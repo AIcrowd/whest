@@ -968,14 +968,14 @@ REGISTRY: dict[str, dict] = {
         "notes": "Symmetric eigenvalues. Cost: (4/3)*n^3 (same as eigh).",
     },
     "linalg.inv": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Matrix inverse. Not yet supported.",
+        "notes": "Matrix inverse. Cost: n^3 (LU + solve).",
     },
     "linalg.lstsq": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Least squares solution. Not yet supported.",
+        "notes": "Least squares. Cost: m*n*min(m,n) (LAPACK gelsd/SVD).",
     },
     "linalg.matmul": {
         "category": "free",
@@ -1018,9 +1018,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Alias for numpy.outer — delegates to mechestim.outer.",
     },
     "linalg.pinv": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Pseudo-inverse. Not yet supported.",
+        "notes": "Pseudoinverse. Cost: m*n*min(m,n) (via SVD).",
     },
     "linalg.qr": {
         "category": "counted_custom",
@@ -1033,9 +1033,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Sign and log of determinant. Not yet supported.",
     },
     "linalg.solve": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Solve linear matrix equation. Not yet supported.",
+        "notes": "Solve Ax=b. Cost: n^3 (LU factorization).",
     },
     "linalg.svdvals": {
         "category": "counted_custom",
@@ -1048,14 +1048,14 @@ REGISTRY: dict[str, dict] = {
         "notes": "Alias for numpy.tensordot — delegates to mechestim.tensordot.",
     },
     "linalg.tensorinv": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Tensor inverse. Not yet supported.",
+        "notes": "Tensor inverse. Cost: n^3 after reshape (delegates to inv).",
     },
     "linalg.tensorsolve": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Solve tensor equation. Not yet supported.",
+        "notes": "Tensor solve. Cost: n^3 after reshape (delegates to solve).",
     },
     "linalg.trace": {
         "category": "blacklisted",
