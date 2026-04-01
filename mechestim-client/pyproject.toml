@@ -11,3 +11,7 @@ dependencies = [
     "pyzmq>=26.0.0",
     "msgpack>=1.0.0",
 ]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
