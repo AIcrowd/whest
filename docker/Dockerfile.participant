@@ -1,0 +1,10 @@
+FROM python:3.10-slim
+WORKDIR /app
+COPY mechestim-client/ /app/mechestim-client/
+RUN pip install --no-cache-dir /app/mechestim-client/
+# Verify numpy is NOT installed
+RUN python -c "import mechestim; print('client installed')" && \
+    python -c "import numpy" 2>&1 | grep -q "No module" && \
+    echo "GOOD: numpy is not installed"
+ENV MECHESTIM_SERVER_URL=ipc:///tmp/mechestim.sock
+CMD ["python", "/submission/run.py"]
