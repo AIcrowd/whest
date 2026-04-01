@@ -11,7 +11,15 @@ Usage::
         print(budget.summary())
 """
 
-__version__ = "0.1.0"
+import numpy as _np
+from mechestim._registry import REGISTRY_META as _REGISTRY_META
+
+__version__ = f"0.2.0+np{_np.__version__}"
+__numpy_version__ = _np.__version__
+__numpy_pinned__ = _REGISTRY_META["numpy_version"]
+
+from mechestim._version_check import check_numpy_version as _check_numpy_version
+_check_numpy_version(__numpy_pinned__)
 
 # --- Budget and diagnostics ---
 from mechestim._budget import BudgetContext, OpRecord  # noqa: F401
@@ -130,7 +138,7 @@ from mechestim import linalg  # noqa: F401
 from mechestim import random  # noqa: F401
 
 # --- NumPy constants and types ---
-import numpy as _np
+# _np already imported above for version attributes
 
 pi = _np.pi
 e = _np.e
