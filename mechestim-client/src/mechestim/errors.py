@@ -97,6 +97,12 @@ def raise_from_response(error_type: str, message: str) -> None:
 
     Unknown error types are treated as :class:`MechEstimServerError`.
     """
+    # Ensure message is a str (server may send bytes if it contains non-ASCII)
+    if isinstance(message, bytes):
+        message = message.decode("utf-8", errors="replace")
+    if isinstance(error_type, bytes):
+        error_type = error_type.decode("utf-8", errors="replace")
+
     exc_cls = _ERROR_MAP.get(error_type, MechEstimServerError)
     if error_type in _MECHESTIM_ERRORS:
         raise exc_cls(message=message)

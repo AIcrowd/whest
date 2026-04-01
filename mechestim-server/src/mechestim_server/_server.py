@@ -1,4 +1,4 @@
-"""MechestimServer — ZMQ REP loop that dispatches requests to a Session + RequestHandler."""
+"""MechestimServer -- ZMQ REP loop that dispatches requests to a Session + RequestHandler."""
 
 from __future__ import annotations
 
@@ -115,7 +115,7 @@ class MechestimServer:
         if self._session is None:
             return encode_error_response(
                 "NoBudgetContextError",
-                "no active session — send budget_open first",
+                "no active session -- send budget_open first",
             )
 
         # --- Validate (whitelist check) ---
@@ -139,7 +139,7 @@ class MechestimServer:
                 result["error_type"], result["message"]
             )
         elif "data" in result:
-            # fetch / fetch_slice — use raw response packing
+            # fetch / fetch_slice -- use raw response packing
             payload = {
                 "status": "ok",
                 "data": result["data"],
@@ -181,7 +181,7 @@ class MechestimServer:
         if self._session is not None and self._session.is_open:
             return encode_error_response(
                 "RuntimeError",
-                "session already open — send budget_close first",
+                "session already open -- send budget_close first",
             )
 
         # Support both top-level and kwargs-based flop_budget
@@ -245,7 +245,7 @@ class MechestimServer:
             return
         if monotonic() - self._last_activity > self._session_timeout_s:
             print(
-                "[mechestim-server] session timed out — reaping",
+                "[mechestim-server] session timed out -- reaping",
                 file=sys.stderr,
             )
             self._session.close()
@@ -294,7 +294,7 @@ def _normalize_msg(msg: dict) -> None:
 
     ``decode_request`` only converts a small set of known string fields
     (op, dtype, request_id) from bytes to str.  Other string-valued
-    fields — ``id``, ``ids``, and items inside ``args`` — may still be
+    fields -- ``id``, ``ids``, and items inside ``args`` -- may still be
     bytes after msgpack decoding with ``raw=True``.  This helper converts
     them so the downstream RequestHandler receives plain strings.
     """
@@ -306,7 +306,7 @@ def _normalize_msg(msg: dict) -> None:
     if "ids" in msg and isinstance(msg["ids"], list):
         msg["ids"] = [_decode_if_bytes(x) for x in msg["ids"]]
 
-    # args — handle IDs are short ASCII strings, may also contain dicts
+    # args -- handle IDs are short ASCII strings, may also contain dicts
     if "args" in msg and isinstance(msg["args"], list):
         msg["args"] = [_normalize_arg(a) for a in msg["args"]]
 

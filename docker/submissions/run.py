@@ -19,20 +19,21 @@ except ImportError:
 print(f"mechestim version: {me.__version__}")
 print()
 
-# ---- 1. Basic array creation ----
-print("--- 1. Array Creation ---")
-x = me.zeros((4, 4))
-print(f"zeros(4,4) shape={x.shape} dtype={x.dtype}")
-
-W = me.array([[1, 0, 0, 0],
-              [0, 2, 0, 0],
-              [0, 0, 3, 0],
-              [0, 0, 0, 4]])
-print(f"W = diag(1,2,3,4):\n{W}")
-
-# ---- 2. Computation with budget tracking ----
-print("\n--- 2. Neural Network Forward Pass ---")
 with me.BudgetContext(flop_budget=1_000_000) as budget:
+
+    # ---- 1. Basic array creation ----
+    print("--- 1. Array Creation ---")
+    x = me.zeros((4, 4))
+    print(f"zeros(4,4) shape={x.shape} dtype={x.dtype}")
+
+    W = me.array([[1.0, 0.0, 0.0, 0.0],
+                  [0.0, 2.0, 0.0, 0.0],
+                  [0.0, 0.0, 3.0, 0.0],
+                  [0.0, 0.0, 0.0, 4.0]])
+    print(f"W = diag(1,2,3,4):\n{W}")
+
+    # ---- 2. Computation with budget tracking ----
+    print("\n--- 2. Neural Network Forward Pass ---")
     # Simulated single-layer neural network
     batch_size = 32
     input_dim = 64
