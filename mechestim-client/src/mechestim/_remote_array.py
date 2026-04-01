@@ -16,9 +16,12 @@ from typing import Any, Dict, List, Tuple, Union
 # ---------------------------------------------------------------------------
 
 #: Maps dtype string to (struct format char, byte width).
+#: Complex types use their float-component format char; _bytes_to_list
+#: handles pairing them into Python complex numbers.
 _DTYPE_INFO: Dict[str, Tuple[str, int]] = {
     "float64": ("d", 8),
     "float32": ("f", 4),
+    "float16": ("e", 2),
     "int64": ("q", 8),
     "int32": ("i", 4),
     "int16": ("h", 2),
@@ -28,7 +31,12 @@ _DTYPE_INFO: Dict[str, Tuple[str, int]] = {
     "uint16": ("H", 2),
     "uint8": ("B", 1),
     "bool": ("?", 1),
+    "complex64": ("f", 8),    # two float32 components
+    "complex128": ("d", 16),   # two float64 components
 }
+
+#: dtypes that are stored as pairs of real components.
+_COMPLEX_DTYPES = frozenset({"complex64", "complex128"})
 
 
 def _bytes_to_list(
@@ -53,7 +61,13 @@ def _bytes_to_list(
     """
     fmt_char, item_size = _DTYPE_INFO[dtype]
     total = max(math.prod(shape), 1) if shape else 1
-    flat = list(struct.unpack(f"<{total}{fmt_char}", data))
+
+    if dtype in _COMPLEX_DTYPES:
+        # Unpack as pairs of floats and construct complex numbers
+        flat_reals = list(struct.unpack(f"<{total * 2}{fmt_char}", data))
+        flat = [complex(flat_reals[i], flat_reals[i + 1]) for i in range(0, len(flat_reals), 2)]
+    else:
+        flat = list(struct.unpack(f"<{total}{fmt_char}", data))
 
     # Scalar
     if not shape:
@@ -373,14 +387,26 @@ class RemoteArray:
     def __floordiv__(self, other):
         return self._dispatch_op("floor_divide", self, other)
 
+    def __rfloordiv__(self, other):
+        return self._dispatch_op("floor_divide", other, self)
+
     def __mod__(self, other):
         return self._dispatch_op("remainder", self, other)
+
+    def __rmod__(self, other):
+        return self._dispatch_op("remainder", other, self)
 
     def __pow__(self, other):
         return self._dispatch_op("power", self, other)
 
+    def __rpow__(self, other):
+        return self._dispatch_op("power", other, self)
+
     def __matmul__(self, other):
         return self._dispatch_op("matmul", self, other)
+
+    def __rmatmul__(self, other):
+        return self._dispatch_op("matmul", other, self)
 
     def __neg__(self):
         return self._dispatch_op("negative", self)
@@ -436,14 +462,22 @@ def _result_from_response(resp: dict) -> Union[RemoteArray, RemoteScalar, tuple,
         return RemoteScalar(value=result["value"], dtype=result.get("dtype", "float64"))
 
     if "multi" in result:
-        return tuple(
-            RemoteArray(
-                handle_id=item["id"],
-                shape=tuple(item["shape"]),
-                dtype=item["dtype"],
-            )
-            for item in result["multi"]
-        )
+        items = []
+        for item in result["multi"]:
+            if "id" in item:
+                items.append(RemoteArray(
+                    handle_id=item["id"],
+                    shape=tuple(item["shape"]),
+                    dtype=item["dtype"],
+                ))
+            elif "value" in item:
+                items.append(RemoteScalar(
+                    value=item["value"],
+                    dtype=item.get("dtype", "float64"),
+                ))
+            else:
+                items.append(item)
+        return tuple(items)
 
     if "id" in result:
         return RemoteArray(

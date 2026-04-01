@@ -10,7 +10,7 @@ import numpy as np
 import pytest
 import zmq
 
-from mechestim_server._server import MechestimServer
+from mechestim_server._server import MechestimServer, _normalize_arg, _normalize_msg
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -177,20 +177,81 @@ def test_budget_close_without_session(server_and_client):
     assert resp["error_type"] == "NoBudgetContextError"
 
 
-def test_session_reopen(server_and_client):
-    """Opening a new session implicitly closes the old one."""
+def test_session_reopen_blocked(server_and_client):
+    """FIX 1: budget_open with an active session must return an error."""
     _server, client = server_and_client
 
     _send(client, {"op": "budget_open", "flop_budget": 100_000})
-    resp = _send(client, {"op": "ones", "args": [(2,)], "kwargs": {}})
-    handle = resp["result"]["id"]
 
-    # Open a new session — old one is closed, old handles are gone
-    _send(client, {"op": "budget_open", "flop_budget": 200_000})
+    # A second budget_open MUST fail instead of silently resetting
+    resp = _send(client, {"op": "budget_open", "flop_budget": 200_000})
+    assert resp["status"] == "error"
+    assert resp["error_type"] == "RuntimeError"
+    assert "already open" in resp["message"]
 
+    # Original session is still active
     resp = _send(client, {"op": "budget_status"})
+    assert resp["result"]["flop_budget"] == 100_000
+
+    # Close and reopen should work
+    _send(client, {"op": "budget_close"})
+    resp = _send(client, {"op": "budget_open", "flop_budget": 200_000})
+    assert resp["status"] == "ok"
     assert resp["result"]["flop_budget"] == 200_000
 
-    # Old handle should not be accessible
-    resp = _send(client, {"op": "fetch", "id": handle})
-    assert resp["status"] == "error"
+
+# ---------------------------------------------------------------------------
+# FIX 2: _normalize_arg preserves binary data
+# ---------------------------------------------------------------------------
+
+
+def test_normalize_arg_preserves_binary_float64():
+    """FIX 2: small binary data (e.g. 8-byte float64) must NOT be decoded."""
+    import struct
+    data = struct.pack("<d", 3.14)  # 8 bytes, may be valid UTF-8
+    result = _normalize_arg(data)
+    assert isinstance(result, bytes), "binary float64 data was incorrectly decoded to str"
+    assert result == data
+
+
+def test_normalize_arg_decodes_handle_id():
+    """FIX 2: short ASCII handle IDs like b'a0' must still be decoded."""
+    result = _normalize_arg(b"a0")
+    assert result == "a0"
+    assert isinstance(result, str)
+
+
+def test_normalize_arg_decodes_dtype():
+    """FIX 2: short ASCII dtype strings must still be decoded."""
+    result = _normalize_arg(b"float64")
+    assert result == "float64"
+    assert isinstance(result, str)
+
+
+def test_normalize_arg_preserves_high_bytes():
+    """FIX 2: bytes with high bytes (>127) must be kept as bytes."""
+    data = bytes([0x80, 0x90, 0xA0])  # high bytes
+    result = _normalize_arg(data)
+    assert isinstance(result, bytes)
+
+
+# ---------------------------------------------------------------------------
+# FIX 8: kwargs normalization uses _normalize_arg
+# ---------------------------------------------------------------------------
+
+
+def test_normalize_msg_kwargs_handle_dict():
+    """FIX 8: kwargs values containing handle dicts are normalized recursively."""
+    msg = {
+        "op": "some_op",
+        "args": [],
+        "kwargs": {
+            b"out": {b"__handle__": b"a5"},
+        },
+    }
+    _normalize_msg(msg)
+    # The dict inside kwargs should have its keys/values normalized
+    out_val = msg["kwargs"]["out"]
+    assert isinstance(out_val, dict)
+    assert "__handle__" in out_val
+    assert out_val["__handle__"] == "a5"

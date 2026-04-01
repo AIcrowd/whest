@@ -4,24 +4,22 @@ from __future__ import annotations
 import msgpack
 
 
-# Maximum byte length that we consider "short enough" to attempt UTF-8 decode.
-# Raw array payloads will be much larger; short handles/status strings will be small.
-_SHORT_THRESHOLD = 1024
+# Maximum byte length that we consider "short enough" to attempt ASCII decode.
+# Handle IDs and status strings are short ASCII; binary array data may contain
+# high bytes even when valid UTF-8.
+_SHORT_THRESHOLD = 32
 
 
 def _normalize(value: object) -> object:
     """Recursively normalize bytes keys/values to strings where appropriate.
 
-    Binary data fields (raw array bytes) stay as bytes — heuristic: try UTF-8
-    decode; if it succeeds, the value is short, and it looks like text
-    (no null bytes), treat as string; otherwise keep as bytes.
+    Binary data fields (raw array bytes) stay as bytes.  Only decode bytes
+    that are short AND contain only ASCII printable characters (no bytes > 127).
+    This catches handle IDs and dtype strings but never touches binary data.
     """
     if isinstance(value, bytes):
-        if len(value) <= _SHORT_THRESHOLD and b"\x00" not in value:
-            try:
-                return value.decode("utf-8")
-            except (UnicodeDecodeError, AttributeError):
-                pass
+        if len(value) <= _SHORT_THRESHOLD and all(32 <= b < 128 for b in value):
+            return value.decode("ascii")
         return value
     if isinstance(value, dict):
         return {_normalize(k): _normalize(v) for k, v in value.items()}

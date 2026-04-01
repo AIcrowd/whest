@@ -253,3 +253,81 @@ class TestBytesToList:
             [[1.0, 2.0], [3.0, 4.0]],
             [[5.0, 6.0], [7.0, 8.0]],
         ]
+
+    # -- FIX 4: float16, complex64, complex128 support -----------------------
+
+    def test_1d_float16(self):
+        vals = [1.0, 2.0, 3.0]
+        data = struct.pack("<3e", *vals)
+        result = _bytes_to_list(data, (3,), "float16")
+        assert result == pytest.approx([1.0, 2.0, 3.0], abs=1e-3)
+
+    def test_1d_complex64(self):
+        # complex64 = two float32 components per element
+        vals = [1.0, 2.0, 3.0, 4.0]  # (1+2j), (3+4j)
+        data = struct.pack("<4f", *vals)
+        result = _bytes_to_list(data, (2,), "complex64")
+        assert len(result) == 2
+        assert result[0] == pytest.approx(complex(1.0, 2.0), abs=1e-6)
+        assert result[1] == pytest.approx(complex(3.0, 4.0), abs=1e-6)
+
+    def test_1d_complex128(self):
+        # complex128 = two float64 components per element
+        vals = [1.0, 2.0, 3.0, 4.0]  # (1+2j), (3+4j)
+        data = struct.pack("<4d", *vals)
+        result = _bytes_to_list(data, (2,), "complex128")
+        assert len(result) == 2
+        assert result[0] == complex(1.0, 2.0)
+        assert result[1] == complex(3.0, 4.0)
+
+    def test_scalar_complex128(self):
+        data = struct.pack("<2d", 5.0, -3.0)
+        result = _bytes_to_list(data, (), "complex128")
+        assert result == complex(5.0, -3.0)
+
+
+# =========================================================================
+# TestResultFromResponseMixed (FIX 6)
+# =========================================================================
+
+
+class TestResultFromResponseMixed:
+    """FIX 6: mixed multi results with both arrays and scalars."""
+
+    def test_multi_with_scalar(self):
+        resp = {
+            "status": "ok",
+            "result": {
+                "multi": [
+                    {"id": "h1", "shape": [2], "dtype": "float64"},
+                    {"value": 3.14},
+                ],
+            },
+        }
+        out = _result_from_response(resp)
+        assert isinstance(out, tuple)
+        assert len(out) == 2
+        assert isinstance(out[0], RemoteArray)
+        assert isinstance(out[1], RemoteScalar)
+        assert float(out[1]) == pytest.approx(3.14)
+
+
+# =========================================================================
+# TestRemoteArrayReverseOps (FIX 5)
+# =========================================================================
+
+
+class TestRemoteArrayReverseOps:
+    """FIX 5: reverse operators exist on RemoteArray."""
+
+    def test_has_rfloordiv(self):
+        assert hasattr(RemoteArray, "__rfloordiv__")
+
+    def test_has_rmod(self):
+        assert hasattr(RemoteArray, "__rmod__")
+
+    def test_has_rpow(self):
+        assert hasattr(RemoteArray, "__rpow__")
+
+    def test_has_rmatmul(self):
+        assert hasattr(RemoteArray, "__rmatmul__")
