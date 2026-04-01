@@ -383,6 +383,14 @@ from mechestim._polynomial import (  # noqa: F401
     polymul, polydiv, polyfit, poly, roots,
 )
 
+# --- Window functions (counted) ---
+from mechestim._window import (  # noqa: F401
+    bartlett, blackman, hamming, hanning, kaiser,
+)
+
+# --- Unwrap (counted) ---
+from mechestim._unwrap import unwrap  # noqa: F401
+
 # --- Submodules ---
 from mechestim import fft  # noqa: F401
 from mechestim import flops  # noqa: F401
