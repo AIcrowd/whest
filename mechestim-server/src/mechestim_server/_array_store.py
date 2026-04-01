@@ -2,7 +2,12 @@
 
 from __future__ import annotations
 
+import os
+
 import numpy as np
+
+#: Maximum number of arrays allowed in a single store (configurable via env var).
+MAX_ARRAY_COUNT = int(os.environ.get("MECHESTIM_MAX_ARRAY_COUNT", "100000"))
 
 
 class ArrayStore:
@@ -22,7 +27,17 @@ class ArrayStore:
     # ------------------------------------------------------------------
 
     def put(self, arr: np.ndarray) -> str:
-        """Store *arr* and return its handle ID."""
+        """Store *arr* and return its handle ID.
+
+        Raises
+        ------
+        MemoryError
+            If the store already contains :data:`MAX_ARRAY_COUNT` arrays.
+        """
+        if len(self._arrays) >= MAX_ARRAY_COUNT:
+            raise MemoryError(
+                f"array store limit reached: {MAX_ARRAY_COUNT} arrays"
+            )
         handle = f"a{self._counter}"
         self._arrays[handle] = arr
         self._counter += 1

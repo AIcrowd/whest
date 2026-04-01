@@ -161,7 +161,7 @@ class RequestHandler:
         if len(args) < 2:
             raise ValueError("__getitem__ requires [handle, key]")
         arr = self._resolve_arg(args[0])
-        key = _decode_index_key(args[1])
+        key = self._decode_index_key(args[1])
         result = arr[key]
         return self._pack_result(result)
 
@@ -173,6 +173,15 @@ class RequestHandler:
         op = request["op"]
         raw_args = request.get("args") or []
         kwargs = request.get("kwargs") or {}
+
+        # Special-case: astype is an ndarray method, not a module function
+        if op == "astype":
+            arr = self._resolve_arg(raw_args[0])
+            dtype = raw_args[1] if len(raw_args) > 1 else kwargs.get("dtype")
+            if isinstance(dtype, bytes):
+                dtype = dtype.decode("utf-8")
+            result = arr.astype(dtype)
+            return self._pack_result(result)
 
         func = _get_mechestim_func(op)
         resolved_args = [self._resolve_arg(a) for a in raw_args]
@@ -205,6 +214,37 @@ class RequestHandler:
             resolved = [self._resolve_arg(item) for item in arg]
             return type(arg)(resolved) if isinstance(arg, tuple) else resolved
         return arg
+
+    # ------------------------------------------------------------------
+    # Result packing
+    # ------------------------------------------------------------------
+
+    def _decode_index_key(self, raw_key):
+        """Decode a serialised index key from the client (instance method).
+
+        Supports handle dicts for fancy indexing with RemoteArrays.
+        """
+        if isinstance(raw_key, dict):
+            # Handle dict: {"__handle__": "a0"} for fancy indexing
+            handle = raw_key.get("__handle__") or raw_key.get(b"__handle__")
+            if handle is not None:
+                if isinstance(handle, bytes):
+                    handle = handle.decode()
+                return self._session.get_array(handle)
+            if "__slice__" in raw_key:
+                parts = raw_key["__slice__"]
+                return slice(*[None if p is None else int(p) for p in parts])
+            if b"__slice__" in raw_key:
+                parts = raw_key[b"__slice__"]
+                return slice(*[None if p is None else int(p) for p in parts])
+        if isinstance(raw_key, list):
+            decoded = [self._decode_index_key(item) for item in raw_key]
+            if any(isinstance(d, slice) for d in decoded) or len(decoded) > 1:
+                return tuple(decoded)
+            return decoded
+        if isinstance(raw_key, (int, float)):
+            return int(raw_key)
+        return raw_key
 
     # ------------------------------------------------------------------
     # Result packing

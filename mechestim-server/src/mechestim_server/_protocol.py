@@ -31,6 +31,7 @@ _PROTOCOL_OPS: frozenset[str] = frozenset(
         "free",
         "create_from_data",
         "__getitem__",
+        "astype",
     }
 )
 
