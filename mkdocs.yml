@@ -1,0 +1,35 @@
+site_name: mechestim
+site_description: NumPy-compatible math primitives with FLOP counting
+repo_url: https://github.com/AIcrowd/mechestim
+
+theme:
+  name: material
+  palette:
+    scheme: default
+    primary: indigo
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: numpy
+            show_source: true
+            show_root_heading: true
+
+nav:
+  - Home: index.md
+  - Quick Start: quickstart.md
+  - API Reference:
+    - Counted Operations: api/counted-ops.md
+    - Free Operations: api/free-ops.md
+    - Budget: api/budget.md
+    - FLOP Cost Query: api/flops.md
+    - Errors: api/errors.md
+  - Changelog: changelog.md
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - admonition
