@@ -1,11 +1,7 @@
 """Linear algebra submodule for mechestim."""
 from mechestim.linalg._svd import svd  # noqa: F401
+from mechestim._registry import make_module_getattr as _make_module_getattr
 
 __all__ = ["svd"]
 
-def __getattr__(name):
-    raise AttributeError(
-        f"mechestim.linalg does not provide '{name}'. "
-        f"Currently supported: svd. "
-        f"Request new ops at https://github.com/AIcrowd/mechestim/issues"
-    )
+__getattr__ = _make_module_getattr(module_prefix="linalg.", module_label="mechestim.linalg")

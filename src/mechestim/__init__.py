@@ -124,6 +124,7 @@ from mechestim._free_ops import (  # noqa: F401
 )
 
 # --- Submodules ---
+from mechestim import fft  # noqa: F401
 from mechestim import flops  # noqa: F401
 from mechestim import linalg  # noqa: F401
 from mechestim import random  # noqa: F401
@@ -150,8 +151,6 @@ complex64 = _np.complex64
 complex128 = _np.complex128
 
 
-def __getattr__(name: str):
-    raise AttributeError(
-        f"mechestim does not provide '{name}'. "
-        f"See https://github.com/AIcrowd/mechestim for supported operations."
-    )
+from mechestim._registry import make_module_getattr as _make_module_getattr
+
+__getattr__ = _make_module_getattr(module_prefix="", module_label="mechestim")
