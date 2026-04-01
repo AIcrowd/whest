@@ -279,7 +279,7 @@ def _normalize_arg(a: object) -> object:
         # characters (no bytes > 127).  This catches handle IDs and dtype
         # strings but never touches binary array data (which often contains
         # high bytes even if it happens to be valid UTF-8).
-        if len(a) <= 32 and all(32 <= b < 128 for b in a):
+        if len(a) > 0 and len(a) <= 32 and all(32 <= b < 128 for b in a):
             return a.decode("ascii")
         return a  # keep as raw bytes (likely binary payload)
     if isinstance(a, dict):
