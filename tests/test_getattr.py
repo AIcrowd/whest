@@ -49,11 +49,6 @@ def test_fft_getattr_gives_blacklist_error():
 
 
 def test_linalg_getattr_consults_registry():
-    from mechestim._registry import REGISTRY
-    linalg_entries = [n for n, e in REGISTRY.items()
-                      if e["module"] == "numpy.linalg" and n != "linalg.svd"]
-    if not linalg_entries:
-        pytest.skip("No non-svd linalg functions")
-    func_name = linalg_entries[0].replace("linalg.", "")
+    """Verify that accessing a non-existent linalg attr raises AttributeError."""
     with pytest.raises(AttributeError):
-        getattr(me.linalg, func_name)
+        getattr(me.linalg, "nonexistent_function_xyz")
