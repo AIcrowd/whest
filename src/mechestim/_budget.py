@@ -35,13 +35,14 @@ class BudgetContext:
         Multiplier applied to all FLOP costs. Default 1.
     """
 
-    def __init__(self, flop_budget: int, flop_multiplier: float = 1.0):
+    def __init__(self, flop_budget: int, flop_multiplier: float = 1.0, quiet: bool = False):
         if flop_budget <= 0:
             raise ValueError(f"flop_budget must be > 0, got {flop_budget}")
         self._flop_budget = flop_budget
         self._flop_multiplier = flop_multiplier
         self._flops_used = 0
         self._op_log: list[OpRecord] = []
+        self._quiet = quiet
 
     @property
     def flop_budget(self) -> int:
@@ -97,6 +98,15 @@ class BudgetContext:
         if get_active_budget() is not None:
             raise RuntimeError("Cannot nest BudgetContexts")
         _thread_local.active_budget = self
+        if not self._quiet:
+            import sys
+            import mechestim
+            print(
+                f"mechestim {mechestim.__version__} "
+                f"(numpy {mechestim.__numpy_version__} backend) | "
+                f"budget: {self._flop_budget:.2e} FLOPs",
+                file=sys.stderr,
+            )
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
