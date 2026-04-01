@@ -128,7 +128,15 @@ def _make_proxy(op_name: str):
                 encoded_args.append(arg._value)
             else:
                 encoded_args.append(arg)
-        resp = conn.send_recv(encode_request(op_name, args=encoded_args, kwargs=kwargs))
+        encoded_kwargs = {}
+        for k, v in kwargs.items():
+            if isinstance(v, RemoteArray):
+                encoded_kwargs[k] = {"__handle__": v.handle_id}
+            elif isinstance(v, RemoteScalar):
+                encoded_kwargs[k] = v._value
+            else:
+                encoded_kwargs[k] = v
+        resp = conn.send_recv(encode_request(op_name, args=encoded_args, kwargs=encoded_kwargs))
         return _result_from_response(resp)
 
     proxy.__name__ = op_name

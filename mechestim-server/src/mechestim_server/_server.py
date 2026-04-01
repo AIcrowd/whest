@@ -177,9 +177,12 @@ class MechestimServer:
     # ------------------------------------------------------------------
 
     def _handle_budget_open(self, msg: dict, t0: int, t1: int) -> bytes:
-        """Open a new session (close any existing one first)."""
+        """Open a new session; error if one is already open."""
         if self._session is not None and self._session.is_open:
-            self._session.close()
+            return encode_error_response(
+                "RuntimeError",
+                "session already open — send budget_close first",
+            )
 
         # Support both top-level and kwargs-based flop_budget
         flop_budget = msg.get("flop_budget")
@@ -267,8 +270,12 @@ def _normalize_arg(a: object) -> object:
     are always short ASCII).
     """
     if isinstance(a, bytes):
-        if len(a) <= 256 and b"\x00" not in a:
-            return _decode_if_bytes(a)
+        # Only decode bytes that are short AND contain only ASCII printable
+        # characters (no bytes > 127).  This catches handle IDs and dtype
+        # strings but never touches binary array data (which often contains
+        # high bytes even if it happens to be valid UTF-8).
+        if len(a) <= 32 and all(32 <= b < 128 for b in a):
+            return a.decode("ascii")
         return a  # keep as raw bytes (likely binary payload)
     if isinstance(a, dict):
         return {_decode_if_bytes(k): _decode_if_bytes(v) for k, v in a.items()}
@@ -299,9 +306,10 @@ def _normalize_msg(msg: dict) -> None:
         msg["args"] = [_normalize_arg(a) for a in msg["args"]]
 
     # kwargs keys are already str (decode_request normalises all keys).
-    # kwargs *values* that are handle-like bytes also need decoding.
+    # kwargs *values* may contain handles, dicts, or lists that need full
+    # normalization (not just _decode_if_bytes).
     if "kwargs" in msg and isinstance(msg["kwargs"], dict):
         msg["kwargs"] = {
-            _decode_if_bytes(k): _decode_if_bytes(v)
+            _decode_if_bytes(k): _normalize_arg(v)
             for k, v in msg["kwargs"].items()
         }

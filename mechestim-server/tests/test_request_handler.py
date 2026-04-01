@@ -250,3 +250,80 @@ def test_budget_info_included_in_operation_responses(handler, session):
     assert "budget" in resp2
     # After exp, some flops should have been used
     assert resp2["budget"]["flops_remaining"] < resp["budget"]["flops_remaining"]
+
+
+# ---------------------------------------------------------------------------
+# FIX 3: _resolve_arg recurses into lists
+# ---------------------------------------------------------------------------
+
+def test_resolve_arg_recurse_list(handler, session):
+    """Handles inside lists (e.g. concatenate([a, b])) are resolved."""
+    a = session.store_array(np.array([1.0, 2.0]))
+    b = session.store_array(np.array([3.0, 4.0]))
+
+    resp = handler.handle({
+        "op": "concatenate",
+        "args": [[{"__handle__": a}, {"__handle__": b}]],
+        "kwargs": {},
+    })
+    assert resp["status"] == "ok"
+    result = session.get_array(resp["result"]["id"])
+    np.testing.assert_array_equal(result, [1.0, 2.0, 3.0, 4.0])
+
+
+# ---------------------------------------------------------------------------
+# FIX 6: _pack_result handles mixed array/scalar tuples
+# ---------------------------------------------------------------------------
+
+def test_pack_result_mixed_tuple(handler, session):
+    """FIX 6: _pack_result handles tuples containing both arrays and scalars."""
+    # Directly test _pack_result with a mixed tuple
+    arr = np.array([1.0, 2.0])
+    scalar = np.float64(3.14)
+    mixed = (arr, scalar)
+
+    result = handler._pack_result(mixed)
+    assert result["status"] == "ok"
+    assert "multi" in result["result"]
+    items = result["result"]["multi"]
+    assert len(items) == 2
+    # First item should be an array (has "id")
+    assert "id" in items[0]
+    assert items[0]["shape"] == [2]
+    # Second item should be a scalar (has "value")
+    assert "value" in items[1]
+    assert abs(items[1]["value"] - 3.14) < 1e-10
+
+
+# ---------------------------------------------------------------------------
+# FIX 9: Max array size limit
+# ---------------------------------------------------------------------------
+
+def test_create_from_data_size_limit(handler, session, monkeypatch):
+    """create_from_data rejects arrays exceeding the size limit."""
+    import mechestim_server._request_handler as rh
+    monkeypatch.setattr(rh, "MAX_ARRAY_BYTES", 100)  # 100 bytes limit
+
+    # Create data that exceeds limit
+    arr = np.ones((200,), dtype=np.float64)  # 200 * 8 = 1600 bytes
+    resp = handler.handle({
+        "op": "create_from_data",
+        "data": arr.tobytes(),
+        "shape": [200],
+        "dtype": "float64",
+    })
+    assert resp["status"] == "error"
+    assert resp["error_type"] == "ValueError"
+    assert "too large" in resp["message"]
+
+
+def test_result_array_size_limit(handler, session, monkeypatch):
+    """Operations producing arrays exceeding the limit return an error."""
+    import mechestim_server._request_handler as rh
+    monkeypatch.setattr(rh, "MAX_ARRAY_BYTES", 100)  # 100 bytes limit
+
+    # ones((200,)) produces 200 * 8 = 1600 bytes
+    resp = handler.handle({"op": "ones", "args": [(200,)], "kwargs": {}})
+    assert resp["status"] == "error"
+    assert resp["error_type"] == "ValueError"
+    assert "too large" in resp["message"]

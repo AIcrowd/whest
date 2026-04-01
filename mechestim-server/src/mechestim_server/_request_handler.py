@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import re
 from typing import Any
 
@@ -11,6 +12,9 @@ import numpy as np
 from mechestim_server._session import Session
 
 _HANDLE_RE = re.compile(r"^a\d+$")
+
+#: Maximum allowed array size in bytes (configurable via environment variable).
+MAX_ARRAY_BYTES = int(os.environ.get("MECHESTIM_MAX_ARRAY_BYTES", 100 * 1024 * 1024))
 
 
 class RequestHandler:
@@ -130,6 +134,12 @@ class RequestHandler:
         # Ensure dtype is a string (may be bytes from msgpack)
         if isinstance(dtype, bytes):
             dtype = dtype.decode("utf-8")
+        if len(data) > MAX_ARRAY_BYTES:
+            return {
+                "status": "error",
+                "error_type": "ValueError",
+                "message": f"array too large: {len(data)} bytes exceeds {MAX_ARRAY_BYTES} byte limit",
+            }
         arr = np.frombuffer(data, dtype=dtype).reshape(shape).copy()
         handle = self._session.store_array(arr)
         meta = self._session.array_metadata(handle)
@@ -174,6 +184,10 @@ class RequestHandler:
                 if isinstance(handle, bytes):
                     handle = handle.decode("utf-8")
                 return self._session.get_array(handle)
+        # Recurse into lists/tuples so that e.g. concatenate([a, b]) works
+        if isinstance(arg, (list, tuple)):
+            resolved = [self._resolve_arg(item) for item in arg]
+            return type(arg)(resolved) if isinstance(arg, tuple) else resolved
         return arg
 
     # ------------------------------------------------------------------
@@ -185,16 +199,27 @@ class RequestHandler:
         budget = self._session.budget_status()
 
         if isinstance(result, np.ndarray):
+            if result.nbytes > MAX_ARRAY_BYTES:
+                return {
+                    "status": "error",
+                    "error_type": "ValueError",
+                    "message": f"result array too large: {result.nbytes} bytes exceeds {MAX_ARRAY_BYTES} byte limit",
+                }
             handle = self._session.store_array(result)
             meta = self._session.array_metadata(handle)
             return {"status": "ok", "result": meta, "budget": budget}
 
-        if isinstance(result, tuple) and all(isinstance(r, np.ndarray) for r in result):
-            multi = []
-            for arr in result:
-                handle = self._session.store_array(arr)
-                multi.append(self._session.array_metadata(handle))
-            return {"status": "ok", "result": {"multi": multi}, "budget": budget}
+        if isinstance(result, tuple):
+            items = []
+            for r in result:
+                if isinstance(r, np.ndarray):
+                    handle = self._session.store_array(r)
+                    items.append(self._session.array_metadata(handle))
+                elif isinstance(r, (np.generic, int, float)):
+                    items.append({"value": float(r) if isinstance(r, (np.floating, float)) else int(r)})
+                else:
+                    items.append(r)
+            return {"status": "ok", "result": {"multi": items}, "budget": budget}
 
         # Scalar or other value
         if isinstance(result, (np.generic,)):

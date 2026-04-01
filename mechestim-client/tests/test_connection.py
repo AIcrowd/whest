@@ -135,6 +135,23 @@ class TestProtocol:
         result = decode_response(payload)
         assert isinstance(result["handle"], str)
 
+    def test_normalize_preserves_small_binary_data(self):
+        """FIX 2 (client): small binary array data must NOT be decoded."""
+        import struct
+        from mechestim._protocol import _normalize
+
+        data = struct.pack("<d", 3.14)  # 8 bytes float64
+        result = _normalize(data)
+        assert isinstance(result, bytes), "binary float64 data was decoded to str"
+
+    def test_normalize_decodes_ascii_handle(self):
+        """FIX 2 (client): short ASCII handle IDs are decoded to str."""
+        from mechestim._protocol import _normalize
+
+        result = _normalize(b"a0")
+        assert result == "a0"
+        assert isinstance(result, str)
+
 
 # ---------------------------------------------------------------------------
 # Connection config tests
