@@ -915,7 +915,7 @@ REGISTRY: dict[str, dict] = {
         "notes": "1-D linear interpolation.",
     },
     # ------------------------------------------------------------------
-    # linalg — svd implemented; rest blacklisted
+    # linalg — svd + decompositions implemented; rest blacklisted
     # ------------------------------------------------------------------
     "linalg.svd": {
         "category": "counted_custom",
@@ -923,9 +923,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Singular value decomposition; cost ~ O(min(m,n)*m*n).",
     },
     "linalg.cholesky": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Cholesky decomposition. Not yet supported.",
+        "notes": "Cholesky decomposition. Cost: n^3/3 (Golub & Van Loan §4.2).",
     },
     "linalg.cond": {
         "category": "blacklisted",
@@ -948,24 +948,24 @@ REGISTRY: dict[str, dict] = {
         "notes": "View of diagonal — delegates to mechestim.diagonal. Cost: 0 FLOPs.",
     },
     "linalg.eig": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Eigenvalues and eigenvectors. Not yet supported.",
+        "notes": "Eigendecomposition. Cost: 10*n^3 (Francis QR, Golub & Van Loan §7.5).",
     },
     "linalg.eigh": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Eigenvalues/vectors for symmetric matrix. Not yet supported.",
+        "notes": "Symmetric eigendecomposition. Cost: (4/3)*n^3 (Golub & Van Loan §8.3).",
     },
     "linalg.eigvals": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Eigenvalues only. Not yet supported.",
+        "notes": "Eigenvalues only. Cost: 10*n^3 (same as eig).",
     },
     "linalg.eigvalsh": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Eigenvalues for symmetric matrix. Not yet supported.",
+        "notes": "Symmetric eigenvalues. Cost: (4/3)*n^3 (same as eigh).",
     },
     "linalg.inv": {
         "category": "blacklisted",
@@ -1023,9 +1023,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Pseudo-inverse. Not yet supported.",
     },
     "linalg.qr": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "QR decomposition. Not yet supported.",
+        "notes": "QR decomposition. Cost: 2*m*n^2 - (2/3)*n^3 (Golub & Van Loan §5.2).",
     },
     "linalg.slogdet": {
         "category": "blacklisted",
@@ -1038,9 +1038,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Solve linear matrix equation. Not yet supported.",
     },
     "linalg.svdvals": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Singular values only. Not yet supported.",
+        "notes": "Singular values only. Cost: m*n*min(m,n) (Golub-Reinsch).",
     },
     "linalg.tensordot": {
         "category": "free",
