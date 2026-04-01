@@ -928,9 +928,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Cholesky decomposition. Cost: n^3/3 (Golub & Van Loan §4.2).",
     },
     "linalg.cond": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Matrix condition number. Not yet supported.",
+        "notes": "Condition number. Cost: m*n*min(m,n) (via SVD).",
     },
     "linalg.cross": {
         "category": "free",
@@ -938,9 +938,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Alias for numpy.cross — delegates to mechestim.cross.",
     },
     "linalg.det": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Matrix determinant. Not yet supported.",
+        "notes": "Determinant. Cost: n^3 (LU factorization).",
     },
     "linalg.diagonal": {
         "category": "free",
@@ -983,9 +983,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Alias for numpy.matmul — delegates to mechestim.matmul.",
     },
     "linalg.matrix_norm": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Matrix norm. Not yet supported.",
+        "notes": "Matrix norm. Cost depends on ord: 2*numel for Frobenius, m*n*min(m,n) for ord=2.",
     },
     "linalg.matrix_power": {
         "category": "blacklisted",
@@ -993,9 +993,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Matrix raised to integer power. Not yet supported.",
     },
     "linalg.matrix_rank": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Matrix rank. Not yet supported.",
+        "notes": "Matrix rank. Cost: m*n*min(m,n) (via SVD).",
     },
     "linalg.matrix_transpose": {
         "category": "free",
@@ -1008,9 +1008,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Efficient multi-matrix dot product. Not yet supported.",
     },
     "linalg.norm": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Matrix or vector norm. Not yet supported.",
+        "notes": "Norm. Cost depends on ord: numel for L1/inf, 2*numel for Frobenius, m*n*min(m,n) for ord=2.",
     },
     "linalg.outer": {
         "category": "free",
@@ -1028,9 +1028,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "QR decomposition. Cost: 2*m*n^2 - (2/3)*n^3 (Golub & Van Loan §5.2).",
     },
     "linalg.slogdet": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Sign and log of determinant. Not yet supported.",
+        "notes": "Sign + log determinant. Cost: n^3 (LU factorization).",
     },
     "linalg.solve": {
         "category": "counted_custom",
@@ -1058,9 +1058,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Tensor solve. Cost: n^3 after reshape (delegates to solve).",
     },
     "linalg.trace": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Sum along diagonal (linalg namespace). Not yet supported.",
+        "notes": "Matrix trace. Cost: n (sum of diagonal elements).",
     },
     "linalg.vecdot": {
         "category": "free",
@@ -1068,9 +1068,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Alias for numpy.vecdot — delegates to mechestim.vecdot.",
     },
     "linalg.vector_norm": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Vector norm. Not yet supported.",
+        "notes": "Vector norm. Cost: numel (or 2*numel for general p-norm).",
     },
     # ------------------------------------------------------------------
     # fft — all blacklisted
