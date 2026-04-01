@@ -324,29 +324,24 @@ def introspect_numpy() -> Dict[str, dict]:
 
 
 def load_registry() -> Tuple[dict, dict]:
-    """Load the mechestim._registry module.
+    """Load the mechestim registry.
 
     Returns
     -------
-    (implementations, blacklist)
-        Two dicts.  ``implementations`` maps qualified name → metadata for
-        things that *are* implemented.  ``blacklist`` maps qualified name →
-        reason for things that are intentionally not implemented.
+    (REGISTRY_META, REGISTRY)
+        The registry metadata and the full registry dict.
         Returns ``({}, {})`` if the registry does not exist yet.
     """
     try:
-        reg = importlib.import_module("mechestim._registry")
+        from mechestim._registry import REGISTRY, REGISTRY_META
+        return REGISTRY_META, REGISTRY
     except ImportError:
         return {}, {}
-
-    implementations: dict = getattr(reg, "IMPLEMENTATIONS", {})
-    blacklist: dict = getattr(reg, "BLACKLIST", {})
-    return implementations, blacklist
 
 
 def compare(
     discovered: Dict[str, dict],
-    registry: Tuple[dict, dict],
+    registry: dict,
 ) -> Dict[str, list]:
     """Compare discovered numpy callables against the mechestim registry.
 
@@ -355,37 +350,56 @@ def compare(
     discovered:
         Output of :func:`introspect_numpy`.
     registry:
-        ``(implementations, blacklist)`` from :func:`load_registry`.
+        ``REGISTRY`` dict from :func:`load_registry` (second element).
 
     Returns
     -------
     dict with keys:
-        - ``covered`` — implemented in mechestim
-        - ``registered_not_implemented`` — in registry but not discovered
-        - ``unclassified`` — discovered but not in registry/implementations
-        - ``blacklisted`` — intentionally not implemented (in blacklist)
-        - ``stale`` — in implementations but not discoverable in numpy
+        - ``covered`` — in registry and importable from mechestim
+        - ``registered_not_implemented`` — in registry but not importable
+        - ``unclassified`` — discovered but not in registry at all
+        - ``blacklisted`` — in registry with category 'blacklisted'
+        - ``stale`` — in registry but not discoverable in numpy
     """
-    implementations, blacklist = registry
-    discovered_names = set(discovered.keys())
-    impl_names = set(implementations.keys())
-    black_names = set(blacklist.keys())
+    # Determine which registered functions are actually importable
+    import mechestim as me
+    implemented_names = set()
+    for name in registry:
+        parts = name.split(".")
+        try:
+            obj = me
+            for part in parts:
+                obj = getattr(obj, part)
+            implemented_names.add(name)
+        except (AttributeError, TypeError):
+            pass
 
-    covered = sorted(discovered_names & impl_names)
-    blacklisted = sorted(discovered_names & black_names)
-    unclassified = sorted(discovered_names - impl_names - black_names)
-    stale = sorted(impl_names - discovered_names)
-    registered_not_implemented = sorted(
-        (impl_names | black_names) - discovered_names
-    )
-
-    return {
-        "covered": covered,
-        "registered_not_implemented": registered_not_implemented,
-        "unclassified": unclassified,
-        "blacklisted": blacklisted,
-        "stale": stale,
+    result: Dict[str, list] = {
+        "covered": [],
+        "registered_not_implemented": [],
+        "unclassified": [],
+        "blacklisted": [],
+        "stale": [],
     }
+
+    for name in sorted(discovered):
+        info = discovered[name]
+        if name in registry:
+            entry = registry[name]
+            if entry["category"] == "blacklisted":
+                result["blacklisted"].append(name)
+            elif name in implemented_names:
+                result["covered"].append(name)
+            else:
+                result["registered_not_implemented"].append(name)
+        else:
+            result["unclassified"].append(name)
+
+    for name in sorted(registry):
+        if name not in discovered:
+            result["stale"].append(name)
+
+    return result
 
 
 # ---------------------------------------------------------------------------
@@ -539,7 +553,7 @@ def main() -> None:
     args = parser.parse_args()
 
     discovered = introspect_numpy()
-    registry = load_registry()
+    registry_meta, registry = load_registry()
     comparison = compare(discovered, registry)
 
     if args.json:
