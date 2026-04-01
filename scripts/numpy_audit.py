@@ -419,6 +419,7 @@ def _category_color(category: str) -> str:
 def print_rich_report(
     discovered: Dict[str, dict],
     comparison: Dict[str, list],
+    registry: dict,
     filter_category: str | None = None,
     filter_module: str | None = None,
 ) -> None:
@@ -428,7 +429,7 @@ def print_rich_report(
         from rich.table import Table
         from rich import box
     except ImportError:
-        print_plain_report(discovered, comparison, filter_category, filter_module)
+        print_plain_report(discovered, comparison, registry, filter_category, filter_module)
         return
 
     console = Console()
@@ -456,20 +457,27 @@ def print_rich_report(
         title="mechestim / NumPy coverage audit",
         box=box.SIMPLE_HEAVY,
         show_lines=False,
+        expand=True,
     )
-    table.add_column("Qualified name", style="bold", min_width=30)
-    table.add_column("Module", min_width=15)
-    table.add_column("Kind", min_width=10)
-    table.add_column("Status", min_width=20)
+    table.add_column("Function", style="bold", no_wrap=True)
+    table.add_column("Module")
+    table.add_column("Kind")
+    table.add_column("Status", no_wrap=True)
+    table.add_column("Notes", ratio=2)
 
     for name, cat in rows:
         meta = discovered.get(name, {})
+        reg_entry = registry.get(name, {})
         color = _category_color(cat)
+        notes = reg_entry.get("notes", "")
+        if len(notes) > 50:
+            notes = notes[:47] + "..."
         table.add_row(
             f"[{color}]{name}[/{color}]",
             meta.get("module", "—"),
             meta.get("kind", "—"),
             f"[{color}]{cat}[/{color}]",
+            notes,
         )
 
     console.print(table)
@@ -486,6 +494,7 @@ def print_rich_report(
 def print_plain_report(
     discovered: Dict[str, dict],
     comparison: Dict[str, list],
+    registry: dict,
     filter_category: str | None = None,
     filter_module: str | None = None,
 ) -> None:
@@ -510,7 +519,11 @@ def print_plain_report(
         print(f"\n--- {cat.upper()} ({len(filtered)}) ---")
         for name in filtered:
             meta = discovered.get(name, {})
-            print(f"  {name:40s}  {meta.get('module', ''):20s}  {meta.get('kind', '')}")
+            reg_entry = registry.get(name, {})
+            notes = reg_entry.get("notes", "")
+            if len(notes) > 50:
+                notes = notes[:47] + "..."
+            print(f"  {name:40s}  {meta.get('module', ''):16s}  {notes}")
 
     print("\n" + "=" * 60)
     print("Summary")
@@ -568,6 +581,7 @@ def main() -> None:
         print_plain_report(
             discovered,
             comparison,
+            registry,
             filter_category=args.filter_category,
             filter_module=args.filter_module,
         )
@@ -578,6 +592,7 @@ def main() -> None:
     print_rich_report(
         discovered,
         comparison,
+        registry,
         filter_category=args.filter_category,
         filter_module=args.filter_module,
     )
