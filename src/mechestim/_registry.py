@@ -2270,31 +2270,31 @@ REGISTRY: dict[str, dict] = {
         "module": "mechestim._polynomial",
         "notes": "Evaluate polynomial at given points. Cost: 2 * m * deg FLOPs (Horner's method).",
     },
-    # blacklisted — window functions
+    # counted_custom — window functions
     "bartlett": {
-        "category": "blacklisted",
-        "module": "numpy",
-        "notes": "Bartlett window function. Not supported.",
+        "category": "counted_custom",
+        "module": "mechestim._window",
+        "notes": "Bartlett window. Cost: n (one linear eval per sample).",
     },
     "blackman": {
-        "category": "blacklisted",
-        "module": "numpy",
-        "notes": "Blackman window function. Not supported.",
+        "category": "counted_custom",
+        "module": "mechestim._window",
+        "notes": "Blackman window. Cost: 3*n (three cosine terms per sample).",
     },
     "hamming": {
-        "category": "blacklisted",
-        "module": "numpy",
-        "notes": "Hamming window function. Not supported.",
+        "category": "counted_custom",
+        "module": "mechestim._window",
+        "notes": "Hamming window. Cost: n (one cosine per sample).",
     },
     "hanning": {
-        "category": "blacklisted",
-        "module": "numpy",
-        "notes": "Hanning window function. Not supported.",
+        "category": "counted_custom",
+        "module": "mechestim._window",
+        "notes": "Hanning window. Cost: n (one cosine per sample).",
     },
     "kaiser": {
-        "category": "blacklisted",
-        "module": "numpy",
-        "notes": "Kaiser window function. Not supported.",
+        "category": "counted_custom",
+        "module": "mechestim._window",
+        "notes": "Kaiser window. Cost: 3*n (Bessel function eval per sample).",
     },
     # blacklisted — IO
     "genfromtxt": {
@@ -2462,9 +2462,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Format floating point scalar as scientific notation. Not supported.",
     },
     "unwrap": {
-        "category": "blacklisted",
-        "module": "numpy",
-        "notes": "Unwrap by taking diff complement wrt period. Not supported.",
+        "category": "counted_custom",
+        "module": "mechestim._unwrap",
+        "notes": "Phase unwrap. Cost: numel(input) (diff + conditional adjustment).",
     },
 }
 
