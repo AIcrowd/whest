@@ -377,6 +377,12 @@ from mechestim._free_ops import (  # noqa: F401
     zeros_like,
 )
 
+# --- Polynomial (counted) ---
+from mechestim._polynomial import (  # noqa: F401
+    polyval, polyadd, polysub, polyder, polyint,
+    polymul, polydiv, polyfit, poly, roots,
+)
+
 # --- Submodules ---
 from mechestim import fft  # noqa: F401
 from mechestim import flops  # noqa: F401
