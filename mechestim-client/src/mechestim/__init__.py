@@ -228,20 +228,40 @@ def array(object, dtype=None, **kwargs):
         if info is None:
             raise TypeError(f"Unsupported dtype: {dtype_str!r}")
         fmt_char, _ = info
-        data = struct.pack(f"<{len(flat)}{fmt_char}", *flat)
+
+        # Complex types: split each value into (real, imag) pairs
+        if dtype_str in ("complex64", "complex128"):
+            expanded = []
+            for v in flat:
+                c = complex(v)
+                expanded.extend([c.real, c.imag])
+            flat = expanded
+            fmt_char = "f" if dtype_str == "complex64" else "d"
+            data = struct.pack(f"<{len(flat)}{fmt_char}", *flat)
+        else:
+            data = struct.pack(f"<{len(flat)}{fmt_char}", *flat)
 
         conn = get_connection()
         resp = conn.send_recv(encode_create_from_data(data, list(shape), dtype_str))
         return _result_from_response(resp)
 
-    if isinstance(object, (int, float)):
+    if isinstance(object, (int, float, complex)):
         # Scalar -> 0-d array
-        dtype_str = dtype if isinstance(dtype, str) else "float64"
+        if isinstance(object, complex) and dtype is None:
+            dtype_str = "complex128"
+        else:
+            dtype_str = dtype if isinstance(dtype, str) else "float64"
         info = _DTYPE_INFO.get(dtype_str)
         if info is None:
             raise TypeError(f"Unsupported dtype: {dtype_str!r}")
         fmt_char, _ = info
-        data = struct.pack(f"<1{fmt_char}", object)
+
+        if dtype_str in ("complex64", "complex128"):
+            c = complex(object)
+            pack_fmt = "f" if dtype_str == "complex64" else "d"
+            data = struct.pack(f"<2{pack_fmt}", c.real, c.imag)
+        else:
+            data = struct.pack(f"<1{fmt_char}", object)
         conn = get_connection()
         resp = conn.send_recv(encode_create_from_data(data, [], dtype_str))
         return _result_from_response(resp)

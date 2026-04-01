@@ -102,7 +102,8 @@ class RemoteScalar:
     """Wraps a scalar value returned from the server.
 
     Behaves like a Python number for comparisons, arithmetic (via
-    ``float()``), and hashing.
+    ``float()``), and hashing.  Also passes ``isinstance(s, RemoteArray)``
+    checks (see :meth:`RemoteArray.__instancecheck__`).
 
     Parameters
     ----------
@@ -198,7 +199,31 @@ class RemoteScalar:
 # ---------------------------------------------------------------------------
 
 
-class RemoteArray:
+def _encode_index_key(key):
+    """Encode an index key for transmission to the server via msgpack.
+
+    Slices become ``{"__slice__": [start, stop, step]}``.
+    Tuples become lists of encoded items.
+    Integers pass through as-is.
+    """
+    if isinstance(key, slice):
+        return {"__slice__": [key.start, key.stop, key.step]}
+    if isinstance(key, tuple):
+        return [_encode_index_key(k) for k in key]
+    return key
+
+
+class _RemoteArrayMeta(type):
+    """Metaclass so that ``isinstance(RemoteScalar(...), RemoteArray)`` is True."""
+
+    def __instancecheck__(cls, instance):
+        if type.__instancecheck__(cls, instance):
+            return True
+        # RemoteScalar should also be considered an ndarray-like object.
+        return isinstance(instance, RemoteScalar)
+
+
+class RemoteArray(metaclass=_RemoteArrayMeta):
     """Transparent proxy for a server-side numpy array.
 
     The constructor only stores metadata -- no data is transferred until
@@ -247,6 +272,11 @@ class RemoteArray:
     def nbytes(self) -> int:
         _, item_size = _DTYPE_INFO[self._dtype]
         return self.size * item_size
+
+    @property
+    def T(self):
+        """Transpose of the array (dispatched to server)."""
+        return self._dispatch_op("transpose", self)
 
     def __len__(self) -> int:
         if not self._shape:
@@ -325,19 +355,27 @@ class RemoteArray:
         return bool(result)
 
     def __iter__(self):
-        values = self.tolist()
         if not self._shape:
             raise TypeError("iteration over a 0-d array")
-        return iter(values)
+        for i in range(self._shape[0]):
+            yield self[i]
 
     def __getitem__(self, key):
-        values = self.tolist()
-        if isinstance(values, list):
-            return values[key]
-        # scalar
-        if key == () or key == Ellipsis:
-            return values
-        raise IndexError(f"too many indices for array with shape {self._shape}")
+        """Index into the array, dispatching to the server.
+
+        For integer keys on 1-D arrays, returns the scalar value.
+        For slices or indexing on 2D+ arrays, returns a RemoteArray.
+        """
+        from mechestim._connection import get_connection
+        from mechestim._protocol import encode_request
+
+        # Encode the key for transmission
+        encoded_key = _encode_index_key(key)
+        encoded_handle = {"__handle__": self._handle_id}
+        resp = get_connection().send_recv(
+            encode_request("__getitem__", args=[encoded_handle, encoded_key])
+        )
+        return _result_from_response(resp)
 
     # -- operator overloads (dispatch to server) ----------------------------
 

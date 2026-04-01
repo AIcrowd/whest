@@ -10,6 +10,16 @@ from unittest.mock import MagicMock, patch
 import msgpack
 
 
+@pytest.fixture(autouse=True)
+def _reset_active_context():
+    """Reset the module-level _active_context guard between tests."""
+    import mechestim._budget as bmod
+    old = bmod._active_context
+    bmod._active_context = None
+    yield
+    bmod._active_context = old
+
+
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
