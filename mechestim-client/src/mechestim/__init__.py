@@ -47,6 +47,7 @@ from mechestim._remote_array import (  # noqa: E402
     RemoteScalar,
     _result_from_response,
     _DTYPE_INFO,
+    _encode_arg,
 )
 
 # Alias: ``me.ndarray`` refers to the RemoteArray class.
@@ -120,22 +121,8 @@ def _make_proxy(op_name: str):
 
     def proxy(*args: Any, **kwargs: Any):
         conn = get_connection()
-        encoded_args = []
-        for arg in args:
-            if isinstance(arg, RemoteArray):
-                encoded_args.append({"__handle__": arg.handle_id})
-            elif isinstance(arg, RemoteScalar):
-                encoded_args.append(arg._value)
-            else:
-                encoded_args.append(arg)
-        encoded_kwargs = {}
-        for k, v in kwargs.items():
-            if isinstance(v, RemoteArray):
-                encoded_kwargs[k] = {"__handle__": v.handle_id}
-            elif isinstance(v, RemoteScalar):
-                encoded_kwargs[k] = v._value
-            else:
-                encoded_kwargs[k] = v
+        encoded_args = [_encode_arg(a) for a in args]
+        encoded_kwargs = {k: _encode_arg(v) for k, v in kwargs.items()}
         resp = conn.send_recv(encode_request(op_name, args=encoded_args, kwargs=encoded_kwargs))
         return _result_from_response(resp)
 
@@ -182,7 +169,9 @@ def _infer_dtype(values):
         return "float64"
     if _all(isinstance(v, bool) for v in values):
         return "bool"
-    return "float64"  # default to float64 for int lists (numpy convention)
+    if _all(isinstance(v, int) for v in values):
+        return "int64"
+    return "float64"  # mixed or float values
 
 
 def array(object, dtype=None, **kwargs):
@@ -295,15 +284,9 @@ def einsum(subscripts, *operands, **kwargs):
         Result of the einsum operation.
     """
     conn = get_connection()
-    encoded_args = [subscripts]
-    for op in operands:
-        if isinstance(op, RemoteArray):
-            encoded_args.append({"__handle__": op.handle_id})
-        elif isinstance(op, RemoteScalar):
-            encoded_args.append(op._value)
-        else:
-            encoded_args.append(op)
-    resp = conn.send_recv(encode_request("einsum", args=encoded_args, kwargs=kwargs))
+    encoded_args = [subscripts] + [_encode_arg(op) for op in operands]
+    encoded_kwargs = {k: _encode_arg(v) for k, v in kwargs.items()}
+    resp = conn.send_recv(encode_request("einsum", args=encoded_args, kwargs=encoded_kwargs))
     return _result_from_response(resp)
 
 

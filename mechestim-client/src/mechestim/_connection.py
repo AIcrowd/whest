@@ -63,11 +63,20 @@ class Connection:
         Raises the appropriate exception if the response has
         ``"status": "error"``.
         """
+        from mechestim.errors import MechEstimServerError
+
         sock = self._ensure_connected()
 
         t0 = time.monotonic_ns()
-        sock.send(raw_request)
-        raw_response: bytes = sock.recv()
+        try:
+            sock.send(raw_request)
+            raw_response: bytes = sock.recv()
+        except zmq.Again:
+            # Socket is in a bad state after timeout — reset it
+            self._reset_socket()
+            raise MechEstimServerError(
+                "server timeout: no response within timeout period"
+            )
         t1 = time.monotonic_ns()
 
         response = decode_response(raw_response)
@@ -82,6 +91,12 @@ class Connection:
             )
 
         return response
+
+    def _reset_socket(self) -> None:
+        """Close and discard the socket so it will be recreated on next use."""
+        if self._socket is not None:
+            self._socket.close(linger=0)
+            self._socket = None
 
     def close(self) -> None:
         """Close the ZMQ socket, if open."""

@@ -193,6 +193,63 @@ class RemoteScalar:
     def __hash__(self) -> int:
         return hash(self._value)
 
+    # -- arithmetic ---------------------------------------------------------
+
+    def __add__(self, other):
+        other_val = other._value if isinstance(other, RemoteScalar) else other
+        return RemoteScalar(self._value + other_val, self._dtype)
+
+    def __radd__(self, other):
+        return RemoteScalar(other + self._value, self._dtype)
+
+    def __sub__(self, other):
+        other_val = other._value if isinstance(other, RemoteScalar) else other
+        return RemoteScalar(self._value - other_val, self._dtype)
+
+    def __rsub__(self, other):
+        return RemoteScalar(other - self._value, self._dtype)
+
+    def __mul__(self, other):
+        other_val = other._value if isinstance(other, RemoteScalar) else other
+        return RemoteScalar(self._value * other_val, self._dtype)
+
+    def __rmul__(self, other):
+        return RemoteScalar(other * self._value, self._dtype)
+
+    def __truediv__(self, other):
+        other_val = other._value if isinstance(other, RemoteScalar) else other
+        return RemoteScalar(self._value / other_val, self._dtype)
+
+    def __rtruediv__(self, other):
+        return RemoteScalar(other / self._value, self._dtype)
+
+    def __floordiv__(self, other):
+        other_val = other._value if isinstance(other, RemoteScalar) else other
+        return RemoteScalar(self._value // other_val, self._dtype)
+
+    def __rfloordiv__(self, other):
+        return RemoteScalar(other // self._value, self._dtype)
+
+    def __mod__(self, other):
+        other_val = other._value if isinstance(other, RemoteScalar) else other
+        return RemoteScalar(self._value % other_val, self._dtype)
+
+    def __rmod__(self, other):
+        return RemoteScalar(other % self._value, self._dtype)
+
+    def __pow__(self, other):
+        other_val = other._value if isinstance(other, RemoteScalar) else other
+        return RemoteScalar(self._value ** other_val, self._dtype)
+
+    def __rpow__(self, other):
+        return RemoteScalar(other ** self._value, self._dtype)
+
+    def __neg__(self):
+        return RemoteScalar(-self._value, self._dtype)
+
+    def __abs__(self):
+        return RemoteScalar(abs(self._value), self._dtype)
+
 
 # ---------------------------------------------------------------------------
 # RemoteArray
@@ -204,11 +261,20 @@ def _encode_index_key(key):
 
     Slices become ``{"__slice__": [start, stop, step]}``.
     Tuples become lists of encoded items.
+    RemoteArray -> ``{"__handle__": handle_id}`` (fancy indexing).
+    RemoteScalar -> its raw value.
     Integers pass through as-is.
     """
+    # Check RemoteScalar before RemoteArray (metaclass makes scalar pass isinstance check)
+    if type(key) is RemoteScalar:
+        return key._value
+    if isinstance(key, RemoteArray):
+        return {"__handle__": key.handle_id}
     if isinstance(key, slice):
         return {"__slice__": [key.start, key.stop, key.step]}
     if isinstance(key, tuple):
+        return [_encode_index_key(k) for k in key]
+    if isinstance(key, list):
         return [_encode_index_key(k) for k in key]
     return key
 
@@ -377,23 +443,22 @@ class RemoteArray(metaclass=_RemoteArrayMeta):
         )
         return _result_from_response(resp)
 
+    def __setitem__(self, key, value):
+        raise TypeError(
+            "mechestim arrays are immutable. Cannot assign to array elements."
+        )
+
     # -- operator overloads (dispatch to server) ----------------------------
 
-    def _dispatch_op(self, op_name: str, *args: Any) -> Any:
+    def _dispatch_op(self, op_name: str, *args: Any, **kwargs: Any) -> Any:
         """Encode and send an operation to the server, return the result."""
         from mechestim._connection import get_connection
         from mechestim._protocol import encode_request
 
-        encoded = []
-        for a in args:
-            if isinstance(a, RemoteArray):
-                encoded.append({"__handle__": a.handle_id})
-            elif isinstance(a, RemoteScalar):
-                encoded.append(a.tolist())
-            else:
-                encoded.append(a)
+        encoded_args = [_encode_arg(a) for a in args]
+        encoded_kwargs = {k: _encode_arg(v) for k, v in kwargs.items()}
         resp = get_connection().send_recv(
-            encode_request(op_name, args=encoded)
+            encode_request(op_name, args=encoded_args, kwargs=encoded_kwargs)
         )
         return _result_from_response(resp)
 
@@ -475,6 +540,53 @@ class RemoteArray(metaclass=_RemoteArrayMeta):
     def __ge__(self, other):
         return self._dispatch_op("greater_equal", self, other)
 
+    # -- convenience methods (delegate to server-side ops) ------------------
+
+    def reshape(self, *shape):
+        if len(shape) == 1 and isinstance(shape[0], (list, tuple)):
+            shape = shape[0]
+        return self._dispatch_op("reshape", self, list(shape))
+
+    def astype(self, dtype):
+        return self._dispatch_op("astype", self, dtype)
+
+    def sum(self, axis=None, **kwargs):
+        if axis is not None:
+            return self._dispatch_op("sum", self, axis=axis, **kwargs)
+        return self._dispatch_op("sum", self, **kwargs)
+
+    def mean(self, axis=None, **kwargs):
+        if axis is not None:
+            return self._dispatch_op("mean", self, axis=axis, **kwargs)
+        return self._dispatch_op("mean", self, **kwargs)
+
+    def max(self, axis=None, **kwargs):
+        if axis is not None:
+            return self._dispatch_op("max", self, axis=axis, **kwargs)
+        return self._dispatch_op("max", self, **kwargs)
+
+    def min(self, axis=None, **kwargs):
+        if axis is not None:
+            return self._dispatch_op("min", self, axis=axis, **kwargs)
+        return self._dispatch_op("min", self, **kwargs)
+
+    def flatten(self):
+        return self._dispatch_op("ravel", self)
+
+    def ravel(self):
+        return self._dispatch_op("ravel", self)
+
+    def transpose(self, *axes):
+        if axes:
+            return self._dispatch_op("transpose", self, list(axes))
+        return self._dispatch_op("transpose", self)
+
+    def dot(self, other):
+        return self._dispatch_op("dot", self, other)
+
+    def copy(self):
+        return self._dispatch_op("copy", self)
+
     # RemoteArray is not hashable (same as numpy arrays)
     __hash__ = None  # type: ignore[assignment]
 
@@ -525,3 +637,29 @@ def _result_from_response(resp: dict) -> Union[RemoteArray, RemoteScalar, tuple,
         )
 
     return result
+
+
+# ---------------------------------------------------------------------------
+# Argument encoding helper (used by _dispatch_op and proxy factories)
+# ---------------------------------------------------------------------------
+
+
+def _encode_arg(arg):
+    """Recursively encode RemoteArray/RemoteScalar objects for wire transmission.
+
+    - RemoteScalar -> its raw ``_value``
+    - RemoteArray  -> ``{"__handle__": handle_id}``
+    - list/tuple   -> recursively encoded list (msgpack can't distinguish tuple/list)
+    - everything else passes through unchanged
+
+    Note: RemoteScalar must be checked *before* RemoteArray because the
+    metaclass makes ``isinstance(RemoteScalar(...), RemoteArray)`` True.
+    """
+    # Check RemoteScalar first (it passes isinstance RemoteArray due to metaclass)
+    if type(arg) is RemoteScalar:
+        return arg._value
+    if isinstance(arg, RemoteArray):
+        return {"__handle__": arg.handle_id}
+    if isinstance(arg, (list, tuple)):
+        return [_encode_arg(item) for item in arg]
+    return arg
