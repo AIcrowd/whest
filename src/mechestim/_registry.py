@@ -933,9 +933,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Matrix condition number. Not yet supported.",
     },
     "linalg.cross": {
-        "category": "blacklisted",
+        "category": "free",
         "module": "numpy.linalg",
-        "notes": "Cross product (linalg namespace). Not yet supported.",
+        "notes": "Alias for numpy.cross — delegates to mechestim.cross.",
     },
     "linalg.det": {
         "category": "blacklisted",
@@ -943,9 +943,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Matrix determinant. Not yet supported.",
     },
     "linalg.diagonal": {
-        "category": "blacklisted",
+        "category": "free",
         "module": "numpy.linalg",
-        "notes": "Diagonal (linalg namespace). Not yet supported.",
+        "notes": "View of diagonal — delegates to mechestim.diagonal. Cost: 0 FLOPs.",
     },
     "linalg.eig": {
         "category": "blacklisted",
@@ -978,9 +978,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Least squares solution. Not yet supported.",
     },
     "linalg.matmul": {
-        "category": "blacklisted",
+        "category": "free",
         "module": "numpy.linalg",
-        "notes": "Matrix multiply (linalg namespace). Use numpy.matmul instead.",
+        "notes": "Alias for numpy.matmul — delegates to mechestim.matmul.",
     },
     "linalg.matrix_norm": {
         "category": "blacklisted",
@@ -998,9 +998,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Matrix rank. Not yet supported.",
     },
     "linalg.matrix_transpose": {
-        "category": "blacklisted",
+        "category": "free",
         "module": "numpy.linalg",
-        "notes": "Transpose (linalg namespace). Use numpy.transpose instead.",
+        "notes": "Transpose view — delegates to mechestim.matrix_transpose. Cost: 0 FLOPs.",
     },
     "linalg.multi_dot": {
         "category": "blacklisted",
@@ -1013,9 +1013,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Matrix or vector norm. Not yet supported.",
     },
     "linalg.outer": {
-        "category": "blacklisted",
+        "category": "free",
         "module": "numpy.linalg",
-        "notes": "Outer product (linalg namespace). Not yet supported.",
+        "notes": "Alias for numpy.outer — delegates to mechestim.outer.",
     },
     "linalg.pinv": {
         "category": "blacklisted",
@@ -1043,9 +1043,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Singular values only. Not yet supported.",
     },
     "linalg.tensordot": {
-        "category": "blacklisted",
+        "category": "free",
         "module": "numpy.linalg",
-        "notes": "Tensor dot (linalg namespace). Use numpy.tensordot instead.",
+        "notes": "Alias for numpy.tensordot — delegates to mechestim.tensordot.",
     },
     "linalg.tensorinv": {
         "category": "blacklisted",
@@ -1063,9 +1063,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Sum along diagonal (linalg namespace). Not yet supported.",
     },
     "linalg.vecdot": {
-        "category": "blacklisted",
+        "category": "free",
         "module": "numpy.linalg",
-        "notes": "Vector dot (linalg namespace). Use numpy.vecdot instead.",
+        "notes": "Alias for numpy.vecdot — delegates to mechestim.vecdot.",
     },
     "linalg.vector_norm": {
         "category": "blacklisted",
