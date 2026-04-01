@@ -127,8 +127,10 @@ class BudgetContext:
         """
         conn = get_connection()
         response = conn.send_recv(encode_budget_status())
-        self._update_budget(response)
-        budget = response.get("flop_budget", self._flop_budget)
+        # Budget status is nested inside "result" key
+        result = response.get("result", {})
+        self._update_budget(result)
+        budget = result.get("flop_budget", self._flop_budget)
         used = self._flops_used
         remaining = int(budget) - used
         return (

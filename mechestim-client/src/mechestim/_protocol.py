@@ -13,11 +13,11 @@ def _normalize(value: object) -> object:
     """Recursively normalize bytes keys/values to strings where appropriate.
 
     Binary data fields (raw array bytes) stay as bytes — heuristic: try UTF-8
-    decode; if it succeeds and the value is short-ish, treat as string,
-    otherwise keep as bytes.
+    decode; if it succeeds, the value is short, and it looks like text
+    (no null bytes), treat as string; otherwise keep as bytes.
     """
     if isinstance(value, bytes):
-        if len(value) <= _SHORT_THRESHOLD:
+        if len(value) <= _SHORT_THRESHOLD and b"\x00" not in value:
             try:
                 return value.decode("utf-8")
             except (UnicodeDecodeError, AttributeError):
