@@ -988,9 +988,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Matrix norm. Cost depends on ord: 2*numel for Frobenius, m*n*min(m,n) for ord=2.",
     },
     "linalg.matrix_power": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Matrix raised to integer power. Not yet supported.",
+        "notes": "Matrix power. Cost: (floor(log2(k)) + popcount(k) - 1) * n^3 (exponentiation by squaring).",
     },
     "linalg.matrix_rank": {
         "category": "counted_custom",
@@ -1003,9 +1003,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Transpose view — delegates to mechestim.matrix_transpose. Cost: 0 FLOPs.",
     },
     "linalg.multi_dot": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Efficient multi-matrix dot product. Not yet supported.",
+        "notes": "Chain matmul. Cost: sum of optimal chain matmul costs (CLRS §15.2).",
     },
     "linalg.norm": {
         "category": "counted_custom",
