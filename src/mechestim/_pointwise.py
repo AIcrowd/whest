@@ -4,6 +4,7 @@ from __future__ import annotations
 import numpy as _np
 
 from mechestim._budget import BudgetContext
+from mechestim._docstrings import attach_docstring
 from mechestim._flops import einsum_cost, pointwise_cost, reduction_cost
 from mechestim._validation import check_nan_inf, require_budget, validate_ndarray
 
@@ -23,6 +24,7 @@ def _counted_unary(np_func, op_name: str):
         return result
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name
+    attach_docstring(wrapper, np_func, "counted_unary", "numel(output) FLOPs")
     return wrapper
 
 
@@ -41,6 +43,7 @@ def _counted_binary(np_func, op_name: str):
         return result
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name
+    attach_docstring(wrapper, np_func, "counted_binary", "numel(output) FLOPs")
     return wrapper
 
 
@@ -57,6 +60,10 @@ def _counted_reduction(np_func, op_name: str, cost_multiplier: int = 1, extra_ou
         return result
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name
+    cost_desc = f"numel(input) * {cost_multiplier} FLOPs" if cost_multiplier > 1 else "numel(input) FLOPs"
+    if extra_output:
+        cost_desc += " + numel(output)"
+    attach_docstring(wrapper, np_func, "counted_reduction", cost_desc)
     return wrapper
 
 
@@ -109,6 +116,9 @@ def clip(a, a_min, a_max):
     return result
 
 
+attach_docstring(clip, _np.clip, "counted_custom", "numel(input) FLOPs")
+
+
 # ---------------------------------------------------------------------------
 # Reductions
 # ---------------------------------------------------------------------------
@@ -146,6 +156,9 @@ def dot(a, b):
     return result
 
 
+attach_docstring(dot, _np.dot, "counted_custom", "depends on operand dimensions")
+
+
 def matmul(a, b):
     """Counted version of np.matmul."""
     budget = require_budget()
@@ -160,3 +173,6 @@ def matmul(a, b):
     result = _np.matmul(a, b)
     check_nan_inf(result, "matmul")
     return result
+
+
+attach_docstring(matmul, _np.matmul, "counted_custom", "depends on operand dimensions")
