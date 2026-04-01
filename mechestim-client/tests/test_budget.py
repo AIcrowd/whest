@@ -228,8 +228,7 @@ class TestBudgetContextSummary:
 
         mock_conn = _make_mock_conn({
             "status": "ok",
-            "flops_used": 350,
-            "flop_budget": 1000,
+            "result": {"flops_used": 350, "flop_budget": 1000},
         })
         with patch("mechestim._budget.get_connection", return_value=mock_conn):
             ctx = BudgetContext(flop_budget=1000)
@@ -241,8 +240,7 @@ class TestBudgetContextSummary:
 
         mock_conn = _make_mock_conn({
             "status": "ok",
-            "flops_used": 100,
-            "flop_budget": 500,
+            "result": {"flops_used": 100, "flop_budget": 500},
         })
         with patch("mechestim._budget.get_connection", return_value=mock_conn):
             ctx = BudgetContext(flop_budget=500)

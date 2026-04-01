@@ -65,7 +65,7 @@ class RequestHandler:
             return {
                 "status": "error",
                 "error_type": "MechEstimServerError",
-                "message": f"internal server error: {type(e).__name__}",
+                "message": f"internal server error: {type(e).__name__}: {e}",
             }
 
     # ------------------------------------------------------------------
@@ -73,7 +73,14 @@ class RequestHandler:
     # ------------------------------------------------------------------
 
     def _handle_fetch(self, request: dict) -> dict:
-        arr = self._session.get_array(request["id"])
+        # Support both direct "id" field and kwargs-based "handle_id"
+        handle = request.get("id")
+        if handle is None:
+            kwargs = request.get("kwargs") or {}
+            handle = kwargs.get("handle_id")
+        if handle is None:
+            raise KeyError("fetch requires 'id' or kwargs.handle_id")
+        arr = self._session.get_array(handle)
         return {
             "status": "ok",
             "data": arr.tobytes(),
@@ -97,14 +104,33 @@ class RequestHandler:
         }
 
     def _handle_free(self, request: dict) -> dict:
-        self._session.free_arrays(request["ids"])
+        # Support both direct "ids" field and kwargs-based "handles"
+        ids = request.get("ids")
+        if ids is None:
+            kwargs = request.get("kwargs") or {}
+            ids = kwargs.get("handles", [])
+        self._session.free_arrays(ids)
         return {"status": "ok"}
 
     def _handle_budget_status(self) -> dict:
         return {"status": "ok", "result": self._session.budget_status()}
 
     def _handle_create_from_data(self, request: dict) -> dict:
-        arr = np.frombuffer(request["data"], dtype=request["dtype"]).reshape(request["shape"]).copy()
+        # Support both direct fields and args-based [data, shape, dtype]
+        if "data" in request:
+            data = request["data"]
+            shape = request["shape"]
+            dtype = request["dtype"]
+        else:
+            args = request.get("args", [])
+            if len(args) >= 3:
+                data, shape, dtype = args[0], args[1], args[2]
+            else:
+                raise ValueError("create_from_data requires data, shape, dtype")
+        # Ensure dtype is a string (may be bytes from msgpack)
+        if isinstance(dtype, bytes):
+            dtype = dtype.decode("utf-8")
+        arr = np.frombuffer(data, dtype=dtype).reshape(shape).copy()
         handle = self._session.store_array(arr)
         meta = self._session.array_metadata(handle)
         return {
@@ -119,8 +145,8 @@ class RequestHandler:
 
     def _handle_mechestim_op(self, request: dict) -> dict:
         op = request["op"]
-        raw_args = request.get("args", [])
-        kwargs = request.get("kwargs", {})
+        raw_args = request.get("args") or []
+        kwargs = request.get("kwargs") or {}
 
         func = _get_mechestim_func(op)
         resolved_args = [self._resolve_arg(a) for a in raw_args]
@@ -138,6 +164,16 @@ class RequestHandler:
         """Resolve a single argument: handle IDs become arrays, rest pass through."""
         if isinstance(arg, str) and _HANDLE_RE.match(arg):
             return self._session.get_array(arg)
+        # Support {"__handle__": "a0"} dict format from the client
+        if isinstance(arg, dict):
+            handle = arg.get("__handle__")
+            if handle is None:
+                # Try bytes key variant (msgpack may leave keys as bytes)
+                handle = arg.get(b"__handle__")
+            if handle is not None:
+                if isinstance(handle, bytes):
+                    handle = handle.decode("utf-8")
+                return self._session.get_array(handle)
         return arg
 
     # ------------------------------------------------------------------

@@ -181,7 +181,11 @@ class MechestimServer:
         if self._session is not None and self._session.is_open:
             self._session.close()
 
-        flop_budget = msg.get("flop_budget", 1_000_000)
+        # Support both top-level and kwargs-based flop_budget
+        flop_budget = msg.get("flop_budget")
+        if flop_budget is None:
+            kwargs = msg.get("kwargs") or {}
+            flop_budget = kwargs.get("flop_budget", 1_000_000)
         self._session = Session(flop_budget=flop_budget)
         self._handler = RequestHandler(self._session)
         self._last_activity = monotonic()
@@ -255,6 +259,24 @@ def _decode_if_bytes(v: object) -> object:
     return v
 
 
+def _normalize_arg(a: object) -> object:
+    """Normalize a single arg: decode short bytes to str, normalize dict keys/values.
+
+    Binary data payloads (array bytes) must stay as bytes.  Heuristic: only
+    decode if short AND contains no null bytes (handles, dtype strings, etc.
+    are always short ASCII).
+    """
+    if isinstance(a, bytes):
+        if len(a) <= 256 and b"\x00" not in a:
+            return _decode_if_bytes(a)
+        return a  # keep as raw bytes (likely binary payload)
+    if isinstance(a, dict):
+        return {_decode_if_bytes(k): _decode_if_bytes(v) for k, v in a.items()}
+    if isinstance(a, list):
+        return [_normalize_arg(x) for x in a]
+    return a
+
+
 def _normalize_msg(msg: dict) -> None:
     """In-place normalise a decoded request dict.
 
@@ -272,9 +294,9 @@ def _normalize_msg(msg: dict) -> None:
     if "ids" in msg and isinstance(msg["ids"], list):
         msg["ids"] = [_decode_if_bytes(x) for x in msg["ids"]]
 
-    # args — handle IDs are short ASCII strings
+    # args — handle IDs are short ASCII strings, may also contain dicts
     if "args" in msg and isinstance(msg["args"], list):
-        msg["args"] = [_decode_if_bytes(a) for a in msg["args"]]
+        msg["args"] = [_normalize_arg(a) for a in msg["args"]]
 
     # kwargs keys are already str (decode_request normalises all keys).
     # kwargs *values* that are handle-like bytes also need decoding.

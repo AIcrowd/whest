@@ -252,6 +252,9 @@ class RemoteArray:
         from mechestim._protocol import encode_fetch
 
         resp = get_connection().send_recv(encode_fetch(self._handle_id))
+        # Fetch responses may have data at top level or inside "result"
+        if "data" in resp:
+            return resp["data"], tuple(resp["shape"]), resp["dtype"]
         result = resp.get("result", {})
         return result["data"], tuple(result["shape"]), result["dtype"]
 
@@ -279,7 +282,11 @@ class RemoteArray:
                 "only size-1 arrays can be converted to Python scalars"
             )
         data, shape, dtype = self._fetch_data()
-        return float(_bytes_to_list(data, shape, dtype))
+        result = _bytes_to_list(data, shape, dtype)
+        # Unwrap single-element lists (e.g., shape (1,) returns [42.0])
+        while isinstance(result, list):
+            result = result[0]
+        return float(result)
 
     def __int__(self) -> int:
         if self.size != 1:
@@ -287,7 +294,10 @@ class RemoteArray:
                 "only size-1 arrays can be converted to Python scalars"
             )
         data, shape, dtype = self._fetch_data()
-        return int(_bytes_to_list(data, shape, dtype))
+        result = _bytes_to_list(data, shape, dtype)
+        while isinstance(result, list):
+            result = result[0]
+        return int(result)
 
     def __bool__(self) -> bool:
         if self.size != 1:
@@ -295,7 +305,10 @@ class RemoteArray:
                 "The truth value of an array with more than one element is ambiguous."
             )
         data, shape, dtype = self._fetch_data()
-        return bool(_bytes_to_list(data, shape, dtype))
+        result = _bytes_to_list(data, shape, dtype)
+        while isinstance(result, list):
+            result = result[0]
+        return bool(result)
 
     def __iter__(self):
         values = self.tolist()
