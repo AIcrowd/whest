@@ -30,6 +30,7 @@ _PROTOCOL_OPS: frozenset[str] = frozenset(
         "fetch_slice",
         "free",
         "create_from_data",
+        "__getitem__",
     }
 )
 

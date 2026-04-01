@@ -8,6 +8,9 @@ from mechestim._protocol import (
     encode_budget_status,
 )
 
+# Module-level guard: only one BudgetContext can be active at a time.
+_active_context = None
+
 
 class OpRecord:
     """Record of a single operation's FLOP cost.
@@ -65,6 +68,7 @@ class BudgetContext:
         self._quiet = quiet
         self._flops_used: int = 0
         self._close_summary: str | None = None
+        self._is_open: bool = False
 
     # ------------------------------------------------------------------
     # Properties
@@ -144,20 +148,34 @@ class BudgetContext:
 
     def __enter__(self) -> BudgetContext:
         """Open the budget on the server and update the local cache."""
+        global _active_context
+        if _active_context is not None:
+            raise RuntimeError(
+                "Nested BudgetContext is not supported. "
+                "Only one context can be active at a time."
+            )
         conn = get_connection()
-        response = conn.send_recv(encode_budget_open(self._flop_budget))
+        response = conn.send_recv(
+            encode_budget_open(self._flop_budget, self._flop_multiplier)
+        )
         self._update_budget(response)
+        self._is_open = True
+        _active_context = self
         return self
 
     def __exit__(self, *args: object) -> None:
         """Close the budget on the server and store the close summary."""
-        conn = get_connection()
-        response = conn.send_recv(encode_budget_close())
-        self._update_budget(response)
-        self._close_summary = (
-            f"BudgetContext closed: {self._flops_used}/{self._flop_budget} "
-            f"FLOPs used"
-        )
+        global _active_context
+        if self._is_open:
+            conn = get_connection()
+            response = conn.send_recv(encode_budget_close())
+            self._update_budget(response)
+            self._close_summary = (
+                f"BudgetContext closed: {self._flops_used}/{self._flop_budget} "
+                f"FLOPs used"
+            )
+            self._is_open = False
+            _active_context = None
 
     def __repr__(self) -> str:  # pragma: no cover
         return (

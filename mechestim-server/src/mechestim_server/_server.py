@@ -186,10 +186,15 @@ class MechestimServer:
 
         # Support both top-level and kwargs-based flop_budget
         flop_budget = msg.get("flop_budget")
+        flop_multiplier = msg.get("flop_multiplier")
         if flop_budget is None:
             kwargs = msg.get("kwargs") or {}
             flop_budget = kwargs.get("flop_budget", 1_000_000)
-        self._session = Session(flop_budget=flop_budget)
+            if flop_multiplier is None:
+                flop_multiplier = kwargs.get("flop_multiplier", 1.0)
+        if flop_multiplier is None:
+            flop_multiplier = 1.0
+        self._session = Session(flop_budget=flop_budget, flop_multiplier=flop_multiplier)
         self._handler = RequestHandler(self._session)
         self._last_activity = monotonic()
 
@@ -278,7 +283,7 @@ def _normalize_arg(a: object) -> object:
             return a.decode("ascii")
         return a  # keep as raw bytes (likely binary payload)
     if isinstance(a, dict):
-        return {_decode_if_bytes(k): _decode_if_bytes(v) for k, v in a.items()}
+        return {_decode_if_bytes(k): _normalize_arg(v) for k, v in a.items()}
     if isinstance(a, list):
         return [_normalize_arg(x) for x in a]
     return a

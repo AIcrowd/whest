@@ -51,6 +51,8 @@ class RequestHandler:
                 return self._handle_budget_status()
             if op == "create_from_data":
                 return self._handle_create_from_data(request)
+            if op == "__getitem__":
+                return self._handle_getitem(request)
 
             # Any other op — mechestim function call
             return self._handle_mechestim_op(request)
@@ -150,6 +152,20 @@ class RequestHandler:
         }
 
     # ------------------------------------------------------------------
+    # __getitem__ dispatch
+    # ------------------------------------------------------------------
+
+    def _handle_getitem(self, request: dict) -> dict:
+        """Handle array indexing: arr[key] on the server side."""
+        args = request.get("args") or []
+        if len(args) < 2:
+            raise ValueError("__getitem__ requires [handle, key]")
+        arr = self._resolve_arg(args[0])
+        key = _decode_index_key(args[1])
+        result = arr[key]
+        return self._pack_result(result)
+
+    # ------------------------------------------------------------------
     # Mechestim function dispatch
     # ------------------------------------------------------------------
 
@@ -215,15 +231,25 @@ class RequestHandler:
                 if isinstance(r, np.ndarray):
                     handle = self._session.store_array(r)
                     items.append(self._session.array_metadata(handle))
-                elif isinstance(r, (np.generic, int, float)):
-                    items.append({"value": float(r) if isinstance(r, (np.floating, float)) else int(r)})
+                elif isinstance(r, np.generic):
+                    items.append({"value": r.item(), "dtype": str(r.dtype)})
+                elif isinstance(r, (int, float)):
+                    dtype_str = "float64" if isinstance(r, float) else "int64"
+                    items.append({"value": r, "dtype": dtype_str})
                 else:
                     items.append(r)
             return {"status": "ok", "result": {"multi": items}, "budget": budget}
 
         # Scalar or other value
-        if isinstance(result, (np.generic,)):
-            result = result.item()
+        if isinstance(result, np.generic):
+            dtype_str = str(result.dtype)
+            return {"status": "ok", "result": {"value": result.item(), "dtype": dtype_str}, "budget": budget}
+        if isinstance(result, bool):
+            return {"status": "ok", "result": {"value": result, "dtype": "bool"}, "budget": budget}
+        if isinstance(result, int):
+            return {"status": "ok", "result": {"value": result, "dtype": "int64"}, "budget": budget}
+        if isinstance(result, float):
+            return {"status": "ok", "result": {"value": result, "dtype": "float64"}, "budget": budget}
         return {"status": "ok", "result": {"value": result}, "budget": budget}
 
 
@@ -238,3 +264,28 @@ def _get_mechestim_func(op_name: str):
     for part in parts:
         obj = getattr(obj, part)
     return obj
+
+
+def _decode_index_key(raw_key):
+    """Decode a serialised index key from the client.
+
+    Supports:
+    - int / float -> int
+    - ``{"__slice__": [start, stop, step]}`` -> slice
+    - list of the above -> tuple (for multi-dimensional indexing)
+    """
+    if isinstance(raw_key, dict):
+        if "__slice__" in raw_key:
+            parts = raw_key["__slice__"]
+            return slice(*[None if p is None else int(p) for p in parts])
+    if isinstance(raw_key, list):
+        decoded = [_decode_index_key(item) for item in raw_key]
+        # A list of slices/ints -> tuple for multi-dim indexing
+        if any(isinstance(d, slice) for d in decoded) or len(decoded) > 1:
+            return tuple(decoded)
+        # Single-element list: could be the key itself being a list
+        # (e.g., fancy indexing) -- keep as list
+        return decoded
+    if isinstance(raw_key, (int, float)):
+        return int(raw_key)
+    return raw_key

@@ -16,12 +16,18 @@ class Session:
     ----------
     flop_budget : int
         Maximum number of FLOPs allowed for this session.
+    flop_multiplier : float
+        Multiplier applied to each operation's raw FLOP cost.
     """
 
-    def __init__(self, flop_budget: int) -> None:
+    def __init__(self, flop_budget: int, flop_multiplier: float = 1.0) -> None:
         self._store = ArrayStore()
         self._comms_tracker = CommsTracker()
-        self._budget_ctx = me.BudgetContext(flop_budget=flop_budget, quiet=True)
+        self._budget_ctx = me.BudgetContext(
+            flop_budget=flop_budget,
+            flop_multiplier=flop_multiplier,
+            quiet=True,
+        )
         self._budget_ctx.__enter__()
         self._is_open = True
 
