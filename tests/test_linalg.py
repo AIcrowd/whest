@@ -62,4 +62,4 @@ def test_svd_op_log():
 def test_linalg_unsupported():
     from mechestim import linalg
     with pytest.raises(AttributeError, match="(does not provide|does not support|registered but not yet implemented)"):
-        linalg.matrix_power
+        linalg.cross_decomposition
