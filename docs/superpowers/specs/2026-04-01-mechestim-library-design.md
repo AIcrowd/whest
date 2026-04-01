@@ -17,7 +17,7 @@ The library exists to make the competition about **algorithmic innovation** rath
 
 ## 2. Design Principles
 
-- **NumPy drop-in API:** `import mechestim as np` should feel natural. Function names, signatures, and submodule structure mirror NumPy. Participants write normal NumPy code; the only change is the import line.
+- **NumPy drop-in API:** `import mechestim as me` is the canonical import. Function names, signatures, and submodule structure mirror NumPy. `import mechestim as np` also works for minimal-diff migration from existing NumPy code.
 - **NumPy-native tensors:** All tensors are plain `numpy.ndarray`. No custom array class.
 - **Analytical FLOP counting:** FLOP cost is computed from shapes, not measured from execution. The cost model is deterministic and hardware-independent.
 - **Single context model:** Everything runs inside a `BudgetContext`. Non-compute ops (reshape, index, etc.) have zero FLOP cost. No separate precomputation phase.
@@ -29,23 +29,24 @@ The library exists to make the competition about **algorithmic innovation** rath
 ### 3.1 Usage Pattern
 
 ```python
-import mechestim as np
+import mechestim as me
 
 # Budget context is the only mechestim-specific API
-with np.BudgetContext(flop_budget=1_000_000) as budget:
+with me.BudgetContext(flop_budget=1_000_000) as budget:
     # Everything below reads like normal NumPy code
-    W = np.array(weight_matrix)          # free (0 FLOPs)
-    x = np.zeros((256,))                 # free
-    h = np.einsum('ij,j->i', W, x)      # counted
-    h = np.maximum(h, 0)                 # counted (ReLU)
-    U, S, Vt = np.linalg.svd(W, k=10)   # counted
+    W = me.array(weight_matrix)          # free (0 FLOPs)
+    x = me.zeros((256,))                 # free
+    h = me.einsum('ij,j->i', W, x)      # counted
+    h = me.maximum(h, 0)                 # counted (ReLU)
+    U, S, Vt = me.linalg.svd(W, k=10)   # counted
 
     print(budget.summary())
 
-# Additional mechestim-specific APIs accessed via full import
-import mechestim
-cost = mechestim.flops.einsum_cost('ij,j->i', shapes=[(256, 256), (256,)])
+# FLOP cost query API
+cost = me.flops.einsum_cost('ij,j->i', shapes=[(256, 256), (256,)])
 ```
+
+**Note:** `import mechestim as np` also works if participants prefer — the API mirrors NumPy exactly. All documentation uses `me` to avoid confusion with actual NumPy.
 
 ### 3.2 System Diagram
 
@@ -53,25 +54,25 @@ cost = mechestim.flops.einsum_cost('ij,j->i', shapes=[(256, 256), (256,)])
 ┌────────────────────────────────────────────────────────────────┐
 │                     PARTICIPANT CODE                           │
 │                                                                │
-│  import mechestim as np                                        │
+│  import mechestim as me                                        │
 │                                                                │
-│  with np.BudgetContext(flop_budget=N) as budget:               │
-│      # Writes normal NumPy code                                │
-│      # Free ops: np.zeros, np.reshape, np.concatenate, ...     │
-│      # Counted ops: np.einsum, np.exp, np.linalg.svd, ...     │
+│  with me.BudgetContext(flop_budget=N) as budget:               │
+│      # Writes normal NumPy-style code                          │
+│      # Free ops: me.zeros, me.reshape, me.concatenate, ...     │
+│      # Counted ops: me.einsum, me.exp, me.linalg.svd, ...     │
 │      result = my_estimator(weights, budget)                    │
 │      print(budget.summary())                                   │
 ├────────────────────────────────────────────────────────────────┤
 │                  mechestim module                               │
 │                                                                │
-│  Top-level (mirrors np.*)       Submodules                     │
+│  Top-level (mirrors numpy.*)    Submodules                     │
 │  ┌────────────────────────┐     ┌────────────────────────────┐ │
-│  │ Counted:               │     │ np.linalg                  │ │
+│  │ Counted:               │     │ me.linalg                  │ │
 │  │   einsum, exp, log,    │     │   .svd(A, k=None)          │ │
 │  │   abs, sqrt, square,   │     │   (future: eigh, cholesky) │ │
 │  │   add, subtract,       │     │                            │ │
 │  │   multiply, divide,    │     ├────────────────────────────┤ │
-│  │   maximum, minimum,    │     │ np.random (passthrough)    │ │
+│  │   maximum, minimum,    │     │ me.random (passthrough)    │ │
 │  │   power, clip,         │     │   .seed, .randn, .rand,   │ │
 │  │   sum, max, min,       │     │   .normal, .uniform, ...   │ │
 │  │   mean, prod           │     │   (free — 0 FLOPs)        │ │
@@ -139,15 +140,15 @@ np.reshape(x, shape)    # np = mechestim
 
 ## 4. API Surface: What's Supported
 
-The goal is: if a participant writes valid NumPy code using operations in the supported set, replacing `import numpy as np` with `import mechestim as np` should be the only change needed.
+The goal is: if a participant writes valid NumPy code using operations in the supported set, replacing `import numpy as np` with `import mechestim as me` (and `np.` → `me.`) should be the only change needed. `import mechestim as np` also works but documentation uses `me` to avoid confusion with actual NumPy.
 
 ### 4.1 Unsupported Operations
 
 Any attribute or function NOT listed in Sections 4.2-4.4 raises `AttributeError` with a helpful message:
 
 ```python
-import mechestim as np
-np.fft.fft(x)
+import mechestim as me
+me.fft.fft(x)
 # AttributeError: mechestim does not provide 'fft.fft'.
 # Supported operations: einsum, exp, log, ..., linalg.svd.
 # See https://... for the full list.
@@ -160,7 +161,7 @@ This is critical for the sandbox: participants get a clear error instead of sile
 
 These are the operations that consume the FLOP budget. Signatures match NumPy exactly (with one extension: `symmetric_dims` on `einsum`).
 
-#### 4.2.1 `np.einsum`
+#### 4.2.1 `me.einsum`
 
 ```python
 np.einsum(subscripts: str, *operands: ndarray, symmetric_dims: list[tuple[int, ...]] | None = None) -> ndarray
@@ -194,20 +195,20 @@ Expressions like `'i->ii'` (diagonal embedding) are not supported by `numpy.eins
 **Examples:**
 
 ```python
-import mechestim as np
+import mechestim as me
 
-with np.BudgetContext(flop_budget=10**8) as budget:
+with me.BudgetContext(flop_budget=10**8) as budget:
     # Standard matmul: cost = m * k * n
-    C = np.einsum('ij,jk->ik', A, B)  # A is (m,k), B is (k,n)
+    C = me.einsum('ij,jk->ik', A, B)  # A is (m,k), B is (k,n)
 
     # Symmetric contraction: x passed twice, cost = (a*b*i) / 2!
-    result = np.einsum('ai,bi,ab->', x, x, A)  # x is same object
+    result = me.einsum('ai,bi,ab->', x, x, A)  # x is same object
 
     # Trace: cost = n
-    tr = np.einsum('ii->', A)
+    tr = me.einsum('ii->', A)
 
     # With explicit symmetric output dims: cost reduced by 2!
-    S = np.einsum('ai,bj,ab->ij', x, y, A, symmetric_dims=[(0,1)])
+    S = me.einsum('ai,bj,ab->ij', x, y, A, symmetric_dims=[(0,1)])
 ```
 
 **Note:** `symmetric_dims` is the ONLY non-standard NumPy parameter. It is optional and keyword-only, so standard NumPy einsum calls work unchanged.
@@ -218,29 +219,29 @@ Element-wise operations. Cost = `numel(output)` (1 FLOP per output element). For
 
 | Function | NumPy equivalent | Cost |
 |---|---|---|
-| `np.exp(x)` | `numpy.exp` | numel(input) |
-| `np.log(x)` | `numpy.log` | numel(input) |
-| `np.log2(x)` | `numpy.log2` | numel(input) |
-| `np.log10(x)` | `numpy.log10` | numel(input) |
-| `np.abs(x)` | `numpy.abs` | numel(input) |
-| `np.negative(x)` | `numpy.negative` | numel(input) |
-| `np.sqrt(x)` | `numpy.sqrt` | numel(input) |
-| `np.square(x)` | `numpy.square` | numel(input) |
-| `np.sin(x)` | `numpy.sin` | numel(input) |
-| `np.cos(x)` | `numpy.cos` | numel(input) |
-| `np.tanh(x)` | `numpy.tanh` | numel(input) |
-| `np.sign(x)` | `numpy.sign` | numel(input) |
-| `np.ceil(x)` | `numpy.ceil` | numel(input) |
-| `np.floor(x)` | `numpy.floor` | numel(input) |
-| `np.add(x, y)` | `numpy.add` | numel(output) |
-| `np.subtract(x, y)` | `numpy.subtract` | numel(output) |
-| `np.multiply(x, y)` | `numpy.multiply` | numel(output) |
-| `np.divide(x, y)` | `numpy.divide` | numel(output) |
-| `np.maximum(x, y)` | `numpy.maximum` | numel(output) |
-| `np.minimum(x, y)` | `numpy.minimum` | numel(output) |
-| `np.power(x, y)` | `numpy.power` | numel(output) |
-| `np.clip(x, a_min, a_max)` | `numpy.clip` | numel(output) |
-| `np.mod(x, y)` | `numpy.mod` | numel(output) |
+| `me.exp(x)` | `numpy.exp` | numel(input) |
+| `me.log(x)` | `numpy.log` | numel(input) |
+| `me.log2(x)` | `numpy.log2` | numel(input) |
+| `me.log10(x)` | `numpy.log10` | numel(input) |
+| `me.abs(x)` | `numpy.abs` | numel(input) |
+| `me.negative(x)` | `numpy.negative` | numel(input) |
+| `me.sqrt(x)` | `numpy.sqrt` | numel(input) |
+| `me.square(x)` | `numpy.square` | numel(input) |
+| `me.sin(x)` | `numpy.sin` | numel(input) |
+| `me.cos(x)` | `numpy.cos` | numel(input) |
+| `me.tanh(x)` | `numpy.tanh` | numel(input) |
+| `me.sign(x)` | `numpy.sign` | numel(input) |
+| `me.ceil(x)` | `numpy.ceil` | numel(input) |
+| `me.floor(x)` | `numpy.floor` | numel(input) |
+| `me.add(x, y)` | `numpy.add` | numel(output) |
+| `me.subtract(x, y)` | `numpy.subtract` | numel(output) |
+| `me.multiply(x, y)` | `numpy.multiply` | numel(output) |
+| `me.divide(x, y)` | `numpy.divide` | numel(output) |
+| `me.maximum(x, y)` | `numpy.maximum` | numel(output) |
+| `me.minimum(x, y)` | `numpy.minimum` | numel(output) |
+| `me.power(x, y)` | `numpy.power` | numel(output) |
+| `me.clip(x, a_min, a_max)` | `numpy.clip` | numel(output) |
+| `me.mod(x, y)` | `numpy.mod` | numel(output) |
 
 #### 4.2.3 Reductions
 
@@ -248,19 +249,19 @@ Cost = `numel(input)` (must scan all input elements).
 
 | Function | NumPy equivalent | Cost |
 |---|---|---|
-| `np.sum(x, axis=None)` | `numpy.sum` | numel(input) |
-| `np.max(x, axis=None)` | `numpy.max` | numel(input) |
-| `np.min(x, axis=None)` | `numpy.min` | numel(input) |
-| `np.mean(x, axis=None)` | `numpy.mean` | numel(input) + numel(output) |
-| `np.prod(x, axis=None)` | `numpy.prod` | numel(input) |
-| `np.std(x, axis=None)` | `numpy.std` | 2 * numel(input) + numel(output) |
-| `np.var(x, axis=None)` | `numpy.var` | 2 * numel(input) + numel(output) |
-| `np.argmax(x, axis=None)` | `numpy.argmax` | numel(input) |
-| `np.argmin(x, axis=None)` | `numpy.argmin` | numel(input) |
-| `np.cumsum(x, axis=None)` | `numpy.cumsum` | numel(input) |
-| `np.cumprod(x, axis=None)` | `numpy.cumprod` | numel(input) |
+| `me.sum(x, axis=None)` | `numpy.sum` | numel(input) |
+| `me.max(x, axis=None)` | `numpy.max` | numel(input) |
+| `me.min(x, axis=None)` | `numpy.min` | numel(input) |
+| `me.mean(x, axis=None)` | `numpy.mean` | numel(input) + numel(output) |
+| `me.prod(x, axis=None)` | `numpy.prod` | numel(input) |
+| `me.std(x, axis=None)` | `numpy.std` | 2 * numel(input) + numel(output) |
+| `me.var(x, axis=None)` | `numpy.var` | 2 * numel(input) + numel(output) |
+| `me.argmax(x, axis=None)` | `numpy.argmax` | numel(input) |
+| `me.argmin(x, axis=None)` | `numpy.argmin` | numel(input) |
+| `me.cumsum(x, axis=None)` | `numpy.cumsum` | numel(input) |
+| `me.cumprod(x, axis=None)` | `numpy.cumprod` | numel(input) |
 
-#### 4.2.4 Linear Algebra: `np.linalg`
+#### 4.2.4 Linear Algebra: `me.linalg`
 
 ```python
 np.linalg.svd(A: ndarray, k: int | None = None) -> tuple[ndarray, ndarray, ndarray]
@@ -282,19 +283,19 @@ Truncated singular value decomposition.
 - `k` must satisfy `1 <= k <= min(m, n)`
 
 **Future linalg ops** (not in v1 but may be added):
-- `np.linalg.eigh` — symmetric eigendecomposition
-- `np.linalg.cholesky` — Cholesky decomposition
-- `np.linalg.norm` — matrix/vector norms
-- `np.linalg.solve` — linear system solve
+- `me.linalg.eigh` — symmetric eigendecomposition
+- `me.linalg.cholesky` — Cholesky decomposition
+- `me.linalg.norm` — matrix/vector norms
+- `me.linalg.solve` — linear system solve
 
 #### 4.2.5 Dot and Matmul
 
 | Function | NumPy equivalent | Cost |
 |---|---|---|
-| `np.dot(a, b)` | `numpy.dot` | Same as equivalent einsum |
-| `np.matmul(a, b)` | `numpy.matmul` | Same as equivalent einsum |
+| `me.dot(a, b)` | `numpy.dot` | Same as equivalent einsum |
+| `me.matmul(a, b)` | `numpy.matmul` | Same as equivalent einsum |
 
-These are convenience wrappers. Internally they delegate to `np.einsum` with the appropriate subscript, so the FLOP cost is identical.
+These are convenience wrappers. Internally they delegate to `me.einsum` with the appropriate subscript, so the FLOP cost is identical.
 
 #### 4.2.6 FLOP Cost Summary
 
@@ -327,96 +328,96 @@ These operations are provided because raw NumPy is disabled in the evaluation sa
 
 | Function | NumPy equivalent |
 |---|---|
-| `np.array(data, dtype=None)` | `numpy.array` |
-| `np.zeros(shape, dtype=float)` | `numpy.zeros` |
-| `np.ones(shape, dtype=float)` | `numpy.ones` |
-| `np.full(shape, fill, dtype=None)` | `numpy.full` |
-| `np.eye(n, m=None, dtype=float)` | `numpy.eye` |
-| `np.diag(v, k=0)` | `numpy.diag` |
-| `np.arange(*args, dtype=None)` | `numpy.arange` |
-| `np.linspace(start, stop, num=50)` | `numpy.linspace` |
-| `np.zeros_like(x)` | `numpy.zeros_like` |
-| `np.ones_like(x)` | `numpy.ones_like` |
-| `np.full_like(x, fill)` | `numpy.full_like` |
-| `np.empty(shape, dtype=float)` | `numpy.empty` |
-| `np.empty_like(x)` | `numpy.empty_like` |
-| `np.identity(n)` | `numpy.identity` |
+| `me.array(data, dtype=None)` | `numpy.array` |
+| `me.zeros(shape, dtype=float)` | `numpy.zeros` |
+| `me.ones(shape, dtype=float)` | `numpy.ones` |
+| `me.full(shape, fill, dtype=None)` | `numpy.full` |
+| `me.eye(n, m=None, dtype=float)` | `numpy.eye` |
+| `me.diag(v, k=0)` | `numpy.diag` |
+| `me.arange(*args, dtype=None)` | `numpy.arange` |
+| `me.linspace(start, stop, num=50)` | `numpy.linspace` |
+| `me.zeros_like(x)` | `numpy.zeros_like` |
+| `me.ones_like(x)` | `numpy.ones_like` |
+| `me.full_like(x, fill)` | `numpy.full_like` |
+| `me.empty(shape, dtype=float)` | `numpy.empty` |
+| `me.empty_like(x)` | `numpy.empty_like` |
+| `me.identity(n)` | `numpy.identity` |
 
 #### 4.3.2 Tensor Manipulation
 
 | Function | NumPy equivalent |
 |---|---|
-| `np.reshape(x, shape)` | `numpy.reshape` |
-| `np.transpose(x, axes=None)` | `numpy.transpose` |
-| `np.swapaxes(x, a1, a2)` | `numpy.swapaxes` |
-| `np.moveaxis(x, src, dst)` | `numpy.moveaxis` |
-| `np.concatenate(arrays, axis=0)` | `numpy.concatenate` |
-| `np.stack(arrays, axis=0)` | `numpy.stack` |
-| `np.vstack(arrays)` | `numpy.vstack` |
-| `np.hstack(arrays)` | `numpy.hstack` |
-| `np.split(x, indices, axis=0)` | `numpy.split` |
-| `np.hsplit(x, indices)` | `numpy.hsplit` |
-| `np.vsplit(x, indices)` | `numpy.vsplit` |
-| `np.squeeze(x, axis=None)` | `numpy.squeeze` |
-| `np.expand_dims(x, axis)` | `numpy.expand_dims` |
-| `np.ravel(x)` | `numpy.ravel` |
-| `np.flatten(x)` | (via ndarray method) |
-| `np.copy(x)` | `numpy.copy` |
-| `np.where(cond, x, y)` | `numpy.where` |
-| `np.tile(x, reps)` | `numpy.tile` |
-| `np.repeat(x, repeats, axis=None)` | `numpy.repeat` |
-| `np.flip(x, axis=None)` | `numpy.flip` |
-| `np.roll(x, shift, axis=None)` | `numpy.roll` |
-| `np.sort(x, axis=-1)` | `numpy.sort` |
-| `np.argsort(x, axis=-1)` | `numpy.argsort` |
-| `np.searchsorted(a, v)` | `numpy.searchsorted` |
-| `np.unique(x)` | `numpy.unique` |
-| `np.pad(x, pad_width, mode)` | `numpy.pad` |
-| `np.triu(x, k=0)` | `numpy.triu` |
-| `np.tril(x, k=0)` | `numpy.tril` |
-| `np.diagonal(x, offset=0)` | `numpy.diagonal` |
-| `np.trace(x)` | `numpy.trace` |
-| `np.broadcast_to(x, shape)` | `numpy.broadcast_to` |
-| `np.meshgrid(*xi)` | `numpy.meshgrid` |
+| `me.reshape(x, shape)` | `numpy.reshape` |
+| `me.transpose(x, axes=None)` | `numpy.transpose` |
+| `me.swapaxes(x, a1, a2)` | `numpy.swapaxes` |
+| `me.moveaxis(x, src, dst)` | `numpy.moveaxis` |
+| `me.concatenate(arrays, axis=0)` | `numpy.concatenate` |
+| `me.stack(arrays, axis=0)` | `numpy.stack` |
+| `me.vstack(arrays)` | `numpy.vstack` |
+| `me.hstack(arrays)` | `numpy.hstack` |
+| `me.split(x, indices, axis=0)` | `numpy.split` |
+| `me.hsplit(x, indices)` | `numpy.hsplit` |
+| `me.vsplit(x, indices)` | `numpy.vsplit` |
+| `me.squeeze(x, axis=None)` | `numpy.squeeze` |
+| `me.expand_dims(x, axis)` | `numpy.expand_dims` |
+| `me.ravel(x)` | `numpy.ravel` |
+| `me.flatten(x)` | (via ndarray method) |
+| `me.copy(x)` | `numpy.copy` |
+| `me.where(cond, x, y)` | `numpy.where` |
+| `me.tile(x, reps)` | `numpy.tile` |
+| `me.repeat(x, repeats, axis=None)` | `numpy.repeat` |
+| `me.flip(x, axis=None)` | `numpy.flip` |
+| `me.roll(x, shift, axis=None)` | `numpy.roll` |
+| `me.sort(x, axis=-1)` | `numpy.sort` |
+| `me.argsort(x, axis=-1)` | `numpy.argsort` |
+| `me.searchsorted(a, v)` | `numpy.searchsorted` |
+| `me.unique(x)` | `numpy.unique` |
+| `me.pad(x, pad_width, mode)` | `numpy.pad` |
+| `me.triu(x, k=0)` | `numpy.triu` |
+| `me.tril(x, k=0)` | `numpy.tril` |
+| `me.diagonal(x, offset=0)` | `numpy.diagonal` |
+| `me.trace(x)` | `numpy.trace` |
+| `me.broadcast_to(x, shape)` | `numpy.broadcast_to` |
+| `me.meshgrid(*xi)` | `numpy.meshgrid` |
 
 #### 4.3.3 Type, Constants, and Info
 
 | Name | NumPy equivalent |
 |---|---|
-| `np.astype(x, dtype)` | `x.astype(dtype)` |
-| `np.asarray(x)` | `numpy.asarray` |
-| `np.isnan(x)` | `numpy.isnan` |
-| `np.isinf(x)` | `numpy.isinf` |
-| `np.isfinite(x)` | `numpy.isfinite` |
-| `np.allclose(a, b)` | `numpy.allclose` |
-| `np.pi` | `numpy.pi` |
-| `np.e` | `numpy.e` |
-| `np.inf` | `numpy.inf` |
-| `np.nan` | `numpy.nan` |
-| `np.float32`, `np.float64`, etc. | `numpy.float32`, etc. |
-| `np.int32`, `np.int64`, etc. | `numpy.int32`, etc. |
-| `np.bool_` | `numpy.bool_` |
-| `np.ndarray` | `numpy.ndarray` |
-| `np.newaxis` | `numpy.newaxis` |
+| `me.astype(x, dtype)` | `x.astype(dtype)` |
+| `me.asarray(x)` | `numpy.asarray` |
+| `me.isnan(x)` | `numpy.isnan` |
+| `me.isinf(x)` | `numpy.isinf` |
+| `me.isfinite(x)` | `numpy.isfinite` |
+| `me.allclose(a, b)` | `numpy.allclose` |
+| `me.pi` | `numpy.pi` |
+| `me.e` | `numpy.e` |
+| `me.inf` | `numpy.inf` |
+| `me.nan` | `numpy.nan` |
+| `me.float32`, `me.float64`, etc. | `numpy.float32`, etc. |
+| `me.int32`, `me.int64`, etc. | `numpy.int32`, etc. |
+| `me.bool_` | `numpy.bool_` |
+| `me.ndarray` | `numpy.ndarray` |
+| `me.newaxis` | `numpy.newaxis` |
 
 **Indexing/slicing:** `x[i, j]`, `x[:, 0]`, `x[mask]`, etc. work natively on ndarrays. No wrapping needed.
 
 **ndarray attributes and methods:** `.shape`, `.dtype`, `.ndim`, `.size`, `.T`, `.reshape()`, `.transpose()`, `.astype()`, `.copy()`, `.flatten()`, `.ravel()` all work natively since tensors are plain ndarrays.
 
-#### 4.3.4 Random: `np.random`
+#### 4.3.4 Random: `me.random`
 
 | Function | NumPy equivalent |
 |---|---|
-| `np.random.seed(s)` | `numpy.random.seed` |
-| `np.random.randn(*shape)` | `numpy.random.randn` |
-| `np.random.rand(*shape)` | `numpy.random.rand` |
-| `np.random.normal(loc, scale, size)` | `numpy.random.normal` |
-| `np.random.uniform(low, high, size)` | `numpy.random.uniform` |
-| `np.random.choice(a, size, ...)` | `numpy.random.choice` |
-| `np.random.permutation(x)` | `numpy.random.permutation` |
-| `np.random.shuffle(x)` | `numpy.random.shuffle` |
-| `np.random.RandomState(seed)` | `numpy.random.RandomState` |
-| `np.random.default_rng(seed)` | `numpy.random.default_rng` |
+| `me.random.seed(s)` | `numpy.random.seed` |
+| `me.random.randn(*shape)` | `numpy.random.randn` |
+| `me.random.rand(*shape)` | `numpy.random.rand` |
+| `me.random.normal(loc, scale, size)` | `numpy.random.normal` |
+| `me.random.uniform(low, high, size)` | `numpy.random.uniform` |
+| `me.random.choice(a, size, ...)` | `numpy.random.choice` |
+| `me.random.permutation(x)` | `numpy.random.permutation` |
+| `me.random.shuffle(x)` | `numpy.random.shuffle` |
+| `me.random.RandomState(seed)` | `numpy.random.RandomState` |
+| `me.random.default_rng(seed)` | `numpy.random.default_rng` |
 
 All random ops are free (0 FLOPs). Sampling random numbers is data generation, not compute. This allows participants to draw Monte Carlo samples within their estimator as part of their algorithm.
 
@@ -465,10 +466,10 @@ class BudgetContext:
 
     Examples
     --------
-    >>> import mechestim as np
-    >>> with np.BudgetContext(flop_budget=1_000_000) as budget:
-    ...     x = np.ones((256, 256))  # free
-    ...     y = np.einsum('ij,jk->ik', x, x)  # costs 256^3 FLOPs
+    >>> import mechestim as me
+    >>> with me.BudgetContext(flop_budget=1_000_000) as budget:
+    ...     x = me.ones((256, 256))  # free
+    ...     y = me.einsum('ij,jk->ik', x, x)  # costs 256^3 FLOPs
     ...     print(budget.flops_used)
     16777216
     """
@@ -586,7 +587,7 @@ Every public function and class uses NumPy-style docstrings with these sections:
 - **Returns** — with types
 - **Raises** — all possible exceptions
 - **Notes** — FLOP cost formula, symmetry behavior
-- **Examples** — using `import mechestim as np` pattern
+- **Examples** — using `import mechestim as me` pattern
 
 ### 7.2 Documentation Site
 
@@ -649,7 +650,7 @@ mechestim/
 │   ├── test_free_ops.py     # Free ops pass-through
 │   ├── test_random.py       # Random submodule pass-through
 │   ├── test_errors.py       # Error conditions + AttributeError on unsupported
-│   ├── test_numpy_compat.py # Verify `import mechestim as np` pattern works
+│   ├── test_numpy_compat.py # Verify `import mechestim as me` works like numpy
 │   └── test_integration.py  # End-to-end estimator flows
 └── docs/                    # mkdocs source
     └── ...
@@ -733,28 +734,28 @@ assert reduction_cost((256, 256)) == 256 * 256
 ### 9.2 Budget Enforcement Tests (`test_budget.py`)
 
 ```python
-import mechestim as np
+import mechestim as me
 
 # Budget exactly sufficient
-with np.BudgetContext(flop_budget=256**3) as budget:
-    np.einsum('ij,jk->ik', A_256, B_256)  # succeeds
+with me.BudgetContext(flop_budget=256**3) as budget:
+    me.einsum('ij,jk->ik', A_256, B_256)  # succeeds
 
 # Budget insufficient
-with pytest.raises(np.BudgetExhaustedError):
-    with np.BudgetContext(flop_budget=100) as budget:
-        np.einsum('ij,jk->ik', A_256, B_256)
+with pytest.raises(me.BudgetExhaustedError):
+    with me.BudgetContext(flop_budget=100) as budget:
+        me.einsum('ij,jk->ik', A_256, B_256)
 
 # Outside context
-with pytest.raises(np.NoBudgetContextError):
-    np.einsum('ij,jk->ik', A, B)
+with pytest.raises(me.NoBudgetContextError):
+    me.einsum('ij,jk->ik', A, B)
 
 # Free ops work without context
-x = np.zeros((10, 10))  # no error
+x = me.zeros((10, 10))  # no error
 
 # Nested context
 with pytest.raises(RuntimeError):
-    with np.BudgetContext(1000):
-        with np.BudgetContext(500):
+    with me.BudgetContext(1000):
+        with me.BudgetContext(500):
             pass
 ```
 
@@ -764,13 +765,13 @@ Every supported operation must produce the same numerical result as NumPy:
 
 ```python
 import numpy
-import mechestim as np
+import mechestim as me
 
-with np.BudgetContext(10**9) as budget:
-    assert numpy.allclose(np.exp(x), numpy.exp(x))
-    assert numpy.allclose(np.einsum('ij,jk->ik', A, B), numpy.einsum('ij,jk->ik', A, B))
-    assert numpy.allclose(np.dot(A, B), numpy.dot(A, B))
-    U, S, Vt = np.linalg.svd(A, k=5)
+with me.BudgetContext(10**9) as budget:
+    assert numpy.allclose(me.exp(x), numpy.exp(x))
+    assert numpy.allclose(me.einsum('ij,jk->ik', A, B), numpy.einsum('ij,jk->ik', A, B))
+    assert numpy.allclose(me.dot(A, B), numpy.dot(A, B))
+    U, S, Vt = me.linalg.svd(A, k=5)
     U_np, S_np, Vt_np = numpy.linalg.svd(A, full_matrices=False)
     assert numpy.allclose(S, S_np[:5])
 ```
@@ -778,15 +779,15 @@ with np.BudgetContext(10**9) as budget:
 ### 9.4 Unsupported Op Tests (`test_errors.py`)
 
 ```python
-import mechestim as np
+import mechestim as me
 
 # Unsupported top-level
 with pytest.raises(AttributeError, match="does not provide"):
-    np.fft
+    me.fft
 
 # Unsupported linalg
 with pytest.raises(AttributeError, match="does not provide"):
-    np.linalg.cholesky
+    me.linalg.cholesky
 ```
 
 ### 9.5 Integration Tests (`test_integration.py`)
@@ -858,7 +859,7 @@ uv sync --all-extras
 | Docker sandbox enforcement | Evaluation harness concern, not library concern. |
 | Cholesky, eigendecomposition, FFT | Not in initial op set. Add if requested. |
 | Evaluation harness integration | Separate repo. mechestim is standalone. |
-| `np.linalg.norm`, `np.linalg.solve` | Not in initial op set. Add if requested. |
+| `me.linalg.norm`, `me.linalg.solve` | Not in initial op set. Add if requested. |
 
 ## 12. Open Items for ARC Confirmation
 
