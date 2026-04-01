@@ -2,6 +2,7 @@
 Demo: A participant's submission that uses mechestim exactly like they would locally.
 This runs inside a container with NO numpy installed.
 """
+import sys
 import mechestim as me
 
 print("=" * 60)
@@ -117,3 +118,13 @@ with me.BudgetContext(flop_budget=1_000_000) as budget:
     print("=" * 60)
     print("\n  SUCCESS: Everything works without numpy!")
     print("  The participant never knew they were using a proxy.")
+
+# ---- Run exhaustive smoke test ----
+print("\n\nRunning exhaustive smoke test...")
+import subprocess, os
+script_dir = os.path.dirname(os.path.abspath(__file__))
+result = subprocess.run(
+    [sys.executable, os.path.join(script_dir, "exhaustive_test.py")],
+    env={**os.environ},
+)
+sys.exit(result.returncode)

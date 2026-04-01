@@ -134,25 +134,32 @@ class MechestimServer:
         is_fetch = op in ("fetch", "fetch_slice")
         response_bytes: bytes
 
-        if result.get("status") == "error":
+        try:
+            if result.get("status") == "error":
+                response_bytes = encode_error_response(
+                    result["error_type"], result["message"]
+                )
+            elif "data" in result:
+                # fetch / fetch_slice -- use raw response packing
+                payload = {
+                    "status": "ok",
+                    "data": result["data"],
+                    "shape": result["shape"],
+                    "dtype": result["dtype"],
+                    "comms_overhead_ns": 0,  # placeholder, updated below
+                }
+                response_bytes = msgpack.packb(payload, use_bin_type=True)
+            else:
+                response_bytes = encode_response(
+                    result.get("result"),
+                    result.get("budget", self._session.budget_remaining if self._session else 0),
+                    comms_overhead_ns=0,  # placeholder
+                )
+        except Exception as enc_err:
+            # Response serialization failed -- return error instead of crashing
             response_bytes = encode_error_response(
-                result["error_type"], result["message"]
-            )
-        elif "data" in result:
-            # fetch / fetch_slice -- use raw response packing
-            payload = {
-                "status": "ok",
-                "data": result["data"],
-                "shape": result["shape"],
-                "dtype": result["dtype"],
-                "comms_overhead_ns": 0,  # placeholder, updated below
-            }
-            response_bytes = msgpack.packb(payload, use_bin_type=True)
-        else:
-            response_bytes = encode_response(
-                result.get("result"),
-                result.get("budget", self._session.budget_remaining if self._session else 0),
-                comms_overhead_ns=0,  # placeholder
+                "MechEstimServerError",
+                f"failed to serialize response: {type(enc_err).__name__}",
             )
 
         t3 = perf_counter_ns()

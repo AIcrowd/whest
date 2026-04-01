@@ -13,6 +13,19 @@ from mechestim_server._session import Session
 
 _HANDLE_RE = re.compile(r"^a\d+$")
 
+
+def _make_serializable(obj):
+    """Convert a nested structure to be msgpack-safe (no numpy types)."""
+    if isinstance(obj, np.ndarray):
+        return obj.tolist()
+    if isinstance(obj, np.generic):
+        return obj.item()
+    if isinstance(obj, (list, tuple)):
+        return [_make_serializable(item) for item in obj]
+    if isinstance(obj, dict):
+        return {k: _make_serializable(v) for k, v in obj.items()}
+    return obj
+
 #: Maximum allowed array size in bytes (configurable via environment variable).
 MAX_ARRAY_BYTES = int(os.environ.get("MECHESTIM_MAX_ARRAY_BYTES", 100 * 1024 * 1024))
 
@@ -265,7 +278,7 @@ class RequestHandler:
             meta = self._session.array_metadata(handle)
             return {"status": "ok", "result": meta, "budget": budget}
 
-        if isinstance(result, tuple):
+        if isinstance(result, (tuple, list)):
             items = []
             for r in result:
                 if isinstance(r, np.ndarray):
@@ -276,8 +289,13 @@ class RequestHandler:
                 elif isinstance(r, (int, float)):
                     dtype_str = "float64" if isinstance(r, float) else "int64"
                     items.append({"value": r, "dtype": dtype_str})
+                elif isinstance(r, str):
+                    items.append({"value": r, "dtype": "str"})
+                elif isinstance(r, (list, tuple)):
+                    # Nested list/tuple (e.g., from einsum_path) — convert to JSON-safe
+                    items.append({"value": _make_serializable(r), "dtype": "object"})
                 else:
-                    items.append(r)
+                    items.append({"value": r})
             return {"status": "ok", "result": {"multi": items}, "budget": budget}
 
         # Scalar or other value
@@ -290,7 +308,16 @@ class RequestHandler:
             return {"status": "ok", "result": {"value": result, "dtype": "int64"}, "budget": budget}
         if isinstance(result, float):
             return {"status": "ok", "result": {"value": result, "dtype": "float64"}, "budget": budget}
-        return {"status": "ok", "result": {"value": result}, "budget": budget}
+        if isinstance(result, str):
+            return {"status": "ok", "result": {"value": result, "dtype": "str"}, "budget": budget}
+        if isinstance(result, np.dtype):
+            return {"status": "ok", "result": {"value": str(result), "dtype": "str"}, "budget": budget}
+        # Fallback: try to make it serializable
+        try:
+            serializable = _make_serializable(result)
+            return {"status": "ok", "result": {"value": serializable}, "budget": budget}
+        except Exception:
+            return {"status": "ok", "result": {"value": str(result), "dtype": "str"}, "budget": budget}
 
 
 # ---------------------------------------------------------------------------
