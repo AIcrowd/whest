@@ -1,17 +1,18 @@
 [project]
 name = "mechestim"
-version = "0.1.0"
+version = "0.2.0"
 description = "NumPy-compatible math primitives with FLOP counting for the Mechanistic Estimation Challenge"
 requires-python = ">=3.10"
 license = "MIT"
 dependencies = [
-    "numpy>=1.24",
+    "numpy>=2.1.0,<2.2.0",
 ]
 
 [project.optional-dependencies]
 dev = [
     "pytest>=7.0",
     "pytest-cov",
+    "rich>=13.0",
 ]
 docs = [
     "mkdocs-material",
