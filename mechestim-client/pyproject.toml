@@ -12,6 +12,9 @@ dependencies = [
     "msgpack>=1.0.0",
 ]
 
+[tool.hatch.build.targets.wheel]
+packages = ["src/mechestim"]
+
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 testpaths = ["tests"]

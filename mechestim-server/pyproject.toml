@@ -14,5 +14,8 @@ dependencies = [
     "msgpack>=1.0.0",
 ]
 
+[tool.hatch.build.targets.wheel]
+packages = ["src/mechestim_server"]
+
 [project.scripts]
 mechestim-server = "mechestim_server.__main__:main"
