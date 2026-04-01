@@ -18,7 +18,7 @@ def _normalize(value: object) -> object:
     This catches handle IDs and dtype strings but never touches binary data.
     """
     if isinstance(value, bytes):
-        if len(value) <= _SHORT_THRESHOLD and all(32 <= b < 128 for b in value):
+        if len(value) > 0 and len(value) <= _SHORT_THRESHOLD and all(32 <= b < 128 for b in value):
             return value.decode("ascii")
         return value
     if isinstance(value, dict):

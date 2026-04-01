@@ -60,7 +60,11 @@ def _bytes_to_list(
     Scalar value, flat list, or nested list of lists depending on *shape*.
     """
     fmt_char, item_size = _DTYPE_INFO[dtype]
-    total = max(math.prod(shape), 1) if shape else 1
+    total = math.prod(shape) if shape else 1
+
+    # Empty array — no data to unpack
+    if total == 0:
+        return _reshape_flat([], shape) if len(shape) > 1 else []
 
     if dtype in _COMPLEX_DTYPES:
         # Unpack as pairs of floats and construct complex numbers
