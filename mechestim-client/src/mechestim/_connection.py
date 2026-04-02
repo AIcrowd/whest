@@ -1,4 +1,5 @@
 """ZMQ REQ socket wrapper for the mechestim client."""
+
 from __future__ import annotations
 
 import os
@@ -25,7 +26,9 @@ class Connection:
         Send/receive timeout in milliseconds.  Defaults to 30 000 ms.
     """
 
-    def __init__(self, url: str | None = None, timeout_ms: int = _DEFAULT_TIMEOUT_MS) -> None:
+    def __init__(
+        self, url: str | None = None, timeout_ms: int = _DEFAULT_TIMEOUT_MS
+    ) -> None:
         self.url: str = url or os.environ.get("MECHESTIM_SERVER_URL", _DEFAULT_URL)
         self.timeout_ms: int = timeout_ms
         self._context: zmq.Context | None = None

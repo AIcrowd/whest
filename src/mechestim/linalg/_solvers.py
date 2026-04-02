@@ -1,7 +1,10 @@
 # src/mechestim/linalg/_solvers.py
 """Linear solver wrappers with FLOP counting."""
+
 from __future__ import annotations
+
 import numpy as _np
+
 from mechestim._docstrings import attach_docstring
 from mechestim._symmetric import SymmetricTensor, as_symmetric
 from mechestim._validation import require_budget, validate_ndarray
@@ -30,8 +33,8 @@ def solve_cost(n: int, nrhs: int = 1, symmetric: bool = False) -> int:
     for LU (general). Source: Golub & Van Loan, *Matrix Computations*, 4th ed.
     """
     if symmetric:
-        return max(n ** 3 // 3 + n * nrhs, 1)
-    return max(2 * n ** 3 // 3 + n ** 2 * nrhs, 1)
+        return max(n**3 // 3 + n * nrhs, 1)
+    return max(2 * n**3 // 3 + n**2 * nrhs, 1)
 
 
 def solve(a, b):
@@ -49,8 +52,13 @@ def solve(a, b):
     budget.deduct("linalg.solve", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.solve(a, b)
 
-attach_docstring(solve, _np.linalg.solve, "linalg",
-    "2n\u00b3/3 + n\u00b2\u00b7nrhs FLOPs (LU), or n\u00b3/3 + n\u00b7nrhs FLOPs (Cholesky) for SymmetricTensor input")
+
+attach_docstring(
+    solve,
+    _np.linalg.solve,
+    "linalg",
+    "2n\u00b3/3 + n\u00b2\u00b7nrhs FLOPs (LU), or n\u00b3/3 + n\u00b7nrhs FLOPs (Cholesky) for SymmetricTensor input",
+)
 
 
 def inv_cost(n: int, symmetric: bool = False) -> int:
@@ -74,8 +82,8 @@ def inv_cost(n: int, symmetric: bool = False) -> int:
     or n**3 for general input (LU-based).
     """
     if symmetric:
-        return max(n ** 3 // 3 + n ** 3 // 2, 1)
-    return max(n ** 3, 1)
+        return max(n**3 // 3 + n**3 // 2, 1)
+    return max(n**3, 1)
 
 
 def inv(a):
@@ -93,8 +101,13 @@ def inv(a):
         result = as_symmetric(result, dims=(0, 1))
     return result
 
-attach_docstring(inv, _np.linalg.inv, "linalg",
-    "n\u00b3 FLOPs, or n\u00b3/3 + n\u00b3/2 for SymmetricTensor input. Returns SymmetricTensor if input is symmetric.")
+
+attach_docstring(
+    inv,
+    _np.linalg.inv,
+    "linalg",
+    "n\u00b3 FLOPs, or n\u00b3/3 + n\u00b3/2 for SymmetricTensor input. Returns SymmetricTensor if input is symmetric.",
+)
 
 
 def lstsq_cost(m: int, n: int) -> int:
@@ -130,7 +143,10 @@ def lstsq(a, b, rcond=None):
     budget.deduct("linalg.lstsq", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.lstsq(a, b, rcond=rcond)
 
-attach_docstring(lstsq, _np.linalg.lstsq, "linalg", "m \u00d7 n \u00d7 min(m,n) FLOPs (SVD-based)")
+
+attach_docstring(
+    lstsq, _np.linalg.lstsq, "linalg", "m \u00d7 n \u00d7 min(m,n) FLOPs (SVD-based)"
+)
 
 
 def pinv_cost(m: int, n: int) -> int:
@@ -169,7 +185,10 @@ def pinv(a, rcond=None, hermitian=False):
         kwargs["rcond"] = rcond
     return _np.linalg.pinv(a, **kwargs)
 
-attach_docstring(pinv, _np.linalg.pinv, "linalg", "m \u00d7 n \u00d7 min(m,n) FLOPs (SVD-based)")
+
+attach_docstring(
+    pinv, _np.linalg.pinv, "linalg", "m \u00d7 n \u00d7 min(m,n) FLOPs (SVD-based)"
+)
 
 
 def tensorsolve_cost(a_shape: tuple, ind: int | None = None) -> int:
@@ -196,7 +215,7 @@ def tensorsolve_cost(a_shape: tuple, ind: int | None = None) -> int:
     n = 1
     for d in a_shape[ind:]:
         n *= d
-    return max(n ** 3, 1)
+    return max(n**3, 1)
 
 
 def tensorsolve(a, b, axes=None):
@@ -204,11 +223,18 @@ def tensorsolve(a, b, axes=None):
     budget = require_budget()
     validate_ndarray(a)
     cost = tensorsolve_cost(a.shape)
-    budget.deduct("linalg.tensorsolve", flop_cost=cost, subscripts=None, shapes=(a.shape,))
+    budget.deduct(
+        "linalg.tensorsolve", flop_cost=cost, subscripts=None, shapes=(a.shape,)
+    )
     return _np.linalg.tensorsolve(a, b, axes=axes)
 
-attach_docstring(tensorsolve, _np.linalg.tensorsolve, "linalg",
-    "n\u00b3 FLOPs where n = product of trailing dims")
+
+attach_docstring(
+    tensorsolve,
+    _np.linalg.tensorsolve,
+    "linalg",
+    "n\u00b3 FLOPs where n = product of trailing dims",
+)
 
 
 def tensorinv_cost(a_shape: tuple, ind: int = 2) -> int:
@@ -233,7 +259,7 @@ def tensorinv_cost(a_shape: tuple, ind: int = 2) -> int:
     n = 1
     for d in a_shape[:ind]:
         n *= d
-    return max(n ** 3, 1)
+    return max(n**3, 1)
 
 
 def tensorinv(a, ind=2):
@@ -241,8 +267,15 @@ def tensorinv(a, ind=2):
     budget = require_budget()
     validate_ndarray(a)
     cost = tensorinv_cost(a.shape, ind=ind)
-    budget.deduct("linalg.tensorinv", flop_cost=cost, subscripts=None, shapes=(a.shape,))
+    budget.deduct(
+        "linalg.tensorinv", flop_cost=cost, subscripts=None, shapes=(a.shape,)
+    )
     return _np.linalg.tensorinv(a, ind=ind)
 
-attach_docstring(tensorinv, _np.linalg.tensorinv, "linalg",
-    "n\u00b3 FLOPs where n = product of leading dims")
+
+attach_docstring(
+    tensorinv,
+    _np.linalg.tensorinv,
+    "linalg",
+    "n\u00b3 FLOPs where n = product of leading dims",
+)

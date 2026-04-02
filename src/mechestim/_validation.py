@@ -1,4 +1,5 @@
 """Input validation and NaN/Inf checking for mechestim operations."""
+
 from __future__ import annotations
 
 import warnings

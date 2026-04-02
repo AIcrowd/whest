@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-import mechestim as me
 import numpy as np
 
+import mechestim as me
 from mechestim_server._array_store import ArrayStore
 from mechestim_server._comms_tracker import CommsTracker
 
@@ -55,7 +55,9 @@ class Session:
             If the session is already closed.
         """
         if not self._is_open:
-            raise RuntimeError("Session is closed; BudgetContext is no longer available.")
+            raise RuntimeError(
+                "Session is closed; BudgetContext is no longer available."
+            )
         return self._budget_ctx
 
     @property

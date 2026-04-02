@@ -1,8 +1,8 @@
 """Client-side message encoding/decoding using msgpack."""
+
 from __future__ import annotations
 
 import msgpack
-
 
 # Maximum byte length that we consider "short enough" to attempt ASCII decode.
 # Handle IDs and status strings are short ASCII; binary array data may contain
@@ -18,7 +18,11 @@ def _normalize(value: object) -> object:
     This catches handle IDs and dtype strings but never touches binary data.
     """
     if isinstance(value, bytes):
-        if len(value) > 0 and len(value) <= _SHORT_THRESHOLD and all(32 <= b < 128 for b in value):
+        if (
+            len(value) > 0
+            and len(value) <= _SHORT_THRESHOLD
+            and all(32 <= b < 128 for b in value)
+        ):
             return value.decode("ascii")
         return value
     if isinstance(value, dict):
@@ -44,7 +48,10 @@ def encode_create_from_data(data: bytes, shape: list, dtype: str) -> bytes:
 
 def encode_budget_open(flop_budget: int, flop_multiplier: float = 1.0) -> bytes:
     """Encode a budget_open request."""
-    return encode_request("budget_open", kwargs={"flop_budget": flop_budget, "flop_multiplier": flop_multiplier})
+    return encode_request(
+        "budget_open",
+        kwargs={"flop_budget": flop_budget, "flop_multiplier": flop_multiplier},
+    )
 
 
 def encode_budget_close() -> bytes:

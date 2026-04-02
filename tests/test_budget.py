@@ -1,5 +1,7 @@
 """Tests for BudgetContext and OpRecord."""
+
 import pytest
+
 from mechestim._budget import BudgetContext, OpRecord, get_active_budget
 from mechestim.errors import BudgetExhaustedError
 

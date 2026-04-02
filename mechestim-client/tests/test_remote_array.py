@@ -4,13 +4,12 @@ These tests cover metadata, scalar operations, _result_from_response,
 and _bytes_to_list.  Operator overloads and data-access methods that
 require a running server are deferred to integration tests (Task 14).
 """
+
 from __future__ import annotations
 
-import math
 import struct
 
 import pytest
-
 from mechestim._remote_array import (
     RemoteArray,
     RemoteScalar,
@@ -18,10 +17,10 @@ from mechestim._remote_array import (
     _result_from_response,
 )
 
-
 # =========================================================================
 # TestRemoteArrayMetadata
 # =========================================================================
+
 
 class TestRemoteArrayMetadata:
     """Cached metadata properties -- no server round-trip needed."""
@@ -71,6 +70,7 @@ class TestRemoteArrayMetadata:
 # =========================================================================
 # TestRemoteScalar
 # =========================================================================
+
 
 class TestRemoteScalar:
     """RemoteScalar wraps a scalar value and behaves like a Python number."""
@@ -158,6 +158,7 @@ class TestRemoteScalar:
 # TestResultFromResponse
 # =========================================================================
 
+
 class TestResultFromResponse:
     """_result_from_response dispatches on result keys."""
 
@@ -206,6 +207,7 @@ class TestResultFromResponse:
 # =========================================================================
 # TestBytesToList
 # =========================================================================
+
 
 class TestBytesToList:
     """_bytes_to_list converts raw bytes to nested Python lists without numpy."""

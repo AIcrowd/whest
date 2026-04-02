@@ -1,6 +1,8 @@
 """End-to-end integration tests simulating participant usage."""
+
 import numpy
 import pytest
+
 import mechestim as me
 
 
@@ -9,12 +11,15 @@ def test_simple_mlp_forward_pass():
     numpy.random.seed(42)
     width = 16
     depth = 4
-    weights = [me.array(numpy.random.randn(width, width) * numpy.sqrt(2.0 / width)) for _ in range(depth)]
+    weights = [
+        me.array(numpy.random.randn(width, width) * numpy.sqrt(2.0 / width))
+        for _ in range(depth)
+    ]
 
     with me.BudgetContext(flop_budget=10**8) as budget:
         x = me.array(numpy.random.randn(100, width))
         for W in weights:
-            x = me.einsum('bi,ji->bj', x, W)
+            x = me.einsum("bi,ji->bj", x, W)
             x = me.maximum(x, me.zeros_like(x))
         estimate = me.mean(x, axis=0)
 
@@ -34,20 +39,20 @@ def test_budget_tracking_accuracy():
     B = me.array(numpy.random.randn(20, 30))
 
     with me.BudgetContext(flop_budget=10**8) as budget:
-        me.einsum('ij,jk->ik', A, B)     # 10 * 20 * 30 = 6000
-        me.exp(me.ones((100,)))            # 100
-        me.sum(me.ones((50,)))             # 50
+        me.einsum("ij,jk->ik", A, B)  # 10 * 20 * 30 = 6000
+        me.exp(me.ones((100,)))  # 100
+        me.sum(me.ones((50,)))  # 50
         assert budget.flops_used == 6000 + 100 + 50
         assert budget.flops_remaining == 10**8 - 6150
 
 
 def test_flop_query_matches_execution():
-    query_cost = me.flops.einsum_cost('ij,jk->ik', shapes=[(10, 20), (20, 30)])
+    query_cost = me.flops.einsum_cost("ij,jk->ik", shapes=[(10, 20), (20, 30)])
 
     with me.BudgetContext(flop_budget=10**8) as budget:
         A = me.array(numpy.random.randn(10, 20))
         B = me.array(numpy.random.randn(20, 30))
-        me.einsum('ij,jk->ik', A, B)
+        me.einsum("ij,jk->ik", A, B)
 
     assert budget.flops_used == query_cost
 

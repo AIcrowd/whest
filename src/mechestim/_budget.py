@@ -1,4 +1,5 @@
 """Budget context manager and operation recording for mechestim."""
+
 from __future__ import annotations
 
 import threading
@@ -9,6 +10,7 @@ from mechestim.errors import BudgetExhaustedError
 
 class OpRecord(NamedTuple):
     """Record of a single counted operation."""
+
     op_name: str
     subscripts: str | None
     shapes: tuple
@@ -35,7 +37,9 @@ class BudgetContext:
         Multiplier applied to all FLOP costs. Default 1.
     """
 
-    def __init__(self, flop_budget: int, flop_multiplier: float = 1.0, quiet: bool = False):
+    def __init__(
+        self, flop_budget: int, flop_multiplier: float = 1.0, quiet: bool = False
+    ):
         if flop_budget <= 0:
             raise ValueError(f"flop_budget must be > 0, got {flop_budget}")
         self._flop_budget = flop_budget
@@ -64,13 +68,25 @@ class BudgetContext:
     def op_log(self) -> list[OpRecord]:
         return self._op_log
 
-    def deduct(self, op_name: str, *, flop_cost: int, subscripts: str | None, shapes: tuple) -> None:
+    def deduct(
+        self, op_name: str, *, flop_cost: int, subscripts: str | None, shapes: tuple
+    ) -> None:
         """Deduct FLOPs from the budget."""
         adjusted_cost = int(flop_cost * self._flop_multiplier)
         if adjusted_cost > self.flops_remaining:
-            raise BudgetExhaustedError(op_name, flop_cost=adjusted_cost, flops_remaining=self.flops_remaining)
+            raise BudgetExhaustedError(
+                op_name, flop_cost=adjusted_cost, flops_remaining=self.flops_remaining
+            )
         self._flops_used += adjusted_cost
-        self._op_log.append(OpRecord(op_name=op_name, subscripts=subscripts, shapes=shapes, flop_cost=adjusted_cost, cumulative=self._flops_used))
+        self._op_log.append(
+            OpRecord(
+                op_name=op_name,
+                subscripts=subscripts,
+                shapes=shapes,
+                flop_cost=adjusted_cost,
+                cumulative=self._flops_used,
+            )
+        )
 
     def summary(self) -> str:
         """Return a pretty-printed FLOP budget summary."""
@@ -84,6 +100,7 @@ class BudgetContext:
             "  By operation:",
         ]
         from collections import Counter
+
         cost_by_op: dict[str, int] = {}
         count_by_op: Counter[str] = Counter()
         for rec in self._op_log:
@@ -91,7 +108,9 @@ class BudgetContext:
             count_by_op[rec.op_name] += 1
         for op_name, cost in sorted(cost_by_op.items(), key=lambda x: -x[1]):
             pct = 100 * cost / self._flops_used if self._flops_used > 0 else 0
-            lines.append(f"    {op_name:<16} {cost:>12,}  ({pct:5.1f}%)  [{count_by_op[op_name]} call{'s' if count_by_op[op_name] != 1 else ''}]")
+            lines.append(
+                f"    {op_name:<16} {cost:>12,}  ({pct:5.1f}%)  [{count_by_op[op_name]} call{'s' if count_by_op[op_name] != 1 else ''}]"
+            )
         return "\n".join(lines)
 
     def __enter__(self) -> BudgetContext:
@@ -100,7 +119,9 @@ class BudgetContext:
         _thread_local.active_budget = self
         if not self._quiet:
             import sys
+
             import mechestim
+
             print(
                 f"mechestim {mechestim.__version__} "
                 f"(numpy {mechestim.__numpy_version__} backend) | "

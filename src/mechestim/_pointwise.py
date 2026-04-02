@@ -1,19 +1,20 @@
 """Counted pointwise operations and reductions for mechestim."""
+
 from __future__ import annotations
 
 import builtins as _builtins
+
 import numpy as _np
 
-from mechestim._budget import BudgetContext
 from mechestim._docstrings import attach_docstring
 from mechestim._flops import einsum_cost, pointwise_cost, reduction_cost
 from mechestim._symmetric import SymmetricTensor, SymmetryInfo
 from mechestim._validation import check_nan_inf, require_budget, validate_ndarray
 
-
 # ---------------------------------------------------------------------------
 # Factory helpers
 # ---------------------------------------------------------------------------
+
 
 def _counted_unary(np_func, op_name: str):
     def wrapper(x):
@@ -27,6 +28,7 @@ def _counted_unary(np_func, op_name: str):
         if sym_info is not None:
             result = SymmetricTensor(result, symmetric_dims=sym_info.symmetric_dims)
         return result
+
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name
     attach_docstring(wrapper, np_func, "counted_unary", "numel(output) FLOPs")
@@ -35,6 +37,7 @@ def _counted_unary(np_func, op_name: str):
 
 def _counted_unary_multi(np_func, op_name: str):
     """Factory for unary functions that return multiple arrays (e.g., modf, frexp)."""
+
     def wrapper(x):
         budget = require_budget()
         validate_ndarray(x)
@@ -42,6 +45,7 @@ def _counted_unary_multi(np_func, op_name: str):
         budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(x.shape,))
         result = np_func(x)
         return result
+
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name
     attach_docstring(wrapper, np_func, "counted_unary", "numel(input) FLOPs")
@@ -58,22 +62,30 @@ def _counted_binary(np_func, op_name: str):
         output_shape = _np.broadcast_shapes(x.shape, y.shape)
         x_sym = x.symmetry_info if isinstance(x, SymmetricTensor) else None
         y_sym = y.symmetry_info if isinstance(y, SymmetricTensor) else None
-        x_is_scalar = (x.ndim == 0)
-        y_is_scalar = (y.ndim == 0)
+        x_is_scalar = x.ndim == 0
+        y_is_scalar = y.ndim == 0
         if x_sym and y_sym and x_sym.symmetric_dims == y_sym.symmetric_dims:
-            out_sym_info = SymmetryInfo(symmetric_dims=x_sym.symmetric_dims, shape=output_shape)
+            out_sym_info = SymmetryInfo(
+                symmetric_dims=x_sym.symmetric_dims, shape=output_shape
+            )
             out_sym_dims = x_sym.symmetric_dims
         elif x_sym and y_is_scalar:
-            out_sym_info = SymmetryInfo(symmetric_dims=x_sym.symmetric_dims, shape=output_shape)
+            out_sym_info = SymmetryInfo(
+                symmetric_dims=x_sym.symmetric_dims, shape=output_shape
+            )
             out_sym_dims = x_sym.symmetric_dims
         elif y_sym and x_is_scalar:
-            out_sym_info = SymmetryInfo(symmetric_dims=y_sym.symmetric_dims, shape=output_shape)
+            out_sym_info = SymmetryInfo(
+                symmetric_dims=y_sym.symmetric_dims, shape=output_shape
+            )
             out_sym_dims = y_sym.symmetric_dims
         else:
             out_sym_info = None
             out_sym_dims = None
         cost = pointwise_cost(output_shape, symmetry_info=out_sym_info)
-        budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape))
+        budget.deduct(
+            op_name, flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape)
+        )
         result = np_func(x, y)
         check_nan_inf(result, op_name)
         if out_sym_dims is not None:
@@ -81,6 +93,7 @@ def _counted_binary(np_func, op_name: str):
         elif isinstance(result, SymmetricTensor):
             result = _np.asarray(result)
         return result
+
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name
     attach_docstring(wrapper, np_func, "counted_binary", "numel(output) FLOPs")
@@ -89,6 +102,7 @@ def _counted_binary(np_func, op_name: str):
 
 def _counted_binary_multi(np_func, op_name: str):
     """Factory for binary functions that return multiple arrays (e.g., divmod)."""
+
     def wrapper(x, y):
         budget = require_budget()
         if not isinstance(x, _np.ndarray):
@@ -97,16 +111,21 @@ def _counted_binary_multi(np_func, op_name: str):
             y = _np.asarray(y)
         output_shape = _np.broadcast_shapes(x.shape, y.shape)
         cost = pointwise_cost(output_shape)
-        budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape))
+        budget.deduct(
+            op_name, flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape)
+        )
         result = np_func(x, y)
         return result
+
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name
     attach_docstring(wrapper, np_func, "counted_binary", "numel(output) FLOPs")
     return wrapper
 
 
-def _counted_reduction(np_func, op_name: str, cost_multiplier: int = 1, extra_output: bool = False):
+def _counted_reduction(
+    np_func, op_name: str, cost_multiplier: int = 1, extra_output: bool = False
+):
     def wrapper(a, axis=None, **kwargs):
         budget = require_budget()
         validate_ndarray(a)
@@ -120,9 +139,14 @@ def _counted_reduction(np_func, op_name: str, cost_multiplier: int = 1, extra_ou
         if isinstance(result, SymmetricTensor):
             result = _np.asarray(result)
         return result
+
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name
-    cost_desc = f"numel(input) * {cost_multiplier} FLOPs" if cost_multiplier > 1 else "numel(input) FLOPs"
+    cost_desc = (
+        f"numel(input) * {cost_multiplier} FLOPs"
+        if cost_multiplier > 1
+        else "numel(input) FLOPs"
+    )
     if extra_output:
         cost_desc += " + numel(output)"
     attach_docstring(wrapper, np_func, "counted_reduction", cost_desc)
@@ -213,6 +237,7 @@ trunc = _counted_unary(_np.trunc, "trunc")
 modf = _counted_unary_multi(_np.modf, "modf")
 frexp = _counted_unary_multi(_np.frexp, "frexp")
 
+
 # isclose is binary (takes 2 args) but classified as unary in registry
 def isclose(a, b, **kwargs):
     """Counted version of np.isclose. Cost = numel(output) FLOPs."""
@@ -225,6 +250,7 @@ def isclose(a, b, **kwargs):
     cost = pointwise_cost(output_shape)
     budget.deduct("isclose", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
     return _np.isclose(a, b, **kwargs)
+
 
 attach_docstring(isclose, _np.isclose, "counted_unary", "numel(output) FLOPs")
 
@@ -290,6 +316,7 @@ divmod = _counted_binary_multi(_np.divmod, "divmod")
 # ---------------------------------------------------------------------------
 # Special: clip
 # ---------------------------------------------------------------------------
+
 
 def clip(a, a_min, a_max):
     """Counted version of np.clip. Cost = numel(input) or unique_elements if symmetric."""
@@ -358,6 +385,7 @@ quantile = _counted_reduction(_np.quantile, "quantile")
 if hasattr(_np, "ptp"):
     ptp = _counted_reduction(_np.ptp, "ptp")
 else:
+
     def ptp(a, axis=None, **kwargs):
         """Peak-to-peak range. Cost = numel(input) FLOPs."""
         budget = require_budget()
@@ -365,12 +393,14 @@ else:
         cost = reduction_cost(a.shape, axis)
         budget.deduct("ptp", flop_cost=cost, subscripts=None, shapes=(a.shape,))
         return _np.max(a, axis=axis, **kwargs) - _np.min(a, axis=axis, **kwargs)
+
     attach_docstring(ptp, _np.max, "counted_reduction", "numel(input) FLOPs")
 
 
 # ---------------------------------------------------------------------------
 # dot and matmul
 # ---------------------------------------------------------------------------
+
 
 def dot(a, b):
     """Counted version of np.dot."""
@@ -383,11 +413,17 @@ def dot(a, b):
     ]
     has_sym = _builtins.any(s is not None for s in operand_symmetries)
     if a.ndim == 2 and b.ndim == 2:
-        cost = einsum_cost("ij,jk->ik", shapes=[a.shape, b.shape],
-                          operand_symmetries=operand_symmetries if has_sym else None)
+        cost = einsum_cost(
+            "ij,jk->ik",
+            shapes=[a.shape, b.shape],
+            operand_symmetries=operand_symmetries if has_sym else None,
+        )
     elif a.ndim == 1 and b.ndim == 1:
-        cost = einsum_cost("i,i->", shapes=[a.shape, b.shape],
-                          operand_symmetries=operand_symmetries if has_sym else None)
+        cost = einsum_cost(
+            "i,i->",
+            shapes=[a.shape, b.shape],
+            operand_symmetries=operand_symmetries if has_sym else None,
+        )
     else:
         cost = a.size * b.size
     budget.deduct("dot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
@@ -410,11 +446,17 @@ def matmul(a, b):
     ]
     has_sym = _builtins.any(s is not None for s in operand_symmetries)
     if a.ndim == 2 and b.ndim == 2:
-        cost = einsum_cost("ij,jk->ik", shapes=[a.shape, b.shape],
-                          operand_symmetries=operand_symmetries if has_sym else None)
+        cost = einsum_cost(
+            "ij,jk->ik",
+            shapes=[a.shape, b.shape],
+            operand_symmetries=operand_symmetries if has_sym else None,
+        )
     elif a.ndim == 1 and b.ndim == 1:
-        cost = einsum_cost("i,i->", shapes=[a.shape, b.shape],
-                          operand_symmetries=operand_symmetries if has_sym else None)
+        cost = einsum_cost(
+            "i,i->",
+            shapes=[a.shape, b.shape],
+            operand_symmetries=operand_symmetries if has_sym else None,
+        )
     else:
         cost = a.size * b.size
     budget.deduct("matmul", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
@@ -430,6 +472,7 @@ attach_docstring(matmul, _np.matmul, "counted_custom", "depends on operand dimen
 # Custom ops (new)
 # ---------------------------------------------------------------------------
 
+
 def inner(a, b):
     """Counted version of np.inner."""
     budget = require_budget()
@@ -437,10 +480,15 @@ def inner(a, b):
         a = _np.asarray(a)
     if not isinstance(b, _np.ndarray):
         b = _np.asarray(b)
-    cost = a.size if (a.ndim <= 1 and b.ndim <= 1) else a.size * (b.shape[-1] if b.ndim > 1 else 1)
+    cost = (
+        a.size
+        if (a.ndim <= 1 and b.ndim <= 1)
+        else a.size * (b.shape[-1] if b.ndim > 1 else 1)
+    )
     budget.deduct("inner", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
     result = _np.inner(a, b)
     return result
+
 
 attach_docstring(inner, _np.inner, "counted_custom", "product of matching dims")
 
@@ -455,6 +503,7 @@ def outer(a, b):
     cost = a.size * b.size
     budget.deduct("outer", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
     return _np.outer(a, b)
+
 
 attach_docstring(outer, _np.outer, "counted_custom", "m * n FLOPs")
 
@@ -477,8 +526,11 @@ def tensordot(a, b, axes=2):
         for i in axes[0]:
             contracted *= a.shape[i]
         cost = _builtins.max(result.size * contracted, 1)
-    budget.deduct("tensordot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
+    budget.deduct(
+        "tensordot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+    )
     return result
+
 
 attach_docstring(tensordot, _np.tensordot, "counted_custom", "product of all dims")
 
@@ -494,6 +546,7 @@ def vdot(a, b):
     budget.deduct("vdot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
     return _np.vdot(a, b)
 
+
 attach_docstring(vdot, _np.vdot, "counted_custom", "size of input FLOPs")
 
 
@@ -505,8 +558,11 @@ def kron(a, b):
     if not isinstance(b, _np.ndarray):
         b = _np.asarray(b)
     result = _np.kron(a, b)
-    budget.deduct("kron", flop_cost=result.size, subscripts=None, shapes=(a.shape, b.shape))
+    budget.deduct(
+        "kron", flop_cost=result.size, subscripts=None, shapes=(a.shape, b.shape)
+    )
     return result
+
 
 attach_docstring(kron, _np.kron, "counted_custom", "output size FLOPs")
 
@@ -520,8 +576,14 @@ def cross(a, b, **kwargs):
         b = _np.asarray(b)
     result = _np.cross(a, b, **kwargs)
     r = _np.asarray(result)
-    budget.deduct("cross", flop_cost=_builtins.max(r.size * 3, 1), subscripts=None, shapes=(a.shape, b.shape))
+    budget.deduct(
+        "cross",
+        flop_cost=_builtins.max(r.size * 3, 1),
+        subscripts=None,
+        shapes=(a.shape, b.shape),
+    )
     return result
+
 
 attach_docstring(cross, _np.cross, "counted_custom", "output_size * 3 FLOPs")
 
@@ -531,8 +593,14 @@ def diff(a, n=1, axis=-1, **kwargs):
     budget = require_budget()
     validate_ndarray(a)
     result = _np.diff(a, n=n, axis=axis, **kwargs)
-    budget.deduct("diff", flop_cost=_builtins.max(result.size, 1), subscripts=None, shapes=(a.shape,))
+    budget.deduct(
+        "diff",
+        flop_cost=_builtins.max(result.size, 1),
+        subscripts=None,
+        shapes=(a.shape,),
+    )
     return result
+
 
 attach_docstring(diff, _np.diff, "counted_custom", "numel(output) FLOPs")
 
@@ -544,6 +612,7 @@ def gradient(f, *varargs, **kwargs):
     budget.deduct("gradient", flop_cost=f.size, subscripts=None, shapes=(f.shape,))
     return _np.gradient(f, *varargs, **kwargs)
 
+
 attach_docstring(gradient, _np.gradient, "counted_custom", "numel(input) FLOPs")
 
 
@@ -553,13 +622,19 @@ def ediff1d(ary, **kwargs):
     if not isinstance(ary, _np.ndarray):
         ary = _np.asarray(ary)
     result = _np.ediff1d(ary, **kwargs)
-    budget.deduct("ediff1d", flop_cost=_builtins.max(result.size, 1), subscripts=None, shapes=(ary.shape,))
+    budget.deduct(
+        "ediff1d",
+        flop_cost=_builtins.max(result.size, 1),
+        subscripts=None,
+        shapes=(ary.shape,),
+    )
     return result
+
 
 attach_docstring(ediff1d, _np.ediff1d, "counted_custom", "numel(output) FLOPs")
 
 
-def convolve(a, v, mode='full'):
+def convolve(a, v, mode="full"):
     """Counted version of np.convolve."""
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
@@ -567,13 +642,19 @@ def convolve(a, v, mode='full'):
     if not isinstance(v, _np.ndarray):
         v = _np.asarray(v)
     result = _np.convolve(a, v, mode=mode)
-    budget.deduct("convolve", flop_cost=_builtins.max(a.size * v.size, 1), subscripts=None, shapes=(a.shape, v.shape))
+    budget.deduct(
+        "convolve",
+        flop_cost=_builtins.max(a.size * v.size, 1),
+        subscripts=None,
+        shapes=(a.shape, v.shape),
+    )
     return result
+
 
 attach_docstring(convolve, _np.convolve, "counted_custom", "n * m FLOPs")
 
 
-def correlate(a, v, mode='valid'):
+def correlate(a, v, mode="valid"):
     """Counted version of np.correlate."""
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
@@ -581,8 +662,14 @@ def correlate(a, v, mode='valid'):
     if not isinstance(v, _np.ndarray):
         v = _np.asarray(v)
     result = _np.correlate(a, v, mode=mode)
-    budget.deduct("correlate", flop_cost=_builtins.max(a.size * v.size, 1), subscripts=None, shapes=(a.shape, v.shape))
+    budget.deduct(
+        "correlate",
+        flop_cost=_builtins.max(a.size * v.size, 1),
+        subscripts=None,
+        shapes=(a.shape, v.shape),
+    )
     return result
+
 
 attach_docstring(correlate, _np.correlate, "counted_custom", "n * m FLOPs")
 
@@ -593,8 +680,11 @@ def corrcoef(x, y=None, **kwargs):
     if not isinstance(x, _np.ndarray):
         x = _np.asarray(x)
     cost = x.size * x.size if y is None else x.size * _np.asarray(y).size
-    budget.deduct("corrcoef", flop_cost=_builtins.max(cost, 1), subscripts=None, shapes=(x.shape,))
+    budget.deduct(
+        "corrcoef", flop_cost=_builtins.max(cost, 1), subscripts=None, shapes=(x.shape,)
+    )
     return _np.corrcoef(x, y=y, **kwargs)
+
 
 attach_docstring(corrcoef, _np.corrcoef, "counted_custom", "n^2 FLOPs")
 
@@ -605,8 +695,11 @@ def cov(m, y=None, **kwargs):
     if not isinstance(m, _np.ndarray):
         m = _np.asarray(m)
     cost = m.size * m.size if y is None else m.size * _np.asarray(y).size
-    budget.deduct("cov", flop_cost=_builtins.max(cost, 1), subscripts=None, shapes=(m.shape,))
+    budget.deduct(
+        "cov", flop_cost=_builtins.max(cost, 1), subscripts=None, shapes=(m.shape,)
+    )
     return _np.cov(m, y=y, **kwargs)
+
 
 attach_docstring(cov, _np.cov, "counted_custom", "n^2 FLOPs")
 
@@ -619,6 +712,7 @@ def trapezoid(y, x=None, dx=1.0, axis=-1):
     budget.deduct("trapezoid", flop_cost=y.size, subscripts=None, shapes=(y.shape,))
     return _np.trapezoid(y, x=x, dx=dx, axis=axis)
 
+
 attach_docstring(trapezoid, _np.trapezoid, "counted_custom", "numel(input) FLOPs")
 
 
@@ -630,6 +724,7 @@ def trapz(y, x=None, dx=1.0, axis=-1):
     budget.deduct("trapz", flop_cost=y.size, subscripts=None, shapes=(y.shape,))
     return _np.trapz(y, x=x, dx=dx, axis=axis)
 
+
 attach_docstring(trapz, _np.trapz, "counted_custom", "numel(input) FLOPs")
 
 
@@ -638,8 +733,11 @@ def interp(x, xp, fp, **kwargs):
     budget = require_budget()
     if not isinstance(x, _np.ndarray):
         x = _np.asarray(x)
-    budget.deduct("interp", flop_cost=_builtins.max(x.size, 1), subscripts=None, shapes=(x.shape,))
+    budget.deduct(
+        "interp", flop_cost=_builtins.max(x.size, 1), subscripts=None, shapes=(x.shape,)
+    )
     return _np.interp(x, xp, fp, **kwargs)
+
 
 attach_docstring(interp, _np.interp, "counted_custom", "numel(x) FLOPs")
 
@@ -648,4 +746,7 @@ def einsum_path(subscripts, *operands, **kwargs):
     """Free passthrough for np.einsum_path (planning only, 0 FLOPs)."""
     return _np.einsum_path(subscripts, *operands, **kwargs)
 
-attach_docstring(einsum_path, _np.einsum_path, "counted_custom", "0 FLOPs (planning only)")
+
+attach_docstring(
+    einsum_path, _np.einsum_path, "counted_custom", "0 FLOPs (planning only)"
+)

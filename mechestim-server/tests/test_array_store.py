@@ -2,13 +2,12 @@
 
 import numpy as np
 import pytest
-
 from mechestim_server._array_store import ArrayStore
-
 
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture()
 def store():
@@ -18,6 +17,7 @@ def store():
 # ---------------------------------------------------------------------------
 # put / get round-trip
 # ---------------------------------------------------------------------------
+
 
 def test_put_returns_handle(store):
     arr = np.array([1, 2, 3])
@@ -43,6 +43,7 @@ def test_get_returns_exact_object(store):
 # Sequential IDs
 # ---------------------------------------------------------------------------
 
+
 def test_first_id_is_a0(store):
     handle = store.put(np.array([]))
     assert handle == "a0"
@@ -64,6 +65,7 @@ def test_ids_keep_incrementing_after_free(store):
 # get — missing handle
 # ---------------------------------------------------------------------------
 
+
 def test_get_missing_raises_keyerror(store):
     with pytest.raises(KeyError):
         store.get("a99")
@@ -81,6 +83,7 @@ def test_get_missing_keyerror_contains_handle(store):
 # ---------------------------------------------------------------------------
 # free
 # ---------------------------------------------------------------------------
+
 
 def test_free_single(store):
     handle = store.put(np.array([1]))
@@ -114,6 +117,7 @@ def test_free_empty_list_is_silent(store):
 # clear
 # ---------------------------------------------------------------------------
 
+
 def test_clear_removes_all(store):
     store.put(np.array([1]))
     store.put(np.array([2]))
@@ -131,6 +135,7 @@ def test_clear_makes_handles_invalid(store):
 # ---------------------------------------------------------------------------
 # count property
 # ---------------------------------------------------------------------------
+
 
 def test_count_starts_at_zero(store):
     assert store.count == 0
@@ -160,6 +165,7 @@ def test_count_zero_after_clear(store):
 # ---------------------------------------------------------------------------
 # metadata
 # ---------------------------------------------------------------------------
+
 
 def test_metadata_id(store):
     arr = np.zeros((2, 3))

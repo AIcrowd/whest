@@ -1,11 +1,17 @@
 """mechestim.random — random number generation submodule proxy."""
+
 from __future__ import annotations
 
-from mechestim._remote_array import RemoteArray, RemoteScalar, _result_from_response, _encode_arg
 from mechestim._connection import get_connection
-from mechestim._protocol import encode_request
 from mechestim._getattr import make_module_getattr
+from mechestim._protocol import encode_request
 from mechestim._registry import iter_proxyable
+from mechestim._remote_array import (
+    RemoteArray,
+    RemoteScalar,
+    _encode_arg,
+    _result_from_response,
+)
 
 
 def _make_random_proxy(op_name: str):
@@ -16,7 +22,9 @@ def _make_random_proxy(op_name: str):
         conn = get_connection()
         encoded_args = [_encode_arg(a) for a in args]
         encoded_kwargs = {k: _encode_arg(v) for k, v in kwargs.items()}
-        resp = conn.send_recv(encode_request(qualified, args=encoded_args, kwargs=encoded_kwargs))
+        resp = conn.send_recv(
+            encode_request(qualified, args=encoded_args, kwargs=encoded_kwargs)
+        )
         return _result_from_response(resp)
 
     proxy.__name__ = op_name
@@ -27,7 +35,7 @@ def _make_random_proxy(op_name: str):
 # Auto-generate proxies for all non-blacklisted random.* functions
 _random_ops = iter_proxyable(prefix="random.")
 for _qname in _random_ops:
-    _short = _qname[len("random."):]
+    _short = _qname[len("random.") :]
     locals()[_short] = _make_random_proxy(_short)
 
 # Cleanup loop vars from module namespace

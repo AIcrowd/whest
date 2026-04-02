@@ -3,6 +3,7 @@
 Thin wrapper around :mod:`mechestim._registry_data` that provides category
 constants and lookup functions.
 """
+
 from __future__ import annotations
 
 from mechestim._registry_data import FUNCTION_CATEGORIES
@@ -18,13 +19,15 @@ COUNTED_CUSTOM = "counted_custom"
 FREE = "free"
 BLACKLISTED = "blacklisted"
 
-_PROXY_CATEGORIES = frozenset({
-    COUNTED_UNARY,
-    COUNTED_BINARY,
-    COUNTED_REDUCTION,
-    COUNTED_CUSTOM,
-    FREE,
-})
+_PROXY_CATEGORIES = frozenset(
+    {
+        COUNTED_UNARY,
+        COUNTED_BINARY,
+        COUNTED_REDUCTION,
+        COUNTED_CUSTOM,
+        FREE,
+    }
+)
 
 # ---------------------------------------------------------------------------
 # Lookup helpers
@@ -59,6 +62,5 @@ def iter_proxyable(*, prefix: str = "") -> list[str]:
     return sorted(
         name
         for name, cat in FUNCTION_CATEGORIES.items()
-        if cat in _PROXY_CATEGORIES
-        and (not prefix or name.startswith(prefix))
+        if cat in _PROXY_CATEGORIES and (not prefix or name.startswith(prefix))
     )

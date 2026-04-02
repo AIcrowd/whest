@@ -4,9 +4,10 @@ Produces a ``__getattr__`` function that checks the registry and raises
 :class:`AttributeError` with a descriptive message for blacklisted,
 registered-but-unimplemented, or completely unknown names.
 """
+
 from __future__ import annotations
 
-from mechestim._registry import get_category, BLACKLISTED
+from mechestim._registry import BLACKLISTED, get_category
 
 
 def make_module_getattr(module_prefix: str, module_label: str):
@@ -26,9 +27,7 @@ def make_module_getattr(module_prefix: str, module_label: str):
     def __getattr__(name: str):
         # Skip dunder/private names to avoid interfering with import machinery
         if name.startswith("_"):
-            raise AttributeError(
-                f"module '{module_label}' has no attribute '{name}'"
-            )
+            raise AttributeError(f"module '{module_label}' has no attribute '{name}'")
 
         qualified = f"{module_prefix}{name}" if module_prefix else name
         category = get_category(qualified)
@@ -48,8 +47,6 @@ def make_module_getattr(module_prefix: str, module_label: str):
                 f"Category: {category}."
             )
         else:
-            raise AttributeError(
-                f"module '{module_label}' has no attribute '{name}'"
-            )
+            raise AttributeError(f"module '{module_label}' has no attribute '{name}'")
 
     return __getattr__

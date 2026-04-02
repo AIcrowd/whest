@@ -2,18 +2,20 @@
 
 All tests mock the connection — no server required.
 """
+
 from __future__ import annotations
 
-import pytest
 from unittest.mock import MagicMock, patch
 
 import msgpack
+import pytest
 
 
 @pytest.fixture(autouse=True)
 def _reset_active_context():
     """Reset the module-level _active_context guard between tests."""
     import mechestim._budget as bmod
+
     old = bmod._active_context
     bmod._active_context = None
     yield
@@ -23,6 +25,7 @@ def _reset_active_context():
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
 
 def _pack_response(payload: dict) -> bytes:
     return msgpack.packb(payload, use_bin_type=True)
@@ -39,21 +42,25 @@ def _make_mock_conn(response: dict) -> MagicMock:
 # OpRecord
 # ---------------------------------------------------------------------------
 
+
 class TestOpRecord:
     """OpRecord stores op metadata and is accessible via attributes."""
 
     def test_op_name(self):
         from mechestim._budget import OpRecord
+
         rec = OpRecord(op_name="dot", flop_cost=100, cumulative=500)
         assert rec.op_name == "dot"
 
     def test_flop_cost(self):
         from mechestim._budget import OpRecord
+
         rec = OpRecord(op_name="matmul", flop_cost=2000, cumulative=3000)
         assert rec.flop_cost == 2000
 
     def test_cumulative(self):
         from mechestim._budget import OpRecord
+
         rec = OpRecord(op_name="add", flop_cost=10, cumulative=110)
         assert rec.cumulative == 110
 
@@ -62,41 +69,49 @@ class TestOpRecord:
 # BudgetContext – attribute defaults
 # ---------------------------------------------------------------------------
 
+
 class TestBudgetContextAttributes:
     """BudgetContext stores parameters without connecting."""
 
     def test_flop_budget_stored(self):
         from mechestim._budget import BudgetContext
+
         ctx = BudgetContext(flop_budget=1000)
         assert ctx.flop_budget == 1000
 
     def test_flop_multiplier_default(self):
         from mechestim._budget import BudgetContext
+
         ctx = BudgetContext(flop_budget=500)
         assert ctx.flop_multiplier == 1.0
 
     def test_flop_multiplier_custom(self):
         from mechestim._budget import BudgetContext
+
         ctx = BudgetContext(flop_budget=500, flop_multiplier=2.5)
         assert ctx.flop_multiplier == 2.5
 
     def test_flops_used_starts_zero(self):
         from mechestim._budget import BudgetContext
+
         ctx = BudgetContext(flop_budget=1000)
         assert ctx.flops_used == 0
 
     def test_flops_remaining_equals_budget_minus_used(self):
         from mechestim._budget import BudgetContext
+
         ctx = BudgetContext(flop_budget=1000)
         assert ctx.flops_remaining == 1000
 
     def test_quiet_default_false(self):
         from mechestim._budget import BudgetContext
+
         ctx = BudgetContext(flop_budget=100)
         assert ctx.quiet is False
 
     def test_quiet_custom(self):
         from mechestim._budget import BudgetContext
+
         ctx = BudgetContext(flop_budget=100, quiet=True)
         assert ctx.quiet is True
 
@@ -105,29 +120,34 @@ class TestBudgetContextAttributes:
 # BudgetContext – _update_budget
 # ---------------------------------------------------------------------------
 
+
 class TestUpdateBudget:
     """_update_budget patches local flops_used from a server-response dict."""
 
     def test_update_flops_used(self):
         from mechestim._budget import BudgetContext
+
         ctx = BudgetContext(flop_budget=1000)
         ctx._update_budget({"flops_used": 300})
         assert ctx.flops_used == 300
 
     def test_flops_remaining_after_update(self):
         from mechestim._budget import BudgetContext
+
         ctx = BudgetContext(flop_budget=1000)
         ctx._update_budget({"flops_used": 400})
         assert ctx.flops_remaining == 600
 
     def test_update_ignores_missing_key(self):
         from mechestim._budget import BudgetContext
+
         ctx = BudgetContext(flop_budget=1000)
-        ctx._update_budget({})   # no flops_used key — should not raise
+        ctx._update_budget({})  # no flops_used key — should not raise
         assert ctx.flops_used == 0
 
     def test_update_multiple_times(self):
         from mechestim._budget import BudgetContext
+
         ctx = BudgetContext(flop_budget=1000)
         ctx._update_budget({"flops_used": 100})
         ctx._update_budget({"flops_used": 250})
@@ -139,12 +159,13 @@ class TestUpdateBudget:
 # BudgetContext – context manager (__enter__ / __exit__)
 # ---------------------------------------------------------------------------
 
+
 class TestBudgetContextManager:
     """__enter__ sends budget_open; __exit__ sends budget_close."""
 
     def test_enter_sends_budget_open(self):
+
         from mechestim._budget import BudgetContext
-        from mechestim._protocol import encode_budget_open
 
         mock_conn = _make_mock_conn({"status": "ok", "flops_used": 0})
         with patch("mechestim._budget.get_connection", return_value=mock_conn):
@@ -199,7 +220,7 @@ class TestBudgetContextManager:
         from mechestim._budget import BudgetContext
 
         responses = [
-            {"status": "ok", "flops_used": 0},   # budget_open
+            {"status": "ok", "flops_used": 0},  # budget_open
             {"status": "ok", "flops_used": 100},  # budget_close
         ]
         mock_conn = MagicMock()
@@ -215,17 +236,20 @@ class TestBudgetContextManager:
 # BudgetContext – summary
 # ---------------------------------------------------------------------------
 
+
 class TestBudgetContextSummary:
     """summary() sends budget_status, updates cache, returns a string."""
 
     def test_summary_sends_budget_status(self):
         from mechestim._budget import BudgetContext
 
-        mock_conn = _make_mock_conn({
-            "status": "ok",
-            "flops_used": 200,
-            "flop_budget": 1000,
-        })
+        mock_conn = _make_mock_conn(
+            {
+                "status": "ok",
+                "flops_used": 200,
+                "flop_budget": 1000,
+            }
+        )
         with patch("mechestim._budget.get_connection", return_value=mock_conn):
             ctx = BudgetContext(flop_budget=1000)
             ctx.summary()
@@ -236,10 +260,12 @@ class TestBudgetContextSummary:
     def test_summary_updates_flops_used(self):
         from mechestim._budget import BudgetContext
 
-        mock_conn = _make_mock_conn({
-            "status": "ok",
-            "result": {"flops_used": 350, "flop_budget": 1000},
-        })
+        mock_conn = _make_mock_conn(
+            {
+                "status": "ok",
+                "result": {"flops_used": 350, "flop_budget": 1000},
+            }
+        )
         with patch("mechestim._budget.get_connection", return_value=mock_conn):
             ctx = BudgetContext(flop_budget=1000)
             ctx.summary()
@@ -248,10 +274,12 @@ class TestBudgetContextSummary:
     def test_summary_returns_string(self):
         from mechestim._budget import BudgetContext
 
-        mock_conn = _make_mock_conn({
-            "status": "ok",
-            "result": {"flops_used": 100, "flop_budget": 500},
-        })
+        mock_conn = _make_mock_conn(
+            {
+                "status": "ok",
+                "result": {"flops_used": 100, "flop_budget": 500},
+            }
+        )
         with patch("mechestim._budget.get_connection", return_value=mock_conn):
             ctx = BudgetContext(flop_budget=500)
             result = ctx.summary()
@@ -260,11 +288,13 @@ class TestBudgetContextSummary:
     def test_summary_contains_budget_info(self):
         from mechestim._budget import BudgetContext
 
-        mock_conn = _make_mock_conn({
-            "status": "ok",
-            "flops_used": 100,
-            "flop_budget": 500,
-        })
+        mock_conn = _make_mock_conn(
+            {
+                "status": "ok",
+                "flops_used": 100,
+                "flop_budget": 500,
+            }
+        )
         with patch("mechestim._budget.get_connection", return_value=mock_conn):
             ctx = BudgetContext(flop_budget=500)
             result = ctx.summary()

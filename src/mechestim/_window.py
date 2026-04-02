@@ -1,7 +1,10 @@
 # src/mechestim/_window.py
 """Window function wrappers with FLOP counting."""
+
 from __future__ import annotations
+
 import numpy as _np
+
 from mechestim._docstrings import attach_docstring
 from mechestim._validation import require_budget
 
@@ -25,11 +28,13 @@ def bartlett_cost(n: int) -> int:
     """
     return max(n, 1)
 
+
 def bartlett(M):
     budget = require_budget()
     cost = bartlett_cost(M)
     budget.deduct("bartlett", flop_cost=cost, subscripts=None, shapes=((M,),))
     return _np.bartlett(M)
+
 
 attach_docstring(bartlett, _np.bartlett, "counted_custom", "n FLOPs")
 
@@ -53,11 +58,13 @@ def blackman_cost(n: int) -> int:
     """
     return max(3 * n, 1)
 
+
 def blackman(M):
     budget = require_budget()
     cost = blackman_cost(M)
     budget.deduct("blackman", flop_cost=cost, subscripts=None, shapes=((M,),))
     return _np.blackman(M)
+
 
 attach_docstring(blackman, _np.blackman, "counted_custom", "n FLOPs")
 
@@ -81,11 +88,13 @@ def hamming_cost(n: int) -> int:
     """
     return max(n, 1)
 
+
 def hamming(M):
     budget = require_budget()
     cost = hamming_cost(M)
     budget.deduct("hamming", flop_cost=cost, subscripts=None, shapes=((M,),))
     return _np.hamming(M)
+
 
 attach_docstring(hamming, _np.hamming, "counted_custom", "n FLOPs")
 
@@ -109,11 +118,13 @@ def hanning_cost(n: int) -> int:
     """
     return max(n, 1)
 
+
 def hanning(M):
     budget = require_budget()
     cost = hanning_cost(M)
     budget.deduct("hanning", flop_cost=cost, subscripts=None, shapes=((M,),))
     return _np.hanning(M)
+
 
 attach_docstring(hanning, _np.hanning, "counted_custom", "n FLOPs")
 
@@ -137,10 +148,12 @@ def kaiser_cost(n: int) -> int:
     """
     return max(3 * n, 1)
 
+
 def kaiser(M, beta):
     budget = require_budget()
     cost = kaiser_cost(M)
     budget.deduct("kaiser", flop_cost=cost, subscripts=None, shapes=((M,),))
     return _np.kaiser(M, beta)
+
 
 attach_docstring(kaiser, _np.kaiser, "counted_custom", "n FLOPs")

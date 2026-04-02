@@ -1,12 +1,18 @@
 """Tests for registry-driven __getattr__ across modules."""
+
 import pytest
+
 import mechestim as me
 
 
 def test_blacklisted_top_level_gives_notes():
     from mechestim._registry import REGISTRY
-    blacklisted = [n for n, e in REGISTRY.items()
-                   if e["category"] == "blacklisted" and e["module"] == "numpy"]
+
+    blacklisted = [
+        n
+        for n, e in REGISTRY.items()
+        if e["category"] == "blacklisted" and e["module"] == "numpy"
+    ]
     if not blacklisted:
         pytest.skip("No blacklisted top-level functions")
     name = blacklisted[0]
@@ -16,11 +22,15 @@ def test_blacklisted_top_level_gives_notes():
 
 def test_registered_not_implemented_gives_message():
     from mechestim._registry import REGISTRY
+
     # Find a counted function that isn't yet implemented
-    not_impl = [n for n, e in REGISTRY.items()
-                if e["category"] in ("counted_unary", "counted_binary", "counted_reduction")
-                and e["module"] == "numpy"
-                and n not in dir(me)]
+    not_impl = [
+        n
+        for n, e in REGISTRY.items()
+        if e["category"] in ("counted_unary", "counted_binary", "counted_reduction")
+        and e["module"] == "numpy"
+        and n not in dir(me)
+    ]
     if not not_impl:
         pytest.skip("All counted functions are implemented")
     name = not_impl[0]
@@ -39,8 +49,12 @@ def test_fft_submodule_exists():
 
 def test_fft_getattr_gives_blacklist_error():
     from mechestim._registry import REGISTRY
-    blacklisted_fft = [n for n, e in REGISTRY.items()
-                       if e["module"] == "numpy.fft" and e["category"] == "blacklisted"]
+
+    blacklisted_fft = [
+        n
+        for n, e in REGISTRY.items()
+        if e["module"] == "numpy.fft" and e["category"] == "blacklisted"
+    ]
     if not blacklisted_fft:
         pytest.skip("No blacklisted fft functions")
     func_name = blacklisted_fft[0].replace("fft.", "")

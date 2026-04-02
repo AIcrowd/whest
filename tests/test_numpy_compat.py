@@ -1,6 +1,8 @@
 """Verify that mechestim produces identical results to NumPy for all supported ops."""
+
 import numpy
 import pytest
+
 import mechestim as me
 from mechestim._budget import BudgetContext
 
@@ -19,10 +21,25 @@ class TestUnaryOps:
         self.x = numpy.random.randn(5, 4).astype(numpy.float64)
         self.x_pos = numpy.abs(self.x) + 0.01
 
-    @pytest.mark.parametrize("op_name", [
-        "exp", "log", "log2", "log10", "abs", "negative",
-        "sqrt", "square", "sin", "cos", "tanh", "sign", "ceil", "floor",
-    ])
+    @pytest.mark.parametrize(
+        "op_name",
+        [
+            "exp",
+            "log",
+            "log2",
+            "log10",
+            "abs",
+            "negative",
+            "sqrt",
+            "square",
+            "sin",
+            "cos",
+            "tanh",
+            "sign",
+            "ceil",
+            "floor",
+        ],
+    )
     def test_unary(self, op_name):
         me_fn = getattr(me, op_name)
         np_fn = getattr(numpy, op_name)
@@ -38,9 +55,19 @@ class TestBinaryOps:
         self.a = numpy.random.randn(3, 4)
         self.b = numpy.random.randn(3, 4) + 2.0
 
-    @pytest.mark.parametrize("op_name", [
-        "add", "subtract", "multiply", "divide", "maximum", "minimum", "power", "mod",
-    ])
+    @pytest.mark.parametrize(
+        "op_name",
+        [
+            "add",
+            "subtract",
+            "multiply",
+            "divide",
+            "maximum",
+            "minimum",
+            "power",
+            "mod",
+        ],
+    )
     def test_binary(self, op_name):
         me_fn = getattr(me, op_name)
         np_fn = getattr(numpy, op_name)
@@ -77,16 +104,20 @@ class TestEinsum:
     def test_matmul(self):
         A = numpy.random.randn(4, 5)
         B = numpy.random.randn(5, 3)
-        assert numpy.allclose(me.einsum('ij,jk->ik', A, B), numpy.einsum('ij,jk->ik', A, B))
+        assert numpy.allclose(
+            me.einsum("ij,jk->ik", A, B), numpy.einsum("ij,jk->ik", A, B)
+        )
 
     def test_trace(self):
         A = numpy.random.randn(4, 4)
-        assert numpy.allclose(me.einsum('ii->', A), numpy.einsum('ii->', A))
+        assert numpy.allclose(me.einsum("ii->", A), numpy.einsum("ii->", A))
 
     def test_batch_matmul(self):
         A = numpy.random.randn(2, 3, 4)
         B = numpy.random.randn(2, 4, 5)
-        assert numpy.allclose(me.einsum('bij,bjk->bik', A, B), numpy.einsum('bij,bjk->bik', A, B))
+        assert numpy.allclose(
+            me.einsum("bij,bjk->bik", A, B), numpy.einsum("bij,bjk->bik", A, B)
+        )
 
 
 class TestDotMatmul:

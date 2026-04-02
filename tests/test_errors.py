@@ -1,11 +1,13 @@
 """Tests for mechestim error classes."""
+
 import pytest
+
 from mechestim.errors import (
-    MechEstimError,
     BudgetExhaustedError,
+    MechEstimError,
+    MechEstimWarning,
     NoBudgetContextError,
     SymmetryError,
-    MechEstimWarning,
 )
 
 

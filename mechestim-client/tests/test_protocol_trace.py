@@ -10,6 +10,7 @@ Because the ``mechestim`` namespace is split across three trees
 use importlib to load specific files without relying on normal
 ``import`` resolution.
 """
+
 from __future__ import annotations
 
 import importlib.util
@@ -19,7 +20,6 @@ import sys
 import types
 
 import msgpack
-import pytest
 
 # =====================================================================
 # Module loading helpers — avoids namespace collision between
@@ -78,6 +78,7 @@ _normalize_arg = _server_mod._normalize_arg
 # Helpers
 # =====================================================================
 
+
 def _server_pipeline(raw: bytes) -> dict:
     """Run client bytes through the full server decode + normalize."""
     msg = server_decode_request(raw)
@@ -100,6 +101,7 @@ def _assert_all_str_keys(d: dict, path: str = "root") -> None:
 # =====================================================================
 # 1. Simple op round-trip (add)
 # =====================================================================
+
 
 class TestSimpleOpAdd:
     """Encode an 'add' request with two handle-dict args, decode on
@@ -141,6 +143,7 @@ class TestSimpleOpAdd:
 # 2. create_from_data with small binary payload
 # =====================================================================
 
+
 class TestCreateFromDataBinary:
     """The data field (8 bytes of float64 for 1.0) MUST survive as
     bytes through the full pipeline — no spurious decode to str.
@@ -165,6 +168,7 @@ class TestCreateFromDataBinary:
 # =====================================================================
 # 3. create_from_data with ASCII-looking payload
 # =====================================================================
+
 
 class TestCreateFromDataAsciiLooking:
     """b"ABCDEFGH" is 8 bytes, all printable ASCII, <=32 bytes long.
@@ -208,6 +212,7 @@ class TestCreateFromDataAsciiLooking:
 # 4. kwargs with integer values
 # =====================================================================
 
+
 class TestKwargsAxisInteger:
     """Encode kwargs={"axis": 0} and verify it arrives as int 0."""
 
@@ -246,6 +251,7 @@ class TestKwargsAxisInteger:
 # 5. Fetch response round-trip (server encode -> client decode)
 # =====================================================================
 
+
 class TestFetchResponseRoundTrip:
     """Server encodes a fetch response with 16 bytes of float64 data.
     Client decodes it.  The data field must remain bytes.
@@ -273,7 +279,10 @@ class TestFetchResponseRoundTrip:
         """Even 8 bytes (single float64) with high bytes must stay bytes."""
         payload = struct.pack("<d", 3.14)
         raw = encode_fetch_response(
-            data=payload, shape=[1], dtype="float64", comms_overhead_ns=0,
+            data=payload,
+            shape=[1],
+            dtype="float64",
+            comms_overhead_ns=0,
         )
         resp = client_decode_response(raw)
         assert isinstance(resp["data"], bytes)
@@ -282,6 +291,7 @@ class TestFetchResponseRoundTrip:
 # =====================================================================
 # 6. __getitem__ with slice
 # =====================================================================
+
 
 class TestGetitemSlice:
     """Encode __getitem__ with a __slice__ dict and verify decoding."""
@@ -327,6 +337,7 @@ class TestGetitemSlice:
 # 7. __getitem__ with fancy index handle
 # =====================================================================
 
+
 class TestGetitemFancyIndex:
     """Both args are handle dicts — verify both normalize correctly."""
 
@@ -351,6 +362,7 @@ class TestGetitemFancyIndex:
 # 8. Handle ID that looks like a number ("a100")
 # =====================================================================
 
+
 class TestHandleIdLooksLikeNumber:
     """Handle 'a100' must remain a string through the full pipeline."""
 
@@ -363,7 +375,9 @@ class TestHandleIdLooksLikeNumber:
 
         for i, expected in enumerate(["a100", "a999"]):
             handle = msg["args"][i]["__handle__"]
-            assert isinstance(handle, str), f"handle {expected!r} became {type(handle).__name__}"
+            assert isinstance(handle, str), (
+                f"handle {expected!r} became {type(handle).__name__}"
+            )
             assert handle == expected
 
     def test_numeric_looking_handle(self):
@@ -383,6 +397,7 @@ class TestHandleIdLooksLikeNumber:
 # =====================================================================
 # 9. Empty kwargs
 # =====================================================================
+
 
 class TestEmptyKwargs:
     """Server must tolerate both {} and None for kwargs."""
@@ -414,6 +429,7 @@ class TestEmptyKwargs:
 # 10. Stress: 100 handle-dict args
 # =====================================================================
 
+
 class TestStress100Handles:
     """Encode 100 handle dicts, verify all normalize to str keys/values."""
 
@@ -441,6 +457,7 @@ class TestStress100Handles:
 # 11. Server encode_response -> client decode round-trip
 # =====================================================================
 
+
 class TestServerResponseRoundTrip:
     """Verify a normal 'ok' response round-trips through server encode
     and client decode without type confusion.
@@ -463,6 +480,7 @@ class TestServerResponseRoundTrip:
 # =====================================================================
 # 12. Bytes/string boundary: raw msgpack with raw=True keys
 # =====================================================================
+
 
 class TestRawMsgpackBytesKeys:
     """Directly test that server decode_request converts bytes keys to str
@@ -497,6 +515,7 @@ class TestRawMsgpackBytesKeys:
 # =====================================================================
 # 13. Client-side _normalize edge cases
 # =====================================================================
+
 
 class TestClientNormalize:
     """Edge cases for the client-side _normalize function."""
@@ -536,6 +555,7 @@ class TestClientNormalize:
 # =====================================================================
 # 14. Server _normalize_arg: the critical bytes->str heuristic
 # =====================================================================
+
 
 class TestServerNormalizeArgHeuristic:
     """Directly exercise _normalize_arg to map out the bytes->str boundary."""

@@ -2473,8 +2473,10 @@ REGISTRY: dict[str, dict] = {
 # Utility
 # ---------------------------------------------------------------------------
 
+
 def make_module_getattr(module_prefix: str, module_label: str):
     """Create a __getattr__ that consults the registry."""
+
     def __getattr__(name: str):
         qualified = f"{module_prefix}{name}" if module_prefix else name
         if qualified in REGISTRY:
@@ -2497,4 +2499,5 @@ def make_module_getattr(module_prefix: str, module_label: str):
             f"{module_label} does not provide '{name}'. "
             f"See https://github.com/AIcrowd/mechestim for supported operations."
         )
+
     return __getattr__

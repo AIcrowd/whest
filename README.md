@@ -4,9 +4,10 @@
 
 **NumPy-compatible math primitives with analytical FLOP counting**
 
+[![CI](https://github.com/AIcrowd/mechestim/actions/workflows/ci.yml/badge.svg)](https://github.com/AIcrowd/mechestim/actions/workflows/ci.yml)
+[![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://aicrowd.github.io/mechestim/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-[![Tests](https://img.shields.io/badge/tests-140%20passing-brightgreen.svg)]()
 
 *Built for the [ARC Mechanistic Estimation Challenge](https://aicrowd.com) by [AIcrowd](https://aicrowd.com)*
 
@@ -14,7 +15,7 @@
 
 ---
 
-**[📚 Full Documentation](docs/index.md)**
+**[📚 Full Documentation](https://aicrowd.github.io/mechestim/)**
 
 **mechestim** is a drop-in replacement for a subset of NumPy that counts FLOPs as you compute. It lets researchers focus on **algorithmic innovation** instead of performance engineering &mdash; the competition score depends on your algorithm's analytical FLOP cost, not wall-clock time.
 
@@ -122,7 +123,7 @@ Unsupported operations raise a helpful `AttributeError` with a link to the docs.
 git clone https://github.com/AIcrowd/mechestim.git
 cd mechestim
 uv sync --all-extras
-uv run pytest                  # 140 tests
+uv run pytest
 uv run mkdocs serve            # local docs at http://127.0.0.1:8000
 ```
 

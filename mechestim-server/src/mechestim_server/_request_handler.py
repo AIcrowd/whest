@@ -6,9 +6,9 @@ import os
 import re
 from typing import Any
 
-import mechestim as me
 import numpy as np
 
+import mechestim as me
 from mechestim_server._session import Session
 
 _HANDLE_RE = re.compile(r"^a\d+$")
@@ -25,6 +25,7 @@ def _make_serializable(obj):
     if isinstance(obj, dict):
         return {k: _make_serializable(v) for k, v in obj.items()}
     return obj
+
 
 #: Maximum allowed array size in bytes (configurable via environment variable).
 MAX_ARRAY_BYTES = int(os.environ.get("MECHESTIM_MAX_ARRAY_BYTES", 100 * 1024 * 1024))
@@ -71,13 +72,25 @@ class RequestHandler:
             return self._handle_mechestim_op(request)
 
         except me.BudgetExhaustedError as e:
-            return {"status": "error", "error_type": "BudgetExhaustedError", "message": str(e)}
+            return {
+                "status": "error",
+                "error_type": "BudgetExhaustedError",
+                "message": str(e),
+            }
         except me.NoBudgetContextError as e:
-            return {"status": "error", "error_type": "NoBudgetContextError", "message": str(e)}
+            return {
+                "status": "error",
+                "error_type": "NoBudgetContextError",
+                "message": str(e),
+            }
         except me.SymmetryError as e:
             return {"status": "error", "error_type": "SymmetryError", "message": str(e)}
         except (ValueError, TypeError) as e:
-            return {"status": "error", "error_type": type(e).__name__, "message": str(e)}
+            return {
+                "status": "error",
+                "error_type": type(e).__name__,
+                "message": str(e),
+            }
         except KeyError as e:
             return {"status": "error", "error_type": "KeyError", "message": str(e)}
         except Exception as e:
@@ -301,28 +314,57 @@ class RequestHandler:
         # Scalar or other value
         if isinstance(result, np.generic):
             dtype_str = str(result.dtype)
-            return {"status": "ok", "result": {"value": result.item(), "dtype": dtype_str}, "budget": budget}
+            return {
+                "status": "ok",
+                "result": {"value": result.item(), "dtype": dtype_str},
+                "budget": budget,
+            }
         if isinstance(result, bool):
-            return {"status": "ok", "result": {"value": result, "dtype": "bool"}, "budget": budget}
+            return {
+                "status": "ok",
+                "result": {"value": result, "dtype": "bool"},
+                "budget": budget,
+            }
         if isinstance(result, int):
-            return {"status": "ok", "result": {"value": result, "dtype": "int64"}, "budget": budget}
+            return {
+                "status": "ok",
+                "result": {"value": result, "dtype": "int64"},
+                "budget": budget,
+            }
         if isinstance(result, float):
-            return {"status": "ok", "result": {"value": result, "dtype": "float64"}, "budget": budget}
+            return {
+                "status": "ok",
+                "result": {"value": result, "dtype": "float64"},
+                "budget": budget,
+            }
         if isinstance(result, str):
-            return {"status": "ok", "result": {"value": result, "dtype": "str"}, "budget": budget}
+            return {
+                "status": "ok",
+                "result": {"value": result, "dtype": "str"},
+                "budget": budget,
+            }
         if isinstance(result, np.dtype):
-            return {"status": "ok", "result": {"value": str(result), "dtype": "str"}, "budget": budget}
+            return {
+                "status": "ok",
+                "result": {"value": str(result), "dtype": "str"},
+                "budget": budget,
+            }
         # Fallback: try to make it serializable
         try:
             serializable = _make_serializable(result)
             return {"status": "ok", "result": {"value": serializable}, "budget": budget}
         except Exception:
-            return {"status": "ok", "result": {"value": str(result), "dtype": "str"}, "budget": budget}
+            return {
+                "status": "ok",
+                "result": {"value": str(result), "dtype": "str"},
+                "budget": budget,
+            }
 
 
 # ---------------------------------------------------------------------------
 # Helper
 # ---------------------------------------------------------------------------
+
 
 def _get_mechestim_func(op_name: str):
     """Look up a mechestim function by dotted name (e.g. 'linalg.svd')."""

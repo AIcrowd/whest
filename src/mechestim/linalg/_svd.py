@@ -1,11 +1,16 @@
 """Truncated SVD with FLOP counting."""
+
 from __future__ import annotations
+
 import numpy as _np
+
 from mechestim._flops import svd_cost
 from mechestim._validation import check_nan_inf, require_budget, validate_ndarray
 
 
-def svd(a: _np.ndarray, k: int | None = None) -> tuple[_np.ndarray, _np.ndarray, _np.ndarray]:
+def svd(
+    a: _np.ndarray, k: int | None = None
+) -> tuple[_np.ndarray, _np.ndarray, _np.ndarray]:
     """Truncated singular value decomposition.
 
     Computes the top-*k* singular values and corresponding vectors

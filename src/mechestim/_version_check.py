@@ -1,4 +1,5 @@
 """NumPy version checking for mechestim."""
+
 from __future__ import annotations
 
 import warnings

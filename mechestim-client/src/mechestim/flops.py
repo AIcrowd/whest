@@ -3,11 +3,11 @@
 Some cost functions can be computed locally (pure arithmetic); others
 proxy to the server for more complex estimations.
 """
+
 from __future__ import annotations
 
 import math
 from typing import Sequence, Tuple, Union
-
 
 # ---------------------------------------------------------------------------
 # Local cost functions (no server needed)
@@ -77,7 +77,6 @@ def einsum_cost(subscripts: str, shapes: Sequence[Tuple[int, ...]]) -> int:
     """
     from mechestim._connection import get_connection
     from mechestim._protocol import encode_request
-    from mechestim._remote_array import _result_from_response
 
     conn = get_connection()
     resp = conn.send_recv(
