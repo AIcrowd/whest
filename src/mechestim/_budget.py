@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import functools
 import threading
 from typing import NamedTuple
 
@@ -144,3 +145,28 @@ class BudgetContext:
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
         _thread_local.active_budget = None
         return None
+
+    def __call__(self, func):
+        """Use BudgetContext as a decorator."""
+
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            with self:
+                return func(*args, **kwargs)
+
+        return wrapper
+
+
+def budget(
+    flop_budget: int,
+    flop_multiplier: float = 1.0,
+    quiet: bool = False,
+    namespace: str | None = None,
+) -> BudgetContext:
+    """Create a BudgetContext usable as both a context manager and decorator."""
+    return BudgetContext(
+        flop_budget=flop_budget,
+        flop_multiplier=flop_multiplier,
+        quiet=quiet,
+        namespace=namespace,
+    )
