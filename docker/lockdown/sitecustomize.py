@@ -111,13 +111,18 @@ def _disabled(name: str):
     return _blocked
 
 
-# NOTE: We do NOT disable exec() because Python's import machinery uses it
-# internally to execute module code. Instead we disable compile(), which
-# prevents exec("string") and eval("string") from working (they call compile
-# first). exec(code_object) still works but participants can't create code
-# objects without compile().
-builtins.compile = _disabled("compile")  # type: ignore[assignment]
-builtins.eval = _disabled("eval")  # type: ignore[assignment]
+# NOTE: We do NOT disable exec(), eval(), or compile() because Python's own
+# stdlib uses them pervasively (collections.namedtuple calls eval, the import
+# system calls exec, dataclasses uses compile, etc.). Disabling them breaks
+# Python itself.
+#
+# Instead, we rely on the other three defense layers:
+# 1. Filesystem stripping — dangerous modules are deleted
+# 2. Import gating — blocked modules can't be imported
+# 3. Docker hardening — no network, read-only FS, no capabilities
+#
+# With these layers, exec/eval can only operate on what's already available
+# in the sandbox, which is safe.
 builtins.breakpoint = _disabled("breakpoint")  # type: ignore[assignment]
 
 # ---------------------------------------------------------------------------
