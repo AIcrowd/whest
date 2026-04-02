@@ -123,7 +123,7 @@ Unsupported operations raise a helpful `AttributeError` with a link to the docs.
 git clone https://github.com/AIcrowd/mechestim.git
 cd mechestim
 uv sync --all-extras
-uv run pytest                  # 140 tests
+uv run pytest
 uv run mkdocs serve            # local docs at http://127.0.0.1:8000
 ```
 
