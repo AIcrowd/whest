@@ -47,7 +47,7 @@ select = ["E", "F", "W", "I"]
 # Scripts, examples, docker: cosmetic issues not worth fixing in utility code
 "scripts/**" = ["E501", "E402", "F401", "F841"]
 "examples/**" = ["E501", "E402", "F401", "F841"]
-"docker/**" = ["E501", "E402", "F401", "E401", "F841"]
+"docker/**" = ["E501", "E402", "F401", "F841"]
 # Client/server packages: E402 in __init__.py (deferred imports pattern)
 "mechestim-client/**" = ["E402", "F401", "E501", "F841"]
 "mechestim-server/**" = ["E402", "F401", "E501", "F841"]
