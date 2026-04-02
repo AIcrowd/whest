@@ -29,7 +29,7 @@ h = np.maximum(h, 0)
 ```python
 import mechestim as me
 
-with me.BudgetContext(flop_budget=10_000_000) as budget:
+with me.BudgetContext(flop_budget=20_000_000) as budget:
     W = me.random.randn(256, 256)
     x = me.random.randn(256)
     h = me.dot(W, x)
