@@ -26,22 +26,47 @@ def _detect_repeated_operands(operands: tuple) -> list[int] | None:
 def einsum(subscripts: str, *operands: _np.ndarray, symmetric_dims: list[tuple[int, ...]] | None = None) -> _np.ndarray:
     """Evaluate Einstein summation with FLOP counting.
 
+    Wraps ``numpy.einsum`` with analytical FLOP cost computation and
+    optional symmetry savings. If any input is a ``SymmetricTensor``,
+    the cost is automatically reduced. If ``symmetric_dims`` is provided
+    and the output passes validation, a ``SymmetricTensor`` is returned.
+
     Parameters
     ----------
     subscripts : str
-        Einstein summation subscript string.
+        Einstein summation subscript string (e.g., ``'ij,jk->ik'``).
     *operands : numpy.ndarray
-        Input arrays.
+        Input arrays. ``SymmetricTensor`` inputs are detected automatically
+        for cost savings.
     symmetric_dims : list of tuple of int, optional
-        Output dimension symmetry groups for FLOP savings. Validated at runtime.
+        Output dimension symmetry groups. For example, ``[(0, 1)]`` declares
+        the output is symmetric in its first two dimensions. Validated at
+        runtime with ``atol=1e-6, rtol=1e-5``.
 
     Returns
     -------
-    numpy.ndarray
+    numpy.ndarray or SymmetricTensor
+        The result of the einsum. Returns ``SymmetricTensor`` when
+        ``symmetric_dims`` is provided and validation passes.
 
     Raises
     ------
-    BudgetExhaustedError, NoBudgetContextError, SymmetryError
+    BudgetExhaustedError
+        If the operation would exceed the FLOP budget.
+    NoBudgetContextError
+        If called outside a ``BudgetContext``.
+    SymmetryError
+        If ``symmetric_dims`` is provided but the result is not symmetric.
+
+    Notes
+    -----
+    **mechestim cost:** product of all index dimensions, divided by
+    symmetry factors (repeated operands and symmetric dim groups).
+    SymmetricTensor inputs further reduce cost based on unique element count.
+
+    See Also
+    --------
+    numpy.einsum : NumPy's einsum documentation for subscript syntax.
     """
     budget = require_budget()
     shapes = [op.shape for op in operands]
