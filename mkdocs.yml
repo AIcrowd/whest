@@ -54,6 +54,7 @@ nav:
   - API Reference:
     - Counted Operations: api/counted-ops.md
     - Free Operations: api/free-ops.md
+    - Symmetric Tensors: api/symmetric.md
     - Linear Algebra: api/linalg.md
     - FFT: api/fft.md
     - Random: api/random.md

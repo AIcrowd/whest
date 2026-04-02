@@ -115,6 +115,7 @@ GENERATED_PAGES: dict[str, dict] = {
 EXISTING_PAGES: dict[str, set[str]] = {
     "api/counted-ops.md": set(),   # covers numpy counted ops + einsum + unwrap
     "api/free-ops.md": set(),      # covers numpy free ops
+    "api/symmetric.md": set(),     # covers SymmetricTensor, SymmetryInfo, as_symmetric
 }
 
 
