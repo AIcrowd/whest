@@ -925,7 +925,7 @@ REGISTRY: dict[str, dict] = {
     "linalg.cholesky": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Cholesky decomposition. Cost: n^3/3 (Golub & Van Loan §4.2).",
+        "notes": "Cholesky decomposition. Cost: $n^3/3$ (Golub & Van Loan §4.2).",
     },
     "linalg.cond": {
         "category": "counted_custom",
@@ -940,7 +940,7 @@ REGISTRY: dict[str, dict] = {
     "linalg.det": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Determinant. Cost: n^3 (LU factorization).",
+        "notes": "Determinant. Cost: $n^3$ (LU factorization).",
     },
     "linalg.diagonal": {
         "category": "free",
@@ -950,27 +950,27 @@ REGISTRY: dict[str, dict] = {
     "linalg.eig": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Eigendecomposition. Cost: 10*n^3 (Francis QR, Golub & Van Loan §7.5).",
+        "notes": "Eigendecomposition. Cost: $10n^3$ (Francis QR, Golub & Van Loan §7.5).",
     },
     "linalg.eigh": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Symmetric eigendecomposition. Cost: (4/3)*n^3 (Golub & Van Loan §8.3).",
+        "notes": "Symmetric eigendecomposition. Cost: $(4/3)n^3$ (Golub & Van Loan §8.3).",
     },
     "linalg.eigvals": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Eigenvalues only. Cost: 10*n^3 (same as eig).",
+        "notes": "Eigenvalues only. Cost: $10n^3$ (same as eig).",
     },
     "linalg.eigvalsh": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Symmetric eigenvalues. Cost: (4/3)*n^3 (same as eigh).",
+        "notes": "Symmetric eigenvalues. Cost: $(4/3)n^3$ (same as eigh).",
     },
     "linalg.inv": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Matrix inverse. Cost: n^3 (LU + solve).",
+        "notes": "Matrix inverse. Cost: $n^3$ (LU + solve).",
     },
     "linalg.lstsq": {
         "category": "counted_custom",
@@ -990,7 +990,7 @@ REGISTRY: dict[str, dict] = {
     "linalg.matrix_power": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Matrix power. Cost: (floor(log2(k)) + popcount(k) - 1) * n^3 (exponentiation by squaring).",
+        "notes": "Matrix power. Cost: $(\\lfloor\\log_2 k\\rfloor + \\text{popcount}(k) - 1) \\cdot n^3$ (exponentiation by squaring).",
     },
     "linalg.matrix_rank": {
         "category": "counted_custom",
@@ -1025,17 +1025,17 @@ REGISTRY: dict[str, dict] = {
     "linalg.qr": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "QR decomposition. Cost: 2*m*n^2 - (2/3)*n^3 (Golub & Van Loan §5.2).",
+        "notes": "QR decomposition. Cost: $2mn^2 - (2/3)n^3$ (Golub & Van Loan §5.2).",
     },
     "linalg.slogdet": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Sign + log determinant. Cost: n^3 (LU factorization).",
+        "notes": "Sign + log determinant. Cost: $n^3$ (LU factorization).",
     },
     "linalg.solve": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Solve Ax=b. Cost: n^3 (LU factorization).",
+        "notes": "Solve Ax=b. Cost: $n^3$ (LU factorization).",
     },
     "linalg.svdvals": {
         "category": "counted_custom",
@@ -1050,12 +1050,12 @@ REGISTRY: dict[str, dict] = {
     "linalg.tensorinv": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Tensor inverse. Cost: n^3 after reshape (delegates to inv).",
+        "notes": "Tensor inverse. Cost: $n^3$ after reshape (delegates to inv).",
     },
     "linalg.tensorsolve": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Tensor solve. Cost: n^3 after reshape (delegates to solve).",
+        "notes": "Tensor solve. Cost: $n^3$ after reshape (delegates to solve).",
     },
     "linalg.trace": {
         "category": "counted_custom",
@@ -2223,12 +2223,12 @@ REGISTRY: dict[str, dict] = {
     "poly": {
         "category": "counted_custom",
         "module": "mechestim._polynomial",
-        "notes": "Polynomial from roots. Cost: n^2 FLOPs.",
+        "notes": "Polynomial from roots. Cost: $n^2$ FLOPs.",
     },
     "roots": {
         "category": "counted_custom",
         "module": "mechestim._polynomial",
-        "notes": "Return roots of polynomial with given coefficients. Cost: 10 * n^3 FLOPs (companion matrix eig).",
+        "notes": "Return roots of polynomial with given coefficients. Cost: $10n^3$ FLOPs (companion matrix eig).",
     },
     "polyadd": {
         "category": "counted_custom",

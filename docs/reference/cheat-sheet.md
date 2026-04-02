@@ -60,33 +60,33 @@
 | `interp` | $n \cdot \log m$ | 1-D linear interpolation. |
 | `kaiser` | $3n$ | Kaiser window. Cost: 3*n (Bessel function eval per sample). |
 | `kron` | $m_1 m_2 \cdot n_1 n_2$ | Kronecker product; cost proportional to output size. |
-| `linalg.cholesky` | $n^3 / 3$ | Cholesky decomposition. Cost: n^3/3 (Golub & Van Loan §4.2). |
+| `linalg.cholesky` | $n^3 / 3$ | Cholesky decomposition. Cost: $n^3/3$ (Golub & Van Loan §4.2). |
 | `linalg.cond` | $m \cdot n \cdot \min(m,n)$ | Condition number. Cost: m*n*min(m,n) (via SVD). |
-| `linalg.det` | $n^3$ | Determinant. Cost: n^3 (LU factorization). |
-| `linalg.eig` | $10n^3$ | Eigendecomposition. Cost: 10*n^3 (Francis QR, Golub & Van Loan §7.5). |
-| `linalg.eigh` | $4n^3 / 3$ | Symmetric eigendecomposition. Cost: (4/3)*n^3 (Golub & Van Loan §8.3). |
-| `linalg.eigvals` | $10n^3$ | Eigenvalues only. Cost: 10*n^3 (same as eig). |
-| `linalg.eigvalsh` | $4n^3 / 3$ | Symmetric eigenvalues. Cost: (4/3)*n^3 (same as eigh). |
-| `linalg.inv` | $n^3$ | Matrix inverse. Cost: n^3 (LU + solve). |
+| `linalg.det` | $n^3$ | Determinant. Cost: $n^3$ (LU factorization). |
+| `linalg.eig` | $10n^3$ | Eigendecomposition. Cost: $10n^3$ (Francis QR, Golub & Van Loan §7.5). |
+| `linalg.eigh` | $4n^3 / 3$ | Symmetric eigendecomposition. Cost: $(4/3)n^3$ (Golub & Van Loan §8.3). |
+| `linalg.eigvals` | $10n^3$ | Eigenvalues only. Cost: $10n^3$ (same as eig). |
+| `linalg.eigvalsh` | $4n^3 / 3$ | Symmetric eigenvalues. Cost: $(4/3)n^3$ (same as eigh). |
+| `linalg.inv` | $n^3$ | Matrix inverse. Cost: $n^3$ (LU + solve). |
 | `linalg.lstsq` | $m \cdot n \cdot \min(m,n)$ | Least squares. Cost: m*n*min(m,n) (LAPACK gelsd/SVD). |
 | `linalg.matrix_norm` | varies | Matrix norm. Cost depends on ord: 2*numel for Frobenius, m*n*min(m,n) for ord=2. |
-| `linalg.matrix_power` | $\lfloor\log_2 k\rfloor \cdot n^3$ | Matrix power. Cost: (floor(log2(k)) + popcount(k) - 1) * n^3 (exponentiation by squaring). |
+| `linalg.matrix_power` | $\lfloor\log_2 k\rfloor \cdot n^3$ | Matrix power. Cost: $(\lfloor\log_2 k\rfloor + \text{popcount}(k) - 1) \cdot n^3$ (exponentiation by squaring). |
 | `linalg.matrix_rank` | $m \cdot n \cdot \min(m,n)$ | Matrix rank. Cost: m*n*min(m,n) (via SVD). |
 | `linalg.multi_dot` | optimal chain | Chain matmul. Cost: sum of optimal chain matmul costs (CLRS §15.2). |
 | `linalg.norm` | varies | Norm. Cost depends on ord: numel for L1/inf, 2*numel for Frobenius, m*n*min(m,n) for ord=2. |
 | `linalg.pinv` | $m \cdot n \cdot \min(m,n)$ | Pseudoinverse. Cost: m*n*min(m,n) (via SVD). |
-| `linalg.qr` | $2mn^2 - 2n^3/3$ | QR decomposition. Cost: 2*m*n^2 - (2/3)*n^3 (Golub & Van Loan §5.2). |
-| `linalg.slogdet` | $n^3$ | Sign + log determinant. Cost: n^3 (LU factorization). |
-| `linalg.solve` | $2n^3/3 + n^2 \cdot n_{\text{rhs}}$ | Solve Ax=b. Cost: n^3 (LU factorization). |
+| `linalg.qr` | $2mn^2 - 2n^3/3$ | QR decomposition. Cost: $2mn^2 - (2/3)n^3$ (Golub & Van Loan §5.2). |
+| `linalg.slogdet` | $n^3$ | Sign + log determinant. Cost: $n^3$ (LU factorization). |
+| `linalg.solve` | $2n^3/3 + n^2 \cdot n_{\text{rhs}}$ | Solve Ax=b. Cost: $n^3$ (LU factorization). |
 | `linalg.svd` | $m \cdot n \cdot k$ | Singular value decomposition; cost ~ O(min(m,n)*m*n). |
 | `linalg.svdvals` | $m \cdot n \cdot \min(m,n)$ | Singular values only. Cost: m*n*min(m,n) (Golub-Reinsch). |
-| `linalg.tensorinv` | $n^3$ | Tensor inverse. Cost: n^3 after reshape (delegates to inv). |
-| `linalg.tensorsolve` | $n^3$ | Tensor solve. Cost: n^3 after reshape (delegates to solve). |
+| `linalg.tensorinv` | $n^3$ | Tensor inverse. Cost: $n^3$ after reshape (delegates to inv). |
+| `linalg.tensorsolve` | $n^3$ | Tensor solve. Cost: $n^3$ after reshape (delegates to solve). |
 | `linalg.trace` | $n$ | Matrix trace. Cost: n (sum of diagonal elements). |
 | `linalg.vector_norm` | $n$ or $2n$ | Vector norm. Cost: numel (or 2*numel for general p-norm). |
 | `matmul` | $m \cdot k \cdot n$ | Matrix multiplication; cost = 2*M*N*K. |
 | `outer` | $m \cdot n$ | Outer product of two vectors; cost = M*N. |
-| `poly` | $n^2$ | Polynomial from roots. Cost: n^2 FLOPs. |
+| `poly` | $n^2$ | Polynomial from roots. Cost: $n^2$ FLOPs. |
 | `polyadd` | $\max(n_1, n_2)$ | Add two polynomials. Cost: max(n1, n2) FLOPs. |
 | `polyder` | $n$ | Differentiate polynomial. Cost: n FLOPs. |
 | `polydiv` | $n_1 \cdot n_2$ | Divide one polynomial by another. Cost: n1 * n2 FLOPs. |
@@ -95,7 +95,7 @@
 | `polymul` | $n_1 \cdot n_2$ | Multiply polynomials. Cost: n1 * n2 FLOPs. |
 | `polysub` | $\max(n_1, n_2)$ | Difference (subtraction) of two polynomials. Cost: max(n1, n2) FLOPs. |
 | `polyval` | $2 \cdot m \cdot \text{deg}$ | Evaluate polynomial at given points. Cost: 2 * m * deg FLOPs (Horner's method). |
-| `roots` | $10n^3$ | Return roots of polynomial with given coefficients. Cost: 10 * n^3 FLOPs (companion matrix eig). |
+| `roots` | $10n^3$ | Return roots of polynomial with given coefficients. Cost: $10n^3$ FLOPs (companion matrix eig). |
 | `tensordot` | $\prod_i d_i$ | Tensor dot product along specified axes. |
 | `trapezoid` | $\text{numel}(\text{input})$ | Integrate using the trapezoidal rule. |
 | `trapz` | $\text{numel}(\text{input})$ | Alias for trapezoid (deprecated). |

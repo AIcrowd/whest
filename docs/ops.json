@@ -2936,7 +2936,7 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Cholesky decomposition. Cost: n^3/3 (Golub & Van Loan \u00a74.2)."
+      "notes": "Cholesky decomposition. Cost: $n^3/3$ (Golub & Van Loan \u00a74.2)."
     },
     {
       "name": "linalg.cond",
@@ -2975,7 +2975,7 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Determinant. Cost: n^3 (LU factorization)."
+      "notes": "Determinant. Cost: $n^3$ (LU factorization)."
     },
     {
       "name": "linalg.diagonal",
@@ -3001,7 +3001,7 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Eigendecomposition. Cost: 10*n^3 (Francis QR, Golub & Van Loan \u00a77.5)."
+      "notes": "Eigendecomposition. Cost: $10n^3$ (Francis QR, Golub & Van Loan \u00a77.5)."
     },
     {
       "name": "linalg.eigh",
@@ -3014,7 +3014,7 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Symmetric eigendecomposition. Cost: (4/3)*n^3 (Golub & Van Loan \u00a78.3)."
+      "notes": "Symmetric eigendecomposition. Cost: $(4/3)n^3$ (Golub & Van Loan \u00a78.3)."
     },
     {
       "name": "linalg.eigvals",
@@ -3027,7 +3027,7 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Eigenvalues only. Cost: 10*n^3 (same as eig)."
+      "notes": "Eigenvalues only. Cost: $10n^3$ (same as eig)."
     },
     {
       "name": "linalg.eigvalsh",
@@ -3040,7 +3040,7 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Symmetric eigenvalues. Cost: (4/3)*n^3 (same as eigh)."
+      "notes": "Symmetric eigenvalues. Cost: $(4/3)n^3$ (same as eigh)."
     },
     {
       "name": "linalg.inv",
@@ -3053,7 +3053,7 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Matrix inverse. Cost: n^3 (LU + solve)."
+      "notes": "Matrix inverse. Cost: $n^3$ (LU + solve)."
     },
     {
       "name": "linalg.lstsq",
@@ -3105,7 +3105,7 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Matrix power. Cost: (floor(log2(k)) + popcount(k) - 1) * n^3 (exponentiation by squaring)."
+      "notes": "Matrix power. Cost: $(\\lfloor\\log_2 k\\rfloor + \\text{popcount}(k) - 1) \\cdot n^3$ (exponentiation by squaring)."
     },
     {
       "name": "linalg.matrix_rank",
@@ -3196,7 +3196,7 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "QR decomposition. Cost: 2*m*n^2 - (2/3)*n^3 (Golub & Van Loan \u00a75.2)."
+      "notes": "QR decomposition. Cost: $2mn^2 - (2/3)n^3$ (Golub & Van Loan \u00a75.2)."
     },
     {
       "name": "linalg.slogdet",
@@ -3209,7 +3209,7 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sign + log determinant. Cost: n^3 (LU factorization)."
+      "notes": "Sign + log determinant. Cost: $n^3$ (LU factorization)."
     },
     {
       "name": "linalg.solve",
@@ -3222,7 +3222,7 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Solve Ax=b. Cost: n^3 (LU factorization)."
+      "notes": "Solve Ax=b. Cost: $n^3$ (LU factorization)."
     },
     {
       "name": "linalg.svd",
@@ -3274,7 +3274,7 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Tensor inverse. Cost: n^3 after reshape (delegates to inv)."
+      "notes": "Tensor inverse. Cost: $n^3$ after reshape (delegates to inv)."
     },
     {
       "name": "linalg.tensorsolve",
@@ -3287,7 +3287,7 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Tensor solve. Cost: n^3 after reshape (delegates to solve)."
+      "notes": "Tensor solve. Cost: $n^3$ after reshape (delegates to solve)."
     },
     {
       "name": "linalg.trace",
@@ -4145,7 +4145,7 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Polynomial from roots. Cost: n^2 FLOPs."
+      "notes": "Polynomial from roots. Cost: $n^2$ FLOPs."
     },
     {
       "name": "polyadd",
@@ -5276,7 +5276,7 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return roots of polynomial with given coefficients. Cost: 10 * n^3 FLOPs (companion matrix eig)."
+      "notes": "Return roots of polynomial with given coefficients. Cost: $10n^3$ FLOPs (companion matrix eig)."
     },
     {
       "name": "rot90",

@@ -245,34 +245,34 @@ Generated from the operation registry (`_registry.py`).
 | `less` | `me.less` | `np.less` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise x1 < x2. |
 | `less_equal` | `me.less_equal` | `np.less_equal` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise x1 <= x2. |
 | `lexsort` | `me.lexsort` | `np.lexsort` | free | $0$ | 🟢 supported | Indirect stable sort using sequence of keys. |
-| `linalg.cholesky` | `me.linalg.cholesky` | `np.linalg.cholesky` | counted_custom | $n^3 / 3$ | 🟠 supported | Cholesky decomposition. Cost: n^3/3 (Golub & Van Loan §4.2). |
+| `linalg.cholesky` | `me.linalg.cholesky` | `np.linalg.cholesky` | counted_custom | $n^3 / 3$ | 🟠 supported | Cholesky decomposition. Cost: $n^3/3$ (Golub & Van Loan §4.2). |
 | `linalg.cond` | `me.linalg.cond` | `np.linalg.cond` | counted_custom | $m \cdot n \cdot \min(m,n)$ | 🟠 supported | Condition number. Cost: m*n*min(m,n) (via SVD). |
 | `linalg.cross` | `me.linalg.cross` | `np.linalg.cross` | free | $0$ | 🟢 supported | Alias for numpy.cross — delegates to mechestim.cross. |
-| `linalg.det` | `me.linalg.det` | `np.linalg.det` | counted_custom | $n^3$ | 🟠 supported | Determinant. Cost: n^3 (LU factorization). |
+| `linalg.det` | `me.linalg.det` | `np.linalg.det` | counted_custom | $n^3$ | 🟠 supported | Determinant. Cost: $n^3$ (LU factorization). |
 | `linalg.diagonal` | `me.linalg.diagonal` | `np.linalg.diagonal` | free | $0$ | 🟢 supported | View of diagonal — delegates to mechestim.diagonal. Cost: 0 FLOPs. |
-| `linalg.eig` | `me.linalg.eig` | `np.linalg.eig` | counted_custom | $10n^3$ | 🟠 supported | Eigendecomposition. Cost: 10*n^3 (Francis QR, Golub & Van Loan §7.5). |
-| `linalg.eigh` | `me.linalg.eigh` | `np.linalg.eigh` | counted_custom | $4n^3 / 3$ | 🟠 supported | Symmetric eigendecomposition. Cost: (4/3)*n^3 (Golub & Van Loan §8.3). |
-| `linalg.eigvals` | `me.linalg.eigvals` | `np.linalg.eigvals` | counted_custom | $10n^3$ | 🟠 supported | Eigenvalues only. Cost: 10*n^3 (same as eig). |
-| `linalg.eigvalsh` | `me.linalg.eigvalsh` | `np.linalg.eigvalsh` | counted_custom | $4n^3 / 3$ | 🟠 supported | Symmetric eigenvalues. Cost: (4/3)*n^3 (same as eigh). |
-| `linalg.inv` | `me.linalg.inv` | `np.linalg.inv` | counted_custom | $n^3$ | 🟠 supported | Matrix inverse. Cost: n^3 (LU + solve). |
+| `linalg.eig` | `me.linalg.eig` | `np.linalg.eig` | counted_custom | $10n^3$ | 🟠 supported | Eigendecomposition. Cost: $10n^3$ (Francis QR, Golub & Van Loan §7.5). |
+| `linalg.eigh` | `me.linalg.eigh` | `np.linalg.eigh` | counted_custom | $4n^3 / 3$ | 🟠 supported | Symmetric eigendecomposition. Cost: $(4/3)n^3$ (Golub & Van Loan §8.3). |
+| `linalg.eigvals` | `me.linalg.eigvals` | `np.linalg.eigvals` | counted_custom | $10n^3$ | 🟠 supported | Eigenvalues only. Cost: $10n^3$ (same as eig). |
+| `linalg.eigvalsh` | `me.linalg.eigvalsh` | `np.linalg.eigvalsh` | counted_custom | $4n^3 / 3$ | 🟠 supported | Symmetric eigenvalues. Cost: $(4/3)n^3$ (same as eigh). |
+| `linalg.inv` | `me.linalg.inv` | `np.linalg.inv` | counted_custom | $n^3$ | 🟠 supported | Matrix inverse. Cost: $n^3$ (LU + solve). |
 | `linalg.lstsq` | `me.linalg.lstsq` | `np.linalg.lstsq` | counted_custom | $m \cdot n \cdot \min(m,n)$ | 🟠 supported | Least squares. Cost: m*n*min(m,n) (LAPACK gelsd/SVD). |
 | `linalg.matmul` | `me.linalg.matmul` | `np.linalg.matmul` | free | $0$ | 🟢 supported | Alias for numpy.matmul — delegates to mechestim.matmul. |
 | `linalg.matrix_norm` | `me.linalg.matrix_norm` | `np.linalg.matrix_norm` | counted_custom | varies | 🟠 supported | Matrix norm. Cost depends on ord: 2*numel for Frobenius, m*n*min(m,n) for ord=2. |
-| `linalg.matrix_power` | `me.linalg.matrix_power` | `np.linalg.matrix_power` | counted_custom | $\lfloor\log_2 k\rfloor \cdot n^3$ | 🟠 supported | Matrix power. Cost: (floor(log2(k)) + popcount(k) - 1) * n^3 (exponentiation by squaring). |
+| `linalg.matrix_power` | `me.linalg.matrix_power` | `np.linalg.matrix_power` | counted_custom | $\lfloor\log_2 k\rfloor \cdot n^3$ | 🟠 supported | Matrix power. Cost: $(\lfloor\log_2 k\rfloor + \text{popcount}(k) - 1) \cdot n^3$ (exponentiation by squaring). |
 | `linalg.matrix_rank` | `me.linalg.matrix_rank` | `np.linalg.matrix_rank` | counted_custom | $m \cdot n \cdot \min(m,n)$ | 🟠 supported | Matrix rank. Cost: m*n*min(m,n) (via SVD). |
 | `linalg.matrix_transpose` | `me.linalg.matrix_transpose` | `np.linalg.matrix_transpose` | free | $0$ | 🟢 supported | Transpose view — delegates to mechestim.matrix_transpose. Cost: 0 FLOPs. |
 | `linalg.multi_dot` | `me.linalg.multi_dot` | `np.linalg.multi_dot` | counted_custom | optimal chain | 🟠 supported | Chain matmul. Cost: sum of optimal chain matmul costs (CLRS §15.2). |
 | `linalg.norm` | `me.linalg.norm` | `np.linalg.norm` | counted_custom | varies | 🟠 supported | Norm. Cost depends on ord: numel for L1/inf, 2*numel for Frobenius, m*n*min(m,n) for ord=2. |
 | `linalg.outer` | `me.linalg.outer` | `np.linalg.outer` | free | $0$ | 🟢 supported | Alias for numpy.outer — delegates to mechestim.outer. |
 | `linalg.pinv` | `me.linalg.pinv` | `np.linalg.pinv` | counted_custom | $m \cdot n \cdot \min(m,n)$ | 🟠 supported | Pseudoinverse. Cost: m*n*min(m,n) (via SVD). |
-| `linalg.qr` | `me.linalg.qr` | `np.linalg.qr` | counted_custom | $2mn^2 - 2n^3/3$ | 🟠 supported | QR decomposition. Cost: 2*m*n^2 - (2/3)*n^3 (Golub & Van Loan §5.2). |
-| `linalg.slogdet` | `me.linalg.slogdet` | `np.linalg.slogdet` | counted_custom | $n^3$ | 🟠 supported | Sign + log determinant. Cost: n^3 (LU factorization). |
-| `linalg.solve` | `me.linalg.solve` | `np.linalg.solve` | counted_custom | $2n^3/3 + n^2 \cdot n_{\text{rhs}}$ | 🟠 supported | Solve Ax=b. Cost: n^3 (LU factorization). |
+| `linalg.qr` | `me.linalg.qr` | `np.linalg.qr` | counted_custom | $2mn^2 - 2n^3/3$ | 🟠 supported | QR decomposition. Cost: $2mn^2 - (2/3)n^3$ (Golub & Van Loan §5.2). |
+| `linalg.slogdet` | `me.linalg.slogdet` | `np.linalg.slogdet` | counted_custom | $n^3$ | 🟠 supported | Sign + log determinant. Cost: $n^3$ (LU factorization). |
+| `linalg.solve` | `me.linalg.solve` | `np.linalg.solve` | counted_custom | $2n^3/3 + n^2 \cdot n_{\text{rhs}}$ | 🟠 supported | Solve Ax=b. Cost: $n^3$ (LU factorization). |
 | `linalg.svd` | `me.linalg.svd` | `np.linalg.svd` | counted_custom | $m \cdot n \cdot k$ | 🟠 supported | Singular value decomposition; cost ~ O(min(m,n)*m*n). |
 | `linalg.svdvals` | `me.linalg.svdvals` | `np.linalg.svdvals` | counted_custom | $m \cdot n \cdot \min(m,n)$ | 🟠 supported | Singular values only. Cost: m*n*min(m,n) (Golub-Reinsch). |
 | `linalg.tensordot` | `me.linalg.tensordot` | `np.linalg.tensordot` | free | $0$ | 🟢 supported | Alias for numpy.tensordot — delegates to mechestim.tensordot. |
-| `linalg.tensorinv` | `me.linalg.tensorinv` | `np.linalg.tensorinv` | counted_custom | $n^3$ | 🟠 supported | Tensor inverse. Cost: n^3 after reshape (delegates to inv). |
-| `linalg.tensorsolve` | `me.linalg.tensorsolve` | `np.linalg.tensorsolve` | counted_custom | $n^3$ | 🟠 supported | Tensor solve. Cost: n^3 after reshape (delegates to solve). |
+| `linalg.tensorinv` | `me.linalg.tensorinv` | `np.linalg.tensorinv` | counted_custom | $n^3$ | 🟠 supported | Tensor inverse. Cost: $n^3$ after reshape (delegates to inv). |
+| `linalg.tensorsolve` | `me.linalg.tensorsolve` | `np.linalg.tensorsolve` | counted_custom | $n^3$ | 🟠 supported | Tensor solve. Cost: $n^3$ after reshape (delegates to solve). |
 | `linalg.trace` | `me.linalg.trace` | `np.linalg.trace` | counted_custom | $n$ | 🟠 supported | Matrix trace. Cost: n (sum of diagonal elements). |
 | `linalg.vecdot` | `me.linalg.vecdot` | `np.linalg.vecdot` | free | $0$ | 🟢 supported | Alias for numpy.vecdot — delegates to mechestim.vecdot. |
 | `linalg.vector_norm` | `me.linalg.vector_norm` | `np.linalg.vector_norm` | counted_custom | $n$ or $2n$ | 🟠 supported | Vector norm. Cost: numel (or 2*numel for general p-norm). |
@@ -338,7 +338,7 @@ Generated from the operation registry (`_registry.py`).
 | `permute_dims` | `me.permute_dims` | `np.permute_dims` | free | $0$ | 🟢 supported | Permute dimensions (NumPy 2.x array API). |
 | `piecewise` | — | `np.piecewise` | blacklisted | N/A | 🔴 blocked | Evaluate piecewise-defined function. Not supported. |
 | `place` | `me.place` | `np.place` | free | $0$ | 🟢 supported | Change elements satisfying condition. |
-| `poly` | `me.poly` | `np.poly` | counted_custom | $n^2$ | 🟠 supported | Polynomial from roots. Cost: n^2 FLOPs. |
+| `poly` | `me.poly` | `np.poly` | counted_custom | $n^2$ | 🟠 supported | Polynomial from roots. Cost: $n^2$ FLOPs. |
 | `polyadd` | `me.polyadd` | `np.polyadd` | counted_custom | $\max(n_1, n_2)$ | 🟠 supported | Add two polynomials. Cost: max(n1, n2) FLOPs. |
 | `polyder` | `me.polyder` | `np.polyder` | counted_custom | $n$ | 🟠 supported | Differentiate polynomial. Cost: n FLOPs. |
 | `polydiv` | `me.polydiv` | `np.polydiv` | counted_custom | $n_1 \cdot n_2$ | 🟠 supported | Divide one polynomial by another. Cost: n1 * n2 FLOPs. |
@@ -425,7 +425,7 @@ Generated from the operation registry (`_registry.py`).
 | `rint` | `me.rint` | `np.rint` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Round to nearest integer element-wise. |
 | `roll` | `me.roll` | `np.roll` | free | $0$ | 🟢 supported | Roll array elements along axis. |
 | `rollaxis` | `me.rollaxis` | `np.rollaxis` | free | $0$ | 🟢 supported | Roll specified axis backwards. |
-| `roots` | `me.roots` | `np.roots` | counted_custom | $10n^3$ | 🟠 supported | Return roots of polynomial with given coefficients. Cost: 10 * n^3 FLOPs (companion matrix eig). |
+| `roots` | `me.roots` | `np.roots` | counted_custom | $10n^3$ | 🟠 supported | Return roots of polynomial with given coefficients. Cost: $10n^3$ FLOPs (companion matrix eig). |
 | `rot90` | `me.rot90` | `np.rot90` | free | $0$ | 🟢 supported | Rotate array 90 degrees. |
 | `round` | `me.round` | `np.round` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Round to given number of decimals element-wise. |
 | `row_stack` | `me.row_stack` | `np.row_stack` | free | $0$ | 🟢 supported | Stack arrays vertically (alias for vstack). |
