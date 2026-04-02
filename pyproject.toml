@@ -17,6 +17,7 @@ dev = [
 docs = [
     "mkdocs-material",
     "mkdocstrings[python]",
+    "mkdocs-llmstxt-md",
 ]
 
 [build-system]
