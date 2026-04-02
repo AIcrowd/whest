@@ -1,138 +1,90 @@
+"""Adversarial tests — verifies lockdown blocks dangerous operations.
+
+Defense layers:
+1. Filesystem stripping — most dangerous modules deleted
+2. open() restriction — can't read arbitrary files
+3. Docker: network_mode=none, read_only, no capabilities, distroless (no shell)
+
+Some modules (math, socket, subprocess) are available because pyzmq/stdlib
+need them transitively, but they're harmless in the locked-down container.
 """
-Demo: A participant's submission that uses mechestim exactly like they would locally.
-This runs inside a container with NO numpy installed.
-"""
 
-import sys
+passed = 0
+failed = 0
 
-import mechestim as me
+def check(name, condition):
+    global passed, failed
+    if condition:
+        print(f"PASS: {name}")
+        passed += 1
+    else:
+        print(f"FAIL: {name}")
+        failed += 1
 
-print("=" * 60)
-print("  Mechestim Client-Server Demo")
-print("  (this container has NO numpy installed)")
-print("=" * 60)
+# Test 1: ctypes is stripped (filesystem layer)
+try:
+    import ctypes
+    check("ctypes blocked", False)
+except ImportError:
+    check("ctypes blocked", True)
 
-# Verify numpy is not available
+# Test 2: numpy is not available
 try:
     import numpy
-
-    print("\nWARNING: numpy is installed (not expected)")
+    check("numpy blocked", False)
 except ImportError:
-    print("\nConfirmed: numpy is NOT installed in this container")
+    check("numpy blocked", True)
 
-print(f"mechestim version: {me.__version__}")
-print()
+# Test 3: open /etc/passwd blocked (open restriction layer)
+try:
+    open("/etc/passwd")
+    check("open /etc/passwd blocked", False)
+except PermissionError:
+    check("open /etc/passwd blocked", True)
 
-with me.BudgetContext(flop_budget=1_000_000) as budget:
-    # ---- 1. Basic array creation ----
-    print("--- 1. Array Creation ---")
-    x = me.zeros((4, 4))
-    print(f"zeros(4,4) shape={x.shape} dtype={x.dtype}")
+# Test 4: write to filesystem blocked (open restriction + read_only FS)
+try:
+    open("/tmp/test.txt", "w")
+    check("write to /tmp blocked", False)
+except (PermissionError, OSError):
+    check("write to /tmp blocked", True)
 
-    W = me.array(
-        [
-            [1.0, 0.0, 0.0, 0.0],
-            [0.0, 2.0, 0.0, 0.0],
-            [0.0, 0.0, 3.0, 0.0],
-            [0.0, 0.0, 0.0, 4.0],
-        ]
-    )
-    print(f"W = diag(1,2,3,4):\n{W}")
+# Test 5: can read own submission files
+try:
+    open("/submission/run.py", "r").read()
+    check("can read /submission/", True)
+except Exception:
+    check("can read /submission/", False)
 
-    # ---- 2. Computation with budget tracking ----
-    print("\n--- 2. Neural Network Forward Pass ---")
-    # Simulated single-layer neural network
-    batch_size = 32
-    input_dim = 64
-    output_dim = 16
+# Test 6: mechestim works
+try:
+    import mechestim as me
+    check(f"mechestim loaded (v{me.__version__})", True)
+except Exception:
+    check("mechestim loaded", False)
 
-    # Create random input and weights
-    x = me.random.randn(batch_size, input_dim)
-    W = me.random.randn(output_dim, input_dim)
-    b = me.zeros((output_dim,))
+# Test 7: allowed stdlib modules work
+try:
+    import itertools, functools, collections, time, json
+    check("allowed stdlib modules work", True)
+except Exception:
+    check("allowed stdlib modules work", False)
 
-    print(f"Input:   x.shape={x.shape}")
-    print(f"Weights: W.shape={W.shape}")
-    print(f"Bias:    b.shape={b.shape}")
+# Test 8: socket exists but is useless (network_mode: none)
+import socket
+try:
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect(("8.8.8.8", 53))
+    check("network blocked (socket connect fails)", False)
+except OSError:
+    check("network blocked (socket connect fails)", True)
 
-    # Forward pass: y = ReLU(Wx + b)
-    h = me.einsum("oi,bi->bo", W, x)  # matrix multiply
-    h = me.add(h, b)  # add bias
-    y = me.maximum(h, me.zeros_like(h))  # ReLU
-
-    print(f"Output:  y.shape={y.shape}")
-    print(f"FLOPs used: {budget.flops_used:,}")
-    print(f"FLOPs remaining: {budget.flops_remaining:,}")
-
-    # ---- 3. Python operators work! ----
-    print("\n--- 3. Python Operators ---")
-    a = me.array([1.0, 2.0, 3.0, 4.0])
-    b = me.array([10.0, 20.0, 30.0, 40.0])
-
-    print(f"a = {a}")
-    print(f"b = {b}")
-    print(f"a + b = {a + b}")
-    print(f"a * 2 = {a * 2.0}")
-    print(f"2 ** a = {2.0**a}")
-    print(f"-a = {-a}")
-
-    # ---- 4. Comparisons ----
-    print("\n--- 4. Comparisons & Reductions ---")
-    mask = a > 2.0
-    print(f"a > 2.0 = {mask}")
-    print(f"sum(a) = {float(me.sum(a))}")
-    print(f"mean(a) = {float(me.mean(a))}")
-    print(f"max(a) = {float(a.max())}")
-    print(f"min(a) = {float(a.min())}")
-
-    # ---- 5. Methods on arrays ----
-    print("\n--- 5. Array Methods ---")
-    M = me.array([[1.0, 2.0], [3.0, 4.0]])
-    print(f"M = {M}")
-    print(f"M.T = {M.T}")
-    print(f"M.reshape(4) = {M.reshape(4)}")
-    print(f"M.sum(axis=0) = {M.sum(axis=0)}")
-    print(f"M.flatten() = {M.flatten()}")
-
-    # ---- 6. Indexing ----
-    print("\n--- 6. Indexing ---")
-    v = me.array([50.0, 40.0, 30.0, 20.0, 10.0])
-    print(f"v = {v}")
-    print(f"v[0] = {v[0]}")
-    print(f"v[-1] = {v[-1]}")
-    print(f"v[1:3] = {v[1:3]}")
-
-    # ---- 7. Iteration ----
-    print("\n--- 7. Iteration ---")
-    for i, val in enumerate(a):
-        print(f"  a[{i}] = {val}")
-
-    # ---- 8. SVD ----
-    print("\n--- 8. Linear Algebra (SVD) ---")
-    A = me.array([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
-    U, S, Vt = me.linalg.svd(A)
-    print(f"A.shape = {A.shape}")
-    print(f"U.shape = {U.shape}")
-    print(f"S = {S}")
-    print(f"Vt.shape = {Vt.shape}")
-
-    # ---- Final summary ----
-    print("\n" + "=" * 60)
-    print(f"  Total FLOPs used: {budget.flops_used:,}")
-    print(f"  Budget remaining: {budget.flops_remaining:,}")
-    print(budget.summary())
-    print("=" * 60)
-    print("\n  SUCCESS: Everything works without numpy!")
-    print("  The participant never knew they were using a proxy.")
-
-# ---- Run exhaustive smoke test ----
-print("\n\nRunning exhaustive smoke test...")
-import os
+# Test 9: subprocess exists but is useless (no shell in distroless)
 import subprocess
+try:
+    subprocess.run(["sh", "-c", "echo pwned"], capture_output=True, timeout=2)
+    check("shell execution blocked", False)
+except (FileNotFoundError, OSError):
+    check("shell execution blocked", True)
 
-script_dir = os.path.dirname(os.path.abspath(__file__))
-result = subprocess.run(
-    [sys.executable, os.path.join(script_dir, "exhaustive_test.py")],
-    env={**os.environ},
-)
-sys.exit(result.returncode)
+print(f"\nResults: {passed} passed, {failed} failed out of {passed + failed} tests")
