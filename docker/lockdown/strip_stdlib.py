@@ -91,13 +91,20 @@ def _discover_kept_files() -> set[str]:
 
 
 def _collect_stdlib_files() -> list[str]:
-    """Return all files under stdlib and platstdlib directories."""
+    """Return all files under stdlib and platstdlib directories.
+
+    Skips site-packages and dist-packages directories — those contain
+    installed packages (pyzmq, msgpack, mechestim) that must not be touched.
+    """
     dirs = {_stdlib_dir(), _platstdlib_dir()}
+    skip_dirs = {"site-packages", "dist-packages"}
     all_files = []
     for d in dirs:
         if not os.path.isdir(d):
             continue
         for root, dirnames, filenames in os.walk(d):
+            # Don't descend into site-packages/dist-packages
+            dirnames[:] = [dn for dn in dirnames if dn not in skip_dirs]
             for fname in filenames:
                 all_files.append(os.path.realpath(os.path.join(root, fname)))
     return all_files
