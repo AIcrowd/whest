@@ -55,3 +55,24 @@ def test_svd_cost():
 
 def test_svd_cost_full():
     assert svd_cost(m=100, n=50, k=None) == 100 * 50 * 50
+
+
+from mechestim._symmetric import SymmetryInfo
+
+def test_pointwise_cost_symmetric():
+    info = SymmetryInfo(symmetric_dims=[(0, 1)], shape=(5, 5))
+    assert pointwise_cost(shape=(5, 5), symmetry_info=info) == 15
+
+def test_pointwise_cost_partial_symmetry():
+    info = SymmetryInfo(symmetric_dims=[(0, 1), (2, 3)], shape=(4, 4, 3, 3))
+    assert pointwise_cost(shape=(4, 4, 3, 3), symmetry_info=info) == 60
+
+def test_pointwise_cost_no_symmetry_unchanged():
+    assert pointwise_cost(shape=(5, 5)) == 25
+
+def test_reduction_cost_symmetric():
+    info = SymmetryInfo(symmetric_dims=[(0, 1)], shape=(5, 5))
+    assert reduction_cost(input_shape=(5, 5), axis=None, symmetry_info=info) == 15
+
+def test_reduction_cost_no_symmetry_unchanged():
+    assert reduction_cost(input_shape=(5, 5), axis=None) == 25

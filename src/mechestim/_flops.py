@@ -3,6 +3,10 @@ from __future__ import annotations
 
 import math
 from collections import Counter
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from mechestim._symmetric import SymmetryInfo
 
 
 def parse_einsum_subscripts(subscripts: str) -> tuple[list[list[str]], list[str]]:
@@ -49,16 +53,20 @@ def einsum_cost(subscripts: str, shapes: list[tuple[int, ...]], repeated_operand
     return base_cost // symmetry_factor
 
 
-def pointwise_cost(shape: tuple[int, ...]) -> int:
+def pointwise_cost(shape: tuple[int, ...], symmetry_info: "SymmetryInfo | None" = None) -> int:
     """Calculate the FLOP cost of a pointwise operation."""
+    if symmetry_info is not None:
+        return max(symmetry_info.unique_elements, 1)
     result = 1
     for dim in shape:
         result *= dim
     return max(result, 1)
 
 
-def reduction_cost(input_shape: tuple[int, ...], axis: int | None = None) -> int:
+def reduction_cost(input_shape: tuple[int, ...], axis: int | None = None, symmetry_info: "SymmetryInfo | None" = None) -> int:
     """Calculate the FLOP cost of a reduction operation."""
+    if symmetry_info is not None:
+        return max(symmetry_info.unique_elements, 1)
     result = 1
     for dim in input_shape:
         result *= dim
