@@ -99,7 +99,7 @@
 | `tensordot` | $\prod_i d_i$ | Tensor dot product along specified axes. |
 | `trapezoid` | $\text{numel}(\text{input})$ | Integrate using the trapezoidal rule. |
 | `trapz` | $\text{numel}(\text{input})$ | Alias for trapezoid (deprecated). |
-| `unwrap` | $\text{numel}(\text{input})$ | Phase unwrap. Cost: numel(input) (diff + conditional adjustment). |
+| `unwrap` | $\text{numel}(\text{input})$ | Phase unwrap. Cost: $\text{numel}(\text{input})$ (diff + conditional adjustment). |
 | `vdot` | $n$ | Dot product with conjugation; cost = 2*N. |
 
 ## Free Operations (complete list)

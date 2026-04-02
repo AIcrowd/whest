@@ -9,9 +9,9 @@ Generated from the operation registry (`_registry.py`).
 | Category | Count | Cost |
 |----------|-------|------|
 | free | 220 | 0 FLOPs |
-| counted_unary | 73 | numel(output) |
-| counted_binary | 45 | numel(output) |
-| counted_reduction | 37 | numel(input) |
+| counted_unary | 73 | $\text{numel}(\text{output})$ |
+| counted_binary | 45 | $\text{numel}(\text{output})$ |
+| counted_reduction | 37 | $\text{numel}(\text{input})$ |
 | counted_custom | 75 | Per-operation formula |
 | blacklisted | 32 | Not available |
 | **Total** | **482** | |
@@ -492,7 +492,7 @@ Generated from the operation registry (`_registry.py`).
 | `unpackbits` | `me.unpackbits` | `np.unpackbits` | free | $0$ | 🟢 supported | Unpack elements of array into bits. |
 | `unravel_index` | `me.unravel_index` | `np.unravel_index` | free | $0$ | 🟢 supported | Convert flat index to multi-dimensional index. |
 | `unstack` | `me.unstack` | `np.unstack` | free | $0$ | 🟢 supported | Unstack array along axis into tuple of arrays (NumPy 2.x). |
-| `unwrap` | `me.unwrap` | `np.unwrap` | counted_custom | $\text{numel}(\text{input})$ | 🟠 supported | Phase unwrap. Cost: numel(input) (diff + conditional adjustment). |
+| `unwrap` | `me.unwrap` | `np.unwrap` | counted_custom | $\text{numel}(\text{input})$ | 🟠 supported | Phase unwrap. Cost: $\text{numel}(\text{input})$ (diff + conditional adjustment). |
 | `vander` | `me.vander` | `np.vander` | free | $0$ | 🟢 supported | Generate Vandermonde matrix. |
 | `var` | `me.var` | `np.var` | counted_reduction | $\text{numel}(\text{input})$ | 🟡 supported | Variance; cost_multiplier=2 (two passes). |
 | `vdot` | `me.vdot` | `np.vdot` | counted_custom | $n$ | 🟠 supported | Dot product with conjugation; cost = 2*N. |

@@ -2464,7 +2464,7 @@ REGISTRY: dict[str, dict] = {
     "unwrap": {
         "category": "counted_custom",
         "module": "mechestim._unwrap",
-        "notes": "Phase unwrap. Cost: numel(input) (diff + conditional adjustment).",
+        "notes": "Phase unwrap. Cost: $\\text{numel}(\\text{input})$ (diff + conditional adjustment).",
     },
 }
 

@@ -236,9 +236,9 @@ CATEGORY_ORDER = [
 
 CATEGORY_LABELS = {
     "free": ("Free Operations (0 FLOPs)", "0 FLOPs"),
-    "counted_unary": ("Counted Unary Operations", "numel(output)"),
-    "counted_binary": ("Counted Binary Operations", "numel(output)"),
-    "counted_reduction": ("Counted Reduction Operations", "numel(input)"),
+    "counted_unary": ("Counted Unary Operations", r"$\text{numel}(\text{output})$"),
+    "counted_binary": ("Counted Binary Operations", r"$\text{numel}(\text{output})$"),
+    "counted_reduction": ("Counted Reduction Operations", r"$\text{numel}(\text{input})$"),
     "counted_custom": ("Counted Custom Operations", "Per-operation formula"),
     "blacklisted": ("Blacklisted Operations", "Not available"),
 }
