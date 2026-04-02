@@ -651,7 +651,26 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
     else:
         total_non_bl = sum(1 for i in registry.values() if i["category"] != "blacklisted")
         print(f"\nAll {total_non_bl} non-blacklisted operations are covered in API docs.")
-        return True
+
+    # Verify ops.json exists and covers all ops
+    ops_json_path = DOCS / "ops.json"
+    if not ops_json_path.exists():
+        print(f"\nops.json NOT FOUND at {ops_json_path}")
+        return False
+
+    ops_data = json.loads(ops_json_path.read_text())
+    ops_names = {op["name"] for op in ops_data["operations"]}
+    registry_names = set(registry.keys())
+    missing_from_json = registry_names - ops_names
+    if missing_from_json:
+        print(f"\nMISSING from ops.json ({len(missing_from_json)} ops):")
+        for name in sorted(missing_from_json):
+            print(f"  {name}")
+        return False
+    else:
+        print(f"ops.json covers all {len(ops_names)} operations.")
+
+    return True
 
 
 # ---------------------------------------------------------------------------
