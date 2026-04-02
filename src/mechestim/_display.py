@@ -79,6 +79,14 @@ def _plain_text_summary() -> str:
     return "\n".join(lines)
 
 
+_GLOBAL_DEFAULT_BUDGET = int(1e15)
+
+
+def _is_global_default_ns(ns, ns_data: dict) -> bool:
+    """Check if a namespace record is the implicit global default."""
+    return ns is None and ns_data.get("flop_budget", 0) >= _GLOBAL_DEFAULT_BUDGET
+
+
 def _rich_namespace_table(label: str, ns_data: dict, color: str):
     """Build a Rich Table for a single namespace."""
     from rich.table import Table
@@ -108,10 +116,17 @@ def _rich_namespace_table(label: str, ns_data: dict, color: str):
         )
 
     table.add_section()
+    remaining = ns_data["flop_budget"] - ns_data["flops_used"]
     table.add_row(
-        Text("Total", style="bold"),
+        Text("Used", style="bold"),
         Text(_format_flops(ns_data["flops_used"]), style=f"bold {color}"),
         Text(_pct(ns_data["flops_used"], ns_data["flop_budget"]), style=color),
+        "",
+    )
+    table.add_row(
+        Text("Remaining", style="bold"),
+        Text(_format_flops(remaining), style="bold"),
+        "",
         "",
     )
 
@@ -130,40 +145,62 @@ def _rich_summary():
     if data["flops_used"] == 0 and not data.get("by_namespace"):
         return Panel("No budget data recorded yet.", title="mechestim Budget")
 
-    color = _usage_color(data["flops_used"], data["flop_budget"])
+    by_ns = data.get("by_namespace", {})
+
+    # Compute display totals excluding the global default's inflated budget
+    explicit_budget = 0
+    explicit_used = 0
+    for ns, ns_data in by_ns.items():
+        if _is_global_default_ns(ns, ns_data):
+            # Only count the used FLOPs, not the huge budget
+            explicit_used += ns_data["flops_used"]
+        else:
+            explicit_budget += ns_data["flop_budget"]
+            explicit_used += ns_data["flops_used"]
+
+    has_explicit = explicit_budget > 0
+    display_budget = explicit_budget if has_explicit else data["flop_budget"]
+    display_used = explicit_used
+    display_remaining = display_budget - display_used if has_explicit else data["flops_remaining"]
+    color = _usage_color(display_used, display_budget) if has_explicit else "green"
 
     # Session totals bar
     totals = Table(show_header=False, expand=True, padding=(0, 1), box=None)
     totals.add_column("label", style="bold")
     totals.add_column("value", justify="right")
-    totals.add_row("Budget", _format_flops(data["flop_budget"]))
+    if has_explicit:
+        totals.add_row("Budget", _format_flops(display_budget))
     totals.add_row(
         "Used",
         Text(
-            f"{_format_flops(data['flops_used'])}  ({_pct(data['flops_used'], data['flop_budget'])})",
+            f"{_format_flops(display_used)}  ({_pct(display_used, display_budget) if has_explicit else ''})",
             style=color,
         ),
     )
-    totals.add_row(
-        "Remaining",
-        f"{_format_flops(data['flops_remaining'])}  ({_pct(data['flops_remaining'], data['flop_budget'])})",
-    )
+    if has_explicit:
+        totals.add_row(
+            "Remaining",
+            f"{_format_flops(display_remaining)}  ({_pct(display_remaining, display_budget)})",
+        )
 
     renderables = [totals]
 
     # Per-namespace panels
-    by_ns = data.get("by_namespace", {})
     if by_ns:
         ns_panels = []
         for ns, ns_data in by_ns.items():
-            label = ns if ns is not None else "(default)"
+            is_default = _is_global_default_ns(ns, ns_data)
+            label = ns if ns is not None else "(unscoped)"
             ns_color = _usage_color(ns_data["flops_used"], ns_data["flop_budget"])
             ns_table = _rich_namespace_table(label, ns_data, ns_color)
-            budget_line = f"Budget: {_format_flops(ns_data['flop_budget'])}"
+            if is_default:
+                subtitle = "[dim]implicit global budget[/dim]"
+            else:
+                subtitle = f"[dim]Budget: {_format_flops(ns_data['flop_budget'])}[/dim]"
             ns_panel = Panel(
                 ns_table,
                 title=f"[bold]{label}[/bold]",
-                subtitle=f"[dim]{budget_line}[/dim]",
+                subtitle=subtitle,
                 border_style=ns_color,
                 expand=True,
             )
