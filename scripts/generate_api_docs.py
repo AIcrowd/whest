@@ -178,6 +178,131 @@ CATEGORY_EMOJI = {
     "blacklisted": "\U0001f534",    # red circle
 }
 
+# ---------------------------------------------------------------------------
+# Per-operation cost formulas (plain text + LaTeX)
+# ---------------------------------------------------------------------------
+
+CUSTOM_COSTS: dict[str, tuple[str, str]] = {
+    "einsum": ("product of all index dims", r"$\prod_i d_i$"),
+    "einsum_path": ("0 (planning only)", "$0$"),
+    "dot": ("m * k * n", r"$m \cdot k \cdot n$"),
+    "matmul": ("m * k * n", r"$m \cdot k \cdot n$"),
+    "inner": ("n", "$n$"),
+    "outer": ("m * n", r"$m \cdot n$"),
+    "tensordot": ("product of contracted dims * output size", r"$\prod_i d_i$"),
+    "vdot": ("n", "$n$"),
+    "vecdot": ("n", "$n$"),
+    "kron": ("m1*m2 * n1*n2", r"$m_1 m_2 \cdot n_1 n_2$"),
+    "clip": ("numel(input)", r"$\text{numel}(\text{input})$"),
+    "cross": ("numel(output)", r"$\text{numel}(\text{output})$"),
+    "diff": ("numel(input)", r"$\text{numel}(\text{input})$"),
+    "ediff1d": ("numel(input)", r"$\text{numel}(\text{input})$"),
+    "gradient": ("numel(input)", r"$\text{numel}(\text{input})$"),
+    "convolve": ("n * m", r"$n \cdot m$"),
+    "correlate": ("n * m", r"$n \cdot m$"),
+    "corrcoef": ("n^2 * m", r"$n^2 \cdot m$"),
+    "cov": ("n^2 * m", r"$n^2 \cdot m$"),
+    "interp": ("n * log(m)", r"$n \cdot \log m$"),
+    "trapezoid": ("numel(input)", r"$\text{numel}(\text{input})$"),
+    "trapz": ("numel(input)", r"$\text{numel}(\text{input})$"),
+    "linalg.svd": ("m * n * k", r"$m \cdot n \cdot k$"),
+    "linalg.svdvals": ("m * n * min(m,n)", r"$m \cdot n \cdot \min(m,n)$"),
+    "linalg.cholesky": ("n^3 / 3", r"$n^3 / 3$"),
+    "linalg.qr": ("2mn^2 - 2n^3/3", r"$2mn^2 - 2n^3/3$"),
+    "linalg.eig": ("10n^3", r"$10n^3$"),
+    "linalg.eigh": ("4n^3 / 3", r"$4n^3 / 3$"),
+    "linalg.eigvals": ("10n^3", r"$10n^3$"),
+    "linalg.eigvalsh": ("4n^3 / 3", r"$4n^3 / 3$"),
+    "linalg.solve": ("2n^3/3 + n^2*nrhs", r"$2n^3/3 + n^2 \cdot n_{\text{rhs}}$"),
+    "linalg.inv": ("n^3", r"$n^3$"),
+    "linalg.lstsq": ("m * n * min(m,n)", r"$m \cdot n \cdot \min(m,n)$"),
+    "linalg.pinv": ("m * n * min(m,n)", r"$m \cdot n \cdot \min(m,n)$"),
+    "linalg.tensorsolve": ("n^3", r"$n^3$"),
+    "linalg.tensorinv": ("n^3", r"$n^3$"),
+    "linalg.trace": ("n", "$n$"),
+    "linalg.det": ("n^3", r"$n^3$"),
+    "linalg.slogdet": ("n^3", r"$n^3$"),
+    "linalg.norm": ("depends on ord", r"varies"),
+    "linalg.vector_norm": ("n or 2n", r"$n$ or $2n$"),
+    "linalg.matrix_norm": ("depends on ord", r"varies"),
+    "linalg.cond": ("m * n * min(m,n)", r"$m \cdot n \cdot \min(m,n)$"),
+    "linalg.matrix_rank": ("m * n * min(m,n)", r"$m \cdot n \cdot \min(m,n)$"),
+    "linalg.multi_dot": ("optimal chain cost", r"optimal chain"),
+    "linalg.matrix_power": ("log2(k) * n^3", r"$\lfloor\log_2 k\rfloor \cdot n^3$"),
+    "fft.fft": ("5n * ceil(log2(n))", r"$5n \cdot \lceil\log_2 n\rceil$"),
+    "fft.ifft": ("5n * ceil(log2(n))", r"$5n \cdot \lceil\log_2 n\rceil$"),
+    "fft.fft2": ("5N * ceil(log2(N))", r"$5N \cdot \lceil\log_2 N\rceil$"),
+    "fft.ifft2": ("5N * ceil(log2(N))", r"$5N \cdot \lceil\log_2 N\rceil$"),
+    "fft.fftn": ("5N * ceil(log2(N))", r"$5N \cdot \lceil\log_2 N\rceil$"),
+    "fft.ifftn": ("5N * ceil(log2(N))", r"$5N \cdot \lceil\log_2 N\rceil$"),
+    "fft.rfft": ("5(n/2) * ceil(log2(n))", r"$5(n/2) \cdot \lceil\log_2 n\rceil$"),
+    "fft.irfft": ("5(n/2) * ceil(log2(n))", r"$5(n/2) \cdot \lceil\log_2 n\rceil$"),
+    "fft.rfft2": ("5(N/2) * ceil(log2(N))", r"$5(N/2) \cdot \lceil\log_2 N\rceil$"),
+    "fft.irfft2": ("5(N/2) * ceil(log2(N))", r"$5(N/2) \cdot \lceil\log_2 N\rceil$"),
+    "fft.rfftn": ("5(N/2) * ceil(log2(N))", r"$5(N/2) \cdot \lceil\log_2 N\rceil$"),
+    "fft.irfftn": ("5(N/2) * ceil(log2(N))", r"$5(N/2) \cdot \lceil\log_2 N\rceil$"),
+    "fft.hfft": ("5n * ceil(log2(n))", r"$5n \cdot \lceil\log_2 n\rceil$"),
+    "fft.ihfft": ("5n * ceil(log2(n))", r"$5n \cdot \lceil\log_2 n\rceil$"),
+    "polyval": ("2 * m * deg", r"$2 \cdot m \cdot \text{deg}$"),
+    "polyadd": ("max(n1, n2)", r"$\max(n_1, n_2)$"),
+    "polysub": ("max(n1, n2)", r"$\max(n_1, n_2)$"),
+    "polyder": ("n", "$n$"),
+    "polyint": ("n", "$n$"),
+    "polymul": ("n1 * n2", r"$n_1 \cdot n_2$"),
+    "polydiv": ("n1 * n2", r"$n_1 \cdot n_2$"),
+    "polyfit": ("2m * (deg+1)^2", r"$2m \cdot (\text{deg}+1)^2$"),
+    "poly": ("n^2", r"$n^2$"),
+    "roots": ("10n^3", r"$10n^3$"),
+    "bartlett": ("n", "$n$"),
+    "blackman": ("3n", "$3n$"),
+    "hamming": ("n", "$n$"),
+    "hanning": ("n", "$n$"),
+    "kaiser": ("3n", "$3n$"),
+    "unwrap": ("numel(input)", r"$\text{numel}(\text{input})$"),
+}
+
+CATEGORY_COST_LATEX: dict[str, tuple[str, str]] = {
+    "free": ("0", "$0$"),
+    "counted_unary": ("numel(output)", r"$\text{numel}(\text{output})$"),
+    "counted_binary": ("numel(output)", r"$\text{numel}(\text{output})$"),
+    "counted_reduction": ("numel(input)", r"$\text{numel}(\text{input})$"),
+    "counted_custom": ("per-operation", "varies"),
+    "blacklisted": ("N/A", "N/A"),
+}
+
+
+# ---------------------------------------------------------------------------
+# Helper functions for op references and cost lookup
+# ---------------------------------------------------------------------------
+
+def mechestim_ref(name: str, module: str) -> str:
+    """Derive the mechestim call reference from an op name and registry module."""
+    if module == "numpy.linalg":
+        return f"`me.linalg.{name.removeprefix('linalg.')}`"
+    if module == "numpy.fft":
+        return f"`me.fft.{name.removeprefix('fft.')}`"
+    if module == "numpy.random":
+        return f"`me.random.{name.removeprefix('random.')}`"
+    return f"`me.{name}`"
+
+
+def numpy_ref(name: str, module: str) -> str:
+    """Derive the NumPy call reference from an op name and registry module."""
+    if module == "numpy.linalg":
+        return f"`np.linalg.{name.removeprefix('linalg.')}`"
+    if module == "numpy.fft":
+        return f"`np.fft.{name.removeprefix('fft.')}`"
+    if module == "numpy.random":
+        return f"`np.random.{name.removeprefix('random.')}`"
+    return f"`np.{name}`"
+
+
+def cost_for_op(name: str, category: str) -> tuple[str, str]:
+    """Return (plain_text, latex) cost formula for an operation."""
+    if name in CUSTOM_COSTS:
+        return CUSTOM_COSTS[name]
+    return CATEGORY_COST_LATEX.get(category, ("unknown", "unknown"))
+
 
 def generate_audit_page(registry: dict[str, dict]) -> None:
     """Generate docs/reference/operation-audit.md from the registry."""
