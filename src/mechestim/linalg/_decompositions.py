@@ -23,7 +23,7 @@ def cholesky_cost(n: int) -> int:
     Returns
     -------
     int
-        Estimated FLOP count: n**3 / 3.
+        Estimated FLOP count: $n^3 / 3$.
 
     Notes
     -----
@@ -60,7 +60,7 @@ def qr_cost(m: int, n: int) -> int:
     Returns
     -------
     int
-        Estimated FLOP count: 2mn**2 - (2/3)n**3 (for m >= n).
+        Estimated FLOP count: $2mn^2 - (2/3)n^3$ (for $m \geq n$).
 
     Notes
     -----
@@ -97,13 +97,13 @@ def eig_cost(n: int) -> int:
     Returns
     -------
     int
-        Estimated FLOP count: 10n**3.
+        Estimated FLOP count: $10n^3$.
 
     Notes
     -----
     Source: Golub & Van Loan, *Matrix Computations*, 4th ed., §7.5.
     Assumes Francis double-shift QR algorithm. The constant ~10 accounts
-    for Hessenberg reduction (~10n**3/3) plus ~2 QR iterations per
+    for Hessenberg reduction (~$10n^3/3$) plus ~2 QR iterations per
     eigenvalue. This is an accepted asymptotic estimate; actual count
     is data-dependent.
     """
@@ -135,7 +135,7 @@ def eigh_cost(n: int) -> int:
     Returns
     -------
     int
-        Estimated FLOP count: (4/3)n**3.
+        Estimated FLOP count: $(4/3)n^3$.
 
     Notes
     -----
@@ -172,7 +172,7 @@ def eigvals_cost(n: int) -> int:
     Returns
     -------
     int
-        Estimated FLOP count: 10n**3.
+        Estimated FLOP count: $10n^3$.
 
     Notes
     -----
@@ -207,7 +207,7 @@ def eigvalsh_cost(n: int) -> int:
     Returns
     -------
     int
-        Estimated FLOP count: (4/3)n**3.
+        Estimated FLOP count: $(4/3)n^3$.
 
     Notes
     -----

@@ -596,7 +596,7 @@ def corrcoef(x, y=None, **kwargs):
     budget.deduct("corrcoef", flop_cost=_builtins.max(cost, 1), subscripts=None, shapes=(x.shape,))
     return _np.corrcoef(x, y=y, **kwargs)
 
-attach_docstring(corrcoef, _np.corrcoef, "counted_custom", "n^2 FLOPs")
+attach_docstring(corrcoef, _np.corrcoef, "counted_custom", r"$n^2$ FLOPs")
 
 
 def cov(m, y=None, **kwargs):
@@ -608,7 +608,7 @@ def cov(m, y=None, **kwargs):
     budget.deduct("cov", flop_cost=_builtins.max(cost, 1), subscripts=None, shapes=(m.shape,))
     return _np.cov(m, y=y, **kwargs)
 
-attach_docstring(cov, _np.cov, "counted_custom", "n^2 FLOPs")
+attach_docstring(cov, _np.cov, "counted_custom", r"$n^2$ FLOPs")
 
 
 def trapezoid(y, x=None, dx=1.0, axis=-1):

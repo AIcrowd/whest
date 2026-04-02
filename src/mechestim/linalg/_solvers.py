@@ -26,7 +26,7 @@ def solve_cost(n: int, nrhs: int = 1, symmetric: bool = False) -> int:
 
     Notes
     -----
-    Uses n**3/3 + n*nrhs for Cholesky (symmetric), or 2n**3/3 + n**2*nrhs
+    Uses $n^3/3 + n \cdot n_{\text{rhs}}$ for Cholesky (symmetric), or $2n^3/3 + n^2 \cdot n_{\text{rhs}}$
     for LU (general). Source: Golub & Van Loan, *Matrix Computations*, 4th ed.
     """
     if symmetric:
@@ -70,8 +70,8 @@ def inv_cost(n: int, symmetric: bool = False) -> int:
 
     Notes
     -----
-    Uses n**3/3 + n**3/2 for symmetric input (Cholesky + back-substitution),
-    or n**3 for general input (LU-based).
+    Uses $n^3/3 + n^3/2$ for symmetric input (Cholesky + back-substitution),
+    or $n^3$ for general input (LU-based).
     """
     if symmetric:
         return max(n ** 3 // 3 + n ** 3 // 2, 1)
@@ -185,7 +185,7 @@ def tensorsolve_cost(a_shape: tuple, ind: int | None = None) -> int:
     Returns
     -------
     int
-        Estimated FLOP count: n**3 where n = product of trailing dims.
+        Estimated FLOP count: $n^3$ where $n$ = product of trailing dims.
 
     Notes
     -----
@@ -224,7 +224,7 @@ def tensorinv_cost(a_shape: tuple, ind: int = 2) -> int:
     Returns
     -------
     int
-        Estimated FLOP count: n**3 where n = product of leading dims.
+        Estimated FLOP count: $n^3$ where $n$ = product of leading dims.
 
     Notes
     -----

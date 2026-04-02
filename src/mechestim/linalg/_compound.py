@@ -80,7 +80,7 @@ def matrix_power_cost(n: int, k: int) -> int:
 
     Notes
     -----
-    Uses exponentiation by repeated squaring. For k < 0, adds n**3 for
+    Uses exponentiation by repeated squaring. For $k < 0$, adds $n^3$ for
     the initial matrix inversion.
     """
     if k == 0 or k == 1:

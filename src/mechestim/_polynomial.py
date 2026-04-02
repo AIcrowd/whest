@@ -52,12 +52,12 @@ def polyfit_cost(m: int, deg: int) -> int:
 
 
 def poly_cost(n: int) -> int:
-    """Cost for poly: n^2 FLOPs."""
+    """Cost for poly: $n^2$ FLOPs."""
     return max(n * n, 1)
 
 
 def roots_cost(n: int) -> int:
-    """Cost for roots: 10 * n^3 FLOPs (companion matrix eigendecomposition)."""
+    """Cost for roots: $10n^3$ FLOPs (companion matrix eigendecomposition)."""
     return max(10 * n ** 3, 1)
 
 
