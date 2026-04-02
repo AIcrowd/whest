@@ -65,6 +65,20 @@ with me.BudgetContext(flop_budget=10**8) as budget:
     print(budget.summary())
 ```
 
+```
+mechestim FLOP Budget Summary
+==============================
+  Total budget:     100,000,000
+  Used:                 656,389  (0.7%)
+  Remaining:         99,343,611  (99.3%)
+
+  By operation:
+    multiply              327,680  ( 49.9%)  [5 calls]
+    einsum                327,680  ( 49.9%)  [5 calls]
+    maximum                 1,024  (  0.2%)  [4 calls]
+    sqrt                        5  (  0.0%)  [5 calls]
+```
+
 ## Installation
 
 ```bash
