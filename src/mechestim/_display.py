@@ -50,11 +50,15 @@ def _plain_text_summary() -> str:
             label = ns if ns is not None else "(default)"
             lines.append(f"  [{label}]")
             lines.append(f"    Budget:  {_format_flops(ns_data['flop_budget']):>16}")
-            lines.append(f"    Used:    {_format_flops(ns_data['flops_used']):>16}  ({_pct(ns_data['flops_used'], ns_data['flop_budget'])})")
+            lines.append(
+                f"    Used:    {_format_flops(ns_data['flops_used']):>16}  ({_pct(ns_data['flops_used'], ns_data['flop_budget'])})"
+            )
             ops = ns_data.get("operations", {})
             if ops:
                 lines.append("    Operations:")
-                for op_name, op_info in sorted(ops.items(), key=lambda x: -x[1]["flop_cost"]):
+                for op_name, op_info in sorted(
+                    ops.items(), key=lambda x: -x[1]["flop_cost"]
+                ):
                     call_word = "call" if op_info["calls"] == 1 else "calls"
                     op_pct = _pct(op_info["flop_cost"], ns_data["flops_used"])
                     lines.append(
@@ -87,7 +91,11 @@ def _rich_summary():
 
     color = _usage_color(data["flops_used"], data["flop_budget"])
 
-    table = Table(title="mechestim FLOP Budget Summary", show_header=True, header_style="bold cyan")
+    table = Table(
+        title="mechestim FLOP Budget Summary",
+        show_header=True,
+        header_style="bold cyan",
+    )
     table.add_column("Metric", style="bold")
     table.add_column("Value", justify="right")
     table.add_column("%", justify="right")
@@ -114,10 +122,14 @@ def _rich_summary():
             table.add_row(
                 Text(f"  {label}", style="bold"),
                 Text(_format_flops(ns_data["flops_used"]), style=ns_color),
-                Text(_pct(ns_data["flops_used"], ns_data["flop_budget"]), style=ns_color),
+                Text(
+                    _pct(ns_data["flops_used"], ns_data["flop_budget"]), style=ns_color
+                ),
             )
             ops = ns_data.get("operations", {})
-            for op_name, op_info in sorted(ops.items(), key=lambda x: -x[1]["flop_cost"]):
+            for op_name, op_info in sorted(
+                ops.items(), key=lambda x: -x[1]["flop_cost"]
+            ):
                 call_word = "call" if op_info["calls"] == 1 else "calls"
                 table.add_row(
                     f"    {op_name}",
@@ -132,6 +144,7 @@ def render_budget_summary():
     """Return a Rich renderable if Rich is installed, otherwise plain text."""
     try:
         import rich  # noqa: F401
+
         return _rich_summary()
     except ImportError:
         return _plain_text_summary()
@@ -184,5 +197,6 @@ def budget_summary():
             print(result)
         else:
             from rich.console import Console
+
             Console().print(result)
         return None

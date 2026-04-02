@@ -7,7 +7,6 @@ import pytest
 
 from mechestim._budget import (
     BudgetContext,
-    _get_global_default,
     _reset_global_default,
     get_active_budget,
 )

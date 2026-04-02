@@ -31,7 +31,13 @@ from mechestim import (
     linalg,  # noqa: F401
     random,  # noqa: F401
 )
-from mechestim._budget import BudgetContext, OpRecord, budget, budget_data, budget_reset  # noqa: F401
+from mechestim._budget import (  # noqa: F401
+    BudgetContext,
+    OpRecord,
+    budget,
+    budget_data,
+    budget_reset,
+)
 from mechestim._display import budget_live, budget_summary  # noqa: F401
 
 # --- Einsum ---

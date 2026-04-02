@@ -1,6 +1,5 @@
 """Tests for BudgetContext decorator form."""
 
-import numpy as np
 import pytest
 
 from mechestim._budget import BudgetContext, budget, get_active_budget

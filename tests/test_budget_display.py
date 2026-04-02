@@ -5,7 +5,7 @@ from unittest.mock import patch
 import pytest
 
 from mechestim._budget import BudgetContext
-from mechestim._display import render_budget_summary, _plain_text_summary, budget_live
+from mechestim._display import _plain_text_summary, budget_live, render_budget_summary
 
 
 def test_plain_text_summary_single_namespace():
@@ -41,7 +41,10 @@ def test_render_budget_summary_falls_back_to_text():
     with BudgetContext(flop_budget=1000, namespace="test", quiet=True) as ctx:
         ctx.deduct("add", flop_cost=100, subscripts=None, shapes=())
 
-    with patch.dict("sys.modules", {"rich": None, "rich.panel": None, "rich.table": None, "rich.text": None}):
+    with patch.dict(
+        "sys.modules",
+        {"rich": None, "rich.panel": None, "rich.table": None, "rich.text": None},
+    ):
         result = render_budget_summary()
         assert isinstance(result, str)
         assert "test" in result
@@ -56,6 +59,7 @@ def test_render_budget_summary_with_rich():
 
     result = render_budget_summary()
     from rich.table import Table
+
     assert isinstance(result, Table)
 
 

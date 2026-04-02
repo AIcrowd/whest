@@ -212,7 +212,10 @@ def _get_global_default() -> BudgetContext:
 def _reset_global_default() -> None:
     """Reset the global default context. For testing and core library use."""
     global _global_default
-    if _global_default is not None and getattr(_thread_local, "active_budget", None) is _global_default:
+    if (
+        _global_default is not None
+        and getattr(_thread_local, "active_budget", None) is _global_default
+    ):
         _thread_local.active_budget = None
     _global_default = None
 
@@ -280,7 +283,10 @@ class BudgetAccumulator:
                 by_ns[ns]["flops_used"] += rec.flops_used
                 for op in rec.op_log:
                     if op.op_name not in by_ns[ns]["operations"]:
-                        by_ns[ns]["operations"][op.op_name] = {"flop_cost": 0, "calls": 0}
+                        by_ns[ns]["operations"][op.op_name] = {
+                            "flop_cost": 0,
+                            "calls": 0,
+                        }
                     by_ns[ns]["operations"][op.op_name]["flop_cost"] += op.flop_cost
                     by_ns[ns]["operations"][op.op_name]["calls"] += 1
             result["by_namespace"] = by_ns

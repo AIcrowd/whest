@@ -1,12 +1,8 @@
 """Tests for BudgetAccumulator and budget_data()."""
 
-import pytest
-
 from mechestim._budget import (
     BudgetContext,
-    BudgetAccumulator,
     NamespaceRecord,
-    _reset_global_default,
     budget_data,
     budget_reset,
 )
