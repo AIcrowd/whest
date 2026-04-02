@@ -1,10 +1,8 @@
 """Tests for linalg compound operation wrappers with FLOP counting."""
 
 import numpy
-import pytest
 
 from mechestim._budget import BudgetContext
-from mechestim.errors import NoBudgetContextError
 
 
 class TestMultiDot:
@@ -87,8 +85,9 @@ class TestMatrixPower:
             # inv: n^3 + power k=2: (1+1-1)*n^3 = n^3, total = 2*n^3
             assert budget.flops_used == 2 * n**3
 
-    def test_outside_context_raises(self):
+    def test_outside_context_uses_global_default(self):
         from mechestim.linalg import matrix_power
 
-        with pytest.raises(NoBudgetContextError):
-            matrix_power(numpy.eye(3), 2)
+        # Operations now auto-activate the global default budget instead of raising
+        result = matrix_power(numpy.eye(3), 2)
+        assert result.shape == (3, 3)

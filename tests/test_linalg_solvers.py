@@ -1,10 +1,8 @@
 """Tests for linalg solver wrappers with FLOP counting."""
 
 import numpy
-import pytest
 
 from mechestim._budget import BudgetContext
-from mechestim.errors import NoBudgetContextError
 
 
 class TestSolve:
@@ -36,11 +34,12 @@ class TestSolve:
             solve(A, b)
             assert budget.op_log[-1].op_name == "linalg.solve"
 
-    def test_outside_context_raises(self):
+    def test_outside_context_uses_global_default(self):
         from mechestim.linalg import solve
 
-        with pytest.raises(NoBudgetContextError):
-            solve(numpy.eye(3), numpy.ones(3))
+        # Operations now auto-activate the global default budget instead of raising
+        result = solve(numpy.eye(3), numpy.ones(3))
+        assert result.shape == (3,)
 
 
 class TestInv:

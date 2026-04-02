@@ -2,10 +2,8 @@
 """Tests for linalg namespace aliases that delegate to top-level mechestim ops."""
 
 import numpy
-import pytest
 
 from mechestim._budget import BudgetContext
-from mechestim.errors import NoBudgetContextError
 
 
 class TestLinalgMatmul:
@@ -27,11 +25,12 @@ class TestLinalgMatmul:
             matmul(A, B)
             assert budget.flops_used > 0
 
-    def test_outside_context_raises(self):
+    def test_outside_context_uses_global_default(self):
         from mechestim.linalg import matmul
 
-        with pytest.raises(NoBudgetContextError):
-            matmul(numpy.ones((2, 2)), numpy.ones((2, 2)))
+        # Operations now auto-activate the global default budget instead of raising
+        result = matmul(numpy.ones((2, 2)), numpy.ones((2, 2)))
+        assert result.shape == (2, 2)
 
 
 class TestLinalgCross:

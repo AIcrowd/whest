@@ -4,7 +4,6 @@ import numpy
 import pytest
 
 from mechestim._budget import BudgetContext
-from mechestim.errors import NoBudgetContextError
 from mechestim.linalg import svd
 
 
@@ -58,8 +57,9 @@ def test_svd_k_too_large():
 
 
 def test_svd_outside_context():
-    with pytest.raises(NoBudgetContextError):
-        svd(numpy.ones((3, 3)))
+    # Operations now auto-activate the global default budget instead of raising
+    U, S, Vt = svd(numpy.ones((3, 3)))
+    assert S.shape == (3,)
 
 
 def test_svd_op_log():

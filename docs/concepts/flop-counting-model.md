@@ -62,6 +62,18 @@ with me.BudgetContext(flop_budget=10**6, flop_multiplier=2.0) as budget:
 
 This is useful for experimentation or adjusting the difficulty of a budget constraint.
 
+## Namespaces
+
+The `namespace` parameter in `BudgetContext` is a display-only label for grouping operations in summaries:
+
+```python
+with me.BudgetContext(flop_budget=10**6, namespace="training") as budget:
+    # Operations are tagged with "training" for display
+    ...
+```
+
+Namespaces do not affect FLOP counting or budget enforcement — they only appear in `me.budget_summary()` output.
+
 ## 📎 Related pages
 
 - [Operation Categories](./operation-categories.md) — which operations are free, counted, or unsupported

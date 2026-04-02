@@ -2,10 +2,8 @@
 """Tests for linalg decomposition wrappers with FLOP counting."""
 
 import numpy
-import pytest
 
 from mechestim._budget import BudgetContext
-from mechestim.errors import NoBudgetContextError
 
 
 class TestCholesky:
@@ -35,11 +33,12 @@ class TestCholesky:
             cholesky(A)
             assert budget.op_log[-1].op_name == "linalg.cholesky"
 
-    def test_outside_context_raises(self):
+    def test_outside_context_uses_global_default(self):
         from mechestim.linalg import cholesky
 
-        with pytest.raises(NoBudgetContextError):
-            cholesky(numpy.eye(3))
+        # Operations now auto-activate the global default budget instead of raising
+        result = cholesky(numpy.eye(3))
+        assert result.shape == (3, 3)
 
 
 class TestQR:

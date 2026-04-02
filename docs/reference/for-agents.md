@@ -77,15 +77,25 @@ Use this to:
 
 ## Five rules for generating mechestim code
 
-**1. Always wrap computation in a BudgetContext.**
+**1. A global default budget is active automatically — use `BudgetContext` for control.**
+
+A global default budget auto-activates when mechestim is imported, so quick
+scripts work without any setup. For precise budget control and namespacing,
+use an explicit `BudgetContext`. Both forms are valid:
 
 ```python
-with me.BudgetContext(flop_budget=10**8) as budget:
-    # all counted ops go here
-```
+# Quick work — global default handles budget tracking automatically
+result = me.einsum('ij,jk->ik', A, B)
 
-Calling a counted operation outside a `BudgetContext` raises
-`NoBudgetContextError`.
+# Recommended for budget control and namespacing
+with me.BudgetContext(flop_budget=10**8) as budget:
+    result = me.einsum('ij,jk->ik', A, B)
+
+# Decorator form for functions
+@me.BudgetContext(flop_budget=10**8)
+def my_forward_pass(x):
+    return me.einsum('ij,j->i', W, x)
+```
 
 **2. Know what's free and what's counted.**
 
@@ -129,11 +139,11 @@ index dimensions: `'ij,jk->ik'` with shapes `(m, k)` and `(k, n)` costs
 | Mistake | What happens | Fix |
 |---------|-------------|-----|
 | Using `np.einsum` instead of `me.einsum` | FLOPs not counted, budget not checked | Always use `me.*` for operations you want tracked |
-| Forgetting `BudgetContext` | `NoBudgetContextError` raised | Wrap in `with me.BudgetContext(...)` |
+| Skipping `BudgetContext` entirely | No error (global default handles it), but budget is harder to track and namespace | Use an explicit `BudgetContext` for any work you want to measure or label |
 | Assuming `sort` costs FLOPs | Overestimates budget usage | `sort` is free — check the cheat sheet |
 | Using `me.save()` or `me.load()` | `AttributeError` — blocked | Use `numpy` directly for I/O |
 | Calling `x.copy()` then passing both to einsum | No symmetry savings (different objects) | Pass the same Python object for savings |
-| Nesting `BudgetContext` blocks | `RuntimeError` | Use a single budget context |
+| Nesting two explicit `BudgetContext` blocks | `RuntimeError` | Use a single explicit context; nesting with the global default is fine |
 
 ## 📎 Related pages
 

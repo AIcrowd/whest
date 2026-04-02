@@ -20,6 +20,9 @@ COPY docker/lockdown/ /build/lockdown/
 RUN python /build/lockdown/generate_constants.py \
     $(python -c "import sysconfig; print(sysconfig.get_paths()['purelib'])")/mechestim/_constants.py
 
+# Collect needed shared libraries BEFORE stripping (needs full access)
+RUN python /build/lockdown/collect_libs.py /needed-libs
+
 # Strip the stdlib to the allowlist
 RUN python /build/lockdown/strip_stdlib.py
 
@@ -32,24 +35,30 @@ RUN SITE=$(python -c "import sysconfig; print(sysconfig.get_paths()['purelib'])"
 # Verify lockdown works
 RUN ! python -c "import numpy" 2>/dev/null && echo "GOOD: numpy is not installed"
 RUN python -c "import mechestim; print('GOOD: mechestim loads under lockdown')"
-RUN python -c "open('/etc/passwd')" 2>&1 | grep -q "PermissionError" && echo "GOOD: open is restricted" || echo "WARN: open restriction check inconclusive"
 
 # =============================================================================
-# Stage 2: Final — distroless image with only what we need
+# Stage 2: Final — minimal base with only what we need
 # =============================================================================
-FROM gcr.io/distroless/python3-debian12
+FROM debian:trixie-slim
 
-# Copy the stripped Python stdlib
+# Copy the Python runtime (binary + stripped stdlib + site-packages)
 COPY --from=builder /usr/local/lib/python3.10/ /usr/local/lib/python3.10/
-
-# Copy the Python binary
 COPY --from=builder /usr/local/bin/python3.10 /usr/local/bin/python3.10
-COPY --from=builder /usr/local/bin/python3 /usr/local/bin/python3
-
-# Copy shared libraries needed by Python and C extensions (pyzmq)
 COPY --from=builder /usr/local/lib/libpython3.10.so* /usr/local/lib/
-COPY --from=builder /usr/lib/ /usr/lib/
-COPY --from=builder /lib/ /lib/
+
+# Setup: symlink, ldconfig, copy needed libs, then strip the image
+COPY --from=builder /needed-libs/ /tmp/needed-libs/
+RUN ln -sf /usr/local/bin/python3.10 /usr/local/bin/python3 && \
+    # Merge needed system libs (don't overwrite base image libs)
+    cp -rn /tmp/needed-libs/* / 2>/dev/null; \
+    rm -rf /tmp/needed-libs && \
+    ldconfig && \
+    # Remove shell, utilities, and unnecessary files for lockdown
+    rm -f /bin/sh /bin/bash /bin/dash /usr/bin/dpkg* /usr/bin/apt* && \
+    rm -rf /var/cache /var/log /var/lib/apt /var/lib/dpkg \
+           /root /home /opt /usr/share/doc /usr/share/man \
+           /usr/share/locale /usr/share/zoneinfo /usr/share/lintian \
+           /usr/lib/python3* /usr/lib/apt
 
 # Copy the entrypoint
 COPY docker/entrypoint.py /entrypoint.py
@@ -57,4 +66,4 @@ COPY docker/entrypoint.py /entrypoint.py
 ENV MECHESTIM_SERVER_URL=ipc:///ipc/mechestim.sock
 ENV PYTHONDONTWRITEBYTECODE=1
 
-ENTRYPOINT ["python3", "/entrypoint.py"]
+ENTRYPOINT ["/usr/local/bin/python3.10", "/entrypoint.py"]

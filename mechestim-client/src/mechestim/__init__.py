@@ -26,7 +26,8 @@ __version__ = "0.1.0"
 # ---------------------------------------------------------------------------
 # Budget
 # ---------------------------------------------------------------------------
-from mechestim._budget import BudgetContext, OpRecord  # noqa: E402
+from mechestim._budget import BudgetContext, OpRecord, budget, budget_data  # noqa: E402
+from mechestim._display import budget_live, budget_summary  # noqa: E402
 from mechestim._math_compat import e, inf, nan, pi  # noqa: E402
 
 # ---------------------------------------------------------------------------
