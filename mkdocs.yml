@@ -107,6 +107,14 @@ nav:
   - Troubleshooting: troubleshooting/common-errors.md
   - Changelog: changelog.md
 
+validation:
+  links:
+    # llms.txt and llms-full.txt are generated into the site root at
+    # build time by the llmstxt-md plugin, so they don't exist in the
+    # docs/ source tree.  Demote "not found" for doc links to info so
+    # these don't abort --strict builds.  Nav links stay at warn.
+    not_found: info
+
 extra_javascript:
   - javascripts/mathjax.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
