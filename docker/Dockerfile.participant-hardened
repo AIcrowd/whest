@@ -1,0 +1,80 @@
+# =============================================================================
+# Stage 1: Builder — install packages, strip stdlib
+# =============================================================================
+FROM python:3.10-slim AS builder
+
+WORKDIR /build
+
+# Install mechestim-client (with pyzmq and msgpack)
+COPY mechestim-client/ /build/mechestim-client/
+RUN pip install --no-cache-dir /build/mechestim-client/
+
+# Verify the client installed and numpy is NOT available
+RUN python -c "import mechestim; print(f'mechestim-client {mechestim.__version__} installed')"
+RUN ! python -c "import numpy" 2>/dev/null && echo "GOOD: numpy is not installed"
+
+# Copy lockdown scripts
+COPY docker/lockdown/ /build/lockdown/
+
+# Generate _constants.py from the real math module BEFORE stripping
+RUN python /build/lockdown/generate_constants.py \
+    $(python -c "import sysconfig; print(sysconfig.get_paths()['purelib'])")/mechestim/_constants.py
+
+# Strip the stdlib to the allowlist
+RUN python /build/lockdown/strip_stdlib.py
+
+# Copy lockdown files into the Python site-packages area so sitecustomize.py
+# is found at startup, and allowlist.py is alongside it
+RUN SITE=$(python -c "import sysconfig; print(sysconfig.get_paths()['purelib'])") && \
+    cp /build/lockdown/sitecustomize.py "$SITE/sitecustomize.py" && \
+    cp /build/lockdown/allowlist.py "$SITE/allowlist.py"
+
+# Verify lockdown works: blocked modules should fail
+RUN python -c "
+try:
+    import math
+    exit(1)
+except ImportError:
+    print('GOOD: math is blocked')
+"
+RUN python -c "
+try:
+    exec('1+1')
+    exit(1)
+except RuntimeError:
+    print('GOOD: exec is disabled')
+"
+RUN python -c "
+try:
+    open('/etc/passwd')
+    exit(1)
+except PermissionError:
+    print('GOOD: open is restricted')
+"
+# Verify mechestim still works
+RUN python -c "import mechestim; print('GOOD: mechestim loads under lockdown')"
+
+# =============================================================================
+# Stage 2: Final — distroless image with only what we need
+# =============================================================================
+FROM gcr.io/distroless/python3-debian12
+
+# Copy the stripped Python stdlib
+COPY --from=builder /usr/local/lib/python3.10/ /usr/local/lib/python3.10/
+
+# Copy the Python binary
+COPY --from=builder /usr/local/bin/python3.10 /usr/local/bin/python3.10
+COPY --from=builder /usr/local/bin/python3 /usr/local/bin/python3
+
+# Copy shared libraries needed by Python and C extensions (pyzmq)
+COPY --from=builder /usr/local/lib/libpython3.10.so* /usr/local/lib/
+COPY --from=builder /usr/lib/ /usr/lib/
+COPY --from=builder /lib/ /lib/
+
+# Copy the entrypoint
+COPY docker/entrypoint.py /entrypoint.py
+
+ENV MECHESTIM_SERVER_URL=ipc:///tmp/ipc/mechestim.sock
+ENV PYTHONDONTWRITEBYTECODE=1
+
+ENTRYPOINT ["python3", "/entrypoint.py"]
