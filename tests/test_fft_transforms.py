@@ -2,10 +2,8 @@
 import math
 
 import numpy
-import pytest
 
 from mechestim._budget import BudgetContext
-from mechestim.errors import NoBudgetContextError
 
 
 class TestFft:
@@ -42,11 +40,12 @@ class TestFft:
             fft(x)
             assert budget.op_log[-1].op_name == "fft.fft"
 
-    def test_outside_context_raises(self):
+    def test_outside_context_uses_global_default(self):
         from mechestim.fft import fft
 
-        with pytest.raises(NoBudgetContextError):
-            fft(numpy.ones(8))
+        # Operations now auto-activate the global default budget instead of raising
+        result = fft(numpy.ones(8))
+        assert result.shape == (8,)
 
 
 class TestIfft:

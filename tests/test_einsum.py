@@ -5,7 +5,7 @@ import pytest
 
 from mechestim._budget import BudgetContext
 from mechestim._einsum import einsum
-from mechestim.errors import BudgetExhaustedError, NoBudgetContextError, SymmetryError
+from mechestim.errors import BudgetExhaustedError, SymmetryError
 
 
 def test_matmul_result():
@@ -84,8 +84,9 @@ def test_symmetric_dims_invalid():
 
 
 def test_outside_context():
-    with pytest.raises(NoBudgetContextError):
-        einsum("ij,jk->ik", numpy.ones((3, 4)), numpy.ones((4, 5)))
+    # Operations now auto-activate the global default budget instead of raising
+    result = einsum("ij,jk->ik", numpy.ones((3, 4)), numpy.ones((4, 5)))
+    assert result.shape == (3, 5)
 
 
 def test_budget_exceeded():

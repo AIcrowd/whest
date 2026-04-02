@@ -19,7 +19,6 @@ from mechestim._pointwise import (
     std,
     sum,
 )
-from mechestim.errors import NoBudgetContextError
 
 
 def test_exp_result():
@@ -131,8 +130,9 @@ def test_matmul_result():
 
 
 def test_counted_op_outside_context():
-    with pytest.raises(NoBudgetContextError):
-        exp(numpy.ones((3,)))
+    # Operations now auto-activate the global default budget instead of raising
+    result = exp(numpy.ones((3,)))
+    assert result.shape == (3,)
 
 
 def test_nan_warning():

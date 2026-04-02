@@ -7,15 +7,17 @@ import warnings
 import numpy as np
 
 from mechestim._budget import get_active_budget
-from mechestim.errors import MechEstimWarning, NoBudgetContextError
+from mechestim.errors import MechEstimWarning
 
 
 def require_budget():
-    """Return the active budget or raise NoBudgetContextError."""
+    """Return the active budget, auto-activating the global default if needed."""
     budget = get_active_budget()
-    if budget is None:
-        raise NoBudgetContextError()
-    return budget
+    if budget is not None:
+        return budget
+    from mechestim._budget import _get_global_default
+
+    return _get_global_default()
 
 
 def validate_ndarray(*arrays: object) -> None:

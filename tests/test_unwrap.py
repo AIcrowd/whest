@@ -1,8 +1,6 @@
 import numpy
-import pytest
 
 from mechestim._budget import BudgetContext
-from mechestim.errors import NoBudgetContextError
 
 
 class TestUnwrap:
@@ -21,8 +19,9 @@ class TestUnwrap:
             unwrap(x)
             assert budget.flops_used == 20
 
-    def test_outside_context_raises(self):
+    def test_outside_context_uses_global_default(self):
         from mechestim import unwrap
 
-        with pytest.raises(NoBudgetContextError):
-            unwrap(numpy.ones(5))
+        # Operations now auto-activate the global default budget instead of raising
+        result = unwrap(numpy.ones(5))
+        assert result.shape == (5,)

@@ -54,6 +54,7 @@ class BudgetContext:
         self._op_log: list[OpRecord] = []
         self._quiet = quiet
         self._namespace = namespace
+        self._previous_budget: BudgetContext | None = None
 
     @property
     def flop_budget(self) -> int:
@@ -126,8 +127,10 @@ class BudgetContext:
         return "\n".join(lines)
 
     def __enter__(self) -> BudgetContext:
-        if get_active_budget() is not None:
+        current = get_active_budget()
+        if current is not None and current is not _global_default:
             raise RuntimeError("Cannot nest BudgetContexts")
+        self._previous_budget = current  # save (may be global default or None)
         _thread_local.active_budget = self
         if not self._quiet:
             import sys
@@ -143,7 +146,7 @@ class BudgetContext:
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
-        _thread_local.active_budget = None
+        _thread_local.active_budget = self._previous_budget  # restore previous
         return None
 
     def __call__(self, func):
@@ -170,3 +173,41 @@ def budget(
         quiet=quiet,
         namespace=namespace,
     )
+
+
+# ---------------------------------------------------------------------------
+# Global default BudgetContext
+# ---------------------------------------------------------------------------
+
+_global_default: BudgetContext | None = None
+
+
+def _get_default_budget_amount() -> int:
+    """Read default budget from env var, falling back to 1e15."""
+    import os
+
+    raw = os.environ.get("MECHESTIM_DEFAULT_BUDGET")
+    if raw is not None:
+        return int(float(raw))
+    return int(1e15)
+
+
+def _get_global_default() -> BudgetContext:
+    """Return the global default BudgetContext, creating it lazily."""
+    global _global_default
+    if _global_default is None:
+        _global_default = BudgetContext(
+            flop_budget=_get_default_budget_amount(),
+            quiet=True,
+            namespace=None,
+        )
+        _thread_local.active_budget = _global_default
+    return _global_default
+
+
+def _reset_global_default() -> None:
+    """Reset the global default context. For testing and core library use."""
+    global _global_default
+    if _global_default is not None and getattr(_thread_local, "active_budget", None) is _global_default:
+        _thread_local.active_budget = None
+    _global_default = None

@@ -1,7 +1,6 @@
 """Tests for counted polynomial operations."""
 
 import numpy
-import pytest
 
 from mechestim._budget import BudgetContext
 from mechestim._polynomial import (
@@ -16,7 +15,6 @@ from mechestim._polynomial import (
     polyval,
     roots,
 )
-from mechestim.errors import NoBudgetContextError
 
 # ---------------------------------------------------------------------------
 # polyval
@@ -41,10 +39,11 @@ def test_polyval_cost():
 
 
 def test_polyval_no_budget():
+    # Operations now auto-activate the global default budget instead of raising
     p = numpy.array([1.0, 0.0])
     x = numpy.array([1.0])
-    with pytest.raises(NoBudgetContextError):
-        polyval(p, x)
+    result = polyval(p, x)
+    assert result.shape == (1,)
 
 
 # ---------------------------------------------------------------------------
@@ -70,8 +69,9 @@ def test_polyadd_cost():
 
 
 def test_polyadd_no_budget():
-    with pytest.raises(NoBudgetContextError):
-        polyadd([1.0], [2.0])
+    # Operations now auto-activate the global default budget instead of raising
+    result = polyadd([1.0], [2.0])
+    assert len(result) >= 1
 
 
 # ---------------------------------------------------------------------------
@@ -97,8 +97,9 @@ def test_polysub_cost():
 
 
 def test_polysub_no_budget():
-    with pytest.raises(NoBudgetContextError):
-        polysub([1.0], [2.0])
+    # Operations now auto-activate the global default budget instead of raising
+    result = polysub([1.0], [2.0])
+    assert len(result) >= 1
 
 
 # ---------------------------------------------------------------------------
@@ -122,8 +123,9 @@ def test_polyder_cost():
 
 
 def test_polyder_no_budget():
-    with pytest.raises(NoBudgetContextError):
-        polyder([1.0, 2.0])
+    # Operations now auto-activate the global default budget instead of raising
+    result = polyder([1.0, 2.0])
+    assert len(result) >= 1
 
 
 # ---------------------------------------------------------------------------
@@ -147,8 +149,9 @@ def test_polyint_cost():
 
 
 def test_polyint_no_budget():
-    with pytest.raises(NoBudgetContextError):
-        polyint([1.0, 2.0])
+    # Operations now auto-activate the global default budget instead of raising
+    result = polyint([1.0, 2.0])
+    assert len(result) >= 1
 
 
 # ---------------------------------------------------------------------------
@@ -174,8 +177,9 @@ def test_polymul_cost():
 
 
 def test_polymul_no_budget():
-    with pytest.raises(NoBudgetContextError):
-        polymul([1.0], [2.0])
+    # Operations now auto-activate the global default budget instead of raising
+    result = polymul([1.0], [2.0])
+    assert len(result) >= 1
 
 
 # ---------------------------------------------------------------------------
@@ -203,8 +207,9 @@ def test_polydiv_cost():
 
 
 def test_polydiv_no_budget():
-    with pytest.raises(NoBudgetContextError):
-        polydiv([1.0, 0.0], [1.0])
+    # Operations now auto-activate the global default budget instead of raising
+    q, r = polydiv([1.0, 0.0], [1.0])
+    assert len(q) >= 1
 
 
 # ---------------------------------------------------------------------------
@@ -230,8 +235,9 @@ def test_polyfit_cost():
 
 
 def test_polyfit_no_budget():
-    with pytest.raises(NoBudgetContextError):
-        polyfit([0.0, 1.0], [0.0, 1.0], 1)
+    # Operations now auto-activate the global default budget instead of raising
+    result = polyfit([0.0, 1.0], [0.0, 1.0], 1)
+    assert len(result) >= 1
 
 
 # ---------------------------------------------------------------------------
@@ -255,8 +261,9 @@ def test_poly_cost():
 
 
 def test_poly_no_budget():
-    with pytest.raises(NoBudgetContextError):
-        poly([1.0, 2.0])
+    # Operations now auto-activate the global default budget instead of raising
+    result = poly([1.0, 2.0])
+    assert len(result) >= 1
 
 
 # ---------------------------------------------------------------------------
@@ -281,8 +288,9 @@ def test_roots_cost():
 
 
 def test_roots_no_budget():
-    with pytest.raises(NoBudgetContextError):
-        roots([1.0, -1.0])
+    # Operations now auto-activate the global default budget instead of raising
+    result = roots([1.0, -1.0])
+    assert len(result) >= 1
 
 
 # ---------------------------------------------------------------------------
