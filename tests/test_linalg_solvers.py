@@ -21,7 +21,7 @@ class TestSolve:
         with BudgetContext(flop_budget=10**6) as budget:
             from mechestim.linalg import solve
             solve(A, b)
-            assert budget.flops_used == n**3
+            assert budget.flops_used == 2 * n**3 // 3 + n**2 * 1
 
     def test_op_log(self):
         A = numpy.eye(3)
