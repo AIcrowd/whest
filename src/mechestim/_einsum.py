@@ -31,6 +31,12 @@ def einsum(subscripts: str, *operands: _np.ndarray, symmetric_dims: list[tuple[i
     the cost is automatically reduced. If ``symmetric_dims`` is provided
     and the output passes validation, a ``SymmetricTensor`` is returned.
 
+    FLOP Cost
+    ---------
+    Product of all index dimensions, divided by symmetry factors
+    (repeated operands and symmetric dim groups). ``SymmetricTensor``
+    inputs further reduce cost based on unique element count.
+
     Parameters
     ----------
     subscripts : str
@@ -57,12 +63,6 @@ def einsum(subscripts: str, *operands: _np.ndarray, symmetric_dims: list[tuple[i
         If called outside a ``BudgetContext``.
     SymmetryError
         If ``symmetric_dims`` is provided but the result is not symmetric.
-
-    Notes
-    -----
-    **mechestim cost:** product of all index dimensions, divided by
-    symmetry factors (repeated operands and symmetric dim groups).
-    SymmetricTensor inputs further reduce cost based on unique element count.
 
     See Also
     --------

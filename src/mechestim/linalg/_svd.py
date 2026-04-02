@@ -11,6 +11,10 @@ def svd(a: _np.ndarray, k: int | None = None) -> tuple[_np.ndarray, _np.ndarray,
     Computes the top-*k* singular values and corresponding vectors
     of a 2-D matrix, wrapping ``numpy.linalg.svd`` with FLOP counting.
 
+    FLOP Cost
+    ---------
+    m × n × k FLOPs.
+
     Parameters
     ----------
     a : numpy.ndarray
