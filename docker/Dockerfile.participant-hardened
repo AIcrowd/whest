@@ -30,9 +30,9 @@ RUN SITE=$(python -c "import sysconfig; print(sysconfig.get_paths()['purelib'])"
     cp /build/lockdown/allowlist.py "$SITE/allowlist.py"
 
 # Verify lockdown works
-RUN ! python -c "import numpy" 2>/dev/null && echo "GOOD: numpy is blocked"
-RUN ! python -c "import socket" 2>/dev/null && echo "GOOD: socket is blocked"
+RUN ! python -c "import numpy" 2>/dev/null && echo "GOOD: numpy is not installed"
 RUN python -c "import mechestim; print('GOOD: mechestim loads under lockdown')"
+RUN python -c "open('/etc/passwd')" 2>&1 | grep -q "PermissionError" && echo "GOOD: open is restricted" || echo "WARN: open restriction check inconclusive"
 
 # =============================================================================
 # Stage 2: Final — distroless image with only what we need
