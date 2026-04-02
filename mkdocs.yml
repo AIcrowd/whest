@@ -4,9 +4,16 @@ repo_url: https://github.com/AIcrowd/mechestim
 
 theme:
   name: material
+  logo: assets/logo/logo.png
+  favicon: assets/logo/logo.png
   palette:
     scheme: default
     primary: indigo
+    accent: indigo
+  features:
+    - navigation.sections
+    - navigation.expand
+    - content.code.copy
 
 plugins:
   - search
@@ -20,16 +27,36 @@ plugins:
 
 nav:
   - Home: index.md
-  - Quick Start: quickstart.md
+  - Getting Started:
+    - Installation: getting-started/installation.md
+    - Your First Budget: getting-started/first-budget.md
+  - How-To Guides:
+    - Migrate from NumPy: how-to/migrate-from-numpy.md
+    - Use Einsum: how-to/use-einsum.md
+    - Exploit Symmetry: how-to/exploit-symmetry.md
+    - Use Linear Algebra: how-to/use-linalg.md
+    - Plan Your Budget: how-to/plan-your-budget.md
+    - Debug Budget Overruns: how-to/debug-budget-overruns.md
+  - Concepts:
+    - FLOP Counting Model: concepts/flop-counting-model.md
+    - Operation Categories: concepts/operation-categories.md
+  - Architecture:
+    - Client-Server Model: architecture/client-server.md
+    - Running with Docker: architecture/docker.md
   - API Reference:
     - Counted Operations: api/counted-ops.md
     - Free Operations: api/free-ops.md
     - Budget: api/budget.md
     - FLOP Cost Query: api/flops.md
     - Errors: api/errors.md
+  - Operation Audit: reference/operation-audit.md
+  - Troubleshooting: troubleshooting/common-errors.md
   - Changelog: changelog.md
 
 markdown_extensions:
-  - pymdownx.highlight
+  - pymdownx.highlight:
+      anchor_linenums: true
   - pymdownx.superfences
   - admonition
+  - pymdownx.details
+  - tables
