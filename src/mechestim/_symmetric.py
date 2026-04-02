@@ -60,3 +60,147 @@ class SymmetryInfo:
         for group in self.symmetric_dims:
             result *= factorial(len(group))
         return result
+
+
+# ---------------------------------------------------------------------------
+# Validation
+# ---------------------------------------------------------------------------
+
+def validate_symmetry(
+    data: np.ndarray,
+    symmetric_dims: list[tuple[int, ...]],
+) -> None:
+    """Validate that *data* has the claimed symmetry.
+
+    For each group, checks that all dims have equal sizes and that all
+    pairwise transpositions are satisfied within tolerance.
+
+    Raises
+    ------
+    SymmetryError
+        If the data is not symmetric along the claimed dims.
+    """
+    for group in symmetric_dims:
+        if len(group) < 2:
+            continue
+        # Check equal sizes.
+        sizes = [data.shape[d] for d in group]
+        if len(set(sizes)) != 1:
+            raise SymmetryError(dims=group, max_deviation=float("inf"))
+        # Check pairwise transpositions.
+        for i in range(len(group)):
+            for j in range(i + 1, len(group)):
+                axes = list(range(data.ndim))
+                axes[group[i]], axes[group[j]] = axes[group[j]], axes[group[i]]
+                transposed = data.transpose(axes)
+                if not np.allclose(data, transposed, atol=1e-6, rtol=1e-5):
+                    max_dev = float(np.max(np.abs(data - transposed)))
+                    raise SymmetryError(dims=group, max_deviation=max_dev)
+
+
+# ---------------------------------------------------------------------------
+# SymmetricTensor  (np.ndarray subclass)
+# ---------------------------------------------------------------------------
+
+class SymmetricTensor(np.ndarray):
+    """An ndarray that carries symmetry metadata.
+
+    Do not instantiate directly; use :func:`as_symmetric`.
+    """
+
+    def __new__(
+        cls,
+        input_array: np.ndarray,
+        symmetric_dims: list[tuple[int, ...]],
+    ) -> SymmetricTensor:
+        obj = np.asarray(input_array).view(cls)
+        obj._symmetric_dims = [tuple(sorted(g)) for g in symmetric_dims]
+        return obj
+
+    def __array_finalize__(self, obj: object) -> None:
+        if obj is None:
+            return
+        self._symmetric_dims = getattr(obj, "_symmetric_dims", None)
+
+    # -- public API --
+
+    @property
+    def symmetric_dims(self) -> list[tuple[int, ...]]:
+        """Symmetry groups carried by this tensor."""
+        return list(self._symmetric_dims) if self._symmetric_dims else []
+
+    @property
+    def symmetry_info(self) -> SymmetryInfo:
+        """Return a :class:`SymmetryInfo` for this tensor."""
+        return SymmetryInfo(
+            symmetric_dims=self.symmetric_dims,
+            shape=self.shape,
+        )
+
+    # -- slicing returns plain ndarray --
+
+    def __getitem__(self, key):  # type: ignore[override]
+        result = super().__getitem__(key)
+        if isinstance(result, np.ndarray):
+            return np.asarray(result)
+        return result
+
+    # -- copy preserves metadata --
+
+    def copy(self, order: str = "C") -> SymmetricTensor:  # type: ignore[override]
+        result = super().copy(order=order)
+        # super().copy() goes through __array_finalize__ which copies _symmetric_dims
+        # but result may have been cast to plain ndarray, so re-view:
+        out = result.view(SymmetricTensor)
+        out._symmetric_dims = list(self._symmetric_dims)
+        return out
+
+    # -- pickling --
+
+    def __reduce__(self):
+        # Use np.ndarray's pickle + our metadata
+        pickled_state = super().__reduce__()
+        # pickled_state is (reconstruct, args, state)
+        new_state = pickled_state[2] + (self._symmetric_dims,)
+        return (pickled_state[0], pickled_state[1], new_state)
+
+    def __setstate__(self, state):
+        # Last element is our _symmetric_dims
+        self._symmetric_dims = state[-1]
+        super().__setstate__(state[:-1])
+
+
+# ---------------------------------------------------------------------------
+# Factory
+# ---------------------------------------------------------------------------
+
+def as_symmetric(
+    data: np.ndarray,
+    dims: tuple[int, ...] | list[tuple[int, ...]],
+) -> SymmetricTensor:
+    """Wrap *data* as a :class:`SymmetricTensor` after validating symmetry.
+
+    Parameters
+    ----------
+    data : numpy.ndarray
+        The tensor data.
+    dims : tuple of int or list of tuple of int
+        A single symmetry group ``(0, 1)`` or a list ``[(0, 1), (2, 3)]``.
+
+    Returns
+    -------
+    SymmetricTensor
+
+    Raises
+    ------
+    SymmetryError
+        If the data does not satisfy the claimed symmetry.
+    """
+    # Normalize single-tuple shorthand.
+    if isinstance(dims, tuple):
+        symmetric_dims: list[tuple[int, ...]] = [dims]
+    else:
+        symmetric_dims = list(dims)
+
+    validate_symmetry(data, symmetric_dims)
+    return SymmetricTensor(data, symmetric_dims)
