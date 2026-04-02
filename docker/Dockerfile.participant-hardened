@@ -29,9 +29,9 @@ RUN SITE=$(python -c "import sysconfig; print(sysconfig.get_paths()['purelib'])"
     cp /build/lockdown/sitecustomize.py "$SITE/sitecustomize.py" && \
     cp /build/lockdown/allowlist.py "$SITE/allowlist.py"
 
-# Verify lockdown works: blocked modules should fail
-# Note: sitecustomize disables exec(), so we use shell-level checks
-RUN ! python -c "import math" 2>/dev/null && echo "GOOD: math is blocked"
+# Verify lockdown works
+RUN ! python -c "import numpy" 2>/dev/null && echo "GOOD: numpy is blocked"
+RUN ! python -c "import socket" 2>/dev/null && echo "GOOD: socket is blocked"
 RUN python -c "import mechestim; print('GOOD: mechestim loads under lockdown')"
 
 # =============================================================================
