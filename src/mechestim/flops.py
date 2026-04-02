@@ -5,6 +5,7 @@ pre-flight cost estimation without running any computation.
 """
 # Existing
 from mechestim._flops import einsum_cost, pointwise_cost, reduction_cost, svd_cost  # noqa: F401
+from mechestim._symmetric import SymmetryInfo  # noqa: F401
 
 # Linalg — decompositions
 from mechestim.linalg._decompositions import (  # noqa: F401
@@ -68,4 +69,6 @@ __all__ = [
     "bartlett_cost", "blackman_cost", "hamming_cost", "hanning_cost", "kaiser_cost",
     # Other
     "unwrap_cost",
+    # Symmetric
+    "SymmetryInfo",
 ]

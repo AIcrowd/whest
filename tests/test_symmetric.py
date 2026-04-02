@@ -154,3 +154,15 @@ class TestSymmetricTensor:
         assert isinstance(loaded, SymmetricTensor)
         assert loaded.symmetric_dims == [(0, 1)]
         np.testing.assert_array_equal(loaded, st)
+
+
+class TestPublicAPI:
+    def test_import_from_mechestim(self):
+        import mechestim as me
+        assert hasattr(me, 'SymmetricTensor')
+        assert hasattr(me, 'SymmetryInfo')
+        assert hasattr(me, 'as_symmetric')
+
+    def test_import_symmetry_info_from_flops(self):
+        from mechestim.flops import SymmetryInfo
+        assert SymmetryInfo is not None
