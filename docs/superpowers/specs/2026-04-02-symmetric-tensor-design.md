@@ -31,8 +31,8 @@ decompositions. Those downstream ops pay full price today.
 |---|---|---|
 | Approach | `SymmetricTensor` subclass of `np.ndarray` | Discoverable type, natural propagation, competition-friendly |
 | Storage | Full dense array + metadata | FLOP counting is decoupled from actual computation; no need for compressed storage |
-| Validation | Always validate, no exceptions | Adversarial competition context; participants must not game symmetry claims |
-| Propagation | Algebraic rules per op category | Validated at every creation/propagation point |
+| Validation | Validate at creation boundaries; trust algebraic guarantees | Adversarial at entry points; no wasted CPU when math proves symmetry |
+| Propagation | Algebraic rules per op category | Validate when symmetry isn't provable; pass through when it is |
 | Cost interface | Pass full symmetry metadata to cost functions | Each cost function decides how to use (or ignore) symmetry info |
 
 ---
@@ -145,12 +145,12 @@ When a result preserves symmetry, the wrapper validates the output and returns
 
 | Operation | Output | Reasoning |
 |---|---|---|
-| `unary_pointwise(S)` (exp, log, abs, ...) | `SymmetricTensor` (same dims) | `f(S[i,j]) == f(S[j,i])` elementwise |
-| `S + T` (both symmetric, same dims) | `SymmetricTensor` | Addition preserves symmetry |
-| `S * scalar` | `SymmetricTensor` | Scaling preserves symmetry |
-| `S.copy()` | `SymmetricTensor` | Validates and inherits metadata |
-| `S.T` (transpose of 2D symmetric) | `SymmetricTensor` | Symmetric by definition |
-| `einsum(...)` with `symmetric_dims` | `SymmetricTensor` | Declared and validated |
+| `unary_pointwise(S)` (exp, log, abs, ...) | `SymmetricTensor` (same dims) | `f(S[i,j]) == f(S[j,i])` — algebraic guarantee, no validation needed |
+| `S + T` (both symmetric, same dims) | `SymmetricTensor` | Algebraic guarantee, no validation needed |
+| `S * scalar` | `SymmetricTensor` | Algebraic guarantee, no validation needed |
+| `S.copy()` | `SymmetricTensor` | Inherits metadata, no validation needed |
+| `S.T` (transpose of 2D symmetric) | `SymmetricTensor` | Algebraic guarantee, no validation needed |
+| `einsum(...)` with `symmetric_dims` | `SymmetricTensor` | Validated (user-declared, not provable) |
 
 ### 4.2 Operations that lose symmetry
 
@@ -177,12 +177,24 @@ symmetric output:
 | `inv(S)` | `n^3/3 + n^3/2` | `2n^3` |
 | `einsum('ij,j->i', S, v)` | ~`n(n+1)/2` muls | `n^2` muls |
 
-### 4.4 Validation
+### 4.4 Validation Policy
 
-All outputs that will be wrapped as `SymmetricTensor` are validated with
-`np.allclose(result, transposed, atol=1e-6, rtol=1e-5)`. No exceptions.
-This runs as real CPU compute (not FLOP-budgeted) and raises `SymmetryError`
-on failure.
+**Validate at creation boundaries** — when a user or external input claims
+symmetry:
+
+- `me.as_symmetric(data, dims=...)` — always validates
+- `einsum(..., symmetric_dims=...)` — always validates output
+- `eigh(A)` — validates input is symmetric
+
+**Trust algebraic guarantees** — when symmetry preservation is mathematically
+provable, pass through metadata without re-checking:
+
+- Unary pointwise: `f(S[i,j]) == f(S[j,i])` guaranteed for elementwise ops
+- Binary pointwise with matching symmetric_dims: `S[i,j] + T[i,j] == S[j,i] + T[j,i]`
+- Scalar multiplication, copy, transpose
+
+Validation uses `np.allclose(result, transposed, atol=1e-6, rtol=1e-5)`, runs
+as real CPU compute (not FLOP-budgeted), and raises `SymmetryError` on failure.
 
 ## 5. Integration with Existing Ops
 
