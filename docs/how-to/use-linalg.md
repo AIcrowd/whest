@@ -2,7 +2,7 @@
 
 ## When to use this page
 
-Use this page to learn how to use `me.linalg` operations.
+Use this page to learn how to use `me.linalg` operations and their FLOP costs.
 
 ## Prerequisites
 
@@ -10,60 +10,87 @@ Use this page to learn how to use `me.linalg` operations.
 
 ## Available operations
 
-### me.linalg.svd — Truncated SVD
+### Decompositions
 
-Compute the top-k singular value decomposition.
+| Operation | Cost | Notes |
+|-----------|------|-------|
+| `me.linalg.svd(A, k=k)` | m × n × k | Truncated SVD |
+| `me.linalg.eig(A)` | 10 × n³ | General eigendecomposition |
+| `me.linalg.eigh(A)` | 4n³/3 | Symmetric eigendecomposition |
+| `me.linalg.cholesky(A)` | n³/3 | Cholesky (symmetric positive definite) |
+| `me.linalg.qr(A)` | 2mn² - 2n³/3 | Householder QR |
+| `me.linalg.eigvals(A)` | 10 × n³ | Eigenvalues only |
+| `me.linalg.eigvalsh(A)` | 4n³/3 | Symmetric eigenvalues only |
+| `me.linalg.svdvals(A)` | m × n × min(m,n) | Singular values only |
+
+### Solvers
+
+| Operation | Cost | Symmetric cost |
+|-----------|------|----------------|
+| `me.linalg.solve(A, b)` | 2n³/3 + n²·nrhs | n³/3 + n·nrhs |
+| `me.linalg.inv(A)` | n³ | n³/3 + n³/2 |
+| `me.linalg.lstsq(A, b)` | m × n × min(m,n) | — |
+| `me.linalg.pinv(A)` | m × n × min(m,n) | — |
+
+When the input is a `SymmetricTensor`, `solve` and `inv` automatically use cheaper Cholesky-based costs. `inv` of a symmetric matrix returns a `SymmetricTensor`.
+
+### Properties
+
+| Operation | Cost | Symmetric cost |
+|-----------|------|----------------|
+| `me.linalg.det(A)` | n³ | n³/3 |
+| `me.linalg.slogdet(A)` | n³ | n³/3 |
+| `me.linalg.norm(x)` | depends on ord | — |
+| `me.linalg.cond(A)` | m × n × min(m,n) | — |
+| `me.linalg.matrix_rank(A)` | m × n × min(m,n) | — |
+| `me.linalg.trace(A)` | n | — |
+
+### Compound
+
+| Operation | Cost | Notes |
+|-----------|------|-------|
+| `me.linalg.multi_dot(arrays)` | Optimal chain ordering | Uses `np.linalg.multi_dot` |
+| `me.linalg.matrix_power(A, n)` | n³ × exponent | Repeated squaring |
+
+## Symmetric input savings
+
+Pass a `SymmetricTensor` to get automatic cost reductions:
 
 ```python
 import mechestim as me
+import numpy as np
 
 with me.BudgetContext(flop_budget=10**8) as budget:
-    A = me.random.randn(256, 256)
+    A = me.as_symmetric(np.eye(10) * 2.0, dims=(0, 1))
 
-    # Truncated SVD: returns top-k singular values/vectors
-    U, S, Vt = me.linalg.svd(A, k=10)
+    # solve uses Cholesky cost: n^3/3 + n*nrhs = 343
+    x = me.linalg.solve(A, np.ones(10))
 
-    print(f"U shape: {U.shape}")    # (256, 10)
-    print(f"S shape: {S.shape}")    # (10,)
-    print(f"Vt shape: {Vt.shape}")  # (10, 256)
-    print(f"Cost: {budget.flops_used:,} FLOPs")  # 655,360
+    # inv returns SymmetricTensor, uses cheaper cost
+    A_inv = me.linalg.inv(A)
+    print(isinstance(A_inv, me.SymmetricTensor))  # True
 ```
 
-**Parameters:**
+See [Exploit Symmetry Savings](./exploit-symmetry.md) for full details.
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `a` | ndarray | Input matrix of shape (m, n) |
-| `k` | int | Number of singular values to compute |
-
-**Cost:** m × n × k FLOPs
-
-**Returns:** `(U, S, Vt)` where U is (m, k), S is (k,), Vt is (k, n)
-
-### Query cost before running
+## Query cost before running
 
 ```python
 cost = me.flops.svd_cost(m=256, n=256, k=10)
 print(f"SVD cost: {cost:,}")  # 655,360
+
+cost = me.flops.solve_cost(n=256, nrhs=1, symmetric=True)
+print(f"Solve cost (symmetric): {cost:,}")
 ```
 
-## Unsupported linalg operations
-
-Calling a NumPy linalg function that isn't available in mechestim raises an `AttributeError` with a message explaining what operations are supported:
-
-```python
-me.linalg.solve(A, b)
-# AttributeError: module 'mechestim.linalg' has no attribute 'solve'.
-# mechestim.linalg currently supports: svd
-```
-
-## ⚠️ Common pitfalls
+## Common pitfalls
 
 **Symptom:** Using `numpy.linalg.svd` instead of `me.linalg.svd`
 
-**Fix:** Operations called through `numpy` directly bypass FLOP counting. Always use `me.linalg.svd`.
+**Fix:** Operations called through `numpy` directly bypass FLOP counting. Always use `me.linalg.*`.
 
-## 📎 Related pages
+## Related pages
 
-- [Plan Your Budget](./plan-your-budget.md) — query SVD cost with `me.flops.svd_cost()`
+- [Exploit Symmetry Savings](./exploit-symmetry.md) — symmetry-aware cost reductions
+- [Plan Your Budget](./plan-your-budget.md) — query costs before running
 - [Operation Audit](../reference/operation-audit.md) — full list of supported operations
