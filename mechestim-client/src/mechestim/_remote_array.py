@@ -7,8 +7,9 @@ operations are dispatched to the server transparently.
 
 from __future__ import annotations
 
-import math
 import struct
+
+from mechestim._math_compat import prod as _prod
 from typing import Any, Dict, Tuple, Union
 
 # ---------------------------------------------------------------------------
@@ -58,7 +59,7 @@ def _bytes_to_list(data: bytes, shape: Tuple[int, ...], dtype: str) -> Any:
     Scalar value, flat list, or nested list of lists depending on *shape*.
     """
     fmt_char, item_size = _DTYPE_INFO[dtype]
-    total = math.prod(shape) if shape else 1
+    total = _prod(shape) if shape else 1
 
     # Empty array — no data to unpack
     if total == 0:
@@ -91,7 +92,7 @@ def _reshape(flat: list, shape: Tuple[int, ...]) -> Any:
     if len(shape) == 1:
         return flat
 
-    stride = math.prod(shape[1:])
+    stride = _prod(shape[1:])
     return [
         _reshape(flat[i * stride : (i + 1) * stride], shape[1:])
         for i in range(shape[0])
@@ -337,7 +338,7 @@ class RemoteArray(metaclass=_RemoteArrayMeta):
 
     @property
     def size(self) -> int:
-        return math.prod(self._shape) if self._shape else 1
+        return _prod(self._shape) if self._shape else 1
 
     @property
     def nbytes(self) -> int:

@@ -6,8 +6,9 @@ proxy to the server for more complex estimations.
 
 from __future__ import annotations
 
-import math
 from typing import Sequence, Tuple, Union
+
+from mechestim._math_compat import prod as _prod
 
 # ---------------------------------------------------------------------------
 # Local cost functions (no server needed)
@@ -25,10 +26,10 @@ def pointwise_cost(shape: Tuple[int, ...]) -> int:
     Returns
     -------
     int
-        Number of elements (``math.prod(shape)``), which equals the number
+        Number of elements (``_prod(shape)``), which equals the number
         of FLOPs for a single pointwise operation.
     """
-    return max(math.prod(shape), 1)
+    return max(_prod(shape), 1)
 
 
 def reduction_cost(input_shape: Tuple[int, ...], axis: Union[int, None] = None) -> int:
@@ -47,7 +48,7 @@ def reduction_cost(input_shape: Tuple[int, ...], axis: Union[int, None] = None) 
     int
         Number of FLOPs for the reduction.
     """
-    total = max(math.prod(input_shape), 1)
+    total = max(_prod(input_shape), 1)
     if axis is None:
         return total
     # Reduction along a single axis: cost is the total element count

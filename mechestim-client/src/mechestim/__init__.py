@@ -14,7 +14,6 @@ to a remote server over ZMQ.  Participants use it as::
 from __future__ import annotations
 
 import builtins
-import math
 import struct
 from typing import Any
 
@@ -28,6 +27,7 @@ __version__ = "0.1.0"
 # Budget
 # ---------------------------------------------------------------------------
 from mechestim._budget import BudgetContext, OpRecord  # noqa: E402
+from mechestim._math_compat import e, inf, nan, pi  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # Remote types
@@ -86,10 +86,10 @@ from mechestim._registry_data import FUNCTION_CATEGORIES as _FC  # noqa: E402
 # Constants (no server round-trip needed)
 # ---------------------------------------------------------------------------
 
-pi: float = math.pi
-e: float = math.e
-inf: float = math.inf
-nan: float = math.nan
+pi: float = pi
+e: float = e
+inf: float = inf
+nan: float = nan
 newaxis = None
 
 # ---------------------------------------------------------------------------
