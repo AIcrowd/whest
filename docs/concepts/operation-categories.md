@@ -27,17 +27,24 @@ Operations that perform arithmetic. Cost is computed analytically from tensor sh
 | Reduction | numel(input) | `sum`, `mean`, `max`, `min`, `std`, `var`, `argmax`, `nansum` |
 | Einsum | product of all index dims | `me.einsum(...)` |
 | Dot/Matmul | equivalent einsum | `me.dot(A, B)`, `A @ B` |
+| Linalg | per-operation formula | `me.linalg.solve`, `me.linalg.eigh`, `me.linalg.cholesky` |
+| FFT | 5 N log N | `me.fft.fft`, `me.fft.rfft`, `me.fft.fft2` |
 | SVD | m × n × k | `me.linalg.svd(A, k=10)` |
 
-### 🔴 Unsupported operations
+When inputs are `SymmetricTensor`, many operations automatically get reduced costs. See [Exploit Symmetry](../how-to/exploit-symmetry.md).
 
-Operations not in the mechestim allowlist. Calling them raises an `AttributeError` with a message explaining what's available.
+### 🔴 Blacklisted operations
+
+Operations not relevant to numerical computation. Calling them raises an `AttributeError`. These are I/O, configuration, datetime, and display functions that have no meaningful FLOP cost.
 
 ```python
-me.fft.fft(x)
-# AttributeError: module 'mechestim.fft' has no attribute 'fft'.
-# mechestim.fft currently supports: (none)
+me.save(array, "file.npy")
+# AttributeError: 'save' is blacklisted in mechestim (I/O operation).
 ```
+
+**Blacklisted categories:** I/O (`save`, `load`, `loadtxt`, `savetxt`, `savez`, `genfromtxt`), configuration (`seterr`, `geterr`, `setbufsize`), datetime (`busday_count`, `is_busday`), display (`array2string`, `array_repr`), functional (`apply_along_axis`, `piecewise`, `frompyfunc`).
+
+See [Operation Audit](../reference/operation-audit.md) for the complete list.
 
 ## 📎 Related pages
 

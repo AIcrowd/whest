@@ -38,7 +38,6 @@ with me.BudgetContext(flop_budget=10_000_000) as budget:
 
 ## What stays the same
 
-- All arrays are plain `numpy.ndarray` — no custom tensor class
 - Function signatures match NumPy for supported operations
 - Broadcasting rules are identical
 - Array indexing, slicing, and assignment work normally
@@ -50,14 +49,15 @@ with me.BudgetContext(flop_budget=10_000_000) as budget:
 | `import numpy as np` | `import mechestim as me` | Drop-in replacement |
 | Call ops anywhere | Wrap in `BudgetContext` | Required for counted ops |
 | `np.linalg.svd(A)` | `me.linalg.svd(A, k=10)` | Truncated SVD with explicit `k` |
-| All NumPy ops available | Subset available | Unsupported ops raise `AttributeError` |
+| Plain `ndarray` only | `SymmetricTensor` available | Wrap with `me.as_symmetric()` for cost savings |
+| All NumPy ops available | Most available, 32 blacklisted | I/O and config ops raise `AttributeError` |
 | No cost tracking | Automatic FLOP counting | Every counted op deducts from budget |
 
-## ⚠️ Common pitfalls
+## Common pitfalls
 
-**Symptom:** `AttributeError: module 'mechestim' has no attribute 'fft'`
+**Symptom:** `AttributeError` when calling an I/O or config function (e.g., `me.save`, `me.seterr`)
 
-**Fix:** Not all NumPy operations are supported. See [Operation Categories](../concepts/operation-categories.md) for the full list. The error message includes guidance on alternatives.
+**Fix:** 32 operations are blacklisted because they are I/O, configuration, or datetime functions with no FLOP cost. See [Operation Categories](../concepts/operation-categories.md) for the full list. Use `numpy` directly for these.
 
 **Symptom:** Using `np.linalg.svd` instead of `me.linalg.svd`
 
