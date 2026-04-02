@@ -2,12 +2,28 @@
 """Matrix property wrappers with FLOP counting."""
 from __future__ import annotations
 import numpy as _np
+from mechestim._docstrings import attach_docstring
 from mechestim._symmetric import SymmetricTensor
 from mechestim._validation import require_budget, validate_ndarray
 
 
 def trace_cost(n: int) -> int:
-    """FLOP cost of matrix trace. Formula: n. Source: Sum of n diagonal elements."""
+    """FLOP cost of matrix trace.
+
+    Parameters
+    ----------
+    n : int
+        Number of diagonal elements to sum.
+
+    Returns
+    -------
+    int
+        Estimated FLOP count: n.
+
+    Notes
+    -----
+    Simply sums n diagonal elements.
+    """
     return max(n, 1)
 
 
@@ -25,9 +41,29 @@ def trace(a, offset=0, axis1=0, axis2=1, dtype=None, out=None):
     budget.deduct("linalg.trace", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.trace(a, offset=offset, axis1=axis1, axis2=axis2, dtype=dtype, out=out)
 
+attach_docstring(trace, _np.trace, "linalg", "n FLOPs")
+
 
 def det_cost(n: int, symmetric: bool = False) -> int:
-    """FLOP cost of determinant. n^3/3 (Cholesky) if symmetric, else n^3 (LU)."""
+    """FLOP cost of determinant.
+
+    Parameters
+    ----------
+    n : int
+        Matrix dimension.
+    symmetric : bool, optional
+        If True, assume symmetric input. Default is False.
+
+    Returns
+    -------
+    int
+        Estimated FLOP count.
+
+    Notes
+    -----
+    Uses n**3/3 for symmetric input (Cholesky), or n**3 for general
+    input (LU factorization).
+    """
     if symmetric:
         return max(n ** 3 // 3, 1)
     return max(n ** 3, 1)
@@ -45,9 +81,30 @@ def det(a):
     budget.deduct("linalg.det", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.det(a)
 
+attach_docstring(det, _np.linalg.det, "linalg",
+    "n\u00b3 FLOPs (LU), or n\u00b3/3 (Cholesky) for SymmetricTensor input")
+
 
 def slogdet_cost(n: int, symmetric: bool = False) -> int:
-    """FLOP cost of sign and log-determinant. n^3/3 (Cholesky) if symmetric, else n^3 (LU)."""
+    """FLOP cost of sign and log-determinant.
+
+    Parameters
+    ----------
+    n : int
+        Matrix dimension.
+    symmetric : bool, optional
+        If True, assume symmetric input. Default is False.
+
+    Returns
+    -------
+    int
+        Estimated FLOP count.
+
+    Notes
+    -----
+    Uses n**3/3 for symmetric input (Cholesky), or n**3 for general
+    input (LU factorization).
+    """
     if symmetric:
         return max(n ** 3 // 3, 1)
     return max(n ** 3, 1)
@@ -65,10 +122,30 @@ def slogdet(a):
     budget.deduct("linalg.slogdet", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.slogdet(a)
 
+attach_docstring(slogdet, _np.linalg.slogdet, "linalg",
+    "n\u00b3 FLOPs (LU), or n\u00b3/3 (Cholesky) for SymmetricTensor input")
+
 
 def norm_cost(shape: tuple, ord=None) -> int:
-    """FLOP cost of matrix or vector norm. Dispatches on ord and dimensionality.
-    Source: Direct analysis of norm definitions."""
+    """FLOP cost of matrix or vector norm.
+
+    Parameters
+    ----------
+    shape : tuple of int
+        Shape of the input array (or effective shape along norm axes).
+    ord : {None, 'fro', 'nuc', inf, -inf, int}, optional
+        Order of the norm.
+
+    Returns
+    -------
+    int
+        Estimated FLOP count.
+
+    Notes
+    -----
+    Cost depends on the ``ord`` parameter and input dimensionality.
+    SVD-based norms (2-norm, nuclear norm) cost m * n * min(m, n).
+    """
     numel = 1
     for d in shape:
         numel *= d
@@ -107,9 +184,29 @@ def norm(x, ord=None, axis=None, keepdims=False):
     budget.deduct("linalg.norm", flop_cost=cost, subscripts=None, shapes=(x.shape,))
     return _np.linalg.norm(x, ord=ord, axis=axis, keepdims=keepdims)
 
+attach_docstring(norm, _np.linalg.norm, "linalg", "depends on ord parameter \u2014 see docstring")
+
 
 def vector_norm_cost(shape: tuple, ord=None) -> int:
-    """FLOP cost of vector norm. Source: Direct analysis."""
+    """FLOP cost of vector norm.
+
+    Parameters
+    ----------
+    shape : tuple of int
+        Shape of the input array (or effective shape along norm axes).
+    ord : {None, inf, -inf, int, float}, optional
+        Order of the norm.
+
+    Returns
+    -------
+    int
+        Estimated FLOP count.
+
+    Notes
+    -----
+    Most norms cost n FLOPs (one pass over elements). General p-norms
+    cost 2n due to exponentiation.
+    """
     numel = 1
     for d in shape:
         numel *= d
@@ -134,9 +231,29 @@ def vector_norm(x, ord=2, axis=None, keepdims=False):
     budget.deduct("linalg.vector_norm", flop_cost=cost, subscripts=None, shapes=(x.shape,))
     return _np.linalg.vector_norm(x, ord=ord, axis=axis, keepdims=keepdims)
 
+attach_docstring(vector_norm, _np.linalg.vector_norm, "linalg", "depends on ord parameter")
+
 
 def matrix_norm_cost(shape: tuple, ord=None) -> int:
-    """FLOP cost of matrix norm. Source: Direct analysis."""
+    """FLOP cost of matrix norm.
+
+    Parameters
+    ----------
+    shape : tuple of int
+        Shape of the input array (last two dims are the matrix).
+    ord : {None, 'fro', 'nuc', inf, -inf, 1, -1, 2, -2}, optional
+        Order of the norm.
+
+    Returns
+    -------
+    int
+        Estimated FLOP count.
+
+    Notes
+    -----
+    SVD-based norms (2-norm, nuclear norm) cost m * n * min(m, n).
+    Frobenius norm costs 2mn. Entry-sum norms cost mn.
+    """
     m, n = shape[-2], shape[-1]
     numel = m * n
     if ord is None or ord == "fro":
@@ -158,9 +275,28 @@ def matrix_norm(x, ord="fro", keepdims=False):
     budget.deduct("linalg.matrix_norm", flop_cost=cost, subscripts=None, shapes=(x.shape,))
     return _np.linalg.matrix_norm(x, ord=ord, keepdims=keepdims)
 
+attach_docstring(matrix_norm, _np.linalg.matrix_norm, "linalg", "depends on ord parameter")
+
 
 def cond_cost(m: int, n: int) -> int:
-    """FLOP cost of condition number. Formula: m * n * min(m, n). Source: SVD."""
+    """FLOP cost of condition number.
+
+    Parameters
+    ----------
+    m : int
+        Number of rows.
+    n : int
+        Number of columns.
+
+    Returns
+    -------
+    int
+        Estimated FLOP count: m * n * min(m, n).
+
+    Notes
+    -----
+    Computed via SVD.
+    """
     return max(m * n * min(m, n), 1)
 
 
@@ -175,9 +311,28 @@ def cond(x, p=None):
     budget.deduct("linalg.cond", flop_cost=cost, subscripts=None, shapes=(x.shape,))
     return _np.linalg.cond(x, p=p)
 
+attach_docstring(cond, _np.linalg.cond, "linalg", "m \u00d7 n \u00d7 min(m,n) FLOPs (SVD)")
+
 
 def matrix_rank_cost(m: int, n: int) -> int:
-    """FLOP cost of matrix rank. Formula: m * n * min(m, n). Source: SVD."""
+    """FLOP cost of matrix rank.
+
+    Parameters
+    ----------
+    m : int
+        Number of rows.
+    n : int
+        Number of columns.
+
+    Returns
+    -------
+    int
+        Estimated FLOP count: m * n * min(m, n).
+
+    Notes
+    -----
+    Computed via SVD.
+    """
     return max(m * n * min(m, n), 1)
 
 
@@ -191,3 +346,5 @@ def matrix_rank(A, tol=None, hermitian=False):
     cost = matrix_rank_cost(m, n)
     budget.deduct("linalg.matrix_rank", flop_cost=cost, subscripts=None, shapes=(A.shape,))
     return _np.linalg.matrix_rank(A, tol=tol, hermitian=hermitian)
+
+attach_docstring(matrix_rank, _np.linalg.matrix_rank, "linalg", "m \u00d7 n \u00d7 min(m,n) FLOPs (SVD)")

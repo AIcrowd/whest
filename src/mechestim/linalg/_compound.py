@@ -2,6 +2,7 @@
 from __future__ import annotations
 import math
 import numpy as _np
+from mechestim._docstrings import attach_docstring
 from mechestim._validation import require_budget, validate_ndarray
 
 
@@ -15,8 +16,21 @@ def _popcount(n: int) -> int:
 
 def multi_dot_cost(shapes: list[tuple[int, ...]]) -> int:
     """FLOP cost of optimal matrix chain multiplication.
-    Formula: Sum of matmul costs using optimal parenthesization (DP).
-    Source: Cormen et al., CLRS §15.2.
+
+    Parameters
+    ----------
+    shapes : list of tuple of int
+        Shapes of the matrices to be multiplied.
+
+    Returns
+    -------
+    int
+        Estimated FLOP count using optimal parenthesization.
+
+    Notes
+    -----
+    Uses dynamic programming for optimal parenthesization.
+    Source: Cormen et al., *Introduction to Algorithms* (CLRS), §15.2.
     """
     n = len(shapes)
     if n < 2:
@@ -46,12 +60,28 @@ def multi_dot(arrays, *, out=None):
     budget.deduct("linalg.multi_dot", flop_cost=cost, subscripts=None, shapes=tuple(shapes))
     return _np.linalg.multi_dot(arrays, out=out)
 
+attach_docstring(multi_dot, _np.linalg.multi_dot, "linalg", "Optimal chain multiplication cost")
+
 
 def matrix_power_cost(n: int, k: int) -> int:
-    """FLOP cost of matrix power A^k for an (n, n) matrix.
-    Formula: k=0 or k=1: 0; k>=2: (floor(log2(k)) + popcount(k) - 1) * n^3;
-    k<0: n^3 (inversion) + matrix_power_cost(n, |k|).
-    Source: Exponentiation by squaring.
+    """FLOP cost of matrix power A**k.
+
+    Parameters
+    ----------
+    n : int
+        Matrix dimension.
+    k : int
+        Exponent.
+
+    Returns
+    -------
+    int
+        Estimated FLOP count.
+
+    Notes
+    -----
+    Uses exponentiation by repeated squaring. For k < 0, adds n**3 for
+    the initial matrix inversion.
     """
     if k == 0 or k == 1:
         return 0
@@ -71,3 +101,6 @@ def matrix_power(a, n):
     cost = matrix_power_cost(size, n)
     budget.deduct("linalg.matrix_power", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.matrix_power(a, n)
+
+attach_docstring(matrix_power, _np.linalg.matrix_power, "linalg",
+    "n\u00b3 \u00d7 exponent FLOPs (repeated squaring)")
