@@ -75,13 +75,20 @@ _original_import = builtins.__import__
 
 
 def _gated_import(name, globals=None, locals=None, fromlist=(), level=0):
-    """Import wrapper that blocks non-allowlisted modules."""
-    # Relative imports (level > 0) are always allowed — they're within
-    # an already-imported package
+    """Import wrapper that blocks explicitly poisoned modules.
+
+    For non-poisoned, non-allowlisted modules we let the import proceed
+    naturally — it will fail with a normal ImportError if the file was
+    stripped, which allows Python's own try/except ImportError patterns
+    (e.g., subprocess trying to import msvcrt on Linux) to work correctly.
+    """
+    # Relative imports (level > 0) are always allowed
     if level > 0:
         return _original_import(name, globals, locals, fromlist, level)
 
-    if not _is_allowed(name):
+    # Only hard-block explicitly poisoned modules
+    top_level = name.split(".")[0]
+    if name in POISONED_MODULES or top_level in POISONED_MODULES:
         raise ImportError(
             f"module {name!r} is not available in the mechestim sandbox"
         )
