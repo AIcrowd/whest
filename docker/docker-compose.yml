@@ -6,20 +6,31 @@ services:
       context: ..
       dockerfile: docker/Dockerfile.server
     volumes:
-      - mechestim-sock:/tmp
+      - mechestim-sock:/tmp/ipc
     restart: unless-stopped
 
   participant:
     build:
       context: ..
-      dockerfile: docker/Dockerfile.participant
+      dockerfile: docker/Dockerfile.participant-hardened
     volumes:
-      - mechestim-sock:/tmp
+      - mechestim-sock:/tmp/ipc
       - ./submissions:/submission:ro
     environment:
-      - MECHESTIM_SERVER_URL=ipc:///tmp/mechestim.sock
+      - MECHESTIM_SERVER_URL=ipc:///tmp/ipc/mechestim.sock
     depends_on:
       - backend
+    network_mode: none
+    read_only: true
+    tmpfs:
+      - /tmp:size=10m
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    mem_limit: 256m
+    cpus: 1.0
+    pids_limit: 50
 
 volumes:
   mechestim-sock:
