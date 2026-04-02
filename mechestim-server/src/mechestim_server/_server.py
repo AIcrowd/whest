@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import sys
-import time
 from time import monotonic, perf_counter_ns
 
 import msgpack
@@ -152,7 +151,9 @@ class MechestimServer:
             else:
                 response_bytes = encode_response(
                     result.get("result"),
-                    result.get("budget", self._session.budget_remaining if self._session else 0),
+                    result.get(
+                        "budget", self._session.budget_remaining if self._session else 0
+                    ),
                     comms_overhead_ns=0,  # placeholder
                 )
         except Exception as enc_err:
@@ -201,7 +202,9 @@ class MechestimServer:
                 flop_multiplier = kwargs.get("flop_multiplier", 1.0)
         if flop_multiplier is None:
             flop_multiplier = 1.0
-        self._session = Session(flop_budget=flop_budget, flop_multiplier=flop_multiplier)
+        self._session = Session(
+            flop_budget=flop_budget, flop_multiplier=flop_multiplier
+        )
         self._handler = RequestHandler(self._session)
         self._last_activity = monotonic()
 
@@ -264,6 +267,7 @@ class MechestimServer:
 # Message normalisation helper
 # ---------------------------------------------------------------------------
 
+
 def _decode_if_bytes(v: object) -> object:
     """Decode bytes to str if possible, otherwise return as-is."""
     if isinstance(v, bytes):
@@ -322,6 +326,5 @@ def _normalize_msg(msg: dict) -> None:
     # normalization (not just _decode_if_bytes).
     if "kwargs" in msg and isinstance(msg["kwargs"], dict):
         msg["kwargs"] = {
-            _decode_if_bytes(k): _normalize_arg(v)
-            for k, v in msg["kwargs"].items()
+            _decode_if_bytes(k): _normalize_arg(v) for k, v in msg["kwargs"].items()
         }

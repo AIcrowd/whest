@@ -1,13 +1,19 @@
 # tests/test_fft_transforms.py
-import math, numpy, pytest
+import math
+
+import numpy
+import pytest
+
 from mechestim._budget import BudgetContext
 from mechestim.errors import NoBudgetContextError
+
 
 class TestFft:
     def test_result_matches_numpy(self):
         x = numpy.random.randn(16)
         with BudgetContext(flop_budget=10**6):
             from mechestim.fft import fft
+
             assert numpy.allclose(fft(x), numpy.fft.fft(x))
 
     def test_cost(self):
@@ -15,6 +21,7 @@ class TestFft:
         x = numpy.random.randn(n)
         with BudgetContext(flop_budget=10**6) as budget:
             from mechestim.fft import fft
+
             fft(x)
             assert budget.flops_used == 5 * n * math.ceil(math.log2(n))
 
@@ -23,6 +30,7 @@ class TestFft:
         n = 32
         with BudgetContext(flop_budget=10**6) as budget:
             from mechestim.fft import fft
+
             fft(x, n=n)
             assert budget.flops_used == 5 * n * math.ceil(math.log2(n))
 
@@ -30,19 +38,23 @@ class TestFft:
         x = numpy.random.randn(8)
         with BudgetContext(flop_budget=10**6) as budget:
             from mechestim.fft import fft
+
             fft(x)
             assert budget.op_log[-1].op_name == "fft.fft"
 
     def test_outside_context_raises(self):
         from mechestim.fft import fft
+
         with pytest.raises(NoBudgetContextError):
             fft(numpy.ones(8))
+
 
 class TestIfft:
     def test_result_matches_numpy(self):
         x = numpy.random.randn(16) + 1j * numpy.random.randn(16)
         with BudgetContext(flop_budget=10**6):
             from mechestim.fft import ifft
+
             assert numpy.allclose(ifft(x), numpy.fft.ifft(x))
 
     def test_cost(self):
@@ -50,14 +62,17 @@ class TestIfft:
         x = numpy.random.randn(n) + 1j * numpy.random.randn(n)
         with BudgetContext(flop_budget=10**6) as budget:
             from mechestim.fft import ifft
+
             ifft(x)
             assert budget.flops_used == 5 * n * math.ceil(math.log2(n))
+
 
 class TestRfft:
     def test_result_matches_numpy(self):
         x = numpy.random.randn(16)
         with BudgetContext(flop_budget=10**6):
             from mechestim.fft import rfft
+
             assert numpy.allclose(rfft(x), numpy.fft.rfft(x))
 
     def test_cost(self):
@@ -65,8 +80,10 @@ class TestRfft:
         x = numpy.random.randn(n)
         with BudgetContext(flop_budget=10**6) as budget:
             from mechestim.fft import rfft
+
             rfft(x)
             assert budget.flops_used == 5 * (n // 2) * math.ceil(math.log2(n))
+
 
 class TestIrfft:
     def test_cost(self):
@@ -74,14 +91,17 @@ class TestIrfft:
         x = numpy.fft.rfft(numpy.random.randn(n))
         with BudgetContext(flop_budget=10**6) as budget:
             from mechestim.fft import irfft
+
             irfft(x, n=n)
             assert budget.flops_used == 5 * (n // 2) * math.ceil(math.log2(n))
+
 
 class TestFft2:
     def test_result_matches_numpy(self):
         x = numpy.random.randn(8, 8)
         with BudgetContext(flop_budget=10**6):
             from mechestim.fft import fft2
+
             assert numpy.allclose(fft2(x), numpy.fft.fft2(x))
 
     def test_cost(self):
@@ -89,15 +109,19 @@ class TestFft2:
         N = 64
         with BudgetContext(flop_budget=10**6) as budget:
             from mechestim.fft import fft2
+
             fft2(x)
             assert budget.flops_used == 5 * N * math.ceil(math.log2(N))
+
 
 class TestFftn:
     def test_result_matches_numpy(self):
         x = numpy.random.randn(4, 4, 4)
         with BudgetContext(flop_budget=10**8):
             from mechestim.fft import fftn
+
             assert numpy.allclose(fftn(x), numpy.fft.fftn(x))
+
 
 class TestHfft:
     def test_cost(self):
@@ -105,6 +129,7 @@ class TestHfft:
         x = numpy.random.randn(n) + 1j * numpy.random.randn(n)
         with BudgetContext(flop_budget=10**6) as budget:
             from mechestim.fft import hfft
+
             hfft(x)
             out_n = 2 * (n - 1)
             assert budget.flops_used == 5 * out_n * math.ceil(math.log2(out_n))

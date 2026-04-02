@@ -3,19 +3,19 @@
 Unit tests use mocks -- no running server required.
 Server-side tests live in mechestim-server/tests/test_bugfixes_round2.py.
 """
+
 from __future__ import annotations
 
-import math
 import struct
+from unittest.mock import MagicMock, patch
 
 import msgpack
 import pytest
-from unittest.mock import MagicMock, patch
-
 
 # =========================================================================
 # Helpers
 # =========================================================================
+
 
 def _make_mock_conn(response):
     """Return a mock Connection whose send_recv always returns *response*."""
@@ -34,19 +34,21 @@ class TestFix1FlopMultiplierSent:
 
     def test_encode_budget_open_includes_multiplier(self):
         from mechestim._protocol import encode_budget_open
+
         raw = encode_budget_open(1000, flop_multiplier=2.5)
         decoded = msgpack.unpackb(raw, raw=False)
         assert decoded["kwargs"]["flop_multiplier"] == 2.5
 
     def test_encode_budget_open_default_multiplier(self):
         from mechestim._protocol import encode_budget_open
+
         raw = encode_budget_open(1000)
         decoded = msgpack.unpackb(raw, raw=False)
         assert decoded["kwargs"]["flop_multiplier"] == 1.0
 
     def test_enter_sends_flop_multiplier(self):
-        from mechestim._budget import BudgetContext
         import mechestim._budget as bmod
+        from mechestim._budget import BudgetContext
 
         mock_conn = _make_mock_conn({"status": "ok", "flops_used": 0})
         old = bmod._active_context
@@ -73,10 +75,12 @@ class TestFix2TransposeProperty:
 
     def test_T_property_exists(self):
         from mechestim._remote_array import RemoteArray
+
         assert hasattr(RemoteArray, "T")
 
     def test_T_is_property(self):
         from mechestim._remote_array import RemoteArray
+
         assert isinstance(
             type.__getattribute__(RemoteArray, "T"),
             property,
@@ -93,10 +97,13 @@ class TestFix3GetitemDispatches:
 
     def test_getitem_sends_request(self):
         from mechestim._remote_array import RemoteArray
-        mock_conn = _make_mock_conn({
-            "status": "ok",
-            "result": {"value": 42.0, "dtype": "float64"},
-        })
+
+        mock_conn = _make_mock_conn(
+            {
+                "status": "ok",
+                "result": {"value": 42.0, "dtype": "float64"},
+            }
+        )
         with patch("mechestim._connection.get_connection", return_value=mock_conn):
             arr = RemoteArray(handle_id="a0", shape=(3,), dtype="float64")
             result = arr[1]
@@ -106,16 +113,19 @@ class TestFix3GetitemDispatches:
 
     def test_getitem_slice_encoding(self):
         from mechestim._remote_array import _encode_index_key
+
         key = slice(0, 5, 2)
         encoded = _encode_index_key(key)
         assert encoded == {"__slice__": [0, 5, 2]}
 
     def test_getitem_int_passthrough(self):
         from mechestim._remote_array import _encode_index_key
+
         assert _encode_index_key(3) == 3
 
     def test_getitem_tuple_encoding(self):
         from mechestim._remote_array import _encode_index_key
+
         key = (slice(1, 3), 0)
         encoded = _encode_index_key(key)
         assert encoded == [{"__slice__": [1, 3, None]}, 0]
@@ -131,7 +141,6 @@ class TestFix4ComplexPacking:
 
     def test_complex128_list_packing(self):
         """Complex values are split into real/imag pairs for struct.pack."""
-        from mechestim._remote_array import _DTYPE_INFO
         # Simulate the packing logic from __init__.py
         flat = [1 + 2j, 3 + 4j]
         expanded = []
@@ -147,6 +156,7 @@ class TestFix4ComplexPacking:
 
     def test_infer_dtype_complex(self):
         from mechestim import _infer_dtype
+
         assert _infer_dtype([1 + 2j, 3.0]) == "complex128"
 
 
@@ -175,6 +185,7 @@ class TestFix5IterUsesGetitem:
 
     def test_iter_0d_raises(self):
         from mechestim._remote_array import RemoteArray
+
         arr = RemoteArray(handle_id="a0", shape=(), dtype="float64")
         with pytest.raises(TypeError, match="0-d"):
             list(arr)
@@ -190,22 +201,26 @@ class TestFix6IsinstanceCheck:
 
     def test_remote_scalar_isinstance_remote_array(self):
         from mechestim._remote_array import RemoteArray, RemoteScalar
+
         s = RemoteScalar(value=3.14, dtype="float64")
         assert isinstance(s, RemoteArray)
 
     def test_ndarray_alias_works(self):
         from mechestim._remote_array import RemoteArray, RemoteScalar
+
         ndarray = RemoteArray
         s = RemoteScalar(value=1.0, dtype="float64")
         assert isinstance(s, ndarray)
 
     def test_remote_array_still_isinstance(self):
         from mechestim._remote_array import RemoteArray
+
         a = RemoteArray(handle_id="h1", shape=(3,), dtype="float64")
         assert isinstance(a, RemoteArray)
 
     def test_plain_object_not_instance(self):
         from mechestim._remote_array import RemoteArray
+
         assert not isinstance(42, RemoteArray)
         assert not isinstance("hello", RemoteArray)
 
@@ -219,8 +234,8 @@ class TestFix7NestedBudgetGuard:
     """Nested BudgetContext raises RuntimeError before hitting the server."""
 
     def test_nested_raises_runtime_error(self):
-        from mechestim._budget import BudgetContext
         import mechestim._budget as bmod
+        from mechestim._budget import BudgetContext
 
         mock_conn = _make_mock_conn({"status": "ok", "flops_used": 0})
         old = bmod._active_context
@@ -240,8 +255,8 @@ class TestFix7NestedBudgetGuard:
             bmod._active_context = old
 
     def test_exit_clears_active_context(self):
-        from mechestim._budget import BudgetContext
         import mechestim._budget as bmod
+        from mechestim._budget import BudgetContext
 
         responses = [
             {"status": "ok", "flops_used": 0},
@@ -264,8 +279,8 @@ class TestFix7NestedBudgetGuard:
 
     def test_exit_without_enter_is_noop(self):
         """Calling __exit__ on a context that was never opened should not crash."""
-        from mechestim._budget import BudgetContext
         import mechestim._budget as bmod
+        from mechestim._budget import BudgetContext
 
         old = bmod._active_context
         bmod._active_context = None

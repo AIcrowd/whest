@@ -1,9 +1,9 @@
 """Symmetric tensor support: SymmetryInfo, SymmetricTensor, as_symmetric."""
+
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from math import comb, factorial
-from typing import Sequence
 
 import numpy as np
 
@@ -66,6 +66,7 @@ class SymmetryInfo:
 # Validation
 # ---------------------------------------------------------------------------
 
+
 def validate_symmetry(
     data: np.ndarray,
     symmetric_dims: list[tuple[int, ...]],
@@ -101,6 +102,7 @@ def validate_symmetry(
 # ---------------------------------------------------------------------------
 # SymmetricTensor  (np.ndarray subclass)
 # ---------------------------------------------------------------------------
+
 
 class SymmetricTensor(np.ndarray):
     """An ndarray that carries symmetry metadata.
@@ -173,6 +175,7 @@ class SymmetricTensor(np.ndarray):
 # ---------------------------------------------------------------------------
 # Factory
 # ---------------------------------------------------------------------------
+
 
 def as_symmetric(
     data: np.ndarray,

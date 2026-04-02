@@ -1,13 +1,12 @@
 """Server-side tests for round-2 bugfixes."""
+
 from __future__ import annotations
 
 import numpy as np
 import pytest
-
-from mechestim_server._session import Session
 from mechestim_server._request_handler import RequestHandler, _decode_index_key
 from mechestim_server._server import _normalize_arg
-
+from mechestim_server._session import Session
 
 # =========================================================================
 # Fixtures
@@ -80,32 +79,38 @@ class TestFix3ServerDecodeKey:
 class TestFix3ServerGetitem:
     def test_getitem_integer(self, handler, session):
         handle = session.store_array(np.array([10.0, 20.0, 30.0]))
-        resp = handler.handle({
-            "op": "__getitem__",
-            "args": [{"__handle__": handle}, 1],
-            "kwargs": {},
-        })
+        resp = handler.handle(
+            {
+                "op": "__getitem__",
+                "args": [{"__handle__": handle}, 1],
+                "kwargs": {},
+            }
+        )
         assert resp["status"] == "ok"
         assert resp["result"]["value"] == 20.0
 
     def test_getitem_slice(self, handler, session):
         handle = session.store_array(np.arange(10, dtype=np.float64))
-        resp = handler.handle({
-            "op": "__getitem__",
-            "args": [{"__handle__": handle}, {"__slice__": [2, 5, None]}],
-            "kwargs": {},
-        })
+        resp = handler.handle(
+            {
+                "op": "__getitem__",
+                "args": [{"__handle__": handle}, {"__slice__": [2, 5, None]}],
+                "kwargs": {},
+            }
+        )
         assert resp["status"] == "ok"
         assert "id" in resp["result"]
         assert resp["result"]["shape"] == [3]
 
     def test_getitem_2d_row(self, handler, session):
         handle = session.store_array(np.array([[1.0, 2.0], [3.0, 4.0]]))
-        resp = handler.handle({
-            "op": "__getitem__",
-            "args": [{"__handle__": handle}, 0],
-            "kwargs": {},
-        })
+        resp = handler.handle(
+            {
+                "op": "__getitem__",
+                "args": [{"__handle__": handle}, 0],
+                "kwargs": {},
+            }
+        )
         assert resp["status"] == "ok"
         assert "id" in resp["result"]
         assert resp["result"]["shape"] == [2]

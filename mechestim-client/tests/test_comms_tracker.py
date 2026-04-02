@@ -1,6 +1,6 @@
 """Tests for mechestim._comms_tracker module."""
-import pytest
 
+import pytest
 from mechestim._comms_tracker import ClientCommsTracker
 
 
@@ -25,7 +25,9 @@ class TestClientCommsTrackerInitialState:
 class TestClientCommsTrackerSingleRecord:
     def setup_method(self):
         self.tracker = ClientCommsTracker()
-        self.tracker.record(round_trip_ns=1_000_000, request_bytes=128, response_bytes=256)
+        self.tracker.record(
+            round_trip_ns=1_000_000, request_bytes=128, response_bytes=256
+        )
 
     def test_request_count_is_one(self):
         assert self.tracker.request_count == 1

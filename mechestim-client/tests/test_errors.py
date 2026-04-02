@@ -1,4 +1,5 @@
 """Tests for mechestim.errors module."""
+
 import pytest
 
 from mechestim.errors import (
@@ -11,10 +12,10 @@ from mechestim.errors import (
     raise_from_response,
 )
 
-
 # ---------------------------------------------------------------------------
 # Hierarchy
 # ---------------------------------------------------------------------------
+
 
 class TestHierarchy:
     def test_budget_exhausted_is_mechestim_error(self):
@@ -39,6 +40,7 @@ class TestHierarchy:
 # ---------------------------------------------------------------------------
 # BudgetExhaustedError
 # ---------------------------------------------------------------------------
+
 
 class TestBudgetExhaustedError:
     def test_message_contains_op_name(self):
@@ -71,6 +73,7 @@ class TestBudgetExhaustedError:
 # NoBudgetContextError
 # ---------------------------------------------------------------------------
 
+
 class TestNoBudgetContextError:
     def test_default_message_mentions_budget_context(self):
         err = NoBudgetContextError()
@@ -88,6 +91,7 @@ class TestNoBudgetContextError:
 # ---------------------------------------------------------------------------
 # SymmetryError
 # ---------------------------------------------------------------------------
+
 
 class TestSymmetryError:
     def test_is_mechestim_error(self):
@@ -114,6 +118,7 @@ class TestSymmetryError:
 # MechEstimServerError
 # ---------------------------------------------------------------------------
 
+
 class TestMechEstimServerError:
     def test_is_mechestim_error(self):
         assert issubclass(MechEstimServerError, MechEstimError)
@@ -126,6 +131,7 @@ class TestMechEstimServerError:
 # ---------------------------------------------------------------------------
 # raise_from_response
 # ---------------------------------------------------------------------------
+
 
 class TestRaiseFromResponse:
     def test_raises_budget_exhausted(self):

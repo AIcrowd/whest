@@ -1,6 +1,6 @@
 """Tests for the numpy audit script."""
+
 import sys
-import json
 
 
 def test_audit_introspection_discovers_numpy_functions():

@@ -1,4 +1,5 @@
 """Einsum with analytical FLOP counting and symmetry detection."""
+
 from __future__ import annotations
 
 import numpy as _np
@@ -23,7 +24,11 @@ def _detect_repeated_operands(operands: tuple) -> list[int] | None:
     return None
 
 
-def einsum(subscripts: str, *operands: _np.ndarray, symmetric_dims: list[tuple[int, ...]] | None = None) -> _np.ndarray:
+def einsum(
+    subscripts: str,
+    *operands: _np.ndarray,
+    symmetric_dims: list[tuple[int, ...]] | None = None,
+) -> _np.ndarray:
     """Evaluate Einstein summation with FLOP counting.
 
     Wraps ``numpy.einsum`` with analytical FLOP cost computation and
@@ -74,8 +79,7 @@ def einsum(subscripts: str, *operands: _np.ndarray, symmetric_dims: list[tuple[i
 
     # Extract symmetry info from SymmetricTensor inputs
     operand_symmetries = [
-        op.symmetry_info if isinstance(op, SymmetricTensor) else None
-        for op in operands
+        op.symmetry_info if isinstance(op, SymmetricTensor) else None for op in operands
     ]
     has_operand_symmetry = any(s is not None for s in operand_symmetries)
 

@@ -35,9 +35,7 @@ class ArrayStore:
             If the store already contains :data:`MAX_ARRAY_COUNT` arrays.
         """
         if len(self._arrays) >= MAX_ARRAY_COUNT:
-            raise MemoryError(
-                f"array store limit reached: {MAX_ARRAY_COUNT} arrays"
-            )
+            raise MemoryError(f"array store limit reached: {MAX_ARRAY_COUNT} arrays")
         handle = f"a{self._counter}"
         self._arrays[handle] = arr
         self._counter += 1

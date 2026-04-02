@@ -2,6 +2,7 @@
 
 Run: uv run python examples/02_einsum_patterns.py
 """
+
 import mechestim as me
 
 patterns = [

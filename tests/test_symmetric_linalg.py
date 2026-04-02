@@ -1,9 +1,10 @@
 """Tests for symmetry-aware linalg operations."""
+
 import numpy
-import pytest
+
+import mechestim.linalg as la
 from mechestim._budget import BudgetContext
 from mechestim._symmetric import SymmetricTensor, as_symmetric
-import mechestim.linalg as la
 
 
 class TestEighValidation:
@@ -31,7 +32,7 @@ class TestSolveSymmetric:
         b = numpy.ones(n)
         with BudgetContext(flop_budget=10**8, quiet=True) as budget:
             la.solve(S, b)
-            assert budget.flops_used == n ** 3 // 3 + n * 1  # Cholesky + back-sub
+            assert budget.flops_used == n**3 // 3 + n * 1  # Cholesky + back-sub
 
     def test_solve_plain_uses_lu_cost(self):
         n = 10
@@ -39,7 +40,7 @@ class TestSolveSymmetric:
         b = numpy.ones(n)
         with BudgetContext(flop_budget=10**8, quiet=True) as budget:
             la.solve(A, b)
-            assert budget.flops_used == 2 * n ** 3 // 3 + n ** 2 * 1  # LU + back-sub
+            assert budget.flops_used == 2 * n**3 // 3 + n**2 * 1  # LU + back-sub
 
     def test_solve_returns_plain(self):
         A = numpy.eye(3) * 2.0
@@ -57,7 +58,7 @@ class TestDetSymmetric:
         S = as_symmetric(A, dims=(0, 1))
         with BudgetContext(flop_budget=10**8, quiet=True) as budget:
             la.det(S)
-            assert budget.flops_used == n ** 3 // 3
+            assert budget.flops_used == n**3 // 3
 
 
 class TestInvSymmetric:
@@ -74,5 +75,5 @@ class TestInvSymmetric:
         S = as_symmetric(A, dims=(0, 1))
         with BudgetContext(flop_budget=10**8, quiet=True) as budget:
             la.inv(S)
-            expected = n ** 3 // 3 + n ** 3 // 2
+            expected = n**3 // 3 + n**3 // 2
             assert budget.flops_used == expected

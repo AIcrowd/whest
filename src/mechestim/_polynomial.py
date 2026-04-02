@@ -1,4 +1,5 @@
 """Counted polynomial operations for mechestim."""
+
 from __future__ import annotations
 
 import numpy as _np
@@ -6,10 +7,10 @@ import numpy as _np
 from mechestim._docstrings import attach_docstring
 from mechestim._validation import require_budget
 
-
 # ---------------------------------------------------------------------------
 # Cost functions
 # ---------------------------------------------------------------------------
+
 
 def polyval_cost(deg: int, m: int) -> int:
     """Cost for polyval: Horner's method = 2 * m * deg FLOPs."""
@@ -58,12 +59,13 @@ def poly_cost(n: int) -> int:
 
 def roots_cost(n: int) -> int:
     """Cost for roots: 10 * n^3 FLOPs (companion matrix eigendecomposition)."""
-    return max(10 * n ** 3, 1)
+    return max(10 * n**3, 1)
 
 
 # ---------------------------------------------------------------------------
 # Wrapped operations
 # ---------------------------------------------------------------------------
+
 
 def polyval(p, x):
     """Evaluate a polynomial at given points. Wraps ``numpy.polyval``."""
@@ -76,7 +78,10 @@ def polyval(p, x):
     budget.deduct("polyval", flop_cost=cost, subscripts=None, shapes=(p.shape, x.shape))
     return _np.polyval(p, x)
 
-attach_docstring(polyval, _np.polyval, "counted_custom", "2 * m * deg FLOPs (Horner's method)")
+
+attach_docstring(
+    polyval, _np.polyval, "counted_custom", "2 * m * deg FLOPs (Horner's method)"
+)
 
 
 def polyadd(a1, a2):
@@ -87,8 +92,11 @@ def polyadd(a1, a2):
     n1 = len(a1)
     n2 = len(a2)
     cost = polyadd_cost(n1, n2)
-    budget.deduct("polyadd", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape))
+    budget.deduct(
+        "polyadd", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
+    )
     return _np.polyadd(a1, a2)
+
 
 attach_docstring(polyadd, _np.polyadd, "counted_custom", "max(n1, n2) FLOPs")
 
@@ -101,8 +109,11 @@ def polysub(a1, a2):
     n1 = len(a1)
     n2 = len(a2)
     cost = polysub_cost(n1, n2)
-    budget.deduct("polysub", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape))
+    budget.deduct(
+        "polysub", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
+    )
     return _np.polysub(a1, a2)
+
 
 attach_docstring(polysub, _np.polysub, "counted_custom", "max(n1, n2) FLOPs")
 
@@ -115,6 +126,7 @@ def polyder(p, m=1):
     cost = polyder_cost(n)
     budget.deduct("polyder", flop_cost=cost, subscripts=None, shapes=(p.shape,))
     return _np.polyder(p, m=m)
+
 
 attach_docstring(polyder, _np.polyder, "counted_custom", "n FLOPs (n = len(coeffs))")
 
@@ -130,6 +142,7 @@ def polyint(p, m=1, k=None):
         return _np.polyint(p, m=m)
     return _np.polyint(p, m=m, k=k)
 
+
 attach_docstring(polyint, _np.polyint, "counted_custom", "n FLOPs (n = len(coeffs))")
 
 
@@ -141,8 +154,11 @@ def polymul(a1, a2):
     n1 = len(a1)
     n2 = len(a2)
     cost = polymul_cost(n1, n2)
-    budget.deduct("polymul", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape))
+    budget.deduct(
+        "polymul", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
+    )
     return _np.polymul(a1, a2)
+
 
 attach_docstring(polymul, _np.polymul, "counted_custom", "n1 * n2 FLOPs")
 
@@ -158,6 +174,7 @@ def polydiv(u, v):
     budget.deduct("polydiv", flop_cost=cost, subscripts=None, shapes=(u.shape, v.shape))
     return _np.polydiv(u, v)
 
+
 attach_docstring(polydiv, _np.polydiv, "counted_custom", "n1 * n2 FLOPs")
 
 
@@ -169,6 +186,7 @@ def polyfit(x, y, deg, **kwargs):
     cost = polyfit_cost(m, deg)
     budget.deduct("polyfit", flop_cost=cost, subscripts=None, shapes=(x.shape,))
     return _np.polyfit(x, y, deg, **kwargs)
+
 
 attach_docstring(polyfit, _np.polyfit, "counted_custom", "2 * m * (deg+1)^2 FLOPs")
 
@@ -186,6 +204,7 @@ def poly(seq_of_zeros):
     budget.deduct("poly", flop_cost=cost, subscripts=None, shapes=(seq.shape,))
     return _np.poly(seq_of_zeros)
 
+
 attach_docstring(poly, _np.poly, "counted_custom", "n^2 FLOPs")
 
 
@@ -198,4 +217,7 @@ def roots(p):
     budget.deduct("roots", flop_cost=cost, subscripts=None, shapes=(p.shape,))
     return _np.roots(p)
 
-attach_docstring(roots, _np.roots, "counted_custom", "10 * n^3 FLOPs (companion matrix eig)")
+
+attach_docstring(
+    roots, _np.roots, "counted_custom", "10 * n^3 FLOPs (companion matrix eig)"
+)

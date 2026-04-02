@@ -2,6 +2,7 @@
 
 Run: uv run python examples/04_svd_usage.py
 """
+
 import mechestim as me
 
 with me.BudgetContext(flop_budget=10**8) as budget:

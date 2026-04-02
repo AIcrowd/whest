@@ -4,13 +4,12 @@ from __future__ import annotations
 
 import numpy as np
 import pytest
-
 from mechestim_server._session import Session
-
 
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture()
 def session():
@@ -24,6 +23,7 @@ def session():
 # ---------------------------------------------------------------------------
 # Creating a session
 # ---------------------------------------------------------------------------
+
 
 def test_session_is_open_after_creation(session):
     assert session.is_open is True
@@ -49,6 +49,7 @@ def test_session_comms_tracker_is_accessible(session):
 # ---------------------------------------------------------------------------
 # Store and retrieve array
 # ---------------------------------------------------------------------------
+
 
 def test_store_array_returns_handle(session):
     arr = np.array([1.0, 2.0, 3.0])
@@ -81,6 +82,7 @@ def test_store_multiple_arrays(session):
 # Array metadata
 # ---------------------------------------------------------------------------
 
+
 def test_array_metadata_returns_id(session):
     arr = np.zeros((2, 3))
     handle = session.store_array(arr)
@@ -111,6 +113,7 @@ def test_array_metadata_missing_raises_keyerror(session):
 # free_arrays
 # ---------------------------------------------------------------------------
 
+
 def test_free_arrays_removes_handles(session):
     h0 = session.store_array(np.array([1]))
     h1 = session.store_array(np.array([2]))
@@ -128,6 +131,7 @@ def test_free_arrays_silently_ignores_unknown(session):
 # ---------------------------------------------------------------------------
 # Budget status
 # ---------------------------------------------------------------------------
+
 
 def test_budget_status_has_required_keys(session):
     status = session.budget_status()
@@ -151,6 +155,7 @@ def test_budget_status_remaining_equals_budget_minus_used(session):
 # ---------------------------------------------------------------------------
 # Close session
 # ---------------------------------------------------------------------------
+
 
 def test_close_returns_dict(session):
     result = session.close()
@@ -197,6 +202,7 @@ def test_close_twice_raises_runtime_error():
 # budget_context raises when closed
 # ---------------------------------------------------------------------------
 
+
 def test_budget_context_raises_when_closed():
     s = Session(flop_budget=1000)
     s.close()
@@ -207,6 +213,7 @@ def test_budget_context_raises_when_closed():
 # ---------------------------------------------------------------------------
 # budget_remaining property
 # ---------------------------------------------------------------------------
+
 
 def test_budget_remaining_reflects_context():
     s = Session(flop_budget=100_000)

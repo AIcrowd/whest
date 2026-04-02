@@ -9,7 +9,6 @@ import msgpack
 import numpy as np
 import pytest
 import zmq
-
 from mechestim_server._server import MechestimServer, _normalize_arg, _normalize_msg
 
 # ---------------------------------------------------------------------------
@@ -208,9 +207,12 @@ def test_session_reopen_blocked(server_and_client):
 def test_normalize_arg_preserves_binary_float64():
     """FIX 2: small binary data (e.g. 8-byte float64) must NOT be decoded."""
     import struct
+
     data = struct.pack("<d", 3.14)  # 8 bytes, may be valid UTF-8
     result = _normalize_arg(data)
-    assert isinstance(result, bytes), "binary float64 data was incorrectly decoded to str"
+    assert isinstance(result, bytes), (
+        "binary float64 data was incorrectly decoded to str"
+    )
     assert result == data
 
 

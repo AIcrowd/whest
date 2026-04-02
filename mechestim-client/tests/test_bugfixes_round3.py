@@ -2,20 +2,19 @@
 
 Unit tests use mocks -- no running server required.
 """
+
 from __future__ import annotations
 
-import struct
+from unittest.mock import MagicMock, patch
 
 import msgpack
 import pytest
-from unittest.mock import MagicMock, patch
-
 import zmq
-
 
 # =========================================================================
 # Helpers
 # =========================================================================
+
 
 def _make_mock_conn(response):
     """Return a mock Connection whose send_recv always returns *response*."""
@@ -34,16 +33,19 @@ class TestFix1EncodeArgRecursive:
 
     def test_encode_arg_remote_array(self):
         from mechestim._remote_array import RemoteArray, _encode_arg
+
         arr = RemoteArray(handle_id="a5", shape=(3,), dtype="float64")
         assert _encode_arg(arr) == {"__handle__": "a5"}
 
     def test_encode_arg_remote_scalar(self):
         from mechestim._remote_array import RemoteScalar, _encode_arg
+
         s = RemoteScalar(value=3.14, dtype="float64")
         assert _encode_arg(s) == 3.14
 
     def test_encode_arg_list_of_remote_arrays(self):
         from mechestim._remote_array import RemoteArray, _encode_arg
+
         a = RemoteArray(handle_id="a0", shape=(3,), dtype="float64")
         b = RemoteArray(handle_id="a1", shape=(3,), dtype="float64")
         result = _encode_arg([a, b])
@@ -51,6 +53,7 @@ class TestFix1EncodeArgRecursive:
 
     def test_encode_arg_tuple_of_remote_arrays(self):
         from mechestim._remote_array import RemoteArray, _encode_arg
+
         a = RemoteArray(handle_id="a0", shape=(3,), dtype="float64")
         b = RemoteArray(handle_id="a1", shape=(3,), dtype="float64")
         result = _encode_arg((a, b))
@@ -58,12 +61,14 @@ class TestFix1EncodeArgRecursive:
 
     def test_encode_arg_nested_list(self):
         from mechestim._remote_array import RemoteArray, _encode_arg
+
         a = RemoteArray(handle_id="a0", shape=(3,), dtype="float64")
         result = _encode_arg([[a], [a]])
         assert result == [[{"__handle__": "a0"}], [{"__handle__": "a0"}]]
 
     def test_encode_arg_plain_value(self):
         from mechestim._remote_array import _encode_arg
+
         assert _encode_arg(42) == 42
         assert _encode_arg("hello") == "hello"
         assert _encode_arg(3.14) == 3.14
@@ -98,18 +103,21 @@ class TestFix2FancyIndexEncoding:
 
     def test_encode_remote_array_key(self):
         from mechestim._remote_array import RemoteArray, _encode_index_key
+
         idx = RemoteArray(handle_id="a3", shape=(5,), dtype="int64")
         result = _encode_index_key(idx)
         assert result == {"__handle__": "a3"}
 
     def test_encode_remote_scalar_key(self):
         from mechestim._remote_array import RemoteScalar, _encode_index_key
+
         idx = RemoteScalar(value=2, dtype="int64")
         result = _encode_index_key(idx)
         assert result == 2
 
     def test_encode_list_key_with_remote_array(self):
         from mechestim._remote_array import RemoteArray, _encode_index_key
+
         idx = RemoteArray(handle_id="a3", shape=(5,), dtype="int64")
         # list fancy index containing a RemoteArray
         result = _encode_index_key([idx])
@@ -126,54 +134,68 @@ class TestFix3RemoteArrayMethods:
 
     def test_has_reshape(self):
         from mechestim._remote_array import RemoteArray
+
         assert hasattr(RemoteArray, "reshape")
 
     def test_has_sum(self):
         from mechestim._remote_array import RemoteArray
+
         assert hasattr(RemoteArray, "sum")
 
     def test_has_mean(self):
         from mechestim._remote_array import RemoteArray
+
         assert hasattr(RemoteArray, "mean")
 
     def test_has_max(self):
         from mechestim._remote_array import RemoteArray
+
         assert hasattr(RemoteArray, "max")
 
     def test_has_min(self):
         from mechestim._remote_array import RemoteArray
+
         assert hasattr(RemoteArray, "min")
 
     def test_has_astype(self):
         from mechestim._remote_array import RemoteArray
+
         assert hasattr(RemoteArray, "astype")
 
     def test_has_flatten(self):
         from mechestim._remote_array import RemoteArray
+
         assert hasattr(RemoteArray, "flatten")
 
     def test_has_ravel(self):
         from mechestim._remote_array import RemoteArray
+
         assert hasattr(RemoteArray, "ravel")
 
     def test_has_transpose_method(self):
         from mechestim._remote_array import RemoteArray
+
         assert hasattr(RemoteArray, "transpose")
 
     def test_has_dot(self):
         from mechestim._remote_array import RemoteArray
+
         assert hasattr(RemoteArray, "dot")
 
     def test_has_copy(self):
         from mechestim._remote_array import RemoteArray
+
         assert hasattr(RemoteArray, "copy")
 
     def test_reshape_dispatches(self):
         from mechestim._remote_array import RemoteArray
-        mock_conn = _make_mock_conn({
-            "status": "ok",
-            "result": {"id": "a1", "shape": [2, 3], "dtype": "float64"},
-        })
+
+        mock_conn = _make_mock_conn(
+            {
+                "status": "ok",
+                "result": {"id": "a1", "shape": [2, 3], "dtype": "float64"},
+            }
+        )
         with patch("mechestim._connection.get_connection", return_value=mock_conn):
             arr = RemoteArray(handle_id="a0", shape=(6,), dtype="float64")
             result = arr.reshape(2, 3)
@@ -181,10 +203,13 @@ class TestFix3RemoteArrayMethods:
 
     def test_reshape_with_tuple_arg(self):
         from mechestim._remote_array import RemoteArray
-        mock_conn = _make_mock_conn({
-            "status": "ok",
-            "result": {"id": "a1", "shape": [2, 3], "dtype": "float64"},
-        })
+
+        mock_conn = _make_mock_conn(
+            {
+                "status": "ok",
+                "result": {"id": "a1", "shape": [2, 3], "dtype": "float64"},
+            }
+        )
         with patch("mechestim._connection.get_connection", return_value=mock_conn):
             arr = RemoteArray(handle_id="a0", shape=(6,), dtype="float64")
             result = arr.reshape((2, 3))
@@ -192,10 +217,13 @@ class TestFix3RemoteArrayMethods:
 
     def test_sum_dispatches(self):
         from mechestim._remote_array import RemoteArray
-        mock_conn = _make_mock_conn({
-            "status": "ok",
-            "result": {"value": 6.0, "dtype": "float64"},
-        })
+
+        mock_conn = _make_mock_conn(
+            {
+                "status": "ok",
+                "result": {"value": 6.0, "dtype": "float64"},
+            }
+        )
         with patch("mechestim._connection.get_connection", return_value=mock_conn):
             arr = RemoteArray(handle_id="a0", shape=(3,), dtype="float64")
             result = arr.sum()
@@ -203,10 +231,13 @@ class TestFix3RemoteArrayMethods:
 
     def test_sum_with_axis(self):
         from mechestim._remote_array import RemoteArray
-        mock_conn = _make_mock_conn({
-            "status": "ok",
-            "result": {"id": "a1", "shape": [3], "dtype": "float64"},
-        })
+
+        mock_conn = _make_mock_conn(
+            {
+                "status": "ok",
+                "result": {"id": "a1", "shape": [3], "dtype": "float64"},
+            }
+        )
         with patch("mechestim._connection.get_connection", return_value=mock_conn):
             arr = RemoteArray(handle_id="a0", shape=(2, 3), dtype="float64")
             result = arr.sum(axis=0)
@@ -217,10 +248,13 @@ class TestFix3RemoteArrayMethods:
     def test_dispatch_op_passes_kwargs(self):
         """_dispatch_op forwards kwargs to encode_request."""
         from mechestim._remote_array import RemoteArray
-        mock_conn = _make_mock_conn({
-            "status": "ok",
-            "result": {"id": "a1", "shape": [3], "dtype": "float64"},
-        })
+
+        mock_conn = _make_mock_conn(
+            {
+                "status": "ok",
+                "result": {"id": "a1", "shape": [3], "dtype": "float64"},
+            }
+        )
         with patch("mechestim._connection.get_connection", return_value=mock_conn):
             arr = RemoteArray(handle_id="a0", shape=(2, 3), dtype="float64")
             arr.mean(axis=1, keepdims=True)
@@ -240,6 +274,7 @@ class TestFix4RemoteScalarArithmetic:
 
     def test_add(self):
         from mechestim._remote_array import RemoteScalar
+
         a = RemoteScalar(3.0, "float64")
         b = RemoteScalar(2.0, "float64")
         result = a + b
@@ -248,96 +283,117 @@ class TestFix4RemoteScalarArithmetic:
 
     def test_add_plain_number(self):
         from mechestim._remote_array import RemoteScalar
+
         a = RemoteScalar(3.0, "float64")
         result = a + 2.0
         assert result._value == 5.0
 
     def test_radd(self):
         from mechestim._remote_array import RemoteScalar
+
         a = RemoteScalar(3.0, "float64")
         result = 10 + a
         assert result._value == 13.0
 
     def test_sub(self):
         from mechestim._remote_array import RemoteScalar
+
         a = RemoteScalar(5.0, "float64")
         b = RemoteScalar(2.0, "float64")
         assert (a - b)._value == 3.0
 
     def test_rsub(self):
         from mechestim._remote_array import RemoteScalar
+
         a = RemoteScalar(3.0, "float64")
         assert (10 - a)._value == 7.0
 
     def test_mul(self):
         from mechestim._remote_array import RemoteScalar
+
         a = RemoteScalar(3.0, "float64")
         b = RemoteScalar(4.0, "float64")
         assert (a * b)._value == 12.0
 
     def test_rmul(self):
         from mechestim._remote_array import RemoteScalar
+
         a = RemoteScalar(3.0, "float64")
         assert (5 * a)._value == 15.0
 
     def test_truediv(self):
         from mechestim._remote_array import RemoteScalar
+
         a = RemoteScalar(10.0, "float64")
         b = RemoteScalar(4.0, "float64")
         assert (a / b)._value == 2.5
 
     def test_rtruediv(self):
         from mechestim._remote_array import RemoteScalar
+
         a = RemoteScalar(4.0, "float64")
         assert (20 / a)._value == 5.0
 
     def test_floordiv(self):
         from mechestim._remote_array import RemoteScalar
+
         a = RemoteScalar(7.0, "float64")
         b = RemoteScalar(3.0, "float64")
         assert (a // b)._value == 2.0
 
     def test_rfloordiv(self):
         from mechestim._remote_array import RemoteScalar
+
         a = RemoteScalar(3.0, "float64")
         assert (7 // a)._value == 2.0
 
     def test_mod(self):
         from mechestim._remote_array import RemoteScalar
+
         a = RemoteScalar(7.0, "float64")
         b = RemoteScalar(3.0, "float64")
         assert (a % b)._value == 1.0
 
     def test_rmod(self):
         from mechestim._remote_array import RemoteScalar
+
         a = RemoteScalar(3.0, "float64")
         assert (7 % a)._value == 1.0
 
     def test_pow(self):
         from mechestim._remote_array import RemoteScalar
+
         a = RemoteScalar(2.0, "float64")
         b = RemoteScalar(3.0, "float64")
-        assert (a ** b)._value == 8.0
+        assert (a**b)._value == 8.0
 
     def test_rpow(self):
         from mechestim._remote_array import RemoteScalar
+
         a = RemoteScalar(3.0, "float64")
-        assert (2 ** a)._value == 8.0
+        assert (2**a)._value == 8.0
 
     def test_neg(self):
         from mechestim._remote_array import RemoteScalar
+
         a = RemoteScalar(5.0, "float64")
         assert (-a)._value == -5.0
 
     def test_abs(self):
         from mechestim._remote_array import RemoteScalar
+
         a = RemoteScalar(-7.0, "float64")
         assert abs(a)._value == 7.0
 
     def test_scalar_iteration_sum(self):
         """Summing scalars from iteration should work."""
         from mechestim._remote_array import RemoteScalar
-        scalars = [RemoteScalar(1.0, "float64"), RemoteScalar(2.0, "float64"), RemoteScalar(3.0, "float64")]
+
+        scalars = [
+            RemoteScalar(1.0, "float64"),
+            RemoteScalar(2.0, "float64"),
+            RemoteScalar(3.0, "float64"),
+        ]
         total = scalars[0]
         for s in scalars[1:]:
             total = total + s
@@ -354,22 +410,27 @@ class TestFix5InferDtypeInt:
 
     def test_int_list_gives_int64(self):
         from mechestim import _infer_dtype
+
         assert _infer_dtype([1, 2, 3]) == "int64"
 
     def test_float_list_gives_float64(self):
         from mechestim import _infer_dtype
+
         assert _infer_dtype([1.0, 2.0]) == "float64"
 
     def test_mixed_gives_float64(self):
         from mechestim import _infer_dtype
+
         assert _infer_dtype([1, 2.0]) == "float64"
 
     def test_bool_list_gives_bool(self):
         from mechestim import _infer_dtype
+
         assert _infer_dtype([True, False]) == "bool"
 
     def test_complex_gives_complex128(self):
         from mechestim import _infer_dtype
+
         assert _infer_dtype([1 + 2j]) == "complex128"
 
 
@@ -383,12 +444,14 @@ class TestFix6SetitemError:
 
     def test_setitem_raises_type_error(self):
         from mechestim._remote_array import RemoteArray
+
         arr = RemoteArray(handle_id="a0", shape=(3,), dtype="float64")
         with pytest.raises(TypeError, match="immutable"):
             arr[0] = 5
 
     def test_setitem_slice_raises_type_error(self):
         from mechestim._remote_array import RemoteArray
+
         arr = RemoteArray(handle_id="a0", shape=(3,), dtype="float64")
         with pytest.raises(TypeError, match="immutable"):
             arr[0:2] = [1, 2]
@@ -404,6 +467,7 @@ class TestFix8ZmqSocketReset:
 
     def test_reset_socket_clears_socket(self):
         from mechestim._connection import Connection
+
         conn = Connection(url="tcp://127.0.0.1:19999", timeout_ms=100)
         # Manually set a mock socket
         mock_sock = MagicMock()
@@ -414,6 +478,7 @@ class TestFix8ZmqSocketReset:
 
     def test_send_recv_resets_on_timeout(self):
         from mechestim._connection import Connection
+
         from mechestim.errors import MechEstimServerError
 
         conn = Connection(url="tcp://127.0.0.1:19999", timeout_ms=100)
@@ -428,6 +493,7 @@ class TestFix8ZmqSocketReset:
 
     def test_send_recv_recv_timeout_resets(self):
         from mechestim._connection import Connection
+
         from mechestim.errors import MechEstimServerError
 
         conn = Connection(url="tcp://127.0.0.1:19999", timeout_ms=100)

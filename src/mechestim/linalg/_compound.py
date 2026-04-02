@@ -1,7 +1,11 @@
 """Compound linalg operations with FLOP counting."""
+
 from __future__ import annotations
+
 import math
+
 import numpy as _np
+
 from mechestim._docstrings import attach_docstring
 from mechestim._validation import require_budget, validate_ndarray
 
@@ -44,7 +48,11 @@ def multi_dot_cost(shapes: list[tuple[int, ...]]) -> int:
             j = i + chain_len - 1
             cost_table[i][j] = float("inf")
             for k in range(i, j):
-                cost = cost_table[i][k] + cost_table[k + 1][j] + dims[i] * dims[k + 1] * dims[j + 1]
+                cost = (
+                    cost_table[i][k]
+                    + cost_table[k + 1][j]
+                    + dims[i] * dims[k + 1] * dims[j + 1]
+                )
                 if cost < cost_table[i][j]:
                     cost_table[i][j] = cost
     return max(int(cost_table[0][n - 1]), 1)
@@ -57,10 +65,15 @@ def multi_dot(arrays, *, out=None):
         validate_ndarray(arr)
     shapes = [arr.shape for arr in arrays]
     cost = multi_dot_cost(shapes)
-    budget.deduct("linalg.multi_dot", flop_cost=cost, subscripts=None, shapes=tuple(shapes))
+    budget.deduct(
+        "linalg.multi_dot", flop_cost=cost, subscripts=None, shapes=tuple(shapes)
+    )
     return _np.linalg.multi_dot(arrays, out=out)
 
-attach_docstring(multi_dot, _np.linalg.multi_dot, "linalg", "Optimal chain multiplication cost")
+
+attach_docstring(
+    multi_dot, _np.linalg.multi_dot, "linalg", "Optimal chain multiplication cost"
+)
 
 
 def matrix_power_cost(n: int, k: int) -> int:
@@ -86,9 +99,9 @@ def matrix_power_cost(n: int, k: int) -> int:
     if k == 0 or k == 1:
         return 0
     if k < 0:
-        return n ** 3 + matrix_power_cost(n, abs(k))
+        return n**3 + matrix_power_cost(n, abs(k))
     num_ops = math.floor(math.log2(k)) + _popcount(k) - 1
-    return max(num_ops * n ** 3, 1)
+    return max(num_ops * n**3, 1)
 
 
 def matrix_power(a, n):
@@ -99,8 +112,15 @@ def matrix_power(a, n):
         raise ValueError(f"Input must be square 2D array, got shape {a.shape}")
     size = a.shape[0]
     cost = matrix_power_cost(size, n)
-    budget.deduct("linalg.matrix_power", flop_cost=cost, subscripts=None, shapes=(a.shape,))
+    budget.deduct(
+        "linalg.matrix_power", flop_cost=cost, subscripts=None, shapes=(a.shape,)
+    )
     return _np.linalg.matrix_power(a, n)
 
-attach_docstring(matrix_power, _np.linalg.matrix_power, "linalg",
-    "n\u00b3 \u00d7 exponent FLOPs (repeated squaring)")
+
+attach_docstring(
+    matrix_power,
+    _np.linalg.matrix_power,
+    "linalg",
+    "n\u00b3 \u00d7 exponent FLOPs (repeated squaring)",
+)

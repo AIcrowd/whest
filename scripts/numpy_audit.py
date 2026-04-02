@@ -13,7 +13,6 @@ Usage
 from __future__ import annotations
 
 import argparse
-import importlib
 import inspect
 import json
 import sys
@@ -81,7 +80,7 @@ SKIP_NAMES: frozenset[str] = frozenset(
         "float16",
         "float32",
         "float64",
-        "float128",   # may not exist on all platforms
+        "float128",  # may not exist on all platforms
         "complex64",
         "complex128",
         "complex256",  # may not exist on all platforms
@@ -229,8 +228,17 @@ SUBMODULES = {
 }
 
 # Submodules to never include (walk targets only)
-EXCLUDED_SUBMODULE_PREFIXES = ("testing", "lib", "compat", "ctypeslib", "ma", "char",
-                                "emath", "core", "rec")
+EXCLUDED_SUBMODULE_PREFIXES = (
+    "testing",
+    "lib",
+    "compat",
+    "ctypeslib",
+    "ma",
+    "char",
+    "emath",
+    "core",
+    "rec",
+)
 
 
 def _classify_kind(obj) -> str:
@@ -334,6 +342,7 @@ def load_registry() -> Tuple[dict, dict]:
     """
     try:
         from mechestim._registry import REGISTRY, REGISTRY_META
+
         return REGISTRY_META, REGISTRY
     except ImportError:
         return {}, {}
@@ -363,6 +372,7 @@ def compare(
     """
     # Determine which registered functions are actually importable
     import mechestim as me
+
     implemented_names = set()
     for name in registry:
         parts = name.split(".")
@@ -406,6 +416,7 @@ def compare(
 # Output helpers
 # ---------------------------------------------------------------------------
 
+
 def _category_color(category: str) -> str:
     return {
         "covered": "green",
@@ -425,11 +436,13 @@ def print_rich_report(
 ) -> None:
     """Print a colour-coded rich table to stdout."""
     try:
+        from rich import box
         from rich.console import Console
         from rich.table import Table
-        from rich import box
     except ImportError:
-        print_plain_report(discovered, comparison, registry, filter_category, filter_module)
+        print_plain_report(
+            discovered, comparison, registry, filter_category, filter_module
+        )
         return
 
     console = Console()
@@ -536,6 +549,7 @@ def print_plain_report(
 # ---------------------------------------------------------------------------
 # CLI entry point
 # ---------------------------------------------------------------------------
+
 
 def main() -> None:
     parser = argparse.ArgumentParser(
