@@ -1,4 +1,5 @@
 """Exception and warning classes for mechestim."""
+from __future__ import annotations
 
 
 class MechEstimError(Exception):
