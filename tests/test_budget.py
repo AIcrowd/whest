@@ -90,10 +90,12 @@ def test_op_record_fields():
         shapes=((3, 4), (4, 5)),
         flop_cost=60,
         cumulative=60,
+        namespace=None,
     )
     assert rec.op_name == "einsum"
     assert rec.subscripts == "ij,jk->ik"
     assert rec.flop_cost == 60
+    assert rec.namespace is None
 
 
 def test_summary():

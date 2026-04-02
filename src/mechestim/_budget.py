@@ -16,6 +16,7 @@ class OpRecord(NamedTuple):
     shapes: tuple
     flop_cost: int
     cumulative: int
+    namespace: str | None = None
 
 
 _thread_local = threading.local()
@@ -38,7 +39,11 @@ class BudgetContext:
     """
 
     def __init__(
-        self, flop_budget: int, flop_multiplier: float = 1.0, quiet: bool = False
+        self,
+        flop_budget: int,
+        flop_multiplier: float = 1.0,
+        quiet: bool = False,
+        namespace: str | None = None,
     ):
         if flop_budget <= 0:
             raise ValueError(f"flop_budget must be > 0, got {flop_budget}")
@@ -47,6 +52,7 @@ class BudgetContext:
         self._flops_used = 0
         self._op_log: list[OpRecord] = []
         self._quiet = quiet
+        self._namespace = namespace
 
     @property
     def flop_budget(self) -> int:
@@ -68,6 +74,10 @@ class BudgetContext:
     def op_log(self) -> list[OpRecord]:
         return self._op_log
 
+    @property
+    def namespace(self) -> str | None:
+        return self._namespace
+
     def deduct(
         self, op_name: str, *, flop_cost: int, subscripts: str | None, shapes: tuple
     ) -> None:
@@ -85,6 +95,7 @@ class BudgetContext:
                 shapes=shapes,
                 flop_cost=adjusted_cost,
                 cumulative=self._flops_used,
+                namespace=self._namespace,
             )
         )
 
