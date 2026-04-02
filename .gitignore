@@ -1,4 +1,4 @@
-# Python
+# Python bytecode & build artifacts
 __pycache__/
 *.pyc
 *.pyo
@@ -8,31 +8,41 @@ __pycache__/
 dist/
 build/
 *.whl
+*.so
 
 # Virtual environments
 .venv/
 venv/
 env/
 
-# IDE
+# IDE & editors
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
-.DS_Store
 
-# Testing
+# Testing & coverage
 .pytest_cache/
 .coverage
+coverage.xml
 htmlcov/
 .tox/
+.nox/
 
 # mkdocs generated site
 site/
 
+# Claude Code session data
+.claude/
+
+# Benchmarks (runtime output)
+.benchmarks/
+
 # ZMQ sockets (runtime)
 *.sock
 
-# OS
+# OS junk
+.DS_Store
 Thumbs.db
+Desktop.ini
