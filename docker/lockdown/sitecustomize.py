@@ -21,7 +21,7 @@ import sysconfig
 # The allowlist module is placed alongside this file in the image
 _lockdown_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, _lockdown_dir)
-from allowlist import ALLOWED_MODULES, POISONED_MODULES  # noqa: E402
+from allowlist import ALLOWED_MODULES  # noqa: E402
 sys.path.remove(_lockdown_dir)
 
 # ---------------------------------------------------------------------------
@@ -74,36 +74,21 @@ def _is_allowed(name: str) -> bool:
 _original_import = builtins.__import__
 
 
-def _gated_import(name, globals=None, locals=None, fromlist=(), level=0):
-    """Import wrapper that blocks explicitly poisoned modules.
-
-    For non-poisoned, non-allowlisted modules we let the import proceed
-    naturally — it will fail with a normal ImportError if the file was
-    stripped, which allows Python's own try/except ImportError patterns
-    (e.g., subprocess trying to import msvcrt on Linux) to work correctly.
-    """
-    # Relative imports (level > 0) are always allowed
-    if level > 0:
-        return _original_import(name, globals, locals, fromlist, level)
-
-    # Only hard-block explicitly poisoned modules
-    top_level = name.split(".")[0]
-    if name in POISONED_MODULES or top_level in POISONED_MODULES:
-        raise ImportError(
-            f"module {name!r} is not available in the mechestim sandbox"
-        )
-
-    return _original_import(name, globals, locals, fromlist, level)
-
-
-builtins.__import__ = _gated_import
-
-# ---------------------------------------------------------------------------
-# 4. Poison known-dangerous modules in sys.modules
-# ---------------------------------------------------------------------------
-
-for _mod_name in POISONED_MODULES:
-    sys.modules[_mod_name] = None  # type: ignore[assignment]
+# NOTE: We do NOT use an import gate or module poisoning.
+#
+# Python's stdlib and pyzmq have deep transitive import chains (zmq → platform
+# → subprocess → selectors → math, zmq.sugar.socket → pickle, etc.) that
+# conflict with any poisoning or gating approach. Instead we rely on:
+#
+# 1. Filesystem stripping — dangerous modules' files are deleted
+# 2. Docker hardening — no network, no shell, read-only FS, no capabilities
+# 3. open() restriction — can't read arbitrary files
+#
+# Modules that are transitively needed (math, subprocess, pickle, etc.) are
+# kept by the strip script but are harmless in the locked-down container:
+# - math: scalar only, can't bypass matrix FLOP counting
+# - subprocess: no shell in distroless, network_mode: none
+# - pickle: no untrusted data to deserialize
 
 # ---------------------------------------------------------------------------
 # 5. Neuter dangerous builtins
