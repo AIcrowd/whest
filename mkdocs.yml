@@ -1,4 +1,7 @@
 site_name: mechestim
+
+exclude_docs: |
+  superpowers/
 site_description: NumPy-compatible math primitives with FLOP counting
 repo_url: https://github.com/AIcrowd/mechestim
 
@@ -8,12 +11,17 @@ theme:
   favicon: assets/logo/logo.png
   palette:
     scheme: default
-    primary: indigo
+    primary: white
     accent: indigo
+  font:
+    text: Inter
+    code: JetBrains Mono
   features:
     - navigation.sections
     - navigation.expand
     - content.code.copy
+    - navigation.top
+    - header.autohide
 
 plugins:
   - search
@@ -46,12 +54,20 @@ nav:
   - API Reference:
     - Counted Operations: api/counted-ops.md
     - Free Operations: api/free-ops.md
+    - Linear Algebra: api/linalg.md
+    - FFT: api/fft.md
+    - Random: api/random.md
+    - Polynomial: api/polynomial.md
+    - Window Functions: api/window.md
     - Budget: api/budget.md
     - FLOP Cost Query: api/flops.md
     - Errors: api/errors.md
   - Operation Audit: reference/operation-audit.md
   - Troubleshooting: troubleshooting/common-errors.md
   - Changelog: changelog.md
+
+extra_css:
+  - stylesheets/extra.css
 
 markdown_extensions:
   - pymdownx.highlight:
