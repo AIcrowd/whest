@@ -47,7 +47,7 @@ cost = product of all unique index sizes
 
 For `'ij,jk->ik'` with shapes `(256, 256)` and `(256, 256)`:
 - Indices: i=256, j=256, k=256
-- Cost: 256 × 256 × 256 = 16,777,216
+- Cost: $256^3$ = 16,777,216
 
 ## me.dot and me.matmul
 

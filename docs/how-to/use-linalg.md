@@ -14,23 +14,23 @@ Use this page to learn how to use `me.linalg` operations and their FLOP costs.
 
 | Operation | Cost | Notes |
 |-----------|------|-------|
-| `me.linalg.svd(A, k=k)` | m × n × k | Truncated SVD |
-| `me.linalg.eig(A)` | 10 × n³ | General eigendecomposition |
-| `me.linalg.eigh(A)` | 4n³/3 | Symmetric eigendecomposition |
-| `me.linalg.cholesky(A)` | n³/3 | Cholesky (symmetric positive definite) |
-| `me.linalg.qr(A)` | 2mn² - 2n³/3 | Householder QR |
-| `me.linalg.eigvals(A)` | 10 × n³ | Eigenvalues only |
-| `me.linalg.eigvalsh(A)` | 4n³/3 | Symmetric eigenvalues only |
-| `me.linalg.svdvals(A)` | m × n × min(m,n) | Singular values only |
+| `me.linalg.svd(A, k=k)` | $m \cdot n \cdot k$ | Truncated SVD |
+| `me.linalg.eig(A)` | $10n^3$ | General eigendecomposition |
+| `me.linalg.eigh(A)` | $4n^3/3$ | Symmetric eigendecomposition |
+| `me.linalg.cholesky(A)` | $n^3/3$ | Cholesky (symmetric positive definite) |
+| `me.linalg.qr(A)` | $2mn^2 - 2n^3/3$ | Householder QR |
+| `me.linalg.eigvals(A)` | $10n^3$ | Eigenvalues only |
+| `me.linalg.eigvalsh(A)` | $4n^3/3$ | Symmetric eigenvalues only |
+| `me.linalg.svdvals(A)` | $m \cdot n \cdot \min(m,n)$ | Singular values only |
 
 ### Solvers
 
 | Operation | Cost | Symmetric cost |
 |-----------|------|----------------|
-| `me.linalg.solve(A, b)` | 2n³/3 + n²·nrhs | n³/3 + n·nrhs |
-| `me.linalg.inv(A)` | n³ | n³/3 + n³/2 |
-| `me.linalg.lstsq(A, b)` | m × n × min(m,n) | — |
-| `me.linalg.pinv(A)` | m × n × min(m,n) | — |
+| `me.linalg.solve(A, b)` | $2n^3/3 + n^2 \cdot n_{\text{rhs}}$ | $n^3/3 + n \cdot n_{\text{rhs}}$ |
+| `me.linalg.inv(A)` | $n^3$ | $n^3/3 + n^3/2$ |
+| `me.linalg.lstsq(A, b)` | $m \cdot n \cdot \min(m,n)$ | — |
+| `me.linalg.pinv(A)` | $m \cdot n \cdot \min(m,n)$ | — |
 
 When the input is a `SymmetricTensor`, `solve` and `inv` automatically use cheaper Cholesky-based costs. `inv` of a symmetric matrix returns a `SymmetricTensor`.
 
@@ -38,19 +38,19 @@ When the input is a `SymmetricTensor`, `solve` and `inv` automatically use cheap
 
 | Operation | Cost | Symmetric cost |
 |-----------|------|----------------|
-| `me.linalg.det(A)` | n³ | n³/3 |
-| `me.linalg.slogdet(A)` | n³ | n³/3 |
+| `me.linalg.det(A)` | $n^3$ | $n^3/3$ |
+| `me.linalg.slogdet(A)` | $n^3$ | $n^3/3$ |
 | `me.linalg.norm(x)` | depends on ord | — |
-| `me.linalg.cond(A)` | m × n × min(m,n) | — |
-| `me.linalg.matrix_rank(A)` | m × n × min(m,n) | — |
-| `me.linalg.trace(A)` | n | — |
+| `me.linalg.cond(A)` | $m \cdot n \cdot \min(m,n)$ | — |
+| `me.linalg.matrix_rank(A)` | $m \cdot n \cdot \min(m,n)$ | — |
+| `me.linalg.trace(A)` | $n$ | — |
 
 ### Compound
 
 | Operation | Cost | Notes |
 |-----------|------|-------|
 | `me.linalg.multi_dot(arrays)` | Optimal chain ordering | Uses `np.linalg.multi_dot` |
-| `me.linalg.matrix_power(A, n)` | n³ × exponent | Repeated squaring |
+| `me.linalg.matrix_power(A, n)` | $n^3 \times \text{exponent}$ | Repeated squaring |
 
 ## Symmetric input savings
 
