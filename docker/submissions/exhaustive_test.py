@@ -4,9 +4,10 @@ registry through the client-server proxy to verify it works end-to-end.
 
 Runs INSIDE the participant container (no numpy).
 """
-import mechestim as me
+
 import sys
-import traceback
+
+import mechestim as me
 
 # ── Results tracking ──────────────────────────────────────────────────────
 
@@ -37,7 +38,6 @@ print("  Exhaustive Mechestim Smoke Test")
 print("=" * 70)
 
 with me.BudgetContext(flop_budget=10**9) as budget:
-
     # ── Test data ──────────────────────────────────────────────────────
     SMALL_POS = me.array([0.5, 1.0, 1.5, 2.0])
     SMALL_UNIT = me.array([0.1, 0.3, 0.5, 0.7])
@@ -61,17 +61,57 @@ with me.BudgetContext(flop_budget=10**9) as budget:
     print("\n--- Counted Unary Ops ---")
 
     # Standard unary (work on general positive floats)
-    for name in ["exp", "exp2", "expm1", "sqrt", "square", "cbrt",
-                  "sin", "cos", "tan", "sinh", "cosh", "tanh",
-                  "arctan", "arcsinh",
-                  "sign", "ceil", "floor", "abs", "absolute", "fabs",
-                  "negative", "positive", "rint", "round", "around",
-                  "fix", "trunc", "deg2rad", "degrees", "rad2deg", "radians",
-                  "log", "log2", "log10", "log1p",
-                  "reciprocal", "signbit", "spacing",
-                  "sinc", "i0", "nan_to_num", "real", "imag",
-                  "conj", "conjugate", "iscomplex", "isreal",
-                  "real_if_close", "logical_not"]:
+    for name in [
+        "exp",
+        "exp2",
+        "expm1",
+        "sqrt",
+        "square",
+        "cbrt",
+        "sin",
+        "cos",
+        "tan",
+        "sinh",
+        "cosh",
+        "tanh",
+        "arctan",
+        "arcsinh",
+        "sign",
+        "ceil",
+        "floor",
+        "abs",
+        "absolute",
+        "fabs",
+        "negative",
+        "positive",
+        "rint",
+        "round",
+        "around",
+        "fix",
+        "trunc",
+        "deg2rad",
+        "degrees",
+        "rad2deg",
+        "radians",
+        "log",
+        "log2",
+        "log10",
+        "log1p",
+        "reciprocal",
+        "signbit",
+        "spacing",
+        "sinc",
+        "i0",
+        "nan_to_num",
+        "real",
+        "imag",
+        "conj",
+        "conjugate",
+        "iscomplex",
+        "isreal",
+        "real_if_close",
+        "logical_not",
+    ]:
         test(name, getattr(me, name), SMALL_POS)
 
     # arcsin, arccos, asin, acos need [-1,1]
@@ -119,25 +159,56 @@ with me.BudgetContext(flop_budget=10**9) as budget:
     # ── 2. COUNTED BINARY ops ─────────────────────────────────────────
     print("\n--- Counted Binary Ops ---")
 
-    for name in ["add", "subtract", "multiply", "divide", "true_divide",
-                  "floor_divide", "power", "pow", "float_power",
-                  "mod", "remainder", "fmod",
-                  "maximum", "minimum", "fmax", "fmin",
-                  "greater", "greater_equal", "less", "less_equal",
-                  "equal", "not_equal",
-                  "logical_and", "logical_or", "logical_xor",
-                  "logaddexp", "logaddexp2",
-                  "arctan2", "atan2", "hypot", "copysign",
-                  "nextafter", "heaviside"]:
+    for name in [
+        "add",
+        "subtract",
+        "multiply",
+        "divide",
+        "true_divide",
+        "floor_divide",
+        "power",
+        "pow",
+        "float_power",
+        "mod",
+        "remainder",
+        "fmod",
+        "maximum",
+        "minimum",
+        "fmax",
+        "fmin",
+        "greater",
+        "greater_equal",
+        "less",
+        "less_equal",
+        "equal",
+        "not_equal",
+        "logical_and",
+        "logical_or",
+        "logical_xor",
+        "logaddexp",
+        "logaddexp2",
+        "arctan2",
+        "atan2",
+        "hypot",
+        "copysign",
+        "nextafter",
+        "heaviside",
+    ]:
         test(name, getattr(me, name), PAIR_A, PAIR_B)
 
     # ldexp: x * 2^i
     test("ldexp", me.ldexp, PAIR_A, me.array([1, 2, 3], dtype="int64"))
 
     # bitwise binary on int arrays
-    for name in ["bitwise_and", "bitwise_or", "bitwise_xor",
-                  "bitwise_left_shift", "bitwise_right_shift",
-                  "left_shift", "right_shift"]:
+    for name in [
+        "bitwise_and",
+        "bitwise_or",
+        "bitwise_xor",
+        "bitwise_left_shift",
+        "bitwise_right_shift",
+        "left_shift",
+        "right_shift",
+    ]:
         test(name, getattr(me, name), INT_PAIR_A, me.array([1, 2, 1], dtype="int64"))
 
     # gcd, lcm
@@ -153,15 +224,38 @@ with me.BudgetContext(flop_budget=10**9) as budget:
     # ── 3. COUNTED REDUCTION ops ──────────────────────────────────────
     print("\n--- Counted Reduction Ops ---")
 
-    for name in ["sum", "prod", "mean", "std", "var", "max", "min",
-                  "amax", "amin", "all", "any",
-                  "argmax", "argmin", "cumsum", "cumprod",
-                  "count_nonzero", "median",
-                  "nansum", "nanprod", "nanmean", "nanstd", "nanvar",
-                  "nanmax", "nanmin", "nanmedian",
-                  "nanargmax", "nanargmin",
-                  "nancumprod", "nancumsum",
-                  "ptp"]:
+    for name in [
+        "sum",
+        "prod",
+        "mean",
+        "std",
+        "var",
+        "max",
+        "min",
+        "amax",
+        "amin",
+        "all",
+        "any",
+        "argmax",
+        "argmin",
+        "cumsum",
+        "cumprod",
+        "count_nonzero",
+        "median",
+        "nansum",
+        "nanprod",
+        "nanmean",
+        "nanstd",
+        "nanvar",
+        "nanmax",
+        "nanmin",
+        "nanmedian",
+        "nanargmax",
+        "nanargmin",
+        "nancumprod",
+        "nancumsum",
+        "ptp",
+    ]:
         test(name, getattr(me, name), SMALL_INT)
 
     # average
@@ -227,10 +321,13 @@ with me.BudgetContext(flop_budget=10**9) as budget:
     test("trapz", me.trapz, SMALL_INT)
 
     # interp
-    test("interp", me.interp,
-         me.array([1.5, 2.5]),
-         me.array([1.0, 2.0, 3.0]),
-         me.array([10.0, 20.0, 30.0]))
+    test(
+        "interp",
+        me.interp,
+        me.array([1.5, 2.5]),
+        me.array([1.0, 2.0, 3.0]),
+        me.array([10.0, 20.0, 30.0]),
+    )
 
     # linalg.svd
     test("linalg.svd", me.linalg.svd, MATRIX3x2)
@@ -301,9 +398,13 @@ with me.BudgetContext(flop_budget=10**9) as budget:
     test("partition", me.partition, me.array([3.0, 1.0, 2.0, 4.0]), 2)
     test("argpartition", me.argpartition, me.array([3.0, 1.0, 2.0, 4.0]), 2)
     test("take", me.take, PAIR_A, [0, 2])
-    test("take_along_axis", me.take_along_axis,
-         me.array([[1.0, 2.0], [3.0, 4.0]]),
-         me.array([[0, 1], [1, 0]], dtype="int64"), axis=1)
+    test(
+        "take_along_axis",
+        me.take_along_axis,
+        me.array([[1.0, 2.0], [3.0, 4.0]]),
+        me.array([[0, 1], [1, 0]], dtype="int64"),
+        axis=1,
+    )
     test("compress", me.compress, [True, False, True], PAIR_A)
     test("extract", me.extract, BOOL_ARR, PAIR_A)
     test("diagonal", me.diagonal, MATRIX)
@@ -379,10 +480,16 @@ with me.BudgetContext(flop_budget=10**9) as budget:
     test("tril_indices_from", me.tril_indices_from, MATRIX)
     test("triu_indices_from", me.triu_indices_from, MATRIX)
     test("indices", me.indices, (2, 3))
-    test("ix_", me.ix_, me.array([0, 1], dtype="int64"), me.array([0, 1], dtype="int64"))
+    test(
+        "ix_", me.ix_, me.array([0, 1], dtype="int64"), me.array([0, 1], dtype="int64")
+    )
     test("unravel_index", me.unravel_index, 5, (3, 3))
-    test("ravel_multi_index", me.ravel_multi_index,
-         (me.array([0, 1, 2], dtype="int64"), me.array([0, 1, 2], dtype="int64")), (3, 3))
+    test(
+        "ravel_multi_index",
+        me.ravel_multi_index,
+        (me.array([0, 1, 2], dtype="int64"), me.array([0, 1, 2], dtype="int64")),
+        (3, 3),
+    )
     test("mask_indices", me.mask_indices, 3, me.triu)
 
     print("\n--- Free Ops: Mesh / Grid ---")
@@ -416,12 +523,22 @@ with me.BudgetContext(flop_budget=10**9) as budget:
     test("put", me.put, arr_put, [0, 2], [99.0, 88.0])
 
     arr_place = me.array([1.0, 2.0, 3.0, 4.0])
-    test("place", me.place, arr_place,
-         me.array([True, False, True, False], dtype="bool"), [99.0, 88.0])
+    test(
+        "place",
+        me.place,
+        arr_place,
+        me.array([True, False, True, False], dtype="bool"),
+        [99.0, 88.0],
+    )
 
     arr_pm = me.array([1.0, 2.0, 3.0, 4.0])
-    test("putmask", me.putmask, arr_pm,
-         me.array([True, False, True, False], dtype="bool"), 0.0)
+    test(
+        "putmask",
+        me.putmask,
+        arr_pm,
+        me.array([True, False, True, False], dtype="bool"),
+        0.0,
+    )
 
     mat_fd = me.array([[1.0, 2.0], [3.0, 4.0]])
     test("fill_diagonal", me.fill_diagonal, mat_fd, 0.0)
@@ -431,14 +548,17 @@ with me.BudgetContext(flop_budget=10**9) as budget:
 
     print("\n--- Free Ops: Choose / Require ---")
 
-    test("choose", me.choose, me.array([0, 1, 0], dtype="int64"),
-         [me.array([10.0, 20.0, 30.0]), me.array([40.0, 50.0, 60.0])])
+    test(
+        "choose",
+        me.choose,
+        me.array([0, 1, 0], dtype="int64"),
+        [me.array([10.0, 20.0, 30.0]), me.array([40.0, 50.0, 60.0])],
+    )
     test("require", me.require, PAIR_A)
 
     print("\n--- Free Ops: Matrix Transpose / Permute ---")
 
-    test("matrix_transpose", me.matrix_transpose,
-         me.array([[[1.0, 2.0], [3.0, 4.0]]]))
+    test("matrix_transpose", me.matrix_transpose, me.array([[[1.0, 2.0], [3.0, 4.0]]]))
     test("permute_dims", me.permute_dims, MATRIX, (1, 0))
 
     print("\n--- Free Ops: Unique Variants ---")
@@ -465,17 +585,27 @@ with me.BudgetContext(flop_budget=10**9) as budget:
 
     print("\n--- Free Ops: Put Along Axis ---")
 
-    test("put_along_axis", me.put_along_axis,
-         me.array([[1.0, 2.0], [3.0, 4.0]]),
-         me.array([[0], [1]], dtype="int64"),
-         me.array([[99.0], [88.0]]), axis=1)
+    test(
+        "put_along_axis",
+        me.put_along_axis,
+        me.array([[1.0, 2.0], [3.0, 4.0]]),
+        me.array([[0], [1]], dtype="int64"),
+        me.array([[99.0], [88.0]]),
+        axis=1,
+    )
 
     print("\n--- Free Ops: Histogram 2D / DD ---")
 
-    test("histogram2d", me.histogram2d,
-         me.array([1.0, 2.0, 3.0]), me.array([4.0, 5.0, 6.0]), 3)
-    test("histogramdd", me.histogramdd,
-         me.array([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]]), 3)
+    test(
+        "histogram2d",
+        me.histogram2d,
+        me.array([1.0, 2.0, 3.0]),
+        me.array([4.0, 5.0, 6.0]),
+        3,
+    )
+    test(
+        "histogramdd", me.histogramdd, me.array([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]]), 3
+    )
 
     # ── 6. RANDOM submodule ───────────────────────────────────────────
     print("\n--- Random Submodule ---")
@@ -519,8 +649,12 @@ with me.BudgetContext(flop_budget=10**9) as budget:
     test("random.weibull", me.random.weibull, 2.0, (3,))
     test("random.zipf", me.random.zipf, 2.0, (3,))
     test("random.dirichlet", me.random.dirichlet, [1.0, 1.0, 1.0])
-    test("random.multivariate_normal", me.random.multivariate_normal,
-         [0.0, 0.0], [[1.0, 0.0], [0.0, 1.0]])
+    test(
+        "random.multivariate_normal",
+        me.random.multivariate_normal,
+        [0.0, 0.0],
+        [[1.0, 0.0], [0.0, 1.0]],
+    )
     test("random.f", me.random.f, 5, 10, (3,))
     test("random.hypergeometric", me.random.hypergeometric, 10, 5, 7, (3,))
     test("random.random_sample", me.random.random_sample, (3,))
@@ -545,9 +679,17 @@ with me.BudgetContext(flop_budget=10**9) as budget:
     print("\n--- Skipped Functions ---")
 
     # Functions that read/write files or need special environments
-    for name in ["fromfile", "fromstring", "frombuffer", "fromfunction",
-                 "fromiter", "fromregex", "from_dlpack",
-                 "bmat", "isdtype"]:
+    for name in [
+        "fromfile",
+        "fromstring",
+        "frombuffer",
+        "fromfunction",
+        "fromiter",
+        "fromregex",
+        "from_dlpack",
+        "bmat",
+        "isdtype",
+    ]:
         skip(name, "requires special input type or file I/O")
 
     # These are hard to test generically

@@ -1,10 +1,11 @@
 """Client-side BudgetContext proxy that delegates to the mechestim server."""
+
 from __future__ import annotations
 
 from mechestim._connection import get_connection
 from mechestim._protocol import (
-    encode_budget_open,
     encode_budget_close,
+    encode_budget_open,
     encode_budget_status,
 )
 
@@ -137,10 +138,7 @@ class BudgetContext:
         budget = result.get("flop_budget", self._flop_budget)
         used = self._flops_used
         remaining = int(budget) - used
-        return (
-            f"BudgetContext: {used}/{budget} FLOPs used "
-            f"({remaining} remaining)"
-        )
+        return f"BudgetContext: {used}/{budget} FLOPs used ({remaining} remaining)"
 
     # ------------------------------------------------------------------
     # Context manager protocol

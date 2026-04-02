@@ -4,14 +4,13 @@ from __future__ import annotations
 
 import numpy as np
 import pytest
-
-from mechestim_server._session import Session
 from mechestim_server._request_handler import RequestHandler
-
+from mechestim_server._session import Session
 
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture()
 def session():
@@ -29,6 +28,7 @@ def handler(session):
 # ---------------------------------------------------------------------------
 # Free ops: zeros / ones
 # ---------------------------------------------------------------------------
+
 
 def test_handle_zeros(handler, session):
     resp = handler.handle({"op": "zeros", "args": [(3, 4)], "kwargs": {}})
@@ -52,6 +52,7 @@ def test_handle_ones(handler, session):
 # Counted unary: exp
 # ---------------------------------------------------------------------------
 
+
 def test_handle_unary_exp(handler, session):
     # Create an input array first
     inp = np.array([0.0, 1.0, 2.0])
@@ -68,6 +69,7 @@ def test_handle_unary_exp(handler, session):
 # Counted binary: add (two handles)
 # ---------------------------------------------------------------------------
 
+
 def test_handle_binary_add(handler, session):
     a = session.store_array(np.array([1.0, 2.0, 3.0]))
     b = session.store_array(np.array([10.0, 20.0, 30.0]))
@@ -82,6 +84,7 @@ def test_handle_binary_add(handler, session):
 # Binary with scalar: handle + float
 # ---------------------------------------------------------------------------
 
+
 def test_handle_binary_with_scalar(handler, session):
     a = session.store_array(np.array([1.0, 2.0, 3.0]))
 
@@ -94,6 +97,7 @@ def test_handle_binary_with_scalar(handler, session):
 # ---------------------------------------------------------------------------
 # Reduction: sum
 # ---------------------------------------------------------------------------
+
 
 def test_handle_reduction_sum(handler, session):
     a = session.store_array(np.array([1.0, 2.0, 3.0]))
@@ -114,6 +118,7 @@ def test_handle_reduction_sum(handler, session):
 # Einsum: string subscript + handle args
 # ---------------------------------------------------------------------------
 
+
 def test_handle_einsum(handler, session):
     W = session.store_array(np.array([[1.0, 2.0], [3.0, 4.0]]))
     x = session.store_array(np.array([1.0, 1.0]))
@@ -128,14 +133,17 @@ def test_handle_einsum(handler, session):
 # create_from_data
 # ---------------------------------------------------------------------------
 
+
 def test_handle_create_from_data(handler, session):
     arr = np.array([1.0, 2.0, 3.0], dtype=np.float64)
-    resp = handler.handle({
-        "op": "create_from_data",
-        "data": arr.tobytes(),
-        "shape": [3],
-        "dtype": "float64",
-    })
+    resp = handler.handle(
+        {
+            "op": "create_from_data",
+            "data": arr.tobytes(),
+            "shape": [3],
+            "dtype": "float64",
+        }
+    )
     assert resp["status"] == "ok"
     stored = session.get_array(resp["result"]["id"])
     np.testing.assert_array_equal(stored, arr)
@@ -144,6 +152,7 @@ def test_handle_create_from_data(handler, session):
 # ---------------------------------------------------------------------------
 # fetch
 # ---------------------------------------------------------------------------
+
 
 def test_handle_fetch(handler, session):
     arr = np.array([1.0, 2.0, 3.0], dtype=np.float64)
@@ -160,6 +169,7 @@ def test_handle_fetch(handler, session):
 # fetch_slice
 # ---------------------------------------------------------------------------
 
+
 def test_handle_fetch_slice(handler, session):
     arr = np.arange(10, dtype=np.float64)
     handle = session.store_array(arr)
@@ -174,6 +184,7 @@ def test_handle_fetch_slice(handler, session):
 # ---------------------------------------------------------------------------
 # free
 # ---------------------------------------------------------------------------
+
 
 def test_handle_free(handler, session):
     h1 = session.store_array(np.array([1.0]))
@@ -192,6 +203,7 @@ def test_handle_free(handler, session):
 # budget_status
 # ---------------------------------------------------------------------------
 
+
 def test_handle_budget_status(handler):
     resp = handler.handle({"op": "budget_status"})
     assert resp["status"] == "ok"
@@ -206,6 +218,7 @@ def test_handle_budget_status(handler):
 # Error: unknown handle
 # ---------------------------------------------------------------------------
 
+
 def test_handle_unknown_handle_returns_error(handler):
     resp = handler.handle({"op": "exp", "args": ["a999"], "kwargs": {}})
     assert resp["status"] == "error"
@@ -215,6 +228,7 @@ def test_handle_unknown_handle_returns_error(handler):
 # ---------------------------------------------------------------------------
 # Error: budget exhausted
 # ---------------------------------------------------------------------------
+
 
 def test_handle_budget_exhausted_returns_error():
     # Tiny budget that will be exceeded
@@ -237,6 +251,7 @@ def test_handle_budget_exhausted_returns_error():
 # Budget info included in operation responses
 # ---------------------------------------------------------------------------
 
+
 def test_budget_info_included_in_operation_responses(handler, session):
     resp = handler.handle({"op": "zeros", "args": [(3,)], "kwargs": {}})
     assert resp["status"] == "ok"
@@ -256,16 +271,19 @@ def test_budget_info_included_in_operation_responses(handler, session):
 # FIX 3: _resolve_arg recurses into lists
 # ---------------------------------------------------------------------------
 
+
 def test_resolve_arg_recurse_list(handler, session):
     """Handles inside lists (e.g. concatenate([a, b])) are resolved."""
     a = session.store_array(np.array([1.0, 2.0]))
     b = session.store_array(np.array([3.0, 4.0]))
 
-    resp = handler.handle({
-        "op": "concatenate",
-        "args": [[{"__handle__": a}, {"__handle__": b}]],
-        "kwargs": {},
-    })
+    resp = handler.handle(
+        {
+            "op": "concatenate",
+            "args": [[{"__handle__": a}, {"__handle__": b}]],
+            "kwargs": {},
+        }
+    )
     assert resp["status"] == "ok"
     result = session.get_array(resp["result"]["id"])
     np.testing.assert_array_equal(result, [1.0, 2.0, 3.0, 4.0])
@@ -274,6 +292,7 @@ def test_resolve_arg_recurse_list(handler, session):
 # ---------------------------------------------------------------------------
 # FIX 6: _pack_result handles mixed array/scalar tuples
 # ---------------------------------------------------------------------------
+
 
 def test_pack_result_mixed_tuple(handler, session):
     """FIX 6: _pack_result handles tuples containing both arrays and scalars."""
@@ -299,19 +318,23 @@ def test_pack_result_mixed_tuple(handler, session):
 # FIX 9: Max array size limit
 # ---------------------------------------------------------------------------
 
+
 def test_create_from_data_size_limit(handler, session, monkeypatch):
     """create_from_data rejects arrays exceeding the size limit."""
     import mechestim_server._request_handler as rh
+
     monkeypatch.setattr(rh, "MAX_ARRAY_BYTES", 100)  # 100 bytes limit
 
     # Create data that exceeds limit
     arr = np.ones((200,), dtype=np.float64)  # 200 * 8 = 1600 bytes
-    resp = handler.handle({
-        "op": "create_from_data",
-        "data": arr.tobytes(),
-        "shape": [200],
-        "dtype": "float64",
-    })
+    resp = handler.handle(
+        {
+            "op": "create_from_data",
+            "data": arr.tobytes(),
+            "shape": [200],
+            "dtype": "float64",
+        }
+    )
     assert resp["status"] == "error"
     assert resp["error_type"] == "ValueError"
     assert "too large" in resp["message"]
@@ -320,6 +343,7 @@ def test_create_from_data_size_limit(handler, session, monkeypatch):
 def test_result_array_size_limit(handler, session, monkeypatch):
     """Operations producing arrays exceeding the limit return an error."""
     import mechestim_server._request_handler as rh
+
     monkeypatch.setattr(rh, "MAX_ARRAY_BYTES", 100)  # 100 bytes limit
 
     # ones((200,)) produces 200 * 8 = 1600 bytes

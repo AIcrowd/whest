@@ -1,35 +1,105 @@
 """Linear algebra submodule for mechestim."""
-from mechestim.linalg._svd import svd  # noqa: F401
+
+from mechestim._registry import make_module_getattr as _make_module_getattr
 from mechestim.linalg._aliases import (  # noqa: F401
-    matmul, cross, outer, tensordot, vecdot, diagonal, matrix_transpose,
-)
-from mechestim.linalg._decompositions import (  # noqa: F401
-    cholesky, qr, eig, eigh, eigvals, eigvalsh, svdvals,
-    cholesky_cost, qr_cost, eig_cost, eigh_cost, eigvals_cost, eigvalsh_cost, svdvals_cost,
-)
-from mechestim.linalg._solvers import (  # noqa: F401
-    solve, inv, lstsq, pinv, tensorsolve, tensorinv,
-    solve_cost, inv_cost, lstsq_cost, pinv_cost, tensorsolve_cost, tensorinv_cost,
-)
-from mechestim.linalg._properties import (  # noqa: F401
-    trace, det, slogdet, norm, vector_norm, matrix_norm, cond, matrix_rank,
-    trace_cost, det_cost, slogdet_cost, norm_cost, vector_norm_cost,
-    matrix_norm_cost, cond_cost, matrix_rank_cost,
+    cross,
+    diagonal,
+    matmul,
+    matrix_transpose,
+    outer,
+    tensordot,
+    vecdot,
 )
 from mechestim.linalg._compound import (  # noqa: F401
-    multi_dot, matrix_power,
-    multi_dot_cost, matrix_power_cost,
+    matrix_power,
+    matrix_power_cost,
+    multi_dot,
+    multi_dot_cost,
 )
-from mechestim._registry import make_module_getattr as _make_module_getattr
+from mechestim.linalg._decompositions import (  # noqa: F401
+    cholesky,
+    cholesky_cost,
+    eig,
+    eig_cost,
+    eigh,
+    eigh_cost,
+    eigvals,
+    eigvals_cost,
+    eigvalsh,
+    eigvalsh_cost,
+    qr,
+    qr_cost,
+    svdvals,
+    svdvals_cost,
+)
+from mechestim.linalg._properties import (  # noqa: F401
+    cond,
+    cond_cost,
+    det,
+    det_cost,
+    matrix_norm,
+    matrix_norm_cost,
+    matrix_rank,
+    matrix_rank_cost,
+    norm,
+    norm_cost,
+    slogdet,
+    slogdet_cost,
+    trace,
+    trace_cost,
+    vector_norm,
+    vector_norm_cost,
+)
+from mechestim.linalg._solvers import (  # noqa: F401
+    inv,
+    inv_cost,
+    lstsq,
+    lstsq_cost,
+    pinv,
+    pinv_cost,
+    solve,
+    solve_cost,
+    tensorinv,
+    tensorinv_cost,
+    tensorsolve,
+    tensorsolve_cost,
+)
+from mechestim.linalg._svd import svd  # noqa: F401
 
 __all__ = [
     "svd",
-    "matmul", "cross", "outer", "tensordot", "vecdot",
-    "diagonal", "matrix_transpose",
-    "cholesky", "qr", "eig", "eigh", "eigvals", "eigvalsh", "svdvals",
-    "solve", "inv", "lstsq", "pinv", "tensorsolve", "tensorinv",
-    "trace", "det", "slogdet", "norm", "vector_norm", "matrix_norm", "cond", "matrix_rank",
-    "multi_dot", "matrix_power",
+    "matmul",
+    "cross",
+    "outer",
+    "tensordot",
+    "vecdot",
+    "diagonal",
+    "matrix_transpose",
+    "cholesky",
+    "qr",
+    "eig",
+    "eigh",
+    "eigvals",
+    "eigvalsh",
+    "svdvals",
+    "solve",
+    "inv",
+    "lstsq",
+    "pinv",
+    "tensorsolve",
+    "tensorinv",
+    "trace",
+    "det",
+    "slogdet",
+    "norm",
+    "vector_norm",
+    "matrix_norm",
+    "cond",
+    "matrix_rank",
+    "multi_dot",
+    "matrix_power",
 ]
 
-__getattr__ = _make_module_getattr(module_prefix="linalg.", module_label="mechestim.linalg")
+__getattr__ = _make_module_getattr(
+    module_prefix="linalg.", module_label="mechestim.linalg"
+)

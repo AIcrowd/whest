@@ -1,4 +1,5 @@
 """FLOP cost calculators for mechestim operations."""
+
 from __future__ import annotations
 
 import math
@@ -34,12 +35,18 @@ def parse_einsum_subscripts(subscripts: str) -> tuple[list[list[str]], list[str]
         for part in input_part.split(","):
             all_labels.extend(list(part))
         counts = Counter(all_labels)
-        output = sorted(l for l, c in counts.items() if c == 1)
+        output = sorted(lbl for lbl, c in counts.items() if c == 1)
     inputs = [list(part) for part in input_part.split(",")]
     return inputs, output
 
 
-def einsum_cost(subscripts: str, shapes: list[tuple[int, ...]], repeated_operand_indices: list[int] | None = None, symmetric_dims: list[tuple[int, ...]] | None = None, operand_symmetries: "list[SymmetryInfo | None] | None" = None) -> int:
+def einsum_cost(
+    subscripts: str,
+    shapes: list[tuple[int, ...]],
+    repeated_operand_indices: list[int] | None = None,
+    symmetric_dims: list[tuple[int, ...]] | None = None,
+    operand_symmetries: "list[SymmetryInfo | None] | None" = None,
+) -> int:
     """FLOP cost of an einsum operation.
 
     Parameters
@@ -71,7 +78,9 @@ def einsum_cost(subscripts: str, shapes: list[tuple[int, ...]], repeated_operand
         for label, dim in zip(operand_labels, shape):
             if label in label_dims:
                 if label_dims[label] != dim:
-                    raise ValueError(f"Inconsistent dimension for label '{label}': {label_dims[label]} vs {dim}")
+                    raise ValueError(
+                        f"Inconsistent dimension for label '{label}': {label_dims[label]} vs {dim}"
+                    )
             else:
                 label_dims[label] = dim
     all_labels = set()
@@ -104,7 +113,9 @@ def einsum_cost(subscripts: str, shapes: list[tuple[int, ...]], repeated_operand
     return max(cost, 1)
 
 
-def pointwise_cost(shape: tuple[int, ...], symmetry_info: "SymmetryInfo | None" = None) -> int:
+def pointwise_cost(
+    shape: tuple[int, ...], symmetry_info: "SymmetryInfo | None" = None
+) -> int:
     """FLOP cost of a pointwise (element-wise) operation.
 
     Parameters
@@ -127,7 +138,11 @@ def pointwise_cost(shape: tuple[int, ...], symmetry_info: "SymmetryInfo | None" 
     return max(result, 1)
 
 
-def reduction_cost(input_shape: tuple[int, ...], axis: int | None = None, symmetry_info: "SymmetryInfo | None" = None) -> int:
+def reduction_cost(
+    input_shape: tuple[int, ...],
+    axis: int | None = None,
+    symmetry_info: "SymmetryInfo | None" = None,
+) -> int:
     """FLOP cost of a reduction operation.
 
     Parameters

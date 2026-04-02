@@ -11,27 +11,28 @@ requiring a running server.  They test:
 - Submodule structure (fft, linalg, random)
 - flops local cost functions
 """
+
 from __future__ import annotations
 
 import math
+
 import pytest
+from mechestim._remote_array import RemoteArray
 
 import mechestim as me
 from mechestim._registry import (
-    FUNCTION_CATEGORIES,
     BLACKLISTED,
-    COUNTED_UNARY,
     COUNTED_BINARY,
-    COUNTED_REDUCTION,
     COUNTED_CUSTOM,
+    COUNTED_REDUCTION,
+    COUNTED_UNARY,
     FREE,
-    is_valid_op,
+    FUNCTION_CATEGORIES,
     get_category,
     is_blacklisted,
+    is_valid_op,
     iter_proxyable,
 )
-from mechestim._remote_array import RemoteArray, RemoteScalar
-
 
 # ===================================================================
 # Registry tests
@@ -175,10 +176,12 @@ class TestClassExports:
 
     def test_BudgetContext_is_class(self):
         from mechestim._budget import BudgetContext
+
         assert me.BudgetContext is BudgetContext
 
     def test_OpRecord_is_class(self):
         from mechestim._budget import OpRecord
+
         assert me.OpRecord is OpRecord
 
     def test_errors_exported(self):
@@ -197,15 +200,32 @@ class TestClassExports:
 class TestProxyFunctions:
     """Tests that auto-generated proxy functions exist and are callable."""
 
-    @pytest.mark.parametrize("name", [
-        "add", "subtract", "multiply", "divide",
-        "exp", "log", "sqrt", "abs",
-        "zeros", "ones", "eye", "arange",
-        "dot", "matmul", "sum", "mean",
-        "reshape", "transpose",
-        "concatenate", "stack",
-        "clip",
-    ])
+    @pytest.mark.parametrize(
+        "name",
+        [
+            "add",
+            "subtract",
+            "multiply",
+            "divide",
+            "exp",
+            "log",
+            "sqrt",
+            "abs",
+            "zeros",
+            "ones",
+            "eye",
+            "arange",
+            "dot",
+            "matmul",
+            "sum",
+            "mean",
+            "reshape",
+            "transpose",
+            "concatenate",
+            "stack",
+            "clip",
+        ],
+    )
     def test_proxy_exists_and_callable(self, name):
         fn = getattr(me, name)
         assert callable(fn), f"me.{name} should be callable"
@@ -277,26 +297,38 @@ class TestSubmodules:
 
     def test_fft_is_module(self):
         import types
+
         assert isinstance(me.fft, types.ModuleType)
 
     def test_linalg_is_module(self):
         import types
+
         assert isinstance(me.linalg, types.ModuleType)
 
     def test_random_is_module(self):
         import types
+
         assert isinstance(me.random, types.ModuleType)
 
     def test_flops_is_module(self):
         import types
+
         assert isinstance(me.flops, types.ModuleType)
 
     def test_linalg_svd_callable(self):
         assert callable(me.linalg.svd)
 
     def test_random_functions_callable(self):
-        for name in ["randn", "normal", "uniform", "rand", "seed",
-                      "choice", "permutation", "shuffle"]:
+        for name in [
+            "randn",
+            "normal",
+            "uniform",
+            "rand",
+            "seed",
+            "choice",
+            "permutation",
+            "shuffle",
+        ]:
             fn = getattr(me.random, name)
             assert callable(fn), f"me.random.{name} should be callable"
 
@@ -344,24 +376,28 @@ class TestArraySpecialCase:
 
     def test_flatten_helper(self):
         from mechestim import _flatten
+
         flat, shape = _flatten([[1, 2], [3, 4]])
         assert flat == [1, 2, 3, 4]
         assert shape == (2, 2)
 
     def test_flatten_1d(self):
         from mechestim import _flatten
+
         flat, shape = _flatten([1, 2, 3])
         assert flat == [1, 2, 3]
         assert shape == (3,)
 
     def test_flatten_3d(self):
         from mechestim import _flatten
+
         flat, shape = _flatten([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])
         assert flat == [1, 2, 3, 4, 5, 6, 7, 8]
         assert shape == (2, 2, 2)
 
     def test_flatten_inhomogeneous_raises(self):
         from mechestim import _flatten
+
         with pytest.raises(ValueError, match="Inhomogeneous"):
             _flatten([[1, 2], [3]])
 
@@ -386,7 +422,11 @@ class TestModuleCompleteness:
                     # If a top-level function or submodule exists with the
                     # same name, skip the check (e.g. "random" is both a
                     # submodule and random.random).
-                    if short in FUNCTION_CATEGORIES or short in ("fft", "linalg", "random"):
+                    if short in FUNCTION_CATEGORIES or short in (
+                        "fft",
+                        "linalg",
+                        "random",
+                    ):
                         continue
                     # Should NOT be in top-level namespace
                     assert not hasattr(me, short) or short in dir(me.__class__), (

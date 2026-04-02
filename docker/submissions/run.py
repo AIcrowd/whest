@@ -2,7 +2,9 @@
 Demo: A participant's submission that uses mechestim exactly like they would locally.
 This runs inside a container with NO numpy installed.
 """
+
 import sys
+
 import mechestim as me
 
 print("=" * 60)
@@ -13,6 +15,7 @@ print("=" * 60)
 # Verify numpy is not available
 try:
     import numpy
+
     print("\nWARNING: numpy is installed (not expected)")
 except ImportError:
     print("\nConfirmed: numpy is NOT installed in this container")
@@ -21,16 +24,19 @@ print(f"mechestim version: {me.__version__}")
 print()
 
 with me.BudgetContext(flop_budget=1_000_000) as budget:
-
     # ---- 1. Basic array creation ----
     print("--- 1. Array Creation ---")
     x = me.zeros((4, 4))
     print(f"zeros(4,4) shape={x.shape} dtype={x.dtype}")
 
-    W = me.array([[1.0, 0.0, 0.0, 0.0],
-                  [0.0, 2.0, 0.0, 0.0],
-                  [0.0, 0.0, 3.0, 0.0],
-                  [0.0, 0.0, 0.0, 4.0]])
+    W = me.array(
+        [
+            [1.0, 0.0, 0.0, 0.0],
+            [0.0, 2.0, 0.0, 0.0],
+            [0.0, 0.0, 3.0, 0.0],
+            [0.0, 0.0, 0.0, 4.0],
+        ]
+    )
     print(f"W = diag(1,2,3,4):\n{W}")
 
     # ---- 2. Computation with budget tracking ----
@@ -50,9 +56,9 @@ with me.BudgetContext(flop_budget=1_000_000) as budget:
     print(f"Bias:    b.shape={b.shape}")
 
     # Forward pass: y = ReLU(Wx + b)
-    h = me.einsum('oi,bi->bo', W, x)  # matrix multiply
-    h = me.add(h, b)                    # add bias
-    y = me.maximum(h, me.zeros_like(h)) # ReLU
+    h = me.einsum("oi,bi->bo", W, x)  # matrix multiply
+    h = me.add(h, b)  # add bias
+    y = me.maximum(h, me.zeros_like(h))  # ReLU
 
     print(f"Output:  y.shape={y.shape}")
     print(f"FLOPs used: {budget.flops_used:,}")
@@ -67,7 +73,7 @@ with me.BudgetContext(flop_budget=1_000_000) as budget:
     print(f"b = {b}")
     print(f"a + b = {a + b}")
     print(f"a * 2 = {a * 2.0}")
-    print(f"2 ** a = {2.0 ** a}")
+    print(f"2 ** a = {2.0**a}")
     print(f"-a = {-a}")
 
     # ---- 4. Comparisons ----
@@ -121,7 +127,9 @@ with me.BudgetContext(flop_budget=1_000_000) as budget:
 
 # ---- Run exhaustive smoke test ----
 print("\n\nRunning exhaustive smoke test...")
-import subprocess, os
+import os
+import subprocess
+
 script_dir = os.path.dirname(os.path.abspath(__file__))
 result = subprocess.run(
     [sys.executable, os.path.join(script_dir, "exhaustive_test.py")],

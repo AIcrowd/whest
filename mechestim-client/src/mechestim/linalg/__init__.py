@@ -1,10 +1,16 @@
 """mechestim.linalg — linear algebra submodule proxy."""
+
 from __future__ import annotations
 
-from mechestim._remote_array import RemoteArray, RemoteScalar, _result_from_response, _encode_arg
 from mechestim._connection import get_connection
-from mechestim._protocol import encode_request
 from mechestim._getattr import make_module_getattr
+from mechestim._protocol import encode_request
+from mechestim._remote_array import (
+    RemoteArray,
+    RemoteScalar,
+    _encode_arg,
+    _result_from_response,
+)
 
 
 def _make_linalg_proxy(op_name: str):
@@ -15,7 +21,9 @@ def _make_linalg_proxy(op_name: str):
         conn = get_connection()
         encoded_args = [_encode_arg(a) for a in args]
         encoded_kwargs = {k: _encode_arg(v) for k, v in kwargs.items()}
-        resp = conn.send_recv(encode_request(qualified, args=encoded_args, kwargs=encoded_kwargs))
+        resp = conn.send_recv(
+            encode_request(qualified, args=encoded_args, kwargs=encoded_kwargs)
+        )
         return _result_from_response(resp)
 
     proxy.__name__ = op_name

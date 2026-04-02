@@ -3,12 +3,13 @@
 Starts a MechestimServer in a subprocess, points the client at it,
 and exercises the full request/response chain.
 """
+
 from __future__ import annotations
 
 import math
 import os
-import subprocess
 import signal
+import subprocess
 import sys
 import time
 

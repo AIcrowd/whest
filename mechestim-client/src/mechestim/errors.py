@@ -1,4 +1,5 @@
 """Custom exceptions and warnings for the mechestim client."""
+
 from __future__ import annotations
 
 
@@ -32,9 +33,7 @@ class BudgetExhaustedError(MechEstimError):
 class NoBudgetContextError(MechEstimError):
     """Raised when a tracked operation is called outside a BudgetContext."""
 
-    _DEFAULT = (
-        "No active budget context. Wrap your computation in a BudgetContext."
-    )
+    _DEFAULT = "No active budget context. Wrap your computation in a BudgetContext."
 
     def __init__(self, message: str = "") -> None:
         super().__init__(message if message else self._DEFAULT)
@@ -73,11 +72,13 @@ class MechEstimServerError(MechEstimError):
 # Error map and dispatcher
 # ---------------------------------------------------------------------------
 
-_MECHESTIM_ERRORS = frozenset({
-    "BudgetExhaustedError",
-    "NoBudgetContextError",
-    "SymmetryError",
-})
+_MECHESTIM_ERRORS = frozenset(
+    {
+        "BudgetExhaustedError",
+        "NoBudgetContextError",
+        "SymmetryError",
+    }
+)
 
 _ERROR_MAP: dict[str, type[Exception]] = {
     "BudgetExhaustedError": BudgetExhaustedError,

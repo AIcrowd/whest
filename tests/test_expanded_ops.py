@@ -1,16 +1,39 @@
 """Tests for expanded operations — verifies they match numpy and charge correct FLOPs."""
+
 import numpy
 import pytest
-from mechestim._budget import BudgetContext
+
 import mechestim as me
+from mechestim._budget import BudgetContext
 
 
 class TestNewUnaryOps:
-    @pytest.mark.parametrize("op_name", [
-        "arcsin", "arccos", "arctan", "sinh", "cosh", "arcsinh", "arccosh", "arctanh",
-        "exp2", "expm1", "log1p", "rint", "trunc", "degrees", "radians",
-        "reciprocal", "positive", "cbrt", "signbit", "tan", "fabs",
-    ])
+    @pytest.mark.parametrize(
+        "op_name",
+        [
+            "arcsin",
+            "arccos",
+            "arctan",
+            "sinh",
+            "cosh",
+            "arcsinh",
+            "arccosh",
+            "arctanh",
+            "exp2",
+            "expm1",
+            "log1p",
+            "rint",
+            "trunc",
+            "degrees",
+            "radians",
+            "reciprocal",
+            "positive",
+            "cbrt",
+            "signbit",
+            "tan",
+            "fabs",
+        ],
+    )
     def test_unary_matches_numpy(self, op_name):
         x = numpy.array([0.1, 0.5, 0.9])
         me_func = getattr(me, op_name)
@@ -19,9 +42,18 @@ class TestNewUnaryOps:
             result = me_func(x)
             assert numpy.allclose(result, np_func(x), equal_nan=True)
 
-    @pytest.mark.parametrize("op_name", [
-        "arcsin", "sinh", "exp2", "rint", "degrees", "reciprocal", "tan",
-    ])
+    @pytest.mark.parametrize(
+        "op_name",
+        [
+            "arcsin",
+            "sinh",
+            "exp2",
+            "rint",
+            "degrees",
+            "reciprocal",
+            "tan",
+        ],
+    )
     def test_unary_charges_numel(self, op_name):
         x = numpy.ones((3, 4))
         me_func = getattr(me, op_name)
@@ -31,12 +63,29 @@ class TestNewUnaryOps:
 
 
 class TestNewBinaryOps:
-    @pytest.mark.parametrize("op_name", [
-        "fmod", "remainder", "logaddexp", "logaddexp2", "float_power",
-        "true_divide", "floor_divide", "arctan2", "hypot", "copysign",
-        "fmax", "fmin", "greater", "less", "equal", "not_equal",
-        "logical_and", "logical_or",
-    ])
+    @pytest.mark.parametrize(
+        "op_name",
+        [
+            "fmod",
+            "remainder",
+            "logaddexp",
+            "logaddexp2",
+            "float_power",
+            "true_divide",
+            "floor_divide",
+            "arctan2",
+            "hypot",
+            "copysign",
+            "fmax",
+            "fmin",
+            "greater",
+            "less",
+            "equal",
+            "not_equal",
+            "logical_and",
+            "logical_or",
+        ],
+    )
     def test_binary_matches_numpy(self, op_name):
         x = numpy.array([1.0, 2.0, 3.0])
         y = numpy.array([2.0, 1.0, 4.0])
@@ -48,10 +97,20 @@ class TestNewBinaryOps:
 
 
 class TestNewReductionOps:
-    @pytest.mark.parametrize("op_name", [
-        "any", "all", "nansum", "nanmean", "nanmax", "nanmin",
-        "median", "average", "count_nonzero",
-    ])
+    @pytest.mark.parametrize(
+        "op_name",
+        [
+            "any",
+            "all",
+            "nansum",
+            "nanmean",
+            "nanmax",
+            "nanmin",
+            "median",
+            "average",
+            "count_nonzero",
+        ],
+    )
     def test_reduction_matches_numpy(self, op_name):
         x = numpy.array([[1.0, 2.0, 3.0], [4.0, 0.0, 6.0]])
         me_func = getattr(me, op_name)

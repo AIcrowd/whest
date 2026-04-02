@@ -4,6 +4,7 @@
 Each operation has a co-located cost function documenting the formula,
 source, and assumptions. Cost functions are pure (shape params) -> int.
 """
+
 from __future__ import annotations
 
 import numpy as _np
@@ -30,7 +31,7 @@ def cholesky_cost(n: int) -> int:
     Source: Golub & Van Loan, *Matrix Computations*, 4th ed., §4.2.
     Assumes standard column-outer-product Cholesky algorithm.
     """
-    return max(n ** 3 // 3, 1)
+    return max(n**3 // 3, 1)
 
 
 def cholesky(a):
@@ -43,6 +44,7 @@ def cholesky(a):
     cost = cholesky_cost(n)
     budget.deduct("linalg.cholesky", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.cholesky(a)
+
 
 attach_docstring(cholesky, _np.linalg.cholesky, "linalg", "n\u00b3/3 FLOPs")
 
@@ -69,7 +71,7 @@ def qr_cost(m: int, n: int) -> int:
     """
     if m < n:
         m, n = n, m
-    return max(2 * m * n ** 2 - (2 * n ** 3) // 3, 1)
+    return max(2 * m * n**2 - (2 * n**3) // 3, 1)
 
 
 def qr(a, mode="reduced"):
@@ -83,7 +85,10 @@ def qr(a, mode="reduced"):
     budget.deduct("linalg.qr", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.qr(a, mode=mode)
 
-attach_docstring(qr, _np.linalg.qr, "linalg", "2mn\u00b2 \u2212 (2/3)n\u00b3 FLOPs (Householder)")
+
+attach_docstring(
+    qr, _np.linalg.qr, "linalg", "2mn\u00b2 \u2212 (2/3)n\u00b3 FLOPs (Householder)"
+)
 
 
 def eig_cost(n: int) -> int:
@@ -107,7 +112,7 @@ def eig_cost(n: int) -> int:
     eigenvalue. This is an accepted asymptotic estimate; actual count
     is data-dependent.
     """
-    return max(10 * n ** 3, 1)
+    return max(10 * n**3, 1)
 
 
 def eig(a):
@@ -120,6 +125,7 @@ def eig(a):
     cost = eig_cost(n)
     budget.deduct("linalg.eig", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.eig(a)
+
 
 attach_docstring(eig, _np.linalg.eig, "linalg", "10n\u00b3 FLOPs (Francis QR)")
 
@@ -143,7 +149,7 @@ def eigh_cost(n: int) -> int:
     Assumes tridiagonalization via Householder followed by implicit
     QR sweeps.
     """
-    return max((4 * n ** 3) // 3, 1)
+    return max((4 * n**3) // 3, 1)
 
 
 def eigh(a, UPLO="L"):
@@ -158,7 +164,10 @@ def eigh(a, UPLO="L"):
     vals, vecs = _np.linalg.eigh(a, UPLO=UPLO)
     return _np.asarray(vals), _np.asarray(vecs)
 
-attach_docstring(eigh, _np.linalg.eigh, "linalg", "4n\u00b3/3 FLOPs (tridiagonal + QR sweeps)")
+
+attach_docstring(
+    eigh, _np.linalg.eigh, "linalg", "4n\u00b3/3 FLOPs (tridiagonal + QR sweeps)"
+)
 
 
 def eigvals_cost(n: int) -> int:
@@ -179,7 +188,7 @@ def eigvals_cost(n: int) -> int:
     Same algorithm as ``eig`` (Francis QR), but eigenvectors are not
     accumulated.
     """
-    return max(10 * n ** 3, 1)
+    return max(10 * n**3, 1)
 
 
 def eigvals(a):
@@ -192,6 +201,7 @@ def eigvals(a):
     cost = eigvals_cost(n)
     budget.deduct("linalg.eigvals", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.eigvals(a)
+
 
 attach_docstring(eigvals, _np.linalg.eigvals, "linalg", "10n\u00b3 FLOPs")
 
@@ -213,7 +223,7 @@ def eigvalsh_cost(n: int) -> int:
     -----
     Same algorithm as ``eigh``, but eigenvectors are not accumulated.
     """
-    return max((4 * n ** 3) // 3, 1)
+    return max((4 * n**3) // 3, 1)
 
 
 def eigvalsh(a, UPLO="L"):
@@ -226,6 +236,7 @@ def eigvalsh(a, UPLO="L"):
     cost = eigvalsh_cost(n)
     budget.deduct("linalg.eigvalsh", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.eigvalsh(a, UPLO=UPLO)
+
 
 attach_docstring(eigvalsh, _np.linalg.eigvalsh, "linalg", "4n\u00b3/3 FLOPs")
 
@@ -263,4 +274,7 @@ def svdvals(a):
     budget.deduct("linalg.svdvals", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.svdvals(a)
 
-attach_docstring(svdvals, _np.linalg.svdvals, "linalg", "m \u00d7 n \u00d7 min(m,n) FLOPs")
+
+attach_docstring(
+    svdvals, _np.linalg.svdvals, "linalg", "m \u00d7 n \u00d7 min(m,n) FLOPs"
+)
