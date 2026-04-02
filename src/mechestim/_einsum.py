@@ -4,8 +4,8 @@ from __future__ import annotations
 import numpy as _np
 
 from mechestim._flops import einsum_cost
+from mechestim._symmetric import SymmetricTensor, validate_symmetry
 from mechestim._validation import check_nan_inf, require_budget
-from mechestim.errors import SymmetryError
 
 
 def _detect_repeated_operands(operands: tuple) -> list[int] | None:
@@ -21,21 +21,6 @@ def _detect_repeated_operands(operands: tuple) -> list[int] | None:
         if len(indices) >= 2:
             return indices
     return None
-
-
-def _validate_symmetric_dims(result: _np.ndarray, symmetric_dims: list[tuple[int, ...]]) -> None:
-    """Validate that the result actually has the claimed symmetry."""
-    for group in symmetric_dims:
-        if len(group) < 2:
-            continue
-        for i in range(len(group)):
-            for j in range(i + 1, len(group)):
-                axes = list(range(result.ndim))
-                axes[group[i]], axes[group[j]] = axes[group[j]], axes[group[i]]
-                transposed = result.transpose(axes)
-                if not _np.allclose(result, transposed, atol=1e-6, rtol=1e-5):
-                    max_dev = float(_np.max(_np.abs(result - transposed)))
-                    raise SymmetryError(dims=group, max_deviation=max_dev)
 
 
 def einsum(subscripts: str, *operands: _np.ndarray, symmetric_dims: list[tuple[int, ...]] | None = None) -> _np.ndarray:
@@ -62,13 +47,27 @@ def einsum(subscripts: str, *operands: _np.ndarray, symmetric_dims: list[tuple[i
     shapes = [op.shape for op in operands]
     repeated = _detect_repeated_operands(operands)
 
-    cost = einsum_cost(subscripts, shapes=list(shapes), repeated_operand_indices=repeated, symmetric_dims=symmetric_dims)
+    # Extract symmetry info from SymmetricTensor inputs
+    operand_symmetries = [
+        op.symmetry_info if isinstance(op, SymmetricTensor) else None
+        for op in operands
+    ]
+    has_operand_symmetry = any(s is not None for s in operand_symmetries)
+
+    cost = einsum_cost(
+        subscripts,
+        shapes=list(shapes),
+        repeated_operand_indices=repeated,
+        symmetric_dims=symmetric_dims,
+        operand_symmetries=operand_symmetries if has_operand_symmetry else None,
+    )
     budget.deduct("einsum", flop_cost=cost, subscripts=subscripts, shapes=tuple(shapes))
 
     result = _np.einsum(subscripts, *operands)
 
     if symmetric_dims and isinstance(result, _np.ndarray) and result.ndim >= 2:
-        _validate_symmetric_dims(result, symmetric_dims)
+        validate_symmetry(result, symmetric_dims)
+        result = SymmetricTensor(result, symmetric_dims=symmetric_dims)
 
     check_nan_inf(result, "einsum")
     return result
