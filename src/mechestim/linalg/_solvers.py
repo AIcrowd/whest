@@ -50,7 +50,7 @@ def solve(a, b):
     return _np.linalg.solve(a, b)
 
 attach_docstring(solve, _np.linalg.solve, "linalg",
-    "2n\u00b3/3 + n\u00b2\u00b7nrhs FLOPs (LU), or n\u00b3/3 + n\u00b7nrhs FLOPs (Cholesky) for SymmetricTensor input")
+    r"$2n^3/3 + n^2 \cdot n_{\text{rhs}}$ FLOPs (LU), or $n^3/3 + n \cdot n_{\text{rhs}}$ FLOPs (Cholesky) for SymmetricTensor input")
 
 
 def inv_cost(n: int, symmetric: bool = False) -> int:
@@ -94,7 +94,7 @@ def inv(a):
     return result
 
 attach_docstring(inv, _np.linalg.inv, "linalg",
-    "n\u00b3 FLOPs, or n\u00b3/3 + n\u00b3/2 for SymmetricTensor input. Returns SymmetricTensor if input is symmetric.")
+    r"$n^3$ FLOPs, or $n^3/3 + n^3/2$ for SymmetricTensor input. Returns SymmetricTensor if input is symmetric.")
 
 
 def lstsq_cost(m: int, n: int) -> int:
@@ -130,7 +130,7 @@ def lstsq(a, b, rcond=None):
     budget.deduct("linalg.lstsq", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.lstsq(a, b, rcond=rcond)
 
-attach_docstring(lstsq, _np.linalg.lstsq, "linalg", "m \u00d7 n \u00d7 min(m,n) FLOPs (SVD-based)")
+attach_docstring(lstsq, _np.linalg.lstsq, "linalg", r"$m \cdot n \cdot \min(m,n)$ FLOPs (SVD-based)")
 
 
 def pinv_cost(m: int, n: int) -> int:
@@ -169,7 +169,7 @@ def pinv(a, rcond=None, hermitian=False):
         kwargs["rcond"] = rcond
     return _np.linalg.pinv(a, **kwargs)
 
-attach_docstring(pinv, _np.linalg.pinv, "linalg", "m \u00d7 n \u00d7 min(m,n) FLOPs (SVD-based)")
+attach_docstring(pinv, _np.linalg.pinv, "linalg", r"$m \cdot n \cdot \min(m,n)$ FLOPs (SVD-based)")
 
 
 def tensorsolve_cost(a_shape: tuple, ind: int | None = None) -> int:
@@ -208,7 +208,7 @@ def tensorsolve(a, b, axes=None):
     return _np.linalg.tensorsolve(a, b, axes=axes)
 
 attach_docstring(tensorsolve, _np.linalg.tensorsolve, "linalg",
-    "n\u00b3 FLOPs where n = product of trailing dims")
+    r"$n^3$ FLOPs where n = product of trailing dims")
 
 
 def tensorinv_cost(a_shape: tuple, ind: int = 2) -> int:
@@ -245,4 +245,4 @@ def tensorinv(a, ind=2):
     return _np.linalg.tensorinv(a, ind=ind)
 
 attach_docstring(tensorinv, _np.linalg.tensorinv, "linalg",
-    "n\u00b3 FLOPs where n = product of leading dims")
+    r"$n^3$ FLOPs where n = product of leading dims")
