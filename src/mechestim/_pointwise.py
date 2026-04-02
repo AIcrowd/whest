@@ -685,6 +685,7 @@ def corrcoef(x, y=None, **kwargs):
     )
     return _np.corrcoef(x, y=y, **kwargs)
 
+
 attach_docstring(corrcoef, _np.corrcoef, "counted_custom", r"$n^2$ FLOPs")
 
 
@@ -698,6 +699,7 @@ def cov(m, y=None, **kwargs):
         "cov", flop_cost=_builtins.max(cost, 1), subscripts=None, shapes=(m.shape,)
     )
     return _np.cov(m, y=y, **kwargs)
+
 
 attach_docstring(cov, _np.cov, "counted_custom", r"$n^2$ FLOPs")
 

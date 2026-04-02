@@ -117,5 +117,10 @@ def matrix_power(a, n):
     )
     return _np.linalg.matrix_power(a, n)
 
-attach_docstring(matrix_power, _np.linalg.matrix_power, "linalg",
-    r"$n^3 \times \text{exponent}$ FLOPs (repeated squaring)")
+
+attach_docstring(
+    matrix_power,
+    _np.linalg.matrix_power,
+    "linalg",
+    r"$n^3 \times \text{exponent}$ FLOPs (repeated squaring)",
+)

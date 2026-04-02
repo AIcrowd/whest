@@ -469,6 +469,7 @@ dev = [
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "rich" },
+    { name = "ruff" },
 ]
 docs = [
     { name = "mkdocs-llmstxt-md" },
@@ -485,6 +486,7 @@ requires-dist = [
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=7.0" },
     { name = "pytest-cov", marker = "extra == 'dev'" },
     { name = "rich", marker = "extra == 'dev'", specifier = ">=13.0" },
+    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.4" },
 ]
 provides-extras = ["dev", "docs"]
 

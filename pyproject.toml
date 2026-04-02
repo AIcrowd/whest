@@ -13,6 +13,7 @@ dev = [
     "pytest>=7.0",
     "pytest-cov",
     "rich>=13.0",
+    "ruff>=0.4",
 ]
 docs = [
     "mkdocs-material",

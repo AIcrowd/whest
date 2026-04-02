@@ -20,7 +20,10 @@ steps = [
         me.flops.einsum_cost("ij,j->i", shapes=[(width, width), (width,)]),
     ),
     ("Layer 2: ReLU", me.flops.pointwise_cost(shape=(width,))),
-    ("Output: mean", me.flops.reduction_cost(input_shape=(width,)) + 1),  # +1 for division
+    (
+        "Output: mean",
+        me.flops.reduction_cost(input_shape=(width,)) + 1,
+    ),  # +1 for division
 ]
 
 total = sum(cost for _, cost in steps)

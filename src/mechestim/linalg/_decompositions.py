@@ -45,6 +45,7 @@ def cholesky(a):
     budget.deduct("linalg.cholesky", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.cholesky(a)
 
+
 attach_docstring(cholesky, _np.linalg.cholesky, "linalg", r"$n^3/3$ FLOPs")
 
 
@@ -84,6 +85,7 @@ def qr(a, mode="reduced"):
     budget.deduct("linalg.qr", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.qr(a, mode=mode)
 
+
 attach_docstring(qr, _np.linalg.qr, "linalg", r"$2mn^2 - 2n^3/3$ FLOPs (Householder)")
 
 
@@ -122,6 +124,7 @@ def eig(a):
     budget.deduct("linalg.eig", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.eig(a)
 
+
 attach_docstring(eig, _np.linalg.eig, "linalg", r"$10n^3$ FLOPs (Francis QR)")
 
 
@@ -159,7 +162,10 @@ def eigh(a, UPLO="L"):
     vals, vecs = _np.linalg.eigh(a, UPLO=UPLO)
     return _np.asarray(vals), _np.asarray(vecs)
 
-attach_docstring(eigh, _np.linalg.eigh, "linalg", r"$4n^3/3$ FLOPs (tridiagonal + QR sweeps)")
+
+attach_docstring(
+    eigh, _np.linalg.eigh, "linalg", r"$4n^3/3$ FLOPs (tridiagonal + QR sweeps)"
+)
 
 
 def eigvals_cost(n: int) -> int:
@@ -194,6 +200,7 @@ def eigvals(a):
     budget.deduct("linalg.eigvals", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.eigvals(a)
 
+
 attach_docstring(eigvals, _np.linalg.eigvals, "linalg", r"$10n^3$ FLOPs")
 
 
@@ -227,6 +234,7 @@ def eigvalsh(a, UPLO="L"):
     cost = eigvalsh_cost(n)
     budget.deduct("linalg.eigvalsh", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.eigvalsh(a, UPLO=UPLO)
+
 
 attach_docstring(eigvalsh, _np.linalg.eigvalsh, "linalg", r"$4n^3/3$ FLOPs")
 
@@ -264,4 +272,7 @@ def svdvals(a):
     budget.deduct("linalg.svdvals", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.svdvals(a)
 
-attach_docstring(svdvals, _np.linalg.svdvals, "linalg", r"$m \cdot n \cdot \min(m,n)$ FLOPs")
+
+attach_docstring(
+    svdvals, _np.linalg.svdvals, "linalg", r"$m \cdot n \cdot \min(m,n)$ FLOPs"
+)

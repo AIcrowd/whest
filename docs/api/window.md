@@ -21,7 +21,7 @@ import mechestim as me
 
 with me.BudgetContext(flop_budget=1_000_000) as budget:
     win = me.hamming(256)   # 256 FLOPs
-    win2 = me.kaiser(256, beta=14)   # 768 FLOPs (3 * 256)
+    win2 = me.kaiser(256)   # 768 FLOPs (3 * 256)
     print(f"Window cost: {budget.flops_used}")  # 1024
 ```
 

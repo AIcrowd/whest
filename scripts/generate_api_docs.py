@@ -14,6 +14,7 @@ import importlib
 import inspect
 import json
 import sys
+import textwrap
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
@@ -241,7 +242,10 @@ CATEGORY_LABELS = {
     "free": ("Free Operations (0 FLOPs)", "0 FLOPs"),
     "counted_unary": ("Counted Unary Operations", r"$\text{numel}(\text{output})$"),
     "counted_binary": ("Counted Binary Operations", r"$\text{numel}(\text{output})$"),
-    "counted_reduction": ("Counted Reduction Operations", r"$\text{numel}(\text{input})$"),
+    "counted_reduction": (
+        "Counted Reduction Operations",
+        r"$\text{numel}(\text{input})$",
+    ),
     "counted_custom": ("Counted Custom Operations", "Per-operation formula"),
     "blacklisted": ("Blacklisted Operations", "Not available"),
 }
@@ -352,6 +356,7 @@ CATEGORY_COST_LATEX: dict[str, tuple[str, str]] = {
 # Helper functions for op references and cost lookup
 # ---------------------------------------------------------------------------
 
+
 def mechestim_ref(name: str, module: str) -> str:
     """Derive the mechestim call reference from an op name and registry module."""
     if module == "numpy.linalg":
@@ -443,19 +448,21 @@ def generate_ops_json(registry: dict[str, dict]) -> None:
         cat = info["category"]
         mod = info["module"]
         plain, latex = cost_for_op(name, cat)
-        ops.append({
-            "name": name,
-            "module": mod,
-            "mechestim_ref": mechestim_ref(name, mod).strip("`"),
-            "numpy_ref": numpy_ref(name, mod).strip("`"),
-            "category": cat,
-            "cost_formula": plain,
-            "cost_formula_latex": latex,
-            "free": cat == "free",
-            "blocked": cat == "blacklisted",
-            "status": "blocked" if cat == "blacklisted" else "supported",
-            "notes": info.get("notes", ""),
-        })
+        ops.append(
+            {
+                "name": name,
+                "module": mod,
+                "mechestim_ref": mechestim_ref(name, mod).strip("`"),
+                "numpy_ref": numpy_ref(name, mod).strip("`"),
+                "category": cat,
+                "cost_formula": plain,
+                "cost_formula_latex": latex,
+                "free": cat == "free",
+                "blocked": cat == "blacklisted",
+                "status": "blocked" if cat == "blacklisted" else "supported",
+                "notes": info.get("notes", ""),
+            }
+        )
     out = DOCS / "ops.json"
     out.write_text(json.dumps({"operations": ops, "total": len(ops)}, indent=2))
     print(f"  Generated ops.json ({len(ops)} operations)")
@@ -515,19 +522,19 @@ def generate_cheat_sheet(registry: dict[str, dict]) -> None:
     lines.append("")
     free_ops = [f"`{op}`" for op in by_cat["free"]]
     for i in range(0, len(free_ops), 8):
-        lines.append(", ".join(free_ops[i:i+8]))
+        lines.append(", ".join(free_ops[i : i + 8]))
     lines.append("")
 
     lines.append("## Blocked Operations (complete list)")
     lines.append("")
     blocked_ops = [f"`{op}`" for op in by_cat["blacklisted"]]
     for i in range(0, len(blocked_ops), 8):
-        lines.append(", ".join(blocked_ops[i:i+8]))
+        lines.append(", ".join(blocked_ops[i : i + 8]))
     lines.append("")
 
     out = REF_DIR / "cheat-sheet.md"
     out.write_text("\n".join(lines))
-    print(f"  Generated reference/cheat-sheet.md")
+    print("  Generated reference/cheat-sheet.md")
 
 
 # ---------------------------------------------------------------------------
@@ -657,8 +664,12 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
         print("\nRun 'python scripts/generate_api_docs.py' to regenerate.")
         return False
     else:
-        total_non_bl = sum(1 for i in registry.values() if i["category"] != "blacklisted")
-        print(f"\nAll {total_non_bl} non-blacklisted operations are covered in API docs.")
+        total_non_bl = sum(
+            1 for i in registry.values() if i["category"] != "blacklisted"
+        )
+        print(
+            f"\nAll {total_non_bl} non-blacklisted operations are covered in API docs."
+        )
 
     # Verify ops.json exists and covers all ops
     ops_json_path = DOCS / "ops.json"

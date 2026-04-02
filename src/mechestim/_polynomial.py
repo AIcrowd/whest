@@ -59,7 +59,7 @@ def poly_cost(n: int) -> int:
 
 def roots_cost(n: int) -> int:
     """Cost for roots: $10n^3$ FLOPs (companion matrix eigendecomposition)."""
-    return max(10 * n ** 3, 1)
+    return max(10 * n**3, 1)
 
 
 # ---------------------------------------------------------------------------
