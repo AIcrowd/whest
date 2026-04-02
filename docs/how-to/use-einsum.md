@@ -53,6 +53,65 @@ For `'ij,jk->ik'` with shapes `(256, 256)` and `(256, 256)`:
 
 `me.dot(A, B)` and `me.matmul(A, B)` are equivalent to the corresponding einsum and have the same FLOP cost.
 
+## Advanced: symmetric tensors in einsum
+
+Einsum integrates with mechestim's symmetry system to reduce costs. There are
+three mechanisms — each can halve (or more) the FLOP cost.
+
+### Repeated operands (auto-detected)
+
+When you pass the **same Python object** as multiple operands, mechestim
+detects this and divides the cost by the factorial of the repeat count:
+
+```python
+with me.BudgetContext(flop_budget=10**8) as budget:
+    x = me.ones((10, 256))
+    A = me.ones((10, 10))
+
+    # x appears twice — cost is divided by 2!
+    result = me.einsum('ai,bi,ab->', x, x, A)
+
+    print(f"Cost: {budget.flops_used:,}")  # 12,800 (half of 25,600)
+```
+
+Detection is by object identity (`id()`), not value equality — `x.copy()`
+breaks the savings.
+
+### Symmetric output dimensions
+
+Use `symmetric_dims` when the output has interchangeable dimensions, like a
+covariance matrix where `C[i,j] == C[j,i]`. The result is returned as a
+`SymmetricTensor`:
+
+```python
+with me.BudgetContext(flop_budget=10**8) as budget:
+    X = me.array(np.random.randn(100, 10))
+
+    # Covariance: output dims (0,1) are symmetric — cost halved
+    C = me.einsum('ki,kj->ij', X, X, symmetric_dims=[(0, 1)])
+
+    print(f"Cost: {budget.flops_used:,}")      # 5,000 (half of 10,000)
+    print(type(C))                              # <class 'SymmetricTensor'>
+```
+
+### Symmetric inputs
+
+When an input is a `SymmetricTensor`, einsum automatically accounts for the
+reduced number of unique elements:
+
+```python
+with me.BudgetContext(flop_budget=10**8) as budget:
+    S = me.as_symmetric(np.eye(10), dims=(0, 1))  # 55 unique elements
+    v = me.ones((10,))
+
+    result = me.einsum('ij,j->i', S, v)  # costs 55, not 100
+
+    print(f"Cost: {budget.flops_used:,}")  # 55
+```
+
+All three mechanisms stack multiplicatively. For the full details, see
+[Exploit Symmetry Savings](./exploit-symmetry.md).
+
 ## ⚠️ Common pitfalls
 
 **Symptom:** Unexpectedly high FLOP cost
@@ -61,5 +120,6 @@ For `'ij,jk->ik'` with shapes `(256, 256)` and `(256, 256)`:
 
 ## 📎 Related pages
 
-- [Exploit Symmetry](./exploit-symmetry.md) — reduce einsum costs with repeated operands
+- [Exploit Symmetry](./exploit-symmetry.md) — full guide to all symmetry mechanisms
+- [Symmetric Tensors API](../api/symmetric.md) — `SymmetricTensor`, `SymmetryInfo`, `as_symmetric`
 - [Plan Your Budget](./plan-your-budget.md) — query costs before executing
