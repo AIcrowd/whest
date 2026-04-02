@@ -30,8 +30,25 @@ mechestim computes FLOP costs **analytically from tensor shapes**, not by measur
 | **Binary** (add, multiply, ...) | numel(output) | shape (256, 256) → 65,536 |
 | **Reduction** (sum, mean, max, ...) | numel(input) | shape (256, 256) → 65,536 |
 | **SVD** | m × n × k | (256, 256, k=10) → 655,360 |
+| **Solve** | 2n³/3 + n²·nrhs (LU) | (256, 256) solve → ~11.1M |
 | **Dot / Matmul** | Equivalent einsum cost | (256, 256) @ (256, 256) → 256³ |
 | **Free ops** | 0 | zeros, reshape, etc. |
+
+## Symmetry savings
+
+When a tensor is a `SymmetricTensor`, costs are reduced based on the number of unique elements rather than total elements. For a symmetric n×n matrix, there are n(n+1)/2 unique elements instead of n².
+
+| Category | Symmetric cost | Standard cost |
+|----------|---------------|---------------|
+| **Pointwise** (unary/binary) | unique_elements | numel(output) |
+| **Reduction** | unique_elements | numel(input) |
+| **Einsum** (symmetric input) | Scaled by unique/total ratio | Full product |
+| **Einsum** (symmetric output) | Divided by group factorial | Full product |
+| **Solve** | n³/3 + n·nrhs (Cholesky) | 2n³/3 + n²·nrhs (LU) |
+| **Det / Slogdet** | n³/3 (Cholesky) | n³ (LU) |
+| **Inv** | n³/3 + n³/2 | n³ |
+
+See [Exploit Symmetry Savings](../how-to/exploit-symmetry.md) for usage details.
 
 ## FLOP multiplier
 

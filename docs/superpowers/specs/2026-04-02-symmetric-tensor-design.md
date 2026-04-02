@@ -1,7 +1,7 @@
 # SymmetricTensor Support for mechestim
 
 **Date:** 2026-04-02
-**Status:** Draft
+**Status:** Implemented
 **Context:** Slack discussions with Paul Christiano and Wilson Wu (March 27–31, 2026) on ops budgeting for the ARC Network Estimation Challenge
 
 ---
