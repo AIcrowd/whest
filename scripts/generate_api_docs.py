@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import importlib
 import inspect
+import json
 import sys
 import textwrap
 from pathlib import Path
@@ -359,6 +360,31 @@ def generate_audit_page(registry: dict[str, dict]) -> None:
     print(f"  Generated reference/operation-audit.md")
 
 
+def generate_ops_json(registry: dict[str, dict]) -> None:
+    """Generate docs/ops.json — machine-readable operation manifest."""
+    ops = []
+    for name, info in sorted(registry.items()):
+        cat = info["category"]
+        mod = info["module"]
+        plain, latex = cost_for_op(name, cat)
+        ops.append({
+            "name": name,
+            "module": mod,
+            "mechestim_ref": mechestim_ref(name, mod).strip("`"),
+            "numpy_ref": numpy_ref(name, mod).strip("`"),
+            "category": cat,
+            "cost_formula": plain,
+            "cost_formula_latex": latex,
+            "free": cat == "free",
+            "blocked": cat == "blacklisted",
+            "status": "blocked" if cat == "blacklisted" else "supported",
+            "notes": info.get("notes", ""),
+        })
+    out = DOCS / "ops.json"
+    out.write_text(json.dumps({"operations": ops, "total": len(ops)}, indent=2))
+    print(f"  Generated ops.json ({len(ops)} operations)")
+
+
 # ---------------------------------------------------------------------------
 # Update counted-ops.md to include polynomial, window, unwrap
 # ---------------------------------------------------------------------------
@@ -512,6 +538,9 @@ def main():
 
     # Generate audit page
     generate_audit_page(registry)
+
+    # Generate ops.json
+    generate_ops_json(registry)
 
     print("\nDone. Run with --verify to check coverage.")
 
