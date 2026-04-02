@@ -10,7 +10,7 @@ Use this page when you hit a `BudgetExhaustedError` and need to find which opera
 
 ## Reading the budget summary
 
-Call `budget.summary()` at any point inside the BudgetContext:
+Call `budget.summary()` at any point inside a `BudgetContext`, or call `me.budget_summary()` outside a context for a session-wide summary across all namespaces:
 
 ```python
 import mechestim as me
@@ -24,9 +24,22 @@ with me.BudgetContext(flop_budget=10_000_000) as budget:
     h = me.sum(h)
 
     print(budget.summary())
+
+# Outside the context — summarises every namespace recorded this session
+print(me.budget_summary())
 ```
 
 The summary shows cost per operation type, sorted by highest cost first.
+
+## Session-wide programmatic analysis
+
+Use `me.budget_data()` to retrieve the raw operation records for automated analysis (e.g. in tests or notebooks):
+
+```python
+records = me.budget_data()
+for record in records:
+    print(record.op_name, record.namespace, record.flop_cost)
+```
 
 ## Inspecting the operation log
 
@@ -34,7 +47,7 @@ For per-call detail, use `budget.op_log`:
 
 ```python
 for record in budget.op_log:
-    print(f"{record.op_name:<16} cost={record.flop_cost:>12,}  cumulative={record.cumulative:>12,}")
+    print(f"{record.op_name:<16} ns={record.namespace!r}  cost={record.flop_cost:>12,}  cumulative={record.cumulative:>12,}")
 ```
 
 Each `OpRecord` contains:
@@ -42,6 +55,7 @@ Each `OpRecord` contains:
 | Field | Description |
 |-------|-------------|
 | `op_name` | Operation name (e.g., `"einsum"`, `"exp"`) |
+| `namespace` | Namespace label from the BudgetContext, or `None` |
 | `subscripts` | Einsum subscript string, or `None` |
 | `shapes` | Tuple of input shapes |
 | `flop_cost` | FLOP cost of this single call |

@@ -5,8 +5,10 @@
 **NumPy-compatible math primitives with analytical FLOP counting.**
 
 !!! warning "mechestim is not a drop-in NumPy replacement"
-    All computation requires a `BudgetContext`. Operations have analytical FLOP
-    costs. 32 operations are blocked. See [Operation Categories](concepts/operation-categories.md).
+    Operations have analytical FLOP costs and 32 operations are blocked.
+    A `BudgetContext` is optional — a global default activates automatically — but
+    using one explicitly gives you budget limits, namespacing, and summaries.
+    See [Operation Categories](concepts/operation-categories.md).
 
 Pick the path that matches what you need right now.
 
@@ -41,12 +43,27 @@ Pick the path that matches what you need right now.
 
 ## Quick example
 
+Operations run freely without any setup — the global default budget tracks FLOPs automatically:
+
+```python
+import mechestim as me
+
+# No BudgetContext needed — the global default is active
+scale = me.sqrt(me.array(2 / 256))
+W = me.multiply(me.random.randn(256, 256), scale)
+x = me.einsum('ij,j->i', W, me.random.randn(256))
+
+print(me.budget_summary())
+```
+
+For budget limits and namespacing, use an explicit `BudgetContext`:
+
 ```python
 import mechestim as me
 
 depth, width = 5, 256
 
-with me.BudgetContext(flop_budget=10**8) as budget:
+with me.BudgetContext(flop_budget=10**8, namespace="mlp-forward") as budget:
     # Weight init — randn is free, multiply is counted
     scale = me.sqrt(me.array(2 / width))
     weights = [me.multiply(me.random.randn(width, width), scale)
@@ -59,12 +76,14 @@ with me.BudgetContext(flop_budget=10**8) as budget:
         h = me.einsum('ij,j->i', W, h)    # linear layer
         if i < depth - 1:
             h = me.maximum(h, 0)           # ReLU
-    print(budget.summary())
+
+print(me.budget_summary())
 ```
 
 ```
 mechestim FLOP Budget Summary
 ==============================
+  Namespace:        mlp-forward
   Total budget:     100,000,000
   Used:                 656,385  (0.7%)
   Remaining:         99,343,615  (99.3%)

@@ -28,9 +28,11 @@ mechestim.errors.BudgetExhaustedError: einsum would cost 16,777,216 FLOPs but on
 mechestim.errors.NoBudgetContextError: No active BudgetContext. Wrap your code in `with mechestim.BudgetContext(...):`
 ```
 
-**Why:** You called a counted operation (like `me.einsum`, `me.exp`, etc.) outside a `BudgetContext`.
+**Why:** A counted operation (like `me.einsum`, `me.exp`, etc.) was called with no active budget session.
 
-**Fix:** Wrap your computation in a `BudgetContext`:
+**In the core library:** This error is unlikely in normal use. mechestim automatically activates a global default budget, so operations run freely without any explicit setup. If you do see this error in the core library, it may indicate the global default was somehow torn down — restarting your session should resolve it.
+
+**In the client-server model:** The server requires an open session. If your code runs on the server without a `BudgetContext`, this error will fire. Fix it by wrapping your computation:
 
 ```python
 with me.BudgetContext(flop_budget=10_000_000) as budget:
@@ -61,9 +63,11 @@ AttributeError: module 'mechestim' has no attribute 'fft'. mechestim does not su
 RuntimeError: Cannot nest BudgetContexts
 ```
 
-**Why:** You opened a `BudgetContext` inside another one. Only one can be active per thread.
+**Why:** You opened a `BudgetContext` inside another explicit `BudgetContext`. This error can only arise when two explicit contexts overlap.
 
-**Fix:** Restructure your code to use a single `BudgetContext`.
+**Note:** If the global default budget is active (the normal case in the core library), opening an explicit `BudgetContext` is fine — it temporarily replaces the global default for the duration of the `with` block, then restores it on exit. This is not nesting and does not raise an error.
+
+**Fix:** If you see this error, you have two explicit `BudgetContext` managers open at the same time. Restructure your code so only one explicit context is active at a time, or rely on the global default for the outer scope.
 
 ---
 

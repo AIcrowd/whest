@@ -67,6 +67,25 @@ sum reduction                 256
 Total                      66,048
 ```
 
+## Using namespaces to track phases
+
+Use the `namespace` parameter to label different computation phases:
+
+```python
+with me.BudgetContext(flop_budget=total, namespace="forward") as budget:
+    # forward pass here
+    ...
+
+with me.BudgetContext(flop_budget=total, namespace="backward") as budget:
+    # backward pass here
+    ...
+
+# Session-wide summary across all phases
+me.budget_summary()
+```
+
+`me.budget_data(by_namespace=True)` returns a dict with per-namespace breakdowns for programmatic analysis.
+
 ## 📎 Related pages
 
 - [Use Einsum](./use-einsum.md) — understand einsum cost formulas
