@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.server
+    volumes:
+      - mechestim-sock:/tmp
+    restart: unless-stopped
+
+  participant:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.participant
+    volumes:
+      - mechestim-sock:/tmp
+      - ./submissions:/submission:ro
+    environment:
+      - MECHESTIM_SERVER_URL=ipc:///tmp/mechestim.sock
+    depends_on:
+      - backend
+
+volumes:
+  mechestim-sock:
