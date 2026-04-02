@@ -10,7 +10,20 @@ if TYPE_CHECKING:
 
 
 def parse_einsum_subscripts(subscripts: str) -> tuple[list[list[str]], list[str]]:
-    """Parse an einsum subscript string into input and output index lists."""
+    """Parse an einsum subscript string into input and output index lists.
+
+    Parameters
+    ----------
+    subscripts : str
+        Einsum subscript string (e.g., ``'ij,jk->ik'``).
+
+    Returns
+    -------
+    inputs : list of list of str
+        Index labels for each input operand.
+    output : list of str
+        Index labels for the output.
+    """
     subscripts = subscripts.replace(" ", "")
     if "->" in subscripts:
         input_part, output_part = subscripts.split("->")
@@ -27,7 +40,31 @@ def parse_einsum_subscripts(subscripts: str) -> tuple[list[list[str]], list[str]
 
 
 def einsum_cost(subscripts: str, shapes: list[tuple[int, ...]], repeated_operand_indices: list[int] | None = None, symmetric_dims: list[tuple[int, ...]] | None = None, operand_symmetries: "list[SymmetryInfo | None] | None" = None) -> int:
-    """Calculate the FLOP cost of an einsum operation."""
+    """FLOP cost of an einsum operation.
+
+    Parameters
+    ----------
+    subscripts : str
+        Einsum subscript string.
+    shapes : list of tuple of int
+        Shapes of the input operands.
+    repeated_operand_indices : list of int or None, optional
+        Indices of operands that are the same array (enables symmetry savings).
+    symmetric_dims : list of tuple of int or None, optional
+        Groups of output dimensions that are symmetric.
+    operand_symmetries : list of SymmetryInfo or None, optional
+        Symmetry information for each input operand.
+
+    Returns
+    -------
+    int
+        Estimated FLOP count.
+
+    Notes
+    -----
+    The cost is the product of all index dimensions, reduced by any
+    symmetry factors from repeated operands or symmetric dimensions.
+    """
     inputs, output = parse_einsum_subscripts(subscripts)
     label_dims: dict[str, int] = {}
     for operand_labels, shape in zip(inputs, shapes):
@@ -68,7 +105,20 @@ def einsum_cost(subscripts: str, shapes: list[tuple[int, ...]], repeated_operand
 
 
 def pointwise_cost(shape: tuple[int, ...], symmetry_info: "SymmetryInfo | None" = None) -> int:
-    """Calculate the FLOP cost of a pointwise operation."""
+    """FLOP cost of a pointwise (element-wise) operation.
+
+    Parameters
+    ----------
+    shape : tuple of int
+        Shape of the array.
+    symmetry_info : SymmetryInfo or None, optional
+        If provided, only unique elements are counted.
+
+    Returns
+    -------
+    int
+        Estimated FLOP count (one per element, or one per unique element).
+    """
     if symmetry_info is not None:
         return max(symmetry_info.unique_elements, 1)
     result = 1
@@ -78,7 +128,22 @@ def pointwise_cost(shape: tuple[int, ...], symmetry_info: "SymmetryInfo | None" 
 
 
 def reduction_cost(input_shape: tuple[int, ...], axis: int | None = None, symmetry_info: "SymmetryInfo | None" = None) -> int:
-    """Calculate the FLOP cost of a reduction operation."""
+    """FLOP cost of a reduction operation.
+
+    Parameters
+    ----------
+    input_shape : tuple of int
+        Shape of the input array.
+    axis : int or None, optional
+        Axis along which to reduce. If None, reduce over all elements.
+    symmetry_info : SymmetryInfo or None, optional
+        If provided, only unique elements are counted.
+
+    Returns
+    -------
+    int
+        Estimated FLOP count (one per element).
+    """
     if symmetry_info is not None:
         return max(symmetry_info.unique_elements, 1)
     result = 1
@@ -88,7 +153,26 @@ def reduction_cost(input_shape: tuple[int, ...], axis: int | None = None, symmet
 
 
 def svd_cost(m: int, n: int, k: int | None = None) -> int:
-    """Calculate the FLOP cost of a truncated SVD."""
+    """FLOP cost of a (truncated) SVD.
+
+    Parameters
+    ----------
+    m : int
+        Number of rows.
+    n : int
+        Number of columns.
+    k : int or None, optional
+        Number of singular values/vectors to compute. Defaults to min(m, n).
+
+    Returns
+    -------
+    int
+        Estimated FLOP count: m * n * k.
+
+    Notes
+    -----
+    Based on Golub-Reinsch bidiagonalization.
+    """
     if k is None:
         k = min(m, n)
     return m * n * k

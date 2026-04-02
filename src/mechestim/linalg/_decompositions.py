@@ -8,15 +8,27 @@ from __future__ import annotations
 
 import numpy as _np
 
+from mechestim._docstrings import attach_docstring
 from mechestim._validation import require_budget, validate_ndarray
 
 
 def cholesky_cost(n: int) -> int:
-    """FLOP cost of Cholesky decomposition of an (n, n) matrix.
+    """FLOP cost of Cholesky decomposition.
 
-    Formula: n^3 / 3
-    Source: Golub & Van Loan, "Matrix Computations", 4th ed., §4.2
-    Assumes: Standard column-outer-product Cholesky algorithm.
+    Parameters
+    ----------
+    n : int
+        Matrix dimension.
+
+    Returns
+    -------
+    int
+        Estimated FLOP count: n**3 / 3.
+
+    Notes
+    -----
+    Source: Golub & Van Loan, *Matrix Computations*, 4th ed., §4.2.
+    Assumes standard column-outer-product Cholesky algorithm.
     """
     return max(n ** 3 // 3, 1)
 
@@ -32,13 +44,28 @@ def cholesky(a):
     budget.deduct("linalg.cholesky", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.cholesky(a)
 
+attach_docstring(cholesky, _np.linalg.cholesky, "linalg", "n\u00b3/3 FLOPs")
+
 
 def qr_cost(m: int, n: int) -> int:
-    """FLOP cost of QR decomposition of an (m, n) matrix.
+    """FLOP cost of QR decomposition.
 
-    Formula: 2*m*n^2 - (2/3)*n^3 (for m >= n)
-    Source: Golub & Van Loan, "Matrix Computations", 4th ed., §5.2
-    Assumes: Householder QR. For m < n, swap roles.
+    Parameters
+    ----------
+    m : int
+        Number of rows.
+    n : int
+        Number of columns.
+
+    Returns
+    -------
+    int
+        Estimated FLOP count: 2mn**2 - (2/3)n**3 (for m >= n).
+
+    Notes
+    -----
+    Source: Golub & Van Loan, *Matrix Computations*, 4th ed., §5.2.
+    Assumes Householder QR. For m < n, roles are swapped.
     """
     if m < n:
         m, n = n, m
@@ -56,15 +83,29 @@ def qr(a, mode="reduced"):
     budget.deduct("linalg.qr", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.qr(a, mode=mode)
 
+attach_docstring(qr, _np.linalg.qr, "linalg", "2mn\u00b2 \u2212 (2/3)n\u00b3 FLOPs (Householder)")
+
 
 def eig_cost(n: int) -> int:
-    """FLOP cost of eigendecomposition of an (n, n) matrix.
+    """FLOP cost of eigendecomposition.
 
-    Formula: 10 * n^3
-    Source: Golub & Van Loan, "Matrix Computations", 4th ed., §7.5
-    Assumes: Francis double-shift QR algorithm. The constant ~10 accounts
-    for Hessenberg reduction (~10n^3/3) plus ~2 QR iterations per eigenvalue.
-    This is an accepted asymptotic estimate; actual count is data-dependent.
+    Parameters
+    ----------
+    n : int
+        Matrix dimension.
+
+    Returns
+    -------
+    int
+        Estimated FLOP count: 10n**3.
+
+    Notes
+    -----
+    Source: Golub & Van Loan, *Matrix Computations*, 4th ed., §7.5.
+    Assumes Francis double-shift QR algorithm. The constant ~10 accounts
+    for Hessenberg reduction (~10n**3/3) plus ~2 QR iterations per
+    eigenvalue. This is an accepted asymptotic estimate; actual count
+    is data-dependent.
     """
     return max(10 * n ** 3, 1)
 
@@ -80,13 +121,27 @@ def eig(a):
     budget.deduct("linalg.eig", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.eig(a)
 
+attach_docstring(eig, _np.linalg.eig, "linalg", "10n\u00b3 FLOPs (Francis QR)")
+
 
 def eigh_cost(n: int) -> int:
-    """FLOP cost of symmetric eigendecomposition of an (n, n) matrix.
+    """FLOP cost of symmetric eigendecomposition.
 
-    Formula: (4/3) * n^3
-    Source: Golub & Van Loan, "Matrix Computations", 4th ed., §8.3
-    Assumes: Tridiagonalization via Householder + implicit QR sweeps.
+    Parameters
+    ----------
+    n : int
+        Matrix dimension.
+
+    Returns
+    -------
+    int
+        Estimated FLOP count: (4/3)n**3.
+
+    Notes
+    -----
+    Source: Golub & Van Loan, *Matrix Computations*, 4th ed., §8.3.
+    Assumes tridiagonalization via Householder followed by implicit
+    QR sweeps.
     """
     return max((4 * n ** 3) // 3, 1)
 
@@ -103,12 +158,26 @@ def eigh(a, UPLO="L"):
     vals, vecs = _np.linalg.eigh(a, UPLO=UPLO)
     return _np.asarray(vals), _np.asarray(vecs)
 
+attach_docstring(eigh, _np.linalg.eigh, "linalg", "4n\u00b3/3 FLOPs (tridiagonal + QR sweeps)")
+
 
 def eigvals_cost(n: int) -> int:
-    """FLOP cost of computing eigenvalues of an (n, n) matrix.
+    """FLOP cost of computing eigenvalues.
 
-    Formula: 10 * n^3
-    Source: Same algorithm as eig (Francis QR).
+    Parameters
+    ----------
+    n : int
+        Matrix dimension.
+
+    Returns
+    -------
+    int
+        Estimated FLOP count: 10n**3.
+
+    Notes
+    -----
+    Same algorithm as ``eig`` (Francis QR), but eigenvectors are not
+    accumulated.
     """
     return max(10 * n ** 3, 1)
 
@@ -124,12 +193,25 @@ def eigvals(a):
     budget.deduct("linalg.eigvals", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.eigvals(a)
 
+attach_docstring(eigvals, _np.linalg.eigvals, "linalg", "10n\u00b3 FLOPs")
+
 
 def eigvalsh_cost(n: int) -> int:
-    """FLOP cost of computing eigenvalues of a symmetric (n, n) matrix.
+    """FLOP cost of computing eigenvalues of a symmetric matrix.
 
-    Formula: (4/3) * n^3
-    Source: Same algorithm as eigh.
+    Parameters
+    ----------
+    n : int
+        Matrix dimension.
+
+    Returns
+    -------
+    int
+        Estimated FLOP count: (4/3)n**3.
+
+    Notes
+    -----
+    Same algorithm as ``eigh``, but eigenvectors are not accumulated.
     """
     return max((4 * n ** 3) // 3, 1)
 
@@ -145,12 +227,27 @@ def eigvalsh(a, UPLO="L"):
     budget.deduct("linalg.eigvalsh", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.eigvalsh(a, UPLO=UPLO)
 
+attach_docstring(eigvalsh, _np.linalg.eigvalsh, "linalg", "4n\u00b3/3 FLOPs")
+
 
 def svdvals_cost(m: int, n: int) -> int:
-    """FLOP cost of computing singular values of an (m, n) matrix.
+    """FLOP cost of computing singular values.
 
-    Formula: m * n * min(m, n)
-    Source: Golub-Reinsch bidiagonalization. Same as full SVD cost model.
+    Parameters
+    ----------
+    m : int
+        Number of rows.
+    n : int
+        Number of columns.
+
+    Returns
+    -------
+    int
+        Estimated FLOP count: m * n * min(m, n).
+
+    Notes
+    -----
+    Source: Golub-Reinsch bidiagonalization. Same cost model as full SVD.
     """
     return max(m * n * min(m, n), 1)
 
@@ -165,3 +262,5 @@ def svdvals(a):
     cost = svdvals_cost(m, n)
     budget.deduct("linalg.svdvals", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.svdvals(a)
+
+attach_docstring(svdvals, _np.linalg.svdvals, "linalg", "m \u00d7 n \u00d7 min(m,n) FLOPs")
