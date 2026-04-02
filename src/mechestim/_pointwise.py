@@ -7,6 +7,7 @@ import numpy as _np
 from mechestim._budget import BudgetContext
 from mechestim._docstrings import attach_docstring
 from mechestim._flops import einsum_cost, pointwise_cost, reduction_cost
+from mechestim._symmetric import SymmetricTensor, SymmetryInfo
 from mechestim._validation import check_nan_inf, require_budget, validate_ndarray
 
 
@@ -18,10 +19,13 @@ def _counted_unary(np_func, op_name: str):
     def wrapper(x):
         budget = require_budget()
         validate_ndarray(x)
-        cost = pointwise_cost(x.shape)
+        sym_info = x.symmetry_info if isinstance(x, SymmetricTensor) else None
+        cost = pointwise_cost(x.shape, symmetry_info=sym_info)
         budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(x.shape,))
         result = np_func(x)
         check_nan_inf(result, op_name)
+        if sym_info is not None:
+            result = SymmetricTensor(result, symmetric_dims=sym_info.symmetric_dims)
         return result
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name
@@ -52,10 +56,30 @@ def _counted_binary(np_func, op_name: str):
         if not isinstance(y, _np.ndarray):
             y = _np.asarray(y)
         output_shape = _np.broadcast_shapes(x.shape, y.shape)
-        cost = pointwise_cost(output_shape)
+        x_sym = x.symmetry_info if isinstance(x, SymmetricTensor) else None
+        y_sym = y.symmetry_info if isinstance(y, SymmetricTensor) else None
+        x_is_scalar = (x.ndim == 0)
+        y_is_scalar = (y.ndim == 0)
+        if x_sym and y_sym and x_sym.symmetric_dims == y_sym.symmetric_dims:
+            out_sym_info = SymmetryInfo(symmetric_dims=x_sym.symmetric_dims, shape=output_shape)
+            out_sym_dims = x_sym.symmetric_dims
+        elif x_sym and y_is_scalar:
+            out_sym_info = SymmetryInfo(symmetric_dims=x_sym.symmetric_dims, shape=output_shape)
+            out_sym_dims = x_sym.symmetric_dims
+        elif y_sym and x_is_scalar:
+            out_sym_info = SymmetryInfo(symmetric_dims=y_sym.symmetric_dims, shape=output_shape)
+            out_sym_dims = y_sym.symmetric_dims
+        else:
+            out_sym_info = None
+            out_sym_dims = None
+        cost = pointwise_cost(output_shape, symmetry_info=out_sym_info)
         budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape))
         result = np_func(x, y)
         check_nan_inf(result, op_name)
+        if out_sym_dims is not None:
+            result = SymmetricTensor(result, symmetric_dims=out_sym_dims)
+        elif isinstance(result, SymmetricTensor):
+            result = _np.asarray(result)
         return result
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name
@@ -86,12 +110,15 @@ def _counted_reduction(np_func, op_name: str, cost_multiplier: int = 1, extra_ou
     def wrapper(a, axis=None, **kwargs):
         budget = require_budget()
         validate_ndarray(a)
-        cost = reduction_cost(a.shape, axis) * cost_multiplier
+        sym_info = a.symmetry_info if isinstance(a, SymmetricTensor) else None
+        cost = reduction_cost(a.shape, axis, symmetry_info=sym_info) * cost_multiplier
         result = np_func(a, axis=axis, **kwargs)
         if extra_output:
             out_shape = _np.asarray(result).shape
             cost += pointwise_cost(out_shape)
         budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(a.shape,))
+        if isinstance(result, SymmetricTensor):
+            result = _np.asarray(result)
         return result
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name
