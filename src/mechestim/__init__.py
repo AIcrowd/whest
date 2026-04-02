@@ -33,6 +33,13 @@ from mechestim.errors import (  # noqa: F401
     SymmetryError,
 )
 
+# --- Symmetric tensor ---
+from mechestim._symmetric import (  # noqa: F401
+    SymmetricTensor,
+    SymmetryInfo,
+    as_symmetric,
+)
+
 # --- Einsum ---
 from mechestim._einsum import einsum  # noqa: F401
 
