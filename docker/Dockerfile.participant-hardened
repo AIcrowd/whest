@@ -46,23 +46,23 @@ COPY --from=builder /usr/local/lib/python3.10/ /usr/local/lib/python3.10/
 COPY --from=builder /usr/local/bin/python3.10 /usr/local/bin/python3.10
 COPY --from=builder /usr/local/lib/libpython3.10.so* /usr/local/lib/
 
-# Setup: symlink, ldconfig, copy needed libs, then strip the image
+# Setup: symlink, ldconfig, copy needed libs
 COPY --from=builder /needed-libs/ /tmp/needed-libs/
 RUN ln -sf /usr/local/bin/python3.10 /usr/local/bin/python3 && \
-    # Merge needed system libs (don't overwrite base image libs)
     cp -rn /tmp/needed-libs/* / 2>/dev/null; \
     rm -rf /tmp/needed-libs && \
-    ldconfig && \
-    # Remove ALL binaries except python3 and python3.10
-    find /bin /sbin /usr/bin /usr/sbin -type f -o -type l 2>/dev/null | \
+    ldconfig
+
+# Strip the image: remove all binaries except python3, remove unnecessary dirs
+RUN find /bin /sbin /usr/bin /usr/sbin -type f -o -type l 2>/dev/null | \
         grep -v python3 | xargs rm -f 2>/dev/null; \
-    # Remove unnecessary directories
     rm -rf /var /root /home /opt /tmp/* /srv /media /mnt \
            /usr/share/doc /usr/share/man /usr/share/info \
            /usr/share/locale /usr/share/zoneinfo /usr/share/lintian \
            /usr/share/common-licenses /usr/share/debianutils \
            /usr/lib/python3* /usr/lib/apt /usr/lib/dpkg \
-           /etc/apt /etc/dpkg
+           /etc/apt /etc/dpkg; \
+    true
 
 # Copy the entrypoint
 COPY docker/entrypoint.py /entrypoint.py
