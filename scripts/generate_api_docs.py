@@ -66,10 +66,34 @@ GENERATED_PAGES: dict[str, dict] = {
     },
     "api/fft.md": {
         "title": "FFT",
-        "description": (
-            "Fast Fourier Transform operations from `mechestim.fft`. "
-            "Transform costs scale as *n* log *n*."
-        ),
+        "description": textwrap.dedent("""\
+            Fast Fourier Transform operations from `mechestim.fft`. All FFT
+            transforms are counted. Real-valued transforms (`rfft`) cost roughly
+            half of complex transforms.
+
+            ## Cost Summary
+
+            | Operation | Cost Formula |
+            |-----------|-------------|
+            | `fft`, `ifft` | $5n \\cdot \\lceil\\log_2 n\\rceil$ |
+            | `rfft`, `irfft` | $5(n/2) \\cdot \\lceil\\log_2 n\\rceil$ |
+            | `fftn`, `ifftn` | $5N \\cdot \\lceil\\log_2 N\\rceil$ where $N = \\prod_i n_i$ |
+            | `fftfreq`, `rfftfreq`, `fftshift`, `ifftshift` | $0$ (free) |
+
+            ## Examples
+
+            ```python
+            import mechestim as me
+
+            with me.BudgetContext(flop_budget=1_000_000) as budget:
+                signal = me.random.randn(1024)    # free
+                spectrum = me.fft.fft(signal)     # 5 * 1024 * 10 = 51,200 FLOPs
+                freqs = me.fft.fftfreq(1024)      # free
+                print(f"FFT cost: {budget.flops_used:,}")  # 51,200
+            ```
+
+            ## API Reference
+        """),
         "directives": [
             "mechestim.fft._transforms",
             "mechestim.fft._free",
@@ -90,10 +114,36 @@ GENERATED_PAGES: dict[str, dict] = {
     },
     "api/polynomial.md": {
         "title": "Polynomial",
-        "description": (
-            "Polynomial operations from `mechestim`. "
-            "Cost formulas vary per operation."
-        ),
+        "description": textwrap.dedent("""\
+            Polynomial operations from `mechestim`. These wrap NumPy's polynomial
+            functions with FLOP counting.
+
+            ## Cost Summary
+
+            | Operation | Cost Formula |
+            |-----------|-------------|
+            | `polyval` | $2 \\cdot m \\cdot \\text{deg}$ (Horner's method) |
+            | `polyadd`, `polysub` | $\\max(n_1, n_2)$ |
+            | `polymul`, `polydiv` | $n_1 \\cdot n_2$ |
+            | `polyfit` | $2m \\cdot (\\text{deg}+1)^2$ |
+            | `poly` | $n^2$ |
+            | `roots` | $10n^3$ (companion matrix eigendecomposition) |
+            | `polyder`, `polyint` | $n$ |
+
+            ## Examples
+
+            ```python
+            import mechestim as me
+
+            with me.BudgetContext(flop_budget=1_000_000) as budget:
+                coeffs = me.array([1.0, -3.0, 2.0])  # x^2 - 3x + 2 (free)
+                x = me.linspace(0, 5, 100)            # free
+                y = me.polyval(coeffs, x)             # 2 * 100 * 2 = 400 FLOPs
+                print(f"polyval cost: {budget.flops_used}")  # 400
+            ```
+
+            ## API Reference
+        """),
         "directives": [
             "mechestim._polynomial",
         ],
@@ -101,10 +151,33 @@ GENERATED_PAGES: dict[str, dict] = {
     },
     "api/window.md": {
         "title": "Window Functions",
-        "description": (
-            "Window function wrappers from `mechestim`. "
-            "Cost formulas vary per operation."
-        ),
+        "description": textwrap.dedent("""\
+            Window function wrappers from `mechestim`. These generate window
+            arrays used in signal processing (e.g., for windowed FFTs).
+
+            ## Cost Summary
+
+            | Operation | Cost Formula | Notes |
+            |-----------|-------------|-------|
+            | `bartlett` | $n$ | Linear taper |
+            | `hamming` | $n$ | One cosine term |
+            | `hanning` | $n$ | One cosine term |
+            | `blackman` | $3n$ | Three cosine terms |
+            | `kaiser` | $3n$ | Bessel function evaluation |
+
+            ## Examples
+
+            ```python
+            import mechestim as me
+
+            with me.BudgetContext(flop_budget=1_000_000) as budget:
+                win = me.hamming(256)   # 256 FLOPs
+                win2 = me.kaiser(256)   # 768 FLOPs (3 * 256)
+                print(f"Window cost: {budget.flops_used}")  # 1024
+            ```
+
+            ## API Reference
+        """),
         "directives": [
             "mechestim._window",
         ],
