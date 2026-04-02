@@ -54,7 +54,7 @@ COPY --from=builder /lib/ /lib/
 # Copy the entrypoint
 COPY docker/entrypoint.py /entrypoint.py
 
-ENV MECHESTIM_SERVER_URL=ipc:///tmp/ipc/mechestim.sock
+ENV MECHESTIM_SERVER_URL=ipc:///ipc/mechestim.sock
 ENV PYTHONDONTWRITEBYTECODE=1
 
 ENTRYPOINT ["python3", "/entrypoint.py"]

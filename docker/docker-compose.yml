@@ -6,7 +6,7 @@ services:
       context: ..
       dockerfile: docker/Dockerfile.server
     volumes:
-      - mechestim-sock:/tmp/ipc
+      - mechestim-sock:/ipc
     restart: unless-stopped
 
   participant:
@@ -14,10 +14,10 @@ services:
       context: ..
       dockerfile: docker/Dockerfile.participant-hardened
     volumes:
-      - mechestim-sock:/tmp/ipc
+      - mechestim-sock:/ipc
       - ./submissions:/submission:ro
     environment:
-      - MECHESTIM_SERVER_URL=ipc:///tmp/ipc/mechestim.sock
+      - MECHESTIM_SERVER_URL=ipc:///ipc/mechestim.sock
     depends_on:
       - backend
     network_mode: none

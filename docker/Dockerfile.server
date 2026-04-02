@@ -11,4 +11,4 @@ RUN pip install --no-cache-dir /app/mechestim-lib/
 COPY mechestim-server/ /app/mechestim-server/
 RUN pip install --no-cache-dir /app/mechestim-server/
 
-CMD ["python", "-m", "mechestim_server", "--url", "ipc:///tmp/ipc/mechestim.sock"]
+CMD ["python", "-m", "mechestim_server", "--url", "ipc:///ipc/mechestim.sock"]
