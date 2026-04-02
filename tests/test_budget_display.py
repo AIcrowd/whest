@@ -58,9 +58,9 @@ def test_render_budget_summary_with_rich():
         ctx.deduct("add", flop_cost=100, subscripts=None, shapes=())
 
     result = render_budget_summary()
-    from rich.table import Table
+    from rich.panel import Panel
 
-    assert isinstance(result, Table)
+    assert isinstance(result, Panel)
 
 
 def test_budget_live_is_context_manager():
