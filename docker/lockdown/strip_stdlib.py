@@ -164,6 +164,17 @@ def strip(dry_run: bool = False) -> None:
             if entry.startswith(("pip-", "setuptools-")) and entry.endswith(".dist-info"):
                 _rmtree(os.path.join(site_packages, entry), dry_run)
 
+    # Remove stale .pth files that reference removed packages
+    if os.path.isdir(site_packages):
+        for entry in os.listdir(site_packages):
+            if entry.endswith(".pth"):
+                pth_path = os.path.join(site_packages, entry)
+                if dry_run:
+                    print(f"  would remove .pth: {pth_path}")
+                else:
+                    os.remove(pth_path)
+                    print(f"  removed stale .pth: {entry}")
+
     print("=== Stripping complete ===")
 
 

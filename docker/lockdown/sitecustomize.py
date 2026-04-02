@@ -157,16 +157,13 @@ def _restricted_open(file, mode="r", *args, **kwargs):
 builtins.open = _restricted_open  # type: ignore[assignment]
 
 # ---------------------------------------------------------------------------
-# 7. Clean up — remove this module from sys.modules
+# 7. Clean up
 # ---------------------------------------------------------------------------
 
-# Remove references so participant can't inspect the lockdown
-for _cleanup_key in list(sys.modules.keys()):
-    if _cleanup_key in ("sitecustomize", "allowlist") or _cleanup_key.startswith("allowlist."):
-        try:
-            del sys.modules[_cleanup_key]
-        except KeyError:
-            pass
+# Remove lockdown modules from sys.modules so participant can't inspect them.
+# Use pop() to avoid KeyError if Python's site.py didn't register them.
+sys.modules.pop("sitecustomize", None)
+sys.modules.pop("allowlist", None)
 
 # Poison usercustomize so Python doesn't try to import it
 sys.modules["usercustomize"] = None  # type: ignore[assignment]
