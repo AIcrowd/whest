@@ -47,13 +47,10 @@ import mechestim as me
 depth, width = 5, 256
 
 with me.BudgetContext(flop_budget=10**8) as budget:
-    # Build weight matrices (like nn.Linear layers)
-    weights = []
-    for _ in range(depth):
-        fan_in = width
-        W = me.random.randn(width, width)                   # free
-        W = me.multiply(W, me.sqrt(me.array(2 / fan_in)))   # counted
-        weights.append(W)
+    # Weight init — randn is free, multiply is counted
+    scale = me.sqrt(me.array(2 / width))
+    weights = [me.multiply(me.random.randn(width, width), scale)
+               for _ in range(depth)]
 
     # Forward pass
     x = me.random.randn(width)
@@ -69,14 +66,14 @@ with me.BudgetContext(flop_budget=10**8) as budget:
 mechestim FLOP Budget Summary
 ==============================
   Total budget:     100,000,000
-  Used:                 656,389  (0.7%)
-  Remaining:         99,343,611  (99.3%)
+  Used:                 656,385  (0.7%)
+  Remaining:         99,343,615  (99.3%)
 
   By operation:
     multiply              327,680  ( 49.9%)  [5 calls]
     einsum                327,680  ( 49.9%)  [5 calls]
     maximum                 1,024  (  0.2%)  [4 calls]
-    sqrt                        5  (  0.0%)  [5 calls]
+    sqrt                        1  (  0.0%)  [1 call]
 ```
 
 ## Installation

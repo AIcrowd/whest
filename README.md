@@ -30,12 +30,10 @@ import numpy as np
 
 depth, width = 5, 256
 
-# Build weight matrices (like nn.Linear layers)
-weights = []
-for _ in range(depth):
-    fan_in = width
-    W = np.random.randn(width, width) * np.sqrt(2 / fan_in)
-    weights.append(W)
+# Weight init (like nn.Linear + He scaling)
+scale = np.sqrt(2 / width)
+weights = [np.random.randn(width, width) * scale
+           for _ in range(depth)]
 
 # Forward pass
 x = np.random.randn(width)
@@ -56,22 +54,19 @@ import mechestim as me
 depth, width = 5, 256
 
 with me.BudgetContext(flop_budget=10**8) as b:
-    # Build weight matrices (like nn.Linear layers)
-    weights = []
-    for _ in range(depth):
-        fan_in = width
-        W = me.random.randn(width, width)               # free
-        W = me.multiply(W, me.sqrt(me.array(2 / fan_in)))  # counted
-        weights.append(W)
+    # Weight init — randn is free, multiply is counted
+    scale = me.sqrt(me.array(2 / width))
+    weights = [me.multiply(me.random.randn(width, width), scale)
+               for _ in range(depth)]
 
     # Forward pass
-    x = me.random.randn(width)                    # free
+    x = me.random.randn(width)
     h = x
     for i, W in enumerate(weights):
-        h = me.einsum('ij,j->i', W, h)           # linear layer
+        h = me.einsum('ij,j->i', W, h)    # linear layer
         if i < depth - 1:
-            h = me.maximum(h, 0)                  # ReLU
-    print(f"Total: {b.flops_used:,} FLOPs")       # 656,389
+            h = me.maximum(h, 0)           # ReLU
+    print(f"Total: {b.flops_used:,} FLOPs")  # 656,385
 ```
 
 </td>
@@ -119,17 +114,13 @@ import mechestim as me
 depth, width = 5, 256
 
 with me.BudgetContext(flop_budget=10**8) as budget:
-    # Build weight matrices (like nn.Linear layers)
-    weights = []
-    for _ in range(depth):
-        fan_in = width
-        # Scale by sqrt(2 / fan_in) — randn is free, multiply is counted
-        W = me.random.randn(width, width)
-        W = me.multiply(W, me.sqrt(me.array(2.0 / fan_in)))
-        weights.append(W)
+    # Weight init — randn is free, multiply is counted
+    scale = me.sqrt(me.array(2.0 / width))
+    weights = [me.multiply(me.random.randn(width, width), scale)
+               for _ in range(depth)]
 
     # Forward pass
-    x = me.random.randn(width)  # random draws cost nothing
+    x = me.random.randn(width)
     h = x
     for i, W in enumerate(weights):
         h = me.einsum('ij,j->i', W, h)    # linear layer: width * width FLOPs
@@ -143,14 +134,14 @@ with me.BudgetContext(flop_budget=10**8) as budget:
 mechestim FLOP Budget Summary
 ==============================
   Total budget:     100,000,000
-  Used:                 656,389  (0.7%)
-  Remaining:         99,343,611  (99.3%)
+  Used:                 656,385  (0.7%)
+  Remaining:         99,343,615  (99.3%)
 
   By operation:
     multiply              327,680  ( 49.9%)  [5 calls]
     einsum                327,680  ( 49.9%)  [5 calls]
     maximum                 1,024  (  0.2%)  [4 calls]
-    sqrt                        5  (  0.0%)  [5 calls]
+    sqrt                        1  (  0.0%)  [1 call]
 ```
 
 ### Plan Your Budget Before Executing
