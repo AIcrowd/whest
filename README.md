@@ -14,6 +14,8 @@
 
 ---
 
+**[📚 Full Documentation](docs/index.md)**
+
 **mechestim** is a drop-in replacement for a subset of NumPy that counts FLOPs as you compute. It lets researchers focus on **algorithmic innovation** instead of performance engineering &mdash; the competition score depends on your algorithm's analytical FLOP cost, not wall-clock time.
 
 ## Key Features
@@ -30,7 +32,7 @@
 ### Installation
 
 ```bash
-pip install git+https://github.com/AIcrowd/mechestim.git
+uv add git+https://github.com/AIcrowd/mechestim.git
 ```
 
 ### Basic Usage
