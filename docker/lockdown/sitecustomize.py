@@ -111,9 +111,13 @@ def _disabled(name: str):
     return _blocked
 
 
-builtins.exec = _disabled("exec")  # type: ignore[assignment]
-builtins.eval = _disabled("eval")  # type: ignore[assignment]
+# NOTE: We do NOT disable exec() because Python's import machinery uses it
+# internally to execute module code. Instead we disable compile(), which
+# prevents exec("string") and eval("string") from working (they call compile
+# first). exec(code_object) still works but participants can't create code
+# objects without compile().
 builtins.compile = _disabled("compile")  # type: ignore[assignment]
+builtins.eval = _disabled("eval")  # type: ignore[assignment]
 builtins.breakpoint = _disabled("breakpoint")  # type: ignore[assignment]
 
 # ---------------------------------------------------------------------------
@@ -160,10 +164,12 @@ builtins.open = _restricted_open  # type: ignore[assignment]
 # ---------------------------------------------------------------------------
 
 # Remove references so participant can't inspect the lockdown
-if "sitecustomize" in sys.modules:
-    del sys.modules["sitecustomize"]
+for _cleanup_key in list(sys.modules.keys()):
+    if _cleanup_key in ("sitecustomize", "allowlist") or _cleanup_key.startswith("allowlist."):
+        try:
+            del sys.modules[_cleanup_key]
+        except KeyError:
+            pass
 
-# Remove the allowlist module too
-for _key in list(sys.modules.keys()):
-    if _key == "allowlist" or _key.startswith("allowlist."):
-        del sys.modules[_key]
+# Poison usercustomize so Python doesn't try to import it
+sys.modules["usercustomize"] = None  # type: ignore[assignment]
