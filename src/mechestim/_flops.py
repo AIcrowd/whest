@@ -26,7 +26,7 @@ def parse_einsum_subscripts(subscripts: str) -> tuple[list[list[str]], list[str]
     return inputs, output
 
 
-def einsum_cost(subscripts: str, shapes: list[tuple[int, ...]], repeated_operand_indices: list[int] | None = None, symmetric_dims: list[tuple[int, ...]] | None = None) -> int:
+def einsum_cost(subscripts: str, shapes: list[tuple[int, ...]], repeated_operand_indices: list[int] | None = None, symmetric_dims: list[tuple[int, ...]] | None = None, operand_symmetries: "list[SymmetryInfo | None] | None" = None) -> int:
     """Calculate the FLOP cost of an einsum operation."""
     inputs, output = parse_einsum_subscripts(subscripts)
     label_dims: dict[str, int] = {}
@@ -50,7 +50,21 @@ def einsum_cost(subscripts: str, shapes: list[tuple[int, ...]], repeated_operand
     if symmetric_dims:
         for group in symmetric_dims:
             symmetry_factor *= math.factorial(len(group))
-    return base_cost // symmetry_factor
+    cost = base_cost // symmetry_factor
+
+    # Apply input operand symmetry savings
+    if operand_symmetries:
+        for i, sym_info in enumerate(operand_symmetries):
+            if sym_info is None:
+                continue
+            total = 1
+            for d in sym_info.shape:
+                total *= d
+            if total > 0:
+                unique = sym_info.unique_elements
+                cost = cost * unique // total
+
+    return max(cost, 1)
 
 
 def pointwise_cost(shape: tuple[int, ...], symmetry_info: "SymmetryInfo | None" = None) -> int:

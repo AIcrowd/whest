@@ -76,3 +76,12 @@ def test_reduction_cost_symmetric():
 
 def test_reduction_cost_no_symmetry_unchanged():
     assert reduction_cost(input_shape=(5, 5), axis=None) == 25
+
+def test_einsum_cost_symmetric_input():
+    info = SymmetryInfo(symmetric_dims=[(0, 1)], shape=(10, 10))
+    cost = einsum_cost("ij,j->i", shapes=[(10, 10), (10,)], operand_symmetries=[info, None])
+    assert cost == 55
+
+def test_einsum_cost_no_operand_symmetry_unchanged():
+    cost = einsum_cost("ij,j->i", shapes=[(10, 10), (10,)])
+    assert cost == 100
