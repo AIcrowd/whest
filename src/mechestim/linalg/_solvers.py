@@ -2,14 +2,14 @@
 """Linear solver wrappers with FLOP counting."""
 from __future__ import annotations
 import numpy as _np
+from mechestim._symmetric import SymmetricTensor, as_symmetric
 from mechestim._validation import require_budget, validate_ndarray
 
 
-def solve_cost(n: int) -> int:
-    """FLOP cost of solving Ax = b for (n, n) matrix A.
-    Formula: n^3
-    Source: LU factorization + back-substitution.
-    """
+def solve_cost(n: int, symmetric: bool = False) -> int:
+    """FLOP cost of solving Ax = b. n^3/3 (Cholesky) if symmetric, else n^3 (LU)."""
+    if symmetric:
+        return max(n ** 3 // 3, 1)
     return max(n ** 3, 1)
 
 
@@ -20,16 +20,16 @@ def solve(a, b):
     if a.ndim != 2 or a.shape[0] != a.shape[1]:
         raise ValueError(f"First argument must be square 2D array, got shape {a.shape}")
     n = a.shape[0]
-    cost = solve_cost(n)
+    is_symmetric = isinstance(a, SymmetricTensor)
+    cost = solve_cost(n, symmetric=is_symmetric)
     budget.deduct("linalg.solve", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.solve(a, b)
 
 
-def inv_cost(n: int) -> int:
-    """FLOP cost of matrix inverse of an (n, n) matrix.
-    Formula: n^3
-    Source: LU factorization + solve for n right-hand sides.
-    """
+def inv_cost(n: int, symmetric: bool = False) -> int:
+    """FLOP cost of matrix inverse. n^3/3 + n^3/2 if symmetric, else n^3."""
+    if symmetric:
+        return max(n ** 3 // 3 + n ** 3 // 2, 1)
     return max(n ** 3, 1)
 
 
@@ -40,9 +40,13 @@ def inv(a):
     if a.ndim != 2 or a.shape[0] != a.shape[1]:
         raise ValueError(f"Input must be square 2D array, got shape {a.shape}")
     n = a.shape[0]
-    cost = inv_cost(n)
+    is_symmetric = isinstance(a, SymmetricTensor)
+    cost = inv_cost(n, symmetric=is_symmetric)
     budget.deduct("linalg.inv", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.linalg.inv(a)
+    result = _np.linalg.inv(a)
+    if is_symmetric:
+        result = as_symmetric(result, dims=(0, 1))
+    return result
 
 
 def lstsq_cost(m: int, n: int) -> int:

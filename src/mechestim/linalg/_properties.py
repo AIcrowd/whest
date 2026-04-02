@@ -2,6 +2,7 @@
 """Matrix property wrappers with FLOP counting."""
 from __future__ import annotations
 import numpy as _np
+from mechestim._symmetric import SymmetricTensor
 from mechestim._validation import require_budget, validate_ndarray
 
 
@@ -25,8 +26,10 @@ def trace(a, offset=0, axis1=0, axis2=1, dtype=None, out=None):
     return _np.trace(a, offset=offset, axis1=axis1, axis2=axis2, dtype=dtype, out=out)
 
 
-def det_cost(n: int) -> int:
-    """FLOP cost of determinant. Formula: n^3. Source: LU factorization."""
+def det_cost(n: int, symmetric: bool = False) -> int:
+    """FLOP cost of determinant. n^3/3 (Cholesky) if symmetric, else n^3 (LU)."""
+    if symmetric:
+        return max(n ** 3 // 3, 1)
     return max(n ** 3, 1)
 
 
@@ -37,13 +40,16 @@ def det(a):
     if a.ndim != 2 or a.shape[0] != a.shape[1]:
         raise ValueError(f"Input must be square 2D array, got shape {a.shape}")
     n = a.shape[0]
-    cost = det_cost(n)
+    is_symmetric = isinstance(a, SymmetricTensor)
+    cost = det_cost(n, symmetric=is_symmetric)
     budget.deduct("linalg.det", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.det(a)
 
 
-def slogdet_cost(n: int) -> int:
-    """FLOP cost of sign and log-determinant. Formula: n^3. Source: Same as det."""
+def slogdet_cost(n: int, symmetric: bool = False) -> int:
+    """FLOP cost of sign and log-determinant. n^3/3 (Cholesky) if symmetric, else n^3 (LU)."""
+    if symmetric:
+        return max(n ** 3 // 3, 1)
     return max(n ** 3, 1)
 
 
@@ -54,7 +60,8 @@ def slogdet(a):
     if a.ndim != 2 or a.shape[0] != a.shape[1]:
         raise ValueError(f"Input must be square 2D array, got shape {a.shape}")
     n = a.shape[0]
-    cost = slogdet_cost(n)
+    is_symmetric = isinstance(a, SymmetricTensor)
+    cost = slogdet_cost(n, symmetric=is_symmetric)
     budget.deduct("linalg.slogdet", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.slogdet(a)
 
