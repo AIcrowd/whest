@@ -100,8 +100,9 @@ ALLOWED_MODULES = PARTICIPANT_MODULES | INFRASTRUCTURE_MODULES
 # Modules to explicitly poison (set to None in sys.modules)
 # This prevents import even if the .py file was somehow missed during stripping.
 POISONED_MODULES = frozenset({
-    "math",
-    "cmath",
+    # NOTE: math/cmath are NOT poisoned because selectors.py (needed by pyzmq)
+    # imports math.ceil. The scalar math module can't meaningfully bypass
+    # FLOP counting for matrix operations anyway.
     "numpy",
     "socket",
     "http",
