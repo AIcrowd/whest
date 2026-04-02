@@ -6,11 +6,12 @@
 
 ## Goal
 
-Rewrite the mechestim documentation to match the style and structure of the
-[circuit-estimation-mvp](https://github.com/AIcrowd/circuit-estimation-challenge-internal)
+Rewrite the mechestim documentation to match the style, structure, and visual
+identity of the
+[network-estimation-challenge-internal](https://github.com/AIcrowd/network-estimation-challenge-internal)
 reference repo. The result is a persona-driven docs site with getting-started
-guides, how-to pages, concept explanations, API reference, troubleshooting,
-and runnable example scripts.
+guides, how-to pages, concept explanations, API reference, operation audit,
+client-server architecture guide, troubleshooting, and runnable example scripts.
 
 ## Design Decisions
 
@@ -20,9 +21,22 @@ and runnable example scripts.
 | Page template | Adapted from reference | "When to use this page", "Prerequisites", "Usage", "What you'll see", "Common pitfalls", "Related pages" |
 | Emojis | Yes, in section headers | Match reference repo style |
 | Installation | `uv` only (no `pip`) | Avoids NumPy version confusion; `uv` resolves from lock file |
-| Examples | Inline snippets in docs + separate `examples/` directory | Both quick understanding and deeper learning |
+| Examples | Inline snippets in docs + separate `examples/` directory. All examples use `uv run`. | Both quick understanding and deeper learning |
 | API docs | Keep mkdocstrings approach | Single source of truth in code docstrings |
-| Build tool | MkDocs + Material (existing) | Already configured, no change needed |
+| Build tool | MkDocs + Material (existing) | Already configured |
+| Theme/logo | Match reference repo visual identity | Consistent branding across the challenge ecosystem |
+| Math advice | None — docs show API usage, not algorithmic guidance | Audience is researchers who know the math |
+
+## Visual Identity
+
+Adopt the visual identity from the reference repo:
+
+- **Logo:** Use the network estimation challenge logo from
+  `/circuit-estimation/logos/` (copy into `docs/assets/logo/`)
+- **Theme colors:** Match the reference repo's MkDocs Material palette
+- **mkdocs.yml theme block:** Update to match reference repo's styling
+  (primary color, accent, logo path, favicon)
+- **Custom CSS:** If the reference repo uses any custom styles, adopt them
 
 ## Site Navigation (mkdocs.yml)
 
@@ -42,12 +56,16 @@ nav:
   - Concepts:
     - FLOP Counting Model: concepts/flop-counting-model.md
     - Operation Categories: concepts/operation-categories.md
+  - Architecture:
+    - Client-Server Model: architecture/client-server.md
+    - Running with Docker: architecture/docker.md
   - API Reference:
     - Counted Operations: api/counted-ops.md
     - Free Operations: api/free-ops.md
     - Budget: api/budget.md
     - FLOP Cost Query: api/flops.md
     - Errors: api/errors.md
+  - Operation Audit: reference/operation-audit.md
   - Troubleshooting: troubleshooting/common-errors.md
   - Changelog: changelog.md
 ```
@@ -92,6 +110,7 @@ Persona-driven entry points with emoji headers:
 - 🛠 **Something isn't working** → Troubleshooting, Error Reference
 - 📈 **I want to optimize my FLOP usage** → How-To guides (einsum, symmetry, budget planning)
 - 🧠 **I want to understand how FLOP counting works** → Concepts (FLOP model, operation categories)
+- 🏗 **I want to understand the sandboxed architecture** → Client-Server Model, Docker
 
 Includes a 4-line quick example and installation one-liner. Ends with a Full
 Taxonomy section listing all pages grouped by category.
@@ -118,6 +137,7 @@ Taxonomy section listing all pages grouped by category.
   - Create arrays (free), run einsum (counted), apply ReLU (counted)
   - Print budget.summary()
 - Show the full summary output with annotations explaining each line
+- Run with: `uv run python examples/01_basic_usage.py`
 - Common pitfall: forgetting the BudgetContext wrapper (NoBudgetContextError)
 
 ### how-to/migrate-from-numpy.md — Migrate from NumPy
@@ -138,12 +158,12 @@ Taxonomy section listing all pages grouped by category.
 
 - Einsum as the core computation primitive
 - Common subscript strings with cost formulas:
-  - Matrix multiply: `'ij,jk->ik'` → m * j * k
-  - Batched matmul: `'bij,bjk->bik'` → b * i * j * k
-  - Outer product: `'i,j->ij'` → i * j
+  - Matrix multiply: `'ij,jk->ik'` → m × j × k
+  - Batched matmul: `'bij,bjk->bik'` → b × i × j × k
+  - Outer product: `'i,j->ij'` → i × j
   - Trace: `'ii->'` → i
-  - Bilinear form: `'ai,bi,ab->'` → a * b * i
-- When to use einsum vs `me.dot` / `me.matmul` (same cost, einsum more flexible)
+  - Bilinear form: `'ai,bi,ab->'` → a × b × i
+- `me.dot` / `me.matmul` have equivalent einsum cost
 - Common pitfall: unexpected cost from large intermediate dimensions
 
 ### how-to/exploit-symmetry.md — Exploit Symmetry Savings
@@ -159,11 +179,15 @@ Taxonomy section listing all pages grouped by category.
 
 ### how-to/use-linalg.md — Use Linear Algebra
 
-- Truncated SVD: `U, S, Vt = me.linalg.svd(A, k=10)`
-- Cost: m * n * k FLOPs
-- Choosing k: trade-off between approximation quality and FLOP cost
-- Query cost before running: `me.flops.svd_cost(m=256, n=256, k=10)`
-- Common pitfall: using full SVD when truncated would suffice
+Demonstrate all available linalg functions coherently:
+
+- Currently available: `me.linalg.svd(A, k=...)` (truncated SVD)
+- API signature and parameters
+- Cost formula: m × n × k FLOPs
+- Query cost: `me.flops.svd_cost(m, n, k)`
+- Code example showing usage within a BudgetContext
+- What happens when you call an unsupported linalg function (helpful error)
+- Note: This page will grow as more linalg operations are added
 
 ### how-to/plan-your-budget.md — Plan Your Budget
 
@@ -171,8 +195,7 @@ Taxonomy section listing all pages grouped by category.
   - `me.flops.einsum_cost(subscripts, shapes)`
   - `me.flops.svd_cost(m, n, k)`
   - `me.flops.pointwise_cost(shape)` / `reduction_cost(shape)`
-- Strategy: plan all operation costs before executing
-- Example: budget breakdown table for a multi-layer forward pass
+- Example: budget breakdown table for a multi-step computation
 - Common pitfall: not accounting for reduction costs
 
 ### how-to/debug-budget-overruns.md — Debug Budget Overruns
@@ -180,11 +203,7 @@ Taxonomy section listing all pages grouped by category.
 - Reading the budget summary output
 - Using `budget.op_log` to inspect individual operation costs
 - Identifying the most expensive operations
-- Strategies for reducing cost:
-  - Use truncated SVD instead of full
-  - Exploit einsum symmetry
-  - Reduce matrix dimensions where possible
-- Common pitfall: single expensive operation dominating the budget
+- Focus: how to read the diagnostic output, not algorithmic advice
 
 ### concepts/flop-counting-model.md — FLOP Counting Model
 
@@ -208,8 +227,57 @@ Taxonomy section listing all pages grouped by category.
   - Cost rule per category
   - Examples with concrete numbers
 - **Unsupported operations:** What happens (AttributeError with guidance)
-  - How to find alternatives
-  - Link to supported operations table
+
+### architecture/client-server.md — Client-Server Model
+
+High-level explanation of the client-server architecture:
+
+- **Why it exists:** Sandboxed execution for competition submissions.
+  Participant code runs in an isolated container that can only communicate
+  with the mechestim server via a socket. This prevents participants from
+  bypassing FLOP counting by importing NumPy directly.
+- **How it works (high level):**
+  - Server runs the real mechestim library and enforces budgets
+  - Client is a drop-in replacement that proxies operations to the server
+  - Communication uses msgpack over TCP
+  - Arrays stay on the server; client holds lightweight RemoteArray handles
+- **Architecture diagram:** ASCII showing client container → TCP → server container
+- **API compatibility:** Client exposes the same `import mechestim as me` API.
+  Code written for the local library works unchanged with the client.
+- **When to use which:**
+  - Local library (`src/mechestim/`): development, testing, research
+  - Client-server (`mechestim-client/` + `mechestim-server/`): competition
+    evaluation, sandboxed environments
+
+### architecture/docker.md — Running with Docker
+
+- How to run the client-server model locally with Docker
+- Docker Compose setup (reference existing `docker/` directory)
+- Running without Docker: start server manually, connect client
+- Environment variables and configuration
+- Verifying the connection works
+- Common pitfall: port conflicts, container networking
+
+### reference/operation-audit.md — Operation Audit
+
+Structured presentation of the full operation registry:
+
+- **Summary stats:**
+  - 209 free operations (0 FLOPs)
+  - 73 counted unary operations
+  - 45 counted binary operations
+  - 37 counted reduction operations
+  - 22 counted custom operations (einsum, matmul, SVD, etc.)
+  - 96 blacklisted operations (unsupported, with explanations)
+- **Tables by category:** For each category, a table listing:
+  - Operation name
+  - Cost formula
+  - NumPy equivalent
+- **Blacklisted operations table:** What's not supported and why
+- **How to read this page:** Explain that this is auto-generated from
+  the operation registry (`_registry.py`) and reflects the current state
+- Note: Consider generating this page from the registry at build time
+  (script in `scripts/`) so it stays in sync automatically
 
 ### troubleshooting/common-errors.md — Common Errors
 
@@ -226,7 +294,8 @@ Symptom → Why → Fix format for each error:
 
 ## Examples Directory
 
-Five runnable Python scripts in `examples/`:
+Five runnable Python scripts in `examples/`. Each includes a header comment
+explaining what it demonstrates. All are run with `uv run python examples/NN_name.py`.
 
 ### 01_basic_usage.py
 - Import mechestim, create BudgetContext
@@ -246,7 +315,7 @@ Five runnable Python scripts in `examples/`:
 
 ### 04_svd_approximation.py
 - Truncated SVD on a random matrix
-- Show how k affects cost and approximation quality
+- Show cost output
 - ~25 lines
 
 ### 05_budget_planning.py
@@ -263,17 +332,21 @@ Five runnable Python scripts in `examples/`:
 - Keep rest as-is (it's already good)
 
 ### mkdocs.yml
-- Update `nav` to match new structure
+- Update `nav` to match new structure (including architecture section)
+- Update theme to match reference repo visual identity (logo, colors)
 - Add `admonition` and `pymdownx.details` extensions for collapsible sections
-- No theme changes needed
+
+## Assets to Copy
+
+- Logo files from reference repo (`/circuit-estimation/logos/`) → `docs/assets/logo/`
+- Any custom CSS from reference repo
 
 ## What's NOT in scope
 
-- Client-server architecture docs (separate concern, different audience)
-- Competition-specific guides (audience is general library users)
+- Competition-specific submission guides (audience is general library users)
 - Auto-generated API docs restructuring (mkdocstrings approach stays as-is)
 - CI/CD for docs deployment
-- Custom MkDocs theme or plugins beyond what's already configured
+- Algorithmic/mathematical advice (audience knows the math)
 
 ## File Count
 
@@ -282,9 +355,12 @@ Five runnable Python scripts in `examples/`:
 | Getting Started | 2 | 0 |
 | How-To | 6 | 0 |
 | Concepts | 2 | 0 |
+| Architecture | 2 | 0 |
+| Reference (audit) | 1 | 0 |
 | Troubleshooting | 1 | 0 |
 | Index | 0 | 1 (rewrite) |
 | Examples | 5 | 0 |
 | Config | 0 | 1 (mkdocs.yml) |
 | README | 0 | 1 (minor update) |
-| **Total** | **16** | **3** |
+| Assets (logo) | 1+ | 0 |
+| **Total** | **~21** | **3** |
