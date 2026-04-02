@@ -1,8 +1,11 @@
-"""Tests for SymmetryInfo dataclass."""
+"""Tests for SymmetryInfo, SymmetricTensor, and as_symmetric."""
+import pickle
+
 import numpy as np
 import pytest
 
-from mechestim._symmetric import SymmetryInfo
+from mechestim._symmetric import SymmetryInfo, SymmetricTensor, as_symmetric, validate_symmetry
+from mechestim.errors import SymmetryError
 
 
 class TestSymmetryInfo:
@@ -45,3 +48,109 @@ class TestSymmetryInfo:
         """Dims are normalized to sorted tuples."""
         info = SymmetryInfo(symmetric_dims=[(1, 0)], shape=(5, 5))
         assert info.symmetric_dims == [(0, 1)]
+
+
+# ---------------------------------------------------------------------------
+# Task 2: SymmetricTensor and as_symmetric
+# ---------------------------------------------------------------------------
+
+def _make_symmetric_matrix(n: int = 5) -> np.ndarray:
+    """Create a random symmetric matrix."""
+    a = np.random.default_rng(42).standard_normal((n, n))
+    return (a + a.T) / 2
+
+
+class TestSymmetricTensor:
+    """Tests for SymmetricTensor ndarray subclass."""
+
+    def test_is_ndarray_and_symmetric_tensor(self):
+        data = _make_symmetric_matrix()
+        st = as_symmetric(data, (0, 1))
+        assert isinstance(st, np.ndarray)
+        assert isinstance(st, SymmetricTensor)
+
+    def test_symmetric_dims_attribute(self):
+        data = _make_symmetric_matrix()
+        st = as_symmetric(data, (0, 1))
+        assert st.symmetric_dims == [(0, 1)]
+
+    def test_symmetry_info_property(self):
+        data = _make_symmetric_matrix()
+        st = as_symmetric(data, (0, 1))
+        info = st.symmetry_info
+        assert isinstance(info, SymmetryInfo)
+        assert info.shape == (5, 5)
+        assert info.unique_elements == 15
+
+    def test_accepts_symmetric_data(self):
+        """Valid symmetric data should not raise."""
+        data = _make_symmetric_matrix()
+        st = as_symmetric(data, (0, 1))  # should not raise
+        assert st.shape == (5, 5)
+
+    def test_rejects_non_symmetric_data(self):
+        """Non-symmetric data raises SymmetryError."""
+        rng = np.random.default_rng(99)
+        data = rng.standard_normal((5, 5))  # not symmetric
+        with pytest.raises(SymmetryError):
+            as_symmetric(data, (0, 1))
+
+    def test_multiple_groups(self):
+        """Multiple symmetry groups work."""
+        rng = np.random.default_rng(7)
+        a = rng.standard_normal((4, 4, 3, 3))
+        # Make dims (0,1) and (2,3) symmetric
+        a = (a + a.transpose(1, 0, 2, 3)) / 2
+        a = (a + a.transpose(0, 1, 3, 2)) / 2
+        st = as_symmetric(a, [(0, 1), (2, 3)])
+        assert st.symmetric_dims == [(0, 1), (2, 3)]
+
+    def test_single_tuple_shorthand(self):
+        """Single tuple dims shorthand: (0,1) treated as [(0,1)]."""
+        data = _make_symmetric_matrix()
+        st = as_symmetric(data, (0, 1))
+        assert st.symmetric_dims == [(0, 1)]
+
+    def test_copy_preserves_symmetry(self):
+        data = _make_symmetric_matrix()
+        st = as_symmetric(data, (0, 1))
+        cp = st.copy()
+        assert isinstance(cp, SymmetricTensor)
+        assert cp.symmetric_dims == [(0, 1)]
+
+    def test_shape_dtype_preserved(self):
+        data = _make_symmetric_matrix().astype(np.float32)
+        st = as_symmetric(data, (0, 1))
+        assert st.shape == (5, 5)
+        assert st.dtype == np.float32
+
+    def test_slicing_loses_symmetry(self):
+        """Slicing returns plain ndarray, not SymmetricTensor."""
+        data = _make_symmetric_matrix()
+        st = as_symmetric(data, (0, 1))
+        row = st[0]
+        assert not isinstance(row, SymmetricTensor)
+        assert isinstance(row, np.ndarray)
+
+    def test_within_tolerance_passes(self):
+        """Deviation of 1e-8 is within default tolerance."""
+        data = _make_symmetric_matrix()
+        data[0, 1] += 1e-8
+        data[1, 0] -= 1e-8  # tiny asymmetry
+        as_symmetric(data, (0, 1))  # should not raise
+
+    def test_exceeds_tolerance_fails(self):
+        """Deviation of 1e-3 exceeds tolerance."""
+        data = _make_symmetric_matrix()
+        data[0, 1] += 1e-3
+        with pytest.raises(SymmetryError):
+            as_symmetric(data, (0, 1))
+
+    def test_pickle_roundtrip(self):
+        """SymmetricTensor survives pickle."""
+        data = _make_symmetric_matrix()
+        st = as_symmetric(data, (0, 1))
+        loaded = pickle.loads(pickle.dumps(st))
+        assert isinstance(loaded, SymmetricTensor)
+        assert loaded.symmetric_dims == [(0, 1)]
+        np.testing.assert_array_equal(loaded, st)
