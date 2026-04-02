@@ -1,37 +1,86 @@
 <div align="center">
+<img src="docs/assets/logo/logo.png" alt="mechestim" height="80">
+<h1>mechestim</h1>
+<p><strong>NumPy-compatible math primitives with analytical FLOP counting</strong></p>
+</div>
 
-# mechestim
-
-**NumPy-compatible math primitives with analytical FLOP counting**
+<div align="center">
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-[![Tests](https://img.shields.io/badge/tests-140%20passing-brightgreen.svg)]()
-
-*Built for the [ARC Mechanistic Estimation Challenge](https://aicrowd.com) by [AIcrowd](https://aicrowd.com)*
+[![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)]()
 
 </div>
 
+*Built for the [ARC Mechanistic Estimation Challenge](https://aicrowd.com) by [AIcrowd](https://aicrowd.com)*
+
 ---
 
-**[📚 Full Documentation](docs/index.md)**
+**mechestim** is a drop-in replacement for a subset of NumPy that counts floating-point operations as you compute. Algorithms submitted to the ARC Mechanistic Estimation Challenge are scored by their analytical FLOP cost, not wall-clock time, so researchers can focus on **algorithmic innovation** rather than hardware tuning. Every arithmetic call deducts from a fixed budget; exceed it and execution stops immediately.
 
-**mechestim** is a drop-in replacement for a subset of NumPy that counts FLOPs as you compute. It lets researchers focus on **algorithmic innovation** instead of performance engineering &mdash; the competition score depends on your algorithm's analytical FLOP cost, not wall-clock time.
+## Why mechestim?
+
+<table>
+<tr><th>NumPy</th><th>mechestim</th></tr>
+<tr>
+<td>
+
+```python
+import numpy as np
+W = np.zeros((256, 256))
+x = np.zeros((256,))
+h = np.einsum('ij,j->i', W, x)
+h = np.maximum(h, 0)
+# How many FLOPs? No idea.
+```
+
+</td>
+<td>
+
+```python
+import mechestim as me
+with me.BudgetContext(flop_budget=10**6) as b:
+    W = me.zeros((256, 256))     # free
+    x = me.zeros((256,))         # free
+    h = me.einsum('ij,j->i', W, x)  # 65,536 FLOPs
+    h = me.maximum(h, 0)            # 256 FLOPs
+    print(b.flops_used)             # 65,792
+```
+
+</td>
+</tr>
+</table>
 
 ## Key Features
 
-- **NumPy-compatible API** &mdash; `import mechestim as me` and write familiar NumPy code
-- **Analytical FLOP counting** &mdash; deterministic, hardware-independent cost tracking
-- **Budget enforcement** &mdash; operations are checked before execution; exceeding the budget raises a clear error
-- **Symmetry-aware einsum** &mdash; automatic FLOP savings for repeated operands and declared symmetry groups
-- **Transparent diagnostics** &mdash; inspect per-operation costs, cumulative budget usage, and detailed summaries at any time
-- **Truncated SVD** &mdash; top-k singular value decomposition with `O(m*n*k)` cost
+- **NumPy-compatible API** -- `import mechestim as me` and write familiar NumPy code
+- **Analytical FLOP counting** -- deterministic, hardware-independent cost tracking
+- **Budget enforcement** -- operations are checked before execution; exceeding the budget raises a clear error
+- **Symmetry-aware einsum** -- automatic FLOP savings for repeated operands and declared symmetry groups
+- **Transparent diagnostics** -- inspect per-operation costs, cumulative budget usage, and detailed summaries at any time
+- **Truncated SVD** -- top-k singular value decomposition with `O(m * n * k)` cost
+
+## What's Supported
+
+| Module | Operations | Cost Model | Status |
+|--------|-----------|------------|--------|
+| Core (`me.*`) | 367 | Varies by category (unary, binary, reduction, free) | Supported |
+| `me.linalg` | 31 | Per-operation formulas | Supported |
+| `me.fft` | 18 | `n * log2(n)` for transforms | Supported |
+| `me.random` | 51 | Free (0 FLOPs) | Supported |
+| `me.polynomial` | 10 | Per-operation formulas | Supported |
+| `me.window` | 5 | Free (0 FLOPs) | Supported |
+| **Total** | **450 supported** | | **32 blocked** |
+
+Blocked operations (I/O, config, and system calls) raise a helpful `AttributeError` with a link to the docs.
 
 ## Quick Start
 
 ### Installation
 
 ```bash
+pip install git+https://github.com/AIcrowd/mechestim.git
+# or
 uv add git+https://github.com/AIcrowd/mechestim.git
 ```
 
@@ -94,27 +143,55 @@ with me.BudgetContext(flop_budget=10**8) as budget:
     # Without symmetry it would be 25,600
 ```
 
-## Supported Operations
-
-| Category | Operations | FLOP Cost |
-|----------|-----------|-----------|
-| **Einsum** | `me.einsum` | product of all index dimensions |
-| **Dot / Matmul** | `me.dot`, `me.matmul` | equivalent einsum cost |
-| **Unary** | `exp`, `log`, `sqrt`, `abs`, `sin`, `cos`, `tanh`, ... | numel(input) |
-| **Binary** | `add`, `multiply`, `maximum`, `divide`, `power`, ... | numel(output) |
-| **Reductions** | `sum`, `mean`, `max`, `min`, `std`, `var`, `argmax`, ... | numel(input) |
-| **Linear algebra** | `me.linalg.svd(A, k=...)` | m &times; n &times; k |
-| **Free (0 FLOPs)** | `zeros`, `ones`, `reshape`, `transpose`, `concatenate`, `where`, ... | 0 |
-| **Random (0 FLOPs)** | `me.random.randn`, `me.random.normal`, `me.random.seed`, ... | 0 |
-
-Unsupported operations raise a helpful `AttributeError` with a link to the docs.
-
 ## How It Works
 
-1. **All computation runs inside a `BudgetContext`** &mdash; there is no separate precomputation phase. Free ops (tensor creation, reshaping) cost 0 FLOPs.
-2. **FLOP costs are analytical** &mdash; computed from tensor shapes, not measured from execution. A matmul of `(m, k) @ (k, n)` always costs `m * k * n` FLOPs regardless of hardware.
-3. **Budget is checked before execution** &mdash; if an operation would exceed the budget, `BudgetExhaustedError` is raised and the operation does not run.
-4. **All tensors are plain `numpy.ndarray`** &mdash; no custom tensor class, no hidden state.
+1. **All computation runs inside a `BudgetContext`.** There is no separate precomputation phase. Free ops (tensor creation, reshaping) cost 0 FLOPs and can be called without restriction.
+2. **FLOP costs are analytical.** Costs are computed from tensor shapes, not measured from execution. A matmul of `(m, k) @ (k, n)` always costs `m * k * n` FLOPs regardless of hardware.
+3. **Budget is checked before execution.** If an operation would exceed the remaining budget, `BudgetExhaustedError` is raised and the operation does not run.
+4. **All tensors are plain `numpy.ndarray`.** There is no custom tensor class and no hidden state. You can pass mechestim arrays to any NumPy-compatible library.
+
+## Sharp Edges
+
+**Budget is mandatory.** Calling any counted operation outside a `BudgetContext` raises `NoBudgetContextError`. Wrap your entire computation in a single `with me.BudgetContext(...)` block.
+
+**32 operations are blocked.** I/O, config, and system-level functions (`save`, `load`, `set_printoptions`, etc.) raise `AttributeError` by design. These have no meaningful FLOP cost and are not part of the competition API.
+
+**sort, argsort, and trace are FREE.** This may be surprising -- these operations cost 0 FLOPs in mechestim because the challenge rules define them as free.
+
+**Nested BudgetContexts are not allowed.** Opening a second `BudgetContext` while one is already active raises `RuntimeError`. Use a single budget for your entire computation.
+
+**Cost is analytical, not wall-clock.** Two operations with the same shapes always report the same FLOP cost, regardless of data values, cache effects, or hardware. This is intentional -- it makes scores reproducible across machines.
+
+**SymmetricTensor propagation rules.** Symmetry metadata (used by einsum for FLOP savings) propagates through reshaping and slicing but is dropped by arithmetic operations. If you need symmetry savings after a computation, declare symmetry groups explicitly.
+
+## Documentation
+
+**Getting Started**
+
+- [Installation & Setup](docs/getting-started/installation.md)
+- [Your First Budget](docs/getting-started/first-budget.md)
+
+**How-To Guides**
+
+- [Use Einsum](docs/how-to/use-einsum.md)
+- [Exploit Symmetry](docs/how-to/exploit-symmetry.md)
+- [Use Linear Algebra](docs/how-to/use-linalg.md)
+- [Plan Your Budget](docs/how-to/plan-your-budget.md)
+- [Debug Budget Overruns](docs/how-to/debug-budget-overruns.md)
+- [Migrate from NumPy](docs/how-to/migrate-from-numpy.md)
+
+**Concepts**
+
+- [FLOP Counting Model](docs/concepts/flop-counting-model.md)
+- [Operation Categories](docs/concepts/operation-categories.md)
+
+**API Reference**
+
+- [Full API Reference](docs/api/)
+
+**For AI Agents:**
+
+- [Cheat Sheet](docs/reference/cheat-sheet.md) -- compact reference for fast lookup
 
 ## Development
 
@@ -122,10 +199,22 @@ Unsupported operations raise a helpful `AttributeError` with a link to the docs.
 git clone https://github.com/AIcrowd/mechestim.git
 cd mechestim
 uv sync --all-extras
-uv run pytest                  # 140 tests
+uv run pytest                  # run tests
 uv run mkdocs serve            # local docs at http://127.0.0.1:8000
+```
+
+## Citation
+
+```bibtex
+@misc{mechestim2026,
+  title  = {mechestim: NumPy-compatible math primitives with FLOP counting},
+  author = {AIcrowd},
+  year   = {2026},
+  url    = {https://github.com/AIcrowd/mechestim},
+  note   = {Built for the ARC Mechanistic Estimation Challenge}
+}
 ```
 
 ## License
 
-MIT
+[MIT](https://opensource.org/licenses/MIT)
