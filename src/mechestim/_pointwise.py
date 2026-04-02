@@ -292,13 +292,16 @@ divmod = _counted_binary_multi(_np.divmod, "divmod")
 # ---------------------------------------------------------------------------
 
 def clip(a, a_min, a_max):
-    """Counted version of np.clip. Cost = numel(input)."""
+    """Counted version of np.clip. Cost = numel(input) or unique_elements if symmetric."""
     budget = require_budget()
     validate_ndarray(a)
-    cost = pointwise_cost(a.shape)
+    sym_info = a.symmetry_info if isinstance(a, SymmetricTensor) else None
+    cost = pointwise_cost(a.shape, symmetry_info=sym_info)
     budget.deduct("clip", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     result = _np.clip(a, a_min, a_max)
     check_nan_inf(result, "clip")
+    if sym_info is not None:
+        result = SymmetricTensor(result, symmetric_dims=sym_info.symmetric_dims)
     return result
 
 
@@ -373,10 +376,18 @@ def dot(a, b):
     """Counted version of np.dot."""
     budget = require_budget()
     validate_ndarray(a, b)
+    # Extract symmetry info for cost calculation
+    operand_symmetries = [
+        a.symmetry_info if isinstance(a, SymmetricTensor) else None,
+        b.symmetry_info if isinstance(b, SymmetricTensor) else None,
+    ]
+    has_sym = _builtins.any(s is not None for s in operand_symmetries)
     if a.ndim == 2 and b.ndim == 2:
-        cost = einsum_cost("ij,jk->ik", shapes=[a.shape, b.shape])
+        cost = einsum_cost("ij,jk->ik", shapes=[a.shape, b.shape],
+                          operand_symmetries=operand_symmetries if has_sym else None)
     elif a.ndim == 1 and b.ndim == 1:
-        cost = einsum_cost("i,i->", shapes=[a.shape, b.shape])
+        cost = einsum_cost("i,i->", shapes=[a.shape, b.shape],
+                          operand_symmetries=operand_symmetries if has_sym else None)
     else:
         cost = a.size * b.size
     budget.deduct("dot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
@@ -392,10 +403,18 @@ def matmul(a, b):
     """Counted version of np.matmul."""
     budget = require_budget()
     validate_ndarray(a, b)
+    # Extract symmetry info for cost calculation
+    operand_symmetries = [
+        a.symmetry_info if isinstance(a, SymmetricTensor) else None,
+        b.symmetry_info if isinstance(b, SymmetricTensor) else None,
+    ]
+    has_sym = _builtins.any(s is not None for s in operand_symmetries)
     if a.ndim == 2 and b.ndim == 2:
-        cost = einsum_cost("ij,jk->ik", shapes=[a.shape, b.shape])
+        cost = einsum_cost("ij,jk->ik", shapes=[a.shape, b.shape],
+                          operand_symmetries=operand_symmetries if has_sym else None)
     elif a.ndim == 1 and b.ndim == 1:
-        cost = einsum_cost("i,i->", shapes=[a.shape, b.shape])
+        cost = einsum_cost("i,i->", shapes=[a.shape, b.shape],
+                          operand_symmetries=operand_symmetries if has_sym else None)
     else:
         cost = a.size * b.size
     budget.deduct("matmul", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
