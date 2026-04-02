@@ -385,6 +385,75 @@ def generate_ops_json(registry: dict[str, dict]) -> None:
     print(f"  Generated ops.json ({len(ops)} operations)")
 
 
+def generate_cheat_sheet(registry: dict[str, dict]) -> None:
+    """Generate docs/reference/cheat-sheet.md — agent-optimized cost reference."""
+    REF_DIR.mkdir(parents=True, exist_ok=True)
+    by_cat: dict[str, list[str]] = {cat: [] for cat in CATEGORY_ORDER}
+    for name, info in sorted(registry.items()):
+        cat = info["category"]
+        if cat in by_cat:
+            by_cat[cat].append(name)
+
+    lines = [
+        HEADER,
+        "# FLOP Cost Cheat Sheet",
+        "",
+        "> **mechestim is NOT NumPy.** All computation requires a `BudgetContext`.",
+        "> Some operations cost FLOPs, some are free, and 32 are blocked entirely.",
+        "",
+        "## Key Constraints",
+        "",
+        "- All counted operations require an active `BudgetContext`",
+        "- Budget is checked *before* execution — exceeding it raises `BudgetExhaustedError`",
+        "- 32 operations are blocked (I/O, config, state functions)",
+        "- `sort`, `argsort`, `trace` are **free** (0 FLOPs) — this may be surprising",
+        "",
+        "## Cost by Category",
+        "",
+        "| Category | Count | Cost Formula |",
+        "|----------|-------|-------------|",
+    ]
+    for cat in CATEGORY_ORDER:
+        _, latex = CATEGORY_COST_LATEX[cat]
+        label = cat.removeprefix("counted_").replace("_", " ").title()
+        if cat == "free":
+            label = "Free"
+        elif cat == "blacklisted":
+            label = "Blocked"
+        lines.append(f"| {label} | {len(by_cat[cat])} | {latex} |")
+    lines.append("")
+
+    custom_ops = by_cat.get("counted_custom", [])
+    if custom_ops:
+        lines.append("## Custom Operation Costs")
+        lines.append("")
+        lines.append("| Operation | Cost Formula | Notes |")
+        lines.append("|-----------|-------------|-------|")
+        for name in custom_ops:
+            _, latex = cost_for_op(name, "counted_custom")
+            notes = registry[name].get("notes", "")
+            lines.append(f"| `{name}` | {latex} | {notes} |")
+        lines.append("")
+
+    lines.append("## Free Operations (complete list)")
+    lines.append("")
+    free_ops = [f"`{op}`" for op in by_cat["free"]]
+    for i in range(0, len(free_ops), 8):
+        lines.append(", ".join(free_ops[i:i+8]))
+    lines.append("")
+
+    lines.append("## Blocked Operations (complete list)")
+    lines.append("")
+    blocked_ops = [f"`{op}`" for op in by_cat["blacklisted"]]
+    for i in range(0, len(blocked_ops), 8):
+        lines.append(", ".join(blocked_ops[i:i+8]))
+    lines.append("")
+
+    out = REF_DIR / "cheat-sheet.md"
+    out.write_text("\n".join(lines))
+    print(f"  Generated reference/cheat-sheet.md")
+
+
 # ---------------------------------------------------------------------------
 # Update counted-ops.md to include polynomial, window, unwrap
 # ---------------------------------------------------------------------------
@@ -541,6 +610,9 @@ def main():
 
     # Generate ops.json
     generate_ops_json(registry)
+
+    # Generate cheat sheet
+    generate_cheat_sheet(registry)
 
     print("\nDone. Run with --verify to check coverage.")
 
