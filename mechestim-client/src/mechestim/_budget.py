@@ -50,6 +50,8 @@ class BudgetContext:
         it is charged against the budget.  Defaults to ``1.0``.
     quiet:
         If ``True``, suppress informational output.  Defaults to ``False``.
+    namespace:
+        Optional label for grouping budget records.
 
     Example
     -------
@@ -63,13 +65,16 @@ class BudgetContext:
         flop_budget: int,
         flop_multiplier: float = 1.0,
         quiet: bool = False,
+        namespace: str | None = None,
     ) -> None:
         self._flop_budget = flop_budget
         self._flop_multiplier = flop_multiplier
         self._quiet = quiet
+        self._namespace = namespace
         self._flops_used: int = 0
         self._close_summary: str | None = None
         self._is_open: bool = False
+        self._previous_context = None
 
     # ------------------------------------------------------------------
     # Properties
@@ -99,6 +104,11 @@ class BudgetContext:
     def quiet(self) -> bool:
         """Whether informational output is suppressed."""
         return self._quiet
+
+    @property
+    def namespace(self) -> str | None:
+        """Optional namespace label for this context."""
+        return self._namespace
 
     # ------------------------------------------------------------------
     # Internal helpers
@@ -141,17 +151,33 @@ class BudgetContext:
         return f"BudgetContext: {used}/{budget} FLOPs used ({remaining} remaining)"
 
     # ------------------------------------------------------------------
+    # Decorator support
+    # ------------------------------------------------------------------
+
+    def __call__(self, func):
+        """Use BudgetContext as a decorator."""
+        import functools
+
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            with self:
+                return func(*args, **kwargs)
+
+        return wrapper
+
+    # ------------------------------------------------------------------
     # Context manager protocol
     # ------------------------------------------------------------------
 
     def __enter__(self) -> BudgetContext:
         """Open the budget on the server and update the local cache."""
         global _active_context
-        if _active_context is not None:
+        if _active_context is not None and _active_context is not _global_default:
             raise RuntimeError(
                 "Nested BudgetContext is not supported. "
                 "Only one context can be active at a time."
             )
+        self._previous_context = _active_context
         conn = get_connection()
         response = conn.send_recv(
             encode_budget_open(self._flop_budget, self._flop_multiplier)
@@ -173,7 +199,8 @@ class BudgetContext:
                 f"FLOPs used"
             )
             self._is_open = False
-            _active_context = None
+            _accumulator.record(self)
+        _active_context = self._previous_context
 
     def __repr__(self) -> str:  # pragma: no cover
         return (
@@ -181,3 +208,117 @@ class BudgetContext:
             f"flops_used={self._flops_used}, "
             f"flop_multiplier={self._flop_multiplier})"
         )
+
+
+# ------------------------------------------------------------------
+# Accumulator
+# ------------------------------------------------------------------
+
+
+class NamespaceRecord:
+    """Snapshot of a BudgetContext's state at close time."""
+
+    def __init__(self, namespace, flop_budget, flops_used):
+        self.namespace = namespace
+        self.flop_budget = flop_budget
+        self.flops_used = flops_used
+
+
+class BudgetAccumulator:
+    """Collects budget records across multiple BudgetContext sessions."""
+
+    def __init__(self):
+        self._records = []
+
+    def record(self, ctx):
+        self._records.append(
+            NamespaceRecord(
+                namespace=ctx.namespace,
+                flop_budget=ctx.flop_budget,
+                flops_used=ctx.flops_used,
+            )
+        )
+
+    def get_data(self, by_namespace=False):
+        total_budget = sum(r.flop_budget for r in self._records)
+        total_used = sum(r.flops_used for r in self._records)
+        result = {
+            "flop_budget": total_budget,
+            "flops_used": total_used,
+            "flops_remaining": total_budget - total_used,
+            "operations": {},
+        }
+        if by_namespace:
+            by_ns = {}
+            for r in self._records:
+                ns = r.namespace
+                if ns not in by_ns:
+                    by_ns[ns] = {"flop_budget": 0, "flops_used": 0, "operations": {}}
+                by_ns[ns]["flop_budget"] += r.flop_budget
+                by_ns[ns]["flops_used"] += r.flops_used
+            result["by_namespace"] = by_ns
+        return result
+
+    def reset(self):
+        self._records.clear()
+
+
+_accumulator = BudgetAccumulator()
+
+
+def budget(flop_budget, flop_multiplier=1.0, quiet=False, namespace=None):
+    """Create a BudgetContext usable as both a context manager and decorator."""
+    return BudgetContext(
+        flop_budget=flop_budget,
+        flop_multiplier=flop_multiplier,
+        quiet=quiet,
+        namespace=namespace,
+    )
+
+
+def budget_data(by_namespace=False):
+    """Return aggregated budget data across all recorded contexts."""
+    return _accumulator.get_data(by_namespace=by_namespace)
+
+
+# Note: No budget_reset() in the client — participants must not clear usage.
+
+
+_global_default = None
+
+
+def _get_default_budget_amount():
+    import os
+
+    raw = os.environ.get("MECHESTIM_DEFAULT_BUDGET")
+    if raw is not None:
+        return int(float(raw))
+    return int(1e15)
+
+
+def _get_global_default():
+    global _global_default, _active_context
+    if _global_default is None:
+        _global_default = BudgetContext(
+            flop_budget=_get_default_budget_amount(),
+            quiet=True,
+            namespace=None,
+        )
+        # Open it on the server
+        conn = get_connection()
+        response = conn.send_recv(
+            encode_budget_open(
+                _global_default._flop_budget, _global_default._flop_multiplier
+            )
+        )
+        _global_default._update_budget(response)
+        _global_default._is_open = True
+        _active_context = _global_default
+    return _global_default
+
+
+def _reset_global_default():
+    global _global_default, _active_context
+    if _global_default is not None and _active_context is _global_default:
+        _active_context = None
+    _global_default = None
