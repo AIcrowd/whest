@@ -32,12 +32,16 @@ class NoBudgetContextError(MechEstimError):
 class SymmetryError(MechEstimError):
     """Raised when a claimed tensor symmetry does not hold."""
 
-    def __init__(self, dims: tuple[int, ...], max_deviation: float):
+    def __init__(self, dims: tuple[int, ...], max_deviation: float,
+                 atol: float = 1e-6, rtol: float = 1e-5):
         self.dims = dims
         self.max_deviation = max_deviation
+        self.atol = atol
+        self.rtol = rtol
         super().__init__(
             f"Tensor not symmetric along dims ({', '.join(str(d) for d in dims)}): "
-            f"max deviation = {max_deviation}"
+            f"max deviation = {max_deviation} "
+            f"(tolerance: atol={atol}, rtol={rtol})"
         )
 
 
