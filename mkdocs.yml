@@ -64,6 +64,7 @@ plugins:
           - api/flops.md: "Cost query functions (einsum_cost, svd_cost, etc.)"
           - api/errors.md: "Exception classes"
         "Reference":
+          - reference/for-agents.md: "Guide for AI coding assistants — resources, rules, and common mistakes"
           - reference/operation-audit.md: "Complete 482-operation inventory with costs"
           - reference/cheat-sheet.md: "Quick FLOP cost reference for all operations"
         "Troubleshooting":
@@ -100,6 +101,7 @@ nav:
     - FLOP Cost Query: api/flops.md
     - Errors: api/errors.md
   - Reference:
+    - For AI Agents: reference/for-agents.md
     - Operation Audit: reference/operation-audit.md
     - FLOP Cost Cheat Sheet: reference/cheat-sheet.md
   - Troubleshooting: troubleshooting/common-errors.md
