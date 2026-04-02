@@ -45,10 +45,15 @@ Pick the path that matches what you need right now.
 import mechestim as me
 
 with me.BudgetContext(flop_budget=1_000_000) as budget:
-    W = me.zeros((256, 256))
-    x = me.zeros((256,))
-    h = me.einsum('ij,j->i', W, x)
-    h = me.maximum(h, 0)
+    # 3-layer MLP with Kaiming init (256 -> 128 -> 64 -> 10)
+    W1 = me.multiply(me.random.randn(128, 256), me.sqrt(me.array(2/256)))
+    W2 = me.multiply(me.random.randn(64, 128), me.sqrt(me.array(2/128)))
+    W3 = me.multiply(me.random.randn(10, 64), me.sqrt(me.array(2/64)))
+    x = me.random.randn(256)
+
+    h = me.maximum(me.einsum('ij,j->i', W1, x), 0)
+    h = me.maximum(me.einsum('ij,j->i', W2, h), 0)
+    out = me.einsum('ij,j->i', W3, h)
     print(budget.summary())
 ```
 

@@ -27,11 +27,17 @@
 
 ```python
 import numpy as np
-W = np.zeros((256, 256))
-x = np.zeros((256,))
-h = np.einsum('ij,j->i', W, x)
-h = np.maximum(h, 0)
-# How many FLOPs? No idea.
+
+# 3-layer MLP with Kaiming init
+W1 = np.random.randn(128, 256) * np.sqrt(2/256)
+W2 = np.random.randn(64, 128) * np.sqrt(2/128)
+W3 = np.random.randn(10, 64) * np.sqrt(2/64)
+x = np.random.randn(256)
+
+h = np.maximum(np.einsum('ij,j->i', W1, x), 0)
+h = np.maximum(np.einsum('ij,j->i', W2, h), 0)
+out = np.einsum('ij,j->i', W3, h)
+# Total FLOPs? No idea.
 ```
 
 </td>
@@ -39,12 +45,18 @@ h = np.maximum(h, 0)
 
 ```python
 import mechestim as me
+
 with me.BudgetContext(flop_budget=10**6) as b:
-    W = me.zeros((256, 256))     # free
-    x = me.zeros((256,))         # free
-    h = me.einsum('ij,j->i', W, x)  # 65,536 FLOPs
-    h = me.maximum(h, 0)            # 256 FLOPs
-    print(b.flops_used)             # 65,792
+    # Kaiming init — randn is free, multiply is counted
+    W1 = me.multiply(me.random.randn(128, 256), me.sqrt(me.array(2/256)))
+    W2 = me.multiply(me.random.randn(64, 128), me.sqrt(me.array(2/128)))
+    W3 = me.multiply(me.random.randn(10, 64), me.sqrt(me.array(2/64)))
+    x = me.random.randn(256)                              # free
+
+    h = me.maximum(me.einsum('ij,j->i', W1, x), 0)       # layer 1
+    h = me.maximum(me.einsum('ij,j->i', W2, h), 0)       # layer 2
+    out = me.einsum('ij,j->i', W3, h)                     # layer 3
+    print(f"Total: {b.flops_used:,} FLOPs")               # 83,395
 ```
 
 </td>
@@ -89,15 +101,17 @@ uv add git+https://github.com/AIcrowd/mechestim.git
 ```python
 import mechestim as me
 
-with me.BudgetContext(flop_budget=10_000_000) as budget:
-    # Free operations (0 FLOPs) -- tensor creation, reshaping, indexing
-    W = me.array(weight_matrix)
-    x = me.zeros((256,))
+with me.BudgetContext(flop_budget=1_000_000) as budget:
+    # Kaiming-initialized 3-layer MLP (256 -> 128 -> 64 -> 10)
+    W1 = me.multiply(me.random.randn(128, 256), me.sqrt(me.array(2/256)))
+    W2 = me.multiply(me.random.randn(64, 128), me.sqrt(me.array(2/128)))
+    W3 = me.multiply(me.random.randn(10, 64), me.sqrt(me.array(2/64)))
+    x = me.random.randn(256)    # free
 
-    # Counted operations -- each deducts from the FLOP budget
-    h = me.einsum('ij,j->i', W, x)      # cost: 256 * 256 FLOPs
-    h = me.maximum(h, 0)                 # cost: 256 FLOPs (ReLU)
-    U, S, Vt = me.linalg.svd(W, k=10)   # cost: 256 * 256 * 10 FLOPs
+    # Forward pass — each op deducts from the FLOP budget
+    h = me.maximum(me.einsum('ij,j->i', W1, x), 0)   # layer 1
+    h = me.maximum(me.einsum('ij,j->i', W2, h), 0)   # layer 2
+    out = me.einsum('ij,j->i', W3, h)                 # layer 3
 
     # Inspect your budget at any time
     print(budget.summary())
@@ -106,15 +120,15 @@ with me.BudgetContext(flop_budget=10_000_000) as budget:
 ```
 mechestim FLOP Budget Summary
 ==============================
-  Total budget:       10,000,000
-  Used:                  721,664  ( 7.2%)
-  Remaining:           9,278,336  (92.8%)
+  Total budget:       1,000,000
+  Used:                  83,395  ( 8.3%)
+  Remaining:            916,605  (91.7%)
 
   By operation:
-    einsum                65,536  ( 9.1%)  [1 call]
-    linalg.svd           655,360  (90.8%)  [1 call]
-    maximum                  256  ( 0.0%)  [1 call]
-    mean                     512  ( 0.1%)  [1 call]
+    multiply               41,600  (49.9%)  [3 calls]
+    einsum                 41,600  (49.9%)  [3 calls]
+    maximum                   192  ( 0.2%)  [2 calls]
+    sqrt                        3  ( 0.0%)  [3 calls]
 ```
 
 ### Plan Your Budget Before Executing
