@@ -53,12 +53,16 @@ RUN ln -sf /usr/local/bin/python3.10 /usr/local/bin/python3 && \
     cp -rn /tmp/needed-libs/* / 2>/dev/null; \
     rm -rf /tmp/needed-libs && \
     ldconfig && \
-    # Remove shell, utilities, and unnecessary files for lockdown
-    rm -f /bin/sh /bin/bash /bin/dash /usr/bin/dpkg* /usr/bin/apt* && \
-    rm -rf /var/cache /var/log /var/lib/apt /var/lib/dpkg \
-           /root /home /opt /usr/share/doc /usr/share/man \
+    # Remove ALL binaries except python3 and python3.10
+    find /bin /sbin /usr/bin /usr/sbin -type f -o -type l 2>/dev/null | \
+        grep -v python3 | xargs rm -f 2>/dev/null; \
+    # Remove unnecessary directories
+    rm -rf /var /root /home /opt /tmp/* /srv /media /mnt \
+           /usr/share/doc /usr/share/man /usr/share/info \
            /usr/share/locale /usr/share/zoneinfo /usr/share/lintian \
-           /usr/lib/python3* /usr/lib/apt
+           /usr/share/common-licenses /usr/share/debianutils \
+           /usr/lib/python3* /usr/lib/apt /usr/lib/dpkg \
+           /etc/apt /etc/dpkg
 
 # Copy the entrypoint
 COPY docker/entrypoint.py /entrypoint.py
