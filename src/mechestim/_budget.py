@@ -103,9 +103,12 @@ class BudgetContext:
 
     def summary(self) -> str:
         """Return a pretty-printed FLOP budget summary."""
+        header = "mechestim FLOP Budget Summary"
+        if self._namespace:
+            header += f" [{self._namespace}]"
         lines = [
-            "mechestim FLOP Budget Summary",
-            "=" * 30,
+            header,
+            "=" * len(header),
             f"  Total budget:  {self._flop_budget:>14,}",
             f"  Used:          {self._flops_used:>14,}  ({100 * self._flops_used / self._flop_budget:.1f}%)",
             f"  Remaining:     {self.flops_remaining:>14,}  ({100 * self.flops_remaining / self._flop_budget:.1f}%)",
