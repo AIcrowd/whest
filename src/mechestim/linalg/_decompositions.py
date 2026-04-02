@@ -100,7 +100,8 @@ def eigh(a, UPLO="L"):
     n = a.shape[0]
     cost = eigh_cost(n)
     budget.deduct("linalg.eigh", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.linalg.eigh(a, UPLO=UPLO)
+    vals, vecs = _np.linalg.eigh(a, UPLO=UPLO)
+    return _np.asarray(vals), _np.asarray(vecs)
 
 
 def eigvals_cost(n: int) -> int:
