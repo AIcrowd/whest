@@ -85,9 +85,13 @@ INFRASTRUCTURE_MODULES = frozenset({
     "select",
     "selectors",
 
-    # platform detection
+    # platform detection — platform imports subprocess, which is needed
+    # by pyzmq's zmq.backend at import time. Subprocess is harmless in
+    # the distroless image (no shell) with network_mode: none.
     "_sysconfigdata__linux_x86_64-linux-gnu",
     "platform",
+    "subprocess",
+    "signal",
 })
 
 # All allowed top-level module names (union of above)
@@ -99,7 +103,6 @@ POISONED_MODULES = frozenset({
     "math",
     "cmath",
     "numpy",
-    "subprocess",
     "socket",
     "http",
     "http.client",
@@ -135,7 +138,6 @@ POISONED_MODULES = frozenset({
     "glob",
     "fnmatch",
     "pathlib",
-    "signal",
     "mmap",
     "resource",
     "pty",
