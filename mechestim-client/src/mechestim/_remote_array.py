@@ -4,12 +4,12 @@
 to participants: metadata is cached locally while data access and arithmetic
 operations are dispatched to the server transparently.
 """
+
 from __future__ import annotations
 
-import functools
 import math
 import struct
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any, Dict, Tuple, Union
 
 # ---------------------------------------------------------------------------
 # dtype helpers  (NO numpy -- pure struct)
@@ -31,17 +31,15 @@ _DTYPE_INFO: Dict[str, Tuple[str, int]] = {
     "uint16": ("H", 2),
     "uint8": ("B", 1),
     "bool": ("?", 1),
-    "complex64": ("f", 8),    # two float32 components
-    "complex128": ("d", 16),   # two float64 components
+    "complex64": ("f", 8),  # two float32 components
+    "complex128": ("d", 16),  # two float64 components
 }
 
 #: dtypes that are stored as pairs of real components.
 _COMPLEX_DTYPES = frozenset({"complex64", "complex128"})
 
 
-def _bytes_to_list(
-    data: bytes, shape: Tuple[int, ...], dtype: str
-) -> Any:
+def _bytes_to_list(data: bytes, shape: Tuple[int, ...], dtype: str) -> Any:
     """Convert raw *data* bytes into a (possibly nested) Python list.
 
     Uses :mod:`struct` for unpacking -- no numpy dependency.
@@ -64,12 +62,15 @@ def _bytes_to_list(
 
     # Empty array — no data to unpack
     if total == 0:
-        return _reshape_flat([], shape) if len(shape) > 1 else []
+        return _reshape([], shape) if len(shape) > 1 else []
 
     if dtype in _COMPLEX_DTYPES:
         # Unpack as pairs of floats and construct complex numbers
         flat_reals = list(struct.unpack(f"<{total * 2}{fmt_char}", data))
-        flat = [complex(flat_reals[i], flat_reals[i + 1]) for i in range(0, len(flat_reals), 2)]
+        flat = [
+            complex(flat_reals[i], flat_reals[i + 1])
+            for i in range(0, len(flat_reals), 2)
+        ]
     else:
         flat = list(struct.unpack(f"<{total}{fmt_char}", data))
 
@@ -243,10 +244,10 @@ class RemoteScalar:
 
     def __pow__(self, other):
         other_val = other._value if isinstance(other, RemoteScalar) else other
-        return RemoteScalar(self._value ** other_val, self._dtype)
+        return RemoteScalar(self._value**other_val, self._dtype)
 
     def __rpow__(self, other):
-        return RemoteScalar(other ** self._value, self._dtype)
+        return RemoteScalar(other**self._value, self._dtype)
 
     def __neg__(self):
         return RemoteScalar(-self._value, self._dtype)
@@ -350,9 +351,7 @@ class RemoteArray(metaclass=_RemoteArrayMeta):
 
     def __len__(self) -> int:
         if not self._shape:
-            raise TypeError(
-                "len() of unsized object (0-d array)"
-            )
+            raise TypeError("len() of unsized object (0-d array)")
         return self._shape[0]
 
     # -- data access (auto-fetch from server) -------------------------------
@@ -392,9 +391,7 @@ class RemoteArray(metaclass=_RemoteArrayMeta):
 
     def __float__(self) -> float:
         if self.size != 1:
-            raise TypeError(
-                "only size-1 arrays can be converted to Python scalars"
-            )
+            raise TypeError("only size-1 arrays can be converted to Python scalars")
         data, shape, dtype = self._fetch_data()
         result = _bytes_to_list(data, shape, dtype)
         # Unwrap single-element lists (e.g., shape (1,) returns [42.0])
@@ -404,9 +401,7 @@ class RemoteArray(metaclass=_RemoteArrayMeta):
 
     def __int__(self) -> int:
         if self.size != 1:
-            raise TypeError(
-                "only size-1 arrays can be converted to Python scalars"
-            )
+            raise TypeError("only size-1 arrays can be converted to Python scalars")
         data, shape, dtype = self._fetch_data()
         result = _bytes_to_list(data, shape, dtype)
         while isinstance(result, list):
@@ -619,16 +614,20 @@ def _result_from_response(resp: dict) -> Union[RemoteArray, RemoteScalar, tuple,
         items = []
         for item in result["multi"]:
             if "id" in item:
-                items.append(RemoteArray(
-                    handle_id=item["id"],
-                    shape=tuple(item["shape"]),
-                    dtype=item["dtype"],
-                ))
+                items.append(
+                    RemoteArray(
+                        handle_id=item["id"],
+                        shape=tuple(item["shape"]),
+                        dtype=item["dtype"],
+                    )
+                )
             elif "value" in item:
-                items.append(RemoteScalar(
-                    value=item["value"],
-                    dtype=item.get("dtype", "float64"),
-                ))
+                items.append(
+                    RemoteScalar(
+                        value=item["value"],
+                        dtype=item.get("dtype", "float64"),
+                    )
+                )
             else:
                 items.append(item)
         return tuple(items)

@@ -1,7 +1,10 @@
 # src/mechestim/linalg/_properties.py
 """Matrix property wrappers with FLOP counting."""
+
 from __future__ import annotations
+
 import numpy as _np
+
 from mechestim._docstrings import attach_docstring
 from mechestim._symmetric import SymmetricTensor
 from mechestim._validation import require_budget, validate_ndarray
@@ -65,8 +68,8 @@ def det_cost(n: int, symmetric: bool = False) -> int:
     input (LU factorization).
     """
     if symmetric:
-        return max(n ** 3 // 3, 1)
-    return max(n ** 3, 1)
+        return max(n**3 // 3, 1)
+    return max(n**3, 1)
 
 
 def det(a):
@@ -106,8 +109,8 @@ def slogdet_cost(n: int, symmetric: bool = False) -> int:
     input (LU factorization).
     """
     if symmetric:
-        return max(n ** 3 // 3, 1)
-    return max(n ** 3, 1)
+        return max(n**3 // 3, 1)
+    return max(n**3, 1)
 
 
 def slogdet(a):
@@ -228,10 +231,15 @@ def vector_norm(x, ord=2, axis=None, keepdims=False):
     else:
         effective_shape = x.shape
     cost = vector_norm_cost(effective_shape, ord=ord)
-    budget.deduct("linalg.vector_norm", flop_cost=cost, subscripts=None, shapes=(x.shape,))
+    budget.deduct(
+        "linalg.vector_norm", flop_cost=cost, subscripts=None, shapes=(x.shape,)
+    )
     return _np.linalg.vector_norm(x, ord=ord, axis=axis, keepdims=keepdims)
 
-attach_docstring(vector_norm, _np.linalg.vector_norm, "linalg", "depends on ord parameter")
+
+attach_docstring(
+    vector_norm, _np.linalg.vector_norm, "linalg", "depends on ord parameter"
+)
 
 
 def matrix_norm_cost(shape: tuple, ord=None) -> int:
@@ -272,10 +280,15 @@ def matrix_norm(x, ord="fro", keepdims=False):
     budget = require_budget()
     validate_ndarray(x)
     cost = matrix_norm_cost(x.shape, ord=ord)
-    budget.deduct("linalg.matrix_norm", flop_cost=cost, subscripts=None, shapes=(x.shape,))
+    budget.deduct(
+        "linalg.matrix_norm", flop_cost=cost, subscripts=None, shapes=(x.shape,)
+    )
     return _np.linalg.matrix_norm(x, ord=ord, keepdims=keepdims)
 
-attach_docstring(matrix_norm, _np.linalg.matrix_norm, "linalg", "depends on ord parameter")
+
+attach_docstring(
+    matrix_norm, _np.linalg.matrix_norm, "linalg", "depends on ord parameter"
+)
 
 
 def cond_cost(m: int, n: int) -> int:
@@ -344,7 +357,9 @@ def matrix_rank(A, tol=None, hermitian=False):
         raise ValueError(f"Input must be 2D, got {A.ndim}D")
     m, n = A.shape
     cost = matrix_rank_cost(m, n)
-    budget.deduct("linalg.matrix_rank", flop_cost=cost, subscripts=None, shapes=(A.shape,))
+    budget.deduct(
+        "linalg.matrix_rank", flop_cost=cost, subscripts=None, shapes=(A.shape,)
+    )
     return _np.linalg.matrix_rank(A, tol=tol, hermitian=hermitian)
 
 attach_docstring(matrix_rank, _np.linalg.matrix_rank, "linalg", r"$m \cdot n \cdot \min(m,n)$ FLOPs (SVD)")

@@ -1,12 +1,17 @@
 """Tests for SymmetryInfo, SymmetricTensor, and as_symmetric."""
+
 import pickle
 
 import numpy
 import numpy as np
 import pytest
 
-from mechestim._symmetric import SymmetryInfo, SymmetricTensor, as_symmetric, validate_symmetry
 from mechestim._budget import BudgetContext
+from mechestim._symmetric import (
+    SymmetricTensor,
+    SymmetryInfo,
+    as_symmetric,
+)
 from mechestim.errors import SymmetryError
 
 
@@ -55,6 +60,7 @@ class TestSymmetryInfo:
 # ---------------------------------------------------------------------------
 # Task 2: SymmetricTensor and as_symmetric
 # ---------------------------------------------------------------------------
+
 
 def _make_symmetric_matrix(n: int = 5) -> np.ndarray:
     """Create a random symmetric matrix."""
@@ -161,12 +167,14 @@ class TestSymmetricTensor:
 class TestPublicAPI:
     def test_import_from_mechestim(self):
         import mechestim as me
-        assert hasattr(me, 'SymmetricTensor')
-        assert hasattr(me, 'SymmetryInfo')
-        assert hasattr(me, 'as_symmetric')
+
+        assert hasattr(me, "SymmetricTensor")
+        assert hasattr(me, "SymmetryInfo")
+        assert hasattr(me, "as_symmetric")
 
     def test_import_symmetry_info_from_flops(self):
         from mechestim.flops import SymmetryInfo
+
         assert SymmetryInfo is not None
 
 
@@ -174,12 +182,13 @@ class TestEndToEnd:
     def test_covprop_workflow(self):
         """Simulate a covprop-like workflow: build covariance, do pointwise, solve."""
         import mechestim as me
+
         n, d = 5, 20
         X = numpy.random.randn(d, n)
 
         with BudgetContext(flop_budget=10**8, quiet=True) as budget:
             # Build symmetric covariance: X^T X -> symmetric
-            cov = me.einsum('ki,kj->ij', X, X, symmetric_dims=[(0, 1)])
+            cov = me.einsum("ki,kj->ij", X, X, symmetric_dims=[(0, 1)])
             assert isinstance(cov, SymmetricTensor)
             cov_cost = budget.flops_used
 
@@ -192,17 +201,20 @@ class TestEndToEnd:
 
             # Solve with symmetric matrix — should use Cholesky cost
             # Make it positive definite first
-            cov_pd = cov + me.multiply(me.as_symmetric(numpy.eye(n), dims=(0, 1)), numpy.asarray(float(n)))
+            cov_pd = cov + me.multiply(
+                me.as_symmetric(numpy.eye(n), dims=(0, 1)), numpy.asarray(float(n))
+            )
             b = numpy.ones(n)
             before = budget.flops_used
             x = me.linalg.solve(cov_pd, b)
             solve_cost_actual = budget.flops_used - before
             assert not isinstance(x, SymmetricTensor)
-            assert solve_cost_actual == n ** 3 // 3 + n * 1  # Cholesky + back-sub
+            assert solve_cost_actual == n**3 // 3 + n * 1  # Cholesky + back-sub
 
     def test_symmetry_preserved_through_chain(self):
         """Chain of unary ops preserves symmetry."""
         import mechestim as me
+
         data = numpy.eye(4) + 0.5
         S = me.as_symmetric(data, dims=(0, 1))
 
@@ -217,9 +229,10 @@ class TestEndToEnd:
     def test_symmetry_lost_on_matmul(self):
         """Matmul does not preserve symmetry."""
         import mechestim as me
+
         A = me.as_symmetric(numpy.eye(3), dims=(0, 1))
         B = numpy.ones((3, 3))
 
         with BudgetContext(flop_budget=10**8, quiet=True):
-            result = me.einsum('ij,jk->ik', A, B)
+            result = me.einsum("ij,jk->ik", A, B)
             assert not isinstance(result, SymmetricTensor)

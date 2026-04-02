@@ -1,4 +1,5 @@
 """Docstring inheritance helper for mechestim wrappers."""
+
 from __future__ import annotations
 
 
@@ -11,16 +12,11 @@ def attach_docstring(wrapper, np_func, category: str, cost_description: str) -> 
     """
     np_doc = getattr(np_func, "__doc__", None) or ""
 
-    cost_section = (
-        f"FLOP Cost\n"
-        f"---------\n"
-        f"{cost_description}\n"
-    )
+    cost_section = f"FLOP Cost\n---------\n{cost_description}\n"
 
     if not np_doc:
         wrapper.__doc__ = (
-            f"Counted wrapper for ``numpy.{np_func.__name__}``.\n\n"
-            f"{cost_section}"
+            f"Counted wrapper for ``numpy.{np_func.__name__}``.\n\n{cost_section}"
         )
         return
 
@@ -28,15 +24,28 @@ def attach_docstring(wrapper, np_func, category: str, cost_description: str) -> 
     # and insert the cost section before it.
     lines = np_doc.split("\n")
     section_headers = {
-        "Parameters", "Returns", "Raises", "See Also",
-        "Notes", "References", "Examples", "Yields", "Warns",
-        "Other Parameters", "Attributes", "Methods",
+        "Parameters",
+        "Returns",
+        "Raises",
+        "See Also",
+        "Notes",
+        "References",
+        "Examples",
+        "Yields",
+        "Warns",
+        "Other Parameters",
+        "Attributes",
+        "Methods",
     }
 
     insert_idx = None
     for i, line in enumerate(lines):
         stripped = line.strip()
-        if stripped in section_headers and i + 1 < len(lines) and lines[i + 1].strip().startswith("---"):
+        if (
+            stripped in section_headers
+            and i + 1 < len(lines)
+            and lines[i + 1].strip().startswith("---")
+        ):
             insert_idx = i
             break
 

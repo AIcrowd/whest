@@ -1,4 +1,5 @@
 """Tests for numpy docstring inheritance."""
+
 import mechestim as me
 
 
@@ -9,7 +10,6 @@ def test_counted_unary_has_mechestim_cost():
 
 
 def test_counted_unary_has_numpy_docstring():
-    import numpy as np
     doc = me.exp.__doc__
     # The NumPy docstring content should be present directly (not behind a separator)
     assert "Calculate the exponential" in doc

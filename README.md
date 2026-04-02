@@ -6,6 +6,8 @@
 
 <div align="center">
 
+[![CI](https://github.com/AIcrowd/mechestim/actions/workflows/ci.yml/badge.svg)](https://github.com/AIcrowd/mechestim/actions/workflows/ci.yml)
+[![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://aicrowd.github.io/mechestim/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)]()

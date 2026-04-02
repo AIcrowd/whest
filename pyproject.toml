@@ -29,3 +29,28 @@ packages = ["src/mechestim"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+
+[tool.ruff.lint.per-file-ignores]
+# Public re-exports: imports are intentionally "unused" from ruff's perspective
+"src/mechestim/random/__init__.py" = ["F401"]
+# Deferred imports after version-check call trigger E402; compact guards use E701
+"src/mechestim/__init__.py" = ["E402"]
+"src/mechestim/fft/_transforms.py" = ["E701"]
+# Tests: unused variables are intentional (assert no exception raised)
+"tests/**" = ["F841", "E402", "E501"]
+# Scripts, examples, docker: cosmetic issues not worth fixing in utility code
+"scripts/**" = ["E501", "E402", "F401", "F841"]
+"examples/**" = ["E501", "E402", "F401", "F841"]
+"docker/**" = ["E501", "E402", "F401", "F841"]
+# Client/server packages: E402 in __init__.py (deferred imports pattern)
+"mechestim-client/**" = ["E402", "F401", "E501", "F841"]
+"mechestim-server/**" = ["E402", "F401", "E501", "F841"]
+# Core source: long lines in dense function signatures and docstrings
+"src/**" = ["E501"]

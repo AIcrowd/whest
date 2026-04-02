@@ -1,4 +1,5 @@
 """mechestim.fft — FFT submodule stub (all functions blacklisted)."""
+
 from __future__ import annotations
 
 from mechestim._getattr import make_module_getattr

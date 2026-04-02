@@ -1,17 +1,27 @@
 """Tests for counted polynomial operations."""
+
 import numpy
 import pytest
+
 from mechestim._budget import BudgetContext
 from mechestim._polynomial import (
-    poly, polyadd, polyder, polydiv, polyfit,
-    polyint, polymul, polysub, polyval, roots,
+    poly,
+    polyadd,
+    polyder,
+    polydiv,
+    polyfit,
+    polyint,
+    polymul,
+    polysub,
+    polyval,
+    roots,
 )
 from mechestim.errors import NoBudgetContextError
-
 
 # ---------------------------------------------------------------------------
 # polyval
 # ---------------------------------------------------------------------------
+
 
 def test_polyval_result():
     p = numpy.array([1.0, -2.0, 3.0])  # x^2 - 2x + 3
@@ -41,6 +51,7 @@ def test_polyval_no_budget():
 # polyadd
 # ---------------------------------------------------------------------------
 
+
 def test_polyadd_result():
     a1 = numpy.array([1.0, 2.0, 3.0])
     a2 = numpy.array([4.0, 5.0])
@@ -66,6 +77,7 @@ def test_polyadd_no_budget():
 # ---------------------------------------------------------------------------
 # polysub
 # ---------------------------------------------------------------------------
+
 
 def test_polysub_result():
     a1 = numpy.array([1.0, 2.0])
@@ -93,6 +105,7 @@ def test_polysub_no_budget():
 # polyder
 # ---------------------------------------------------------------------------
 
+
 def test_polyder_result():
     p = numpy.array([1.0, 2.0, 3.0, 4.0])  # x^3 + 2x^2 + 3x + 4
     with BudgetContext(flop_budget=10**6):
@@ -117,6 +130,7 @@ def test_polyder_no_budget():
 # polyint
 # ---------------------------------------------------------------------------
 
+
 def test_polyint_result():
     p = numpy.array([1.0, 2.0, 3.0])
     with BudgetContext(flop_budget=10**6):
@@ -140,6 +154,7 @@ def test_polyint_no_budget():
 # ---------------------------------------------------------------------------
 # polymul
 # ---------------------------------------------------------------------------
+
 
 def test_polymul_result():
     a1 = numpy.array([1.0, 2.0])
@@ -166,6 +181,7 @@ def test_polymul_no_budget():
 # ---------------------------------------------------------------------------
 # polydiv
 # ---------------------------------------------------------------------------
+
 
 def test_polydiv_result():
     u = numpy.array([1.0, 2.0, 3.0])
@@ -195,6 +211,7 @@ def test_polydiv_no_budget():
 # polyfit
 # ---------------------------------------------------------------------------
 
+
 def test_polyfit_result():
     x = numpy.array([0.0, 1.0, 2.0, 3.0, 4.0])
     y = numpy.array([0.0, 1.0, 4.0, 9.0, 16.0])
@@ -221,6 +238,7 @@ def test_polyfit_no_budget():
 # poly
 # ---------------------------------------------------------------------------
 
+
 def test_poly_result():
     zeros = numpy.array([1.0, 2.0, 3.0, 4.0])
     with BudgetContext(flop_budget=10**6):
@@ -244,6 +262,7 @@ def test_poly_no_budget():
 # ---------------------------------------------------------------------------
 # roots
 # ---------------------------------------------------------------------------
+
 
 def test_roots_result():
     p = numpy.array([1.0, -6.0, 11.0, -6.0])  # (x-1)(x-2)(x-3)
@@ -270,8 +289,10 @@ def test_roots_no_budget():
 # Integration with __init__.py
 # ---------------------------------------------------------------------------
 
+
 def test_import_from_mechestim():
     import mechestim as me
+
     assert hasattr(me, "polyval")
     assert hasattr(me, "polyadd")
     assert hasattr(me, "polysub")

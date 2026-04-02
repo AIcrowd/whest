@@ -3,12 +3,13 @@
 Designed to find bugs by testing edge cases, data integrity,
 operator correctness, and error handling.
 """
+
 from __future__ import annotations
 
 import math
 import os
-import subprocess
 import signal
+import subprocess
 import sys
 import time
 
@@ -66,6 +67,7 @@ def _start_server():
 @pytest.fixture(autouse=True)
 def _reset_client():
     from mechestim._connection import reset_connection
+
     reset_connection()
     yield
     reset_connection()
@@ -212,15 +214,15 @@ class TestOperationChains:
 
         with me.BudgetContext(flop_budget=10_000_000):
             x = me.ones((10,))
-            x = me.exp(x)       # e^1
-            x = me.log(x)       # 1
-            x = me.abs(x)       # 1
+            x = me.exp(x)  # e^1
+            x = me.log(x)  # 1
+            x = me.abs(x)  # 1
             x = me.negative(x)  # -1
             x = me.negative(x)  # 1
-            x = me.exp(x)       # e
-            x = me.log(x)       # 1
-            x = me.abs(x)       # 1
-            s = me.sum(x)       # 10
+            x = me.exp(x)  # e
+            x = me.log(x)  # 1
+            x = me.abs(x)  # 1
+            s = me.sum(x)  # 10
             assert abs(float(s) - 10.0) < 1e-6
 
 
@@ -278,8 +280,8 @@ class TestOperators:
 
         with me.BudgetContext(flop_budget=1_000_000):
             x = me.array([1.0, 2.0, 3.0])
-            a = x ** 2
-            b = 2 ** x
+            a = x**2
+            b = 2**x
             assert a.tolist() == [1.0, 4.0, 9.0]
             b_vals = b.tolist()
             assert abs(b_vals[0] - 2.0) < 1e-10
@@ -327,6 +329,7 @@ class TestOperators:
             mask = x > 0.5
             # Should be a RemoteArray with bool values
             from mechestim import RemoteArray
+
             assert isinstance(mask, RemoteArray)
             values = mask.tolist()
             assert values == [False, True, False, True]
@@ -494,6 +497,7 @@ class TestIndexing:
             x = me.array([[1.0, 2.0], [3.0, 4.0]])
             row = x[0]
             from mechestim import RemoteArray
+
             assert isinstance(row, RemoteArray)
             assert row.tolist() == [1.0, 2.0]
 
@@ -504,6 +508,7 @@ class TestIndexing:
             x = me.array([10.0, 20.0, 30.0, 40.0, 50.0])
             sliced = x[1:3]
             from mechestim import RemoteArray
+
             assert isinstance(sliced, RemoteArray)
             assert sliced.shape == (2,)
             assert sliced.tolist() == [20.0, 30.0]

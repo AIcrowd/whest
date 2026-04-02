@@ -4,6 +4,7 @@
 Each operation has a co-located cost function documenting the formula,
 source, and assumptions. Cost functions are pure (shape params) -> int.
 """
+
 from __future__ import annotations
 
 import numpy as _np
@@ -30,7 +31,7 @@ def cholesky_cost(n: int) -> int:
     Source: Golub & Van Loan, *Matrix Computations*, 4th ed., §4.2.
     Assumes standard column-outer-product Cholesky algorithm.
     """
-    return max(n ** 3 // 3, 1)
+    return max(n**3 // 3, 1)
 
 
 def cholesky(a):
@@ -69,7 +70,7 @@ def qr_cost(m: int, n: int) -> int:
     """
     if m < n:
         m, n = n, m
-    return max(2 * m * n ** 2 - (2 * n ** 3) // 3, 1)
+    return max(2 * m * n**2 - (2 * n**3) // 3, 1)
 
 
 def qr(a, mode="reduced"):
@@ -107,7 +108,7 @@ def eig_cost(n: int) -> int:
     eigenvalue. This is an accepted asymptotic estimate; actual count
     is data-dependent.
     """
-    return max(10 * n ** 3, 1)
+    return max(10 * n**3, 1)
 
 
 def eig(a):
@@ -143,7 +144,7 @@ def eigh_cost(n: int) -> int:
     Assumes tridiagonalization via Householder followed by implicit
     QR sweeps.
     """
-    return max((4 * n ** 3) // 3, 1)
+    return max((4 * n**3) // 3, 1)
 
 
 def eigh(a, UPLO="L"):
@@ -179,7 +180,7 @@ def eigvals_cost(n: int) -> int:
     Same algorithm as ``eig`` (Francis QR), but eigenvectors are not
     accumulated.
     """
-    return max(10 * n ** 3, 1)
+    return max(10 * n**3, 1)
 
 
 def eigvals(a):
@@ -213,7 +214,7 @@ def eigvalsh_cost(n: int) -> int:
     -----
     Same algorithm as ``eigh``, but eigenvectors are not accumulated.
     """
-    return max((4 * n ** 3) // 3, 1)
+    return max((4 * n**3) // 3, 1)
 
 
 def eigvalsh(a, UPLO="L"):

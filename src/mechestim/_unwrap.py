@@ -1,7 +1,10 @@
 # src/mechestim/_unwrap.py
 """Unwrap wrapper with FLOP counting."""
+
 from __future__ import annotations
+
 import numpy as _np
+
 from mechestim._docstrings import attach_docstring
 from mechestim._validation import require_budget, validate_ndarray
 
@@ -24,7 +27,8 @@ def unwrap_cost(shape: tuple[int, ...]) -> int:
     Cost covers element-wise differencing and conditional adjustment.
     """
     numel = 1
-    for d in shape: numel *= d
+    for d in shape:
+        numel *= d
     return max(numel, 1)
 
 
@@ -37,5 +41,6 @@ def unwrap(p, discont=None, axis=-1, *, period=6.283185307179586):
     if discont is not None:
         kwargs["discont"] = discont
     return _np.unwrap(p, **kwargs)
+
 
 attach_docstring(unwrap, _np.unwrap, "counted_custom", "numel(input) FLOPs")

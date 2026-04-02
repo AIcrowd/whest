@@ -1,4 +1,5 @@
 """Exception and warning classes for mechestim."""
+
 from __future__ import annotations
 
 _DOCS_BASE = "https://aicrowd.github.io/mechestim/troubleshooting/common-errors"
@@ -36,8 +37,13 @@ class NoBudgetContextError(MechEstimError):
 class SymmetryError(MechEstimError):
     """Raised when a claimed tensor symmetry does not hold."""
 
-    def __init__(self, dims: tuple[int, ...], max_deviation: float,
-                 atol: float = 1e-6, rtol: float = 1e-5):
+    def __init__(
+        self,
+        dims: tuple[int, ...],
+        max_deviation: float,
+        atol: float = 1e-6,
+        rtol: float = 1e-5,
+    ):
         self.dims = dims
         self.max_deviation = max_deviation
         self.atol = atol

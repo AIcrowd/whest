@@ -1,7 +1,10 @@
 # src/mechestim/linalg/_solvers.py
 """Linear solver wrappers with FLOP counting."""
+
 from __future__ import annotations
+
 import numpy as _np
+
 from mechestim._docstrings import attach_docstring
 from mechestim._symmetric import SymmetricTensor, as_symmetric
 from mechestim._validation import require_budget, validate_ndarray
@@ -30,8 +33,8 @@ def solve_cost(n: int, nrhs: int = 1, symmetric: bool = False) -> int:
     for LU (general). Source: Golub & Van Loan, *Matrix Computations*, 4th ed.
     """
     if symmetric:
-        return max(n ** 3 // 3 + n * nrhs, 1)
-    return max(2 * n ** 3 // 3 + n ** 2 * nrhs, 1)
+        return max(n**3 // 3 + n * nrhs, 1)
+    return max(2 * n**3 // 3 + n**2 * nrhs, 1)
 
 
 def solve(a, b):
@@ -74,8 +77,8 @@ def inv_cost(n: int, symmetric: bool = False) -> int:
     or $n^3$ for general input (LU-based).
     """
     if symmetric:
-        return max(n ** 3 // 3 + n ** 3 // 2, 1)
-    return max(n ** 3, 1)
+        return max(n**3 // 3 + n**3 // 2, 1)
+    return max(n**3, 1)
 
 
 def inv(a):
@@ -196,7 +199,7 @@ def tensorsolve_cost(a_shape: tuple, ind: int | None = None) -> int:
     n = 1
     for d in a_shape[ind:]:
         n *= d
-    return max(n ** 3, 1)
+    return max(n**3, 1)
 
 
 def tensorsolve(a, b, axes=None):
@@ -204,7 +207,9 @@ def tensorsolve(a, b, axes=None):
     budget = require_budget()
     validate_ndarray(a)
     cost = tensorsolve_cost(a.shape)
-    budget.deduct("linalg.tensorsolve", flop_cost=cost, subscripts=None, shapes=(a.shape,))
+    budget.deduct(
+        "linalg.tensorsolve", flop_cost=cost, subscripts=None, shapes=(a.shape,)
+    )
     return _np.linalg.tensorsolve(a, b, axes=axes)
 
 attach_docstring(tensorsolve, _np.linalg.tensorsolve, "linalg",
@@ -233,7 +238,7 @@ def tensorinv_cost(a_shape: tuple, ind: int = 2) -> int:
     n = 1
     for d in a_shape[:ind]:
         n *= d
-    return max(n ** 3, 1)
+    return max(n**3, 1)
 
 
 def tensorinv(a, ind=2):
@@ -241,7 +246,9 @@ def tensorinv(a, ind=2):
     budget = require_budget()
     validate_ndarray(a)
     cost = tensorinv_cost(a.shape, ind=ind)
-    budget.deduct("linalg.tensorinv", flop_cost=cost, subscripts=None, shapes=(a.shape,))
+    budget.deduct(
+        "linalg.tensorinv", flop_cost=cost, subscripts=None, shapes=(a.shape,)
+    )
     return _np.linalg.tensorinv(a, ind=ind)
 
 attach_docstring(tensorinv, _np.linalg.tensorinv, "linalg",

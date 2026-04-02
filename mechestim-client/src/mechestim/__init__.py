@@ -10,6 +10,7 @@ to a remote server over ZMQ.  Participants use it as::
         b = me.zeros((2, 2))
         c = me.add(a, b)
 """
+
 from __future__ import annotations
 
 import builtins
@@ -23,6 +24,21 @@ __version__ = "0.1.0"
 # Errors
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# Budget
+# ---------------------------------------------------------------------------
+from mechestim._budget import BudgetContext, OpRecord  # noqa: E402
+
+# ---------------------------------------------------------------------------
+# Remote types
+# ---------------------------------------------------------------------------
+from mechestim._remote_array import (  # noqa: E402
+    _DTYPE_INFO,
+    RemoteArray,
+    RemoteScalar,
+    _encode_arg,
+    _result_from_response,
+)
 from mechestim.errors import (  # noqa: E402
     BudgetExhaustedError,
     MechEstimError,
@@ -32,24 +48,6 @@ from mechestim.errors import (  # noqa: E402
     SymmetryError,
 )
 
-# ---------------------------------------------------------------------------
-# Budget
-# ---------------------------------------------------------------------------
-
-from mechestim._budget import BudgetContext, OpRecord  # noqa: E402
-
-# ---------------------------------------------------------------------------
-# Remote types
-# ---------------------------------------------------------------------------
-
-from mechestim._remote_array import (  # noqa: E402
-    RemoteArray,
-    RemoteScalar,
-    _result_from_response,
-    _DTYPE_INFO,
-    _encode_arg,
-)
-
 # Alias: ``me.ndarray`` refers to the RemoteArray class.
 ndarray = RemoteArray
 
@@ -57,33 +55,32 @@ ndarray = RemoteArray
 # Connection / protocol (private)
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# Submodules (imported so ``me.linalg``, ``me.random``, ``me.fft`` work)
+# ---------------------------------------------------------------------------
+from mechestim import (
+    fft,  # noqa: E402, F401
+    flops,  # noqa: E402, F401
+    linalg,  # noqa: E402, F401
+    random,  # noqa: E402, F401
+)
 from mechestim._connection import get_connection  # noqa: E402
 from mechestim._protocol import (  # noqa: E402
-    encode_request,
     encode_create_from_data,
+    encode_request,
 )
 
 # ---------------------------------------------------------------------------
 # Registry
 # ---------------------------------------------------------------------------
-
 from mechestim._registry import (  # noqa: E402
-    FUNCTION_CATEGORIES,
     BLACKLISTED,
-    is_valid_op,
+    FUNCTION_CATEGORIES,
     get_category,
+    is_valid_op,
     iter_proxyable,
 )
 from mechestim._registry_data import FUNCTION_CATEGORIES as _FC  # noqa: E402
-
-# ---------------------------------------------------------------------------
-# Submodules (imported so ``me.linalg``, ``me.random``, ``me.fft`` work)
-# ---------------------------------------------------------------------------
-
-from mechestim import fft  # noqa: E402, F401
-from mechestim import flops  # noqa: E402, F401
-from mechestim import linalg  # noqa: E402, F401
-from mechestim import random  # noqa: E402, F401
 
 # ---------------------------------------------------------------------------
 # Constants (no server round-trip needed)
@@ -123,7 +120,9 @@ def _make_proxy(op_name: str):
         conn = get_connection()
         encoded_args = [_encode_arg(a) for a in args]
         encoded_kwargs = {k: _encode_arg(v) for k, v in kwargs.items()}
-        resp = conn.send_recv(encode_request(op_name, args=encoded_args, kwargs=encoded_kwargs))
+        resp = conn.send_recv(
+            encode_request(op_name, args=encoded_args, kwargs=encoded_kwargs)
+        )
         return _result_from_response(resp)
 
     proxy.__name__ = op_name
@@ -207,9 +206,7 @@ def array(object, dtype=None, **kwargs):
             # Empty array
             dtype_str = dtype if isinstance(dtype, str) else "float64"
             conn = get_connection()
-            resp = conn.send_recv(
-                encode_create_from_data(b"", list(shape), dtype_str)
-            )
+            resp = conn.send_recv(encode_create_from_data(b"", list(shape), dtype_str))
             return _result_from_response(resp)
 
         dtype_str = dtype if isinstance(dtype, str) else (dtype or _infer_dtype(flat))
@@ -286,7 +283,9 @@ def einsum(subscripts, *operands, **kwargs):
     conn = get_connection()
     encoded_args = [subscripts] + [_encode_arg(op) for op in operands]
     encoded_kwargs = {k: _encode_arg(v) for k, v in kwargs.items()}
-    resp = conn.send_recv(encode_request("einsum", args=encoded_args, kwargs=encoded_kwargs))
+    resp = conn.send_recv(
+        encode_request("einsum", args=encoded_args, kwargs=encoded_kwargs)
+    )
     return _result_from_response(resp)
 
 

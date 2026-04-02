@@ -1,4 +1,5 @@
 """Tests for version identity and runtime banner."""
+
 import re
 import warnings
 
@@ -14,6 +15,7 @@ def test_version_includes_numpy_suffix():
 
 def test_numpy_version_attribute():
     import numpy
+
     assert me.__numpy_version__ == numpy.__version__
 
 
@@ -39,6 +41,7 @@ def test_budget_context_quiet_suppresses_banner(capsys):
 
 def test_numpy_version_mismatch_warning():
     from mechestim._version_check import check_numpy_version
+
     with warnings.catch_warnings(record=True) as w:
         warnings.simplefilter("always")
         check_numpy_version(pinned="99.99.99")

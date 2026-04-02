@@ -7,6 +7,7 @@ Run with:
     PYTHONPATH=mechestim-client/src:mechestim-server/src:src \
         .venv/bin/python -m pytest mechestim-client/tests/test_exhaustive.py -v --timeout=120
 """
+
 from __future__ import annotations
 
 import os
@@ -67,8 +68,9 @@ def _start_server():
 
 @pytest.fixture(autouse=True)
 def _reset_client():
-    import mechestim._budget as _bmod
     from mechestim._connection import reset_connection
+
+    import mechestim._budget as _bmod
 
     def _force_cleanup():
         """Force-reset client state and try to close server session."""
@@ -79,6 +81,7 @@ def _reset_client():
         try:
             from mechestim._connection import get_connection
             from mechestim._protocol import encode_budget_close
+
             conn = get_connection()
             conn.send_recv(encode_budget_close())
         except Exception:
@@ -95,8 +98,10 @@ def _reset_client():
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def _import_me():
     import mechestim as me
+
     return me
 
 
@@ -104,8 +109,10 @@ def _import_me():
 # Test data (created fresh in a budget context)
 # ---------------------------------------------------------------------------
 
+
 class _TestData:
     """Lazily-created test data for all tests."""
+
     _instance = None
 
     @classmethod
@@ -137,17 +144,55 @@ class _TestData:
 # ---------------------------------------------------------------------------
 
 _UNARY_GENERAL = [
-    "exp", "exp2", "expm1", "sqrt", "square", "cbrt",
-    "sin", "cos", "tan", "sinh", "cosh", "tanh",
-    "arctan", "arcsinh",
-    "sign", "ceil", "floor", "abs", "absolute", "fabs",
-    "negative", "positive", "rint", "round", "around",
-    "fix", "trunc", "deg2rad", "degrees", "rad2deg", "radians",
-    "log", "log2", "log10", "log1p",
-    "reciprocal", "signbit", "spacing",
-    "sinc", "i0", "nan_to_num", "real", "imag",
-    "conj", "conjugate", "iscomplex", "isreal",
-    "real_if_close", "logical_not",
+    "exp",
+    "exp2",
+    "expm1",
+    "sqrt",
+    "square",
+    "cbrt",
+    "sin",
+    "cos",
+    "tan",
+    "sinh",
+    "cosh",
+    "tanh",
+    "arctan",
+    "arcsinh",
+    "sign",
+    "ceil",
+    "floor",
+    "abs",
+    "absolute",
+    "fabs",
+    "negative",
+    "positive",
+    "rint",
+    "round",
+    "around",
+    "fix",
+    "trunc",
+    "deg2rad",
+    "degrees",
+    "rad2deg",
+    "radians",
+    "log",
+    "log2",
+    "log10",
+    "log1p",
+    "reciprocal",
+    "signbit",
+    "spacing",
+    "sinc",
+    "i0",
+    "nan_to_num",
+    "real",
+    "imag",
+    "conj",
+    "conjugate",
+    "iscomplex",
+    "isreal",
+    "real_if_close",
+    "logical_not",
 ]
 
 
@@ -290,16 +335,39 @@ def test_isposinf():
 # ---------------------------------------------------------------------------
 
 _BINARY_OPS = [
-    "add", "subtract", "multiply", "divide", "true_divide",
-    "floor_divide", "power", "pow", "float_power",
-    "mod", "remainder", "fmod",
-    "maximum", "minimum", "fmax", "fmin",
-    "greater", "greater_equal", "less", "less_equal",
-    "equal", "not_equal",
-    "logical_and", "logical_or", "logical_xor",
-    "logaddexp", "logaddexp2",
-    "arctan2", "atan2", "hypot", "copysign",
-    "nextafter", "heaviside",
+    "add",
+    "subtract",
+    "multiply",
+    "divide",
+    "true_divide",
+    "floor_divide",
+    "power",
+    "pow",
+    "float_power",
+    "mod",
+    "remainder",
+    "fmod",
+    "maximum",
+    "minimum",
+    "fmax",
+    "fmin",
+    "greater",
+    "greater_equal",
+    "less",
+    "less_equal",
+    "equal",
+    "not_equal",
+    "logical_and",
+    "logical_or",
+    "logical_xor",
+    "logaddexp",
+    "logaddexp2",
+    "arctan2",
+    "atan2",
+    "hypot",
+    "copysign",
+    "nextafter",
+    "heaviside",
 ]
 
 
@@ -322,9 +390,13 @@ def test_ldexp():
 
 
 _BITWISE_BINARY = [
-    "bitwise_and", "bitwise_or", "bitwise_xor",
-    "bitwise_left_shift", "bitwise_right_shift",
-    "left_shift", "right_shift",
+    "bitwise_and",
+    "bitwise_or",
+    "bitwise_xor",
+    "bitwise_left_shift",
+    "bitwise_right_shift",
+    "left_shift",
+    "right_shift",
 ]
 
 
@@ -375,14 +447,35 @@ def test_vecdot():
 # ---------------------------------------------------------------------------
 
 _REDUCTION_OPS = [
-    "sum", "prod", "mean", "std", "var", "max", "min",
-    "amax", "amin", "all", "any",
-    "argmax", "argmin", "cumsum", "cumprod",
-    "count_nonzero", "median",
-    "nansum", "nanprod", "nanmean", "nanstd", "nanvar",
-    "nanmax", "nanmin", "nanmedian",
-    "nanargmax", "nanargmin",
-    "nancumprod", "nancumsum",
+    "sum",
+    "prod",
+    "mean",
+    "std",
+    "var",
+    "max",
+    "min",
+    "amax",
+    "amin",
+    "all",
+    "any",
+    "argmax",
+    "argmin",
+    "cumsum",
+    "cumprod",
+    "count_nonzero",
+    "median",
+    "nansum",
+    "nanprod",
+    "nanmean",
+    "nanstd",
+    "nanvar",
+    "nanmax",
+    "nanmin",
+    "nanmedian",
+    "nanargmax",
+    "nanargmin",
+    "nancumprod",
+    "nancumsum",
     "ptp",
 ]
 
@@ -458,6 +551,7 @@ def test_cumulative_prod():
 # ---------------------------------------------------------------------------
 # Counted Custom
 # ---------------------------------------------------------------------------
+
 
 def test_clip():
     me = _import_me()
@@ -644,6 +738,7 @@ def test_linalg_svd():
 # Free Ops: Creation
 # ---------------------------------------------------------------------------
 
+
 def test_array_creation():
     me = _import_me()
     with me.BudgetContext(flop_budget=10**9):
@@ -782,6 +877,7 @@ def test_vander():
 # ---------------------------------------------------------------------------
 # Free Ops: Manipulation
 # ---------------------------------------------------------------------------
+
 
 def test_reshape():
     me = _import_me()
@@ -1049,11 +1145,14 @@ def test_take():
 def test_take_along_axis():
     me = _import_me()
     with me.BudgetContext(flop_budget=10**9):
-        assert me.take_along_axis(
-            me.array([[1.0, 2.0], [3.0, 4.0]]),
-            me.array([[0, 1], [1, 0]], dtype="int64"),
-            axis=1,
-        ) is not None
+        assert (
+            me.take_along_axis(
+                me.array([[1.0, 2.0], [3.0, 4.0]]),
+                me.array([[0, 1], [1, 0]], dtype="int64"),
+                axis=1,
+            )
+            is not None
+        )
 
 
 def test_compress():
@@ -1277,20 +1376,26 @@ def test_histogram_bin_edges():
 def test_histogram2d():
     me = _import_me()
     with me.BudgetContext(flop_budget=10**9):
-        assert me.histogram2d(
-            me.array([1.0, 2.0, 3.0]),
-            me.array([4.0, 5.0, 6.0]),
-            3,
-        ) is not None
+        assert (
+            me.histogram2d(
+                me.array([1.0, 2.0, 3.0]),
+                me.array([4.0, 5.0, 6.0]),
+                3,
+            )
+            is not None
+        )
 
 
 def test_histogramdd():
     me = _import_me()
     with me.BudgetContext(flop_budget=10**9):
-        assert me.histogramdd(
-            me.array([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]]),
-            3,
-        ) is not None
+        assert (
+            me.histogramdd(
+                me.array([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]]),
+                3,
+            )
+            is not None
+        )
 
 
 def test_asarray():
@@ -1401,10 +1506,13 @@ def test_indices():
 def test_ix_():
     me = _import_me()
     with me.BudgetContext(flop_budget=10**9):
-        assert me.ix_(
-            me.array([0, 1], dtype="int64"),
-            me.array([0, 1], dtype="int64"),
-        ) is not None
+        assert (
+            me.ix_(
+                me.array([0, 1], dtype="int64"),
+                me.array([0, 1], dtype="int64"),
+            )
+            is not None
+        )
 
 
 def test_unravel_index():
@@ -1416,10 +1524,16 @@ def test_unravel_index():
 def test_ravel_multi_index():
     me = _import_me()
     with me.BudgetContext(flop_budget=10**9):
-        assert me.ravel_multi_index(
-            (me.array([0, 1, 2], dtype="int64"), me.array([0, 1, 2], dtype="int64")),
-            (3, 3),
-        ) is not None
+        assert (
+            me.ravel_multi_index(
+                (
+                    me.array([0, 1, 2], dtype="int64"),
+                    me.array([0, 1, 2], dtype="int64"),
+                ),
+                (3, 3),
+            )
+            is not None
+        )
 
 
 def test_mask_indices():
@@ -1437,13 +1551,19 @@ def test_meshgrid():
 def test_lexsort():
     me = _import_me()
     with me.BudgetContext(flop_budget=10**9):
-        assert me.lexsort((me.array([1.0, 2.0, 1.0]), me.array([3.0, 1.0, 2.0]))) is not None
+        assert (
+            me.lexsort((me.array([1.0, 2.0, 1.0]), me.array([3.0, 1.0, 2.0])))
+            is not None
+        )
 
 
 def test_digitize():
     me = _import_me()
     with me.BudgetContext(flop_budget=10**9):
-        assert me.digitize(me.array([0.5, 1.5, 2.5]), me.array([1.0, 2.0, 3.0])) is not None
+        assert (
+            me.digitize(me.array([0.5, 1.5, 2.5]), me.array([1.0, 2.0, 3.0]))
+            is not None
+        )
 
 
 def test_bincount():
@@ -1455,7 +1575,9 @@ def test_bincount():
 def test_packbits():
     me = _import_me()
     with me.BudgetContext(flop_budget=10**9):
-        assert me.packbits(me.array([1, 0, 1, 1, 0, 0, 0, 1], dtype="uint8")) is not None
+        assert (
+            me.packbits(me.array([1, 0, 1, 1, 0, 0, 0, 1], dtype="uint8")) is not None
+        )
 
 
 def test_unpackbits():
@@ -1554,10 +1676,13 @@ def test_copyto():
 def test_choose():
     me = _import_me()
     with me.BudgetContext(flop_budget=10**9):
-        assert me.choose(
-            me.array([0, 1, 0], dtype="int64"),
-            [me.array([10.0, 20.0, 30.0]), me.array([40.0, 50.0, 60.0])],
-        ) is not None
+        assert (
+            me.choose(
+                me.array([0, 1, 0], dtype="int64"),
+                [me.array([10.0, 20.0, 30.0]), me.array([40.0, 50.0, 60.0])],
+            )
+            is not None
+        )
 
 
 def test_require():
@@ -1682,7 +1807,10 @@ _RANDOM_SIMPLE = [
     ("random.logseries", lambda me: me.random.logseries(0.9, (3,))),
     ("random.multinomial", lambda me: me.random.multinomial(10, [0.5, 0.3, 0.2])),
     ("random.negative_binomial", lambda me: me.random.negative_binomial(5, 0.5, (3,))),
-    ("random.noncentral_chisquare", lambda me: me.random.noncentral_chisquare(2, 1.0, (3,))),
+    (
+        "random.noncentral_chisquare",
+        lambda me: me.random.noncentral_chisquare(2, 1.0, (3,)),
+    ),
     ("random.noncentral_f", lambda me: me.random.noncentral_f(5, 10, 1.0, (3,))),
     ("random.pareto", lambda me: me.random.pareto(2.0, (3,))),
     ("random.poisson", lambda me: me.random.poisson(5.0, (3,))),
@@ -1699,18 +1827,26 @@ _RANDOM_SIMPLE = [
     ("random.weibull", lambda me: me.random.weibull(2.0, (3,))),
     ("random.zipf", lambda me: me.random.zipf(2.0, (3,))),
     ("random.dirichlet", lambda me: me.random.dirichlet([1.0, 1.0, 1.0])),
-    ("random.multivariate_normal", lambda me: me.random.multivariate_normal([0.0, 0.0], [[1.0, 0.0], [0.0, 1.0]])),
+    (
+        "random.multivariate_normal",
+        lambda me: me.random.multivariate_normal([0.0, 0.0], [[1.0, 0.0], [0.0, 1.0]]),
+    ),
     ("random.f", lambda me: me.random.f(5, 10, (3,))),
     ("random.hypergeometric", lambda me: me.random.hypergeometric(10, 5, 7, (3,))),
     ("random.random_sample", lambda me: me.random.random_sample((3,))),
     ("random.ranf", lambda me: me.random.ranf((3,))),
     ("random.sample", lambda me: me.random.sample((3,))),
     ("random.get_state", lambda me: me.random.get_state()),
-    ("random.shuffle", lambda me: me.random.shuffle(me.array([1.0, 2.0, 3.0, 4.0, 5.0]))),
+    (
+        "random.shuffle",
+        lambda me: me.random.shuffle(me.array([1.0, 2.0, 3.0, 4.0, 5.0])),
+    ),
 ]
 
 
-@pytest.mark.parametrize("name,call", _RANDOM_SIMPLE, ids=[n for n, _ in _RANDOM_SIMPLE])
+@pytest.mark.parametrize(
+    "name,call", _RANDOM_SIMPLE, ids=[n for n, _ in _RANDOM_SIMPLE]
+)
 def test_random(name, call):
     me = _import_me()
     with me.BudgetContext(flop_budget=10**9):

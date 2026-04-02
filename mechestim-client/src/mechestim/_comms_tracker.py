@@ -1,4 +1,5 @@
 """Client-side communications tracker."""
+
 from __future__ import annotations
 
 
