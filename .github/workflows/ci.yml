@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [main]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -43,6 +47,7 @@ jobs:
 
   docs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [lint, test]
     runs-on: ubuntu-latest
     permissions:
       contents: write
