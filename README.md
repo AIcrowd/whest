@@ -30,15 +30,20 @@ import numpy as np
 
 depth, width = 5, 256
 
-weights = [np.random.randn(width, width)
-           * np.sqrt(2 / width) for _ in range(depth)]
-x = np.random.randn(width)
+# Build weight matrices (like nn.Linear layers)
+weights = []
+for _ in range(depth):
+    fan_in = width
+    W = np.random.randn(width, width) * np.sqrt(2 / fan_in)
+    weights.append(W)
 
+# Forward pass
+x = np.random.randn(width)
 h = x
 for i, W in enumerate(weights):
-    h = np.einsum('ij,j->i', W, h)
+    h = np.einsum('ij,j->i', W, h)   # linear layer
     if i < depth - 1:
-        h = np.maximum(h, 0)
+        h = np.maximum(h, 0)         # ReLU
 # Total FLOPs? No idea.
 ```
 
@@ -51,16 +56,22 @@ import mechestim as me
 depth, width = 5, 256
 
 with me.BudgetContext(flop_budget=10**8) as b:
-    weights = [me.multiply(me.random.randn(width, width),
-               me.sqrt(me.array(2 / width))) for _ in range(depth)]
-    x = me.random.randn(width)
+    # Build weight matrices (like nn.Linear layers)
+    weights = []
+    for _ in range(depth):
+        fan_in = width
+        W = me.random.randn(width, width)               # free
+        W = me.multiply(W, me.sqrt(me.array(2 / fan_in)))  # counted
+        weights.append(W)
 
+    # Forward pass
+    x = me.random.randn(width)                    # free
     h = x
     for i, W in enumerate(weights):
-        h = me.einsum('ij,j->i', W, h)
+        h = me.einsum('ij,j->i', W, h)           # linear layer
         if i < depth - 1:
-            h = me.maximum(h, 0)
-    print(f"Total: {b.flops_used:,} FLOPs")  # 656,389
+            h = me.maximum(h, 0)                  # ReLU
+    print(f"Total: {b.flops_used:,} FLOPs")       # 656,389
 ```
 
 </td>
@@ -108,20 +119,22 @@ import mechestim as me
 depth, width = 5, 256
 
 with me.BudgetContext(flop_budget=10**8) as budget:
-    # Initialize weights with scaled random values
+    # Build weight matrices (like nn.Linear layers)
     weights = []
-    for i in range(depth):
-        W = me.multiply(me.random.randn(width, width),
-                        me.sqrt(me.array(2.0 / width)))
+    for _ in range(depth):
+        fan_in = width
+        # Scale by sqrt(2 / fan_in) — randn is free, multiply is counted
+        W = me.random.randn(width, width)
+        W = me.multiply(W, me.sqrt(me.array(2.0 / fan_in)))
         weights.append(W)
 
-    # Forward pass through the MLP
-    x = me.random.randn(width)
+    # Forward pass
+    x = me.random.randn(width)  # random draws cost nothing
     h = x
-    for i in range(depth):
-        h = me.einsum('ij,j->i', weights[i], h)
+    for i, W in enumerate(weights):
+        h = me.einsum('ij,j->i', W, h)    # linear layer: width * width FLOPs
         if i < depth - 1:
-            h = me.maximum(h, 0)
+            h = me.maximum(h, 0)           # ReLU: width FLOPs
 
     print(budget.summary())
 ```

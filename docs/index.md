@@ -47,15 +47,21 @@ import mechestim as me
 depth, width = 5, 256
 
 with me.BudgetContext(flop_budget=10**8) as budget:
-    weights = [me.multiply(me.random.randn(width, width),
-               me.sqrt(me.array(2 / width))) for _ in range(depth)]
-    x = me.random.randn(width)
+    # Build weight matrices (like nn.Linear layers)
+    weights = []
+    for _ in range(depth):
+        fan_in = width
+        W = me.random.randn(width, width)                   # free
+        W = me.multiply(W, me.sqrt(me.array(2 / fan_in)))   # counted
+        weights.append(W)
 
+    # Forward pass
+    x = me.random.randn(width)
     h = x
     for i, W in enumerate(weights):
-        h = me.einsum('ij,j->i', W, h)
+        h = me.einsum('ij,j->i', W, h)    # linear layer
         if i < depth - 1:
-            h = me.maximum(h, 0)
+            h = me.maximum(h, 0)           # ReLU
     print(budget.summary())
 ```
 
