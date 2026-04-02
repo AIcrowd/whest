@@ -160,10 +160,8 @@ builtins.open = _restricted_open  # type: ignore[assignment]
 # 7. Clean up
 # ---------------------------------------------------------------------------
 
-# Remove lockdown modules from sys.modules so participant can't inspect them.
-# Use pop() to avoid KeyError if Python's site.py didn't register them.
-sys.modules.pop("sitecustomize", None)
+# Don't remove sitecustomize from sys.modules — Python's site.py expects it
+# to stay registered after execution. Instead, remove the allowlist module
+# and poison usercustomize so Python doesn't try to import it.
 sys.modules.pop("allowlist", None)
-
-# Poison usercustomize so Python doesn't try to import it
 sys.modules["usercustomize"] = None  # type: ignore[assignment]
