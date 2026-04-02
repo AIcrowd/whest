@@ -10,17 +10,29 @@ In competition evaluation, participant code runs in an **isolated container** th
 
 The client-server model enforces this isolation:
 
-```
-┌──────────────────────┐         ┌──────────────────────┐
-│  Participant Container│         │   Server Container   │
-│                      │         │                      │
-│  import mechestim    │  ZMQ    │  mechestim library   │
-│  as me               │◄───────►│  (real NumPy)        │
-│                      │  IPC/   │                      │
-│  # No NumPy here!    │  TCP    │  Budget enforcement  │
-│  # Only client proxy │         │  Array storage       │
-│                      │         │  FLOP counting       │
-└──────────────────────┘         └──────────────────────┘
+```mermaid
+graph LR
+  subgraph participant ["Participant Container"]
+    direction TB
+    p1["import mechestim as me"]
+    p2["No NumPy here!<br/>Only client proxy"]
+  end
+
+  subgraph server ["Server Container"]
+    direction TB
+    s1["mechestim library<br/>(real NumPy)"]
+    s2["Budget enforcement<br/>Array storage<br/>FLOP counting"]
+  end
+
+  participant -- "ZMQ · IPC / TCP" --> server
+  server -- "ZMQ · IPC / TCP" --> participant
+
+  style participant fill:#f8f9fa,stroke:#4051b5,stroke-width:2px,color:#1a1a2e
+  style server fill:#f8f9fa,stroke:#4051b5,stroke-width:2px,color:#1a1a2e
+  style p1 fill:#fff,stroke:#e5e7eb,color:#1a1a2e
+  style p2 fill:#fff,stroke:#e5e7eb,color:#555
+  style s1 fill:#fff,stroke:#e5e7eb,color:#1a1a2e
+  style s2 fill:#fff,stroke:#e5e7eb,color:#555
 ```
 
 ## How it works

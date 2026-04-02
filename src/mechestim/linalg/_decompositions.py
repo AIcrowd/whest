@@ -48,7 +48,7 @@ attach_docstring(cholesky, _np.linalg.cholesky, "linalg", r"$n^3/3$ FLOPs")
 
 
 def qr_cost(m: int, n: int) -> int:
-    """FLOP cost of QR decomposition.
+    r"""FLOP cost of QR decomposition.
 
     Parameters
     ----------

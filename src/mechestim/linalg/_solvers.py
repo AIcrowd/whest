@@ -8,7 +8,7 @@ from mechestim._validation import require_budget, validate_ndarray
 
 
 def solve_cost(n: int, nrhs: int = 1, symmetric: bool = False) -> int:
-    """FLOP cost of solving a linear system Ax = b.
+    r"""FLOP cost of solving a linear system Ax = b.
 
     Parameters
     ----------
