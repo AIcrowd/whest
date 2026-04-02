@@ -19,23 +19,33 @@ works with NumPy may fail or behave differently with mechestim:
 
 ## Machine-readable resources
 
-| Resource | URL | Format | Use case |
-|----------|-----|--------|----------|
-| **llms.txt** | `/llms.txt` | Markdown | Start here. Curated index of all doc pages with one-line descriptions. Under 4K tokens. |
-| **llms-full.txt** | `/llms-full.txt` | Markdown | Complete docs in one file. Use if your context window is large enough (~115KB). |
-| **ops.json** | `/ops.json` | JSON | Machine-readable manifest of all 482 operations. Query programmatically for name, category, cost formula, status. |
-| **Cheat Sheet** | [FLOP Cost Cheat Sheet](./cheat-sheet.md) | Markdown | Dense reference of every operation's cost. Optimized for agent context windows. |
-| **Operation Audit** | [Operation Audit](./operation-audit.md) | Markdown | 7-column searchable table: operation, mechestim ref, NumPy ref, category, cost, status, notes. |
+| Resource | Format | Use case |
+|----------|--------|----------|
+| **llms.txt** (`/llms.txt` at site root) | Markdown | Start here. Curated index of all doc pages with one-line descriptions. Under 4K tokens. |
+| **llms-full.txt** (`/llms-full.txt` at site root) | Markdown | Complete docs in one file. Use if your context window is large enough (~115KB). |
+| **ops.json** (`/ops.json` at site root) | JSON | Machine-readable manifest of all 482 operations. Query programmatically for name, category, cost formula, status. |
+| [FLOP Cost Cheat Sheet](./cheat-sheet.md) | Markdown | Dense reference of every operation's cost. Optimized for agent context windows. |
+| [Operation Audit](./operation-audit.md) | Markdown | 7-column searchable table: operation, mechestim ref, NumPy ref, category, cost, status, notes. |
 
 ### How to use llms.txt
 
 If you're an agent encountering mechestim for the first time:
 
-1. Fetch `/llms.txt` — this gives you the doc map in ~300 words
+1. Fetch `llms.txt` — this gives you the doc map in ~300 words
 2. Identify which page answers your question from the section descriptions
-3. Fetch that specific page via its `.md` URL
+3. Fetch that specific page
 
-If you have a large context window, fetch `/llms-full.txt` instead to get
+**URL patterns:** `llms.txt` links to `.md` variants of each page (raw
+markdown for agents). Every page is also available as rendered HTML — just
+drop the trailing `/index.md` from the URL:
+
+| Agent URL (raw markdown) | Human URL (rendered HTML) |
+|--------------------------|---------------------------|
+| `.../getting-started/installation/index.md` | `.../getting-started/installation/` |
+| `.../how-to/use-einsum/index.md` | `.../how-to/use-einsum/` |
+| `.../api/linalg/index.md` | `.../api/linalg/` |
+
+If you have a large context window, fetch `llms-full.txt` instead to get
 everything in one request.
 
 ### How to use ops.json
