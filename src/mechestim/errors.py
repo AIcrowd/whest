@@ -1,6 +1,8 @@
 """Exception and warning classes for mechestim."""
 from __future__ import annotations
 
+_DOCS_BASE = "https://aicrowd.github.io/mechestim/troubleshooting/common-errors"
+
 
 class MechEstimError(Exception):
     """Base exception for all mechestim errors."""
@@ -15,7 +17,8 @@ class BudgetExhaustedError(MechEstimError):
         self.flops_remaining = flops_remaining
         super().__init__(
             f"{op_name} would cost {flop_cost:,} FLOPs but only "
-            f"{flops_remaining:,} remain"
+            f"{flops_remaining:,} remain. "
+            f"See: {_DOCS_BASE}/#budgetexhaustederror"
         )
 
 
@@ -25,7 +28,8 @@ class NoBudgetContextError(MechEstimError):
     def __init__(self):
         super().__init__(
             "No active BudgetContext. "
-            "Wrap your code in `with mechestim.BudgetContext(...):`"
+            "Wrap your code in `with mechestim.BudgetContext(...):`  "
+            f"See: {_DOCS_BASE}/#nobudgetcontexterror"
         )
 
 
@@ -41,7 +45,8 @@ class SymmetryError(MechEstimError):
         super().__init__(
             f"Tensor not symmetric along dims ({', '.join(str(d) for d in dims)}): "
             f"max deviation = {max_deviation} "
-            f"(tolerance: atol={atol}, rtol={rtol})"
+            f"(tolerance: atol={atol}, rtol={rtol}). "
+            f"See: {_DOCS_BASE}/#symmetryerror"
         )
 
 
