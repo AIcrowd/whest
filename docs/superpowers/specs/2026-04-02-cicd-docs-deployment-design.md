@@ -32,9 +32,13 @@ Add CI/CD via GitHub Actions and deploy documentation to GitHub Pages. Single wo
 #### Job: `docs`
 - Condition: only on push to `main` (not PRs)
 - Runner: `ubuntu-latest`, Python 3.12
-- Install docs dependencies via `uv sync --extra docs`
+- Install all dependencies via `uv sync --all-extras` (needs both `dev` and `docs` extras since `generate_api_docs.py` imports `mechestim._registry`)
+- Run `uv run python scripts/generate_api_docs.py` to regenerate API reference pages from the registry
+- Run `uv run python scripts/generate_api_docs.py --verify` to ensure full coverage
 - Deploy via `uv run mkdocs gh-deploy --force`
 - Requires `contents: write` permission for pushing to `gh-pages` branch
+
+**Note:** `mkdocs.yml` already has `exclude_docs: superpowers/` so internal specs and plans won't appear in the deployed site.
 
 ### 2. Ruff Configuration (in `pyproject.toml`)
 
@@ -62,7 +66,7 @@ This is a one-time manual step by a repo admin.
 
 1. **New:** `.github/workflows/ci.yml` — CI/CD workflow
 2. **Edit:** `pyproject.toml` — add `[tool.ruff]` configuration
-3. **Edit:** `README.md` — add CI/docs badges, update docs link
+3. **Edit:** `README.md` — add CI/docs badges, update docs link to GitHub Pages URL
 
 ## Out of Scope
 
