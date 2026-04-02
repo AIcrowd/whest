@@ -146,6 +146,7 @@ class BudgetContext:
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+        _accumulator.record(self)
         _thread_local.active_budget = self._previous_budget  # restore previous
         return None
 
@@ -211,3 +212,97 @@ def _reset_global_default() -> None:
     if _global_default is not None and getattr(_thread_local, "active_budget", None) is _global_default:
         _thread_local.active_budget = None
     _global_default = None
+
+
+# ---------------------------------------------------------------------------
+# Session-level accumulator
+# ---------------------------------------------------------------------------
+
+
+class NamespaceRecord(NamedTuple):
+    """Snapshot of a BudgetContext's state at close time."""
+
+    namespace: str | None
+    flop_budget: int
+    flops_used: int
+    op_log: list[OpRecord]
+
+
+class BudgetAccumulator:
+    """Collects budget records across multiple BudgetContext sessions."""
+
+    def __init__(self) -> None:
+        self._records: list[NamespaceRecord] = []
+
+    def record(self, ctx: BudgetContext) -> None:
+        """Snapshot a BudgetContext and store it."""
+        self._records.append(
+            NamespaceRecord(
+                namespace=ctx.namespace,
+                flop_budget=ctx.flop_budget,
+                flops_used=ctx.flops_used,
+                op_log=list(ctx.op_log),
+            )
+        )
+
+    def get_data(self, by_namespace: bool = False) -> dict:
+        """Return aggregated budget data across all recorded contexts."""
+        total_budget = 0
+        total_used = 0
+        ops: dict[str, dict] = {}
+
+        for rec in self._records:
+            total_budget += rec.flop_budget
+            total_used += rec.flops_used
+            for op in rec.op_log:
+                if op.op_name not in ops:
+                    ops[op.op_name] = {"flop_cost": 0, "calls": 0}
+                ops[op.op_name]["flop_cost"] += op.flop_cost
+                ops[op.op_name]["calls"] += 1
+
+        result = {
+            "flop_budget": total_budget,
+            "flops_used": total_used,
+            "flops_remaining": total_budget - total_used,
+            "operations": ops,
+        }
+
+        if by_namespace:
+            by_ns: dict[str | None, dict] = {}
+            for rec in self._records:
+                ns = rec.namespace
+                if ns not in by_ns:
+                    by_ns[ns] = {"flop_budget": 0, "flops_used": 0, "operations": {}}
+                by_ns[ns]["flop_budget"] += rec.flop_budget
+                by_ns[ns]["flops_used"] += rec.flops_used
+                for op in rec.op_log:
+                    if op.op_name not in by_ns[ns]["operations"]:
+                        by_ns[ns]["operations"][op.op_name] = {"flop_cost": 0, "calls": 0}
+                    by_ns[ns]["operations"][op.op_name]["flop_cost"] += op.flop_cost
+                    by_ns[ns]["operations"][op.op_name]["calls"] += 1
+            result["by_namespace"] = by_ns
+
+        return result
+
+    def reset(self) -> None:
+        """Clear all recorded data."""
+        self._records.clear()
+
+
+_accumulator = BudgetAccumulator()
+
+
+def budget_data(by_namespace: bool = False) -> dict:
+    """Return aggregated budget data across all recorded contexts."""
+    # Include the global default if it has been used
+    if _global_default is not None and _global_default.flops_used > 0:
+        acc_copy = BudgetAccumulator()
+        acc_copy._records = list(_accumulator._records)
+        acc_copy.record(_global_default)
+        return acc_copy.get_data(by_namespace=by_namespace)
+    return _accumulator.get_data(by_namespace=by_namespace)
+
+
+def budget_reset() -> None:
+    """Clear all accumulated budget data. Core library only."""
+    _accumulator.reset()
