@@ -1,25 +1,65 @@
+<img src="assets/logo/logo.png" alt="mechestim logo" style="height: 80px;">
+
 # mechestim
 
-NumPy-compatible math primitives with analytical FLOP counting for the
-[Mechanistic Estimation Challenge](https://github.com/AIcrowd/mechestim).
+**NumPy-compatible math primitives with analytical FLOP counting.**
 
-## What is this?
+Pick the path that matches what you need right now.
 
-mechestim is a drop-in replacement for a subset of NumPy that counts
-FLOPs as you compute. Use it to develop algorithms where the goal is
-to minimize computational cost, not wall-clock time.
+## 🚀 I want to get started
+
+- [Installation](./getting-started/installation.md)
+- [Your First Budget](./getting-started/first-budget.md)
+
+## 🛠 Something isn't working
+
+- [Common Errors](./troubleshooting/common-errors.md)
+- [Error Reference](./api/errors.md)
+
+## 📈 I want to write efficient code with mechestim
+
+- [Migrate from NumPy](./how-to/migrate-from-numpy.md)
+- [Use Einsum](./how-to/use-einsum.md)
+- [Exploit Symmetry](./how-to/exploit-symmetry.md)
+- [Use Linear Algebra](./how-to/use-linalg.md)
+- [Plan Your Budget](./how-to/plan-your-budget.md)
+- [Debug Budget Overruns](./how-to/debug-budget-overruns.md)
+
+## 🧠 I want to understand how it works
+
+- [FLOP Counting Model](./concepts/flop-counting-model.md) — how costs are computed, why FLOPs
+- [Operation Categories](./concepts/operation-categories.md) — free vs counted vs unsupported
+
+## 🏗 I want to understand the sandboxed architecture
+
+- [Client-Server Model](./architecture/client-server.md) — why it exists, how it works
+- [Running with Docker](./architecture/docker.md) — local setup with Docker
 
 ## Quick example
 
-    import mechestim as me
+```python
+import mechestim as me
 
-    with me.BudgetContext(flop_budget=1_000_000) as budget:
-        W = me.array(weight_matrix)
-        x = me.zeros((256,))
-        h = me.einsum('ij,j->i', W, x)
-        h = me.maximum(h, 0)
-        print(budget.summary())
+with me.BudgetContext(flop_budget=1_000_000) as budget:
+    W = me.zeros((256, 256))
+    x = me.zeros((256,))
+    h = me.einsum('ij,j->i', W, x)
+    h = me.maximum(h, 0)
+    print(budget.summary())
+```
 
 ## Installation
 
-    pip install git+https://github.com/AIcrowd/mechestim.git
+```bash
+uv add git+https://github.com/AIcrowd/mechestim.git
+```
+
+## Full Taxonomy
+
+- **Getting Started:** [Installation](./getting-started/installation.md), [Your First Budget](./getting-started/first-budget.md)
+- **How-To:** [Migrate from NumPy](./how-to/migrate-from-numpy.md), [Use Einsum](./how-to/use-einsum.md), [Exploit Symmetry](./how-to/exploit-symmetry.md), [Use Linear Algebra](./how-to/use-linalg.md), [Plan Your Budget](./how-to/plan-your-budget.md), [Debug Budget Overruns](./how-to/debug-budget-overruns.md)
+- **Concepts:** [FLOP Counting Model](./concepts/flop-counting-model.md), [Operation Categories](./concepts/operation-categories.md)
+- **Architecture:** [Client-Server Model](./architecture/client-server.md), [Running with Docker](./architecture/docker.md)
+- **API Reference:** [Counted Ops](./api/counted-ops.md), [Free Ops](./api/free-ops.md), [Budget](./api/budget.md), [FLOP Cost Query](./api/flops.md), [Errors](./api/errors.md)
+- **Reference:** [Operation Audit](./reference/operation-audit.md)
+- **Troubleshooting:** [Common Errors](./troubleshooting/common-errors.md)
