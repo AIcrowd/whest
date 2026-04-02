@@ -4,6 +4,10 @@
 
 **NumPy-compatible math primitives with analytical FLOP counting.**
 
+!!! warning "mechestim is not a drop-in NumPy replacement"
+    All computation requires a `BudgetContext`. Operations have analytical FLOP
+    costs. 32 operations are blocked. See [Operation Categories](concepts/operation-categories.md).
+
 Pick the path that matches what you need right now.
 
 ## 🚀 I want to get started
