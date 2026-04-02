@@ -6,11 +6,15 @@ from mechestim._symmetric import SymmetricTensor, as_symmetric
 from mechestim._validation import require_budget, validate_ndarray
 
 
-def solve_cost(n: int, symmetric: bool = False) -> int:
-    """FLOP cost of solving Ax = b. n^3/3 (Cholesky) if symmetric, else n^3 (LU)."""
+def solve_cost(n: int, nrhs: int = 1, symmetric: bool = False) -> int:
+    """FLOP cost of solving Ax = b for (n, n) matrix A with nrhs right-hand sides.
+
+    Formula: n^3/3 + n*nrhs (Cholesky) if symmetric, else 2*n^3/3 + n^2*nrhs (LU).
+    Source: Golub & Van Loan, "Matrix Computations", 4th ed.
+    """
     if symmetric:
-        return max(n ** 3 // 3, 1)
-    return max(n ** 3, 1)
+        return max(n ** 3 // 3 + n * nrhs, 1)
+    return max(2 * n ** 3 // 3 + n ** 2 * nrhs, 1)
 
 
 def solve(a, b):
@@ -20,8 +24,11 @@ def solve(a, b):
     if a.ndim != 2 or a.shape[0] != a.shape[1]:
         raise ValueError(f"First argument must be square 2D array, got shape {a.shape}")
     n = a.shape[0]
+    if not isinstance(b, _np.ndarray):
+        b = _np.asarray(b)
+    nrhs = b.shape[1] if b.ndim == 2 else 1
     is_symmetric = isinstance(a, SymmetricTensor)
-    cost = solve_cost(n, symmetric=is_symmetric)
+    cost = solve_cost(n, nrhs=nrhs, symmetric=is_symmetric)
     budget.deduct("linalg.solve", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.solve(a, b)
 
