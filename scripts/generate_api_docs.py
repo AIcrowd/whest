@@ -306,10 +306,8 @@ def cost_for_op(name: str, category: str) -> tuple[str, str]:
 
 
 def generate_audit_page(registry: dict[str, dict]) -> None:
-    """Generate docs/reference/operation-audit.md from the registry."""
+    """Generate docs/reference/operation-audit.md — 7-column searchable table."""
     REF_DIR.mkdir(parents=True, exist_ok=True)
-
-    # Group ops by category
     by_cat: dict[str, list[str]] = {cat: [] for cat in CATEGORY_ORDER}
     for name, info in sorted(registry.items()):
         cat = info["category"]
@@ -320,7 +318,7 @@ def generate_audit_page(registry: dict[str, dict]) -> None:
         HEADER,
         "# Operation Audit",
         "",
-        "Complete list of every NumPy operation and its mechestim category.",
+        "Complete inventory of every NumPy operation and its mechestim status.",
         "Generated from the operation registry (`_registry.py`).",
         "",
         "## Summary",
@@ -328,7 +326,6 @@ def generate_audit_page(registry: dict[str, dict]) -> None:
         "| Category | Count | Cost |",
         "|----------|-------|------|",
     ]
-
     total = 0
     for cat in CATEGORY_ORDER:
         label, cost = CATEGORY_LABELS[cat]
@@ -338,26 +335,29 @@ def generate_audit_page(registry: dict[str, dict]) -> None:
     lines.append(f"| **Total** | **{total}** | |")
     lines.append("")
 
-    # Per-category sections
-    for cat in CATEGORY_ORDER:
-        label, cost = CATEGORY_LABELS[cat]
-        emoji = CATEGORY_EMOJI[cat]
-        ops = by_cat[cat]
-        lines.append(f"## {emoji} {label}")
-        lines.append("")
-        lines.append(f"**{len(ops)} operations:**")
-        lines.append("")
-
-        # Format as backtick-wrapped, 6 per line
-        formatted = [f"`{op}`" for op in ops]
-        for i in range(0, len(formatted), 6):
-            chunk = ", ".join(formatted[i:i+6])
-            lines.append(chunk)
-        lines.append("")
-
+    lines.append("## All Operations")
+    lines.append("")
+    lines.append("| Operation | mechestim | NumPy | Category | Cost | Status | Notes |")
+    lines.append("|-----------|-----------|-------|----------|------|--------|-------|")
+    for name, info in sorted(registry.items()):
+        cat = info["category"]
+        mod = info["module"]
+        me_ref = mechestim_ref(name, mod)
+        np_ref = numpy_ref(name, mod)
+        _, latex = cost_for_op(name, cat)
+        emoji = CATEGORY_EMOJI.get(cat, "")
+        status = "blocked" if cat == "blacklisted" else "supported"
+        status_display = f"{emoji} {status}"
+        notes = info.get("notes", "")
+        if cat == "blacklisted":
+            me_ref = "\u2014"
+        lines.append(
+            f"| `{name}` | {me_ref} | {np_ref} | {cat} | {latex} | {status_display} | {notes} |"
+        )
+    lines.append("")
     out = REF_DIR / "operation-audit.md"
     out.write_text("\n".join(lines))
-    print(f"  Generated reference/operation-audit.md")
+    print(f"  Generated reference/operation-audit.md ({total} operations)")
 
 
 def generate_ops_json(registry: dict[str, dict]) -> None:
