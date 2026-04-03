@@ -125,7 +125,9 @@ def einsum(
             symmetric_dims=symmetric_dims,
             operand_symmetries=operand_symmetries if has_operand_symmetry else None,
         )
-        budget.deduct("einsum", flop_cost=cost, subscripts=subscripts, shapes=tuple(shapes))
+        budget.deduct(
+            "einsum", flop_cost=cost, subscripts=subscripts, shapes=tuple(shapes)
+        )
         result = _np.einsum(subscripts, *operands)
     else:
         # Convert SymmetryInfo -> IndexSymmetry for the path optimizer
@@ -161,7 +163,9 @@ def einsum(
             operand_symmetries=operand_symmetries if has_operand_symmetry else None,
         )
 
-        budget.deduct("einsum", flop_cost=total_cost, subscripts=subscripts, shapes=tuple(shapes))
+        budget.deduct(
+            "einsum", flop_cost=total_cost, subscripts=subscripts, shapes=tuple(shapes)
+        )
 
         # Execute pairwise steps
         result = _execute_pairwise(path_info, list(operands))

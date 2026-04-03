@@ -60,8 +60,9 @@ docs-deploy:  ## Deploy docs to gh-pages (same as CI)
 # Setup
 # ---------------------------------------------------------------------------
 .PHONY: install
-install:  ## Install all deps (dev + docs)
+install:  ## Install all deps (dev + docs) and set up git hooks
 	uv sync --all-extras
+	git config core.hooksPath .githooks
 
 # ---------------------------------------------------------------------------
 # Help

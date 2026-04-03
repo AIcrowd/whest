@@ -15,7 +15,7 @@ from __future__ import annotations
 from math import comb, factorial
 from typing import Collection
 
-from ._helpers import compute_size_by_dict, flop_count
+from ._helpers import flop_count
 
 # Type alias: a list of frozensets, each frozenset names indices that are
 # mutually symmetric (e.g. [frozenset("ij"), frozenset("kl")] means S2 x S2).
@@ -207,7 +207,7 @@ def symmetric_flop_count(
                 n = next(size_dictionary[idx] for idx in active)
                 k = len(active)
                 # Ratio of unique tuples to total tuples
-                cost = cost * comb(n + k - 1, k) // (n ** k)
+                cost = cost * comb(n + k - 1, k) // (n**k)
 
     # Scale down for output symmetry
     if output_symmetry:

@@ -22,8 +22,14 @@ class TestMultiOperandEinsum:
     def test_symmetric_input_reduces_multi_operand_cost(self):
         n = 10
         T_data = numpy.random.RandomState(42).rand(n, n, n)
-        T_data = (T_data + T_data.transpose(1, 0, 2) + T_data.transpose(2, 1, 0) +
-                  T_data.transpose(0, 2, 1) + T_data.transpose(1, 2, 0) + T_data.transpose(2, 0, 1)) / 6
+        T_data = (
+            T_data
+            + T_data.transpose(1, 0, 2)
+            + T_data.transpose(2, 1, 0)
+            + T_data.transpose(0, 2, 1)
+            + T_data.transpose(1, 2, 0)
+            + T_data.transpose(2, 0, 1)
+        ) / 6
         T = as_symmetric(T_data, dims=(0, 1, 2))
         A = numpy.random.RandomState(43).rand(n, n)
         B = numpy.random.RandomState(44).rand(n, n)
@@ -90,9 +96,9 @@ class TestEinsumPath:
         path, info = einsum_path("ij,jk,kl->il", A, B, C)
         assert isinstance(path, list)
         assert len(path) == 2
-        assert hasattr(info, 'steps')
-        assert hasattr(info, 'optimized_cost')
-        assert hasattr(info, 'speedup')
+        assert hasattr(info, "steps")
+        assert hasattr(info, "optimized_cost")
+        assert hasattr(info, "speedup")
 
     def test_zero_budget_cost(self):
         A = numpy.ones((10, 10))
@@ -126,6 +132,7 @@ class TestEinsumPath:
 class TestPathInfoStepInfo:
     def test_step_info_has_symmetry_fields(self):
         from mechestim._opt_einsum._contract import StepInfo
+
         A = numpy.ones((5, 5))
         B = numpy.ones((5, 5))
         C = numpy.ones((5, 5))
@@ -133,11 +140,11 @@ class TestPathInfoStepInfo:
         assert len(info.steps) == 2
         for step in info.steps:
             assert isinstance(step, StepInfo)
-            assert hasattr(step, 'subscript')
-            assert hasattr(step, 'flop_cost')
-            assert hasattr(step, 'dense_flop_cost')
-            assert hasattr(step, 'symmetry_savings')
-            assert hasattr(step, 'output_symmetry')
+            assert hasattr(step, "subscript")
+            assert hasattr(step, "flop_cost")
+            assert hasattr(step, "dense_flop_cost")
+            assert hasattr(step, "symmetry_savings")
+            assert hasattr(step, "output_symmetry")
 
     def test_dense_path_has_zero_savings(self):
         A = numpy.ones((5, 5))

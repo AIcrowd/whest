@@ -7,6 +7,7 @@ reach anything useful in the locked-down container.
 passed = 0
 failed = 0
 
+
 def check(name, condition):
     global passed, failed
     if condition:
@@ -15,6 +16,7 @@ def check(name, condition):
     else:
         print(f"FAIL: {name}")
         failed += 1
+
 
 # Test 1: __subclasses__ escape — can we find dangerous classes?
 dangerous_found = []
@@ -26,6 +28,7 @@ check("no Popen/FileIO via __subclasses__", len(dangerous_found) == 0)
 
 # Test 2: even if we find os module via introspection, network is blocked
 import os
+
 try:
     os.listdir("/submission")
     check("os.listdir /submission works (expected)", True)

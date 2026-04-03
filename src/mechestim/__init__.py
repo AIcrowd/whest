@@ -43,9 +43,6 @@ from mechestim._display import budget_live, budget_summary  # noqa: F401
 # --- Einsum ---
 from mechestim._einsum import einsum, einsum_path  # noqa: F401
 
-# --- Path optimization types ---
-from mechestim._opt_einsum import PathInfo, StepInfo  # noqa: F401
-
 # --- Free ops ---
 from mechestim._free_ops import (  # noqa: F401
     allclose,
@@ -207,6 +204,9 @@ from mechestim._free_ops import (  # noqa: F401
     zeros,
     zeros_like,
 )
+
+# --- Path optimization types ---
+from mechestim._opt_einsum import PathInfo, StepInfo  # noqa: F401
 
 # --- Pointwise (counted) ---
 from mechestim._pointwise import (  # noqa: F401

@@ -151,10 +151,14 @@ def find_output_str(subscripts: str) -> str:
     ''
     """
     tmp_subscripts = subscripts.replace(",", "")
-    return "".join(s for s in sorted(set(tmp_subscripts)) if tmp_subscripts.count(s) == 1)
+    return "".join(
+        s for s in sorted(set(tmp_subscripts)) if tmp_subscripts.count(s) == 1
+    )
 
 
-def find_output_shape(inputs: list[str], shapes: list[TensorShapeType], output: str) -> TensorShapeType:
+def find_output_shape(
+    inputs: list[str], shapes: list[TensorShapeType], output: str
+) -> TensorShapeType:
     """Find the output shape for given inputs, shapes and output string, taking
     into account broadcasting.
 
@@ -167,7 +171,14 @@ def find_output_shape(inputs: list[str], shapes: list[TensorShapeType], output: 
     >>> oe.parser.find_output_shape(["a", "a"], [(4, ), (1, )], "a")
     (4,)
     """
-    return tuple(max(shape[loc] for shape, loc in zip(shapes, [x.find(c) for x in inputs]) if loc >= 0) for c in output)
+    return tuple(
+        max(
+            shape[loc]
+            for shape, loc in zip(shapes, [x.find(c) for x in inputs])
+            if loc >= 0
+        )
+        for c in output
+    )
 
 
 _BaseTypes = (bool, int, float, complex, str, bytes)
@@ -190,7 +201,9 @@ def get_shape(x: Any) -> TensorShapeType:
             x = x[0]
         return tuple(shape)
     else:
-        raise ValueError(f"Cannot determine the shape of {x}, can only determine the shape of array-like objects.")
+        raise ValueError(
+            f"Cannot determine the shape of {x}, can only determine the shape of array-like objects."
+        )
 
 
 def possibly_convert_to_numpy(x: Any) -> Any:
@@ -271,7 +284,9 @@ def convert_interleaved_input(operands: Sequence[Any]) -> tuple[str, tuple[Any, 
         symbol_set.discard(Ellipsis)
 
         # build the map based on sorted user symbols, retaining the order we lost in the `set`
-        symbol_map = {symbol: get_symbol(idx) for idx, symbol in enumerate(sorted(symbol_set))}
+        symbol_map = {
+            symbol: get_symbol(idx) for idx, symbol in enumerate(sorted(symbol_set))
+        }
 
     except TypeError:  # unhashable or uncomparable object
         raise TypeError(
@@ -286,7 +301,9 @@ def convert_interleaved_input(operands: Sequence[Any]) -> tuple[str, tuple[Any, 
     return subscripts, tuple(operand_list)
 
 
-def parse_einsum_input(operands: Any, shapes: bool = False) -> tuple[str, str, list[ArrayType]]:
+def parse_einsum_input(
+    operands: Any, shapes: bool = False
+) -> tuple[str, str, list[ArrayType]]:
     """A reproduction of einsum c side einsum parsing in python.
 
     Parameters:
@@ -342,7 +359,9 @@ def parse_einsum_input(operands: Any, shapes: bool = False) -> tuple[str, str, l
     # Parse ellipses
     if "." in subscripts:
         used = subscripts.replace(".", "").replace(",", "").replace("->", "")
-        ellipse_inds = "".join(gen_unused_symbols(used, max(len(x) for x in operand_shapes)))
+        ellipse_inds = "".join(
+            gen_unused_symbols(used, max(len(x) for x in operand_shapes))
+        )
         longest = 0
 
         # Do we have an output to account for?
@@ -373,7 +392,9 @@ def parse_einsum_input(operands: Any, shapes: bool = False) -> tuple[str, str, l
                 elif ellipse_count == 0:
                     split_subscripts[num] = sub.replace("...", "")
                 else:
-                    split_subscripts[num] = sub.replace("...", ellipse_inds[-ellipse_count:])
+                    split_subscripts[num] = sub.replace(
+                        "...", ellipse_inds[-ellipse_count:]
+                    )
 
         subscripts = ",".join(split_subscripts)
 
@@ -401,7 +422,9 @@ def parse_einsum_input(operands: Any, shapes: bool = False) -> tuple[str, str, l
     # Make sure output subscripts are unique and in the input
     for char in output_subscript:
         if output_subscript.count(char) != 1:
-            raise ValueError(f"Output character '{char}' appeared more than once in the output.")
+            raise ValueError(
+                f"Output character '{char}' appeared more than once in the output."
+            )
         if char not in input_subscripts:
             raise ValueError(f"Output character '{char}' did not appear in the input")
 

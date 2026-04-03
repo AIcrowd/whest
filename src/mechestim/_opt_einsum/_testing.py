@@ -10,7 +10,35 @@ from ._typing import ArrayType, PathType, TensorShapeType
 
 _no_collision_chars = "".join(chr(i) for i in range(7000, 7007))
 _valid_chars = "abcdefghijklmnopqABC" + _no_collision_chars
-_sizes = [2, 3, 4, 5, 4, 3, 2, 6, 5, 4, 3, 2, 5, 7, 4, 3, 2, 3, 4, 9, 10, 2, 4, 5, 3, 2, 6]
+_sizes = [
+    2,
+    3,
+    4,
+    5,
+    4,
+    3,
+    2,
+    6,
+    5,
+    4,
+    3,
+    2,
+    5,
+    7,
+    4,
+    3,
+    2,
+    3,
+    4,
+    9,
+    10,
+    2,
+    4,
+    5,
+    3,
+    2,
+    6,
+]
 _default_dim_dict = dict(zip(_valid_chars, _sizes))
 assert len(_valid_chars) == len(_sizes), (
     f"Valid characters and sizes must be the same length: {len(_valid_chars)} != {len(_sizes)}"
@@ -18,7 +46,9 @@ assert len(_valid_chars) == len(_sizes), (
 
 
 def build_shapes(
-    string: str, dimension_dict: dict[str, int] | None = None, replace_ellipsis: bool = False
+    string: str,
+    dimension_dict: dict[str, int] | None = None,
+    replace_ellipsis: bool = False,
 ) -> tuple[TensorShapeType, ...]:
     """Builds random tensor shapes for testing.
 
@@ -87,7 +117,9 @@ def build_views(
         array_function = np.random.rand
 
     views = []
-    for shape in build_shapes(string, dimension_dict=dimension_dict, replace_ellipsis=replace_ellipsis):
+    for shape in build_shapes(
+        string, dimension_dict=dimension_dict, replace_ellipsis=replace_ellipsis
+    ):
         if shape:
             views.append(array_function(*shape))
         else:
@@ -179,7 +211,9 @@ def rand_equation(
     inputs = ["" for _ in range(n)]
     output = []
 
-    size_dict = {get_symbol(i): np.random.randint(d_min, d_max + 1) for i in range(num_inds)}
+    size_dict = {
+        get_symbol(i): np.random.randint(d_min, d_max + 1) for i in range(num_inds)
+    }
 
     # generate a list of indices to place either once or twice
     def gen():

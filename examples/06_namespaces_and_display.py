@@ -26,12 +26,18 @@ _ = me.einsum("ij,j->i", W, x)
 # per-context banner so only the final summary is visible.
 
 layers = [
-    (me.array(np.random.randn(64, 64).astype(np.float32)),  # W1
-     me.array(np.random.randn(64).astype(np.float32))),     # b1
-    (me.array(np.random.randn(64, 64).astype(np.float32)),  # W2
-     me.array(np.random.randn(64).astype(np.float32))),     # b2
-    (me.array(np.random.randn(64, 64).astype(np.float32)),  # W3
-     me.array(np.random.randn(64).astype(np.float32))),     # b3
+    (
+        me.array(np.random.randn(64, 64).astype(np.float32)),  # W1
+        me.array(np.random.randn(64).astype(np.float32)),
+    ),  # b1
+    (
+        me.array(np.random.randn(64, 64).astype(np.float32)),  # W2
+        me.array(np.random.randn(64).astype(np.float32)),
+    ),  # b2
+    (
+        me.array(np.random.randn(64, 64).astype(np.float32)),  # W3
+        me.array(np.random.randn(64).astype(np.float32)),
+    ),  # b3
 ]
 
 batch_size = 16
@@ -58,6 +64,7 @@ with me.BudgetContext(
 # BudgetContext can also wrap a function directly.  Here we define a single
 # forward pass and label it with namespace="inference".
 
+
 @me.BudgetContext(flop_budget=5_000_000, namespace="inference", quiet=True)
 def run_inference():
     h = me.array(np.random.randn(batch_size, 64).astype(np.float32))
@@ -65,6 +72,7 @@ def run_inference():
         h = me.einsum("bi,ji->bj", h, W_layer)
         h = me.maximum(h + b, 0)
     return h
+
 
 output = run_inference()
 print(f"Inference output shape: {output.shape}")

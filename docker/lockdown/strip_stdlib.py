@@ -42,7 +42,10 @@ def _discover_kept_files() -> set[str]:
         try:
             __import__(mod_name)
         except ImportError:
-            print(f"  WARN: could not import allowlisted module {mod_name!r}", file=sys.stderr)
+            print(
+                f"  WARN: could not import allowlisted module {mod_name!r}",
+                file=sys.stderr,
+            )
 
     # Also import the packages we need in site-packages
     for pkg in ("zmq", "msgpack", "mechestim"):
@@ -148,8 +151,15 @@ def strip(dry_run: bool = False) -> None:
 
     # Also remove pip, setuptools, ensurepip, distutils, lib2to3
     site_packages = sysconfig.get_paths()["purelib"]
-    for pkg_name in ("pip", "setuptools", "ensurepip", "distutils", "lib2to3",
-                     "pkg_resources", "_distutils_hack"):
+    for pkg_name in (
+        "pip",
+        "setuptools",
+        "ensurepip",
+        "distutils",
+        "lib2to3",
+        "pkg_resources",
+        "_distutils_hack",
+    ):
         pkg_dir = os.path.join(site_packages, pkg_name)
         if os.path.isdir(pkg_dir):
             _rmtree(pkg_dir, dry_run)
@@ -161,7 +171,9 @@ def strip(dry_run: bool = False) -> None:
     # Remove .dist-info for pip and setuptools
     if os.path.isdir(site_packages):
         for entry in os.listdir(site_packages):
-            if entry.startswith(("pip-", "setuptools-")) and entry.endswith(".dist-info"):
+            if entry.startswith(("pip-", "setuptools-")) and entry.endswith(
+                ".dist-info"
+            ):
                 _rmtree(os.path.join(site_packages, entry), dry_run)
 
     # Remove stale .pth files that reference removed packages
@@ -193,6 +205,8 @@ def _rmtree(path: str, dry_run: bool) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Strip stdlib to allowlist")
-    parser.add_argument("--dry-run", action="store_true", help="Print what would be removed")
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Print what would be removed"
+    )
     args = parser.parse_args()
     strip(dry_run=args.dry_run)

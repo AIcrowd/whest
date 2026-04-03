@@ -22,6 +22,7 @@ import sysconfig
 _lockdown_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, _lockdown_dir)
 from allowlist import ALLOWED_MODULES  # noqa: E402
+
 sys.path.remove(_lockdown_dir)
 
 # ---------------------------------------------------------------------------
@@ -31,6 +32,7 @@ sys.path.remove(_lockdown_dir)
 # Site-packages modules are always allowed (mechestim, zmq, msgpack, etc.)
 _site_packages = sysconfig.get_paths()["purelib"]
 _platlib = sysconfig.get_paths()["platlib"]
+
 
 def _is_site_package(name: str) -> bool:
     """Check if a module name comes from site-packages (always allowed)."""
@@ -94,10 +96,13 @@ _original_import = builtins.__import__
 # 5. Neuter dangerous builtins
 # ---------------------------------------------------------------------------
 
+
 def _disabled(name: str):
     """Return a function that raises RuntimeError when called."""
+
     def _blocked(*args, **kwargs):
         raise RuntimeError(f"{name}() is disabled in the mechestim sandbox")
+
     _blocked.__name__ = name
     _blocked.__qualname__ = name
     return _blocked

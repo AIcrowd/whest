@@ -161,7 +161,9 @@ def _rich_summary():
     has_explicit = explicit_budget > 0
     display_budget = explicit_budget if has_explicit else data["flop_budget"]
     display_used = explicit_used
-    display_remaining = display_budget - display_used if has_explicit else data["flops_remaining"]
+    display_remaining = (
+        display_budget - display_used if has_explicit else data["flops_remaining"]
+    )
     color = _usage_color(display_used, display_budget) if has_explicit else "green"
 
     # Session totals bar
