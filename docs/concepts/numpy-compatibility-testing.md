@@ -12,36 +12,48 @@ NumPy test file                conftest.py               mechestim
   asserts result              (monkeypatch)              (FLOP-counted)
 ```
 
+### Avoiding infinite recursion
+
+mechestim functions internally call numpy (e.g., `me.dot` calls `_np.dot`). Since `_np` IS the numpy module, patching `numpy.dot = me.dot` would cause infinite recursion: `me.dot` → `_np.dot` → `numpy.dot` → `me.dot` → ...
+
+We solve this by **freezing numpy before patching**: the conftest creates a snapshot of the numpy module (and its submodules like `numpy.linalg`, `numpy.fft`), then rebinds every mechestim module's `_np` reference to the frozen copy. Now mechestim's internal calls go to the original numpy functions, while the test suite sees mechestim's versions.
+
+```python
+# Simplified flow in conftest.py:
+frozen_np = freeze_numpy()           # snapshot of original numpy
+rebind_mechestim_np(frozen_np)       # me._np → frozen copy
+patch_numpy()                        # np.sum = me.sum, etc.
+# Now: test calls np.sum → me.sum → frozen_np.sum (original) ✓
+```
+
 ## What gets patched
 
-Of mechestim's 482 registered functions, **55 are patched** onto numpy during testing. The rest are skipped for specific reasons:
+Of mechestim's 482 registered functions, most non-ufunc functions are patched onto numpy during testing. The only categories skipped:
 
 | Category | Count | Why skipped |
 |----------|-------|-------------|
-| **Patched** | 55 | Non-ufunc reductions and special functions |
-| Ufuncs | 101 | mechestim functions are plain callables, not ufuncs -- they lack `.reduce`, `.accumulate`, `.outer`, `.nargs` |
-| Free ops | 220 | Pure pass-throughs that delegate to numpy. Patching causes infinite recursion |
-| Counted custom | 36 | `dot`, `matmul`, `einsum`, etc. call `_np.func()` via module lookup. Same recursion issue |
-| Submodule | 38 | `linalg.*`, `fft.*`. Same recursion issue |
+| Ufuncs | 101 | mechestim functions are plain callables, not ufuncs -- they lack `.reduce`, `.accumulate`, `.outer`, `.nargs`. Tests check these attributes at collection time. |
 | Blacklisted | 32 | Intentionally unsupported |
+| `linalg.outer` | 1 | `me.linalg.outer` delegates to `np.outer` (not `np.linalg.outer`), which has different validation behavior |
 
-The patched functions include: `all`, `any`, `amax`, `amin`, `argmax`, `argmin`, `average`, `cumsum`, `cumprod`, `mean`, `median`, `std`, `var`, `sum`, `prod`, `isclose`, `real`, `imag`, and more.
+Everything else -- free ops, counted custom ops (dot, einsum, etc.), submodule functions (linalg, fft), reductions, and special functions -- is patched.
 
 ## Test suites
 
-We run 8 NumPy test modules covering core math, ufuncs, numerics, linear algebra, FFT, polynomials, and random:
+We run 7 NumPy test modules covering core math, ufuncs, numerics, linear algebra, FFT, polynomials, and random:
 
-| Suite | Module | Tests |
-|-------|--------|-------|
-| Core math | `numpy._core.tests.test_umath` | 4,668 |
-| Ufunc infrastructure | `numpy._core.tests.test_ufunc` | 795 |
-| Numeric operations | `numpy._core.tests.test_numeric` | 1,597 |
-| Linear algebra | `numpy.linalg.tests.test_linalg` | 436 |
-| FFT | `numpy.fft.tests.test_pocketfft` | 148 |
-| FFT helpers | `numpy.fft.tests.test_helper` | 8 |
-| Polynomials | `numpy.polynomial.tests.test_polynomial` | 38 |
-| Random | `numpy.random.tests.test_random` | 142 |
-| **Total** | | **7,832** |
+| Suite | Module | Passed | xfailed |
+|-------|--------|--------|---------|
+| Core math | `numpy._core.tests.test_umath` | 4,668 | 13 |
+| Ufunc infrastructure | `numpy._core.tests.test_ufunc` | 795 | 7 |
+| Numeric operations | `numpy._core.tests.test_numeric` | 1,560 | 20 |
+| Linear algebra | `numpy.linalg.tests.test_linalg` | 48 | 255 |
+| FFT | `numpy.fft.tests.test_pocketfft` | 114 | 34 |
+| Polynomials | `numpy.polynomial.tests.test_polynomial` | 36 | 2 |
+| Random | `numpy.random.tests.test_random` | 142 | 0 |
+| **Total** | | **7,363** | **331** |
+
+All failures are tracked as xfails in `tests/numpy_compat/xfails.py`.
 
 ## Running the tests
 
@@ -67,17 +79,19 @@ The numpy_compat tests are excluded from the default `pytest` run (via `pyprojec
 
 Tests that fail due to known, accepted differences are tracked in `tests/numpy_compat/xfails.py`. Each entry maps a test pattern to a categorized reason:
 
-| Category | Meaning |
-|----------|---------|
-| `UNSUPPORTED_DTYPE` | mechestim doesn't support this dtype (timedelta, etc.) |
-| `NOT_IMPLEMENTED` | Function exists but lacks a kwarg or edge case behavior |
-| `UFUNC_INTERNALS` | Test relies on ufunc protocol mechestim doesn't implement |
-| `BUDGET_SIDE_EFFECT` | Test assumes no global state changes |
-| `NUMPY_INTERNAL` | Test uses numpy internals unrelated to our functions |
+| Category | Meaning | Examples |
+|----------|---------|---------|
+| `NOT_IMPLEMENTED` | Function exists but lacks a kwarg or edge case | Missing `out=`, `where=`, `subok=` kwargs |
+| `UNSUPPORTED_DTYPE` | mechestim doesn't support this dtype | timedelta, object arrays |
+| `UFUNC_INTERNALS` | Test relies on ufunc protocol | `.reduce`, `__array_ufunc__` |
+| `BUDGET_SIDE_EFFECT` | Test assumes no global state changes | Budget deduction during assertions |
+| `NUMPY_INTERNAL` | Test uses numpy internals | `_umath_tests`, internal type tables |
 
-To triage new failures:
+The linalg suite has the most xfails (255) because mechestim's linalg wrappers don't support stacked/batched arrays, 0-size arrays, or some advanced kwargs that numpy's linalg tests exercise extensively.
 
-1. Run a suite and look at failures: `uv run pytest tests/numpy_compat/ --pyargs <module> -n auto --tb=line`
+### Triaging new failures
+
+1. Run a suite: `uv run pytest tests/numpy_compat/ --pyargs <module> -n auto --tb=line`
 2. Categorize each failure
 3. If it's a bug we should fix, create an issue
 4. If it's an accepted divergence, add it to `xfails.py`
@@ -88,6 +102,4 @@ We considered alternatives:
 
 - **Array subclass with `__array_ufunc__`**: Would intercept ufunc calls, but mechestim arrays are plain `numpy.ndarray` by design -- no custom tensor class.
 - **Running tests with `import mechestim as np`**: NumPy's test files import from `numpy._core`, `numpy.testing`, etc. -- can't redirect all internal imports.
-- **Monkeypatching**: Simple, works with NumPy's existing test infrastructure, and tests exactly what users experience (same function signatures and behavior).
-
-The trade-off is that ufuncs and internally-delegating functions can't be patched. But the 55 functions we do patch (reductions, special functions) cover the most common compatibility surface.
+- **Monkeypatching with frozen numpy**: Simple, works with NumPy's existing test infrastructure, tests exactly what users experience (same function signatures), and the frozen-numpy trick prevents infinite recursion.
