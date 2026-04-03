@@ -85,6 +85,7 @@ nav:
   - Concepts:
     - FLOP Counting Model: concepts/flop-counting-model.md
     - Operation Categories: concepts/operation-categories.md
+    - NumPy Compatibility Testing: concepts/numpy-compatibility-testing.md
   - Architecture:
     - Client-Server Model: architecture/client-server.md
     - Running with Docker: architecture/docker.md

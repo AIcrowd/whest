@@ -41,7 +41,12 @@ test:  ## Run pytest with coverage
 test-numpy-compat:  ## Run NumPy's own tests against mechestim
 	$(UV) pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_umath -n auto -q
 	$(UV) pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_ufunc -n auto -q
+	$(UV) pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_numeric -n auto -q
 	$(UV) pytest tests/numpy_compat/ --pyargs numpy.linalg.tests.test_linalg -n auto -q
+	$(UV) pytest tests/numpy_compat/ --pyargs numpy.fft.tests.test_pocketfft -n auto -q
+	$(UV) pytest tests/numpy_compat/ --pyargs numpy.fft.tests.test_helper -n auto -q
+	$(UV) pytest tests/numpy_compat/ --pyargs numpy.polynomial.tests.test_polynomial -n auto -q
+	$(UV) pytest tests/numpy_compat/ --pyargs numpy.random.tests.test_random -n auto -q
 
 # ---------------------------------------------------------------------------
 # Docs  (mirrors: CI → docs job)
