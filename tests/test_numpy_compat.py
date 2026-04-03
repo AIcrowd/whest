@@ -194,7 +194,9 @@ class TestInputCoercion:
         assert numpy.allclose(me.clip([1, 5, 10], 2, 8), numpy.clip([1, 5, 10], 2, 8))
 
     def test_dot_lists(self):
-        assert numpy.allclose(me.dot([1, 2, 3], [4, 5, 6]), numpy.dot([1, 2, 3], [4, 5, 6]))
+        assert numpy.allclose(
+            me.dot([1, 2, 3], [4, 5, 6]), numpy.dot([1, 2, 3], [4, 5, 6])
+        )
 
     def test_linalg_solve_lists(self):
         A = [[1.0, 2.0], [3.0, 4.0]]
