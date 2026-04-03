@@ -6,7 +6,7 @@ from __future__ import annotations
 import numpy as _np
 
 from mechestim._docstrings import attach_docstring
-from mechestim._validation import require_budget, validate_ndarray
+from mechestim._validation import require_budget
 
 
 def unwrap_cost(shape: tuple[int, ...]) -> int:

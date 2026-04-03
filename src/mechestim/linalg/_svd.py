@@ -5,7 +5,7 @@ from __future__ import annotations
 import numpy as _np
 
 from mechestim._flops import svd_cost
-from mechestim._validation import check_nan_inf, require_budget, validate_ndarray
+from mechestim._validation import check_nan_inf, require_budget
 
 
 def svd(

@@ -7,7 +7,7 @@ import math
 import numpy as _np
 
 from mechestim._docstrings import attach_docstring
-from mechestim._validation import require_budget, validate_ndarray
+from mechestim._validation import require_budget
 
 
 def _popcount(n: int) -> int:

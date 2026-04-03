@@ -7,7 +7,7 @@ import numpy as _np
 
 from mechestim._docstrings import attach_docstring
 from mechestim._symmetric import SymmetricTensor, as_symmetric
-from mechestim._validation import require_budget, validate_ndarray
+from mechestim._validation import require_budget
 
 
 def solve_cost(n: int, nrhs: int = 1, symmetric: bool = False) -> int:
