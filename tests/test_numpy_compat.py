@@ -170,3 +170,36 @@ class TestFreeOps:
         assert me.pi == numpy.pi
         assert me.inf == numpy.inf
         assert me.ndarray is numpy.ndarray
+
+
+class TestInputCoercion:
+    """Verify mechestim accepts scalars, lists, and arrays like NumPy."""
+
+    def test_unary_scalar(self):
+        assert numpy.allclose(me.sqrt(0.5), numpy.sqrt(0.5))
+
+    def test_unary_python_int(self):
+        assert numpy.allclose(me.exp(1), numpy.exp(1))
+
+    def test_unary_list(self):
+        assert numpy.allclose(me.sqrt([0.25, 1.0, 4.0]), numpy.sqrt([0.25, 1.0, 4.0]))
+
+    def test_reduction_scalar(self):
+        assert numpy.allclose(me.sum(5.0), numpy.sum(5.0))
+
+    def test_reduction_list(self):
+        assert numpy.allclose(me.sum([1, 2, 3]), numpy.sum([1, 2, 3]))
+
+    def test_clip_list(self):
+        assert numpy.allclose(me.clip([1, 5, 10], 2, 8), numpy.clip([1, 5, 10], 2, 8))
+
+    def test_dot_lists(self):
+        assert numpy.allclose(me.dot([1, 2, 3], [4, 5, 6]), numpy.dot([1, 2, 3], [4, 5, 6]))
+
+    def test_linalg_solve_lists(self):
+        A = [[1.0, 2.0], [3.0, 4.0]]
+        b = [5.0, 6.0]
+        assert numpy.allclose(me.linalg.solve(A, b), numpy.linalg.solve(A, b))
+
+    def test_fft_list(self):
+        assert numpy.allclose(me.fft.fft([1, 2, 3, 4]), numpy.fft.fft([1, 2, 3, 4]))

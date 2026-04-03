@@ -61,8 +61,7 @@ def multi_dot_cost(shapes: list[tuple[int, ...]]) -> int:
 def multi_dot(arrays, *, out=None):
     """Efficient multi-matrix dot product with FLOP counting."""
     budget = require_budget()
-    for arr in arrays:
-        validate_ndarray(arr)
+    arrays = [a if isinstance(a, _np.ndarray) else _np.asarray(a) for a in arrays]
     shapes = [arr.shape for arr in arrays]
     cost = multi_dot_cost(shapes)
     budget.deduct(
@@ -107,7 +106,8 @@ def matrix_power_cost(n: int, k: int) -> int:
 def matrix_power(a, n):
     """Matrix power with FLOP counting."""
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if a.ndim != 2 or a.shape[0] != a.shape[1]:
         raise ValueError(f"Input must be square 2D array, got shape {a.shape}")
     size = a.shape[0]

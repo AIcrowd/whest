@@ -40,7 +40,8 @@ def solve_cost(n: int, nrhs: int = 1, symmetric: bool = False) -> int:
 def solve(a, b):
     """Solve linear system with FLOP counting."""
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if a.ndim != 2 or a.shape[0] != a.shape[1]:
         raise ValueError(f"First argument must be square 2D array, got shape {a.shape}")
     n = a.shape[0]
@@ -89,7 +90,8 @@ def inv_cost(n: int, symmetric: bool = False) -> int:
 def inv(a):
     """Matrix inverse with FLOP counting."""
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if a.ndim != 2 or a.shape[0] != a.shape[1]:
         raise ValueError(f"Input must be square 2D array, got shape {a.shape}")
     n = a.shape[0]
@@ -135,7 +137,8 @@ def lstsq_cost(m: int, n: int) -> int:
 def lstsq(a, b, rcond=None):
     """Least-squares solution with FLOP counting."""
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if a.ndim != 2:
         raise ValueError(f"First argument must be 2D, got {a.ndim}D")
     m, n = a.shape
@@ -174,7 +177,8 @@ def pinv_cost(m: int, n: int) -> int:
 def pinv(a, rcond=None, hermitian=False):
     """Pseudoinverse with FLOP counting."""
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if a.ndim != 2:
         raise ValueError(f"Input must be 2D, got {a.ndim}D")
     m, n = a.shape
@@ -221,7 +225,8 @@ def tensorsolve_cost(a_shape: tuple, ind: int | None = None) -> int:
 def tensorsolve(a, b, axes=None):
     """Tensor solve with FLOP counting."""
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     cost = tensorsolve_cost(a.shape)
     budget.deduct(
         "linalg.tensorsolve", flop_cost=cost, subscripts=None, shapes=(a.shape,)
@@ -265,7 +270,8 @@ def tensorinv_cost(a_shape: tuple, ind: int = 2) -> int:
 def tensorinv(a, ind=2):
     """Tensor inverse with FLOP counting."""
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     cost = tensorinv_cost(a.shape, ind=ind)
     budget.deduct(
         "linalg.tensorinv", flop_cost=cost, subscripts=None, shapes=(a.shape,)

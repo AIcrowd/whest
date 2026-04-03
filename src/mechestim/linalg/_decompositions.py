@@ -37,7 +37,8 @@ def cholesky_cost(n: int) -> int:
 def cholesky(a):
     """Cholesky decomposition with FLOP counting."""
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if a.ndim != 2 or a.shape[0] != a.shape[1]:
         raise ValueError(f"Input must be square 2D array, got shape {a.shape}")
     n = a.shape[0]
@@ -77,7 +78,8 @@ def qr_cost(m: int, n: int) -> int:
 def qr(a, mode="reduced"):
     """QR decomposition with FLOP counting."""
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if a.ndim != 2:
         raise ValueError(f"Input must be 2D, got {a.ndim}D")
     m, n = a.shape
@@ -116,7 +118,8 @@ def eig_cost(n: int) -> int:
 def eig(a):
     """Eigendecomposition with FLOP counting."""
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if a.ndim != 2 or a.shape[0] != a.shape[1]:
         raise ValueError(f"Input must be square 2D array, got shape {a.shape}")
     n = a.shape[0]
@@ -153,7 +156,8 @@ def eigh_cost(n: int) -> int:
 def eigh(a, UPLO="L"):
     """Symmetric eigendecomposition with FLOP counting."""
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if a.ndim != 2 or a.shape[0] != a.shape[1]:
         raise ValueError(f"Input must be square 2D array, got shape {a.shape}")
     n = a.shape[0]
@@ -192,7 +196,8 @@ def eigvals_cost(n: int) -> int:
 def eigvals(a):
     """Eigenvalues (nonsymmetric) with FLOP counting."""
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if a.ndim != 2 or a.shape[0] != a.shape[1]:
         raise ValueError(f"Input must be square 2D array, got shape {a.shape}")
     n = a.shape[0]
@@ -227,7 +232,8 @@ def eigvalsh_cost(n: int) -> int:
 def eigvalsh(a, UPLO="L"):
     """Eigenvalues (symmetric) with FLOP counting."""
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if a.ndim != 2 or a.shape[0] != a.shape[1]:
         raise ValueError(f"Input must be square 2D array, got shape {a.shape}")
     n = a.shape[0]
@@ -264,7 +270,8 @@ def svdvals_cost(m: int, n: int) -> int:
 def svdvals(a):
     """Singular values with FLOP counting."""
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if a.ndim != 2:
         raise ValueError(f"Input must be 2D, got {a.ndim}D")
     m, n = a.shape

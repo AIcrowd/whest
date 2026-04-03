@@ -27,6 +27,18 @@ def validate_ndarray(*arrays: object) -> None:
             raise TypeError(f"Expected numpy.ndarray, got {type(arr).__name__}")
 
 
+def coerce_array(x):
+    """Convert input to ndarray if not already one, matching NumPy's behavior."""
+    if isinstance(x, np.ndarray):
+        return x
+    return np.asarray(x)
+
+
+def coerce_arrays(*arrays):
+    """Convert multiple inputs to ndarrays."""
+    return tuple(coerce_array(a) for a in arrays)
+
+
 def check_nan_inf(result: np.ndarray, op_name: str) -> None:
     """Issue a warning if result contains NaN or Inf values."""
     if not isinstance(result, np.ndarray):

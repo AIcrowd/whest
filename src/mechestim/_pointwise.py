@@ -19,7 +19,8 @@ from mechestim._validation import check_nan_inf, require_budget, validate_ndarra
 def _counted_unary(np_func, op_name: str):
     def wrapper(x):
         budget = require_budget()
-        validate_ndarray(x)
+        if not isinstance(x, _np.ndarray):
+            x = _np.asarray(x)
         sym_info = x.symmetry_info if isinstance(x, SymmetricTensor) else None
         cost = pointwise_cost(x.shape, symmetry_info=sym_info)
         budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(x.shape,))
@@ -40,7 +41,8 @@ def _counted_unary_multi(np_func, op_name: str):
 
     def wrapper(x):
         budget = require_budget()
-        validate_ndarray(x)
+        if not isinstance(x, _np.ndarray):
+            x = _np.asarray(x)
         cost = pointwise_cost(x.shape)
         budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(x.shape,))
         result = np_func(x)
@@ -128,7 +130,8 @@ def _counted_reduction(
 ):
     def wrapper(a, axis=None, **kwargs):
         budget = require_budget()
-        validate_ndarray(a)
+        if not isinstance(a, _np.ndarray):
+            a = _np.asarray(a)
         sym_info = a.symmetry_info if isinstance(a, SymmetricTensor) else None
         cost = reduction_cost(a.shape, axis, symmetry_info=sym_info) * cost_multiplier
         result = np_func(a, axis=axis, **kwargs)
@@ -321,7 +324,8 @@ divmod = _counted_binary_multi(_np.divmod, "divmod")
 def clip(a, a_min, a_max):
     """Counted version of np.clip. Cost = numel(input) or unique_elements if symmetric."""
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     sym_info = a.symmetry_info if isinstance(a, SymmetricTensor) else None
     cost = pointwise_cost(a.shape, symmetry_info=sym_info)
     budget.deduct("clip", flop_cost=cost, subscripts=None, shapes=(a.shape,))
@@ -389,7 +393,8 @@ else:
     def ptp(a, axis=None, **kwargs):
         """Peak-to-peak range. Cost = numel(input) FLOPs."""
         budget = require_budget()
-        validate_ndarray(a)
+        if not isinstance(a, _np.ndarray):
+            a = _np.asarray(a)
         cost = reduction_cost(a.shape, axis)
         budget.deduct("ptp", flop_cost=cost, subscripts=None, shapes=(a.shape,))
         return _np.max(a, axis=axis, **kwargs) - _np.min(a, axis=axis, **kwargs)
@@ -405,7 +410,10 @@ else:
 def dot(a, b):
     """Counted version of np.dot."""
     budget = require_budget()
-    validate_ndarray(a, b)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
+    if not isinstance(b, _np.ndarray):
+        b = _np.asarray(b)
     # Extract symmetry info for cost calculation
     operand_symmetries = [
         a.symmetry_info if isinstance(a, SymmetricTensor) else None,
@@ -438,7 +446,10 @@ attach_docstring(dot, _np.dot, "counted_custom", "depends on operand dimensions"
 def matmul(a, b):
     """Counted version of np.matmul."""
     budget = require_budget()
-    validate_ndarray(a, b)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
+    if not isinstance(b, _np.ndarray):
+        b = _np.asarray(b)
     # Extract symmetry info for cost calculation
     operand_symmetries = [
         a.symmetry_info if isinstance(a, SymmetricTensor) else None,
@@ -591,7 +602,8 @@ attach_docstring(cross, _np.cross, "counted_custom", "output_size * 3 FLOPs")
 def diff(a, n=1, axis=-1, **kwargs):
     """Counted version of np.diff."""
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     result = _np.diff(a, n=n, axis=axis, **kwargs)
     budget.deduct(
         "diff",
@@ -608,7 +620,8 @@ attach_docstring(diff, _np.diff, "counted_custom", "numel(output) FLOPs")
 def gradient(f, *varargs, **kwargs):
     """Counted version of np.gradient."""
     budget = require_budget()
-    validate_ndarray(f)
+    if not isinstance(f, _np.ndarray):
+        f = _np.asarray(f)
     budget.deduct("gradient", flop_cost=f.size, subscripts=None, shapes=(f.shape,))
     return _np.gradient(f, *varargs, **kwargs)
 

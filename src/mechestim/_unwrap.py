@@ -34,7 +34,8 @@ def unwrap_cost(shape: tuple[int, ...]) -> int:
 
 def unwrap(p, discont=None, axis=-1, *, period=6.283185307179586):
     budget = require_budget()
-    validate_ndarray(p)
+    if not isinstance(p, _np.ndarray):
+        p = _np.asarray(p)
     cost = unwrap_cost(p.shape)
     budget.deduct("unwrap", flop_cost=cost, subscripts=None, shapes=(p.shape,))
     kwargs = {"axis": axis, "period": period}

@@ -33,7 +33,8 @@ def trace_cost(n: int) -> int:
 def trace(a, offset=0, axis1=0, axis2=1, dtype=None, out=None):
     """Matrix trace with FLOP counting."""
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     n = min(a.shape[axis1], a.shape[axis2])
     if offset > 0:
         n = min(n, a.shape[axis2] - offset)
@@ -76,7 +77,8 @@ def det_cost(n: int, symmetric: bool = False) -> int:
 def det(a):
     """Determinant with FLOP counting."""
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if a.ndim != 2 or a.shape[0] != a.shape[1]:
         raise ValueError(f"Input must be square 2D array, got shape {a.shape}")
     n = a.shape[0]
@@ -122,7 +124,8 @@ def slogdet_cost(n: int, symmetric: bool = False) -> int:
 def slogdet(a):
     """Sign and log-determinant with FLOP counting."""
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if a.ndim != 2 or a.shape[0] != a.shape[1]:
         raise ValueError(f"Input must be square 2D array, got shape {a.shape}")
     n = a.shape[0]
@@ -187,7 +190,8 @@ def norm_cost(shape: tuple, ord=None) -> int:
 def norm(x, ord=None, axis=None, keepdims=False):
     """Matrix or vector norm with FLOP counting."""
     budget = require_budget()
-    validate_ndarray(x)
+    if not isinstance(x, _np.ndarray):
+        x = _np.asarray(x)
     if axis is None:
         effective_shape = x.shape
     elif isinstance(axis, int):
@@ -236,7 +240,8 @@ def vector_norm_cost(shape: tuple, ord=None) -> int:
 def vector_norm(x, ord=2, axis=None, keepdims=False):
     """Vector norm with FLOP counting."""
     budget = require_budget()
-    validate_ndarray(x)
+    if not isinstance(x, _np.ndarray):
+        x = _np.asarray(x)
     if axis is not None:
         if isinstance(axis, int):
             effective_shape = (x.shape[axis],)
@@ -292,7 +297,8 @@ def matrix_norm_cost(shape: tuple, ord=None) -> int:
 def matrix_norm(x, ord="fro", keepdims=False):
     """Matrix norm with FLOP counting."""
     budget = require_budget()
-    validate_ndarray(x)
+    if not isinstance(x, _np.ndarray):
+        x = _np.asarray(x)
     cost = matrix_norm_cost(x.shape, ord=ord)
     budget.deduct(
         "linalg.matrix_norm", flop_cost=cost, subscripts=None, shapes=(x.shape,)
@@ -330,7 +336,8 @@ def cond_cost(m: int, n: int) -> int:
 def cond(x, p=None):
     """Condition number with FLOP counting."""
     budget = require_budget()
-    validate_ndarray(x)
+    if not isinstance(x, _np.ndarray):
+        x = _np.asarray(x)
     if x.ndim != 2:
         raise ValueError(f"Input must be 2D, got {x.ndim}D")
     m, n = x.shape
@@ -369,7 +376,8 @@ def matrix_rank_cost(m: int, n: int) -> int:
 def matrix_rank(A, tol=None, hermitian=False):
     """Matrix rank with FLOP counting."""
     budget = require_budget()
-    validate_ndarray(A)
+    if not isinstance(A, _np.ndarray):
+        A = _np.asarray(A)
     if A.ndim != 2:
         raise ValueError(f"Input must be 2D, got {A.ndim}D")
     m, n = A.shape

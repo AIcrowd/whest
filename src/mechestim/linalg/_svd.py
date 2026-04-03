@@ -54,7 +54,8 @@ def svd(
     numpy.linalg.svd : Full NumPy SVD documentation.
     """
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if a.ndim != 2:
         raise ValueError(f"Input must be 2D, got {a.ndim}D")
     m, n = a.shape

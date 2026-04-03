@@ -139,7 +139,8 @@ def hfft_cost(n_out: int) -> int:
 # 1-D transforms
 def fft(a, n=None, axis=-1, norm=None):
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if n is None:
         n = a.shape[axis]
     cost = fft_cost(n)
@@ -154,7 +155,8 @@ attach_docstring(
 
 def ifft(a, n=None, axis=-1, norm=None):
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if n is None:
         n = a.shape[axis]
     cost = fft_cost(n)
@@ -169,7 +171,8 @@ attach_docstring(
 
 def rfft(a, n=None, axis=-1, norm=None):
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if n is None:
         n = a.shape[axis]
     cost = rfft_cost(n)
@@ -184,7 +187,8 @@ attach_docstring(
 
 def irfft(a, n=None, axis=-1, norm=None):
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if n is None:
         n = 2 * (a.shape[axis] - 1)
     cost = rfft_cost(n)
@@ -200,7 +204,8 @@ attach_docstring(
 # 2-D transforms
 def fft2(a, s=None, axes=(-2, -1), norm=None):
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if s is None:
         s = tuple(a.shape[ax] for ax in axes)
     cost = fftn_cost(s)
@@ -218,7 +223,8 @@ attach_docstring(
 
 def ifft2(a, s=None, axes=(-2, -1), norm=None):
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if s is None:
         s = tuple(a.shape[ax] for ax in axes)
     cost = fftn_cost(s)
@@ -236,7 +242,8 @@ attach_docstring(
 
 def rfft2(a, s=None, axes=(-2, -1), norm=None):
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if s is None:
         s = tuple(a.shape[ax] for ax in axes)
     cost = rfftn_cost(s)
@@ -254,7 +261,8 @@ attach_docstring(
 
 def irfft2(a, s=None, axes=(-2, -1), norm=None):
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if s is None:
         s = (a.shape[axes[0]], 2 * (a.shape[axes[1]] - 1))
     cost = rfftn_cost(s)
@@ -273,7 +281,8 @@ attach_docstring(
 # N-D transforms
 def fftn(a, s=None, axes=None, norm=None):
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if s is None:
         s = a.shape if axes is None else tuple(a.shape[ax] for ax in axes)
     cost = fftn_cost(s)
@@ -291,7 +300,8 @@ attach_docstring(
 
 def ifftn(a, s=None, axes=None, norm=None):
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if s is None:
         s = a.shape if axes is None else tuple(a.shape[ax] for ax in axes)
     cost = fftn_cost(s)
@@ -309,7 +319,8 @@ attach_docstring(
 
 def rfftn(a, s=None, axes=None, norm=None):
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if s is None:
         s = a.shape if axes is None else tuple(a.shape[ax] for ax in axes)
     cost = rfftn_cost(s)
@@ -327,7 +338,8 @@ attach_docstring(
 
 def irfftn(a, s=None, axes=None, norm=None):
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if s is None:
         if axes is None:
             s = tuple(
@@ -355,7 +367,8 @@ attach_docstring(
 # Hermitian transforms
 def hfft(a, n=None, axis=-1, norm=None):
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if n is None:
         n = 2 * (a.shape[axis] - 1)
     cost = hfft_cost(n)
@@ -373,7 +386,8 @@ attach_docstring(
 
 def ihfft(a, n=None, axis=-1, norm=None):
     budget = require_budget()
-    validate_ndarray(a)
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
     if n is None:
         n = a.shape[axis]
     cost = hfft_cost(n)
