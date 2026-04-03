@@ -32,18 +32,20 @@ import numpy as np
 
 depth, width = 5, 256
 
-# Weight init (like nn.Linear + He scaling)
+# Weight init (He scaling)
 scale = np.sqrt(2 / width)
-weights = [np.random.randn(width, width) * scale
-           for _ in range(depth)]
+weights = [
+    np.random.randn(width, width) * scale
+    for _ in range(depth)
+]
 
 # Forward pass
 x = np.random.randn(width)
 h = x
 for i, W in enumerate(weights):
-    h = np.einsum('ij,j->i', W, h)   # linear layer
+    h = np.einsum('ij,j->i', W, h)
     if i < depth - 1:
-        h = np.maximum(h, 0)         # ReLU
+        h = np.maximum(h, 0)
 # Total FLOPs? No idea.
 ```
 
@@ -55,20 +57,21 @@ import mechestim as me
 
 depth, width = 5, 256
 
-with me.BudgetContext(flop_budget=10**8) as b:
-    # Weight init — randn is free, multiply is counted
-    scale = me.sqrt(me.array(2 / width))
-    weights = [me.multiply(me.random.randn(width, width), scale)
-               for _ in range(depth)]
+# Weight init (randn is free)
+scale = me.sqrt(me.array(2 / width))
+weights = [
+    me.multiply(me.random.randn(width, width), scale)
+    for _ in range(depth)
+]
 
-    # Forward pass
-    x = me.random.randn(width)
-    h = x
-    for i, W in enumerate(weights):
-        h = me.einsum('ij,j->i', W, h)    # linear layer
-        if i < depth - 1:
-            h = me.maximum(h, 0)           # ReLU
-    print(f"Total: {b.flops_used:,} FLOPs")  # 656,385
+# Forward pass
+x = me.random.randn(width)
+h = x
+for i, W in enumerate(weights):
+    h = me.einsum('ij,j->i', W, h)
+    if i < depth - 1:
+        h = me.maximum(h, 0)
+me.budget_summary()  # 656,385 FLOPs
 ```
 
 </td>
@@ -174,14 +177,14 @@ with me.BudgetContext(flop_budget=10**8) as budget:
 
 ## How It Works
 
-1. **All computation runs inside a `BudgetContext`.** There is no separate precomputation phase. Free ops (tensor creation, reshaping) cost 0 FLOPs and can be called without restriction.
+1. **FLOPs are tracked automatically.** A global default budget activates on first use, or you can wrap code in an explicit `BudgetContext` for a custom limit. Free ops (tensor creation, reshaping) cost 0 FLOPs.
 2. **FLOP costs are analytical.** Costs are computed from tensor shapes, not measured from execution. A matmul of `(m, k) @ (k, n)` always costs `m * k * n` FLOPs regardless of hardware.
 3. **Budget is checked before execution.** If an operation would exceed the remaining budget, `BudgetExhaustedError` is raised and the operation does not run.
 4. **All tensors are plain `numpy.ndarray`.** There is no custom tensor class and no hidden state. You can pass mechestim arrays to any NumPy-compatible library.
 
 ## Sharp Edges
 
-**Budget is mandatory.** Calling any counted operation outside a `BudgetContext` raises `NoBudgetContextError`. Wrap your entire computation in a single `with me.BudgetContext(...)` block.
+**Budget is always active.** A global default budget (1e15 FLOPs, configurable via `MECHESTIM_DEFAULT_BUDGET` env var) activates automatically. Use an explicit `BudgetContext` to set a custom limit.
 
 **32 operations are blocked.** I/O, config, and system-level functions (`save`, `load`, `set_printoptions`, etc.) raise `AttributeError` by design. These have no meaningful FLOP cost and are not part of the competition API.
 

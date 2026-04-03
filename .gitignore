@@ -1,3 +1,5 @@
+.aicrowd/
+
 # Python bytecode & build artifacts
 __pycache__/
 *.pyc
