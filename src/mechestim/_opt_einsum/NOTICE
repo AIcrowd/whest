@@ -1,0 +1,11 @@
+This package is a modified fork of opt_einsum by Daniel G. A. Smith et al.
+Original repository: https://github.com/dgasmith/opt_einsum
+Original license: MIT (see LICENSE in this directory)
+
+Modifications:
+- Removed execution logic (_core_contract, contract), backend dispatch,
+  sharing/caching layer, and non-numpy backends
+- Added symmetry-aware path finding: IndexSymmetry type, symmetry propagation,
+  symmetry-aware FLOP counting, and symmetry-aware cost heuristics
+- Restructured as an internal subpackage (no external dependencies beyond
+  Python stdlib + numpy)
