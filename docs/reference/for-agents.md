@@ -64,7 +64,7 @@ everything in one request.
   "free": false,
   "blocked": false,
   "status": "supported",
-  "notes": "Supports symmetry detection for repeated operands"
+  "notes": "Supports symmetric tensors for automatic cost reduction"
 }
 ```
 

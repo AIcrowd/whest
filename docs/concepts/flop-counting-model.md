@@ -16,7 +16,7 @@ Use this page to understand how mechestim counts FLOPs and why it uses analytica
 mechestim computes FLOP costs **analytically from tensor shapes**, not by measuring execution time.
 
 1. You call a counted operation (e.g., `me.einsum('ij,j->i', W, x)`)
-2. mechestim computes the cost from the shapes: 256 × 256 = 65,536 FLOPs
+2. mechestim computes the cost from the shapes: 2 × 256 × 256 = 131,072 FLOPs
 3. The cost is checked against the remaining budget
 4. If within budget: the operation executes and the cost is deducted
 5. If over budget: `BudgetExhaustedError` is raised, the operation does **not** execute
@@ -25,13 +25,13 @@ mechestim computes FLOP costs **analytically from tensor shapes**, not by measur
 
 | Category | Formula | Example |
 |----------|---------|---------|
-| **Einsum** | Product of all index dimensions | `'ij,jk->ik'` with (256,256) × (256,256) → $256^3$ |
+| **Einsum** | Per-step: product of dims × op_factor | `'ij,jk->ik'` → 2 × 3 × 4 × 5 = 120 |
 | **Unary** (exp, log, sqrt, ...) | $\text{numel}(\text{output})$ | shape (256, 256) → 65,536 |
 | **Binary** (add, multiply, ...) | $\text{numel}(\text{output})$ | shape (256, 256) → 65,536 |
 | **Reduction** (sum, mean, max, ...) | $\text{numel}(\text{input})$ | shape (256, 256) → 65,536 |
 | **SVD** | $m \cdot n \cdot k$ | (256, 256, k=10) → 655,360 |
 | **Solve** | $2n^3/3 + n^2 \cdot n_{\text{rhs}}$ (LU) | (256, 256) solve → ~11.1M |
-| **Dot / Matmul** | Equivalent einsum cost | (256, 256) @ (256, 256) → $256^3$ |
+| **Dot / Matmul** | Same as einsum | (256, 256) @ (256, 256) → 2 × 256³ |
 | **Free ops** | 0 | zeros, reshape, etc. |
 
 ## Symmetry savings
@@ -42,38 +42,45 @@ When a tensor is a `SymmetricTensor`, costs are reduced based on the number of u
 |----------|---------------|---------------|
 | **Pointwise** (unary/binary) | unique_elements | $\text{numel}(\text{output})$ |
 | **Reduction** | unique_elements | $\text{numel}(\text{input})$ |
-| **Einsum** (symmetric input) | Scaled by unique/total ratio | Full product |
-| **Einsum** (symmetric output) | Divided by group factorial | Full product |
+| **Einsum** (symmetric input) | Scaled by unique/total for surviving index groups | Full product |
 | **Solve** | $n^3/3 + n \cdot n_{\text{rhs}}$ (Cholesky) | $2n^3/3 + n^2 \cdot n_{\text{rhs}}$ (LU) |
 | **Det / Slogdet** | $n^3/3$ (Cholesky) | $n^3$ (LU) |
 | **Inv** | $n^3/3 + n^3/2$ | $n^3$ |
 
 See [Exploit Symmetry Savings](../how-to/exploit-symmetry.md) for usage details.
 
-## Multi-operand einsum cost
+## Einsum cost model
 
-For einsums with 3+ operands, mechestim decomposes the contraction into a
-sequence of pairwise steps along the optimal contraction path (found via
-opt_einsum). The optimizer is symmetry-aware in its ordering: it uses
-symmetric costs to decide which pair to contract at each step, so the
-returned path may differ from the dense-optimal path when symmetric tensors
-are present. The total cost is the sum of pairwise step costs, where each
-step's cost is reduced by the symmetry of its inputs and output:
+Every einsum — regardless of the number of operands — is decomposed into
+pairwise contraction steps along an optimal path (found via opt_einsum).
+The total cost is the sum of per-step costs:
 
 ```
 total_cost = sum(step.flop_cost for step in path.steps)
 ```
 
-The per-step cost formula correctly distinguishes between summed and
-surviving indices in symmetric groups. For a symmetric group such as S_3
-on {i,j,k}, if index i is summed out in that step, only the S_2 subgroup
-on the surviving indices {j,k} contributes a symmetry reduction. Summed
-indices receive no symmetry discount.
+For each pairwise step, the cost is:
 
-Symmetry propagates through intermediates: if an early contraction produces
-a symmetric intermediate, subsequent steps that consume it benefit from
-the reduced element count, and the optimizer factors this into its ordering
-decisions. Use `me.einsum_path()` to inspect the per-step breakdown. See
+```
+step_cost = (product of all index dimensions) × op_factor
+```
+
+where `op_factor = 2` when indices are summed (multiply + add) and
+`op_factor = 1` when no indices are summed (outer product).
+
+For a simple two-operand einsum like `'ij,jk->ik'`, there is one step,
+so the total cost equals the step cost. For multi-operand einsums (3+
+tensors), the optimizer finds the pairwise ordering that minimizes the
+total cost.
+
+When symmetric tensors are present, the optimizer is symmetry-aware: it
+uses symmetric costs to decide which pair to contract at each step, so the
+returned path may differ from the dense-optimal path. Symmetry propagates
+through intermediates — if an early contraction produces a symmetric
+intermediate, subsequent steps benefit from the reduced element count, and
+the optimizer factors this into its ordering decisions.
+
+Use `me.einsum_path()` to inspect the per-step breakdown. See
 [Use Einsum](../how-to/use-einsum.md) for examples.
 
 ## FLOP multiplier
