@@ -4,7 +4,6 @@ Covers: _format_flops, _pct edge cases, _usage_color, plain text with
 no-namespace ops section, _PlainTextLive context manager, budget_summary.
 """
 
-import io
 from unittest.mock import patch
 
 import pytest
@@ -21,10 +20,10 @@ from mechestim._display import (
     render_budget_summary,
 )
 
-
 # ---------------------------------------------------------------------------
 # Pure helper functions
 # ---------------------------------------------------------------------------
+
 
 def test_format_flops_small():
     assert _format_flops(0) == "0"
@@ -62,6 +61,7 @@ def test_usage_color_high():
 # _is_global_default_ns
 # ---------------------------------------------------------------------------
 
+
 def test_is_global_default_ns_none_with_large_budget():
     assert _is_global_default_ns(None, {"flop_budget": int(2e15)})
 
@@ -77,6 +77,7 @@ def test_is_global_default_ns_none_small_budget():
 # ---------------------------------------------------------------------------
 # _plain_text_summary — edge cases
 # ---------------------------------------------------------------------------
+
 
 def test_plain_text_summary_no_data_message():
     text = _plain_text_summary()
@@ -117,6 +118,7 @@ def test_plain_text_summary_percentages():
 # _PlainTextLive context manager
 # ---------------------------------------------------------------------------
 
+
 def test_plain_text_live_prints_on_exit(capsys):
     """_PlainTextLive prints a summary when exiting the context."""
     with patch.dict(
@@ -125,7 +127,9 @@ def test_plain_text_live_prints_on_exit(capsys):
     ):
         live = budget_live()
         with live:
-            with BudgetContext(flop_budget=100, namespace="live_test", quiet=True) as ctx:
+            with BudgetContext(
+                flop_budget=100, namespace="live_test", quiet=True
+            ) as ctx:
                 ctx.deduct("live_op", flop_cost=10, subscripts=None, shapes=())
     # The output should be captured from the plain text fallback
     captured = capsys.readouterr()
@@ -136,6 +140,7 @@ def test_plain_text_live_prints_on_exit(capsys):
 # ---------------------------------------------------------------------------
 # budget_summary — non-IPython path
 # ---------------------------------------------------------------------------
+
 
 def test_budget_summary_plain_text_prints(capsys):
     """In a non-IPython context, budget_summary should print plain text."""
@@ -158,7 +163,9 @@ def test_budget_summary_with_rich_returns_none(capsys):
     """With rich available, budget_summary returns None (prints via Console)."""
     pytest.importorskip("rich")
 
-    with BudgetContext(flop_budget=1000, namespace="rich_summary_test", quiet=True) as ctx:
+    with BudgetContext(
+        flop_budget=1000, namespace="rich_summary_test", quiet=True
+    ) as ctx:
         ctx.deduct("op1", flop_cost=50, subscripts=None, shapes=())
 
     result = budget_summary()
@@ -168,6 +175,7 @@ def test_budget_summary_with_rich_returns_none(capsys):
 # ---------------------------------------------------------------------------
 # render_budget_summary — rich path with namespace data
 # ---------------------------------------------------------------------------
+
 
 def test_render_budget_summary_rich_with_multiple_namespaces():
     """Rich summary renders without error when multiple namespaces are present."""
@@ -179,4 +187,5 @@ def test_render_budget_summary_rich_with_multiple_namespaces():
 
     result = render_budget_summary()
     from rich.panel import Panel
+
     assert isinstance(result, Panel)

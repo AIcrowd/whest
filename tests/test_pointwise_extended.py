@@ -8,14 +8,14 @@ trapezoid, and uncovered symmetric / scalar paths in factory functions.
 import numpy
 import pytest
 
-from mechestim._budget import BudgetContext
 import mechestim._pointwise as ops
+from mechestim._budget import BudgetContext
 from mechestim._symmetric import SymmetricTensor, as_symmetric
-
 
 # ---------------------------------------------------------------------------
 # Multi-output unary ops
 # ---------------------------------------------------------------------------
+
 
 def test_modf():
     x = numpy.array([1.5, 2.7, -0.3])
@@ -30,12 +30,13 @@ def test_frexp():
     with BudgetContext(flop_budget=10**6) as budget:
         mant, exp = ops.frexp(x)
         assert budget.flops_used == x.size
-    assert numpy.allclose(mant * (2 ** exp), x)
+    assert numpy.allclose(mant * (2**exp), x)
 
 
 # ---------------------------------------------------------------------------
 # Multi-output binary ops
 # ---------------------------------------------------------------------------
+
 
 def test_divmod():
     x = numpy.array([7.0, 8.0, 9.0])
@@ -50,32 +51,36 @@ def test_divmod():
 # Binary ops (new, previously uncovered)
 # ---------------------------------------------------------------------------
 
-@pytest.mark.parametrize("op_name,x,y", [
-    ("copysign", numpy.array([1.0, -2.0, 3.0]), numpy.array([-1.0, 1.0, -1.0])),
-    ("heaviside", numpy.array([-1.0, 0.0, 1.0]), numpy.array([0.5, 0.5, 0.5])),
-    ("arctan2", numpy.array([1.0, 1.0]), numpy.array([1.0, -1.0])),
-    ("atan2", numpy.array([1.0]), numpy.array([1.0])),
-    ("float_power", numpy.array([2.0, 3.0]), numpy.array([3.0, 2.0])),
-    ("floor_divide", numpy.array([7.0, 8.0]), numpy.array([2.0, 3.0])),
-    ("fmax", numpy.array([1.0, float('nan')]), numpy.array([2.0, 1.0])),
-    ("fmin", numpy.array([1.0, float('nan')]), numpy.array([2.0, 1.0])),
-    ("fmod", numpy.array([7.0, 8.0]), numpy.array([3.0, 3.0])),
-    ("hypot", numpy.array([3.0]), numpy.array([4.0])),
-    ("logaddexp", numpy.array([0.0, 1.0]), numpy.array([0.0, 0.0])),
-    ("logaddexp2", numpy.array([0.0, 1.0]), numpy.array([0.0, 0.0])),
-    ("logical_and", numpy.array([True, False]), numpy.array([True, True])),
-    ("logical_or", numpy.array([True, False]), numpy.array([False, False])),
-    ("logical_xor", numpy.array([True, False]), numpy.array([True, True])),
-    ("nextafter", numpy.array([1.0]), numpy.array([2.0])),
-    ("not_equal", numpy.array([1.0, 2.0]), numpy.array([1.0, 3.0])),
-    ("remainder", numpy.array([7.0]), numpy.array([3.0])),
-    ("true_divide", numpy.array([6.0]), numpy.array([2.0])),
-    ("equal", numpy.array([1.0, 2.0]), numpy.array([1.0, 3.0])),
-    ("greater", numpy.array([2.0, 1.0]), numpy.array([1.0, 2.0])),
-    ("greater_equal", numpy.array([2.0, 1.0]), numpy.array([2.0, 2.0])),
-    ("less", numpy.array([1.0, 2.0]), numpy.array([2.0, 1.0])),
-    ("less_equal", numpy.array([1.0, 2.0]), numpy.array([1.0, 1.0])),
-])
+
+@pytest.mark.parametrize(
+    "op_name,x,y",
+    [
+        ("copysign", numpy.array([1.0, -2.0, 3.0]), numpy.array([-1.0, 1.0, -1.0])),
+        ("heaviside", numpy.array([-1.0, 0.0, 1.0]), numpy.array([0.5, 0.5, 0.5])),
+        ("arctan2", numpy.array([1.0, 1.0]), numpy.array([1.0, -1.0])),
+        ("atan2", numpy.array([1.0]), numpy.array([1.0])),
+        ("float_power", numpy.array([2.0, 3.0]), numpy.array([3.0, 2.0])),
+        ("floor_divide", numpy.array([7.0, 8.0]), numpy.array([2.0, 3.0])),
+        ("fmax", numpy.array([1.0, float("nan")]), numpy.array([2.0, 1.0])),
+        ("fmin", numpy.array([1.0, float("nan")]), numpy.array([2.0, 1.0])),
+        ("fmod", numpy.array([7.0, 8.0]), numpy.array([3.0, 3.0])),
+        ("hypot", numpy.array([3.0]), numpy.array([4.0])),
+        ("logaddexp", numpy.array([0.0, 1.0]), numpy.array([0.0, 0.0])),
+        ("logaddexp2", numpy.array([0.0, 1.0]), numpy.array([0.0, 0.0])),
+        ("logical_and", numpy.array([True, False]), numpy.array([True, True])),
+        ("logical_or", numpy.array([True, False]), numpy.array([False, False])),
+        ("logical_xor", numpy.array([True, False]), numpy.array([True, True])),
+        ("nextafter", numpy.array([1.0]), numpy.array([2.0])),
+        ("not_equal", numpy.array([1.0, 2.0]), numpy.array([1.0, 3.0])),
+        ("remainder", numpy.array([7.0]), numpy.array([3.0])),
+        ("true_divide", numpy.array([6.0]), numpy.array([2.0])),
+        ("equal", numpy.array([1.0, 2.0]), numpy.array([1.0, 3.0])),
+        ("greater", numpy.array([2.0, 1.0]), numpy.array([1.0, 2.0])),
+        ("greater_equal", numpy.array([2.0, 1.0]), numpy.array([2.0, 2.0])),
+        ("less", numpy.array([1.0, 2.0]), numpy.array([2.0, 1.0])),
+        ("less_equal", numpy.array([1.0, 2.0]), numpy.array([1.0, 1.0])),
+    ],
+)
 def test_binary_op_runs(op_name, x, y):
     with BudgetContext(flop_budget=10**6) as budget:
         result = getattr(ops, op_name)(x, y)
@@ -139,6 +144,7 @@ def test_vecdot():
 # Custom ops (diff, gradient, ediff1d, convolve, correlate, corrcoef, cov,
 #             trapezoid, interp)
 # ---------------------------------------------------------------------------
+
 
 def test_diff():
     x = numpy.array([1.0, 3.0, 6.0, 10.0])
@@ -233,6 +239,7 @@ def test_interp():
 # Symmetric tensor paths in binary factory (_counted_binary)
 # ---------------------------------------------------------------------------
 
+
 def test_binary_op_symmetric_x_scalar():
     """x is SymmetricTensor, y is scalar — result should preserve symmetry."""
     data = numpy.array([[1.0, 2.0], [2.0, 3.0]])
@@ -269,6 +276,7 @@ def test_binary_op_mismatched_symmetry_returns_plain():
 # Unary factory with SymmetricTensor — preserves symmetry
 # ---------------------------------------------------------------------------
 
+
 def test_unary_op_symmetric_result():
     data = numpy.array([[1.0, 2.0], [2.0, 3.0]])
     x = as_symmetric(data, (0, 1))
@@ -280,6 +288,7 @@ def test_unary_op_symmetric_result():
 # ---------------------------------------------------------------------------
 # isclose (special binary-ish)
 # ---------------------------------------------------------------------------
+
 
 def test_isclose():
     a = numpy.array([1.0, 2.0, 3.0])
@@ -294,11 +303,23 @@ def test_isclose():
 # Additional reductions not tested in test_pointwise.py
 # ---------------------------------------------------------------------------
 
-@pytest.mark.parametrize("op_name", [
-    "all", "any", "amax", "amin", "count_nonzero",
-    "nanmax", "nanmin", "nansum", "nanprod",
-    "nanargmax", "nanargmin",
-])
+
+@pytest.mark.parametrize(
+    "op_name",
+    [
+        "all",
+        "any",
+        "amax",
+        "amin",
+        "count_nonzero",
+        "nanmax",
+        "nanmin",
+        "nansum",
+        "nanprod",
+        "nanargmax",
+        "nanargmin",
+    ],
+)
 def test_reduction_runs(op_name):
     x = numpy.array([1.0, 2.0, 3.0, 4.0])
     with BudgetContext(flop_budget=10**6):
@@ -342,56 +363,56 @@ def test_quantile():
 
 
 def test_nanpercentile():
-    x = numpy.array([1.0, float('nan'), 3.0])
+    x = numpy.array([1.0, float("nan"), 3.0])
     with BudgetContext(flop_budget=10**6):
         result = ops.nanpercentile(x, q=50)
     assert numpy.isclose(result, 2.0)
 
 
 def test_nanquantile():
-    x = numpy.array([1.0, float('nan'), 3.0])
+    x = numpy.array([1.0, float("nan"), 3.0])
     with BudgetContext(flop_budget=10**6):
         result = ops.nanquantile(x, q=0.5)
     assert numpy.isclose(result, 2.0)
 
 
 def test_nancumprod():
-    x = numpy.array([1.0, float('nan'), 3.0])
+    x = numpy.array([1.0, float("nan"), 3.0])
     with BudgetContext(flop_budget=10**6):
         result = ops.nancumprod(x)
     assert result.shape == (3,)
 
 
 def test_nancumsum():
-    x = numpy.array([1.0, float('nan'), 3.0])
+    x = numpy.array([1.0, float("nan"), 3.0])
     with BudgetContext(flop_budget=10**6):
         result = ops.nancumsum(x)
     assert result.shape == (3,)
 
 
 def test_nanmean():
-    x = numpy.array([1.0, float('nan'), 3.0])
+    x = numpy.array([1.0, float("nan"), 3.0])
     with BudgetContext(flop_budget=10**6):
         result = ops.nanmean(x)
     assert numpy.isclose(result, 2.0)
 
 
 def test_nanmedian():
-    x = numpy.array([1.0, float('nan'), 3.0])
+    x = numpy.array([1.0, float("nan"), 3.0])
     with BudgetContext(flop_budget=10**6):
         result = ops.nanmedian(x)
     assert numpy.isclose(result, 2.0)
 
 
 def test_nanstd():
-    x = numpy.array([1.0, 2.0, float('nan'), 4.0])
+    x = numpy.array([1.0, 2.0, float("nan"), 4.0])
     with BudgetContext(flop_budget=10**6):
         result = ops.nanstd(x)
     assert not numpy.isnan(result)
 
 
 def test_nanvar():
-    x = numpy.array([1.0, 2.0, float('nan'), 4.0])
+    x = numpy.array([1.0, 2.0, float("nan"), 4.0])
     with BudgetContext(flop_budget=10**6):
         result = ops.nanvar(x)
     assert not numpy.isnan(result)

@@ -4,46 +4,44 @@ import numpy
 import pytest
 
 from mechestim._budget import BudgetContext
-from mechestim._symmetric import SymmetricTensor, as_symmetric
+from mechestim._symmetric import as_symmetric
+from mechestim.linalg._decompositions import (
+    cholesky,
+    cholesky_cost,
+    eig,
+    eig_cost,
+    eigh,
+    eigh_cost,
+    eigvals,
+    eigvals_cost,
+    eigvalsh,
+    eigvalsh_cost,
+    qr,
+    qr_cost,
+    svdvals,
+    svdvals_cost,
+)
 from mechestim.linalg._properties import (
-    cond_cost,
-    det_cost,
-    matrix_norm_cost,
-    matrix_rank_cost,
-    norm_cost,
-    slogdet_cost,
-    trace_cost,
-    vector_norm_cost,
     cond,
     det,
+    det_cost,
     matrix_norm,
+    matrix_norm_cost,
     matrix_rank,
     norm,
+    norm_cost,
     slogdet,
+    slogdet_cost,
     trace,
+    trace_cost,
     vector_norm,
+    vector_norm_cost,
 )
-from mechestim.linalg._decompositions import (
-    cholesky_cost,
-    eig_cost,
-    eigh_cost,
-    eigvals_cost,
-    eigvalsh_cost,
-    qr_cost,
-    svdvals_cost,
-    cholesky,
-    eig,
-    eigh,
-    eigvals,
-    eigvalsh,
-    qr,
-    svdvals,
-)
-
 
 # ---------------------------------------------------------------------------
 # Cost helper functions — direct testing for edge cases
 # ---------------------------------------------------------------------------
+
 
 def test_trace_cost_min1():
     assert trace_cost(0) == 1
@@ -174,6 +172,7 @@ def test_matrix_norm_cost_fallback():
 # Properties — SymmetricTensor paths
 # ---------------------------------------------------------------------------
 
+
 def test_det_symmetric_tensor_cost():
     n = 4
     data = numpy.eye(n)
@@ -196,6 +195,7 @@ def test_slogdet_symmetric_tensor_cost():
 # Properties — trace with positive/negative offset
 # ---------------------------------------------------------------------------
 
+
 def test_trace_positive_offset():
     A = numpy.arange(9, dtype=float).reshape(3, 3)
     with BudgetContext(flop_budget=10**6) as budget:
@@ -213,6 +213,7 @@ def test_trace_negative_offset():
 # ---------------------------------------------------------------------------
 # Properties — norm with axis parameter
 # ---------------------------------------------------------------------------
+
 
 def test_norm_with_tuple_axis():
     A = numpy.random.randn(3, 4, 5)
@@ -232,6 +233,7 @@ def test_norm_with_single_axis():
 # Properties — vector_norm with axis
 # ---------------------------------------------------------------------------
 
+
 def test_vector_norm_with_tuple_axis():
     A = numpy.random.randn(3, 4)
     with BudgetContext(flop_budget=10**6):
@@ -250,6 +252,7 @@ def test_vector_norm_with_single_axis():
 # Properties — matrix_norm with various ord values
 # ---------------------------------------------------------------------------
 
+
 @pytest.mark.parametrize("ord_val", [1, -1, 2, -2, numpy.inf, -numpy.inf, "nuc"])
 def test_matrix_norm_various_ords(ord_val):
     A = numpy.random.randn(4, 4)
@@ -261,6 +264,7 @@ def test_matrix_norm_various_ords(ord_val):
 # ---------------------------------------------------------------------------
 # Decompositions — cost helpers
 # ---------------------------------------------------------------------------
+
 
 def test_cholesky_cost():
     assert cholesky_cost(1) == 1
@@ -301,6 +305,7 @@ def test_svdvals_cost():
 # ---------------------------------------------------------------------------
 # Decompositions — non-square / wrong dim error paths
 # ---------------------------------------------------------------------------
+
 
 def test_cholesky_non_square_raises():
     with pytest.raises(ValueError):
@@ -348,6 +353,7 @@ def test_svdvals_non_2d_raises():
 # Decompositions — successful runs
 # ---------------------------------------------------------------------------
 
+
 def test_eigh_result():
     A = numpy.array([[2.0, 1.0], [1.0, 2.0]])
     with BudgetContext(flop_budget=10**6) as budget:
@@ -382,6 +388,7 @@ def test_svdvals_result():
 # ---------------------------------------------------------------------------
 # Properties — det/slogdet/cond/matrix_rank error paths
 # ---------------------------------------------------------------------------
+
 
 def test_det_non_square_raises():
     with pytest.raises(ValueError):

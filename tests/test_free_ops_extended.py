@@ -9,10 +9,10 @@ import pytest
 
 import mechestim._free_ops as ops
 
-
 # ---------------------------------------------------------------------------
 # Helper
 # ---------------------------------------------------------------------------
+
 
 def arr(*shape, dtype=float):
     return numpy.arange(1, numpy.prod(shape) + 1, dtype=dtype).reshape(shape)
@@ -21,6 +21,7 @@ def arr(*shape, dtype=float):
 # ---------------------------------------------------------------------------
 # Tensor creation wrappers (uncovered)
 # ---------------------------------------------------------------------------
+
 
 def test_full_like():
     a = numpy.zeros((2, 3))
@@ -49,6 +50,7 @@ def test_identity():
 # ---------------------------------------------------------------------------
 # Tensor manipulation wrappers (uncovered)
 # ---------------------------------------------------------------------------
+
 
 def test_swapaxes():
     a = arr(2, 3, 4)
@@ -189,20 +191,21 @@ def test_asarray():
 # Type / info helpers and new free ops (uncovered lines ~438+)
 # ---------------------------------------------------------------------------
 
+
 def test_isnan():
-    a = numpy.array([1.0, float('nan'), 3.0])
+    a = numpy.array([1.0, float("nan"), 3.0])
     r = ops.isnan(a)
     assert list(r) == [False, True, False]
 
 
 def test_isinf():
-    a = numpy.array([1.0, float('inf'), 3.0])
+    a = numpy.array([1.0, float("inf"), 3.0])
     r = ops.isinf(a)
     assert list(r) == [False, True, False]
 
 
 def test_isfinite():
-    a = numpy.array([1.0, float('inf'), float('nan')])
+    a = numpy.array([1.0, float("inf"), float("nan")])
     r = ops.isfinite(a)
     assert list(r) == [True, False, False]
 
@@ -774,6 +777,7 @@ def test_vander():
 
 def test_frombuffer():
     import struct
+
     buf = struct.pack("3f", 1.0, 2.0, 3.0)
     r = ops.frombuffer(buf, dtype=numpy.float32)
     assert list(r) == pytest.approx([1.0, 2.0, 3.0])

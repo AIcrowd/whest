@@ -8,16 +8,8 @@ Also exercises the cost helper functions directly.
 import math
 
 import numpy
-import pytest
 
 from mechestim._budget import BudgetContext
-from mechestim.fft._transforms import (
-    fft_cost,
-    fftn_cost,
-    hfft_cost,
-    rfft_cost,
-    rfftn_cost,
-)
 from mechestim.fft import (
     fft,
     fft2,
@@ -34,11 +26,18 @@ from mechestim.fft import (
     rfft2,
     rfftn,
 )
-
+from mechestim.fft._transforms import (
+    fft_cost,
+    fftn_cost,
+    hfft_cost,
+    rfft_cost,
+    rfftn_cost,
+)
 
 # ---------------------------------------------------------------------------
 # Cost helper functions
 # ---------------------------------------------------------------------------
+
 
 def test_fft_cost_small():
     assert fft_cost(0) == 0
@@ -72,6 +71,7 @@ def test_hfft_cost():
 # ifft
 # ---------------------------------------------------------------------------
 
+
 class TestIfftExtended:
     def test_result_roundtrip(self):
         x = numpy.random.randn(16)
@@ -98,6 +98,7 @@ class TestIfftExtended:
 # rfft
 # ---------------------------------------------------------------------------
 
+
 class TestRfftExtended:
     def test_output_shape(self):
         n = 16
@@ -116,6 +117,7 @@ class TestRfftExtended:
 # ---------------------------------------------------------------------------
 # irfft
 # ---------------------------------------------------------------------------
+
 
 class TestIrfft:
     def test_result_matches_numpy(self):
@@ -145,6 +147,7 @@ class TestIrfft:
 # fft2 extra coverage
 # ---------------------------------------------------------------------------
 
+
 class TestFft2Extended:
     def test_op_log_name(self):
         x = numpy.random.randn(4, 4)
@@ -164,6 +167,7 @@ class TestFft2Extended:
 # ---------------------------------------------------------------------------
 # ifft2
 # ---------------------------------------------------------------------------
+
 
 class TestIfft2:
     def test_result_roundtrip(self):
@@ -197,6 +201,7 @@ class TestIfft2:
 # rfft2
 # ---------------------------------------------------------------------------
 
+
 class TestRfft2:
     def test_result_matches_numpy(self):
         x = numpy.random.randn(8, 8)
@@ -228,6 +233,7 @@ class TestRfft2:
 # irfft2
 # ---------------------------------------------------------------------------
 
+
 class TestIrfft2:
     def test_result_roundtrip(self):
         n = 8
@@ -256,6 +262,7 @@ class TestIrfft2:
 # fftn
 # ---------------------------------------------------------------------------
 
+
 class TestFftnExtended:
     def test_cost(self):
         x = numpy.random.randn(4, 4, 4)
@@ -280,6 +287,7 @@ class TestFftnExtended:
 # ---------------------------------------------------------------------------
 # ifftn
 # ---------------------------------------------------------------------------
+
 
 class TestIfftn:
     def test_result_roundtrip(self):
@@ -312,6 +320,7 @@ class TestIfftn:
 # rfftn
 # ---------------------------------------------------------------------------
 
+
 class TestRfftn:
     def test_result_matches_numpy(self):
         x = numpy.random.randn(4, 4)
@@ -341,6 +350,7 @@ class TestRfftn:
 # ---------------------------------------------------------------------------
 # irfftn
 # ---------------------------------------------------------------------------
+
 
 class TestIrfftn:
     def test_result_roundtrip(self):
@@ -376,6 +386,7 @@ class TestIrfftn:
 # hfft
 # ---------------------------------------------------------------------------
 
+
 class TestHfftExtended:
     def test_result_matches_numpy(self):
         n = 8
@@ -394,6 +405,7 @@ class TestHfftExtended:
 # ---------------------------------------------------------------------------
 # ihfft
 # ---------------------------------------------------------------------------
+
 
 class TestIhfft:
     def test_result_matches_numpy(self):
