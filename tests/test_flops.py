@@ -28,7 +28,9 @@ def test_parse_implicit():
 
 
 def test_einsum_cost_matmul():
-    assert einsum_cost("ij,jk->ik", shapes=[(3, 4), (4, 5)]) == 120  # 3*4*5 * op_factor(2)
+    assert (
+        einsum_cost("ij,jk->ik", shapes=[(3, 4), (4, 5)]) == 120
+    )  # 3*4*5 * op_factor(2)
 
 
 def test_einsum_cost_trace():
@@ -36,11 +38,15 @@ def test_einsum_cost_trace():
 
 
 def test_einsum_cost_batch_matmul():
-    assert einsum_cost("bij,bjk->bik", shapes=[(2, 3, 4), (2, 4, 5)]) == 240  # 2*3*4*5 * op_factor(2)
+    assert (
+        einsum_cost("bij,bjk->bik", shapes=[(2, 3, 4), (2, 4, 5)]) == 240
+    )  # 2*3*4*5 * op_factor(2)
 
 
 def test_einsum_cost_outer_product():
-    assert einsum_cost("i,j->ij", shapes=[(3,), (4,)]) == 12  # no inner product, op_factor=1
+    assert (
+        einsum_cost("i,j->ij", shapes=[(3,), (4,)]) == 12
+    )  # no inner product, op_factor=1
 
 
 def test_einsum_cost_scalar_output():
