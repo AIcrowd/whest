@@ -143,6 +143,7 @@ def symmetric_flop_count(
     *,
     input_symmetries: list[IndexSymmetry | None] | None = None,
     output_symmetry: IndexSymmetry | None = None,
+    output_indices: frozenset[str] | None = None,
 ) -> int:
     """FLOP count that accounts for symmetric structure.
 
@@ -151,9 +152,11 @@ def symmetric_flop_count(
 
     Strategy:
     - Start with the dense FLOP count.
-    - For each input symmetry group whose indices overlap with the
-      contraction indices, scale by C(n+k-1, k) / n^k  (the fraction of
-      unique multi-indices).
+    - For each input symmetry group, find the *surviving* subgroup — the
+      indices that appear in ``output_indices`` (i.e. are not summed away).
+      Only the surviving subgroup benefits from the symmetry reduction
+      ``C(n+k-1, k) / n^k``, because summed indices interact with the other
+      factor and every value must still be visited.
     - Divide by the output symmetry factor (we only need to compute each
       unique output element once).
     - Return at least 1.
@@ -172,6 +175,12 @@ def symmetric_flop_count(
         Symmetry info for each input tensor.
     output_symmetry : IndexSymmetry | None, optional
         Symmetry of the output tensor.
+    output_indices : frozenset of str or None, optional
+        Indices that survive into the output of this contraction step.
+        When provided, only the intersection of each symmetry group with
+        these indices benefits from symmetry reduction.  When *None*,
+        falls back to the legacy behaviour (intersect with
+        ``idx_contraction``).
 
     Returns
     -------
@@ -183,13 +192,16 @@ def symmetric_flop_count(
 
     idx_set = frozenset(idx_contraction)
 
+    # Determine which indices to use for the surviving-subgroup intersection.
+    survive_set = output_indices if output_indices is not None else idx_set
+
     # Scale down for input symmetries
     if input_symmetries:
         for sym in input_symmetries:
             if sym is None:
                 continue
             for group in sym:
-                active = group & idx_set
+                active = group & survive_set
                 if len(active) < 2:
                     continue
                 n = next(size_dictionary[idx] for idx in active)

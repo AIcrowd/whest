@@ -315,3 +315,71 @@ class TestStepInfoBlasType:
         # At least one step should involve the symmetric tensor and get SYMM
         assert any(bt in ("SYMM", "SYMV", "SYDT") for bt in blas_types), \
             f"Expected at least one symmetric BLAS type, got {blas_types}"
+
+
+class TestFixedSymmetricFlopCount:
+    def test_s2_matvec_no_reduction(self):
+        """S[ij](S2) * v[j] -> r[i]: summing j means S2 gives no reduction."""
+        from mechestim._opt_einsum._helpers import flop_count
+        size_dict = {"i": 10, "j": 10}
+        cost = symmetric_flop_count(
+            frozenset("ij"), True, 2, size_dict,
+            output_indices=frozenset("i"),
+            input_symmetries=[[frozenset("ij")], None],
+            output_symmetry=None,
+        )
+        dense = flop_count(frozenset("ij"), True, 2, size_dict)
+        assert cost == dense
+
+    def test_s3_contract_one_gives_s2_reduction(self):
+        """T[ijk](S3) * A[ai] -> R[ajk](S2): i summed, j,k survive as S2."""
+        from mechestim._opt_einsum._helpers import flop_count
+        size_dict = {"i": 10, "j": 10, "k": 10, "a": 10}
+        cost = symmetric_flop_count(
+            frozenset("aijk"), True, 2, size_dict,
+            output_indices=frozenset("ajk"),
+            input_symmetries=[[frozenset("ijk")], None],
+            output_symmetry=[frozenset("jk")],
+        )
+        dense = flop_count(frozenset("aijk"), True, 2, size_dict)
+        # Surviving group {j,k}: C(11,2)/100 = 0.55. Output S2: /2
+        # cost = 20000 * 55 // 100 // 2 = 5500
+        assert cost == 5500
+
+    def test_hand_counted_s3_contraction(self):
+        """Verify: 550 unique outputs (10 × C(11,2)) × 10 mults = 5500."""
+        size_dict = {"i": 10, "j": 10, "k": 10, "a": 10}
+        cost = symmetric_flop_count(
+            frozenset("aijk"), True, 2, size_dict,
+            output_indices=frozenset("ajk"),
+            input_symmetries=[[frozenset("ijk")], None],
+            output_symmetry=[frozenset("jk")],
+        )
+        assert cost == 5500
+
+    def test_output_indices_none_backward_compat(self):
+        """When output_indices is None, equals no-symmetry flop_count."""
+        from mechestim._opt_einsum._helpers import flop_count
+        size_dict = {"i": 10, "j": 10, "k": 10}
+        cost_new = symmetric_flop_count(
+            frozenset("ijk"), True, 2, size_dict,
+            output_indices=None,
+            input_symmetries=[None, None],
+            output_symmetry=None,
+        )
+        dense = flop_count(frozenset("ijk"), True, 2, size_dict)
+        assert cost_new == dense
+
+    def test_all_indices_survive(self):
+        """When no indices are summed, full group applies (outer product-like)."""
+        size_dict = {"i": 10, "j": 10, "a": 10}
+        cost = symmetric_flop_count(
+            frozenset("aij"), False, 2, size_dict,
+            output_indices=frozenset("aij"),
+            input_symmetries=[[frozenset("ij")], None],
+            output_symmetry=[frozenset("ij")],
+        )
+        # Full S2 group survives: C(11,2)/100 = 0.55, output /2
+        dense_base = 10 * 10 * 10  # 1000
+        # cost = 1000 * 55 // 100 // 2 = 275
+        assert cost == 275
