@@ -17,7 +17,7 @@ import mechestim as me
 
 # Einsum cost
 cost = me.flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
-print(f"Matmul cost: {cost:,}")         # 16,777,216
+print(f"Matmul cost: {cost:,}")         # 33,554,432 (2 × 256³)
 
 # SVD cost
 cost = me.flops.svd_cost(m=256, n=256, k=10)
@@ -60,11 +60,11 @@ Output:
 ```
 Operation                   FLOPs
 ----------------------------------
-einsum ij,j->i             65,536
+einsum ij,j->i            131,072
 ReLU (maximum)                256
 sum reduction                 256
 ----------------------------------
-Total                      66,048
+Total                     131,584
 ```
 
 ## Multi-operand einsum planning with `einsum_path`

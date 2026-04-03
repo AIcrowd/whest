@@ -31,7 +31,7 @@ x = me.random.randn(width)
 
 h = x
 for W in weights:
-    h = me.einsum('ij,j->i', W, h)  # matrix-vector multiply: counted
+    h = me.einsum('ij,j->i', W, h)  # matrix-vector multiply: 2 × 256 × 256 = 131,072 FLOPs
     h = me.maximum(h, 0)             # ReLU activation: counted
 
 result = me.sum(h)                   # reduction: counted
@@ -54,12 +54,12 @@ uv run python first_budget.py
 ├──────────────┬───────────────┬────────────┬─────────────┤
 │ Namespace    │ Budget        │ Used       │ Remaining   │
 ├──────────────┼───────────────┼────────────┼─────────────┤
-│ (default)    │ 1.00e+15      │ 658,176    │ ~1.00e+15   │
+│ (default)    │ 1.00e+15      │ 1,313,536  │ ~1.00e+15   │
 └──────────────┴───────────────┴────────────┴─────────────┘
 
   (default) — by operation
-    einsum    655,360  ( 99.6%)  [10 calls]
-    maximum     2,560  (  0.4%)  [10 calls]
+    einsum  1,310,720  ( 99.8%)  [10 calls]
+    maximum     2,560  (  0.2%)  [10 calls]
     sum           256  (  0.0%)   [1 call]
 ```
 
@@ -91,7 +91,7 @@ with me.BudgetContext(flop_budget=50_000_000, namespace="mlp-forward") as budget
 
     h = x
     for W in weights:
-        h = me.einsum('ij,j->i', W, h)  # 65,536 FLOPs each pass
+        h = me.einsum('ij,j->i', W, h)  # matrix-vector multiply: 2 × 256 × 256 = 131,072 FLOPs
         h = me.maximum(h, 0)             # 256 FLOPs each pass
 
     result = me.sum(h)                   # 256 FLOPs
@@ -105,12 +105,12 @@ me.budget_summary()
 ├───────────────┬────────────┬──────────┬──────────────────┤
 │ Namespace     │ Budget     │ Used     │ Remaining        │
 ├───────────────┼────────────┼──────────┼──────────────────┤
-│ mlp-forward   │ 50,000,000 │ 658,176  │ 49,341,824       │
-└───────────────┴────────────┴──────────┴──────────────────┘
+│ mlp-forward   │ 50,000,000 │ 1,313,536 │ 48,686,464      │
+└───────────────┴────────────┴───────────┴─────────────────┘
 
   mlp-forward — by operation
-    einsum    655,360  ( 99.6%)  [10 calls]
-    maximum     2,560  (  0.4%)  [10 calls]
+    einsum  1,310,720  ( 99.8%)  [10 calls]
+    maximum     2,560  (  0.2%)  [10 calls]
     sum           256  (  0.0%)   [1 call]
 ```
 
@@ -146,7 +146,7 @@ Each call to `run_mlp()` draws from the same `mlp-forward` namespace budget. Cal
 
 ```python
 data = me.budget_data()
-# {'mlp-forward': {'budget': 50_000_000, 'used': 658176, 'remaining': 49341824, ...}}
+# {'mlp-forward': {'budget': 50_000_000, 'used': 1313536, 'remaining': 48686464, ...}}
 ```
 
 ## ⚠️ Common pitfalls

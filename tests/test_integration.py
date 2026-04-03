@@ -39,11 +39,11 @@ def test_budget_tracking_accuracy():
     B = me.array(numpy.random.randn(20, 30))
 
     with me.BudgetContext(flop_budget=10**8) as budget:
-        me.einsum("ij,jk->ik", A, B)  # 10 * 20 * 30 = 6000
+        me.einsum("ij,jk->ik", A, B)  # 10 * 20 * 30 * 2 = 12000 (op_factor)
         me.exp(me.ones((100,)))  # 100
         me.sum(me.ones((50,)))  # 50
-        assert budget.flops_used == 6000 + 100 + 50
-        assert budget.flops_remaining == 10**8 - 6150
+        assert budget.flops_used == 12000 + 100 + 50
+        assert budget.flops_remaining == 10**8 - 12150
 
 
 def test_flop_query_matches_execution():

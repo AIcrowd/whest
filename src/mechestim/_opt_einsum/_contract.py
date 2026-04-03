@@ -41,7 +41,7 @@ class StepInfo:
     """Einsum subscript for this step, e.g. ``"ijk,ai->ajk"``."""
 
     flop_cost: int
-    """Symmetry-aware FLOP cost (mechestim formula: product of all labels / symmetry)."""
+    """Symmetry-aware FLOP cost (opt_einsum convention: includes op_factor)."""
 
     input_shapes: list[tuple[int, ...]]
     """Shapes of the input operands for this step."""
@@ -56,7 +56,7 @@ class StepInfo:
     """IndexSymmetry of the output, or None."""
 
     dense_flop_cost: int
-    """FLOP cost without symmetry (product of all labels)."""
+    """FLOP cost without symmetry (opt_einsum convention: includes op_factor)."""
 
     symmetry_savings: float
     """Fraction saved: ``1 - (flop_cost / dense_flop_cost)``. Zero when no symmetry."""
@@ -76,10 +76,10 @@ class PathInfo:
     """Per-step diagnostics."""
 
     naive_cost: int
-    """Naive (single-step) FLOP cost using mechestim formula."""
+    """Naive (single-step) FLOP cost (opt_einsum convention with op_factor)."""
 
     optimized_cost: int
-    """Sum of per-step costs using mechestim formula."""
+    """Sum of per-step costs (opt_einsum convention with op_factor)."""
 
     largest_intermediate: int
     """Number of elements in the largest intermediate tensor."""
@@ -450,28 +450,20 @@ def contract_path(
 
         einsum_str = ",".join(tmp_inputs) + "->" + idx_result
 
-        # Build StepInfo — use mechestim-style cost (product of all labels)
-        # which is the dense_cost / op_factor for backward compat
-        mechestim_dense = helpers.compute_size_by_dict(idx_contract, size_dict)
-        # For symmetry-aware mechestim cost, scale down by same ratio
-        if dense_cost > 0 and cost < dense_cost:
-            mechestim_sym = max(1, mechestim_dense * cost // dense_cost)
-        else:
-            mechestim_sym = mechestim_dense
-
-        savings = (
-            1.0 - (mechestim_sym / mechestim_dense) if mechestim_dense > 0 else 0.0
-        )
+        # Build StepInfo — use opt_einsum cost convention (includes op_factor)
+        step_flop = cost          # already has op_factor
+        step_dense = dense_cost   # already has op_factor
+        savings = 1.0 - (step_flop / step_dense) if step_dense > 0 else 0.0
 
         step_infos.append(
             StepInfo(
                 subscript=einsum_str,
-                flop_cost=mechestim_sym,
+                flop_cost=step_flop,
                 input_shapes=list(tmp_shapes),
                 output_shape=shp_result,
                 input_symmetries=list(step_syms),
                 output_symmetry=result_sym,
-                dense_flop_cost=mechestim_dense,
+                dense_flop_cost=step_dense,
                 symmetry_savings=savings,
                 blas_type=do_blas,
             )
@@ -489,17 +481,16 @@ def contract_path(
 
     opt_cost = sum(cost_list)
 
-    # Compute mechestim-style naive cost: product of ALL index labels
-    mechestim_naive = helpers.compute_size_by_dict(indices, size_dict)
-    mechestim_optimized = sum(s.flop_cost for s in step_infos)
+    # naive_cost already computed with flop_count (includes op_factor)
+    optimized_cost = sum(s.flop_cost for s in step_infos)
 
     path_print = PathInfo(
         path=list(path_tuple),
         steps=step_infos,
-        naive_cost=mechestim_naive,
-        optimized_cost=mechestim_optimized,
+        naive_cost=naive_cost,
+        optimized_cost=optimized_cost,
         largest_intermediate=max(size_list, default=1),
-        speedup=mechestim_naive / max(mechestim_optimized, 1),
+        speedup=naive_cost / max(optimized_cost, 1),
         input_subscripts=input_subscripts,
         output_subscript=output_subscript,
         size_dict=dict(size_dict),
