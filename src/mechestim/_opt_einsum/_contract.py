@@ -399,6 +399,7 @@ def contract_path(
                 size_dict,
                 input_symmetries=step_syms,
                 output_symmetry=result_sym,
+                output_indices=out_inds,
             )
         else:
             step_syms = [None] * len(contract_inds)
@@ -451,8 +452,8 @@ def contract_path(
         einsum_str = ",".join(tmp_inputs) + "->" + idx_result
 
         # Build StepInfo — use opt_einsum cost convention (includes op_factor)
-        step_flop = cost          # already has op_factor
-        step_dense = dense_cost   # already has op_factor
+        step_flop = cost  # already has op_factor
+        step_dense = dense_cost  # already has op_factor
         savings = 1.0 - (step_flop / step_dense) if step_dense > 0 else 0.0
 
         step_infos.append(
