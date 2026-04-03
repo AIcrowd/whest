@@ -50,6 +50,22 @@ When a tensor is a `SymmetricTensor`, costs are reduced based on the number of u
 
 See [Exploit Symmetry Savings](../how-to/exploit-symmetry.md) for usage details.
 
+## Multi-operand einsum cost
+
+For einsums with 3+ operands, mechestim decomposes the contraction into a
+sequence of pairwise steps along the optimal contraction path (found via
+opt_einsum). The total cost is the sum of pairwise step costs, where each
+step's cost is reduced by the symmetry of its inputs and output:
+
+```
+total_cost = sum(step.flop_cost for step in path.steps)
+```
+
+Symmetry propagates through intermediates: if an early contraction produces
+a symmetric intermediate, subsequent steps that consume it benefit from
+the reduced element count. Use `me.einsum_path()` to inspect the per-step
+breakdown. See [Use Einsum](../how-to/use-einsum.md) for examples.
+
 ## FLOP multiplier
 
 The `flop_multiplier` parameter in `BudgetContext` scales all costs:

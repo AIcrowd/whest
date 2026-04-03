@@ -112,14 +112,64 @@ with me.BudgetContext(flop_budget=10**8) as budget:
 All three mechanisms stack multiplicatively. For the full details, see
 [Exploit Symmetry Savings](./exploit-symmetry.md).
 
+## Multi-operand contractions
+
+For einsums with 3+ operands, mechestim automatically finds the optimal
+pairwise contraction order using opt_einsum. This is controlled by the
+`optimize` kwarg (defaults to `'auto'`):
+
+```python
+with me.BudgetContext(flop_budget=10**9) as budget:
+    T = me.as_symmetric(T_data, dims=(0, 1, 2))  # S₃ symmetric 3-tensor
+    A = me.ones((100, 100))
+    B = me.ones((100, 100))
+    C = me.ones((100, 100))
+
+    # Automatic path optimization (default)
+    result = me.einsum('ijk,ai,bj,ck->abc', T, A, B, C)
+
+    # Disable path optimization (uses left-to-right order)
+    result = me.einsum('ijk,ai,bj,ck->abc', T, A, B, C, optimize=False)
+```
+
+Symmetry is tracked through intermediates: contracting an S₃-symmetric
+`ijk` with `ai` yields an intermediate `ajk` with S₂ symmetry on `(j,k)`,
+reducing the cost of that step.
+
+## Inspecting contraction paths
+
+Use `me.einsum_path()` to preview the contraction plan without executing
+or spending any budget:
+
+```python
+path, info = me.einsum_path('ijk,ai,bj,ck->abc', T, A, B, C)
+
+print(info)
+# Step  Subscript         FLOPs  Dense FLOPs  Symmetry Savings
+# ────  ────────────────  ─────  ───────────  ────────────────
+# 0     ijk,ai->ajk       ...    ...          ...
+# 1     ajk,bj->abk       ...    ...          ...
+# 2     abk,ck->abc       ...    ...          ...
+# ────  ────────────────  ─────  ───────────  ────────────────
+# Total                   ...    ...          ...x speedup
+
+print(f"Naive cost:     {info.naive_cost:,}")
+print(f"Optimized cost: {info.optimized_cost:,}")
+print(f"Speedup:        {info.speedup:.1f}x")
+```
+
+`einsum_path` returns a `(path, PathInfo)` tuple. See
+[PathInfo / StepInfo API](../api/symmetric.md) for full field reference.
+
 ## ⚠️ Common pitfalls
 
 **Symptom:** Unexpectedly high FLOP cost
 
-**Fix:** Check all index dimensions. A subscript like `'ijkl,jklm->im'` multiplies all five dimension sizes together. Use `me.flops.einsum_cost()` to preview costs before executing.
+**Fix:** Check all index dimensions. A subscript like `'ijkl,jklm->im'` multiplies all five dimension sizes together. Use `me.flops.einsum_cost()` or `me.einsum_path()` to preview costs before executing.
 
 ## 📎 Related pages
 
 - [Exploit Symmetry](./exploit-symmetry.md) — full guide to all symmetry mechanisms
 - [Symmetric Tensors API](../api/symmetric.md) — `SymmetricTensor`, `SymmetryInfo`, `as_symmetric`
 - [Plan Your Budget](./plan-your-budget.md) — query costs before executing
+- [FLOP Counting Model](../concepts/flop-counting-model.md) — how multi-operand costs are computed
