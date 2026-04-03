@@ -3,9 +3,16 @@
 This lets us run NumPy's own test suite against mechestim to verify
 that our interface matches NumPy's. Tests that fail due to known
 divergences are listed in xfails.py.
+
+Key trick: before patching numpy, we freeze a copy of the original
+numpy module and rebind mechestim's internal `_np` references to it.
+This breaks the infinite recursion that would otherwise occur when
+mechestim functions call _np.func() → numpy.func() → me.func() → ...
 """
 
 import fnmatch
+import sys
+import types
 
 import numpy as np
 import pytest
@@ -17,46 +24,83 @@ from mechestim._registry import REGISTRY
 from .xfails import XFAIL_PATTERNS
 
 # Functions we monkeypatch onto numpy
-_PATCHED = {}
+_PATCHED: dict[str, object] = {}
+
+# mechestim modules whose _np we rebind, with their originals
+_REBOUND: dict[str, object] = {}
+
+# All mechestim submodules that import numpy as _np
+_MECHESTIM_MODULES_WITH_NP = [
+    "mechestim._pointwise",
+    "mechestim._free_ops",
+    "mechestim._einsum",
+    "mechestim._polynomial",
+    "mechestim._unwrap",
+    "mechestim._window",
+    "mechestim._version_check",
+    "mechestim.__init__",
+    "mechestim.fft._transforms",
+    "mechestim.fft._free",
+    "mechestim.linalg._decompositions",
+    "mechestim.linalg._properties",
+    "mechestim.linalg._solvers",
+    "mechestim.linalg._compound",
+    "mechestim.linalg._svd",
+    "mechestim.linalg._aliases",
+]
+
+
+def _freeze_numpy():
+    """Create a frozen copy of numpy that won't be affected by patching.
+
+    Returns a module whose attributes are snapshots of numpy's current
+    functions. Submodules (linalg, fft, random) are also frozen.
+    """
+    frozen = types.ModuleType("_frozen_numpy")
+    frozen.__dict__.update(np.__dict__)
+
+    # Freeze submodules so _np.linalg.solve etc. still work
+    for submod_name in ("linalg", "fft", "random"):
+        original_submod = getattr(np, submod_name)
+        frozen_submod = types.ModuleType(f"_frozen_numpy.{submod_name}")
+        frozen_submod.__dict__.update(original_submod.__dict__)
+        setattr(frozen, submod_name, frozen_submod)
+
+    return frozen
+
+
+def _rebind_mechestim_np(frozen_np):
+    """Replace _np in all mechestim modules with the frozen copy."""
+    for mod_name in _MECHESTIM_MODULES_WITH_NP:
+        mod = sys.modules.get(mod_name)
+        if mod is not None and hasattr(mod, "_np"):
+            _REBOUND[mod_name] = mod._np
+            mod._np = frozen_np
+
+
+def _restore_mechestim_np():
+    """Restore original _np references in mechestim modules."""
+    for mod_name, original in _REBOUND.items():
+        mod = sys.modules.get(mod_name)
+        if mod is not None:
+            mod._np = original
+    _REBOUND.clear()
 
 
 def _patch_numpy():
     """Replace numpy functions with mechestim equivalents.
 
-    Skips:
-    - blacklisted: unsupported functions
-    - free: pure pass-throughs (would cause infinite recursion)
-    - numpy ufuncs: tests access ufunc attributes (.reduce, .nargs, etc.)
-      at collection time; replacing a ufunc with a plain function crashes
-      test discovery
+    Patches all non-blacklisted functions from the registry, including
+    ufuncs, custom ops, submodule functions, and free ops. The frozen
+    numpy copy prevents infinite recursion.
     """
     for name, meta in REGISTRY.items():
         cat = meta["category"]
-        if cat in ("blacklisted", "free"):
+        if cat == "blacklisted":
             continue
 
+        # Resolve the mechestim function
         parts = name.split(".")
-
-        # Skip submodule functions (linalg.*, fft.*) — mechestim's
-        # implementations call _np.linalg.X() internally, which after
-        # patching becomes me.linalg.X() → infinite recursion.
-        if len(parts) > 1:
-            continue
-
-        # Skip ufuncs — our replacements are plain functions and lack
-        # .reduce/.accumulate/.outer/.nargs/etc.
-        try:
-            np_obj = getattr(np, name, None)
-            if isinstance(np_obj, np.ufunc):
-                continue
-        except (AttributeError, TypeError):
-            pass
-
-        # Skip counted_custom functions — they call _np.dot(), _np.convolve()
-        # etc. via module-level lookup, so patching causes infinite recursion.
-        # (Factory-built functions capture np_func in a closure, so they're safe.)
-        if cat == "counted_custom":
-            continue
         try:
             if len(parts) == 1:
                 me_fn = getattr(me, name)
@@ -68,7 +112,30 @@ def _patch_numpy():
         except AttributeError:
             continue
 
-        # Resolve the numpy target and patch
+        # Skip ufuncs — our replacements are plain functions and lack
+        # .reduce/.accumulate/.outer/.nargs/etc. which tests check at
+        # collection time.
+        try:
+            if len(parts) == 1:
+                np_obj = getattr(np, name, None)
+            elif len(parts) == 2:
+                np_obj = getattr(getattr(np, parts[0], None), parts[1], None)
+            else:
+                np_obj = None
+            if isinstance(np_obj, np.ufunc):
+                continue
+        except (AttributeError, TypeError):
+            pass
+
+        # Skip functions where mechestim delegates to a different numpy function
+        # than the one being patched (e.g., me.linalg.outer → np.outer, not
+        # np.linalg.outer). Patching causes collection-time errors in tests that
+        # check the real np.linalg.outer's behaviour at class-definition time.
+        _SKIP_PATCH = {"linalg.outer"}
+        if name in _SKIP_PATCH:
+            continue
+
+        # Patch numpy
         try:
             if len(parts) == 1:
                 if hasattr(np, name):
@@ -105,13 +172,16 @@ def reset_budget():
 
 
 def pytest_configure(config):
-    """Apply monkeypatch at session start."""
+    """Freeze numpy, rebind mechestim internals, then patch."""
+    frozen = _freeze_numpy()
+    _rebind_mechestim_np(frozen)
     _patch_numpy()
 
 
 def pytest_unconfigure(config):
-    """Restore numpy at session end."""
+    """Restore everything."""
     _unpatch_numpy()
+    _restore_mechestim_np()
 
 
 def pytest_collection_modifyitems(config, items):
