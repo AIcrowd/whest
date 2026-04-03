@@ -35,12 +35,17 @@ _helpers.py  (vendored from opt_einsum/helpers.py)
   - No logic changes. All functions preserved: compute_size_by_dict,
     find_contraction, flop_count.
 
-_blas.py  (vendored from opt_einsum/blas.py)
+_blas.py  (vendored from opt_einsum/blas.py — EXTENDED)
 ──────────────────────────────────────────────────
   - Import paths changed from `opt_einsum.X` to relative `._X`.
-  - No logic changes. BLAS classification (GEMM, DOT, TDOT, etc.)
-    is unchanged. Used only for informational labeling in contraction
-    lists — this fork does not execute contractions.
+  - Added optional `input_symmetries` parameter to `can_blas()`.
+  - When symmetric inputs are detected, refines the base classification:
+      GEMM       + symmetric input → SYMM
+      GEMV/EINSUM + symmetric input → SYMV
+      DOT        + symmetric input → SYDT
+  - Classification only — actual dispatch to scipy.linalg.blas.dsymm/dsymv
+    is future work. These labels serve as metadata for PathInfo/StepInfo.
+  - When input_symmetries is None, behavior is identical to upstream.
 
 _testing.py  (vendored from opt_einsum/testing.py)
 ──────────────────────────────────────────────────

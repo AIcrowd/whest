@@ -209,3 +209,109 @@ class TestSymmetryAwarePaths:
         )
         assert len(path) == 2
         assert info.opt_cost > 0
+
+
+class TestSymmetricBlas:
+    """Tests for symmetry-aware BLAS classification."""
+
+    def test_gemm_with_symmetric_left_becomes_symm(self):
+        """GEMM with symmetric left input → SYMM."""
+        from mechestim._opt_einsum._blas import can_blas
+        # ij,jk->ik where ij is symmetric
+        result = can_blas(
+            ["ij", "jk"], "ik", frozenset("j"),
+            input_symmetries=[[frozenset("ij")], None],
+        )
+        assert result == "SYMM"
+
+    def test_gemm_with_symmetric_right_becomes_symm(self):
+        """GEMM with symmetric right input → SYMM."""
+        from mechestim._opt_einsum._blas import can_blas
+        result = can_blas(
+            ["ij", "jk"], "ik", frozenset("j"),
+            input_symmetries=[None, [frozenset("jk")]],
+        )
+        assert result == "SYMM"
+
+    def test_gemv_with_symmetric_matrix_becomes_symv(self):
+        """GEMV with symmetric matrix → SYMV."""
+        from mechestim._opt_einsum._blas import can_blas
+        # ijk,ji->k where ij is symmetric: can_blas returns GEMV/EINSUM
+        # (transposed contraction not efficiently expressed as GEMM).
+        # With symmetric ij, this should become SYMV.
+        result = can_blas(
+            ["ijk", "ji"], "k", frozenset("ij"),
+            input_symmetries=[[frozenset("ij")], None],
+        )
+        assert result == "SYMV"
+
+    def test_dot_with_symmetric_becomes_sydt(self):
+        """DOT with symmetric input → SYDT."""
+        from mechestim._opt_einsum._blas import can_blas
+        result = can_blas(
+            ["ij", "ij"], "", frozenset("ij"),
+            input_symmetries=[[frozenset("ij")], None],
+        )
+        assert result == "SYDT"
+
+    def test_no_symmetry_unchanged(self):
+        """Without symmetry, classification is unchanged."""
+        from mechestim._opt_einsum._blas import can_blas
+        result = can_blas(["ij", "jk"], "ik", frozenset("j"))
+        assert result == "GEMM"
+
+    def test_none_symmetries_unchanged(self):
+        """Explicit None symmetries → same as no symmetry."""
+        from mechestim._opt_einsum._blas import can_blas
+        result = can_blas(
+            ["ij", "jk"], "ik", frozenset("j"),
+            input_symmetries=[None, None],
+        )
+        assert result == "GEMM"
+
+    def test_tdot_with_symmetry_unchanged(self):
+        """TDOT doesn't have a symmetric variant — stays TDOT."""
+        from mechestim._opt_einsum._blas import can_blas
+        # ijk,lkj->il: base classification is TDOT (non-aligned contraction).
+        # Symmetry on an index pair present in the input does not upgrade TDOT.
+        result = can_blas(
+            ["ijk", "lkj"], "il", frozenset("jk"),
+            input_symmetries=[[frozenset("ij")], None],
+        )
+        assert result == "TDOT"
+
+    def test_outer_with_symmetry_unchanged(self):
+        """OUTER doesn't have a symmetric variant — stays OUTER/EINSUM."""
+        from mechestim._opt_einsum._blas import can_blas
+        result = can_blas(
+            ["i", "j"], "ij", frozenset(),
+            input_symmetries=[None, None],
+        )
+        assert result == "OUTER/EINSUM"
+
+
+class TestStepInfoBlasType:
+    def test_step_info_has_blas_type(self):
+        """StepInfo should include blas_type field."""
+        from mechestim._opt_einsum._contract import contract_path, StepInfo
+        _, info = contract_path(
+            "ij,jk,kl->il", (5,5), (5,5), (5,5),
+            shapes=True, optimize="greedy",
+        )
+        for step in info.steps:
+            assert hasattr(step, 'blas_type')
+
+    def test_blas_type_with_symmetric_input(self):
+        """StepInfo should show SYMM/SYMV for symmetric inputs."""
+        from mechestim._opt_einsum._contract import contract_path
+        # ij,jk->ik where ij is symmetric — the step that contracts the
+        # symmetric tensor should show SYMM
+        _, info = contract_path(
+            "ij,jk,kl->il", (5,5), (5,5), (5,5),
+            shapes=True, optimize="greedy",
+            input_symmetries=[[frozenset("ij")], None, None],
+        )
+        blas_types = [s.blas_type for s in info.steps]
+        # At least one step should involve the symmetric tensor and get SYMM
+        assert any(bt in ("SYMM", "SYMV", "SYDT") for bt in blas_types), \
+            f"Expected at least one symmetric BLAS type, got {blas_types}"

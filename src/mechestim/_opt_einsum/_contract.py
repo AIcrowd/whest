@@ -62,6 +62,9 @@ class StepInfo:
     symmetry_savings: float
     """Fraction saved: ``1 - (flop_cost / dense_flop_cost)``. Zero when no symmetry."""
 
+    blas_type: str | bool = False
+    """BLAS classification for this step (e.g. 'GEMM', 'SYMM', False)."""
+
 
 @dataclass
 class PathInfo:
@@ -117,13 +120,14 @@ class PathInfo:
             f"  Optimized cost (mechestim):  {self.optimized_cost:,}",
             f"                     Speedup:  {self.speedup:.3f}x",
             f"       Largest intermediate:  {self.largest_intermediate:,} elements",
-            "-" * 74,
-            f"{'step':>4}  {'subscript':<30} {'flops':>12} {'dense_flops':>12} {'savings':>8}",
-            "-" * 74,
+            "-" * 84,
+            f"{'step':>4}  {'subscript':<30} {'flops':>12} {'dense_flops':>12} {'savings':>8}  {'blas':<10}",
+            "-" * 84,
         ]
         for i, step in enumerate(self.steps):
+            blas_label = str(step.blas_type) if step.blas_type else "-"
             lines.append(
-                f"{i:>4}  {step.subscript:<30} {step.flop_cost:>12,} {step.dense_flop_cost:>12,} {step.symmetry_savings:>7.1%}"
+                f"{i:>4}  {step.subscript:<30} {step.flop_cost:>12,} {step.dense_flop_cost:>12,} {step.symmetry_savings:>7.1%}  {blas_label:<10}"
             )
         return "\n".join(lines)
 
@@ -378,7 +382,10 @@ def contract_path(
                 sym_list.pop(x)
 
         if use_blas:
-            do_blas = blas.can_blas(tmp_inputs, "".join(out_inds), idx_removed, tmp_shapes)
+            do_blas = blas.can_blas(
+                tmp_inputs, "".join(out_inds), idx_removed, tmp_shapes,
+                input_symmetries=step_syms if sym_list is not None else None,
+            )
         else:
             do_blas = False
 
@@ -419,6 +426,7 @@ def contract_path(
             output_symmetry=result_sym,
             dense_flop_cost=mechestim_dense,
             symmetry_savings=savings,
+            blas_type=do_blas,
         ))
 
         # for large expressions saving the remaining terms at each step can
