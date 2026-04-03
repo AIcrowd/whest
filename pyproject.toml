@@ -30,6 +30,7 @@ packages = ["src/mechestim"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+addopts = "--ignore=tests/numpy_compat"
 
 [tool.ruff]
 line-length = 88
@@ -59,4 +60,5 @@ select = ["E", "F", "W", "I"]
 [dependency-groups]
 dev = [
     "hypothesis>=6.151.10",
+    "pytest-xdist>=3.8.0",
 ]
