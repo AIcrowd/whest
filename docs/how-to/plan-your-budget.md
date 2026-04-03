@@ -67,6 +67,34 @@ sum reduction                 256
 Total                      66,048
 ```
 
+## Multi-operand einsum planning with `einsum_path`
+
+For multi-operand einsums (3+ operands), `me.einsum_path()` is more
+informative than `me.flops.einsum_cost()` because it shows the step-by-step
+contraction breakdown with per-step symmetry savings:
+
+```python
+import mechestim as me
+import numpy as np
+
+T = me.as_symmetric(np.random.randn(50, 50, 50), dims=(0, 1, 2))
+A = me.ones((50, 50))
+B = me.ones((50, 50))
+C = me.ones((50, 50))
+
+path, info = me.einsum_path('ijk,ai,bj,ck->abc', T, A, B, C)
+
+print(f"Optimized cost: {info.optimized_cost:,}")
+print(f"Naive cost:     {info.naive_cost:,}")
+print(f"Speedup:        {info.speedup:.1f}x")
+print(f"Largest intermediate: {info.largest_intermediate:,} elements")
+print(info)  # full per-step table
+```
+
+`me.einsum_path()` has **zero budget cost** — it plans the contraction path
+without executing anything. Use it alongside `me.flops.einsum_cost()` for
+comprehensive planning.
+
 ## Using namespaces to track phases
 
 Use the `namespace` parameter to label different computation phases:
@@ -88,5 +116,6 @@ me.budget_summary()
 
 ## 📎 Related pages
 
-- [Use Einsum](./use-einsum.md) — understand einsum cost formulas
+- [Use Einsum](./use-einsum.md) — understand einsum cost formulas and multi-operand paths
 - [Debug Budget Overruns](./debug-budget-overruns.md) — diagnose after the fact
+- [Symmetric Tensors API](../api/symmetric.md) — `PathInfo` and `StepInfo` reference

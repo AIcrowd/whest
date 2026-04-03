@@ -742,11 +742,3 @@ def interp(x, xp, fp, **kwargs):
 attach_docstring(interp, _np.interp, "counted_custom", "numel(x) FLOPs")
 
 
-def einsum_path(subscripts, *operands, **kwargs):
-    """Free passthrough for np.einsum_path (planning only, 0 FLOPs)."""
-    return _np.einsum_path(subscripts, *operands, **kwargs)
-
-
-attach_docstring(
-    einsum_path, _np.einsum_path, "counted_custom", "0 FLOPs (planning only)"
-)
