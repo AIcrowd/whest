@@ -53,27 +53,35 @@ _testing.py  (vendored from opt_einsum/testing.py)
   - No logic changes. Provides build_shapes, build_views, rand_equation
     for the vendored test suite.
 
-_paths.py  (vendored from opt_einsum/paths.py)
+_paths.py  (vendored from opt_einsum/paths.py — EXTENDED)
 ──────────────────────────────────────────────────
   - Import paths changed from `opt_einsum.X` to relative `._X`.
-  - No logic changes to any path algorithm. All algorithms preserved:
-      * optimal          — brute-force DFS with branch-and-bound
-      * BranchBound      — heuristic branch-and-bound (branch-all, branch-2, branch-1)
-      * ssa_greedy_optimize / greedy — 3-phase greedy (Hadamard dedup → pairwise → outer products)
-      * DynamicProgramming — DP-based optimal (Phys. Rev. E 90, 033315)
-      * auto / auto_hq   — adaptive algorithm selectors
-      * PathOptimizer     — base class for custom optimizers
-      * register_path_fn / get_path_fn — path function registry
-  - The path algorithms determine contraction ORDER only. They are not
-    symmetry-aware — symmetry affects cost reporting in _contract.py,
-    not the ordering heuristic. (Future work: thread symmetry into the
-    greedy cost function so ordering also benefits from symmetry.)
+  - Added `input_symmetries` parameter to ALL path algorithms:
+      * calc_k12_flops: accepts symmetry_map, returns (k12, cost, sym12)
+        Uses symmetric_flop_count + propagate_symmetry when present.
+      * optimal: threads symmetry_map through DFS recursion.
+        Disables result cache when symmetry is present (same index
+        pair may have different symmetries in different branches).
+      * BranchBound: threads symmetry_map through branch search.
+        Candidate assessment uses symmetric costs and unique sizes.
+      * ssa_greedy_optimize / greedy: tracks symmetry_map per tensor.
+        Uses compute_unique_size for footprints. Propagates symmetry
+        after each contraction.
+      * DynamicProgramming: accepts input_symmetries.
+      * auto / auto_hq: pass input_symmetries through to dispatched algorithm.
+  - PathOptimizer base class updated to accept **kwargs.
+  - When input_symmetries is None, ALL behavior is identical to upstream.
 
-_path_random.py  (vendored from opt_einsum/path_random.py)
+_path_random.py  (vendored from opt_einsum/path_random.py — EXTENDED)
 ──────────────────────────────────────────────────
   - Import paths changed from `opt_einsum.X` to relative `._X`.
-  - No logic changes. All classes/functions preserved: RandomOptimizer,
-    RandomGreedy, thermal_chooser, random_greedy, random_greedy_128.
+  - Added `input_symmetries` parameter to RandomOptimizer.__call__() and
+    RandomGreedy.__call__(). Symmetry is threaded through to the underlying
+    greedy optimizer (ssa_greedy_optimize) so that random restarts also
+    benefit from symmetry-aware cost estimates and ordering.
+  - All classes/functions preserved: RandomOptimizer, RandomGreedy,
+    thermal_chooser, random_greedy, random_greedy_128.
+  - When input_symmetries is None, ALL behavior is identical to upstream.
 
 _contract.py  (vendored from opt_einsum/contract.py — HEAVILY MODIFIED)
 ──────────────────────────────────────────────────
@@ -231,7 +239,20 @@ The host project (mechestim) converts its SymmetryInfo objects (positional
 integer dims like [(0,1,2)]) to IndexSymmetry (character labels like
 [frozenset("ijk")]) at the boundary, then passes them to contract_path().
 
-Inside contract_path(), for each pairwise step:
+Symmetry now influences both the contraction ORDER (via the path algorithms)
+and the cost reporting (via contract_path). Each path algorithm maintains a
+symmetry_map (tensor index → IndexSymmetry) that is updated after every
+contraction so downstream steps see the propagated symmetry.
+
+Inside each path algorithm, for each candidate contraction:
+
+  1. Look up IndexSymmetry for both operands from symmetry_map.
+  2. Call calc_k12_flops() which uses symmetric_flop_count() + propagate_symmetry().
+  3. The resulting cost drives greedy/branch/DP selection — cheaper symmetric
+     contractions are preferred over denser ones.
+  4. The propagated result symmetry is stored back into symmetry_map.
+
+Inside contract_path(), for final cost reporting per step:
 
   1. Gather the IndexSymmetry of the tensors being contracted.
   2. Call propagate_symmetry() to compute the result's symmetry.

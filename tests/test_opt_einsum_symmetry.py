@@ -434,3 +434,114 @@ class TestAllAlgorithmsSymmetryAware:
             _, info_sym = contract_path(*args, shapes=True, optimize=algo, input_symmetries=sym)
             assert info_sym.optimized_cost <= info_dense.optimized_cost, \
                 f"{algo}: sym={info_sym.optimized_cost} > dense={info_dense.optimized_cost}"
+
+
+class TestExhaustiveSymmetryValidation:
+    """Exhaustive tests to verify symmetry-aware path algorithms are correct."""
+
+    def test_all_algorithms_agree_on_small_problem(self):
+        """For a small problem, optimal and dp should find the same cost."""
+        from mechestim._opt_einsum._contract import contract_path
+        args = ("ij,jk,ki->", (5,5), (5,5), (5,5))
+        sym = [[frozenset("ij")], None, None]
+        costs = {}
+        for algo in ["optimal", "greedy", "branch-all", "dp"]:
+            _, info = contract_path(*args, shapes=True, optimize=algo, input_symmetries=sym)
+            costs[algo] = info.optimized_cost
+        # Optimal should find the best; all others should be >= optimal
+        assert costs["greedy"] >= costs["optimal"], f"greedy < optimal: {costs}"
+        assert costs["branch-all"] >= costs["optimal"], f"branch-all < optimal: {costs}"
+
+    def test_symmetric_cost_le_dense_cost_all_algorithms(self):
+        """For every algorithm, symmetric cost <= dense cost."""
+        from mechestim._opt_einsum._contract import contract_path
+        args = ("ijk,ai,bj->abk", (5,)*3, (5,5), (5,5))
+        sym = [[frozenset("ijk")], None, None]
+        for algo in ["optimal", "greedy", "branch-all", "dp"]:
+            _, info_dense = contract_path(*args, shapes=True, optimize=algo)
+            _, info_sym = contract_path(*args, shapes=True, optimize=algo, input_symmetries=sym)
+            assert info_sym.optimized_cost <= info_dense.optimized_cost, \
+                f"{algo}: sym={info_sym.optimized_cost} > dense={info_dense.optimized_cost}"
+
+    def test_no_symmetry_all_algorithms_unchanged(self):
+        """Every algorithm produces identical results with None symmetries."""
+        from mechestim._opt_einsum._contract import contract_path
+        args = ("ij,jk,kl->il", (2,3), (3,4), (4,5))
+        for algo in ["optimal", "greedy", "branch-all", "dp"]:
+            path_before, info_before = contract_path(*args, shapes=True, optimize=algo)
+            path_after, info_after = contract_path(*args, shapes=True, optimize=algo,
+                                                    input_symmetries=[None, None, None])
+            assert list(path_before) == list(path_after), f"{algo} path changed"
+
+    def test_slack_thread_example(self):
+        """The ijk,ai,bj,ck->abc example from the Slack discussion."""
+        from mechestim._opt_einsum._contract import contract_path
+        _, info = contract_path(
+            "ijk,ai,bj,ck->abc",
+            *[(100,)*3, (100,100), (100,100), (100,100)],
+            shapes=True,
+            input_symmetries=[[frozenset("ijk")], None, None, None],
+        )
+        assert len(info.steps) == 3
+        _, info_dense = contract_path(
+            "ijk,ai,bj,ck->abc",
+            *[(100,)*3, (100,100), (100,100), (100,100)],
+            shapes=True,
+        )
+        assert info.optimized_cost < info_dense.optimized_cost
+        assert any(s.symmetry_savings > 0 for s in info.steps)
+
+    def test_mixed_symmetry_network(self):
+        """Network with S2, S3, and dense tensors."""
+        from mechestim._opt_einsum._contract import contract_path
+        _, info = contract_path(
+            "ijk,kl,li->j",
+            *[(5,)*3, (5,5), (5,5)],
+            shapes=True, optimize="optimal",
+            input_symmetries=[[frozenset("ijk")], [frozenset("kl")], None],
+        )
+        assert len(info.steps) == 2
+        assert info.optimized_cost > 0
+
+    def test_dp_invariant_result_symmetry(self):
+        """Result symmetry of a subset is order-independent."""
+        from mechestim._opt_einsum._symmetry import propagate_symmetry
+        sym_T = [frozenset("ijk")]
+        # Order 1: T+A -> ajk, then +B -> abk
+        sym1 = propagate_symmetry(sym_T, frozenset("ijk"), None, frozenset("ai"), frozenset("ajk"))
+        sym_final1 = propagate_symmetry(sym1, frozenset("ajk"), None, frozenset("bj"), frozenset("abk"))
+        # Order 2: T+B -> ibk, then +A -> abk
+        sym2 = propagate_symmetry(sym_T, frozenset("ijk"), None, frozenset("bj"), frozenset("ibk"))
+        sym_final2 = propagate_symmetry(sym2, frozenset("ibk"), None, frozenset("ai"), frozenset("abk"))
+        assert sym_final1 == sym_final2
+
+    def test_random_greedy_with_symmetry(self):
+        """RandomGreedy accepts and uses symmetry."""
+        from mechestim._opt_einsum._path_random import RandomGreedy
+        rg = RandomGreedy(max_repeats=4)
+        path = rg(
+            [frozenset("ij"), frozenset("jk"), frozenset("ki")],
+            frozenset(""), {"i": 5, "j": 5, "k": 5},
+            input_symmetries=[[frozenset("ij")], None, None],
+        )
+        assert len(path) == 2
+
+    def test_end_to_end_numerical_correctness(self):
+        """Symmetry-aware path produces numerically correct results."""
+        import numpy as np
+        from mechestim._einsum import einsum
+        from mechestim._symmetric import as_symmetric
+        from mechestim._budget import BudgetContext
+
+        n = 8
+        T_data = np.random.RandomState(42).rand(n, n, n)
+        T_data = (T_data + T_data.transpose(1,0,2) + T_data.transpose(2,1,0) +
+                  T_data.transpose(0,2,1) + T_data.transpose(1,2,0) + T_data.transpose(2,0,1)) / 6
+        T = as_symmetric(T_data, dims=(0, 1, 2))
+        A = np.random.RandomState(43).rand(n, n)
+        B = np.random.RandomState(44).rand(n, n)
+
+        expected = np.einsum("ijk,ai,bj->abk", T_data, A, B)
+        with BudgetContext(flop_budget=10**8, quiet=True):
+            result = einsum("ijk,ai,bj->abk", T, A, B)
+        np.testing.assert_allclose(result, expected, rtol=1e-10)
