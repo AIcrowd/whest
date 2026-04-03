@@ -115,8 +115,11 @@ All three mechanisms stack multiplicatively. For the full details, see
 ## Multi-operand contractions
 
 For einsums with 3+ operands, mechestim automatically finds the optimal
-pairwise contraction order using opt_einsum. This is controlled by the
-`optimize` kwarg (defaults to `'auto'`):
+pairwise contraction order using opt_einsum. The optimizer is fully
+symmetry-aware: it uses symmetry information to choose the contraction
+ORDER, not just to report cheaper costs after the fact. This means it may
+select a different ordering for symmetric tensors than it would for dense
+tensors. The `optimize` kwarg controls the algorithm (defaults to `'auto'`):
 
 ```python
 with me.BudgetContext(flop_budget=10**9) as budget:
@@ -134,12 +137,15 @@ with me.BudgetContext(flop_budget=10**9) as budget:
 
 Symmetry is tracked through intermediates: contracting an S₃-symmetric
 `ijk` with `ai` yields an intermediate `ajk` with S₂ symmetry on `(j,k)`,
-reducing the cost of that step.
+and the optimizer factors this propagated symmetry into its ordering
+decisions for subsequent steps.
 
 ## Inspecting contraction paths
 
 Use `me.einsum_path()` to preview the contraction plan without executing
-or spending any budget:
+or spending any budget. The returned path reflects the symmetry-aware
+ordering -- the optimizer has already chosen the best order for the given
+symmetric tensors:
 
 ```python
 path, info = me.einsum_path('ijk,ai,bj,ck->abc', T, A, B, C)

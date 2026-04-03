@@ -56,18 +56,31 @@ _testing.py  (vendored from opt_einsum/testing.py)
 _paths.py  (vendored from opt_einsum/paths.py — EXTENDED)
 ──────────────────────────────────────────────────
   - Import paths changed from `opt_einsum.X` to relative `._X`.
-  - Added `input_symmetries` parameter to ALL path algorithms:
-      * calc_k12_flops: accepts symmetry_map, returns (k12, cost, sym12)
-        Uses symmetric_flop_count + propagate_symmetry when present.
+  - Added `input_symmetries` parameter to ALL path algorithms. Symmetry
+    now drives the contraction ORDER — the algorithms prefer contractions
+    that exploit symmetry, not just contractions that look cheapest under
+    dense cost estimates. This means the returned path may differ from the
+    upstream path when symmetry is present.
+      * calc_k12_flops: accepts symmetry_map, returns (k12, cost, sym12).
+        Uses symmetric_flop_count (with the output_indices fix) +
+        propagate_symmetry when present.
       * optimal: threads symmetry_map through DFS recursion.
         Disables result cache when symmetry is present (same index
         pair may have different symmetries in different branches).
+        Symmetric costs in calc_k12_flops guide the DFS to choose
+        the cheapest symmetric contraction order.
       * BranchBound: threads symmetry_map through branch search.
-        Candidate assessment uses symmetric costs and unique sizes.
+        Candidate assessment uses symmetric costs and unique sizes,
+        so the branch-and-bound pruning respects symmetry savings.
       * ssa_greedy_optimize / greedy: tracks symmetry_map per tensor.
-        Uses compute_unique_size for footprints. Propagates symmetry
-        after each contraction.
-      * DynamicProgramming: accepts input_symmetries.
+        Uses compute_unique_size for memory footprints. Propagates
+        symmetry after each contraction so that future greedy choices
+        see the updated symmetry of intermediates.
+      * DynamicProgramming: accepts input_symmetries, incorporates
+        symmetric costs into the DP table.
+      * RandomGreedy: passes input_symmetries through to
+        ssa_greedy_optimize so random restarts also explore
+        symmetry-aware orderings (see also _path_random.py).
       * auto / auto_hq: pass input_symmetries through to dispatched algorithm.
   - PathOptimizer base class updated to accept **kwargs.
   - When input_symmetries is None, ALL behavior is identical to upstream.
@@ -76,9 +89,10 @@ _path_random.py  (vendored from opt_einsum/path_random.py — EXTENDED)
 ──────────────────────────────────────────────────
   - Import paths changed from `opt_einsum.X` to relative `._X`.
   - Added `input_symmetries` parameter to RandomOptimizer.__call__() and
-    RandomGreedy.__call__(). Symmetry is threaded through to the underlying
-    greedy optimizer (ssa_greedy_optimize) so that random restarts also
-    benefit from symmetry-aware cost estimates and ordering.
+    RandomGreedy.__call__(). The input_symmetries value is passed through
+    to the underlying greedy optimizer (ssa_greedy_optimize) so that
+    random restarts also benefit from symmetry-aware cost estimates and
+    symmetry-aware contraction ordering.
   - All classes/functions preserved: RandomOptimizer, RandomGreedy,
     thermal_chooser, random_greedy, random_greedy_128.
   - When input_symmetries is None, ALL behavior is identical to upstream.
@@ -113,7 +127,10 @@ _contract.py  (vendored from opt_einsum/contract.py — HEAVILY MODIFIED)
 
   contract_path() changes:
     - Added `input_symmetries: list[IndexSymmetry | None] | None = None`
-      parameter. When provided, enables symmetry-aware cost reporting.
+      parameter. When provided, enables symmetry-aware cost reporting AND
+      passes input_symmetries through to whichever optimizer is dispatched
+      (optimal, greedy, branch-and-bound, DP, random-greedy, etc.) so that
+      symmetry influences the contraction order, not just the cost report.
     - Removed `einsum_call` hidden kwarg (was for contract() integration).
     - In the contraction list loop:
       * Tracks a parallel `sym_list` alongside `input_list` / `input_shapes`.
@@ -187,7 +204,8 @@ _symmetry.py  (NEW — not in upstream opt_einsum)
     Example: S₃ → 3! = 6, S₂×S₂ → 2!×2! = 4.
 
   symmetric_flop_count(idx_contraction, inner, num_terms, size_dict,
-                       input_symmetries=None, output_symmetry=None) → int
+                       input_symmetries=None, output_symmetry=None,
+                       output_indices=None) → int
     Symmetry-aware FLOP estimate:
     1. Start with dense cost: flop_count(idx_contraction, inner, num_terms, size_dict)
     2. For each input symmetry group overlapping the contraction indices,
@@ -195,6 +213,13 @@ _symmetry.py  (NEW — not in upstream opt_einsum)
     3. Divide by symmetry_factor(output_symmetry).
     4. Return max(cost, 1).
     When no symmetry is provided, returns the same value as flop_count().
+
+    FIX (output_indices parameter): The original implementation over-reduced
+    for summed indices. The new `output_indices` parameter tells the function
+    which indices survive into the output. The symmetry ratio is now applied
+    only to surviving (non-summed) subgroups of each symmetric group. For
+    example, given S_3 on {i,j,k} where i is summed out, only the S_2
+    subgroup on {j,k} contributes a symmetry reduction.
 
 __init__.py
 ──────────────────────────────────────────────────
@@ -239,25 +264,36 @@ The host project (mechestim) converts its SymmetryInfo objects (positional
 integer dims like [(0,1,2)]) to IndexSymmetry (character labels like
 [frozenset("ijk")]) at the boundary, then passes them to contract_path().
 
-Symmetry now influences both the contraction ORDER (via the path algorithms)
-and the cost reporting (via contract_path). Each path algorithm maintains a
-symmetry_map (tensor index → IndexSymmetry) that is updated after every
-contraction so downstream steps see the propagated symmetry.
+Symmetry drives both the contraction ORDER (via the path algorithms) and the
+cost reporting (via contract_path). This is the key distinction: symmetry does
+not merely give cheaper cost numbers for a fixed path — it changes which path
+the optimizer selects. A contraction that looks sub-optimal under dense cost
+estimates may become the best choice once symmetry savings are accounted for.
+
+Each path algorithm (optimal, branch-and-bound, greedy, DP, random-greedy)
+maintains a symmetry_map (tensor index -> IndexSymmetry) that is updated
+after every contraction so downstream steps see the propagated symmetry.
 
 Inside each path algorithm, for each candidate contraction:
 
   1. Look up IndexSymmetry for both operands from symmetry_map.
-  2. Call calc_k12_flops() which uses symmetric_flop_count() + propagate_symmetry().
-  3. The resulting cost drives greedy/branch/DP selection — cheaper symmetric
-     contractions are preferred over denser ones.
-  4. The propagated result symmetry is stored back into symmetry_map.
+  2. Call calc_k12_flops() which uses symmetric_flop_count() (with the
+     output_indices fix for correct summed-vs-surviving index handling)
+     + propagate_symmetry().
+  3. The resulting symmetric cost drives greedy/branch/DP selection —
+     cheaper symmetric contractions are preferred over denser ones.
+     This means the contraction ORDER changes with symmetry.
+  4. The propagated result symmetry is stored back into symmetry_map,
+     influencing all future ordering decisions in the same search.
 
 Inside contract_path(), for final cost reporting per step:
 
   1. Gather the IndexSymmetry of the tensors being contracted.
   2. Call propagate_symmetry() to compute the result's symmetry.
      Conservative rule: restrict each group to surviving indices.
-  3. Call symmetric_flop_count() for the symmetry-aware cost.
+  3. Call symmetric_flop_count() (with output_indices) for the
+     symmetry-aware cost. Summed indices do not receive symmetry
+     reduction; only surviving subgroups contribute.
   4. Store the result symmetry for downstream steps.
 
 Example chain for `ijk,ai,bj,ck->abc` with T[ijk] having S₃:

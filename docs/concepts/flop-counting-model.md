@@ -54,17 +54,27 @@ See [Exploit Symmetry Savings](../how-to/exploit-symmetry.md) for usage details.
 
 For einsums with 3+ operands, mechestim decomposes the contraction into a
 sequence of pairwise steps along the optimal contraction path (found via
-opt_einsum). The total cost is the sum of pairwise step costs, where each
+opt_einsum). The optimizer is symmetry-aware in its ordering: it uses
+symmetric costs to decide which pair to contract at each step, so the
+returned path may differ from the dense-optimal path when symmetric tensors
+are present. The total cost is the sum of pairwise step costs, where each
 step's cost is reduced by the symmetry of its inputs and output:
 
 ```
 total_cost = sum(step.flop_cost for step in path.steps)
 ```
 
+The per-step cost formula correctly distinguishes between summed and
+surviving indices in symmetric groups. For a symmetric group such as S_3
+on {i,j,k}, if index i is summed out in that step, only the S_2 subgroup
+on the surviving indices {j,k} contributes a symmetry reduction. Summed
+indices receive no symmetry discount.
+
 Symmetry propagates through intermediates: if an early contraction produces
 a symmetric intermediate, subsequent steps that consume it benefit from
-the reduced element count. Use `me.einsum_path()` to inspect the per-step
-breakdown. See [Use Einsum](../how-to/use-einsum.md) for examples.
+the reduced element count, and the optimizer factors this into its ordering
+decisions. Use `me.einsum_path()` to inspect the per-step breakdown. See
+[Use Einsum](../how-to/use-einsum.md) for examples.
 
 ## FLOP multiplier
 
