@@ -6,6 +6,7 @@ format_const_einsum_str, shape_only.
 """
 
 from collections.abc import Collection, Sequence
+from dataclasses import dataclass, field
 from decimal import Decimal
 from typing import Any, Literal, overload
 
@@ -25,6 +26,7 @@ from ._typing import (
 __all__ = [
     "contract_path",
     "PathInfo",
+    "StepInfo",
 ]
 
 ## Common types
@@ -32,74 +34,101 @@ __all__ = [
 _MemoryLimit = None | int | Decimal | Literal["max_input"]
 
 
+@dataclass
+class StepInfo:
+    """Per-step diagnostics for a contraction path."""
+
+    subscript: str
+    """Einsum subscript for this step, e.g. ``"ijk,ai->ajk"``."""
+
+    flop_cost: int
+    """Symmetry-aware FLOP cost (mechestim formula: product of all labels / symmetry)."""
+
+    input_shapes: list[tuple[int, ...]]
+    """Shapes of the input operands for this step."""
+
+    output_shape: tuple[int, ...]
+    """Shape of the output operand for this step."""
+
+    input_symmetries: list[IndexSymmetry | None]
+    """IndexSymmetry for each input in this step."""
+
+    output_symmetry: IndexSymmetry | None
+    """IndexSymmetry of the output, or None."""
+
+    dense_flop_cost: int
+    """FLOP cost without symmetry (product of all labels)."""
+
+    symmetry_savings: float
+    """Fraction saved: ``1 - (flop_cost / dense_flop_cost)``. Zero when no symmetry."""
+
+
+@dataclass
 class PathInfo:
-    """A printable object to contain information about a contraction path."""
+    """Information about a contraction path with per-step symmetry diagnostics."""
 
-    def __init__(
-        self,
-        contraction_list: ContractionListType,
-        input_subscripts: str,
-        output_subscript: str,
-        indices: ArrayIndexType,
-        path: PathType,
-        scale_list: Sequence[int],
-        naive_cost: int,
-        opt_cost: int,
-        size_list: Sequence[int],
-        size_dict: dict[str, int],
-    ):
-        self.contraction_list = contraction_list
-        self.input_subscripts = input_subscripts
-        self.output_subscript = output_subscript
-        self.path = path
-        self.indices = indices
-        self.scale_list = scale_list
-        self.naive_cost = Decimal(naive_cost)
-        self.opt_cost = Decimal(opt_cost)
-        self.speedup = self.naive_cost / max(self.opt_cost, Decimal(1))
-        self.size_list = size_list
-        self.size_dict = size_dict
+    path: list[tuple[int, ...]]
+    """The optimized contraction path (list of index-tuples)."""
 
-        self.shapes = [tuple(size_dict[k] for k in ks) for ks in input_subscripts.split(",")]
-        self.eq = f"{input_subscripts}->{output_subscript}"
-        self.largest_intermediate = Decimal(max(size_list, default=1))
+    steps: list[StepInfo]
+    """Per-step diagnostics."""
+
+    naive_cost: int
+    """Naive (single-step) FLOP cost using mechestim formula."""
+
+    optimized_cost: int
+    """Sum of per-step costs using mechestim formula."""
+
+    largest_intermediate: int
+    """Number of elements in the largest intermediate tensor."""
+
+    speedup: float
+    """``naive_cost / optimized_cost``."""
+
+    input_subscripts: str = ""
+    """Comma-separated input subscripts, e.g. ``"ij,jk,kl"``."""
+
+    output_subscript: str = ""
+    """Output subscript, e.g. ``"il"``."""
+
+    size_dict: dict[str, int] = field(default_factory=dict)
+    """Mapping from index label to dimension size."""
+
+    # Legacy fields for backward-compat with opt_einsum tests
+    contraction_list: ContractionListType = field(default_factory=list)
+    scale_list: list[int] = field(default_factory=list)
+    size_list: list[int] = field(default_factory=list)
+    _oe_naive_cost: int = 0
+    _oe_opt_cost: int = 0
+
+    @property
+    def opt_cost(self) -> Decimal:
+        """Legacy: opt_einsum-style cost (using flop_count with op_factor)."""
+        return Decimal(self._oe_opt_cost)
+
+    @property
+    def eq(self) -> str:
+        return f"{self.input_subscripts}->{self.output_subscript}"
+
+    def __str__(self) -> str:
+        lines = [
+            f"  Complete contraction:  {self.eq}",
+            f"      Naive cost (mechestim):  {self.naive_cost:,}",
+            f"  Optimized cost (mechestim):  {self.optimized_cost:,}",
+            f"                     Speedup:  {self.speedup:.3f}x",
+            f"       Largest intermediate:  {self.largest_intermediate:,} elements",
+            "-" * 74,
+            f"{'step':>4}  {'subscript':<30} {'flops':>12} {'dense_flops':>12} {'savings':>8}",
+            "-" * 74,
+        ]
+        for i, step in enumerate(self.steps):
+            lines.append(
+                f"{i:>4}  {step.subscript:<30} {step.flop_cost:>12,} {step.dense_flop_cost:>12,} {step.symmetry_savings:>7.1%}"
+            )
+        return "\n".join(lines)
 
     def __repr__(self) -> str:
-        # Return the path along with a nice string representation
-        header = ("scaling", "BLAS", "current", "remaining")
-
-        path_print = [
-            f"  Complete contraction:  {self.eq}\n",
-            f"         Naive scaling:  {len(self.indices)}\n",
-            f"     Optimized scaling:  {max(self.scale_list, default=0)}\n",
-            f"      Naive FLOP count:  {self.naive_cost:.3e}\n",
-            f"  Optimized FLOP count:  {self.opt_cost:.3e}\n",
-            f"   Theoretical speedup:  {self.speedup:.3e}\n",
-            f"  Largest intermediate:  {self.largest_intermediate:.3e} elements\n",
-            "-" * 80 + "\n",
-            "{:>6} {:>11} {:>22} {:>37}\n".format(*header),
-            "-" * 80,
-        ]
-
-        for n, contraction in enumerate(self.contraction_list):
-            _, _, einsum_str, remaining, do_blas = contraction
-
-            if remaining is not None:
-                remaining_str = ",".join(remaining) + "->" + self.output_subscript
-            else:
-                remaining_str = "..."
-            size_remaining = max(0, 56 - max(22, len(einsum_str)))
-
-            path_run = (
-                self.scale_list[n],
-                do_blas,
-                einsum_str,
-                remaining_str,
-                size_remaining,
-            )
-            path_print.append("\n{:>4} {:>14} {:>22}    {:>{}}".format(*path_run))
-
-        return "".join(path_print)
+        return self.__str__()
 
 
 def _choose_memory_arg(memory_limit: _MemoryLimit, size_list: list[int]) -> int | None:
@@ -291,6 +320,7 @@ def contract_path(
     scale_list = []
     size_list = []
     contraction_list = []
+    step_infos: list[StepInfo] = []
 
     # Track symmetries through contractions if provided
     sym_list: list[IndexSymmetry | None] | None = None
@@ -330,8 +360,12 @@ def contract_path(
                 output_symmetry=result_sym,
             )
         else:
-            result_sym = None  # not used
+            step_syms = [None] * len(contract_inds)
+            result_sym = None
             cost = helpers.flop_count(idx_contract, bool(idx_removed), len(contract_inds), size_dict)
+
+        # Dense cost is always the opt_einsum flop_count (no symmetry)
+        dense_cost = helpers.flop_count(idx_contract, bool(idx_removed), len(contract_inds), size_dict)
 
         cost_list.append(cost)
         scale_list.append(len(idx_contract))
@@ -365,6 +399,28 @@ def contract_path(
 
         einsum_str = ",".join(tmp_inputs) + "->" + idx_result
 
+        # Build StepInfo — use mechestim-style cost (product of all labels)
+        # which is the dense_cost / op_factor for backward compat
+        mechestim_dense = helpers.compute_size_by_dict(idx_contract, size_dict)
+        # For symmetry-aware mechestim cost, scale down by same ratio
+        if dense_cost > 0 and cost < dense_cost:
+            mechestim_sym = max(1, mechestim_dense * cost // dense_cost)
+        else:
+            mechestim_sym = mechestim_dense
+
+        savings = 1.0 - (mechestim_sym / mechestim_dense) if mechestim_dense > 0 else 0.0
+
+        step_infos.append(StepInfo(
+            subscript=einsum_str,
+            flop_cost=mechestim_sym,
+            input_shapes=list(tmp_shapes),
+            output_shape=shp_result,
+            input_symmetries=list(step_syms),
+            output_symmetry=result_sym,
+            dense_flop_cost=mechestim_dense,
+            symmetry_savings=savings,
+        ))
+
         # for large expressions saving the remaining terms at each step can
         # incur a large memory footprint - and also be messy to print
         if len(input_list) <= 20:
@@ -377,17 +433,25 @@ def contract_path(
 
     opt_cost = sum(cost_list)
 
+    # Compute mechestim-style naive cost: product of ALL index labels
+    mechestim_naive = helpers.compute_size_by_dict(indices, size_dict)
+    mechestim_optimized = sum(s.flop_cost for s in step_infos)
+
     path_print = PathInfo(
-        contraction_list,
-        input_subscripts,
-        output_subscript,
-        indices,
-        path_tuple,
-        scale_list,
-        naive_cost,
-        opt_cost,
-        size_list,
-        size_dict,
+        path=list(path_tuple),
+        steps=step_infos,
+        naive_cost=mechestim_naive,
+        optimized_cost=mechestim_optimized,
+        largest_intermediate=max(size_list, default=1),
+        speedup=mechestim_naive / max(mechestim_optimized, 1),
+        input_subscripts=input_subscripts,
+        output_subscript=output_subscript,
+        size_dict=dict(size_dict),
+        contraction_list=contraction_list,
+        scale_list=scale_list,
+        size_list=size_list,
+        _oe_naive_cost=naive_cost,
+        _oe_opt_cost=opt_cost,
     )
 
     return path_tuple, path_print

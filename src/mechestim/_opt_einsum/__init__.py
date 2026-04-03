@@ -5,12 +5,13 @@ See LICENSE and NOTICE in this directory for attribution.
 """
 
 from mechestim._opt_einsum import _path_random, _paths
-from mechestim._opt_einsum._contract import PathInfo, contract_path
+from mechestim._opt_einsum._contract import PathInfo, StepInfo, contract_path
 from mechestim._opt_einsum._paths import BranchBound, DynamicProgramming
 
 __all__ = [
     "contract_path",
     "PathInfo",
+    "StepInfo",
     "BranchBound",
     "DynamicProgramming",
 ]
