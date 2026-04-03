@@ -383,3 +383,54 @@ class TestFixedSymmetricFlopCount:
         dense_base = 10 * 10 * 10  # 1000
         # cost = 1000 * 55 // 100 // 2 = 275
         assert cost == 275
+
+
+class TestAllAlgorithmsSymmetryAware:
+    """Each algorithm accepts and uses input_symmetries."""
+
+    def _run_algo(self, algo_name, input_symmetries):
+        from mechestim._opt_einsum._contract import contract_path
+        return contract_path(
+            "ijk,ai,bj->abk",
+            (5,)*3, (5,5), (5,5),
+            shapes=True, optimize=algo_name,
+            input_symmetries=input_symmetries,
+        )
+
+    def test_optimal_accepts_symmetry(self):
+        path, info = self._run_algo("optimal", [[frozenset("ijk")], None, None])
+        assert len(path) == 2
+        assert info.optimized_cost > 0
+
+    def test_greedy_accepts_symmetry(self):
+        path, info = self._run_algo("greedy", [[frozenset("ijk")], None, None])
+        assert len(path) == 2
+
+    def test_branch_all_accepts_symmetry(self):
+        path, info = self._run_algo("branch-all", [[frozenset("ijk")], None, None])
+        assert len(path) == 2
+
+    def test_dp_accepts_symmetry(self):
+        path, info = self._run_algo("dp", [[frozenset("ijk")], None, None])
+        assert len(path) == 2
+
+    def test_no_symmetry_unchanged_all_algos(self):
+        """Every algorithm produces identical results without symmetry."""
+        from mechestim._opt_einsum._contract import contract_path
+        args = ("ij,jk,kl->il", (2,3), (3,4), (4,5))
+        for algo in ["optimal", "greedy", "branch-all", "dp"]:
+            path_before, _ = contract_path(*args, shapes=True, optimize=algo)
+            path_after, _ = contract_path(*args, shapes=True, optimize=algo,
+                                          input_symmetries=[None, None, None])
+            assert list(path_before) == list(path_after), f"{algo} path changed with None symmetries"
+
+    def test_symmetric_cost_le_dense_all_algos(self):
+        """Symmetric cost <= dense cost for all algorithms."""
+        from mechestim._opt_einsum._contract import contract_path
+        args = ("ijk,ai,bj->abk", (5,)*3, (5,5), (5,5))
+        sym = [[frozenset("ijk")], None, None]
+        for algo in ["optimal", "greedy", "branch-all", "dp"]:
+            _, info_dense = contract_path(*args, shapes=True, optimize=algo)
+            _, info_sym = contract_path(*args, shapes=True, optimize=algo, input_symmetries=sym)
+            assert info_sym.optimized_cost <= info_dense.optimized_cost, \
+                f"{algo}: sym={info_sym.optimized_cost} > dense={info_dense.optimized_cost}"

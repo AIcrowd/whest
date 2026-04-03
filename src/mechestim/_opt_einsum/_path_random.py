@@ -155,6 +155,7 @@ class RandomOptimizer(paths.PathOptimizer):
         inputs: list[ArrayIndexType],
         output: ArrayIndexType,
         size_dict: dict[str, int],
+        **kwargs: Any,
     ) -> tuple[Any, Any]:
         raise NotImplementedError
 
@@ -164,6 +165,7 @@ class RandomOptimizer(paths.PathOptimizer):
         output: ArrayIndexType,
         size_dict: dict[str, int],
         memory_limit: int | None = None,
+        **kwargs: Any,
     ) -> PathType:
         self._check_args_against_first_call(inputs, output, size_dict)
 
@@ -171,7 +173,7 @@ class RandomOptimizer(paths.PathOptimizer):
         if self.max_time is not None:
             t0 = time.time()
 
-        trial_fn, trial_args = self.setup(inputs, output, size_dict)
+        trial_fn, trial_args = self.setup(inputs, output, size_dict, **kwargs)
 
         r_start = self._repeats_start + len(self.costs)
         r_stop = r_start + self.max_repeats
@@ -293,7 +295,7 @@ def ssa_path_compute_cost(
     max_size = 0
 
     for i, j in ssa_path:
-        k12, flops12 = paths.calc_k12_flops(inputs, output, remaining, i, j, size_dict)  # type: ignore
+        k12, flops12, _sym12 = paths.calc_k12_flops(inputs, output, remaining, i, j, size_dict)  # type: ignore
         remaining.discard(i)
         remaining.discard(j)
         remaining.add(len(inputs))
@@ -379,6 +381,7 @@ class RandomGreedy(RandomOptimizer):
         inputs: list[ArrayIndexType],
         output: ArrayIndexType,
         size_dict: dict[str, int],
+        **kwargs: Any,
     ) -> tuple[Any, Any]:
         fn = _trial_greedy_ssa_path_and_cost
         args = (inputs, output, size_dict, self.choose_fn, self.cost_fn)
@@ -390,11 +393,12 @@ def random_greedy(
     output: ArrayIndexType,
     idx_dict: dict[str, int],
     memory_limit: int | None = None,
+    input_symmetries: "list | None" = None,
     **optimizer_kwargs: Any,
 ) -> ArrayType:
     """A simple wrapper around the `RandomGreedy` optimizer."""
     optimizer = RandomGreedy(**optimizer_kwargs)
-    return optimizer(inputs, output, idx_dict, memory_limit)
+    return optimizer(inputs, output, idx_dict, memory_limit, input_symmetries=input_symmetries)
 
 
 random_greedy_128 = functools.partial(random_greedy, max_repeats=128)

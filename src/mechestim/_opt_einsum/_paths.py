@@ -13,6 +13,7 @@ from collections.abc import Callable, Generator, Sequence
 from typing import Any
 
 from ._helpers import compute_size_by_dict, flop_count
+from ._symmetry import IndexSymmetry, compute_unique_size, propagate_symmetry, symmetric_flop_count
 from ._typing import ArrayIndexType, PathSearchFunctionType, PathType, TensorShapeType
 
 __all__ = [
@@ -76,6 +77,7 @@ class PathOptimizer:
         output: ArrayIndexType,
         size_dict: dict[str, int],
         memory_limit: int | None = None,
+        **kwargs: Any,
     ) -> PathType:
         raise NotImplementedError
 
@@ -133,7 +135,8 @@ def calc_k12_flops(
     i: int,
     j: int,
     size_dict: dict[str, int],
-) -> tuple[frozenset[str], int]:
+    symmetry_map: dict[int, IndexSymmetry | None] | None = None,
+) -> tuple[frozenset[str], int, IndexSymmetry | None]:
     """Calculate the resulting indices and flops for a potential pairwise
     contraction - used in the recursive (optimal/branch) algorithms.
 
@@ -146,10 +149,12 @@ def calc_k12_flops(
         i: Index of potential tensor to contract.
         j: Index of potential tensor to contract.
         size_dict: Size mapping of all the indices.
+        symmetry_map: Optional mapping from tensor SSA id to its IndexSymmetry.
 
     Returns:
         k12: The resulting indices of the potential tensor.
         cost: Estimated flop count of operation.
+        sym12: Symmetry of the result tensor (None when no symmetry).
     """
     k1, k2 = inputs[i], inputs[j]
     either = k1 | k2
@@ -157,9 +162,22 @@ def calc_k12_flops(
     keep = frozenset.union(output, *map(inputs.__getitem__, remaining - {i, j}))
 
     k12 = either & keep
-    cost = flop_count(either, bool(shared - keep), 2, size_dict)
 
-    return k12, cost
+    if symmetry_map is not None:
+        sym_i = symmetry_map.get(i)
+        sym_j = symmetry_map.get(j)
+        sym12 = propagate_symmetry(sym_i, k1, sym_j, k2, k12)
+        cost = symmetric_flop_count(
+            either, bool(shared - keep), 2, size_dict,
+            output_indices=k12,
+            input_symmetries=[sym_i, sym_j],
+            output_symmetry=sym12,
+        )
+    else:
+        sym12 = None
+        cost = flop_count(either, bool(shared - keep), 2, size_dict)
+
+    return k12, cost, sym12
 
 
 def _compute_oversize_flops(
@@ -182,6 +200,7 @@ def optimal(
     output: ArrayIndexType,
     size_dict: dict[str, int],
     memory_limit: int | None = None,
+    input_symmetries: list[IndexSymmetry | None] | None = None,
 ) -> PathType:
     """Computes all possible pair contractions in a depth-first recursive manner,
     sieving results based on `memory_limit` and the best path found so far.
@@ -210,9 +229,18 @@ def optimal(
     best_flops = {"flops": float("inf")}
     best_ssa_path = {"ssa_path": (tuple(range(len(inputs))),)}
     size_cache: dict[frozenset[str], int] = {}
-    result_cache: dict[tuple[ArrayIndexType, ArrayIndexType], tuple[frozenset[str], int]] = {}
 
-    def _optimal_iterate(path, remaining, inputs, flops):
+    # Build symmetry_map when symmetry info is provided
+    symmetry_map: dict[int, IndexSymmetry | None] | None = None
+    if input_symmetries is not None:
+        symmetry_map = {i: s for i, s in enumerate(input_symmetries)}
+
+    # Disable result cache when symmetry is present (same index pair may have
+    # different symmetries in different parts of the search tree).
+    result_cache: dict[tuple[ArrayIndexType, ArrayIndexType], tuple[frozenset[str], int, IndexSymmetry | None]] = {}
+    use_cache = symmetry_map is None
+
+    def _optimal_iterate(path, remaining, inputs, flops, sym_map):
         # reached end of path (only ever get here if flops is best found so far)
         if len(remaining) == 1:
             best_flops["flops"] = flops
@@ -223,11 +251,19 @@ def optimal(
         for i, j in itertools.combinations(remaining, 2):
             if i > j:
                 i, j = j, i
-            key = (inputs[i], inputs[j])
-            try:
-                k12, flops12 = result_cache[key]
-            except KeyError:
-                k12, flops12 = result_cache[key] = calc_k12_flops(inputs, output_set, remaining, i, j, size_dict)
+
+            if use_cache:
+                key = (inputs[i], inputs[j])
+                try:
+                    k12, flops12, sym12 = result_cache[key]
+                except KeyError:
+                    k12, flops12, sym12 = result_cache[key] = calc_k12_flops(
+                        inputs, output_set, remaining, i, j, size_dict, symmetry_map=sym_map
+                    )
+            else:
+                k12, flops12, sym12 = calc_k12_flops(
+                    inputs, output_set, remaining, i, j, size_dict, symmetry_map=sym_map
+                )
 
             # sieve based on current best flops
             new_flops = flops + flops12
@@ -249,15 +285,22 @@ def optimal(
                         best_ssa_path["ssa_path"] = path + (tuple(remaining),)
                     continue
 
+            # update symmetry map for the new tensor
+            new_sym_map = sym_map
+            if sym_map is not None:
+                new_sym_map = dict(sym_map)
+                new_sym_map[len(inputs)] = sym12
+
             # add contraction and recurse into all remaining
             _optimal_iterate(
                 path=path + ((i, j),),
                 inputs=inputs + (k12,),
                 remaining=remaining - {i, j} | {len(inputs)},
                 flops=new_flops,
+                sym_map=new_sym_map,
             )
 
-    _optimal_iterate(path=(), inputs=inputs_set, remaining=set(range(len(inputs))), flops=0)
+    _optimal_iterate(path=(), inputs=inputs_set, remaining=set(range(len(inputs))), flops=0, sym_map=symmetry_map)
 
     return ssa_to_linear(best_ssa_path["ssa_path"])
 
@@ -355,12 +398,14 @@ class BranchBound(PathOptimizer):
         output_: ArrayIndexType,
         size_dict: dict[str, int],
         memory_limit: int | None = None,
+        input_symmetries: list[IndexSymmetry | None] | None = None,
     ) -> PathType:
         """Parameters:
             inputs_: List of sets that represent the lhs side of the einsum subscript
             output_: Set that represents the rhs side of the overall einsum subscript
             size_dict: Dictionary of index sizes
             memory_limit: The maximum number of elements in a temporary array.
+            input_symmetries: Optional symmetry info for each input tensor.
 
         Returns:
             path: The contraction order within the memory limit constraint.
@@ -379,9 +424,17 @@ class BranchBound(PathOptimizer):
         output: frozenset[str] = frozenset(output_)
 
         size_cache = {k: compute_size_by_dict(k, size_dict) for k in inputs}
-        result_cache: dict[tuple[frozenset[str], frozenset[str]], tuple[frozenset[str], int]] = {}
 
-        def _branch_iterate(path, inputs, remaining, flops, size):
+        # Build symmetry_map when symmetry info is provided
+        symmetry_map: dict[int, IndexSymmetry | None] | None = None
+        if input_symmetries is not None:
+            symmetry_map = {i: s for i, s in enumerate(input_symmetries)}
+
+        # Disable result cache when symmetry is present
+        use_cache = symmetry_map is None
+        result_cache: dict[tuple[frozenset[str], frozenset[str]], tuple[frozenset[str], int, IndexSymmetry | None]] = {}
+
+        def _branch_iterate(path, inputs, remaining, flops, size, sym_map):
             # reached end of path (only ever get here if flops is best found so far)
             if len(remaining) == 1:
                 self.best["size"] = size
@@ -391,10 +444,17 @@ class BranchBound(PathOptimizer):
 
             def _assess_candidate(k1: frozenset[str], k2: frozenset[str], i: int, j: int) -> Any:
                 # find resulting indices and flops
-                try:
-                    k12, flops12 = result_cache[k1, k2]
-                except KeyError:
-                    k12, flops12 = result_cache[k1, k2] = calc_k12_flops(inputs, output, remaining, i, j, size_dict)
+                if use_cache:
+                    try:
+                        k12, flops12, sym12 = result_cache[k1, k2]
+                    except KeyError:
+                        k12, flops12, sym12 = result_cache[k1, k2] = calc_k12_flops(
+                            inputs, output, remaining, i, j, size_dict, symmetry_map=sym_map
+                        )
+                else:
+                    k12, flops12, sym12 = calc_k12_flops(
+                        inputs, output, remaining, i, j, size_dict, symmetry_map=sym_map
+                    )
 
                 try:
                     size12 = size_cache[k12]
@@ -428,7 +488,7 @@ class BranchBound(PathOptimizer):
                 size1, size2 = size_cache[inputs[i]], size_cache[inputs[j]]
                 cost = self.cost_fn(size12, size1, size2, k12, k1, k2)
 
-                return cost, flops12, new_flops, new_size, (i, j), k12
+                return cost, flops12, new_flops, new_size, (i, j), k12, sym12
 
             # check all possible remaining paths
             candidates = []
@@ -458,17 +518,28 @@ class BranchBound(PathOptimizer):
             # recurse into all or some of the best candidate contractions
             bi = 0
             while (self.nbranch is None or bi < self.nbranch) and candidates:
-                _, _, new_flops, new_size, (i, j), k12 = heapq.heappop(candidates)
+                _, _, new_flops, new_size, (i, j), k12, sym12 = heapq.heappop(candidates)
+
+                # update symmetry map for the new tensor
+                new_sym_map = sym_map
+                if sym_map is not None:
+                    new_sym_map = dict(sym_map)
+                    new_sym_map[len(inputs)] = sym12
+
                 _branch_iterate(
                     path=path + ((i, j),),
                     inputs=inputs + (k12,),
                     remaining=(remaining - {i, j}) | {len(inputs)},
                     flops=new_flops,
                     size=new_size,
+                    sym_map=new_sym_map,
                 )
                 bi += 1
 
-        _branch_iterate(path=(), inputs=inputs, remaining=set(range(len(inputs))), flops=0, size=0)
+        _branch_iterate(
+            path=(), inputs=inputs, remaining=set(range(len(inputs))),
+            flops=0, size=0, sym_map=symmetry_map,
+        )
 
         return self.path
 
@@ -482,11 +553,12 @@ def branch(
     cutoff_flops_factor: int = 4,
     minimize: str = "flops",
     cost_fn: str = "memory-removed",
+    input_symmetries: list[IndexSymmetry | None] | None = None,
 ) -> PathType:
     optimizer = BranchBound(
         nbranch=nbranch, cutoff_flops_factor=cutoff_flops_factor, minimize=minimize, cost_fn=cost_fn
     )
-    return optimizer(inputs, output, size_dict, memory_limit)
+    return optimizer(inputs, output, size_dict, memory_limit, input_symmetries=input_symmetries)
 
 
 branch_all = functools.partial(branch, nbranch=None)
@@ -580,6 +652,7 @@ def ssa_greedy_optimize(
     sizes: dict[str, int],
     choose_fn: Any = None,
     cost_fn: Any = "memory-removed",
+    input_symmetries: list[IndexSymmetry | None] | None = None,
 ) -> PathType:
     """This is the core function for :func:`greedy` but produces a path with
     static single assignment ids rather than recycled linear ids.
@@ -716,6 +789,7 @@ def greedy(
     memory_limit: int | None = None,
     choose_fn: Any = None,
     cost_fn: str = "memory-removed",
+    input_symmetries: list[IndexSymmetry | None] | None = None,
 ) -> PathType:
     """Finds the path by a three stage algorithm:
 
@@ -733,6 +807,7 @@ def greedy(
         memory_limit: The maximum number of elements in a temporary array
         choose_fn: A function that chooses which contraction to perform from the queue
         cost_fn: A function that assigns a potential contraction a cost.
+        input_symmetries: Optional symmetry info for each input tensor.
 
     Returns:
         path: The contraction order (a list of tuples of ints).
@@ -747,9 +822,9 @@ def greedy(
         ```
     """
     if memory_limit not in _UNLIMITED_MEM:
-        return branch(inputs, output, size_dict, memory_limit, nbranch=1, cost_fn=cost_fn)  # type: ignore
+        return branch(inputs, output, size_dict, memory_limit, nbranch=1, cost_fn=cost_fn, input_symmetries=input_symmetries)  # type: ignore
 
-    ssa_path = ssa_greedy_optimize(inputs, output, size_dict, cost_fn=cost_fn, choose_fn=choose_fn)
+    ssa_path = ssa_greedy_optimize(inputs, output, size_dict, cost_fn=cost_fn, choose_fn=choose_fn, input_symmetries=input_symmetries)
     return ssa_to_linear(ssa_path)
 
 
@@ -1119,6 +1194,7 @@ class DynamicProgramming(PathOptimizer):
         output_: ArrayIndexType,
         size_dict_: dict[str, int],
         memory_limit_: int | None = None,
+        input_symmetries: list[IndexSymmetry | None] | None = None,
     ) -> PathType:
         """Parameters:
             inputs_: List of sets that represent the lhs side of the einsum subscript
@@ -1279,10 +1355,11 @@ def dynamic_programming(
     output: ArrayIndexType,
     size_dict: dict[str, int],
     memory_limit: int | None = None,
+    input_symmetries: list[IndexSymmetry | None] | None = None,
     **kwargs: Any,
 ) -> PathType:
     optimizer = DynamicProgramming(**kwargs)
-    return optimizer(inputs, output, size_dict, memory_limit)
+    return optimizer(inputs, output, size_dict, memory_limit, input_symmetries=input_symmetries)
 
 
 _AUTO_CHOICES = {}
@@ -1301,11 +1378,17 @@ def auto(
     output: ArrayIndexType,
     size_dict: dict[str, int],
     memory_limit: int | None = None,
+    input_symmetries: list[IndexSymmetry | None] | None = None,
 ) -> PathType:
     """Finds the contraction path by automatically choosing the method based on
     how many input arguments there are.
     """
-    return _AUTO_CHOICES.get(len(inputs), greedy)(inputs, output, size_dict, memory_limit)
+    fn = _AUTO_CHOICES.get(len(inputs), greedy)
+    # Pass input_symmetries to functions that accept it
+    try:
+        return fn(inputs, output, size_dict, memory_limit, input_symmetries=input_symmetries)
+    except TypeError:
+        return fn(inputs, output, size_dict, memory_limit)
 
 
 _AUTO_HQ_CHOICES = {}
@@ -1320,6 +1403,7 @@ def auto_hq(
     output: ArrayIndexType,
     size_dict: dict[str, int],
     memory_limit: int | None = None,
+    input_symmetries: list[IndexSymmetry | None] | None = None,
 ) -> PathType:
     """Finds the contraction path by automatically choosing the method based on
     how many input arguments there are, but targeting a more generous
@@ -1327,7 +1411,11 @@ def auto_hq(
     """
     from ._path_random import random_greedy_128
 
-    return _AUTO_HQ_CHOICES.get(len(inputs), random_greedy_128)(inputs, output, size_dict, memory_limit)
+    fn = _AUTO_HQ_CHOICES.get(len(inputs), random_greedy_128)
+    try:
+        return fn(inputs, output, size_dict, memory_limit, input_symmetries=input_symmetries)
+    except TypeError:
+        return fn(inputs, output, size_dict, memory_limit)
 
 
 _PATH_OPTIONS: dict[str, PathSearchFunctionType] = {

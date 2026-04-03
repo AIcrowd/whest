@@ -315,10 +315,22 @@ def contract_path(
         path_tuple = [tuple(range(num_ops))]
     elif isinstance(optimize, paths.PathOptimizer):
         # Custom path optimizer supplied
-        path_tuple = optimize(input_sets, output_set, size_dict, memory_arg)
+        if input_symmetries is not None:
+            try:
+                path_tuple = optimize(input_sets, output_set, size_dict, memory_arg, input_symmetries=input_symmetries)
+            except TypeError:
+                path_tuple = optimize(input_sets, output_set, size_dict, memory_arg)
+        else:
+            path_tuple = optimize(input_sets, output_set, size_dict, memory_arg)
     else:
         path_optimizer = paths.get_path_fn(optimize)
-        path_tuple = path_optimizer(input_sets, output_set, size_dict, memory_arg)
+        if input_symmetries is not None:
+            try:
+                path_tuple = path_optimizer(input_sets, output_set, size_dict, memory_arg, input_symmetries=input_symmetries)
+            except TypeError:
+                path_tuple = path_optimizer(input_sets, output_set, size_dict, memory_arg)
+        else:
+            path_tuple = path_optimizer(input_sets, output_set, size_dict, memory_arg)
 
     cost_list = []
     scale_list = []
