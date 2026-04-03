@@ -32,7 +32,7 @@ import numpy as np
 
 depth, width = 5, 256
 
-# Weight init (He scaling)
+# Weight init
 scale = np.sqrt(2 / width)
 weights = [
     np.random.randn(width, width) * scale
@@ -57,10 +57,10 @@ import mechestim as me
 
 depth, width = 5, 256
 
-# Weight init (randn is free)
-scale = me.sqrt(me.array(2 / width))
+# Weight init
+scale = me.sqrt(2 / width)
 weights = [
-    me.multiply(me.random.randn(width, width), scale)
+    me.random.randn(width, width) * scale
     for _ in range(depth)
 ]
 
@@ -71,7 +71,7 @@ for i, W in enumerate(weights):
     h = me.einsum('ij,j->i', W, h)
     if i < depth - 1:
         h = me.maximum(h, 0)
-me.budget_summary()  # 656,385 FLOPs
+me.budget_summary()  # 328,705 FLOPs
 ```
 
 </td>
@@ -119,18 +119,18 @@ import mechestim as me
 depth, width = 5, 256
 
 with me.BudgetContext(flop_budget=10**8) as budget:
-    # Weight init — randn is free, multiply is counted
-    scale = me.sqrt(me.array(2.0 / width))
-    weights = [me.multiply(me.random.randn(width, width), scale)
+    # Weight init
+    scale = me.sqrt(2 / width)
+    weights = [me.random.randn(width, width) * scale
                for _ in range(depth)]
 
     # Forward pass
     x = me.random.randn(width)
     h = x
     for i, W in enumerate(weights):
-        h = me.einsum('ij,j->i', W, h)    # linear layer: width * width FLOPs
+        h = me.einsum('ij,j->i', W, h)
         if i < depth - 1:
-            h = me.maximum(h, 0)           # ReLU: width FLOPs
+            h = me.maximum(h, 0)
 
     print(budget.summary())
 ```
@@ -139,13 +139,12 @@ with me.BudgetContext(flop_budget=10**8) as budget:
 mechestim FLOP Budget Summary
 ==============================
   Total budget:     100,000,000
-  Used:                 656,385  (0.7%)
-  Remaining:         99,343,615  (99.3%)
+  Used:                 328,705  (0.3%)
+  Remaining:         99,671,295  (99.7%)
 
   By operation:
-    multiply              327,680  ( 49.9%)  [5 calls]
-    einsum                327,680  ( 49.9%)  [5 calls]
-    maximum                 1,024  (  0.2%)  [4 calls]
+    einsum                327,680  ( 99.7%)  [5 calls]
+    maximum                 1,024  (  0.3%)  [4 calls]
     sqrt                        1  (  0.0%)  [1 call]
 ```
 
