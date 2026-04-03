@@ -55,3 +55,8 @@ select = ["E", "F", "W", "I"]
 "mechestim-server/**" = ["E402", "F401", "E501", "F841"]
 # Core source: long lines in dense function signatures and docstrings
 "src/**" = ["E501"]
+
+[dependency-groups]
+dev = [
+    "hypothesis>=6.151.10",
+]
