@@ -15,6 +15,7 @@ from typing import Any
 from ._helpers import compute_size_by_dict, flop_count
 from ._symmetry import (
     IndexSymmetry,
+    compute_unique_size,
     propagate_symmetry,
     symmetric_flop_count,
 )
@@ -739,6 +740,12 @@ def ssa_greedy_optimize(
         # assume chooser wants access to all possible contractions
         push_all = True
 
+    # Build symmetry_map: ssa_id -> IndexSymmetry | None
+    symmetry_map: dict[int, IndexSymmetry | None] = {}
+    if input_symmetries is not None:
+        for i, s in enumerate(input_symmetries):
+            symmetry_map[i] = s
+
     # A dim that is common to all tensors might as well be an output dim, since it
     # cannot be contracted until the final step. This avoids an expensive all-pairs
     # comparison to search for possible contractions at each step, leading to speedup
@@ -753,7 +760,13 @@ def ssa_greedy_optimize(
     for ssa_id, key in enumerate(fs_inputs):
         if key in remaining:
             ssa_path.append((remaining[key], ssa_id))
-            remaining[key] = next(ssa_ids)
+            new_id = next(ssa_ids)
+            # Hadamard dedup: keep symmetry from one of the merged tensors
+            if symmetry_map:
+                old_sym = symmetry_map.get(remaining[key])
+                cur_sym = symmetry_map.get(ssa_id)
+                symmetry_map[new_id] = old_sym if old_sym is not None else cur_sym
+            remaining[key] = new_id
         else:
             remaining[key] = ssa_id
 
@@ -772,7 +785,14 @@ def ssa_greedy_optimize(
     }
 
     # Compute separable part of the objective function for contractions.
-    footprints = {key: compute_size_by_dict(key, sizes) for key in remaining}
+    # Use symmetry-aware sizes when symmetry info is available.
+    if symmetry_map:
+        footprints = {
+            key: compute_unique_size(key, sizes, symmetry_map.get(ssa_id))
+            for key, ssa_id in remaining.items()
+        }
+    else:
+        footprints = {key: compute_size_by_dict(key, sizes) for key in remaining}
 
     # Find initial candidate contractions.
     queue: list[GreedyContractionType] = []
@@ -807,14 +827,36 @@ def ssa_greedy_optimize(
         for dim in k2 - output:
             dim_to_keys[dim].remove(k2)
         ssa_path.append((ssa_id1, ssa_id2))
+
+        # Propagate symmetry for the new intermediate tensor.
+        if symmetry_map:
+            sym1 = symmetry_map.get(ssa_id1)
+            sym2 = symmetry_map.get(ssa_id2)
+            sym12 = propagate_symmetry(sym1, k1, sym2, k2, k12)
+        else:
+            sym12 = None
+
         if k12 in remaining:
-            ssa_path.append((remaining[k12], next(ssa_ids)))
+            hadamard_id = next(ssa_ids)
+            ssa_path.append((remaining[k12], hadamard_id))
+            # Hadamard dedup for result: keep symmetry from existing tensor
+            if symmetry_map:
+                old_sym = symmetry_map.get(remaining[k12])
+                symmetry_map[hadamard_id] = old_sym if old_sym is not None else sym12
         else:
             for dim in k12 - output:
                 dim_to_keys[dim].add(k12)
-        remaining[k12] = next(ssa_ids)
+        new_ssa_id = next(ssa_ids)
+        remaining[k12] = new_ssa_id
+        if symmetry_map:
+            symmetry_map[new_ssa_id] = sym12
         _update_ref_counts(dim_to_keys, dim_ref_counts, k1 | k2 - output)
-        footprints[k12] = compute_size_by_dict(k12, sizes)
+
+        # Update footprint for the new intermediate — symmetry-aware.
+        if symmetry_map:
+            footprints[k12] = compute_unique_size(k12, sizes, sym12)
+        else:
+            footprints[k12] = compute_size_by_dict(k12, sizes)
 
         # Find new candidate contractions.
         k1 = k12
@@ -835,18 +877,38 @@ def ssa_greedy_optimize(
             )
 
     # Greedily compute pairwise outer products.
-    final_queue = [
-        (compute_size_by_dict(key & output, sizes), ssa_id, key)
-        for key, ssa_id in remaining.items()
-    ]
+    # Use symmetry-aware sizes when available.
+    if symmetry_map:
+        final_queue = [
+            (
+                compute_unique_size(key & output, sizes, symmetry_map.get(ssa_id)),
+                ssa_id,
+                key,
+            )
+            for key, ssa_id in remaining.items()
+        ]
+    else:
+        final_queue = [
+            (compute_size_by_dict(key & output, sizes), ssa_id, key)
+            for key, ssa_id in remaining.items()
+        ]
     heapq.heapify(final_queue)
     _, ssa_id1, k1 = heapq.heappop(final_queue)
     while final_queue:
         _, ssa_id2, k2 = heapq.heappop(final_queue)
         ssa_path.append((min(ssa_id1, ssa_id2), max(ssa_id1, ssa_id2)))
         k12 = (k1 | k2) & output
-        cost = compute_size_by_dict(k12, sizes)
+        if symmetry_map:
+            sym1 = symmetry_map.get(ssa_id1)
+            sym2 = symmetry_map.get(ssa_id2)
+            sym12 = propagate_symmetry(sym1, k1, sym2, k2, k12)
+            cost = compute_unique_size(k12, sizes, sym12)
+        else:
+            cost = compute_size_by_dict(k12, sizes)
+            sym12 = None
         ssa_id12 = next(ssa_ids)
+        if symmetry_map:
+            symmetry_map[ssa_id12] = sym12
         _, ssa_id1, k1 = heapq.heappushpop(final_queue, (cost, ssa_id12, k12))
 
     return ssa_path

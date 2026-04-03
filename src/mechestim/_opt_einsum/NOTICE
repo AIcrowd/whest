@@ -76,8 +76,14 @@ _paths.py  (vendored from opt_einsum/paths.py — EXTENDED)
         Uses compute_unique_size for memory footprints. Propagates
         symmetry after each contraction so that future greedy choices
         see the updated symmetry of intermediates.
-      * DynamicProgramming: accepts input_symmetries, incorporates
-        symmetric costs into the DP table.
+      * DynamicProgramming: accepts input_symmetries but does NOT use
+        them for path ordering. The DP algorithm uses integer-mapped
+        indices internally and its comparator functions (_dp_compare_*)
+        operate on bitmap sets, making full symmetry integration complex.
+        This is acceptable because: (1) DP is only used for 6-16 operands
+        via auto_hq, and (2) the symmetry-aware COST REPORTING in
+        contract_path() still applies, so the reported costs are correct
+        even though the path itself is optimized under dense assumptions.
       * RandomGreedy: passes input_symmetries through to
         ssa_greedy_optimize so random restarts also explore
         symmetry-aware orderings (see also _path_random.py).
@@ -270,9 +276,12 @@ not merely give cheaper cost numbers for a fixed path — it changes which path
 the optimizer selects. A contraction that looks sub-optimal under dense cost
 estimates may become the best choice once symmetry savings are accounted for.
 
-Each path algorithm (optimal, branch-and-bound, greedy, DP, random-greedy)
+Each path algorithm (optimal, branch-and-bound, greedy, random-greedy)
 maintains a symmetry_map (tensor index -> IndexSymmetry) that is updated
 after every contraction so downstream steps see the propagated symmetry.
+DynamicProgramming accepts input_symmetries but does not use them for
+path ordering (see _paths.py notes above); cost reporting is still
+symmetry-aware via contract_path().
 
 Inside each path algorithm, for each candidate contraction:
 
