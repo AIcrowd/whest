@@ -24,9 +24,10 @@ def main() -> None:
     os.makedirs(output_dir, exist_ok=True)
 
     # Import everything to load all .so files
-    import mechestim  # noqa: F401
-    import zmq  # noqa: F401
     import msgpack  # noqa: F401
+    import zmq  # noqa: F401
+
+    import mechestim  # noqa: F401
 
     # Collect all loaded .so paths
     so_files = set()
@@ -63,7 +64,8 @@ def main() -> None:
 
     # Filter to only system libraries (not site-packages — those come with python)
     system_libs = {
-        p for p in needed
+        p
+        for p in needed
         if p.startswith(("/lib", "/usr/lib"))
         and "site-packages" not in p
         and os.path.exists(p)

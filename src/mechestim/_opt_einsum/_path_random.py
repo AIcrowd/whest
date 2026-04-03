@@ -130,7 +130,9 @@ class RandomOptimizer(paths.PathOptimizer):
         # assume a pool-executor has been supplied
         self._executor = parallel
 
-    def _gen_results_parallel(self, repeats: Iterable[int], trial_fn: Any, args: Any) -> Generator[Any, None, None]:
+    def _gen_results_parallel(
+        self, repeats: Iterable[int], trial_fn: Any, args: Any
+    ) -> Generator[Any, None, None]:
         """Lazily generate results from an executor without submitting all jobs at once."""
         self._futures = deque()
 
@@ -192,7 +194,9 @@ class RandomOptimizer(paths.PathOptimizer):
             self.sizes.append(size)
 
             # check if we have found a new best
-            found_new_best = self.better(cost, size, self.best["flops"], self.best["size"])
+            found_new_best = self.better(
+                cost, size, self.best["flops"], self.best["size"]
+            )
 
             if found_new_best:
                 self.best["flops"] = cost
@@ -295,7 +299,9 @@ def ssa_path_compute_cost(
     max_size = 0
 
     for i, j in ssa_path:
-        k12, flops12, _sym12 = paths.calc_k12_flops(inputs, output, remaining, i, j, size_dict)  # type: ignore
+        k12, flops12, _sym12 = paths.calc_k12_flops(
+            inputs, output, remaining, i, j, size_dict
+        )  # type: ignore
         remaining.discard(i)
         remaining.discard(j)
         remaining.add(len(inputs))
@@ -398,7 +404,9 @@ def random_greedy(
 ) -> ArrayType:
     """A simple wrapper around the `RandomGreedy` optimizer."""
     optimizer = RandomGreedy(**optimizer_kwargs)
-    return optimizer(inputs, output, idx_dict, memory_limit, input_symmetries=input_symmetries)
+    return optimizer(
+        inputs, output, idx_dict, memory_limit, input_symmetries=input_symmetries
+    )
 
 
 random_greedy_128 = functools.partial(random_greedy, max_repeats=128)

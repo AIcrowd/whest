@@ -8,9 +8,9 @@ operations are dispatched to the server transparently.
 from __future__ import annotations
 
 import struct
+from typing import Any, Dict, Tuple, Union
 
 from mechestim._math_compat import prod as _prod
-from typing import Any, Dict, Tuple, Union
 
 # ---------------------------------------------------------------------------
 # dtype helpers  (NO numpy -- pure struct)

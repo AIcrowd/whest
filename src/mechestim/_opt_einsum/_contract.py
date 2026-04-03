@@ -5,7 +5,7 @@ _transpose, backends/sharing imports, _filter_einsum_defaults,
 format_const_einsum_str, shape_only.
 """
 
-from collections.abc import Collection, Sequence
+from collections.abc import Collection
 from dataclasses import dataclass, field
 from decimal import Decimal
 from typing import Any, Literal, overload
@@ -16,7 +16,6 @@ from . import _parser as parser
 from . import _paths as paths
 from ._symmetry import IndexSymmetry, propagate_symmetry, symmetric_flop_count
 from ._typing import (
-    ArrayIndexType,
     ArrayType,
     ContractionListType,
     OptimizeKind,
@@ -140,7 +139,9 @@ def _choose_memory_arg(memory_limit: _MemoryLimit, size_list: list[int]) -> int 
         return max(size_list)
 
     if isinstance(memory_limit, str):
-        raise ValueError("memory_limit must be None, int, or the string Literal['max_input'].")
+        raise ValueError(
+            "memory_limit must be None, int, or the string Literal['max_input']."
+        )
 
     if memory_limit is None:
         return None
@@ -257,7 +258,9 @@ def contract_path(
 
     # Python side parsing
     operands_ = [subscripts] + list(operands)
-    input_subscripts, output_subscript, operands_prepped = parser.parse_einsum_input(operands_, shapes=shapes)
+    input_subscripts, output_subscript, operands_prepped = parser.parse_einsum_input(
+        operands_, shapes=shapes
+    )
 
     # Build a few useful list and sets
     input_list = input_subscripts.split(",")
@@ -295,7 +298,10 @@ def contract_path(
                 size_dict[char] = dim
 
     # Compute size of each input array plus the output array
-    size_list = [helpers.compute_size_by_dict(term, size_dict) for term in input_list + [output_subscript]]
+    size_list = [
+        helpers.compute_size_by_dict(term, size_dict)
+        for term in input_list + [output_subscript]
+    ]
     memory_arg = _choose_memory_arg(memory_limit, size_list)
 
     num_ops = len(input_list)
@@ -317,7 +323,13 @@ def contract_path(
         # Custom path optimizer supplied
         if input_symmetries is not None:
             try:
-                path_tuple = optimize(input_sets, output_set, size_dict, memory_arg, input_symmetries=input_symmetries)
+                path_tuple = optimize(
+                    input_sets,
+                    output_set,
+                    size_dict,
+                    memory_arg,
+                    input_symmetries=input_symmetries,
+                )
             except TypeError:
                 path_tuple = optimize(input_sets, output_set, size_dict, memory_arg)
         else:
@@ -326,9 +338,17 @@ def contract_path(
         path_optimizer = paths.get_path_fn(optimize)
         if input_symmetries is not None:
             try:
-                path_tuple = path_optimizer(input_sets, output_set, size_dict, memory_arg, input_symmetries=input_symmetries)
+                path_tuple = path_optimizer(
+                    input_sets,
+                    output_set,
+                    size_dict,
+                    memory_arg,
+                    input_symmetries=input_symmetries,
+                )
             except TypeError:
-                path_tuple = path_optimizer(input_sets, output_set, size_dict, memory_arg)
+                path_tuple = path_optimizer(
+                    input_sets, output_set, size_dict, memory_arg
+                )
         else:
             path_tuple = path_optimizer(input_sets, output_set, size_dict, memory_arg)
 
@@ -366,22 +386,31 @@ def contract_path(
                 accum_k = step_input_sets[0]
                 for si in range(1, len(step_syms)):
                     k_other = step_input_sets[si]
-                    accum_sym = propagate_symmetry(accum_sym, accum_k, step_syms[si], k_other, out_inds)
+                    accum_sym = propagate_symmetry(
+                        accum_sym, accum_k, step_syms[si], k_other, out_inds
+                    )
                     accum_k = accum_k | k_other
                 result_sym = accum_sym
 
             cost = symmetric_flop_count(
-                idx_contract, bool(idx_removed), len(contract_inds), size_dict,
+                idx_contract,
+                bool(idx_removed),
+                len(contract_inds),
+                size_dict,
                 input_symmetries=step_syms,
                 output_symmetry=result_sym,
             )
         else:
             step_syms = [None] * len(contract_inds)
             result_sym = None
-            cost = helpers.flop_count(idx_contract, bool(idx_removed), len(contract_inds), size_dict)
+            cost = helpers.flop_count(
+                idx_contract, bool(idx_removed), len(contract_inds), size_dict
+            )
 
         # Dense cost is always the opt_einsum flop_count (no symmetry)
-        dense_cost = helpers.flop_count(idx_contract, bool(idx_removed), len(contract_inds), size_dict)
+        dense_cost = helpers.flop_count(
+            idx_contract, bool(idx_removed), len(contract_inds), size_dict
+        )
 
         cost_list.append(cost)
         scale_list.append(len(idx_contract))
@@ -395,7 +424,10 @@ def contract_path(
 
         if use_blas:
             do_blas = blas.can_blas(
-                tmp_inputs, "".join(out_inds), idx_removed, tmp_shapes,
+                tmp_inputs,
+                "".join(out_inds),
+                idx_removed,
+                tmp_shapes,
                 input_symmetries=step_syms if sym_list is not None else None,
             )
         else:
@@ -427,19 +459,23 @@ def contract_path(
         else:
             mechestim_sym = mechestim_dense
 
-        savings = 1.0 - (mechestim_sym / mechestim_dense) if mechestim_dense > 0 else 0.0
+        savings = (
+            1.0 - (mechestim_sym / mechestim_dense) if mechestim_dense > 0 else 0.0
+        )
 
-        step_infos.append(StepInfo(
-            subscript=einsum_str,
-            flop_cost=mechestim_sym,
-            input_shapes=list(tmp_shapes),
-            output_shape=shp_result,
-            input_symmetries=list(step_syms),
-            output_symmetry=result_sym,
-            dense_flop_cost=mechestim_dense,
-            symmetry_savings=savings,
-            blas_type=do_blas,
-        ))
+        step_infos.append(
+            StepInfo(
+                subscript=einsum_str,
+                flop_cost=mechestim_sym,
+                input_shapes=list(tmp_shapes),
+                output_shape=shp_result,
+                input_symmetries=list(step_syms),
+                output_symmetry=result_sym,
+                dense_flop_cost=mechestim_dense,
+                symmetry_savings=savings,
+                blas_type=do_blas,
+            )
+        )
 
         # for large expressions saving the remaining terms at each step can
         # incur a large memory footprint - and also be messy to print

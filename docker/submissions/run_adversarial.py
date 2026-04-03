@@ -12,6 +12,7 @@ need them transitively, but they're harmless in the locked-down container.
 passed = 0
 failed = 0
 
+
 def check(name, condition):
     global passed, failed
     if condition:
@@ -21,9 +22,11 @@ def check(name, condition):
         print(f"FAIL: {name}")
         failed += 1
 
+
 # Test 1: ctypes is stripped (filesystem layer)
 try:
     import ctypes
+
     check("ctypes blocked", False)
 except ImportError:
     check("ctypes blocked", True)
@@ -31,6 +34,7 @@ except ImportError:
 # Test 2: numpy is not available
 try:
     import numpy
+
     check("numpy blocked", False)
 except ImportError:
     check("numpy blocked", True)
@@ -59,19 +63,26 @@ except Exception:
 # Test 6: mechestim works
 try:
     import mechestim as me
+
     check(f"mechestim loaded (v{me.__version__})", True)
 except Exception:
     check("mechestim loaded", False)
 
 # Test 7: allowed stdlib modules work
 try:
-    import itertools, functools, collections, time, json
+    import collections
+    import functools
+    import itertools
+    import json
+    import time
+
     check("allowed stdlib modules work", True)
 except Exception:
     check("allowed stdlib modules work", False)
 
 # Test 8: socket exists but is useless (network_mode: none)
 import socket
+
 try:
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect(("8.8.8.8", 53))
@@ -81,6 +92,7 @@ except OSError:
 
 # Test 9: subprocess exists but is useless (no shell in distroless)
 import subprocess
+
 try:
     subprocess.run(["sh", "-c", "echo pwned"], capture_output=True, timeout=2)
     check("shell execution blocked", False)

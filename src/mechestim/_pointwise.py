@@ -740,5 +740,3 @@ def interp(x, xp, fp, **kwargs):
 
 
 attach_docstring(interp, _np.interp, "counted_custom", "numel(x) FLOPs")
-
-
