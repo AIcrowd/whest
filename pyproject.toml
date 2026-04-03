@@ -32,6 +32,17 @@ packages = ["src/mechestim"]
 testpaths = ["tests"]
 addopts = "--ignore=tests/numpy_compat"
 
+[tool.coverage.run]
+source = ["mechestim"]
+
+[tool.coverage.report]
+fail_under = 90
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+]
+
 [tool.ruff]
 line-length = 88
 target-version = "py310"

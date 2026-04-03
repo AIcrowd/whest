@@ -34,8 +34,8 @@ fmt:  ## Auto-fix lint and format issues
 # Test  (mirrors: CI → test job)
 # ---------------------------------------------------------------------------
 .PHONY: test
-test:  ## Run pytest with coverage
-	$(UV) pytest --cov=mechestim
+test:  ## Run pytest with coverage (fails if < 90%)
+	$(UV) pytest --cov=mechestim --cov-fail-under=90
 
 .PHONY: test-numpy-compat
 test-numpy-compat:  ## Run NumPy's own tests against mechestim
