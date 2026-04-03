@@ -15,7 +15,7 @@ UV    := uv run
 # Composite targets
 # ---------------------------------------------------------------------------
 .PHONY: ci
-ci: lint test docs-build  ## Run the full CI pipeline locally
+ci: lint test test-numpy-compat docs-build  ## Run the full CI pipeline locally
 
 # ---------------------------------------------------------------------------
 # Lint  (mirrors: CI → lint job)
@@ -36,6 +36,12 @@ fmt:  ## Auto-fix lint and format issues
 .PHONY: test
 test:  ## Run pytest with coverage
 	$(UV) pytest --cov=mechestim
+
+.PHONY: test-numpy-compat
+test-numpy-compat:  ## Run NumPy's own tests against mechestim
+	$(UV) pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_umath -n auto -q
+	$(UV) pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_ufunc -n auto -q
+	$(UV) pytest tests/numpy_compat/ --pyargs numpy.linalg.tests.test_linalg -n auto -q
 
 # ---------------------------------------------------------------------------
 # Docs  (mirrors: CI → docs job)

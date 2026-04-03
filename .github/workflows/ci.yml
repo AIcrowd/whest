@@ -45,6 +45,12 @@ jobs:
       - name: Run tests
         run: uv run pytest --cov=mechestim
 
+      - name: NumPy compatibility tests
+        run: |
+          uv run pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_umath -n auto -q
+          uv run pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_ufunc -n auto -q
+          uv run pytest tests/numpy_compat/ --pyargs numpy.linalg.tests.test_linalg -n auto -q
+
   docs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: [lint, test]
