@@ -127,3 +127,85 @@ class TestSymmetricFlopCount:
         dense = flop_count(idx, True, 2, size_dict)
         sym = symmetric_flop_count(idx, True, 2, size_dict, input_symmetries=[None, None], output_symmetry=None)
         assert sym == dense
+
+
+class TestSymmetryAwarePaths:
+    def test_greedy_with_symmetry(self):
+        """Greedy path optimizer accepts and uses symmetry info."""
+        from mechestim._opt_einsum._contract import contract_path
+
+        # ijk,ai,bj,ck->abc where ijk has S3
+        symmetries = [[frozenset("ijk")], None, None, None]
+        path, info = contract_path(
+            "ijk,ai,bj,ck->abc",
+            *[(10,)*3, (10,10), (10,10), (10,10)],
+            shapes=True,
+            input_symmetries=symmetries,
+        )
+        assert len(path) == 3
+
+    def test_symmetry_aware_cost_less_than_dense(self):
+        """Symmetry-aware total cost should be less than dense for symmetric inputs."""
+        from mechestim._opt_einsum._contract import contract_path
+
+        args = ("ij,jk,ki->", (10,10), (10,10), (10,10))
+        kwargs = dict(shapes=True, optimize="greedy")
+
+        _, info_dense = contract_path(*args, **kwargs)
+        _, info_sym = contract_path(
+            *args, **kwargs,
+            input_symmetries=[[frozenset("ij")], None, None],
+        )
+        assert info_sym.opt_cost <= info_dense.opt_cost
+
+    def test_no_symmetry_matches_upstream(self):
+        """With no symmetry info, results should match upstream dense path."""
+        from mechestim._opt_einsum._contract import contract_path
+
+        path_no_sym, info_no_sym = contract_path(
+            "ij,jk,kl->il", (2,3), (3,4), (4,5),
+            shapes=True, optimize="greedy",
+        )
+        path_sym, info_sym = contract_path(
+            "ij,jk,kl->il", (2,3), (3,4), (4,5),
+            shapes=True, optimize="greedy",
+            input_symmetries=[None, None, None],
+        )
+        assert path_no_sym == path_sym
+        assert info_no_sym.opt_cost == info_sym.opt_cost
+
+    def test_optimal_with_symmetry(self):
+        """Optimal algorithm works with symmetry."""
+        from mechestim._opt_einsum._contract import contract_path
+        symmetries = [[frozenset("ij")], None, None]
+        path, info = contract_path(
+            "ij,jk,ki->", (5,5), (5,5), (5,5),
+            shapes=True, optimize="optimal",
+            input_symmetries=symmetries,
+        )
+        assert len(path) == 2
+        assert info.opt_cost > 0
+
+    def test_dp_with_symmetry(self):
+        """DP algorithm works with symmetry."""
+        from mechestim._opt_einsum._contract import contract_path
+        symmetries = [[frozenset("ij")], None, None]
+        path, info = contract_path(
+            "ij,jk,ki->", (5,5), (5,5), (5,5),
+            shapes=True, optimize="dp",
+            input_symmetries=symmetries,
+        )
+        assert len(path) == 2
+        assert info.opt_cost > 0
+
+    def test_branch_with_symmetry(self):
+        """Branch algorithm works with symmetry."""
+        from mechestim._opt_einsum._contract import contract_path
+        symmetries = [[frozenset("ij")], None, None]
+        path, info = contract_path(
+            "ij,jk,ki->", (5,5), (5,5), (5,5),
+            shapes=True, optimize="branch-all",
+            input_symmetries=symmetries,
+        )
+        assert len(path) == 2
+        assert info.opt_cost > 0

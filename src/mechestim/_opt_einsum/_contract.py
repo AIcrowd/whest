@@ -13,6 +13,7 @@ from . import _blas as blas
 from . import _helpers as helpers
 from . import _parser as parser
 from . import _paths as paths
+from ._symmetry import IndexSymmetry, propagate_symmetry, symmetric_flop_count
 from ._typing import (
     ArrayIndexType,
     ArrayType,
@@ -129,6 +130,7 @@ def contract_path(
     optimize: OptimizeKind = True,
     memory_limit: _MemoryLimit = None,
     shapes: bool = False,
+    input_symmetries: list[IndexSymmetry | None] | None = None,
 ) -> tuple[PathType, PathInfo]: ...
 
 
@@ -141,6 +143,7 @@ def contract_path(
     optimize: OptimizeKind = True,
     memory_limit: _MemoryLimit = None,
     shapes: bool = False,
+    input_symmetries: list[IndexSymmetry | None] | None = None,
 ) -> tuple[PathType, PathInfo]: ...
 
 
@@ -151,6 +154,7 @@ def contract_path(
     optimize: OptimizeKind = True,
     memory_limit: _MemoryLimit = None,
     shapes: bool = False,
+    input_symmetries: list[IndexSymmetry | None] | None = None,
 ) -> tuple[PathType, PathInfo]:
     """Find a contraction order `path`, without performing the contraction.
 
@@ -288,6 +292,11 @@ def contract_path(
     size_list = []
     contraction_list = []
 
+    # Track symmetries through contractions if provided
+    sym_list: list[IndexSymmetry | None] | None = None
+    if input_symmetries is not None:
+        sym_list = list(input_symmetries)
+
     # Build contraction tuple (positions, gemm, einsum_str, remaining)
     for cnum, contract_inds in enumerate(path_tuple):
         # Make sure we remove inds from right to left
@@ -296,14 +305,43 @@ def contract_path(
         contract_tuple = helpers.find_contraction(contract_inds, input_sets, output_set)
         out_inds, input_sets, idx_removed, idx_contract = contract_tuple
 
-        # Compute cost, scale, and size
-        cost = helpers.flop_count(idx_contract, bool(idx_removed), len(contract_inds), size_dict)
+        # Compute cost, scale, and size — symmetry-aware when available
+        if sym_list is not None:
+            # Gather symmetries for the contracted tensors (before popping)
+            step_syms = [sym_list[i] for i in contract_inds]
+            # Propagate symmetry pairwise through all contracted tensors
+            if len(contract_inds) == 1:
+                result_sym = step_syms[0]
+            else:
+                # Get the index sets for the contracted tensors
+                step_input_sets = [frozenset(input_list[i]) for i in contract_inds]
+                # Fold left: propagate pairwise, using out_inds as the surviving indices
+                accum_sym = step_syms[0]
+                accum_k = step_input_sets[0]
+                for si in range(1, len(step_syms)):
+                    k_other = step_input_sets[si]
+                    accum_sym = propagate_symmetry(accum_sym, accum_k, step_syms[si], k_other, out_inds)
+                    accum_k = accum_k | k_other
+                result_sym = accum_sym
+
+            cost = symmetric_flop_count(
+                idx_contract, bool(idx_removed), len(contract_inds), size_dict,
+                input_symmetries=step_syms,
+                output_symmetry=result_sym,
+            )
+        else:
+            result_sym = None  # not used
+            cost = helpers.flop_count(idx_contract, bool(idx_removed), len(contract_inds), size_dict)
+
         cost_list.append(cost)
         scale_list.append(len(idx_contract))
         size_list.append(helpers.compute_size_by_dict(out_inds, size_dict))
 
         tmp_inputs = [input_list.pop(x) for x in contract_inds]
         tmp_shapes = [input_shapes.pop(x) for x in contract_inds]
+        if sym_list is not None:
+            for x in contract_inds:
+                sym_list.pop(x)
 
         if use_blas:
             do_blas = blas.can_blas(tmp_inputs, "".join(out_inds), idx_removed, tmp_shapes)
@@ -322,6 +360,8 @@ def contract_path(
 
         input_list.append(idx_result)
         input_shapes.append(shp_result)
+        if sym_list is not None:
+            sym_list.append(result_sym)
 
         einsum_str = ",".join(tmp_inputs) + "->" + idx_result
 
