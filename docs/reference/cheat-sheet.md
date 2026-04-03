@@ -35,9 +35,9 @@
 | `cov` | $n^2 \cdot m$ | Covariance matrix. |
 | `cross` | $\text{numel}(\text{output})$ | Cross product of two 3-D vectors. |
 | `diff` | $\text{numel}(\text{input})$ | n-th discrete difference along axis. |
-| `dot` | $m \cdot k \cdot n$ | Dot product; cost = 2*M*N*K for matrix multiply. |
+| `dot` | $2 \cdot m \cdot k \cdot n$ | Dot product; cost = 2*M*N*K for matrix multiply. |
 | `ediff1d` | $\text{numel}(\text{input})$ | Differences between consecutive elements. |
-| `einsum` | $\prod_i d_i$ | Generalized Einstein summation. |
+| `einsum` | $\text{op\_factor} \cdot \prod_i d_i$ | Generalized Einstein summation. |
 | `einsum_path` | $0$ | Optimize einsum contraction path (no numeric output). |
 | `fft.fft` | $5n \cdot \lceil\log_2 n\rceil$ | 1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 §1.4). |
 | `fft.fft2` | $5N \cdot \lceil\log_2 N\rceil$ | 2-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 §1.4). |
@@ -84,7 +84,7 @@
 | `linalg.tensorsolve` | $n^3$ | Tensor solve. Cost: $n^3$ after reshape (delegates to solve). |
 | `linalg.trace` | $n$ | Matrix trace. Cost: n (sum of diagonal elements). |
 | `linalg.vector_norm` | $n$ or $2n$ | Vector norm. Cost: numel (or 2*numel for general p-norm). |
-| `matmul` | $m \cdot k \cdot n$ | Matrix multiplication; cost = 2*M*N*K. |
+| `matmul` | $2 \cdot m \cdot k \cdot n$ | Matrix multiplication; cost = 2*M*N*K. |
 | `outer` | $m \cdot n$ | Outer product of two vectors; cost = M*N. |
 | `poly` | $n^2$ | Polynomial from roots. Cost: $n^2$ FLOPs. |
 | `polyadd` | $\max(n_1, n_2)$ | Add two polynomials. Cost: max(n1, n2) FLOPs. |

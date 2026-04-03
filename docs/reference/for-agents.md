@@ -59,12 +59,12 @@ everything in one request.
   "mechestim_ref": "me.einsum",
   "numpy_ref": "np.einsum",
   "category": "counted_custom",
-  "cost_formula": "product of all index dims",
-  "cost_formula_latex": "$\\prod_i d_i$",
+  "cost_formula": "product of all index dims * op_factor",
+  "cost_formula_latex": "$\\text{op\\_factor} \\cdot \\prod_i d_i$",
   "free": false,
   "blocked": false,
   "status": "supported",
-  "notes": "Supports symmetric tensors for automatic cost reduction"
+  "notes": "Supports symmetric tensors via input_symmetries for automatic cost reduction"
 }
 ```
 
@@ -121,14 +121,13 @@ These are pure functions — no `BudgetContext` needed.
 
 **4. Use `me.einsum` as the primary computation primitive.**
 
-Most linear algebra can be expressed as einsum. The cost is the product of all
-index dimensions: `'ij,jk->ik'` with shapes `(m, k)` and `(k, n)` costs
-`m * k * n` FLOPs.
+Most linear algebra can be expressed as einsum. The cost follows the opt_einsum
+convention: `product_of_all_index_dims * op_factor`, where `op_factor` is 2
+when there is an inner product (summed indices) and 1 otherwise.
+`'ij,jk->ik'` with shapes `(m, k)` and `(k, n)` costs `2 * m * k * n` FLOPs.
 
 **5. Exploit symmetry for cost savings.**
 
-- Pass the same array object multiple times: `me.einsum('ai,bi->', x, x)`
-  costs half because `x` is repeated
 - Use `symmetric_dims` for symmetric outputs:
   `me.einsum('ki,kj->ij', X, X, symmetric_dims=[(0, 1)])`
 - Wrap known-symmetric matrices with `me.as_symmetric(data, dims=(0, 1))`
@@ -142,7 +141,6 @@ index dimensions: `'ij,jk->ik'` with shapes `(m, k)` and `(k, n)` costs
 | Skipping `BudgetContext` entirely | No error (global default handles it), but budget is harder to track and namespace | Use an explicit `BudgetContext` for any work you want to measure or label |
 | Assuming `sort` costs FLOPs | Overestimates budget usage | `sort` is free — check the cheat sheet |
 | Using `me.save()` or `me.load()` | `AttributeError` — blocked | Use `numpy` directly for I/O |
-| Calling `x.copy()` then passing both to einsum | No symmetry savings (different objects) | Pass the same Python object for savings |
 | Nesting two explicit `BudgetContext` blocks | `RuntimeError` | Use a single explicit context; nesting with the global default is fine |
 
 ## 📎 Related pages

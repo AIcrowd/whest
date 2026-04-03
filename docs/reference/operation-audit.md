@@ -129,11 +129,11 @@ Generated from the operation registry (`_registry.py`).
 | `digitize` | `me.digitize` | `np.digitize` | free | $0$ | 🟢 supported | Return indices of bins to which values belong. |
 | `divide` | `me.divide` | `np.divide` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise true division. |
 | `divmod` | `me.divmod` | `np.divmod` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise (quotient, remainder) tuple. |
-| `dot` | `me.dot` | `np.dot` | counted_custom | $m \cdot k \cdot n$ | 🟠 supported | Dot product; cost = 2*M*N*K for matrix multiply. |
+| `dot` | `me.dot` | `np.dot` | counted_custom | $2 \cdot m \cdot k \cdot n$ | 🟠 supported | Dot product; cost = 2*M*N*K for matrix multiply. |
 | `dsplit` | `me.dsplit` | `np.dsplit` | free | $0$ | 🟢 supported | Split array into multiple sub-arrays depth-wise. |
 | `dstack` | `me.dstack` | `np.dstack` | free | $0$ | 🟢 supported | Stack arrays depth-wise (along third axis). |
 | `ediff1d` | `me.ediff1d` | `np.ediff1d` | counted_custom | $\text{numel}(\text{input})$ | 🟠 supported | Differences between consecutive elements. |
-| `einsum` | `me.einsum` | `np.einsum` | counted_custom | $\prod_i d_i$ | 🟠 supported | Generalized Einstein summation. |
+| `einsum` | `me.einsum` | `np.einsum` | counted_custom | $\text{op\_factor} \cdot \prod_i d_i$ | 🟠 supported | Generalized Einstein summation. |
 | `einsum_path` | `me.einsum_path` | `np.einsum_path` | counted_custom | $0$ | 🟠 supported | Optimize einsum contraction path (no numeric output). |
 | `empty` | `me.empty` | `np.empty` | free | $0$ | 🟢 supported | Uninitialized array allocation. |
 | `empty_like` | `me.empty_like` | `np.empty_like` | free | $0$ | 🟢 supported | Uninitialized array with same shape/type as input. |
@@ -291,7 +291,7 @@ Generated from the operation registry (`_registry.py`).
 | `logical_xor` | `me.logical_xor` | `np.logical_xor` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise logical XOR. |
 | `logspace` | `me.logspace` | `np.logspace` | free | $0$ | 🟢 supported | Return numbers spaced evenly on log scale. |
 | `mask_indices` | `me.mask_indices` | `np.mask_indices` | free | $0$ | 🟢 supported | Return indices of mask for n x n array. |
-| `matmul` | `me.matmul` | `np.matmul` | counted_custom | $m \cdot k \cdot n$ | 🟠 supported | Matrix multiplication; cost = 2*M*N*K. |
+| `matmul` | `me.matmul` | `np.matmul` | counted_custom | $2 \cdot m \cdot k \cdot n$ | 🟠 supported | Matrix multiplication; cost = 2*M*N*K. |
 | `matrix_transpose` | `me.matrix_transpose` | `np.matrix_transpose` | free | $0$ | 🟢 supported | Transpose last two dimensions (NumPy 2.x array API). |
 | `max` | `me.max` | `np.max` | counted_reduction | $\text{numel}(\text{input})$ | 🟡 supported | Maximum value of array. |
 | `maximum` | `me.maximum` | `np.maximum` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise maximum (propagates NaN). |
