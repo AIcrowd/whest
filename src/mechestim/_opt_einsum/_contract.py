@@ -399,6 +399,7 @@ def contract_path(
                 size_dict,
                 input_symmetries=step_syms,
                 output_symmetry=result_sym,
+                output_indices=out_inds,
             )
         else:
             step_syms = [None] * len(contract_inds)

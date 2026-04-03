@@ -9,11 +9,14 @@ from mechestim._symmetric import SymmetricTensor, as_symmetric
 
 class TestEinsumSymmetricInput:
     def test_symmetric_input_reduces_cost(self):
-        S = as_symmetric(numpy.eye(10), dims=(0, 1))
-        v = numpy.ones(10)
+        # Use a contraction where symmetric indices survive in the output:
+        # "ijk,k->ij" with S2 on {i,j}. The symmetric group on {i,j}
+        # provides a real cost reduction since both indices survive.
+        S = as_symmetric(numpy.ones((10, 10, 5)), dims=(0, 1))
+        v = numpy.ones(5)
         with BudgetContext(flop_budget=10**6, quiet=True) as budget:
-            result = einsum("ij,j->i", S, v)
-            dense_cost = 200  # 10*10 * op_factor(2)
+            result = einsum("ijk,k->ij", S, v)
+            dense_cost = 2 * 10 * 10 * 5  # 1000 with op_factor
             assert budget.flops_used < dense_cost
             assert budget.flops_used > 0
 

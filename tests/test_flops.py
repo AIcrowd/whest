@@ -100,14 +100,27 @@ def test_reduction_cost_no_symmetry_unchanged():
 
 
 def test_einsum_cost_symmetric_input():
-    info = SymmetryInfo(symmetric_dims=[(0, 1)], shape=(10, 10))
+    # Use a case where symmetric indices survive in the output:
+    # "ijk,k->ij" with S2 on {i,j}. Both i and j survive, so the
+    # symmetric group provides a real cost reduction.
+    info = SymmetryInfo(symmetric_dims=[(0, 1)], shape=(10, 10, 5))
     cost = einsum_cost(
-        "ij,j->i", shapes=[(10, 10), (10,)], operand_symmetries=[info, None]
+        "ijk,k->ij", shapes=[(10, 10, 5), (5,)], operand_symmetries=[info, None]
     )
-    assert cost < 200  # less than dense cost
+    dense_cost = 2 * 10 * 10 * 5  # 1000 with op_factor
+    assert cost < dense_cost  # symmetry reduces cost
     assert cost > 0
 
 
 def test_einsum_cost_no_operand_symmetry_unchanged():
     cost = einsum_cost("ij,j->i", shapes=[(10, 10), (10,)])
     assert cost == 200  # 10*10 * op_factor(2)
+
+
+def test_einsum_cost_matches_contract_path():
+    from mechestim._opt_einsum import contract_path
+
+    # Verify einsum_cost delegates correctly for a simple matmul
+    cost = einsum_cost("ij,jk->ik", shapes=[(3, 4), (4, 5)])
+    _, info = contract_path("ij,jk->ik", (3, 4), (4, 5), shapes=True)
+    assert cost == info.optimized_cost

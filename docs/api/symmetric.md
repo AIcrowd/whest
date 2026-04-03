@@ -42,7 +42,7 @@ pairwise contraction along the optimal path.
 | `flop_cost` | `int` | Symmetry-aware FLOP cost of this step |
 | `dense_flop_cost` | `int` | FLOP cost without symmetry savings |
 | `symmetry_savings` | `float` | `1 - (flop_cost / dense_flop_cost)` — fraction of cost saved by symmetry |
-| `input_symmetries` | `list[SymmetryInfo | None]` | Symmetry of each input to this step |
-| `output_symmetry` | `SymmetryInfo | None` | Symmetry of the step's output (propagated to next step) |
+| `input_symmetries` | `list[IndexSymmetry | None]` | Symmetry of each input to this step |
+| `output_symmetry` | `IndexSymmetry | None` | Symmetry of the step's output (propagated to next step) |
 | `input_shapes` | `list[tuple[int, ...]]` | Shapes of input operands |
 | `output_shape` | `tuple[int, ...]` | Shape of the output tensor |

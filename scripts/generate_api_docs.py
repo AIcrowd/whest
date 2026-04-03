@@ -264,10 +264,13 @@ CATEGORY_EMOJI = {
 # ---------------------------------------------------------------------------
 
 CUSTOM_COSTS: dict[str, tuple[str, str]] = {
-    "einsum": ("product of all index dims", r"$\prod_i d_i$"),
+    "einsum": (
+        "op_factor * product of all index dims",
+        r"$\text{op\_factor} \cdot \prod_i d_i$",
+    ),
     "einsum_path": ("0 (planning only)", "$0$"),
-    "dot": ("m * k * n", r"$m \cdot k \cdot n$"),
-    "matmul": ("m * k * n", r"$m \cdot k \cdot n$"),
+    "dot": ("2 * m * k * n", r"$2 \cdot m \cdot k \cdot n$"),
+    "matmul": ("2 * m * k * n", r"$2 \cdot m \cdot k \cdot n$"),
     "inner": ("n", "$n$"),
     "outer": ("m * n", r"$m \cdot n$"),
     "tensordot": ("product of contracted dims * output size", r"$\prod_i d_i$"),

@@ -108,13 +108,16 @@ class TestEinsumPath:
             assert budget.flops_used == 0
 
     def test_symmetric_input_shows_savings(self):
+        # Use a contraction where symmetric indices survive in the output.
+        # "ijk,k->ij" with S2 on {i,j}: both i and j survive, so the
+        # symmetric group provides a real cost reduction.
         n = 10
-        S = as_symmetric(numpy.eye(n), dims=(0, 1))
-        v = numpy.ones(n)
-        path, info = einsum_path("ij,j->i", S, v)
-        # With a symmetric matrix, there should be some savings
+        k = 5
+        S = as_symmetric(numpy.ones((n, n, k)), dims=(0, 1))
+        v = numpy.ones(k)
+        path, info = einsum_path("ijk,k->ij", S, v)
         assert len(info.steps) >= 1
-        # Either per-step savings or overall cost reduction
+        # Per-step savings from symmetry
         has_savings = any(s.symmetry_savings > 0 for s in info.steps)
         has_cost_reduction = info.optimized_cost < info.naive_cost
         assert has_savings or has_cost_reduction
