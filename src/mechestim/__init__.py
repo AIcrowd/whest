@@ -41,7 +41,10 @@ from mechestim._budget import (  # noqa: F401
 from mechestim._display import budget_live, budget_summary  # noqa: F401
 
 # --- Einsum ---
-from mechestim._einsum import einsum  # noqa: F401
+from mechestim._einsum import einsum, einsum_path  # noqa: F401
+
+# --- Path optimization types ---
+from mechestim._opt_einsum import PathInfo, StepInfo  # noqa: F401
 
 # --- Free ops ---
 from mechestim._free_ops import (  # noqa: F401
@@ -266,7 +269,6 @@ from mechestim._pointwise import (  # noqa: F401
     divmod,
     dot,
     ediff1d,
-    einsum_path,
     equal,
     exp,
     exp2,
