@@ -21,17 +21,42 @@ _PATCHED = {}
 
 
 def _patch_numpy():
-    """Replace numpy functions with mechestim equivalents."""
+    """Replace numpy functions with mechestim equivalents.
+
+    Skips:
+    - blacklisted: unsupported functions
+    - free: pure pass-throughs (would cause infinite recursion)
+    - numpy ufuncs: tests access ufunc attributes (.reduce, .nargs, etc.)
+      at collection time; replacing a ufunc with a plain function crashes
+      test discovery
+    """
     for name, meta in REGISTRY.items():
         cat = meta["category"]
         if cat in ("blacklisted", "free"):
-            # Skip blacklisted (unsupported) and free ops (pure pass-throughs
-            # that delegate back to numpy — patching them causes infinite
-            # recursion because they call _np.<name> via module attribute).
             continue
 
-        # Resolve the mechestim function
         parts = name.split(".")
+
+        # Skip submodule functions (linalg.*, fft.*) — mechestim's
+        # implementations call _np.linalg.X() internally, which after
+        # patching becomes me.linalg.X() → infinite recursion.
+        if len(parts) > 1:
+            continue
+
+        # Skip ufuncs — our replacements are plain functions and lack
+        # .reduce/.accumulate/.outer/.nargs/etc.
+        try:
+            np_obj = getattr(np, name, None)
+            if isinstance(np_obj, np.ufunc):
+                continue
+        except (AttributeError, TypeError):
+            pass
+
+        # Skip counted_custom functions — they call _np.dot(), _np.convolve()
+        # etc. via module-level lookup, so patching causes infinite recursion.
+        # (Factory-built functions capture np_func in a closure, so they're safe.)
+        if cat == "counted_custom":
+            continue
         try:
             if len(parts) == 1:
                 me_fn = getattr(me, name)
