@@ -28,7 +28,6 @@ Pick the path that matches what you need right now.
 - [Use Einsum](./how-to/use-einsum.md)
 - [Exploit Symmetry](./how-to/exploit-symmetry.md)
 - [Use Linear Algebra](./how-to/use-linalg.md)
-- [Use FFT](./how-to/use-fft.md)
 - [Plan Your Budget](./how-to/plan-your-budget.md)
 - [Debug Budget Overruns](./how-to/debug-budget-overruns.md)
 
@@ -106,8 +105,9 @@ uv add git+https://github.com/AIcrowd/mechestim.git
 
 - **Getting Started:** [Installation](./getting-started/installation.md), [Your First Budget](./getting-started/first-budget.md)
 - **How-To:** [Migrate from NumPy](./how-to/migrate-from-numpy.md), [Use Einsum](./how-to/use-einsum.md), [Exploit Symmetry](./how-to/exploit-symmetry.md), [Use Linear Algebra](./how-to/use-linalg.md), [Use FFT](./how-to/use-fft.md), [Plan Your Budget](./how-to/plan-your-budget.md), [Debug Budget Overruns](./how-to/debug-budget-overruns.md)
-- **Concepts:** [FLOP Counting Model](./concepts/flop-counting-model.md), [Operation Categories](./concepts/operation-categories.md)
+- **Concepts:** [FLOP Counting Model](./concepts/flop-counting-model.md), [Operation Categories](./concepts/operation-categories.md), [NumPy Compatibility Testing](./concepts/numpy-compatibility-testing.md)
 - **Architecture:** [Client-Server Model](./architecture/client-server.md), [Running with Docker](./architecture/docker.md)
-- **API Reference:** [Counted Ops](./api/counted-ops.md), [Free Ops](./api/free-ops.md), [Budget](./api/budget.md), [FLOP Cost Query](./api/flops.md), [Errors](./api/errors.md)
-- **Reference:** [Operation Audit](./reference/operation-audit.md)
+- **API Reference:** [Counted Ops](./api/counted-ops.md), [Free Ops](./api/free-ops.md), [Symmetric Tensors](./api/symmetric.md), [Linear Algebra](./api/linalg.md), [FFT](./api/fft.md), [Random](./api/random.md), [Polynomial](./api/polynomial.md), [Window Functions](./api/window.md), [Budget](./api/budget.md), [FLOP Cost Query](./api/flops.md), [Errors](./api/errors.md)
+- **Reference:** [For AI Agents](./reference/for-agents.md), [Operation Audit](./reference/operation-audit.md), [FLOP Cost Cheat Sheet](./reference/cheat-sheet.md)
 - **Troubleshooting:** [Common Errors](./troubleshooting/common-errors.md)
+- **Changelog:** [Changelog](./changelog.md)

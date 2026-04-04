@@ -61,6 +61,25 @@ Each `OpRecord` contains:
 | `flop_cost` | FLOP cost of this single call |
 | `cumulative` | Running total after this call |
 
+## Live budget display
+
+Use `me.budget_live()` as a context manager for a Rich-based live-updating display that refreshes as operations run. This is useful when running long computations and you want to watch budget consumption in real time:
+
+```python
+import mechestim as me
+
+with me.budget_live():
+    with me.BudgetContext(flop_budget=10**8, namespace="training") as budget:
+        for i in range(100):
+            W = me.ones((256, 256))
+            x = me.ones((256,))
+            h = me.einsum('ij,j->i', W, x)
+            h = me.exp(h)
+            # The live display updates automatically as FLOPs are consumed
+```
+
+If Rich is not installed, `budget_live()` falls back to printing a plain-text summary on exit.
+
 ## ⚠️ Common pitfalls
 
 **Symptom:** `BudgetExhaustedError` but summary shows budget was nearly full

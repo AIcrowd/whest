@@ -149,11 +149,23 @@ data = me.budget_summary_dict()
 # {'mlp-forward': {'budget': 50_000_000, 'used': 1313536, 'remaining': 48686464, ...}}
 ```
 
+## Configuring the global default budget
+
+The global default budget is 1e15 FLOPs (1 quadrillion). You can change this via the `MECHESTIM_DEFAULT_BUDGET` environment variable:
+
+```bash
+# Set a smaller default budget (e.g., 1 billion FLOPs)
+export MECHESTIM_DEFAULT_BUDGET=1e9
+uv run python your_script.py
+```
+
+The env var is read once when the global default is first created (on the first counted operation). It accepts any numeric value that Python's `float()` can parse (e.g., `1e9`, `1000000000`, `5e12`).
+
 ## ⚠️ Common pitfalls
 
 **Symptom:** `BudgetExhaustedError`
 
-**Fix:** Your operations exceed the budget you set. Increase `flop_budget` on the `BudgetContext` (or decorator), reduce computation, or rely on the global default context which has a 1e15 FLOP ceiling.
+**Fix:** Your operations exceed the budget you set. Increase `flop_budget` on the `BudgetContext` (or decorator), reduce computation, or rely on the global default context which has a 1e15 FLOP ceiling (configurable via `MECHESTIM_DEFAULT_BUDGET`).
 
 **Note on `NoBudgetContextError`:** This error no longer triggers in normal use. The global default context activates automatically on first use, so bare calls outside any `with` block are safe.
 

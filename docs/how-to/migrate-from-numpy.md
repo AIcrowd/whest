@@ -24,7 +24,21 @@ h = np.dot(W, x)
 h = np.maximum(h, 0)
 ```
 
-**After (mechestim):**
+**After (mechestim) — simplest form:**
+
+```python
+import mechestim as me
+
+# No setup needed — global default budget tracks FLOPs automatically
+W = me.random.randn(256, 256)
+x = me.random.randn(256)
+h = me.dot(W, x)
+h = me.maximum(h, 0)
+
+me.budget_summary()  # see what you spent
+```
+
+**After (mechestim) — with explicit budget control:**
 
 ```python
 import mechestim as me
@@ -47,7 +61,7 @@ with me.BudgetContext(flop_budget=20_000_000) as budget:
 | NumPy | mechestim | Notes |
 |-------|-----------|-------|
 | `import numpy as np` | `import mechestim as me` | Drop-in replacement |
-| Call ops anywhere | Wrap in `BudgetContext` | Required for counted ops |
+| Call ops anywhere | Works anywhere too | A global default budget auto-activates; use explicit `BudgetContext` for limits and namespacing |
 | `np.linalg.svd(A)` | `me.linalg.svd(A, k=10)` | Truncated SVD with explicit `k` |
 | Plain `ndarray` only | `SymmetricTensor` available | Wrap with `me.as_symmetric()` for cost savings |
 | All NumPy ops available | Most available, 32 blacklisted | I/O and config ops raise `AttributeError` |

@@ -46,7 +46,7 @@ plugins:
           - how-to/use-einsum.md: "Einstein summation patterns and costs"
           - how-to/exploit-symmetry.md: "Save FLOPs via symmetry detection"
           - how-to/use-linalg.md: "Linear algebra operations and costs"
-          - how-to/use-fft.md: "FFT operations and costs"
+          - how-to/use-fft.md: "FFT operations, real vs complex, and costs"
           - how-to/plan-your-budget.md: "Query FLOP costs before executing"
           - how-to/debug-budget-overruns.md: "Diagnose and fix budget overruns"
         "Concepts":
