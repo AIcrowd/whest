@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from mechestim._budget import budget_data
+from mechestim._budget import budget_summary_dict
 
 
 def _format_flops(n: int) -> str:
@@ -31,7 +31,7 @@ def _usage_color(used: int, total: int) -> str:
 
 def _plain_text_summary() -> str:
     """Render a plain-text budget summary across all namespaces."""
-    data = budget_data(by_namespace=True)
+    data = budget_summary_dict(by_namespace=True)
     if data["flops_used"] == 0 and not data.get("by_namespace"):
         return "No budget data recorded yet."
 
@@ -141,7 +141,7 @@ def _rich_summary():
     from rich.table import Table
     from rich.text import Text
 
-    data = budget_data(by_namespace=True)
+    data = budget_summary_dict(by_namespace=True)
     if data["flops_used"] == 0 and not data.get("by_namespace"):
         return Panel("No budget data recorded yet.", title="mechestim Budget")
 

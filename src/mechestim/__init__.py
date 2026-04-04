@@ -35,7 +35,7 @@ from mechestim._budget import (  # noqa: F401
     BudgetContext,
     OpRecord,
     budget,
-    budget_data,
+    budget_summary_dict,
     budget_reset,
 )
 from mechestim._config import configure  # noqa: F401

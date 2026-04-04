@@ -142,10 +142,10 @@ run_mlp()
 me.budget_summary()
 ```
 
-Each call to `run_mlp()` draws from the same `mlp-forward` namespace budget. Call `me.budget_data()` to retrieve the summary as a plain dict for programmatic use:
+Each call to `run_mlp()` draws from the same `mlp-forward` namespace budget. Call `me.budget_summary_dict()` to retrieve the summary as a plain dict for programmatic use:
 
 ```python
-data = me.budget_data()
+data = me.budget_summary_dict()
 # {'mlp-forward': {'budget': 50_000_000, 'used': 1313536, 'remaining': 48686464, ...}}
 ```
 

@@ -301,8 +301,22 @@ class BudgetAccumulator:
 _accumulator = BudgetAccumulator()
 
 
-def budget_data(by_namespace: bool = False) -> dict:
-    """Return aggregated budget data across all recorded contexts."""
+def budget_summary_dict(by_namespace: bool = False) -> dict:
+    """Return aggregated budget data across all recorded contexts.
+
+    Parameters
+    ----------
+    by_namespace : bool, optional
+        If ``True``, include a ``"by_namespace"`` key with per-namespace
+        breakdowns. Default ``False``.
+
+    Returns
+    -------
+    dict
+        Dictionary with keys ``"flop_budget"``, ``"flops_used"``,
+        ``"flops_remaining"``, ``"operations"``, and optionally
+        ``"by_namespace"``.
+    """
     # Include the global default if it has been used
     if _global_default is not None and _global_default.flops_used > 0:
         acc_copy = BudgetAccumulator()

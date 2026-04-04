@@ -276,7 +276,7 @@ def budget(flop_budget, flop_multiplier=1.0, quiet=False, namespace=None):
     )
 
 
-def budget_data(by_namespace=False):
+def budget_summary_dict(by_namespace=False):
     """Return aggregated budget data across all recorded contexts."""
     return _accumulator.get_data(by_namespace=by_namespace)
 

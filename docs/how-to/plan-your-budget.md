@@ -112,7 +112,7 @@ with me.BudgetContext(flop_budget=total, namespace="backward") as budget:
 me.budget_summary()
 ```
 
-`me.budget_data(by_namespace=True)` returns a dict with per-namespace breakdowns for programmatic analysis.
+`me.budget_summary_dict(by_namespace=True)` returns a dict with per-namespace breakdowns for programmatic analysis.
 
 ## 📎 Related pages
 

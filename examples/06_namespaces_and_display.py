@@ -89,10 +89,10 @@ me.budget_summary()
 # ---------------------------------------------------------------------------
 # 5. Programmatic access with by_namespace=True
 # ---------------------------------------------------------------------------
-# me.budget_data(by_namespace=True) returns a plain dict, useful for logging,
+# me.budget_summary_dict(by_namespace=True) returns a plain dict, useful for logging,
 # assertions, or downstream analysis.
 
-data = me.budget_data(by_namespace=True)
+data = me.budget_summary_dict(by_namespace=True)
 
 print("\n--- Per-namespace breakdown ---")
 for ns, stats in data.get("by_namespace", {}).items():
