@@ -62,30 +62,29 @@ For multi-operand einsums (3+ tensors), mechestim automatically decomposes the c
 
 ## Symmetric tensors
 
-Wrap your tensor with `me.as_symmetric(data, dims)`. The optimizer automatically:
-- Uses symmetry to choose the best contraction order
-- Charges reduced costs based on unique elements
+There are two separate symmetry declarations — one for inputs, one for outputs:
+
+**Input symmetry** — wrap with `me.as_symmetric()` before passing to einsum. The optimizer automatically uses symmetry to choose the best contraction order and charges reduced costs:
 
 ```python
 with me.BudgetContext(flop_budget=10**8) as budget:
     S = me.as_symmetric(np.eye(10), symmetric_axes=(0, 1))  # 55 unique elements
     v = me.ones((10,))
 
-    result = me.einsum('ij,j->i', S, v)  # costs based on unique elements, not 100
-
-    print(f"Cost: {budget.flops_used:,}")
+    result = me.einsum('ij,j->i', S, v)  # cost reduced by input symmetry
 ```
 
-Use `symmetric_axes` on `einsum()` when the output is symmetric — this wraps the result as a `SymmetricTensor` for downstream savings:
+**Output symmetry** — pass `symmetric_axes` to `einsum()` to declare that the result is symmetric. This wraps the output as a `SymmetricTensor` so downstream operations benefit from reduced costs. It does NOT affect the cost of this einsum — it's a declaration about the result's structure:
 
 ```python
 with me.BudgetContext(flop_budget=10**8) as budget:
     X = me.array(np.random.randn(100, 10))
 
-    # Covariance: output axes (0,1) are symmetric
+    # X^T X is always symmetric — declare output axes (0,1) as symmetric
     C = me.einsum('ki,kj->ij', X, X, symmetric_axes=[(0, 1)])
 
     print(type(C))  # <class 'SymmetricTensor'>
+    # C can now be passed to other operations with automatic cost savings
 ```
 
 For the full symmetry guide, see [Exploit Symmetry Savings](./exploit-symmetry.md).
@@ -117,6 +116,38 @@ print(f"Speedup:        {info.speedup:.1f}x")
 cost = me.flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
 print(f"Matmul cost: {cost:,}")  # 33,554,432
 ```
+
+## Custom contraction paths
+
+By default mechestim finds the optimal contraction order automatically. You can override this by passing an explicit path — a list of int-tuples specifying which operand positions to contract at each step:
+
+```python
+import mechestim as me
+
+A = me.ones((3, 4))
+B = me.ones((4, 5))
+C = me.ones((5, 6))
+
+# Plan first, execute later
+path, info = me.einsum_path('ij,jk,kl->il', A, B, C)
+print(f"Optimal path: {path}")  # e.g. [(0, 1), (0, 1)]
+
+# Execute with the planned path
+with me.BudgetContext(flop_budget=10**8) as budget:
+    result = me.einsum('ij,jk,kl->il', A, B, C, optimize=path)
+```
+
+You can also specify a completely custom path. Each tuple names the positions (in the current operand list) to contract; the result is appended to the end:
+
+```python
+# Force B×C first (positions 1,2), then A×result (positions 0,1)
+result = me.einsum('ij,jk,kl->il', A, B, C, optimize=[(1, 2), (0, 1)])
+
+# Force A×B first (positions 0,1), then result×C (positions 0,1)
+result = me.einsum('ij,jk,kl->il', A, B, C, optimize=[(0, 1), (0, 1)])
+```
+
+Different paths may have different FLOP costs. Use `me.einsum_path()` to compare — it returns the cost without executing or spending budget.
 
 ## ⚠️ Common pitfalls
 
