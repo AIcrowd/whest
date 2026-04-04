@@ -49,12 +49,14 @@ def propagate_symmetry(
         Symmetry of the output, or None if no symmetry survives.
     """
     result: list[frozenset[str]] = []
+    seen: set[frozenset[str]] = set()
     for sym in (sym1, sym2):
         if sym is None:
             continue
         for group in sym:
             surviving = group & k12
-            if len(surviving) >= 2:
+            if len(surviving) >= 2 and surviving not in seen:
+                seen.add(surviving)
                 result.append(surviving)
     return result if result else None
 
@@ -93,6 +95,10 @@ def unique_elements(
     if symmetry:
         for group in symmetry:
             active = group & indices
+            # Skip if already accounted (handles duplicate groups from
+            # e.g. Hadamard dedup merging two tensors with the same symmetry)
+            if active <= accounted:
+                continue
             if len(active) < 2:
                 continue
             # All indices in a symmetric group must have the same size.

@@ -640,13 +640,22 @@ def _get_candidate(
     k1: ArrayIndexType,
     k2: ArrayIndexType,
     cost_fn: Any,
+    symmetry_map: dict[int, "IndexSymmetry | None"] | None = None,
 ) -> GreedyContractionType:
     either = k1 | k2
     two = k1 & k2
     one = either - two
     k12 = (either & output) | (two & dim_ref_counts[3]) | (one & dim_ref_counts[2])
+    # Compute size12 symmetry-aware when possible
+    if symmetry_map is not None:
+        sym1 = symmetry_map.get(remaining[k1])
+        sym2 = symmetry_map.get(remaining[k2])
+        sym12 = propagate_symmetry(sym1, k1, sym2, k2, k12) if (sym1 or sym2) else None
+        size12 = compute_unique_size(k12, sizes, sym12)
+    else:
+        size12 = compute_size_by_dict(k12, sizes)
     cost = cost_fn(
-        compute_size_by_dict(k12, sizes),
+        size12,
         footprints[k1],
         footprints[k2],
         k12,
@@ -672,10 +681,19 @@ def _push_candidate(
     queue: list[GreedyContractionType],
     push_all: bool,
     cost_fn: Any,
+    symmetry_map: dict[int, "IndexSymmetry | None"] | None = None,
 ) -> None:
     candidates = (
         _get_candidate(
-            output, sizes, remaining, footprints, dim_ref_counts, k1, k2, cost_fn
+            output,
+            sizes,
+            remaining,
+            footprints,
+            dim_ref_counts,
+            k1,
+            k2,
+            cost_fn,
+            symmetry_map=symmetry_map,
         )
         for k2 in k2s
     )
@@ -761,11 +779,22 @@ def ssa_greedy_optimize(
         if key in remaining:
             ssa_path.append((remaining[key], ssa_id))
             new_id = next(ssa_ids)
-            # Hadamard dedup: keep symmetry from one of the merged tensors
+            # Hadamard dedup: merge symmetry groups, deduplicating
             if symmetry_map:
                 old_sym = symmetry_map.get(remaining[key])
                 cur_sym = symmetry_map.get(ssa_id)
-                symmetry_map[new_id] = old_sym if old_sym is not None else cur_sym
+                if old_sym and cur_sym:
+                    # Merge and deduplicate groups
+                    seen = set()
+                    merged = []
+                    for g in old_sym + cur_sym:
+                        fg = frozenset(g)
+                        if fg not in seen:
+                            seen.add(fg)
+                            merged.append(fg)
+                    symmetry_map[new_id] = merged if merged else None
+                else:
+                    symmetry_map[new_id] = old_sym if old_sym is not None else cur_sym
             remaining[key] = new_id
         else:
             remaining[key] = ssa_id
@@ -811,6 +840,7 @@ def ssa_greedy_optimize(
                 queue,
                 push_all,
                 cost_fn,
+                symmetry_map=symmetry_map if symmetry_map else None,
             )
 
     # Greedily contract pairs of tensors.
@@ -839,10 +869,22 @@ def ssa_greedy_optimize(
         if k12 in remaining:
             hadamard_id = next(ssa_ids)
             ssa_path.append((remaining[k12], hadamard_id))
-            # Hadamard dedup for result: keep symmetry from existing tensor
+            # Hadamard dedup for result: merge and deduplicate symmetry
             if symmetry_map:
                 old_sym = symmetry_map.get(remaining[k12])
-                symmetry_map[hadamard_id] = old_sym if old_sym is not None else sym12
+                if old_sym and sym12:
+                    seen = set()
+                    merged = []
+                    for g in old_sym + sym12:
+                        fg = frozenset(g)
+                        if fg not in seen:
+                            seen.add(fg)
+                            merged.append(fg)
+                    symmetry_map[hadamard_id] = merged if merged else None
+                else:
+                    symmetry_map[hadamard_id] = (
+                        old_sym if old_sym is not None else sym12
+                    )
         else:
             for dim in k12 - output:
                 dim_to_keys[dim].add(k12)
@@ -874,6 +916,7 @@ def ssa_greedy_optimize(
                 queue,
                 push_all,
                 cost_fn,
+                symmetry_map=symmetry_map if symmetry_map else None,
             )
 
     # Greedily compute pairwise outer products.
