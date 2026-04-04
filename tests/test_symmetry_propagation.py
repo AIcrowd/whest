@@ -421,6 +421,40 @@ class TestBinaryIntersection:
 # -----------------------------------------------------------------------
 
 
+class TestIsSymmetric:
+    def test_symmetric_matrix(self):
+        data = np.array([[1.0, 2.0], [2.0, 3.0]])
+        assert me.is_symmetric(data, (0, 1))
+
+    def test_asymmetric_matrix(self):
+        data = np.array([[1.0, 2.0], [3.0, 4.0]])
+        assert not me.is_symmetric(data, (0, 1))
+
+    def test_within_tolerance(self):
+        data = np.array([[1.0, 2.0], [2.0 + 1e-8, 3.0]])
+        assert me.is_symmetric(data, (0, 1))
+
+    def test_exceeds_tolerance(self):
+        data = np.array([[1.0, 2.0], [2.5, 3.0]])
+        assert not me.is_symmetric(data, (0, 1))
+
+    def test_custom_tolerance(self):
+        data = np.array([[1.0, 2.0], [2.1, 3.0]])
+        assert not me.is_symmetric(data, (0, 1))
+        assert me.is_symmetric(data, (0, 1), atol=0.2)
+
+    def test_multiple_groups(self):
+        data = np.random.RandomState(0).randn(3, 3, 3, 3)
+        sym = (data + data.transpose(1, 0, 2, 3)) / 2
+        sym = (sym + sym.transpose(0, 1, 3, 2)) / 2
+        assert me.is_symmetric(sym, [(0, 1), (2, 3)])
+        assert not me.is_symmetric(sym, [(0, 1, 2, 3)])
+
+    def test_mismatched_sizes(self):
+        data = np.ones((3, 4))
+        assert not me.is_symmetric(data, (0, 1))
+
+
 class TestConfigure:
     def test_configure_unknown_key_raises(self):
         with pytest.raises(ValueError, match="Unknown setting"):

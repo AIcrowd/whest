@@ -406,6 +406,7 @@ from mechestim._symmetric import (  # noqa: F401
     SymmetricTensor,
     SymmetryInfo,
     as_symmetric,
+    is_symmetric,
 )
 
 # --- Unwrap (counted) ---

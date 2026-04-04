@@ -101,6 +101,53 @@ def validate_symmetry(
                     raise SymmetryError(axes=group, max_deviation=max_dev)
 
 
+def is_symmetric(
+    data: np.ndarray,
+    symmetric_axes: tuple[int, ...] | list[tuple[int, ...]],
+    *,
+    atol: float = 1e-6,
+    rtol: float = 1e-5,
+) -> bool:
+    """Check whether *data* is symmetric along the given axes.
+
+    Parameters
+    ----------
+    data : numpy.ndarray
+        The tensor data.
+    symmetric_axes : tuple of int or list of tuple of int
+        A single symmetry group ``(0, 1)`` or a list ``[(0, 1), (2, 3)]``.
+    atol, rtol : float
+        Tolerances passed to :func:`numpy.allclose`.
+
+    Returns
+    -------
+    bool
+    """
+    if (
+        isinstance(symmetric_axes, tuple)
+        and symmetric_axes
+        and not isinstance(symmetric_axes[0], tuple)
+    ):
+        groups: list[tuple[int, ...]] = [symmetric_axes]
+    else:
+        groups = list(symmetric_axes)
+
+    for group in groups:
+        if len(group) < 2:
+            continue
+        sizes = [data.shape[d] for d in group]
+        if len(set(sizes)) != 1:
+            return False
+        for i in range(len(group)):
+            for j in range(i + 1, len(group)):
+                axes = list(range(data.ndim))
+                axes[group[i]], axes[group[j]] = axes[group[j]], axes[group[i]]
+                transposed = data.transpose(axes)
+                if not np.allclose(data, transposed, atol=atol, rtol=rtol):
+                    return False
+    return True
+
+
 # ---------------------------------------------------------------------------
 # Symmetry-loss warning helper
 # ---------------------------------------------------------------------------
