@@ -128,9 +128,9 @@ when there is an inner product (summed indices) and 1 otherwise.
 
 **5. Exploit symmetry for cost savings.**
 
-- Use `symmetric_dims` for symmetric outputs:
-  `me.einsum('ki,kj->ij', X, X, symmetric_dims=[(0, 1)])`
-- Wrap known-symmetric matrices with `me.as_symmetric(data, dims=(0, 1))`
+- Use `symmetric_axes` for symmetric outputs:
+  `me.einsum('ki,kj->ij', X, X, symmetric_axes=[(0, 1)])`
+- Wrap known-symmetric matrices with `me.as_symmetric(data, symmetric_axes=(0, 1))`
   for automatic savings in downstream ops
 
 ## Common mistakes agents make

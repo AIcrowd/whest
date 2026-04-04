@@ -68,7 +68,7 @@ Wrap your tensor with `me.as_symmetric(data, dims)`. The optimizer automatically
 
 ```python
 with me.BudgetContext(flop_budget=10**8) as budget:
-    S = me.as_symmetric(np.eye(10), dims=(0, 1))  # 55 unique elements
+    S = me.as_symmetric(np.eye(10), symmetric_axes=(0, 1))  # 55 unique elements
     v = me.ones((10,))
 
     result = me.einsum('ij,j->i', S, v)  # costs based on unique elements, not 100
@@ -76,14 +76,14 @@ with me.BudgetContext(flop_budget=10**8) as budget:
     print(f"Cost: {budget.flops_used:,}")
 ```
 
-Use `symmetric_dims` on `einsum()` when the output is symmetric — this wraps the result as a `SymmetricTensor` for downstream savings:
+Use `symmetric_axes` on `einsum()` when the output is symmetric — this wraps the result as a `SymmetricTensor` for downstream savings:
 
 ```python
 with me.BudgetContext(flop_budget=10**8) as budget:
     X = me.array(np.random.randn(100, 10))
 
-    # Covariance: output dims (0,1) are symmetric
-    C = me.einsum('ki,kj->ij', X, X, symmetric_dims=[(0, 1)])
+    # Covariance: output axes (0,1) are symmetric
+    C = me.einsum('ki,kj->ij', X, X, symmetric_axes=[(0, 1)])
 
     print(type(C))  # <class 'SymmetricTensor'>
 ```

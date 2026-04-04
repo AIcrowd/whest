@@ -77,7 +77,7 @@ contraction breakdown with per-step symmetry savings:
 import mechestim as me
 import numpy as np
 
-T = me.as_symmetric(np.random.randn(50, 50, 50), dims=(0, 1, 2))
+T = me.as_symmetric(np.random.randn(50, 50, 50), symmetric_axes=(0, 1, 2))
 A = me.ones((50, 50))
 B = me.ones((50, 50))
 C = me.ones((50, 50))

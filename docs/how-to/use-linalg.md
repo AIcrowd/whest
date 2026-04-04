@@ -61,7 +61,7 @@ import mechestim as me
 import numpy as np
 
 with me.BudgetContext(flop_budget=10**8) as budget:
-    A = me.as_symmetric(np.eye(10) * 2.0, dims=(0, 1))
+    A = me.as_symmetric(np.eye(10) * 2.0, symmetric_axes=(0, 1))
 
     # solve uses Cholesky cost: n^3/3 + n*nrhs = 343
     x = me.linalg.solve(A, np.ones(10))
