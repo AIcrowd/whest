@@ -12,9 +12,7 @@ Every NumPy function falls into one of three categories in mechestim:
 
 Operations that involve no arithmetic computation — just memory allocation, reshaping, or data movement.
 
-**Examples:** `zeros`, `ones`, `full`, `eye`, `arange`, `linspace`, `empty`, `reshape`, `transpose`, `concatenate`, `stack`, `split`, `squeeze`, `expand_dims`, `ravel`, `take`, `where`, `copy`, `astype`, `asarray`, `array_equal`
-
-**Random operations** are also free: `me.random.randn`, `me.random.normal`, `me.random.seed`, etc.
+**Examples:** `zeros`, `ones`, `full`, `eye`, `arange`, `linspace`, `empty`, `reshape`, `transpose`, `concatenate`, `stack`, `split`, `squeeze`, `expand_dims`, `ravel`, `take`, `where`, `copy`, `astype`, `asarray`
 
 ### 🟡 Counted operations (cost > 0)
 
@@ -30,6 +28,8 @@ Operations that perform arithmetic. Cost is computed analytically from tensor sh
 | Linalg | per-operation formula | `me.linalg.solve`, `me.linalg.eigh`, `me.linalg.cholesky` |
 | FFT | 5 N log N | `me.fft.fft`, `me.fft.rfft`, `me.fft.fft2` |
 | SVD | m × n × k | `me.linalg.svd(A, k=10)` |
+| Sort/Search | n log n per slice | `sort`, `argsort`, `unique`, `searchsorted` |
+| Random | numel(output) | `me.random.randn`, `me.random.normal`, `me.random.uniform` |
 
 When inputs are `SymmetricTensor`, many operations automatically get reduced costs. See [Exploit Symmetry](../how-to/exploit-symmetry.md).
 

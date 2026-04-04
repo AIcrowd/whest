@@ -34,6 +34,31 @@ mechestim computes FLOP costs **analytically from tensor shapes**, not by measur
 | **Dot / Matmul** | Same as einsum | (256, 256) @ (256, 256) → 2 × 256³ |
 | **Free ops** | 0 | zeros, reshape, etc. |
 
+### Sorting & search
+
+| Category | Formula | Example |
+|----------|---------|---------|
+| **Sort / Argsort** | $n \cdot \lceil\log_2 n\rceil$ per slice | shape (4, 8), axis=-1 → 4 × 8 × 3 = 96 |
+| **Lexsort** | $k \cdot n \cdot \lceil\log_2 n\rceil$ | 2 keys of length 8 → 2 × 8 × 3 = 48 |
+| **Partition** | $n$ per slice | shape (100,), kth=50 → 100 |
+| **Searchsorted** | $m \cdot \lceil\log_2 n\rceil$ | 5 queries into 1024 → 5 × 10 = 50 |
+| **Unique** | $n \cdot \lceil\log_2 n\rceil$ | 8 elements → 8 × 3 = 24 |
+| **Set ops** | $(n+m) \cdot \lceil\log_2(n+m)\rceil$ | 4 + 4 elements → 8 × 3 = 24 |
+
+### Histogram & counting
+
+| Category | Formula | Example |
+|----------|---------|---------|
+| **Histogram** | $n \cdot \lceil\log_2 \text{bins}\rceil$ | 100 elements, 8 bins → 100 × 3 = 300 |
+| **Bincount** | $n$ | 100 elements → 100 |
+
+### Random sampling
+
+| Category | Formula | Example |
+|----------|---------|---------|
+| **Simple samplers** | $\text{numel}(\text{output})$ | shape (10, 20) → 200 |
+| **Shuffle / Permutation** | $n \cdot \lceil\log_2 n\rceil$ | 16 elements → 16 × 4 = 64 |
+
 ## Symmetry savings
 
 When a tensor is a `SymmetricTensor`, costs are reduced based on the number of unique elements rather than total elements. For a symmetric $n \times n$ matrix, there are $n(n+1)/2$ unique elements instead of $n^2$.

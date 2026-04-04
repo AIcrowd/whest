@@ -187,7 +187,7 @@ with me.BudgetContext(flop_budget=10**8) as budget:
 
 **32 operations are blocked.** I/O, config, and system-level functions (`save`, `load`, `set_printoptions`, etc.) raise `AttributeError` by design. These have no meaningful FLOP cost and are not part of the competition API.
 
-**sort, argsort, and trace are FREE.** This may be surprising -- these operations cost 0 FLOPs in mechestim because the challenge rules define them as free.
+**sort, argsort, trace, and random sampling all have analytical FLOP costs** based on their algorithmic complexity.
 
 **Nested BudgetContexts are not allowed.** Opening a second `BudgetContext` while one is already active raises `RuntimeError`. Use a single budget for your entire computation.
 
