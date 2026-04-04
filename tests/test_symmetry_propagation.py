@@ -454,6 +454,16 @@ class TestIsSymmetric:
         data = np.ones((3, 4))
         assert not me.is_symmetric(data, (0, 1))
 
+    def test_method_default_axes(self):
+        data = np.array([[1.0, 2.0], [2.0, 3.0]])
+        st = as_symmetric(data, (0, 1))
+        assert st.is_symmetric()
+
+    def test_method_custom_axes(self):
+        data = np.array([[1.0, 2.0], [2.0, 3.0]])
+        st = as_symmetric(data, (0, 1))
+        assert st.is_symmetric(symmetric_axes=(0, 1))
+
 
 class TestConfigure:
     def test_configure_unknown_key_raises(self):

@@ -460,6 +460,26 @@ class SymmetricTensor(np.ndarray):
             shape=self.shape,
         )
 
+    def is_symmetric(
+        self,
+        symmetric_axes: tuple[int, ...] | list[tuple[int, ...]] | None = None,
+        *,
+        atol: float = 1e-6,
+        rtol: float = 1e-5,
+    ) -> bool:
+        """Check whether the data satisfies the given (or carried) symmetry.
+
+        Parameters
+        ----------
+        symmetric_axes : tuple or list of tuples, optional
+            Axes to check.  If *None*, checks the axes already carried
+            by this ``SymmetricTensor``.
+        atol, rtol : float
+            Tolerances passed to :func:`numpy.allclose`.
+        """
+        axes = symmetric_axes if symmetric_axes is not None else self._symmetric_axes
+        return is_symmetric(np.asarray(self), axes, atol=atol, rtol=rtol)
+
     # -- slicing with symmetry propagation --
 
     def __getitem__(self, key):  # type: ignore[override]
