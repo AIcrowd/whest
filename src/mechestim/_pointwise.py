@@ -8,7 +8,13 @@ import numpy as _np
 
 from mechestim._docstrings import attach_docstring
 from mechestim._flops import einsum_cost, pointwise_cost, reduction_cost
-from mechestim._symmetric import SymmetricTensor, SymmetryInfo
+from mechestim._symmetric import (
+    SymmetricTensor,
+    SymmetryInfo,
+    _warn_symmetry_loss,
+    intersect_symmetry,
+    propagate_symmetry_reduce,
+)
 from mechestim._validation import check_nan_inf, require_budget
 
 # ---------------------------------------------------------------------------
@@ -66,34 +72,63 @@ def _counted_binary(np_func, op_name: str):
         y_sym = y.symmetry_info if isinstance(y, SymmetricTensor) else None
         x_is_scalar = x.ndim == 0
         y_is_scalar = y.ndim == 0
-        if x_sym and y_sym and x_sym.symmetric_axes == y_sym.symmetric_axes:
-            out_sym_info = SymmetryInfo(
-                symmetric_axes=x_sym.symmetric_axes, shape=output_shape
-            )
-            out_sym_axes = x_sym.symmetric_axes
-        elif x_sym and y_is_scalar:
-            out_sym_info = SymmetryInfo(
-                symmetric_axes=x_sym.symmetric_axes, shape=output_shape
-            )
+
+        # Determine output symmetry.
+        out_sym_axes: list | None = None
+        if x_sym and y_is_scalar:
             out_sym_axes = x_sym.symmetric_axes
         elif y_sym and x_is_scalar:
-            out_sym_info = SymmetryInfo(
-                symmetric_axes=y_sym.symmetric_axes, shape=output_shape
-            )
             out_sym_axes = y_sym.symmetric_axes
-        else:
-            out_sym_info = None
-            out_sym_axes = None
+        elif x_sym or y_sym:
+            # Use intersection (handles both exact-match and partial-overlap).
+            x_axes = x_sym.symmetric_axes if x_sym else []
+            y_axes = y_sym.symmetric_axes if y_sym else []
+            out_sym_axes = intersect_symmetry(
+                x_axes if x_axes else None,
+                y_axes if y_axes else None,
+                x.shape,
+                y.shape,
+                output_shape,
+            )
+
+        out_sym_info = (
+            SymmetryInfo(symmetric_axes=out_sym_axes, shape=output_shape)
+            if out_sym_axes
+            else None
+        )
         cost = pointwise_cost(output_shape, symmetry_info=out_sym_info)
         budget.deduct(
             op_name, flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape)
         )
         result = np_func(x, y)
         check_nan_inf(result, op_name)
-        if out_sym_axes is not None:
+        if out_sym_axes:
             result = SymmetricTensor(result, symmetric_axes=out_sym_axes)
+            # Warn if either input had more symmetry.
+            input_groups = set()
+            if x_sym:
+                input_groups.update(x_sym.symmetric_axes)
+            if y_sym:
+                input_groups.update(y_sym.symmetric_axes)
+            out_set = set(out_sym_axes)
+            lost = [g for g in input_groups if g not in out_set]
+            if lost:
+                _warn_symmetry_loss(
+                    lost, f"{op_name} — groups not shared by both operands"
+                )
         elif isinstance(result, SymmetricTensor):
             result = _np.asarray(result)
+            # Warn about total loss.
+            input_groups_list = []
+            if x_sym:
+                input_groups_list.extend(x_sym.symmetric_axes)
+            if y_sym:
+                input_groups_list.extend(y_sym.symmetric_axes)
+            if input_groups_list:
+                _warn_symmetry_loss(
+                    input_groups_list,
+                    f"{op_name} — no symmetry groups shared by both operands",
+                )
         return result
 
     wrapper.__name__ = op_name
@@ -139,7 +174,32 @@ def _counted_reduction(
             out_shape = _np.asarray(result).shape
             cost += pointwise_cost(out_shape)
         budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(a.shape,))
-        if isinstance(result, SymmetricTensor):
+
+        # Propagate symmetry through reduction.
+        if sym_info is not None:
+            keepdims = kwargs.get("keepdims", False)
+            new_groups = propagate_symmetry_reduce(
+                sym_info.symmetric_axes, len(a.shape), axis, keepdims=keepdims
+            )
+            if new_groups is not None:
+                result = _np.asarray(result).view(SymmetricTensor)
+                result._symmetric_axes = new_groups
+                # Warn if groups were partially lost.
+                old_set = set(sym_info.symmetric_axes)
+                new_set = set(new_groups)
+                if new_set != old_set:
+                    lost = [g for g in sym_info.symmetric_axes if g not in new_set]
+                    if lost:
+                        _warn_symmetry_loss(lost, f"{op_name} reduced dims")
+            else:
+                if isinstance(result, SymmetricTensor):
+                    result = _np.asarray(result)
+                if sym_info.symmetric_axes:
+                    _warn_symmetry_loss(
+                        sym_info.symmetric_axes,
+                        f"{op_name} removed all symmetric dim groups",
+                    )
+        elif isinstance(result, SymmetricTensor):
             result = _np.asarray(result)
         return result
 

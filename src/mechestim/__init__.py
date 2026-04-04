@@ -38,6 +38,7 @@ from mechestim._budget import (  # noqa: F401
     budget_data,
     budget_reset,
 )
+from mechestim._config import configure  # noqa: F401
 from mechestim._display import budget_live, budget_summary  # noqa: F401
 
 # --- Einsum ---
@@ -426,6 +427,7 @@ from mechestim.errors import (  # noqa: F401
     MechEstimWarning,
     NoBudgetContextError,
     SymmetryError,
+    SymmetryLossWarning,
 )
 
 # --- NumPy constants and types ---

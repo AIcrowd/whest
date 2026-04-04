@@ -58,3 +58,7 @@ class SymmetryError(MechEstimError):
 
 class MechEstimWarning(UserWarning):
     """Warning issued when mechestim detects potential numerical issues."""
+
+
+class SymmetryLossWarning(MechEstimWarning):
+    """Warning issued when an operation causes loss of symmetry metadata."""
