@@ -202,7 +202,8 @@ class TestEndToEnd:
             # Solve with symmetric matrix — should use Cholesky cost
             # Make it positive definite first
             cov_pd = cov + me.multiply(
-                me.as_symmetric(numpy.eye(n), symmetric_axes=(0, 1)), numpy.asarray(float(n))
+                me.as_symmetric(numpy.eye(n), symmetric_axes=(0, 1)),
+                numpy.asarray(float(n)),
             )
             b = numpy.ones(n)
             before = budget.flops_used
