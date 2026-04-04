@@ -11,7 +11,7 @@ class TestUnarySymmetry:
         import mechestim as me
 
         data = numpy.eye(10)
-        S = as_symmetric(data, dims=(0, 1))
+        S = as_symmetric(data, symmetric_axes=(0, 1))
         with BudgetContext(flop_budget=10**6, quiet=True) as budget:
             result = me.exp(S)
             assert budget.flops_used == 55  # 10*11/2
@@ -20,17 +20,17 @@ class TestUnarySymmetry:
         import mechestim as me
 
         data = numpy.eye(4)
-        S = as_symmetric(data, dims=(0, 1))
+        S = as_symmetric(data, symmetric_axes=(0, 1))
         with BudgetContext(flop_budget=10**6, quiet=True):
             result = me.exp(S)
             assert isinstance(result, SymmetricTensor)
-            assert result.symmetric_dims == [(0, 1)]
+            assert result.symmetric_axes == [(0, 1)]
 
     def test_log_symmetric_cost(self):
         import mechestim as me
 
         data = numpy.eye(5) + 1
-        S = as_symmetric(data, dims=(0, 1))
+        S = as_symmetric(data, symmetric_axes=(0, 1))
         with BudgetContext(flop_budget=10**6, quiet=True) as budget:
             me.log(S)
             assert budget.flops_used == 15
@@ -45,11 +45,11 @@ class TestUnarySymmetry:
 
 
 class TestBinarySymmetry:
-    def test_add_both_symmetric_same_dims(self):
+    def test_add_both_symmetric_same_axes(self):
         import mechestim as me
 
-        A = as_symmetric(numpy.eye(5), dims=(0, 1))
-        B = as_symmetric(numpy.eye(5) * 2, dims=(0, 1))
+        A = as_symmetric(numpy.eye(5), symmetric_axes=(0, 1))
+        B = as_symmetric(numpy.eye(5) * 2, symmetric_axes=(0, 1))
         with BudgetContext(flop_budget=10**6, quiet=True) as budget:
             result = me.add(A, B)
             assert budget.flops_used == 15
@@ -58,7 +58,7 @@ class TestBinarySymmetry:
     def test_add_different_dims_no_symmetry(self):
         import mechestim as me
 
-        A = as_symmetric(numpy.eye(5), dims=(0, 1))
+        A = as_symmetric(numpy.eye(5), symmetric_axes=(0, 1))
         B = numpy.ones((5, 5))
         with BudgetContext(flop_budget=10**6, quiet=True) as budget:
             result = me.add(A, B)
@@ -68,7 +68,7 @@ class TestBinarySymmetry:
     def test_multiply_scalar_preserves_symmetry(self):
         import mechestim as me
 
-        A = as_symmetric(numpy.eye(5), dims=(0, 1))
+        A = as_symmetric(numpy.eye(5), symmetric_axes=(0, 1))
         scalar = numpy.asarray(3.0)
         with BudgetContext(flop_budget=10**6, quiet=True) as budget:
             result = me.multiply(A, scalar)
@@ -80,7 +80,7 @@ class TestReductionSymmetry:
         import mechestim as me
 
         data = numpy.eye(10)
-        S = as_symmetric(data, dims=(0, 1))
+        S = as_symmetric(data, symmetric_axes=(0, 1))
         with BudgetContext(flop_budget=10**6, quiet=True) as budget:
             me.sum(S)
             assert budget.flops_used == 55
@@ -89,7 +89,7 @@ class TestReductionSymmetry:
         import mechestim as me
 
         data = numpy.eye(4)
-        S = as_symmetric(data, dims=(0, 1))
+        S = as_symmetric(data, symmetric_axes=(0, 1))
         with BudgetContext(flop_budget=10**6, quiet=True):
             result = me.sum(S)
             assert not isinstance(result, SymmetricTensor)

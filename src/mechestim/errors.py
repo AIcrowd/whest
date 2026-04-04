@@ -39,17 +39,17 @@ class SymmetryError(MechEstimError):
 
     def __init__(
         self,
-        dims: tuple[int, ...],
+        axes: tuple[int, ...],
         max_deviation: float,
         atol: float = 1e-6,
         rtol: float = 1e-5,
     ):
-        self.dims = dims
+        self.axes = axes
         self.max_deviation = max_deviation
         self.atol = atol
         self.rtol = rtol
         super().__init__(
-            f"Tensor not symmetric along dims ({', '.join(str(d) for d in dims)}): "
+            f"Tensor not symmetric along axes ({', '.join(str(d) for d in axes)}): "
             f"max deviation = {max_deviation} "
             f"(tolerance: atol={atol}, rtol={rtol}). "
             f"See: {_DOCS_BASE}/#symmetryerror"

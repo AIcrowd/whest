@@ -10,14 +10,14 @@ from mechestim._symmetric import SymmetricTensor, as_symmetric
 class TestEighValidation:
     def test_eigh_accepts_symmetric_tensor(self):
         A = numpy.array([[2.0, 1.0], [1.0, 3.0]])
-        S = as_symmetric(A, dims=(0, 1))
+        S = as_symmetric(A, symmetric_axes=(0, 1))
         with BudgetContext(flop_budget=10**6, quiet=True):
             vals, vecs = la.eigh(S)
             assert vals.shape == (2,)
 
     def test_eigh_returns_plain_arrays(self):
         A = numpy.array([[2.0, 1.0], [1.0, 3.0]])
-        S = as_symmetric(A, dims=(0, 1))
+        S = as_symmetric(A, symmetric_axes=(0, 1))
         with BudgetContext(flop_budget=10**6, quiet=True):
             vals, vecs = la.eigh(S)
             assert not isinstance(vals, SymmetricTensor)
@@ -28,7 +28,7 @@ class TestSolveSymmetric:
     def test_solve_symmetric_uses_cholesky_cost(self):
         n = 10
         A = numpy.eye(n) * 2.0
-        S = as_symmetric(A, dims=(0, 1))
+        S = as_symmetric(A, symmetric_axes=(0, 1))
         b = numpy.ones(n)
         with BudgetContext(flop_budget=10**8, quiet=True) as budget:
             la.solve(S, b)
@@ -44,7 +44,7 @@ class TestSolveSymmetric:
 
     def test_solve_returns_plain(self):
         A = numpy.eye(3) * 2.0
-        S = as_symmetric(A, dims=(0, 1))
+        S = as_symmetric(A, symmetric_axes=(0, 1))
         b = numpy.ones(3)
         with BudgetContext(flop_budget=10**6, quiet=True):
             result = la.solve(S, b)
@@ -55,7 +55,7 @@ class TestDetSymmetric:
     def test_det_symmetric_uses_cholesky_cost(self):
         n = 10
         A = numpy.eye(n) * 2.0
-        S = as_symmetric(A, dims=(0, 1))
+        S = as_symmetric(A, symmetric_axes=(0, 1))
         with BudgetContext(flop_budget=10**8, quiet=True) as budget:
             la.det(S)
             assert budget.flops_used == n**3 // 3
@@ -64,7 +64,7 @@ class TestDetSymmetric:
 class TestInvSymmetric:
     def test_inv_symmetric_returns_symmetric(self):
         A = numpy.eye(3) * 2.0
-        S = as_symmetric(A, dims=(0, 1))
+        S = as_symmetric(A, symmetric_axes=(0, 1))
         with BudgetContext(flop_budget=10**6, quiet=True):
             result = la.inv(S)
             assert isinstance(result, SymmetricTensor)
@@ -72,7 +72,7 @@ class TestInvSymmetric:
     def test_inv_symmetric_cost(self):
         n = 10
         A = numpy.eye(n) * 2.0
-        S = as_symmetric(A, dims=(0, 1))
+        S = as_symmetric(A, symmetric_axes=(0, 1))
         with BudgetContext(flop_budget=10**8, quiet=True) as budget:
             la.inv(S)
             expected = n**3 // 3 + n**3 // 2

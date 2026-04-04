@@ -76,7 +76,7 @@ def einsum_cost(
             else:
                 groups = [
                     frozenset(chars[d] for d in g)
-                    for g in sym.symmetric_dims
+                    for g in sym.symmetric_axes
                     if len(g) >= 2
                 ]
                 index_syms.append(groups if groups else None)

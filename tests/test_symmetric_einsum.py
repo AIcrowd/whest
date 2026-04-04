@@ -12,7 +12,7 @@ class TestEinsumSymmetricInput:
         # Use a contraction where symmetric indices survive in the output:
         # "ijk,k->ij" with S2 on {i,j}. The symmetric group on {i,j}
         # provides a real cost reduction since both indices survive.
-        S = as_symmetric(numpy.ones((10, 10, 5)), dims=(0, 1))
+        S = as_symmetric(numpy.ones((10, 10, 5)), symmetric_axes=(0, 1))
         v = numpy.ones(5)
         with BudgetContext(flop_budget=10**6, quiet=True) as budget:
             result = einsum("ijk,k->ij", S, v)
@@ -29,14 +29,14 @@ class TestEinsumSymmetricInput:
 
 
 class TestEinsumSymmetricOutput:
-    def test_symmetric_dims_returns_symmetric_tensor(self):
+    def test_symmetric_axes_returns_symmetric_tensor(self):
         X = numpy.ones((5, 10))
         with BudgetContext(flop_budget=10**8, quiet=True):
-            result = einsum("ki,kj->ij", X, X, symmetric_dims=[(0, 1)])
+            result = einsum("ki,kj->ij", X, X, symmetric_axes=[(0, 1)])
             assert isinstance(result, SymmetricTensor)
-            assert result.symmetric_dims == [(0, 1)]
+            assert result.symmetric_axes == [(0, 1)]
 
-    def test_without_symmetric_dims_returns_plain(self):
+    def test_without_symmetric_axes_returns_plain(self):
         A = numpy.ones((3, 4))
         B = numpy.ones((4, 5))
         with BudgetContext(flop_budget=10**8, quiet=True):

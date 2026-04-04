@@ -37,8 +37,8 @@ def test_no_budget_context_error_message():
 
 
 def test_symmetry_error_attributes():
-    err = SymmetryError(dims=(0, 1), max_deviation=0.5)
-    assert err.dims == (0, 1)
+    err = SymmetryError(axes=(0, 1), max_deviation=0.5)
+    assert err.axes == (0, 1)
     assert err.max_deviation == 0.5
     assert "0, 1" in str(err)
 

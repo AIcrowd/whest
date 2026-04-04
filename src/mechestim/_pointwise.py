@@ -27,7 +27,7 @@ def _counted_unary(np_func, op_name: str):
         result = np_func(x)
         check_nan_inf(result, op_name)
         if sym_info is not None:
-            result = SymmetricTensor(result, symmetric_dims=sym_info.symmetric_dims)
+            result = SymmetricTensor(result, symmetric_axes=sym_info.symmetric_axes)
         return result
 
     wrapper.__name__ = op_name
@@ -66,32 +66,32 @@ def _counted_binary(np_func, op_name: str):
         y_sym = y.symmetry_info if isinstance(y, SymmetricTensor) else None
         x_is_scalar = x.ndim == 0
         y_is_scalar = y.ndim == 0
-        if x_sym and y_sym and x_sym.symmetric_dims == y_sym.symmetric_dims:
+        if x_sym and y_sym and x_sym.symmetric_axes == y_sym.symmetric_axes:
             out_sym_info = SymmetryInfo(
-                symmetric_dims=x_sym.symmetric_dims, shape=output_shape
+                symmetric_axes=x_sym.symmetric_axes, shape=output_shape
             )
-            out_sym_dims = x_sym.symmetric_dims
+            out_sym_axes = x_sym.symmetric_axes
         elif x_sym and y_is_scalar:
             out_sym_info = SymmetryInfo(
-                symmetric_dims=x_sym.symmetric_dims, shape=output_shape
+                symmetric_axes=x_sym.symmetric_axes, shape=output_shape
             )
-            out_sym_dims = x_sym.symmetric_dims
+            out_sym_axes = x_sym.symmetric_axes
         elif y_sym and x_is_scalar:
             out_sym_info = SymmetryInfo(
-                symmetric_dims=y_sym.symmetric_dims, shape=output_shape
+                symmetric_axes=y_sym.symmetric_axes, shape=output_shape
             )
-            out_sym_dims = y_sym.symmetric_dims
+            out_sym_axes = y_sym.symmetric_axes
         else:
             out_sym_info = None
-            out_sym_dims = None
+            out_sym_axes = None
         cost = pointwise_cost(output_shape, symmetry_info=out_sym_info)
         budget.deduct(
             op_name, flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape)
         )
         result = np_func(x, y)
         check_nan_inf(result, op_name)
-        if out_sym_dims is not None:
-            result = SymmetricTensor(result, symmetric_dims=out_sym_dims)
+        if out_sym_axes is not None:
+            result = SymmetricTensor(result, symmetric_axes=out_sym_axes)
         elif isinstance(result, SymmetricTensor):
             result = _np.asarray(result)
         return result
@@ -332,7 +332,7 @@ def clip(a, a_min, a_max):
     result = _np.clip(a, a_min, a_max)
     check_nan_inf(result, "clip")
     if sym_info is not None:
-        result = SymmetricTensor(result, symmetric_dims=sym_info.symmetric_dims)
+        result = SymmetricTensor(result, symmetric_axes=sym_info.symmetric_axes)
     return result
 
 

@@ -100,7 +100,7 @@ def inv(a):
     budget.deduct("linalg.inv", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     result = _np.linalg.inv(a)
     if is_symmetric:
-        result = as_symmetric(result, dims=(0, 1))
+        result = as_symmetric(result, symmetric_axes=(0, 1))
     return result
 
 

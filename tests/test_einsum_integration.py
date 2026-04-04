@@ -30,7 +30,7 @@ class TestMultiOperandEinsum:
             + T_data.transpose(1, 2, 0)
             + T_data.transpose(2, 0, 1)
         ) / 6
-        T = as_symmetric(T_data, dims=(0, 1, 2))
+        T = as_symmetric(T_data, symmetric_axes=(0, 1, 2))
         A = numpy.random.RandomState(43).rand(n, n)
         B = numpy.random.RandomState(44).rand(n, n)
 
@@ -113,7 +113,7 @@ class TestEinsumPath:
         # symmetric group provides a real cost reduction.
         n = 10
         k = 5
-        S = as_symmetric(numpy.ones((n, n, k)), dims=(0, 1))
+        S = as_symmetric(numpy.ones((n, n, k)), symmetric_axes=(0, 1))
         v = numpy.ones(k)
         path, info = einsum_path("ijk,k->ij", S, v)
         assert len(info.steps) >= 1
@@ -167,8 +167,8 @@ class TestBackwardCompatibility:
             assert budget.flops_used == 120  # 3*4*5 * op_factor(2)
             assert result.shape == (3, 5)
 
-    def test_symmetric_dims_output_still_works(self):
+    def test_symmetric_axes_output_still_works(self):
         X = numpy.ones((5, 10))
         with BudgetContext(flop_budget=10**8, quiet=True):
-            result = einsum("ki,kj->ij", X, X, symmetric_dims=[(0, 1)])
+            result = einsum("ki,kj->ij", X, X, symmetric_axes=[(0, 1)])
             assert isinstance(result, SymmetricTensor)

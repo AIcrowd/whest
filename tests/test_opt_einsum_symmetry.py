@@ -659,7 +659,7 @@ class TestExhaustiveSymmetryValidation:
             + T_data.transpose(1, 2, 0)
             + T_data.transpose(2, 0, 1)
         ) / 6
-        T = as_symmetric(T_data, dims=(0, 1, 2))
+        T = as_symmetric(T_data, symmetric_axes=(0, 1, 2))
         A = np.random.RandomState(43).rand(n, n)
         B = np.random.RandomState(44).rand(n, n)
 

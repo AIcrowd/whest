@@ -77,12 +77,12 @@ from mechestim._symmetric import SymmetryInfo
 
 
 def test_pointwise_cost_symmetric():
-    info = SymmetryInfo(symmetric_dims=[(0, 1)], shape=(5, 5))
+    info = SymmetryInfo(symmetric_axes=[(0, 1)], shape=(5, 5))
     assert pointwise_cost(shape=(5, 5), symmetry_info=info) == 15
 
 
 def test_pointwise_cost_partial_symmetry():
-    info = SymmetryInfo(symmetric_dims=[(0, 1), (2, 3)], shape=(4, 4, 3, 3))
+    info = SymmetryInfo(symmetric_axes=[(0, 1), (2, 3)], shape=(4, 4, 3, 3))
     assert pointwise_cost(shape=(4, 4, 3, 3), symmetry_info=info) == 60
 
 
@@ -91,7 +91,7 @@ def test_pointwise_cost_no_symmetry_unchanged():
 
 
 def test_reduction_cost_symmetric():
-    info = SymmetryInfo(symmetric_dims=[(0, 1)], shape=(5, 5))
+    info = SymmetryInfo(symmetric_axes=[(0, 1)], shape=(5, 5))
     assert reduction_cost(input_shape=(5, 5), axis=None, symmetry_info=info) == 15
 
 
@@ -103,7 +103,7 @@ def test_einsum_cost_symmetric_input():
     # Use a case where symmetric indices survive in the output:
     # "ijk,k->ij" with S2 on {i,j}. Both i and j survive, so the
     # symmetric group provides a real cost reduction.
-    info = SymmetryInfo(symmetric_dims=[(0, 1)], shape=(10, 10, 5))
+    info = SymmetryInfo(symmetric_axes=[(0, 1)], shape=(10, 10, 5))
     cost = einsum_cost(
         "ijk,k->ij", shapes=[(10, 10, 5), (5,)], operand_symmetries=[info, None]
     )

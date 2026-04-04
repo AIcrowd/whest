@@ -16,20 +16,20 @@ class SymmetryInfo:
 
     Parameters
     ----------
-    symmetric_dims : list of tuple of int
+    symmetric_axes : list of tuple of int
         Groups of dimension indices that are symmetric under permutation.
     shape : tuple of int
         Full tensor shape.
     """
 
-    symmetric_dims: list[tuple[int, ...]]
+    symmetric_axes: list[tuple[int, ...]]
     shape: tuple[int, ...]
 
     def __post_init__(self) -> None:
         # Normalize each group to a sorted tuple.
-        normalized = [tuple(sorted(g)) for g in self.symmetric_dims]
+        normalized = [tuple(sorted(g)) for g in self.symmetric_axes]
         # frozen=True means we must use object.__setattr__
-        object.__setattr__(self, "symmetric_dims", normalized)
+        object.__setattr__(self, "symmetric_axes", normalized)
 
     @property
     def unique_elements(self) -> int:
@@ -42,7 +42,7 @@ class SymmetryInfo:
         # Collect all dims that belong to a symmetric group.
         symmetric_indices: set[int] = set()
         result = 1
-        for group in self.symmetric_dims:
+        for group in self.symmetric_axes:
             symmetric_indices.update(group)
             k = len(group)
             n = self.shape[group[0]]  # all dims in a group must be same size
@@ -57,7 +57,7 @@ class SymmetryInfo:
     def symmetry_factor(self) -> int:
         """Product of factorial(len(group)) for each group."""
         result = 1
-        for group in self.symmetric_dims:
+        for group in self.symmetric_axes:
             result *= factorial(len(group))
         return result
 
@@ -69,7 +69,7 @@ class SymmetryInfo:
 
 def validate_symmetry(
     data: np.ndarray,
-    symmetric_dims: list[tuple[int, ...]],
+    symmetric_axes: list[tuple[int, ...]],
 ) -> None:
     """Validate that *data* has the claimed symmetry.
 
@@ -79,15 +79,15 @@ def validate_symmetry(
     Raises
     ------
     SymmetryError
-        If the data is not symmetric along the claimed dims.
+        If the data is not symmetric along the claimed axes.
     """
-    for group in symmetric_dims:
+    for group in symmetric_axes:
         if len(group) < 2:
             continue
         # Check equal sizes.
         sizes = [data.shape[d] for d in group]
         if len(set(sizes)) != 1:
-            raise SymmetryError(dims=group, max_deviation=float("inf"))
+            raise SymmetryError(axes=group, max_deviation=float("inf"))
         # Check pairwise transpositions.
         for i in range(len(group)):
             for j in range(i + 1, len(group)):
@@ -96,7 +96,7 @@ def validate_symmetry(
                 transposed = data.transpose(axes)
                 if not np.allclose(data, transposed, atol=1e-6, rtol=1e-5):
                     max_dev = float(np.max(np.abs(data - transposed)))
-                    raise SymmetryError(dims=group, max_deviation=max_dev)
+                    raise SymmetryError(axes=group, max_deviation=max_dev)
 
 
 # ---------------------------------------------------------------------------
@@ -113,29 +113,29 @@ class SymmetricTensor(np.ndarray):
     def __new__(
         cls,
         input_array: np.ndarray,
-        symmetric_dims: list[tuple[int, ...]],
+        symmetric_axes: list[tuple[int, ...]],
     ) -> SymmetricTensor:
         obj = np.asarray(input_array).view(cls)
-        obj._symmetric_dims = [tuple(sorted(g)) for g in symmetric_dims]
+        obj._symmetric_axes = [tuple(sorted(g)) for g in symmetric_axes]
         return obj
 
     def __array_finalize__(self, obj: object) -> None:
         if obj is None:
             return
-        self._symmetric_dims = getattr(obj, "_symmetric_dims", None)
+        self._symmetric_axes = getattr(obj, "_symmetric_axes", None)
 
     # -- public API --
 
     @property
-    def symmetric_dims(self) -> list[tuple[int, ...]]:
+    def symmetric_axes(self) -> list[tuple[int, ...]]:
         """Symmetry groups carried by this tensor."""
-        return list(self._symmetric_dims) if self._symmetric_dims else []
+        return list(self._symmetric_axes) if self._symmetric_axes else []
 
     @property
     def symmetry_info(self) -> SymmetryInfo:
         """Return a :class:`SymmetryInfo` for this tensor."""
         return SymmetryInfo(
-            symmetric_dims=self.symmetric_dims,
+            symmetric_axes=self.symmetric_axes,
             shape=self.shape,
         )
 
@@ -151,10 +151,10 @@ class SymmetricTensor(np.ndarray):
 
     def copy(self, order: str = "C") -> SymmetricTensor:  # type: ignore[override]
         result = super().copy(order=order)
-        # super().copy() goes through __array_finalize__ which copies _symmetric_dims
+        # super().copy() goes through __array_finalize__ which copies _symmetric_axes
         # but result may have been cast to plain ndarray, so re-view:
         out = result.view(SymmetricTensor)
-        out._symmetric_dims = list(self._symmetric_dims)
+        out._symmetric_axes = list(self._symmetric_axes)
         return out
 
     # -- pickling --
@@ -163,12 +163,12 @@ class SymmetricTensor(np.ndarray):
         # Use np.ndarray's pickle + our metadata
         pickled_state = super().__reduce__()
         # pickled_state is (reconstruct, args, state)
-        new_state = pickled_state[2] + (self._symmetric_dims,)
+        new_state = pickled_state[2] + (self._symmetric_axes,)
         return (pickled_state[0], pickled_state[1], new_state)
 
     def __setstate__(self, state):
-        # Last element is our _symmetric_dims
-        self._symmetric_dims = state[-1]
+        # Last element is our _symmetric_axes
+        self._symmetric_axes = state[-1]
         super().__setstate__(state[:-1])
 
 
@@ -179,7 +179,7 @@ class SymmetricTensor(np.ndarray):
 
 def as_symmetric(
     data: np.ndarray,
-    dims: tuple[int, ...] | list[tuple[int, ...]],
+    symmetric_axes: tuple[int, ...] | list[tuple[int, ...]],
 ) -> SymmetricTensor:
     """Wrap *data* as a :class:`SymmetricTensor` after validating symmetry.
 
@@ -187,7 +187,7 @@ def as_symmetric(
     ----------
     data : numpy.ndarray
         The tensor data.
-    dims : tuple of int or list of tuple of int
+    symmetric_axes : tuple of int or list of tuple of int
         A single symmetry group ``(0, 1)`` or a list ``[(0, 1), (2, 3)]``.
 
     Returns
@@ -199,11 +199,10 @@ def as_symmetric(
     SymmetryError
         If the data does not satisfy the claimed symmetry.
     """
-    # Normalize single-tuple shorthand.
-    if isinstance(dims, tuple):
-        symmetric_dims: list[tuple[int, ...]] = [dims]
+    if isinstance(symmetric_axes, tuple):
+        groups: list[tuple[int, ...]] = [symmetric_axes]
     else:
-        symmetric_dims = list(dims)
+        groups = list(symmetric_axes)
 
-    validate_symmetry(data, symmetric_dims)
-    return SymmetricTensor(data, symmetric_dims)
+    validate_symmetry(data, groups)
+    return SymmetricTensor(data, groups)

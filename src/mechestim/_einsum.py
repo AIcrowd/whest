@@ -9,16 +9,16 @@ from mechestim._validation import check_nan_inf, require_budget
 
 
 def _symmetry_info_to_index_symmetry(sym_info, subscript_chars: str):
-    """Convert SymmetryInfo (positional dims) to IndexSymmetry (char labels).
+    """Convert SymmetryInfo (positional axes) to IndexSymmetry (char labels).
 
-    sym_info.symmetric_dims is like [(0, 1, 2)] -- positional indices.
+    sym_info.symmetric_axes is like [(0, 1, 2)] -- positional indices.
     subscript_chars is like "ijk" -- the einsum subscript for this operand.
     Returns IndexSymmetry like [frozenset("ijk")], or None.
     """
     if sym_info is None:
         return None
     groups = []
-    for group in sym_info.symmetric_dims:
+    for group in sym_info.symmetric_axes:
         char_group = frozenset(subscript_chars[d] for d in group)
         if len(char_group) >= 2:
             groups.append(char_group)
@@ -41,14 +41,14 @@ def einsum(
     subscripts: str,
     *operands: _np.ndarray,
     optimize: str | bool = "auto",
-    symmetric_dims: list[tuple[int, ...]] | None = None,
+    symmetric_axes: list[tuple[int, ...]] | None = None,
     **kwargs,
 ) -> _np.ndarray:
     """Evaluate Einstein summation with FLOP counting and optional path optimization.
 
     Wraps ``numpy.einsum`` with analytical FLOP cost computation and
     optional symmetry savings. If any input is a ``SymmetricTensor``,
-    the cost is automatically reduced. If ``symmetric_dims`` is provided
+    the cost is automatically reduced. If ``symmetric_axes`` is provided
     and the output passes validation, a ``SymmetricTensor`` is returned.
 
     All contractions go through opt_einsum's ``contract_path`` to find an
@@ -66,7 +66,7 @@ def einsum(
     optimize : str or bool, optional
         Contraction path strategy. Default ``'auto'``. ``False`` is treated
         as ``'auto'`` (all einsums go through contract_path).
-    symmetric_dims : list of tuple of int, optional
+    symmetric_axes : list of tuple of int, optional
         Output dimension symmetry groups. For example, ``[(0, 1)]`` declares
         the output is symmetric in its first two dimensions.
 
@@ -82,7 +82,7 @@ def einsum(
     NoBudgetContextError
         If called outside a ``BudgetContext``.
     SymmetryError
-        If ``symmetric_dims`` is provided but the result is not symmetric.
+        If ``symmetric_axes`` is provided but the result is not symmetric.
     """
     budget = require_budget()
     shapes = [op.shape for op in operands]
@@ -121,9 +121,9 @@ def einsum(
     result = _execute_pairwise(path_info, list(operands))
 
     # Handle output symmetry wrapping
-    if symmetric_dims and isinstance(result, _np.ndarray) and result.ndim >= 2:
-        validate_symmetry(result, symmetric_dims)
-        result = SymmetricTensor(result, symmetric_dims=symmetric_dims)
+    if symmetric_axes and isinstance(result, _np.ndarray) and result.ndim >= 2:
+        validate_symmetry(result, symmetric_axes)
+        result = SymmetricTensor(result, symmetric_axes=symmetric_axes)
 
     check_nan_inf(result, "einsum")
     return result
