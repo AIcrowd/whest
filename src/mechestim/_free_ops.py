@@ -294,38 +294,6 @@ def roll(a, shift, axis=None):
 attach_docstring(roll, _np.roll, "free", "0 FLOPs")
 
 
-def sort(a, axis=-1, **kwargs):
-    """Return sorted copy. Wraps ``numpy.sort``. Cost: 0 FLOPs."""
-    return _np.sort(a, axis=axis, **kwargs)
-
-
-attach_docstring(sort, _np.sort, "free", "0 FLOPs")
-
-
-def argsort(a, axis=-1, **kwargs):
-    """Return indices that would sort. Wraps ``numpy.argsort``. Cost: 0 FLOPs."""
-    return _np.argsort(a, axis=axis, **kwargs)
-
-
-attach_docstring(argsort, _np.argsort, "free", "0 FLOPs")
-
-
-def searchsorted(a, v, **kwargs):
-    """Find insertion indices. Wraps ``numpy.searchsorted``. Cost: 0 FLOPs."""
-    return _np.searchsorted(a, v, **kwargs)
-
-
-attach_docstring(searchsorted, _np.searchsorted, "free", "0 FLOPs")
-
-
-def unique(ar, **kwargs):
-    """Find unique elements. Wraps ``numpy.unique``. Cost: 0 FLOPs."""
-    return _np.unique(ar, **kwargs)
-
-
-attach_docstring(unique, _np.unique, "free", "0 FLOPs")
-
-
 def pad(array, pad_width, **kwargs):
     """Pad an array. Wraps ``numpy.pad``. Cost: 0 FLOPs."""
     return _np.pad(array, pad_width, **kwargs)
@@ -356,14 +324,6 @@ def diagonal(a, offset=0, axis1=0, axis2=1):
 
 
 attach_docstring(diagonal, _np.diagonal, "free", "0 FLOPs")
-
-
-def trace(a, offset=0, axis1=0, axis2=1, dtype=None):
-    """Return sum along diagonal. Wraps ``numpy.trace``. Cost: 0 FLOPs."""
-    return _np.trace(a, offset=offset, axis1=axis1, axis2=axis2, dtype=dtype)
-
-
-attach_docstring(trace, _np.trace, "free", "0 FLOPs")
 
 
 def broadcast_to(array, shape):
@@ -407,28 +367,12 @@ def isnan(x, **kwargs):
 attach_docstring(isnan, _np.isnan, "free", "0 FLOPs")
 
 
-def isinf(x, **kwargs):
-    """Test element-wise for Inf. Wraps ``numpy.isinf``. Cost: 0 FLOPs."""
-    return _np.isinf(x, **kwargs)
-
-
-attach_docstring(isinf, _np.isinf, "free", "0 FLOPs")
-
-
 def isfinite(x, **kwargs):
     """Test element-wise for finiteness. Wraps ``numpy.isfinite``. Cost: 0 FLOPs."""
     return _np.isfinite(x, **kwargs)
 
 
 attach_docstring(isfinite, _np.isfinite, "free", "0 FLOPs")
-
-
-def allclose(a, b, **kwargs):
-    """Check if all elements are close. Wraps ``numpy.allclose``. Cost: 0 FLOPs."""
-    return _np.allclose(a, b, **kwargs)
-
-
-attach_docstring(allclose, _np.allclose, "free", "0 FLOPs")
 
 # ---------------------------------------------------------------------------
 # New free ops
@@ -443,36 +387,12 @@ def append(*args, **kwargs):
 attach_docstring(append, _np.append, "free", "0 FLOPs")
 
 
-def argpartition(*args, **kwargs):
-    """Indirect partition. Wraps ``numpy.argpartition``. Cost: 0 FLOPs."""
-    return _np.argpartition(*args, **kwargs)
-
-
-attach_docstring(argpartition, _np.argpartition, "free", "0 FLOPs")
-
-
 def argwhere(*args, **kwargs):
     """Find indices of non-zero elements. Wraps ``numpy.argwhere``. Cost: 0 FLOPs."""
     return _np.argwhere(*args, **kwargs)
 
 
 attach_docstring(argwhere, _np.argwhere, "free", "0 FLOPs")
-
-
-def array_equal(*args, **kwargs):
-    """True if two arrays are element-wise equal. Wraps ``numpy.array_equal``. Cost: 0 FLOPs."""
-    return _np.array_equal(*args, **kwargs)
-
-
-attach_docstring(array_equal, _np.array_equal, "free", "0 FLOPs")
-
-
-def array_equiv(*args, **kwargs):
-    """Returns True if input arrays are shape consistent. Wraps ``numpy.array_equiv``. Cost: 0 FLOPs."""
-    return _np.array_equiv(*args, **kwargs)
-
-
-attach_docstring(array_equiv, _np.array_equiv, "free", "0 FLOPs")
 
 
 def array_split(*args, **kwargs):
@@ -529,14 +449,6 @@ def binary_repr(*args, **kwargs):
 
 
 attach_docstring(binary_repr, _np.binary_repr, "free", "0 FLOPs")
-
-
-def bincount(*args, **kwargs):
-    """Count occurrences of non-negative integer. Wraps ``numpy.bincount``. Cost: 0 FLOPs."""
-    return _np.bincount(*args, **kwargs)
-
-
-attach_docstring(bincount, _np.bincount, "free", "0 FLOPs")
 
 
 def block(*args, **kwargs):
@@ -659,14 +571,6 @@ def diagflat(*args, **kwargs):
 attach_docstring(diagflat, _np.diagflat, "free", "0 FLOPs")
 
 
-def digitize(*args, **kwargs):
-    """Return indices of bins to which values belong. Wraps ``numpy.digitize``. Cost: 0 FLOPs."""
-    return _np.digitize(*args, **kwargs)
-
-
-attach_docstring(digitize, _np.digitize, "free", "0 FLOPs")
-
-
 def dsplit(*args, **kwargs):
     """Split array along third axis. Wraps ``numpy.dsplit``. Cost: 0 FLOPs."""
     return _np.dsplit(*args, **kwargs)
@@ -779,54 +683,6 @@ def fromstring(*args, **kwargs):
 attach_docstring(fromstring, _np.fromstring, "free", "0 FLOPs")
 
 
-def geomspace(*args, **kwargs):
-    """Return numbers spaced evenly on a log scale (geometric). Wraps ``numpy.geomspace``. Cost: 0 FLOPs."""
-    return _np.geomspace(*args, **kwargs)
-
-
-attach_docstring(geomspace, _np.geomspace, "free", "0 FLOPs")
-
-
-def histogram(*args, **kwargs):
-    """Compute histogram of data. Wraps ``numpy.histogram``. Cost: 0 FLOPs."""
-    return _np.histogram(*args, **kwargs)
-
-
-attach_docstring(histogram, _np.histogram, "free", "0 FLOPs")
-
-
-def histogram2d(*args, **kwargs):
-    """Compute 2-D histogram. Wraps ``numpy.histogram2d``. Cost: 0 FLOPs."""
-    return _np.histogram2d(*args, **kwargs)
-
-
-attach_docstring(histogram2d, _np.histogram2d, "free", "0 FLOPs")
-
-
-def histogram_bin_edges(*args, **kwargs):
-    """Function to calculate the bin edges for a histogram. Wraps ``numpy.histogram_bin_edges``. Cost: 0 FLOPs."""
-    return _np.histogram_bin_edges(*args, **kwargs)
-
-
-attach_docstring(histogram_bin_edges, _np.histogram_bin_edges, "free", "0 FLOPs")
-
-
-def histogramdd(*args, **kwargs):
-    """Compute multidimensional histogram. Wraps ``numpy.histogramdd``. Cost: 0 FLOPs."""
-    return _np.histogramdd(*args, **kwargs)
-
-
-attach_docstring(histogramdd, _np.histogramdd, "free", "0 FLOPs")
-
-
-def in1d(*args, **kwargs):
-    """Test whether each element of 1-D array is in another. Wraps ``numpy.in1d``. Cost: 0 FLOPs."""
-    return _np.in1d(*args, **kwargs)
-
-
-attach_docstring(in1d, _np.in1d, "free", "0 FLOPs")
-
-
 def indices(*args, **kwargs):
     """Return array representing indices of a grid. Wraps ``numpy.indices``. Cost: 0 FLOPs."""
     return _np.indices(*args, **kwargs)
@@ -841,14 +697,6 @@ def insert(*args, **kwargs):
 
 
 attach_docstring(insert, _np.insert, "free", "0 FLOPs")
-
-
-def intersect1d(*args, **kwargs):
-    """Find intersection of two arrays. Wraps ``numpy.intersect1d``. Cost: 0 FLOPs."""
-    return _np.intersect1d(*args, **kwargs)
-
-
-attach_docstring(intersect1d, _np.intersect1d, "free", "0 FLOPs")
 
 
 def isdtype(*args, **kwargs):
@@ -905,22 +753,6 @@ def ix_(*args, **kwargs):
 
 
 attach_docstring(ix_, _np.ix_, "free", "0 FLOPs")
-
-
-def lexsort(*args, **kwargs):
-    """Perform indirect stable sort using sequence of keys. Wraps ``numpy.lexsort``. Cost: 0 FLOPs."""
-    return _np.lexsort(*args, **kwargs)
-
-
-attach_docstring(lexsort, _np.lexsort, "free", "0 FLOPs")
-
-
-def logspace(*args, **kwargs):
-    """Return numbers spaced evenly on a log scale. Wraps ``numpy.logspace``. Cost: 0 FLOPs."""
-    return _np.logspace(*args, **kwargs)
-
-
-attach_docstring(logspace, _np.logspace, "free", "0 FLOPs")
 
 
 def mask_indices(*args, **kwargs):
@@ -985,14 +817,6 @@ def packbits(*args, **kwargs):
 
 
 attach_docstring(packbits, _np.packbits, "free", "0 FLOPs")
-
-
-def partition(*args, **kwargs):
-    """Return partitioned copy of array. Wraps ``numpy.partition``. Cost: 0 FLOPs."""
-    return _np.partition(*args, **kwargs)
-
-
-attach_docstring(partition, _np.partition, "free", "0 FLOPs")
 
 
 def permute_dims(*args, **kwargs):
@@ -1107,22 +931,6 @@ def select(*args, **kwargs):
 attach_docstring(select, _np.select, "free", "0 FLOPs")
 
 
-def setdiff1d(*args, **kwargs):
-    """Find set difference of two arrays. Wraps ``numpy.setdiff1d``. Cost: 0 FLOPs."""
-    return _np.setdiff1d(*args, **kwargs)
-
-
-attach_docstring(setdiff1d, _np.setdiff1d, "free", "0 FLOPs")
-
-
-def setxor1d(*args, **kwargs):
-    """Find set exclusive-or of two arrays. Wraps ``numpy.setxor1d``. Cost: 0 FLOPs."""
-    return _np.setxor1d(*args, **kwargs)
-
-
-attach_docstring(setxor1d, _np.setxor1d, "free", "0 FLOPs")
-
-
 def shape(*args, **kwargs):
     """Return shape of array. Wraps ``numpy.shape``. Cost: 0 FLOPs."""
     return _np.shape(*args, **kwargs)
@@ -1219,46 +1027,6 @@ def typename(*args, **kwargs):
 attach_docstring(typename, _np.typename, "free", "0 FLOPs")
 
 
-def union1d(*args, **kwargs):
-    """Find union of two arrays. Wraps ``numpy.union1d``. Cost: 0 FLOPs."""
-    return _np.union1d(*args, **kwargs)
-
-
-attach_docstring(union1d, _np.union1d, "free", "0 FLOPs")
-
-
-def unique_all(*args, **kwargs):
-    """Find unique elements with indices, inverse, and counts. Wraps ``numpy.unique_all``. Cost: 0 FLOPs."""
-    return _np.unique_all(*args, **kwargs)
-
-
-attach_docstring(unique_all, _np.unique_all, "free", "0 FLOPs")
-
-
-def unique_counts(*args, **kwargs):
-    """Find unique elements and their counts. Wraps ``numpy.unique_counts``. Cost: 0 FLOPs."""
-    return _np.unique_counts(*args, **kwargs)
-
-
-attach_docstring(unique_counts, _np.unique_counts, "free", "0 FLOPs")
-
-
-def unique_inverse(*args, **kwargs):
-    """Find unique elements and indices for reconstructing input. Wraps ``numpy.unique_inverse``. Cost: 0 FLOPs."""
-    return _np.unique_inverse(*args, **kwargs)
-
-
-attach_docstring(unique_inverse, _np.unique_inverse, "free", "0 FLOPs")
-
-
-def unique_values(*args, **kwargs):
-    """Find unique elements of array. Wraps ``numpy.unique_values``. Cost: 0 FLOPs."""
-    return _np.unique_values(*args, **kwargs)
-
-
-attach_docstring(unique_values, _np.unique_values, "free", "0 FLOPs")
-
-
 def unpackbits(*args, **kwargs):
     """Unpack elements of uint8 array into binary-valued bit array. Wraps ``numpy.unpackbits``. Cost: 0 FLOPs."""
     return _np.unpackbits(*args, **kwargs)
@@ -1281,11 +1049,3 @@ def unstack(*args, **kwargs):
 
 
 attach_docstring(unstack, _np.unstack, "free", "0 FLOPs")
-
-
-def vander(*args, **kwargs):
-    """Generate Vandermonde matrix. Wraps ``numpy.vander``. Cost: 0 FLOPs."""
-    return _np.vander(*args, **kwargs)
-
-
-attach_docstring(vander, _np.vander, "free", "0 FLOPs")
