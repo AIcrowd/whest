@@ -39,7 +39,7 @@ with me.BudgetContext(flop_budget=10**8) as budget:
 
 ## Cost formula
 
-The cost of an einsum is the sum of per-step costs along the optimal contraction path. Every einsum — even a simple two-operand one — goes through opt_einsum's path optimizer.
+The cost of an einsum is the sum of per-step costs along the optimal contraction path. Every einsum — even a simple two-operand one — goes through the [opt_einsum path optimizer](../api/opt-einsum.md) (a symmetry-aware fork of [opt_einsum](https://github.com/dgasmith/opt_einsum)).
 
 For each pairwise step:
 
@@ -158,6 +158,7 @@ Different paths may have different FLOP costs. Use `me.einsum_path()` to compare
 ## 📎 Related pages
 
 - [Exploit Symmetry](./exploit-symmetry.md) — full guide to symmetry mechanisms
+- [Path Optimizer](../api/opt-einsum.md) — algorithms, symmetry support, and upstream attribution
 - [Symmetric Tensors API](../api/symmetric.md) — `SymmetricTensor`, `SymmetryInfo`, `as_symmetric`
 - [Plan Your Budget](./plan-your-budget.md) — query costs before executing
 - [FLOP Counting Model](../concepts/flop-counting-model.md) — how costs are computed
