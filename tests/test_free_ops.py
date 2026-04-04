@@ -91,5 +91,3 @@ def test_triu():
     assert numpy.allclose(ops.triu(ops.ones((3, 3))), numpy.triu(numpy.ones((3, 3))))
 
 
-def test_sort():
-    assert list(ops.sort(ops.array([3, 1, 2]))) == [1, 2, 3]

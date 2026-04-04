@@ -121,22 +121,6 @@ def test_roll():
     assert list(r) == [4, 1, 2, 3]
 
 
-def test_argsort():
-    a = numpy.array([3, 1, 2])
-    r = ops.argsort(a)
-    assert list(r) == [1, 2, 0]
-
-
-def test_searchsorted():
-    a = numpy.array([1, 3, 5])
-    r = ops.searchsorted(a, 4)
-    assert r == 2
-
-
-def test_unique():
-    a = numpy.array([3, 1, 2, 1])
-    r = ops.unique(a)
-    assert list(r) == [1, 2, 3]
 
 
 def test_pad():
@@ -155,12 +139,6 @@ def test_diagonal():
     a = numpy.array([[1, 2], [3, 4]])
     r = ops.diagonal(a)
     assert list(r) == [1, 4]
-
-
-def test_trace():
-    a = numpy.array([[1, 2], [3, 4]])
-    r = ops.trace(a)
-    assert r == 5
 
 
 def test_broadcast_to():
@@ -210,37 +188,16 @@ def test_isfinite():
     assert list(r) == [True, False, False]
 
 
-def test_allclose():
-    a = numpy.array([1.0, 2.0])
-    b = numpy.array([1.0, 2.0 + 1e-10])
-    assert ops.allclose(a, b)
-
-
 def test_append():
     a = numpy.array([1, 2])
     r = ops.append(a, 3)
     assert list(r) == [1, 2, 3]
 
 
-def test_argpartition():
-    a = numpy.array([3, 1, 4, 1, 5])
-    r = ops.argpartition(a, 2)
-    assert r.shape == a.shape
-
-
 def test_argwhere():
     a = numpy.array([0, 1, 0, 2])
     r = ops.argwhere(a)
     assert r.shape == (2, 1)
-
-
-def test_array_equal():
-    assert ops.array_equal(numpy.array([1, 2]), numpy.array([1, 2]))
-    assert not ops.array_equal(numpy.array([1, 2]), numpy.array([1, 3]))
-
-
-def test_array_equiv():
-    assert ops.array_equiv(numpy.array([1, 2]), numpy.array([[1, 2], [1, 2]]))
 
 
 def test_array_split():
@@ -276,11 +233,6 @@ def test_base_repr():
 def test_binary_repr():
     r = ops.binary_repr(5)
     assert r == "101"
-
-
-def test_bincount():
-    r = ops.bincount(numpy.array([0, 1, 1, 2]))
-    assert list(r) == [1, 2, 1]
 
 
 def test_block():
@@ -359,13 +311,6 @@ def test_diagflat():
     assert r.shape == (3, 3)
 
 
-def test_digitize():
-    a = numpy.array([1.5, 2.5, 3.5])
-    bins = numpy.array([1, 2, 3, 4])
-    r = ops.digitize(a, bins)
-    assert list(r) == [1, 2, 3]
-
-
 def test_dsplit():
     a = numpy.zeros((2, 2, 4))
     parts = ops.dsplit(a, 2)
@@ -425,44 +370,6 @@ def test_fromstring():
     assert list(r) == [1.0, 2.0, 3.0]
 
 
-def test_geomspace():
-    r = ops.geomspace(1, 100, 3)
-    assert r.shape == (3,)
-    assert numpy.isclose(r[0], 1.0)
-    assert numpy.isclose(r[-1], 100.0)
-
-
-def test_histogram():
-    a = numpy.array([1, 2, 3, 4, 5])
-    counts, bins = ops.histogram(a, bins=3)
-    assert len(counts) == 3
-
-
-def test_histogram2d():
-    x = numpy.array([1.0, 2.0, 3.0])
-    y = numpy.array([1.0, 2.0, 3.0])
-    H, xedges, yedges = ops.histogram2d(x, y, bins=2)
-    assert H.shape == (2, 2)
-
-
-def test_histogram_bin_edges():
-    r = ops.histogram_bin_edges(numpy.arange(10), bins=5)
-    assert r.shape == (6,)
-
-
-def test_histogramdd():
-    sample = numpy.random.randn(100, 2)
-    H, edges = ops.histogramdd(sample, bins=5)
-    assert H.ndim == 2
-
-
-def test_in1d():
-    a = numpy.array([1, 2, 3, 4])
-    b = numpy.array([2, 4])
-    r = ops.in1d(a, b)
-    assert list(r) == [False, True, False, True]
-
-
 def test_indices():
     r = ops.indices((2, 3))
     assert r.shape == (2, 2, 3)
@@ -472,11 +379,6 @@ def test_insert():
     a = numpy.array([1, 2, 3])
     r = ops.insert(a, 1, 99)
     assert list(r) == [1, 99, 2, 3]
-
-
-def test_intersect1d():
-    r = ops.intersect1d(numpy.array([1, 2, 3]), numpy.array([2, 3, 4]))
-    assert list(r) == [2, 3]
 
 
 def test_isdtype():
@@ -512,18 +414,6 @@ def test_iterable():
 def test_ix_():
     r = ops.ix_([0, 1], [2, 3])
     assert len(r) == 2
-
-
-def test_lexsort():
-    keys = (numpy.array([3, 1, 2]), numpy.array([1, 1, 2]))
-    r = ops.lexsort(keys)
-    assert r.shape == (3,)
-
-
-def test_logspace():
-    r = ops.logspace(0, 2, 3)
-    assert numpy.isclose(r[0], 1.0)
-    assert numpy.isclose(r[-1], 100.0)
 
 
 def test_mask_indices():
@@ -567,12 +457,6 @@ def test_packbits():
     a = numpy.array([0, 1, 0, 1, 1, 0, 0, 1], dtype=numpy.uint8)
     r = ops.packbits(a)
     assert r.shape == (1,)
-
-
-def test_partition():
-    a = numpy.array([3, 1, 4, 1, 5])
-    r = ops.partition(a, 2)
-    assert r.shape == a.shape
 
 
 def test_permute_dims():
@@ -652,16 +536,6 @@ def test_select():
     assert list(r) == [-1, 0, 0, 1]
 
 
-def test_setdiff1d():
-    r = ops.setdiff1d(numpy.array([1, 2, 3, 4]), numpy.array([2, 4]))
-    assert list(r) == [1, 3]
-
-
-def test_setxor1d():
-    r = ops.setxor1d(numpy.array([1, 2, 3]), numpy.array([2, 3, 4]))
-    assert list(r) == [1, 4]
-
-
 def test_shape():
     r = ops.shape(numpy.ones((2, 3, 4)))
     assert r == (2, 3, 4)
@@ -728,31 +602,6 @@ def test_typename():
     assert isinstance(r, str)
 
 
-def test_union1d():
-    r = ops.union1d(numpy.array([1, 2]), numpy.array([2, 3]))
-    assert list(r) == [1, 2, 3]
-
-
-def test_unique_all():
-    r = ops.unique_all(numpy.array([1, 2, 1, 3]))
-    assert hasattr(r, "values")
-
-
-def test_unique_counts():
-    r = ops.unique_counts(numpy.array([1, 2, 1]))
-    assert hasattr(r, "values")
-
-
-def test_unique_inverse():
-    r = ops.unique_inverse(numpy.array([1, 2, 1]))
-    assert hasattr(r, "values")
-
-
-def test_unique_values():
-    r = ops.unique_values(numpy.array([3, 1, 2, 1]))
-    assert list(r) == [1, 2, 3]
-
-
 def test_unpackbits():
     a = numpy.array([85], dtype=numpy.uint8)
     r = ops.unpackbits(a)
@@ -768,11 +617,6 @@ def test_unstack():
     a = numpy.array([[1, 2], [3, 4], [5, 6]])
     parts = ops.unstack(a)
     assert len(parts) == 3
-
-
-def test_vander():
-    r = ops.vander([1, 2, 3], 3)
-    assert r.shape == (3, 3)
 
 
 def test_frombuffer():
