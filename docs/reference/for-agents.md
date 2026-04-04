@@ -14,7 +14,7 @@ works with NumPy may fail or behave differently with mechestim:
 
 - All counted operations require an active `BudgetContext`
 - 32 operations are blocked entirely (I/O, config, state)
-- `sort`, `argsort`, `trace` are free (0 FLOPs) — this is surprising
+- `sort`, `argsort`, `trace`, `random.*` sampling ops are now **counted** (not free)
 - Costs are analytical (from tensor shapes), not measured at runtime
 
 ## Machine-readable resources
@@ -100,10 +100,12 @@ def my_forward_pass(x):
 **2. Know what's free and what's counted.**
 
 Free (0 FLOPs): `zeros`, `ones`, `array`, `reshape`, `transpose`,
-`concatenate`, `sort`, `argsort`, all `random.*` functions.
+`concatenate`, `linspace`, `where`, `copy`, `random.seed`, `random.get_state`,
+`random.set_state`, `random.default_rng`.
 
 Counted: `einsum`, `dot`, `matmul`, `exp`, `log`, `add`, `multiply`, `sum`,
-`mean`, all `linalg.*`, all `fft.*`.
+`mean`, all `linalg.*`, all `fft.*`, `sort`, `argsort`, `trace`,
+`unique`, set ops (`in1d`, `isin`, etc.), `histogram`, `random.*` sampling.
 
 Blocked: `save`, `load`, `geterr`, `seterr`, and 28 others. These raise
 `AttributeError`.
@@ -141,7 +143,7 @@ and 1 otherwise.
 |---------|-------------|-----|
 | Using `np.einsum` instead of `me.einsum` | FLOPs not counted, budget not checked | Always use `me.*` for operations you want tracked |
 | Skipping `BudgetContext` entirely | No error (global default handles it), but budget is harder to track and namespace | Use an explicit `BudgetContext` for any work you want to measure or label |
-| Assuming `sort` costs FLOPs | Overestimates budget usage | `sort` is free — check the cheat sheet |
+| Assuming `sort` is free | Underestimates budget usage | `sort` costs `n*ceil(log2(n))` per slice — check the cheat sheet |
 | Using `me.save()` or `me.load()` | `AttributeError` — blocked | Use `numpy` directly for I/O |
 | Nesting two explicit `BudgetContext` blocks | `RuntimeError` | Use a single explicit context; nesting with the global default is fine |
 

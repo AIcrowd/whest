@@ -9,24 +9,30 @@
 - All counted operations require an active `BudgetContext`
 - Budget is checked *before* execution — exceeding it raises `BudgetExhaustedError`
 - 32 operations are blocked (I/O, config, state functions)
-- `sort`, `argsort`, `trace` are **free** (0 FLOPs) — this may be surprising
+- `sort`, `argsort`, `trace`, `random.*` sampling, set ops are now **counted** (not free)
 
 ## Cost by Category
 
 | Category | Count | Cost Formula |
 |----------|-------|-------------|
-| Free | 220 | $0$ |
+| Free | 143 | $0$ |
 | Unary | 73 | $\text{numel}(\text{output})$ |
 | Binary | 45 | $\text{numel}(\text{output})$ |
 | Reduction | 37 | $\text{numel}(\text{input})$ |
-| Custom | 75 | varies |
+| Custom | 152 | varies |
 | Blocked | 32 | N/A |
 
 ## Custom Operation Costs
 
 | Operation | Cost Formula | Notes |
 |-----------|-------------|-------|
+| `allclose` | $\text{numel}(a)$ | Element-wise comparison within tolerance. |
+| `argpartition` | $n \cdot \lceil\log_2 n\rceil$ | Indirect partial sort per slice. |
+| `argsort` | $n \cdot \lceil\log_2 n\rceil$ | Indirect sort per slice. |
+| `array_equal` | $\text{numel}(a)$ | Shape and element equality test. |
+| `array_equiv` | $\text{numel}(a)$ | Shape-consistent element equality test. |
 | `bartlett` | $n$ | Bartlett window. Cost: n (one linear eval per sample). |
+| `bincount` | $\text{numel}(x)$ | Count occurrences of non-negative integers. |
 | `blackman` | $3n$ | Blackman window. Cost: 3*n (three cosine terms per sample). |
 | `clip` | $\text{numel}(\text{input})$ | Clip array to [a_min, a_max] element-wise. |
 | `convolve` | $n \cdot m$ | 1-D discrete convolution. |
@@ -35,6 +41,7 @@
 | `cov` | $n^2 \cdot m$ | Covariance matrix. |
 | `cross` | $\text{numel}(\text{output})$ | Cross product of two 3-D vectors. |
 | `diff` | $\text{numel}(\text{input})$ | n-th discrete difference along axis. |
+| `digitize` | $m \cdot \lceil\log_2 n\rceil$ | Bin indices via binary search. |
 | `dot` | $2 \cdot m \cdot k \cdot n$ | Dot product; cost = 2*M*N*K for matrix multiply. |
 | `ediff1d` | $\text{numel}(\text{input})$ | Differences between consecutive elements. |
 | `einsum` | $\text{op\_factor} \cdot \prod_i d_i$ | Generalized Einstein summation. |
@@ -53,13 +60,22 @@
 | `fft.rfft` | $5(n/2) \cdot \lceil\log_2 n\rceil$ | 1-D real FFT. Cost: 5*(n//2)*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 §1.4). |
 | `fft.rfft2` | $5(N/2) \cdot \lceil\log_2 N\rceil$ | 2-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 §1.4). |
 | `fft.rfftn` | $5(N/2) \cdot \lceil\log_2 N\rceil$ | N-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 §1.4). |
+| `geomspace` | $\text{numel}(\text{output})$ | Geometric sequence generation. |
 | `gradient` | $\text{numel}(\text{input})$ | Gradient using central differences. |
 | `hamming` | $n$ | Hamming window. Cost: n (one cosine per sample). |
 | `hanning` | $n$ | Hanning window. Cost: n (one cosine per sample). |
+| `histogram` | $\text{numel}(a) \cdot \lceil\log_2(\text{bins})\rceil$ | Histogram of array data. |
+| `histogram2d` | $\text{numel}(x) \cdot \lceil\log_2(\text{bins})\rceil$ | 2-D histogram. |
+| `histogram_bin_edges` | $\text{numel}(a)$ | Compute histogram bin edges. |
+| `histogramdd` | $\text{numel}(\text{sample}) \cdot \lceil\log_2(\text{bins})\rceil$ | Multi-dimensional histogram. |
+| `in1d` | $(n+m) \cdot \lceil\log_2(n+m)\rceil$ | Test membership in 1-D array. |
 | `inner` | $n$ | Inner product; cost = 2*N for 1-D, 2*N*M for n-D. |
 | `interp` | $n \cdot \log m$ | 1-D linear interpolation. |
+| `intersect1d` | $(n+m) \cdot \lceil\log_2(n+m)\rceil$ | Intersection of two sorted arrays. |
+| `isin` | $(n+m) \cdot \lceil\log_2(n+m)\rceil$ | Test membership element-wise. |
 | `kaiser` | $3n$ | Kaiser window. Cost: 3*n (Bessel function eval per sample). |
 | `kron` | $m_1 m_2 \cdot n_1 n_2$ | Kronecker product; cost proportional to output size. |
+| `lexsort` | $n \cdot \lceil\log_2 n\rceil$ | Indirect stable sort on multiple keys per slice. |
 | `linalg.cholesky` | $n^3 / 3$ | Cholesky decomposition. Cost: $n^3/3$ (Golub & Van Loan §4.2). |
 | `linalg.cond` | $m \cdot n \cdot \min(m,n)$ | Condition number. Cost: m*n*min(m,n) (via SVD). |
 | `linalg.det` | $n^3$ | Determinant. Cost: $n^3$ (LU factorization). |
@@ -84,8 +100,10 @@
 | `linalg.tensorsolve` | $n^3$ | Tensor solve. Cost: $n^3$ after reshape (delegates to solve). |
 | `linalg.trace` | $n$ | Matrix trace. Cost: n (sum of diagonal elements). |
 | `linalg.vector_norm` | $n$ or $2n$ | Vector norm. Cost: numel (or 2*numel for general p-norm). |
+| `logspace` | $\text{numel}(\text{output})$ | Logarithmic sequence generation. |
 | `matmul` | $2 \cdot m \cdot k \cdot n$ | Matrix multiplication; cost = 2*M*N*K. |
 | `outer` | $m \cdot n$ | Outer product of two vectors; cost = M*N. |
+| `partition` | $n \cdot \lceil\log_2 n\rceil$ | Partial sort per slice. |
 | `poly` | $n^2$ | Polynomial from roots. Cost: $n^2$ FLOPs. |
 | `polyadd` | $\max(n_1, n_2)$ | Add two polynomials. Cost: max(n1, n2) FLOPs. |
 | `polyder` | $n$ | Differentiate polynomial. Cost: n FLOPs. |
@@ -95,43 +113,48 @@
 | `polymul` | $n_1 \cdot n_2$ | Multiply polynomials. Cost: n1 * n2 FLOPs. |
 | `polysub` | $\max(n_1, n_2)$ | Difference (subtraction) of two polynomials. Cost: max(n1, n2) FLOPs. |
 | `polyval` | $2 \cdot m \cdot \text{deg}$ | Evaluate polynomial at given points. Cost: 2 * m * deg FLOPs (Horner's method). |
+| `random.*` (sampling) | $\text{numel}(\text{output})$ | All sampling ops: beta, binomial, normal, uniform, etc. |
+| `random.permutation` | $n \cdot \lceil\log_2 n\rceil$ | Random permutation. |
+| `random.shuffle` | $n \cdot \lceil\log_2 n\rceil$ | Shuffle array in-place. |
 | `roots` | $10n^3$ | Return roots of polynomial with given coefficients. Cost: $10n^3$ FLOPs (companion matrix eig). |
+| `searchsorted` | $m \cdot \lceil\log_2 n\rceil$ | Binary search in sorted array. |
+| `setdiff1d` | $(n+m) \cdot \lceil\log_2(n+m)\rceil$ | Set difference of two arrays. |
+| `setxor1d` | $(n+m) \cdot \lceil\log_2(n+m)\rceil$ | Symmetric set difference. |
+| `sort` | $n \cdot \lceil\log_2 n\rceil$ | Sort per slice. |
 | `tensordot` | $\prod_i d_i$ | Tensor dot product along specified axes. |
 | `trapezoid` | $\text{numel}(\text{input})$ | Integrate using the trapezoidal rule. |
+| `trace` | $\min(n,m)$ | Matrix trace (sum of diagonal). |
 | `trapz` | $\text{numel}(\text{input})$ | Alias for trapezoid (deprecated). |
+| `union1d` | $(n+m) \cdot \lceil\log_2(n+m)\rceil$ | Union of two arrays. |
+| `unique` | $n \cdot \lceil\log_2 n\rceil$ | Find unique elements (sort-based). |
+| `unique_all` | $n \cdot \lceil\log_2 n\rceil$ | Unique elements with indices and counts. |
+| `unique_counts` | $n \cdot \lceil\log_2 n\rceil$ | Unique elements with counts. |
+| `unique_inverse` | $n \cdot \lceil\log_2 n\rceil$ | Unique elements with inverse indices. |
+| `unique_values` | $n \cdot \lceil\log_2 n\rceil$ | Unique values only. |
 | `unwrap` | $\text{numel}(\text{input})$ | Phase unwrap. Cost: $\text{numel}(\text{input})$ (diff + conditional adjustment). |
+| `vander` | $n \cdot m$ | Vandermonde matrix. |
 | `vdot` | $n$ | Dot product with conjugation; cost = 2*N. |
 
 ## Free Operations (complete list)
 
-`allclose`, `append`, `arange`, `argpartition`, `argsort`, `argwhere`, `array`, `array_equal`
-`array_equiv`, `array_split`, `asarray`, `asarray_chkfinite`, `astype`, `atleast_1d`, `atleast_2d`, `atleast_3d`
-`base_repr`, `binary_repr`, `bincount`, `block`, `bmat`, `broadcast_arrays`, `broadcast_shapes`, `broadcast_to`
-`can_cast`, `choose`, `column_stack`, `common_type`, `compress`, `concat`, `concatenate`, `copy`
-`copyto`, `delete`, `diag`, `diag_indices`, `diag_indices_from`, `diagflat`, `diagonal`, `digitize`
-`dsplit`, `dstack`, `empty`, `empty_like`, `expand_dims`, `extract`, `eye`, `fft.fftfreq`
-`fft.fftshift`, `fft.ifftshift`, `fft.rfftfreq`, `fill_diagonal`, `flatnonzero`, `flip`, `fliplr`, `flipud`
-`from_dlpack`, `frombuffer`, `fromfile`, `fromfunction`, `fromiter`, `fromregex`, `fromstring`, `full`
-`full_like`, `geomspace`, `histogram`, `histogram2d`, `histogram_bin_edges`, `histogramdd`, `hsplit`, `hstack`
-`identity`, `in1d`, `indices`, `insert`, `intersect1d`, `isdtype`, `isfinite`, `isfortran`
-`isin`, `isinf`, `isnan`, `isscalar`, `issubdtype`, `iterable`, `ix_`, `lexsort`
+`append`, `arange`, `argwhere`, `array`, `array_split`, `asarray`, `asarray_chkfinite`, `astype`
+`atleast_1d`, `atleast_2d`, `atleast_3d`, `base_repr`, `binary_repr`, `block`, `bmat`, `broadcast_arrays`
+`broadcast_shapes`, `broadcast_to`, `can_cast`, `choose`, `column_stack`, `common_type`, `compress`, `concat`
+`concatenate`, `copy`, `copyto`, `delete`, `diag`, `diag_indices`, `diag_indices_from`, `diagflat`
+`diagonal`, `dsplit`, `dstack`, `empty`, `empty_like`, `expand_dims`, `extract`, `eye`
+`fft.fftfreq`, `fft.fftshift`, `fft.ifftshift`, `fft.rfftfreq`, `fill_diagonal`, `flatnonzero`, `flip`, `fliplr`
+`flipud`, `from_dlpack`, `frombuffer`, `fromfile`, `fromfunction`, `fromiter`, `fromregex`, `fromstring`
+`full`, `full_like`, `hsplit`, `hstack`, `identity`, `indices`, `insert`, `isdtype`
+`isfinite`, `isfortran`, `isinf`, `isnan`, `isscalar`, `issubdtype`, `iterable`, `ix_`
 `linalg.cross`, `linalg.diagonal`, `linalg.matmul`, `linalg.matrix_transpose`, `linalg.outer`, `linalg.tensordot`, `linalg.vecdot`, `linspace`
-`logspace`, `mask_indices`, `matrix_transpose`, `may_share_memory`, `meshgrid`, `min_scalar_type`, `mintypecode`, `moveaxis`
-`ndim`, `nonzero`, `ones`, `ones_like`, `packbits`, `pad`, `partition`, `permute_dims`
-`place`, `promote_types`, `put`, `put_along_axis`, `putmask`, `random.beta`, `random.binomial`, `random.bytes`
-`random.chisquare`, `random.choice`, `random.default_rng`, `random.dirichlet`, `random.exponential`, `random.f`, `random.gamma`, `random.geometric`
-`random.get_state`, `random.gumbel`, `random.hypergeometric`, `random.laplace`, `random.logistic`, `random.lognormal`, `random.logseries`, `random.multinomial`
-`random.multivariate_normal`, `random.negative_binomial`, `random.noncentral_chisquare`, `random.noncentral_f`, `random.normal`, `random.pareto`, `random.permutation`, `random.poisson`
-`random.power`, `random.rand`, `random.randint`, `random.randn`, `random.random`, `random.random_integers`, `random.random_sample`, `random.ranf`
-`random.rayleigh`, `random.sample`, `random.seed`, `random.set_state`, `random.shuffle`, `random.standard_cauchy`, `random.standard_exponential`, `random.standard_gamma`
-`random.standard_normal`, `random.standard_t`, `random.triangular`, `random.uniform`, `random.vonmises`, `random.wald`, `random.weibull`, `random.zipf`
-`ravel`, `ravel_multi_index`, `repeat`, `require`, `reshape`, `resize`, `result_type`, `roll`
-`rollaxis`, `rot90`, `row_stack`, `searchsorted`, `select`, `setdiff1d`, `setxor1d`, `shape`
-`shares_memory`, `size`, `sort`, `split`, `squeeze`, `stack`, `swapaxes`, `take`
-`take_along_axis`, `tile`, `trace`, `transpose`, `tri`, `tril`, `tril_indices`, `tril_indices_from`
-`trim_zeros`, `triu`, `triu_indices`, `triu_indices_from`, `typename`, `union1d`, `unique`, `unique_all`
-`unique_counts`, `unique_inverse`, `unique_values`, `unpackbits`, `unravel_index`, `unstack`, `vander`, `vsplit`
-`vstack`, `where`, `zeros`, `zeros_like`
+`mask_indices`, `matrix_transpose`, `may_share_memory`, `meshgrid`, `min_scalar_type`, `mintypecode`, `moveaxis`, `ndim`
+`nonzero`, `ones`, `ones_like`, `packbits`, `pad`, `permute_dims`, `place`, `promote_types`
+`put`, `put_along_axis`, `putmask`, `random.default_rng`, `random.get_state`, `random.seed`, `random.set_state`, `ravel`
+`ravel_multi_index`, `repeat`, `require`, `reshape`, `resize`, `result_type`, `roll`, `rollaxis`
+`rot90`, `row_stack`, `select`, `shape`, `shares_memory`, `size`, `split`, `squeeze`
+`stack`, `swapaxes`, `take`, `take_along_axis`, `tile`, `transpose`, `tri`, `tril`
+`tril_indices`, `tril_indices_from`, `trim_zeros`, `triu`, `triu_indices`, `triu_indices_from`, `typename`, `unpackbits`
+`unravel_index`, `unstack`, `vsplit`, `vstack`, `where`, `zeros`, `zeros_like`
 
 ## Blocked Operations (complete list)
 
