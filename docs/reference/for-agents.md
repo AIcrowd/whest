@@ -121,9 +121,11 @@ These are pure functions — no `BudgetContext` needed.
 
 **4. Use `me.einsum` as the primary computation primitive.**
 
-Most linear algebra can be expressed as einsum. The cost follows the opt_einsum
-convention: `product_of_all_index_dims * op_factor`, where `op_factor` is 2
-when there is an inner product (summed indices) and 1 otherwise.
+Most linear algebra can be expressed as einsum. The cost follows the
+[opt_einsum](https://github.com/dgasmith/opt_einsum) convention (see
+[our fork](../api/opt-einsum.md)): `product_of_all_index_dims * op_factor`,
+where `op_factor` is 2 when there is an inner product (summed indices)
+and 1 otherwise.
 `'ij,jk->ik'` with shapes `(m, k)` and `(k, n)` costs `2 * m * k * n` FLOPs.
 
 **5. Exploit symmetry for cost savings.**

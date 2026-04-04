@@ -52,7 +52,8 @@ See [Exploit Symmetry Savings](../how-to/exploit-symmetry.md) for usage details.
 ## Einsum cost model
 
 Every einsum — regardless of the number of operands — is decomposed into
-pairwise contraction steps along an optimal path (found via opt_einsum).
+pairwise contraction steps along an optimal path (found via mechestim's
+[opt_einsum fork](../api/opt-einsum.md)).
 The total cost is the sum of per-step costs:
 
 ```
