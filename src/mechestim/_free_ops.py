@@ -374,6 +374,14 @@ def isfinite(x, **kwargs):
 
 attach_docstring(isfinite, _np.isfinite, "free", "0 FLOPs")
 
+
+def isinf(x, **kwargs):
+    """Test element-wise for Inf. Wraps ``numpy.isinf``. Cost: 0 FLOPs."""
+    return _np.isinf(x, **kwargs)
+
+
+attach_docstring(isinf, _np.isinf, "free", "0 FLOPs")
+
 # ---------------------------------------------------------------------------
 # New free ops
 # ---------------------------------------------------------------------------
