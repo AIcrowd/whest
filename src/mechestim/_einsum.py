@@ -40,7 +40,7 @@ def _execute_pairwise(path_info, operands: list):
 def einsum(
     subscripts: str,
     *operands: _np.ndarray,
-    optimize: str | bool = "auto",
+    optimize: str | bool | list = "auto",
     symmetric_axes: list[tuple[int, ...]] | None = None,
     **kwargs,
 ) -> _np.ndarray:
@@ -63,12 +63,22 @@ def einsum(
     *operands : numpy.ndarray
         Input arrays. ``SymmetricTensor`` inputs are detected automatically
         for cost savings.
-    optimize : str or bool, optional
-        Contraction path strategy. Default ``'auto'``. ``False`` is treated
-        as ``'auto'`` (all einsums go through contract_path).
+    optimize : str, bool, or list of tuple, optional
+        Contraction path strategy. Default ``'auto'``.
+
+        - ``'auto'``, ``'greedy'``, ``'optimal'``, ``'dp'``, etc.:
+          Use the named algorithm to find the best path.
+        - A list of int-tuples (e.g. ``[(1, 2), (0, 1)]``): use this
+          explicit contraction path. Obtain one from ``me.einsum_path()``
+          or construct manually. Each tuple names the operand positions
+          to contract at that step; the result is appended to the end.
+        - ``False``: treated as ``'auto'``.
     symmetric_axes : list of tuple of int, optional
-        Output dimension symmetry groups. For example, ``[(0, 1)]`` declares
-        the output is symmetric in its first two dimensions.
+        **Output** dimension symmetry groups. Declares that the result
+        is symmetric in the given axes and wraps it as a
+        ``SymmetricTensor``. For example, ``[(0, 1)]`` means the output
+        satisfies ``result[i,j,...] == result[j,i,...]``. This does NOT
+        declare input symmetry — use ``me.as_symmetric()`` for that.
 
     Returns
     -------
@@ -129,10 +139,12 @@ def einsum(
     return result
 
 
-def einsum_path(subscripts: str, *operands, optimize: str | bool = "auto"):
+def einsum_path(subscripts: str, *operands, optimize: str | bool | list = "auto"):
     """Compute the optimal contraction path without executing.
 
-    Returns ``(path, PathInfo)`` with zero budget cost.
+    Returns ``(path, PathInfo)`` with zero budget cost. The returned
+    ``path`` can be passed back to ``me.einsum(..., optimize=path)``
+    to execute with that exact contraction order.
 
     Parameters
     ----------
@@ -140,13 +152,13 @@ def einsum_path(subscripts: str, *operands, optimize: str | bool = "auto"):
         Einstein summation subscript string.
     *operands : numpy.ndarray
         Input arrays.
-    optimize : str or bool, optional
+    optimize : str, bool, or list of tuple, optional
         Path optimization strategy. Default ``'auto'``.
 
     Returns
     -------
     path : list of tuple of int
-        The contraction path.
+        The contraction path. Pass to ``me.einsum(..., optimize=path)``.
     info : PathInfo
         Diagnostics including per-step costs and symmetry savings.
     """
