@@ -124,3 +124,51 @@ def test_einsum_cost_matches_contract_path():
     cost = einsum_cost("ij,jk->ik", shapes=[(3, 4), (4, 5)])
     _, info = contract_path("ij,jk->ik", (3, 4), (4, 5), shapes=True)
     assert cost == info.optimized_cost
+
+
+import math
+from mechestim._flops import _ceil_log2, sort_cost, search_cost
+
+
+class TestCeilLog2:
+    def test_one(self):
+        assert _ceil_log2(1) == 1
+
+    def test_two(self):
+        assert _ceil_log2(2) == 1
+
+    def test_three(self):
+        assert _ceil_log2(3) == 2
+
+    def test_power_of_two(self):
+        assert _ceil_log2(8) == 3
+
+    def test_large(self):
+        assert _ceil_log2(1000) == 10
+
+    def test_zero(self):
+        assert _ceil_log2(0) == 1
+
+
+class TestSortCost:
+    def test_basic(self):
+        # sort 8 elements: 8 * ceil(log2(8)) = 8 * 3 = 24
+        assert sort_cost(8) == 24
+
+    def test_one_element(self):
+        assert sort_cost(1) == 1
+
+    def test_zero_elements(self):
+        assert sort_cost(0) == 1
+
+
+class TestSearchCost:
+    def test_basic(self):
+        # 10 queries into sorted array of 8: 10 * ceil(log2(8)) = 10 * 3 = 30
+        assert search_cost(10, 8) == 30
+
+    def test_one_query(self):
+        assert search_cost(1, 1024) == 10
+
+    def test_empty_queries(self):
+        assert search_cost(0, 100) == 1

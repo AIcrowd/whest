@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 from collections import Counter
 from typing import TYPE_CHECKING
 
@@ -165,3 +166,59 @@ def svd_cost(m: int, n: int, k: int | None = None) -> int:
     if k is None:
         k = min(m, n)
     return m * n * k
+
+
+def _ceil_log2(n: int) -> int:
+    """Return ceil(log2(n)), minimum 1.
+
+    Parameters
+    ----------
+    n : int
+        Input value.
+
+    Returns
+    -------
+    int
+        ceil(log2(n)), with a floor of 1.
+    """
+    if n <= 1:
+        return 1
+    return max(math.ceil(math.log2(n)), 1)
+
+
+def sort_cost(n: int) -> int:
+    """FLOP cost of comparison-based sort.
+
+    Parameters
+    ----------
+    n : int
+        Number of elements to sort.
+
+    Returns
+    -------
+    int
+        Estimated FLOP count: n * ceil(log2(n)).
+    """
+    if n <= 0:
+        return 1
+    return max(n * _ceil_log2(n), 1)
+
+
+def search_cost(queries: int, sorted_size: int) -> int:
+    """FLOP cost of binary search.
+
+    Parameters
+    ----------
+    queries : int
+        Number of search queries.
+    sorted_size : int
+        Size of the sorted array being searched.
+
+    Returns
+    -------
+    int
+        Estimated FLOP count: queries * ceil(log2(sorted_size)).
+    """
+    if queries <= 0:
+        return 1
+    return max(queries * _ceil_log2(sorted_size), 1)
