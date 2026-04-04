@@ -64,7 +64,7 @@ import mechestim as me
 depth, width = 5, 256
 
 with me.BudgetContext(flop_budget=10**8, namespace="mlp-forward") as budget:
-    # Weight init — randn is free, multiply is counted
+    # Weight init — randn and multiply are both counted
     scale = me.sqrt(me.array(2 / width))
     weights = [me.multiply(me.random.randn(width, width), scale)
                for _ in range(depth)]
