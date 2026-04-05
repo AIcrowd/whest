@@ -183,14 +183,16 @@ def eigvals_cost(n: int) -> int:
     Returns
     -------
     int
-        Estimated FLOP count: $10n^3$.
+        Estimated FLOP count: $7n^3$.
 
     Notes
     -----
     Same algorithm as ``eig`` (Francis QR), but eigenvectors are not
-    accumulated.
+    accumulated. Without back-accumulation of eigenvectors the cost
+    is dominated by Hessenberg reduction (~(10/3)n^3) plus QR iterations
+    (~4n^3), totalling ~7n^3.
     """
-    return max(10 * n**3, 1)
+    return max(7 * n**3, 1)
 
 
 def eigvals(a):
@@ -206,7 +208,7 @@ def eigvals(a):
     return _np.linalg.eigvals(a)
 
 
-attach_docstring(eigvals, _np.linalg.eigvals, "linalg", r"$10n^3$ FLOPs")
+attach_docstring(eigvals, _np.linalg.eigvals, "linalg", r"$7n^3$ FLOPs")
 
 
 def eigvalsh_cost(n: int) -> int:

@@ -129,7 +129,7 @@ class TestEigvals:
             from mechestim.linalg import eigvals
 
             eigvals(A)
-            assert budget.flops_used == 10 * n**3
+            assert budget.flops_used == 7 * n**3
 
 
 class TestEigvalsh:

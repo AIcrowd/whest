@@ -311,7 +311,7 @@ attach_docstring(
 )
 
 
-def cond_cost(m: int, n: int) -> int:
+def cond_cost(m: int, n: int, p=None) -> int:
     """FLOP cost of condition number.
 
     Parameters
@@ -320,17 +320,26 @@ def cond_cost(m: int, n: int) -> int:
         Number of rows.
     n : int
         Number of columns.
+    p : {None, 2, -2, 1, -1, inf, -inf}, optional
+        Norm type. ``None`` and ``2``/``-2`` use SVD; ``1``/``-1``/``inf``/``-inf``
+        use LU factorization, which is cheaper.
 
     Returns
     -------
     int
-        Estimated FLOP count: m * n * min(m, n).
+        Estimated FLOP count.
 
     Notes
     -----
-    Computed via SVD.
+    For ``p=None``, ``p=2``, or ``p=-2``, computed via SVD (cost m*n*min(m,n)).
+    For ``p=1``, ``p=-1``, ``p=inf``, or ``p=-inf``, computed via LU factorization
+    (cost ~min(m,n)^3 + m*n for norm).
     """
-    return max(m * n * min(m, n), 1)
+    if p is None or p == 2 or p == -2:
+        return max(m * n * min(m, n), 1)
+    # LU-based: factorization cost + norm computation
+    k = min(m, n)
+    return max(k ** 3 + m * n, 1)
 
 
 def cond(x, p=None):
@@ -341,13 +350,16 @@ def cond(x, p=None):
     if x.ndim != 2:
         raise ValueError(f"Input must be 2D, got {x.ndim}D")
     m, n = x.shape
-    cost = cond_cost(m, n)
+    cost = cond_cost(m, n, p=p)
     budget.deduct("linalg.cond", flop_cost=cost, subscripts=None, shapes=(x.shape,))
     return _np.linalg.cond(x, p=p)
 
 
 attach_docstring(
-    cond, _np.linalg.cond, "linalg", r"$m \cdot n \cdot \min(m,n)$ FLOPs (SVD)"
+    cond,
+    _np.linalg.cond,
+    "linalg",
+    r"$m \cdot n \cdot \min(m,n)$ FLOPs (SVD) or $\min(m,n)^3 + mn$ (LU) depending on p",
 )
 
 

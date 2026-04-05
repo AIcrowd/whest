@@ -45,7 +45,7 @@ class TestHamming:
             from mechestim import hamming
 
             hamming(10)
-            assert budget.flops_used == 10
+            assert budget.flops_used == 20
 
 
 class TestHanning:
@@ -60,7 +60,7 @@ class TestHanning:
             from mechestim import hanning
 
             hanning(10)
-            assert budget.flops_used == 10
+            assert budget.flops_used == 20
 
 
 class TestKaiser:

@@ -35,9 +35,10 @@ def sort(a, axis=-1, **kwargs):
         a = _np.asarray(a)
     if a.ndim == 0:
         cost = 1
+    elif axis is None:
+        cost = sort_cost(a.size)
     else:
-        ax = axis if axis is not None else -1
-        ax = ax % a.ndim
+        ax = axis % a.ndim
         cost = _sort_cost_nd(a, ax)
     budget.deduct("sort", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.sort(a, axis=axis, **kwargs)
@@ -53,9 +54,10 @@ def argsort(a, axis=-1, **kwargs):
         a = _np.asarray(a)
     if a.ndim == 0:
         cost = 1
+    elif axis is None:
+        cost = sort_cost(a.size)
     else:
-        ax = axis if axis is not None else -1
-        ax = ax % a.ndim
+        ax = axis % a.ndim
         cost = _sort_cost_nd(a, ax)
     budget.deduct("argsort", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.argsort(a, axis=axis, **kwargs)

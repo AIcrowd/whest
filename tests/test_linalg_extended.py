@@ -290,7 +290,7 @@ def test_eigh_cost():
 
 
 def test_eigvals_cost():
-    assert eigvals_cost(4) == 10 * 64
+    assert eigvals_cost(4) == 7 * 64
 
 
 def test_eigvalsh_cost():

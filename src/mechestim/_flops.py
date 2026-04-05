@@ -133,6 +133,12 @@ def reduction_cost(
     -------
     int
         Estimated FLOP count (one per element).
+
+    Notes
+    -----
+    The ``axis`` parameter is accepted for API consistency but does not
+    affect the result: a reduction always touches every element regardless
+    of which axis is reduced, so the cost is always ``prod(input_shape)``.
     """
     if symmetry_info is not None:
         return max(symmetry_info.unique_elements, 1)

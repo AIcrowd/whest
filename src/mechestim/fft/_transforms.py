@@ -72,19 +72,22 @@ def fftn_cost(shape: tuple[int, ...]) -> int:
     Returns
     -------
     int
-        Estimated FLOP count: 5 * N * ceil(log2(N)), where N = prod(shape).
+        Estimated FLOP count: 5 * N * sum(ceil(log2(d_i))), where N = prod(shape).
 
     Notes
     -----
-    The multi-dimensional FFT is computed as a sequence of 1-D FFTs.
-    The total cost scales with the product of the transform dimensions.
+    The multi-dimensional FFT is computed as successive 1-D FFTs along each
+    axis. The cost along axis *i* is 5 * (N / d_i) * d_i * ceil(log2(d_i))
+    = 5 * N * ceil(log2(d_i)). Summing over axes gives
+    5 * N * sum(ceil(log2(d_i))).
     """
     N = 1
     for d in shape:
         N *= d
     if N <= 1:
         return 0
-    return 5 * N * math.ceil(math.log2(N))
+    log_sum = sum(math.ceil(math.log2(d)) for d in shape if d > 1)
+    return 5 * N * log_sum
 
 
 def rfftn_cost(shape: tuple[int, ...]) -> int:
@@ -98,7 +101,7 @@ def rfftn_cost(shape: tuple[int, ...]) -> int:
     Returns
     -------
     int
-        Estimated FLOP count: 5 * (N // 2) * ceil(log2(N)), where N = prod(shape).
+        Estimated FLOP count: 5 * (N // 2) * sum(ceil(log2(d_i))), where N = prod(shape).
 
     Notes
     -----
@@ -110,7 +113,8 @@ def rfftn_cost(shape: tuple[int, ...]) -> int:
         N *= d
     if N <= 1:
         return 0
-    return 5 * (N // 2) * math.ceil(math.log2(N))
+    log_sum = sum(math.ceil(math.log2(d)) for d in shape if d > 1)
+    return 5 * (N // 2) * log_sum
 
 
 def hfft_cost(n_out: int) -> int:
@@ -137,7 +141,7 @@ def hfft_cost(n_out: int) -> int:
 
 
 # 1-D transforms
-def fft(a, n=None, axis=-1, norm=None):
+def fft(a, n=None, axis=-1, norm=None, out=None):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
@@ -145,7 +149,7 @@ def fft(a, n=None, axis=-1, norm=None):
         n = a.shape[axis]
     cost = fft_cost(n)
     budget.deduct("fft.fft", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.fft.fft(a, n=n, axis=axis, norm=norm)
+    return _np.fft.fft(a, n=n, axis=axis, norm=norm, out=out)
 
 
 attach_docstring(
@@ -153,7 +157,7 @@ attach_docstring(
 )
 
 
-def ifft(a, n=None, axis=-1, norm=None):
+def ifft(a, n=None, axis=-1, norm=None, out=None):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
@@ -161,7 +165,7 @@ def ifft(a, n=None, axis=-1, norm=None):
         n = a.shape[axis]
     cost = fft_cost(n)
     budget.deduct("fft.ifft", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.fft.ifft(a, n=n, axis=axis, norm=norm)
+    return _np.fft.ifft(a, n=n, axis=axis, norm=norm, out=out)
 
 
 attach_docstring(
@@ -169,7 +173,7 @@ attach_docstring(
 )
 
 
-def rfft(a, n=None, axis=-1, norm=None):
+def rfft(a, n=None, axis=-1, norm=None, out=None):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
@@ -177,7 +181,7 @@ def rfft(a, n=None, axis=-1, norm=None):
         n = a.shape[axis]
     cost = rfft_cost(n)
     budget.deduct("fft.rfft", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.fft.rfft(a, n=n, axis=axis, norm=norm)
+    return _np.fft.rfft(a, n=n, axis=axis, norm=norm, out=out)
 
 
 attach_docstring(
@@ -185,7 +189,7 @@ attach_docstring(
 )
 
 
-def irfft(a, n=None, axis=-1, norm=None):
+def irfft(a, n=None, axis=-1, norm=None, out=None):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
@@ -193,7 +197,7 @@ def irfft(a, n=None, axis=-1, norm=None):
         n = 2 * (a.shape[axis] - 1)
     cost = rfft_cost(n)
     budget.deduct("fft.irfft", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.fft.irfft(a, n=n, axis=axis, norm=norm)
+    return _np.fft.irfft(a, n=n, axis=axis, norm=norm, out=out)
 
 
 attach_docstring(
@@ -202,15 +206,20 @@ attach_docstring(
 
 
 # 2-D transforms
-def fft2(a, s=None, axes=(-2, -1), norm=None):
+def fft2(a, s=None, axes=(-2, -1), norm=None, out=None):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     if s is None:
-        s = tuple(a.shape[ax] for ax in axes)
-    cost = fftn_cost(s)
+        s_for_cost = tuple(a.shape[ax] for ax in axes)
+    else:
+        s_for_cost = tuple(
+            a.shape[axes[i]] if si is None else si
+            for i, si in enumerate(s)
+        )
+    cost = fftn_cost(s_for_cost)
     budget.deduct("fft.fft2", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.fft.fft2(a, s=s, axes=axes, norm=norm)
+    return _np.fft.fft2(a, s=s, axes=axes, norm=norm, out=out)
 
 
 attach_docstring(
@@ -221,15 +230,20 @@ attach_docstring(
 )
 
 
-def ifft2(a, s=None, axes=(-2, -1), norm=None):
+def ifft2(a, s=None, axes=(-2, -1), norm=None, out=None):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     if s is None:
-        s = tuple(a.shape[ax] for ax in axes)
-    cost = fftn_cost(s)
+        s_for_cost = tuple(a.shape[ax] for ax in axes)
+    else:
+        s_for_cost = tuple(
+            a.shape[axes[i]] if si is None else si
+            for i, si in enumerate(s)
+        )
+    cost = fftn_cost(s_for_cost)
     budget.deduct("fft.ifft2", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.fft.ifft2(a, s=s, axes=axes, norm=norm)
+    return _np.fft.ifft2(a, s=s, axes=axes, norm=norm, out=out)
 
 
 attach_docstring(
@@ -240,15 +254,20 @@ attach_docstring(
 )
 
 
-def rfft2(a, s=None, axes=(-2, -1), norm=None):
+def rfft2(a, s=None, axes=(-2, -1), norm=None, out=None):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     if s is None:
-        s = tuple(a.shape[ax] for ax in axes)
-    cost = rfftn_cost(s)
+        s_for_cost = tuple(a.shape[ax] for ax in axes)
+    else:
+        s_for_cost = tuple(
+            a.shape[axes[i]] if si is None else si
+            for i, si in enumerate(s)
+        )
+    cost = rfftn_cost(s_for_cost)
     budget.deduct("fft.rfft2", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.fft.rfft2(a, s=s, axes=axes, norm=norm)
+    return _np.fft.rfft2(a, s=s, axes=axes, norm=norm, out=out)
 
 
 attach_docstring(
@@ -259,15 +278,21 @@ attach_docstring(
 )
 
 
-def irfft2(a, s=None, axes=(-2, -1), norm=None):
+def irfft2(a, s=None, axes=(-2, -1), norm=None, out=None):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     if s is None:
-        s = (a.shape[axes[0]], 2 * (a.shape[axes[1]] - 1))
-    cost = rfftn_cost(s)
+        s_for_cost = (a.shape[axes[0]], 2 * (a.shape[axes[1]] - 1))
+    else:
+        s_for_cost = tuple(
+            (a.shape[axes[i]] if i < len(s) - 1 else 2 * (a.shape[axes[i]] - 1))
+            if si is None else si
+            for i, si in enumerate(s)
+        )
+    cost = rfftn_cost(s_for_cost)
     budget.deduct("fft.irfft2", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.fft.irfft2(a, s=s, axes=axes, norm=norm)
+    return _np.fft.irfft2(a, s=s, axes=axes, norm=norm, out=out)
 
 
 attach_docstring(
@@ -279,15 +304,21 @@ attach_docstring(
 
 
 # N-D transforms
-def fftn(a, s=None, axes=None, norm=None):
+def fftn(a, s=None, axes=None, norm=None, out=None):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     if s is None:
-        s = a.shape if axes is None else tuple(a.shape[ax] for ax in axes)
-    cost = fftn_cost(s)
+        s_for_cost = a.shape if axes is None else tuple(a.shape[ax] for ax in axes)
+    else:
+        eff_axes = tuple(range(a.ndim)) if axes is None else tuple(axes)
+        s_for_cost = tuple(
+            a.shape[eff_axes[i]] if si is None else si
+            for i, si in enumerate(s)
+        )
+    cost = fftn_cost(s_for_cost)
     budget.deduct("fft.fftn", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.fft.fftn(a, s=s, axes=axes, norm=norm)
+    return _np.fft.fftn(a, s=s, axes=axes, norm=norm, out=out)
 
 
 attach_docstring(
@@ -298,15 +329,21 @@ attach_docstring(
 )
 
 
-def ifftn(a, s=None, axes=None, norm=None):
+def ifftn(a, s=None, axes=None, norm=None, out=None):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     if s is None:
-        s = a.shape if axes is None else tuple(a.shape[ax] for ax in axes)
-    cost = fftn_cost(s)
+        s_for_cost = a.shape if axes is None else tuple(a.shape[ax] for ax in axes)
+    else:
+        eff_axes = tuple(range(a.ndim)) if axes is None else tuple(axes)
+        s_for_cost = tuple(
+            a.shape[eff_axes[i]] if si is None else si
+            for i, si in enumerate(s)
+        )
+    cost = fftn_cost(s_for_cost)
     budget.deduct("fft.ifftn", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.fft.ifftn(a, s=s, axes=axes, norm=norm)
+    return _np.fft.ifftn(a, s=s, axes=axes, norm=norm, out=out)
 
 
 attach_docstring(
@@ -317,15 +354,21 @@ attach_docstring(
 )
 
 
-def rfftn(a, s=None, axes=None, norm=None):
+def rfftn(a, s=None, axes=None, norm=None, out=None):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     if s is None:
-        s = a.shape if axes is None else tuple(a.shape[ax] for ax in axes)
-    cost = rfftn_cost(s)
+        s_for_cost = a.shape if axes is None else tuple(a.shape[ax] for ax in axes)
+    else:
+        eff_axes = tuple(range(a.ndim)) if axes is None else tuple(axes)
+        s_for_cost = tuple(
+            a.shape[eff_axes[i]] if si is None else si
+            for i, si in enumerate(s)
+        )
+    cost = rfftn_cost(s_for_cost)
     budget.deduct("fft.rfftn", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.fft.rfftn(a, s=s, axes=axes, norm=norm)
+    return _np.fft.rfftn(a, s=s, axes=axes, norm=norm, out=out)
 
 
 attach_docstring(
@@ -336,24 +379,31 @@ attach_docstring(
 )
 
 
-def irfftn(a, s=None, axes=None, norm=None):
+def irfftn(a, s=None, axes=None, norm=None, out=None):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     if s is None:
         if axes is None:
-            s = tuple(
+            s_for_cost = tuple(
                 d if i < len(a.shape) - 1 else 2 * (d - 1)
                 for i, d in enumerate(a.shape)
             )
         else:
-            s = tuple(
+            s_for_cost = tuple(
                 a.shape[ax] if i < len(axes) - 1 else 2 * (a.shape[ax] - 1)
                 for i, ax in enumerate(axes)
             )
-    cost = rfftn_cost(s)
+    else:
+        eff_axes = tuple(range(a.ndim)) if axes is None else tuple(axes)
+        s_for_cost = tuple(
+            (a.shape[eff_axes[i]] if i < len(s) - 1 else 2 * (a.shape[eff_axes[i]] - 1))
+            if si is None else si
+            for i, si in enumerate(s)
+        )
+    cost = rfftn_cost(s_for_cost)
     budget.deduct("fft.irfftn", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.fft.irfftn(a, s=s, axes=axes, norm=norm)
+    return _np.fft.irfftn(a, s=s, axes=axes, norm=norm, out=out)
 
 
 attach_docstring(
@@ -365,7 +415,7 @@ attach_docstring(
 
 
 # Hermitian transforms
-def hfft(a, n=None, axis=-1, norm=None):
+def hfft(a, n=None, axis=-1, norm=None, out=None):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
@@ -373,7 +423,7 @@ def hfft(a, n=None, axis=-1, norm=None):
         n = 2 * (a.shape[axis] - 1)
     cost = hfft_cost(n)
     budget.deduct("fft.hfft", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.fft.hfft(a, n=n, axis=axis, norm=norm)
+    return _np.fft.hfft(a, n=n, axis=axis, norm=norm, out=out)
 
 
 attach_docstring(
@@ -384,7 +434,7 @@ attach_docstring(
 )
 
 
-def ihfft(a, n=None, axis=-1, norm=None):
+def ihfft(a, n=None, axis=-1, norm=None, out=None):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
@@ -392,7 +442,7 @@ def ihfft(a, n=None, axis=-1, norm=None):
         n = a.shape[axis]
     cost = hfft_cost(n)
     budget.deduct("fft.ihfft", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.fft.ihfft(a, n=n, axis=axis, norm=norm)
+    return _np.fft.ihfft(a, n=n, axis=axis, norm=norm, out=out)
 
 
 attach_docstring(

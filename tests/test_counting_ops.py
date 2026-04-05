@@ -186,12 +186,12 @@ class TestHistogram:
         assert budget.flops_used == 100
 
     def test_cost_array_bins(self):
-        # array bins → cost = n
+        # array bins of length 11 → binary search: n * ceil(log2(11)) = 100 * 4 = 400
         a = numpy.random.randn(100)
         edges = numpy.linspace(-3, 3, 11)
         with BudgetContext(flop_budget=10**6) as budget:
             histogram(a, bins=edges)
-        assert budget.flops_used == 100
+        assert budget.flops_used == 400
 
 
 # ---------------------------------------------------------------------------
@@ -225,12 +225,12 @@ class TestHistogram2d:
         assert budget.flops_used == 350
 
     def test_cost_non_int_bins(self):
-        # array bins → cost = n = 50
+        # array bins of length 5 each → n * (ceil(log2(5)) + ceil(log2(5))) = 50*(3+3) = 300
         x = numpy.random.randn(50)
         y = numpy.random.randn(50)
         with BudgetContext(flop_budget=10**6) as budget:
             histogram2d(x, y, bins=[numpy.linspace(-3, 3, 5), numpy.linspace(-3, 3, 5)])
-        assert budget.flops_used == 50
+        assert budget.flops_used == 300
 
 
 # ---------------------------------------------------------------------------
@@ -254,11 +254,11 @@ class TestHistogramdd:
         assert budget.flops_used == 450
 
     def test_cost_non_int_bins(self):
-        # list bins → cost = n = 50
+        # list of ints [5,5,5] → n * (ceil(log2(5))*3) = 50*(3+3+3) = 450
         sample = numpy.random.randn(50, 3)
         with BudgetContext(flop_budget=10**6) as budget:
             histogramdd(sample, bins=[5, 5, 5])
-        assert budget.flops_used == 50
+        assert budget.flops_used == 450
 
 
 # ---------------------------------------------------------------------------

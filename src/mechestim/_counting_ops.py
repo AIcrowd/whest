@@ -35,8 +35,13 @@ attach_docstring(
 def allclose(a, b, **kwargs):
     budget = require_budget()
     a = _np.asarray(a)
-    cost = _builtins.max(a.size, 1)
-    budget.deduct("allclose", flop_cost=cost, subscripts=None, shapes=(a.shape,))
+    b = _np.asarray(b)
+    out_shape = _np.broadcast_shapes(a.shape, b.shape)
+    numel = 1
+    for d in out_shape:
+        numel *= d
+    cost = _builtins.max(numel, 1)
+    budget.deduct("allclose", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
     return _np.allclose(a, b, **kwargs)
 
 
@@ -46,8 +51,13 @@ attach_docstring(allclose, _np.allclose, "counted_custom", "numel(a) FLOPs")
 def array_equal(a, b, **kwargs):
     budget = require_budget()
     a = _np.asarray(a)
-    cost = _builtins.max(a.size, 1)
-    budget.deduct("array_equal", flop_cost=cost, subscripts=None, shapes=(a.shape,))
+    b = _np.asarray(b)
+    out_shape = _np.broadcast_shapes(a.shape, b.shape)
+    numel = 1
+    for d in out_shape:
+        numel *= d
+    cost = _builtins.max(numel, 1)
+    budget.deduct("array_equal", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
     return _np.array_equal(a, b, **kwargs)
 
 
@@ -57,8 +67,13 @@ attach_docstring(array_equal, _np.array_equal, "counted_custom", "numel(a) FLOPs
 def array_equiv(a, b):
     budget = require_budget()
     a = _np.asarray(a)
-    cost = _builtins.max(a.size, 1)
-    budget.deduct("array_equiv", flop_cost=cost, subscripts=None, shapes=(a.shape,))
+    b = _np.asarray(b)
+    out_shape = _np.broadcast_shapes(a.shape, b.shape)
+    numel = 1
+    for d in out_shape:
+        numel *= d
+    cost = _builtins.max(numel, 1)
+    budget.deduct("array_equiv", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
     return _np.array_equiv(a, b)
 
 
@@ -76,8 +91,11 @@ def histogram(a, bins=10, **kwargs):
     n = a.size
     if isinstance(bins, _builtins.int):
         cost = _builtins.max(n * _ceil_log2(bins), 1)
-    else:
+    elif isinstance(bins, _builtins.str):
         cost = _builtins.max(n, 1)
+    else:
+        bins_arr = _np.asarray(bins)
+        cost = _builtins.max(n * _ceil_log2(_builtins.len(bins_arr)), 1)
     budget.deduct("histogram", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.histogram(a, bins=bins, **kwargs)
 
@@ -107,6 +125,15 @@ def histogram2d(x, y, bins=10, **kwargs):
     ):
         bx, by = bins[0], bins[1]
         cost = _builtins.max(n * (_ceil_log2(bx) + _ceil_log2(by)), 1)
+    elif isinstance(bins, (_builtins.list, tuple)) and _builtins.len(bins) == 2:
+        b0 = _np.asarray(bins[0])
+        b1 = _np.asarray(bins[1])
+        if b0.ndim >= 1 and b1.ndim >= 1:
+            cost = _builtins.max(
+                n * (_ceil_log2(_builtins.len(b0)) + _ceil_log2(_builtins.len(b1))), 1
+            )
+        else:
+            cost = _builtins.max(n, 1)
     else:
         cost = _builtins.max(n, 1)
 
@@ -136,6 +163,18 @@ def histogramdd(sample, bins=10, **kwargs):
 
     if isinstance(bins, _builtins.int):
         cost = _builtins.max(n * d * _ceil_log2(bins), 1)
+    elif isinstance(bins, (_builtins.list, tuple)):
+        total_log = 0
+        for b in bins:
+            if isinstance(b, _builtins.int):
+                total_log += _ceil_log2(b)
+            else:
+                b_arr = _np.asarray(b)
+                if b_arr.ndim >= 1 and b_arr.size > 0:
+                    total_log += _ceil_log2(_builtins.len(b_arr))
+                else:
+                    total_log += 1
+        cost = _builtins.max(n * total_log, 1)
     else:
         cost = _builtins.max(n, 1)
 
