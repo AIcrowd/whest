@@ -9,7 +9,7 @@
 - All counted operations require an active `BudgetContext`
 - Budget is checked *before* execution — exceeding it raises `BudgetExhaustedError`
 - 32 operations are blocked (I/O, config, state functions)
-- `sort`, `argsort`, `trace` are **free** (0 FLOPs) — this may be surprising
+- `sort`, `argsort`, `trace`, and random sampling are **counted** with analytical FLOP costs
 
 ## Cost by Category
 
