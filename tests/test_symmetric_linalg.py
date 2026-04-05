@@ -32,7 +32,7 @@ class TestSolveSymmetric:
         b = numpy.ones(n)
         with BudgetContext(flop_budget=10**8, quiet=True) as budget:
             la.solve(S, b)
-            assert budget.flops_used == n**3 // 3 + n * 1  # Cholesky + back-sub
+            assert budget.flops_used == n**3 // 3 + 2 * n**2 * 1  # Cholesky + two triangular solves
 
     def test_solve_plain_uses_lu_cost(self):
         n = 10
@@ -40,7 +40,7 @@ class TestSolveSymmetric:
         b = numpy.ones(n)
         with BudgetContext(flop_budget=10**8, quiet=True) as budget:
             la.solve(A, b)
-            assert budget.flops_used == 2 * n**3 // 3 + n**2 * 1  # LU + back-sub
+            assert budget.flops_used == 2 * n**3 // 3 + 2 * n**2 * 1  # LU + two triangular solves
 
     def test_solve_returns_plain(self):
         A = numpy.eye(3) * 2.0
@@ -75,5 +75,5 @@ class TestInvSymmetric:
         S = as_symmetric(A, symmetric_axes=(0, 1))
         with BudgetContext(flop_budget=10**8, quiet=True) as budget:
             la.inv(S)
-            expected = n**3 // 3 + n**3 // 2
+            expected = n**3 // 3 + n**3
             assert budget.flops_used == expected

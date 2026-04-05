@@ -23,7 +23,7 @@ class TestSolve:
             from mechestim.linalg import solve
 
             solve(A, b)
-            assert budget.flops_used == 2 * n**3 // 3 + n**2 * 1
+            assert budget.flops_used == 2 * n**3 // 3 + 2 * n**2 * 1
 
     def test_op_log(self):
         A = numpy.eye(3)

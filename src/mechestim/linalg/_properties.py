@@ -66,12 +66,12 @@ def det_cost(n: int, symmetric: bool = False) -> int:
 
     Notes
     -----
-    Uses $n^3/3$ for symmetric input (Cholesky), or $n^3$ for general
+    Uses $n^3/3$ for symmetric input (Cholesky), or $2n^3/3$ for general
     input (LU factorization).
     """
     if symmetric:
         return max(n**3 // 3, 1)
-    return max(n**3, 1)
+    return max(2 * n**3 // 3, 1)
 
 
 def det(a):
@@ -113,12 +113,12 @@ def slogdet_cost(n: int, symmetric: bool = False) -> int:
 
     Notes
     -----
-    Uses $n^3/3$ for symmetric input (Cholesky), or $n^3$ for general
+    Uses $n^3/3$ for symmetric input (Cholesky), or $2n^3/3$ for general
     input (LU factorization).
     """
     if symmetric:
         return max(n**3 // 3, 1)
-    return max(n**3, 1)
+    return max(2 * n**3 // 3, 1)
 
 
 def slogdet(a):

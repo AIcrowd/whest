@@ -313,7 +313,8 @@ class TestIfftn:
         x = numpy.random.randn(8, 8)
         with BudgetContext(flop_budget=10**6) as budget:
             ifftn(x, axes=(0,))
-        assert budget.flops_used == fftn_cost((8,))
+        # 8 independent 1-D transforms of length 8 (batch=8)
+        assert budget.flops_used == 8 * fftn_cost((8,))
 
 
 # ---------------------------------------------------------------------------
@@ -344,7 +345,8 @@ class TestRfftn:
         x = numpy.random.randn(8, 8)
         with BudgetContext(flop_budget=10**6) as budget:
             rfftn(x, axes=(0,))
-        assert budget.flops_used == rfftn_cost((8,))
+        # 8 independent 1-D transforms of length 8 (batch=8)
+        assert budget.flops_used == 8 * rfftn_cost((8,))
 
 
 # ---------------------------------------------------------------------------

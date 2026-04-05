@@ -41,7 +41,7 @@ def multi_dot_cost(shapes: list[tuple[int, ...]]) -> int:
         return 0
     dims = [s[0] for s in shapes] + [shapes[-1][-1]]
     if n == 2:
-        return dims[0] * dims[1] * dims[2]
+        return 2 * dims[0] * dims[1] * dims[2]
     cost_table = [[0] * n for _ in range(n)]
     for chain_len in range(2, n + 1):
         for i in range(n - chain_len + 1):
@@ -51,7 +51,7 @@ def multi_dot_cost(shapes: list[tuple[int, ...]]) -> int:
                 cost = (
                     cost_table[i][k]
                     + cost_table[k + 1][j]
-                    + dims[i] * dims[k + 1] * dims[j + 1]
+                    + 2 * dims[i] * dims[k + 1] * dims[j + 1]
                 )
                 if cost < cost_table[i][j]:
                     cost_table[i][j] = cost

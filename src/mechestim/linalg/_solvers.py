@@ -29,12 +29,13 @@ def solve_cost(n: int, nrhs: int = 1, symmetric: bool = False) -> int:
 
     Notes
     -----
-    Uses $n^3/3 + n \cdot n_{\text{rhs}}$ for Cholesky (symmetric), or $2n^3/3 + n^2 \cdot n_{\text{rhs}}$
-    for LU (general). Source: Golub & Van Loan, *Matrix Computations*, 4th ed.
+    Uses $n^3/3 + 2n^2 \cdot n_{\text{rhs}}$ for Cholesky (symmetric; two triangular
+    solves), or $2n^3/3 + 2n^2 \cdot n_{\text{rhs}}$ for LU (general; two triangular
+    solves). Source: Golub & Van Loan, *Matrix Computations*, 4th ed.
     """
     if symmetric:
-        return max(n**3 // 3 + n * nrhs, 1)
-    return max(2 * n**3 // 3 + n**2 * nrhs, 1)
+        return max(n**3 // 3 + 2 * n**2 * nrhs, 1)
+    return max(2 * n**3 // 3 + 2 * n**2 * nrhs, 1)
 
 
 def solve(a, b):
@@ -58,7 +59,7 @@ attach_docstring(
     solve,
     _np.linalg.solve,
     "linalg",
-    r"$2n^3/3 + n^2 \cdot n_{\text{rhs}}$ FLOPs (LU), or $n^3/3 + n \cdot n_{\text{rhs}}$ FLOPs (Cholesky) for SymmetricTensor input",
+    r"$2n^3/3 + 2n^2 \cdot n_{\text{rhs}}$ FLOPs (LU), or $n^3/3 + 2n^2 \cdot n_{\text{rhs}}$ FLOPs (Cholesky) for SymmetricTensor input",
 )
 
 
@@ -79,11 +80,11 @@ def inv_cost(n: int, symmetric: bool = False) -> int:
 
     Notes
     -----
-    Uses $n^3/3 + n^3/2$ for symmetric input (Cholesky + back-substitution),
-    or $n^3$ for general input (LU-based).
+    Uses $n^3/3 + n^3$ for symmetric input (Cholesky factorization + n
+    triangular solves against identity), or $n^3$ for general input (LU-based).
     """
     if symmetric:
-        return max(n**3 // 3 + n**3 // 2, 1)
+        return max(n**3 // 3 + n**3, 1)
     return max(n**3, 1)
 
 
@@ -108,7 +109,7 @@ attach_docstring(
     inv,
     _np.linalg.inv,
     "linalg",
-    r"$n^3$ FLOPs, or $n^3/3 + n^3/2$ for SymmetricTensor input. Returns SymmetricTensor if input is symmetric.",
+    r"$n^3$ FLOPs, or $n^3/3 + n^3$ for SymmetricTensor input. Returns SymmetricTensor if input is symmetric.",
 )
 
 
