@@ -25,3 +25,7 @@ See [FLOP Counting Model](../concepts/flop-counting-model.md) for full details.
 ::: mechestim._window
 
 ::: mechestim._unwrap
+
+::: mechestim._sorting_ops
+
+::: mechestim._counting_ops
