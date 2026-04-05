@@ -23,7 +23,7 @@ This starts two containers:
 | Service | Image | Role |
 |---------|-------|------|
 | `backend` | `Dockerfile.server` | Runs mechestim server, listens on IPC socket |
-| `participant` | `Dockerfile.participant` | Runs participant code with mechestim-client only |
+| `participant` | `Dockerfile.participant-hardened` | Runs participant code with mechestim-client only |
 
 The containers share an IPC socket volume for communication.
 

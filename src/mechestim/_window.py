@@ -66,7 +66,7 @@ def blackman(M):
     return _np.blackman(M)
 
 
-attach_docstring(blackman, _np.blackman, "counted_custom", "n FLOPs")
+attach_docstring(blackman, _np.blackman, "counted_custom", "3n FLOPs")
 
 
 def hamming_cost(n: int) -> int:
@@ -156,4 +156,4 @@ def kaiser(M, beta):
     return _np.kaiser(M, beta)
 
 
-attach_docstring(kaiser, _np.kaiser, "counted_custom", "n FLOPs")
+attach_docstring(kaiser, _np.kaiser, "counted_custom", "3n FLOPs")

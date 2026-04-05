@@ -20,7 +20,7 @@ Contraction path with per-step diagnostics. Returned by `me.einsum_path()`.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `path` | `list[tuple[int, int]]` | Sequence of pairwise contraction indices |
+| `path` | `list[tuple[int, ...]]` | Sequence of contraction index groups |
 | `steps` | `list[StepInfo]` | Per-step diagnostics |
 | `naive_cost` | `int` | FLOP cost without path optimization |
 | `optimized_cost` | `int` | FLOP cost along the optimal path |

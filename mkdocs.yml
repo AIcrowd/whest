@@ -52,24 +52,31 @@ plugins:
         "Concepts":
           - concepts/flop-counting-model.md: "How FLOP costs are computed analytically"
           - concepts/operation-categories.md: "Free vs counted vs blocked operations"
+          - concepts/numpy-compatibility-testing.md: "NumPy compatibility test suite coverage"
+        "Architecture":
+          - architecture/client-server.md: "Client-server architecture for sandboxed execution"
+          - architecture/docker.md: "Running mechestim with Docker and Docker Compose"
         "API Reference":
           - api/counted-ops.md: "Operations that cost FLOPs"
           - api/free-ops.md: "Operations that cost 0 FLOPs"
           - api/symmetric.md: "SymmetricTensor for symmetry-aware savings"
           - api/linalg.md: "Linear algebra module (SVD, Cholesky, QR, etc.)"
           - api/fft.md: "FFT module (fft, rfft, fftn, etc.)"
-          - api/random.md: "Random number generation (all free, 0 FLOPs)"
+          - api/random.md: "Random number generation (sampling is counted)"
           - api/polynomial.md: "Polynomial operations"
           - api/window.md: "Window functions (bartlett, hamming, etc.)"
           - api/budget.md: "BudgetContext and OpRecord classes"
           - api/flops.md: "Cost query functions (einsum_cost, svd_cost, etc.)"
-          - api/errors.md: "Exception classes"
+          - api/opt-einsum.md: "Path optimizer for einsum contractions"
+          - api/errors.md: "Exception and warning classes"
         "Reference":
           - reference/for-agents.md: "Guide for AI coding assistants — resources, rules, and common mistakes"
           - reference/operation-audit.md: "Complete 482-operation inventory with costs"
           - reference/cheat-sheet.md: "Quick FLOP cost reference for all operations"
         "Troubleshooting":
           - troubleshooting/common-errors.md: "Common errors and fixes"
+        "Changelog":
+          - changelog.md: "Release history and breaking changes"
 
 nav:
   - Home: index.md

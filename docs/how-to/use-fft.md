@@ -115,7 +115,7 @@ with me.BudgetContext(flop_budget=1_000_000) as budget:
 ## Query costs before running
 
 ```python
-from mechestim.fft._transforms import fft_cost, rfft_cost
+from mechestim.flops import fft_cost, rfft_cost
 
 # Check cost of a large FFT before committing budget
 n = 2**20  # ~1 million points

@@ -54,13 +54,14 @@ uv run python first_budget.py
 ├──────────────┬───────────────┬────────────┬─────────────┤
 │ Namespace    │ Budget        │ Used       │ Remaining   │
 ├──────────────┼───────────────┼────────────┼─────────────┤
-│ (default)    │ 1.00e+15      │ 1,313,536  │ ~1.00e+15   │
+│ (default)    │ 1.00e+15      │ 1,969,152  │ ~1.00e+15   │
 └──────────────┴───────────────┴────────────┴─────────────┘
 
   (default) — by operation
-    einsum  1,310,720  ( 99.8%)  [10 calls]
-    maximum     2,560  (  0.2%)  [10 calls]
-    sum           256  (  0.0%)   [1 call]
+    einsum        1,310,720  ( 66.6%)  [10 calls]
+    random.randn    655,616  ( 33.3%)  [11 calls]
+    maximum           2,560  (  0.1%)  [10 calls]
+    sum                 256  (  0.0%)   [1 call]
 ```
 
 **Reading the output:**
@@ -68,7 +69,7 @@ uv run python first_budget.py
 - **Namespace:** `(default)` is the auto-created global context; named contexts appear here once you add them
 - **Used / Remaining:** how much of the budget has been consumed across all calls
 - **By operation:** breakdown of costs per operation type and call count
-- The 10-layer MLP spends almost all FLOPs on `einsum` (matrix multiplies); activations (`maximum`) are comparatively cheap
+- The 10-layer MLP spends two-thirds of FLOPs on `einsum` (matrix multiplies) and one-third on random number generation; activations (`maximum`) are comparatively cheap
 
 ## Explicit context with a namespace
 
@@ -102,16 +103,17 @@ me.budget_summary()
 ```
 ┌──────────────────────────────────────────────────────────┐
 │              mechestim FLOP Budget Summary                │
-├───────────────┬────────────┬──────────┬──────────────────┤
-│ Namespace     │ Budget     │ Used     │ Remaining        │
-├───────────────┼────────────┼──────────┼──────────────────┤
-│ mlp-forward   │ 50,000,000 │ 1,313,536 │ 48,686,464      │
+├───────────────┬────────────┬───────────┬─────────────────┤
+│ Namespace     │ Budget     │ Used      │ Remaining       │
+├───────────────┼────────────┼───────────┼─────────────────┤
+│ mlp-forward   │ 50,000,000 │ 1,969,152 │ 48,030,848      │
 └───────────────┴────────────┴───────────┴─────────────────┘
 
   mlp-forward — by operation
-    einsum  1,310,720  ( 99.8%)  [10 calls]
-    maximum     2,560  (  0.2%)  [10 calls]
-    sum           256  (  0.0%)   [1 call]
+    einsum        1,310,720  ( 66.6%)  [10 calls]
+    random.randn    655,616  ( 33.3%)  [11 calls]
+    maximum           2,560  (  0.1%)  [10 calls]
+    sum                 256  (  0.0%)   [1 call]
 ```
 
 ## Decorator form
@@ -146,7 +148,11 @@ Each call to `run_mlp()` draws from the same `mlp-forward` namespace budget. Cal
 
 ```python
 data = me.budget_summary_dict()
-# {'mlp-forward': {'budget': 50_000_000, 'used': 1313536, 'remaining': 48686464, ...}}
+# {'flop_budget': ..., 'flops_used': ..., 'flops_remaining': ..., 'operations': {...}}
+
+# For per-namespace breakdown:
+data = me.budget_summary_dict(by_namespace=True)
+# data["by_namespace"]["mlp-forward"]["flops_used"] -> 1313536
 ```
 
 ## Configuring the global default budget

@@ -33,12 +33,15 @@ The summary shows cost per operation type, sorted by highest cost first.
 
 ## Session-wide programmatic analysis
 
-Use `me.budget_summary_dict()` to retrieve the raw operation records for automated analysis (e.g. in tests or notebooks):
+Use `me.budget_summary_dict()` to retrieve aggregated budget data as a dict for automated analysis (e.g. in tests or notebooks):
 
 ```python
-records = me.budget_summary_dict()
-for record in records:
-    print(record.op_name, record.namespace, record.flop_cost)
+data = me.budget_summary_dict()
+print(f"Budget: {data['flop_budget']:,}")
+print(f"Used:   {data['flops_used']:,}")
+print(f"Left:   {data['flops_remaining']:,}")
+for op_name, op_data in data["operations"].items():
+    print(f"  {op_name}: {op_data['flops']:,} ({op_data['calls']} calls)")
 ```
 
 ## Inspecting the operation log

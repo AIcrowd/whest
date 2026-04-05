@@ -85,13 +85,14 @@ mechestim FLOP Budget Summary
 ==============================
   Namespace:        mlp-forward
   Total budget:     100,000,000
-  Used:                 656,385  (0.7%)
-  Remaining:         99,343,615  (99.3%)
+  Used:               1,312,001  (1.3%)
+  Remaining:         98,687,999  (98.7%)
 
   By operation:
-    multiply              327,680  ( 49.9%)  [5 calls]
-    einsum                327,680  ( 49.9%)  [5 calls]
-    maximum                 1,024  (  0.2%)  [4 calls]
+    einsum                655,360  ( 50.0%)  [5 calls]
+    random.randn          327,936  ( 25.0%)  [6 calls]
+    multiply              327,680  ( 25.0%)  [5 calls]
+    maximum                 1,024  (  0.1%)  [4 calls]
     sqrt                        1  (  0.0%)  [1 call]
 ```
 

@@ -46,10 +46,10 @@ with me.BudgetContext(flop_budget=10_000_000) as budget:
 **Symptom:**
 
 ```
-AttributeError: module 'mechestim' has no attribute 'fft'. mechestim does not support this operation.
+AttributeError: module 'mechestim' has no attribute 'save'. mechestim does not support this operation.
 ```
 
-**Why:** The NumPy function you're trying to use is not in mechestim's allowlist.
+**Why:** The NumPy function you're trying to use is blocked by mechestim (I/O, config, and system-level functions are not part of the competition API).
 
 **Fix:** Check [Operation Categories](../concepts/operation-categories.md) for supported operations, or see the [Operation Audit](../reference/operation-audit.md) for the complete list.
 
@@ -76,12 +76,12 @@ RuntimeError: Cannot nest BudgetContexts
 **Symptom:**
 
 ```
-mechestim.errors.SymmetryError: Tensor not symmetric along dims (0, 1): max deviation = 0.5
+mechestim.errors.SymmetryError: Tensor not symmetric along axes (0, 1): max deviation = 0.5
 ```
 
-**Why:** You passed the same array object to multiple einsum operands, but the array values don't satisfy the symmetry that mechestim detected.
+**Why:** You called `me.as_symmetric()` to declare that a tensor is symmetric along certain axes, but the actual data does not satisfy the symmetry within tolerance.
 
-**Fix:** This usually indicates a bug — the same Python object is expected to have identical values. Check that you haven't mutated the array between creating it and calling einsum.
+**Fix:** Verify that the tensor truly has the claimed symmetry (e.g., `A[i,j] == A[j,i]`). If it's approximately symmetric, you may need to symmetrise it first: `A = (A + A.T) / 2`.
 
 ---
 

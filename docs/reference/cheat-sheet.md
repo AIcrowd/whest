@@ -77,6 +77,11 @@
 | `kron` | $m_1 m_2 \cdot n_1 n_2$ | Kronecker product; cost proportional to output size. |
 | `lexsort` | varies | Multi-key sort; cost = k*n*ceil(log2(n)). |
 | `linalg.cholesky` | $n^3 / 3$ | Cholesky decomposition. Cost: $n^3/3$ (Golub & Van Loan §4.2). |
+| `linalg.cross` | delegates to `cross` | Alias — charges `numel(output)` via `me.cross`. |
+| `linalg.matmul` | delegates to `matmul` | Alias — charges `2*m*k*n` via `me.matmul`. |
+| `linalg.outer` | delegates to `outer` | Alias — charges `m*n` via `me.outer`. |
+| `linalg.tensordot` | delegates to `tensordot` | Alias — charges FLOPs via `me.tensordot`. |
+| `linalg.vecdot` | delegates to `vecdot` | Alias — charges `2*n` via `me.vecdot`. |
 | `linalg.cond` | $m \cdot n \cdot \min(m,n)$ | Condition number. Cost: m*n*min(m,n) (via SVD). |
 | `linalg.det` | $n^3$ | Determinant. Cost: $n^3$ (LU factorization). |
 | `linalg.eig` | $10n^3$ | Eigendecomposition. Cost: $10n^3$ (Francis QR, Golub & Van Loan §7.5). |
@@ -93,7 +98,7 @@
 | `linalg.pinv` | $m \cdot n \cdot \min(m,n)$ | Pseudoinverse. Cost: m*n*min(m,n) (via SVD). |
 | `linalg.qr` | $2mn^2 - 2n^3/3$ | QR decomposition. Cost: $2mn^2 - (2/3)n^3$ (Golub & Van Loan §5.2). |
 | `linalg.slogdet` | $n^3$ | Sign + log determinant. Cost: $n^3$ (LU factorization). |
-| `linalg.solve` | $2n^3/3 + n^2 \cdot n_{\text{rhs}}$ | Solve Ax=b. Cost: $n^3$ (LU factorization). |
+| `linalg.solve` | $2n^3/3 + n^2 \cdot n_{\text{rhs}}$ | Solve Ax=b. Cost: $2n^3/3$ (LU) + $n^2 \cdot n_{\text{rhs}}$ (back-substitution). |
 | `linalg.svd` | $m \cdot n \cdot k$ | Singular value decomposition; cost ~ O(min(m,n)*m*n). |
 | `linalg.svdvals` | $m \cdot n \cdot \min(m,n)$ | Singular values only. Cost: m*n*min(m,n) (Golub-Reinsch). |
 | `linalg.tensorinv` | $n^3$ | Tensor inverse. Cost: $n^3$ after reshape (delegates to inv). |
@@ -190,7 +195,7 @@
 `flipud`, `from_dlpack`, `frombuffer`, `fromfile`, `fromfunction`, `fromiter`, `fromregex`, `fromstring`
 `full`, `full_like`, `hsplit`, `hstack`, `identity`, `indices`, `insert`, `isdtype`
 `isfinite`, `isfortran`, `isinf`, `isnan`, `isscalar`, `issubdtype`, `iterable`, `ix_`
-`linalg.cross`, `linalg.diagonal`, `linalg.matmul`, `linalg.matrix_transpose`, `linalg.outer`, `linalg.tensordot`, `linalg.vecdot`, `linspace`
+`linalg.diagonal`, `linalg.matrix_transpose`, `linspace`
 `mask_indices`, `matrix_transpose`, `may_share_memory`, `meshgrid`, `min_scalar_type`, `mintypecode`, `moveaxis`, `ndim`
 `nonzero`, `ones`, `ones_like`, `packbits`, `pad`, `permute_dims`, `place`, `promote_types`
 `put`, `put_along_axis`, `putmask`, `random.default_rng`, `random.get_state`, `random.seed`, `random.set_state`, `ravel`

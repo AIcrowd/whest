@@ -4,35 +4,41 @@ Runs NumPy's own test suite with mechestim monkeypatched in.
 
 ## How it works
 
-`conftest.py` replaces non-ufunc mechestim functions onto numpy, then
-points pytest at NumPy's installed test files. Currently 55 functions
-are patched (reductions and special functions). Ufuncs, free ops,
-custom ops, and submodule functions are not patched due to the ufunc
-protocol and delegation recursion constraints (see xfails.py header).
+`conftest.py` freezes the original numpy module, rebinds mechestim's internal
+`_np` references to the frozen copy, then patches most non-ufunc mechestim
+functions onto numpy. This lets NumPy's tests call mechestim's versions while
+mechestim internally calls unpatched numpy (avoiding infinite recursion).
+
+Ufuncs (101) and blacklisted ops (32) are skipped. Everything else -- free ops,
+counted custom ops, submodule functions (linalg, fft, random) -- is patched.
+
+See `docs/concepts/numpy-compatibility-testing.md` for full details.
 
 ## Running
 
 ```bash
-# Run all three suites in parallel (uses all CPU cores)
-uv run pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_umath -n auto -q &
-uv run pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_ufunc -n auto -q &
-uv run pytest tests/numpy_compat/ --pyargs numpy.linalg.tests.test_linalg -n auto -q &
-wait
+# Run everything (recommended)
+make test-numpy-compat
+
+# Run a single suite
+uv run pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_umath -n auto -q
 
 # Filter to specific functions
 uv run pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_umath -k "sqrt" -n auto -v
-
-# Run a single suite verbosely
-uv run pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_umath -n auto -v
 ```
 
 ## Current results (2026-04-03)
 
-| Suite | Passed | Failed |
-|-------|--------|--------|
-| test_umath | 4,668 | 0 |
-| test_ufunc | 795 | 0 |
-| test_linalg | 436 | 0 |
+| Suite | Module | Passed | xfailed |
+|-------|--------|--------|---------|
+| Core math | `test_umath` | 4,668 | 13 |
+| Ufunc infra | `test_ufunc` | 795 | 7 |
+| Numeric ops | `test_numeric` | 1,560 | 20 |
+| Linear algebra | `test_linalg` | 48 | 255 |
+| FFT | `test_pocketfft` | 114 | 34 |
+| Polynomials | `test_polynomial` | 36 | 2 |
+| Random | `test_random` | 142 | 0 |
+| **Total** | | **7,363** | **331** |
 
 ## Triaging failures
 

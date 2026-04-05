@@ -27,10 +27,10 @@ uv run python -c "import mechestim as me; print(me.__version__)"
 ## 🔍 What you'll see
 
 ```
-0.2.0
+0.2.0+np2.1.3
 ```
 
-If you see a version number, mechestim is installed correctly.
+The version string includes the pinned NumPy version suffix. If you see a version number, mechestim is installed correctly.
 
 ## ⚠️ Common pitfalls
 

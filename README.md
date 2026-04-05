@@ -71,7 +71,7 @@ for i, W in enumerate(weights):
     h = me.einsum('ij,j->i', W, h)
     if i < depth - 1:
         h = me.maximum(h, 0)
-me.budget_summary()  # 328,705 FLOPs
+me.budget_summary()  # 984,321 FLOPs
 ```
 
 </td>
@@ -93,10 +93,10 @@ me.budget_summary()  # 328,705 FLOPs
 |--------|-----------|------------|--------|
 | Core (`me.*`) | 367 | Varies by category (unary, binary, reduction, free) | Supported |
 | `me.linalg` | 31 | Per-operation formulas | Supported |
-| `me.fft` | 18 | `n * log2(n)` for transforms | Supported |
-| `me.random` | 51 | Free (0 FLOPs) | Supported |
+| `me.fft` | 18 | `5n * ceil(log2(n))` for transforms | Supported |
+| `me.random` | 51 | `numel(output)` per sample; shuffle: `n*ceil(log2(n))` | Supported |
 | `me.polynomial` | 10 | Per-operation formulas | Supported |
-| `me.window` | 5 | Free (0 FLOPs) | Supported |
+| `me.window` | 5 | `n` to `3n` per window | Supported |
 | **Total** | **450 supported** | | **32 blocked** |
 
 Blocked operations (I/O, config, and system calls) raise a helpful `AttributeError` with a link to the docs.
@@ -137,14 +137,15 @@ with me.BudgetContext(flop_budget=10**8) as budget:
 
 ```
 mechestim FLOP Budget Summary
-==============================
+=============================
   Total budget:     100,000,000
-  Used:                 328,705  (0.3%)
-  Remaining:         99,671,295  (99.7%)
+  Used:                 984,321  (1.0%)
+  Remaining:         99,015,679  (99.0%)
 
   By operation:
-    einsum                327,680  ( 99.7%)  [5 calls]
-    maximum                 1,024  (  0.3%)  [4 calls]
+    einsum                655,360  ( 66.6%)  [5 calls]
+    random.randn          327,936  ( 33.3%)  [6 calls]
+    maximum                 1,024  (  0.1%)  [4 calls]
     sqrt                        1  (  0.0%)  [1 call]
 ```
 
@@ -153,7 +154,7 @@ mechestim FLOP Budget Summary
 ```python
 # Query FLOP costs without running anything (no BudgetContext needed)
 cost = me.flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
-print(f"Matmul cost: {cost:,}")  # 16,777,216
+print(f"Matmul cost: {cost:,}")  # 33,554,432
 
 cost = me.flops.svd_cost(m=256, n=256, k=10)
 print(f"SVD cost: {cost:,}")     # 655,360
@@ -177,7 +178,7 @@ with me.BudgetContext(flop_budget=10**8) as budget:
 ## How It Works
 
 1. **FLOPs are tracked automatically.** A global default budget activates on first use, or you can wrap code in an explicit `BudgetContext` for a custom limit. Free ops (tensor creation, reshaping) cost 0 FLOPs.
-2. **FLOP costs are analytical.** Costs are computed from tensor shapes, not measured from execution. A matmul of `(m, k) @ (k, n)` always costs `m * k * n` FLOPs regardless of hardware.
+2. **FLOP costs are analytical.** Costs are computed from tensor shapes, not measured from execution. A matmul of `(m, k) @ (k, n)` always costs `2 * m * k * n` FLOPs regardless of hardware.
 3. **Budget is checked before execution.** If an operation would exceed the remaining budget, `BudgetExhaustedError` is raised and the operation does not run.
 4. **All tensors are plain `numpy.ndarray`.** There is no custom tensor class and no hidden state. You can pass mechestim arrays to any NumPy-compatible library.
 
@@ -189,11 +190,11 @@ with me.BudgetContext(flop_budget=10**8) as budget:
 
 **sort, argsort, trace, and random sampling all have analytical FLOP costs** based on their algorithmic complexity.
 
-**Nested BudgetContexts are not allowed.** Opening a second `BudgetContext` while one is already active raises `RuntimeError`. Use a single budget for your entire computation.
+**Nested explicit BudgetContexts are not allowed.** Opening an explicit `BudgetContext` while another explicit `BudgetContext` is already active raises `RuntimeError`. However, opening an explicit context while only the global default is active is fine — the explicit context temporarily replaces the default.
 
 **Cost is analytical, not wall-clock.** Two operations with the same shapes always report the same FLOP cost, regardless of data values, cache effects, or hardware. This is intentional -- it makes scores reproducible across machines.
 
-**SymmetricTensor propagation rules.** Symmetry metadata (used by einsum for FLOP savings) propagates through reshaping and slicing but is dropped by arithmetic operations. If you need symmetry savings after a computation, declare symmetry groups explicitly.
+**SymmetricTensor propagation rules.** Symmetry metadata (used by einsum for FLOP savings) propagates through reshaping, slicing, and unary pointwise operations (e.g., `exp`, `log`). Binary pointwise operations (e.g., `add`, `multiply`) intersect the symmetry groups of both operands. Reductions may drop symmetry on the reduced axis. If the result doesn't carry the symmetry you expect, declare symmetry groups explicitly with `me.as_symmetric()`.
 
 ## Documentation
 
