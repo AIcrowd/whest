@@ -1,6 +1,7 @@
 """Tests for mechestim.random counted wrappers."""
 
 import numpy
+
 from mechestim import random as merandom
 from mechestim._budget import BudgetContext
 from mechestim._flops import _ceil_log2

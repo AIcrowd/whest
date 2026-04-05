@@ -2,12 +2,10 @@
 
 from __future__ import annotations
 
-import math as _math
-
 import numpy as _np
 
 from mechestim._docstrings import attach_docstring
-from mechestim._flops import _ceil_log2, search_cost, sort_cost
+from mechestim._flops import search_cost, sort_cost
 from mechestim._validation import require_budget
 
 

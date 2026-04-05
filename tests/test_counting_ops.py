@@ -2,10 +2,7 @@
 
 from __future__ import annotations
 
-import math
-
 import numpy
-import pytest
 
 from mechestim._budget import BudgetContext
 from mechestim._counting_ops import (
@@ -22,7 +19,6 @@ from mechestim._counting_ops import (
     trace,
     vander,
 )
-
 
 # ---------------------------------------------------------------------------
 # trace

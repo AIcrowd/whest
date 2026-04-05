@@ -126,8 +126,8 @@ def test_einsum_cost_matches_contract_path():
     assert cost == info.optimized_cost
 
 
-import math
-from mechestim._flops import _ceil_log2, sort_cost, search_cost
+
+from mechestim._flops import _ceil_log2, search_cost, sort_cost
 
 
 class TestCeilLog2:

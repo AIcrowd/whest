@@ -3,10 +3,9 @@
 from __future__ import annotations
 
 import numpy
-import pytest
 
 from mechestim._budget import BudgetContext
-from mechestim._flops import _ceil_log2, search_cost, sort_cost
+from mechestim._flops import search_cost, sort_cost
 from mechestim._sorting_ops import (
     argpartition,
     argsort,
@@ -27,7 +26,6 @@ from mechestim._sorting_ops import (
     unique_inverse,
     unique_values,
 )
-
 
 # ---------------------------------------------------------------------------
 # Sorting

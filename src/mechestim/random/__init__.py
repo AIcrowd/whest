@@ -21,7 +21,6 @@ import numpy.random as _npr
 from mechestim._flops import _ceil_log2, sort_cost
 from mechestim._validation import require_budget
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------

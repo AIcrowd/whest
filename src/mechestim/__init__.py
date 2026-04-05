@@ -39,6 +39,22 @@ from mechestim._budget import (  # noqa: F401
     budget_summary_dict,
 )
 from mechestim._config import configure  # noqa: F401
+
+# --- Counting, histogram & generation ops (counted) ---
+from mechestim._counting_ops import (  # noqa: F401
+    allclose,
+    array_equal,
+    array_equiv,
+    bincount,
+    geomspace,
+    histogram,
+    histogram2d,
+    histogram_bin_edges,
+    histogramdd,
+    logspace,
+    trace,
+    vander,
+)
 from mechestim._display import budget_live, budget_summary  # noqa: F401
 
 # --- Einsum ---
@@ -174,44 +190,6 @@ from mechestim._free_ops import (  # noqa: F401
     where,
     zeros,
     zeros_like,
-)
-
-# --- Sorting, search & set ops (counted) ---
-from mechestim._sorting_ops import (  # noqa: F401
-    argpartition,
-    argsort,
-    digitize,
-    in1d,
-    intersect1d,
-    isin,
-    lexsort,
-    partition,
-    searchsorted,
-    setdiff1d,
-    setxor1d,
-    sort,
-    union1d,
-    unique,
-    unique_all,
-    unique_counts,
-    unique_inverse,
-    unique_values,
-)
-
-# --- Counting, histogram & generation ops (counted) ---
-from mechestim._counting_ops import (  # noqa: F401
-    allclose,
-    array_equal,
-    array_equiv,
-    bincount,
-    geomspace,
-    histogram,
-    histogram2d,
-    histogram_bin_edges,
-    histogramdd,
-    logspace,
-    trace,
-    vander,
 )
 
 # --- Path optimization types ---
@@ -407,6 +385,28 @@ from mechestim._polynomial import (  # noqa: F401
     polysub,
     polyval,
     roots,
+)
+
+# --- Sorting, search & set ops (counted) ---
+from mechestim._sorting_ops import (  # noqa: F401
+    argpartition,
+    argsort,
+    digitize,
+    in1d,
+    intersect1d,
+    isin,
+    lexsort,
+    partition,
+    searchsorted,
+    setdiff1d,
+    setxor1d,
+    sort,
+    union1d,
+    unique,
+    unique_all,
+    unique_counts,
+    unique_inverse,
+    unique_values,
 )
 
 # --- Symmetric tensor ---

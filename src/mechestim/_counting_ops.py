@@ -14,7 +14,6 @@ from mechestim._docstrings import attach_docstring
 from mechestim._flops import _ceil_log2
 from mechestim._validation import require_budget
 
-
 # ---------------------------------------------------------------------------
 # Reductions disguised as free
 # ---------------------------------------------------------------------------
