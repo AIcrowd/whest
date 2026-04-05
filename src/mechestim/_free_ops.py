@@ -132,9 +132,9 @@ attach_docstring(identity, _np.identity, "free", "0 FLOPs")
 # ---------------------------------------------------------------------------
 
 
-def reshape(a, newshape, **kwargs):
+def reshape(a, /, *args, **kwargs):
     """Reshape an array. Wraps ``numpy.reshape``. Cost: 0 FLOPs."""
-    return _np.reshape(a, newshape, **kwargs)
+    return _np.reshape(a, *args, **kwargs)
 
 
 attach_docstring(reshape, _np.reshape, "free", "0 FLOPs")

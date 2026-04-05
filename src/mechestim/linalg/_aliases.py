@@ -33,9 +33,9 @@ attach_docstring(
 )
 
 
-def outer(a, b):
+def outer(a, b, out=None):
     """Outer product (linalg namespace). Delegates to mechestim.outer."""
-    return _me.outer(a, b)
+    return _me.outer(a, b, out=out)
 
 
 attach_docstring(

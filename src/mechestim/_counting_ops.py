@@ -54,11 +54,8 @@ def array_equal(a, b, **kwargs):
     budget = require_budget()
     a = _np.asarray(a)
     b = _np.asarray(b)
-    out_shape = _np.broadcast_shapes(a.shape, b.shape)
-    numel = 1
-    for d in out_shape:
-        numel *= d
-    cost = _builtins.max(numel, 1)
+    # array_equal does not broadcast; returns False on shape mismatch
+    cost = _builtins.max(a.size, b.size, 1)
     budget.deduct(
         "array_equal", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
     )
@@ -72,11 +69,15 @@ def array_equiv(a, b):
     budget = require_budget()
     a = _np.asarray(a)
     b = _np.asarray(b)
-    out_shape = _np.broadcast_shapes(a.shape, b.shape)
-    numel = 1
-    for d in out_shape:
-        numel *= d
-    cost = _builtins.max(numel, 1)
+    # array_equiv broadcasts; returns False if shapes are incompatible
+    try:
+        out_shape = _np.broadcast_shapes(a.shape, b.shape)
+        numel = 1
+        for d in out_shape:
+            numel *= d
+        cost = _builtins.max(numel, 1)
+    except ValueError:
+        cost = _builtins.max(a.size, b.size, 1)
     budget.deduct(
         "array_equiv", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
     )

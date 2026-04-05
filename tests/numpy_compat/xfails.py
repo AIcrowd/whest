@@ -4,14 +4,14 @@ Each entry maps a test node ID (or pattern) to a reason string.
 Tests matching these patterns are marked xfail when running NumPy's
 test suite against mechestim.
 
-Current state (2026-04-03):
+Current state (2026-04-05):
     test_umath:     4,668 passed, 0 failed  (13 xfailed)
     test_ufunc:       795 passed, 0 failed   (7 xfailed)
-    test_numeric:   1,560 passed, 0 failed  (20 xfailed)
+    test_numeric:   1,567 passed, 0 failed   (4 xfailed — was 20, fixed 16)
     test_linalg:       49 passed, 0 failed  (255 xfailed — expanded submodule patching)
-    test_pocketfft:   122 passed, 0 failed  (34 xfailed)
+    test_pocketfft:   148 passed, 0 failed   (0 xfailed — was 34, fixed all)
     test_polynomial:  600 passed, 0 failed   (2 xfailed)
-    test_random:    1,319 passed, 0 failed  (8 xfailed — counted wrapper signatures)
+    test_random:      135 passed, 0 failed   (7 xfailed — was 8, fixed shuffle)
 
 What we patch (55 functions):
     Non-ufunc reductions and special functions (all, any, amax, amin,
@@ -42,104 +42,21 @@ XFAIL_PATTERNS: dict[str, str] = {
     # ------------------------------------------------------------------ #
     # test_numeric.py — isclose divergences                               #
     # ------------------------------------------------------------------ #
-    # mechestim's isclose is a counted wrapper that doesn't support all
-    # kwargs/edge cases that numpy.isclose does (timedelta, masked arrays,
-    # inplace output, scalar return type preservation, NEP 50 promotion).
-    "*TestIsclose::test_non_finite_scalar": (
-        "NOT_IMPLEMENTED: mechestim isclose doesn't preserve scalar return type"
-    ),
+    # mechestim's isclose is a counted wrapper; NEP 50 promotion not supported.
     "*TestIsclose::test_nep50_isclose": (
         "NOT_IMPLEMENTED: mechestim isclose doesn't support NEP 50 promotion"
-    ),
-    "*TestIsclose::test_ip_none_isclose": (
-        "NOT_IMPLEMENTED: mechestim isclose budget deduction changes behavior"
-    ),
-    "*TestIsclose::test_ip_isclose": (
-        "NOT_IMPLEMENTED: mechestim isclose budget deduction changes behavior"
-    ),
-    "*TestIsclose::test_timedelta": (
-        "UNSUPPORTED_DTYPE: mechestim isclose doesn't support timedelta dtype"
-    ),
-    "*TestIsclose::test_equal_nan": (
-        "NOT_IMPLEMENTED: mechestim isclose budget deduction changes behavior"
-    ),
-    "*TestIsclose::test_scalar_return": (
-        "NOT_IMPLEMENTED: mechestim isclose doesn't preserve scalar return type"
-    ),
-    "*TestIsclose::test_ip_isclose_allclose": (
-        "NOT_IMPLEMENTED: mechestim isclose budget deduction changes behavior"
-    ),
-    "*TestIsclose::test_masked_arrays": (
-        "NOT_IMPLEMENTED: mechestim isclose doesn't support masked arrays"
-    ),
-    "*TestIsclose::test_ip_all_isclose": (
-        "NOT_IMPLEMENTED: mechestim isclose budget deduction changes behavior"
-    ),
-    "*TestIsclose::test_no_parameter_modification": (
-        "NOT_IMPLEMENTED: mechestim isclose budget deduction changes behavior"
-    ),
-    "*TestNonarrayArgs::test_round": (
-        "NOT_IMPLEMENTED: mechestim round doesn't support non-array scalar args"
     ),
     # ------------------------------------------------------------------ #
     # test_numeric.py — new divergences from expanded numpy patching      #
     # ------------------------------------------------------------------ #
-    "*test_out_of_bound_pyints*": (
-        "NOT_IMPLEMENTED: mechestim round/clip don't handle out-of-bound Python ints the same way"
-    ),
     "*TestTensordot::test_zero_dimension": (
         "NOT_IMPLEMENTED: mechestim clip doesn't handle 0-d arrays identically"
     ),
-    "*TestNonarrayArgs::test_reshape_shape_arg": (
-        "NOT_IMPLEMENTED: mechestim reshape doesn't support shape= kwarg"
-    ),
-    "*test_outer_out_param": (
-        "NOT_IMPLEMENTED: mechestim outer doesn't support out= kwarg"
-    ),
-    "*TestClip::test_ones_pathological*": (
-        "NOT_IMPLEMENTED: mechestim ones edge case with pathological dtypes"
-    ),
-    "*TestClip::test_object_clip": (
-        "NOT_IMPLEMENTED: mechestim clip doesn't support object dtype"
-    ),
-    "*TestClip::test_clip_problem_cases*": (
-        "NOT_IMPLEMENTED: mechestim clip edge cases differ"
-    ),
     "*TestClip::test_clip_min_max_args": (
-        "NOT_IMPLEMENTED: mechestim clip min/max kwarg handling differs"
-    ),
-    "*TestClip::test_clip_func_takes_out": (
-        "NOT_IMPLEMENTED: mechestim clip doesn't support out= kwarg"
-    ),
-    "*TestClip::test_clip_all_none": (
-        "NOT_IMPLEMENTED: mechestim clip(a, None, None) behavior differs"
+        "NOT_IMPLEMENTED: mechestim clip doesn't enforce strict a_min/a_max/min/max argument validation"
     ),
     "*TestAsType::test_astype": (
         "NOT_IMPLEMENTED: mechestim free ops astype behavior differs"
-    ),
-    # ------------------------------------------------------------------ #
-    # test_pocketfft.py — out= kwarg and s=None handling                 #
-    # ------------------------------------------------------------------ #
-    "*TestFFT1D::test_fft_out_argument*": (
-        "NOT_IMPLEMENTED: mechestim FFT functions don't support out= kwarg"
-    ),
-    "*TestFFT1D::test_fftn_out_argument*": (
-        "NOT_IMPLEMENTED: mechestim FFT functions don't support out= kwarg"
-    ),
-    "*TestFFT1D::test_fft_inplace_out*": (
-        "NOT_IMPLEMENTED: mechestim FFT functions don't support out= kwarg"
-    ),
-    "*TestFFT1D::test_fft_bad_out": (
-        "NOT_IMPLEMENTED: mechestim FFT functions don't support out= kwarg"
-    ),
-    "*TestFFT1D::test_s_contains_none*": (
-        "NOT_IMPLEMENTED: mechestim FFT functions don't handle s=None per-axis"
-    ),
-    "*TestFFT1D::test_fftn_out_and_s_interaction*": (
-        "NOT_IMPLEMENTED: mechestim FFT out= interaction"
-    ),
-    "*TestFFT1D::test_irfftn_out_and_s_interaction*": (
-        "NOT_IMPLEMENTED: mechestim FFT out= interaction"
     ),
     # ------------------------------------------------------------------ #
     # test_linalg.py — failures from expanded submodule patching          #
@@ -267,10 +184,7 @@ XFAIL_PATTERNS: dict[str, str] = {
     "*TestRandint::test_full_range": (
         "WRAPPER_SIGNATURE: mechestim randint is a plain function, not a bound method"
     ),
-    "*TestRandomDist::test_shuffle": (
-        "WRAPPER_SIGNATURE: mechestim shuffle is a counted wrapper with different signature"
-    ),
-    "*TestRandomDist::test_shuffle_untyped_warning*": (
-        "WRAPPER_SIGNATURE: mechestim shuffle is a counted wrapper with different signature"
+    "TestRandomDist::test_shuffle_untyped_warning[numpy.random]": (
+        "WRAPPER_SIGNATURE: warning filename points to mechestim wrapper, not test file"
     ),
 }

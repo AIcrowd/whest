@@ -194,13 +194,16 @@ def permutation(x):
     return _npr.permutation(x)
 
 
-def shuffle(x):
+def shuffle(x, axis=0):
     """Counted version of ``numpy.random.shuffle``.
 
     Modifies ``x`` in-place. Cost: sort_cost(n) = n * ceil(log2(n)) FLOPs.
     """
     budget = require_budget()
-    n = x.shape[0]
+    if hasattr(x, "shape"):
+        n = x.shape[axis]
+    else:
+        n = len(x)
     cost = sort_cost(n)
     budget.deduct("random.shuffle", flop_cost=cost, subscripts=None, shapes=((n,),))
     _npr.shuffle(x)
