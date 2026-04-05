@@ -20,7 +20,7 @@ half of complex transforms.
 import mechestim as me
 
 with me.BudgetContext(flop_budget=1_000_000) as budget:
-    signal = me.random.randn(1024)    # 1024 FLOPs
+    signal = me.random.randn(1024)    # free
     spectrum = me.fft.fft(signal)     # 5 * 1024 * 10 = 51,200 FLOPs
     freqs = me.fft.fftfreq(1024)      # free
     print(f"FFT cost: {budget.flops_used:,}")  # 51,200

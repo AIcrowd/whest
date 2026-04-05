@@ -9,7 +9,7 @@
 - All counted operations require an active `BudgetContext`
 - Budget is checked *before* execution — exceeding it raises `BudgetExhaustedError`
 - 32 operations are blocked (I/O, config, state functions)
-- `sort`, `argsort`, `trace`, `random.*` sampling, set ops are now **counted** (not free)
+- `sort`, `argsort`, `trace` are **free** (0 FLOPs) — this may be surprising
 
 ## Cost by Category
 
@@ -26,13 +26,13 @@
 
 | Operation | Cost Formula | Notes |
 |-----------|-------------|-------|
-| `allclose` | $\text{numel}(a)$ | Element-wise comparison within tolerance. |
-| `argpartition` | $n \cdot \lceil\log_2 n\rceil$ | Indirect partial sort per slice. |
-| `argsort` | $n \cdot \lceil\log_2 n\rceil$ | Indirect sort per slice. |
-| `array_equal` | $\text{numel}(a)$ | Shape and element equality test. |
-| `array_equiv` | $\text{numel}(a)$ | Shape-consistent element equality test. |
+| `allclose` | varies | Element-wise tolerance check; cost = numel(a). |
+| `argpartition` | varies | Indirect partition; cost = n per slice. |
+| `argsort` | varies | Indirect sort; cost = n*ceil(log2(n)) per slice. |
+| `array_equal` | varies | Element-wise equality; cost = numel(a). |
+| `array_equiv` | varies | Element-wise equivalence; cost = numel(a). |
 | `bartlett` | $n$ | Bartlett window. Cost: n (one linear eval per sample). |
-| `bincount` | $\text{numel}(x)$ | Count occurrences of non-negative integers. |
+| `bincount` | varies | Integer counting; cost = numel(x). |
 | `blackman` | $3n$ | Blackman window. Cost: 3*n (three cosine terms per sample). |
 | `clip` | $\text{numel}(\text{input})$ | Clip array to [a_min, a_max] element-wise. |
 | `convolve` | $n \cdot m$ | 1-D discrete convolution. |
@@ -41,7 +41,7 @@
 | `cov` | $n^2 \cdot m$ | Covariance matrix. |
 | `cross` | $\text{numel}(\text{output})$ | Cross product of two 3-D vectors. |
 | `diff` | $\text{numel}(\text{input})$ | n-th discrete difference along axis. |
-| `digitize` | $m \cdot \lceil\log_2 n\rceil$ | Bin indices via binary search. |
+| `digitize` | varies | Bin search; cost = n*ceil(log2(bins)). |
 | `dot` | $2 \cdot m \cdot k \cdot n$ | Dot product; cost = 2*M*N*K for matrix multiply. |
 | `ediff1d` | $\text{numel}(\text{input})$ | Differences between consecutive elements. |
 | `einsum` | $\text{op\_factor} \cdot \prod_i d_i$ | Generalized Einstein summation. |
@@ -60,22 +60,22 @@
 | `fft.rfft` | $5(n/2) \cdot \lceil\log_2 n\rceil$ | 1-D real FFT. Cost: 5*(n//2)*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 §1.4). |
 | `fft.rfft2` | $5(N/2) \cdot \lceil\log_2 N\rceil$ | 2-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 §1.4). |
 | `fft.rfftn` | $5(N/2) \cdot \lceil\log_2 N\rceil$ | N-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 §1.4). |
-| `geomspace` | $\text{numel}(\text{output})$ | Geometric sequence generation. |
+| `geomspace` | varies | Geometric-spaced generation; cost = num. |
 | `gradient` | $\text{numel}(\text{input})$ | Gradient using central differences. |
 | `hamming` | $n$ | Hamming window. Cost: n (one cosine per sample). |
 | `hanning` | $n$ | Hanning window. Cost: n (one cosine per sample). |
-| `histogram` | $\text{numel}(a) \cdot \lceil\log_2(\text{bins})\rceil$ | Histogram of array data. |
-| `histogram2d` | $\text{numel}(x) \cdot \lceil\log_2(\text{bins})\rceil$ | 2-D histogram. |
-| `histogram_bin_edges` | $\text{numel}(a)$ | Compute histogram bin edges. |
-| `histogramdd` | $\text{numel}(\text{sample}) \cdot \lceil\log_2(\text{bins})\rceil$ | Multi-dimensional histogram. |
-| `in1d` | $(n+m) \cdot \lceil\log_2(n+m)\rceil$ | Test membership in 1-D array. |
+| `histogram` | varies | Binning; cost = n*ceil(log2(bins)). |
+| `histogram2d` | varies | 2D binning; cost = n*(ceil(log2(bx))+ceil(log2(by))). |
+| `histogram_bin_edges` | varies | Bin edge computation; cost = numel(a). |
+| `histogramdd` | varies | ND binning; cost = n*sum(ceil(log2(b_i))). |
+| `in1d` | varies | Set membership; cost = (n+m)*ceil(log2(n+m)). |
 | `inner` | $n$ | Inner product; cost = 2*N for 1-D, 2*N*M for n-D. |
 | `interp` | $n \cdot \log m$ | 1-D linear interpolation. |
-| `intersect1d` | $(n+m) \cdot \lceil\log_2(n+m)\rceil$ | Intersection of two sorted arrays. |
-| `isin` | $(n+m) \cdot \lceil\log_2(n+m)\rceil$ | Test membership element-wise. |
+| `intersect1d` | varies | Set intersection; cost = (n+m)*ceil(log2(n+m)). |
+| `isin` | varies | Set membership; cost = (n+m)*ceil(log2(n+m)). |
 | `kaiser` | $3n$ | Kaiser window. Cost: 3*n (Bessel function eval per sample). |
 | `kron` | $m_1 m_2 \cdot n_1 n_2$ | Kronecker product; cost proportional to output size. |
-| `lexsort` | $n \cdot \lceil\log_2 n\rceil$ | Indirect stable sort on multiple keys per slice. |
+| `lexsort` | varies | Multi-key sort; cost = k*n*ceil(log2(n)). |
 | `linalg.cholesky` | $n^3 / 3$ | Cholesky decomposition. Cost: $n^3/3$ (Golub & Van Loan §4.2). |
 | `linalg.cond` | $m \cdot n \cdot \min(m,n)$ | Condition number. Cost: m*n*min(m,n) (via SVD). |
 | `linalg.det` | $n^3$ | Determinant. Cost: $n^3$ (LU factorization). |
@@ -100,10 +100,10 @@
 | `linalg.tensorsolve` | $n^3$ | Tensor solve. Cost: $n^3$ after reshape (delegates to solve). |
 | `linalg.trace` | $n$ | Matrix trace. Cost: n (sum of diagonal elements). |
 | `linalg.vector_norm` | $n$ or $2n$ | Vector norm. Cost: numel (or 2*numel for general p-norm). |
-| `logspace` | $\text{numel}(\text{output})$ | Logarithmic sequence generation. |
+| `logspace` | varies | Log-spaced generation; cost = num. |
 | `matmul` | $2 \cdot m \cdot k \cdot n$ | Matrix multiplication; cost = 2*M*N*K. |
 | `outer` | $m \cdot n$ | Outer product of two vectors; cost = M*N. |
-| `partition` | $n \cdot \lceil\log_2 n\rceil$ | Partial sort per slice. |
+| `partition` | varies | Quickselect; cost = n per slice. |
 | `poly` | $n^2$ | Polynomial from roots. Cost: $n^2$ FLOPs. |
 | `polyadd` | $\max(n_1, n_2)$ | Add two polynomials. Cost: max(n1, n2) FLOPs. |
 | `polyder` | $n$ | Differentiate polynomial. Cost: n FLOPs. |
@@ -113,26 +113,70 @@
 | `polymul` | $n_1 \cdot n_2$ | Multiply polynomials. Cost: n1 * n2 FLOPs. |
 | `polysub` | $\max(n_1, n_2)$ | Difference (subtraction) of two polynomials. Cost: max(n1, n2) FLOPs. |
 | `polyval` | $2 \cdot m \cdot \text{deg}$ | Evaluate polynomial at given points. Cost: 2 * m * deg FLOPs (Horner's method). |
-| `random.*` (sampling) | $\text{numel}(\text{output})$ | All sampling ops: beta, binomial, normal, uniform, etc. |
-| `random.permutation` | $n \cdot \lceil\log_2 n\rceil$ | Random permutation. |
-| `random.shuffle` | $n \cdot \lceil\log_2 n\rceil$ | Shuffle array in-place. |
+| `random.beta` | varies | Sampling; cost = numel(output). |
+| `random.binomial` | varies | Sampling; cost = numel(output). |
+| `random.bytes` | varies | Sampling; cost = numel(output). |
+| `random.chisquare` | varies | Sampling; cost = numel(output). |
+| `random.choice` | varies | Sampling; cost = numel(output) if replace, n*ceil(log2(n)) if not. |
+| `random.dirichlet` | varies | Sampling; cost = numel(output). |
+| `random.exponential` | varies | Sampling; cost = numel(output). |
+| `random.f` | varies | Sampling; cost = numel(output). |
+| `random.gamma` | varies | Sampling; cost = numel(output). |
+| `random.geometric` | varies | Sampling; cost = numel(output). |
+| `random.gumbel` | varies | Sampling; cost = numel(output). |
+| `random.hypergeometric` | varies | Sampling; cost = numel(output). |
+| `random.laplace` | varies | Sampling; cost = numel(output). |
+| `random.logistic` | varies | Sampling; cost = numel(output). |
+| `random.lognormal` | varies | Sampling; cost = numel(output). |
+| `random.logseries` | varies | Sampling; cost = numel(output). |
+| `random.multinomial` | varies | Sampling; cost = numel(output). |
+| `random.multivariate_normal` | varies | Sampling; cost = numel(output). |
+| `random.negative_binomial` | varies | Sampling; cost = numel(output). |
+| `random.noncentral_chisquare` | varies | Sampling; cost = numel(output). |
+| `random.noncentral_f` | varies | Sampling; cost = numel(output). |
+| `random.normal` | varies | Sampling; cost = numel(output). |
+| `random.pareto` | varies | Sampling; cost = numel(output). |
+| `random.permutation` | varies | Shuffle; cost = n*ceil(log2(n)). |
+| `random.poisson` | varies | Sampling; cost = numel(output). |
+| `random.power` | varies | Sampling; cost = numel(output). |
+| `random.rand` | varies | Sampling; cost = numel(output). |
+| `random.randint` | varies | Sampling; cost = numel(output). |
+| `random.randn` | varies | Sampling; cost = numel(output). |
+| `random.random` | varies | Sampling; cost = numel(output). |
+| `random.random_integers` | varies | Sampling; cost = numel(output). |
+| `random.random_sample` | varies | Sampling; cost = numel(output). |
+| `random.ranf` | varies | Sampling; cost = numel(output). |
+| `random.rayleigh` | varies | Sampling; cost = numel(output). |
+| `random.sample` | varies | Sampling; cost = numel(output). |
+| `random.shuffle` | varies | Shuffle; cost = n*ceil(log2(n)). |
+| `random.standard_cauchy` | varies | Sampling; cost = numel(output). |
+| `random.standard_exponential` | varies | Sampling; cost = numel(output). |
+| `random.standard_gamma` | varies | Sampling; cost = numel(output). |
+| `random.standard_normal` | varies | Sampling; cost = numel(output). |
+| `random.standard_t` | varies | Sampling; cost = numel(output). |
+| `random.triangular` | varies | Sampling; cost = numel(output). |
+| `random.uniform` | varies | Sampling; cost = numel(output). |
+| `random.vonmises` | varies | Sampling; cost = numel(output). |
+| `random.wald` | varies | Sampling; cost = numel(output). |
+| `random.weibull` | varies | Sampling; cost = numel(output). |
+| `random.zipf` | varies | Sampling; cost = numel(output). |
 | `roots` | $10n^3$ | Return roots of polynomial with given coefficients. Cost: $10n^3$ FLOPs (companion matrix eig). |
-| `searchsorted` | $m \cdot \lceil\log_2 n\rceil$ | Binary search in sorted array. |
-| `setdiff1d` | $(n+m) \cdot \lceil\log_2(n+m)\rceil$ | Set difference of two arrays. |
-| `setxor1d` | $(n+m) \cdot \lceil\log_2(n+m)\rceil$ | Symmetric set difference. |
-| `sort` | $n \cdot \lceil\log_2 n\rceil$ | Sort per slice. |
+| `searchsorted` | varies | Binary search; cost = m*ceil(log2(n)). |
+| `setdiff1d` | varies | Set difference; cost = (n+m)*ceil(log2(n+m)). |
+| `setxor1d` | varies | Symmetric set difference; cost = (n+m)*ceil(log2(n+m)). |
+| `sort` | varies | Comparison sort; cost = n*ceil(log2(n)) per slice. |
 | `tensordot` | $\prod_i d_i$ | Tensor dot product along specified axes. |
+| `trace` | varies | Diagonal sum; cost = min(n,m). |
 | `trapezoid` | $\text{numel}(\text{input})$ | Integrate using the trapezoidal rule. |
-| `trace` | $\min(n,m)$ | Matrix trace (sum of diagonal). |
 | `trapz` | $\text{numel}(\text{input})$ | Alias for trapezoid (deprecated). |
-| `union1d` | $(n+m) \cdot \lceil\log_2(n+m)\rceil$ | Union of two arrays. |
-| `unique` | $n \cdot \lceil\log_2 n\rceil$ | Find unique elements (sort-based). |
-| `unique_all` | $n \cdot \lceil\log_2 n\rceil$ | Unique elements with indices and counts. |
-| `unique_counts` | $n \cdot \lceil\log_2 n\rceil$ | Unique elements with counts. |
-| `unique_inverse` | $n \cdot \lceil\log_2 n\rceil$ | Unique elements with inverse indices. |
-| `unique_values` | $n \cdot \lceil\log_2 n\rceil$ | Unique values only. |
+| `union1d` | varies | Set union; cost = (n+m)*ceil(log2(n+m)). |
+| `unique` | varies | Sort-based unique; cost = n*ceil(log2(n)). |
+| `unique_all` | varies | Sort-based unique; cost = n*ceil(log2(n)). |
+| `unique_counts` | varies | Sort-based unique; cost = n*ceil(log2(n)). |
+| `unique_inverse` | varies | Sort-based unique; cost = n*ceil(log2(n)). |
+| `unique_values` | varies | Sort-based unique; cost = n*ceil(log2(n)). |
 | `unwrap` | $\text{numel}(\text{input})$ | Phase unwrap. Cost: $\text{numel}(\text{input})$ (diff + conditional adjustment). |
-| `vander` | $n \cdot m$ | Vandermonde matrix. |
+| `vander` | varies | Vandermonde matrix; cost = len(x)*(N-1). |
 | `vdot` | $n$ | Dot product with conjugation; cost = 2*N. |
 
 ## Free Operations (complete list)

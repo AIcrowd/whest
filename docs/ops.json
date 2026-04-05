@@ -84,12 +84,12 @@
       "mechestim_ref": "me.allclose",
       "numpy_ref": "np.allclose",
       "category": "counted_custom",
-      "cost_formula": "numel(a)",
-      "cost_formula_latex": "$\\text{numel}(a)$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Test whether two arrays are element-wise equal within tolerance."
+      "notes": "Element-wise tolerance check; cost = numel(a)."
     },
     {
       "name": "amax",
@@ -318,12 +318,12 @@
       "mechestim_ref": "me.argpartition",
       "numpy_ref": "np.argpartition",
       "category": "counted_custom",
-      "cost_formula": "n*ceil(log2(n)) per slice",
-      "cost_formula_latex": "$n \\cdot \\lceil\\log_2 n\\rceil$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Indirect partial sort returning indices."
+      "notes": "Indirect partition; cost = n per slice."
     },
     {
       "name": "argsort",
@@ -331,12 +331,12 @@
       "mechestim_ref": "me.argsort",
       "numpy_ref": "np.argsort",
       "category": "counted_custom",
-      "cost_formula": "n*ceil(log2(n)) per slice",
-      "cost_formula_latex": "$n \\cdot \\lceil\\log_2 n\\rceil$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Indirect sort returning indices."
+      "notes": "Indirect sort; cost = n*ceil(log2(n)) per slice."
     },
     {
       "name": "argwhere",
@@ -396,12 +396,12 @@
       "mechestim_ref": "me.array_equal",
       "numpy_ref": "np.array_equal",
       "category": "counted_custom",
-      "cost_formula": "numel(a)",
-      "cost_formula_latex": "$\\text{numel}(a)$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "True if two arrays have same shape and elements."
+      "notes": "Element-wise equality; cost = numel(a)."
     },
     {
       "name": "array_equiv",
@@ -409,12 +409,12 @@
       "mechestim_ref": "me.array_equiv",
       "numpy_ref": "np.array_equiv",
       "category": "counted_custom",
-      "cost_formula": "numel(a)",
-      "cost_formula_latex": "$\\text{numel}(a)$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "True if two arrays are shape-consistent and element-equal."
+      "notes": "Element-wise equivalence; cost = numel(a)."
     },
     {
       "name": "array_repr",
@@ -669,12 +669,12 @@
       "mechestim_ref": "me.bincount",
       "numpy_ref": "np.bincount",
       "category": "counted_custom",
-      "cost_formula": "numel(x)",
-      "cost_formula_latex": "$\\text{numel}(x)$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Count occurrences of non-negative integers."
+      "notes": "Integer counting; cost = numel(x)."
     },
     {
       "name": "bitwise_and",
@@ -1384,12 +1384,12 @@
       "mechestim_ref": "me.digitize",
       "numpy_ref": "np.digitize",
       "category": "counted_custom",
-      "cost_formula": "m*ceil(log2(n))",
-      "cost_formula_latex": "$m \\cdot \\lceil\\log_2 n\\rceil$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return indices of bins to which values belong."
+      "notes": "Bin search; cost = n*ceil(log2(bins))."
     },
     {
       "name": "divide",
@@ -2216,12 +2216,12 @@
       "mechestim_ref": "me.geomspace",
       "numpy_ref": "np.geomspace",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return numbers spaced evenly on log scale (geometric)."
+      "notes": "Geometric-spaced generation; cost = num."
     },
     {
       "name": "get_include",
@@ -2359,12 +2359,12 @@
       "mechestim_ref": "me.histogram",
       "numpy_ref": "np.histogram",
       "category": "counted_custom",
-      "cost_formula": "numel(a)*ceil(log2(bins))",
-      "cost_formula_latex": "$\\text{numel}(a) \\cdot \\lceil\\log_2(\\text{bins})\\rceil$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Compute histogram of dataset."
+      "notes": "Binning; cost = n*ceil(log2(bins))."
     },
     {
       "name": "histogram2d",
@@ -2372,12 +2372,12 @@
       "mechestim_ref": "me.histogram2d",
       "numpy_ref": "np.histogram2d",
       "category": "counted_custom",
-      "cost_formula": "numel(x)*ceil(log2(bins))",
-      "cost_formula_latex": "$\\text{numel}(x) \\cdot \\lceil\\log_2(\\text{bins})\\rceil$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Compute 2-D histogram."
+      "notes": "2D binning; cost = n*(ceil(log2(bx))+ceil(log2(by)))."
     },
     {
       "name": "histogram_bin_edges",
@@ -2385,12 +2385,12 @@
       "mechestim_ref": "me.histogram_bin_edges",
       "numpy_ref": "np.histogram_bin_edges",
       "category": "counted_custom",
-      "cost_formula": "numel(a)",
-      "cost_formula_latex": "$\\text{numel}(a)$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Compute bin edges for histogram."
+      "notes": "Bin edge computation; cost = numel(a)."
     },
     {
       "name": "histogramdd",
@@ -2398,12 +2398,12 @@
       "mechestim_ref": "me.histogramdd",
       "numpy_ref": "np.histogramdd",
       "category": "counted_custom",
-      "cost_formula": "numel(sample)*ceil(log2(bins))",
-      "cost_formula_latex": "$\\text{numel}(\\text{sample}) \\cdot \\lceil\\log_2(\\text{bins})\\rceil$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Compute multi-dimensional histogram."
+      "notes": "ND binning; cost = n*sum(ceil(log2(b_i)))."
     },
     {
       "name": "hsplit",
@@ -2489,12 +2489,12 @@
       "mechestim_ref": "me.in1d",
       "numpy_ref": "np.in1d",
       "category": "counted_custom",
-      "cost_formula": "(n+m)*ceil(log2(n+m))",
-      "cost_formula_latex": "$(n+m) \\cdot \\lceil\\log_2(n+m)\\rceil$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Test whether each element of 1-D array is in another."
+      "notes": "Set membership; cost = (n+m)*ceil(log2(n+m))."
     },
     {
       "name": "indices",
@@ -2554,12 +2554,12 @@
       "mechestim_ref": "me.intersect1d",
       "numpy_ref": "np.intersect1d",
       "category": "counted_custom",
-      "cost_formula": "(n+m)*ceil(log2(n+m))",
-      "cost_formula_latex": "$(n+m) \\cdot \\lceil\\log_2(n+m)\\rceil$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Intersection of two arrays."
+      "notes": "Set intersection; cost = (n+m)*ceil(log2(n+m))."
     },
     {
       "name": "invert",
@@ -2671,12 +2671,12 @@
       "mechestim_ref": "me.isin",
       "numpy_ref": "np.isin",
       "category": "counted_custom",
-      "cost_formula": "(n+m)*ceil(log2(n+m))",
-      "cost_formula_latex": "$(n+m) \\cdot \\lceil\\log_2(n+m)\\rceil$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Test element-wise membership in array."
+      "notes": "Set membership; cost = (n+m)*ceil(log2(n+m))."
     },
     {
       "name": "isinf",
@@ -2918,12 +2918,12 @@
       "mechestim_ref": "me.lexsort",
       "numpy_ref": "np.lexsort",
       "category": "counted_custom",
-      "cost_formula": "n*ceil(log2(n)) per slice",
-      "cost_formula_latex": "$n \\cdot \\lceil\\log_2 n\\rceil$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Indirect stable sort using sequence of keys."
+      "notes": "Multi-key sort; cost = k*n*ceil(log2(n))."
     },
     {
       "name": "linalg.cholesky",
@@ -3503,12 +3503,12 @@
       "mechestim_ref": "me.logspace",
       "numpy_ref": "np.logspace",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return numbers spaced evenly on log scale."
+      "notes": "Log-spaced generation; cost = num."
     },
     {
       "name": "mask_indices",
@@ -4075,12 +4075,12 @@
       "mechestim_ref": "me.partition",
       "numpy_ref": "np.partition",
       "category": "counted_custom",
-      "cost_formula": "n*ceil(log2(n)) per slice",
-      "cost_formula_latex": "$n \\cdot \\lceil\\log_2 n\\rceil$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Partial sort of array."
+      "notes": "Quickselect; cost = n per slice."
     },
     {
       "name": "percentile",
@@ -4413,12 +4413,12 @@
       "mechestim_ref": "me.random.beta",
       "numpy_ref": "np.random.beta",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from Beta distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.binomial",
@@ -4426,12 +4426,12 @@
       "mechestim_ref": "me.random.binomial",
       "numpy_ref": "np.random.binomial",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from binomial distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.bytes",
@@ -4439,12 +4439,12 @@
       "mechestim_ref": "me.random.bytes",
       "numpy_ref": "np.random.bytes",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return random bytes."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.chisquare",
@@ -4452,12 +4452,12 @@
       "mechestim_ref": "me.random.chisquare",
       "numpy_ref": "np.random.chisquare",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from chi-square distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.choice",
@@ -4465,12 +4465,12 @@
       "mechestim_ref": "me.random.choice",
       "numpy_ref": "np.random.choice",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Random sample from given 1-D array."
+      "notes": "Sampling; cost = numel(output) if replace, n*ceil(log2(n)) if not."
     },
     {
       "name": "random.default_rng",
@@ -4491,12 +4491,12 @@
       "mechestim_ref": "me.random.dirichlet",
       "numpy_ref": "np.random.dirichlet",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from Dirichlet distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.exponential",
@@ -4504,12 +4504,12 @@
       "mechestim_ref": "me.random.exponential",
       "numpy_ref": "np.random.exponential",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from exponential distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.f",
@@ -4517,12 +4517,12 @@
       "mechestim_ref": "me.random.f",
       "numpy_ref": "np.random.f",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from F distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.gamma",
@@ -4530,12 +4530,12 @@
       "mechestim_ref": "me.random.gamma",
       "numpy_ref": "np.random.gamma",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from Gamma distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.geometric",
@@ -4543,12 +4543,12 @@
       "mechestim_ref": "me.random.geometric",
       "numpy_ref": "np.random.geometric",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from geometric distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.get_state",
@@ -4569,12 +4569,12 @@
       "mechestim_ref": "me.random.gumbel",
       "numpy_ref": "np.random.gumbel",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from Gumbel distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.hypergeometric",
@@ -4582,12 +4582,12 @@
       "mechestim_ref": "me.random.hypergeometric",
       "numpy_ref": "np.random.hypergeometric",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from hypergeometric distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.laplace",
@@ -4595,12 +4595,12 @@
       "mechestim_ref": "me.random.laplace",
       "numpy_ref": "np.random.laplace",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from Laplace distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.logistic",
@@ -4608,12 +4608,12 @@
       "mechestim_ref": "me.random.logistic",
       "numpy_ref": "np.random.logistic",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from logistic distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.lognormal",
@@ -4621,12 +4621,12 @@
       "mechestim_ref": "me.random.lognormal",
       "numpy_ref": "np.random.lognormal",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from log-normal distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.logseries",
@@ -4634,12 +4634,12 @@
       "mechestim_ref": "me.random.logseries",
       "numpy_ref": "np.random.logseries",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from logarithmic series distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.multinomial",
@@ -4647,12 +4647,12 @@
       "mechestim_ref": "me.random.multinomial",
       "numpy_ref": "np.random.multinomial",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from multinomial distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.multivariate_normal",
@@ -4660,12 +4660,12 @@
       "mechestim_ref": "me.random.multivariate_normal",
       "numpy_ref": "np.random.multivariate_normal",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from multivariate normal distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.negative_binomial",
@@ -4673,12 +4673,12 @@
       "mechestim_ref": "me.random.negative_binomial",
       "numpy_ref": "np.random.negative_binomial",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from negative binomial distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.noncentral_chisquare",
@@ -4686,12 +4686,12 @@
       "mechestim_ref": "me.random.noncentral_chisquare",
       "numpy_ref": "np.random.noncentral_chisquare",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from noncentral chi-square distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.noncentral_f",
@@ -4699,12 +4699,12 @@
       "mechestim_ref": "me.random.noncentral_f",
       "numpy_ref": "np.random.noncentral_f",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from noncentral F distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.normal",
@@ -4712,12 +4712,12 @@
       "mechestim_ref": "me.random.normal",
       "numpy_ref": "np.random.normal",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from normal (Gaussian) distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.pareto",
@@ -4725,12 +4725,12 @@
       "mechestim_ref": "me.random.pareto",
       "numpy_ref": "np.random.pareto",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from Pareto distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.permutation",
@@ -4738,12 +4738,12 @@
       "mechestim_ref": "me.random.permutation",
       "numpy_ref": "np.random.permutation",
       "category": "counted_custom",
-      "cost_formula": "n*ceil(log2(n))",
-      "cost_formula_latex": "$n \\cdot \\lceil\\log_2 n\\rceil$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Randomly permute sequence or return permuted range."
+      "notes": "Shuffle; cost = n*ceil(log2(n))."
     },
     {
       "name": "random.poisson",
@@ -4751,12 +4751,12 @@
       "mechestim_ref": "me.random.poisson",
       "numpy_ref": "np.random.poisson",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from Poisson distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.power",
@@ -4764,12 +4764,12 @@
       "mechestim_ref": "me.random.power",
       "numpy_ref": "np.random.power",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from power distribution with positive exponent."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.rand",
@@ -4777,12 +4777,12 @@
       "mechestim_ref": "me.random.rand",
       "numpy_ref": "np.random.rand",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Random values in [0, 1)."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.randint",
@@ -4790,12 +4790,12 @@
       "mechestim_ref": "me.random.randint",
       "numpy_ref": "np.random.randint",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Random integers from low (inclusive) to high (exclusive)."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.randn",
@@ -4803,12 +4803,12 @@
       "mechestim_ref": "me.random.randn",
       "numpy_ref": "np.random.randn",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sample from standard normal distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.random",
@@ -4816,12 +4816,12 @@
       "mechestim_ref": "me.random.random",
       "numpy_ref": "np.random.random",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Random floats in [0.0, 1.0)."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.random_integers",
@@ -4829,12 +4829,12 @@
       "mechestim_ref": "me.random.random_integers",
       "numpy_ref": "np.random.random_integers",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Random integers from low to high (inclusive, deprecated)."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.random_sample",
@@ -4842,12 +4842,12 @@
       "mechestim_ref": "me.random.random_sample",
       "numpy_ref": "np.random.random_sample",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Random floats in [0.0, 1.0) (alias for random.random)."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.ranf",
@@ -4855,12 +4855,12 @@
       "mechestim_ref": "me.random.ranf",
       "numpy_ref": "np.random.ranf",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Random floats in [0.0, 1.0) (alias)."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.rayleigh",
@@ -4868,12 +4868,12 @@
       "mechestim_ref": "me.random.rayleigh",
       "numpy_ref": "np.random.rayleigh",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from Rayleigh distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.sample",
@@ -4881,12 +4881,12 @@
       "mechestim_ref": "me.random.sample",
       "numpy_ref": "np.random.sample",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Random floats in [0.0, 1.0) (alias)."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.seed",
@@ -4920,12 +4920,12 @@
       "mechestim_ref": "me.random.shuffle",
       "numpy_ref": "np.random.shuffle",
       "category": "counted_custom",
-      "cost_formula": "n*ceil(log2(n))",
-      "cost_formula_latex": "$n \\cdot \\lceil\\log_2 n\\rceil$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Modify sequence in-place by shuffling."
+      "notes": "Shuffle; cost = n*ceil(log2(n))."
     },
     {
       "name": "random.standard_cauchy",
@@ -4933,12 +4933,12 @@
       "mechestim_ref": "me.random.standard_cauchy",
       "numpy_ref": "np.random.standard_cauchy",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from standard Cauchy distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.standard_exponential",
@@ -4946,12 +4946,12 @@
       "mechestim_ref": "me.random.standard_exponential",
       "numpy_ref": "np.random.standard_exponential",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from standard exponential distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.standard_gamma",
@@ -4959,12 +4959,12 @@
       "mechestim_ref": "me.random.standard_gamma",
       "numpy_ref": "np.random.standard_gamma",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from standard Gamma distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.standard_normal",
@@ -4972,12 +4972,12 @@
       "mechestim_ref": "me.random.standard_normal",
       "numpy_ref": "np.random.standard_normal",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from standard normal distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.standard_t",
@@ -4985,12 +4985,12 @@
       "mechestim_ref": "me.random.standard_t",
       "numpy_ref": "np.random.standard_t",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from standard Student's t distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.triangular",
@@ -4998,12 +4998,12 @@
       "mechestim_ref": "me.random.triangular",
       "numpy_ref": "np.random.triangular",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from triangular distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.uniform",
@@ -5011,12 +5011,12 @@
       "mechestim_ref": "me.random.uniform",
       "numpy_ref": "np.random.uniform",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from uniform distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.vonmises",
@@ -5024,12 +5024,12 @@
       "mechestim_ref": "me.random.vonmises",
       "numpy_ref": "np.random.vonmises",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from von Mises distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.wald",
@@ -5037,12 +5037,12 @@
       "mechestim_ref": "me.random.wald",
       "numpy_ref": "np.random.wald",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from Wald (inverse Gaussian) distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.weibull",
@@ -5050,12 +5050,12 @@
       "mechestim_ref": "me.random.weibull",
       "numpy_ref": "np.random.weibull",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from Weibull distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "random.zipf",
@@ -5063,12 +5063,12 @@
       "mechestim_ref": "me.random.zipf",
       "numpy_ref": "np.random.zipf",
       "category": "counted_custom",
-      "cost_formula": "numel(output)",
-      "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Draw samples from Zipf distribution."
+      "notes": "Sampling; cost = numel(output)."
     },
     {
       "name": "ravel",
@@ -5375,12 +5375,12 @@
       "mechestim_ref": "me.searchsorted",
       "numpy_ref": "np.searchsorted",
       "category": "counted_custom",
-      "cost_formula": "m*ceil(log2(n))",
-      "cost_formula_latex": "$m \\cdot \\lceil\\log_2 n\\rceil$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Find insertion points to maintain sorted order."
+      "notes": "Binary search; cost = m*ceil(log2(n))."
     },
     {
       "name": "select",
@@ -5414,12 +5414,12 @@
       "mechestim_ref": "me.setdiff1d",
       "numpy_ref": "np.setdiff1d",
       "category": "counted_custom",
-      "cost_formula": "(n+m)*ceil(log2(n+m))",
-      "cost_formula_latex": "$(n+m) \\cdot \\lceil\\log_2(n+m)\\rceil$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Set difference of two arrays."
+      "notes": "Set difference; cost = (n+m)*ceil(log2(n+m))."
     },
     {
       "name": "seterr",
@@ -5453,12 +5453,12 @@
       "mechestim_ref": "me.setxor1d",
       "numpy_ref": "np.setxor1d",
       "category": "counted_custom",
-      "cost_formula": "(n+m)*ceil(log2(n+m))",
-      "cost_formula_latex": "$(n+m) \\cdot \\lceil\\log_2(n+m)\\rceil$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Exclusive-or (symmetric difference) of two arrays."
+      "notes": "Symmetric set difference; cost = (n+m)*ceil(log2(n+m))."
     },
     {
       "name": "shape",
@@ -5596,12 +5596,12 @@
       "mechestim_ref": "me.sort",
       "numpy_ref": "np.sort",
       "category": "counted_custom",
-      "cost_formula": "n*ceil(log2(n)) per slice",
-      "cost_formula_latex": "$n \\cdot \\lceil\\log_2 n\\rceil$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return sorted array."
+      "notes": "Comparison sort; cost = n*ceil(log2(n)) per slice."
     },
     {
       "name": "sort_complex",
@@ -5830,12 +5830,12 @@
       "mechestim_ref": "me.trace",
       "numpy_ref": "np.trace",
       "category": "counted_custom",
-      "cost_formula": "min(n,m)",
-      "cost_formula_latex": "$\\min(n,m)$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sum along diagonals."
+      "notes": "Diagonal sum; cost = min(n,m)."
     },
     {
       "name": "transpose",
@@ -6025,12 +6025,12 @@
       "mechestim_ref": "me.union1d",
       "numpy_ref": "np.union1d",
       "category": "counted_custom",
-      "cost_formula": "(n+m)*ceil(log2(n+m))",
-      "cost_formula_latex": "$(n+m) \\cdot \\lceil\\log_2(n+m)\\rceil$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Unique union of two arrays."
+      "notes": "Set union; cost = (n+m)*ceil(log2(n+m))."
     },
     {
       "name": "unique",
@@ -6038,12 +6038,12 @@
       "mechestim_ref": "me.unique",
       "numpy_ref": "np.unique",
       "category": "counted_custom",
-      "cost_formula": "n*ceil(log2(n))",
-      "cost_formula_latex": "$n \\cdot \\lceil\\log_2 n\\rceil$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Find unique elements of array."
+      "notes": "Sort-based unique; cost = n*ceil(log2(n))."
     },
     {
       "name": "unique_all",
@@ -6051,12 +6051,12 @@
       "mechestim_ref": "me.unique_all",
       "numpy_ref": "np.unique_all",
       "category": "counted_custom",
-      "cost_formula": "n*ceil(log2(n))",
-      "cost_formula_latex": "$n \\cdot \\lceil\\log_2 n\\rceil$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return unique values, indices, inverse, and counts (NumPy 2.x)."
+      "notes": "Sort-based unique; cost = n*ceil(log2(n))."
     },
     {
       "name": "unique_counts",
@@ -6064,12 +6064,12 @@
       "mechestim_ref": "me.unique_counts",
       "numpy_ref": "np.unique_counts",
       "category": "counted_custom",
-      "cost_formula": "n*ceil(log2(n))",
-      "cost_formula_latex": "$n \\cdot \\lceil\\log_2 n\\rceil$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return unique values and their counts (NumPy 2.x)."
+      "notes": "Sort-based unique; cost = n*ceil(log2(n))."
     },
     {
       "name": "unique_inverse",
@@ -6077,12 +6077,12 @@
       "mechestim_ref": "me.unique_inverse",
       "numpy_ref": "np.unique_inverse",
       "category": "counted_custom",
-      "cost_formula": "n*ceil(log2(n))",
-      "cost_formula_latex": "$n \\cdot \\lceil\\log_2 n\\rceil$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return unique values and inverse indices (NumPy 2.x)."
+      "notes": "Sort-based unique; cost = n*ceil(log2(n))."
     },
     {
       "name": "unique_values",
@@ -6090,12 +6090,12 @@
       "mechestim_ref": "me.unique_values",
       "numpy_ref": "np.unique_values",
       "category": "counted_custom",
-      "cost_formula": "n*ceil(log2(n))",
-      "cost_formula_latex": "$n \\cdot \\lceil\\log_2 n\\rceil$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return unique values without extra info (NumPy 2.x)."
+      "notes": "Sort-based unique; cost = n*ceil(log2(n))."
     },
     {
       "name": "unpackbits",
@@ -6155,12 +6155,12 @@
       "mechestim_ref": "me.vander",
       "numpy_ref": "np.vander",
       "category": "counted_custom",
-      "cost_formula": "n*m",
-      "cost_formula_latex": "$n \\cdot m$",
+      "cost_formula": "per-operation",
+      "cost_formula_latex": "varies",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Generate Vandermonde matrix."
+      "notes": "Vandermonde matrix; cost = len(x)*(N-1)."
     },
     {
       "name": "var",

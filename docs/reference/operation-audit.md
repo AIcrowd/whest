@@ -26,7 +26,7 @@ Generated from the operation registry (`_registry.py`).
 | `acosh` | `me.acosh` | `np.acosh` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Alias for arccosh (NumPy 2.x). |
 | `add` | `me.add` | `np.add` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise addition. |
 | `all` | `me.all` | `np.all` | counted_reduction | $\text{numel}(\text{input})$ | 🟡 supported | Test whether all array elements are true. |
-| `allclose` | `me.allclose` | `np.allclose` | counted_custom | $\text{numel}(a)$ | 🟠 supported | Element-wise comparison within tolerance. |
+| `allclose` | `me.allclose` | `np.allclose` | counted_custom | varies | 🟠 supported | Element-wise tolerance check; cost = numel(a). |
 | `amax` | `me.amax` | `np.amax` | counted_reduction | $\text{numel}(\text{input})$ | 🟡 supported | Maximum value of array (alias for max/numpy.amax). |
 | `amin` | `me.amin` | `np.amin` | counted_reduction | $\text{numel}(\text{input})$ | 🟡 supported | Minimum value of array (alias for min/numpy.amin). |
 | `angle` | `me.angle` | `np.angle` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Return angle of complex argument element-wise. |
@@ -44,14 +44,14 @@ Generated from the operation registry (`_registry.py`).
 | `arctanh` | `me.arctanh` | `np.arctanh` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise inverse hyperbolic tangent. |
 | `argmax` | `me.argmax` | `np.argmax` | counted_reduction | $\text{numel}(\text{input})$ | 🟡 supported | Index of maximum value. |
 | `argmin` | `me.argmin` | `np.argmin` | counted_reduction | $\text{numel}(\text{input})$ | 🟡 supported | Index of minimum value. |
-| `argpartition` | `me.argpartition` | `np.argpartition` | counted_custom | $n \cdot \lceil\log_2 n\rceil$ | 🟠 supported | Indirect partial sort per slice. |
-| `argsort` | `me.argsort` | `np.argsort` | counted_custom | $n \cdot \lceil\log_2 n\rceil$ | 🟠 supported | Indirect sort per slice. |
+| `argpartition` | `me.argpartition` | `np.argpartition` | counted_custom | varies | 🟠 supported | Indirect partition; cost = n per slice. |
+| `argsort` | `me.argsort` | `np.argsort` | counted_custom | varies | 🟠 supported | Indirect sort; cost = n*ceil(log2(n)) per slice. |
 | `argwhere` | `me.argwhere` | `np.argwhere` | free | $0$ | 🟢 supported | Find indices of non-zero elements. |
 | `around` | `me.around` | `np.around` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Alias for round. |
 | `array` | `me.array` | `np.array` | free | $0$ | 🟢 supported | Create array from data. |
 | `array2string` | — | `np.array2string` | blacklisted | N/A | 🔴 blocked | Return string representation of array. Not supported. |
-| `array_equal` | `me.array_equal` | `np.array_equal` | counted_custom | $\text{numel}(a)$ | 🟠 supported | Shape and element equality test. |
-| `array_equiv` | `me.array_equiv` | `np.array_equiv` | counted_custom | $\text{numel}(a)$ | 🟠 supported | Shape-consistent element equality test. |
+| `array_equal` | `me.array_equal` | `np.array_equal` | counted_custom | varies | 🟠 supported | Element-wise equality; cost = numel(a). |
+| `array_equiv` | `me.array_equiv` | `np.array_equiv` | counted_custom | varies | 🟠 supported | Element-wise equivalence; cost = numel(a). |
 | `array_repr` | — | `np.array_repr` | blacklisted | N/A | 🔴 blocked | Return string representation of array. Not supported. |
 | `array_split` | `me.array_split` | `np.array_split` | free | $0$ | 🟢 supported | Split array into sub-arrays (possibly unequal). |
 | `array_str` | — | `np.array_str` | blacklisted | N/A | 🔴 blocked | Return string representation of data in array. Not supported. |
@@ -71,7 +71,7 @@ Generated from the operation registry (`_registry.py`).
 | `bartlett` | `me.bartlett` | `np.bartlett` | counted_custom | $n$ | 🟠 supported | Bartlett window. Cost: n (one linear eval per sample). |
 | `base_repr` | `me.base_repr` | `np.base_repr` | free | $0$ | 🟢 supported | Return string representation of number in given base. |
 | `binary_repr` | `me.binary_repr` | `np.binary_repr` | free | $0$ | 🟢 supported | Return binary string representation of the input number. |
-| `bincount` | `me.bincount` | `np.bincount` | counted_custom | $\text{numel}(x)$ | 🟠 supported | Count occurrences of non-negative integers. |
+| `bincount` | `me.bincount` | `np.bincount` | counted_custom | varies | 🟠 supported | Integer counting; cost = numel(x). |
 | `bitwise_and` | `me.bitwise_and` | `np.bitwise_and` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise bitwise AND. |
 | `bitwise_count` | `me.bitwise_count` | `np.bitwise_count` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Count set bits element-wise (popcount). |
 | `bitwise_invert` | `me.bitwise_invert` | `np.bitwise_invert` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise bitwise invert (alias for bitwise_not). |
@@ -126,7 +126,7 @@ Generated from the operation registry (`_registry.py`).
 | `diagflat` | `me.diagflat` | `np.diagflat` | free | $0$ | 🟢 supported | Create diagonal array from flattened input. |
 | `diagonal` | `me.diagonal` | `np.diagonal` | free | $0$ | 🟢 supported | Return specified diagonals. |
 | `diff` | `me.diff` | `np.diff` | counted_custom | $\text{numel}(\text{input})$ | 🟠 supported | n-th discrete difference along axis. |
-| `digitize` | `me.digitize` | `np.digitize` | counted_custom | $m \cdot \lceil\log_2 n\rceil$ | 🟠 supported | Bin indices via binary search. |
+| `digitize` | `me.digitize` | `np.digitize` | counted_custom | varies | 🟠 supported | Bin search; cost = n*ceil(log2(bins)). |
 | `divide` | `me.divide` | `np.divide` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise true division. |
 | `divmod` | `me.divmod` | `np.divmod` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise (quotient, remainder) tuple. |
 | `dot` | `me.dot` | `np.dot` | counted_custom | $2 \cdot m \cdot k \cdot n$ | 🟠 supported | Dot product; cost = 2*M*N*K for matrix multiply. |
@@ -190,7 +190,7 @@ Generated from the operation registry (`_registry.py`).
 | `full_like` | `me.full_like` | `np.full_like` | free | $0$ | 🟢 supported | Array filled with scalar, same shape/type as input. |
 | `gcd` | `me.gcd` | `np.gcd` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise greatest common divisor. |
 | `genfromtxt` | — | `np.genfromtxt` | blacklisted | N/A | 🔴 blocked | Load data from text file with missing values. Not supported. |
-| `geomspace` | `me.geomspace` | `np.geomspace` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Geometric sequence generation. |
+| `geomspace` | `me.geomspace` | `np.geomspace` | counted_custom | varies | 🟠 supported | Geometric-spaced generation; cost = num. |
 | `get_include` | — | `np.get_include` | blacklisted | N/A | 🔴 blocked | Return directory containing NumPy C header files. Not supported. |
 | `getbufsize` | — | `np.getbufsize` | blacklisted | N/A | 🔴 blocked | Return size of buffer used in ufuncs. Not supported. |
 | `geterr` | — | `np.geterr` | blacklisted | N/A | 🔴 blocked | Get current way of handling floating-point errors. Not supported. |
@@ -201,22 +201,22 @@ Generated from the operation registry (`_registry.py`).
 | `hamming` | `me.hamming` | `np.hamming` | counted_custom | $n$ | 🟠 supported | Hamming window. Cost: n (one cosine per sample). |
 | `hanning` | `me.hanning` | `np.hanning` | counted_custom | $n$ | 🟠 supported | Hanning window. Cost: n (one cosine per sample). |
 | `heaviside` | `me.heaviside` | `np.heaviside` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Heaviside step function element-wise. |
-| `histogram` | `me.histogram` | `np.histogram` | counted_custom | $\text{numel}(a) \cdot \lceil\log_2(\text{bins})\rceil$ | 🟠 supported | Histogram of array data. |
-| `histogram2d` | `me.histogram2d` | `np.histogram2d` | counted_custom | $\text{numel}(x) \cdot \lceil\log_2(\text{bins})\rceil$ | 🟠 supported | 2-D histogram. |
-| `histogram_bin_edges` | `me.histogram_bin_edges` | `np.histogram_bin_edges` | counted_custom | $\text{numel}(a)$ | 🟠 supported | Compute histogram bin edges. |
-| `histogramdd` | `me.histogramdd` | `np.histogramdd` | counted_custom | $\text{numel}(\text{sample}) \cdot \lceil\log_2(\text{bins})\rceil$ | 🟠 supported | Multi-dimensional histogram. |
+| `histogram` | `me.histogram` | `np.histogram` | counted_custom | varies | 🟠 supported | Binning; cost = n*ceil(log2(bins)). |
+| `histogram2d` | `me.histogram2d` | `np.histogram2d` | counted_custom | varies | 🟠 supported | 2D binning; cost = n*(ceil(log2(bx))+ceil(log2(by))). |
+| `histogram_bin_edges` | `me.histogram_bin_edges` | `np.histogram_bin_edges` | counted_custom | varies | 🟠 supported | Bin edge computation; cost = numel(a). |
+| `histogramdd` | `me.histogramdd` | `np.histogramdd` | counted_custom | varies | 🟠 supported | ND binning; cost = n*sum(ceil(log2(b_i))). |
 | `hsplit` | `me.hsplit` | `np.hsplit` | free | $0$ | 🟢 supported | Split array into columns. |
 | `hstack` | `me.hstack` | `np.hstack` | free | $0$ | 🟢 supported | Stack arrays horizontally. |
 | `hypot` | `me.hypot` | `np.hypot` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise Euclidean norm sqrt(x1^2 + x2^2). |
 | `i0` | `me.i0` | `np.i0` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Modified Bessel function of order 0, element-wise. |
 | `identity` | `me.identity` | `np.identity` | free | $0$ | 🟢 supported | Create square identity matrix. |
 | `imag` | `me.imag` | `np.imag` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Return imaginary part of complex array. |
-| `in1d` | `me.in1d` | `np.in1d` | counted_custom | $(n+m) \cdot \lceil\log_2(n+m)\rceil$ | 🟠 supported | Test membership in 1-D array (deprecated, use isin). |
+| `in1d` | `me.in1d` | `np.in1d` | counted_custom | varies | 🟠 supported | Set membership; cost = (n+m)*ceil(log2(n+m)). |
 | `indices` | `me.indices` | `np.indices` | free | $0$ | 🟢 supported | Return array representing indices of a grid. |
 | `inner` | `me.inner` | `np.inner` | counted_custom | $n$ | 🟠 supported | Inner product; cost = 2*N for 1-D, 2*N*M for n-D. |
 | `insert` | `me.insert` | `np.insert` | free | $0$ | 🟢 supported | Insert values along axis before given indices. |
 | `interp` | `me.interp` | `np.interp` | counted_custom | $n \cdot \log m$ | 🟠 supported | 1-D linear interpolation. |
-| `intersect1d` | `me.intersect1d` | `np.intersect1d` | counted_custom | $(n+m) \cdot \lceil\log_2(n+m)\rceil$ | 🟠 supported | Intersection of two sorted arrays. |
+| `intersect1d` | `me.intersect1d` | `np.intersect1d` | counted_custom | varies | 🟠 supported | Set intersection; cost = (n+m)*ceil(log2(n+m)). |
 | `invert` | `me.invert` | `np.invert` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Bitwise NOT element-wise. |
 | `is_busday` | — | `np.is_busday` | blacklisted | N/A | 🔴 blocked | Calculates which of given dates are valid days. Not supported. |
 | `isclose` | `me.isclose` | `np.isclose` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise approximate equality test. |
@@ -225,7 +225,7 @@ Generated from the operation registry (`_registry.py`).
 | `isdtype` | `me.isdtype` | `np.isdtype` | free | $0$ | 🟢 supported | Return True if array or dtype is of specified kind (NumPy 2.x). |
 | `isfinite` | `me.isfinite` | `np.isfinite` | free | $0$ | 🟢 supported | Test for finite values element-wise. |
 | `isfortran` | `me.isfortran` | `np.isfortran` | free | $0$ | 🟢 supported | Return True if array is Fortran contiguous. |
-| `isin` | `me.isin` | `np.isin` | counted_custom | $(n+m) \cdot \lceil\log_2(n+m)\rceil$ | 🟠 supported | Test membership element-wise. |
+| `isin` | `me.isin` | `np.isin` | counted_custom | varies | 🟠 supported | Set membership; cost = (n+m)*ceil(log2(n+m)). |
 | `isinf` | `me.isinf` | `np.isinf` | free | $0$ | 🟢 supported | Test for infinity element-wise. |
 | `isnan` | `me.isnan` | `np.isnan` | free | $0$ | 🟢 supported | Test for NaN element-wise. |
 | `isnat` | `me.isnat` | `np.isnat` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Test for NaT (not-a-time) element-wise. |
@@ -244,7 +244,7 @@ Generated from the operation registry (`_registry.py`).
 | `left_shift` | `me.left_shift` | `np.left_shift` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise left bit shift (legacy name). |
 | `less` | `me.less` | `np.less` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise x1 < x2. |
 | `less_equal` | `me.less_equal` | `np.less_equal` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise x1 <= x2. |
-| `lexsort` | `me.lexsort` | `np.lexsort` | counted_custom | $n \cdot \lceil\log_2 n\rceil$ | 🟠 supported | Indirect stable sort on multiple keys per slice. |
+| `lexsort` | `me.lexsort` | `np.lexsort` | counted_custom | varies | 🟠 supported | Multi-key sort; cost = k*n*ceil(log2(n)). |
 | `linalg.cholesky` | `me.linalg.cholesky` | `np.linalg.cholesky` | counted_custom | $n^3 / 3$ | 🟠 supported | Cholesky decomposition. Cost: $n^3/3$ (Golub & Van Loan §4.2). |
 | `linalg.cond` | `me.linalg.cond` | `np.linalg.cond` | counted_custom | $m \cdot n \cdot \min(m,n)$ | 🟠 supported | Condition number. Cost: m*n*min(m,n) (via SVD). |
 | `linalg.cross` | `me.linalg.cross` | `np.linalg.cross` | free | $0$ | 🟢 supported | Alias for numpy.cross — delegates to mechestim.cross. |
@@ -289,7 +289,7 @@ Generated from the operation registry (`_registry.py`).
 | `logical_not` | `me.logical_not` | `np.logical_not` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise logical NOT. |
 | `logical_or` | `me.logical_or` | `np.logical_or` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise logical OR. |
 | `logical_xor` | `me.logical_xor` | `np.logical_xor` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise logical XOR. |
-| `logspace` | `me.logspace` | `np.logspace` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Logarithmic sequence generation. |
+| `logspace` | `me.logspace` | `np.logspace` | counted_custom | varies | 🟠 supported | Log-spaced generation; cost = num. |
 | `mask_indices` | `me.mask_indices` | `np.mask_indices` | free | $0$ | 🟢 supported | Return indices of mask for n x n array. |
 | `matmul` | `me.matmul` | `np.matmul` | counted_custom | $2 \cdot m \cdot k \cdot n$ | 🟠 supported | Matrix multiplication; cost = 2*M*N*K. |
 | `matrix_transpose` | `me.matrix_transpose` | `np.matrix_transpose` | free | $0$ | 🟢 supported | Transpose last two dimensions (NumPy 2.x array API). |
@@ -333,7 +333,7 @@ Generated from the operation registry (`_registry.py`).
 | `outer` | `me.outer` | `np.outer` | counted_custom | $m \cdot n$ | 🟠 supported | Outer product of two vectors; cost = M*N. |
 | `packbits` | `me.packbits` | `np.packbits` | free | $0$ | 🟢 supported | Pack elements of array into bits. |
 | `pad` | `me.pad` | `np.pad` | free | $0$ | 🟢 supported | Pad array. |
-| `partition` | `me.partition` | `np.partition` | counted_custom | $n \cdot \lceil\log_2 n\rceil$ | 🟠 supported | Partial sort per slice. |
+| `partition` | `me.partition` | `np.partition` | counted_custom | varies | 🟠 supported | Quickselect; cost = n per slice. |
 | `percentile` | `me.percentile` | `np.percentile` | counted_reduction | $\text{numel}(\text{input})$ | 🟡 supported | q-th percentile of array elements. |
 | `permute_dims` | `me.permute_dims` | `np.permute_dims` | free | $0$ | 🟢 supported | Permute dimensions (NumPy 2.x array API). |
 | `piecewise` | — | `np.piecewise` | blacklisted | N/A | 🔴 blocked | Evaluate piecewise-defined function. Not supported. |
@@ -359,57 +359,57 @@ Generated from the operation registry (`_registry.py`).
 | `quantile` | `me.quantile` | `np.quantile` | counted_reduction | $\text{numel}(\text{input})$ | 🟡 supported | q-th quantile of array elements. |
 | `rad2deg` | `me.rad2deg` | `np.rad2deg` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Alias for degrees. |
 | `radians` | `me.radians` | `np.radians` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Convert degrees to radians element-wise. |
-| `random.beta` | `me.random.beta` | `np.random.beta` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from Beta distribution. |
-| `random.binomial` | `me.random.binomial` | `np.random.binomial` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from binomial distribution. |
-| `random.bytes` | `me.random.bytes` | `np.random.bytes` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Return random bytes. |
-| `random.chisquare` | `me.random.chisquare` | `np.random.chisquare` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from chi-square distribution. |
-| `random.choice` | `me.random.choice` | `np.random.choice` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Random sample from given 1-D array. |
+| `random.beta` | `me.random.beta` | `np.random.beta` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.binomial` | `me.random.binomial` | `np.random.binomial` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.bytes` | `me.random.bytes` | `np.random.bytes` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.chisquare` | `me.random.chisquare` | `np.random.chisquare` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.choice` | `me.random.choice` | `np.random.choice` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output) if replace, n*ceil(log2(n)) if not. |
 | `random.default_rng` | `me.random.default_rng` | `np.random.default_rng` | free | $0$ | 🟢 supported | Construct a new Generator with default BitGenerator. |
-| `random.dirichlet` | `me.random.dirichlet` | `np.random.dirichlet` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from Dirichlet distribution. |
-| `random.exponential` | `me.random.exponential` | `np.random.exponential` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from exponential distribution. |
-| `random.f` | `me.random.f` | `np.random.f` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from F distribution. |
-| `random.gamma` | `me.random.gamma` | `np.random.gamma` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from Gamma distribution. |
-| `random.geometric` | `me.random.geometric` | `np.random.geometric` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from geometric distribution. |
+| `random.dirichlet` | `me.random.dirichlet` | `np.random.dirichlet` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.exponential` | `me.random.exponential` | `np.random.exponential` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.f` | `me.random.f` | `np.random.f` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.gamma` | `me.random.gamma` | `np.random.gamma` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.geometric` | `me.random.geometric` | `np.random.geometric` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
 | `random.get_state` | `me.random.get_state` | `np.random.get_state` | free | $0$ | 🟢 supported | Return tuple representing internal state of generator. |
-| `random.gumbel` | `me.random.gumbel` | `np.random.gumbel` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from Gumbel distribution. |
-| `random.hypergeometric` | `me.random.hypergeometric` | `np.random.hypergeometric` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from hypergeometric distribution. |
-| `random.laplace` | `me.random.laplace` | `np.random.laplace` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from Laplace distribution. |
-| `random.logistic` | `me.random.logistic` | `np.random.logistic` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from logistic distribution. |
-| `random.lognormal` | `me.random.lognormal` | `np.random.lognormal` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from log-normal distribution. |
-| `random.logseries` | `me.random.logseries` | `np.random.logseries` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from logarithmic series distribution. |
-| `random.multinomial` | `me.random.multinomial` | `np.random.multinomial` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from multinomial distribution. |
-| `random.multivariate_normal` | `me.random.multivariate_normal` | `np.random.multivariate_normal` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from multivariate normal distribution. |
-| `random.negative_binomial` | `me.random.negative_binomial` | `np.random.negative_binomial` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from negative binomial distribution. |
-| `random.noncentral_chisquare` | `me.random.noncentral_chisquare` | `np.random.noncentral_chisquare` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from noncentral chi-square distribution. |
-| `random.noncentral_f` | `me.random.noncentral_f` | `np.random.noncentral_f` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from noncentral F distribution. |
-| `random.normal` | `me.random.normal` | `np.random.normal` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from normal (Gaussian) distribution. |
-| `random.pareto` | `me.random.pareto` | `np.random.pareto` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from Pareto distribution. |
-| `random.permutation` | `me.random.permutation` | `np.random.permutation` | counted_custom | $n \cdot \lceil\log_2 n\rceil$ | 🟠 supported | Randomly permute sequence or return permuted range. |
-| `random.poisson` | `me.random.poisson` | `np.random.poisson` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from Poisson distribution. |
-| `random.power` | `me.random.power` | `np.random.power` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from power distribution with positive exponent. |
-| `random.rand` | `me.random.rand` | `np.random.rand` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Random values in [0, 1). |
-| `random.randint` | `me.random.randint` | `np.random.randint` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Random integers from low (inclusive) to high (exclusive). |
-| `random.randn` | `me.random.randn` | `np.random.randn` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Sample from standard normal distribution. |
-| `random.random` | `me.random.random` | `np.random.random` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Random floats in [0.0, 1.0). |
-| `random.random_integers` | `me.random.random_integers` | `np.random.random_integers` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Random integers from low to high (inclusive, deprecated). |
-| `random.random_sample` | `me.random.random_sample` | `np.random.random_sample` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Random floats in [0.0, 1.0) (alias for random.random). |
-| `random.ranf` | `me.random.ranf` | `np.random.ranf` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Random floats in [0.0, 1.0) (alias). |
-| `random.rayleigh` | `me.random.rayleigh` | `np.random.rayleigh` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from Rayleigh distribution. |
-| `random.sample` | `me.random.sample` | `np.random.sample` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Random floats in [0.0, 1.0) (alias). |
+| `random.gumbel` | `me.random.gumbel` | `np.random.gumbel` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.hypergeometric` | `me.random.hypergeometric` | `np.random.hypergeometric` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.laplace` | `me.random.laplace` | `np.random.laplace` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.logistic` | `me.random.logistic` | `np.random.logistic` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.lognormal` | `me.random.lognormal` | `np.random.lognormal` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.logseries` | `me.random.logseries` | `np.random.logseries` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.multinomial` | `me.random.multinomial` | `np.random.multinomial` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.multivariate_normal` | `me.random.multivariate_normal` | `np.random.multivariate_normal` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.negative_binomial` | `me.random.negative_binomial` | `np.random.negative_binomial` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.noncentral_chisquare` | `me.random.noncentral_chisquare` | `np.random.noncentral_chisquare` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.noncentral_f` | `me.random.noncentral_f` | `np.random.noncentral_f` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.normal` | `me.random.normal` | `np.random.normal` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.pareto` | `me.random.pareto` | `np.random.pareto` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.permutation` | `me.random.permutation` | `np.random.permutation` | counted_custom | varies | 🟠 supported | Shuffle; cost = n*ceil(log2(n)). |
+| `random.poisson` | `me.random.poisson` | `np.random.poisson` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.power` | `me.random.power` | `np.random.power` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.rand` | `me.random.rand` | `np.random.rand` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.randint` | `me.random.randint` | `np.random.randint` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.randn` | `me.random.randn` | `np.random.randn` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.random` | `me.random.random` | `np.random.random` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.random_integers` | `me.random.random_integers` | `np.random.random_integers` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.random_sample` | `me.random.random_sample` | `np.random.random_sample` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.ranf` | `me.random.ranf` | `np.random.ranf` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.rayleigh` | `me.random.rayleigh` | `np.random.rayleigh` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.sample` | `me.random.sample` | `np.random.sample` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
 | `random.seed` | `me.random.seed` | `np.random.seed` | free | $0$ | 🟢 supported | Seed random number generator. |
 | `random.set_state` | `me.random.set_state` | `np.random.set_state` | free | $0$ | 🟢 supported | Set internal state of generator. |
-| `random.shuffle` | `me.random.shuffle` | `np.random.shuffle` | counted_custom | $n \cdot \lceil\log_2 n\rceil$ | 🟠 supported | Modify sequence in-place by shuffling. |
-| `random.standard_cauchy` | `me.random.standard_cauchy` | `np.random.standard_cauchy` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from standard Cauchy distribution. |
-| `random.standard_exponential` | `me.random.standard_exponential` | `np.random.standard_exponential` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from standard exponential distribution. |
-| `random.standard_gamma` | `me.random.standard_gamma` | `np.random.standard_gamma` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from standard Gamma distribution. |
-| `random.standard_normal` | `me.random.standard_normal` | `np.random.standard_normal` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from standard normal distribution. |
-| `random.standard_t` | `me.random.standard_t` | `np.random.standard_t` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from standard Student's t distribution. |
-| `random.triangular` | `me.random.triangular` | `np.random.triangular` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from triangular distribution. |
-| `random.uniform` | `me.random.uniform` | `np.random.uniform` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from uniform distribution. |
-| `random.vonmises` | `me.random.vonmises` | `np.random.vonmises` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from von Mises distribution. |
-| `random.wald` | `me.random.wald` | `np.random.wald` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from Wald (inverse Gaussian) distribution. |
-| `random.weibull` | `me.random.weibull` | `np.random.weibull` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from Weibull distribution. |
-| `random.zipf` | `me.random.zipf` | `np.random.zipf` | counted_custom | $\text{numel}(\text{output})$ | 🟠 supported | Draw samples from Zipf distribution. |
+| `random.shuffle` | `me.random.shuffle` | `np.random.shuffle` | counted_custom | varies | 🟠 supported | Shuffle; cost = n*ceil(log2(n)). |
+| `random.standard_cauchy` | `me.random.standard_cauchy` | `np.random.standard_cauchy` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.standard_exponential` | `me.random.standard_exponential` | `np.random.standard_exponential` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.standard_gamma` | `me.random.standard_gamma` | `np.random.standard_gamma` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.standard_normal` | `me.random.standard_normal` | `np.random.standard_normal` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.standard_t` | `me.random.standard_t` | `np.random.standard_t` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.triangular` | `me.random.triangular` | `np.random.triangular` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.uniform` | `me.random.uniform` | `np.random.uniform` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.vonmises` | `me.random.vonmises` | `np.random.vonmises` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.wald` | `me.random.wald` | `np.random.wald` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.weibull` | `me.random.weibull` | `np.random.weibull` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
+| `random.zipf` | `me.random.zipf` | `np.random.zipf` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
 | `ravel` | `me.ravel` | `np.ravel` | free | $0$ | 🟢 supported | Return contiguous flattened array. |
 | `ravel_multi_index` | `me.ravel_multi_index` | `np.ravel_multi_index` | free | $0$ | 🟢 supported | Convert multi-dimensional index to flat index. |
 | `real` | `me.real` | `np.real` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Return real part of complex array. |
@@ -433,13 +433,13 @@ Generated from the operation registry (`_registry.py`).
 | `savetxt` | — | `np.savetxt` | blacklisted | N/A | 🔴 blocked | Save array to text file. Not supported. |
 | `savez` | — | `np.savez` | blacklisted | N/A | 🔴 blocked | Save multiple arrays to .npz file. Not supported. |
 | `savez_compressed` | — | `np.savez_compressed` | blacklisted | N/A | 🔴 blocked | Save multiple arrays to compressed .npz file. Not supported. |
-| `searchsorted` | `me.searchsorted` | `np.searchsorted` | counted_custom | $m \cdot \lceil\log_2 n\rceil$ | 🟠 supported | Binary search in sorted array. |
+| `searchsorted` | `me.searchsorted` | `np.searchsorted` | counted_custom | varies | 🟠 supported | Binary search; cost = m*ceil(log2(n)). |
 | `select` | `me.select` | `np.select` | free | $0$ | 🟢 supported | Return array from list of choices based on conditions. |
 | `setbufsize` | — | `np.setbufsize` | blacklisted | N/A | 🔴 blocked | Set size of buffer used in ufuncs. Not supported. |
-| `setdiff1d` | `me.setdiff1d` | `np.setdiff1d` | counted_custom | $(n+m) \cdot \lceil\log_2(n+m)\rceil$ | 🟠 supported | Set difference of two arrays. |
+| `setdiff1d` | `me.setdiff1d` | `np.setdiff1d` | counted_custom | varies | 🟠 supported | Set difference; cost = (n+m)*ceil(log2(n+m)). |
 | `seterr` | — | `np.seterr` | blacklisted | N/A | 🔴 blocked | Set how floating-point errors are handled. Not supported. |
 | `seterrcall` | — | `np.seterrcall` | blacklisted | N/A | 🔴 blocked | Set callback function for floating-point errors. Not supported. |
-| `setxor1d` | `me.setxor1d` | `np.setxor1d` | counted_custom | $(n+m) \cdot \lceil\log_2(n+m)\rceil$ | 🟠 supported | Symmetric set difference. |
+| `setxor1d` | `me.setxor1d` | `np.setxor1d` | counted_custom | varies | 🟠 supported | Symmetric set difference; cost = (n+m)*ceil(log2(n+m)). |
 | `shape` | `me.shape` | `np.shape` | free | $0$ | 🟢 supported | Return shape of array. |
 | `shares_memory` | `me.shares_memory` | `np.shares_memory` | free | $0$ | 🟢 supported | Determine if two arrays share memory. |
 | `show_config` | — | `np.show_config` | blacklisted | N/A | 🔴 blocked | Show NumPy build configuration. Not supported. |
@@ -450,7 +450,7 @@ Generated from the operation registry (`_registry.py`).
 | `sinc` | `me.sinc` | `np.sinc` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Normalized sinc function element-wise. |
 | `sinh` | `me.sinh` | `np.sinh` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise hyperbolic sine. |
 | `size` | `me.size` | `np.size` | free | $0$ | 🟢 supported | Return number of elements in array. |
-| `sort` | `me.sort` | `np.sort` | counted_custom | $n \cdot \lceil\log_2 n\rceil$ | 🟠 supported | Sort per slice. |
+| `sort` | `me.sort` | `np.sort` | counted_custom | varies | 🟠 supported | Comparison sort; cost = n*ceil(log2(n)) per slice. |
 | `sort_complex` | `me.sort_complex` | `np.sort_complex` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Sort complex array by real then imaginary part. |
 | `spacing` | `me.spacing` | `np.spacing` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Return ULP spacing for each element. |
 | `split` | `me.split` | `np.split` | free | $0$ | 🟢 supported | Split array into sub-arrays. |
@@ -468,7 +468,7 @@ Generated from the operation registry (`_registry.py`).
 | `tanh` | `me.tanh` | `np.tanh` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise hyperbolic tangent. |
 | `tensordot` | `me.tensordot` | `np.tensordot` | counted_custom | $\prod_i d_i$ | 🟠 supported | Tensor dot product along specified axes. |
 | `tile` | `me.tile` | `np.tile` | free | $0$ | 🟢 supported | Repeat array by tiling. |
-| `trace` | `me.trace` | `np.trace` | counted_custom | $\min(n,m)$ | 🟠 supported | Matrix trace (sum of diagonal). |
+| `trace` | `me.trace` | `np.trace` | counted_custom | varies | 🟠 supported | Diagonal sum; cost = min(n,m). |
 | `transpose` | `me.transpose` | `np.transpose` | free | $0$ | 🟢 supported | Permute array dimensions. |
 | `trapezoid` | `me.trapezoid` | `np.trapezoid` | counted_custom | $\text{numel}(\text{input})$ | 🟠 supported | Integrate using the trapezoidal rule. |
 | `trapz` | `me.trapz` | `np.trapz` | counted_custom | $\text{numel}(\text{input})$ | 🟠 supported | Alias for trapezoid (deprecated). |
@@ -483,17 +483,17 @@ Generated from the operation registry (`_registry.py`).
 | `true_divide` | `me.true_divide` | `np.true_divide` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise true division (explicit). |
 | `trunc` | `me.trunc` | `np.trunc` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Truncate toward zero element-wise. |
 | `typename` | `me.typename` | `np.typename` | free | $0$ | 🟢 supported | Return description of given data type code. |
-| `union1d` | `me.union1d` | `np.union1d` | counted_custom | $(n+m) \cdot \lceil\log_2(n+m)\rceil$ | 🟠 supported | Union of two arrays. |
-| `unique` | `me.unique` | `np.unique` | counted_custom | $n \cdot \lceil\log_2 n\rceil$ | 🟠 supported | Find unique elements (sort-based). |
-| `unique_all` | `me.unique_all` | `np.unique_all` | counted_custom | $n \cdot \lceil\log_2 n\rceil$ | 🟠 supported | Unique elements with indices and counts. |
-| `unique_counts` | `me.unique_counts` | `np.unique_counts` | counted_custom | $n \cdot \lceil\log_2 n\rceil$ | 🟠 supported | Unique elements with counts. |
-| `unique_inverse` | `me.unique_inverse` | `np.unique_inverse` | counted_custom | $n \cdot \lceil\log_2 n\rceil$ | 🟠 supported | Unique elements with inverse indices. |
-| `unique_values` | `me.unique_values` | `np.unique_values` | counted_custom | $n \cdot \lceil\log_2 n\rceil$ | 🟠 supported | Unique values only. |
+| `union1d` | `me.union1d` | `np.union1d` | counted_custom | varies | 🟠 supported | Set union; cost = (n+m)*ceil(log2(n+m)). |
+| `unique` | `me.unique` | `np.unique` | counted_custom | varies | 🟠 supported | Sort-based unique; cost = n*ceil(log2(n)). |
+| `unique_all` | `me.unique_all` | `np.unique_all` | counted_custom | varies | 🟠 supported | Sort-based unique; cost = n*ceil(log2(n)). |
+| `unique_counts` | `me.unique_counts` | `np.unique_counts` | counted_custom | varies | 🟠 supported | Sort-based unique; cost = n*ceil(log2(n)). |
+| `unique_inverse` | `me.unique_inverse` | `np.unique_inverse` | counted_custom | varies | 🟠 supported | Sort-based unique; cost = n*ceil(log2(n)). |
+| `unique_values` | `me.unique_values` | `np.unique_values` | counted_custom | varies | 🟠 supported | Sort-based unique; cost = n*ceil(log2(n)). |
 | `unpackbits` | `me.unpackbits` | `np.unpackbits` | free | $0$ | 🟢 supported | Unpack elements of array into bits. |
 | `unravel_index` | `me.unravel_index` | `np.unravel_index` | free | $0$ | 🟢 supported | Convert flat index to multi-dimensional index. |
 | `unstack` | `me.unstack` | `np.unstack` | free | $0$ | 🟢 supported | Unstack array along axis into tuple of arrays (NumPy 2.x). |
 | `unwrap` | `me.unwrap` | `np.unwrap` | counted_custom | $\text{numel}(\text{input})$ | 🟠 supported | Phase unwrap. Cost: $\text{numel}(\text{input})$ (diff + conditional adjustment). |
-| `vander` | `me.vander` | `np.vander` | counted_custom | $n \cdot m$ | 🟠 supported | Vandermonde matrix. |
+| `vander` | `me.vander` | `np.vander` | counted_custom | varies | 🟠 supported | Vandermonde matrix; cost = len(x)*(N-1). |
 | `var` | `me.var` | `np.var` | counted_reduction | $\text{numel}(\text{input})$ | 🟡 supported | Variance; cost_multiplier=2 (two passes). |
 | `vdot` | `me.vdot` | `np.vdot` | counted_custom | $n$ | 🟠 supported | Dot product with conjugation; cost = 2*N. |
 | `vecdot` | `me.vecdot` | `np.vecdot` | counted_binary | $n$ | 🟡 supported | Vector dot product along last axis. |
