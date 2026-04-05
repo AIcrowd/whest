@@ -43,14 +43,20 @@ def _output_size(*dims, size=None):
 
 
 def _counted_sampler(np_func, op_name):
-    """Factory for simple samplers: cost = numel(output)."""
+    """Factory for simple samplers: cost = numel(output).
 
-    def wrapper(*args, size=None, **kwargs):
+    Passes all args/kwargs through transparently to numpy. Inspects
+    the ``size`` keyword argument (if present) for cost computation.
+    """
+
+    def wrapper(*args, **kwargs):
         budget = require_budget()
+        size = kwargs.get("size", None)
         n = _output_size(size=size)
         cost = _builtins.max(n, 1)
         budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=((n,),))
-        return np_func(*args, size=size, **kwargs)
+        result = np_func(*args, **kwargs)
+        return result
 
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name
@@ -145,10 +151,30 @@ multivariate_normal = _counted_sampler(
 )
 dirichlet = _counted_sampler(_npr.dirichlet, "random.dirichlet")
 randint = _counted_sampler(_npr.randint, "random.randint")
-random = _counted_sampler(_npr.random, "random.random")
-random_sample = _counted_sampler(_npr.random_sample, "random.random_sample")
-ranf = _counted_sampler(_npr.ranf, "random.ranf")
-sample = _counted_sampler(_npr.sample, "random.sample")
+
+
+def _counted_size_only_sampler(np_func, op_name):
+    """Factory for samplers where the only arg is ``size`` (positional or kw)."""
+
+    def wrapper(size=None):
+        budget = require_budget()
+        n = _output_size(size=size)
+        cost = _builtins.max(n, 1)
+        budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=((n,),))
+        return np_func(size=size)
+
+    wrapper.__name__ = op_name
+    wrapper.__qualname__ = op_name
+    wrapper.__doc__ = (
+        f"Counted version of ``numpy.random.{op_name}``. Cost: numel(output) FLOPs."
+    )
+    return wrapper
+
+
+random = _counted_size_only_sampler(_npr.random, "random.random")
+random_sample = _counted_size_only_sampler(_npr.random_sample, "random.random_sample")
+ranf = _counted_size_only_sampler(_npr.ranf, "random.ranf")
+sample = _counted_size_only_sampler(_npr.sample, "random.sample")
 
 
 # ---------------------------------------------------------------------------
