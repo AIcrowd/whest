@@ -33,6 +33,8 @@ _REBOUND: dict[str, object] = {}
 _MECHESTIM_MODULES_WITH_NP = [
     "mechestim._pointwise",
     "mechestim._free_ops",
+    "mechestim._sorting_ops",
+    "mechestim._counting_ops",
     "mechestim._einsum",
     "mechestim._polynomial",
     "mechestim._unwrap",
@@ -47,6 +49,11 @@ _MECHESTIM_MODULES_WITH_NP = [
     "mechestim.linalg._compound",
     "mechestim.linalg._svd",
     "mechestim.linalg._aliases",
+]
+
+# Modules that also import numpy.random as _npr
+_MECHESTIM_MODULES_WITH_NPR = [
+    "mechestim.random",
 ]
 
 
@@ -76,14 +83,26 @@ def _rebind_mechestim_np(frozen_np):
         if mod is not None and hasattr(mod, "_np"):
             _REBOUND[mod_name] = mod._np
             mod._np = frozen_np
+    # Also rebind _npr (numpy.random) in modules that use it
+    for mod_name in _MECHESTIM_MODULES_WITH_NPR:
+        mod = sys.modules.get(mod_name)
+        if mod is not None and hasattr(mod, "_npr"):
+            _REBOUND[mod_name + "._npr"] = mod._npr
+            mod._npr = frozen_np.random
 
 
 def _restore_mechestim_np():
     """Restore original _np references in mechestim modules."""
-    for mod_name, original in _REBOUND.items():
-        mod = sys.modules.get(mod_name)
-        if mod is not None:
-            mod._np = original
+    for key, original in _REBOUND.items():
+        if key.endswith("._npr"):
+            mod_name = key[: -len("._npr")]
+            mod = sys.modules.get(mod_name)
+            if mod is not None:
+                mod._npr = original
+        else:
+            mod = sys.modules.get(key)
+            if mod is not None:
+                mod._np = original
     _REBOUND.clear()
 
 
