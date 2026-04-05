@@ -933,9 +933,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Condition number. Cost: m*n*min(m,n) (via SVD).",
     },
     "linalg.cross": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Alias for numpy.cross — delegates to mechestim.cross.",
+        "notes": "Delegates to `me.cross` which charges `numel(output)` FLOPs.",
     },
     "linalg.det": {
         "category": "counted_custom",
@@ -978,9 +978,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Least squares. Cost: m*n*min(m,n) (LAPACK gelsd/SVD).",
     },
     "linalg.matmul": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Alias for numpy.matmul — delegates to mechestim.matmul.",
+        "notes": "Delegates to `me.matmul` which charges `2*m*k*n` FLOPs.",
     },
     "linalg.matrix_norm": {
         "category": "counted_custom",
@@ -1013,9 +1013,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Norm. Cost depends on ord: numel for L1/inf, 2*numel for Frobenius, m*n*min(m,n) for ord=2.",
     },
     "linalg.outer": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Alias for numpy.outer — delegates to mechestim.outer.",
+        "notes": "Delegates to `me.outer` which charges `m*n` FLOPs.",
     },
     "linalg.pinv": {
         "category": "counted_custom",
@@ -1035,7 +1035,7 @@ REGISTRY: dict[str, dict] = {
     "linalg.solve": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Solve Ax=b. Cost: $n^3$ (LU factorization).",
+        "notes": "Solve Ax=b. Cost: $2n^3/3$ (LU) + $n^2 \\cdot n_{\\text{rhs}}$ (back-substitution).",
     },
     "linalg.svdvals": {
         "category": "counted_custom",
@@ -1043,9 +1043,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Singular values only. Cost: m*n*min(m,n) (Golub-Reinsch).",
     },
     "linalg.tensordot": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Alias for numpy.tensordot — delegates to mechestim.tensordot.",
+        "notes": "Delegates to `me.tensordot` which charges FLOPs based on contraction.",
     },
     "linalg.tensorinv": {
         "category": "counted_custom",
@@ -1063,9 +1063,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Matrix trace. Cost: n (sum of diagonal elements).",
     },
     "linalg.vecdot": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Alias for numpy.vecdot — delegates to mechestim.vecdot.",
+        "notes": "Delegates to `me.vecdot` which charges `2*n` FLOPs.",
     },
     "linalg.vector_norm": {
         "category": "counted_custom",

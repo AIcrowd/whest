@@ -2956,13 +2956,13 @@
       "module": "numpy.linalg",
       "mechestim_ref": "me.linalg.cross",
       "numpy_ref": "np.linalg.cross",
-      "category": "free",
-      "cost_formula": "0",
-      "cost_formula_latex": "$0$",
-      "free": true,
+      "category": "counted_custom",
+      "cost_formula": "delegates to me.cross",
+      "cost_formula_latex": "delegates to `cross`",
+      "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Alias for numpy.cross \u2014 delegates to mechestim.cross."
+      "notes": "Delegates to `me.cross` which charges `numel(output)` FLOPs."
     },
     {
       "name": "linalg.det",
@@ -3073,13 +3073,13 @@
       "module": "numpy.linalg",
       "mechestim_ref": "me.linalg.matmul",
       "numpy_ref": "np.linalg.matmul",
-      "category": "free",
-      "cost_formula": "0",
-      "cost_formula_latex": "$0$",
-      "free": true,
+      "category": "counted_custom",
+      "cost_formula": "delegates to me.matmul",
+      "cost_formula_latex": "delegates to `matmul`",
+      "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Alias for numpy.matmul \u2014 delegates to mechestim.matmul."
+      "notes": "Delegates to `me.matmul` which charges `2*m*k*n` FLOPs."
     },
     {
       "name": "linalg.matrix_norm",
@@ -3164,13 +3164,13 @@
       "module": "numpy.linalg",
       "mechestim_ref": "me.linalg.outer",
       "numpy_ref": "np.linalg.outer",
-      "category": "free",
-      "cost_formula": "0",
-      "cost_formula_latex": "$0$",
-      "free": true,
+      "category": "counted_custom",
+      "cost_formula": "delegates to me.outer",
+      "cost_formula_latex": "delegates to `outer`",
+      "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Alias for numpy.outer \u2014 delegates to mechestim.outer."
+      "notes": "Delegates to `me.outer` which charges `m*n` FLOPs."
     },
     {
       "name": "linalg.pinv",
@@ -3222,7 +3222,7 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Solve Ax=b. Cost: $n^3$ (LU factorization)."
+      "notes": "Solve Ax=b. Cost: $2n^3/3$ (LU) + $n^2 \\cdot n_{\\text{rhs}}$ (back-substitution)."
     },
     {
       "name": "linalg.svd",
@@ -3255,13 +3255,13 @@
       "module": "numpy.linalg",
       "mechestim_ref": "me.linalg.tensordot",
       "numpy_ref": "np.linalg.tensordot",
-      "category": "free",
-      "cost_formula": "0",
-      "cost_formula_latex": "$0$",
-      "free": true,
+      "category": "counted_custom",
+      "cost_formula": "delegates to me.tensordot",
+      "cost_formula_latex": "delegates to `tensordot`",
+      "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Alias for numpy.tensordot \u2014 delegates to mechestim.tensordot."
+      "notes": "Delegates to `me.tensordot` which charges FLOPs based on contraction."
     },
     {
       "name": "linalg.tensorinv",
@@ -3307,13 +3307,13 @@
       "module": "numpy.linalg",
       "mechestim_ref": "me.linalg.vecdot",
       "numpy_ref": "np.linalg.vecdot",
-      "category": "free",
-      "cost_formula": "0",
-      "cost_formula_latex": "$0$",
-      "free": true,
+      "category": "counted_custom",
+      "cost_formula": "delegates to me.vecdot",
+      "cost_formula_latex": "delegates to `vecdot`",
+      "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Alias for numpy.vecdot \u2014 delegates to mechestim.vecdot."
+      "notes": "Delegates to `me.vecdot` which charges `2*n` FLOPs."
     },
     {
       "name": "linalg.vector_norm",

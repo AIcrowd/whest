@@ -78,8 +78,12 @@ GENERATED_PAGES: dict[str, dict] = {
             | Operation | Cost Formula |
             |-----------|-------------|
             | `fft`, `ifft` | $5n \\cdot \\lceil\\log_2 n\\rceil$ |
-            | `rfft`, `irfft` | $5(n/2) \\cdot \\lceil\\log_2 n\\rceil$ |
+            | `fft2`, `ifft2` | $5N \\cdot \\lceil\\log_2 N\\rceil$ where $N = n_1 \\cdot n_2$ |
             | `fftn`, `ifftn` | $5N \\cdot \\lceil\\log_2 N\\rceil$ where $N = \\prod_i n_i$ |
+            | `rfft`, `irfft` | $5(n/2) \\cdot \\lceil\\log_2 n\\rceil$ |
+            | `rfft2`, `irfft2` | $5(N/2) \\cdot \\lceil\\log_2 N\\rceil$ where $N = n_1 \\cdot n_2$ |
+            | `rfftn`, `irfftn` | $5(N/2) \\cdot \\lceil\\log_2 N\\rceil$ where $N = \\prod_i n_i$ |
+            | `hfft`, `ihfft` | $5n_{\\text{out}} \\cdot \\lceil\\log_2 n_{\\text{out}}\\rceil$ |
             | `fftfreq`, `rfftfreq`, `fftshift`, `ifftshift` | $0$ (free) |
 
             ## Examples
@@ -106,8 +110,10 @@ GENERATED_PAGES: dict[str, dict] = {
         "title": "Random",
         "description": (
             "Random number generation from `mechestim.random`. "
-            "All random operations are **free** (0 FLOPs) — "
-            "they are direct passthroughs to `numpy.random`."
+            "Sampling operations are **counted** — each sample costs "
+            "`numel(output)` FLOPs, and shuffle/permutation costs "
+            "`n * ceil(log2(n))` FLOPs. Only configuration helpers "
+            "(`seed`, `get_state`, `set_state`, `default_rng`) are free (0 FLOPs)."
         ),
         "directives": [
             "mechestim.random",
@@ -297,6 +303,11 @@ CUSTOM_COSTS: dict[str, tuple[str, str]] = {
     "linalg.eigh": ("4n^3 / 3", r"$4n^3 / 3$"),
     "linalg.eigvals": ("10n^3", r"$10n^3$"),
     "linalg.eigvalsh": ("4n^3 / 3", r"$4n^3 / 3$"),
+    "linalg.cross": ("delegates to me.cross", r"delegates to `cross`"),
+    "linalg.matmul": ("delegates to me.matmul", r"delegates to `matmul`"),
+    "linalg.outer": ("delegates to me.outer", r"delegates to `outer`"),
+    "linalg.tensordot": ("delegates to me.tensordot", r"delegates to `tensordot`"),
+    "linalg.vecdot": ("delegates to me.vecdot", r"delegates to `vecdot`"),
     "linalg.solve": ("2n^3/3 + n^2*nrhs", r"$2n^3/3 + n^2 \cdot n_{\text{rhs}}$"),
     "linalg.inv": ("n^3", r"$n^3$"),
     "linalg.lstsq": ("m * n * min(m,n)", r"$m \cdot n \cdot \min(m,n)$"),

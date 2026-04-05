@@ -15,11 +15,11 @@
 
 | Category | Count | Cost Formula |
 |----------|-------|-------------|
-| Free | 143 | $0$ |
+| Free | 138 | $0$ |
 | Unary | 73 | $\text{numel}(\text{output})$ |
 | Binary | 45 | $\text{numel}(\text{output})$ |
 | Reduction | 37 | $\text{numel}(\text{input})$ |
-| Custom | 152 | varies |
+| Custom | 157 | varies |
 | Blocked | 32 | N/A |
 
 ## Custom Operation Costs
@@ -77,12 +77,8 @@
 | `kron` | $m_1 m_2 \cdot n_1 n_2$ | Kronecker product; cost proportional to output size. |
 | `lexsort` | varies | Multi-key sort; cost = k*n*ceil(log2(n)). |
 | `linalg.cholesky` | $n^3 / 3$ | Cholesky decomposition. Cost: $n^3/3$ (Golub & Van Loan §4.2). |
-| `linalg.cross` | delegates to `cross` | Alias — charges `numel(output)` via `me.cross`. |
-| `linalg.matmul` | delegates to `matmul` | Alias — charges `2*m*k*n` via `me.matmul`. |
-| `linalg.outer` | delegates to `outer` | Alias — charges `m*n` via `me.outer`. |
-| `linalg.tensordot` | delegates to `tensordot` | Alias — charges FLOPs via `me.tensordot`. |
-| `linalg.vecdot` | delegates to `vecdot` | Alias — charges `2*n` via `me.vecdot`. |
 | `linalg.cond` | $m \cdot n \cdot \min(m,n)$ | Condition number. Cost: m*n*min(m,n) (via SVD). |
+| `linalg.cross` | delegates to `cross` | Delegates to `me.cross` which charges `numel(output)` FLOPs. |
 | `linalg.det` | $n^3$ | Determinant. Cost: $n^3$ (LU factorization). |
 | `linalg.eig` | $10n^3$ | Eigendecomposition. Cost: $10n^3$ (Francis QR, Golub & Van Loan §7.5). |
 | `linalg.eigh` | $4n^3 / 3$ | Symmetric eigendecomposition. Cost: $(4/3)n^3$ (Golub & Van Loan §8.3). |
@@ -90,20 +86,24 @@
 | `linalg.eigvalsh` | $4n^3 / 3$ | Symmetric eigenvalues. Cost: $(4/3)n^3$ (same as eigh). |
 | `linalg.inv` | $n^3$ | Matrix inverse. Cost: $n^3$ (LU + solve). |
 | `linalg.lstsq` | $m \cdot n \cdot \min(m,n)$ | Least squares. Cost: m*n*min(m,n) (LAPACK gelsd/SVD). |
+| `linalg.matmul` | delegates to `matmul` | Delegates to `me.matmul` which charges `2*m*k*n` FLOPs. |
 | `linalg.matrix_norm` | varies | Matrix norm. Cost depends on ord: 2*numel for Frobenius, m*n*min(m,n) for ord=2. |
 | `linalg.matrix_power` | $\lfloor\log_2 k\rfloor \cdot n^3$ | Matrix power. Cost: $(\lfloor\log_2 k\rfloor + \text{popcount}(k) - 1) \cdot n^3$ (exponentiation by squaring). |
 | `linalg.matrix_rank` | $m \cdot n \cdot \min(m,n)$ | Matrix rank. Cost: m*n*min(m,n) (via SVD). |
 | `linalg.multi_dot` | optimal chain | Chain matmul. Cost: sum of optimal chain matmul costs (CLRS §15.2). |
 | `linalg.norm` | varies | Norm. Cost depends on ord: numel for L1/inf, 2*numel for Frobenius, m*n*min(m,n) for ord=2. |
+| `linalg.outer` | delegates to `outer` | Delegates to `me.outer` which charges `m*n` FLOPs. |
 | `linalg.pinv` | $m \cdot n \cdot \min(m,n)$ | Pseudoinverse. Cost: m*n*min(m,n) (via SVD). |
 | `linalg.qr` | $2mn^2 - 2n^3/3$ | QR decomposition. Cost: $2mn^2 - (2/3)n^3$ (Golub & Van Loan §5.2). |
 | `linalg.slogdet` | $n^3$ | Sign + log determinant. Cost: $n^3$ (LU factorization). |
 | `linalg.solve` | $2n^3/3 + n^2 \cdot n_{\text{rhs}}$ | Solve Ax=b. Cost: $2n^3/3$ (LU) + $n^2 \cdot n_{\text{rhs}}$ (back-substitution). |
 | `linalg.svd` | $m \cdot n \cdot k$ | Singular value decomposition; cost ~ O(min(m,n)*m*n). |
 | `linalg.svdvals` | $m \cdot n \cdot \min(m,n)$ | Singular values only. Cost: m*n*min(m,n) (Golub-Reinsch). |
+| `linalg.tensordot` | delegates to `tensordot` | Delegates to `me.tensordot` which charges FLOPs based on contraction. |
 | `linalg.tensorinv` | $n^3$ | Tensor inverse. Cost: $n^3$ after reshape (delegates to inv). |
 | `linalg.tensorsolve` | $n^3$ | Tensor solve. Cost: $n^3$ after reshape (delegates to solve). |
 | `linalg.trace` | $n$ | Matrix trace. Cost: n (sum of diagonal elements). |
+| `linalg.vecdot` | delegates to `vecdot` | Delegates to `me.vecdot` which charges `2*n` FLOPs. |
 | `linalg.vector_norm` | $n$ or $2n$ | Vector norm. Cost: numel (or 2*numel for general p-norm). |
 | `logspace` | varies | Log-spaced generation; cost = num. |
 | `matmul` | $2 \cdot m \cdot k \cdot n$ | Matrix multiplication; cost = 2*M*N*K. |
@@ -195,15 +195,15 @@
 `flipud`, `from_dlpack`, `frombuffer`, `fromfile`, `fromfunction`, `fromiter`, `fromregex`, `fromstring`
 `full`, `full_like`, `hsplit`, `hstack`, `identity`, `indices`, `insert`, `isdtype`
 `isfinite`, `isfortran`, `isinf`, `isnan`, `isscalar`, `issubdtype`, `iterable`, `ix_`
-`linalg.diagonal`, `linalg.matrix_transpose`, `linspace`
-`mask_indices`, `matrix_transpose`, `may_share_memory`, `meshgrid`, `min_scalar_type`, `mintypecode`, `moveaxis`, `ndim`
-`nonzero`, `ones`, `ones_like`, `packbits`, `pad`, `permute_dims`, `place`, `promote_types`
-`put`, `put_along_axis`, `putmask`, `random.default_rng`, `random.get_state`, `random.seed`, `random.set_state`, `ravel`
-`ravel_multi_index`, `repeat`, `require`, `reshape`, `resize`, `result_type`, `roll`, `rollaxis`
-`rot90`, `row_stack`, `select`, `shape`, `shares_memory`, `size`, `split`, `squeeze`
-`stack`, `swapaxes`, `take`, `take_along_axis`, `tile`, `transpose`, `tri`, `tril`
-`tril_indices`, `tril_indices_from`, `trim_zeros`, `triu`, `triu_indices`, `triu_indices_from`, `typename`, `unpackbits`
-`unravel_index`, `unstack`, `vsplit`, `vstack`, `where`, `zeros`, `zeros_like`
+`linalg.diagonal`, `linalg.matrix_transpose`, `linspace`, `mask_indices`, `matrix_transpose`, `may_share_memory`, `meshgrid`, `min_scalar_type`
+`mintypecode`, `moveaxis`, `ndim`, `nonzero`, `ones`, `ones_like`, `packbits`, `pad`
+`permute_dims`, `place`, `promote_types`, `put`, `put_along_axis`, `putmask`, `random.default_rng`, `random.get_state`
+`random.seed`, `random.set_state`, `ravel`, `ravel_multi_index`, `repeat`, `require`, `reshape`, `resize`
+`result_type`, `roll`, `rollaxis`, `rot90`, `row_stack`, `select`, `shape`, `shares_memory`
+`size`, `split`, `squeeze`, `stack`, `swapaxes`, `take`, `take_along_axis`, `tile`
+`transpose`, `tri`, `tril`, `tril_indices`, `tril_indices_from`, `trim_zeros`, `triu`, `triu_indices`
+`triu_indices_from`, `typename`, `unpackbits`, `unravel_index`, `unstack`, `vsplit`, `vstack`, `where`
+`zeros`, `zeros_like`
 
 ## Blocked Operations (complete list)
 
