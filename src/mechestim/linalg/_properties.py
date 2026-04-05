@@ -339,7 +339,7 @@ def cond_cost(m: int, n: int, p=None) -> int:
         return max(m * n * min(m, n), 1)
     # LU-based: factorization cost + norm computation
     k = min(m, n)
-    return max(k ** 3 + m * n, 1)
+    return max(k**3 + m * n, 1)
 
 
 def cond(x, p=None):

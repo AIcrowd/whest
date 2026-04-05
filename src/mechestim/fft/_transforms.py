@@ -214,8 +214,7 @@ def fft2(a, s=None, axes=(-2, -1), norm=None, out=None):
         s_for_cost = tuple(a.shape[ax] for ax in axes)
     else:
         s_for_cost = tuple(
-            a.shape[axes[i]] if si is None else si
-            for i, si in enumerate(s)
+            a.shape[axes[i]] if si is None else si for i, si in enumerate(s)
         )
     cost = fftn_cost(s_for_cost)
     budget.deduct("fft.fft2", flop_cost=cost, subscripts=None, shapes=(a.shape,))
@@ -238,8 +237,7 @@ def ifft2(a, s=None, axes=(-2, -1), norm=None, out=None):
         s_for_cost = tuple(a.shape[ax] for ax in axes)
     else:
         s_for_cost = tuple(
-            a.shape[axes[i]] if si is None else si
-            for i, si in enumerate(s)
+            a.shape[axes[i]] if si is None else si for i, si in enumerate(s)
         )
     cost = fftn_cost(s_for_cost)
     budget.deduct("fft.ifft2", flop_cost=cost, subscripts=None, shapes=(a.shape,))
@@ -262,8 +260,7 @@ def rfft2(a, s=None, axes=(-2, -1), norm=None, out=None):
         s_for_cost = tuple(a.shape[ax] for ax in axes)
     else:
         s_for_cost = tuple(
-            a.shape[axes[i]] if si is None else si
-            for i, si in enumerate(s)
+            a.shape[axes[i]] if si is None else si for i, si in enumerate(s)
         )
     cost = rfftn_cost(s_for_cost)
     budget.deduct("fft.rfft2", flop_cost=cost, subscripts=None, shapes=(a.shape,))
@@ -287,7 +284,8 @@ def irfft2(a, s=None, axes=(-2, -1), norm=None, out=None):
     else:
         s_for_cost = tuple(
             (a.shape[axes[i]] if i < len(s) - 1 else 2 * (a.shape[axes[i]] - 1))
-            if si is None else si
+            if si is None
+            else si
             for i, si in enumerate(s)
         )
     cost = rfftn_cost(s_for_cost)
@@ -313,8 +311,7 @@ def fftn(a, s=None, axes=None, norm=None, out=None):
     else:
         eff_axes = tuple(range(a.ndim)) if axes is None else tuple(axes)
         s_for_cost = tuple(
-            a.shape[eff_axes[i]] if si is None else si
-            for i, si in enumerate(s)
+            a.shape[eff_axes[i]] if si is None else si for i, si in enumerate(s)
         )
     cost = fftn_cost(s_for_cost)
     budget.deduct("fft.fftn", flop_cost=cost, subscripts=None, shapes=(a.shape,))
@@ -338,8 +335,7 @@ def ifftn(a, s=None, axes=None, norm=None, out=None):
     else:
         eff_axes = tuple(range(a.ndim)) if axes is None else tuple(axes)
         s_for_cost = tuple(
-            a.shape[eff_axes[i]] if si is None else si
-            for i, si in enumerate(s)
+            a.shape[eff_axes[i]] if si is None else si for i, si in enumerate(s)
         )
     cost = fftn_cost(s_for_cost)
     budget.deduct("fft.ifftn", flop_cost=cost, subscripts=None, shapes=(a.shape,))
@@ -363,8 +359,7 @@ def rfftn(a, s=None, axes=None, norm=None, out=None):
     else:
         eff_axes = tuple(range(a.ndim)) if axes is None else tuple(axes)
         s_for_cost = tuple(
-            a.shape[eff_axes[i]] if si is None else si
-            for i, si in enumerate(s)
+            a.shape[eff_axes[i]] if si is None else si for i, si in enumerate(s)
         )
     cost = rfftn_cost(s_for_cost)
     budget.deduct("fft.rfftn", flop_cost=cost, subscripts=None, shapes=(a.shape,))
@@ -398,7 +393,8 @@ def irfftn(a, s=None, axes=None, norm=None, out=None):
         eff_axes = tuple(range(a.ndim)) if axes is None else tuple(axes)
         s_for_cost = tuple(
             (a.shape[eff_axes[i]] if i < len(s) - 1 else 2 * (a.shape[eff_axes[i]] - 1))
-            if si is None else si
+            if si is None
+            else si
             for i, si in enumerate(s)
         )
     cost = rfftn_cost(s_for_cost)

@@ -41,7 +41,9 @@ def allclose(a, b, **kwargs):
     for d in out_shape:
         numel *= d
     cost = _builtins.max(numel, 1)
-    budget.deduct("allclose", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
+    budget.deduct(
+        "allclose", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+    )
     return _np.allclose(a, b, **kwargs)
 
 
@@ -57,7 +59,9 @@ def array_equal(a, b, **kwargs):
     for d in out_shape:
         numel *= d
     cost = _builtins.max(numel, 1)
-    budget.deduct("array_equal", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
+    budget.deduct(
+        "array_equal", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+    )
     return _np.array_equal(a, b, **kwargs)
 
 
@@ -73,7 +77,9 @@ def array_equiv(a, b):
     for d in out_shape:
         numel *= d
     cost = _builtins.max(numel, 1)
-    budget.deduct("array_equiv", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
+    budget.deduct(
+        "array_equiv", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+    )
     return _np.array_equiv(a, b)
 
 
