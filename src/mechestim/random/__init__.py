@@ -196,9 +196,7 @@ def choice(a, size=None, replace=True, p=None):
         )
     else:
         cost = sort_cost(n)
-        budget.deduct(
-            "random.choice", flop_cost=cost, subscripts=None, shapes=((n,),)
-        )
+        budget.deduct("random.choice", flop_cost=cost, subscripts=None, shapes=((n,),))
     return _npr.choice(a, size=size, replace=replace, p=p)
 
 
@@ -209,9 +207,7 @@ def bytes(length):
     """
     budget = require_budget()
     cost = _builtins.max(int(length), 1)
-    budget.deduct(
-        "random.bytes", flop_cost=cost, subscripts=None, shapes=((length,),)
-    )
+    budget.deduct("random.bytes", flop_cost=cost, subscripts=None, shapes=((length,),))
     return _npr.bytes(length)
 
 

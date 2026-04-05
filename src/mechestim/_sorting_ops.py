@@ -87,9 +87,7 @@ def lexsort(keys, axis=-1):
     return _np.lexsort(keys_list, axis=axis)
 
 
-attach_docstring(
-    lexsort, _np.lexsort, "counted_custom", "k*n*ceil(log2(n)) FLOPs"
-)
+attach_docstring(lexsort, _np.lexsort, "counted_custom", "k*n*ceil(log2(n)) FLOPs")
 
 
 def partition(a, kth, axis=-1, **kwargs):
@@ -228,9 +226,7 @@ def unique(ar, **kwargs):
     return _np.unique(ar_arr, **kwargs)
 
 
-attach_docstring(
-    unique, _np.unique, "counted_custom", "n*ceil(log2(n)) FLOPs"
-)
+attach_docstring(unique, _np.unique, "counted_custom", "n*ceil(log2(n)) FLOPs")
 
 
 def unique_all(x, /):
@@ -242,9 +238,7 @@ def unique_all(x, /):
     return _np.unique_all(x_arr)
 
 
-attach_docstring(
-    unique_all, _np.unique_all, "counted_custom", "n*ceil(log2(n)) FLOPs"
-)
+attach_docstring(unique_all, _np.unique_all, "counted_custom", "n*ceil(log2(n)) FLOPs")
 
 
 def unique_counts(x, /):
@@ -318,9 +312,7 @@ def in1d(ar1, ar2, **kwargs):
     return _np.in1d(ar1, ar2, **kwargs)
 
 
-attach_docstring(
-    in1d, _np.in1d, "counted_custom", "(n+m)*ceil(log2(n+m)) FLOPs"
-)
+attach_docstring(in1d, _np.in1d, "counted_custom", "(n+m)*ceil(log2(n+m)) FLOPs")
 
 
 def isin(element, test_elements, **kwargs):
@@ -333,9 +325,7 @@ def isin(element, test_elements, **kwargs):
     return _np.isin(element, test_elements, **kwargs)
 
 
-attach_docstring(
-    isin, _np.isin, "counted_custom", "(n+m)*ceil(log2(n+m)) FLOPs"
-)
+attach_docstring(isin, _np.isin, "counted_custom", "(n+m)*ceil(log2(n+m)) FLOPs")
 
 
 def intersect1d(ar1, ar2, **kwargs):
@@ -367,9 +357,7 @@ def union1d(ar1, ar2):
     return _np.union1d(ar1, ar2)
 
 
-attach_docstring(
-    union1d, _np.union1d, "counted_custom", "(n+m)*ceil(log2(n+m)) FLOPs"
-)
+attach_docstring(union1d, _np.union1d, "counted_custom", "(n+m)*ceil(log2(n+m)) FLOPs")
 
 
 def setdiff1d(ar1, ar2, **kwargs):

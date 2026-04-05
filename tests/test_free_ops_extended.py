@@ -121,8 +121,6 @@ def test_roll():
     assert list(r) == [4, 1, 2, 3]
 
 
-
-
 def test_pad():
     a = numpy.array([1, 2, 3])
     r = ops.pad(a, 1)

@@ -27,7 +27,9 @@ def trace(a, offset=0, axis1=0, axis2=1, dtype=None):
     return _np.trace(a, offset=offset, axis1=axis1, axis2=axis2, dtype=dtype)
 
 
-attach_docstring(trace, _np.trace, "counted_custom", "min(a.shape[axis1], a.shape[axis2]) FLOPs")
+attach_docstring(
+    trace, _np.trace, "counted_custom", "min(a.shape[axis1], a.shape[axis2]) FLOPs"
+)
 
 
 def allclose(a, b, **kwargs):
@@ -108,7 +110,9 @@ def histogram2d(x, y, bins=10, **kwargs):
     else:
         cost = _builtins.max(n, 1)
 
-    budget.deduct("histogram2d", flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape))
+    budget.deduct(
+        "histogram2d", flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape)
+    )
     return _np.histogram2d(x, y, bins=bins, **kwargs)
 
 
@@ -135,7 +139,9 @@ def histogramdd(sample, bins=10, **kwargs):
     else:
         cost = _builtins.max(n, 1)
 
-    budget.deduct("histogramdd", flop_cost=cost, subscripts=None, shapes=(sample.shape,))
+    budget.deduct(
+        "histogramdd", flop_cost=cost, subscripts=None, shapes=(sample.shape,)
+    )
     return _np.histogramdd(sample, bins=bins, **kwargs)
 
 
@@ -151,11 +157,15 @@ def histogram_bin_edges(a, bins=10, **kwargs):
     budget = require_budget()
     a = _np.asarray(a)
     cost = _builtins.max(a.size, 1)
-    budget.deduct("histogram_bin_edges", flop_cost=cost, subscripts=None, shapes=(a.shape,))
+    budget.deduct(
+        "histogram_bin_edges", flop_cost=cost, subscripts=None, shapes=(a.shape,)
+    )
     return _np.histogram_bin_edges(a, bins=bins, **kwargs)
 
 
-attach_docstring(histogram_bin_edges, _np.histogram_bin_edges, "counted_custom", "numel(a) FLOPs")
+attach_docstring(
+    histogram_bin_edges, _np.histogram_bin_edges, "counted_custom", "numel(a) FLOPs"
+)
 
 
 def bincount(x, **kwargs):

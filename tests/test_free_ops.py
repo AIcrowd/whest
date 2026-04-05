@@ -89,5 +89,3 @@ def test_expand_dims():
 
 def test_triu():
     assert numpy.allclose(ops.triu(ops.ones((3, 3))), numpy.triu(numpy.ones((3, 3))))
-
-

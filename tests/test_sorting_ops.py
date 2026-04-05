@@ -375,9 +375,7 @@ class TestIntersect1d:
         ar1 = numpy.array([1, 2, 3, 4])
         ar2 = numpy.array([3, 4, 5, 6])
         with BudgetContext(flop_budget=10**6):
-            assert numpy.array_equal(
-                intersect1d(ar1, ar2), numpy.intersect1d(ar1, ar2)
-            )
+            assert numpy.array_equal(intersect1d(ar1, ar2), numpy.intersect1d(ar1, ar2))
 
     def test_cost(self):
         ar1 = numpy.array([1, 2, 3, 4])
