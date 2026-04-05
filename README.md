@@ -217,6 +217,10 @@ with me.BudgetContext(flop_budget=10**8) as budget:
 - [FLOP Counting Model](docs/concepts/flop-counting-model.md)
 - [Operation Categories](docs/concepts/operation-categories.md)
 
+**Development**
+
+- [Contributor Guide](docs/development/contributing.md)
+
 **API Reference**
 
 - [Full API Reference](docs/api/)
@@ -230,10 +234,13 @@ with me.BudgetContext(flop_budget=10**8) as budget:
 ```bash
 git clone https://github.com/AIcrowd/mechestim.git
 cd mechestim
-uv sync --all-extras
-uv run pytest                  # run tests
-uv run mkdocs serve            # local docs at http://127.0.0.1:8000
+make install
+make test                      # core test suite
+make docs-serve                # local docs at http://127.0.0.1:8000
 ```
+
+For the monorepo layout, client/server workflows, and generated-doc rules, see
+[Contributor Guide](docs/development/contributing.md).
 
 ## Citation
 

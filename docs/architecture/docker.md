@@ -29,31 +29,40 @@ The containers share an IPC socket volume for communication.
 
 ## Without Docker
 
-Start the server manually:
+From a source checkout, start both processes from the repository root so the
+server can import the local `src/mechestim` package:
 
 ```bash
 # Terminal 1: Start the server
-cd mechestim-server
-uv run python -m mechestim_server --url ipc:///tmp/mechestim.sock
+PYTHONPATH=src:mechestim-server/src \
+  uv run --with pyzmq --with msgpack \
+  python -m mechestim_server --url ipc:///tmp/mechestim.sock
 ```
 
 ```bash
 # Terminal 2: Run client code
 export MECHESTIM_SERVER_URL=ipc:///tmp/mechestim.sock
-cd mechestim-client
-uv run python your_script.py
+PYTHONPATH=mechestim-client/src \
+  uv run --with pyzmq --with msgpack python your_script.py
 ```
 
 For TCP (e.g., across machines):
 
 ```bash
 # Server
-uv run python -m mechestim_server --url tcp://0.0.0.0:15555
+PYTHONPATH=src:mechestim-server/src \
+  uv run --with pyzmq --with msgpack \
+  python -m mechestim_server --url tcp://0.0.0.0:15555
 
 # Client
 export MECHESTIM_SERVER_URL=tcp://server-host:15555
-uv run python your_script.py
+PYTHONPATH=mechestim-client/src \
+  uv run --with pyzmq --with msgpack python your_script.py
 ```
+
+If you already have `mechestim-client` and `mechestim-server` installed into
+separate environments, the shorter `cd ... && uv run ...` workflow also works.
+The commands above are the reproducible source-checkout path.
 
 ## ⚠️ Common pitfalls
 
@@ -68,3 +77,4 @@ uv run python your_script.py
 ## 📎 Related pages
 
 - [Client-Server Model](./client-server.md) — architecture overview
+- [Contributor Guide](../development/contributing.md) — local repo workflows

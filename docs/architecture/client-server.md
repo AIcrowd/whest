@@ -85,4 +85,5 @@ with me.BudgetContext(flop_budget=10**6) as budget:
 ## 📎 Related pages
 
 - [Running with Docker](./docker.md) — set up client-server locally
+- [Contributor Guide](../development/contributing.md) — source-checkout commands for local development
 - [Your First Budget](../getting-started/first-budget.md) — getting started with the local library

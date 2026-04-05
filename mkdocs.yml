@@ -56,6 +56,8 @@ plugins:
         "Architecture":
           - architecture/client-server.md: "Client-server architecture for sandboxed execution"
           - architecture/docker.md: "Running mechestim with Docker and Docker Compose"
+        "Development":
+          - development/contributing.md: "Repository layout, local workflows, and generated-doc rules"
         "API Reference":
           - api/counted-ops.md: "Operations that cost FLOPs"
           - api/free-ops.md: "Operations that cost 0 FLOPs"
@@ -98,6 +100,8 @@ nav:
   - Architecture:
     - Client-Server Model: architecture/client-server.md
     - Running with Docker: architecture/docker.md
+  - Development:
+    - Contributor Guide: development/contributing.md
   - API Reference:
     - Counted Operations: api/counted-ops.md
     - Free Operations: api/free-ops.md
