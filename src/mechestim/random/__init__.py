@@ -187,7 +187,11 @@ def choice(a, size=None, replace=True, p=None):
     sort_cost(n) = n * ceil(log2(n)) FLOPs if ``replace=False``.
     """
     budget = require_budget()
-    n = int(a) if isinstance(a, (int, _np.integer)) else a.shape[0]
+    if isinstance(a, (int, _np.integer)):
+        n = int(a)
+    else:
+        a_arr = _np.asarray(a)
+        n = a_arr.shape[0] if a_arr.ndim > 0 else 1
     if replace:
         out_size = _output_size(size=size)
         cost = _builtins.max(out_size, 1)
