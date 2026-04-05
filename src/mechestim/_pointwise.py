@@ -249,7 +249,32 @@ arcsin = _counted_unary(_np.arcsin, "arcsin")
 arcsinh = _counted_unary(_np.arcsinh, "arcsinh")
 arctan = _counted_unary(_np.arctan, "arctan")
 arctanh = _counted_unary(_np.arctanh, "arctanh")
-around = _counted_unary(_np.around, "around")
+
+
+def around(a, decimals=0, out=None):
+    """Counted version of np.around. Cost = numel(output) FLOPs."""
+    budget = require_budget()
+    a_is_scalar = not isinstance(a, _np.ndarray) and _np.ndim(a) == 0
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
+    sym_info = a.symmetry_info if isinstance(a, SymmetricTensor) else None
+    cost = pointwise_cost(a.shape, symmetry_info=sym_info)
+    budget.deduct("around", flop_cost=cost, subscripts=None, shapes=(a.shape,))
+    result = _np.around(a, decimals=decimals, out=out)
+    check_nan_inf(result, "around")
+    if sym_info is not None:
+        result = SymmetricTensor(result, symmetric_axes=sym_info.symmetric_axes)
+    if (
+        a_is_scalar
+        and out is None
+        and isinstance(result, _np.ndarray)
+        and result.ndim == 0
+    ):
+        return result.item()
+    return result
+
+
+attach_docstring(around, _np.around, "counted_unary", "numel(output) FLOPs")
 asin = _counted_unary(_np.asin, "asin")
 asinh = _counted_unary(_np.asinh, "asinh")
 atan = _counted_unary(_np.atan, "atan")
@@ -287,7 +312,32 @@ real = _counted_unary(_np.real, "real")
 real_if_close = _counted_unary(_np.real_if_close, "real_if_close")
 reciprocal = _counted_unary(_np.reciprocal, "reciprocal")
 rint = _counted_unary(_np.rint, "rint")
-round = _counted_unary(_np.round, "round")
+
+
+def round(a, decimals=0, out=None):
+    """Counted version of np.round. Cost = numel(output) FLOPs."""
+    budget = require_budget()
+    a_is_scalar = not isinstance(a, _np.ndarray) and _np.ndim(a) == 0
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
+    sym_info = a.symmetry_info if isinstance(a, SymmetricTensor) else None
+    cost = pointwise_cost(a.shape, symmetry_info=sym_info)
+    budget.deduct("round", flop_cost=cost, subscripts=None, shapes=(a.shape,))
+    result = _np.round(a, decimals=decimals, out=out)
+    check_nan_inf(result, "round")
+    if sym_info is not None:
+        result = SymmetricTensor(result, symmetric_axes=sym_info.symmetric_axes)
+    if (
+        a_is_scalar
+        and out is None
+        and isinstance(result, _np.ndarray)
+        and result.ndim == 0
+    ):
+        return result.item()
+    return result
+
+
+attach_docstring(round, _np.round, "counted_unary", "numel(output) FLOPs")
 signbit = _counted_unary(_np.signbit, "signbit")
 sinc = _counted_unary(_np.sinc, "sinc")
 sinh = _counted_unary(_np.sinh, "sinh")
@@ -305,6 +355,8 @@ frexp = _counted_unary_multi(_np.frexp, "frexp")
 def isclose(a, b, **kwargs):
     """Counted version of np.isclose. Cost = numel(output) FLOPs."""
     budget = require_budget()
+    a_is_scalar = not isinstance(a, _np.ndarray) and _np.ndim(a) == 0
+    b_is_scalar = not isinstance(b, _np.ndarray) and _np.ndim(b) == 0
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     if not isinstance(b, _np.ndarray):
@@ -312,7 +364,15 @@ def isclose(a, b, **kwargs):
     output_shape = _np.broadcast_shapes(a.shape, b.shape)
     cost = pointwise_cost(output_shape)
     budget.deduct("isclose", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
-    return _np.isclose(a, b, **kwargs)
+    result = _np.isclose(a, b, **kwargs)
+    if (
+        a_is_scalar
+        and b_is_scalar
+        and isinstance(result, _np.ndarray)
+        and result.ndim == 0
+    ):
+        return result.item()
+    return result
 
 
 attach_docstring(isclose, _np.isclose, "counted_unary", "numel(output) FLOPs")
@@ -381,7 +441,7 @@ divmod = _counted_binary_multi(_np.divmod, "divmod")
 # ---------------------------------------------------------------------------
 
 
-def clip(a, a_min, a_max):
+def clip(a, a_min=None, a_max=None, out=None, **kwargs):
     """Counted version of np.clip. Cost = numel(input) or unique_elements if symmetric."""
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
@@ -389,8 +449,16 @@ def clip(a, a_min, a_max):
     sym_info = a.symmetry_info if isinstance(a, SymmetricTensor) else None
     cost = pointwise_cost(a.shape, symmetry_info=sym_info)
     budget.deduct("clip", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    result = _np.clip(a, a_min, a_max)
-    check_nan_inf(result, "clip")
+    # numpy forbids min=/max= kwargs when a_min/a_max positional args are given;
+    # handle the case where caller uses min=/max= keyword style
+    if "min" in kwargs or "max" in kwargs:
+        if a_min is None and "min" in kwargs:
+            a_min = kwargs.pop("min")
+        if a_max is None and "max" in kwargs:
+            a_max = kwargs.pop("max")
+    result = _np.clip(a, a_min, a_max, out=out, **kwargs)
+    if a.dtype.kind in ("f", "c"):
+        check_nan_inf(result, "clip")
     if sym_info is not None:
         result = SymmetricTensor(result, symmetric_axes=sym_info.symmetric_axes)
     return result
@@ -564,7 +632,7 @@ def inner(a, b):
 attach_docstring(inner, _np.inner, "counted_custom", "product of matching dims")
 
 
-def outer(a, b):
+def outer(a, b, out=None):
     """Counted version of np.outer."""
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
@@ -573,7 +641,7 @@ def outer(a, b):
         b = _np.asarray(b)
     cost = a.size * b.size
     budget.deduct("outer", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
-    return _np.outer(a, b)
+    return _np.outer(a, b, out=out)
 
 
 attach_docstring(outer, _np.outer, "counted_custom", "m * n FLOPs")
