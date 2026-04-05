@@ -11,7 +11,7 @@ Current state (2026-04-03):
     test_linalg:       49 passed, 0 failed  (255 xfailed — expanded submodule patching)
     test_pocketfft:   122 passed, 0 failed  (34 xfailed)
     test_polynomial:  600 passed, 0 failed   (2 xfailed)
-    test_random:    1,319 passed, 0 failed
+    test_random:    1,319 passed, 0 failed  (8 xfailed — counted wrapper signatures)
 
 What we patch (55 functions):
     Non-ufunc reductions and special functions (all, any, amax, amin,
@@ -242,5 +242,35 @@ XFAIL_PATTERNS: dict[str, str] = {
     ),
     "*TestEvaluation::test_polyval": (
         "NOT_IMPLEMENTED: mechestim polyval doesn't support masked arrays"
+    ),
+    # ------------------------------------------------------------------ #
+    # test_random.py — counted random wrapper signature divergences        #
+    # ------------------------------------------------------------------ #
+    # mechestim random wrappers are plain functions, not methods on the
+    # RandomState class. Tests that use np.random.randint as a bound method
+    # (passing self) or test internal RandomState behavior will fail.
+    "*TestRandint::test_in_bounds_fuzz": (
+        "WRAPPER_SIGNATURE: mechestim randint is a plain function, not a bound method"
+    ),
+    "*TestRandint::test_rng_zero_and_extremes": (
+        "WRAPPER_SIGNATURE: mechestim randint is a plain function, not a bound method"
+    ),
+    "*TestRandint::test_respect_dtype_singleton": (
+        "WRAPPER_SIGNATURE: mechestim randint is a plain function, not a bound method"
+    ),
+    "*TestRandint::test_bounds_checking": (
+        "WRAPPER_SIGNATURE: mechestim randint is a plain function, not a bound method"
+    ),
+    "*TestRandint::test_repeatability": (
+        "WRAPPER_SIGNATURE: mechestim randint is a plain function, not a bound method"
+    ),
+    "*TestRandint::test_full_range": (
+        "WRAPPER_SIGNATURE: mechestim randint is a plain function, not a bound method"
+    ),
+    "*TestRandomDist::test_shuffle": (
+        "WRAPPER_SIGNATURE: mechestim shuffle is a counted wrapper with different signature"
+    ),
+    "*TestRandomDist::test_shuffle_untyped_warning*": (
+        "WRAPPER_SIGNATURE: mechestim shuffle is a counted wrapper with different signature"
     ),
 }
