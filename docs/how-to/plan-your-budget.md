@@ -117,5 +117,6 @@ me.budget_summary()
 ## 📎 Related pages
 
 - [Use Einsum](./use-einsum.md) — understand einsum cost formulas and multi-operand paths
+- [Calibrate Weights](./calibrate-weights.md) — measure per-operation weights to refine cost estimates
 - [Debug Budget Overruns](./debug-budget-overruns.md) — diagnose after the fact
 - [Symmetric Tensors API](../api/symmetric.md) — `PathInfo` and `StepInfo` reference

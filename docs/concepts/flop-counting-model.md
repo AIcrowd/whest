@@ -23,6 +23,10 @@ mechestim computes FLOP costs **analytically from tensor shapes**, not by measur
 
 ## Cost formulas by category
 
+Each formula below gives the **analytical base cost**. When per-operation
+[weights](#per-operation-weights) are loaded, the base cost is multiplied
+by the operation's weight to give the final deducted cost.
+
 | Category | Formula | Example |
 |----------|---------|---------|
 | **Einsum** | Per-step: product of dims × op_factor | `'ij,jk->ik'` → 2 × 3 × 4 × 5 = 120 |
@@ -109,6 +113,86 @@ the optimizer factors this into its ordering decisions.
 Use `me.einsum_path()` to inspect the per-step breakdown. See
 [Use Einsum](../how-to/use-einsum.md) for examples.
 
+## Per-operation weights
+
+The analytical formulas above treat all operations within a category as
+equally expensive — `exp`, `log`, `sin`, and `abs` all cost
+$\text{numel}(\text{output})$ FLOPs. In reality, `exp` decomposes into
+~15–25 basic floating-point operations (a minimax polynomial approximation),
+while `abs` is a single bit manipulation.
+
+Per-operation **weights** correct for this. Each weight is a multiplicative
+constant applied on top of the analytical formula:
+
+```
+actual_cost = analytical_formula(shape) × weight(op_name)
+```
+
+| Operation | Analytical formula | Weight | Effective cost |
+|-----------|--------------------|--------|----------------|
+| `add` | $\text{numel}(\text{output})$ | 1.0 | 65,536 |
+| `exp` | $\text{numel}(\text{output})$ | ~23 | ~1,507,328 |
+| `sin` | $\text{numel}(\text{output})$ | ~30 | ~1,966,080 |
+| `linalg.cholesky` | $n^3/3$ | ~1.0 | ~5.6M |
+
+Weights are loaded from a JSON config file. Without a config file, all
+weights default to 1.0 — the analytical formulas apply unchanged.
+
+### How weights are applied
+
+Weights are applied centrally in `BudgetContext.deduct()`. Every counted
+operation passes its `op_name` to `deduct()`, which looks up the weight
+and multiplies it into the cost:
+
+```python
+adjusted_cost = analytical_cost × flop_multiplier × weight(op_name)
+```
+
+This means weights compose with `flop_multiplier` and with symmetry
+reductions — symmetry reduces the element count, the weight scales the
+per-element cost, and both apply independently.
+
+### Loading a weights config
+
+Set the `MECHESTIM_WEIGHTS_FILE` environment variable to load weights at
+import time:
+
+```bash
+export MECHESTIM_WEIGHTS_FILE=/path/to/weights.json
+```
+
+The JSON file must have a `"weights"` key mapping operation names to floats:
+
+```json
+{
+  "weights": {
+    "add": 1.0,
+    "exp": 23.4,
+    "sin": 30.1,
+    "linalg.cholesky": 1.15
+  }
+}
+```
+
+Operations not listed in the file default to 1.0. See
+[Calibrate Weights](../how-to/calibrate-weights.md) for how to generate
+this file.
+
+### Where weights come from
+
+Weights can be determined in two ways:
+
+1. **Hardware performance counters** (Linux `perf stat`) — counts actual
+   floating-point instructions retired by the CPU, weighted by SIMD width.
+   This gives the true number of basic FP ops per high-level operation.
+
+2. **Wall-clock time normalization** — measures `time(op) / time(add)` as
+   a relative proxy. Less precise than hardware counters but works on any
+   platform.
+
+The `benchmarks/` package in this repository automates both methods. See
+[Calibrate Weights](../how-to/calibrate-weights.md).
+
 ## FLOP multiplier
 
 The `flop_multiplier` parameter in `BudgetContext` scales all costs:
@@ -119,7 +203,10 @@ with me.BudgetContext(flop_budget=10**6, flop_multiplier=2.0) as budget:
     ...
 ```
 
-This is useful for experimentation or adjusting the difficulty of a budget constraint.
+This is useful for experimentation or adjusting the difficulty of a budget
+constraint. Note that `flop_multiplier` and per-operation weights are
+independent — `flop_multiplier` scales *all* operations uniformly, while
+weights scale each operation individually.
 
 ## Namespaces
 
@@ -137,3 +224,4 @@ Namespaces do not affect FLOP counting or budget enforcement — they only appea
 
 - [Operation Categories](./operation-categories.md) — which operations are free, counted, or unsupported
 - [Plan Your Budget](../how-to/plan-your-budget.md) — query costs before running
+- [Calibrate Weights](../how-to/calibrate-weights.md) — measure per-operation weights empirically
