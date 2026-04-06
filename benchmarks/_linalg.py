@@ -68,7 +68,11 @@ def benchmark_linalg(
     dtype: str = "float64",
     repeats: int = 10,
 ) -> dict[str, float]:
-    """Benchmark linalg ops, returning correction factors (measured / analytical).
+    """Benchmark linalg ops, returning raw measurement per analytical FLOP.
+
+    In perf mode this is actual FP ops / analytical FLOPs (correction factor).
+    In timing mode this is nanoseconds / analytical FLOPs (same units as
+    pointwise — the runner normalizes against baseline to get relative weights).
 
     Parameters
     ----------
@@ -82,7 +86,7 @@ def benchmark_linalg(
     Returns
     -------
     dict[str, float]
-        Mapping from op name to median correction factor.
+        Mapping from op name to median raw measurement per analytical FLOP.
     """
     results: dict[str, float] = {}
 

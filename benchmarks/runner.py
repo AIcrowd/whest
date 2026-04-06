@@ -19,13 +19,14 @@ from benchmarks._reductions import benchmark_reductions
 from benchmarks._sorting import benchmark_sorting
 from benchmarks.dashboard import render_html, render_terminal
 
-# Categories that get normalized by baseline_fpe
-_NORMALIZED_CATEGORIES = {"pointwise", "reductions", "sorting", "random", "polynomial"}
+# In perf mode: linalg/fft return correction factors (already normalized).
+# In timing mode: ALL categories return raw timing, need baseline normalization.
+_CORRECTION_CATEGORIES = {"linalg", "fft"}
 
-# Categories that use correction factors directly (no normalization)
-_DIRECT_CATEGORIES = {"linalg", "fft"}
-
-ALL_CATEGORIES = sorted(_NORMALIZED_CATEGORIES | _DIRECT_CATEGORIES)
+ALL_CATEGORIES = sorted(
+    {"pointwise", "reductions", "sorting", "random", "polynomial"}
+    | _CORRECTION_CATEGORIES
+)
 
 _BENCHMARK_FUNCS: dict[str, Any] = {
     "pointwise": benchmark_pointwise,
@@ -79,7 +80,7 @@ def run_benchmarks(
 
     mode = measurement_mode()
 
-    # -- try rich progress -------------------------------------------------
+    # -- try rich ----------------------------------------------------------
     try:
         from rich.console import Console
         from rich.progress import (
@@ -96,15 +97,15 @@ def run_benchmarks(
     except ImportError:
         use_rich = False
 
-    def _print(msg: str) -> None:
+    def _log(msg: str) -> None:
         if use_rich:
             console.print(msg)
         else:
             print(msg, file=sys.stderr)
 
-    _print(f"[bold]Measurement mode:[/bold] {mode}" if use_rich else f"Measurement mode: {mode}")
+    _log(f"[bold]Measurement mode:[/bold] {mode}" if use_rich else f"Measurement mode: {mode}")
     if mode == "timing":
-        _print(
+        _log(
             "  [dim](perf not available — using wall-clock time as proxy)[/dim]"
             if use_rich else
             "  (perf not available — using wall-clock time as proxy)"
@@ -112,13 +113,20 @@ def run_benchmarks(
 
     t_start = _time.monotonic()
 
-    _print("Collecting metadata ...")
+    _log("Collecting metadata ...")
     meta = collect_metadata(dtype=dtype, repeats=repeats, distributions=3)
     meta["benchmark_config"]["measurement_mode"] = mode
 
     # -- baseline ----------------------------------------------------------
-    _print("Measuring baseline (np.add) ...")
+    _log("Measuring baseline (np.add) ...")
     baseline_fpe = measure_baseline(dtype=dtype, repeats=repeats)
+
+    # -- helper: should we normalize? --------------------------------------
+    def _should_normalize(cat: str) -> bool:
+        """In timing mode, normalize everything. In perf mode, skip linalg/fft."""
+        if mode == "perf" and cat in _CORRECTION_CATEGORIES:
+            return False
+        return True
 
     # -- run each category -------------------------------------------------
     weights: dict[str, float] = {}
@@ -127,28 +135,30 @@ def run_benchmarks(
         total_ops = sum(_APPROX_OP_COUNTS.get(c, 10) for c in cats)
         progress = Progress(
             SpinnerColumn(),
-            TextColumn("[bold blue]{task.description}"),
-            BarColumn(bar_width=30),
+            TextColumn("[bold blue]{task.fields[current_op]}"),
+            BarColumn(bar_width=40),
             MofNCompleteColumn(),
-            TextColumn("[dim]{task.fields[current_op]}"),
             TimeElapsedColumn(),
             console=console,
+            transient=False,
         )
         with progress:
-            task_id = progress.add_task("Benchmarking", total=total_ops, current_op="")
+            task_id = progress.add_task(
+                "Benchmarking", total=total_ops, current_op="starting..."
+            )
             for cat in cats:
                 if cat not in _BENCHMARK_FUNCS:
                     continue
-                progress.update(task_id, current_op=f"[{cat}]")
+                progress.update(task_id, current_op=f"benchmarking {cat}")
                 func = _BENCHMARK_FUNCS[cat]
                 raw = func(dtype=dtype, repeats=repeats)
 
-                if cat in _NORMALIZED_CATEGORIES:
-                    normalized = normalize_weights(raw, baseline_fpe)
+                if _should_normalize(cat):
+                    weights.update(normalize_weights(raw, baseline_fpe))
                 else:
-                    normalized = raw
-                weights.update(normalized)
+                    weights.update(raw)
                 progress.advance(task_id, advance=_APPROX_OP_COUNTS.get(cat, len(raw)))
+            progress.update(task_id, current_op="done")
     else:
         for cat in cats:
             if cat not in _BENCHMARK_FUNCS:
@@ -158,11 +168,10 @@ def run_benchmarks(
             func = _BENCHMARK_FUNCS[cat]
             raw = func(dtype=dtype, repeats=repeats)
 
-            if cat in _NORMALIZED_CATEGORIES:
-                normalized = normalize_weights(raw, baseline_fpe)
+            if _should_normalize(cat):
+                weights.update(normalize_weights(raw, baseline_fpe))
             else:
-                normalized = raw
-            weights.update(normalized)
+                weights.update(raw)
 
     # -- round weights -----------------------------------------------------
     weights = {k: round(v, 4) for k, v in weights.items()}
@@ -174,7 +183,7 @@ def run_benchmarks(
 
     # -- write JSON --------------------------------------------------------
     if output:
-        _print(f"Writing JSON to {output} ...")
+        _log(f"Writing JSON to {output} ...")
         with open(output, "w") as f:
             json.dump(result, f, indent=2)
 
@@ -186,7 +195,7 @@ def run_benchmarks(
 
     # -- optional HTML report ----------------------------------------------
     if html:
-        _print(f"Writing HTML report to {html} ...")
+        _log(f"Writing HTML report to {html} ...")
         html_content = render_html(
             meta, weights, baseline_fpe, len(weights), duration
         )

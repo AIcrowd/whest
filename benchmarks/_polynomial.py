@@ -27,25 +27,29 @@ def benchmark_polynomial(
     n: int = 1_000_000,
     dtype: str = "float64",
     repeats: int = 10,
-    degree: int = 10,
+    degree: int = 100,
 ) -> dict[str, float]:
-    """Benchmark polynomial ops, returning FP ops per element (or per degree).
+    """Benchmark polynomial ops, returning raw measurement per element.
+
+    For large-array ops (polyval, polyfit): normalizes by n.
+    For coefficient ops: uses degree=100 to amortize overhead,
+    normalizes by degree+1 (the coefficient array size).
 
     Parameters
     ----------
     n : int
-        Array size for polyval/polyfit; ignored for coefficient-only ops.
+        Array size for polyval/polyfit.
     dtype : str
         NumPy dtype string.
     repeats : int
         Number of repetitions per measurement.
     degree : int
-        Polynomial degree.
+        Polynomial degree (higher = less overhead-dominated for coeff ops).
 
     Returns
     -------
     dict[str, float]
-        Mapping from op name to median normalized FP ops.
+        Mapping from op name to median raw measurement per element.
     """
     results: dict[str, float] = {}
 
@@ -95,33 +99,26 @@ def benchmark_polynomial(
                     + f"; d = rng.standard_normal({degree + 1}).astype(np.{dtype})"
                 )
                 bench = f"np.{op}(c, d)"
-                normalizer = degree
-            elif op == "polymul":
+                normalizer = degree + 1
+            elif op in ("polymul", "polydiv"):
                 setup = (
                     base_setup
                     + f"; d = rng.standard_normal({degree + 1}).astype(np.{dtype})"
                 )
-                bench = "np.polymul(c, d)"
-                normalizer = degree
-            elif op == "polydiv":
-                setup = (
-                    base_setup
-                    + f"; d = rng.standard_normal({degree + 1}).astype(np.{dtype})"
-                )
-                bench = "np.polydiv(c, d)"
-                normalizer = degree
+                bench = f"np.{op}(c, d)"
+                normalizer = degree + 1
             elif op == "polyder":
                 setup = base_setup
                 bench = "np.polyder(c)"
-                normalizer = degree
+                normalizer = degree + 1
             elif op == "polyint":
                 setup = base_setup
                 bench = "np.polyint(c)"
-                normalizer = degree
+                normalizer = degree + 1
             else:
                 setup = base_setup
                 bench = f"np.{op}(c)"
-                normalizer = degree
+                normalizer = degree + 1
 
             try:
                 result = measure_flops(setup, bench, repeats=repeats)

@@ -83,5 +83,5 @@ class TestBenchmarkPolynomial:
                 n=1_000, dtype="float64", repeats=1, degree=10
             )
 
-        # polyadd: total_flops = 50*4 = 200, normalized = 200 / (10 * 1) = 20.0
-        assert result["polyadd"] == pytest.approx(20.0)
+        # polyadd: total_flops = 50*4 = 200, normalized = 200 / (11 * 1) ≈ 18.18
+        assert result["polyadd"] == pytest.approx(200.0 / 11)
