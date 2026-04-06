@@ -1,4 +1,8 @@
-"""Benchmark pointwise (element-wise) unary and binary operations."""
+"""Benchmark pointwise (element-wise) unary and binary operations.
+
+All benchmarks pre-allocate output arrays and use ``out=`` to eliminate
+memory allocation overhead from measurements, isolating pure compute cost.
+"""
 
 from __future__ import annotations
 
@@ -83,6 +87,14 @@ BINARY_OPS: list[str] = [
     "ldexp",
 ]
 
+# Ops whose output dtype is bool (need bool pre-allocation for out=)
+_BOOL_UNARY = frozenset({"signbit", "logical_not"})
+_BOOL_BINARY = frozenset({
+    "greater", "greater_equal", "less", "less_equal",
+    "equal", "not_equal",
+    "logical_and", "logical_or", "logical_xor",
+})
+
 
 def _make_inputs_unary(n: int, dtype: str) -> list[np.ndarray]:
     """Return 3 input arrays with different distributions."""
@@ -115,13 +127,56 @@ def _make_inputs_binary(
     ]
 
 
+def _unary_setup(n: int, dtype: str, op: str, dist_idx: int) -> str:
+    """Build setup code for a unary op with pre-allocated output."""
+    dists = [
+        f"x = np.random.default_rng(42).standard_normal({n}).astype(np.{dtype})",
+        f"x = np.random.default_rng(42).uniform(0.01, 100, size={n}).astype(np.{dtype})",
+        f"x = np.random.default_rng(42).uniform(-1000, 1000, size={n}).astype(np.{dtype})",
+    ]
+    out_dtype = "bool" if op in _BOOL_UNARY else f"np.{dtype}"
+    return (
+        f"import numpy as np; {dists[dist_idx]}; "
+        f"_out = np.empty({n}, dtype={out_dtype})"
+    )
+
+
+def _binary_setup(n: int, dtype: str, op: str, dist_idx: int) -> str:
+    """Build setup code for a binary op with pre-allocated output."""
+    dists = [
+        (
+            f"rng = np.random.default_rng(42); "
+            f"a = rng.standard_normal({n}).astype(np.{dtype}); "
+            f"b = rng.standard_normal({n}).astype(np.{dtype})"
+        ),
+        (
+            f"rng = np.random.default_rng(42); "
+            f"a = rng.uniform(0.01, 100, size={n}).astype(np.{dtype}); "
+            f"b = rng.uniform(0.01, 100, size={n}).astype(np.{dtype})"
+        ),
+        (
+            f"rng = np.random.default_rng(42); "
+            f"a = rng.uniform(-1000, 1000, size={n}).astype(np.{dtype}); "
+            f"b = rng.uniform(-1000, 1000, size={n}).astype(np.{dtype})"
+        ),
+    ]
+    out_dtype = "bool" if op in _BOOL_BINARY else f"np.{dtype}"
+    return (
+        f"import numpy as np; {dists[dist_idx]}; "
+        f"_out = np.empty({n}, dtype={out_dtype})"
+    )
+
+
 def benchmark_pointwise(
     n: int = 10_000_000,
     dtype: str = "float64",
     repeats: int = 10,
     distributions: int = 3,
 ) -> dict[str, float]:
-    """Benchmark all pointwise ops, returning FP ops per element.
+    """Benchmark all pointwise ops, returning raw measurement per element.
+
+    All operations use pre-allocated output (``out=``) to eliminate memory
+    allocation overhead from measurements, isolating pure compute cost.
 
     Parameters
     ----------
@@ -137,20 +192,16 @@ def benchmark_pointwise(
     Returns
     -------
     dict[str, float]
-        Mapping from op name to median FP ops per element.
+        Mapping from op name to median measurement per element.
     """
     results: dict[str, float] = {}
 
     # --- Unary ops ---
     for op in UNARY_OPS:
         dist_values: list[float] = []
-        setups = [
-            f"import numpy as np; x = np.random.default_rng(42).standard_normal({n}).astype(np.{dtype})",
-            f"import numpy as np; x = np.random.default_rng(42).uniform(0.01, 100, size={n}).astype(np.{dtype})",
-            f"import numpy as np; x = np.random.default_rng(42).uniform(-1000, 1000, size={n}).astype(np.{dtype})",
-        ]
-        for setup in setups[:distributions]:
-            bench = f"np.{op}(x)"
+        for di in range(distributions):
+            setup = _unary_setup(n, dtype, op, di)
+            bench = f"np.{op}(x, out=_out)"
             try:
                 result = measure_flops(setup, bench, repeats=repeats)
             except RuntimeError:
@@ -161,26 +212,10 @@ def benchmark_pointwise(
 
     # --- Binary ops ---
     for op in BINARY_OPS:
-        dist_values = []
-        setups = [
-            (
-                f"import numpy as np; rng = np.random.default_rng(42); "
-                f"a = rng.standard_normal({n}).astype(np.{dtype}); "
-                f"b = rng.standard_normal({n}).astype(np.{dtype})"
-            ),
-            (
-                f"import numpy as np; rng = np.random.default_rng(42); "
-                f"a = rng.uniform(0.01, 100, size={n}).astype(np.{dtype}); "
-                f"b = rng.uniform(0.01, 100, size={n}).astype(np.{dtype})"
-            ),
-            (
-                f"import numpy as np; rng = np.random.default_rng(42); "
-                f"a = rng.uniform(-1000, 1000, size={n}).astype(np.{dtype}); "
-                f"b = rng.uniform(-1000, 1000, size={n}).astype(np.{dtype})"
-            ),
-        ]
-        for setup in setups[:distributions]:
-            bench = f"np.{op}(a, b)"
+        dist_values: list[float] = []
+        for di in range(distributions):
+            setup = _binary_setup(n, dtype, op, di)
+            bench = f"np.{op}(a, b, out=_out)"
             try:
                 result = measure_flops(setup, bench, repeats=repeats)
             except RuntimeError:

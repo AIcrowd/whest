@@ -1,4 +1,8 @@
-"""Benchmark reduction operations."""
+"""Benchmark reduction operations.
+
+Cumulative ops (cumsum, cumprod) use pre-allocated output via ``out=``
+to match the pointwise measurement methodology.
+"""
 
 from __future__ import annotations
 
@@ -45,13 +49,16 @@ _SPECIAL_ARGS: dict[str, str] = {
     "nanquantile": ", 0.5",
 }
 
+# Cumulative ops return same-size array — pre-allocate output.
+_CUMULATIVE_OPS = frozenset({"cumsum", "cumprod"})
+
 
 def benchmark_reductions(
     n: int = 10_000_000,
     dtype: str = "float64",
     repeats: int = 10,
 ) -> dict[str, float]:
-    """Benchmark all reduction ops, returning FP ops per element.
+    """Benchmark all reduction ops, returning raw measurement per element.
 
     Parameters
     ----------
@@ -65,11 +72,11 @@ def benchmark_reductions(
     Returns
     -------
     dict[str, float]
-        Mapping from op name to median FP ops per element.
+        Mapping from op name to median measurement per element.
     """
     results: dict[str, float] = {}
 
-    setups = [
+    base_setups = [
         f"import numpy as np; x = np.random.default_rng(42).standard_normal({n}).astype(np.{dtype})",
         f"import numpy as np; x = np.random.default_rng(42).uniform(0.01, 100, size={n}).astype(np.{dtype})",
         f"import numpy as np; x = np.random.default_rng(42).uniform(-1000, 1000, size={n}).astype(np.{dtype})",
@@ -78,8 +85,14 @@ def benchmark_reductions(
     for op in REDUCTION_OPS:
         dist_values: list[float] = []
         extra = _SPECIAL_ARGS.get(op, "")
-        for setup in setups:
-            bench = f"np.{op}(x{extra})"
+
+        for base_setup in base_setups:
+            if op in _CUMULATIVE_OPS:
+                setup = base_setup + f"; _out = np.empty({n}, dtype=np.{dtype})"
+                bench = f"np.{op}(x, out=_out)"
+            else:
+                setup = base_setup
+                bench = f"np.{op}(x{extra})"
             try:
                 result = measure_flops(setup, bench, repeats=repeats)
             except RuntimeError:
