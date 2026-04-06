@@ -84,7 +84,10 @@ class BudgetContext:
         self, op_name: str, *, flop_cost: int, subscripts: str | None, shapes: tuple
     ) -> None:
         """Deduct FLOPs from the budget."""
-        adjusted_cost = int(flop_cost * self._flop_multiplier)
+        from mechestim._weights import get_weight
+
+        weight = get_weight(op_name)
+        adjusted_cost = int(flop_cost * self._flop_multiplier * weight)
         if adjusted_cost > self.flops_remaining:
             raise BudgetExhaustedError(
                 op_name, flop_cost=adjusted_cost, flops_remaining=self.flops_remaining
