@@ -14,7 +14,7 @@ This fork extends opt_einsum with **symmetry-aware path finding**. When input te
 
 2. **Propagates symmetry through intermediates.** After each pairwise contraction, the result's symmetry is computed by restricting each input's symmetry groups to the surviving indices. This propagated symmetry influences subsequent ordering decisions.
 
-3. **Reports symmetry-aware costs.** Each step in the contraction path includes both the symmetry-reduced cost and the dense cost, so you can see exactly where symmetry helps.
+3. **Reports symmetry-aware costs.** Each step's cost is reduced by the exact ratio of unique output elements to total output elements (via `C(n+k-1, k)` for each symmetric group). Both the symmetry-reduced cost and the dense cost are reported, so you can see exactly where symmetry helps.
 
 4. **Classifies symmetric BLAS operations.** Pairwise contractions involving symmetric inputs are labeled with symmetric BLAS types (SYMM, SYMV, SYDT) in addition to standard types (GEMM, DOT, TDOT).
 

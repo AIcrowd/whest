@@ -67,7 +67,7 @@ When a tensor is a `SymmetricTensor`, costs are reduced based on the number of u
 |----------|---------------|---------------|
 | **Pointwise** (unary/binary) | unique_elements | $\text{numel}(\text{output})$ |
 | **Reduction** | unique_elements | $\text{numel}(\text{input})$ |
-| **Einsum** (symmetric input) | Scaled by unique/total for surviving index groups | Full product |
+| **Einsum** (symmetric output) | `dense_cost × unique_output / total_output` (exact via `C(n+k-1, k)`) | Full product |
 | **Solve** | $n^3/3 + n \cdot n_{\text{rhs}}$ (Cholesky) | $2n^3/3 + n^2 \cdot n_{\text{rhs}}$ (LU) |
 | **Det / Slogdet** | $n^3/3$ (Cholesky) | $n^3$ (LU) |
 | **Inv** | $n^3/3 + n^3/2$ | $n^3$ |
@@ -85,14 +85,24 @@ The total cost is the sum of per-step costs:
 total_cost = sum(step.flop_cost for step in path.steps)
 ```
 
-For each pairwise step, the cost is:
+For each pairwise step, the dense cost is:
 
 ```
-step_cost = (product of all index dimensions) × op_factor
+dense_step_cost = (product of all index dimensions) × op_factor
 ```
 
 where `op_factor = 2` when indices are summed (multiply + add) and
 `op_factor = 1` when no indices are summed (outer product).
+
+When the output of a step has symmetry (inherited from symmetric inputs via
+symmetry propagation), the cost is reduced:
+
+```
+step_cost = dense_step_cost × (unique_output_elements / total_output_elements)
+```
+
+where `unique_output_elements` is computed exactly using the stars-and-bars
+formula `C(n+k-1, k)` for each symmetric group of `k` indices of size `n`.
 
 For a simple two-operand einsum like `'ij,jk->ik'`, there is one step,
 so the total cost equals the step cost. For multi-operand einsums (3+

@@ -169,10 +169,10 @@ with me.BudgetContext(flop_budget=10**8) as budget:
     x = me.ones((10, 256))
     A = me.ones((10, 10))
 
-    # x is passed twice (same object) -- cost is divided by 2!
+    # x is passed twice (same object) -- cost reduced by unique/total ratio
     result = me.einsum('ai,bi,ab->', x, x, A)
-    print(f"Cost with symmetry: {budget.flops_used:,}")   # 12,800
-    # Without symmetry it would be 25,600
+    print(f"Cost with symmetry: {budget.flops_used:,}")
+    # Cost is reduced for symmetric intermediates
 ```
 
 ## How It Works

@@ -158,14 +158,18 @@ def symmetric_flop_count(
 
     Strategy:
     - Start with the dense FLOP count.
-    - For each input symmetry group, find the *surviving* subgroup — the
-      indices that appear in ``output_indices`` (i.e. are not summed away).
-      Only the surviving subgroup benefits from the symmetry reduction
-      ``C(n+k-1, k) / n^k``, because summed indices interact with the other
-      factor and every value must still be visited.
-    - Divide by the output symmetry factor (we only need to compute each
-      unique output element once).
+    - Reduce by the ratio ``unique_output / total_output``, where
+      ``unique_output`` is the number of distinct output elements under
+      ``output_symmetry`` (computed exactly via the stars-and-bars formula
+      ``C(n+k-1, k)`` for each symmetric group of *k* indices of size *n*).
     - Return at least 1.
+
+    The output symmetry fully determines the reduction.  Input symmetry on
+    surviving indices creates the output symmetry (tracked by
+    :func:`propagate_symmetry`), but it is not an independent source of
+    savings — applying both would double-count.  The ``input_symmetries``
+    parameter is retained for API compatibility and for potential future
+    optimisations on contracted-index symmetry (a genuinely separate concern).
 
     Parameters
     ----------
@@ -178,46 +182,28 @@ def symmetric_flop_count(
     size_dictionary : dict
         Index label -> dimension size.
     input_symmetries : list of (IndexSymmetry | None), optional
-        Symmetry info for each input tensor.
+        Symmetry info for each input tensor.  Currently unused for cost
+        reduction (output_symmetry captures the savings), but kept for
+        API stability and future contracted-index optimisations.
     output_symmetry : IndexSymmetry | None, optional
         Symmetry of the output tensor.
     output_indices : frozenset of str or None, optional
         Indices that survive into the output of this contraction step.
-        When provided, only the intersection of each symmetry group with
-        these indices benefits from symmetry reduction.  When *None*,
-        falls back to the legacy behaviour (intersect with
-        ``idx_contraction``).
 
     Returns
     -------
     int
         Estimated FLOP count.
     """
+    from ._helpers import compute_size_by_dict
+
     # Dense baseline
     cost = flop_count(idx_contraction, inner, num_terms, size_dictionary)
 
-    idx_set = frozenset(idx_contraction)
-
-    # Determine which indices to use for the surviving-subgroup intersection.
-    survive_set = output_indices if output_indices is not None else idx_set
-
-    # Scale down for input symmetries
-    if input_symmetries:
-        for sym in input_symmetries:
-            if sym is None:
-                continue
-            for group in sym:
-                active = group & survive_set
-                if len(active) < 2:
-                    continue
-                n = next(size_dictionary[idx] for idx in active)
-                k = len(active)
-                # Ratio of unique tuples to total tuples
-                cost = cost * comb(n + k - 1, k) // (n**k)
-
-    # Scale down for output symmetry
-    if output_symmetry:
-        sf = symmetry_factor(output_symmetry)
-        cost = cost // sf
+    # Reduce for output symmetry: only compute unique output elements.
+    if output_symmetry and output_indices is not None:
+        total = compute_size_by_dict(output_indices, size_dictionary)
+        unique = unique_elements(output_indices, size_dictionary, output_symmetry)
+        cost = cost * unique // total
 
     return max(cost, 1)

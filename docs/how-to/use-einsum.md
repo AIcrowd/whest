@@ -56,6 +56,8 @@ For `'ij,jk->ik'` with shapes `(256, 256)` and `(256, 256)`:
 
 For multi-operand einsums (3+ tensors), mechestim automatically decomposes the contraction into optimal pairwise steps. The total cost is the sum of per-step costs.
 
+When symmetric tensors are involved, each step's cost is further reduced by the ratio of unique output elements to total output elements. See [Exploit Symmetry Savings](exploit-symmetry.md#symmetry-in-einsum) for details.
+
 ## me.dot and me.matmul
 
 `me.dot(A, B)` and `me.matmul(A, B)` are equivalent to the corresponding einsum and have the same FLOP cost.

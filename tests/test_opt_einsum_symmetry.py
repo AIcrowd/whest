@@ -114,6 +114,7 @@ class TestSymmetricFlopCount:
             True,
             2,
             size_dict,
+            output_indices=frozenset("ajk"),
             input_symmetries=[sym1, sym2],
             output_symmetry=[frozenset("jk")],
         )
@@ -398,7 +399,12 @@ class TestFixedSymmetricFlopCount:
         assert cost == dense
 
     def test_s3_contract_one_gives_s2_reduction(self):
-        """T[ijk](S3) * A[ai] -> R[ajk](S2): i summed, j,k survive as S2."""
+        """T[ijk](S3) * A[ai] -> R[ajk](S2): i summed, j,k survive as S2.
+
+        The reduction comes solely from output symmetry: we compute only
+        unique (j,k) pairs.  unique_output / total_output = C(11,2)/100
+        = 55/100 = 0.55, so cost = 20000 * 55 // 100 = 11000.
+        """
         from mechestim._opt_einsum._helpers import flop_count
 
         size_dict = {"i": 10, "j": 10, "k": 10, "a": 10}
@@ -412,12 +418,13 @@ class TestFixedSymmetricFlopCount:
             output_symmetry=[frozenset("jk")],
         )
         dense = flop_count(frozenset("aijk"), True, 2, size_dict)
-        # Surviving group {j,k}: C(11,2)/100 = 0.55. Output S2: /2
-        # cost = 20000 * 55 // 100 // 2 = 5500
-        assert cost == 5500
+        # unique outputs = 10 * C(11,2) = 550, total = 1000
+        # cost = 20000 * 550 // 1000 = 11000
+        assert cost == 11000
 
     def test_hand_counted_s3_contraction(self):
-        """Verify: 550 unique outputs (10 × C(11,2)) × 10 mults = 5500."""
+        """Verify: 550 unique outputs (10 × C(11,2)), each a length-10 dot
+        product with 2 ops each => 550 × 10 × 2 = 11000."""
         size_dict = {"i": 10, "j": 10, "k": 10, "a": 10}
         cost = symmetric_flop_count(
             frozenset("aijk"),
@@ -428,7 +435,39 @@ class TestFixedSymmetricFlopCount:
             input_symmetries=[[frozenset("ijk")], None],
             output_symmetry=[frozenset("jk")],
         )
-        assert cost == 5500
+        assert cost == 11000
+
+    def test_brute_force_flop_count(self):
+        """Verify formula against explicit operation counting for small n."""
+        import numpy as np
+
+        n = 4
+        rng = np.random.default_rng(42)
+        raw = rng.standard_normal((n, n, n))
+        T = (raw + raw.transpose(0, 2, 1) + raw.transpose(1, 0, 2)
+             + raw.transpose(1, 2, 0) + raw.transpose(2, 0, 1)
+             + raw.transpose(2, 1, 0)) / 6.0
+        A = rng.standard_normal((n, n))
+
+        # Count actual multiply-adds for unique (j,k) pairs
+        counted_ops = 0
+        for a in range(n):
+            for j in range(n):
+                for k in range(j, n):  # unique (j,k) only
+                    for i in range(n):
+                        counted_ops += 2  # one multiply + one add
+
+        size_dict = {"i": n, "j": n, "k": n, "a": n}
+        formula_cost = symmetric_flop_count(
+            frozenset("aijk"),
+            True,
+            2,
+            size_dict,
+            output_indices=frozenset("ajk"),
+            input_symmetries=[[frozenset("ijk")], None],
+            output_symmetry=[frozenset("jk")],
+        )
+        assert formula_cost == counted_ops
 
     def test_output_indices_none_backward_compat(self):
         """When output_indices is None, equals no-symmetry flop_count."""
@@ -459,10 +498,10 @@ class TestFixedSymmetricFlopCount:
             input_symmetries=[[frozenset("ij")], None],
             output_symmetry=[frozenset("ij")],
         )
-        # Full S2 group survives: C(11,2)/100 = 0.55, output /2
-        dense_base = 10 * 10 * 10  # 1000
-        # cost = 1000 * 55 // 100 // 2 = 275
-        assert cost == 275
+        # Output has S2 on (i,j): unique = 10 * C(11,2) = 550, total = 1000
+        # dense_base = 1000 * 1 (op_factor=1, no inner product)
+        # cost = 1000 * 550 // 1000 = 550
+        assert cost == 550
 
 
 class TestAllAlgorithmsSymmetryAware:
