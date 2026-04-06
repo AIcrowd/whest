@@ -2,8 +2,6 @@
 
 from unittest.mock import patch
 
-import pytest
-
 from benchmarks._linalg import LINALG_OPS, _analytical_cost, benchmark_linalg
 from benchmarks._perf import PerfResult
 

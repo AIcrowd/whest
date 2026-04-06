@@ -1,6 +1,6 @@
 """Tests for benchmark dashboard."""
 
-from benchmarks.dashboard import render_terminal, render_html
+from benchmarks.dashboard import render_html, render_terminal
 
 
 def test_render_terminal_produces_string():

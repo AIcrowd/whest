@@ -1,8 +1,6 @@
 """Tests for the perf stat wrapper and wall-clock fallback."""
 
-import subprocess
-import sys
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 
@@ -14,7 +12,6 @@ from benchmarks._perf import (
     measure_flops,
     measurement_mode,
 )
-
 
 SAMPLE_PERF_CSV = """\
 # Started on ...

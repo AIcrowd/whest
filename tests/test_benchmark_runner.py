@@ -3,9 +3,9 @@
 import json
 import os
 import tempfile
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
-from benchmarks.runner import run_benchmarks, normalize_weights, _BENCHMARK_FUNCS
+from benchmarks.runner import _BENCHMARK_FUNCS, normalize_weights, run_benchmarks
 
 
 def test_normalize_weights():

@@ -2,8 +2,6 @@
 
 from unittest.mock import patch
 
-import pytest
-
 from benchmarks._fft import FFT_OPS, _analytical_cost, benchmark_fft
 from benchmarks._perf import PerfResult
 

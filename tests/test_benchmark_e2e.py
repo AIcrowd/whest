@@ -5,8 +5,6 @@ import json
 import os
 import tempfile
 
-import numpy as np
-
 from mechestim._budget import BudgetContext
 from mechestim._weights import load_weights, reset_weights
 

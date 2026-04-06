@@ -59,6 +59,8 @@ select = ["E", "F", "W", "I"]
 "src/mechestim/fft/_transforms.py" = ["E701"]
 # Tests: unused variables are intentional (assert no exception raised)
 "tests/**" = ["F841", "E402", "E501"]
+# Benchmarks: long f-strings for subprocess setup code
+"benchmarks/**" = ["E501"]
 # Scripts, examples, docker: cosmetic issues not worth fixing in utility code
 "scripts/**" = ["E501", "E402", "F401", "F841"]
 "examples/**" = ["E501", "E402", "F401", "F841"]
