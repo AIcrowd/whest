@@ -5,7 +5,7 @@ import os
 import tempfile
 from unittest.mock import patch, MagicMock
 
-from benchmarks.runner import run_benchmarks, normalize_weights
+from benchmarks.runner import run_benchmarks, normalize_weights, _BENCHMARK_FUNCS
 
 
 def test_normalize_weights():
@@ -27,12 +27,21 @@ def test_normalize_weights_with_baseline():
 
 
 def test_run_benchmarks_writes_json():
-    mock_weights = {"add": 1.0, "exp": 18.3}
     mock_meta = {
         "timestamp": "2026-04-06",
         "hardware": {},
         "software": {},
         "benchmark_config": {"dtype": "float64", "repeats": 10, "distributions": 3},
+    }
+
+    mock_funcs = {
+        "pointwise": lambda **kw: {"add": 1.0, "exp": 18.3},
+        "reductions": lambda **kw: {"sum": 1.0},
+        "linalg": lambda **kw: {"linalg.cholesky": 1.15},
+        "fft": lambda **kw: {"fft.fft": 1.05},
+        "sorting": lambda **kw: {"sort": 1.0},
+        "random": lambda **kw: {"random.standard_normal": 4.2},
+        "polynomial": lambda **kw: {"polyval": 1.0},
     }
 
     with tempfile.NamedTemporaryFile(suffix=".json", delete=False) as f:
@@ -42,13 +51,7 @@ def test_run_benchmarks_writes_json():
         with (
             patch("benchmarks.runner.collect_metadata", return_value=mock_meta),
             patch("benchmarks.runner.measure_baseline", return_value=1.0),
-            patch("benchmarks.runner.benchmark_pointwise", return_value={"add": 1.0, "exp": 18.3}),
-            patch("benchmarks.runner.benchmark_reductions", return_value={"sum": 1.0}),
-            patch("benchmarks.runner.benchmark_linalg", return_value={"linalg.cholesky": 1.15}),
-            patch("benchmarks.runner.benchmark_fft", return_value={"fft.fft": 1.05}),
-            patch("benchmarks.runner.benchmark_sorting", return_value={"sort": 1.0}),
-            patch("benchmarks.runner.benchmark_random", return_value={"random.standard_normal": 4.2}),
-            patch("benchmarks.runner.benchmark_polynomial", return_value={"polyval": 1.0}),
+            patch.dict(_BENCHMARK_FUNCS, mock_funcs),
             patch("benchmarks.runner.render_terminal", return_value="summary"),
         ):
             run_benchmarks(

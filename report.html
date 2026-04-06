@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Benchmark Dashboard</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+         max-width: 900px; margin: 2rem auto; padding: 0 1rem; color: #333; }
+  h1 { border-bottom: 2px solid #2563eb; padding-bottom: .5rem; }
+  .meta { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;
+          padding: 1rem 1.5rem; margin-bottom: 1.5rem; }
+  .meta span { display: inline-block; margin-right: 2rem; }
+  h2 { color: #1e40af; margin-top: 2rem; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+  th { text-align: left; border-bottom: 2px solid #cbd5e1; padding: .5rem; }
+  td { padding: .5rem; border-bottom: 1px solid #e2e8f0; }
+  .bar-cell { width: 40%; }
+  .bar { height: 1.2rem; background: #22c55e; border-radius: 3px; }
+  .summary { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px;
+             padding: 1rem 1.5rem; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<h1>Benchmark Dashboard</h1>
+
+<div class="meta">
+<span><b>Timestamp:</b> 2026-04-06T07:32:42.026979+00:00</span>
+<span><b>CPU:</b> arm (16 cores)</span>
+<span><b>dtype:</b> float64</span>
+<span><b>NumPy:</b> 2.1.3</span>
+<span><b>BLAS:</b> accelerate unknown</span>
+</div>
+<h2>Pointwise</h2>
+<table><tr><th>Operation</th><th>Weight</th><th class='bar-cell'>Bar</th></tr>
+<tr><td>roots</td><td>14699.00</td><td class="bar-cell"><div class="bar" style="width:100.0%"></div></td></tr>
+<tr><td>poly</td><td>7381.07</td><td class="bar-cell"><div class="bar" style="width:50.2%"></div></td></tr>
+<tr><td>unique</td><td>252.29</td><td class="bar-cell"><div class="bar" style="width:1.7%"></div></td></tr>
+<tr><td>searchsorted</td><td>247.71</td><td class="bar-cell"><div class="bar" style="width:1.7%"></div></td></tr>
+<tr><td>arctan2</td><td>121.11</td><td class="bar-cell"><div class="bar" style="width:0.8%"></div></td></tr>
+<tr><td>logaddexp2</td><td>105.91</td><td class="bar-cell"><div class="bar" style="width:0.7%"></div></td></tr>
+<tr><td>logaddexp</td><td>93.57</td><td class="bar-cell"><div class="bar" style="width:0.6%"></div></td></tr>
+<tr><td>mod</td><td>85.57</td><td class="bar-cell"><div class="bar" style="width:0.6%"></div></td></tr>
+<tr><td>remainder</td><td>84.66</td><td class="bar-cell"><div class="bar" style="width:0.6%"></div></td></tr>
+<tr><td>floor_divide</td><td>83.65</td><td class="bar-cell"><div class="bar" style="width:0.6%"></div></td></tr>
+<tr><td>nanquantile</td><td>53.13</td><td class="bar-cell"><div class="bar" style="width:0.4%"></div></td></tr>
+<tr><td>percentile</td><td>51.74</td><td class="bar-cell"><div class="bar" style="width:0.4%"></div></td></tr>
+<tr><td>nanpercentile</td><td>50.98</td><td class="bar-cell"><div class="bar" style="width:0.3%"></div></td></tr>
+<tr><td>float_power</td><td>50.61</td><td class="bar-cell"><div class="bar" style="width:0.3%"></div></td></tr>
+<tr><td>quantile</td><td>50.46</td><td class="bar-cell"><div class="bar" style="width:0.3%"></div></td></tr>
+<tr><td>power</td><td>50.33</td><td class="bar-cell"><div class="bar" style="width:0.3%"></div></td></tr>
+<tr><td>fmod</td><td>48.98</td><td class="bar-cell"><div class="bar" style="width:0.3%"></div></td></tr>
+<tr><td>nanmedian</td><td>46.30</td><td class="bar-cell"><div class="bar" style="width:0.3%"></div></td></tr>
+<tr><td>median</td><td>45.70</td><td class="bar-cell"><div class="bar" style="width:0.3%"></div></td></tr>
+<tr><td>cos</td><td>37.30</td><td class="bar-cell"><div class="bar" style="width:0.3%"></div></td></tr>
+<tr><td>sin</td><td>36.95</td><td class="bar-cell"><div class="bar" style="width:0.3%"></div></td></tr>
+<tr><td>nextafter</td><td>34.49</td><td class="bar-cell"><div class="bar" style="width:0.2%"></div></td></tr>
+<tr><td>arctan</td><td>33.84</td><td class="bar-cell"><div class="bar" style="width:0.2%"></div></td></tr>
+<tr><td>arcsin</td><td>31.05</td><td class="bar-cell"><div class="bar" style="width:0.2%"></div></td></tr>
+<tr><td>log2</td><td>30.73</td><td class="bar-cell"><div class="bar" style="width:0.2%"></div></td></tr>
+<tr><td>log1p</td><td>29.66</td><td class="bar-cell"><div class="bar" style="width:0.2%"></div></td></tr>
+<tr><td>log10</td><td>29.08</td><td class="bar-cell"><div class="bar" style="width:0.2%"></div></td></tr>
+<tr><td>exp</td><td>29.02</td><td class="bar-cell"><div class="bar" style="width:0.2%"></div></td></tr>
+<tr><td>arccos</td><td>28.90</td><td class="bar-cell"><div class="bar" style="width:0.2%"></div></td></tr>
+<tr><td>expm1</td><td>28.57</td><td class="bar-cell"><div class="bar" style="width:0.2%"></div></td></tr>
+<tr><td>log</td><td>28.37</td><td class="bar-cell"><div class="bar" style="width:0.2%"></div></td></tr>
+<tr><td>sign</td><td>23.07</td><td class="bar-cell"><div class="bar" style="width:0.2%"></div></td></tr>
+<tr><td>sinh</td><td>22.44</td><td class="bar-cell"><div class="bar" style="width:0.2%"></div></td></tr>
+<tr><td>cosh</td><td>22.29</td><td class="bar-cell"><div class="bar" style="width:0.2%"></div></td></tr>
+<tr><td>arcsinh</td><td>19.95</td><td class="bar-cell"><div class="bar" style="width:0.1%"></div></td></tr>
+<tr><td>arccosh</td><td>17.18</td><td class="bar-cell"><div class="bar" style="width:0.1%"></div></td></tr>
+<tr><td>tan</td><td>17.12</td><td class="bar-cell"><div class="bar" style="width:0.1%"></div></td></tr>
+<tr><td>tanh</td><td>13.84</td><td class="bar-cell"><div class="bar" style="width:0.1%"></div></td></tr>
+<tr><td>arctanh</td><td>12.91</td><td class="bar-cell"><div class="bar" style="width:0.1%"></div></td></tr>
+<tr><td>nanstd</td><td>10.96</td><td class="bar-cell"><div class="bar" style="width:0.1%"></div></td></tr>
+<tr><td>nanvar</td><td>10.80</td><td class="bar-cell"><div class="bar" style="width:0.1%"></div></td></tr>
+<tr><td>cbrt</td><td>10.73</td><td class="bar-cell"><div class="bar" style="width:0.1%"></div></td></tr>
+<tr><td>hypot</td><td>9.39</td><td class="bar-cell"><div class="bar" style="width:0.1%"></div></td></tr>
+<tr><td>exp2</td><td>9.17</td><td class="bar-cell"><div class="bar" style="width:0.1%"></div></td></tr>
+<tr><td>count_nonzero</td><td>7.80</td><td class="bar-cell"><div class="bar" style="width:0.1%"></div></td></tr>
+<tr><td>nanprod</td><td>7.60</td><td class="bar-cell"><div class="bar" style="width:0.1%"></div></td></tr>
+<tr><td>lexsort</td><td>6.73</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>radians</td><td>4.80</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>fabs</td><td>4.65</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>deg2rad</td><td>4.64</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>degrees</td><td>4.57</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>rad2deg</td><td>4.57</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>nanmean</td><td>4.14</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>argmax</td><td>3.50</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>argmin</td><td>3.47</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>nansum</td><td>2.99</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>logical_xor</td><td>2.13</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>logical_and</td><td>2.02</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>copysign</td><td>1.63</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>logical_or</td><td>1.62</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>fmin</td><td>1.56</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>logical_not</td><td>1.55</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>positive</td><td>1.54</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>sqrt</td><td>1.53</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>equal</td><td>1.46</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>maximum</td><td>1.44</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>minimum</td><td>1.42</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>fmax</td><td>1.38</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>greater</td><td>1.36</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>greater_equal</td><td>1.34</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>less_equal</td><td>1.33</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>true_divide</td><td>1.32</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>not_equal</td><td>1.29</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>less</td><td>1.29</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>multiply</td><td>1.27</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>add</td><td>1.26</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>subtract</td><td>1.26</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>divide</td><td>1.26</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>floor</td><td>0.85</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>abs</td><td>0.85</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>rint</td><td>0.85</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>reciprocal</td><td>0.84</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>trunc</td><td>0.83</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>ceil</td><td>0.83</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>square</td><td>0.83</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>negative</td><td>0.83</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>average</td><td>0.75</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>nanmin</td><td>0.61</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>nanmax</td><td>0.60</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>signbit</td><td>0.56</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+</table>
+<h2>Reductions</h2>
+<table><tr><th>Operation</th><th>Weight</th><th class='bar-cell'>Bar</th></tr>
+<tr><td>cumsum</td><td>15.21</td><td class="bar-cell"><div class="bar" style="width:0.1%"></div></td></tr>
+<tr><td>cumprod</td><td>15.20</td><td class="bar-cell"><div class="bar" style="width:0.1%"></div></td></tr>
+<tr><td>prod</td><td>5.24</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>std</td><td>3.27</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>var</td><td>3.24</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>all</td><td>1.63</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>any</td><td>1.58</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>sum</td><td>0.74</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>mean</td><td>0.74</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>min</td><td>0.56</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>max</td><td>0.55</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+</table>
+<h2>Sorting</h2>
+<table><tr><th>Operation</th><th>Weight</th><th class='bar-cell'>Bar</th></tr>
+<tr><td>sort</td><td>188.98</td><td class="bar-cell"><div class="bar" style="width:1.3%"></div></td></tr>
+<tr><td>argsort</td><td>74.38</td><td class="bar-cell"><div class="bar" style="width:0.5%"></div></td></tr>
+<tr><td>argpartition</td><td>4.79</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>partition</td><td>3.84</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+</table>
+<h2>FFT</h2>
+<table><tr><th>Operation</th><th>Weight</th><th class='bar-cell'>Bar</th></tr>
+<tr><td>fft.hfft</td><td>0.24</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>fft.fft</td><td>0.11</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>fft.ifft</td><td>0.10</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>fft.ifftn</td><td>0.09</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>fft.ifft2</td><td>0.09</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>fft.fft2</td><td>0.09</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>fft.fftn</td><td>0.09</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>fft.irfft</td><td>0.09</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>fft.rfft</td><td>0.08</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>fft.irfftn</td><td>0.07</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>fft.irfft2</td><td>0.07</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>fft.rfft2</td><td>0.05</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>fft.rfftn</td><td>0.05</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>fft.ihfft</td><td>0.04</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+</table>
+<h2>Linalg</h2>
+<table><tr><th>Operation</th><th>Weight</th><th class='bar-cell'>Bar</th></tr>
+<tr><td>linalg.pinv</td><td>0.11</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>linalg.svd</td><td>0.11</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>linalg.lstsq</td><td>0.07</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>linalg.eigvals</td><td>0.06</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>linalg.eigh</td><td>0.05</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>linalg.eig</td><td>0.05</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>linalg.svdvals</td><td>0.05</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>linalg.eigvalsh</td><td>0.03</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>linalg.qr</td><td>0.03</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>linalg.cholesky</td><td>0.02</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>linalg.inv</td><td>0.01</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>linalg.solve</td><td>0.01</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>linalg.det</td><td>0.01</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+<tr><td>linalg.slogdet</td><td>0.01</td><td class="bar-cell"><div class="bar" style="width:0.0%"></div></td></tr>
+</table>
+<h2>Polynomial</h2>
+<table><tr><th>Operation</th><th>Weight</th><th class='bar-cell'>Bar</th></tr>
+<tr><td>polydiv</td><td>7822.94</td><td class="bar-cell"><div class="bar" style="width:53.2%"></div></td></tr>
+<tr><td>polymul</td><td>2659.00</td><td class="bar-cell"><div class="bar" style="width:18.1%"></div></td></tr>
+<tr><td>polyint</td><td>1376.25</td><td class="bar-cell"><div class="bar" style="width:9.4%"></div></td></tr>
+<tr><td>polyder</td><td>1098.45</td><td class="bar-cell"><div class="bar" style="width:7.5%"></div></td></tr>
+<tr><td>polysub</td><td>441.92</td><td class="bar-cell"><div class="bar" style="width:3.0%"></div></td></tr>
+<tr><td>polyfit</td><td>438.08</td><td class="bar-cell"><div class="bar" style="width:3.0%"></div></td></tr>
+<tr><td>polyadd</td><td>421.74</td><td class="bar-cell"><div class="bar" style="width:2.9%"></div></td></tr>
+<tr><td>polyval</td><td>26.73</td><td class="bar-cell"><div class="bar" style="width:0.2%"></div></td></tr>
+</table>
+<h2>Random</h2>
+<table><tr><th>Operation</th><th>Weight</th><th class='bar-cell'>Bar</th></tr>
+<tr><td>random.poisson</td><td>188.41</td><td class="bar-cell"><div class="bar" style="width:1.3%"></div></td></tr>
+<tr><td>random.binomial</td><td>170.25</td><td class="bar-cell"><div class="bar" style="width:1.2%"></div></td></tr>
+<tr><td>random.standard_t</td><td>167.36</td><td class="bar-cell"><div class="bar" style="width:1.1%"></div></td></tr>
+<tr><td>random.standard_cauchy</td><td>109.56</td><td class="bar-cell"><div class="bar" style="width:0.7%"></div></td></tr>
+<tr><td>random.permutation</td><td>70.33</td><td class="bar-cell"><div class="bar" style="width:0.5%"></div></td></tr>
+<tr><td>random.shuffle</td><td>67.18</td><td class="bar-cell"><div class="bar" style="width:0.5%"></div></td></tr>
+<tr><td>random.standard_normal</td><td>61.23</td><td class="bar-cell"><div class="bar" style="width:0.4%"></div></td></tr>
+<tr><td>random.standard_gamma</td><td>49.99</td><td class="bar-cell"><div class="bar" style="width:0.3%"></div></td></tr>
+<tr><td>random.standard_exponential</td><td>46.82</td><td class="bar-cell"><div class="bar" style="width:0.3%"></div></td></tr>
+<tr><td>random.uniform</td><td>14.62</td><td class="bar-cell"><div class="bar" style="width:0.1%"></div></td></tr>
+</table>
+<div class="summary">
+<b>Baseline FPE rate:</b> 0.1650<br>
+<b>Total operations:</b> 151<br>
+<b>Duration:</b> 462.6s
+</div>
+</body></html>
