@@ -444,9 +444,14 @@ class TestFixedSymmetricFlopCount:
         n = 4
         rng = np.random.default_rng(42)
         raw = rng.standard_normal((n, n, n))
-        T = (raw + raw.transpose(0, 2, 1) + raw.transpose(1, 0, 2)
-             + raw.transpose(1, 2, 0) + raw.transpose(2, 0, 1)
-             + raw.transpose(2, 1, 0)) / 6.0
+        T = (
+            raw
+            + raw.transpose(0, 2, 1)
+            + raw.transpose(1, 0, 2)
+            + raw.transpose(1, 2, 0)
+            + raw.transpose(2, 0, 1)
+            + raw.transpose(2, 1, 0)
+        ) / 6.0
         A = rng.standard_normal((n, n))
 
         # Count actual multiply-adds for unique (j,k) pairs
