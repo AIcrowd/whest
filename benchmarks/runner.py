@@ -64,7 +64,7 @@ def run_benchmarks(
 
     # -- metadata ----------------------------------------------------------
     print("Collecting metadata ...", file=sys.stderr)
-    meta = collect_metadata(dtype=dtype, repeats=repeats)
+    meta = collect_metadata(dtype=dtype, repeats=repeats, distributions=3)
 
     # -- baseline ----------------------------------------------------------
     print("Measuring baseline (np.add) ...", file=sys.stderr)
