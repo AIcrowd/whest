@@ -8,7 +8,9 @@ from __future__ import annotations
 from benchmarks._perf import measure_flops
 
 
-def measure_baseline(n: int = 10_000_000, dtype: str = "float64", repeats: int = 10) -> float:
+def measure_baseline(
+    n: int = 10_000_000, dtype: str = "float64", repeats: int = 10
+) -> float:
     """Measure raw cost per element for np.add (the 1.0 reference).
 
     Parameters

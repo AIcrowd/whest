@@ -138,10 +138,14 @@ def _measure_perf(setup_code: str, bench_code: str, repeats: int) -> PerfResult:
         events_arg = ",".join(PERF_EVENTS)
         proc = subprocess.run(
             [
-                "perf", "stat",
-                "-e", events_arg,
-                "-x", ",",
-                sys.executable, tmp.name,
+                "perf",
+                "stat",
+                "-e",
+                events_arg,
+                "-x",
+                ",",
+                sys.executable,
+                tmp.name,
             ],
             capture_output=True,
             text=True,

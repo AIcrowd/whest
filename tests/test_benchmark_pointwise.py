@@ -63,9 +63,7 @@ class TestBenchmarkPointwise:
             packed_256_double=0,
             packed_512_double=0,
         )
-        with patch(
-            "benchmarks._pointwise.measure_flops", return_value=mock_result
-        ):
+        with patch("benchmarks._pointwise.measure_flops", return_value=mock_result):
             result = benchmark_pointwise(
                 n=1_000_000, dtype="float64", repeats=1, distributions=1
             )
@@ -81,9 +79,7 @@ class TestBenchmarkPointwise:
             packed_256_double=0,
             packed_512_double=0,
         )
-        with patch(
-            "benchmarks._pointwise.measure_flops", return_value=mock_result
-        ):
+        with patch("benchmarks._pointwise.measure_flops", return_value=mock_result):
             result = benchmark_pointwise(
                 n=1_000_000, dtype="float64", repeats=1, distributions=1
             )
@@ -99,9 +95,7 @@ class TestBenchmarkPointwise:
             packed_256_double=2_000_000,
             packed_512_double=0,
         )
-        with patch(
-            "benchmarks._pointwise.measure_flops", return_value=mock_result
-        ):
+        with patch("benchmarks._pointwise.measure_flops", return_value=mock_result):
             result = benchmark_pointwise(
                 n=1_000_000, dtype="float64", repeats=2, distributions=1
             )

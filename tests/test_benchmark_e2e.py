@@ -28,7 +28,9 @@ def test_e2e_weights_affect_budget():
             budget.deduct("add", flop_cost=1000, subscripts=None, shapes=((1000,),))
             assert budget.flops_used == 11000  # 10000 + 1000 * 1.0
 
-            budget.deduct("subtract", flop_cost=1000, subscripts=None, shapes=((1000,),))
+            budget.deduct(
+                "subtract", flop_cost=1000, subscripts=None, shapes=((1000,),)
+            )
             assert budget.flops_used == 12000  # not in config, default 1.0
     finally:
         reset_weights()

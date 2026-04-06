@@ -89,11 +89,19 @@ BINARY_OPS: list[str] = [
 
 # Ops whose output dtype is bool (need bool pre-allocation for out=)
 _BOOL_UNARY = frozenset({"signbit", "logical_not"})
-_BOOL_BINARY = frozenset({
-    "greater", "greater_equal", "less", "less_equal",
-    "equal", "not_equal",
-    "logical_and", "logical_or", "logical_xor",
-})
+_BOOL_BINARY = frozenset(
+    {
+        "greater",
+        "greater_equal",
+        "less",
+        "less_equal",
+        "equal",
+        "not_equal",
+        "logical_and",
+        "logical_or",
+        "logical_xor",
+    }
+)
 
 
 def _make_inputs_unary(n: int, dtype: str) -> list[np.ndarray]:
@@ -106,9 +114,7 @@ def _make_inputs_unary(n: int, dtype: str) -> list[np.ndarray]:
     ]
 
 
-def _make_inputs_binary(
-    n: int, dtype: str
-) -> list[tuple[np.ndarray, np.ndarray]]:
+def _make_inputs_binary(n: int, dtype: str) -> list[tuple[np.ndarray, np.ndarray]]:
     """Return 3 (a, b) tuples with different distributions."""
     rng = np.random.default_rng(42)
     return [

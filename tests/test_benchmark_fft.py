@@ -40,9 +40,7 @@ class TestBenchmarkFFT:
             packed_256_double=0,
             packed_512_double=0,
         )
-        with patch(
-            "benchmarks._fft.measure_flops", return_value=mock_result
-        ):
+        with patch("benchmarks._fft.measure_flops", return_value=mock_result):
             result = benchmark_fft(n=1024, dtype="float64", repeats=1)
 
         assert isinstance(result, dict)
@@ -55,9 +53,7 @@ class TestBenchmarkFFT:
             packed_256_double=0,
             packed_512_double=0,
         )
-        with patch(
-            "benchmarks._fft.measure_flops", return_value=mock_result
-        ):
+        with patch("benchmarks._fft.measure_flops", return_value=mock_result):
             result = benchmark_fft(n=1024, dtype="float64", repeats=1)
 
         for key, val in result.items():

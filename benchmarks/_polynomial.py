@@ -65,12 +65,13 @@ def benchmark_polynomial(
 
         for ci, c_setup in enumerate(coeff_setups):
             seed = 42 + ci
-            base_setup = f"import numpy as np; rng = np.random.default_rng({seed}); {c_setup}"
+            base_setup = (
+                f"import numpy as np; rng = np.random.default_rng({seed}); {c_setup}"
+            )
 
             if op == "polyval":
                 setup = (
-                    base_setup
-                    + f"; x = rng.standard_normal({n}).astype(np.{dtype})"
+                    base_setup + f"; x = rng.standard_normal({n}).astype(np.{dtype})"
                 )
                 bench = "np.polyval(c, x)"
                 normalizer = n

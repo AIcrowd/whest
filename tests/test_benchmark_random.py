@@ -30,9 +30,7 @@ class TestBenchmarkRandom:
             packed_256_double=0,
             packed_512_double=0,
         )
-        with patch(
-            "benchmarks._random.measure_flops", return_value=mock_result
-        ):
+        with patch("benchmarks._random.measure_flops", return_value=mock_result):
             result = benchmark_random(n=1_000, dtype="float64", repeats=1)
 
         assert isinstance(result, dict)
@@ -45,9 +43,7 @@ class TestBenchmarkRandom:
             packed_256_double=0,
             packed_512_double=0,
         )
-        with patch(
-            "benchmarks._random.measure_flops", return_value=mock_result
-        ):
+        with patch("benchmarks._random.measure_flops", return_value=mock_result):
             result = benchmark_random(n=1_000, dtype="float64", repeats=1)
 
         for key, val in result.items():
@@ -60,9 +56,7 @@ class TestBenchmarkRandom:
             packed_256_double=2_000,
             packed_512_double=0,
         )
-        with patch(
-            "benchmarks._random.measure_flops", return_value=mock_result
-        ):
+        with patch("benchmarks._random.measure_flops", return_value=mock_result):
             result = benchmark_random(n=1_000, dtype="float64", repeats=4)
 
         # total_flops = 2000 * 4 = 8000, per_element = 8000 / (1000 * 4) = 2.0

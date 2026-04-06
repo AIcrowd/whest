@@ -50,7 +50,9 @@ _APPROX_OP_COUNTS: dict[str, int] = {
 }
 
 
-def normalize_weights(raw_fpe: dict[str, float], baseline_fpe: float) -> dict[str, float]:
+def normalize_weights(
+    raw_fpe: dict[str, float], baseline_fpe: float
+) -> dict[str, float]:
     """Divide each raw FPE value by *baseline_fpe*.
 
     If *baseline_fpe* is zero (or very close), fall back to 1.0 so the raw
@@ -103,12 +105,16 @@ def run_benchmarks(
         else:
             print(msg, file=sys.stderr)
 
-    _log(f"[bold]Measurement mode:[/bold] {mode}" if use_rich else f"Measurement mode: {mode}")
+    _log(
+        f"[bold]Measurement mode:[/bold] {mode}"
+        if use_rich
+        else f"Measurement mode: {mode}"
+    )
     if mode == "timing":
         _log(
             "  [dim](perf not available — using wall-clock time as proxy)[/dim]"
-            if use_rich else
-            "  (perf not available — using wall-clock time as proxy)"
+            if use_rich
+            else "  (perf not available — using wall-clock time as proxy)"
         )
 
     t_start = _time.monotonic()
@@ -188,17 +194,13 @@ def run_benchmarks(
             json.dump(result, f, indent=2)
 
     # -- terminal dashboard ------------------------------------------------
-    summary = render_terminal(
-        meta, weights, baseline_fpe, len(weights), duration
-    )
+    summary = render_terminal(meta, weights, baseline_fpe, len(weights), duration)
     print(summary, file=sys.stderr)
 
     # -- optional HTML report ----------------------------------------------
     if html:
         _log(f"Writing HTML report to {html} ...")
-        html_content = render_html(
-            meta, weights, baseline_fpe, len(weights), duration
-        )
+        html_content = render_html(meta, weights, baseline_fpe, len(weights), duration)
         with open(html, "w") as f:
             f.write(html_content)
 

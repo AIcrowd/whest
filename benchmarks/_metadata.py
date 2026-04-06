@@ -95,9 +95,7 @@ PERF_EVENTS = [
 ]
 
 
-def collect_metadata(
-    dtype: str, repeats: int, distributions: int
-) -> dict[str, Any]:
+def collect_metadata(dtype: str, repeats: int, distributions: int) -> dict[str, Any]:
     """Collect hardware/software metadata for a benchmark run.
 
     Parameters

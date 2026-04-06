@@ -25,12 +25,8 @@ class TestBenchmarkPolynomial:
             packed_256_double=0,
             packed_512_double=0,
         )
-        with patch(
-            "benchmarks._polynomial.measure_flops", return_value=mock_result
-        ):
-            result = benchmark_polynomial(
-                n=1_000, dtype="float64", repeats=1, degree=5
-            )
+        with patch("benchmarks._polynomial.measure_flops", return_value=mock_result):
+            result = benchmark_polynomial(n=1_000, dtype="float64", repeats=1, degree=5)
 
         assert isinstance(result, dict)
         assert set(result.keys()) == set(POLYNOMIAL_OPS)
@@ -42,12 +38,8 @@ class TestBenchmarkPolynomial:
             packed_256_double=0,
             packed_512_double=0,
         )
-        with patch(
-            "benchmarks._polynomial.measure_flops", return_value=mock_result
-        ):
-            result = benchmark_polynomial(
-                n=1_000, dtype="float64", repeats=1, degree=5
-            )
+        with patch("benchmarks._polynomial.measure_flops", return_value=mock_result):
+            result = benchmark_polynomial(n=1_000, dtype="float64", repeats=1, degree=5)
 
         for key, val in result.items():
             assert isinstance(val, float), f"{key} value is not float"
@@ -59,12 +51,8 @@ class TestBenchmarkPolynomial:
             packed_256_double=500,
             packed_512_double=0,
         )
-        with patch(
-            "benchmarks._polynomial.measure_flops", return_value=mock_result
-        ):
-            result = benchmark_polynomial(
-                n=1_000, dtype="float64", repeats=1, degree=5
-            )
+        with patch("benchmarks._polynomial.measure_flops", return_value=mock_result):
+            result = benchmark_polynomial(n=1_000, dtype="float64", repeats=1, degree=5)
 
         # polyval: total_flops = 500*4 = 2000, normalized = 2000 / (1000 * 1) = 2.0
         assert result["polyval"] == pytest.approx(2.0)
@@ -76,9 +64,7 @@ class TestBenchmarkPolynomial:
             packed_256_double=50,
             packed_512_double=0,
         )
-        with patch(
-            "benchmarks._polynomial.measure_flops", return_value=mock_result
-        ):
+        with patch("benchmarks._polynomial.measure_flops", return_value=mock_result):
             result = benchmark_polynomial(
                 n=1_000, dtype="float64", repeats=1, degree=10
             )

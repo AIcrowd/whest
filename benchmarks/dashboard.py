@@ -8,23 +8,62 @@ from typing import Any
 
 _REDUCTION_NAMES = frozenset(
     {
-        "sum", "mean", "std", "var", "max", "min", "prod",
-        "any", "all", "cumsum", "cumprod",
-        "nansum", "nanmean", "nanstd", "nanvar", "nanmax", "nanmin",
-        "nanprod", "median", "nanmedian",
-        "percentile", "nanpercentile", "quantile", "nanquantile",
-        "count_nonzero", "average",
-        "argmax", "argmin",
-        "nancumprod", "nancumsum",
+        "sum",
+        "mean",
+        "std",
+        "var",
+        "max",
+        "min",
+        "prod",
+        "any",
+        "all",
+        "cumsum",
+        "cumprod",
+        "nansum",
+        "nanmean",
+        "nanstd",
+        "nanvar",
+        "nanmax",
+        "nanmin",
+        "nanprod",
+        "median",
+        "nanmedian",
+        "percentile",
+        "nanpercentile",
+        "quantile",
+        "nanquantile",
+        "count_nonzero",
+        "average",
+        "argmax",
+        "argmin",
+        "nancumprod",
+        "nancumsum",
     }
 )
 _SORTING_NAMES = frozenset(
-    {"sort", "argsort", "partition", "argpartition", "searchsorted",
-     "unique", "lexsort"}
+    {
+        "sort",
+        "argsort",
+        "partition",
+        "argpartition",
+        "searchsorted",
+        "unique",
+        "lexsort",
+    }
 )
 _POLY_NAMES = frozenset(
-    {"polyval", "polyfit", "polyder", "polyint", "polyadd", "polysub",
-     "polymul", "polydiv", "poly", "roots"}
+    {
+        "polyval",
+        "polyfit",
+        "polyder",
+        "polyint",
+        "polyadd",
+        "polysub",
+        "polymul",
+        "polydiv",
+        "poly",
+        "roots",
+    }
 )
 
 
@@ -104,9 +143,12 @@ def _render_terminal_rich(
         f"CPU       : {hw.get('cpu_model', 'N/A')} ({hw.get('cpu_cores', '?')} cores, {hw.get('arch', '?')})",
         f"dtype     : {bc.get('dtype', 'N/A')}",
         f"NumPy     : {sw.get('numpy', 'N/A')} ({sw.get('blas', 'N/A')})",
-        f"Mode      : {mode}" + (" (wall-clock proxy)" if mode == "timing" else " (hardware counters)"),
+        f"Mode      : {mode}"
+        + (" (wall-clock proxy)" if mode == "timing" else " (hardware counters)"),
     ]
-    console.print(Panel("\n".join(header_lines), title="mechestim FLOP Weight Benchmark"))
+    console.print(
+        Panel("\n".join(header_lines), title="mechestim FLOP Weight Benchmark")
+    )
 
     categories = _categorize_weights(weights)
 
@@ -228,9 +270,13 @@ def render_html(
         f"({hw.get('cpu_cores', '?')} cores, {esc(str(hw.get('arch', '?')))})<br>"
     )
     parts.append(f"<b>dtype:</b> {esc(str(bc.get('dtype', 'N/A')))} | ")
-    parts.append(f"<b>NumPy:</b> {esc(str(sw.get('numpy', 'N/A')))} ({esc(str(sw.get('blas', 'N/A')))})<br>")
+    parts.append(
+        f"<b>NumPy:</b> {esc(str(sw.get('numpy', 'N/A')))} ({esc(str(sw.get('blas', 'N/A')))})<br>"
+    )
     mode = bc.get("measurement_mode", "unknown")
-    mode_label = "hardware counters (perf)" if mode == "perf" else "wall-clock time (proxy)"
+    mode_label = (
+        "hardware counters (perf)" if mode == "perf" else "wall-clock time (proxy)"
+    )
     parts.append(f"<b>Mode:</b> {esc(mode_label)}")
     parts.append("</div>")
 
@@ -255,7 +301,9 @@ def render_html(
     mins = int(duration_seconds // 60)
     secs = int(duration_seconds % 60)
     parts.append('<div class="summary">')
-    parts.append(f"<b>Baseline:</b> np.add = 1.0 ({baseline_fpe:.4f} raw units/elem)<br>")
+    parts.append(
+        f"<b>Baseline:</b> np.add = 1.0 ({baseline_fpe:.4f} raw units/elem)<br>"
+    )
     parts.append(f"<b>Total operations:</b> {total_ops}<br>")
     parts.append(f"<b>Duration:</b> {mins}m {secs:02d}s")
     parts.append("</div>")

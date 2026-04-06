@@ -25,9 +25,7 @@ class TestBenchmarkSorting:
             packed_256_double=0,
             packed_512_double=0,
         )
-        with patch(
-            "benchmarks._sorting.measure_flops", return_value=mock_result
-        ):
+        with patch("benchmarks._sorting.measure_flops", return_value=mock_result):
             result = benchmark_sorting(n=1_000, dtype="float64", repeats=1)
 
         assert isinstance(result, dict)
@@ -40,9 +38,7 @@ class TestBenchmarkSorting:
             packed_256_double=0,
             packed_512_double=0,
         )
-        with patch(
-            "benchmarks._sorting.measure_flops", return_value=mock_result
-        ):
+        with patch("benchmarks._sorting.measure_flops", return_value=mock_result):
             result = benchmark_sorting(n=1_000, dtype="float64", repeats=1)
 
         for key, val in result.items():
@@ -55,9 +51,7 @@ class TestBenchmarkSorting:
             packed_256_double=1_000,
             packed_512_double=0,
         )
-        with patch(
-            "benchmarks._sorting.measure_flops", return_value=mock_result
-        ):
+        with patch("benchmarks._sorting.measure_flops", return_value=mock_result):
             result = benchmark_sorting(n=1_000, dtype="float64", repeats=2)
 
         # total_flops = 1000 * 4 = 4000, per_element = 4000 / (1000 * 2) = 2.0

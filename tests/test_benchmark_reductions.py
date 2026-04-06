@@ -13,7 +13,16 @@ class TestOpsLists:
         assert len(REDUCTION_OPS) > 0
 
     def test_contains_expected_ops(self):
-        for op in ("sum", "mean", "std", "argmax", "nansum", "median", "percentile", "count_nonzero"):
+        for op in (
+            "sum",
+            "mean",
+            "std",
+            "argmax",
+            "nansum",
+            "median",
+            "percentile",
+            "count_nonzero",
+        ):
             assert op in REDUCTION_OPS, f"{op} missing from REDUCTION_OPS"
 
 
@@ -25,9 +34,7 @@ class TestBenchmarkReductions:
             packed_256_double=0,
             packed_512_double=0,
         )
-        with patch(
-            "benchmarks._reductions.measure_flops", return_value=mock_result
-        ):
+        with patch("benchmarks._reductions.measure_flops", return_value=mock_result):
             result = benchmark_reductions(n=1_000_000, dtype="float64", repeats=1)
 
         assert isinstance(result, dict)
@@ -40,9 +47,7 @@ class TestBenchmarkReductions:
             packed_256_double=0,
             packed_512_double=0,
         )
-        with patch(
-            "benchmarks._reductions.measure_flops", return_value=mock_result
-        ):
+        with patch("benchmarks._reductions.measure_flops", return_value=mock_result):
             result = benchmark_reductions(n=1_000_000, dtype="float64", repeats=1)
 
         for key, val in result.items():
@@ -55,9 +60,7 @@ class TestBenchmarkReductions:
             packed_256_double=500_000,
             packed_512_double=0,
         )
-        with patch(
-            "benchmarks._reductions.measure_flops", return_value=mock_result
-        ):
+        with patch("benchmarks._reductions.measure_flops", return_value=mock_result):
             result = benchmark_reductions(n=1_000_000, dtype="float64", repeats=2)
 
         # total_flops = 500K * 4 = 2M, per_element = 2M / (1M * 2) = 1.0
