@@ -1,4 +1,4 @@
-"""Tests for the perf stat wrapper."""
+"""Tests for the perf stat wrapper and wall-clock fallback."""
 
 import subprocess
 import sys
@@ -8,9 +8,11 @@ import pytest
 
 from benchmarks._perf import (
     PerfResult,
+    TimingResult,
     _parse_perf_csv,
     has_perf,
     measure_flops,
+    measurement_mode,
 )
 
 
@@ -46,17 +48,35 @@ def test_parse_perf_csv_with_not_supported():
     assert result.total_flops == 123456
 
 
-@pytest.mark.skipif(not has_perf(), reason="perf not available")
-def test_measure_flops_integration():
-    """Smoke test: measure np.add on a small array."""
-    import numpy as np
+def test_timing_result_total_flops():
+    result = TimingResult(elapsed_ns=5_000_000)
+    assert result.total_flops == 5_000_000
 
-    x = np.ones(1000, dtype=np.float64)
-    y = np.ones(1000, dtype=np.float64)
+
+def test_measurement_mode():
+    mode = measurement_mode()
+    assert mode in ("perf", "timing")
+
+
+def test_measure_flops_timing_fallback():
+    """When perf is unavailable, measure_flops uses wall-clock timing."""
+    with patch("benchmarks._perf.has_perf", return_value=False):
+        result = measure_flops(
+            "x = np.ones(1000); y = np.ones(1000)",
+            "np.add(x, y)",
+            repeats=5,
+        )
+        assert isinstance(result, TimingResult)
+        assert result.total_flops > 0
+
+
+@pytest.mark.skipif(not has_perf(), reason="perf not available")
+def test_measure_flops_perf_integration():
+    """Smoke test: measure np.add on a small array with perf."""
     result = measure_flops(
-        "import numpy as np; x = np.ones(1000); y = np.ones(1000)",
+        "x = np.ones(1000); y = np.ones(1000)",
         "np.add(x, y)",
         repeats=5,
     )
-    # np.add on 1000 elements should produce at least 1000 FP ops total
+    assert isinstance(result, PerfResult)
     assert result.total_flops >= 1000

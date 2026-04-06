@@ -1,4 +1,8 @@
-"""Wrapper around Linux ``perf stat`` for counting hardware FP operations."""
+"""Measure floating-point work for benchmark operations.
+
+Primary method: Linux ``perf stat`` hardware counters (exact FP op counts).
+Fallback: wall-clock time measurement (relative proxy, works everywhere).
+"""
 
 from __future__ import annotations
 
@@ -45,9 +49,41 @@ class PerfResult:
         )
 
 
+@dataclass(frozen=True)
+class TimingResult:
+    """Wall-clock timing result used as fallback when perf is unavailable.
+
+    Stores elapsed nanoseconds. Consumers use ``total_flops`` which returns
+    the raw nanosecond value — the normalization step (op_time / add_time)
+    in the runner cancels units, producing valid relative weights.
+    """
+
+    elapsed_ns: int
+
+    @property
+    def total_flops(self) -> int:
+        """Return elapsed nanoseconds as a proxy for FP work.
+
+        This is intentionally named ``total_flops`` so that all benchmark
+        modules can use the same interface regardless of measurement mode.
+        The values are only meaningful as ratios (normalized against the
+        baseline ``np.add`` measurement).
+        """
+        return self.elapsed_ns
+
+
+# Union type for both measurement modes
+MeasureResult = PerfResult | TimingResult
+
+
 def has_perf() -> bool:
     """Return True if the ``perf`` binary is on PATH."""
     return shutil.which("perf") is not None
+
+
+def measurement_mode() -> str:
+    """Return the active measurement mode: ``'perf'`` or ``'timing'``."""
+    return "perf" if has_perf() else "timing"
 
 
 def _parse_perf_csv(output: str) -> PerfResult:
@@ -80,42 +116,21 @@ def _parse_perf_csv(output: str) -> PerfResult:
     )
 
 
-def measure_flops(
-    setup_code: str,
-    bench_code: str,
-    repeats: int = 10,
-) -> PerfResult:
-    """Run *bench_code* under ``perf stat`` and return FP-op counts.
-
-    Parameters
-    ----------
-    setup_code:
-        Python code executed once before the hot loop.
-    bench_code:
-        Python code executed *repeats* times inside the hot loop.
-    repeats:
-        Number of iterations of the hot loop.
-
-    Raises
-    ------
-    RuntimeError
-        If ``perf`` is not available on the system.
-    """
-    if not has_perf():
-        raise RuntimeError(
-            "perf is not available on this system. "
-            "Install linux-tools-common or equivalent."
-        )
-
-    script = (
+def _build_script(setup_code: str, bench_code: str, repeats: int) -> str:
+    """Build the benchmark Python script content."""
+    return (
+        "import numpy as np\n"
         f"{setup_code}\n"
         f"for _i in range({repeats}):\n"
         f"    {bench_code}\n"
     )
 
-    tmp = tempfile.NamedTemporaryFile(
-        mode="w", suffix=".py", delete=False
-    )
+
+def _measure_perf(setup_code: str, bench_code: str, repeats: int) -> PerfResult:
+    """Measure using Linux perf stat hardware counters."""
+    script = _build_script(setup_code, bench_code, repeats)
+
+    tmp = tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False)
     try:
         tmp.write(script)
         tmp.close()
@@ -123,19 +138,81 @@ def measure_flops(
         events_arg = ",".join(PERF_EVENTS)
         proc = subprocess.run(
             [
-                "perf",
-                "stat",
-                "-e",
-                events_arg,
-                "-x",
-                ",",
-                sys.executable,
-                tmp.name,
+                "perf", "stat",
+                "-e", events_arg,
+                "-x", ",",
+                sys.executable, tmp.name,
             ],
             capture_output=True,
             text=True,
         )
-        # perf writes CSV to stderr.
         return _parse_perf_csv(proc.stderr)
     finally:
         Path(tmp.name).unlink(missing_ok=True)
+
+
+def _measure_timing(setup_code: str, bench_code: str, repeats: int) -> TimingResult:
+    """Measure using wall-clock time in a subprocess."""
+    script = (
+        "import time\n"
+        "import numpy as np\n"
+        f"{setup_code}\n"
+        "# Warmup\n"
+        f"for _i in range(2):\n"
+        f"    {bench_code}\n"
+        "# Timed run\n"
+        "_t0 = time.perf_counter_ns()\n"
+        f"for _i in range({repeats}):\n"
+        f"    {bench_code}\n"
+        "_t1 = time.perf_counter_ns()\n"
+        "print(_t1 - _t0)\n"
+    )
+
+    tmp = tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False)
+    try:
+        tmp.write(script)
+        tmp.close()
+
+        proc = subprocess.run(
+            [sys.executable, tmp.name],
+            capture_output=True,
+            text=True,
+            timeout=300,
+        )
+        if proc.returncode != 0:
+            raise RuntimeError(
+                f"Benchmark subprocess failed (exit {proc.returncode}):\n"
+                f"stderr: {proc.stderr}"
+            )
+        elapsed_ns = int(proc.stdout.strip())
+        return TimingResult(elapsed_ns=elapsed_ns)
+    finally:
+        Path(tmp.name).unlink(missing_ok=True)
+
+
+def measure_flops(
+    setup_code: str,
+    bench_code: str,
+    repeats: int = 10,
+) -> MeasureResult:
+    """Measure FP work for a benchmark operation.
+
+    Uses ``perf stat`` hardware counters when available (Linux). Falls back
+    to wall-clock time measurement on other platforms. Both return an object
+    with a ``total_flops`` property — for perf mode this is actual FP ops,
+    for timing mode it is elapsed nanoseconds (valid as a relative proxy
+    when normalized against the baseline).
+
+    Parameters
+    ----------
+    setup_code:
+        Python code executed once before the hot loop (numpy is
+        already imported as ``np``).
+    bench_code:
+        Python code executed *repeats* times inside the hot loop.
+    repeats:
+        Number of iterations of the hot loop.
+    """
+    if has_perf():
+        return _measure_perf(setup_code, bench_code, repeats)
+    return _measure_timing(setup_code, bench_code, repeats)

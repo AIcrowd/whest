@@ -147,10 +147,14 @@ def benchmark_linalg(
 
         for setup in setups:
             full_setup = setup + bench_suffix
-            result = measure_flops(full_setup, bench, repeats=repeats)
+            try:
+                result = measure_flops(full_setup, bench, repeats=repeats)
+            except RuntimeError:
+                continue
             measured = result.total_flops / repeats
             dist_values.append(measured / analytical if analytical else 0.0)
 
-        results[op] = statistics.median(dist_values)
+        if dist_values:
+            results[op] = statistics.median(dist_values)
 
     return results

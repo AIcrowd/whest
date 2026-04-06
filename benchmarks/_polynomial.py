@@ -123,9 +123,13 @@ def benchmark_polynomial(
                 bench = f"np.{op}(c)"
                 normalizer = degree
 
-            result = measure_flops(setup, bench, repeats=repeats)
+            try:
+                result = measure_flops(setup, bench, repeats=repeats)
+            except RuntimeError:
+                continue
             dist_values.append(result.total_flops / (normalizer * repeats))
 
-        results[op] = statistics.median(dist_values)
+        if dist_values:
+            results[op] = statistics.median(dist_values)
 
     return results

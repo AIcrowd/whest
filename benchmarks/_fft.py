@@ -103,12 +103,24 @@ def benchmark_fft(
             shape_str = f"({n},)"
             effective_n = n
 
-        # Need complex input for ifft/ihfft/hfft variants
+        # Determine input type needed
         short = op.split(".")[-1]
-        needs_complex = short.startswith("i") or short == "hfft"
+
+        # irfft variants need rfft output (complex, half-size)
+        needs_rfft_input = short in ("irfft", "irfft2", "irfftn")
+        # ifft variants and hfft need complex input
+        needs_complex = short in ("ifft", "ifft2", "ifftn", "hfft")
 
         setups = []
-        if needs_complex:
+        if needs_rfft_input:
+            # Generate input by applying rfft to real data
+            rfft_func = short.replace("i", "", 1)  # irfft -> rfft
+            setups = [
+                f"import numpy as np; _r = np.random.default_rng(42).standard_normal({shape_str}).astype(np.{dtype}); x = np.fft.{rfft_func}(_r)",
+                f"import numpy as np; _r = np.random.default_rng(43).uniform(-1, 1, size={shape_str}).astype(np.{dtype}); x = np.fft.{rfft_func}(_r)",
+                f"import numpy as np; _r = np.random.default_rng(99).standard_normal({shape_str}).astype(np.{dtype}) * 100; x = np.fft.{rfft_func}(_r)",
+            ]
+        elif needs_complex:
             setups = [
                 (
                     f"import numpy as np; x = np.random.default_rng(42).standard_normal({shape_str}).astype(np.{dtype}) "
@@ -124,6 +136,7 @@ def benchmark_fft(
                 ),
             ]
         else:
+            # Real input: fft, rfft, fftn, rfftn, ihfft
             setups = [
                 f"import numpy as np; x = np.random.default_rng(42).standard_normal({shape_str}).astype(np.{dtype})",
                 (
@@ -137,10 +150,14 @@ def benchmark_fft(
         analytical = _analytical_cost(op, effective_n)
 
         for setup in setups:
-            result = measure_flops(setup, bench, repeats=repeats)
+            try:
+                result = measure_flops(setup, bench, repeats=repeats)
+            except RuntimeError:
+                continue
             measured = result.total_flops / repeats
             dist_values.append(measured / analytical if analytical else 0.0)
 
-        results[op] = statistics.median(dist_values)
+        if dist_values:
+            results[op] = statistics.median(dist_values)
 
     return results

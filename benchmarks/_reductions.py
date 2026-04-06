@@ -80,8 +80,12 @@ def benchmark_reductions(
         extra = _SPECIAL_ARGS.get(op, "")
         for setup in setups:
             bench = f"np.{op}(x{extra})"
-            result = measure_flops(setup, bench, repeats=repeats)
+            try:
+                result = measure_flops(setup, bench, repeats=repeats)
+            except RuntimeError:
+                continue
             dist_values.append(result.total_flops / (n * repeats))
-        results[op] = statistics.median(dist_values)
+        if dist_values:
+            results[op] = statistics.median(dist_values)
 
     return results

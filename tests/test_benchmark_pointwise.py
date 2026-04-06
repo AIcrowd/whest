@@ -23,7 +23,7 @@ class TestOpsLists:
         assert len(BINARY_OPS) > 0
 
     def test_unary_ops_contains_expected(self):
-        for op in ("abs", "exp", "sin", "sqrt", "logical_not", "bitwise_invert"):
+        for op in ("abs", "exp", "sin", "sqrt", "logical_not"):
             assert op in UNARY_OPS, f"{op} missing from UNARY_OPS"
 
     def test_binary_ops_contains_expected(self):

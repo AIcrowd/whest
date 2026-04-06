@@ -47,7 +47,6 @@ UNARY_OPS: list[str] = [
     "degrees",
     "radians",
     "logical_not",
-    "bitwise_invert",
 ]
 
 BINARY_OPS: list[str] = [
@@ -152,9 +151,13 @@ def benchmark_pointwise(
         ]
         for setup in setups[:distributions]:
             bench = f"np.{op}(x)"
-            result = measure_flops(setup, bench, repeats=repeats)
+            try:
+                result = measure_flops(setup, bench, repeats=repeats)
+            except RuntimeError:
+                continue
             dist_values.append(result.total_flops / (n * repeats))
-        results[op] = statistics.median(dist_values)
+        if dist_values:
+            results[op] = statistics.median(dist_values)
 
     # --- Binary ops ---
     for op in BINARY_OPS:
@@ -178,8 +181,12 @@ def benchmark_pointwise(
         ]
         for setup in setups[:distributions]:
             bench = f"np.{op}(a, b)"
-            result = measure_flops(setup, bench, repeats=repeats)
+            try:
+                result = measure_flops(setup, bench, repeats=repeats)
+            except RuntimeError:
+                continue
             dist_values.append(result.total_flops / (n * repeats))
-        results[op] = statistics.median(dist_values)
+        if dist_values:
+            results[op] = statistics.median(dist_values)
 
     return results

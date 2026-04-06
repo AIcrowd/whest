@@ -63,8 +63,23 @@ def run_benchmarks(
         cats = categories
 
     # -- metadata ----------------------------------------------------------
+    from benchmarks._perf import measurement_mode
+
+    mode = measurement_mode()
+    print(f"Measurement mode: {mode}", file=sys.stderr)
+    if mode == "timing":
+        print(
+            "  (perf not available — using wall-clock time as proxy)",
+            file=sys.stderr,
+        )
+
+    import time as _time
+
+    t_start = _time.monotonic()
+
     print("Collecting metadata ...", file=sys.stderr)
     meta = collect_metadata(dtype=dtype, repeats=repeats, distributions=3)
+    meta["benchmark_config"]["measurement_mode"] = mode
 
     # -- baseline ----------------------------------------------------------
     print("Measuring baseline (np.add) ...", file=sys.stderr)
@@ -95,6 +110,9 @@ def run_benchmarks(
     # -- round weights -----------------------------------------------------
     weights = {k: round(v, 4) for k, v in weights.items()}
 
+    duration = round(_time.monotonic() - t_start, 1)
+    meta["duration_seconds"] = duration
+
     result = {"meta": meta, "weights": weights}
 
     # -- write JSON --------------------------------------------------------
@@ -104,13 +122,17 @@ def run_benchmarks(
             json.dump(result, f, indent=2)
 
     # -- terminal dashboard ------------------------------------------------
-    summary = render_terminal(weights)
+    summary = render_terminal(
+        meta, weights, baseline_fpe, len(weights), duration
+    )
     print(summary, file=sys.stderr)
 
     # -- optional HTML report ----------------------------------------------
     if html:
         print(f"Writing HTML report to {html} ...", file=sys.stderr)
-        html_content = render_html(weights, meta)
+        html_content = render_html(
+            meta, weights, baseline_fpe, len(weights), duration
+        )
         with open(html, "w") as f:
             f.write(html_content)
 
