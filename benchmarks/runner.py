@@ -173,6 +173,13 @@ def run_benchmarks(
             else:
                 weights.update(raw)
 
+    # -- renormalize so add = 1.0 exactly -----------------------------------
+    # The separate baseline subprocess and the pointwise add measurement may
+    # differ slightly due to setup/allocation overhead. Force add = 1.0.
+    add_weight = weights.get("add", 1.0)
+    if add_weight > 0:
+        weights = {k: v / add_weight for k, v in weights.items()}
+
     # -- round weights -----------------------------------------------------
     weights = {k: round(v, 4) for k, v in weights.items()}
 
