@@ -112,3 +112,47 @@ def test_iinfo_int32():
     assert info.min == -(2**31)
     assert info.max == 2**31 - 1
     assert info.bits == 32
+
+
+# ----- Functional: error state -----
+
+
+def test_errstate_suppresses_warnings():
+    """me.errstate can suppress numpy warnings in a block."""
+    a = me.array([1.0, 2.0, 3.0])
+    b = me.array([0.0, 0.0, 0.0])
+    with me.errstate(divide="ignore", invalid="ignore"):
+        with me.BudgetContext(flop_budget=int(1e9)):
+            result = a / b
+    result_np = np.asarray(result)
+    assert np.isinf(result_np[0]) or np.isnan(result_np[0])
+
+
+def test_geterr_seterr_roundtrip():
+    """me.geterr returns numpy's current error state, me.seterr updates it."""
+    original = me.geterr()
+    try:
+        me.seterr(divide="ignore")
+        current = me.geterr()
+        assert current["divide"] == "ignore"
+    finally:
+        me.seterr(**original)
+
+
+# ----- Functional: iteration utilities -----
+
+
+def test_ndindex_iterates_shape():
+    """me.ndindex iterates over all indices of a shape."""
+    indices = list(me.ndindex(2, 3))
+    assert len(indices) == 6
+    assert indices[0] == (0, 0)
+    assert indices[-1] == (1, 2)
+
+
+def test_ndenumerate_yields_index_and_value():
+    """me.ndenumerate yields (index, value) pairs."""
+    a = me.array([[1.0, 2.0], [3.0, 4.0]])
+    pairs = list(me.ndenumerate(a))
+    assert len(pairs) == 4
+    assert pairs[0] == ((0, 0), 1.0)
