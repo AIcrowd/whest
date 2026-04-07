@@ -448,7 +448,8 @@ e = _np.e
 inf = _np.inf
 nan = _np.nan
 newaxis = _np.newaxis
-from mechestim._ndarray import MechestimArray as ndarray  # noqa: E402
+from mechestim._ndarray import MechestimArray as ndarray  # noqa: E402, F401
+
 float16 = _np.float16
 float32 = _np.float32
 float64 = _np.float64

@@ -184,6 +184,9 @@ def einsum_path(subscripts: str, *operands, optimize: str | bool | list = "auto"
     )
     return list(path), path_info
 
-from mechestim._ndarray import wrap_module_returns as _wrap_module_returns
-import sys as _sys
+
+import sys as _sys  # noqa: E402
+
+from mechestim._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402
+
 _wrap_module_returns(_sys.modules[__name__], skip_names={"einsum_path"})
