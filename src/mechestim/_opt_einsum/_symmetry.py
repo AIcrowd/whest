@@ -7,7 +7,6 @@ This module provides:
 - merge_overlapping_groups: connected-component merge of symmetry groups
 - propagate_symmetry: track which symmetries survive a pairwise contraction
 - unique_elements / compute_unique_size: count distinct elements under symmetry
-- symmetry_factor: product of factorial(group_size) for all symmetric groups
 - symmetric_flop_count: FLOP estimate that accounts for input/output symmetry
 
 No imports from mechestim — only stdlib (math) and relative imports from _opt_einsum.
@@ -15,14 +14,22 @@ No imports from mechestim — only stdlib (math) and relative imports from _opt_
 
 from __future__ import annotations
 
-from math import comb, factorial
+from math import comb
 from typing import Collection
 
 from ._helpers import flop_count
 
-# Type alias: a list of frozensets, each frozenset names indices that are
-# mutually symmetric (e.g. [frozenset("ij"), frozenset("kl")] means S2 x S2).
-IndexSymmetry = list[frozenset[str]]
+# Type alias: a list of frozensets, each frozenset names symmetry-equivalent
+# "blocks" of indices. Each block is a tuple of index characters. Per-index
+# groups use 1-tuples (e.g. frozenset({('i',), ('j',)}) is S2{i,j}). Block
+# groups use k-tuples for k >= 2 (e.g. frozenset({('j','k'),('l','m')}) is
+# block S2 on blocks (j,k) and (l,m)).
+#
+# Invariants:
+#   1. All tuples in a given frozenset have the same length (uniform block size).
+#   2. Indices used across all blocks in a single group are disjoint.
+#   3. At least 2 blocks per group (singletons are dropped at construction).
+IndexSymmetry = list[frozenset[tuple[str, ...]]]
 
 
 def restrict_group(
@@ -36,7 +43,7 @@ def restrict_group(
 
     For block groups (block size >= 2), uses a parallel-survival check:
     for each block-position, either all blocks have that position surviving
-    (keep), or none do (drop), or it's mixed (block sym breaks → return None).
+    (keep), or none do (drop), or it's mixed (block sym breaks -> return None).
     Surviving positions are projected to form new blocks; if the projection
     yields fewer than 2 distinct blocks, returns None.
 
@@ -71,17 +78,14 @@ def restrict_group(
         if all(present):
             surviving_positions.append(pos)
         elif any(present):
-            # Mixed: some blocks surviving at this pos, others not → breaks
+            # Mixed: some blocks surviving at this pos, others not -> breaks
             return None
-        # else: all contracted at this pos — fine, position is gone
+        # else: all contracted at this pos -- fine, position is gone
 
     if not surviving_positions:
         return None
 
-    new_blocks = [
-        tuple(b[pos] for pos in surviving_positions)
-        for b in blocks
-    ]
+    new_blocks = [tuple(b[pos] for pos in surviving_positions) for b in blocks]
     # Check for trivial collapse (all blocks became the same)
     if len(set(new_blocks)) < 2:
         return None
@@ -126,7 +130,7 @@ def merge_overlapping_groups(
     any already-merged group it overlaps with (sharing at least one index
     character). When the overlap is between groups of the same block size,
     we take the union of their block sets. When block sizes differ, we fall
-    back to ``pick_stronger`` and keep only one — documented limitation.
+    back to ``pick_stronger`` and keep only one -- documented limitation.
 
     Parameters
     ----------
@@ -169,109 +173,65 @@ def propagate_symmetry(
     sym2: IndexSymmetry | None,
     k2: frozenset[str],
     k12: frozenset[str],
+    induced_output_symmetry: IndexSymmetry | None = None,
 ) -> IndexSymmetry | None:
     """Propagate symmetry through a pairwise contraction.
 
-    For each symmetric group in the inputs, restrict it to the indices that
-    survive in the output (k12). Groups that shrink below size 2 are dropped.
+    Combines two sources of symmetry:
+    1. Per-input symmetry (sym1, sym2) restricted to the indices that survive
+       the contraction. Block groups degrade via restrict_group's parallel-check
+       rule: parallel collapse -> per-index, non-parallel -> breaks.
+    2. Induced output symmetry (global groups from equal-args detection)
+       restricted to the same surviving set.
+
+    Both sources are fed into merge_overlapping_groups to unify overlapping
+    groups (pairwise S2 -> S3, block + per-index -> pick_stronger, etc.).
 
     Parameters
     ----------
     sym1, sym2 : IndexSymmetry or None
-        Symmetry of the two input tensors.
+        Symmetry of the two input tensors, in the tuple-based format.
     k1, k2 : frozenset of str
         Index sets of the two input tensors.
     k12 : frozenset of str
-        Index set of the output tensor.
+        Index set of the output tensor (indices surviving this step).
+    induced_output_symmetry : IndexSymmetry or None, optional
+        Global output-level symmetry constraints from equal-args detection.
+        Each group is restricted to k12 and merged with the per-input groups.
 
     Returns
     -------
     IndexSymmetry or None
         Symmetry of the output, or None if no symmetry survives.
     """
-    candidates: list[frozenset[str]] = []
-    seen: set[frozenset[str]] = set()
+    candidates: list[frozenset[tuple[str, ...]]] = []
+    seen: set[frozenset[tuple[str, ...]]] = set()
+
+    # Source 1: restrict each input symmetry group
     for sym in (sym1, sym2):
         if sym is None:
             continue
         for group in sym:
-            surviving = group & k12
-            if len(surviving) >= 2 and surviving not in seen:
-                seen.add(surviving)
-                candidates.append(surviving)
-
-    # Merge overlapping groups.  Two symmetry groups that share an index
-    # generate a larger permutation group on their union — e.g. S2{a,d}
-    # and S2{a,e} together generate S3{a,d,e} (transpositions sharing an
-    # element generate the full symmetric group).  Keeping them separate
-    # causes unique_elements to double-count shared indices.  We merge
-    # by computing connected components of the "shares an index" graph.
-    if len(candidates) > 1:
-        merged: list[frozenset[str]] = []
-        for g in candidates:
-            # Find all existing merged groups that overlap with g
-            overlapping = [i for i, m in enumerate(merged) if m & g]
-            if not overlapping:
-                merged.append(g)
-            else:
-                # Union g with all overlapping groups
-                combined = g
-                for i in sorted(overlapping, reverse=True):
-                    combined = combined | merged.pop(i)
-                merged.append(combined)
-        candidates = merged
-
-    return candidates if candidates else None
-
-
-def _unique_elements_tuple(
-    indices: frozenset[str],
-    size_dict: dict[str, int],
-    symmetry: list[frozenset[tuple[str, ...]]] | None,
-) -> int:
-    """Count distinct elements with the new tuple-based IndexSymmetry format.
-
-    Handles both per-index (tuples of length 1) and block (tuples of length >= 2)
-    groups via the general stars-and-bars formula C(n^s + k - 1, k) where s is
-    the block size and k is the number of blocks.
-
-    This function will REPLACE the existing unique_elements in Task 9 once the
-    type migration happens. It lives in parallel for now so the old code path
-    stays valid while we add the new primitives.
-    """
-    if not indices:
-        return 1
-
-    accounted: set[str] = set()
-    count = 1
-
-    if symmetry:
-        for group in symmetry:
-            # Collect all characters across all blocks in this group
-            all_chars = frozenset(c for block in group for c in block)
-            if all_chars & accounted:
-                # Already accounted for by an earlier group — skip
+            restricted = restrict_group(group, k12)
+            if restricted is None or restricted in seen:
                 continue
-            if not all_chars <= indices:
-                # Some character in the group isn't in the tensor's index set
+            seen.add(restricted)
+            candidates.append(restricted)
+
+    # Source 2: restrict each induced output constraint
+    if induced_output_symmetry:
+        for group in induced_output_symmetry:
+            restricted = restrict_group(group, k12)
+            if restricted is None or restricted in seen:
                 continue
+            seen.add(restricted)
+            candidates.append(restricted)
 
-            blocks = list(group)
-            if len(blocks) < 2:
-                continue
-            s = len(blocks[0])
-            n = size_dict[blocks[0][0]]
-            k = len(blocks)
+    if not candidates:
+        return None
 
-            block_card = n ** s
-            count *= comb(block_card + k - 1, k)
-            accounted |= all_chars
-
-    for idx in indices:
-        if idx not in accounted:
-            count *= size_dict[idx]
-
-    return count
+    merged = merge_overlapping_groups(candidates)
+    return merged if merged else None
 
 
 def unique_elements(
@@ -281,8 +241,11 @@ def unique_elements(
 ) -> int:
     """Count distinct elements of a tensor with the given symmetry.
 
-    For each symmetric group of k indices each of size n, the number of
-    unique index tuples is C(n + k - 1, k)  (stars and bars).
+    Handles both per-index (tuples of length 1) and block (tuples of length >= 2)
+    groups via the general stars-and-bars formula C(n^s + k - 1, k) where s is
+    the block size and k is the number of blocks.
+
+    For per-index groups (s=1), this reduces to the familiar C(n + k - 1, k).
     Free (non-symmetric) indices contribute their full size.
 
     Parameters
@@ -307,20 +270,26 @@ def unique_elements(
 
     if symmetry:
         for group in symmetry:
-            active = group & indices
-            # Skip if already accounted (handles duplicate groups from
-            # e.g. Hadamard dedup merging two tensors with the same symmetry)
-            if active <= accounted:
+            # Collect all characters across all blocks in this group
+            all_chars = frozenset(c for block in group for c in block)
+            if all_chars & accounted:
+                # Already accounted for by an earlier group -- skip
                 continue
-            if len(active) < 2:
+            if not all_chars <= indices:
+                # Some character in the group isn't in the tensor's index set
                 continue
-            # All indices in a symmetric group must have the same size.
-            n = next(size_dict[idx] for idx in active)
-            k = len(active)
-            count *= comb(n + k - 1, k)
-            accounted.update(active)
 
-    # Free indices: full size
+            blocks = list(group)
+            if len(blocks) < 2:
+                continue
+            s = len(blocks[0])
+            n = size_dict[blocks[0][0]]
+            k = len(blocks)
+
+            block_card = n**s
+            count *= comb(block_card + k - 1, k)
+            accounted |= all_chars
+
     for idx in indices:
         if idx not in accounted:
             count *= size_dict[idx]
@@ -330,28 +299,6 @@ def unique_elements(
 
 # Alias
 compute_unique_size = unique_elements
-
-
-def symmetry_factor(symmetry: IndexSymmetry | None) -> int:
-    """Product of factorial(len(group)) over all symmetric groups.
-
-    This equals the order of the symmetry group (number of permutations
-    that leave the tensor invariant).
-
-    Parameters
-    ----------
-    symmetry : IndexSymmetry or None
-
-    Returns
-    -------
-    int
-    """
-    if not symmetry:
-        return 1
-    result = 1
-    for group in symmetry:
-        result *= factorial(len(group))
-    return result
 
 
 def symmetric_flop_count(
@@ -380,7 +327,7 @@ def symmetric_flop_count(
     The output symmetry fully determines the reduction.  Input symmetry on
     surviving indices creates the output symmetry (tracked by
     :func:`propagate_symmetry`), but it is not an independent source of
-    savings — applying both would double-count.  The ``input_symmetries``
+    savings -- applying both would double-count.  The ``input_symmetries``
     parameter is retained for API compatibility and for potential future
     optimisations on contracted-index symmetry (a genuinely separate concern).
 

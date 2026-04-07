@@ -117,7 +117,17 @@ class PathInfo:
             """Format an IndexSymmetry as e.g. 'S3{i,j,k}' or 'S2{i,j}·S2{k,l}'."""
             if not sym:
                 return "-"
-            return "·".join(f"S{len(g)}{{{','.join(sorted(g))}}}" for g in sym)
+
+            def fmt_block(block: tuple) -> str:
+                if len(block) == 1:
+                    return block[0]
+                return f"({''.join(block)})"
+
+            def fmt_group(g: frozenset) -> str:
+                blocks = sorted(g)
+                return f"S{len(g)}{{{','.join(fmt_block(b) for b in blocks)}}}"
+
+            return "·".join(fmt_group(g) for g in sym)
 
         def fmt_step_sym(step: StepInfo) -> str:
             """Format inputs→output symmetry transformation for one step."""

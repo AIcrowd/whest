@@ -3,7 +3,6 @@
 from mechestim._opt_einsum._symmetry import (
     propagate_symmetry,
     symmetric_flop_count,
-    symmetry_factor,
     unique_elements,
 )
 
@@ -11,17 +10,17 @@ from mechestim._opt_einsum._symmetry import (
 class TestPropagateSymmetry:
     def test_s3_contracts_one_index_to_s2(self):
         """ijk (S3) contracted with ai -> ajk has S2 on (j,k)."""
-        sym1 = [frozenset("ijk")]
+        sym1 = [frozenset({("i",), ("j",), ("k",)})]
         sym2 = None
         k1 = frozenset("ijk")
         k2 = frozenset("ai")
         k12 = frozenset("ajk")
         result = propagate_symmetry(sym1, k1, sym2, k2, k12)
-        assert result == [frozenset("jk")]
+        assert result == [frozenset({("j",), ("k",)})]
 
     def test_s3_contracts_two_indices_to_none(self):
         """ijk (S3) contracted with ij -> k has no symmetry."""
-        sym1 = [frozenset("ijk")]
+        sym1 = [frozenset({("i",), ("j",), ("k",)})]
         sym2 = None
         k1 = frozenset("ijk")
         k2 = frozenset("ij")
@@ -31,14 +30,14 @@ class TestPropagateSymmetry:
 
     def test_partial_symmetry_preserved(self):
         """ijkl (S2 on ij, S2 on kl) contracted with ak -> aijl has S2 on (i,j) only."""
-        sym1 = [frozenset("ij"), frozenset("kl")]
+        sym1 = [frozenset({("i",), ("j",)}), frozenset({("k",), ("l",)})]
         sym2 = None
         k1 = frozenset("ijkl")
         k2 = frozenset("ak")
         k12 = frozenset("aijl")
         result = propagate_symmetry(sym1, k1, sym2, k2, k12)
-        assert frozenset("ij") in result
-        assert frozenset("kl") not in result
+        assert frozenset({("i",), ("j",)}) in result
+        assert frozenset({("k",), ("l",)}) not in result
         assert len(result) == 1
 
     def test_no_symmetry_inputs(self):
@@ -50,14 +49,14 @@ class TestPropagateSymmetry:
 
     def test_both_inputs_symmetric(self):
         """Both inputs have symmetry, both propagate."""
-        sym1 = [frozenset("ij")]
-        sym2 = [frozenset("kl")]
+        sym1 = [frozenset({("i",), ("j",)})]
+        sym2 = [frozenset({("k",), ("l",)})]
         k1 = frozenset("ijm")
         k2 = frozenset("mkl")
         k12 = frozenset("ijkl")
         result = propagate_symmetry(sym1, k1, sym2, k2, k12)
-        assert frozenset("ij") in result
-        assert frozenset("kl") in result
+        assert frozenset({("i",), ("j",)}) in result
+        assert frozenset({("k",), ("l",)}) in result
         assert len(result) == 2
 
 
@@ -65,19 +64,19 @@ class TestUniqueElements:
     def test_s2_symmetry(self):
         """C(n+1, 2) for S2 on two indices of size n."""
         size_dict = {"i": 10, "j": 10}
-        sym = [frozenset("ij")]
+        sym = [frozenset({("i",), ("j",)})]
         assert unique_elements(frozenset("ij"), size_dict, sym) == 55
 
     def test_s3_symmetry(self):
         """C(n+2, 3) for S3."""
         size_dict = {"i": 10, "j": 10, "k": 10}
-        sym = [frozenset("ijk")]
+        sym = [frozenset({("i",), ("j",), ("k",)})]
         assert unique_elements(frozenset("ijk"), size_dict, sym) == 220
 
     def test_mixed_symmetric_and_free(self):
         """S2 on (j,k) plus free index a."""
         size_dict = {"a": 5, "j": 10, "k": 10}
-        sym = [frozenset("jk")]
+        sym = [frozenset({("j",), ("k",)})]
         assert unique_elements(frozenset("ajk"), size_dict, sym) == 5 * 55
 
     def test_no_symmetry(self):
@@ -88,25 +87,11 @@ class TestUniqueElements:
         assert unique_elements(frozenset(), {}, None) == 1
 
 
-class TestSymmetryFactor:
-    def test_s2(self):
-        assert symmetry_factor([frozenset("ij")]) == 2
-
-    def test_s3(self):
-        assert symmetry_factor([frozenset("ijk")]) == 6
-
-    def test_multiple_groups(self):
-        assert symmetry_factor([frozenset("ij"), frozenset("kl")]) == 4
-
-    def test_none(self):
-        assert symmetry_factor(None) == 1
-
-
 class TestSymmetricFlopCount:
     def test_s3_contraction_reduces_cost(self):
         """ijk,ai->ajk with S3 on ijk should cost less than dense."""
         size_dict = {"i": 100, "j": 100, "k": 100, "a": 100}
-        sym1 = [frozenset("ijk")]
+        sym1 = [frozenset({("i",), ("j",), ("k",)})]
         sym2 = None
         idx_contract = frozenset("aijk")
         cost = symmetric_flop_count(
@@ -116,7 +101,7 @@ class TestSymmetricFlopCount:
             size_dict,
             output_indices=frozenset("ajk"),
             input_symmetries=[sym1, sym2],
-            output_symmetry=[frozenset("jk")],
+            output_symmetry=[frozenset({("j",), ("k",)})],
         )
         dense_cost = 100**4 * 2
         assert cost < dense_cost
@@ -141,7 +126,7 @@ class TestSymmetryAwarePaths:
         from mechestim._opt_einsum._contract import contract_path
 
         # ijk,ai,bj,ck->abc where ijk has S3
-        symmetries = [[frozenset("ijk")], None, None, None]
+        symmetries = [[frozenset({("i",), ("j",), ("k",)})], None, None, None]
         path, info = contract_path(
             "ijk,ai,bj,ck->abc",
             *[(10,) * 3, (10, 10), (10, 10), (10, 10)],
@@ -161,7 +146,7 @@ class TestSymmetryAwarePaths:
         _, info_sym = contract_path(
             *args,
             **kwargs,
-            input_symmetries=[[frozenset("ij")], None, None],
+            input_symmetries=[[frozenset({("i",), ("j",)})], None, None],
         )
         assert info_sym.opt_cost <= info_dense.opt_cost
 
@@ -193,7 +178,7 @@ class TestSymmetryAwarePaths:
         """Optimal algorithm works with symmetry."""
         from mechestim._opt_einsum._contract import contract_path
 
-        symmetries = [[frozenset("ij")], None, None]
+        symmetries = [[frozenset({("i",), ("j",)})], None, None]
         path, info = contract_path(
             "ij,jk,ki->",
             (5, 5),
@@ -210,7 +195,7 @@ class TestSymmetryAwarePaths:
         """DP algorithm works with symmetry."""
         from mechestim._opt_einsum._contract import contract_path
 
-        symmetries = [[frozenset("ij")], None, None]
+        symmetries = [[frozenset({("i",), ("j",)})], None, None]
         path, info = contract_path(
             "ij,jk,ki->",
             (5, 5),
@@ -227,7 +212,7 @@ class TestSymmetryAwarePaths:
         """Branch algorithm works with symmetry."""
         from mechestim._opt_einsum._contract import contract_path
 
-        symmetries = [[frozenset("ij")], None, None]
+        symmetries = [[frozenset({("i",), ("j",)})], None, None]
         path, info = contract_path(
             "ij,jk,ki->",
             (5, 5),
@@ -245,7 +230,7 @@ class TestSymmetricBlas:
     """Tests for symmetry-aware BLAS classification."""
 
     def test_gemm_with_symmetric_left_becomes_symm(self):
-        """GEMM with symmetric left input → SYMM."""
+        """GEMM with symmetric left input -> SYMM."""
         from mechestim._opt_einsum._blas import can_blas
 
         # ij,jk->ik where ij is symmetric
@@ -253,24 +238,24 @@ class TestSymmetricBlas:
             ["ij", "jk"],
             "ik",
             frozenset("j"),
-            input_symmetries=[[frozenset("ij")], None],
+            input_symmetries=[[frozenset({("i",), ("j",)})], None],
         )
         assert result == "SYMM"
 
     def test_gemm_with_symmetric_right_becomes_symm(self):
-        """GEMM with symmetric right input → SYMM."""
+        """GEMM with symmetric right input -> SYMM."""
         from mechestim._opt_einsum._blas import can_blas
 
         result = can_blas(
             ["ij", "jk"],
             "ik",
             frozenset("j"),
-            input_symmetries=[None, [frozenset("jk")]],
+            input_symmetries=[None, [frozenset({("j",), ("k",)})]],
         )
         assert result == "SYMM"
 
     def test_gemv_with_symmetric_matrix_becomes_symv(self):
-        """GEMV with symmetric matrix → SYMV."""
+        """GEMV with symmetric matrix -> SYMV."""
         from mechestim._opt_einsum._blas import can_blas
 
         # ijk,ji->k where ij is symmetric: can_blas returns GEMV/EINSUM
@@ -280,19 +265,19 @@ class TestSymmetricBlas:
             ["ijk", "ji"],
             "k",
             frozenset("ij"),
-            input_symmetries=[[frozenset("ij")], None],
+            input_symmetries=[[frozenset({("i",), ("j",)})], None],
         )
         assert result == "SYMV"
 
     def test_dot_with_symmetric_becomes_sydt(self):
-        """DOT with symmetric input → SYDT."""
+        """DOT with symmetric input -> SYDT."""
         from mechestim._opt_einsum._blas import can_blas
 
         result = can_blas(
             ["ij", "ij"],
             "",
             frozenset("ij"),
-            input_symmetries=[[frozenset("ij")], None],
+            input_symmetries=[[frozenset({("i",), ("j",)})], None],
         )
         assert result == "SYDT"
 
@@ -304,7 +289,7 @@ class TestSymmetricBlas:
         assert result == "GEMM"
 
     def test_none_symmetries_unchanged(self):
-        """Explicit None symmetries → same as no symmetry."""
+        """Explicit None symmetries -> same as no symmetry."""
         from mechestim._opt_einsum._blas import can_blas
 
         result = can_blas(
@@ -316,7 +301,7 @@ class TestSymmetricBlas:
         assert result == "GEMM"
 
     def test_tdot_with_symmetry_unchanged(self):
-        """TDOT doesn't have a symmetric variant — stays TDOT."""
+        """TDOT doesn't have a symmetric variant -- stays TDOT."""
         from mechestim._opt_einsum._blas import can_blas
 
         # ijk,lkj->il: base classification is TDOT (non-aligned contraction).
@@ -325,12 +310,12 @@ class TestSymmetricBlas:
             ["ijk", "lkj"],
             "il",
             frozenset("jk"),
-            input_symmetries=[[frozenset("ij")], None],
+            input_symmetries=[[frozenset({("i",), ("j",)})], None],
         )
         assert result == "TDOT"
 
     def test_outer_with_symmetry_unchanged(self):
-        """OUTER doesn't have a symmetric variant — stays OUTER/EINSUM."""
+        """OUTER doesn't have a symmetric variant -- stays OUTER/EINSUM."""
         from mechestim._opt_einsum._blas import can_blas
 
         result = can_blas(
@@ -362,7 +347,7 @@ class TestStepInfoBlasType:
         """StepInfo should show SYMM/SYMV for symmetric inputs."""
         from mechestim._opt_einsum._contract import contract_path
 
-        # ij,jk->ik where ij is symmetric — the step that contracts the
+        # ij,jk->ik where ij is symmetric -- the step that contracts the
         # symmetric tensor should show SYMM
         _, info = contract_path(
             "ij,jk,kl->il",
@@ -371,7 +356,7 @@ class TestStepInfoBlasType:
             (5, 5),
             shapes=True,
             optimize="greedy",
-            input_symmetries=[[frozenset("ij")], None, None],
+            input_symmetries=[[frozenset({("i",), ("j",)})], None, None],
         )
         blas_types = [s.blas_type for s in info.steps]
         # At least one step should involve the symmetric tensor and get SYMM
@@ -392,7 +377,7 @@ class TestFixedSymmetricFlopCount:
             2,
             size_dict,
             output_indices=frozenset("i"),
-            input_symmetries=[[frozenset("ij")], None],
+            input_symmetries=[[frozenset({("i",), ("j",)})], None],
             output_symmetry=None,
         )
         dense = flop_count(frozenset("ij"), True, 2, size_dict)
@@ -414,8 +399,8 @@ class TestFixedSymmetricFlopCount:
             2,
             size_dict,
             output_indices=frozenset("ajk"),
-            input_symmetries=[[frozenset("ijk")], None],
-            output_symmetry=[frozenset("jk")],
+            input_symmetries=[[frozenset({("i",), ("j",), ("k",)})], None],
+            output_symmetry=[frozenset({("j",), ("k",)})],
         )
         dense = flop_count(frozenset("aijk"), True, 2, size_dict)
         # unique outputs = 10 * C(11,2) = 550, total = 1000
@@ -423,8 +408,8 @@ class TestFixedSymmetricFlopCount:
         assert cost == 11000
 
     def test_hand_counted_s3_contraction(self):
-        """Verify: 550 unique outputs (10 × C(11,2)), each a length-10 dot
-        product with 2 ops each => 550 × 10 × 2 = 11000."""
+        """Verify: 550 unique outputs (10 x C(11,2)), each a length-10 dot
+        product with 2 ops each => 550 x 10 x 2 = 11000."""
         size_dict = {"i": 10, "j": 10, "k": 10, "a": 10}
         cost = symmetric_flop_count(
             frozenset("aijk"),
@@ -432,8 +417,8 @@ class TestFixedSymmetricFlopCount:
             2,
             size_dict,
             output_indices=frozenset("ajk"),
-            input_symmetries=[[frozenset("ijk")], None],
-            output_symmetry=[frozenset("jk")],
+            input_symmetries=[[frozenset({("i",), ("j",), ("k",)})], None],
+            output_symmetry=[frozenset({("j",), ("k",)})],
         )
         assert cost == 11000
 
@@ -469,8 +454,8 @@ class TestFixedSymmetricFlopCount:
             2,
             size_dict,
             output_indices=frozenset("ajk"),
-            input_symmetries=[[frozenset("ijk")], None],
-            output_symmetry=[frozenset("jk")],
+            input_symmetries=[[frozenset({("i",), ("j",), ("k",)})], None],
+            output_symmetry=[frozenset({("j",), ("k",)})],
         )
         assert formula_cost == counted_ops
 
@@ -500,8 +485,8 @@ class TestFixedSymmetricFlopCount:
             2,
             size_dict,
             output_indices=frozenset("aij"),
-            input_symmetries=[[frozenset("ij")], None],
-            output_symmetry=[frozenset("ij")],
+            input_symmetries=[[frozenset({("i",), ("j",)})], None],
+            output_symmetry=[frozenset({("i",), ("j",)})],
         )
         # Output has S2 on (i,j): unique = 10 * C(11,2) = 550, total = 1000
         # dense_base = 1000 * 1 (op_factor=1, no inner product)
@@ -526,20 +511,28 @@ class TestAllAlgorithmsSymmetryAware:
         )
 
     def test_optimal_accepts_symmetry(self):
-        path, info = self._run_algo("optimal", [[frozenset("ijk")], None, None])
+        path, info = self._run_algo(
+            "optimal", [[frozenset({("i",), ("j",), ("k",)})], None, None]
+        )
         assert len(path) == 2
         assert info.optimized_cost > 0
 
     def test_greedy_accepts_symmetry(self):
-        path, info = self._run_algo("greedy", [[frozenset("ijk")], None, None])
+        path, info = self._run_algo(
+            "greedy", [[frozenset({("i",), ("j",), ("k",)})], None, None]
+        )
         assert len(path) == 2
 
     def test_branch_all_accepts_symmetry(self):
-        path, info = self._run_algo("branch-all", [[frozenset("ijk")], None, None])
+        path, info = self._run_algo(
+            "branch-all", [[frozenset({("i",), ("j",), ("k",)})], None, None]
+        )
         assert len(path) == 2
 
     def test_dp_accepts_symmetry(self):
-        path, info = self._run_algo("dp", [[frozenset("ijk")], None, None])
+        path, info = self._run_algo(
+            "dp", [[frozenset({("i",), ("j",), ("k",)})], None, None]
+        )
         assert len(path) == 2
 
     def test_no_symmetry_unchanged_all_algos(self):
@@ -561,7 +554,7 @@ class TestAllAlgorithmsSymmetryAware:
         from mechestim._opt_einsum._contract import contract_path
 
         args = ("ijk,ai,bj->abk", (5,) * 3, (5, 5), (5, 5))
-        sym = [[frozenset("ijk")], None, None]
+        sym = [[frozenset({("i",), ("j",), ("k",)})], None, None]
         for algo in ["optimal", "greedy", "branch-all", "dp"]:
             _, info_dense = contract_path(*args, shapes=True, optimize=algo)
             _, info_sym = contract_path(
@@ -580,7 +573,7 @@ class TestExhaustiveSymmetryValidation:
         from mechestim._opt_einsum._contract import contract_path
 
         args = ("ij,jk,ki->", (5, 5), (5, 5), (5, 5))
-        sym = [[frozenset("ij")], None, None]
+        sym = [[frozenset({("i",), ("j",)})], None, None]
         costs = {}
         for algo in ["optimal", "greedy", "branch-all", "dp"]:
             _, info = contract_path(
@@ -596,7 +589,7 @@ class TestExhaustiveSymmetryValidation:
         from mechestim._opt_einsum._contract import contract_path
 
         args = ("ijk,ai,bj->abk", (5,) * 3, (5, 5), (5, 5))
-        sym = [[frozenset("ijk")], None, None]
+        sym = [[frozenset({("i",), ("j",), ("k",)})], None, None]
         for algo in ["optimal", "greedy", "branch-all", "dp"]:
             _, info_dense = contract_path(*args, shapes=True, optimize=algo)
             _, info_sym = contract_path(
@@ -626,7 +619,7 @@ class TestExhaustiveSymmetryValidation:
             "ijk,ai,bj,ck->abc",
             *[(100,) * 3, (100, 100), (100, 100), (100, 100)],
             shapes=True,
-            input_symmetries=[[frozenset("ijk")], None, None, None],
+            input_symmetries=[[frozenset({("i",), ("j",), ("k",)})], None, None, None],
         )
         assert len(info.steps) == 3
         _, info_dense = contract_path(
@@ -646,7 +639,11 @@ class TestExhaustiveSymmetryValidation:
             *[(5,) * 3, (5, 5), (5, 5)],
             shapes=True,
             optimize="optimal",
-            input_symmetries=[[frozenset("ijk")], [frozenset("kl")], None],
+            input_symmetries=[
+                [frozenset({("i",), ("j",), ("k",)})],
+                [frozenset({("k",), ("l",)})],
+                None,
+            ],
         )
         assert len(info.steps) == 2
         assert info.optimized_cost > 0
@@ -655,7 +652,7 @@ class TestExhaustiveSymmetryValidation:
         """Result symmetry of a subset is order-independent."""
         from mechestim._opt_einsum._symmetry import propagate_symmetry
 
-        sym_T = [frozenset("ijk")]
+        sym_T = [frozenset({("i",), ("j",), ("k",)})]
         # Order 1: T+A -> ajk, then +B -> abk
         sym1 = propagate_symmetry(
             sym_T, frozenset("ijk"), None, frozenset("ai"), frozenset("ajk")
@@ -681,7 +678,7 @@ class TestExhaustiveSymmetryValidation:
             [frozenset("ij"), frozenset("jk"), frozenset("ki")],
             frozenset(""),
             {"i": 5, "j": 5, "k": 5},
-            input_symmetries=[[frozenset("ij")], None, None],
+            input_symmetries=[[frozenset({("i",), ("j",)})], None, None],
         )
         assert len(path) == 2
 

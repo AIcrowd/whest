@@ -13,13 +13,16 @@ def _symmetry_info_to_index_symmetry(sym_info, subscript_chars: str):
 
     sym_info.symmetric_axes is like [(0, 1, 2)] -- positional indices.
     subscript_chars is like "ijk" -- the einsum subscript for this operand.
-    Returns IndexSymmetry like [frozenset("ijk")], or None.
+    Returns IndexSymmetry like [frozenset({('i',), ('j',), ('k',)})], or None.
+
+    Per-index symmetries (as declared via SymmetricTensor) always map to
+    1-tuple blocks in the new uniform tuple representation.
     """
     if sym_info is None:
         return None
     groups = []
     for group in sym_info.symmetric_axes:
-        char_group = frozenset(subscript_chars[d] for d in group)
+        char_group = frozenset((subscript_chars[d],) for d in group)
         if len(char_group) >= 2:
             groups.append(char_group)
     return groups if groups else None
