@@ -192,7 +192,10 @@ def propagate_symmetry(
     sym1, sym2 : IndexSymmetry or None
         Symmetry of the two input tensors, in the tuple-based format.
     k1, k2 : frozenset of str
-        Index sets of the two input tensors.
+        Index sets of the two input tensors.  Currently unused by the
+        body (restriction is done via k12 and restrict_group), but kept
+        in the signature for API stability and for potential future
+        contracted-index symmetry optimisations.
     k12 : frozenset of str
         Index set of the output tensor (indices surviving this step).
     induced_output_symmetry : IndexSymmetry or None, optional

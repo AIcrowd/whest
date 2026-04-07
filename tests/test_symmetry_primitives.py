@@ -14,6 +14,7 @@ from mechestim._opt_einsum._symmetry import (
     merge_two,
     pick_stronger,
     restrict_group,
+    unique_elements,
 )
 
 
@@ -250,81 +251,53 @@ class TestMergeOverlappingGroups:
         assert result[0] == frozenset({("a", "b"), ("c", "d"), ("e", "f")})
 
 
-class TestUniqueElementsTuple:
-    """_unique_elements_tuple with the new tuple-based IndexSymmetry format."""
+class TestUniqueElements:
+    """unique_elements with the new tuple-based IndexSymmetry format (per-index and block groups)."""
 
     def test_no_symmetry_returns_product(self):
-        from mechestim._opt_einsum._symmetry import (
-            unique_elements as _unique_elements_tuple,
-        )
-
         indices = frozenset("ij")
         size_dict = {"i": 10, "j": 10}
-        assert _unique_elements_tuple(indices, size_dict, None) == 100
+        assert unique_elements(indices, size_dict, None) == 100
 
     def test_per_index_s2(self):
-        from mechestim._opt_einsum._symmetry import (
-            unique_elements as _unique_elements_tuple,
-        )
-
         # S2{i,j}: C(n+1, 2) unique elements
         indices = frozenset("ij")
         size_dict = {"i": 10, "j": 10}
         sym = [frozenset({("i",), ("j",)})]
         # C(10+1, 2) = 55
-        assert _unique_elements_tuple(indices, size_dict, sym) == 55
+        assert unique_elements(indices, size_dict, sym) == 55
 
     def test_per_index_s3(self):
-        from mechestim._opt_einsum._symmetry import (
-            unique_elements as _unique_elements_tuple,
-        )
-
         indices = frozenset("ijk")
         size_dict = {"i": 10, "j": 10, "k": 10}
         sym = [frozenset({("i",), ("j",), ("k",)})]
         # C(10+2, 3) = 220
-        assert _unique_elements_tuple(indices, size_dict, sym) == 220
+        assert unique_elements(indices, size_dict, sym) == 220
 
     def test_per_index_with_free_dim(self):
-        from mechestim._opt_einsum._symmetry import (
-            unique_elements as _unique_elements_tuple,
-        )
-
         # a is free, (j,k) is S2
         indices = frozenset("ajk")
         size_dict = {"a": 10, "j": 10, "k": 10}
         sym = [frozenset({("j",), ("k",)})]
         # 10 * C(11,2) = 10 * 55 = 550
-        assert _unique_elements_tuple(indices, size_dict, sym) == 550
+        assert unique_elements(indices, size_dict, sym) == 550
 
     def test_block_s2_2x2(self):
-        from mechestim._opt_einsum._symmetry import (
-            unique_elements as _unique_elements_tuple,
-        )
-
         # Block S2 on (j,k) and (l,m): C(n^2 + 1, 2)
         indices = frozenset("jklm")
         size_dict = {"j": 10, "k": 10, "l": 10, "m": 10}
         sym = [frozenset({("j", "k"), ("l", "m")})]
         # n=10, s=2, k=2 → C(100+1, 2) = 5050
-        assert _unique_elements_tuple(indices, size_dict, sym) == 5050
+        assert unique_elements(indices, size_dict, sym) == 5050
 
     def test_block_s2_with_free_dim(self):
-        from mechestim._opt_einsum._symmetry import (
-            unique_elements as _unique_elements_tuple,
-        )
-
         indices = frozenset("ajklm")
         size_dict = {"a": 5, "j": 10, "k": 10, "l": 10, "m": 10}
         sym = [frozenset({("j", "k"), ("l", "m")})]
         # 5 (free a) * 5050 (block) = 25250
-        assert _unique_elements_tuple(indices, size_dict, sym) == 25250
+        assert unique_elements(indices, size_dict, sym) == 25250
 
     def test_two_independent_s2_groups(self):
-        from mechestim._opt_einsum._symmetry import (
-            unique_elements as _unique_elements_tuple,
-        )
-
         indices = frozenset("ijkl")
         size_dict = {"i": 10, "j": 10, "k": 10, "l": 10}
         sym = [
@@ -332,11 +305,7 @@ class TestUniqueElementsTuple:
             frozenset({("k",), ("l",)}),
         ]
         # C(11,2) * C(11,2) = 55 * 55 = 3025
-        assert _unique_elements_tuple(indices, size_dict, sym) == 3025
+        assert unique_elements(indices, size_dict, sym) == 3025
 
     def test_empty_indices(self):
-        from mechestim._opt_einsum._symmetry import (
-            unique_elements as _unique_elements_tuple,
-        )
-
-        assert _unique_elements_tuple(frozenset(), {"a": 10}, None) == 1
+        assert unique_elements(frozenset(), {"a": 10}, None) == 1
