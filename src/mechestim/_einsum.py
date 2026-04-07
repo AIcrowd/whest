@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from itertools import combinations as _combinations
+
 import numpy as _np
 
 from mechestim._symmetric import SymmetricTensor, validate_symmetry
@@ -26,6 +28,103 @@ def _symmetry_info_to_index_symmetry(sym_info, subscript_chars: str):
         if len(char_group) >= 2:
             groups.append(char_group)
     return groups if groups else None
+
+
+def _operand_has_permutation_as_sym(per_op_sym, orig_sub: str, new_sub: str) -> bool:
+    """Check whether an operand's declared per-op symmetry already includes the
+    permutation that relabels orig_sub → new_sub on its own indices.
+
+    The permutation is determined positionally: position i of new_sub should equal
+    the image of position i of orig_sub. We then check whether the induced
+    permutation on index chars is a composition of the operand's declared groups.
+
+    This is used as the self-mapping guard in _is_valid_symmetry: when an operand
+    maps to itself under a non-trivial sigma, we require that the operand is
+    already invariant under that relabeling.
+    """
+    if per_op_sym is None:
+        return False
+    # Build the mapping from original char to new char at matching positions
+    perm: dict[str, str] = {}
+    for a, b in zip(orig_sub, new_sub):
+        if a in perm and perm[a] != b:
+            return False  # inconsistent permutation
+        perm[a] = b
+    # Check that perm is the identity on any char not in a declared group,
+    # and is consistent with some declared group otherwise.
+    for a, b in perm.items():
+        if a == b:
+            continue
+        # a and b must be in the same symmetric group
+        in_same_group = any(
+            any(a in block for block in group) and any(b in block for block in group)
+            for group in per_op_sym
+        )
+        if not in_same_group:
+            return False
+    return True
+
+
+def _is_valid_symmetry(
+    sigma: dict[str, str],
+    subscript_parts: list[str],
+    operands: list,
+    per_op_syms: list,
+) -> bool:
+    """Check whether a permutation sigma of output indices is a valid symmetry
+    of the einsum contraction.
+
+    sigma is a dict {a: b, b: a, ...} representing the index relabeling.
+    Valid iff each relabeled operand can be matched to an original operand with
+    the same index set AND the same Python identity. When an operand self-maps
+    with a non-trivial relabel, the operand must have a declared symmetry
+    covering that relabel.
+
+    Parameters
+    ----------
+    sigma : dict[str, str]
+        The proposed permutation of output indices.
+    subscript_parts : list[str]
+        The einsum subscript for each operand (e.g., ['ij', 'jk']).
+    operands : list
+        The actual operand objects (used for identity comparison via `is`).
+    per_op_syms : list
+        Per-operand declared symmetries (from SymmetricTensor), for the
+        self-mapping guard.
+
+    Returns
+    -------
+    bool
+        True iff sigma is a valid symmetry of the contraction.
+    """
+    relabeled = [
+        "".join(sigma.get(c, c) for c in subscript)
+        for subscript in subscript_parts
+    ]
+
+    used: set[int] = set()
+    for i, new_sub in enumerate(relabeled):
+        new_idx_set = frozenset(new_sub)
+        matched = False
+        for j, orig_sub in enumerate(subscript_parts):
+            if j in used:
+                continue
+            if frozenset(orig_sub) != new_idx_set:
+                continue
+            if operands[j] is not operands[i]:
+                continue
+            if i == j and new_sub != orig_sub:
+                # Self-map with non-trivial relabel: require declared sym
+                if not _operand_has_permutation_as_sym(
+                    per_op_syms[i], orig_sub, new_sub
+                ):
+                    continue
+            used.add(j)
+            matched = True
+            break
+        if not matched:
+            return False
+    return True
 
 
 def _execute_pairwise(path_info, operands: list):
@@ -186,6 +285,189 @@ def einsum_path(subscripts: str, *operands, optimize: str | bool | list = "auto"
         input_symmetries=index_symmetries if has_symmetry else None,
     )
     return list(path), path_info
+
+
+def _enumerate_per_index_candidates(output_chars: str) -> list[dict[str, str]]:
+    """Enumerate all per-index transposition sigmas for candidate S2 groups.
+
+    For each pair of output indices (a, b), produce the swap sigma {a: b, b: a}.
+
+    Parameters
+    ----------
+    output_chars : str
+        The output subscript characters (e.g., 'ijk').
+
+    Returns
+    -------
+    list of dict[str, str]
+        Each dict is a proposed sigma. Pass each to _is_valid_symmetry.
+    """
+    chars = list(dict.fromkeys(output_chars))  # preserve order, dedupe
+    return [{a: b, b: a} for a, b in _combinations(chars, 2)]
+
+
+def _enumerate_block_candidates(
+    operands: list,
+    subscript_parts: list[str],
+    output_chars: frozenset[str],
+) -> list[dict[str, str]]:
+    """Enumerate block-swap sigmas for pairs of equal operands.
+
+    For each pair (i, j) of operand positions where operands[i] is operands[j]
+    and each operand contributes the same-size block of free indices to the
+    output, produce the block-swap sigma that aligns the free indices positionally.
+
+    "Free to operand i only" means: in operand i's subscript AND in the output
+    AND NOT in any other operand's subscript (including the other equal operand).
+
+    Parameters
+    ----------
+    operands : list
+        Original operand objects.
+    subscript_parts : list[str]
+        Einsum subscript per operand.
+    output_chars : frozenset[str]
+        The final output's index characters.
+
+    Returns
+    -------
+    list of dict[str, str]
+        Candidate sigmas for block-swap induction.
+    """
+    candidates: list[dict[str, str]] = []
+    n = len(operands)
+
+    for i, j in _combinations(range(n), 2):
+        if operands[i] is not operands[j]:
+            continue
+
+        sub_i = subscript_parts[i]
+        sub_j = subscript_parts[j]
+        other_subs = [
+            subscript_parts[k] for k in range(n) if k != i and k != j
+        ]
+        other_chars = (
+            frozenset().union(*[frozenset(s) for s in other_subs])
+            if other_subs
+            else frozenset()
+        )
+
+        # Free to op i only: in sub_i, in output, not in sub_j or any other op
+        sub_i_set = frozenset(sub_i)
+        sub_j_set = frozenset(sub_j)
+        free_i_set = sub_i_set - sub_j_set - other_chars
+        free_j_set = sub_j_set - sub_i_set - other_chars
+        free_i_set = free_i_set & output_chars
+        free_j_set = free_j_set & output_chars
+
+        if len(free_i_set) != len(free_j_set) or len(free_i_set) == 0:
+            continue
+
+        # Positional pairing: enumerate free indices in the order they appear
+        # in each operand's subscript.
+        free_i_ordered = [c for c in sub_i if c in free_i_set]
+        free_j_ordered = [c for c in sub_j if c in free_j_set]
+
+        sigma: dict[str, str] = {}
+        for a, b in zip(free_i_ordered, free_j_ordered):
+            sigma[a] = b
+            sigma[b] = a
+        candidates.append(sigma)
+
+    return candidates
+
+
+def _sigma_to_group(sigma: dict[str, str]) -> frozenset[tuple[str, ...]] | None:
+    """Convert a sigma (char-level permutation) to a symmetry group.
+
+    The sigma represents a permutation; we convert to the orbits of that
+    permutation, then group the orbits by their size into blocks.
+
+    For a simple transposition {a:b, b:a}, the orbit is {a, b} — two separate
+    1-element blocks → per-index S2 = frozenset({(a,), (b,)}).
+
+    For a composition like {j:l, l:j, k:m, m:k} (two disjoint transpositions
+    forming a block swap), the orbits are {j, l} and {k, m}, grouped by
+    positional correspondence into a single block group
+    frozenset({(j, k), (l, m)}).
+
+    IMPORTANT: the positional correspondence must be recoverable from how the
+    sigma was built. We rely on the ordered keys in the dict to preserve
+    block structure: sigma[a_0] = b_0, sigma[a_1] = b_1, ... → blocks (a_0,a_1)
+    and (b_0,b_1).
+    """
+    # Split the sigma into pairs: (a, b) where a < b in insertion order
+    seen: set[str] = set()
+    a_list: list[str] = []
+    b_list: list[str] = []
+    for a, b in sigma.items():
+        if a in seen or b in seen:
+            continue
+        seen.add(a)
+        seen.add(b)
+        a_list.append(a)
+        b_list.append(b)
+    if not a_list:
+        return None
+    return frozenset({tuple(a_list), tuple(b_list)})
+
+
+def _detect_induced_output_symmetry(
+    operands: list,
+    subscript_parts: list[str],
+    output_chars: str,
+    per_op_syms: list,
+) -> list[frozenset[tuple[str, ...]]] | None:
+    """Detect output symmetry induced by Python-identity equal operands.
+
+    Enumerates per-index and block candidate sigmas, validates each, converts
+    valid sigmas to symmetry groups, and merges overlapping groups. Returns
+    None if no induction applies.
+
+    Parameters
+    ----------
+    operands : list
+        Original operand objects (for `is` comparison).
+    subscript_parts : list[str]
+        Einsum subscript per operand.
+    output_chars : str
+        Final output subscript.
+    per_op_syms : list
+        Per-operand declared symmetries for the self-mapping guard.
+
+    Returns
+    -------
+    IndexSymmetry or None
+        The induced output symmetry, merged into a list of groups.
+    """
+    if len(operands) < 2 or not output_chars:
+        return None
+
+    output_set = frozenset(output_chars)
+
+    candidates: list[frozenset[tuple[str, ...]]] = []
+
+    # Per-index candidates
+    for sigma in _enumerate_per_index_candidates(output_chars):
+        if _is_valid_symmetry(sigma, subscript_parts, operands, per_op_syms):
+            group = _sigma_to_group(sigma)
+            if group is not None:
+                candidates.append(group)
+
+    # Block candidates
+    for sigma in _enumerate_block_candidates(operands, subscript_parts, output_set):
+        if _is_valid_symmetry(sigma, subscript_parts, operands, per_op_syms):
+            group = _sigma_to_group(sigma)
+            if group is not None and group not in candidates:
+                candidates.append(group)
+
+    if not candidates:
+        return None
+
+    # Merge overlapping groups via the existing primitive
+    from mechestim._opt_einsum._symmetry import merge_overlapping_groups
+    merged = merge_overlapping_groups(candidates)
+    return merged if merged else None
 
 
 import sys as _sys  # noqa: E402
