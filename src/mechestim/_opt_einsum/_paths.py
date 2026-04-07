@@ -141,6 +141,7 @@ def calc_k12_flops(
     j: int,
     size_dict: dict[str, int],
     symmetry_map: dict[int, IndexSymmetry | None] | None = None,
+    induced_output_symmetry: IndexSymmetry | None = None,
 ) -> tuple[frozenset[str], int, IndexSymmetry | None]:
     """Calculate the resulting indices and flops for a potential pairwise
     contraction - used in the recursive (optimal/branch) algorithms.
@@ -155,6 +156,8 @@ def calc_k12_flops(
         j: Index of potential tensor to contract.
         size_dict: Size mapping of all the indices.
         symmetry_map: Optional mapping from tensor SSA id to its IndexSymmetry.
+        induced_output_symmetry: Global output-level symmetry constraints from
+            equal-args detection, passed through to propagate_symmetry at every step.
 
     Returns:
         k12: The resulting indices of the potential tensor.
@@ -172,10 +175,17 @@ def calc_k12_flops(
     # (in only one operand).  Both require accumulation (additions).
     inner = bool(either - k12)
 
-    if symmetry_map is not None:
-        sym_i = symmetry_map.get(i)
-        sym_j = symmetry_map.get(j)
-        sym12 = propagate_symmetry(sym_i, k1, sym_j, k2, k12)
+    if symmetry_map is not None or induced_output_symmetry is not None:
+        sym_i = symmetry_map.get(i) if symmetry_map is not None else None
+        sym_j = symmetry_map.get(j) if symmetry_map is not None else None
+        sym12 = propagate_symmetry(
+            sym_i,
+            k1,
+            sym_j,
+            k2,
+            k12,
+            induced_output_symmetry=induced_output_symmetry,
+        )
         cost = symmetric_flop_count(
             either,
             inner,
