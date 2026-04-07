@@ -1,0 +1,219 @@
+"""Subclass of numpy.ndarray whose operators track FLOP usage.
+
+This module defines MechestimArray, a thin numpy.ndarray subclass
+that overrides arithmetic, matmul, unary, comparison, bitwise, and
+shift operators to route through mechestim's FLOP-counted me.*
+functions.
+
+Because MechestimArray inherits from numpy.ndarray, isinstance(x,
+numpy.ndarray) returns True. All me.* functions return MechestimArray.
+"""
+
+from __future__ import annotations
+
+import numpy as _np
+
+
+def _me():
+    """Lazy import of mechestim namespace to avoid circular imports.
+
+    The dunder methods need me.add, me.multiply etc. but those are
+    defined in mechestim/__init__.py which itself imports this module.
+    Defer the import until first use.
+    """
+    import mechestim as _mechestim
+    return _mechestim
+
+
+class MechestimArray(_np.ndarray):
+    """A numpy ndarray subclass with FLOP-tracked operators.
+
+    Behaves exactly like numpy.ndarray except that arithmetic and
+    related operators route through mechestim's counted me.* functions
+    so the active BudgetContext sees them.
+    """
+
+    def __new__(cls, shape, dtype=float, buffer=None, offset=0,
+                strides=None, order=None):
+        return super().__new__(cls, shape, dtype, buffer, offset,
+                               strides, order)
+
+    def __array_finalize__(self, obj):
+        # Called when numpy creates a view or slice of this subclass.
+        # No subclass state to propagate.
+        pass
+
+    # ----- Binary arithmetic -----
+
+    def __add__(self, other):
+        return _me().add(self, other)
+
+    def __radd__(self, other):
+        return _me().add(other, self)
+
+    def __iadd__(self, other):
+        return _me().add(self, other)
+
+    def __sub__(self, other):
+        return _me().subtract(self, other)
+
+    def __rsub__(self, other):
+        return _me().subtract(other, self)
+
+    def __isub__(self, other):
+        return _me().subtract(self, other)
+
+    def __mul__(self, other):
+        return _me().multiply(self, other)
+
+    def __rmul__(self, other):
+        return _me().multiply(other, self)
+
+    def __imul__(self, other):
+        return _me().multiply(self, other)
+
+    def __truediv__(self, other):
+        return _me().true_divide(self, other)
+
+    def __rtruediv__(self, other):
+        return _me().true_divide(other, self)
+
+    def __itruediv__(self, other):
+        return _me().true_divide(self, other)
+
+    def __floordiv__(self, other):
+        return _me().floor_divide(self, other)
+
+    def __rfloordiv__(self, other):
+        return _me().floor_divide(other, self)
+
+    def __ifloordiv__(self, other):
+        return _me().floor_divide(self, other)
+
+    def __mod__(self, other):
+        return _me().mod(self, other)
+
+    def __rmod__(self, other):
+        return _me().mod(other, self)
+
+    def __imod__(self, other):
+        return _me().mod(self, other)
+
+    def __pow__(self, other):
+        return _me().power(self, other)
+
+    def __rpow__(self, other):
+        return _me().power(other, self)
+
+    def __ipow__(self, other):
+        return _me().power(self, other)
+
+    def __matmul__(self, other):
+        return _me().matmul(self, other)
+
+    def __rmatmul__(self, other):
+        return _me().matmul(other, self)
+
+    def __imatmul__(self, other):
+        return _me().matmul(self, other)
+
+    # ----- Unary arithmetic -----
+
+    def __neg__(self):
+        return _me().negative(self)
+
+    def __pos__(self):
+        return _me().positive(self)
+
+    def __abs__(self):
+        return _me().abs(self)
+
+    def __invert__(self):
+        return _me().invert(self)
+
+    # ----- Comparison -----
+
+    def __eq__(self, other):
+        return _me().equal(self, other)
+
+    def __ne__(self, other):
+        return _me().not_equal(self, other)
+
+    def __lt__(self, other):
+        return _me().less(self, other)
+
+    def __le__(self, other):
+        return _me().less_equal(self, other)
+
+    def __gt__(self, other):
+        return _me().greater(self, other)
+
+    def __ge__(self, other):
+        return _me().greater_equal(self, other)
+
+    def __hash__(self):
+        # numpy ndarray is unhashable; preserve that.
+        raise TypeError(
+            f"unhashable type: '{type(self).__name__}'"
+        )
+
+    # ----- Bitwise -----
+
+    def __and__(self, other):
+        return _me().bitwise_and(self, other)
+
+    def __rand__(self, other):
+        return _me().bitwise_and(other, self)
+
+    def __iand__(self, other):
+        return _me().bitwise_and(self, other)
+
+    def __or__(self, other):
+        return _me().bitwise_or(self, other)
+
+    def __ror__(self, other):
+        return _me().bitwise_or(other, self)
+
+    def __ior__(self, other):
+        return _me().bitwise_or(self, other)
+
+    def __xor__(self, other):
+        return _me().bitwise_xor(self, other)
+
+    def __rxor__(self, other):
+        return _me().bitwise_xor(other, self)
+
+    def __ixor__(self, other):
+        return _me().bitwise_xor(self, other)
+
+    def __lshift__(self, other):
+        return _me().left_shift(self, other)
+
+    def __rlshift__(self, other):
+        return _me().left_shift(other, self)
+
+    def __ilshift__(self, other):
+        return _me().left_shift(self, other)
+
+    def __rshift__(self, other):
+        return _me().right_shift(self, other)
+
+    def __rrshift__(self, other):
+        return _me().right_shift(other, self)
+
+    def __irshift__(self, other):
+        return _me().right_shift(self, other)
+
+
+def _asmechestim(x):
+    """Convert any array-like to MechestimArray as a zero-copy view.
+
+    - MechestimArray: returned as-is
+    - numpy.ndarray: view-cast to MechestimArray (no copy)
+    - other: np.asarray first, then view-cast
+    """
+    if isinstance(x, MechestimArray):
+        return x
+    if isinstance(x, _np.ndarray):
+        return x.view(MechestimArray)
+    return _np.asarray(x).view(MechestimArray)
