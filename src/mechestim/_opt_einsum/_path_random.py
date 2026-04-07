@@ -400,12 +400,18 @@ def random_greedy(
     idx_dict: dict[str, int],
     memory_limit: int | None = None,
     input_symmetries: "list | None" = None,
+    induced_output_symmetry: "list | None" = None,
     **optimizer_kwargs: Any,
 ) -> ArrayType:
     """A simple wrapper around the `RandomGreedy` optimizer."""
     optimizer = RandomGreedy(**optimizer_kwargs)
     return optimizer(
-        inputs, output, idx_dict, memory_limit, input_symmetries=input_symmetries
+        inputs,
+        output,
+        idx_dict,
+        memory_limit,
+        input_symmetries=input_symmetries,
+        induced_output_symmetry=induced_output_symmetry,
     )
 
 

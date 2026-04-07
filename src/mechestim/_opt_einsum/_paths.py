@@ -223,6 +223,7 @@ def optimal(
     size_dict: dict[str, int],
     memory_limit: int | None = None,
     input_symmetries: list[IndexSymmetry | None] | None = None,
+    induced_output_symmetry: IndexSymmetry | None = None,
 ) -> PathType:
     """Computes all possible pair contractions in a depth-first recursive manner,
     sieving results based on `memory_limit` and the best path found so far.
@@ -263,7 +264,7 @@ def optimal(
         tuple[ArrayIndexType, ArrayIndexType],
         tuple[frozenset[str], int, IndexSymmetry | None],
     ] = {}
-    use_cache = symmetry_map is None
+    use_cache = symmetry_map is None and induced_output_symmetry is None
 
     def _optimal_iterate(path, remaining, inputs, flops, sym_map):
         # reached end of path (only ever get here if flops is best found so far)
@@ -290,10 +291,18 @@ def optimal(
                         j,
                         size_dict,
                         symmetry_map=sym_map,
+                        induced_output_symmetry=induced_output_symmetry,
                     )
             else:
                 k12, flops12, sym12 = calc_k12_flops(
-                    inputs, output_set, remaining, i, j, size_dict, symmetry_map=sym_map
+                    inputs,
+                    output_set,
+                    remaining,
+                    i,
+                    j,
+                    size_dict,
+                    symmetry_map=sym_map,
+                    induced_output_symmetry=induced_output_symmetry,
                 )
 
             # sieve based on current best flops
@@ -444,6 +453,7 @@ class BranchBound(PathOptimizer):
         size_dict: dict[str, int],
         memory_limit: int | None = None,
         input_symmetries: list[IndexSymmetry | None] | None = None,
+        induced_output_symmetry: IndexSymmetry | None = None,
     ) -> PathType:
         """Parameters:
             inputs_: List of sets that represent the lhs side of the einsum subscript
@@ -451,6 +461,8 @@ class BranchBound(PathOptimizer):
             size_dict: Dictionary of index sizes
             memory_limit: The maximum number of elements in a temporary array.
             input_symmetries: Optional symmetry info for each input tensor.
+            induced_output_symmetry: Global output-level symmetry constraints from
+                equal-args detection, passed through to propagate_symmetry at every step.
 
         Returns:
             path: The contraction order within the memory limit constraint.
@@ -476,7 +488,7 @@ class BranchBound(PathOptimizer):
             symmetry_map = {i: s for i, s in enumerate(input_symmetries)}
 
         # Disable result cache when symmetry is present
-        use_cache = symmetry_map is None
+        use_cache = symmetry_map is None and induced_output_symmetry is None
         result_cache: dict[
             tuple[frozenset[str], frozenset[str]],
             tuple[frozenset[str], int, IndexSymmetry | None],
@@ -506,10 +518,18 @@ class BranchBound(PathOptimizer):
                             j,
                             size_dict,
                             symmetry_map=sym_map,
+                            induced_output_symmetry=induced_output_symmetry,
                         )
                 else:
                     k12, flops12, sym12 = calc_k12_flops(
-                        inputs, output, remaining, i, j, size_dict, symmetry_map=sym_map
+                        inputs,
+                        output,
+                        remaining,
+                        i,
+                        j,
+                        size_dict,
+                        symmetry_map=sym_map,
+                        induced_output_symmetry=induced_output_symmetry,
                     )
 
                 try:
@@ -623,6 +643,7 @@ def branch(
     minimize: str = "flops",
     cost_fn: str = "memory-removed",
     input_symmetries: list[IndexSymmetry | None] | None = None,
+    induced_output_symmetry: IndexSymmetry | None = None,
 ) -> PathType:
     optimizer = BranchBound(
         nbranch=nbranch,
@@ -631,7 +652,12 @@ def branch(
         cost_fn=cost_fn,
     )
     return optimizer(
-        inputs, output, size_dict, memory_limit, input_symmetries=input_symmetries
+        inputs,
+        output,
+        size_dict,
+        memory_limit,
+        input_symmetries=input_symmetries,
+        induced_output_symmetry=induced_output_symmetry,
     )
 
 
@@ -752,6 +778,7 @@ def ssa_greedy_optimize(
     choose_fn: Any = None,
     cost_fn: Any = "memory-removed",
     input_symmetries: list[IndexSymmetry | None] | None = None,
+    induced_output_symmetry: IndexSymmetry | None = None,
 ) -> PathType:
     """This is the core function for :func:`greedy` but produces a path with
     static single assignment ids rather than recycled linear ids.
@@ -873,10 +900,13 @@ def ssa_greedy_optimize(
         ssa_path.append((ssa_id1, ssa_id2))
 
         # Propagate symmetry for the new intermediate tensor.
-        if symmetry_map:
-            sym1 = symmetry_map.get(ssa_id1)
-            sym2 = symmetry_map.get(ssa_id2)
-            sym12 = propagate_symmetry(sym1, k1, sym2, k2, k12)
+        if symmetry_map or induced_output_symmetry is not None:
+            sym1 = symmetry_map.get(ssa_id1) if symmetry_map else None
+            sym2 = symmetry_map.get(ssa_id2) if symmetry_map else None
+            sym12 = propagate_symmetry(
+                sym1, k1, sym2, k2, k12,
+                induced_output_symmetry=induced_output_symmetry,
+            )
         else:
             sym12 = None
 
@@ -955,16 +985,19 @@ def ssa_greedy_optimize(
         _, ssa_id2, k2 = heapq.heappop(final_queue)
         ssa_path.append((min(ssa_id1, ssa_id2), max(ssa_id1, ssa_id2)))
         k12 = (k1 | k2) & output
-        if symmetry_map:
-            sym1 = symmetry_map.get(ssa_id1)
-            sym2 = symmetry_map.get(ssa_id2)
-            sym12 = propagate_symmetry(sym1, k1, sym2, k2, k12)
+        if symmetry_map or induced_output_symmetry is not None:
+            sym1 = symmetry_map.get(ssa_id1) if symmetry_map else None
+            sym2 = symmetry_map.get(ssa_id2) if symmetry_map else None
+            sym12 = propagate_symmetry(
+                sym1, k1, sym2, k2, k12,
+                induced_output_symmetry=induced_output_symmetry,
+            )
             cost = compute_unique_size(k12, sizes, sym12)
         else:
             cost = compute_size_by_dict(k12, sizes)
             sym12 = None
         ssa_id12 = next(ssa_ids)
-        if symmetry_map:
+        if symmetry_map or induced_output_symmetry is not None:
             symmetry_map[ssa_id12] = sym12
         _, ssa_id1, k1 = heapq.heappushpop(final_queue, (cost, ssa_id12, k12))
 
@@ -979,6 +1012,7 @@ def greedy(
     choose_fn: Any = None,
     cost_fn: str = "memory-removed",
     input_symmetries: list[IndexSymmetry | None] | None = None,
+    induced_output_symmetry: IndexSymmetry | None = None,
 ) -> PathType:
     """Finds the path by a three stage algorithm:
 
@@ -1019,6 +1053,7 @@ def greedy(
             nbranch=1,
             cost_fn=cost_fn,
             input_symmetries=input_symmetries,
+            induced_output_symmetry=induced_output_symmetry,
         )  # type: ignore
 
     ssa_path = ssa_greedy_optimize(
@@ -1028,6 +1063,7 @@ def greedy(
         cost_fn=cost_fn,
         choose_fn=choose_fn,
         input_symmetries=input_symmetries,
+        induced_output_symmetry=induced_output_symmetry,
     )
     return ssa_to_linear(ssa_path)
 
@@ -1418,6 +1454,7 @@ class DynamicProgramming(PathOptimizer):
         size_dict_: dict[str, int],
         memory_limit_: int | None = None,
         input_symmetries: list[IndexSymmetry | None] | None = None,
+        induced_output_symmetry: IndexSymmetry | None = None,
     ) -> PathType:
         """Parameters:
             inputs_: List of sets that represent the lhs side of the einsum subscript
@@ -1585,11 +1622,17 @@ def dynamic_programming(
     size_dict: dict[str, int],
     memory_limit: int | None = None,
     input_symmetries: list[IndexSymmetry | None] | None = None,
+    induced_output_symmetry: IndexSymmetry | None = None,
     **kwargs: Any,
 ) -> PathType:
     optimizer = DynamicProgramming(**kwargs)
     return optimizer(
-        inputs, output, size_dict, memory_limit, input_symmetries=input_symmetries
+        inputs,
+        output,
+        size_dict,
+        memory_limit,
+        input_symmetries=input_symmetries,
+        induced_output_symmetry=induced_output_symmetry,
     )
 
 
@@ -1610,6 +1653,7 @@ def auto(
     size_dict: dict[str, int],
     memory_limit: int | None = None,
     input_symmetries: list[IndexSymmetry | None] | None = None,
+    induced_output_symmetry: IndexSymmetry | None = None,
 ) -> PathType:
     """Finds the contraction path by automatically choosing the method based on
     how many input arguments there are.
@@ -1618,7 +1662,12 @@ def auto(
     # Pass input_symmetries to functions that accept it
     try:
         return fn(
-            inputs, output, size_dict, memory_limit, input_symmetries=input_symmetries
+            inputs,
+            output,
+            size_dict,
+            memory_limit,
+            input_symmetries=input_symmetries,
+            induced_output_symmetry=induced_output_symmetry,
         )
     except TypeError:
         return fn(inputs, output, size_dict, memory_limit)
@@ -1637,6 +1686,7 @@ def auto_hq(
     size_dict: dict[str, int],
     memory_limit: int | None = None,
     input_symmetries: list[IndexSymmetry | None] | None = None,
+    induced_output_symmetry: IndexSymmetry | None = None,
 ) -> PathType:
     """Finds the contraction path by automatically choosing the method based on
     how many input arguments there are, but targeting a more generous
@@ -1647,7 +1697,12 @@ def auto_hq(
     fn = _AUTO_HQ_CHOICES.get(len(inputs), random_greedy_128)
     try:
         return fn(
-            inputs, output, size_dict, memory_limit, input_symmetries=input_symmetries
+            inputs,
+            output,
+            size_dict,
+            memory_limit,
+            input_symmetries=input_symmetries,
+            induced_output_symmetry=induced_output_symmetry,
         )
     except TypeError:
         return fn(inputs, output, size_dict, memory_limit)
