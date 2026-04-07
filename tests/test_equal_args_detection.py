@@ -155,3 +155,91 @@ class TestEnumerateCandidates:
         )
         # No equal pairs → no block candidates
         assert candidates == []
+
+
+class TestDetectInducedOutputSymmetry:
+    """Top-level detection integrating candidate enumeration + validity check."""
+
+    def test_gram_matrix(self):
+        X = np.ones((3, 3))
+        # einsum('ij,ik->jk', X, X)
+        result = _detect_induced_output_symmetry(
+            operands=[X, X],
+            subscript_parts=["ij", "ik"],
+            output_chars="jk",
+            per_op_syms=[None, None],
+        )
+        assert result == [frozenset({('j',), ('k',)})]
+
+    def test_matmul_chain_plain_X(self):
+        X = np.ones((3, 3))
+        # einsum('ij,jk->ik', X, X) — plain X, no declared sym
+        # Per-index swap i↔k: op0 'ij'→'kj' (sorted 'jk'=op1), op1 'jk'→'ji' (='ij'=op0)
+        # Op0↔op1, both X. Valid.
+        result = _detect_induced_output_symmetry(
+            operands=[X, X],
+            subscript_parts=["ij", "jk"],
+            output_chars="ik",
+            per_op_syms=[None, None],
+        )
+        assert result == [frozenset({('i',), ('k',)})]
+
+    def test_different_operands_no_induction(self):
+        X = np.ones((3, 3))
+        Y = np.ones((3, 3))
+        result = _detect_induced_output_symmetry(
+            operands=[X, Y],
+            subscript_parts=["ij", "jk"],
+            output_chars="ik",
+            per_op_syms=[None, None],
+        )
+        assert result is None
+
+    def test_triple_product(self):
+        X = np.ones((3, 3))
+        # einsum('ij,ik,il->jkl', X, X, X)
+        result = _detect_induced_output_symmetry(
+            operands=[X, X, X],
+            subscript_parts=["ij", "ik", "il"],
+            output_chars="jkl",
+            per_op_syms=[None, None, None],
+        )
+        # Per-index candidates: j↔k, j↔l, k↔l — all valid
+        # After merge: S3{j,k,l}
+        assert result is not None
+        assert len(result) == 1
+        assert result[0] == frozenset({('j',), ('k',), ('l',)})
+
+    def test_single_operand_no_induction(self):
+        X = np.ones((3, 3, 3))
+        result = _detect_induced_output_symmetry(
+            operands=[X],
+            subscript_parts=["ijk"],
+            output_chars="ikj",
+            per_op_syms=[None],
+        )
+        # Only one operand → no pairs → no induction
+        assert result is None
+
+    def test_empty_output(self):
+        X = np.ones((3, 3))
+        result = _detect_induced_output_symmetry(
+            operands=[X, X],
+            subscript_parts=["ij", "ij"],
+            output_chars="",
+            per_op_syms=[None, None],
+        )
+        # Empty output → no induction possible
+        assert result is None
+
+    def test_block_outer_product(self):
+        X = np.ones((3, 3, 3))
+        # einsum('ijk,ilm->jklm', X, X)
+        result = _detect_induced_output_symmetry(
+            operands=[X, X],
+            subscript_parts=["ijk", "ilm"],
+            output_chars="jklm",
+            per_op_syms=[None, None],
+        )
+        # Block candidate: (j,k)↔(l,m). Valid. Induce block S2.
+        assert result == [frozenset({('j', 'k'), ('l', 'm')})]
