@@ -205,6 +205,60 @@ class MechestimArray(_np.ndarray):
         return _me().right_shift(self, other)
 
 
+def wrap_module_returns(module, skip_names=None, check_module=True):
+    """Patch all public callables in a module to wrap return values.
+
+    Walks the module's namespace, finds public functions defined in
+    that module, and replaces them with wrappers that convert any
+    numpy.ndarray return value into a MechestimArray (zero-copy view).
+
+    Tuple/list of arrays are also handled element-wise.
+
+    Args:
+        module: The module object to patch.
+        skip_names: Optional set of function names to leave unwrapped
+                    (e.g. functions that return scalars or shape tuples).
+        check_module: If True (default), only wrap functions whose
+                      __module__ matches the module being patched.
+                      Set to False for modules that re-export from
+                      sub-modules (e.g. mechestim.linalg).
+    """
+    import functools
+
+    skip = set(skip_names or ())
+
+    for name in list(vars(module)):
+        if name.startswith("_") or name in skip:
+            continue
+        obj = getattr(module, name)
+        if not callable(obj):
+            continue
+        if check_module:
+            if not hasattr(obj, "__module__") or obj.__module__ != module.__name__:
+                continue
+
+        original = obj
+
+        @functools.wraps(original)
+        def wrapped(*args, _orig=original, **kwargs):
+            result = _orig(*args, **kwargs)
+            if isinstance(result, _np.ndarray):
+                return _asmechestim(result)
+            if isinstance(result, tuple):
+                return tuple(
+                    _asmechestim(r) if isinstance(r, _np.ndarray) else r
+                    for r in result
+                )
+            if isinstance(result, list):
+                return [
+                    _asmechestim(r) if isinstance(r, _np.ndarray) else r
+                    for r in result
+                ]
+            return result
+
+        setattr(module, name, wrapped)
+
+
 def _asmechestim(x):
     """Convert any array-like to MechestimArray as a zero-copy view.
 
