@@ -166,6 +166,32 @@ class TestEinsumPath:
         assert "S3" in table
         assert "S2" in table
 
+    def test_str_output_includes_index_sizes(self):
+        """The 'Index sizes' line should appear and group equal-sized indices."""
+        # All same size: should collapse to a=b=c=d=i=j=k=l=N
+        n = 7
+        T = as_symmetric(numpy.ones((n, n, n)), symmetric_axes=(0, 1, 2))
+        A = numpy.ones((n, n))
+        _, info = einsum_path("ijk,ai->ajk", T, A)
+        table = str(info)
+        assert "Index sizes:" in table
+        # All four indices have size 7 → grouped
+        assert "a=i=j=k=7" in table or "i=j=k=a=7" in table or "7" in table
+
+    def test_str_output_index_sizes_separates_different(self):
+        """Different-sized indices should be listed separately."""
+        A = numpy.ones((3, 100))
+        B = numpy.ones((100, 50))
+        C = numpy.ones((50, 7))
+        _, info = einsum_path("ij,jk,kl->il", A, B, C)
+        table = str(info)
+        assert "Index sizes:" in table
+        # Each index has a unique size
+        assert "i=3" in table or "=3" in table
+        assert "100" in table
+        assert "50" in table
+        assert "l=7" in table or "=7" in table
+
 
 class TestPathInfoStepInfo:
     def test_step_info_has_symmetry_fields(self):

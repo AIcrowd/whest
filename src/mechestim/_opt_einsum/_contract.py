@@ -127,20 +127,44 @@ class PathInfo:
                 return ""
             return f"{' × '.join(in_parts)} → {out_part}"
 
+        def fmt_index_sizes() -> str:
+            """Format index sizes compactly. Groups indices with the same size."""
+            if not self.size_dict:
+                return ""
+            # Group indices by size: {20: ['a','b','c'], 5: ['d']} -> "a=b=c=20, d=5"
+            from collections import defaultdict
+
+            by_size: dict[int, list[str]] = defaultdict(list)
+            for idx, sz in self.size_dict.items():
+                by_size[sz].append(idx)
+            parts = []
+            for sz, idxs in sorted(
+                by_size.items(), key=lambda kv: (-len(kv[1]), -kv[0])
+            ):
+                idxs_sorted = sorted(idxs)
+                parts.append(f"{'='.join(idxs_sorted)}={sz}")
+            return ", ".join(parts)
+
         # Decide layout: single-line if symmetry column fits, otherwise two-line
         sym_strs = [fmt_step_sym(s) for s in self.steps]
         max_sym_width = max((len(s) for s in sym_strs), default=0)
         any_sym = any(s for s in sym_strs)
+        sizes_line = fmt_index_sizes()
+
+        header_lines = [
+            f"  Complete contraction:  {self.eq}",
+            f"      Naive cost (mechestim):  {self.naive_cost:,}",
+            f"  Optimized cost (mechestim):  {self.optimized_cost:,}",
+            f"                     Speedup:  {self.speedup:.3f}x",
+            f"       Largest intermediate:  {self.largest_intermediate:,} elements",
+        ]
+        if sizes_line:
+            header_lines.append(f"                Index sizes:  {sizes_line}")
 
         if not any_sym:
             # No symmetry anywhere — keep the original compact format
             width = 84
-            lines = [
-                f"  Complete contraction:  {self.eq}",
-                f"      Naive cost (mechestim):  {self.naive_cost:,}",
-                f"  Optimized cost (mechestim):  {self.optimized_cost:,}",
-                f"                     Speedup:  {self.speedup:.3f}x",
-                f"       Largest intermediate:  {self.largest_intermediate:,} elements",
+            lines = header_lines + [
                 "-" * width,
                 f"{'step':>4}  {'subscript':<30} {'flops':>14} {'dense_flops':>14} {'savings':>8}  {'blas':<8}",
                 "-" * width,
@@ -155,12 +179,7 @@ class PathInfo:
         # With symmetry: include a "symmetry" column
         sym_col_width = min(max(max_sym_width, len("symmetry (inputs → output)")), 60)
         width = 32 + 14 + 14 + 9 + 9 + sym_col_width + 6  # rough total
-        lines = [
-            f"  Complete contraction:  {self.eq}",
-            f"      Naive cost (mechestim):  {self.naive_cost:,}",
-            f"  Optimized cost (mechestim):  {self.optimized_cost:,}",
-            f"                     Speedup:  {self.speedup:.3f}x",
-            f"       Largest intermediate:  {self.largest_intermediate:,} elements",
+        lines = header_lines + [
             "-" * width,
             f"{'step':>4}  {'subscript':<30} {'flops':>14} {'dense_flops':>14} {'savings':>8}  {'blas':<8}  {'symmetry (inputs → output)':<{sym_col_width}}",
             "-" * width,
