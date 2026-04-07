@@ -156,3 +156,61 @@ def test_ndenumerate_yields_index_and_value():
     pairs = list(me.ndenumerate(a))
     assert len(pairs) == 4
     assert pairs[0] == ((0, 0), 1.0)
+
+
+# ----- Functional: print options -----
+
+
+def test_printoptions_context_manager():
+    """me.printoptions temporarily changes print formatting."""
+    a = me.array([1.234567891234])
+    with me.printoptions(precision=2):
+        short = str(a)
+    with me.printoptions(precision=10):
+        long = str(a)
+    assert len(long) > len(short)
+
+
+def test_set_get_printoptions_roundtrip():
+    """me.set_printoptions changes state, me.get_printoptions returns it."""
+    original = me.get_printoptions()
+    try:
+        me.set_printoptions(precision=3)
+        current = me.get_printoptions()
+        assert current["precision"] == 3
+    finally:
+        me.set_printoptions(
+            **{k: v for k, v in original.items() if k != "legacy"}
+        )
+
+
+# ----- Functional: me.typing submodule -----
+
+
+def test_typing_submodule_has_NDArray():
+    """me.typing.NDArray is available."""
+    from mechestim.typing import ArrayLike, DTypeLike, NDArray
+
+    assert NDArray is not None
+    assert ArrayLike is not None
+    assert DTypeLike is not None
+
+
+def test_typing_NDArray_is_numpy_NDArray():
+    """me.typing.NDArray is identical to numpy.typing.NDArray."""
+    import numpy.typing as npt
+
+    assert me.typing.NDArray is npt.NDArray
+
+
+def test_typing_NDArray_accepts_mechestim_array():
+    """A function annotated with NDArray accepts MechestimArray at runtime."""
+    from mechestim.typing import NDArray
+
+    def f(x: NDArray) -> NDArray:
+        return x * 2
+
+    m = me.array([1.0, 2.0, 3.0])
+    with me.BudgetContext(flop_budget=int(1e9)):
+        result = f(m)
+    assert isinstance(result, me.ndarray)
