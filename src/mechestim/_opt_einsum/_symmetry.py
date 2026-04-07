@@ -48,7 +48,7 @@ def propagate_symmetry(
     IndexSymmetry or None
         Symmetry of the output, or None if no symmetry survives.
     """
-    result: list[frozenset[str]] = []
+    candidates: list[frozenset[str]] = []
     seen: set[frozenset[str]] = set()
     for sym in (sym1, sym2):
         if sym is None:
@@ -57,7 +57,16 @@ def propagate_symmetry(
             surviving = group & k12
             if len(surviving) >= 2 and surviving not in seen:
                 seen.add(surviving)
-                result.append(surviving)
+                candidates.append(surviving)
+
+    # Remove groups that are subsets of larger groups.  When both S2{d,e}
+    # and S3{c,d,e} survive, the S3 already implies S2 on every pair;
+    # keeping both would cause unique_elements to double-reduce.
+    result: list[frozenset[str]] = []
+    for g in candidates:
+        if not any(g < other for other in candidates):  # strict subset
+            result.append(g)
+
     return result if result else None
 
 
