@@ -57,8 +57,28 @@ def restrict_group(
             return None
         return frozenset(new_blocks)
 
-    # Block case (s >= 2) — handled in Task 3
-    raise NotImplementedError("block restriction not yet implemented")
+    # Block case (s >= 2): parallel survival check
+    surviving_positions = []
+    for pos in range(s):
+        present = [b[pos] in surviving_indices for b in blocks]
+        if all(present):
+            surviving_positions.append(pos)
+        elif any(present):
+            # Mixed: some blocks surviving at this pos, others not → breaks
+            return None
+        # else: all contracted at this pos — fine, position is gone
+
+    if not surviving_positions:
+        return None
+
+    new_blocks = [
+        tuple(b[pos] for pos in surviving_positions)
+        for b in blocks
+    ]
+    # Check for trivial collapse (all blocks became the same)
+    if len(set(new_blocks)) < 2:
+        return None
+    return frozenset(new_blocks)
 
 
 def propagate_symmetry(
