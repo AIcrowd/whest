@@ -76,3 +76,24 @@ class TestBlockOuterProductInduction:
         # total = n^4 = 10000
         # cost = 200000 * 5050 / 10000 = 101000
         assert info.optimized_cost == 101000
+
+
+class TestSymmetricXMatMul:
+    """einsum('ij,jk->ik', X, X) where X is already declared symmetric.
+
+    Combines per-operand symmetry (S2 on X's axes) with equal-operand detection
+    (induced S2{i,k} on the output). Both sources should flow through the
+    merge-aware propagate_symmetry.
+    """
+
+    def test_both_sources_apply(self):
+        n = 10
+        X_data = np.ones((n, n))
+        X = me.as_symmetric(X_data, symmetric_axes=(0, 1))
+        _, info = me.einsum_path("ij,jk->ik", X, X)
+        # dense = n^3 * 2 = 2000
+        # Induced S2{i,k} on output → unique = C(11,2) = 55, total = 100
+        # cost = 2000 * 55/100 = 1100
+        # (The per-op S2{i,j} on X0 and S2{j,k} on X1 don't contribute after
+        # restriction — j is contracted. Only the induced S2{i,k} remains.)
+        assert info.optimized_cost == 1100
