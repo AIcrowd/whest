@@ -22,6 +22,7 @@ def _me():
     Defer the import until first use.
     """
     import mechestim as _mechestim
+
     return _mechestim
 
 
@@ -33,10 +34,10 @@ class MechestimArray(_np.ndarray):
     so the active BudgetContext sees them.
     """
 
-    def __new__(cls, shape, dtype=float, buffer=None, offset=0,
-                strides=None, order=None):
-        return super().__new__(cls, shape, dtype, buffer, offset,
-                               strides, order)
+    def __new__(
+        cls, shape, dtype=float, buffer=None, offset=0, strides=None, order=None
+    ):
+        return super().__new__(cls, shape, dtype, buffer, offset, strides, order)
 
     def __array_finalize__(self, obj):
         # Called when numpy creates a view or slice of this subclass.
@@ -153,9 +154,7 @@ class MechestimArray(_np.ndarray):
 
     def __hash__(self):
         # numpy ndarray is unhashable; preserve that.
-        raise TypeError(
-            f"unhashable type: '{type(self).__name__}'"
-        )
+        raise TypeError(f"unhashable type: '{type(self).__name__}'")
 
     # ----- Bitwise -----
 
@@ -246,17 +245,15 @@ def wrap_module_returns(module, skip_names=None, check_module=True):
                 return _asmechestim(result)
             if isinstance(result, tuple):
                 wrapped_elems = [
-                    _asmechestim(r) if isinstance(r, _np.ndarray) else r
-                    for r in result
+                    _asmechestim(r) if isinstance(r, _np.ndarray) else r for r in result
                 ]
                 # Preserve named tuple type (e.g. UniqueAllResult).
-                if type(result) is not tuple and hasattr(type(result), '_fields'):
+                if type(result) is not tuple and hasattr(type(result), "_fields"):
                     return type(result)(*wrapped_elems)
                 return tuple(wrapped_elems)
             if isinstance(result, list):
                 return [
-                    _asmechestim(r) if isinstance(r, _np.ndarray) else r
-                    for r in result
+                    _asmechestim(r) if isinstance(r, _np.ndarray) else r for r in result
                 ]
             return result
 

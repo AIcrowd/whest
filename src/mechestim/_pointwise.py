@@ -8,6 +8,7 @@ import numpy as _np
 
 from mechestim._docstrings import attach_docstring
 from mechestim._flops import einsum_cost, pointwise_cost, reduction_cost
+from mechestim._ndarray import _asmechestim
 from mechestim._symmetric import (
     SymmetricTensor,
     SymmetryInfo,
@@ -15,7 +16,6 @@ from mechestim._symmetric import (
     intersect_symmetry,
     propagate_symmetry_reduce,
 )
-from mechestim._ndarray import _asmechestim
 from mechestim._validation import check_nan_inf, require_budget
 
 # ---------------------------------------------------------------------------
