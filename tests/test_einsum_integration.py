@@ -131,6 +131,41 @@ class TestEinsumPath:
         assert isinstance(table, str)
         assert len(table) > 50
 
+    def test_str_output_no_symmetry_omits_sym_column(self):
+        """When no operands have symmetry, the symmetry column is omitted."""
+        A = numpy.ones((3, 4))
+        B = numpy.ones((4, 5))
+        _, info = einsum_path("ij,jk->ik", A, B)
+        table = str(info)
+        assert "symmetry" not in table.lower()
+
+    def test_str_output_with_symmetry_includes_sym_column(self):
+        """When any operand has symmetry, the symmetry column is shown
+        with per-step inputs → output annotations."""
+        n = 6
+        T = as_symmetric(numpy.ones((n, n, n)), symmetric_axes=(0, 1, 2))
+        A = numpy.ones((n, n))
+        _, info = einsum_path("ijk,ai->ajk", T, A)
+        table = str(info)
+        assert "symmetry" in table.lower()
+        # The S3 input should appear, and the S2 output (since j,k survive)
+        assert "S3" in table
+        assert "S2" in table
+
+    def test_str_output_symmetry_chain_through_steps(self):
+        """Verify that symmetry degradation through a multi-step path is shown:
+        S3 → S2 → dense as indices are progressively contracted."""
+        n = 5
+        T = as_symmetric(numpy.ones((n, n, n)), symmetric_axes=(0, 1, 2))
+        A = numpy.ones((n, n))
+        B = numpy.ones((n, n))
+        C = numpy.ones((n, n))
+        _, info = einsum_path("ijk,ai,bj,ck->abc", T, A, B, C)
+        table = str(info)
+        # Should show S3 (input), S2 (after first contract), and dense (later)
+        assert "S3" in table
+        assert "S2" in table
+
 
 class TestPathInfoStepInfo:
     def test_step_info_has_symmetry_fields(self):

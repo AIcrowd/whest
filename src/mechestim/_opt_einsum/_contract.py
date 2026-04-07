@@ -113,20 +113,66 @@ class PathInfo:
         return f"{self.input_subscripts}->{self.output_subscript}"
 
     def __str__(self) -> str:
+        def fmt_sym(sym: IndexSymmetry | None) -> str:
+            """Format an IndexSymmetry as e.g. 'S3{i,j,k}' or 'S2{i,j}·S2{k,l}'."""
+            if not sym:
+                return "-"
+            return "·".join(f"S{len(g)}{{{','.join(sorted(g))}}}" for g in sym)
+
+        def fmt_step_sym(step: StepInfo) -> str:
+            """Format inputs→output symmetry transformation for one step."""
+            in_parts = [fmt_sym(s) for s in step.input_symmetries]
+            out_part = fmt_sym(step.output_symmetry)
+            if all(p == "-" for p in in_parts) and out_part == "-":
+                return ""
+            return f"{' × '.join(in_parts)} → {out_part}"
+
+        # Decide layout: single-line if symmetry column fits, otherwise two-line
+        sym_strs = [fmt_step_sym(s) for s in self.steps]
+        max_sym_width = max((len(s) for s in sym_strs), default=0)
+        any_sym = any(s for s in sym_strs)
+
+        if not any_sym:
+            # No symmetry anywhere — keep the original compact format
+            width = 84
+            lines = [
+                f"  Complete contraction:  {self.eq}",
+                f"      Naive cost (mechestim):  {self.naive_cost:,}",
+                f"  Optimized cost (mechestim):  {self.optimized_cost:,}",
+                f"                     Speedup:  {self.speedup:.3f}x",
+                f"       Largest intermediate:  {self.largest_intermediate:,} elements",
+                "-" * width,
+                f"{'step':>4}  {'subscript':<30} {'flops':>14} {'dense_flops':>14} {'savings':>8}  {'blas':<8}",
+                "-" * width,
+            ]
+            for i, step in enumerate(self.steps):
+                blas_label = str(step.blas_type) if step.blas_type else "-"
+                lines.append(
+                    f"{i:>4}  {step.subscript:<30} {step.flop_cost:>14,} {step.dense_flop_cost:>14,} {step.symmetry_savings:>7.1%}  {blas_label:<8}"
+                )
+            return "\n".join(lines)
+
+        # With symmetry: include a "symmetry" column
+        sym_col_width = min(max(max_sym_width, len("symmetry (inputs → output)")), 60)
+        width = 32 + 14 + 14 + 9 + 9 + sym_col_width + 6  # rough total
         lines = [
             f"  Complete contraction:  {self.eq}",
             f"      Naive cost (mechestim):  {self.naive_cost:,}",
             f"  Optimized cost (mechestim):  {self.optimized_cost:,}",
             f"                     Speedup:  {self.speedup:.3f}x",
             f"       Largest intermediate:  {self.largest_intermediate:,} elements",
-            "-" * 84,
-            f"{'step':>4}  {'subscript':<30} {'flops':>12} {'dense_flops':>12} {'savings':>8}  {'blas':<10}",
-            "-" * 84,
+            "-" * width,
+            f"{'step':>4}  {'subscript':<30} {'flops':>14} {'dense_flops':>14} {'savings':>8}  {'blas':<8}  {'symmetry (inputs → output)':<{sym_col_width}}",
+            "-" * width,
         ]
         for i, step in enumerate(self.steps):
             blas_label = str(step.blas_type) if step.blas_type else "-"
+            sym_str = sym_strs[i] or "-"
+            # Truncate if longer than column width
+            if len(sym_str) > sym_col_width:
+                sym_str = sym_str[: sym_col_width - 1] + "…"
             lines.append(
-                f"{i:>4}  {step.subscript:<30} {step.flop_cost:>12,} {step.dense_flop_cost:>12,} {step.symmetry_savings:>7.1%}  {blas_label:<10}"
+                f"{i:>4}  {step.subscript:<30} {step.flop_cost:>14,} {step.dense_flop_cost:>14,} {step.symmetry_savings:>7.1%}  {blas_label:<8}  {sym_str:<{sym_col_width}}"
             )
         return "\n".join(lines)
 
