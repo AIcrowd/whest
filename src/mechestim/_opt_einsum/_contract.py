@@ -240,6 +240,7 @@ def contract_path(
     memory_limit: _MemoryLimit = None,
     shapes: bool = False,
     input_symmetries: list[IndexSymmetry | None] | None = None,
+    induced_output_symmetry: IndexSymmetry | None = None,
 ) -> tuple[PathType, PathInfo]: ...
 
 
@@ -253,6 +254,7 @@ def contract_path(
     memory_limit: _MemoryLimit = None,
     shapes: bool = False,
     input_symmetries: list[IndexSymmetry | None] | None = None,
+    induced_output_symmetry: IndexSymmetry | None = None,
 ) -> tuple[PathType, PathInfo]: ...
 
 
@@ -264,6 +266,7 @@ def contract_path(
     memory_limit: _MemoryLimit = None,
     shapes: bool = False,
     input_symmetries: list[IndexSymmetry | None] | None = None,
+    induced_output_symmetry: IndexSymmetry | None = None,
 ) -> tuple[PathType, PathInfo]:
     """Find a contraction order `path`, without performing the contraction.
 
@@ -396,7 +399,7 @@ def contract_path(
         path_tuple = [tuple(range(num_ops))]
     elif isinstance(optimize, paths.PathOptimizer):
         # Custom path optimizer supplied
-        if input_symmetries is not None:
+        if input_symmetries is not None or induced_output_symmetry is not None:
             try:
                 path_tuple = optimize(
                     input_sets,
@@ -404,6 +407,7 @@ def contract_path(
                     size_dict,
                     memory_arg,
                     input_symmetries=input_symmetries,
+                    induced_output_symmetry=induced_output_symmetry,
                 )
             except TypeError:
                 path_tuple = optimize(input_sets, output_set, size_dict, memory_arg)
@@ -411,7 +415,7 @@ def contract_path(
             path_tuple = optimize(input_sets, output_set, size_dict, memory_arg)
     else:
         path_optimizer = paths.get_path_fn(optimize)
-        if input_symmetries is not None:
+        if input_symmetries is not None or induced_output_symmetry is not None:
             try:
                 path_tuple = path_optimizer(
                     input_sets,
@@ -419,6 +423,7 @@ def contract_path(
                     size_dict,
                     memory_arg,
                     input_symmetries=input_symmetries,
+                    induced_output_symmetry=induced_output_symmetry,
                 )
             except TypeError:
                 path_tuple = path_optimizer(
@@ -435,8 +440,8 @@ def contract_path(
 
     # Track symmetries through contractions if provided
     sym_list: list[IndexSymmetry | None] | None = None
-    if input_symmetries is not None:
-        sym_list = list(input_symmetries)
+    if input_symmetries is not None or induced_output_symmetry is not None:
+        sym_list = list(input_symmetries) if input_symmetries is not None else [None] * num_ops
 
     # Build contraction tuple (positions, gemm, einsum_str, remaining)
     for cnum, contract_inds in enumerate(path_tuple):
@@ -462,7 +467,12 @@ def contract_path(
                 for si in range(1, len(step_syms)):
                     k_other = step_input_sets[si]
                     accum_sym = propagate_symmetry(
-                        accum_sym, accum_k, step_syms[si], k_other, out_inds
+                        accum_sym,
+                        accum_k,
+                        step_syms[si],
+                        k_other,
+                        out_inds,
+                        induced_output_symmetry=induced_output_symmetry,
                     )
                     accum_k = accum_k | k_other
                 result_sym = accum_sym
