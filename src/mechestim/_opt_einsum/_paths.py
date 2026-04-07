@@ -163,10 +163,14 @@ def calc_k12_flops(
     """
     k1, k2 = inputs[i], inputs[j]
     either = k1 | k2
-    shared = k1 & k2
     keep = frozenset.union(output, *map(inputs.__getitem__, remaining - {i, j}))
 
     k12 = either & keep
+
+    # Any index in `either` but not in `k12` is summed away.  This includes
+    # both shared-contracted indices (in both operands) AND traced indices
+    # (in only one operand).  Both require accumulation (additions).
+    inner = bool(either - k12)
 
     if symmetry_map is not None:
         sym_i = symmetry_map.get(i)
@@ -174,7 +178,7 @@ def calc_k12_flops(
         sym12 = propagate_symmetry(sym_i, k1, sym_j, k2, k12)
         cost = symmetric_flop_count(
             either,
-            bool(shared - keep),
+            inner,
             2,
             size_dict,
             output_indices=k12,
@@ -183,7 +187,7 @@ def calc_k12_flops(
         )
     else:
         sym12 = None
-        cost = flop_count(either, bool(shared - keep), 2, size_dict)
+        cost = flop_count(either, inner, 2, size_dict)
 
     return k12, cost, sym12
 
