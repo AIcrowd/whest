@@ -254,3 +254,11 @@ def __getattr__(name):
     if hasattr(_npr, name):
         return getattr(_npr, name)
     raise AttributeError(f"mechestim.random does not provide '{name}'")
+
+from mechestim._ndarray import wrap_module_returns as _wrap_module_returns
+import sys as _sys
+_wrap_module_returns(
+    _sys.modules[__name__],
+    skip_names={"default_rng", "RandomState", "SeedSequence", "seed",
+                "get_state", "set_state"},
+)

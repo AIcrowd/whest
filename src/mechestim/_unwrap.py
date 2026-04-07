@@ -45,3 +45,7 @@ def unwrap(p, discont=None, axis=-1, *, period=6.283185307179586):
 
 
 attach_docstring(unwrap, _np.unwrap, "counted_custom", "numel(input) FLOPs")
+
+from mechestim._ndarray import wrap_module_returns as _wrap_module_returns
+import sys as _sys
+_wrap_module_returns(_sys.modules[__name__])

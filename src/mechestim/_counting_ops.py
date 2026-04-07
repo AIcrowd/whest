@@ -262,3 +262,7 @@ def vander(x, N=None, **kwargs):
 
 
 attach_docstring(vander, _np.vander, "counted_custom", "len(x) * (N-1) FLOPs")
+
+from mechestim._ndarray import wrap_module_returns as _wrap_module_returns
+import sys as _sys
+_wrap_module_returns(_sys.modules[__name__])

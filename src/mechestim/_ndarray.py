@@ -245,16 +245,22 @@ def wrap_module_returns(module, skip_names=None, check_module=True):
             if isinstance(result, _np.ndarray):
                 return _asmechestim(result)
             if isinstance(result, tuple):
-                return tuple(
+                wrapped_elems = [
                     _asmechestim(r) if isinstance(r, _np.ndarray) else r
                     for r in result
-                )
+                ]
+                # Preserve named tuple type (e.g. UniqueAllResult).
+                if type(result) is not tuple and hasattr(type(result), '_fields'):
+                    return type(result)(*wrapped_elems)
+                return tuple(wrapped_elems)
             if isinstance(result, list):
                 return [
                     _asmechestim(r) if isinstance(r, _np.ndarray) else r
                     for r in result
                 ]
             return result
+
+        wrapped.__wrapped__ = original
 
         setattr(module, name, wrapped)
 
@@ -263,10 +269,15 @@ def _asmechestim(x):
     """Convert any array-like to MechestimArray as a zero-copy view.
 
     - MechestimArray: returned as-is
-    - numpy.ndarray: view-cast to MechestimArray (no copy)
+    - numpy.ndarray subclass (e.g. SymmetricTensor): returned as-is to
+      preserve subclass metadata
+    - plain numpy.ndarray: view-cast to MechestimArray (no copy)
     - other: np.asarray first, then view-cast
     """
     if isinstance(x, MechestimArray):
+        return x
+    if type(x) is not _np.ndarray and isinstance(x, _np.ndarray):
+        # Other ndarray subclass (e.g. SymmetricTensor) — preserve as-is.
         return x
     if isinstance(x, _np.ndarray):
         return x.view(MechestimArray)
