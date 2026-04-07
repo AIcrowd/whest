@@ -117,6 +117,52 @@ def pick_stronger(
     return g1 if s1 >= s2 else g2
 
 
+def merge_overlapping_groups(
+    candidates: list[frozenset[tuple[str, ...]]],
+) -> list[frozenset[tuple[str, ...]]]:
+    """Merge symmetry groups that share any individual index character.
+
+    Uses a connected-components approach: each new group is combined with
+    any already-merged group it overlaps with (sharing at least one index
+    character). When the overlap is between groups of the same block size,
+    we take the union of their block sets. When block sizes differ, we fall
+    back to ``pick_stronger`` and keep only one — documented limitation.
+
+    Parameters
+    ----------
+    candidates : list of frozenset of tuple of str
+        Candidate symmetry groups, possibly overlapping.
+
+    Returns
+    -------
+    list of frozenset of tuple of str
+        Merged groups. No two groups in the result share any index character.
+    """
+    merged: list[frozenset[tuple[str, ...]]] = []
+    for g in candidates:
+        g_chars = frozenset(c for block in g for c in block)
+        overlapping_idx = [
+            i
+            for i, m in enumerate(merged)
+            if any(c in g_chars for block in m for c in block)
+        ]
+        if not overlapping_idx:
+            merged.append(g)
+            continue
+
+        combined = g
+        for i in sorted(overlapping_idx, reverse=True):
+            other = merged.pop(i)
+            two = merge_two(combined, other)
+            if two is None:
+                combined = pick_stronger(combined, other)
+            else:
+                combined = two
+        merged.append(combined)
+
+    return merged
+
+
 def propagate_symmetry(
     sym1: IndexSymmetry | None,
     k1: frozenset[str],

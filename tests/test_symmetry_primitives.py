@@ -10,6 +10,7 @@ All test inputs use the new tuple-based IndexSymmetry format:
 """
 
 from mechestim._opt_einsum._symmetry import (
+    merge_overlapping_groups,
     merge_two,
     pick_stronger,
     restrict_group,
@@ -176,3 +177,72 @@ class TestMergeTwoAndPickStronger:
         g2 = frozenset({('c',), ('d',)})
         result = pick_stronger(g1, g2)
         assert result == g1
+
+
+class TestMergeOverlappingGroups:
+    """merge_overlapping_groups — connected-component merge with block awareness."""
+
+    def test_disjoint_groups_unchanged(self):
+        candidates = [
+            frozenset({('a',), ('b',)}),
+            frozenset({('c',), ('d',)}),
+        ]
+        result = merge_overlapping_groups(candidates)
+        assert sorted(result, key=sorted) == sorted(candidates, key=sorted)
+
+    def test_two_overlapping_per_index_groups_union(self):
+        candidates = [
+            frozenset({('a',), ('b',)}),
+            frozenset({('b',), ('c',)}),
+        ]
+        result = merge_overlapping_groups(candidates)
+        assert len(result) == 1
+        assert result[0] == frozenset({('a',), ('b',), ('c',)})
+
+    def test_three_pairwise_s2_merge_to_s3(self):
+        """Classic triple product: S2{j,k}, S2{j,l}, S2{k,l} → S3{j,k,l}."""
+        candidates = [
+            frozenset({('j',), ('k',)}),
+            frozenset({('j',), ('l',)}),
+            frozenset({('k',), ('l',)}),
+        ]
+        result = merge_overlapping_groups(candidates)
+        assert len(result) == 1
+        assert result[0] == frozenset({('j',), ('k',), ('l',)})
+
+    def test_empty_input(self):
+        result = merge_overlapping_groups([])
+        assert result == []
+
+    def test_single_group_unchanged(self):
+        candidates = [frozenset({('a',), ('b',)})]
+        result = merge_overlapping_groups(candidates)
+        assert result == candidates
+
+    def test_mixed_size_overlap_picks_stronger(self):
+        """When per-index and block groups overlap on shared chars, keep the stronger (block)."""
+        per_idx = frozenset({('j',), ('k',)})  # size 1
+        block = frozenset({('j', 'l'), ('k', 'm')})  # size 2, shares j and k with per_idx
+        candidates = [per_idx, block]
+        result = merge_overlapping_groups(candidates)
+        assert len(result) == 1
+        assert result[0] == block  # block is stronger
+
+    def test_two_disjoint_block_groups(self):
+        candidates = [
+            frozenset({('a', 'b'), ('c', 'd')}),
+            frozenset({('e', 'f'), ('g', 'h')}),
+        ]
+        result = merge_overlapping_groups(candidates)
+        # Disjoint — both preserved
+        assert len(result) == 2
+
+    def test_two_overlapping_block_groups_same_size(self):
+        """Blocks sharing a character union their block sets."""
+        g1 = frozenset({('a', 'b'), ('c', 'd')})
+        g2 = frozenset({('c', 'd'), ('e', 'f')})  # shares block (c,d)
+        candidates = [g1, g2]
+        result = merge_overlapping_groups(candidates)
+        assert len(result) == 1
+        # Union of block sets
+        assert result[0] == frozenset({('a', 'b'), ('c', 'd'), ('e', 'f')})
