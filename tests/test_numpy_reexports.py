@@ -7,9 +7,10 @@ Two categories:
 
 from __future__ import annotations
 
-import mechestim as me
 import numpy as np
 import pytest
+
+import mechestim as me
 
 # ----- Parametrized identity tests -----
 
@@ -46,9 +47,7 @@ NEW_EXPORTS = [
 def test_reexport_identity(name, expected):
     """Every new mechestim export is identical to its numpy counterpart."""
     actual = getattr(me, name)
-    assert actual is expected, (
-        f"me.{name} is {actual!r}, expected {expected!r}"
-    )
+    assert actual is expected, f"me.{name} is {actual!r}, expected {expected!r}"
 
 
 # ----- Functional: abstract dtype hierarchy -----
@@ -179,9 +178,7 @@ def test_set_get_printoptions_roundtrip():
         current = me.get_printoptions()
         assert current["precision"] == 3
     finally:
-        me.set_printoptions(
-            **{k: v for k, v in original.items() if k != "legacy"}
-        )
+        me.set_printoptions(**{k: v for k, v in original.items() if k != "legacy"})
 
 
 # ----- Functional: me.typing submodule -----

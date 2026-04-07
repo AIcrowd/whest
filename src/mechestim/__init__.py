@@ -463,6 +463,7 @@ complex64 = _np.complex64
 complex128 = _np.complex128
 
 # --- Missing dtype types and numpy utilities (re-exported as free) ---
+from mechestim import typing  # noqa: F401, E402
 from mechestim._dtypes import (  # noqa: F401, E402
     dtype,
     floating,
@@ -472,7 +473,6 @@ from mechestim._dtypes import (  # noqa: F401, E402
     uint32,
     uint64,
 )
-from mechestim._type_info import finfo, iinfo  # noqa: F401, E402
 from mechestim._errstate import (  # noqa: F401, E402
     broadcast,
     errstate,
@@ -485,9 +485,7 @@ from mechestim._errstate import (  # noqa: F401, E402
     set_printoptions,
     seterr,
 )
-from mechestim import typing  # noqa: F401, E402
-
-
 from mechestim._registry import make_module_getattr as _make_module_getattr
+from mechestim._type_info import finfo, iinfo  # noqa: F401, E402
 
 __getattr__ = _make_module_getattr(module_prefix="", module_label="mechestim")

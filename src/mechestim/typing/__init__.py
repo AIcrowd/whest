@@ -14,15 +14,14 @@ accept mechestim arrays without any runtime overhead.
 
 from __future__ import annotations
 
+# Re-export everything numpy.typing publicly exposes
+from numpy import typing as _np_typing
 from numpy.typing import (  # noqa: F401
     ArrayLike,
     DTypeLike,
     NBitBase,
     NDArray,
 )
-
-# Re-export everything numpy.typing publicly exposes
-from numpy import typing as _np_typing
 
 __all__ = [name for name in dir(_np_typing) if not name.startswith("_")]
 
