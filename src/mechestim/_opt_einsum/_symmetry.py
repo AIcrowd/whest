@@ -224,6 +224,56 @@ def propagate_symmetry(
     return candidates if candidates else None
 
 
+def _unique_elements_tuple(
+    indices: frozenset[str],
+    size_dict: dict[str, int],
+    symmetry: list[frozenset[tuple[str, ...]]] | None,
+) -> int:
+    """Count distinct elements with the new tuple-based IndexSymmetry format.
+
+    Handles both per-index (tuples of length 1) and block (tuples of length >= 2)
+    groups via the general stars-and-bars formula C(n^s + k - 1, k) where s is
+    the block size and k is the number of blocks.
+
+    This function will REPLACE the existing unique_elements in Task 9 once the
+    type migration happens. It lives in parallel for now so the old code path
+    stays valid while we add the new primitives.
+    """
+    if not indices:
+        return 1
+
+    accounted: set[str] = set()
+    count = 1
+
+    if symmetry:
+        for group in symmetry:
+            # Collect all characters across all blocks in this group
+            all_chars = frozenset(c for block in group for c in block)
+            if all_chars & accounted:
+                # Already accounted for by an earlier group — skip
+                continue
+            if not all_chars <= indices:
+                # Some character in the group isn't in the tensor's index set
+                continue
+
+            blocks = list(group)
+            if len(blocks) < 2:
+                continue
+            s = len(blocks[0])
+            n = size_dict[blocks[0][0]]
+            k = len(blocks)
+
+            block_card = n ** s
+            count *= comb(block_card + k - 1, k)
+            accounted |= all_chars
+
+    for idx in indices:
+        if idx not in accounted:
+            count *= size_dict[idx]
+
+    return count
+
+
 def unique_elements(
     indices: frozenset[str],
     size_dict: dict[str, int],
