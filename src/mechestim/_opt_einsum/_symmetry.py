@@ -30,14 +30,19 @@ def restrict_group(
     """Restrict a symmetry group to indices that survive in the output.
 
     For per-index groups (block size 1), drops blocks whose single character
-    isn't in surviving_indices. Returns None if fewer than 2 blocks remain.
+    isn't in ``surviving_indices``. Returns None if fewer than 2 blocks remain.
 
-    Block groups (block size >= 2) are handled separately — see Task 3.
+    For block groups (block size >= 2), uses a parallel-survival check:
+    for each block-position, either all blocks have that position surviving
+    (keep), or none do (drop), or it's mixed (block sym breaks → return None).
+    Surviving positions are projected to form new blocks; if the projection
+    yields fewer than 2 distinct blocks, returns None.
 
     Parameters
     ----------
     group : frozenset of tuple of str
-        A single symmetry group (tuples of indices).
+        A single symmetry group (tuples of indices). All tuples in the group
+        must have the same length (uniform block size invariant).
     surviving_indices : frozenset of str
         Indices that survive in the output of the current step.
 
