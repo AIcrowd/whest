@@ -49,3 +49,33 @@ def test_reexport_identity(name, expected):
     assert actual is expected, (
         f"me.{name} is {actual!r}, expected {expected!r}"
     )
+
+
+# ----- Functional: abstract dtype hierarchy -----
+
+
+def test_floating_type_check():
+    """me.floating correctly identifies float dtypes."""
+    assert np.issubdtype(me.float32, me.floating)
+    assert np.issubdtype(me.float64, me.floating)
+    assert not np.issubdtype(me.int32, me.floating)
+
+
+def test_integer_type_check():
+    """me.integer correctly identifies integer dtypes."""
+    assert np.issubdtype(me.int32, me.integer)
+    assert np.issubdtype(me.uint32, me.integer)
+    assert not np.issubdtype(me.float32, me.integer)
+
+
+def test_number_type_check():
+    """me.number is the parent of both floating and integer."""
+    assert np.issubdtype(me.float32, me.number)
+    assert np.issubdtype(me.int64, me.number)
+    assert np.issubdtype(me.complex64, me.number)
+
+
+def test_dtype_construction():
+    """me.dtype constructs dtypes from strings or types."""
+    assert me.dtype("float32") == me.float32
+    assert me.dtype(me.int32).kind == "i"
