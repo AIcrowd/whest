@@ -22,6 +22,44 @@ from ._helpers import flop_count
 IndexSymmetry = list[frozenset[str]]
 
 
+def restrict_group(
+    group: frozenset[tuple[str, ...]],
+    surviving_indices: frozenset[str],
+) -> frozenset[tuple[str, ...]] | None:
+    """Restrict a symmetry group to indices that survive in the output.
+
+    For per-index groups (block size 1), drops blocks whose single character
+    isn't in surviving_indices. Returns None if fewer than 2 blocks remain.
+
+    Block groups (block size >= 2) are handled separately — see Task 3.
+
+    Parameters
+    ----------
+    group : frozenset of tuple of str
+        A single symmetry group (tuples of indices).
+    surviving_indices : frozenset of str
+        Indices that survive in the output of the current step.
+
+    Returns
+    -------
+    frozenset of tuple of str or None
+        The restricted group, or None if the symmetry doesn't survive.
+    """
+    blocks = list(group)
+    if not blocks:
+        return None
+    s = len(blocks[0])  # block size (invariant: uniform within a group)
+
+    if s == 1:
+        new_blocks = [b for b in blocks if b[0] in surviving_indices]
+        if len(new_blocks) < 2:
+            return None
+        return frozenset(new_blocks)
+
+    # Block case (s >= 2) — handled in Task 3
+    raise NotImplementedError("block restriction not yet implemented")
+
+
 def propagate_symmetry(
     sym1: IndexSymmetry | None,
     k1: frozenset[str],
