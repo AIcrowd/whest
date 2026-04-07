@@ -15,6 +15,7 @@ from mechestim._symmetric import (
     intersect_symmetry,
     propagate_symmetry_reduce,
 )
+from mechestim._ndarray import _asmechestim
 from mechestim._validation import check_nan_inf, require_budget
 
 # ---------------------------------------------------------------------------
@@ -34,6 +35,8 @@ def _counted_unary(np_func, op_name: str):
         check_nan_inf(result, op_name)
         if sym_info is not None:
             result = SymmetricTensor(result, symmetric_axes=sym_info.symmetric_axes)
+        if sym_info is None:
+            result = _asmechestim(result)
         return result
 
     wrapper.__name__ = op_name
@@ -52,6 +55,10 @@ def _counted_unary_multi(np_func, op_name: str):
         cost = pointwise_cost(x.shape)
         budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(x.shape,))
         result = np_func(x)
+        if isinstance(result, tuple):
+            result = tuple(_asmechestim(r) for r in result)
+        else:
+            result = _asmechestim(result)
         return result
 
     wrapper.__name__ = op_name
@@ -129,6 +136,8 @@ def _counted_binary(np_func, op_name: str):
                     input_groups_list,
                     f"{op_name} — no symmetry groups shared by both operands",
                 )
+        if not isinstance(result, SymmetricTensor):
+            result = _asmechestim(result)
         return result
 
     wrapper.__name__ = op_name
@@ -152,6 +161,10 @@ def _counted_binary_multi(np_func, op_name: str):
             op_name, flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape)
         )
         result = np_func(x, y)
+        if isinstance(result, tuple):
+            result = tuple(_asmechestim(r) for r in result)
+        else:
+            result = _asmechestim(result)
         return result
 
     wrapper.__name__ = op_name
@@ -201,6 +214,8 @@ def _counted_reduction(
                     )
         elif isinstance(result, SymmetricTensor):
             result = _np.asarray(result)
+        if not isinstance(result, SymmetricTensor):
+            result = _asmechestim(result)
         return result
 
     wrapper.__name__ = op_name

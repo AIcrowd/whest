@@ -43,10 +43,11 @@ def test_sqrt_result():
 def test_add_result():
     a = numpy.array([1.0, 2.0])
     b = numpy.array([3.0, 4.0])
+    expected = a + b
     with BudgetContext(flop_budget=10**6) as budget:
         result = add(a, b)
-        assert numpy.allclose(result, a + b)
         assert budget.flops_used == 2
+    assert numpy.allclose(result, expected)
 
 
 def test_add_broadcast_cost():
@@ -75,8 +76,8 @@ def test_sum_full():
     x = numpy.ones((5, 3))
     with BudgetContext(flop_budget=10**6) as budget:
         result = sum(x)
-        assert result == 15.0
         assert budget.flops_used == 15
+    assert float(result) == 15.0
 
 
 def test_sum_axis():
