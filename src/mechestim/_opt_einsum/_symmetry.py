@@ -2,6 +2,7 @@
 
 This module provides:
 - IndexSymmetry type for describing permutation symmetries of tensor indices
+- restrict_group: restrict a symmetry group to surviving indices
 - propagate_symmetry: track which symmetries survive a pairwise contraction
 - unique_elements / compute_unique_size: count distinct elements under symmetry
 - symmetry_factor: product of factorial(group_size) for all symmetric groups

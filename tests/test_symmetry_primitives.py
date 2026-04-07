@@ -9,7 +9,6 @@ All test inputs use the new tuple-based IndexSymmetry format:
     frozenset({('i', 'j'), ('k', 'l')}) is block S2 on blocks (i,j) and (k,l)
 """
 
-import pytest
 from mechestim._opt_einsum._symmetry import restrict_group
 
 
