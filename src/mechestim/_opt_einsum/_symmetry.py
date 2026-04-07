@@ -59,15 +59,28 @@ def propagate_symmetry(
                 seen.add(surviving)
                 candidates.append(surviving)
 
-    # Remove groups that are subsets of larger groups.  When both S2{d,e}
-    # and S3{c,d,e} survive, the S3 already implies S2 on every pair;
-    # keeping both would cause unique_elements to double-reduce.
-    result: list[frozenset[str]] = []
-    for g in candidates:
-        if not any(g < other for other in candidates):  # strict subset
-            result.append(g)
+    # Merge overlapping groups.  Two symmetry groups that share an index
+    # generate a larger permutation group on their union — e.g. S2{a,d}
+    # and S2{a,e} together generate S3{a,d,e} (transpositions sharing an
+    # element generate the full symmetric group).  Keeping them separate
+    # causes unique_elements to double-count shared indices.  We merge
+    # by computing connected components of the "shares an index" graph.
+    if len(candidates) > 1:
+        merged: list[frozenset[str]] = []
+        for g in candidates:
+            # Find all existing merged groups that overlap with g
+            overlapping = [i for i, m in enumerate(merged) if m & g]
+            if not overlapping:
+                merged.append(g)
+            else:
+                # Union g with all overlapping groups
+                combined = g
+                for i in sorted(overlapping, reverse=True):
+                    combined = combined | merged.pop(i)
+                merged.append(combined)
+        candidates = merged
 
-    return result if result else None
+    return candidates if candidates else None
 
 
 def unique_elements(
