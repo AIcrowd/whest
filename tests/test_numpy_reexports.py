@@ -79,3 +79,36 @@ def test_dtype_construction():
     """me.dtype constructs dtypes from strings or types."""
     assert me.dtype("float32") == me.float32
     assert me.dtype(me.int32).kind == "i"
+
+
+# ----- Functional: concrete dtypes -----
+
+
+def test_uint_dtypes_usable():
+    """The new uint dtypes can be used to create arrays."""
+    a16 = me.array([1, 2, 3], dtype=me.uint16)
+    a32 = me.array([1, 2, 3], dtype=me.uint32)
+    a64 = me.array([1, 2, 3], dtype=me.uint64)
+    assert a16.dtype == np.uint16
+    assert a32.dtype == np.uint32
+    assert a64.dtype == np.uint64
+
+
+# ----- Functional: dtype info -----
+
+
+def test_finfo_float32():
+    """me.finfo returns sensible float32 metadata."""
+    info = me.finfo(me.float32)
+    assert info.eps > 0
+    assert info.max > 0
+    assert info.tiny > 0
+    assert info.bits == 32
+
+
+def test_iinfo_int32():
+    """me.iinfo returns sensible int32 metadata."""
+    info = me.iinfo(me.int32)
+    assert info.min == -(2**31)
+    assert info.max == 2**31 - 1
+    assert info.bits == 32
