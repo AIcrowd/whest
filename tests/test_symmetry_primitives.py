@@ -9,7 +9,11 @@ All test inputs use the new tuple-based IndexSymmetry format:
     frozenset({('i', 'j'), ('k', 'l')}) is block S2 on blocks (i,j) and (k,l)
 """
 
-from mechestim._opt_einsum._symmetry import restrict_group
+from mechestim._opt_einsum._symmetry import (
+    merge_two,
+    pick_stronger,
+    restrict_group,
+)
 
 
 class TestRestrictGroupPerIndex:
@@ -126,3 +130,49 @@ class TestRestrictGroupBlock:
         result = restrict_group(group, frozenset("acdf"))
         # Blocks become (a,c) and (d,f) — still a 2-block group of size 2
         assert result == frozenset({('a', 'c'), ('d', 'f')})
+
+
+class TestMergeTwoAndPickStronger:
+    """merge_two and pick_stronger helpers for merge_overlapping_groups."""
+
+    def test_merge_two_same_block_size_unions(self):
+        g1 = frozenset({('i',), ('j',)})
+        g2 = frozenset({('j',), ('k',)})
+        result = merge_two(g1, g2)
+        assert result == frozenset({('i',), ('j',), ('k',)})
+
+    def test_merge_two_same_size_full_union(self):
+        g1 = frozenset({('a',), ('b',)})
+        g2 = frozenset({('b',), ('c',), ('d',)})
+        result = merge_two(g1, g2)
+        assert result == frozenset({('a',), ('b',), ('c',), ('d',)})
+
+    def test_merge_two_same_block_size_2_unions(self):
+        g1 = frozenset({('j', 'k'), ('l', 'm')})
+        g2 = frozenset({('l', 'm'), ('n', 'o')})
+        result = merge_two(g1, g2)
+        assert result == frozenset({('j', 'k'), ('l', 'm'), ('n', 'o')})
+
+    def test_merge_two_different_sizes_returns_none(self):
+        g1 = frozenset({('j',), ('k',)})  # size 1
+        g2 = frozenset({('j', 'l'), ('m', 'n')})  # size 2
+        result = merge_two(g1, g2)
+        assert result is None
+
+    def test_pick_stronger_prefers_larger_block_size(self):
+        g1 = frozenset({('j',), ('k',)})  # size 1
+        g2 = frozenset({('j', 'l'), ('m', 'n')})  # size 2
+        result = pick_stronger(g1, g2)
+        assert result == g2
+
+    def test_pick_stronger_reverse_order(self):
+        g1 = frozenset({('j', 'l'), ('m', 'n')})
+        g2 = frozenset({('j',), ('k',)})
+        result = pick_stronger(g1, g2)
+        assert result == g1
+
+    def test_pick_stronger_equal_sizes_returns_first(self):
+        g1 = frozenset({('a',), ('b',)})
+        g2 = frozenset({('c',), ('d',)})
+        result = pick_stronger(g1, g2)
+        assert result == g1

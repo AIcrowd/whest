@@ -3,6 +3,8 @@
 This module provides:
 - IndexSymmetry type for describing permutation symmetries of tensor indices
 - restrict_group: restrict a symmetry group to surviving indices
+- merge_two / pick_stronger: helpers for combining overlapping groups
+- merge_overlapping_groups: connected-component merge of symmetry groups
 - propagate_symmetry: track which symmetries survive a pairwise contraction
 - unique_elements / compute_unique_size: count distinct elements under symmetry
 - symmetry_factor: product of factorial(group_size) for all symmetric groups
@@ -84,6 +86,35 @@ def restrict_group(
     if len(set(new_blocks)) < 2:
         return None
     return frozenset(new_blocks)
+
+
+def merge_two(
+    g1: frozenset[tuple[str, ...]],
+    g2: frozenset[tuple[str, ...]],
+) -> frozenset[tuple[str, ...]] | None:
+    """Merge two overlapping symmetry groups via set union.
+
+    Returns None when the groups have different block sizes (cannot be
+    combined into a single group while preserving the uniform-block-size
+    invariant). Callers should fall back to ``pick_stronger`` in that case.
+    """
+    s1 = len(next(iter(g1)))
+    s2 = len(next(iter(g2)))
+    if s1 != s2:
+        return None
+    return frozenset(g1 | g2)
+
+
+def pick_stronger(
+    g1: frozenset[tuple[str, ...]],
+    g2: frozenset[tuple[str, ...]],
+) -> frozenset[tuple[str, ...]]:
+    """When two groups cannot merge cleanly, keep the one with larger
+    block size (conservative: block symmetries typically give more savings
+    per unit of index space than per-index symmetries)."""
+    s1 = len(next(iter(g1)))
+    s2 = len(next(iter(g2)))
+    return g1 if s1 >= s2 else g2
 
 
 def propagate_symmetry(
