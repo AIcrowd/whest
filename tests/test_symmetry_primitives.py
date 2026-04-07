@@ -309,3 +309,71 @@ class TestUniqueElements:
 
     def test_empty_indices(self):
         assert unique_elements(frozenset(), {"a": 10}, None) == 1
+
+
+class TestPropagateSymmetryWithInduced:
+    """propagate_symmetry with induced_output_symmetry parameter."""
+
+    def test_no_inputs_only_induced(self):
+        from mechestim._opt_einsum._symmetry import propagate_symmetry
+
+        # No input symmetry, but an induced output constraint survives restriction
+        result = propagate_symmetry(
+            sym1=None,
+            k1=frozenset("ij"),
+            sym2=None,
+            k2=frozenset("ik"),
+            k12=frozenset("jk"),
+            induced_output_symmetry=[frozenset({("j",), ("k",)})],
+        )
+        assert result == [frozenset({("j",), ("k",)})]
+
+    def test_induced_restricted_to_dropped(self):
+        from mechestim._opt_einsum._symmetry import propagate_symmetry
+
+        # Induced constraint on {j,l} but l isn't in k12
+        result = propagate_symmetry(
+            sym1=None,
+            k1=frozenset("ij"),
+            sym2=None,
+            k2=frozenset("ik"),
+            k12=frozenset("jk"),
+            induced_output_symmetry=[frozenset({("j",), ("l",)})],
+        )
+        # Only j survives from the group → size 1 → dropped
+        assert result is None
+
+    def test_input_and_induced_merge(self):
+        from mechestim._opt_einsum._symmetry import propagate_symmetry
+
+        sym1 = [frozenset({("i",), ("j",)})]  # S2{i,j}
+        sym2 = None
+        # Contract away i, keep j and k; induced S2{j,k}
+        result = propagate_symmetry(
+            sym1=sym1,
+            k1=frozenset("ij"),
+            sym2=sym2,
+            k2=frozenset("ik"),
+            k12=frozenset("jk"),
+            induced_output_symmetry=[frozenset({("j",), ("k",)})],
+        )
+        # sym1 restricted to {j,k} = just {j} → dropped (only 1 element)
+        # induced restricted to {j,k} = {j,k} → survives
+        # merge → [S2{j,k}]
+        assert result == [frozenset({("j",), ("k",)})]
+
+    def test_induced_none_behaves_like_before(self):
+        """Backwards compat: not passing induced_output_symmetry should give
+        the same result as the old propagate_symmetry."""
+        from mechestim._opt_einsum._symmetry import propagate_symmetry
+
+        sym1 = [frozenset({("i",), ("j",), ("k",)})]  # S3{i,j,k}
+        result = propagate_symmetry(
+            sym1=sym1,
+            k1=frozenset("ijk"),
+            sym2=None,
+            k2=frozenset("ai"),
+            k12=frozenset("ajk"),
+        )
+        # S3 restricted to {a,j,k} = {j,k} → S2{j,k}
+        assert result == [frozenset({("j",), ("k",)})]
