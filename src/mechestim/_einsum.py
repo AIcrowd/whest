@@ -98,8 +98,7 @@ def _is_valid_symmetry(
         True iff sigma is a valid symmetry of the contraction.
     """
     relabeled = [
-        "".join(sigma.get(c, c) for c in subscript)
-        for subscript in subscript_parts
+        "".join(sigma.get(c, c) for c in subscript) for subscript in subscript_parts
     ]
 
     used: set[int] = set()
@@ -212,6 +211,16 @@ def einsum(
     ]
     has_symmetry = any(s is not None for s in index_symmetries)
 
+    # Detect induced output symmetry from operand identity (e.g. `einsum(..., X, X)`)
+    output_str = subscripts.split("->")[1] if "->" in subscripts else ""
+    induced_output_symmetry = _detect_induced_output_symmetry(
+        operands=list(operands),
+        subscript_parts=input_parts,
+        output_chars=output_str,
+        per_op_syms=index_symmetries,
+    )
+    has_induced = induced_output_symmetry is not None
+
     from mechestim._opt_einsum import contract_path as _contract_path
 
     path, path_info = _contract_path(
@@ -219,7 +228,8 @@ def einsum(
         *shapes,
         shapes=True,
         optimize=optimize if optimize is not False else "auto",
-        input_symmetries=index_symmetries if has_symmetry else None,
+        input_symmetries=index_symmetries if (has_symmetry or has_induced) else None,
+        induced_output_symmetry=induced_output_symmetry,
     )
 
     budget.deduct(
@@ -275,6 +285,16 @@ def einsum_path(subscripts: str, *operands, optimize: str | bool | list = "auto"
     ]
     has_symmetry = any(s is not None for s in index_symmetries)
 
+    # Detect induced output symmetry from operand identity (e.g. `einsum(..., X, X)`)
+    output_str = subscripts.split("->")[1] if "->" in subscripts else ""
+    induced_output_symmetry = _detect_induced_output_symmetry(
+        operands=list(operands),
+        subscript_parts=input_parts,
+        output_chars=output_str,
+        per_op_syms=index_symmetries,
+    )
+    has_induced = induced_output_symmetry is not None
+
     from mechestim._opt_einsum import contract_path as _contract_path
 
     path, path_info = _contract_path(
@@ -282,7 +302,8 @@ def einsum_path(subscripts: str, *operands, optimize: str | bool | list = "auto"
         *shapes,
         shapes=True,
         optimize=optimize if optimize is not False else "auto",
-        input_symmetries=index_symmetries if has_symmetry else None,
+        input_symmetries=index_symmetries if (has_symmetry or has_induced) else None,
+        induced_output_symmetry=induced_output_symmetry,
     )
     return list(path), path_info
 
@@ -343,9 +364,7 @@ def _enumerate_block_candidates(
 
         sub_i = subscript_parts[i]
         sub_j = subscript_parts[j]
-        other_subs = [
-            subscript_parts[k] for k in range(n) if k != i and k != j
-        ]
+        other_subs = [subscript_parts[k] for k in range(n) if k != i and k != j]
         other_chars = (
             frozenset().union(*[frozenset(s) for s in other_subs])
             if other_subs
@@ -466,6 +485,7 @@ def _detect_induced_output_symmetry(
 
     # Merge overlapping groups via the existing primitive
     from mechestim._opt_einsum._symmetry import merge_overlapping_groups
+
     merged = merge_overlapping_groups(candidates)
     return merged if merged else None
 
