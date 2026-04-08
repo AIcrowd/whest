@@ -13,6 +13,7 @@ from typing import Any
 
 from . import _paths as paths
 from ._helpers import compute_size_by_dict
+from ._subgraph_symmetry import SubgraphSymmetryOracle
 from ._typing import ArrayIndexType, ArrayType, PathType
 
 __all__ = ["RandomGreedy", "random_greedy", "random_greedy_128"]
@@ -399,20 +400,14 @@ def random_greedy(
     output: ArrayIndexType,
     idx_dict: dict[str, int],
     memory_limit: int | None = None,
-    input_symmetries: "list | None" = None,
-    induced_output_symmetry: "list | None" = None,
+    symmetry_oracle: "SubgraphSymmetryOracle | None" = None,
     **optimizer_kwargs: Any,
 ) -> ArrayType:
     """A simple wrapper around the `RandomGreedy` optimizer."""
+    # Symmetry awareness lands in Commit 3; for now accept and ignore.
+    _ = symmetry_oracle
     optimizer = RandomGreedy(**optimizer_kwargs)
-    return optimizer(
-        inputs,
-        output,
-        idx_dict,
-        memory_limit,
-        input_symmetries=input_symmetries,
-        induced_output_symmetry=induced_output_symmetry,
-    )
+    return optimizer(inputs, output, idx_dict, memory_limit)
 
 
 random_greedy_128 = functools.partial(random_greedy, max_repeats=128)

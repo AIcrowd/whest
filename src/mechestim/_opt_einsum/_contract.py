@@ -14,7 +14,8 @@ from . import _blas as blas
 from . import _helpers as helpers
 from . import _parser as parser
 from . import _paths as paths
-from ._symmetry import IndexSymmetry, propagate_symmetry, symmetric_flop_count
+from ._subgraph_symmetry import SubgraphSymmetryOracle
+from ._symmetry import IndexSymmetry, symmetric_flop_count
 from ._typing import (
     ArrayType,
     ContractionListType,
@@ -239,8 +240,7 @@ def contract_path(
     optimize: OptimizeKind = True,
     memory_limit: _MemoryLimit = None,
     shapes: bool = False,
-    input_symmetries: list[IndexSymmetry | None] | None = None,
-    induced_output_symmetry: IndexSymmetry | None = None,
+    symmetry_oracle: SubgraphSymmetryOracle | None = None,
 ) -> tuple[PathType, PathInfo]: ...
 
 
@@ -253,8 +253,7 @@ def contract_path(
     optimize: OptimizeKind = True,
     memory_limit: _MemoryLimit = None,
     shapes: bool = False,
-    input_symmetries: list[IndexSymmetry | None] | None = None,
-    induced_output_symmetry: IndexSymmetry | None = None,
+    symmetry_oracle: SubgraphSymmetryOracle | None = None,
 ) -> tuple[PathType, PathInfo]: ...
 
 
@@ -265,8 +264,7 @@ def contract_path(
     optimize: OptimizeKind = True,
     memory_limit: _MemoryLimit = None,
     shapes: bool = False,
-    input_symmetries: list[IndexSymmetry | None] | None = None,
-    induced_output_symmetry: IndexSymmetry | None = None,
+    symmetry_oracle: SubgraphSymmetryOracle | None = None,
 ) -> tuple[PathType, PathInfo]:
     """Find a contraction order `path`, without performing the contraction.
 
@@ -399,15 +397,14 @@ def contract_path(
         path_tuple = [tuple(range(num_ops))]
     elif isinstance(optimize, paths.PathOptimizer):
         # Custom path optimizer supplied
-        if input_symmetries is not None or induced_output_symmetry is not None:
+        if symmetry_oracle is not None:
             try:
                 path_tuple = optimize(
                     input_sets,
                     output_set,
                     size_dict,
                     memory_arg,
-                    input_symmetries=input_symmetries,
-                    induced_output_symmetry=induced_output_symmetry,
+                    symmetry_oracle=symmetry_oracle,
                 )
             except TypeError:
                 path_tuple = optimize(input_sets, output_set, size_dict, memory_arg)
@@ -415,20 +412,14 @@ def contract_path(
             path_tuple = optimize(input_sets, output_set, size_dict, memory_arg)
     else:
         path_optimizer = paths.get_path_fn(optimize)
-        if input_symmetries is not None or induced_output_symmetry is not None:
-            try:
-                path_tuple = path_optimizer(
-                    input_sets,
-                    output_set,
-                    size_dict,
-                    memory_arg,
-                    input_symmetries=input_symmetries,
-                    induced_output_symmetry=induced_output_symmetry,
-                )
-            except TypeError:
-                path_tuple = path_optimizer(
-                    input_sets, output_set, size_dict, memory_arg
-                )
+        if symmetry_oracle is not None:
+            path_tuple = path_optimizer(
+                input_sets,
+                output_set,
+                size_dict,
+                memory_arg,
+                symmetry_oracle=symmetry_oracle,
+            )
         else:
             path_tuple = path_optimizer(input_sets, output_set, size_dict, memory_arg)
 
@@ -438,12 +429,15 @@ def contract_path(
     contraction_list = []
     step_infos: list[StepInfo] = []
 
-    # Track symmetries through contractions if provided
-    sym_list: list[IndexSymmetry | None] | None = None
-    if input_symmetries is not None or induced_output_symmetry is not None:
-        sym_list = (
-            list(input_symmetries) if input_symmetries is not None else [None] * num_ops
-        )
+    # Track symmetries through contractions using the oracle
+    # ssa_ids[position] gives the SSA id for that operand position in input_list
+    ssa_ids: list[int] = list(range(num_ops))
+    next_ssa = num_ops
+
+    # ssa_to_subset: maps SSA id -> frozenset of original operand indices
+    ssa_to_subset: dict[int, frozenset[int]] = {
+        k: frozenset({k}) for k in range(num_ops)
+    }
 
     # Build contraction tuple (positions, gemm, einsum_str, remaining)
     for cnum, contract_inds in enumerate(path_tuple):
@@ -453,38 +447,23 @@ def contract_path(
         contract_tuple = helpers.find_contraction(contract_inds, input_sets, output_set)
         out_inds, input_sets, idx_removed, idx_contract = contract_tuple
 
-        # Compute cost, scale, and size — symmetry-aware when available
-        if sym_list is not None:
-            # Gather symmetries for the contracted tensors (before popping)
-            step_syms = [sym_list[i] for i in contract_inds]
-            # Propagate symmetry pairwise through all contracted tensors
-            if len(contract_inds) == 1:
-                result_sym = step_syms[0]
-            else:
-                # Get the index sets for the contracted tensors
-                step_input_sets = [frozenset(input_list[i]) for i in contract_inds]
-                # Fold left: propagate pairwise, using out_inds as the surviving indices
-                accum_sym = step_syms[0]
-                accum_k = step_input_sets[0]
-                for si in range(1, len(step_syms)):
-                    k_other = step_input_sets[si]
-                    accum_sym = propagate_symmetry(
-                        accum_sym,
-                        accum_k,
-                        step_syms[si],
-                        k_other,
-                        out_inds,
-                        induced_output_symmetry=induced_output_symmetry,
-                    )
-                    accum_k = accum_k | k_other
-                result_sym = accum_sym
+        # Compute cost using oracle if available
+        if symmetry_oracle is not None:
+            # Gather step syms before popping
+            step_syms = [None] * len(contract_inds)
+            # Merge subsets for oracle lookup
+            merged_subset: frozenset[int] = frozenset()
+            for pos_in_step, ci in enumerate(contract_inds):
+                ssa_id = ssa_ids[ci]
+                merged_subset = merged_subset | ssa_to_subset[ssa_id]
+
+            result_sym = symmetry_oracle.sym(merged_subset)
 
             cost = symmetric_flop_count(
                 idx_contract,
                 bool(idx_removed),
                 len(contract_inds),
                 size_dict,
-                input_symmetries=step_syms,
                 output_symmetry=result_sym,
                 output_indices=out_inds,
             )
@@ -506,9 +485,23 @@ def contract_path(
 
         tmp_inputs = [input_list.pop(x) for x in contract_inds]
         tmp_shapes = [input_shapes.pop(x) for x in contract_inds]
-        if sym_list is not None:
-            for x in contract_inds:
-                sym_list.pop(x)
+
+        # Update SSA id tracking: compute merged subset and assign new SSA id
+        if symmetry_oracle is not None:
+            new_merged_subset: frozenset[int] = frozenset()
+            for ci in contract_inds:
+                ssa_id = ssa_ids[ci]
+                new_merged_subset = new_merged_subset | ssa_to_subset[ssa_id]
+            for ci in contract_inds:
+                ssa_ids.pop(ci)
+            ssa_to_subset[next_ssa] = new_merged_subset
+            ssa_ids.append(next_ssa)
+            next_ssa += 1
+        else:
+            for ci in contract_inds:
+                ssa_ids.pop(ci)
+            ssa_ids.append(next_ssa)
+            next_ssa += 1
 
         if use_blas:
             do_blas = blas.can_blas(
@@ -516,7 +509,7 @@ def contract_path(
                 "".join(out_inds),
                 idx_removed,
                 tmp_shapes,
-                input_symmetries=step_syms if sym_list is not None else None,
+                input_symmetries=None,
             )
         else:
             do_blas = False
@@ -533,8 +526,6 @@ def contract_path(
 
         input_list.append(idx_result)
         input_shapes.append(shp_result)
-        if sym_list is not None:
-            sym_list.append(result_sym)
 
         einsum_str = ",".join(tmp_inputs) + "->" + idx_result
 

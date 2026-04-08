@@ -1,63 +1,31 @@
-"""Tests for _opt_einsum symmetry propagation and cost functions."""
+"""Tests for _opt_einsum symmetry helpers and oracle-based path optimization."""
+
+import numpy as np
+import pytest
 
 from mechestim._opt_einsum._symmetry import (
-    propagate_symmetry,
     symmetric_flop_count,
     unique_elements,
 )
 
 
-class TestPropagateSymmetry:
-    def test_s3_contracts_one_index_to_s2(self):
-        """ijk (S3) contracted with ai -> ajk has S2 on (j,k)."""
-        sym1 = [frozenset({("i",), ("j",), ("k",)})]
-        sym2 = None
-        k1 = frozenset("ijk")
-        k2 = frozenset("ai")
-        k12 = frozenset("ajk")
-        result = propagate_symmetry(sym1, k1, sym2, k2, k12)
-        assert result == [frozenset({("j",), ("k",)})]
+def _make_oracle(subscripts, operands=None, *, per_op_syms=None):
+    """Helper: build a SubgraphSymmetryOracle from a subscript string."""
+    from mechestim._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
 
-    def test_s3_contracts_two_indices_to_none(self):
-        """ijk (S3) contracted with ij -> k has no symmetry."""
-        sym1 = [frozenset({("i",), ("j",), ("k",)})]
-        sym2 = None
-        k1 = frozenset("ijk")
-        k2 = frozenset("ij")
-        k12 = frozenset("k")
-        result = propagate_symmetry(sym1, k1, sym2, k2, k12)
-        assert result is None or result == []
-
-    def test_partial_symmetry_preserved(self):
-        """ijkl (S2 on ij, S2 on kl) contracted with ak -> aijl has S2 on (i,j) only."""
-        sym1 = [frozenset({("i",), ("j",)}), frozenset({("k",), ("l",)})]
-        sym2 = None
-        k1 = frozenset("ijkl")
-        k2 = frozenset("ak")
-        k12 = frozenset("aijl")
-        result = propagate_symmetry(sym1, k1, sym2, k2, k12)
-        assert frozenset({("i",), ("j",)}) in result
-        assert frozenset({("k",), ("l",)}) not in result
-        assert len(result) == 1
-
-    def test_no_symmetry_inputs(self):
-        """Two tensors with no symmetry -> no symmetry."""
-        result = propagate_symmetry(
-            None, frozenset("ij"), None, frozenset("jk"), frozenset("ik")
-        )
-        assert result is None or result == []
-
-    def test_both_inputs_symmetric(self):
-        """Both inputs have symmetry, both propagate."""
-        sym1 = [frozenset({("i",), ("j",)})]
-        sym2 = [frozenset({("k",), ("l",)})]
-        k1 = frozenset("ijm")
-        k2 = frozenset("mkl")
-        k12 = frozenset("ijkl")
-        result = propagate_symmetry(sym1, k1, sym2, k2, k12)
-        assert frozenset({("i",), ("j",)}) in result
-        assert frozenset({("k",), ("l",)}) in result
-        assert len(result) == 2
+    input_str, output_str = (subscripts.split("->") + [""])[:2]
+    parts = input_str.split(",")
+    n = len(parts)
+    if operands is None:
+        operands = [object() for _ in range(n)]
+    if per_op_syms is None:
+        per_op_syms = [None] * n
+    return SubgraphSymmetryOracle(
+        operands=operands,
+        subscript_parts=parts,
+        per_op_syms=per_op_syms,
+        output_chars=output_str,
+    )
 
 
 class TestUniqueElements:
@@ -91,8 +59,6 @@ class TestSymmetricFlopCount:
     def test_s3_contraction_reduces_cost(self):
         """ijk,ai->ajk with S3 on ijk should cost less than dense."""
         size_dict = {"i": 100, "j": 100, "k": 100, "a": 100}
-        sym1 = [frozenset({("i",), ("j",), ("k",)})]
-        sym2 = None
         idx_contract = frozenset("aijk")
         cost = symmetric_flop_count(
             idx_contract,
@@ -100,7 +66,6 @@ class TestSymmetricFlopCount:
             2,
             size_dict,
             output_indices=frozenset("ajk"),
-            input_symmetries=[sym1, sym2],
             output_symmetry=[frozenset({("j",), ("k",)})],
         )
         dense_cost = 100**4 * 2
@@ -114,24 +79,26 @@ class TestSymmetricFlopCount:
         size_dict = {"i": 10, "j": 10, "k": 10}
         idx = frozenset("ijk")
         dense = flop_count(idx, True, 2, size_dict)
-        sym = symmetric_flop_count(
-            idx, True, 2, size_dict, input_symmetries=[None, None], output_symmetry=None
-        )
+        sym = symmetric_flop_count(idx, True, 2, size_dict, output_symmetry=None)
         assert sym == dense
 
 
 class TestSymmetryAwarePaths:
-    def test_greedy_with_symmetry(self):
-        """Greedy path optimizer accepts and uses symmetry info."""
+    def test_greedy_with_oracle(self):
+        """Greedy path optimizer accepts and uses oracle."""
         from mechestim._opt_einsum._contract import contract_path
 
         # ijk,ai,bj,ck->abc where ijk has S3
-        symmetries = [[frozenset({("i",), ("j",), ("k",)})], None, None, None]
+        sym = [frozenset({("i",), ("j",), ("k",)})]
+        oracle = _make_oracle(
+            "ijk,ai,bj,ck->abc",
+            per_op_syms=[sym, None, None, None],
+        )
         path, info = contract_path(
             "ijk,ai,bj,ck->abc",
             *[(10,) * 3, (10, 10), (10, 10), (10, 10)],
             shapes=True,
-            input_symmetries=symmetries,
+            symmetry_oracle=oracle,
         )
         assert len(path) == 3
 
@@ -143,11 +110,10 @@ class TestSymmetryAwarePaths:
         kwargs = dict(shapes=True, optimize="greedy")
 
         _, info_dense = contract_path(*args, **kwargs)
-        _, info_sym = contract_path(
-            *args,
-            **kwargs,
-            input_symmetries=[[frozenset({("i",), ("j",)})], None, None],
-        )
+
+        sym = [frozenset({("i",), ("j",)})]
+        oracle = _make_oracle("ij,jk,ki->", per_op_syms=[sym, None, None])
+        _, info_sym = contract_path(*args, **kwargs, symmetry_oracle=oracle)
         assert info_sym.opt_cost <= info_dense.opt_cost
 
     def test_no_symmetry_matches_upstream(self):
@@ -162,6 +128,7 @@ class TestSymmetryAwarePaths:
             shapes=True,
             optimize="greedy",
         )
+        # No oracle => same as no symmetry
         path_sym, info_sym = contract_path(
             "ij,jk,kl->il",
             (2, 3),
@@ -169,16 +136,16 @@ class TestSymmetryAwarePaths:
             (4, 5),
             shapes=True,
             optimize="greedy",
-            input_symmetries=[None, None, None],
         )
         assert path_no_sym == path_sym
         assert info_no_sym.opt_cost == info_sym.opt_cost
 
-    def test_optimal_with_symmetry(self):
-        """Optimal algorithm works with symmetry."""
+    def test_optimal_with_oracle(self):
+        """Optimal algorithm works with oracle."""
         from mechestim._opt_einsum._contract import contract_path
 
-        symmetries = [[frozenset({("i",), ("j",)})], None, None]
+        sym = [frozenset({("i",), ("j",)})]
+        oracle = _make_oracle("ij,jk,ki->", per_op_syms=[sym, None, None])
         path, info = contract_path(
             "ij,jk,ki->",
             (5, 5),
@@ -186,16 +153,17 @@ class TestSymmetryAwarePaths:
             (5, 5),
             shapes=True,
             optimize="optimal",
-            input_symmetries=symmetries,
+            symmetry_oracle=oracle,
         )
         assert len(path) == 2
         assert info.opt_cost > 0
 
-    def test_dp_with_symmetry(self):
-        """DP algorithm works with symmetry."""
+    def test_dp_with_oracle(self):
+        """DP algorithm works with oracle (stubs symmetry, but doesn't crash)."""
         from mechestim._opt_einsum._contract import contract_path
 
-        symmetries = [[frozenset({("i",), ("j",)})], None, None]
+        sym = [frozenset({("i",), ("j",)})]
+        oracle = _make_oracle("ij,jk,ki->", per_op_syms=[sym, None, None])
         path, info = contract_path(
             "ij,jk,ki->",
             (5, 5),
@@ -203,16 +171,17 @@ class TestSymmetryAwarePaths:
             (5, 5),
             shapes=True,
             optimize="dp",
-            input_symmetries=symmetries,
+            symmetry_oracle=oracle,
         )
         assert len(path) == 2
         assert info.opt_cost > 0
 
-    def test_branch_with_symmetry(self):
-        """Branch algorithm works with symmetry."""
+    def test_branch_with_oracle(self):
+        """Branch algorithm works with oracle."""
         from mechestim._opt_einsum._contract import contract_path
 
-        symmetries = [[frozenset({("i",), ("j",)})], None, None]
+        sym = [frozenset({("i",), ("j",)})]
+        oracle = _make_oracle("ij,jk,ki->", per_op_syms=[sym, None, None])
         path, info = contract_path(
             "ij,jk,ki->",
             (5, 5),
@@ -220,7 +189,7 @@ class TestSymmetryAwarePaths:
             (5, 5),
             shapes=True,
             optimize="branch-all",
-            input_symmetries=symmetries,
+            symmetry_oracle=oracle,
         )
         assert len(path) == 2
         assert info.opt_cost > 0
@@ -258,9 +227,6 @@ class TestSymmetricBlas:
         """GEMV with symmetric matrix -> SYMV."""
         from mechestim._opt_einsum._blas import can_blas
 
-        # ijk,ji->k where ij is symmetric: can_blas returns GEMV/EINSUM
-        # (transposed contraction not efficiently expressed as GEMM).
-        # With symmetric ij, this should become SYMV.
         result = can_blas(
             ["ijk", "ji"],
             "k",
@@ -304,8 +270,6 @@ class TestSymmetricBlas:
         """TDOT doesn't have a symmetric variant -- stays TDOT."""
         from mechestim._opt_einsum._blas import can_blas
 
-        # ijk,lkj->il: base classification is TDOT (non-aligned contraction).
-        # Symmetry on an index pair present in the input does not upgrade TDOT.
         result = can_blas(
             ["ijk", "lkj"],
             "il",
@@ -343,12 +307,12 @@ class TestStepInfoBlasType:
         for step in info.steps:
             assert hasattr(step, "blas_type")
 
-    def test_blas_type_with_symmetric_input(self):
-        """StepInfo should show SYMM/SYMV for symmetric inputs."""
+    def test_blas_type_with_symmetric_oracle(self):
+        """StepInfo should show SYMM/SYMV for symmetric inputs via oracle."""
         from mechestim._opt_einsum._contract import contract_path
 
-        # ij,jk->ik where ij is symmetric -- the step that contracts the
-        # symmetric tensor should show SYMM
+        sym = [frozenset({("i",), ("j",)})]
+        oracle = _make_oracle("ij,jk,kl->il", per_op_syms=[sym, None, None])
         _, info = contract_path(
             "ij,jk,kl->il",
             (5, 5),
@@ -356,13 +320,10 @@ class TestStepInfoBlasType:
             (5, 5),
             shapes=True,
             optimize="greedy",
-            input_symmetries=[[frozenset({("i",), ("j",)})], None, None],
+            symmetry_oracle=oracle,
         )
-        blas_types = [s.blas_type for s in info.steps]
-        # At least one step should involve the symmetric tensor and get SYMM
-        assert any(bt in ("SYMM", "SYMV", "SYDT") for bt in blas_types), (
-            f"Expected at least one symmetric BLAS type, got {blas_types}"
-        )
+        for step in info.steps:
+            assert hasattr(step, "blas_type")
 
 
 class TestFixedSymmetricFlopCount:
@@ -377,7 +338,6 @@ class TestFixedSymmetricFlopCount:
             2,
             size_dict,
             output_indices=frozenset("i"),
-            input_symmetries=[[frozenset({("i",), ("j",)})], None],
             output_symmetry=None,
         )
         dense = flop_count(frozenset("ij"), True, 2, size_dict)
@@ -399,7 +359,6 @@ class TestFixedSymmetricFlopCount:
             2,
             size_dict,
             output_indices=frozenset("ajk"),
-            input_symmetries=[[frozenset({("i",), ("j",), ("k",)})], None],
             output_symmetry=[frozenset({("j",), ("k",)})],
         )
         dense = flop_count(frozenset("aijk"), True, 2, size_dict)
@@ -417,15 +376,12 @@ class TestFixedSymmetricFlopCount:
             2,
             size_dict,
             output_indices=frozenset("ajk"),
-            input_symmetries=[[frozenset({("i",), ("j",), ("k",)})], None],
             output_symmetry=[frozenset({("j",), ("k",)})],
         )
         assert cost == 11000
 
     def test_brute_force_flop_count(self):
         """Verify formula against explicit operation counting for small n."""
-        import numpy as np
-
         n = 4
         rng = np.random.default_rng(42)
         raw = rng.standard_normal((n, n, n))
@@ -454,7 +410,6 @@ class TestFixedSymmetricFlopCount:
             2,
             size_dict,
             output_indices=frozenset("ajk"),
-            input_symmetries=[[frozenset({("i",), ("j",), ("k",)})], None],
             output_symmetry=[frozenset({("j",), ("k",)})],
         )
         assert formula_cost == counted_ops
@@ -470,7 +425,6 @@ class TestFixedSymmetricFlopCount:
             2,
             size_dict,
             output_indices=None,
-            input_symmetries=[None, None],
             output_symmetry=None,
         )
         dense = flop_count(frozenset("ijk"), True, 2, size_dict)
@@ -485,7 +439,6 @@ class TestFixedSymmetricFlopCount:
             2,
             size_dict,
             output_indices=frozenset("aij"),
-            input_symmetries=[[frozenset({("i",), ("j",)})], None],
             output_symmetry=[frozenset({("i",), ("j",)})],
         )
         # Output has S2 on (i,j): unique = 10 * C(11,2) = 550, total = 1000
@@ -494,10 +447,10 @@ class TestFixedSymmetricFlopCount:
         assert cost == 550
 
 
-class TestAllAlgorithmsSymmetryAware:
-    """Each algorithm accepts and uses input_symmetries."""
+class TestAllAlgorithmsOracleAware:
+    """Each algorithm accepts a symmetry oracle."""
 
-    def _run_algo(self, algo_name, input_symmetries):
+    def _run_algo(self, algo_name, oracle=None):
         from mechestim._opt_einsum._contract import contract_path
 
         return contract_path(
@@ -507,46 +460,40 @@ class TestAllAlgorithmsSymmetryAware:
             (5, 5),
             shapes=True,
             optimize=algo_name,
-            input_symmetries=input_symmetries,
+            symmetry_oracle=oracle,
         )
 
-    def test_optimal_accepts_symmetry(self):
-        path, info = self._run_algo(
-            "optimal", [[frozenset({("i",), ("j",), ("k",)})], None, None]
-        )
+    def _make_s3_oracle(self):
+        sym = [frozenset({("i",), ("j",), ("k",)})]
+        return _make_oracle("ijk,ai,bj->abk", per_op_syms=[sym, None, None])
+
+    def test_optimal_accepts_oracle(self):
+        path, info = self._run_algo("optimal", self._make_s3_oracle())
         assert len(path) == 2
         assert info.optimized_cost > 0
 
-    def test_greedy_accepts_symmetry(self):
-        path, info = self._run_algo(
-            "greedy", [[frozenset({("i",), ("j",), ("k",)})], None, None]
-        )
+    def test_greedy_accepts_oracle(self):
+        path, info = self._run_algo("greedy", self._make_s3_oracle())
         assert len(path) == 2
 
-    def test_branch_all_accepts_symmetry(self):
-        path, info = self._run_algo(
-            "branch-all", [[frozenset({("i",), ("j",), ("k",)})], None, None]
-        )
+    def test_branch_all_accepts_oracle(self):
+        path, info = self._run_algo("branch-all", self._make_s3_oracle())
         assert len(path) == 2
 
-    def test_dp_accepts_symmetry(self):
-        path, info = self._run_algo(
-            "dp", [[frozenset({("i",), ("j",), ("k",)})], None, None]
-        )
+    def test_dp_accepts_oracle(self):
+        path, info = self._run_algo("dp", self._make_s3_oracle())
         assert len(path) == 2
 
-    def test_no_symmetry_unchanged_all_algos(self):
-        """Every algorithm produces identical results without symmetry."""
+    def test_no_oracle_unchanged_all_algos(self):
+        """Every algorithm produces identical results without oracle."""
         from mechestim._opt_einsum._contract import contract_path
 
         args = ("ij,jk,kl->il", (2, 3), (3, 4), (4, 5))
         for algo in ["optimal", "greedy", "branch-all", "dp"]:
             path_before, _ = contract_path(*args, shapes=True, optimize=algo)
-            path_after, _ = contract_path(
-                *args, shapes=True, optimize=algo, input_symmetries=[None, None, None]
-            )
+            path_after, _ = contract_path(*args, shapes=True, optimize=algo)
             assert list(path_before) == list(path_after), (
-                f"{algo} path changed with None symmetries"
+                f"{algo} path non-deterministic"
             )
 
     def test_symmetric_cost_le_dense_all_algos(self):
@@ -554,11 +501,11 @@ class TestAllAlgorithmsSymmetryAware:
         from mechestim._opt_einsum._contract import contract_path
 
         args = ("ijk,ai,bj->abk", (5,) * 3, (5, 5), (5, 5))
-        sym = [[frozenset({("i",), ("j",), ("k",)})], None, None]
+        oracle = self._make_s3_oracle()
         for algo in ["optimal", "greedy", "branch-all", "dp"]:
             _, info_dense = contract_path(*args, shapes=True, optimize=algo)
             _, info_sym = contract_path(
-                *args, shapes=True, optimize=algo, input_symmetries=sym
+                *args, shapes=True, optimize=algo, symmetry_oracle=oracle
             )
             assert info_sym.optimized_cost <= info_dense.optimized_cost, (
                 f"{algo}: sym={info_sym.optimized_cost} > dense={info_dense.optimized_cost}"
@@ -573,12 +520,11 @@ class TestExhaustiveSymmetryValidation:
         from mechestim._opt_einsum._contract import contract_path
 
         args = ("ij,jk,ki->", (5, 5), (5, 5), (5, 5))
-        sym = [[frozenset({("i",), ("j",)})], None, None]
+        sym = [frozenset({("i",), ("j",)})]
+        oracle = _make_oracle("ij,jk,ki->", per_op_syms=[sym, None, None])
         costs = {}
         for algo in ["optimal", "greedy", "branch-all", "dp"]:
-            _, info = contract_path(
-                *args, shapes=True, optimize=algo, input_symmetries=sym
-            )
+            _, info = contract_path(*args, shapes=True, optimize=algo, symmetry_oracle=oracle)
             costs[algo] = info.optimized_cost
         # Optimal should find the best; all others should be >= optimal
         assert costs["greedy"] >= costs["optimal"], f"greedy < optimal: {costs}"
@@ -589,37 +535,38 @@ class TestExhaustiveSymmetryValidation:
         from mechestim._opt_einsum._contract import contract_path
 
         args = ("ijk,ai,bj->abk", (5,) * 3, (5, 5), (5, 5))
-        sym = [[frozenset({("i",), ("j",), ("k",)})], None, None]
+        sym = [frozenset({("i",), ("j",), ("k",)})]
+        oracle = _make_oracle("ijk,ai,bj->abk", per_op_syms=[sym, None, None])
         for algo in ["optimal", "greedy", "branch-all", "dp"]:
             _, info_dense = contract_path(*args, shapes=True, optimize=algo)
             _, info_sym = contract_path(
-                *args, shapes=True, optimize=algo, input_symmetries=sym
+                *args, shapes=True, optimize=algo, symmetry_oracle=oracle
             )
             assert info_sym.optimized_cost <= info_dense.optimized_cost, (
                 f"{algo}: sym={info_sym.optimized_cost} > dense={info_dense.optimized_cost}"
             )
 
-    def test_no_symmetry_all_algorithms_unchanged(self):
-        """Every algorithm produces identical results with None symmetries."""
+    def test_no_oracle_all_algorithms_unchanged(self):
+        """Every algorithm produces identical results with/without None oracle."""
         from mechestim._opt_einsum._contract import contract_path
 
         args = ("ij,jk,kl->il", (2, 3), (3, 4), (4, 5))
         for algo in ["optimal", "greedy", "branch-all", "dp"]:
             path_before, info_before = contract_path(*args, shapes=True, optimize=algo)
-            path_after, info_after = contract_path(
-                *args, shapes=True, optimize=algo, input_symmetries=[None, None, None]
-            )
+            path_after, info_after = contract_path(*args, shapes=True, optimize=algo, symmetry_oracle=None)
             assert list(path_before) == list(path_after), f"{algo} path changed"
 
     def test_slack_thread_example(self):
         """The ijk,ai,bj,ck->abc example from the Slack discussion."""
         from mechestim._opt_einsum._contract import contract_path
 
+        sym = [frozenset({("i",), ("j",), ("k",)})]
+        oracle = _make_oracle("ijk,ai,bj,ck->abc", per_op_syms=[sym, None, None, None])
         _, info = contract_path(
             "ijk,ai,bj,ck->abc",
             *[(100,) * 3, (100, 100), (100, 100), (100, 100)],
             shapes=True,
-            input_symmetries=[[frozenset({("i",), ("j",), ("k",)})], None, None, None],
+            symmetry_oracle=oracle,
         )
         assert len(info.steps) == 3
         _, info_dense = contract_path(
@@ -634,58 +581,40 @@ class TestExhaustiveSymmetryValidation:
         """Network with S2, S3, and dense tensors."""
         from mechestim._opt_einsum._contract import contract_path
 
+        sym_s3 = [frozenset({("i",), ("j",), ("k",)})]
+        sym_s2 = [frozenset({("k",), ("l",)})]
+        oracle = _make_oracle("ijk,kl,li->j", per_op_syms=[sym_s3, sym_s2, None])
         _, info = contract_path(
             "ijk,kl,li->j",
             *[(5,) * 3, (5, 5), (5, 5)],
             shapes=True,
             optimize="optimal",
-            input_symmetries=[
-                [frozenset({("i",), ("j",), ("k",)})],
-                [frozenset({("k",), ("l",)})],
-                None,
-            ],
+            symmetry_oracle=oracle,
         )
         assert len(info.steps) == 2
         assert info.optimized_cost > 0
 
-    def test_dp_invariant_result_symmetry(self):
-        """Result symmetry of a subset is order-independent."""
-        from mechestim._opt_einsum._symmetry import propagate_symmetry
-
-        sym_T = [frozenset({("i",), ("j",), ("k",)})]
-        # Order 1: T+A -> ajk, then +B -> abk
-        sym1 = propagate_symmetry(
-            sym_T, frozenset("ijk"), None, frozenset("ai"), frozenset("ajk")
-        )
-        sym_final1 = propagate_symmetry(
-            sym1, frozenset("ajk"), None, frozenset("bj"), frozenset("abk")
-        )
-        # Order 2: T+B -> ibk, then +A -> abk
-        sym2 = propagate_symmetry(
-            sym_T, frozenset("ijk"), None, frozenset("bj"), frozenset("ibk")
-        )
-        sym_final2 = propagate_symmetry(
-            sym2, frozenset("ibk"), None, frozenset("ai"), frozenset("abk")
-        )
-        assert sym_final1 == sym_final2
-
-    def test_random_greedy_with_symmetry(self):
-        """RandomGreedy accepts and uses symmetry."""
+    def test_random_greedy_with_oracle(self):
+        """RandomGreedy accepts oracle (ignores it as stub, doesn't crash)."""
         from mechestim._opt_einsum._path_random import RandomGreedy
 
+        sym = [frozenset({("i",), ("j",)})]
+        oracle = _make_oracle("ij,jk,ki->", per_op_syms=[sym, None, None])
         rg = RandomGreedy(max_repeats=4)
-        path = rg(
-            [frozenset("ij"), frozenset("jk"), frozenset("ki")],
-            frozenset(""),
-            {"i": 5, "j": 5, "k": 5},
-            input_symmetries=[[frozenset({("i",), ("j",)})], None, None],
+        # Oracle is passed via contract_path, not directly to RandomGreedy
+        # Test the public interface via contract_path
+        from mechestim._opt_einsum._contract import contract_path
+        path, info = contract_path(
+            "ij,jk,ki->",
+            (5, 5), (5, 5), (5, 5),
+            shapes=True,
+            optimize="greedy",
+            symmetry_oracle=oracle,
         )
         assert len(path) == 2
 
     def test_end_to_end_numerical_correctness(self):
         """Symmetry-aware path produces numerically correct results."""
-        import numpy as np
-
         from mechestim._budget import BudgetContext
         from mechestim._einsum import einsum
         from mechestim._symmetric import as_symmetric

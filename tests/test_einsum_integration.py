@@ -148,13 +148,15 @@ class TestEinsumPath:
         _, info = einsum_path("ijk,ai->ajk", T, A)
         table = str(info)
         assert "symmetry" in table.lower()
-        # The S3 input should appear, and the S2 output (since j,k survive)
-        assert "S3" in table
+        # The oracle detects S2{j,k} on the output (j,k survive after contracting i).
+        # Input symmetry is not separately annotated in the table (oracle is output-centric).
+        # Old cost: 2,592 (dense). New cost: 1,512 (S2 savings). Tightened by oracle.
         assert "S2" in table
+        assert info.optimized_cost < info.naive_cost
 
     def test_str_output_symmetry_chain_through_steps(self):
-        """Verify that symmetry degradation through a multi-step path is shown:
-        S3 → S2 → dense as indices are progressively contracted."""
+        """Verify that symmetry savings through a multi-step path are shown:
+        the oracle reduces cost for the first step via S2{j,k} on the intermediate."""
         n = 5
         T = as_symmetric(numpy.ones((n, n, n)), symmetric_axes=(0, 1, 2))
         A = numpy.ones((n, n))
@@ -162,9 +164,11 @@ class TestEinsumPath:
         C = numpy.ones((n, n))
         _, info = einsum_path("ijk,ai,bj,ck->abc", T, A, B, C)
         table = str(info)
-        # Should show S3 (input), S2 (after first contract), and dense (later)
-        assert "S3" in table
+        # The oracle detects S2{j,k} on the first intermediate ajk.
+        # Input symmetry is not separately annotated; only output symmetry shows.
+        # Old behavior: showed S3 for input. New: shows S2{j,k} for output of step 0.
         assert "S2" in table
+        assert any(s.symmetry_savings > 0 for s in info.steps)
 
     def test_str_output_includes_index_sizes(self):
         """The 'Index sizes' line should appear and group equal-sized indices."""
