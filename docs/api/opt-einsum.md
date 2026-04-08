@@ -55,6 +55,24 @@ mechestim's `_einsum.py` converts between positional `SymmetryInfo` (used by `Sy
 
 See [Symmetric Tensors API](./symmetric.md#pathinfo) for the full dataclass reference.
 
+## Path finding parameters
+
+### `input_symmetries` parameter
+
+`contract_path` and related path algorithms accept an optional `input_symmetries: list[IndexSymmetry]`
+keyword argument. This is symmetry information for each operand, used by the path finder to make
+symmetry-aware ordering decisions.
+
+### `induced_output_symmetry` parameter
+
+`contract_path` accepts an optional `induced_output_symmetry: IndexSymmetry | None`
+keyword argument. This is a list of global output-level symmetry groups derived
+from equal-operand detection in the high-level `me.einsum` API. At each
+contraction step, these groups are restricted to the step's surviving indices
+and merged with input-propagated symmetry via the block-aware
+`merge_overlapping_groups`. Most users don't set this directly — `me.einsum`
+sets it automatically.
+
 ## Attribution
 
 See the [NOTICE](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_opt_einsum/NOTICE) file for a detailed file-by-file changelog of all modifications from upstream.
