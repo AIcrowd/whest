@@ -333,3 +333,82 @@ class TestMemoKeyIsSubsetOnly:
         b = oracle.sym(frozenset([0, 1]))
         c = oracle.sym(frozenset({1, 0}))
         assert a is b is c
+
+
+class TestOldSymIsSubsetOfNewSym:
+    """Option B contract: the new oracle finds at least every symmetry
+    the old _detect_induced_output_symmetry finds on every test case.
+
+    This test is REMOVED in a follow-up commit along with the old
+    reference implementation after the refactor has landed and stabilised.
+    """
+
+    @pytest.mark.parametrize(
+        "subscripts, make_operands",
+        [
+            ("ij,ai,bj->ab", lambda: (np.zeros((3, 3)), np.zeros((4, 3)), np.zeros((4, 3)))),
+            ("ij,ik->jk", lambda: (np.zeros((3, 4)), np.zeros((3, 5)))),
+            ("ijk,ilm->jklm", lambda: (np.zeros((3, 3, 3)), np.zeros((3, 3, 3)))),
+            ("ai,bi,ci->abc", lambda: (np.zeros((2, 3)), np.zeros((2, 3)), np.zeros((2, 3)))),
+            ("ij,jk->ik", lambda: (np.zeros((3, 4)), np.zeros((4, 5)))),
+        ],
+    )
+    def test_old_sym_subset_of_new(self, subscripts, make_operands):
+        operands_tuple = make_operands()
+        # Operands passed as the SAME object for repeated positions
+        if subscripts == "ij,ai,bj->ab":
+            T, S1, _ = operands_tuple
+            operands = [T, S1, S1]
+        elif subscripts == "ij,ik->jk":
+            X, _ = operands_tuple
+            operands = [X, X]
+        elif subscripts == "ijk,ilm->jklm":
+            X, _ = operands_tuple
+            operands = [X, X]
+        elif subscripts == "ai,bi,ci->abc":
+            X, _, _ = operands_tuple
+            operands = [X, X, X]
+        elif subscripts == "ij,jk->ik":
+            A, B = operands_tuple
+            operands = [A, B]
+        else:
+            raise ValueError(subscripts)
+
+        input_parts = subscripts.split("->")[0].split(",")
+        output_chars = subscripts.split("->")[1]
+
+        # Call the OLD reference implementation (still present in
+        # mechestim._einsum until Commit 2). Skip gracefully if it has
+        # already been removed.
+        try:
+            from mechestim._einsum import _detect_induced_output_symmetry
+        except ImportError:
+            pytest.skip("old detector already removed")
+
+        old = _detect_induced_output_symmetry(
+            operands=operands,
+            subscript_parts=input_parts,
+            output_chars=output_chars,
+            per_op_syms=[None] * len(operands),
+        )
+        if old is None:
+            old = []
+
+        oracle = SubgraphSymmetryOracle(
+            operands=operands,
+            subscript_parts=input_parts,
+            per_op_syms=[None] * len(operands),
+            output_chars=output_chars,
+        )
+        new = oracle.sym(frozenset(range(len(operands))))
+        if new is None:
+            new = []
+
+        # For each old group, assert that there exists a new group that
+        # covers it (superset by labels).
+        for old_g in old:
+            old_chars = frozenset(c for block in old_g for c in block)
+            assert any(
+                old_chars <= frozenset(c for block in new_g for c in block)
+                for new_g in new
+            ), f"Old group {old_g} not covered by new oracle: {new}"
