@@ -28,14 +28,14 @@ The fork is **self-contained** (zero imports from mechestim, depends only on Pyt
 
 ## Path algorithms
 
-All algorithms accept an optional `input_symmetries` parameter for symmetry-aware path finding.
+All algorithms are symmetry-aware — they receive symmetry information from the `symmetry_oracle` kwarg and use it to score candidate contractions.
 
 | Algorithm | `optimize=` | Used by | Symmetry-aware ordering? |
 |-----------|-------------|---------|--------------------------|
 | Optimal (brute-force DFS) | `'optimal'` | `'auto'` for 1-4 operands | Yes |
 | Branch-and-bound | `'branch-all'`, `'branch-2'` | `'auto'` for 5-14 operands | Yes |
 | Greedy | `'greedy'` | `'auto'` for 15+ operands | Yes |
-| Dynamic programming | `'dp'` | `'auto-hq'` for 6-16 operands | No (dense ordering, symmetric cost reporting) |
+| Dynamic programming | `'dp'` | `'auto-hq'` for 6-16 operands | Conservative (2× reduction heuristic; `TODO(dp-symmetry)`) |
 | Random greedy | `'random-greedy'`, `'random-greedy-128'` | `'auto-hq'` for 17+ operands | Yes (via greedy) |
 | Auto | `'auto'` (default) | — | Dispatches to above |
 
@@ -57,21 +57,29 @@ See [Symmetric Tensors API](./symmetric.md#pathinfo) for the full dataclass refe
 
 ## Path finding parameters
 
-### `input_symmetries` parameter
+### `symmetry_oracle` parameter
 
-`contract_path` and related path algorithms accept an optional `input_symmetries: list[IndexSymmetry]`
-keyword argument. This is symmetry information for each operand, used by the path finder to make
-symmetry-aware ordering decisions.
+`contract_path` and related path algorithms accept an optional `symmetry_oracle` keyword argument. This is a `SubgraphSymmetryOracle` instance (from `mechestim._opt_einsum._subgraph_symmetry`) that provides symmetry information for each intermediate tensor encountered during path search.
 
-### `induced_output_symmetry` parameter
+The oracle is constructed once per `contract_path` call by `me.einsum` and `me.einsum_path`. It is plumbed through `_PATH_OPTIONS` so that every algorithm receives it. Most users never interact with this directly.
 
-`contract_path` accepts an optional `induced_output_symmetry: IndexSymmetry | None`
-keyword argument. This is a list of global output-level symmetry groups derived
-from equal-operand detection in the high-level `me.einsum` API. At each
-contraction step, these groups are restricted to the step's surviving indices
-and merged with input-propagated symmetry via the block-aware
-`merge_overlapping_groups`. Most users don't set this directly — `me.einsum`
-sets it automatically.
+## Deviations from upstream opt_einsum
+
+The fork diverges from upstream opt_einsum in the following ways that are visible to users and contributors.
+
+### Every path optimizer is symmetry-aware
+
+In upstream opt_einsum, path algorithms operate purely on tensor shapes with no knowledge of symmetry. In this fork, every algorithm (optimal, branch-\*, greedy, dp, random-greedy) receives a `symmetry_oracle` and uses it to score candidate contractions. Symmetry information propagates through the candidate evaluation loop so that early contractions producing symmetric intermediates are preferred.
+
+The `symmetry_oracle` kwarg is plumbed through `_PATH_OPTIONS` in `_paths.py`. Any algorithm that calls `_PATH_OPTIONS[alg](*args, **kwargs)` automatically inherits it.
+
+### No silent symmetry fallback
+
+Upstream opt_einsum silently ignores unknown kwargs. This fork enforces that `symmetry_oracle` is consumed. The absence of silent fallback is verified by `tests/test_no_silent_symmetry_drop.py`.
+
+### DP uses a conservative symmetry heuristic
+
+The dynamic programming optimizer (`'dp'`) uses a conservative 2× reduction heuristic rather than the full subgraph-symmetry oracle. This is tracked as `TODO(dp-symmetry)` in the source and will be addressed in a follow-up iteration.
 
 ## Attribution
 

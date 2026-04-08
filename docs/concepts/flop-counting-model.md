@@ -74,18 +74,47 @@ When a tensor is a `SymmetricTensor`, costs are reduced based on the number of u
 
 See [Exploit Symmetry Savings](../how-to/exploit-symmetry.md) for usage details.
 
-### Induced symmetry from equal operands
+### Subgraph symmetry detection
 
-When the same Python object is passed as multiple operands to `me.einsum`,
-detection identifies this and computes additional output symmetry that
-cannot be seen from per-operand symmetry alone. These **induced** groups
-are merged with per-operand groups via the same `propagate_symmetry`
-machinery, and the enriched `output_symmetry` feeds into the cost formula
-`cost = dense × unique_elements / total_elements`.
+Symmetry that reduces einsum costs comes from two complementary sources,
+both unified under the **subgraph symmetry detection** algorithm:
+
+1. **Declared per-operand symmetry.** When an operand is wrapped with
+   `me.as_symmetric()`, its symmetry groups are embedded in the bipartite
+   graph as U-vertex equivalence classes. These propagate into intermediate
+   tensors automatically.
+
+2. **Induced symmetry from repeated operands.** When the same Python object
+   is passed at multiple operand positions, the subgraph oracle detects this
+   via Python identity (`is`) and derives symmetry groups on the output that
+   cannot be seen from per-operand metadata alone.
+
+The oracle builds a bipartite graph once per `contract_path` call and
+evaluates symmetry lazily per subset of operands encountered during path
+search. Both sources feed into the same cost formula:
+
+```
+step_cost = dense_step_cost × (unique_output_elements / total_output_elements)
+```
+
+The two sources are merged via the same group-merging machinery, so a
+tensor that is both `SymmetricTensor` and also repeated in the subscript
+benefits from both contributions simultaneously.
 
 See the
 [exploit-symmetry guide](../how-to/exploit-symmetry.md#automatic-symmetry-from-repeated-operands)
-for usage examples.
+for usage examples, and the
+[subgraph symmetry explanation](../explanation/subgraph-symmetry.md)
+for the algorithm walkthrough.
+
+### What is not captured
+
+The current cost model reduces FLOP counts based on the number of unique
+output elements under permutation symmetry. It does **not** account for
+symmetry along contracted (summed) indices — exploiting that would require
+restructuring the contraction loop itself (e.g., only iterating over the
+upper triangle of a summed symmetric index). Such loop restructuring is out
+of scope and is not reflected in the FLOP counts reported by mechestim.
 
 ## Einsum cost model
 
