@@ -1,7 +1,6 @@
 """Tests for _opt_einsum symmetry helpers and oracle-based path optimization."""
 
 import numpy as np
-import pytest
 
 from mechestim._opt_einsum._symmetry import (
     symmetric_flop_count,

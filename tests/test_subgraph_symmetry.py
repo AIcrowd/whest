@@ -9,7 +9,6 @@ from mechestim._opt_einsum._subgraph_symmetry import (
     EinsumBipartite,
     SubgraphSymmetryOracle,
     _build_bipartite,
-    _compute_subset_symmetry,
 )
 
 

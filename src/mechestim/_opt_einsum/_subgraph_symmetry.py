@@ -18,11 +18,10 @@ Deferred to a follow-up iteration.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from itertools import combinations, permutations, product
+from itertools import permutations, product
 from typing import Any
 
 from ._symmetry import IndexSymmetry
-
 
 _MISSING = object()
 

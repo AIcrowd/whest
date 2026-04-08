@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import numpy as np
 
-import mechestim as me
 from mechestim._opt_einsum import contract_path
 from mechestim._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
 
