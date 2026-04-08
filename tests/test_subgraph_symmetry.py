@@ -297,3 +297,39 @@ class TestHybridBlockPath:
             output_chars="jklm",
         )
         assert oracle.sym(frozenset({0, 1})) is None
+
+
+class TestOracleCaching:
+    def test_same_subset_returns_cached_object(self):
+        X = np.zeros((3, 3))
+        oracle = SubgraphSymmetryOracle(
+            operands=[X, X],
+            subscript_parts=["ij", "jk"],
+            per_op_syms=[None, None],
+            output_chars="ik",
+        )
+        sym1 = oracle.sym(frozenset({0, 1}))
+        sym2 = oracle.sym(frozenset({0, 1}))
+        assert sym1 is sym2
+
+    def test_two_oracles_do_not_share_cache(self):
+        X = np.zeros((3, 3))
+        o1 = SubgraphSymmetryOracle([X, X], ["ij", "jk"], [None, None], "ik")
+        o2 = SubgraphSymmetryOracle([X, X], ["ij", "jk"], [None, None], "ik")
+        assert o1._cache is not o2._cache
+
+    def test_empty_subset_returns_none(self):
+        X = np.zeros((3, 3))
+        oracle = SubgraphSymmetryOracle([X, X], ["ij", "jk"], [None, None], "ik")
+        assert oracle.sym(frozenset()) is None
+
+
+class TestMemoKeyIsSubsetOnly:
+    def test_same_subset_via_different_query_paths(self):
+        # Construct the same subset key via different frozenset constructions
+        X = np.zeros((3, 3))
+        oracle = SubgraphSymmetryOracle([X, X, X], ["ai", "bi", "ci"], [None, None, None], "abc")
+        a = oracle.sym(frozenset({0, 1}))
+        b = oracle.sym(frozenset([0, 1]))
+        c = oracle.sym(frozenset({1, 0}))
+        assert a is b is c
