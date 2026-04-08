@@ -200,3 +200,57 @@ class TestSubsetInduction:
 
         sub_single = _induce_subgraph(g, frozenset({1}))
         assert sub_single.id_groups == ()  # no group with |intersection| >= 2
+
+
+class TestPerIndexPairs:
+    def test_wilson_t_s_s_example(self):
+        # einsum('ij,ai,bj->ab', T, S, S) with T sym in (i,j), S1 is S2
+        T = np.zeros((3, 3))
+        S = np.zeros((4, 3))
+        oracle = SubgraphSymmetryOracle(
+            operands=[T, S, S],
+            subscript_parts=["ij", "ai", "bj"],
+            per_op_syms=[[frozenset({("i",), ("j",)})], None, None],
+            output_chars="ab",
+        )
+        sym = oracle.sym(frozenset({0, 1, 2}))
+        assert sym == [frozenset({("a",), ("b",)})]
+
+    def test_three_identical_operands_finds_s3(self):
+        X = np.zeros((3, 3))
+        oracle = SubgraphSymmetryOracle(
+            operands=[X, X, X],
+            subscript_parts=["ai", "bi", "ci"],
+            per_op_syms=[None, None, None],
+            output_chars="abc",
+        )
+        sym = oracle.sym(frozenset({0, 1, 2}))
+        # All three of a, b, c should be in one merged group (S3)
+        assert sym is not None
+        assert len(sym) == 1
+        only_group = sym[0]
+        assert only_group == frozenset({("a",), ("b",), ("c",)})
+
+    def test_distinct_operands_no_induced_symmetry(self):
+        X = np.zeros((3, 3))
+        Y = np.zeros((3, 3))
+        oracle = SubgraphSymmetryOracle(
+            operands=[X, Y, Y],
+            subscript_parts=["ai", "bi", "ci"],
+            per_op_syms=[None, None, None],
+            output_chars="abc",
+        )
+        sym = oracle.sym(frozenset({0, 1, 2}))
+        # Only Y, Y are identical (ops 1, 2), inducing S2{b, c}
+        assert sym == [frozenset({("b",), ("c",)})]
+
+    def test_empty_v_returns_none(self):
+        # einsum('i,i->', X, X) — scalar output, V is empty
+        X = np.zeros((3,))
+        oracle = SubgraphSymmetryOracle(
+            operands=[X, X],
+            subscript_parts=["i", "i"],
+            per_op_syms=[None, None],
+            output_chars="",
+        )
+        assert oracle.sym(frozenset({0, 1})) is None
