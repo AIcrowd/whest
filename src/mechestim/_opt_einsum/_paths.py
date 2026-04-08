@@ -1042,6 +1042,8 @@ def _dp_compare_flops(
     memory_limit: int | None,
     contract1: int | tuple[int],
     contract2: int | tuple[int],
+    oracle: SubgraphSymmetryOracle | None = None,
+    bitmap_to_subset: Callable[[int], frozenset[int]] | None = None,
 ) -> None:
     """Performs the inner comparison of whether the two subgraphs (the bitmaps
     `s1` and `s2`) should be merged and added to the dynamic programming
@@ -1052,15 +1054,30 @@ def _dp_compare_flops(
     2. If we've already found a better way of making `s`.
     3. If the intermediate tensor corresponding to `s` is going to break the
        memory limit.
+
+    When an oracle is provided, the step cost is scaled by the output symmetry
+    for the merged subset (conservative /2 heuristic; see TODO(dp-symmetry)).
     """
+    s = s1 | s2
+    i = _dp_calc_legs(g, all_tensors, s, inputs, i1_cut_i2_wo_output, i1_union_i2)
+
     # TODO: Odd usage with an Iterable[int] to map a dict of type List[int]
-    cost = cost1 + cost2 + compute_size_by_dict(i1_union_i2, size_dict)
+    if oracle is not None and bitmap_to_subset is not None:
+        merged_subset = bitmap_to_subset(s)
+        sym = oracle.sym(merged_subset)
+        if sym is not None:
+            # Conservative heuristic: any detected symmetry reduces the
+            # step cost by at least 2x. Exact ratio would require the
+            # int<->str label map; see TODO(dp-symmetry).
+            step_cost = compute_size_by_dict(i1_union_i2, size_dict) // 2
+        else:
+            step_cost = compute_size_by_dict(i1_union_i2, size_dict)
+    else:
+        step_cost = compute_size_by_dict(i1_union_i2, size_dict)
+
+    cost = cost1 + cost2 + step_cost
     if cost <= cost_cap:
-        s = s1 | s2
         if s not in xn or cost < xn[s][1]:
-            i = _dp_calc_legs(
-                g, all_tensors, s, inputs, i1_cut_i2_wo_output, i1_union_i2
-            )
             mem = compute_size_by_dict(i, size_dict)
             if memory_limit is None or mem <= memory_limit:
                 xn[s] = (i, cost, (contract1, contract2))
@@ -1082,6 +1099,8 @@ def _dp_compare_size(
     memory_limit: int | None,
     contract1: int | tuple[int],
     contract2: int | tuple[int],
+    oracle: SubgraphSymmetryOracle | None = None,
+    bitmap_to_subset: Callable[[int], frozenset[int]] | None = None,
 ) -> None:
     """Like `_dp_compare_flops` but sieves the potential contraction based
     on the size of the intermediate tensor created, rather than the number of
@@ -1090,6 +1109,11 @@ def _dp_compare_size(
     s = s1 | s2
     i = _dp_calc_legs(g, all_tensors, s, inputs, i1_cut_i2_wo_output, i1_union_i2)
     mem = compute_size_by_dict(i, size_dict)
+    if oracle is not None and bitmap_to_subset is not None:
+        merged_subset = bitmap_to_subset(s)
+        sym = oracle.sym(merged_subset)
+        if sym is not None:
+            mem = mem // 2
     cost = max(cost1, cost2, mem)
     if cost <= cost_cap:
         if s not in xn or cost < xn[s][1]:
@@ -1113,6 +1137,8 @@ def _dp_compare_write(
     memory_limit: int | None,
     contract1: int | tuple[int],
     contract2: int | tuple[int],
+    oracle: SubgraphSymmetryOracle | None = None,
+    bitmap_to_subset: Callable[[int], frozenset[int]] | None = None,
 ) -> None:
     """Like ``_dp_compare_flops`` but sieves the potential contraction based
     on the total size of memory created, rather than the number of
@@ -1121,6 +1147,11 @@ def _dp_compare_write(
     s = s1 | s2
     i = _dp_calc_legs(g, all_tensors, s, inputs, i1_cut_i2_wo_output, i1_union_i2)
     mem = compute_size_by_dict(i, size_dict)
+    if oracle is not None and bitmap_to_subset is not None:
+        merged_subset = bitmap_to_subset(s)
+        sym = oracle.sym(merged_subset)
+        if sym is not None:
+            mem = mem // 2
     cost = cost1 + cost2 + mem
     if cost <= cost_cap:
         if s not in xn or cost < xn[s][1]:
@@ -1149,6 +1180,8 @@ def _dp_compare_combo(
     contract2: int | tuple[int],
     factor: int | float = DEFAULT_COMBO_FACTOR,
     combine: Callable = sum,
+    oracle: SubgraphSymmetryOracle | None = None,
+    bitmap_to_subset: Callable[[int], frozenset[int]] | None = None,
 ) -> None:
     """Like ``_dp_compare_flops`` but sieves the potential contraction based
     on some combination of both the flops and size,.
@@ -1157,6 +1190,12 @@ def _dp_compare_combo(
     i = _dp_calc_legs(g, all_tensors, s, inputs, i1_cut_i2_wo_output, i1_union_i2)
     mem = compute_size_by_dict(i, size_dict)
     f = compute_size_by_dict(i1_union_i2, size_dict)
+    if oracle is not None and bitmap_to_subset is not None:
+        merged_subset = bitmap_to_subset(s)
+        sym = oracle.sym(merged_subset)
+        if sym is not None:
+            mem = mem // 2
+            f = f // 2
     cost = cost1 + cost2 + combine((f, factor * mem))
     if cost <= cost_cap:
         if s not in xn or cost < xn[s][1]:
@@ -1294,6 +1333,7 @@ class DynamicProgramming(PathOptimizer):
         output_: ArrayIndexType,
         size_dict_: dict[str, int],
         memory_limit_: int | None = None,
+        symmetry_oracle: SubgraphSymmetryOracle | None = None,
     ) -> PathType:
         """Parameters:
             inputs_: List of sets that represent the lhs side of the einsum subscript
@@ -1366,6 +1406,22 @@ class DynamicProgramming(PathOptimizer):
         # s1 & (all_tensors ^ s2)
         all_tensors = (1 << len(inputs)) - 1
 
+        # Build a per-call bitmap->frozenset[int] converter for the oracle.
+        # Maps DP bitmap `s` (bit j set iff tensor j is in the subset) to the
+        # original operand-position frozenset that the oracle was built with.
+        if symmetry_oracle is not None:
+            _bts_cache: dict[int, frozenset[int]] = {}
+
+            def bitmap_to_subset(s: int, _cache: dict[int, frozenset[int]] = _bts_cache) -> frozenset[int]:
+                if s not in _cache:
+                    _cache[s] = frozenset(j for j in range(len(inputs)) if s >> j & 1)
+                return _cache[s]
+
+            oracle: SubgraphSymmetryOracle | None = symmetry_oracle
+        else:
+            bitmap_to_subset = None  # type: ignore[assignment]
+            oracle = None
+
         for g in subgraphs:
             # dynamic programming approach to compute x[n] for subgraph g;
             # x[n][set of n tensors] = (indices, cost, contraction)
@@ -1427,6 +1483,8 @@ class DynamicProgramming(PathOptimizer):
                                             memory_limit_,
                                             contract1,
                                             contract2,
+                                            oracle=oracle,
+                                            bitmap_to_subset=bitmap_to_subset,
                                         )
 
                 if (cost_cap > naive_cost) and (len(x[-1]) == 0):
@@ -1463,10 +1521,8 @@ def dynamic_programming(
     symmetry_oracle: SubgraphSymmetryOracle | None = None,
     **kwargs: Any,
 ) -> PathType:
-    # Symmetry awareness lands in Commit 4; for now accept and ignore.
-    _ = symmetry_oracle
     optimizer = DynamicProgramming(**kwargs)
-    return optimizer(inputs, output, size_dict, memory_limit)
+    return optimizer(inputs, output, size_dict, memory_limit, symmetry_oracle=symmetry_oracle)
 
 
 _AUTO_CHOICES = {}
