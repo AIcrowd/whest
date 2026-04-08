@@ -427,79 +427,33 @@ def _block_sigma_is_valid(
     col_of: dict[str, tuple[int, ...]],
     row_order: tuple[int, ...],
 ) -> bool:
-    """Validate a block sigma in two ways (OR):
-
-    1. Column-equality path: apply the operand swap (i ↔ j) as a row
-       permutation on M_S and check that V columns match under the label
-       sigma and W columns are a multiset-permutation.
-
-    2. Subscript-multiset path: apply sigma to the label names of each
-       operand in `subset` and check that the resulting (subscript_set,
-       operand_id) multiset matches the original.  This catches cases
-       like "ij,jk->ik" with same operand X where i↔k is valid because
-       swapping the operands and relabeling reproduces the same multiset,
-       even though the column patterns differ due to the summed index j.
-    """
-    # Path 1: column-equality (geometric)
+    """Validate a block sigma by applying the operand swap (i ↔ j) as a
+    row permutation on M_S and the label sigma as a column relabel, then
+    checking that V columns match and W columns are a permutation."""
     tilde_sigma = {i: j, j: i}
     sigma_row_perm = _lift_operand_perm_to_u(tilde_sigma, row_order, graph)
-    if sigma_row_perm is not None:
-        all_labels = sub.v_labels | sub.w_labels
-        sigma_col_of: dict[str, tuple[int, ...]] = {}
-        for label in all_labels:
-            sigma_col_of[label] = tuple(
-                graph.incidence[sigma_row_perm[k]].get(label, 0)
-                for k in range(len(row_order))
-            )
+    if sigma_row_perm is None:
+        return False
 
-        w_sorted = tuple(sorted(sub.w_labels))
-        w_ok = tuple(sorted(sigma_col_of[lbl] for lbl in w_sorted)) == tuple(
-            sorted(col_of[lbl] for lbl in w_sorted)
+    all_labels = sub.v_labels | sub.w_labels
+    sigma_col_of: dict[str, tuple[int, ...]] = {}
+    for label in all_labels:
+        sigma_col_of[label] = tuple(
+            graph.incidence[sigma_row_perm[k]].get(label, 0)
+            for k in range(len(row_order))
         )
-        if w_ok and all(
-            col_of[v_lbl] == sigma_col_of[sigma.get(v_lbl, v_lbl)]
-            for v_lbl in sub.v_labels
-        ):
-            return True
 
-    # Path 2: subscript-multiset (algebraic)
-    # Apply sigma to each operand's subscript and check if the resulting
-    # (frozenset_of_labels, operand_id) multiset equals the original.
-    from collections import Counter
+    w_sorted = tuple(sorted(sub.w_labels))
+    if tuple(sorted(sigma_col_of[lbl] for lbl in w_sorted)) != tuple(
+        sorted(col_of[lbl] for lbl in w_sorted)
+    ):
+        return False
 
-    original_multiset = Counter(
-        (frozenset(graph.operand_subscripts[op]), id(None))  # id placeholder
-        for op in subset
-    )
-    # We don't have the actual operand objects here, but we can use the
-    # operand index as a proxy since all operands in an id_group share the
-    # same Python id. The key is: does applying sigma to subscripts produce
-    # the same multiset of subscript-frozensets for identical operands?
-    # Build the original multiset: {(subscript_frozenset, operand_class): count}
-    # where operand_class groups operands by identity.
-    # Use the identical_operand_groups to determine which ops share identity.
-    id_class_of: dict[int, int] = {}
-    for group_idx, group in enumerate(graph.identical_operand_groups):
-        for op in group:
-            if op in subset:
-                id_class_of[op] = group_idx
-    # ops not in any group get unique classes
-    next_class = len(graph.identical_operand_groups)
-    for op in sorted(subset):
-        if op not in id_class_of:
-            id_class_of[op] = next_class
-            next_class += 1
-
-    from collections import Counter as _Counter
-    original_ctr = _Counter(
-        (frozenset(graph.operand_subscripts[op]), id_class_of[op])
-        for op in subset
-    )
-    relabeled_ctr = _Counter(
-        (frozenset(sigma.get(c, c) for c in graph.operand_subscripts[op]), id_class_of[op])
-        for op in subset
-    )
-    return original_ctr == relabeled_ctr
+    for v_lbl in sub.v_labels:
+        mapped = sigma.get(v_lbl, v_lbl)
+        if col_of[v_lbl] != sigma_col_of[mapped]:
+            return False
+    return True
 
 
 def _merge_overlapping_groups(
