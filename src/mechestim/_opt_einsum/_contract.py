@@ -441,7 +441,9 @@ def contract_path(
     # Track symmetries through contractions if provided
     sym_list: list[IndexSymmetry | None] | None = None
     if input_symmetries is not None or induced_output_symmetry is not None:
-        sym_list = list(input_symmetries) if input_symmetries is not None else [None] * num_ops
+        sym_list = (
+            list(input_symmetries) if input_symmetries is not None else [None] * num_ops
+        )
 
     # Build contraction tuple (positions, gemm, einsum_str, remaining)
     for cnum, contract_inds in enumerate(path_tuple):

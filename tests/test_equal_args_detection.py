@@ -65,8 +65,8 @@ class TestIsValidSymmetry:
         subscript_parts = ["ij", "kl"]
         operands = [X, X]
         per_op_syms = [
-            [frozenset({('i',), ('j',)})],  # S2{i,j} on op0
-            [frozenset({('k',), ('l',)})],  # S2{k,l} on op1 (not strictly needed here)
+            [frozenset({("i",), ("j",)})],  # S2{i,j} on op0
+            [frozenset({("k",), ("l",)})],  # S2{k,l} on op1 (not strictly needed here)
         ]
         assert _is_valid_symmetry(sigma, subscript_parts, operands, per_op_syms)
 
@@ -100,9 +100,11 @@ class TestEnumerateCandidates:
             {"i": "k", "k": "i"},
             {"j": "k", "k": "j"},
         ]
+
         # Sort dicts as sets of items for comparison
         def key(d):
             return tuple(sorted(d.items()))
+
         assert sorted(candidates, key=key) == sorted(expected, key=key)
 
     def test_per_index_candidates_single_output(self):
@@ -169,7 +171,7 @@ class TestDetectInducedOutputSymmetry:
             output_chars="jk",
             per_op_syms=[None, None],
         )
-        assert result == [frozenset({('j',), ('k',)})]
+        assert result == [frozenset({("j",), ("k",)})]
 
     def test_matmul_chain_plain_X(self):
         X = np.ones((3, 3))
@@ -182,7 +184,7 @@ class TestDetectInducedOutputSymmetry:
             output_chars="ik",
             per_op_syms=[None, None],
         )
-        assert result == [frozenset({('i',), ('k',)})]
+        assert result == [frozenset({("i",), ("k",)})]
 
     def test_different_operands_no_induction(self):
         X = np.ones((3, 3))
@@ -208,7 +210,7 @@ class TestDetectInducedOutputSymmetry:
         # After merge: S3{j,k,l}
         assert result is not None
         assert len(result) == 1
-        assert result[0] == frozenset({('j',), ('k',), ('l',)})
+        assert result[0] == frozenset({("j",), ("k",), ("l",)})
 
     def test_single_operand_no_induction(self):
         X = np.ones((3, 3, 3))
@@ -242,4 +244,4 @@ class TestDetectInducedOutputSymmetry:
             per_op_syms=[None, None],
         )
         # Block candidate: (j,k)↔(l,m). Valid. Induce block S2.
-        assert result == [frozenset({('j', 'k'), ('l', 'm')})]
+        assert result == [frozenset({("j", "k"), ("l", "m")})]

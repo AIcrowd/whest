@@ -904,7 +904,11 @@ def ssa_greedy_optimize(
             sym1 = symmetry_map.get(ssa_id1) if symmetry_map else None
             sym2 = symmetry_map.get(ssa_id2) if symmetry_map else None
             sym12 = propagate_symmetry(
-                sym1, k1, sym2, k2, k12,
+                sym1,
+                k1,
+                sym2,
+                k2,
+                k12,
                 induced_output_symmetry=induced_output_symmetry,
             )
         else:
@@ -989,7 +993,11 @@ def ssa_greedy_optimize(
             sym1 = symmetry_map.get(ssa_id1) if symmetry_map else None
             sym2 = symmetry_map.get(ssa_id2) if symmetry_map else None
             sym12 = propagate_symmetry(
-                sym1, k1, sym2, k2, k12,
+                sym1,
+                k1,
+                sym2,
+                k2,
+                k12,
                 induced_output_symmetry=induced_output_symmetry,
             )
             cost = compute_unique_size(k12, sizes, sym12)
