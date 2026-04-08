@@ -248,7 +248,9 @@ class PathInfo:
         )
 
         contract_strs = [fmt_contract(s) for s in self.steps]
-        contract_col_width = max(len("contract"), max((len(c) for c in contract_strs), default=0))
+        contract_col_width = max(
+            len("contract"), max((len(c) for c in contract_strs), default=0)
+        )
         unique_col_width = max(
             len("unique/dense"),
             max((len(fmt_unique_dense(s)) for s in self.steps), default=0),
@@ -267,7 +269,9 @@ class PathInfo:
         if any_unique:
             cols.append(f"{'unique/dense':<{unique_col_width}}")
         if any_sym:
-            sym_col_width = min(max(max_sym_width, len("symmetry (inputs → output)")), 60)
+            sym_col_width = min(
+                max(max_sym_width, len("symmetry (inputs → output)")), 60
+            )
             cols.append(f"{'symmetry (inputs → output)':<{sym_col_width}}")
         else:
             sym_col_width = 0

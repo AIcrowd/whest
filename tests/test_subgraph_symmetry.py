@@ -175,9 +175,7 @@ class TestSubsetInduction:
         A = np.zeros((3, 4))
         B = np.zeros((4, 5))
         C = np.zeros((5, 6))
-        g = _build_bipartite(
-            [A, B, C], ["ij", "jk", "kl"], [None, None, None], "il"
-        )
+        g = _build_bipartite([A, B, C], ["ij", "jk", "kl"], [None, None, None], "il")
         from mechestim._opt_einsum._subgraph_symmetry import _induce_subgraph
 
         # Contract ops 0 and 1. j is summed entirely within the subset
@@ -327,7 +325,9 @@ class TestMemoKeyIsSubsetOnly:
     def test_same_subset_via_different_query_paths(self):
         # Construct the same subset key via different frozenset constructions
         X = np.zeros((3, 3))
-        oracle = SubgraphSymmetryOracle([X, X, X], ["ai", "bi", "ci"], [None, None, None], "abc")
+        oracle = SubgraphSymmetryOracle(
+            [X, X, X], ["ai", "bi", "ci"], [None, None, None], "abc"
+        )
         a = oracle.sym(frozenset({0, 1}))
         b = oracle.sym(frozenset([0, 1]))
         c = oracle.sym(frozenset({1, 0}))
@@ -345,10 +345,16 @@ class TestOldSymIsSubsetOfNewSym:
     @pytest.mark.parametrize(
         "subscripts, make_operands",
         [
-            ("ij,ai,bj->ab", lambda: (np.zeros((3, 3)), np.zeros((4, 3)), np.zeros((4, 3)))),
+            (
+                "ij,ai,bj->ab",
+                lambda: (np.zeros((3, 3)), np.zeros((4, 3)), np.zeros((4, 3))),
+            ),
             ("ij,ik->jk", lambda: (np.zeros((3, 4)), np.zeros((3, 5)))),
             ("ijk,ilm->jklm", lambda: (np.zeros((3, 3, 3)), np.zeros((3, 3, 3)))),
-            ("ai,bi,ci->abc", lambda: (np.zeros((2, 3)), np.zeros((2, 3)), np.zeros((2, 3)))),
+            (
+                "ai,bi,ci->abc",
+                lambda: (np.zeros((2, 3)), np.zeros((2, 3)), np.zeros((2, 3))),
+            ),
             ("ij,jk->ik", lambda: (np.zeros((3, 4)), np.zeros((4, 5)))),
         ],
     )

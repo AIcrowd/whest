@@ -41,9 +41,7 @@ class TestRandomGreedyUsesSymmetry:
     def test_random_greedy_cost_less_than_dense(self):
         n = 10
         X = np.ones((n, n, n))
-        oracle = SubgraphSymmetryOracle(
-            [X, X], ["ijk", "ilm"], [None, None], "jklm"
-        )
+        oracle = SubgraphSymmetryOracle([X, X], ["ijk", "ilm"], [None, None], "jklm")
         _, info = contract_path(
             "ijk,ilm->jklm",
             (n, n, n),
@@ -66,9 +64,7 @@ class TestSsaPathComputeCostUsesOracle:
         output = frozenset("jklm")
         size_dict = {c: n for c in "ijklm"}
 
-        oracle = SubgraphSymmetryOracle(
-            [X, X], ["ijk", "ilm"], [None, None], "jklm"
-        )
+        oracle = SubgraphSymmetryOracle([X, X], ["ijk", "ilm"], [None, None], "jklm")
 
         ssa_path = [(0, 1)]
         dense_cost, _ = ssa_path_compute_cost(

@@ -554,7 +554,9 @@ class TestExhaustiveSymmetryValidation:
         oracle = _make_oracle("ij,jk,ki->", per_op_syms=[sym, None, None])
         costs = {}
         for algo in ["optimal", "greedy", "branch-all", "dp"]:
-            _, info = contract_path(*args, shapes=True, optimize=algo, symmetry_oracle=oracle)
+            _, info = contract_path(
+                *args, shapes=True, optimize=algo, symmetry_oracle=oracle
+            )
             costs[algo] = info.optimized_cost
         # Optimal should find the best; all others should be >= optimal
         assert costs["greedy"] >= costs["optimal"], f"greedy < optimal: {costs}"
@@ -583,7 +585,9 @@ class TestExhaustiveSymmetryValidation:
         args = ("ij,jk,kl->il", (2, 3), (3, 4), (4, 5))
         for algo in ["optimal", "greedy", "branch-all", "dp"]:
             path_before, info_before = contract_path(*args, shapes=True, optimize=algo)
-            path_after, info_after = contract_path(*args, shapes=True, optimize=algo, symmetry_oracle=None)
+            path_after, info_after = contract_path(
+                *args, shapes=True, optimize=algo, symmetry_oracle=None
+            )
             assert list(path_before) == list(path_after), f"{algo} path changed"
 
     def test_slack_thread_example(self):
@@ -634,9 +638,12 @@ class TestExhaustiveSymmetryValidation:
         # Oracle is passed via contract_path, not directly to RandomGreedy
         # Test the public interface via contract_path
         from mechestim._opt_einsum._contract import contract_path
+
         path, info = contract_path(
             "ij,jk,ki->",
-            (5, 5), (5, 5), (5, 5),
+            (5, 5),
+            (5, 5),
+            (5, 5),
             shapes=True,
             optimize="greedy",
             symmetry_oracle=oracle,

@@ -799,7 +799,9 @@ def ssa_greedy_optimize(
             hadamard_id = next(ssa_ids)
             ssa_path.append((remaining[k12], hadamard_id))
             old_id = remaining[k12]
-            merged = ssa_to_subset[old_id] | ssa_to_subset[ssa_id1] | ssa_to_subset[ssa_id2]
+            merged = (
+                ssa_to_subset[old_id] | ssa_to_subset[ssa_id1] | ssa_to_subset[ssa_id2]
+            )
             ssa_to_subset[hadamard_id] = merged
         else:
             for dim in k12 - output:
@@ -1412,7 +1414,9 @@ class DynamicProgramming(PathOptimizer):
         if symmetry_oracle is not None:
             _bts_cache: dict[int, frozenset[int]] = {}
 
-            def bitmap_to_subset(s: int, _cache: dict[int, frozenset[int]] = _bts_cache) -> frozenset[int]:
+            def bitmap_to_subset(
+                s: int, _cache: dict[int, frozenset[int]] = _bts_cache
+            ) -> frozenset[int]:
                 if s not in _cache:
                     _cache[s] = frozenset(j for j in range(len(inputs)) if s >> j & 1)
                 return _cache[s]
@@ -1522,7 +1526,9 @@ def dynamic_programming(
     **kwargs: Any,
 ) -> PathType:
     optimizer = DynamicProgramming(**kwargs)
-    return optimizer(inputs, output, size_dict, memory_limit, symmetry_oracle=symmetry_oracle)
+    return optimizer(
+        inputs, output, size_dict, memory_limit, symmetry_oracle=symmetry_oracle
+    )
 
 
 _AUTO_CHOICES = {}

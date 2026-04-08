@@ -44,14 +44,14 @@ class EinsumBipartite:
     """
 
     # Parallel tuples over U vertices:
-    u_vertices: tuple[tuple[int, int], ...]       # (operand_idx, class_id)
-    u_labels: tuple[frozenset[str], ...]          # which labels this class contains
-    u_operand: tuple[int, ...]                    # operand index
-    incidence: tuple[dict[str, int], ...]         # {label -> multiplicity}
+    u_vertices: tuple[tuple[int, int], ...]  # (operand_idx, class_id)
+    u_labels: tuple[frozenset[str], ...]  # which labels this class contains
+    u_operand: tuple[int, ...]  # operand index
+    incidence: tuple[dict[str, int], ...]  # {label -> multiplicity}
 
     # Right vertices, top-level partition:
-    free_labels: frozenset[str]                   # V at the top level
-    summed_labels: frozenset[str]                 # W at the top level
+    free_labels: frozenset[str]  # V at the top level
+    summed_labels: frozenset[str]  # W at the top level
 
     # Python-identity groups: partition of [0..num_operands),
     # non-singleton blocks enumerate identical operands.
@@ -194,9 +194,7 @@ class _Subgraph:
     id_groups: tuple[tuple[int, ...], ...]
 
 
-def _induce_subgraph(
-    graph: EinsumBipartite, subset: frozenset[int]
-) -> _Subgraph:
+def _induce_subgraph(graph: EinsumBipartite, subset: frozenset[int]) -> _Subgraph:
     u_local = tuple(
         idx for idx, op_idx in enumerate(graph.u_operand) if op_idx in subset
     )
@@ -273,9 +271,7 @@ def _compute_subset_symmetry(
     all_labels = sub.v_labels | sub.w_labels
     col_of: dict[str, tuple[int, ...]] = {}
     for label in all_labels:
-        col_of[label] = tuple(
-            graph.incidence[u].get(label, 0) for u in row_order
-        )
+        col_of[label] = tuple(graph.incidence[u].get(label, 0) for u in row_order)
 
     # Step 2a: per-index pair detection
     per_index_groups = _detect_per_index_pairs(graph, sub, row_order, col_of)
@@ -313,9 +309,7 @@ def _detect_per_index_pairs(
                 for k in range(len(row_order))
             )
 
-        sigma_w_multiset = tuple(
-            sorted(sigma_col_of[lbl] for lbl in w_sorted)
-        )
+        sigma_w_multiset = tuple(sorted(sigma_col_of[lbl] for lbl in w_sorted))
         if sigma_w_multiset != w_col_multiset:
             continue
 
@@ -378,11 +372,7 @@ def _detect_block_candidates(
             sub_i = subscripts[i]
             sub_j = subscripts[j]
             other_ops_labels = frozenset().union(
-                *[
-                    graph.operand_labels[k]
-                    for k in subset
-                    if k != i and k != j
-                ]
+                *[graph.operand_labels[k] for k in subset if k != i and k != j]
             )
 
             sub_i_set = frozenset(sub_i)
