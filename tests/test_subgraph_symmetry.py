@@ -24,6 +24,7 @@ class TestBipartiteConstruction:
             summed_labels=frozenset(),
             identical_operand_groups=(),
             operand_labels=(),
+            operand_subscripts=(),
         )
         assert g.u_vertices == ()
         assert g.free_labels == frozenset()
@@ -252,5 +253,47 @@ class TestPerIndexPairs:
             subscript_parts=["i", "i"],
             per_op_syms=[None, None],
             output_chars="",
+        )
+        assert oracle.sym(frozenset({0, 1})) is None
+
+
+class TestHybridBlockPath:
+    def test_gram_matrix_per_index_via_block(self):
+        # einsum('ij,ik->jk', X, X) — a single-index swap the block path
+        # also finds (as a 1-tuple block).
+        X = np.zeros((3, 4))
+        oracle = SubgraphSymmetryOracle(
+            operands=[X, X],
+            subscript_parts=["ij", "ik"],
+            per_op_syms=[None, None],
+            output_chars="jk",
+        )
+        sym = oracle.sym(frozenset({0, 1}))
+        assert sym == [frozenset({("j",), ("k",)})]
+
+    def test_outer_product_block_s2(self):
+        # einsum('ijk,ilm->jklm', X, X) — block symmetry on (j,k) and (l,m)
+        X = np.zeros((3, 3, 3))
+        oracle = SubgraphSymmetryOracle(
+            operands=[X, X],
+            subscript_parts=["ijk", "ilm"],
+            per_op_syms=[None, None],
+            output_chars="jklm",
+        )
+        sym = oracle.sym(frozenset({0, 1}))
+        assert sym is not None
+        # Expect a single block group: {(j,k), (l,m)}
+        assert len(sym) == 1
+        only = sym[0]
+        assert frozenset({("j", "k"), ("l", "m")}) == only
+
+    def test_distinct_operands_no_block(self):
+        X = np.zeros((3, 3, 3))
+        Y = np.zeros((3, 3, 3))
+        oracle = SubgraphSymmetryOracle(
+            operands=[X, Y],
+            subscript_parts=["ijk", "ilm"],
+            per_op_syms=[None, None],
+            output_chars="jklm",
         )
         assert oracle.sym(frozenset({0, 1})) is None

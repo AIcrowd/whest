@@ -62,6 +62,10 @@ class EinsumBipartite:
     # crossing labels efficiently without re-scanning incidence.
     operand_labels: tuple[frozenset[str], ...]
 
+    # Per-operand subscript string, needed by the block path helper
+    # to reconstruct free-to-one-operand label sets in positional order.
+    operand_subscripts: tuple[str, ...]  # parallel to operand_labels
+
 
 def _build_bipartite(
     operands: list[Any],
@@ -170,6 +174,7 @@ def _build_bipartite(
         summed_labels=summed_labels,
         identical_operand_groups=identical_operand_groups,
         operand_labels=tuple(operand_labels),
+        operand_subscripts=tuple(subscript_parts),
     )
 
 
@@ -260,15 +265,11 @@ def _compute_subset_symmetry(
     graph: EinsumBipartite,
     subset: frozenset[int],
 ) -> IndexSymmetry | None:
-    # Step 0: induce the subgraph
     sub = _induce_subgraph(graph, subset)
     if not sub.v_labels:
         return None
 
-    # Step 1: canonical column encoding of M_S
-    # Row order: sub.u_local in the order given.
-    # Column: for each label L, the tuple of incidence multiplicities
-    # across rows in sub.u_local.
+    # Step 1: canonical column encoding
     row_order = sub.u_local
     all_labels = sub.v_labels | sub.w_labels
     col_of: dict[str, tuple[int, ...]] = {}
@@ -278,34 +279,47 @@ def _compute_subset_symmetry(
         )
 
     # Step 2a: per-index pair detection
+    per_index_groups = _detect_per_index_pairs(graph, sub, row_order, col_of)
+
+    # Step 2b: block candidate detection (hybrid carry-over)
+    block_groups = _detect_block_candidates(graph, sub, subset, col_of, row_order)
+
+    # Step 3: merge per-index + block candidates
+    all_candidates = list(per_index_groups) + list(block_groups)
+    if not all_candidates:
+        return None
+    merged = _merge_overlapping_groups(all_candidates)
+    return merged or None
+
+
+def _detect_per_index_pairs(
+    graph: EinsumBipartite,
+    sub: _Subgraph,
+    row_order: tuple[int, ...],
+    col_of: dict[str, tuple[int, ...]],
+) -> IndexSymmetry:
     pair_set: set[tuple[str, str]] = set()
     v_sorted = tuple(sorted(sub.v_labels))
     w_sorted = tuple(sorted(sub.w_labels))
     w_col_multiset = tuple(sorted(col_of[lbl] for lbl in w_sorted))
 
     for tilde_sigma in _enumerate_id_group_permutations(sub.id_groups):
-        sigma_row_perm = _lift_operand_perm_to_u(
-            tilde_sigma, row_order, graph
-        )
+        sigma_row_perm = _lift_operand_perm_to_u(tilde_sigma, row_order, graph)
         if sigma_row_perm is None:
             continue
-        # sigma_row_perm[k] = the NEW row that replaces row_order[k]
-        # when sigma is applied. To build sigma(M_S)[:, label], we look
-        # up graph.incidence[sigma_row_perm[k]].get(label, 0) for k in
-        # range(len(row_order)).
         sigma_col_of: dict[str, tuple[int, ...]] = {}
-        for label in all_labels:
+        for label in sub.v_labels | sub.w_labels:
             sigma_col_of[label] = tuple(
                 graph.incidence[sigma_row_perm[k]].get(label, 0)
                 for k in range(len(row_order))
             )
 
-        # W-columns must be a permutation
-        sigma_w_multiset = tuple(sorted(sigma_col_of[lbl] for lbl in w_sorted))
+        sigma_w_multiset = tuple(
+            sorted(sigma_col_of[lbl] for lbl in w_sorted)
+        )
         if sigma_w_multiset != w_col_multiset:
             continue
 
-        # Pair check
         for i_idx in range(len(v_sorted)):
             for j_idx in range(i_idx + 1, len(v_sorted)):
                 i_lbl = v_sorted[i_idx]
@@ -314,7 +328,6 @@ def _compute_subset_symmetry(
                     continue
                 if col_of[j_lbl] != sigma_col_of[i_lbl]:
                     continue
-                # All other V columns unchanged
                 ok = True
                 for k_idx in range(len(v_sorted)):
                     if k_idx == i_idx or k_idx == j_idx:
@@ -326,10 +339,155 @@ def _compute_subset_symmetry(
                 if ok:
                     pair_set.add((i_lbl, j_lbl))
 
-    per_index_groups = _pairs_to_groups(sub.v_labels, pair_set)
+    return _pairs_to_groups(sub.v_labels, pair_set)
 
-    # Step 2b and Step 3 land in Tasks 1.6 and 1.7.
-    return per_index_groups or None
+
+def _detect_block_candidates(
+    graph: EinsumBipartite,
+    sub: _Subgraph,
+    subset: frozenset[int],
+    col_of: dict[str, tuple[int, ...]],
+    row_order: tuple[int, ...],
+) -> IndexSymmetry:
+    """Hybrid block candidate path. Ported from _enumerate_block_candidates.
+
+    For each pair (i, j) of operand positions within `subset` where the
+    operands are in the same identical-operand group, build the positional
+    block-swap sigma that maps "free-only-to-i" labels to "free-only-to-j"
+    labels in subscript order, then validate via the same column-equality
+    machinery used in Step 2a.
+    """
+    id_group_of: dict[int, tuple[int, ...]] = {}
+    for group in graph.identical_operand_groups:
+        for op in group:
+            id_group_of[op] = tuple(sorted(set(group) & subset))
+
+    groups: list[frozenset[tuple[str, ...]]] = []
+    seen_group: set[frozenset[tuple[str, ...]]] = set()
+
+    subscripts = graph.operand_subscripts
+
+    for i in sorted(subset):
+        for j in sorted(subset):
+            if j <= i:
+                continue
+            if id_group_of.get(i) is None or id_group_of.get(j) is None:
+                continue
+            if j not in id_group_of[i]:
+                continue
+
+            sub_i = subscripts[i]
+            sub_j = subscripts[j]
+            other_ops_labels = frozenset().union(
+                *[
+                    graph.operand_labels[k]
+                    for k in subset
+                    if k != i and k != j
+                ]
+            )
+
+            sub_i_set = frozenset(sub_i)
+            sub_j_set = frozenset(sub_j)
+            free_i = sub_i_set - sub_j_set - other_ops_labels
+            free_j = sub_j_set - sub_i_set - other_ops_labels
+            free_i = free_i & sub.v_labels
+            free_j = free_j & sub.v_labels
+            if len(free_i) != len(free_j) or len(free_i) == 0:
+                continue
+
+            free_i_ordered = tuple(c for c in sub_i if c in free_i)
+            free_j_ordered = tuple(c for c in sub_j if c in free_j)
+
+            sigma: dict[str, str] = {}
+            for a, b in zip(free_i_ordered, free_j_ordered):
+                sigma[a] = b
+                sigma[b] = a
+
+            if _block_sigma_is_valid(
+                graph, sub, subset, i, j, sigma, col_of, row_order
+            ):
+                if len(free_i) == 1:
+                    group = frozenset({(free_i_ordered[0],), (free_j_ordered[0],)})
+                else:
+                    group = frozenset({free_i_ordered, free_j_ordered})
+                if group not in seen_group:
+                    seen_group.add(group)
+                    groups.append(group)
+
+    return groups
+
+
+def _block_sigma_is_valid(
+    graph: EinsumBipartite,
+    sub: _Subgraph,
+    subset: frozenset[int],
+    i: int,
+    j: int,
+    sigma: dict[str, str],
+    col_of: dict[str, tuple[int, ...]],
+    row_order: tuple[int, ...],
+) -> bool:
+    """Validate a block sigma by applying the operand swap (i ↔ j) as a
+    row permutation on M_S and the label sigma as a column relabel, then
+    checking that V columns match and W columns are a permutation."""
+    tilde_sigma = {i: j, j: i}
+    sigma_row_perm = _lift_operand_perm_to_u(tilde_sigma, row_order, graph)
+    if sigma_row_perm is None:
+        return False
+
+    all_labels = sub.v_labels | sub.w_labels
+    sigma_col_of: dict[str, tuple[int, ...]] = {}
+    for label in all_labels:
+        sigma_col_of[label] = tuple(
+            graph.incidence[sigma_row_perm[k]].get(label, 0)
+            for k in range(len(row_order))
+        )
+
+    w_sorted = tuple(sorted(sub.w_labels))
+    if tuple(sorted(sigma_col_of[lbl] for lbl in w_sorted)) != tuple(
+        sorted(col_of[lbl] for lbl in w_sorted)
+    ):
+        return False
+
+    for v_lbl in sub.v_labels:
+        mapped = sigma.get(v_lbl, v_lbl)
+        if col_of[v_lbl] != sigma_col_of[mapped]:
+            return False
+    return True
+
+
+def _merge_overlapping_groups(
+    candidates: list[frozenset[tuple[str, ...]]],
+) -> list[frozenset[tuple[str, ...]]]:
+    """Merge groups that share any individual label character.
+
+    For groups of the same block size, take the union of their blocks.
+    For groups of different block sizes, keep the one with the larger
+    block size (block symmetries dominate per-index).
+    """
+    merged: list[frozenset[tuple[str, ...]]] = []
+    for g in candidates:
+        g_chars = frozenset(c for block in g for c in block)
+        overlapping = [
+            k
+            for k, m in enumerate(merged)
+            if any(c in g_chars for block in m for c in block)
+        ]
+        if not overlapping:
+            merged.append(g)
+            continue
+
+        combined = g
+        for k in sorted(overlapping, reverse=True):
+            other = merged.pop(k)
+            s1 = len(next(iter(combined)))
+            s2 = len(next(iter(other)))
+            if s1 == s2:
+                combined = frozenset(combined | other)
+            else:
+                combined = combined if s1 > s2 else other
+        merged.append(combined)
+    return merged
 
 
 def _enumerate_id_group_permutations(
