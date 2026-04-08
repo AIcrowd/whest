@@ -44,6 +44,25 @@ class MechestimArray(_np.ndarray):
         # No subclass state to propagate.
         pass
 
+    def __array_wrap__(self, out_arr, context=None, return_scalar=False):
+        """Honor numpy's `return_scalar` request from ufunc reductions.
+
+        When a ufunc reduction collapses to a single value (e.g.
+        ``np.bitwise_or.reduce(np.array([True], dtype=object))``), numpy
+        passes ``return_scalar=True`` to ``__array_wrap__`` so the caller
+        receives a Python scalar rather than a 0-d ndarray. The default
+        ndarray behaviour respects this flag; we forward it explicitly so
+        the same behaviour holds when the input is a MechestimArray.
+
+        For non-scalar results we let numpy preserve the subclass (the
+        default behaviour) so views, slices, and ufunc outputs stay
+        MechestimArrays — keeping operator overloads and FLOP tracking
+        intact for chained expressions.
+        """
+        if return_scalar:
+            return out_arr[()]
+        return super().__array_wrap__(out_arr, context, return_scalar)
+
     # ----- Binary arithmetic -----
 
     def __add__(self, other):
@@ -268,7 +287,10 @@ def _asmechestim(x):
     - MechestimArray: returned as-is
     - numpy.ndarray subclass (e.g. SymmetricTensor): returned as-is to
       preserve subclass metadata
-    - plain numpy.ndarray: view-cast to MechestimArray (no copy)
+    - plain numpy.ndarray: view-cast to MechestimArray (no copy). The
+      view does NOT own its data — callers that need OWNDATA=True on
+      the output should construct the result via mechestim's typed APIs
+      directly rather than relying on this conversion.
     - other: np.asarray first, then view-cast
     """
     if isinstance(x, MechestimArray):

@@ -70,6 +70,10 @@ def _counted_unary_multi(np_func, op_name: str):
 def _counted_binary(np_func, op_name: str):
     def wrapper(x, y):
         budget = require_budget()
+        # Preserve original (possibly Python-scalar) values for the actual
+        # numpy call so that NEP 50 weak-typing rules apply correctly. We
+        # only need ndarray views for shape and symmetry inspection below.
+        x_orig, y_orig = x, y
         if not isinstance(x, _np.ndarray):
             x = _np.asarray(x)
         if not isinstance(y, _np.ndarray):
@@ -107,7 +111,10 @@ def _counted_binary(np_func, op_name: str):
         budget.deduct(
             op_name, flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape)
         )
-        result = np_func(x, y)
+        # Call the underlying ufunc with the ORIGINAL inputs so that
+        # Python-scalar dtype promotion (NEP 50) and FloatingPointError
+        # propagation (np.errstate) work exactly as in plain numpy.
+        result = np_func(x_orig, y_orig)
         check_nan_inf(result, op_name)
         if out_sym_axes:
             result = SymmetricTensor(result, symmetric_axes=out_sym_axes)

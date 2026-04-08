@@ -40,8 +40,18 @@ def coerce_arrays(*arrays):
 
 
 def check_nan_inf(result: np.ndarray, op_name: str) -> None:
-    """Issue a warning if result contains NaN or Inf values."""
+    """Issue a warning if result contains NaN or Inf values.
+
+    Skips dtypes that don't support `np.isnan`/`np.isinf` (e.g. object,
+    integer, complex with object content) — these can never contain NaN
+    or Inf as ndarray values, so the check is a no-op.
+    """
     if not isinstance(result, np.ndarray):
+        return
+    # np.isnan/np.isinf only support float and complex dtypes. For other
+    # dtypes (object, integer, bool, structured), there are no NaN/Inf
+    # values to detect, so skip the check.
+    if result.dtype.kind not in ("f", "c"):
         return
     nan_count = int(np.isnan(result).sum())
     inf_count = int(np.isinf(result).sum())
