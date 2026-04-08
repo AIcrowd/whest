@@ -74,6 +74,19 @@ When a tensor is a `SymmetricTensor`, costs are reduced based on the number of u
 
 See [Exploit Symmetry Savings](../how-to/exploit-symmetry.md) for usage details.
 
+### Induced symmetry from equal operands
+
+When the same Python object is passed as multiple operands to `me.einsum`,
+detection identifies this and computes additional output symmetry that
+cannot be seen from per-operand symmetry alone. These **induced** groups
+are merged with per-operand groups via the same `propagate_symmetry`
+machinery, and the enriched `output_symmetry` feeds into the cost formula
+`cost = dense × unique_elements / total_elements`.
+
+See the
+[exploit-symmetry guide](../how-to/exploit-symmetry.md#automatic-symmetry-from-repeated-operands)
+for usage examples.
+
 ## Einsum cost model
 
 Every einsum — regardless of the number of operands — is decomposed into
