@@ -13,10 +13,9 @@ from collections.abc import Callable, Generator, Sequence
 from typing import Any
 
 from ._helpers import compute_size_by_dict, flop_count
+from ._subgraph_symmetry import SubgraphSymmetryOracle
 from ._symmetry import (
     IndexSymmetry,
-    compute_unique_size,
-    propagate_symmetry,
     symmetric_flop_count,
 )
 from ._typing import ArrayIndexType, PathSearchFunctionType, PathType, TensorShapeType
@@ -140,63 +139,53 @@ def calc_k12_flops(
     i: int,
     j: int,
     size_dict: dict[str, int],
-    symmetry_map: dict[int, IndexSymmetry | None] | None = None,
-    induced_output_symmetry: IndexSymmetry | None = None,
+    oracle: SubgraphSymmetryOracle | None = None,
+    ssa_to_subset: dict[int, frozenset[int]] | None = None,
 ) -> tuple[frozenset[str], int, IndexSymmetry | None]:
     """Calculate the resulting indices and flops for a potential pairwise
-    contraction - used in the recursive (optimal/branch) algorithms.
+    contraction.
 
-    Parameters:
-        inputs: The indices of each tensor in this contraction, note this includes
-            tensors unavailable to contract as static single assignment is used:>
-            contracted tensors are not removed from the list.
-        output: The set of output indices for the whole contraction.
-        remaining: *The set of indices (corresponding to ``inputs``) of tensors still available to contract.
-        i: Index of potential tensor to contract.
-        j: Index of potential tensor to contract.
-        size_dict: Size mapping of all the indices.
-        symmetry_map: Optional mapping from tensor SSA id to its IndexSymmetry.
-        induced_output_symmetry: Global output-level symmetry constraints from
-            equal-args detection, passed through to propagate_symmetry at every step.
+    Parameters
+    ----------
+    oracle : SubgraphSymmetryOracle | None
+        Subset-keyed symmetry oracle. When provided together with
+        ``ssa_to_subset``, the symmetry of the output tensor is looked
+        up via ``oracle.sym(ssa_to_subset[i] | ssa_to_subset[j])`` and
+        used to reduce the FLOP count.
+    ssa_to_subset : dict[int, frozenset[int]] | None
+        Mapping from SSA tensor id to the subset of original operand
+        positions that tensor represents.
 
-    Returns:
-        k12: The resulting indices of the potential tensor.
-        cost: Estimated flop count of operation.
-        sym12: Symmetry of the result tensor (None when no symmetry).
+    Returns
+    -------
+    k12 : frozenset[str]
+        The resulting indices of the potential tensor.
+    cost : int
+        Estimated flop count of the operation.
+    sym12 : IndexSymmetry | None
+        Symmetry of the result tensor (None when no oracle or no symmetry).
     """
     k1, k2 = inputs[i], inputs[j]
     either = k1 | k2
     keep = frozenset.union(output, *map(inputs.__getitem__, remaining - {i, j}))
-
     k12 = either & keep
-
-    # Any index in `either` but not in `k12` is summed away.  This includes
-    # both shared-contracted indices (in both operands) AND traced indices
-    # (in only one operand).  Both require accumulation (additions).
     inner = bool(either - k12)
 
-    if symmetry_map is not None or induced_output_symmetry is not None:
-        sym_i = symmetry_map.get(i) if symmetry_map is not None else None
-        sym_j = symmetry_map.get(j) if symmetry_map is not None else None
-        sym12 = propagate_symmetry(
-            sym_i,
-            k1,
-            sym_j,
-            k2,
-            k12,
-            induced_output_symmetry=induced_output_symmetry,
-        )
+    sym12: IndexSymmetry | None = None
+    if oracle is not None and ssa_to_subset is not None:
+        merged_subset = ssa_to_subset[i] | ssa_to_subset[j]
+        sym12 = oracle.sym(merged_subset)
+
+    if sym12 is not None:
         cost = symmetric_flop_count(
             either,
             inner,
             2,
             size_dict,
-            output_indices=k12,
-            input_symmetries=[sym_i, sym_j],
             output_symmetry=sym12,
+            output_indices=k12,
         )
     else:
-        sym12 = None
         cost = flop_count(either, inner, 2, size_dict)
 
     return k12, cost, sym12
@@ -222,102 +211,65 @@ def optimal(
     output: ArrayIndexType,
     size_dict: dict[str, int],
     memory_limit: int | None = None,
-    input_symmetries: list[IndexSymmetry | None] | None = None,
-    induced_output_symmetry: IndexSymmetry | None = None,
+    symmetry_oracle: SubgraphSymmetryOracle | None = None,
 ) -> PathType:
-    """Computes all possible pair contractions in a depth-first recursive manner,
-    sieving results based on `memory_limit` and the best path found so far.
-
-    Parameters:
-        inputs: List of sets that represent the lhs side of the einsum subscript.
-        output: Set that represents the rhs side of the overall einsum subscript.
-        size_dict: Dictionary of index sizes.
-        memory_limit: The maximum number of elements in a temporary array.
-
-    Returns:
-        path: The optimal contraction order within the memory limit constraint.
-
-    Examples:
-    ```python
-    isets = [set('abd'), set('ac'), set('bdc')]
-    oset = set('')
-    idx_sizes = {'a': 1, 'b':2, 'c':3, 'd':4}
-    optimal(isets, oset, idx_sizes, 5000)
-    #> [(0, 2), (0, 1)]
-    ```
-    """
+    """Computes all possible pair contractions in a depth-first recursive manner."""
     inputs_set = tuple(map(frozenset, inputs))
     output_set = frozenset(output)
+    num_operands = len(inputs)
 
     best_flops = {"flops": float("inf")}
     best_ssa_path = {"ssa_path": (tuple(range(len(inputs))),)}
     size_cache: dict[frozenset[str], int] = {}
 
-    # Build symmetry_map when symmetry info is provided
-    symmetry_map: dict[int, IndexSymmetry | None] | None = None
-    if input_symmetries is not None:
-        symmetry_map = {i: s for i, s in enumerate(input_symmetries)}
+    # Initial SSA -> subset mapping: each original operand covers itself.
+    initial_ssa_to_subset: dict[int, frozenset[int]] = {
+        k: frozenset({k}) for k in range(num_operands)
+    }
 
-    # Disable result cache when symmetry is present (same index pair may have
-    # different symmetries in different parts of the search tree).
+    # Result cache is valid because calc_k12_flops is now pure in
+    # (merged_subset,) — the oracle guarantees that two subsets with the
+    # same frozenset key produce the same symmetry.
     result_cache: dict[
-        tuple[ArrayIndexType, ArrayIndexType],
+        tuple[ArrayIndexType, ArrayIndexType, frozenset[int]],
         tuple[frozenset[str], int, IndexSymmetry | None],
     ] = {}
-    use_cache = symmetry_map is None and induced_output_symmetry is None
 
-    def _optimal_iterate(path, remaining, inputs, flops, sym_map):
-        # reached end of path (only ever get here if flops is best found so far)
+    def _optimal_iterate(path, remaining, inputs, flops, ssa_to_subset):
         if len(remaining) == 1:
             best_flops["flops"] = flops
             best_ssa_path["ssa_path"] = path
             return
 
-        # check all possible remaining paths
         for i, j in itertools.combinations(remaining, 2):
             if i > j:
                 i, j = j, i
 
-            if use_cache:
-                key = (inputs[i], inputs[j])
-                try:
-                    k12, flops12, sym12 = result_cache[key]
-                except KeyError:
-                    k12, flops12, sym12 = result_cache[key] = calc_k12_flops(
-                        inputs,
-                        output_set,
-                        remaining,
-                        i,
-                        j,
-                        size_dict,
-                        symmetry_map=sym_map,
-                        induced_output_symmetry=induced_output_symmetry,
-                    )
-            else:
-                k12, flops12, sym12 = calc_k12_flops(
+            merged_subset = ssa_to_subset[i] | ssa_to_subset[j]
+            cache_key = (inputs[i], inputs[j], merged_subset)
+            try:
+                k12, flops12, sym12 = result_cache[cache_key]
+            except KeyError:
+                k12, flops12, sym12 = result_cache[cache_key] = calc_k12_flops(
                     inputs,
                     output_set,
                     remaining,
                     i,
                     j,
                     size_dict,
-                    symmetry_map=sym_map,
-                    induced_output_symmetry=induced_output_symmetry,
+                    oracle=symmetry_oracle,
+                    ssa_to_subset=ssa_to_subset,
                 )
 
-            # sieve based on current best flops
             new_flops = flops + flops12
             if new_flops >= best_flops["flops"]:
                 continue
 
-            # sieve based on memory limit
             if memory_limit not in _UNLIMITED_MEM:
                 try:
                     size12 = size_cache[k12]
                 except KeyError:
                     size12 = size_cache[k12] = compute_size_by_dict(k12, size_dict)
-
-                # possibly terminate this path with an all-terms einsum
                 if size12 > memory_limit:
                     new_flops = flops + _compute_oversize_flops(
                         inputs, remaining, output_set, size_dict
@@ -327,19 +279,15 @@ def optimal(
                         best_ssa_path["ssa_path"] = path + (tuple(remaining),)
                     continue
 
-            # update symmetry map for the new tensor
-            new_sym_map = sym_map
-            if sym_map is not None:
-                new_sym_map = dict(sym_map)
-                new_sym_map[len(inputs)] = sym12
+            new_ssa_to_subset = dict(ssa_to_subset)
+            new_ssa_to_subset[len(inputs)] = merged_subset
 
-            # add contraction and recurse into all remaining
             _optimal_iterate(
                 path=path + ((i, j),),
                 inputs=inputs + (k12,),
                 remaining=remaining - {i, j} | {len(inputs)},
                 flops=new_flops,
-                sym_map=new_sym_map,
+                ssa_to_subset=new_ssa_to_subset,
             )
 
     _optimal_iterate(
@@ -347,7 +295,7 @@ def optimal(
         inputs=inputs_set,
         remaining=set(range(len(inputs))),
         flops=0,
-        sym_map=symmetry_map,
+        ssa_to_subset=initial_ssa_to_subset,
     )
 
     return ssa_to_linear(best_ssa_path["ssa_path"])
@@ -452,17 +400,14 @@ class BranchBound(PathOptimizer):
         output_: ArrayIndexType,
         size_dict: dict[str, int],
         memory_limit: int | None = None,
-        input_symmetries: list[IndexSymmetry | None] | None = None,
-        induced_output_symmetry: IndexSymmetry | None = None,
+        symmetry_oracle: SubgraphSymmetryOracle | None = None,
     ) -> PathType:
         """Parameters:
             inputs_: List of sets that represent the lhs side of the einsum subscript
             output_: Set that represents the rhs side of the overall einsum subscript
             size_dict: Dictionary of index sizes
             memory_limit: The maximum number of elements in a temporary array.
-            input_symmetries: Optional symmetry info for each input tensor.
-            induced_output_symmetry: Global output-level symmetry constraints from
-                equal-args detection, passed through to propagate_symmetry at every step.
+            symmetry_oracle: Optional subgraph symmetry oracle.
 
         Returns:
             path: The contraction order within the memory limit constraint.
@@ -477,24 +422,23 @@ class BranchBound(PathOptimizer):
         """
         self._check_args_against_first_call(inputs_, output_, size_dict)
 
-        inputs: tuple[frozenset[str]] = tuple(map(frozenset, inputs_))  # type: ignore
+        inputs: tuple[frozenset[str]] = tuple(map(frozenset, inputs_))
         output: frozenset[str] = frozenset(output_)
+        num_operands = len(inputs_)
 
         size_cache = {k: compute_size_by_dict(k, size_dict) for k in inputs}
 
-        # Build symmetry_map when symmetry info is provided
-        symmetry_map: dict[int, IndexSymmetry | None] | None = None
-        if input_symmetries is not None:
-            symmetry_map = {i: s for i, s in enumerate(input_symmetries)}
+        initial_ssa_to_subset: dict[int, frozenset[int]] = {
+            k: frozenset({k}) for k in range(num_operands)
+        }
 
-        # Disable result cache when symmetry is present
-        use_cache = symmetry_map is None and induced_output_symmetry is None
+        # Result cache is valid with the oracle — key by (k1, k2, merged_subset)
         result_cache: dict[
-            tuple[frozenset[str], frozenset[str]],
+            tuple[frozenset[str], frozenset[str], frozenset[int]],
             tuple[frozenset[str], int, IndexSymmetry | None],
         ] = {}
 
-        def _branch_iterate(path, inputs, remaining, flops, size, sym_map):
+        def _branch_iterate(path, inputs, remaining, flops, size, ssa_to_subset):
             # reached end of path (only ever get here if flops is best found so far)
             if len(remaining) == 1:
                 self.best["size"] = size
@@ -506,30 +450,20 @@ class BranchBound(PathOptimizer):
                 k1: frozenset[str], k2: frozenset[str], i: int, j: int
             ) -> Any:
                 # find resulting indices and flops
-                if use_cache:
-                    try:
-                        k12, flops12, sym12 = result_cache[k1, k2]
-                    except KeyError:
-                        k12, flops12, sym12 = result_cache[k1, k2] = calc_k12_flops(
-                            inputs,
-                            output,
-                            remaining,
-                            i,
-                            j,
-                            size_dict,
-                            symmetry_map=sym_map,
-                            induced_output_symmetry=induced_output_symmetry,
-                        )
-                else:
-                    k12, flops12, sym12 = calc_k12_flops(
+                merged_subset = ssa_to_subset[i] | ssa_to_subset[j]
+                cache_key = (k1, k2, merged_subset)
+                try:
+                    k12, flops12, sym12 = result_cache[cache_key]
+                except KeyError:
+                    k12, flops12, sym12 = result_cache[cache_key] = calc_k12_flops(
                         inputs,
                         output,
                         remaining,
                         i,
                         j,
                         size_dict,
-                        symmetry_map=sym_map,
-                        induced_output_symmetry=induced_output_symmetry,
+                        oracle=symmetry_oracle,
+                        ssa_to_subset=ssa_to_subset,
                     )
 
                 try:
@@ -605,11 +539,8 @@ class BranchBound(PathOptimizer):
                     candidates
                 )
 
-                # update symmetry map for the new tensor
-                new_sym_map = sym_map
-                if sym_map is not None:
-                    new_sym_map = dict(sym_map)
-                    new_sym_map[len(inputs)] = sym12
+                new_ssa_to_subset = dict(ssa_to_subset)
+                new_ssa_to_subset[len(inputs)] = ssa_to_subset[i] | ssa_to_subset[j]
 
                 _branch_iterate(
                     path=path + ((i, j),),
@@ -617,7 +548,7 @@ class BranchBound(PathOptimizer):
                     remaining=(remaining - {i, j}) | {len(inputs)},
                     flops=new_flops,
                     size=new_size,
-                    sym_map=new_sym_map,
+                    ssa_to_subset=new_ssa_to_subset,
                 )
                 bi += 1
 
@@ -627,7 +558,7 @@ class BranchBound(PathOptimizer):
             remaining=set(range(len(inputs))),
             flops=0,
             size=0,
-            sym_map=symmetry_map,
+            ssa_to_subset=initial_ssa_to_subset,
         )
 
         return self.path
@@ -642,8 +573,7 @@ def branch(
     cutoff_flops_factor: int = 4,
     minimize: str = "flops",
     cost_fn: str = "memory-removed",
-    input_symmetries: list[IndexSymmetry | None] | None = None,
-    induced_output_symmetry: IndexSymmetry | None = None,
+    symmetry_oracle: SubgraphSymmetryOracle | None = None,
 ) -> PathType:
     optimizer = BranchBound(
         nbranch=nbranch,
@@ -656,8 +586,7 @@ def branch(
         output,
         size_dict,
         memory_limit,
-        input_symmetries=input_symmetries,
-        induced_output_symmetry=induced_output_symmetry,
+        symmetry_oracle=symmetry_oracle,
     )
 
 
@@ -680,20 +609,12 @@ def _get_candidate(
     k1: ArrayIndexType,
     k2: ArrayIndexType,
     cost_fn: Any,
-    symmetry_map: dict[int, "IndexSymmetry | None"] | None = None,
 ) -> GreedyContractionType:
     either = k1 | k2
     two = k1 & k2
     one = either - two
     k12 = (either & output) | (two & dim_ref_counts[3]) | (one & dim_ref_counts[2])
-    # Compute size12 symmetry-aware when possible
-    if symmetry_map is not None:
-        sym1 = symmetry_map.get(remaining[k1])
-        sym2 = symmetry_map.get(remaining[k2])
-        sym12 = propagate_symmetry(sym1, k1, sym2, k2, k12) if (sym1 or sym2) else None
-        size12 = compute_unique_size(k12, sizes, sym12)
-    else:
-        size12 = compute_size_by_dict(k12, sizes)
+    size12 = compute_size_by_dict(k12, sizes)
     cost = cost_fn(
         size12,
         footprints[k1],
@@ -721,7 +642,6 @@ def _push_candidate(
     queue: list[GreedyContractionType],
     push_all: bool,
     cost_fn: Any,
-    symmetry_map: dict[int, "IndexSymmetry | None"] | None = None,
 ) -> None:
     candidates = (
         _get_candidate(
@@ -733,7 +653,6 @@ def _push_candidate(
             k1,
             k2,
             cost_fn,
-            symmetry_map=symmetry_map,
         )
         for k2 in k2s
     )
@@ -777,8 +696,8 @@ def ssa_greedy_optimize(
     sizes: dict[str, int],
     choose_fn: Any = None,
     cost_fn: Any = "memory-removed",
-    input_symmetries: list[IndexSymmetry | None] | None = None,
-    induced_output_symmetry: IndexSymmetry | None = None,
+    symmetry_oracle: SubgraphSymmetryOracle | None = None,
+    ssa_to_subset: dict[int, frozenset[int]] | None = None,
 ) -> PathType:
     """This is the core function for :func:`greedy` but produces a path with
     static single assignment ids rather than recycled linear ids.
@@ -799,11 +718,9 @@ def ssa_greedy_optimize(
         # assume chooser wants access to all possible contractions
         push_all = True
 
-    # Build symmetry_map: ssa_id -> IndexSymmetry | None
-    symmetry_map: dict[int, IndexSymmetry | None] = {}
-    if input_symmetries is not None:
-        for i, s in enumerate(input_symmetries):
-            symmetry_map[i] = s
+    num_operands = len(inputs)
+    if ssa_to_subset is None:
+        ssa_to_subset = {k: frozenset({k}) for k in range(num_operands)}
 
     # A dim that is common to all tensors might as well be an output dim, since it
     # cannot be contracted until the final step. This avoids an expensive all-pairs
@@ -820,22 +737,9 @@ def ssa_greedy_optimize(
         if key in remaining:
             ssa_path.append((remaining[key], ssa_id))
             new_id = next(ssa_ids)
-            # Hadamard dedup: merge symmetry groups, deduplicating
-            if symmetry_map:
-                old_sym = symmetry_map.get(remaining[key])
-                cur_sym = symmetry_map.get(ssa_id)
-                if old_sym and cur_sym:
-                    # Merge and deduplicate groups
-                    seen = set()
-                    merged = []
-                    for g in old_sym + cur_sym:
-                        fg = frozenset(g)
-                        if fg not in seen:
-                            seen.add(fg)
-                            merged.append(fg)
-                    symmetry_map[new_id] = merged if merged else None
-                else:
-                    symmetry_map[new_id] = old_sym if old_sym is not None else cur_sym
+            # Hadamard dedup: merge subsets
+            old_id = remaining[key]
+            ssa_to_subset[new_id] = ssa_to_subset[old_id] | ssa_to_subset[ssa_id]
             remaining[key] = new_id
         else:
             remaining[key] = ssa_id
@@ -855,14 +759,7 @@ def ssa_greedy_optimize(
     }
 
     # Compute separable part of the objective function for contractions.
-    # Use symmetry-aware sizes when symmetry info is available.
-    if symmetry_map:
-        footprints = {
-            key: compute_unique_size(key, sizes, symmetry_map.get(ssa_id))
-            for key, ssa_id in remaining.items()
-        }
-    else:
-        footprints = {key: compute_size_by_dict(key, sizes) for key in remaining}
+    footprints = {key: compute_size_by_dict(key, sizes) for key in remaining}
 
     # Find initial candidate contractions.
     queue: list[GreedyContractionType] = []
@@ -881,7 +778,6 @@ def ssa_greedy_optimize(
                 queue,
                 push_all,
                 cost_fn,
-                symmetry_map=symmetry_map if symmetry_map else None,
             )
 
     # Greedily contract pairs of tensors.
@@ -899,54 +795,21 @@ def ssa_greedy_optimize(
             dim_to_keys[dim].remove(k2)
         ssa_path.append((ssa_id1, ssa_id2))
 
-        # Propagate symmetry for the new intermediate tensor.
-        if symmetry_map or induced_output_symmetry is not None:
-            sym1 = symmetry_map.get(ssa_id1) if symmetry_map else None
-            sym2 = symmetry_map.get(ssa_id2) if symmetry_map else None
-            sym12 = propagate_symmetry(
-                sym1,
-                k1,
-                sym2,
-                k2,
-                k12,
-                induced_output_symmetry=induced_output_symmetry,
-            )
-        else:
-            sym12 = None
-
         if k12 in remaining:
             hadamard_id = next(ssa_ids)
             ssa_path.append((remaining[k12], hadamard_id))
-            # Hadamard dedup for result: merge and deduplicate symmetry
-            if symmetry_map:
-                old_sym = symmetry_map.get(remaining[k12])
-                if old_sym and sym12:
-                    seen = set()
-                    merged = []
-                    for g in old_sym + sym12:
-                        fg = frozenset(g)
-                        if fg not in seen:
-                            seen.add(fg)
-                            merged.append(fg)
-                    symmetry_map[hadamard_id] = merged if merged else None
-                else:
-                    symmetry_map[hadamard_id] = (
-                        old_sym if old_sym is not None else sym12
-                    )
+            old_id = remaining[k12]
+            merged = ssa_to_subset[old_id] | ssa_to_subset[ssa_id1] | ssa_to_subset[ssa_id2]
+            ssa_to_subset[hadamard_id] = merged
         else:
             for dim in k12 - output:
                 dim_to_keys[dim].add(k12)
         new_ssa_id = next(ssa_ids)
         remaining[k12] = new_ssa_id
-        if symmetry_map:
-            symmetry_map[new_ssa_id] = sym12
+        ssa_to_subset[new_ssa_id] = ssa_to_subset[ssa_id1] | ssa_to_subset[ssa_id2]
         _update_ref_counts(dim_to_keys, dim_ref_counts, k1 | k2 - output)
 
-        # Update footprint for the new intermediate — symmetry-aware.
-        if symmetry_map:
-            footprints[k12] = compute_unique_size(k12, sizes, sym12)
-        else:
-            footprints[k12] = compute_size_by_dict(k12, sizes)
+        footprints[k12] = compute_size_by_dict(k12, sizes)
 
         # Find new candidate contractions.
         k1 = k12
@@ -964,49 +827,22 @@ def ssa_greedy_optimize(
                 queue,
                 push_all,
                 cost_fn,
-                symmetry_map=symmetry_map if symmetry_map else None,
             )
 
     # Greedily compute pairwise outer products.
-    # Use symmetry-aware sizes when available.
-    if symmetry_map:
-        final_queue = [
-            (
-                compute_unique_size(key & output, sizes, symmetry_map.get(ssa_id)),
-                ssa_id,
-                key,
-            )
-            for key, ssa_id in remaining.items()
-        ]
-    else:
-        final_queue = [
-            (compute_size_by_dict(key & output, sizes), ssa_id, key)
-            for key, ssa_id in remaining.items()
-        ]
+    final_queue = [
+        (compute_size_by_dict(key & output, sizes), ssa_id, key)
+        for key, ssa_id in remaining.items()
+    ]
     heapq.heapify(final_queue)
     _, ssa_id1, k1 = heapq.heappop(final_queue)
     while final_queue:
         _, ssa_id2, k2 = heapq.heappop(final_queue)
         ssa_path.append((min(ssa_id1, ssa_id2), max(ssa_id1, ssa_id2)))
         k12 = (k1 | k2) & output
-        if symmetry_map or induced_output_symmetry is not None:
-            sym1 = symmetry_map.get(ssa_id1) if symmetry_map else None
-            sym2 = symmetry_map.get(ssa_id2) if symmetry_map else None
-            sym12 = propagate_symmetry(
-                sym1,
-                k1,
-                sym2,
-                k2,
-                k12,
-                induced_output_symmetry=induced_output_symmetry,
-            )
-            cost = compute_unique_size(k12, sizes, sym12)
-        else:
-            cost = compute_size_by_dict(k12, sizes)
-            sym12 = None
+        cost = compute_size_by_dict(k12, sizes)
         ssa_id12 = next(ssa_ids)
-        if symmetry_map or induced_output_symmetry is not None:
-            symmetry_map[ssa_id12] = sym12
+        ssa_to_subset[ssa_id12] = ssa_to_subset[ssa_id1] | ssa_to_subset[ssa_id2]
         _, ssa_id1, k1 = heapq.heappushpop(final_queue, (cost, ssa_id12, k12))
 
     return ssa_path
@@ -1019,8 +855,7 @@ def greedy(
     memory_limit: int | None = None,
     choose_fn: Any = None,
     cost_fn: str = "memory-removed",
-    input_symmetries: list[IndexSymmetry | None] | None = None,
-    induced_output_symmetry: IndexSymmetry | None = None,
+    symmetry_oracle: SubgraphSymmetryOracle | None = None,
 ) -> PathType:
     """Finds the path by a three stage algorithm:
 
@@ -1038,7 +873,7 @@ def greedy(
         memory_limit: The maximum number of elements in a temporary array
         choose_fn: A function that chooses which contraction to perform from the queue
         cost_fn: A function that assigns a potential contraction a cost.
-        input_symmetries: Optional symmetry info for each input tensor.
+        symmetry_oracle: Optional subgraph symmetry oracle.
 
     Returns:
         path: The contraction order (a list of tuples of ints).
@@ -1060,8 +895,7 @@ def greedy(
             memory_limit,
             nbranch=1,
             cost_fn=cost_fn,
-            input_symmetries=input_symmetries,
-            induced_output_symmetry=induced_output_symmetry,
+            symmetry_oracle=symmetry_oracle,
         )  # type: ignore
 
     ssa_path = ssa_greedy_optimize(
@@ -1070,8 +904,7 @@ def greedy(
         size_dict,
         cost_fn=cost_fn,
         choose_fn=choose_fn,
-        input_symmetries=input_symmetries,
-        induced_output_symmetry=induced_output_symmetry,
+        symmetry_oracle=symmetry_oracle,
     )
     return ssa_to_linear(ssa_path)
 
@@ -1209,6 +1042,8 @@ def _dp_compare_flops(
     memory_limit: int | None,
     contract1: int | tuple[int],
     contract2: int | tuple[int],
+    oracle: SubgraphSymmetryOracle | None = None,
+    bitmap_to_subset: Callable[[int], frozenset[int]] | None = None,
 ) -> None:
     """Performs the inner comparison of whether the two subgraphs (the bitmaps
     `s1` and `s2`) should be merged and added to the dynamic programming
@@ -1219,15 +1054,30 @@ def _dp_compare_flops(
     2. If we've already found a better way of making `s`.
     3. If the intermediate tensor corresponding to `s` is going to break the
        memory limit.
+
+    When an oracle is provided, the step cost is scaled by the output symmetry
+    for the merged subset (conservative /2 heuristic; see TODO(dp-symmetry)).
     """
+    s = s1 | s2
+    i = _dp_calc_legs(g, all_tensors, s, inputs, i1_cut_i2_wo_output, i1_union_i2)
+
     # TODO: Odd usage with an Iterable[int] to map a dict of type List[int]
-    cost = cost1 + cost2 + compute_size_by_dict(i1_union_i2, size_dict)
+    if oracle is not None and bitmap_to_subset is not None:
+        merged_subset = bitmap_to_subset(s)
+        sym = oracle.sym(merged_subset)
+        if sym is not None:
+            # Conservative heuristic: any detected symmetry reduces the
+            # step cost by at least 2x. Exact ratio would require the
+            # int<->str label map; see TODO(dp-symmetry).
+            step_cost = compute_size_by_dict(i1_union_i2, size_dict) // 2
+        else:
+            step_cost = compute_size_by_dict(i1_union_i2, size_dict)
+    else:
+        step_cost = compute_size_by_dict(i1_union_i2, size_dict)
+
+    cost = cost1 + cost2 + step_cost
     if cost <= cost_cap:
-        s = s1 | s2
         if s not in xn or cost < xn[s][1]:
-            i = _dp_calc_legs(
-                g, all_tensors, s, inputs, i1_cut_i2_wo_output, i1_union_i2
-            )
             mem = compute_size_by_dict(i, size_dict)
             if memory_limit is None or mem <= memory_limit:
                 xn[s] = (i, cost, (contract1, contract2))
@@ -1249,6 +1099,8 @@ def _dp_compare_size(
     memory_limit: int | None,
     contract1: int | tuple[int],
     contract2: int | tuple[int],
+    oracle: SubgraphSymmetryOracle | None = None,
+    bitmap_to_subset: Callable[[int], frozenset[int]] | None = None,
 ) -> None:
     """Like `_dp_compare_flops` but sieves the potential contraction based
     on the size of the intermediate tensor created, rather than the number of
@@ -1257,6 +1109,11 @@ def _dp_compare_size(
     s = s1 | s2
     i = _dp_calc_legs(g, all_tensors, s, inputs, i1_cut_i2_wo_output, i1_union_i2)
     mem = compute_size_by_dict(i, size_dict)
+    if oracle is not None and bitmap_to_subset is not None:
+        merged_subset = bitmap_to_subset(s)
+        sym = oracle.sym(merged_subset)
+        if sym is not None:
+            mem = mem // 2
     cost = max(cost1, cost2, mem)
     if cost <= cost_cap:
         if s not in xn or cost < xn[s][1]:
@@ -1280,6 +1137,8 @@ def _dp_compare_write(
     memory_limit: int | None,
     contract1: int | tuple[int],
     contract2: int | tuple[int],
+    oracle: SubgraphSymmetryOracle | None = None,
+    bitmap_to_subset: Callable[[int], frozenset[int]] | None = None,
 ) -> None:
     """Like ``_dp_compare_flops`` but sieves the potential contraction based
     on the total size of memory created, rather than the number of
@@ -1288,6 +1147,11 @@ def _dp_compare_write(
     s = s1 | s2
     i = _dp_calc_legs(g, all_tensors, s, inputs, i1_cut_i2_wo_output, i1_union_i2)
     mem = compute_size_by_dict(i, size_dict)
+    if oracle is not None and bitmap_to_subset is not None:
+        merged_subset = bitmap_to_subset(s)
+        sym = oracle.sym(merged_subset)
+        if sym is not None:
+            mem = mem // 2
     cost = cost1 + cost2 + mem
     if cost <= cost_cap:
         if s not in xn or cost < xn[s][1]:
@@ -1316,6 +1180,8 @@ def _dp_compare_combo(
     contract2: int | tuple[int],
     factor: int | float = DEFAULT_COMBO_FACTOR,
     combine: Callable = sum,
+    oracle: SubgraphSymmetryOracle | None = None,
+    bitmap_to_subset: Callable[[int], frozenset[int]] | None = None,
 ) -> None:
     """Like ``_dp_compare_flops`` but sieves the potential contraction based
     on some combination of both the flops and size,.
@@ -1324,6 +1190,12 @@ def _dp_compare_combo(
     i = _dp_calc_legs(g, all_tensors, s, inputs, i1_cut_i2_wo_output, i1_union_i2)
     mem = compute_size_by_dict(i, size_dict)
     f = compute_size_by_dict(i1_union_i2, size_dict)
+    if oracle is not None and bitmap_to_subset is not None:
+        merged_subset = bitmap_to_subset(s)
+        sym = oracle.sym(merged_subset)
+        if sym is not None:
+            mem = mem // 2
+            f = f // 2
     cost = cost1 + cost2 + combine((f, factor * mem))
     if cost <= cost_cap:
         if s not in xn or cost < xn[s][1]:
@@ -1461,8 +1333,7 @@ class DynamicProgramming(PathOptimizer):
         output_: ArrayIndexType,
         size_dict_: dict[str, int],
         memory_limit_: int | None = None,
-        input_symmetries: list[IndexSymmetry | None] | None = None,
-        induced_output_symmetry: IndexSymmetry | None = None,
+        symmetry_oracle: SubgraphSymmetryOracle | None = None,
     ) -> PathType:
         """Parameters:
             inputs_: List of sets that represent the lhs side of the einsum subscript
@@ -1535,6 +1406,22 @@ class DynamicProgramming(PathOptimizer):
         # s1 & (all_tensors ^ s2)
         all_tensors = (1 << len(inputs)) - 1
 
+        # Build a per-call bitmap->frozenset[int] converter for the oracle.
+        # Maps DP bitmap `s` (bit j set iff tensor j is in the subset) to the
+        # original operand-position frozenset that the oracle was built with.
+        if symmetry_oracle is not None:
+            _bts_cache: dict[int, frozenset[int]] = {}
+
+            def bitmap_to_subset(s: int, _cache: dict[int, frozenset[int]] = _bts_cache) -> frozenset[int]:
+                if s not in _cache:
+                    _cache[s] = frozenset(j for j in range(len(inputs)) if s >> j & 1)
+                return _cache[s]
+
+            oracle: SubgraphSymmetryOracle | None = symmetry_oracle
+        else:
+            bitmap_to_subset = None  # type: ignore[assignment]
+            oracle = None
+
         for g in subgraphs:
             # dynamic programming approach to compute x[n] for subgraph g;
             # x[n][set of n tensors] = (indices, cost, contraction)
@@ -1596,6 +1483,8 @@ class DynamicProgramming(PathOptimizer):
                                             memory_limit_,
                                             contract1,
                                             contract2,
+                                            oracle=oracle,
+                                            bitmap_to_subset=bitmap_to_subset,
                                         )
 
                 if (cost_cap > naive_cost) and (len(x[-1]) == 0):
@@ -1629,19 +1518,11 @@ def dynamic_programming(
     output: ArrayIndexType,
     size_dict: dict[str, int],
     memory_limit: int | None = None,
-    input_symmetries: list[IndexSymmetry | None] | None = None,
-    induced_output_symmetry: IndexSymmetry | None = None,
+    symmetry_oracle: SubgraphSymmetryOracle | None = None,
     **kwargs: Any,
 ) -> PathType:
     optimizer = DynamicProgramming(**kwargs)
-    return optimizer(
-        inputs,
-        output,
-        size_dict,
-        memory_limit,
-        input_symmetries=input_symmetries,
-        induced_output_symmetry=induced_output_symmetry,
-    )
+    return optimizer(inputs, output, size_dict, memory_limit, symmetry_oracle=symmetry_oracle)
 
 
 _AUTO_CHOICES = {}
@@ -1660,25 +1541,18 @@ def auto(
     output: ArrayIndexType,
     size_dict: dict[str, int],
     memory_limit: int | None = None,
-    input_symmetries: list[IndexSymmetry | None] | None = None,
-    induced_output_symmetry: IndexSymmetry | None = None,
+    symmetry_oracle: SubgraphSymmetryOracle | None = None,
 ) -> PathType:
-    """Finds the contraction path by automatically choosing the method based on
-    how many input arguments there are.
-    """
+    """Auto-select based on number of inputs. All routed optimizers
+    accept ``symmetry_oracle``; no silent fallback."""
     fn = _AUTO_CHOICES.get(len(inputs), greedy)
-    # Pass input_symmetries to functions that accept it
-    try:
-        return fn(
-            inputs,
-            output,
-            size_dict,
-            memory_limit,
-            input_symmetries=input_symmetries,
-            induced_output_symmetry=induced_output_symmetry,
-        )
-    except TypeError:
-        return fn(inputs, output, size_dict, memory_limit)
+    return fn(
+        inputs,
+        output,
+        size_dict,
+        memory_limit,
+        symmetry_oracle=symmetry_oracle,
+    )
 
 
 _AUTO_HQ_CHOICES = {}
@@ -1693,27 +1567,20 @@ def auto_hq(
     output: ArrayIndexType,
     size_dict: dict[str, int],
     memory_limit: int | None = None,
-    input_symmetries: list[IndexSymmetry | None] | None = None,
-    induced_output_symmetry: IndexSymmetry | None = None,
+    symmetry_oracle: SubgraphSymmetryOracle | None = None,
 ) -> PathType:
-    """Finds the contraction path by automatically choosing the method based on
-    how many input arguments there are, but targeting a more generous
-    amount of search time than ``'auto'``.
-    """
+    """Auto-HQ selection based on number of inputs. All routed
+    optimizers accept ``symmetry_oracle``; no silent fallback."""
     from ._path_random import random_greedy_128
 
     fn = _AUTO_HQ_CHOICES.get(len(inputs), random_greedy_128)
-    try:
-        return fn(
-            inputs,
-            output,
-            size_dict,
-            memory_limit,
-            input_symmetries=input_symmetries,
-            induced_output_symmetry=induced_output_symmetry,
-        )
-    except TypeError:
-        return fn(inputs, output, size_dict, memory_limit)
+    return fn(
+        inputs,
+        output,
+        size_dict,
+        memory_limit,
+        symmetry_oracle=symmetry_oracle,
+    )
 
 
 _PATH_OPTIONS: dict[str, PathSearchFunctionType] = {

@@ -1,5 +1,34 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+- **Symmetry detection rewritten** — the induced-symmetry mechanism is replaced
+  by a subset-keyed subgraph symmetry oracle (`SubgraphSymmetryOracle`). The
+  oracle analyses the bipartite structure of the einsum expression, evaluates
+  symmetry lazily per operand subset, and caches results. This correctly handles
+  intermediates (not just the top-level contraction) and eliminates over-eager
+  per-step propagation.
+
+- **Every optimizer is symmetry-aware** — the `symmetry_oracle` kwarg is plumbed
+  through `_PATH_OPTIONS` so that optimal, branch-\*, greedy, and random-greedy
+  algorithms all receive symmetry information. DP uses a conservative 2× reduction
+  heuristic (`TODO(dp-symmetry)`). Previously only greedy received symmetry info
+  in some code paths.
+
+- **Silent fallback deleted** — the previous code silently fell back to dense
+  costs when detection produced no result. The oracle now enforces that symmetry
+  information is consumed. Enforcement is verified by
+  `tests/test_no_silent_symmetry_drop.py`.
+
+### Removed
+
+- `symmetric_flop_count`'s `input_symmetries` parameter (high-level API)
+- `propagate_symmetry` and related helpers
+- `_detect_induced_output_symmetry` and related helpers
+- `induced_output_symmetry` kwarg on `contract_path`
+
 ## 0.2.0 (2026-04-03)
 
 Second release with unified einsum cost model, NumPy compatibility testing, and expanded operation coverage.

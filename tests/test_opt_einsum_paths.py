@@ -582,7 +582,7 @@ def test_custom_random_optimizer() -> None:
             )
             return ssa_path, cost, size
 
-        def setup(self, inputs: Any, output: Any, size_dict: Any) -> Any:
+        def setup(self, inputs: Any, output: Any, size_dict: Any, **kwargs: Any) -> Any:
             self.was_used = True
             n = len(inputs)
             trial_fn = self.random_path

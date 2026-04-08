@@ -31,17 +31,28 @@ class TestGramMatrixInduction:
         assert info.optimized_cost == 2000
 
 
-class TestMatMulChainInduction:
-    """einsum('ij,jk->ik', X, X) — Wilson's original example."""
+class TestMatMulChainNoInducedSymmetry:
+    """einsum('ij,jk->ik', X, X) with plain (non-declared-symmetric) X.
 
-    def test_plain_X_induces_s2_on_ik(self):
+    Regression guard: the old _detect_induced_output_symmetry incorrectly
+    marked this as having S2(i,k) because its structural operand-matching
+    heuristic treated "same Python object + matching index sets after
+    relabel" as proof of symmetry. But X @ X is NOT symmetric in (i, k)
+    unless X itself is symmetric — the output value R[i,k] = Σ_j X[i,j]·X[j,k]
+    differs from R[k,i] = Σ_j X[k,j]·X[j,i] for a generic non-symmetric X.
+
+    The subgraph symmetry oracle correctly rejects this case: passing the
+    same Python object does not imply the tensor values are symmetric.
+    Use me.as_symmetric() to declare symmetry explicitly — see
+    TestSymmetricXMatMul below for the declared-symmetric case.
+    """
+
+    def test_plain_X_has_no_induced_symmetry(self):
         n = 10
         X = np.ones((n, n))
         _, info = me.einsum_path("ij,jk->ik", X, X)
-        # dense = n^3 * 2 = 2000
-        # induced S2{i,k}: unique = C(11,2) = 55, total = 100
-        # cost = 2000 * 55 / 100 = 1100
-        assert info.optimized_cost == 1100
+        # dense = n^3 * 2 = 2000, no symmetry detected
+        assert info.optimized_cost == 2000
 
 
 class TestTripleProductInduction:

@@ -82,8 +82,24 @@ def einsum_cost(
                 ]
                 index_syms.append(groups if groups else None)
 
+    # Build oracle if we have symmetry info
+    oracle = None
+    if index_syms is not None:
+        from mechestim._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
+
+        input_parts = subscripts.replace(" ", "").split("->")[0].split(",")
+        output_str = subscripts.split("->")[1] if "->" in subscripts else ""
+        # Use sentinel objects as operands (identity-based detection not needed here)
+        sentinel_operands = [object() for _ in range(len(input_parts))]
+        oracle = SubgraphSymmetryOracle(
+            operands=sentinel_operands,
+            subscript_parts=input_parts,
+            per_op_syms=index_syms,
+            output_chars=output_str,
+        )
+
     _, path_info = contract_path(
-        subscripts, *shapes, shapes=True, input_symmetries=index_syms
+        subscripts, *shapes, shapes=True, symmetry_oracle=oracle
     )
     return path_info.optimized_cost
 

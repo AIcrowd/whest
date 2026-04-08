@@ -64,7 +64,7 @@ everything in one request.
   "free": false,
   "blocked": false,
   "status": "supported",
-  "notes": "Supports symmetric tensors via input_symmetries for automatic cost reduction"
+  "notes": "Supports SymmetricTensor inputs and repeated-operand detection for automatic cost reduction"
 }
 ```
 

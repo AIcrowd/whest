@@ -53,6 +53,8 @@ plugins:
           - concepts/flop-counting-model.md: "How FLOP costs are computed analytically"
           - concepts/operation-categories.md: "Free vs counted vs blocked operations"
           - concepts/numpy-compatibility-testing.md: "NumPy compatibility test suite coverage"
+        "Explanation":
+          - explanation/subgraph-symmetry.md: "Algorithm walkthrough for subgraph symmetry detection"
         "Architecture":
           - architecture/client-server.md: "Client-server architecture for sandboxed execution"
           - architecture/docker.md: "Running mechestim with Docker and Docker Compose"
@@ -100,6 +102,8 @@ nav:
   - Architecture:
     - Client-Server Model: architecture/client-server.md
     - Running with Docker: architecture/docker.md
+  - Explanation:
+    - Subgraph Symmetry Detection: explanation/subgraph-symmetry.md
   - Development:
     - Contributor Guide: development/contributing.md
   - API Reference:
