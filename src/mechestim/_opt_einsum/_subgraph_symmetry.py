@@ -173,6 +173,58 @@ def _build_bipartite(
     )
 
 
+@dataclass(frozen=True)
+class _Subgraph:
+    """Induced subgraph of an EinsumBipartite on a subset of operands.
+
+    u_local: list of U-vertex indices (indices into graph.u_vertices) that
+             belong to operands in the subset.
+    v_labels: labels that are free at this step (output or crossing the cut).
+    w_labels: labels that are summed entirely within the subset.
+    id_groups: identical-operand groups restricted to the subset.
+    """
+
+    u_local: tuple[int, ...]
+    v_labels: frozenset[str]
+    w_labels: frozenset[str]
+    id_groups: tuple[tuple[int, ...], ...]
+
+
+def _induce_subgraph(
+    graph: EinsumBipartite, subset: frozenset[int]
+) -> _Subgraph:
+    u_local = tuple(
+        idx for idx, op_idx in enumerate(graph.u_operand) if op_idx in subset
+    )
+
+    labels_in_subset: set[str] = set()
+    for idx in u_local:
+        labels_in_subset.update(graph.incidence[idx].keys())
+
+    # Labels appearing in operands outside the subset (crossing the cut).
+    outside_labels: set[str] = set()
+    for op_idx, op_lbls in enumerate(graph.operand_labels):
+        if op_idx not in subset:
+            outside_labels.update(op_lbls)
+
+    # V at this step = labels_in_subset ∩ (free_labels ∪ outside_labels)
+    v_labels = frozenset(labels_in_subset & (graph.free_labels | outside_labels))
+    w_labels = frozenset(labels_in_subset - v_labels)
+
+    id_groups = tuple(
+        tuple(sorted(set(g) & subset))
+        for g in graph.identical_operand_groups
+        if len(set(g) & subset) >= 2
+    )
+
+    return _Subgraph(
+        u_local=u_local,
+        v_labels=v_labels,
+        w_labels=w_labels,
+        id_groups=id_groups,
+    )
+
+
 # Placeholder stubs — implemented in Tasks 1.4, 1.5.
 
 

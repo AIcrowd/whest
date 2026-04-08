@@ -142,3 +142,61 @@ class TestBuildBipartite:
         t_rows = [row for u, row in zip(g.u_operand, g.incidence) if u == 0]
         assert len(t_rows) == 1
         assert t_rows[0] == {"i": 1, "j": 1}
+
+
+class TestSubsetInduction:
+    def test_full_subset_matches_top_level_partition(self):
+        A = np.zeros((3, 4))
+        B = np.zeros((4, 5))
+        g = _build_bipartite([A, B], ["ij", "jk"], [None, None], "ik")
+        from mechestim._opt_einsum._subgraph_symmetry import _induce_subgraph
+
+        sub = _induce_subgraph(g, frozenset({0, 1}))
+        assert sub.v_labels == frozenset("ik")
+        assert sub.w_labels == frozenset("j")
+        assert len(sub.u_local) == 4  # all U vertices
+        assert sub.id_groups == ()
+
+    def test_singleton_subset_crossing_labels_become_free(self):
+        A = np.zeros((3, 4))
+        B = np.zeros((4, 5))
+        g = _build_bipartite([A, B], ["ij", "jk"], [None, None], "ik")
+        from mechestim._opt_einsum._subgraph_symmetry import _induce_subgraph
+
+        # Contract only operand 0. Label i is top-level free (in output).
+        # Label j is top-level summed but crosses the cut (also in op 1),
+        # so it becomes a free-at-this-step label.
+        sub = _induce_subgraph(g, frozenset({0}))
+        assert sub.v_labels == frozenset("ij")
+        assert sub.w_labels == frozenset()
+        assert len(sub.u_local) == 2
+
+    def test_mid_tree_subset_j_stays_summed(self):
+        A = np.zeros((3, 4))
+        B = np.zeros((4, 5))
+        C = np.zeros((5, 6))
+        g = _build_bipartite(
+            [A, B, C], ["ij", "jk", "kl"], [None, None, None], "il"
+        )
+        from mechestim._opt_einsum._subgraph_symmetry import _induce_subgraph
+
+        # Contract ops 0 and 1. j is summed entirely within the subset
+        # (not in any operand outside the subset, not in output), so j
+        # belongs to W_S. k crosses the cut to op 2, so it's V_S.
+        sub = _induce_subgraph(g, frozenset({0, 1}))
+        assert sub.v_labels == frozenset("ik")
+        assert sub.w_labels == frozenset("j")
+
+    def test_identical_group_restricts_to_subset(self):
+        X = np.zeros((3, 3))
+        g = _build_bipartite([X, X, X], ["ai", "bi", "ci"], [None, None, None], "abc")
+        from mechestim._opt_einsum._subgraph_symmetry import _induce_subgraph
+
+        sub_all = _induce_subgraph(g, frozenset({0, 1, 2}))
+        assert sub_all.id_groups == ((0, 1, 2),)
+
+        sub_pair = _induce_subgraph(g, frozenset({0, 2}))
+        assert sub_pair.id_groups == ((0, 2),)
+
+        sub_single = _induce_subgraph(g, frozenset({1}))
+        assert sub_single.id_groups == ()  # no group with |intersection| >= 2
