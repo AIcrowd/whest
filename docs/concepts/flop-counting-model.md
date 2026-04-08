@@ -67,7 +67,7 @@ When a tensor is a `SymmetricTensor`, costs are reduced based on the number of u
 |----------|---------------|---------------|
 | **Pointwise** (unary/binary) | unique_elements | $\text{numel}(\text{output})$ |
 | **Reduction** | unique_elements | $\text{numel}(\text{input})$ |
-| **Einsum** (symmetric output) | `dense_cost × unique_output / total_output` (exact via `C(n+k-1, k)`) | Full product |
+| **Einsum** (symmetric output) | `dense_cost × unique_output / total_output` (exact via `C(B+k-1, k)`; see below) | Full product |
 | **Solve** | $n^3/3 + n \cdot n_{\text{rhs}}$ (Cholesky) | $2n^3/3 + n^2 \cdot n_{\text{rhs}}$ (LU) |
 | **Det / Slogdet** | $n^3/3$ (Cholesky) | $n^3$ (LU) |
 | **Inv** | $n^3/3 + n^3/2$ | $n^3$ |
@@ -136,15 +136,33 @@ dense_step_cost = (product of all index dimensions) × op_factor
 where `op_factor = 2` when indices are summed (multiply + add) and
 `op_factor = 1` when no indices are summed (outer product).
 
-When the output of a step has symmetry (inherited from symmetric inputs via
-symmetry propagation), the cost is reduced:
+When the output of a step has symmetry (discovered by the subgraph oracle
+from declared per-operand symmetries and/or repeated-operand identity), the
+cost is reduced:
 
 ```
 step_cost = dense_step_cost × (unique_output_elements / total_output_elements)
 ```
 
 where `unique_output_elements` is computed exactly using the stars-and-bars
-formula `C(n+k-1, k)` for each symmetric group of `k` indices of size `n`.
+formula `C(B + k - 1, k)` for each symmetric group of `k` interchangeable
+blocks, where `B` is the cardinality of one block:
+
+- For a **per-index** group (block size 1) on `k` interchangeable indices
+  each of size `n`, `B = n` and the formula reduces to the familiar
+  `C(n+k-1, k)`. A single symmetric matrix indexed by `(i, j)` of size `n`
+  has `C(n+1, 2) = n(n+1)/2` unique entries.
+- For a **block** group with `k` interchangeable blocks of uniform shape,
+  `B` is the product of axis sizes within one block. An outer product
+  `einsum('ab,cd->abcd', X, X)` with same-object `X` of shape `(n_a, n_b)`
+  yields a block group `{(a,b), (c,d)}` with `B = n_a · n_b`, so the
+  unique count is `C(n_a·n_b + 1, 2) = (n_a·n_b)(n_a·n_b + 1)/2`. This
+  correctly handles **rectangular** tensors where axis dimensions differ
+  within a block — e.g., `X` of shape `(3, 4)` gives `B = 12` unique pair
+  cardinalities, not `3² = 9`.
+
+Free (non-symmetric) indices contribute their full axis size to the total
+unique count, multiplicatively.
 
 For a simple two-operand einsum like `'ij,jk->ik'`, there is one step,
 so the total cost equals the step cost. For multi-operand einsums (3+

@@ -26,6 +26,23 @@ Contraction path with per-step diagnostics. Returned by `me.einsum_path()`.
 | `optimized_cost` | `int` | FLOP cost along the optimal path |
 | `largest_intermediate` | `int` | Max number of elements in any intermediate tensor |
 | `speedup` | `float` | `naive_cost / optimized_cost` |
+| `input_subscripts` | `str` | Comma-separated input subscripts (e.g. `"ij,jk,kl"`) |
+| `output_subscript` | `str` | Output subscript (e.g. `"il"`) |
+| `size_dict` | `dict[str, int]` | Label → dimension size |
+| `optimizer_used` | `str` | Name of the path-finder actually invoked. For `optimize='auto'`/`'auto-hq'` this resolves to the inner choice (e.g. `'optimal'`, `'branch_2'`, `'dynamic_programming'`, `'random_greedy_128'`). `'trivial'` for `num_ops ≤ 2` cases where no optimizer runs. |
+
+### Methods
+
+**`format_table(verbose: bool = False) -> str`**
+
+Render the path as a printable table. `__str__` calls this with `verbose=False`.
+
+When `verbose=True`, an indented second row is emitted under each step
+showing the merged operand subset (`subset={0,1,2}` — the key the oracle
+uses for its symmetry lookup), the intermediate's output shape
+(`out_shape=(10,10,10)`), and the running cumulative cost (`cumulative=2,208`).
+This is the most useful view when debugging why a particular step's
+symmetry savings are what they are.
 
 ---
 
@@ -42,7 +59,10 @@ pairwise contraction along the optimal path.
 | `flop_cost` | `int` | Symmetry-aware FLOP cost of this step (exact: `dense_cost × unique_output / total_output`) |
 | `dense_flop_cost` | `int` | FLOP cost without symmetry savings |
 | `symmetry_savings` | `float` | `1 - (flop_cost / dense_flop_cost)` — fraction of cost saved by symmetry |
-| `input_symmetries` | `list[IndexSymmetry | None]` | Symmetry of each input to this step |
-| `output_symmetry` | `IndexSymmetry | None` | Symmetry of the step's output (propagated to next step) |
+| `input_symmetries` | `list[IndexSymmetry \| None]` | Symmetry of each input to this step. In the oracle-based flow this is typically `[None, None]` — the oracle computes each intermediate's output symmetry directly from its operand subset rather than chaining per-input groups through the tree. The field is retained for backward compatibility and for future per-input tracking. The informative side is `output_symmetry`. |
+| `output_symmetry` | `IndexSymmetry \| None` | Symmetry of the step's output, as derived by `SubgraphSymmetryOracle.sym(merged_subset)` |
 | `input_shapes` | `list[tuple[int, ...]]` | Shapes of input operands |
 | `output_shape` | `tuple[int, ...]` | Shape of the output tensor |
+| `blas_type` | `str \| bool` | BLAS classification (e.g. `'GEMM'`, `'TDOT'`, `'DOT'`) or `False` for non-BLAS steps |
+| `path_indices` | `tuple[int, ...]` | The path-supplied contraction tuple for this step (the entry from `PathInfo.path[i]`). Lets you cross-reference the table with the raw path field. |
+| `merged_subset` | `frozenset[int] \| None` | Subset of **original** operand positions that this step's output intermediate covers. For a step contracting two original operands `i` and `j`, this is `frozenset({i, j})`. For later steps it's the union of the subsets of all SSA inputs being contracted. This is the exact key `SubgraphSymmetryOracle.sym(...)` used to derive `output_symmetry`, so any symmetry shown in the table is directly attributable to this subset. |

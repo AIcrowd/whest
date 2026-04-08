@@ -150,15 +150,27 @@ index.
 
 For each pair `(i, j)` of operands in the same identical-operand group:
 
-1. Compute `free_i` = labels exclusive to operand `i` in the output.
-2. Compute `free_j` = labels exclusive to operand `j` in the output.
+1. Compute `free_i` = labels that appear in operand `i`'s subscript, survive
+   to the output of the current subset, and do NOT appear in operand `j`'s
+   subscript or any other operand in the subset. These are the labels that
+   "belong uniquely" to operand `i` at this step.
+2. Compute `free_j` similarly for operand `j`.
 3. If `|free_i| == |free_j| > 0`, build the label swap `σ: free_i ↔ free_j`
-   in subscript order.
-4. Validate `σ` via the column-equality check (path 1) or the subscript-multiset
-   check (path 2).
+   pairing them positionally in subscript order. For an outer product
+   `einsum('abc,def->abcdef', X, X)` this produces
+   `σ = {a↔d, b↔e, c↔f}`.
+4. Validate `σ` via the same incidence-matrix column-equality machinery used
+   in Step 2a: lift the operand swap `tilde_sigma = {i: j, j: i}` to a row
+   permutation of `M_S`, compute `σ(M_S)`, and check that every V-column `L`
+   satisfies `M_S[:, L] == σ(M_S)[:, σ(L)]` — i.e., the column-for-column
+   match is performed under the *label relabeling* rather than requiring
+   every column to stay put. The W-column multiset must also be preserved.
 
 If valid, record a block symmetry group. Block size 1 collapses to a per-index
-pair (handled by Step 2a). Block size ≥ 2 produces a block group.
+pair (already handled equivalently by Step 2a). Block size ≥ 2 produces a
+true block group like `frozenset({('a','b','c'), ('d','e','f')})` whose
+semantics are "these two 3-tuples can swap as a unit, but you cannot swap
+only one axis without the others."
 
 **Follow-up (`sigma → pi` extension, `TODO(sigma-to-pi)`):** The natural
 unification of Steps 2a and 2b is to extend Step 2a to derive the full label
