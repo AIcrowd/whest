@@ -54,6 +54,37 @@ class TestUniqueElements:
     def test_empty(self):
         assert unique_elements(frozenset(), {}, None) == 1
 
+    def test_block_s2_uniform_dims(self):
+        """Block S2 on (a,b) ↔ (c,d) with all dims equal."""
+        # block_card = 3*3 = 9, k = 2 → C(9+1, 2) = 45
+        size_dict = {"a": 3, "b": 3, "c": 3, "d": 3}
+        sym = [frozenset({("a", "b"), ("c", "d")})]
+        assert unique_elements(frozenset("abcd"), size_dict, sym) == 45
+
+    def test_block_s2_heterogeneous_dims_rect(self):
+        """Block S2 on (a,b) ↔ (c,d) where each block has shape (3, 4).
+
+        Regression test for the bug where unique_elements assumed all axes
+        in a block had the same size and computed n**s instead of the
+        product over the block's labels. For X of shape (3, 4) used as
+        einsum('ab,cd->abcd', X, X), the block cardinality is 3*4 = 12,
+        not 3**2 = 9, and the unique count is C(13, 2) = 78, not 45.
+        """
+        size_dict = {"a": 3, "b": 4, "c": 3, "d": 4}
+        sym = [frozenset({("a", "b"), ("c", "d")})]
+        assert unique_elements(frozenset("abcd"), size_dict, sym) == 78
+
+    def test_block_s2_heterogeneous_dims_rank3(self):
+        """Block S2 on rank-3 blocks (a,b,c) ↔ (d,e,f) with shape (2, 3, 4).
+
+        Block cardinality should be 2*3*4 = 24, giving C(25, 2) = 300
+        unique entries. The buggy formula gave 2**3 = 8 → C(9, 2) = 36,
+        an ~8x underestimate.
+        """
+        size_dict = {"a": 2, "b": 3, "c": 4, "d": 2, "e": 3, "f": 4}
+        sym = [frozenset({("a", "b", "c"), ("d", "e", "f")})]
+        assert unique_elements(frozenset("abcdef"), size_dict, sym) == 300
+
 
 class TestSymmetricFlopCount:
     def test_s3_contraction_reduces_cost(self):

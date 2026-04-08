@@ -10,7 +10,7 @@ Detection of symmetries is handled by ``_subgraph_symmetry.SubgraphSymmetryOracl
 
 from __future__ import annotations
 
-from math import comb
+from math import comb, prod
 from typing import Collection
 
 from ._helpers import flop_count
@@ -36,10 +36,18 @@ def unique_elements(
     """Count distinct elements of a tensor with the given symmetry.
 
     Handles both per-index (tuples of length 1) and block (tuples of length >= 2)
-    groups via the general stars-and-bars formula C(n^s + k - 1, k) where s is
-    the block size and k is the number of blocks.
+    groups via the stars-and-bars formula ``C(block_card + k - 1, k)`` where
+    ``block_card`` is the cardinality of one block (the product of axis sizes
+    over the labels in the block) and ``k`` is the number of blocks in the group.
 
-    For per-index groups (s=1), this reduces to the familiar C(n + k - 1, k).
+    For per-index groups (block size 1) this reduces to the familiar
+    ``C(n + k - 1, k)``. For block groups with possibly heterogeneous axis
+    sizes (e.g. block ``(a, b)`` with ``size[a] != size[b]``), the block
+    cardinality is computed as the product over the labels in any single
+    block. A well-formed block group requires every block to have the same
+    per-position axis sizes (otherwise the swap is not a valid symmetry),
+    so reading from ``blocks[0]`` is sufficient.
+
     Free (non-symmetric) indices contribute their full size.
 
     Parameters
@@ -76,11 +84,14 @@ def unique_elements(
             blocks = list(group)
             if len(blocks) < 2:
                 continue
-            s = len(blocks[0])
-            n = size_dict[blocks[0][0]]
             k = len(blocks)
+            # Block cardinality = product of axis sizes over the labels in
+            # one block. For per-index groups (block size 1), this reduces
+            # to the single label's dimension. For block groups with
+            # heterogeneous axis sizes, this correctly handles each
+            # position's actual dimension rather than assuming uniformity.
+            block_card = prod(size_dict[c] for c in blocks[0])
 
-            block_card = n**s
             count *= comb(block_card + k - 1, k)
             accounted |= all_chars
 
