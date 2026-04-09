@@ -120,10 +120,23 @@ class TestBenchmarkSorting:
         # All original ops must be present; NumPy 2.x unique variants may
         # fail with RuntimeError if unavailable, so we check the core set.
         core_ops = {
-            "sort", "argsort", "lexsort", "partition", "argpartition",
-            "searchsorted", "unique", "in1d", "isin", "intersect1d",
-            "setdiff1d", "setxor1d", "union1d",
-            "unique_all", "unique_counts", "unique_inverse", "unique_values",
+            "sort",
+            "argsort",
+            "lexsort",
+            "partition",
+            "argpartition",
+            "searchsorted",
+            "unique",
+            "in1d",
+            "isin",
+            "intersect1d",
+            "setdiff1d",
+            "setxor1d",
+            "union1d",
+            "unique_all",
+            "unique_counts",
+            "unique_inverse",
+            "unique_values",
         }
         assert core_ops.issubset(set(result.keys()))
 

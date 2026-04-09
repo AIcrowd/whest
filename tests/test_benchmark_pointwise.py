@@ -29,8 +29,14 @@ class TestOpsLists:
 
     def test_unary_ops_contains_new_ops(self):
         for op in (
-            "frexp", "modf", "sinc", "i0", "spacing",
-            "nan_to_num", "isneginf", "isposinf",
+            "frexp",
+            "modf",
+            "sinc",
+            "i0",
+            "spacing",
+            "nan_to_num",
+            "isneginf",
+            "isposinf",
         ):
             assert op in UNARY_OPS, f"{op} missing from UNARY_OPS"
 

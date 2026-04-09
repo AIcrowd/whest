@@ -187,9 +187,7 @@ def _get_op_config(op: str, dtype: str) -> dict:
     # --- Element-wise comparison/conversion ---
     if op == "allclose":
         # Two similar arrays (b = a + small noise) so allclose scans all.
-        base = (
-            f"import numpy as np; rng = np.random.default_rng({rng_seed_a})"
-        )
+        base = f"import numpy as np; rng = np.random.default_rng({rng_seed_a})"
         setups = [
             (
                 f"{base}; a = rng.standard_normal({n_large}).astype(np.{dtype}); "
@@ -317,17 +315,21 @@ def _get_op_config(op: str, dtype: str) -> dict:
     if op == "histogram2d":
         setups = _three_setups_2arr(n_large, extra="")
         # Rename for histogram2d: need x and y
-        setups = [s.replace("; a = ", "; x = ").replace("; b = ", "; y = ")
-                  for s in setups]
+        setups = [
+            s.replace("; a = ", "; x = ").replace("; b = ", "; y = ") for s in setups
+        ]
         # Fix variable names in rng references
-        setups = [s.replace("rng_a", "rng").replace("rng_b", "rng2")
-                  .replace(
-                      f"rng = np.random.default_rng({rng_seed_a}); "
-                      f"rng2 = np.random.default_rng({rng_seed_b})",
-                      f"rng = np.random.default_rng({rng_seed_a}); "
-                      f"rng2 = np.random.default_rng({rng_seed_b})",
-                  )
-                  for s in setups]
+        setups = [
+            s.replace("rng_a", "rng")
+            .replace("rng_b", "rng2")
+            .replace(
+                f"rng = np.random.default_rng({rng_seed_a}); "
+                f"rng2 = np.random.default_rng({rng_seed_b})",
+                f"rng = np.random.default_rng({rng_seed_a}); "
+                f"rng2 = np.random.default_rng({rng_seed_b})",
+            )
+            for s in setups
+        ]
         return {
             "setups": setups,
             "bench": "np.histogram2d(x, y, bins=100)",

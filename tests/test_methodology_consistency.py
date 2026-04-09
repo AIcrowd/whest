@@ -48,6 +48,7 @@ def _run_and_get_cost(func, *args, **kwargs) -> int:
 # Sorting
 # ---------------------------------------------------------------------------
 
+
 class TestSortingConsistency:
     """sort, argsort: cost = n * ceil(log2(n))."""
 
@@ -72,6 +73,7 @@ class TestSortingConsistency:
 # Contractions
 # ---------------------------------------------------------------------------
 
+
 class TestContractionConsistency:
     """matmul: cost = 2*M*N*K for 2D matrix multiply."""
 
@@ -91,6 +93,7 @@ class TestContractionConsistency:
 # ---------------------------------------------------------------------------
 # Pointwise
 # ---------------------------------------------------------------------------
+
 
 class TestPointwiseConsistency:
     """Unary ops: cost = numel(input). Binary ops: cost = numel(broadcast output)."""
@@ -119,6 +122,7 @@ class TestPointwiseConsistency:
 # Reductions
 # ---------------------------------------------------------------------------
 
+
 class TestReductionConsistency:
     """Reductions: cost = numel(input)."""
 
@@ -140,6 +144,7 @@ class TestReductionConsistency:
 # Polynomial
 # ---------------------------------------------------------------------------
 
+
 class TestPolynomialConsistency:
     """polyval: cost = 2 * m * deg (Horner's method)."""
 
@@ -159,6 +164,7 @@ class TestPolynomialConsistency:
 # FFT
 # ---------------------------------------------------------------------------
 
+
 class TestFFTConsistency:
     """fft.fft: cost = 5 * n * ceil(log2(n))."""
 
@@ -175,6 +181,7 @@ class TestFFTConsistency:
 # ---------------------------------------------------------------------------
 # Histogram (misc)
 # ---------------------------------------------------------------------------
+
 
 class TestMiscConsistency:
     """histogram: cost = n * ceil(log2(bins))."""
@@ -194,20 +201,20 @@ class TestMiscConsistency:
 # Window
 # ---------------------------------------------------------------------------
 
+
 class TestWindowConsistency:
     """bartlett: cost = n (one trig eval per sample)."""
 
     def test_bartlett(self):
         n = 1000
         runtime_cost = _run_and_get_cost(me.bartlett, n)
-        assert runtime_cost == n, (
-            f"bartlett({n}): runtime={runtime_cost}, expected={n}"
-        )
+        assert runtime_cost == n, f"bartlett({n}): runtime={runtime_cost}, expected={n}"
 
 
 # ---------------------------------------------------------------------------
 # Random
 # ---------------------------------------------------------------------------
+
 
 class TestRandomConsistency:
     """Random samplers: cost = numel(output)."""
@@ -226,6 +233,7 @@ class TestRandomConsistency:
 # ---------------------------------------------------------------------------
 # Linalg
 # ---------------------------------------------------------------------------
+
 
 class TestLinalgConsistency:
     """linalg.cholesky: cost = n^3 / 3."""

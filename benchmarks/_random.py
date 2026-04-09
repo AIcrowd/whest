@@ -89,12 +89,14 @@ _EXTRA_ARGS: dict[str, str] = {
 }
 
 # Ops that need completely custom setup/bench code.
-_CUSTOM_OPS = frozenset({
-    "random.choice",
-    "random.dirichlet",
-    "random.multinomial",
-    "random.multivariate_normal",
-})
+_CUSTOM_OPS = frozenset(
+    {
+        "random.choice",
+        "random.dirichlet",
+        "random.multinomial",
+        "random.multivariate_normal",
+    }
+)
 
 
 def _custom_bench(op: str, n: int, dtype: str, seed: int) -> tuple[str, str]:
@@ -111,10 +113,7 @@ def _custom_bench(op: str, n: int, dtype: str, seed: int) -> tuple[str, str]:
         setup = base_setup
         bench = f"np.random.multinomial(10, [0.2, 0.3, 0.5], {n})"
     elif op == "random.multivariate_normal":
-        setup = (
-            base_setup
-            + "; _mean = np.zeros(10); _cov = np.eye(10)"
-        )
+        setup = base_setup + "; _mean = np.zeros(10); _cov = np.eye(10)"
         bench = f"np.random.multivariate_normal(_mean, _cov, {n})"
     else:
         raise ValueError(f"Unknown custom op: {op}")

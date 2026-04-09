@@ -99,7 +99,9 @@ class TestBenchmarkPolynomial:
         )
         n, degree = 1_000, 5
         with patch("benchmarks._polynomial.measure_flops", return_value=mock_result):
-            result = benchmark_polynomial(n=n, dtype="float64", repeats=1, degree=degree)
+            result = benchmark_polynomial(
+                n=n, dtype="float64", repeats=1, degree=degree
+            )
 
         # polyval: total_flops = 500*4 = 2000
         # analytical = 2 * 1000 * 5 = 10000
