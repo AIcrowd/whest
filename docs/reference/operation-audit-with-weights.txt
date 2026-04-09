@@ -1,0 +1,488 @@
+Operation                           Module          Category                      Weight  Notes
+----------------------------------------------------------------------------------------------------------------------------------
+abs                                 numpy           counted_unary                 0.3837  Element-wise absolute value; alias for absolute.
+absolute                            numpy           counted_unary                      —  Element-wise absolute value.
+acos                                numpy           counted_unary                      —  Alias for arccos (NumPy 2.x).
+acosh                               numpy           counted_unary                      —  Alias for arccosh (NumPy 2.x).
+add                                 numpy           counted_binary                1.4067  Element-wise addition.
+all                                 numpy           counted_reduction             0.3837  Test whether all array elements are true.
+allclose                            numpy           counted_custom                     —  Element-wise tolerance check; cost = numel(a).
+amax                                numpy           counted_reduction                  —  Maximum value of array (alias for max/numpy.amax).
+amin                                numpy           counted_reduction                  —  Minimum value of array (alias for min/numpy.amin).
+angle                               numpy           counted_unary                      —  Return angle of complex argument element-wise.
+any                                 numpy           counted_reduction             0.3837  Test whether any array element is true.
+append                              numpy           free                               —  Append values to end of array.
+apply_along_axis                    numpy           blacklisted                        —  Apply function along axis. Not supported.
+apply_over_axes                     numpy           blacklisted                        —  Apply function over multiple axes. Not supported.
+arange                              numpy           free                               —  Return evenly spaced values in given interval.
+arccos                              numpy           counted_unary                34.2633  Element-wise inverse cosine.
+arccosh                             numpy           counted_unary                53.1311  Element-wise inverse hyperbolic cosine.
+arcsin                              numpy           counted_unary                36.1813  Element-wise inverse sine.
+arcsinh                             numpy           counted_unary                50.8929  Element-wise inverse hyperbolic sine.
+arctan                              numpy           counted_unary                30.4335  Element-wise inverse tangent.
+arctan2                             numpy           counted_binary               34.6532  Element-wise arctan(y/x) considering quadrant.
+arctanh                             numpy           counted_unary                46.4110  Element-wise inverse hyperbolic tangent.
+argmax                              numpy           counted_reduction             0.3837  Index of maximum value.
+argmin                              numpy           counted_reduction             0.3837  Index of minimum value.
+argpartition                        numpy           counted_custom               13.8459  Indirect partition; cost = n per slice.
+argsort                             numpy           counted_custom               80.4905  Indirect sort; cost = n*ceil(log2(n)) per slice.
+argwhere                            numpy           free                               —  Find indices of non-zero elements.
+around                              numpy           counted_unary                      —  Alias for round.
+array                               numpy           free                               —  Create array from data.
+array2string                        numpy           blacklisted                        —  Return string representation of array. Not support...
+array_equal                         numpy           counted_custom                     —  Element-wise equality; cost = numel(a).
+array_equiv                         numpy           counted_custom                     —  Element-wise equivalence; cost = numel(a).
+array_repr                          numpy           blacklisted                        —  Return string representation of array. Not support...
+array_split                         numpy           free                               —  Split array into sub-arrays (possibly unequal).
+array_str                           numpy           blacklisted                        —  Return string representation of data in array. Not...
+asarray                             numpy           free                               —  Convert input to array.
+asarray_chkfinite                   numpy           free                               —  Convert to array, raising if NaN or inf.
+asin                                numpy           counted_unary                      —  Alias for arcsin (NumPy 2.x).
+asinh                               numpy           counted_unary                      —  Alias for arcsinh (NumPy 2.x).
+asmatrix                            numpy           blacklisted                        —  Interpret input as matrix (deprecated). Not suppor...
+astype                              numpy           free                               —  Cast array to specified type.
+atan                                numpy           counted_unary                      —  Alias for arctan (NumPy 2.x).
+atan2                               numpy           counted_binary                     —  Alias for arctan2 (NumPy 2.x).
+atanh                               numpy           counted_unary                      —  Alias for arctanh (NumPy 2.x).
+atleast_1d                          numpy           free                               —  View inputs as arrays with at least one dimension.
+atleast_2d                          numpy           free                               —  View inputs as arrays with at least two dimensions...
+atleast_3d                          numpy           free                               —  View inputs as arrays with at least three dimensio...
+average                             numpy           counted_reduction             1.0230  Weighted average of array elements.
+bartlett                            mechestim._window counted_custom                     —  Bartlett window. Cost: n (one linear eval per samp...
+base_repr                           numpy           free                               —  Return string representation of number in given ba...
+binary_repr                         numpy           free                               —  Return binary string representation of the input n...
+bincount                            numpy           counted_custom                     —  Integer counting; cost = numel(x).
+bitwise_and                         numpy           counted_binary                     —  Element-wise bitwise AND.
+bitwise_count                       numpy           counted_unary                      —  Count set bits element-wise (popcount).
+bitwise_invert                      numpy           counted_unary                      —  Element-wise bitwise invert (alias for bitwise_not...
+bitwise_left_shift                  numpy           counted_binary                     —  Element-wise left bit shift.
+bitwise_not                         numpy           counted_unary                      —  Element-wise bitwise NOT.
+bitwise_or                          numpy           counted_binary                     —  Element-wise bitwise OR.
+bitwise_right_shift                 numpy           counted_binary                     —  Element-wise right bit shift.
+bitwise_xor                         numpy           counted_binary                     —  Element-wise bitwise XOR.
+blackman                            mechestim._window counted_custom                     —  Blackman window. Cost: 3*n (three cosine terms per...
+block                               numpy           free                               —  Assemble ndarray from nested list of blocks.
+bmat                                numpy           free                               —  Build matrix from nested list of matrices.
+broadcast_arrays                    numpy           free                               —  Broadcast arrays against each other.
+broadcast_shapes                    numpy           free                               —  Compute broadcast shape from input shapes.
+broadcast_to                        numpy           free                               —  Broadcast array to new shape.
+busday_count                        numpy           blacklisted                        —  Count valid days between begindate and enddate. No...
+busday_offset                       numpy           blacklisted                        —  Apply offset to dates subject to valid day rules. ...
+can_cast                            numpy           free                               —  Returns True if cast is safe.
+cbrt                                numpy           counted_unary                24.6793  Element-wise cube root.
+ceil                                numpy           counted_unary                 0.3837  Element-wise ceiling.
+choose                              numpy           free                               —  Construct array from index array and choices.
+clip                                numpy           counted_custom                     —  Clip array to [a_min, a_max] element-wise.
+column_stack                        numpy           free                               —  Stack 1-D arrays as columns into 2-D array.
+common_type                         numpy           free                               —  Return scalar type common to all input arrays.
+compress                            numpy           free                               —  Return selected slices along axis.
+concat                              numpy           free                               —  Join arrays along axis (NumPy 2.x array API alias ...
+concatenate                         numpy           free                               —  Join arrays along axis.
+conj                                numpy           counted_unary                      —  Complex conjugate element-wise.
+conjugate                           numpy           counted_unary                      —  Complex conjugate element-wise.
+convolve                            numpy           counted_custom                     —  1-D discrete convolution.
+copy                                numpy           free                               —  Return array copy.
+copysign                            numpy           counted_binary                0.7673  Copy sign of x2 to magnitude of x1 element-wise.
+copyto                              numpy           free                               —  Copy values from src to dst array.
+corrcoef                            numpy           counted_custom                     —  Pearson correlation coefficients.
+correlate                           numpy           counted_custom                     —  1-D cross-correlation.
+cos                                 numpy           counted_unary                25.8987  Element-wise cosine.
+cosh                                numpy           counted_unary                18.2857  Element-wise hyperbolic cosine.
+count_nonzero                       numpy           counted_reduction             0.3837  Count non-zero elements.
+cov                                 numpy           counted_custom                     —  Covariance matrix.
+cross                               numpy           counted_custom                     —  Cross product of two 3-D vectors.
+cumprod                             numpy           counted_reduction             1.0230  Cumulative product of array elements.
+cumsum                              numpy           counted_reduction             1.0230  Cumulative sum of array elements.
+cumulative_prod                     numpy           counted_reduction                  —  Cumulative product (NumPy 2.x array API).
+cumulative_sum                      numpy           counted_reduction                  —  Cumulative sum (NumPy 2.x array API).
+datetime_as_string                  numpy           blacklisted                        —  Convert datetime array to string representation. N...
+datetime_data                       numpy           blacklisted                        —  Get information about the step size of datetime dt...
+deg2rad                             numpy           counted_unary                 1.0230  Alias for radians.
+degrees                             numpy           counted_unary                 1.0230  Convert radians to degrees element-wise.
+delete                              numpy           free                               —  Return array with sub-arrays deleted along axis.
+diag                                numpy           free                               —  Extract diagonal or construct diagonal array.
+diag_indices                        numpy           free                               —  Return indices to access main diagonal of n-D arra...
+diag_indices_from                   numpy           free                               —  Return indices to access main diagonal of given ar...
+diagflat                            numpy           free                               —  Create diagonal array from flattened input.
+diagonal                            numpy           free                               —  Return specified diagonals.
+diff                                numpy           counted_custom                     —  n-th discrete difference along axis.
+digitize                            numpy           counted_custom                     —  Bin search; cost = n*ceil(log2(bins)).
+divide                              numpy           counted_binary                1.4067  Element-wise true division.
+divmod                              numpy           counted_binary                     —  Element-wise (quotient, remainder) tuple.
+dot                                 numpy           counted_custom                     —  Dot product; cost = 2*M*N*K for matrix multiply.
+dsplit                              numpy           free                               —  Split array into multiple sub-arrays depth-wise.
+dstack                              numpy           free                               —  Stack arrays depth-wise (along third axis).
+ediff1d                             numpy           counted_custom                     —  Differences between consecutive elements.
+einsum                              numpy           counted_custom                     —  Generalized Einstein summation.
+einsum_path                         numpy           counted_custom                     —  Optimize einsum contraction path (no numeric outpu...
+empty                               numpy           free                               —  Uninitialized array allocation.
+empty_like                          numpy           free                               —  Uninitialized array with same shape/type as input.
+equal                               numpy           counted_binary                0.7673  Element-wise x1 == x2.
+exp                                 numpy           counted_unary                14.4495  Element-wise e^x.
+exp2                                numpy           counted_unary                 9.9740  Element-wise 2^x.
+expand_dims                         numpy           free                               —  Insert new size-1 axis.
+expm1                               numpy           counted_unary                26.5973  Element-wise e^x - 1 (accurate near zero).
+extract                             numpy           free                               —  Return elements satisfying condition.
+eye                                 numpy           free                               —  Create identity matrix.
+fabs                                numpy           counted_unary                 0.3837  Element-wise absolute value (always float).
+fft.fft                             numpy.fft       counted_custom                0.8351  1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-T...
+fft.fft2                            numpy.fft       counted_custom                0.7213  2-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s...
+fft.fftfreq                         numpy.fft       free                               —  FFT sample frequencies. No arithmetic; returns ind...
+fft.fftn                            numpy.fft       counted_custom                0.7213  N-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s...
+fft.fftshift                        numpy.fft       free                               —  Shift zero-frequency component to center. No arith...
+fft.hfft                            numpy.fft       counted_custom                2.2883  FFT of Hermitian-symmetric signal. Cost: 5*n_out*c...
+fft.ifft                            numpy.fft       counted_custom                1.3471  Inverse 1-D complex FFT. Cost: 5*n*ceil(log2(n)) (...
+fft.ifft2                           numpy.fft       counted_custom                0.7833  Inverse 2-D complex FFT. Cost: 5*N*ceil(log2(N)), ...
+fft.ifftn                           numpy.fft       counted_custom                0.7833  Inverse N-D complex FFT. Cost: 5*N*ceil(log2(N)), ...
+fft.ifftshift                       numpy.fft       free                               —  Inverse of fftshift. No arithmetic; index reorderi...
+fft.ihfft                           numpy.fft       counted_custom                0.4274  Inverse FFT of Hermitian signal. Cost: 5*n*ceil(lo...
+fft.irfft                           numpy.fft       counted_custom                1.0337  Inverse 1-D real FFT. Cost: 5*(n//2)*ceil(log2(n))...
+fft.irfft2                          numpy.fft       counted_custom                0.9010  Inverse 2-D real FFT. Cost: 5*(N//2)*ceil(log2(N))...
+fft.irfftn                          numpy.fft       counted_custom                0.9010  Inverse N-D real FFT. Cost: 5*(N//2)*ceil(log2(N))...
+fft.rfft                            numpy.fft       counted_custom                0.8348  1-D real FFT. Cost: 5*(n//2)*ceil(log2(n)) (Cooley...
+fft.rfft2                           numpy.fft       counted_custom                0.7074  2-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod...
+fft.rfftfreq                        numpy.fft       free                               —  Real FFT sample frequencies. No arithmetic; return...
+fft.rfftn                           numpy.fft       counted_custom                0.7074  N-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod...
+fill_diagonal                       numpy           free                               —  Fill main diagonal of given array.
+fix                                 numpy           counted_unary                      —  Round toward zero element-wise (alias for trunc).
+flatnonzero                         numpy           free                               —  Return indices of non-zero elements in flattened a...
+flip                                numpy           free                               —  Reverse order of elements along axis.
+fliplr                              numpy           free                               —  Flip array left-right.
+flipud                              numpy           free                               —  Flip array up-down.
+float_power                         numpy           counted_binary               20.8222  Element-wise exponentiation in float64.
+floor                               numpy           counted_unary                 0.3837  Element-wise floor.
+floor_divide                        numpy           counted_binary                3.0823  Element-wise floor division.
+fmax                                numpy           counted_binary                1.4067  Element-wise maximum ignoring NaN.
+fmin                                numpy           counted_binary                1.4067  Element-wise minimum ignoring NaN.
+fmod                                numpy           counted_binary                0.7673  Element-wise C-style fmod (remainder toward zero).
+format_float_positional             numpy           blacklisted                        —  Format floating point scalar as decimal string. No...
+format_float_scientific             numpy           blacklisted                        —  Format floating point scalar as scientific notatio...
+frexp                               numpy           counted_unary                      —  Decompose x into mantissa and exponent element-wis...
+from_dlpack                         numpy           free                               —  Create ndarray from DLPack object (zero-copy).
+frombuffer                          numpy           free                               —  Interpret buffer as 1-D array.
+fromfile                            numpy           free                               —  Construct array from binary/text file.
+fromfunction                        numpy           free                               —  Construct array by executing function over each co...
+fromiter                            numpy           free                               —  Create array from an iterable.
+frompyfunc                          numpy           blacklisted                        —  Take arbitrary Python function and return NumPy uf...
+fromregex                           numpy           free                               —  Construct array from text file using regex.
+fromstring                          numpy           free                               —  Create 1-D array from string data.
+full                                numpy           free                               —  Create array filled with scalar value.
+full_like                           numpy           free                               —  Array filled with scalar, same shape/type as input...
+gcd                                 numpy           counted_binary                     —  Element-wise greatest common divisor.
+genfromtxt                          numpy           blacklisted                        —  Load data from text file with missing values. Not ...
+geomspace                           numpy           counted_custom                     —  Geometric-spaced generation; cost = num.
+get_include                         numpy           blacklisted                        —  Return directory containing NumPy C header files. ...
+getbufsize                          numpy           blacklisted                        —  Return size of buffer used in ufuncs. Not supporte...
+geterr                              numpy           blacklisted                        —  Get current way of handling floating-point errors....
+geterrcall                          numpy           blacklisted                        —  Return current callback function for floating-poin...
+gradient                            numpy           counted_custom                     —  Gradient using central differences.
+greater                             numpy           counted_binary                0.7673  Element-wise x1 > x2.
+greater_equal                       numpy           counted_binary                0.7673  Element-wise x1 >= x2.
+hamming                             mechestim._window counted_custom                     —  Hamming window. Cost: n (one cosine per sample).
+hanning                             mechestim._window counted_custom                     —  Hanning window. Cost: n (one cosine per sample).
+heaviside                           numpy           counted_binary                     —  Heaviside step function element-wise.
+histogram                           numpy           counted_custom                     —  Binning; cost = n*ceil(log2(bins)).
+histogram2d                         numpy           counted_custom                     —  2D binning; cost = n*(ceil(log2(bx))+ceil(log2(by)...
+histogram_bin_edges                 numpy           counted_custom                     —  Bin edge computation; cost = numel(a).
+histogramdd                         numpy           counted_custom                     —  ND binning; cost = n*sum(ceil(log2(b_i))).
+hsplit                              numpy           free                               —  Split array into columns.
+hstack                              numpy           free                               —  Stack arrays horizontally.
+hypot                               numpy           counted_binary                7.4809  Element-wise Euclidean norm sqrt(x1^2 + x2^2).
+i0                                  numpy           counted_unary                      —  Modified Bessel function of order 0, element-wise.
+identity                            numpy           free                               —  Create square identity matrix.
+imag                                numpy           counted_unary                      —  Return imaginary part of complex array.
+in1d                                numpy           counted_custom                     —  Set membership; cost = (n+m)*ceil(log2(n+m)).
+indices                             numpy           free                               —  Return array representing indices of a grid.
+inner                               numpy           counted_custom                     —  Inner product; cost = 2*N for 1-D, 2*N*M for n-D.
+insert                              numpy           free                               —  Insert values along axis before given indices.
+interp                              numpy           counted_custom                     —  1-D linear interpolation.
+intersect1d                         numpy           counted_custom                     —  Set intersection; cost = (n+m)*ceil(log2(n+m)).
+invert                              numpy           counted_unary                      —  Bitwise NOT element-wise.
+is_busday                           numpy           blacklisted                        —  Calculates which of given dates are valid days. No...
+isclose                             numpy           counted_unary                      —  Element-wise approximate equality test.
+iscomplex                           numpy           counted_unary                      —  Test if element is complex element-wise.
+iscomplexobj                        numpy           counted_unary                      —  Return True if input is a complex type or array.
+isdtype                             numpy           free                               —  Return True if array or dtype is of specified kind...
+isfinite                            numpy           free                               —  Test for finite values element-wise.
+isfortran                           numpy           free                               —  Return True if array is Fortran contiguous.
+isin                                numpy           counted_custom                     —  Set membership; cost = (n+m)*ceil(log2(n+m)).
+isinf                               numpy           free                               —  Test for infinity element-wise.
+isnan                               numpy           free                               —  Test for NaN element-wise.
+isnat                               numpy           counted_unary                      —  Test for NaT (not-a-time) element-wise.
+isneginf                            numpy           counted_unary                      —  Test for negative infinity element-wise.
+isposinf                            numpy           counted_unary                      —  Test for positive infinity element-wise.
+isreal                              numpy           counted_unary                      —  Test if element is real (imag == 0) element-wise.
+isrealobj                           numpy           counted_unary                      —  Return True if x is a not complex type or array.
+isscalar                            numpy           free                               —  Return True if input is a scalar.
+issubdtype                          numpy           free                               —  Return True if first argument is lower in type hie...
+iterable                            numpy           free                               —  Return True if object is iterable.
+ix_                                 numpy           free                               —  Construct open mesh from multiple sequences.
+kaiser                              mechestim._window counted_custom                     —  Kaiser window. Cost: 3*n (Bessel function eval per...
+kron                                numpy           counted_custom                     —  Kronecker product; cost proportional to output siz...
+lcm                                 numpy           counted_binary                     —  Element-wise least common multiple.
+ldexp                               numpy           counted_binary                0.7673  Return x1 * 2**x2 element-wise.
+left_shift                          numpy           counted_binary                     —  Element-wise left bit shift (legacy name).
+less                                numpy           counted_binary                0.7673  Element-wise x1 < x2.
+less_equal                          numpy           counted_binary                0.7673  Element-wise x1 <= x2.
+lexsort                             numpy           counted_custom               22.8490  Multi-key sort; cost = k*n*ceil(log2(n)).
+linalg.cholesky                     numpy.linalg    counted_custom                1.6734  Cholesky decomposition. Cost: $n^3/3$ (Golub & Van...
+linalg.cond                         numpy.linalg    counted_custom                     —  Condition number. Cost: m*n*min(m,n) (via SVD).
+linalg.cross                        numpy.linalg    counted_custom                     —  Delegates to `me.cross` which charges `numel(outpu...
+linalg.det                          numpy.linalg    counted_custom                1.0828  Determinant. Cost: $n^3$ (LU factorization).
+linalg.diagonal                     numpy.linalg    free                               —  View of diagonal — delegates to mechestim.diagonal...
+linalg.eig                          numpy.linalg    counted_custom                1.5021  Eigendecomposition. Cost: $10n^3$ (Francis QR, Gol...
+linalg.eigh                         numpy.linalg    counted_custom                3.6263  Symmetric eigendecomposition. Cost: $(4/3)n^3$ (Go...
+linalg.eigvals                      numpy.linalg    counted_custom                1.0197  Eigenvalues only. Cost: $10n^3$ (same as eig).
+linalg.eigvalsh                     numpy.linalg    counted_custom                1.2624  Symmetric eigenvalues. Cost: $(4/3)n^3$ (same as e...
+linalg.inv                          numpy.linalg    counted_custom                2.7290  Matrix inverse. Cost: $n^3$ (LU + solve).
+linalg.lstsq                        numpy.linalg    counted_custom                3.0940  Least squares. Cost: m*n*min(m,n) (LAPACK gelsd/SV...
+linalg.matmul                       numpy.linalg    counted_custom                     —  Delegates to `me.matmul` which charges `2*m*k*n` F...
+linalg.matrix_norm                  numpy.linalg    counted_custom                     —  Matrix norm. Cost depends on ord: 2*numel for Frob...
+linalg.matrix_power                 numpy.linalg    counted_custom                     —  Matrix power. Cost: $(\lfloor\log_2 k\rfloor + \te...
+linalg.matrix_rank                  numpy.linalg    counted_custom                     —  Matrix rank. Cost: m*n*min(m,n) (via SVD).
+linalg.matrix_transpose             numpy.linalg    free                               —  Transpose view — delegates to mechestim.matrix_tra...
+linalg.multi_dot                    numpy.linalg    counted_custom                     —  Chain matmul. Cost: sum of optimal chain matmul co...
+linalg.norm                         numpy.linalg    counted_custom                     —  Norm. Cost depends on ord: numel for L1/inf, 2*num...
+linalg.outer                        numpy.linalg    counted_custom                     —  Delegates to `me.outer` which charges `m*n` FLOPs.
+linalg.pinv                         numpy.linalg    counted_custom               11.2414  Pseudoinverse. Cost: m*n*min(m,n) (via SVD).
+linalg.qr                           numpy.linalg    counted_custom                2.0853  QR decomposition. Cost: $2mn^2 - (2/3)n^3$ (Golub ...
+linalg.slogdet                      numpy.linalg    counted_custom                1.0828  Sign + log determinant. Cost: $n^3$ (LU factorizat...
+linalg.solve                        numpy.linalg    counted_custom                1.0096  Solve Ax=b. Cost: $2n^3/3$ (LU) + $n^2 \cdot n_{\t...
+linalg.svd                          numpy.linalg    counted_custom                9.2345  Singular value decomposition; cost ~ O(min(m,n)*m*...
+linalg.svdvals                      numpy.linalg    counted_custom                2.9458  Singular values only. Cost: m*n*min(m,n) (Golub-Re...
+linalg.tensordot                    numpy.linalg    counted_custom                     —  Delegates to `me.tensordot` which charges FLOPs ba...
+linalg.tensorinv                    numpy.linalg    counted_custom                     —  Tensor inverse. Cost: $n^3$ after reshape (delegat...
+linalg.tensorsolve                  numpy.linalg    counted_custom                     —  Tensor solve. Cost: $n^3$ after reshape (delegates...
+linalg.trace                        numpy.linalg    counted_custom                     —  Matrix trace. Cost: n (sum of diagonal elements).
+linalg.vecdot                       numpy.linalg    counted_custom                     —  Delegates to `me.vecdot` which charges `2*n` FLOPs...
+linalg.vector_norm                  numpy.linalg    counted_custom                     —  Vector norm. Cost: numel (or 2*numel for general p...
+linspace                            numpy           free                               —  Return evenly spaced numbers over interval.
+load                                numpy           blacklisted                        —  Load arrays from .npy/.npz files. Not supported.
+loadtxt                             numpy           blacklisted                        —  Load data from text file. Not supported.
+log                                 numpy           counted_unary                20.3202  Element-wise natural logarithm.
+log10                               numpy           counted_unary                22.8776  Element-wise base-10 logarithm.
+log1p                               numpy           counted_unary                26.5973  Element-wise log(1+x) (accurate near zero).
+log2                                numpy           counted_unary                22.5579  Element-wise base-2 logarithm.
+logaddexp                           numpy           counted_binary               21.6097  log(exp(x1) + exp(x2)) element-wise.
+logaddexp2                          numpy           counted_binary               22.5287  log2(2**x1 + 2**x2) element-wise.
+logical_and                         numpy           counted_binary                0.7673  Element-wise logical AND.
+logical_not                         numpy           counted_unary                 0.3837  Element-wise logical NOT.
+logical_or                          numpy           counted_binary                0.7673  Element-wise logical OR.
+logical_xor                         numpy           counted_binary                0.7673  Element-wise logical XOR.
+logspace                            numpy           counted_custom                     —  Log-spaced generation; cost = num.
+mask_indices                        numpy           free                               —  Return indices of mask for n x n array.
+matmul                              numpy           counted_custom                     —  Matrix multiplication; cost = 2*M*N*K.
+matrix_transpose                    numpy           free                               —  Transpose last two dimensions (NumPy 2.x array API...
+max                                 numpy           counted_reduction             1.0237  Maximum value of array.
+maximum                             numpy           counted_binary                1.4067  Element-wise maximum (propagates NaN).
+may_share_memory                    numpy           free                               —  Determine if two arrays might share memory.
+mean                                numpy           counted_reduction             1.0230  Arithmetic mean of array elements.
+median                              numpy           counted_reduction             0.3837  Median of array elements (sorts internally).
+meshgrid                            numpy           free                               —  Coordinate matrices from coordinate vectors.
+min                                 numpy           counted_reduction             1.0237  Minimum value of array.
+min_scalar_type                     numpy           free                               —  Return the minimum scalar type for a value.
+minimum                             numpy           counted_binary                1.4067  Element-wise minimum (propagates NaN).
+mintypecode                         numpy           free                               —  Return minimum data type character that can satisf...
+mod                                 numpy           counted_binary                0.7673  Element-wise modulo.
+modf                                numpy           counted_unary                      —  Return fractional and integral parts element-wise.
+moveaxis                            numpy           free                               —  Move axes to new positions.
+multiply                            numpy           counted_binary                1.4067  Element-wise multiplication.
+nan_to_num                          numpy           counted_unary                      —  Replace NaN/inf with finite numbers element-wise.
+nanargmax                           numpy           counted_reduction                  —  Index of maximum ignoring NaNs.
+nanargmin                           numpy           counted_reduction                  —  Index of minimum ignoring NaNs.
+nancumprod                          numpy           counted_reduction                  —  Cumulative product ignoring NaNs.
+nancumsum                           numpy           counted_reduction                  —  Cumulative sum ignoring NaNs.
+nanmax                              numpy           counted_reduction             1.0237  Maximum ignoring NaNs.
+nanmean                             numpy           counted_reduction             1.0230  Mean ignoring NaNs.
+nanmedian                           numpy           counted_reduction             0.3837  Median ignoring NaNs.
+nanmin                              numpy           counted_reduction             1.0237  Minimum ignoring NaNs.
+nanpercentile                       numpy           counted_reduction             0.3837  q-th percentile ignoring NaNs.
+nanprod                             numpy           counted_reduction             1.0230  Product ignoring NaNs.
+nanquantile                         numpy           counted_reduction             0.3837  q-th quantile ignoring NaNs.
+nanstd                              numpy           counted_reduction             2.9411  Standard deviation ignoring NaNs.
+nansum                              numpy           counted_reduction             1.0230  Sum ignoring NaNs.
+nanvar                              numpy           counted_reduction             2.9411  Variance ignoring NaNs.
+ndim                                numpy           free                               —  Return number of dimensions of array.
+negative                            numpy           counted_unary                 0.3837  Element-wise negation.
+nested_iters                        numpy           blacklisted                        —  Create nested iterators for multi-index broadcasti...
+nextafter                           numpy           counted_binary                0.7673  Return next float after x1 toward x2 element-wise.
+nonzero                             numpy           free                               —  Return indices of non-zero elements.
+not_equal                           numpy           counted_binary                0.7673  Element-wise x1 != x2.
+ones                                numpy           free                               —  Create one-filled array.
+ones_like                           numpy           free                               —  Array of ones with same shape/type as input.
+outer                               numpy           counted_custom                     —  Outer product of two vectors; cost = M*N.
+packbits                            numpy           free                               —  Pack elements of array into bits.
+pad                                 numpy           free                               —  Pad array.
+partition                           numpy           counted_custom               14.1337  Quickselect; cost = n per slice.
+percentile                          numpy           counted_reduction             0.3837  q-th percentile of array elements.
+permute_dims                        numpy           free                               —  Permute dimensions (NumPy 2.x array API).
+piecewise                           numpy           blacklisted                        —  Evaluate piecewise-defined function. Not supported...
+place                               numpy           free                               —  Change elements satisfying condition.
+poly                                mechestim._polynomial counted_custom              138.0333  Polynomial from roots. Cost: $n^2$ FLOPs.
+polyadd                             mechestim._polynomial counted_custom                8.2015  Add two polynomials. Cost: max(n1, n2) FLOPs.
+polyder                             mechestim._polynomial counted_custom                8.7003  Differentiate polynomial. Cost: n FLOPs.
+polydiv                             mechestim._polynomial counted_custom               10.2335  Divide one polynomial by another. Cost: n1 * n2 FL...
+polyfit                             mechestim._polynomial counted_custom            15459.7653  Least squares polynomial fit. Cost: 2 * m * (deg+1...
+polyint                             mechestim._polynomial counted_custom                8.0800  Integrate polynomial. Cost: n FLOPs.
+polymul                             mechestim._polynomial counted_custom              169.3638  Multiply polynomials. Cost: n1 * n2 FLOPs.
+polysub                             mechestim._polynomial counted_custom                8.2015  Difference (subtraction) of two polynomials. Cost:...
+polyval                             mechestim._polynomial counted_custom              129.3312  Evaluate polynomial at given points. Cost: 2 * m *...
+positive                            numpy           counted_unary                 0.3837  Element-wise unary plus (copy with sign preserved)...
+pow                                 numpy           counted_binary                     —  Alias for power (NumPy 2.x).
+power                               numpy           counted_binary               46.7140  Element-wise exponentiation x**y.
+prod                                numpy           counted_reduction             1.0230  Product of array elements.
+promote_types                       numpy           free                               —  Return smallest type to which both types may be sa...
+ptp                                 numpy           counted_reduction                  —  Peak-to-peak (max - min) range of array.
+put                                 numpy           free                               —  Replace elements at given flat indices.
+put_along_axis                      numpy           free                               —  Put values into destination array using indices.
+putmask                             numpy           free                               —  Change elements of array based on condition and in...
+quantile                            numpy           counted_reduction             0.3837  q-th quantile of array elements.
+rad2deg                             numpy           counted_unary                 1.0230  Alias for degrees.
+radians                             numpy           counted_unary                 1.0230  Convert degrees to radians element-wise.
+random.beta                         numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.binomial                     numpy.random    counted_custom               18.5410  Sampling; cost = numel(output).
+random.bytes                        numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.chisquare                    numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.choice                       numpy.random    counted_custom                     —  Sampling; cost = numel(output) if replace, n*ceil(...
+random.default_rng                  numpy.random    free                               —  Construct a new Generator with default BitGenerato...
+random.dirichlet                    numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.exponential                  numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.f                            numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.gamma                        numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.geometric                    numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.get_state                    numpy.random    free                               —  Return tuple representing internal state of genera...
+random.gumbel                       numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.hypergeometric               numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.laplace                      numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.logistic                     numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.lognormal                    numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.logseries                    numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.multinomial                  numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.multivariate_normal          numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.negative_binomial            numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.noncentral_chisquare         numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.noncentral_f                 numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.normal                       numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.pareto                       numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.permutation                  numpy.random    counted_custom                0.0001  Shuffle; cost = n*ceil(log2(n)).
+random.poisson                      numpy.random    counted_custom               28.1315  Sampling; cost = numel(output).
+random.power                        numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.rand                         numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.randint                      numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.randn                        numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.random                       numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.random_integers              numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.random_sample                numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.ranf                         numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.rayleigh                     numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.sample                       numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.seed                         numpy.random    free                               —  Seed random number generator.
+random.set_state                    numpy.random    free                               —  Set internal state of generator.
+random.shuffle                      numpy.random    counted_custom                0.2558  Shuffle; cost = n*ceil(log2(n)).
+random.standard_cauchy              numpy.random    counted_custom               29.1635  Sampling; cost = numel(output).
+random.standard_exponential         numpy.random    counted_custom               17.3029  Sampling; cost = numel(output).
+random.standard_gamma               numpy.random    counted_custom               17.3029  Sampling; cost = numel(output).
+random.standard_normal              numpy.random    counted_custom               14.2622  Sampling; cost = numel(output).
+random.standard_t                   numpy.random    counted_custom               45.4818  Sampling; cost = numel(output).
+random.triangular                   numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.uniform                      numpy.random    counted_custom                3.1969  Sampling; cost = numel(output).
+random.vonmises                     numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.wald                         numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.weibull                      numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+random.zipf                         numpy.random    counted_custom                     —  Sampling; cost = numel(output).
+ravel                               numpy           free                               —  Return contiguous flattened array.
+ravel_multi_index                   numpy           free                               —  Convert multi-dimensional index to flat index.
+real                                numpy           counted_unary                      —  Return real part of complex array.
+real_if_close                       numpy           counted_unary                      —  Return real array if imaginary part is negligible.
+reciprocal                          numpy           counted_unary                 1.0230  Element-wise 1/x.
+remainder                           numpy           counted_binary                0.7673  Element-wise remainder (same as mod).
+repeat                              numpy           free                               —  Repeat elements of an array.
+require                             numpy           free                               —  Return array that satisfies requirements.
+reshape                             numpy           free                               —  Reshape array without copying.
+resize                              numpy           free                               —  Return new array with given shape by repeating.
+result_type                         numpy           free                               —  Return type that results from applying NumPy type ...
+right_shift                         numpy           counted_binary                     —  Element-wise right bit shift (legacy name).
+rint                                numpy           counted_unary                 0.3837  Round to nearest integer element-wise.
+roll                                numpy           free                               —  Roll array elements along axis.
+rollaxis                            numpy           free                               —  Roll specified axis backwards.
+roots                               mechestim._polynomial counted_custom            68892.4486  Return roots of polynomial with given coefficients...
+rot90                               numpy           free                               —  Rotate array 90 degrees.
+round                               numpy           counted_unary                      —  Round to given number of decimals element-wise.
+row_stack                           numpy           free                               —  Stack arrays vertically (alias for vstack).
+save                                numpy           blacklisted                        —  Save array to .npy file. Not supported.
+savetxt                             numpy           blacklisted                        —  Save array to text file. Not supported.
+savez                               numpy           blacklisted                        —  Save multiple arrays to .npz file. Not supported.
+savez_compressed                    numpy           blacklisted                        —  Save multiple arrays to compressed .npz file. Not ...
+searchsorted                        numpy           counted_custom               22.8490  Binary search; cost = m*ceil(log2(n)).
+select                              numpy           free                               —  Return array from list of choices based on conditi...
+setbufsize                          numpy           blacklisted                        —  Set size of buffer used in ufuncs. Not supported.
+setdiff1d                           numpy           counted_custom                     —  Set difference; cost = (n+m)*ceil(log2(n+m)).
+seterr                              numpy           blacklisted                        —  Set how floating-point errors are handled. Not sup...
+seterrcall                          numpy           blacklisted                        —  Set callback function for floating-point errors. N...
+setxor1d                            numpy           counted_custom                     —  Symmetric set difference; cost = (n+m)*ceil(log2(n...
+shape                               numpy           free                               —  Return shape of array.
+shares_memory                       numpy           free                               —  Determine if two arrays share memory.
+show_config                         numpy           blacklisted                        —  Show NumPy build configuration. Not supported.
+show_runtime                        numpy           blacklisted                        —  Show runtime info. Not supported.
+sign                                numpy           counted_unary                 0.3837  Element-wise sign function.
+signbit                             numpy           counted_unary                 0.3837  Returns True for elements with negative sign bit.
+sin                                 numpy           counted_unary                25.8688  Element-wise sine.
+sinc                                numpy           counted_unary                      —  Normalized sinc function element-wise.
+sinh                                numpy           counted_unary                21.4825  Element-wise hyperbolic sine.
+size                                numpy           free                               —  Return number of elements in array.
+sort                                numpy           counted_custom               67.6431  Comparison sort; cost = n*ceil(log2(n)) per slice.
+sort_complex                        numpy           counted_unary                      —  Sort complex array by real then imaginary part.
+spacing                             numpy           counted_unary                      —  Return ULP spacing for each element.
+split                               numpy           free                               —  Split array into sub-arrays.
+sqrt                                numpy           counted_unary                 1.0230  Element-wise square root.
+square                              numpy           counted_unary                 1.0230  Element-wise x^2.
+squeeze                             numpy           free                               —  Remove size-1 dimensions.
+stack                               numpy           free                               —  Join arrays along new axis.
+std                                 numpy           counted_reduction             2.9411  Standard deviation; cost_multiplier=2 (two passes)...
+subtract                            numpy           counted_binary                1.4067  Element-wise subtraction.
+sum                                 numpy           counted_reduction             1.0230  Sum of array elements.
+swapaxes                            numpy           free                               —  Interchange two axes of an array.
+take                                numpy           free                               —  Take elements from array along axis.
+take_along_axis                     numpy           free                               —  Take values from input array by matching 1-D index...
+tan                                 numpy           counted_unary                38.7451  Element-wise tangent.
+tanh                                numpy           counted_unary                21.4825  Element-wise hyperbolic tangent.
+tensordot                           numpy           counted_custom                     —  Tensor dot product along specified axes.
+tile                                numpy           free                               —  Repeat array by tiling.
+trace                               numpy           counted_custom                     —  Diagonal sum; cost = min(n,m).
+transpose                           numpy           free                               —  Permute array dimensions.
+trapezoid                           numpy           counted_custom                     —  Integrate using the trapezoidal rule.
+trapz                               numpy           counted_custom                     —  Alias for trapezoid (deprecated).
+tri                                 numpy           free                               —  Array with ones at and below given diagonal.
+tril                                numpy           free                               —  Lower triangle of array.
+tril_indices                        numpy           free                               —  Return lower-triangle indices for n x n array.
+tril_indices_from                   numpy           free                               —  Return lower-triangle indices for given array.
+trim_zeros                          numpy           free                               —  Trim leading/trailing zeros from 1-D array.
+triu                                numpy           free                               —  Upper triangle of array.
+triu_indices                        numpy           free                               —  Return upper-triangle indices for n x n array.
+triu_indices_from                   numpy           free                               —  Return upper-triangle indices for given array.
+true_divide                         numpy           counted_binary                1.4067  Element-wise true division (explicit).
+trunc                               numpy           counted_unary                 0.3837  Truncate toward zero element-wise.
+typename                            numpy           free                               —  Return description of given data type code.
+union1d                             numpy           counted_custom                     —  Set union; cost = (n+m)*ceil(log2(n+m)).
+unique                              numpy           counted_custom               67.6431  Sort-based unique; cost = n*ceil(log2(n)).
+unique_all                          numpy           counted_custom                     —  Sort-based unique; cost = n*ceil(log2(n)).
+unique_counts                       numpy           counted_custom                     —  Sort-based unique; cost = n*ceil(log2(n)).
+unique_inverse                      numpy           counted_custom                     —  Sort-based unique; cost = n*ceil(log2(n)).
+unique_values                       numpy           counted_custom                     —  Sort-based unique; cost = n*ceil(log2(n)).
+unpackbits                          numpy           free                               —  Unpack elements of array into bits.
+unravel_index                       numpy           free                               —  Convert flat index to multi-dimensional index.
+unstack                             numpy           free                               —  Unstack array along axis into tuple of arrays (Num...
+unwrap                              mechestim._unwrap counted_custom                     —  Phase unwrap. Cost: $\text{numel}(\text{input})$ (...
+vander                              numpy           counted_custom                     —  Vandermonde matrix; cost = len(x)*(N-1).
+var                                 numpy           counted_reduction             2.9411  Variance; cost_multiplier=2 (two passes).
+vdot                                numpy           counted_custom                     —  Dot product with conjugation; cost = 2*N.
+vecdot                              numpy           counted_binary                     —  Vector dot product along last axis.
+vsplit                              numpy           free                               —  Split array into rows.
+vstack                              numpy           free                               —  Stack arrays vertically.
+where                               numpy           free                               —  Select elements based on condition.
+zeros                               numpy           free                               —  Create zero-filled array.
+zeros_like                          numpy           free                               —  Array of zeros with same shape/type as input.
+
+Total registry entries: 482
+Entries with weights: 152
+Entries without weights: 330
