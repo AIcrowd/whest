@@ -5,13 +5,13 @@ from unittest.mock import patch
 
 import pytest
 
-from benchmarks._perf import PerfResult
 from benchmarks._misc import (
     MISC_OPS,
     _analytical_cost,
     _get_op_config,
     benchmark_misc,
 )
+from benchmarks._perf import PerfResult
 
 
 class TestOpsLists:

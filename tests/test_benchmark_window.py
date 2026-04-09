@@ -6,8 +6,8 @@ import pytest
 
 from benchmarks._perf import PerfResult
 from benchmarks._window import (
-    WINDOW_OPS,
     _ANALYTICAL_COST,
+    WINDOW_OPS,
     benchmark_window,
 )
 

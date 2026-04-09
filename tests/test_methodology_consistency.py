@@ -17,7 +17,6 @@ import sys
 from pathlib import Path
 
 import numpy as np
-import pytest
 
 import mechestim as me
 from mechestim._budget import BudgetContext
@@ -26,12 +25,14 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from benchmarks._contractions import _analytical_cost as contraction_cost  # noqa: E402
 from benchmarks._fft import _analytical_cost as fft_analytical_cost  # noqa: E402
 from benchmarks._linalg import _analytical_cost as linalg_analytical_cost  # noqa: E402
-from benchmarks._misc import _analytical_cost as misc_analytical_cost  # noqa: E402
-from benchmarks._polynomial import _analytical_cost as poly_analytical_cost  # noqa: E402
-from benchmarks._sorting import _analytical_cost as sorting_analytical_cost  # noqa: E402
+from benchmarks._polynomial import (
+    _analytical_cost as poly_analytical_cost,  # noqa: E402
+)
+from benchmarks._sorting import (
+    _analytical_cost as sorting_analytical_cost,  # noqa: E402
+)
 
 
 def _run_and_get_cost(func, *args, **kwargs) -> int:
