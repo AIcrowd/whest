@@ -56,6 +56,8 @@ For `'ij,jk->ik'` with shapes `(256, 256)` and `(256, 256)`:
 
 For multi-operand einsums (3+ tensors), mechestim automatically decomposes the contraction into optimal pairwise steps. The total cost is the sum of per-step costs.
 
+When symmetric tensors are involved, each step's cost is further reduced by the ratio of unique output elements to total output elements. See [Exploit Symmetry Savings](exploit-symmetry.md#symmetry-in-einsum) for details.
+
 ## me.dot and me.matmul
 
 `me.dot(A, B)` and `me.matmul(A, B)` are equivalent to the corresponding einsum and have the same FLOP cost.
@@ -97,17 +99,24 @@ For the full symmetry guide, see [Exploit Symmetry Savings](./exploit-symmetry.m
 path, info = me.einsum_path('ijk,ai,bj,ck->abc', T, A, B, C)
 
 print(info)
-# Step  Subscript         FLOPs  Dense FLOPs  Symmetry Savings
-# ────  ────────────────  ─────  ───────────  ────────────────
-# 0     ijk,ai->ajk       ...    ...          ...
-# 1     ajk,bj->abk       ...    ...          ...
-# 2     abk,ck->abc       ...    ...          ...
-# ────  ────────────────  ─────  ───────────  ────────────────
-# Total                   ...    ...          ...x speedup
+# Prints a multi-line table with a header (complete contraction, naive
+# cost, optimized cost, speedup, largest intermediate, index sizes, and
+# the name of the optimizer that ran) followed by one row per contraction
+# step showing the path-supplied contract tuple, subscript, FLOPs, dense
+# FLOPs, savings percentage, BLAS label, unique/dense element counts, and
+# the symmetry transformation. See the Exploit Symmetry guide for a
+# worked example:
+# https://github.com/AIcrowd/mechestim/blob/main/docs/how-to/exploit-symmetry.md#example
+
+# Call info.format_table(verbose=True) to get an indented detail row per
+# step with the merged operand subset, the intermediate's output shape,
+# and the running cumulative cost — useful when debugging why a particular
+# step's savings are what they are.
 
 print(f"Naive cost:     {info.naive_cost:,}")
 print(f"Optimized cost: {info.optimized_cost:,}")
 print(f"Speedup:        {info.speedup:.1f}x")
+print(f"Optimizer used: {info.optimizer_used}")
 ```
 
 `me.flops.einsum_cost()` returns the same cost that `einsum()` would deduct — one source of truth:

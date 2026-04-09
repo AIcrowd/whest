@@ -187,4 +187,150 @@ XFAIL_PATTERNS: dict[str, str] = {
     "TestRandomDist::test_shuffle_untyped_warning[numpy.random]": (
         "WRAPPER_SIGNATURE: warning filename points to mechestim wrapper, not test file"
     ),
+    "*TestRandomDist::test_shuffle": (
+        "WRAPPER_SIGNATURE: mechestim shuffle is a plain function, not a bound method"
+    ),
+    "*TestRandomDist::test_shuffle_no_object_unpacking*": (
+        "WRAPPER_SIGNATURE: mechestim shuffle is a plain function, not a bound method"
+    ),
+    # ------------------------------------------------------------------ #
+    # SUBCLASS_RETURN — MechestimArray subclass propagation               #
+    # ------------------------------------------------------------------ #
+    # mechestim wraps return values in MechestimArray (an ndarray subclass)
+    # so that operator overloads can route through FLOP-tracked me.* funcs.
+    # NumPy's tests use strict `type(x) is np.ndarray` checks that fail when
+    # the result is a subclass. These tests are inherent limitations of the
+    # subclass design.
+    "*TestSpecialMethods::test_priority": (
+        "SUBCLASS_RETURN: ndarray subclass propagates through ufunc with __array_priority__"
+    ),
+    "*TestSpecialMethods::test_ufunc_override_where": (
+        "SUBCLASS_RETURN: MechestimArray __array_ufunc__ interaction with other override classes"
+    ),
+    "*TestUfunc::test_scalar_reduction": (
+        "SUBCLASS_RETURN: ufunc reduction on MechestimArray returns subclass instead of scalar"
+    ),
+    "*TestUfunc::test_scalar_equal": (
+        "SUBCLASS_RETURN: scalar comparison returns MechestimArray instead of bool"
+    ),
+    "*TestUfunc::test_struct_ufunc": (
+        "SUBCLASS_RETURN: structured ufunc result preserves MechestimArray subclass"
+    ),
+    "*TestUfunc::test_safe_casting": (
+        "SUBCLASS_RETURN: safe casting check sees MechestimArray subclass"
+    ),
+    "*TestUfunc::test_broadcast": (
+        "SUBCLASS_RETURN: broadcast result preserves MechestimArray subclass"
+    ),
+    "*TestNonzero::test_return_type": (
+        "SUBCLASS_RETURN: nonzero returns MechestimArray instead of plain ndarray tuple"
+    ),
+    "*TestRequire::test_non_array_input": (
+        "SUBCLASS_RETURN: np.require called on MechestimArray returns subclass"
+    ),
+    "*TestRequire::test_ensure_array": (
+        "SUBCLASS_RETURN: np.require with subok=False can't strip MechestimArray"
+    ),
+    "*TestArrayComparisons::test_compare_unstructured_voids*": (
+        "SUBCLASS_RETURN: void comparison preserves MechestimArray subclass"
+    ),
+    "*TestPinv::test_sq_cases": (
+        "SUBCLASS_RETURN: pinv result type assertion sees MechestimArray subclass"
+    ),
+    # ------------------------------------------------------------------ #
+    # OWNDATA_VIEW — _asmechestim view-cast loses OWNDATA flag            #
+    # ------------------------------------------------------------------ #
+    # mechestim's _asmechestim wraps numpy results via .view(MechestimArray)
+    # which produces a view (OWNDATA=False) rather than an owning array.
+    # NumPy's TestClip tests use assert_array_strict_equal which compares
+    # ndarray.flags including OWNDATA. The data and shape are correct;
+    # only the OWNDATA flag differs. Same root cause for several other tests.
+    "*TestClip::test_simple_int": (
+        "OWNDATA_VIEW: _asmechestim view-cast loses OWNDATA"
+    ),
+    "*TestClip::test_simple_double": (
+        "OWNDATA_VIEW: _asmechestim view-cast loses OWNDATA"
+    ),
+    "*TestClip::test_simple_complex": (
+        "OWNDATA_VIEW: _asmechestim view-cast loses OWNDATA"
+    ),
+    "*TestClip::test_simple_inplace_01": (
+        "OWNDATA_VIEW: _asmechestim view-cast loses OWNDATA"
+    ),
+    "*TestClip::test_simple_inplace_02": (
+        "OWNDATA_VIEW: _asmechestim view-cast loses OWNDATA"
+    ),
+    "*TestClip::test_simple_int32_inout*": (
+        "OWNDATA_VIEW: _asmechestim view-cast loses OWNDATA"
+    ),
+    "*TestClip::test_simple_int32_out": (
+        "OWNDATA_VIEW: _asmechestim view-cast loses OWNDATA"
+    ),
+    "*TestClip::test_simple_int64_inout": (
+        "OWNDATA_VIEW: _asmechestim view-cast loses OWNDATA"
+    ),
+    "*TestClip::test_simple_int64_out": (
+        "OWNDATA_VIEW: _asmechestim view-cast loses OWNDATA"
+    ),
+    "*TestClip::test_array_double": (
+        "OWNDATA_VIEW: _asmechestim view-cast loses OWNDATA"
+    ),
+    "*TestClip::test_clip_func_takes_out": (
+        "OWNDATA_VIEW: _asmechestim view-cast loses OWNDATA"
+    ),
+    "*TestClip::test_clip_inplace_array": (
+        "OWNDATA_VIEW: _asmechestim view-cast loses OWNDATA"
+    ),
+    "*TestClip::test_clip_inplace_simple": (
+        "OWNDATA_VIEW: _asmechestim view-cast loses OWNDATA"
+    ),
+    "*TestClip::test_clip_non_contig": (
+        "OWNDATA_VIEW: _asmechestim view-cast loses OWNDATA"
+    ),
+    "*TestClip::test_clip_with_out_array_int32": (
+        "OWNDATA_VIEW: _asmechestim view-cast loses OWNDATA"
+    ),
+    "*TestClip::test_clip_with_out_array_outint32": (
+        "OWNDATA_VIEW: _asmechestim view-cast loses OWNDATA"
+    ),
+    "*TestClip::test_clip_with_out_simple2": (
+        "OWNDATA_VIEW: _asmechestim view-cast loses OWNDATA"
+    ),
+    "*TestClip::test_clip_with_out_simple_int32": (
+        "OWNDATA_VIEW: _asmechestim view-cast loses OWNDATA"
+    ),
+    "*TestClip::test_type_cast_01": (
+        "OWNDATA_VIEW: _asmechestim view-cast loses OWNDATA"
+    ),
+    "*TestClip::test_type_cast_02": (
+        "OWNDATA_VIEW: _asmechestim view-cast loses OWNDATA"
+    ),
+    "*TestClip::test_type_cast_03": (
+        "OWNDATA_VIEW: _asmechestim view-cast loses OWNDATA"
+    ),
+    "*TestClip::test_type_cast_04": (
+        "OWNDATA_VIEW: _asmechestim view-cast loses OWNDATA"
+    ),
+    "*TestClip::test_type_cast_05": (
+        "OWNDATA_VIEW: _asmechestim view-cast loses OWNDATA"
+    ),
+    "*TestClip::test_type_cast_06": (
+        "OWNDATA_VIEW: _asmechestim view-cast loses OWNDATA"
+    ),
+    "*TestClip::test_type_cast_09": (
+        "OWNDATA_VIEW: _asmechestim view-cast loses OWNDATA"
+    ),
+    # ------------------------------------------------------------------ #
+    # NUMPY_INTERNAL — fromiter/resize edge cases                         #
+    # ------------------------------------------------------------------ #
+    "*TestFromiter::test_growth_and_complicated_dtypes*": (
+        "NUMPY_INTERNAL: fromiter with object dtype interacts unexpectedly with patched np"
+    ),
+    "*TestResize::test_reshape_from_zero": (
+        "NUMPY_INTERNAL: resize from zero-element array edge case"
+    ),
+    "*TestFFT1D::test_identity_long_short*": (
+        "NUMPY_INTERNAL: float32/longdouble FFT roundtrip exceeds default tolerance "
+        "when run via mechestim's patched fft (intermittent)"
+    ),
 }

@@ -13,13 +13,16 @@ def _symmetry_info_to_index_symmetry(sym_info, subscript_chars: str):
 
     sym_info.symmetric_axes is like [(0, 1, 2)] -- positional indices.
     subscript_chars is like "ijk" -- the einsum subscript for this operand.
-    Returns IndexSymmetry like [frozenset("ijk")], or None.
+    Returns IndexSymmetry like [frozenset({('i',), ('j',), ('k',)})], or None.
+
+    Per-index symmetries (as declared via SymmetricTensor) always map to
+    1-tuple blocks in the new uniform tuple representation.
     """
     if sym_info is None:
         return None
     groups = []
     for group in sym_info.symmetric_axes:
-        char_group = frozenset(subscript_chars[d] for d in group)
+        char_group = frozenset((subscript_chars[d],) for d in group)
         if len(char_group) >= 2:
             groups.append(char_group)
     return groups if groups else None
@@ -97,18 +100,26 @@ def einsum(
     budget = require_budget()
     shapes = [op.shape for op in operands]
 
-    # Extract symmetry info from SymmetricTensor inputs
     operand_symmetries = [
         op.symmetry_info if isinstance(op, SymmetricTensor) else None for op in operands
     ]
 
-    # Convert SymmetryInfo -> IndexSymmetry for the path optimizer
     input_parts = subscripts.split("->")[0].split(",")
+    output_str = subscripts.split("->")[1] if "->" in subscripts else ""
+
     index_symmetries = [
         _symmetry_info_to_index_symmetry(s, chars)
         for s, chars in zip(operand_symmetries, input_parts)
     ]
-    has_symmetry = any(s is not None for s in index_symmetries)
+
+    from mechestim._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
+
+    oracle = SubgraphSymmetryOracle(
+        operands=list(operands),
+        subscript_parts=input_parts,
+        per_op_syms=index_symmetries,
+        output_chars=output_str,
+    )
 
     from mechestim._opt_einsum import contract_path as _contract_path
 
@@ -117,7 +128,7 @@ def einsum(
         *shapes,
         shapes=True,
         optimize=optimize if optimize is not False else "auto",
-        input_symmetries=index_symmetries if has_symmetry else None,
+        symmetry_oracle=oracle,
     )
 
     budget.deduct(
@@ -167,11 +178,21 @@ def einsum_path(subscripts: str, *operands, optimize: str | bool | list = "auto"
         op.symmetry_info if isinstance(op, SymmetricTensor) else None for op in operands
     ]
     input_parts = subscripts.split("->")[0].split(",")
+    output_str = subscripts.split("->")[1] if "->" in subscripts else ""
+
     index_symmetries = [
         _symmetry_info_to_index_symmetry(s, chars)
         for s, chars in zip(operand_symmetries, input_parts)
     ]
-    has_symmetry = any(s is not None for s in index_symmetries)
+
+    from mechestim._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
+
+    oracle = SubgraphSymmetryOracle(
+        operands=list(operands),
+        subscript_parts=input_parts,
+        per_op_syms=index_symmetries,
+        output_chars=output_str,
+    )
 
     from mechestim._opt_einsum import contract_path as _contract_path
 
@@ -180,6 +201,13 @@ def einsum_path(subscripts: str, *operands, optimize: str | bool | list = "auto"
         *shapes,
         shapes=True,
         optimize=optimize if optimize is not False else "auto",
-        input_symmetries=index_symmetries if has_symmetry else None,
+        symmetry_oracle=oracle,
     )
     return list(path), path_info
+
+
+import sys as _sys  # noqa: E402
+
+from mechestim._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402
+
+_wrap_module_returns(_sys.modules[__name__], skip_names={"einsum_path"})

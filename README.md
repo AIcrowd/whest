@@ -162,18 +162,24 @@ print(f"SVD cost: {cost:,}")     # 655,360
 
 ### Symmetry Savings
 
-When you pass the same array object multiple times, mechestim automatically detects the symmetry and reduces the FLOP count:
+When you pass the same array object multiple times, mechestim automatically
+detects the symmetry and reduces the FLOP count:
 
 ```python
 with me.BudgetContext(flop_budget=10**8) as budget:
-    x = me.ones((10, 256))
-    A = me.ones((10, 10))
+    X = me.ones((100, 100))
 
-    # x is passed twice (same object) -- cost is divided by 2!
-    result = me.einsum('ai,bi,ab->', x, x, A)
-    print(f"Cost with symmetry: {budget.flops_used:,}")   # 12,800
-    # Without symmetry it would be 25,600
+    # Gram matrix: both operands are the same X.
+    # mechestim auto-detects this and induces S2{j,k} on the output,
+    # giving ~1/2 the dense cost (since R[j,k] = R[k,j]).
+    R = me.einsum("ij,ik->jk", X, X)
+    print(f"Cost with equal-operand detection: {budget.flops_used:,}")
 ```
+
+This works for any einsum where the same Python object appears at multiple
+operand positions. See the
+[exploit-symmetry guide](docs/how-to/exploit-symmetry.md) for more examples
+including triple products and block symmetries.
 
 ## How It Works
 

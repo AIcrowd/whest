@@ -394,3 +394,9 @@ def setxor1d(ar1, ar2, **kwargs):
 attach_docstring(
     setxor1d, _np.setxor1d, "counted_custom", "(n+m)*ceil(log2(n+m)) FLOPs"
 )
+
+import sys as _sys  # noqa: E402
+
+from mechestim._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402
+
+_wrap_module_returns(_sys.modules[__name__])

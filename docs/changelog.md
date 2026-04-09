@@ -1,5 +1,85 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+- **Symmetric BLAS classification restored.** Pairwise contractions with
+  symmetric inputs now correctly report `SYMM`, `SYMV`, or `SYDT` BLAS
+  types instead of the generic `GEMM`, `GEMV`, `DOT`. This was disabled
+  during the subgraph-symmetry refactor because per-input symmetry wasn't
+  being looked up; now each step's inputs are queried via
+  `symmetry_oracle.sym(ssa_to_subset[ssa_id])` before calling `can_blas`.
+
+- **Symmetry detection rewritten** — the induced-symmetry mechanism is replaced
+  by a subset-keyed subgraph symmetry oracle (`SubgraphSymmetryOracle`). The
+  oracle analyses the bipartite structure of the einsum expression, evaluates
+  symmetry lazily per operand subset, and caches results. This correctly handles
+  intermediates (not just the top-level contraction) and eliminates over-eager
+  per-step propagation.
+
+- **Every optimizer is symmetry-aware** — the `symmetry_oracle` kwarg is plumbed
+  through `_PATH_OPTIONS` so that optimal, branch-\*, greedy, random-greedy, and
+  dynamic-programming algorithms all receive symmetry information and use the
+  exact `unique/dense` ratio for scoring. DP uses a subset-keyed ratio cache
+  (`get_ratio(s, legs)`) co-located with the existing `bitmap_to_subset` closure
+  inside `DynamicProgramming.__call__`, amortizing the int↔str label translation
+  across all `_dp_compare_*` helper calls for a given subset. Previously only
+  greedy received symmetry info in some code paths.
+
+- **Silent fallback deleted** — the previous code silently fell back to dense
+  costs when detection produced no result. The oracle now enforces that symmetry
+  information is consumed. Enforcement is verified by
+  `tests/test_no_silent_symmetry_drop.py`.
+
+### Removed
+
+- `symmetric_flop_count`'s `input_symmetries` parameter (high-level API)
+- `propagate_symmetry` and related helpers
+- `_detect_induced_output_symmetry` and related helpers
+- `induced_output_symmetry` kwarg on `contract_path`
+
+### Fixed
+
+- **`bitmap_to_subset` in DP now correctly handles operand renumbering.**
+  Previously, when `_dp_parse_out_single_term_ops` removed or renumbered
+  operands before the DP loop (e.g., on `einsum('i,ab,cd->abcd', v, X, X)`
+  where `v` has a unique index that reduces to a scalar), the
+  bitmap-to-subset mapping would point at the wrong original operand
+  positions, causing the oracle to return symmetry for an unrelated
+  intermediate. This bug was latent under the conservative 2× heuristic
+  and only surfaces with exact ratio scoring.
+
+- **Heterogeneous block dimensions in `unique_elements`** — the stars-and-bars
+  block-cardinality calculation assumed all axes within a block had the same
+  dimension. For rectangular block-symmetric tensors (e.g.
+  `einsum('ab,cd->abcd', X, X)` with `X` of shape `(3, 4)`), it computed
+  `n**s = 3**2 = 9` instead of the correct product `3*4 = 12`, silently
+  underestimating the unique-element count by up to ~8× on rank-3 cases.
+  `block_card` is now computed as `prod(size_dict[c] for c in blocks[0])`,
+  which reduces to the old formula for per-index groups and gives the
+  correct product for block groups with differing axis sizes.
+
+### Added
+
+- **Enriched `PathInfo` display** — `me.einsum_path().format_table(verbose=False)`
+  (called by `__str__`) now shows an `Optimizer:` header line resolving
+  `optimize='auto'`/`'auto-hq'` to the inner choice that actually ran
+  (e.g. `optimal`, `dynamic_programming`, `random_greedy_128`), a
+  `contract` column giving the path-supplied contraction tuple, and a
+  `unique/dense` column showing the bare element counts that the
+  symmetry savings derive from. Call `format_table(verbose=True)` for an
+  indented detail row per step showing the merged operand subset, the
+  intermediate's output shape, and the running cumulative cost — the
+  most useful view when debugging why a particular step's savings are
+  what they are.
+- **New `PathInfo.optimizer_used: str`** field and new `StepInfo` fields
+  `path_indices: tuple[int, ...]` and `merged_subset: frozenset[int] | None`.
+  The `merged_subset` field is the exact key
+  `SubgraphSymmetryOracle.sym(...)` uses for its lookups, making the
+  symmetry column directly attributable to the oracle's view of each
+  intermediate.
+
 ## 0.2.0 (2026-04-03)
 
 Second release with unified einsum cost model, NumPy compatibility testing, and expanded operation coverage.

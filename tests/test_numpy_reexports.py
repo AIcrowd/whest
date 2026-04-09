@@ -1,0 +1,213 @@
+"""Tests for numpy re-exports in mechestim.
+
+Two categories:
+1. Parametrized identity tests — proves each re-export IS the numpy counterpart
+2. Functional smoke tests — proves the re-exports actually work in realistic use
+"""
+
+from __future__ import annotations
+
+import numpy as np
+import pytest
+
+import mechestim as me
+
+# ----- Parametrized identity tests -----
+
+NEW_EXPORTS = [
+    # Abstract dtype hierarchy
+    ("floating", np.floating),
+    ("integer", np.integer),
+    ("number", np.number),
+    ("dtype", np.dtype),
+    # Concrete dtypes
+    ("uint16", np.uint16),
+    ("uint32", np.uint32),
+    ("uint64", np.uint64),
+    # Dtype info
+    ("finfo", np.finfo),
+    ("iinfo", np.iinfo),
+    # Error state
+    ("errstate", np.errstate),
+    ("seterr", np.seterr),
+    ("geterr", np.geterr),
+    # Iteration
+    ("ndindex", np.ndindex),
+    ("ndenumerate", np.ndenumerate),
+    ("broadcast", np.broadcast),
+    ("nditer", np.nditer),
+    # Print options
+    ("set_printoptions", np.set_printoptions),
+    ("get_printoptions", np.get_printoptions),
+    ("printoptions", np.printoptions),
+]
+
+
+@pytest.mark.parametrize("name,expected", NEW_EXPORTS)
+def test_reexport_identity(name, expected):
+    """Every new mechestim export is identical to its numpy counterpart."""
+    actual = getattr(me, name)
+    assert actual is expected, f"me.{name} is {actual!r}, expected {expected!r}"
+
+
+# ----- Functional: abstract dtype hierarchy -----
+
+
+def test_floating_type_check():
+    """me.floating correctly identifies float dtypes."""
+    assert np.issubdtype(me.float32, me.floating)
+    assert np.issubdtype(me.float64, me.floating)
+    assert not np.issubdtype(me.int32, me.floating)
+
+
+def test_integer_type_check():
+    """me.integer correctly identifies integer dtypes."""
+    assert np.issubdtype(me.int32, me.integer)
+    assert np.issubdtype(me.uint32, me.integer)
+    assert not np.issubdtype(me.float32, me.integer)
+
+
+def test_number_type_check():
+    """me.number is the parent of both floating and integer."""
+    assert np.issubdtype(me.float32, me.number)
+    assert np.issubdtype(me.int64, me.number)
+    assert np.issubdtype(me.complex64, me.number)
+
+
+def test_dtype_construction():
+    """me.dtype constructs dtypes from strings or types."""
+    assert me.dtype("float32") == me.float32
+    assert me.dtype(me.int32).kind == "i"
+
+
+# ----- Functional: concrete dtypes -----
+
+
+def test_uint_dtypes_usable():
+    """The new uint dtypes can be used to create arrays."""
+    a16 = me.array([1, 2, 3], dtype=me.uint16)
+    a32 = me.array([1, 2, 3], dtype=me.uint32)
+    a64 = me.array([1, 2, 3], dtype=me.uint64)
+    assert a16.dtype == np.uint16
+    assert a32.dtype == np.uint32
+    assert a64.dtype == np.uint64
+
+
+# ----- Functional: dtype info -----
+
+
+def test_finfo_float32():
+    """me.finfo returns sensible float32 metadata."""
+    info = me.finfo(me.float32)
+    assert info.eps > 0
+    assert info.max > 0
+    assert info.tiny > 0
+    assert info.bits == 32
+
+
+def test_iinfo_int32():
+    """me.iinfo returns sensible int32 metadata."""
+    info = me.iinfo(me.int32)
+    assert info.min == -(2**31)
+    assert info.max == 2**31 - 1
+    assert info.bits == 32
+
+
+# ----- Functional: error state -----
+
+
+def test_errstate_suppresses_warnings():
+    """me.errstate can suppress numpy warnings in a block."""
+    a = me.array([1.0, 2.0, 3.0])
+    b = me.array([0.0, 0.0, 0.0])
+    with me.errstate(divide="ignore", invalid="ignore"):
+        with me.BudgetContext(flop_budget=int(1e9)):
+            result = a / b
+    result_np = np.asarray(result)
+    assert np.isinf(result_np[0]) or np.isnan(result_np[0])
+
+
+def test_geterr_seterr_roundtrip():
+    """me.geterr returns numpy's current error state, me.seterr updates it."""
+    original = me.geterr()
+    try:
+        me.seterr(divide="ignore")
+        current = me.geterr()
+        assert current["divide"] == "ignore"
+    finally:
+        me.seterr(**original)
+
+
+# ----- Functional: iteration utilities -----
+
+
+def test_ndindex_iterates_shape():
+    """me.ndindex iterates over all indices of a shape."""
+    indices = list(me.ndindex(2, 3))
+    assert len(indices) == 6
+    assert indices[0] == (0, 0)
+    assert indices[-1] == (1, 2)
+
+
+def test_ndenumerate_yields_index_and_value():
+    """me.ndenumerate yields (index, value) pairs."""
+    a = me.array([[1.0, 2.0], [3.0, 4.0]])
+    pairs = list(me.ndenumerate(a))
+    assert len(pairs) == 4
+    assert pairs[0] == ((0, 0), 1.0)
+
+
+# ----- Functional: print options -----
+
+
+def test_printoptions_context_manager():
+    """me.printoptions temporarily changes print formatting."""
+    a = me.array([1.234567891234])
+    with me.printoptions(precision=2):
+        short = str(a)
+    with me.printoptions(precision=10):
+        long = str(a)
+    assert len(long) > len(short)
+
+
+def test_set_get_printoptions_roundtrip():
+    """me.set_printoptions changes state, me.get_printoptions returns it."""
+    original = me.get_printoptions()
+    try:
+        me.set_printoptions(precision=3)
+        current = me.get_printoptions()
+        assert current["precision"] == 3
+    finally:
+        me.set_printoptions(**{k: v for k, v in original.items() if k != "legacy"})
+
+
+# ----- Functional: me.typing submodule -----
+
+
+def test_typing_submodule_has_NDArray():
+    """me.typing.NDArray is available."""
+    from mechestim.typing import ArrayLike, DTypeLike, NDArray
+
+    assert NDArray is not None
+    assert ArrayLike is not None
+    assert DTypeLike is not None
+
+
+def test_typing_NDArray_is_numpy_NDArray():
+    """me.typing.NDArray is identical to numpy.typing.NDArray."""
+    import numpy.typing as npt
+
+    assert me.typing.NDArray is npt.NDArray
+
+
+def test_typing_NDArray_accepts_mechestim_array():
+    """A function annotated with NDArray accepts MechestimArray at runtime."""
+    from mechestim.typing import NDArray
+
+    def f(x: NDArray) -> NDArray:
+        return x * 2
+
+    m = me.array([1.0, 2.0, 3.0])
+    with me.BudgetContext(flop_budget=int(1e9)):
+        result = f(m)
+    assert isinstance(result, me.ndarray)

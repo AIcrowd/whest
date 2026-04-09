@@ -221,3 +221,9 @@ def roots(p):
 attach_docstring(
     roots, _np.roots, "counted_custom", "10 * n^3 FLOPs (companion matrix eig)"
 )
+
+import sys as _sys  # noqa: E402
+
+from mechestim._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402
+
+_wrap_module_returns(_sys.modules[__name__])

@@ -169,7 +169,7 @@ class TestFreeOps:
     def test_constants(self):
         assert me.pi == numpy.pi
         assert me.inf == numpy.inf
-        assert me.ndarray is numpy.ndarray
+        assert issubclass(me.ndarray, numpy.ndarray)
 
 
 class TestInputCoercion:

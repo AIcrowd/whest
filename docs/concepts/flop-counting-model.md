@@ -71,12 +71,54 @@ When a tensor is a `SymmetricTensor`, costs are reduced based on the number of u
 |----------|---------------|---------------|
 | **Pointwise** (unary/binary) | unique_elements | $\text{numel}(\text{output})$ |
 | **Reduction** | unique_elements | $\text{numel}(\text{input})$ |
-| **Einsum** (symmetric input) | Scaled by unique/total for surviving index groups | Full product |
+| **Einsum** (symmetric output) | `dense_cost × unique_output / total_output` (exact via `C(B+k-1, k)`; see below) | Full product |
 | **Solve** | $n^3/3 + n \cdot n_{\text{rhs}}$ (Cholesky) | $2n^3/3 + n^2 \cdot n_{\text{rhs}}$ (LU) |
 | **Det / Slogdet** | $n^3/3$ (Cholesky) | $n^3$ (LU) |
 | **Inv** | $n^3/3 + n^3/2$ | $n^3$ |
 
 See [Exploit Symmetry Savings](../how-to/exploit-symmetry.md) for usage details.
+
+### Subgraph symmetry detection
+
+Symmetry that reduces einsum costs comes from two complementary sources,
+both unified under the **subgraph symmetry detection** algorithm:
+
+1. **Declared per-operand symmetry.** When an operand is wrapped with
+   `me.as_symmetric()`, its symmetry groups are embedded in the bipartite
+   graph as U-vertex equivalence classes. These propagate into intermediate
+   tensors automatically.
+
+2. **Induced symmetry from repeated operands.** When the same Python object
+   is passed at multiple operand positions, the subgraph oracle detects this
+   via Python identity (`is`) and derives symmetry groups on the output that
+   cannot be seen from per-operand metadata alone.
+
+The oracle builds a bipartite graph once per `contract_path` call and
+evaluates symmetry lazily per subset of operands encountered during path
+search. Both sources feed into the same cost formula:
+
+```
+step_cost = dense_step_cost × (unique_output_elements / total_output_elements)
+```
+
+The two sources are merged via the same group-merging machinery, so a
+tensor that is both `SymmetricTensor` and also repeated in the subscript
+benefits from both contributions simultaneously.
+
+See the
+[exploit-symmetry guide](../how-to/exploit-symmetry.md#automatic-symmetry-from-repeated-operands)
+for usage examples, and the
+[subgraph symmetry explanation](../explanation/subgraph-symmetry.md)
+for the algorithm walkthrough.
+
+### What is not captured
+
+The current cost model reduces FLOP counts based on the number of unique
+output elements under permutation symmetry. It does **not** account for
+symmetry along contracted (summed) indices — exploiting that would require
+restructuring the contraction loop itself (e.g., only iterating over the
+upper triangle of a summed symmetric index). Such loop restructuring is out
+of scope and is not reflected in the FLOP counts reported by mechestim.
 
 ## Einsum cost model
 
@@ -89,14 +131,63 @@ The total cost is the sum of per-step costs:
 total_cost = sum(step.flop_cost for step in path.steps)
 ```
 
-For each pairwise step, the cost is:
+For each pairwise step, the dense cost is:
 
 ```
-step_cost = (product of all index dimensions) × op_factor
+dense_step_cost = (product of all index dimensions) × op_factor
 ```
 
 where `op_factor = 2` when indices are summed (multiply + add) and
 `op_factor = 1` when no indices are summed (outer product).
+
+When the output of a step has symmetry (discovered by the subgraph oracle
+from declared per-operand symmetries and/or repeated-operand identity), the
+cost is reduced:
+
+```
+step_cost = dense_step_cost × (unique_output_elements / total_output_elements)
+```
+
+where `unique_output_elements` is computed exactly using the stars-and-bars
+formula `C(B + k - 1, k)` for each symmetric group of `k` interchangeable
+blocks, where `B` is the cardinality of one block:
+
+- For a **per-index** group (block size 1) on `k` interchangeable indices
+  each of size `n`, `B = n` and the formula reduces to the familiar
+  `C(n+k-1, k)`. A single symmetric matrix indexed by `(i, j)` of size `n`
+  has `C(n+1, 2) = n(n+1)/2` unique entries.
+- For a **block** group with `k` interchangeable blocks of uniform shape,
+  `B` is the product of axis sizes within one block. An outer product
+  `einsum('ab,cd->abcd', X, X)` with same-object `X` of shape `(n_a, n_b)`
+  yields a block group `{(a,b), (c,d)}` with `B = n_a · n_b`, so the
+  unique count is `C(n_a·n_b + 1, 2) = (n_a·n_b)(n_a·n_b + 1)/2`. This
+  correctly handles **rectangular** tensors where axis dimensions differ
+  within a block — e.g., `X` of shape `(3, 4)` gives `B = 12` unique pair
+  cardinalities, not `3² = 9`.
+
+Free (non-symmetric) indices contribute their full axis size to the total
+unique count, multiplicatively.
+
+### Inner-sum symmetry (opt-in)
+
+When contracted (summed) labels are interchangeable — e.g., in
+`einsum('ij,ji->', X, X)` where labels `i` and `j` are symmetric in the
+summation — the inner-loop work can also be reduced. With the
+`use_inner_symmetry=True` flag on `symmetric_flop_count`, the cost becomes:
+
+```
+step_cost = dense_step_cost
+          × (unique_output_elements / total_output_elements)
+          × (unique_inner_elements / total_inner_elements)
+```
+
+where `unique_inner_elements` is computed using the same stars-and-bars
+formula applied to the symmetry groups among the contracted labels.
+
+This reduction is **opt-in** because not all backends can exploit inner-sum
+symmetry — `numpy.einsum` computes the dense inner loop regardless. The
+flag is useful for theoretical FLOP counting or when targeting a backend
+that can dispatch symmetric summation routines.
 
 For a simple two-operand einsum like `'ij,jk->ik'`, there is one step,
 so the total cost equals the step cost. For multi-operand einsums (3+

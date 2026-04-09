@@ -1,64 +1,50 @@
-"""Symmetry-aware cost functions for opt_einsum contraction paths.
+"""Symmetry-aware cost helpers for opt_einsum contraction paths.
 
 This module provides:
-- IndexSymmetry type for describing permutation symmetries of tensor indices
-- propagate_symmetry: track which symmetries survive a pairwise contraction
-- unique_elements / compute_unique_size: count distinct elements under symmetry
-- symmetry_factor: product of factorial(group_size) for all symmetric groups
-- symmetric_flop_count: FLOP estimate that accounts for input/output symmetry
+- IndexSymmetry type alias for describing permutation symmetries.
+- unique_elements / compute_unique_size: count distinct elements under symmetry.
+- symmetric_flop_count: FLOP estimate reduced by output symmetry.
 
-No imports from mechestim — only stdlib (math) and relative imports from _opt_einsum.
+Detection of symmetries is handled by ``_subgraph_symmetry.SubgraphSymmetryOracle``.
 """
 
 from __future__ import annotations
 
-from math import comb, factorial
+from dataclasses import dataclass
+from math import comb, prod
 from typing import Collection
 
 from ._helpers import flop_count
 
-# Type alias: a list of frozensets, each frozenset names indices that are
-# mutually symmetric (e.g. [frozenset("ij"), frozenset("kl")] means S2 x S2).
-IndexSymmetry = list[frozenset[str]]
+# Type alias: a list of frozensets, each frozenset names symmetry-equivalent
+# "blocks" of indices. Each block is a tuple of index characters. Per-index
+# groups use 1-tuples (e.g. frozenset({('i',), ('j',)}) is S2{i,j}). Block
+# groups use k-tuples for k >= 2 (e.g. frozenset({('j','k'),('l','m')}) is
+# block S2 on blocks (j,k) and (l,m)).
+#
+# Invariants:
+#   1. All tuples in a given frozenset have the same length (uniform block size).
+#   2. Indices used across all blocks in a single group are disjoint.
+#   3. At least 2 blocks per group (singletons are dropped at construction).
+IndexSymmetry = list[frozenset[tuple[str, ...]]]
 
 
-def propagate_symmetry(
-    sym1: IndexSymmetry | None,
-    k1: frozenset[str],
-    sym2: IndexSymmetry | None,
-    k2: frozenset[str],
-    k12: frozenset[str],
-) -> IndexSymmetry | None:
-    """Propagate symmetry through a pairwise contraction.
+@dataclass(frozen=True)
+class SubsetSymmetry:
+    """Symmetry info for one contraction subset, split by V/W.
 
-    For each symmetric group in the inputs, restrict it to the indices that
-    survive in the output (k12). Groups that shrink below size 2 are dropped.
-
-    Parameters
+    Attributes
     ----------
-    sym1, sym2 : IndexSymmetry or None
-        Symmetry of the two input tensors.
-    k1, k2 : frozenset of str
-        Index sets of the two input tensors.
-    k12 : frozenset of str
-        Index set of the output tensor.
-
-    Returns
-    -------
-    IndexSymmetry or None
-        Symmetry of the output, or None if no symmetry survives.
+    output : IndexSymmetry or None
+        V-side symmetry: symmetries of the output tensor's free labels.
+    inner : IndexSymmetry or None
+        W-side symmetry: symmetries among the contracted (summed) labels.
+        Used for inner-sum FLOP reduction when ``use_inner_symmetry`` is
+        enabled in ``symmetric_flop_count``.
     """
-    result: list[frozenset[str]] = []
-    seen: set[frozenset[str]] = set()
-    for sym in (sym1, sym2):
-        if sym is None:
-            continue
-        for group in sym:
-            surviving = group & k12
-            if len(surviving) >= 2 and surviving not in seen:
-                seen.add(surviving)
-                result.append(surviving)
-    return result if result else None
+
+    output: IndexSymmetry | None
+    inner: IndexSymmetry | None
 
 
 def unique_elements(
@@ -68,8 +54,19 @@ def unique_elements(
 ) -> int:
     """Count distinct elements of a tensor with the given symmetry.
 
-    For each symmetric group of k indices each of size n, the number of
-    unique index tuples is C(n + k - 1, k)  (stars and bars).
+    Handles both per-index (tuples of length 1) and block (tuples of length >= 2)
+    groups via the stars-and-bars formula ``C(block_card + k - 1, k)`` where
+    ``block_card`` is the cardinality of one block (the product of axis sizes
+    over the labels in the block) and ``k`` is the number of blocks in the group.
+
+    For per-index groups (block size 1) this reduces to the familiar
+    ``C(n + k - 1, k)``. For block groups with possibly heterogeneous axis
+    sizes (e.g. block ``(a, b)`` with ``size[a] != size[b]``), the block
+    cardinality is computed as the product over the labels in any single
+    block. A well-formed block group requires every block to have the same
+    per-position axis sizes (otherwise the swap is not a valid symmetry),
+    so reading from ``blocks[0]`` is sufficient.
+
     Free (non-symmetric) indices contribute their full size.
 
     Parameters
@@ -94,20 +91,29 @@ def unique_elements(
 
     if symmetry:
         for group in symmetry:
-            active = group & indices
-            # Skip if already accounted (handles duplicate groups from
-            # e.g. Hadamard dedup merging two tensors with the same symmetry)
-            if active <= accounted:
+            # Collect all characters across all blocks in this group
+            all_chars = frozenset(c for block in group for c in block)
+            if all_chars & accounted:
+                # Already accounted for by an earlier group -- skip
                 continue
-            if len(active) < 2:
+            if not all_chars <= indices:
+                # Some character in the group isn't in the tensor's index set
                 continue
-            # All indices in a symmetric group must have the same size.
-            n = next(size_dict[idx] for idx in active)
-            k = len(active)
-            count *= comb(n + k - 1, k)
-            accounted.update(active)
 
-    # Free indices: full size
+            blocks = list(group)
+            if len(blocks) < 2:
+                continue
+            k = len(blocks)
+            # Block cardinality = product of axis sizes over the labels in
+            # one block. For per-index groups (block size 1), this reduces
+            # to the single label's dimension. For block groups with
+            # heterogeneous axis sizes, this correctly handles each
+            # position's actual dimension rather than assuming uniformity.
+            block_card = prod(size_dict[c] for c in blocks[0])
+
+            count *= comb(block_card + k - 1, k)
+            accounted |= all_chars
+
     for idx in indices:
         if idx not in accounted:
             count *= size_dict[idx]
@@ -119,105 +125,44 @@ def unique_elements(
 compute_unique_size = unique_elements
 
 
-def symmetry_factor(symmetry: IndexSymmetry | None) -> int:
-    """Product of factorial(len(group)) over all symmetric groups.
-
-    This equals the order of the symmetry group (number of permutations
-    that leave the tensor invariant).
-
-    Parameters
-    ----------
-    symmetry : IndexSymmetry or None
-
-    Returns
-    -------
-    int
-    """
-    if not symmetry:
-        return 1
-    result = 1
-    for group in symmetry:
-        result *= factorial(len(group))
-    return result
-
-
 def symmetric_flop_count(
     idx_contraction: Collection[str],
     inner: bool,
     num_terms: int,
     size_dictionary: dict[str, int],
     *,
-    input_symmetries: list[IndexSymmetry | None] | None = None,
     output_symmetry: IndexSymmetry | None = None,
     output_indices: frozenset[str] | None = None,
+    inner_symmetry: IndexSymmetry | None = None,
+    inner_indices: frozenset[str] | None = None,
+    use_inner_symmetry: bool = False,
 ) -> int:
-    """FLOP count that accounts for symmetric structure.
+    """FLOP count reduced by output-tensor and inner-sum symmetry.
 
     Without any symmetry information this returns the same value as
-    :func:`._helpers.flop_count`.
+    :func:`._helpers.flop_count`. With ``output_symmetry`` and
+    ``output_indices``, the dense FLOP count is scaled by
+    ``unique_output / total_output``.
 
-    Strategy:
-    - Start with the dense FLOP count.
-    - For each input symmetry group, find the *surviving* subgroup — the
-      indices that appear in ``output_indices`` (i.e. are not summed away).
-      Only the surviving subgroup benefits from the symmetry reduction
-      ``C(n+k-1, k) / n^k``, because summed indices interact with the other
-      factor and every value must still be visited.
-    - Divide by the output symmetry factor (we only need to compute each
-      unique output element once).
-    - Return at least 1.
-
-    Parameters
-    ----------
-    idx_contraction : collection of str
-        All indices involved in this contraction step.
-    inner : bool
-        Whether there is an inner (trace / summation) product.
-    num_terms : int
-        Number of input tensors being contracted.
-    size_dictionary : dict
-        Index label -> dimension size.
-    input_symmetries : list of (IndexSymmetry | None), optional
-        Symmetry info for each input tensor.
-    output_symmetry : IndexSymmetry | None, optional
-        Symmetry of the output tensor.
-    output_indices : frozenset of str or None, optional
-        Indices that survive into the output of this contraction step.
-        When provided, only the intersection of each symmetry group with
-        these indices benefits from symmetry reduction.  When *None*,
-        falls back to the legacy behaviour (intersect with
-        ``idx_contraction``).
-
-    Returns
-    -------
-    int
-        Estimated FLOP count.
+    When ``use_inner_symmetry`` is True and ``inner_symmetry`` /
+    ``inner_indices`` are provided, an additional multiplicative
+    reduction of ``unique_inner / total_inner`` is applied.
     """
-    # Dense baseline
+    from ._helpers import compute_size_by_dict
+
     cost = flop_count(idx_contraction, inner, num_terms, size_dictionary)
 
-    idx_set = frozenset(idx_contraction)
+    if output_symmetry and output_indices is not None:
+        total = compute_size_by_dict(output_indices, size_dictionary)
+        unique = unique_elements(output_indices, size_dictionary, output_symmetry)
+        cost = cost * unique // total
 
-    # Determine which indices to use for the surviving-subgroup intersection.
-    survive_set = output_indices if output_indices is not None else idx_set
-
-    # Scale down for input symmetries
-    if input_symmetries:
-        for sym in input_symmetries:
-            if sym is None:
-                continue
-            for group in sym:
-                active = group & survive_set
-                if len(active) < 2:
-                    continue
-                n = next(size_dictionary[idx] for idx in active)
-                k = len(active)
-                # Ratio of unique tuples to total tuples
-                cost = cost * comb(n + k - 1, k) // (n**k)
-
-    # Scale down for output symmetry
-    if output_symmetry:
-        sf = symmetry_factor(output_symmetry)
-        cost = cost // sf
+    if use_inner_symmetry and inner_symmetry and inner_indices is not None:
+        total_inner = compute_size_by_dict(inner_indices, size_dictionary)
+        if total_inner > 0:
+            unique_inner = unique_elements(
+                inner_indices, size_dictionary, inner_symmetry
+            )
+            cost = cost * unique_inner // total_inner
 
     return max(cost, 1)

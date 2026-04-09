@@ -17,13 +17,18 @@ def _has_symmetric_input(
     left_sym = False
     right_sym = False
     if input_symmetries[0]:
+        input0_chars = set(inputs[0])
         for group in input_symmetries[0]:
-            if len(group & set(inputs[0])) >= 2:
+            # group is frozenset[tuple[str, ...]] -- extract all chars from all blocks
+            group_chars = frozenset(c for block in group for c in block)
+            if len(group_chars & input0_chars) >= 2:
                 left_sym = True
                 break
     if input_symmetries[1]:
+        input1_chars = set(inputs[1])
         for group in input_symmetries[1]:
-            if len(group & set(inputs[1])) >= 2:
+            group_chars = frozenset(c for block in group for c in block)
+            if len(group_chars & input1_chars) >= 2:
                 right_sym = True
                 break
     return left_sym, right_sym

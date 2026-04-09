@@ -469,3 +469,9 @@ attach_docstring(
     "fft",
     "5 \u00d7 n_out \u00d7 \u2308log\u2082(n_out)\u2309 FLOPs",
 )
+
+import sys as _sys  # noqa: E402
+
+from mechestim._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402
+
+_wrap_module_returns(_sys.modules[__name__])

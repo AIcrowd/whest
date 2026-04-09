@@ -30,6 +30,7 @@ from mechestim import (
     flops,  # noqa: F401
     linalg,  # noqa: F401
     random,  # noqa: F401
+    testing,  # noqa: F401
 )
 from mechestim._budget import (  # noqa: F401
     BudgetContext,
@@ -447,7 +448,8 @@ e = _np.e
 inf = _np.inf
 nan = _np.nan
 newaxis = _np.newaxis
-ndarray = _np.ndarray
+from mechestim._ndarray import MechestimArray as ndarray  # noqa: E402, F401
+
 float16 = _np.float16
 float32 = _np.float32
 float64 = _np.float64
@@ -460,7 +462,30 @@ bool_ = _np.bool_
 complex64 = _np.complex64
 complex128 = _np.complex128
 
-
+# --- Missing dtype types and numpy utilities (re-exported as free) ---
+from mechestim import typing  # noqa: F401, E402
+from mechestim._dtypes import (  # noqa: F401, E402
+    dtype,
+    floating,
+    integer,
+    number,
+    uint16,
+    uint32,
+    uint64,
+)
+from mechestim._errstate import (  # noqa: F401, E402
+    broadcast,
+    errstate,
+    get_printoptions,
+    geterr,
+    ndenumerate,
+    ndindex,
+    nditer,
+    printoptions,
+    set_printoptions,
+    seterr,
+)
 from mechestim._registry import make_module_getattr as _make_module_getattr
+from mechestim._type_info import finfo, iinfo  # noqa: F401, E402
 
 __getattr__ = _make_module_getattr(module_prefix="", module_label="mechestim")

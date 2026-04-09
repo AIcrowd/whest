@@ -5,7 +5,7 @@ Shuffle-like operations (``permutation``, ``shuffle``, ``choice`` without
 replacement) deduct ``n * ceil(log2(n))`` FLOPs.
 
 Configuration helpers (``seed``, ``get_state``, ``set_state``,
-``default_rng``, ``RandomState``) are free.
+``default_rng``, ``RandomState``, ``SeedSequence``) are free.
 
 Any attribute not listed here is forwarded to ``numpy.random`` via
 ``__getattr__`` without budget deduction.
@@ -95,6 +95,7 @@ get_state = _npr.get_state
 set_state = _npr.set_state
 default_rng = _npr.default_rng
 RandomState = _npr.RandomState
+SeedSequence = _npr.SeedSequence
 
 
 # ---------------------------------------------------------------------------
@@ -253,3 +254,20 @@ def __getattr__(name):
     if hasattr(_npr, name):
         return getattr(_npr, name)
     raise AttributeError(f"mechestim.random does not provide '{name}'")
+
+
+import sys as _sys  # noqa: E402
+
+from mechestim._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402
+
+_wrap_module_returns(
+    _sys.modules[__name__],
+    skip_names={
+        "default_rng",
+        "RandomState",
+        "SeedSequence",
+        "seed",
+        "get_state",
+        "set_state",
+    },
+)
