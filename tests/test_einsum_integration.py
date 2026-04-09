@@ -131,13 +131,13 @@ class TestEinsumPath:
         assert isinstance(table, str)
         assert len(table) > 50
 
-    def test_str_output_no_symmetry_omits_sym_column(self):
-        """When no operands have symmetry, the symmetry column is omitted."""
+    def test_str_output_no_symmetry_shows_dash_in_sym_column(self):
+        """When no operands have symmetry, the symmetry column shows '-'."""
         A = numpy.ones((3, 4))
         B = numpy.ones((4, 5))
         _, info = einsum_path("ij,jk->ik", A, B)
         table = str(info)
-        assert "symmetry" not in table.lower()
+        assert "symmetry" in table.lower()
 
     def test_str_output_with_symmetry_includes_sym_column(self):
         """When any operand has symmetry, the symmetry column is shown

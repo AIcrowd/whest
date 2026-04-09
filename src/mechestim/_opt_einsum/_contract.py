@@ -233,7 +233,6 @@ class PathInfo:
 
         sym_strs = [fmt_step_sym(s) for s in self.steps]
         max_sym_width = max((len(s) for s in sym_strs), default=0)
-        any_sym = any(s for s in sym_strs)
         sizes_line = fmt_index_sizes()
 
         header_lines = [
@@ -277,13 +276,8 @@ class PathInfo:
         ]
         if any_unique:
             cols.append(f"{'unique/dense':<{unique_col_width}}")
-        if any_sym:
-            sym_col_width = min(
-                max(max_sym_width, len("symmetry (inputs → output)")), 60
-            )
-            cols.append(f"{'symmetry (inputs → output)':<{sym_col_width}}")
-        else:
-            sym_col_width = 0
+        sym_col_width = min(max(max_sym_width, len("symmetry (inputs → output)")), 60)
+        cols.append(f"{'symmetry (inputs → output)':<{sym_col_width}}")
 
         header_row = "  ".join(cols)
         width = max(len(header_row), 84)
@@ -303,11 +297,10 @@ class PathInfo:
             ]
             if any_unique:
                 row_parts.append(f"{fmt_unique_dense(step):<{unique_col_width}}")
-            if any_sym:
-                sym_str = sym_strs[i] or "-"
-                if len(sym_str) > sym_col_width:
-                    sym_str = sym_str[: sym_col_width - 1] + "…"
-                row_parts.append(f"{sym_str:<{sym_col_width}}")
+            sym_str = sym_strs[i] or "-"
+            if len(sym_str) > sym_col_width:
+                sym_str = sym_str[: sym_col_width - 1] + "…"
+            row_parts.append(f"{sym_str:<{sym_col_width}}")
             lines.append("  ".join(row_parts))
 
             cumulative += step.flop_cost
