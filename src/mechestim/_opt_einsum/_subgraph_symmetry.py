@@ -26,6 +26,236 @@ from ._symmetry import IndexSymmetry
 _MISSING = object()
 
 
+# ---------------------------------------------------------------------------
+# π-based detection helpers (added alongside old Step 2a/2b path)
+# ---------------------------------------------------------------------------
+
+
+def _detect_fingerprint_equivalences(
+    col_of: dict[str, tuple[int, ...]],
+    labels: frozenset[str],
+) -> IndexSymmetry:
+    """Group labels by column fingerprint; return per-index groups for groups >= 2."""
+    fp_groups: dict[tuple[int, ...], list[str]] = {}
+    for lbl in sorted(labels):
+        fp = col_of[lbl]
+        fp_groups.setdefault(fp, []).append(lbl)
+    return [
+        frozenset((lbl,) for lbl in group)
+        for group in fp_groups.values()
+        if len(group) >= 2
+    ]
+
+
+def _derive_pi_canonical(
+    sigma_col_of: dict[str, tuple[int, ...]],
+    fp_to_labels: dict[tuple[int, ...], set[str]],
+    v_labels: frozenset[str],
+    w_labels: frozenset[str],
+) -> dict[str, str] | None:
+    """Build π by canonical hash lookup. Returns None on failure.
+
+    For each label ℓ, looks up σ(M)'s column fingerprint in fp_to_labels
+    and picks the lex-first unused candidate. Validates that π is a
+    bijection and preserves the V/W partition.
+    """
+    pi: dict[str, str] = {}
+    used: set[str] = set()
+    all_labels = v_labels | w_labels
+
+    for label in sorted(all_labels):
+        fp = sigma_col_of[label]
+        candidates = fp_to_labels.get(fp)
+        if not candidates:
+            return None
+        pick = None
+        for c in sorted(candidates):
+            if c not in used:
+                pick = c
+                break
+        if pick is None:
+            return None
+        pi[label] = pick
+        used.add(pick)
+
+    # Validate V→V and W→W.
+    for lbl, target in pi.items():
+        if lbl in v_labels and target not in v_labels:
+            return None
+        if lbl in w_labels and target not in w_labels:
+            return None
+
+    return pi
+
+
+def _classify_pi_cycles(
+    pi: dict[str, str],
+    target_labels: frozenset[str],
+    graph: "EinsumBipartite",
+    sub: "_Subgraph",
+) -> list[frozenset[tuple[str, ...]]]:
+    """Decompose π restricted to target_labels into cycles, classify into groups."""
+    # Decompose into disjoint cycles.
+    visited: set[str] = set()
+    cycles: list[tuple[str, ...]] = []
+    for start in sorted(target_labels):
+        if start in visited:
+            continue
+        if pi.get(start, start) == start:
+            visited.add(start)
+            continue
+        cycle: list[str] = []
+        cur = start
+        while cur not in visited:
+            cycle.append(cur)
+            visited.add(cur)
+            cur = pi[cur]
+        cycles.append(tuple(cycle))
+
+    if not cycles:
+        return []
+
+    # Single cycle: per-index group.
+    if len(cycles) == 1:
+        return [frozenset((lbl,) for lbl in cycles[0])]
+
+    # Multiple cycles: check if all same length for block classification.
+    cycle_lengths = {len(c) for c in cycles}
+    if len(cycle_lengths) != 1:
+        # Mixed lengths: each cycle is an independent per-index group.
+        return [frozenset((lbl,) for lbl in c) for c in cycles]
+
+    # All same length — attempt block construction.
+    blocks = _build_blocks_from_cycles(cycles, graph, sub)
+    if blocks is not None:
+        return [frozenset(blocks)]
+
+    # Block construction failed — fall back to per-index per cycle.
+    return [frozenset((lbl,) for lbl in c) for c in cycles]
+
+
+def _build_blocks_from_cycles(
+    cycles: list[tuple[str, ...]],
+    graph: "EinsumBipartite",
+    sub: "_Subgraph",
+) -> list[tuple[str, ...]] | None:
+    """Given same-length disjoint cycles, group labels by operand into blocks.
+
+    Returns list of k tuples (one per block) or None if the cycle
+    structure doesn't correspond to a clean block swap.
+    """
+    k = len(cycles[0])  # cycle length = number of blocks
+
+    def _single_operand_of(label: str) -> int | None:
+        ops = [i for i, lbls in enumerate(graph.operand_labels) if label in lbls]
+        return ops[0] if len(ops) == 1 else None
+
+    # Compute operand sequence per cycle.
+    cycle_op_seqs: list[list[int]] = []
+    for cycle in cycles:
+        op_seq: list[int] = []
+        for lbl in cycle:
+            op = _single_operand_of(lbl)
+            if op is None:
+                return None
+            op_seq.append(op)
+        if len(set(op_seq)) != k:
+            return None  # cycle revisits same operand
+        cycle_op_seqs.append(op_seq)
+
+    reference = cycle_op_seqs[0]
+
+    # Align each cycle to reference operand order via cyclic rotation.
+    blocks: list[list[str]] = [[] for _ in range(k)]
+    for cycle, op_seq in zip(cycles, cycle_op_seqs):
+        rotation = _find_rotation(op_seq, reference)
+        if rotation is None:
+            return None
+        aligned = cycle[rotation:] + cycle[:rotation]
+        for block_idx, lbl in enumerate(aligned):
+            blocks[block_idx].append(lbl)
+
+    # Order within each block by subscript position.
+    for block_idx in range(k):
+        op = reference[block_idx]
+        subscript = graph.operand_subscripts[op]
+        blocks[block_idx].sort(key=lambda lbl: subscript.index(lbl))
+
+    # Validate all blocks same size.
+    if not all(len(b) == len(cycles) for b in blocks):
+        return None
+
+    return [tuple(b) for b in blocks]
+
+
+def _find_rotation(
+    seq: list[int], reference: list[int]
+) -> int | None:
+    """Find r such that seq[r:] + seq[:r] == reference."""
+    k = len(seq)
+    for r in range(k):
+        if seq[r:] + seq[:r] == reference:
+            return r
+    return None
+
+
+def _detect_symmetries_via_pi(
+    graph: "EinsumBipartite",
+    sub: "_Subgraph",
+    row_order: tuple[int, ...],
+    col_of: dict[str, tuple[int, ...]],
+    fp_to_labels: dict[tuple[int, ...], set[str]],
+) -> tuple[list[frozenset[tuple[str, ...]]], list[frozenset[tuple[str, ...]]]]:
+    """Unified σ loop: derive π per σ, classify cycles on V and W.
+
+    Returns (v_groups, w_groups) — candidate groups for each side.
+    """
+    v_groups: list[frozenset[tuple[str, ...]]] = []
+    w_groups: list[frozenset[tuple[str, ...]]] = []
+    all_labels = sub.v_labels | sub.w_labels
+
+    for tilde_sigma in _enumerate_id_group_permutations(sub.id_groups):
+        # Skip identity σ — it always gives π = identity.
+        if not tilde_sigma or all(
+            tilde_sigma.get(k, k) == k for k in tilde_sigma
+        ):
+            continue
+
+        sigma_row_perm = _lift_operand_perm_to_u(tilde_sigma, row_order, graph)
+        if sigma_row_perm is None:
+            continue
+
+        # Compute σ(M)'s column fingerprints.
+        sigma_col_of: dict[str, tuple[int, ...]] = {}
+        for label in all_labels:
+            sigma_col_of[label] = tuple(
+                graph.incidence[sigma_row_perm[k]].get(label, 0)
+                for k in range(len(row_order))
+            )
+
+        # Derive π.
+        pi = _derive_pi_canonical(
+            sigma_col_of, fp_to_labels, sub.v_labels, sub.w_labels
+        )
+        if pi is None:
+            continue
+
+        # Classify cycles on V.
+        if sub.v_labels:
+            v_groups.extend(_classify_pi_cycles(pi, sub.v_labels, graph, sub))
+
+        # Classify cycles on W.
+        if sub.w_labels:
+            w_groups.extend(_classify_pi_cycles(pi, sub.w_labels, graph, sub))
+
+    return v_groups, w_groups
+
+
+# ---------------------------------------------------------------------------
+# End of π-based detection helpers
+# ---------------------------------------------------------------------------
+
+
 @dataclass(frozen=True)
 class EinsumBipartite:
     """Bipartite graph representation of an einsum expression.

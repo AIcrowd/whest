@@ -447,3 +447,176 @@ class TestSubsetSymmetryDataclass:
 
         with pytest.raises(AttributeError):
             ss.output = [frozenset({("x",)})]  # type: ignore[misc]
+
+
+from mechestim._opt_einsum._subgraph_symmetry import (
+    _build_bipartite,
+    _induce_subgraph,
+    _detect_fingerprint_equivalences,
+    _derive_pi_canonical,
+    _classify_pi_cycles,
+    _detect_symmetries_via_pi,
+)
+
+
+class TestDetectFingerprintEquivalences:
+    def test_no_collisions(self):
+        col_of = {"a": (1, 0), "b": (0, 1)}
+        groups = _detect_fingerprint_equivalences(col_of, frozenset("ab"))
+        assert groups == []
+
+    def test_pair_collision(self):
+        col_of = {"i": (1,), "j": (1,), "k": (0,)}
+        groups = _detect_fingerprint_equivalences(col_of, frozenset("ijk"))
+        assert len(groups) == 1
+        assert groups[0] == frozenset({("i",), ("j",)})
+
+    def test_triple_collision(self):
+        col_of = {"a": (1,), "b": (1,), "c": (1,)}
+        groups = _detect_fingerprint_equivalences(col_of, frozenset("abc"))
+        assert len(groups) == 1
+        assert groups[0] == frozenset({("a",), ("b",), ("c",)})
+
+    def test_only_considers_given_labels(self):
+        col_of = {"a": (1,), "b": (1,), "c": (1,)}
+        groups = _detect_fingerprint_equivalences(col_of, frozenset("ab"))
+        assert len(groups) == 1
+        assert groups[0] == frozenset({("a",), ("b",)})
+
+
+class TestDerivePiCanonical:
+    def test_simple_swap(self):
+        fp_to_labels = {
+            (1, 0, 0, 0): {"a"},
+            (0, 1, 0, 0): {"b"},
+            (0, 0, 1, 0): {"c"},
+            (0, 0, 0, 1): {"d"},
+        }
+        sigma_col_of = {
+            "a": (0, 0, 1, 0),
+            "b": (0, 0, 0, 1),
+            "c": (1, 0, 0, 0),
+            "d": (0, 1, 0, 0),
+        }
+        pi = _derive_pi_canonical(
+            sigma_col_of,
+            fp_to_labels,
+            v_labels=frozenset("abcd"),
+            w_labels=frozenset(),
+        )
+        assert pi == {"a": "c", "b": "d", "c": "a", "d": "b"}
+
+    def test_no_match_returns_none(self):
+        fp_to_labels = {(1, 0): {"a"}, (0, 1): {"b"}}
+        sigma_col_of = {"a": (1, 1), "b": (0, 0)}
+        pi = _derive_pi_canonical(
+            sigma_col_of,
+            fp_to_labels,
+            v_labels=frozenset("ab"),
+            w_labels=frozenset(),
+        )
+        assert pi is None
+
+    def test_vw_crossing_returns_none(self):
+        fp_to_labels = {(1,): {"a", "i"}}
+        sigma_col_of = {"a": (1,), "i": (1,)}
+        pi = _derive_pi_canonical(
+            sigma_col_of,
+            fp_to_labels,
+            v_labels=frozenset("a"),
+            w_labels=frozenset("i"),
+        )
+        assert pi is not None
+        assert pi["a"] == "a"
+        assert pi["i"] == "i"
+
+    def test_collision_canonical_pick(self):
+        fp_to_labels = {(1, 1): {"i", "j"}}
+        sigma_col_of = {"i": (1, 1), "j": (1, 1)}
+        pi = _derive_pi_canonical(
+            sigma_col_of,
+            fp_to_labels,
+            v_labels=frozenset("ij"),
+            w_labels=frozenset(),
+        )
+        assert pi is not None
+        assert pi == {"i": "i", "j": "j"}
+
+
+class TestClassifyPiCycles:
+    def test_identity_returns_empty(self):
+        pi = {"a": "a", "b": "b"}
+        X = np.zeros((3, 4))
+        g = _build_bipartite([X], ["ab"], [None], "ab")
+        sub = _induce_subgraph(g, frozenset({0}))
+        groups = _classify_pi_cycles(pi, frozenset("ab"), g, sub)
+        assert groups == []
+
+    def test_single_two_cycle(self):
+        x = np.zeros((3,))
+        g = _build_bipartite([x, x], ["a", "b"], [None, None], "ab")
+        sub = _induce_subgraph(g, frozenset({0, 1}))
+        pi = {"a": "b", "b": "a"}
+        groups = _classify_pi_cycles(pi, frozenset("ab"), g, sub)
+        assert len(groups) == 1
+        assert groups[0] == frozenset({("a",), ("b",)})
+
+    def test_block_s2_two_cycles(self):
+        X = np.zeros((3, 4))
+        g = _build_bipartite([X, X], ["ab", "cd"], [None, None], "abcd")
+        sub = _induce_subgraph(g, frozenset({0, 1}))
+        pi = {"a": "c", "c": "a", "b": "d", "d": "b"}
+        groups = _classify_pi_cycles(pi, frozenset("abcd"), g, sub)
+        assert len(groups) == 1
+        assert groups[0] == frozenset({("a", "b"), ("c", "d")})
+
+    def test_block_s2_three_cycles(self):
+        T = np.zeros((2, 3, 4))
+        g = _build_bipartite([T, T], ["abc", "def"], [None, None], "abcdef")
+        sub = _induce_subgraph(g, frozenset({0, 1}))
+        pi = {"a": "d", "d": "a", "b": "e", "e": "b", "c": "f", "f": "c"}
+        groups = _classify_pi_cycles(pi, frozenset("abcdef"), g, sub)
+        assert len(groups) == 1
+        assert groups[0] == frozenset({("a", "b", "c"), ("d", "e", "f")})
+
+
+class TestDetectSymmetriesViaPi:
+    def test_outer_product_block_s2(self):
+        X = np.zeros((3, 4))
+        g = _build_bipartite([X, X], ["ab", "cd"], [None, None], "abcd")
+        sub = _induce_subgraph(g, frozenset({0, 1}))
+        row_order = sub.u_local
+        col_of = {
+            lbl: tuple(g.incidence[u].get(lbl, 0) for u in row_order)
+            for lbl in sub.v_labels | sub.w_labels
+        }
+        fp_to_labels: dict[tuple[int, ...], set[str]] = {}
+        for lbl, fp in col_of.items():
+            fp_to_labels.setdefault(fp, set()).add(lbl)
+
+        v_groups, w_groups = _detect_symmetries_via_pi(
+            g, sub, row_order, col_of, fp_to_labels
+        )
+        assert len(v_groups) == 1
+        assert v_groups[0] == frozenset({("a", "b"), ("c", "d")})
+        assert w_groups == []
+
+    def test_w_side_transposition(self):
+        X = np.zeros((3, 3))
+        g = _build_bipartite([X, X], ["ij", "ji"], [None, None], "")
+        sub = _induce_subgraph(g, frozenset({0, 1}))
+        row_order = sub.u_local
+        col_of = {
+            lbl: tuple(g.incidence[u].get(lbl, 0) for u in row_order)
+            for lbl in sub.v_labels | sub.w_labels
+        }
+        fp_to_labels: dict[tuple[int, ...], set[str]] = {}
+        for lbl, fp in col_of.items():
+            fp_to_labels.setdefault(fp, set()).add(lbl)
+
+        v_groups, w_groups = _detect_symmetries_via_pi(
+            g, sub, row_order, col_of, fp_to_labels
+        )
+        assert v_groups == []
+        assert len(w_groups) == 1
+        assert w_groups[0] == frozenset({("i",), ("j",)})
