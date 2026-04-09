@@ -451,12 +451,11 @@ class TestSubsetSymmetryDataclass:
 
 
 from mechestim._opt_einsum._subgraph_symmetry import (
-    _build_bipartite,
-    _induce_subgraph,
-    _detect_fingerprint_equivalences,
-    _derive_pi_canonical,
     _classify_pi_cycles,
+    _derive_pi_canonical,
+    _detect_fingerprint_equivalences,
     _detect_symmetries_via_pi,
+    _induce_subgraph,
 )
 
 

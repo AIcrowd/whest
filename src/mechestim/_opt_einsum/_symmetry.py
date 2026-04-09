@@ -10,10 +10,9 @@ Detection of symmetries is handled by ``_subgraph_symmetry.SubgraphSymmetryOracl
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from math import comb, prod
 from typing import Collection
-
-from dataclasses import dataclass
 
 from ._helpers import flop_count
 

@@ -676,7 +676,6 @@ class TestExhaustiveSymmetryValidation:
         np.testing.assert_allclose(result, expected, rtol=1e-10)
 
 
-from mechestim._opt_einsum._symmetry import symmetric_flop_count, unique_elements
 
 
 class TestInnerSymmetryFlops:
