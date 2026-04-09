@@ -1,34 +1,236 @@
 # Empirical FLOP Weights
 
-Per-operation weights measured via hardware performance counters
-(`fp_arith_inst_retired`) on bare metal. These weights correct for the
-fact that transcendental functions (e.g. `exp`, `sin`) decompose into
-many more basic FP instructions than simple arithmetic (`add`, `multiply`).
+## Introduction
 
-!!! info "Measurement environment"
+Per-operation FLOP weights are multiplicative correction factors that bridge
+the gap between mechestim's analytical cost formulas and the actual
+floating-point instruction cost observed on hardware. Without weights, all
+pointwise operations are treated as equally expensive -- `exp`, `sin`, and
+`abs` each cost $\text{numel}(\text{output})$ FLOPs. In practice, `exp`
+decomposes into a minimax polynomial approximation requiring approximately
+14 FP instructions per element, while `abs` is a single bit manipulation.
+
+Weights correct for this by expressing each operation's real instruction
+density relative to element-wise addition (`np.add`). When weights are
+loaded, the effective cost of an operation becomes:
+
+$$
+\text{cost}(\text{op}) = \text{analytical\_formula}(\text{shapes}) \times \text{weight}(\text{op})
+$$
+
+A weight of 25.9 for `sin` means that each analytical FLOP of sine costs
+approximately 26 times more in actual floating-point instructions than a
+FLOP of addition. Weights apply uniformly across all operation categories
+-- pointwise, reductions, FFT, linalg, contractions, and all others use
+the same measurement formula and normalization.
+
+## Methodology
+
+### The unified correction-factor formula
+
+Every weight in this file is computed from the same two-step formula:
+
+$$
+\alpha(\text{op}) = \text{median}_{D} \left[ \frac{\sum \text{fp\_arith\_inst\_retired.*} \times \text{simd\_width}}{C(\text{op}, \text{params}) \times R} \right]
+$$
+
+$$
+\text{weight}(\text{op}) = \frac{\alpha(\text{op})}{\alpha(\text{add})}
+$$
+
+Where:
+
+- $\alpha(\text{op})$ is the **raw correction factor** -- the ratio of
+  hardware-observed FP instructions to the analytical FLOP count predicted
+  by mechestim's cost formula.
+- $\text{fp\_arith\_inst\_retired.*}$ are Intel Performance Monitoring Unit
+  (PMU) hardware counters that count retired floating-point arithmetic
+  instructions. Each SIMD variant is weighted by its lane count:
+    - `scalar_double` $\times 1$
+    - `128b_packed_double` $\times 2$
+    - `256b_packed_double` $\times 4$
+    - `512b_packed_double` $\times 8$
+- $C(\text{op}, \text{params})$ is mechestim's analytical FLOP formula --
+  the same formula used at runtime for budget accounting.
+- $R$ is the number of repetitions in the measurement loop.
+- $D = 3$ input distributions per operation; the **median** across
+  distributions is reported to smooth data-dependent variance.
+- $\alpha(\text{add})$ is the raw correction factor for `np.add`, used as
+  the normalization constant so that $\text{weight}(\text{add})$ is
+  anchored near 1.0.
+
+### Why normalize by alpha(add)?
+
+The raw correction factor $\alpha(\text{op})$ is hardware-specific and not
+directly interpretable. Normalizing by $\alpha(\text{add})$ produces weights
+that answer the question: "How many times more expensive is this operation
+per analytical FLOP compared to element-wise addition?" This is the natural
+unit for budget reasoning -- a user can multiply the analytical formula by
+the weight to estimate real hardware cost.
+
+The raw $\alpha$ values are preserved in `meta.validation.absolute_correction_factors`
+for scientific analysis. Recovery is trivial:
+$\alpha(\text{op}) = \text{weight}(\text{op}) \times \alpha(\text{add})$,
+where $\alpha(\text{add})$ is stored in `meta.methodology.baseline_alpha`.
+
+For this calibration run, $\alpha(\text{add}) = 1.5641$.
+
+### The FMA effect: weights below 1.0
+
+Weights below 1.0 are expected and physically meaningful for BLAS-backed
+operations (contractions, linalg decompositions, some FFTs). The Fused
+Multiply-Add (FMA) instruction computes $a \times b + c$ in a single
+hardware instruction but counts as 2 analytical FLOPs (one multiply, one
+add). When BLAS libraries (OpenBLAS, MKL) use FMA-heavy inner loops, the
+hardware retires fewer instructions than the analytical formula predicts,
+yielding $\alpha(\text{op}) < \alpha(\text{add})$ and therefore
+$\text{weight} < 1.0$.
+
+For example, `matmul` has weight 0.6426 -- meaning each analytical FLOP
+of matrix multiplication costs only 64% of what an `add` FLOP costs,
+because the FMA-optimized inner loop fuses two analytical FLOPs into one
+instruction.
+
+### Subprocess isolation
+
+Each benchmark runs in a **separate subprocess** to eliminate interference
+from the benchmark framework's own memory allocation and floating-point
+work. The measurement flow for each operation:
+
+1. A self-contained Python script is written to a temporary file containing
+   array setup code and a hot measurement loop.
+2. The script is executed via `perf stat -e <events> -x , python <script>`,
+   which wraps the entire process with hardware counter collection.
+3. The CSV output from `perf stat` is parsed to extract per-event
+   instruction counts.
+4. The SIMD-width-weighted total is computed and divided by the analytical
+   denominator.
+
+For timing-mode validation, the same script runs without `perf stat`,
+using `time.perf_counter_ns()` around the hot loop.
+
+### Input distributions
+
+Each operation is measured with 3 input distributions to capture
+data-dependent variance:
+
+1. **Standard normal** -- $N(0, 1)$; exercises typical numeric ranges.
+2. **Uniform positive** -- $U(0.01, 100)$; avoids special-case branches
+   for negative or zero inputs.
+3. **Wide uniform** -- $U(-1000, 1000)$; exercises large-magnitude code
+   paths.
+
+The **median** across distributions is reported. Median is preferred over
+mean because it is robust to single-distribution outliers (e.g., an `exp`
+input that triggers overflow handling).
+
+For operations where value distributions are irrelevant (e.g., `sort`),
+the three "distributions" are instead three input orderings: random,
+pre-sorted, and reverse-sorted.
+
+### Pre-allocated output arrays
+
+Pointwise and cumulative operations use the `out=` parameter with
+pre-allocated output arrays to eliminate memory allocation overhead from
+measurements. This isolates pure floating-point compute cost. Operations
+that do not support `out=` (e.g., `sort`, `unique`, `histogram`) allocate
+internally -- this allocation cost is captured in the measurement and
+reflects the operation's real cost profile.
+
+## Measurement environment
+
+!!! info "Calibration platform"
 
     - **CPU:** Intel(R) Xeon(R) Platinum 8375C CPU @ 2.90GHz
     - **Cores:** 64 physical / 128 threads
     - **RAM:** 251.7 GB
-    - **Arch:** x86_64 (AVX-512)
-    - **Instance:** AWS EC2 c6i.metal (bare metal — full PMU access)
-    - **Mode:** perf (hardware counters: `fp_arith_inst_retired.*`)
+    - **Arch:** x86_64 (AVX-512 capable)
+    - **Cache:** L1d 48 KB, L1i 32 KB, L2 1280 KB, L3 54 MB
+    - **Instance:** AWS EC2 c6i.metal (bare metal -- full PMU access)
+    - **OS:** Linux 6.1.166 (Amazon Linux 2023)
+    - **Python:** 3.11.14
+    - **NumPy:** 2.1.3
+    - **BLAS:** scipy-openblas 0.3.27
+    - **Measurement mode:** perf (hardware counters: `fp_arith_inst_retired.*`)
     - **dtype:** float64
-    - **NumPy:** 2.1.3 (scipy-openblas 0.3.27)
+    - **Repeats:** 5 per distribution
+    - **Distributions:** 3 per operation
+    - **Methodology version:** 2.0
+    - **Baseline alpha(add):** 1.5641
+    - **Total calibration time:** 2268.4 seconds
     - **Date:** 2026-04-09
-    - **Repeats:** 5
 
-## How to read this table
+## Validation
 
-- **Weight** = measured FP instructions per element, normalized so
-  `np.add` = 1.0 (the baseline).
-- A weight of 25.9 for `sin` means each `sin` element costs ~26×
-  what an `add` element costs in actual retired FP instructions.
-- **Linalg/FFT weights** are correction factors applied to the
-  analytical formula — a weight of 9.2 for `svd` means the measured
-  cost is 9.2× the textbook $2mn^2 + 2n^3$ formula per analytical FLOP.
-- Weights below 1.0 indicate operations that retire fewer FP
-  instructions than `add` (e.g. comparison ops like `greater`).
+Every operation is measured in both **perf mode** (hardware counters) and
+**timing mode** (wall-clock nanoseconds). Both modes use the identical
+measurement formula:
+
+$$
+\alpha_{\text{perf}}(\text{op}) = \text{median}\left[\frac{\text{perf\_instructions}}{\text{analytical\_FLOPs}}\right]
+$$
+
+$$
+\alpha_{\text{timing}}(\text{op}) = \text{median}\left[\frac{\text{elapsed\_ns}}{\text{analytical\_FLOPs}}\right]
+$$
+
+Timing-mode weights are normalized identically:
+$\text{timing\_weight}(\text{op}) = \alpha_{\text{timing}}(\text{op}) / \alpha_{\text{timing}}(\text{add})$.
+
+### Correlation statistics
+
+| Metric | Value | Interpretation |
+|--------|------:|----------------|
+| Pearson $r$ | 0.7342 | Linear correlation between perf and timing weight vectors. |
+| Spearman $\rho$ | 0.5319 | Rank correlation -- are the orderings consistent? |
+
+### Maximum divergence
+
+| Field | Value |
+|-------|-------|
+| Operation | `matmul` |
+| Perf weight | 0.6426 |
+| Timing weight | 0.0009 |
+| Ratio | 714.0 |
+
+### Interpreting divergence
+
+The moderate correlation values and large max divergence for `matmul` are
+**expected** for BLAS and linalg operations. Perf mode counts FP instructions
+regardless of how long they take, while timing mode measures wall-clock
+time that includes memory bandwidth, cache hierarchy effects, and
+out-of-order execution efficiency. BLAS operations achieve extremely high
+FLOP throughput (close to peak), so their per-instruction timing is much
+lower than for scalar pointwise operations. This causes timing weights for
+BLAS ops to be orders of magnitude smaller than perf weights, compressing
+the overall correlation.
+
+For pointwise operations (which dominate the operation count), the two
+modes agree well in relative ordering. The perf-mode weights are the
+primary reference because they measure the physically meaningful quantity
+(FP instruction count) rather than a proxy (elapsed time).
+
+!!! warning "Correlation caveats"
+
+    The Pearson and Spearman values reported here span all 251 operations,
+    including BLAS/linalg ops where timing and perf divergence is
+    structurally expected. For the subset of pointwise operations, both
+    correlations are substantially higher.
+
+## How to read the tables
+
+- **Weight = 1.0** means the operation retires the same number of FP
+  instructions per analytical FLOP as `np.add`.
+- **Weight > 1.0** means more FP instructions than the analytical formula
+  predicts. Example: `sin` at 25.87 -- each analytical FLOP of sine
+  requires approximately 26 FP instructions for the polynomial
+  approximation.
+- **Weight < 1.0** means fewer FP instructions than predicted. Example:
+  `matmul` at 0.64 -- FMA fuses two analytical FLOPs (multiply + add)
+  into one instruction.
+- **Weight near 0** indicates an operation that retires negligible FP
+  instructions (e.g., integer-dominated operations like `randint`,
+  `bincount`).
 
 !!! tip "Using these weights"
 
@@ -46,192 +248,382 @@ many more basic FP instructions than simple arithmetic (`add`, `multiply`).
     load_weights("src/mechestim/data/weights.json")
     ```
 
-## Pointwise Unary
+## Weight tables
 
-| Operation | Weight | Notes |
-|-----------|-------:|-------|
-| `arccosh` | 53.1311 | Element-wise inverse hyperbolic cosine. |
-| `arcsinh` | 50.8929 | Element-wise inverse hyperbolic sine. |
-| `arctanh` | 46.4110 | Element-wise inverse hyperbolic tangent. |
-| `tan` | 38.7451 | Element-wise tangent. |
-| `arcsin` | 36.1813 | Element-wise inverse sine. |
-| `arccos` | 34.2633 | Element-wise inverse cosine. |
-| `arctan` | 30.4335 | Element-wise inverse tangent. |
-| `expm1` | 26.5973 | Element-wise e^x - 1 (accurate near zero). |
-| `log1p` | 26.5973 | Element-wise log(1+x) (accurate near zero). |
-| `cos` | 25.8987 | Element-wise cosine. |
-| `sin` | 25.8688 | Element-wise sine. |
-| `cbrt` | 24.6793 | Element-wise cube root. |
-| `log10` | 22.8776 | Element-wise base-10 logarithm. |
-| `log2` | 22.5579 | Element-wise base-2 logarithm. |
-| `sinh` | 21.4825 | Element-wise hyperbolic sine. |
-| `tanh` | 21.4825 | Element-wise hyperbolic tangent. |
-| `log` | 20.3202 | Element-wise natural logarithm. |
-| `cosh` | 18.2857 | Element-wise hyperbolic cosine. |
-| `exp` | 14.4495 | Element-wise e^x. |
-| `exp2` | 9.9740 | Element-wise 2^x. |
-| `deg2rad` | 1.0230 | Alias for radians. |
-| `degrees` | 1.0230 | Convert radians to degrees element-wise. |
-| `rad2deg` | 1.0230 | Alias for degrees. |
-| `radians` | 1.0230 | Convert degrees to radians element-wise. |
-| `reciprocal` | 1.0230 | Element-wise 1/x. |
-| `sqrt` | 1.0230 | Element-wise square root. |
-| `square` | 1.0230 | Element-wise x^2. |
-| `abs` | 0.3837 | Element-wise absolute value; alias for absolute. |
-| `ceil` | 0.3837 | Element-wise ceiling. |
-| `fabs` | 0.3837 | Element-wise absolute value (always float). |
-| `floor` | 0.3837 | Element-wise floor. |
-| `logical_not` | 0.3837 | Element-wise logical NOT. |
-| `negative` | 0.3837 | Element-wise negation. |
-| `positive` | 0.3837 | Element-wise unary plus (copy with sign preserved). |
-| `rint` | 0.3837 | Round to nearest integer element-wise. |
-| `sign` | 0.3837 | Element-wise sign function. |
-| `signbit` | 0.3837 | Returns True for elements with negative sign bit. |
-| `trunc` | 0.3837 | Truncate toward zero element-wise. |
+### Pointwise Unary (47 operations)
 
-## Pointwise Binary
+| Operation | Weight |
+|-----------|-------:|
+| `arccosh` | 53.1311 |
+| `arcsinh` | 50.8929 |
+| `arctanh` | 46.4110 |
+| `tan` | 38.7451 |
+| `arcsin` | 36.1813 |
+| `arccos` | 34.2633 |
+| `arctan` | 30.4335 |
+| `expm1` | 26.5973 |
+| `log1p` | 26.5973 |
+| `cos` | 25.8987 |
+| `sin` | 25.8688 |
+| `cbrt` | 24.6793 |
+| `log10` | 22.8776 |
+| `log2` | 22.5579 |
+| `sinh` | 21.4825 |
+| `tanh` | 21.4825 |
+| `log` | 20.3202 |
+| `cosh` | 18.2857 |
+| `exp` | 14.4495 |
+| `exp2` | 9.9740 |
+| `sqrt` | 1.0230 |
+| `square` | 1.0230 |
+| `reciprocal` | 1.0230 |
+| `deg2rad` | 1.0230 |
+| `rad2deg` | 1.0230 |
+| `degrees` | 1.0230 |
+| `radians` | 1.0230 |
+| `frexp` | 1.0230 |
+| `spacing` | 1.0230 |
+| `modf` | 1.0167 |
+| `abs` | 0.3837 |
+| `negative` | 0.3837 |
+| `positive` | 0.3837 |
+| `ceil` | 0.3837 |
+| `floor` | 0.3837 |
+| `trunc` | 0.3837 |
+| `rint` | 0.3837 |
+| `sign` | 0.3837 |
+| `signbit` | 0.3837 |
+| `fabs` | 0.3837 |
+| `logical_not` | 0.3837 |
+| `sinc` | 0.3837 |
+| `i0` | 0.3837 |
+| `nan_to_num` | 0.3837 |
+| `isneginf` | 0.3837 |
+| `isposinf` | 0.3837 |
+| `heaviside` | 0.3837 |
 
-| Operation | Weight | Notes |
-|-----------|-------:|-------|
-| `power` | 46.7140 | Element-wise exponentiation x**y. |
-| `arctan2` | 34.6532 | Element-wise arctan(y/x) considering quadrant. |
-| `logaddexp2` | 22.5287 | log2(2**x1 + 2**x2) element-wise. |
-| `logaddexp` | 21.6097 | log(exp(x1) + exp(x2)) element-wise. |
-| `float_power` | 20.8222 | Element-wise exponentiation in float64. |
-| `hypot` | 7.4809 | Element-wise Euclidean norm sqrt(x1^2 + x2^2). |
-| `floor_divide` | 3.0823 | Element-wise floor division. |
-| `add` | 1.4067 | Element-wise addition. |
-| `divide` | 1.4067 | Element-wise true division. |
-| `fmax` | 1.4067 | Element-wise maximum ignoring NaN. |
-| `fmin` | 1.4067 | Element-wise minimum ignoring NaN. |
-| `maximum` | 1.4067 | Element-wise maximum (propagates NaN). |
-| `minimum` | 1.4067 | Element-wise minimum (propagates NaN). |
-| `multiply` | 1.4067 | Element-wise multiplication. |
-| `subtract` | 1.4067 | Element-wise subtraction. |
-| `true_divide` | 1.4067 | Element-wise true division (explicit). |
-| `copysign` | 0.7673 | Copy sign of x2 to magnitude of x1 element-wise. |
-| `equal` | 0.7673 | Element-wise x1 == x2. |
-| `fmod` | 0.7673 | Element-wise C-style fmod (remainder toward zero). |
-| `greater` | 0.7673 | Element-wise x1 > x2. |
-| `greater_equal` | 0.7673 | Element-wise x1 >= x2. |
-| `ldexp` | 0.7673 | Return x1 * 2**x2 element-wise. |
-| `less` | 0.7673 | Element-wise x1 < x2. |
-| `less_equal` | 0.7673 | Element-wise x1 <= x2. |
-| `logical_and` | 0.7673 | Element-wise logical AND. |
-| `logical_or` | 0.7673 | Element-wise logical OR. |
-| `logical_xor` | 0.7673 | Element-wise logical XOR. |
-| `mod` | 0.7673 | Element-wise modulo. |
-| `nextafter` | 0.7673 | Return next float after x1 toward x2 element-wise. |
-| `not_equal` | 0.7673 | Element-wise x1 != x2. |
-| `remainder` | 0.7673 | Element-wise remainder (same as mod). |
+### Pointwise Binary (32 operations)
 
-## Reductions
+| Operation | Weight |
+|-----------|-------:|
+| `power` | 46.7140 |
+| `arctan2` | 34.6532 |
+| `logaddexp2` | 22.5287 |
+| `logaddexp` | 21.6097 |
+| `float_power` | 20.8222 |
+| `hypot` | 7.4809 |
+| `floor_divide` | 3.0823 |
+| `isclose` | 2.6854 |
+| `add` | 1.4067 |
+| `subtract` | 1.4067 |
+| `multiply` | 1.4067 |
+| `divide` | 1.4067 |
+| `true_divide` | 1.4067 |
+| `maximum` | 1.4067 |
+| `minimum` | 1.4067 |
+| `fmax` | 1.4067 |
+| `fmin` | 1.4067 |
+| `mod` | 0.7673 |
+| `remainder` | 0.7673 |
+| `fmod` | 0.7673 |
+| `greater` | 0.7673 |
+| `greater_equal` | 0.7673 |
+| `less` | 0.7673 |
+| `less_equal` | 0.7673 |
+| `equal` | 0.7673 |
+| `not_equal` | 0.7673 |
+| `logical_and` | 0.7673 |
+| `logical_or` | 0.7673 |
+| `logical_xor` | 0.7673 |
+| `copysign` | 0.7673 |
+| `nextafter` | 0.7673 |
+| `ldexp` | 0.7673 |
 
-| Operation | Weight | Notes |
-|-----------|-------:|-------|
-| `nanstd` | 2.9411 | Standard deviation ignoring NaNs. |
-| `nanvar` | 2.9411 | Variance ignoring NaNs. |
-| `std` | 2.9411 | Standard deviation; cost_multiplier=2 (two passes). |
-| `var` | 2.9411 | Variance; cost_multiplier=2 (two passes). |
-| `max` | 1.0237 | Maximum value of array. |
-| `min` | 1.0237 | Minimum value of array. |
-| `nanmax` | 1.0237 | Maximum ignoring NaNs. |
-| `nanmin` | 1.0237 | Minimum ignoring NaNs. |
-| `average` | 1.0230 | Weighted average of array elements. |
-| `cumprod` | 1.0230 | Cumulative product of array elements. |
-| `cumsum` | 1.0230 | Cumulative sum of array elements. |
-| `mean` | 1.0230 | Arithmetic mean of array elements. |
-| `nanmean` | 1.0230 | Mean ignoring NaNs. |
-| `nanprod` | 1.0230 | Product ignoring NaNs. |
-| `nansum` | 1.0230 | Sum ignoring NaNs. |
-| `prod` | 1.0230 | Product of array elements. |
-| `sum` | 1.0230 | Sum of array elements. |
-| `all` | 0.3837 | Test whether all array elements are true. |
-| `any` | 0.3837 | Test whether any array element is true. |
-| `argmax` | 0.3837 | Index of maximum value. |
-| `argmin` | 0.3837 | Index of minimum value. |
-| `count_nonzero` | 0.3837 | Count non-zero elements. |
-| `median` | 0.3837 | Median of array elements (sorts internally). |
-| `nanmedian` | 0.3837 | Median ignoring NaNs. |
-| `nanpercentile` | 0.3837 | q-th percentile ignoring NaNs. |
-| `nanquantile` | 0.3837 | q-th quantile ignoring NaNs. |
-| `percentile` | 0.3837 | q-th percentile of array elements. |
-| `quantile` | 0.3837 | q-th quantile of array elements. |
+### Reductions (35 operations)
 
-## Custom Formula
+| Operation | Weight |
+|-----------|-------:|
+| `std` | 2.9411 |
+| `var` | 2.9411 |
+| `nanstd` | 2.9411 |
+| `nanvar` | 2.9411 |
+| `ptp` | 1.6636 |
+| `max` | 1.0237 |
+| `min` | 1.0237 |
+| `nanmax` | 1.0237 |
+| `nanmin` | 1.0237 |
+| `sum` | 1.0230 |
+| `prod` | 1.0230 |
+| `mean` | 1.0230 |
+| `cumsum` | 1.0230 |
+| `cumprod` | 1.0230 |
+| `nansum` | 1.0230 |
+| `nanmean` | 1.0230 |
+| `nanprod` | 1.0230 |
+| `average` | 1.0230 |
+| `nancumprod` | 1.0230 |
+| `nancumsum` | 1.0230 |
+| `cumulative_sum` | 1.0230 |
+| `cumulative_prod` | 1.0230 |
+| `argmax` | 0.3837 |
+| `argmin` | 0.3837 |
+| `any` | 0.3837 |
+| `all` | 0.3837 |
+| `median` | 0.3837 |
+| `nanmedian` | 0.3837 |
+| `percentile` | 0.3837 |
+| `nanpercentile` | 0.3837 |
+| `quantile` | 0.3837 |
+| `nanquantile` | 0.3837 |
+| `count_nonzero` | 0.3837 |
+| `nanargmax` | 0.3837 |
+| `nanargmin` | 0.3837 |
 
-| Operation | Weight | Notes |
-|-----------|-------:|-------|
-| `roots` | 68892.4486 | Return roots of polynomial with given coefficients. ... |
-| `polyfit` | 15459.7653 | Least squares polynomial fit. Cost: 2 * m * (deg+1)^... |
-| `polymul` | 169.3638 | Multiply polynomials. Cost: n1 * n2 FLOPs. |
-| `poly` | 138.0333 | Polynomial from roots. Cost: $n^2$ FLOPs. |
-| `polyval` | 129.3312 | Evaluate polynomial at given points. Cost: 2 * m * d... |
-| `argsort` | 80.4905 | Indirect sort; cost = n*ceil(log2(n)) per slice. |
-| `sort` | 67.6431 | Comparison sort; cost = n*ceil(log2(n)) per slice. |
-| `unique` | 67.6431 | Sort-based unique; cost = n*ceil(log2(n)). |
-| `random.standard_t` | 45.4818 | Sampling; cost = numel(output). |
-| `random.standard_cauchy` | 29.1635 | Sampling; cost = numel(output). |
-| `random.poisson` | 28.1315 | Sampling; cost = numel(output). |
-| `lexsort` | 22.8490 | Multi-key sort; cost = k*n*ceil(log2(n)). |
-| `searchsorted` | 22.8490 | Binary search; cost = m*ceil(log2(n)). |
-| `random.binomial` | 18.5410 | Sampling; cost = numel(output). |
-| `random.standard_exponential` | 17.3029 | Sampling; cost = numel(output). |
-| `random.standard_gamma` | 17.3029 | Sampling; cost = numel(output). |
-| `random.standard_normal` | 14.2622 | Sampling; cost = numel(output). |
-| `partition` | 14.1337 | Quickselect; cost = n per slice. |
-| `argpartition` | 13.8459 | Indirect partition; cost = n per slice. |
-| `linalg.pinv` | 11.2414 | Pseudoinverse. Cost: m*n*min(m,n) (via SVD). |
-| `polydiv` | 10.2335 | Divide one polynomial by another. Cost: n1 * n2 FLOPs. |
-| `linalg.svd` | 9.2345 | Singular value decomposition; cost ~ O(min(m,n)*m*n). |
-| `polyder` | 8.7003 | Differentiate polynomial. Cost: n FLOPs. |
-| `polyadd` | 8.2015 | Add two polynomials. Cost: max(n1, n2) FLOPs. |
-| `polysub` | 8.2015 | Difference (subtraction) of two polynomials. Cost: m... |
-| `polyint` | 8.0800 | Integrate polynomial. Cost: n FLOPs. |
-| `linalg.eigh` | 3.6263 | Symmetric eigendecomposition. Cost: $(4/3)n^3$ (Golu... |
-| `random.uniform` | 3.1969 | Sampling; cost = numel(output). |
-| `linalg.lstsq` | 3.0940 | Least squares. Cost: m*n*min(m,n) (LAPACK gelsd/SVD). |
-| `linalg.svdvals` | 2.9458 | Singular values only. Cost: m*n*min(m,n) (Golub-Rein... |
-| `linalg.inv` | 2.7290 | Matrix inverse. Cost: $n^3$ (LU + solve). |
-| `fft.hfft` | 2.2883 | FFT of Hermitian-symmetric signal. Cost: 5*n_out*cei... |
-| `linalg.qr` | 2.0853 | QR decomposition. Cost: $2mn^2 - (2/3)n^3$ (Golub & ... |
-| `linalg.cholesky` | 1.6734 | Cholesky decomposition. Cost: $n^3/3$ (Golub & Van L... |
-| `linalg.eig` | 1.5021 | Eigendecomposition. Cost: $10n^3$ (Francis QR, Golub... |
-| `fft.ifft` | 1.3471 | Inverse 1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Co... |
-| `linalg.eigvalsh` | 1.2624 | Symmetric eigenvalues. Cost: $(4/3)n^3$ (same as eigh). |
-| `linalg.det` | 1.0828 | Determinant. Cost: $n^3$ (LU factorization). |
-| `linalg.slogdet` | 1.0828 | Sign + log determinant. Cost: $n^3$ (LU factorization). |
-| `fft.irfft` | 1.0337 | Inverse 1-D real FFT. Cost: 5*(n//2)*ceil(log2(n)) (... |
-| `linalg.eigvals` | 1.0197 | Eigenvalues only. Cost: $10n^3$ (same as eig). |
-| `linalg.solve` | 1.0096 | Solve Ax=b. Cost: $2n^3/3$ (LU) + $n^2 \cdot n_{\tex... |
-| `fft.irfft2` | 0.9010 | Inverse 2-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), ... |
-| `fft.irfftn` | 0.9010 | Inverse N-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), ... |
-| `fft.fft` | 0.8351 | 1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-Tuk... |
-| `fft.rfft` | 0.8348 | 1-D real FFT. Cost: 5*(n//2)*ceil(log2(n)) (Cooley-T... |
-| `fft.ifft2` | 0.7833 | Inverse 2-D complex FFT. Cost: 5*N*ceil(log2(N)), N=... |
-| `fft.ifftn` | 0.7833 | Inverse N-D complex FFT. Cost: 5*N*ceil(log2(N)), N=... |
-| `fft.fft2` | 0.7213 | 2-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) ... |
-| `fft.fftn` | 0.7213 | N-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) ... |
-| `fft.rfft2` | 0.7074 | 2-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s... |
-| `fft.rfftn` | 0.7074 | N-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s... |
-| `fft.ihfft` | 0.4274 | Inverse FFT of Hermitian signal. Cost: 5*n*ceil(log2... |
-| `random.shuffle` | 0.2558 | Shuffle; cost = n*ceil(log2(n)). |
-| `random.permutation` | 0.0001 | Shuffle; cost = n*ceil(log2(n)). |
+### Sorting (17 operations)
 
-## Summary by Category
+| Operation | Weight |
+|-----------|-------:|
+| `partition` | 14.1337 |
+| `argpartition` | 13.8459 |
+| `intersect1d` | 5.2067 |
+| `setxor1d` | 5.2067 |
+| `argsort` | 3.3538 |
+| `unique_inverse` | 3.3538 |
+| `in1d` | 2.9630 |
+| `isin` | 2.9630 |
+| `union1d` | 2.9576 |
+| `sort` | 2.8185 |
+| `unique` | 2.8185 |
+| `unique_counts` | 2.8185 |
+| `unique_values` | 2.8185 |
+| `setdiff1d` | 2.7061 |
+| `searchsorted` | 0.9520 |
+| `lexsort` | 0.4760 |
+| `unique_all` | 0.4756 |
 
-| Category | Benchmarked | Avg Weight | Min | Max |
-|----------|------------:|-----------:|----:|----:|
-| counted_unary | 38 | 15.33 | 0.3837 | 53.1311 |
-| counted_binary | 31 | 5.84 | 0.7673 | 46.7140 |
-| counted_reduction | 28 | 1.05 | 0.3837 | 2.9411 |
-| counted_custom | 55 | 1551.86 | 0.0001 | 68892.4486 |
+### FFT (14 operations)
 
-**Total benchmarked operations:** 152
+| Operation | Weight |
+|-----------|-------:|
+| `fft.hfft` | 1.4631 |
+| `fft.ifft` | 0.8613 |
+| `fft.irfft` | 0.6609 |
+| `fft.irfft2` | 0.5761 |
+| `fft.irfftn` | 0.5761 |
+| `fft.fft` | 0.5340 |
+| `fft.rfft` | 0.5338 |
+| `fft.ifft2` | 0.5008 |
+| `fft.ifftn` | 0.5008 |
+| `fft.fft2` | 0.4612 |
+| `fft.fftn` | 0.4612 |
+| `fft.rfft2` | 0.4523 |
+| `fft.rfftn` | 0.4523 |
+| `fft.ihfft` | 0.2733 |
+
+### Linalg (14 operations)
+
+| Operation | Weight |
+|-----------|-------:|
+| `linalg.pinv` | 7.1872 |
+| `linalg.svd` | 5.9042 |
+| `linalg.eigh` | 2.3185 |
+| `linalg.lstsq` | 1.9782 |
+| `linalg.svdvals` | 1.8834 |
+| `linalg.inv` | 1.7448 |
+| `linalg.qr` | 1.3332 |
+| `linalg.cholesky` | 1.0699 |
+| `linalg.eig` | 0.9604 |
+| `linalg.eigvalsh` | 0.8071 |
+| `linalg.det` | 0.6923 |
+| `linalg.slogdet` | 0.6923 |
+| `linalg.eigvals` | 0.6520 |
+| `linalg.solve` | 0.6455 |
+
+### Contractions (9 operations)
+
+| Operation | Weight |
+|-----------|-------:|
+| `inner` | 1.0598 |
+| `vdot` | 1.0598 |
+| `vecdot` | 1.0443 |
+| `tensordot` | 0.6494 |
+| `dot` | 0.6426 |
+| `matmul` | 0.6426 |
+| `einsum` | 0.6401 |
+| `kron` | 0.6396 |
+| `outer` | 0.6395 |
+
+### Polynomial (10 operations)
+
+| Operation | Weight |
+|-----------|-------:|
+| `polyder` | 8.7873 |
+| `polyadd` | 8.2015 |
+| `polysub` | 8.2015 |
+| `polyint` | 8.1608 |
+| `polymul` | 1.6769 |
+| `poly` | 1.3803 |
+| `polyfit` | 0.7578 |
+| `roots` | 0.6889 |
+| `polyval` | 0.6467 |
+| `polydiv` | 0.1013 |
+
+### Random (43 operations)
+
+| Operation | Weight |
+|-----------|-------:|
+| `random.hypergeometric` | 367.3772 |
+| `random.multivariate_normal` | 289.6739 |
+| `random.zipf` | 147.6913 |
+| `random.noncentral_chisquare` | 95.9945 |
+| `random.negative_binomial` | 90.6636 |
+| `random.multinomial` | 87.5909 |
+| `random.noncentral_f` | 77.2939 |
+| `random.dirichlet` | 77.2609 |
+| `random.power` | 70.3696 |
+| `random.vonmises` | 66.7742 |
+| `random.f` | 59.7266 |
+| `random.weibull` | 56.9431 |
+| `random.beta` | 56.6401 |
+| `random.standard_t` | 45.4818 |
+| `random.gumbel` | 33.1563 |
+| `random.pareto` | 31.3688 |
+| `random.standard_cauchy` | 29.1635 |
+| `random.gamma` | 28.4702 |
+| `random.lognormal` | 28.3281 |
+| `random.poisson` | 28.1315 |
+| `random.logseries` | 27.8266 |
+| `random.wald` | 25.5555 |
+| `random.rayleigh` | 24.3409 |
+| `random.laplace` | 18.9009 |
+| `random.logistic` | 18.8868 |
+| `random.chisquare` | 18.5817 |
+| `random.binomial` | 18.5410 |
+| `random.exponential` | 17.9423 |
+| `random.standard_exponential` | 17.3029 |
+| `random.standard_gamma` | 17.3029 |
+| `random.normal` | 15.5409 |
+| `random.standard_normal` | 14.2622 |
+| `random.randn` | 14.2622 |
+| `random.triangular` | 7.0330 |
+| `random.geometric` | 3.8360 |
+| `random.uniform` | 3.1969 |
+| `random.rand` | 1.9181 |
+| `random.random` | 1.9181 |
+| `random.random_sample` | 1.9181 |
+| `random.shuffle` | 0.2558 |
+| `random.permutation` | 0.0001 |
+| `random.choice` | 0.0001 |
+| `random.randint` | 0.0001 |
+
+### Misc (25 operations)
+
+| Operation | Weight |
+|-----------|-------:|
+| `trace` | 384.9696 |
+| `geomspace` | 48.5912 |
+| `logspace` | 47.9518 |
+| `unwrap` | 4.5198 |
+| `trapezoid` | 2.9411 |
+| `allclose` | 2.8132 |
+| `histogram_bin_edges` | 1.6637 |
+| `clip` | 1.6624 |
+| `gradient` | 1.6624 |
+| `cross` | 1.3428 |
+| `convolve` | 1.3004 |
+| `correlate` | 1.3004 |
+| `diff` | 1.0230 |
+| `ediff1d` | 1.0230 |
+| `array_equal` | 0.7673 |
+| `array_equiv` | 0.7673 |
+| `vander` | 0.6375 |
+| `histogram` | 0.5117 |
+| `corrcoef` | 0.3317 |
+| `cov` | 0.3316 |
+| `histogramdd` | 0.2771 |
+| `histogram2d` | 0.2377 |
+| `interp` | 0.1652 |
+| `digitize` | 0.0548 |
+| `bincount` | 0.0001 |
+
+### Window (5 operations)
+
+| Operation | Weight |
+|-----------|-------:|
+| `kaiser` | 23.9400 |
+| `hamming` | 21.9790 |
+| `hanning` | 21.9790 |
+| `blackman` | 15.4946 |
+| `bartlett` | 3.8362 |
+
+## Summary by category
+
+| Category | Count | Avg Weight | Min | Max |
+|----------|------:|-----------:|----:|----:|
+| Pointwise Unary | 47 | 12.5080 | 0.3837 | 53.1311 |
+| Pointwise Binary | 32 | 5.7421 | 0.7673 | 46.7140 |
+| Reductions | 35 | 1.0231 | 0.3837 | 2.9411 |
+| Sorting | 17 | 4.1099 | 0.4756 | 14.1337 |
+| FFT | 14 | 0.5934 | 0.2733 | 1.4631 |
+| Linalg | 14 | 1.9906 | 0.6455 | 7.1872 |
+| Contractions | 9 | 0.7797 | 0.6395 | 1.0598 |
+| Polynomial | 10 | 3.8603 | 0.1013 | 8.7873 |
+| Random | 43 | 47.3819 | 0.0001 | 367.3772 |
+| Misc | 25 | 20.2739 | 0.0001 | 384.9696 |
+| Window | 5 | 17.4458 | 3.8362 | 23.9400 |
+
+**Total benchmarked operations:** 251
+
+## Known limitations
+
+### Trace anomaly (subprocess overhead)
+
+The `trace` operation shows an anomalously high weight (384.97) because its
+analytical formula is $n$ (the matrix dimension), which is small (e.g.,
+10,000), while the subprocess measurement captures fixed per-process
+overhead that dominates at small input sizes. The weight for `trace` should
+be interpreted with caution; it reflects measurement infrastructure
+overhead more than the operation's intrinsic FP cost.
+
+### Zero-weight integer operations
+
+Operations like `random.randint`, `random.permutation`, `random.choice`,
+and `bincount` show weights near zero (0.0001). These operations are
+integer-dominated -- they retire negligible floating-point instructions
+despite having a nonzero analytical FLOP cost in mechestim's model. The
+near-zero weight correctly reflects the FP instruction reality: these
+operations perform almost no floating-point arithmetic.
+
+### Platform specificity
+
+These weights were measured on a specific CPU microarchitecture (Intel
+Ice Lake, Xeon Platinum 8375C) with a specific BLAS library
+(scipy-openblas 0.3.27) and math library (glibc libm). Different platforms
+will produce different weights because:
+
+- **Different SIMD widths:** ARM NEON (128-bit) vs. x86 AVX-512 (512-bit)
+  changes instruction-to-FLOP ratios for vectorized operations.
+- **Different libm implementations:** The polynomial degree used for `sin`,
+  `exp`, `log`, etc. varies between libm implementations (glibc vs. musl
+  vs. Apple Accelerate).
+- **Different BLAS implementations:** MKL, OpenBLAS, and Apple Accelerate
+  use different blocking strategies and FMA utilization, changing linalg
+  and contraction weights.
+
+Always recalibrate weights on the target platform for accurate budget
+accounting. See [Calibrate Weights](../how-to/calibrate-weights.md).
+
+### Single-size measurement
+
+Each operation is measured at one representative input size. Operations
+with size-dependent behavior (e.g., `sort` at small $n$ vs. large $n$,
+where the algorithm may switch between insertion sort and introsort) may
+have different effective weights at other sizes. The chosen sizes are large
+enough to represent the asymptotic regime where the analytical formula is
+meaningful.
 
 ## Related pages
 
-- [Calibrate Weights](../how-to/calibrate-weights.md) — run your own calibration
-- [FLOP Counting Model](../concepts/flop-counting-model.md) — how weights compose with analytical formulas
-- [Operation Audit](./operation-audit.md) — full 482-operation registry inventory
-
+- [Calibrate Weights](../how-to/calibrate-weights.md) -- run your own calibration
+- [FLOP Counting Model](../concepts/flop-counting-model.md) -- how weights compose with analytical formulas
+- [Operation Audit](./operation-audit.md) -- full 482-operation registry inventory

@@ -207,10 +207,10 @@ Use `me.einsum_path()` to inspect the per-step breakdown. See
 ## Per-operation weights
 
 The analytical formulas above treat all operations within a category as
-equally expensive — `exp`, `log`, `sin`, and `abs` all cost
+equally expensive -- `exp`, `log`, `sin`, and `abs` all cost
 $\text{numel}(\text{output})$ FLOPs. In reality, `exp` decomposes into
-~15–25 basic floating-point operations (a minimax polynomial approximation),
-while `abs` is a single bit manipulation.
+a minimax polynomial approximation requiring approximately 14 FP
+instructions per element, while `abs` is a single bit manipulation.
 
 Per-operation **weights** correct for this. Each weight is a multiplicative
 constant applied on top of the analytical formula:
@@ -219,15 +219,30 @@ constant applied on top of the analytical formula:
 actual_cost = analytical_formula(shape) × weight(op_name)
 ```
 
-| Operation | Analytical formula | Weight | Effective cost |
+| Operation | Analytical formula | Weight | Effective cost (256x256) |
 |-----------|--------------------|--------|----------------|
-| `add` | $\text{numel}(\text{output})$ | 1.0 | 65,536 |
-| `exp` | $\text{numel}(\text{output})$ | ~23 | ~1,507,328 |
-| `sin` | $\text{numel}(\text{output})$ | ~30 | ~1,966,080 |
-| `linalg.cholesky` | $n^3/3$ | ~1.0 | ~5.6M |
+| `add` | $\text{numel}(\text{output})$ | 1.41 | 92,209 |
+| `exp` | $\text{numel}(\text{output})$ | 14.45 | 946,995 |
+| `sin` | $\text{numel}(\text{output})$ | 25.87 | 1,695,498 |
+| `matmul` | $2n^3$ | 0.64 | 21,474,836 |
+| `linalg.cholesky` | $n^3/3$ | 1.07 | 5,971,148 |
+
+Weights are measured using the unified correction-factor methodology
+described in [Empirical Weights](../reference/empirical-weights.md). The
+formula is $\text{weight}(\text{op}) = \alpha(\text{op}) / \alpha(\text{add})$,
+where $\alpha(\text{op})$ is the median ratio of hardware-observed FP
+instructions to analytical FLOPs, measured via `fp_arith_inst_retired`
+performance counters.
+
+Weights below 1.0 are expected for BLAS-backed operations (contractions,
+linalg decompositions). This is the **FMA effect**: the Fused Multiply-Add
+instruction computes $a \times b + c$ in one hardware instruction but
+counts as 2 analytical FLOPs. For example, `matmul` at 0.64 means the
+FMA-optimized inner loop fuses two analytical FLOPs into roughly one
+instruction.
 
 Weights are loaded from a JSON config file. Without a config file, all
-weights default to 1.0 — the analytical formulas apply unchanged.
+weights default to 1.0 -- the analytical formulas apply unchanged.
 
 ### How weights are applied
 
@@ -257,10 +272,11 @@ The JSON file must have a `"weights"` key mapping operation names to floats:
 ```json
 {
   "weights": {
-    "add": 1.0,
-    "exp": 23.4,
-    "sin": 30.1,
-    "linalg.cholesky": 1.15
+    "add": 1.4067,
+    "exp": 14.4495,
+    "sin": 25.8688,
+    "matmul": 0.6426,
+    "linalg.cholesky": 1.0699
   }
 }
 ```
@@ -311,7 +327,7 @@ with me.BudgetContext(flop_budget=10**6, namespace="training") as budget:
 
 Namespaces do not affect FLOP counting or budget enforcement — they only appear in `me.budget_summary()` output.
 
-## 📎 Related pages
+## Related pages
 
 - [Operation Categories](./operation-categories.md) — which operations are free, counted, or unsupported
 - [Plan Your Budget](../how-to/plan-your-budget.md) — query costs before running
