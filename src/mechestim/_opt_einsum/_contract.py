@@ -63,6 +63,11 @@ class StepInfo:
     """Fraction saved: ``1 - (flop_cost / dense_flop_cost)``. Zero when no symmetry."""
 
     blas_type: str | bool = False
+
+    inner_symmetry: IndexSymmetry | None = None
+    """IndexSymmetry among the contracted (summed) labels, or None.
+    Describes inner-summation redundancy from the W-side of the
+    subgraph symmetry oracle."""
     """BLAS classification for this step (e.g. 'GEMM', 'SYMM', False)."""
 
     path_indices: tuple[int, ...] = ()
@@ -170,9 +175,13 @@ class PathInfo:
             """Format inputs→output symmetry transformation for one step."""
             in_parts = [fmt_sym(s) for s in step.input_symmetries]
             out_part = fmt_sym(step.output_symmetry)
-            if all(p == "-" for p in in_parts) and out_part == "-":
+            w_part = fmt_sym(step.inner_symmetry)
+            if all(p == "-" for p in in_parts) and out_part == "-" and w_part == "-":
                 return ""
-            return f"{' × '.join(in_parts)} → {out_part}"
+            result = f"{' × '.join(in_parts)} → {out_part}"
+            if w_part != "-":
+                result += f"  [W: {w_part}]"
+            return result
 
         def fmt_index_sizes() -> str:
             """Format index sizes compactly. Groups indices with the same size."""
@@ -688,6 +697,7 @@ def contract_path(
                 output_shape=shp_result,
                 input_symmetries=list(step_syms),
                 output_symmetry=result_sym,
+                inner_symmetry=subset_sym.inner if symmetry_oracle is not None else None,
                 dense_flop_cost=step_dense,
                 symmetry_savings=savings,
                 blas_type=do_blas,
