@@ -225,9 +225,7 @@ def _run_category_loop(
                 func = _BENCHMARK_FUNCS[cat]
                 raw = func(dtype=dtype, repeats=repeats)
                 alphas.update(raw)
-                progress.advance(
-                    task_id, advance=_APPROX_OP_COUNTS.get(cat, len(raw))
-                )
+                progress.advance(task_id, advance=_APPROX_OP_COUNTS.get(cat, len(raw)))
             progress.update(task_id, current_op="done")
     else:
         for cat in cats:
@@ -312,9 +310,7 @@ def run_benchmarks(
     # If primary mode is perf, re-run in timing mode for validation.
     # If primary mode is timing, we have no perf to compare against.
     validation: dict[str, Any] = {
-        "absolute_correction_factors": {
-            k: round(v, 6) for k, v in raw_alphas.items()
-        },
+        "absolute_correction_factors": {k: round(v, 6) for k, v in raw_alphas.items()},
     }
 
     if mode == "perf" and not os.environ.get("MECHESTIM_SKIP_VALIDATION"):

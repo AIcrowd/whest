@@ -9,11 +9,11 @@ from benchmarks._perf import measure_flops
 WINDOW_OPS: list[str] = ["bartlett", "blackman", "hamming", "hanning", "kaiser"]
 
 _ANALYTICAL_COST: dict[str, int] = {
-    "bartlett": 1,   # multiplied by n
-    "blackman": 3,   # multiplied by n
-    "hamming": 1,    # multiplied by n
-    "hanning": 1,    # multiplied by n
-    "kaiser": 3,     # multiplied by n
+    "bartlett": 1,  # multiplied by n
+    "blackman": 3,  # multiplied by n
+    "hamming": 1,  # multiplied by n
+    "hanning": 1,  # multiplied by n
+    "kaiser": 3,  # multiplied by n
 }
 
 

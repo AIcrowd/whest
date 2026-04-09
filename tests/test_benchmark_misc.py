@@ -20,14 +20,31 @@ class TestOpsLists:
 
     def test_expected_ops_present(self):
         expected = [
-            "allclose", "array_equal", "array_equiv", "clip",
-            "diff", "ediff1d", "gradient", "unwrap",
-            "convolve", "correlate",
-            "corrcoef", "cov", "cross",
-            "histogram", "histogram2d", "histogramdd",
-            "histogram_bin_edges", "digitize", "bincount",
+            "allclose",
+            "array_equal",
+            "array_equiv",
+            "clip",
+            "diff",
+            "ediff1d",
+            "gradient",
+            "unwrap",
+            "convolve",
+            "correlate",
+            "corrcoef",
+            "cov",
+            "cross",
+            "histogram",
+            "histogram2d",
+            "histogramdd",
+            "histogram_bin_edges",
+            "digitize",
+            "bincount",
             "interp",
-            "trace", "trapezoid", "logspace", "geomspace", "vander",
+            "trace",
+            "trapezoid",
+            "logspace",
+            "geomspace",
+            "vander",
         ]
         for op in expected:
             assert op in MISC_OPS, f"{op} missing from MISC_OPS"
@@ -273,6 +290,7 @@ class TestBenchmarkMisc:
 
     def test_handles_runtime_error_gracefully(self):
         """Benchmark should skip ops that raise RuntimeError."""
+
         def mock_measure(setup, bench, repeats=10):
             raise RuntimeError("perf not available")
 

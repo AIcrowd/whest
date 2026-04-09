@@ -66,9 +66,7 @@ class TestBenchmarkContractions:
             packed_256_double=0,
             packed_512_double=0,
         )
-        with patch(
-            "benchmarks._contractions.measure_flops", return_value=mock_result
-        ):
+        with patch("benchmarks._contractions.measure_flops", return_value=mock_result):
             result = benchmark_contractions(dtype="float64", repeats=1)
 
         assert isinstance(result, dict)
@@ -80,9 +78,7 @@ class TestBenchmarkContractions:
             packed_256_double=0,
             packed_512_double=0,
         )
-        with patch(
-            "benchmarks._contractions.measure_flops", return_value=mock_result
-        ):
+        with patch("benchmarks._contractions.measure_flops", return_value=mock_result):
             result = benchmark_contractions(dtype="float64", repeats=1)
 
         for key, val in result.items():
@@ -96,9 +92,7 @@ class TestBenchmarkContractions:
             packed_256_double=0,
             packed_512_double=0,
         )
-        with patch(
-            "benchmarks._contractions.measure_flops", return_value=mock_result
-        ):
+        with patch("benchmarks._contractions.measure_flops", return_value=mock_result):
             result = benchmark_contractions(dtype="float64", repeats=1)
 
         expected = set(CONTRACTION_OPS) - {"vecdot"}

@@ -103,57 +103,103 @@ ALIAS_MAP: dict[str, str] = {
 # ---------------------------------------------------------------------------
 
 #: Bitwise / integer-only ops -- no fp_arith_inst_retired events.
-EXCLUDED_BITWISE: frozenset[str] = frozenset({
-    "bitwise_and", "bitwise_count", "bitwise_invert", "bitwise_left_shift",
-    "bitwise_not", "bitwise_or", "bitwise_right_shift", "bitwise_xor",
-    "invert", "left_shift", "right_shift", "gcd", "lcm",
-})
+EXCLUDED_BITWISE: frozenset[str] = frozenset(
+    {
+        "bitwise_and",
+        "bitwise_count",
+        "bitwise_invert",
+        "bitwise_left_shift",
+        "bitwise_not",
+        "bitwise_or",
+        "bitwise_right_shift",
+        "bitwise_xor",
+        "invert",
+        "left_shift",
+        "right_shift",
+        "gcd",
+        "lcm",
+    }
+)
 
 #: Complex-number ops -- benchmarked with float64 but internally branch
 #: on dtype; a single real-dtype weight isn't representative.
-EXCLUDED_COMPLEX: frozenset[str] = frozenset({
-    "angle", "conj", "conjugate", "imag", "real", "real_if_close",
-    "iscomplex", "iscomplexobj", "isreal", "isrealobj", "sort_complex",
-})
+EXCLUDED_COMPLEX: frozenset[str] = frozenset(
+    {
+        "angle",
+        "conj",
+        "conjugate",
+        "imag",
+        "real",
+        "real_if_close",
+        "iscomplex",
+        "iscomplexobj",
+        "isreal",
+        "isrealobj",
+        "sort_complex",
+    }
+)
 
 #: BLAS contraction planning ops -- no FP work.
-EXCLUDED_CONTRACTION: frozenset[str] = frozenset({
-    "einsum_path",  # planning op, no FP work
-})
+EXCLUDED_CONTRACTION: frozenset[str] = frozenset(
+    {
+        "einsum_path",  # planning op, no FP work
+    }
+)
 
 #: linalg ops not in the decomposition benchmark suite -- delegates to
 #: contraction ops or uses decompositions internally.
-EXCLUDED_LINALG: frozenset[str] = frozenset({
-    "linalg.cond", "linalg.cross", "linalg.matmul", "linalg.matrix_norm",
-    "linalg.matrix_power", "linalg.matrix_rank", "linalg.multi_dot",
-    "linalg.norm", "linalg.outer", "linalg.tensordot", "linalg.tensorinv",
-    "linalg.tensorsolve", "linalg.trace", "linalg.vecdot",
-    "linalg.vector_norm",
-})
+EXCLUDED_LINALG: frozenset[str] = frozenset(
+    {
+        "linalg.cond",
+        "linalg.cross",
+        "linalg.matmul",
+        "linalg.matrix_norm",
+        "linalg.matrix_power",
+        "linalg.matrix_rank",
+        "linalg.multi_dot",
+        "linalg.norm",
+        "linalg.outer",
+        "linalg.tensordot",
+        "linalg.tensorinv",
+        "linalg.tensorsolve",
+        "linalg.trace",
+        "linalg.vecdot",
+        "linalg.vector_norm",
+    }
+)
 
 #: Random ops that cannot be meaningfully benchmarked with float64.
-EXCLUDED_RANDOM: frozenset[str] = frozenset({
-    "random.bytes",             # returns bytes, not FP
-    "random.random_integers",   # removed in NumPy 2.x
-    "random.ranf",              # alias for random_sample
-    "random.sample",            # alias for random_sample
-})
+EXCLUDED_RANDOM: frozenset[str] = frozenset(
+    {
+        "random.bytes",  # returns bytes, not FP
+        "random.random_integers",  # removed in NumPy 2.x
+        "random.ranf",  # alias for random_sample
+        "random.sample",  # alias for random_sample
+    }
+)
 
 #: Ops that only exist in specific NumPy versions, or operate on non-float
 #: dtypes (e.g. datetime64) where a float64 weight is not applicable.
-EXCLUDED_VERSION_DEPENDENT: frozenset[str] = frozenset({
-    "isnat",  # datetime64/timedelta64 only -- no FP operations
-})
+EXCLUDED_VERSION_DEPENDENT: frozenset[str] = frozenset(
+    {
+        "isnat",  # datetime64/timedelta64 only -- no FP operations
+    }
+)
 
 ALL_EXCLUDED = (
-    EXCLUDED_BITWISE | EXCLUDED_COMPLEX | EXCLUDED_CONTRACTION
-    | EXCLUDED_LINALG | EXCLUDED_RANDOM | EXCLUDED_VERSION_DEPENDENT
+    EXCLUDED_BITWISE
+    | EXCLUDED_COMPLEX
+    | EXCLUDED_CONTRACTION
+    | EXCLUDED_LINALG
+    | EXCLUDED_RANDOM
+    | EXCLUDED_VERSION_DEPENDENT
 )
 
 
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture(scope="module")
 def weights() -> dict[str, float]:
@@ -176,7 +222,8 @@ def docs_text() -> str:
 def counted_ops() -> set[str]:
     """All non-free, non-blacklisted operations in the registry."""
     return {
-        name for name, entry in REGISTRY.items()
+        name
+        for name, entry in REGISTRY.items()
         if entry["category"] not in ("free", "blacklisted")
     }
 
@@ -184,6 +231,7 @@ def counted_ops() -> set[str]:
 # ---------------------------------------------------------------------------
 # Tests
 # ---------------------------------------------------------------------------
+
 
 class TestWeightsJsonCoverage:
     """Verify weights.json covers all benchmarkable operations."""
@@ -245,9 +293,7 @@ class TestWeightsJsonCoverage:
     def test_excluded_ops_are_actually_in_registry(self, counted_ops: set[str]):
         """Excluded ops should actually be in the registry (catch stale exclusions)."""
         stale = sorted(ALL_EXCLUDED - counted_ops)
-        assert not stale, (
-            f"Excluded ops not in registry (stale?): {stale}"
-        )
+        assert not stale, f"Excluded ops not in registry (stale?): {stale}"
 
     def test_no_double_accounting(self, weights: dict[str, float]):
         """Ops should not be both excluded AND weighted/benchmarked."""
@@ -263,9 +309,7 @@ class TestWeightsJsonCoverage:
     def test_benchmarked_ops_exist_in_registry(self):
         """Every op listed in a benchmark module should be in the registry."""
         missing = sorted(BENCHMARKED_OPS - set(REGISTRY))
-        assert not missing, (
-            f"Benchmark ops not in registry: {missing}"
-        )
+        assert not missing, f"Benchmark ops not in registry: {missing}"
 
     def test_meta_has_required_fields(self):
         """weights.json metadata should have hardware/software/config."""
