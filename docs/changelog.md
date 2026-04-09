@@ -4,6 +4,13 @@
 
 ### Changed
 
+- **Symmetric BLAS classification restored.** Pairwise contractions with
+  symmetric inputs now correctly report `SYMM`, `SYMV`, or `SYDT` BLAS
+  types instead of the generic `GEMM`, `GEMV`, `DOT`. This was disabled
+  during the subgraph-symmetry refactor because per-input symmetry wasn't
+  being looked up; now each step's inputs are queried via
+  `symmetry_oracle.sym(ssa_to_subset[ssa_id])` before calling `can_blas`.
+
 - **Symmetry detection rewritten** — the induced-symmetry mechanism is replaced
   by a subset-keyed subgraph symmetry oracle (`SubgraphSymmetryOracle`). The
   oracle analyses the bipartite structure of the einsum expression, evaluates

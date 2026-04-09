@@ -591,13 +591,17 @@ def contract_path(
 
         # Compute cost using oracle if available
         if symmetry_oracle is not None:
-            # Gather step syms before popping
-            step_syms = [None] * len(contract_inds)
-            # Merge subsets for oracle lookup
+            # Look up each input's symmetry from the oracle before merging.
+            # This is used both for cost computation (via merged_subset →
+            # result_sym) and for BLAS classification (input_symmetries
+            # enables SYMM/SYMV/SYDT labelling in can_blas).
+            step_syms: list = [None] * len(contract_inds)
             merged_subset: frozenset[int] = frozenset()
             for pos_in_step, ci in enumerate(contract_inds):
                 ssa_id = ssa_ids[ci]
-                merged_subset = merged_subset | ssa_to_subset[ssa_id]
+                subset_i = ssa_to_subset[ssa_id]
+                step_syms[pos_in_step] = symmetry_oracle.sym(subset_i)
+                merged_subset = merged_subset | subset_i
 
             result_sym = symmetry_oracle.sym(merged_subset)
 
@@ -642,22 +646,12 @@ def contract_path(
         next_ssa += 1
 
         if use_blas:
-            # TODO(symm-blas): _blas.can_blas supports SYMM/SYMV/SYDT
-            # classification when given per-operand input_symmetries, but
-            # the subgraph-oracle flow doesn't populate per-input symmetry
-            # on each step (it keys by operand subset and derives output
-            # symmetry directly). As a result, symmetric matmuls are
-            # currently reported as GEMM rather than SYMM. To restore
-            # the specialised labels, look up each operand's declared
-            # symmetry from symmetry_oracle._graph.operand_subscripts and
-            # the per-op_syms the oracle was constructed with, and pass
-            # the surviving-on-this-step slices here.
             do_blas = blas.can_blas(
                 tmp_inputs,
                 "".join(out_inds),
                 idx_removed,
                 tmp_shapes,
-                input_symmetries=None,
+                input_symmetries=step_syms if symmetry_oracle is not None else None,
             )
         else:
             do_blas = False

@@ -16,6 +16,8 @@ This fork extends opt_einsum with **symmetry-aware path finding**. When input te
 
 3. **Reports symmetry-aware costs.** Each step's cost is reduced by the exact ratio of unique output elements to total output elements, computed via the stars-and-bars formula `C(B + k - 1, k)` where `k` is the number of interchangeable blocks in a symmetry group and `B` is the cardinality of one block (the product of axis sizes within the block). For per-index groups (block size 1) this reduces to `C(n + k - 1, k)`. Both the symmetry-reduced cost and the dense cost are reported in `PathInfo`, so you can see exactly where symmetry helps. See [Symmetry savings in the FLOP counting model](../concepts/flop-counting-model.md#symmetry-savings) for the full derivation including the heterogeneous-axis block case.
 
+4. **Classifies symmetric BLAS operations.** Pairwise contractions where an input has a symmetric group covering 2+ of its indices are labelled with specialised BLAS types (`SYMM`, `SYMV`, `SYDT`) instead of the generic `GEMM`, `GEMV`/`EINSUM`, `DOT`. These labels are informational — they don't affect cost estimation but help identify where symmetric BLAS routines (like LAPACK's `dsymm`) could be dispatched.
+
 ## What was removed from upstream
 
 - Execution logic (`contract`, `_core_contract`) — mechestim handles execution via `numpy.einsum`
@@ -74,12 +76,6 @@ The `symmetry_oracle` kwarg is plumbed through `_PATH_OPTIONS` in `_paths.py`. A
 ### No silent symmetry fallback
 
 Upstream opt_einsum silently ignores unknown kwargs. This fork enforces that `symmetry_oracle` is consumed. The absence of silent fallback is verified by `tests/test_no_silent_symmetry_drop.py`.
-
-### Symmetric BLAS classification is currently disabled
-
-Upstream opt_einsum's `_blas.py` can label symmetric-matrix operations with specialized BLAS tags (`SYMM`, `SYMV`, `SYDT`) when given per-operand symmetry information. In this fork, the `_blas.can_blas()` function retains that logic, but `_contract.py`'s call site passes `input_symmetries=None` unconditionally in the oracle-based flow, so those labels are never produced — symmetric matmuls are currently reported as `GEMM`.
-
-This is a minor observability regression from the refactor (BLAS labels are informational; they don't affect cost estimation). Restoring the labels requires looking up per-operand declared symmetry from the oracle's graph and passing it to `can_blas`. Tracked as `TODO(symm-blas)`.
 
 ## Attribution
 
