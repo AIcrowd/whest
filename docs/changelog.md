@@ -12,10 +12,13 @@
   per-step propagation.
 
 - **Every optimizer is symmetry-aware** — the `symmetry_oracle` kwarg is plumbed
-  through `_PATH_OPTIONS` so that optimal, branch-\*, greedy, and random-greedy
-  algorithms all receive symmetry information. DP uses a conservative 2× reduction
-  heuristic (`TODO(dp-symmetry)`). Previously only greedy received symmetry info
-  in some code paths.
+  through `_PATH_OPTIONS` so that optimal, branch-\*, greedy, random-greedy, and
+  dynamic-programming algorithms all receive symmetry information and use the
+  exact `unique/dense` ratio for scoring. DP uses a subset-keyed ratio cache
+  (`get_ratio(s, legs)`) co-located with the existing `bitmap_to_subset` closure
+  inside `DynamicProgramming.__call__`, amortizing the int↔str label translation
+  across all `_dp_compare_*` helper calls for a given subset. Previously only
+  greedy received symmetry info in some code paths.
 
 - **Silent fallback deleted** — the previous code silently fell back to dense
   costs when detection produced no result. The oracle now enforces that symmetry
@@ -30,6 +33,15 @@
 - `induced_output_symmetry` kwarg on `contract_path`
 
 ### Fixed
+
+- **`bitmap_to_subset` in DP now correctly handles operand renumbering.**
+  Previously, when `_dp_parse_out_single_term_ops` removed or renumbered
+  operands before the DP loop (e.g., on `einsum('i,ab,cd->abcd', v, X, X)`
+  where `v` has a unique index that reduces to a scalar), the
+  bitmap-to-subset mapping would point at the wrong original operand
+  positions, causing the oracle to return symmetry for an unrelated
+  intermediate. This bug was latent under the conservative 2× heuristic
+  and only surfaces with exact ratio scoring.
 
 - **Heterogeneous block dimensions in `unique_elements`** — the stars-and-bars
   block-cardinality calculation assumed all axes within a block had the same

@@ -10,7 +10,7 @@ mechestim includes a vendored fork of [opt_einsum](https://github.com/dgasmith/o
 
 This fork extends opt_einsum with **symmetry-aware path finding**. When input tensors have permutation symmetry (e.g., a symmetric matrix where `A[i,j] = A[j,i]`) or the same Python object is passed at multiple operand positions, the fork:
 
-1. **Uses symmetry to choose contraction order.** The path algorithms (optimal, branch-and-bound, greedy, random-greedy, and DP via a conservative heuristic) account for symmetry when scoring candidate contractions, preferring orders that exploit symmetric structure.
+1. **Uses symmetry to choose contraction order.** The path algorithms (optimal, branch-and-bound, greedy, random-greedy, and dynamic programming) all account for symmetry when scoring candidate contractions, preferring orders that exploit symmetric structure. Every optimizer uses the exact `unique/dense` ratio derived from the subgraph-symmetry oracle.
 
 2. **Tracks symmetry by operand subset.** Each intermediate tensor encountered during path search has its symmetry derived by the `SubgraphSymmetryOracle` from the **subset of original operands it contracts** — not by restricting each input's symmetry groups step-by-step. The oracle runs a subgraph-level analysis on the bipartite graph for that subset and returns the output symmetry directly. Results are cached per subset for the duration of a `contract_path` call. See [the subgraph symmetry explanation](../explanation/subgraph-symmetry.md) for the algorithm.
 
@@ -33,7 +33,7 @@ All algorithms are symmetry-aware — they receive symmetry information from the
 | Optimal (brute-force DFS) | `'optimal'` | `'auto'` for 1-4 operands | Yes |
 | Branch-and-bound | `'branch-all'`, `'branch-2'` | `'auto'` for 5-14 operands | Yes |
 | Greedy | `'greedy'` | `'auto'` for 15+ operands | Yes |
-| Dynamic programming | `'dp'` | `'auto-hq'` for 6-16 operands | Conservative (2× reduction heuristic; `TODO(dp-symmetry)`) |
+| Dynamic programming | `'dp'` | `'auto-hq'` for 6-16 operands | Yes |
 | Random greedy | `'random-greedy'`, `'random-greedy-128'` | `'auto-hq'` for 17+ operands | Yes (via greedy) |
 | Auto | `'auto'` (default) | — | Dispatches to above |
 
@@ -74,10 +74,6 @@ The `symmetry_oracle` kwarg is plumbed through `_PATH_OPTIONS` in `_paths.py`. A
 ### No silent symmetry fallback
 
 Upstream opt_einsum silently ignores unknown kwargs. This fork enforces that `symmetry_oracle` is consumed. The absence of silent fallback is verified by `tests/test_no_silent_symmetry_drop.py`.
-
-### DP uses a conservative symmetry heuristic
-
-The dynamic programming optimizer (`'dp'`) uses a conservative 2× reduction heuristic rather than the full subgraph-symmetry oracle. This is tracked as `TODO(dp-symmetry)` in the source and will be addressed in a follow-up iteration.
 
 ### Symmetric BLAS classification is currently disabled
 
