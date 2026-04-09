@@ -21,6 +21,44 @@ class TestOpsLists:
         ):
             assert op in RANDOM_OPS, f"{op} missing from RANDOM_OPS"
 
+    def test_contains_new_distribution_ops(self):
+        for op in (
+            "random.beta",
+            "random.chisquare",
+            "random.choice",
+            "random.dirichlet",
+            "random.exponential",
+            "random.f",
+            "random.gamma",
+            "random.geometric",
+            "random.gumbel",
+            "random.hypergeometric",
+            "random.laplace",
+            "random.logistic",
+            "random.lognormal",
+            "random.logseries",
+            "random.multinomial",
+            "random.multivariate_normal",
+            "random.negative_binomial",
+            "random.noncentral_chisquare",
+            "random.noncentral_f",
+            "random.normal",
+            "random.pareto",
+            "random.power",
+            "random.rand",
+            "random.randint",
+            "random.randn",
+            "random.random",
+            "random.random_sample",
+            "random.rayleigh",
+            "random.triangular",
+            "random.vonmises",
+            "random.wald",
+            "random.weibull",
+            "random.zipf",
+        ):
+            assert op in RANDOM_OPS, f"{op} missing from RANDOM_OPS"
+
 
 class TestBenchmarkRandom:
     def test_returns_dict_with_all_ops(self):

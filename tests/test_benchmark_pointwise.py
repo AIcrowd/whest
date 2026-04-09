@@ -8,6 +8,7 @@ import pytest
 from benchmarks._perf import PerfResult
 from benchmarks._pointwise import (
     BINARY_OPS,
+    SPECIAL_OPS,
     UNARY_OPS,
     _make_inputs_binary,
     _make_inputs_unary,
@@ -26,9 +27,20 @@ class TestOpsLists:
         for op in ("abs", "exp", "sin", "sqrt", "logical_not"):
             assert op in UNARY_OPS, f"{op} missing from UNARY_OPS"
 
+    def test_unary_ops_contains_new_ops(self):
+        for op in (
+            "frexp", "modf", "sinc", "i0", "spacing",
+            "nan_to_num", "isneginf", "isposinf",
+        ):
+            assert op in UNARY_OPS, f"{op} missing from UNARY_OPS"
+
     def test_binary_ops_contains_expected(self):
         for op in ("add", "subtract", "multiply", "divide", "maximum", "logaddexp"):
             assert op in BINARY_OPS, f"{op} missing from BINARY_OPS"
+
+    def test_special_ops_contains_expected(self):
+        for op in ("isclose", "heaviside", "clip"):
+            assert op in SPECIAL_OPS, f"{op} missing from SPECIAL_OPS"
 
 
 class TestMakeInputs:
@@ -69,7 +81,7 @@ class TestBenchmarkPointwise:
             )
 
         assert isinstance(result, dict)
-        expected_keys = set(UNARY_OPS) | set(BINARY_OPS)
+        expected_keys = set(UNARY_OPS) | set(BINARY_OPS) | set(SPECIAL_OPS)
         assert set(result.keys()) == expected_keys
 
     def test_values_are_floats(self):

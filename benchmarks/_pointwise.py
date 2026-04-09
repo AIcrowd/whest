@@ -51,6 +51,15 @@ UNARY_OPS: list[str] = [
     "degrees",
     "radians",
     "logical_not",
+    # --- added in Step 2.3 ---
+    "frexp",
+    "modf",
+    "sinc",
+    "i0",
+    "spacing",
+    "nan_to_num",
+    "isneginf",
+    "isposinf",
 ]
 
 BINARY_OPS: list[str] = [
@@ -87,8 +96,15 @@ BINARY_OPS: list[str] = [
     "ldexp",
 ]
 
+# Special pointwise ops that don't follow the standard unary/binary pattern.
+SPECIAL_OPS: list[str] = [
+    "isclose",
+    "heaviside",
+    "clip",
+]
+
 # Ops whose output dtype is bool (need bool pre-allocation for out=)
-_BOOL_UNARY = frozenset({"signbit", "logical_not"})
+_BOOL_UNARY = frozenset({"signbit", "logical_not", "isneginf", "isposinf"})
 _BOOL_BINARY = frozenset(
     {
         "greater",
@@ -102,6 +118,15 @@ _BOOL_BINARY = frozenset(
         "logical_xor",
     }
 )
+
+# Ops that return tuples — benchmark without out= parameter.
+_TUPLE_RETURN_OPS = frozenset({"frexp", "modf"})
+
+# Ops that require positive input.
+_POSITIVE_INPUT_OPS = frozenset({"i0"})
+
+# Ops that benefit from NaN/inf values in input.
+_NAN_INPUT_OPS = frozenset({"nan_to_num"})
 
 
 def _make_inputs_unary(n: int, dtype: str) -> list[np.ndarray]:
@@ -140,11 +165,27 @@ def _unary_setup(n: int, dtype: str, op: str, dist_idx: int) -> str:
         f"x = np.random.default_rng(42).uniform(0.01, 100, size={n}).astype(np.{dtype})",
         f"x = np.random.default_rng(42).uniform(-1000, 1000, size={n}).astype(np.{dtype})",
     ]
+    setup = f"import numpy as np; {dists[dist_idx]}"
+
+    # i0 only works on positive input.
+    if op in _POSITIVE_INPUT_OPS:
+        setup += "; x = np.abs(x)"
+
+    # nan_to_num benefits from NaN/inf values in one distribution.
+    if op in _NAN_INPUT_OPS and dist_idx == 0:
+        setup += (
+            f"; x[:{n}//100] = np.nan"
+            f"; x[{n}//100:{n}//50] = np.inf"
+            f"; x[{n}//50:{n}//50+{n}//100] = -np.inf"
+        )
+
+    # Tuple-return ops (frexp, modf) don't use out=.
+    if op in _TUPLE_RETURN_OPS:
+        return setup
+
     out_dtype = "bool" if op in _BOOL_UNARY else f"np.{dtype}"
-    return (
-        f"import numpy as np; {dists[dist_idx]}; "
-        f"_out = np.empty({n}, dtype={out_dtype})"
-    )
+    setup += f"; _out = np.empty({n}, dtype={out_dtype})"
+    return setup
 
 
 def _binary_setup(n: int, dtype: str, op: str, dist_idx: int) -> str:
@@ -207,7 +248,10 @@ def benchmark_pointwise(
         dist_values: list[float] = []
         for di in range(distributions):
             setup = _unary_setup(n, dtype, op, di)
-            bench = f"np.{op}(x, out=_out)"
+            if op in _TUPLE_RETURN_OPS:
+                bench = f"np.{op}(x)"
+            else:
+                bench = f"np.{op}(x, out=_out)"
             try:
                 result = measure_flops(setup, bench, repeats=repeats)
             except RuntimeError:
@@ -222,6 +266,32 @@ def benchmark_pointwise(
         for di in range(distributions):
             setup = _binary_setup(n, dtype, op, di)
             bench = f"np.{op}(a, b, out=_out)"
+            try:
+                result = measure_flops(setup, bench, repeats=repeats)
+            except RuntimeError:
+                continue
+            dist_values.append(result.total_flops / (n * repeats))
+        if dist_values:
+            results[op] = statistics.median(dist_values)
+
+    # --- Special ops (non-standard patterns) ---
+    for op in SPECIAL_OPS:
+        dist_values: list[float] = []
+        for di in range(distributions):
+            if op == "isclose":
+                # Binary comparison returning bool.
+                setup = _binary_setup(n, dtype, op, di)
+                bench = "np.isclose(a, b)"
+            elif op == "heaviside":
+                # Binary with scalar second argument.
+                setup = _unary_setup(n, dtype, op, di)
+                bench = "np.heaviside(x, 0.5)"
+            elif op == "clip":
+                # Ternary: clip(x, min, max).
+                setup = _unary_setup(n, dtype, op, di)
+                bench = "np.clip(x, -1.0, 1.0)"
+            else:
+                continue
             try:
                 result = measure_flops(setup, bench, repeats=repeats)
             except RuntimeError:
