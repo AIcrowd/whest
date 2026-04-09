@@ -161,6 +161,36 @@ Results from the fast path and σ loop are merged via
 `_merge_overlapping_groups`, which unions groups sharing labels and prefers
 larger block sizes.
 
+### Worked example: `einsum('ab,cd->abcd', X, X)`
+
+Consider two identical dense matrices `X`. The incidence matrix M is the 4×4
+identity (one U-vertex per axis, one label per column):
+
+```
+        a  b  c  d
+u0_a  [ 1  0  0  0 ]
+u0_b  [ 0  1  0  0 ]
+u1_c  [ 0  0  1  0 ]
+u1_d  [ 0  0  0  1 ]
+```
+
+**Fast path:** All four fingerprints are distinct — no equivalences.
+
+**σ loop:** The only nontrivial σ swaps operands 0 and 1, permuting rows
+(0↔2, 1↔3). The resulting σ(M) has columns:
+
+```
+σ(M)[:,a] = (0,0,1,0)  →  col_of[c]  →  π(a) = c
+σ(M)[:,b] = (0,0,0,1)  →  col_of[d]  →  π(b) = d
+σ(M)[:,c] = (1,0,0,0)  →  col_of[a]  →  π(c) = a
+σ(M)[:,d] = (0,1,0,0)  →  col_of[b]  →  π(d) = b
+```
+
+So π = (a c)(b d). Two disjoint 2-cycles from one σ, all in V (W is empty).
+Classify: number of cycles = 2 = block size; cycle length = 2 = number of
+blocks. Group by operand: block₁ = (a, b), block₂ = (c, d). The result is
+block S₂: `{(a,b), (c,d)}`.
+
 ### V-side and W-side
 
 V-side groups are symmetries of the output tensor (same as before). W-side
@@ -228,3 +258,7 @@ The previous implementation used three separate mechanisms:
 The `induced_output_symmetry` kwarg, `propagate_symmetry`, and
 `_detect_induced_output_symmetry` are all deleted. No replacement text is
 needed — the oracle subsumes all three.
+
+The oracle's internal detection algorithm was subsequently unified from two
+separate code paths (Step 2a: Wilson's pair test, Step 2b: block-swap
+constructor) into the single π-based approach described above.
