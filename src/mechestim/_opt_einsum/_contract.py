@@ -642,6 +642,16 @@ def contract_path(
         next_ssa += 1
 
         if use_blas:
+            # TODO(symm-blas): _blas.can_blas supports SYMM/SYMV/SYDT
+            # classification when given per-operand input_symmetries, but
+            # the subgraph-oracle flow doesn't populate per-input symmetry
+            # on each step (it keys by operand subset and derives output
+            # symmetry directly). As a result, symmetric matmuls are
+            # currently reported as GEMM rather than SYMM. To restore
+            # the specialised labels, look up each operand's declared
+            # symmetry from symmetry_oracle._graph.operand_subscripts and
+            # the per-op_syms the oracle was constructed with, and pass
+            # the surviving-on-this-step slices here.
             do_blas = blas.can_blas(
                 tmp_inputs,
                 "".join(out_inds),

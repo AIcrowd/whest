@@ -8,15 +8,13 @@ mechestim includes a vendored fork of [opt_einsum](https://github.com/dgasmith/o
 
 ## What our fork adds
 
-This fork extends opt_einsum with **symmetry-aware path finding**. When input tensors have permutation symmetry (e.g., a symmetric matrix where `A[i,j] = A[j,i]`), the fork:
+This fork extends opt_einsum with **symmetry-aware path finding**. When input tensors have permutation symmetry (e.g., a symmetric matrix where `A[i,j] = A[j,i]`) or the same Python object is passed at multiple operand positions, the fork:
 
-1. **Uses symmetry to choose contraction order.** The path algorithms (greedy, optimal, branch-and-bound) account for symmetry when scoring candidate contractions, preferring orders that exploit symmetric structure.
+1. **Uses symmetry to choose contraction order.** The path algorithms (optimal, branch-and-bound, greedy, random-greedy, and DP via a conservative heuristic) account for symmetry when scoring candidate contractions, preferring orders that exploit symmetric structure.
 
-2. **Propagates symmetry through intermediates.** After each pairwise contraction, the result's symmetry is computed by restricting each input's symmetry groups to the surviving indices. This propagated symmetry influences subsequent ordering decisions.
+2. **Tracks symmetry by operand subset.** Each intermediate tensor encountered during path search has its symmetry derived by the `SubgraphSymmetryOracle` from the **subset of original operands it contracts** — not by restricting each input's symmetry groups step-by-step. The oracle runs a subgraph-level analysis on the bipartite graph for that subset and returns the output symmetry directly. Results are cached per subset for the duration of a `contract_path` call. See [the subgraph symmetry explanation](../explanation/subgraph-symmetry.md) for the algorithm.
 
-3. **Reports symmetry-aware costs.** Each step's cost is reduced by the exact ratio of unique output elements to total output elements (via `C(n+k-1, k)` for each symmetric group). Both the symmetry-reduced cost and the dense cost are reported, so you can see exactly where symmetry helps.
-
-4. **Classifies symmetric BLAS operations.** Pairwise contractions involving symmetric inputs are labeled with symmetric BLAS types (SYMM, SYMV, SYDT) in addition to standard types (GEMM, DOT, TDOT).
+3. **Reports symmetry-aware costs.** Each step's cost is reduced by the exact ratio of unique output elements to total output elements, computed via the stars-and-bars formula `C(B + k - 1, k)` where `k` is the number of interchangeable blocks in a symmetry group and `B` is the cardinality of one block (the product of axis sizes within the block). For per-index groups (block size 1) this reduces to `C(n + k - 1, k)`. Both the symmetry-reduced cost and the dense cost are reported in `PathInfo`, so you can see exactly where symmetry helps. See [Symmetry savings in the FLOP counting model](../concepts/flop-counting-model.md#symmetry-savings) for the full derivation including the heterogeneous-axis block case.
 
 ## What was removed from upstream
 
@@ -80,6 +78,12 @@ Upstream opt_einsum silently ignores unknown kwargs. This fork enforces that `sy
 ### DP uses a conservative symmetry heuristic
 
 The dynamic programming optimizer (`'dp'`) uses a conservative 2× reduction heuristic rather than the full subgraph-symmetry oracle. This is tracked as `TODO(dp-symmetry)` in the source and will be addressed in a follow-up iteration.
+
+### Symmetric BLAS classification is currently disabled
+
+Upstream opt_einsum's `_blas.py` can label symmetric-matrix operations with specialized BLAS tags (`SYMM`, `SYMV`, `SYDT`) when given per-operand symmetry information. In this fork, the `_blas.can_blas()` function retains that logic, but `_contract.py`'s call site passes `input_symmetries=None` unconditionally in the oracle-based flow, so those labels are never produced — symmetric matmuls are currently reported as `GEMM`.
+
+This is a minor observability regression from the refactor (BLAS labels are informational; they don't affect cost estimation). Restoring the labels requires looking up per-operand declared symmetry from the oracle's graph and passing it to `can_blas`. Tracked as `TODO(symm-blas)`.
 
 ## Attribution
 
