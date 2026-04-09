@@ -188,9 +188,7 @@ def _build_blocks_from_cycles(
     return [tuple(b) for b in blocks]
 
 
-def _find_rotation(
-    seq: list[int], reference: list[int]
-) -> int | None:
+def _find_rotation(seq: list[int], reference: list[int]) -> int | None:
     """Find r such that seq[r:] + seq[:r] == reference."""
     k = len(seq)
     for r in range(k):
@@ -216,9 +214,7 @@ def _detect_symmetries_via_pi(
 
     for tilde_sigma in _enumerate_id_group_permutations(sub.id_groups):
         # Skip identity σ — it always gives π = identity.
-        if not tilde_sigma or all(
-            tilde_sigma.get(k, k) == k for k in tilde_sigma
-        ):
+        if not tilde_sigma or all(tilde_sigma.get(k, k) == k for k in tilde_sigma):
             continue
 
         sigma_row_perm = _lift_operand_perm_to_u(tilde_sigma, row_order, graph)
@@ -510,8 +506,12 @@ def _compute_subset_symmetry(
         fp_to_labels.setdefault(fp, set()).add(lbl)
 
     # Step 3: fast path (fingerprint equivalences, no σ needed).
-    v_fast = _detect_fingerprint_equivalences(col_of, sub.v_labels) if sub.v_labels else []
-    w_fast = _detect_fingerprint_equivalences(col_of, sub.w_labels) if sub.w_labels else []
+    v_fast = (
+        _detect_fingerprint_equivalences(col_of, sub.v_labels) if sub.v_labels else []
+    )
+    w_fast = (
+        _detect_fingerprint_equivalences(col_of, sub.w_labels) if sub.w_labels else []
+    )
 
     # Step 4: σ loop — derive π per σ, classify cycles on V and W.
     v_sigma, w_sigma = _detect_symmetries_via_pi(
@@ -526,8 +526,6 @@ def _compute_subset_symmetry(
         output=v_merged or None,
         inner=w_merged or None,
     )
-
-
 
 
 def _merge_overlapping_groups(
@@ -631,5 +629,3 @@ def _lift_operand_perm_to_u(
             return None  # class count mismatch; lift undefined
         result[k] = j_classes[pos]
     return tuple(result)
-
-

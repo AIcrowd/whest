@@ -677,9 +677,7 @@ class TestPiBasedOracleRegression:
 
     def test_rank3_block_s2(self):
         T = np.zeros((2, 3, 4))
-        oracle = SubgraphSymmetryOracle(
-            [T, T], ["abc", "def"], [None, None], "abcdef"
-        )
+        oracle = SubgraphSymmetryOracle([T, T], ["abc", "def"], [None, None], "abcdef")
         result = oracle.sym(frozenset({0, 1}))
         assert result.output == [frozenset({("a", "b", "c"), ("d", "e", "f")})]
 

@@ -676,8 +676,6 @@ class TestExhaustiveSymmetryValidation:
         np.testing.assert_allclose(result, expected, rtol=1e-10)
 
 
-
-
 class TestInnerSymmetryFlops:
     def test_no_inner_sym_unchanged(self):
         """Without inner symmetry, the cost should match the existing behavior."""

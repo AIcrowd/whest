@@ -157,11 +157,7 @@ def symmetric_flop_count(
         unique = unique_elements(output_indices, size_dictionary, output_symmetry)
         cost = cost * unique // total
 
-    if (
-        use_inner_symmetry
-        and inner_symmetry
-        and inner_indices is not None
-    ):
+    if use_inner_symmetry and inner_symmetry and inner_indices is not None:
         total_inner = compute_size_by_dict(inner_indices, size_dictionary)
         if total_inner > 0:
             unique_inner = unique_elements(
