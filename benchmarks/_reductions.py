@@ -8,6 +8,8 @@ from __future__ import annotations
 
 import statistics
 
+import numpy as np
+
 from benchmarks._perf import measure_flops
 
 REDUCTION_OPS: list[str] = [
@@ -39,7 +41,17 @@ REDUCTION_OPS: list[str] = [
     "nanquantile",
     "count_nonzero",
     "average",
+    # --- added in Step 2.4 ---
+    "nanargmax",
+    "nanargmin",
+    "ptp",
+    "nancumprod",
+    "nancumsum",
 ]
+
+# Add NumPy 2.x array API cumulative ops if available.
+if hasattr(np, "cumulative_sum"):
+    REDUCTION_OPS.extend(["cumulative_sum", "cumulative_prod"])
 
 # Ops that require an extra argument.
 _SPECIAL_ARGS: dict[str, str] = {
@@ -50,7 +62,10 @@ _SPECIAL_ARGS: dict[str, str] = {
 }
 
 # Cumulative ops return same-size array — pre-allocate output.
-_CUMULATIVE_OPS = frozenset({"cumsum", "cumprod"})
+_CUMULATIVE_OPS = {"cumsum", "cumprod", "nancumprod", "nancumsum"}
+if hasattr(np, "cumulative_sum"):
+    _CUMULATIVE_OPS |= {"cumulative_sum", "cumulative_prod"}
+_CUMULATIVE_OPS = frozenset(_CUMULATIVE_OPS)
 
 
 def benchmark_reductions(

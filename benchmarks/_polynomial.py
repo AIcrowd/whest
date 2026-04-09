@@ -19,8 +19,29 @@ POLYNOMIAL_OPS: list[str] = [
     "roots",
 ]
 
-# Ops that normalize by n (large-array ops).
-_NORMALIZE_BY_N = {"polyval", "polyfit"}
+
+def _analytical_cost(op: str, n: int, degree: int) -> int:
+    """Return the analytical FLOP cost for a polynomial operation.
+
+    These formulas match mechestim's runtime cost model so that the
+    benchmark denominator and the budget deduction use the same formula.
+    """
+    if op == "polyval":
+        return 2 * n * degree
+    elif op == "polyfit":
+        return 2 * n * (degree + 1) ** 2
+    elif op == "roots":
+        return 10 * degree**3
+    elif op in ("polymul", "polydiv"):
+        return (degree + 1) ** 2
+    elif op in ("polyadd", "polysub"):
+        return degree + 1
+    elif op in ("polyder", "polyint"):
+        return degree
+    elif op == "poly":
+        return degree**2
+    else:
+        raise ValueError(f"Unknown polynomial op: {op!r}")
 
 
 def benchmark_polynomial(
@@ -31,9 +52,9 @@ def benchmark_polynomial(
 ) -> dict[str, float]:
     """Benchmark polynomial ops, returning raw measurement per element.
 
-    For large-array ops (polyval, polyfit): normalizes by n.
-    For coefficient ops: uses degree=100 to amortize overhead,
-    normalizes by degree+1 (the coefficient array size).
+    Each op is normalized by its analytical FLOP cost from
+    ``_analytical_cost(op, n, degree)`` so the returned value
+    represents raw perf-counter FLOPs per analytical FLOP.
 
     Parameters
     ----------
@@ -74,7 +95,6 @@ def benchmark_polynomial(
                     base_setup + f"; x = rng.standard_normal({n}).astype(np.{dtype})"
                 )
                 bench = "np.polyval(c, x)"
-                normalizer = n
             elif op == "polyfit":
                 setup = (
                     base_setup
@@ -82,50 +102,43 @@ def benchmark_polynomial(
                     + f"; y = np.polyval(c, x) + rng.standard_normal({n}).astype(np.{dtype}) * 0.01"
                 )
                 bench = f"np.polyfit(x, y, {degree})"
-                normalizer = n
             elif op == "poly":
                 setup = (
                     base_setup
                     + f"; r = rng.standard_normal({degree}).astype(np.{dtype})"
                 )
                 bench = "np.poly(r)"
-                normalizer = degree
             elif op == "roots":
                 setup = base_setup
                 bench = "np.roots(c)"
-                normalizer = degree
             elif op in ("polyadd", "polysub"):
                 setup = (
                     base_setup
                     + f"; d = rng.standard_normal({degree + 1}).astype(np.{dtype})"
                 )
                 bench = f"np.{op}(c, d)"
-                normalizer = degree + 1
             elif op in ("polymul", "polydiv"):
                 setup = (
                     base_setup
                     + f"; d = rng.standard_normal({degree + 1}).astype(np.{dtype})"
                 )
                 bench = f"np.{op}(c, d)"
-                normalizer = degree + 1
             elif op == "polyder":
                 setup = base_setup
                 bench = "np.polyder(c)"
-                normalizer = degree + 1
             elif op == "polyint":
                 setup = base_setup
                 bench = "np.polyint(c)"
-                normalizer = degree + 1
             else:
                 setup = base_setup
                 bench = f"np.{op}(c)"
-                normalizer = degree + 1
 
             try:
                 result = measure_flops(setup, bench, repeats=repeats)
             except RuntimeError:
                 continue
-            dist_values.append(result.total_flops / (normalizer * repeats))
+            analytical = _analytical_cost(op, n, degree)
+            dist_values.append(result.total_flops / (analytical * repeats))
 
         if dist_values:
             results[op] = statistics.median(dist_values)

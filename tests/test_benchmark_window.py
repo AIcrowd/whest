@@ -1,0 +1,134 @@
+"""Tests for window function benchmark module."""
+
+from unittest.mock import patch
+
+import pytest
+
+from benchmarks._perf import PerfResult
+from benchmarks._window import (
+    WINDOW_OPS,
+    _ANALYTICAL_COST,
+    benchmark_window,
+)
+
+
+class TestOpsLists:
+    def test_window_ops_non_empty(self):
+        assert len(WINDOW_OPS) > 0
+
+    def test_contains_all_expected_ops(self):
+        expected = ["bartlett", "blackman", "hamming", "hanning", "kaiser"]
+        for op in expected:
+            assert op in WINDOW_OPS, f"{op} missing from WINDOW_OPS"
+
+    def test_window_ops_length(self):
+        assert len(WINDOW_OPS) == 5
+
+
+class TestAnalyticalCost:
+    def test_bartlett_cost(self):
+        assert _ANALYTICAL_COST["bartlett"] == 1
+
+    def test_blackman_cost(self):
+        assert _ANALYTICAL_COST["blackman"] == 3
+
+    def test_hamming_cost(self):
+        assert _ANALYTICAL_COST["hamming"] == 1
+
+    def test_hanning_cost(self):
+        assert _ANALYTICAL_COST["hanning"] == 1
+
+    def test_kaiser_cost(self):
+        assert _ANALYTICAL_COST["kaiser"] == 3
+
+    def test_all_ops_have_cost(self):
+        for op in WINDOW_OPS:
+            assert op in _ANALYTICAL_COST, f"{op} missing from _ANALYTICAL_COST"
+
+
+class TestBenchmarkWindow:
+    def test_returns_dict_with_all_ops(self):
+        mock_result = PerfResult(
+            scalar_double=1_000_000,
+            packed_128_double=0,
+            packed_256_double=0,
+            packed_512_double=0,
+        )
+        with patch("benchmarks._window.measure_flops", return_value=mock_result):
+            result = benchmark_window(n=1_000, dtype="float64", repeats=1)
+
+        assert isinstance(result, dict)
+        assert set(WINDOW_OPS).issubset(set(result.keys()))
+
+    def test_values_are_floats(self):
+        mock_result = PerfResult(
+            scalar_double=500_000,
+            packed_128_double=0,
+            packed_256_double=0,
+            packed_512_double=0,
+        )
+        with patch("benchmarks._window.measure_flops", return_value=mock_result):
+            result = benchmark_window(n=1_000, dtype="float64", repeats=1)
+
+        for key, val in result.items():
+            assert isinstance(val, float), f"{key} value is not float"
+
+    def test_bartlett_uses_linear_denominator(self):
+        n = 1_000
+        repeats = 2
+        total_flops = 10_000
+        mock_result = PerfResult(
+            scalar_double=total_flops,
+            packed_128_double=0,
+            packed_256_double=0,
+            packed_512_double=0,
+        )
+        with patch("benchmarks._window.measure_flops", return_value=mock_result):
+            result = benchmark_window(n=n, dtype="float64", repeats=repeats)
+
+        analytical = _ANALYTICAL_COST["bartlett"] * n
+        expected = total_flops / (analytical * repeats)
+        assert result["bartlett"] == pytest.approx(expected)
+
+    def test_blackman_uses_3n_denominator(self):
+        n = 1_000
+        repeats = 1
+        total_flops = 30_000
+        mock_result = PerfResult(
+            scalar_double=total_flops,
+            packed_128_double=0,
+            packed_256_double=0,
+            packed_512_double=0,
+        )
+        with patch("benchmarks._window.measure_flops", return_value=mock_result):
+            result = benchmark_window(n=n, dtype="float64", repeats=repeats)
+
+        analytical = _ANALYTICAL_COST["blackman"] * n  # 3 * n
+        expected = total_flops / (analytical * repeats)
+        assert result["blackman"] == pytest.approx(expected)
+
+    def test_kaiser_uses_3n_denominator(self):
+        n = 1_000
+        repeats = 1
+        total_flops = 30_000
+        mock_result = PerfResult(
+            scalar_double=total_flops,
+            packed_128_double=0,
+            packed_256_double=0,
+            packed_512_double=0,
+        )
+        with patch("benchmarks._window.measure_flops", return_value=mock_result):
+            result = benchmark_window(n=n, dtype="float64", repeats=repeats)
+
+        analytical = _ANALYTICAL_COST["kaiser"] * n  # 3 * n
+        expected = total_flops / (analytical * repeats)
+        assert result["kaiser"] == pytest.approx(expected)
+
+    def test_runtime_error_skipped(self):
+        """If measure_flops raises RuntimeError, the op is skipped."""
+        with patch(
+            "benchmarks._window.measure_flops", side_effect=RuntimeError("no perf")
+        ):
+            result = benchmark_window(n=1_000, dtype="float64", repeats=1)
+
+        assert result == {}

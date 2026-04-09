@@ -4,7 +4,8 @@ This test ensures that every non-free, non-blacklisted operation in the
 registry either:
   1. Has a direct weight in weights.json, OR
   2. Is a known alias of a weighted operation, OR
-  3. Falls into a documented exclusion category (bitwise, complex, etc.)
+  3. Is listed in a benchmark module's ops list (weights pending generation), OR
+  4. Falls into a documented exclusion category (bitwise, complex, etc.)
 
 It also validates that the docs/reference/empirical-weights.md mentions every
 operation that has a weight.
@@ -13,6 +14,7 @@ operation that has a weight.
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 import pytest
@@ -22,6 +24,39 @@ from mechestim._registry import REGISTRY
 ROOT = Path(__file__).resolve().parent.parent
 WEIGHTS_PATH = ROOT / "src" / "mechestim" / "data" / "weights.json"
 DOCS_PATH = ROOT / "docs" / "reference" / "empirical-weights.md"
+
+# Ensure benchmarks package is importable.
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from benchmarks._contractions import CONTRACTION_OPS  # noqa: E402
+from benchmarks._fft import FFT_OPS  # noqa: E402
+from benchmarks._linalg import LINALG_OPS  # noqa: E402
+from benchmarks._misc import MISC_OPS  # noqa: E402
+from benchmarks._pointwise import BINARY_OPS, SPECIAL_OPS, UNARY_OPS  # noqa: E402
+from benchmarks._polynomial import POLYNOMIAL_OPS  # noqa: E402
+from benchmarks._random import RANDOM_OPS  # noqa: E402
+from benchmarks._reductions import REDUCTION_OPS  # noqa: E402
+from benchmarks._sorting import SORTING_OPS  # noqa: E402
+from benchmarks._window import WINDOW_OPS  # noqa: E402
+
+# ---------------------------------------------------------------------------
+# Ops covered by benchmark modules (weights pending bare-metal generation).
+# ---------------------------------------------------------------------------
+BENCHMARKED_OPS: frozenset[str] = frozenset(
+    set(SORTING_OPS)
+    | set(CONTRACTION_OPS)
+    | set(MISC_OPS)
+    | set(WINDOW_OPS)
+    | set(UNARY_OPS)
+    | set(BINARY_OPS)
+    | set(SPECIAL_OPS)
+    | set(REDUCTION_OPS)
+    | set(RANDOM_OPS)
+    | set(POLYNOMIAL_OPS)
+    | set(FFT_OPS)
+    | set(LINALG_OPS)
+)
 
 # ---------------------------------------------------------------------------
 # Alias map: operation name -> canonical name whose weight it should inherit.
@@ -57,6 +92,8 @@ ALIAS_MAP: dict[str, str] = {
     "ptp": "max",
     # Binary alias
     "divmod": "floor_divide",
+    # Deprecated name
+    "trapz": "trapezoid",
 }
 
 # ---------------------------------------------------------------------------
@@ -65,28 +102,26 @@ ALIAS_MAP: dict[str, str] = {
 # shape-dependent cost that can't be captured by a single scalar weight.
 # ---------------------------------------------------------------------------
 
-#: Bitwise / integer-only ops — no fp_arith_inst_retired events.
+#: Bitwise / integer-only ops -- no fp_arith_inst_retired events.
 EXCLUDED_BITWISE: frozenset[str] = frozenset({
     "bitwise_and", "bitwise_count", "bitwise_invert", "bitwise_left_shift",
     "bitwise_not", "bitwise_or", "bitwise_right_shift", "bitwise_xor",
     "invert", "left_shift", "right_shift", "gcd", "lcm",
 })
 
-#: Complex-number ops — benchmarked with float64 but internally branch
+#: Complex-number ops -- benchmarked with float64 but internally branch
 #: on dtype; a single real-dtype weight isn't representative.
 EXCLUDED_COMPLEX: frozenset[str] = frozenset({
     "angle", "conj", "conjugate", "imag", "real", "real_if_close",
     "iscomplex", "iscomplexobj", "isreal", "isrealobj", "sort_complex",
 })
 
-#: BLAS contraction ops — cost is shape-dependent (M×N×K), a single
-#: scalar weight doesn't apply. These need a correction-factor approach.
+#: BLAS contraction planning ops -- no FP work.
 EXCLUDED_CONTRACTION: frozenset[str] = frozenset({
-    "dot", "einsum", "einsum_path", "inner", "kron", "matmul",
-    "outer", "tensordot", "vdot", "vecdot",
+    "einsum_path",  # planning op, no FP work
 })
 
-#: linalg ops not in the decomposition benchmark suite — delegates to
+#: linalg ops not in the decomposition benchmark suite -- delegates to
 #: contraction ops or uses decompositions internally.
 EXCLUDED_LINALG: frozenset[str] = frozenset({
     "linalg.cond", "linalg.cross", "linalg.matmul", "linalg.matrix_norm",
@@ -96,59 +131,23 @@ EXCLUDED_LINALG: frozenset[str] = frozenset({
     "linalg.vector_norm",
 })
 
-#: Random distributions not yet in the benchmark suite — only 10
-#: representative distributions are benchmarked; these share the same
-#: underlying RNG + transform pattern.
+#: Random ops that cannot be meaningfully benchmarked with float64.
 EXCLUDED_RANDOM: frozenset[str] = frozenset({
-    name for name in REGISTRY
-    if name.startswith("random.") and name not in {
-        "random.binomial", "random.permutation", "random.poisson",
-        "random.shuffle", "random.standard_cauchy",
-        "random.standard_exponential", "random.standard_gamma",
-        "random.standard_normal", "random.standard_t", "random.uniform",
-    }
-    and REGISTRY[name]["category"] != "free"
+    "random.bytes",             # returns bytes, not FP
+    "random.random_integers",   # removed in NumPy 2.x
+    "random.ranf",              # alias for random_sample
+    "random.sample",            # alias for random_sample
 })
 
-#: Window functions — cost is trivially n (one trig eval per sample);
-#: not benchmarked separately as they reduce to sin/cos weights.
-EXCLUDED_WINDOW: frozenset[str] = frozenset({
-    "bartlett", "blackman", "hamming", "hanning", "kaiser",
-})
-
-#: Set operations — sort-dominated, weight inheritable from sort.
-EXCLUDED_SET: frozenset[str] = frozenset({
-    "in1d", "intersect1d", "isin", "setdiff1d", "setxor1d", "union1d",
-    "unique_all", "unique_counts", "unique_inverse", "unique_values",
-})
-
-#: Misc element-wise ops that are either trivially cheap (comparison/test
-#: ops like isclose, nan_to_num) or have custom formulas where the
-#: per-element weight is ~1.0 (diff, clip, allclose, etc.).
-#: These should be benchmarked in a future calibration pass.
-EXCLUDED_PENDING_BENCHMARK: frozenset[str] = frozenset({
-    # Simple element-wise tests / conversions (weight ≈ comparison ops)
-    "allclose", "array_equal", "array_equiv", "clip", "heaviside",
-    "isclose", "isnat", "isneginf", "isposinf", "nan_to_num",
-    "frexp", "modf", "spacing", "sinc", "i0",
-    # Differencing / gradient (element-wise subtraction)
-    "diff", "ediff1d", "gradient",
-    # Generation ops (cost = num elements)
-    "geomspace", "logspace", "vander",
-    # Aggregation / statistical (delegate to weighted ops internally)
-    "bincount", "corrcoef", "correlate", "convolve", "cov", "cross",
-    "digitize", "histogram", "histogram2d", "histogram_bin_edges",
-    "histogramdd", "interp", "trace", "trapezoid", "trapz", "unwrap",
-    # Pure planning op (no FP work)
-    "einsum_path",
-    # Unary that are essentially identity / real extraction
-    "real_if_close", "sort_complex",
+#: Ops that only exist in specific NumPy versions, or operate on non-float
+#: dtypes (e.g. datetime64) where a float64 weight is not applicable.
+EXCLUDED_VERSION_DEPENDENT: frozenset[str] = frozenset({
+    "isnat",  # datetime64/timedelta64 only -- no FP operations
 })
 
 ALL_EXCLUDED = (
     EXCLUDED_BITWISE | EXCLUDED_COMPLEX | EXCLUDED_CONTRACTION
-    | EXCLUDED_LINALG | EXCLUDED_RANDOM | EXCLUDED_WINDOW
-    | EXCLUDED_SET | EXCLUDED_PENDING_BENCHMARK
+    | EXCLUDED_LINALG | EXCLUDED_RANDOM | EXCLUDED_VERSION_DEPENDENT
 )
 
 
@@ -211,14 +210,17 @@ class TestWeightsJsonCoverage:
         weights: dict[str, float],
         counted_ops: set[str],
     ):
-        """Every counted op must be weighted, aliased, or in an exclusion list."""
+        """Every counted op must be weighted, in a benchmark module, aliased, or excluded."""
         covered = set(weights)
-        aliased = {name for name in ALIAS_MAP if ALIAS_MAP[name] in weights}
-        accounted_for = covered | aliased | ALL_EXCLUDED
+        # An alias is accounted for if its target is either already weighted
+        # or listed in a benchmark module's ops list.
+        alias_targets = set(weights) | BENCHMARKED_OPS
+        aliased = {name for name in ALIAS_MAP if ALIAS_MAP[name] in alias_targets}
+        accounted_for = covered | aliased | BENCHMARKED_OPS | ALL_EXCLUDED
 
         uncovered = sorted(counted_ops - accounted_for)
         assert not uncovered, (
-            f"{len(uncovered)} counted ops are not weighted, aliased, "
+            f"{len(uncovered)} counted ops are not weighted, benchmarked, aliased, "
             f"or excluded:\n"
             + "\n".join(
                 f"  {name:30s} ({REGISTRY[name]['category']})"
@@ -227,15 +229,17 @@ class TestWeightsJsonCoverage:
             + ("\n  ..." if len(uncovered) > 20 else "")
         )
 
-    def test_alias_targets_are_weighted(self, weights: dict[str, float]):
-        """Every alias target in ALIAS_MAP should have a weight."""
+    def test_alias_targets_exist(self, weights: dict[str, float]):
+        """Every alias target in ALIAS_MAP should be weighted or in a benchmark module."""
+        alias_targets = set(weights) | BENCHMARKED_OPS
         missing_targets = {
             f"{alias} -> {target}"
             for alias, target in ALIAS_MAP.items()
-            if target not in weights
+            if target not in alias_targets
         }
         assert not missing_targets, (
-            f"Alias targets missing from weights: {sorted(missing_targets)}"
+            f"Alias targets missing from weights and benchmark modules: "
+            f"{sorted(missing_targets)}"
         )
 
     def test_excluded_ops_are_actually_in_registry(self, counted_ops: set[str]):
@@ -243,6 +247,24 @@ class TestWeightsJsonCoverage:
         stale = sorted(ALL_EXCLUDED - counted_ops)
         assert not stale, (
             f"Excluded ops not in registry (stale?): {stale}"
+        )
+
+    def test_no_double_accounting(self, weights: dict[str, float]):
+        """Ops should not be both excluded AND weighted/benchmarked."""
+        double = sorted(ALL_EXCLUDED & (set(weights) | BENCHMARKED_OPS))
+        # Allow ops that are in BENCHMARKED_OPS to also be excluded --
+        # this can happen during transition.  Only flag ops that are in
+        # weights.json AND excluded.
+        truly_double = sorted(ALL_EXCLUDED & set(weights))
+        assert not truly_double, (
+            f"Ops in both weights.json and exclusion sets: {truly_double}"
+        )
+
+    def test_benchmarked_ops_exist_in_registry(self):
+        """Every op listed in a benchmark module should be in the registry."""
+        missing = sorted(BENCHMARKED_OPS - set(REGISTRY))
+        assert not missing, (
+            f"Benchmark ops not in registry: {missing}"
         )
 
     def test_meta_has_required_fields(self):

@@ -1,6 +1,15 @@
-"""Baseline measurement: FP ops per element for np.add with pre-allocated output.
+"""Baseline measurement: alpha(add) — the correction factor for np.add.
 
-Uses the same methodology as pointwise benchmarks (out= to eliminate allocation).
+Uses the same methodology as pointwise benchmarks (``out=`` to eliminate
+allocation overhead).  The returned value is::
+
+    alpha(add) = total_measured / (numel * repeats)
+
+Since the analytical FLOP cost of element-wise addition is ``numel``,
+dividing the total measurement by ``numel * repeats`` gives the per-FLOP
+correction factor directly.  This value is stored in the output as
+``meta.methodology.baseline_alpha`` and used to normalise all other
+operations:  ``weight(op) = alpha(op) / alpha(add)``.
 """
 
 from __future__ import annotations
@@ -11,7 +20,16 @@ from benchmarks._perf import measure_flops
 def measure_baseline(
     n: int = 10_000_000, dtype: str = "float64", repeats: int = 10
 ) -> float:
-    """Measure raw cost per element for np.add (the 1.0 reference).
+    """Return alpha(add): the correction factor for ``np.add``.
+
+    This is the ratio of measured hardware cost (FP instructions in perf
+    mode, or elapsed nanoseconds in timing mode) to the analytical FLOP
+    count (``n``) per repetition::
+
+        alpha(add) = total_measured / (n * repeats)
+
+    The runner uses this as the normalisation constant so that
+    ``weight(add) = 1.0``.
 
     Parameters
     ----------
@@ -25,7 +43,7 @@ def measure_baseline(
     Returns
     -------
     float
-        Raw measurement per element for np.add.
+        alpha(add) — raw measurement per analytical FLOP for np.add.
     """
     setup = (
         f"x = np.random.default_rng(42).standard_normal({n}).astype(np.{dtype}); "
