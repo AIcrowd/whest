@@ -17,6 +17,7 @@ from ._subgraph_symmetry import SubgraphSymmetryOracle
 from ._symmetry import (
     IndexSymmetry,
     symmetric_flop_count,
+    unique_elements,
 )
 from ._typing import ArrayIndexType, PathSearchFunctionType, PathType, TensorShapeType
 
@@ -1044,8 +1045,7 @@ def _dp_compare_flops(
     memory_limit: int | None,
     contract1: int | tuple[int],
     contract2: int | tuple[int],
-    oracle: SubgraphSymmetryOracle | None = None,
-    bitmap_to_subset: Callable[[int], frozenset[int]] | None = None,
+    get_ratio: Callable[[int, frozenset[int]], float] | None = None,
 ) -> None:
     """Performs the inner comparison of whether the two subgraphs (the bitmaps
     `s1` and `s2`) should be merged and added to the dynamic programming
@@ -1057,25 +1057,17 @@ def _dp_compare_flops(
     3. If the intermediate tensor corresponding to `s` is going to break the
        memory limit.
 
-    When an oracle is provided, the step cost is scaled by the output symmetry
-    for the merged subset (conservative /2 heuristic; see TODO(dp-symmetry)).
+    When a ``get_ratio`` closure is provided, the step cost is scaled by the
+    exact unique/dense symmetry ratio for the merged subset.
     """
     s = s1 | s2
     i = _dp_calc_legs(g, all_tensors, s, inputs, i1_cut_i2_wo_output, i1_union_i2)
 
-    # TODO: Odd usage with an Iterable[int] to map a dict of type List[int]
-    if oracle is not None and bitmap_to_subset is not None:
-        merged_subset = bitmap_to_subset(s)
-        sym = oracle.sym(merged_subset)
-        if sym is not None:
-            # Conservative heuristic: any detected symmetry reduces the
-            # step cost by at least 2x. Exact ratio would require the
-            # int<->str label map; see TODO(dp-symmetry).
-            step_cost = compute_size_by_dict(i1_union_i2, size_dict) // 2
-        else:
-            step_cost = compute_size_by_dict(i1_union_i2, size_dict)
+    dense_step = compute_size_by_dict(i1_union_i2, size_dict)
+    if get_ratio is not None:
+        step_cost = int(dense_step * get_ratio(s, i))
     else:
-        step_cost = compute_size_by_dict(i1_union_i2, size_dict)
+        step_cost = dense_step
 
     cost = cost1 + cost2 + step_cost
     if cost <= cost_cap:
@@ -1101,8 +1093,7 @@ def _dp_compare_size(
     memory_limit: int | None,
     contract1: int | tuple[int],
     contract2: int | tuple[int],
-    oracle: SubgraphSymmetryOracle | None = None,
-    bitmap_to_subset: Callable[[int], frozenset[int]] | None = None,
+    get_ratio: Callable[[int, frozenset[int]], float] | None = None,
 ) -> None:
     """Like `_dp_compare_flops` but sieves the potential contraction based
     on the size of the intermediate tensor created, rather than the number of
@@ -1111,11 +1102,8 @@ def _dp_compare_size(
     s = s1 | s2
     i = _dp_calc_legs(g, all_tensors, s, inputs, i1_cut_i2_wo_output, i1_union_i2)
     mem = compute_size_by_dict(i, size_dict)
-    if oracle is not None and bitmap_to_subset is not None:
-        merged_subset = bitmap_to_subset(s)
-        sym = oracle.sym(merged_subset)
-        if sym is not None:
-            mem = mem // 2
+    if get_ratio is not None:
+        mem = int(mem * get_ratio(s, i))
     cost = max(cost1, cost2, mem)
     if cost <= cost_cap:
         if s not in xn or cost < xn[s][1]:
@@ -1139,8 +1127,7 @@ def _dp_compare_write(
     memory_limit: int | None,
     contract1: int | tuple[int],
     contract2: int | tuple[int],
-    oracle: SubgraphSymmetryOracle | None = None,
-    bitmap_to_subset: Callable[[int], frozenset[int]] | None = None,
+    get_ratio: Callable[[int, frozenset[int]], float] | None = None,
 ) -> None:
     """Like ``_dp_compare_flops`` but sieves the potential contraction based
     on the total size of memory created, rather than the number of
@@ -1149,11 +1136,8 @@ def _dp_compare_write(
     s = s1 | s2
     i = _dp_calc_legs(g, all_tensors, s, inputs, i1_cut_i2_wo_output, i1_union_i2)
     mem = compute_size_by_dict(i, size_dict)
-    if oracle is not None and bitmap_to_subset is not None:
-        merged_subset = bitmap_to_subset(s)
-        sym = oracle.sym(merged_subset)
-        if sym is not None:
-            mem = mem // 2
+    if get_ratio is not None:
+        mem = int(mem * get_ratio(s, i))
     cost = cost1 + cost2 + mem
     if cost <= cost_cap:
         if s not in xn or cost < xn[s][1]:
@@ -1182,8 +1166,7 @@ def _dp_compare_combo(
     contract2: int | tuple[int],
     factor: int | float = DEFAULT_COMBO_FACTOR,
     combine: Callable = sum,
-    oracle: SubgraphSymmetryOracle | None = None,
-    bitmap_to_subset: Callable[[int], frozenset[int]] | None = None,
+    get_ratio: Callable[[int, frozenset[int]], float] | None = None,
 ) -> None:
     """Like ``_dp_compare_flops`` but sieves the potential contraction based
     on some combination of both the flops and size,.
@@ -1192,12 +1175,10 @@ def _dp_compare_combo(
     i = _dp_calc_legs(g, all_tensors, s, inputs, i1_cut_i2_wo_output, i1_union_i2)
     mem = compute_size_by_dict(i, size_dict)
     f = compute_size_by_dict(i1_union_i2, size_dict)
-    if oracle is not None and bitmap_to_subset is not None:
-        merged_subset = bitmap_to_subset(s)
-        sym = oracle.sym(merged_subset)
-        if sym is not None:
-            mem = mem // 2
-            f = f // 2
+    if get_ratio is not None:
+        ratio = get_ratio(s, i)
+        mem = int(mem * ratio)
+        f = int(f * ratio)
     cost = cost1 + cost2 + combine((f, factor * mem))
     if cost <= cost_cap:
         if s not in xn or cost < xn[s][1]:
@@ -1418,13 +1399,60 @@ class DynamicProgramming(PathOptimizer):
                 s: int, _cache: dict[int, frozenset[int]] = _bts_cache
             ) -> frozenset[int]:
                 if s not in _cache:
-                    _cache[s] = frozenset(j for j in range(len(inputs)) if s >> j & 1)
+                    result: set[int] = set()
+                    for k in range(len(inputs)):
+                        if s >> k & 1:
+                            orig = inputs_contractions[k]
+                            result.add(
+                                orig if isinstance(orig, int) else orig[0]
+                            )
+                    _cache[s] = frozenset(result)
                 return _cache[s]
 
-            oracle: SubgraphSymmetryOracle | None = symmetry_oracle
+            _ratio_cache: dict[int, float] = {}
+
+            def get_ratio(
+                s: int,
+                int_output_legs: frozenset[int],
+                _cache: dict[int, float] = _ratio_cache,
+            ) -> float:
+                """Exact unique/dense ratio for the intermediate at DP bitmap s.
+
+                Lazily computed on first access and cached per subset. Returns
+                1.0 when the oracle reports no symmetry, or when the
+                intermediate has no elements. The int<->str label translation
+                happens once per cache miss and is amortized across all
+                _dp_compare_* helper calls that subsequently reuse this
+                subset's ratio.
+
+                all_inds[ix] is the inverse of symbol2int: the string label
+                for int label ix. Only the labels in this intermediate need
+                translation, keeping the per-miss work bounded.
+                """
+                cached = _cache.get(s, -1.0)
+                if cached >= 0.0:
+                    return cached
+                subset = bitmap_to_subset(s)
+                sym = symmetry_oracle.sym(subset)
+                if sym is None:
+                    _cache[s] = 1.0
+                    return 1.0
+                str_legs = frozenset(all_inds[ix] for ix in int_output_legs)
+                str_size_dict = {
+                    all_inds[ix]: size_dict[ix] for ix in int_output_legs
+                }
+                dense = compute_size_by_dict(str_legs, str_size_dict)
+                if dense <= 0:
+                    _cache[s] = 1.0
+                    return 1.0
+                unique = unique_elements(str_legs, str_size_dict, sym)
+                ratio = unique / dense
+                _cache[s] = ratio
+                return ratio
+
         else:
             bitmap_to_subset = None  # type: ignore[assignment]
-            oracle = None
+            get_ratio = None  # type: ignore[assignment]
 
         for g in subgraphs:
             # dynamic programming approach to compute x[n] for subgraph g;
@@ -1487,8 +1515,7 @@ class DynamicProgramming(PathOptimizer):
                                             memory_limit_,
                                             contract1,
                                             contract2,
-                                            oracle=oracle,
-                                            bitmap_to_subset=bitmap_to_subset,
+                                            get_ratio=get_ratio,
                                         )
 
                 if (cost_cap > naive_cost) and (len(x[-1]) == 0):
