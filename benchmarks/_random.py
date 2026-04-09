@@ -102,7 +102,7 @@ def _custom_bench(op: str, n: int, dtype: str, seed: int) -> tuple[str, str]:
     base_setup = f"import numpy as np; np.random.seed({seed})"
 
     if op == "random.choice":
-        setup = base_setup + f"; _pool = np.arange(1000)"
+        setup = base_setup + "; _pool = np.arange(1000)"
         bench = f"np.random.choice(_pool, {n})"
     elif op == "random.dirichlet":
         setup = base_setup

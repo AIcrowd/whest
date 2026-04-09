@@ -431,12 +431,6 @@ def _get_op_config(op: str, dtype: str) -> dict:
     if op == "trapezoid":
         setups = _three_setups_1arr(n_large)
         # Handle NumPy version differences: trapezoid (>=1.25) vs trapz
-        bench = (
-            "try:\n"
-            "        np.trapezoid(x)\n"
-            "    except AttributeError:\n"
-            "        np.trapz(x)"
-        )
         # Use a simpler approach: detect at setup time
         setups_with_compat = []
         for s in setups:

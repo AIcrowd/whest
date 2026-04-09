@@ -5,7 +5,11 @@ from unittest.mock import patch
 import pytest
 
 from benchmarks._perf import PerfResult
-from benchmarks._polynomial import POLYNOMIAL_OPS, _analytical_cost, benchmark_polynomial
+from benchmarks._polynomial import (
+    POLYNOMIAL_OPS,
+    _analytical_cost,
+    benchmark_polynomial,
+)
 
 
 class TestOpsLists:
