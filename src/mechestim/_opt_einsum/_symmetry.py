@@ -13,6 +13,8 @@ from __future__ import annotations
 from math import comb, prod
 from typing import Collection
 
+from dataclasses import dataclass
+
 from ._helpers import flop_count
 
 # Type alias: a list of frozensets, each frozenset names symmetry-equivalent
@@ -26,6 +28,24 @@ from ._helpers import flop_count
 #   2. Indices used across all blocks in a single group are disjoint.
 #   3. At least 2 blocks per group (singletons are dropped at construction).
 IndexSymmetry = list[frozenset[tuple[str, ...]]]
+
+
+@dataclass(frozen=True)
+class SubsetSymmetry:
+    """Symmetry info for one contraction subset, split by V/W.
+
+    Attributes
+    ----------
+    output : IndexSymmetry or None
+        V-side symmetry: symmetries of the output tensor's free labels.
+    inner : IndexSymmetry or None
+        W-side symmetry: symmetries among the contracted (summed) labels.
+        Used for inner-sum FLOP reduction when ``use_inner_symmetry`` is
+        enabled in ``symmetric_flop_count``.
+    """
+
+    output: IndexSymmetry | None
+    inner: IndexSymmetry | None
 
 
 def unique_elements(

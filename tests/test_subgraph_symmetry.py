@@ -417,3 +417,33 @@ class TestOldSymIsSubsetOfNewSym:
                 old_chars <= frozenset(c for block in new_g for c in block)
                 for new_g in new
             ), f"Old group {old_g} not covered by new oracle: {new}"
+
+
+from mechestim._opt_einsum._symmetry import SubsetSymmetry
+
+
+class TestSubsetSymmetryDataclass:
+    def test_both_none(self):
+        ss = SubsetSymmetry(output=None, inner=None)
+        assert ss.output is None
+        assert ss.inner is None
+
+    def test_output_only(self):
+        sym = [frozenset({("a",), ("b",)})]
+        ss = SubsetSymmetry(output=sym, inner=None)
+        assert ss.output == sym
+        assert ss.inner is None
+
+    def test_both_populated(self):
+        v = [frozenset({("a",), ("b",)})]
+        w = [frozenset({("i",), ("j",)})]
+        ss = SubsetSymmetry(output=v, inner=w)
+        assert ss.output == v
+        assert ss.inner == w
+
+    def test_frozen(self):
+        ss = SubsetSymmetry(output=None, inner=None)
+        import pytest
+
+        with pytest.raises(AttributeError):
+            ss.output = [frozenset({("x",)})]  # type: ignore[misc]
