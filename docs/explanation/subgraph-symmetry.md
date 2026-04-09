@@ -101,7 +101,7 @@ from, not on the order in which they were contracted. This is because:
 - Symmetry is a property of the final intermediate, not its contraction history.
 
 This property makes the subset key canonical. The oracle stores results in a
-`dict[frozenset[int], IndexSymmetry | None]` and returns cached results on
+`dict[frozenset[int], SubsetSymmetry]` and returns cached results on
 subsequent calls with the same subset.
 
 ```python
@@ -114,68 +114,72 @@ oracle = SubgraphSymmetryOracle(
 )
 
 # Lazy evaluation — only computed on first access per subset
-sym = oracle.sym(frozenset({0, 1}))  # symmetry of intermediate from ops 0 and 1
+result = oracle.sym(frozenset({0, 1}))  # SubsetSymmetry for intermediate from ops 0 and 1
+result.output  # V-side (output tensor) symmetry
+result.inner   # W-side (inner summation) symmetry
 ```
 
-## Per-index pair detection (Step 2a)
+## π-based detection
 
-Given the induced subgraph M for a subset, Step 2a detects which pairs of free
-labels (V-labels) are symmetry-equivalent.
+Given the induced subgraph M for a subset, detection proceeds in two passes:
 
-**Algorithm:**
+### Fast path: fingerprint equivalences
 
-1. Fix a canonical column encoding: for each label `c`, let `col(c)` be the
-   tuple of incidence values down the rows of M.
+For each label `c`, compute its column fingerprint `col(c)` — the tuple of
+incidence values down the rows of M. Labels with identical fingerprints are
+symmetry-equivalent. Group V-labels (and separately W-labels) by fingerprint;
+any group of size ≥ 2 becomes a per-index symmetry group.
 
-2. For each permutation `σ` of the identical-operand groups:
-   a. Lift `σ` to a row permutation on M (permute rows belonging to swapped operands).
-   b. Compute `σ·col(c)` for each label.
-   c. Validate that W-column multisets are preserved (summed labels are inert).
-   d. For each pair `(i, j)` of V-labels: if `col(i) == σ·col(j)` and
-      `col(j) == σ·col(i)` and all other V-labels are fixed by `σ`, record the
-      pair `(i, j)`.
+This catches symmetry arising from declared per-operand symmetry (e.g., a
+`SymmetricTensor` where two axes collapse into one U-vertex, giving their
+labels the same fingerprint) without needing to enumerate any operand
+permutations.
 
-3. Run union-find over the collected pairs to produce connected components.
-   Each component of size ≥ 2 becomes one S_k symmetry group.
+### σ loop: derive π per operand permutation
 
-**Complexity:** `O(m! · poly(n))` per subset, where `m` is the size of the
-largest identical-operand group and `n` is the number of labels. In practice
-`m` is small (2 or 3 for typical einsums).
+For each permutation `σ` of the identical-operand groups:
 
-## Hybrid block path (Step 2b)
+1. Lift `σ` to a row permutation on M.
+2. Compute `σ(M)`'s column fingerprints: `σ·col(c)` for each label `c`.
+3. **Derive the induced label permutation π directly.** For each label `ℓ`,
+   `π(ℓ)` is the label whose M-column matches `σ(M)`'s column for `ℓ` — a
+   hash-table lookup in `O(1)`. When multiple labels share a fingerprint
+   (collision), pick the lex-first unused candidate. If any label has no
+   match, reject this σ.
+4. **Validate π:** `π(V) ⊆ V` and `π(W) ⊆ W`. Any cycle crossing V↔W
+   invalidates the σ.
+5. **Classify π's cycle structure on V** (and separately on W):
+   - Fixed points → no contribution.
+   - Single k-cycle → per-index group on k labels.
+   - Multiple disjoint cycles of the same length, from one σ → **block
+     symmetry**. The number of cycles = block size; cycle length = number
+     of blocks. Blocks are formed by grouping same-operand labels and
+     ordering by subscript position.
+   - Mixed-length cycles → independent per-index groups per cycle.
 
-Step 2a detects per-index symmetry. Step 2b extends this to block symmetry,
-where each operand contributes a tuple of free indices rather than a single
-index.
+Results from the fast path and σ loop are merged via
+`_merge_overlapping_groups`, which unions groups sharing labels and prefers
+larger block sizes.
 
-For each pair `(i, j)` of operands in the same identical-operand group:
+### V-side and W-side
 
-1. Compute `free_i` = labels that appear in operand `i`'s subscript, survive
-   to the output of the current subset, and do NOT appear in operand `j`'s
-   subscript or any other operand in the subset. These are the labels that
-   "belong uniquely" to operand `i` at this step.
-2. Compute `free_j` similarly for operand `j`.
-3. If `|free_i| == |free_j| > 0`, build the label swap `σ: free_i ↔ free_j`
-   pairing them positionally in subscript order. For an outer product
-   `einsum('abc,def->abcdef', X, X)` this produces
-   `σ = {a↔d, b↔e, c↔f}`.
-4. Validate `σ` via the same incidence-matrix column-equality machinery used
-   in Step 2a: lift the operand swap `tilde_sigma = {i: j, j: i}` to a row
-   permutation of `M_S`, compute `σ(M_S)`, and check that every V-column `L`
-   satisfies `M_S[:, L] == σ(M_S)[:, σ(L)]` — i.e., the column-for-column
-   match is performed under the *label relabeling* rather than requiring
-   every column to stay put. The W-column multiset must also be preserved.
+V-side groups are symmetries of the output tensor (same as before). W-side
+groups are symmetries among the contracted (summed) labels — they describe
+inner-summation redundancy that can optionally reduce FLOP estimates when
+`use_inner_symmetry=True` is passed to `symmetric_flop_count`.
 
-If valid, record a block symmetry group. Block size 1 collapses to a per-index
-pair (already handled equivalently by Step 2a). Block size ≥ 2 produces a
-true block group like `frozenset({('a','b','c'), ('d','e','f')})` whose
-semantics are "these two 3-tuples can swap as a unit, but you cannot swap
-only one axis without the others."
+The oracle returns a `SubsetSymmetry` dataclass with `.output` (V-side) and
+`.inner` (W-side) fields.
 
-**Follow-up (`sigma → pi` extension, `TODO(sigma-to-pi)`):** The natural
-unification of Steps 2a and 2b is to extend Step 2a to derive the full label
-permutation `π` induced by each operand permutation `σ`, rather than iterating
-pairs. This subsumes the block path entirely. Deferred to a follow-up iteration.
+### Previous approach
+
+The previous implementation used two separate code paths: Step 2a (Wilson's
+pair-by-pair transposition test, O(|V|²) per σ) and Step 2b (hand-built
+block-swap constructor for pairwise operand swaps). Both were special cases
+of the π-based approach — Step 2a restricted π to single transpositions with
+everything else fixed; Step 2b constructed a specific block π from subscript-
+order positional pairing. The unified path subsumes both by deriving π
+directly in O(|V|+|W|) per σ and classifying its full cycle structure.
 
 ## Complexity bound
 

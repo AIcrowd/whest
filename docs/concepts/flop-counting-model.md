@@ -164,6 +164,27 @@ blocks, where `B` is the cardinality of one block:
 Free (non-symmetric) indices contribute their full axis size to the total
 unique count, multiplicatively.
 
+### Inner-sum symmetry (opt-in)
+
+When contracted (summed) labels are interchangeable — e.g., in
+`einsum('ij,ji->', X, X)` where labels `i` and `j` are symmetric in the
+summation — the inner-loop work can also be reduced. With the
+`use_inner_symmetry=True` flag on `symmetric_flop_count`, the cost becomes:
+
+```
+step_cost = dense_step_cost
+          × (unique_output_elements / total_output_elements)
+          × (unique_inner_elements / total_inner_elements)
+```
+
+where `unique_inner_elements` is computed using the same stars-and-bars
+formula applied to the symmetry groups among the contracted labels.
+
+This reduction is **opt-in** because not all backends can exploit inner-sum
+symmetry — `numpy.einsum` computes the dense inner loop regardless. The
+flag is useful for theoretical FLOP counting or when targeting a backend
+that can dispatch symmetric summation routines.
+
 For a simple two-operand einsum like `'ij,jk->ik'`, there is one step,
 so the total cost equals the step cost. For multi-operand einsums (3+
 tensors), the optimizer finds the pairwise ordering that minimizes the

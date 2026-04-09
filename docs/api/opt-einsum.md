@@ -44,12 +44,30 @@ All algorithms are symmetry-aware — they receive symmetry information from the
 ### `IndexSymmetry`
 
 ```python
-IndexSymmetry = list[frozenset[str]]
+IndexSymmetry = list[frozenset[tuple[str, ...]]]
 ```
 
-The fork's native symmetry representation. Each `frozenset` names einsum index characters that are symmetric under permutation. Example: `[frozenset("ijk")]` means S_3 symmetry on indices i, j, k.
+The fork's native symmetry representation. Each `frozenset` names blocks of
+einsum index characters that are symmetric under permutation. Per-index groups
+use 1-tuples: `frozenset({('i',), ('j',)})` means S₂ on `{i, j}`. Block groups
+use k-tuples: `frozenset({('a','b'), ('c','d')})` means the two 2-label blocks
+can swap as a unit.
 
 mechestim's `_einsum.py` converts between positional `SymmetryInfo` (used by `SymmetricTensor`) and character-based `IndexSymmetry` at the boundary.
+
+### `SubsetSymmetry`
+
+```python
+@dataclass(frozen=True)
+class SubsetSymmetry:
+    output: IndexSymmetry | None  # V-side: output tensor symmetry
+    inner: IndexSymmetry | None   # W-side: inner summation symmetry
+```
+
+Returned by `SubgraphSymmetryOracle.sym(subset)`. The `.output` field carries
+the same V-side symmetry that consumers use for cost reduction. The `.inner`
+field carries W-side symmetry among contracted labels, used when
+`use_inner_symmetry=True`.
 
 ### `PathInfo` and `StepInfo`
 
@@ -62,6 +80,10 @@ See [Symmetric Tensors API](./symmetric.md#pathinfo) for the full dataclass refe
 `contract_path` and related path algorithms accept an optional `symmetry_oracle` keyword argument. This is a `SubgraphSymmetryOracle` instance (from `mechestim._opt_einsum._subgraph_symmetry`) that provides symmetry information for each intermediate tensor encountered during path search.
 
 The oracle is constructed once per `contract_path` call by `me.einsum` and `me.einsum_path`. It is plumbed through `_PATH_OPTIONS` so that every algorithm receives it. Most users never interact with this directly.
+
+The oracle's `sym()` method returns a `SubsetSymmetry` dataclass. Access
+`.output` for the output tensor's symmetry (used by all path algorithms) and
+`.inner` for inner-sum symmetry (used when `use_inner_symmetry=True`).
 
 ## Deviations from upstream opt_einsum
 
