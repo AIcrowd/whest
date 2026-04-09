@@ -621,3 +621,100 @@ class TestDetectSymmetriesViaPi:
         assert v_groups == []
         assert len(w_groups) == 1
         assert w_groups[0] == frozenset({("i",), ("j",)})
+
+
+class TestPiBasedOracleRegression:
+    """Oracle-level tests for the unified pi-based detection path."""
+
+    def test_outer_product_block_s2(self):
+        X = np.zeros((3, 4))
+        oracle = SubgraphSymmetryOracle([X, X], ["ab", "cd"], [None, None], "abcd")
+        result = oracle.sym(frozenset({0, 1}))
+        assert result.output == [frozenset({("a", "b"), ("c", "d")})]
+        assert result.inner is None
+
+    def test_vector_outer_product_per_index(self):
+        x = np.zeros((3,))
+        oracle = SubgraphSymmetryOracle([x, x], ["a", "b"], [None, None], "ab")
+        result = oracle.sym(frozenset({0, 1}))
+        assert result.output == [frozenset({("a",), ("b",)})]
+
+    def test_gram_matrix(self):
+        X = np.zeros((3, 4))
+        oracle = SubgraphSymmetryOracle([X, X], ["ai", "bi"], [None, None], "ab")
+        result = oracle.sym(frozenset({0, 1}))
+        assert result.output == [frozenset({("a",), ("b",)})]
+
+    def test_matmul_no_symmetry(self):
+        X = np.zeros((3, 3))
+        oracle = SubgraphSymmetryOracle([X, X], ["ij", "jk"], [None, None], "ik")
+        result = oracle.sym(frozenset({0, 1}))
+        assert result.output is None
+
+    def test_internal_symmetry_propagates(self):
+        x = np.zeros((5,))
+        Y = np.zeros((3, 3, 5))
+        oracle = SubgraphSymmetryOracle(
+            [x, Y],
+            ["e", "abe"],
+            [None, [frozenset({("a",), ("b",)})]],
+            "ab",
+        )
+        result = oracle.sym(frozenset({0, 1}))
+        assert result.output == [frozenset({("a",), ("b",)})]
+
+    def test_internal_sym_plus_repeated(self):
+        T = np.zeros((3, 3, 4))
+        oracle = SubgraphSymmetryOracle(
+            [T, T],
+            ["ijk", "ijl"],
+            [[frozenset({("i",), ("j",)})]] * 2,
+            "kl",
+        )
+        result = oracle.sym(frozenset({0, 1}))
+        assert result.output == [frozenset({("k",), ("l",)})]
+        assert result.inner is not None
+        assert frozenset({("i",), ("j",)}) in result.inner
+
+    def test_rank3_block_s2(self):
+        T = np.zeros((2, 3, 4))
+        oracle = SubgraphSymmetryOracle(
+            [T, T], ["abc", "def"], [None, None], "abcdef"
+        )
+        result = oracle.sym(frozenset({0, 1}))
+        assert result.output == [frozenset({("a", "b", "c"), ("d", "e", "f")})]
+
+
+class TestWSymmetryOracle:
+    """Oracle-level tests for W-side symmetry detection."""
+
+    def test_w_side_transposition(self):
+        X = np.zeros((3, 3))
+        oracle = SubgraphSymmetryOracle([X, X], ["ij", "ji"], [None, None], "")
+        result = oracle.sym(frozenset({0, 1}))
+        assert result.output is None
+        assert result.inner == [frozenset({("i",), ("j",)})]
+
+    def test_w_empty_gives_inner_none(self):
+        X = np.zeros((3, 4))
+        oracle = SubgraphSymmetryOracle([X, X], ["ab", "cd"], [None, None], "abcd")
+        result = oracle.sym(frozenset({0, 1}))
+        assert result.inner is None
+
+    def test_w_no_symmetry_gives_inner_none(self):
+        X = np.zeros((3, 4))
+        Y = np.zeros((4, 5))
+        oracle = SubgraphSymmetryOracle([X, Y], ["ij", "jk"], [None, None], "ik")
+        result = oracle.sym(frozenset({0, 1}))
+        assert result.inner is None
+
+    def test_internal_sym_w_collision(self):
+        T = np.zeros((3, 3))
+        oracle = SubgraphSymmetryOracle(
+            [T, T],
+            ["ij", "ij"],
+            [[frozenset({("i",), ("j",)})]] * 2,
+            "ij",
+        )
+        result = oracle.sym(frozenset({0, 1}))
+        assert result.output == [frozenset({("i",), ("j",)})]
