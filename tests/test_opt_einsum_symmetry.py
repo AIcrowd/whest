@@ -674,3 +674,95 @@ class TestExhaustiveSymmetryValidation:
         with BudgetContext(flop_budget=10**8, quiet=True):
             result = einsum("ijk,ai,bj->abk", T, A, B)
         np.testing.assert_allclose(result, expected, rtol=1e-10)
+
+
+from mechestim._opt_einsum._symmetry import symmetric_flop_count, unique_elements
+
+
+class TestInnerSymmetryFlops:
+    def test_no_inner_sym_unchanged(self):
+        """Without inner symmetry, the cost should match the existing behavior."""
+        cost = symmetric_flop_count(
+            "abij",
+            True,
+            2,
+            {"a": 3, "b": 3, "i": 4, "j": 4},
+            output_symmetry=[frozenset({("a",), ("b",)})],
+            output_indices=frozenset("ab"),
+        )
+        cost_with_flag = symmetric_flop_count(
+            "abij",
+            True,
+            2,
+            {"a": 3, "b": 3, "i": 4, "j": 4},
+            output_symmetry=[frozenset({("a",), ("b",)})],
+            output_indices=frozenset("ab"),
+            use_inner_symmetry=True,
+        )
+        assert cost == cost_with_flag
+
+    def test_inner_sym_reduces_cost(self):
+        """With inner symmetry and flag on, cost should be strictly lower."""
+        base_cost = symmetric_flop_count(
+            "abij",
+            True,
+            2,
+            {"a": 3, "b": 3, "i": 4, "j": 4},
+            output_symmetry=[frozenset({("a",), ("b",)})],
+            output_indices=frozenset("ab"),
+        )
+        reduced_cost = symmetric_flop_count(
+            "abij",
+            True,
+            2,
+            {"a": 3, "b": 3, "i": 4, "j": 4},
+            output_symmetry=[frozenset({("a",), ("b",)})],
+            output_indices=frozenset("ab"),
+            inner_symmetry=[frozenset({("i",), ("j",)})],
+            inner_indices=frozenset("ij"),
+            use_inner_symmetry=True,
+        )
+        assert reduced_cost < base_cost
+
+    def test_inner_sym_flag_off_no_reduction(self):
+        """With flag off, inner_symmetry is ignored."""
+        base_cost = symmetric_flop_count(
+            "abij",
+            True,
+            2,
+            {"a": 3, "b": 3, "i": 4, "j": 4},
+            output_symmetry=[frozenset({("a",), ("b",)})],
+            output_indices=frozenset("ab"),
+        )
+        same_cost = symmetric_flop_count(
+            "abij",
+            True,
+            2,
+            {"a": 3, "b": 3, "i": 4, "j": 4},
+            output_symmetry=[frozenset({("a",), ("b",)})],
+            output_indices=frozenset("ab"),
+            inner_symmetry=[frozenset({("i",), ("j",)})],
+            inner_indices=frozenset("ij"),
+            use_inner_symmetry=False,
+        )
+        assert same_cost == base_cost
+
+    def test_inner_sym_exact_value(self):
+        """Verify exact multiplicative reduction: output_ratio * inner_ratio."""
+        # size: a=3, b=3, i=4, j=4
+        # dense = 3*3*4*4 * op_factor(inner=True, 2 terms) = 144 * 2 = 288
+        # output unique: C(3+1,2) = 6 out of 9 -> ratio 6/9
+        # inner unique: C(4+1,2) = 10 out of 16 -> ratio 10/16
+        # reduced = 288 * 6/9 * 10/16 = 288 * 2/3 * 5/8 = 120
+        cost = symmetric_flop_count(
+            "abij",
+            True,
+            2,
+            {"a": 3, "b": 3, "i": 4, "j": 4},
+            output_symmetry=[frozenset({("a",), ("b",)})],
+            output_indices=frozenset("ab"),
+            inner_symmetry=[frozenset({("i",), ("j",)})],
+            inner_indices=frozenset("ij"),
+            use_inner_symmetry=True,
+        )
+        assert cost == 120

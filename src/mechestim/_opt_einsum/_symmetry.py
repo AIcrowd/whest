@@ -134,13 +134,20 @@ def symmetric_flop_count(
     *,
     output_symmetry: IndexSymmetry | None = None,
     output_indices: frozenset[str] | None = None,
+    inner_symmetry: IndexSymmetry | None = None,
+    inner_indices: frozenset[str] | None = None,
+    use_inner_symmetry: bool = False,
 ) -> int:
-    """FLOP count reduced by output-tensor symmetry.
+    """FLOP count reduced by output-tensor and inner-sum symmetry.
 
     Without any symmetry information this returns the same value as
     :func:`._helpers.flop_count`. With ``output_symmetry`` and
     ``output_indices``, the dense FLOP count is scaled by
     ``unique_output / total_output``.
+
+    When ``use_inner_symmetry`` is True and ``inner_symmetry`` /
+    ``inner_indices`` are provided, an additional multiplicative
+    reduction of ``unique_inner / total_inner`` is applied.
     """
     from ._helpers import compute_size_by_dict
 
@@ -150,5 +157,17 @@ def symmetric_flop_count(
         total = compute_size_by_dict(output_indices, size_dictionary)
         unique = unique_elements(output_indices, size_dictionary, output_symmetry)
         cost = cost * unique // total
+
+    if (
+        use_inner_symmetry
+        and inner_symmetry
+        and inner_indices is not None
+    ):
+        total_inner = compute_size_by_dict(inner_indices, size_dictionary)
+        if total_inner > 0:
+            unique_inner = unique_elements(
+                inner_indices, size_dictionary, inner_symmetry
+            )
+            cost = cost * unique_inner // total_inner
 
     return max(cost, 1)
