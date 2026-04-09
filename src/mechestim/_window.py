@@ -157,3 +157,9 @@ def kaiser(M, beta):
 
 
 attach_docstring(kaiser, _np.kaiser, "counted_custom", "3n FLOPs")
+
+import sys as _sys  # noqa: E402
+
+from mechestim._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402
+
+_wrap_module_returns(_sys.modules[__name__])

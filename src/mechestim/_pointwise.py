@@ -8,6 +8,7 @@ import numpy as _np
 
 from mechestim._docstrings import attach_docstring
 from mechestim._flops import einsum_cost, pointwise_cost, reduction_cost
+from mechestim._ndarray import _asmechestim
 from mechestim._symmetric import (
     SymmetricTensor,
     SymmetryInfo,
@@ -34,6 +35,8 @@ def _counted_unary(np_func, op_name: str):
         check_nan_inf(result, op_name)
         if sym_info is not None:
             result = SymmetricTensor(result, symmetric_axes=sym_info.symmetric_axes)
+        if sym_info is None:
+            result = _asmechestim(result)
         return result
 
     wrapper.__name__ = op_name
@@ -52,6 +55,10 @@ def _counted_unary_multi(np_func, op_name: str):
         cost = pointwise_cost(x.shape)
         budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(x.shape,))
         result = np_func(x)
+        if isinstance(result, tuple):
+            result = tuple(_asmechestim(r) for r in result)
+        else:
+            result = _asmechestim(result)
         return result
 
     wrapper.__name__ = op_name
@@ -63,6 +70,10 @@ def _counted_unary_multi(np_func, op_name: str):
 def _counted_binary(np_func, op_name: str):
     def wrapper(x, y):
         budget = require_budget()
+        # Preserve original (possibly Python-scalar) values for the actual
+        # numpy call so that NEP 50 weak-typing rules apply correctly. We
+        # only need ndarray views for shape and symmetry inspection below.
+        x_orig, y_orig = x, y
         if not isinstance(x, _np.ndarray):
             x = _np.asarray(x)
         if not isinstance(y, _np.ndarray):
@@ -100,7 +111,10 @@ def _counted_binary(np_func, op_name: str):
         budget.deduct(
             op_name, flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape)
         )
-        result = np_func(x, y)
+        # Call the underlying ufunc with the ORIGINAL inputs so that
+        # Python-scalar dtype promotion (NEP 50) and FloatingPointError
+        # propagation (np.errstate) work exactly as in plain numpy.
+        result = np_func(x_orig, y_orig)
         check_nan_inf(result, op_name)
         if out_sym_axes:
             result = SymmetricTensor(result, symmetric_axes=out_sym_axes)
@@ -129,6 +143,8 @@ def _counted_binary(np_func, op_name: str):
                     input_groups_list,
                     f"{op_name} — no symmetry groups shared by both operands",
                 )
+        if not isinstance(result, SymmetricTensor):
+            result = _asmechestim(result)
         return result
 
     wrapper.__name__ = op_name
@@ -152,6 +168,10 @@ def _counted_binary_multi(np_func, op_name: str):
             op_name, flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape)
         )
         result = np_func(x, y)
+        if isinstance(result, tuple):
+            result = tuple(_asmechestim(r) for r in result)
+        else:
+            result = _asmechestim(result)
         return result
 
     wrapper.__name__ = op_name
@@ -201,6 +221,8 @@ def _counted_reduction(
                     )
         elif isinstance(result, SymmetricTensor):
             result = _np.asarray(result)
+        if not isinstance(result, SymmetricTensor):
+            result = _asmechestim(result)
         return result
 
     wrapper.__name__ = op_name

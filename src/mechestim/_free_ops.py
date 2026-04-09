@@ -1057,3 +1057,46 @@ def unstack(*args, **kwargs):
 
 
 attach_docstring(unstack, _np.unstack, "free", "0 FLOPs")
+
+# ---------------------------------------------------------------------------
+# Wrap all free op return values as MechestimArray
+# ---------------------------------------------------------------------------
+
+from mechestim._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402
+
+_FREE_OPS_SKIP = {
+    "shape",
+    "size",
+    "ndim",
+    "isscalar",
+    "isfortran",
+    "isfinite",
+    "isinf",
+    "isnan",
+    "isdtype",
+    "issubdtype",
+    "iscomplex",
+    "iscomplexobj",
+    "isnat",
+    "isneginf",
+    "isposinf",
+    "isreal",
+    "isrealobj",
+    "iterable",
+    "may_share_memory",
+    "shares_memory",
+    "can_cast",
+    "common_type",
+    "min_scalar_type",
+    "promote_types",
+    "result_type",
+    "typename",
+    "base_repr",
+    "binary_repr",
+    "broadcast_shapes",
+    "fill_diagonal",
+}
+
+import sys as _sys  # noqa: E402
+
+_wrap_module_returns(_sys.modules[__name__], skip_names=_FREE_OPS_SKIP)

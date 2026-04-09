@@ -13,6 +13,7 @@ from typing import Any
 
 from . import _paths as paths
 from ._helpers import compute_size_by_dict
+from ._subgraph_symmetry import SubgraphSymmetryOracle
 from ._typing import ArrayIndexType, ArrayType, PathType
 
 __all__ = ["RandomGreedy", "random_greedy", "random_greedy_128"]
@@ -167,15 +168,20 @@ class RandomOptimizer(paths.PathOptimizer):
         output: ArrayIndexType,
         size_dict: dict[str, int],
         memory_limit: int | None = None,
+        symmetry_oracle: "SubgraphSymmetryOracle | None" = None,
         **kwargs: Any,
     ) -> PathType:
         self._check_args_against_first_call(inputs, output, size_dict)
+
+        self._symmetry_oracle = symmetry_oracle
 
         # start a timer?
         if self.max_time is not None:
             t0 = time.time()
 
-        trial_fn, trial_args = self.setup(inputs, output, size_dict, **kwargs)
+        trial_fn, trial_args = self.setup(
+            inputs, output, size_dict, symmetry_oracle=symmetry_oracle, **kwargs
+        )
 
         r_start = self._repeats_start + len(self.costs)
         r_stop = r_start + self.max_repeats
@@ -290,21 +296,38 @@ def ssa_path_compute_cost(
     inputs: list[ArrayIndexType],
     output: ArrayIndexType,
     size_dict: dict[str, int],
+    symmetry_oracle: "SubgraphSymmetryOracle | None" = None,
 ) -> tuple[int, int]:
-    """Compute the flops and max size of an ssa path."""
+    """Compute the flops and max size of an ssa path, using the symmetry oracle
+    if provided."""
     inputs = list(map(frozenset, inputs))
     output = frozenset(output)
     remaining = set(range(len(inputs)))
+    num_operands = len(inputs)
+    ssa_to_subset: dict[int, frozenset[int]] = {
+        k: frozenset({k}) for k in range(num_operands)
+    }
     total_cost = 0
     max_size = 0
 
     for i, j in ssa_path:
         k12, flops12, _sym12 = paths.calc_k12_flops(
-            inputs, output, remaining, i, j, size_dict
-        )  # type: ignore
+            inputs,
+            output,
+            remaining,
+            i,
+            j,
+            size_dict,
+            oracle=symmetry_oracle,
+            ssa_to_subset=ssa_to_subset,
+        )
+        # Update ssa_to_subset for the new intermediate
+        new_ssa_id = len(inputs)
+        ssa_to_subset[new_ssa_id] = ssa_to_subset[i] | ssa_to_subset[j]
+
         remaining.discard(i)
         remaining.discard(j)
-        remaining.add(len(inputs))
+        remaining.add(new_ssa_id)
         inputs.append(k12)
         total_cost += flops12
         max_size = max(max_size, compute_size_by_dict(k12, size_dict))
@@ -319,6 +342,7 @@ def _trial_greedy_ssa_path_and_cost(
     size_dict: dict[str, int],
     choose_fn: Any,
     cost_fn: Any,
+    symmetry_oracle: "SubgraphSymmetryOracle | None" = None,
 ) -> tuple[PathType, int, int]:
     """A single, repeatable, greedy trial run. **Returns:** ``ssa_path`` and cost."""
     if r == 0:
@@ -327,8 +351,21 @@ def _trial_greedy_ssa_path_and_cost(
 
     random_seed(r)
 
-    ssa_path = paths.ssa_greedy_optimize(inputs, output, size_dict, choose_fn, cost_fn)
-    cost, size = ssa_path_compute_cost(ssa_path, inputs, output, size_dict)
+    num_operands = len(inputs)
+    ssa_to_subset = {k: frozenset({k}) for k in range(num_operands)}
+
+    ssa_path = paths.ssa_greedy_optimize(
+        inputs,
+        output,
+        size_dict,
+        choose_fn,
+        cost_fn,
+        symmetry_oracle=symmetry_oracle,
+        ssa_to_subset=ssa_to_subset,
+    )
+    cost, size = ssa_path_compute_cost(
+        ssa_path, inputs, output, size_dict, symmetry_oracle=symmetry_oracle
+    )
 
     return ssa_path, cost, size
 
@@ -387,10 +424,18 @@ class RandomGreedy(RandomOptimizer):
         inputs: list[ArrayIndexType],
         output: ArrayIndexType,
         size_dict: dict[str, int],
+        symmetry_oracle: "SubgraphSymmetryOracle | None" = None,
         **kwargs: Any,
     ) -> tuple[Any, Any]:
         fn = _trial_greedy_ssa_path_and_cost
-        args = (inputs, output, size_dict, self.choose_fn, self.cost_fn)
+        args = (
+            inputs,
+            output,
+            size_dict,
+            self.choose_fn,
+            self.cost_fn,
+            symmetry_oracle,
+        )
         return fn, args
 
 
@@ -399,13 +444,17 @@ def random_greedy(
     output: ArrayIndexType,
     idx_dict: dict[str, int],
     memory_limit: int | None = None,
-    input_symmetries: "list | None" = None,
+    symmetry_oracle: "SubgraphSymmetryOracle | None" = None,
     **optimizer_kwargs: Any,
 ) -> ArrayType:
-    """A simple wrapper around the `RandomGreedy` optimizer."""
+    """A simple wrapper around the RandomGreedy optimizer."""
     optimizer = RandomGreedy(**optimizer_kwargs)
     return optimizer(
-        inputs, output, idx_dict, memory_limit, input_symmetries=input_symmetries
+        inputs,
+        output,
+        idx_dict,
+        memory_limit,
+        symmetry_oracle=symmetry_oracle,
     )
 
 
