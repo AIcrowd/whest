@@ -343,3 +343,21 @@ class TestBackwardCompatibility:
         with BudgetContext(flop_budget=10**8, quiet=True):
             result = einsum("ki,kj->ij", X, X, symmetric_axes=[(0, 1)])
             assert isinstance(result, SymmetricTensor)
+
+
+class TestSymmetricBlasClassification:
+    """Verify that symmetric inputs produce SYMM/SYMV/SYDT BLAS labels
+    instead of the generic GEMM/GEMV/DOT."""
+
+    def test_symmetric_matmul_gets_symm_label(self):
+        """einsum('ij,jk->ik', X, X) with X declared symmetric should
+        report blas_type='SYMM' on the single contraction step, not 'GEMM'."""
+        import mechestim as me
+
+        n = 10
+        X = me.as_symmetric(numpy.ones((n, n)), symmetric_axes=(0, 1))
+        _, info = einsum_path("ij,jk->ik", X, X)
+        assert len(info.steps) == 1
+        assert info.steps[0].blas_type == "SYMM", (
+            f"Expected SYMM for symmetric matmul, got {info.steps[0].blas_type!r}"
+        )
