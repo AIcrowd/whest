@@ -2,17 +2,17 @@
 
 One oracle per contract_path call. Given the original operand list,
 subscript parts, per-operand declared symmetries, and output subscript,
-builds a bipartite graph once and exposes `.sym(subset)` which returns
-the IndexSymmetry of the intermediate tensor for any subset of the
-original operands, computed lazily on first access and cached.
+builds a bipartite graph once and exposes ``.sym(subset)`` which returns
+a ``SubsetSymmetry`` with ``.output`` (V-side) and ``.inner`` (W-side)
+symmetries, computed lazily on first access and cached.
+
+The detection algorithm derives the induced column permutation π for
+each operand permutation σ via column-fingerprint hash lookup, then
+classifies π's cycle structure into per-index or block symmetry groups.
+This subsumes both the per-index pair test (Wilson §1) and the block-
+swap construction from the original two-path approach.
 
 See docs/explanation/subgraph-symmetry.md for the algorithm walkthrough.
-
-TODO(sigma-to-pi): the hybrid block-candidate path in Step 2b is a
-carry-over of the old _enumerate_block_candidates logic. The natural
-unification is to extend Step 2a to derive the induced permutation pi
-on V per sigma (instead of iterating pairs), which subsumes both paths.
-Deferred to a follow-up iteration.
 """
 
 from __future__ import annotations
@@ -528,162 +528,6 @@ def _compute_subset_symmetry(
     )
 
 
-def _detect_per_index_pairs(
-    graph: EinsumBipartite,
-    sub: _Subgraph,
-    row_order: tuple[int, ...],
-    col_of: dict[str, tuple[int, ...]],
-) -> IndexSymmetry:
-    pair_set: set[tuple[str, str]] = set()
-    v_sorted = tuple(sorted(sub.v_labels))
-    w_sorted = tuple(sorted(sub.w_labels))
-    w_col_multiset = tuple(sorted(col_of[lbl] for lbl in w_sorted))
-
-    for tilde_sigma in _enumerate_id_group_permutations(sub.id_groups):
-        sigma_row_perm = _lift_operand_perm_to_u(tilde_sigma, row_order, graph)
-        if sigma_row_perm is None:
-            continue
-        sigma_col_of: dict[str, tuple[int, ...]] = {}
-        for label in sub.v_labels | sub.w_labels:
-            sigma_col_of[label] = tuple(
-                graph.incidence[sigma_row_perm[k]].get(label, 0)
-                for k in range(len(row_order))
-            )
-
-        sigma_w_multiset = tuple(sorted(sigma_col_of[lbl] for lbl in w_sorted))
-        if sigma_w_multiset != w_col_multiset:
-            continue
-
-        for i_idx in range(len(v_sorted)):
-            for j_idx in range(i_idx + 1, len(v_sorted)):
-                i_lbl = v_sorted[i_idx]
-                j_lbl = v_sorted[j_idx]
-                if col_of[i_lbl] != sigma_col_of[j_lbl]:
-                    continue
-                if col_of[j_lbl] != sigma_col_of[i_lbl]:
-                    continue
-                ok = True
-                for k_idx in range(len(v_sorted)):
-                    if k_idx == i_idx or k_idx == j_idx:
-                        continue
-                    k_lbl = v_sorted[k_idx]
-                    if col_of[k_lbl] != sigma_col_of[k_lbl]:
-                        ok = False
-                        break
-                if ok:
-                    pair_set.add((i_lbl, j_lbl))
-
-    return _pairs_to_groups(sub.v_labels, pair_set)
-
-
-def _detect_block_candidates(
-    graph: EinsumBipartite,
-    sub: _Subgraph,
-    subset: frozenset[int],
-    col_of: dict[str, tuple[int, ...]],
-    row_order: tuple[int, ...],
-) -> IndexSymmetry:
-    """Hybrid block candidate path. Ported from _enumerate_block_candidates.
-
-    For each pair (i, j) of operand positions within `subset` where the
-    operands are in the same identical-operand group, build the positional
-    block-swap sigma that maps "free-only-to-i" labels to "free-only-to-j"
-    labels in subscript order, then validate via the same column-equality
-    machinery used in Step 2a.
-    """
-    id_group_of: dict[int, tuple[int, ...]] = {}
-    for group in graph.identical_operand_groups:
-        for op in group:
-            id_group_of[op] = tuple(sorted(set(group) & subset))
-
-    groups: list[frozenset[tuple[str, ...]]] = []
-    seen_group: set[frozenset[tuple[str, ...]]] = set()
-
-    subscripts = graph.operand_subscripts
-
-    for i in sorted(subset):
-        for j in sorted(subset):
-            if j <= i:
-                continue
-            if id_group_of.get(i) is None or id_group_of.get(j) is None:
-                continue
-            if j not in id_group_of[i]:
-                continue
-
-            sub_i = subscripts[i]
-            sub_j = subscripts[j]
-            other_ops_labels = frozenset().union(
-                *[graph.operand_labels[k] for k in subset if k != i and k != j]
-            )
-
-            sub_i_set = frozenset(sub_i)
-            sub_j_set = frozenset(sub_j)
-            free_i = sub_i_set - sub_j_set - other_ops_labels
-            free_j = sub_j_set - sub_i_set - other_ops_labels
-            free_i = free_i & sub.v_labels
-            free_j = free_j & sub.v_labels
-            if len(free_i) != len(free_j) or len(free_i) == 0:
-                continue
-
-            free_i_ordered = tuple(c for c in sub_i if c in free_i)
-            free_j_ordered = tuple(c for c in sub_j if c in free_j)
-
-            sigma: dict[str, str] = {}
-            for a, b in zip(free_i_ordered, free_j_ordered):
-                sigma[a] = b
-                sigma[b] = a
-
-            if _block_sigma_is_valid(
-                graph, sub, subset, i, j, sigma, col_of, row_order
-            ):
-                if len(free_i) == 1:
-                    group = frozenset({(free_i_ordered[0],), (free_j_ordered[0],)})
-                else:
-                    group = frozenset({free_i_ordered, free_j_ordered})
-                if group not in seen_group:
-                    seen_group.add(group)
-                    groups.append(group)
-
-    return groups
-
-
-def _block_sigma_is_valid(
-    graph: EinsumBipartite,
-    sub: _Subgraph,
-    subset: frozenset[int],
-    i: int,
-    j: int,
-    sigma: dict[str, str],
-    col_of: dict[str, tuple[int, ...]],
-    row_order: tuple[int, ...],
-) -> bool:
-    """Validate a block sigma by applying the operand swap (i ↔ j) as a
-    row permutation on M_S and the label sigma as a column relabel, then
-    checking that V columns match and W columns are a permutation."""
-    tilde_sigma = {i: j, j: i}
-    sigma_row_perm = _lift_operand_perm_to_u(tilde_sigma, row_order, graph)
-    if sigma_row_perm is None:
-        return False
-
-    all_labels = sub.v_labels | sub.w_labels
-    sigma_col_of: dict[str, tuple[int, ...]] = {}
-    for label in all_labels:
-        sigma_col_of[label] = tuple(
-            graph.incidence[sigma_row_perm[k]].get(label, 0)
-            for k in range(len(row_order))
-        )
-
-    w_sorted = tuple(sorted(sub.w_labels))
-    if tuple(sorted(sigma_col_of[lbl] for lbl in w_sorted)) != tuple(
-        sorted(col_of[lbl] for lbl in w_sorted)
-    ):
-        return False
-
-    for v_lbl in sub.v_labels:
-        mapped = sigma.get(v_lbl, v_lbl)
-        if col_of[v_lbl] != sigma_col_of[mapped]:
-            return False
-    return True
 
 
 def _merge_overlapping_groups(
@@ -789,35 +633,3 @@ def _lift_operand_perm_to_u(
     return tuple(result)
 
 
-def _pairs_to_groups(
-    v_labels: frozenset[str], pair_set: set[tuple[str, str]]
-) -> IndexSymmetry:
-    """Union-find over V, joining endpoints in pair_set. Returns one
-    IndexSymmetry group per connected component of size >= 2."""
-    parent: dict[str, str] = {lbl: lbl for lbl in v_labels}
-
-    def find(x: str) -> str:
-        while parent[x] != x:
-            parent[x] = parent[parent[x]]
-            x = parent[x]
-        return x
-
-    def union(x: str, y: str) -> None:
-        rx, ry = find(x), find(y)
-        if rx != ry:
-            parent[rx] = ry
-
-    for a, b in pair_set:
-        if a in parent and b in parent:
-            union(a, b)
-
-    components: dict[str, list[str]] = {}
-    for lbl in v_labels:
-        root = find(lbl)
-        components.setdefault(root, []).append(lbl)
-
-    return [
-        frozenset((lbl,) for lbl in sorted(comp))
-        for comp in components.values()
-        if len(comp) >= 2
-    ]
