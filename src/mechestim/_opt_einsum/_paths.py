@@ -1403,9 +1403,7 @@ class DynamicProgramming(PathOptimizer):
                     for k in range(len(inputs)):
                         if s >> k & 1:
                             orig = inputs_contractions[k]
-                            result.add(
-                                orig if isinstance(orig, int) else orig[0]
-                            )
+                            result.add(orig if isinstance(orig, int) else orig[0])
                     _cache[s] = frozenset(result)
                 return _cache[s]
 
@@ -1438,9 +1436,7 @@ class DynamicProgramming(PathOptimizer):
                     _cache[s] = 1.0
                     return 1.0
                 str_legs = frozenset(all_inds[ix] for ix in int_output_legs)
-                str_size_dict = {
-                    all_inds[ix]: size_dict[ix] for ix in int_output_legs
-                }
+                str_size_dict = {all_inds[ix]: size_dict[ix] for ix in int_output_legs}
                 dense = compute_size_by_dict(str_legs, str_size_dict)
                 if dense <= 0:
                     _cache[s] = 1.0

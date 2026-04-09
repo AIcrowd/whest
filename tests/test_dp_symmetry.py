@@ -238,11 +238,8 @@ class TestDPSingleTermReductionWithOracle:
 
         # Find the step that produces the 'abcd' intermediate —
         # it's the one that should benefit from the block S2 symmetry.
-        dense_n4 = n ** 4  # 256 for n=4
-        outer_steps = [
-            s for s in info_dp.steps
-            if s.dense_flop_cost == dense_n4
-        ]
+        dense_n4 = n**4  # 256 for n=4
+        outer_steps = [s for s in info_dp.steps if s.dense_flop_cost == dense_n4]
         assert len(outer_steps) >= 1, (
             f"expected at least one step with dense cost {dense_n4}; "
             f"got steps: {[(s.subscript, s.dense_flop_cost) for s in info_dp.steps]}"
