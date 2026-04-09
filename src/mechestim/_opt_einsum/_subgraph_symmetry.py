@@ -21,7 +21,7 @@ from dataclasses import dataclass
 from itertools import permutations, product
 from typing import Any
 
-from ._symmetry import IndexSymmetry
+from ._symmetry import IndexSymmetry, SubsetSymmetry
 
 _MISSING = object()
 
@@ -461,7 +461,8 @@ class SubgraphSymmetryOracle:
     """Subset-keyed symmetry oracle for einsum intermediates.
 
     One oracle per contract_path call. Symmetries are computed lazily
-    on first access to a subset and cached in memory.
+    on first access to a subset and cached in memory. Returns a
+    ``SubsetSymmetry`` with ``.output`` (V-side) and ``.inner`` (W-side).
     """
 
     def __init__(
@@ -477,9 +478,9 @@ class SubgraphSymmetryOracle:
             per_op_syms=per_op_syms,
             output_chars=output_chars,
         )
-        self._cache: dict[frozenset[int], IndexSymmetry | None] = {}
+        self._cache: dict[frozenset[int], SubsetSymmetry] = {}
 
-    def sym(self, subset: frozenset[int]) -> IndexSymmetry | None:
+    def sym(self, subset: frozenset[int]) -> SubsetSymmetry:
         cached = self._cache.get(subset, _MISSING)
         if cached is not _MISSING:
             return cached  # type: ignore[return-value]
@@ -491,30 +492,40 @@ class SubgraphSymmetryOracle:
 def _compute_subset_symmetry(
     graph: EinsumBipartite,
     subset: frozenset[int],
-) -> IndexSymmetry | None:
+) -> SubsetSymmetry:
     sub = _induce_subgraph(graph, subset)
-    if not sub.v_labels:
-        return None
+    if not sub.v_labels and not sub.w_labels:
+        return SubsetSymmetry(None, None)
 
-    # Step 1: canonical column encoding
+    # Step 1: column fingerprints.
     row_order = sub.u_local
     all_labels = sub.v_labels | sub.w_labels
     col_of: dict[str, tuple[int, ...]] = {}
     for label in all_labels:
         col_of[label] = tuple(graph.incidence[u].get(label, 0) for u in row_order)
 
-    # Step 2a: per-index pair detection
-    per_index_groups = _detect_per_index_pairs(graph, sub, row_order, col_of)
+    # Step 2: reverse index.
+    fp_to_labels: dict[tuple[int, ...], set[str]] = {}
+    for lbl, fp in col_of.items():
+        fp_to_labels.setdefault(fp, set()).add(lbl)
 
-    # Step 2b: block candidate detection (hybrid carry-over)
-    block_groups = _detect_block_candidates(graph, sub, subset, col_of, row_order)
+    # Step 3: fast path (fingerprint equivalences, no σ needed).
+    v_fast = _detect_fingerprint_equivalences(col_of, sub.v_labels) if sub.v_labels else []
+    w_fast = _detect_fingerprint_equivalences(col_of, sub.w_labels) if sub.w_labels else []
 
-    # Step 3: merge per-index + block candidates
-    all_candidates = list(per_index_groups) + list(block_groups)
-    if not all_candidates:
-        return None
-    merged = _merge_overlapping_groups(all_candidates)
-    return merged or None
+    # Step 4: σ loop — derive π per σ, classify cycles on V and W.
+    v_sigma, w_sigma = _detect_symmetries_via_pi(
+        graph, sub, row_order, col_of, fp_to_labels
+    )
+
+    # Step 5: merge.
+    v_merged = _merge_overlapping_groups(v_fast + v_sigma)
+    w_merged = _merge_overlapping_groups(w_fast + w_sigma)
+
+    return SubsetSymmetry(
+        output=v_merged or None,
+        inner=w_merged or None,
+    )
 
 
 def _detect_per_index_pairs(

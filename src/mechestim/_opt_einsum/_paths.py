@@ -175,7 +175,8 @@ def calc_k12_flops(
     sym12: IndexSymmetry | None = None
     if oracle is not None and ssa_to_subset is not None:
         merged_subset = ssa_to_subset[i] | ssa_to_subset[j]
-        sym12 = oracle.sym(merged_subset)
+        subset_sym = oracle.sym(merged_subset)
+        sym12 = subset_sym.output
 
     if sym12 is not None:
         cost = symmetric_flop_count(
@@ -1431,7 +1432,8 @@ class DynamicProgramming(PathOptimizer):
                 if cached >= 0.0:
                     return cached
                 subset = bitmap_to_subset(s)
-                sym = symmetry_oracle.sym(subset)
+                subset_sym = symmetry_oracle.sym(subset)
+                sym = subset_sym.output
                 if sym is None:
                     _cache[s] = 1.0
                     return 1.0

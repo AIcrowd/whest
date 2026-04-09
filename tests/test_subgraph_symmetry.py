@@ -211,8 +211,8 @@ class TestPerIndexPairs:
             per_op_syms=[[frozenset({("i",), ("j",)})], None, None],
             output_chars="ab",
         )
-        sym = oracle.sym(frozenset({0, 1, 2}))
-        assert sym == [frozenset({("a",), ("b",)})]
+        result = oracle.sym(frozenset({0, 1, 2}))
+        assert result.output == [frozenset({("a",), ("b",)})]
 
     def test_three_identical_operands_finds_s3(self):
         X = np.zeros((3, 3))
@@ -222,11 +222,11 @@ class TestPerIndexPairs:
             per_op_syms=[None, None, None],
             output_chars="abc",
         )
-        sym = oracle.sym(frozenset({0, 1, 2}))
+        result = oracle.sym(frozenset({0, 1, 2}))
         # All three of a, b, c should be in one merged group (S3)
-        assert sym is not None
-        assert len(sym) == 1
-        only_group = sym[0]
+        assert result.output is not None
+        assert len(result.output) == 1
+        only_group = result.output[0]
         assert only_group == frozenset({("a",), ("b",), ("c",)})
 
     def test_distinct_operands_no_induced_symmetry(self):
@@ -238,9 +238,9 @@ class TestPerIndexPairs:
             per_op_syms=[None, None, None],
             output_chars="abc",
         )
-        sym = oracle.sym(frozenset({0, 1, 2}))
+        result = oracle.sym(frozenset({0, 1, 2}))
         # Only Y, Y are identical (ops 1, 2), inducing S2{b, c}
-        assert sym == [frozenset({("b",), ("c",)})]
+        assert result.output == [frozenset({("b",), ("c",)})]
 
     def test_empty_v_returns_none(self):
         # einsum('i,i->', X, X) — scalar output, V is empty
@@ -251,7 +251,7 @@ class TestPerIndexPairs:
             per_op_syms=[None, None],
             output_chars="",
         )
-        assert oracle.sym(frozenset({0, 1})) is None
+        assert oracle.sym(frozenset({0, 1})).output is None
 
 
 class TestHybridBlockPath:
@@ -265,8 +265,8 @@ class TestHybridBlockPath:
             per_op_syms=[None, None],
             output_chars="jk",
         )
-        sym = oracle.sym(frozenset({0, 1}))
-        assert sym == [frozenset({("j",), ("k",)})]
+        result = oracle.sym(frozenset({0, 1}))
+        assert result.output == [frozenset({("j",), ("k",)})]
 
     def test_outer_product_block_s2(self):
         # einsum('ijk,ilm->jklm', X, X) — block symmetry on (j,k) and (l,m)
@@ -277,11 +277,11 @@ class TestHybridBlockPath:
             per_op_syms=[None, None],
             output_chars="jklm",
         )
-        sym = oracle.sym(frozenset({0, 1}))
-        assert sym is not None
+        result = oracle.sym(frozenset({0, 1}))
+        assert result.output is not None
         # Expect a single block group: {(j,k), (l,m)}
-        assert len(sym) == 1
-        only = sym[0]
+        assert len(result.output) == 1
+        only = result.output[0]
         assert frozenset({("j", "k"), ("l", "m")}) == only
 
     def test_distinct_operands_no_block(self):
@@ -293,7 +293,7 @@ class TestHybridBlockPath:
             per_op_syms=[None, None],
             output_chars="jklm",
         )
-        assert oracle.sym(frozenset({0, 1})) is None
+        assert oracle.sym(frozenset({0, 1})).output is None
 
 
 class TestOracleCaching:
@@ -315,10 +315,12 @@ class TestOracleCaching:
         o2 = SubgraphSymmetryOracle([X, X], ["ij", "jk"], [None, None], "ik")
         assert o1._cache is not o2._cache
 
-    def test_empty_subset_returns_none(self):
+    def test_empty_subset_returns_both_none(self):
         X = np.zeros((3, 3))
         oracle = SubgraphSymmetryOracle([X, X], ["ij", "jk"], [None, None], "ik")
-        assert oracle.sym(frozenset()) is None
+        result = oracle.sym(frozenset())
+        assert result.output is None
+        assert result.inner is None
 
 
 class TestMemoKeyIsSubsetOnly:
@@ -405,9 +407,8 @@ class TestOldSymIsSubsetOfNewSym:
             per_op_syms=[None] * len(operands),
             output_chars=output_chars,
         )
-        new = oracle.sym(frozenset(range(len(operands))))
-        if new is None:
-            new = []
+        result = oracle.sym(frozenset(range(len(operands))))
+        new = result.output if result.output is not None else []
 
         # For each old group, assert that there exists a new group that
         # covers it (superset by labels).

@@ -219,10 +219,10 @@ class TestDPSingleTermReductionWithOracle:
         # changes), the test doesn't exercise the bug it's trying to
         # guard against and needs to be rewritten.
         probe_oracle = SubgraphSymmetryOracle(**oracle_kwargs)
-        assert probe_oracle.sym(frozenset({1, 2})) is not None, (
+        assert probe_oracle.sym(frozenset({1, 2})).output is not None, (
             "probe: oracle should see symmetry on the two X copies"
         )
-        assert probe_oracle.sym(frozenset({0, 1})) is None, (
+        assert probe_oracle.sym(frozenset({0, 1})).output is None, (
             "probe: oracle should NOT see symmetry on (v, X) — v is distinct"
         )
 

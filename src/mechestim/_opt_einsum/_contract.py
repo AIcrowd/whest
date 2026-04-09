@@ -600,18 +600,22 @@ def contract_path(
             for pos_in_step, ci in enumerate(contract_inds):
                 ssa_id = ssa_ids[ci]
                 subset_i = ssa_to_subset[ssa_id]
-                step_syms[pos_in_step] = symmetry_oracle.sym(subset_i)
+                step_syms[pos_in_step] = symmetry_oracle.sym(subset_i).output
                 merged_subset = merged_subset | subset_i
 
-            result_sym = symmetry_oracle.sym(merged_subset)
+            subset_sym = symmetry_oracle.sym(merged_subset)
+            result_sym = subset_sym.output
 
             cost = symmetric_flop_count(
                 idx_contract,
                 bool(idx_removed),
                 len(contract_inds),
                 size_dict,
-                output_symmetry=result_sym,
+                output_symmetry=subset_sym.output,
                 output_indices=out_inds,
+                inner_symmetry=subset_sym.inner,
+                inner_indices=idx_removed if idx_removed else None,
+                use_inner_symmetry=False,
             )
         else:
             step_syms = [None] * len(contract_inds)
