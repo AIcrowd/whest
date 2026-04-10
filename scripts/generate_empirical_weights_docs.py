@@ -249,33 +249,74 @@ def _confidence(alphas: list[float]) -> str:
     return "low"
 
 
-def _effective_cost_example(formula: str, weight: float, analytical_flops: int | None) -> str:
+def _effective_cost_example(formula: str, weight: float,
+                            op_name: str = "") -> str:
     """Compute a concrete cost example for the reviewer.
 
-    Uses n=1000 for pointwise/reduction, or the benchmark's own analytical
-    FLOPs scaled down, to show a concrete number.
+    Shows: ``weight * C(example_input)`` = effective weighted FLOPs.
+    Uses a small, concrete input size so the reviewer can sanity-check.
     """
-    if not analytical_flops or weight == 0:
+    if weight == 0:
         return ""
-    # Use a reference size of 1000 elements for per-element formulas
-    # For non-per-element formulas, scale from the benchmark size
     lower = formula.lower() if formula else ""
+
+    # Per-element formulas (pointwise, reductions, random, etc.)
     if "numel" in lower or formula in ("n", ""):
-        example_flops = 1000
+        effective = 1000 * weight
         desc = "1000 elements"
-    elif "m*n*k" in lower or "m*n" in lower:
-        example_flops = 2 * 32 * 32 * 32  # 32x32 matmul
-        desc = "32x32 matmul"
-    elif "log" in lower and "n" in lower:
-        example_flops = 1000 * math.ceil(math.log2(1000))  # n*log2(n)
-        desc = "1000 elements"
+    # Matrix multiply
+    elif "m*n*k" in lower:
+        c = 2 * 32 * 32 * 32  # 32x32 @ 32x32
+        effective = c * weight
+        desc = f"32x32 matmul, C={c}"
+    # Sort / search with log factor
+    elif "log" in lower and "n" in lower and "ceil" in lower:
+        c = 1000 * math.ceil(math.log2(1000))
+        effective = c * weight
+        desc = f"1000 elements, C={c}"
+    # Polynomial with degree
     elif "degree" in lower or "deg" in lower:
-        example_flops = 2 * 100 * 10  # polyval at n=100, deg=10
-        desc = "n=100 deg=10"
+        c = 2 * 100 * 10
+        effective = c * weight
+        desc = f"n=100 deg=10, C={c}"
+    # Linalg: n^3 formulas
+    elif "n^3" in lower or "n^2" in lower:
+        # Use n=32 as example (small matrix)
+        if "n^3 / 3" in lower:
+            c = 32 ** 3 // 3
+        elif "n^3" in lower:
+            c = 32 ** 3
+        else:
+            c = 32 ** 2
+        effective = c * weight
+        desc = f"n=32, C={c}"
+    # Inner/vdot: 2*N
+    elif formula.startswith("2*N") or formula == "2*N":
+        c = 2 * 1000
+        effective = c * weight
+        desc = f"1000-element dot, C={c}"
+    # Cross, trace, simple n formulas
+    elif formula.startswith(("6 *", "min(")):
+        c = 1000
+        effective = c * weight
+        desc = f"n=1000, C={c}"
+    # Convolution: n * k
+    elif "n * k" in lower:
+        c = 1000 * 100  # n=1000, k=100
+        effective = c * weight
+        desc = f"n=1000 k=100, C={c}"
+    # Statistical: 2 * f^2 * s
+    elif "f^2" in lower:
+        c = 2 * 10 * 10 * 100  # f=10, s=100
+        effective = c * weight
+        desc = f"10 features x 100 samples, C={c}"
+    # Fallback: just show weight * 1000
     else:
-        example_flops = 1000
-        desc = "1000 analytical FLOPs"
-    effective = example_flops * weight
+        c = 1000
+        effective = c * weight
+        desc = f"C={c}"
+
+    effective = c * weight
     return f"{effective:,.0f} FLOPs ({desc})"
 
 
