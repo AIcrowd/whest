@@ -160,35 +160,36 @@ def load_data(path: Path) -> dict:
 # Row building
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# Section A: Review columns — what the reviewer reads and tunes
+# Section B: Evidence columns — raw measurements for anyone who needs to dig
+# ---------------------------------------------------------------------------
+
 CSV_COLUMNS = [
+    # --- Section A: Review ---
     "Operation",
     "Status",
-    "Exclusion Reason",
     "Category",
-    "FP Instructions per Analytical FLOP",
-    "Relative to Add",
-    "Perf Weight (normalized)",
-    "Timing Weight",
-    "Perf/Timing Ratio",
-    "Weight Tier",
-    "Zero FP",
-    "Alpha Min",
-    "Alpha Max",
-    "Alpha CV",
-    "Analytical Formula",
-    "Analytical FLOPs",
-    "Benchmark Code",
-    "Benchmark Size",
-    "Repeats",
-    "Perf Instructions (total)",
-    "Timing Total (ns)",
-    "Time per Analytical FLOP (ns)",
-    "Baseline Alpha",
-    "Baseline Command",
-    "Baseline Perf Instructions",
-    "Baseline Timing (ns)",
-    "Implementation URL",
+    "Cost Formula",
+    "Weight",
+    "Reviewer Weight",
+    "Effective Cost Example",
+    "vs Add",
+    "Confidence",
     "Notes",
+    # --- Section B: Evidence ---
+    "Exclusion Reason",
+    "Hardware FP Instructions (per analytical FLOP)",
+    "Timing Weight",
+    "Perf/Timing Agreement",
+    "Measurement Spread (CV)",
+    "Benchmark Command",
+    "Benchmark Size",
+    "Total Perf Instructions",
+    "Total Timing (ns)",
+    "Implementation",
+    "Weight Tier",
+    "Repeats",
 ]
 
 
@@ -229,7 +230,53 @@ def _empty_row(op_name: str, status: str, reason: str,
     row["Exclusion Reason"] = reason
     row["Category"] = category
     row["Notes"] = notes
+    row["Reviewer Weight"] = ""
     return row
+
+
+def _confidence(alphas: list[float]) -> str:
+    """Classify measurement confidence from distribution spread."""
+    if len(alphas) < 2:
+        return ""
+    m = statistics.mean(alphas)
+    if abs(m) < 1e-15:
+        return "low"
+    cv = statistics.stdev(alphas) / m
+    if cv < 0.05:
+        return "high"
+    if cv < 0.20:
+        return "medium"
+    return "low"
+
+
+def _effective_cost_example(formula: str, weight: float, analytical_flops: int | None) -> str:
+    """Compute a concrete cost example for the reviewer.
+
+    Uses n=1000 for pointwise/reduction, or the benchmark's own analytical
+    FLOPs scaled down, to show a concrete number.
+    """
+    if not analytical_flops or weight == 0:
+        return ""
+    # Use a reference size of 1000 elements for per-element formulas
+    # For non-per-element formulas, scale from the benchmark size
+    lower = formula.lower() if formula else ""
+    if "numel" in lower or formula in ("n", ""):
+        example_flops = 1000
+        desc = "1000 elements"
+    elif "m*n*k" in lower or "m*n" in lower:
+        example_flops = 2 * 32 * 32 * 32  # 32x32 matmul
+        desc = "32x32 matmul"
+    elif "log" in lower and "n" in lower:
+        example_flops = 1000 * math.ceil(math.log2(1000))  # n*log2(n)
+        desc = "1000 elements"
+    elif "degree" in lower or "deg" in lower:
+        example_flops = 2 * 100 * 10  # polyval at n=100, deg=10
+        desc = "n=100 deg=10"
+    else:
+        example_flops = 1000
+        desc = "1000 analytical FLOPs"
+    effective = example_flops * weight
+    return f"{effective:,.0f} FLOPs ({desc})"
 
 
 # Alias map: excluded op -> canonical benchmarked op whose weight it inherits
@@ -296,7 +343,6 @@ def build_rows(data: dict) -> list[dict]:
     timing_weights = data["meta"]["validation"].get("timing_weights", {})
     abs_alphas = data["meta"]["validation"].get("absolute_correction_factors", {})
     add_weight = weights.get("add", 1.0)
-    add_alpha = abs_alphas.get("add", 1.0)
 
     rows = []
 
@@ -311,60 +357,52 @@ def build_rows(data: dict) -> list[dict]:
         repeats = d.get("repeats")
         timing_ns = d.get("timing_ns_total")
         absolute_alpha = abs_alphas.get(op_name, d.get("absolute_alpha", 0.0))
-        relative_to_add = perf_weight / add_weight if add_weight else 0.0
+        vs_add = perf_weight / add_weight if add_weight else 0.0
+        formula = d.get("analytical_formula", "")
 
         row = {
+            # Section A: Review
             "Operation": op_name,
             "Status": "benchmarked",
-            "Exclusion Reason": "",
             "Category": display_cat,
-            "FP Instructions per Analytical FLOP": f"{absolute_alpha:.4f}",
-            "Relative to Add": f"{relative_to_add:.2f}x",
-            "Perf Weight (normalized)": f"{perf_weight:.4f}",
-            "Timing Weight": f"{tw:.4f}" if tw else "0.0000",
-            "Perf/Timing Ratio": _safe_div(perf_weight, tw),
-            "Weight Tier": _weight_tier(perf_weight),
-            "Zero FP": "TRUE" if perf_weight < 0.001 else "FALSE",
-            "Alpha Min": f"{min(alphas):.4f}" if alphas else "N/A",
-            "Alpha Max": f"{max(alphas):.4f}" if alphas else "N/A",
-            "Alpha CV": _alpha_cv(alphas),
-            "Analytical Formula": d.get("analytical_formula", ""),
-            "Analytical FLOPs": str(analytical_flops) if analytical_flops is not None else "",
-            "Benchmark Code": d.get("bench_code", ""),
-            "Benchmark Size": d.get("benchmark_size", ""),
-            "Repeats": str(repeats) if repeats is not None else "",
-            "Perf Instructions (total)": str(d.get("perf_instructions_total", "")),
-            "Timing Total (ns)": str(timing_ns) if timing_ns is not None else "",
-            "Time per Analytical FLOP (ns)": _time_per_flop(timing_ns, analytical_flops, repeats),
-            "Baseline Alpha": f"{d.get('baseline_alpha', 0.0):.4f}",
-            "Baseline Command": d.get("baseline_bench_code", ""),
-            "Baseline Perf Instructions": str(d.get("baseline_perf_instructions_total", "")),
-            "Baseline Timing (ns)": str(d.get("baseline_timing_ns_total", "")),
-            "Implementation URL": d.get("cost_impl_url", ""),
+            "Cost Formula": formula,
+            "Weight": f"{perf_weight:.4f}",
+            "Reviewer Weight": "",
+            "Effective Cost Example": _effective_cost_example(formula, perf_weight, analytical_flops),
+            "vs Add": f"{vs_add:.1f}x",
+            "Confidence": _confidence(alphas),
             "Notes": d.get("notes", ""),
+            # Section B: Evidence
+            "Exclusion Reason": "",
+            "Hardware FP Instructions (per analytical FLOP)": f"{absolute_alpha:.2f}",
+            "Timing Weight": f"{tw:.4f}" if tw else "0.0000",
+            "Perf/Timing Agreement": _safe_div(perf_weight, tw),
+            "Measurement Spread (CV)": _alpha_cv(alphas),
+            "Benchmark Command": d.get("bench_code", ""),
+            "Benchmark Size": d.get("benchmark_size", ""),
+            "Total Perf Instructions": str(d.get("perf_instructions_total", "")),
+            "Total Timing (ns)": str(timing_ns) if timing_ns is not None else "",
+            "Implementation": d.get("cost_impl_url", ""),
+            "Weight Tier": _weight_tier(perf_weight),
+            "Repeats": str(repeats) if repeats is not None else "",
         }
         rows.append(row)
 
     # --- Alias ops (inherit weight from canonical op) ---
     for alias, canonical in sorted(_ALIAS_MAP.items()):
         if alias in weights:
-            continue  # already benchmarked directly
+            continue
         entry = REGISTRY.get(alias, {})
-        canon_weight = weights.get(canonical, "")
-        canon_alpha = abs_alphas.get(canonical, "")
+        canon_weight = weights.get(canonical, 0.0)
+        canon_alpha = abs_alphas.get(canonical, 0.0)
+        vs_add = canon_weight / add_weight if add_weight and canon_weight else 0.0
         reason = f"Alias of {canonical}"
         if canon_weight:
-            reason += f" (weight: {canon_weight:.4f})"
-        row = _empty_row(
-            alias, "alias", reason,
-            entry.get("category", ""),
-            entry.get("notes", ""),
-        )
-        if canon_alpha:
-            row["FP Instructions per Analytical FLOP"] = f"{canon_alpha:.4f}"
-        if canon_weight:
-            row["Perf Weight (normalized)"] = f"{canon_weight:.4f}"
-            row["Relative to Add"] = f"{canon_weight / add_weight:.2f}x" if add_weight else ""
+            reason += f" (weight: {canon_weight:.2f})"
+        row = _empty_row(alias, "alias", reason, entry.get("category", ""), entry.get("notes", ""))
+        row["Weight"] = f"{canon_weight:.4f}" if canon_weight else ""
+        row["vs Add"] = f"{vs_add:.1f}x" if vs_add else ""
+        row["Hardware FP Instructions (per analytical FLOP)"] = f"{canon_alpha:.2f}" if canon_alpha else ""
         rows.append(row)
 
     # --- Excluded ops ---
@@ -373,29 +411,20 @@ def build_rows(data: dict) -> list[dict]:
             if op_name in weights:
                 continue
             entry = REGISTRY.get(op_name, {})
-            rows.append(_empty_row(
-                op_name, "excluded", reason,
-                entry.get("category", ""),
-                entry.get("notes", ""),
-            ))
+            rows.append(_empty_row(op_name, "excluded", reason, entry.get("category", ""), entry.get("notes", "")))
 
     # --- Free ops (0 FLOPs) ---
     for name, entry in sorted(REGISTRY.items()):
         if entry["category"] == "free" and name not in weights:
-            rows.append(_empty_row(
-                name, "free", "Zero FLOP cost — not benchmarked",
-                "free",
-                entry.get("notes", ""),
-            ))
+            row = _empty_row(name, "free", "Zero FLOP cost — not benchmarked", "free", entry.get("notes", ""))
+            row["Weight"] = "0"
+            row["Cost Formula"] = "0"
+            rows.append(row)
 
     # --- Blacklisted ops ---
     for name, entry in sorted(REGISTRY.items()):
         if entry["category"] == "blacklisted" and name not in weights:
-            rows.append(_empty_row(
-                name, "blacklisted", "Intentionally unsupported in mechestim",
-                "blacklisted",
-                entry.get("notes", ""),
-            ))
+            rows.append(_empty_row(name, "blacklisted", "Intentionally unsupported in mechestim", "blacklisted", entry.get("notes", "")))
 
     # Sort: benchmarked first (by category then weight), then alias, excluded, free, blacklisted
     status_order = {"benchmarked": 0, "alias": 1, "excluded": 2, "free": 3, "blacklisted": 4}
@@ -403,7 +432,7 @@ def build_rows(data: dict) -> list[dict]:
     rows.sort(key=lambda r: (
         status_order.get(r["Status"], 99),
         cat_order.get(r["Category"], 999),
-        -float(r["Perf Weight (normalized)"]) if r["Perf Weight (normalized)"] else 0,
+        -float(r["Weight"]) if r["Weight"] else 0,
     ))
     return rows
 
@@ -478,7 +507,7 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     # ------------------------------------------------------------------
     # Title + introduction
     # ------------------------------------------------------------------
-    w("# Empirical FLOP Weights")
+    w("# FLOP Weight Calibration Results")
     w()
     w("## Introduction")
     w()
@@ -619,18 +648,17 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
             continue
         w(f"### {cat} ({len(cat_rows)} operations)")
         w()
-        w("| Op | FP Instr / FLOP | vs Add | Timing Wt | Time/FLOP (ns) | Formula | Impl | Notes |")
-        w("|:---|----------------:|-------:|----------:|---------------:|:--------|:-----|:------|")
+        w("| Op | Weight | vs Add | Confidence | Formula | Impl | Notes |")
+        w("|:---|-------:|-------:|:-----------|:--------|:-----|:------|")
         for r in cat_rows:
             op = f"`{r['Operation']}`"
-            fp = _format_weight(r["FP Instructions per Analytical FLOP"])
-            rel = r["Relative to Add"]
-            tw = _format_weight(r["Timing Weight"])
-            tpf = r["Time per Analytical FLOP (ns)"]
-            formula = r["Analytical Formula"]
-            impl = _impl_link(r["Implementation URL"])
+            wt = _format_weight(r["Weight"])
+            vs = r["vs Add"]
+            conf = r["Confidence"]
+            formula = r["Cost Formula"]
+            impl = _impl_link(r["Implementation"])
             notes = r["Notes"]
-            w(f"| {op} | {fp} | {rel} | {tw} | {tpf} | {formula} | {impl} | {notes} |")
+            w(f"| {op} | {wt} | {vs} | {conf} | {formula} | {impl} | {notes} |")
         w()
 
     # ------------------------------------------------------------------
@@ -638,20 +666,20 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     # ------------------------------------------------------------------
     w("## Summary by category")
     w()
-    w("| Category | Count | Avg FP Instr/FLOP | Min | Max |")
-    w("|:---------|------:|------------------:|----:|----:|")
+    w("| Category | Count | Avg Weight | Min | Max |")
+    w("|:---------|------:|-----------:|----:|----:|")
     for cat in DISPLAY_CATEGORIES:
         cat_rows = by_cat.get(cat, [])
         if not cat_rows:
             continue
-        wts = [float(r["FP Instructions per Analytical FLOP"]) for r in cat_rows
-               if r["FP Instructions per Analytical FLOP"] and r["FP Instructions per Analytical FLOP"] != "N/A"]
+        wts = [float(r["Weight"]) for r in cat_rows
+               if r["Weight"] and r["Weight"] != "N/A"]
         if not wts:
             continue
         avg = statistics.mean(wts)
         mn = min(wts)
         mx = max(wts)
-        w(f"| {cat} | {len(cat_rows)} | {avg:.4f} | {mn:.4f} | {mx:.4f} |")
+        w(f"| {cat} | {len(cat_rows)} | {avg:.2f} | {mn:.4f} | {mx:.4f} |")
     w()
     total = sum(len(by_cat.get(c, [])) for c in DISPLAY_CATEGORIES)
     w(f"**Total benchmarked operations:** {total}")
