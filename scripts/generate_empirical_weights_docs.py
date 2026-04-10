@@ -165,9 +165,10 @@ CSV_COLUMNS = [
     "Status",
     "Exclusion Reason",
     "Category",
-    "Perf Weight",
+    "FP Instructions per Analytical FLOP",
+    "Relative to Add",
+    "Perf Weight (normalized)",
     "Timing Weight",
-    "Absolute Alpha",
     "Perf/Timing Ratio",
     "Weight Tier",
     "Zero FP",
@@ -293,6 +294,9 @@ def build_rows(data: dict) -> list[dict]:
     weights = data["weights"]
     details = data["meta"]["per_op_details"]
     timing_weights = data["meta"]["validation"].get("timing_weights", {})
+    abs_alphas = data["meta"]["validation"].get("absolute_correction_factors", {})
+    add_weight = weights.get("add", 1.0)
+    add_alpha = abs_alphas.get("add", 1.0)
 
     rows = []
 
@@ -306,15 +310,18 @@ def build_rows(data: dict) -> list[dict]:
         analytical_flops = d.get("analytical_flops")
         repeats = d.get("repeats")
         timing_ns = d.get("timing_ns_total")
+        absolute_alpha = abs_alphas.get(op_name, d.get("absolute_alpha", 0.0))
+        relative_to_add = perf_weight / add_weight if add_weight else 0.0
 
         row = {
             "Operation": op_name,
             "Status": "benchmarked",
             "Exclusion Reason": "",
             "Category": display_cat,
-            "Perf Weight": f"{perf_weight:.4f}",
+            "FP Instructions per Analytical FLOP": f"{absolute_alpha:.4f}",
+            "Relative to Add": f"{relative_to_add:.2f}x",
+            "Perf Weight (normalized)": f"{perf_weight:.4f}",
             "Timing Weight": f"{tw:.4f}" if tw else "0.0000",
-            "Absolute Alpha": f"{d.get('absolute_alpha', 0.0):.4f}",
             "Perf/Timing Ratio": _safe_div(perf_weight, tw),
             "Weight Tier": _weight_tier(perf_weight),
             "Zero FP": "TRUE" if perf_weight < 0.001 else "FALSE",
@@ -344,6 +351,7 @@ def build_rows(data: dict) -> list[dict]:
             continue  # already benchmarked directly
         entry = REGISTRY.get(alias, {})
         canon_weight = weights.get(canonical, "")
+        canon_alpha = abs_alphas.get(canonical, "")
         reason = f"Alias of {canonical}"
         if canon_weight:
             reason += f" (weight: {canon_weight:.4f})"
@@ -352,7 +360,11 @@ def build_rows(data: dict) -> list[dict]:
             entry.get("category", ""),
             entry.get("notes", ""),
         )
-        row["Perf Weight"] = f"{canon_weight:.4f}" if canon_weight else ""
+        if canon_alpha:
+            row["FP Instructions per Analytical FLOP"] = f"{canon_alpha:.4f}"
+        if canon_weight:
+            row["Perf Weight (normalized)"] = f"{canon_weight:.4f}"
+            row["Relative to Add"] = f"{canon_weight / add_weight:.2f}x" if add_weight else ""
         rows.append(row)
 
     # --- Excluded ops ---
@@ -391,7 +403,7 @@ def build_rows(data: dict) -> list[dict]:
     rows.sort(key=lambda r: (
         status_order.get(r["Status"], 99),
         cat_order.get(r["Category"], 999),
-        -float(r["Perf Weight"]) if r["Perf Weight"] else 0,
+        -float(r["Perf Weight (normalized)"]) if r["Perf Weight (normalized)"] else 0,
     ))
     return rows
 
@@ -607,17 +619,18 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
             continue
         w(f"### {cat} ({len(cat_rows)} operations)")
         w()
-        w("| Op | Perf Wt | Timing Wt | Time/FLOP (ns) | Formula | Impl | Notes |")
-        w("|:---|--------:|----------:|---------------:|:--------|:-----|:------|")
+        w("| Op | FP Instr / FLOP | vs Add | Timing Wt | Time/FLOP (ns) | Formula | Impl | Notes |")
+        w("|:---|----------------:|-------:|----------:|---------------:|:--------|:-----|:------|")
         for r in cat_rows:
             op = f"`{r['Operation']}`"
-            pw = _format_weight(r["Perf Weight"])
+            fp = _format_weight(r["FP Instructions per Analytical FLOP"])
+            rel = r["Relative to Add"]
             tw = _format_weight(r["Timing Weight"])
             tpf = r["Time per Analytical FLOP (ns)"]
             formula = r["Analytical Formula"]
             impl = _impl_link(r["Implementation URL"])
             notes = r["Notes"]
-            w(f"| {op} | {pw} | {tw} | {tpf} | {formula} | {impl} | {notes} |")
+            w(f"| {op} | {fp} | {rel} | {tw} | {tpf} | {formula} | {impl} | {notes} |")
         w()
 
     # ------------------------------------------------------------------
@@ -625,13 +638,16 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     # ------------------------------------------------------------------
     w("## Summary by category")
     w()
-    w("| Category | Count | Avg Weight | Min | Max |")
-    w("|:---------|------:|-----------:|----:|----:|")
+    w("| Category | Count | Avg FP Instr/FLOP | Min | Max |")
+    w("|:---------|------:|------------------:|----:|----:|")
     for cat in DISPLAY_CATEGORIES:
         cat_rows = by_cat.get(cat, [])
         if not cat_rows:
             continue
-        wts = [float(r["Perf Weight"]) for r in cat_rows]
+        wts = [float(r["FP Instructions per Analytical FLOP"]) for r in cat_rows
+               if r["FP Instructions per Analytical FLOP"] and r["FP Instructions per Analytical FLOP"] != "N/A"]
+        if not wts:
+            continue
         avg = statistics.mean(wts)
         mn = min(wts)
         mx = max(wts)
