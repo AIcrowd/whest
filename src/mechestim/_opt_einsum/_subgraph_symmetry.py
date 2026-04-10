@@ -21,7 +21,9 @@ from dataclasses import dataclass
 from itertools import permutations, product
 from typing import Any
 
-from mechestim._perm_group import Permutation as Perm, PermutationGroup
+from mechestim._perm_group import Permutation as Perm
+from mechestim._perm_group import PermutationGroup
+
 from ._symmetry import IndexSymmetry, SubsetSymmetry
 
 _MISSING = object()

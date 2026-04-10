@@ -7,12 +7,12 @@ import numpy as np
 import pytest
 
 from mechestim._budget import BudgetContext
+from mechestim._perm_group import PermutationGroup
 from mechestim._symmetric import (
     SymmetricTensor,
     SymmetryInfo,
     as_symmetric,
 )
-from mechestim._perm_group import Permutation, PermutationGroup
 from mechestim.errors import SymmetryError
 
 
@@ -306,8 +306,8 @@ class TestAsSymmetricPermGroup:
         for i in range(n):
             for j in range(n):
                 for k in range(n):
-                    for l in range(n):
-                        data[i, j, k, l] = (i + j) * 100 + (k + l)
+                    for m in range(n):
+                        data[i, j, k, m] = (i + j) * 100 + (k + m)
         data = (data + data.transpose(1, 0, 2, 3)) / 2
         data = (data + data.transpose(0, 1, 3, 2)) / 2
         groups = [

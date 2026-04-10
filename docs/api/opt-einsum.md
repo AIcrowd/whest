@@ -14,7 +14,7 @@ This fork extends opt_einsum with **symmetry-aware path finding**. When input te
 
 2. **Tracks symmetry by operand subset.** Each intermediate tensor encountered during path search has its symmetry derived by the `SubgraphSymmetryOracle` from the **subset of original operands it contracts** — not by restricting each input's symmetry groups step-by-step. The oracle runs a subgraph-level analysis on the bipartite graph for that subset and returns a `SubsetSymmetry` with both output (V-side) and inner (W-side) symmetry. Results are cached per subset for the duration of a `contract_path` call. See [the subgraph symmetry explanation](../explanation/subgraph-symmetry.md) for the algorithm.
 
-3. **Reports symmetry-aware costs.** Each step's cost is reduced by the exact ratio of unique output elements to total output elements, computed via the stars-and-bars formula `C(B + k - 1, k)` where `k` is the number of interchangeable blocks in a symmetry group and `B` is the cardinality of one block (the product of axis sizes within the block). For per-index groups (block size 1) this reduces to `C(n + k - 1, k)`. Both the symmetry-reduced cost and the dense cost are reported in `PathInfo`, so you can see exactly where symmetry helps. See [Symmetry savings in the FLOP counting model](../concepts/flop-counting-model.md#symmetry-savings) for the full derivation including the heterogeneous-axis block case.
+3. **Reports symmetry-aware costs.** Each step's cost is the minimum of a direct-evaluation estimate (unique/total output scaling) and a symmetry-preserving (Φ) estimate that exploits symmetry across all index groups simultaneously. Both the symmetry-reduced cost and the dense cost are reported in `PathInfo`. See [Einsum cost model](../concepts/flop-counting-model.md#einsum-cost-model) for the full derivation.
 
 4. **Classifies symmetric BLAS operations.** Pairwise contractions where an input has a symmetric group covering 2+ of its indices are labelled with specialised BLAS types (`SYMM`, `SYMV`, `SYDT`) instead of the generic `GEMM`, `GEMV`/`EINSUM`, `DOT`. These labels are informational — they don't affect cost estimation but help identify where symmetric BLAS routines (like LAPACK's `dsymm`) could be dispatched.
 
@@ -65,9 +65,10 @@ class SubsetSymmetry:
 ```
 
 Returned by `SubgraphSymmetryOracle.sym(subset)`. The `.output` field carries
-the same V-side symmetry that consumers use for cost reduction. The `.inner`
-field carries W-side symmetry among contracted labels, used when
-`use_inner_symmetry=True`.
+V-side symmetry used for direct-evaluation cost reduction. The `.inner`
+field carries W-side symmetry among contracted labels. Both feed into the
+Φ cost model when it activates (pairwise contractions with uniform index
+dimensions).
 
 ### `PathInfo` and `StepInfo`
 
@@ -83,7 +84,7 @@ The oracle is constructed once per `contract_path` call by `me.einsum` and `me.e
 
 The oracle's `sym()` method returns a `SubsetSymmetry` dataclass. Access
 `.output` for the output tensor's symmetry (used by all path algorithms) and
-`.inner` for inner-sum symmetry (used when `use_inner_symmetry=True`).
+`.inner` for inner-sum symmetry (used by the Φ cost model).
 
 ## Deviations from upstream opt_einsum
 

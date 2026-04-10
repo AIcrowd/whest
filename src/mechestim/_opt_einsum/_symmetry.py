@@ -10,12 +10,13 @@ Detection of symmetries is handled by ``_subgraph_symmetry.SubgraphSymmetryOracl
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from math import comb, prod
 from typing import Collection
 
-from ._helpers import flop_count
 from mechestim._perm_group import PermutationGroup
+
+from ._helpers import flop_count
 
 # Type alias: a list of frozensets, each frozenset names symmetry-equivalent
 # "blocks" of indices. Each block is a tuple of index characters. Per-index

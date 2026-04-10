@@ -3,10 +3,10 @@
 from __future__ import annotations
 
 import math
+
 import pytest
 
-from mechestim._perm_group import Permutation
-from mechestim._perm_group import PermutationGroup
+from mechestim._perm_group import Permutation, PermutationGroup
 
 
 class TestPermutation:

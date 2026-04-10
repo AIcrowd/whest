@@ -717,7 +717,6 @@ class TestWSymmetryOracle:
         assert result.output == [frozenset({("i",), ("j",)})]
 
 
-from mechestim._perm_group import PermutationGroup
 from mechestim._opt_einsum._symmetry import unique_elements
 
 

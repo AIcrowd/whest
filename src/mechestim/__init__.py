@@ -196,6 +196,9 @@ from mechestim._free_ops import (  # noqa: F401
 # --- Path optimization types ---
 from mechestim._opt_einsum import PathInfo, StepInfo  # noqa: F401
 
+# --- Permutation groups ---
+from mechestim._perm_group import Permutation, PermutationGroup  # noqa: F401
+
 # --- Pointwise (counted) ---
 from mechestim._pointwise import (  # noqa: F401
     abs,
@@ -417,9 +420,6 @@ from mechestim._symmetric import (  # noqa: F401
     as_symmetric,
     is_symmetric,
 )
-
-# --- Permutation groups ---
-from mechestim._perm_group import Permutation, PermutationGroup  # noqa: F401
 
 # --- Unwrap (counted) ---
 from mechestim._unwrap import unwrap  # noqa: F401

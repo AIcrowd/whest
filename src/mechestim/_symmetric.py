@@ -4,13 +4,12 @@ from __future__ import annotations
 
 import warnings
 from dataclasses import dataclass, field
-from math import comb, factorial
 
 import numpy as np
 
 from mechestim._config import get_setting
-from mechestim.errors import SymmetryError, SymmetryLossWarning
 from mechestim._perm_group import PermutationGroup
+from mechestim.errors import SymmetryError, SymmetryLossWarning
 
 
 @dataclass(frozen=True)
