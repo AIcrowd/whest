@@ -227,7 +227,7 @@ actual_cost = analytical_formula(shape) × weight(op_name)
 | `matmul` | $2n^3$ | 0.64 | 21,474,836 |
 | `linalg.cholesky` | $n^3/3$ | 1.07 | 5,971,148 |
 
-Weights are measured using the unified correction-factor methodology
+Weights are measured using the correction-factor methodology
 described in [FLOP Weight Calibration Results](../reference/empirical-weights.md). The
 formula is $\text{weight}(\text{op}) = \alpha(\text{op}) / \alpha(\text{add})$,
 where $\alpha(\text{op})$ is the median ratio of hardware-observed FP

@@ -72,7 +72,7 @@ Measurement mode: timing
 ## What gets measured
 
 The suite benchmarks eleven categories of operations, all using the
-same unified correction-factor formula:
+same correction formula:
 
 | Category | Operations | Size | Normalization |
 |----------|-----------|------|---------------|
