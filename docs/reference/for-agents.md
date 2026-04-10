@@ -60,7 +60,7 @@ everything in one request.
   "numpy_ref": "np.einsum",
   "category": "counted_custom",
   "cost_formula": "product of all index dims * op_factor",
-  "cost_formula_latex": "$\\text{op\\_factor} \\cdot \\prod_i d_i$",
+  "cost_formula_latex": "$\\texttt{op\\_factor} \\cdot \\prod_i d_i$",
   "free": false,
   "blocked": false,
   "status": "supported",

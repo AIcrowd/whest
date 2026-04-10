@@ -15,7 +15,7 @@ density relative to element-wise addition (`np.add`). When weights are
 loaded, the effective cost of an operation becomes:
 
 $$
-\text{cost}(\text{op}) = \text{analytical\_formula}(\text{shapes}) \times \text{weight}(\text{op})
+\text{cost}(\text{op}) = \texttt{analytical\_formula}(\text{shapes}) \times \text{weight}(\text{op})
 $$
 
 A weight of 25.9 for `sin` means that each analytical FLOP of sine costs
@@ -31,7 +31,7 @@ the same measurement formula and normalization.
 Every weight in this file is computed from the same two-step formula:
 
 $$
-\alpha(\text{op}) = \text{median}_{D} \left[ \frac{\sum \text{fp\_arith\_inst\_retired.*} \times \text{simd\_width}}{C(\text{op}, \text{params}) \times R} \right]
+\alpha(\text{op}) = \text{median}_{D} \left[ \frac{\sum \texttt{fp\_arith\_inst\_retired.*} \times \texttt{simd\_width}}{C(\text{op}, \text{params}) \times R} \right]
 $$
 
 $$
@@ -43,7 +43,7 @@ Where:
 - $\alpha(\text{op})$ is the **raw correction factor** -- the ratio of
   hardware-observed FP instructions to the analytical FLOP count predicted
   by mechestim's cost formula.
-- $\text{fp\_arith\_inst\_retired.*}$ are Intel Performance Monitoring Unit
+- $\texttt{fp\_arith\_inst\_retired.*}$ are Intel Performance Monitoring Unit
   (PMU) hardware counters that count retired floating-point arithmetic
   instructions. Each SIMD variant is weighted by its lane count:
     - `scalar_double` $\times 1$
@@ -167,15 +167,15 @@ Every operation is measured in both **perf mode** (hardware counters) and
 measurement formula:
 
 $$
-\alpha_{\text{perf}}(\text{op}) = \text{median}\left[\frac{\text{perf\_instructions}}{\text{analytical\_FLOPs}}\right]
+\alpha_{\text{perf}}(\text{op}) = \text{median}\left[\frac{\texttt{perf\_instructions}}{\texttt{analytical\_FLOPs}}\right]
 $$
 
 $$
-\alpha_{\text{timing}}(\text{op}) = \text{median}\left[\frac{\text{elapsed\_ns}}{\text{analytical\_FLOPs}}\right]
+\alpha_{\text{timing}}(\text{op}) = \text{median}\left[\frac{\texttt{elapsed\_ns}}{\texttt{analytical\_FLOPs}}\right]
 $$
 
 Timing-mode weights are normalized identically:
-$\text{timing\_weight}(\text{op}) = \alpha_{\text{timing}}(\text{op}) / \alpha_{\text{timing}}(\text{add})$.
+$\texttt{timing\_weight}(\text{op}) = \alpha_{\text{timing}}(\text{op}) / \alpha_{\text{timing}}(\text{add})$.
 
 ### Correlation statistics
 

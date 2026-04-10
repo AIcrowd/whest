@@ -49,6 +49,35 @@ MISC_OPS: list[str] = [
 ]
 
 
+_FORMULA_STRINGS: dict[str, str] = {
+    "allclose": "n",
+    "array_equal": "n",
+    "array_equiv": "n",
+    "clip": "n",
+    "diff": "n",
+    "ediff1d": "n",
+    "gradient": "n",
+    "unwrap": "n",
+    "convolve": "n * k",
+    "correlate": "n * k",
+    "corrcoef": "2 * f^2 * s",
+    "cov": "2 * f^2 * s",
+    "cross": "6 * n",
+    "histogram": "n * ceil(log2(bins))",
+    "histogram2d": "n * 2 * ceil(log2(bins))",
+    "histogramdd": "n * ndim * ceil(log2(bins))",
+    "histogram_bin_edges": "n",
+    "digitize": "n * ceil(log2(bins))",
+    "bincount": "n",
+    "interp": "n * ceil(log2(xp))",
+    "trace": "min(m, n)",
+    "trapezoid": "n",
+    "logspace": "n",
+    "geomspace": "n",
+    "vander": "n * (degree - 1)",
+}
+
+
 def _analytical_cost(op: str, **kwargs: int) -> int:
     """Return the analytical FLOP count for the benchmark configuration.
 
@@ -502,10 +531,35 @@ def _get_op_config(op: str, dtype: str) -> dict:
     raise ValueError(f"Unknown misc op: {op!r}")
 
 
+def _benchmark_size_str(op: str) -> str:
+    """Return a human-readable benchmark size string for an op."""
+    n_large = 10_000_000
+    if op in ("convolve", "correlate"):
+        return "n=100000, k=1000"
+    if op in ("corrcoef", "cov"):
+        return "f=1000, s=10000"
+    if op == "cross":
+        return "n=1000000"
+    if op == "histogramdd":
+        return "n=1000000, bins=50, ndim=3"
+    if op in ("histogram", "histogram2d"):
+        return f"n={n_large}, bins=100"
+    if op == "digitize":
+        return f"n={n_large}, bins=100"
+    if op == "interp":
+        return f"n={n_large}, xp=10000"
+    if op == "trace":
+        return "n=1000 (1000x1000 matrix)"
+    if op == "vander":
+        return "n=10000, degree=100"
+    # Default: most ops use n_large
+    return f"n={n_large}"
+
+
 def benchmark_misc(
     dtype: str = "float64",
     repeats: int = 10,
-) -> dict[str, float]:
+) -> tuple[dict[str, float], dict[str, dict]]:
     """Benchmark misc ops, returning alpha(op) = measured / analytical.
 
     For each operation, run with 3 input distributions and take the
@@ -520,10 +574,13 @@ def benchmark_misc(
 
     Returns
     -------
-    dict[str, float]
-        Mapping from op name to median alpha(op).
+    tuple[dict[str, float], dict[str, dict]]
+        A pair of (alphas, details). ``alphas`` maps op name to median
+        alpha(op). ``details`` maps op name to a dict of raw benchmark
+        metadata.
     """
     results: dict[str, float] = {}
+    details: dict[str, dict] = {}
 
     for op in MISC_OPS:
         try:
@@ -539,6 +596,8 @@ def benchmark_misc(
             continue
 
         dist_values: list[float] = []
+        dist_raw_totals: list[int] = []
+        last_bench_code = ""
 
         for i, setup in enumerate(setups):
             # bench can be a single string or a list (one per distribution)
@@ -546,14 +605,28 @@ def benchmark_misc(
                 bench_code = bench[i]
             else:
                 bench_code = bench
+            last_bench_code = bench_code
 
             try:
                 result = measure_flops(setup, bench_code, repeats=repeats)
             except RuntimeError:
                 continue
             dist_values.append(result.total_flops / (analytical * repeats))
+            dist_raw_totals.append(result.total_flops)
 
         if dist_values:
             results[op] = statistics.median(dist_values)
+            # For ops with varying bench code (list), store the first one
+            display_bench = bench[0] if isinstance(bench, list) else bench
+            details[op] = {
+                "category": "counted_custom",
+                "analytical_formula": _FORMULA_STRINGS.get(op, "n"),
+                "analytical_flops": analytical,
+                "benchmark_size": _benchmark_size_str(op),
+                "bench_code": display_bench,
+                "repeats": repeats,
+                "perf_instructions_total": dist_raw_totals,
+                "distribution_alphas": dist_values,
+            }
 
-    return results
+    return results, details

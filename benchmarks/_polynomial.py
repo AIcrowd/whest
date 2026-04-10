@@ -19,6 +19,19 @@ POLYNOMIAL_OPS: list[str] = [
     "roots",
 ]
 
+_FORMULA_STRINGS: dict[str, str] = {
+    "polyval": "2 * n * degree",
+    "polyfit": "2 * n * (degree+1)^2",
+    "roots": "10 * degree^3",
+    "polymul": "(degree+1)^2",
+    "polydiv": "(degree+1)^2",
+    "polyadd": "degree + 1",
+    "polysub": "degree + 1",
+    "polyder": "degree",
+    "polyint": "degree",
+    "poly": "degree^2",
+}
+
 
 def _analytical_cost(op: str, n: int, degree: int) -> int:
     """Return the analytical FLOP cost for a polynomial operation.
@@ -49,7 +62,7 @@ def benchmark_polynomial(
     dtype: str = "float64",
     repeats: int = 10,
     degree: int = 100,
-) -> dict[str, float]:
+) -> tuple[dict[str, float], dict[str, dict]]:
     """Benchmark polynomial ops, returning raw measurement per element.
 
     Each op is normalized by its analytical FLOP cost from
@@ -69,10 +82,12 @@ def benchmark_polynomial(
 
     Returns
     -------
-    dict[str, float]
-        Mapping from op name to median raw measurement per element.
+    tuple[dict[str, float], dict[str, dict]]
+        ``(alphas, details)`` where *alphas* maps op name to median alpha
+        and *details* maps op name to a dict of per-op measurement metadata.
     """
     results: dict[str, float] = {}
+    details: dict[str, dict] = {}
 
     # 3 distributions with varying coefficient magnitudes
     coeff_setups = [
@@ -83,6 +98,7 @@ def benchmark_polynomial(
 
     for op in POLYNOMIAL_OPS:
         dist_values: list[float] = []
+        perf_instructions: list[int] = []
 
         for ci, c_setup in enumerate(coeff_setups):
             seed = 42 + ci
@@ -138,9 +154,21 @@ def benchmark_polynomial(
             except RuntimeError:
                 continue
             analytical = _analytical_cost(op, n, degree)
+            perf_instructions.append(result.total_flops)
             dist_values.append(result.total_flops / (analytical * repeats))
 
         if dist_values:
             results[op] = statistics.median(dist_values)
+            median_idx = dist_values.index(statistics.median(dist_values))
+            details[op] = {
+                "category": "counted_custom",
+                "analytical_formula": _FORMULA_STRINGS.get(op, "n"),
+                "analytical_flops": analytical,
+                "benchmark_size": f"n={n}, degree={degree}",
+                "bench_code": bench,
+                "repeats": repeats,
+                "perf_instructions_total": perf_instructions[median_idx],
+                "distribution_alphas": dist_values,
+            }
 
-    return results
+    return results, details

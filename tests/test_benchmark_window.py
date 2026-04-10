@@ -7,6 +7,7 @@ import pytest
 from benchmarks._perf import PerfResult
 from benchmarks._window import (
     _ANALYTICAL_COST,
+    _FORMULA_STRINGS,
     WINDOW_OPS,
     benchmark_window,
 )
@@ -46,7 +47,26 @@ class TestAnalyticalCost:
             assert op in _ANALYTICAL_COST, f"{op} missing from _ANALYTICAL_COST"
 
 
+class TestFormulaStrings:
+    def test_all_ops_have_formula(self):
+        for op in WINDOW_OPS:
+            assert op in _FORMULA_STRINGS, f"{op} missing from _FORMULA_STRINGS"
+
+
 class TestBenchmarkWindow:
+    def test_returns_tuple(self):
+        mock_result = PerfResult(
+            scalar_double=1_000_000,
+            packed_128_double=0,
+            packed_256_double=0,
+            packed_512_double=0,
+        )
+        with patch("benchmarks._window.measure_flops", return_value=mock_result):
+            ret = benchmark_window(n=1_000, dtype="float64", repeats=1)
+
+        assert isinstance(ret, tuple)
+        assert len(ret) == 2
+
     def test_returns_dict_with_all_ops(self):
         mock_result = PerfResult(
             scalar_double=1_000_000,
@@ -55,7 +75,7 @@ class TestBenchmarkWindow:
             packed_512_double=0,
         )
         with patch("benchmarks._window.measure_flops", return_value=mock_result):
-            result = benchmark_window(n=1_000, dtype="float64", repeats=1)
+            result, details = benchmark_window(n=1_000, dtype="float64", repeats=1)
 
         assert isinstance(result, dict)
         assert set(WINDOW_OPS).issubset(set(result.keys()))
@@ -68,7 +88,7 @@ class TestBenchmarkWindow:
             packed_512_double=0,
         )
         with patch("benchmarks._window.measure_flops", return_value=mock_result):
-            result = benchmark_window(n=1_000, dtype="float64", repeats=1)
+            result, _ = benchmark_window(n=1_000, dtype="float64", repeats=1)
 
         for key, val in result.items():
             assert isinstance(val, float), f"{key} value is not float"
@@ -84,7 +104,7 @@ class TestBenchmarkWindow:
             packed_512_double=0,
         )
         with patch("benchmarks._window.measure_flops", return_value=mock_result):
-            result = benchmark_window(n=n, dtype="float64", repeats=repeats)
+            result, _ = benchmark_window(n=n, dtype="float64", repeats=repeats)
 
         analytical = _ANALYTICAL_COST["bartlett"] * n
         expected = total_flops / (analytical * repeats)
@@ -101,7 +121,7 @@ class TestBenchmarkWindow:
             packed_512_double=0,
         )
         with patch("benchmarks._window.measure_flops", return_value=mock_result):
-            result = benchmark_window(n=n, dtype="float64", repeats=repeats)
+            result, _ = benchmark_window(n=n, dtype="float64", repeats=repeats)
 
         analytical = _ANALYTICAL_COST["blackman"] * n  # 3 * n
         expected = total_flops / (analytical * repeats)
@@ -118,7 +138,7 @@ class TestBenchmarkWindow:
             packed_512_double=0,
         )
         with patch("benchmarks._window.measure_flops", return_value=mock_result):
-            result = benchmark_window(n=n, dtype="float64", repeats=repeats)
+            result, _ = benchmark_window(n=n, dtype="float64", repeats=repeats)
 
         analytical = _ANALYTICAL_COST["kaiser"] * n  # 3 * n
         expected = total_flops / (analytical * repeats)
@@ -129,6 +149,28 @@ class TestBenchmarkWindow:
         with patch(
             "benchmarks._window.measure_flops", side_effect=RuntimeError("no perf")
         ):
-            result = benchmark_window(n=1_000, dtype="float64", repeats=1)
+            result, details = benchmark_window(n=1_000, dtype="float64", repeats=1)
 
         assert result == {}
+        assert details == {}
+
+    def test_details_populated_for_all_ops(self):
+        mock_result = PerfResult(
+            scalar_double=1_000_000,
+            packed_128_double=0,
+            packed_256_double=0,
+            packed_512_double=0,
+        )
+        with patch("benchmarks._window.measure_flops", return_value=mock_result):
+            result, details = benchmark_window(n=1_000, dtype="float64", repeats=1)
+
+        assert set(details.keys()) == set(result.keys())
+        for op, d in details.items():
+            assert d["category"] == "counted_custom"
+            assert d["analytical_formula"] == _FORMULA_STRINGS[op]
+            assert d["analytical_flops"] == _ANALYTICAL_COST[op] * 1_000
+            assert d["benchmark_size"] == "n=1000"
+            assert isinstance(d["bench_code"], str)
+            assert d["repeats"] == 1
+            assert isinstance(d["perf_instructions_total"], list)
+            assert isinstance(d["distribution_alphas"], list)

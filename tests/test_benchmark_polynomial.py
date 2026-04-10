@@ -7,6 +7,7 @@ import pytest
 from benchmarks._perf import PerfResult
 from benchmarks._polynomial import (
     POLYNOMIAL_OPS,
+    _FORMULA_STRINGS,
     _analytical_cost,
     benchmark_polynomial,
 )
@@ -63,7 +64,31 @@ class TestAnalyticalCost:
             assert cost > 0, f"{op} returned non-positive cost"
 
 
+class TestFormulaStrings:
+    def test_all_ops_have_formula(self):
+        for op in POLYNOMIAL_OPS:
+            assert op in _FORMULA_STRINGS, f"{op} missing from _FORMULA_STRINGS"
+
+    def test_formulas_are_strings(self):
+        for op, formula in _FORMULA_STRINGS.items():
+            assert isinstance(formula, str), f"{op} formula is not a string"
+            assert len(formula) > 0, f"{op} formula is empty"
+
+
 class TestBenchmarkPolynomial:
+    def test_returns_tuple(self):
+        mock_result = PerfResult(
+            scalar_double=1_000_000,
+            packed_128_double=0,
+            packed_256_double=0,
+            packed_512_double=0,
+        )
+        with patch("benchmarks._polynomial.measure_flops", return_value=mock_result):
+            rv = benchmark_polynomial(n=1_000, dtype="float64", repeats=1, degree=5)
+
+        assert isinstance(rv, tuple)
+        assert len(rv) == 2
+
     def test_returns_dict_with_all_ops(self):
         mock_result = PerfResult(
             scalar_double=1_000_000,
@@ -72,7 +97,9 @@ class TestBenchmarkPolynomial:
             packed_512_double=0,
         )
         with patch("benchmarks._polynomial.measure_flops", return_value=mock_result):
-            result = benchmark_polynomial(n=1_000, dtype="float64", repeats=1, degree=5)
+            result, details = benchmark_polynomial(
+                n=1_000, dtype="float64", repeats=1, degree=5
+            )
 
         assert isinstance(result, dict)
         assert set(result.keys()) == set(POLYNOMIAL_OPS)
@@ -85,7 +112,9 @@ class TestBenchmarkPolynomial:
             packed_512_double=0,
         )
         with patch("benchmarks._polynomial.measure_flops", return_value=mock_result):
-            result = benchmark_polynomial(n=1_000, dtype="float64", repeats=1, degree=5)
+            result, _details = benchmark_polynomial(
+                n=1_000, dtype="float64", repeats=1, degree=5
+            )
 
         for key, val in result.items():
             assert isinstance(val, float), f"{key} value is not float"
@@ -99,7 +128,7 @@ class TestBenchmarkPolynomial:
         )
         n, degree = 1_000, 5
         with patch("benchmarks._polynomial.measure_flops", return_value=mock_result):
-            result = benchmark_polynomial(
+            result, _details = benchmark_polynomial(
                 n=n, dtype="float64", repeats=1, degree=degree
             )
 
@@ -118,7 +147,7 @@ class TestBenchmarkPolynomial:
         )
         n, degree = 1_000, 10
         with patch("benchmarks._polynomial.measure_flops", return_value=mock_result):
-            result = benchmark_polynomial(
+            result, _details = benchmark_polynomial(
                 n=n, dtype="float64", repeats=1, degree=degree
             )
 
@@ -127,3 +156,52 @@ class TestBenchmarkPolynomial:
         # normalized = 200 / 11 ≈ 18.18
         expected = 200.0 / _analytical_cost("polyadd", n, degree)
         assert result["polyadd"] == pytest.approx(expected)
+
+    def test_details_keys_match_results(self):
+        mock_result = PerfResult(
+            scalar_double=1_000_000,
+            packed_128_double=0,
+            packed_256_double=0,
+            packed_512_double=0,
+        )
+        with patch("benchmarks._polynomial.measure_flops", return_value=mock_result):
+            result, details = benchmark_polynomial(
+                n=1_000, dtype="float64", repeats=1, degree=5
+            )
+
+        assert set(result.keys()) == set(details.keys())
+
+    def test_details_schema(self):
+        mock_result = PerfResult(
+            scalar_double=1_000_000,
+            packed_128_double=0,
+            packed_256_double=0,
+            packed_512_double=0,
+        )
+        with patch("benchmarks._polynomial.measure_flops", return_value=mock_result):
+            _result, details = benchmark_polynomial(
+                n=1_000, dtype="float64", repeats=1, degree=5
+            )
+
+        expected_keys = {
+            "category",
+            "analytical_formula",
+            "analytical_flops",
+            "benchmark_size",
+            "bench_code",
+            "repeats",
+            "perf_instructions_total",
+            "distribution_alphas",
+        }
+        for op, d in details.items():
+            assert set(d.keys()) == expected_keys, f"{op} details keys mismatch"
+            assert d["category"] == "counted_custom"
+            assert isinstance(d["analytical_formula"], str)
+            assert isinstance(d["analytical_flops"], int)
+            assert "n=1000" in d["benchmark_size"]
+            assert "degree=5" in d["benchmark_size"]
+            assert isinstance(d["bench_code"], str)
+            assert d["repeats"] == 1
+            assert isinstance(d["perf_instructions_total"], int)
+            assert isinstance(d["distribution_alphas"], list)
+            assert len(d["distribution_alphas"]) == 3  # 3 distributions

@@ -33,6 +33,23 @@ _RFFT_OPS = {
     "fft.irfftn",
 }
 
+_FORMULA_STRINGS: dict[str, str] = {
+    "fft.fft": "5*n*ceil(log2(n))",
+    "fft.ifft": "5*n*ceil(log2(n))",
+    "fft.rfft": "5*(n/2)*ceil(log2(n))",
+    "fft.irfft": "5*(n/2)*ceil(log2(n))",
+    "fft.fft2": "5*n*ceil(log2(n))",
+    "fft.ifft2": "5*n*ceil(log2(n))",
+    "fft.rfft2": "5*(n/2)*ceil(log2(n))",
+    "fft.irfft2": "5*(n/2)*ceil(log2(n))",
+    "fft.fftn": "5*n*ceil(log2(n))",
+    "fft.ifftn": "5*n*ceil(log2(n))",
+    "fft.rfftn": "5*(n/2)*ceil(log2(n))",
+    "fft.irfftn": "5*(n/2)*ceil(log2(n))",
+    "fft.hfft": "5*n*ceil(log2(n))",
+    "fft.ihfft": "5*(n/2)*ceil(log2(n))",
+}
+
 
 def _ceil_log2(n: int) -> int:
     """Return ceil(log2(n)), minimum 1."""
@@ -66,7 +83,7 @@ def benchmark_fft(
     n: int = 2**20,
     dtype: str = "float64",
     repeats: int = 10,
-) -> dict[str, float]:
+) -> tuple[dict[str, float], dict[str, dict]]:
     """Benchmark FFT ops, returning correction factors (measured / analytical).
 
     Parameters
@@ -80,16 +97,20 @@ def benchmark_fft(
 
     Returns
     -------
-    dict[str, float]
-        Mapping from op name to median correction factor.
+    tuple[dict[str, float], dict[str, dict]]
+        A pair of (alphas, details). ``alphas`` maps op name to median
+        correction factor. ``details`` maps op name to a dict of raw
+        benchmark metadata.
     """
     results: dict[str, float] = {}
+    details: dict[str, dict] = {}
 
     # 2D/nD ops use sqrt(n) x sqrt(n)
     side = int(math.isqrt(n))
 
     for op in FFT_OPS:
         dist_values: list[float] = []
+        dist_raw_totals: list[int] = []
 
         # Determine dimensionality
         is_2d = "2" in op.split(".")[-1]
@@ -99,9 +120,11 @@ def benchmark_fft(
         if is_multi:
             shape_str = f"({side}, {side})"
             effective_n = side * side
+            benchmark_size = f"n={side}x{side}"
         else:
             shape_str = f"({n},)"
             effective_n = n
+            benchmark_size = f"n={n}"
 
         # Determine input type needed
         short = op.split(".")[-1]
@@ -156,8 +179,19 @@ def benchmark_fft(
                 continue
             measured = result.total_flops / repeats
             dist_values.append(measured / analytical if analytical else 0.0)
+            dist_raw_totals.append(result.total_flops)
 
         if dist_values:
             results[op] = statistics.median(dist_values)
+            details[op] = {
+                "category": "counted_custom",
+                "analytical_formula": _FORMULA_STRINGS.get(op, ""),
+                "analytical_flops": analytical,
+                "benchmark_size": benchmark_size,
+                "bench_code": bench,
+                "repeats": repeats,
+                "perf_instructions_total": dist_raw_totals,
+                "distribution_alphas": dist_values,
+            }
 
-    return results
+    return results, details

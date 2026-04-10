@@ -61,6 +61,19 @@ class TestOpsLists:
 
 
 class TestBenchmarkRandom:
+    def test_returns_tuple(self):
+        mock_result = PerfResult(
+            scalar_double=1_000_000,
+            packed_128_double=0,
+            packed_256_double=0,
+            packed_512_double=0,
+        )
+        with patch("benchmarks._random.measure_flops", return_value=mock_result):
+            ret = benchmark_random(n=1_000, dtype="float64", repeats=1)
+
+        assert isinstance(ret, tuple)
+        assert len(ret) == 2
+
     def test_returns_dict_with_all_ops(self):
         mock_result = PerfResult(
             scalar_double=1_000_000,
@@ -69,7 +82,7 @@ class TestBenchmarkRandom:
             packed_512_double=0,
         )
         with patch("benchmarks._random.measure_flops", return_value=mock_result):
-            result = benchmark_random(n=1_000, dtype="float64", repeats=1)
+            result, details = benchmark_random(n=1_000, dtype="float64", repeats=1)
 
         assert isinstance(result, dict)
         assert set(result.keys()) == set(RANDOM_OPS)
@@ -82,7 +95,7 @@ class TestBenchmarkRandom:
             packed_512_double=0,
         )
         with patch("benchmarks._random.measure_flops", return_value=mock_result):
-            result = benchmark_random(n=1_000, dtype="float64", repeats=1)
+            result, _ = benchmark_random(n=1_000, dtype="float64", repeats=1)
 
         for key, val in result.items():
             assert isinstance(val, float), f"{key} value is not float"
@@ -95,8 +108,29 @@ class TestBenchmarkRandom:
             packed_512_double=0,
         )
         with patch("benchmarks._random.measure_flops", return_value=mock_result):
-            result = benchmark_random(n=1_000, dtype="float64", repeats=4)
+            result, _ = benchmark_random(n=1_000, dtype="float64", repeats=4)
 
         # total_flops = 2000 * 4 = 8000, per_element = 8000 / (1000 * 4) = 2.0
         for val in result.values():
             assert val == pytest.approx(2.0)
+
+    def test_details_populated_for_all_ops(self):
+        mock_result = PerfResult(
+            scalar_double=1_000_000,
+            packed_128_double=0,
+            packed_256_double=0,
+            packed_512_double=0,
+        )
+        with patch("benchmarks._random.measure_flops", return_value=mock_result):
+            result, details = benchmark_random(n=1_000, dtype="float64", repeats=1)
+
+        assert set(details.keys()) == set(result.keys())
+        for op, d in details.items():
+            assert d["category"] == "counted_custom"
+            assert d["analytical_formula"] == "numel(output)"
+            assert d["analytical_flops"] == 1_000
+            assert d["benchmark_size"] == "n=1000"
+            assert isinstance(d["bench_code"], str)
+            assert d["repeats"] == 1
+            assert isinstance(d["perf_instructions_total"], list)
+            assert isinstance(d["distribution_alphas"], list)

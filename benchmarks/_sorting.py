@@ -29,6 +29,26 @@ SORTING_OPS: list[str] = [
     "unique_values",
 ]
 
+_FORMULA_STRINGS: dict[str, str] = {
+    "sort": "n * ceil(log2(n))",
+    "argsort": "n * ceil(log2(n))",
+    "unique": "n * ceil(log2(n))",
+    "unique_all": "n * ceil(log2(n))",
+    "unique_counts": "n * ceil(log2(n))",
+    "unique_inverse": "n * ceil(log2(n))",
+    "unique_values": "n * ceil(log2(n))",
+    "lexsort": "k * n * ceil(log2(n))",
+    "searchsorted": "m * ceil(log2(n))",
+    "partition": "n",
+    "argpartition": "n",
+    "in1d": "(n+m) * ceil(log2(n+m))",
+    "isin": "(n+m) * ceil(log2(n+m))",
+    "intersect1d": "(n+m) * ceil(log2(n+m))",
+    "setdiff1d": "(n+m) * ceil(log2(n+m))",
+    "setxor1d": "(n+m) * ceil(log2(n+m))",
+    "union1d": "(n+m) * ceil(log2(n+m))",
+}
+
 
 def _analytical_cost(op: str, n: int, **kwargs: int) -> int:
     """Return the analytical operation count for a sorting-related op.
@@ -81,7 +101,7 @@ def benchmark_sorting(
     n: int = 10_000_000,
     dtype: str = "float64",
     repeats: int = 10,
-) -> dict[str, float]:
+) -> tuple[dict[str, float], dict[str, dict]]:
     """Benchmark sorting ops, returning FP ops per analytical operation.
 
     Parameters
@@ -95,13 +115,16 @@ def benchmark_sorting(
 
     Returns
     -------
-    dict[str, float]
-        Mapping from op name to median FP ops per analytical operation.
+    tuple[dict[str, float], dict[str, dict]]
+        ``(alphas, details)`` where *alphas* maps op name to median alpha
+        and *details* maps op name to a dict of per-op measurement metadata.
     """
     results: dict[str, float] = {}
+    details: dict[str, dict] = {}
 
     for op in SORTING_OPS:
         dist_values: list[float] = []
+        perf_instructions: list[int] = []
 
         if op == "lexsort":
             setups = [
@@ -215,9 +238,22 @@ def benchmark_sorting(
                 result = measure_flops(setup, bench, repeats=repeats)
             except RuntimeError:
                 continue
+            perf_instructions.append(result.total_flops)
             dist_values.append(result.total_flops / (analytical * repeats))
 
         if dist_values:
             results[op] = statistics.median(dist_values)
+            # Find the perf_instructions corresponding to the median alpha
+            median_idx = dist_values.index(statistics.median(dist_values))
+            details[op] = {
+                "category": "counted_custom",
+                "analytical_formula": _FORMULA_STRINGS.get(op, "n"),
+                "analytical_flops": analytical,
+                "benchmark_size": f"n={n}",
+                "bench_code": bench,
+                "repeats": repeats,
+                "perf_instructions_total": perf_instructions[median_idx],
+                "distribution_alphas": dist_values,
+            }
 
-    return results
+    return results, details
