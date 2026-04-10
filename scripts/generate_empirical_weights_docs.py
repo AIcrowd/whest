@@ -162,6 +162,8 @@ def load_data(path: Path) -> dict:
 
 CSV_COLUMNS = [
     "Operation",
+    "Status",
+    "Exclusion Reason",
     "Category",
     "Perf Weight",
     "Timing Weight",
@@ -217,13 +219,84 @@ def _time_per_flop(timing_ns: float | None, analytical_flops: int | None,
     return f"{timing_ns / denom:.4f}"
 
 
+def _empty_row(op_name: str, status: str, reason: str,
+               category: str, notes: str) -> dict:
+    """Build a row with only status/reason fields populated."""
+    row = {col: "" for col in CSV_COLUMNS}
+    row["Operation"] = op_name
+    row["Status"] = status
+    row["Exclusion Reason"] = reason
+    row["Category"] = category
+    row["Notes"] = notes
+    return row
+
+
+# Alias map: excluded op -> canonical benchmarked op whose weight it inherits
+_ALIAS_MAP = {
+    "acos": "arccos", "acosh": "arccosh", "asin": "arcsin",
+    "asinh": "arcsinh", "atan": "arctan", "atan2": "arctan2",
+    "atanh": "arctanh", "pow": "power", "absolute": "abs",
+    "amax": "max", "amin": "min", "around": "rint", "fix": "trunc",
+    "round": "rint", "nanargmax": "argmax", "nanargmin": "argmin",
+    "nancumprod": "cumprod", "nancumsum": "cumsum",
+    "cumulative_prod": "cumprod", "cumulative_sum": "cumsum",
+    "ptp": "max", "divmod": "floor_divide", "trapz": "trapezoid",
+}
+
+# Exclusion sets with reasons
+_EXCLUSIONS = {
+    "bitwise": (
+        frozenset({"bitwise_and", "bitwise_count", "bitwise_invert",
+                    "bitwise_left_shift", "bitwise_not", "bitwise_or",
+                    "bitwise_right_shift", "bitwise_xor", "invert",
+                    "left_shift", "right_shift", "gcd", "lcm"}),
+        "Integer/bitwise operation — no floating-point instructions retired",
+    ),
+    "complex": (
+        frozenset({"angle", "conj", "conjugate", "imag", "real",
+                    "real_if_close", "iscomplex", "iscomplexobj",
+                    "isreal", "isrealobj", "sort_complex"}),
+        "Complex-number operation — weight depends on dtype (real vs complex)",
+    ),
+    "linalg_delegate": (
+        frozenset({"linalg.cond", "linalg.cross", "linalg.matmul",
+                    "linalg.matrix_norm", "linalg.matrix_power",
+                    "linalg.matrix_rank", "linalg.multi_dot", "linalg.norm",
+                    "linalg.outer", "linalg.tensordot", "linalg.tensorinv",
+                    "linalg.tensorsolve", "linalg.trace", "linalg.vecdot",
+                    "linalg.vector_norm"}),
+        "Delegates to a primary op (e.g., linalg.matmul -> matmul)",
+    ),
+    "random_alias": (
+        frozenset({"random.bytes", "random.random_integers",
+                    "random.ranf", "random.sample"}),
+        "Alias or removed in NumPy 2.x",
+    ),
+    "no_fp_work": (
+        frozenset({"einsum_path"}),
+        "Planning operation — no floating-point computation",
+    ),
+    "version_dependent": (
+        frozenset({"isnat"}),
+        "datetime64-only operation — no floating-point instructions",
+    ),
+}
+
+
 def build_rows(data: dict) -> list[dict]:
-    """Build one row dict per operation from enriched weights.json."""
+    """Build one row dict per operation from enriched weights.json.
+
+    Includes benchmarked ops, aliases, and excluded ops with reasons.
+    """
+    from mechestim._registry import REGISTRY
+
     weights = data["weights"]
     details = data["meta"]["per_op_details"]
     timing_weights = data["meta"]["validation"].get("timing_weights", {})
 
     rows = []
+
+    # --- Benchmarked ops ---
     for op_name, perf_weight in weights.items():
         d = details.get(op_name, {})
         tw = timing_weights.get(op_name, 0.0)
@@ -236,6 +309,8 @@ def build_rows(data: dict) -> list[dict]:
 
         row = {
             "Operation": op_name,
+            "Status": "benchmarked",
+            "Exclusion Reason": "",
             "Category": display_cat,
             "Perf Weight": f"{perf_weight:.4f}",
             "Timing Weight": f"{tw:.4f}" if tw else "0.0000",
@@ -263,11 +338,60 @@ def build_rows(data: dict) -> list[dict]:
         }
         rows.append(row)
 
-    # Sort by category order, then by perf weight descending
+    # --- Alias ops (inherit weight from canonical op) ---
+    for alias, canonical in sorted(_ALIAS_MAP.items()):
+        if alias in weights:
+            continue  # already benchmarked directly
+        entry = REGISTRY.get(alias, {})
+        canon_weight = weights.get(canonical, "")
+        reason = f"Alias of {canonical}"
+        if canon_weight:
+            reason += f" (weight: {canon_weight:.4f})"
+        row = _empty_row(
+            alias, "alias", reason,
+            entry.get("category", ""),
+            entry.get("notes", ""),
+        )
+        row["Perf Weight"] = f"{canon_weight:.4f}" if canon_weight else ""
+        rows.append(row)
+
+    # --- Excluded ops ---
+    for group_name, (op_set, reason) in _EXCLUSIONS.items():
+        for op_name in sorted(op_set):
+            if op_name in weights:
+                continue
+            entry = REGISTRY.get(op_name, {})
+            rows.append(_empty_row(
+                op_name, "excluded", reason,
+                entry.get("category", ""),
+                entry.get("notes", ""),
+            ))
+
+    # --- Free ops (0 FLOPs) ---
+    for name, entry in sorted(REGISTRY.items()):
+        if entry["category"] == "free" and name not in weights:
+            rows.append(_empty_row(
+                name, "free", "Zero FLOP cost — not benchmarked",
+                "free",
+                entry.get("notes", ""),
+            ))
+
+    # --- Blacklisted ops ---
+    for name, entry in sorted(REGISTRY.items()):
+        if entry["category"] == "blacklisted" and name not in weights:
+            rows.append(_empty_row(
+                name, "blacklisted", "Intentionally unsupported in mechestim",
+                "blacklisted",
+                entry.get("notes", ""),
+            ))
+
+    # Sort: benchmarked first (by category then weight), then alias, excluded, free, blacklisted
+    status_order = {"benchmarked": 0, "alias": 1, "excluded": 2, "free": 3, "blacklisted": 4}
     cat_order = {c: i for i, c in enumerate(DISPLAY_CATEGORIES)}
     rows.sort(key=lambda r: (
+        status_order.get(r["Status"], 99),
         cat_order.get(r["Category"], 999),
-        -float(r["Perf Weight"]),
+        -float(r["Perf Weight"]) if r["Perf Weight"] else 0,
     ))
     return rows
 
