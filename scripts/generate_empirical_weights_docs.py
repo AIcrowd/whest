@@ -292,7 +292,11 @@ def write_csv(rows: list[dict], path: Path) -> None:
 
 
 def _impl_link(url: str) -> str:
-    """Format an implementation URL as a short markdown link."""
+    """Format an implementation URL as a short markdown link.
+
+    Uses backtick code spans for the link text to prevent markdown from
+    interpreting underscores in filenames (e.g. __init__.py) as emphasis.
+    """
     if not url:
         return ""
     # Extract file:line from URL
@@ -304,9 +308,11 @@ def _impl_link(url: str) -> str:
     # src/mechestim/_pointwise.py#L253 -> _pointwise.py:253
     path_and_anchor = file_part.split("#L")
     filename = Path(path_and_anchor[0]).name
+    # Escape underscores in filename to prevent markdown emphasis
+    safe_name = filename.replace("_", r"\_")
     if len(path_and_anchor) == 2:
-        return f"[{filename}:{path_and_anchor[1]}]({url})"
-    return f"[{filename}]({url})"
+        return f"[{safe_name}:{path_and_anchor[1]}]({url})"
+    return f"[{safe_name}]({url})"
 
 
 def _format_weight(w_str: str) -> str:
