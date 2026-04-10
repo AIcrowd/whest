@@ -184,7 +184,7 @@ def benchmark_polynomial(
                 "benchmark_size": bm_size,
                 "bench_code": bench,
                 "repeats": repeats,
-                "perf_instructions_total": perf_instructions[median_idx],
+                "perf_instructions_total": perf_instructions,
                 "distribution_alphas": dist_values,
             }
 

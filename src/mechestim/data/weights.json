@@ -4641,7 +4641,9 @@
         "benchmark_size": "c: (101,), x: (1000000,)",
         "bench_code": "np.polyval(c, x)",
         "repeats": 5,
-        "perf_instructions_total": 1011416473,
+        "perf_instructions_total": [
+          1011416473
+        ],
         "distribution_alphas": [
           1.011416473,
           1.011421596,
@@ -4666,7 +4668,9 @@
         "benchmark_size": "x: (1000000,), y: (1000000,), degree=100",
         "bench_code": "np.polyfit(x, y, 100)",
         "repeats": 5,
-        "perf_instructions_total": 120900890185,
+        "perf_instructions_total": [
+          120900890185
+        ],
         "distribution_alphas": [
           1.1851866501813548,
           1.1851867004019214,
@@ -4691,7 +4695,9 @@
         "benchmark_size": "c: (101,), d: (101,)",
         "bench_code": "np.polyadd(c, d)",
         "repeats": 5,
-        "perf_instructions_total": 6478,
+        "perf_instructions_total": [
+          6478
+        ],
         "distribution_alphas": [
           12.673267326732674,
           12.827722772277228,
@@ -4716,7 +4722,9 @@
         "benchmark_size": "c: (101,), d: (101,)",
         "bench_code": "np.polysub(c, d)",
         "repeats": 5,
-        "perf_instructions_total": 6478,
+        "perf_instructions_total": [
+          6478
+        ],
         "distribution_alphas": [
           12.673267326732674,
           12.827722772277228,
@@ -4741,7 +4749,9 @@
         "benchmark_size": "c: (101,), d: (101,)",
         "bench_code": "np.polymul(c, d)",
         "repeats": 5,
-        "perf_instructions_total": 133773,
+        "perf_instructions_total": [
+          133773
+        ],
         "distribution_alphas": [
           2.6212136065091656,
           2.6227428683462404,
@@ -4766,7 +4776,9 @@
         "benchmark_size": "c: (101,), d: (101,)",
         "bench_code": "np.polydiv(c, d)",
         "repeats": 5,
-        "perf_instructions_total": 8083,
+        "perf_instructions_total": [
+          8083
+        ],
         "distribution_alphas": [
           0.15694539751004805,
           0.15847465934712282,
@@ -4791,7 +4803,9 @@
         "benchmark_size": "c: (101,)",
         "bench_code": "np.polyder(c)",
         "repeats": 5,
-        "perf_instructions_total": 6872,
+        "perf_instructions_total": [
+          6872
+        ],
         "distribution_alphas": [
           13.607920792079208
         ],
@@ -4814,7 +4828,9 @@
         "benchmark_size": "c: (101,)",
         "bench_code": "np.polyint(c)",
         "repeats": 5,
-        "perf_instructions_total": 6382,
+        "perf_instructions_total": [
+          6382
+        ],
         "distribution_alphas": [
           12.637623762376236
         ],
@@ -4837,7 +4853,9 @@
         "benchmark_size": "r: (100,)",
         "bench_code": "np.poly(r)",
         "repeats": 5,
-        "perf_instructions_total": 107947,
+        "perf_instructions_total": [
+          107947
+        ],
         "distribution_alphas": [
           2.15738,
           2.15894,
@@ -4862,7 +4880,9 @@
         "benchmark_size": "c: (101,)",
         "bench_code": "np.roots(c)",
         "repeats": 5,
-        "perf_instructions_total": 53876357,
+        "perf_instructions_total": [
+          53876357
+        ],
         "distribution_alphas": [
           1.07752714,
           1.09457804,
@@ -7149,7 +7169,9 @@
         "benchmark_size": "x: (10000000,)",
         "bench_code": "np.sort(x)",
         "repeats": 5,
-        "perf_instructions_total": 5289929132,
+        "perf_instructions_total": [
+          5289929132
+        ],
         "distribution_alphas": [
           3.67259217,
           4.408274276666667,
@@ -7174,7 +7196,9 @@
         "benchmark_size": "x: (10000000,)",
         "bench_code": "np.argsort(x)",
         "repeats": 5,
-        "perf_instructions_total": 6294647272,
+        "perf_instructions_total": [
+          6294647272
+        ],
         "distribution_alphas": [
           4.56813782,
           5.245539393333333,
@@ -7199,7 +7223,9 @@
         "benchmark_size": "x: (10000000,), y: (10000000,), k=2",
         "bench_code": "np.lexsort((x, y))",
         "repeats": 5,
-        "perf_instructions_total": 1786874568,
+        "perf_instructions_total": [
+          1786874568
+        ],
         "distribution_alphas": [
           0.011754435,
           0.74453107,
@@ -7224,7 +7250,9 @@
         "benchmark_size": "x: (10000000,), kth=5000000",
         "bench_code": "np.partition(x, 5000000)",
         "repeats": 5,
-        "perf_instructions_total": 228384341,
+        "perf_instructions_total": [
+          228384341
+        ],
         "distribution_alphas": [
           4.68062508,
           3.93339978,
@@ -7249,7 +7277,9 @@
         "benchmark_size": "x: (10000000,), kth=5000000",
         "bench_code": "np.argpartition(x, 5000000)",
         "repeats": 5,
-        "perf_instructions_total": 237123359,
+        "perf_instructions_total": [
+          237123359
+        ],
         "distribution_alphas": [
           4.63401188,
           4.74246718,
@@ -7274,7 +7304,9 @@
         "benchmark_size": "x: (10000000,), q: (10000000,)",
         "bench_code": "np.searchsorted(x, q)",
         "repeats": 5,
-        "perf_instructions_total": 1786874568,
+        "perf_instructions_total": [
+          1786874568
+        ],
         "distribution_alphas": [
           0.755675185,
           1.48906214,
@@ -7299,7 +7331,9 @@
         "benchmark_size": "x: (10000000,)",
         "bench_code": "np.unique(x)",
         "repeats": 5,
-        "perf_instructions_total": 5289929132,
+        "perf_instructions_total": [
+          5289929132
+        ],
         "distribution_alphas": [
           3.67259217,
           4.408274276666667,
@@ -7324,7 +7358,9 @@
         "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.in1d(a, b)",
         "repeats": 5,
-        "perf_instructions_total": 11586026801,
+        "perf_instructions_total": [
+          11586026801
+        ],
         "distribution_alphas": [
           3.9539693308,
           4.6344107204,
@@ -7349,7 +7385,9 @@
         "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.isin(a, b)",
         "repeats": 5,
-        "perf_instructions_total": 11586026698,
+        "perf_instructions_total": [
+          11586026698
+        ],
         "distribution_alphas": [
           3.9539692896,
           4.6344106792,
@@ -7374,7 +7412,9 @@
         "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.intersect1d(a, b)",
         "repeats": 5,
-        "perf_instructions_total": 20359265948,
+        "perf_instructions_total": [
+          20359265948
+        ],
         "distribution_alphas": [
           7.3801254536,
           8.1437063792,
@@ -7399,7 +7439,9 @@
         "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.setdiff1d(a, b)",
         "repeats": 5,
-        "perf_instructions_total": 10581308558,
+        "perf_instructions_total": [
+          10581308558
+        ],
         "distribution_alphas": [
           3.5241073776,
           4.2325234232,
@@ -7424,7 +7466,9 @@
         "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.setxor1d(a, b)",
         "repeats": 5,
-        "perf_instructions_total": 20359265948,
+        "perf_instructions_total": [
+          20359265948
+        ],
         "distribution_alphas": [
           7.3801254536,
           8.1437063792,
@@ -7449,7 +7493,9 @@
         "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.union1d(a, b)",
         "repeats": 5,
-        "perf_instructions_total": 11564832268,
+        "perf_instructions_total": [
+          11564832268
+        ],
         "distribution_alphas": [
           3.6129020176,
           4.6259329072,
@@ -7474,7 +7520,9 @@
         "benchmark_size": "x: (10000000,)",
         "bench_code": "np.unique_all(x)",
         "repeats": 5,
-        "perf_instructions_total": 892712297,
+        "perf_instructions_total": [
+          892712297
+        ],
         "distribution_alphas": [
           0.011760599166666667,
           0.7439269141666667,
@@ -7499,7 +7547,9 @@
         "benchmark_size": "x: (10000000,)",
         "bench_code": "np.unique_counts(x)",
         "repeats": 5,
-        "perf_instructions_total": 5289929137,
+        "perf_instructions_total": [
+          5289929137
+        ],
         "distribution_alphas": [
           3.6725921741666667,
           4.408274280833333,
@@ -7524,7 +7574,9 @@
         "benchmark_size": "x: (10000000,)",
         "bench_code": "np.unique_inverse(x)",
         "repeats": 5,
-        "perf_instructions_total": 6294647272,
+        "perf_instructions_total": [
+          6294647272
+        ],
         "distribution_alphas": [
           4.56813782,
           5.245539393333333,
@@ -7549,7 +7601,9 @@
         "benchmark_size": "x: (10000000,)",
         "bench_code": "np.unique_values(x)",
         "repeats": 5,
-        "perf_instructions_total": 5289929132,
+        "perf_instructions_total": [
+          5289929132
+        ],
         "distribution_alphas": [
           3.67259217,
           4.408274276666667,
