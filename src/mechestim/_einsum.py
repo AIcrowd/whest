@@ -149,7 +149,10 @@ def einsum(
     # Handle output symmetry wrapping
     if symmetry is not None and isinstance(result, _np.ndarray) and result.ndim >= 2:
         from mechestim._symmetric import validate_symmetry_groups
-        perm_groups = [symmetry] if isinstance(symmetry, PermutationGroup) else list(symmetry)
+
+        perm_groups = (
+            [symmetry] if isinstance(symmetry, PermutationGroup) else list(symmetry)
+        )
         validate_symmetry_groups(result, perm_groups)
         sym_axes = [g.axes for g in perm_groups if g.axes is not None]
         result = SymmetricTensor(result, sym_axes, perm_groups=perm_groups)

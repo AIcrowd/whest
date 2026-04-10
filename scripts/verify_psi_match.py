@@ -283,7 +283,10 @@ def main():
     print("ASYMPTOTIC FORMULAS (n → ∞, μ=ν=1)")
     print("=" * 100)
     from math import factorial
-    print(f"{'(s,t,v)':>8} {'ω':>3} │ {'Ψ leading':>20} {'Φ leading':>20} {'Φ coeff':>8} {'best':>6}")
+
+    print(
+        f"{'(s,t,v)':>8} {'ω':>3} │ {'Ψ leading':>20} {'Φ leading':>20} {'Φ coeff':>8} {'best':>6}"
+    )
     print("─" * 75)
     for s, t, v in cases:
         omega = s + t + v
@@ -303,7 +306,9 @@ def main():
 
         label = f"({s},{t},{v})"
         pad = max(8 - len(label), 0)
-        print(f"{label}{' ' * pad} {omega:>3} │ {psi_str:>20} {phi_str:>20} {phi_coeff:>8} {best:>6}")
+        print(
+            f"{label}{' ' * pad} {omega:>3} │ {psi_str:>20} {phi_str:>20} {phi_coeff:>8} {best:>6}"
+        )
 
 
 if __name__ == "__main__":

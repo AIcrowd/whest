@@ -1,4 +1,5 @@
 """Debug: what does the oracle detect vs what Φ needs?"""
+
 from math import comb
 
 import numpy as np
@@ -10,9 +11,7 @@ from mechestim._opt_einsum._symmetry import unique_elements
 n = 6
 X = np.ones((n, n, n))
 
-oracle = SubgraphSymmetryOracle(
-    [X, X], ["ijk", "ilm"], [None, None], "jklm"
-)
+oracle = SubgraphSymmetryOracle([X, X], ["ijk", "ilm"], [None, None], "jklm")
 
 # What symmetry does the oracle see for the merged subset {0, 1}?
 sym = oracle.sym(frozenset({0, 1}))
@@ -39,7 +38,7 @@ print(f"ratio: {unique_oracle / n**5:.4f}")
 full_sym = [frozenset((c,) for c in "ijklm")]  # all 5 in one group
 unique_full = unique_elements(all_indices, size_dict, full_sym)
 print(f"\nunique_elements (full ω-symmetry): {unique_full}")
-print(f"((n={n}, ω=5)) = C({n+4}, 5) = {comb(n+4, 5)}")
+print(f"((n={n}, ω=5)) = C({n + 4}, 5) = {comb(n + 4, 5)}")
 
 # Φ cost with full symmetry
 omega = 5

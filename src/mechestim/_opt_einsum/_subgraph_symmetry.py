@@ -591,7 +591,9 @@ def _compute_subset_symmetry(
     w_merged = _merge_overlapping_groups(w_fast + w_sigma)
 
     # Step 6: collect exact PermutationGroup via raw π's.
-    v_perms, w_perms = _collect_pi_permutations(graph, sub, row_order, col_of, fp_to_labels)
+    v_perms, w_perms = _collect_pi_permutations(
+        graph, sub, row_order, col_of, fp_to_labels
+    )
     v_sorted = tuple(sorted(sub.v_labels))
     w_sorted = tuple(sorted(sub.w_labels))
 

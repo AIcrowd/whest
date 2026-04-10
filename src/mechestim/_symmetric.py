@@ -131,7 +131,9 @@ def validate_symmetry_groups(data: np.ndarray, groups: list) -> None:
         for orbit in group.orbits():
             sizes = {data.shape[axes[i]] for i in orbit}
             if len(sizes) != 1:
-                raise SymmetryError(axes=tuple(axes[i] for i in orbit), max_deviation=float("inf"))
+                raise SymmetryError(
+                    axes=tuple(axes[i] for i in orbit), max_deviation=float("inf")
+                )
         for gen in group.generators:
             if gen.is_identity:
                 continue
@@ -578,7 +580,9 @@ class SymmetricTensor(np.ndarray):
         # but result may have been cast to plain ndarray, so re-view:
         out = result.view(SymmetricTensor)
         out._symmetric_axes = list(self._symmetric_axes)
-        out._symmetry_groups = list(self._symmetry_groups) if self._symmetry_groups else []
+        out._symmetry_groups = (
+            list(self._symmetry_groups) if self._symmetry_groups else []
+        )
         return out
 
     # -- pickling --
@@ -599,15 +603,13 @@ class SymmetricTensor(np.ndarray):
         # Check if last element looks like a list of PermutationGroup objects
         # (new format) vs list of tuples (old format)
         if isinstance(last, list) and (
-            len(last) == 0
-            or isinstance(last[0], PermutationGroup)
+            len(last) == 0 or isinstance(last[0], PermutationGroup)
         ):
             # Could be new format (empty list or list of PermutationGroup)
             # Check second-to-last to confirm it's symmetric_axes
             second_last = state[-2]
             if isinstance(second_last, list) and (
-                len(second_last) == 0
-                or isinstance(second_last[0], tuple)
+                len(second_last) == 0 or isinstance(second_last[0], tuple)
             ):
                 # New format
                 self._symmetry_groups = last

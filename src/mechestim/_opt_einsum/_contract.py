@@ -613,9 +613,7 @@ def contract_path(
             result_sym = subset_sym.output
 
             # Per-operand free index counts for Φ cost model.
-            _free_counts = tuple(
-                len(s - idx_removed) for s in _pre_input_sets
-            )
+            _free_counts = tuple(len(s - idx_removed) for s in _pre_input_sets)
 
             cost = symmetric_flop_count(
                 idx_contract,

@@ -59,7 +59,9 @@ class Permutation:
 
     def __mul__(self, other: Permutation) -> Permutation:
         """Compose: ``(self * other)[i] = self[other[i]]``."""
-        return Permutation(tuple(self._array_form[other._array_form[i]] for i in range(self.size)))
+        return Permutation(
+            tuple(self._array_form[other._array_form[i]] for i in range(self.size))
+        )
 
     def __invert__(self) -> Permutation:
         inv = [0] * self.size
@@ -164,7 +166,9 @@ class PermutationGroup:
         axes: tuple[int, ...] | None = None,
     ) -> None:
         if not generators:
-            raise ValueError("At least one generator required (use Permutation.identity(n) for the trivial group)")
+            raise ValueError(
+                "At least one generator required (use Permutation.identity(n) for the trivial group)"
+            )
         degrees = {g.size for g in generators}
         if len(degrees) != 1:
             raise ValueError(f"All generators must have the same size, got {degrees}")
@@ -262,13 +266,17 @@ class PermutationGroup:
             total_fixed += fixed
 
         count, remainder = divmod(total_fixed, self.order())
-        assert remainder == 0, f"Burnside sum {total_fixed} not divisible by |G|={self.order()}"
+        assert remainder == 0, (
+            f"Burnside sum {total_fixed} not divisible by |G|={self.order()}"
+        )
         return count
 
     # --- Convenience constructors ---
 
     @classmethod
-    def symmetric(cls, k: int, *, axes: tuple[int, ...] | None = None) -> PermutationGroup:
+    def symmetric(
+        cls, k: int, *, axes: tuple[int, ...] | None = None
+    ) -> PermutationGroup:
         """S_k: the full symmetric group. Generators: adjacent transpositions."""
         if k < 1:
             raise ValueError(f"k must be >= 1, got {k}")
@@ -292,7 +300,9 @@ class PermutationGroup:
         return cls(gen, axes=axes)
 
     @classmethod
-    def dihedral(cls, k: int, *, axes: tuple[int, ...] | None = None) -> PermutationGroup:
+    def dihedral(
+        cls, k: int, *, axes: tuple[int, ...] | None = None
+    ) -> PermutationGroup:
         """D_k: the dihedral group. Generators: k-cycle and reflection."""
         if k < 1:
             raise ValueError(f"k must be >= 1, got {k}")
@@ -316,7 +326,9 @@ class PermutationGroup:
         return SPermutationGroup(*[g.as_sympy() for g in self._generators])
 
     @classmethod
-    def from_sympy(cls, spg, *, axes: tuple[int, ...] | None = None) -> PermutationGroup:
+    def from_sympy(
+        cls, spg, *, axes: tuple[int, ...] | None = None
+    ) -> PermutationGroup:
         """Construct from a ``sympy.combinatorics.PermutationGroup``."""
         gens = [Permutation.from_sympy(g) for g in spg.generators]
         return cls(*gens, axes=axes)

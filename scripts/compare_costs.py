@@ -147,12 +147,8 @@ def print_comparison(cases, n_values):
             naive = F_naive(n, s, t, v)
             psi = F_psi(n, s, t, v)
             phi = F_phi(n, s, t, v)
-            code_neq = F_code(
-                n, s, t, v, same_object=False, use_inner_symmetry=True
-            )
-            code_eq = F_code(
-                n, s, t, v, same_object=True, use_inner_symmetry=True
-            )
+            code_neq = F_code(n, s, t, v, same_object=False, use_inner_symmetry=True)
+            code_eq = F_code(n, s, t, v, same_object=True, use_inner_symmetry=True)
 
             # Best code estimate (A=B when possible)
             code_best = code_eq
@@ -162,7 +158,7 @@ def print_comparison(cases, n_values):
             label = f"({s},{t},{v})"
             pad = max(8 - len(label), 0)
             print(
-                f"{label}{' ' * pad} {s+t+v:>3} {n:>4} │ "
+                f"{label}{' ' * pad} {s + t + v:>3} {n:>4} │ "
                 f"{naive:>12,} {psi:>12,} {phi:>12,} │ "
                 f"{code_neq:>12,} {code_eq:>12,} │ "
                 f"{ratio_psi:>8} {ratio_phi:>8}"
@@ -173,7 +169,9 @@ def print_comparison(cases, n_values):
 def print_asymptotic_table(cases):
     """Print asymptotic (n→∞) formulas."""
     print("\nAsymptotic leading-order costs (n → ∞, μ=ν=1):")
-    print(f"{'(s,t,v)':>8} {'ω':>3} │ {'Naive':>16} {'Ψ':>16} {'Φ (approx)':>16} │ {'Code A≠B':>16} {'Code A=B':>16}")
+    print(
+        f"{'(s,t,v)':>8} {'ω':>3} │ {'Naive':>16} {'Ψ':>16} {'Φ (approx)':>16} │ {'Code A≠B':>16} {'Code A=B':>16}"
+    )
     print("─" * 100)
 
     for s, t, v in cases:
@@ -193,15 +191,23 @@ def print_asymptotic_table(cases):
 
         # Code A≠B with inner: op × n^ω / (s!·t!·v!)
         code_neq_denom = factorial(s) * factorial(t) * (factorial(v) if v >= 2 else 1)
-        code_neq_str = f"{op}n^{omega}/{code_neq_denom}" if code_neq_denom > 1 else f"{op}n^{omega}"
+        code_neq_str = (
+            f"{op}n^{omega}/{code_neq_denom}"
+            if code_neq_denom > 1
+            else f"{op}n^{omega}"
+        )
 
         # Code A=B with inner: op × n^ω / ((s+t)!·v!)
         code_eq_denom = factorial(s + t) * (factorial(v) if v >= 2 else 1)
-        code_eq_str = f"{op}n^{omega}/{code_eq_denom}" if code_eq_denom > 1 else f"{op}n^{omega}"
+        code_eq_str = (
+            f"{op}n^{omega}/{code_eq_denom}" if code_eq_denom > 1 else f"{op}n^{omega}"
+        )
 
         label = f"({s},{t},{v})"
         pad = max(8 - len(label), 0)
-        print(f"{label}{' ' * pad} {omega:>3} │ {naive_str:>16} {psi_str:>16} {phi_str:>16} │ {code_neq_str:>16} {code_eq_str:>16}")
+        print(
+            f"{label}{' ' * pad} {omega:>3} │ {naive_str:>16} {psi_str:>16} {phi_str:>16} │ {code_neq_str:>16} {code_eq_str:>16}"
+        )
 
 
 if __name__ == "__main__":
@@ -227,7 +233,9 @@ if __name__ == "__main__":
 
     # Also show the ratios at large n
     print("\n\nRatios at n=100 (Code A=B with inner / other models):")
-    print(f"{'(s,t,v)':>8} │ {'Code/Naive':>12} {'Code/Ψ':>12} {'Code/Φ':>12} {'Ψ/Φ':>12}")
+    print(
+        f"{'(s,t,v)':>8} │ {'Code/Naive':>12} {'Code/Ψ':>12} {'Code/Φ':>12} {'Ψ/Φ':>12}"
+    )
     print("─" * 65)
     for s, t, v in cases:
         n = 100
@@ -239,5 +247,5 @@ if __name__ == "__main__":
         pad = max(8 - len(label), 0)
         print(
             f"{label}{' ' * pad} │ "
-            f"{code/naive:>12.4f} {code/psi:>12.4f} {code/phi:>12.4f} {psi/phi:>12.4f}"
+            f"{code / naive:>12.4f} {code / psi:>12.4f} {code / phi:>12.4f} {psi / phi:>12.4f}"
         )

@@ -3,6 +3,7 @@
 Runs actual contract_path with the symmetry oracle and compares
 the reported cost against the analytical Φ formula.
 """
+
 from math import comb
 
 import numpy as np

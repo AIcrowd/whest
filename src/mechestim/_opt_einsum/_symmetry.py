@@ -212,7 +212,9 @@ def symmetric_flop_count(
     # Use PermutationGroup (Burnside) when available, else fall back to IndexSymmetry.
     if output_group is not None and output_indices is not None:
         total = compute_size_by_dict(output_indices, size_dictionary)
-        unique = unique_elements(output_indices, size_dictionary, perm_group=output_group)
+        unique = unique_elements(
+            output_indices, size_dictionary, perm_group=output_group
+        )
         cost = cost * unique // total
     elif output_symmetry and output_indices is not None:
         total = compute_size_by_dict(output_indices, size_dictionary)
@@ -258,13 +260,9 @@ def symmetric_flop_count(
         # Φ's intermediate Ẑ is fully symmetric across ALL ω indices by
         # construction (Solomonik & Demmel 2015, Algorithm 5.1).
         full_sym: IndexSymmetry = (
-            [frozenset((lbl,) for lbl in all_indices)]
-            if len(all_indices) >= 2
-            else []
+            [frozenset((lbl,) for lbl in all_indices)] if len(all_indices) >= 2 else []
         )
-        unique_all = unique_elements(
-            all_indices, size_dictionary, full_sym or None
-        )
+        unique_all = unique_elements(all_indices, size_dictionary, full_sym or None)
 
         # Per-element cost: 1 mult + C(ω, free_i) adds per operand
         # + C(ω, v) adds for Ẑ→Z accumulation.
@@ -279,21 +277,17 @@ def symmetric_flop_count(
             order_i = free_i + v
             if order_i > 0 and order_i < omega:
                 sub = frozenset(sorted_labels[:order_i])
-                sub_sym: IndexSymmetry = [
-                    frozenset((lbl,) for lbl in sub)
-                ] if len(sub) >= 2 else []
+                sub_sym: IndexSymmetry = (
+                    [frozenset((lbl,) for lbl in sub)] if len(sub) >= 2 else []
+                )
                 phi_cost += unique_elements(sub, size_dictionary, sub_sym or None)
 
         # Output symmetrization term: ((n, s+t)).
         st = sum(per_operand_free_counts)
         if st >= 2 and output_indices:
             out_sub = frozenset(sorted_labels[:st])
-            out_sym_phi: IndexSymmetry = [
-                frozenset((lbl,) for lbl in out_sub)
-            ]
-            phi_cost += unique_elements(
-                out_sub, size_dictionary, out_sym_phi or None
-            )
+            out_sym_phi: IndexSymmetry = [frozenset((lbl,) for lbl in out_sub)]
+            phi_cost += unique_elements(out_sub, size_dictionary, out_sym_phi or None)
 
         cost = min(cost, max(phi_cost, 1))
 

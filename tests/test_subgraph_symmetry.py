@@ -767,6 +767,7 @@ class TestExactGroupDetection:
 class TestBurnsideFLOPCount:
     def test_c3_unique_via_perm_group(self):
         from mechestim._perm_group import PermutationGroup as PG
+
         n = 10
         c3 = PG.cyclic(3)
         result = unique_elements(
@@ -778,6 +779,7 @@ class TestBurnsideFLOPCount:
 
     def test_s3_unique_via_perm_group_matches_index_symmetry(self):
         from mechestim._perm_group import PermutationGroup as PG
+
         n = 10
         s3 = PG.symmetric(3)
         result_pg = unique_elements(
