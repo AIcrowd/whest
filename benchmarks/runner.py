@@ -424,15 +424,27 @@ def run_benchmarks(
         )
 
         # -- inject timing data into per-op details -------------------------
-        for op, t_alpha in timing_alphas.items():
+        # Use the raw timing from _timing_details directly — no
+        # reconstruction needed.  In timing mode, perf_instructions_total
+        # IS the raw elapsed_ns (TimingResult.total_flops = elapsed_ns).
+        for op in timing_alphas:
             if op in all_details:
-                # Reconstruct total timing from alpha and the op's own
-                # analytical FLOPs (NOT the baseline N — sort has 240M
-                # analytical FLOPs, not 10M).
-                op_aflops = all_details[op].get("analytical_flops", _BASELINE_N)
-                all_details[op]["timing_ns_total"] = round(
-                    t_alpha * op_aflops * repeats, 2
-                )
+                td = _timing_details.get(op, {})
+                raw_timing = td.get("perf_instructions_total")
+                if raw_timing is not None:
+                    # raw_timing is the cumulative elapsed_ns across all
+                    # distributions.  For a single value it's the total;
+                    # for a list it's per-distribution totals.
+                    if isinstance(raw_timing, list):
+                        # Take the median distribution's value
+                        import statistics as _stats
+                        all_details[op]["timing_ns_total"] = round(
+                            _stats.median(raw_timing), 2
+                        )
+                    else:
+                        all_details[op]["timing_ns_total"] = round(
+                            float(raw_timing), 2
+                        )
             if op in timing_weights and op in all_details:
                 all_details[op]["timing_weight"] = timing_weights[op]
 
