@@ -40,23 +40,24 @@ Where:
 
 ## Measurement environment
 
-!!! info "Calibration platform"
-    - **CPU:** Intel(R) Xeon(R) Platinum 8375C CPU @ 2.90GHz
-    - **Cores:** 64 physical / 128 threads
-    - **RAM:** 251.7 GB
-    - **Arch:** x86_64 (AVX-512 capable)
-    - **Cache:** L1d 48 KB, L1i 32 KB, L2 1280 KB, L3 54 MB
-    - **Instance:** AWS EC2 c6i.metal (bare metal -- full PMU access)
-    - **OS:** Linux 6.1.166-197.305.amzn2023.x86_64
-    - **Python:** 3.11.14
-    - **NumPy:** 2.1.3
-    - **BLAS:** scipy-openblas 0.3.27
-    - **Measurement mode:** perf (hardware counters: `fp_arith_inst_retired.*`)
-    - **dtype:** float64
-    - **Repeats:** 5 per distribution
-    - **Distributions:** 3 per operation
-    - **Methodology version:** 2.0
-    - **Baseline $\alpha(\text{add})$:** 1.564071
+| Parameter | Value |
+|-----------|-------|
+| CPU | Intel(R) Xeon(R) Platinum 8375C CPU @ 2.90GHz |
+| Cores | 64 physical / 128 threads |
+| RAM | 251.7 GB |
+| Arch | x86_64 (AVX-512 capable) |
+| Cache | L1d 48 KB, L1i 32 KB, L2 1280 KB, L3 54 MB |
+| Instance | AWS EC2 c6i.metal (bare metal, full PMU access) |
+| OS | Linux 6.1.166-197.305.amzn2023.x86_64 |
+| Python | 3.11.14 |
+| NumPy | 2.1.3 |
+| BLAS | scipy-openblas 0.3.27 |
+| Measurement mode | perf (hardware counters: `fp_arith_inst_retired.*`) |
+| dtype | float64 |
+| Repeats | 5 per distribution |
+| Distributions | 3 per operation |
+| Methodology version | 2.0 |
+| Baseline alpha(add) | 1.564071 |
     - **Date:** 2026-04-10
     - **Total calibration time:** 2272.4 seconds
 
@@ -428,10 +429,10 @@ effects. BLAS operations achieve near-peak FLOP throughput, so their per-instruc
 timing is much lower than for scalar pointwise operations. For pointwise ops
 (which dominate the count), the two modes agree well in relative ordering.
 
-!!! warning "Correlation caveats"
-    The Pearson and Spearman values span all operations, including BLAS/linalg
-    ops where timing and perf divergence is structurally expected. For the
-    subset of pointwise operations, both correlations are substantially higher.
+**Correlation caveats:**
+The Pearson and Spearman values span all operations, including BLAS/linalg
+ops where timing and perf divergence is structurally expected. For the
+subset of pointwise operations, both correlations are substantially higher.
 
 ## Known limitations
 

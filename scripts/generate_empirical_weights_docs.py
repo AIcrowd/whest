@@ -178,7 +178,7 @@ CSV_COLUMNS = [
     "Benchmark Size",
     "Repeats",
     "Perf Instructions (total)",
-    "Timing (ns, total)",
+    "Timing Total (ns)",
     "Time per Analytical FLOP (ns)",
     "Baseline Alpha",
     "Baseline Command",
@@ -252,7 +252,7 @@ def build_rows(data: dict) -> list[dict]:
             "Benchmark Size": d.get("benchmark_size", ""),
             "Repeats": str(repeats) if repeats is not None else "",
             "Perf Instructions (total)": str(d.get("perf_instructions_total", "")),
-            "Timing (ns, total)": str(timing_ns) if timing_ns is not None else "",
+            "Timing Total (ns)": str(timing_ns) if timing_ns is not None else "",
             "Time per Analytical FLOP (ns)": _time_per_flop(timing_ns, analytical_flops, repeats),
             "Baseline Alpha": f"{d.get('baseline_alpha', 0.0):.4f}",
             "Baseline Command": d.get("baseline_bench_code", ""),
@@ -400,29 +400,30 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     # ------------------------------------------------------------------
     w("## Measurement environment")
     w()
-    w('!!! info "Calibration platform"')
     cache = hw.get("cache", {})
     l3_mb = cache.get("L3", 0) / 1024 if cache.get("L3", 0) > 1024 else cache.get("L3", 0)
-    w(f"    - **CPU:** {hw['cpu_model']}")
-    w(f"    - **Cores:** {hw['cpu_cores']} physical / {hw['cpu_threads']} threads")
-    w(f"    - **RAM:** {hw['ram_gb']} GB")
-    w(f"    - **Arch:** {hw['arch']} (AVX-512 capable)")
-    w(f"    - **Cache:** L1d {cache.get('L1d', '?')} KB, "
+    w("| Parameter | Value |")
+    w("|-----------|-------|")
+    w(f"| CPU | {hw['cpu_model']} |")
+    w(f"| Cores | {hw['cpu_cores']} physical / {hw['cpu_threads']} threads |")
+    w(f"| RAM | {hw['ram_gb']} GB |")
+    w(f"| Arch | {hw['arch']} (AVX-512 capable) |")
+    w(f"| Cache | L1d {cache.get('L1d', '?')} KB, "
       f"L1i {cache.get('L1i', '?')} KB, "
       f"L2 {cache.get('L2', '?')} KB, "
-      f"L3 {l3_mb:.0f} MB")
-    w("    - **Instance:** AWS EC2 c6i.metal (bare metal -- full PMU access)")
-    w(f"    - **OS:** {sw['os']}")
-    w(f"    - **Python:** {sw['python'].split('(')[0].strip()}")
-    w(f"    - **NumPy:** {sw['numpy']}")
-    w(f"    - **BLAS:** {sw['blas']}")
-    w(f"    - **Measurement mode:** {bc['measurement_mode']} "
-      f"(hardware counters: `fp_arith_inst_retired.*`)")
-    w(f"    - **dtype:** {bc['dtype']}")
-    w(f"    - **Repeats:** {bc['repeats']} per distribution")
-    w(f"    - **Distributions:** {bc['distributions']} per operation")
-    w(f"    - **Methodology version:** {meth['version']}")
-    w(f"    - **Baseline $\\alpha(\\text{{add}})$:** {meth['baseline_alpha']}")
+      f"L3 {l3_mb:.0f} MB |")
+    w("| Instance | AWS EC2 c6i.metal (bare metal, full PMU access) |")
+    w(f"| OS | {sw['os']} |")
+    w(f"| Python | {sw['python'].split('(')[0].strip()} |")
+    w(f"| NumPy | {sw['numpy']} |")
+    w(f"| BLAS | {sw['blas']} |")
+    w(f"| Measurement mode | {bc['measurement_mode']} "
+      f"(hardware counters: `fp_arith_inst_retired.*`) |")
+    w(f"| dtype | {bc['dtype']} |")
+    w(f"| Repeats | {bc['repeats']} per distribution |")
+    w(f"| Distributions | {bc['distributions']} per operation |")
+    w(f"| Methodology version | {meth['version']} |")
+    w(f"| Baseline alpha(add) | {meth['baseline_alpha']} |")
     ts = meta.get("timestamp", "")
     if ts:
         w(f"    - **Date:** {ts[:10]}")
@@ -555,10 +556,10 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     w("timing is much lower than for scalar pointwise operations. For pointwise ops")
     w("(which dominate the count), the two modes agree well in relative ordering.")
     w()
-    w('!!! warning "Correlation caveats"')
-    w("    The Pearson and Spearman values span all operations, including BLAS/linalg")
-    w("    ops where timing and perf divergence is structurally expected. For the")
-    w("    subset of pointwise operations, both correlations are substantially higher.")
+    w("**Correlation caveats:**")
+    w("The Pearson and Spearman values span all operations, including BLAS/linalg")
+    w("ops where timing and perf divergence is structurally expected. For the")
+    w("subset of pointwise operations, both correlations are substantially higher.")
     w()
 
     # ------------------------------------------------------------------
