@@ -158,10 +158,20 @@ def _make_inputs_binary(n: int, dtype: str) -> list[tuple[np.ndarray, np.ndarray
     ]
 
 
+# sin/cos have a fast path for small inputs (near 0) that skips range
+# reduction.  Use uniform(-100, 100) instead of standard_normal for
+# distribution 0 so all three distributions exercise the full code path.
+_WIDE_INPUT_OPS = frozenset({"sin", "cos"})
+
+
 def _unary_setup(n: int, dtype: str, op: str, dist_idx: int) -> str:
     """Build setup code for a unary op with pre-allocated output."""
+    if op in _WIDE_INPUT_OPS and dist_idx == 0:
+        dists_0 = f"x = np.random.default_rng(42).uniform(-100, 100, size={n}).astype(np.{dtype})"
+    else:
+        dists_0 = f"x = np.random.default_rng(42).standard_normal({n}).astype(np.{dtype})"
     dists = [
-        f"x = np.random.default_rng(42).standard_normal({n}).astype(np.{dtype})",
+        dists_0,
         f"x = np.random.default_rng(42).uniform(0.01, 100, size={n}).astype(np.{dtype})",
         f"x = np.random.default_rng(42).uniform(-1000, 1000, size={n}).astype(np.{dtype})",
     ]
