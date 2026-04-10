@@ -32,13 +32,13 @@ class TestAnalyticalCost:
         assert _analytical_cost("matmul") == 2 * 512 * 512 * 512
 
     def test_inner_cost(self):
-        assert _analytical_cost("inner") == 2 * 10_000
+        assert _analytical_cost("inner") == 1_000_000  # a.size, no factor of 2
 
     def test_vdot_cost(self):
-        assert _analytical_cost("vdot") == 2 * 10_000
+        assert _analytical_cost("vdot") == 1_000_000  # a.size, no factor of 2
 
     def test_vecdot_cost(self):
-        assert _analytical_cost("vecdot") == 2 * 512 * 1000
+        assert _analytical_cost("vecdot") == 1000  # output size (batch), not broadcast
 
     def test_outer_cost(self):
         assert _analytical_cost("outer") == 5000 * 5000

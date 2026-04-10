@@ -452,7 +452,21 @@ pow = _counted_binary(_np.pow, "pow")
 remainder = _counted_binary(_np.remainder, "remainder")
 right_shift = _counted_binary(_np.right_shift, "right_shift")
 true_divide = _counted_binary(_np.true_divide, "true_divide")
-vecdot = _counted_binary(_np.vecdot, "vecdot")
+def vecdot(a, b, **kwargs):
+    """Counted version of np.vecdot.
+
+    Vector dot product along last axis. Cost = numel(output), where
+    output shape is the broadcast of a and b with the last axis removed.
+    """
+    budget = require_budget()
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
+    if not isinstance(b, _np.ndarray):
+        b = _np.asarray(b)
+    result = _np.vecdot(a, b, **kwargs)
+    cost = result.size  # output size, NOT broadcast of inputs
+    budget.deduct("vecdot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
+    return result
 
 # Multi-output binary ops
 divmod = _counted_binary_multi(_np.divmod, "divmod")

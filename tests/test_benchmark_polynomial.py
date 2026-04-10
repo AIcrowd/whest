@@ -45,10 +45,10 @@ class TestAnalyticalCost:
         assert _analytical_cost("polysub", 100, 10) == 11
 
     def test_polyder(self):
-        assert _analytical_cost("polyder", 100, 10) == 10
+        assert _analytical_cost("polyder", 100, 10) == 11  # degree + 1 = len(c)
 
     def test_polyint(self):
-        assert _analytical_cost("polyint", 100, 10) == 10
+        assert _analytical_cost("polyint", 100, 10) == 11  # degree + 1 = len(c)
 
     def test_poly(self):
         assert _analytical_cost("poly", 100, 10) == 100
