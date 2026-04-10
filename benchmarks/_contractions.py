@@ -23,7 +23,7 @@ _FORMULA_STRINGS: dict[str, str] = {
     "matmul": "2*M*N*K",
     "inner": "N (a.size)",
     "vdot": "N (a.size)",
-    "vecdot": "batch (output size)",
+    "vecdot": "batch * K (output_size * contracted_axis)",
     "outer": "M*N",
     "tensordot": "2*d^5 (axes=1, shape=(d,d,d))",
     "kron": "d^4 (Kronecker, shape=(d,d)x(d,d))",
@@ -70,9 +70,9 @@ def _analytical_cost(op: str, **kwargs: int) -> int:
         # Runtime charges a.size (NOT 2*N).
         "vdot": 1_000_000,
         # vecdot: batched dot product A(1000,512) . B(1000,512)
-        # Output shape is (1000,) — the last axis is contracted.
-        # Runtime charges result.size = 1000.
-        "vecdot": 1000,
+        # Output (1000,) with contracted axis 512.
+        # Runtime charges result.size * contracted = 1000 * 512.
+        "vecdot": 1000 * 512,
         # outer: outer product of two 5000-element vectors
         "outer": 5000 * 5000,
         # tensordot: A(64,64,64) . B(64,64,64) axes=1 -> contract last of A with first of B

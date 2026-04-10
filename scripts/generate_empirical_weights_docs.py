@@ -290,11 +290,11 @@ def _effective_cost_example(formula: str, weight: float,
             c = 32 ** 2
         effective = c * weight
         desc = f"n=32, C={c}"
-    # Inner/vdot: 2*N
-    elif formula.startswith("2*N") or formula == "2*N":
-        c = 2 * 1000
+    # Inner/vdot: N (a.size) or batch * K
+    elif "a.size" in lower or ("batch" in lower and "k" in lower):
+        c = 1000
         effective = c * weight
-        desc = f"1000-element dot, C={c}"
+        desc = f"1000-element vector, C={c}"
     # Cross, trace, simple n formulas
     elif formula.startswith(("6 *", "min(")):
         c = 1000
@@ -312,11 +312,9 @@ def _effective_cost_example(formula: str, weight: float,
         desc = f"10 features x 100 samples, C={c}"
     # Fallback: just show weight * 1000
     else:
-        c = 1000
-        effective = c * weight
-        desc = f"C={c}"
+        effective = 1000 * weight
+        desc = "C=1000"
 
-    effective = c * weight
     return f"{effective:,.0f} FLOPs ({desc})"
 
 
