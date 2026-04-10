@@ -15,7 +15,7 @@ from . import _helpers as helpers
 from . import _parser as parser
 from . import _paths as paths
 from ._subgraph_symmetry import SubgraphSymmetryOracle
-from ._symmetry import IndexSymmetry, symmetric_flop_count
+from ._symmetry import PermutationGroup, symmetric_flop_count
 from ._typing import (
     ArrayType,
     ContractionListType,
@@ -50,11 +50,11 @@ class StepInfo:
     output_shape: tuple[int, ...]
     """Shape of the output operand for this step."""
 
-    input_symmetries: list[IndexSymmetry | None]
-    """IndexSymmetry for each input in this step."""
+    input_symmetries: list[PermutationGroup | None]
+    """PermutationGroup for each input in this step."""
 
-    output_symmetry: IndexSymmetry | None
-    """IndexSymmetry of the output, or None."""
+    output_symmetry: PermutationGroup | None
+    """PermutationGroup of the output, or None."""
 
     dense_flop_cost: int
     """FLOP cost without symmetry (opt_einsum convention: includes op_factor)."""
@@ -64,8 +64,8 @@ class StepInfo:
 
     blas_type: str | bool = False
 
-    inner_symmetry: IndexSymmetry | None = None
-    """IndexSymmetry among the contracted (summed) labels, or None.
+    inner_symmetry: PermutationGroup | None = None
+    """PermutationGroup among the contracted (summed) labels, or None.
     Describes inner-summation redundancy from the W-side of the
     subgraph symmetry oracle."""
     """BLAS classification for this step (e.g. 'GEMM', 'SYMM', False)."""
@@ -155,21 +155,14 @@ class PathInfo:
         """
         from math import prod
 
-        def fmt_sym(sym: IndexSymmetry | None) -> str:
-            """Format an IndexSymmetry as e.g. 'S3{i,j,k}' or 'S2{i,j}·S2{k,l}'."""
-            if not sym:
+        def fmt_sym(sym: PermutationGroup | None) -> str:
+            """Format a PermutationGroup as e.g. 'S3{i,j,k}' or 'S2{i,j}'."""
+            if sym is None:
                 return "-"
-
-            def fmt_block(block: tuple) -> str:
-                if len(block) == 1:
-                    return block[0]
-                return f"({''.join(block)})"
-
-            def fmt_group(g: frozenset) -> str:
-                blocks = sorted(g)
-                return f"S{len(g)}{{{','.join(fmt_block(b) for b in blocks)}}}"
-
-            return "·".join(fmt_group(g) for g in sym)
+            labels = sym._labels
+            if labels is None:
+                return f"S{sym.degree}"
+            return f"S{sym.degree}{{{','.join(labels)}}}"
 
         def fmt_step_sym(step: StepInfo) -> str:
             """Format inputs→output symmetry transformation for one step."""
@@ -620,13 +613,11 @@ def contract_path(
                 bool(idx_removed),
                 len(contract_inds),
                 size_dict,
-                output_symmetry=subset_sym.output,
+                output_group=subset_sym.output,
                 output_indices=out_inds,
-                inner_symmetry=subset_sym.inner,
+                inner_group=subset_sym.inner,
                 inner_indices=idx_removed if idx_removed else None,
                 per_operand_free_counts=_free_counts,
-                output_group=subset_sym.output_group,
-                inner_group=subset_sym.inner_group,
             )
         else:
             step_syms = [None] * len(contract_inds)
@@ -699,9 +690,9 @@ def contract_path(
                 output_shape=shp_result,
                 input_symmetries=list(step_syms),
                 output_symmetry=result_sym,
-                inner_symmetry=subset_sym.inner
-                if symmetry_oracle is not None
-                else None,
+                inner_symmetry=(
+                    subset_sym.inner if symmetry_oracle is not None else None
+                ),
                 dense_flop_cost=step_dense,
                 symmetry_savings=savings,
                 blas_type=do_blas,

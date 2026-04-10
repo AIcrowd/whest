@@ -5,11 +5,33 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
+from mechestim._perm_group import PermutationGroup
 from mechestim._opt_einsum._subgraph_symmetry import (
     EinsumBipartite,
     SubgraphSymmetryOracle,
     _build_bipartite,
 )
+
+
+def _has_labels(pg: PermutationGroup | None, *expected_labels: str) -> bool:
+    """Check that a PermutationGroup covers the given labels (sorted)."""
+    if pg is None:
+        return False
+    if pg._labels is None:
+        return False
+    return set(pg._labels) == set(expected_labels)
+
+
+def _is_s_k(pg: PermutationGroup | None, k: int, *labels: str) -> bool:
+    """Check that pg is S_k on the given labels."""
+    if pg is None:
+        return False
+    if pg.degree != k:
+        return False
+    if labels and pg._labels is not None:
+        if set(pg._labels) != set(labels):
+            return False
+    return pg.is_symmetric()
 
 
 class TestBipartiteConstruction:
@@ -212,7 +234,7 @@ class TestPerIndexPairs:
             output_chars="ab",
         )
         result = oracle.sym(frozenset({0, 1, 2}))
-        assert result.output == [frozenset({("a",), ("b",)})]
+        assert _is_s_k(result.output, 2, "a", "b")
 
     def test_three_identical_operands_finds_s3(self):
         X = np.zeros((3, 3))
@@ -223,11 +245,10 @@ class TestPerIndexPairs:
             output_chars="abc",
         )
         result = oracle.sym(frozenset({0, 1, 2}))
-        # All three of a, b, c should be in one merged group (S3)
+        # All three of a, b, c should be in the group (S3)
         assert result.output is not None
-        assert len(result.output) == 1
-        only_group = result.output[0]
-        assert only_group == frozenset({("a",), ("b",), ("c",)})
+        assert _has_labels(result.output, "a", "b", "c")
+        assert result.output.order() == 6  # S3
 
     def test_distinct_operands_no_induced_symmetry(self):
         X = np.zeros((3, 3))
@@ -239,8 +260,10 @@ class TestPerIndexPairs:
             output_chars="abc",
         )
         result = oracle.sym(frozenset({0, 1, 2}))
-        # Only Y, Y are identical (ops 1, 2), inducing S2{b, c}
-        assert result.output == [frozenset({("b",), ("c",)})]
+        # Only Y, Y are identical (ops 1, 2), inducing a transposition on b, c
+        assert result.output is not None
+        assert result.output.order() == 2
+        assert _has_labels(result.output, "a", "b", "c")
 
     def test_empty_v_returns_none(self):
         # einsum('i,i->', X, X) — scalar output, V is empty
@@ -266,7 +289,7 @@ class TestHybridBlockPath:
             output_chars="jk",
         )
         result = oracle.sym(frozenset({0, 1}))
-        assert result.output == [frozenset({("j",), ("k",)})]
+        assert _is_s_k(result.output, 2, "j", "k")
 
     def test_outer_product_block_s2(self):
         # einsum('ijk,ilm->jklm', X, X) — block symmetry on (j,k) and (l,m)
@@ -279,10 +302,8 @@ class TestHybridBlockPath:
         )
         result = oracle.sym(frozenset({0, 1}))
         assert result.output is not None
-        # Expect a single block group: {(j,k), (l,m)}
-        assert len(result.output) == 1
-        only = result.output[0]
-        assert frozenset({("j", "k"), ("l", "m")}) == only
+        # Output group covers j,k,l,m
+        assert _has_labels(result.output, "j", "k", "l", "m")
 
     def test_distinct_operands_no_block(self):
         X = np.zeros((3, 3, 3))
@@ -408,16 +429,18 @@ class TestOldSymIsSubsetOfNewSym:
             output_chars=output_chars,
         )
         result = oracle.sym(frozenset(range(len(operands))))
-        new = result.output if result.output is not None else []
+        new_pg = result.output  # PermutationGroup or None
 
-        # For each old group, assert that there exists a new group that
-        # covers it (superset by labels).
-        for old_g in old:
-            old_chars = frozenset(c for block in old_g for c in block)
-            assert any(
-                old_chars <= frozenset(c for block in new_g for c in block)
-                for new_g in new
-            ), f"Old group {old_g} not covered by new oracle: {new}"
+        # For each old group, assert that the new PermutationGroup covers
+        # those labels.
+        if old:
+            assert new_pg is not None, f"Old detected groups {old} but new oracle returned None"
+            new_labels = set(new_pg._labels) if new_pg._labels else set()
+            for old_g in old:
+                old_chars = frozenset(c for block in old_g for c in block)
+                assert old_chars <= new_labels, (
+                    f"Old group {old_g} not covered by new oracle labels: {new_labels}"
+                )
 
 
 from mechestim._opt_einsum._symmetry import SubsetSymmetry
@@ -430,24 +453,27 @@ class TestSubsetSymmetryDataclass:
         assert ss.inner is None
 
     def test_output_only(self):
-        sym = [frozenset({("a",), ("b",)})]
-        ss = SubsetSymmetry(output=sym, inner=None)
-        assert ss.output == sym
+        pg = PermutationGroup.symmetric(2)
+        pg._labels = ("a", "b")
+        ss = SubsetSymmetry(output=pg, inner=None)
+        assert ss.output is pg
         assert ss.inner is None
 
     def test_both_populated(self):
-        v = [frozenset({("a",), ("b",)})]
-        w = [frozenset({("i",), ("j",)})]
+        v = PermutationGroup.symmetric(2)
+        v._labels = ("a", "b")
+        w = PermutationGroup.symmetric(2)
+        w._labels = ("i", "j")
         ss = SubsetSymmetry(output=v, inner=w)
-        assert ss.output == v
-        assert ss.inner == w
+        assert ss.output is v
+        assert ss.inner is w
 
     def test_frozen(self):
         ss = SubsetSymmetry(output=None, inner=None)
         import pytest
 
         with pytest.raises(AttributeError):
-            ss.output = [frozenset({("x",)})]  # type: ignore[misc]
+            ss.output = PermutationGroup.symmetric(1)  # type: ignore[misc]
 
 
 from mechestim._opt_einsum._subgraph_symmetry import (
@@ -629,20 +655,21 @@ class TestPiBasedOracleRegression:
         X = np.zeros((3, 4))
         oracle = SubgraphSymmetryOracle([X, X], ["ab", "cd"], [None, None], "abcd")
         result = oracle.sym(frozenset({0, 1}))
-        assert result.output == [frozenset({("a", "b"), ("c", "d")})]
+        assert result.output is not None
+        assert _has_labels(result.output, "a", "b", "c", "d")
         assert result.inner is None
 
     def test_vector_outer_product_per_index(self):
         x = np.zeros((3,))
         oracle = SubgraphSymmetryOracle([x, x], ["a", "b"], [None, None], "ab")
         result = oracle.sym(frozenset({0, 1}))
-        assert result.output == [frozenset({("a",), ("b",)})]
+        assert _is_s_k(result.output, 2, "a", "b")
 
     def test_gram_matrix(self):
         X = np.zeros((3, 4))
         oracle = SubgraphSymmetryOracle([X, X], ["ai", "bi"], [None, None], "ab")
         result = oracle.sym(frozenset({0, 1}))
-        assert result.output == [frozenset({("a",), ("b",)})]
+        assert _is_s_k(result.output, 2, "a", "b")
 
     def test_matmul_no_symmetry(self):
         X = np.zeros((3, 3))
@@ -660,7 +687,7 @@ class TestPiBasedOracleRegression:
             "ab",
         )
         result = oracle.sym(frozenset({0, 1}))
-        assert result.output == [frozenset({("a",), ("b",)})]
+        assert _is_s_k(result.output, 2, "a", "b")
 
     def test_internal_sym_plus_repeated(self):
         T = np.zeros((3, 3, 4))
@@ -671,15 +698,16 @@ class TestPiBasedOracleRegression:
             "kl",
         )
         result = oracle.sym(frozenset({0, 1}))
-        assert result.output == [frozenset({("k",), ("l",)})]
+        assert _is_s_k(result.output, 2, "k", "l")
         assert result.inner is not None
-        assert frozenset({("i",), ("j",)}) in result.inner
+        assert _has_labels(result.inner, "i", "j")
 
     def test_rank3_block_s2(self):
         T = np.zeros((2, 3, 4))
         oracle = SubgraphSymmetryOracle([T, T], ["abc", "def"], [None, None], "abcdef")
         result = oracle.sym(frozenset({0, 1}))
-        assert result.output == [frozenset({("a", "b", "c"), ("d", "e", "f")})]
+        assert result.output is not None
+        assert _has_labels(result.output, "a", "b", "c", "d", "e", "f")
 
 
 class TestWSymmetryOracle:
@@ -690,7 +718,7 @@ class TestWSymmetryOracle:
         oracle = SubgraphSymmetryOracle([X, X], ["ij", "ji"], [None, None], "")
         result = oracle.sym(frozenset({0, 1}))
         assert result.output is None
-        assert result.inner == [frozenset({("i",), ("j",)})]
+        assert _is_s_k(result.inner, 2, "i", "j")
 
     def test_w_empty_gives_inner_none(self):
         X = np.zeros((3, 4))
@@ -714,7 +742,7 @@ class TestWSymmetryOracle:
             "ij",
         )
         result = oracle.sym(frozenset({0, 1}))
-        assert result.output == [frozenset({("i",), ("j",)})]
+        assert _is_s_k(result.output, 2, "i", "j")
 
 
 from mechestim._opt_einsum._symmetry import unique_elements
@@ -731,9 +759,9 @@ class TestExactGroupDetection:
             output_chars="",
         )
         sym = oracle.sym(frozenset({0, 1, 2}))
-        assert sym.inner_group is not None
-        assert sym.inner_group.order() == 3  # C_3
-        assert not sym.inner_group.is_symmetric()  # NOT S_3
+        assert sym.inner is not None
+        assert sym.inner.order() == 3  # C_3
+        assert not sym.inner.is_symmetric()  # NOT S_3
 
     def test_gram_matrix_output_is_s2(self):
         """einsum('ij,ik->jk', X, X) — output symmetry is S_2."""
@@ -745,9 +773,9 @@ class TestExactGroupDetection:
             output_chars="jk",
         )
         sym = oracle.sym(frozenset({0, 1}))
-        assert sym.output_group is not None
-        assert sym.output_group.order() == 2
-        assert sym.output_group.is_symmetric()
+        assert sym.output is not None
+        assert sym.output.order() == 2
+        assert sym.output.is_symmetric()
 
     def test_three_independent_operands_output_is_s3(self):
         """Independent subscripts give S_3 output."""
@@ -759,9 +787,9 @@ class TestExactGroupDetection:
             output_chars="jln",
         )
         sym = oracle.sym(frozenset({0, 1, 2}))
-        assert sym.output_group is not None
-        assert sym.output_group.is_symmetric()
-        assert sym.output_group.order() == 6
+        assert sym.output is not None
+        assert sym.output.is_symmetric()
+        assert sym.output.order() == 6
 
 
 class TestBurnsideFLOPCount:
@@ -777,7 +805,7 @@ class TestBurnsideFLOPCount:
         )
         assert result == (n**3 + 2 * n) // 3
 
-    def test_s3_unique_via_perm_group_matches_index_symmetry(self):
+    def test_s3_unique_via_perm_group_gives_correct_value(self):
         from mechestim._perm_group import PermutationGroup as PG
 
         n = 10
@@ -787,9 +815,6 @@ class TestBurnsideFLOPCount:
             {"i": n, "j": n, "k": n},
             perm_group=s3,
         )
-        result_idx = unique_elements(
-            frozenset({"i", "j", "k"}),
-            {"i": n, "j": n, "k": n},
-            symmetry=[frozenset({("i",), ("j",), ("k",)})],
-        )
-        assert result_pg == result_idx
+        # C(n+2, 3) = C(12, 3) = 220
+        from math import comb
+        assert result_pg == comb(n + 2, 3)

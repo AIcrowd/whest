@@ -24,7 +24,7 @@ from typing import Any
 from mechestim._perm_group import Permutation as Perm
 from mechestim._perm_group import PermutationGroup
 
-from ._symmetry import IndexSymmetry, SubsetSymmetry
+from ._symmetry import SubsetSymmetry
 
 _MISSING = object()
 
@@ -37,7 +37,7 @@ _MISSING = object()
 def _detect_fingerprint_equivalences(
     col_of: dict[str, tuple[int, ...]],
     labels: frozenset[str],
-) -> IndexSymmetry:
+) -> list[frozenset[tuple[str, ...]]]:
     """Group labels by column fingerprint; return per-index groups for groups >= 2."""
     fp_groups: dict[tuple[int, ...], list[str]] = {}
     for lbl in sorted(labels):
@@ -363,7 +363,7 @@ class EinsumBipartite:
 def _build_bipartite(
     operands: list[Any],
     subscript_parts: list[str],
-    per_op_syms: list[IndexSymmetry | None],
+    per_op_syms: list[list[frozenset[tuple[str, ...]]] | None],
     output_chars: str,
 ) -> EinsumBipartite:
     """Construct the bipartite graph for an einsum expression.
@@ -375,9 +375,8 @@ def _build_bipartite(
         repeated operands.
     subscript_parts : list[str]
         Per-operand subscript strings (e.g., ["ij", "jk"]).
-    per_op_syms : list[IndexSymmetry | None]
-        Declared symmetry for each operand, in the tuple-based
-        IndexSymmetry format.
+    per_op_syms : list
+        Declared symmetry for each operand, in the tuple-based format.
     output_chars : str
         Output subscript string.
     """
@@ -533,7 +532,7 @@ class SubgraphSymmetryOracle:
         self,
         operands: list[Any],
         subscript_parts: list[str],
-        per_op_syms: list[IndexSymmetry | None],
+        per_op_syms: list[list[frozenset[tuple[str, ...]]] | None],
         output_chars: str,
     ) -> None:
         self._graph = _build_bipartite(
@@ -629,10 +628,8 @@ def _compute_subset_symmetry(
             w_group._labels = tuple(sorted(all_w_chars))
 
     return SubsetSymmetry(
-        output=v_merged or None,
-        inner=w_merged or None,
-        output_group=v_group,
-        inner_group=w_group,
+        output=v_group,
+        inner=w_group,
     )
 
 

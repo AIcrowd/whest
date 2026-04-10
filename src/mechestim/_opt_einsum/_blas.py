@@ -11,26 +11,27 @@ def _has_symmetric_input(
     inputs: list[str],
     input_symmetries: list | None,
 ) -> tuple[bool, bool]:
-    """Check if any input has a symmetric group covering 2+ indices used in the contraction."""
+    """Check if any input has a symmetric group covering 2+ indices used in the contraction.
+
+    Each element of ``input_symmetries`` may be a ``PermutationGroup``
+    (the unified representation) or ``None``.
+    """
     if input_symmetries is None:
         return False, False
-    left_sym = False
-    right_sym = False
-    if input_symmetries[0]:
-        input0_chars = set(inputs[0])
-        for group in input_symmetries[0]:
-            # group is frozenset[tuple[str, ...]] -- extract all chars from all blocks
-            group_chars = frozenset(c for block in group for c in block)
-            if len(group_chars & input0_chars) >= 2:
-                left_sym = True
-                break
-    if input_symmetries[1]:
-        input1_chars = set(inputs[1])
-        for group in input_symmetries[1]:
-            group_chars = frozenset(c for block in group for c in block)
-            if len(group_chars & input1_chars) >= 2:
-                right_sym = True
-                break
+
+    from mechestim._perm_group import PermutationGroup
+
+    def _is_symmetric(sym, input_chars: set[str]) -> bool:
+        if sym is None:
+            return False
+        if isinstance(sym, PermutationGroup):
+            if sym._labels is not None:
+                return len(set(sym._labels) & input_chars) >= 2
+            return sym.degree >= 2
+        return False
+
+    left_sym = _is_symmetric(input_symmetries[0], set(inputs[0]))
+    right_sym = _is_symmetric(input_symmetries[1], set(inputs[1]))
     return left_sym, right_sym
 
 

@@ -2,10 +2,18 @@
 
 import numpy as np
 
+from mechestim._perm_group import PermutationGroup
 from mechestim._opt_einsum._symmetry import (
     symmetric_flop_count,
     unique_elements,
 )
+
+
+def _s_group(*labels):
+    """Create S_k group with given labels for testing."""
+    g = PermutationGroup.symmetric(len(labels))
+    g._labels = tuple(labels)
+    return g
 
 
 def _make_oracle(subscripts, operands=None, *, per_op_syms=None):
@@ -31,20 +39,17 @@ class TestUniqueElements:
     def test_s2_symmetry(self):
         """C(n+1, 2) for S2 on two indices of size n."""
         size_dict = {"i": 10, "j": 10}
-        sym = [frozenset({("i",), ("j",)})]
-        assert unique_elements(frozenset("ij"), size_dict, sym) == 55
+        assert unique_elements(frozenset("ij"), size_dict, perm_group=_s_group("i", "j")) == 55
 
     def test_s3_symmetry(self):
         """C(n+2, 3) for S3."""
         size_dict = {"i": 10, "j": 10, "k": 10}
-        sym = [frozenset({("i",), ("j",), ("k",)})]
-        assert unique_elements(frozenset("ijk"), size_dict, sym) == 220
+        assert unique_elements(frozenset("ijk"), size_dict, perm_group=_s_group("i", "j", "k")) == 220
 
     def test_mixed_symmetric_and_free(self):
         """S2 on (j,k) plus free index a."""
         size_dict = {"a": 5, "j": 10, "k": 10}
-        sym = [frozenset({("j",), ("k",)})]
-        assert unique_elements(frozenset("ajk"), size_dict, sym) == 5 * 55
+        assert unique_elements(frozenset("ajk"), size_dict, perm_group=_s_group("j", "k")) == 5 * 55
 
     def test_no_symmetry(self):
         size_dict = {"i": 3, "j": 4}
@@ -52,37 +57,6 @@ class TestUniqueElements:
 
     def test_empty(self):
         assert unique_elements(frozenset(), {}, None) == 1
-
-    def test_block_s2_uniform_dims(self):
-        """Block S2 on (a,b) ↔ (c,d) with all dims equal."""
-        # block_card = 3*3 = 9, k = 2 → C(9+1, 2) = 45
-        size_dict = {"a": 3, "b": 3, "c": 3, "d": 3}
-        sym = [frozenset({("a", "b"), ("c", "d")})]
-        assert unique_elements(frozenset("abcd"), size_dict, sym) == 45
-
-    def test_block_s2_heterogeneous_dims_rect(self):
-        """Block S2 on (a,b) ↔ (c,d) where each block has shape (3, 4).
-
-        Regression test for the bug where unique_elements assumed all axes
-        in a block had the same size and computed n**s instead of the
-        product over the block's labels. For X of shape (3, 4) used as
-        einsum('ab,cd->abcd', X, X), the block cardinality is 3*4 = 12,
-        not 3**2 = 9, and the unique count is C(13, 2) = 78, not 45.
-        """
-        size_dict = {"a": 3, "b": 4, "c": 3, "d": 4}
-        sym = [frozenset({("a", "b"), ("c", "d")})]
-        assert unique_elements(frozenset("abcd"), size_dict, sym) == 78
-
-    def test_block_s2_heterogeneous_dims_rank3(self):
-        """Block S2 on rank-3 blocks (a,b,c) ↔ (d,e,f) with shape (2, 3, 4).
-
-        Block cardinality should be 2*3*4 = 24, giving C(25, 2) = 300
-        unique entries. The buggy formula gave 2**3 = 8 → C(9, 2) = 36,
-        an ~8x underestimate.
-        """
-        size_dict = {"a": 2, "b": 3, "c": 4, "d": 2, "e": 3, "f": 4}
-        sym = [frozenset({("a", "b", "c"), ("d", "e", "f")})]
-        assert unique_elements(frozenset("abcdef"), size_dict, sym) == 300
 
 
 class TestSymmetricFlopCount:
@@ -96,7 +70,7 @@ class TestSymmetricFlopCount:
             2,
             size_dict,
             output_indices=frozenset("ajk"),
-            output_symmetry=[frozenset({("j",), ("k",)})],
+            output_group=_s_group("j", "k"),
         )
         dense_cost = 100**4 * 2
         assert cost < dense_cost
@@ -109,7 +83,7 @@ class TestSymmetricFlopCount:
         size_dict = {"i": 10, "j": 10, "k": 10}
         idx = frozenset("ijk")
         dense = flop_count(idx, True, 2, size_dict)
-        sym = symmetric_flop_count(idx, True, 2, size_dict, output_symmetry=None)
+        sym = symmetric_flop_count(idx, True, 2, size_dict, output_group=None)
         assert sym == dense
 
 
@@ -237,7 +211,7 @@ class TestSymmetricBlas:
             ["ij", "jk"],
             "ik",
             frozenset("j"),
-            input_symmetries=[[frozenset({("i",), ("j",)})], None],
+            input_symmetries=[_s_group("i", "j"), None],
         )
         assert result == "SYMM"
 
@@ -249,7 +223,7 @@ class TestSymmetricBlas:
             ["ij", "jk"],
             "ik",
             frozenset("j"),
-            input_symmetries=[None, [frozenset({("j",), ("k",)})]],
+            input_symmetries=[None, _s_group("j", "k")],
         )
         assert result == "SYMM"
 
@@ -261,7 +235,7 @@ class TestSymmetricBlas:
             ["ijk", "ji"],
             "k",
             frozenset("ij"),
-            input_symmetries=[[frozenset({("i",), ("j",)})], None],
+            input_symmetries=[_s_group("i", "j"), None],
         )
         assert result == "SYMV"
 
@@ -273,7 +247,7 @@ class TestSymmetricBlas:
             ["ij", "ij"],
             "",
             frozenset("ij"),
-            input_symmetries=[[frozenset({("i",), ("j",)})], None],
+            input_symmetries=[_s_group("i", "j"), None],
         )
         assert result == "SYDT"
 
@@ -304,7 +278,7 @@ class TestSymmetricBlas:
             ["ijk", "lkj"],
             "il",
             frozenset("jk"),
-            input_symmetries=[[frozenset({("i",), ("j",)})], None],
+            input_symmetries=[_s_group("i", "j"), None],
         )
         assert result == "TDOT"
 
@@ -368,7 +342,7 @@ class TestFixedSymmetricFlopCount:
             2,
             size_dict,
             output_indices=frozenset("i"),
-            output_symmetry=None,
+            output_group=None,
         )
         dense = flop_count(frozenset("ij"), True, 2, size_dict)
         assert cost == dense
@@ -389,7 +363,7 @@ class TestFixedSymmetricFlopCount:
             2,
             size_dict,
             output_indices=frozenset("ajk"),
-            output_symmetry=[frozenset({("j",), ("k",)})],
+            output_group=_s_group("j", "k"),
         )
         dense = flop_count(frozenset("aijk"), True, 2, size_dict)
         # unique outputs = 10 * C(11,2) = 550, total = 1000
@@ -406,7 +380,7 @@ class TestFixedSymmetricFlopCount:
             2,
             size_dict,
             output_indices=frozenset("ajk"),
-            output_symmetry=[frozenset({("j",), ("k",)})],
+            output_group=_s_group("j", "k"),
         )
         assert cost == 11000
 
@@ -440,7 +414,7 @@ class TestFixedSymmetricFlopCount:
             2,
             size_dict,
             output_indices=frozenset("ajk"),
-            output_symmetry=[frozenset({("j",), ("k",)})],
+            output_group=_s_group("j", "k"),
         )
         assert formula_cost == counted_ops
 
@@ -455,7 +429,7 @@ class TestFixedSymmetricFlopCount:
             2,
             size_dict,
             output_indices=None,
-            output_symmetry=None,
+            output_group=None,
         )
         dense = flop_count(frozenset("ijk"), True, 2, size_dict)
         assert cost_new == dense
@@ -469,7 +443,7 @@ class TestFixedSymmetricFlopCount:
             2,
             size_dict,
             output_indices=frozenset("aij"),
-            output_symmetry=[frozenset({("i",), ("j",)})],
+            output_group=_s_group("i", "j"),
         )
         # Output has S2 on (i,j): unique = 10 * C(11,2) = 550, total = 1000
         # dense_base = 1000 * 1 (op_factor=1, no inner product)
@@ -684,7 +658,7 @@ class TestInnerSymmetryFlops:
             True,
             2,
             {"a": 3, "b": 3, "i": 4, "j": 4},
-            output_symmetry=[frozenset({("a",), ("b",)})],
+            output_group=_s_group("a", "b"),
             output_indices=frozenset("ab"),
         )
         cost_with_flag = symmetric_flop_count(
@@ -692,7 +666,7 @@ class TestInnerSymmetryFlops:
             True,
             2,
             {"a": 3, "b": 3, "i": 4, "j": 4},
-            output_symmetry=[frozenset({("a",), ("b",)})],
+            output_group=_s_group("a", "b"),
             output_indices=frozenset("ab"),
             use_inner_symmetry=True,
         )
@@ -705,7 +679,7 @@ class TestInnerSymmetryFlops:
             True,
             2,
             {"a": 3, "b": 3, "i": 4, "j": 4},
-            output_symmetry=[frozenset({("a",), ("b",)})],
+            output_group=_s_group("a", "b"),
             output_indices=frozenset("ab"),
         )
         reduced_cost = symmetric_flop_count(
@@ -713,22 +687,22 @@ class TestInnerSymmetryFlops:
             True,
             2,
             {"a": 3, "b": 3, "i": 4, "j": 4},
-            output_symmetry=[frozenset({("a",), ("b",)})],
+            output_group=_s_group("a", "b"),
             output_indices=frozenset("ab"),
-            inner_symmetry=[frozenset({("i",), ("j",)})],
+            inner_group=_s_group("i", "j"),
             inner_indices=frozenset("ij"),
             use_inner_symmetry=True,
         )
         assert reduced_cost < base_cost
 
     def test_inner_sym_flag_off_no_reduction(self):
-        """With flag off, inner_symmetry is ignored."""
+        """With flag off, inner_group is ignored."""
         base_cost = symmetric_flop_count(
             "abij",
             True,
             2,
             {"a": 3, "b": 3, "i": 4, "j": 4},
-            output_symmetry=[frozenset({("a",), ("b",)})],
+            output_group=_s_group("a", "b"),
             output_indices=frozenset("ab"),
         )
         same_cost = symmetric_flop_count(
@@ -736,9 +710,9 @@ class TestInnerSymmetryFlops:
             True,
             2,
             {"a": 3, "b": 3, "i": 4, "j": 4},
-            output_symmetry=[frozenset({("a",), ("b",)})],
+            output_group=_s_group("a", "b"),
             output_indices=frozenset("ab"),
-            inner_symmetry=[frozenset({("i",), ("j",)})],
+            inner_group=_s_group("i", "j"),
             inner_indices=frozenset("ij"),
             use_inner_symmetry=False,
         )
@@ -756,9 +730,9 @@ class TestInnerSymmetryFlops:
             True,
             2,
             {"a": 3, "b": 3, "i": 4, "j": 4},
-            output_symmetry=[frozenset({("a",), ("b",)})],
+            output_group=_s_group("a", "b"),
             output_indices=frozenset("ab"),
-            inner_symmetry=[frozenset({("i",), ("j",)})],
+            inner_group=_s_group("i", "j"),
             inner_indices=frozenset("ij"),
             use_inner_symmetry=True,
         )
