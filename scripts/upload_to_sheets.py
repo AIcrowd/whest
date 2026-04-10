@@ -23,36 +23,56 @@ DEFAULT_CSV = REPO_ROOT / "src" / "mechestim" / "data" / "weights.csv"
 TITLE = "mechestim FLOP Weight Calibration Review"
 
 
+import tempfile
+
+
 def gws(*args: str, json_body: dict | None = None) -> dict:
-    """Run a gws CLI command and return parsed JSON output."""
+    """Run a gws CLI command and return parsed JSON output.
+
+    For large JSON bodies, writes to a temp file to avoid CLI arg length limits.
+    """
     cmd = ["gws"] + list(args)
+    tmp_file = None
     if json_body is not None:
         body_str = json.dumps(json_body)
-        cmd += ["--json", body_str]
-    result = subprocess.run(cmd, capture_output=True, text=True)
+        # If body is large, write to temp file and use @file syntax
+        if len(body_str) > 50_000:
+            tmp_file = tempfile.NamedTemporaryFile(
+                mode="w", suffix=".json", delete=False
+            )
+            tmp_file.write(body_str)
+            tmp_file.close()
+            cmd += ["--json", f"@{tmp_file.name}"]
+        else:
+            cmd += ["--json", body_str]
 
-    # Try stdout first (most commands), then stderr
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True)
+    finally:
+        if tmp_file:
+            Path(tmp_file.name).unlink(missing_ok=True)
+
+    # Try stdout first, then stderr
     for output in [result.stdout, result.stderr]:
         idx = output.find("{")
         if idx == -1:
             continue
-        try:
-            return json.loads(output[idx:])
-        except json.JSONDecodeError:
-            # Try to find just the first complete JSON object
-            depth = 0
-            start = idx
-            for i, ch in enumerate(output[idx:], idx):
-                if ch == "{":
-                    depth += 1
-                elif ch == "}":
-                    depth -= 1
-                    if depth == 0:
-                        try:
-                            return json.loads(output[start : i + 1])
-                        except json.JSONDecodeError:
-                            break
-            continue
+        # Find the first complete JSON object
+        depth = 0
+        for i, ch in enumerate(output[idx:], idx):
+            if ch == "{":
+                depth += 1
+            elif ch == "}":
+                depth -= 1
+                if depth == 0:
+                    try:
+                        parsed = json.loads(output[idx : i + 1])
+                        if "error" in parsed:
+                            print(f"  gws API error: {parsed['error'].get('message', '')[:200]}",
+                                  file=sys.stderr)
+                        return parsed
+                    except json.JSONDecodeError:
+                        break
 
     if result.returncode != 0:
         print(f"gws error (exit {result.returncode}):", file=sys.stderr)
@@ -305,7 +325,7 @@ def apply_formatting(sid: str, num_rows: int, num_cols: int) -> None:
         ("NUMBER_LESS", "2.0",    _color(0.72, 0.88, 0.72), None),           # baseline: green
         ("NUMBER_LESS", "20.0",   _color(1.0, 0.95, 0.6),   None),           # moderate: yellow
         ("NUMBER_LESS", "100.0",  _color(1.0, 0.8, 0.4),    None),           # heavy: orange
-        ("NUMBER_GREATER_THAN_OR_EQUAL", "100.0", _color(0.92, 0.45, 0.4), None),  # extreme: red
+        ("NUMBER_GREATER_THAN_EQ", "100.0", _color(0.92, 0.45, 0.4), None),  # extreme: red
     ]
     for cond_type, value, bg, fg in weight_rules:
         requests.append(_number_rule(sheet_id, 4, num_rows, cond_type, value, bg, fg))
@@ -388,13 +408,17 @@ def apply_formatting(sid: str, num_rows: int, num_cols: int) -> None:
         }
     })
 
-    # ---- Send batch update ----
-    gws(
-        "sheets", "spreadsheets", "batchUpdate",
-        "--params", json.dumps({"spreadsheetId": sid}),
-        json_body={"requests": requests},
-    )
-    print("  Formatting applied.")
+    # ---- Send batch updates in chunks (avoid CLI arg length limits) ----
+    CHUNK_SIZE = 10
+    for i in range(0, len(requests), CHUNK_SIZE):
+        chunk = requests[i : i + CHUNK_SIZE]
+        print(f"  Sending batch {i // CHUNK_SIZE + 1} ({len(chunk)} requests)...")
+        gws(
+            "sheets", "spreadsheets", "batchUpdate",
+            "--params", json.dumps({"spreadsheetId": sid}),
+            json_body={"requests": chunk},
+        )
+    print(f"  Formatting applied ({len(requests)} requests total).")
 
 
 def create_summary_sheet(sid: str, rows: list[list[str]]) -> None:
