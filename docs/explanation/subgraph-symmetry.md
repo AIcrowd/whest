@@ -72,34 +72,21 @@ objects.
 
 #### Full bipartite graph
 
-```mermaid
-%%{init: {'theme': 'neutral', 'flowchart': {'rankSpacing': 80}}}%%
-flowchart LR
-    A0["(A, 0)"] --- a((a))
-    B0["(B, 0)"] --- b((b))
-    T0["(T, 0)"] --- i{{i}}
-    A1["(A, 1)"] --- i
-    T1["(T, 1)"] --- j{{j}}
-    B1["(B, 1)"] --- j
+```
+   U (axis classes)                 Labels
+   ─────────────────               ──────
+                                   V (free):
+   (A, 0) ───────────────────────── a
+   (B, 0) ───────────────────────── b
 
-    subgraph U ["U-vertices (axis classes)"]
-        A0
-        B0
-        T0
-        A1
-        T1
-        B1
-    end
+                                   W (summed):
+   (T, 0) ──────────┐
+                    ├────────────── i
+   (A, 1) ──────────┘
 
-    subgraph Labels ["Labels — V free ○ · W summed ⬡"]
-        a
-        b
-        i
-        j
-    end
-
-    style i fill:#f0f0f0,stroke:#999,stroke-dasharray:5 5
-    style j fill:#f0f0f0,stroke:#999,stroke-dasharray:5 5
+   (T, 1) ──────────┐
+                    ├────────────── j
+   (B, 1) ──────────┘
 ```
 
 Now consider the subset `{A, B}` (positions 1 and 2):
@@ -116,27 +103,16 @@ Now consider the subset `{A, B}` (positions 1 and 2):
 When we restrict to subset {A, B}, labels `i` and `j` cross the cut (they also
 appear in T, outside the subset), so they move from W to V:
 
-```mermaid
-%%{init: {'theme': 'neutral', 'flowchart': {'rankSpacing': 80}}}%%
-flowchart LR
-    A0["(A, 0)"] --- a((a))
-    A1["(A, 1)"] --- i((i))
-    B0["(B, 0)"] --- b((b))
-    B1["(B, 1)"] --- j((j))
+```
+   U (subset {A, B} only)           Labels
+   ──────────────────────           ──────
+                                    V (all free):
+   (A, 0) ───────────────────────── a
+   (A, 1) ───────────────────────── i
+   (B, 0) ───────────────────────── b
+   (B, 1) ───────────────────────── j
 
-    subgraph U ["U-vertices (subset only)"]
-        A0
-        A1
-        B0
-        B1
-    end
-
-    subgraph V ["V (all free · W is empty)"]
-        a
-        i
-        b
-        j
-    end
+                                    W: (empty)
 ```
 
 The incidence matrix M at this subset (rows = U-vertices, columns = V∪W):
@@ -227,31 +203,18 @@ Consider two identical dense matrices `X`. The bipartite graph has one
 U-vertex per axis (four total), one label per column, and no W-labels
 (nothing is contracted):
 
-```mermaid
-%%{init: {'theme': 'neutral', 'flowchart': {'rankSpacing': 80}}}%%
-flowchart LR
-    u0a["X₀ · a"] --- a((a))
-    u0b["X₀ · b"] --- b((b))
-    u1c["X₁ · c"] --- c((c))
-    u1d["X₁ · d"] --- d((d))
+```
+   U (axis classes)                 Labels
+   ─────────────────               ──────
+   operand X₀:                     V (all free):
+     X₀ · a ─────────────────────── a
+     X₀ · b ─────────────────────── b
 
-    subgraph U ["U-vertices (axis classes)"]
-        subgraph grp0 ["operand X₀"]
-            u0a
-            u0b
-        end
-        subgraph grp1 ["operand X₁ (= X₀)"]
-            u1c
-            u1d
-        end
-    end
+   operand X₁ (= X₀):
+     X₁ · c ─────────────────────── c
+     X₁ · d ─────────────────────── d
 
-    subgraph V ["V (all free · W is empty)"]
-        a
-        b
-        c
-        d
-    end
+                                    W: (empty)
 ```
 
 X₀ and X₁ are the same Python object (grouped above), forming one
