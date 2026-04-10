@@ -418,6 +418,9 @@ from mechestim._symmetric import (  # noqa: F401
     is_symmetric,
 )
 
+# --- Permutation groups ---
+from mechestim._perm_group import Permutation, PermutationGroup  # noqa: F401
+
 # --- Unwrap (counted) ---
 from mechestim._unwrap import unwrap  # noqa: F401
 
