@@ -169,7 +169,7 @@ class TestBenchmarkWindow:
             assert d["category"] == "counted_custom"
             assert d["analytical_formula"] == _FORMULA_STRINGS[op]
             assert d["analytical_flops"] == _ANALYTICAL_COST[op] * 1_000
-            assert d["benchmark_size"] == "n=1000"
+            assert d["benchmark_size"] == "output: (1000,)"
             assert isinstance(d["bench_code"], str)
             assert d["repeats"] == 1
             assert isinstance(d["perf_instructions_total"], list)

@@ -160,11 +160,28 @@ def benchmark_polynomial(
         if dist_values:
             results[op] = statistics.median(dist_values)
             median_idx = dist_values.index(statistics.median(dist_values))
+            # Build explicit benchmark_size per op
+            if op == "polyval":
+                bm_size = f"c: ({degree + 1},), x: ({n},)"
+            elif op == "polyfit":
+                bm_size = f"x: ({n},), y: ({n},), degree={degree}"
+            elif op in ("polymul", "polydiv"):
+                bm_size = f"c: ({degree + 1},), d: ({degree + 1},)"
+            elif op in ("polyadd", "polysub"):
+                bm_size = f"c: ({degree + 1},), d: ({degree + 1},)"
+            elif op in ("polyder", "polyint"):
+                bm_size = f"c: ({degree + 1},)"
+            elif op == "poly":
+                bm_size = f"r: ({degree},)"
+            elif op == "roots":
+                bm_size = f"c: ({degree + 1},)"
+            else:
+                bm_size = f"n={n}, degree={degree}"
             details[op] = {
                 "category": "counted_custom",
                 "analytical_formula": _FORMULA_STRINGS.get(op, "n"),
                 "analytical_flops": analytical,
-                "benchmark_size": f"n={n}, degree={degree}",
+                "benchmark_size": bm_size,
                 "bench_code": bench,
                 "repeats": repeats,
                 "perf_instructions_total": perf_instructions[median_idx],

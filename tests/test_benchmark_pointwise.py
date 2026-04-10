@@ -155,7 +155,7 @@ class TestBenchmarkPointwise:
         assert sin_detail["category"] == "counted_unary"
         assert sin_detail["analytical_formula"] == "numel(output)"
         assert sin_detail["analytical_flops"] == n
-        assert sin_detail["benchmark_size"] == f"n={n}"
+        assert sin_detail["benchmark_size"] == f"x: ({n},)"
         assert isinstance(sin_detail["bench_code"], str)
         assert sin_detail["repeats"] == 5
         assert isinstance(sin_detail["perf_instructions_total"], list)

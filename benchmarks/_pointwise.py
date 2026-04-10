@@ -279,7 +279,7 @@ def benchmark_pointwise(
                 "category": "counted_unary",
                 "analytical_formula": "numel(output)",
                 "analytical_flops": n,
-                "benchmark_size": f"n={n}",
+                "benchmark_size": f"x: ({n},)",
                 "bench_code": bench,
                 "repeats": repeats,
                 "perf_instructions_total": dist_raw_totals,
@@ -306,7 +306,7 @@ def benchmark_pointwise(
                 "category": "counted_binary",
                 "analytical_formula": "numel(output)",
                 "analytical_flops": n,
-                "benchmark_size": f"n={n}",
+                "benchmark_size": f"a: ({n},), b: ({n},)",
                 "bench_code": bench,
                 "repeats": repeats,
                 "perf_instructions_total": dist_raw_totals,
@@ -344,11 +344,19 @@ def benchmark_pointwise(
             dist_raw_totals.append(result.total_flops)
         if dist_values:
             results[op] = statistics.median(dist_values)
+            if op == "isclose":
+                bm_size = f"a: ({n},), b: ({n},)"
+            elif op == "heaviside":
+                bm_size = f"x: ({n},), h=0.5"
+            elif op == "clip":
+                bm_size = f"x: ({n},), a_min=-1.0, a_max=1.0"
+            else:
+                bm_size = f"x: ({n},)"
             details[op] = {
                 "category": category,
                 "analytical_formula": "numel(output)",
                 "analytical_flops": n,
-                "benchmark_size": f"n={n}",
+                "benchmark_size": bm_size,
                 "bench_code": bench,
                 "repeats": repeats,
                 "perf_instructions_total": dist_raw_totals,

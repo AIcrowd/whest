@@ -537,25 +537,41 @@ def _benchmark_size_str(op: str) -> str:
     """Return a human-readable benchmark size string for an op."""
     n_large = 10_000_000
     if op in ("convolve", "correlate"):
-        return "n=100000, k=1000"
+        return "x: (100000,), k: (1000,)"
     if op in ("corrcoef", "cov"):
-        return "f=1000, s=10000"
+        return "x: (1000,10000)"
     if op == "cross":
-        return "n=1000000"
+        return "a: (1000000,3), b: (1000000,3)"
     if op == "histogramdd":
-        return "n=1000000, bins=50, ndim=3"
-    if op in ("histogram", "histogram2d"):
-        return f"n={n_large}, bins=100"
+        return "x: (1000000,3), bins=50"
+    if op == "histogram":
+        return f"x: ({n_large},), bins=100"
+    if op == "histogram2d":
+        return f"x: ({n_large},), y: ({n_large},), bins=100"
+    if op == "histogram_bin_edges":
+        return f"x: ({n_large},), bins=100"
     if op == "digitize":
-        return f"n={n_large}, bins=100"
+        return f"x: ({n_large},), bins: (100,)"
+    if op == "bincount":
+        return f"x: ({n_large},)"
     if op == "interp":
-        return f"n={n_large}, xp=10000"
+        return f"x: ({n_large},), xp: (10000,), fp: (10000,)"
     if op == "trace":
-        return "n=10000 (10000x10000 matrix)"
+        return "A: (10000,10000)"
     if op == "vander":
-        return "n=10000, degree=100"
+        return "x: (10000,), degree=100"
+    if op == "clip":
+        return f"x: ({n_large},), a_min=-1.0, a_max=1.0"
+    if op in ("allclose", "array_equal", "array_equiv"):
+        return f"a: ({n_large},), b: ({n_large},)"
+    if op in ("diff", "ediff1d", "gradient", "unwrap"):
+        return f"x: ({n_large},)"
+    if op == "trapezoid":
+        return f"x: ({n_large},)"
+    if op in ("logspace", "geomspace"):
+        return f"output: ({n_large},)"
     # Default: most ops use n_large
-    return f"n={n_large}"
+    return f"x: ({n_large},)"
 
 
 def benchmark_misc(

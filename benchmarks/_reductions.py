@@ -125,7 +125,7 @@ def benchmark_reductions(
                 "category": "counted_reduction",
                 "analytical_formula": "numel(input)",
                 "analytical_flops": n,
-                "benchmark_size": f"n={n}",
+                "benchmark_size": f"x: ({n},)",
                 "bench_code": bench,
                 "repeats": repeats,
                 "perf_instructions_total": dist_raw_totals,

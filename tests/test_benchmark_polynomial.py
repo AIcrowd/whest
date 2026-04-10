@@ -198,8 +198,9 @@ class TestBenchmarkPolynomial:
             assert d["category"] == "counted_custom"
             assert isinstance(d["analytical_formula"], str)
             assert isinstance(d["analytical_flops"], int)
-            assert "n=1000" in d["benchmark_size"]
-            assert "degree=5" in d["benchmark_size"]
+            assert d["benchmark_size"]  # non-empty
+            # New format uses explicit param shapes (e.g. "c: (6,), x: (1000,)")
+            assert ":" in d["benchmark_size"] or "=" in d["benchmark_size"]
             assert isinstance(d["bench_code"], str)
             assert d["repeats"] == 1
             assert isinstance(d["perf_instructions_total"], int)

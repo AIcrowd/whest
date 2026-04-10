@@ -106,7 +106,7 @@ class TestBenchmarkReductions:
         assert sum_detail["category"] == "counted_reduction"
         assert sum_detail["analytical_formula"] == "numel(input)"
         assert sum_detail["analytical_flops"] == n
-        assert sum_detail["benchmark_size"] == f"n={n}"
+        assert sum_detail["benchmark_size"] == f"x: ({n},)"
         assert isinstance(sum_detail["bench_code"], str)
         assert sum_detail["repeats"] == 5
         assert isinstance(sum_detail["perf_instructions_total"], list)
