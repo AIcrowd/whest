@@ -1,10 +1,11 @@
 """Debug: what does the oracle detect vs what Φ needs?"""
+from math import comb
+
 import numpy as np
 
 from mechestim._opt_einsum._contract import contract_path
 from mechestim._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
 from mechestim._opt_einsum._symmetry import unique_elements
-from math import comb
 
 n = 6
 X = np.ones((n, n, n))
