@@ -8,9 +8,10 @@ floating-point instruction cost observed on hardware. When weights are
 loaded, the effective cost of an operation becomes:
 
 $$
-\text{cost}(\text{op}) = \texttt{analytical\_formula}(\text{shapes}) \times \text{weight}(\text{op})
+\text{cost}(\text{op}) = C(\text{op}, \text{shapes}) \times w(\text{op})
 $$
 
+where $C$ is the analytical FLOP formula and $w$ is the weight.
 A weight of 25.9 for `sin` means that each analytical FLOP of sine costs
 approximately 26 times more in actual floating-point instructions than a
 FLOP of addition.
@@ -22,18 +23,18 @@ FLOP of addition.
 Every weight is computed from the same two-step formula:
 
 $$
-$\alpha$(\text{op}) = \text{median}_{D} \left[ \frac{\sum \texttt{fp\_arith\_inst\_retired.*} \times \texttt{simd\_width}}{C(\text{op}, \text{params}) \times R} \right]
+\alpha(\text{op}) = \operatorname{median}_{D} \left[ \frac{\text{perf\_fp\_retired} \times \text{simd\_width}}{C(\text{op}, \text{params}) \times R} \right]
 $$
 
 $$
-\text{weight}(\text{op}) = \frac{$\alpha$(\text{op})}{$\alpha$(\text{add})}
+w(\text{op}) = \frac{\alpha(\text{op})}{\alpha(\text{add})}
 $$
 
 Where:
 
-- $\alpha$(op) is the **raw correction factor** -- the ratio of hardware-observed FP instructions to the analytical FLOP count.
+- $\alpha(\text{op})$ is the **raw correction factor** -- the ratio of hardware-observed FP instructions to the analytical FLOP count.
 - `fp_arith_inst_retired.*` are Intel PMU hardware counters that count retired floating-point arithmetic instructions, weighted by SIMD lane count.
-- $C$(op, params) is the analytical FLOP count from mechestim's cost formula (e.g., `numel(output)` for pointwise ops).
+- $C(\text{op}, \text{params})$ is the analytical FLOP count from mechestim's cost formula (e.g., `numel(output)` for pointwise ops).
 - $R$ is the number of repeats per distribution.
 - The **median** across 3 input distributions is reported.
 
@@ -56,7 +57,7 @@ Where:
     - **Repeats:** 5 per distribution
     - **Distributions:** 3 per operation
     - **Methodology version:** 2.0
-    - **Baseline $\alpha$(add):** 1.564071
+    - **Baseline $\alpha(\text{add})$:** 1.564071
     - **Date:** 2026-04-10
     - **Total calibration time:** 2272.4 seconds
 
@@ -68,7 +69,7 @@ All weights are normalized against element-wise addition (`np.add`):
 - **Array size:** A(512,512) x B(512,512), dtype=float64
 - **Measured perf instructions:** 78203574.0
 - **Measured timing:** 79555837.0 ns
-- **$\alpha$(add):** 1.564071
+- **$\alpha(\text{add})$:** 1.564071
 
 **[Download full review spreadsheet (CSV)](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/data/weights.csv)**
 

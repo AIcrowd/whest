@@ -352,10 +352,11 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     w("loaded, the effective cost of an operation becomes:")
     w()
     w("$$")
-    w("\\text{cost}(\\text{op}) = \\texttt{analytical\\_formula}(\\text{shapes}) "
-      "\\times \\text{weight}(\\text{op})")
+    w("\\text{cost}(\\text{op}) = C(\\text{op}, \\text{shapes}) "
+      "\\times w(\\text{op})")
     w("$$")
     w()
+    w("where $C$ is the analytical FLOP formula and $w$ is the weight.")
     w("A weight of 25.9 for `sin` means that each analytical FLOP of sine costs")
     w("approximately 26 times more in actual floating-point instructions than a")
     w("FLOP of addition.")
@@ -371,25 +372,25 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     w("Every weight is computed from the same two-step formula:")
     w()
     w("$$")
-    w("$\\alpha$(\\text{op}) = \\text{median}_{D} "
-      "\\left[ \\frac{\\sum \\texttt{fp\\_arith\\_inst\\_retired.*} "
-      "\\times \\texttt{simd\\_width}}"
+    w("\\alpha(\\text{op}) = \\operatorname{median}_{D} "
+      "\\left[ \\frac{\\text{perf\\_fp\\_retired} "
+      "\\times \\text{simd\\_width}}"
       "{C(\\text{op}, \\text{params}) \\times R} \\right]")
     w("$$")
     w()
     w("$$")
-    w("\\text{weight}(\\text{op}) = "
-      "\\frac{$\\alpha$(\\text{op})}{$\\alpha$(\\text{add})}")
+    w("w(\\text{op}) = "
+      "\\frac{\\alpha(\\text{op})}{\\alpha(\\text{add})}")
     w("$$")
     w()
     w("Where:")
     w()
-    w("- $\\alpha$(op) is the **raw correction factor** -- the ratio of "
+    w("- $\\alpha(\\text{op})$ is the **raw correction factor** -- the ratio of "
       "hardware-observed FP instructions to the analytical FLOP count.")
     w("- `fp_arith_inst_retired.*` are Intel PMU hardware counters "
       "that count retired floating-point arithmetic instructions, "
       "weighted by SIMD lane count.")
-    w("- $C$(op, params) is the analytical FLOP count from mechestim's "
+    w("- $C(\\text{op}, \\text{params})$ is the analytical FLOP count from mechestim's "
       "cost formula (e.g., `numel(output)` for pointwise ops).")
     w("- $R$ is the number of repeats per distribution.")
     w("- The **median** across 3 input distributions is reported.")
@@ -423,7 +424,7 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     w(f"    - **Repeats:** {bc['repeats']} per distribution")
     w(f"    - **Distributions:** {bc['distributions']} per operation")
     w(f"    - **Methodology version:** {meth['version']}")
-    w(f"    - **Baseline $\\alpha$(add):** {meth['baseline_alpha']}")
+    w(f"    - **Baseline $\\alpha(\\text{{add}})$:** {meth['baseline_alpha']}")
     ts = meta.get("timestamp", "")
     if ts:
         w(f"    - **Date:** {ts[:10]}")
@@ -453,10 +454,10 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
         w(f"- **Array size:** {sample_detail.get('benchmark_size', 'n=10_000_000')}, dtype=float64")
         w(f"- **Measured perf instructions:** {sample_detail.get('baseline_perf_instructions_total', 'N/A')}")
         w(f"- **Measured timing:** {sample_detail.get('baseline_timing_ns_total', 'N/A')} ns")
-        w(f"- **$\\alpha$(add):** {meth['baseline_alpha']}")
+        w(f"- **$\\alpha(\\text{{add}})$:** {meth['baseline_alpha']}")
     else:
         w(f"- **Benchmark command:** `np.add(x, y, out=_out)`")
-        w(f"- **$\\alpha$(add):** {meth['baseline_alpha']}")
+        w(f"- **$\\alpha(\\text{{add}})$:** {meth['baseline_alpha']}")
     w()
 
     # ------------------------------------------------------------------
