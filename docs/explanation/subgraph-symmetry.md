@@ -110,7 +110,7 @@ When we restrict to subset {A, B}, labels `i` and `j` cross the cut (they also
 appear in T, outside the subset), so they move from W to V:
 
 ```mermaid
-%%{init: {'theme': 'neutral', 'flowchart': {'nodeSpacing': 30, 'subGraphTitleMargin': {'bottom': 5}}}}%%
+%%{init: {'theme': 'neutral'}}%%
 flowchart LR
     A0["(A, 0)"] ----- a((a))
     A1["(A, 1)"] ----- i((i))
@@ -121,14 +121,19 @@ flowchart LR
         A0; A1; B0; B1
     end
 
-    subgraph V ["V — all labels free"]
-        a; i; b; j
+    subgraph right [" "]
+        subgraph V ["V — all labels free"]
+            a; i; b; j
+        end
+
+        subgraph W ["W — empty"]
+            w_none["(none)"]
+        end
+
+        V ~~~ W
     end
 
-    subgraph W ["W — empty"]
-        w_none["(none)"]
-    end
-
+    style right fill:none,stroke:none
     style w_none fill:none,stroke-dasharray: 5 5,stroke:#999,color:#999
 ```
 
