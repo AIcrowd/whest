@@ -181,16 +181,16 @@
         "ldexp": 1.200112,
         "isclose": 4.200112,
         "heaviside": 0.600112,
-        "polyval": 1.011416,
-        "polyfit": 1.185187,
-        "polyadd": 12.827723,
-        "polysub": 12.827723,
-        "polymul": 2.622743,
-        "polydiv": 0.158475,
+        "polyval": 1.011416473,
+        "polyfit": 1.1851866501813548,
+        "polyadd": 12.827722772277228,
+        "polysub": 12.827722772277228,
+        "polymul": 2.6227428683462404,
+        "polydiv": 0.15847465934712282,
         "polyder": 13.607920792079208,
-        "polyint": 12.637623762376236,
+        "polyint": 12.637623762376238,
         "poly": 2.15894,
-        "roots": 1.077527,
+        "roots": 1.07752714,
         "random.standard_normal": 22.307137,
         "random.uniform": 5.000112,
         "random.standard_exponential": 27.063048,
@@ -269,23 +269,23 @@
         "nancumsum": 1.600112,
         "cumulative_sum": 1.600112,
         "cumulative_prod": 1.600114,
-        "sort": 4.408274,
-        "argsort": 5.245539,
-        "lexsort": 0.744531,
-        "partition": 4.567687,
-        "argpartition": 4.742467,
-        "searchsorted": 1.489062,
-        "unique": 4.408274,
-        "in1d": 4.634411,
-        "isin": 4.634411,
-        "intersect1d": 8.143706,
-        "setdiff1d": 4.232523,
-        "setxor1d": 8.143706,
-        "union1d": 4.625933,
-        "unique_all": 0.743927,
-        "unique_counts": 4.408274,
-        "unique_inverse": 5.245539,
-        "unique_values": 4.408274,
+        "sort": 4.408274276666667,
+        "argsort": 5.245539393333333,
+        "lexsort": 0.74453107,
+        "partition": 4.56768682,
+        "argpartition": 4.74246718,
+        "searchsorted": 1.48906214,
+        "unique": 4.408274276666667,
+        "in1d": 4.6344107204,
+        "isin": 4.6344106792,
+        "intersect1d": 8.1437063792,
+        "setdiff1d": 4.2325234232,
+        "setxor1d": 8.1437063792,
+        "union1d": 4.6259329072,
+        "unique_all": 0.7439269141666667,
+        "unique_counts": 4.408274280833333,
+        "unique_inverse": 5.245539393333333,
+        "unique_values": 4.408274276666667,
         "bartlett": 6.000096,
         "blackman": 24.234681,
         "hamming": 34.376702,
@@ -539,7 +539,11 @@
         "blackman": 5.5853,
         "hamming": 8.2548,
         "hanning": 8.2404,
-        "kaiser": 26.1269
+        "kaiser": 26.1269,
+        "i0": 43.3131,
+        "sinc": 8.83,
+        "nan_to_num": 0.8719,
+        "ldexp": 1.6799
       },
       "perf_vs_timing": {
         "pearson_r": 0.102731,
@@ -3516,7 +3520,7 @@
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,)",
-        "bench_code": "np.sinc(x, out=_out)",
+        "bench_code": "np.sinc(x)",
         "repeats": 5,
         "perf_instructions_total": [
           14112715,
@@ -3536,14 +3540,16 @@
         "baseline_perf_instructions_total": 110005601.0,
         "baseline_timing_ns_total": 75917896.0,
         "notes": "Normalized sinc function element-wise.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L364"
+        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L364",
+        "timing_ns_total": 680153166.0,
+        "timing_weight": 8.83
       },
       "i0": {
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,)",
-        "bench_code": "np.i0(x, out=_out)",
+        "bench_code": "np.i0(x)",
         "repeats": 5,
         "perf_instructions_total": [
           14112715,
@@ -3563,7 +3569,9 @@
         "baseline_perf_instructions_total": 110005601.0,
         "baseline_timing_ns_total": 75917896.0,
         "notes": "Modified Bessel function of order 0, element-wise.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L317"
+        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L317",
+        "timing_ns_total": 3336297833.0,
+        "timing_weight": 43.3131
       },
       "spacing": {
         "category": "counted_unary",
@@ -3599,7 +3607,7 @@
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,)",
-        "bench_code": "np.nan_to_num(x, out=_out)",
+        "bench_code": "np.nan_to_num(x)",
         "repeats": 5,
         "perf_instructions_total": [
           14112715,
@@ -3619,7 +3627,9 @@
         "baseline_perf_instructions_total": 110005601.0,
         "baseline_timing_ns_total": 75917896.0,
         "notes": "Replace NaN/inf with finite numbers element-wise.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L329"
+        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L329",
+        "timing_ns_total": 67160167.0,
+        "timing_weight": 0.8719
       },
       "isneginf": {
         "category": "counted_unary",
@@ -4574,7 +4584,9 @@
         "baseline_perf_instructions_total": 110005601.0,
         "baseline_timing_ns_total": 75917896.0,
         "notes": "Return x1 * 2**x2 element-wise.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L440"
+        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L440",
+        "timing_ns_total": 129399208.0,
+        "timing_weight": 1.6799
       },
       "isclose": {
         "category": "counted_binary",
@@ -4642,7 +4654,9 @@
         "bench_code": "np.polyval(c, x)",
         "repeats": 5,
         "perf_instructions_total": [
-          1011416473
+          1011416473,
+          1011421596,
+          1011413899
         ],
         "distribution_alphas": [
           1.011416473,
@@ -4652,7 +4666,7 @@
         "timing_ns_total": 531693556.0,
         "timing_weight": 0.3502,
         "perf_weight": 0.4597,
-        "absolute_alpha": 1.011391,
+        "absolute_alpha": 1.011416473,
         "baseline_alpha": 2.200112,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -4669,7 +4683,9 @@
         "bench_code": "np.polyfit(x, y, 100)",
         "repeats": 5,
         "perf_instructions_total": [
-          120900890185
+          120900890185,
+          120900895308,
+          120900887599
         ],
         "distribution_alphas": [
           1.1851866501813548,
@@ -4679,7 +4695,7 @@
         "timing_ns_total": 16598137888.9,
         "timing_weight": 0.1072,
         "perf_weight": 0.5387,
-        "absolute_alpha": 1.1852,
+        "absolute_alpha": 1.1851866501813548,
         "baseline_alpha": 2.200112,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -4696,7 +4712,9 @@
         "bench_code": "np.polyadd(c, d)",
         "repeats": 5,
         "perf_instructions_total": [
-          6478
+          6400,
+          6478,
+          6499
         ],
         "distribution_alphas": [
           12.673267326732674,
@@ -4706,7 +4724,7 @@
         "timing_ns_total": 11846.0,
         "timing_weight": 15.4492,
         "perf_weight": 5.8305,
-        "absolute_alpha": 12.827753,
+        "absolute_alpha": 12.827722772277228,
         "baseline_alpha": 2.200112,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -4723,7 +4741,9 @@
         "bench_code": "np.polysub(c, d)",
         "repeats": 5,
         "perf_instructions_total": [
-          6478
+          6400,
+          6478,
+          6499
         ],
         "distribution_alphas": [
           12.673267326732674,
@@ -4733,7 +4753,7 @@
         "timing_ns_total": 11743.0,
         "timing_weight": 15.3149,
         "perf_weight": 5.8305,
-        "absolute_alpha": 12.827753,
+        "absolute_alpha": 12.827722772277228,
         "baseline_alpha": 2.200112,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -4750,7 +4770,9 @@
         "bench_code": "np.polymul(c, d)",
         "repeats": 5,
         "perf_instructions_total": [
-          133773
+          133695,
+          133773,
+          133794
         ],
         "distribution_alphas": [
           2.6212136065091656,
@@ -4760,7 +4782,7 @@
         "timing_ns_total": 81456.0,
         "timing_weight": 1.0518,
         "perf_weight": 1.1921,
-        "absolute_alpha": 2.622754,
+        "absolute_alpha": 2.6227428683462404,
         "baseline_alpha": 2.200112,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -4777,7 +4799,9 @@
         "bench_code": "np.polydiv(c, d)",
         "repeats": 5,
         "perf_instructions_total": [
-          8083
+          8005,
+          8083,
+          8104
         ],
         "distribution_alphas": [
           0.15694539751004805,
@@ -4787,7 +4811,7 @@
         "timing_ns_total": 193410.0,
         "timing_weight": 2.4974,
         "perf_weight": 0.072,
-        "absolute_alpha": 0.158408,
+        "absolute_alpha": 0.15847465934712282,
         "baseline_alpha": 2.200112,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -4804,9 +4828,13 @@
         "bench_code": "np.polyder(c)",
         "repeats": 5,
         "perf_instructions_total": [
+          6747,
+          6877,
           6872
         ],
         "distribution_alphas": [
+          13.36039603960396,
+          13.617821782178218,
           13.607920792079208
         ],
         "timing_ns_total": 26697.33,
@@ -4829,15 +4857,19 @@
         "bench_code": "np.polyint(c)",
         "repeats": 5,
         "perf_instructions_total": [
+          6257,
+          6387,
           6382
         ],
         "distribution_alphas": [
-          12.637623762376236
+          12.39009900990099,
+          12.647524752475247,
+          12.637623762376238
         ],
         "timing_ns_total": 34199.61,
         "timing_weight": 44.6021,
         "perf_weight": 5.7441,
-        "absolute_alpha": 12.637623762376236,
+        "absolute_alpha": 12.637623762376238,
         "baseline_alpha": 2.200112,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -4854,7 +4886,9 @@
         "bench_code": "np.poly(r)",
         "repeats": 5,
         "perf_instructions_total": [
-          107947
+          107869,
+          107947,
+          107968
         ],
         "distribution_alphas": [
           2.15738,
@@ -4864,7 +4898,7 @@
         "timing_ns_total": 1041554.0,
         "timing_weight": 13.7195,
         "perf_weight": 0.9813,
-        "absolute_alpha": 2.15897,
+        "absolute_alpha": 2.15894,
         "baseline_alpha": 2.200112,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -4881,7 +4915,9 @@
         "bench_code": "np.roots(c)",
         "repeats": 5,
         "perf_instructions_total": [
-          53876357
+          53876357,
+          54728902,
+          51754797
         ],
         "distribution_alphas": [
           1.07752714,
@@ -4891,7 +4927,7 @@
         "timing_ns_total": 19929764.0,
         "timing_weight": 0.2625,
         "perf_weight": 0.4898,
-        "absolute_alpha": 1.077615,
+        "absolute_alpha": 1.07752714,
         "baseline_alpha": 2.200112,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -7170,7 +7206,9 @@
         "bench_code": "np.sort(x)",
         "repeats": 5,
         "perf_instructions_total": [
-          5289929132
+          4407110604,
+          5289929132,
+          5295359702
         ],
         "distribution_alphas": [
           3.67259217,
@@ -7180,7 +7218,7 @@
         "timing_ns_total": 470395213.92,
         "timing_weight": 0.2582,
         "perf_weight": 2.0037,
-        "absolute_alpha": 4.408364,
+        "absolute_alpha": 4.408274276666667,
         "baseline_alpha": 2.200112,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -7197,7 +7235,9 @@
         "bench_code": "np.argsort(x)",
         "repeats": 5,
         "perf_instructions_total": [
-          6294647272
+          5481765384,
+          6294647272,
+          6302895862
         ],
         "distribution_alphas": [
           4.56813782,
@@ -7207,7 +7247,7 @@
         "timing_ns_total": 1026918066.96,
         "timing_weight": 0.5636,
         "perf_weight": 2.3842,
-        "absolute_alpha": 5.245507,
+        "absolute_alpha": 5.245539393333333,
         "baseline_alpha": 2.200112,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -7224,6 +7264,8 @@
         "bench_code": "np.lexsort((x, y))",
         "repeats": 5,
         "perf_instructions_total": [
+          28210644,
+          1786874568,
           1786874568
         ],
         "distribution_alphas": [
@@ -7234,7 +7276,7 @@
         "timing_ns_total": 203140646.88,
         "timing_weight": 0.0557,
         "perf_weight": 0.3384,
-        "absolute_alpha": 0.744518,
+        "absolute_alpha": 0.74453107,
         "baseline_alpha": 2.200112,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -7251,6 +7293,8 @@
         "bench_code": "np.partition(x, 5000000)",
         "repeats": 5,
         "perf_instructions_total": [
+          234031254,
+          196669989,
           228384341
         ],
         "distribution_alphas": [
@@ -7261,7 +7305,7 @@
         "timing_ns_total": 174478579.0,
         "timing_weight": 2.2983,
         "perf_weight": 2.0761,
-        "absolute_alpha": 4.567653,
+        "absolute_alpha": 4.56768682,
         "baseline_alpha": 2.200112,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -7278,7 +7322,9 @@
         "bench_code": "np.argpartition(x, 5000000)",
         "repeats": 5,
         "perf_instructions_total": [
-          237123359
+          231700594,
+          237123359,
+          271002391
         ],
         "distribution_alphas": [
           4.63401188,
@@ -7288,7 +7334,7 @@
         "timing_ns_total": 273188438.0,
         "timing_weight": 3.5985,
         "perf_weight": 2.1556,
-        "absolute_alpha": 4.742561,
+        "absolute_alpha": 4.74246718,
         "baseline_alpha": 2.200112,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -7305,6 +7351,8 @@
         "bench_code": "np.searchsorted(x, q)",
         "repeats": 5,
         "perf_instructions_total": [
+          906810222,
+          1786874568,
           1786874568
         ],
         "distribution_alphas": [
@@ -7315,7 +7363,7 @@
         "timing_ns_total": 2029208546.88,
         "timing_weight": 1.1137,
         "perf_weight": 0.6768,
-        "absolute_alpha": 1.489036,
+        "absolute_alpha": 1.48906214,
         "baseline_alpha": 2.200112,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -7332,7 +7380,9 @@
         "bench_code": "np.unique(x)",
         "repeats": 5,
         "perf_instructions_total": [
-          5289929132
+          4407110604,
+          5289929132,
+          5295359702
         ],
         "distribution_alphas": [
           3.67259217,
@@ -7342,7 +7392,7 @@
         "timing_ns_total": 637470078.0,
         "timing_weight": 0.3499,
         "perf_weight": 2.0037,
-        "absolute_alpha": 4.408364,
+        "absolute_alpha": 4.408274276666667,
         "baseline_alpha": 2.200112,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -7359,7 +7409,9 @@
         "bench_code": "np.in1d(a, b)",
         "repeats": 5,
         "perf_instructions_total": [
-          11586026801
+          9884923327,
+          11586026801,
+          11599705961
         ],
         "distribution_alphas": [
           3.9539693308,
@@ -7369,7 +7421,7 @@
         "timing_ns_total": 4189167347.0,
         "timing_weight": 1.1036,
         "perf_weight": 2.1064,
-        "absolute_alpha": 4.634316,
+        "absolute_alpha": 4.6344107204,
         "baseline_alpha": 2.200112,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -7386,7 +7438,9 @@
         "bench_code": "np.isin(a, b)",
         "repeats": 5,
         "perf_instructions_total": [
-          11586026698
+          9884923224,
+          11586026698,
+          11599705858
         ],
         "distribution_alphas": [
           3.9539692896,
@@ -7396,7 +7450,7 @@
         "timing_ns_total": 4197059329.0,
         "timing_weight": 1.1057,
         "perf_weight": 2.1064,
-        "absolute_alpha": 4.634316,
+        "absolute_alpha": 4.6344106792,
         "baseline_alpha": 2.200112,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -7413,7 +7467,9 @@
         "bench_code": "np.intersect1d(a, b)",
         "repeats": 5,
         "perf_instructions_total": [
-          20359265948
+          18450313634,
+          20359265948,
+          20370127088
         ],
         "distribution_alphas": [
           7.3801254536,
@@ -7423,7 +7479,7 @@
         "timing_ns_total": 2420390124.0,
         "timing_weight": 0.6376,
         "perf_weight": 3.7015,
-        "absolute_alpha": 8.143715,
+        "absolute_alpha": 8.1437063792,
         "baseline_alpha": 2.200112,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -7440,7 +7496,9 @@
         "bench_code": "np.setdiff1d(a, b)",
         "repeats": 5,
         "perf_instructions_total": [
-          10581308558
+          8810268444,
+          10581308558,
+          10592169698
         ],
         "distribution_alphas": [
           3.5241073776,
@@ -7450,7 +7508,7 @@
         "timing_ns_total": 3073260037.0,
         "timing_weight": 0.8096,
         "perf_weight": 1.9238,
-        "absolute_alpha": 4.232576,
+        "absolute_alpha": 4.2325234232,
         "baseline_alpha": 2.200112,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -7467,7 +7525,9 @@
         "bench_code": "np.setxor1d(a, b)",
         "repeats": 5,
         "perf_instructions_total": [
-          20359265948
+          18450313634,
+          20359265948,
+          20370127088
         ],
         "distribution_alphas": [
           7.3801254536,
@@ -7477,7 +7537,7 @@
         "timing_ns_total": 2691240551.0,
         "timing_weight": 0.709,
         "perf_weight": 3.7015,
-        "absolute_alpha": 8.143715,
+        "absolute_alpha": 8.1437063792,
         "baseline_alpha": 2.200112,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -7494,7 +7554,9 @@
         "bench_code": "np.union1d(a, b)",
         "repeats": 5,
         "perf_instructions_total": [
-          11564832268
+          9032255044,
+          11564832268,
+          12009900198
         ],
         "distribution_alphas": [
           3.6129020176,
@@ -7504,7 +7566,7 @@
         "timing_ns_total": 1614126332.0,
         "timing_weight": 0.4252,
         "perf_weight": 2.1026,
-        "absolute_alpha": 4.625956,
+        "absolute_alpha": 4.6259329072,
         "baseline_alpha": 2.200112,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -7521,6 +7583,8 @@
         "bench_code": "np.unique_all(x)",
         "repeats": 5,
         "perf_instructions_total": [
+          14112719,
+          892712297,
           892712297
         ],
         "distribution_alphas": [
@@ -7531,7 +7595,7 @@
         "timing_ns_total": 1283145970.08,
         "timing_weight": 0.7042,
         "perf_weight": 0.3381,
-        "absolute_alpha": 0.743858,
+        "absolute_alpha": 0.7439269141666667,
         "baseline_alpha": 2.200112,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -7548,7 +7612,9 @@
         "bench_code": "np.unique_counts(x)",
         "repeats": 5,
         "perf_instructions_total": [
-          5289929137
+          4407110609,
+          5289929137,
+          5295359707
         ],
         "distribution_alphas": [
           3.6725921741666667,
@@ -7558,7 +7624,7 @@
         "timing_ns_total": 895656420.96,
         "timing_weight": 0.4916,
         "perf_weight": 2.0037,
-        "absolute_alpha": 4.408364,
+        "absolute_alpha": 4.408274280833333,
         "baseline_alpha": 2.200112,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -7575,7 +7641,9 @@
         "bench_code": "np.unique_inverse(x)",
         "repeats": 5,
         "perf_instructions_total": [
-          6294647272
+          5481765384,
+          6294647272,
+          6302895862
         ],
         "distribution_alphas": [
           4.56813782,
@@ -7585,7 +7653,7 @@
         "timing_ns_total": 1803114439.92,
         "timing_weight": 0.9896,
         "perf_weight": 2.3842,
-        "absolute_alpha": 5.245507,
+        "absolute_alpha": 5.245539393333333,
         "baseline_alpha": 2.200112,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -7602,7 +7670,9 @@
         "bench_code": "np.unique_values(x)",
         "repeats": 5,
         "perf_instructions_total": [
-          5289929132
+          4407110604,
+          5289929132,
+          5295359702
         ],
         "distribution_alphas": [
           3.67259217,
@@ -7612,7 +7682,7 @@
         "timing_ns_total": 644523978.0,
         "timing_weight": 0.3537,
         "perf_weight": 2.0037,
-        "absolute_alpha": 4.408364,
+        "absolute_alpha": 4.408274276666667,
         "baseline_alpha": 2.200112,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
