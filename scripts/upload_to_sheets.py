@@ -27,25 +27,39 @@ def gws(*args: str, json_body: dict | None = None) -> dict:
     """Run a gws CLI command and return parsed JSON output."""
     cmd = ["gws"] + list(args)
     if json_body is not None:
-        cmd += ["--json", json.dumps(json_body)]
+        body_str = json.dumps(json_body)
+        cmd += ["--json", body_str]
     result = subprocess.run(cmd, capture_output=True, text=True)
-    # Strip the "Using keyring backend: ..." line from stderr
-    output = result.stdout
-    if not output.strip():
-        # Some gws commands output to stderr
-        output = result.stderr
-    # Find the first { in the output
-    idx = output.find("{")
-    if idx == -1:
-        if result.returncode != 0:
-            print(f"gws error: {result.stderr}", file=sys.stderr)
-            sys.exit(1)
-        return {}
-    try:
-        return json.loads(output[idx:])
-    except json.JSONDecodeError:
-        print(f"Failed to parse gws output:\n{output[:500]}", file=sys.stderr)
+
+    # Try stdout first (most commands), then stderr
+    for output in [result.stdout, result.stderr]:
+        idx = output.find("{")
+        if idx == -1:
+            continue
+        try:
+            return json.loads(output[idx:])
+        except json.JSONDecodeError:
+            # Try to find just the first complete JSON object
+            depth = 0
+            start = idx
+            for i, ch in enumerate(output[idx:], idx):
+                if ch == "{":
+                    depth += 1
+                elif ch == "}":
+                    depth -= 1
+                    if depth == 0:
+                        try:
+                            return json.loads(output[start : i + 1])
+                        except json.JSONDecodeError:
+                            break
+            continue
+
+    if result.returncode != 0:
+        print(f"gws error (exit {result.returncode}):", file=sys.stderr)
+        print(f"  cmd: {' '.join(cmd[:6])}...", file=sys.stderr)
+        print(f"  stderr: {result.stderr[:300]}", file=sys.stderr)
         sys.exit(1)
+    return {}
 
 
 def load_csv(path: Path) -> list[list[str]]:
@@ -82,10 +96,10 @@ def upload_data(sid: str, rows: list[list[str]]) -> None:
     print(f"Uploading {len(rows)} rows ({len(rows[0])} columns)...")
     # Use the values update API
     gws(
-        "sheets", "spreadsheets.values", "update",
+        "sheets", "spreadsheets", "values", "update",
         "--params", json.dumps({
             "spreadsheetId": sid,
-            "range": f"'All Operations'!A1",
+            "range": "'All Operations'!A1",
             "valueInputOption": "RAW",
         }),
         json_body={"values": rows},
@@ -427,7 +441,7 @@ def create_summary_sheet(sid: str, rows: list[list[str]]) -> None:
     summary.append(["6. Weight > 1.0 means more expensive (e.g., sin=18.39)", ""])
 
     gws(
-        "sheets", "spreadsheets.values", "update",
+        "sheets", "spreadsheets", "values", "update",
         "--params", json.dumps({
             "spreadsheetId": sid,
             "range": "'Review Summary'!A1",
