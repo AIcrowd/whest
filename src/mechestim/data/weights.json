@@ -570,7 +570,7 @@
           1.0050823405385017,
           1.0050823166966438
         ],
-        "timing_ns_total": 91401.9,
+        "timing_ns_total": 2453551.07,
         "timing_weight": 0.0012,
         "perf_weight": 0.4568,
         "absolute_alpha": 1.005011,
@@ -599,7 +599,7 @@
           1.0050823405385017,
           1.0050823166966438
         ],
-        "timing_ns_total": 72357.8,
+        "timing_ns_total": 1942339.9,
         "timing_weight": 0.001,
         "perf_weight": 0.4568,
         "absolute_alpha": 1.005011,
@@ -628,7 +628,7 @@
           3.2032396,
           3.2032332
         ],
-        "timing_ns_total": 462940.0,
+        "timing_ns_total": 46294.0,
         "timing_weight": 0.0061,
         "perf_weight": 1.4559,
         "absolute_alpha": 3.2032332,
@@ -657,7 +657,7 @@
           3.2032396,
           3.2032332
         ],
-        "timing_ns_total": 475860.0,
+        "timing_ns_total": 47586.0,
         "timing_weight": 0.0063,
         "perf_weight": 1.4559,
         "absolute_alpha": 3.2032332,
@@ -686,7 +686,7 @@
           3.266653515625,
           3.266641015625
         ],
-        "timing_ns_total": 13380566.41,
+        "timing_ns_total": 685085.0,
         "timing_weight": 0.1763,
         "perf_weight": 1.4848,
         "absolute_alpha": 3.266641015625,
@@ -715,7 +715,7 @@
           1.000285064,
           1.000284808
         ],
-        "timing_ns_total": 100476488.8,
+        "timing_ns_total": 251191222.0,
         "timing_weight": 1.3235,
         "perf_weight": 0.4547,
         "absolute_alpha": 1.000391,
@@ -744,7 +744,7 @@
           1.0157720141112805,
           1.0157720111310482
         ],
-        "timing_ns_total": 681830.99,
+        "timing_ns_total": 146422090.17,
         "timing_weight": 0.009,
         "perf_weight": 0.4617,
         "absolute_alpha": 1.015792,
@@ -773,7 +773,7 @@
           1.000360119342804,
           1.0003597378730773
         ],
-        "timing_ns_total": 99657344.22,
+        "timing_ns_total": 167197279.0,
         "timing_weight": 1.3127,
         "perf_weight": 0.4547,
         "absolute_alpha": 1.000391,
@@ -802,7 +802,7 @@
           1.0011760719120502,
           1.0011760480701923
         ],
-        "timing_ns_total": 6789052.3,
+        "timing_ns_total": 182242235.0,
         "timing_weight": 0.0894,
         "perf_weight": 0.4551,
         "absolute_alpha": 1.001271,
@@ -831,7 +831,7 @@
           1.0025376720428467,
           0.8351493625640869
         ],
-        "timing_ns_total": 16164850.04,
+        "timing_ns_total": 169500737.96,
         "timing_weight": 0.2129,
         "perf_weight": 0.3796,
         "absolute_alpha": 0.835163,
@@ -860,7 +860,7 @@
           1.4789171028137207,
           1.347149507522583
         ],
-        "timing_ns_total": 12889660.84,
+        "timing_ns_total": 135157890.05,
         "timing_weight": 0.1698,
         "perf_weight": 0.6123,
         "absolute_alpha": 1.347129,
@@ -889,7 +889,7 @@
           1.1696011772155763,
           0.8348245582580566
         ],
-        "timing_ns_total": 13882332.42,
+        "timing_ns_total": 72783403.0,
         "timing_weight": 0.1829,
         "perf_weight": 0.3794,
         "absolute_alpha": 0.834723,
@@ -918,7 +918,7 @@
           1.036051803588867,
           1.0336882362365722
         ],
-        "timing_ns_total": 15181782.91,
+        "timing_ns_total": 79596265.98,
         "timing_weight": 0.2,
         "perf_weight": 0.4698,
         "absolute_alpha": 1.033613,
@@ -947,7 +947,7 @@
           0.8886660881042481,
           0.7212777786254883
         ],
-        "timing_ns_total": 7943143.27,
+        "timing_ns_total": 83289893.97,
         "timing_weight": 0.1046,
         "perf_weight": 0.3278,
         "absolute_alpha": 0.721197,
@@ -976,7 +976,7 @@
           0.9150454425811767,
           0.7832778472900391
         ],
-        "timing_ns_total": 7986811.16,
+        "timing_ns_total": 83747784.99,
         "timing_weight": 0.1052,
         "perf_weight": 0.356,
         "absolute_alpha": 0.78324,
@@ -1005,7 +1005,7 @@
           1.0421412887573243,
           0.7073646697998046
         ],
-        "timing_ns_total": 6497952.46,
+        "timing_ns_total": 34067984.99,
         "timing_weight": 0.0856,
         "perf_weight": 0.3215,
         "absolute_alpha": 0.707336,
@@ -1034,7 +1034,7 @@
           0.9033917617797852,
           0.9010281944274903
         ],
-        "timing_ns_total": 7130457.69,
+        "timing_ns_total": 37384134.01,
         "timing_weight": 0.0939,
         "perf_weight": 0.4095,
         "absolute_alpha": 0.900946,
@@ -1063,7 +1063,7 @@
           0.8886660881042481,
           0.7212777786254883
         ],
-        "timing_ns_total": 8110543.25,
+        "timing_ns_total": 85045209.99,
         "timing_weight": 0.1068,
         "perf_weight": 0.3278,
         "absolute_alpha": 0.721197,
@@ -1092,7 +1092,7 @@
           0.9150454425811767,
           0.7832778472900391
         ],
-        "timing_ns_total": 7916867.64,
+        "timing_ns_total": 83014374.02,
         "timing_weight": 0.1043,
         "perf_weight": 0.356,
         "absolute_alpha": 0.78324,
@@ -1121,7 +1121,7 @@
           1.0421412887573243,
           0.7073646697998046
         ],
-        "timing_ns_total": 6571709.63,
+        "timing_ns_total": 34454684.98,
         "timing_weight": 0.0866,
         "perf_weight": 0.3215,
         "absolute_alpha": 0.707336,
@@ -1150,7 +1150,7 @@
           0.9033917617797852,
           0.9010281944274903
         ],
-        "timing_ns_total": 7237724.3,
+        "timing_ns_total": 37946519.98,
         "timing_weight": 0.0953,
         "perf_weight": 0.4095,
         "absolute_alpha": 0.900946,
@@ -1179,7 +1179,7 @@
           2.420086259841919,
           2.288318664550781
         ],
-        "timing_ns_total": 36399203.11,
+        "timing_ns_total": 381673308.0,
         "timing_weight": 0.4795,
         "perf_weight": 1.0401,
         "absolute_alpha": 2.288337,
@@ -1208,7 +1208,7 @@
           0.5948006076812744,
           0.42741229820251464
         ],
-        "timing_ns_total": 7221163.75,
+        "timing_ns_total": 75719390.0,
         "timing_weight": 0.0951,
         "perf_weight": 0.1943,
         "absolute_alpha": 0.427482,
@@ -1237,7 +1237,7 @@
           1.6743059259600062,
           1.6733750960541656
         ],
-        "timing_ns_total": 2038440.69,
+        "timing_ns_total": 72958634.09,
         "timing_weight": 0.0269,
         "perf_weight": 0.7606,
         "absolute_alpha": 1.673405,
@@ -1266,7 +1266,7 @@
           2.08528466569945,
           2.3860278171086553
         ],
-        "timing_ns_total": 2889385.48,
+        "timing_ns_total": 413660538.26,
         "timing_weight": 0.0381,
         "perf_weight": 0.9478,
         "absolute_alpha": 2.085266,
@@ -1295,7 +1295,7 @@
           1.5020977531932294,
           1.2627102230861784
         ],
-        "timing_ns_total": 3766084.43,
+        "timing_ns_total": 4043802365.21,
         "timing_weight": 0.0496,
         "perf_weight": 0.6827,
         "absolute_alpha": 1.502016,
@@ -1324,7 +1324,7 @@
           3.609184349144153,
           3.6263168970649864
         ],
-        "timing_ns_total": 4242456.49,
+        "timing_ns_total": 607373729.17,
         "timing_weight": 0.0559,
         "perf_weight": 1.6482,
         "absolute_alpha": 3.626225,
@@ -1353,7 +1353,7 @@
           1.0197083334571548,
           0.9951717831194401
         ],
-        "timing_ns_total": 3994003.17,
+        "timing_ns_total": 3001969774.17,
         "timing_weight": 0.0526,
         "perf_weight": 0.4635,
         "absolute_alpha": 1.019752,
@@ -1382,7 +1382,7 @@
           1.2624471004732063,
           1.2620655234116283
         ],
-        "timing_ns_total": 2268447.26,
+        "timing_ns_total": 324763559.74,
         "timing_weight": 0.0299,
         "perf_weight": 0.5738,
         "absolute_alpha": 1.262424,
@@ -1411,7 +1411,7 @@
           9.322445701248943,
           8.41044015083462
         ],
-        "timing_ns_total": 13192175.33,
+        "timing_ns_total": 1416499040.14,
         "timing_weight": 0.1738,
         "perf_weight": 4.1973,
         "absolute_alpha": 9.23453,
@@ -1440,7 +1440,7 @@
           2.9457724284380675,
           3.3319638475775717
         ],
-        "timing_ns_total": 7732077.95,
+        "timing_ns_total": 830225548.13,
         "timing_weight": 0.1018,
         "perf_weight": 1.3389,
         "absolute_alpha": 2.94573,
@@ -1469,7 +1469,7 @@
           1.0095518223703563,
           1.609281106639889
         ],
-        "timing_ns_total": 1577740.13,
+        "timing_ns_total": 113269913.65,
         "timing_weight": 0.0208,
         "perf_weight": 0.4589,
         "absolute_alpha": 1.009631,
@@ -1498,7 +1498,7 @@
           2.729031701013446,
           3.130022569745779
         ],
-        "timing_ns_total": 2324127.45,
+        "timing_ns_total": 249551284.74,
         "timing_weight": 0.0306,
         "perf_weight": 1.2404,
         "absolute_alpha": 2.729019,
@@ -1527,7 +1527,7 @@
           3.094006704725325,
           3.4283138740807773
         ],
-        "timing_ns_total": 9007508.62,
+        "timing_ns_total": 967173873.53,
         "timing_weight": 0.1186,
         "perf_weight": 1.4063,
         "absolute_alpha": 3.094018,
@@ -1556,7 +1556,7 @@
           11.32928355820477,
           10.417278007790447
         ],
-        "timing_ns_total": 13527332.53,
+        "timing_ns_total": 1452486270.46,
         "timing_weight": 0.1782,
         "perf_weight": 5.1094,
         "absolute_alpha": 11.241252,
@@ -1585,7 +1585,7 @@
           1.0827772671196398,
           1.684263680581249
         ],
-        "timing_ns_total": 2962267.53,
+        "timing_ns_total": 212047369.19,
         "timing_weight": 0.039,
         "perf_weight": 0.4921,
         "absolute_alpha": 1.082675,
@@ -1614,7 +1614,7 @@
           1.0827772316362496,
           1.6842636777872813
         ],
-        "timing_ns_total": 2934621.12,
+        "timing_ns_total": 210068362.08,
         "timing_weight": 0.0387,
         "perf_weight": 0.4921,
         "absolute_alpha": 1.082675,
@@ -1875,7 +1875,7 @@
           2.033932216,
           2.033932152
         ],
-        "timing_ns_total": 6727070.1,
+        "timing_ns_total": 67270701.0,
         "timing_weight": 0.0886,
         "perf_weight": 0.9245,
         "absolute_alpha": 2.034004,
@@ -1904,7 +1904,7 @@
           2.033932216,
           2.033932152
         ],
-        "timing_ns_total": 5803168.0,
+        "timing_ns_total": 58031680.0,
         "timing_weight": 0.0764,
         "perf_weight": 0.9245,
         "absolute_alpha": 2.034004,
@@ -1933,7 +1933,7 @@
           0.51886924262,
           0.5188692424
         ],
-        "timing_ns_total": 364195.03,
+        "timing_ns_total": 728390060.0,
         "timing_weight": 0.0048,
         "perf_weight": 0.2358,
         "absolute_alpha": 0.518786,
@@ -1962,7 +1962,7 @@
           0.51866919262,
           0.5186691924
         ],
-        "timing_ns_total": 359500.04,
+        "timing_ns_total": 719000080.0,
         "timing_weight": 0.0047,
         "perf_weight": 0.2357,
         "absolute_alpha": 0.518566,
@@ -1991,7 +1991,7 @@
           2.1001877666666666,
           2.1001867
         ],
-        "timing_ns_total": 328909193.33,
+        "timing_ns_total": 197345516.0,
         "timing_weight": 4.3324,
         "perf_weight": 0.9546,
         "absolute_alpha": 2.100227,
@@ -2020,7 +2020,7 @@
           0.8003010057142858,
           0.8003009428571428
         ],
-        "timing_ns_total": 90162943.0,
+        "timing_ns_total": 631140601.0,
         "timing_weight": 1.1876,
         "perf_weight": 0.3638,
         "absolute_alpha": 0.800401,
@@ -2049,7 +2049,7 @@
           0.3717229757142857,
           0.37172293
         ],
-        "timing_ns_total": 357256163.57,
+        "timing_ns_total": 5001586289.98,
         "timing_weight": 4.7058,
         "perf_weight": 0.169,
         "absolute_alpha": 0.371819,
@@ -2078,7 +2078,7 @@
           0.4334386333333333,
           0.4334383888888889
         ],
-        "timing_ns_total": 343817258.33,
+        "timing_ns_total": 618871064.99,
         "timing_weight": 4.5288,
         "perf_weight": 0.197,
         "absolute_alpha": 0.433422,
@@ -2136,7 +2136,7 @@
           0.08573149428571429,
           0.08573143142857143
         ],
-        "timing_ns_total": 308800538.57,
+        "timing_ns_total": 2161603769.99,
         "timing_weight": 4.0676,
         "perf_weight": 0.039,
         "absolute_alpha": 0.085804,
@@ -2194,7 +2194,7 @@
           0.2583361085714286,
           0.25833604857142856
         ],
-        "timing_ns_total": 327848409.21,
+        "timing_ns_total": 4589877728.94,
         "timing_weight": 4.3185,
         "perf_weight": 0.1174,
         "absolute_alpha": 0.258293,
@@ -2223,7 +2223,7 @@
           6001.11244,
           6001.112
         ],
-        "timing_ns_total": 37807000.0,
+        "timing_ns_total": 37807.0,
         "timing_weight": 0.498,
         "perf_weight": 0.7273,
         "absolute_alpha": 6001.11201,
@@ -2339,7 +2339,7 @@
           0.9970953535353535,
           0.9970909090909091
         ],
-        "timing_ns_total": 149349747.47,
+        "timing_ns_total": 14785625.0,
         "timing_weight": 1.9673,
         "perf_weight": 0.4532,
         "absolute_alpha": 0.997091,
@@ -4647,7 +4647,7 @@
           1.011421596,
           1.011413899
         ],
-        "timing_ns_total": 26584677.8,
+        "timing_ns_total": 531693556.0,
         "timing_weight": 0.3502,
         "perf_weight": 0.4597,
         "absolute_alpha": 1.011391,
@@ -4672,7 +4672,7 @@
           1.1851867004019214,
           1.1851866248308989
         ],
-        "timing_ns_total": 8135544.5,
+        "timing_ns_total": 16598137888.9,
         "timing_weight": 0.1072,
         "perf_weight": 0.5387,
         "absolute_alpha": 1.1852,
@@ -4697,7 +4697,7 @@
           12.827722772277228,
           12.86930693069307
         ],
-        "timing_ns_total": 1172871287.13,
+        "timing_ns_total": 11846.0,
         "timing_weight": 15.4492,
         "perf_weight": 5.8305,
         "absolute_alpha": 12.827753,
@@ -4722,7 +4722,7 @@
           12.827722772277228,
           12.86930693069307
         ],
-        "timing_ns_total": 1162673267.33,
+        "timing_ns_total": 11743.0,
         "timing_weight": 15.3149,
         "perf_weight": 5.8305,
         "absolute_alpha": 12.827753,
@@ -4747,7 +4747,7 @@
           2.6227428683462404,
           2.6231545926869915
         ],
-        "timing_ns_total": 79850995.0,
+        "timing_ns_total": 81456.0,
         "timing_weight": 1.0518,
         "perf_weight": 1.1921,
         "absolute_alpha": 2.622754,
@@ -4772,7 +4772,7 @@
           0.15847465934712282,
           0.15888638368787375
         ],
-        "timing_ns_total": 189599058.92,
+        "timing_ns_total": 193410.0,
         "timing_weight": 2.4974,
         "perf_weight": 0.072,
         "absolute_alpha": 0.158408,
@@ -4795,7 +4795,7 @@
         "distribution_alphas": [
           13.607920792079208
         ],
-        "timing_ns_total": 2643300000.0,
+        "timing_ns_total": 26697.33,
         "timing_weight": 34.8179,
         "perf_weight": 6.1851,
         "absolute_alpha": 13.607920792079208,
@@ -4818,7 +4818,7 @@
         "distribution_alphas": [
           12.637623762376236
         ],
-        "timing_ns_total": 3386100000.0,
+        "timing_ns_total": 34199.61,
         "timing_weight": 44.6021,
         "perf_weight": 5.7441,
         "absolute_alpha": 12.637623762376236,
@@ -4843,7 +4843,7 @@
           2.15894,
           2.15936
         ],
-        "timing_ns_total": 1041554000.0,
+        "timing_ns_total": 1041554.0,
         "timing_weight": 13.7195,
         "perf_weight": 0.9813,
         "absolute_alpha": 2.15897,
@@ -7155,7 +7155,7 @@
           4.408274276666667,
           4.412799751666666
         ],
-        "timing_ns_total": 19599800.58,
+        "timing_ns_total": 470395213.92,
         "timing_weight": 0.2582,
         "perf_weight": 2.0037,
         "absolute_alpha": 4.408364,
@@ -7180,7 +7180,7 @@
           5.245539393333333,
           5.252413218333333
         ],
-        "timing_ns_total": 42788252.79,
+        "timing_ns_total": 1026918066.96,
         "timing_weight": 0.5636,
         "perf_weight": 2.3842,
         "absolute_alpha": 5.245507,
@@ -7205,7 +7205,7 @@
           0.74453107,
           0.74453107
         ],
-        "timing_ns_total": 4232096.81,
+        "timing_ns_total": 203140646.88,
         "timing_weight": 0.0557,
         "perf_weight": 0.3384,
         "absolute_alpha": 0.744518,
@@ -7280,7 +7280,7 @@
           1.48906214,
           1.48906214
         ],
-        "timing_ns_total": 84550356.12,
+        "timing_ns_total": 2029208546.88,
         "timing_weight": 1.1137,
         "perf_weight": 0.6768,
         "absolute_alpha": 1.489036,
@@ -7305,7 +7305,7 @@
           4.408274276666667,
           4.412799751666666
         ],
-        "timing_ns_total": 26561253.25,
+        "timing_ns_total": 637470078.0,
         "timing_weight": 0.3499,
         "perf_weight": 2.0037,
         "absolute_alpha": 4.408364,
@@ -7330,7 +7330,7 @@
           4.6344107204,
           4.6398823844
         ],
-        "timing_ns_total": 83783346.94,
+        "timing_ns_total": 4189167347.0,
         "timing_weight": 1.1036,
         "perf_weight": 2.1064,
         "absolute_alpha": 4.634316,
@@ -7355,7 +7355,7 @@
           4.6344106792,
           4.6398823432
         ],
-        "timing_ns_total": 83941186.58,
+        "timing_ns_total": 4197059329.0,
         "timing_weight": 1.1057,
         "perf_weight": 2.1064,
         "absolute_alpha": 4.634316,
@@ -7380,7 +7380,7 @@
           8.1437063792,
           8.1480508352
         ],
-        "timing_ns_total": 48407802.48,
+        "timing_ns_total": 2420390124.0,
         "timing_weight": 0.6376,
         "perf_weight": 3.7015,
         "absolute_alpha": 8.143715,
@@ -7405,7 +7405,7 @@
           4.2325234232,
           4.2368678792
         ],
-        "timing_ns_total": 61465200.74,
+        "timing_ns_total": 3073260037.0,
         "timing_weight": 0.8096,
         "perf_weight": 1.9238,
         "absolute_alpha": 4.232576,
@@ -7430,7 +7430,7 @@
           8.1437063792,
           8.1480508352
         ],
-        "timing_ns_total": 53824811.02,
+        "timing_ns_total": 2691240551.0,
         "timing_weight": 0.709,
         "perf_weight": 3.7015,
         "absolute_alpha": 8.143715,
@@ -7455,7 +7455,7 @@
           4.6259329072,
           4.8039600792
         ],
-        "timing_ns_total": 32282526.64,
+        "timing_ns_total": 1614126332.0,
         "timing_weight": 0.4252,
         "perf_weight": 2.1026,
         "absolute_alpha": 4.625956,
@@ -7480,7 +7480,7 @@
           0.7439269141666667,
           0.7439269141666667
         ],
-        "timing_ns_total": 53464415.42,
+        "timing_ns_total": 1283145970.08,
         "timing_weight": 0.7042,
         "perf_weight": 0.3381,
         "absolute_alpha": 0.743858,
@@ -7505,7 +7505,7 @@
           4.408274280833333,
           4.412799755833333
         ],
-        "timing_ns_total": 37319017.54,
+        "timing_ns_total": 895656420.96,
         "timing_weight": 0.4916,
         "perf_weight": 2.0037,
         "absolute_alpha": 4.408364,
@@ -7530,7 +7530,7 @@
           5.245539393333333,
           5.252413218333333
         ],
-        "timing_ns_total": 75129768.33,
+        "timing_ns_total": 1803114439.92,
         "timing_weight": 0.9896,
         "perf_weight": 2.3842,
         "absolute_alpha": 5.245507,
@@ -7555,7 +7555,7 @@
           4.408274276666667,
           4.412799751666666
         ],
-        "timing_ns_total": 26855165.75,
+        "timing_ns_total": 644523978.0,
         "timing_weight": 0.3537,
         "perf_weight": 2.0037,
         "absolute_alpha": 4.408364,
@@ -7613,7 +7613,7 @@
           24.23468076,
           24.23468076
         ],
-        "timing_ns_total": 424025216.0,
+        "timing_ns_total": 1272075648.0,
         "timing_weight": 5.5853,
         "perf_weight": 11.0152,
         "absolute_alpha": 24.234674,
@@ -7700,7 +7700,7 @@
           37.44389999333333,
           37.44389999333333
         ],
-        "timing_ns_total": 1983501847.67,
+        "timing_ns_total": 5950505543.01,
         "timing_weight": 26.1269,
         "perf_weight": 17.0191,
         "absolute_alpha": 37.443926,
