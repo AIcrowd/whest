@@ -120,7 +120,7 @@ def upload_data(sid: str, rows: list[list[str]]) -> None:
         "--params", json.dumps({
             "spreadsheetId": sid,
             "range": "'All Operations'!A1",
-            "valueInputOption": "RAW",
+            "valueInputOption": "USER_ENTERED",
         }),
         json_body={"values": rows},
     )
