@@ -110,20 +110,26 @@ When we restrict to subset {A, B}, labels `i` and `j` cross the cut (they also
 appear in T, outside the subset), so they move from W to V:
 
 ```mermaid
-%%{init: {'theme': 'neutral'}}%%
+%%{init: {'theme': 'neutral', 'flowchart': {'nodeSpacing': 30, 'subGraphTitleMargin': {'bottom': 5}}}}%%
 flowchart LR
-    A0["(A, 0)"] --- a((a))
-    A1["(A, 1)"] --- i((i))
-    B0["(B, 0)"] --- b((b))
-    B1["(B, 1)"] --- j((j))
+    A0["(A, 0)"] ----- a((a))
+    A1["(A, 1)"] ----- i((i))
+    B0["(B, 0)"] ----- b((b))
+    B1["(B, 1)"] ----- j((j))
 
-    subgraph U [U-vertices — subset only]
+    subgraph U ["U-vertices (subset only)"]
         A0; A1; B0; B1
     end
 
-    subgraph V [V — all labels free]
+    subgraph V ["V — all labels free"]
         a; i; b; j
     end
+
+    subgraph W ["W — empty"]
+        w_none["(none)"]
+    end
+
+    style w_none fill:none,stroke-dasharray: 5 5,stroke:#999,color:#999
 ```
 
 The incidence matrix M at this subset (rows = U-vertices, columns = V∪W):
