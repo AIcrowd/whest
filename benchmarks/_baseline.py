@@ -45,11 +45,33 @@ def measure_baseline(
     float
         alpha(add) — raw measurement per analytical FLOP for np.add.
     """
-    setup = (
-        f"x = np.random.default_rng(42).standard_normal({n}).astype(np.{dtype}); "
-        f"y = np.random.default_rng(43).standard_normal({n}).astype(np.{dtype}); "
-        f"_out = np.empty({n}, dtype=np.{dtype})"
-    )
+    import statistics
+
+    # Use the SAME 3 distributions as the pointwise benchmark so the
+    # per-element overhead from numpy's ufunc dispatch cancels out when
+    # computing weight(op) = alpha(op) / alpha(add).
+    setups = [
+        (
+            f"x = np.random.default_rng(42).standard_normal({n}).astype(np.{dtype}); "
+            f"y = np.random.default_rng(43).standard_normal({n}).astype(np.{dtype}); "
+            f"_out = np.empty({n}, dtype=np.{dtype})"
+        ),
+        (
+            f"rng = np.random.default_rng(42); "
+            f"x = rng.uniform(0.01, 100, size={n}).astype(np.{dtype}); "
+            f"y = rng.uniform(0.01, 100, size={n}).astype(np.{dtype}); "
+            f"_out = np.empty({n}, dtype=np.{dtype})"
+        ),
+        (
+            f"rng = np.random.default_rng(42); "
+            f"x = rng.uniform(-1000, 1000, size={n}).astype(np.{dtype}); "
+            f"y = rng.uniform(-1000, 1000, size={n}).astype(np.{dtype}); "
+            f"_out = np.empty({n}, dtype=np.{dtype})"
+        ),
+    ]
     bench = "np.add(x, y, out=_out)"
-    result = measure_flops(setup, bench, repeats=repeats)
-    return result.total_flops / (n * repeats)
+    dist_alphas = []
+    for setup in setups:
+        result = measure_flops(setup, bench, repeats=repeats)
+        dist_alphas.append(result.total_flops / (n * repeats))
+    return statistics.median(dist_alphas)
