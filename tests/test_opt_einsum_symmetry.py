@@ -16,7 +16,7 @@ def _s_group(*labels):
     return g
 
 
-def _make_oracle(subscripts, operands=None, *, per_op_syms=None):
+def _make_oracle(subscripts, operands=None, *, per_op_groups=None):
     """Helper: build a SubgraphSymmetryOracle from a subscript string."""
     from mechestim._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
 
@@ -25,12 +25,12 @@ def _make_oracle(subscripts, operands=None, *, per_op_syms=None):
     n = len(parts)
     if operands is None:
         operands = [object() for _ in range(n)]
-    if per_op_syms is None:
-        per_op_syms = [None] * n
+    if per_op_groups is None:
+        per_op_groups = [None] * n
     return SubgraphSymmetryOracle(
         operands=operands,
         subscript_parts=parts,
-        per_op_syms=per_op_syms,
+        per_op_groups=per_op_groups,
         output_chars=output_str,
     )
 
@@ -93,10 +93,10 @@ class TestSymmetryAwarePaths:
         from mechestim._opt_einsum._contract import contract_path
 
         # ijk,ai,bj,ck->abc where ijk has S3
-        sym = [frozenset({("i",), ("j",), ("k",)})]
+        sym = [_s_group("i", "j", "k")]
         oracle = _make_oracle(
             "ijk,ai,bj,ck->abc",
-            per_op_syms=[sym, None, None, None],
+            per_op_groups=[sym, None, None, None],
         )
         path, info = contract_path(
             "ijk,ai,bj,ck->abc",
@@ -115,8 +115,8 @@ class TestSymmetryAwarePaths:
 
         _, info_dense = contract_path(*args, **kwargs)
 
-        sym = [frozenset({("i",), ("j",)})]
-        oracle = _make_oracle("ij,jk,ki->", per_op_syms=[sym, None, None])
+        sym = [_s_group("i", "j")]
+        oracle = _make_oracle("ij,jk,ki->", per_op_groups=[sym, None, None])
         _, info_sym = contract_path(*args, **kwargs, symmetry_oracle=oracle)
         assert info_sym.opt_cost <= info_dense.opt_cost
 
@@ -148,8 +148,8 @@ class TestSymmetryAwarePaths:
         """Optimal algorithm works with oracle."""
         from mechestim._opt_einsum._contract import contract_path
 
-        sym = [frozenset({("i",), ("j",)})]
-        oracle = _make_oracle("ij,jk,ki->", per_op_syms=[sym, None, None])
+        sym = [_s_group("i", "j")]
+        oracle = _make_oracle("ij,jk,ki->", per_op_groups=[sym, None, None])
         path, info = contract_path(
             "ij,jk,ki->",
             (5, 5),
@@ -166,8 +166,8 @@ class TestSymmetryAwarePaths:
         """DP algorithm works with oracle (stubs symmetry, but doesn't crash)."""
         from mechestim._opt_einsum._contract import contract_path
 
-        sym = [frozenset({("i",), ("j",)})]
-        oracle = _make_oracle("ij,jk,ki->", per_op_syms=[sym, None, None])
+        sym = [_s_group("i", "j")]
+        oracle = _make_oracle("ij,jk,ki->", per_op_groups=[sym, None, None])
         path, info = contract_path(
             "ij,jk,ki->",
             (5, 5),
@@ -184,8 +184,8 @@ class TestSymmetryAwarePaths:
         """Branch algorithm works with oracle."""
         from mechestim._opt_einsum._contract import contract_path
 
-        sym = [frozenset({("i",), ("j",)})]
-        oracle = _make_oracle("ij,jk,ki->", per_op_syms=[sym, None, None])
+        sym = [_s_group("i", "j")]
+        oracle = _make_oracle("ij,jk,ki->", per_op_groups=[sym, None, None])
         path, info = contract_path(
             "ij,jk,ki->",
             (5, 5),
@@ -315,8 +315,8 @@ class TestStepInfoBlasType:
         """StepInfo should show SYMM/SYMV for symmetric inputs via oracle."""
         from mechestim._opt_einsum._contract import contract_path
 
-        sym = [frozenset({("i",), ("j",)})]
-        oracle = _make_oracle("ij,jk,kl->il", per_op_syms=[sym, None, None])
+        sym = [_s_group("i", "j")]
+        oracle = _make_oracle("ij,jk,kl->il", per_op_groups=[sym, None, None])
         _, info = contract_path(
             "ij,jk,kl->il",
             (5, 5),
@@ -468,8 +468,8 @@ class TestAllAlgorithmsOracleAware:
         )
 
     def _make_s3_oracle(self):
-        sym = [frozenset({("i",), ("j",), ("k",)})]
-        return _make_oracle("ijk,ai,bj->abk", per_op_syms=[sym, None, None])
+        sym = [_s_group("i", "j", "k")]
+        return _make_oracle("ijk,ai,bj->abk", per_op_groups=[sym, None, None])
 
     def test_optimal_accepts_oracle(self):
         path, info = self._run_algo("optimal", self._make_s3_oracle())
@@ -524,8 +524,8 @@ class TestExhaustiveSymmetryValidation:
         from mechestim._opt_einsum._contract import contract_path
 
         args = ("ij,jk,ki->", (5, 5), (5, 5), (5, 5))
-        sym = [frozenset({("i",), ("j",)})]
-        oracle = _make_oracle("ij,jk,ki->", per_op_syms=[sym, None, None])
+        sym = [_s_group("i", "j")]
+        oracle = _make_oracle("ij,jk,ki->", per_op_groups=[sym, None, None])
         costs = {}
         for algo in ["optimal", "greedy", "branch-all", "dp"]:
             _, info = contract_path(
@@ -541,8 +541,8 @@ class TestExhaustiveSymmetryValidation:
         from mechestim._opt_einsum._contract import contract_path
 
         args = ("ijk,ai,bj->abk", (5,) * 3, (5, 5), (5, 5))
-        sym = [frozenset({("i",), ("j",), ("k",)})]
-        oracle = _make_oracle("ijk,ai,bj->abk", per_op_syms=[sym, None, None])
+        sym = [_s_group("i", "j", "k")]
+        oracle = _make_oracle("ijk,ai,bj->abk", per_op_groups=[sym, None, None])
         for algo in ["optimal", "greedy", "branch-all", "dp"]:
             _, info_dense = contract_path(*args, shapes=True, optimize=algo)
             _, info_sym = contract_path(
@@ -568,8 +568,8 @@ class TestExhaustiveSymmetryValidation:
         """The ijk,ai,bj,ck->abc example from the Slack discussion."""
         from mechestim._opt_einsum._contract import contract_path
 
-        sym = [frozenset({("i",), ("j",), ("k",)})]
-        oracle = _make_oracle("ijk,ai,bj,ck->abc", per_op_syms=[sym, None, None, None])
+        sym = [_s_group("i", "j", "k")]
+        oracle = _make_oracle("ijk,ai,bj,ck->abc", per_op_groups=[sym, None, None, None])
         _, info = contract_path(
             "ijk,ai,bj,ck->abc",
             *[(100,) * 3, (100, 100), (100, 100), (100, 100)],
@@ -589,9 +589,9 @@ class TestExhaustiveSymmetryValidation:
         """Network with S2, S3, and dense tensors."""
         from mechestim._opt_einsum._contract import contract_path
 
-        sym_s3 = [frozenset({("i",), ("j",), ("k",)})]
-        sym_s2 = [frozenset({("k",), ("l",)})]
-        oracle = _make_oracle("ijk,kl,li->j", per_op_syms=[sym_s3, sym_s2, None])
+        sym_s3 = [_s_group("i", "j", "k")]
+        sym_s2 = [_s_group("k", "l")]
+        oracle = _make_oracle("ijk,kl,li->j", per_op_groups=[sym_s3, sym_s2, None])
         _, info = contract_path(
             "ijk,kl,li->j",
             *[(5,) * 3, (5, 5), (5, 5)],
@@ -606,8 +606,8 @@ class TestExhaustiveSymmetryValidation:
         """RandomGreedy accepts oracle (ignores it as stub, doesn't crash)."""
         from mechestim._opt_einsum._path_random import RandomGreedy
 
-        sym = [frozenset({("i",), ("j",)})]
-        oracle = _make_oracle("ij,jk,ki->", per_op_syms=[sym, None, None])
+        sym = [_s_group("i", "j")]
+        oracle = _make_oracle("ij,jk,ki->", per_op_groups=[sym, None, None])
         rg = RandomGreedy(max_repeats=4)
         # Oracle is passed via contract_path, not directly to RandomGreedy
         # Test the public interface via contract_path

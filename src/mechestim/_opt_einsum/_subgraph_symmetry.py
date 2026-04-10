@@ -174,7 +174,7 @@ class EinsumBipartite:
 def _build_bipartite(
     operands: list[Any],
     subscript_parts: list[str],
-    per_op_syms: list[list[frozenset[tuple[str, ...]]] | None],
+    per_op_groups: list[list[PermutationGroup] | None],
     output_chars: str,
 ) -> EinsumBipartite:
     """Construct the bipartite graph for an einsum expression.
@@ -186,8 +186,9 @@ def _build_bipartite(
         repeated operands.
     subscript_parts : list[str]
         Per-operand subscript strings (e.g., ["ij", "jk"]).
-    per_op_syms : list
-        Declared symmetry for each operand, in the tuple-based format.
+    per_op_groups : list
+        Declared symmetry for each operand, as a list of
+        PermutationGroup objects (with ``_labels`` set), or None.
     output_chars : str
         Output subscript string.
     """
@@ -199,34 +200,29 @@ def _build_bipartite(
 
     for op_idx, sub in enumerate(subscript_parts):
         operand_labels.append(frozenset(sub))
-        sym = per_op_syms[op_idx]
+        groups = per_op_groups[op_idx]
 
         # Build equivalence classes on the axes of this operand.
         # Each axis (position in sub) starts in its own singleton class.
-        # Declared symmetry groups merge axes into classes by their
-        # positional index within the operand.
-        #
-        # Declared sym is a list of frozenset({1-tuple, ...}) groups.
-        # A group {("i",), ("j",)} on subscript "ij" means positions 0
-        # and 1 are in the same class.
+        # Declared symmetry groups merge axes into classes via orbit
+        # analysis on the PermutationGroup.
         class_of_position: dict[int, int] = {k: k for k in range(len(sub))}
 
-        if sym is not None:
-            for group in sym:
-                # Only per-index (1-tuple) groups participate in U-vertex
-                # merging. Higher-block groups are not currently produced
-                # by SymmetricTensor (see _einsum.py's converter) and we
-                # leave them as no-ops here.
-                if any(len(t) != 1 for t in group):
+        if groups is not None:
+            for group in groups:
+                if group._labels is None:
                     continue
-                chars_in_group = {t[0] for t in group}
-                positions_in_group = [
-                    k for k, c in enumerate(sub) if c in chars_in_group
-                ]
-                if len(positions_in_group) >= 2:
-                    canonical = positions_in_group[0]
-                    for k in positions_in_group[1:]:
-                        class_of_position[k] = class_of_position[canonical]
+                for orbit in group.orbits():
+                    if len(orbit) < 2:
+                        continue
+                    chars_in_orbit = {group._labels[i] for i in orbit}
+                    positions_in_orbit = [
+                        k for k, c in enumerate(sub) if c in chars_in_orbit
+                    ]
+                    if len(positions_in_orbit) >= 2:
+                        canonical = positions_in_orbit[0]
+                        for k in positions_in_orbit[1:]:
+                            class_of_position[k] = class_of_position[canonical]
 
         # Normalize class ids to 0..num_classes-1 in order of first occurrence
         class_order: dict[int, int] = {}
@@ -343,13 +339,13 @@ class SubgraphSymmetryOracle:
         self,
         operands: list[Any],
         subscript_parts: list[str],
-        per_op_syms: list[list[frozenset[tuple[str, ...]]] | None],
+        per_op_groups: list[list[PermutationGroup] | None],
         output_chars: str,
     ) -> None:
         self._graph = _build_bipartite(
             operands=operands,
             subscript_parts=subscript_parts,
-            per_op_syms=per_op_syms,
+            per_op_groups=per_op_groups,
             output_chars=output_chars,
         )
         self._cache: dict[frozenset[int], SubsetSymmetry] = {}

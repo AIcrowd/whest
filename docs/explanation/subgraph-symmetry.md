@@ -145,7 +145,7 @@ subsequent calls with the same subset.
 oracle = SubgraphSymmetryOracle(
     operands=list(operands),
     subscript_parts=input_parts,
-    per_op_syms=index_symmetries,
+    per_op_groups=perm_groups,
     output_chars=output_str,
 )
 
@@ -184,18 +184,15 @@ For each permutation `σ` of the identical-operand groups:
    match, reject this σ.
 4. **Validate π:** `π(V) ⊆ V` and `π(W) ⊆ W`. Any cycle crossing V↔W
    invalidates the σ.
-5. **Classify π's cycle structure on V** (and separately on W):
-   - Fixed points → no contribution.
-   - Single k-cycle → per-index group on k labels.
-   - Multiple disjoint cycles of the same length, from one σ → **block
-     symmetry**. The number of cycles = block size; cycle length = number
-     of blocks. Blocks are formed by grouping same-operand labels and
-     ordering by subscript position.
-   - Mixed-length cycles → independent per-index groups per cycle.
+5. **Collect π as a `Permutation` object** restricted to V labels (and
+   separately to W labels). Non-identity permutations become generators
+   of the detected `PermutationGroup`.
 
-Results from the fast path and σ loop are merged via
-`_merge_overlapping_groups`, which unions groups sharing labels and prefers
-larger block sizes.
+The σ-loop collects all non-identity π restrictions as `Permutation` objects.
+These generators are passed to `PermutationGroup(...)` to build the exact
+symmetry group on V (and separately on W). The fingerprint fast-path handles
+the common case where labels share column fingerprints, yielding S_k directly
+without running the σ-loop.
 
 ### Worked example: `einsum('ab,cd->abcd', X, X)`
 
@@ -340,16 +337,6 @@ simultaneously, which subsumes both V-side and W-side contributions.
 The oracle returns a `SubsetSymmetry` dataclass with `.output` (V-side) and
 `.inner` (W-side) fields.
 
-### Previous approach
-
-The previous implementation used two separate code paths: Step 2a (Wilson's
-pair-by-pair transposition test, O(|V|²) per σ) and Step 2b (hand-built
-block-swap constructor for pairwise operand swaps). Both were special cases
-of the π-based approach — Step 2a restricted π to single transpositions with
-everything else fixed; Step 2b constructed a specific block π from subscript-
-order positional pairing. The unified path subsumes both by deriving π
-directly in O(|V|+|W|) per σ and classifying its full cycle structure.
-
 ## Complexity bound
 
 The oracle evaluates each subset at most once. For a contract with `N` operands
@@ -367,9 +354,8 @@ per-subset cost is `O(poly(n))`.
 
 ## Exact group detection and Burnside counting
 
-As of v0.3, the σ-loop collects all valid π permutations as `Permutation`
-objects (generators) rather than immediately classifying their cycle structure
-into `IndexSymmetry` frozensets.
+The σ-loop collects all valid π permutations as `Permutation`
+objects (generators) and builds a `PermutationGroup` directly.
 
 These generators define a `PermutationGroup` on the label set. When the
 generated group equals S_k (checked via `order == k!`), the existing

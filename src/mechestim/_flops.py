@@ -66,10 +66,10 @@ def einsum_cost(
     """
     from mechestim._opt_einsum import contract_path
 
-    # Convert SymmetryInfo -> index symmetry (frozenset format) for oracle
+    # Convert SymmetryInfo -> PermutationGroup for oracle
     oracle = None
     if operand_symmetries and any(s is not None for s in operand_symmetries):
-        from mechestim._einsum import _perm_groups_to_index_symmetry, _symmetry_info_to_perm_groups
+        from mechestim._einsum import _symmetry_info_to_perm_groups
 
         input_parts = subscripts.replace(" ", "").split("->")[0].split(",")
         output_str = subscripts.split("->")[1] if "->" in subscripts else ""
@@ -77,9 +77,6 @@ def einsum_cost(
         perm_groups = [
             _symmetry_info_to_perm_groups(sym, chars)
             for sym, chars in zip(operand_symmetries, input_parts)
-        ]
-        index_syms = [
-            _perm_groups_to_index_symmetry(pg) for pg in perm_groups
         ]
 
         from mechestim._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
@@ -89,7 +86,7 @@ def einsum_cost(
         oracle = SubgraphSymmetryOracle(
             operands=sentinel_operands,
             subscript_parts=input_parts,
-            per_op_syms=index_syms,
+            per_op_groups=perm_groups,
             output_chars=output_str,
         )
 

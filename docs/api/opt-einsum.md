@@ -41,33 +41,20 @@ All algorithms are symmetry-aware — they receive symmetry information from the
 
 ## Key types
 
-### `IndexSymmetry`
-
-```python
-IndexSymmetry = list[frozenset[tuple[str, ...]]]
-```
-
-The fork's native symmetry representation. Each `frozenset` names blocks of
-einsum index characters that are symmetric under permutation. Per-index groups
-use 1-tuples: `frozenset({('i',), ('j',)})` means S₂ on `{i, j}`. Block groups
-use k-tuples: `frozenset({('a','b'), ('c','d')})` means the two 2-label blocks
-can swap as a unit.
-
-mechestim's `_einsum.py` converts between positional `SymmetryInfo` (used by `SymmetricTensor`) and character-based `IndexSymmetry` at the boundary.
-
 ### `SubsetSymmetry`
 
 ```python
 @dataclass(frozen=True)
 class SubsetSymmetry:
-    output: IndexSymmetry | None  # V-side: output tensor symmetry
-    inner: IndexSymmetry | None   # W-side: inner summation symmetry
+    output: PermutationGroup | None  # V-side: output tensor symmetry
+    inner: PermutationGroup | None   # W-side: inner summation symmetry
 ```
 
 Returned by `SubgraphSymmetryOracle.sym(subset)`. The `.output` field carries
-V-side symmetry (output tensor index permutations). The `.inner` field
-carries W-side symmetry among contracted labels. Both are used by the
-symmetric contraction cost formula.
+V-side symmetry (output tensor index permutations) as a `PermutationGroup`.
+The `.inner` field carries W-side symmetry among contracted labels. Both are
+used by the symmetric contraction cost formula. Groups display as `S2`, `C3`,
+`D4`, `G(order)` etc. depending on their structure.
 
 ### `PathInfo` and `StepInfo`
 

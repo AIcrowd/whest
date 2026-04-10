@@ -28,23 +28,6 @@ def _symmetry_info_to_perm_groups(sym_info, subscript_chars: str):
     return groups if groups else None
 
 
-def _perm_groups_to_index_symmetry(perm_groups):
-    """Convert a list of PermutationGroup objects to the old frozenset format.
-
-    The SubgraphSymmetryOracle expects per_op_syms in the tuple-based format:
-    list[frozenset[tuple[str, ...]]] | None.
-    """
-    if perm_groups is None:
-        return None
-    result = []
-    for pg in perm_groups:
-        if pg._labels is not None:
-            char_group = frozenset((lbl,) for lbl in pg._labels)
-            if len(char_group) >= 2:
-                result.append(char_group)
-    return result if result else None
-
-
 def _execute_pairwise(path_info, operands: list):
     """Execute pairwise contractions according to the optimized path."""
     ops = list(operands)
@@ -132,16 +115,13 @@ def einsum(
         _symmetry_info_to_perm_groups(s, chars)
         for s, chars in zip(operand_symmetries, input_parts)
     ]
-    index_symmetries = [
-        _perm_groups_to_index_symmetry(pg) for pg in perm_groups
-    ]
 
     from mechestim._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
 
     oracle = SubgraphSymmetryOracle(
         operands=list(operands),
         subscript_parts=input_parts,
-        per_op_syms=index_symmetries,
+        per_op_groups=perm_groups,
         output_chars=output_str,
     )
 
@@ -217,16 +197,13 @@ def einsum_path(subscripts: str, *operands, optimize: str | bool | list = "auto"
         _symmetry_info_to_perm_groups(s, chars)
         for s, chars in zip(operand_symmetries, input_parts)
     ]
-    index_symmetries = [
-        _perm_groups_to_index_symmetry(pg) for pg in perm_groups
-    ]
 
     from mechestim._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
 
     oracle = SubgraphSymmetryOracle(
         operands=list(operands),
         subscript_parts=input_parts,
-        per_op_syms=index_symmetries,
+        per_op_groups=perm_groups,
         output_chars=output_str,
     )
 
