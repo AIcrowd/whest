@@ -12,6 +12,7 @@ from mechestim._symmetric import (
     SymmetryInfo,
     as_symmetric,
 )
+from mechestim._perm_group import Permutation, PermutationGroup
 from mechestim.errors import SymmetryError
 
 
@@ -239,3 +240,79 @@ class TestEndToEnd:
         with BudgetContext(flop_budget=10**8, quiet=True):
             result = me.einsum("ij,jk->ik", A, B)
             assert not isinstance(result, SymmetricTensor)
+
+
+class TestSymmetryInfoPermGroup:
+    def test_groups_property_from_symmetric_axes(self):
+        info = SymmetryInfo(symmetric_axes=[(0, 1)], shape=(5, 5))
+        assert len(info.groups) == 1
+        assert isinstance(info.groups[0], PermutationGroup)
+        assert info.groups[0].is_symmetric()
+        assert info.groups[0].degree == 2
+        assert info.groups[0].axes == (0, 1)
+
+    def test_unique_elements_s3_unchanged(self):
+        info = SymmetryInfo(symmetric_axes=[(0, 1, 2)], shape=(5, 5, 5))
+        assert info.unique_elements == 35
+
+    def test_unique_elements_c3_via_groups(self):
+        c3 = PermutationGroup.cyclic(3, axes=(0, 1, 2))
+        info = SymmetryInfo(groups=[c3], shape=(5, 5, 5))
+        expected = (125 + 10) // 3
+        assert info.unique_elements == expected
+        info_s3 = SymmetryInfo(symmetric_axes=[(0, 1, 2)], shape=(5, 5, 5))
+        assert info.unique_elements > info_s3.unique_elements
+
+    def test_symmetric_axes_backward_compat(self):
+        info = SymmetryInfo(symmetric_axes=[(0, 1), (2, 3)], shape=(4, 4, 3, 3))
+        assert info.symmetric_axes == [(0, 1), (2, 3)]
+        assert info.unique_elements == 60
+        assert info.symmetry_factor == 4
+
+
+class TestAsSymmetricPermGroup:
+    def test_symmetry_param_s2(self):
+        data = numpy.array([[2.0, 1.0], [1.0, 3.0]])
+        g = PermutationGroup.symmetric(2, axes=(0, 1))
+        T = as_symmetric(data, symmetry=g)
+        assert isinstance(T, SymmetricTensor)
+        assert len(T.symmetry_info.groups) == 1
+        assert T.symmetry_info.groups[0].is_symmetric()
+
+    def test_symmetry_param_c3(self):
+        n = 4
+        data = numpy.zeros((n, n, n))
+        for i in range(n):
+            for j in range(n):
+                for k in range(n):
+                    data[i, j, k] = i * 100 + j * 10 + k
+        rotated1 = data.transpose(1, 2, 0)
+        rotated2 = data.transpose(2, 0, 1)
+        sym_data = (data + rotated1 + rotated2) / 3.0
+        g = PermutationGroup.cyclic(3, axes=(0, 1, 2))
+        T = as_symmetric(sym_data, symmetry=g)
+        assert isinstance(T, SymmetricTensor)
+        assert not T.symmetry_info.groups[0].is_symmetric()
+
+    def test_mutual_exclusion(self):
+        data = numpy.eye(3)
+        g = PermutationGroup.symmetric(2, axes=(0, 1))
+        with pytest.raises(ValueError, match="mutually exclusive"):
+            as_symmetric(data, symmetric_axes=(0, 1), symmetry=g)
+
+    def test_symmetry_list_of_groups(self):
+        n = 3
+        data = numpy.zeros((n, n, n, n))
+        for i in range(n):
+            for j in range(n):
+                for k in range(n):
+                    for l in range(n):
+                        data[i, j, k, l] = (i + j) * 100 + (k + l)
+        data = (data + data.transpose(1, 0, 2, 3)) / 2
+        data = (data + data.transpose(0, 1, 3, 2)) / 2
+        groups = [
+            PermutationGroup.symmetric(2, axes=(0, 1)),
+            PermutationGroup.symmetric(2, axes=(2, 3)),
+        ]
+        T = as_symmetric(data, symmetry=groups)
+        assert len(T.symmetry_info.groups) == 2

@@ -3,13 +3,14 @@
 from __future__ import annotations
 
 import warnings
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from math import comb, factorial
 
 import numpy as np
 
 from mechestim._config import get_setting
 from mechestim.errors import SymmetryError, SymmetryLossWarning
+from mechestim._perm_group import PermutationGroup
 
 
 @dataclass(frozen=True)
@@ -22,10 +23,14 @@ class SymmetryInfo:
         Groups of dimension indices that are symmetric under permutation.
     shape : tuple of int
         Full tensor shape.
+    groups : list of PermutationGroup, optional
+        PermutationGroup objects carrying axis info. Auto-built from
+        symmetric_axes when not supplied.
     """
 
-    symmetric_axes: list[tuple[int, ...]]
-    shape: tuple[int, ...]
+    symmetric_axes: list[tuple[int, ...]] = field(default_factory=list)
+    shape: tuple[int, ...] = ()
+    groups: list | None = None
 
     def __post_init__(self) -> None:
         # Normalize each group to a sorted tuple.
@@ -33,34 +38,43 @@ class SymmetryInfo:
         # frozen=True means we must use object.__setattr__
         object.__setattr__(self, "symmetric_axes", normalized)
 
+        if self.groups is None:
+            auto_groups = [
+                PermutationGroup.symmetric(len(g), axes=g)
+                for g in normalized
+                if len(g) >= 2
+            ]
+            object.__setattr__(self, "groups", auto_groups)
+
     @property
     def unique_elements(self) -> int:
         """Number of unique elements accounting for symmetry.
 
-        For each symmetric group of *k* dims each of size *n*,
-        the count is C(n + k - 1, k).  Free (non-symmetric) dims
-        contribute their full size.  The total is the product.
+        Uses Burnside's lemma via PermutationGroup when groups are present.
+        Free (non-symmetric) dims contribute their full size.
+        The total is the product.
         """
-        # Collect all dims that belong to a symmetric group.
-        symmetric_indices: set[int] = set()
+        accounted: set[int] = set()
         result = 1
-        for group in self.symmetric_axes:
-            symmetric_indices.update(group)
-            k = len(group)
-            n = self.shape[group[0]]  # all dims in a group must be same size
-            result *= comb(n + k - 1, k)
+        for group in self.groups:
+            axes = group.axes
+            if axes is None:
+                continue
+            size_dict = {i: self.shape[axes[i]] for i in range(group.degree)}
+            result *= group.burnside_unique_count(size_dict)
+            accounted.update(axes)
         # Multiply by free dims.
         for i, s in enumerate(self.shape):
-            if i not in symmetric_indices:
+            if i not in accounted:
                 result *= s
         return result
 
     @property
     def symmetry_factor(self) -> int:
-        """Product of factorial(len(group)) for each group."""
+        """Product of group orders for each symmetry group."""
         result = 1
-        for group in self.symmetric_axes:
-            result *= factorial(len(group))
+        for group in self.groups:
+            result *= group.order()
         return result
 
 
@@ -99,6 +113,36 @@ def validate_symmetry(
                 if not np.allclose(data, transposed, atol=1e-6, rtol=1e-5):
                     max_dev = float(np.max(np.abs(data - transposed)))
                     raise SymmetryError(axes=group, max_deviation=max_dev)
+
+
+def validate_symmetry_groups(data: np.ndarray, groups: list) -> None:
+    """Validate that *data* is symmetric under the given PermutationGroups.
+
+    Raises
+    ------
+    ValueError
+        If a group has no axes set.
+    SymmetryError
+        If the data is not symmetric under the claimed group.
+    """
+    for group in groups:
+        axes = group.axes
+        if axes is None:
+            raise ValueError("PermutationGroup must have axes set for tensor symmetry")
+        for orbit in group.orbits():
+            sizes = {data.shape[axes[i]] for i in orbit}
+            if len(sizes) != 1:
+                raise SymmetryError(axes=tuple(axes[i] for i in orbit), max_deviation=float("inf"))
+        for gen in group.generators:
+            if gen.is_identity:
+                continue
+            perm = list(range(data.ndim))
+            for i in range(group.degree):
+                perm[axes[i]] = axes[gen._array_form[i]]
+            transposed = data.transpose(perm)
+            if not np.allclose(data, transposed, atol=1e-6, rtol=1e-5):
+                max_dev = float(np.max(np.abs(data - transposed)))
+                raise SymmetryError(axes=tuple(axes), max_deviation=max_dev)
 
 
 def is_symmetric(
@@ -435,15 +479,27 @@ class SymmetricTensor(np.ndarray):
         cls,
         input_array: np.ndarray,
         symmetric_axes: list[tuple[int, ...]],
+        *,
+        perm_groups: list | None = None,
     ) -> SymmetricTensor:
         obj = np.asarray(input_array).view(cls)
         obj._symmetric_axes = [tuple(sorted(g)) for g in symmetric_axes]
+        if perm_groups is not None:
+            obj._symmetry_groups = list(perm_groups)
+        else:
+            # Auto-build S_k groups from symmetric_axes
+            obj._symmetry_groups = [
+                PermutationGroup.symmetric(len(g), axes=g)
+                for g in obj._symmetric_axes
+                if len(g) >= 2
+            ]
         return obj
 
     def __array_finalize__(self, obj: object) -> None:
         if obj is None:
             return
         self._symmetric_axes = getattr(obj, "_symmetric_axes", None)
+        self._symmetry_groups = getattr(obj, "_symmetry_groups", None)
 
     # -- public API --
 
@@ -458,6 +514,7 @@ class SymmetricTensor(np.ndarray):
         return SymmetryInfo(
             symmetric_axes=self.symmetric_axes,
             shape=self.shape,
+            groups=list(self._symmetry_groups) if self._symmetry_groups else None,
         )
 
     def is_symmetric(
@@ -491,6 +548,11 @@ class SymmetricTensor(np.ndarray):
         if new_groups is not None:
             out = np.asarray(result).view(SymmetricTensor)
             out._symmetric_axes = new_groups
+            out._symmetry_groups = [
+                PermutationGroup.symmetric(len(g), axes=g)
+                for g in new_groups
+                if len(g) >= 2
+            ]
             # Warn if symmetry was partially lost.
             old_set = set(self._symmetric_axes)
             new_set = set(new_groups)
@@ -517,6 +579,7 @@ class SymmetricTensor(np.ndarray):
         # but result may have been cast to plain ndarray, so re-view:
         out = result.view(SymmetricTensor)
         out._symmetric_axes = list(self._symmetric_axes)
+        out._symmetry_groups = list(self._symmetry_groups) if self._symmetry_groups else []
         return out
 
     # -- pickling --
@@ -525,12 +588,40 @@ class SymmetricTensor(np.ndarray):
         # Use np.ndarray's pickle + our metadata
         pickled_state = super().__reduce__()
         # pickled_state is (reconstruct, args, state)
-        new_state = pickled_state[2] + (self._symmetric_axes,)
+        new_state = pickled_state[2] + (self._symmetric_axes, self._symmetry_groups)
         return (pickled_state[0], pickled_state[1], new_state)
 
     def __setstate__(self, state):
-        # Last element is our _symmetric_axes
-        self._symmetric_axes = state[-1]
+        # Detect format by checking if the second-to-last element looks like
+        # symmetric_axes (a list of tuples of ints) vs a list of PermutationGroup.
+        # New format: state[-1] is _symmetry_groups (list of PermutationGroup or [])
+        # Old format: state[-1] is _symmetric_axes (list of tuples)
+        last = state[-1]
+        # Check if last element looks like a list of PermutationGroup objects
+        # (new format) vs list of tuples (old format)
+        if isinstance(last, list) and (
+            len(last) == 0
+            or isinstance(last[0], PermutationGroup)
+        ):
+            # Could be new format (empty list or list of PermutationGroup)
+            # Check second-to-last to confirm it's symmetric_axes
+            second_last = state[-2]
+            if isinstance(second_last, list) and (
+                len(second_last) == 0
+                or isinstance(second_last[0], tuple)
+            ):
+                # New format
+                self._symmetry_groups = last
+                self._symmetric_axes = second_last
+                super().__setstate__(state[:-2])
+                return
+        # Old format: last element is _symmetric_axes
+        self._symmetric_axes = last
+        self._symmetry_groups = [
+            PermutationGroup.symmetric(len(g), axes=g)
+            for g in self._symmetric_axes
+            if len(g) >= 2
+        ]
         super().__setstate__(state[:-1])
 
 
@@ -541,7 +632,9 @@ class SymmetricTensor(np.ndarray):
 
 def as_symmetric(
     data: np.ndarray,
-    symmetric_axes: tuple[int, ...] | list[tuple[int, ...]],
+    symmetric_axes: tuple[int, ...] | list[tuple[int, ...]] | None = None,
+    *,
+    symmetry: PermutationGroup | list | None = None,
 ) -> SymmetricTensor:
     """Wrap *data* as a :class:`SymmetricTensor` after validating symmetry.
 
@@ -549,8 +642,12 @@ def as_symmetric(
     ----------
     data : numpy.ndarray
         The tensor data.
-    symmetric_axes : tuple of int or list of tuple of int
+    symmetric_axes : tuple of int or list of tuple of int, optional
         A single symmetry group ``(0, 1)`` or a list ``[(0, 1), (2, 3)]``.
+        Mutually exclusive with *symmetry*.
+    symmetry : PermutationGroup or list of PermutationGroup, optional
+        One or more :class:`PermutationGroup` objects (must have axes set).
+        Mutually exclusive with *symmetric_axes*.
 
     Returns
     -------
@@ -558,9 +655,37 @@ def as_symmetric(
 
     Raises
     ------
+    ValueError
+        If both *symmetric_axes* and *symmetry* are provided.
     SymmetryError
         If the data does not satisfy the claimed symmetry.
     """
+    if symmetric_axes is not None and symmetry is not None:
+        raise ValueError(
+            "symmetric_axes and symmetry are mutually exclusive; provide only one"
+        )
+
+    if symmetry is not None:
+        # PermutationGroup path
+        if isinstance(symmetry, PermutationGroup):
+            perm_groups = [symmetry]
+        else:
+            perm_groups = list(symmetry)
+
+        validate_symmetry_groups(data, perm_groups)
+
+        # Build symmetric_axes from groups for backward compat
+        axes_list = []
+        for g in perm_groups:
+            if g.axes is not None:
+                axes_list.append(g.axes)
+
+        return SymmetricTensor(data, axes_list, perm_groups=perm_groups)
+
+    # Legacy symmetric_axes path
+    if symmetric_axes is None:
+        raise ValueError("Either symmetric_axes or symmetry must be provided")
+
     if isinstance(symmetric_axes, tuple):
         groups: list[tuple[int, ...]] = [symmetric_axes]
     else:
