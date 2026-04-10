@@ -73,25 +73,32 @@ objects.
 #### Full bipartite graph
 
 ```mermaid
-%%{init: {'theme': 'neutral'}}%%
+%%{init: {'theme': 'neutral', 'flowchart': {'rankSpacing': 80}}}%%
 flowchart LR
-    T0["(T, 0)"] --- i((i))
-    T1["(T, 1)"] --- j((j))
     A0["(A, 0)"] --- a((a))
-    A1["(A, 1)"] --- i
     B0["(B, 0)"] --- b((b))
+    T0["(T, 0)"] --- i((i))
+    A1["(A, 1)"] --- i
+    T1["(T, 1)"] --- j((j))
     B1["(B, 1)"] --- j
 
-    subgraph U [U-vertices]
-        T0; T1; A0; A1; B0; B1
+    subgraph U ["U-vertices (axis classes)"]
+        A0
+        B0
+        T0
+        A1
+        T1
+        B1
     end
 
-    subgraph V [V — free]
-        a; b
+    subgraph V ["V (free)"]
+        a
+        b
     end
 
-    subgraph W [W — summed]
-        i; j
+    subgraph W ["W (summed)"]
+        i
+        j
     end
 ```
 
@@ -110,31 +117,26 @@ When we restrict to subset {A, B}, labels `i` and `j` cross the cut (they also
 appear in T, outside the subset), so they move from W to V:
 
 ```mermaid
-%%{init: {'theme': 'neutral'}}%%
+%%{init: {'theme': 'neutral', 'flowchart': {'rankSpacing': 80}}}%%
 flowchart LR
-    A0["(A, 0)"] ----- a((a))
-    A1["(A, 1)"] ----- i((i))
-    B0["(B, 0)"] ----- b((b))
-    B1["(B, 1)"] ----- j((j))
+    A0["(A, 0)"] --- a((a))
+    A1["(A, 1)"] --- i((i))
+    B0["(B, 0)"] --- b((b))
+    B1["(B, 1)"] --- j((j))
 
     subgraph U ["U-vertices (subset only)"]
-        A0; A1; B0; B1
+        A0
+        A1
+        B0
+        B1
     end
 
-    subgraph right [" "]
-        subgraph V ["V — all labels free"]
-            a; i; b; j
-        end
-
-        subgraph W ["W — empty"]
-            w_none["(none)"]
-        end
-
-        V ~~~ W
+    subgraph V ["V (all free · W is empty)"]
+        a
+        i
+        b
+        j
     end
-
-    style right fill:none,stroke:none
-    style w_none fill:none,stroke-dasharray: 5 5,stroke:#999,color:#999
 ```
 
 The incidence matrix M at this subset (rows = U-vertices, columns = V∪W):
@@ -226,24 +228,29 @@ U-vertex per axis (four total), one label per column, and no W-labels
 (nothing is contracted):
 
 ```mermaid
-%%{init: {'theme': 'neutral'}}%%
+%%{init: {'theme': 'neutral', 'flowchart': {'rankSpacing': 80}}}%%
 flowchart LR
-    u0a["X₀ axis a"] --- a((a))
-    u0b["X₀ axis b"] --- b((b))
-    u1c["X₁ axis c"] --- c((c))
-    u1d["X₁ axis d"] --- d((d))
+    u0a["X₀ · a"] --- a((a))
+    u0b["X₀ · b"] --- b((b))
+    u1c["X₁ · c"] --- c((c))
+    u1d["X₁ · d"] --- d((d))
 
-    subgraph U [U-vertices]
-        subgraph grp0 [operand X₀]
-            u0a; u0b
+    subgraph U ["U-vertices (axis classes)"]
+        subgraph grp0 ["operand X₀"]
+            u0a
+            u0b
         end
-        subgraph grp1 [operand X₁]
-            u1c; u1d
+        subgraph grp1 ["operand X₁ (= X₀)"]
+            u1c
+            u1d
         end
     end
 
-    subgraph V [V — free labels]
-        a; b; c; d
+    subgraph V ["V (all free · W is empty)"]
+        a
+        b
+        c
+        d
     end
 ```
 
