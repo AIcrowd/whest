@@ -360,7 +360,7 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     # ------------------------------------------------------------------
     w("## Methodology")
     w()
-    w("### The unified correction-factor formula")
+    w("### The correction formula")
     w()
     w("Every weight is computed from the same two-step formula:")
     w()
@@ -456,7 +456,7 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     # ------------------------------------------------------------------
     # Download link
     # ------------------------------------------------------------------
-    w("**[Download full review spreadsheet (CSV)](empirical-weights.csv)**")
+    w("**[Download full review spreadsheet (CSV)](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/data/weights.csv)**")
     w()
 
     # ------------------------------------------------------------------

@@ -1,4 +1,4 @@
-# FLOP Weight Calibration Results
+# Empirical FLOP Weights
 
 ## Introduction
 
@@ -17,7 +17,7 @@ FLOP of addition.
 
 ## Methodology
 
-### The unified correction-factor formula
+### The correction formula
 
 Every weight is computed from the same two-step formula:
 
