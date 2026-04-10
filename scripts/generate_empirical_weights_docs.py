@@ -31,7 +31,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 WEIGHTS_PATH = REPO_ROOT / "src" / "mechestim" / "data" / "weights.json"
-CSV_OUT = REPO_ROOT / "docs" / "reference" / "empirical-weights.csv"
+CSV_OUT = REPO_ROOT / "src" / "mechestim" / "data" / "weights.csv"
 MD_OUT = REPO_ROOT / "docs" / "reference" / "empirical-weights.md"
 
 # ---------------------------------------------------------------------------

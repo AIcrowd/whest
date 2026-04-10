@@ -291,6 +291,6 @@ reset_weights()
 ## Related pages
 
 - [FLOP Counting Model](../concepts/flop-counting-model.md) -- how weights fit into the cost model
-- [Empirical Weights](../reference/empirical-weights.md) -- full weight tables and methodology reference
+- [FLOP Weight Calibration Results](../reference/empirical-weights.md) -- full weight tables and methodology reference
 - [Plan Your Budget](./plan-your-budget.md) -- query costs before running
 - [Operation Categories](../concepts/operation-categories.md) -- which operations are counted
