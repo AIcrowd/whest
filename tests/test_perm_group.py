@@ -215,3 +215,39 @@ class TestBurnsideCount:
         g = PermutationGroup.symmetric(2)
         with pytest.raises(ValueError, match="same dimension size"):
             g.burnside_unique_count({0: 3, 1: 5})
+
+
+class TestSympyBridge:
+    """Tests that require sympy. Skipped if sympy is not installed."""
+
+    sympy = pytest.importorskip("sympy")
+
+    def test_permutation_round_trip(self):
+        from sympy.combinatorics import Permutation as SPerm
+
+        p = Permutation([2, 0, 1])
+        sp = p.as_sympy()
+        assert isinstance(sp, SPerm)
+        assert list(sp.array_form) == [2, 0, 1]
+
+        p2 = Permutation.from_sympy(sp)
+        assert p2 == p
+
+    def test_group_round_trip(self):
+        from sympy.combinatorics import PermutationGroup as SPG
+
+        g = PermutationGroup.cyclic(4, axes=(0, 1, 2, 3))
+        sg = g.as_sympy()
+        assert isinstance(sg, SPG)
+        assert sg.order() == 4
+
+        g2 = PermutationGroup.from_sympy(sg, axes=(0, 1, 2, 3))
+        assert g2.order() == 4
+        assert g2.axes == (0, 1, 2, 3)
+
+    def test_symmetric_round_trip(self):
+        g = PermutationGroup.symmetric(3)
+        sg = g.as_sympy()
+        g2 = PermutationGroup.from_sympy(sg)
+        assert g2.order() == 6
+        assert g2.is_symmetric()
