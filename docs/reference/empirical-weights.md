@@ -23,7 +23,7 @@ FLOP of addition.
 Every weight is computed from the same two-step formula:
 
 $$
-\alpha(\text{op}) = \operatorname{median}_{D} \left[ \frac{\text{perf\_fp\_retired} \times \text{simd\_width}}{C(\text{op}, \text{params}) \times R} \right]
+\alpha(\text{op}) = \mathrm{median}_{D} \left[ \frac{F(\text{op})}{C(\text{op}, \text{params}) \times R} \right]
 $$
 
 $$
@@ -33,7 +33,7 @@ $$
 Where:
 
 - $\alpha(\text{op})$ is the **raw correction factor** -- the ratio of hardware-observed FP instructions to the analytical FLOP count.
-- `fp_arith_inst_retired.*` are Intel PMU hardware counters that count retired floating-point arithmetic instructions, weighted by SIMD lane count.
+- $F(\text{op})$ is the total SIMD-width-weighted count of retired floating-point instructions, measured via the Intel PMU counters `fp_arith_inst_retired.*` (scalar x1, 128-bit x2, 256-bit x4, 512-bit x8).
 - $C(\text{op}, \text{params})$ is the analytical FLOP count from mechestim's cost formula (e.g., `numel(output)` for pointwise ops).
 - $R$ is the number of repeats per distribution.
 - The **median** across 3 input distributions is reported.
@@ -41,7 +41,6 @@ Where:
 ## Measurement environment
 
 !!! info "Calibration platform"
-
     - **CPU:** Intel(R) Xeon(R) Platinum 8375C CPU @ 2.90GHz
     - **Cores:** 64 physical / 128 threads
     - **RAM:** 251.7 GB
@@ -430,7 +429,6 @@ timing is much lower than for scalar pointwise operations. For pointwise ops
 (which dominate the count), the two modes agree well in relative ordering.
 
 !!! warning "Correlation caveats"
-
     The Pearson and Spearman values span all operations, including BLAS/linalg
     ops where timing and perf divergence is structurally expected. For the
     subset of pointwise operations, both correlations are substantially higher.
