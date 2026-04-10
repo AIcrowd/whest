@@ -333,8 +333,9 @@ two indices, which is exactly what we expect.
 
 V-side groups are symmetries of the output tensor (same as before). W-side
 groups are symmetries among the contracted (summed) labels — they describe
-inner-summation redundancy that can optionally reduce FLOP estimates when
-`use_inner_symmetry=True` is passed to `symmetric_flop_count`.
+inner-summation redundancy. When the Φ (symmetry-preserving) cost model
+activates for a pairwise step, it exploits symmetry across all indices
+simultaneously, which subsumes both V-side and W-side contributions.
 
 The oracle returns a `SubsetSymmetry` dataclass with `.output` (V-side) and
 `.inner` (W-side) fields.
@@ -361,3 +362,33 @@ and groups of sizes `k₁, k₂, …`:
 
 For the common case of a single pair of identical operands (`m = 2`):
 per-subset cost is `O(poly(n))`.
+
+---
+
+## Exact group detection and Burnside counting
+
+As of v0.3, the σ-loop collects all valid π permutations as `Permutation`
+objects (generators) rather than immediately classifying their cycle structure
+into `IndexSymmetry` frozensets.
+
+These generators define a `PermutationGroup` on the label set. When the
+generated group equals S_k (checked via `order == k!`), the existing
+`C(n+k-1, k)` formula applies as before. When the group is a proper subgroup
+(e.g., C₃ from `einsum('ij,jk,ki->', A, A, A)`), Burnside's lemma gives the
+exact unique element count.
+
+### Worked example: tr(A³)
+
+For `einsum('ij,jk,ki->', A, A, A)` with the same n×n matrix A:
+
+1. The σ-loop tries all 6 permutations of {operand 0, 1, 2}
+2. Only 3 produce valid π's: identity, (i→j→k), (i→k→j)
+3. These are the generators of C₃ (cyclic group of order 3)
+4. Burnside counting on W-labels {i,j,k} with dimension n:
+   - Identity: n³ fixed tuples (every tuple is fixed)
+   - 3-cycle (ijk): n fixed tuples (only i=j=k tuples)
+   - 3-cycle (ikj): n fixed tuples
+   - Total: (n³ + 2n) / 3
+
+For n=10: 340 unique elements instead of 220 (S₃), giving a more accurate
+(higher) FLOP estimate.
