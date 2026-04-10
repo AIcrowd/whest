@@ -776,13 +776,6 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     # ------------------------------------------------------------------
     w("## Known limitations")
     w()
-    w("### Trace anomaly (subprocess overhead)")
-    w()
-    w("The `trace` operation shows an anomalously high weight because its analytical")
-    w("formula is $n$ (the matrix dimension), which is small, while the subprocess")
-    w("measurement captures fixed per-process overhead that dominates at small input")
-    w("sizes. The weight for `trace` should be interpreted with caution.")
-    w()
     w("### BLAS vectorization effects")
     w()
     w("Operations backed by optimized BLAS routines (`matmul`, `dot`, contraction ops)")
