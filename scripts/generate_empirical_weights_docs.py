@@ -174,7 +174,6 @@ CSV_COLUMNS = [
     "Weight",
     "Reviewer Weight",
     "Effective Cost Example",
-    "vs Add",
     "Confidence",
     "Notes",
     # --- Section B: Evidence ---
@@ -396,7 +395,6 @@ def build_rows(data: dict) -> list[dict]:
         repeats = d.get("repeats")
         timing_ns = d.get("timing_ns_total")
         absolute_alpha = abs_alphas.get(op_name, d.get("absolute_alpha", 0.0))
-        vs_add = perf_weight / add_weight if add_weight else 0.0
         formula = d.get("analytical_formula", "")
 
         row = {
@@ -408,7 +406,6 @@ def build_rows(data: dict) -> list[dict]:
             "Weight": f"{perf_weight:.4f}",
             "Reviewer Weight": "",
             "Effective Cost Example": _effective_cost_example(formula, perf_weight, analytical_flops),
-            "vs Add": f"{vs_add:.1f}x",
             "Confidence": _confidence(alphas),
             "Notes": d.get("notes", ""),
             # Section B: Evidence
@@ -434,13 +431,11 @@ def build_rows(data: dict) -> list[dict]:
         entry = REGISTRY.get(alias, {})
         canon_weight = weights.get(canonical, 0.0)
         canon_alpha = abs_alphas.get(canonical, 0.0)
-        vs_add = canon_weight / add_weight if add_weight and canon_weight else 0.0
         reason = f"Alias of {canonical}"
         if canon_weight:
             reason += f" (weight: {canon_weight:.2f})"
         row = _empty_row(alias, "alias", reason, entry.get("category", ""), entry.get("notes", ""))
         row["Weight"] = f"{canon_weight:.4f}" if canon_weight else ""
-        row["vs Add"] = f"{vs_add:.1f}x" if vs_add else ""
         row["Hardware FP Instructions (per analytical FLOP)"] = f"{canon_alpha:.2f}" if canon_alpha else ""
         rows.append(row)
 
@@ -687,17 +682,16 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
             continue
         w(f"### {cat} ({len(cat_rows)} operations)")
         w()
-        w("| Op | Weight | vs Add | Confidence | Formula | Impl | Notes |")
-        w("|:---|-------:|-------:|:-----------|:--------|:-----|:------|")
+        w("| Op | Weight | Confidence | Formula | Impl | Notes |")
+        w("|:---|-------:|:-----------|:--------|:-----|:------|")
         for r in cat_rows:
             op = f"`{r['Operation']}`"
             wt = _format_weight(r["Weight"])
-            vs = r["vs Add"]
             conf = r["Confidence"]
             formula = r["Cost Formula"]
             impl = _impl_link(r["Implementation"])
             notes = r["Notes"]
-            w(f"| {op} | {wt} | {vs} | {conf} | {formula} | {impl} | {notes} |")
+            w(f"| {op} | {wt} | {conf} | {formula} | {impl} | {notes} |")
         w()
 
     # ------------------------------------------------------------------
