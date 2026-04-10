@@ -211,7 +211,7 @@ class TestSymmetricBlas:
             ["ij", "jk"],
             "ik",
             frozenset("j"),
-            input_symmetries=[_s_group("i", "j"), None],
+            input_groups=[_s_group("i", "j"), None],
         )
         assert result == "SYMM"
 
@@ -223,7 +223,7 @@ class TestSymmetricBlas:
             ["ij", "jk"],
             "ik",
             frozenset("j"),
-            input_symmetries=[None, _s_group("j", "k")],
+            input_groups=[None, _s_group("j", "k")],
         )
         assert result == "SYMM"
 
@@ -235,7 +235,7 @@ class TestSymmetricBlas:
             ["ijk", "ji"],
             "k",
             frozenset("ij"),
-            input_symmetries=[_s_group("i", "j"), None],
+            input_groups=[_s_group("i", "j"), None],
         )
         assert result == "SYMV"
 
@@ -247,7 +247,7 @@ class TestSymmetricBlas:
             ["ij", "ij"],
             "",
             frozenset("ij"),
-            input_symmetries=[_s_group("i", "j"), None],
+            input_groups=[_s_group("i", "j"), None],
         )
         assert result == "SYDT"
 
@@ -266,7 +266,7 @@ class TestSymmetricBlas:
             ["ij", "jk"],
             "ik",
             frozenset("j"),
-            input_symmetries=[None, None],
+            input_groups=[None, None],
         )
         assert result == "GEMM"
 
@@ -278,7 +278,7 @@ class TestSymmetricBlas:
             ["ijk", "lkj"],
             "il",
             frozenset("jk"),
-            input_symmetries=[_s_group("i", "j"), None],
+            input_groups=[_s_group("i", "j"), None],
         )
         assert result == "TDOT"
 
@@ -290,7 +290,7 @@ class TestSymmetricBlas:
             ["i", "j"],
             "ij",
             frozenset(),
-            input_symmetries=[None, None],
+            input_groups=[None, None],
         )
         assert result == "OUTER/EINSUM"
 

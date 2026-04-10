@@ -66,29 +66,24 @@ def einsum_cost(
     """
     from mechestim._opt_einsum import contract_path
 
-    # Convert SymmetryInfo -> IndexSymmetry if needed
-    index_syms = None
-    if operand_symmetries and any(s is not None for s in operand_symmetries):
-        input_parts = subscripts.replace(" ", "").split("->")[0].split(",")
-        index_syms = []
-        for sym, chars in zip(operand_symmetries, input_parts):
-            if sym is None:
-                index_syms.append(None)
-            else:
-                groups = [
-                    frozenset((chars[d],) for d in g)
-                    for g in sym.symmetric_axes
-                    if len(g) >= 2
-                ]
-                index_syms.append(groups if groups else None)
-
-    # Build oracle if we have symmetry info
+    # Convert SymmetryInfo -> index symmetry (frozenset format) for oracle
     oracle = None
-    if index_syms is not None:
-        from mechestim._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
+    if operand_symmetries and any(s is not None for s in operand_symmetries):
+        from mechestim._einsum import _perm_groups_to_index_symmetry, _symmetry_info_to_perm_groups
 
         input_parts = subscripts.replace(" ", "").split("->")[0].split(",")
         output_str = subscripts.split("->")[1] if "->" in subscripts else ""
+
+        perm_groups = [
+            _symmetry_info_to_perm_groups(sym, chars)
+            for sym, chars in zip(operand_symmetries, input_parts)
+        ]
+        index_syms = [
+            _perm_groups_to_index_symmetry(pg) for pg in perm_groups
+        ]
+
+        from mechestim._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
+
         # Use sentinel objects as operands (identity-based detection not needed here)
         sentinel_operands = [object() for _ in range(len(input_parts))]
         oracle = SubgraphSymmetryOracle(

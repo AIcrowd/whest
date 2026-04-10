@@ -212,7 +212,7 @@ class TestPathInfoStepInfo:
             assert hasattr(step, "flop_cost")
             assert hasattr(step, "dense_flop_cost")
             assert hasattr(step, "symmetry_savings")
-            assert hasattr(step, "output_symmetry")
+            assert hasattr(step, "output_group")
 
     def test_dense_path_has_zero_savings(self):
         A = numpy.ones((5, 5))

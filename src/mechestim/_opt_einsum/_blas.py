@@ -9,14 +9,14 @@ __all__ = ["can_blas"]
 
 def _has_symmetric_input(
     inputs: list[str],
-    input_symmetries: list | None,
+    input_groups: list | None,
 ) -> tuple[bool, bool]:
     """Check if any input has a symmetric group covering 2+ indices used in the contraction.
 
-    Each element of ``input_symmetries`` may be a ``PermutationGroup``
+    Each element of ``input_groups`` may be a ``PermutationGroup``
     (the unified representation) or ``None``.
     """
-    if input_symmetries is None:
+    if input_groups is None:
         return False, False
 
     from mechestim._perm_group import PermutationGroup
@@ -30,8 +30,8 @@ def _has_symmetric_input(
             return sym.degree >= 2
         return False
 
-    left_sym = _is_symmetric(input_symmetries[0], set(inputs[0]))
-    right_sym = _is_symmetric(input_symmetries[1], set(inputs[1]))
+    left_sym = _is_symmetric(input_groups[0], set(inputs[0]))
+    right_sym = _is_symmetric(input_groups[1], set(inputs[1]))
     return left_sym, right_sym
 
 
@@ -40,7 +40,7 @@ def can_blas(
     result: str,
     idx_removed: ArrayIndexType,
     shapes: Sequence[tuple[int]] | None = None,
-    input_symmetries: list | None = None,
+    input_groups: list | None = None,
 ) -> str | bool:
     """Checks if we can use a BLAS call.
 
@@ -54,7 +54,7 @@ def can_blas(
         Indices that are removed in the summation
     shapes : sequence of tuple[int], optional
         If given, check also that none of the indices are broadcast dimensions.
-    input_symmetries : list of (IndexSymmetry or None), optional
+    input_groups : list of (PermutationGroup or None), optional
         Symmetry groups for each input. When an input has a symmetric group
         covering 2+ of its indices, the BLAS classification is refined:
         GEMM → SYMM, GEMV/EINSUM → SYMV, DOT → SYDT.
@@ -156,8 +156,8 @@ def can_blas(
             base_result = "TDOT"
 
     # Refine for symmetric inputs
-    if input_symmetries is not None:
-        left_sym, right_sym = _has_symmetric_input(inputs, input_symmetries)
+    if input_groups is not None:
+        left_sym, right_sym = _has_symmetric_input(inputs, input_groups)
         if left_sym or right_sym:
             if base_result == "GEMM":
                 return "SYMM"

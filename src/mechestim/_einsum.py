@@ -9,24 +9,40 @@ from mechestim._symmetric import SymmetricTensor, validate_symmetry
 from mechestim._validation import check_nan_inf, require_budget
 
 
-def _symmetry_info_to_index_symmetry(sym_info, subscript_chars: str):
-    """Convert SymmetryInfo (positional axes) to IndexSymmetry (char labels).
+def _symmetry_info_to_perm_groups(sym_info, subscript_chars: str):
+    """Convert SymmetryInfo (positional axes) to label-indexed PermutationGroups.
 
-    sym_info.symmetric_axes is like [(0, 1, 2)] -- positional indices.
-    subscript_chars is like "ijk" -- the einsum subscript for this operand.
-    Returns IndexSymmetry like [frozenset({('i',), ('j',), ('k',)})], or None.
-
-    Per-index symmetries (as declared via SymmetricTensor) always map to
-    1-tuple blocks in the new uniform tuple representation.
+    Returns a list of PermutationGroup objects with _labels set to the
+    corresponding einsum characters, or None if no symmetry.
     """
     if sym_info is None:
         return None
     groups = []
-    for group in sym_info.symmetric_axes:
-        char_group = frozenset((subscript_chars[d],) for d in group)
-        if len(char_group) >= 2:
-            groups.append(char_group)
+    for group in sym_info.groups:
+        if group.axes is None or group.degree < 2:
+            continue
+        labels = tuple(subscript_chars[ax] for ax in group.axes)
+        new_group = PermutationGroup(*group.generators)
+        new_group._labels = labels
+        groups.append(new_group)
     return groups if groups else None
+
+
+def _perm_groups_to_index_symmetry(perm_groups):
+    """Convert a list of PermutationGroup objects to the old frozenset format.
+
+    The SubgraphSymmetryOracle expects per_op_syms in the tuple-based format:
+    list[frozenset[tuple[str, ...]]] | None.
+    """
+    if perm_groups is None:
+        return None
+    result = []
+    for pg in perm_groups:
+        if pg._labels is not None:
+            char_group = frozenset((lbl,) for lbl in pg._labels)
+            if len(char_group) >= 2:
+                result.append(char_group)
+    return result if result else None
 
 
 def _execute_pairwise(path_info, operands: list):
@@ -112,9 +128,12 @@ def einsum(
     input_parts = subscripts.split("->")[0].split(",")
     output_str = subscripts.split("->")[1] if "->" in subscripts else ""
 
-    index_symmetries = [
-        _symmetry_info_to_index_symmetry(s, chars)
+    perm_groups = [
+        _symmetry_info_to_perm_groups(s, chars)
         for s, chars in zip(operand_symmetries, input_parts)
+    ]
+    index_symmetries = [
+        _perm_groups_to_index_symmetry(pg) for pg in perm_groups
     ]
 
     from mechestim._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
@@ -194,9 +213,12 @@ def einsum_path(subscripts: str, *operands, optimize: str | bool | list = "auto"
     input_parts = subscripts.split("->")[0].split(",")
     output_str = subscripts.split("->")[1] if "->" in subscripts else ""
 
-    index_symmetries = [
-        _symmetry_info_to_index_symmetry(s, chars)
+    perm_groups = [
+        _symmetry_info_to_perm_groups(s, chars)
         for s, chars in zip(operand_symmetries, input_parts)
+    ]
+    index_symmetries = [
+        _perm_groups_to_index_symmetry(pg) for pg in perm_groups
     ]
 
     from mechestim._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle

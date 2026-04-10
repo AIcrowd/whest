@@ -50,10 +50,10 @@ class StepInfo:
     output_shape: tuple[int, ...]
     """Shape of the output operand for this step."""
 
-    input_symmetries: list[PermutationGroup | None]
+    input_groups: list[PermutationGroup | None]
     """PermutationGroup for each input in this step."""
 
-    output_symmetry: PermutationGroup | None
+    output_group: PermutationGroup | None
     """PermutationGroup of the output, or None."""
 
     dense_flop_cost: int
@@ -64,7 +64,7 @@ class StepInfo:
 
     blas_type: str | bool = False
 
-    inner_symmetry: PermutationGroup | None = None
+    inner_group: PermutationGroup | None = None
     """PermutationGroup among the contracted (summed) labels, or None.
     Describes inner-summation redundancy from the W-side of the
     subgraph symmetry oracle."""
@@ -155,20 +155,27 @@ class PathInfo:
         """
         from math import prod
 
-        def fmt_sym(sym: PermutationGroup | None) -> str:
-            """Format a PermutationGroup as e.g. 'S3{i,j,k}' or 'S2{i,j}'."""
-            if sym is None:
+        def fmt_sym(group: PermutationGroup | None) -> str:
+            """Format a PermutationGroup as e.g. 'S3{i,j,k}' or 'C3{i,j,k}'."""
+            if group is None:
                 return "-"
-            labels = sym._labels
-            if labels is None:
-                return f"S{sym.degree}"
-            return f"S{sym.degree}{{{','.join(labels)}}}"
+            labels = group._labels or tuple(str(i) for i in range(group.degree))
+            label_str = ",".join(labels)
+            k = group.degree
+            if group.is_symmetric():
+                return f"S{k}{{{label_str}}}"
+            order = group.order()
+            if order == k:
+                return f"C{k}{{{label_str}}}"
+            if order == 2 * k and k >= 3:
+                return f"D{k}{{{label_str}}}"
+            return f"G({order}){{{label_str}}}"
 
         def fmt_step_sym(step: StepInfo) -> str:
             """Format inputs→output symmetry transformation for one step."""
-            in_parts = [fmt_sym(s) for s in step.input_symmetries]
-            out_part = fmt_sym(step.output_symmetry)
-            w_part = fmt_sym(step.inner_symmetry)
+            in_parts = [fmt_sym(s) for s in step.input_groups]
+            out_part = fmt_sym(step.output_group)
+            w_part = fmt_sym(step.inner_group)
             if all(p == "-" for p in in_parts) and out_part == "-" and w_part == "-":
                 return ""
             result = f"{' × '.join(in_parts)} → {out_part}"
@@ -592,7 +599,7 @@ def contract_path(
         if symmetry_oracle is not None:
             # Look up each input's symmetry from the oracle before merging.
             # This is used both for cost computation (via merged_subset →
-            # result_sym) and for BLAS classification (input_symmetries
+            # result_sym) and for BLAS classification (input_groups
             # enables SYMM/SYMV/SYDT labelling in can_blas).
             step_syms: list = [None] * len(contract_inds)
             merged_subset: frozenset[int] = frozenset()
@@ -657,7 +664,7 @@ def contract_path(
                 "".join(out_inds),
                 idx_removed,
                 tmp_shapes,
-                input_symmetries=step_syms if symmetry_oracle is not None else None,
+                input_groups=step_syms if symmetry_oracle is not None else None,
             )
         else:
             do_blas = False
@@ -688,9 +695,9 @@ def contract_path(
                 flop_cost=step_flop,
                 input_shapes=list(tmp_shapes),
                 output_shape=shp_result,
-                input_symmetries=list(step_syms),
-                output_symmetry=result_sym,
-                inner_symmetry=(
+                input_groups=list(step_syms),
+                output_group=result_sym,
+                inner_group=(
                     subset_sym.inner if symmetry_oracle is not None else None
                 ),
                 dense_flop_cost=step_dense,

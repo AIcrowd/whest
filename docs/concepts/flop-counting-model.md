@@ -67,7 +67,7 @@ When a tensor is a `SymmetricTensor`, costs are reduced based on the number of u
 |----------|---------------|---------------|
 | **Pointwise** (unary/binary) | unique_elements | $\text{numel}(\text{output})$ |
 | **Reduction** | unique_elements | $\text{numel}(\text{input})$ |
-| **Einsum** (symmetric contraction) | `min(direct, Φ)` (see below) | Full product |
+| **Einsum** (symmetric contraction) | Symmetry-reduced (see below) | Full product |
 | **Solve** | $n^3/3 + n \cdot n_{\text{rhs}}$ (Cholesky) | $2n^3/3 + n^2 \cdot n_{\text{rhs}}$ (LU) |
 | **Det / Slogdet** | $n^3/3$ (Cholesky) | $n^3$ (LU) |
 | **Inv** | $n^3/3 + n^3/2$ | $n^3$ |
@@ -112,13 +112,9 @@ The total cost is the sum of per-step costs:
 total_cost = sum(step.flop_cost for step in path.steps)
 ```
 
-For each pairwise step, the cost is the minimum of two independent
-estimates — a **direct-evaluation** bound and a **symmetry-preserving (Φ)**
-bound.
+### Per-step cost
 
-### Direct-evaluation estimate
-
-The dense cost of a pairwise step is:
+For each pairwise step, the **dense** cost is:
 
 ```
 dense_step_cost = (product of all index dimensions) × op_factor
@@ -127,70 +123,50 @@ dense_step_cost = (product of all index dimensions) × op_factor
 where `op_factor = 2` when indices are summed (multiply + add) and
 `op_factor = 1` when no indices are summed (outer product).
 
-When the output has symmetry (discovered by the subgraph oracle from
-declared per-operand symmetries and/or repeated-operand identity), the
-cost is reduced:
+When symmetry is present, mechestim reduces the cost by exploiting the
+structure of the contraction. The reduction depends on the contraction's
+shape.
 
-```
-direct_cost = dense_step_cost × (unique_output_elements / total_output_elements)
-```
+### Symmetric contraction cost
 
-where `unique_output_elements` is computed exactly using the stars-and-bars
-formula `C(B + k - 1, k)` for each symmetric group of `k` interchangeable
-blocks, where `B` is the cardinality of one block:
+Consider a pairwise contraction of symmetric tensors **A** (order $s + v$)
+and **B** (order $t + v$) with $v$ contracted indices, producing output
+**C** (order $s + t$). Let $\omega = s + t + v$ and let all indices have
+dimension $n$.
 
-- For a **per-index** group (block size 1) on `k` interchangeable indices
-  each of size `n`, `B = n` and the formula reduces to the familiar
-  `C(n+k-1, k)`. A single symmetric matrix indexed by `(i, j)` of size `n`
-  has `C(n+1, 2) = n(n+1)/2` unique entries.
-- For a **block** group with `k` interchangeable blocks of uniform shape,
-  `B` is the product of axis sizes within one block. An outer product
-  `einsum('ab,cd->abcd', X, X)` with same-object `X` of shape `(n_a, n_b)`
-  yields a block group `{(a,b), (c,d)}` with `B = n_a · n_b`, so the
-  unique count is `C(n_a·n_b + 1, 2) = (n_a·n_b)(n_a·n_b + 1)/2`. This
-  correctly handles **rectangular** tensors where axis dimensions differ
-  within a block — e.g., `X` of shape `(3, 4)` gives `B = 12` unique pair
-  cardinalities, not `3² = 9`.
+The cost is computed using the symmetry-preserving formula from
+Solomonik & Demmel (2015):
 
-Free (non-symmetric) indices contribute their full axis size to the total
-unique count, multiplicatively.
+$$F = \binom{n + \omega - 1}{\omega} \left[ 1 + \binom{\omega}{s} + \binom{\omega}{t} + \binom{\omega}{v} \right] + \binom{n+s+v-1}{s+v} + \binom{n+t+v-1}{t+v} + \binom{n+s+t-1}{s+t}$$
 
-### Symmetry-preserving estimate (Φ)
-
-For pairwise contractions where all index dimensions are equal (size $n$)
-and at least one index is contracted, a tighter bound is available based on
-the symmetry-preserving algorithm of Solomonik & Demmel (2015). This
-algorithm exploits symmetry across *all* index groups simultaneously —
-including contracted indices — by forming a fully-symmetric intermediate
-tensor.
-
-Consider a contraction of symmetric tensors **A** (order $s + v$) and
-**B** (order $t + v$) with $v$ contracted indices, producing output **C**
-(order $s + t$). Let $\omega = s + t + v$. The Φ cost with equal
-multiplication and addition costs ($\mu = \nu = 1$) is:
-
-$$F^\Phi = \binom{n + \omega - 1}{\omega} \left[ 1 + \binom{\omega}{s} + \binom{\omega}{t} + \binom{\omega}{v} \right] + \binom{n+s+v-1}{s+v} + \binom{n+t+v-1}{t+v} + \binom{n+s+t-1}{s+t}$$
-
-The leading term $\binom{n+\omega-1}{\omega} \approx n^\omega / \omega!$ is
-the number of unique elements in the fully-symmetric order-$\omega$
+The leading term $\binom{n+\omega-1}{\omega} \approx n^\omega / \omega!$
+counts the unique elements of a fully-symmetric order-$\omega$
 intermediate. The bracket contains one multiplication plus additions for
-accumulating partial sums from each operand and for reducing into the output.
-The trailing terms are lower-order costs for operand intermediates and output
-symmetrization.
+accumulating partial sums from each operand and for reducing into the
+output. The trailing terms are lower-order costs for operand intermediates
+and output symmetrization.
 
-### Combined cost: min(direct, Φ)
+This formula exploits symmetry across *all* $\omega$ index groups
+simultaneously — including contracted indices — giving much larger savings
+than reducing output elements alone. For example, a contraction with
+$s = t = v = 3$ ($\omega = 9$) achieves roughly 10× savings over the
+per-group approach at $n = 100$.
 
-The final step cost is:
+### Fallback for low-order and non-uniform cases
+
+When the symmetry-preserving formula does not apply — outer products
+($v = 0$), non-uniform index dimensions, or low-order contractions where
+the addition overhead exceeds the savings — the cost falls back to:
 
 ```
-step_cost = min(direct_cost, phi_cost)
+step_cost = dense_step_cost × (unique_output_elements / total_output_elements)
 ```
 
-The Φ bound is tighter for higher-order contractions ($\omega \geq 4$) and
-larger $n$. The direct bound wins for low-order cases ($\omega \leq 2$),
-small $n$, outer products ($v = 0$), or contractions with non-uniform index
-dimensions. The `min` ensures the model always reports the best achievable
-cost.
+The unique element count is computed exactly using Burnside's lemma over
+the detected permutation group. For the full symmetric group S$_k$, this
+reduces to the stars-and-bars formula $\binom{n+k-1}{k}$.
+
+### Multi-operand contractions
 
 For a simple two-operand einsum like `'ij,jk->ik'`, there is one step,
 so the total cost equals the step cost. For multi-operand einsums (3+

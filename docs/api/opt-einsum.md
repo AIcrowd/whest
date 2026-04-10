@@ -14,7 +14,7 @@ This fork extends opt_einsum with **symmetry-aware path finding**. When input te
 
 2. **Tracks symmetry by operand subset.** Each intermediate tensor encountered during path search has its symmetry derived by the `SubgraphSymmetryOracle` from the **subset of original operands it contracts** — not by restricting each input's symmetry groups step-by-step. The oracle runs a subgraph-level analysis on the bipartite graph for that subset and returns a `SubsetSymmetry` with both output (V-side) and inner (W-side) symmetry. Results are cached per subset for the duration of a `contract_path` call. See [the subgraph symmetry explanation](../explanation/subgraph-symmetry.md) for the algorithm.
 
-3. **Reports symmetry-aware costs.** Each step's cost is the minimum of a direct-evaluation estimate (unique/total output scaling) and a symmetry-preserving (Φ) estimate that exploits symmetry across all index groups simultaneously. Both the symmetry-reduced cost and the dense cost are reported in `PathInfo`. See [Einsum cost model](../concepts/flop-counting-model.md#einsum-cost-model) for the full derivation.
+3. **Reports symmetry-aware costs.** Each step's cost exploits symmetry across all index groups simultaneously — including contracted indices — using the Solomonik & Demmel (2015) formula. Both the symmetry-reduced cost and the dense cost are reported in `PathInfo`. See [Einsum cost model](../concepts/flop-counting-model.md#einsum-cost-model) for the full derivation.
 
 4. **Classifies symmetric BLAS operations.** Pairwise contractions where an input has a symmetric group covering 2+ of its indices are labelled with specialised BLAS types (`SYMM`, `SYMV`, `SYDT`) instead of the generic `GEMM`, `GEMV`/`EINSUM`, `DOT`. These labels are informational — they don't affect cost estimation but help identify where symmetric BLAS routines (like LAPACK's `dsymm`) could be dispatched.
 
@@ -65,10 +65,9 @@ class SubsetSymmetry:
 ```
 
 Returned by `SubgraphSymmetryOracle.sym(subset)`. The `.output` field carries
-V-side symmetry used for direct-evaluation cost reduction. The `.inner`
-field carries W-side symmetry among contracted labels. Both feed into the
-Φ cost model when it activates (pairwise contractions with uniform index
-dimensions).
+V-side symmetry (output tensor index permutations). The `.inner` field
+carries W-side symmetry among contracted labels. Both are used by the
+symmetric contraction cost formula.
 
 ### `PathInfo` and `StepInfo`
 
