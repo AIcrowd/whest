@@ -1,4 +1,4 @@
-# Empirical FLOP Weights
+# FLOP Weight Calibration Results
 
 ## Introduction
 
@@ -70,7 +70,7 @@ All weights are normalized against element-wise addition (`np.add`):
 - **Measured timing:** 79555837.0 ns
 - **$\alpha$(add):** 1.564071
 
-**[Download full review spreadsheet (CSV)](empirical-weights.csv)**
+**[Download full review spreadsheet (CSV)](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/data/weights.csv)**
 
 ## Weight tables
 

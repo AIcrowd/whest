@@ -77,7 +77,7 @@ plugins:
         "Reference":
           - reference/for-agents.md: "Guide for AI coding assistants — resources, rules, and common mistakes"
           - reference/operation-audit.md: "Complete 482-operation inventory with costs"
-          - reference/empirical-weights.md: "Hardware-measured per-operation FLOP weights from perf counters"
+          - reference/empirical-weights.md: "FLOP weight calibration results from hardware perf counters"
           - reference/cheat-sheet.md: "Quick FLOP cost reference for all operations"
         "Troubleshooting":
           - troubleshooting/common-errors.md: "Common errors and fixes"
@@ -125,7 +125,7 @@ nav:
   - Reference:
     - For AI Agents: reference/for-agents.md
     - Operation Audit: reference/operation-audit.md
-    - Empirical Weights: reference/empirical-weights.md
+    - FLOP Weight Calibration Results: reference/empirical-weights.md
     - FLOP Cost Cheat Sheet: reference/cheat-sheet.md
   - Troubleshooting: troubleshooting/common-errors.md
   - Changelog: changelog.md
