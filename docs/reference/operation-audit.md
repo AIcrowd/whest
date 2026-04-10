@@ -133,7 +133,7 @@ Generated from the operation registry (`_registry.py`).
 | `dsplit` | `me.dsplit` | `np.dsplit` | free | $0$ | 🟢 supported | Split array into multiple sub-arrays depth-wise. |
 | `dstack` | `me.dstack` | `np.dstack` | free | $0$ | 🟢 supported | Stack arrays depth-wise (along third axis). |
 | `ediff1d` | `me.ediff1d` | `np.ediff1d` | counted_custom | $\text{numel}(\text{input})$ | 🟠 supported | Differences between consecutive elements. |
-| `einsum` | `me.einsum` | `np.einsum` | counted_custom | $\text{op\_factor} \cdot \prod_i d_i$ | 🟠 supported | Generalized Einstein summation. |
+| `einsum` | `me.einsum` | `np.einsum` | counted_custom | $\texttt{op\_factor} \cdot \prod_i d_i$ | 🟠 supported | Generalized Einstein summation. |
 | `einsum_path` | `me.einsum_path` | `np.einsum_path` | counted_custom | $0$ | 🟠 supported | Optimize einsum contraction path (no numeric output). |
 | `empty` | `me.empty` | `np.empty` | free | $0$ | 🟢 supported | Uninitialized array allocation. |
 | `empty_like` | `me.empty_like` | `np.empty_like` | free | $0$ | 🟢 supported | Uninitialized array with same shape/type as input. |

@@ -72,7 +72,7 @@ def benchmark_reductions(
     n: int = 10_000_000,
     dtype: str = "float64",
     repeats: int = 10,
-) -> dict[str, float]:
+) -> tuple[dict[str, float], dict[str, dict]]:
     """Benchmark all reduction ops, returning raw measurement per element.
 
     Parameters
@@ -86,10 +86,13 @@ def benchmark_reductions(
 
     Returns
     -------
-    dict[str, float]
-        Mapping from op name to median measurement per element.
+    tuple[dict[str, float], dict[str, dict]]
+        A pair of (alphas, details). ``alphas`` maps op name to median
+        measurement per element. ``details`` maps op name to a dict of
+        raw benchmark metadata.
     """
     results: dict[str, float] = {}
+    details: dict[str, dict] = {}
 
     base_setups = [
         f"import numpy as np; x = np.random.default_rng(42).standard_normal({n}).astype(np.{dtype})",
@@ -99,7 +102,9 @@ def benchmark_reductions(
 
     for op in REDUCTION_OPS:
         dist_values: list[float] = []
+        dist_raw_totals: list[int] = []
         extra = _SPECIAL_ARGS.get(op, "")
+        bench = ""
 
         for base_setup in base_setups:
             if op in _CUMULATIVE_OPS:
@@ -113,7 +118,18 @@ def benchmark_reductions(
             except RuntimeError:
                 continue
             dist_values.append(result.total_flops / (n * repeats))
+            dist_raw_totals.append(result.total_flops)
         if dist_values:
             results[op] = statistics.median(dist_values)
+            details[op] = {
+                "category": "counted_reduction",
+                "analytical_formula": "numel(input)",
+                "analytical_flops": n,
+                "benchmark_size": f"n={n}",
+                "bench_code": bench,
+                "repeats": repeats,
+                "perf_instructions_total": dist_raw_totals,
+                "distribution_alphas": dist_values,
+            }
 
-    return results
+    return results, details

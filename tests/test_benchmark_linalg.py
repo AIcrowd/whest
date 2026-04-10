@@ -2,7 +2,12 @@
 
 from unittest.mock import patch
 
-from benchmarks._linalg import LINALG_OPS, _analytical_cost, benchmark_linalg
+from benchmarks._linalg import (
+    LINALG_OPS,
+    _FORMULA_STRINGS,
+    _analytical_cost,
+    benchmark_linalg,
+)
 from benchmarks._perf import PerfResult
 
 
@@ -39,8 +44,16 @@ class TestAnalyticalCost:
         assert _analytical_cost("linalg.inv", n) == n**3
 
 
+class TestFormulaStrings:
+    def test_all_ops_have_formula(self):
+        for op in LINALG_OPS:
+            assert op in _FORMULA_STRINGS, f"{op} missing from _FORMULA_STRINGS"
+            assert isinstance(_FORMULA_STRINGS[op], str)
+            assert len(_FORMULA_STRINGS[op]) > 0
+
+
 class TestBenchmarkLinalg:
-    def test_returns_dict_with_all_ops(self):
+    def test_returns_tuple_with_all_ops(self):
         mock_result = PerfResult(
             scalar_double=1_000_000,
             packed_128_double=0,
@@ -48,10 +61,12 @@ class TestBenchmarkLinalg:
             packed_512_double=0,
         )
         with patch("benchmarks._linalg.measure_flops", return_value=mock_result):
-            result = benchmark_linalg(n=64, dtype="float64", repeats=1)
+            result, details = benchmark_linalg(n=64, dtype="float64", repeats=1)
 
         assert isinstance(result, dict)
+        assert isinstance(details, dict)
         assert set(result.keys()) == set(LINALG_OPS)
+        assert set(details.keys()) == set(LINALG_OPS)
 
     def test_values_are_floats(self):
         mock_result = PerfResult(
@@ -61,7 +76,38 @@ class TestBenchmarkLinalg:
             packed_512_double=0,
         )
         with patch("benchmarks._linalg.measure_flops", return_value=mock_result):
-            result = benchmark_linalg(n=64, dtype="float64", repeats=1)
+            result, _details = benchmark_linalg(n=64, dtype="float64", repeats=1)
 
         for key, val in result.items():
             assert isinstance(val, float), f"{key} value is not float"
+
+    def test_details_have_required_keys(self):
+        mock_result = PerfResult(
+            scalar_double=1_000_000,
+            packed_128_double=0,
+            packed_256_double=0,
+            packed_512_double=0,
+        )
+        with patch("benchmarks._linalg.measure_flops", return_value=mock_result):
+            _result, details = benchmark_linalg(n=64, dtype="float64", repeats=1)
+
+        required_keys = {
+            "category",
+            "analytical_formula",
+            "analytical_flops",
+            "benchmark_size",
+            "bench_code",
+            "repeats",
+            "perf_instructions_total",
+            "distribution_alphas",
+        }
+        for op, d in details.items():
+            assert required_keys.issubset(d.keys()), (
+                f"{op} missing keys: {required_keys - set(d.keys())}"
+            )
+            assert d["category"] == "counted_custom"
+            assert isinstance(d["analytical_flops"], int)
+            assert isinstance(d["bench_code"], str)
+            assert isinstance(d["distribution_alphas"], list)
+            assert len(d["distribution_alphas"]) > 0
+            assert "64x64" in d["benchmark_size"]

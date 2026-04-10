@@ -26,6 +26,23 @@ LINALG_OPS: list[str] = [
 # Ops that need symmetric positive-definite matrices.
 _SPD_OPS = {"linalg.cholesky", "linalg.eigh", "linalg.eigvalsh"}
 
+_FORMULA_STRINGS: dict[str, str] = {
+    "linalg.cholesky": "n^3 / 3",
+    "linalg.qr": "2*m*n^2 - 2*n^3/3",
+    "linalg.eig": "10*n^3",
+    "linalg.eigh": "4*n^3 / 3",
+    "linalg.eigvals": "7*n^3",
+    "linalg.eigvalsh": "4*n^3 / 3",
+    "linalg.svd": "m*n*min(m,n)",
+    "linalg.svdvals": "m*n*min(m,n)",
+    "linalg.solve": "2*n^3/3 + 2*n^2",
+    "linalg.inv": "n^3",
+    "linalg.lstsq": "m*n*min(m,n)",
+    "linalg.pinv": "m*n*min(m,n)",
+    "linalg.det": "2*n^3 / 3",
+    "linalg.slogdet": "2*n^3 / 3",
+}
+
 
 def _analytical_cost(op_name: str, n: int) -> int:
     """Return the textbook FLOP count for *op_name* on an (n, n) matrix.
@@ -67,7 +84,7 @@ def benchmark_linalg(
     n: int = 1024,
     dtype: str = "float64",
     repeats: int = 10,
-) -> dict[str, float]:
+) -> tuple[dict[str, float], dict[str, dict]]:
     """Benchmark linalg ops, returning raw measurement per analytical FLOP.
 
     In perf mode this is actual FP ops / analytical FLOPs (correction factor).
@@ -85,13 +102,17 @@ def benchmark_linalg(
 
     Returns
     -------
-    dict[str, float]
-        Mapping from op name to median raw measurement per analytical FLOP.
+    tuple[dict[str, float], dict[str, dict]]
+        A pair of (alphas, details). ``alphas`` maps op name to median
+        raw measurement per analytical FLOP. ``details`` maps op name to
+        a dict of raw benchmark metadata.
     """
     results: dict[str, float] = {}
+    details: dict[str, dict] = {}
 
     for op in LINALG_OPS:
         dist_values: list[float] = []
+        dist_raw_totals: list[int] = []
 
         if op in _SPD_OPS:
             # SPD matrices: A@A.T + n*I
@@ -157,8 +178,19 @@ def benchmark_linalg(
                 continue
             measured = result.total_flops / repeats
             dist_values.append(measured / analytical if analytical else 0.0)
+            dist_raw_totals.append(result.total_flops)
 
         if dist_values:
             results[op] = statistics.median(dist_values)
+            details[op] = {
+                "category": "counted_custom",
+                "analytical_formula": _FORMULA_STRINGS.get(op, ""),
+                "analytical_flops": analytical,
+                "benchmark_size": f"n={n} ({n}x{n})",
+                "bench_code": bench,
+                "repeats": repeats,
+                "perf_instructions_total": dist_raw_totals,
+                "distribution_alphas": dist_values,
+            }
 
-    return results
+    return results, details

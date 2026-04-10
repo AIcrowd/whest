@@ -16,12 +16,20 @@ _ANALYTICAL_COST: dict[str, int] = {
     "kaiser": 3,  # multiplied by n
 }
 
+_FORMULA_STRINGS: dict[str, str] = {
+    "bartlett": "n",
+    "blackman": "3*n",
+    "hamming": "n",
+    "hanning": "n",
+    "kaiser": "3*n",
+}
+
 
 def benchmark_window(
     n: int = 10_000_000,
     dtype: str = "float64",
     repeats: int = 10,
-) -> dict[str, float]:
+) -> tuple[dict[str, float], dict[str, dict]]:
     """Benchmark window ops, returning alpha(op) = measured/analytical.
 
     Parameters
@@ -36,14 +44,19 @@ def benchmark_window(
 
     Returns
     -------
-    dict[str, float]
-        Mapping from op name to median FP ops per analytical operation.
+    tuple[dict[str, float], dict[str, dict]]
+        A pair of (alphas, details). ``alphas`` maps op name to median
+        alpha(op). ``details`` maps op name to a dict of raw benchmark
+        metadata.
     """
     results: dict[str, float] = {}
+    details: dict[str, dict] = {}
 
     for op in WINDOW_OPS:
         dist_values: list[float] = []
+        dist_raw_totals: list[int] = []
         analytical = _ANALYTICAL_COST[op] * n
+        bench = ""
 
         # Window functions are deterministic (no input distribution),
         # but we still take 3 measurements with different seeds for
@@ -60,8 +73,19 @@ def benchmark_window(
             except RuntimeError:
                 continue
             dist_values.append(result.total_flops / (analytical * repeats))
+            dist_raw_totals.append(result.total_flops)
 
         if dist_values:
             results[op] = statistics.median(dist_values)
+            details[op] = {
+                "category": "counted_custom",
+                "analytical_formula": _FORMULA_STRINGS[op],
+                "analytical_flops": analytical,
+                "benchmark_size": f"n={n}",
+                "bench_code": bench,
+                "repeats": repeats,
+                "perf_instructions_total": dist_raw_totals,
+                "distribution_alphas": dist_values,
+            }
 
-    return results
+    return results, details

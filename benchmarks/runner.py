@@ -180,6 +180,19 @@ def _compute_validation_stats(
     return stats
 
 
+def _unpack_benchmark_result(
+    result: dict[str, float] | tuple[dict[str, float], dict[str, dict]],
+) -> tuple[dict[str, float], dict[str, dict]]:
+    """Unpack a benchmark function return value.
+
+    Handles both the legacy ``dict`` return and the new ``(alphas, details)``
+    tuple return for backward compatibility.
+    """
+    if isinstance(result, tuple):
+        return result
+    return result, {}
+
+
 def _run_category_loop(
     cats: list[str],
     dtype: str,
@@ -187,12 +200,14 @@ def _run_category_loop(
     log_fn: Any,
     use_rich: bool = False,
     console: Any = None,
-) -> dict[str, float]:
+) -> tuple[dict[str, float], dict[str, dict]]:
     """Run all benchmark categories and collect raw alpha(op) values.
 
-    Returns a dict mapping op names to raw alpha values (measured / analytical).
+    Returns a tuple of ``(alphas, details)`` where *alphas* maps op names to
+    raw alpha values and *details* maps op names to per-op benchmark metadata.
     """
     alphas: dict[str, float] = {}
+    all_details: dict[str, dict] = {}
 
     if use_rich:
         from rich.progress import (
@@ -223,9 +238,14 @@ def _run_category_loop(
                     continue
                 progress.update(task_id, current_op=f"benchmarking {cat}")
                 func = _BENCHMARK_FUNCS[cat]
-                raw = func(dtype=dtype, repeats=repeats)
-                alphas.update(raw)
-                progress.advance(task_id, advance=_APPROX_OP_COUNTS.get(cat, len(raw)))
+                raw_alphas, raw_details = _unpack_benchmark_result(
+                    func(dtype=dtype, repeats=repeats)
+                )
+                alphas.update(raw_alphas)
+                all_details.update(raw_details)
+                progress.advance(
+                    task_id, advance=_APPROX_OP_COUNTS.get(cat, len(raw_alphas))
+                )
             progress.update(task_id, current_op="done")
     else:
         for cat in cats:
@@ -234,10 +254,69 @@ def _run_category_loop(
                 continue
             log_fn(f"Benchmarking {cat} ...")
             func = _BENCHMARK_FUNCS[cat]
-            raw = func(dtype=dtype, repeats=repeats)
-            alphas.update(raw)
+            raw_alphas, raw_details = _unpack_benchmark_result(
+                func(dtype=dtype, repeats=repeats)
+            )
+            alphas.update(raw_alphas)
+            all_details.update(raw_details)
 
-    return alphas
+    return alphas, all_details
+
+
+def _enrich_details(
+    all_details: dict[str, dict],
+    *,
+    weights: dict[str, float],
+    alpha_add: float,
+    baseline_n: int,
+    baseline_bench_code: str,
+    repeats: int,
+    timing_baseline: float,
+) -> None:
+    """Enrich per-op detail dicts with computed fields, URLs, and notes.
+
+    Mutates *all_details* in place.
+    """
+    # -- registry notes ----------------------------------------------------
+    try:
+        from mechestim._registry import REGISTRY
+    except ImportError:
+        REGISTRY = {}  # type: ignore[assignment]
+
+    # -- implementation URLs -----------------------------------------------
+    try:
+        from benchmarks._impl_urls import build_url_map
+
+        url_map = build_url_map(list(all_details.keys()))
+    except Exception:
+        url_map = {}
+
+    for op, detail in all_details.items():
+        # weight-derived fields
+        detail["perf_weight"] = weights.get(op, 0.0)
+        detail["absolute_alpha"] = round(weights.get(op, 0.0) * alpha_add, 6)
+
+        # baseline reference fields
+        detail["baseline_alpha"] = round(alpha_add, 6)
+        detail["baseline_analytical_flops"] = baseline_n
+        detail["baseline_bench_code"] = baseline_bench_code
+        detail["baseline_perf_instructions_total"] = round(
+            alpha_add * baseline_n * repeats, 2
+        )
+
+        # baseline timing (from validation loop, if available)
+        if timing_baseline > 0:
+            detail["baseline_timing_ns_total"] = round(
+                timing_baseline * baseline_n * repeats, 2
+            )
+
+        # registry notes
+        detail["notes"] = REGISTRY.get(op, {}).get("notes", "")
+
+        # implementation URL
+        url = url_map.get(op, "")
+        if url:
+            detail["cost_impl_url"] = url
 
 
 def run_benchmarks(
@@ -297,9 +376,13 @@ def run_benchmarks(
     _log("Measuring baseline (np.add) ...")
     baseline_fpe = measure_baseline(dtype=dtype, repeats=repeats)
 
+    # -- baseline constants ---------------------------------------------------
+    _BASELINE_N = 10_000_000  # default n in measure_baseline()
+    _BASELINE_BENCH_CODE = "np.add(x, y, out=_out)"
+
     # -- primary measurement loop ------------------------------------------
     _log("Running primary measurement loop ...")
-    raw_alphas = _run_category_loop(
+    raw_alphas, all_details = _run_category_loop(
         cats, dtype, repeats, _log, use_rich=use_rich, console=console
     )
 
@@ -313,6 +396,10 @@ def run_benchmarks(
         "absolute_correction_factors": {k: round(v, 6) for k, v in raw_alphas.items()},
     }
 
+    timing_weights: dict[str, float] = {}
+    timing_alphas: dict[str, float] = {}
+    timing_baseline: float = 0.0
+
     if mode == "perf" and not os.environ.get("MECHESTIM_SKIP_VALIDATION"):
         _log("Running timing-mode validation loop ...")
         # Force timing mode for the re-run
@@ -320,7 +407,7 @@ def run_benchmarks(
         os.environ["MECHESTIM_FORCE_TIMING"] = "1"
         try:
             timing_baseline = measure_baseline(dtype=dtype, repeats=repeats)
-            timing_alphas = _run_category_loop(
+            timing_alphas, _timing_details = _run_category_loop(
                 cats, dtype, repeats, _log, use_rich=False, console=None
             )
         finally:
@@ -335,6 +422,15 @@ def run_benchmarks(
         validation["perf_vs_timing"] = _compute_validation_stats(
             weights, timing_weights
         )
+
+        # -- inject timing data into per-op details -------------------------
+        for op, t_alpha in timing_alphas.items():
+            if op in all_details:
+                all_details[op]["timing_ns_total"] = round(
+                    t_alpha * _BASELINE_N * repeats, 2
+                )
+            if op in timing_weights and op in all_details:
+                all_details[op]["timing_weight"] = timing_weights[op]
 
     # -- methodology metadata (Step 1.3 + 1.4) ----------------------------
     meta["methodology"] = {
@@ -354,6 +450,20 @@ def run_benchmarks(
 
     # -- round weights -----------------------------------------------------
     weights = {k: round(v, 4) for k, v in weights.items()}
+
+    # -- enrich per-op details ---------------------------------------------
+    _enrich_details(
+        all_details,
+        weights=weights,
+        alpha_add=baseline_fpe,
+        baseline_n=_BASELINE_N,
+        baseline_bench_code=_BASELINE_BENCH_CODE,
+        repeats=repeats,
+        timing_baseline=timing_baseline,
+    )
+
+    # -- store per-op details in meta --------------------------------------
+    meta["per_op_details"] = all_details
 
     duration = round(_time.monotonic() - t_start, 1)
     meta["duration_seconds"] = duration

@@ -219,7 +219,7 @@ def benchmark_pointwise(
     dtype: str = "float64",
     repeats: int = 10,
     distributions: int = 3,
-) -> dict[str, float]:
+) -> tuple[dict[str, float], dict[str, dict]]:
     """Benchmark all pointwise ops, returning raw measurement per element.
 
     All operations use pre-allocated output (``out=``) to eliminate memory
@@ -238,14 +238,19 @@ def benchmark_pointwise(
 
     Returns
     -------
-    dict[str, float]
-        Mapping from op name to median measurement per element.
+    tuple[dict[str, float], dict[str, dict]]
+        A pair of (alphas, details). ``alphas`` maps op name to median
+        measurement per element. ``details`` maps op name to a dict of
+        raw benchmark metadata.
     """
     results: dict[str, float] = {}
+    details: dict[str, dict] = {}
 
     # --- Unary ops ---
     for op in UNARY_OPS:
         dist_values: list[float] = []
+        dist_raw_totals: list[int] = []
+        bench = ""
         for di in range(distributions):
             setup = _unary_setup(n, dtype, op, di)
             if op in _TUPLE_RETURN_OPS:
@@ -257,12 +262,25 @@ def benchmark_pointwise(
             except RuntimeError:
                 continue
             dist_values.append(result.total_flops / (n * repeats))
+            dist_raw_totals.append(result.total_flops)
         if dist_values:
             results[op] = statistics.median(dist_values)
+            details[op] = {
+                "category": "counted_unary",
+                "analytical_formula": "numel(output)",
+                "analytical_flops": n,
+                "benchmark_size": f"n={n}",
+                "bench_code": bench,
+                "repeats": repeats,
+                "perf_instructions_total": dist_raw_totals,
+                "distribution_alphas": dist_values,
+            }
 
     # --- Binary ops ---
     for op in BINARY_OPS:
         dist_values: list[float] = []
+        dist_raw_totals: list[int] = []
+        bench = ""
         for di in range(distributions):
             setup = _binary_setup(n, dtype, op, di)
             bench = f"np.{op}(a, b, out=_out)"
@@ -271,25 +289,41 @@ def benchmark_pointwise(
             except RuntimeError:
                 continue
             dist_values.append(result.total_flops / (n * repeats))
+            dist_raw_totals.append(result.total_flops)
         if dist_values:
             results[op] = statistics.median(dist_values)
+            details[op] = {
+                "category": "counted_binary",
+                "analytical_formula": "numel(output)",
+                "analytical_flops": n,
+                "benchmark_size": f"n={n}",
+                "bench_code": bench,
+                "repeats": repeats,
+                "perf_instructions_total": dist_raw_totals,
+                "distribution_alphas": dist_values,
+            }
 
     # --- Special ops (non-standard patterns) ---
     for op in SPECIAL_OPS:
         dist_values: list[float] = []
+        dist_raw_totals: list[int] = []
+        bench = ""
         for di in range(distributions):
             if op == "isclose":
                 # Binary comparison returning bool.
                 setup = _binary_setup(n, dtype, op, di)
                 bench = "np.isclose(a, b)"
+                category = "counted_binary"
             elif op == "heaviside":
                 # Binary with scalar second argument.
                 setup = _unary_setup(n, dtype, op, di)
                 bench = "np.heaviside(x, 0.5)"
+                category = "counted_binary"
             elif op == "clip":
                 # Ternary: clip(x, min, max).
                 setup = _unary_setup(n, dtype, op, di)
                 bench = "np.clip(x, -1.0, 1.0)"
+                category = "counted_unary"
             else:
                 continue
             try:
@@ -297,7 +331,18 @@ def benchmark_pointwise(
             except RuntimeError:
                 continue
             dist_values.append(result.total_flops / (n * repeats))
+            dist_raw_totals.append(result.total_flops)
         if dist_values:
             results[op] = statistics.median(dist_values)
+            details[op] = {
+                "category": category,
+                "analytical_formula": "numel(output)",
+                "analytical_flops": n,
+                "benchmark_size": f"n={n}",
+                "bench_code": bench,
+                "repeats": repeats,
+                "perf_instructions_total": dist_raw_totals,
+                "distribution_alphas": dist_values,
+            }
 
-    return results
+    return results, details

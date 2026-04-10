@@ -8,6 +8,7 @@ import pytest
 from benchmarks._perf import PerfResult
 from benchmarks._sorting import (
     SORTING_OPS,
+    _FORMULA_STRINGS,
     _analytical_cost,
     benchmark_sorting,
 )
@@ -105,7 +106,31 @@ class TestAnalyticalCost:
         assert _analytical_cost("in1d", 1, m=1) == 2 * math.ceil(math.log2(2))
 
 
+class TestFormulaStrings:
+    def test_all_ops_have_formula(self):
+        for op in SORTING_OPS:
+            assert op in _FORMULA_STRINGS, f"{op} missing from _FORMULA_STRINGS"
+
+    def test_formulas_are_strings(self):
+        for op, formula in _FORMULA_STRINGS.items():
+            assert isinstance(formula, str), f"{op} formula is not a string"
+            assert len(formula) > 0, f"{op} formula is empty"
+
+
 class TestBenchmarkSorting:
+    def test_returns_tuple(self):
+        mock_result = PerfResult(
+            scalar_double=1_000_000,
+            packed_128_double=0,
+            packed_256_double=0,
+            packed_512_double=0,
+        )
+        with patch("benchmarks._sorting.measure_flops", return_value=mock_result):
+            rv = benchmark_sorting(n=1_000, dtype="float64", repeats=1)
+
+        assert isinstance(rv, tuple)
+        assert len(rv) == 2
+
     def test_returns_dict_with_all_ops(self):
         mock_result = PerfResult(
             scalar_double=1_000_000,
@@ -114,7 +139,7 @@ class TestBenchmarkSorting:
             packed_512_double=0,
         )
         with patch("benchmarks._sorting.measure_flops", return_value=mock_result):
-            result = benchmark_sorting(n=1_000, dtype="float64", repeats=1)
+            result, details = benchmark_sorting(n=1_000, dtype="float64", repeats=1)
 
         assert isinstance(result, dict)
         # All original ops must be present; NumPy 2.x unique variants may
@@ -148,7 +173,7 @@ class TestBenchmarkSorting:
             packed_512_double=0,
         )
         with patch("benchmarks._sorting.measure_flops", return_value=mock_result):
-            result = benchmark_sorting(n=1_000, dtype="float64", repeats=1)
+            result, _details = benchmark_sorting(n=1_000, dtype="float64", repeats=1)
 
         for key, val in result.items():
             assert isinstance(val, float), f"{key} value is not float"
@@ -165,7 +190,7 @@ class TestBenchmarkSorting:
             packed_512_double=0,
         )
         with patch("benchmarks._sorting.measure_flops", return_value=mock_result):
-            result = benchmark_sorting(n=n, dtype="float64", repeats=repeats)
+            result, _details = benchmark_sorting(n=n, dtype="float64", repeats=repeats)
 
         analytical = _analytical_cost("sort", n)
         expected = total_flops / (analytical * repeats)
@@ -183,7 +208,7 @@ class TestBenchmarkSorting:
             packed_512_double=0,
         )
         with patch("benchmarks._sorting.measure_flops", return_value=mock_result):
-            result = benchmark_sorting(n=n, dtype="float64", repeats=repeats)
+            result, _details = benchmark_sorting(n=n, dtype="float64", repeats=repeats)
 
         expected = total_flops / (n * repeats)
         assert result["partition"] == pytest.approx(expected)
@@ -200,7 +225,7 @@ class TestBenchmarkSorting:
             packed_512_double=0,
         )
         with patch("benchmarks._sorting.measure_flops", return_value=mock_result):
-            result = benchmark_sorting(n=n, dtype="float64", repeats=repeats)
+            result, _details = benchmark_sorting(n=n, dtype="float64", repeats=repeats)
 
         analytical = _analytical_cost("lexsort", n, k=2)
         expected = total_flops / (analytical * repeats)
@@ -218,9 +243,53 @@ class TestBenchmarkSorting:
             packed_512_double=0,
         )
         with patch("benchmarks._sorting.measure_flops", return_value=mock_result):
-            result = benchmark_sorting(n=n, dtype="float64", repeats=repeats)
+            result, _details = benchmark_sorting(n=n, dtype="float64", repeats=repeats)
 
         # Set ops use m=n in the benchmark
         analytical = _analytical_cost("intersect1d", n, m=n)
         expected = total_flops / (analytical * repeats)
         assert result["intersect1d"] == pytest.approx(expected)
+
+    def test_details_keys_match_results(self):
+        mock_result = PerfResult(
+            scalar_double=1_000_000,
+            packed_128_double=0,
+            packed_256_double=0,
+            packed_512_double=0,
+        )
+        with patch("benchmarks._sorting.measure_flops", return_value=mock_result):
+            result, details = benchmark_sorting(n=1_000, dtype="float64", repeats=1)
+
+        assert set(result.keys()) == set(details.keys())
+
+    def test_details_schema(self):
+        mock_result = PerfResult(
+            scalar_double=1_000_000,
+            packed_128_double=0,
+            packed_256_double=0,
+            packed_512_double=0,
+        )
+        with patch("benchmarks._sorting.measure_flops", return_value=mock_result):
+            _result, details = benchmark_sorting(n=1_000, dtype="float64", repeats=1)
+
+        expected_keys = {
+            "category",
+            "analytical_formula",
+            "analytical_flops",
+            "benchmark_size",
+            "bench_code",
+            "repeats",
+            "perf_instructions_total",
+            "distribution_alphas",
+        }
+        for op, d in details.items():
+            assert set(d.keys()) == expected_keys, f"{op} details keys mismatch"
+            assert d["category"] == "counted_custom"
+            assert isinstance(d["analytical_formula"], str)
+            assert isinstance(d["analytical_flops"], int)
+            assert d["benchmark_size"] == "n=1000"
+            assert isinstance(d["bench_code"], str)
+            assert d["repeats"] == 1
+            assert isinstance(d["perf_instructions_total"], int)
+            assert isinstance(d["distribution_alphas"], list)
+            assert len(d["distribution_alphas"]) == 3  # 3 distributions

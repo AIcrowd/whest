@@ -125,7 +125,7 @@ def benchmark_random(
     n: int = 10_000_000,
     dtype: str = "float64",
     repeats: int = 10,
-) -> dict[str, float]:
+) -> tuple[dict[str, float], dict[str, dict]]:
     """Benchmark random ops, returning FP ops per element.
 
     Parameters
@@ -139,15 +139,20 @@ def benchmark_random(
 
     Returns
     -------
-    dict[str, float]
-        Mapping from op name to median FP ops per element.
+    tuple[dict[str, float], dict[str, dict]]
+        A pair of (alphas, details). ``alphas`` maps op name to median
+        measurement per element. ``details`` maps op name to a dict of
+        raw benchmark metadata.
     """
     results: dict[str, float] = {}
+    details: dict[str, dict] = {}
     seeds = [42, 123, 999]
 
     for op in RANDOM_OPS:
         dist_values: list[float] = []
+        dist_raw_totals: list[int] = []
         extra = _EXTRA_ARGS.get(op, "")
+        bench = ""
 
         for seed in seeds:
             if op in _CUSTOM_OPS:
@@ -170,8 +175,19 @@ def benchmark_random(
             except RuntimeError:
                 continue
             dist_values.append(result.total_flops / (n * repeats))
+            dist_raw_totals.append(result.total_flops)
 
         if dist_values:
             results[op] = statistics.median(dist_values)
+            details[op] = {
+                "category": "counted_custom",
+                "analytical_formula": "numel(output)",
+                "analytical_flops": n,
+                "benchmark_size": f"n={n}",
+                "bench_code": bench,
+                "repeats": repeats,
+                "perf_instructions_total": dist_raw_totals,
+                "distribution_alphas": dist_values,
+            }
 
-    return results
+    return results, details

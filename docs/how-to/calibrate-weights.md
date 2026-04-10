@@ -95,7 +95,7 @@ same unified correction-factor formula:
 Every operation uses the same unified formula:
 
 $$
-\alpha(\text{op}) = \text{median}_{D} \left[ \frac{\sum \text{fp\_arith\_inst\_retired.*} \times \text{simd\_width}}{C(\text{op}, \text{params}) \times R} \right]
+\alpha(\text{op}) = \text{median}_{D} \left[ \frac{\sum \texttt{fp\_arith\_inst\_retired.*} \times \texttt{simd\_width}}{C(\text{op}, \text{params}) \times R} \right]
 $$
 
 $$

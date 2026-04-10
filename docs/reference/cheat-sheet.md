@@ -44,7 +44,7 @@
 | `digitize` | varies | Bin search; cost = n*ceil(log2(bins)). |
 | `dot` | $2 \cdot m \cdot k \cdot n$ | Dot product; cost = 2*M*N*K for matrix multiply. |
 | `ediff1d` | $\text{numel}(\text{input})$ | Differences between consecutive elements. |
-| `einsum` | $\text{op\_factor} \cdot \prod_i d_i$ | Generalized Einstein summation. |
+| `einsum` | $\texttt{op\_factor} \cdot \prod_i d_i$ | Generalized Einstein summation. |
 | `einsum_path` | $0$ | Optimize einsum contraction path (no numeric output). |
 | `fft.fft` | $5n \cdot \lceil\log_2 n\rceil$ | 1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 §1.4). |
 | `fft.fft2` | $5N \cdot \lceil\log_2 N\rceil$ | 2-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 §1.4). |

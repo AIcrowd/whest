@@ -4,6 +4,8 @@ from unittest.mock import patch
 
 from benchmarks._contractions import (
     CONTRACTION_OPS,
+    _BENCHMARK_SIZE_STRINGS,
+    _FORMULA_STRINGS,
     _analytical_cost,
     benchmark_contractions,
 )
@@ -58,8 +60,24 @@ class TestAnalyticalCost:
             assert cost > 0, f"{op} cost must be positive"
 
 
+class TestFormulaStrings:
+    def test_all_ops_have_formula(self):
+        for op in CONTRACTION_OPS:
+            assert op in _FORMULA_STRINGS, f"{op} missing from _FORMULA_STRINGS"
+            assert isinstance(_FORMULA_STRINGS[op], str)
+            assert len(_FORMULA_STRINGS[op]) > 0
+
+    def test_all_ops_have_benchmark_size(self):
+        for op in CONTRACTION_OPS:
+            assert op in _BENCHMARK_SIZE_STRINGS, (
+                f"{op} missing from _BENCHMARK_SIZE_STRINGS"
+            )
+            assert isinstance(_BENCHMARK_SIZE_STRINGS[op], str)
+            assert len(_BENCHMARK_SIZE_STRINGS[op]) > 0
+
+
 class TestBenchmarkContractions:
-    def test_returns_dict(self):
+    def test_returns_tuple(self):
         mock_result = PerfResult(
             scalar_double=1_000_000,
             packed_128_double=0,
@@ -67,9 +85,10 @@ class TestBenchmarkContractions:
             packed_512_double=0,
         )
         with patch("benchmarks._contractions.measure_flops", return_value=mock_result):
-            result = benchmark_contractions(dtype="float64", repeats=1)
+            result, details = benchmark_contractions(dtype="float64", repeats=1)
 
         assert isinstance(result, dict)
+        assert isinstance(details, dict)
 
     def test_values_are_floats(self):
         mock_result = PerfResult(
@@ -79,7 +98,7 @@ class TestBenchmarkContractions:
             packed_512_double=0,
         )
         with patch("benchmarks._contractions.measure_flops", return_value=mock_result):
-            result = benchmark_contractions(dtype="float64", repeats=1)
+            result, _details = benchmark_contractions(dtype="float64", repeats=1)
 
         for key, val in result.items():
             assert isinstance(val, float), f"{key} value is not float"
@@ -93,7 +112,37 @@ class TestBenchmarkContractions:
             packed_512_double=0,
         )
         with patch("benchmarks._contractions.measure_flops", return_value=mock_result):
-            result = benchmark_contractions(dtype="float64", repeats=1)
+            result, _details = benchmark_contractions(dtype="float64", repeats=1)
 
         expected = set(CONTRACTION_OPS) - {"vecdot"}
         assert expected.issubset(set(result.keys()))
+
+    def test_details_have_required_keys(self):
+        mock_result = PerfResult(
+            scalar_double=1_000_000,
+            packed_128_double=0,
+            packed_256_double=0,
+            packed_512_double=0,
+        )
+        with patch("benchmarks._contractions.measure_flops", return_value=mock_result):
+            _result, details = benchmark_contractions(dtype="float64", repeats=1)
+
+        required_keys = {
+            "category",
+            "analytical_formula",
+            "analytical_flops",
+            "benchmark_size",
+            "bench_code",
+            "repeats",
+            "perf_instructions_total",
+            "distribution_alphas",
+        }
+        for op, d in details.items():
+            assert required_keys.issubset(d.keys()), (
+                f"{op} missing keys: {required_keys - set(d.keys())}"
+            )
+            assert d["category"] == "counted_custom"
+            assert isinstance(d["analytical_flops"], int)
+            assert isinstance(d["bench_code"], str)
+            assert isinstance(d["distribution_alphas"], list)
+            assert len(d["distribution_alphas"]) > 0

@@ -18,6 +18,30 @@ CONTRACTION_OPS: list[str] = [
     "einsum",
 ]
 
+_FORMULA_STRINGS: dict[str, str] = {
+    "dot": "2*M*N*K",
+    "matmul": "2*M*N*K",
+    "inner": "2*N",
+    "vdot": "2*N",
+    "vecdot": "2*batch*N",
+    "outer": "M*N",
+    "tensordot": "2*d^5 (axes=1, shape=(d,d,d))",
+    "kron": "d^4 (Kronecker, shape=(d,d)x(d,d))",
+    "einsum": "2*M*N*K (ij,jk->ik)",
+}
+
+_BENCHMARK_SIZE_STRINGS: dict[str, str] = {
+    "dot": "A(512,512) x B(512,512)",
+    "matmul": "A(512,512) x B(512,512)",
+    "inner": "a(10000) . b(10000)",
+    "vdot": "a(10000) . b(10000)",
+    "vecdot": "A(1000,512) . B(1000,512)",
+    "outer": "a(5000) x b(5000)",
+    "tensordot": "A(64,64,64) . B(64,64,64) axes=1",
+    "kron": "A(64,64) x B(64,64)",
+    "einsum": "A(512,512) x B(512,512) 'ij,jk->ik'",
+}
+
 
 def _analytical_cost(op: str, **kwargs: int) -> int:
     """Return analytical FLOP count for the benchmark configuration.
@@ -60,7 +84,7 @@ def _analytical_cost(op: str, **kwargs: int) -> int:
 def benchmark_contractions(
     dtype: str = "float64",
     repeats: int = 10,
-) -> dict[str, float]:
+) -> tuple[dict[str, float], dict[str, dict]]:
     """Benchmark contraction ops, returning raw measurement per analytical FLOP.
 
     In perf mode this is actual FP ops / analytical FLOPs (correction factor).
@@ -76,13 +100,17 @@ def benchmark_contractions(
 
     Returns
     -------
-    dict[str, float]
-        Mapping from op name to median raw measurement per analytical FLOP.
+    tuple[dict[str, float], dict[str, dict]]
+        A pair of (alphas, details). ``alphas`` maps op name to median
+        raw measurement per analytical FLOP. ``details`` maps op name to
+        a dict of raw benchmark metadata.
     """
     results: dict[str, float] = {}
+    details: dict[str, dict] = {}
 
     for op in CONTRACTION_OPS:
         dist_values: list[float] = []
+        dist_raw_totals: list[int] = []
 
         # --- Build setups and bench code per op ---
 
@@ -237,8 +265,19 @@ def benchmark_contractions(
 
             measured = result.total_flops / repeats
             dist_values.append(measured / analytical if analytical else 0.0)
+            dist_raw_totals.append(result.total_flops)
 
         if dist_values:
             results[op] = statistics.median(dist_values)
+            details[op] = {
+                "category": "counted_custom",
+                "analytical_formula": _FORMULA_STRINGS.get(op, ""),
+                "analytical_flops": analytical,
+                "benchmark_size": _BENCHMARK_SIZE_STRINGS.get(op, ""),
+                "bench_code": bench,
+                "repeats": repeats,
+                "perf_instructions_total": dist_raw_totals,
+                "distribution_alphas": dist_values,
+            }
 
-    return results
+    return results, details
