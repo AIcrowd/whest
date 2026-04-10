@@ -372,9 +372,8 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     w("Every weight is computed from the same two-step formula:")
     w()
     w("$$")
-    w("\\alpha(\\text{op}) = \\operatorname{median}_{D} "
-      "\\left[ \\frac{\\text{perf\\_fp\\_retired} "
-      "\\times \\text{simd\\_width}}"
+    w("\\alpha(\\text{op}) = \\mathrm{median}_{D} "
+      "\\left[ \\frac{F(\\text{op})}"
       "{C(\\text{op}, \\text{params}) \\times R} \\right]")
     w("$$")
     w()
@@ -387,9 +386,9 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     w()
     w("- $\\alpha(\\text{op})$ is the **raw correction factor** -- the ratio of "
       "hardware-observed FP instructions to the analytical FLOP count.")
-    w("- `fp_arith_inst_retired.*` are Intel PMU hardware counters "
-      "that count retired floating-point arithmetic instructions, "
-      "weighted by SIMD lane count.")
+    w("- $F(\\text{op})$ is the total SIMD-width-weighted count of retired "
+      "floating-point instructions, measured via the Intel PMU counters "
+      "`fp_arith_inst_retired.*` (scalar x1, 128-bit x2, 256-bit x4, 512-bit x8).")
     w("- $C(\\text{op}, \\text{params})$ is the analytical FLOP count from mechestim's "
       "cost formula (e.g., `numel(output)` for pointwise ops).")
     w("- $R$ is the number of repeats per distribution.")
@@ -402,7 +401,6 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     w("## Measurement environment")
     w()
     w('!!! info "Calibration platform"')
-    w()
     cache = hw.get("cache", {})
     l3_mb = cache.get("L3", 0) / 1024 if cache.get("L3", 0) > 1024 else cache.get("L3", 0)
     w(f"    - **CPU:** {hw['cpu_model']}")
@@ -558,7 +556,6 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     w("(which dominate the count), the two modes agree well in relative ordering.")
     w()
     w('!!! warning "Correlation caveats"')
-    w()
     w("    The Pearson and Spearman values span all operations, including BLAS/linalg")
     w("    ops where timing and perf divergence is structurally expected. For the")
     w("    subset of pointwise operations, both correlations are substantially higher.")
