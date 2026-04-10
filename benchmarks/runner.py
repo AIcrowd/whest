@@ -426,8 +426,12 @@ def run_benchmarks(
         # -- inject timing data into per-op details -------------------------
         for op, t_alpha in timing_alphas.items():
             if op in all_details:
+                # Reconstruct total timing from alpha and the op's own
+                # analytical FLOPs (NOT the baseline N — sort has 240M
+                # analytical FLOPs, not 10M).
+                op_aflops = all_details[op].get("analytical_flops", _BASELINE_N)
                 all_details[op]["timing_ns_total"] = round(
-                    t_alpha * _BASELINE_N * repeats, 2
+                    t_alpha * op_aflops * repeats, 2
                 )
             if op in timing_weights and op in all_details:
                 all_details[op]["timing_weight"] = timing_weights[op]
