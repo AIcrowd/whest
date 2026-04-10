@@ -77,9 +77,9 @@ objects.
 flowchart LR
     A0["(A, 0)"] --- a((a))
     B0["(B, 0)"] --- b((b))
-    T0["(T, 0)"] --- i((i))
+    T0["(T, 0)"] --- i{{i}}
     A1["(A, 1)"] --- i
-    T1["(T, 1)"] --- j((j))
+    T1["(T, 1)"] --- j{{j}}
     B1["(B, 1)"] --- j
 
     subgraph U ["U-vertices (axis classes)"]
@@ -91,15 +91,15 @@ flowchart LR
         B1
     end
 
-    subgraph V ["V (free)"]
+    subgraph Labels ["Labels — V free ○ · W summed ⬡"]
         a
         b
-    end
-
-    subgraph W ["W (summed)"]
         i
         j
     end
+
+    style i fill:#f0f0f0,stroke:#999,stroke-dasharray:5 5
+    style j fill:#f0f0f0,stroke:#999,stroke-dasharray:5 5
 ```
 
 Now consider the subset `{A, B}` (positions 1 and 2):
