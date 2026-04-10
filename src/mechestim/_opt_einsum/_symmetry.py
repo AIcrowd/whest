@@ -182,9 +182,7 @@ def symmetric_flop_count(
             out_sub = frozenset(sorted_labels[:st])
             out_group = PermutationGroup.symmetric(len(out_sub))
             out_group._labels = tuple(sorted(out_sub))
-            phi_cost += unique_elements(
-                out_sub, size_dictionary, perm_group=out_group
-            )
+            phi_cost += unique_elements(out_sub, size_dictionary, perm_group=out_group)
 
         cost = min(cost, max(phi_cost, 1))
 

@@ -5,12 +5,13 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from mechestim._perm_group import PermutationGroup
 from mechestim._opt_einsum._subgraph_symmetry import (
     EinsumBipartite,
     SubgraphSymmetryOracle,
     _build_bipartite,
+    _induce_subgraph,
 )
+from mechestim._perm_group import PermutationGroup
 
 
 def _sym_group(*labels: str) -> PermutationGroup:
@@ -179,7 +180,6 @@ class TestSubsetInduction:
         A = np.zeros((3, 4))
         B = np.zeros((4, 5))
         g = _build_bipartite([A, B], ["ij", "jk"], [None, None], "ik")
-        from mechestim._opt_einsum._subgraph_symmetry import _induce_subgraph
 
         sub = _induce_subgraph(g, frozenset({0, 1}))
         assert sub.v_labels == frozenset("ik")
@@ -191,7 +191,6 @@ class TestSubsetInduction:
         A = np.zeros((3, 4))
         B = np.zeros((4, 5))
         g = _build_bipartite([A, B], ["ij", "jk"], [None, None], "ik")
-        from mechestim._opt_einsum._subgraph_symmetry import _induce_subgraph
 
         # Contract only operand 0. Label i is top-level free (in output).
         # Label j is top-level summed but crosses the cut (also in op 1),
@@ -206,7 +205,6 @@ class TestSubsetInduction:
         B = np.zeros((4, 5))
         C = np.zeros((5, 6))
         g = _build_bipartite([A, B, C], ["ij", "jk", "kl"], [None, None, None], "il")
-        from mechestim._opt_einsum._subgraph_symmetry import _induce_subgraph
 
         # Contract ops 0 and 1. j is summed entirely within the subset
         # (not in any operand outside the subset, not in output), so j
@@ -218,7 +216,6 @@ class TestSubsetInduction:
     def test_identical_group_restricts_to_subset(self):
         X = np.zeros((3, 3))
         g = _build_bipartite([X, X, X], ["ai", "bi", "ci"], [None, None, None], "abc")
-        from mechestim._opt_einsum._subgraph_symmetry import _induce_subgraph
 
         sub_all = _induce_subgraph(g, frozenset({0, 1, 2}))
         assert sub_all.id_groups == ((0, 1, 2),)
@@ -442,7 +439,9 @@ class TestOldSymIsSubsetOfNewSym:
         # For each old group, assert that the new PermutationGroup covers
         # those labels.
         if old:
-            assert new_pg is not None, f"Old detected groups {old} but new oracle returned None"
+            assert new_pg is not None, (
+                f"Old detected groups {old} but new oracle returned None"
+            )
             new_labels = set(new_pg._labels) if new_pg._labels else set()
             for old_g in old:
                 old_chars = frozenset(c for block in old_g for c in block)
@@ -486,7 +485,6 @@ class TestSubsetSymmetryDataclass:
 
 from mechestim._opt_einsum._subgraph_symmetry import (
     _derive_pi_canonical,
-    _induce_subgraph,
 )
 
 
@@ -718,6 +716,7 @@ class TestBurnsideFLOPCount:
         )
         # C(n+2, 3) = C(12, 3) = 220
         from math import comb
+
         assert result_pg == comb(n + 2, 3)
 
 

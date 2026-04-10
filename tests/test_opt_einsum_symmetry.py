@@ -2,11 +2,11 @@
 
 import numpy as np
 
-from mechestim._perm_group import PermutationGroup
 from mechestim._opt_einsum._symmetry import (
     symmetric_flop_count,
     unique_elements,
 )
+from mechestim._perm_group import PermutationGroup
 
 
 def _s_group(*labels):
@@ -39,17 +39,28 @@ class TestUniqueElements:
     def test_s2_symmetry(self):
         """C(n+1, 2) for S2 on two indices of size n."""
         size_dict = {"i": 10, "j": 10}
-        assert unique_elements(frozenset("ij"), size_dict, perm_group=_s_group("i", "j")) == 55
+        assert (
+            unique_elements(frozenset("ij"), size_dict, perm_group=_s_group("i", "j"))
+            == 55
+        )
 
     def test_s3_symmetry(self):
         """C(n+2, 3) for S3."""
         size_dict = {"i": 10, "j": 10, "k": 10}
-        assert unique_elements(frozenset("ijk"), size_dict, perm_group=_s_group("i", "j", "k")) == 220
+        assert (
+            unique_elements(
+                frozenset("ijk"), size_dict, perm_group=_s_group("i", "j", "k")
+            )
+            == 220
+        )
 
     def test_mixed_symmetric_and_free(self):
         """S2 on (j,k) plus free index a."""
         size_dict = {"a": 5, "j": 10, "k": 10}
-        assert unique_elements(frozenset("ajk"), size_dict, perm_group=_s_group("j", "k")) == 5 * 55
+        assert (
+            unique_elements(frozenset("ajk"), size_dict, perm_group=_s_group("j", "k"))
+            == 5 * 55
+        )
 
     def test_no_symmetry(self):
         size_dict = {"i": 3, "j": 4}
@@ -569,7 +580,9 @@ class TestExhaustiveSymmetryValidation:
         from mechestim._opt_einsum._contract import contract_path
 
         sym = [_s_group("i", "j", "k")]
-        oracle = _make_oracle("ijk,ai,bj,ck->abc", per_op_groups=[sym, None, None, None])
+        oracle = _make_oracle(
+            "ijk,ai,bj,ck->abc", per_op_groups=[sym, None, None, None]
+        )
         _, info = contract_path(
             "ijk,ai,bj,ck->abc",
             *[(100,) * 3, (100, 100), (100, 100), (100, 100)],

@@ -697,9 +697,7 @@ def contract_path(
                 output_shape=shp_result,
                 input_groups=list(step_syms),
                 output_group=result_sym,
-                inner_group=(
-                    subset_sym.inner if symmetry_oracle is not None else None
-                ),
+                inner_group=(subset_sym.inner if symmetry_oracle is not None else None),
                 dense_flop_cost=step_dense,
                 symmetry_savings=savings,
                 blas_type=do_blas,

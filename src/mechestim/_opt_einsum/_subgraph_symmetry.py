@@ -396,7 +396,9 @@ def _compute_subset_symmetry(
         fp_groups: dict[tuple[int, ...], list[str]] = {}
         for lbl in sub.v_labels:
             fp_groups.setdefault(col_of[lbl], []).append(lbl)
-        v_equiv = sorted(lbl for grp in fp_groups.values() if len(grp) >= 2 for lbl in grp)
+        v_equiv = sorted(
+            lbl for grp in fp_groups.values() if len(grp) >= 2 for lbl in grp
+        )
         if len(v_equiv) >= 2:
             v_group = PermutationGroup.symmetric(
                 len(v_equiv), axes=tuple(range(len(v_equiv)))
@@ -412,7 +414,9 @@ def _compute_subset_symmetry(
         fp_groups_w: dict[tuple[int, ...], list[str]] = {}
         for lbl in sub.w_labels:
             fp_groups_w.setdefault(col_of[lbl], []).append(lbl)
-        w_equiv = sorted(lbl for grp in fp_groups_w.values() if len(grp) >= 2 for lbl in grp)
+        w_equiv = sorted(
+            lbl for grp in fp_groups_w.values() if len(grp) >= 2 for lbl in grp
+        )
         if len(w_equiv) >= 2:
             w_group = PermutationGroup.symmetric(
                 len(w_equiv), axes=tuple(range(len(w_equiv)))
