@@ -209,15 +209,15 @@ All weights are normalized against element-wise addition (`np.add`):
 
 | Op | Weight | vs Add | Confidence | Formula | Impl | Notes |
 |:---|-------:|-------:|:-----------|:--------|:-----|:------|
-| `partition` | 14.1337 | 10.0x | low | n | [\_sorting\_ops.py:111](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L111) | Quickselect; cost = n per slice. |
-| `argpartition` | 13.8459 | 9.8x | low | n | [\_sorting\_ops.py:136](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L136) | Indirect partition; cost = n per slice. |
 | `intersect1d` | 5.2067 | 3.7x | medium | (n+m) * ceil(log2(n+m)) | [\_sorting\_ops.py:340](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L340) | Set intersection; cost = (n+m)*ceil(log2(n+m)). |
 | `setxor1d` | 5.2067 | 3.7x | medium | (n+m) * ceil(log2(n+m)) | [\_sorting\_ops.py:389](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L389) | Symmetric set difference; cost = (n+m)*ceil(log2(n+m)). |
 | `argsort` | 3.3538 | 2.4x | medium | n * ceil(log2(n)) | [\_sorting\_ops.py:62](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L62) | Indirect sort; cost = n*ceil(log2(n)) per slice. |
 | `unique_inverse` | 3.3538 | 2.4x | medium | n * ceil(log2(n)) | [\_sorting\_ops.py:268](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L268) | Sort-based unique; cost = n*ceil(log2(n)). |
+| `argpartition` | 3.0321 | 2.2x | medium | n | [\_sorting\_ops.py:136](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L136) | Indirect partition; cost = n per slice. |
 | `in1d` | 2.9630 | 2.1x | medium | (n+m) * ceil(log2(n+m)) | [\_sorting\_ops.py:313](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L313) | Set membership; cost = (n+m)*ceil(log2(n+m)). |
 | `isin` | 2.9630 | 2.1x | medium | (n+m) * ceil(log2(n+m)) | [\_sorting\_ops.py:326](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L326) | Set membership; cost = (n+m)*ceil(log2(n+m)). |
 | `union1d` | 2.9576 | 2.1x | medium | (n+m) * ceil(log2(n+m)) | [\_sorting\_ops.py:357](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L357) | Set union; cost = (n+m)*ceil(log2(n+m)). |
+| `partition` | 2.9204 | 2.1x | medium | n | [\_sorting\_ops.py:111](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L111) | Quickselect; cost = n per slice. |
 | `sort` | 2.8185 | 2.0x | medium | n * ceil(log2(n)) | [\_sorting\_ops.py:43](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L43) | Comparison sort; cost = n*ceil(log2(n)) per slice. |
 | `unique` | 2.8185 | 2.0x | medium | n * ceil(log2(n)) | [\_sorting\_ops.py:227](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L227) | Sort-based unique; cost = n*ceil(log2(n)). |
 | `unique_counts` | 2.8185 | 2.0x | medium | n * ceil(log2(n)) | [\_sorting\_ops.py:252](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L252) | Sort-based unique; cost = n*ceil(log2(n)). |
@@ -269,9 +269,9 @@ All weights are normalized against element-wise addition (`np.add`):
 
 | Op | Weight | vs Add | Confidence | Formula | Impl | Notes |
 |:---|-------:|-------:|:-----------|:--------|:-----|:------|
-| `inner` | 1.0598 | 0.8x | medium | 2*N | [\_pointwise.py:649](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L649) | Inner product; cost = 2*N for 1-D, 2*N*M for n-D. |
-| `vdot` | 1.0598 | 0.8x | medium | 2*N | [\_pointwise.py:707](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L707) | Dot product with conjugation; cost = 2*N. |
 | `vecdot` | 1.0443 | 0.7x | medium | 2*batch*N | [\_pointwise.py:455](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L455) | Vector dot product along last axis. |
+| `inner` | 1.0240 | 0.7x | medium | 2*N | [\_pointwise.py:649](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L649) | Inner product; cost = 2*N for 1-D, 2*N*M for n-D. |
+| `vdot` | 1.0240 | 0.7x | medium | 2*N | [\_pointwise.py:707](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L707) | Dot product with conjugation; cost = 2*N. |
 | `tensordot` | 0.6494 | 0.5x | high | 2*d^5 (axes=1, shape=(d,d,d)) | [\_\_init\_\_.py:74](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/__init__.py#L74) | Tensor dot product along specified axes. |
 | `dot` | 0.6426 | 0.5x | high | 2*M*N*K | [\_pointwise.py:587](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L587) | Dot product; cost = 2*M*N*K for matrix multiply. |
 | `matmul` | 0.6426 | 0.5x | high | 2*M*N*K | [\_pointwise.py:623](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L623) | Matrix multiplication; cost = 2*M*N*K. |
@@ -346,7 +346,6 @@ All weights are normalized against element-wise addition (`np.add`):
 
 | Op | Weight | vs Add | Confidence | Formula | Impl | Notes |
 |:---|-------:|-------:|:-----------|:--------|:-----|:------|
-| `trace` | 384.9696 | 273.7x | low | min(m, n) | [\_counting\_ops.py:26](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L26) | Diagonal sum; cost = min(n,m). |
 | `geomspace` | 48.5912 | 34.5x | high | n | [\_counting\_ops.py:246](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L246) | Geometric-spaced generation; cost = num. |
 | `logspace` | 47.9518 | 34.1x | high | n | [\_counting\_ops.py:236](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L236) | Log-spaced generation; cost = num. |
 | `unwrap` | 4.5198 | 3.2x | medium | n | [\_unwrap.py:40](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_unwrap.py#L40) | Phase unwrap. Cost: $\text{numel}(\text{input})$ (diff + conditional adjustment). |
@@ -359,6 +358,7 @@ All weights are normalized against element-wise addition (`np.add`):
 | `correlate` | 1.3004 | 0.9x | high | n * k | [\_pointwise.py:829](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L829) | 1-D cross-correlation. |
 | `diff` | 1.0230 | 0.7x | medium | n | [\_pointwise.py:759](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L759) | n-th discrete difference along axis. |
 | `ediff1d` | 1.0230 | 0.7x | medium | n | [\_pointwise.py:789](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L789) | Differences between consecutive elements. |
+| `trace` | 1.0230 | 0.7x | low | min(m, n) | [\_counting\_ops.py:26](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L26) | Diagonal sum; cost = min(n,m). Weight set to match sum (both are simple reductions; direct measurement dominated by subprocess overhead). |
 | `array_equal` | 0.7673 | 0.5x | low | n | [\_counting\_ops.py:60](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L60) | Element-wise equality; cost = numel(a). |
 | `array_equiv` | 0.7673 | 0.5x | low | n | [\_counting\_ops.py:82](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L82) | Element-wise equivalence; cost = numel(a). |
 | `vander` | 0.6375 | 0.5x | high | n * (degree - 1) | [\_counting\_ops.py:260](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L260) | Vandermonde matrix; cost = len(x)*(N-1). |
@@ -388,13 +388,13 @@ All weights are normalized against element-wise addition (`np.add`):
 | Pointwise Unary | 47 | 12.54 | 0.3837 | 53.1311 |
 | Pointwise Binary | 33 | 5.58 | 0.3837 | 46.7140 |
 | Reductions | 35 | 1.02 | 0.3837 | 2.9411 |
-| Sorting | 17 | 4.11 | 0.4756 | 14.1337 |
+| Sorting | 17 | 2.81 | 0.4756 | 5.2067 |
 | FFT | 14 | 0.59 | 0.2733 | 1.4631 |
 | Linalg | 14 | 1.99 | 0.6455 | 7.1872 |
-| Contractions | 9 | 0.78 | 0.6395 | 1.0598 |
+| Contractions | 9 | 0.77 | 0.6395 | 1.0443 |
 | Polynomial | 10 | 3.86 | 0.1013 | 8.7873 |
 | Random | 43 | 47.38 | 0.0001 | 367.3772 |
-| Misc | 24 | 21.05 | 0.0001 | 384.9696 |
+| Misc | 24 | 5.05 | 0.0001 | 48.5912 |
 | Window | 5 | 17.45 | 3.8362 | 23.9400 |
 
 **Total benchmarked operations:** 251
