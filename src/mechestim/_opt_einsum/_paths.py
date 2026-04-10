@@ -186,6 +186,7 @@ def calc_k12_flops(
             size_dict,
             output_symmetry=sym12,
             output_indices=k12,
+            output_group=subset_sym.output_group,
         )
     else:
         cost = flop_count(either, inner, 2, size_dict)

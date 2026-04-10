@@ -21,6 +21,7 @@ from dataclasses import dataclass
 from itertools import permutations, product
 from typing import Any
 
+from mechestim._perm_group import Permutation as Perm, PermutationGroup
 from ._symmetry import IndexSymmetry, SubsetSymmetry
 
 _MISSING = object()
@@ -245,6 +246,71 @@ def _detect_symmetries_via_pi(
             w_groups.extend(_classify_pi_cycles(pi, sub.w_labels, graph, sub))
 
     return v_groups, w_groups
+
+
+def _collect_pi_permutations(
+    graph: "EinsumBipartite",
+    sub: "_Subgraph",
+    row_order: tuple[int, ...],
+    col_of: dict[str, tuple[int, ...]],
+    fp_to_labels: dict[tuple[int, ...], set[str]],
+) -> tuple[list[Perm], list[Perm]]:
+    """Collect all valid π's as Permutation objects for V and W labels.
+
+    Similar to ``_detect_symmetries_via_pi`` but returns raw ``Perm``
+    objects instead of classified ``frozenset`` groups, enabling the
+    caller to build a ``PermutationGroup`` from exact generators.
+
+    Returns
+    -------
+    v_perms : list[Perm]
+        Non-identity permutations on V labels (output / free side).
+    w_perms : list[Perm]
+        Non-identity permutations on W labels (inner / summed side).
+    """
+    v_perms: list[Perm] = []
+    w_perms: list[Perm] = []
+    all_labels = sub.v_labels | sub.w_labels
+    v_sorted = tuple(sorted(sub.v_labels))
+    w_sorted = tuple(sorted(sub.w_labels))
+    v_idx = {lbl: i for i, lbl in enumerate(v_sorted)}
+    w_idx = {lbl: i for i, lbl in enumerate(w_sorted)}
+
+    for tilde_sigma in _enumerate_id_group_permutations(sub.id_groups):
+        # Skip identity σ — it always gives π = identity.
+        if not tilde_sigma or all(tilde_sigma.get(k, k) == k for k in tilde_sigma):
+            continue
+
+        sigma_row_perm = _lift_operand_perm_to_u(tilde_sigma, row_order, graph)
+        if sigma_row_perm is None:
+            continue
+
+        # Compute σ(M)'s column fingerprints.
+        sigma_col_of: dict[str, tuple[int, ...]] = {}
+        for label in all_labels:
+            sigma_col_of[label] = tuple(
+                graph.incidence[sigma_row_perm[k]].get(label, 0)
+                for k in range(len(row_order))
+            )
+
+        # Derive π.
+        pi = _derive_pi_canonical(
+            sigma_col_of, fp_to_labels, sub.v_labels, sub.w_labels
+        )
+        if pi is None:
+            continue
+
+        # Restrict π to V labels — emit Perm if non-identity.
+        if sub.v_labels and any(pi.get(lbl, lbl) != lbl for lbl in sub.v_labels):
+            arr = [v_idx[pi.get(lbl, lbl)] for lbl in v_sorted]
+            v_perms.append(Perm(arr))
+
+        # Restrict π to W labels — emit Perm if non-identity.
+        if sub.w_labels and any(pi.get(lbl, lbl) != lbl for lbl in sub.w_labels):
+            arr = [w_idx[pi.get(lbl, lbl)] for lbl in w_sorted]
+            w_perms.append(Perm(arr))
+
+    return v_perms, w_perms
 
 
 # ---------------------------------------------------------------------------
@@ -522,9 +588,47 @@ def _compute_subset_symmetry(
     v_merged = _merge_overlapping_groups(v_fast + v_sigma)
     w_merged = _merge_overlapping_groups(w_fast + w_sigma)
 
+    # Step 6: collect exact PermutationGroup via raw π's.
+    v_perms, w_perms = _collect_pi_permutations(graph, sub, row_order, col_of, fp_to_labels)
+    v_sorted = tuple(sorted(sub.v_labels))
+    w_sorted = tuple(sorted(sub.w_labels))
+
+    v_group: PermutationGroup | None = None
+    if v_perms:
+        v_group = PermutationGroup(*v_perms, axes=tuple(range(len(v_sorted))))
+        v_group._labels = v_sorted
+    elif v_merged:
+        # Fingerprint-only path: label equivalences imply S_k for those labels.
+        all_v_chars: set[str] = set()
+        for grp in v_merged:
+            for block in grp:
+                all_v_chars.update(block)
+        if len(all_v_chars) >= 2:
+            v_group = PermutationGroup.symmetric(
+                len(all_v_chars), axes=tuple(range(len(all_v_chars)))
+            )
+            v_group._labels = tuple(sorted(all_v_chars))
+
+    w_group: PermutationGroup | None = None
+    if w_perms:
+        w_group = PermutationGroup(*w_perms, axes=tuple(range(len(w_sorted))))
+        w_group._labels = w_sorted
+    elif w_merged:
+        all_w_chars: set[str] = set()
+        for grp in w_merged:
+            for block in grp:
+                all_w_chars.update(block)
+        if len(all_w_chars) >= 2:
+            w_group = PermutationGroup.symmetric(
+                len(all_w_chars), axes=tuple(range(len(all_w_chars)))
+            )
+            w_group._labels = tuple(sorted(all_w_chars))
+
     return SubsetSymmetry(
         output=v_merged or None,
         inner=w_merged or None,
+        output_group=v_group,
+        inner_group=w_group,
     )
 
 

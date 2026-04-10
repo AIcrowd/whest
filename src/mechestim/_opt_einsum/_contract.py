@@ -588,6 +588,10 @@ def contract_path(
         # Make sure we remove inds from right to left
         contract_inds = tuple(sorted(contract_inds, reverse=True))
 
+        # Snapshot per-operand index sets before find_contraction mutates
+        # input_sets (needed for Φ cost model's per-operand free counts).
+        _pre_input_sets = [input_sets[ci] for ci in contract_inds]
+
         contract_tuple = helpers.find_contraction(contract_inds, input_sets, output_set)
         out_inds, input_sets, idx_removed, idx_contract = contract_tuple
 
@@ -608,6 +612,11 @@ def contract_path(
             subset_sym = symmetry_oracle.sym(merged_subset)
             result_sym = subset_sym.output
 
+            # Per-operand free index counts for Φ cost model.
+            _free_counts = tuple(
+                len(s - idx_removed) for s in _pre_input_sets
+            )
+
             cost = symmetric_flop_count(
                 idx_contract,
                 bool(idx_removed),
@@ -617,7 +626,9 @@ def contract_path(
                 output_indices=out_inds,
                 inner_symmetry=subset_sym.inner,
                 inner_indices=idx_removed if idx_removed else None,
-                use_inner_symmetry=False,
+                per_operand_free_counts=_free_counts,
+                output_group=subset_sym.output_group,
+                inner_group=subset_sym.inner_group,
             )
         else:
             step_syms = [None] * len(contract_inds)

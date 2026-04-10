@@ -715,3 +715,80 @@ class TestWSymmetryOracle:
         )
         result = oracle.sym(frozenset({0, 1}))
         assert result.output == [frozenset({("i",), ("j",)})]
+
+
+from mechestim._perm_group import PermutationGroup
+from mechestim._opt_einsum._symmetry import unique_elements
+
+
+class TestExactGroupDetection:
+    def test_trace_a_cubed_inner_is_c3(self):
+        """einsum('ij,jk,ki->', A, A, A) — inner symmetry is C_3, not S_3."""
+        A = np.ones((5, 5))
+        oracle = SubgraphSymmetryOracle(
+            operands=[A, A, A],
+            subscript_parts=["ij", "jk", "ki"],
+            per_op_syms=[None, None, None],
+            output_chars="",
+        )
+        sym = oracle.sym(frozenset({0, 1, 2}))
+        assert sym.inner_group is not None
+        assert sym.inner_group.order() == 3  # C_3
+        assert not sym.inner_group.is_symmetric()  # NOT S_3
+
+    def test_gram_matrix_output_is_s2(self):
+        """einsum('ij,ik->jk', X, X) — output symmetry is S_2."""
+        X = np.ones((5, 3))
+        oracle = SubgraphSymmetryOracle(
+            operands=[X, X],
+            subscript_parts=["ij", "ik"],
+            per_op_syms=[None, None],
+            output_chars="jk",
+        )
+        sym = oracle.sym(frozenset({0, 1}))
+        assert sym.output_group is not None
+        assert sym.output_group.order() == 2
+        assert sym.output_group.is_symmetric()
+
+    def test_three_independent_operands_output_is_s3(self):
+        """Independent subscripts give S_3 output."""
+        X = np.ones((3, 4))
+        oracle = SubgraphSymmetryOracle(
+            operands=[X, X, X],
+            subscript_parts=["ij", "kl", "mn"],
+            per_op_syms=[None, None, None],
+            output_chars="jln",
+        )
+        sym = oracle.sym(frozenset({0, 1, 2}))
+        assert sym.output_group is not None
+        assert sym.output_group.is_symmetric()
+        assert sym.output_group.order() == 6
+
+
+class TestBurnsideFLOPCount:
+    def test_c3_unique_via_perm_group(self):
+        from mechestim._perm_group import PermutationGroup as PG
+        n = 10
+        c3 = PG.cyclic(3)
+        result = unique_elements(
+            frozenset({"i", "j", "k"}),
+            {"i": n, "j": n, "k": n},
+            perm_group=c3,
+        )
+        assert result == (n**3 + 2 * n) // 3
+
+    def test_s3_unique_via_perm_group_matches_index_symmetry(self):
+        from mechestim._perm_group import PermutationGroup as PG
+        n = 10
+        s3 = PG.symmetric(3)
+        result_pg = unique_elements(
+            frozenset({"i", "j", "k"}),
+            {"i": n, "j": n, "k": n},
+            perm_group=s3,
+        )
+        result_idx = unique_elements(
+            frozenset({"i", "j", "k"}),
+            {"i": n, "j": n, "k": n},
+            symmetry=[frozenset({("i",), ("j",), ("k",)})],
+        )
+        assert result_pg == result_idx

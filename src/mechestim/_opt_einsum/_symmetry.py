@@ -10,11 +10,12 @@ Detection of symmetries is handled by ``_subgraph_symmetry.SubgraphSymmetryOracl
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from math import comb, prod
 from typing import Collection
 
 from ._helpers import flop_count
+from mechestim._perm_group import PermutationGroup
 
 # Type alias: a list of frozensets, each frozenset names symmetry-equivalent
 # "blocks" of indices. Each block is a tuple of index characters. Per-index
@@ -41,18 +42,31 @@ class SubsetSymmetry:
         W-side symmetry: symmetries among the contracted (summed) labels.
         Used for inner-sum FLOP reduction when ``use_inner_symmetry`` is
         enabled in ``symmetric_flop_count``.
+    output_group : PermutationGroup or None
+        Exact permutation group for the output (V) labels.  When provided,
+        Burnside's lemma is used instead of the stars-and-bars approximation.
+    inner_group : PermutationGroup or None
+        Exact permutation group for the inner (W) labels.
     """
 
     output: IndexSymmetry | None
     inner: IndexSymmetry | None
+    output_group: PermutationGroup | None = None
+    inner_group: PermutationGroup | None = None
 
 
 def unique_elements(
     indices: frozenset[str],
     size_dict: dict[str, int],
-    symmetry: IndexSymmetry | None,
+    symmetry: IndexSymmetry | None = None,
+    *,
+    perm_group: PermutationGroup | None = None,
 ) -> int:
     """Count distinct elements of a tensor with the given symmetry.
+
+    When ``perm_group`` is provided, Burnside's lemma is used for exact
+    orbit counting.  This is more precise than the stars-and-bars
+    approximation used for ``IndexSymmetry`` groups.
 
     Handles both per-index (tuples of length 1) and block (tuples of length >= 2)
     groups via the stars-and-bars formula ``C(block_card + k - 1, k)`` where
@@ -77,6 +91,10 @@ def unique_elements(
         Mapping from index label to dimension size.
     symmetry : IndexSymmetry or None
         Symmetric groups, or None for a dense tensor.
+    perm_group : PermutationGroup or None
+        When provided, use Burnside counting instead of stars-and-bars.
+        The group's ``_labels`` attribute maps integer positions to string
+        labels; if absent, ``sorted(indices)[:degree]`` is used.
 
     Returns
     -------
@@ -86,6 +104,26 @@ def unique_elements(
     if not indices:
         return 1
 
+    # --- Burnside path ---
+    if perm_group is not None:
+        if perm_group._labels is not None:
+            label_list = list(perm_group._labels)
+        else:
+            sorted_labels = sorted(indices)
+            label_list = sorted_labels[: perm_group.degree]
+        pg_size_dict: dict[int, int] = {}
+        accounted_pg: set[str] = set()
+        for i, lbl in enumerate(label_list):
+            pg_size_dict[i] = size_dict[lbl]
+            accounted_pg.add(lbl)
+        count = perm_group.burnside_unique_count(pg_size_dict)
+        # Free indices not covered by the group contribute their full size.
+        for idx in indices:
+            if idx not in accounted_pg:
+                count *= size_dict[idx]
+        return count
+
+    # --- IndexSymmetry (stars-and-bars) path ---
     accounted: set[str] = set()
     count = 1
 
@@ -136,33 +174,126 @@ def symmetric_flop_count(
     inner_symmetry: IndexSymmetry | None = None,
     inner_indices: frozenset[str] | None = None,
     use_inner_symmetry: bool = False,
+    per_operand_free_counts: tuple[int, ...] | None = None,
+    output_group: PermutationGroup | None = None,
+    inner_group: PermutationGroup | None = None,
 ) -> int:
-    """FLOP count reduced by output-tensor and inner-sum symmetry.
+    r"""FLOP count for a symmetric tensor contraction via the Φ algorithm.
 
-    Without any symmetry information this returns the same value as
-    :func:`._helpers.flop_count`. With ``output_symmetry`` and
-    ``output_indices``, the dense FLOP count is scaled by
-    ``unique_output / total_output``.
+    When ``per_operand_free_counts`` and ``inner_indices`` are provided,
+    computes the cost of the symmetry-preserving algorithm
+    (Solomonik & Demmel 2015, Theorem 5.4) with :math:`\mu = \nu = 1`:
 
-    When ``use_inner_symmetry`` is True and ``inner_symmetry`` /
-    ``inner_indices`` are provided, an additional multiplicative
-    reduction of ``unique_inner / total_inner`` is applied.
+    .. math::
+
+        F^\Phi = \binom{n+\omega-1}{\omega}
+                 \bigl[1 + \tbinom{\omega}{s} + \tbinom{\omega}{t}
+                 + \tbinom{\omega}{v}\bigr]
+                 + \binom{n+s+v-1}{s+v}
+                 + \binom{n+t+v-1}{t+v}
+                 + \binom{n+s+t-1}{s+t}
+
+    Falls back to the previous direct-evaluation estimate when the
+    per-operand decomposition is unavailable or when there are no
+    contracted indices (``v = 0``).
+
+    Parameters
+    ----------
+    per_operand_free_counts : tuple of int, optional
+        Number of free (non-contracted) indices contributed by each
+        operand.  For a pairwise contraction this is ``(s, t)``.
     """
     from ._helpers import compute_size_by_dict
 
+    # --- Direct-evaluation estimate ---
     cost = flop_count(idx_contraction, inner, num_terms, size_dictionary)
 
-    if output_symmetry and output_indices is not None:
+    # Use PermutationGroup (Burnside) when available, else fall back to IndexSymmetry.
+    if output_group is not None and output_indices is not None:
+        total = compute_size_by_dict(output_indices, size_dictionary)
+        unique = unique_elements(output_indices, size_dictionary, perm_group=output_group)
+        cost = cost * unique // total
+    elif output_symmetry and output_indices is not None:
         total = compute_size_by_dict(output_indices, size_dictionary)
         unique = unique_elements(output_indices, size_dictionary, output_symmetry)
         cost = cost * unique // total
 
-    if use_inner_symmetry and inner_symmetry and inner_indices is not None:
-        total_inner = compute_size_by_dict(inner_indices, size_dictionary)
-        if total_inner > 0:
-            unique_inner = unique_elements(
-                inner_indices, size_dictionary, inner_symmetry
-            )
-            cost = cost * unique_inner // total_inner
+    if use_inner_symmetry:
+        if inner_group is not None and inner_indices is not None:
+            total_inner = compute_size_by_dict(inner_indices, size_dictionary)
+            if total_inner > 0:
+                unique_inner = unique_elements(
+                    inner_indices, size_dictionary, perm_group=inner_group
+                )
+                cost = cost * unique_inner // total_inner
+        elif inner_symmetry and inner_indices is not None:
+            total_inner = compute_size_by_dict(inner_indices, size_dictionary)
+            if total_inner > 0:
+                unique_inner = unique_elements(
+                    inner_indices, size_dictionary, inner_symmetry
+                )
+                cost = cost * unique_inner // total_inner
 
-    return max(cost, 1)
+    cost = max(cost, 1)
+
+    # --- Φ (symmetry-preserving) estimate ---
+    # Only for pairwise contractions with contracted indices and uniform
+    # index dimensions (the paper assumes n-dimensional symmetric tensors).
+    _all_inds = (output_indices or frozenset()) | (inner_indices or frozenset())
+    _dims = {size_dictionary[c] for c in _all_inds} if _all_inds else set()
+    _uniform_dims = len(_dims) == 1
+
+    if (
+        per_operand_free_counts is not None
+        and len(per_operand_free_counts) == 2
+        and inner_indices
+        and len(inner_indices) > 0
+        and _uniform_dims
+    ):
+        v = len(inner_indices)
+        omega = sum(per_operand_free_counts) + v
+        all_indices = (output_indices or frozenset()) | inner_indices
+
+        # Φ's intermediate Ẑ is fully symmetric across ALL ω indices by
+        # construction (Solomonik & Demmel 2015, Algorithm 5.1).
+        full_sym: IndexSymmetry = (
+            [frozenset((lbl,) for lbl in all_indices)]
+            if len(all_indices) >= 2
+            else []
+        )
+        unique_all = unique_elements(
+            all_indices, size_dictionary, full_sym or None
+        )
+
+        # Per-element cost: 1 mult + C(ω, free_i) adds per operand
+        # + C(ω, v) adds for Ẑ→Z accumulation.
+        add_factor = comb(omega, v)
+        for free_i in per_operand_free_counts:
+            add_factor += comb(omega, free_i)
+        phi_cost = unique_all * (1 + add_factor)
+
+        # Lower-order terms: operand intermediates A^(p), B^(q).
+        sorted_labels = sorted(all_indices)
+        for free_i in per_operand_free_counts:
+            order_i = free_i + v
+            if order_i > 0 and order_i < omega:
+                sub = frozenset(sorted_labels[:order_i])
+                sub_sym: IndexSymmetry = [
+                    frozenset((lbl,) for lbl in sub)
+                ] if len(sub) >= 2 else []
+                phi_cost += unique_elements(sub, size_dictionary, sub_sym or None)
+
+        # Output symmetrization term: ((n, s+t)).
+        st = sum(per_operand_free_counts)
+        if st >= 2 and output_indices:
+            out_sub = frozenset(sorted_labels[:st])
+            out_sym_phi: IndexSymmetry = [
+                frozenset((lbl,) for lbl in out_sub)
+            ]
+            phi_cost += unique_elements(
+                out_sub, size_dictionary, out_sym_phi or None
+            )
+
+        cost = min(cost, max(phi_cost, 1))
+
+    return cost
