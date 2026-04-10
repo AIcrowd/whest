@@ -44,7 +44,7 @@
 | `digitize` | varies | Bin search; cost = n*ceil(log2(bins)). |
 | `dot` | $2 \cdot m \cdot k \cdot n$ | Dot product; cost = 2*M*N*K for matrix multiply. |
 | `ediff1d` | $\text{numel}(\text{input})$ | Differences between consecutive elements. |
-| `einsum` | $\texttt{op\_factor} \cdot \prod_i d_i$ | Generalized Einstein summation. |
+| `einsum` | $\texttt{op\_factor} \cdot \prod_{i} d_{i}$ | Generalized Einstein summation. |
 | `einsum_path` | $0$ | Optimize einsum contraction path (no numeric output). |
 | `fft.fft` | $5n \cdot \lceil\log_2 n\rceil$ | 1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 §1.4). |
 | `fft.fft2` | $5N \cdot \lceil\log_2 N\rceil$ | 2-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 §1.4). |
@@ -74,7 +74,7 @@
 | `intersect1d` | varies | Set intersection; cost = (n+m)*ceil(log2(n+m)). |
 | `isin` | varies | Set membership; cost = (n+m)*ceil(log2(n+m)). |
 | `kaiser` | $3n$ | Kaiser window. Cost: 3*n (Bessel function eval per sample). |
-| `kron` | $m_1 m_2 \cdot n_1 n_2$ | Kronecker product; cost proportional to output size. |
+| `kron` | $m_{1} m_{2} \cdot n_{1} n_{2}$ | Kronecker product; cost proportional to output size. |
 | `lexsort` | varies | Multi-key sort; cost = k*n*ceil(log2(n)). |
 | `linalg.cholesky` | $n^3 / 3$ | Cholesky decomposition. Cost: $n^3/3$ (Golub & Van Loan §4.2). |
 | `linalg.cond` | $m \cdot n \cdot \min(m,n)$ | Condition number. Cost: m*n*min(m,n) (via SVD). |
@@ -110,13 +110,13 @@
 | `outer` | $m \cdot n$ | Outer product of two vectors; cost = M*N. |
 | `partition` | varies | Quickselect; cost = n per slice. |
 | `poly` | $n^2$ | Polynomial from roots. Cost: $n^2$ FLOPs. |
-| `polyadd` | $\max(n_1, n_2)$ | Add two polynomials. Cost: max(n1, n2) FLOPs. |
+| `polyadd` | $\max(n_{1}, n_{2})$ | Add two polynomials. Cost: max(n1, n2) FLOPs. |
 | `polyder` | $n$ | Differentiate polynomial. Cost: n FLOPs. |
-| `polydiv` | $n_1 \cdot n_2$ | Divide one polynomial by another. Cost: n1 * n2 FLOPs. |
+| `polydiv` | $n_{1} \cdot n_{2}$ | Divide one polynomial by another. Cost: n1 * n2 FLOPs. |
 | `polyfit` | $2m \cdot (\text{deg}+1)^2$ | Least squares polynomial fit. Cost: 2 * m * (deg+1)^2 FLOPs. |
 | `polyint` | $n$ | Integrate polynomial. Cost: n FLOPs. |
-| `polymul` | $n_1 \cdot n_2$ | Multiply polynomials. Cost: n1 * n2 FLOPs. |
-| `polysub` | $\max(n_1, n_2)$ | Difference (subtraction) of two polynomials. Cost: max(n1, n2) FLOPs. |
+| `polymul` | $n_{1} \cdot n_{2}$ | Multiply polynomials. Cost: n1 * n2 FLOPs. |
+| `polysub` | $\max(n_{1}, n_{2})$ | Difference (subtraction) of two polynomials. Cost: max(n1, n2) FLOPs. |
 | `polyval` | $2 \cdot m \cdot \text{deg}$ | Evaluate polynomial at given points. Cost: 2 * m * deg FLOPs (Horner's method). |
 | `random.beta` | varies | Sampling; cost = numel(output). |
 | `random.binomial` | varies | Sampling; cost = numel(output). |
@@ -170,7 +170,7 @@
 | `setdiff1d` | varies | Set difference; cost = (n+m)*ceil(log2(n+m)). |
 | `setxor1d` | varies | Symmetric set difference; cost = (n+m)*ceil(log2(n+m)). |
 | `sort` | varies | Comparison sort; cost = n*ceil(log2(n)) per slice. |
-| `tensordot` | $\prod_i d_i$ | Tensor dot product along specified axes. |
+| `tensordot` | $\prod_{i} d_{i}$ | Tensor dot product along specified axes. |
 | `trace` | varies | Diagonal sum; cost = min(n,m). |
 | `trapezoid` | $\text{numel}(\text{input})$ | Integrate using the trapezoidal rule. |
 | `trapz` | $\text{numel}(\text{input})$ | Alias for trapezoid (deprecated). |

@@ -9,8 +9,8 @@ functions with FLOP counting.
 | Operation | Cost Formula |
 |-----------|-------------|
 | `polyval` | $2 \cdot m \cdot \text{deg}$ (Horner's method) |
-| `polyadd`, `polysub` | $\max(n_1, n_2)$ |
-| `polymul`, `polydiv` | $n_1 \cdot n_2$ |
+| `polyadd`, `polysub` | $\max(n_{1}, n_{2})$ |
+| `polymul`, `polydiv` | $n_{1} \cdot n_{2}$ |
 | `polyfit` | $2m \cdot (\text{deg}+1)^2$ |
 | `poly` | $n^2$ |
 | `roots` | $10n^3$ (companion matrix eigendecomposition) |

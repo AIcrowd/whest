@@ -16,8 +16,8 @@ FFT costs are based on the Cooley-Tukey radix-2 algorithm:
 |-----------|-------------|------------------|
 | `fft`, `ifft` | $5n \cdot \lceil\log_2 n\rceil$ | 51,200 |
 | `rfft`, `irfft` | $5(n/2) \cdot \lceil\log_2 n\rceil$ | 25,600 |
-| `fft2`, `ifft2` | $5N \cdot \lceil\log_2 N\rceil$ where $N = n_1 \cdot n_2$ | varies |
-| `fftn`, `ifftn` | $5N \cdot \lceil\log_2 N\rceil$ where $N = \prod_i n_i$ | varies |
+| `fft2`, `ifft2` | $5N \cdot \lceil\log_2 N\rceil$ where $N = n_{1} \cdot n_{2}$ | varies |
+| `fftn`, `ifftn` | $5N \cdot \lceil\log_2 N\rceil$ where $N = \prod_{i} n_{i}$ | varies |
 | `fftfreq`, `rfftfreq` | 0 (free) | 0 |
 | `fftshift`, `ifftshift` | 0 (free) | 0 |
 
@@ -131,7 +131,7 @@ print(f"Real FFT:    {rfft_cost(n):,} FLOPs")   # 52,428,800
 
 **Symptom:** Unexpectedly high cost for multi-dimensional FFT
 
-**Fix:** The cost scales as $5 \cdot \prod n_i \cdot \lceil\log_2(\prod n_i)\rceil$. A 256x256 2-D FFT processes 65,536 elements, not 256. Use `fft_cost` to estimate before running.
+**Fix:** The cost scales as $5 \cdot \prod n_{i} \cdot \lceil\log_2(\prod n_{i})\rceil$. A 256x256 2-D FFT processes 65,536 elements, not 256. Use `fft_cost` to estimate before running.
 
 ## 📎 Related pages
 

@@ -133,7 +133,7 @@ Generated from the operation registry (`_registry.py`).
 | `dsplit` | `me.dsplit` | `np.dsplit` | free | $0$ | 🟢 supported | Split array into multiple sub-arrays depth-wise. |
 | `dstack` | `me.dstack` | `np.dstack` | free | $0$ | 🟢 supported | Stack arrays depth-wise (along third axis). |
 | `ediff1d` | `me.ediff1d` | `np.ediff1d` | counted_custom | $\text{numel}(\text{input})$ | 🟠 supported | Differences between consecutive elements. |
-| `einsum` | `me.einsum` | `np.einsum` | counted_custom | $\texttt{op\_factor} \cdot \prod_i d_i$ | 🟠 supported | Generalized Einstein summation. |
+| `einsum` | `me.einsum` | `np.einsum` | counted_custom | $\texttt{op\_factor} \cdot \prod_{i} d_{i}$ | 🟠 supported | Generalized Einstein summation. |
 | `einsum_path` | `me.einsum_path` | `np.einsum_path` | counted_custom | $0$ | 🟠 supported | Optimize einsum contraction path (no numeric output). |
 | `empty` | `me.empty` | `np.empty` | free | $0$ | 🟢 supported | Uninitialized array allocation. |
 | `empty_like` | `me.empty_like` | `np.empty_like` | free | $0$ | 🟢 supported | Uninitialized array with same shape/type as input. |
@@ -238,7 +238,7 @@ Generated from the operation registry (`_registry.py`).
 | `iterable` | `me.iterable` | `np.iterable` | free | $0$ | 🟢 supported | Return True if object is iterable. |
 | `ix_` | `me.ix_` | `np.ix_` | free | $0$ | 🟢 supported | Construct open mesh from multiple sequences. |
 | `kaiser` | `me.kaiser` | `np.kaiser` | counted_custom | $3n$ | 🟠 supported | Kaiser window. Cost: 3*n (Bessel function eval per sample). |
-| `kron` | `me.kron` | `np.kron` | counted_custom | $m_1 m_2 \cdot n_1 n_2$ | 🟠 supported | Kronecker product; cost proportional to output size. |
+| `kron` | `me.kron` | `np.kron` | counted_custom | $m_{1} m_{2} \cdot n_{1} n_{2}$ | 🟠 supported | Kronecker product; cost proportional to output size. |
 | `lcm` | `me.lcm` | `np.lcm` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise least common multiple. |
 | `ldexp` | `me.ldexp` | `np.ldexp` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Return x1 * 2**x2 element-wise. |
 | `left_shift` | `me.left_shift` | `np.left_shift` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise left bit shift (legacy name). |
@@ -339,13 +339,13 @@ Generated from the operation registry (`_registry.py`).
 | `piecewise` | — | `np.piecewise` | blacklisted | N/A | 🔴 blocked | Evaluate piecewise-defined function. Not supported. |
 | `place` | `me.place` | `np.place` | free | $0$ | 🟢 supported | Change elements satisfying condition. |
 | `poly` | `me.poly` | `np.poly` | counted_custom | $n^2$ | 🟠 supported | Polynomial from roots. Cost: $n^2$ FLOPs. |
-| `polyadd` | `me.polyadd` | `np.polyadd` | counted_custom | $\max(n_1, n_2)$ | 🟠 supported | Add two polynomials. Cost: max(n1, n2) FLOPs. |
+| `polyadd` | `me.polyadd` | `np.polyadd` | counted_custom | $\max(n_{1}, n_{2})$ | 🟠 supported | Add two polynomials. Cost: max(n1, n2) FLOPs. |
 | `polyder` | `me.polyder` | `np.polyder` | counted_custom | $n$ | 🟠 supported | Differentiate polynomial. Cost: n FLOPs. |
-| `polydiv` | `me.polydiv` | `np.polydiv` | counted_custom | $n_1 \cdot n_2$ | 🟠 supported | Divide one polynomial by another. Cost: n1 * n2 FLOPs. |
+| `polydiv` | `me.polydiv` | `np.polydiv` | counted_custom | $n_{1} \cdot n_{2}$ | 🟠 supported | Divide one polynomial by another. Cost: n1 * n2 FLOPs. |
 | `polyfit` | `me.polyfit` | `np.polyfit` | counted_custom | $2m \cdot (\text{deg}+1)^2$ | 🟠 supported | Least squares polynomial fit. Cost: 2 * m * (deg+1)^2 FLOPs. |
 | `polyint` | `me.polyint` | `np.polyint` | counted_custom | $n$ | 🟠 supported | Integrate polynomial. Cost: n FLOPs. |
-| `polymul` | `me.polymul` | `np.polymul` | counted_custom | $n_1 \cdot n_2$ | 🟠 supported | Multiply polynomials. Cost: n1 * n2 FLOPs. |
-| `polysub` | `me.polysub` | `np.polysub` | counted_custom | $\max(n_1, n_2)$ | 🟠 supported | Difference (subtraction) of two polynomials. Cost: max(n1, n2) FLOPs. |
+| `polymul` | `me.polymul` | `np.polymul` | counted_custom | $n_{1} \cdot n_{2}$ | 🟠 supported | Multiply polynomials. Cost: n1 * n2 FLOPs. |
+| `polysub` | `me.polysub` | `np.polysub` | counted_custom | $\max(n_{1}, n_{2})$ | 🟠 supported | Difference (subtraction) of two polynomials. Cost: max(n1, n2) FLOPs. |
 | `polyval` | `me.polyval` | `np.polyval` | counted_custom | $2 \cdot m \cdot \text{deg}$ | 🟠 supported | Evaluate polynomial at given points. Cost: 2 * m * deg FLOPs (Horner's method). |
 | `positive` | `me.positive` | `np.positive` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise unary plus (copy with sign preserved). |
 | `pow` | `me.pow` | `np.pow` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Alias for power (NumPy 2.x). |
@@ -466,7 +466,7 @@ Generated from the operation registry (`_registry.py`).
 | `take_along_axis` | `me.take_along_axis` | `np.take_along_axis` | free | $0$ | 🟢 supported | Take values from input array by matching 1-D index. |
 | `tan` | `me.tan` | `np.tan` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise tangent. |
 | `tanh` | `me.tanh` | `np.tanh` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise hyperbolic tangent. |
-| `tensordot` | `me.tensordot` | `np.tensordot` | counted_custom | $\prod_i d_i$ | 🟠 supported | Tensor dot product along specified axes. |
+| `tensordot` | `me.tensordot` | `np.tensordot` | counted_custom | $\prod_{i} d_{i}$ | 🟠 supported | Tensor dot product along specified axes. |
 | `tile` | `me.tile` | `np.tile` | free | $0$ | 🟢 supported | Repeat array by tiling. |
 | `trace` | `me.trace` | `np.trace` | counted_custom | varies | 🟠 supported | Diagonal sum; cost = min(n,m). |
 | `transpose` | `me.transpose` | `np.transpose` | free | $0$ | 🟢 supported | Permute array dimensions. |
