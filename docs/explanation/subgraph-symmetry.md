@@ -259,6 +259,76 @@ Classify: number of cycles = 2 = block size; cycle length = 2 = number of
 blocks. Group by operand: block₁ = (a, b), block₂ = (c, d). The result is
 block S₂: `{(a,b), (c,d)}`.
 
+### Worked example: `einsum('ia,ib->ab', X, X)` — per-index V symmetry
+
+This computes XᵀX, which is symmetric. The detection derives this from the
+bipartite graph alone.
+
+U-vertices (dense X, one class per axis):
+
+- `(X₀, 0)` — label `i` (subscript `ia`, axis 0)
+- `(X₀, 1)` — label `a` (subscript `ia`, axis 1)
+- `(X₁, 0)` — label `i` (subscript `ib`, axis 0)
+- `(X₁, 1)` — label `b` (subscript `ib`, axis 1)
+
+Labels: V = `{a, b}` (output), W = `{i}` (contracted). X₀ and X₁ are the
+same Python object — one identical-operand group of size 2.
+
+```
+   U (axis classes)                 Labels
+   ─────────────────               ──────
+   operand X₀:                     V (free):
+     X₀ · a ─────────────────────── a
+
+   operand X₁ (= X₀):
+     X₁ · b ─────────────────────── b
+
+                                   W (summed):
+     X₀ · i ────────┐
+                    ├────────────── i
+     X₁ · i ────────┘
+```
+
+The incidence matrix M (rows = U-vertices, columns = V∪W):
+
+```
+         a  b  i
+X₀ · i [ 0  0  1 ]
+X₀ · a [ 1  0  0 ]
+X₁ · i [ 0  0  1 ]
+X₁ · b [ 0  1  0 ]
+```
+
+**Fast path:** `col(a) = (0,1,0,0)`, `col(b) = (0,0,0,1)`, `col(i) = (1,0,1,0)`.
+All three are distinct — no fingerprint equivalences.
+
+**σ loop:** The only nontrivial σ swaps operands 0 and 1, permuting rows
+(0↔2, 1↔3):
+
+```
+  M (original rows)        σ(M) (rows 0↔2, 1↔3)
+  ┌────────────────┐       ┌────────────────┐
+  │ X₀·i  0 0 1   │  σ    │ X₁·i  0 0 1   │
+  │ X₀·a  1 0 0   │ ───>  │ X₁·b  0 1 0   │
+  │ X₁·i  0 0 1   │       │ X₀·i  0 0 1   │
+  │ X₁·b  0 1 0   │       │ X₀·a  1 0 0   │
+  └────────────────┘       └────────────────┘
+       columns: a b i           columns: a b i
+
+  Match σ(M) columns back to M columns:
+    σ·col(a) = (0,0,0,1) = col(b)  →  π(a) = b
+    σ·col(b) = (0,1,0,0) = col(a)  →  π(b) = a
+    σ·col(i) = (1,0,1,0) = col(i)  →  π(i) = i
+
+  Induced π = (a b),  i fixed
+```
+
+Validate: π(V) = {b, a} ⊆ V ✓, π(W) = {i} ⊆ W ✓.
+
+Cycle structure on V: single 2-cycle (a b) → **per-index S₂{a, b}**.
+The oracle reports this as the output symmetry — XᵀX is symmetric in its
+two indices, which is exactly what we expect.
+
 ### V-side and W-side
 
 V-side groups are symmetries of the output tensor (same as before). W-side
