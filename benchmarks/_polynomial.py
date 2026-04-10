@@ -27,8 +27,8 @@ _FORMULA_STRINGS: dict[str, str] = {
     "polydiv": "(degree+1)^2",
     "polyadd": "degree + 1",
     "polysub": "degree + 1",
-    "polyder": "degree",
-    "polyint": "degree",
+    "polyder": "degree + 1",
+    "polyint": "degree + 1",
     "poly": "degree^2",
 }
 
@@ -50,7 +50,7 @@ def _analytical_cost(op: str, n: int, degree: int) -> int:
     elif op in ("polyadd", "polysub"):
         return degree + 1
     elif op in ("polyder", "polyint"):
-        return degree
+        return degree + 1  # runtime charges len(c) = degree + 1
     elif op == "poly":
         return degree**2
     else:

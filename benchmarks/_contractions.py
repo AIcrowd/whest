@@ -21,9 +21,9 @@ CONTRACTION_OPS: list[str] = [
 _FORMULA_STRINGS: dict[str, str] = {
     "dot": "2*M*N*K",
     "matmul": "2*M*N*K",
-    "inner": "2*N",
-    "vdot": "2*N",
-    "vecdot": "2*batch*N",
+    "inner": "N (a.size)",
+    "vdot": "N (a.size)",
+    "vecdot": "batch*N (broadcast_shapes)",
     "outer": "M*N",
     "tensordot": "2*d^5 (axes=1, shape=(d,d,d))",
     "kron": "d^4 (Kronecker, shape=(d,d)x(d,d))",
@@ -63,12 +63,16 @@ def _analytical_cost(op: str, **kwargs: int) -> int:
         "dot": 2 * 512 * 512 * 512,
         # matmul: identical to dot for 2D
         "matmul": 2 * 512 * 512 * 512,
-        # inner: dot product of two 1M-element vectors (large enough for FMA to dominate)
-        "inner": 2 * 1_000_000,
-        # vdot: same as inner for 1D real inputs
-        "vdot": 2 * 1_000_000,
+        # inner: dot product of two 1M-element vectors.
+        # Runtime charges a.size (NOT 2*N) — matches mechestim's convention.
+        "inner": 1_000_000,
+        # vdot: same as inner for 1D real inputs.
+        # Runtime charges a.size (NOT 2*N).
+        "vdot": 1_000_000,
         # vecdot: batched dot product A(1000,512) . B(1000,512)
-        "vecdot": 2 * 512 * 1000,
+        # Runtime uses _counted_binary which charges broadcast_shapes = 512*1000
+        # (this overcharges — real output is (1000,) — but we match runtime).
+        "vecdot": 512 * 1000,
         # outer: outer product of two 5000-element vectors
         "outer": 5000 * 5000,
         # tensordot: A(64,64,64) . B(64,64,64) axes=1 -> contract last of A with first of B
