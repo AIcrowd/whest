@@ -168,10 +168,13 @@ def benchmark_sorting(
             analytical = _analytical_cost(op, n, m=n)
         elif op in ("partition", "argpartition"):
             kth = n // 2
+            # Use only random input — sorted/reverse-sorted is pathological
+            # for introselect (O(n^2) worst case), which inflates the weight.
+            # The analytical formula O(n) reflects average-case performance.
             setups = [
                 f"import numpy as np; x = np.random.default_rng(42).standard_normal({n}).astype(np.{dtype})",
-                f"import numpy as np; x = np.sort(np.random.default_rng(42).standard_normal({n}).astype(np.{dtype}))",
-                f"import numpy as np; x = np.sort(np.random.default_rng(42).standard_normal({n}).astype(np.{dtype}))[::-1].copy()",
+                f"import numpy as np; x = np.random.default_rng(43).standard_normal({n}).astype(np.{dtype})",
+                f"import numpy as np; x = np.random.default_rng(99).standard_normal({n}).astype(np.{dtype})",
             ]
             bench = f"np.{op}(x, {kth})"
             analytical = _analytical_cost(op, n)

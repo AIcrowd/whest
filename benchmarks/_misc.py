@@ -446,7 +446,9 @@ def _get_op_config(op: str, dtype: str) -> dict:
 
     # --- Linear/generation ---
     if op == "trace":
-        n_trace = 1000
+        # Use 10000x10000 to ensure analytical cost (10000) dominates
+        # over subprocess overhead (~1000 FP instructions).
+        n_trace = 10000
         base = f"import numpy as np; rng = np.random.default_rng({rng_seed_a})"
         setups = [
             f"{base}; A = rng.standard_normal(({n_trace}, {n_trace})).astype(np.{dtype})",
@@ -549,7 +551,7 @@ def _benchmark_size_str(op: str) -> str:
     if op == "interp":
         return f"n={n_large}, xp=10000"
     if op == "trace":
-        return "n=1000 (1000x1000 matrix)"
+        return "n=10000 (10000x10000 matrix)"
     if op == "vander":
         return "n=10000, degree=100"
     # Default: most ops use n_large

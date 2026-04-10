@@ -33,8 +33,8 @@ _FORMULA_STRINGS: dict[str, str] = {
 _BENCHMARK_SIZE_STRINGS: dict[str, str] = {
     "dot": "A(512,512) x B(512,512)",
     "matmul": "A(512,512) x B(512,512)",
-    "inner": "a(10000) . b(10000)",
-    "vdot": "a(10000) . b(10000)",
+    "inner": "a(1000000) . b(1000000)",
+    "vdot": "a(1000000) . b(1000000)",
     "vecdot": "A(1000,512) . B(1000,512)",
     "outer": "a(5000) x b(5000)",
     "tensordot": "A(64,64,64) . B(64,64,64) axes=1",
@@ -63,10 +63,10 @@ def _analytical_cost(op: str, **kwargs: int) -> int:
         "dot": 2 * 512 * 512 * 512,
         # matmul: identical to dot for 2D
         "matmul": 2 * 512 * 512 * 512,
-        # inner: dot product of two 10000-element vectors
-        "inner": 2 * 10_000,
+        # inner: dot product of two 1M-element vectors (large enough for FMA to dominate)
+        "inner": 2 * 1_000_000,
         # vdot: same as inner for 1D real inputs
-        "vdot": 2 * 10_000,
+        "vdot": 2 * 1_000_000,
         # vecdot: batched dot product A(1000,512) . B(1000,512)
         "vecdot": 2 * 512 * 1000,
         # outer: outer product of two 5000-element vectors
@@ -141,22 +141,24 @@ def benchmark_contractions(
                 bench = "np.einsum('ij,jk->ik', A, B)"
 
         elif op in ("inner", "vdot"):
-            # Two 10000-element vectors
+            # Two 1M-element vectors — large enough for BLAS ddot FMA to dominate
+            # over per-call overhead (10K was too small, overhead inflated alpha)
+            vec_n = 1_000_000
             setups = [
                 (
                     f"import numpy as np; rng = np.random.default_rng(42); "
-                    f"a = rng.standard_normal(10000).astype(np.{dtype}); "
-                    f"b = rng.standard_normal(10000).astype(np.{dtype})"
+                    f"a = rng.standard_normal({vec_n}).astype(np.{dtype}); "
+                    f"b = rng.standard_normal({vec_n}).astype(np.{dtype})"
                 ),
                 (
                     f"import numpy as np; rng = np.random.default_rng(42); "
-                    f"a = rng.uniform(0.01, 100, size=10000).astype(np.{dtype}); "
-                    f"b = rng.uniform(0.01, 100, size=10000).astype(np.{dtype})"
+                    f"a = rng.uniform(0.01, 100, size={vec_n}).astype(np.{dtype}); "
+                    f"b = rng.uniform(0.01, 100, size={vec_n}).astype(np.{dtype})"
                 ),
                 (
                     f"import numpy as np; rng = np.random.default_rng(42); "
-                    f"a = rng.uniform(-1000, 1000, size=10000).astype(np.{dtype}); "
-                    f"b = rng.uniform(-1000, 1000, size=10000).astype(np.{dtype})"
+                    f"a = rng.uniform(-1000, 1000, size={vec_n}).astype(np.{dtype}); "
+                    f"b = rng.uniform(-1000, 1000, size={vec_n}).astype(np.{dtype})"
                 ),
             ]
             bench = f"np.{op}(a, b)"
