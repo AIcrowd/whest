@@ -70,6 +70,37 @@ Summed labels at the top level: `{i, j}` (contracted out).
 No identical operands in this example — `T`, `A`, and `B` are distinct Python
 objects.
 
+#### Full bipartite graph
+
+```mermaid
+graph LR
+    subgraph U ["U-vertices (axis classes)"]
+        T0["(T, 0)"]
+        T1["(T, 1)"]
+        A0["(A, 0)"]
+        A1["(A, 1)"]
+        B0["(B, 0)"]
+        B1["(B, 1)"]
+    end
+
+    subgraph V ["V — free labels"]
+        a((a))
+        b((b))
+    end
+
+    subgraph W ["W — summed labels"]
+        i((i))
+        j((j))
+    end
+
+    T0 --- i
+    T1 --- j
+    A0 --- a
+    A1 --- i
+    B0 --- b
+    B1 --- j
+```
+
 Now consider the subset `{A, B}` (positions 1 and 2):
 
 - U-vertices in subset: `(A, 0)`, `(A, 1)`, `(B, 0)`, `(B, 1)`
@@ -78,6 +109,33 @@ Now consider the subset `{A, B}` (positions 1 and 2):
 - Crossing labels (in subset AND in outside): `{i, j}`
 - V at this step = `{a, b} ∪ {i, j}` = `{a, b, i, j}` (all four — `{i,j}` cross the cut)
 - W at this step = `{}` (nothing is summed entirely within `{A, B}`)
+
+#### Induced subgraph for subset {A, B}
+
+When we restrict to subset {A, B}, labels `i` and `j` cross the cut (they also
+appear in T, outside the subset), so they move from W to V:
+
+```mermaid
+graph LR
+    subgraph U ["U-vertices (subset only)"]
+        A0["(A, 0)"]
+        A1["(A, 1)"]
+        B0["(B, 0)"]
+        B1["(B, 1)"]
+    end
+
+    subgraph V ["V — all labels are free"]
+        a((a))
+        i((i))
+        b((b))
+        j((j))
+    end
+
+    A0 --- a
+    A1 --- i
+    B0 --- b
+    B1 --- j
+```
 
 The incidence matrix M at this subset (rows = U-vertices, columns = V∪W):
 
@@ -163,8 +221,41 @@ larger block sizes.
 
 ### Worked example: `einsum('ab,cd->abcd', X, X)`
 
-Consider two identical dense matrices `X`. The incidence matrix M is the 4×4
-identity (one U-vertex per axis, one label per column):
+Consider two identical dense matrices `X`. The bipartite graph has one
+U-vertex per axis (four total), one label per column, and no W-labels
+(nothing is contracted):
+
+```mermaid
+graph LR
+    subgraph U ["U-vertices (axis classes)"]
+        u0a["X₀ axis a"]
+        u0b["X₀ axis b"]
+        u1c["X₁ axis c"]
+        u1d["X₁ axis d"]
+    end
+
+    subgraph V ["V — free labels"]
+        a((a))
+        b((b))
+        c((c))
+        d((d))
+    end
+
+    u0a --- a
+    u0b --- b
+    u1c --- c
+    u1d --- d
+
+    style u0a fill:#e8f4fd,stroke:#4a90d9
+    style u0b fill:#e8f4fd,stroke:#4a90d9
+    style u1c fill:#fde8e8,stroke:#d94a4a
+    style u1d fill:#fde8e8,stroke:#d94a4a
+```
+
+X₀ and X₁ are the same Python object (blue and red groups), forming one
+identical-operand group of size 2.
+
+The incidence matrix M is the 4×4 identity:
 
 ```
         a  b  c  d
@@ -184,6 +275,34 @@ u1_d  [ 0  0  0  1 ]
 σ(M)[:,b] = (0,0,0,1)  →  col_of[d]  →  π(b) = d
 σ(M)[:,c] = (1,0,0,0)  →  col_of[a]  →  π(c) = a
 σ(M)[:,d] = (0,1,0,0)  →  col_of[b]  →  π(d) = b
+```
+
+The σ swaps the U-vertex groups, and π follows — each label maps to its
+counterpart in the other operand:
+
+```mermaid
+graph LR
+    subgraph before ["M — original"]
+        direction TB
+        u0a2["X₀ axis a"] ~~~ u0b2["X₀ axis b"]
+        u1c2["X₁ axis c"] ~~~ u1d2["X₁ axis d"]
+    end
+
+    subgraph after ["σ(M) — rows swapped"]
+        direction TB
+        u1c3["X₁ axis c"] ~~~ u1d3["X₁ axis d"]
+        u0a3["X₀ axis a"] ~~~ u0b3["X₀ axis b"]
+    end
+
+    before --"σ: swap\noperands"--> after
+
+    subgraph pi ["Induced π on labels"]
+        direction LR
+        ac["a ↔ c"]
+        bd["b ↔ d"]
+    end
+
+    after --"match\ncolumns"--> pi
 ```
 
 So π = (a c)(b d). Two disjoint 2-cycles from one σ, all in V (W is empty).
