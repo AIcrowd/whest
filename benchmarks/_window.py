@@ -81,7 +81,7 @@ def benchmark_window(
                 "category": "counted_custom",
                 "analytical_formula": _FORMULA_STRINGS[op],
                 "analytical_flops": analytical,
-                "benchmark_size": f"n={n}",
+                "benchmark_size": f"output: ({n},)",
                 "bench_code": bench,
                 "repeats": repeats,
                 "perf_instructions_total": dist_raw_totals,

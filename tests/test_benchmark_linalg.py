@@ -110,4 +110,4 @@ class TestBenchmarkLinalg:
             assert isinstance(d["bench_code"], str)
             assert isinstance(d["distribution_alphas"], list)
             assert len(d["distribution_alphas"]) > 0
-            assert "64x64" in d["benchmark_size"]
+            assert "(64,64)" in d["benchmark_size"]

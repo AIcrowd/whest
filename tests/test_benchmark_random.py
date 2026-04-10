@@ -129,7 +129,7 @@ class TestBenchmarkRandom:
             assert d["category"] == "counted_custom"
             assert d["analytical_formula"] == "numel(output)"
             assert d["analytical_flops"] == 1_000
-            assert d["benchmark_size"] == "n=1000"
+            assert "1000" in d["benchmark_size"]
             assert isinstance(d["bench_code"], str)
             assert d["repeats"] == 1
             assert isinstance(d["perf_instructions_total"], list)

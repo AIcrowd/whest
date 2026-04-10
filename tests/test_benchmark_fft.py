@@ -109,8 +109,8 @@ class TestBenchmarkFFT:
         with patch("benchmarks._fft.measure_flops", return_value=mock_result):
             _result, details = benchmark_fft(n=1024, dtype="float64", repeats=1)
 
-        # 1D ops should have "n=1024"
-        assert details["fft.fft"]["benchmark_size"] == "n=1024"
+        # 1D ops should have explicit input shape
+        assert details["fft.fft"]["benchmark_size"] == "x: (1024,)"
 
     def test_2d_ops_have_side_size(self):
         mock_result = PerfResult(
@@ -122,5 +122,5 @@ class TestBenchmarkFFT:
         with patch("benchmarks._fft.measure_flops", return_value=mock_result):
             _result, details = benchmark_fft(n=1024, dtype="float64", repeats=1)
 
-        # 2D ops should have "n=32x32" (isqrt(1024) = 32)
-        assert details["fft.fft2"]["benchmark_size"] == "n=32x32"
+        # 2D ops should have explicit 2D input shape (isqrt(1024) = 32)
+        assert details["fft.fft2"]["benchmark_size"] == "x: (32,32)"

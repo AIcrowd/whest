@@ -120,11 +120,11 @@ def benchmark_fft(
         if is_multi:
             shape_str = f"({side}, {side})"
             effective_n = side * side
-            benchmark_size = f"n={side}x{side}"
+            benchmark_size = f"x: ({side},{side})"
         else:
             shape_str = f"({n},)"
             effective_n = n
-            benchmark_size = f"n={n}"
+            benchmark_size = f"x: ({n},)"
 
         # Determine input type needed
         short = op.split(".")[-1]

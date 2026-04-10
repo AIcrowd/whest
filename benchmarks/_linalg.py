@@ -182,11 +182,15 @@ def benchmark_linalg(
 
         if dist_values:
             results[op] = statistics.median(dist_values)
+            if op in ("linalg.solve", "linalg.lstsq"):
+                bm_size = f"A: ({n},{n}), b: ({n},)"
+            else:
+                bm_size = f"A: ({n},{n})"
             details[op] = {
                 "category": "counted_custom",
                 "analytical_formula": _FORMULA_STRINGS.get(op, ""),
                 "analytical_flops": analytical,
-                "benchmark_size": f"n={n} ({n}x{n})",
+                "benchmark_size": bm_size,
                 "bench_code": bench,
                 "repeats": repeats,
                 "perf_instructions_total": dist_raw_totals,

@@ -179,11 +179,26 @@ def benchmark_random(
 
         if dist_values:
             results[op] = statistics.median(dist_values)
+            # Build explicit benchmark_size per op
+            if op == "random.shuffle":
+                bm_size = f"x: ({n},)"
+            elif op == "random.permutation":
+                bm_size = f"n={n}"
+            elif op == "random.choice":
+                bm_size = f"pool: (1000,), size={n}"
+            elif op == "random.multinomial":
+                bm_size = f"n_trials=10, pvals: (3,), size={n}"
+            elif op == "random.multivariate_normal":
+                bm_size = f"mean: (10,), cov: (10,10), size={n}"
+            elif op == "random.dirichlet":
+                bm_size = f"alpha: (3,), size={n}"
+            else:
+                bm_size = f"output: ({n},)"
             details[op] = {
                 "category": "counted_custom",
                 "analytical_formula": "numel(output)",
                 "analytical_flops": n,
-                "benchmark_size": f"n={n}",
+                "benchmark_size": bm_size,
                 "bench_code": bench,
                 "repeats": repeats,
                 "perf_instructions_total": dist_raw_totals,
