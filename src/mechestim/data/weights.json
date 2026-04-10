@@ -557,7 +557,7 @@
         "category": "counted_custom",
         "analytical_formula": "2*M*N*K",
         "analytical_flops": 268435456,
-        "benchmark_size": "A(512,512) x B(512,512)",
+        "benchmark_size": "A: (512,512), B: (512,512)",
         "bench_code": "np.dot(A, B)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -586,7 +586,7 @@
         "category": "counted_custom",
         "analytical_formula": "2*M*N*K",
         "analytical_flops": 268435456,
-        "benchmark_size": "A(512,512) x B(512,512)",
+        "benchmark_size": "A: (512,512), B: (512,512)",
         "bench_code": "np.matmul(A, B)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -615,7 +615,7 @@
         "category": "counted_custom",
         "analytical_formula": "N (a.size)",
         "analytical_flops": 1000000,
-        "benchmark_size": "a(1000000) . b(1000000)",
+        "benchmark_size": "a: (1000000,), b: (1000000,)",
         "bench_code": "np.inner(a, b)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -644,7 +644,7 @@
         "category": "counted_custom",
         "analytical_formula": "N (a.size)",
         "analytical_flops": 1000000,
-        "benchmark_size": "a(1000000) . b(1000000)",
+        "benchmark_size": "a: (1000000,), b: (1000000,)",
         "bench_code": "np.vdot(a, b)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -673,7 +673,7 @@
         "category": "counted_custom",
         "analytical_formula": "batch * K (output_size * contracted_axis)",
         "analytical_flops": 512000,
-        "benchmark_size": "A(1000,512) . B(1000,512)",
+        "benchmark_size": "A: (1000,512), B: (1000,512)",
         "bench_code": "np.vecdot(A, B)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -702,7 +702,7 @@
         "category": "counted_custom",
         "analytical_formula": "M*N",
         "analytical_flops": 25000000,
-        "benchmark_size": "a(5000) x b(5000)",
+        "benchmark_size": "a: (5000,), b: (5000,)",
         "bench_code": "np.outer(a, b)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -731,7 +731,7 @@
         "category": "counted_custom",
         "analytical_formula": "2*d^5 (axes=1, shape=(d,d,d))",
         "analytical_flops": 2147483648,
-        "benchmark_size": "A(64,64,64) . B(64,64,64) axes=1",
+        "benchmark_size": "A: (64,64,64), B: (64,64,64), axes=1",
         "bench_code": "np.tensordot(A, B, axes=1)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -760,7 +760,7 @@
         "category": "counted_custom",
         "analytical_formula": "d^4 (Kronecker, shape=(d,d)x(d,d))",
         "analytical_flops": 16777216,
-        "benchmark_size": "A(64,64) x B(64,64)",
+        "benchmark_size": "A: (64,64), B: (64,64)",
         "bench_code": "np.kron(A, B)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -789,7 +789,7 @@
         "category": "counted_custom",
         "analytical_formula": "2*M*N*K (ij,jk->ik)",
         "analytical_flops": 268435456,
-        "benchmark_size": "A(512,512) x B(512,512) 'ij,jk->ik'",
+        "benchmark_size": "A: (512,512), B: (512,512), subscripts='ij,jk->ik'",
         "bench_code": "np.einsum('ij,jk->ik', A, B)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -818,7 +818,7 @@
         "category": "counted_custom",
         "analytical_formula": "5*n*ceil(log2(n))",
         "analytical_flops": 104857600,
-        "benchmark_size": "n=1048576",
+        "benchmark_size": "x: (1048576,)",
         "bench_code": "np.fft.fft(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -847,7 +847,7 @@
         "category": "counted_custom",
         "analytical_formula": "5*n*ceil(log2(n))",
         "analytical_flops": 104857600,
-        "benchmark_size": "n=1048576",
+        "benchmark_size": "x: (1048576,)",
         "bench_code": "np.fft.ifft(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -876,7 +876,7 @@
         "category": "counted_custom",
         "analytical_formula": "5*(n/2)*ceil(log2(n))",
         "analytical_flops": 52428800,
-        "benchmark_size": "n=1048576",
+        "benchmark_size": "x: (1048576,)",
         "bench_code": "np.fft.rfft(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -905,7 +905,7 @@
         "category": "counted_custom",
         "analytical_formula": "5*(n/2)*ceil(log2(n))",
         "analytical_flops": 52428800,
-        "benchmark_size": "n=1048576",
+        "benchmark_size": "x: (1048576,)",
         "bench_code": "np.fft.irfft(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -934,7 +934,7 @@
         "category": "counted_custom",
         "analytical_formula": "5*n*ceil(log2(n))",
         "analytical_flops": 104857600,
-        "benchmark_size": "n=1024x1024",
+        "benchmark_size": "x: (1024,1024)",
         "bench_code": "np.fft.fft2(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -963,7 +963,7 @@
         "category": "counted_custom",
         "analytical_formula": "5*n*ceil(log2(n))",
         "analytical_flops": 104857600,
-        "benchmark_size": "n=1024x1024",
+        "benchmark_size": "x: (1024,1024)",
         "bench_code": "np.fft.ifft2(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -992,7 +992,7 @@
         "category": "counted_custom",
         "analytical_formula": "5*(n/2)*ceil(log2(n))",
         "analytical_flops": 52428800,
-        "benchmark_size": "n=1024x1024",
+        "benchmark_size": "x: (1024,1024)",
         "bench_code": "np.fft.rfft2(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1021,7 +1021,7 @@
         "category": "counted_custom",
         "analytical_formula": "5*(n/2)*ceil(log2(n))",
         "analytical_flops": 52428800,
-        "benchmark_size": "n=1024x1024",
+        "benchmark_size": "x: (1024,1024)",
         "bench_code": "np.fft.irfft2(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1050,7 +1050,7 @@
         "category": "counted_custom",
         "analytical_formula": "5*n*ceil(log2(n))",
         "analytical_flops": 104857600,
-        "benchmark_size": "n=1024x1024",
+        "benchmark_size": "x: (1024,1024)",
         "bench_code": "np.fft.fftn(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1079,7 +1079,7 @@
         "category": "counted_custom",
         "analytical_formula": "5*n*ceil(log2(n))",
         "analytical_flops": 104857600,
-        "benchmark_size": "n=1024x1024",
+        "benchmark_size": "x: (1024,1024)",
         "bench_code": "np.fft.ifftn(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1108,7 +1108,7 @@
         "category": "counted_custom",
         "analytical_formula": "5*(n/2)*ceil(log2(n))",
         "analytical_flops": 52428800,
-        "benchmark_size": "n=1024x1024",
+        "benchmark_size": "x: (1024,1024)",
         "bench_code": "np.fft.rfftn(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1137,7 +1137,7 @@
         "category": "counted_custom",
         "analytical_formula": "5*(n/2)*ceil(log2(n))",
         "analytical_flops": 52428800,
-        "benchmark_size": "n=1024x1024",
+        "benchmark_size": "x: (1024,1024)",
         "bench_code": "np.fft.irfftn(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1166,7 +1166,7 @@
         "category": "counted_custom",
         "analytical_formula": "5*n*ceil(log2(n))",
         "analytical_flops": 104857600,
-        "benchmark_size": "n=1048576",
+        "benchmark_size": "x: (1048576,)",
         "bench_code": "np.fft.hfft(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1195,7 +1195,7 @@
         "category": "counted_custom",
         "analytical_formula": "5*(n/2)*ceil(log2(n))",
         "analytical_flops": 104857600,
-        "benchmark_size": "n=1048576",
+        "benchmark_size": "x: (1048576,)",
         "bench_code": "np.fft.ihfft(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1224,7 +1224,7 @@
         "category": "counted_custom",
         "analytical_formula": "n^3 / 3",
         "analytical_flops": 357913941,
-        "benchmark_size": "n=1024 (1024x1024)",
+        "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.cholesky(A)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1253,7 +1253,7 @@
         "category": "counted_custom",
         "analytical_formula": "2*m*n^2 - 2*n^3/3",
         "analytical_flops": 1431655766,
-        "benchmark_size": "n=1024 (1024x1024)",
+        "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.qr(A)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1282,7 +1282,7 @@
         "category": "counted_custom",
         "analytical_formula": "10*n^3",
         "analytical_flops": 10737418240,
-        "benchmark_size": "n=1024 (1024x1024)",
+        "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.eig(A)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1311,7 +1311,7 @@
         "category": "counted_custom",
         "analytical_formula": "4*n^3 / 3",
         "analytical_flops": 1431655765,
-        "benchmark_size": "n=1024 (1024x1024)",
+        "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.eigh(A)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1340,7 +1340,7 @@
         "category": "counted_custom",
         "analytical_formula": "7*n^3",
         "analytical_flops": 7516192768,
-        "benchmark_size": "n=1024 (1024x1024)",
+        "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.eigvals(A)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1369,7 +1369,7 @@
         "category": "counted_custom",
         "analytical_formula": "4*n^3 / 3",
         "analytical_flops": 1431655765,
-        "benchmark_size": "n=1024 (1024x1024)",
+        "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.eigvalsh(A)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1398,7 +1398,7 @@
         "category": "counted_custom",
         "analytical_formula": "m*n*min(m,n)",
         "analytical_flops": 1073741824,
-        "benchmark_size": "n=1024 (1024x1024)",
+        "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.svd(A)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1427,7 +1427,7 @@
         "category": "counted_custom",
         "analytical_formula": "m*n*min(m,n)",
         "analytical_flops": 1073741824,
-        "benchmark_size": "n=1024 (1024x1024)",
+        "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.svdvals(A)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1456,7 +1456,7 @@
         "category": "counted_custom",
         "analytical_formula": "2*n^3/3 + 2*n^2",
         "analytical_flops": 717925034,
-        "benchmark_size": "n=1024 (1024x1024)",
+        "benchmark_size": "A: (1024,1024), b: (1024,)",
         "bench_code": "np.linalg.solve(A, b)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1485,7 +1485,7 @@
         "category": "counted_custom",
         "analytical_formula": "n^3",
         "analytical_flops": 1073741824,
-        "benchmark_size": "n=1024 (1024x1024)",
+        "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.inv(A)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1514,7 +1514,7 @@
         "category": "counted_custom",
         "analytical_formula": "m*n*min(m,n)",
         "analytical_flops": 1073741824,
-        "benchmark_size": "n=1024 (1024x1024)",
+        "benchmark_size": "A: (1024,1024), b: (1024,)",
         "bench_code": "np.linalg.lstsq(A, b, rcond=None)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1543,7 +1543,7 @@
         "category": "counted_custom",
         "analytical_formula": "m*n*min(m,n)",
         "analytical_flops": 1073741824,
-        "benchmark_size": "n=1024 (1024x1024)",
+        "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.pinv(A)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1572,7 +1572,7 @@
         "category": "counted_custom",
         "analytical_formula": "2*n^3 / 3",
         "analytical_flops": 715827882,
-        "benchmark_size": "n=1024 (1024x1024)",
+        "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.det(A)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1601,7 +1601,7 @@
         "category": "counted_custom",
         "analytical_formula": "2*n^3 / 3",
         "analytical_flops": 715827882,
-        "benchmark_size": "n=1024 (1024x1024)",
+        "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.slogdet(A)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1630,7 +1630,7 @@
         "category": "counted_custom",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.allclose(a, b)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1659,7 +1659,7 @@
         "category": "counted_custom",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.array_equal(a, b)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1688,7 +1688,7 @@
         "category": "counted_custom",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.array_equiv(a, b)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1717,7 +1717,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,), a_min=-1.0, a_max=1.0",
         "bench_code": "np.clip(x, -1.0, 1.0)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1746,7 +1746,7 @@
         "category": "counted_custom",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.diff(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1775,7 +1775,7 @@
         "category": "counted_custom",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.ediff1d(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1804,7 +1804,7 @@
         "category": "counted_custom",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.gradient(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1833,7 +1833,7 @@
         "category": "counted_custom",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.unwrap(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1862,7 +1862,7 @@
         "category": "counted_custom",
         "analytical_formula": "n * k",
         "analytical_flops": 100000000,
-        "benchmark_size": "n=100000, k=1000",
+        "benchmark_size": "x: (100000,), k: (1000,)",
         "bench_code": "np.convolve(x, k, mode='full')",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1891,7 +1891,7 @@
         "category": "counted_custom",
         "analytical_formula": "n * k",
         "analytical_flops": 100000000,
-        "benchmark_size": "n=100000, k=1000",
+        "benchmark_size": "x: (100000,), k: (1000,)",
         "bench_code": "np.correlate(x, k, mode='full')",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1920,7 +1920,7 @@
         "category": "counted_custom",
         "analytical_formula": "2 * f^2 * s",
         "analytical_flops": 20000000000,
-        "benchmark_size": "f=1000, s=10000",
+        "benchmark_size": "x: (1000,10000)",
         "bench_code": "np.corrcoef(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1949,7 +1949,7 @@
         "category": "counted_custom",
         "analytical_formula": "2 * f^2 * s",
         "analytical_flops": 20000000000,
-        "benchmark_size": "f=1000, s=10000",
+        "benchmark_size": "x: (1000,10000)",
         "bench_code": "np.cov(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -1978,7 +1978,7 @@
         "category": "counted_custom",
         "analytical_formula": "6 * n",
         "analytical_flops": 6000000,
-        "benchmark_size": "n=1000000",
+        "benchmark_size": "a: (1000000,3), b: (1000000,3)",
         "bench_code": "np.cross(a, b)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2007,7 +2007,7 @@
         "category": "counted_custom",
         "analytical_formula": "n * ceil(log2(bins))",
         "analytical_flops": 70000000,
-        "benchmark_size": "n=10000000, bins=100",
+        "benchmark_size": "x: (10000000,), bins=100",
         "bench_code": "np.histogram(x, bins=100)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2036,7 +2036,7 @@
         "category": "counted_custom",
         "analytical_formula": "n * 2 * ceil(log2(bins))",
         "analytical_flops": 140000000,
-        "benchmark_size": "n=10000000, bins=100",
+        "benchmark_size": "x: (10000000,), y: (10000000,), bins=100",
         "bench_code": "np.histogram2d(x, y, bins=100)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2065,7 +2065,7 @@
         "category": "counted_custom",
         "analytical_formula": "n * ndim * ceil(log2(bins))",
         "analytical_flops": 18000000,
-        "benchmark_size": "n=1000000, bins=50, ndim=3",
+        "benchmark_size": "x: (1000000,3), bins=50",
         "bench_code": "np.histogramdd(x, bins=50)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2094,7 +2094,7 @@
         "category": "counted_custom",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,), bins=100",
         "bench_code": "np.histogram_bin_edges(x, bins=100)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2123,7 +2123,7 @@
         "category": "counted_custom",
         "analytical_formula": "n * ceil(log2(bins))",
         "analytical_flops": 70000000,
-        "benchmark_size": "n=10000000, bins=100",
+        "benchmark_size": "x: (10000000,), bins: (100,)",
         "bench_code": "np.digitize(x, bins)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2152,7 +2152,7 @@
         "category": "counted_custom",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.bincount(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2181,7 +2181,7 @@
         "category": "counted_custom",
         "analytical_formula": "n * ceil(log2(xp))",
         "analytical_flops": 140000000,
-        "benchmark_size": "n=10000000, xp=10000",
+        "benchmark_size": "x: (10000000,), xp: (10000,), fp: (10000,)",
         "bench_code": "np.interp(x, xp, fp)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2210,7 +2210,7 @@
         "category": "counted_custom",
         "analytical_formula": "min(m, n)",
         "analytical_flops": 10000,
-        "benchmark_size": "n=10000 (10000x10000 matrix)",
+        "benchmark_size": "A: (10000,10000)",
         "bench_code": "np.trace(A)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2239,7 +2239,7 @@
         "category": "counted_custom",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "_trapfn(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2268,7 +2268,7 @@
         "category": "counted_custom",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.logspace(0, 10, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2297,7 +2297,7 @@
         "category": "counted_custom",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.geomspace(1, 1000, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2326,7 +2326,7 @@
         "category": "counted_custom",
         "analytical_formula": "n * (degree - 1)",
         "analytical_flops": 990000,
-        "benchmark_size": "n=10000, degree=100",
+        "benchmark_size": "x: (10000,), degree=100",
         "bench_code": "np.vander(x, 100)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2355,7 +2355,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.abs(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2384,7 +2384,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.negative(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2413,7 +2413,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.positive(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2442,7 +2442,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.exp(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2471,7 +2471,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.exp2(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2500,7 +2500,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.expm1(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2529,7 +2529,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.log(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2558,7 +2558,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.log2(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2587,7 +2587,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.log10(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2616,7 +2616,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.log1p(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2645,7 +2645,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.sqrt(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2674,7 +2674,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.cbrt(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2703,7 +2703,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.square(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2732,7 +2732,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.reciprocal(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2761,7 +2761,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.sin(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2790,7 +2790,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.cos(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2819,7 +2819,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.tan(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2848,7 +2848,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.arcsin(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2877,7 +2877,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.arccos(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2906,7 +2906,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.arctan(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2935,7 +2935,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.sinh(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2964,7 +2964,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.cosh(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -2993,7 +2993,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.tanh(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3022,7 +3022,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.arcsinh(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3051,7 +3051,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.arccosh(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3080,7 +3080,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.arctanh(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3109,7 +3109,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.ceil(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3138,7 +3138,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.floor(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3167,7 +3167,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.trunc(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3196,7 +3196,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.rint(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3225,7 +3225,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.sign(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3254,7 +3254,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.signbit(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3283,7 +3283,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.fabs(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3312,7 +3312,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.deg2rad(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3341,7 +3341,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.rad2deg(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3370,7 +3370,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.degrees(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3399,7 +3399,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.radians(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3428,7 +3428,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.logical_not(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3457,7 +3457,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.frexp(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3486,7 +3486,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.modf(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3515,7 +3515,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.sinc(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3542,7 +3542,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.i0(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3569,7 +3569,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.spacing(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3598,7 +3598,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.nan_to_num(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3625,7 +3625,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.isneginf(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3654,7 +3654,7 @@
         "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.isposinf(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3683,7 +3683,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.add(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3712,7 +3712,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.subtract(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3741,7 +3741,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.multiply(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3770,7 +3770,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.divide(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3799,7 +3799,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.true_divide(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3828,7 +3828,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.floor_divide(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3857,7 +3857,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.power(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3886,7 +3886,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.float_power(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3915,7 +3915,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.mod(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3944,7 +3944,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.remainder(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -3973,7 +3973,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.fmod(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -4002,7 +4002,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.maximum(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -4031,7 +4031,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.minimum(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -4060,7 +4060,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.fmax(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -4089,7 +4089,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.fmin(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -4118,7 +4118,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.greater(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -4147,7 +4147,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.greater_equal(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -4176,7 +4176,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.less(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -4205,7 +4205,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.less_equal(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -4234,7 +4234,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.equal(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -4263,7 +4263,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.not_equal(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -4292,7 +4292,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.logical_and(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -4321,7 +4321,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.logical_or(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -4350,7 +4350,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.logical_xor(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -4379,7 +4379,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.arctan2(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -4408,7 +4408,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.hypot(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -4437,7 +4437,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.copysign(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -4466,7 +4466,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.nextafter(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -4495,7 +4495,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.logaddexp(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -4524,7 +4524,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.logaddexp2(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -4553,7 +4553,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.ldexp(a, b, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -4580,7 +4580,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.isclose(a, b)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -4609,7 +4609,7 @@
         "category": "counted_binary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,), h=0.5",
         "bench_code": "np.heaviside(x, 0.5)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -4638,7 +4638,7 @@
         "category": "counted_custom",
         "analytical_formula": "2 * n * degree",
         "analytical_flops": 200000000,
-        "benchmark_size": "n=1000000, degree=100",
+        "benchmark_size": "c: (101,), x: (1000000,)",
         "bench_code": "np.polyval(c, x)",
         "repeats": 5,
         "perf_instructions_total": 1011416473,
@@ -4663,7 +4663,7 @@
         "category": "counted_custom",
         "analytical_formula": "2 * n * (degree+1)^2",
         "analytical_flops": 20402000000,
-        "benchmark_size": "n=1000000, degree=100",
+        "benchmark_size": "x: (1000000,), y: (1000000,), degree=100",
         "bench_code": "np.polyfit(x, y, 100)",
         "repeats": 5,
         "perf_instructions_total": 120900890185,
@@ -4688,7 +4688,7 @@
         "category": "counted_custom",
         "analytical_formula": "degree + 1",
         "analytical_flops": 101,
-        "benchmark_size": "n=1000000, degree=100",
+        "benchmark_size": "c: (101,), d: (101,)",
         "bench_code": "np.polyadd(c, d)",
         "repeats": 5,
         "perf_instructions_total": 6478,
@@ -4713,7 +4713,7 @@
         "category": "counted_custom",
         "analytical_formula": "degree + 1",
         "analytical_flops": 101,
-        "benchmark_size": "n=1000000, degree=100",
+        "benchmark_size": "c: (101,), d: (101,)",
         "bench_code": "np.polysub(c, d)",
         "repeats": 5,
         "perf_instructions_total": 6478,
@@ -4738,7 +4738,7 @@
         "category": "counted_custom",
         "analytical_formula": "(degree+1)^2",
         "analytical_flops": 10201,
-        "benchmark_size": "n=1000000, degree=100",
+        "benchmark_size": "c: (101,), d: (101,)",
         "bench_code": "np.polymul(c, d)",
         "repeats": 5,
         "perf_instructions_total": 133773,
@@ -4763,7 +4763,7 @@
         "category": "counted_custom",
         "analytical_formula": "(degree+1)^2",
         "analytical_flops": 10201,
-        "benchmark_size": "n=1000000, degree=100",
+        "benchmark_size": "c: (101,), d: (101,)",
         "bench_code": "np.polydiv(c, d)",
         "repeats": 5,
         "perf_instructions_total": 8083,
@@ -4788,7 +4788,7 @@
         "category": "counted_custom",
         "analytical_formula": "degree + 1",
         "analytical_flops": 101,
-        "benchmark_size": "n=1000000, degree=100",
+        "benchmark_size": "c: (101,)",
         "bench_code": "np.polyder(c)",
         "repeats": 5,
         "perf_instructions_total": 6872,
@@ -4811,7 +4811,7 @@
         "category": "counted_custom",
         "analytical_formula": "degree + 1",
         "analytical_flops": 101,
-        "benchmark_size": "n=1000000, degree=100",
+        "benchmark_size": "c: (101,)",
         "bench_code": "np.polyint(c)",
         "repeats": 5,
         "perf_instructions_total": 6382,
@@ -4834,7 +4834,7 @@
         "category": "counted_custom",
         "analytical_formula": "degree^2",
         "analytical_flops": 10000,
-        "benchmark_size": "n=1000000, degree=100",
+        "benchmark_size": "r: (100,)",
         "bench_code": "np.poly(r)",
         "repeats": 5,
         "perf_instructions_total": 107947,
@@ -4859,7 +4859,7 @@
         "category": "counted_custom",
         "analytical_formula": "10 * degree^3",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=1000000, degree=100",
+        "benchmark_size": "c: (101,)",
         "bench_code": "np.roots(c)",
         "repeats": 5,
         "perf_instructions_total": 53876357,
@@ -4884,7 +4884,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.standard_normal(10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -4913,7 +4913,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.uniform(0.0, 1.0, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -4942,7 +4942,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.standard_exponential(10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -4971,7 +4971,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.standard_cauchy(10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5000,7 +5000,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.standard_gamma(1.0, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5029,7 +5029,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.standard_t(3, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5058,7 +5058,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.poisson(5.0, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5087,7 +5087,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.binomial(10, 0.5, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5145,7 +5145,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.random.shuffle(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5174,7 +5174,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.beta(2.0, 5.0, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5203,7 +5203,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.chisquare(2, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5232,7 +5232,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "pool: (1000,), size=10000000",
         "bench_code": "np.random.choice(_pool, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5261,7 +5261,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "alpha: (3,), size=10000000",
         "bench_code": "np.random.dirichlet([1.0, 2.0, 3.0], 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5290,7 +5290,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.exponential(1.0, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5319,7 +5319,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.f(5, 10, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5348,7 +5348,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.gamma(2.0, 1.0, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5377,7 +5377,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.geometric(0.5, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5406,7 +5406,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.gumbel(0.0, 1.0, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5435,7 +5435,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.hypergeometric(100, 50, 20, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5464,7 +5464,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.laplace(0.0, 1.0, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5493,7 +5493,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.logistic(0.0, 1.0, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5522,7 +5522,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.lognormal(0.0, 1.0, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5551,7 +5551,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.logseries(0.5, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5580,7 +5580,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "n_trials=10, pvals: (3,), size=10000000",
         "bench_code": "np.random.multinomial(10, [0.2, 0.3, 0.5], 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5609,7 +5609,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "mean: (10,), cov: (10,10), size=10000000",
         "bench_code": "np.random.multivariate_normal(_mean, _cov, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5638,7 +5638,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.negative_binomial(10, 0.5, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5667,7 +5667,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.noncentral_chisquare(2, 1.0, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5696,7 +5696,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.noncentral_f(5, 10, 1.0, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5725,7 +5725,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.normal(0.0, 1.0, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5754,7 +5754,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.pareto(3.0, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5783,7 +5783,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.power(5.0, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5812,7 +5812,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.rand(10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5841,7 +5841,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.randint(0, 1000, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5870,7 +5870,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.randn(10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5899,7 +5899,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.random(10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5928,7 +5928,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.random_sample(10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5957,7 +5957,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.rayleigh(1.0, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -5986,7 +5986,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.triangular(-1.0, 0.0, 1.0, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6015,7 +6015,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.vonmises(0.0, 1.0, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6044,7 +6044,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.wald(1.0, 1.0, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6073,7 +6073,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.weibull(2.0, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6102,7 +6102,7 @@
         "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.random.zipf(2.0, 10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6131,7 +6131,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.sum(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6160,7 +6160,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.prod(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6189,7 +6189,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.mean(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6218,7 +6218,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.std(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6247,7 +6247,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.var(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6276,7 +6276,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.max(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6305,7 +6305,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.min(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6334,7 +6334,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.argmax(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6363,7 +6363,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.argmin(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6392,7 +6392,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.any(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6421,7 +6421,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.all(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6450,7 +6450,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.cumsum(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6479,7 +6479,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.cumprod(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6508,7 +6508,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.nansum(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6537,7 +6537,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.nanmean(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6566,7 +6566,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.nanstd(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6595,7 +6595,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.nanvar(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6624,7 +6624,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.nanmax(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6653,7 +6653,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.nanmin(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6682,7 +6682,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.nanprod(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6711,7 +6711,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.median(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6740,7 +6740,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.nanmedian(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6769,7 +6769,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.percentile(x, 50)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6798,7 +6798,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.nanpercentile(x, 50)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6827,7 +6827,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.quantile(x, 0.5)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6856,7 +6856,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.nanquantile(x, 0.5)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6885,7 +6885,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.count_nonzero(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6914,7 +6914,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.average(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6943,7 +6943,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.nanargmax(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -6972,7 +6972,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.nanargmin(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -7001,7 +7001,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.ptp(x)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -7030,7 +7030,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.nancumprod(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -7059,7 +7059,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.nancumsum(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -7088,7 +7088,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.cumulative_sum(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -7117,7 +7117,7 @@
         "category": "counted_reduction",
         "analytical_formula": "numel(input)",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.cumulative_prod(x, out=_out)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -7146,7 +7146,7 @@
         "category": "counted_custom",
         "analytical_formula": "n * ceil(log2(n))",
         "analytical_flops": 240000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.sort(x)",
         "repeats": 5,
         "perf_instructions_total": 5289929132,
@@ -7171,7 +7171,7 @@
         "category": "counted_custom",
         "analytical_formula": "n * ceil(log2(n))",
         "analytical_flops": 240000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.argsort(x)",
         "repeats": 5,
         "perf_instructions_total": 6294647272,
@@ -7196,7 +7196,7 @@
         "category": "counted_custom",
         "analytical_formula": "k * n * ceil(log2(n))",
         "analytical_flops": 480000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,), y: (10000000,), k=2",
         "bench_code": "np.lexsort((x, y))",
         "repeats": 5,
         "perf_instructions_total": 1786874568,
@@ -7221,7 +7221,7 @@
         "category": "counted_custom",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,), kth=5000000",
         "bench_code": "np.partition(x, 5000000)",
         "repeats": 5,
         "perf_instructions_total": 228384341,
@@ -7246,7 +7246,7 @@
         "category": "counted_custom",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,), kth=5000000",
         "bench_code": "np.argpartition(x, 5000000)",
         "repeats": 5,
         "perf_instructions_total": 237123359,
@@ -7271,7 +7271,7 @@
         "category": "counted_custom",
         "analytical_formula": "m * ceil(log2(n))",
         "analytical_flops": 240000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,), q: (10000000,)",
         "bench_code": "np.searchsorted(x, q)",
         "repeats": 5,
         "perf_instructions_total": 1786874568,
@@ -7296,7 +7296,7 @@
         "category": "counted_custom",
         "analytical_formula": "n * ceil(log2(n))",
         "analytical_flops": 240000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.unique(x)",
         "repeats": 5,
         "perf_instructions_total": 5289929132,
@@ -7321,7 +7321,7 @@
         "category": "counted_custom",
         "analytical_formula": "(n+m) * ceil(log2(n+m))",
         "analytical_flops": 500000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.in1d(a, b)",
         "repeats": 5,
         "perf_instructions_total": 11586026801,
@@ -7346,7 +7346,7 @@
         "category": "counted_custom",
         "analytical_formula": "(n+m) * ceil(log2(n+m))",
         "analytical_flops": 500000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.isin(a, b)",
         "repeats": 5,
         "perf_instructions_total": 11586026698,
@@ -7371,7 +7371,7 @@
         "category": "counted_custom",
         "analytical_formula": "(n+m) * ceil(log2(n+m))",
         "analytical_flops": 500000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.intersect1d(a, b)",
         "repeats": 5,
         "perf_instructions_total": 20359265948,
@@ -7396,7 +7396,7 @@
         "category": "counted_custom",
         "analytical_formula": "(n+m) * ceil(log2(n+m))",
         "analytical_flops": 500000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.setdiff1d(a, b)",
         "repeats": 5,
         "perf_instructions_total": 10581308558,
@@ -7421,7 +7421,7 @@
         "category": "counted_custom",
         "analytical_formula": "(n+m) * ceil(log2(n+m))",
         "analytical_flops": 500000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.setxor1d(a, b)",
         "repeats": 5,
         "perf_instructions_total": 20359265948,
@@ -7446,7 +7446,7 @@
         "category": "counted_custom",
         "analytical_formula": "(n+m) * ceil(log2(n+m))",
         "analytical_flops": 500000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
         "bench_code": "np.union1d(a, b)",
         "repeats": 5,
         "perf_instructions_total": 11564832268,
@@ -7471,7 +7471,7 @@
         "category": "counted_custom",
         "analytical_formula": "n * ceil(log2(n))",
         "analytical_flops": 240000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.unique_all(x)",
         "repeats": 5,
         "perf_instructions_total": 892712297,
@@ -7496,7 +7496,7 @@
         "category": "counted_custom",
         "analytical_formula": "n * ceil(log2(n))",
         "analytical_flops": 240000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.unique_counts(x)",
         "repeats": 5,
         "perf_instructions_total": 5289929137,
@@ -7521,7 +7521,7 @@
         "category": "counted_custom",
         "analytical_formula": "n * ceil(log2(n))",
         "analytical_flops": 240000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.unique_inverse(x)",
         "repeats": 5,
         "perf_instructions_total": 6294647272,
@@ -7546,7 +7546,7 @@
         "category": "counted_custom",
         "analytical_formula": "n * ceil(log2(n))",
         "analytical_flops": 240000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "x: (10000000,)",
         "bench_code": "np.unique_values(x)",
         "repeats": 5,
         "perf_instructions_total": 5289929132,
@@ -7571,7 +7571,7 @@
         "category": "counted_custom",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.bartlett(10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -7600,7 +7600,7 @@
         "category": "counted_custom",
         "analytical_formula": "3*n",
         "analytical_flops": 30000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.blackman(10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -7629,7 +7629,7 @@
         "category": "counted_custom",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.hamming(10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -7658,7 +7658,7 @@
         "category": "counted_custom",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.hanning(10000000)",
         "repeats": 5,
         "perf_instructions_total": [
@@ -7687,7 +7687,7 @@
         "category": "counted_custom",
         "analytical_formula": "3*n",
         "analytical_flops": 30000000,
-        "benchmark_size": "n=10000000",
+        "benchmark_size": "output: (10000000,)",
         "bench_code": "np.kaiser(10000000, 14.0)",
         "repeats": 5,
         "perf_instructions_total": [

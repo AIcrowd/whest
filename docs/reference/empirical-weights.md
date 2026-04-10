@@ -66,7 +66,7 @@ Where:
 All weights are normalized against element-wise addition (`np.add`):
 
 - **Benchmark command:** `np.add(x, y, out=_out)`
-- **Array size:** A(512,512) x B(512,512), dtype=float64
+- **Array size:** A: (512,512), B: (512,512), dtype=float64
 - **Measured perf instructions:** 110005601.0
 - **Measured timing:** 75917896.0 ns
 - **$\alpha(\text{add})$:** 2.200112
