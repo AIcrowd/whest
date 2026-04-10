@@ -42,8 +42,8 @@
       "absolute_correction_factors": {
         "dot": 1.005082,
         "matmul": 1.005082,
-        "inner": 1.65766,
-        "vdot": 1.65766,
+        "inner": 1.6016166,
+        "vdot": 1.6016166,
         "vecdot": 1.633321,
         "outer": 1.000285,
         "tensordot": 1.015772,
@@ -97,7 +97,7 @@
         "digitize": 0.085731,
         "bincount": 0.000112,
         "interp": 0.258336,
-        "trace": 602.12,
+        "trace": 1.600112,
         "trapezoid": 4.600112,
         "logspace": 75.000096,
         "geomspace": 76.000152,
@@ -272,8 +272,8 @@
         "sort": 4.408274,
         "argsort": 5.245539,
         "lexsort": 0.744531,
-        "partition": 22.106186,
-        "argpartition": 21.655903,
+        "partition": 4.5676868200000005,
+        "argpartition": 4.742467179999999,
         "searchsorted": 1.489062,
         "unique": 4.408274,
         "in1d": 4.634411,
@@ -614,24 +614,24 @@
       "inner": {
         "category": "counted_custom",
         "analytical_formula": "2*N",
-        "analytical_flops": 20000,
+        "analytical_flops": 2000000,
         "benchmark_size": "a(10000) . b(10000)",
         "bench_code": "np.inner(a, b)",
         "repeats": 5,
         "perf_instructions_total": [
-          134856,
-          165798,
-          165766
+          12836489,
+          16016198,
+          16016166
         ],
         "distribution_alphas": [
-          1.34856,
-          1.65798,
-          1.65766
+          1.2836489,
+          1.6016198000000001,
+          1.6016166
         ],
         "timing_ns_total": 7641000.0,
         "timing_weight": 0.096,
-        "perf_weight": 1.0598,
-        "absolute_alpha": 1.657603,
+        "perf_weight": 1.024,
+        "absolute_alpha": 1.6016166,
         "baseline_alpha": 1.564071,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -643,24 +643,24 @@
       "vdot": {
         "category": "counted_custom",
         "analytical_formula": "2*N",
-        "analytical_flops": 20000,
+        "analytical_flops": 2000000,
         "benchmark_size": "a(10000) . b(10000)",
         "bench_code": "np.vdot(a, b)",
         "repeats": 5,
         "perf_instructions_total": [
-          134856,
-          165798,
-          165766
+          12836489,
+          16016198,
+          16016166
         ],
         "distribution_alphas": [
-          1.34856,
-          1.65798,
-          1.65766
+          1.2836489,
+          1.6016198000000001,
+          1.6016166
         ],
         "timing_ns_total": 7384500.0,
         "timing_weight": 0.0928,
-        "perf_weight": 1.0598,
-        "absolute_alpha": 1.657603,
+        "perf_weight": 1.024,
+        "absolute_alpha": 1.6016166,
         "baseline_alpha": 1.564071,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -2209,30 +2209,30 @@
       "trace": {
         "category": "counted_custom",
         "analytical_formula": "min(m, n)",
-        "analytical_flops": 1000,
+        "analytical_flops": 10000,
         "benchmark_size": "n=1000 (1000x1000 matrix)",
         "bench_code": "np.trace(A)",
         "repeats": 5,
         "perf_instructions_total": [
-          1421346,
-          3010622,
-          3010600
+          140994833,
+          300055622,
+          300055600
         ],
         "distribution_alphas": [
-          284.2692,
-          602.1244,
-          602.12
+          2819.8966600000003,
+          6001.11244,
+          6001.112
         ],
         "timing_ns_total": 157840000.0,
         "timing_weight": 1.984,
-        "perf_weight": 384.9696,
-        "absolute_alpha": 602.119972,
+        "perf_weight": 1.023,
+        "absolute_alpha": 1.600112,
         "baseline_alpha": 1.564071,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_perf_instructions_total": 78203574.0,
         "baseline_timing_ns_total": 79555837.0,
-        "notes": "Diagonal sum; cost = min(n,m).",
+        "notes": "Diagonal sum; cost = min(n,m). Weight set to match sum (both are simple reductions; direct measurement dominated by subprocess overhead).",
         "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L26"
       },
       "trapezoid": {
@@ -7228,16 +7228,20 @@
         "benchmark_size": "n=10000000",
         "bench_code": "np.partition(x, 5000000)",
         "repeats": 5,
-        "perf_instructions_total": 1105309282,
+        "perf_instructions_total": [
+          234031254,
+          196669989,
+          228384341
+        ],
         "distribution_alphas": [
-          4.68062508,
-          22.10618564,
-          22.26484564
+          4.6806250799999995,
+          3.93339978,
+          4.5676868200000005
         ],
         "timing_ns_total": 181786730.0,
         "timing_weight": 2.285,
-        "perf_weight": 14.1337,
-        "absolute_alpha": 22.106117,
+        "perf_weight": 2.9204,
+        "absolute_alpha": 4.5676868200000005,
         "baseline_alpha": 1.564071,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -7253,16 +7257,20 @@
         "benchmark_size": "n=10000000",
         "bench_code": "np.argpartition(x, 5000000)",
         "repeats": 5,
-        "perf_instructions_total": 1082795142,
+        "perf_instructions_total": [
+          231700594,
+          237123359,
+          271002391
+        ],
         "distribution_alphas": [
           4.63401188,
-          22.43379484,
-          21.65590284
+          4.742467179999999,
+          5.420047820000001
         ],
         "timing_ns_total": 227860939.0,
         "timing_weight": 2.8642,
-        "perf_weight": 13.8459,
-        "absolute_alpha": 21.655977,
+        "perf_weight": 3.0321,
+        "absolute_alpha": 4.742467179999999,
         "baseline_alpha": 1.564071,
         "baseline_analytical_flops": 10000000,
         "baseline_bench_code": "np.add(x, y, out=_out)",
@@ -7722,8 +7730,8 @@
   "weights": {
     "dot": 0.6426,
     "matmul": 0.6426,
-    "inner": 1.0598,
-    "vdot": 1.0598,
+    "inner": 1.024,
+    "vdot": 1.024,
     "vecdot": 1.0443,
     "outer": 0.6395,
     "tensordot": 0.6494,
@@ -7777,7 +7785,7 @@
     "digitize": 0.0548,
     "bincount": 0.0001,
     "interp": 0.1652,
-    "trace": 384.9696,
+    "trace": 1.023,
     "trapezoid": 2.9411,
     "logspace": 47.9518,
     "geomspace": 48.5912,
@@ -7952,8 +7960,8 @@
     "sort": 2.8185,
     "argsort": 3.3538,
     "lexsort": 0.476,
-    "partition": 14.1337,
-    "argpartition": 13.8459,
+    "partition": 2.9204,
+    "argpartition": 3.0321,
     "searchsorted": 0.952,
     "unique": 2.8185,
     "in1d": 2.963,
