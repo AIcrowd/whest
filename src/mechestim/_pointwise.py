@@ -455,8 +455,9 @@ true_divide = _counted_binary(_np.true_divide, "true_divide")
 def vecdot(a, b, **kwargs):
     """Counted version of np.vecdot.
 
-    Vector dot product along last axis. Cost = numel(output), where
-    output shape is the broadcast of a and b with the last axis removed.
+    Vector dot product along last axis. Each output element is the dot
+    product of two vectors of length K (the last axis), costing K FLOPs.
+    Total cost = batch_size * K = numel(a) when a and b have the same shape.
     """
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
@@ -464,7 +465,10 @@ def vecdot(a, b, **kwargs):
     if not isinstance(b, _np.ndarray):
         b = _np.asarray(b)
     result = _np.vecdot(a, b, **kwargs)
-    cost = result.size  # output size, NOT broadcast of inputs
+    # Cost = output_elements * contracted_axis_size
+    # For vecdot, the last axis is contracted.
+    contracted = a.shape[-1] if a.ndim > 0 else 1
+    cost = result.size * contracted
     budget.deduct("vecdot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
     return result
 

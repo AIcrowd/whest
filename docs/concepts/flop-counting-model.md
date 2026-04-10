@@ -221,11 +221,11 @@ actual_cost = analytical_formula(shape) × weight(op_name)
 
 | Operation | Analytical formula | Weight | Effective cost (256x256) |
 |-----------|--------------------|--------|----------------|
-| `add` | $\text{numel}(\text{output})$ | 1.41 | 92,209 |
-| `exp` | $\text{numel}(\text{output})$ | 14.45 | 946,995 |
-| `sin` | $\text{numel}(\text{output})$ | 25.87 | 1,695,498 |
-| `matmul` | $2n^3$ | 0.64 | 21,474,836 |
-| `linalg.cholesky` | $n^3/3$ | 1.07 | 5,971,148 |
+| `add` | $\text{numel}(\text{output})$ | 1.00 | 65,536 |
+| `exp` | $\text{numel}(\text{output})$ | 10.27 | 673,095 |
+| `sin` | $\text{numel}(\text{output})$ | 18.39 | 1,205,346 |
+| `matmul` | $2n^3$ | 0.46 | 15,400,727 |
+| `linalg.cholesky` | $n^3/3$ | 0.76 | 4,244,635 |
 
 Weights are measured using the correction-factor methodology
 described in [FLOP Weight Calibration Results](../reference/empirical-weights.md). The

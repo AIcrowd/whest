@@ -192,13 +192,13 @@ methodology and validation sections:
     }
   },
   "weights": {
-    "abs": 0.3837,
-    "add": 1.4067,
-    "exp": 14.4495,
-    "sin": 25.8688,
-    "matmul": 0.6426,
-    "linalg.cholesky": 1.0699,
-    "fft.fft": 0.534
+    "abs": 0.2728,
+    "add": 1.0,
+    "exp": 10.2723,
+    "sin": 18.3903,
+    "matmul": 0.4568,
+    "linalg.cholesky": 0.7606,
+    "fft.fft": 0.3796
   }
 }
 ```
@@ -265,8 +265,8 @@ from mechestim._weights import load_weights, reset_weights, get_weight
 load_weights("/path/to/weights.json")
 
 # Check a weight
-print(get_weight("exp"))   # 14.4495
-print(get_weight("add"))   # 1.4067
+print(get_weight("exp"))   # 10.2723
+print(get_weight("add"))   # 1.0
 print(get_weight("foo"))   # 1.0 (unknown ops default to 1.0)
 
 # Reset to defaults (all 1.0)

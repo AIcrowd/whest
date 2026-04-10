@@ -38,7 +38,7 @@ class TestAnalyticalCost:
         assert _analytical_cost("vdot") == 1_000_000  # a.size, no factor of 2
 
     def test_vecdot_cost(self):
-        assert _analytical_cost("vecdot") == 1000  # output size (batch), not broadcast
+        assert _analytical_cost("vecdot") == 1000 * 512  # batch * contracted_axis
 
     def test_outer_cost(self):
         assert _analytical_cost("outer") == 5000 * 5000
