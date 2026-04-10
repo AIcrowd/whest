@@ -92,15 +92,19 @@ same correction formula:
 
 ### Measurement methodology
 
-Every operation uses the same unified formula:
+Every operation uses the same correction formula:
 
 $$
-\alpha(\text{op}) = \text{median}_{D} \left[ \frac{\sum \texttt{fp\_arith\_inst\_retired.*} \times \texttt{simd\_width}}{C(\text{op}, \text{params}) \times R} \right]
+\alpha(\text{op}) = \mathrm{median}_{D} \left[ \frac{F(\text{op})}{C(\text{op}, \text{params}) \times R} \right]
 $$
 
 $$
-\text{weight}(\text{op}) = \frac{\alpha(\text{op})}{\alpha(\text{add})}
+w(\text{op}) = \frac{\alpha(\text{op})}{\alpha(\text{add})}
 $$
+
+where $F(\text{op})$ is the SIMD-width-weighted count of retired FP instructions
+(`fp_arith_inst_retired.*`: scalar x1, 128-bit x2, 256-bit x4, 512-bit x8),
+$C$ is the analytical FLOP formula, and $R$ is the number of repeats.
 
 Where $C(\text{op}, \text{params})$ is mechestim's analytical FLOP formula
 for the operation and $R$ is the number of repetitions. The $\alpha(\text{add})$
