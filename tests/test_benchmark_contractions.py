@@ -3,9 +3,9 @@
 from unittest.mock import patch
 
 from benchmarks._contractions import (
-    CONTRACTION_OPS,
     _BENCHMARK_SIZE_STRINGS,
     _FORMULA_STRINGS,
+    CONTRACTION_OPS,
     _analytical_cost,
     benchmark_contractions,
 )

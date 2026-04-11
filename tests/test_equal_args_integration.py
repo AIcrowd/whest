@@ -83,10 +83,10 @@ class TestBlockOuterProductInduction:
         X = np.ones((n, n, n))
         _, info = me.einsum_path("ijk,ilm->jklm", X, X)
         # Single step: ijk,ilm→jklm. dense = n^5 * 2 = 200000.
-        # Φ (symmetry-preserving): s=2, t=2, v=1, ω=5
-        # ((10,5)) × [1 + C(5,2) + C(5,2) + C(5,1)] + lower-order
-        # = 2002 × 26 + 220 + 220 + 715 = 53207
-        assert info.optimized_cost == 53207
+        # Direct evaluation: output has G(2){j,k,l,m} from same-object
+        # detection (block S2 on {j,k} and {l,m}).
+        # unique_output / total_output = 5050 / 10000 → cost = 101000.
+        assert info.optimized_cost == 101000
 
 
 class TestSymmetricXMatMul:

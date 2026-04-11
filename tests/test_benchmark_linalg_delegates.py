@@ -6,9 +6,9 @@ import numpy as np
 import pytest
 
 from benchmarks._linalg_delegates import (
-    LINALG_DELEGATE_OPS,
     _FORMULA_STRINGS,
     _NUMPY2_OPS,
+    LINALG_DELEGATE_OPS,
     _analytical_cost,
     benchmark_linalg_delegates,
 )
@@ -116,9 +116,7 @@ class TestBenchmarkLinalgDelegates:
             "benchmarks._linalg_delegates.measure_flops",
             return_value=mock_result,
         ):
-            result, details = benchmark_linalg_delegates(
-                dtype="float64", repeats=1
-            )
+            result, details = benchmark_linalg_delegates(dtype="float64", repeats=1)
 
         available = set(self._available_ops())
         assert isinstance(result, dict)

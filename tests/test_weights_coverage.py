@@ -29,9 +29,12 @@ DOCS_PATH = ROOT / "docs" / "reference" / "empirical-weights.md"
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from benchmarks._bitwise import BITWISE_OPS  # noqa: E402
+from benchmarks._complex import COMPLEX_OPS  # noqa: E402
 from benchmarks._contractions import CONTRACTION_OPS  # noqa: E402
 from benchmarks._fft import FFT_OPS  # noqa: E402
 from benchmarks._linalg import LINALG_OPS  # noqa: E402
+from benchmarks._linalg_delegates import LINALG_DELEGATE_OPS  # noqa: E402
 from benchmarks._misc import MISC_OPS  # noqa: E402
 from benchmarks._pointwise import BINARY_OPS, SPECIAL_OPS, UNARY_OPS  # noqa: E402
 from benchmarks._polynomial import POLYNOMIAL_OPS  # noqa: E402
@@ -39,9 +42,6 @@ from benchmarks._random import RANDOM_OPS  # noqa: E402
 from benchmarks._reductions import REDUCTION_OPS  # noqa: E402
 from benchmarks._sorting import SORTING_OPS  # noqa: E402
 from benchmarks._window import WINDOW_OPS  # noqa: E402
-from benchmarks._bitwise import BITWISE_OPS  # noqa: E402
-from benchmarks._complex import COMPLEX_OPS  # noqa: E402
-from benchmarks._linalg_delegates import LINALG_DELEGATE_OPS  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # Ops covered by benchmark modules (weights pending bare-metal generation).
@@ -126,10 +126,7 @@ EXCLUDED_RANDOM: frozenset[str] = frozenset(
     }
 )
 
-ALL_EXCLUDED = (
-    EXCLUDED_CONTRACTION
-    | EXCLUDED_RANDOM
-)
+ALL_EXCLUDED = EXCLUDED_CONTRACTION | EXCLUDED_RANDOM
 
 
 # ---------------------------------------------------------------------------

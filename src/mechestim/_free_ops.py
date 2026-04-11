@@ -10,6 +10,15 @@ from __future__ import annotations
 import numpy as _np
 
 from mechestim._docstrings import attach_docstring
+from mechestim._symmetric import SymmetricTensor
+
+
+def _symmetric_2d(result):
+    """Wrap a 2D square result as SymmetricTensor with axes (0,1)."""
+    if result.ndim == 2 and result.shape[0] == result.shape[1]:
+        return SymmetricTensor(result, symmetric_axes=[(0, 1)])
+    return result
+
 
 # ---------------------------------------------------------------------------
 # Tensor creation
@@ -26,7 +35,7 @@ attach_docstring(array, _np.array, "free", "0 FLOPs")
 
 def zeros(shape, dtype=float, **kwargs):
     """Return array of zeros. Wraps ``numpy.zeros``. Cost: 0 FLOPs."""
-    return _np.zeros(shape, dtype=dtype, **kwargs)
+    return _symmetric_2d(_np.zeros(shape, dtype=dtype, **kwargs))
 
 
 attach_docstring(zeros, _np.zeros, "free", "0 FLOPs")
@@ -34,7 +43,7 @@ attach_docstring(zeros, _np.zeros, "free", "0 FLOPs")
 
 def ones(shape, dtype=float, **kwargs):
     """Return array of ones. Wraps ``numpy.ones``. Cost: 0 FLOPs."""
-    return _np.ones(shape, dtype=dtype, **kwargs)
+    return _symmetric_2d(_np.ones(shape, dtype=dtype, **kwargs))
 
 
 attach_docstring(ones, _np.ones, "free", "0 FLOPs")
@@ -42,7 +51,7 @@ attach_docstring(ones, _np.ones, "free", "0 FLOPs")
 
 def full(shape, fill_value, dtype=None, **kwargs):
     """Return array filled with *fill_value*. Wraps ``numpy.full``. Cost: 0 FLOPs."""
-    return _np.full(shape, fill_value, dtype=dtype, **kwargs)
+    return _symmetric_2d(_np.full(shape, fill_value, dtype=dtype, **kwargs))
 
 
 attach_docstring(full, _np.full, "free", "0 FLOPs")
@@ -50,7 +59,10 @@ attach_docstring(full, _np.full, "free", "0 FLOPs")
 
 def eye(N, M=None, k=0, dtype=float, **kwargs):
     """Return identity matrix. Wraps ``numpy.eye``. Cost: 0 FLOPs."""
-    return _np.eye(N, M=M, k=k, dtype=dtype, **kwargs)
+    result = _np.eye(N, M=M, k=k, dtype=dtype, **kwargs)
+    if k == 0 and (M is None or M == N):
+        return SymmetricTensor(result, symmetric_axes=[(0, 1)])
+    return result
 
 
 attach_docstring(eye, _np.eye, "free", "0 FLOPs")
@@ -58,7 +70,11 @@ attach_docstring(eye, _np.eye, "free", "0 FLOPs")
 
 def diag(v, k=0):
     """Extract diagonal or construct diagonal array. Wraps ``numpy.diag``. Cost: 0 FLOPs."""
-    return _np.diag(v, k=k)
+    v = _np.asarray(v)
+    result = _np.diag(v, k=k)
+    if v.ndim == 1 and k == 0:
+        return SymmetricTensor(result, symmetric_axes=[(0, 1)])
+    return result
 
 
 attach_docstring(diag, _np.diag, "free", "0 FLOPs")
@@ -82,7 +98,10 @@ attach_docstring(linspace, _np.linspace, "free", "0 FLOPs")
 
 def zeros_like(a, dtype=None, **kwargs):
     """Return array of zeros with same shape. Wraps ``numpy.zeros_like``. Cost: 0 FLOPs."""
-    return _np.zeros_like(a, dtype=dtype, **kwargs)
+    result = _np.zeros_like(a, dtype=dtype, **kwargs)
+    if isinstance(a, SymmetricTensor) and a._symmetric_axes:
+        return SymmetricTensor(result, symmetric_axes=list(a._symmetric_axes))
+    return result
 
 
 attach_docstring(zeros_like, _np.zeros_like, "free", "0 FLOPs")
@@ -90,7 +109,10 @@ attach_docstring(zeros_like, _np.zeros_like, "free", "0 FLOPs")
 
 def ones_like(a, dtype=None, **kwargs):
     """Return array of ones with same shape. Wraps ``numpy.ones_like``. Cost: 0 FLOPs."""
-    return _np.ones_like(a, dtype=dtype, **kwargs)
+    result = _np.ones_like(a, dtype=dtype, **kwargs)
+    if isinstance(a, SymmetricTensor) and a._symmetric_axes:
+        return SymmetricTensor(result, symmetric_axes=list(a._symmetric_axes))
+    return result
 
 
 attach_docstring(ones_like, _np.ones_like, "free", "0 FLOPs")
@@ -98,7 +120,10 @@ attach_docstring(ones_like, _np.ones_like, "free", "0 FLOPs")
 
 def full_like(a, fill_value, dtype=None, **kwargs):
     """Return full array with same shape. Wraps ``numpy.full_like``. Cost: 0 FLOPs."""
-    return _np.full_like(a, fill_value, dtype=dtype, **kwargs)
+    result = _np.full_like(a, fill_value, dtype=dtype, **kwargs)
+    if isinstance(a, SymmetricTensor) and a._symmetric_axes:
+        return SymmetricTensor(result, symmetric_axes=list(a._symmetric_axes))
+    return result
 
 
 attach_docstring(full_like, _np.full_like, "free", "0 FLOPs")
@@ -122,7 +147,8 @@ attach_docstring(empty_like, _np.empty_like, "free", "0 FLOPs")
 
 def identity(n, dtype=float):
     """Return identity matrix. Wraps ``numpy.identity``. Cost: 0 FLOPs."""
-    return _np.identity(n, dtype=dtype)
+    result = _np.identity(n, dtype=dtype)
+    return SymmetricTensor(result, symmetric_axes=[(0, 1)])
 
 
 attach_docstring(identity, _np.identity, "free", "0 FLOPs")
@@ -571,9 +597,12 @@ def diag_indices_from(*args, **kwargs):
 attach_docstring(diag_indices_from, _np.diag_indices_from, "free", "0 FLOPs")
 
 
-def diagflat(*args, **kwargs):
+def diagflat(v, k=0):
     """Create diagonal array from flattened input. Wraps ``numpy.diagflat``. Cost: 0 FLOPs."""
-    return _np.diagflat(*args, **kwargs)
+    result = _np.diagflat(v, k=k)
+    if k == 0:
+        return SymmetricTensor(result, symmetric_axes=[(0, 1)])
+    return result
 
 
 attach_docstring(diagflat, _np.diagflat, "free", "0 FLOPs")

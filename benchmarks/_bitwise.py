@@ -107,7 +107,7 @@ def _shift_setup(n: int, dist_idx: int) -> str:
 def _isnat_setup(n: int, dist_idx: int) -> str:
     """Build setup code for isnat (datetime64 input with some NaTs)."""
     seeds = [42, 123, 7]
-    seed = seeds[dist_idx]
+    seeds[dist_idx]
     # Create datetime64 array with ~1/3 NaT values
     return (
         f"import numpy as np; "

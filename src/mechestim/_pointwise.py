@@ -452,6 +452,8 @@ pow = _counted_binary(_np.pow, "pow")
 remainder = _counted_binary(_np.remainder, "remainder")
 right_shift = _counted_binary(_np.right_shift, "right_shift")
 true_divide = _counted_binary(_np.true_divide, "true_divide")
+
+
 def vecdot(a, b, **kwargs):
     """Counted version of np.vecdot.
 
@@ -471,6 +473,7 @@ def vecdot(a, b, **kwargs):
     cost = result.size * contracted
     budget.deduct("vecdot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
     return result
+
 
 # Multi-output binary ops
 divmod = _counted_binary_multi(_np.divmod, "divmod")

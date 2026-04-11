@@ -499,8 +499,26 @@ class SymmetricTensor(np.ndarray):
     def __array_finalize__(self, obj: object) -> None:
         if obj is None:
             return
-        self._symmetric_axes = getattr(obj, "_symmetric_axes", None)
-        self._symmetry_groups = getattr(obj, "_symmetry_groups", None)
+        axes = getattr(obj, "_symmetric_axes", None)
+        groups = getattr(obj, "_symmetry_groups", None)
+        # Validate that symmetric axes are still valid for the new shape.
+        # Views, reshapes, and other numpy internals can produce arrays with
+        # different shapes that inherit metadata via __array_finalize__.
+        if axes and self.shape != getattr(obj, "shape", None):
+            valid = []
+            valid_groups = []
+            for i, group in enumerate(axes):
+                if all(
+                    d < self.ndim and self.shape[d] == self.shape[group[0]]
+                    for d in group
+                ):
+                    valid.append(group)
+                    if groups and i < len(groups):
+                        valid_groups.append(groups[i])
+            axes = valid or None
+            groups = valid_groups or None
+        self._symmetric_axes = axes
+        self._symmetry_groups = groups
 
     # -- public API --
 
@@ -544,6 +562,9 @@ class SymmetricTensor(np.ndarray):
         result = super().__getitem__(key)
         if not isinstance(result, np.ndarray) or result.ndim == 0:
             return result if not isinstance(result, np.ndarray) else np.asarray(result)
+
+        if not self._symmetric_axes:
+            return np.asarray(result)
 
         new_groups = propagate_symmetry_slice(self._symmetric_axes, self.shape, key)
         if new_groups is not None:

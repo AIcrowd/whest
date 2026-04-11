@@ -75,6 +75,11 @@ class StepInfo:
     ``PathInfo.path[i]``). Useful for cross-referencing the table with
     the raw path field."""
 
+    inner_applied: bool = False
+    """Whether inner (W-side) symmetry was actually applied to reduce
+    the FLOP cost at this step.  True only when ``use_inner_symmetry``
+    is enabled and all W-group labels are contracted at this step."""
+
     merged_subset: frozenset[int] | None = None
     """Subset of *original* operand positions that this step's output
     intermediate covers. For step 0 contracting two original operands i
@@ -155,21 +160,72 @@ class PathInfo:
         """
         from math import prod
 
+        def _try_named_group(k: int, order: int) -> str | None:
+            """Return the named prefix (e.g. 'S3') if recognised, else None."""
+            if order == 1:
+                return None
+            from math import factorial
+
+            if order == factorial(k):
+                return f"S{k}"
+            if order == k:
+                return f"C{k}"
+            if order == 2 * k and k >= 3:
+                return f"D{k}"
+            return None
+
+        def _fmt_generators(group: PermutationGroup, labels: tuple) -> str:
+            """Format generators in cycle notation with labels."""
+            parts = []
+            for gen in group.generators:
+                if gen.is_identity:
+                    continue
+                cycles = gen.cyclic_form
+                if not cycles:
+                    continue
+                perm_str = "".join(
+                    "(" + " ".join(labels[i] for i in cycle) + ")" for cycle in cycles
+                )
+                parts.append(perm_str)
+            return ", ".join(parts) if parts else "e"
+
         def fmt_sym(group: PermutationGroup | None) -> str:
-            """Format a PermutationGroup as e.g. 'S3{i,j,k}' or 'C3{i,j,k}'."""
+            """Format a PermutationGroup for display.
+
+            Strategy:
+            1. Named groups on all labels: S3{i,j,k}, C4{a,b,c,d}, etc.
+            2. Fixed points present, single non-trivial orbit: drop fixed
+               points and try named recognition on the orbit labels.
+            3. Fallback: show generators in cycle notation with labels.
+            """
             if group is None:
                 return "-"
             labels = group._labels or tuple(str(i) for i in range(group.degree))
-            label_str = ",".join(labels)
             k = group.degree
-            if group.is_symmetric():
-                return f"S{k}{{{label_str}}}"
             order = group.order()
-            if order == k:
-                return f"C{k}{{{label_str}}}"
-            if order == 2 * k and k >= 3:
-                return f"D{k}{{{label_str}}}"
-            return f"G({order}){{{label_str}}}"
+
+            # Try named recognition on full group.
+            name = _try_named_group(k, order)
+            if name is not None:
+                return f"{name}{{{','.join(labels)}}}"
+
+            # Find non-trivial orbits (size >= 2).
+            orbits = [orb for orb in group.orbits() if len(orb) >= 2]
+            if not orbits:
+                return "-"
+
+            # Single non-trivial orbit: try named recognition on moved labels.
+            if len(orbits) == 1:
+                orbit = orbits[0]
+                moved_labels = tuple(labels[i] for i in sorted(orbit))
+                mk = len(moved_labels)
+                name = _try_named_group(mk, order)
+                if name is not None:
+                    return f"{name}{{{','.join(moved_labels)}}}"
+
+            # Fallback: generators in cycle notation.
+            gen_str = _fmt_generators(group, labels)
+            return f"PermGroup\u27e8{gen_str}\u27e9"
 
         def fmt_step_sym(step: StepInfo) -> str:
             """Format inputs→output symmetry transformation for one step."""
@@ -180,7 +236,8 @@ class PathInfo:
                 return ""
             result = f"{' × '.join(in_parts)} → {out_part}"
             if w_part != "-":
-                result += f"  [W: {w_part}]"
+                w_prefix = "W\u2713" if step.inner_applied else "W"
+                result += f"  [{w_prefix}: {w_part}]"
             return result
 
         def fmt_index_sizes() -> str:
@@ -209,20 +266,51 @@ class PathInfo:
             return "(" + ",".join(str(p) for p in step.path_indices) + ")"
 
         def fmt_unique_dense(step: StepInfo) -> str:
-            """Show the unique-vs-dense element counts the savings derive from.
+            """Show output and inner unique/dense element counts.
 
-            Computed by inverting flop_cost = dense_flop_cost * unique // total.
-            For steps with no symmetry the column shows '-' to keep the
-            common-case row uncluttered.
+            Computes real unique counts from the PermutationGroups rather
+            than reverse-engineering from the cost ratio.  Shows separate
+            V (output) and W (inner) ratios when both contribute.
             """
-            if step.dense_flop_cost <= 0:
-                return "-"
+            from mechestim._opt_einsum._symmetry import unique_elements
+
             if step.flop_cost == step.dense_flop_cost:
                 return "-"
-            dense_total = prod(step.output_shape) if step.output_shape else 1
-            ratio = step.flop_cost / step.dense_flop_cost
-            unique = max(1, round(dense_total * ratio))
-            return f"{unique:,}/{dense_total:,}"
+
+            parts: list[str] = []
+
+            # Output (V) unique/dense
+            if step.output_group is not None and step.output_shape:
+                out_str = (
+                    step.subscript.split("->")[1] if "->" in step.subscript else ""
+                )
+                out_total = prod(step.output_shape)
+                out_unique = unique_elements(
+                    frozenset(out_str), self.size_dict, perm_group=step.output_group
+                )
+                if out_unique != out_total:
+                    parts.append(f"V:{out_unique:,}/{out_total:,}")
+
+            # Inner (W) unique/dense
+            if step.inner_applied and step.inner_group is not None:
+                lhs = (
+                    step.subscript.split("->")[0]
+                    if "->" in step.subscript
+                    else step.subscript
+                )
+                out_str = (
+                    step.subscript.split("->")[1] if "->" in step.subscript else ""
+                )
+                contracted = frozenset(lhs.replace(",", "")) - frozenset(out_str)
+                if contracted:
+                    inner_total = prod(self.size_dict[c] for c in contracted)
+                    inner_unique = unique_elements(
+                        contracted, self.size_dict, perm_group=step.inner_group
+                    )
+                    if inner_unique != inner_total:
+                        parts.append(f"W:{inner_unique:,}/{inner_total:,}")
+
+            return " ".join(parts) if parts else "-"
 
         def fmt_subset(s: frozenset[int] | None) -> str:
             if s is None:
@@ -260,7 +348,7 @@ class PathInfo:
             len("contract"), max((len(c) for c in contract_strs), default=0)
         )
         unique_col_width = max(
-            len("unique/dense"),
+            len("unique/total"),
             max((len(fmt_unique_dense(s)) for s in self.steps), default=0),
         )
 
@@ -275,7 +363,7 @@ class PathInfo:
             f"{'blas':<8}",
         ]
         if any_unique:
-            cols.append(f"{'unique/dense':<{unique_col_width}}")
+            cols.append(f"{'unique/total':<{unique_col_width}}")
         sym_col_width = min(max(max_sym_width, len("symmetry (inputs → output)")), 60)
         cols.append(f"{'symmetry (inputs → output)':<{sym_col_width}}")
 
@@ -615,6 +703,10 @@ def contract_path(
             # Per-operand free index counts for Φ cost model.
             _free_counts = tuple(len(s - idx_removed) for s in _pre_input_sets)
 
+            from mechestim._config import get_setting
+
+            _use_inner = bool(get_setting("use_inner_symmetry"))
+
             cost = symmetric_flop_count(
                 idx_contract,
                 bool(idx_removed),
@@ -624,8 +716,18 @@ def contract_path(
                 output_indices=out_inds,
                 inner_group=subset_sym.inner,
                 inner_indices=idx_removed if idx_removed else None,
+                use_inner_symmetry=_use_inner,
                 per_operand_free_counts=_free_counts,
             )
+
+            # Determine whether inner symmetry was actually applied at
+            # this step (for display: W✓ vs W).
+            _step_inner_applied = False
+            if _use_inner and subset_sym.inner is not None and idx_removed:
+                _gl = (
+                    set(subset_sym.inner._labels) if subset_sym.inner._labels else set()
+                )
+                _step_inner_applied = bool(_gl and _gl <= set(idx_removed))
         else:
             step_syms = [None] * len(contract_inds)
             result_sym = None
@@ -701,6 +803,9 @@ def contract_path(
                 dense_flop_cost=step_dense,
                 symmetry_savings=savings,
                 blas_type=do_blas,
+                inner_applied=(
+                    _step_inner_applied if symmetry_oracle is not None else False
+                ),
                 path_indices=original_path_tuple,
                 merged_subset=new_merged_subset,
             )

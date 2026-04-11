@@ -10,7 +10,6 @@ Detection of symmetries is handled by ``_subgraph_symmetry.SubgraphSymmetryOracl
 from __future__ import annotations
 
 from dataclasses import dataclass
-from math import comb
 from typing import Collection
 
 from mechestim._perm_group import PermutationGroup
@@ -83,24 +82,29 @@ def symmetric_flop_count(
     output_indices: frozenset[str] | None = None,
     inner_group: PermutationGroup | None = None,
     inner_indices: frozenset[str] | None = None,
-    use_inner_symmetry: bool = False,
+    use_inner_symmetry: bool = True,
     per_operand_free_counts: tuple[int, ...] | None = None,
 ) -> int:
-    r"""FLOP count for a symmetric tensor contraction via the Phi algorithm.
+    r"""FLOP count for a symmetric tensor contraction.
 
-    When ``per_operand_free_counts`` and ``inner_indices`` are provided,
-    computes the cost of the symmetry-preserving algorithm
-    (Solomonik & Demmel 2015, Theorem 5.4) with :math:`\mu = \nu = 1`.
+    Computes the direct-evaluation cost, reduced by the output and inner
+    symmetry ratios when the corresponding groups are provided.
 
-    Falls back to the previous direct-evaluation estimate when the
-    per-operand decomposition is unavailable or when there are no
-    contracted indices (``v = 0``).
+    Inner symmetry reduction is applied only when ``use_inner_symmetry``
+    is True and **all** labels in ``inner_group`` are present as
+    contracted indices in this specific step. If any W-group labels were
+    contracted at earlier steps and are no longer present, the inner
+    reduction is skipped.
 
     Parameters
     ----------
+    use_inner_symmetry : bool, optional
+        Whether to apply the inner (W-side) symmetry reduction.
+        Default ``True``.
     per_operand_free_counts : tuple of int, optional
         Number of free (non-contracted) indices contributed by each
         operand.  For a pairwise contraction this is ``(s, t)``.
+        Reserved for future cost models; not currently used.
     """
     from ._helpers import compute_size_by_dict
 
@@ -114,8 +118,12 @@ def symmetric_flop_count(
         )
         cost = cost * unique // total
 
-    if use_inner_symmetry:
-        if inner_group is not None and inner_indices is not None:
+    # Inner symmetry: only apply when ALL group labels are being contracted
+    # at this step.  The oracle's W-group may span labels from prior steps
+    # that no longer exist in the current pairwise contraction.
+    if use_inner_symmetry and inner_group is not None and inner_indices is not None:
+        group_labels = set(inner_group._labels) if inner_group._labels else set()
+        if group_labels and group_labels <= set(inner_indices):
             total_inner = compute_size_by_dict(inner_indices, size_dictionary)
             if total_inner > 0:
                 unique_inner = unique_elements(
@@ -123,67 +131,4 @@ def symmetric_flop_count(
                 )
                 cost = cost * unique_inner // total_inner
 
-    cost = max(cost, 1)
-
-    # --- Phi (symmetry-preserving) estimate ---
-    # Only for pairwise contractions with contracted indices and uniform
-    # index dimensions (the paper assumes n-dimensional symmetric tensors).
-    _all_inds = (output_indices or frozenset()) | (inner_indices or frozenset())
-    _dims = {size_dictionary[c] for c in _all_inds} if _all_inds else set()
-    _uniform_dims = len(_dims) == 1
-
-    if (
-        per_operand_free_counts is not None
-        and len(per_operand_free_counts) == 2
-        and inner_indices
-        and len(inner_indices) > 0
-        and _uniform_dims
-    ):
-        v = len(inner_indices)
-        omega = sum(per_operand_free_counts) + v
-        all_indices = (output_indices or frozenset()) | inner_indices
-
-        # Phi's intermediate Z-hat is fully symmetric across ALL omega indices by
-        # construction (Solomonik & Demmel 2015, Algorithm 5.1).
-        if len(all_indices) >= 2:
-            full_group = PermutationGroup.symmetric(len(all_indices))
-            full_group._labels = tuple(sorted(all_indices))
-            unique_all = unique_elements(
-                all_indices, size_dictionary, perm_group=full_group
-            )
-        else:
-            unique_all = unique_elements(all_indices, size_dictionary)
-
-        # Per-element cost: 1 mult + C(omega, free_i) adds per operand
-        # + C(omega, v) adds for Z-hat->Z accumulation.
-        add_factor = comb(omega, v)
-        for free_i in per_operand_free_counts:
-            add_factor += comb(omega, free_i)
-        phi_cost = unique_all * (1 + add_factor)
-
-        # Lower-order terms: operand intermediates A^(p), B^(q).
-        sorted_labels = sorted(all_indices)
-        for free_i in per_operand_free_counts:
-            order_i = free_i + v
-            if order_i > 0 and order_i < omega:
-                sub = frozenset(sorted_labels[:order_i])
-                if len(sub) >= 2:
-                    sub_group = PermutationGroup.symmetric(len(sub))
-                    sub_group._labels = tuple(sorted(sub))
-                    phi_cost += unique_elements(
-                        sub, size_dictionary, perm_group=sub_group
-                    )
-                else:
-                    phi_cost += unique_elements(sub, size_dictionary)
-
-        # Output symmetrization term: ((n, s+t)).
-        st = sum(per_operand_free_counts)
-        if st >= 2 and output_indices:
-            out_sub = frozenset(sorted_labels[:st])
-            out_group = PermutationGroup.symmetric(len(out_sub))
-            out_group._labels = tuple(sorted(out_sub))
-            phi_cost += unique_elements(out_sub, size_dictionary, perm_group=out_group)
-
-        cost = min(cost, max(phi_cost, 1))
-
-    return cost
+    return max(cost, 1)

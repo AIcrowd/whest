@@ -85,9 +85,7 @@ class TestBenchmarkReductions:
         )
         n = 1_000_000
         with patch("benchmarks._reductions.measure_flops", return_value=mock_result):
-            _result, details = benchmark_reductions(
-                n=n, dtype="float64", repeats=5
-            )
+            _result, details = benchmark_reductions(n=n, dtype="float64", repeats=5)
 
         expected_detail_keys = {
             "category",
