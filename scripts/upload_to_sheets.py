@@ -111,89 +111,177 @@ def create_spreadsheet() -> str:
     return sid
 
 
+def _read_sheet_all(sid: str, sheet_name: str = "All Operations") -> tuple[list[str], list[list[str]]]:
+    """Read all data from a sheet. Returns (headers, data_rows)."""
+    resp = gws(
+        "sheets", "spreadsheets", "values", "get",
+        "--params", json.dumps({
+            "spreadsheetId": sid,
+            "range": f"'{sheet_name}'!A1:ZZ",
+        }),
+    )
+    all_rows = resp.get("values", [])
+    if not all_rows:
+        return [], []
+    return all_rows[0], all_rows[1:]
+
+
+# Column headers that belong to the reviewer even if they appear in our CSV.
+# "Reviewer Weight" is in our CSV but always empty — the real data is on the sheet.
+_ALWAYS_PRESERVE = frozenset({"Reviewer Weight"})
+
+
+def _find_reviewer_columns(
+    sheet_headers: list[str],
+    csv_headers: list[str],
+) -> list[int]:
+    """Return sheet column indices that should be preserved (reviewer-owned).
+
+    A column is reviewer-owned if:
+    - Its header is NOT in our CSV headers, OR
+    - Its header is in _ALWAYS_PRESERVE (e.g. "Reviewer Weight" which is
+      in our CSV but always empty — the reviewer fills it in on the sheet).
+    """
+    csv_set = set(csv_headers) - _ALWAYS_PRESERVE
+    return [
+        i for i, h in enumerate(sheet_headers)
+        if h not in csv_set or h in _ALWAYS_PRESERVE
+    ]
+
+
 def upload_data(sid: str, rows: list[list[str]]) -> None:
     """Upload CSV data to Sheet 1, preserving reviewer-added columns.
 
-    Reads the sheet's current headers, maps CSV columns by name, and
-    only writes columns whose headers match. Columns added by the
-    reviewer (e.g. "Reviewer Weight", "Proposed denominator") are
-    left untouched.
+    Algorithm:
+    1. Read the sheet's current state (headers + all data).
+    2. Identify reviewer-added columns (headers not in our CSV).
+    3. Build a map: operation_name -> {reviewer_col_header: value, ...}
+       keyed by the Operation column so alignment is by name, not row.
+    4. Clear the sheet and write our CSV data (all columns including
+       our "Reviewer Weight" placeholder).
+    5. Write reviewer data back, aligned by operation name to match
+       the new row order.
     """
     csv_headers = rows[0]
     csv_data = rows[1:]
     print(f"Uploading {len(csv_data)} data rows ({len(csv_headers)} CSV columns)...")
 
-    # Read current sheet headers
-    resp = gws(
-        "sheets", "spreadsheets", "values", "get",
-        "--params", json.dumps({
-            "spreadsheetId": sid,
-            "range": "'All Operations'!A1:Z1",
-        }),
-    )
-    sheet_headers = resp.get("values", [[]])[0] if resp.get("values") else []
+    # --- Step 1: Read current sheet state ---
+    sheet_headers, sheet_data = _read_sheet_all(sid)
 
     if not sheet_headers:
-        # Fresh sheet — upload everything
         print("  Fresh sheet, uploading all columns...")
-        CHUNK = 50
-        for start in range(0, len(rows), CHUNK):
-            chunk = rows[start:start + CHUNK]
-            row_start = start + 1
-            gws(
-                "sheets", "spreadsheets", "values", "update",
-                "--params", json.dumps({
-                    "spreadsheetId": sid,
-                    "range": f"'All Operations'!A{row_start}",
-                    "valueInputOption": "USER_ENTERED",
-                }),
-                json_body={"values": chunk},
-            )
-        print("  Data uploaded.")
+        _upload_all_rows(sid, rows)
         return
 
-    # Map CSV columns to sheet columns by header name
-    csv_to_sheet: dict[int, int] = {}
-    used_sheet_cols: set[int] = set()
-    for csv_idx, csv_h in enumerate(csv_headers):
-        if csv_h == "Reviewer Weight":
-            continue  # never overwrite
-        for sheet_idx, sheet_h in enumerate(sheet_headers):
-            if sheet_h == csv_h and sheet_idx not in used_sheet_cols:
-                csv_to_sheet[csv_idx] = sheet_idx
-                used_sheet_cols.add(sheet_idx)
-                break
+    # --- Step 2: Identify reviewer columns ---
+    reviewer_col_indices = _find_reviewer_columns(sheet_headers, csv_headers)
+    reviewer_col_names = [sheet_headers[i] for i in reviewer_col_indices]
+    reviewer_col_set = set(reviewer_col_names)
 
-    preserved = [
-        f"{chr(65 + i)}: '{sheet_headers[i]}'"
-        for i in range(len(sheet_headers))
-        if i not in used_sheet_cols
-    ]
-    if preserved:
-        print(f"  Preserving reviewer columns: {', '.join(preserved)}")
+    if reviewer_col_names:
+        print(f"  Found reviewer columns: {reviewer_col_names}")
+    else:
+        print("  No reviewer columns found.")
 
-    # Upload column by column
-    CHUNK = 100
-    for csv_idx, sheet_idx in sorted(csv_to_sheet.items(), key=lambda x: x[1]):
-        col_letter = chr(65 + sheet_idx)
-        col_values = [[csv_headers[csv_idx]]] + [
-            [row[csv_idx] if csv_idx < len(row) else ""]
-            for row in csv_data
-        ]
-        for start in range(0, len(col_values), CHUNK):
-            chunk = col_values[start:start + CHUNK]
-            row_start = start + 1
-            gws(
-                "sheets", "spreadsheets", "values", "update",
-                "--params", json.dumps({
-                    "spreadsheetId": sid,
-                    "range": f"'All Operations'!{col_letter}{row_start}",
-                    "valueInputOption": "USER_ENTERED",
-                }),
-                json_body={"values": chunk},
-            )
+    # --- Step 3: Build operation -> reviewer data map ---
+    # Find the Operation column on the sheet (should be index 0)
+    try:
+        op_col_idx = sheet_headers.index("Operation")
+    except ValueError:
+        op_col_idx = 0
 
-    print(f"  Updated {len(csv_to_sheet)} columns, preserved {len(preserved)} reviewer columns.")
+    reviewer_data: dict[str, dict[str, str]] = {}
+    for row in sheet_data:
+        if not row or len(row) <= op_col_idx:
+            continue
+        op_name = row[op_col_idx]
+        if not op_name:
+            continue
+        reviewer_data[op_name] = {}
+        for col_idx in reviewer_col_indices:
+            col_name = sheet_headers[col_idx]
+            value = row[col_idx] if col_idx < len(row) else ""
+            reviewer_data[op_name][col_name] = value
+
+    non_empty = sum(
+        1 for op_vals in reviewer_data.values()
+        for v in op_vals.values() if v.strip()
+    )
+    print(f"  Captured {non_empty} non-empty reviewer values across {len(reviewer_data)} ops.")
+
+    # --- Step 4: Clear sheet and write CSV data ---
+    # Clear the entire data range first
+    gws(
+        "sheets", "spreadsheets", "values", "clear",
+        "--params", json.dumps({
+            "spreadsheetId": sid,
+            "range": f"'All Operations'!A1:ZZ",
+        }),
+    )
+
+    # Build output column order: preserve the sheet's original column layout.
+    # For each sheet column, either pull from CSV (by header name) or from
+    # the reviewer data (by operation name). This keeps reviewer columns
+    # in their original positions (e.g. F and G stay as F and G).
+    csv_header_to_idx = {h: i for i, h in enumerate(csv_headers)}
+
+    # Determine output columns: sheet's existing order, but skip CSV's
+    # "Reviewer Weight" since it's always empty and the sheet has the real one.
+    out_col_sources: list[tuple[str, str]] = []  # (header, source: "csv"|"reviewer")
+    for sheet_col_name in sheet_headers:
+        if sheet_col_name in _ALWAYS_PRESERVE:
+            out_col_sources.append((sheet_col_name, "reviewer"))
+        elif sheet_col_name in csv_header_to_idx and sheet_col_name not in reviewer_col_set:
+            out_col_sources.append((sheet_col_name, "csv"))
+        else:
+            out_col_sources.append((sheet_col_name, "reviewer"))
+
+    # Add any CSV columns not already on the sheet (new columns)
+    sheet_header_set = set(sheet_headers)
+    for csv_h in csv_headers:
+        if csv_h not in sheet_header_set and csv_h not in _ALWAYS_PRESERVE:
+            out_col_sources.append((csv_h, "csv"))
+
+    # Build rows
+    out_headers = [src[0] for src in out_col_sources]
+    out_data = []
+    for csv_row in csv_data:
+        op_name = csv_row[0] if csv_row else ""
+        reviewer_vals = reviewer_data.get(op_name, {})
+        row = []
+        for col_name, source in out_col_sources:
+            if source == "csv":
+                idx = csv_header_to_idx.get(col_name)
+                row.append(csv_row[idx] if idx is not None and idx < len(csv_row) else "")
+            else:  # reviewer
+                row.append(reviewer_vals.get(col_name, ""))
+        out_data.append(row)
+
+    all_out = [out_headers] + out_data
+    _upload_all_rows(sid, all_out)
+
+    print(f"  Uploaded {len(out_data)} rows: {len(out_col_sources)} columns "
+          f"({sum(1 for _, s in out_col_sources if s == 'csv')} CSV, "
+          f"{sum(1 for _, s in out_col_sources if s == 'reviewer')} reviewer), "
+          f"aligned by operation name.")
+
+
+def _upload_all_rows(sid: str, rows: list[list[str]]) -> None:
+    """Upload rows to the sheet in chunks."""
+    CHUNK = 50
+    for start in range(0, len(rows), CHUNK):
+        chunk = rows[start:start + CHUNK]
+        row_start = start + 1
+        gws(
+            "sheets", "spreadsheets", "values", "update",
+            "--params", json.dumps({
+                "spreadsheetId": sid,
+                "range": f"'All Operations'!A{row_start}",
+                "valueInputOption": "USER_ENTERED",
+            }),
+            json_body={"values": chunk},
+        )
 
 
 def _color(r: float, g: float, b: float) -> dict:
@@ -549,15 +637,25 @@ def main():
     parser = argparse.ArgumentParser(description="Upload weights CSV to Google Sheets")
     parser.add_argument("--csv", type=Path, default=DEFAULT_CSV,
                         help=f"Path to weights CSV (default: {DEFAULT_CSV})")
+    parser.add_argument("--spreadsheet-id", type=str, default=None,
+                        help="Update an existing spreadsheet instead of creating a new one. "
+                             "Reviewer-added columns are preserved and realigned by operation name.")
     args = parser.parse_args()
 
     rows = load_csv(args.csv)
     print(f"Loaded {len(rows)} rows, {len(rows[0])} columns from {args.csv}")
 
-    sid = create_spreadsheet()
-    upload_data(sid, rows)
-    apply_formatting(sid, num_rows=len(rows), num_cols=len(rows[0]))
-    create_summary_sheet(sid, rows)
+    if args.spreadsheet_id:
+        sid = args.spreadsheet_id
+        print(f"Updating existing spreadsheet: {sid}")
+        upload_data(sid, rows)
+        # Re-apply formatting (the clear + rewrite removes conditional formats)
+        apply_formatting(sid, num_rows=len(rows), num_cols=len(rows[0]))
+    else:
+        sid = create_spreadsheet()
+        upload_data(sid, rows)
+        apply_formatting(sid, num_rows=len(rows), num_cols=len(rows[0]))
+        create_summary_sheet(sid, rows)
 
     url = f"https://docs.google.com/spreadsheets/d/{sid}"
     print(f"\nDone! Spreadsheet URL:\n  {url}")
