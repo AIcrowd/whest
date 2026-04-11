@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import numpy as _np
 
+from mechestim._cost_model import FMA_COST
 from mechestim._docstrings import attach_docstring
 from mechestim._symmetric import SymmetricTensor
 from mechestim._validation import require_budget
@@ -66,12 +67,12 @@ def det_cost(n: int, symmetric: bool = False) -> int:
 
     Notes
     -----
-    Uses $n^3/3$ for symmetric input (Cholesky), or $2n^3/3$ for general
+    Uses $n^3/3$ for symmetric input (Cholesky), or $n^3/3$ (FMA = 1 op) for general
     input (LU factorization).
     """
     if symmetric:
         return max(n**3 // 3, 1)
-    return max(2 * n**3 // 3, 1)
+    return max(FMA_COST * n**3 // 3, 1)
 
 
 def det(a):
@@ -113,12 +114,12 @@ def slogdet_cost(n: int, symmetric: bool = False) -> int:
 
     Notes
     -----
-    Uses $n^3/3$ for symmetric input (Cholesky), or $2n^3/3$ for general
+    Uses $n^3/3$ for symmetric input (Cholesky), or $n^3/3$ (FMA = 1 op) for general
     input (LU factorization).
     """
     if symmetric:
         return max(n**3 // 3, 1)
-    return max(2 * n**3 // 3, 1)
+    return max(FMA_COST * n**3 // 3, 1)
 
 
 def slogdet(a):
@@ -173,11 +174,11 @@ def norm_cost(shape: tuple, ord=None) -> int:
         elif ord in (1, -1, _np.inf, -_np.inf, 0):
             return numel
         else:
-            return 2 * numel
+            return FMA_COST * numel
     else:
         m, n = shape[-2], shape[-1]
         if ord is None or ord == "fro":
-            return 2 * numel
+            return FMA_COST * numel
         elif ord in (1, -1, _np.inf, -_np.inf):
             return numel
         elif ord == 2 or ord == -2:
@@ -234,7 +235,7 @@ def vector_norm_cost(shape: tuple, ord=None) -> int:
     numel = max(numel, 1)
     if ord is None or ord == 2 or ord == -2 or ord in (1, -1, _np.inf, -_np.inf, 0):
         return numel
-    return 2 * numel
+    return FMA_COST * numel
 
 
 def vector_norm(x, ord=2, axis=None, keepdims=False):
@@ -284,7 +285,7 @@ def matrix_norm_cost(shape: tuple, ord=None) -> int:
     m, n = shape[-2], shape[-1]
     numel = m * n
     if ord is None or ord == "fro":
-        return 2 * numel
+        return FMA_COST * numel
     elif ord in (1, -1, _np.inf, -_np.inf):
         return numel
     elif ord == 2 or ord == -2:
