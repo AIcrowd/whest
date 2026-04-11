@@ -247,7 +247,7 @@ def eigvalsh(a, UPLO="L"):
 attach_docstring(eigvalsh, _np.linalg.eigvalsh, "linalg", r"$4n^3/3$ FLOPs")
 
 
-def svdvals_cost(m: int, n: int) -> int:
+def svdvals_cost(m: int, n: int, k: int | None = None) -> int:
     """FLOP cost of computing singular values.
 
     Parameters
@@ -256,20 +256,24 @@ def svdvals_cost(m: int, n: int) -> int:
         Number of rows.
     n : int
         Number of columns.
+    k : int or None, optional
+        Number of singular values to compute. Defaults to min(m, n).
 
     Returns
     -------
     int
-        Estimated FLOP count: m * n * min(m, n).
+        Estimated FLOP count: m * n * k.
 
     Notes
     -----
-    Source: Golub-Reinsch bidiagonalization. Same cost model as full SVD.
+    Source: Golub-Reinsch bidiagonalization. Same cost model as SVD.
     """
-    return max(m * n * min(m, n), 1)
+    if k is None:
+        k = min(m, n)
+    return max(m * n * k, 1)
 
 
-def svdvals(a):
+def svdvals(a, k: int | None = None):
     """Singular values with FLOP counting."""
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
@@ -277,11 +281,13 @@ def svdvals(a):
     if a.ndim != 2:
         raise ValueError(f"Input must be 2D, got {a.ndim}D")
     m, n = a.shape
-    cost = svdvals_cost(m, n)
+    if k is None:
+        k = min(m, n)
+    if not (1 <= k <= min(m, n)):
+        raise ValueError(f"k must satisfy 1 <= k <= min(m, n) = {min(m, n)}, got k={k}")
+    cost = svdvals_cost(m, n, k)
     budget.deduct("linalg.svdvals", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.linalg.svdvals(a)
+    return _np.linalg.svdvals(a)[:k]
 
 
-attach_docstring(
-    svdvals, _np.linalg.svdvals, "linalg", r"$m \cdot n \cdot \min(m,n)$ FLOPs"
-)
+attach_docstring(svdvals, _np.linalg.svdvals, "linalg", r"$m \cdot n \cdot k$ FLOPs")
