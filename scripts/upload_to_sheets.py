@@ -111,19 +111,59 @@ def create_spreadsheet() -> str:
     return sid
 
 
-def upload_data(sid: str, rows: list[list[str]]) -> None:
-    """Upload CSV data to Sheet 1."""
+def upload_data(sid: str, rows: list[list[str]], *, skip_col: int | None = 5) -> None:
+    """Upload CSV data to Sheet 1.
+
+    Parameters
+    ----------
+    skip_col : int or None
+        Column index to skip (default: 5 = "Reviewer Weight" column F).
+        When updating an existing sheet, this preserves reviewer edits.
+        Set to None for fresh sheets (creates all columns).
+    """
     print(f"Uploading {len(rows)} rows ({len(rows[0])} columns)...")
-    # Use the values update API
-    gws(
-        "sheets", "spreadsheets", "values", "update",
-        "--params", json.dumps({
-            "spreadsheetId": sid,
-            "range": "'All Operations'!A1",
-            "valueInputOption": "USER_ENTERED",
-        }),
-        json_body={"values": rows},
-    )
+
+    CHUNK = 50
+    for start in range(0, len(rows), CHUNK):
+        chunk = rows[start:start + CHUNK]
+        row_start = start + 1
+
+        if skip_col is not None and skip_col > 0:
+            # Upload columns before skip_col (A-E)
+            chunk_before = [row[:skip_col] for row in chunk]
+            gws(
+                "sheets", "spreadsheets", "values", "update",
+                "--params", json.dumps({
+                    "spreadsheetId": sid,
+                    "range": f"'All Operations'!A{row_start}",
+                    "valueInputOption": "USER_ENTERED",
+                }),
+                json_body={"values": chunk_before},
+            )
+            # Upload columns after skip_col (G onward)
+            col_letter = chr(65 + skip_col + 1)  # F+1 = G
+            chunk_after = [row[skip_col + 1:] for row in chunk]
+            gws(
+                "sheets", "spreadsheets", "values", "update",
+                "--params", json.dumps({
+                    "spreadsheetId": sid,
+                    "range": f"'All Operations'!{col_letter}{row_start}",
+                    "valueInputOption": "USER_ENTERED",
+                }),
+                json_body={"values": chunk_after},
+            )
+        else:
+            # Upload all columns (fresh sheet)
+            gws(
+                "sheets", "spreadsheets", "values", "update",
+                "--params", json.dumps({
+                    "spreadsheetId": sid,
+                    "range": f"'All Operations'!A{row_start}",
+                    "valueInputOption": "USER_ENTERED",
+                }),
+                json_body={"values": chunk},
+            )
+
     print("  Data uploaded.")
 
 
