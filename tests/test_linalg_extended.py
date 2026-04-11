@@ -75,12 +75,12 @@ def test_norm_cost_1d_ord_0():
 
 
 def test_norm_cost_1d_p_norm():
-    # ord=3 triggers the else: 2 * numel
-    assert norm_cost((10,), ord=3) == 20
+    # ord=3 triggers the else: numel (FMA_COST=1)
+    assert norm_cost((10,), ord=3) == 10
 
 
 def test_norm_cost_2d_fro():
-    assert norm_cost((4, 5), ord="fro") == 2 * 20
+    assert norm_cost((4, 5), ord="fro") == 20
 
 
 def test_norm_cost_2d_nuc():
@@ -115,8 +115,8 @@ def test_norm_cost_2d_fallback():
 
 
 def test_vector_norm_cost_p_norm():
-    # ord=3 triggers 2*numel
-    assert vector_norm_cost((10,), ord=3) == 20
+    # ord=3 triggers numel (FMA_COST=1)
+    assert vector_norm_cost((10,), ord=3) == 10
 
 
 def test_vector_norm_cost_special_ords():
@@ -126,7 +126,7 @@ def test_vector_norm_cost_special_ords():
 
 def test_matrix_norm_cost_fro():
     m, n = 3, 4
-    assert matrix_norm_cost((m, n), ord="fro") == 2 * m * n
+    assert matrix_norm_cost((m, n), ord="fro") == m * n
 
 
 def test_matrix_norm_cost_nuc():
@@ -276,7 +276,7 @@ def test_qr_cost_wide_matrix():
     m, n = 3, 5
     cost = qr_cost(m, n)
     # After swap, effective m=5, n=3
-    assert cost == max(2 * 5 * 9 - 2 * 27 // 3, 1)
+    assert cost == max(5 * 9 - 27 // 3, 1)
 
 
 def test_eig_cost():

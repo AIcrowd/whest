@@ -26,17 +26,17 @@ class TestAnalyticalCost:
 
     def test_qr_cost(self):
         n = 100
-        expected = 2 * n * n**2 - 2 * n**3 // 3
+        expected = n * n**2 - n**3 // 3
         assert _analytical_cost("linalg.qr", n) == expected
 
     def test_solve_cost(self):
         n = 100
-        expected = 2 * n**3 // 3 + 2 * n**2
+        expected = n**3 // 3 + n**2
         assert _analytical_cost("linalg.solve", n) == expected
 
     def test_det_cost(self):
         n = 100
-        expected = 2 * n**3 // 3
+        expected = n**3 // 3
         assert _analytical_cost("linalg.det", n) == expected
 
     def test_inv_cost(self):
