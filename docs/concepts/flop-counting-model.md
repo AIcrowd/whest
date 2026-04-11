@@ -241,6 +241,12 @@ counts as 2 analytical FLOPs. For example, `matmul` at 0.64 means the
 FMA-optimized inner loop fuses two analytical FLOPs into roughly one
 instruction.
 
+Integer and bitwise operations (`bitwise_and`, `gcd`, `lcm`, etc.) use
+**timing-based weights** because they do not retire `fp_arith_inst_retired`
+events on the CPU. Their weights are derived from wall-clock timing
+normalized against the timing baseline of `np.add`, producing comparable
+relative costs despite the different measurement method.
+
 Weights are loaded from a JSON config file. Without a config file, all
 weights default to 1.0 -- the analytical formulas apply unchanged.
 

@@ -38,6 +38,23 @@ Where:
 - $R$ is the number of repeats per distribution.
 - The **median** across 3 input distributions is reported.
 
+### Measurement modes by category
+
+Most operations are measured with hardware performance counters (perf mode).
+Two categories use alternative measurement:
+
+**Bitwise/integer operations** (bitwise_and, gcd, lcm, etc.) are measured
+with wall-clock timing instead of perf counters, because integer ALU
+operations do not retire `fp_arith_inst_retired` events. The timing weight
+is normalized against the timing baseline of `np.add`, producing comparable
+relative costs. Input arrays use int64 dtype.
+
+**Complex-number operations** (angle, conj, real, imag, etc.) are measured
+with perf counters on complex128 input arrays, which generate real
+floating-point instructions for the underlying real/imaginary arithmetic.
+Two type-check operations (`iscomplexobj`, `isrealobj`) use timing mode
+as they perform a single type check rather than per-element FP work.
+
 ## Measurement environment
 
 | Parameter | Value |
@@ -246,7 +263,7 @@ All weights are normalized against element-wise addition (`np.add`):
 | `fft.rfftn` | 0.3215 | low | 5*(n/2)*ceil(log2(n)) | [\_transforms.py:387](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/fft/_transforms.py#L387) | N-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 §1.4). |
 | `fft.ihfft` | 0.1943 | low | 5*(n/2)*ceil(log2(n)) | [\_transforms.py:462](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/fft/_transforms.py#L462) | Inverse FFT of Hermitian signal. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 §1.4). |
 
-### Linalg (29 operations)
+### Linalg (14 operations)
 
 | Op | Weight | Confidence | Formula | Impl | Notes |
 |:---|-------:|:-----------|:--------|:-----|:------|
@@ -254,28 +271,33 @@ All weights are normalized against element-wise addition (`np.add`):
 | `linalg.svd` | 4.1973 | medium | m*n*min(m,n) | [\_svd.py:67](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_svd.py#L67) | Singular value decomposition; cost ~ O(min(m,n)*m*n). |
 | `linalg.eigh` | 1.6482 | high | 4*n^3 / 3 | [\_decompositions.py:165](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L165) | Symmetric eigendecomposition. Cost: $(4/3)n^3$ (Golub & Van Loan §8.3). |
 | `linalg.lstsq` | 1.4063 | medium | m*n*min(m,n) | [\_solvers.py:147](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_solvers.py#L147) | Least squares. Cost: m*n*min(m,n) (LAPACK gelsd/SVD). |
+| `linalg.svdvals` | 1.3389 | medium | m*n*min(m,n) | [\_decompositions.py:281](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L281) | Singular values only. Cost: m*n*min(m,n) (Golub-Reinsch). |
+| `linalg.inv` | 1.2404 | medium | n^3 | [\_solvers.py:101](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_solvers.py#L101) | Matrix inverse. Cost: $n^3$ (LU + solve). |
+| `linalg.qr` | 0.9478 | medium | 2*m*n^2 - 2*n^3/3 | [\_decompositions.py:87](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L87) | QR decomposition. Cost: $2mn^2 - (2/3)n^3$ (Golub & Van Loan §5.2). |
+| `linalg.cholesky` | 0.7606 | high | n^3 / 3 | [\_decompositions.py:46](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L46) | Cholesky decomposition. Cost: $n^3/3$ (Golub & Van Loan §4.2). |
+| `linalg.eig` | 0.6827 | medium | 10*n^3 | [\_decompositions.py:127](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L127) | Eigendecomposition. Cost: $10n^3$ (Francis QR, Golub & Van Loan §7.5). |
+| `linalg.eigvalsh` | 0.5738 | high | 4*n^3 / 3 | [\_decompositions.py:243](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L243) | Symmetric eigenvalues. Cost: $(4/3)n^3$ (same as eigh). |
+| `linalg.det` | 0.4921 | low | 2*n^3 / 3 | [\_properties.py:87](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_properties.py#L87) | Determinant. Cost: $n^3$ (LU factorization). |
+| `linalg.slogdet` | 0.4921 | low | 2*n^3 / 3 | [\_properties.py:134](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_properties.py#L134) | Sign + log determinant. Cost: $n^3$ (LU factorization). |
+| `linalg.eigvals` | 0.4635 | high | 7*n^3 | [\_decompositions.py:207](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L207) | Eigenvalues only. Cost: $10n^3$ (same as eig). |
+| `linalg.solve` | 0.4589 | low | 2*n^3/3 + 2*n^2 | [\_solvers.py:54](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_solvers.py#L54) | Solve Ax=b. Cost: $2n^3/3$ (LU) + $n^2 \cdot n_{\text{rhs}}$ (back-substitution). |
+
+### Linalg Delegates (15 operations)
+
+| Op | Weight | Confidence | Formula | Impl | Notes |
+|:---|-------:|:-----------|:--------|:-----|:------|
 | `linalg.cond` | 1.4043 | high | m*n*min(m,n) |  |  |
 | `linalg.matrix_rank` | 1.4043 | high | m*n*min(m,n) |  |  |
 | `linalg.tensorinv` | 1.3998 | high | n^3 after reshape |  |  |
 | `linalg.vecdot` | 1.3777 | medium | batch*K |  |  |
-| `linalg.svdvals` | 1.3389 | medium | m*n*min(m,n) | [\_decompositions.py:281](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L281) | Singular values only. Cost: m*n*min(m,n) (Golub-Reinsch). |
-| `linalg.inv` | 1.2404 | medium | n^3 | [\_solvers.py:101](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_solvers.py#L101) | Matrix inverse. Cost: $n^3$ (LU + solve). |
 | `linalg.norm` | 1.1283 | medium | numel (L2) |  |  |
 | `linalg.vector_norm` | 1.1282 | medium | numel (L2) |  |  |
-| `linalg.qr` | 0.9478 | medium | 2*m*n^2 - 2*n^3/3 | [\_decompositions.py:87](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L87) | QR decomposition. Cost: $2mn^2 - (2/3)n^3$ (Golub & Van Loan §5.2). |
 | `linalg.matrix_power` | 0.9184 | high | (ceil(log2(k))+popcount(k)-1)*n^3 |  |  |
 | `linalg.cross` | 0.9011 | medium | 6*n |  |  |
-| `linalg.cholesky` | 0.7606 | high | n^3 / 3 | [\_decompositions.py:46](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L46) | Cholesky decomposition. Cost: $n^3/3$ (Golub & Van Loan §4.2). |
 | `linalg.trace` | 0.7273 | low | min(m,n) |  | Matrix trace. Cost: n (sum of diagonal elements). Weight set to match trace/sum (subprocess overhead dominates at small analytical cost). |
-| `linalg.eig` | 0.6827 | medium | 10*n^3 | [\_decompositions.py:127](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L127) | Eigendecomposition. Cost: $10n^3$ (Francis QR, Golub & Van Loan §7.5). |
-| `linalg.eigvalsh` | 0.5738 | high | 4*n^3 / 3 | [\_decompositions.py:243](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L243) | Symmetric eigenvalues. Cost: $(4/3)n^3$ (same as eigh). |
 | `linalg.matrix_norm` | 0.5651 | medium | 2*numel (Frobenius) |  |  |
-| `linalg.det` | 0.4921 | low | 2*n^3 / 3 | [\_properties.py:87](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_properties.py#L87) | Determinant. Cost: $n^3$ (LU factorization). |
-| `linalg.slogdet` | 0.4921 | low | 2*n^3 / 3 | [\_properties.py:134](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_properties.py#L134) | Sign + log determinant. Cost: $n^3$ (LU factorization). |
 | `linalg.tensorsolve` | 0.4834 | high | n^3 after reshape |  |  |
-| `linalg.eigvals` | 0.4635 | high | 7*n^3 | [\_decompositions.py:207](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L207) | Eigenvalues only. Cost: $10n^3$ (same as eig). |
 | `linalg.tensordot` | 0.4617 | high | 2*d^5 |  |  |
-| `linalg.solve` | 0.4589 | low | 2*n^3/3 + 2*n^2 | [\_solvers.py:54](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_solvers.py#L54) | Solve Ax=b. Cost: $2n^3/3$ (LU) + $n^2 \cdot n_{\text{rhs}}$ (back-substitution). |
 | `linalg.matmul` | 0.4567 | high | 2*M*N*K |  |  |
 | `linalg.outer` | 0.4546 | high | M*N |  |  |
 | `linalg.multi_dot` | 0.2298 | high | 2*(128*64*128 + 128*128*64) |  |  |
@@ -357,38 +379,17 @@ All weights are normalized against element-wise addition (`np.add`):
 | `random.choice` | 0.0001 | high | numel(output) | [\_\_init\_\_.py:233](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L233) | Sampling; cost = numel(output) if replace, n*ceil(log2(n)) if not. |
 | `random.randint` | 0.0001 | high | numel(output) | [\_\_init\_\_.py:154](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L154) | Sampling; cost = numel(output). |
 
-### Misc (49 operations)
+### Misc (24 operations)
 
 | Op | Weight | Confidence | Formula | Impl | Notes |
 |:---|-------:|:-----------|:--------|:-----|:------|
-| `lcm` | 46.3478 | high | n |  |  |
-| `gcd` | 45.6325 | high | n |  |  |
 | `geomspace` | 34.5438 | high | n | [\_counting\_ops.py:246](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L246) | Geometric-spaced generation; cost = num. |
 | `logspace` | 34.0892 | high | n | [\_counting\_ops.py:236](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L236) | Log-spaced generation; cost = num. |
-| `angle` | 25.0732 | high | numel(output) |  |  |
 | `unwrap` | 3.2132 | medium | n | [\_unwrap.py:40](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_unwrap.py#L40) | Phase unwrap. Cost: $\text{numel}(\text{input})$ (diff + conditional adjustment). |
 | `trapezoid` | 2.0909 | high | n | [\_pointwise.py:875](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L875) | Integrate using the trapezoidal rule. |
 | `allclose` | 1.9999 | medium | n | [\_counting\_ops.py:45](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L45) | Element-wise tolerance check; cost = numel(a). |
-| `bitwise_and` | 1.4430 | high | n |  |  |
-| `bitwise_right_shift` | 1.4316 | high | n |  |  |
-| `right_shift` | 1.4298 | high | n |  |  |
-| `bitwise_xor` | 1.4154 | high | n |  |  |
-| `bitwise_left_shift` | 1.4094 | high | n |  |  |
-| `left_shift` | 1.4061 | high | n |  |  |
-| `bitwise_or` | 1.3942 | high | n |  |  |
 | `histogram_bin_edges` | 1.1827 | medium | n | [\_counting\_ops.py:207](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L207) | Bin edge computation; cost = numel(a). |
 | `gradient` | 1.1818 | medium | n | [\_pointwise.py:775](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L775) | Gradient using central differences. |
-| `bitwise_not` | 1.1239 | high | n |  |  |
-| `invert` | 1.0974 | high | n |  |  |
-| `bitwise_invert` | 1.0761 | high | n |  |  |
-| `sort_complex` | 0.9842 | high | numel(output) |  |  |
-| `conj` | 0.9835 | high | numel(output) |  |  |
-| `conjugate` | 0.9835 | high | numel(output) |  |  |
-| `imag` | 0.9835 | high | numel(output) |  |  |
-| `real` | 0.9835 | high | numel(output) |  |  |
-| `real_if_close` | 0.9835 | low | numel(output) |  |  |
-| `iscomplex` | 0.9835 | high | numel(output) |  |  |
-| `isreal` | 0.9835 | high | numel(output) |  |  |
 | `cross` | 0.9546 | medium | 6 * n | [\_\_init\_\_.py:72](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/__init__.py#L72) | Cross product of two 3-D vectors. |
 | `convolve` | 0.9245 | high | n * k | [\_pointwise.py:809](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L809) | 1-D discrete convolution. |
 | `correlate` | 0.9245 | high | n * k | [\_pointwise.py:829](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L829) | 1-D cross-correlation. |
@@ -397,8 +398,6 @@ All weights are normalized against element-wise addition (`np.add`):
 | `trace` | 0.7273 | low | min(m, n) | [\_counting\_ops.py:26](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L26) | Diagonal sum; cost = min(n,m). Weight set to match sum (both are simple reductions; direct measurement dominated by subprocess overhead). |
 | `array_equal` | 0.5455 | low | n | [\_counting\_ops.py:60](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L60) | Element-wise equality; cost = numel(a). |
 | `array_equiv` | 0.5455 | low | n | [\_counting\_ops.py:82](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L82) | Element-wise equivalence; cost = numel(a). |
-| `bitwise_count` | 0.5363 | high | n |  |  |
-| `isnat` | 0.4652 | high | n |  |  |
 | `vander` | 0.4532 | high | n * (degree - 1) | [\_counting\_ops.py:260](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L260) | Vandermonde matrix; cost = len(x)*(N-1). |
 | `histogram` | 0.3638 | high | n * ceil(log2(bins)) | [\_counting\_ops.py:106](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L106) | Binning; cost = n*ceil(log2(bins)). |
 | `corrcoef` | 0.2358 | high | 2 * f^2 * s | [\_pointwise.py:847](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L847) | Pearson correlation coefficients. |
@@ -408,8 +407,6 @@ All weights are normalized against element-wise addition (`np.add`):
 | `interp` | 0.1174 | medium | n * ceil(log2(xp)) | [\_pointwise.py:900](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L900) | 1-D linear interpolation. |
 | `digitize` | 0.0390 | low | n * ceil(log2(bins)) | [\_sorting\_ops.py:193](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L193) | Bin search; cost = n*ceil(log2(bins)). |
 | `bincount` | 0.0001 | high | n | [\_counting\_ops.py:221](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L221) | Integer counting; cost = numel(x). |
-| `isrealobj` | 0.0001 | medium | numel(output) |  |  |
-| `iscomplexobj` | 0.0000 | high | numel(output) |  |  |
 
 ### Window (5 operations)
 
@@ -421,6 +418,41 @@ All weights are normalized against element-wise addition (`np.add`):
 | `blackman` | 11.0152 | high | 3*n | [\_window.py:65](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_window.py#L65) | Blackman window. Cost: 3*n (three cosine terms per sample). |
 | `bartlett` | 2.7272 | high | n | [\_window.py:35](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_window.py#L35) | Bartlett window. Cost: n (one linear eval per sample). |
 
+### Bitwise (14 operations)
+
+| Op | Weight | Confidence | Formula | Impl | Notes |
+|:---|-------:|:-----------|:--------|:-----|:------|
+| `lcm` | 46.3478 | high | n |  |  |
+| `gcd` | 45.6325 | high | n |  |  |
+| `bitwise_and` | 1.4430 | high | n |  |  |
+| `bitwise_right_shift` | 1.4316 | high | n |  |  |
+| `right_shift` | 1.4298 | high | n |  |  |
+| `bitwise_xor` | 1.4154 | high | n |  |  |
+| `bitwise_left_shift` | 1.4094 | high | n |  |  |
+| `left_shift` | 1.4061 | high | n |  |  |
+| `bitwise_or` | 1.3942 | high | n |  |  |
+| `bitwise_not` | 1.1239 | high | n |  |  |
+| `invert` | 1.0974 | high | n |  |  |
+| `bitwise_invert` | 1.0761 | high | n |  |  |
+| `bitwise_count` | 0.5363 | high | n |  |  |
+| `isnat` | 0.4652 | high | n |  |  |
+
+### Complex (11 operations)
+
+| Op | Weight | Confidence | Formula | Impl | Notes |
+|:---|-------:|:-----------|:--------|:-----|:------|
+| `angle` | 25.0732 | high | numel(output) |  |  |
+| `sort_complex` | 0.9842 | high | numel(output) |  |  |
+| `conj` | 0.9835 | high | numel(output) |  |  |
+| `conjugate` | 0.9835 | high | numel(output) |  |  |
+| `imag` | 0.9835 | high | numel(output) |  |  |
+| `real` | 0.9835 | high | numel(output) |  |  |
+| `real_if_close` | 0.9835 | low | numel(output) |  |  |
+| `iscomplex` | 0.9835 | high | numel(output) |  |  |
+| `isreal` | 0.9835 | high | numel(output) |  |  |
+| `isrealobj` | 0.0001 | medium | numel(output) |  |  |
+| `iscomplexobj` | 0.0000 | high | numel(output) |  |  |
+
 ## Summary by category
 
 | Category | Count | Avg Weight | Min | Max |
@@ -430,12 +462,15 @@ All weights are normalized against element-wise addition (`np.add`):
 | Reductions | 35 | 0.73 | 0.2728 | 2.0909 |
 | Sorting | 17 | 2.00 | 0.3381 | 3.7015 |
 | FFT | 14 | 0.42 | 0.1943 | 1.0401 |
-| Linalg | 29 | 1.13 | 0.2298 | 5.1094 |
+| Linalg | 14 | 1.42 | 0.4589 | 5.1094 |
+| Linalg Delegates | 15 | 0.87 | 0.2298 | 1.4043 |
 | Contractions | 9 | 0.79 | 0.4547 | 1.4848 |
 | Polynomial | 10 | 2.73 | 0.0720 | 6.1851 |
 | Random | 43 | 33.68 | 0.0001 | 261.1704 |
-| Misc | 49 | 4.60 | 0.0000 | 46.3478 |
+| Misc | 24 | 3.59 | 0.0001 | 34.5438 |
 | Window | 5 | 12.40 | 2.7272 | 17.0191 |
+| Bitwise | 14 | 7.59 | 0.4652 | 46.3478 |
+| Complex | 11 | 2.99 | 0.0000 | 25.0732 |
 
 **Total benchmarked operations:** 291
 

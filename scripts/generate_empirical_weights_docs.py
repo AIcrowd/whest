@@ -47,11 +47,14 @@ DISPLAY_CATEGORIES = [
     "Sorting",
     "FFT",
     "Linalg",
+    "Linalg Delegates",
     "Contractions",
     "Polynomial",
     "Random",
     "Misc",
     "Window",
+    "Bitwise",
+    "Complex",
 ]
 
 #: Map from per_op_details "category" field to display category.
@@ -68,7 +71,9 @@ def _classify_op(op_name: str, detail_category: str) -> str:
     if op_name.startswith("fft."):
         return "FFT"
     if op_name.startswith("linalg."):
-        return "Linalg"
+        if op_name in _LINALG_DECOMP_OPS:
+            return "Linalg"
+        return "Linalg Delegates"
     if op_name.startswith("random."):
         return "Random"
     if op_name in _CONTRACTION_OPS:
@@ -79,6 +84,10 @@ def _classify_op(op_name: str, detail_category: str) -> str:
         return "Window"
     if op_name in _POLYNOMIAL_OPS:
         return "Polynomial"
+    if op_name in _BITWISE_OPS:
+        return "Bitwise"
+    if op_name in _COMPLEX_OPS:
+        return "Complex"
     return CATEGORY_MAP.get(detail_category, "Misc")
 
 
@@ -127,6 +136,37 @@ _POLYNOMIAL_OPS = {
     "polyint",
     "poly",
     "roots",
+}
+
+#: Original 14 linalg decomposition/solver ops (keep as "Linalg").
+#: All other ``linalg.*`` ops are classified as "Linalg Delegates".
+_LINALG_DECOMP_OPS = {
+    "linalg.cholesky",
+    "linalg.qr",
+    "linalg.eig",
+    "linalg.eigh",
+    "linalg.eigvals",
+    "linalg.eigvalsh",
+    "linalg.svd",
+    "linalg.svdvals",
+    "linalg.solve",
+    "linalg.inv",
+    "linalg.lstsq",
+    "linalg.pinv",
+    "linalg.det",
+    "linalg.slogdet",
+}
+
+_BITWISE_OPS = {
+    "bitwise_and", "bitwise_or", "bitwise_xor", "bitwise_not",
+    "bitwise_invert", "bitwise_count", "bitwise_left_shift",
+    "bitwise_right_shift", "gcd", "lcm", "invert",
+    "left_shift", "right_shift", "isnat",
+}
+
+_COMPLEX_OPS = {
+    "angle", "conj", "conjugate", "imag", "real", "real_if_close",
+    "iscomplex", "iscomplexobj", "isreal", "isrealobj", "sort_complex",
 }
 
 # ---------------------------------------------------------------------------
@@ -567,6 +607,27 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
       "cost formula (e.g., `numel(output)` for pointwise ops).")
     w("- $R$ is the number of repeats per distribution.")
     w("- The **median** across 3 input distributions is reported.")
+    w()
+
+    # ------------------------------------------------------------------
+    # Measurement modes by category
+    # ------------------------------------------------------------------
+    w("### Measurement modes by category")
+    w()
+    w("Most operations are measured with hardware performance counters (perf mode).")
+    w("Two categories use alternative measurement:")
+    w()
+    w("**Bitwise/integer operations** (bitwise_and, gcd, lcm, etc.) are measured")
+    w("with wall-clock timing instead of perf counters, because integer ALU")
+    w("operations do not retire `fp_arith_inst_retired` events. The timing weight")
+    w("is normalized against the timing baseline of `np.add`, producing comparable")
+    w("relative costs. Input arrays use int64 dtype.")
+    w()
+    w("**Complex-number operations** (angle, conj, real, imag, etc.) are measured")
+    w("with perf counters on complex128 input arrays, which generate real")
+    w("floating-point instructions for the underlying real/imaginary arithmetic.")
+    w("Two type-check operations (`iscomplexobj`, `isrealobj`) use timing mode")
+    w("as they perform a single type check rather than per-element FP work.")
     w()
 
     # ------------------------------------------------------------------
