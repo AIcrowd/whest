@@ -766,8 +766,9 @@ class TestInnerSymmetryFlops:
 
     def test_inner_sym_config_toggle(self):
         """Global config use_inner_symmetry controls the reduction."""
-        import mechestim as me
         import numpy as np
+
+        import mechestim as me
 
         n = 5
         T = np.random.randn(n, n, n, n)
