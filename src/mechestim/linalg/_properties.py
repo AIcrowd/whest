@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import numpy as _np
 
-from mechestim._cost_model import FMA_COST
 from mechestim._docstrings import attach_docstring
 from mechestim._symmetric import SymmetricTensor
 from mechestim._validation import require_budget
@@ -58,21 +57,18 @@ def det_cost(n: int, symmetric: bool = False) -> int:
     n : int
         Matrix dimension.
     symmetric : bool, optional
-        If True, assume symmetric input. Default is False.
+        Ignored (kept for API compatibility). Default is False.
 
     Returns
     -------
     int
-        Estimated FLOP count.
+        Estimated FLOP count: $n^3$.
 
     Notes
     -----
-    Uses $n^3/3$ for symmetric input (Cholesky), or $n^3/3$ (FMA = 1 op) for general
-    input (LU factorization).
+    Simplified cubic cost model for determinant computation.
     """
-    if symmetric:
-        return max(n**3 // 3, 1)
-    return max(FMA_COST * n**3 // 3, 1)
+    return max(n**3, 1)
 
 
 def det(a):
@@ -89,12 +85,7 @@ def det(a):
     return _np.linalg.det(a)
 
 
-attach_docstring(
-    det,
-    _np.linalg.det,
-    "linalg",
-    r"$n^3$ FLOPs (LU), or $n^3/3$ (Cholesky) for SymmetricTensor input",
-)
+attach_docstring(det, _np.linalg.det, "linalg", r"$n^3$ FLOPs")
 
 
 def slogdet_cost(n: int, symmetric: bool = False) -> int:
@@ -105,21 +96,18 @@ def slogdet_cost(n: int, symmetric: bool = False) -> int:
     n : int
         Matrix dimension.
     symmetric : bool, optional
-        If True, assume symmetric input. Default is False.
+        Ignored (kept for API compatibility). Default is False.
 
     Returns
     -------
     int
-        Estimated FLOP count.
+        Estimated FLOP count: $n^3$.
 
     Notes
     -----
-    Uses $n^3/3$ for symmetric input (Cholesky), or $n^3/3$ (FMA = 1 op) for general
-    input (LU factorization).
+    Simplified cubic cost model for sign and log-determinant computation.
     """
-    if symmetric:
-        return max(n**3 // 3, 1)
-    return max(FMA_COST * n**3 // 3, 1)
+    return max(n**3, 1)
 
 
 def slogdet(a):
@@ -136,12 +124,7 @@ def slogdet(a):
     return _np.linalg.slogdet(a)
 
 
-attach_docstring(
-    slogdet,
-    _np.linalg.slogdet,
-    "linalg",
-    r"$n^3$ FLOPs (LU), or $n^3/3$ (Cholesky) for SymmetricTensor input",
-)
+attach_docstring(slogdet, _np.linalg.slogdet, "linalg", r"$n^3$ FLOPs")
 
 
 def norm_cost(shape: tuple, ord=None) -> int:
@@ -174,11 +157,11 @@ def norm_cost(shape: tuple, ord=None) -> int:
         elif ord in (1, -1, _np.inf, -_np.inf, 0):
             return numel
         else:
-            return FMA_COST * numel
+            return 2 * numel
     else:
         m, n = shape[-2], shape[-1]
         if ord is None or ord == "fro":
-            return FMA_COST * numel
+            return 2 * numel
         elif ord in (1, -1, _np.inf, -_np.inf):
             return numel
         elif ord == 2 or ord == -2:
@@ -235,7 +218,7 @@ def vector_norm_cost(shape: tuple, ord=None) -> int:
     numel = max(numel, 1)
     if ord is None or ord == 2 or ord == -2 or ord in (1, -1, _np.inf, -_np.inf, 0):
         return numel
-    return FMA_COST * numel
+    return 2 * numel
 
 
 def vector_norm(x, ord=2, axis=None, keepdims=False):
@@ -285,7 +268,7 @@ def matrix_norm_cost(shape: tuple, ord=None) -> int:
     m, n = shape[-2], shape[-1]
     numel = m * n
     if ord is None or ord == "fro":
-        return FMA_COST * numel
+        return 2 * numel
     elif ord in (1, -1, _np.inf, -_np.inf):
         return numel
     elif ord == 2 or ord == -2:

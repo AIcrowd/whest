@@ -30,17 +30,17 @@ def test_parse_implicit():
 def test_einsum_cost_matmul():
     assert (
         einsum_cost("ij,jk->ik", shapes=[(3, 4), (4, 5)]) == 60
-    )  # 3*4*5 * op_factor(1)
+    )  # 3*4*5 * op_factor(1), FMA=1
 
 
 def test_einsum_cost_trace():
-    assert einsum_cost("ii->", shapes=[(10, 10)]) == 10  # 10 * op_factor(1)
+    assert einsum_cost("ii->", shapes=[(10, 10)]) == 10  # 10 * op_factor(1), FMA=1
 
 
 def test_einsum_cost_batch_matmul():
     assert (
         einsum_cost("bij,bjk->bik", shapes=[(2, 3, 4), (2, 4, 5)]) == 120
-    )  # 2*3*4*5 * op_factor(1)
+    )  # 2*3*4*5 * op_factor(1), FMA=1
 
 
 def test_einsum_cost_outer_product():
@@ -50,7 +50,7 @@ def test_einsum_cost_outer_product():
 
 
 def test_einsum_cost_scalar_output():
-    assert einsum_cost("i,i->", shapes=[(5,), (5,)]) == 5  # 5 * op_factor(1)
+    assert einsum_cost("i,i->", shapes=[(5,), (5,)]) == 5  # 5 * op_factor(1), FMA=1
 
 
 def test_pointwise_cost():
@@ -107,14 +107,14 @@ def test_einsum_cost_symmetric_input():
     cost = einsum_cost(
         "ijk,k->ij", shapes=[(10, 10, 5), (5,)], operand_symmetries=[info, None]
     )
-    dense_cost = 10 * 10 * 5  # 500 with FMA_COST=1
+    dense_cost = 10 * 10 * 5  # 500 with FMA=1 op_factor
     assert cost < dense_cost  # symmetry reduces cost
     assert cost > 0
 
 
 def test_einsum_cost_no_operand_symmetry_unchanged():
     cost = einsum_cost("ij,j->i", shapes=[(10, 10), (10,)])
-    assert cost == 100  # 10*10 * op_factor(1)
+    assert cost == 100  # 10*10 * op_factor(1), FMA=1
 
 
 def test_einsum_cost_matches_contract_path():

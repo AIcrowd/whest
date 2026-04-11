@@ -87,28 +87,34 @@ def test_existing_counted_reduction_ops():
 
 
 def test_existing_free_ops():
-    expected = [
+    # Some former free ops are now counted_custom (budget deduction added)
+    still_free = [
         "zeros",
         "ones",
         "reshape",
         "transpose",
+        "eye",
+        "triu",
+        "tril",
+    ]
+    now_counted = [
         "concatenate",
         "stack",
-        "eye",
         "diag",
         "arange",
         "linspace",
         "where",
         "pad",
-        "triu",
-        "tril",
         "isnan",
         "isinf",
         "isfinite",
     ]
-    for name in expected:
+    for name in still_free:
         assert name in REGISTRY, f"{name} not in registry"
         assert REGISTRY[name]["category"] == "free"
+    for name in now_counted:
+        assert name in REGISTRY, f"{name} not in registry"
+        assert REGISTRY[name]["category"] == "counted_custom"
 
 
 def test_existing_custom_ops():

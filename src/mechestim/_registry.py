@@ -386,9 +386,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Return real array if imaginary part is negligible.",
     },
     "sort_complex": {
-        "category": "counted_unary",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Sort complex array by real then imaginary part.",
+        "notes": "Sort complex array. Cost: $n \\cdot \\lceil\\log_2 n\\rceil$.",
     },
     # ------------------------------------------------------------------
     # counted_binary — implemented in _pointwise.py
@@ -812,12 +812,12 @@ REGISTRY: dict[str, dict] = {
     "dot": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Dot product; cost = M*N*K for matrix multiply (FMA=1).",
+        "notes": "Dot product; cost = 2*M*N*K for matrix multiply.",
     },
     "matmul": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Matrix multiplication; cost = M*N*K (FMA=1).",
+        "notes": "Matrix multiplication; cost = 2*M*N*K.",
     },
     "einsum": {
         "category": "counted_custom",
@@ -837,7 +837,7 @@ REGISTRY: dict[str, dict] = {
     "inner": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Inner product; cost = N for 1-D, N*M for n-D.",
+        "notes": "Inner product; cost = 2*N for 1-D, 2*N*M for n-D.",
     },
     "outer": {
         "category": "counted_custom",
@@ -852,7 +852,7 @@ REGISTRY: dict[str, dict] = {
     "vdot": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Dot product with conjugation; cost = N.",
+        "notes": "Dot product with conjugation; cost = 2*N.",
     },
     "kron": {
         "category": "counted_custom",
@@ -925,7 +925,7 @@ REGISTRY: dict[str, dict] = {
     "linalg.cholesky": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Cholesky decomposition. Cost: $n^3/3$ (Golub & Van Loan §4.2).",
+        "notes": "Cholesky decomposition. Cost: $n^3$.",
     },
     "linalg.cond": {
         "category": "counted_custom",
@@ -940,7 +940,7 @@ REGISTRY: dict[str, dict] = {
     "linalg.det": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Determinant. Cost: $n^3$ (LU factorization).",
+        "notes": "Determinant. Cost: $n^3$.",
     },
     "linalg.diagonal": {
         "category": "free",
@@ -950,22 +950,22 @@ REGISTRY: dict[str, dict] = {
     "linalg.eig": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Eigendecomposition. Cost: $10n^3$ (Francis QR, Golub & Van Loan §7.5).",
+        "notes": "Eigendecomposition. Cost: $n^3$.",
     },
     "linalg.eigh": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Symmetric eigendecomposition. Cost: $(4/3)n^3$ (Golub & Van Loan §8.3).",
+        "notes": "Symmetric eigendecomposition. Cost: $n^3$.",
     },
     "linalg.eigvals": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Eigenvalues only. Cost: $10n^3$ (same as eig).",
+        "notes": "Eigenvalues only. Cost: $n^3$.",
     },
     "linalg.eigvalsh": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Symmetric eigenvalues. Cost: $(4/3)n^3$ (same as eigh).",
+        "notes": "Symmetric eigenvalues. Cost: $n^3$.",
     },
     "linalg.inv": {
         "category": "counted_custom",
@@ -980,12 +980,12 @@ REGISTRY: dict[str, dict] = {
     "linalg.matmul": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Delegates to `me.matmul` which charges `m*k*n` FLOPs.",
+        "notes": "Delegates to `me.matmul` which charges `m*k*n` FLOPs (FMA=1).",
     },
     "linalg.matrix_norm": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Matrix norm. Cost depends on ord: numel for Frobenius, m*n*min(m,n) for ord=2.",
+        "notes": "Matrix norm. Cost depends on ord: 2*numel for Frobenius, m*n*min(m,n) for ord=2.",
     },
     "linalg.matrix_power": {
         "category": "counted_custom",
@@ -1010,7 +1010,7 @@ REGISTRY: dict[str, dict] = {
     "linalg.norm": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Norm. Cost depends on ord: numel for L1/inf, numel for Frobenius, m*n*min(m,n) for ord=2.",
+        "notes": "Norm. Cost depends on ord: numel for L1/inf, 2*numel for Frobenius, m*n*min(m,n) for ord=2.",
     },
     "linalg.outer": {
         "category": "counted_custom",
@@ -1025,17 +1025,17 @@ REGISTRY: dict[str, dict] = {
     "linalg.qr": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "QR decomposition. Cost: $2mn^2 - (2/3)n^3$ (Golub & Van Loan §5.2).",
+        "notes": "QR decomposition. Cost: $m \\cdot n \\cdot \\min(m,n)$.",
     },
     "linalg.slogdet": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Sign + log determinant. Cost: $n^3$ (LU factorization).",
+        "notes": "Sign + log determinant. Cost: $n^3$.",
     },
     "linalg.solve": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Solve Ax=b. Cost: $2n^3/3$ (LU) + $n^2 \\cdot n_{\\text{rhs}}$ (back-substitution).",
+        "notes": "Solve Ax=b. Cost: $n^3$.",
     },
     "linalg.svdvals": {
         "category": "counted_custom",
@@ -1065,12 +1065,12 @@ REGISTRY: dict[str, dict] = {
     "linalg.vecdot": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Delegates to `me.vecdot` which charges `n` FLOPs.",
+        "notes": "Delegates to `me.vecdot` which charges `2*n` FLOPs.",
     },
     "linalg.vector_norm": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Vector norm. Cost: numel (or numel for general p-norm).",
+        "notes": "Vector norm. Cost: numel (or 2*numel for general p-norm).",
     },
     # ------------------------------------------------------------------
     # fft — counted_custom (14 transforms) + free (4 utility ops)
@@ -1169,9 +1169,9 @@ REGISTRY: dict[str, dict] = {
     # free — implemented in _free_ops.py
     # ------------------------------------------------------------------
     "array": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Create array from data.",
+        "notes": "Create array from data. Cost: numel(input).",
     },
     "zeros": {
         "category": "free",
@@ -1184,9 +1184,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Create one-filled array.",
     },
     "full": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Create array filled with scalar value.",
+        "notes": "Create array filled with scalar value. Cost: numel(output).",
     },
     "eye": {
         "category": "free",
@@ -1199,19 +1199,19 @@ REGISTRY: dict[str, dict] = {
         "notes": "Create square identity matrix.",
     },
     "diag": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Extract diagonal or construct diagonal array.",
+        "notes": "Extract diagonal or construct diagonal array. Cost: numel(input).",
     },
     "arange": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Return evenly spaced values in given interval.",
+        "notes": "Return evenly spaced values in given interval. Cost: numel(output).",
     },
     "linspace": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Return evenly spaced numbers over interval.",
+        "notes": "Return evenly spaced numbers over interval. Cost: numel(output).",
     },
     "zeros_like": {
         "category": "free",
@@ -1224,9 +1224,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Array of ones with same shape/type as input.",
     },
     "full_like": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Array filled with scalar, same shape/type as input.",
+        "notes": "Array filled with scalar, same shape/type as input. Cost: numel(output).",
     },
     "empty": {
         "category": "free",
@@ -1259,19 +1259,19 @@ REGISTRY: dict[str, dict] = {
         "notes": "Move axes to new positions.",
     },
     "concatenate": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Join arrays along axis.",
+        "notes": "Join arrays along axis. Cost: numel(output).",
     },
     "stack": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Join arrays along new axis.",
+        "notes": "Join arrays along new axis. Cost: numel(output).",
     },
     "vstack": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Stack arrays vertically.",
+        "notes": "Stack arrays vertically. Cost: numel(output).",
     },
     "hstack": {
         "category": "free",
@@ -1279,9 +1279,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Stack arrays horizontally.",
     },
     "split": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Split array into sub-arrays.",
+        "notes": "Split array into sub-arrays. Cost: numel(output).",
     },
     "hsplit": {
         "category": "free",
@@ -1289,9 +1289,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Split array into columns.",
     },
     "vsplit": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Split array into rows.",
+        "notes": "Split array into rows. Cost: numel(output).",
     },
     "squeeze": {
         "category": "free",
@@ -1304,9 +1304,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Insert new size-1 axis.",
     },
     "ravel": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Return contiguous flattened array.",
+        "notes": "Return contiguous flattened array. Cost: numel(input).",
     },
     "copy": {
         "category": "free",
@@ -1314,19 +1314,19 @@ REGISTRY: dict[str, dict] = {
         "notes": "Return array copy.",
     },
     "where": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Select elements based on condition.",
+        "notes": "Select elements based on condition. Cost: numel(input).",
     },
     "tile": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Repeat array by tiling.",
+        "notes": "Repeat array by tiling. Cost: numel(output).",
     },
     "repeat": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Repeat elements of an array.",
+        "notes": "Repeat elements of an array. Cost: numel(output).",
     },
     "flip": {
         "category": "free",
@@ -1334,9 +1334,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Reverse order of elements along axis.",
     },
     "roll": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Roll array elements along axis.",
+        "notes": "Roll array elements along axis. Cost: numel(output).",
     },
     "sort": {
         "category": "counted_custom",
@@ -1359,9 +1359,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
     },
     "pad": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Pad array.",
+        "notes": "Pad array. Cost: numel(output).",
     },
     "triu": {
         "category": "free",
@@ -1374,9 +1374,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Lower triangle of array.",
     },
     "diagonal": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Return specified diagonals.",
+        "notes": "Return specified diagonals. Cost: numel(input).",
     },
     "trace": {
         "category": "counted_custom",
@@ -1384,14 +1384,14 @@ REGISTRY: dict[str, dict] = {
         "notes": "Diagonal sum; cost = min(n,m).",
     },
     "broadcast_to": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Broadcast array to new shape.",
+        "notes": "Broadcast array to new shape. Cost: numel(output).",
     },
     "meshgrid": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Coordinate matrices from coordinate vectors.",
+        "notes": "Coordinate matrices from coordinate vectors. Cost: numel(output).",
     },
     "astype": {
         "category": "free",
@@ -1399,24 +1399,24 @@ REGISTRY: dict[str, dict] = {
         "notes": "Cast array to specified type.",
     },
     "asarray": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Convert input to array.",
+        "notes": "Convert input to array. Cost: numel(input).",
     },
     "isnan": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Test for NaN element-wise.",
+        "notes": "Test for NaN element-wise. Cost: numel(input).",
     },
     "isinf": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Test for infinity element-wise.",
+        "notes": "Test for infinity element-wise. Cost: numel(input).",
     },
     "isfinite": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Test for finite values element-wise.",
+        "notes": "Test for finite values element-wise. Cost: numel(input).",
     },
     "allclose": {
         "category": "counted_custom",
@@ -1460,9 +1460,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Stack 1-D arrays as columns into 2-D array.",
     },
     "dstack": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Stack arrays depth-wise (along third axis).",
+        "notes": "Stack arrays depth-wise (along third axis). Cost: numel(output).",
     },
     "row_stack": {
         "category": "free",
@@ -1470,19 +1470,19 @@ REGISTRY: dict[str, dict] = {
         "notes": "Stack arrays vertically (alias for vstack).",
     },
     "flatnonzero": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Return indices of non-zero elements in flattened array.",
+        "notes": "Return indices of non-zero elements in flattened array. Cost: numel(input).",
     },
     "nonzero": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Return indices of non-zero elements.",
+        "notes": "Return indices of non-zero elements. Cost: numel(input).",
     },
     "argwhere": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Find indices of non-zero elements.",
+        "notes": "Find indices of non-zero elements. Cost: numel(input).",
     },
     "isin": {
         "category": "counted_custom",
@@ -1495,54 +1495,54 @@ REGISTRY: dict[str, dict] = {
         "notes": "Set membership; cost = (n+m)*ceil(log2(n+m)).",
     },
     "select": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Return array from list of choices based on conditions.",
+        "notes": "Return array from list of choices based on conditions. Cost: numel(input).",
     },
     "extract": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Return elements satisfying condition.",
+        "notes": "Return elements satisfying condition. Cost: numel(input).",
     },
     "place": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Change elements satisfying condition.",
+        "notes": "Change elements satisfying condition. Cost: numel(input).",
     },
     "put": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Replace elements at given flat indices.",
+        "notes": "Replace elements at given flat indices. Cost: numel(input).",
     },
     "put_along_axis": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Put values into destination array using indices.",
+        "notes": "Put values into destination array using indices. Cost: numel(input).",
     },
     "putmask": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Change elements of array based on condition and input values.",
+        "notes": "Change elements of array based on condition and input values. Cost: numel(input).",
     },
     "take": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Take elements from array along axis.",
+        "notes": "Take elements from array along axis. Cost: numel(output).",
     },
     "take_along_axis": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Take values from input array by matching 1-D index.",
+        "notes": "Take values from input array by matching 1-D index. Cost: numel(output).",
     },
     "choose": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Construct array from index array and choices.",
+        "notes": "Construct array from index array and choices. Cost: numel(output).",
     },
     "compress": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Return selected slices along axis.",
+        "notes": "Return selected slices along axis. Cost: numel(input).",
     },
     "array_equal": {
         "category": "counted_custom",
@@ -1570,24 +1570,24 @@ REGISTRY: dict[str, dict] = {
         "notes": "Return number of dimensions of array.",
     },
     "dsplit": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Split array into multiple sub-arrays depth-wise.",
+        "notes": "Split array into multiple sub-arrays depth-wise. Cost: numel(output).",
     },
     "array_split": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Split array into sub-arrays (possibly unequal).",
+        "notes": "Split array into sub-arrays (possibly unequal). Cost: numel(output).",
     },
     "trim_zeros": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Trim leading/trailing zeros from 1-D array.",
+        "notes": "Trim leading/trailing zeros from 1-D array. Cost: numel(output).",
     },
     "resize": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Return new array with given shape by repeating.",
+        "notes": "Return new array with given shape by repeating. Cost: numel(output).",
     },
     "broadcast_shapes": {
         "category": "free",
@@ -1595,9 +1595,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Compute broadcast shape from input shapes.",
     },
     "broadcast_arrays": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Broadcast arrays against each other.",
+        "notes": "Broadcast arrays against each other. Cost: numel(output).",
     },
     "result_type": {
         "category": "free",
@@ -1635,59 +1635,59 @@ REGISTRY: dict[str, dict] = {
         "notes": "Determine if two arrays might share memory.",
     },
     "packbits": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Pack elements of array into bits.",
+        "notes": "Pack elements of array into bits. Cost: numel(input).",
     },
     "unpackbits": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Unpack elements of array into bits.",
+        "notes": "Unpack elements of array into bits. Cost: numel(input).",
     },
     "fromfunction": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Construct array by executing function over each coordinate.",
+        "notes": "Construct array by executing function over each coordinate. Cost: numel(output).",
     },
     "fromiter": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Create array from an iterable.",
+        "notes": "Create array from an iterable. Cost: numel(output).",
     },
     "frombuffer": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Interpret buffer as 1-D array.",
+        "notes": "Interpret buffer as 1-D array. Cost: numel(output).",
     },
     "fromstring": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Create 1-D array from string data.",
+        "notes": "Create 1-D array from string data. Cost: numel(output).",
     },
     "fromfile": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Construct array from binary/text file.",
+        "notes": "Construct array from binary/text file. Cost: numel(output).",
     },
     "fromregex": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Construct array from text file using regex.",
+        "notes": "Construct array from text file using regex. Cost: numel(output).",
     },
     "from_dlpack": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Create ndarray from DLPack object (zero-copy).",
+        "notes": "Create ndarray from DLPack object (zero-copy). Cost: numel(output).",
     },
     "block": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Assemble ndarray from nested list of blocks.",
+        "notes": "Assemble ndarray from nested list of blocks. Cost: numel(output).",
     },
     "bmat": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Build matrix from nested list of matrices.",
+        "notes": "Build matrix from nested list of matrices. Cost: numel(output).",
     },
     "lexsort": {
         "category": "counted_custom",
@@ -1765,9 +1765,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Convert multi-dimensional index to flat index.",
     },
     "indices": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Return array representing indices of a grid.",
+        "notes": "Return array representing indices of a grid. Cost: numel(output).",
     },
     "diag_indices": {
         "category": "free",
@@ -1780,14 +1780,14 @@ REGISTRY: dict[str, dict] = {
         "notes": "Return indices to access main diagonal of given array.",
     },
     "diagflat": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Create diagonal array from flattened input.",
+        "notes": "Create diagonal array from flattened input. Cost: numel(input).",
     },
     "mask_indices": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Return indices of mask for n x n array.",
+        "notes": "Return indices of mask for n x n array. Cost: numel(output).",
     },
     "tril_indices": {
         "category": "free",
@@ -1810,9 +1810,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Return upper-triangle indices for given array.",
     },
     "fill_diagonal": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Fill main diagonal of given array.",
+        "notes": "Fill main diagonal of given array. Cost: numel(input).",
     },
     "tri": {
         "category": "free",
@@ -1830,9 +1830,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Log-spaced generation; cost = num.",
     },
     "concat": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Join arrays along axis (NumPy 2.x array API alias for concatenate).",
+        "notes": "Join arrays along axis (NumPy 2.x array API alias for concatenate). Cost: numel(output).",
     },
     "vander": {
         "category": "counted_custom",
@@ -1840,14 +1840,14 @@ REGISTRY: dict[str, dict] = {
         "notes": "Vandermonde matrix; cost = len(x)*(N-1).",
     },
     "ix_": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Construct open mesh from multiple sequences.",
+        "notes": "Construct open mesh from multiple sequences. Cost: numel(output).",
     },
     "rollaxis": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Roll specified axis backwards.",
+        "notes": "Roll specified axis backwards. Cost: numel(output).",
     },
     "permute_dims": {
         "category": "free",
@@ -1860,29 +1860,29 @@ REGISTRY: dict[str, dict] = {
         "notes": "Transpose last two dimensions (NumPy 2.x array API).",
     },
     "unstack": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Unstack array along axis into tuple of arrays (NumPy 2.x).",
+        "notes": "Unstack array along axis into tuple of arrays (NumPy 2.x). Cost: numel(output).",
     },
     "delete": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Return array with sub-arrays deleted along axis.",
+        "notes": "Return array with sub-arrays deleted along axis. Cost: numel(output).",
     },
     "insert": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Insert values along axis before given indices.",
+        "notes": "Insert values along axis before given indices. Cost: numel(output).",
     },
     "append": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Append values to end of array.",
+        "notes": "Append values to end of array. Cost: numel(output).",
     },
     "copyto": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Copy values from src to dst array.",
+        "notes": "Copy values from src to dst array. Cost: numel(output).",
     },
     "unique_all": {
         "category": "counted_custom",
@@ -1905,9 +1905,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
     },
     "asarray_chkfinite": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Convert to array, raising if NaN or inf.",
+        "notes": "Convert to array, raising if NaN or inf. Cost: numel(input).",
     },
     "require": {
         "category": "free",
@@ -1950,14 +1950,14 @@ REGISTRY: dict[str, dict] = {
         "notes": "Return minimum data type character that can satisfy all given types.",
     },
     "base_repr": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Return string representation of number in given base.",
+        "notes": "Return string representation of number in given base. Cost: numel(input).",
     },
     "binary_repr": {
-        "category": "free",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Return binary string representation of the input number.",
+        "notes": "Return binary string representation of the input number. Cost: numel(input).",
     },
     # ------------------------------------------------------------------
     # random — passthrough, category=free
@@ -2228,7 +2228,7 @@ REGISTRY: dict[str, dict] = {
     "roots": {
         "category": "counted_custom",
         "module": "mechestim._polynomial",
-        "notes": "Return roots of polynomial with given coefficients. Cost: $10n^3$ FLOPs (companion matrix eig).",
+        "notes": "Return roots of polynomial with given coefficients. Cost: $n^3$ (companion matrix eig, simplified).",
     },
     "polyadd": {
         "category": "counted_custom",
@@ -2248,7 +2248,7 @@ REGISTRY: dict[str, dict] = {
     "polyfit": {
         "category": "counted_custom",
         "module": "mechestim._polynomial",
-        "notes": "Least squares polynomial fit. Cost: m * (deg+1)^2 FLOPs.",
+        "notes": "Least squares polynomial fit. Cost: 2 * m * (deg+1)^2 FLOPs.",
     },
     "polyint": {
         "category": "counted_custom",
@@ -2268,7 +2268,7 @@ REGISTRY: dict[str, dict] = {
     "polyval": {
         "category": "counted_custom",
         "module": "mechestim._polynomial",
-        "notes": "Evaluate polynomial at given points. Cost: m * deg FLOPs (Horner's method).",
+        "notes": "Evaluate polynomial at given points. Cost: $m \\cdot \\text{deg}$ (Horner's method, FMA=1).",
     },
     # counted_custom — window functions
     "bartlett": {
@@ -2395,19 +2395,19 @@ REGISTRY: dict[str, dict] = {
         "notes": "Take arbitrary Python function and return NumPy ufunc. Not supported.",
     },
     "piecewise": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Evaluate piecewise-defined function. Not supported.",
+        "notes": "Piecewise function. Cost: numel(input).",
     },
     "apply_along_axis": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Apply function along axis. Not supported.",
+        "notes": "Apply function along axis. Cost: numel(output). Inner function costs tracked separately.",
     },
     "apply_over_axes": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Apply function over multiple axes. Not supported.",
+        "notes": "Apply function over multiple axes. Cost: numel(output).",
     },
     # blacklisted — datetime
     "datetime_as_string": {

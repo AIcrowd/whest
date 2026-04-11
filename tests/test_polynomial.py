@@ -30,7 +30,7 @@ def test_polyval_result():
 
 
 def test_polyval_cost():
-    # coeffs [1, -2, 3] -> deg=2, 5 points -> cost = 5*2 = 10 (FMA_COST=1)
+    # coeffs [1, -2, 3] -> deg=2, 5 points -> cost = 5*2 = 10 (FMA=1)
     p = numpy.array([1.0, -2.0, 3.0])
     x = numpy.array([0.0, 1.0, 2.0, 3.0, 4.0])
     with BudgetContext(flop_budget=10**6) as budget:
@@ -226,12 +226,12 @@ def test_polyfit_result():
 
 
 def test_polyfit_cost():
-    # 5 points, deg 2 -> cost = 5 * (2+1)^2 = 5 * 9 = 45 (FMA_COST=1)
+    # 5 points, deg 2 -> cost = 2 * 5 * (2+1)^2 = 2 * 5 * 9 = 90
     x = numpy.array([0.0, 1.0, 2.0, 3.0, 4.0])
     y = numpy.array([0.0, 1.0, 4.0, 9.0, 16.0])
     with BudgetContext(flop_budget=10**6) as budget:
         polyfit(x, y, 2)
-        assert budget.flops_used == 45
+        assert budget.flops_used == 90
 
 
 def test_polyfit_no_budget():
@@ -280,11 +280,11 @@ def test_roots_result():
 
 
 def test_roots_cost():
-    # 4 coeffs -> n = len(p)-1 = 3 -> cost = 10 * 3^3 = 10 * 27 = 270
+    # 4 coeffs -> n = len(p)-1 = 3 -> cost = 3^3 = 27 (simplified)
     p = numpy.array([1.0, -6.0, 11.0, -6.0])
     with BudgetContext(flop_budget=10**6) as budget:
         roots(p)
-        assert budget.flops_used == 270
+        assert budget.flops_used == 27
 
 
 def test_roots_no_budget():

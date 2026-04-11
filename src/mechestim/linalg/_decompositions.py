@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import numpy as _np
 
-from mechestim._cost_model import FMA_COST
 from mechestim._docstrings import attach_docstring
 from mechestim._validation import require_budget
 
@@ -25,14 +24,13 @@ def cholesky_cost(n: int) -> int:
     Returns
     -------
     int
-        Estimated FLOP count: $n^3 / 3$.
+        Estimated FLOP count: $n^3$.
 
     Notes
     -----
-    Source: Golub & Van Loan, *Matrix Computations*, 4th ed., §4.2.
-    Assumes standard column-outer-product Cholesky algorithm.
+    Simplified cubic cost model for Cholesky decomposition.
     """
-    return max(n**3 // 3, 1)
+    return max(n**3, 1)
 
 
 def cholesky(a):
@@ -48,7 +46,7 @@ def cholesky(a):
     return _np.linalg.cholesky(a)
 
 
-attach_docstring(cholesky, _np.linalg.cholesky, "linalg", r"$n^3/3$ FLOPs")
+attach_docstring(cholesky, _np.linalg.cholesky, "linalg", r"$n^3$ FLOPs")
 
 
 def qr_cost(m: int, n: int) -> int:
@@ -64,16 +62,13 @@ def qr_cost(m: int, n: int) -> int:
     Returns
     -------
     int
-        Estimated FLOP count: $mn^2 - n^3/3$ (FMA = 1 op) (for $m \geq n$).
+        Estimated FLOP count: $m \cdot n \cdot \min(m, n)$.
 
     Notes
     -----
-    Source: Golub & Van Loan, *Matrix Computations*, 4th ed., §5.2.
-    Assumes Householder QR. For m < n, roles are swapped.
+    Simplified cubic cost model for QR decomposition.
     """
-    if m < n:
-        m, n = n, m
-    return max(FMA_COST * (m * n**2 - n**3 // 3), 1)
+    return max(m * n * min(m, n), 1)
 
 
 def qr(a, mode="reduced"):
@@ -89,7 +84,7 @@ def qr(a, mode="reduced"):
     return _np.linalg.qr(a, mode=mode)
 
 
-attach_docstring(qr, _np.linalg.qr, "linalg", r"$mn^2 - n^3/3$ FLOPs (Householder, FMA=1)")
+attach_docstring(qr, _np.linalg.qr, "linalg", r"$m \cdot n \cdot \min(m,n)$ FLOPs")
 
 
 def eig_cost(n: int) -> int:
@@ -103,17 +98,13 @@ def eig_cost(n: int) -> int:
     Returns
     -------
     int
-        Estimated FLOP count: $10n^3$.
+        Estimated FLOP count: $n^3$.
 
     Notes
     -----
-    Source: Golub & Van Loan, *Matrix Computations*, 4th ed., §7.5.
-    Assumes Francis double-shift QR algorithm. The constant ~10 accounts
-    for Hessenberg reduction (~$10n^3/3$) plus ~2 QR iterations per
-    eigenvalue. This is an accepted asymptotic estimate; actual count
-    is data-dependent.
+    Simplified cubic cost model for eigendecomposition.
     """
-    return max(10 * n**3, 1)
+    return max(n**3, 1)
 
 
 def eig(a):
@@ -129,7 +120,7 @@ def eig(a):
     return _np.linalg.eig(a)
 
 
-attach_docstring(eig, _np.linalg.eig, "linalg", r"$10n^3$ FLOPs (Francis QR)")
+attach_docstring(eig, _np.linalg.eig, "linalg", r"$n^3$ FLOPs")
 
 
 def eigh_cost(n: int) -> int:
@@ -143,15 +134,13 @@ def eigh_cost(n: int) -> int:
     Returns
     -------
     int
-        Estimated FLOP count: $(4/3)n^3$.
+        Estimated FLOP count: $n^3$.
 
     Notes
     -----
-    Source: Golub & Van Loan, *Matrix Computations*, 4th ed., §8.3.
-    Assumes tridiagonalization via Householder followed by implicit
-    QR sweeps.
+    Simplified cubic cost model for symmetric eigendecomposition.
     """
-    return max((4 * n**3) // 3, 1)
+    return max(n**3, 1)
 
 
 def eigh(a, UPLO="L"):
@@ -168,9 +157,7 @@ def eigh(a, UPLO="L"):
     return _np.asarray(vals), _np.asarray(vecs)
 
 
-attach_docstring(
-    eigh, _np.linalg.eigh, "linalg", r"$4n^3/3$ FLOPs (tridiagonal + QR sweeps)"
-)
+attach_docstring(eigh, _np.linalg.eigh, "linalg", r"$n^3$ FLOPs")
 
 
 def eigvals_cost(n: int) -> int:
@@ -184,16 +171,13 @@ def eigvals_cost(n: int) -> int:
     Returns
     -------
     int
-        Estimated FLOP count: $7n^3$.
+        Estimated FLOP count: $n^3$.
 
     Notes
     -----
-    Same algorithm as ``eig`` (Francis QR), but eigenvectors are not
-    accumulated. Without back-accumulation of eigenvectors the cost
-    is dominated by Hessenberg reduction (~(10/3)n^3) plus QR iterations
-    (~4n^3), totalling ~7n^3.
+    Simplified cubic cost model for eigenvalue computation.
     """
-    return max(7 * n**3, 1)
+    return max(n**3, 1)
 
 
 def eigvals(a):
@@ -209,7 +193,7 @@ def eigvals(a):
     return _np.linalg.eigvals(a)
 
 
-attach_docstring(eigvals, _np.linalg.eigvals, "linalg", r"$7n^3$ FLOPs")
+attach_docstring(eigvals, _np.linalg.eigvals, "linalg", r"$n^3$ FLOPs")
 
 
 def eigvalsh_cost(n: int) -> int:
@@ -223,13 +207,13 @@ def eigvalsh_cost(n: int) -> int:
     Returns
     -------
     int
-        Estimated FLOP count: $(4/3)n^3$.
+        Estimated FLOP count: $n^3$.
 
     Notes
     -----
-    Same algorithm as ``eigh``, but eigenvectors are not accumulated.
+    Simplified cubic cost model for symmetric eigenvalue computation.
     """
-    return max((4 * n**3) // 3, 1)
+    return max(n**3, 1)
 
 
 def eigvalsh(a, UPLO="L"):
@@ -245,7 +229,7 @@ def eigvalsh(a, UPLO="L"):
     return _np.linalg.eigvalsh(a, UPLO=UPLO)
 
 
-attach_docstring(eigvalsh, _np.linalg.eigvalsh, "linalg", r"$4n^3/3$ FLOPs")
+attach_docstring(eigvalsh, _np.linalg.eigvalsh, "linalg", r"$n^3$ FLOPs")
 
 
 def svdvals_cost(m: int, n: int, k: int | None = None) -> int:

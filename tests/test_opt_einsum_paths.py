@@ -129,14 +129,14 @@ def test_flop_cost() -> None:
     assert 10 == oe._helpers.flop_count("a", False, 2, size_dict)
     assert 100 == oe._helpers.flop_count("ab", False, 2, size_dict)
 
-    # Inner product (+, *) — FMA_COST=1
+    # Inner product (FMA=1, no +1 for inner)
     assert 10 == oe._helpers.flop_count("a", True, 2, size_dict)
     assert 100 == oe._helpers.flop_count("ab", True, 2, size_dict)
 
-    # Inner product x3 (+, *, *) — 1 FMA + 1 standalone mul = 2
+    # Inner product x3 (FMA=1, op_factor = max(1, 3-1) = 2)
     assert 20 == oe._helpers.flop_count("a", True, 3, size_dict)
 
-    # GEMM — FMA_COST=1
+    # GEMM (FMA=1)
     assert 1000 == oe._helpers.flop_count("abc", True, 2, size_dict)
 
 

@@ -19,15 +19,15 @@ CONTRACTION_OPS: list[str] = [
 ]
 
 _FORMULA_STRINGS: dict[str, str] = {
-    "dot": "M*N*K",
-    "matmul": "M*N*K",
+    "dot": "M*N*K (FMA=1)",
+    "matmul": "M*N*K (FMA=1)",
     "inner": "N (a.size)",
     "vdot": "N (a.size)",
     "vecdot": "batch * K (output_size * contracted_axis)",
     "outer": "M*N",
-    "tensordot": "d^5 (axes=1, shape=(d,d,d))",
+    "tensordot": "d^5 (axes=1, shape=(d,d,d), FMA=1)",
     "kron": "d^4 (Kronecker, shape=(d,d)x(d,d))",
-    "einsum": "M*N*K (ij,jk->ik)",
+    "einsum": "M*N*K (ij,jk->ik, FMA=1)",
 }
 
 _BENCHMARK_SIZE_STRINGS: dict[str, str] = {
@@ -59,19 +59,19 @@ def _analytical_cost(op: str, **kwargs: int) -> int:
         Analytical FLOP count.
     """
     costs: dict[str, int] = {
-        # dot: 2D matrix multiply A(512,512) @ B(512,512)
+        # dot: 2D matrix multiply A(512,512) @ B(512,512), FMA=1 op
         "dot": 512 * 512 * 512,
         # matmul: identical to dot for 2D
         "matmul": 512 * 512 * 512,
         # inner: dot product of two 1M-element vectors.
-        # Runtime charges a.size (NOT 2*N) — matches mechestim's convention.
+        # Runtime charges a.size — matches mechestim's convention (FMA=1).
         "inner": 1_000_000,
         # vdot: same as inner for 1D real inputs.
-        # Runtime charges a.size (NOT 2*N).
+        # Runtime charges a.size (FMA=1).
         "vdot": 1_000_000,
         # vecdot: batched dot product A(1000,512) . B(1000,512)
         # Output (1000,) with contracted axis 512.
-        # Runtime charges result.size * contracted = 1000 * 512.
+        # Runtime charges result.size * contracted = 1000 * 512 (FMA=1).
         "vecdot": 1000 * 512,
         # outer: outer product of two 5000-element vectors
         "outer": 5000 * 5000,
@@ -79,7 +79,7 @@ def _analytical_cost(op: str, **kwargs: int) -> int:
         "tensordot": 64**5,
         # kron: Kronecker product A(64,64) x B(64,64)
         "kron": 64**4,
-        # einsum: 'ij,jk->ik' is matrix multiply (512,512)x(512,512)
+        # einsum: 'ij,jk->ik' is matrix multiply (512,512)x(512,512), FMA=1
         "einsum": 512 * 512 * 512,
     }
     return costs[op]

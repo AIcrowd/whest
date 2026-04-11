@@ -27,20 +27,20 @@ LINALG_OPS: list[str] = [
 _SPD_OPS = {"linalg.cholesky", "linalg.eigh", "linalg.eigvalsh"}
 
 _FORMULA_STRINGS: dict[str, str] = {
-    "linalg.cholesky": "n^3 / 3",
-    "linalg.qr": "m*n^2 - n^3/3",
-    "linalg.eig": "10*n^3",
-    "linalg.eigh": "4*n^3 / 3",
-    "linalg.eigvals": "7*n^3",
-    "linalg.eigvalsh": "4*n^3 / 3",
+    "linalg.cholesky": "n^3",
+    "linalg.qr": "m*n*min(m,n)",
+    "linalg.eig": "n^3",
+    "linalg.eigh": "n^3",
+    "linalg.eigvals": "n^3",
+    "linalg.eigvalsh": "n^3",
     "linalg.svd": "m*n*min(m,n)",
     "linalg.svdvals": "m*n*min(m,n)",
-    "linalg.solve": "n^3/3 + n^2",
+    "linalg.solve": "n^3",
     "linalg.inv": "n^3",
     "linalg.lstsq": "m*n*min(m,n)",
     "linalg.pinv": "m*n*min(m,n)",
-    "linalg.det": "n^3 / 3",
-    "linalg.slogdet": "n^3 / 3",
+    "linalg.det": "n^3",
+    "linalg.slogdet": "n^3",
 }
 
 
@@ -62,20 +62,20 @@ def _analytical_cost(op_name: str, n: int) -> int:
     m = n  # square matrices
     short = op_name.split(".")[-1]
     costs: dict[str, int] = {
-        "cholesky": n**3 // 3,
-        "qr": m * n**2 - n**3 // 3,
-        "eig": 10 * n**3,
-        "eigh": 4 * n**3 // 3,
-        "eigvals": 7 * n**3,
-        "eigvalsh": 4 * n**3 // 3,
+        "cholesky": n**3,
+        "qr": m * n * min(m, n),
+        "eig": n**3,
+        "eigh": n**3,
+        "eigvals": n**3,
+        "eigvalsh": n**3,
         "svd": m * n * min(m, n),
         "svdvals": m * n * min(m, n),
-        "solve": n**3 // 3 + n**2,
+        "solve": n**3,
         "inv": n**3,
         "lstsq": m * n * min(m, n),
         "pinv": m * n * min(m, n),
-        "det": n**3 // 3,
-        "slogdet": n**3 // 3,
+        "det": n**3,
+        "slogdet": n**3,
     }
     return costs[short]
 

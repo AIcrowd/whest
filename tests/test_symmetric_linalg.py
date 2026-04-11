@@ -25,26 +25,22 @@ class TestEighValidation:
 
 
 class TestSolveSymmetric:
-    def test_solve_symmetric_uses_cholesky_cost(self):
+    def test_solve_symmetric_uses_cubic_cost(self):
         n = 10
         A = numpy.eye(n) * 2.0
         S = as_symmetric(A, symmetric_axes=(0, 1))
         b = numpy.ones(n)
         with BudgetContext(flop_budget=10**8, quiet=True) as budget:
             la.solve(S, b)
-            assert (
-                budget.flops_used == n**3 // 3 + n**2 * 1
-            )  # Cholesky + triangular solves (FMA_COST=1)
+            assert budget.flops_used == n**3  # simplified cubic cost
 
-    def test_solve_plain_uses_lu_cost(self):
+    def test_solve_plain_uses_cubic_cost(self):
         n = 10
         A = numpy.eye(n) * 2.0
         b = numpy.ones(n)
         with BudgetContext(flop_budget=10**8, quiet=True) as budget:
             la.solve(A, b)
-            assert (
-                budget.flops_used == n**3 // 3 + n**2 * 1
-            )  # LU + triangular solves (FMA_COST=1)
+            assert budget.flops_used == n**3  # simplified cubic cost
 
     def test_solve_returns_plain(self):
         A = numpy.eye(3) * 2.0
@@ -56,13 +52,13 @@ class TestSolveSymmetric:
 
 
 class TestDetSymmetric:
-    def test_det_symmetric_uses_cholesky_cost(self):
+    def test_det_symmetric_uses_cubic_cost(self):
         n = 10
         A = numpy.eye(n) * 2.0
         S = as_symmetric(A, symmetric_axes=(0, 1))
         with BudgetContext(flop_budget=10**8, quiet=True) as budget:
             la.det(S)
-            assert budget.flops_used == n**3 // 3
+            assert budget.flops_used == n**3  # simplified cubic cost
 
 
 class TestInvSymmetric:

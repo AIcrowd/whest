@@ -32,14 +32,14 @@ LINALG_DELEGATE_OPS: list[str] = [
 _FORMULA_STRINGS: dict[str, str] = {
     "linalg.cond": "m*n*min(m,n)",
     "linalg.cross": "6*n",
-    "linalg.matmul": "M*N*K",
-    "linalg.matrix_norm": "numel (Frobenius)",
+    "linalg.matmul": "M*N*K (FMA=1)",
+    "linalg.matrix_norm": "2*numel (Frobenius)",
     "linalg.matrix_power": "(ceil(log2(k))+popcount(k)-1)*n^3",
     "linalg.matrix_rank": "m*n*min(m,n)",
-    "linalg.multi_dot": "128*64*128 + 128*128*64",
+    "linalg.multi_dot": "128*64*128 + 128*128*64 (FMA=1)",
     "linalg.norm": "numel (L2)",
     "linalg.outer": "M*N",
-    "linalg.tensordot": "d^5",
+    "linalg.tensordot": "d^5 (FMA=1)",
     "linalg.tensorinv": "n^3 after reshape",
     "linalg.tensorsolve": "n^3 after reshape",
     "linalg.trace": "min(m,n)",
@@ -79,14 +79,14 @@ def _analytical_cost(op_name: str) -> int:
     costs: dict[str, int] = {
         "cond": 512 * 512 * 512,  # m*n*min(m,n) via SVD
         "cross": 6 * 1_000_000,  # 6*n
-        "matmul": 512 * 512 * 512,  # M*N*K
-        "matrix_norm": 512 * 512,  # numel (Frobenius)
+        "matmul": 512 * 512 * 512,  # M*N*K (FMA=1)
+        "matrix_norm": 2 * 512 * 512,  # 2*numel (Frobenius)
         "matrix_power": 3 * 64**3,  # 3 matmuls for n=5
         "matrix_rank": 512 * 512 * 512,  # m*n*min(m,n) via SVD
-        "multi_dot": 128 * 64 * 128 + 128 * 128 * 64,
+        "multi_dot": 128 * 64 * 128 + 128 * 128 * 64,  # FMA=1
         "norm": 10_000_000,  # numel (L2)
         "outer": 5000 * 5000,  # M*N
-        "tensordot": 64**5,  # d^5
+        "tensordot": 64**5,  # d^5 (FMA=1)
         "tensorinv": 64**3,  # n^3 after reshape
         "tensorsolve": 64**3,  # n^3 after reshape
         "trace": 10_000,  # min(m,n)
