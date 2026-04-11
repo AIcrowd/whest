@@ -1,6 +1,7 @@
 """Tests for symmetry-aware einsum."""
 
 import numpy
+import pytest
 
 from mechestim._budget import BudgetContext
 from mechestim._einsum import einsum
@@ -42,3 +43,22 @@ class TestEinsumSymmetricOutput:
         with BudgetContext(flop_budget=10**8, quiet=True):
             result = einsum("ij,jk->ik", A, B)
             assert not isinstance(result, SymmetricTensor)
+
+
+from mechestim._perm_group import PermutationGroup
+
+
+class TestEinsumSymmetryParam:
+    def test_symmetry_param_returns_symmetric_tensor(self):
+        X = numpy.ones((5, 10))
+        g = PermutationGroup.symmetric(2, axes=(0, 1))
+        with BudgetContext(flop_budget=10**8, quiet=True):
+            result = einsum("ki,kj->ij", X, X, symmetry=g)
+            assert isinstance(result, SymmetricTensor)
+
+    def test_symmetry_and_symmetric_axes_mutually_exclusive(self):
+        X = numpy.ones((3, 4))
+        g = PermutationGroup.symmetric(2, axes=(0, 1))
+        with BudgetContext(flop_budget=10**8, quiet=True):
+            with pytest.raises(ValueError, match="mutually exclusive"):
+                einsum("ki,kj->ij", X, X, symmetric_axes=[(0, 1)], symmetry=g)

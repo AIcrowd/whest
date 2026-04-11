@@ -15,7 +15,7 @@ from . import _helpers as helpers
 from . import _parser as parser
 from . import _paths as paths
 from ._subgraph_symmetry import SubgraphSymmetryOracle
-from ._symmetry import IndexSymmetry, symmetric_flop_count
+from ._symmetry import PermutationGroup, symmetric_flop_count
 from ._typing import (
     ArrayType,
     ContractionListType,
@@ -50,11 +50,11 @@ class StepInfo:
     output_shape: tuple[int, ...]
     """Shape of the output operand for this step."""
 
-    input_symmetries: list[IndexSymmetry | None]
-    """IndexSymmetry for each input in this step."""
+    input_groups: list[PermutationGroup | None]
+    """PermutationGroup for each input in this step."""
 
-    output_symmetry: IndexSymmetry | None
-    """IndexSymmetry of the output, or None."""
+    output_group: PermutationGroup | None
+    """PermutationGroup of the output, or None."""
 
     dense_flop_cost: int
     """FLOP cost without symmetry (opt_einsum convention: includes op_factor)."""
@@ -64,8 +64,8 @@ class StepInfo:
 
     blas_type: str | bool = False
 
-    inner_symmetry: IndexSymmetry | None = None
-    """IndexSymmetry among the contracted (summed) labels, or None.
+    inner_group: PermutationGroup | None = None
+    """PermutationGroup among the contracted (summed) labels, or None.
     Describes inner-summation redundancy from the W-side of the
     subgraph symmetry oracle."""
     """BLAS classification for this step (e.g. 'GEMM', 'SYMM', False)."""
@@ -155,27 +155,27 @@ class PathInfo:
         """
         from math import prod
 
-        def fmt_sym(sym: IndexSymmetry | None) -> str:
-            """Format an IndexSymmetry as e.g. 'S3{i,j,k}' or 'S2{i,j}·S2{k,l}'."""
-            if not sym:
+        def fmt_sym(group: PermutationGroup | None) -> str:
+            """Format a PermutationGroup as e.g. 'S3{i,j,k}' or 'C3{i,j,k}'."""
+            if group is None:
                 return "-"
-
-            def fmt_block(block: tuple) -> str:
-                if len(block) == 1:
-                    return block[0]
-                return f"({''.join(block)})"
-
-            def fmt_group(g: frozenset) -> str:
-                blocks = sorted(g)
-                return f"S{len(g)}{{{','.join(fmt_block(b) for b in blocks)}}}"
-
-            return "·".join(fmt_group(g) for g in sym)
+            labels = group._labels or tuple(str(i) for i in range(group.degree))
+            label_str = ",".join(labels)
+            k = group.degree
+            if group.is_symmetric():
+                return f"S{k}{{{label_str}}}"
+            order = group.order()
+            if order == k:
+                return f"C{k}{{{label_str}}}"
+            if order == 2 * k and k >= 3:
+                return f"D{k}{{{label_str}}}"
+            return f"G({order}){{{label_str}}}"
 
         def fmt_step_sym(step: StepInfo) -> str:
             """Format inputs→output symmetry transformation for one step."""
-            in_parts = [fmt_sym(s) for s in step.input_symmetries]
-            out_part = fmt_sym(step.output_symmetry)
-            w_part = fmt_sym(step.inner_symmetry)
+            in_parts = [fmt_sym(s) for s in step.input_groups]
+            out_part = fmt_sym(step.output_group)
+            w_part = fmt_sym(step.inner_group)
             if all(p == "-" for p in in_parts) and out_part == "-" and w_part == "-":
                 return ""
             result = f"{' × '.join(in_parts)} → {out_part}"
@@ -233,7 +233,6 @@ class PathInfo:
 
         sym_strs = [fmt_step_sym(s) for s in self.steps]
         max_sym_width = max((len(s) for s in sym_strs), default=0)
-        any_sym = any(s for s in sym_strs)
         sizes_line = fmt_index_sizes()
 
         header_lines = [
@@ -277,13 +276,8 @@ class PathInfo:
         ]
         if any_unique:
             cols.append(f"{'unique/dense':<{unique_col_width}}")
-        if any_sym:
-            sym_col_width = min(
-                max(max_sym_width, len("symmetry (inputs → output)")), 60
-            )
-            cols.append(f"{'symmetry (inputs → output)':<{sym_col_width}}")
-        else:
-            sym_col_width = 0
+        sym_col_width = min(max(max_sym_width, len("symmetry (inputs → output)")), 60)
+        cols.append(f"{'symmetry (inputs → output)':<{sym_col_width}}")
 
         header_row = "  ".join(cols)
         width = max(len(header_row), 84)
@@ -303,11 +297,10 @@ class PathInfo:
             ]
             if any_unique:
                 row_parts.append(f"{fmt_unique_dense(step):<{unique_col_width}}")
-            if any_sym:
-                sym_str = sym_strs[i] or "-"
-                if len(sym_str) > sym_col_width:
-                    sym_str = sym_str[: sym_col_width - 1] + "…"
-                row_parts.append(f"{sym_str:<{sym_col_width}}")
+            sym_str = sym_strs[i] or "-"
+            if len(sym_str) > sym_col_width:
+                sym_str = sym_str[: sym_col_width - 1] + "…"
+            row_parts.append(f"{sym_str:<{sym_col_width}}")
             lines.append("  ".join(row_parts))
 
             cumulative += step.flop_cost
@@ -595,6 +588,10 @@ def contract_path(
         # Make sure we remove inds from right to left
         contract_inds = tuple(sorted(contract_inds, reverse=True))
 
+        # Snapshot per-operand index sets before find_contraction mutates
+        # input_sets (needed for Φ cost model's per-operand free counts).
+        _pre_input_sets = [input_sets[ci] for ci in contract_inds]
+
         contract_tuple = helpers.find_contraction(contract_inds, input_sets, output_set)
         out_inds, input_sets, idx_removed, idx_contract = contract_tuple
 
@@ -602,7 +599,7 @@ def contract_path(
         if symmetry_oracle is not None:
             # Look up each input's symmetry from the oracle before merging.
             # This is used both for cost computation (via merged_subset →
-            # result_sym) and for BLAS classification (input_symmetries
+            # result_sym) and for BLAS classification (input_groups
             # enables SYMM/SYMV/SYDT labelling in can_blas).
             step_syms: list = [None] * len(contract_inds)
             merged_subset: frozenset[int] = frozenset()
@@ -615,16 +612,19 @@ def contract_path(
             subset_sym = symmetry_oracle.sym(merged_subset)
             result_sym = subset_sym.output
 
+            # Per-operand free index counts for Φ cost model.
+            _free_counts = tuple(len(s - idx_removed) for s in _pre_input_sets)
+
             cost = symmetric_flop_count(
                 idx_contract,
                 bool(idx_removed),
                 len(contract_inds),
                 size_dict,
-                output_symmetry=subset_sym.output,
+                output_group=subset_sym.output,
                 output_indices=out_inds,
-                inner_symmetry=subset_sym.inner,
+                inner_group=subset_sym.inner,
                 inner_indices=idx_removed if idx_removed else None,
-                use_inner_symmetry=False,
+                per_operand_free_counts=_free_counts,
             )
         else:
             step_syms = [None] * len(contract_inds)
@@ -664,7 +664,7 @@ def contract_path(
                 "".join(out_inds),
                 idx_removed,
                 tmp_shapes,
-                input_symmetries=step_syms if symmetry_oracle is not None else None,
+                input_groups=step_syms if symmetry_oracle is not None else None,
             )
         else:
             do_blas = False
@@ -695,11 +695,9 @@ def contract_path(
                 flop_cost=step_flop,
                 input_shapes=list(tmp_shapes),
                 output_shape=shp_result,
-                input_symmetries=list(step_syms),
-                output_symmetry=result_sym,
-                inner_symmetry=subset_sym.inner
-                if symmetry_oracle is not None
-                else None,
+                input_groups=list(step_syms),
+                output_group=result_sym,
+                inner_group=(subset_sym.inner if symmetry_oracle is not None else None),
                 dense_flop_cost=step_dense,
                 symmetry_savings=savings,
                 blas_type=do_blas,

@@ -71,7 +71,7 @@ When a tensor is a `SymmetricTensor`, costs are reduced based on the number of u
 |----------|---------------|---------------|
 | **Pointwise** (unary/binary) | unique_elements | $\text{numel}(\text{output})$ |
 | **Reduction** | unique_elements | $\text{numel}(\text{input})$ |
-| **Einsum** (symmetric output) | `dense_cost × unique_output / total_output` (exact via `C(B+k-1, k)`; see below) | Full product |
+| **Einsum** (symmetric contraction) | Symmetry-reduced (see below) | Full product |
 | **Solve** | $n^3/3 + n \cdot n_{\text{rhs}}$ (Cholesky) | $2n^3/3 + n^2 \cdot n_{\text{rhs}}$ (LU) |
 | **Det / Slogdet** | $n^3/3$ (Cholesky) | $n^3$ (LU) |
 | **Inv** | $n^3/3 + n^3/2$ | $n^3$ |
@@ -95,13 +95,7 @@ both unified under the **subgraph symmetry detection** algorithm:
 
 The oracle builds a bipartite graph once per `contract_path` call and
 evaluates symmetry lazily per subset of operands encountered during path
-search. Both sources feed into the same cost formula:
-
-```
-step_cost = dense_step_cost × (unique_output_elements / total_output_elements)
-```
-
-The two sources are merged via the same group-merging machinery, so a
+search. Both sources are merged via the same group-merging machinery, so a
 tensor that is both `SymmetricTensor` and also repeated in the subscript
 benefits from both contributions simultaneously.
 
@@ -110,15 +104,6 @@ See the
 for usage examples, and the
 [subgraph symmetry explanation](../explanation/subgraph-symmetry.md)
 for the algorithm walkthrough.
-
-### What is not captured
-
-The current cost model reduces FLOP counts based on the number of unique
-output elements under permutation symmetry. It does **not** account for
-symmetry along contracted (summed) indices — exploiting that would require
-restructuring the contraction loop itself (e.g., only iterating over the
-upper triangle of a summed symmetric index). Such loop restructuring is out
-of scope and is not reflected in the FLOP counts reported by mechestim.
 
 ## Einsum cost model
 
@@ -131,7 +116,9 @@ The total cost is the sum of per-step costs:
 total_cost = sum(step.flop_cost for step in path.steps)
 ```
 
-For each pairwise step, the dense cost is:
+### Per-step cost
+
+For each pairwise step, the **dense** cost is:
 
 ```
 dense_step_cost = (product of all index dimensions) × op_factor
@@ -140,54 +127,50 @@ dense_step_cost = (product of all index dimensions) × op_factor
 where `op_factor = 2` when indices are summed (multiply + add) and
 `op_factor = 1` when no indices are summed (outer product).
 
-When the output of a step has symmetry (discovered by the subgraph oracle
-from declared per-operand symmetries and/or repeated-operand identity), the
-cost is reduced:
+When symmetry is present, mechestim reduces the cost by exploiting the
+structure of the contraction. The reduction depends on the contraction's
+shape.
+
+### Symmetric contraction cost
+
+Consider a pairwise contraction of symmetric tensors **A** (order $s + v$)
+and **B** (order $t + v$) with $v$ contracted indices, producing output
+**C** (order $s + t$). Let $\omega = s + t + v$ and let all indices have
+dimension $n$.
+
+The cost is computed using the symmetry-preserving formula from
+Solomonik & Demmel (2015):
+
+$$F = \binom{n + \omega - 1}{\omega} \left[ 1 + \binom{\omega}{s} + \binom{\omega}{t} + \binom{\omega}{v} \right] + \binom{n+s+v-1}{s+v} + \binom{n+t+v-1}{t+v} + \binom{n+s+t-1}{s+t}$$
+
+The leading term $\binom{n+\omega-1}{\omega} \approx n^\omega / \omega!$
+counts the unique elements of a fully-symmetric order-$\omega$
+intermediate. The bracket contains one multiplication plus additions for
+accumulating partial sums from each operand and for reducing into the
+output. The trailing terms are lower-order costs for operand intermediates
+and output symmetrization.
+
+This formula exploits symmetry across *all* $\omega$ index groups
+simultaneously — including contracted indices — giving much larger savings
+than reducing output elements alone. For example, a contraction with
+$s = t = v = 3$ ($\omega = 9$) achieves roughly 10× savings over the
+per-group approach at $n = 100$.
+
+### Fallback for low-order and non-uniform cases
+
+When the symmetry-preserving formula does not apply — outer products
+($v = 0$), non-uniform index dimensions, or low-order contractions where
+the addition overhead exceeds the savings — the cost falls back to:
 
 ```
 step_cost = dense_step_cost × (unique_output_elements / total_output_elements)
 ```
 
-where `unique_output_elements` is computed exactly using the stars-and-bars
-formula `C(B + k - 1, k)` for each symmetric group of `k` interchangeable
-blocks, where `B` is the cardinality of one block:
+The unique element count is computed exactly using Burnside's lemma over
+the detected permutation group. For the full symmetric group S$_k$, this
+reduces to the stars-and-bars formula $\binom{n+k-1}{k}$.
 
-- For a **per-index** group (block size 1) on `k` interchangeable indices
-  each of size `n`, `B = n` and the formula reduces to the familiar
-  `C(n+k-1, k)`. A single symmetric matrix indexed by `(i, j)` of size `n`
-  has `C(n+1, 2) = n(n+1)/2` unique entries.
-- For a **block** group with `k` interchangeable blocks of uniform shape,
-  `B` is the product of axis sizes within one block. An outer product
-  `einsum('ab,cd->abcd', X, X)` with same-object `X` of shape `(n_a, n_b)`
-  yields a block group `{(a,b), (c,d)}` with `B = n_a · n_b`, so the
-  unique count is `C(n_a·n_b + 1, 2) = (n_a·n_b)(n_a·n_b + 1)/2`. This
-  correctly handles **rectangular** tensors where axis dimensions differ
-  within a block — e.g., `X` of shape `(3, 4)` gives `B = 12` unique pair
-  cardinalities, not `3² = 9`.
-
-Free (non-symmetric) indices contribute their full axis size to the total
-unique count, multiplicatively.
-
-### Inner-sum symmetry (opt-in)
-
-When contracted (summed) labels are interchangeable — e.g., in
-`einsum('ij,ji->', X, X)` where labels `i` and `j` are symmetric in the
-summation — the inner-loop work can also be reduced. With the
-`use_inner_symmetry=True` flag on `symmetric_flop_count`, the cost becomes:
-
-```
-step_cost = dense_step_cost
-          × (unique_output_elements / total_output_elements)
-          × (unique_inner_elements / total_inner_elements)
-```
-
-where `unique_inner_elements` is computed using the same stars-and-bars
-formula applied to the symmetry groups among the contracted labels.
-
-This reduction is **opt-in** because not all backends can exploit inner-sum
-symmetry — `numpy.einsum` computes the dense inner loop regardless. The
-flag is useful for theoretical FLOP counting or when targeting a backend
-that can dispatch symmetric summation routines.
+### Multi-operand contractions
 
 For a simple two-operand einsum like `'ij,jk->ik'`, there is one step,
 so the total cost equals the step cost. For multi-operand einsums (3+
@@ -203,6 +186,12 @@ the optimizer factors this into its ordering decisions.
 
 Use `me.einsum_path()` to inspect the per-step breakdown. See
 [Use Einsum](../how-to/use-einsum.md) for examples.
+
+### References
+
+E. Solomonik and J. Demmel, "Contracting Symmetric Tensors Using Fewer
+Multiplications," preprint, ETH Zurich, 2015.
+[doi:10.3929/ethz-a-010345741](https://doi.org/10.3929/ethz-a-010345741)
 
 ## Per-operation weights
 
@@ -261,7 +250,7 @@ adjusted_cost = analytical_cost × flop_multiplier × weight(op_name)
 ```
 
 This means weights compose with `flop_multiplier` and with symmetry
-reductions — symmetry reduces the element count, the weight scales the
+reductions -- symmetry reduces the element count, the weight scales the
 per-element cost, and both apply independently.
 
 ### Loading a weights config
@@ -278,11 +267,11 @@ The JSON file must have a `"weights"` key mapping operation names to floats:
 ```json
 {
   "weights": {
-    "add": 1.4067,
-    "exp": 14.4495,
-    "sin": 25.8688,
-    "matmul": 0.6426,
-    "linalg.cholesky": 1.0699
+    "add": 1.0,
+    "exp": 10.2723,
+    "sin": 18.3903,
+    "matmul": 0.4568,
+    "linalg.cholesky": 0.7606
   }
 }
 ```
@@ -295,11 +284,11 @@ this file.
 
 Weights can be determined in two ways:
 
-1. **Hardware performance counters** (Linux `perf stat`) — counts actual
+1. **Hardware performance counters** (Linux `perf stat`) -- counts actual
    floating-point instructions retired by the CPU, weighted by SIMD width.
    This gives the true number of basic FP ops per high-level operation.
 
-2. **Wall-clock time normalization** — measures `time(op) / time(add)` as
+2. **Wall-clock time normalization** -- measures `time(op) / time(add)` as
    a relative proxy. Less precise than hardware counters but works on any
    platform.
 

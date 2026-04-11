@@ -8,9 +8,9 @@ symmetries, computed lazily on first access and cached.
 
 The detection algorithm derives the induced column permutation π for
 each operand permutation σ via column-fingerprint hash lookup, then
-classifies π's cycle structure into per-index or block symmetry groups.
-This subsumes both the per-index pair test (Wilson §1) and the block-
-swap construction from the original two-path approach.
+collects the resulting Permutation objects to build a PermutationGroup
+directly. A fingerprint fast-path detects S_k symmetry without running
+the σ-loop when all labels on a side share the same column fingerprint.
 
 See docs/explanation/subgraph-symmetry.md for the algorithm walkthrough.
 """
@@ -21,30 +21,12 @@ from dataclasses import dataclass
 from itertools import permutations, product
 from typing import Any
 
-from ._symmetry import IndexSymmetry, SubsetSymmetry
+from mechestim._perm_group import Permutation as Perm
+from mechestim._perm_group import PermutationGroup
+
+from ._symmetry import SubsetSymmetry
 
 _MISSING = object()
-
-
-# ---------------------------------------------------------------------------
-# π-based detection helpers (added alongside old Step 2a/2b path)
-# ---------------------------------------------------------------------------
-
-
-def _detect_fingerprint_equivalences(
-    col_of: dict[str, tuple[int, ...]],
-    labels: frozenset[str],
-) -> IndexSymmetry:
-    """Group labels by column fingerprint; return per-index groups for groups >= 2."""
-    fp_groups: dict[tuple[int, ...], list[str]] = {}
-    for lbl in sorted(labels):
-        fp = col_of[lbl]
-        fp_groups.setdefault(fp, []).append(lbl)
-    return [
-        frozenset((lbl,) for lbl in group)
-        for group in fp_groups.values()
-        if len(group) >= 2
-    ]
 
 
 def _derive_pi_canonical(
@@ -88,129 +70,29 @@ def _derive_pi_canonical(
     return pi
 
 
-def _classify_pi_cycles(
-    pi: dict[str, str],
-    target_labels: frozenset[str],
-    graph: "EinsumBipartite",
-    sub: "_Subgraph",
-) -> list[frozenset[tuple[str, ...]]]:
-    """Decompose π restricted to target_labels into cycles, classify into groups."""
-    # Decompose into disjoint cycles.
-    visited: set[str] = set()
-    cycles: list[tuple[str, ...]] = []
-    for start in sorted(target_labels):
-        if start in visited:
-            continue
-        if pi.get(start, start) == start:
-            visited.add(start)
-            continue
-        cycle: list[str] = []
-        cur = start
-        while cur not in visited:
-            cycle.append(cur)
-            visited.add(cur)
-            cur = pi[cur]
-        cycles.append(tuple(cycle))
-
-    if not cycles:
-        return []
-
-    # Single cycle: per-index group.
-    if len(cycles) == 1:
-        return [frozenset((lbl,) for lbl in cycles[0])]
-
-    # Multiple cycles: check if all same length for block classification.
-    cycle_lengths = {len(c) for c in cycles}
-    if len(cycle_lengths) != 1:
-        # Mixed lengths: each cycle is an independent per-index group.
-        return [frozenset((lbl,) for lbl in c) for c in cycles]
-
-    # All same length — attempt block construction.
-    blocks = _build_blocks_from_cycles(cycles, graph, sub)
-    if blocks is not None:
-        return [frozenset(blocks)]
-
-    # Block construction failed — fall back to per-index per cycle.
-    return [frozenset((lbl,) for lbl in c) for c in cycles]
-
-
-def _build_blocks_from_cycles(
-    cycles: list[tuple[str, ...]],
-    graph: "EinsumBipartite",
-    sub: "_Subgraph",
-) -> list[tuple[str, ...]] | None:
-    """Given same-length disjoint cycles, group labels by operand into blocks.
-
-    Returns list of k tuples (one per block) or None if the cycle
-    structure doesn't correspond to a clean block swap.
-    """
-    k = len(cycles[0])  # cycle length = number of blocks
-
-    def _single_operand_of(label: str) -> int | None:
-        ops = [i for i, lbls in enumerate(graph.operand_labels) if label in lbls]
-        return ops[0] if len(ops) == 1 else None
-
-    # Compute operand sequence per cycle.
-    cycle_op_seqs: list[list[int]] = []
-    for cycle in cycles:
-        op_seq: list[int] = []
-        for lbl in cycle:
-            op = _single_operand_of(lbl)
-            if op is None:
-                return None
-            op_seq.append(op)
-        if len(set(op_seq)) != k:
-            return None  # cycle revisits same operand
-        cycle_op_seqs.append(op_seq)
-
-    reference = cycle_op_seqs[0]
-
-    # Align each cycle to reference operand order via cyclic rotation.
-    blocks: list[list[str]] = [[] for _ in range(k)]
-    for cycle, op_seq in zip(cycles, cycle_op_seqs):
-        rotation = _find_rotation(op_seq, reference)
-        if rotation is None:
-            return None
-        aligned = cycle[rotation:] + cycle[:rotation]
-        for block_idx, lbl in enumerate(aligned):
-            blocks[block_idx].append(lbl)
-
-    # Order within each block by subscript position.
-    for block_idx in range(k):
-        op = reference[block_idx]
-        subscript = graph.operand_subscripts[op]
-        blocks[block_idx].sort(key=lambda lbl: subscript.index(lbl))
-
-    # Validate all blocks same size.
-    if not all(len(b) == len(cycles) for b in blocks):
-        return None
-
-    return [tuple(b) for b in blocks]
-
-
-def _find_rotation(seq: list[int], reference: list[int]) -> int | None:
-    """Find r such that seq[r:] + seq[:r] == reference."""
-    k = len(seq)
-    for r in range(k):
-        if seq[r:] + seq[:r] == reference:
-            return r
-    return None
-
-
-def _detect_symmetries_via_pi(
+def _collect_pi_permutations(
     graph: "EinsumBipartite",
     sub: "_Subgraph",
     row_order: tuple[int, ...],
     col_of: dict[str, tuple[int, ...]],
     fp_to_labels: dict[tuple[int, ...], set[str]],
-) -> tuple[list[frozenset[tuple[str, ...]]], list[frozenset[tuple[str, ...]]]]:
-    """Unified σ loop: derive π per σ, classify cycles on V and W.
+) -> tuple[list[Perm], list[Perm]]:
+    """Collect all valid π's as Permutation objects for V and W labels.
 
-    Returns (v_groups, w_groups) — candidate groups for each side.
+    Returns
+    -------
+    v_perms : list[Perm]
+        Non-identity permutations on V labels (output / free side).
+    w_perms : list[Perm]
+        Non-identity permutations on W labels (inner / summed side).
     """
-    v_groups: list[frozenset[tuple[str, ...]]] = []
-    w_groups: list[frozenset[tuple[str, ...]]] = []
+    v_perms: list[Perm] = []
+    w_perms: list[Perm] = []
     all_labels = sub.v_labels | sub.w_labels
+    v_sorted = tuple(sorted(sub.v_labels))
+    w_sorted = tuple(sorted(sub.w_labels))
+    v_idx = {lbl: i for i, lbl in enumerate(v_sorted)}
+    w_idx = {lbl: i for i, lbl in enumerate(w_sorted)}
 
     for tilde_sigma in _enumerate_id_group_permutations(sub.id_groups):
         # Skip identity σ — it always gives π = identity.
@@ -236,20 +118,17 @@ def _detect_symmetries_via_pi(
         if pi is None:
             continue
 
-        # Classify cycles on V.
-        if sub.v_labels:
-            v_groups.extend(_classify_pi_cycles(pi, sub.v_labels, graph, sub))
+        # Restrict π to V labels — emit Perm if non-identity.
+        if sub.v_labels and any(pi.get(lbl, lbl) != lbl for lbl in sub.v_labels):
+            arr = [v_idx[pi.get(lbl, lbl)] for lbl in v_sorted]
+            v_perms.append(Perm(arr))
 
-        # Classify cycles on W.
-        if sub.w_labels:
-            w_groups.extend(_classify_pi_cycles(pi, sub.w_labels, graph, sub))
+        # Restrict π to W labels — emit Perm if non-identity.
+        if sub.w_labels and any(pi.get(lbl, lbl) != lbl for lbl in sub.w_labels):
+            arr = [w_idx[pi.get(lbl, lbl)] for lbl in w_sorted]
+            w_perms.append(Perm(arr))
 
-    return v_groups, w_groups
-
-
-# ---------------------------------------------------------------------------
-# End of π-based detection helpers
-# ---------------------------------------------------------------------------
+    return v_perms, w_perms
 
 
 @dataclass(frozen=True)
@@ -295,7 +174,7 @@ class EinsumBipartite:
 def _build_bipartite(
     operands: list[Any],
     subscript_parts: list[str],
-    per_op_syms: list[IndexSymmetry | None],
+    per_op_groups: list[list[PermutationGroup] | None],
     output_chars: str,
 ) -> EinsumBipartite:
     """Construct the bipartite graph for an einsum expression.
@@ -307,9 +186,9 @@ def _build_bipartite(
         repeated operands.
     subscript_parts : list[str]
         Per-operand subscript strings (e.g., ["ij", "jk"]).
-    per_op_syms : list[IndexSymmetry | None]
-        Declared symmetry for each operand, in the tuple-based
-        IndexSymmetry format.
+    per_op_groups : list
+        Declared symmetry for each operand, as a list of
+        PermutationGroup objects (with ``_labels`` set), or None.
     output_chars : str
         Output subscript string.
     """
@@ -321,34 +200,29 @@ def _build_bipartite(
 
     for op_idx, sub in enumerate(subscript_parts):
         operand_labels.append(frozenset(sub))
-        sym = per_op_syms[op_idx]
+        groups = per_op_groups[op_idx]
 
         # Build equivalence classes on the axes of this operand.
         # Each axis (position in sub) starts in its own singleton class.
-        # Declared symmetry groups merge axes into classes by their
-        # positional index within the operand.
-        #
-        # Declared sym is a list of frozenset({1-tuple, ...}) groups.
-        # A group {("i",), ("j",)} on subscript "ij" means positions 0
-        # and 1 are in the same class.
+        # Declared symmetry groups merge axes into classes via orbit
+        # analysis on the PermutationGroup.
         class_of_position: dict[int, int] = {k: k for k in range(len(sub))}
 
-        if sym is not None:
-            for group in sym:
-                # Only per-index (1-tuple) groups participate in U-vertex
-                # merging. Higher-block groups are not currently produced
-                # by SymmetricTensor (see _einsum.py's converter) and we
-                # leave them as no-ops here.
-                if any(len(t) != 1 for t in group):
+        if groups is not None:
+            for group in groups:
+                if group._labels is None:
                     continue
-                chars_in_group = {t[0] for t in group}
-                positions_in_group = [
-                    k for k, c in enumerate(sub) if c in chars_in_group
-                ]
-                if len(positions_in_group) >= 2:
-                    canonical = positions_in_group[0]
-                    for k in positions_in_group[1:]:
-                        class_of_position[k] = class_of_position[canonical]
+                for orbit in group.orbits():
+                    if len(orbit) < 2:
+                        continue
+                    chars_in_orbit = {group._labels[i] for i in orbit}
+                    positions_in_orbit = [
+                        k for k, c in enumerate(sub) if c in chars_in_orbit
+                    ]
+                    if len(positions_in_orbit) >= 2:
+                        canonical = positions_in_orbit[0]
+                        for k in positions_in_orbit[1:]:
+                            class_of_position[k] = class_of_position[canonical]
 
         # Normalize class ids to 0..num_classes-1 in order of first occurrence
         class_order: dict[int, int] = {}
@@ -465,13 +339,13 @@ class SubgraphSymmetryOracle:
         self,
         operands: list[Any],
         subscript_parts: list[str],
-        per_op_syms: list[IndexSymmetry | None],
+        per_op_groups: list[list[PermutationGroup] | None],
         output_chars: str,
     ) -> None:
         self._graph = _build_bipartite(
             operands=operands,
             subscript_parts=subscript_parts,
-            per_op_syms=per_op_syms,
+            per_op_groups=per_op_groups,
             output_chars=output_chars,
         )
         self._cache: dict[frozenset[int], SubsetSymmetry] = {}
@@ -493,73 +367,63 @@ def _compute_subset_symmetry(
     if not sub.v_labels and not sub.w_labels:
         return SubsetSymmetry(None, None)
 
-    # Step 1: column fingerprints.
+    # Column fingerprints for π derivation.
     row_order = sub.u_local
     all_labels = sub.v_labels | sub.w_labels
     col_of: dict[str, tuple[int, ...]] = {}
     for label in all_labels:
         col_of[label] = tuple(graph.incidence[u].get(label, 0) for u in row_order)
 
-    # Step 2: reverse index.
     fp_to_labels: dict[tuple[int, ...], set[str]] = {}
     for lbl, fp in col_of.items():
         fp_to_labels.setdefault(fp, set()).add(lbl)
 
-    # Step 3: fast path (fingerprint equivalences, no σ needed).
-    v_fast = (
-        _detect_fingerprint_equivalences(col_of, sub.v_labels) if sub.v_labels else []
-    )
-    w_fast = (
-        _detect_fingerprint_equivalences(col_of, sub.w_labels) if sub.w_labels else []
-    )
-
-    # Step 4: σ loop — derive π per σ, classify cycles on V and W.
-    v_sigma, w_sigma = _detect_symmetries_via_pi(
+    # Collect exact π generators via σ-loop.
+    v_perms, w_perms = _collect_pi_permutations(
         graph, sub, row_order, col_of, fp_to_labels
     )
+    v_sorted = tuple(sorted(sub.v_labels))
+    w_sorted = tuple(sorted(sub.w_labels))
 
-    # Step 5: merge.
-    v_merged = _merge_overlapping_groups(v_fast + v_sigma)
-    w_merged = _merge_overlapping_groups(w_fast + w_sigma)
+    # Build V-side group.
+    v_group: PermutationGroup | None = None
+    if v_perms:
+        v_group = PermutationGroup(*v_perms, axes=tuple(range(len(v_sorted))))
+        v_group._labels = v_sorted
+    elif sub.v_labels and len(sub.v_labels) >= 2:
+        # Fingerprint fast path: labels that share a fingerprint with at least
+        # one other V label can be freely permuted → S_k for that group.
+        fp_groups: dict[tuple[int, ...], list[str]] = {}
+        for lbl in sub.v_labels:
+            fp_groups.setdefault(col_of[lbl], []).append(lbl)
+        v_equiv = sorted(
+            lbl for grp in fp_groups.values() if len(grp) >= 2 for lbl in grp
+        )
+        if len(v_equiv) >= 2:
+            v_group = PermutationGroup.symmetric(
+                len(v_equiv), axes=tuple(range(len(v_equiv)))
+            )
+            v_group._labels = tuple(v_equiv)
 
-    return SubsetSymmetry(
-        output=v_merged or None,
-        inner=w_merged or None,
-    )
+    # Build W-side group.
+    w_group: PermutationGroup | None = None
+    if w_perms:
+        w_group = PermutationGroup(*w_perms, axes=tuple(range(len(w_sorted))))
+        w_group._labels = w_sorted
+    elif sub.w_labels and len(sub.w_labels) >= 2:
+        fp_groups_w: dict[tuple[int, ...], list[str]] = {}
+        for lbl in sub.w_labels:
+            fp_groups_w.setdefault(col_of[lbl], []).append(lbl)
+        w_equiv = sorted(
+            lbl for grp in fp_groups_w.values() if len(grp) >= 2 for lbl in grp
+        )
+        if len(w_equiv) >= 2:
+            w_group = PermutationGroup.symmetric(
+                len(w_equiv), axes=tuple(range(len(w_equiv)))
+            )
+            w_group._labels = tuple(w_equiv)
 
-
-def _merge_overlapping_groups(
-    candidates: list[frozenset[tuple[str, ...]]],
-) -> list[frozenset[tuple[str, ...]]]:
-    """Merge groups that share any individual label character.
-
-    For groups of the same block size, take the union of their blocks.
-    For groups of different block sizes, keep the one with the larger
-    block size (block symmetries dominate per-index).
-    """
-    merged: list[frozenset[tuple[str, ...]]] = []
-    for g in candidates:
-        g_chars = frozenset(c for block in g for c in block)
-        overlapping = [
-            k
-            for k, m in enumerate(merged)
-            if any(c in g_chars for block in m for c in block)
-        ]
-        if not overlapping:
-            merged.append(g)
-            continue
-
-        combined = g
-        for k in sorted(overlapping, reverse=True):
-            other = merged.pop(k)
-            s1 = len(next(iter(combined)))
-            s2 = len(next(iter(other)))
-            if s1 == s2:
-                combined = frozenset(combined | other)
-            else:
-                combined = combined if s1 > s2 else other
-        merged.append(combined)
-    return merged
+    return SubsetSymmetry(output=v_group, inner=w_group)
 
 
 def _enumerate_id_group_permutations(

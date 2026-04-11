@@ -12,6 +12,27 @@ See [Exploit Symmetry Savings](../how-to/exploit-symmetry.md) for usage patterns
 
 ---
 
+## Permutation Groups
+
+First-class permutation group support for declaring and inspecting tensor
+symmetries beyond the full symmetric group S_k.
+
+::: mechestim._perm_group
+
+### Sympy Interoperability
+
+`Permutation` and `PermutationGroup` use the same internal representation
+(integer array form) as sympy's `combinatorics` module. Convert with:
+
+- `perm.as_sympy()` → `sympy.combinatorics.Permutation`
+- `Permutation.from_sympy(sp)` → mechestim `Permutation`
+- `group.as_sympy()` → `sympy.combinatorics.PermutationGroup`
+- `PermutationGroup.from_sympy(spg, axes=...)` → mechestim `PermutationGroup`
+
+Requires `pip install sympy`. Sympy is not a required dependency.
+
+---
+
 ## PathInfo
 
 Contraction path with per-step diagnostics. Returned by `me.einsum_path()`.
@@ -56,11 +77,11 @@ pairwise contraction along the optimal path.
 | Field | Type | Description |
 |-------|------|-------------|
 | `subscript` | `str` | Einsum subscript for this pairwise step (e.g., `'ijk,ai->ajk'`) |
-| `flop_cost` | `int` | Symmetry-aware FLOP cost of this step (exact: `dense_cost × unique_output / total_output`) |
+| `flop_cost` | `int` | Symmetry-aware FLOP cost of this step, exploiting cross-group symmetry including contracted indices when applicable. See [Einsum cost model](../concepts/flop-counting-model.md#einsum-cost-model). |
 | `dense_flop_cost` | `int` | FLOP cost without symmetry savings |
 | `symmetry_savings` | `float` | `1 - (flop_cost / dense_flop_cost)` — fraction of cost saved by symmetry |
-| `input_symmetries` | `list[IndexSymmetry \| None]` | Symmetry of each input to this step. In the oracle-based flow this is typically `[None, None]` — the oracle computes each intermediate's output symmetry directly from its operand subset rather than chaining per-input groups through the tree. The field is retained for backward compatibility and for future per-input tracking. The informative side is `output_symmetry`. |
-| `output_symmetry` | `IndexSymmetry \| None` | Symmetry of the step's output, as derived by `SubgraphSymmetryOracle.sym(merged_subset)` |
+| `input_groups` | `list[PermutationGroup \| None]` | Symmetry of each input to this step. In the oracle-based flow this is typically `[None, None]` — the oracle computes each intermediate's output symmetry directly from its operand subset rather than chaining per-input groups through the tree. The field is retained for backward compatibility and for future per-input tracking. The informative side is `output_group`. |
+| `output_group` | `PermutationGroup \| None` | Symmetry of the step's output, as derived by `SubgraphSymmetryOracle.sym(merged_subset)`. Displays as `S2`, `C3`, `D4`, `G(order)` etc. depending on the group structure. |
 | `input_shapes` | `list[tuple[int, ...]]` | Shapes of input operands |
 | `output_shape` | `tuple[int, ...]` | Shape of the output tensor |
 | `blas_type` | `str \| bool` | BLAS classification (e.g. `'GEMM'`, `'TDOT'`, `'DOT'`) or `False` for non-BLAS steps |
