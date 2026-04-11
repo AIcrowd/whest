@@ -28,19 +28,19 @@ _SPD_OPS = {"linalg.cholesky", "linalg.eigh", "linalg.eigvalsh"}
 
 _FORMULA_STRINGS: dict[str, str] = {
     "linalg.cholesky": "n^3 / 3",
-    "linalg.qr": "2*m*n^2 - 2*n^3/3",
+    "linalg.qr": "m*n^2 - n^3/3",
     "linalg.eig": "10*n^3",
     "linalg.eigh": "4*n^3 / 3",
     "linalg.eigvals": "7*n^3",
     "linalg.eigvalsh": "4*n^3 / 3",
     "linalg.svd": "m*n*min(m,n)",
     "linalg.svdvals": "m*n*min(m,n)",
-    "linalg.solve": "2*n^3/3 + 2*n^2",
+    "linalg.solve": "n^3/3 + n^2",
     "linalg.inv": "n^3",
     "linalg.lstsq": "m*n*min(m,n)",
     "linalg.pinv": "m*n*min(m,n)",
-    "linalg.det": "2*n^3 / 3",
-    "linalg.slogdet": "2*n^3 / 3",
+    "linalg.det": "n^3 / 3",
+    "linalg.slogdet": "n^3 / 3",
 }
 
 
@@ -63,19 +63,19 @@ def _analytical_cost(op_name: str, n: int) -> int:
     short = op_name.split(".")[-1]
     costs: dict[str, int] = {
         "cholesky": n**3 // 3,
-        "qr": 2 * m * n**2 - 2 * n**3 // 3,
+        "qr": m * n**2 - n**3 // 3,
         "eig": 10 * n**3,
         "eigh": 4 * n**3 // 3,
         "eigvals": 7 * n**3,
         "eigvalsh": 4 * n**3 // 3,
         "svd": m * n * min(m, n),
         "svdvals": m * n * min(m, n),
-        "solve": 2 * n**3 // 3 + 2 * n**2,
+        "solve": n**3 // 3 + n**2,
         "inv": n**3,
         "lstsq": m * n * min(m, n),
         "pinv": m * n * min(m, n),
-        "det": 2 * n**3 // 3,
-        "slogdet": 2 * n**3 // 3,
+        "det": n**3 // 3,
+        "slogdet": n**3 // 3,
     }
     return costs[short]
 

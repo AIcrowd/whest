@@ -60,8 +60,8 @@ _FORMULA_STRINGS: dict[str, str] = {
     "unwrap": "n",
     "convolve": "n * k",
     "correlate": "n * k",
-    "corrcoef": "2 * f^2 * s",
-    "cov": "2 * f^2 * s",
+    "corrcoef": "f^2 * s",
+    "cov": "f^2 * s",
     "cross": "6 * n",
     "histogram": "n * ceil(log2(bins))",
     "histogram2d": "n * 2 * ceil(log2(bins))",
@@ -114,7 +114,7 @@ def _analytical_cost(op: str, **kwargs: int) -> int:
     if op in ("corrcoef", "cov"):
         f = kwargs.get("f", 1000)
         s = kwargs.get("s", 10000)
-        return 2 * f * f * s
+        return f * f * s
 
     if op == "cross":
         # 6 multiply-adds per cross product
