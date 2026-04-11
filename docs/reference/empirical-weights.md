@@ -379,7 +379,7 @@ All weights are normalized against element-wise addition (`np.add`):
 | `random.random` | 1.0000 | high | numel(output) | [\_\_init\_\_.py:175](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L175) | Sampling; cost = numel(output). |
 | `random.random_sample` | 1.0000 | high | numel(output) | [\_\_init\_\_.py:176](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L176) | Sampling; cost = numel(output). |
 
-### Misc (27 operations)
+### Misc (96 operations)
 
 | Op | Weight | Confidence | Formula | Impl | Notes |
 |:---|-------:|:-----------|:--------|:-----|:------|
@@ -410,6 +410,75 @@ All weights are normalized against element-wise addition (`np.add`):
 | `apply_along_axis` | 1.0000 |  |  |  |  |
 | `apply_over_axes` | 1.0000 |  |  |  |  |
 | `piecewise` | 1.0000 |  |  |  |  |
+| `append` | 1.0000 |  |  |  |  |
+| `arange` | 1.0000 |  |  |  |  |
+| `argwhere` | 1.0000 |  |  |  |  |
+| `array` | 1.0000 |  |  |  |  |
+| `array_split` | 1.0000 |  |  |  |  |
+| `asarray` | 1.0000 |  |  |  |  |
+| `asarray_chkfinite` | 1.0000 |  |  |  |  |
+| `base_repr` | 1.0000 |  |  |  |  |
+| `binary_repr` | 1.0000 |  |  |  |  |
+| `block` | 1.0000 |  |  |  |  |
+| `bmat` | 1.0000 |  |  |  |  |
+| `broadcast_arrays` | 1.0000 |  |  |  |  |
+| `broadcast_to` | 1.0000 |  |  |  |  |
+| `choose` | 1.0000 |  |  |  |  |
+| `compress` | 1.0000 |  |  |  |  |
+| `concat` | 1.0000 |  |  |  |  |
+| `concatenate` | 1.0000 |  |  |  |  |
+| `copyto` | 1.0000 |  |  |  |  |
+| `delete` | 1.0000 |  |  |  |  |
+| `diag` | 1.0000 |  |  |  |  |
+| `diagflat` | 1.0000 |  |  |  |  |
+| `diagonal` | 1.0000 |  |  |  |  |
+| `dsplit` | 1.0000 |  |  |  |  |
+| `dstack` | 1.0000 |  |  |  |  |
+| `extract` | 1.0000 |  |  |  |  |
+| `fill_diagonal` | 1.0000 |  |  |  |  |
+| `flatnonzero` | 1.0000 |  |  |  |  |
+| `from_dlpack` | 1.0000 |  |  |  |  |
+| `frombuffer` | 1.0000 |  |  |  |  |
+| `fromfile` | 1.0000 |  |  |  |  |
+| `fromfunction` | 1.0000 |  |  |  |  |
+| `fromiter` | 1.0000 |  |  |  |  |
+| `fromregex` | 1.0000 |  |  |  |  |
+| `fromstring` | 1.0000 |  |  |  |  |
+| `full` | 1.0000 |  |  |  |  |
+| `full_like` | 1.0000 |  |  |  |  |
+| `indices` | 1.0000 |  |  |  |  |
+| `insert` | 1.0000 |  |  |  |  |
+| `isfinite` | 1.0000 |  |  |  |  |
+| `isinf` | 1.0000 |  |  |  |  |
+| `isnan` | 1.0000 |  |  |  |  |
+| `ix_` | 1.0000 |  |  |  |  |
+| `linspace` | 1.0000 |  |  |  |  |
+| `mask_indices` | 1.0000 |  |  |  |  |
+| `meshgrid` | 1.0000 |  |  |  |  |
+| `nonzero` | 1.0000 |  |  |  |  |
+| `packbits` | 1.0000 |  |  |  |  |
+| `pad` | 1.0000 |  |  |  |  |
+| `place` | 1.0000 |  |  |  |  |
+| `put` | 1.0000 |  |  |  |  |
+| `put_along_axis` | 1.0000 |  |  |  |  |
+| `putmask` | 1.0000 |  |  |  |  |
+| `ravel` | 1.0000 |  |  |  |  |
+| `repeat` | 1.0000 |  |  |  |  |
+| `resize` | 1.0000 |  |  |  |  |
+| `roll` | 1.0000 |  |  |  |  |
+| `rollaxis` | 1.0000 |  |  |  |  |
+| `select` | 1.0000 |  |  |  |  |
+| `split` | 1.0000 |  |  |  |  |
+| `stack` | 1.0000 |  |  |  |  |
+| `take` | 1.0000 |  |  |  |  |
+| `take_along_axis` | 1.0000 |  |  |  |  |
+| `tile` | 1.0000 |  |  |  |  |
+| `trim_zeros` | 1.0000 |  |  |  |  |
+| `unpackbits` | 1.0000 |  |  |  |  |
+| `unstack` | 1.0000 |  |  |  |  |
+| `vsplit` | 1.0000 |  |  |  |  |
+| `vstack` | 1.0000 |  |  |  |  |
+| `where` | 1.0000 |  |  |  |  |
 
 ### Window (5 operations)
 
@@ -470,12 +539,12 @@ All weights are normalized against element-wise addition (`np.add`):
 | Contractions | 9 | 1.00 | 1.0000 | 1.0000 |
 | Polynomial | 10 | 2.50 | 1.0000 | 16.0000 |
 | Random | 43 | 13.21 | 1.0000 | 16.0000 |
-| Misc | 27 | 1.00 | 1.0000 | 1.0000 |
+| Misc | 96 | 1.00 | 1.0000 | 1.0000 |
 | Window | 5 | 13.00 | 1.0000 | 16.0000 |
 | Bitwise | 14 | 3.14 | 1.0000 | 16.0000 |
 | Complex | 11 | 2.36 | 1.0000 | 16.0000 |
 
-**Total benchmarked operations:** 294
+**Total benchmarked operations:** 363
 
 ## Validation
 
