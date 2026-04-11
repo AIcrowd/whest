@@ -274,8 +274,42 @@ into `M`?*
     σ(M)[:,c] = col_of[a]  →  π(c) = a
     σ(M)[:,d] = col_of[b]  →  π(d) = b
 
-  Induced π = (a c)(b d).  Check: π(σ(M)) = M. ✓
+  Induced π = (a c)(b d).
 ```
+
+**Recover M from σ(M).** We now show concretely that `π(σ(M)) = M`.
+Rename each column `ℓ` of `σ(M)` by `π(ℓ)` (so column `a` → `c`, `b` → `d`,
+`c` → `a`, `d` → `b`), then re-sort the columns alphabetically:
+
+```
+     σ(M), cols renamed by π:       after sorting cols (a,b,c,d):
+              c  d  a  b                         a  b  c  d
+     u1_c  [ 0  0  1  0 ]             u1_c  [ 1  0  0  0 ]
+     u1_d  [ 0  0  0  1 ]             u1_d  [ 0  1  0  0 ]
+     u0_a  [ 1  0  0  0 ]             u0_a  [ 0  0  1  0 ]
+     u0_b  [ 0  1  0  0 ]             u0_b  [ 0  0  0  1 ]
+```
+
+Entry-by-entry the result matches M — both are the 4×4 identity. The
+row labels have been carried along by `σ` (which sent `u0_a ↔ u1_c`
+and `u0_b ↔ u1_d`), so every incidence `(u, ℓ)` of M maps under
+`(σ, π)` to another incidence of M. The labelled bipartite graph is
+unchanged — `(σ, π)` is an automorphism, and `π(σ(M)) = M` holds in
+the graph-automorphism sense.
+
+Equivalently, we can verify the recovery edge by edge. M has four
+edges; apply `(σ, π)` to each and check the image is still an edge
+of M:
+
+```
+  (u0_a, a) ─(σ,π)→ (u1_c, c)   ✓ in M
+  (u0_b, b) ─(σ,π)→ (u1_d, d)   ✓ in M
+  (u1_c, c) ─(σ,π)→ (u0_a, a)   ✓ in M
+  (u1_d, d) ─(σ,π)→ (u0_b, b)   ✓ in M
+```
+
+All four edges are preserved → `(σ, π)` is an automorphism of the
+labelled bipartite graph, confirming the matrix-level recovery.
 
 So π = (a c)(b d). Two disjoint 2-cycles from one σ, all in V (W is empty).
 Classify: number of cycles = 2 = block size; cycle length = 2 = number of
@@ -347,6 +381,23 @@ All three are distinct — no fingerprint equivalences.
 ```
 
 Validate: π(V) = {b, a} ⊆ V ✓, π(W) = {i} ⊆ W ✓.
+
+**Recovery check.** Apply `(σ, π)` to each edge of M and verify it
+lands back on an edge of M:
+
+```
+  (X₀·i, i) ─(σ,π)→ (X₁·i, i)   ✓ in M   (i is a π-fixed point)
+  (X₀·a, a) ─(σ,π)→ (X₁·b, b)   ✓ in M
+  (X₁·i, i) ─(σ,π)→ (X₀·i, i)   ✓ in M
+  (X₁·b, b) ─(σ,π)→ (X₀·a, a)   ✓ in M
+```
+
+All four edges are preserved, so `π(σ(M)) = M`. Notice that `i`
+stays in W on both sides of the map — this is what makes the
+`π(W) ⊆ W` validation pass and is why the W/V partition check is
+needed: if a hypothetical π had pulled `i` into V (or an output
+label into W), the implied bipartite-graph action would no longer
+be an automorphism of the *labelled* graph.
 
 Cycle structure on V: single 2-cycle (a b) → **per-index S₂{a, b}**.
 The oracle reports this as the output symmetry — XᵀX is symmetric in its
