@@ -129,15 +129,15 @@ def test_flop_cost() -> None:
     assert 10 == oe._helpers.flop_count("a", False, 2, size_dict)
     assert 100 == oe._helpers.flop_count("ab", False, 2, size_dict)
 
-    # Inner product (+, *)
-    assert 20 == oe._helpers.flop_count("a", True, 2, size_dict)
-    assert 200 == oe._helpers.flop_count("ab", True, 2, size_dict)
+    # Inner product (+, *) — FMA_COST=1
+    assert 10 == oe._helpers.flop_count("a", True, 2, size_dict)
+    assert 100 == oe._helpers.flop_count("ab", True, 2, size_dict)
 
-    # Inner product x3 (+, *, *)
-    assert 30 == oe._helpers.flop_count("a", True, 3, size_dict)
+    # Inner product x3 (+, *, *) — 1 FMA + 1 standalone mul = 2
+    assert 20 == oe._helpers.flop_count("a", True, 3, size_dict)
 
-    # GEMM
-    assert 2000 == oe._helpers.flop_count("abc", True, 2, size_dict)
+    # GEMM — FMA_COST=1
+    assert 1000 == oe._helpers.flop_count("abc", True, 2, size_dict)
 
 
 @pytest.mark.skip(reason="oe.contract not vendored")
@@ -316,43 +316,43 @@ def test_custom_dp_can_set_cost_cap() -> None:
     [
         (
             "flops",
-            663054,
+            331527,
             18900,
             [(4, 5), (2, 5), (2, 7), (5, 6), (1, 5), (1, 4), (0, 3), (0, 2), (0, 1)],
         ),
         (
             "size",
-            1114440,
+            557220,
             2016,
             [(2, 7), (3, 8), (3, 7), (2, 6), (1, 5), (1, 4), (1, 3), (1, 2), (0, 1)],
         ),
         (
             "write",
-            983790,
+            491895,
             2016,
             [(0, 8), (3, 4), (1, 4), (5, 6), (1, 5), (0, 4), (0, 3), (1, 2), (0, 1)],
         ),
         (
             "combo",
-            973518,
+            486759,
             2016,
             [(4, 5), (2, 5), (6, 7), (2, 6), (1, 5), (1, 4), (0, 3), (0, 2), (0, 1)],
         ),
         (
             "limit",
-            983832,
+            491916,
             2016,
             [(2, 7), (3, 4), (0, 4), (3, 6), (2, 5), (0, 4), (0, 3), (1, 2), (0, 1)],
         ),
         (
             "combo-256",
-            983790,
+            491895,
             2016,
             [(0, 8), (3, 4), (1, 4), (5, 6), (1, 5), (0, 4), (0, 3), (1, 2), (0, 1)],
         ),
         (
             "limit-256",
-            983832,
+            491916,
             2016,
             [(2, 7), (3, 4), (0, 4), (3, 6), (2, 5), (0, 4), (0, 3), (1, 2), (0, 1)],
         ),

@@ -38,7 +38,7 @@ class TestDet:
             from mechestim.linalg import det
 
             det(A)
-            assert budget.flops_used == 2 * n**3 // 3
+            assert budget.flops_used == n**3 // 3
 
 
 class TestSlogdet:
@@ -59,7 +59,7 @@ class TestSlogdet:
             from mechestim.linalg import slogdet
 
             slogdet(A)
-            assert budget.flops_used == 2 * n**3 // 3
+            assert budget.flops_used == n**3 // 3
 
 
 class TestNorm:
@@ -84,7 +84,7 @@ class TestNorm:
             from mechestim.linalg import norm
 
             norm(A)
-            assert budget.flops_used == 2 * 20
+            assert budget.flops_used == 20
 
     def test_matrix_ord2_cost(self):
         A = numpy.random.randn(4, 5)
@@ -108,7 +108,7 @@ class TestNorm:
             from mechestim.linalg import norm
 
             norm(x, ord=3)
-            assert budget.flops_used == 2 * 10
+            assert budget.flops_used == 10
 
 
 class TestVectorNorm:
@@ -142,7 +142,7 @@ class TestMatrixNorm:
             from mechestim.linalg import matrix_norm
 
             matrix_norm(A)
-            assert budget.flops_used == 2 * 12
+            assert budget.flops_used == 12
 
 
 class TestCond:

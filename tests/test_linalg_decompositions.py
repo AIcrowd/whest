@@ -59,7 +59,7 @@ class TestQR:
             from mechestim.linalg import qr
 
             qr(A)
-            expected = 2 * m * n**2 - (2 * n**3) // 3
+            expected = m * n**2 - n**3 // 3
             assert budget.flops_used == expected
 
     def test_op_log(self):
