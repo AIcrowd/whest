@@ -44,6 +44,8 @@ from mechestim._config import configure  # noqa: F401
 # --- Counting, histogram & generation ops (counted) ---
 from mechestim._counting_ops import (  # noqa: F401
     allclose,
+    apply_along_axis,
+    apply_over_axes,
     array_equal,
     array_equiv,
     bincount,
@@ -53,6 +55,7 @@ from mechestim._counting_ops import (  # noqa: F401
     histogram_bin_edges,
     histogramdd,
     logspace,
+    piecewise,
     trace,
     vander,
 )
