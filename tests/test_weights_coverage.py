@@ -39,6 +39,9 @@ from benchmarks._random import RANDOM_OPS  # noqa: E402
 from benchmarks._reductions import REDUCTION_OPS  # noqa: E402
 from benchmarks._sorting import SORTING_OPS  # noqa: E402
 from benchmarks._window import WINDOW_OPS  # noqa: E402
+from benchmarks._bitwise import BITWISE_OPS  # noqa: E402
+from benchmarks._complex import COMPLEX_OPS  # noqa: E402
+from benchmarks._linalg_delegates import LINALG_DELEGATE_OPS  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # Ops covered by benchmark modules (weights pending bare-metal generation).
@@ -56,6 +59,9 @@ BENCHMARKED_OPS: frozenset[str] = frozenset(
     | set(POLYNOMIAL_OPS)
     | set(FFT_OPS)
     | set(LINALG_OPS)
+    | set(BITWISE_OPS)
+    | set(COMPLEX_OPS)
+    | set(LINALG_DELEGATE_OPS)
 )
 
 # ---------------------------------------------------------------------------
@@ -94,6 +100,9 @@ ALIAS_MAP: dict[str, str] = {
     "divmod": "floor_divide",
     # Deprecated name
     "trapz": "trapezoid",
+    # Random aliases
+    "random.ranf": "random.random_sample",
+    "random.sample": "random.random_sample",
 }
 
 # ---------------------------------------------------------------------------
@@ -102,69 +111,10 @@ ALIAS_MAP: dict[str, str] = {
 # shape-dependent cost that can't be captured by a single scalar weight.
 # ---------------------------------------------------------------------------
 
-#: Bitwise / integer-only ops -- no fp_arith_inst_retired events.
-EXCLUDED_BITWISE: frozenset[str] = frozenset(
-    {
-        "bitwise_and",
-        "bitwise_count",
-        "bitwise_invert",
-        "bitwise_left_shift",
-        "bitwise_not",
-        "bitwise_or",
-        "bitwise_right_shift",
-        "bitwise_xor",
-        "invert",
-        "left_shift",
-        "right_shift",
-        "gcd",
-        "lcm",
-    }
-)
-
-#: Complex-number ops -- benchmarked with float64 but internally branch
-#: on dtype; a single real-dtype weight isn't representative.
-EXCLUDED_COMPLEX: frozenset[str] = frozenset(
-    {
-        "angle",
-        "conj",
-        "conjugate",
-        "imag",
-        "real",
-        "real_if_close",
-        "iscomplex",
-        "iscomplexobj",
-        "isreal",
-        "isrealobj",
-        "sort_complex",
-    }
-)
-
 #: BLAS contraction planning ops -- no FP work.
 EXCLUDED_CONTRACTION: frozenset[str] = frozenset(
     {
         "einsum_path",  # planning op, no FP work
-    }
-)
-
-#: linalg ops not in the decomposition benchmark suite -- delegates to
-#: contraction ops or uses decompositions internally.
-EXCLUDED_LINALG: frozenset[str] = frozenset(
-    {
-        "linalg.cond",
-        "linalg.cross",
-        "linalg.matmul",
-        "linalg.matrix_norm",
-        "linalg.matrix_power",
-        "linalg.matrix_rank",
-        "linalg.multi_dot",
-        "linalg.norm",
-        "linalg.outer",
-        "linalg.tensordot",
-        "linalg.tensorinv",
-        "linalg.tensorsolve",
-        "linalg.trace",
-        "linalg.vecdot",
-        "linalg.vector_norm",
     }
 )
 
@@ -173,26 +123,12 @@ EXCLUDED_RANDOM: frozenset[str] = frozenset(
     {
         "random.bytes",  # returns bytes, not FP
         "random.random_integers",  # removed in NumPy 2.x
-        "random.ranf",  # alias for random_sample
-        "random.sample",  # alias for random_sample
-    }
-)
-
-#: Ops that only exist in specific NumPy versions, or operate on non-float
-#: dtypes (e.g. datetime64) where a float64 weight is not applicable.
-EXCLUDED_VERSION_DEPENDENT: frozenset[str] = frozenset(
-    {
-        "isnat",  # datetime64/timedelta64 only -- no FP operations
     }
 )
 
 ALL_EXCLUDED = (
-    EXCLUDED_BITWISE
-    | EXCLUDED_COMPLEX
-    | EXCLUDED_CONTRACTION
-    | EXCLUDED_LINALG
+    EXCLUDED_CONTRACTION
     | EXCLUDED_RANDOM
-    | EXCLUDED_VERSION_DEPENDENT
 )
 
 
