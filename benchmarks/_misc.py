@@ -615,7 +615,6 @@ def benchmark_misc(
 
         dist_values: list[float] = []
         dist_raw_totals: list[int] = []
-        last_bench_code = ""
 
         for i, setup in enumerate(setups):
             # bench can be a single string or a list (one per distribution)
@@ -623,7 +622,6 @@ def benchmark_misc(
                 bench_code = bench[i]
             else:
                 bench_code = bench
-            last_bench_code = bench_code
 
             try:
                 result = measure_flops(setup, bench_code, repeats=repeats)

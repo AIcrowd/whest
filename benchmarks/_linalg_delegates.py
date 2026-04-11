@@ -7,7 +7,6 @@ with perf counters to capture any wrapper overhead.
 
 from __future__ import annotations
 
-import math
 import statistics
 
 from benchmarks._perf import measure_flops
@@ -49,9 +48,15 @@ _FORMULA_STRINGS: dict[str, str] = {
 }
 
 # NumPy 2.x-only ops — skip gracefully on older versions.
-_NUMPY2_OPS = {"linalg.cross", "linalg.matrix_norm", "linalg.vector_norm",
-               "linalg.outer", "linalg.vecdot", "linalg.matmul",
-               "linalg.tensordot"}
+_NUMPY2_OPS = {
+    "linalg.cross",
+    "linalg.matrix_norm",
+    "linalg.vector_norm",
+    "linalg.outer",
+    "linalg.vecdot",
+    "linalg.matmul",
+    "linalg.tensordot",
+}
 
 
 def _analytical_cost(op_name: str) -> int:
@@ -72,21 +77,21 @@ def _analytical_cost(op_name: str) -> int:
     """
     short = op_name.split(".")[-1]
     costs: dict[str, int] = {
-        "cond": 512 * 512 * 512,                       # m*n*min(m,n) via SVD
-        "cross": 6 * 1_000_000,                         # 6*n
-        "matmul": 2 * 512 * 512 * 512,                  # 2*M*N*K
-        "matrix_norm": 2 * 512 * 512,                   # 2*numel (Frobenius)
-        "matrix_power": 3 * 64**3,                      # 3 matmuls for n=5
-        "matrix_rank": 512 * 512 * 512,                 # m*n*min(m,n) via SVD
+        "cond": 512 * 512 * 512,  # m*n*min(m,n) via SVD
+        "cross": 6 * 1_000_000,  # 6*n
+        "matmul": 2 * 512 * 512 * 512,  # 2*M*N*K
+        "matrix_norm": 2 * 512 * 512,  # 2*numel (Frobenius)
+        "matrix_power": 3 * 64**3,  # 3 matmuls for n=5
+        "matrix_rank": 512 * 512 * 512,  # m*n*min(m,n) via SVD
         "multi_dot": 2 * (128 * 64 * 128 + 128 * 128 * 64),
-        "norm": 10_000_000,                             # numel (L2)
-        "outer": 5000 * 5000,                           # M*N
-        "tensordot": 2 * 64**5,                         # 2*d^5
-        "tensorinv": 64**3,                             # n^3 after reshape
-        "tensorsolve": 64**3,                           # n^3 after reshape
-        "trace": 10_000,                                # min(m,n)
-        "vecdot": 1000 * 512,                           # batch*K
-        "vector_norm": 10_000_000,                      # numel (L2)
+        "norm": 10_000_000,  # numel (L2)
+        "outer": 5000 * 5000,  # M*N
+        "tensordot": 2 * 64**5,  # 2*d^5
+        "tensorinv": 64**3,  # n^3 after reshape
+        "tensorsolve": 64**3,  # n^3 after reshape
+        "trace": 10_000,  # min(m,n)
+        "vecdot": 1000 * 512,  # batch*K
+        "vector_norm": 10_000_000,  # numel (L2)
     }
     return costs[short]
 
@@ -94,6 +99,7 @@ def _analytical_cost(op_name: str) -> int:
 # ---------------------------------------------------------------------------
 # Per-op setup / bench code builders
 # ---------------------------------------------------------------------------
+
 
 def _op_config(op: str, dtype: str) -> tuple[list[str], str, str]:
     """Return (setups, bench_code, benchmark_size) for a delegate op.
@@ -336,6 +342,7 @@ def _op_config(op: str, dtype: str) -> tuple[list[str], str, str]:
 # ---------------------------------------------------------------------------
 # Main benchmark entry point
 # ---------------------------------------------------------------------------
+
 
 def benchmark_linalg_delegates(
     dtype: str = "float64",

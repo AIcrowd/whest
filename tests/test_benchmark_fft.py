@@ -2,7 +2,7 @@
 
 from unittest.mock import patch
 
-from benchmarks._fft import FFT_OPS, _FORMULA_STRINGS, _analytical_cost, benchmark_fft
+from benchmarks._fft import _FORMULA_STRINGS, FFT_OPS, _analytical_cost, benchmark_fft
 from benchmarks._perf import PerfResult
 
 

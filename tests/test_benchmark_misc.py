@@ -6,8 +6,8 @@ from unittest.mock import patch
 import pytest
 
 from benchmarks._misc import (
-    MISC_OPS,
     _FORMULA_STRINGS,
+    MISC_OPS,
     _analytical_cost,
     _get_op_config,
     benchmark_misc,
