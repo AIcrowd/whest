@@ -72,16 +72,39 @@ The reviewer simplified all linalg decomposition formulas to a uniform
 | `linalg.svd` | `m*n*k` | keep | 4 | `4*m*n*k` |
 | `linalg.svdvals` | `m*n*k` | keep | 4 | `4*m*n*k` |
 
+### Polynomial — drop factor of 2 from polyval:
+| Op | Current | New | Rationale |
+|----|:---|:---|:---|
+| `polyval` | `2 * n * degree` | `n * degree` | FMA = 1 op (same as contractions) |
+| `roots` | `10 * degree^3` | `degree^3` | Simplify; weight=16 handles cost |
+
 ### Other formula changes:
 | Op | Current | New | Rationale |
 |----|:---|:---|:---|
 | `sort_complex` | `numel(output)` | `n*ceil(log2(n))` | It's a sort |
 | `argpartition` | `n` | `n * len(k)` | Scales with kth count |
 
-### SVD — NO formula change, weight=4 handles correction:
-`svd_cost(m, n, k)` stays as `m*n*k` (where k defaults to `min(m,n)`
-when not provided). The reviewer's `4*m*n*k` is the total cost after
-applying weight=4: `m*n*k * 4 = 4*m*n*k`.
+### No formula change needed:
+- **SVD:** `m*n*k` stays. Weight=4 gives `4*m*n*k`.
+- **linalg.cond:** `m*n*min(m,n)` stays (reviewer wrote same formula).
+- **Window functions:** formulas stay (`n` or `3*n`). Weight=16 (bartlett=1).
+- **einsum "symmetrization bonus"**: already implemented via subgraph
+  symmetry detection in opt_einsum. No change needed.
+
+### Linalg delegate ops — 12 ops with `?` weight:
+The reviewer left `?` for all linalg delegate ops. These delegate to
+primary ops that already have weights. Assign:
+- Ops delegating to contractions (matmul, outer, tensordot, vecdot,
+  cross, multi_dot): weight = 1 (matches contraction weight)
+- Ops delegating to decompositions (cond, matrix_rank → SVD): weight = 4
+- Ops delegating to solve (tensorinv, tensorsolve): weight = 1 (matches solve)
+- Simple reductions (norm, vector_norm, matrix_norm, trace): weight = 1
+
+### Other `?` weight ops:
+- `isnat`: weight = 1 (element scan, like isnan)
+- `random.ranf`, `random.sample`: aliases for `random.random_sample`,
+  inherit its weight = 1
+- `random.bytes`, `random.random_integers`, `einsum_path`: stay excluded
 
 **Files:** `src/mechestim/_flops.py` (svd_cost, einsum op_factor),
 `src/mechestim/_pointwise.py` (dot, matmul, tensordot, kron),
@@ -102,11 +125,13 @@ and add cost functions. 63 ops stay free (views/metadata).
 `extract`, `place`, `put`, `put_along_axis`, `putmask`, `select`,
 `where`, `compress`, `fill_diagonal`, `packbits`, `unpackbits`
 
-### C2: Array-creation/copy ops (weight = 1, cost = numel(output))
+### C2: Array-creation/copy ops (weight = 1, cost = numel(output) or noted)
 `append`, `concatenate`, `concat`, `stack`, `vstack`, `dstack`, `block`,
-`bmat`, `repeat`, `tile`, `resize`, `pad`, `insert`, `delete`,
-`broadcast_arrays`, `broadcast_to`, `choose`, `take`, `take_along_axis`,
-`roll`, `rollaxis`, `split`, `dsplit`, `unstack`, `vsplit`, `trim_zeros`
+`bmat`, `repeat`, `tile`, `resize`, `pad`, `insert` (num inserted),
+`delete` (num deleted), `broadcast_arrays`, `broadcast_to`, `choose`,
+`take`, `take_along_axis`, `roll`, `rollaxis`, `split`,
+`array_split` (input length), `dsplit`, `unstack`, `vsplit`,
+`trim_zeros` (num trimmed), `copyto` (num copied)
 
 ### C3: Generation ops (weight = 1, cost = numel(output))
 `arange`, `linspace`, `indices`, `meshgrid`, `full`, `full_like`,
