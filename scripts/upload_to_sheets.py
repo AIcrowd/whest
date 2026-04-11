@@ -111,49 +111,35 @@ def create_spreadsheet() -> str:
     return sid
 
 
-def upload_data(sid: str, rows: list[list[str]], *, skip_col: int | None = 5) -> None:
-    """Upload CSV data to Sheet 1.
+def upload_data(sid: str, rows: list[list[str]]) -> None:
+    """Upload CSV data to Sheet 1, preserving reviewer-added columns.
 
-    Parameters
-    ----------
-    skip_col : int or None
-        Column index to skip (default: 5 = "Reviewer Weight" column F).
-        When updating an existing sheet, this preserves reviewer edits.
-        Set to None for fresh sheets (creates all columns).
+    Reads the sheet's current headers, maps CSV columns by name, and
+    only writes columns whose headers match. Columns added by the
+    reviewer (e.g. "Reviewer Weight", "Proposed denominator") are
+    left untouched.
     """
-    print(f"Uploading {len(rows)} rows ({len(rows[0])} columns)...")
+    csv_headers = rows[0]
+    csv_data = rows[1:]
+    print(f"Uploading {len(csv_data)} data rows ({len(csv_headers)} CSV columns)...")
 
-    CHUNK = 50
-    for start in range(0, len(rows), CHUNK):
-        chunk = rows[start:start + CHUNK]
-        row_start = start + 1
+    # Read current sheet headers
+    resp = gws(
+        "sheets", "spreadsheets", "values", "get",
+        "--params", json.dumps({
+            "spreadsheetId": sid,
+            "range": "'All Operations'!A1:Z1",
+        }),
+    )
+    sheet_headers = resp.get("values", [[]])[0] if resp.get("values") else []
 
-        if skip_col is not None and skip_col > 0:
-            # Upload columns before skip_col (A-E)
-            chunk_before = [row[:skip_col] for row in chunk]
-            gws(
-                "sheets", "spreadsheets", "values", "update",
-                "--params", json.dumps({
-                    "spreadsheetId": sid,
-                    "range": f"'All Operations'!A{row_start}",
-                    "valueInputOption": "USER_ENTERED",
-                }),
-                json_body={"values": chunk_before},
-            )
-            # Upload columns after skip_col (G onward)
-            col_letter = chr(65 + skip_col + 1)  # F+1 = G
-            chunk_after = [row[skip_col + 1:] for row in chunk]
-            gws(
-                "sheets", "spreadsheets", "values", "update",
-                "--params", json.dumps({
-                    "spreadsheetId": sid,
-                    "range": f"'All Operations'!{col_letter}{row_start}",
-                    "valueInputOption": "USER_ENTERED",
-                }),
-                json_body={"values": chunk_after},
-            )
-        else:
-            # Upload all columns (fresh sheet)
+    if not sheet_headers:
+        # Fresh sheet — upload everything
+        print("  Fresh sheet, uploading all columns...")
+        CHUNK = 50
+        for start in range(0, len(rows), CHUNK):
+            chunk = rows[start:start + CHUNK]
+            row_start = start + 1
             gws(
                 "sheets", "spreadsheets", "values", "update",
                 "--params", json.dumps({
@@ -163,8 +149,51 @@ def upload_data(sid: str, rows: list[list[str]], *, skip_col: int | None = 5) ->
                 }),
                 json_body={"values": chunk},
             )
+        print("  Data uploaded.")
+        return
 
-    print("  Data uploaded.")
+    # Map CSV columns to sheet columns by header name
+    csv_to_sheet: dict[int, int] = {}
+    used_sheet_cols: set[int] = set()
+    for csv_idx, csv_h in enumerate(csv_headers):
+        if csv_h == "Reviewer Weight":
+            continue  # never overwrite
+        for sheet_idx, sheet_h in enumerate(sheet_headers):
+            if sheet_h == csv_h and sheet_idx not in used_sheet_cols:
+                csv_to_sheet[csv_idx] = sheet_idx
+                used_sheet_cols.add(sheet_idx)
+                break
+
+    preserved = [
+        f"{chr(65 + i)}: '{sheet_headers[i]}'"
+        for i in range(len(sheet_headers))
+        if i not in used_sheet_cols
+    ]
+    if preserved:
+        print(f"  Preserving reviewer columns: {', '.join(preserved)}")
+
+    # Upload column by column
+    CHUNK = 100
+    for csv_idx, sheet_idx in sorted(csv_to_sheet.items(), key=lambda x: x[1]):
+        col_letter = chr(65 + sheet_idx)
+        col_values = [[csv_headers[csv_idx]]] + [
+            [row[csv_idx] if csv_idx < len(row) else ""]
+            for row in csv_data
+        ]
+        for start in range(0, len(col_values), CHUNK):
+            chunk = col_values[start:start + CHUNK]
+            row_start = start + 1
+            gws(
+                "sheets", "spreadsheets", "values", "update",
+                "--params", json.dumps({
+                    "spreadsheetId": sid,
+                    "range": f"'All Operations'!{col_letter}{row_start}",
+                    "valueInputOption": "USER_ENTERED",
+                }),
+                json_body={"values": chunk},
+            )
+
+    print(f"  Updated {len(csv_to_sheet)} columns, preserved {len(preserved)} reviewer columns.")
 
 
 def _color(r: float, g: float, b: float) -> dict:
