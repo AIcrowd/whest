@@ -263,6 +263,72 @@ def vander(x, N=None, **kwargs):
 
 attach_docstring(vander, _np.vander, "counted_custom", "len(x) * (N-1) FLOPs")
 
+# ---------------------------------------------------------------------------
+# Apply & piecewise (formerly blacklisted)
+# ---------------------------------------------------------------------------
+
+
+def apply_along_axis(func1d, axis, arr, *args, **kwargs):
+    """Counted version of np.apply_along_axis. Cost: numel(output)."""
+    budget = require_budget()
+    if not isinstance(arr, _np.ndarray):
+        arr = _np.asarray(arr)
+    result = _np.apply_along_axis(func1d, axis, arr, *args, **kwargs)
+    cost = result.size if hasattr(result, "size") else 1
+    budget.deduct(
+        "apply_along_axis", flop_cost=cost, subscripts=None, shapes=(arr.shape,)
+    )
+    return result
+
+
+attach_docstring(
+    apply_along_axis,
+    _np.apply_along_axis,
+    "counted_custom",
+    "numel(output) FLOPs",
+)
+
+
+def apply_over_axes(func, a, axes):
+    """Counted version of np.apply_over_axes. Cost: numel(output)."""
+    budget = require_budget()
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
+    result = _np.apply_over_axes(func, a, axes)
+    cost = result.size if hasattr(result, "size") else 1
+    budget.deduct(
+        "apply_over_axes", flop_cost=cost, subscripts=None, shapes=(a.shape,)
+    )
+    return result
+
+
+attach_docstring(
+    apply_over_axes,
+    _np.apply_over_axes,
+    "counted_custom",
+    "numel(output) FLOPs",
+)
+
+
+def piecewise(x, condlist, funclist, *args, **kw):
+    """Counted version of np.piecewise. Cost: numel(input)."""
+    budget = require_budget()
+    if not isinstance(x, _np.ndarray):
+        x = _np.asarray(x)
+    result = _np.piecewise(x, condlist, funclist, *args, **kw)
+    cost = x.size
+    budget.deduct("piecewise", flop_cost=cost, subscripts=None, shapes=(x.shape,))
+    return result
+
+
+attach_docstring(
+    piecewise,
+    _np.piecewise,
+    "counted_custom",
+    "numel(input) FLOPs",
+)
+
+
 import sys as _sys  # noqa: E402
 
 from mechestim._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402

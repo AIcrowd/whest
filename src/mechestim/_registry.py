@@ -386,9 +386,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Return real array if imaginary part is negligible.",
     },
     "sort_complex": {
-        "category": "counted_unary",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Sort complex array by real then imaginary part.",
+        "notes": "Sort complex array. Cost: $n \\cdot \\lceil\\log_2 n\\rceil$.",
     },
     # ------------------------------------------------------------------
     # counted_binary — implemented in _pointwise.py
@@ -925,7 +925,7 @@ REGISTRY: dict[str, dict] = {
     "linalg.cholesky": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Cholesky decomposition. Cost: $n^3/3$ (Golub & Van Loan §4.2).",
+        "notes": "Cholesky decomposition. Cost: $n^3$.",
     },
     "linalg.cond": {
         "category": "counted_custom",
@@ -940,7 +940,7 @@ REGISTRY: dict[str, dict] = {
     "linalg.det": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Determinant. Cost: $n^3$ (LU factorization).",
+        "notes": "Determinant. Cost: $n^3$.",
     },
     "linalg.diagonal": {
         "category": "free",
@@ -950,22 +950,22 @@ REGISTRY: dict[str, dict] = {
     "linalg.eig": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Eigendecomposition. Cost: $10n^3$ (Francis QR, Golub & Van Loan §7.5).",
+        "notes": "Eigendecomposition. Cost: $n^3$.",
     },
     "linalg.eigh": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Symmetric eigendecomposition. Cost: $(4/3)n^3$ (Golub & Van Loan §8.3).",
+        "notes": "Symmetric eigendecomposition. Cost: $n^3$.",
     },
     "linalg.eigvals": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Eigenvalues only. Cost: $10n^3$ (same as eig).",
+        "notes": "Eigenvalues only. Cost: $n^3$.",
     },
     "linalg.eigvalsh": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Symmetric eigenvalues. Cost: $(4/3)n^3$ (same as eigh).",
+        "notes": "Symmetric eigenvalues. Cost: $n^3$.",
     },
     "linalg.inv": {
         "category": "counted_custom",
@@ -980,7 +980,7 @@ REGISTRY: dict[str, dict] = {
     "linalg.matmul": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Delegates to `me.matmul` which charges `2*m*k*n` FLOPs.",
+        "notes": "Delegates to `me.matmul` which charges `m*k*n` FLOPs (FMA=1).",
     },
     "linalg.matrix_norm": {
         "category": "counted_custom",
@@ -1025,17 +1025,17 @@ REGISTRY: dict[str, dict] = {
     "linalg.qr": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "QR decomposition. Cost: $2mn^2 - (2/3)n^3$ (Golub & Van Loan §5.2).",
+        "notes": "QR decomposition. Cost: $m \\cdot n \\cdot \\min(m,n)$.",
     },
     "linalg.slogdet": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Sign + log determinant. Cost: $n^3$ (LU factorization).",
+        "notes": "Sign + log determinant. Cost: $n^3$.",
     },
     "linalg.solve": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Solve Ax=b. Cost: $2n^3/3$ (LU) + $n^2 \\cdot n_{\\text{rhs}}$ (back-substitution).",
+        "notes": "Solve Ax=b. Cost: $n^3$.",
     },
     "linalg.svdvals": {
         "category": "counted_custom",
@@ -2228,7 +2228,7 @@ REGISTRY: dict[str, dict] = {
     "roots": {
         "category": "counted_custom",
         "module": "mechestim._polynomial",
-        "notes": "Return roots of polynomial with given coefficients. Cost: $10n^3$ FLOPs (companion matrix eig).",
+        "notes": "Return roots of polynomial with given coefficients. Cost: $n^3$ (companion matrix eig, simplified).",
     },
     "polyadd": {
         "category": "counted_custom",
@@ -2268,7 +2268,7 @@ REGISTRY: dict[str, dict] = {
     "polyval": {
         "category": "counted_custom",
         "module": "mechestim._polynomial",
-        "notes": "Evaluate polynomial at given points. Cost: 2 * m * deg FLOPs (Horner's method).",
+        "notes": "Evaluate polynomial at given points. Cost: $m \\cdot \\text{deg}$ (Horner's method, FMA=1).",
     },
     # counted_custom — window functions
     "bartlett": {
@@ -2395,19 +2395,19 @@ REGISTRY: dict[str, dict] = {
         "notes": "Take arbitrary Python function and return NumPy ufunc. Not supported.",
     },
     "piecewise": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Evaluate piecewise-defined function. Not supported.",
+        "notes": "Piecewise function. Cost: numel(input).",
     },
     "apply_along_axis": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Apply function along axis. Not supported.",
+        "notes": "Apply function along axis. Cost: numel(output). Inner function costs tracked separately.",
     },
     "apply_over_axes": {
-        "category": "blacklisted",
+        "category": "counted_custom",
         "module": "numpy",
-        "notes": "Apply function over multiple axes. Not supported.",
+        "notes": "Apply function over multiple axes. Cost: numel(output).",
     },
     # blacklisted — datetime
     "datetime_as_string": {
