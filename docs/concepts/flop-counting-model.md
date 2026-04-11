@@ -127,48 +127,46 @@ dense_step_cost = (product of all index dimensions) × op_factor
 where `op_factor = 2` when indices are summed (multiply + add) and
 `op_factor = 1` when no indices are summed (outer product).
 
-When symmetry is present, mechestim reduces the cost by exploiting the
-structure of the contraction. The reduction depends on the contraction's
-shape.
+When symmetry is present, mechestim reduces each step's cost based on
+the structure of the contraction.
 
 ### Symmetric contraction cost
 
-Consider a pairwise contraction of symmetric tensors **A** (order $s + v$)
-and **B** (order $t + v$) with $v$ contracted indices, producing output
-**C** (order $s + t$). Let $\omega = s + t + v$ and let all indices have
-dimension $n$.
-
-The cost is computed using the symmetry-preserving formula from
-Solomonik & Demmel (2015):
-
-$$F = \binom{n + \omega - 1}{\omega} \left[ 1 + \binom{\omega}{s} + \binom{\omega}{t} + \binom{\omega}{v} \right] + \binom{n+s+v-1}{s+v} + \binom{n+t+v-1}{t+v} + \binom{n+s+t-1}{s+t}$$
-
-The leading term $\binom{n+\omega-1}{\omega} \approx n^\omega / \omega!$
-counts the unique elements of a fully-symmetric order-$\omega$
-intermediate. The bracket contains one multiplication plus additions for
-accumulating partial sums from each operand and for reducing into the
-output. The trailing terms are lower-order costs for operand intermediates
-and output symmetrization.
-
-This formula exploits symmetry across *all* $\omega$ index groups
-simultaneously — including contracted indices — giving much larger savings
-than reducing output elements alone. For example, a contraction with
-$s = t = v = 3$ ($\omega = 9$) achieves roughly 10× savings over the
-per-group approach at $n = 100$.
-
-### Fallback for low-order and non-uniform cases
-
-When the symmetry-preserving formula does not apply — outer products
-($v = 0$), non-uniform index dimensions, or low-order contractions where
-the addition overhead exceeds the savings — the cost falls back to:
+Each pairwise step's cost is reduced by two independent multiplicative
+factors — one for the output (V-side) indices and one for the inner
+(W-side) contracted indices:
 
 ```
-step_cost = dense_step_cost × (unique_output_elements / total_output_elements)
+step_cost = dense_step_cost
+          × (unique_output_elements / total_output_elements)
+          × (unique_inner_elements / total_inner_elements)
 ```
 
-The unique element count is computed exactly using Burnside's lemma over
-the detected permutation group. For the full symmetric group S$_k$, this
-reduces to the stars-and-bars formula $\binom{n+k-1}{k}$.
+Each ratio is computed exactly using **Burnside's lemma** over the
+permutation group detected for that step by the
+[`SubgraphSymmetryOracle`](../explanation/subgraph-symmetry.md). For the
+full symmetric group S$_k$ on $k$ equal-sized axes, Burnside reduces to
+the stars-and-bars formula $\binom{n+k-1}{k}$; for proper subgroups like
+$C_k$ or block groups the oracle returns the exact generators and
+Burnside counts over the enumerated elements.
+
+The **output (V-side) reduction** is always applied when the step's
+intermediate has a non-trivial permutation group on its free indices —
+only the unique output elements need to be computed.
+
+The **inner (W-side) reduction** is applied only when *all* labels in
+the detected inner group are present as contracted indices in that
+specific pairwise step. If any of those labels were contracted at an
+earlier step and no longer appear in the current step, the inner
+reduction is skipped (the per-step table shows this as `[W: ...]` when
+detected-but-not-applied versus `[W✓: ...]` when applied). Inner
+symmetry can be toggled globally with
+`me.configure(use_inner_symmetry=False)`.
+
+The two factors are independent; outer-product contractions (no summed
+indices) and non-uniform index dimensions are handled by the same
+formula, since Burnside's lemma makes no assumption about uniform sizes
+beyond requiring axes in the same orbit to share a dimension.
 
 ### Multi-operand contractions
 
@@ -186,12 +184,6 @@ the optimizer factors this into its ordering decisions.
 
 Use `me.einsum_path()` to inspect the per-step breakdown. See
 [Use Einsum](../how-to/use-einsum.md) for examples.
-
-### References
-
-E. Solomonik and J. Demmel, "Contracting Symmetric Tensors Using Fewer
-Multiplications," preprint, ETH Zurich, 2015.
-[doi:10.3929/ethz-a-010345741](https://doi.org/10.3929/ethz-a-010345741)
 
 ## Per-operation weights
 
