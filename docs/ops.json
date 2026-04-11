@@ -1423,12 +1423,12 @@
       "mechestim_ref": "me.dot",
       "numpy_ref": "np.dot",
       "category": "counted_custom",
-      "cost_formula": "2 * m * k * n",
-      "cost_formula_latex": "$2 \\cdot m \\cdot k \\cdot n$",
+      "cost_formula": "m * k * n",
+      "cost_formula_latex": "$m \\cdot k \\cdot n$",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Dot product; cost = 2*M*N*K for matrix multiply."
+      "notes": "Dot product; cost = M*N*K for matrix multiply (FMA=1)."
     },
     {
       "name": "dsplit",
@@ -1475,8 +1475,8 @@
       "mechestim_ref": "me.einsum",
       "numpy_ref": "np.einsum",
       "category": "counted_custom",
-      "cost_formula": "op_factor * product of all index dims",
-      "cost_formula_latex": "$\\texttt{op\\_factor} \\cdot \\prod_i d_i$",
+      "cost_formula": "product of all index dims (FMA=1)",
+      "cost_formula_latex": "$\\prod_i d_i$",
       "free": false,
       "blocked": false,
       "status": "supported",
@@ -2520,7 +2520,7 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Inner product; cost = 2*N for 1-D, 2*N*M for n-D."
+      "notes": "Inner product; cost = N for 1-D, N*M for n-D."
     },
     {
       "name": "insert",
@@ -3079,7 +3079,7 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Delegates to `me.matmul` which charges `2*m*k*n` FLOPs."
+      "notes": "Delegates to `me.matmul` which charges `m*k*n` FLOPs."
     },
     {
       "name": "linalg.matrix_norm",
@@ -3092,7 +3092,7 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Matrix norm. Cost depends on ord: 2*numel for Frobenius, m*n*min(m,n) for ord=2."
+      "notes": "Matrix norm. Cost depends on ord: numel for Frobenius, m*n*min(m,n) for ord=2."
     },
     {
       "name": "linalg.matrix_power",
@@ -3157,7 +3157,7 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Norm. Cost depends on ord: numel for L1/inf, 2*numel for Frobenius, m*n*min(m,n) for ord=2."
+      "notes": "Norm. Cost depends on ord: numel for L1/inf, numel for Frobenius, m*n*min(m,n) for ord=2."
     },
     {
       "name": "linalg.outer",
@@ -3217,12 +3217,12 @@
       "mechestim_ref": "me.linalg.solve",
       "numpy_ref": "np.linalg.solve",
       "category": "counted_custom",
-      "cost_formula": "2n^3/3 + n^2*nrhs",
-      "cost_formula_latex": "$2n^3/3 + n^2 \\cdot n_{\\text{rhs}}$",
+      "cost_formula": "n^3/3 + n^2*nrhs (FMA=1)",
+      "cost_formula_latex": "$n^3/3 + n^2 \\cdot n_{\\text{rhs}}$",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Solve Ax=b. Cost: $2n^3/3$ (LU) + $n^2 \\cdot n_{\\text{rhs}}$ (back-substitution)."
+      "notes": "Solve Ax=b. Cost: $n^3/3$ (LU) + $n^2 \\cdot n_{\\text{rhs}}$ (back-substitution)."
     },
     {
       "name": "linalg.svd",
@@ -3313,7 +3313,7 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Delegates to `me.vecdot` which charges `2*n` FLOPs."
+      "notes": "Delegates to `me.vecdot` which charges `n` FLOPs."
     },
     {
       "name": "linalg.vector_norm",
@@ -3322,11 +3322,11 @@
       "numpy_ref": "np.linalg.vector_norm",
       "category": "counted_custom",
       "cost_formula": "n or 2n",
-      "cost_formula_latex": "$n$ or $2n$",
+      "cost_formula_latex": "$n$",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Vector norm. Cost: numel (or 2*numel for general p-norm)."
+      "notes": "Vector norm. Cost: numel (or numel for general p-norm)."
     },
     {
       "name": "linspace",
@@ -3529,12 +3529,12 @@
       "mechestim_ref": "me.matmul",
       "numpy_ref": "np.matmul",
       "category": "counted_custom",
-      "cost_formula": "2 * m * k * n",
-      "cost_formula_latex": "$2 \\cdot m \\cdot k \\cdot n$",
+      "cost_formula": "m * k * n",
+      "cost_formula_latex": "$m \\cdot k \\cdot n$",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Matrix multiplication; cost = 2*M*N*K."
+      "notes": "Matrix multiplication; cost = M*N*K (FMA=1)."
     },
     {
       "name": "matrix_transpose",
@@ -4192,12 +4192,12 @@
       "mechestim_ref": "me.polyfit",
       "numpy_ref": "np.polyfit",
       "category": "counted_custom",
-      "cost_formula": "2m * (deg+1)^2",
-      "cost_formula_latex": "$2m \\cdot (\\text{deg}+1)^2$",
+      "cost_formula": "m * (deg+1)^2",
+      "cost_formula_latex": "$m \\cdot (\\text{deg}+1)^2$",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Least squares polynomial fit. Cost: 2 * m * (deg+1)^2 FLOPs."
+      "notes": "Least squares polynomial fit. Cost: m * (deg+1)^2 FLOPs."
     },
     {
       "name": "polyint",
@@ -4244,12 +4244,12 @@
       "mechestim_ref": "me.polyval",
       "numpy_ref": "np.polyval",
       "category": "counted_custom",
-      "cost_formula": "2 * m * deg",
-      "cost_formula_latex": "$2 \\cdot m \\cdot \\text{deg}$",
+      "cost_formula": "m * deg",
+      "cost_formula_latex": "$m \\cdot \\text{deg}$",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Evaluate polynomial at given points. Cost: 2 * m * deg FLOPs (Horner's method)."
+      "notes": "Evaluate polynomial at given points. Cost: m * deg FLOPs (Horner's method)."
     },
     {
       "name": "positive",
@@ -6186,7 +6186,7 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Dot product with conjugation; cost = 2*N."
+      "notes": "Dot product with conjugation; cost = N."
     },
     {
       "name": "vecdot",

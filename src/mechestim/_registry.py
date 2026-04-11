@@ -812,12 +812,12 @@ REGISTRY: dict[str, dict] = {
     "dot": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Dot product; cost = 2*M*N*K for matrix multiply.",
+        "notes": "Dot product; cost = M*N*K for matrix multiply (FMA=1).",
     },
     "matmul": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Matrix multiplication; cost = 2*M*N*K.",
+        "notes": "Matrix multiplication; cost = M*N*K (FMA=1).",
     },
     "einsum": {
         "category": "counted_custom",
@@ -837,7 +837,7 @@ REGISTRY: dict[str, dict] = {
     "inner": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Inner product; cost = 2*N for 1-D, 2*N*M for n-D.",
+        "notes": "Inner product; cost = N for 1-D, N*M for n-D.",
     },
     "outer": {
         "category": "counted_custom",
@@ -852,7 +852,7 @@ REGISTRY: dict[str, dict] = {
     "vdot": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Dot product with conjugation; cost = 2*N.",
+        "notes": "Dot product with conjugation; cost = N.",
     },
     "kron": {
         "category": "counted_custom",
@@ -980,12 +980,12 @@ REGISTRY: dict[str, dict] = {
     "linalg.matmul": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Delegates to `me.matmul` which charges `2*m*k*n` FLOPs.",
+        "notes": "Delegates to `me.matmul` which charges `m*k*n` FLOPs.",
     },
     "linalg.matrix_norm": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Matrix norm. Cost depends on ord: 2*numel for Frobenius, m*n*min(m,n) for ord=2.",
+        "notes": "Matrix norm. Cost depends on ord: numel for Frobenius, m*n*min(m,n) for ord=2.",
     },
     "linalg.matrix_power": {
         "category": "counted_custom",
@@ -1010,7 +1010,7 @@ REGISTRY: dict[str, dict] = {
     "linalg.norm": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Norm. Cost depends on ord: numel for L1/inf, 2*numel for Frobenius, m*n*min(m,n) for ord=2.",
+        "notes": "Norm. Cost depends on ord: numel for L1/inf, numel for Frobenius, m*n*min(m,n) for ord=2.",
     },
     "linalg.outer": {
         "category": "counted_custom",
@@ -1065,12 +1065,12 @@ REGISTRY: dict[str, dict] = {
     "linalg.vecdot": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Delegates to `me.vecdot` which charges `2*n` FLOPs.",
+        "notes": "Delegates to `me.vecdot` which charges `n` FLOPs.",
     },
     "linalg.vector_norm": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Vector norm. Cost: numel (or 2*numel for general p-norm).",
+        "notes": "Vector norm. Cost: numel (or numel for general p-norm).",
     },
     # ------------------------------------------------------------------
     # fft — counted_custom (14 transforms) + free (4 utility ops)
@@ -2248,7 +2248,7 @@ REGISTRY: dict[str, dict] = {
     "polyfit": {
         "category": "counted_custom",
         "module": "mechestim._polynomial",
-        "notes": "Least squares polynomial fit. Cost: 2 * m * (deg+1)^2 FLOPs.",
+        "notes": "Least squares polynomial fit. Cost: m * (deg+1)^2 FLOPs.",
     },
     "polyint": {
         "category": "counted_custom",
@@ -2268,7 +2268,7 @@ REGISTRY: dict[str, dict] = {
     "polyval": {
         "category": "counted_custom",
         "module": "mechestim._polynomial",
-        "notes": "Evaluate polynomial at given points. Cost: 2 * m * deg FLOPs (Horner's method).",
+        "notes": "Evaluate polynomial at given points. Cost: m * deg FLOPs (Horner's method).",
     },
     # counted_custom — window functions
     "bartlett": {
