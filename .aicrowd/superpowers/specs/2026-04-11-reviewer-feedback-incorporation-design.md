@@ -51,11 +51,26 @@ the reviewer's weight=4 serves as the correction factor on top.
 | `kron` | current | `numel(output)` | Simplify |
 | `inner`, `vdot` | `a.size` | Keep | Already charges N, no factor of 2 |
 
-### Linalg — NO formula changes, weight=4 handles correction:
-Keep current formulas (`n^3/3` for Cholesky, `2*m*n^2 - 2*n^3/3` for QR,
-etc.). The reviewer's weight=4 applies on top as the correction factor.
-Column G suggestions (`n^3`) were the reviewer's estimate of the total
-cost, not a replacement formula.
+### Linalg — simplify all formulas to n^3:
+The reviewer simplified all linalg decomposition formulas to a uniform
+`n^3` baseline. The weight then differentiates cost levels.
+
+| Op | Current formula | New formula | Weight | Total cost |
+|----|:---|:---|:---:|:---|
+| `linalg.cholesky` | `n^3/3` | `n^3` | 4 | `4*n^3` |
+| `linalg.eigh` | `4*n^3/3` | `n^3` | 4 | `4*n^3` |
+| `linalg.eig` | `10*n^3` | `n^3` | 4 | `4*n^3` |
+| `linalg.eigvals` | `7*n^3` | `n^3` | 4 | `4*n^3` |
+| `linalg.eigvalsh` | `4*n^3/3` | `n^3` | 4 | `4*n^3` |
+| `linalg.det` | `2*n^3/3` | `n^3` | 4 | `4*n^3` |
+| `linalg.slogdet` | `2*n^3/3` | `n^3` | 4 | `4*n^3` |
+| `linalg.solve` | `2*n^3/3 + 2*n^2` | `n^3` | 1 | `n^3` |
+| `linalg.qr` | `2*m*n^2 - 2*n^3/3` | `m*n*min(m,n)` | 4 | `4*m*n*min(m,n)` |
+| `linalg.inv` | `n^3` | `n^3` | 4 | `4*n^3` (unchanged) |
+| `linalg.lstsq` | `m*n*min(m,n)` | keep | 4 | `4*m*n*min(m,n)` |
+| `linalg.pinv` | `m*n*min(m,n)` | keep | 4 | `4*m*n*min(m,n)` |
+| `linalg.svd` | `m*n*k` | keep | 4 | `4*m*n*k` |
+| `linalg.svdvals` | `m*n*k` | keep | 4 | `4*m*n*k` |
 
 ### Other formula changes:
 | Op | Current | New | Rationale |
@@ -134,9 +149,8 @@ metadata queries, `fft.fftfreq`, `fft.rfftfreq`, `fft.fftshift`,
 
 ## Workstream E: SVD Cost Formula Update
 
-No change needed. The current formula `svd_cost(m, n, k) = m*n*k` is
-correct. The reviewer's weight=4 applied on top gives the desired
-`4*m*n*k` total cost.
+Merged into Workstream B (linalg formula table). SVD formula stays
+`m*n*k`, weight=4 gives total `4*m*n*k`.
 
 ## Execution Plan
 
