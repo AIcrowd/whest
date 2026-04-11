@@ -157,7 +157,31 @@ result.inner   # W-side (inner summation) symmetry
 
 ## π-based detection
 
-Given the induced subgraph M for a subset, detection proceeds in two passes:
+### Goal
+
+For a fixed subset `S` with incidence matrix `M`, we want the full group
+of **automorphisms of the labelled bipartite graph** — pairs `(σ, π)`
+where `σ` permutes identical-operand rows and `π` permutes label columns,
+such that applying `π` to the columns of `σ(M)` recovers `M`:
+
+```
+π(σ(M)) = M          (equivalently, σ(M) = π⁻¹(M))
+```
+
+Every such `π` is a symmetry of the intermediate tensor built from `S`.
+Restricted to V labels it contributes to the output (V-side) symmetry;
+restricted to W labels it contributes to the inner (W-side) symmetry.
+The V/W partition is part of the labelled structure, so legitimate
+automorphisms must preserve it — `π(V) ⊆ V` and `π(W) ⊆ W` — and any
+`π` with a cycle crossing V↔W is rejected.
+
+The algorithm enumerates the finitely many `σ`'s (the identity plus the
+non-trivial permutations of each identical-operand group) and, for each
+one, recovers the unique `π` (up to fingerprint collisions) satisfying
+the equation above. The collected `π`'s become generators of the
+detected `PermutationGroup` on labels.
+
+Given M for a subset, detection proceeds in two passes:
 
 ### Fast path: fingerprint equivalences
 
@@ -230,7 +254,8 @@ u1_d  [ 0  0  0  1 ]
 **Fast path:** All four fingerprints are distinct — no equivalences.
 
 **σ loop:** The only nontrivial σ swaps operands 0 and 1, permuting rows
-(0↔2, 1↔3):
+(0↔2, 1↔3). We ask: *what relabeling π of the columns turns `σ(M)` back
+into `M`?*
 
 ```
   M (original rows)          σ(M) (rows 0↔2, 1↔3)
@@ -242,13 +267,14 @@ u1_d  [ 0  0  0  1 ]
   └──────────────────┘       └──────────────────┘
          columns: a b c d           columns: a b c d
 
-  Match σ(M) columns back to M columns:
+  Match σ(M) columns back to M columns — i.e., for each column ℓ of
+  σ(M), find the M-column that equals it; that label is π(ℓ):
     σ(M)[:,a] = col_of[c]  →  π(a) = c
     σ(M)[:,b] = col_of[d]  →  π(b) = d
     σ(M)[:,c] = col_of[a]  →  π(c) = a
     σ(M)[:,d] = col_of[b]  →  π(d) = b
 
-  Induced π = (a c)(b d)
+  Induced π = (a c)(b d).  Check: π(σ(M)) = M. ✓
 ```
 
 So π = (a c)(b d). Two disjoint 2-cycles from one σ, all in V (W is empty).
