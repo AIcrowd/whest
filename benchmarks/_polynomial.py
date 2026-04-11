@@ -20,9 +20,9 @@ POLYNOMIAL_OPS: list[str] = [
 ]
 
 _FORMULA_STRINGS: dict[str, str] = {
-    "polyval": "2 * n * degree",
+    "polyval": "n * degree (FMA=1)",
     "polyfit": "2 * n * (degree+1)^2",
-    "roots": "10 * degree^3",
+    "roots": "degree^3",
     "polymul": "(degree+1)^2",
     "polydiv": "(degree+1)^2",
     "polyadd": "degree + 1",
@@ -40,11 +40,11 @@ def _analytical_cost(op: str, n: int, degree: int) -> int:
     benchmark denominator and the budget deduction use the same formula.
     """
     if op == "polyval":
-        return 2 * n * degree
+        return n * degree
     elif op == "polyfit":
         return 2 * n * (degree + 1) ** 2
     elif op == "roots":
-        return 10 * degree**3
+        return degree**3
     elif op in ("polymul", "polydiv"):
         return (degree + 1) ** 2
     elif op in ("polyadd", "polysub"):

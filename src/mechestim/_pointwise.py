@@ -363,7 +363,18 @@ attach_docstring(round, _np.round, "counted_unary", "numel(output) FLOPs")
 signbit = _counted_unary(_np.signbit, "signbit")
 sinc = _counted_unary(_np.sinc, "sinc")
 sinh = _counted_unary(_np.sinh, "sinh")
-sort_complex = _counted_unary(_np.sort_complex, "sort_complex")
+def sort_complex(a):
+    """Counted version of np.sort_complex. Cost: n*ceil(log2(n))."""
+    import math
+
+    budget = require_budget()
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
+    n = a.size
+    log2n = math.ceil(math.log2(n)) if n > 1 else 1
+    cost = n * log2n
+    budget.deduct("sort_complex", flop_cost=cost, subscripts=None, shapes=(a.shape,))
+    return _np.sort_complex(a)
 spacing = _counted_unary(_np.spacing, "spacing")
 tan = _counted_unary(_np.tan, "tan")
 trunc = _counted_unary(_np.trunc, "trunc")

@@ -75,7 +75,7 @@ class TestSortingConsistency:
 
 
 class TestContractionConsistency:
-    """matmul: cost = 2*M*N*K for 2D matrix multiply."""
+    """matmul: cost = M*N*K for 2D matrix multiply (FMA=1 op)."""
 
     def test_matmul(self):
         m, n, k = 32, 32, 32
@@ -83,8 +83,8 @@ class TestContractionConsistency:
         b = np.random.rand(k, n)
         runtime_cost = _run_and_get_cost(me.matmul, a, b)
         # mechestim uses einsum_cost("ij,jk->ik", [(32,32),(32,32)])
-        # which should be 2*32*32*32 = 65536
-        expected = 2 * m * n * k
+        # FMA=1 op, so cost = 32*32*32 = 32768
+        expected = m * n * k
         assert runtime_cost == expected, (
             f"matmul({m},{k})x({k},{n}): runtime={runtime_cost}, expected={expected}"
         )
@@ -146,7 +146,7 @@ class TestReductionConsistency:
 
 
 class TestPolynomialConsistency:
-    """polyval: cost = 2 * m * deg (Horner's method)."""
+    """polyval: cost = m * deg (Horner's method, FMA=1)."""
 
     def test_polyval(self):
         degree = 10
@@ -236,7 +236,7 @@ class TestRandomConsistency:
 
 
 class TestLinalgConsistency:
-    """linalg.cholesky: cost = n^3 / 3."""
+    """linalg.cholesky: cost = n^3."""
 
     def test_cholesky(self):
         n = 64
