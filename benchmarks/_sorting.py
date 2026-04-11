@@ -249,9 +249,15 @@ def benchmark_sorting(
             # Find the perf_instructions corresponding to the median alpha
             dist_values.index(statistics.median(dist_values))
             # Build explicit benchmark_size per op
-            if op in ("sort", "argsort", "unique",
-                       "unique_all", "unique_counts",
-                       "unique_inverse", "unique_values"):
+            if op in (
+                "sort",
+                "argsort",
+                "unique",
+                "unique_all",
+                "unique_counts",
+                "unique_inverse",
+                "unique_values",
+            ):
                 bm_size = f"x: ({n},)"
             elif op in ("partition", "argpartition"):
                 bm_size = f"x: ({n},), kth={n // 2}"
@@ -259,8 +265,14 @@ def benchmark_sorting(
                 bm_size = f"x: ({n},), q: ({n},)"
             elif op == "lexsort":
                 bm_size = f"x: ({n},), y: ({n},), k=2"
-            elif op in ("in1d", "isin", "intersect1d",
-                         "setdiff1d", "setxor1d", "union1d"):
+            elif op in (
+                "in1d",
+                "isin",
+                "intersect1d",
+                "setdiff1d",
+                "setxor1d",
+                "union1d",
+            ):
                 bm_size = f"a: ({n},), b: ({n},)"
             else:
                 bm_size = f"x: ({n},)"

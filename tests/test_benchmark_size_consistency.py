@@ -18,14 +18,16 @@ WEIGHTS_PATH = ROOT / "src" / "mechestim" / "data" / "weights.json"
 
 # Tokens that appear as bench_code arguments but are NOT array variables
 # whose shapes need documenting in benchmark_size.
-_EXEMPT_TOKENS = frozenset({
-    "_out",       # pre-allocated output buffer
-    "out",        # same
-    "None",       # keyword default
-    "rcond",      # keyword arg
-    "mode",       # keyword arg
-    "0.5",        # scalar constant (heaviside h)
-})
+_EXEMPT_TOKENS = frozenset(
+    {
+        "_out",  # pre-allocated output buffer
+        "out",  # same
+        "None",  # keyword default
+        "rcond",  # keyword arg
+        "mode",  # keyword arg
+        "0.5",  # scalar constant (heaviside h)
+    }
+)
 
 
 def _extract_bench_vars(bench_code: str) -> list[str]:
@@ -65,7 +67,11 @@ def _extract_bench_vars(bench_code: str) -> list[str]:
         if re.match(r"^[a-zA-Z_]\w*$", arg):
             # Strip leading underscores to match benchmark_size convention
             # _pool -> pool, _mean -> mean, _cov -> cov
-            clean = arg.lstrip("_") if arg.startswith("_") and arg not in _EXEMPT_TOKENS else arg
+            clean = (
+                arg.lstrip("_")
+                if arg.startswith("_") and arg not in _EXEMPT_TOKENS
+                else arg
+            )
             if clean:
                 variables.append(clean)
 
@@ -110,9 +116,11 @@ class TestBenchmarkSizeConsistency:
 
             for var in bench_vars:
                 if var not in size_var_set:
-                    missing.append(f"{op}: variable '{var}' in bench_code "
-                                   f"'{bench}' not documented in "
-                                   f"benchmark_size '{size}'")
+                    missing.append(
+                        f"{op}: variable '{var}' in bench_code "
+                        f"'{bench}' not documented in "
+                        f"benchmark_size '{size}'"
+                    )
 
         assert not missing, (
             f"{len(missing)} bench_code variables missing from benchmark_size:\n"
@@ -121,8 +129,11 @@ class TestBenchmarkSizeConsistency:
 
     def test_benchmark_size_is_nonempty(self, per_op_details: dict):
         """Every benchmarked op should have a non-empty benchmark_size."""
-        empty = [op for op, d in per_op_details.items()
-                 if not d.get("benchmark_size", "").strip()]
+        empty = [
+            op
+            for op, d in per_op_details.items()
+            if not d.get("benchmark_size", "").strip()
+        ]
         assert not empty, f"Ops with empty benchmark_size: {empty}"
 
     def test_benchmark_size_uses_explicit_shapes(self, per_op_details: dict):
@@ -163,7 +174,9 @@ class TestExtractFunctions:
         assert _extract_bench_vars("np.random.choice(_pool, 10000000)") == ["pool"]
 
     def test_extract_bench_vars_multiple_underscore_prefix(self):
-        result = _extract_bench_vars("np.random.multivariate_normal(_mean, _cov, 10000000)")
+        result = _extract_bench_vars(
+            "np.random.multivariate_normal(_mean, _cov, 10000000)"
+        )
         assert result == ["mean", "cov"]
 
     def test_extract_bench_vars_window(self):

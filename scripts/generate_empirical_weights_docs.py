@@ -158,15 +158,34 @@ _LINALG_DECOMP_OPS = {
 }
 
 _BITWISE_OPS = {
-    "bitwise_and", "bitwise_or", "bitwise_xor", "bitwise_not",
-    "bitwise_invert", "bitwise_count", "bitwise_left_shift",
-    "bitwise_right_shift", "gcd", "lcm", "invert",
-    "left_shift", "right_shift", "isnat",
+    "bitwise_and",
+    "bitwise_or",
+    "bitwise_xor",
+    "bitwise_not",
+    "bitwise_invert",
+    "bitwise_count",
+    "bitwise_left_shift",
+    "bitwise_right_shift",
+    "gcd",
+    "lcm",
+    "invert",
+    "left_shift",
+    "right_shift",
+    "isnat",
 }
 
 _COMPLEX_OPS = {
-    "angle", "conj", "conjugate", "imag", "real", "real_if_close",
-    "iscomplex", "iscomplexobj", "isreal", "isrealobj", "sort_complex",
+    "angle",
+    "conj",
+    "conjugate",
+    "imag",
+    "real",
+    "real_if_close",
+    "iscomplex",
+    "iscomplexobj",
+    "isreal",
+    "isrealobj",
+    "sort_complex",
 }
 
 # ---------------------------------------------------------------------------
@@ -249,8 +268,9 @@ def _alpha_cv(alphas: list[float]) -> str:
     return f"{statistics.stdev(alphas) / m:.4f}"
 
 
-def _time_per_flop(timing_ns: float | None, analytical_flops: int | None,
-                   repeats: int | None) -> str:
+def _time_per_flop(
+    timing_ns: float | None, analytical_flops: int | None, repeats: int | None
+) -> str:
     """Compute timing_ns / (analytical_flops * repeats)."""
     if timing_ns is None or analytical_flops is None or repeats is None:
         return "N/A"
@@ -260,8 +280,9 @@ def _time_per_flop(timing_ns: float | None, analytical_flops: int | None,
     return f"{timing_ns / denom:.4f}"
 
 
-def _empty_row(op_name: str, status: str, reason: str,
-               category: str, notes: str) -> dict:
+def _empty_row(
+    op_name: str, status: str, reason: str, category: str, notes: str
+) -> dict:
     """Build a row with only status/reason fields populated."""
     row = {col: "" for col in CSV_COLUMNS}
     row["Operation"] = op_name
@@ -288,8 +309,7 @@ def _confidence(alphas: list[float]) -> str:
     return "low"
 
 
-def _effective_cost_example(formula: str, weight: float,
-                            op_name: str = "") -> str:
+def _effective_cost_example(formula: str, weight: float, op_name: str = "") -> str:
     """Compute a concrete cost example for the reviewer.
 
     Shows: ``weight * C(example_input)`` = effective weighted FLOPs.
@@ -322,11 +342,11 @@ def _effective_cost_example(formula: str, weight: float,
     elif "n^3" in lower or "n^2" in lower:
         # Use n=32 as example (small matrix)
         if "n^3 / 3" in lower:
-            c = 32 ** 3 // 3
+            c = 32**3 // 3
         elif "n^3" in lower:
-            c = 32 ** 3
+            c = 32**3
         else:
-            c = 32 ** 2
+            c = 32**2
         effective = c * weight
         desc = f"n=32, C={c}"
     # Inner/vdot: N (a.size) or batch * K
@@ -359,14 +379,29 @@ def _effective_cost_example(formula: str, weight: float,
 
 # Alias map: excluded op -> canonical benchmarked op whose weight it inherits
 _ALIAS_MAP = {
-    "acos": "arccos", "acosh": "arccosh", "asin": "arcsin",
-    "asinh": "arcsinh", "atan": "arctan", "atan2": "arctan2",
-    "atanh": "arctanh", "pow": "power", "absolute": "abs",
-    "amax": "max", "amin": "min", "around": "rint", "fix": "trunc",
-    "round": "rint", "nanargmax": "argmax", "nanargmin": "argmin",
-    "nancumprod": "cumprod", "nancumsum": "cumsum",
-    "cumulative_prod": "cumprod", "cumulative_sum": "cumsum",
-    "ptp": "max", "divmod": "floor_divide", "trapz": "trapezoid",
+    "acos": "arccos",
+    "acosh": "arccosh",
+    "asin": "arcsin",
+    "asinh": "arcsinh",
+    "atan": "arctan",
+    "atan2": "arctan2",
+    "atanh": "arctanh",
+    "pow": "power",
+    "absolute": "abs",
+    "amax": "max",
+    "amin": "min",
+    "around": "rint",
+    "fix": "trunc",
+    "round": "rint",
+    "nanargmax": "argmax",
+    "nanargmin": "argmin",
+    "nancumprod": "cumprod",
+    "nancumsum": "cumsum",
+    "cumulative_prod": "cumprod",
+    "cumulative_sum": "cumsum",
+    "ptp": "max",
+    "divmod": "floor_divide",
+    "trapz": "trapezoid",
     "random.ranf": "random.random_sample",
     "random.sample": "random.random_sample",
 }
@@ -420,7 +455,9 @@ def build_rows(data: dict) -> list[dict]:
             "Cost Formula": formula,
             "Weight": f"{perf_weight:.4f}",
             "Reviewer Weight": "",
-            "Effective Cost Example": _effective_cost_example(formula, perf_weight, analytical_flops),
+            "Effective Cost Example": _effective_cost_example(
+                formula, perf_weight, analytical_flops
+            ),
             "Confidence": _confidence(alphas),
             "Notes": d.get("notes", ""),
             # Section B: Evidence
@@ -449,9 +486,13 @@ def build_rows(data: dict) -> list[dict]:
         reason = f"Alias of {canonical}"
         if canon_weight:
             reason += f" (weight: {canon_weight:.2f})"
-        row = _empty_row(alias, "alias", reason, entry.get("category", ""), entry.get("notes", ""))
+        row = _empty_row(
+            alias, "alias", reason, entry.get("category", ""), entry.get("notes", "")
+        )
         row["Weight"] = f"{canon_weight:.4f}" if canon_weight else ""
-        row["Hardware FP Instructions (per analytical FLOP)"] = f"{canon_alpha:.2f}" if canon_alpha else ""
+        row["Hardware FP Instructions (per analytical FLOP)"] = (
+            f"{canon_alpha:.2f}" if canon_alpha else ""
+        )
         rows.append(row)
 
     # --- Excluded ops ---
@@ -460,12 +501,26 @@ def build_rows(data: dict) -> list[dict]:
             if op_name in weights:
                 continue
             entry = REGISTRY.get(op_name, {})
-            rows.append(_empty_row(op_name, "excluded", reason, entry.get("category", ""), entry.get("notes", "")))
+            rows.append(
+                _empty_row(
+                    op_name,
+                    "excluded",
+                    reason,
+                    entry.get("category", ""),
+                    entry.get("notes", ""),
+                )
+            )
 
     # --- Free ops (0 FLOPs) ---
     for name, entry in sorted(REGISTRY.items()):
         if entry["category"] == "free" and name not in weights:
-            row = _empty_row(name, "free", "Zero FLOP cost — not benchmarked", "free", entry.get("notes", ""))
+            row = _empty_row(
+                name,
+                "free",
+                "Zero FLOP cost — not benchmarked",
+                "free",
+                entry.get("notes", ""),
+            )
             row["Weight"] = "0"
             row["Cost Formula"] = "0"
             rows.append(row)
@@ -473,16 +528,32 @@ def build_rows(data: dict) -> list[dict]:
     # --- Blacklisted ops ---
     for name, entry in sorted(REGISTRY.items()):
         if entry["category"] == "blacklisted" and name not in weights:
-            rows.append(_empty_row(name, "blacklisted", "Intentionally unsupported in mechestim", "blacklisted", entry.get("notes", "")))
+            rows.append(
+                _empty_row(
+                    name,
+                    "blacklisted",
+                    "Intentionally unsupported in mechestim",
+                    "blacklisted",
+                    entry.get("notes", ""),
+                )
+            )
 
     # Sort: benchmarked first (by category then weight), then alias, excluded, free, blacklisted
-    status_order = {"benchmarked": 0, "alias": 1, "excluded": 2, "free": 3, "blacklisted": 4}
+    status_order = {
+        "benchmarked": 0,
+        "alias": 1,
+        "excluded": 2,
+        "free": 3,
+        "blacklisted": 4,
+    }
     cat_order = {c: i for i, c in enumerate(DISPLAY_CATEGORIES)}
-    rows.sort(key=lambda r: (
-        status_order.get(r["Status"], 99),
-        cat_order.get(r["Category"], 999),
-        -float(r["Weight"]) if r["Weight"] else 0,
-    ))
+    rows.sort(
+        key=lambda r: (
+            status_order.get(r["Status"], 99),
+            cat_order.get(r["Category"], 999),
+            -float(r["Weight"]) if r["Weight"] else 0,
+        )
+    )
     return rows
 
 
@@ -566,8 +637,7 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     w("loaded, the effective cost of an operation becomes:")
     w()
     w("$$")
-    w("\\text{cost}(\\text{op}) = C(\\text{op}, \\text{shapes}) "
-      "\\times w(\\text{op})")
+    w("\\text{cost}(\\text{op}) = C(\\text{op}, \\text{shapes}) \\times w(\\text{op})")
     w("$$")
     w()
     w("where $C$ is the analytical FLOP formula and $w$ is the weight.")
@@ -586,25 +656,32 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     w("Every weight is computed from the same two-step formula:")
     w()
     w("$$")
-    w("\\alpha(\\text{op}) = \\mathrm{median}_{D} "
-      "\\left[ \\frac{F(\\text{op})}"
-      "{C(\\text{op}, \\text{params}) \\times R} \\right]")
+    w(
+        "\\alpha(\\text{op}) = \\mathrm{median}_{D} "
+        "\\left[ \\frac{F(\\text{op})}"
+        "{C(\\text{op}, \\text{params}) \\times R} \\right]"
+    )
     w("$$")
     w()
     w("$$")
-    w("w(\\text{op}) = "
-      "\\frac{\\alpha(\\text{op})}{\\alpha(\\text{add})}")
+    w("w(\\text{op}) = \\frac{\\alpha(\\text{op})}{\\alpha(\\text{add})}")
     w("$$")
     w()
     w("Where:")
     w()
-    w("- $\\alpha(\\text{op})$ is the **raw correction factor** -- the ratio of "
-      "hardware-observed FP instructions to the analytical FLOP count.")
-    w("- $F(\\text{op})$ is the total SIMD-width-weighted count of retired "
-      "floating-point instructions, measured via the Intel PMU counters "
-      "`fp_arith_inst_retired.*` (scalar x1, 128-bit x2, 256-bit x4, 512-bit x8).")
-    w("- $C(\\text{op}, \\text{params})$ is the analytical FLOP count from mechestim's "
-      "cost formula (e.g., `numel(output)` for pointwise ops).")
+    w(
+        "- $\\alpha(\\text{op})$ is the **raw correction factor** -- the ratio of "
+        "hardware-observed FP instructions to the analytical FLOP count."
+    )
+    w(
+        "- $F(\\text{op})$ is the total SIMD-width-weighted count of retired "
+        "floating-point instructions, measured via the Intel PMU counters "
+        "`fp_arith_inst_retired.*` (scalar x1, 128-bit x2, 256-bit x4, 512-bit x8)."
+    )
+    w(
+        "- $C(\\text{op}, \\text{params})$ is the analytical FLOP count from mechestim's "
+        "cost formula (e.g., `numel(output)` for pointwise ops)."
+    )
     w("- $R$ is the number of repeats per distribution.")
     w("- The **median** across 3 input distributions is reported.")
     w()
@@ -636,24 +713,30 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     w("## Measurement environment")
     w()
     cache = hw.get("cache", {})
-    l3_mb = cache.get("L3", 0) / 1024 if cache.get("L3", 0) > 1024 else cache.get("L3", 0)
+    l3_mb = (
+        cache.get("L3", 0) / 1024 if cache.get("L3", 0) > 1024 else cache.get("L3", 0)
+    )
     w("| Parameter | Value |")
     w("|-----------|-------|")
     w(f"| CPU | {hw['cpu_model']} |")
     w(f"| Cores | {hw['cpu_cores']} physical / {hw['cpu_threads']} threads |")
     w(f"| RAM | {hw['ram_gb']} GB |")
     w(f"| Arch | {hw['arch']} (AVX-512 capable) |")
-    w(f"| Cache | L1d {cache.get('L1d', '?')} KB, "
-      f"L1i {cache.get('L1i', '?')} KB, "
-      f"L2 {cache.get('L2', '?')} KB, "
-      f"L3 {l3_mb:.0f} MB |")
+    w(
+        f"| Cache | L1d {cache.get('L1d', '?')} KB, "
+        f"L1i {cache.get('L1i', '?')} KB, "
+        f"L2 {cache.get('L2', '?')} KB, "
+        f"L3 {l3_mb:.0f} MB |"
+    )
     w("| Instance | AWS EC2 c6i.metal (bare metal, full PMU access) |")
     w(f"| OS | {sw['os']} |")
     w(f"| Python | {sw['python'].split('(')[0].strip()} |")
     w(f"| NumPy | {sw['numpy']} |")
     w(f"| BLAS | {sw['blas']} |")
-    w(f"| Measurement mode | {bc['measurement_mode']} "
-      f"(hardware counters: `fp_arith_inst_retired.*`) |")
+    w(
+        f"| Measurement mode | {bc['measurement_mode']} "
+        f"(hardware counters: `fp_arith_inst_retired.*`) |"
+    )
     w(f"| dtype | {bc['dtype']} |")
     w(f"| Repeats | {bc['repeats']} per distribution |")
     w(f"| Distributions | {bc['distributions']} per operation |")
@@ -684,10 +767,18 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
             break
 
     if sample_detail:
-        w(f"- **Benchmark command:** `{sample_detail.get('baseline_bench_code', 'np.add(x, y, out=_out)')}`")
-        w(f"- **Array size:** {sample_detail.get('benchmark_size', 'n=10_000_000')}, dtype=float64")
-        w(f"- **Measured perf instructions:** {sample_detail.get('baseline_perf_instructions_total', 'N/A')}")
-        w(f"- **Measured timing:** {sample_detail.get('baseline_timing_ns_total', 'N/A')} ns")
+        w(
+            f"- **Benchmark command:** `{sample_detail.get('baseline_bench_code', 'np.add(x, y, out=_out)')}`"
+        )
+        w(
+            f"- **Array size:** {sample_detail.get('benchmark_size', 'n=10_000_000')}, dtype=float64"
+        )
+        w(
+            f"- **Measured perf instructions:** {sample_detail.get('baseline_perf_instructions_total', 'N/A')}"
+        )
+        w(
+            f"- **Measured timing:** {sample_detail.get('baseline_timing_ns_total', 'N/A')} ns"
+        )
         w(f"- **$\\alpha(\\text{{add}})$:** {meth['baseline_alpha']}")
     else:
         w("- **Benchmark command:** `np.add(x, y, out=_out)`")
@@ -697,7 +788,9 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     # ------------------------------------------------------------------
     # Download link
     # ------------------------------------------------------------------
-    w("**[Download full review spreadsheet (CSV)](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/data/weights.csv)**")
+    w(
+        "**[Download full review spreadsheet (CSV)](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/data/weights.csv)**"
+    )
     w()
 
     # ------------------------------------------------------------------
@@ -708,6 +801,7 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
 
     # Group rows by category
     from collections import defaultdict
+
     by_cat: dict[str, list[dict]] = defaultdict(list)
     for r in rows:
         by_cat[r["Category"]].append(r)
@@ -741,8 +835,9 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
         cat_rows = by_cat.get(cat, [])
         if not cat_rows:
             continue
-        wts = [float(r["Weight"]) for r in cat_rows
-               if r["Weight"] and r["Weight"] != "N/A"]
+        wts = [
+            float(r["Weight"]) for r in cat_rows if r["Weight"] and r["Weight"] != "N/A"
+        ]
         if not wts:
             continue
         avg = statistics.mean(wts)
@@ -766,10 +861,14 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     w()
     w("| Metric | Value | Interpretation |")
     w("|--------|------:|:---------------|")
-    w(f"| Pearson $r$ | {pv['pearson_r']:.4f} | "
-      f"Linear correlation between perf and timing weight vectors. |")
-    w(f"| Spearman $\\rho$ | {pv['spearman_rho']:.4f} | "
-      f"Rank correlation -- are the orderings consistent? |")
+    w(
+        f"| Pearson $r$ | {pv['pearson_r']:.4f} | "
+        f"Linear correlation between perf and timing weight vectors. |"
+    )
+    w(
+        f"| Spearman $\\rho$ | {pv['spearman_rho']:.4f} | "
+        f"Rank correlation -- are the orderings consistent? |"
+    )
     w()
 
     max_div = pv.get("max_divergence", {})
@@ -786,10 +885,14 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
 
     w("### Interpreting divergence")
     w()
-    w("The moderate correlation values and large max divergence for BLAS operations are")
+    w(
+        "The moderate correlation values and large max divergence for BLAS operations are"
+    )
     w("**expected**. Perf mode counts FP instructions regardless of execution time,")
     w("while timing mode measures wall-clock time including memory bandwidth and cache")
-    w("effects. BLAS operations achieve near-peak FLOP throughput, so their per-instruction")
+    w(
+        "effects. BLAS operations achieve near-peak FLOP throughput, so their per-instruction"
+    )
     w("timing is much lower than for scalar pointwise operations. For pointwise ops")
     w("(which dominate the count), the two modes agree well in relative ordering.")
     w()

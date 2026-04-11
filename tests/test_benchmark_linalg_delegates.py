@@ -116,9 +116,7 @@ class TestBenchmarkLinalgDelegates:
             "benchmarks._linalg_delegates.measure_flops",
             return_value=mock_result,
         ):
-            result, details = benchmark_linalg_delegates(
-                dtype="float64", repeats=1
-            )
+            result, details = benchmark_linalg_delegates(dtype="float64", repeats=1)
 
         available = set(self._available_ops())
         assert isinstance(result, dict)
