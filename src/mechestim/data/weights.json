@@ -9172,7 +9172,7 @@
       },
       "array": {
         "category": "counted_custom",
-        "analytical_formula": "numel(input)",
+        "analytical_formula": "numel(output)",
         "notes": "Create array from data. Cost: numel(input)."
       },
       "full": {
@@ -9217,17 +9217,17 @@
       },
       "split": {
         "category": "counted_custom",
-        "analytical_formula": "numel(output)",
+        "analytical_formula": "numel(input)",
         "notes": "Split array into sub-arrays. Cost: numel(output)."
       },
       "vsplit": {
         "category": "counted_custom",
-        "analytical_formula": "numel(output)",
+        "analytical_formula": "numel(input)",
         "notes": "Split array into rows. Cost: numel(output)."
       },
       "ravel": {
         "category": "counted_custom",
-        "analytical_formula": "numel(input)",
+        "analytical_formula": "numel(output)",
         "notes": "Return contiguous flattened array. Cost: numel(input)."
       },
       "where": {
@@ -9257,7 +9257,7 @@
       },
       "diagonal": {
         "category": "counted_custom",
-        "analytical_formula": "numel(input)",
+        "analytical_formula": "numel(output)",
         "notes": "Return specified diagonals. Cost: numel(input)."
       },
       "broadcast_to": {
@@ -9272,7 +9272,7 @@
       },
       "asarray": {
         "category": "counted_custom",
-        "analytical_formula": "numel(input)",
+        "analytical_formula": "numel(output)",
         "notes": "Convert input to array. Cost: numel(input)."
       },
       "isnan": {
@@ -9357,17 +9357,17 @@
       },
       "compress": {
         "category": "counted_custom",
-        "analytical_formula": "numel(input)",
+        "analytical_formula": "numel(output)",
         "notes": "Return selected slices along axis. Cost: numel(input)."
       },
       "dsplit": {
         "category": "counted_custom",
-        "analytical_formula": "numel(output)",
+        "analytical_formula": "numel(input)",
         "notes": "Split array into multiple sub-arrays depth-wise. Cost: numel(output)."
       },
       "array_split": {
         "category": "counted_custom",
-        "analytical_formula": "numel(output)",
+        "analytical_formula": "numel(input)",
         "notes": "Split array into sub-arrays (possibly unequal). Cost: numel(output)."
       },
       "trim_zeros": {
@@ -9387,12 +9387,12 @@
       },
       "packbits": {
         "category": "counted_custom",
-        "analytical_formula": "numel(input)",
+        "analytical_formula": "numel(output)",
         "notes": "Pack elements of array into bits. Cost: numel(input)."
       },
       "unpackbits": {
         "category": "counted_custom",
-        "analytical_formula": "numel(input)",
+        "analytical_formula": "numel(output)",
         "notes": "Unpack elements of array into bits. Cost: numel(input)."
       },
       "fromfunction": {
@@ -9477,7 +9477,7 @@
       },
       "unstack": {
         "category": "counted_custom",
-        "analytical_formula": "numel(output)",
+        "analytical_formula": "numel(input)",
         "notes": "Unstack array along axis into tuple of arrays (NumPy 2.x). Cost: numel(output)."
       },
       "delete": {
@@ -9502,17 +9502,17 @@
       },
       "asarray_chkfinite": {
         "category": "counted_custom",
-        "analytical_formula": "numel(input)",
+        "analytical_formula": "numel(output)",
         "notes": "Convert to array, raising if NaN or inf. Cost: numel(input)."
       },
       "base_repr": {
         "category": "counted_custom",
-        "analytical_formula": "numel(input)",
+        "analytical_formula": "numel(output)",
         "notes": "Return string representation of number in given base. Cost: numel(input)."
       },
       "binary_repr": {
         "category": "counted_custom",
-        "analytical_formula": "numel(input)",
+        "analytical_formula": "numel(output)",
         "notes": "Return binary string representation of the input number. Cost: numel(input)."
       },
       "piecewise": {
