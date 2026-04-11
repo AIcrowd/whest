@@ -7,8 +7,8 @@ import pytest
 
 from benchmarks._perf import PerfResult
 from benchmarks._sorting import (
-    SORTING_OPS,
     _FORMULA_STRINGS,
+    SORTING_OPS,
     _analytical_cost,
     benchmark_sorting,
 )

@@ -690,7 +690,7 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
         w(f"- **Measured timing:** {sample_detail.get('baseline_timing_ns_total', 'N/A')} ns")
         w(f"- **$\\alpha(\\text{{add}})$:** {meth['baseline_alpha']}")
     else:
-        w(f"- **Benchmark command:** `np.add(x, y, out=_out)`")
+        w("- **Benchmark command:** `np.add(x, y, out=_out)`")
         w(f"- **$\\alpha(\\text{{add}})$:** {meth['baseline_alpha']}")
     w()
 

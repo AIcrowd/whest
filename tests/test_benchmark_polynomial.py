@@ -6,8 +6,8 @@ import pytest
 
 from benchmarks._perf import PerfResult
 from benchmarks._polynomial import (
-    POLYNOMIAL_OPS,
     _FORMULA_STRINGS,
+    POLYNOMIAL_OPS,
     _analytical_cost,
     benchmark_polynomial,
 )

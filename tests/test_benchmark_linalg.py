@@ -3,8 +3,8 @@
 from unittest.mock import patch
 
 from benchmarks._linalg import (
-    LINALG_OPS,
     _FORMULA_STRINGS,
+    LINALG_OPS,
     _analytical_cost,
     benchmark_linalg,
 )

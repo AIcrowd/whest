@@ -4,17 +4,17 @@ from unittest.mock import patch
 
 import pytest
 
-from benchmarks._perf import TimingResult
 from benchmarks._bitwise import (
+    _FORMULA_STRINGS,
     BINARY_OPS,
     BITWISE_OPS,
     SHIFT_OPS,
     SPECIAL_OPS,
     UNARY_OPS,
-    _FORMULA_STRINGS,
     _analytical_cost,
     benchmark_bitwise,
 )
+from benchmarks._perf import TimingResult
 
 
 class TestOpsLists:

@@ -7,7 +7,6 @@ with perf counters to capture any wrapper overhead.
 
 from __future__ import annotations
 
-import math
 import statistics
 
 from benchmarks._perf import measure_flops
