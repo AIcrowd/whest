@@ -71,7 +71,7 @@ Measurement mode: timing
 
 ## What gets measured
 
-The suite benchmarks eleven categories of operations, all using the
+The suite benchmarks fourteen categories of operations, all using the
 same correction formula:
 
 | Category | Operations | Size | Normalization |
@@ -87,8 +87,11 @@ same correction formula:
 | **Random** | 43 random generators | 10M elements | $\alpha(\text{op}) / \alpha(\text{add})$ |
 | **Misc** | 25 misc ops | Varies per op | $\alpha(\text{op}) / \alpha(\text{add})$ |
 | **Window** | 5 window functions | 10M elements | $\alpha(\text{op}) / \alpha(\text{add})$ |
+| **Bitwise** | 14 bitwise/integer ops | 10M int64 elements | Timing only (integer ops produce 0 perf FP counts) |
+| **Complex** | 11 complex ops | 10M complex128 elements | Perf on complex128 (iscomplexobj/isrealobj use timing) |
+| **Linalg Delegates** | 15 linalg namespace ops | Various | Perf (same as linalg decompositions) |
 
-**Total: 251 benchmarked operations.**
+**Total: 291 benchmarked operations.**
 
 ### Measurement methodology
 
@@ -136,8 +139,9 @@ python -m benchmarks.runner \
     --category linalg
 ```
 
-Available categories: `pointwise`, `reductions`, `linalg`, `fft`,
-`sorting`, `random`, `polynomial`, `contractions`, `misc`, `window`.
+Available categories: `pointwise`, `reductions`, `linalg`, `linalg_delegates`,
+`fft`, `sorting`, `random`, `polynomial`, `contractions`, `misc`, `window`,
+`bitwise`, `complex`.
 
 ## Output format
 
