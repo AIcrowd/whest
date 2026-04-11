@@ -465,13 +465,12 @@ def run_benchmarks(
                     if isinstance(raw_timing, list):
                         # Take the median distribution's value
                         import statistics as _stats
+
                         all_details[op]["timing_ns_total"] = round(
                             _stats.median(raw_timing), 2
                         )
                     else:
-                        all_details[op]["timing_ns_total"] = round(
-                            float(raw_timing), 2
-                        )
+                        all_details[op]["timing_ns_total"] = round(float(raw_timing), 2)
             if op in timing_weights and op in all_details:
                 all_details[op]["timing_weight"] = timing_weights[op]
 

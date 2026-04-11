@@ -184,8 +184,7 @@ class PathInfo:
                 if not cycles:
                     continue
                 perm_str = "".join(
-                    "(" + " ".join(labels[i] for i in cycle) + ")"
-                    for cycle in cycles
+                    "(" + " ".join(labels[i] for i in cycle) + ")" for cycle in cycles
                 )
                 parts.append(perm_str)
             return ", ".join(parts) if parts else "e"
@@ -282,7 +281,9 @@ class PathInfo:
 
             # Output (V) unique/dense
             if step.output_group is not None and step.output_shape:
-                out_str = step.subscript.split("->")[1] if "->" in step.subscript else ""
+                out_str = (
+                    step.subscript.split("->")[1] if "->" in step.subscript else ""
+                )
                 out_total = prod(step.output_shape)
                 out_unique = unique_elements(
                     frozenset(out_str), self.size_dict, perm_group=step.output_group
@@ -292,8 +293,14 @@ class PathInfo:
 
             # Inner (W) unique/dense
             if step.inner_applied and step.inner_group is not None:
-                lhs = step.subscript.split("->")[0] if "->" in step.subscript else step.subscript
-                out_str = step.subscript.split("->")[1] if "->" in step.subscript else ""
+                lhs = (
+                    step.subscript.split("->")[0]
+                    if "->" in step.subscript
+                    else step.subscript
+                )
+                out_str = (
+                    step.subscript.split("->")[1] if "->" in step.subscript else ""
+                )
                 contracted = frozenset(lhs.replace(",", "")) - frozenset(out_str)
                 if contracted:
                     inner_total = prod(self.size_dict[c] for c in contracted)
@@ -718,9 +725,7 @@ def contract_path(
             _step_inner_applied = False
             if _use_inner and subset_sym.inner is not None and idx_removed:
                 _gl = (
-                    set(subset_sym.inner._labels)
-                    if subset_sym.inner._labels
-                    else set()
+                    set(subset_sym.inner._labels) if subset_sym.inner._labels else set()
                 )
                 _step_inner_applied = bool(_gl and _gl <= set(idx_removed))
         else:

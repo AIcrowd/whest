@@ -68,8 +68,10 @@ def gws(*args: str, json_body: dict | None = None) -> dict:
                     try:
                         parsed = json.loads(output[idx : i + 1])
                         if "error" in parsed:
-                            print(f"  gws API error: {parsed['error'].get('message', '')[:200]}",
-                                  file=sys.stderr)
+                            print(
+                                f"  gws API error: {parsed['error'].get('message', '')[:200]}",
+                                file=sys.stderr,
+                            )
                         return parsed
                     except json.JSONDecodeError:
                         break
@@ -93,7 +95,9 @@ def create_spreadsheet() -> str:
     """Create a new Google Sheets spreadsheet and return its ID."""
     print(f"Creating spreadsheet: {TITLE}")
     resp = gws(
-        "sheets", "spreadsheets", "create",
+        "sheets",
+        "spreadsheets",
+        "create",
         json_body={
             "properties": {"title": TITLE},
             "sheets": [
@@ -125,11 +129,17 @@ def upload_data(sid: str, rows: list[list[str]]) -> None:
 
     # Read current sheet headers
     resp = gws(
-        "sheets", "spreadsheets", "values", "get",
-        "--params", json.dumps({
-            "spreadsheetId": sid,
-            "range": "'All Operations'!A1:Z1",
-        }),
+        "sheets",
+        "spreadsheets",
+        "values",
+        "get",
+        "--params",
+        json.dumps(
+            {
+                "spreadsheetId": sid,
+                "range": "'All Operations'!A1:Z1",
+            }
+        ),
     )
     sheet_headers = resp.get("values", [[]])[0] if resp.get("values") else []
 
@@ -138,15 +148,21 @@ def upload_data(sid: str, rows: list[list[str]]) -> None:
         print("  Fresh sheet, uploading all columns...")
         CHUNK = 50
         for start in range(0, len(rows), CHUNK):
-            chunk = rows[start:start + CHUNK]
+            chunk = rows[start : start + CHUNK]
             row_start = start + 1
             gws(
-                "sheets", "spreadsheets", "values", "update",
-                "--params", json.dumps({
-                    "spreadsheetId": sid,
-                    "range": f"'All Operations'!A{row_start}",
-                    "valueInputOption": "USER_ENTERED",
-                }),
+                "sheets",
+                "spreadsheets",
+                "values",
+                "update",
+                "--params",
+                json.dumps(
+                    {
+                        "spreadsheetId": sid,
+                        "range": f"'All Operations'!A{row_start}",
+                        "valueInputOption": "USER_ENTERED",
+                    }
+                ),
                 json_body={"values": chunk},
             )
         print("  Data uploaded.")
@@ -177,23 +193,30 @@ def upload_data(sid: str, rows: list[list[str]]) -> None:
     for csv_idx, sheet_idx in sorted(csv_to_sheet.items(), key=lambda x: x[1]):
         col_letter = chr(65 + sheet_idx)
         col_values = [[csv_headers[csv_idx]]] + [
-            [row[csv_idx] if csv_idx < len(row) else ""]
-            for row in csv_data
+            [row[csv_idx] if csv_idx < len(row) else ""] for row in csv_data
         ]
         for start in range(0, len(col_values), CHUNK):
-            chunk = col_values[start:start + CHUNK]
+            chunk = col_values[start : start + CHUNK]
             row_start = start + 1
             gws(
-                "sheets", "spreadsheets", "values", "update",
-                "--params", json.dumps({
-                    "spreadsheetId": sid,
-                    "range": f"'All Operations'!{col_letter}{row_start}",
-                    "valueInputOption": "USER_ENTERED",
-                }),
+                "sheets",
+                "spreadsheets",
+                "values",
+                "update",
+                "--params",
+                json.dumps(
+                    {
+                        "spreadsheetId": sid,
+                        "range": f"'All Operations'!{col_letter}{row_start}",
+                        "valueInputOption": "USER_ENTERED",
+                    }
+                ),
                 json_body={"values": chunk},
             )
 
-    print(f"  Updated {len(csv_to_sheet)} columns, preserved {len(preserved)} reviewer columns.")
+    print(
+        f"  Updated {len(csv_to_sheet)} columns, preserved {len(preserved)} reviewer columns."
+    )
 
 
 def _color(r: float, g: float, b: float) -> dict:
@@ -201,19 +224,22 @@ def _color(r: float, g: float, b: float) -> dict:
     return {"red": r, "green": g, "blue": b}
 
 
-def _cond_rule(sheet_id: int, col: int, num_rows: int,
-               condition_type: str, values: list, fmt: dict) -> dict:
+def _cond_rule(
+    sheet_id: int, col: int, num_rows: int, condition_type: str, values: list, fmt: dict
+) -> dict:
     """Build a conditional format rule for a column."""
     rule = {
         "addConditionalFormatRule": {
             "rule": {
-                "ranges": [{
-                    "sheetId": sheet_id,
-                    "startRowIndex": 1,
-                    "endRowIndex": num_rows,
-                    "startColumnIndex": col,
-                    "endColumnIndex": col + 1,
-                }],
+                "ranges": [
+                    {
+                        "sheetId": sheet_id,
+                        "startRowIndex": 1,
+                        "endRowIndex": num_rows,
+                        "startColumnIndex": col,
+                        "endColumnIndex": col + 1,
+                    }
+                ],
                 "booleanRule": {
                     "condition": {
                         "type": condition_type,
@@ -228,39 +254,57 @@ def _cond_rule(sheet_id: int, col: int, num_rows: int,
     return rule
 
 
-def _text_eq_rule(sheet_id: int, col: int, num_rows: int,
-                  text: str, bg: dict, fg: dict | None = None) -> dict:
+def _text_eq_rule(
+    sheet_id: int, col: int, num_rows: int, text: str, bg: dict, fg: dict | None = None
+) -> dict:
     """Conditional format: cell text equals a specific value."""
     fmt = {"backgroundColor": bg}
     if fg:
         fmt["textFormat"] = {"foregroundColor": fg}
     return _cond_rule(
-        sheet_id, col, num_rows,
-        "TEXT_EQ", [{"userEnteredValue": text}], fmt,
+        sheet_id,
+        col,
+        num_rows,
+        "TEXT_EQ",
+        [{"userEnteredValue": text}],
+        fmt,
     )
 
 
-def _number_between_rule(sheet_id: int, col: int, num_rows: int,
-                         lo: str, hi: str, bg: dict) -> dict:
+def _number_between_rule(
+    sheet_id: int, col: int, num_rows: int, lo: str, hi: str, bg: dict
+) -> dict:
     """Conditional format: number between lo and hi."""
     return _cond_rule(
-        sheet_id, col, num_rows,
+        sheet_id,
+        col,
+        num_rows,
         "NUMBER_BETWEEN",
         [{"userEnteredValue": lo}, {"userEnteredValue": hi}],
         {"backgroundColor": bg},
     )
 
 
-def _number_rule(sheet_id: int, col: int, num_rows: int,
-                 cond_type: str, value: str, bg: dict,
-                 fg: dict | None = None) -> dict:
+def _number_rule(
+    sheet_id: int,
+    col: int,
+    num_rows: int,
+    cond_type: str,
+    value: str,
+    bg: dict,
+    fg: dict | None = None,
+) -> dict:
     """Conditional format: number comparison."""
     fmt = {"backgroundColor": bg}
     if fg:
         fmt["textFormat"] = {"foregroundColor": fg}
     return _cond_rule(
-        sheet_id, col, num_rows,
-        cond_type, [{"userEnteredValue": value}], fmt,
+        sheet_id,
+        col,
+        num_rows,
+        cond_type,
+        [{"userEnteredValue": value}],
+        fmt,
     )
 
 
@@ -271,117 +315,135 @@ def apply_formatting(sid: str, num_rows: int, num_cols: int) -> None:
     requests = []
 
     # ---- Freeze header row + column A ----
-    requests.append({
-        "updateSheetProperties": {
-            "properties": {
-                "sheetId": sheet_id,
-                "gridProperties": {
-                    "frozenRowCount": 1,
-                    "frozenColumnCount": 1,
+    requests.append(
+        {
+            "updateSheetProperties": {
+                "properties": {
+                    "sheetId": sheet_id,
+                    "gridProperties": {
+                        "frozenRowCount": 1,
+                        "frozenColumnCount": 1,
+                    },
                 },
-            },
-            "fields": "gridProperties.frozenRowCount,gridProperties.frozenColumnCount",
+                "fields": "gridProperties.frozenRowCount,gridProperties.frozenColumnCount",
+            }
         }
-    })
+    )
 
     # ---- Header row formatting ----
     # Section A (cols 0-8): dark blue-gray bg, white text, bold
-    requests.append({
-        "repeatCell": {
-            "range": {
-                "sheetId": sheet_id,
-                "startRowIndex": 0, "endRowIndex": 1,
-                "startColumnIndex": 0, "endColumnIndex": 9,
-            },
-            "cell": {
-                "userEnteredFormat": {
-                    "backgroundColor": _color(0.2, 0.3, 0.4),
-                    "textFormat": {
-                        "foregroundColor": _color(1, 1, 1),
-                        "bold": True,
-                        "fontSize": 10,
-                    },
-                }
-            },
-            "fields": "userEnteredFormat.backgroundColor,userEnteredFormat.textFormat",
+    requests.append(
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": sheet_id,
+                    "startRowIndex": 0,
+                    "endRowIndex": 1,
+                    "startColumnIndex": 0,
+                    "endColumnIndex": 9,
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "backgroundColor": _color(0.2, 0.3, 0.4),
+                        "textFormat": {
+                            "foregroundColor": _color(1, 1, 1),
+                            "bold": True,
+                            "fontSize": 10,
+                        },
+                    }
+                },
+                "fields": "userEnteredFormat.backgroundColor,userEnteredFormat.textFormat",
+            }
         }
-    })
+    )
     # Section B (cols 9-20): lighter gray bg
-    requests.append({
-        "repeatCell": {
-            "range": {
-                "sheetId": sheet_id,
-                "startRowIndex": 0, "endRowIndex": 1,
-                "startColumnIndex": 9, "endColumnIndex": num_cols,
-            },
-            "cell": {
-                "userEnteredFormat": {
-                    "backgroundColor": _color(0.6, 0.6, 0.65),
-                    "textFormat": {
-                        "foregroundColor": _color(1, 1, 1),
-                        "bold": True,
-                        "fontSize": 10,
-                    },
-                }
-            },
-            "fields": "userEnteredFormat.backgroundColor,userEnteredFormat.textFormat",
+    requests.append(
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": sheet_id,
+                    "startRowIndex": 0,
+                    "endRowIndex": 1,
+                    "startColumnIndex": 9,
+                    "endColumnIndex": num_cols,
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "backgroundColor": _color(0.6, 0.6, 0.65),
+                        "textFormat": {
+                            "foregroundColor": _color(1, 1, 1),
+                            "bold": True,
+                            "fontSize": 10,
+                        },
+                    }
+                },
+                "fields": "userEnteredFormat.backgroundColor,userEnteredFormat.textFormat",
+            }
         }
-    })
+    )
 
     # ---- Reviewer Weight column (F, index 5): light yellow bg ----
-    requests.append({
-        "repeatCell": {
-            "range": {
-                "sheetId": sheet_id,
-                "startRowIndex": 1, "endRowIndex": num_rows,
-                "startColumnIndex": 5, "endColumnIndex": 6,
-            },
-            "cell": {
-                "userEnteredFormat": {
-                    "backgroundColor": _color(1.0, 0.98, 0.8),
-                }
-            },
-            "fields": "userEnteredFormat.backgroundColor",
+    requests.append(
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": sheet_id,
+                    "startRowIndex": 1,
+                    "endRowIndex": num_rows,
+                    "startColumnIndex": 5,
+                    "endColumnIndex": 6,
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "backgroundColor": _color(1.0, 0.98, 0.8),
+                    }
+                },
+                "fields": "userEnteredFormat.backgroundColor",
+            }
         }
-    })
+    )
 
     # ---- Status dropdown (col B, index 1) ----
-    requests.append({
-        "setDataValidation": {
-            "range": {
-                "sheetId": sheet_id,
-                "startRowIndex": 1, "endRowIndex": num_rows,
-                "startColumnIndex": 1, "endColumnIndex": 2,
-            },
-            "rule": {
-                "condition": {
-                    "type": "ONE_OF_LIST",
-                    "values": [
-                        {"userEnteredValue": "benchmarked"},
-                        {"userEnteredValue": "alias"},
-                        {"userEnteredValue": "excluded"},
-                        {"userEnteredValue": "free"},
-                        {"userEnteredValue": "blacklisted"},
-                        {"userEnteredValue": "blacklisted-by-reviewer"},
-                        {"userEnteredValue": "keep"},
-                    ],
+    requests.append(
+        {
+            "setDataValidation": {
+                "range": {
+                    "sheetId": sheet_id,
+                    "startRowIndex": 1,
+                    "endRowIndex": num_rows,
+                    "startColumnIndex": 1,
+                    "endColumnIndex": 2,
                 },
-                "showCustomUi": True,
-                "strict": False,
-            },
+                "rule": {
+                    "condition": {
+                        "type": "ONE_OF_LIST",
+                        "values": [
+                            {"userEnteredValue": "benchmarked"},
+                            {"userEnteredValue": "alias"},
+                            {"userEnteredValue": "excluded"},
+                            {"userEnteredValue": "free"},
+                            {"userEnteredValue": "blacklisted"},
+                            {"userEnteredValue": "blacklisted-by-reviewer"},
+                            {"userEnteredValue": "keep"},
+                        ],
+                    },
+                    "showCustomUi": True,
+                    "strict": False,
+                },
+            }
         }
-    })
+    )
 
     # ---- Conditional formatting: Status column (B, index 1) ----
     WHITE = _color(1, 1, 1)
     status_rules = [
-        ("benchmarked",            _color(0.85, 0.93, 0.83), None),
-        ("alias",                  _color(0.82, 0.88, 0.95), None),
-        ("excluded",               _color(0.9, 0.9, 0.9),   None),
-        ("free",                   _color(0.96, 0.96, 0.96), None),
-        ("blacklisted",            _color(0.87, 0.36, 0.34), WHITE),
+        ("benchmarked", _color(0.85, 0.93, 0.83), None),
+        ("alias", _color(0.82, 0.88, 0.95), None),
+        ("excluded", _color(0.9, 0.9, 0.9), None),
+        ("free", _color(0.96, 0.96, 0.96), None),
+        ("blacklisted", _color(0.87, 0.36, 0.34), WHITE),
         ("blacklisted-by-reviewer", _color(0.6, 0.15, 0.15), WHITE),
-        ("keep",                   _color(0.2, 0.55, 0.24),  WHITE),
+        ("keep", _color(0.2, 0.55, 0.24), WHITE),
     ]
     for text, bg, fg in status_rules:
         requests.append(_text_eq_rule(sheet_id, 1, num_rows, text, bg, fg))
@@ -389,52 +451,80 @@ def apply_formatting(sid: str, num_rows: int, num_cols: int) -> None:
     # ---- Conditional formatting: Weight column (E, index 4) ----
     # Order matters: more specific rules first (Sheets evaluates top-down, first match wins)
     weight_rules = [
-        ("NUMBER_LESS", "0.001",  _color(1, 1, 1), _color(0.8, 0.1, 0.1)),  # zero FP: red text
-        ("NUMBER_LESS", "0.5",    _color(0.85, 0.95, 0.85), None),           # negligible: light green
-        ("NUMBER_LESS", "2.0",    _color(0.72, 0.88, 0.72), None),           # baseline: green
-        ("NUMBER_LESS", "20.0",   _color(1.0, 0.95, 0.6),   None),           # moderate: yellow
-        ("NUMBER_LESS", "100.0",  _color(1.0, 0.8, 0.4),    None),           # heavy: orange
-        ("NUMBER_GREATER_THAN_EQ", "100.0", _color(0.92, 0.45, 0.4), None),  # extreme: red
+        (
+            "NUMBER_LESS",
+            "0.001",
+            _color(1, 1, 1),
+            _color(0.8, 0.1, 0.1),
+        ),  # zero FP: red text
+        (
+            "NUMBER_LESS",
+            "0.5",
+            _color(0.85, 0.95, 0.85),
+            None,
+        ),  # negligible: light green
+        ("NUMBER_LESS", "2.0", _color(0.72, 0.88, 0.72), None),  # baseline: green
+        ("NUMBER_LESS", "20.0", _color(1.0, 0.95, 0.6), None),  # moderate: yellow
+        ("NUMBER_LESS", "100.0", _color(1.0, 0.8, 0.4), None),  # heavy: orange
+        (
+            "NUMBER_GREATER_THAN_EQ",
+            "100.0",
+            _color(0.92, 0.45, 0.4),
+            None,
+        ),  # extreme: red
     ]
     for cond_type, value, bg, fg in weight_rules:
         requests.append(_number_rule(sheet_id, 4, num_rows, cond_type, value, bg, fg))
 
     # ---- Conditional formatting: Confidence column (H, index 7) ----
     conf_rules = [
-        ("high",   _color(0.72, 0.88, 0.72)),
+        ("high", _color(0.72, 0.88, 0.72)),
         ("medium", _color(1.0, 0.95, 0.6)),
-        ("low",    _color(0.95, 0.7, 0.65)),
+        ("low", _color(0.95, 0.7, 0.65)),
     ]
     for text, bg in conf_rules:
         requests.append(_text_eq_rule(sheet_id, 7, num_rows, text, bg))
 
     # ---- Conditional formatting: Perf/Timing Agreement (M, index 12) ----
     # Green: 0.5-2.0, Yellow: 0.2-0.5 or 2.0-5.0, Red: <0.2 or >5.0
-    requests.append(_number_between_rule(sheet_id, 12, num_rows, "0.5", "2.0",
-                                          _color(0.72, 0.88, 0.72)))
-    requests.append(_number_between_rule(sheet_id, 12, num_rows, "0.2", "0.5",
-                                          _color(1.0, 0.95, 0.6)))
-    requests.append(_number_between_rule(sheet_id, 12, num_rows, "2.0", "5.0",
-                                          _color(1.0, 0.95, 0.6)))
-    requests.append(_number_rule(sheet_id, 12, num_rows,
-                                  "NUMBER_LESS", "0.2",
-                                  _color(0.95, 0.7, 0.65)))
-    requests.append(_number_rule(sheet_id, 12, num_rows,
-                                  "NUMBER_GREATER", "5.0",
-                                  _color(0.95, 0.7, 0.65)))
+    requests.append(
+        _number_between_rule(
+            sheet_id, 12, num_rows, "0.5", "2.0", _color(0.72, 0.88, 0.72)
+        )
+    )
+    requests.append(
+        _number_between_rule(
+            sheet_id, 12, num_rows, "0.2", "0.5", _color(1.0, 0.95, 0.6)
+        )
+    )
+    requests.append(
+        _number_between_rule(
+            sheet_id, 12, num_rows, "2.0", "5.0", _color(1.0, 0.95, 0.6)
+        )
+    )
+    requests.append(
+        _number_rule(
+            sheet_id, 12, num_rows, "NUMBER_LESS", "0.2", _color(0.95, 0.7, 0.65)
+        )
+    )
+    requests.append(
+        _number_rule(
+            sheet_id, 12, num_rows, "NUMBER_GREATER", "5.0", _color(0.95, 0.7, 0.65)
+        )
+    )
 
     # ---- Column widths ----
     col_widths = {
-        0: 200,   # Operation
-        1: 140,   # Status
-        2: 140,   # Category
-        3: 180,   # Cost Formula
-        4: 90,    # Weight
-        5: 120,   # Reviewer Weight
-        6: 250,   # Effective Cost Example
-        7: 100,   # Confidence
-        8: 400,   # Notes
-        9: 300,   # Exclusion Reason
+        0: 200,  # Operation
+        1: 140,  # Status
+        2: 140,  # Category
+        3: 180,  # Cost Formula
+        4: 90,  # Weight
+        5: 120,  # Reviewer Weight
+        6: 250,  # Effective Cost Example
+        7: 100,  # Confidence
+        8: 400,  # Notes
+        9: 300,  # Exclusion Reason
         10: 100,  # HW FP Instructions
         11: 100,  # Timing Weight
         12: 100,  # Perf/Timing Agreement
@@ -445,37 +535,41 @@ def apply_formatting(sid: str, num_rows: int, num_cols: int) -> None:
         17: 120,  # Total Timing
         18: 350,  # Implementation URL
         19: 100,  # Weight Tier
-        20: 70,   # Repeats
+        20: 70,  # Repeats
     }
     for col_idx, width in col_widths.items():
         if col_idx < num_cols:
-            requests.append({
-                "updateDimensionProperties": {
-                    "range": {
-                        "sheetId": sheet_id,
-                        "dimension": "COLUMNS",
-                        "startIndex": col_idx,
-                        "endIndex": col_idx + 1,
-                    },
-                    "properties": {"pixelSize": width},
-                    "fields": "pixelSize",
+            requests.append(
+                {
+                    "updateDimensionProperties": {
+                        "range": {
+                            "sheetId": sheet_id,
+                            "dimension": "COLUMNS",
+                            "startIndex": col_idx,
+                            "endIndex": col_idx + 1,
+                        },
+                        "properties": {"pixelSize": width},
+                        "fields": "pixelSize",
+                    }
                 }
-            })
+            )
 
     # ---- Wrap text on Notes column ----
-    requests.append({
-        "repeatCell": {
-            "range": {
-                "sheetId": sheet_id,
-                "startRowIndex": 1, "endRowIndex": num_rows,
-                "startColumnIndex": 8, "endColumnIndex": 9,
-            },
-            "cell": {
-                "userEnteredFormat": {"wrapStrategy": "WRAP"}
-            },
-            "fields": "userEnteredFormat.wrapStrategy",
+    requests.append(
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": sheet_id,
+                    "startRowIndex": 1,
+                    "endRowIndex": num_rows,
+                    "startColumnIndex": 8,
+                    "endColumnIndex": 9,
+                },
+                "cell": {"userEnteredFormat": {"wrapStrategy": "WRAP"}},
+                "fields": "userEnteredFormat.wrapStrategy",
+            }
         }
-    })
+    )
 
     # ---- Send batch updates in chunks (avoid CLI arg length limits) ----
     CHUNK_SIZE = 10
@@ -483,8 +577,11 @@ def apply_formatting(sid: str, num_rows: int, num_cols: int) -> None:
         chunk = requests[i : i + CHUNK_SIZE]
         print(f"  Sending batch {i // CHUNK_SIZE + 1} ({len(chunk)} requests)...")
         gws(
-            "sheets", "spreadsheets", "batchUpdate",
-            "--params", json.dumps({"spreadsheetId": sid}),
+            "sheets",
+            "spreadsheets",
+            "batchUpdate",
+            "--params",
+            json.dumps({"spreadsheetId": sid}),
             json_body={"requests": chunk},
         )
     print(f"  Formatting applied ({len(requests)} requests total).")
@@ -498,9 +595,12 @@ def create_summary_sheet(sid: str, rows: list[list[str]]) -> None:
 
     # Build summary data
     from collections import Counter
+
     statuses = Counter(r[1] for r in data_rows)  # col B
     categories = Counter(r[2] for r in data_rows if r[2])  # col C
-    tiers = Counter(r[19] for r in data_rows if len(r) > 19 and r[19])  # col T (Weight Tier)
+    tiers = Counter(
+        r[19] for r in data_rows if len(r) > 19 and r[19]
+    )  # col T (Weight Tier)
     confs = Counter(r[7] for r in data_rows if r[7])  # col H
 
     summary = [
@@ -527,19 +627,29 @@ def create_summary_sheet(sid: str, rows: list[list[str]]) -> None:
     summary.append(["", ""])
     summary.append(["Instructions:", ""])
     summary.append(["1. Review the 'Weight' column (E) in 'All Operations'", ""])
-    summary.append(["2. Change Status dropdown to 'keep' or 'blacklisted-by-reviewer'", ""])
+    summary.append(
+        ["2. Change Status dropdown to 'keep' or 'blacklisted-by-reviewer'", ""]
+    )
     summary.append(["3. Enter your preferred weight in 'Reviewer Weight' (F)", ""])
-    summary.append(["4. Weight = 1.0 means same cost as np.add per analytical FLOP", ""])
+    summary.append(
+        ["4. Weight = 1.0 means same cost as np.add per analytical FLOP", ""]
+    )
     summary.append(["5. Weight < 1.0 means cheaper (e.g., matmul=0.46 due to FMA)", ""])
     summary.append(["6. Weight > 1.0 means more expensive (e.g., sin=18.39)", ""])
 
     gws(
-        "sheets", "spreadsheets", "values", "update",
-        "--params", json.dumps({
-            "spreadsheetId": sid,
-            "range": "'Review Summary'!A1",
-            "valueInputOption": "RAW",
-        }),
+        "sheets",
+        "spreadsheets",
+        "values",
+        "update",
+        "--params",
+        json.dumps(
+            {
+                "spreadsheetId": sid,
+                "range": "'Review Summary'!A1",
+                "valueInputOption": "RAW",
+            }
+        ),
         json_body={"values": summary},
     )
     print("  Summary sheet created.")
@@ -547,8 +657,12 @@ def create_summary_sheet(sid: str, rows: list[list[str]]) -> None:
 
 def main():
     parser = argparse.ArgumentParser(description="Upload weights CSV to Google Sheets")
-    parser.add_argument("--csv", type=Path, default=DEFAULT_CSV,
-                        help=f"Path to weights CSV (default: {DEFAULT_CSV})")
+    parser.add_argument(
+        "--csv",
+        type=Path,
+        default=DEFAULT_CSV,
+        help=f"Path to weights CSV (default: {DEFAULT_CSV})",
+    )
     args = parser.parse_args()
 
     rows = load_csv(args.csv)

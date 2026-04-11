@@ -169,7 +169,9 @@ def _unary_setup(n: int, dtype: str, op: str, dist_idx: int) -> str:
     if op in _WIDE_INPUT_OPS and dist_idx == 0:
         dists_0 = f"x = np.random.default_rng(42).uniform(-100, 100, size={n}).astype(np.{dtype})"
     else:
-        dists_0 = f"x = np.random.default_rng(42).standard_normal({n}).astype(np.{dtype})"
+        dists_0 = (
+            f"x = np.random.default_rng(42).standard_normal({n}).astype(np.{dtype})"
+        )
     dists = [
         dists_0,
         f"x = np.random.default_rng(42).uniform(0.01, 100, size={n}).astype(np.{dtype})",

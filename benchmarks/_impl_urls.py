@@ -63,7 +63,7 @@ def _find_deduct_line(op_name: str) -> tuple[str, int | None]:
 
     # --- Strategy 1: direct deduct("op_name" or deduct('op_name' --------
     for quote in ('"', "'"):
-        hits = _grep(f'deduct\\({quote}{escaped}{quote}')
+        hits = _grep(f"deduct\\({quote}{escaped}{quote}")
         if hits:
             abs_path, line_no, _ = hits[0]
             return (_to_rel_path(abs_path), line_no)
@@ -74,7 +74,7 @@ def _find_deduct_line(op_name: str) -> tuple[str, int | None]:
         # Match patterns like:
         #   sin = _counted_unary(_np.sin, "sin")
         #   random.rand = _counted_dims_sampler(_np.random.rand, "random.rand")
-        pattern = f'_counted_\\w+\\([^)]*,\\s*{quote}{escaped}{quote}'
+        pattern = f"_counted_\\w+\\([^)]*,\\s*{quote}{escaped}{quote}"
         hits = _grep(pattern)
         if hits:
             abs_path, line_no, _ = hits[0]
@@ -83,7 +83,7 @@ def _find_deduct_line(op_name: str) -> tuple[str, int | None]:
     # --- Strategy 3: for reduction ops created via loops or dicts --------
     # Search for the string literal "op_name" near a deduct or factory call
     for quote in ('"', "'"):
-        pattern = f'{quote}{escaped}{quote}'
+        pattern = f"{quote}{escaped}{quote}"
         hits = _grep(pattern)
         # Filter to source files (not test, not __pycache__, not data/)
         src_hits = [

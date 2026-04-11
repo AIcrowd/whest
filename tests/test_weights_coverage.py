@@ -126,10 +126,7 @@ EXCLUDED_RANDOM: frozenset[str] = frozenset(
     }
 )
 
-ALL_EXCLUDED = (
-    EXCLUDED_CONTRACTION
-    | EXCLUDED_RANDOM
-)
+ALL_EXCLUDED = EXCLUDED_CONTRACTION | EXCLUDED_RANDOM
 
 
 # ---------------------------------------------------------------------------
