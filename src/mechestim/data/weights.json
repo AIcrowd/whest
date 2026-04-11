@@ -9425,6 +9425,9 @@
     "linalg.tensorsolve": 1,
     "linalg.trace": 1,
     "linalg.vecdot": 1,
-    "linalg.vector_norm": 1
+    "linalg.vector_norm": 1,
+    "apply_along_axis": 1,
+    "apply_over_axes": 1,
+    "piecewise": 1
   }
 }

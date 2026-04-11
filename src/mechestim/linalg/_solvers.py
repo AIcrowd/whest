@@ -18,24 +18,20 @@ def solve_cost(n: int, nrhs: int = 1, symmetric: bool = False) -> int:
     n : int
         Matrix dimension.
     nrhs : int, optional
-        Number of right-hand sides. Default is 1.
+        Ignored (kept for API compatibility). Default is 1.
     symmetric : bool, optional
-        If True, assume Cholesky factorization. Default is False (LU).
+        Ignored (kept for API compatibility). Default is False.
 
     Returns
     -------
     int
-        Estimated FLOP count.
+        Estimated FLOP count: $n^3$.
 
     Notes
     -----
-    Uses $n^3/3 + 2n^2 \cdot n_{\text{rhs}}$ for Cholesky (symmetric; two triangular
-    solves), or $2n^3/3 + 2n^2 \cdot n_{\text{rhs}}$ for LU (general; two triangular
-    solves). Source: Golub & Van Loan, *Matrix Computations*, 4th ed.
+    Simplified cubic cost model for linear solve.
     """
-    if symmetric:
-        return max(n**3 // 3 + 2 * n**2 * nrhs, 1)
-    return max(2 * n**3 // 3 + 2 * n**2 * nrhs, 1)
+    return max(n**3, 1)
 
 
 def solve(a, b):
@@ -55,12 +51,7 @@ def solve(a, b):
     return _np.linalg.solve(a, b)
 
 
-attach_docstring(
-    solve,
-    _np.linalg.solve,
-    "linalg",
-    r"$2n^3/3 + 2n^2 \cdot n_{\text{rhs}}$ FLOPs (LU), or $n^3/3 + 2n^2 \cdot n_{\text{rhs}}$ FLOPs (Cholesky) for SymmetricTensor input",
-)
+attach_docstring(solve, _np.linalg.solve, "linalg", r"$n^3$ FLOPs")
 
 
 def inv_cost(n: int, symmetric: bool = False) -> int:

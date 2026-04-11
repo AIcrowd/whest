@@ -379,7 +379,7 @@ All weights are normalized against element-wise addition (`np.add`):
 | `random.random` | 1.0000 | high | numel(output) | [\_\_init\_\_.py:175](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L175) | Sampling; cost = numel(output). |
 | `random.random_sample` | 1.0000 | high | numel(output) | [\_\_init\_\_.py:176](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L176) | Sampling; cost = numel(output). |
 
-### Misc (24 operations)
+### Misc (27 operations)
 
 | Op | Weight | Confidence | Formula | Impl | Notes |
 |:---|-------:|:-----------|:--------|:-----|:------|
@@ -407,6 +407,9 @@ All weights are normalized against element-wise addition (`np.add`):
 | `logspace` | 1.0000 | high | n | [\_counting\_ops.py:236](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L236) | Log-spaced generation; cost = num. |
 | `geomspace` | 1.0000 | high | n | [\_counting\_ops.py:246](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L246) | Geometric-spaced generation; cost = num. |
 | `vander` | 1.0000 | high | n * (degree - 1) | [\_counting\_ops.py:260](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L260) | Vandermonde matrix; cost = len(x)*(N-1). |
+| `apply_along_axis` | 1.0000 |  |  |  |  |
+| `apply_over_axes` | 1.0000 |  |  |  |  |
+| `piecewise` | 1.0000 |  |  |  |  |
 
 ### Window (5 operations)
 
@@ -467,12 +470,12 @@ All weights are normalized against element-wise addition (`np.add`):
 | Contractions | 9 | 1.00 | 1.0000 | 1.0000 |
 | Polynomial | 10 | 2.50 | 1.0000 | 16.0000 |
 | Random | 43 | 13.21 | 1.0000 | 16.0000 |
-| Misc | 24 | 1.00 | 1.0000 | 1.0000 |
+| Misc | 27 | 1.00 | 1.0000 | 1.0000 |
 | Window | 5 | 13.00 | 1.0000 | 16.0000 |
 | Bitwise | 14 | 3.14 | 1.0000 | 16.0000 |
 | Complex | 11 | 2.36 | 1.0000 | 16.0000 |
 
-**Total benchmarked operations:** 291
+**Total benchmarked operations:** 294
 
 ## Validation
 
