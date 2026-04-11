@@ -3,6 +3,8 @@
 from collections.abc import Collection, Iterable
 from typing import Any, overload
 
+from mechestim._cost_model import FMA_COST
+
 from ._typing import ArrayIndexType, ArrayType
 
 __all__ = ["compute_size_by_dict", "find_contraction", "flop_count"]
@@ -134,13 +136,23 @@ def flop_count(
     30
 
     >>> flop_count('abc', True, 2, {'a': 2, 'b':3, 'c':5})
-    60
+    30
 
     """
     overall_size = compute_size_by_dict(idx_contraction, size_dictionary)
-    op_factor = max(1, num_terms - 1)
-    if inner:
-        op_factor += 1
+    n_multiplies = max(1, num_terms - 1)
+    if inner and num_terms >= 2:
+        # One multiply fuses with the accumulation into a single FMA.
+        # Remaining multiplies are standalone.
+        n_fma = 1
+        n_standalone_mul = n_multiplies - 1
+        op_factor = n_fma * FMA_COST + n_standalone_mul
+    elif inner:
+        # Pure reduction (trace): just additions, no multiplies to fuse.
+        op_factor = FMA_COST
+    else:
+        # No inner contraction: just multiplies.
+        op_factor = n_multiplies
 
     return overall_size * op_factor
 

@@ -57,8 +57,7 @@ def einsum(
 
     All contractions go through opt_einsum's ``contract_path`` to find an
     optimal pairwise decomposition. The FLOP cost uses opt_einsum's cost
-    model which includes ``op_factor`` (multiply-add = 2 FLOPs for inner
-    products).
+    model where FMA = 1 operation (see ``_cost_model.FMA_COST``).
 
     Parameters
     ----------
