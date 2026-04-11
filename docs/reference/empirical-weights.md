@@ -413,26 +413,26 @@ All weights are normalized against element-wise addition (`np.add`):
 | `append` | 1.0000 |  | numel(output) |  | Append values to end of array. Cost: numel(output). |
 | `arange` | 1.0000 |  | numel(output) |  | Return evenly spaced values in given interval. Cost: numel(output). |
 | `argwhere` | 1.0000 |  | numel(input) |  | Find indices of non-zero elements. Cost: numel(input). |
-| `array` | 1.0000 |  | numel(input) |  | Create array from data. Cost: numel(input). |
-| `array_split` | 1.0000 |  | numel(output) |  | Split array into sub-arrays (possibly unequal). Cost: numel(output). |
-| `asarray` | 1.0000 |  | numel(input) |  | Convert input to array. Cost: numel(input). |
-| `asarray_chkfinite` | 1.0000 |  | numel(input) |  | Convert to array, raising if NaN or inf. Cost: numel(input). |
-| `base_repr` | 1.0000 |  | numel(input) |  | Return string representation of number in given base. Cost: numel(input). |
-| `binary_repr` | 1.0000 |  | numel(input) |  | Return binary string representation of the input number. Cost: numel(input). |
+| `array` | 1.0000 |  | numel(output) |  | Create array from data. Cost: numel(input). |
+| `array_split` | 1.0000 |  | numel(input) |  | Split array into sub-arrays (possibly unequal). Cost: numel(output). |
+| `asarray` | 1.0000 |  | numel(output) |  | Convert input to array. Cost: numel(input). |
+| `asarray_chkfinite` | 1.0000 |  | numel(output) |  | Convert to array, raising if NaN or inf. Cost: numel(input). |
+| `base_repr` | 1.0000 |  | numel(output) |  | Return string representation of number in given base. Cost: numel(input). |
+| `binary_repr` | 1.0000 |  | numel(output) |  | Return binary string representation of the input number. Cost: numel(input). |
 | `block` | 1.0000 |  | numel(output) |  | Assemble ndarray from nested list of blocks. Cost: numel(output). |
 | `bmat` | 1.0000 |  | numel(output) |  | Build matrix from nested list of matrices. Cost: numel(output). |
 | `broadcast_arrays` | 1.0000 |  | numel(output) |  | Broadcast arrays against each other. Cost: numel(output). |
 | `broadcast_to` | 1.0000 |  | numel(output) |  | Broadcast array to new shape. Cost: numel(output). |
 | `choose` | 1.0000 |  | numel(output) |  | Construct array from index array and choices. Cost: numel(output). |
-| `compress` | 1.0000 |  | numel(input) |  | Return selected slices along axis. Cost: numel(input). |
+| `compress` | 1.0000 |  | numel(output) |  | Return selected slices along axis. Cost: numel(input). |
 | `concat` | 1.0000 |  | numel(output) |  | Join arrays along axis (NumPy 2.x array API alias for concatenate). Cost: numel(output). |
 | `concatenate` | 1.0000 |  | numel(output) |  | Join arrays along axis. Cost: numel(output). |
 | `copyto` | 1.0000 |  | numel(output) |  | Copy values from src to dst array. Cost: numel(output). |
 | `delete` | 1.0000 |  | numel(output) |  | Return array with sub-arrays deleted along axis. Cost: numel(output). |
 | `diag` | 1.0000 |  | numel(input) |  | Extract diagonal or construct diagonal array. Cost: numel(input). |
 | `diagflat` | 1.0000 |  | numel(input) |  | Create diagonal array from flattened input. Cost: numel(input). |
-| `diagonal` | 1.0000 |  | numel(input) |  | Return specified diagonals. Cost: numel(input). |
-| `dsplit` | 1.0000 |  | numel(output) |  | Split array into multiple sub-arrays depth-wise. Cost: numel(output). |
+| `diagonal` | 1.0000 |  | numel(output) |  | Return specified diagonals. Cost: numel(input). |
+| `dsplit` | 1.0000 |  | numel(input) |  | Split array into multiple sub-arrays depth-wise. Cost: numel(output). |
 | `dstack` | 1.0000 |  | numel(output) |  | Stack arrays depth-wise (along third axis). Cost: numel(output). |
 | `extract` | 1.0000 |  | numel(input) |  | Return elements satisfying condition. Cost: numel(input). |
 | `fill_diagonal` | 1.0000 |  | numel(input) |  | Fill main diagonal of given array. Cost: numel(input). |
@@ -456,27 +456,27 @@ All weights are normalized against element-wise addition (`np.add`):
 | `mask_indices` | 1.0000 |  | numel(output) |  | Return indices of mask for n x n array. Cost: numel(output). |
 | `meshgrid` | 1.0000 |  | numel(output) |  | Coordinate matrices from coordinate vectors. Cost: numel(output). |
 | `nonzero` | 1.0000 |  | numel(input) |  | Return indices of non-zero elements. Cost: numel(input). |
-| `packbits` | 1.0000 |  | numel(input) |  | Pack elements of array into bits. Cost: numel(input). |
+| `packbits` | 1.0000 |  | numel(output) |  | Pack elements of array into bits. Cost: numel(input). |
 | `pad` | 1.0000 |  | numel(output) |  | Pad array. Cost: numel(output). |
 | `place` | 1.0000 |  | numel(input) |  | Change elements satisfying condition. Cost: numel(input). |
 | `put` | 1.0000 |  | numel(input) |  | Replace elements at given flat indices. Cost: numel(input). |
 | `put_along_axis` | 1.0000 |  | numel(input) |  | Put values into destination array using indices. Cost: numel(input). |
 | `putmask` | 1.0000 |  | numel(input) |  | Change elements of array based on condition and input values. Cost: numel(input). |
-| `ravel` | 1.0000 |  | numel(input) |  | Return contiguous flattened array. Cost: numel(input). |
+| `ravel` | 1.0000 |  | numel(output) |  | Return contiguous flattened array. Cost: numel(input). |
 | `repeat` | 1.0000 |  | numel(output) |  | Repeat elements of an array. Cost: numel(output). |
 | `resize` | 1.0000 |  | numel(output) |  | Return new array with given shape by repeating. Cost: numel(output). |
 | `roll` | 1.0000 |  | numel(output) |  | Roll array elements along axis. Cost: numel(output). |
 | `rollaxis` | 1.0000 |  | numel(output) |  | Roll specified axis backwards. Cost: numel(output). |
 | `select` | 1.0000 |  | numel(input) |  | Return array from list of choices based on conditions. Cost: numel(input). |
-| `split` | 1.0000 |  | numel(output) |  | Split array into sub-arrays. Cost: numel(output). |
+| `split` | 1.0000 |  | numel(input) |  | Split array into sub-arrays. Cost: numel(output). |
 | `stack` | 1.0000 |  | numel(output) |  | Join arrays along new axis. Cost: numel(output). |
 | `take` | 1.0000 |  | numel(output) |  | Take elements from array along axis. Cost: numel(output). |
 | `take_along_axis` | 1.0000 |  | numel(output) |  | Take values from input array by matching 1-D index. Cost: numel(output). |
 | `tile` | 1.0000 |  | numel(output) |  | Repeat array by tiling. Cost: numel(output). |
 | `trim_zeros` | 1.0000 |  | numel(output) |  | Trim leading/trailing zeros from 1-D array. Cost: numel(output). |
-| `unpackbits` | 1.0000 |  | numel(input) |  | Unpack elements of array into bits. Cost: numel(input). |
-| `unstack` | 1.0000 |  | numel(output) |  | Unstack array along axis into tuple of arrays (NumPy 2.x). Cost: numel(output). |
-| `vsplit` | 1.0000 |  | numel(output) |  | Split array into rows. Cost: numel(output). |
+| `unpackbits` | 1.0000 |  | numel(output) |  | Unpack elements of array into bits. Cost: numel(input). |
+| `unstack` | 1.0000 |  | numel(input) |  | Unstack array along axis into tuple of arrays (NumPy 2.x). Cost: numel(output). |
+| `vsplit` | 1.0000 |  | numel(input) |  | Split array into rows. Cost: numel(output). |
 | `vstack` | 1.0000 |  | numel(output) |  | Stack arrays vertically. Cost: numel(output). |
 | `where` | 1.0000 |  | numel(input) |  | Select elements based on condition. Cost: numel(input). |
 
