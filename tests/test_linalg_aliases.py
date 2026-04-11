@@ -92,7 +92,7 @@ class TestLinalgDiagonal:
             from mechestim.linalg import diagonal
 
             diagonal(A)
-            assert budget.flops_used == A.size  # numel(input) scan cost
+            assert budget.flops_used == min(A.shape[0], A.shape[1])  # numel(output) scan cost
 
 
 class TestLinalgMatrixTranspose:
