@@ -203,6 +203,6 @@ class TestBenchmarkPolynomial:
             assert ":" in d["benchmark_size"] or "=" in d["benchmark_size"]
             assert isinstance(d["bench_code"], str)
             assert d["repeats"] == 1
-            assert isinstance(d["perf_instructions_total"], int)
+            assert isinstance(d["perf_instructions_total"], list)
             assert isinstance(d["distribution_alphas"], list)
             assert len(d["distribution_alphas"]) == 3  # 3 distributions

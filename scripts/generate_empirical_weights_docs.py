@@ -327,44 +327,19 @@ _ALIAS_MAP = {
     "nancumprod": "cumprod", "nancumsum": "cumsum",
     "cumulative_prod": "cumprod", "cumulative_sum": "cumsum",
     "ptp": "max", "divmod": "floor_divide", "trapz": "trapezoid",
+    "random.ranf": "random.random_sample",
+    "random.sample": "random.random_sample",
 }
 
 # Exclusion sets with reasons
 _EXCLUSIONS = {
-    "bitwise": (
-        frozenset({"bitwise_and", "bitwise_count", "bitwise_invert",
-                    "bitwise_left_shift", "bitwise_not", "bitwise_or",
-                    "bitwise_right_shift", "bitwise_xor", "invert",
-                    "left_shift", "right_shift", "gcd", "lcm"}),
-        "Integer/bitwise operation — no floating-point instructions retired",
-    ),
-    "complex": (
-        frozenset({"angle", "conj", "conjugate", "imag", "real",
-                    "real_if_close", "iscomplex", "iscomplexobj",
-                    "isreal", "isrealobj", "sort_complex"}),
-        "Complex-number operation — weight depends on dtype (real vs complex)",
-    ),
-    "linalg_delegate": (
-        frozenset({"linalg.cond", "linalg.cross", "linalg.matmul",
-                    "linalg.matrix_norm", "linalg.matrix_power",
-                    "linalg.matrix_rank", "linalg.multi_dot", "linalg.norm",
-                    "linalg.outer", "linalg.tensordot", "linalg.tensorinv",
-                    "linalg.tensorsolve", "linalg.trace", "linalg.vecdot",
-                    "linalg.vector_norm"}),
-        "Delegates to a primary op (e.g., linalg.matmul -> matmul)",
-    ),
-    "random_alias": (
-        frozenset({"random.bytes", "random.random_integers",
-                    "random.ranf", "random.sample"}),
-        "Alias or removed in NumPy 2.x",
+    "random_excluded": (
+        frozenset({"random.bytes", "random.random_integers"}),
+        "Returns bytes or removed in NumPy 2.x",
     ),
     "no_fp_work": (
         frozenset({"einsum_path"}),
         "Planning operation — no floating-point computation",
-    ),
-    "version_dependent": (
-        frozenset({"isnat"}),
-        "datetime64-only operation — no floating-point instructions",
     ),
 }
 

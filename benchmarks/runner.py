@@ -50,6 +50,21 @@ try:
 except ImportError:
     benchmark_window = None  # type: ignore[assignment]
 
+try:
+    from benchmarks._bitwise import benchmark_bitwise
+except ImportError:
+    benchmark_bitwise = None  # type: ignore[assignment]
+
+try:
+    from benchmarks._complex import benchmark_complex
+except ImportError:
+    benchmark_complex = None  # type: ignore[assignment]
+
+try:
+    from benchmarks._linalg_delegates import benchmark_linalg_delegates
+except ImportError:
+    benchmark_linalg_delegates = None  # type: ignore[assignment]
+
 
 ALL_CATEGORIES = sorted(
     {
@@ -63,6 +78,9 @@ ALL_CATEGORIES = sorted(
         "contractions",
         "misc",
         "window",
+        "bitwise",
+        "complex",
+        "linalg_delegates",
     }
 )
 
@@ -82,6 +100,12 @@ if benchmark_misc is not None:
     _BENCHMARK_FUNCS["misc"] = benchmark_misc
 if benchmark_window is not None:
     _BENCHMARK_FUNCS["window"] = benchmark_window
+if benchmark_bitwise is not None:
+    _BENCHMARK_FUNCS["bitwise"] = benchmark_bitwise
+if benchmark_complex is not None:
+    _BENCHMARK_FUNCS["complex"] = benchmark_complex
+if benchmark_linalg_delegates is not None:
+    _BENCHMARK_FUNCS["linalg_delegates"] = benchmark_linalg_delegates
 
 # Approximate op counts per category (for progress bar total)
 _APPROX_OP_COUNTS: dict[str, int] = {
@@ -95,6 +119,9 @@ _APPROX_OP_COUNTS: dict[str, int] = {
     "contractions": 10,
     "misc": 25,
     "window": 5,
+    "bitwise": 14,
+    "complex": 11,
+    "linalg_delegates": 15,
 }
 
 
