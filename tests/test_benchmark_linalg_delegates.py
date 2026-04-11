@@ -6,9 +6,9 @@ import numpy as np
 import pytest
 
 from benchmarks._linalg_delegates import (
-    LINALG_DELEGATE_OPS,
     _FORMULA_STRINGS,
     _NUMPY2_OPS,
+    LINALG_DELEGATE_OPS,
     _analytical_cost,
     benchmark_linalg_delegates,
 )

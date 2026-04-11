@@ -4,13 +4,13 @@ from unittest.mock import patch
 
 import pytest
 
-from benchmarks._perf import PerfResult
 from benchmarks._complex import (
-    COMPLEX_OPS,
     _FORMULA_STRINGS,
     _TIMING_ONLY_OPS,
+    COMPLEX_OPS,
     benchmark_complex,
 )
+from benchmarks._perf import PerfResult
 
 
 class TestOpsLists:
