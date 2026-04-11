@@ -27,12 +27,12 @@ def _symmetric_2d(result):
 
 
 def array(object, dtype=None, **kwargs):
-    """Create an array. Cost: numel(input)."""
+    """Create an array. Cost: numel(output)."""
     budget = require_budget()
-    x_arr = _np.asarray(object)
-    cost = x_arr.size
-    budget.deduct("array", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,))
-    return _np.array(object, dtype=dtype, **kwargs)
+    result = _np.array(object, dtype=dtype, **kwargs)
+    cost = result.size if hasattr(result, 'size') else len(result) if hasattr(result, '__len__') else 1
+    budget.deduct("array", flop_cost=cost, subscripts=None, shapes=(result.shape,))
+    return result
 
 
 attach_docstring(array, _np.array, "free", "0 FLOPs")
@@ -262,12 +262,12 @@ attach_docstring(hstack, _np.hstack, "free", "0 FLOPs")
 
 
 def split(ary, indices_or_sections, axis=0):
-    """Split array. Cost: numel(output)."""
+    """Split array. Cost: numel(input)."""
     budget = require_budget()
-    result = _np.split(ary, indices_or_sections, axis=axis)
-    cost = sum(a.size for a in result)
-    budget.deduct("split", flop_cost=cost, subscripts=None, shapes=())
-    return result
+    ary_arr = _np.asarray(ary)
+    cost = ary_arr.size
+    budget.deduct("split", flop_cost=cost, subscripts=None, shapes=(ary_arr.shape,))
+    return _np.split(ary, indices_or_sections, axis=axis)
 
 
 attach_docstring(split, _np.split, "free", "0 FLOPs")
@@ -282,12 +282,12 @@ attach_docstring(hsplit, _np.hsplit, "free", "0 FLOPs")
 
 
 def vsplit(ary, indices_or_sections):
-    """Split array vertically. Cost: numel(output)."""
+    """Split array vertically. Cost: numel(input)."""
     budget = require_budget()
-    result = _np.vsplit(ary, indices_or_sections)
-    cost = sum(a.size for a in result)
-    budget.deduct("vsplit", flop_cost=cost, subscripts=None, shapes=())
-    return result
+    ary_arr = _np.asarray(ary)
+    cost = ary_arr.size
+    budget.deduct("vsplit", flop_cost=cost, subscripts=None, shapes=(ary_arr.shape,))
+    return _np.vsplit(ary, indices_or_sections)
 
 
 attach_docstring(vsplit, _np.vsplit, "free", "0 FLOPs")
@@ -310,12 +310,12 @@ attach_docstring(expand_dims, _np.expand_dims, "free", "0 FLOPs")
 
 
 def ravel(a, **kwargs):
-    """Flatten array. Cost: numel(input)."""
+    """Flatten array. Cost: numel(output)."""
     budget = require_budget()
-    a_arr = _np.asarray(a)
-    cost = a_arr.size
-    budget.deduct("ravel", flop_cost=cost, subscripts=None, shapes=(a_arr.shape,))
-    return _np.ravel(a, **kwargs)
+    result = _np.ravel(a, **kwargs)
+    cost = result.size if hasattr(result, 'size') else len(result) if hasattr(result, '__len__') else 1
+    budget.deduct("ravel", flop_cost=cost, subscripts=None, shapes=(result.shape,))
+    return result
 
 
 attach_docstring(ravel, _np.ravel, "free", "0 FLOPs")
@@ -416,12 +416,12 @@ attach_docstring(tril, _np.tril, "free", "0 FLOPs")
 
 
 def diagonal(a, offset=0, axis1=0, axis2=1):
-    """Return diagonal. Cost: numel(input)."""
+    """Return diagonal. Cost: numel(output)."""
     budget = require_budget()
-    a_arr = _np.asarray(a)
-    cost = a_arr.size
-    budget.deduct("diagonal", flop_cost=cost, subscripts=None, shapes=(a_arr.shape,))
-    return _np.diagonal(a, offset=offset, axis1=axis1, axis2=axis2)
+    result = _np.diagonal(a, offset=offset, axis1=axis1, axis2=axis2)
+    cost = result.size if hasattr(result, 'size') else len(result) if hasattr(result, '__len__') else 1
+    budget.deduct("diagonal", flop_cost=cost, subscripts=None, shapes=(result.shape,))
+    return result
 
 
 attach_docstring(diagonal, _np.diagonal, "free", "0 FLOPs")
@@ -461,12 +461,12 @@ def astype(x, dtype):
 
 
 def asarray(a, dtype=None, **kwargs):
-    """Convert to array. Cost: numel(input)."""
+    """Convert to array. Cost: numel(output)."""
     budget = require_budget()
-    x_arr = _np.asarray(a, dtype=dtype, **kwargs)
-    cost = x_arr.size
-    budget.deduct("asarray", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,))
-    return x_arr
+    result = _np.asarray(a, dtype=dtype, **kwargs)
+    cost = result.size if hasattr(result, 'size') else len(result) if hasattr(result, '__len__') else 1
+    budget.deduct("asarray", flop_cost=cost, subscripts=None, shapes=(result.shape,))
+    return result
 
 
 attach_docstring(asarray, _np.asarray, "free", "0 FLOPs")
@@ -536,23 +536,23 @@ def argwhere(a, *args, **kwargs):
 attach_docstring(argwhere, _np.argwhere, "free", "0 FLOPs")
 
 
-def array_split(*args, **kwargs):
-    """Split array into sub-arrays. Cost: numel(output)."""
+def array_split(ary, *args, **kwargs):
+    """Split array into sub-arrays. Cost: numel(input)."""
     budget = require_budget()
-    result = _np.array_split(*args, **kwargs)
-    cost = sum(a.size for a in result)
-    budget.deduct("array_split", flop_cost=cost, subscripts=None, shapes=())
-    return result
+    ary_arr = _np.asarray(ary)
+    cost = ary_arr.size
+    budget.deduct("array_split", flop_cost=cost, subscripts=None, shapes=(ary_arr.shape,))
+    return _np.array_split(ary, *args, **kwargs)
 
 
 attach_docstring(array_split, _np.array_split, "free", "0 FLOPs")
 
 
 def asarray_chkfinite(a, *args, **kwargs):
-    """Convert to array checking for NaN/Inf. Cost: numel(input)."""
+    """Convert to array checking for NaN/Inf. Cost: numel(output)."""
     budget = require_budget()
     result = _np.asarray_chkfinite(a, *args, **kwargs)
-    cost = result.size
+    cost = result.size if hasattr(result, 'size') else len(result) if hasattr(result, '__len__') else 1
     budget.deduct("asarray_chkfinite", flop_cost=cost, subscripts=None, shapes=(result.shape,))
     return result
 
@@ -585,7 +585,7 @@ attach_docstring(atleast_3d, _np.atleast_3d, "free", "0 FLOPs")
 
 
 def base_repr(*args, **kwargs):
-    """Return string representation of number. Cost: numel(input)."""
+    """Return string representation of number. Cost: numel(output)."""
     budget = require_budget()
     result = _np.base_repr(*args, **kwargs)
     cost = len(result)
@@ -597,7 +597,7 @@ attach_docstring(base_repr, _np.base_repr, "free", "0 FLOPs")
 
 
 def binary_repr(*args, **kwargs):
-    """Return binary representation of integer. Cost: numel(input)."""
+    """Return binary representation of integer. Cost: numel(output)."""
     budget = require_budget()
     result = _np.binary_repr(*args, **kwargs)
     cost = len(result)
@@ -689,12 +689,12 @@ attach_docstring(common_type, _np.common_type, "free", "0 FLOPs")
 
 
 def compress(condition, a, *args, **kwargs):
-    """Return selected slices along an axis. Cost: numel(input)."""
+    """Return selected slices along an axis. Cost: numel(output)."""
     budget = require_budget()
-    a_arr = _np.asarray(a)
-    cost = a_arr.size
-    budget.deduct("compress", flop_cost=cost, subscripts=None, shapes=(a_arr.shape,))
-    return _np.compress(condition, a, *args, **kwargs)
+    result = _np.compress(condition, a, *args, **kwargs)
+    cost = result.size if hasattr(result, 'size') else len(result) if hasattr(result, '__len__') else 1
+    budget.deduct("compress", flop_cost=cost, subscripts=None, shapes=(result.shape,))
+    return result
 
 
 attach_docstring(compress, _np.compress, "free", "0 FLOPs")
@@ -767,13 +767,13 @@ def diagflat(v, k=0):
 attach_docstring(diagflat, _np.diagflat, "free", "0 FLOPs")
 
 
-def dsplit(*args, **kwargs):
-    """Split array along third axis. Cost: numel(output)."""
+def dsplit(ary, *args, **kwargs):
+    """Split array along third axis. Cost: numel(input)."""
     budget = require_budget()
-    result = _np.dsplit(*args, **kwargs)
-    cost = sum(a.size for a in result)
-    budget.deduct("dsplit", flop_cost=cost, subscripts=None, shapes=())
-    return result
+    ary_arr = _np.asarray(ary)
+    cost = ary_arr.size
+    budget.deduct("dsplit", flop_cost=cost, subscripts=None, shapes=(ary_arr.shape,))
+    return _np.dsplit(ary, *args, **kwargs)
 
 
 attach_docstring(dsplit, _np.dsplit, "free", "0 FLOPs")
@@ -1076,12 +1076,12 @@ attach_docstring(nonzero, _np.nonzero, "free", "0 FLOPs")
 
 
 def packbits(a, *args, **kwargs):
-    """Pack binary-valued array into bits. Cost: numel(input)."""
+    """Pack binary-valued array into bits. Cost: numel(output)."""
     budget = require_budget()
-    a_arr = _np.asarray(a)
-    cost = a_arr.size
-    budget.deduct("packbits", flop_cost=cost, subscripts=None, shapes=(a_arr.shape,))
-    return _np.packbits(a, *args, **kwargs)
+    result = _np.packbits(a, *args, **kwargs)
+    cost = result.size if hasattr(result, 'size') else len(result) if hasattr(result, '__len__') else 1
+    budget.deduct("packbits", flop_cost=cost, subscripts=None, shapes=(result.shape,))
+    return result
 
 
 attach_docstring(packbits, _np.packbits, "free", "0 FLOPs")
@@ -1336,12 +1336,12 @@ attach_docstring(typename, _np.typename, "free", "0 FLOPs")
 
 
 def unpackbits(a, *args, **kwargs):
-    """Unpack elements of uint8 array into binary-valued bit array. Cost: numel(input)."""
+    """Unpack elements of uint8 array into binary-valued bit array. Cost: numel(output)."""
     budget = require_budget()
-    a_arr = _np.asarray(a)
-    cost = a_arr.size
-    budget.deduct("unpackbits", flop_cost=cost, subscripts=None, shapes=(a_arr.shape,))
-    return _np.unpackbits(a, *args, **kwargs)
+    result = _np.unpackbits(a, *args, **kwargs)
+    cost = result.size if hasattr(result, 'size') else len(result) if hasattr(result, '__len__') else 1
+    budget.deduct("unpackbits", flop_cost=cost, subscripts=None, shapes=(result.shape,))
+    return result
 
 
 attach_docstring(unpackbits, _np.unpackbits, "free", "0 FLOPs")
@@ -1355,13 +1355,13 @@ def unravel_index(*args, **kwargs):
 attach_docstring(unravel_index, _np.unravel_index, "free", "0 FLOPs")
 
 
-def unstack(*args, **kwargs):
-    """Split array into sequence of arrays along an axis. Cost: numel(output)."""
+def unstack(x, *args, **kwargs):
+    """Split array into sequence of arrays along an axis. Cost: numel(input)."""
     budget = require_budget()
-    result = _np.unstack(*args, **kwargs)
-    cost = sum(a.size for a in result)
-    budget.deduct("unstack", flop_cost=cost, subscripts=None, shapes=())
-    return result
+    x_arr = _np.asarray(x)
+    cost = x_arr.size
+    budget.deduct("unstack", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,))
+    return _np.unstack(x, *args, **kwargs)
 
 
 attach_docstring(unstack, _np.unstack, "free", "0 FLOPs")
