@@ -286,23 +286,23 @@ class TestPathInfoDebugFields:
         assert "contract" in table
         assert "(0," in table or "(1," in table  # path tuple shown
 
-    def test_format_table_shows_unique_dense_when_symmetry_present(self):
-        # 'ab,cd->abcd' with same X has block S2 → unique/dense column
+    def test_format_table_shows_unique_total_when_symmetry_present(self):
+        # 'ab,cd->abcd' with same X has block S2 → unique/total column
         X = numpy.ones((4, 4))
         _, info = einsum_path("ab,cd->abcd", X, X)
         table = info.format_table()
-        assert "unique/dense" in table
-        # Block S2 unique = C(17, 2) = 136 for n=4 (n^2 = 16, k = 2)
-        # dense = 4^4 = 256
-        assert "136/256" in table
+        assert "unique/total" in table
+        # Block S2: Burnside on (ac)(bd) gives (n^4 + n^2)/2 = (256+16)/2 = 136
+        # Output has 256 total elements
+        assert "V:136/256" in table
 
-    def test_format_table_omits_unique_dense_when_no_symmetry(self):
+    def test_format_table_omits_unique_total_when_no_symmetry(self):
         A = numpy.ones((5, 5))
         B = numpy.ones((5, 5))
         C = numpy.ones((5, 5))
         _, info = einsum_path("ij,jk,kl->il", A, B, C)
         table = info.format_table()
-        assert "unique/dense" not in table
+        assert "unique/total" not in table
 
     def test_format_table_verbose_shows_subset_and_cumulative(self):
         X = numpy.ones((4, 4))

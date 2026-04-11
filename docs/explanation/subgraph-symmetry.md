@@ -328,11 +328,32 @@ two indices, which is exactly what we expect.
 
 ### V-side and W-side
 
-V-side groups are symmetries of the output tensor (same as before). W-side
-groups are symmetries among the contracted (summed) labels — they describe
-inner-summation redundancy. When the Φ (symmetry-preserving) cost model
-activates for a pairwise step, it exploits symmetry across all indices
-simultaneously, which subsumes both V-side and W-side contributions.
+V-side groups are symmetries of the output tensor — they reduce the number of
+unique output elements that need to be computed. W-side groups are symmetries
+among the contracted (summed) labels — they reduce the number of unique
+summation terms. Both contribute multiplicatively to the cost reduction:
+
+```
+cost = dense_cost × (unique_output / total_output) × (unique_inner / total_inner)
+```
+
+opt_einsum decomposes contractions into pairwise steps and finds the
+optimal path by accumulating costs. At each pairwise step, if the oracle
+detects a W-symmetry and **all** the W-group's labels are present as
+contracted indices in that specific step, the inner savings are applied.
+If any of the W-group's labels were contracted at an earlier step (and
+are no longer present), the inner reduction is skipped.
+
+For example, in `einsum('abij,abkl->ijkl', T, T)` where T is symmetric
+in `(a,b)`, both `a` and `b` are contracted in a single step → the inner
+reduction applies. In contrast, for a multi-step path where `a` and `b`
+are contracted in separate steps, each step only sees one of those
+labels — the inner reduction is correctly skipped.
+
+This behaviour is controlled by `me.configure(use_inner_symmetry=True/False)`.
+In the contraction path table, `[W✓: ...]` indicates the inner reduction was
+applied, while `[W: ...]` indicates it was detected but not applied at that
+step.
 
 The oracle returns a `SubsetSymmetry` dataclass with `.output` (V-side) and
 `.inner` (W-side) fields.
