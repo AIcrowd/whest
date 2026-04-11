@@ -363,7 +363,7 @@ class TestFixedSymmetricFlopCount:
 
         The reduction comes solely from output symmetry: we compute only
         unique (j,k) pairs.  unique_output / total_output = C(11,2)/100
-        = 55/100 = 0.55, so cost = 10000 * 55 // 100 = 5500 (FMA_COST=1).
+        = 55/100 = 0.55, so cost = 20000 * 55 // 100 = 11000.
         """
         from mechestim._opt_einsum._helpers import flop_count
 
@@ -378,12 +378,12 @@ class TestFixedSymmetricFlopCount:
         )
         dense = flop_count(frozenset("aijk"), True, 2, size_dict)
         # unique outputs = 10 * C(11,2) = 550, total = 1000
-        # cost = 10000 * 550 // 1000 = 5500
+        # cost = 10000 * 550 // 1000 = 5500 (FMA=1)
         assert cost == 5500
 
     def test_hand_counted_s3_contraction(self):
         """Verify: 550 unique outputs (10 x C(11,2)), each a length-10 dot
-        product with 1 FMA each => 550 x 10 x 1 = 5500 (FMA_COST=1)."""
+        product with 1 FMA op each => 550 x 10 x 1 = 5500."""
         size_dict = {"i": 10, "j": 10, "k": 10, "a": 10}
         cost = symmetric_flop_count(
             frozenset("aijk"),
@@ -410,13 +410,13 @@ class TestFixedSymmetricFlopCount:
         ) / 6.0
         A = rng.standard_normal((n, n))
 
-        # Count FMA ops for unique (j,k) pairs (FMA_COST=1: one FMA per element)
+        # Count FMA ops for unique (j,k) pairs (FMA=1 op)
         counted_ops = 0
         for a in range(n):
             for j in range(n):
                 for k in range(j, n):  # unique (j,k) only
                     for i in range(n):
-                        counted_ops += 1  # one FMA (multiply + add fused)
+                        counted_ops += 1  # one FMA (fused multiply-add)
 
         size_dict = {"i": n, "j": n, "k": n, "a": n}
         formula_cost = symmetric_flop_count(
@@ -674,7 +674,7 @@ class TestInnerSymmetryFlops:
             output_group=_s_group("a", "b"),
             output_indices=frozenset("ab"),
         )
-        # dense = 144 (FMA_COST=1), output ratio = 6/9 -> 96
+        # dense = 288, output ratio = 6/9 -> 192
         assert cost == 96
 
     def test_inner_sym_reduces_cost_when_labels_match(self):
@@ -725,10 +725,10 @@ class TestInnerSymmetryFlops:
     def test_inner_sym_exact_value(self):
         """Verify exact multiplicative reduction: output_ratio * inner_ratio."""
         # size: a=3, b=3, i=4, j=4
-        # dense = 3*3*4*4 * op_factor(inner=True, 2 terms) = 144 * 1 = 144 (FMA_COST=1)
+        # dense = 3*3*4*4 * op_factor(inner=True, 2 terms) = 144 * 2 = 288
         # output unique: C(3+1,2) = 6 out of 9 -> ratio 6/9
         # inner unique: C(4+1,2) = 10 out of 16 -> ratio 10/16
-        # reduced = 144 * 6/9 * 10/16 = 144 * 2/3 * 5/8 = 60
+        # reduced = 288 * 6/9 * 10/16 = 288 * 2/3 * 5/8 = 120
         cost = symmetric_flop_count(
             "abij",
             True,

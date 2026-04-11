@@ -39,7 +39,7 @@ def test_budget_tracking_accuracy():
     B = me.array(numpy.random.randn(20, 30))
 
     with me.BudgetContext(flop_budget=10**8) as budget:
-        me.einsum("ij,jk->ik", A, B)  # 10 * 20 * 30 = 6000 (FMA_COST=1)
+        me.einsum("ij,jk->ik", A, B)  # 10 * 20 * 30 = 6000 (FMA=1)
         me.exp(me.ones((100,)))  # 100
         me.sum(me.ones((50,)))  # 50
         assert budget.flops_used == 6000 + 100 + 50
@@ -50,11 +50,11 @@ def test_flop_query_matches_execution():
     query_cost = me.flops.einsum_cost("ij,jk->ik", shapes=[(10, 20), (20, 30)])
 
     with me.BudgetContext(flop_budget=10**8) as budget:
-        A = me.array(numpy.random.randn(10, 20))
-        B = me.array(numpy.random.randn(20, 30))
+        A = me.array(numpy.random.randn(10, 20))  # 200 (array creation)
+        B = me.array(numpy.random.randn(20, 30))  # 600 (array creation)
         me.einsum("ij,jk->ik", A, B)
 
-    assert budget.flops_used == query_cost
+    assert budget.flops_used == query_cost + 200 + 600
 
 
 def test_mixed_free_and_counted():
