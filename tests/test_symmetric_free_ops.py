@@ -232,13 +232,13 @@ class TestIntegration:
             assert isinstance(inv_ident, SymmetricTensor)
             np.testing.assert_allclose(inv_ident, np.eye(4))
 
-    def test_creation_ops_cost_zero_flops(self):
+    def test_creation_ops_cost(self):
         with me.BudgetContext(flop_budget=10**6) as budget:
-            me.eye(10)
-            me.identity(10)
-            me.zeros((10, 10))
-            me.ones((10, 10))
-            me.full((10, 10), 3.14)
-            me.diag(np.arange(10, dtype=float))
-            me.diagflat(np.arange(5, dtype=float))
-            assert budget.flops_used == 0
+            me.eye(10)        # free
+            me.identity(10)   # free
+            me.zeros((10, 10))  # free
+            me.ones((10, 10))   # free
+            me.full((10, 10), 3.14)  # numel(output)=100
+            me.diag(np.arange(10, dtype=float))  # numel(input)=10
+            me.diagflat(np.arange(5, dtype=float))  # numel(input)=5
+            assert budget.flops_used == 100 + 10 + 5

@@ -15,10 +15,10 @@ class TestGramMatrixInduction:
     def test_plain_X_induces_s2_on_jk(self):
         n = 10
         X = np.ones((n, n))
-        # dense = n * n * n = 1000 (FMA_COST=1)
+        # dense = n * n * n = 1000 (FMA=1)
         # symmetric unique = n * C(n+1,2) = 10 * 55 = 550
         # total = n * n = 100
-        # cost = 1000 * 550 / 1000 = 550
+        # cost = 1000 * 55/100 = 550
         _, info_eq = me.einsum_path("ij,ik->jk", X, X)
         assert info_eq.optimized_cost == 550
 
@@ -27,7 +27,7 @@ class TestGramMatrixInduction:
         X = np.ones((n, n))
         Y = np.ones((n, n))
         _, info = me.einsum_path("ij,ik->jk", X, Y)
-        # Different operands → no induction → full dense
+        # Different operands → no induction → full dense (FMA=1)
         assert info.optimized_cost == 1000
 
 
@@ -51,7 +51,7 @@ class TestMatMulChainNoInducedSymmetry:
         n = 10
         X = np.ones((n, n))
         _, info = me.einsum_path("ij,jk->ik", X, X)
-        # dense = n^3 = 1000 (FMA_COST=1), no symmetry detected
+        # dense = n^3 = 1000 (FMA=1), no symmetry detected
         assert info.optimized_cost == 1000
 
 
@@ -62,15 +62,9 @@ class TestTripleProductInduction:
         n = 10
         X = np.ones((n, n))
         _, info = me.einsum_path("ij,ik,il->jkl", X, X, X)
-        # The path optimizer will pick a pairwise ordering.
-        # Actual path chosen: (ik,ij->ikj) then (ikj,il->jkl)
-        # Step 0: ik,ij→ikj. dense = n^4 = 10000 (FMA_COST=1).
-        #   S2{j,k} induced from the equal pair (0,1).
-        #   → step 0 cost = 10000 * 55/100 = 550 (num_terms=2, inner, but step cost halved).
-        # Step 1: ikj,il→jkl. dense = n^4 = 10000 (FMA_COST=1).
-        #   Propagated S2{j,k} from step 0. Induced S2{j,l}, S2{k,l}.
-        #   All three merge to S3{j,k,l}. unique = C(12,3) = 220, total = 1000.
-        #   → step 1 cost = 10000 * 220/1000 = 2200.
+        # Path: (ik,ij->ikj) then (ikj,il->jkl), FMA=1.
+        # Step 0: dense = n^3 = 1000, S2 savings: 1000 * 55/100 = 550.
+        # Step 1: dense = n^4 = 10000, S3 savings: 10000 * 220/1000 = 2200.
         # Total: 550 + 2200 = 2750
         assert info.optimized_cost == 2750
 
@@ -82,7 +76,7 @@ class TestBlockOuterProductInduction:
         n = 10
         X = np.ones((n, n, n))
         _, info = me.einsum_path("ijk,ilm->jklm", X, X)
-        # Single step: ijk,ilm→jklm. dense = n^5 = 100000 (FMA_COST=1).
+        # Single step: ijk,ilm→jklm. dense = n^5 = 100000 (FMA=1).
         # Direct evaluation: output has G(2){j,k,l,m} from same-object
         # detection (block S2 on {j,k} and {l,m}).
         # unique_output / total_output = 5050 / 10000 → cost = 50500.
@@ -102,9 +96,7 @@ class TestSymmetricXMatMul:
         X_data = np.ones((n, n))
         X = me.as_symmetric(X_data, symmetric_axes=(0, 1))
         _, info = me.einsum_path("ij,jk->ik", X, X)
-        # dense = n^3 = 1000 (FMA_COST=1)
+        # dense = n^3 = 1000 (FMA=1)
         # Induced S2{i,k} on output → unique = C(11,2) = 55, total = 100
         # cost = 1000 * 55/100 = 550
-        # (The per-op S2{i,j} on X0 and S2{j,k} on X1 don't contribute after
-        # restriction — j is contracted. Only the induced S2{i,k} remains.)
         assert info.optimized_cost == 550

@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import numpy as _np
 
-from mechestim._cost_model import FMA_COST
 from mechestim._docstrings import attach_docstring
 from mechestim._validation import require_budget
 
@@ -14,8 +13,8 @@ from mechestim._validation import require_budget
 
 
 def polyval_cost(deg: int, m: int) -> int:
-    """Cost for polyval: Horner's method = m * deg (FMA = 1 op) FLOPs."""
-    return max(FMA_COST * m * deg, 1)
+    """Cost for polyval: Horner's method = m * deg FLOPs (FMA=1 op)."""
+    return max(m * deg, 1)
 
 
 def polyadd_cost(n1: int, n2: int) -> int:
@@ -49,8 +48,8 @@ def polydiv_cost(n1: int, n2: int) -> int:
 
 
 def polyfit_cost(m: int, deg: int) -> int:
-    """Cost for polyfit: m * (deg+1)^2 (FMA = 1 op) FLOPs."""
-    return max(FMA_COST * m * (deg + 1) ** 2, 1)
+    """Cost for polyfit: 2 * m * (deg+1)^2 FLOPs."""
+    return max(2 * m * (deg + 1) ** 2, 1)
 
 
 def poly_cost(n: int) -> int:
@@ -59,8 +58,8 @@ def poly_cost(n: int) -> int:
 
 
 def roots_cost(n: int) -> int:
-    """Cost for roots: $10n^3$ FLOPs (companion matrix eigendecomposition)."""
-    return max(10 * n**3, 1)
+    """Cost for roots: $n^3$ FLOPs (companion matrix eigendecomposition, simplified)."""
+    return max(n**3, 1)
 
 
 # ---------------------------------------------------------------------------
@@ -189,7 +188,7 @@ def polyfit(x, y, deg, **kwargs):
     return _np.polyfit(x, y, deg, **kwargs)
 
 
-attach_docstring(polyfit, _np.polyfit, "counted_custom", "m * (deg+1)^2 FLOPs (FMA=1)")
+attach_docstring(polyfit, _np.polyfit, "counted_custom", "2 * m * (deg+1)^2 FLOPs")
 
 
 def poly(seq_of_zeros):
@@ -220,7 +219,7 @@ def roots(p):
 
 
 attach_docstring(
-    roots, _np.roots, "counted_custom", "10 * n^3 FLOPs (companion matrix eig)"
+    roots, _np.roots, "counted_custom", "n^3 FLOPs (companion matrix eig, simplified)"
 )
 
 import sys as _sys  # noqa: E402

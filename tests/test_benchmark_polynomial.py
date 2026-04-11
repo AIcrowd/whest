@@ -27,10 +27,10 @@ class TestAnalyticalCost:
         assert _analytical_cost("polyval", 1000, 5) == 1000 * 5
 
     def test_polyfit(self):
-        assert _analytical_cost("polyfit", 1000, 5) == 1000 * 6**2
+        assert _analytical_cost("polyfit", 1000, 5) == 2 * 1000 * 6**2
 
     def test_roots(self):
-        assert _analytical_cost("roots", 100, 10) == 10 * 10**3
+        assert _analytical_cost("roots", 100, 10) == 10**3
 
     def test_polymul(self):
         assert _analytical_cost("polymul", 100, 10) == 11**2
@@ -133,7 +133,7 @@ class TestBenchmarkPolynomial:
             )
 
         # polyval: total_flops = 500*4 = 2000
-        # analytical = 1000 * 5 = 5000 (FMA_COST=1)
+        # analytical = 1000 * 5 = 5000 (FMA=1)
         # normalized = 2000 / 5000 = 0.4
         expected = 2000.0 / _analytical_cost("polyval", n, degree)
         assert result["polyval"] == pytest.approx(expected)

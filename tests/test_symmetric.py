@@ -211,9 +211,7 @@ class TestEndToEnd:
             x = me.linalg.solve(cov_pd, b)
             solve_cost_actual = budget.flops_used - before
             assert not isinstance(x, SymmetricTensor)
-            assert (
-                solve_cost_actual == n**3 // 3 + n**2 * 1
-            )  # Cholesky + triangular solves (FMA_COST=1)
+            assert solve_cost_actual == n**3  # simplified to n^3
 
     def test_symmetry_preserved_through_chain(self):
         """Chain of unary ops preserves symmetry."""

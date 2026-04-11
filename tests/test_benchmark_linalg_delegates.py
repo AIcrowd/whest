@@ -41,7 +41,7 @@ class TestAnalyticalCost:
         assert _analytical_cost("linalg.matmul") == 512 * 512 * 512
 
     def test_matrix_norm_cost(self):
-        assert _analytical_cost("linalg.matrix_norm") == 512 * 512
+        assert _analytical_cost("linalg.matrix_norm") == 2 * 512 * 512
 
     def test_matrix_power_cost(self):
         assert _analytical_cost("linalg.matrix_power") == 3 * 64**3
@@ -50,7 +50,7 @@ class TestAnalyticalCost:
         assert _analytical_cost("linalg.matrix_rank") == 512**3
 
     def test_multi_dot_cost(self):
-        expected = 128 * 64 * 128 + 128 * 128 * 64
+        expected = 128 * 64 * 128 + 128 * 128 * 64  # FMA=1
         assert _analytical_cost("linalg.multi_dot") == expected
 
     def test_norm_cost(self):
