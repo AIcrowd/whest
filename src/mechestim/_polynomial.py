@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import numpy as _np
 
+from mechestim._cost_model import FMA_COST
 from mechestim._docstrings import attach_docstring
 from mechestim._validation import require_budget
 
@@ -13,8 +14,8 @@ from mechestim._validation import require_budget
 
 
 def polyval_cost(deg: int, m: int) -> int:
-    """Cost for polyval: Horner's method = 2 * m * deg FLOPs."""
-    return max(2 * m * deg, 1)
+    """Cost for polyval: Horner's method = m * deg (FMA = 1 op) FLOPs."""
+    return max(FMA_COST * m * deg, 1)
 
 
 def polyadd_cost(n1: int, n2: int) -> int:
@@ -48,8 +49,8 @@ def polydiv_cost(n1: int, n2: int) -> int:
 
 
 def polyfit_cost(m: int, deg: int) -> int:
-    """Cost for polyfit: 2 * m * (deg+1)^2 FLOPs."""
-    return max(2 * m * (deg + 1) ** 2, 1)
+    """Cost for polyfit: m * (deg+1)^2 (FMA = 1 op) FLOPs."""
+    return max(FMA_COST * m * (deg + 1) ** 2, 1)
 
 
 def poly_cost(n: int) -> int:
@@ -80,7 +81,7 @@ def polyval(p, x):
 
 
 attach_docstring(
-    polyval, _np.polyval, "counted_custom", "2 * m * deg FLOPs (Horner's method)"
+    polyval, _np.polyval, "counted_custom", "m * deg FLOPs (Horner's method, FMA=1)"
 )
 
 
@@ -188,7 +189,7 @@ def polyfit(x, y, deg, **kwargs):
     return _np.polyfit(x, y, deg, **kwargs)
 
 
-attach_docstring(polyfit, _np.polyfit, "counted_custom", "2 * m * (deg+1)^2 FLOPs")
+attach_docstring(polyfit, _np.polyfit, "counted_custom", "m * (deg+1)^2 FLOPs (FMA=1)")
 
 
 def poly(seq_of_zeros):

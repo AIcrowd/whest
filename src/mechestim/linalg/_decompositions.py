@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import numpy as _np
 
+from mechestim._cost_model import FMA_COST
 from mechestim._docstrings import attach_docstring
 from mechestim._validation import require_budget
 
@@ -63,7 +64,7 @@ def qr_cost(m: int, n: int) -> int:
     Returns
     -------
     int
-        Estimated FLOP count: $2mn^2 - (2/3)n^3$ (for $m \geq n$).
+        Estimated FLOP count: $mn^2 - n^3/3$ (FMA = 1 op) (for $m \geq n$).
 
     Notes
     -----
@@ -72,7 +73,7 @@ def qr_cost(m: int, n: int) -> int:
     """
     if m < n:
         m, n = n, m
-    return max(2 * m * n**2 - (2 * n**3) // 3, 1)
+    return max(FMA_COST * (m * n**2 - n**3 // 3), 1)
 
 
 def qr(a, mode="reduced"):
@@ -88,7 +89,7 @@ def qr(a, mode="reduced"):
     return _np.linalg.qr(a, mode=mode)
 
 
-attach_docstring(qr, _np.linalg.qr, "linalg", r"$2mn^2 - 2n^3/3$ FLOPs (Householder)")
+attach_docstring(qr, _np.linalg.qr, "linalg", r"$mn^2 - n^3/3$ FLOPs (Householder, FMA=1)")
 
 
 def eig_cost(n: int) -> int:

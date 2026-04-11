@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import numpy as _np
 
+from mechestim._cost_model import FMA_COST
 from mechestim._docstrings import attach_docstring
 from mechestim._symmetric import SymmetricTensor, as_symmetric
 from mechestim._validation import require_budget
@@ -29,13 +30,13 @@ def solve_cost(n: int, nrhs: int = 1, symmetric: bool = False) -> int:
 
     Notes
     -----
-    Uses $n^3/3 + 2n^2 \cdot n_{\text{rhs}}$ for Cholesky (symmetric; two triangular
-    solves), or $2n^3/3 + 2n^2 \cdot n_{\text{rhs}}$ for LU (general; two triangular
-    solves). Source: Golub & Van Loan, *Matrix Computations*, 4th ed.
+    Uses $n^3/3 + n^2 \cdot n_{\text{rhs}}$ (FMA = 1 op) for Cholesky (symmetric),
+    or $n^3/3 + n^2 \cdot n_{\text{rhs}}$ (FMA = 1 op) for LU (general).
+    Source: Golub & Van Loan, *Matrix Computations*, 4th ed.
     """
     if symmetric:
-        return max(n**3 // 3 + 2 * n**2 * nrhs, 1)
-    return max(2 * n**3 // 3 + 2 * n**2 * nrhs, 1)
+        return max(n**3 // 3 + FMA_COST * n**2 * nrhs, 1)
+    return max(FMA_COST * (n**3 // 3 + n**2 * nrhs), 1)
 
 
 def solve(a, b):
@@ -59,7 +60,7 @@ attach_docstring(
     solve,
     _np.linalg.solve,
     "linalg",
-    r"$2n^3/3 + 2n^2 \cdot n_{\text{rhs}}$ FLOPs (LU), or $n^3/3 + 2n^2 \cdot n_{\text{rhs}}$ FLOPs (Cholesky) for SymmetricTensor input",
+    r"$n^3/3 + n^2 \cdot n_{\text{rhs}}$ FLOPs (LU, FMA=1), or $n^3/3 + n^2 \cdot n_{\text{rhs}}$ FLOPs (Cholesky, FMA=1) for SymmetricTensor input",
 )
 
 
