@@ -118,7 +118,6 @@ All weights are normalized against element-wise addition (`np.add`):
 | `arctanh` | 16.0000 | high | numel(output) | [\_pointwise.py:273](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L273) | Element-wise inverse hyperbolic tangent. |
 | `sinc` | 16.0000 | low | numel(output) | [\_pointwise.py:364](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L364) | Normalized sinc function element-wise. |
 | `i0` | 16.0000 | low | numel(output) | [\_pointwise.py:317](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L317) | Modified Bessel function of order 0, element-wise. |
-| `clip` | 1.0000 | medium | numel(output) | [\_pointwise.py:473](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L473) | Clip array to [a_min, a_max] element-wise. |
 | `abs` | 1.0000 | low | numel(output) | [\_pointwise.py:249](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L249) | Element-wise absolute value; alias for absolute. |
 | `negative` | 1.0000 | low | numel(output) | [\_pointwise.py:250](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L250) | Element-wise negation. |
 | `positive` | 1.0000 | low | numel(output) | [\_pointwise.py:330](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L330) | Element-wise unary plus (copy with sign preserved). |
@@ -143,8 +142,9 @@ All weights are normalized against element-wise addition (`np.add`):
 | `nan_to_num` | 1.0000 | low | numel(output) | [\_pointwise.py:329](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L329) | Replace NaN/inf with finite numbers element-wise. |
 | `isneginf` | 1.0000 | low | numel(output) | [\_pointwise.py:323](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L323) | Test for negative infinity element-wise. |
 | `isposinf` | 1.0000 | low | numel(output) | [\_pointwise.py:324](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L324) | Test for positive infinity element-wise. |
+| `isclose` | 1.0000 | medium | numel(output) | [\_pointwise.py:388](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L388) | Element-wise approximate equality test. |
 
-### Pointwise Binary (33 operations)
+### Pointwise Binary (32 operations)
 
 | Op | Weight | Confidence | Formula | Impl | Notes |
 |:---|-------:|:-----------|:--------|:-----|:------|
@@ -179,7 +179,6 @@ All weights are normalized against element-wise addition (`np.add`):
 | `copysign` | 1.0000 | low | numel(output) | [\_pointwise.py:427](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L427) | Copy sign of x2 to magnitude of x1 element-wise. |
 | `nextafter` | 1.0000 | low | numel(output) | [\_pointwise.py:449](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L449) | Return next float after x1 toward x2 element-wise. |
 | `ldexp` | 1.0000 | low | numel(output) | [\_pointwise.py:440](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L440) | Return x1 * 2**x2 element-wise. |
-| `isclose` | 1.0000 | medium | numel(output) | [\_pointwise.py:388](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L388) | Element-wise approximate equality test. |
 | `heaviside` | 1.0000 | low | numel(output) | [\_pointwise.py:437](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L437) | Heaviside step function element-wise. |
 
 ### Reductions (35 operations)
@@ -379,13 +378,14 @@ All weights are normalized against element-wise addition (`np.add`):
 | `random.random` | 1.0000 | high | numel(output) | [\_\_init\_\_.py:175](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L175) | Sampling; cost = numel(output). |
 | `random.random_sample` | 1.0000 | high | numel(output) | [\_\_init\_\_.py:176](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L176) | Sampling; cost = numel(output). |
 
-### Misc (96 operations)
+### Misc (97 operations)
 
 | Op | Weight | Confidence | Formula | Impl | Notes |
 |:---|-------:|:-----------|:--------|:-----|:------|
 | `allclose` | 1.0000 | medium | n | [\_counting\_ops.py:45](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L45) | Element-wise tolerance check; cost = numel(a). |
 | `array_equal` | 1.0000 | low | n | [\_counting\_ops.py:60](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L60) | Element-wise equality; cost = numel(a). |
 | `array_equiv` | 1.0000 | low | n | [\_counting\_ops.py:82](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L82) | Element-wise equivalence; cost = numel(a). |
+| `clip` | 1.0000 | medium | numel(output) | [\_pointwise.py:473](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L473) | Clip array to [a_min, a_max] element-wise. |
 | `diff` | 1.0000 | medium | n | [\_pointwise.py:759](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L759) | n-th discrete difference along axis. |
 | `ediff1d` | 1.0000 | medium | n | [\_pointwise.py:789](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L789) | Differences between consecutive elements. |
 | `gradient` | 1.0000 | medium | n | [\_pointwise.py:775](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L775) | Gradient using central differences. |
@@ -530,7 +530,7 @@ All weights are normalized against element-wise addition (`np.add`):
 | Category | Count | Avg Weight | Min | Max |
 |:---------|------:|-----------:|----:|----:|
 | Pointwise Unary | 47 | 8.02 | 1.0000 | 16.0000 |
-| Pointwise Binary | 33 | 5.55 | 1.0000 | 16.0000 |
+| Pointwise Binary | 32 | 5.69 | 1.0000 | 16.0000 |
 | Reductions | 35 | 3.69 | 1.0000 | 16.0000 |
 | Sorting | 17 | 1.00 | 1.0000 | 1.0000 |
 | FFT | 14 | 1.00 | 1.0000 | 1.0000 |
@@ -539,7 +539,7 @@ All weights are normalized against element-wise addition (`np.add`):
 | Contractions | 9 | 1.00 | 1.0000 | 1.0000 |
 | Polynomial | 10 | 2.50 | 1.0000 | 16.0000 |
 | Random | 43 | 13.21 | 1.0000 | 16.0000 |
-| Misc | 96 | 1.00 | 1.0000 | 1.0000 |
+| Misc | 97 | 1.00 | 1.0000 | 1.0000 |
 | Window | 5 | 13.00 | 1.0000 | 16.0000 |
 | Bitwise | 14 | 3.14 | 1.0000 | 16.0000 |
 | Complex | 11 | 2.36 | 1.0000 | 16.0000 |
