@@ -62,7 +62,11 @@ cost, not a replacement formula.
 |----|:---|:---|:---|
 | `sort_complex` | `numel(output)` | `n*ceil(log2(n))` | It's a sort |
 | `argpartition` | `n` | `n * len(k)` | Scales with kth count |
-| `svd_cost(m,n,k)` | `m*n*k` | `4*m*n*k` | Reviewer's explicit request |
+
+### SVD — NO formula change, weight=4 handles correction:
+`svd_cost(m, n, k)` stays as `m*n*k` (where k defaults to `min(m,n)`
+when not provided). The reviewer's `4*m*n*k` is the total cost after
+applying weight=4: `m*n*k * 4 = 4*m*n*k`.
 
 **Files:** `src/mechestim/_flops.py` (svd_cost, einsum op_factor),
 `src/mechestim/_pointwise.py` (dot, matmul, tensordot, kron),
@@ -130,8 +134,9 @@ metadata queries, `fft.fftfreq`, `fft.rfftfreq`, `fft.fftshift`,
 
 ## Workstream E: SVD Cost Formula Update
 
-Merged into Workstream B — `svd_cost(m, n, k)` changes from `m*n*k` to
-`4*m*n*k` as part of the formula changes.
+No change needed. The current formula `svd_cost(m, n, k) = m*n*k` is
+correct. The reviewer's weight=4 applied on top gives the desired
+`4*m*n*k` total cost.
 
 ## Execution Plan
 
