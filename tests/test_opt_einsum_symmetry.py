@@ -378,12 +378,12 @@ class TestFixedSymmetricFlopCount:
         )
         dense = flop_count(frozenset("aijk"), True, 2, size_dict)
         # unique outputs = 10 * C(11,2) = 550, total = 1000
-        # cost = 20000 * 550 // 1000 = 11000
-        assert cost == 11000
+        # cost = 10000 * 550 // 1000 = 5500 (FMA=1)
+        assert cost == 5500
 
     def test_hand_counted_s3_contraction(self):
         """Verify: 550 unique outputs (10 x C(11,2)), each a length-10 dot
-        product with 2 ops each => 550 x 10 x 2 = 11000."""
+        product with 1 FMA op each => 550 x 10 x 1 = 5500."""
         size_dict = {"i": 10, "j": 10, "k": 10, "a": 10}
         cost = symmetric_flop_count(
             frozenset("aijk"),
@@ -393,7 +393,7 @@ class TestFixedSymmetricFlopCount:
             output_indices=frozenset("ajk"),
             output_group=_s_group("j", "k"),
         )
-        assert cost == 11000
+        assert cost == 5500
 
     def test_brute_force_flop_count(self):
         """Verify formula against explicit operation counting for small n."""
@@ -410,13 +410,13 @@ class TestFixedSymmetricFlopCount:
         ) / 6.0
         A = rng.standard_normal((n, n))
 
-        # Count actual multiply-adds for unique (j,k) pairs
+        # Count FMA ops for unique (j,k) pairs (FMA=1 op)
         counted_ops = 0
         for a in range(n):
             for j in range(n):
                 for k in range(j, n):  # unique (j,k) only
                     for i in range(n):
-                        counted_ops += 2  # one multiply + one add
+                        counted_ops += 1  # one FMA (fused multiply-add)
 
         size_dict = {"i": n, "j": n, "k": n, "a": n}
         formula_cost = symmetric_flop_count(
@@ -675,7 +675,7 @@ class TestInnerSymmetryFlops:
             output_indices=frozenset("ab"),
         )
         # dense = 288, output ratio = 6/9 -> 192
-        assert cost == 192
+        assert cost == 96
 
     def test_inner_sym_reduces_cost_when_labels_match(self):
         """Inner symmetry applies when all group labels are in inner_indices."""
@@ -739,7 +739,7 @@ class TestInnerSymmetryFlops:
             inner_group=_s_group("i", "j"),
             inner_indices=frozenset("ij"),
         )
-        assert cost == 120
+        assert cost == 60
 
     def test_inner_sym_disabled_via_param(self):
         """With use_inner_symmetry=False, inner reduction is skipped."""

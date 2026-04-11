@@ -57,21 +57,18 @@ def det_cost(n: int, symmetric: bool = False) -> int:
     n : int
         Matrix dimension.
     symmetric : bool, optional
-        If True, assume symmetric input. Default is False.
+        Ignored (kept for API compatibility). Default is False.
 
     Returns
     -------
     int
-        Estimated FLOP count.
+        Estimated FLOP count: $n^3$.
 
     Notes
     -----
-    Uses $n^3/3$ for symmetric input (Cholesky), or $2n^3/3$ for general
-    input (LU factorization).
+    Simplified cubic cost model for determinant computation.
     """
-    if symmetric:
-        return max(n**3 // 3, 1)
-    return max(2 * n**3 // 3, 1)
+    return max(n**3, 1)
 
 
 def det(a):
@@ -88,12 +85,7 @@ def det(a):
     return _np.linalg.det(a)
 
 
-attach_docstring(
-    det,
-    _np.linalg.det,
-    "linalg",
-    r"$n^3$ FLOPs (LU), or $n^3/3$ (Cholesky) for SymmetricTensor input",
-)
+attach_docstring(det, _np.linalg.det, "linalg", r"$n^3$ FLOPs")
 
 
 def slogdet_cost(n: int, symmetric: bool = False) -> int:
@@ -104,21 +96,18 @@ def slogdet_cost(n: int, symmetric: bool = False) -> int:
     n : int
         Matrix dimension.
     symmetric : bool, optional
-        If True, assume symmetric input. Default is False.
+        Ignored (kept for API compatibility). Default is False.
 
     Returns
     -------
     int
-        Estimated FLOP count.
+        Estimated FLOP count: $n^3$.
 
     Notes
     -----
-    Uses $n^3/3$ for symmetric input (Cholesky), or $2n^3/3$ for general
-    input (LU factorization).
+    Simplified cubic cost model for sign and log-determinant computation.
     """
-    if symmetric:
-        return max(n**3 // 3, 1)
-    return max(2 * n**3 // 3, 1)
+    return max(n**3, 1)
 
 
 def slogdet(a):
@@ -135,12 +124,7 @@ def slogdet(a):
     return _np.linalg.slogdet(a)
 
 
-attach_docstring(
-    slogdet,
-    _np.linalg.slogdet,
-    "linalg",
-    r"$n^3$ FLOPs (LU), or $n^3/3$ (Cholesky) for SymmetricTensor input",
-)
+attach_docstring(slogdet, _np.linalg.slogdet, "linalg", r"$n^3$ FLOPs")
 
 
 def norm_cost(shape: tuple, ord=None) -> int:
