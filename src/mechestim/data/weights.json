@@ -893,7 +893,7 @@
     "per_op_details": {
       "dot": {
         "category": "counted_custom",
-        "analytical_formula": "2*M*N*K",
+        "analytical_formula": "MNK",
         "analytical_flops": 268435456,
         "benchmark_size": "A: (512,512), B: (512,512)",
         "bench_code": "np.dot(A, B)",
@@ -922,7 +922,7 @@
       },
       "matmul": {
         "category": "counted_custom",
-        "analytical_formula": "2*M*N*K",
+        "analytical_formula": "MNK",
         "analytical_flops": 268435456,
         "benchmark_size": "A: (512,512), B: (512,512)",
         "bench_code": "np.matmul(A, B)",
@@ -1067,7 +1067,7 @@
       },
       "tensordot": {
         "category": "counted_custom",
-        "analytical_formula": "2*d^5 (axes=1, shape=(d,d,d))",
+        "analytical_formula": "product of free * contracted dims",
         "analytical_flops": 2147483648,
         "benchmark_size": "A: (64,64,64), B: (64,64,64), axes=1",
         "bench_code": "np.tensordot(A, B, axes=1)",
@@ -1096,7 +1096,7 @@
       },
       "kron": {
         "category": "counted_custom",
-        "analytical_formula": "d^4 (Kronecker, shape=(d,d)x(d,d))",
+        "analytical_formula": "numel(output)",
         "analytical_flops": 16777216,
         "benchmark_size": "A: (64,64), B: (64,64)",
         "bench_code": "np.kron(A, B)",
@@ -1125,7 +1125,7 @@
       },
       "einsum": {
         "category": "counted_custom",
-        "analytical_formula": "2*M*N*K (ij,jk->ik)",
+        "analytical_formula": "product of index dims (FMA=1)",
         "analytical_flops": 268435456,
         "benchmark_size": "A: (512,512), B: (512,512), subscripts='ij,jk->ik'",
         "bench_code": "np.einsum('ij,jk->ik', A, B)",
@@ -1560,7 +1560,7 @@
       },
       "linalg.cholesky": {
         "category": "counted_custom",
-        "analytical_formula": "n^3 / 3",
+        "analytical_formula": "n^3",
         "analytical_flops": 357913941,
         "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.cholesky(A)",
@@ -1589,7 +1589,7 @@
       },
       "linalg.qr": {
         "category": "counted_custom",
-        "analytical_formula": "2*m*n^2 - 2*n^3/3",
+        "analytical_formula": "m*n*min(m,n)",
         "analytical_flops": 1431655766,
         "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.qr(A)",
@@ -1618,7 +1618,7 @@
       },
       "linalg.eig": {
         "category": "counted_custom",
-        "analytical_formula": "10*n^3",
+        "analytical_formula": "n^3",
         "analytical_flops": 10737418240,
         "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.eig(A)",
@@ -1647,7 +1647,7 @@
       },
       "linalg.eigh": {
         "category": "counted_custom",
-        "analytical_formula": "4*n^3 / 3",
+        "analytical_formula": "n^3",
         "analytical_flops": 1431655765,
         "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.eigh(A)",
@@ -1676,7 +1676,7 @@
       },
       "linalg.eigvals": {
         "category": "counted_custom",
-        "analytical_formula": "7*n^3",
+        "analytical_formula": "n^3",
         "analytical_flops": 7516192768,
         "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.eigvals(A)",
@@ -1705,7 +1705,7 @@
       },
       "linalg.eigvalsh": {
         "category": "counted_custom",
-        "analytical_formula": "4*n^3 / 3",
+        "analytical_formula": "n^3",
         "analytical_flops": 1431655765,
         "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.eigvalsh(A)",
@@ -1792,7 +1792,7 @@
       },
       "linalg.solve": {
         "category": "counted_custom",
-        "analytical_formula": "2*n^3/3 + 2*n^2",
+        "analytical_formula": "n^3",
         "analytical_flops": 717925034,
         "benchmark_size": "A: (1024,1024), b: (1024,)",
         "bench_code": "np.linalg.solve(A, b)",
@@ -1908,7 +1908,7 @@
       },
       "linalg.det": {
         "category": "counted_custom",
-        "analytical_formula": "2*n^3 / 3",
+        "analytical_formula": "n^3",
         "analytical_flops": 715827882,
         "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.det(A)",
@@ -1937,7 +1937,7 @@
       },
       "linalg.slogdet": {
         "category": "counted_custom",
-        "analytical_formula": "2*n^3 / 3",
+        "analytical_formula": "n^3",
         "analytical_flops": 715827882,
         "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.slogdet(A)",
@@ -4982,7 +4982,7 @@
       },
       "polyval": {
         "category": "counted_custom",
-        "analytical_formula": "2 * n * degree",
+        "analytical_formula": "n * degree",
         "analytical_flops": 200000000,
         "benchmark_size": "c: (101,), x: (1000000,)",
         "bench_code": "np.polyval(c, x)",
@@ -5243,7 +5243,7 @@
       },
       "roots": {
         "category": "counted_custom",
-        "analytical_formula": "10 * degree^3",
+        "analytical_formula": "degree^3",
         "analytical_flops": 10000000,
         "benchmark_size": "c: (101,)",
         "bench_code": "np.roots(c)",
@@ -8700,7 +8700,7 @@
       },
       "sort_complex": {
         "category": "counted_complex",
-        "analytical_formula": "numel(output)",
+        "analytical_formula": "n * ceil(log2(n))",
         "analytical_flops": 1000000,
         "benchmark_size": "x: (1000000,) complex128",
         "bench_code": "np.sort_complex(x)",
