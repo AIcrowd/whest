@@ -4,27 +4,27 @@ from __future__ import annotations
 
 import numpy as _np
 
+from mechestim._perm_group import PermutationGroup
 from mechestim._symmetric import SymmetricTensor, validate_symmetry
 from mechestim._validation import check_nan_inf, require_budget
 
 
-def _symmetry_info_to_index_symmetry(sym_info, subscript_chars: str):
-    """Convert SymmetryInfo (positional axes) to IndexSymmetry (char labels).
+def _symmetry_info_to_perm_groups(sym_info, subscript_chars: str):
+    """Convert SymmetryInfo (positional axes) to label-indexed PermutationGroups.
 
-    sym_info.symmetric_axes is like [(0, 1, 2)] -- positional indices.
-    subscript_chars is like "ijk" -- the einsum subscript for this operand.
-    Returns IndexSymmetry like [frozenset({('i',), ('j',), ('k',)})], or None.
-
-    Per-index symmetries (as declared via SymmetricTensor) always map to
-    1-tuple blocks in the new uniform tuple representation.
+    Returns a list of PermutationGroup objects with _labels set to the
+    corresponding einsum characters, or None if no symmetry.
     """
     if sym_info is None:
         return None
     groups = []
-    for group in sym_info.symmetric_axes:
-        char_group = frozenset((subscript_chars[d],) for d in group)
-        if len(char_group) >= 2:
-            groups.append(char_group)
+    for group in sym_info.groups:
+        if group.axes is None or group.degree < 2:
+            continue
+        labels = tuple(subscript_chars[ax] for ax in group.axes)
+        new_group = PermutationGroup(*group.generators)
+        new_group._labels = labels
+        groups.append(new_group)
     return groups if groups else None
 
 
@@ -45,6 +45,7 @@ def einsum(
     *operands: _np.ndarray,
     optimize: str | bool | list = "auto",
     symmetric_axes: list[tuple[int, ...]] | None = None,
+    symmetry: PermutationGroup | list[PermutationGroup] | None = None,  # NEW
     **kwargs,
 ) -> _np.ndarray:
     """Evaluate Einstein summation with FLOP counting and optional path optimization.
@@ -97,6 +98,9 @@ def einsum(
     SymmetryError
         If ``symmetric_axes`` is provided but the result is not symmetric.
     """
+    if symmetric_axes is not None and symmetry is not None:
+        raise ValueError("symmetric_axes and symmetry are mutually exclusive")
+
     budget = require_budget()
     shapes = [op.shape for op in operands]
 
@@ -107,8 +111,8 @@ def einsum(
     input_parts = subscripts.split("->")[0].split(",")
     output_str = subscripts.split("->")[1] if "->" in subscripts else ""
 
-    index_symmetries = [
-        _symmetry_info_to_index_symmetry(s, chars)
+    perm_groups = [
+        _symmetry_info_to_perm_groups(s, chars)
         for s, chars in zip(operand_symmetries, input_parts)
     ]
 
@@ -117,7 +121,7 @@ def einsum(
     oracle = SubgraphSymmetryOracle(
         operands=list(operands),
         subscript_parts=input_parts,
-        per_op_syms=index_symmetries,
+        per_op_groups=perm_groups,
         output_chars=output_str,
     )
 
@@ -142,7 +146,16 @@ def einsum(
     result = _execute_pairwise(path_info, list(operands))
 
     # Handle output symmetry wrapping
-    if symmetric_axes and isinstance(result, _np.ndarray) and result.ndim >= 2:
+    if symmetry is not None and isinstance(result, _np.ndarray) and result.ndim >= 2:
+        from mechestim._symmetric import validate_symmetry_groups
+
+        perm_groups = (
+            [symmetry] if isinstance(symmetry, PermutationGroup) else list(symmetry)
+        )
+        validate_symmetry_groups(result, perm_groups)
+        sym_axes = [g.axes for g in perm_groups if g.axes is not None]
+        result = SymmetricTensor(result, sym_axes, perm_groups=perm_groups)
+    elif symmetric_axes and isinstance(result, _np.ndarray) and result.ndim >= 2:
         validate_symmetry(result, symmetric_axes)
         result = SymmetricTensor(result, symmetric_axes=symmetric_axes)
 
@@ -180,8 +193,8 @@ def einsum_path(subscripts: str, *operands, optimize: str | bool | list = "auto"
     input_parts = subscripts.split("->")[0].split(",")
     output_str = subscripts.split("->")[1] if "->" in subscripts else ""
 
-    index_symmetries = [
-        _symmetry_info_to_index_symmetry(s, chars)
+    perm_groups = [
+        _symmetry_info_to_perm_groups(s, chars)
         for s, chars in zip(operand_symmetries, input_parts)
     ]
 
@@ -190,7 +203,7 @@ def einsum_path(subscripts: str, *operands, optimize: str | bool | list = "auto"
     oracle = SubgraphSymmetryOracle(
         operands=list(operands),
         subscript_parts=input_parts,
-        per_op_syms=index_symmetries,
+        per_op_groups=perm_groups,
         output_chars=output_str,
     )
 

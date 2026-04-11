@@ -119,7 +119,7 @@ class TestDPMatchesOptimalUnderExactScoring:
         oracle_kwargs = dict(
             operands=[X, X, X, X],
             subscript_parts=["ij", "ik", "il", "im"],
-            per_op_syms=[None, None, None, None],
+            per_op_groups=[None, None, None, None],
             output_chars="jklm",
         )
         _, info_dp = contract_path(
@@ -156,7 +156,7 @@ class TestDPMatchesOptimalUnderExactScoring:
         oracle_kwargs = dict(
             operands=[X, X, X],
             subscript_parts=["ai", "bi", "ci"],
-            per_op_syms=[None, None, None],
+            per_op_groups=[None, None, None],
             output_chars="abc",
         )
         _, info_dp = contract_path(
@@ -210,7 +210,7 @@ class TestDPSingleTermReductionWithOracle:
         oracle_kwargs = dict(
             operands=[v, X, X],
             subscript_parts=["i", "ab", "cd"],
-            per_op_syms=[None, None, None],
+            per_op_groups=[None, None, None],
             output_chars="abcd",
         )
         # Sanity check: the oracle really does report block S2 at the

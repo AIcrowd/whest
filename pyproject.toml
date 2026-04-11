@@ -21,6 +21,9 @@ docs = [
     "mkdocstrings[python]",
     "mkdocs-llmstxt-md",
 ]
+sympy = [
+    "sympy>=1.11",
+]
 
 [build-system]
 requires = ["hatchling"]
