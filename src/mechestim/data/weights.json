@@ -290,7 +290,47 @@
         "blackman": 24.234681,
         "hamming": 34.376702,
         "hanning": 34.376702,
-        "kaiser": 37.4439
+        "kaiser": 37.4439,
+        "bitwise_not": 1.73556126,
+        "bitwise_invert": 1.66170622,
+        "bitwise_count": 0.8281747,
+        "invert": 1.69451858,
+        "bitwise_and": 2.22818302,
+        "bitwise_or": 2.15287104,
+        "bitwise_xor": 2.18567514,
+        "gcd": 70.46462016,
+        "lcm": 71.56925804,
+        "bitwise_left_shift": 2.17628688,
+        "bitwise_right_shift": 2.21065554,
+        "left_shift": 2.17128448,
+        "right_shift": 2.20782936,
+        "isnat": 0.71830366,
+        "angle": 55.16380894,
+        "conj": 2.16380894,
+        "conjugate": 2.16380894,
+        "imag": 2.16380894,
+        "real": 2.16380894,
+        "real_if_close": 2.16380916,
+        "iscomplex": 2.16380894,
+        "isreal": 2.16380894,
+        "sort_complex": 2.1653368,
+        "iscomplexobj": 0.0001063,
+        "isrealobj": 0.00011606,
+        "linalg.cond": 3.0896433353424073,
+        "linalg.cross": 1.9824691666666667,
+        "linalg.matmul": 1.004852295666933,
+        "linalg.matrix_norm": 1.2433795928955078,
+        "linalg.matrix_power": 2.0206192016601565,
+        "linalg.matrix_rank": 3.0896472185850143,
+        "linalg.multi_dot": 0.5056583404541015,
+        "linalg.norm": 2.48246578,
+        "linalg.outer": 1.000240424,
+        "linalg.tensordot": 1.0157432585023343,
+        "linalg.tensorinv": 3.079659271240234,
+        "linalg.tensorsolve": 1.0636146545410157,
+        "linalg.trace": 4819.89666,
+        "linalg.vecdot": 3.031137890625,
+        "linalg.vector_norm": 2.48225448
       },
       "timing_weights": {
         "dot": 0.0012,
@@ -7835,6 +7875,967 @@
         "baseline_timing_ns_total": 75917896.0,
         "notes": "Kaiser window. Cost: 3*n (Bessel function eval per sample).",
         "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_window.py#L155"
+      },
+      "bitwise_not": {
+        "category": "timed_unary",
+        "analytical_formula": "n",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "np.bitwise_not(x)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          86882004,
+          82840630,
+          86778063
+        ],
+        "distribution_alphas": [
+          1.73764008,
+          1.6568126,
+          1.73556126
+        ],
+        "perf_weight": 1.1239,
+        "absolute_alpha": 1.73556126,
+        "baseline_alpha": 1.54417752,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "timing"
+      },
+      "bitwise_invert": {
+        "category": "timed_unary",
+        "analytical_formula": "n",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "np.bitwise_invert(x)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          84605264,
+          83053097,
+          83085311
+        ],
+        "distribution_alphas": [
+          1.69210528,
+          1.66106194,
+          1.66170622
+        ],
+        "perf_weight": 1.0761,
+        "absolute_alpha": 1.66170622,
+        "baseline_alpha": 1.54417752,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "timing"
+      },
+      "bitwise_count": {
+        "category": "timed_unary",
+        "analytical_formula": "n",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "np.bitwise_count(x)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          41408735,
+          41523261,
+          41261318
+        ],
+        "distribution_alphas": [
+          0.8281747,
+          0.83046522,
+          0.82522636
+        ],
+        "perf_weight": 0.5363,
+        "absolute_alpha": 0.8281747,
+        "baseline_alpha": 1.54417752,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "timing"
+      },
+      "invert": {
+        "category": "timed_unary",
+        "analytical_formula": "n",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "np.invert(x)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          86274230,
+          84725929,
+          82682331
+        ],
+        "distribution_alphas": [
+          1.7254846,
+          1.69451858,
+          1.65364662
+        ],
+        "perf_weight": 1.0974,
+        "absolute_alpha": 1.69451858,
+        "baseline_alpha": 1.54417752,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "timing"
+      },
+      "bitwise_and": {
+        "category": "timed_binary",
+        "analytical_formula": "n",
+        "analytical_flops": 10000000,
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
+        "bench_code": "np.bitwise_and(a, b)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          112547858,
+          107474418,
+          111409151
+        ],
+        "distribution_alphas": [
+          2.25095716,
+          2.14948836,
+          2.22818302
+        ],
+        "perf_weight": 1.443,
+        "absolute_alpha": 2.22818302,
+        "baseline_alpha": 1.54417752,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "timing"
+      },
+      "bitwise_or": {
+        "category": "timed_binary",
+        "analytical_formula": "n",
+        "analytical_flops": 10000000,
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
+        "bench_code": "np.bitwise_or(a, b)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          107643552,
+          107069777,
+          111844015
+        ],
+        "distribution_alphas": [
+          2.15287104,
+          2.14139554,
+          2.2368803
+        ],
+        "perf_weight": 1.3942,
+        "absolute_alpha": 2.15287104,
+        "baseline_alpha": 1.54417752,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "timing"
+      },
+      "bitwise_xor": {
+        "category": "timed_binary",
+        "analytical_formula": "n",
+        "analytical_flops": 10000000,
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
+        "bench_code": "np.bitwise_xor(a, b)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          111582719,
+          109283757,
+          107779689
+        ],
+        "distribution_alphas": [
+          2.23165438,
+          2.18567514,
+          2.15559378
+        ],
+        "perf_weight": 1.4154,
+        "absolute_alpha": 2.18567514,
+        "baseline_alpha": 1.54417752,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "timing"
+      },
+      "gcd": {
+        "category": "timed_binary",
+        "analytical_formula": "n",
+        "analytical_flops": 10000000,
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
+        "bench_code": "np.gcd(a, b)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          3522218853,
+          3523231008,
+          3524098819
+        ],
+        "distribution_alphas": [
+          70.44437706,
+          70.46462016,
+          70.48197638
+        ],
+        "perf_weight": 45.6325,
+        "absolute_alpha": 70.46462016,
+        "baseline_alpha": 1.54417752,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "timing"
+      },
+      "lcm": {
+        "category": "timed_binary",
+        "analytical_formula": "n",
+        "analytical_flops": 10000000,
+        "benchmark_size": "a: (10000000,), b: (10000000,)",
+        "bench_code": "np.lcm(a, b)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          3578462902,
+          3578383641,
+          3579444848
+        ],
+        "distribution_alphas": [
+          71.56925804,
+          71.56767282,
+          71.58889696
+        ],
+        "perf_weight": 46.3478,
+        "absolute_alpha": 71.56925804,
+        "baseline_alpha": 1.54417752,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "timing"
+      },
+      "bitwise_left_shift": {
+        "category": "timed_shift",
+        "analytical_formula": "n",
+        "analytical_flops": 10000000,
+        "benchmark_size": "a: (10000000,), b: (10000000,) (values 0-10)",
+        "bench_code": "np.bitwise_left_shift(a, b)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          110565780,
+          108814344,
+          107320287
+        ],
+        "distribution_alphas": [
+          2.2113156,
+          2.17628688,
+          2.14640574
+        ],
+        "perf_weight": 1.4094,
+        "absolute_alpha": 2.17628688,
+        "baseline_alpha": 1.54417752,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "timing"
+      },
+      "bitwise_right_shift": {
+        "category": "timed_shift",
+        "analytical_formula": "n",
+        "analytical_flops": 10000000,
+        "benchmark_size": "a: (10000000,), b: (10000000,) (values 0-10)",
+        "bench_code": "np.bitwise_right_shift(a, b)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          110532777,
+          112486219,
+          110369261
+        ],
+        "distribution_alphas": [
+          2.21065554,
+          2.24972438,
+          2.20738522
+        ],
+        "perf_weight": 1.4316,
+        "absolute_alpha": 2.21065554,
+        "baseline_alpha": 1.54417752,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "timing"
+      },
+      "left_shift": {
+        "category": "timed_shift",
+        "analytical_formula": "n",
+        "analytical_flops": 10000000,
+        "benchmark_size": "a: (10000000,), b: (10000000,) (values 0-10)",
+        "bench_code": "np.left_shift(a, b)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          108564224,
+          107836172,
+          109684971
+        ],
+        "distribution_alphas": [
+          2.17128448,
+          2.15672344,
+          2.19369942
+        ],
+        "perf_weight": 1.4061,
+        "absolute_alpha": 2.17128448,
+        "baseline_alpha": 1.54417752,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "timing"
+      },
+      "right_shift": {
+        "category": "timed_shift",
+        "analytical_formula": "n",
+        "analytical_flops": 10000000,
+        "benchmark_size": "a: (10000000,), b: (10000000,) (values 0-10)",
+        "bench_code": "np.right_shift(a, b)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          108345490,
+          110391468,
+          112763980
+        ],
+        "distribution_alphas": [
+          2.1669098,
+          2.20782936,
+          2.2552796
+        ],
+        "perf_weight": 1.4298,
+        "absolute_alpha": 2.20782936,
+        "baseline_alpha": 1.54417752,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "timing"
+      },
+      "isnat": {
+        "category": "timed_special",
+        "analytical_formula": "n",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,) datetime64 with NaTs",
+        "bench_code": "np.isnat(x)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          35880542,
+          36219019,
+          35915183
+        ],
+        "distribution_alphas": [
+          0.71761084,
+          0.72438038,
+          0.71830366
+        ],
+        "perf_weight": 0.4652,
+        "absolute_alpha": 0.71830366,
+        "baseline_alpha": 1.54417752,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "timing"
+      },
+      "angle": {
+        "category": "counted_complex",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,) complex128",
+        "bench_code": "np.angle(x)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          2758203589,
+          2758190447,
+          2758179996
+        ],
+        "distribution_alphas": [
+          55.16407178,
+          55.16380894,
+          55.16359992
+        ],
+        "perf_weight": 25.0732,
+        "absolute_alpha": 55.16380894,
+        "baseline_alpha": 2.200112,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "perf"
+      },
+      "conj": {
+        "category": "counted_complex",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,) complex128",
+        "bench_code": "np.conj(x)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          108203589,
+          108190447,
+          108179996
+        ],
+        "distribution_alphas": [
+          2.16407178,
+          2.16380894,
+          2.16359992
+        ],
+        "perf_weight": 0.9835,
+        "absolute_alpha": 2.16380894,
+        "baseline_alpha": 2.200112,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "perf"
+      },
+      "conjugate": {
+        "category": "counted_complex",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,) complex128",
+        "bench_code": "np.conjugate(x)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          108203589,
+          108190447,
+          108179996
+        ],
+        "distribution_alphas": [
+          2.16407178,
+          2.16380894,
+          2.16359992
+        ],
+        "perf_weight": 0.9835,
+        "absolute_alpha": 2.16380894,
+        "baseline_alpha": 2.200112,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "perf"
+      },
+      "imag": {
+        "category": "counted_complex",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,) complex128",
+        "bench_code": "np.imag(x)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          108203589,
+          108190447,
+          108179996
+        ],
+        "distribution_alphas": [
+          2.16407178,
+          2.16380894,
+          2.16359992
+        ],
+        "perf_weight": 0.9835,
+        "absolute_alpha": 2.16380894,
+        "baseline_alpha": 2.200112,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "perf"
+      },
+      "real": {
+        "category": "counted_complex",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,) complex128",
+        "bench_code": "np.real(x)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          108203589,
+          108190447,
+          108179996
+        ],
+        "distribution_alphas": [
+          2.16407178,
+          2.16380894,
+          2.16359992
+        ],
+        "perf_weight": 0.9835,
+        "absolute_alpha": 2.16380894,
+        "baseline_alpha": 2.200112,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "perf"
+      },
+      "real_if_close": {
+        "category": "counted_complex",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,) complex128",
+        "bench_code": "np.real_if_close(x)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          168203622,
+          108190458,
+          108180007
+        ],
+        "distribution_alphas": [
+          3.36407244,
+          2.16380916,
+          2.16360014
+        ],
+        "perf_weight": 0.9835,
+        "absolute_alpha": 2.16380916,
+        "baseline_alpha": 2.200112,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "perf"
+      },
+      "iscomplex": {
+        "category": "counted_complex",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,) complex128",
+        "bench_code": "np.iscomplex(x)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          108203589,
+          108190447,
+          108179996
+        ],
+        "distribution_alphas": [
+          2.16407178,
+          2.16380894,
+          2.16359992
+        ],
+        "perf_weight": 0.9835,
+        "absolute_alpha": 2.16380894,
+        "baseline_alpha": 2.200112,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "perf"
+      },
+      "isreal": {
+        "category": "counted_complex",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,) complex128",
+        "bench_code": "np.isreal(x)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          108203589,
+          108190447,
+          108179996
+        ],
+        "distribution_alphas": [
+          2.16407178,
+          2.16380894,
+          2.16359992
+        ],
+        "perf_weight": 0.9835,
+        "absolute_alpha": 2.16380894,
+        "baseline_alpha": 2.200112,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "perf"
+      },
+      "sort_complex": {
+        "category": "counted_complex",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 1000000,
+        "benchmark_size": "x: (1000000,) complex128",
+        "bench_code": "np.sort_complex(x)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          10832153,
+          10817398,
+          10826684
+        ],
+        "distribution_alphas": [
+          2.1664306,
+          2.1634796,
+          2.1653368
+        ],
+        "perf_weight": 0.9842,
+        "absolute_alpha": 2.1653368,
+        "baseline_alpha": 2.200112,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "perf"
+      },
+      "iscomplexobj": {
+        "category": "counted_complex",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,) complex128 (type check)",
+        "bench_code": "np.iscomplexobj(x)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          5142,
+          5342,
+          5315
+        ],
+        "distribution_alphas": [
+          0.00010284,
+          0.00010684,
+          0.0001063
+        ],
+        "perf_weight": 0.0,
+        "absolute_alpha": 0.0001063,
+        "baseline_alpha": 2.200112,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "perf"
+      },
+      "isrealobj": {
+        "category": "counted_complex",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,) complex128 (type check)",
+        "bench_code": "np.isrealobj(x)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          6604,
+          5803,
+          5418
+        ],
+        "distribution_alphas": [
+          0.00013208,
+          0.00011606,
+          0.00010836
+        ],
+        "perf_weight": 0.0001,
+        "absolute_alpha": 0.00011606,
+        "baseline_alpha": 2.200112,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "perf"
+      },
+      "linalg.cond": {
+        "category": "counted_custom",
+        "analytical_formula": "m*n*min(m,n)",
+        "analytical_flops": 134217728,
+        "benchmark_size": "A: (512,512)",
+        "bench_code": "np.linalg.cond(A)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          2072803396,
+          2073424544,
+          2081315849
+        ],
+        "distribution_alphas": [
+          3.0887177526950835,
+          3.0896433353424073,
+          3.101402296125889
+        ],
+        "perf_weight": 1.4043,
+        "absolute_alpha": 3.0896433353424073,
+        "baseline_alpha": 2.200112,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "perf"
+      },
+      "linalg.cross": {
+        "category": "counted_custom",
+        "analytical_formula": "6*n",
+        "analytical_flops": 6000000,
+        "benchmark_size": "a: (1000000,3), b: (1000000,3)",
+        "bench_code": "np.linalg.cross(a, b)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          53474053,
+          63005601,
+          59474075
+        ],
+        "distribution_alphas": [
+          1.7824684333333334,
+          2.1001867,
+          1.9824691666666667
+        ],
+        "perf_weight": 0.9011,
+        "absolute_alpha": 1.9824691666666667,
+        "baseline_alpha": 2.200112,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "perf"
+      },
+      "linalg.matmul": {
+        "category": "counted_custom",
+        "analytical_formula": "2*M*N*K",
+        "analytical_flops": 268435456,
+        "benchmark_size": "A: (512,512), B: (512,512)",
+        "bench_code": "np.linalg.matmul(A, B)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          1348165611,
+          1348998696,
+          1348689921
+        ],
+        "distribution_alphas": [
+          1.0044616542756557,
+          1.0050823509693145,
+          1.004852295666933
+        ],
+        "perf_weight": 0.4567,
+        "absolute_alpha": 1.004852295666933,
+        "baseline_alpha": 2.200112,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "perf"
+      },
+      "linalg.matrix_norm": {
+        "category": "counted_custom",
+        "analytical_formula": "2*numel (Frobenius)",
+        "analytical_flops": 524288,
+        "benchmark_size": "A: (512,512)",
+        "bench_code": "np.linalg.matrix_norm(A)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          2997301,
+          3413514,
+          3259445
+        ],
+        "distribution_alphas": [
+          1.1433795928955077,
+          1.3021522521972657,
+          1.2433795928955078
+        ],
+        "perf_weight": 0.5651,
+        "absolute_alpha": 1.2433795928955078,
+        "baseline_alpha": 2.200112,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "perf"
+      },
+      "linalg.matrix_power": {
+        "category": "counted_custom",
+        "analytical_formula": "(ceil(log2(k))+popcount(k)-1)*n^3",
+        "analytical_flops": 786432,
+        "benchmark_size": "A: (64,64), n=5",
+        "bench_code": "np.linalg.matrix_power(A, 5)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          7945398,
+          7951902,
+          7945398
+        ],
+        "distribution_alphas": [
+          2.0206192016601565,
+          2.022273254394531,
+          2.0206192016601565
+        ],
+        "perf_weight": 0.9184,
+        "absolute_alpha": 2.0206192016601565,
+        "baseline_alpha": 2.200112,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "perf"
+      },
+      "linalg.matrix_rank": {
+        "category": "counted_custom",
+        "analytical_formula": "m*n*min(m,n)",
+        "analytical_flops": 134217728,
+        "benchmark_size": "A: (512,512)",
+        "bench_code": "np.linalg.matrix_rank(A)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          2072806002,
+          2073427150,
+          2081318455
+        ],
+        "distribution_alphas": [
+          3.0887216359376906,
+          3.0896472185850143,
+          3.101406179368496
+        ],
+        "perf_weight": 1.4043,
+        "absolute_alpha": 3.0896472185850143,
+        "baseline_alpha": 2.200112,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "perf"
+      },
+      "linalg.multi_dot": {
+        "category": "counted_custom",
+        "analytical_formula": "2*(128*64*128 + 128*128*64)",
+        "analytical_flops": 4194304,
+        "benchmark_size": "A: (128,64), B: (64,128), C: (128,64)",
+        "bench_code": "np.linalg.multi_dot([A, B, C])",
+        "repeats": 5,
+        "perf_instructions_total": [
+          10588018,
+          10626610,
+          10604424
+        ],
+        "distribution_alphas": [
+          0.5048760414123535,
+          0.506716251373291,
+          0.5056583404541015
+        ],
+        "perf_weight": 0.2298,
+        "absolute_alpha": 0.5056583404541015,
+        "baseline_alpha": 2.200112,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "perf"
+      },
+      "linalg.norm": {
+        "category": "counted_custom",
+        "analytical_formula": "numel (L2)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "np.linalg.norm(x)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          114123289,
+          130016207,
+          124123289
+        ],
+        "distribution_alphas": [
+          2.28246578,
+          2.6003241399999997,
+          2.48246578
+        ],
+        "perf_weight": 1.1283,
+        "absolute_alpha": 2.48246578,
+        "baseline_alpha": 2.200112,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "perf"
+      },
+      "linalg.outer": {
+        "category": "counted_custom",
+        "analytical_formula": "M*N",
+        "analytical_flops": 25000000,
+        "benchmark_size": "a: (5000,), b: (5000,)",
+        "bench_code": "np.linalg.outer(a, b)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          125020031,
+          125035647,
+          125030053
+        ],
+        "distribution_alphas": [
+          1.000160248,
+          1.000285176,
+          1.000240424
+        ],
+        "perf_weight": 0.4546,
+        "absolute_alpha": 1.000240424,
+        "baseline_alpha": 2.200112,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "perf"
+      },
+      "linalg.tensordot": {
+        "category": "counted_custom",
+        "analytical_formula": "2*d^5",
+        "analytical_flops": 2147483648,
+        "benchmark_size": "A: (64,64,64), B: (64,64,64)",
+        "bench_code": "np.linalg.tensordot(A, B, axes=1)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          10905935881,
+          10906768966,
+          10906460191
+        ],
+        "distribution_alphas": [
+          1.0156944283284246,
+          1.015772015415132,
+          1.0157432585023343
+        ],
+        "perf_weight": 0.4617,
+        "absolute_alpha": 1.0157432585023343,
+        "baseline_alpha": 2.200112,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "perf"
+      },
+      "linalg.tensorinv": {
+        "category": "counted_custom",
+        "analytical_formula": "n^3 after reshape",
+        "analytical_flops": 262144,
+        "benchmark_size": "A: (8,8,8,8)",
+        "bench_code": "np.linalg.tensorinv(A, ind=2)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          4036571,
+          4043075,
+          4036571
+        ],
+        "distribution_alphas": [
+          3.079659271240234,
+          3.0846214294433594,
+          3.079659271240234
+        ],
+        "perf_weight": 1.3998,
+        "absolute_alpha": 3.079659271240234,
+        "baseline_alpha": 2.200112,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "perf"
+      },
+      "linalg.tensorsolve": {
+        "category": "counted_custom",
+        "analytical_formula": "n^3 after reshape",
+        "analytical_flops": 262144,
+        "benchmark_size": "A: (8,8,8,8), b: (8,8)",
+        "bench_code": "np.linalg.tensorsolve(A, b)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          1394101,
+          1400722,
+          1394101
+        ],
+        "distribution_alphas": [
+          1.0636146545410157,
+          1.0686660766601563,
+          1.0636146545410157
+        ],
+        "perf_weight": 0.4834,
+        "absolute_alpha": 1.0636146545410157,
+        "baseline_alpha": 2.200112,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "perf"
+      },
+      "linalg.trace": {
+        "category": "counted_custom",
+        "analytical_formula": "min(m,n)",
+        "analytical_flops": 10000,
+        "benchmark_size": "A: (10000,10000)",
+        "bench_code": "np.linalg.trace(A)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          140994833,
+          300055632,
+          240994833
+        ],
+        "distribution_alphas": [
+          2819.8966600000003,
+          6001.11264,
+          4819.89666
+        ],
+        "perf_weight": 0.7273,
+        "absolute_alpha": 4819.89666,
+        "baseline_alpha": 2.200112,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "perf",
+        "notes": "Matrix trace. Cost: n (sum of diagonal elements). Weight set to match trace/sum (subprocess overhead dominates at small analytical cost)."
+      },
+      "linalg.vecdot": {
+        "category": "counted_custom",
+        "analytical_formula": "batch*K",
+        "analytical_flops": 512000,
+        "benchmark_size": "A: (1000,512), B: (1000,512)",
+        "bench_code": "np.linalg.vecdot(A, B)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          6735691,
+          8362647,
+          7759713
+        ],
+        "distribution_alphas": [
+          2.6311292968749997,
+          3.266658984375,
+          3.031137890625
+        ],
+        "perf_weight": 1.3777,
+        "absolute_alpha": 3.031137890625,
+        "baseline_alpha": 2.200112,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "perf"
+      },
+      "linalg.vector_norm": {
+        "category": "counted_custom",
+        "analytical_formula": "numel (L2)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "np.linalg.vector_norm(x)",
+        "repeats": 5,
+        "perf_instructions_total": [
+          114112724,
+          130005642,
+          124112724
+        ],
+        "distribution_alphas": [
+          2.28225448,
+          2.60011284,
+          2.48225448
+        ],
+        "perf_weight": 1.1282,
+        "absolute_alpha": 2.48225448,
+        "baseline_alpha": 2.200112,
+        "baseline_bench_code": "np.add(x, y, out=_out)",
+        "baseline_analytical_flops": 10000000,
+        "measurement_mode": "perf"
       }
     },
     "duration_seconds": 2275.7
@@ -8090,6 +9091,46 @@
     "blackman": 11.0152,
     "hamming": 15.625,
     "hanning": 15.625,
-    "kaiser": 17.0191
+    "kaiser": 17.0191,
+    "bitwise_not": 1.1239,
+    "bitwise_invert": 1.0761,
+    "bitwise_count": 0.5363,
+    "invert": 1.0974,
+    "bitwise_and": 1.443,
+    "bitwise_or": 1.3942,
+    "bitwise_xor": 1.4154,
+    "gcd": 45.6325,
+    "lcm": 46.3478,
+    "bitwise_left_shift": 1.4094,
+    "bitwise_right_shift": 1.4316,
+    "left_shift": 1.4061,
+    "right_shift": 1.4298,
+    "isnat": 0.4652,
+    "angle": 25.0732,
+    "conj": 0.9835,
+    "conjugate": 0.9835,
+    "imag": 0.9835,
+    "real": 0.9835,
+    "real_if_close": 0.9835,
+    "iscomplex": 0.9835,
+    "isreal": 0.9835,
+    "sort_complex": 0.9842,
+    "iscomplexobj": 0.0,
+    "isrealobj": 0.0001,
+    "linalg.cond": 1.4043,
+    "linalg.cross": 0.9011,
+    "linalg.matmul": 0.4567,
+    "linalg.matrix_norm": 0.5651,
+    "linalg.matrix_power": 0.9184,
+    "linalg.matrix_rank": 1.4043,
+    "linalg.multi_dot": 0.2298,
+    "linalg.norm": 1.1283,
+    "linalg.outer": 0.4546,
+    "linalg.tensordot": 0.4617,
+    "linalg.tensorinv": 1.3998,
+    "linalg.tensorsolve": 0.4834,
+    "linalg.trace": 0.7273,
+    "linalg.vecdot": 1.3777,
+    "linalg.vector_norm": 1.1282
   }
 }
