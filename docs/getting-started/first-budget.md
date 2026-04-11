@@ -31,7 +31,7 @@ x = me.random.randn(width)
 
 h = x
 for W in weights:
-    h = me.einsum('ij,j->i', W, h)  # matrix-vector multiply: 2 × 256 × 256 = 131,072 FLOPs
+    h = me.einsum('ij,j->i', W, h)  # matrix-vector multiply: 256 × 256 = 65,536 FLOPs
     h = me.maximum(h, 0)             # ReLU activation: counted
 
 result = me.sum(h)                   # reduction: counted
@@ -92,7 +92,7 @@ with me.BudgetContext(flop_budget=50_000_000, namespace="mlp-forward") as budget
 
     h = x
     for W in weights:
-        h = me.einsum('ij,j->i', W, h)  # matrix-vector multiply: 2 × 256 × 256 = 131,072 FLOPs
+        h = me.einsum('ij,j->i', W, h)  # matrix-vector multiply: 256 × 256 = 65,536 FLOPs
         h = me.maximum(h, 0)             # 256 FLOPs each pass
 
     result = me.sum(h)                   # 256 FLOPs

@@ -3191,12 +3191,12 @@
       "mechestim_ref": "me.linalg.qr",
       "numpy_ref": "np.linalg.qr",
       "category": "counted_custom",
-      "cost_formula": "2mn^2 - 2n^3/3",
-      "cost_formula_latex": "$2mn^2 - 2n^3/3$",
+      "cost_formula": "mn^2 - n^3/3 (FMA=1)",
+      "cost_formula_latex": "$mn^2 - n^3/3$",
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "QR decomposition. Cost: $2mn^2 - (2/3)n^3$ (Golub & Van Loan \u00a75.2)."
+      "notes": "QR decomposition. Cost: $mn^2 - n^3/3$ (Golub & Van Loan \u00a75.2, FMA=1)."
     },
     {
       "name": "linalg.slogdet",

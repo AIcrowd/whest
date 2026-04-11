@@ -273,14 +273,14 @@ All weights are normalized against element-wise addition (`np.add`):
 | `linalg.lstsq` | 1.4063 | medium | m*n*min(m,n) | [\_solvers.py:147](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_solvers.py#L147) | Least squares. Cost: m*n*min(m,n) (LAPACK gelsd/SVD). |
 | `linalg.svdvals` | 1.3389 | medium | m*n*min(m,n) | [\_decompositions.py:281](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L281) | Singular values only. Cost: m*n*min(m,n) (Golub-Reinsch). |
 | `linalg.inv` | 1.2404 | medium | n^3 | [\_solvers.py:101](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_solvers.py#L101) | Matrix inverse. Cost: $n^3$ (LU + solve). |
-| `linalg.qr` | 0.9478 | medium | 2*m*n^2 - 2*n^3/3 | [\_decompositions.py:87](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L87) | QR decomposition. Cost: $2mn^2 - (2/3)n^3$ (Golub & Van Loan §5.2). |
+| `linalg.qr` | 0.9478 | medium | m*n^2 - n^3/3 | [\_decompositions.py:87](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L87) | QR decomposition. Cost: $mn^2 - n^3/3$ (Golub & Van Loan §5.2, FMA=1). |
 | `linalg.cholesky` | 0.7606 | high | n^3 / 3 | [\_decompositions.py:46](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L46) | Cholesky decomposition. Cost: $n^3/3$ (Golub & Van Loan §4.2). |
 | `linalg.eig` | 0.6827 | medium | 10*n^3 | [\_decompositions.py:127](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L127) | Eigendecomposition. Cost: $10n^3$ (Francis QR, Golub & Van Loan §7.5). |
 | `linalg.eigvalsh` | 0.5738 | high | 4*n^3 / 3 | [\_decompositions.py:243](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L243) | Symmetric eigenvalues. Cost: $(4/3)n^3$ (same as eigh). |
-| `linalg.det` | 0.4921 | low | 2*n^3 / 3 | [\_properties.py:87](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_properties.py#L87) | Determinant. Cost: $n^3$ (LU factorization). |
-| `linalg.slogdet` | 0.4921 | low | 2*n^3 / 3 | [\_properties.py:134](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_properties.py#L134) | Sign + log determinant. Cost: $n^3$ (LU factorization). |
+| `linalg.det` | 0.4921 | low | n^3 / 3 | [\_properties.py:87](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_properties.py#L87) | Determinant. Cost: $n^3/3$ (LU factorization, FMA=1). |
+| `linalg.slogdet` | 0.4921 | low | n^3 / 3 | [\_properties.py:134](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_properties.py#L134) | Sign + log determinant. Cost: $n^3/3$ (LU factorization, FMA=1). |
 | `linalg.eigvals` | 0.4635 | high | 7*n^3 | [\_decompositions.py:207](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L207) | Eigenvalues only. Cost: $10n^3$ (same as eig). |
-| `linalg.solve` | 0.4589 | low | 2*n^3/3 + 2*n^2 | [\_solvers.py:54](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_solvers.py#L54) | Solve Ax=b. Cost: $2n^3/3$ (LU) + $n^2 \cdot n_{\text{rhs}}$ (back-substitution). |
+| `linalg.solve` | 0.4589 | low | n^3/3 + n^2 | [\_solvers.py:54](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_solvers.py#L54) | Solve Ax=b. Cost: $n^3/3$ (LU) + $n^2 \cdot n_{\text{rhs}}$ (back-substitution, FMA=1). |
 
 ### Linalg Delegates (15 operations)
 
@@ -295,24 +295,24 @@ All weights are normalized against element-wise addition (`np.add`):
 | `linalg.matrix_power` | 0.9184 | high | (ceil(log2(k))+popcount(k)-1)*n^3 |  |  |
 | `linalg.cross` | 0.9011 | medium | 6*n |  |  |
 | `linalg.trace` | 0.7273 | low | min(m,n) |  | Matrix trace. Cost: n (sum of diagonal elements). Weight set to match trace/sum (subprocess overhead dominates at small analytical cost). |
-| `linalg.matrix_norm` | 0.5651 | medium | 2*numel (Frobenius) |  |  |
+| `linalg.matrix_norm` | 0.5651 | medium | numel (Frobenius) |  |  |
 | `linalg.tensorsolve` | 0.4834 | high | n^3 after reshape |  |  |
-| `linalg.tensordot` | 0.4617 | high | 2*d^5 |  |  |
-| `linalg.matmul` | 0.4567 | high | 2*M*N*K |  |  |
+| `linalg.tensordot` | 0.4617 | high | d^5 |  |  |
+| `linalg.matmul` | 0.4567 | high | M*N*K |  |  |
 | `linalg.outer` | 0.4546 | high | M*N |  |  |
-| `linalg.multi_dot` | 0.2298 | high | 2*(128*64*128 + 128*128*64) |  |  |
+| `linalg.multi_dot` | 0.2298 | high | 128*64*128 + 128*128*64 |  |  |
 
 ### Contractions (9 operations)
 
 | Op | Weight | Confidence | Formula | Impl | Notes |
 |:---|-------:|:-----------|:--------|:-----|:------|
 | `vecdot` | 1.4848 | medium | batch * K (output_size * contracted_axis) | [\_pointwise.py:455](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L455) | Vector dot product along last axis. |
-| `inner` | 1.4559 | medium | N (a.size) | [\_pointwise.py:649](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L649) | Inner product; cost = 2*N for 1-D, 2*N*M for n-D. |
-| `vdot` | 1.4559 | medium | N (a.size) | [\_pointwise.py:707](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L707) | Dot product with conjugation; cost = 2*N. |
-| `tensordot` | 0.4617 | high | 2*d^5 (axes=1, shape=(d,d,d)) | [\_\_init\_\_.py:74](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/__init__.py#L74) | Tensor dot product along specified axes. |
-| `dot` | 0.4568 | high | 2*M*N*K | [\_pointwise.py:587](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L587) | Dot product; cost = 2*M*N*K for matrix multiply. |
-| `matmul` | 0.4568 | high | 2*M*N*K | [\_pointwise.py:623](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L623) | Matrix multiplication; cost = 2*M*N*K. |
-| `einsum` | 0.4551 | high | 2*M*N*K (ij,jk->ik) | [\_einsum.py:135](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_einsum.py#L135) | Generalized Einstein summation. |
+| `inner` | 1.4559 | medium | N (a.size) | [\_pointwise.py:649](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L649) | Inner product; cost = N for 1-D, N*M for n-D (FMA=1). |
+| `vdot` | 1.4559 | medium | N (a.size) | [\_pointwise.py:707](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L707) | Dot product with conjugation; cost = N (FMA=1). |
+| `tensordot` | 0.4617 | high | d^5 (axes=1, shape=(d,d,d)) | [\_\_init\_\_.py:74](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/__init__.py#L74) | Tensor dot product along specified axes. |
+| `dot` | 0.4568 | high | M*N*K | [\_pointwise.py:587](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L587) | Dot product; cost = M*N*K for matrix multiply (FMA=1). |
+| `matmul` | 0.4568 | high | M*N*K | [\_pointwise.py:623](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L623) | Matrix multiplication; cost = M*N*K (FMA=1). |
+| `einsum` | 0.4551 | high | M*N*K (ij,jk->ik) | [\_einsum.py:135](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_einsum.py#L135) | Generalized Einstein summation (FMA=1). |
 | `outer` | 0.4547 | high | M*N | [\_pointwise.py:665](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L665) | Outer product of two vectors; cost = M*N. |
 | `kron` | 0.4547 | high | d^4 (Kronecker, shape=(d,d)x(d,d)) | [\_pointwise.py:723](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L723) | Kronecker product; cost proportional to output size. |
 
@@ -326,9 +326,9 @@ All weights are normalized against element-wise addition (`np.add`):
 | `polyint` | 5.7441 | high | degree + 1 | [\_polynomial.py:140](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L140) | Integrate polynomial. Cost: n FLOPs. |
 | `polymul` | 1.1921 | high | (degree+1)^2 | [\_polynomial.py:158](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L158) | Multiply polynomials. Cost: n1 * n2 FLOPs. |
 | `poly` | 0.9813 | high | degree^2 | [\_polynomial.py:204](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L204) | Polynomial from roots. Cost: $n^2$ FLOPs. |
-| `polyfit` | 0.5387 | high | 2 * n * (degree+1)^2 | [\_polynomial.py:187](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L187) | Least squares polynomial fit. Cost: 2 * m * (deg+1)^2 FLOPs. |
+| `polyfit` | 0.5387 | high | n * (degree+1)^2 | [\_polynomial.py:187](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L187) | Least squares polynomial fit. Cost: m * (deg+1)^2 FLOPs (FMA=1). |
 | `roots` | 0.4898 | high | 10 * degree^3 | [\_polynomial.py:217](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L217) | Return roots of polynomial with given coefficients. Cost: $10n^3$ FLOPs (companion matrix eig). |
-| `polyval` | 0.4597 | high | 2 * n * degree | [\_polynomial.py:78](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L78) | Evaluate polynomial at given points. Cost: 2 * m * deg FLOPs (Horner's method). |
+| `polyval` | 0.4597 | high | n * degree | [\_polynomial.py:78](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L78) | Evaluate polynomial at given points. Cost: m * deg FLOPs (Horner's method, FMA=1). |
 | `polydiv` | 0.0720 | high | (degree+1)^2 | [\_polynomial.py:174](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L174) | Divide one polynomial by another. Cost: n1 * n2 FLOPs. |
 
 ### Random (43 operations)
