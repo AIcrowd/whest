@@ -4,6 +4,7 @@ from __future__ import annotations
 
 _SETTINGS: dict[str, object] = {
     "symmetry_warnings": True,
+    "use_inner_symmetry": True,
 }
 
 
@@ -15,6 +16,10 @@ def configure(**kwargs: object) -> None:
     symmetry_warnings : bool
         If ``False``, suppress :class:`~mechestim.errors.SymmetryLossWarning`
         warnings.  Default ``True``.
+    use_inner_symmetry : bool
+        If ``True``, exploit inner (W-side) symmetry to reduce FLOP costs
+        when all W-group labels are contracted at the same step.
+        Default ``True``.
     """
     for key, value in kwargs.items():
         if key not in _SETTINGS:

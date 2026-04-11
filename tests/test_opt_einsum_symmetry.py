@@ -664,8 +664,8 @@ class TestExhaustiveSymmetryValidation:
 
 
 class TestInnerSymmetryFlops:
-    def test_no_inner_sym_unchanged(self):
-        """Without inner symmetry, the cost should match the existing behavior."""
+    def test_no_inner_group_unchanged(self):
+        """Without inner_group, the cost equals the output-only reduction."""
         cost = symmetric_flop_count(
             "abij",
             True,
@@ -674,19 +674,11 @@ class TestInnerSymmetryFlops:
             output_group=_s_group("a", "b"),
             output_indices=frozenset("ab"),
         )
-        cost_with_flag = symmetric_flop_count(
-            "abij",
-            True,
-            2,
-            {"a": 3, "b": 3, "i": 4, "j": 4},
-            output_group=_s_group("a", "b"),
-            output_indices=frozenset("ab"),
-            use_inner_symmetry=True,
-        )
-        assert cost == cost_with_flag
+        # dense = 288, output ratio = 6/9 -> 192
+        assert cost == 192
 
-    def test_inner_sym_reduces_cost(self):
-        """With inner symmetry and flag on, cost should be strictly lower."""
+    def test_inner_sym_reduces_cost_when_labels_match(self):
+        """Inner symmetry applies when all group labels are in inner_indices."""
         base_cost = symmetric_flop_count(
             "abij",
             True,
@@ -704,12 +696,11 @@ class TestInnerSymmetryFlops:
             output_indices=frozenset("ab"),
             inner_group=_s_group("i", "j"),
             inner_indices=frozenset("ij"),
-            use_inner_symmetry=True,
         )
         assert reduced_cost < base_cost
 
-    def test_inner_sym_flag_off_no_reduction(self):
-        """With flag off, inner_group is ignored."""
+    def test_inner_sym_skipped_when_labels_mismatch(self):
+        """Inner group is ignored when its labels aren't all in inner_indices."""
         base_cost = symmetric_flop_count(
             "abij",
             True,
@@ -718,6 +709,7 @@ class TestInnerSymmetryFlops:
             output_group=_s_group("a", "b"),
             output_indices=frozenset("ab"),
         )
+        # inner_group has labels {i,j} but inner_indices is only {i}
         same_cost = symmetric_flop_count(
             "abij",
             True,
@@ -726,8 +718,7 @@ class TestInnerSymmetryFlops:
             output_group=_s_group("a", "b"),
             output_indices=frozenset("ab"),
             inner_group=_s_group("i", "j"),
-            inner_indices=frozenset("ij"),
-            use_inner_symmetry=False,
+            inner_indices=frozenset("i"),
         )
         assert same_cost == base_cost
 
@@ -747,6 +738,57 @@ class TestInnerSymmetryFlops:
             output_indices=frozenset("ab"),
             inner_group=_s_group("i", "j"),
             inner_indices=frozenset("ij"),
-            use_inner_symmetry=True,
         )
         assert cost == 120
+
+    def test_inner_sym_disabled_via_param(self):
+        """With use_inner_symmetry=False, inner reduction is skipped."""
+        base_cost = symmetric_flop_count(
+            "abij",
+            True,
+            2,
+            {"a": 3, "b": 3, "i": 4, "j": 4},
+            output_group=_s_group("a", "b"),
+            output_indices=frozenset("ab"),
+        )
+        cost_disabled = symmetric_flop_count(
+            "abij",
+            True,
+            2,
+            {"a": 3, "b": 3, "i": 4, "j": 4},
+            output_group=_s_group("a", "b"),
+            output_indices=frozenset("ab"),
+            inner_group=_s_group("i", "j"),
+            inner_indices=frozenset("ij"),
+            use_inner_symmetry=False,
+        )
+        assert cost_disabled == base_cost
+
+    def test_inner_sym_config_toggle(self):
+        """Global config use_inner_symmetry controls the reduction."""
+        import mechestim as me
+        import numpy as np
+
+        n = 5
+        T = np.random.randn(n, n, n, n)
+        T = (T + T.transpose(1, 0, 2, 3)) / 2
+        Tsym = me.as_symmetric(T, symmetric_axes=[(0, 1)])
+
+        with me.BudgetContext(flop_budget=1e15):
+            _, info_on = me.einsum_path("abij,abkl->ijkl", Tsym, Tsym)
+
+        me.configure(use_inner_symmetry=False)
+        try:
+            with me.BudgetContext(flop_budget=1e15):
+                _, info_off = me.einsum_path("abij,abkl->ijkl", Tsym, Tsym)
+        finally:
+            me.configure(use_inner_symmetry=True)
+
+        # With inner symmetry on, cost should be lower
+        assert info_on.optimized_cost < info_off.optimized_cost
+        # Both should have inner_group detected
+        assert info_on.steps[0].inner_group is not None
+        assert info_off.steps[0].inner_group is not None
+        # Only the on-case should have inner_applied
+        assert info_on.steps[0].inner_applied is True
+        assert info_off.steps[0].inner_applied is False
