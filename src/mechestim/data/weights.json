@@ -8847,7 +8847,7 @@
       },
       "linalg.matmul": {
         "category": "counted_custom",
-        "analytical_formula": "2*M*N*K",
+        "analytical_formula": "MNK",
         "analytical_flops": 268435456,
         "benchmark_size": "A: (512,512), B: (512,512)",
         "bench_code": "np.linalg.matmul(A, B)",
@@ -8872,7 +8872,7 @@
       },
       "linalg.matrix_norm": {
         "category": "counted_custom",
-        "analytical_formula": "2*numel (Frobenius)",
+        "analytical_formula": "numel",
         "analytical_flops": 524288,
         "benchmark_size": "A: (512,512)",
         "bench_code": "np.linalg.matrix_norm(A)",
@@ -8947,7 +8947,7 @@
       },
       "linalg.multi_dot": {
         "category": "counted_custom",
-        "analytical_formula": "sum of optimal chain matmul costs",
+        "analytical_formula": "sum of chain MNK costs",
         "analytical_flops": 4194304,
         "benchmark_size": "A: (128,64), B: (64,128), C: (128,64)",
         "bench_code": "np.linalg.multi_dot([A, B, C])",
@@ -8972,7 +8972,7 @@
       },
       "linalg.norm": {
         "category": "counted_custom",
-        "analytical_formula": "numel (L2)",
+        "analytical_formula": "numel",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,)",
         "bench_code": "np.linalg.norm(x)",
@@ -9022,7 +9022,7 @@
       },
       "linalg.tensordot": {
         "category": "counted_custom",
-        "analytical_formula": "2*d^5",
+        "analytical_formula": "product of free * contracted dims",
         "analytical_flops": 2147483648,
         "benchmark_size": "A: (64,64,64), B: (64,64,64)",
         "bench_code": "np.linalg.tensordot(A, B, axes=1)",
@@ -9047,7 +9047,7 @@
       },
       "linalg.tensorinv": {
         "category": "counted_custom",
-        "analytical_formula": "n^3 after reshape",
+        "analytical_formula": "n^3",
         "analytical_flops": 262144,
         "benchmark_size": "A: (8,8,8,8)",
         "bench_code": "np.linalg.tensorinv(A, ind=2)",
@@ -9072,7 +9072,7 @@
       },
       "linalg.tensorsolve": {
         "category": "counted_custom",
-        "analytical_formula": "n^3 after reshape",
+        "analytical_formula": "n^3",
         "analytical_flops": 262144,
         "benchmark_size": "A: (8,8,8,8), b: (8,8)",
         "bench_code": "np.linalg.tensorsolve(A, b)",
@@ -9147,7 +9147,7 @@
       },
       "linalg.vector_norm": {
         "category": "counted_custom",
-        "analytical_formula": "numel (L2)",
+        "analytical_formula": "numel",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,)",
         "bench_code": "np.linalg.vector_norm(x)",
