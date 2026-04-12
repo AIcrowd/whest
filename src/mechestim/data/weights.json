@@ -9182,8 +9182,8 @@
       },
       "diag": {
         "category": "counted_custom",
-        "analytical_formula": "numel(input)",
-        "notes": "Extract diagonal or construct diagonal array. Cost: numel(input)."
+        "analytical_formula": "len(diagonal)",
+        "notes": "Extract diagonal or construct diagonal array. Cost: len(diagonal)."
       },
       "arange": {
         "category": "counted_custom",
@@ -9372,8 +9372,8 @@
       },
       "trim_zeros": {
         "category": "counted_custom",
-        "analytical_formula": "numel(output)",
-        "notes": "Trim leading/trailing zeros from 1-D array. Cost: numel(output)."
+        "analytical_formula": "num trimmed",
+        "notes": "Trim leading/trailing zeros from 1-D array. Cost: num trimmed."
       },
       "resize": {
         "category": "counted_custom",
@@ -9447,8 +9447,8 @@
       },
       "diagflat": {
         "category": "counted_custom",
-        "analytical_formula": "numel(input)",
-        "notes": "Create diagonal array from flattened input. Cost: numel(input)."
+        "analytical_formula": "len(v)",
+        "notes": "Create diagonal array from flattened input. Cost: len(v)."
       },
       "mask_indices": {
         "category": "counted_custom",
@@ -9457,8 +9457,8 @@
       },
       "fill_diagonal": {
         "category": "counted_custom",
-        "analytical_formula": "numel(input)",
-        "notes": "Fill main diagonal of given array. Cost: numel(input)."
+        "analytical_formula": "min(m,n)",
+        "notes": "Fill main diagonal of given array. Cost: min(m,n)."
       },
       "concat": {
         "category": "counted_custom",
@@ -9482,18 +9482,18 @@
       },
       "delete": {
         "category": "counted_custom",
-        "analytical_formula": "numel(output)",
-        "notes": "Return array with sub-arrays deleted along axis. Cost: numel(output)."
+        "analytical_formula": "num deleted",
+        "notes": "Return array with sub-arrays deleted along axis. Cost: num deleted."
       },
       "insert": {
         "category": "counted_custom",
-        "analytical_formula": "numel(output)",
-        "notes": "Insert values along axis before given indices. Cost: numel(output)."
+        "analytical_formula": "numel(values)",
+        "notes": "Insert values along axis before given indices. Cost: numel(values)."
       },
       "append": {
         "category": "counted_custom",
-        "analytical_formula": "numel(output)",
-        "notes": "Append values to end of array. Cost: numel(output)."
+        "analytical_formula": "numel(values)",
+        "notes": "Append values to end of array. Cost: numel(values)."
       },
       "copyto": {
         "category": "counted_custom",
