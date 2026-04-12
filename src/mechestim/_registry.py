@@ -1186,7 +1186,7 @@ REGISTRY: dict[str, dict] = {
     "full": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Create array filled with scalar value. Cost: numel(output).",
+        "notes": "Create array filled with scalar value. Cost: num copied.",
     },
     "eye": {
         "category": "free",
@@ -1882,7 +1882,7 @@ REGISTRY: dict[str, dict] = {
     "copyto": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Copy values from src to dst array. Cost: numel(output).",
+        "notes": "Copy values from src to dst array. Cost: num copied.",
     },
     "unique_all": {
         "category": "counted_custom",

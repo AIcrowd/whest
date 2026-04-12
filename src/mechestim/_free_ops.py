@@ -718,13 +718,17 @@ def concat(*args, **kwargs):
 attach_docstring(concat, _np.concat, "free", "0 FLOPs")
 
 
-def copyto(dst, src, *args, **kwargs):
-    """Copies values from one array to another. Cost: numel(output)."""
+def copyto(dst, src, casting="same_kind", where=True):
+    """Copies values from one array to another. Cost: num elements copied."""
     budget = require_budget()
-    dst_arr = _np.asarray(dst)
-    cost = dst_arr.size
-    budget.deduct("copyto", flop_cost=cost, subscripts=None, shapes=(dst_arr.shape,))
-    return _np.copyto(dst, src, *args, **kwargs)
+    src_arr = _np.asarray(src)
+    if where is not True:
+        where_arr = _np.asarray(where)
+        cost = int(_np.count_nonzero(where_arr))
+    else:
+        cost = src_arr.size
+    budget.deduct("copyto", flop_cost=cost, subscripts=None, shapes=())
+    return _np.copyto(dst, src, casting=casting, where=where)
 
 
 attach_docstring(copyto, _np.copyto, "free", "0 FLOPs")
