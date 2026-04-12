@@ -12,6 +12,7 @@ import numpy as _np
 from mechestim._docstrings import attach_docstring
 from mechestim._symmetric import SymmetricTensor
 from mechestim._validation import require_budget
+from mechestim.errors import UnsupportedFunctionError
 
 
 def _symmetric_2d(result):
@@ -1368,16 +1369,25 @@ def unravel_index(*args, **kwargs):
 attach_docstring(unravel_index, _np.unravel_index, "free", "0 FLOPs")
 
 
-def unstack(x, *args, **kwargs):
-    """Split array into sequence of arrays along an axis. Cost: numel(input)."""
-    budget = require_budget()
-    x_arr = _np.asarray(x)
-    cost = x_arr.size
-    budget.deduct("unstack", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,))
-    return _np.unstack(x, *args, **kwargs)
+if hasattr(_np, "unstack"):
 
+    def unstack(x, *args, **kwargs):
+        """Split array into sequence of arrays along an axis. Cost: numel(input)."""
+        budget = require_budget()
+        x_arr = _np.asarray(x)
+        cost = x_arr.size
+        budget.deduct(
+            "unstack", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,)
+        )
+        return _np.unstack(x, *args, **kwargs)
 
-attach_docstring(unstack, _np.unstack, "free", "0 FLOPs")
+    attach_docstring(unstack, _np.unstack, "free", "0 FLOPs")
+
+else:
+
+    def unstack(*args, **kwargs):
+        raise UnsupportedFunctionError("unstack", min_version="2.1")
+
 
 # ---------------------------------------------------------------------------
 # Wrap all free op return values as MechestimArray

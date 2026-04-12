@@ -9539,6 +9539,8 @@
     "inner": 1.0,
     "vdot": 1.0,
     "vecdot": 1.0,
+    "matvec": 1.0,
+    "vecmat": 1.0,
     "outer": 1.0,
     "tensordot": 1.0,
     "kron": 1.0,

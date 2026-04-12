@@ -1,4 +1,4 @@
-"""Registry of all public numpy 2.1.3 callables with FLOP-counting categories.
+"""Registry of all public numpy 2.x callables with FLOP-counting categories.
 
 Categories
 ----------
@@ -13,8 +13,9 @@ blacklisted        intentionally unsupported
 from __future__ import annotations
 
 REGISTRY_META: dict = {
-    "numpy_version": "2.1.3",
-    "last_updated": "2026-04-01",
+    "numpy_version": "2.2.6",
+    "numpy_supported": ">=2.0.0,<2.3.0",
+    "last_updated": "2026-04-12",
 }
 
 # ---------------------------------------------------------------------------
@@ -283,6 +284,7 @@ REGISTRY: dict[str, dict] = {
     "bitwise_count": {
         "category": "counted_unary",
         "module": "numpy",
+        "min_numpy": "2.1",
         "notes": "Count set bits element-wise (popcount).",
     },
     "invert": {
@@ -616,7 +618,20 @@ REGISTRY: dict[str, dict] = {
     "vecdot": {
         "category": "counted_binary",
         "module": "numpy",
+        "min_numpy": "2.1",
         "notes": "Vector dot product along last axis.",
+    },
+    "matvec": {
+        "category": "counted_binary",
+        "module": "numpy",
+        "min_numpy": "2.2",
+        "notes": "Matrix-vector product. Cost = output_size * contracted_axis.",
+    },
+    "vecmat": {
+        "category": "counted_binary",
+        "module": "numpy",
+        "min_numpy": "2.2",
+        "notes": "Vector-matrix product. Cost = output_size * contracted_axis.",
     },
     # ------------------------------------------------------------------
     # counted_reduction — implemented in _pointwise.py
@@ -799,11 +814,13 @@ REGISTRY: dict[str, dict] = {
     "cumulative_sum": {
         "category": "counted_reduction",
         "module": "numpy",
+        "min_numpy": "2.1",
         "notes": "Cumulative sum (NumPy 2.x array API).",
     },
     "cumulative_prod": {
         "category": "counted_reduction",
         "module": "numpy",
+        "min_numpy": "2.1",
         "notes": "Cumulative product (NumPy 2.x array API).",
     },
     # ------------------------------------------------------------------
@@ -1862,6 +1879,7 @@ REGISTRY: dict[str, dict] = {
     "unstack": {
         "category": "counted_custom",
         "module": "numpy",
+        "min_numpy": "2.1",
         "notes": "Unstack array along axis into tuple of arrays (NumPy 2.x). Cost: numel(output).",
     },
     "delete": {
