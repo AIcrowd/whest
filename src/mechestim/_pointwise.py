@@ -17,6 +17,7 @@ from mechestim._symmetric import (
     propagate_symmetry_reduce,
 )
 from mechestim._validation import check_nan_inf, require_budget
+from mechestim.errors import UnsupportedFunctionError
 
 # ---------------------------------------------------------------------------
 # Factory helpers
@@ -301,7 +302,13 @@ asin = _counted_unary(_np.asin, "asin")
 asinh = _counted_unary(_np.asinh, "asinh")
 atan = _counted_unary(_np.atan, "atan")
 atanh = _counted_unary(_np.atanh, "atanh")
-bitwise_count = _counted_unary(_np.bitwise_count, "bitwise_count")
+if hasattr(_np, "bitwise_count"):
+    bitwise_count = _counted_unary(_np.bitwise_count, "bitwise_count")
+else:
+
+    def bitwise_count(*args, **kwargs):
+        raise UnsupportedFunctionError("bitwise_count", min_version="2.1")
+
 bitwise_invert = _counted_unary(_np.bitwise_invert, "bitwise_invert")
 bitwise_not = _counted_unary(_np.bitwise_not, "bitwise_not")
 cbrt = _counted_unary(_np.cbrt, "cbrt")
@@ -465,25 +472,89 @@ right_shift = _counted_binary(_np.right_shift, "right_shift")
 true_divide = _counted_binary(_np.true_divide, "true_divide")
 
 
-def vecdot(a, b, **kwargs):
-    """Counted version of np.vecdot.
+if hasattr(_np, "vecdot"):
 
-    Vector dot product along last axis. Each output element is the dot
-    product of two vectors of length K (the last axis), costing K FLOPs.
-    Total cost = batch_size * K = numel(a) when a and b have the same shape.
-    """
-    budget = require_budget()
-    if not isinstance(a, _np.ndarray):
-        a = _np.asarray(a)
-    if not isinstance(b, _np.ndarray):
-        b = _np.asarray(b)
-    result = _np.vecdot(a, b, **kwargs)
-    # Cost = output_elements * contracted_axis_size
-    # For vecdot, the last axis is contracted.
-    contracted = a.shape[-1] if a.ndim > 0 else 1
-    cost = result.size * contracted
-    budget.deduct("vecdot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
-    return result
+    def vecdot(a, b, **kwargs):
+        """Counted version of np.vecdot.
+
+        Vector dot product along last axis. Each output element is the dot
+        product of two vectors of length K (the last axis), costing K FLOPs.
+        Total cost = batch_size * K = numel(a) when a and b have the same shape.
+        """
+        budget = require_budget()
+        if not isinstance(a, _np.ndarray):
+            a = _np.asarray(a)
+        if not isinstance(b, _np.ndarray):
+            b = _np.asarray(b)
+        result = _np.vecdot(a, b, **kwargs)
+        # Cost = output_elements * contracted_axis_size
+        # For vecdot, the last axis is contracted.
+        contracted = a.shape[-1] if a.ndim > 0 else 1
+        cost = result.size * contracted
+        budget.deduct(
+            "vecdot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+        )
+        return result
+
+else:
+
+    def vecdot(*args, **kwargs):
+        raise UnsupportedFunctionError("vecdot", min_version="2.1")
+
+
+if hasattr(_np, "matvec"):
+
+    def matvec(a, b, **kwargs):
+        """Counted version of np.matvec.
+
+        Matrix-vector product. A is (..., m, n), v is (..., n), result is (..., m).
+        Cost = output_size * contracted_axis (A's last axis).
+        """
+        budget = require_budget()
+        if not isinstance(a, _np.ndarray):
+            a = _np.asarray(a)
+        if not isinstance(b, _np.ndarray):
+            b = _np.asarray(b)
+        result = _np.matvec(a, b, **kwargs)
+        contracted = a.shape[-1] if a.ndim > 0 else 1
+        cost = result.size * contracted
+        budget.deduct(
+            "matvec", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+        )
+        return result
+
+else:
+
+    def matvec(*args, **kwargs):
+        raise UnsupportedFunctionError("matvec", min_version="2.2")
+
+
+if hasattr(_np, "vecmat"):
+
+    def vecmat(a, b, **kwargs):
+        """Counted version of np.vecmat.
+
+        Vector-matrix product. v is (..., n), A is (..., n, m), result is (..., m).
+        Cost = output_size * contracted_axis (v's last axis).
+        """
+        budget = require_budget()
+        if not isinstance(a, _np.ndarray):
+            a = _np.asarray(a)
+        if not isinstance(b, _np.ndarray):
+            b = _np.asarray(b)
+        result = _np.vecmat(a, b, **kwargs)
+        contracted = a.shape[-1] if a.ndim > 0 else 1
+        cost = result.size * contracted
+        budget.deduct(
+            "vecmat", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+        )
+        return result
+
+else:
+
+    def vecmat(*args, **kwargs):
+        raise UnsupportedFunctionError("vecmat", min_version="2.2")
+
 
 
 # Multi-output binary ops
@@ -547,8 +618,20 @@ amin = _counted_reduction(_np.amin, "amin")
 any = _counted_reduction(_np.any, "any")
 average = _counted_reduction(_np.average, "average", extra_output=True)
 count_nonzero = _counted_reduction(_np.count_nonzero, "count_nonzero")
-cumulative_prod = _counted_reduction(_np.cumulative_prod, "cumulative_prod")
-cumulative_sum = _counted_reduction(_np.cumulative_sum, "cumulative_sum")
+if hasattr(_np, "cumulative_prod"):
+    cumulative_prod = _counted_reduction(_np.cumulative_prod, "cumulative_prod")
+else:
+
+    def cumulative_prod(*args, **kwargs):
+        raise UnsupportedFunctionError("cumulative_prod", min_version="2.1")
+
+if hasattr(_np, "cumulative_sum"):
+    cumulative_sum = _counted_reduction(_np.cumulative_sum, "cumulative_sum")
+else:
+
+    def cumulative_sum(*args, **kwargs):
+        raise UnsupportedFunctionError("cumulative_sum", min_version="2.1")
+
 median = _counted_reduction(_np.median, "median")
 nanargmax = _counted_reduction(_np.nanargmax, "nanargmax")
 nanargmin = _counted_reduction(_np.nanargmin, "nanargmin")
