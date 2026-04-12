@@ -118,7 +118,6 @@ All weights are normalized against element-wise addition (`np.add`):
 | `arctanh` | 16.0000 | high | numel(output) | [\_pointwise.py:273](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L273) | Element-wise inverse hyperbolic tangent. |
 | `sinc` | 16.0000 | low | numel(output) | [\_pointwise.py:364](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L364) | Normalized sinc function element-wise. |
 | `i0` | 16.0000 | low | numel(output) | [\_pointwise.py:317](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L317) | Modified Bessel function of order 0, element-wise. |
-| `clip` | 1.0000 | medium | numel(output) | [\_pointwise.py:473](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L473) | Clip array to [a_min, a_max] element-wise. |
 | `abs` | 1.0000 | low | numel(output) | [\_pointwise.py:249](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L249) | Element-wise absolute value; alias for absolute. |
 | `negative` | 1.0000 | low | numel(output) | [\_pointwise.py:250](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L250) | Element-wise negation. |
 | `positive` | 1.0000 | low | numel(output) | [\_pointwise.py:330](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L330) | Element-wise unary plus (copy with sign preserved). |
@@ -143,8 +142,9 @@ All weights are normalized against element-wise addition (`np.add`):
 | `nan_to_num` | 1.0000 | low | numel(output) | [\_pointwise.py:329](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L329) | Replace NaN/inf with finite numbers element-wise. |
 | `isneginf` | 1.0000 | low | numel(output) | [\_pointwise.py:323](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L323) | Test for negative infinity element-wise. |
 | `isposinf` | 1.0000 | low | numel(output) | [\_pointwise.py:324](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L324) | Test for positive infinity element-wise. |
+| `isclose` | 1.0000 | medium | numel(output) | [\_pointwise.py:388](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L388) | Element-wise approximate equality test. |
 
-### Pointwise Binary (33 operations)
+### Pointwise Binary (32 operations)
 
 | Op | Weight | Confidence | Formula | Impl | Notes |
 |:---|-------:|:-----------|:--------|:-----|:------|
@@ -179,7 +179,6 @@ All weights are normalized against element-wise addition (`np.add`):
 | `copysign` | 1.0000 | low | numel(output) | [\_pointwise.py:427](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L427) | Copy sign of x2 to magnitude of x1 element-wise. |
 | `nextafter` | 1.0000 | low | numel(output) | [\_pointwise.py:449](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L449) | Return next float after x1 toward x2 element-wise. |
 | `ldexp` | 1.0000 | low | numel(output) | [\_pointwise.py:440](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L440) | Return x1 * 2**x2 element-wise. |
-| `isclose` | 1.0000 | medium | numel(output) | [\_pointwise.py:388](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L388) | Element-wise approximate equality test. |
 | `heaviside` | 1.0000 | low | numel(output) | [\_pointwise.py:437](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L437) | Heaviside step function element-wise. |
 
 ### Reductions (35 operations)
@@ -229,8 +228,8 @@ All weights are normalized against element-wise addition (`np.add`):
 | `sort` | 1.0000 | medium | n * ceil(log2(n)) | [\_sorting\_ops.py:43](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L43) | Comparison sort; cost = n*ceil(log2(n)) per slice. |
 | `argsort` | 1.0000 | medium | n * ceil(log2(n)) | [\_sorting\_ops.py:62](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L62) | Indirect sort; cost = n*ceil(log2(n)) per slice. |
 | `lexsort` | 1.0000 | low | k * n * ceil(log2(n)) | [\_sorting\_ops.py:88](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L88) | Multi-key sort; cost = k*n*ceil(log2(n)). |
-| `partition` | 1.0000 | medium | n | [\_sorting\_ops.py:111](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L111) | Quickselect; cost = n per slice. |
-| `argpartition` | 1.0000 | medium | n | [\_sorting\_ops.py:136](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L136) | Indirect partition; cost = n per slice. |
+| `partition` | 1.0000 | medium | n * len(kth) | [\_sorting\_ops.py:111](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L111) | Quickselect; cost = n per slice. |
+| `argpartition` | 1.0000 | medium | n * len(kth) | [\_sorting\_ops.py:136](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L136) | Indirect partition; cost = n per slice. |
 | `searchsorted` | 1.0000 | low | m * ceil(log2(n)) | [\_sorting\_ops.py:166](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L166) | Binary search; cost = m*ceil(log2(n)). |
 | `unique` | 1.0000 | medium | n * ceil(log2(n)) | [\_sorting\_ops.py:227](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L227) | Sort-based unique; cost = n*ceil(log2(n)). |
 | `in1d` | 1.0000 | medium | (n+m) * ceil(log2(n+m)) | [\_sorting\_ops.py:313](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L313) | Set membership; cost = (n+m)*ceil(log2(n+m)). |
@@ -267,61 +266,61 @@ All weights are normalized against element-wise addition (`np.add`):
 
 | Op | Weight | Confidence | Formula | Impl | Notes |
 |:---|-------:|:-----------|:--------|:-----|:------|
-| `linalg.cholesky` | 4.0000 | high | n^3 / 3 | [\_decompositions.py:46](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L46) | Cholesky decomposition. Cost: $n^3/3$ (Golub & Van Loan §4.2). |
-| `linalg.qr` | 4.0000 | medium | 2*m*n^2 - 2*n^3/3 | [\_decompositions.py:87](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L87) | QR decomposition. Cost: $2mn^2 - (2/3)n^3$ (Golub & Van Loan §5.2). |
-| `linalg.eig` | 4.0000 | medium | 10*n^3 | [\_decompositions.py:127](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L127) | Eigendecomposition. Cost: $10n^3$ (Francis QR, Golub & Van Loan §7.5). |
-| `linalg.eigh` | 4.0000 | high | 4*n^3 / 3 | [\_decompositions.py:165](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L165) | Symmetric eigendecomposition. Cost: $(4/3)n^3$ (Golub & Van Loan §8.3). |
-| `linalg.eigvals` | 4.0000 | high | 7*n^3 | [\_decompositions.py:207](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L207) | Eigenvalues only. Cost: $10n^3$ (same as eig). |
-| `linalg.eigvalsh` | 4.0000 | high | 4*n^3 / 3 | [\_decompositions.py:243](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L243) | Symmetric eigenvalues. Cost: $(4/3)n^3$ (same as eigh). |
+| `linalg.cholesky` | 4.0000 | high | n^3 | [\_decompositions.py:46](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L46) | Cholesky decomposition. Cost: $n^3$. |
+| `linalg.qr` | 4.0000 | medium | m*n*min(m,n) | [\_decompositions.py:87](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L87) | QR decomposition. Cost: $m \cdot n \cdot \min(m,n)$. |
+| `linalg.eig` | 4.0000 | medium | n^3 | [\_decompositions.py:127](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L127) | Eigendecomposition. Cost: $n^3$. |
+| `linalg.eigh` | 4.0000 | high | n^3 | [\_decompositions.py:165](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L165) | Symmetric eigendecomposition. Cost: $n^3$. |
+| `linalg.eigvals` | 4.0000 | high | n^3 | [\_decompositions.py:207](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L207) | Eigenvalues only. Cost: $n^3$. |
+| `linalg.eigvalsh` | 4.0000 | high | n^3 | [\_decompositions.py:243](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L243) | Symmetric eigenvalues. Cost: $n^3$. |
 | `linalg.svd` | 4.0000 | medium | m*n*min(m,n) | [\_svd.py:67](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_svd.py#L67) | Singular value decomposition; cost ~ O(min(m,n)*m*n). |
 | `linalg.svdvals` | 4.0000 | medium | m*n*min(m,n) | [\_decompositions.py:281](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L281) | Singular values only. Cost: m*n*min(m,n) (Golub-Reinsch). |
 | `linalg.inv` | 4.0000 | medium | n^3 | [\_solvers.py:101](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_solvers.py#L101) | Matrix inverse. Cost: $n^3$ (LU + solve). |
 | `linalg.lstsq` | 4.0000 | medium | m*n*min(m,n) | [\_solvers.py:147](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_solvers.py#L147) | Least squares. Cost: m*n*min(m,n) (LAPACK gelsd/SVD). |
 | `linalg.pinv` | 4.0000 | high | m*n*min(m,n) | [\_solvers.py:187](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_solvers.py#L187) | Pseudoinverse. Cost: m*n*min(m,n) (via SVD). |
-| `linalg.det` | 4.0000 | low | 2*n^3 / 3 | [\_properties.py:87](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_properties.py#L87) | Determinant. Cost: $n^3$ (LU factorization). |
-| `linalg.slogdet` | 4.0000 | low | 2*n^3 / 3 | [\_properties.py:134](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_properties.py#L134) | Sign + log determinant. Cost: $n^3$ (LU factorization). |
-| `linalg.solve` | 1.0000 | low | 2*n^3/3 + 2*n^2 | [\_solvers.py:54](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_solvers.py#L54) | Solve Ax=b. Cost: $2n^3/3$ (LU) + $n^2 \cdot n_{\text{rhs}}$ (back-substitution). |
+| `linalg.det` | 4.0000 | low | n^3 | [\_properties.py:87](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_properties.py#L87) | Determinant. Cost: $n^3$. |
+| `linalg.slogdet` | 4.0000 | low | n^3 | [\_properties.py:134](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_properties.py#L134) | Sign + log determinant. Cost: $n^3$. |
+| `linalg.solve` | 1.0000 | low | n^3 | [\_solvers.py:54](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_solvers.py#L54) | Solve Ax=b. Cost: $n^3$. |
 
 ### Linalg Delegates (15 operations)
 
 | Op | Weight | Confidence | Formula | Impl | Notes |
 |:---|-------:|:-----------|:--------|:-----|:------|
-| `linalg.cond` | 4.0000 | high | m*n*min(m,n) |  |  |
-| `linalg.matrix_power` | 4.0000 | high | (ceil(log2(k))+popcount(k)-1)*n^3 |  |  |
-| `linalg.matrix_rank` | 4.0000 | high | m*n*min(m,n) |  |  |
-| `linalg.cross` | 1.0000 | medium | 6*n |  |  |
-| `linalg.matmul` | 1.0000 | high | 2*M*N*K |  |  |
-| `linalg.matrix_norm` | 1.0000 | medium | 2*numel (Frobenius) |  |  |
-| `linalg.multi_dot` | 1.0000 | high | 2*(128*64*128 + 128*128*64) |  |  |
-| `linalg.norm` | 1.0000 | medium | numel (L2) |  |  |
-| `linalg.outer` | 1.0000 | high | M*N |  |  |
-| `linalg.tensordot` | 1.0000 | high | 2*d^5 |  |  |
-| `linalg.tensorinv` | 1.0000 | high | n^3 after reshape |  |  |
-| `linalg.tensorsolve` | 1.0000 | high | n^3 after reshape |  |  |
-| `linalg.trace` | 1.0000 | low | min(m,n) |  | Matrix trace. Cost: n (sum of diagonal elements). Weight set to match trace/sum (subprocess overhead dominates at small analytical cost). |
-| `linalg.vecdot` | 1.0000 | medium | batch*K |  |  |
-| `linalg.vector_norm` | 1.0000 | medium | numel (L2) |  |  |
+| `linalg.cond` | 4.0000 | high | m*n*min(m,n) |  | Condition number. Cost: m*n*min(m,n) (via SVD). |
+| `linalg.matrix_power` | 4.0000 | high | (ceil(log2(k))+popcount(k)-1)*n^3 |  | Matrix power. Cost: $(\lfloor\log_2 k\rfloor + \text{popcount}(k) - 1) \cdot n^3$ (exponentiation by squaring). |
+| `linalg.matrix_rank` | 4.0000 | high | m*n*min(m,n) |  | Matrix rank. Cost: m*n*min(m,n) (via SVD). |
+| `linalg.cross` | 1.0000 | medium | 6*n |  | Delegates to `me.cross` which charges `numel(output)` FLOPs. |
+| `linalg.matmul` | 1.0000 | high | MNK |  | Delegates to `me.matmul` which charges `m*k*n` FLOPs (FMA=1). |
+| `linalg.matrix_norm` | 1.0000 | medium | numel |  | Matrix norm. Cost depends on ord: 2*numel for Frobenius, m*n*min(m,n) for ord=2. |
+| `linalg.multi_dot` | 1.0000 | high | sum of chain MNK costs |  | Chain matmul. Cost: sum of optimal chain matmul costs (CLRS §15.2). |
+| `linalg.norm` | 1.0000 | medium | numel |  | Norm. Cost depends on ord: numel for L1/inf, 2*numel for Frobenius, m*n*min(m,n) for ord=2. |
+| `linalg.outer` | 1.0000 | high | M*N |  | Delegates to `me.outer` which charges `m*n` FLOPs. |
+| `linalg.tensordot` | 1.0000 | high | product of free * contracted dims |  | Delegates to `me.tensordot` which charges FLOPs based on contraction. |
+| `linalg.tensorinv` | 1.0000 | high | n^3 |  | Tensor inverse. Cost: $n^3$ after reshape (delegates to inv). |
+| `linalg.tensorsolve` | 1.0000 | high | n^3 |  | Tensor solve. Cost: $n^3$ after reshape (delegates to solve). |
+| `linalg.trace` | 1.0000 | low | min(m,n) |  | Matrix trace. Cost: n (sum of diagonal elements). |
+| `linalg.vecdot` | 1.0000 | medium | batch*K |  | Delegates to `me.vecdot` which charges `2*n` FLOPs. |
+| `linalg.vector_norm` | 1.0000 | medium | numel |  | Vector norm. Cost: numel (or 2*numel for general p-norm). |
 
 ### Contractions (9 operations)
 
 | Op | Weight | Confidence | Formula | Impl | Notes |
 |:---|-------:|:-----------|:--------|:-----|:------|
-| `dot` | 1.0000 | high | 2*M*N*K | [\_pointwise.py:587](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L587) | Dot product; cost = 2*M*N*K for matrix multiply. |
-| `matmul` | 1.0000 | high | 2*M*N*K | [\_pointwise.py:623](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L623) | Matrix multiplication; cost = 2*M*N*K. |
+| `dot` | 1.0000 | high | MNK | [\_pointwise.py:587](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L587) | Dot product; cost = 2*M*N*K for matrix multiply. |
+| `matmul` | 1.0000 | high | MNK | [\_pointwise.py:623](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L623) | Matrix multiplication; cost = 2*M*N*K. |
 | `inner` | 1.0000 | medium | N (a.size) | [\_pointwise.py:649](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L649) | Inner product; cost = 2*N for 1-D, 2*N*M for n-D. |
 | `vdot` | 1.0000 | medium | N (a.size) | [\_pointwise.py:707](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L707) | Dot product with conjugation; cost = 2*N. |
 | `vecdot` | 1.0000 | medium | batch * K (output_size * contracted_axis) | [\_pointwise.py:455](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L455) | Vector dot product along last axis. |
 | `outer` | 1.0000 | high | M*N | [\_pointwise.py:665](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L665) | Outer product of two vectors; cost = M*N. |
-| `tensordot` | 1.0000 | high | 2*d^5 (axes=1, shape=(d,d,d)) | [\_\_init\_\_.py:74](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/__init__.py#L74) | Tensor dot product along specified axes. |
-| `kron` | 1.0000 | high | d^4 (Kronecker, shape=(d,d)x(d,d)) | [\_pointwise.py:723](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L723) | Kronecker product; cost proportional to output size. |
-| `einsum` | 1.0000 | high | 2*M*N*K (ij,jk->ik) | [\_einsum.py:135](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_einsum.py#L135) | Generalized Einstein summation. |
+| `tensordot` | 1.0000 | high | product of free * contracted dims | [\_\_init\_\_.py:74](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/__init__.py#L74) | Tensor dot product along specified axes. |
+| `kron` | 1.0000 | high | numel(output) | [\_pointwise.py:723](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L723) | Kronecker product; cost proportional to output size. |
+| `einsum` | 1.0000 | high | product of index dims (FMA=1) | [\_einsum.py:135](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_einsum.py#L135) | Generalized Einstein summation. |
 
 ### Polynomial (10 operations)
 
 | Op | Weight | Confidence | Formula | Impl | Notes |
 |:---|-------:|:-----------|:--------|:-----|:------|
-| `roots` | 16.0000 | high | 10 * degree^3 | [\_polynomial.py:217](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L217) | Return roots of polynomial with given coefficients. Cost: $10n^3$ FLOPs (companion matrix eig). |
-| `polyval` | 1.0000 | high | 2 * n * degree | [\_polynomial.py:78](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L78) | Evaluate polynomial at given points. Cost: 2 * m * deg FLOPs (Horner's method). |
+| `roots` | 16.0000 | high | degree^3 | [\_polynomial.py:217](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L217) | Return roots of polynomial with given coefficients. Cost: $n^3$ (companion matrix eig, simplified). |
+| `polyval` | 1.0000 | high | n * degree | [\_polynomial.py:78](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L78) | Evaluate polynomial at given points. Cost: $m \cdot \text{deg}$ (Horner's method, FMA=1). |
 | `polyfit` | 1.0000 | high | 2 * n * (degree+1)^2 | [\_polynomial.py:187](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L187) | Least squares polynomial fit. Cost: 2 * m * (deg+1)^2 FLOPs. |
 | `polyadd` | 1.0000 | high | degree + 1 | [\_polynomial.py:96](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L96) | Add two polynomials. Cost: max(n1, n2) FLOPs. |
 | `polysub` | 1.0000 | high | degree + 1 | [\_polynomial.py:113](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L113) | Difference (subtraction) of two polynomials. Cost: max(n1, n2) FLOPs. |
@@ -379,13 +378,14 @@ All weights are normalized against element-wise addition (`np.add`):
 | `random.random` | 1.0000 | high | numel(output) | [\_\_init\_\_.py:175](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L175) | Sampling; cost = numel(output). |
 | `random.random_sample` | 1.0000 | high | numel(output) | [\_\_init\_\_.py:176](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L176) | Sampling; cost = numel(output). |
 
-### Misc (96 operations)
+### Misc (97 operations)
 
 | Op | Weight | Confidence | Formula | Impl | Notes |
 |:---|-------:|:-----------|:--------|:-----|:------|
 | `allclose` | 1.0000 | medium | n | [\_counting\_ops.py:45](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L45) | Element-wise tolerance check; cost = numel(a). |
 | `array_equal` | 1.0000 | low | n | [\_counting\_ops.py:60](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L60) | Element-wise equality; cost = numel(a). |
 | `array_equiv` | 1.0000 | low | n | [\_counting\_ops.py:82](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L82) | Element-wise equivalence; cost = numel(a). |
+| `clip` | 1.0000 | medium | numel(output) | [\_pointwise.py:473](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L473) | Clip array to [a_min, a_max] element-wise. |
 | `diff` | 1.0000 | medium | n | [\_pointwise.py:759](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L759) | n-th discrete difference along axis. |
 | `ediff1d` | 1.0000 | medium | n | [\_pointwise.py:789](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L789) | Differences between consecutive elements. |
 | `gradient` | 1.0000 | medium | n | [\_pointwise.py:775](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L775) | Gradient using central differences. |
@@ -402,83 +402,83 @@ All weights are normalized against element-wise addition (`np.add`):
 | `digitize` | 1.0000 | low | n * ceil(log2(bins)) | [\_sorting\_ops.py:193](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L193) | Bin search; cost = n*ceil(log2(bins)). |
 | `bincount` | 1.0000 | high | n | [\_counting\_ops.py:221](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L221) | Integer counting; cost = numel(x). |
 | `interp` | 1.0000 | medium | n * ceil(log2(xp)) | [\_pointwise.py:900](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L900) | 1-D linear interpolation. |
-| `trace` | 1.0000 | low | min(m, n) | [\_counting\_ops.py:26](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L26) | Diagonal sum; cost = min(n,m). Weight set to match sum (both are simple reductions; direct measurement dominated by subprocess overhead). |
+| `trace` | 1.0000 | low | min(m, n) | [\_counting\_ops.py:26](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L26) | Diagonal sum; cost = min(n,m). |
 | `trapezoid` | 1.0000 | high | n | [\_pointwise.py:875](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L875) | Integrate using the trapezoidal rule. |
 | `logspace` | 1.0000 | high | n | [\_counting\_ops.py:236](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L236) | Log-spaced generation; cost = num. |
 | `geomspace` | 1.0000 | high | n | [\_counting\_ops.py:246](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L246) | Geometric-spaced generation; cost = num. |
 | `vander` | 1.0000 | high | n * (degree - 1) | [\_counting\_ops.py:260](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L260) | Vandermonde matrix; cost = len(x)*(N-1). |
-| `apply_along_axis` | 1.0000 |  |  |  |  |
-| `apply_over_axes` | 1.0000 |  |  |  |  |
-| `piecewise` | 1.0000 |  |  |  |  |
-| `append` | 1.0000 |  |  |  |  |
-| `arange` | 1.0000 |  |  |  |  |
-| `argwhere` | 1.0000 |  |  |  |  |
-| `array` | 1.0000 |  |  |  |  |
-| `array_split` | 1.0000 |  |  |  |  |
-| `asarray` | 1.0000 |  |  |  |  |
-| `asarray_chkfinite` | 1.0000 |  |  |  |  |
-| `base_repr` | 1.0000 |  |  |  |  |
-| `binary_repr` | 1.0000 |  |  |  |  |
-| `block` | 1.0000 |  |  |  |  |
-| `bmat` | 1.0000 |  |  |  |  |
-| `broadcast_arrays` | 1.0000 |  |  |  |  |
-| `broadcast_to` | 1.0000 |  |  |  |  |
-| `choose` | 1.0000 |  |  |  |  |
-| `compress` | 1.0000 |  |  |  |  |
-| `concat` | 1.0000 |  |  |  |  |
-| `concatenate` | 1.0000 |  |  |  |  |
-| `copyto` | 1.0000 |  |  |  |  |
-| `delete` | 1.0000 |  |  |  |  |
-| `diag` | 1.0000 |  |  |  |  |
-| `diagflat` | 1.0000 |  |  |  |  |
-| `diagonal` | 1.0000 |  |  |  |  |
-| `dsplit` | 1.0000 |  |  |  |  |
-| `dstack` | 1.0000 |  |  |  |  |
-| `extract` | 1.0000 |  |  |  |  |
-| `fill_diagonal` | 1.0000 |  |  |  |  |
-| `flatnonzero` | 1.0000 |  |  |  |  |
-| `from_dlpack` | 1.0000 |  |  |  |  |
-| `frombuffer` | 1.0000 |  |  |  |  |
-| `fromfile` | 1.0000 |  |  |  |  |
-| `fromfunction` | 1.0000 |  |  |  |  |
-| `fromiter` | 1.0000 |  |  |  |  |
-| `fromregex` | 1.0000 |  |  |  |  |
-| `fromstring` | 1.0000 |  |  |  |  |
-| `full` | 1.0000 |  |  |  |  |
-| `full_like` | 1.0000 |  |  |  |  |
-| `indices` | 1.0000 |  |  |  |  |
-| `insert` | 1.0000 |  |  |  |  |
-| `isfinite` | 1.0000 |  |  |  |  |
-| `isinf` | 1.0000 |  |  |  |  |
-| `isnan` | 1.0000 |  |  |  |  |
-| `ix_` | 1.0000 |  |  |  |  |
-| `linspace` | 1.0000 |  |  |  |  |
-| `mask_indices` | 1.0000 |  |  |  |  |
-| `meshgrid` | 1.0000 |  |  |  |  |
-| `nonzero` | 1.0000 |  |  |  |  |
-| `packbits` | 1.0000 |  |  |  |  |
-| `pad` | 1.0000 |  |  |  |  |
-| `place` | 1.0000 |  |  |  |  |
-| `put` | 1.0000 |  |  |  |  |
-| `put_along_axis` | 1.0000 |  |  |  |  |
-| `putmask` | 1.0000 |  |  |  |  |
-| `ravel` | 1.0000 |  |  |  |  |
-| `repeat` | 1.0000 |  |  |  |  |
-| `resize` | 1.0000 |  |  |  |  |
-| `roll` | 1.0000 |  |  |  |  |
-| `rollaxis` | 1.0000 |  |  |  |  |
-| `select` | 1.0000 |  |  |  |  |
-| `split` | 1.0000 |  |  |  |  |
-| `stack` | 1.0000 |  |  |  |  |
-| `take` | 1.0000 |  |  |  |  |
-| `take_along_axis` | 1.0000 |  |  |  |  |
-| `tile` | 1.0000 |  |  |  |  |
-| `trim_zeros` | 1.0000 |  |  |  |  |
-| `unpackbits` | 1.0000 |  |  |  |  |
-| `unstack` | 1.0000 |  |  |  |  |
-| `vsplit` | 1.0000 |  |  |  |  |
-| `vstack` | 1.0000 |  |  |  |  |
-| `where` | 1.0000 |  |  |  |  |
+| `apply_along_axis` | 1.0000 |  | numel(output) |  | Apply function along axis. Cost: numel(output). Inner function costs tracked separately. |
+| `apply_over_axes` | 1.0000 |  | numel(output) |  | Apply function over multiple axes. Cost: numel(output). |
+| `piecewise` | 1.0000 |  | numel(input) |  | Piecewise function. Cost: numel(input). |
+| `append` | 1.0000 |  | numel(values) |  | Append values to end of array. Cost: numel(values). |
+| `arange` | 1.0000 |  | numel(output) |  | Return evenly spaced values in given interval. Cost: numel(output). |
+| `argwhere` | 1.0000 |  | numel(input) |  | Find indices of non-zero elements. Cost: numel(input). |
+| `array` | 1.0000 |  | numel(output) |  | Create array from data. Cost: numel(input). |
+| `array_split` | 1.0000 |  | numel(input) |  | Split array into sub-arrays (possibly unequal). Cost: numel(output). |
+| `asarray` | 1.0000 |  | numel(output) |  | Convert input to array. Cost: numel(input). |
+| `asarray_chkfinite` | 1.0000 |  | numel(output) |  | Convert to array, raising if NaN or inf. Cost: numel(input). |
+| `base_repr` | 1.0000 |  | numel(output) |  | Return string representation of number in given base. Cost: numel(input). |
+| `binary_repr` | 1.0000 |  | numel(output) |  | Return binary string representation of the input number. Cost: numel(input). |
+| `block` | 1.0000 |  | numel(output) |  | Assemble ndarray from nested list of blocks. Cost: numel(output). |
+| `bmat` | 1.0000 |  | numel(output) |  | Build matrix from nested list of matrices. Cost: numel(output). |
+| `broadcast_arrays` | 1.0000 |  | numel(output) |  | Broadcast arrays against each other. Cost: numel(output). |
+| `broadcast_to` | 1.0000 |  | numel(output) |  | Broadcast array to new shape. Cost: numel(output). |
+| `choose` | 1.0000 |  | numel(output) |  | Construct array from index array and choices. Cost: numel(output). |
+| `compress` | 1.0000 |  | numel(output) |  | Return selected slices along axis. Cost: numel(input). |
+| `concat` | 1.0000 |  | numel(output) |  | Join arrays along axis (NumPy 2.x array API alias for concatenate). Cost: numel(output). |
+| `concatenate` | 1.0000 |  | numel(output) |  | Join arrays along axis. Cost: numel(output). |
+| `copyto` | 1.0000 |  | num copied |  | Copy values from src to dst array. Cost: numel(output). |
+| `delete` | 1.0000 |  | num deleted |  | Return array with sub-arrays deleted along axis. Cost: num deleted. |
+| `diag` | 1.0000 |  | len(diagonal) |  | Extract diagonal or construct diagonal array. Cost: len(diagonal). |
+| `diagflat` | 1.0000 |  | len(v) |  | Create diagonal array from flattened input. Cost: len(v). |
+| `diagonal` | 1.0000 |  | numel(output) |  | Return specified diagonals. Cost: numel(input). |
+| `dsplit` | 1.0000 |  | numel(input) |  | Split array into multiple sub-arrays depth-wise. Cost: numel(output). |
+| `dstack` | 1.0000 |  | numel(output) |  | Stack arrays depth-wise (along third axis). Cost: numel(output). |
+| `extract` | 1.0000 |  | numel(input) |  | Return elements satisfying condition. Cost: numel(input). |
+| `fill_diagonal` | 1.0000 |  | min(m,n) |  | Fill main diagonal of given array. Cost: min(m,n). |
+| `flatnonzero` | 1.0000 |  | numel(input) |  | Return indices of non-zero elements in flattened array. Cost: numel(input). |
+| `from_dlpack` | 1.0000 |  | numel(output) |  | Create ndarray from DLPack object (zero-copy). Cost: numel(output). |
+| `frombuffer` | 1.0000 |  | numel(output) |  | Interpret buffer as 1-D array. Cost: numel(output). |
+| `fromfile` | 1.0000 |  | numel(output) |  | Construct array from binary/text file. Cost: numel(output). |
+| `fromfunction` | 1.0000 |  | numel(output) |  | Construct array by executing function over each coordinate. Cost: numel(output). |
+| `fromiter` | 1.0000 |  | numel(output) |  | Create array from an iterable. Cost: numel(output). |
+| `fromregex` | 1.0000 |  | numel(output) |  | Construct array from text file using regex. Cost: numel(output). |
+| `fromstring` | 1.0000 |  | numel(output) |  | Create 1-D array from string data. Cost: numel(output). |
+| `full` | 1.0000 |  | numel(output) |  | Create array filled with scalar value. Cost: numel(output). |
+| `full_like` | 1.0000 |  | numel(output) |  | Array filled with scalar, same shape/type as input. Cost: numel(output). |
+| `indices` | 1.0000 |  | numel(output) |  | Return array representing indices of a grid. Cost: numel(output). |
+| `insert` | 1.0000 |  | numel(values) |  | Insert values along axis before given indices. Cost: numel(values). |
+| `isfinite` | 1.0000 |  | numel(input) |  | Test for finite values element-wise. Cost: numel(input). |
+| `isinf` | 1.0000 |  | numel(input) |  | Test for infinity element-wise. Cost: numel(input). |
+| `isnan` | 1.0000 |  | numel(input) |  | Test for NaN element-wise. Cost: numel(input). |
+| `ix_` | 1.0000 |  | numel(output) |  | Construct open mesh from multiple sequences. Cost: numel(output). |
+| `linspace` | 1.0000 |  | numel(output) |  | Return evenly spaced numbers over interval. Cost: numel(output). |
+| `mask_indices` | 1.0000 |  | numel(output) |  | Return indices of mask for n x n array. Cost: numel(output). |
+| `meshgrid` | 1.0000 |  | numel(output) |  | Coordinate matrices from coordinate vectors. Cost: numel(output). |
+| `nonzero` | 1.0000 |  | numel(input) |  | Return indices of non-zero elements. Cost: numel(input). |
+| `packbits` | 1.0000 |  | numel(output) |  | Pack elements of array into bits. Cost: numel(input). |
+| `pad` | 1.0000 |  | numel(output) |  | Pad array. Cost: numel(output). |
+| `place` | 1.0000 |  | numel(input) |  | Change elements satisfying condition. Cost: numel(input). |
+| `put` | 1.0000 |  | numel(input) |  | Replace elements at given flat indices. Cost: numel(input). |
+| `put_along_axis` | 1.0000 |  | numel(input) |  | Put values into destination array using indices. Cost: numel(input). |
+| `putmask` | 1.0000 |  | numel(input) |  | Change elements of array based on condition and input values. Cost: numel(input). |
+| `ravel` | 1.0000 |  | numel(output) |  | Return contiguous flattened array. Cost: numel(input). |
+| `repeat` | 1.0000 |  | numel(output) |  | Repeat elements of an array. Cost: numel(output). |
+| `resize` | 1.0000 |  | numel(output) |  | Return new array with given shape by repeating. Cost: numel(output). |
+| `roll` | 1.0000 |  | numel(output) |  | Roll array elements along axis. Cost: numel(output). |
+| `rollaxis` | 1.0000 |  | numel(output) |  | Roll specified axis backwards. Cost: numel(output). |
+| `select` | 1.0000 |  | numel(input) |  | Return array from list of choices based on conditions. Cost: numel(input). |
+| `split` | 1.0000 |  | numel(input) |  | Split array into sub-arrays. Cost: numel(output). |
+| `stack` | 1.0000 |  | numel(output) |  | Join arrays along new axis. Cost: numel(output). |
+| `take` | 1.0000 |  | numel(output) |  | Take elements from array along axis. Cost: numel(output). |
+| `take_along_axis` | 1.0000 |  | numel(output) |  | Take values from input array by matching 1-D index. Cost: numel(output). |
+| `tile` | 1.0000 |  | numel(output) |  | Repeat array by tiling. Cost: numel(output). |
+| `trim_zeros` | 1.0000 |  | num trimmed |  | Trim leading/trailing zeros from 1-D array. Cost: num trimmed. |
+| `unpackbits` | 1.0000 |  | numel(output) |  | Unpack elements of array into bits. Cost: numel(input). |
+| `unstack` | 1.0000 |  | numel(input) |  | Unstack array along axis into tuple of arrays (NumPy 2.x). Cost: numel(output). |
+| `vsplit` | 1.0000 |  | numel(input) |  | Split array into rows. Cost: numel(output). |
+| `vstack` | 1.0000 |  | numel(output) |  | Stack arrays vertically. Cost: numel(output). |
+| `where` | 1.0000 |  | numel(input) |  | Select elements based on condition. Cost: numel(input). |
 
 ### Window (5 operations)
 
@@ -494,43 +494,43 @@ All weights are normalized against element-wise addition (`np.add`):
 
 | Op | Weight | Confidence | Formula | Impl | Notes |
 |:---|-------:|:-----------|:--------|:-----|:------|
-| `gcd` | 16.0000 | high | n |  |  |
-| `lcm` | 16.0000 | high | n |  |  |
-| `bitwise_not` | 1.0000 | high | n |  |  |
-| `bitwise_invert` | 1.0000 | high | n |  |  |
-| `bitwise_count` | 1.0000 | high | n |  |  |
-| `invert` | 1.0000 | high | n |  |  |
-| `bitwise_and` | 1.0000 | high | n |  |  |
-| `bitwise_or` | 1.0000 | high | n |  |  |
-| `bitwise_xor` | 1.0000 | high | n |  |  |
-| `bitwise_left_shift` | 1.0000 | high | n |  |  |
-| `bitwise_right_shift` | 1.0000 | high | n |  |  |
-| `left_shift` | 1.0000 | high | n |  |  |
-| `right_shift` | 1.0000 | high | n |  |  |
-| `isnat` | 1.0000 | high | n |  |  |
+| `gcd` | 16.0000 | high | n |  | Element-wise greatest common divisor. |
+| `lcm` | 16.0000 | high | n |  | Element-wise least common multiple. |
+| `bitwise_not` | 1.0000 | high | n |  | Element-wise bitwise NOT. |
+| `bitwise_invert` | 1.0000 | high | n |  | Element-wise bitwise invert (alias for bitwise_not). |
+| `bitwise_count` | 1.0000 | high | n |  | Count set bits element-wise (popcount). |
+| `invert` | 1.0000 | high | n |  | Bitwise NOT element-wise. |
+| `bitwise_and` | 1.0000 | high | n |  | Element-wise bitwise AND. |
+| `bitwise_or` | 1.0000 | high | n |  | Element-wise bitwise OR. |
+| `bitwise_xor` | 1.0000 | high | n |  | Element-wise bitwise XOR. |
+| `bitwise_left_shift` | 1.0000 | high | n |  | Element-wise left bit shift. |
+| `bitwise_right_shift` | 1.0000 | high | n |  | Element-wise right bit shift. |
+| `left_shift` | 1.0000 | high | n |  | Element-wise left bit shift (legacy name). |
+| `right_shift` | 1.0000 | high | n |  | Element-wise right bit shift (legacy name). |
+| `isnat` | 1.0000 | high | n |  | Test for NaT (not-a-time) element-wise. |
 
 ### Complex (11 operations)
 
 | Op | Weight | Confidence | Formula | Impl | Notes |
 |:---|-------:|:-----------|:--------|:-----|:------|
-| `angle` | 16.0000 | high | numel(output) |  |  |
-| `conj` | 1.0000 | high | numel(output) |  |  |
-| `conjugate` | 1.0000 | high | numel(output) |  |  |
-| `imag` | 1.0000 | high | numel(output) |  |  |
-| `real` | 1.0000 | high | numel(output) |  |  |
-| `real_if_close` | 1.0000 | low | numel(output) |  |  |
-| `iscomplex` | 1.0000 | high | numel(output) |  |  |
-| `isreal` | 1.0000 | high | numel(output) |  |  |
-| `sort_complex` | 1.0000 | high | numel(output) |  |  |
-| `iscomplexobj` | 1.0000 | high | numel(output) |  |  |
-| `isrealobj` | 1.0000 | medium | numel(output) |  |  |
+| `angle` | 16.0000 | high | numel(output) |  | Return angle of complex argument element-wise. |
+| `conj` | 1.0000 | high | numel(output) |  | Complex conjugate element-wise. |
+| `conjugate` | 1.0000 | high | numel(output) |  | Complex conjugate element-wise. |
+| `imag` | 1.0000 | high | numel(output) |  | Return imaginary part of complex array. |
+| `real` | 1.0000 | high | numel(output) |  | Return real part of complex array. |
+| `real_if_close` | 1.0000 | low | numel(output) |  | Return real array if imaginary part is negligible. |
+| `iscomplex` | 1.0000 | high | numel(output) |  | Test if element is complex element-wise. |
+| `isreal` | 1.0000 | high | numel(output) |  | Test if element is real (imag == 0) element-wise. |
+| `sort_complex` | 1.0000 | high | n * ceil(log2(n)) |  | Sort complex array. Cost: $n \cdot \lceil\log_2 n\rceil$. |
+| `iscomplexobj` | 1.0000 | high | numel(output) |  | Return True if input is a complex type or array. |
+| `isrealobj` | 1.0000 | medium | numel(output) |  | Return True if x is a not complex type or array. |
 
 ## Summary by category
 
 | Category | Count | Avg Weight | Min | Max |
 |:---------|------:|-----------:|----:|----:|
 | Pointwise Unary | 47 | 8.02 | 1.0000 | 16.0000 |
-| Pointwise Binary | 33 | 5.55 | 1.0000 | 16.0000 |
+| Pointwise Binary | 32 | 5.69 | 1.0000 | 16.0000 |
 | Reductions | 35 | 3.69 | 1.0000 | 16.0000 |
 | Sorting | 17 | 1.00 | 1.0000 | 1.0000 |
 | FFT | 14 | 1.00 | 1.0000 | 1.0000 |
@@ -539,7 +539,7 @@ All weights are normalized against element-wise addition (`np.add`):
 | Contractions | 9 | 1.00 | 1.0000 | 1.0000 |
 | Polynomial | 10 | 2.50 | 1.0000 | 16.0000 |
 | Random | 43 | 13.21 | 1.0000 | 16.0000 |
-| Misc | 96 | 1.00 | 1.0000 | 1.0000 |
+| Misc | 97 | 1.00 | 1.0000 | 1.0000 |
 | Window | 5 | 13.00 | 1.0000 | 16.0000 |
 | Bitwise | 14 | 3.14 | 1.0000 | 16.0000 |
 | Complex | 11 | 2.36 | 1.0000 | 16.0000 |
