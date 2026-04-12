@@ -234,10 +234,10 @@ class TestIntegration:
 
     def test_creation_ops_cost(self):
         with me.BudgetContext(flop_budget=10**6) as budget:
-            me.eye(10)        # free
-            me.identity(10)   # free
+            me.eye(10)  # free
+            me.identity(10)  # free
             me.zeros((10, 10))  # free
-            me.ones((10, 10))   # free
+            me.ones((10, 10))  # free
             me.full((10, 10), 3.14)  # numel(output)=100
             me.diag(np.arange(10, dtype=float))  # numel(input)=10
             me.diagflat(np.arange(5, dtype=float))  # numel(input)=5

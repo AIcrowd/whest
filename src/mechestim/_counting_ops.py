@@ -296,9 +296,7 @@ def apply_over_axes(func, a, axes):
         a = _np.asarray(a)
     result = _np.apply_over_axes(func, a, axes)
     cost = result.size if hasattr(result, "size") else 1
-    budget.deduct(
-        "apply_over_axes", flop_cost=cost, subscripts=None, shapes=(a.shape,)
-    )
+    budget.deduct("apply_over_axes", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return result
 
 
