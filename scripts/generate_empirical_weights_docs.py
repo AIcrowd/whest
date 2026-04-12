@@ -438,7 +438,9 @@ def build_rows(data: dict) -> list[dict]:
     for op_name, perf_weight in weights.items():
         d = details.get(op_name, {})
         tw = timing_weights.get(op_name, 0.0)
-        category = d.get("category", "counted_custom")
+        # Use LIVE registry for category (per_op_details may be stale)
+        reg_entry = REGISTRY.get(op_name, {})
+        category = reg_entry.get("category", d.get("category", "counted_custom"))
         display_cat = _classify_op(op_name, category)
         alphas = d.get("distribution_alphas", [])
         analytical_flops = d.get("analytical_flops")

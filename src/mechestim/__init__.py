@@ -18,10 +18,11 @@ from mechestim._registry import REGISTRY_META as _REGISTRY_META
 __version__ = f"0.2.0+np{_np.__version__}"
 __numpy_version__ = _np.__version__
 __numpy_pinned__ = _REGISTRY_META["numpy_version"]
+__numpy_supported__ = _REGISTRY_META.get("numpy_supported", ">=2.0.0,<2.3.0")
 
 from mechestim._version_check import check_numpy_version as _check_numpy_version
 
-_check_numpy_version(__numpy_pinned__)
+_check_numpy_version(__numpy_supported__)
 
 # --- Budget and diagnostics ---
 # --- Submodules ---
@@ -378,6 +379,8 @@ from mechestim._pointwise import (  # noqa: F401
     var,
     vdot,
     vecdot,
+    matvec,
+    vecmat,
 )
 
 # --- Polynomial (counted) ---
@@ -444,6 +447,7 @@ from mechestim.errors import (  # noqa: F401
     NoBudgetContextError,
     SymmetryError,
     SymmetryLossWarning,
+    UnsupportedFunctionError,
 )
 
 # --- NumPy constants and types ---

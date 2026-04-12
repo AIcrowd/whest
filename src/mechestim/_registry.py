@@ -1,4 +1,4 @@
-"""Registry of all public numpy 2.1.3 callables with FLOP-counting categories.
+"""Registry of all public numpy 2.x callables with FLOP-counting categories.
 
 Categories
 ----------
@@ -13,8 +13,9 @@ blacklisted        intentionally unsupported
 from __future__ import annotations
 
 REGISTRY_META: dict = {
-    "numpy_version": "2.1.3",
-    "last_updated": "2026-04-01",
+    "numpy_version": "2.2.6",
+    "numpy_supported": ">=2.0.0,<2.3.0",
+    "last_updated": "2026-04-12",
 }
 
 # ---------------------------------------------------------------------------
@@ -283,6 +284,7 @@ REGISTRY: dict[str, dict] = {
     "bitwise_count": {
         "category": "counted_unary",
         "module": "numpy",
+        "min_numpy": "2.1",
         "notes": "Count set bits element-wise (popcount).",
     },
     "invert": {
@@ -616,7 +618,20 @@ REGISTRY: dict[str, dict] = {
     "vecdot": {
         "category": "counted_binary",
         "module": "numpy",
+        "min_numpy": "2.1",
         "notes": "Vector dot product along last axis.",
+    },
+    "matvec": {
+        "category": "counted_binary",
+        "module": "numpy",
+        "min_numpy": "2.2",
+        "notes": "Matrix-vector product. Cost = output_size * contracted_axis.",
+    },
+    "vecmat": {
+        "category": "counted_binary",
+        "module": "numpy",
+        "min_numpy": "2.2",
+        "notes": "Vector-matrix product. Cost = output_size * contracted_axis.",
     },
     # ------------------------------------------------------------------
     # counted_reduction — implemented in _pointwise.py
@@ -799,11 +814,13 @@ REGISTRY: dict[str, dict] = {
     "cumulative_sum": {
         "category": "counted_reduction",
         "module": "numpy",
+        "min_numpy": "2.1",
         "notes": "Cumulative sum (NumPy 2.x array API).",
     },
     "cumulative_prod": {
         "category": "counted_reduction",
         "module": "numpy",
+        "min_numpy": "2.1",
         "notes": "Cumulative product (NumPy 2.x array API).",
     },
     # ------------------------------------------------------------------
@@ -1186,7 +1203,7 @@ REGISTRY: dict[str, dict] = {
     "full": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Create array filled with scalar value. Cost: numel(output).",
+        "notes": "Create array filled with scalar value. Cost: num copied.",
     },
     "eye": {
         "category": "free",
@@ -1201,7 +1218,7 @@ REGISTRY: dict[str, dict] = {
     "diag": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Extract diagonal or construct diagonal array. Cost: numel(input).",
+        "notes": "Extract diagonal or construct diagonal array. Cost: len(diagonal).",
     },
     "arange": {
         "category": "counted_custom",
@@ -1582,7 +1599,7 @@ REGISTRY: dict[str, dict] = {
     "trim_zeros": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Trim leading/trailing zeros from 1-D array. Cost: numel(output).",
+        "notes": "Trim leading/trailing zeros from 1-D array. Cost: num trimmed.",
     },
     "resize": {
         "category": "counted_custom",
@@ -1782,7 +1799,7 @@ REGISTRY: dict[str, dict] = {
     "diagflat": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Create diagonal array from flattened input. Cost: numel(input).",
+        "notes": "Create diagonal array from flattened input. Cost: len(v).",
     },
     "mask_indices": {
         "category": "counted_custom",
@@ -1812,7 +1829,7 @@ REGISTRY: dict[str, dict] = {
     "fill_diagonal": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Fill main diagonal of given array. Cost: numel(input).",
+        "notes": "Fill main diagonal of given array. Cost: min(m,n).",
     },
     "tri": {
         "category": "free",
@@ -1862,27 +1879,28 @@ REGISTRY: dict[str, dict] = {
     "unstack": {
         "category": "counted_custom",
         "module": "numpy",
+        "min_numpy": "2.1",
         "notes": "Unstack array along axis into tuple of arrays (NumPy 2.x). Cost: numel(output).",
     },
     "delete": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Return array with sub-arrays deleted along axis. Cost: numel(output).",
+        "notes": "Return array with sub-arrays deleted along axis. Cost: num deleted.",
     },
     "insert": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Insert values along axis before given indices. Cost: numel(output).",
+        "notes": "Insert values along axis before given indices. Cost: numel(values).",
     },
     "append": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Append values to end of array. Cost: numel(output).",
+        "notes": "Append values to end of array. Cost: numel(values).",
     },
     "copyto": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Copy values from src to dst array. Cost: numel(output).",
+        "notes": "Copy values from src to dst array. Cost: num copied.",
     },
     "unique_all": {
         "category": "counted_custom",
