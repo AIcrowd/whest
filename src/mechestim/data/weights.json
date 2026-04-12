@@ -7621,7 +7621,7 @@
       },
       "partition": {
         "category": "counted_custom",
-        "analytical_formula": "n",
+        "analytical_formula": "n * len(kth)",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,), kth=5000000",
         "bench_code": "np.partition(x, 5000000)",
@@ -7650,7 +7650,7 @@
       },
       "argpartition": {
         "category": "counted_custom",
-        "analytical_formula": "n",
+        "analytical_formula": "n * len(kth)",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,), kth=5000000",
         "bench_code": "np.argpartition(x, 5000000)",

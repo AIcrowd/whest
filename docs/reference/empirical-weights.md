@@ -228,8 +228,8 @@ All weights are normalized against element-wise addition (`np.add`):
 | `sort` | 1.0000 | medium | n * ceil(log2(n)) | [\_sorting\_ops.py:43](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L43) | Comparison sort; cost = n*ceil(log2(n)) per slice. |
 | `argsort` | 1.0000 | medium | n * ceil(log2(n)) | [\_sorting\_ops.py:62](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L62) | Indirect sort; cost = n*ceil(log2(n)) per slice. |
 | `lexsort` | 1.0000 | low | k * n * ceil(log2(n)) | [\_sorting\_ops.py:88](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L88) | Multi-key sort; cost = k*n*ceil(log2(n)). |
-| `partition` | 1.0000 | medium | n | [\_sorting\_ops.py:111](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L111) | Quickselect; cost = n per slice. |
-| `argpartition` | 1.0000 | medium | n | [\_sorting\_ops.py:136](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L136) | Indirect partition; cost = n per slice. |
+| `partition` | 1.0000 | medium | n * len(kth) | [\_sorting\_ops.py:111](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L111) | Quickselect; cost = n per slice. |
+| `argpartition` | 1.0000 | medium | n * len(kth) | [\_sorting\_ops.py:136](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L136) | Indirect partition; cost = n per slice. |
 | `searchsorted` | 1.0000 | low | m * ceil(log2(n)) | [\_sorting\_ops.py:166](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L166) | Binary search; cost = m*ceil(log2(n)). |
 | `unique` | 1.0000 | medium | n * ceil(log2(n)) | [\_sorting\_ops.py:227](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L227) | Sort-based unique; cost = n*ceil(log2(n)). |
 | `in1d` | 1.0000 | medium | (n+m) * ceil(log2(n+m)) | [\_sorting\_ops.py:313](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L313) | Set membership; cost = (n+m)*ceil(log2(n+m)). |
@@ -410,7 +410,7 @@ All weights are normalized against element-wise addition (`np.add`):
 | `apply_along_axis` | 1.0000 |  | numel(output) |  | Apply function along axis. Cost: numel(output). Inner function costs tracked separately. |
 | `apply_over_axes` | 1.0000 |  | numel(output) |  | Apply function over multiple axes. Cost: numel(output). |
 | `piecewise` | 1.0000 |  | numel(input) |  | Piecewise function. Cost: numel(input). |
-| `append` | 1.0000 |  | numel(output) |  | Append values to end of array. Cost: numel(output). |
+| `append` | 1.0000 |  | numel(values) |  | Append values to end of array. Cost: numel(values). |
 | `arange` | 1.0000 |  | numel(output) |  | Return evenly spaced values in given interval. Cost: numel(output). |
 | `argwhere` | 1.0000 |  | numel(input) |  | Find indices of non-zero elements. Cost: numel(input). |
 | `array` | 1.0000 |  | numel(output) |  | Create array from data. Cost: numel(input). |
@@ -428,14 +428,14 @@ All weights are normalized against element-wise addition (`np.add`):
 | `concat` | 1.0000 |  | numel(output) |  | Join arrays along axis (NumPy 2.x array API alias for concatenate). Cost: numel(output). |
 | `concatenate` | 1.0000 |  | numel(output) |  | Join arrays along axis. Cost: numel(output). |
 | `copyto` | 1.0000 |  | numel(output) |  | Copy values from src to dst array. Cost: numel(output). |
-| `delete` | 1.0000 |  | numel(output) |  | Return array with sub-arrays deleted along axis. Cost: numel(output). |
-| `diag` | 1.0000 |  | numel(input) |  | Extract diagonal or construct diagonal array. Cost: numel(input). |
-| `diagflat` | 1.0000 |  | numel(input) |  | Create diagonal array from flattened input. Cost: numel(input). |
+| `delete` | 1.0000 |  | num deleted |  | Return array with sub-arrays deleted along axis. Cost: num deleted. |
+| `diag` | 1.0000 |  | len(diagonal) |  | Extract diagonal or construct diagonal array. Cost: len(diagonal). |
+| `diagflat` | 1.0000 |  | len(v) |  | Create diagonal array from flattened input. Cost: len(v). |
 | `diagonal` | 1.0000 |  | numel(output) |  | Return specified diagonals. Cost: numel(input). |
 | `dsplit` | 1.0000 |  | numel(input) |  | Split array into multiple sub-arrays depth-wise. Cost: numel(output). |
 | `dstack` | 1.0000 |  | numel(output) |  | Stack arrays depth-wise (along third axis). Cost: numel(output). |
 | `extract` | 1.0000 |  | numel(input) |  | Return elements satisfying condition. Cost: numel(input). |
-| `fill_diagonal` | 1.0000 |  | numel(input) |  | Fill main diagonal of given array. Cost: numel(input). |
+| `fill_diagonal` | 1.0000 |  | min(m,n) |  | Fill main diagonal of given array. Cost: min(m,n). |
 | `flatnonzero` | 1.0000 |  | numel(input) |  | Return indices of non-zero elements in flattened array. Cost: numel(input). |
 | `from_dlpack` | 1.0000 |  | numel(output) |  | Create ndarray from DLPack object (zero-copy). Cost: numel(output). |
 | `frombuffer` | 1.0000 |  | numel(output) |  | Interpret buffer as 1-D array. Cost: numel(output). |
@@ -447,7 +447,7 @@ All weights are normalized against element-wise addition (`np.add`):
 | `full` | 1.0000 |  | numel(output) |  | Create array filled with scalar value. Cost: numel(output). |
 | `full_like` | 1.0000 |  | numel(output) |  | Array filled with scalar, same shape/type as input. Cost: numel(output). |
 | `indices` | 1.0000 |  | numel(output) |  | Return array representing indices of a grid. Cost: numel(output). |
-| `insert` | 1.0000 |  | numel(output) |  | Insert values along axis before given indices. Cost: numel(output). |
+| `insert` | 1.0000 |  | numel(values) |  | Insert values along axis before given indices. Cost: numel(values). |
 | `isfinite` | 1.0000 |  | numel(input) |  | Test for finite values element-wise. Cost: numel(input). |
 | `isinf` | 1.0000 |  | numel(input) |  | Test for infinity element-wise. Cost: numel(input). |
 | `isnan` | 1.0000 |  | numel(input) |  | Test for NaN element-wise. Cost: numel(input). |
@@ -473,7 +473,7 @@ All weights are normalized against element-wise addition (`np.add`):
 | `take` | 1.0000 |  | numel(output) |  | Take elements from array along axis. Cost: numel(output). |
 | `take_along_axis` | 1.0000 |  | numel(output) |  | Take values from input array by matching 1-D index. Cost: numel(output). |
 | `tile` | 1.0000 |  | numel(output) |  | Repeat array by tiling. Cost: numel(output). |
-| `trim_zeros` | 1.0000 |  | numel(output) |  | Trim leading/trailing zeros from 1-D array. Cost: numel(output). |
+| `trim_zeros` | 1.0000 |  | num trimmed |  | Trim leading/trailing zeros from 1-D array. Cost: num trimmed. |
 | `unpackbits` | 1.0000 |  | numel(output) |  | Unpack elements of array into bits. Cost: numel(input). |
 | `unstack` | 1.0000 |  | numel(input) |  | Unstack array along axis into tuple of arrays (NumPy 2.x). Cost: numel(output). |
 | `vsplit` | 1.0000 |  | numel(input) |  | Split array into rows. Cost: numel(output). |
