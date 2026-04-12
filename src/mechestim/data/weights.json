@@ -9497,7 +9497,7 @@
       },
       "copyto": {
         "category": "counted_custom",
-        "analytical_formula": "numel(output)",
+        "analytical_formula": "num copied",
         "notes": "Copy values from src to dst array. Cost: numel(output)."
       },
       "asarray_chkfinite": {
