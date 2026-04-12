@@ -289,17 +289,17 @@ All weights are normalized against element-wise addition (`np.add`):
 | `linalg.matrix_power` | 4.0000 | high | (ceil(log2(k))+popcount(k)-1)*n^3 |  | Matrix power. Cost: $(\lfloor\log_2 k\rfloor + \text{popcount}(k) - 1) \cdot n^3$ (exponentiation by squaring). |
 | `linalg.matrix_rank` | 4.0000 | high | m*n*min(m,n) |  | Matrix rank. Cost: m*n*min(m,n) (via SVD). |
 | `linalg.cross` | 1.0000 | medium | 6*n |  | Delegates to `me.cross` which charges `numel(output)` FLOPs. |
-| `linalg.matmul` | 1.0000 | high | 2*M*N*K |  | Delegates to `me.matmul` which charges `m*k*n` FLOPs (FMA=1). |
-| `linalg.matrix_norm` | 1.0000 | medium | 2*numel (Frobenius) |  | Matrix norm. Cost depends on ord: 2*numel for Frobenius, m*n*min(m,n) for ord=2. |
-| `linalg.multi_dot` | 1.0000 | high | sum of optimal chain matmul costs |  | Chain matmul. Cost: sum of optimal chain matmul costs (CLRS §15.2). |
-| `linalg.norm` | 1.0000 | medium | numel (L2) |  | Norm. Cost depends on ord: numel for L1/inf, 2*numel for Frobenius, m*n*min(m,n) for ord=2. |
+| `linalg.matmul` | 1.0000 | high | MNK |  | Delegates to `me.matmul` which charges `m*k*n` FLOPs (FMA=1). |
+| `linalg.matrix_norm` | 1.0000 | medium | numel |  | Matrix norm. Cost depends on ord: 2*numel for Frobenius, m*n*min(m,n) for ord=2. |
+| `linalg.multi_dot` | 1.0000 | high | sum of chain MNK costs |  | Chain matmul. Cost: sum of optimal chain matmul costs (CLRS §15.2). |
+| `linalg.norm` | 1.0000 | medium | numel |  | Norm. Cost depends on ord: numel for L1/inf, 2*numel for Frobenius, m*n*min(m,n) for ord=2. |
 | `linalg.outer` | 1.0000 | high | M*N |  | Delegates to `me.outer` which charges `m*n` FLOPs. |
-| `linalg.tensordot` | 1.0000 | high | 2*d^5 |  | Delegates to `me.tensordot` which charges FLOPs based on contraction. |
-| `linalg.tensorinv` | 1.0000 | high | n^3 after reshape |  | Tensor inverse. Cost: $n^3$ after reshape (delegates to inv). |
-| `linalg.tensorsolve` | 1.0000 | high | n^3 after reshape |  | Tensor solve. Cost: $n^3$ after reshape (delegates to solve). |
+| `linalg.tensordot` | 1.0000 | high | product of free * contracted dims |  | Delegates to `me.tensordot` which charges FLOPs based on contraction. |
+| `linalg.tensorinv` | 1.0000 | high | n^3 |  | Tensor inverse. Cost: $n^3$ after reshape (delegates to inv). |
+| `linalg.tensorsolve` | 1.0000 | high | n^3 |  | Tensor solve. Cost: $n^3$ after reshape (delegates to solve). |
 | `linalg.trace` | 1.0000 | low | min(m,n) |  | Matrix trace. Cost: n (sum of diagonal elements). |
 | `linalg.vecdot` | 1.0000 | medium | batch*K |  | Delegates to `me.vecdot` which charges `2*n` FLOPs. |
-| `linalg.vector_norm` | 1.0000 | medium | numel (L2) |  | Vector norm. Cost: numel (or 2*numel for general p-norm). |
+| `linalg.vector_norm` | 1.0000 | medium | numel |  | Vector norm. Cost: numel (or 2*numel for general p-norm). |
 
 ### Contractions (9 operations)
 
@@ -427,7 +427,7 @@ All weights are normalized against element-wise addition (`np.add`):
 | `compress` | 1.0000 |  | numel(output) |  | Return selected slices along axis. Cost: numel(input). |
 | `concat` | 1.0000 |  | numel(output) |  | Join arrays along axis (NumPy 2.x array API alias for concatenate). Cost: numel(output). |
 | `concatenate` | 1.0000 |  | numel(output) |  | Join arrays along axis. Cost: numel(output). |
-| `copyto` | 1.0000 |  | numel(output) |  | Copy values from src to dst array. Cost: numel(output). |
+| `copyto` | 1.0000 |  | num copied |  | Copy values from src to dst array. Cost: numel(output). |
 | `delete` | 1.0000 |  | num deleted |  | Return array with sub-arrays deleted along axis. Cost: num deleted. |
 | `diag` | 1.0000 |  | len(diagonal) |  | Extract diagonal or construct diagonal array. Cost: len(diagonal). |
 | `diagflat` | 1.0000 |  | len(v) |  | Create diagonal array from flattened input. Cost: len(v). |
