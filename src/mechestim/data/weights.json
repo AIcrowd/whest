@@ -893,7 +893,7 @@
     "per_op_details": {
       "dot": {
         "category": "counted_custom",
-        "analytical_formula": "2*M*N*K",
+        "analytical_formula": "MNK",
         "analytical_flops": 268435456,
         "benchmark_size": "A: (512,512), B: (512,512)",
         "bench_code": "np.dot(A, B)",
@@ -922,7 +922,7 @@
       },
       "matmul": {
         "category": "counted_custom",
-        "analytical_formula": "2*M*N*K",
+        "analytical_formula": "MNK",
         "analytical_flops": 268435456,
         "benchmark_size": "A: (512,512), B: (512,512)",
         "bench_code": "np.matmul(A, B)",
@@ -1008,7 +1008,7 @@
         "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L707"
       },
       "vecdot": {
-        "category": "counted_custom",
+        "category": "counted_binary",
         "analytical_formula": "batch * K (output_size * contracted_axis)",
         "analytical_flops": 512000,
         "benchmark_size": "A: (1000,512), B: (1000,512)",
@@ -1067,7 +1067,7 @@
       },
       "tensordot": {
         "category": "counted_custom",
-        "analytical_formula": "2*d^5 (axes=1, shape=(d,d,d))",
+        "analytical_formula": "product of free * contracted dims",
         "analytical_flops": 2147483648,
         "benchmark_size": "A: (64,64,64), B: (64,64,64), axes=1",
         "bench_code": "np.tensordot(A, B, axes=1)",
@@ -1096,7 +1096,7 @@
       },
       "kron": {
         "category": "counted_custom",
-        "analytical_formula": "d^4 (Kronecker, shape=(d,d)x(d,d))",
+        "analytical_formula": "numel(output)",
         "analytical_flops": 16777216,
         "benchmark_size": "A: (64,64), B: (64,64)",
         "bench_code": "np.kron(A, B)",
@@ -1125,7 +1125,7 @@
       },
       "einsum": {
         "category": "counted_custom",
-        "analytical_formula": "2*M*N*K (ij,jk->ik)",
+        "analytical_formula": "product of index dims (FMA=1)",
         "analytical_flops": 268435456,
         "benchmark_size": "A: (512,512), B: (512,512), subscripts='ij,jk->ik'",
         "bench_code": "np.einsum('ij,jk->ik', A, B)",
@@ -1560,7 +1560,7 @@
       },
       "linalg.cholesky": {
         "category": "counted_custom",
-        "analytical_formula": "n^3 / 3",
+        "analytical_formula": "n^3",
         "analytical_flops": 357913941,
         "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.cholesky(A)",
@@ -1584,12 +1584,12 @@
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_perf_instructions_total": 110005601.0,
         "baseline_timing_ns_total": 75917896.0,
-        "notes": "Cholesky decomposition. Cost: $n^3/3$ (Golub & Van Loan \u00a74.2).",
+        "notes": "Cholesky decomposition. Cost: $n^3$.",
         "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L46"
       },
       "linalg.qr": {
         "category": "counted_custom",
-        "analytical_formula": "2*m*n^2 - 2*n^3/3",
+        "analytical_formula": "m*n*min(m,n)",
         "analytical_flops": 1431655766,
         "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.qr(A)",
@@ -1613,12 +1613,12 @@
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_perf_instructions_total": 110005601.0,
         "baseline_timing_ns_total": 75917896.0,
-        "notes": "QR decomposition. Cost: $2mn^2 - (2/3)n^3$ (Golub & Van Loan \u00a75.2).",
+        "notes": "QR decomposition. Cost: $m \\cdot n \\cdot \\min(m,n)$.",
         "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L87"
       },
       "linalg.eig": {
         "category": "counted_custom",
-        "analytical_formula": "10*n^3",
+        "analytical_formula": "n^3",
         "analytical_flops": 10737418240,
         "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.eig(A)",
@@ -1642,12 +1642,12 @@
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_perf_instructions_total": 110005601.0,
         "baseline_timing_ns_total": 75917896.0,
-        "notes": "Eigendecomposition. Cost: $10n^3$ (Francis QR, Golub & Van Loan \u00a77.5).",
+        "notes": "Eigendecomposition. Cost: $n^3$.",
         "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L127"
       },
       "linalg.eigh": {
         "category": "counted_custom",
-        "analytical_formula": "4*n^3 / 3",
+        "analytical_formula": "n^3",
         "analytical_flops": 1431655765,
         "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.eigh(A)",
@@ -1671,12 +1671,12 @@
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_perf_instructions_total": 110005601.0,
         "baseline_timing_ns_total": 75917896.0,
-        "notes": "Symmetric eigendecomposition. Cost: $(4/3)n^3$ (Golub & Van Loan \u00a78.3).",
+        "notes": "Symmetric eigendecomposition. Cost: $n^3$.",
         "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L165"
       },
       "linalg.eigvals": {
         "category": "counted_custom",
-        "analytical_formula": "7*n^3",
+        "analytical_formula": "n^3",
         "analytical_flops": 7516192768,
         "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.eigvals(A)",
@@ -1700,12 +1700,12 @@
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_perf_instructions_total": 110005601.0,
         "baseline_timing_ns_total": 75917896.0,
-        "notes": "Eigenvalues only. Cost: $10n^3$ (same as eig).",
+        "notes": "Eigenvalues only. Cost: $n^3$.",
         "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L207"
       },
       "linalg.eigvalsh": {
         "category": "counted_custom",
-        "analytical_formula": "4*n^3 / 3",
+        "analytical_formula": "n^3",
         "analytical_flops": 1431655765,
         "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.eigvalsh(A)",
@@ -1729,7 +1729,7 @@
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_perf_instructions_total": 110005601.0,
         "baseline_timing_ns_total": 75917896.0,
-        "notes": "Symmetric eigenvalues. Cost: $(4/3)n^3$ (same as eigh).",
+        "notes": "Symmetric eigenvalues. Cost: $n^3$.",
         "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L243"
       },
       "linalg.svd": {
@@ -1792,7 +1792,7 @@
       },
       "linalg.solve": {
         "category": "counted_custom",
-        "analytical_formula": "2*n^3/3 + 2*n^2",
+        "analytical_formula": "n^3",
         "analytical_flops": 717925034,
         "benchmark_size": "A: (1024,1024), b: (1024,)",
         "bench_code": "np.linalg.solve(A, b)",
@@ -1816,7 +1816,7 @@
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_perf_instructions_total": 110005601.0,
         "baseline_timing_ns_total": 75917896.0,
-        "notes": "Solve Ax=b. Cost: $2n^3/3$ (LU) + $n^2 \\cdot n_{\\text{rhs}}$ (back-substitution).",
+        "notes": "Solve Ax=b. Cost: $n^3$.",
         "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_solvers.py#L54"
       },
       "linalg.inv": {
@@ -1908,7 +1908,7 @@
       },
       "linalg.det": {
         "category": "counted_custom",
-        "analytical_formula": "2*n^3 / 3",
+        "analytical_formula": "n^3",
         "analytical_flops": 715827882,
         "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.det(A)",
@@ -1932,12 +1932,12 @@
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_perf_instructions_total": 110005601.0,
         "baseline_timing_ns_total": 75917896.0,
-        "notes": "Determinant. Cost: $n^3$ (LU factorization).",
+        "notes": "Determinant. Cost: $n^3$.",
         "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_properties.py#L87"
       },
       "linalg.slogdet": {
         "category": "counted_custom",
-        "analytical_formula": "2*n^3 / 3",
+        "analytical_formula": "n^3",
         "analytical_flops": 715827882,
         "benchmark_size": "A: (1024,1024)",
         "bench_code": "np.linalg.slogdet(A)",
@@ -1961,7 +1961,7 @@
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_perf_instructions_total": 110005601.0,
         "baseline_timing_ns_total": 75917896.0,
-        "notes": "Sign + log determinant. Cost: $n^3$ (LU factorization).",
+        "notes": "Sign + log determinant. Cost: $n^3$.",
         "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_properties.py#L134"
       },
       "allclose": {
@@ -2052,7 +2052,7 @@
         "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L82"
       },
       "clip": {
-        "category": "counted_unary",
+        "category": "counted_custom",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,), a_min=-1.0, a_max=1.0",
@@ -2570,7 +2570,7 @@
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_perf_instructions_total": 110005601.0,
         "baseline_timing_ns_total": 75917896.0,
-        "notes": "Diagonal sum; cost = min(n,m). Weight set to match sum (both are simple reductions; direct measurement dominated by subprocess overhead).",
+        "notes": "Diagonal sum; cost = min(n,m).",
         "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L26"
       },
       "trapezoid": {
@@ -4923,7 +4923,7 @@
         "timing_weight": 1.6799
       },
       "isclose": {
-        "category": "counted_binary",
+        "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
         "benchmark_size": "a: (10000000,), b: (10000000,)",
@@ -4982,7 +4982,7 @@
       },
       "polyval": {
         "category": "counted_custom",
-        "analytical_formula": "2 * n * degree",
+        "analytical_formula": "n * degree",
         "analytical_flops": 200000000,
         "benchmark_size": "c: (101,), x: (1000000,)",
         "bench_code": "np.polyval(c, x)",
@@ -5006,7 +5006,7 @@
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_perf_instructions_total": 110005601.0,
         "baseline_timing_ns_total": 75917896.0,
-        "notes": "Evaluate polynomial at given points. Cost: 2 * m * deg FLOPs (Horner's method).",
+        "notes": "Evaluate polynomial at given points. Cost: $m \\cdot \\text{deg}$ (Horner's method, FMA=1).",
         "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L78"
       },
       "polyfit": {
@@ -5243,7 +5243,7 @@
       },
       "roots": {
         "category": "counted_custom",
-        "analytical_formula": "10 * degree^3",
+        "analytical_formula": "degree^3",
         "analytical_flops": 10000000,
         "benchmark_size": "c: (101,)",
         "bench_code": "np.roots(c)",
@@ -5267,7 +5267,7 @@
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_perf_instructions_total": 110005601.0,
         "baseline_timing_ns_total": 75917896.0,
-        "notes": "Return roots of polynomial with given coefficients. Cost: $10n^3$ FLOPs (companion matrix eig).",
+        "notes": "Return roots of polynomial with given coefficients. Cost: $n^3$ (companion matrix eig, simplified).",
         "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L217"
       },
       "random.standard_normal": {
@@ -7621,7 +7621,7 @@
       },
       "partition": {
         "category": "counted_custom",
-        "analytical_formula": "n",
+        "analytical_formula": "n * len(kth)",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,), kth=5000000",
         "bench_code": "np.partition(x, 5000000)",
@@ -7650,7 +7650,7 @@
       },
       "argpartition": {
         "category": "counted_custom",
-        "analytical_formula": "n",
+        "analytical_formula": "n * len(kth)",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,), kth=5000000",
         "bench_code": "np.argpartition(x, 5000000)",
@@ -8171,7 +8171,7 @@
         "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_window.py#L155"
       },
       "bitwise_not": {
-        "category": "timed_unary",
+        "category": "counted_unary",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,)",
@@ -8192,10 +8192,11 @@
         "baseline_alpha": 1.54417752,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "timing"
+        "measurement_mode": "timing",
+        "notes": "Element-wise bitwise NOT."
       },
       "bitwise_invert": {
-        "category": "timed_unary",
+        "category": "counted_unary",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,)",
@@ -8216,10 +8217,11 @@
         "baseline_alpha": 1.54417752,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "timing"
+        "measurement_mode": "timing",
+        "notes": "Element-wise bitwise invert (alias for bitwise_not)."
       },
       "bitwise_count": {
-        "category": "timed_unary",
+        "category": "counted_unary",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,)",
@@ -8240,10 +8242,11 @@
         "baseline_alpha": 1.54417752,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "timing"
+        "measurement_mode": "timing",
+        "notes": "Count set bits element-wise (popcount)."
       },
       "invert": {
-        "category": "timed_unary",
+        "category": "counted_unary",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,)",
@@ -8264,10 +8267,11 @@
         "baseline_alpha": 1.54417752,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "timing"
+        "measurement_mode": "timing",
+        "notes": "Bitwise NOT element-wise."
       },
       "bitwise_and": {
-        "category": "timed_binary",
+        "category": "counted_binary",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
         "benchmark_size": "a: (10000000,), b: (10000000,)",
@@ -8288,10 +8292,11 @@
         "baseline_alpha": 1.54417752,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "timing"
+        "measurement_mode": "timing",
+        "notes": "Element-wise bitwise AND."
       },
       "bitwise_or": {
-        "category": "timed_binary",
+        "category": "counted_binary",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
         "benchmark_size": "a: (10000000,), b: (10000000,)",
@@ -8312,10 +8317,11 @@
         "baseline_alpha": 1.54417752,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "timing"
+        "measurement_mode": "timing",
+        "notes": "Element-wise bitwise OR."
       },
       "bitwise_xor": {
-        "category": "timed_binary",
+        "category": "counted_binary",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
         "benchmark_size": "a: (10000000,), b: (10000000,)",
@@ -8336,10 +8342,11 @@
         "baseline_alpha": 1.54417752,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "timing"
+        "measurement_mode": "timing",
+        "notes": "Element-wise bitwise XOR."
       },
       "gcd": {
-        "category": "timed_binary",
+        "category": "counted_binary",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
         "benchmark_size": "a: (10000000,), b: (10000000,)",
@@ -8360,10 +8367,11 @@
         "baseline_alpha": 1.54417752,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "timing"
+        "measurement_mode": "timing",
+        "notes": "Element-wise greatest common divisor."
       },
       "lcm": {
-        "category": "timed_binary",
+        "category": "counted_binary",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
         "benchmark_size": "a: (10000000,), b: (10000000,)",
@@ -8384,10 +8392,11 @@
         "baseline_alpha": 1.54417752,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "timing"
+        "measurement_mode": "timing",
+        "notes": "Element-wise least common multiple."
       },
       "bitwise_left_shift": {
-        "category": "timed_shift",
+        "category": "counted_binary",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
         "benchmark_size": "a: (10000000,), b: (10000000,) (values 0-10)",
@@ -8408,10 +8417,11 @@
         "baseline_alpha": 1.54417752,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "timing"
+        "measurement_mode": "timing",
+        "notes": "Element-wise left bit shift."
       },
       "bitwise_right_shift": {
-        "category": "timed_shift",
+        "category": "counted_binary",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
         "benchmark_size": "a: (10000000,), b: (10000000,) (values 0-10)",
@@ -8432,10 +8442,11 @@
         "baseline_alpha": 1.54417752,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "timing"
+        "measurement_mode": "timing",
+        "notes": "Element-wise right bit shift."
       },
       "left_shift": {
-        "category": "timed_shift",
+        "category": "counted_binary",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
         "benchmark_size": "a: (10000000,), b: (10000000,) (values 0-10)",
@@ -8456,10 +8467,11 @@
         "baseline_alpha": 1.54417752,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "timing"
+        "measurement_mode": "timing",
+        "notes": "Element-wise left bit shift (legacy name)."
       },
       "right_shift": {
-        "category": "timed_shift",
+        "category": "counted_binary",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
         "benchmark_size": "a: (10000000,), b: (10000000,) (values 0-10)",
@@ -8480,10 +8492,11 @@
         "baseline_alpha": 1.54417752,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "timing"
+        "measurement_mode": "timing",
+        "notes": "Element-wise right bit shift (legacy name)."
       },
       "isnat": {
-        "category": "timed_special",
+        "category": "counted_unary",
         "analytical_formula": "n",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,) datetime64 with NaTs",
@@ -8504,10 +8517,11 @@
         "baseline_alpha": 1.54417752,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "timing"
+        "measurement_mode": "timing",
+        "notes": "Test for NaT (not-a-time) element-wise."
       },
       "angle": {
-        "category": "counted_complex",
+        "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,) complex128",
@@ -8528,10 +8542,11 @@
         "baseline_alpha": 2.200112,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "perf"
+        "measurement_mode": "perf",
+        "notes": "Return angle of complex argument element-wise."
       },
       "conj": {
-        "category": "counted_complex",
+        "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,) complex128",
@@ -8552,10 +8567,11 @@
         "baseline_alpha": 2.200112,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "perf"
+        "measurement_mode": "perf",
+        "notes": "Complex conjugate element-wise."
       },
       "conjugate": {
-        "category": "counted_complex",
+        "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,) complex128",
@@ -8576,10 +8592,11 @@
         "baseline_alpha": 2.200112,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "perf"
+        "measurement_mode": "perf",
+        "notes": "Complex conjugate element-wise."
       },
       "imag": {
-        "category": "counted_complex",
+        "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,) complex128",
@@ -8600,10 +8617,11 @@
         "baseline_alpha": 2.200112,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "perf"
+        "measurement_mode": "perf",
+        "notes": "Return imaginary part of complex array."
       },
       "real": {
-        "category": "counted_complex",
+        "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,) complex128",
@@ -8624,10 +8642,11 @@
         "baseline_alpha": 2.200112,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "perf"
+        "measurement_mode": "perf",
+        "notes": "Return real part of complex array."
       },
       "real_if_close": {
-        "category": "counted_complex",
+        "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,) complex128",
@@ -8648,10 +8667,11 @@
         "baseline_alpha": 2.200112,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "perf"
+        "measurement_mode": "perf",
+        "notes": "Return real array if imaginary part is negligible."
       },
       "iscomplex": {
-        "category": "counted_complex",
+        "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,) complex128",
@@ -8672,10 +8692,11 @@
         "baseline_alpha": 2.200112,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "perf"
+        "measurement_mode": "perf",
+        "notes": "Test if element is complex element-wise."
       },
       "isreal": {
-        "category": "counted_complex",
+        "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,) complex128",
@@ -8696,11 +8717,12 @@
         "baseline_alpha": 2.200112,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "perf"
+        "measurement_mode": "perf",
+        "notes": "Test if element is real (imag == 0) element-wise."
       },
       "sort_complex": {
-        "category": "counted_complex",
-        "analytical_formula": "numel(output)",
+        "category": "counted_custom",
+        "analytical_formula": "n * ceil(log2(n))",
         "analytical_flops": 1000000,
         "benchmark_size": "x: (1000000,) complex128",
         "bench_code": "np.sort_complex(x)",
@@ -8720,10 +8742,11 @@
         "baseline_alpha": 2.200112,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "perf"
+        "measurement_mode": "perf",
+        "notes": "Sort complex array. Cost: $n \\cdot \\lceil\\log_2 n\\rceil$."
       },
       "iscomplexobj": {
-        "category": "counted_complex",
+        "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,) complex128 (type check)",
@@ -8744,10 +8767,11 @@
         "baseline_alpha": 2.200112,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "perf"
+        "measurement_mode": "perf",
+        "notes": "Return True if input is a complex type or array."
       },
       "isrealobj": {
-        "category": "counted_complex",
+        "category": "counted_unary",
         "analytical_formula": "numel(output)",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,) complex128 (type check)",
@@ -8768,7 +8792,8 @@
         "baseline_alpha": 2.200112,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "perf"
+        "measurement_mode": "perf",
+        "notes": "Return True if x is a not complex type or array."
       },
       "linalg.cond": {
         "category": "counted_custom",
@@ -8792,7 +8817,8 @@
         "baseline_alpha": 2.200112,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "perf"
+        "measurement_mode": "perf",
+        "notes": "Condition number. Cost: m*n*min(m,n) (via SVD)."
       },
       "linalg.cross": {
         "category": "counted_custom",
@@ -8816,11 +8842,12 @@
         "baseline_alpha": 2.200112,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "perf"
+        "measurement_mode": "perf",
+        "notes": "Delegates to `me.cross` which charges `numel(output)` FLOPs."
       },
       "linalg.matmul": {
         "category": "counted_custom",
-        "analytical_formula": "2*M*N*K",
+        "analytical_formula": "MNK",
         "analytical_flops": 268435456,
         "benchmark_size": "A: (512,512), B: (512,512)",
         "bench_code": "np.linalg.matmul(A, B)",
@@ -8840,11 +8867,12 @@
         "baseline_alpha": 2.200112,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "perf"
+        "measurement_mode": "perf",
+        "notes": "Delegates to `me.matmul` which charges `m*k*n` FLOPs (FMA=1)."
       },
       "linalg.matrix_norm": {
         "category": "counted_custom",
-        "analytical_formula": "2*numel (Frobenius)",
+        "analytical_formula": "numel",
         "analytical_flops": 524288,
         "benchmark_size": "A: (512,512)",
         "bench_code": "np.linalg.matrix_norm(A)",
@@ -8864,7 +8892,8 @@
         "baseline_alpha": 2.200112,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "perf"
+        "measurement_mode": "perf",
+        "notes": "Matrix norm. Cost depends on ord: 2*numel for Frobenius, m*n*min(m,n) for ord=2."
       },
       "linalg.matrix_power": {
         "category": "counted_custom",
@@ -8888,7 +8917,8 @@
         "baseline_alpha": 2.200112,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "perf"
+        "measurement_mode": "perf",
+        "notes": "Matrix power. Cost: $(\\lfloor\\log_2 k\\rfloor + \\text{popcount}(k) - 1) \\cdot n^3$ (exponentiation by squaring)."
       },
       "linalg.matrix_rank": {
         "category": "counted_custom",
@@ -8912,11 +8942,12 @@
         "baseline_alpha": 2.200112,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "perf"
+        "measurement_mode": "perf",
+        "notes": "Matrix rank. Cost: m*n*min(m,n) (via SVD)."
       },
       "linalg.multi_dot": {
         "category": "counted_custom",
-        "analytical_formula": "2*(128*64*128 + 128*128*64)",
+        "analytical_formula": "sum of chain MNK costs",
         "analytical_flops": 4194304,
         "benchmark_size": "A: (128,64), B: (64,128), C: (128,64)",
         "bench_code": "np.linalg.multi_dot([A, B, C])",
@@ -8936,11 +8967,12 @@
         "baseline_alpha": 2.200112,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "perf"
+        "measurement_mode": "perf",
+        "notes": "Chain matmul. Cost: sum of optimal chain matmul costs (CLRS \u00a715.2)."
       },
       "linalg.norm": {
         "category": "counted_custom",
-        "analytical_formula": "numel (L2)",
+        "analytical_formula": "numel",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,)",
         "bench_code": "np.linalg.norm(x)",
@@ -8960,7 +8992,8 @@
         "baseline_alpha": 2.200112,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "perf"
+        "measurement_mode": "perf",
+        "notes": "Norm. Cost depends on ord: numel for L1/inf, 2*numel for Frobenius, m*n*min(m,n) for ord=2."
       },
       "linalg.outer": {
         "category": "counted_custom",
@@ -8984,11 +9017,12 @@
         "baseline_alpha": 2.200112,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "perf"
+        "measurement_mode": "perf",
+        "notes": "Delegates to `me.outer` which charges `m*n` FLOPs."
       },
       "linalg.tensordot": {
         "category": "counted_custom",
-        "analytical_formula": "2*d^5",
+        "analytical_formula": "product of free * contracted dims",
         "analytical_flops": 2147483648,
         "benchmark_size": "A: (64,64,64), B: (64,64,64)",
         "bench_code": "np.linalg.tensordot(A, B, axes=1)",
@@ -9008,11 +9042,12 @@
         "baseline_alpha": 2.200112,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "perf"
+        "measurement_mode": "perf",
+        "notes": "Delegates to `me.tensordot` which charges FLOPs based on contraction."
       },
       "linalg.tensorinv": {
         "category": "counted_custom",
-        "analytical_formula": "n^3 after reshape",
+        "analytical_formula": "n^3",
         "analytical_flops": 262144,
         "benchmark_size": "A: (8,8,8,8)",
         "bench_code": "np.linalg.tensorinv(A, ind=2)",
@@ -9032,11 +9067,12 @@
         "baseline_alpha": 2.200112,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "perf"
+        "measurement_mode": "perf",
+        "notes": "Tensor inverse. Cost: $n^3$ after reshape (delegates to inv)."
       },
       "linalg.tensorsolve": {
         "category": "counted_custom",
-        "analytical_formula": "n^3 after reshape",
+        "analytical_formula": "n^3",
         "analytical_flops": 262144,
         "benchmark_size": "A: (8,8,8,8), b: (8,8)",
         "bench_code": "np.linalg.tensorsolve(A, b)",
@@ -9056,7 +9092,8 @@
         "baseline_alpha": 2.200112,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "perf"
+        "measurement_mode": "perf",
+        "notes": "Tensor solve. Cost: $n^3$ after reshape (delegates to solve)."
       },
       "linalg.trace": {
         "category": "counted_custom",
@@ -9081,7 +9118,7 @@
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
         "measurement_mode": "perf",
-        "notes": "Matrix trace. Cost: n (sum of diagonal elements). Weight set to match trace/sum (subprocess overhead dominates at small analytical cost)."
+        "notes": "Matrix trace. Cost: n (sum of diagonal elements)."
       },
       "linalg.vecdot": {
         "category": "counted_custom",
@@ -9105,11 +9142,12 @@
         "baseline_alpha": 2.200112,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "perf"
+        "measurement_mode": "perf",
+        "notes": "Delegates to `me.vecdot` which charges `2*n` FLOPs."
       },
       "linalg.vector_norm": {
         "category": "counted_custom",
-        "analytical_formula": "numel (L2)",
+        "analytical_formula": "numel",
         "analytical_flops": 10000000,
         "benchmark_size": "x: (10000000,)",
         "bench_code": "np.linalg.vector_norm(x)",
@@ -9129,7 +9167,368 @@
         "baseline_alpha": 2.200112,
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_analytical_flops": 10000000,
-        "measurement_mode": "perf"
+        "measurement_mode": "perf",
+        "notes": "Vector norm. Cost: numel (or 2*numel for general p-norm)."
+      },
+      "array": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Create array from data. Cost: numel(input)."
+      },
+      "full": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Create array filled with scalar value. Cost: numel(output)."
+      },
+      "diag": {
+        "category": "counted_custom",
+        "analytical_formula": "len(diagonal)",
+        "notes": "Extract diagonal or construct diagonal array. Cost: len(diagonal)."
+      },
+      "arange": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Return evenly spaced values in given interval. Cost: numel(output)."
+      },
+      "linspace": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Return evenly spaced numbers over interval. Cost: numel(output)."
+      },
+      "full_like": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Array filled with scalar, same shape/type as input. Cost: numel(output)."
+      },
+      "concatenate": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Join arrays along axis. Cost: numel(output)."
+      },
+      "stack": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Join arrays along new axis. Cost: numel(output)."
+      },
+      "vstack": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Stack arrays vertically. Cost: numel(output)."
+      },
+      "split": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(input)",
+        "notes": "Split array into sub-arrays. Cost: numel(output)."
+      },
+      "vsplit": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(input)",
+        "notes": "Split array into rows. Cost: numel(output)."
+      },
+      "ravel": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Return contiguous flattened array. Cost: numel(input)."
+      },
+      "where": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(input)",
+        "notes": "Select elements based on condition. Cost: numel(input)."
+      },
+      "tile": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Repeat array by tiling. Cost: numel(output)."
+      },
+      "repeat": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Repeat elements of an array. Cost: numel(output)."
+      },
+      "roll": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Roll array elements along axis. Cost: numel(output)."
+      },
+      "pad": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Pad array. Cost: numel(output)."
+      },
+      "diagonal": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Return specified diagonals. Cost: numel(input)."
+      },
+      "broadcast_to": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Broadcast array to new shape. Cost: numel(output)."
+      },
+      "meshgrid": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Coordinate matrices from coordinate vectors. Cost: numel(output)."
+      },
+      "asarray": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Convert input to array. Cost: numel(input)."
+      },
+      "isnan": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(input)",
+        "notes": "Test for NaN element-wise. Cost: numel(input)."
+      },
+      "isinf": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(input)",
+        "notes": "Test for infinity element-wise. Cost: numel(input)."
+      },
+      "isfinite": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(input)",
+        "notes": "Test for finite values element-wise. Cost: numel(input)."
+      },
+      "dstack": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Stack arrays depth-wise (along third axis). Cost: numel(output)."
+      },
+      "flatnonzero": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(input)",
+        "notes": "Return indices of non-zero elements in flattened array. Cost: numel(input)."
+      },
+      "nonzero": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(input)",
+        "notes": "Return indices of non-zero elements. Cost: numel(input)."
+      },
+      "argwhere": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(input)",
+        "notes": "Find indices of non-zero elements. Cost: numel(input)."
+      },
+      "select": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(input)",
+        "notes": "Return array from list of choices based on conditions. Cost: numel(input)."
+      },
+      "extract": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(input)",
+        "notes": "Return elements satisfying condition. Cost: numel(input)."
+      },
+      "place": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(input)",
+        "notes": "Change elements satisfying condition. Cost: numel(input)."
+      },
+      "put": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(input)",
+        "notes": "Replace elements at given flat indices. Cost: numel(input)."
+      },
+      "put_along_axis": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(input)",
+        "notes": "Put values into destination array using indices. Cost: numel(input)."
+      },
+      "putmask": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(input)",
+        "notes": "Change elements of array based on condition and input values. Cost: numel(input)."
+      },
+      "take": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Take elements from array along axis. Cost: numel(output)."
+      },
+      "take_along_axis": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Take values from input array by matching 1-D index. Cost: numel(output)."
+      },
+      "choose": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Construct array from index array and choices. Cost: numel(output)."
+      },
+      "compress": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Return selected slices along axis. Cost: numel(input)."
+      },
+      "dsplit": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(input)",
+        "notes": "Split array into multiple sub-arrays depth-wise. Cost: numel(output)."
+      },
+      "array_split": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(input)",
+        "notes": "Split array into sub-arrays (possibly unequal). Cost: numel(output)."
+      },
+      "trim_zeros": {
+        "category": "counted_custom",
+        "analytical_formula": "num trimmed",
+        "notes": "Trim leading/trailing zeros from 1-D array. Cost: num trimmed."
+      },
+      "resize": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Return new array with given shape by repeating. Cost: numel(output)."
+      },
+      "broadcast_arrays": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Broadcast arrays against each other. Cost: numel(output)."
+      },
+      "packbits": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Pack elements of array into bits. Cost: numel(input)."
+      },
+      "unpackbits": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Unpack elements of array into bits. Cost: numel(input)."
+      },
+      "fromfunction": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Construct array by executing function over each coordinate. Cost: numel(output)."
+      },
+      "fromiter": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Create array from an iterable. Cost: numel(output)."
+      },
+      "frombuffer": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Interpret buffer as 1-D array. Cost: numel(output)."
+      },
+      "fromstring": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Create 1-D array from string data. Cost: numel(output)."
+      },
+      "fromfile": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Construct array from binary/text file. Cost: numel(output)."
+      },
+      "fromregex": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Construct array from text file using regex. Cost: numel(output)."
+      },
+      "from_dlpack": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Create ndarray from DLPack object (zero-copy). Cost: numel(output)."
+      },
+      "block": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Assemble ndarray from nested list of blocks. Cost: numel(output)."
+      },
+      "bmat": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Build matrix from nested list of matrices. Cost: numel(output)."
+      },
+      "indices": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Return array representing indices of a grid. Cost: numel(output)."
+      },
+      "diagflat": {
+        "category": "counted_custom",
+        "analytical_formula": "len(v)",
+        "notes": "Create diagonal array from flattened input. Cost: len(v)."
+      },
+      "mask_indices": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Return indices of mask for n x n array. Cost: numel(output)."
+      },
+      "fill_diagonal": {
+        "category": "counted_custom",
+        "analytical_formula": "min(m,n)",
+        "notes": "Fill main diagonal of given array. Cost: min(m,n)."
+      },
+      "concat": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Join arrays along axis (NumPy 2.x array API alias for concatenate). Cost: numel(output)."
+      },
+      "ix_": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Construct open mesh from multiple sequences. Cost: numel(output)."
+      },
+      "rollaxis": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Roll specified axis backwards. Cost: numel(output)."
+      },
+      "unstack": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(input)",
+        "notes": "Unstack array along axis into tuple of arrays (NumPy 2.x). Cost: numel(output)."
+      },
+      "delete": {
+        "category": "counted_custom",
+        "analytical_formula": "num deleted",
+        "notes": "Return array with sub-arrays deleted along axis. Cost: num deleted."
+      },
+      "insert": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(values)",
+        "notes": "Insert values along axis before given indices. Cost: numel(values)."
+      },
+      "append": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(values)",
+        "notes": "Append values to end of array. Cost: numel(values)."
+      },
+      "copyto": {
+        "category": "counted_custom",
+        "analytical_formula": "num copied",
+        "notes": "Copy values from src to dst array. Cost: numel(output)."
+      },
+      "asarray_chkfinite": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Convert to array, raising if NaN or inf. Cost: numel(input)."
+      },
+      "base_repr": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Return string representation of number in given base. Cost: numel(input)."
+      },
+      "binary_repr": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Return binary string representation of the input number. Cost: numel(input)."
+      },
+      "piecewise": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(input)",
+        "notes": "Piecewise function. Cost: numel(input)."
+      },
+      "apply_along_axis": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Apply function along axis. Cost: numel(output). Inner function costs tracked separately."
+      },
+      "apply_over_axes": {
+        "category": "counted_custom",
+        "analytical_formula": "numel(output)",
+        "notes": "Apply function over multiple axes. Cost: numel(output)."
       }
     },
     "duration_seconds": 2275.7
@@ -9140,6 +9539,8 @@
     "inner": 1.0,
     "vdot": 1.0,
     "vecdot": 1.0,
+    "matvec": 1.0,
+    "vecmat": 1.0,
     "outer": 1.0,
     "tensordot": 1.0,
     "kron": 1.0,
