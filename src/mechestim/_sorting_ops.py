@@ -93,10 +93,12 @@ attach_docstring(lexsort, _np.lexsort, "counted_custom", "k*n*ceil(log2(n)) FLOP
 
 
 def partition(a, kth, axis=-1, **kwargs):
-    """Counted version of ``numpy.partition``. Cost: n FLOPs per slice (quickselect)."""
+    """Counted version of ``numpy.partition``. Cost: n * len(kth) per slice."""
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
+    # kth can be int or sequence of ints
+    kth_count = len(kth) if hasattr(kth, '__len__') else 1
     if a.ndim == 0:
         cost = 1
     else:
@@ -107,7 +109,7 @@ def partition(a, kth, axis=-1, **kwargs):
         for d in a.shape:
             numel *= d
         num_slices = numel // n if n > 0 else 1
-        cost = max(num_slices * n, 1)
+        cost = max(num_slices * n * kth_count, 1)
     budget.deduct("partition", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.partition(a, kth, axis=axis, **kwargs)
 
@@ -118,10 +120,12 @@ attach_docstring(
 
 
 def argpartition(a, kth, axis=-1, **kwargs):
-    """Counted version of ``numpy.argpartition``. Cost: n FLOPs per slice."""
+    """Counted version of ``numpy.argpartition``. Cost: n * len(kth) per slice."""
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
+    # kth can be int or sequence of ints
+    kth_count = len(kth) if hasattr(kth, '__len__') else 1
     if a.ndim == 0:
         cost = 1
     else:
@@ -132,7 +136,7 @@ def argpartition(a, kth, axis=-1, **kwargs):
         for d in a.shape:
             numel *= d
         num_slices = numel // n if n > 0 else 1
-        cost = max(num_slices * n, 1)
+        cost = max(num_slices * n * kth_count, 1)
     budget.deduct("argpartition", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.argpartition(a, kth, axis=axis, **kwargs)
 
