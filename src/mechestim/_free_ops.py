@@ -58,7 +58,7 @@ def full(shape, fill_value, dtype=None, **kwargs):
     """Return array filled with *fill_value*. Cost: numel(output)."""
     budget = require_budget()
     result = _np.full(shape, fill_value, dtype=dtype, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("full", flop_cost=cost, subscripts=None, shapes=())
     return _symmetric_2d(result)
 
@@ -96,7 +96,7 @@ def arange(*args, **kwargs):
     """Return evenly spaced values. Cost: numel(output)."""
     budget = require_budget()
     result = _np.arange(*args, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("arange", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -110,9 +110,9 @@ def linspace(start, stop, num=50, **kwargs):
     result = _np.linspace(start, stop, num=num, **kwargs)
     # linspace may return (array, step) tuple if retstep=True
     if isinstance(result, tuple):
-        cost = result[0].size if hasattr(result[0], 'size') else 1
+        cost = result[0].size if hasattr(result[0], "size") else 1
     else:
-        cost = result.size if hasattr(result, 'size') else 1
+        cost = result.size if hasattr(result, "size") else 1
     budget.deduct("linspace", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -146,7 +146,7 @@ def full_like(a, fill_value, dtype=None, **kwargs):
     """Return full array with same shape. Cost: numel(output)."""
     budget = require_budget()
     result = _np.full_like(a, fill_value, dtype=dtype, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("full_like", flop_cost=cost, subscripts=None, shapes=())
     if isinstance(a, SymmetricTensor) and a._symmetric_axes:
         return SymmetricTensor(result, symmetric_axes=list(a._symmetric_axes))
@@ -221,7 +221,7 @@ def concatenate(arrays, axis=0, **kwargs):
     """Join arrays along an axis. Cost: numel(output)."""
     budget = require_budget()
     result = _np.concatenate(arrays, axis=axis, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("concatenate", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -233,7 +233,7 @@ def stack(arrays, axis=0, **kwargs):
     """Stack arrays along a new axis. Cost: numel(output)."""
     budget = require_budget()
     result = _np.stack(arrays, axis=axis, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("stack", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -245,7 +245,7 @@ def vstack(tup):
     """Stack arrays vertically. Cost: numel(output)."""
     budget = require_budget()
     result = _np.vstack(tup)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("vstack", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -347,7 +347,7 @@ def tile(A, reps):
     """Construct array by repeating. Cost: numel(output)."""
     budget = require_budget()
     result = _np.tile(A, reps)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("tile", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -359,7 +359,7 @@ def repeat(a, repeats, axis=None):
     """Repeat elements. Cost: numel(output)."""
     budget = require_budget()
     result = _np.repeat(a, repeats, axis=axis)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("repeat", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -379,7 +379,7 @@ def roll(a, shift, axis=None):
     """Roll array elements. Cost: numel(output)."""
     budget = require_budget()
     result = _np.roll(a, shift, axis=axis)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("roll", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -391,7 +391,7 @@ def pad(array, pad_width, **kwargs):
     """Pad an array. Cost: numel(output)."""
     budget = require_budget()
     result = _np.pad(array, pad_width, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("pad", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -431,7 +431,7 @@ def broadcast_to(array, shape):
     """Broadcast array to shape. Cost: numel(output)."""
     budget = require_budget()
     result = _np.broadcast_to(array, shape)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("broadcast_to", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -516,7 +516,7 @@ def append(arr, values, axis=None, **kwargs):
     """Append values. Cost: numel(output)."""
     budget = require_budget()
     result = _np.append(arr, values, axis=axis, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("append", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -553,7 +553,9 @@ def asarray_chkfinite(a, *args, **kwargs):
     budget = require_budget()
     result = _np.asarray_chkfinite(a, *args, **kwargs)
     cost = result.size
-    budget.deduct("asarray_chkfinite", flop_cost=cost, subscripts=None, shapes=(result.shape,))
+    budget.deduct(
+        "asarray_chkfinite", flop_cost=cost, subscripts=None, shapes=(result.shape,)
+    )
     return result
 
 
@@ -612,7 +614,7 @@ def block(*args, **kwargs):
     """Assemble array from nested lists. Cost: numel(output)."""
     budget = require_budget()
     result = _np.block(*args, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("block", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -624,7 +626,7 @@ def bmat(*args, **kwargs):
     """Build matrix from string/nested sequence. Cost: numel(output)."""
     budget = require_budget()
     result = _np.bmat(*args, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("bmat", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -664,7 +666,7 @@ def choose(*args, **kwargs):
     """Construct array from index array. Cost: numel(output)."""
     budget = require_budget()
     result = _np.choose(*args, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("choose", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -704,7 +706,7 @@ def concat(*args, **kwargs):
     """Join arrays along an axis. Cost: numel(output)."""
     budget = require_budget()
     result = _np.concat(*args, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("concat", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -728,7 +730,7 @@ def delete(*args, **kwargs):
     """Return new array with sub-arrays deleted. Cost: numel(output)."""
     budget = require_budget()
     result = _np.delete(*args, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("delete", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -783,7 +785,7 @@ def dstack(*args, **kwargs):
     """Stack arrays along third axis. Cost: numel(output)."""
     budget = require_budget()
     result = _np.dstack(*args, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("dstack", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -808,7 +810,9 @@ def fill_diagonal(a, val, *args, **kwargs):
     budget = require_budget()
     a_arr = _np.asarray(a)
     cost = a_arr.size
-    budget.deduct("fill_diagonal", flop_cost=cost, subscripts=None, shapes=(a_arr.shape,))
+    budget.deduct(
+        "fill_diagonal", flop_cost=cost, subscripts=None, shapes=(a_arr.shape,)
+    )
     return _np.fill_diagonal(a, val, *args, **kwargs)
 
 
@@ -847,7 +851,7 @@ def from_dlpack(*args, **kwargs):
     """Create array from DLPack capsule. Cost: numel(output)."""
     budget = require_budget()
     result = _np.from_dlpack(*args, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("from_dlpack", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -859,7 +863,7 @@ def frombuffer(*args, **kwargs):
     """Interpret buffer as 1-D array. Cost: numel(output)."""
     budget = require_budget()
     result = _np.frombuffer(*args, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("frombuffer", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -871,7 +875,7 @@ def fromfile(*args, **kwargs):
     """Construct array from data in text or binary file. Cost: numel(output)."""
     budget = require_budget()
     result = _np.fromfile(*args, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("fromfile", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -883,7 +887,7 @@ def fromfunction(*args, **kwargs):
     """Construct array by executing function over each coordinate. Cost: numel(output)."""
     budget = require_budget()
     result = _np.fromfunction(*args, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("fromfunction", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -895,7 +899,7 @@ def fromiter(*args, **kwargs):
     """Create array from iterable object. Cost: numel(output)."""
     budget = require_budget()
     result = _np.fromiter(*args, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("fromiter", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -907,7 +911,7 @@ def fromregex(*args, **kwargs):
     """Construct array from text file using regex. Cost: numel(output)."""
     budget = require_budget()
     result = _np.fromregex(*args, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("fromregex", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -919,7 +923,7 @@ def fromstring(*args, **kwargs):
     """Construct array from string. Cost: numel(output)."""
     budget = require_budget()
     result = _np.fromstring(*args, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("fromstring", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -931,7 +935,7 @@ def indices(*args, **kwargs):
     """Return array representing indices of a grid. Cost: numel(output)."""
     budget = require_budget()
     result = _np.indices(*args, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("indices", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -943,7 +947,7 @@ def insert(*args, **kwargs):
     """Insert values along axis before given indices. Cost: numel(output)."""
     budget = require_budget()
     result = _np.insert(*args, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("insert", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -1132,7 +1136,9 @@ def put_along_axis(arr, indices, values, axis, *args, **kwargs):
     budget = require_budget()
     arr_np = _np.asarray(arr)
     cost = arr_np.size
-    budget.deduct("put_along_axis", flop_cost=cost, subscripts=None, shapes=(arr_np.shape,))
+    budget.deduct(
+        "put_along_axis", flop_cost=cost, subscripts=None, shapes=(arr_np.shape,)
+    )
     return _np.put_along_axis(arr, indices, values, axis, *args, **kwargs)
 
 
@@ -1171,7 +1177,7 @@ def resize(*args, **kwargs):
     """Return new array with given shape. Cost: numel(output)."""
     budget = require_budget()
     result = _np.resize(*args, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("resize", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -1191,7 +1197,7 @@ def rollaxis(*args, **kwargs):
     """Roll specified axis backwards. Cost: numel(output)."""
     budget = require_budget()
     result = _np.rollaxis(*args, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("rollaxis", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -1255,7 +1261,7 @@ def take(*args, **kwargs):
     """Take elements from array along axis. Cost: numel(output)."""
     budget = require_budget()
     result = _np.take(*args, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("take", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -1267,7 +1273,7 @@ def take_along_axis(*args, **kwargs):
     """Take values from input array along axis using indices. Cost: numel(output)."""
     budget = require_budget()
     result = _np.take_along_axis(*args, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    cost = result.size if hasattr(result, "size") else 1
     budget.deduct("take_along_axis", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -1303,7 +1309,7 @@ def trim_zeros(*args, **kwargs):
     """Trim leading and/or trailing zeros from 1-D array. Cost: numel(output)."""
     budget = require_budget()
     result = _np.trim_zeros(*args, **kwargs)
-    cost = len(result) if not hasattr(result, 'size') else result.size
+    cost = len(result) if not hasattr(result, "size") else result.size
     budget.deduct("trim_zeros", flop_cost=cost, subscripts=None, shapes=())
     return result
 
