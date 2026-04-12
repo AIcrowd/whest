@@ -78,10 +78,15 @@ attach_docstring(eye, _np.eye, "free", "0 FLOPs")
 
 
 def diag(v, k=0):
-    """Extract diagonal or construct diagonal array. Cost: numel(input)."""
+    """Extract diagonal or construct diagonal array. Cost: len(diagonal)."""
     budget = require_budget()
     v = _np.asarray(v)
-    cost = v.size
+    if v.ndim == 1:
+        cost = v.size  # constructing: len(v)
+    else:
+        # extracting diagonal from 2D
+        m, n = v.shape[0], v.shape[1] if v.ndim > 1 else v.shape[0]
+        cost = min(m, n)  # diagonal length
     budget.deduct("diag", flop_cost=cost, subscripts=None, shapes=(v.shape,))
     result = _np.diag(v, k=k)
     if v.ndim == 1 and k == 0:
@@ -513,11 +518,12 @@ attach_docstring(isinf, _np.isinf, "free", "0 FLOPs")
 
 
 def append(arr, values, axis=None, **kwargs):
-    """Append values. Cost: numel(output)."""
+    """Append values. Cost: numel(appended values)."""
     budget = require_budget()
-    result = _np.append(arr, values, axis=axis, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    values_arr = _np.asarray(values)
+    cost = values_arr.size  # num appended
     budget.deduct("append", flop_cost=cost, subscripts=None, shapes=())
+    result = _np.append(arr, values, axis=axis, **kwargs)
     return result
 
 
@@ -724,11 +730,12 @@ def copyto(dst, src, *args, **kwargs):
 attach_docstring(copyto, _np.copyto, "free", "0 FLOPs")
 
 
-def delete(*args, **kwargs):
-    """Return new array with sub-arrays deleted. Cost: numel(output)."""
+def delete(arr, obj, axis=None, **kwargs):
+    """Return new array with sub-arrays deleted. Cost: num elements removed."""
     budget = require_budget()
-    result = _np.delete(*args, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    arr_np = _np.asarray(arr)
+    result = _np.delete(arr, obj, axis=axis, **kwargs)
+    cost = max(arr_np.size - result.size, 0)  # num deleted
     budget.deduct("delete", flop_cost=cost, subscripts=None, shapes=())
     return result
 
@@ -753,10 +760,10 @@ attach_docstring(diag_indices_from, _np.diag_indices_from, "free", "0 FLOPs")
 
 
 def diagflat(v, k=0):
-    """Create diagonal array from flattened input. Cost: numel(input)."""
+    """Create diagonal array from flattened input. Cost: len(v)."""
     budget = require_budget()
     v_arr = _np.asarray(v)
-    cost = v_arr.size
+    cost = v_arr.size  # len of diagonal = len of flattened input
     budget.deduct("diagflat", flop_cost=cost, subscripts=None, shapes=(v_arr.shape,))
     result = _np.diagflat(v, k=k)
     if k == 0:
@@ -803,13 +810,13 @@ def extract(condition, arr, *args, **kwargs):
 attach_docstring(extract, _np.extract, "free", "0 FLOPs")
 
 
-def fill_diagonal(a, val, *args, **kwargs):
-    """Fill main diagonal of array in-place. Cost: numel(input)."""
+def fill_diagonal(a, val, wrap=False, **kwargs):
+    """Fill main diagonal of array in-place. Cost: min(m,n)."""
     budget = require_budget()
     a_arr = _np.asarray(a)
-    cost = a_arr.size
+    cost = min(a_arr.shape[0], a_arr.shape[1]) if a_arr.ndim >= 2 else a_arr.size
     budget.deduct("fill_diagonal", flop_cost=cost, subscripts=None, shapes=(a_arr.shape,))
-    return _np.fill_diagonal(a, val, *args, **kwargs)
+    return _np.fill_diagonal(a, val, wrap=wrap, **kwargs)
 
 
 attach_docstring(fill_diagonal, _np.fill_diagonal, "free", "0 FLOPs")
@@ -939,13 +946,13 @@ def indices(*args, **kwargs):
 attach_docstring(indices, _np.indices, "free", "0 FLOPs")
 
 
-def insert(*args, **kwargs):
-    """Insert values along axis before given indices. Cost: numel(output)."""
+def insert(arr, obj, values, axis=None, **kwargs):
+    """Insert values along axis before given indices. Cost: numel(inserted values)."""
     budget = require_budget()
-    result = _np.insert(*args, **kwargs)
-    cost = result.size if hasattr(result, 'size') else 1
+    values_arr = _np.asarray(values)
+    cost = values_arr.size  # num inserted
     budget.deduct("insert", flop_cost=cost, subscripts=None, shapes=())
-    return result
+    return _np.insert(arr, obj, values, axis=axis, **kwargs)
 
 
 attach_docstring(insert, _np.insert, "free", "0 FLOPs")
@@ -1299,11 +1306,13 @@ def tril_indices_from(*args, **kwargs):
 attach_docstring(tril_indices_from, _np.tril_indices_from, "free", "0 FLOPs")
 
 
-def trim_zeros(*args, **kwargs):
-    """Trim leading and/or trailing zeros from 1-D array. Cost: numel(output)."""
+def trim_zeros(filt, trim='fb', **kwargs):
+    """Trim leading and/or trailing zeros from 1-D array. Cost: num elements trimmed."""
     budget = require_budget()
-    result = _np.trim_zeros(*args, **kwargs)
-    cost = len(result) if not hasattr(result, 'size') else result.size
+    filt_arr = _np.asarray(filt)
+    result = _np.trim_zeros(filt, trim=trim, **kwargs)
+    result_arr = _np.asarray(result)
+    cost = max(filt_arr.size - result_arr.size, 0)  # num trimmed
     budget.deduct("trim_zeros", flop_cost=cost, subscripts=None, shapes=())
     return result
 
