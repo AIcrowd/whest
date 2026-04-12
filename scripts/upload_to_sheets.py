@@ -216,7 +216,7 @@ def upload_data(sid: str, rows: list[list[str]]) -> None:
         "sheets", "spreadsheets", "values", "clear",
         "--params", json.dumps({
             "spreadsheetId": sid,
-            "range": f"'All Operations'!A1:ZZ",
+            "range": "'All Operations'!A1:ZZ",
         }),
     )
 
