@@ -29,7 +29,12 @@ def _symmetric_2d(result):
 def array(object, dtype=None, **kwargs):
     """Create an array. Cost: numel(input)."""
     budget = require_budget()
-    x_arr = _np.asarray(object)
+    try:
+        x_arr = _np.asarray(object, dtype=dtype)
+    except (ValueError, TypeError):
+        # Inhomogeneous sequences (e.g. mixed-shape arrays) may fail
+        # without an explicit dtype; fall back to object dtype for costing.
+        x_arr = _np.asarray(object, dtype=_np.object_)
     cost = x_arr.size
     budget.deduct("array", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,))
     return _np.array(object, dtype=dtype, **kwargs)
