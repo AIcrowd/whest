@@ -310,6 +310,8 @@ All weights are normalized against element-wise addition (`np.add`):
 | `inner` | 1.0000 | medium | N (a.size) | [\_pointwise.py:649](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L649) | Inner product; cost = 2*N for 1-D, 2*N*M for n-D. |
 | `vdot` | 1.0000 | medium | N (a.size) | [\_pointwise.py:707](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L707) | Dot product with conjugation; cost = 2*N. |
 | `vecdot` | 1.0000 | medium | batch * K (output_size * contracted_axis) | [\_pointwise.py:455](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L455) | Vector dot product along last axis. |
+| `matvec` | 1.0000 |  | output_size * contracted_axis |  | Matrix-vector product (numpy 2.2+). Cost = output_size * contracted_axis. |
+| `vecmat` | 1.0000 |  | output_size * contracted_axis |  | Vector-matrix product (numpy 2.2+). Cost = output_size * contracted_axis. |
 | `outer` | 1.0000 | high | M*N | [\_pointwise.py:665](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L665) | Outer product of two vectors; cost = M*N. |
 | `tensordot` | 1.0000 | high | product of free * contracted dims | [\_\_init\_\_.py:74](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/__init__.py#L74) | Tensor dot product along specified axes. |
 | `kron` | 1.0000 | high | numel(output) | [\_pointwise.py:723](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L723) | Kronecker product; cost proportional to output size. |
