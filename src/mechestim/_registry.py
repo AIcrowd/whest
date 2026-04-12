@@ -1186,7 +1186,7 @@ REGISTRY: dict[str, dict] = {
     "full": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Create array filled with scalar value. Cost: numel(output).",
+        "notes": "Create array filled with scalar value. Cost: num copied.",
     },
     "eye": {
         "category": "free",
@@ -1201,7 +1201,7 @@ REGISTRY: dict[str, dict] = {
     "diag": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Extract diagonal or construct diagonal array. Cost: numel(input).",
+        "notes": "Extract diagonal or construct diagonal array. Cost: len(diagonal).",
     },
     "arange": {
         "category": "counted_custom",
@@ -1582,7 +1582,7 @@ REGISTRY: dict[str, dict] = {
     "trim_zeros": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Trim leading/trailing zeros from 1-D array. Cost: numel(output).",
+        "notes": "Trim leading/trailing zeros from 1-D array. Cost: num trimmed.",
     },
     "resize": {
         "category": "counted_custom",
@@ -1782,7 +1782,7 @@ REGISTRY: dict[str, dict] = {
     "diagflat": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Create diagonal array from flattened input. Cost: numel(input).",
+        "notes": "Create diagonal array from flattened input. Cost: len(v).",
     },
     "mask_indices": {
         "category": "counted_custom",
@@ -1812,7 +1812,7 @@ REGISTRY: dict[str, dict] = {
     "fill_diagonal": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Fill main diagonal of given array. Cost: numel(input).",
+        "notes": "Fill main diagonal of given array. Cost: min(m,n).",
     },
     "tri": {
         "category": "free",
@@ -1867,22 +1867,22 @@ REGISTRY: dict[str, dict] = {
     "delete": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Return array with sub-arrays deleted along axis. Cost: numel(output).",
+        "notes": "Return array with sub-arrays deleted along axis. Cost: num deleted.",
     },
     "insert": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Insert values along axis before given indices. Cost: numel(output).",
+        "notes": "Insert values along axis before given indices. Cost: numel(values).",
     },
     "append": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Append values to end of array. Cost: numel(output).",
+        "notes": "Append values to end of array. Cost: numel(values).",
     },
     "copyto": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Copy values from src to dst array. Cost: numel(output).",
+        "notes": "Copy values from src to dst array. Cost: num copied.",
     },
     "unique_all": {
         "category": "counted_custom",
