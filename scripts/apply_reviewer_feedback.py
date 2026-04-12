@@ -101,10 +101,12 @@ def download_reviewer_feedback() -> dict[str, dict[str, str]]:
         "values",
         "get",
         "--params",
-        json.dumps({
-            "spreadsheetId": SID,
-            "range": "'All Operations'!A1:ZZ",
-        }),
+        json.dumps(
+            {
+                "spreadsheetId": SID,
+                "range": "'All Operations'!A1:ZZ",
+            }
+        ),
     )
     all_rows = resp.get("values", [])
     if not all_rows:
@@ -140,8 +142,12 @@ def download_reviewer_feedback() -> dict[str, dict[str, str]]:
                 rev_weight_idx = i
                 break
 
-    print(f"  Reviewer Weight column: {rev_weight_idx} ({headers[rev_weight_idx] if rev_weight_idx is not None else 'NOT FOUND'})")
-    print(f"  Reviewer Notes column: {rev_notes_idx} ({headers[rev_notes_idx] if rev_notes_idx is not None else 'NOT FOUND'})")
+    print(
+        f"  Reviewer Weight column: {rev_weight_idx} ({headers[rev_weight_idx] if rev_weight_idx is not None else 'NOT FOUND'})"
+    )
+    print(
+        f"  Reviewer Notes column: {rev_notes_idx} ({headers[rev_notes_idx] if rev_notes_idx is not None else 'NOT FOUND'})"
+    )
 
     # Extract reviewer data
     reviewer_data: dict[str, dict[str, str]] = {}
@@ -174,7 +180,9 @@ def download_reviewer_feedback() -> dict[str, dict[str, str]]:
     numeric = sum(1 for v in reviewer_data.values() if _is_numeric(v["weight"]))
     question = sum(1 for v in reviewer_data.values() if v["weight"] == "?")
     with_notes = sum(1 for v in reviewer_data.values() if v["notes"])
-    print(f"  Breakdown: {numeric} numeric weights, {question} '?' weights, {with_notes} with notes")
+    print(
+        f"  Breakdown: {numeric} numeric weights, {question} '?' weights, {with_notes} with notes"
+    )
 
     return reviewer_data
 
