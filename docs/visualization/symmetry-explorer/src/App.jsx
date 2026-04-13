@@ -2,7 +2,7 @@ import { useState, useMemo, useCallback } from 'react';
 import { EXAMPLES } from './data/examples.js';
 import {
   buildBipartite, buildIncidenceMatrix, runSigmaLoop,
-  buildGroup, buildDeclaredGroup, computeBurnside, computeCostReduction,
+  buildGroup, computeBurnside, computeCostReduction,
 } from './engine/algorithm.js';
 import ExampleChooser from './components/ExampleChooser.jsx';
 import BipartiteGraph from './components/BipartiteGraph.jsx';
@@ -52,11 +52,7 @@ export default function App() {
       const graph = buildBipartite(example);
       const matrixData = buildIncidenceMatrix(graph);
       const sigmaResults = runSigmaLoop(graph, matrixData);
-      // For declared-symmetry examples, build the group from the declaration
-      // instead of from the σ-loop (which finds nothing for single operands).
-      const group = example.declared
-        ? buildDeclaredGroup(example)
-        : buildGroup(sigmaResults, graph);
+      const group = buildGroup(sigmaResults, graph);
       return { graph, matrixData, sigmaResults, group };
     } catch (err) {
       console.error('Pipeline error:', err);

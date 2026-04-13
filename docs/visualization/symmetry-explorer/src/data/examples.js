@@ -69,51 +69,6 @@ export const EXAMPLES = [
     color: '#bb86fc',
   },
 
-  // ── Declared cyclic C3: identity einsum ──
-  {
-    id: 'cyclic-tensor',
-    name: 'Cyclic C₃ tensor',
-    formula: "einsum('ijk→ijk', T_cyc)",
-    subscripts: ['ijk'],
-    output: 'ijk',
-    operandNames: ['T_cyc'],
-    perOpSymmetry: 'cyclic',
-    description: 'Declared C₃ symmetry — T[i,j,k] = T[j,k,i] = T[k,i,j] but T[i,j,k] ≠ T[j,i,k]',
-    expectedGroup: 'C3{i,j,k}',
-    color: '#F59E0B',
-    declared: true,
-  },
-
-  // ── Declared block-swap ──
-  {
-    id: 'block-swap',
-    name: 'Block swap (ij)↔(kl)',
-    formula: "einsum('ijkl→ijkl', T_blk)",
-    subscripts: ['ijkl'],
-    output: 'ijkl',
-    operandNames: ['T_blk'],
-    perOpSymmetry: 'block-swap',
-    description: 'Block swap — T[i,j,k,l] = T[k,l,i,j]. Like 2-electron integrals (ij|kl)=(kl|ij)',
-    expectedGroup: 'S2{i,k}×S2{j,l}',
-    color: '#EC4899',
-    declared: true,
-  },
-
-  // ── Declared dihedral D4 ──
-  {
-    id: 'dihedral-grid',
-    name: 'Dihedral D₄ tensor',
-    formula: "einsum('ijkl→ijkl', T_dih)",
-    subscripts: ['ijkl'],
-    output: 'ijkl',
-    operandNames: ['T_dih'],
-    perOpSymmetry: 'dihedral',
-    description: 'Dihedral D₄ — rotations + reflections of a square. 8 of 24 permutations valid',
-    expectedGroup: 'D4{i,j,k,l}',
-    color: '#8B5CF6',
-    declared: true,
-  },
-
   // ── W-side symmetry: contracted indices ──
   {
     id: 'trace-product',
