@@ -142,7 +142,7 @@ class TestMatrixNorm:
             from mechestim.linalg import matrix_norm
 
             matrix_norm(A)
-            assert budget.flops_used == 2 * 12
+            assert budget.flops_used == 12
 
 
 class TestCond:

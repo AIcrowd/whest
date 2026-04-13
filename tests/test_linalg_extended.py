@@ -115,8 +115,8 @@ def test_norm_cost_2d_fallback():
 
 
 def test_vector_norm_cost_p_norm():
-    # ord=3 triggers 2*numel
-    assert vector_norm_cost((10,), ord=3) == 20
+    # FMA=1: all norms cost numel (one pass over elements)
+    assert vector_norm_cost((10,), ord=3) == 10
 
 
 def test_vector_norm_cost_special_ords():
@@ -126,7 +126,7 @@ def test_vector_norm_cost_special_ords():
 
 def test_matrix_norm_cost_fro():
     m, n = 3, 4
-    assert matrix_norm_cost((m, n), ord="fro") == 2 * m * n
+    assert matrix_norm_cost((m, n), ord="fro") == m * n
 
 
 def test_matrix_norm_cost_nuc():
