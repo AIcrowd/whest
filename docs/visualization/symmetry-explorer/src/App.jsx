@@ -195,7 +195,7 @@ export default function App() {
               <p className="section-desc">
                 The FLOP cost is reduced by the ratio of unique to total elements.
               </p>
-              <CostView cost={cost} />
+              <CostView cost={cost} numOperands={example?.subscripts?.length || 0} />
             </section>
           </>
         )}
