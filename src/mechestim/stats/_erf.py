@@ -10,6 +10,22 @@ Four regions:
   |x| >= 6        : erf(x) = sign(x) * 1.0
 
 Accuracy: matches C99 math.erf / scipy.special.erf to ~1 ULP.
+
+References
+----------
+.. [1] Sun Microsystems, "Freely Distributable LIBM (fdlibm) s_erf.c",
+   https://www.netlib.org/fdlibm/s_erf.c
+   Algorithm and coefficients by Sun Microsystems (see copyright below).
+
+.. [2] glibc implementation (derived from fdlibm):
+   https://sourceware.org/git/?p=glibc.git;a=blob;f=sysdeps/ieee754/dbl-64/s_erf.c
+
+Copyright (original fdlibm source)
+-----------------------------------
+Copyright (C) 1993 by Sun Microsystems, Inc. All rights reserved.
+Developed at SunSoft, a Sun Microsystems, Inc. business.
+Permission to use, copy, modify, and distribute this software is freely
+granted, provided that this notice is preserved.
 """
 
 from __future__ import annotations
@@ -90,7 +106,10 @@ _sb7 = -2.24409524465858183362e+01
 
 
 def _erf(x):
-    """Vectorized error function matching scipy.special.erf to ~1 ULP."""
+    """Vectorized error function matching scipy.special.erf to ~1 ULP.
+
+    Algorithm and coefficients from fdlibm ``s_erf.c`` [1]_.
+    """
     x = np.asarray(x, dtype=np.float64)
     scalar = x.ndim == 0
     x = np.atleast_1d(x)
