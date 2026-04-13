@@ -1937,7 +1937,7 @@ code, .mono { font-family: var(--font-mono); }
   font-size: 3rem;
   font-weight: 700;
   font-family: var(--font-mono);
-  color: var(--coral);
+  color: #16a34a;
 }
 
 .speedup-label {

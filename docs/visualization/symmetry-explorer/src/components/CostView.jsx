@@ -56,9 +56,9 @@ export default function CostView({ cost, numOperands = 0 }) {
             </div>
           </div>
           <div className="speedup-card" style={{ marginTop: 12 }}>
-            <div className="speedup-number">{speedup.toFixed(1)}×</div>
+            <div className="speedup-number">{pctSaved}% saved</div>
             <div className="speedup-label">via {groupName}</div>
-            <div className="speedup-detail">{pctSaved}% saved</div>
+            <div className="speedup-detail">{speedup.toFixed(1)}× speedup</div>
           </div>
         </div>
       )}
@@ -132,9 +132,9 @@ export default function CostView({ cost, numOperands = 0 }) {
                 </div>
               </div>
               <div className="speedup-card" style={{ marginTop: 12, opacity: 0.8 }}>
-                <div className="speedup-number" style={{ color: '#e68a00' }}>{wSpeedup.toFixed(1)}×</div>
-                <div className="speedup-label">via {wGroupName}</div>
-                <div className="speedup-detail">{combinedPctSaved}% saved (V+W combined)</div>
+                <div className="speedup-number">{combinedPctSaved}% saved</div>
+                <div className="speedup-label">via {wGroupName} (V+W combined)</div>
+                <div className="speedup-detail">{wSpeedup.toFixed(1)}× speedup</div>
               </div>
               {isBinary ? (
                 <p style={{
