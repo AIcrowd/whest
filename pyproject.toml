@@ -1,5 +1,5 @@
 [project]
-name = "mechestim"
+name = "whest"
 version = "0.2.0"
 description = "NumPy-compatible math primitives with FLOP counting for the Mechanistic Estimation Challenge"
 requires-python = ">=3.10"
@@ -31,14 +31,14 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/mechestim", "benchmarks"]
+packages = ["src/whest", "benchmarks"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "--ignore=tests/numpy_compat"
 
 [tool.coverage.run]
-source = ["mechestim"]
+source = ["whest"]
 
 [tool.coverage.report]
 fail_under = 90
@@ -57,11 +57,11 @@ select = ["E", "F", "W", "I"]
 
 [tool.ruff.lint.per-file-ignores]
 # Public re-exports: imports are intentionally "unused" from ruff's perspective
-"src/mechestim/random/__init__.py" = ["F401"]
-"src/mechestim/stats/__init__.py" = ["F401"]
+"src/whest/random/__init__.py" = ["F401"]
+"src/whest/stats/__init__.py" = ["F401"]
 # Deferred imports after version-check call trigger E402; compact guards use E701
-"src/mechestim/__init__.py" = ["E402"]
-"src/mechestim/fft/_transforms.py" = ["E701"]
+"src/whest/__init__.py" = ["E402"]
+"src/whest/fft/_transforms.py" = ["E701"]
 # Tests: unused variables are intentional (assert no exception raised)
 "tests/**" = ["F841", "E402", "E501"]
 # Benchmarks: long f-strings for subprocess setup code
@@ -71,8 +71,8 @@ select = ["E", "F", "W", "I"]
 "examples/**" = ["E501", "E402", "F401", "F841"]
 "docker/**" = ["E501", "E402", "F401", "F841"]
 # Client/server packages: E402 in __init__.py (deferred imports pattern)
-"mechestim-client/**" = ["E402", "F401", "E501", "F841"]
-"mechestim-server/**" = ["E402", "F401", "E501", "F841"]
+"whest-client/**" = ["E402", "F401", "E501", "F841"]
+"whest-server/**" = ["E402", "F401", "E501", "F841"]
 # Core source: long lines in dense function signatures and docstrings
 "src/**" = ["E501"]
 

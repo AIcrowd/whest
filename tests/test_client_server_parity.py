@@ -1,7 +1,7 @@
-"""API surface parity tests: core library vs. mechestim-client.
+"""API surface parity tests: core library vs. whest-client.
 
 Loads modules from specific file paths using importlib so that both
-``src/mechestim`` (core) and ``mechestim-client/src/mechestim`` (client)
+``src/whest`` (core) and ``whest-client/src/whest`` (client)
 can be examined in the same process without namespace conflicts.
 """
 
@@ -21,7 +21,7 @@ import pytest
 _TEST_DIR = Path(__file__).resolve().parent
 ROOT = _TEST_DIR.parent
 CORE_SRC = ROOT / "src"
-CLIENT_SRC = ROOT / "mechestim-client" / "src"
+CLIENT_SRC = ROOT / "whest-client" / "src"
 
 
 # ---------------------------------------------------------------------------
@@ -43,12 +43,12 @@ def _load_module(file_path: Path, module_name: str) -> types.ModuleType:
 
 def _load_core(relative: str, alias: str) -> types.ModuleType:
     """Load a core module file relative to CORE_SRC."""
-    return _load_module(CORE_SRC / "mechestim" / relative, alias)
+    return _load_module(CORE_SRC / "whest" / relative, alias)
 
 
 def _load_client(relative: str, alias: str) -> types.ModuleType:
     """Load a client module file relative to CLIENT_SRC."""
-    return _load_module(CLIENT_SRC / "mechestim" / relative, alias)
+    return _load_module(CLIENT_SRC / "whest" / relative, alias)
 
 
 # ---------------------------------------------------------------------------
@@ -109,12 +109,12 @@ class TestErrorParity:
 
     # Names that are public exception/warning classes in the core module
     _EXPECTED_CORE_CLASSES = [
-        "MechEstimError",
+        "WhestError",
         "BudgetExhaustedError",
         "NoBudgetContextError",
         "SymmetryError",
         "UnsupportedFunctionError",
-        "MechEstimWarning",
+        "WhestWarning",
         "SymmetryLossWarning",
     ]
 
@@ -181,24 +181,24 @@ class TestSubmoduleParity:
 
     def test_client_submodule_init_files_exist(self):
         for submod in self._SUBMODULES:
-            init_path = CLIENT_SRC / "mechestim" / submod / "__init__.py"
+            init_path = CLIENT_SRC / "whest" / submod / "__init__.py"
             assert init_path.exists(), (
-                f"Client submodule mechestim/{submod}/__init__.py not found at {init_path}"
+                f"Client submodule whest/{submod}/__init__.py not found at {init_path}"
             )
 
     def test_core_submodule_init_files_exist(self):
         for submod in self._SUBMODULES:
-            init_path = CORE_SRC / "mechestim" / submod / "__init__.py"
+            init_path = CORE_SRC / "whest" / submod / "__init__.py"
             assert init_path.exists(), (
-                f"Core submodule mechestim/{submod}/__init__.py not found at {init_path}"
+                f"Core submodule whest/{submod}/__init__.py not found at {init_path}"
             )
 
     def test_client_submodule_init_files_are_non_empty(self):
         for submod in self._SUBMODULES:
-            init_path = CLIENT_SRC / "mechestim" / submod / "__init__.py"
+            init_path = CLIENT_SRC / "whest" / submod / "__init__.py"
             if init_path.exists():
                 assert init_path.stat().st_size > 0, (
-                    f"Client mechestim/{submod}/__init__.py exists but is empty"
+                    f"Client whest/{submod}/__init__.py exists but is empty"
                 )
 
 
