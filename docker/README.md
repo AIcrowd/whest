@@ -1,16 +1,16 @@
-# Mechestim Docker Setup
+# Whest Docker Setup
 
-Docker configuration for running mechestim participant submissions in a hardened, sandboxed environment.
+Docker configuration for running whest participant submissions in a hardened, sandboxed environment.
 
 ## Architecture
 
 ```
 ┌─────────────────────┐     IPC socket      ┌─────────────────────┐
 │   participant        │ ◄────────────────► │   backend           │
-│   (hardened image)   │   /ipc/mechestim   │   (server image)    │
+│   (hardened image)   │   /ipc/whest   │   (server image)    │
 │                      │      .sock          │                     │
-│  - mechestim-client  │                     │  - mechestim lib    │
-│  - pyzmq, msgpack    │                     │  - mechestim-server │
+│  - whest-client  │                     │  - whest lib    │
+│  - pyzmq, msgpack    │                     │  - whest-server │
 │  - stripped stdlib   │                     │  - numpy            │
 │  - no shell, no net  │                     │                     │
 └─────────────────────┘                     └─────────────────────┘
@@ -18,7 +18,7 @@ Docker configuration for running mechestim participant submissions in a hardened
 
 **Participant container** runs untrusted submission code with a locked-down Python environment. All computation is dispatched to the backend via ZMQ over a Unix domain socket.
 
-**Backend container** runs the real mechestim server with NumPy, executing operations and counting FLOPs.
+**Backend container** runs the real whest server with NumPy, executing operations and counting FLOPs.
 
 ## Quick Start
 
@@ -41,7 +41,7 @@ Three test scripts are included in `submissions/`:
 
 | File | Purpose |
 |------|---------|
-| `run_basic.py` | Smoke test — runs mechestim API (einsum, maximum, sum) with a FLOP budget |
+| `run_basic.py` | Smoke test — runs whest API (einsum, maximum, sum) with a FLOP budget |
 | `run_adversarial.py` | 9 tests verifying all defense layers (filesystem, open restriction, network, shell) |
 | `run_introspection.py` | 6 tests for Python introspection attacks (__subclasses__, eval+import, os.system) |
 
@@ -57,7 +57,7 @@ cp submissions/run_adversarial.py submissions/run.py
 The hardened participant image uses four independent defense layers:
 
 ### 1. Filesystem Stripping
-The Python stdlib is stripped from ~2500 files down to ~450, keeping only modules needed by mechestim-client and pyzmq. Dangerous modules like `ctypes`, `numpy`, and `tkinter` are deleted at build time.
+The Python stdlib is stripped from ~2500 files down to ~450, keeping only modules needed by whest-client and pyzmq. Dangerous modules like `ctypes`, `numpy`, and `tkinter` are deleted at build time.
 
 ### 2. open() Restriction
 `builtins.open` is replaced with a wrapper that only allows read-only access to:
@@ -85,7 +85,7 @@ Applied via `docker-compose.yml`:
 
 ## What Participants Can Do
 
-- Use the full mechestim API (`import mechestim as me`)
+- Use the full whest API (`import whest as me`)
 - `print()` for debugging and budget summaries
 - Basic Python: loops, lists, dicts, classes, generators, comprehensions
 - `itertools`, `functools`, `collections`, `json`, `time`, `contextlib`

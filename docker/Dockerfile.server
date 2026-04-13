@@ -1,14 +1,14 @@
 FROM python:3.10-slim
 WORKDIR /app
 
-# Install the real mechestim library (src layout)
-COPY src/ /app/mechestim-lib/src/
-COPY pyproject.toml /app/mechestim-lib/pyproject.toml
-COPY README.md /app/mechestim-lib/README.md
-RUN pip install --no-cache-dir /app/mechestim-lib/
+# Install the real whest library (src layout)
+COPY src/ /app/whest-lib/src/
+COPY pyproject.toml /app/whest-lib/pyproject.toml
+COPY README.md /app/whest-lib/README.md
+RUN pip install --no-cache-dir /app/whest-lib/
 
 # Install the server package
-COPY mechestim-server/ /app/mechestim-server/
-RUN pip install --no-cache-dir /app/mechestim-server/
+COPY whest-server/ /app/whest-server/
+RUN pip install --no-cache-dir /app/whest-server/
 
-CMD ["python", "-m", "mechestim_server", "--url", "ipc:///ipc/mechestim.sock"]
+CMD ["python", "-m", "whest_server", "--url", "ipc:///ipc/whest.sock"]

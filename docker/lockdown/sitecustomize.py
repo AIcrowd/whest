@@ -29,7 +29,7 @@ sys.path.remove(_lockdown_dir)
 # 2. Build the set of allowed top-level import names
 # ---------------------------------------------------------------------------
 
-# Site-packages modules are always allowed (mechestim, zmq, msgpack, etc.)
+# Site-packages modules are always allowed (whest, zmq, msgpack, etc.)
 _site_packages = sysconfig.get_paths()["purelib"]
 _platlib = sysconfig.get_paths()["platlib"]
 
@@ -53,7 +53,7 @@ def _is_allowed(name: str) -> bool:
     """Check if a module import should be allowed."""
     top_level = name.split(".")[0]
 
-    # Always allow site-packages (mechestim, zmq, msgpack, etc.)
+    # Always allow site-packages (whest, zmq, msgpack, etc.)
     if _is_site_package(top_level):
         return True
 
@@ -101,7 +101,7 @@ def _disabled(name: str):
     """Return a function that raises RuntimeError when called."""
 
     def _blocked(*args, **kwargs):
-        raise RuntimeError(f"{name}() is disabled in the mechestim sandbox")
+        raise RuntimeError(f"{name}() is disabled in the whest sandbox")
 
     _blocked.__name__ = name
     _blocked.__qualname__ = name
@@ -144,7 +144,7 @@ def _restricted_open(file, mode="r", *args, **kwargs):
     # Only allow read modes
     if any(c in str(mode) for c in ("w", "a", "x", "+")):
         raise PermissionError(
-            f"write access is disabled in the mechestim sandbox (mode={mode!r})"
+            f"write access is disabled in the whest sandbox (mode={mode!r})"
         )
 
     # Resolve the path
@@ -153,7 +153,7 @@ def _restricted_open(file, mode="r", *args, **kwargs):
     # Check against allowed prefixes
     if not any(path.startswith(prefix) for prefix in _ALLOWED_READ_PREFIXES):
         raise PermissionError(
-            f"read access to {file!r} is not allowed in the mechestim sandbox"
+            f"read access to {file!r} is not allowed in the whest sandbox"
         )
 
     return _original_open(file, mode, *args, **kwargs)

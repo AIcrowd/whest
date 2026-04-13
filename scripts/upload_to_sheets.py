@@ -6,7 +6,7 @@ Requires: gws CLI (https://github.com/googleworkspace/cli) authenticated via `gw
 Usage::
 
     python scripts/upload_to_sheets.py
-    python scripts/upload_to_sheets.py --csv src/mechestim/data/weights.csv
+    python scripts/upload_to_sheets.py --csv src/whest/data/weights.csv
 """
 
 from __future__ import annotations
@@ -19,8 +19,8 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-DEFAULT_CSV = REPO_ROOT / "src" / "mechestim" / "data" / "weights.csv"
-TITLE = "mechestim FLOP Weight Calibration Review"
+DEFAULT_CSV = REPO_ROOT / "src" / "whest" / "data" / "weights.csv"
+TITLE = "whest FLOP Weight Calibration Review"
 
 
 import tempfile
@@ -830,7 +830,7 @@ def create_summary_sheet(sid: str, rows: list[list[str]]) -> None:
     confs = Counter(r[7] for r in data_rows if r[7])  # col H
 
     summary = [
-        ["mechestim FLOP Weight Calibration — Review Summary", ""],
+        ["whest FLOP Weight Calibration — Review Summary", ""],
         ["", ""],
         ["Status", "Count"],
     ]

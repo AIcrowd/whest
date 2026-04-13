@@ -60,13 +60,13 @@ try:
 except Exception:
     check("can read /submission/", False)
 
-# Test 6: mechestim works
+# Test 6: whest works
 try:
-    import mechestim as me
+    import whest as we
 
-    check(f"mechestim loaded (v{me.__version__})", True)
+    check(f"whest loaded (v{we.__version__})", True)
 except Exception:
-    check("mechestim loaded", False)
+    check("whest loaded", False)
 
 # Test 7: allowed stdlib modules work
 try:
