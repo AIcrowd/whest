@@ -134,13 +134,14 @@ def flop_count(
     30
 
     >>> flop_count('abc', True, 2, {'a': 2, 'b':3, 'c':5})
-    60
+    30
 
     """
     overall_size = compute_size_by_dict(idx_contraction, size_dictionary)
+    # FMA (fused multiply-add) counts as 1 op, not 2.
+    # For a 2-operand contraction with inner sum: op_factor = 1 (just the multiply).
     op_factor = max(1, num_terms - 1)
-    if inner:
-        op_factor += 1
+    # No +1 for inner — FMA fuses multiply+accumulate into single op.
 
     return overall_size * op_factor
 

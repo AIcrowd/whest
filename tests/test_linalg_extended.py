@@ -50,12 +50,12 @@ def test_trace_cost_min1():
 
 def test_det_cost_symmetric():
     n = 4
-    assert det_cost(n, symmetric=True) == max(n**3 // 3, 1)
+    assert det_cost(n, symmetric=True) == max(n**3, 1)
 
 
 def test_slogdet_cost_symmetric():
     n = 4
-    assert slogdet_cost(n, symmetric=True) == max(n**3 // 3, 1)
+    assert slogdet_cost(n, symmetric=True) == max(n**3, 1)
 
 
 def test_norm_cost_1d_ord_none():
@@ -115,8 +115,8 @@ def test_norm_cost_2d_fallback():
 
 
 def test_vector_norm_cost_p_norm():
-    # ord=3 triggers 2*numel
-    assert vector_norm_cost((10,), ord=3) == 20
+    # FMA=1: all norms cost numel (one pass over elements)
+    assert vector_norm_cost((10,), ord=3) == 10
 
 
 def test_vector_norm_cost_special_ords():
@@ -126,7 +126,7 @@ def test_vector_norm_cost_special_ords():
 
 def test_matrix_norm_cost_fro():
     m, n = 3, 4
-    assert matrix_norm_cost((m, n), ord="fro") == 2 * m * n
+    assert matrix_norm_cost((m, n), ord="fro") == m * n
 
 
 def test_matrix_norm_cost_nuc():
@@ -268,33 +268,31 @@ def test_matrix_norm_various_ords(ord_val):
 
 def test_cholesky_cost():
     assert cholesky_cost(1) == 1
-    assert cholesky_cost(3) == max(27 // 3, 1)
+    assert cholesky_cost(3) == max(27, 1)
 
 
 def test_qr_cost_wide_matrix():
-    # m < n triggers swap
     m, n = 3, 5
     cost = qr_cost(m, n)
-    # After swap, effective m=5, n=3
-    assert cost == max(2 * 5 * 9 - 2 * 27 // 3, 1)
+    assert cost == max(m * n * min(m, n), 1)
 
 
 def test_eig_cost():
     assert eig_cost(0) == 1
-    assert eig_cost(4) == 10 * 64
+    assert eig_cost(4) == 64
 
 
 def test_eigh_cost():
     assert eigh_cost(0) == 1
-    assert eigh_cost(3) == max(4 * 27 // 3, 1)
+    assert eigh_cost(3) == max(27, 1)
 
 
 def test_eigvals_cost():
-    assert eigvals_cost(4) == 7 * 64
+    assert eigvals_cost(4) == 64
 
 
 def test_eigvalsh_cost():
-    assert eigvalsh_cost(4) == max(4 * 64 // 3, 1)
+    assert eigvalsh_cost(4) == max(64, 1)
 
 
 def test_svdvals_cost():

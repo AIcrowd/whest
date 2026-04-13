@@ -8,7 +8,7 @@ from the active budget before execution.
 - **Unary** (exp, log, sqrt, ...): 1 FLOP per output element
 - **Binary** (add, multiply, maximum, ...): 1 FLOP per output element (after broadcasting)
 - **Reductions** (sum, mean, max, ...): 1 FLOP per input element
-- **Einsum**: `product_of_all_index_dims x op_factor` (op_factor=2 for inner products)
+- **Einsum**: `product_of_all_index_dims` (FMA=1; no factor of 2)
 
 See [FLOP Counting Model](../concepts/flop-counting-model.md) for full details.
 

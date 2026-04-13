@@ -17,7 +17,7 @@ import mechestim as me
 
 # Einsum cost
 cost = me.flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
-print(f"Matmul cost: {cost:,}")         # 33,554,432 (2 × 256³)
+print(f"Matmul cost: {cost:,}")         # 16,777,216 (256³, FMA=1)
 
 # SVD cost
 cost = me.flops.svd_cost(m=256, n=256, k=10)

@@ -18,21 +18,21 @@ with me.BudgetContext(flop_budget=10**8) as budget:
     B = me.ones((256, 256))
     x = me.ones((256,))
 
-    # Matrix-vector multiply: cost = 2 × m × k
-    y = me.einsum('ij,j->i', A, x)           # 2 × 256 × 256 = 131,072 FLOPs
+    # Matrix-vector multiply: cost = m × k
+    y = me.einsum('ij,j->i', A, x)           # 256 × 256 = 65,536 FLOPs
 
-    # Matrix multiply: cost = 2 × m × k × n
-    C = me.einsum('ij,jk->ik', A, B)         # 2 × 256 × 256 × 256 = 33,554,432 FLOPs
+    # Matrix multiply: cost = m × k × n
+    C = me.einsum('ij,jk->ik', A, B)         # 256 × 256 × 256 = 16,777,216 FLOPs
 
-    # Outer product: cost = i × j (no summation, no ×2)
+    # Outer product: cost = i × j
     outer = me.einsum('i,j->ij', x, x)       # 256 × 256 = 65,536 FLOPs
 
-    # Trace: cost = 2 × i
-    tr = me.einsum('ii->', A)                 # 2 × 256 = 512 FLOPs
+    # Trace: cost = i
+    tr = me.einsum('ii->', A)                 # 256 FLOPs
 
-    # Batched matmul: cost = 2 × b × m × k × n
+    # Batched matmul: cost = b × m × k × n
     batch = me.ones((4, 256, 256))
-    out = me.einsum('bij,bjk->bik', batch, batch)  # 2 × 4 × 256 × 256 × 256 FLOPs
+    out = me.einsum('bij,bjk->bik', batch, batch)  # 4 × 256 × 256 × 256 FLOPs
 
     print(budget.summary())
 ```
@@ -44,15 +44,15 @@ The cost of an einsum is the sum of per-step costs along the optimal contraction
 For each pairwise step:
 
 ```
-cost = (product of all index dimensions) × op_factor
+cost = product of all index dimensions
 ```
 
-where `op_factor = 2` when indices are summed (multiply + add) and `op_factor = 1` when no indices are summed (outer product / pure assignment).
+Each FMA (fused multiply-add) counts as 1 operation, so the cost is
+simply the product of all index dimensions with no factor-of-2.
 
 For `'ij,jk->ik'` with shapes `(256, 256)` and `(256, 256)`:
 - Indices: i=256, j=256, k=256
-- `j` is summed out, so op_factor = 2
-- Cost: 2 x 256 x 256 x 256 = 33,554,432
+- Cost: 256 x 256 x 256 = 16,777,216
 
 For multi-operand einsums (3+ tensors), mechestim automatically decomposes the contraction into optimal pairwise steps. The total cost is the sum of per-step costs.
 
@@ -123,7 +123,7 @@ print(f"Optimizer used: {info.optimizer_used}")
 
 ```python
 cost = me.flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
-print(f"Matmul cost: {cost:,}")  # 33,554,432
+print(f"Matmul cost: {cost:,}")  # 16,777,216
 ```
 
 ## Custom contraction paths
@@ -162,7 +162,7 @@ Different paths may have different FLOP costs. Use `me.einsum_path()` to compare
 
 **Symptom:** Unexpectedly high FLOP cost
 
-**Fix:** Check all index dimensions. A subscript like `'ijkl,jklm->im'` multiplies all five dimension sizes together (times op_factor). Use `me.flops.einsum_cost()` or `me.einsum_path()` to preview costs before executing.
+**Fix:** Check all index dimensions. A subscript like `'ijkl,jklm->im'` multiplies all five dimension sizes together. Use `me.flops.einsum_cost()` or `me.einsum_path()` to preview costs before executing.
 
 ## 📎 Related pages
 

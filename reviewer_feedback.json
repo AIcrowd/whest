@@ -1,0 +1,1814 @@
+{
+  "abs": {
+    "notes": "",
+    "weight": "1"
+  },
+  "absolute": {
+    "notes": "",
+    "weight": "1"
+  },
+  "acos": {
+    "notes": "",
+    "weight": "16"
+  },
+  "acosh": {
+    "notes": "",
+    "weight": "16"
+  },
+  "add": {
+    "notes": "",
+    "weight": "1"
+  },
+  "all": {
+    "notes": "",
+    "weight": "1"
+  },
+  "allclose": {
+    "notes": "",
+    "weight": "1"
+  },
+  "amax": {
+    "notes": "",
+    "weight": "1"
+  },
+  "amin": {
+    "notes": "",
+    "weight": "1"
+  },
+  "angle": {
+    "notes": "",
+    "weight": "16"
+  },
+  "any": {
+    "notes": "",
+    "weight": "1"
+  },
+  "append": {
+    "notes": "num appended",
+    "weight": "1"
+  },
+  "apply_along_axis": {
+    "notes": "output length (most cost is in the sub-function)",
+    "weight": "1"
+  },
+  "apply_over_axes": {
+    "notes": "output length (most cost is in the sub-function)",
+    "weight": "1"
+  },
+  "arange": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "arccos": {
+    "notes": "",
+    "weight": "16"
+  },
+  "arccosh": {
+    "notes": "",
+    "weight": "16"
+  },
+  "arcsin": {
+    "notes": "",
+    "weight": "16"
+  },
+  "arcsinh": {
+    "notes": "",
+    "weight": "16"
+  },
+  "arctan": {
+    "notes": "",
+    "weight": "16"
+  },
+  "arctan2": {
+    "notes": "",
+    "weight": "16"
+  },
+  "arctanh": {
+    "notes": "",
+    "weight": "16"
+  },
+  "argmax": {
+    "notes": "",
+    "weight": "1"
+  },
+  "argmin": {
+    "notes": "",
+    "weight": "1"
+  },
+  "argpartition": {
+    "notes": "n * len(k)",
+    "weight": "1"
+  },
+  "argsort": {
+    "notes": "",
+    "weight": "1"
+  },
+  "argwhere": {
+    "notes": "input length",
+    "weight": "1"
+  },
+  "around": {
+    "notes": "",
+    "weight": "1"
+  },
+  "array": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "array_equal": {
+    "notes": "",
+    "weight": "1"
+  },
+  "array_equiv": {
+    "notes": "",
+    "weight": "1"
+  },
+  "array_split": {
+    "notes": "input length",
+    "weight": "1"
+  },
+  "asarray": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "asarray_chkfinite": {
+    "notes": "outputlength",
+    "weight": "1"
+  },
+  "asin": {
+    "notes": "",
+    "weight": "16"
+  },
+  "asinh": {
+    "notes": "",
+    "weight": "16"
+  },
+  "astype": {
+    "notes": "",
+    "weight": "0"
+  },
+  "atan": {
+    "notes": "",
+    "weight": "16"
+  },
+  "atan2": {
+    "notes": "",
+    "weight": "16"
+  },
+  "atanh": {
+    "notes": "",
+    "weight": "16"
+  },
+  "atleast_1d": {
+    "notes": "",
+    "weight": "0"
+  },
+  "atleast_2d": {
+    "notes": "",
+    "weight": "0"
+  },
+  "atleast_3d": {
+    "notes": "",
+    "weight": "0"
+  },
+  "average": {
+    "notes": "",
+    "weight": "1"
+  },
+  "bartlett": {
+    "notes": "n",
+    "weight": "1"
+  },
+  "base_repr": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "binary_repr": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "bincount": {
+    "notes": "",
+    "weight": "1"
+  },
+  "bitwise_and": {
+    "notes": "",
+    "weight": "1"
+  },
+  "bitwise_count": {
+    "notes": "",
+    "weight": "1"
+  },
+  "bitwise_invert": {
+    "notes": "",
+    "weight": "1"
+  },
+  "bitwise_left_shift": {
+    "notes": "",
+    "weight": "1"
+  },
+  "bitwise_not": {
+    "notes": "",
+    "weight": "1"
+  },
+  "bitwise_or": {
+    "notes": "",
+    "weight": "1"
+  },
+  "bitwise_right_shift": {
+    "notes": "",
+    "weight": "1"
+  },
+  "bitwise_xor": {
+    "notes": "",
+    "weight": "1"
+  },
+  "blackman": {
+    "notes": "3n",
+    "weight": "16"
+  },
+  "block": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "bmat": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "broadcast_arrays": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "broadcast_shapes": {
+    "notes": "",
+    "weight": "0"
+  },
+  "broadcast_to": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "can_cast": {
+    "notes": "",
+    "weight": "0"
+  },
+  "cbrt": {
+    "notes": "",
+    "weight": "16"
+  },
+  "ceil": {
+    "notes": "",
+    "weight": "1"
+  },
+  "choose": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "clip": {
+    "notes": "",
+    "weight": "1"
+  },
+  "column_stack": {
+    "notes": "",
+    "weight": "0"
+  },
+  "common_type": {
+    "notes": "",
+    "weight": "0"
+  },
+  "compress": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "concat": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "concatenate": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "conj": {
+    "notes": "",
+    "weight": "1"
+  },
+  "conjugate": {
+    "notes": "",
+    "weight": "1"
+  },
+  "convolve": {
+    "notes": "",
+    "weight": "1"
+  },
+  "copy": {
+    "notes": "",
+    "weight": "0"
+  },
+  "copysign": {
+    "notes": "",
+    "weight": "1"
+  },
+  "copyto": {
+    "notes": "# copied",
+    "weight": "1"
+  },
+  "corrcoef": {
+    "notes": "",
+    "weight": "1"
+  },
+  "correlate": {
+    "notes": "",
+    "weight": "1"
+  },
+  "cos": {
+    "notes": "",
+    "weight": "16"
+  },
+  "cosh": {
+    "notes": "",
+    "weight": "16"
+  },
+  "count_nonzero": {
+    "notes": "",
+    "weight": "1"
+  },
+  "cov": {
+    "notes": "",
+    "weight": "1"
+  },
+  "cross": {
+    "notes": "",
+    "weight": "1"
+  },
+  "cumprod": {
+    "notes": "",
+    "weight": "1"
+  },
+  "cumsum": {
+    "notes": "",
+    "weight": "1"
+  },
+  "cumulative_prod": {
+    "notes": "",
+    "weight": "1"
+  },
+  "cumulative_sum": {
+    "notes": "",
+    "weight": "1"
+  },
+  "deg2rad": {
+    "notes": "",
+    "weight": "1"
+  },
+  "degrees": {
+    "notes": "",
+    "weight": "1"
+  },
+  "delete": {
+    "notes": "num deleted",
+    "weight": "1"
+  },
+  "diag": {
+    "notes": "len diagonal",
+    "weight": "1"
+  },
+  "diag_indices": {
+    "notes": "",
+    "weight": "0"
+  },
+  "diag_indices_from": {
+    "notes": "",
+    "weight": "0"
+  },
+  "diagflat": {
+    "notes": "len diagonal",
+    "weight": "1"
+  },
+  "diagonal": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "diff": {
+    "notes": "",
+    "weight": "1"
+  },
+  "digitize": {
+    "notes": "",
+    "weight": "1"
+  },
+  "divide": {
+    "notes": "",
+    "weight": "1"
+  },
+  "divmod": {
+    "notes": "",
+    "weight": "16"
+  },
+  "dot": {
+    "notes": "MNK",
+    "weight": "1"
+  },
+  "dsplit": {
+    "notes": "input length",
+    "weight": "1"
+  },
+  "dstack": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "ediff1d": {
+    "notes": "",
+    "weight": "1"
+  },
+  "einsum": {
+    "notes": "Use # multiplies (and symmetrization bonus)",
+    "weight": "1"
+  },
+  "einsum_path": {
+    "notes": "",
+    "weight": "?"
+  },
+  "empty": {
+    "notes": "",
+    "weight": "0"
+  },
+  "empty_like": {
+    "notes": "",
+    "weight": "0"
+  },
+  "equal": {
+    "notes": "",
+    "weight": "1"
+  },
+  "exp": {
+    "notes": "",
+    "weight": "16"
+  },
+  "exp2": {
+    "notes": "",
+    "weight": "16"
+  },
+  "expand_dims": {
+    "notes": "",
+    "weight": "0"
+  },
+  "expm1": {
+    "notes": "",
+    "weight": "16"
+  },
+  "extract": {
+    "notes": "input size",
+    "weight": "1"
+  },
+  "eye": {
+    "notes": "",
+    "weight": "0"
+  },
+  "fabs": {
+    "notes": "",
+    "weight": "1"
+  },
+  "fft.fft": {
+    "notes": "",
+    "weight": "1"
+  },
+  "fft.fft2": {
+    "notes": "",
+    "weight": "1"
+  },
+  "fft.fftfreq": {
+    "notes": "",
+    "weight": "0"
+  },
+  "fft.fftn": {
+    "notes": "",
+    "weight": "1"
+  },
+  "fft.fftshift": {
+    "notes": "",
+    "weight": "0"
+  },
+  "fft.hfft": {
+    "notes": "",
+    "weight": "1"
+  },
+  "fft.ifft": {
+    "notes": "",
+    "weight": "1"
+  },
+  "fft.ifft2": {
+    "notes": "",
+    "weight": "1"
+  },
+  "fft.ifftn": {
+    "notes": "",
+    "weight": "1"
+  },
+  "fft.ifftshift": {
+    "notes": "",
+    "weight": "0"
+  },
+  "fft.ihfft": {
+    "notes": "",
+    "weight": "1"
+  },
+  "fft.irfft": {
+    "notes": "",
+    "weight": "1"
+  },
+  "fft.irfft2": {
+    "notes": "",
+    "weight": "1"
+  },
+  "fft.irfftn": {
+    "notes": "",
+    "weight": "1"
+  },
+  "fft.rfft": {
+    "notes": "",
+    "weight": "1"
+  },
+  "fft.rfft2": {
+    "notes": "",
+    "weight": "1"
+  },
+  "fft.rfftfreq": {
+    "notes": "",
+    "weight": "0"
+  },
+  "fft.rfftn": {
+    "notes": "",
+    "weight": "1"
+  },
+  "fill_diagonal": {
+    "notes": "diagonal length",
+    "weight": "1"
+  },
+  "fix": {
+    "notes": "",
+    "weight": "1"
+  },
+  "flatnonzero": {
+    "notes": "input length",
+    "weight": "1"
+  },
+  "flip": {
+    "notes": "",
+    "weight": "0"
+  },
+  "fliplr": {
+    "notes": "",
+    "weight": "0"
+  },
+  "flipud": {
+    "notes": "",
+    "weight": "0"
+  },
+  "float_power": {
+    "notes": "",
+    "weight": "16"
+  },
+  "floor": {
+    "notes": "",
+    "weight": "1"
+  },
+  "floor_divide": {
+    "notes": "",
+    "weight": "16"
+  },
+  "fmax": {
+    "notes": "",
+    "weight": "1"
+  },
+  "fmin": {
+    "notes": "",
+    "weight": "1"
+  },
+  "fmod": {
+    "notes": "",
+    "weight": "16"
+  },
+  "frexp": {
+    "notes": "",
+    "weight": "1"
+  },
+  "from_dlpack": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "frombuffer": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "fromfile": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "fromfunction": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "fromiter": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "fromregex": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "fromstring": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "full": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "full_like": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "gcd": {
+    "notes": "",
+    "weight": "16"
+  },
+  "geomspace": {
+    "notes": "",
+    "weight": "1"
+  },
+  "gradient": {
+    "notes": "",
+    "weight": "1"
+  },
+  "greater": {
+    "notes": "",
+    "weight": "1"
+  },
+  "greater_equal": {
+    "notes": "",
+    "weight": "1"
+  },
+  "hamming": {
+    "notes": "n",
+    "weight": "16"
+  },
+  "hanning": {
+    "notes": "n",
+    "weight": "16"
+  },
+  "heaviside": {
+    "notes": "",
+    "weight": "1"
+  },
+  "histogram": {
+    "notes": "",
+    "weight": "1"
+  },
+  "histogram2d": {
+    "notes": "",
+    "weight": "1"
+  },
+  "histogram_bin_edges": {
+    "notes": "",
+    "weight": "1"
+  },
+  "histogramdd": {
+    "notes": "",
+    "weight": "1"
+  },
+  "hsplit": {
+    "notes": "",
+    "weight": "0"
+  },
+  "hstack": {
+    "notes": "",
+    "weight": "0"
+  },
+  "hypot": {
+    "notes": "",
+    "weight": "16"
+  },
+  "i0": {
+    "notes": "",
+    "weight": "16"
+  },
+  "identity": {
+    "notes": "",
+    "weight": "0"
+  },
+  "imag": {
+    "notes": "",
+    "weight": "1"
+  },
+  "in1d": {
+    "notes": "",
+    "weight": "1"
+  },
+  "indices": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "inner": {
+    "notes": "",
+    "weight": "1"
+  },
+  "insert": {
+    "notes": "num inserted",
+    "weight": "1"
+  },
+  "interp": {
+    "notes": "",
+    "weight": "1"
+  },
+  "intersect1d": {
+    "notes": "",
+    "weight": "1"
+  },
+  "invert": {
+    "notes": "",
+    "weight": "1"
+  },
+  "isclose": {
+    "notes": "",
+    "weight": "1"
+  },
+  "iscomplex": {
+    "notes": "",
+    "weight": "1"
+  },
+  "iscomplexobj": {
+    "notes": "",
+    "weight": "1"
+  },
+  "isdtype": {
+    "notes": "",
+    "weight": "0"
+  },
+  "isfinite": {
+    "notes": "input length",
+    "weight": "1"
+  },
+  "isfortran": {
+    "notes": "",
+    "weight": "0"
+  },
+  "isin": {
+    "notes": "",
+    "weight": "1"
+  },
+  "isinf": {
+    "notes": "input length",
+    "weight": "1"
+  },
+  "isnan": {
+    "notes": "input length",
+    "weight": "1"
+  },
+  "isnat": {
+    "notes": "",
+    "weight": "?"
+  },
+  "isneginf": {
+    "notes": "",
+    "weight": "1"
+  },
+  "isposinf": {
+    "notes": "",
+    "weight": "1"
+  },
+  "isreal": {
+    "notes": "",
+    "weight": "1"
+  },
+  "isrealobj": {
+    "notes": "",
+    "weight": "1"
+  },
+  "isscalar": {
+    "notes": "",
+    "weight": "0"
+  },
+  "issubdtype": {
+    "notes": "",
+    "weight": "0"
+  },
+  "iterable": {
+    "notes": "",
+    "weight": "0"
+  },
+  "ix_": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "kaiser": {
+    "notes": "3n",
+    "weight": "16"
+  },
+  "kron": {
+    "notes": "Output size",
+    "weight": "1"
+  },
+  "lcm": {
+    "notes": "",
+    "weight": "16"
+  },
+  "ldexp": {
+    "notes": "",
+    "weight": "1"
+  },
+  "left_shift": {
+    "notes": "",
+    "weight": "1"
+  },
+  "less": {
+    "notes": "",
+    "weight": "1"
+  },
+  "less_equal": {
+    "notes": "",
+    "weight": "1"
+  },
+  "lexsort": {
+    "notes": "",
+    "weight": "1"
+  },
+  "linalg.cholesky": {
+    "notes": "n^3",
+    "weight": "4"
+  },
+  "linalg.cond": {
+    "notes": "n*m*min(n,m)",
+    "weight": "4"
+  },
+  "linalg.cross": {
+    "notes": "",
+    "weight": "1"
+  },
+  "linalg.det": {
+    "notes": "n^3",
+    "weight": "4"
+  },
+  "linalg.diagonal": {
+    "notes": "",
+    "weight": "0"
+  },
+  "linalg.eig": {
+    "notes": "n^3",
+    "weight": "4"
+  },
+  "linalg.eigh": {
+    "notes": "n^3",
+    "weight": "4"
+  },
+  "linalg.eigvals": {
+    "notes": "n^3",
+    "weight": "4"
+  },
+  "linalg.eigvalsh": {
+    "notes": "n^3",
+    "weight": "4"
+  },
+  "linalg.inv": {
+    "notes": "",
+    "weight": "4"
+  },
+  "linalg.lstsq": {
+    "notes": "",
+    "weight": "4"
+  },
+  "linalg.matmul": {
+    "notes": "",
+    "weight": "1"
+  },
+  "linalg.matrix_norm": {
+    "notes": "",
+    "weight": "?"
+  },
+  "linalg.matrix_power": {
+    "notes": "",
+    "weight": "?"
+  },
+  "linalg.matrix_rank": {
+    "notes": "",
+    "weight": "?"
+  },
+  "linalg.matrix_transpose": {
+    "notes": "",
+    "weight": "0"
+  },
+  "linalg.multi_dot": {
+    "notes": "",
+    "weight": "?"
+  },
+  "linalg.norm": {
+    "notes": "",
+    "weight": "?"
+  },
+  "linalg.outer": {
+    "notes": "",
+    "weight": "?"
+  },
+  "linalg.pinv": {
+    "notes": "",
+    "weight": "4"
+  },
+  "linalg.qr": {
+    "notes": "mn min(m,n)",
+    "weight": "4"
+  },
+  "linalg.slogdet": {
+    "notes": "n^3",
+    "weight": "4"
+  },
+  "linalg.solve": {
+    "notes": "n^3",
+    "weight": "1"
+  },
+  "linalg.svd": {
+    "notes": "Note: we should add sparse SVD, top k for 4*k*m*n",
+    "weight": "4"
+  },
+  "linalg.svdvals": {
+    "notes": "",
+    "weight": "4"
+  },
+  "linalg.tensordot": {
+    "notes": "",
+    "weight": "?"
+  },
+  "linalg.tensorinv": {
+    "notes": "",
+    "weight": "?"
+  },
+  "linalg.tensorsolve": {
+    "notes": "",
+    "weight": "?"
+  },
+  "linalg.trace": {
+    "notes": "",
+    "weight": "?"
+  },
+  "linalg.vecdot": {
+    "notes": "",
+    "weight": "?"
+  },
+  "linalg.vector_norm": {
+    "notes": "",
+    "weight": "?"
+  },
+  "linspace": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "log": {
+    "notes": "",
+    "weight": "16"
+  },
+  "log10": {
+    "notes": "",
+    "weight": "16"
+  },
+  "log1p": {
+    "notes": "",
+    "weight": "16"
+  },
+  "log2": {
+    "notes": "",
+    "weight": "16"
+  },
+  "logaddexp": {
+    "notes": "",
+    "weight": "16"
+  },
+  "logaddexp2": {
+    "notes": "",
+    "weight": "16"
+  },
+  "logical_and": {
+    "notes": "",
+    "weight": "1"
+  },
+  "logical_not": {
+    "notes": "",
+    "weight": "1"
+  },
+  "logical_or": {
+    "notes": "",
+    "weight": "1"
+  },
+  "logical_xor": {
+    "notes": "",
+    "weight": "1"
+  },
+  "logspace": {
+    "notes": "",
+    "weight": "1"
+  },
+  "mask_indices": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "matmul": {
+    "notes": "MNK",
+    "weight": "1"
+  },
+  "matrix_transpose": {
+    "notes": "",
+    "weight": "0"
+  },
+  "max": {
+    "notes": "",
+    "weight": "1"
+  },
+  "maximum": {
+    "notes": "",
+    "weight": "1"
+  },
+  "may_share_memory": {
+    "notes": "",
+    "weight": "0"
+  },
+  "mean": {
+    "notes": "",
+    "weight": "1"
+  },
+  "median": {
+    "notes": "",
+    "weight": "16"
+  },
+  "meshgrid": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "min": {
+    "notes": "",
+    "weight": "1"
+  },
+  "min_scalar_type": {
+    "notes": "",
+    "weight": "0"
+  },
+  "minimum": {
+    "notes": "",
+    "weight": "1"
+  },
+  "mintypecode": {
+    "notes": "",
+    "weight": "0"
+  },
+  "mod": {
+    "notes": "",
+    "weight": "16"
+  },
+  "modf": {
+    "notes": "",
+    "weight": "1"
+  },
+  "moveaxis": {
+    "notes": "",
+    "weight": "0"
+  },
+  "multiply": {
+    "notes": "",
+    "weight": "1"
+  },
+  "nan_to_num": {
+    "notes": "",
+    "weight": "1"
+  },
+  "nanargmax": {
+    "notes": "",
+    "weight": "1"
+  },
+  "nanargmin": {
+    "notes": "",
+    "weight": "1"
+  },
+  "nancumprod": {
+    "notes": "",
+    "weight": "1"
+  },
+  "nancumsum": {
+    "notes": "",
+    "weight": "1"
+  },
+  "nanmax": {
+    "notes": "",
+    "weight": "1"
+  },
+  "nanmean": {
+    "notes": "",
+    "weight": "1"
+  },
+  "nanmedian": {
+    "notes": "",
+    "weight": "16"
+  },
+  "nanmin": {
+    "notes": "",
+    "weight": "1"
+  },
+  "nanpercentile": {
+    "notes": "",
+    "weight": "16"
+  },
+  "nanprod": {
+    "notes": "",
+    "weight": "1"
+  },
+  "nanquantile": {
+    "notes": "",
+    "weight": "16"
+  },
+  "nanstd": {
+    "notes": "",
+    "weight": "2"
+  },
+  "nansum": {
+    "notes": "",
+    "weight": "1"
+  },
+  "nanvar": {
+    "notes": "",
+    "weight": "2"
+  },
+  "ndim": {
+    "notes": "",
+    "weight": "0"
+  },
+  "negative": {
+    "notes": "",
+    "weight": "1"
+  },
+  "nextafter": {
+    "notes": "",
+    "weight": "1"
+  },
+  "nonzero": {
+    "notes": "input length",
+    "weight": "1"
+  },
+  "not_equal": {
+    "notes": "",
+    "weight": "1"
+  },
+  "ones": {
+    "notes": "",
+    "weight": "0"
+  },
+  "ones_like": {
+    "notes": "",
+    "weight": "0"
+  },
+  "outer": {
+    "notes": "",
+    "weight": "1"
+  },
+  "packbits": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "pad": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "partition": {
+    "notes": "",
+    "weight": "1"
+  },
+  "percentile": {
+    "notes": "",
+    "weight": "16"
+  },
+  "permute_dims": {
+    "notes": "",
+    "weight": "0"
+  },
+  "piecewise": {
+    "notes": "n (most cost is in functions and conditions)",
+    "weight": "1"
+  },
+  "place": {
+    "notes": "input length",
+    "weight": "1"
+  },
+  "poly": {
+    "notes": "",
+    "weight": "1"
+  },
+  "polyadd": {
+    "notes": "",
+    "weight": "1"
+  },
+  "polyder": {
+    "notes": "",
+    "weight": "1"
+  },
+  "polydiv": {
+    "notes": "",
+    "weight": "1"
+  },
+  "polyfit": {
+    "notes": "",
+    "weight": "1"
+  },
+  "polyint": {
+    "notes": "",
+    "weight": "1"
+  },
+  "polymul": {
+    "notes": "",
+    "weight": "1"
+  },
+  "polysub": {
+    "notes": "",
+    "weight": "1"
+  },
+  "polyval": {
+    "notes": "n * degree",
+    "weight": "1"
+  },
+  "positive": {
+    "notes": "",
+    "weight": "1"
+  },
+  "pow": {
+    "notes": "",
+    "weight": "16"
+  },
+  "power": {
+    "notes": "",
+    "weight": "16"
+  },
+  "prod": {
+    "notes": "",
+    "weight": "1"
+  },
+  "promote_types": {
+    "notes": "",
+    "weight": "0"
+  },
+  "ptp": {
+    "notes": "",
+    "weight": "1"
+  },
+  "put": {
+    "notes": "input length",
+    "weight": "1"
+  },
+  "put_along_axis": {
+    "notes": "input length",
+    "weight": "1"
+  },
+  "putmask": {
+    "notes": "input length",
+    "weight": "1"
+  },
+  "quantile": {
+    "notes": "",
+    "weight": "16"
+  },
+  "rad2deg": {
+    "notes": "",
+    "weight": "1"
+  },
+  "radians": {
+    "notes": "",
+    "weight": "1"
+  },
+  "random.beta": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.binomial": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.bytes": {
+    "notes": "",
+    "weight": "?"
+  },
+  "random.chisquare": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.choice": {
+    "notes": "",
+    "weight": "1"
+  },
+  "random.default_rng": {
+    "notes": "",
+    "weight": "0"
+  },
+  "random.dirichlet": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.exponential": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.f": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.gamma": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.geometric": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.get_state": {
+    "notes": "",
+    "weight": "0"
+  },
+  "random.gumbel": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.hypergeometric": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.laplace": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.logistic": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.lognormal": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.logseries": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.multinomial": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.multivariate_normal": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.negative_binomial": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.noncentral_chisquare": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.noncentral_f": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.normal": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.pareto": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.permutation": {
+    "notes": "",
+    "weight": "1"
+  },
+  "random.poisson": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.power": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.rand": {
+    "notes": "",
+    "weight": "1"
+  },
+  "random.randint": {
+    "notes": "",
+    "weight": "1"
+  },
+  "random.randn": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.random": {
+    "notes": "",
+    "weight": "1"
+  },
+  "random.random_integers": {
+    "notes": "",
+    "weight": "?"
+  },
+  "random.random_sample": {
+    "notes": "",
+    "weight": "1"
+  },
+  "random.ranf": {
+    "notes": "",
+    "weight": "?"
+  },
+  "random.rayleigh": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.sample": {
+    "notes": "",
+    "weight": "?"
+  },
+  "random.seed": {
+    "notes": "",
+    "weight": "0"
+  },
+  "random.set_state": {
+    "notes": "",
+    "weight": "0"
+  },
+  "random.shuffle": {
+    "notes": "",
+    "weight": "1"
+  },
+  "random.standard_cauchy": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.standard_exponential": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.standard_gamma": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.standard_normal": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.standard_t": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.triangular": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.uniform": {
+    "notes": "",
+    "weight": "1"
+  },
+  "random.vonmises": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.wald": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.weibull": {
+    "notes": "",
+    "weight": "16"
+  },
+  "random.zipf": {
+    "notes": "",
+    "weight": "16"
+  },
+  "ravel": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "ravel_multi_index": {
+    "notes": "",
+    "weight": "0"
+  },
+  "real": {
+    "notes": "",
+    "weight": "1"
+  },
+  "real_if_close": {
+    "notes": "",
+    "weight": "1"
+  },
+  "reciprocal": {
+    "notes": "",
+    "weight": "1"
+  },
+  "remainder": {
+    "notes": "",
+    "weight": "16"
+  },
+  "repeat": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "require": {
+    "notes": "",
+    "weight": "0"
+  },
+  "reshape": {
+    "notes": "",
+    "weight": "0"
+  },
+  "resize": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "result_type": {
+    "notes": "",
+    "weight": "0"
+  },
+  "right_shift": {
+    "notes": "",
+    "weight": "1"
+  },
+  "rint": {
+    "notes": "",
+    "weight": "1"
+  },
+  "roll": {
+    "notes": "num outputs",
+    "weight": "1"
+  },
+  "rollaxis": {
+    "notes": "num outputs",
+    "weight": "1"
+  },
+  "roots": {
+    "notes": "n^3",
+    "weight": "16"
+  },
+  "rot90": {
+    "notes": "",
+    "weight": "0"
+  },
+  "round": {
+    "notes": "",
+    "weight": "1"
+  },
+  "row_stack": {
+    "notes": "",
+    "weight": "0"
+  },
+  "searchsorted": {
+    "notes": "",
+    "weight": "1"
+  },
+  "select": {
+    "notes": "input length",
+    "weight": "1"
+  },
+  "setdiff1d": {
+    "notes": "",
+    "weight": "1"
+  },
+  "setxor1d": {
+    "notes": "",
+    "weight": "1"
+  },
+  "shape": {
+    "notes": "",
+    "weight": "0"
+  },
+  "shares_memory": {
+    "notes": "",
+    "weight": "0"
+  },
+  "sign": {
+    "notes": "",
+    "weight": "1"
+  },
+  "signbit": {
+    "notes": "",
+    "weight": "1"
+  },
+  "sin": {
+    "notes": "",
+    "weight": "16"
+  },
+  "sinc": {
+    "notes": "",
+    "weight": "16"
+  },
+  "sinh": {
+    "notes": "",
+    "weight": "16"
+  },
+  "size": {
+    "notes": "",
+    "weight": "0"
+  },
+  "sort": {
+    "notes": "",
+    "weight": "1"
+  },
+  "sort_complex": {
+    "notes": "n log_2(n)",
+    "weight": "1"
+  },
+  "spacing": {
+    "notes": "",
+    "weight": "1"
+  },
+  "split": {
+    "notes": "input length",
+    "weight": "1"
+  },
+  "sqrt": {
+    "notes": "",
+    "weight": "1"
+  },
+  "square": {
+    "notes": "",
+    "weight": "1"
+  },
+  "squeeze": {
+    "notes": "",
+    "weight": "0"
+  },
+  "stack": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "std": {
+    "notes": "",
+    "weight": "2"
+  },
+  "subtract": {
+    "notes": "",
+    "weight": "1"
+  },
+  "sum": {
+    "notes": "",
+    "weight": "1"
+  },
+  "swapaxes": {
+    "notes": "",
+    "weight": "0"
+  },
+  "take": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "take_along_axis": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "tan": {
+    "notes": "",
+    "weight": "16"
+  },
+  "tanh": {
+    "notes": "",
+    "weight": "16"
+  },
+  "tensordot": {
+    "notes": "Use # multiplies",
+    "weight": "1"
+  },
+  "tile": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "trace": {
+    "notes": "",
+    "weight": "1"
+  },
+  "transpose": {
+    "notes": "",
+    "weight": "0"
+  },
+  "trapezoid": {
+    "notes": "",
+    "weight": "1"
+  },
+  "trapz": {
+    "notes": "",
+    "weight": "1"
+  },
+  "tri": {
+    "notes": "",
+    "weight": "0"
+  },
+  "tril": {
+    "notes": "",
+    "weight": "0"
+  },
+  "tril_indices": {
+    "notes": "",
+    "weight": "0"
+  },
+  "tril_indices_from": {
+    "notes": "",
+    "weight": "0"
+  },
+  "trim_zeros": {
+    "notes": "num trimmed",
+    "weight": "1"
+  },
+  "triu": {
+    "notes": "",
+    "weight": "0"
+  },
+  "triu_indices": {
+    "notes": "",
+    "weight": "0"
+  },
+  "triu_indices_from": {
+    "notes": "",
+    "weight": "0"
+  },
+  "true_divide": {
+    "notes": "",
+    "weight": "1"
+  },
+  "trunc": {
+    "notes": "",
+    "weight": "1"
+  },
+  "typename": {
+    "notes": "",
+    "weight": "0"
+  },
+  "union1d": {
+    "notes": "",
+    "weight": "1"
+  },
+  "unique": {
+    "notes": "",
+    "weight": "1"
+  },
+  "unique_all": {
+    "notes": "",
+    "weight": "1"
+  },
+  "unique_counts": {
+    "notes": "",
+    "weight": "1"
+  },
+  "unique_inverse": {
+    "notes": "",
+    "weight": "1"
+  },
+  "unique_values": {
+    "notes": "",
+    "weight": "1"
+  },
+  "unpackbits": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "unravel_index": {
+    "notes": "",
+    "weight": "0"
+  },
+  "unstack": {
+    "notes": "input length",
+    "weight": "1"
+  },
+  "unwrap": {
+    "notes": "",
+    "weight": "1"
+  },
+  "vander": {
+    "notes": "",
+    "weight": "1"
+  },
+  "var": {
+    "notes": "",
+    "weight": "2"
+  },
+  "vdot": {
+    "notes": "",
+    "weight": "1"
+  },
+  "vecdot": {
+    "notes": "",
+    "weight": "1"
+  },
+  "vsplit": {
+    "notes": "input length",
+    "weight": "1"
+  },
+  "vstack": {
+    "notes": "output length",
+    "weight": "1"
+  },
+  "where": {
+    "notes": "input length",
+    "weight": "1"
+  },
+  "zeros": {
+    "notes": "",
+    "weight": "0"
+  },
+  "zeros_like": {
+    "notes": "",
+    "weight": "0"
+  }
+}

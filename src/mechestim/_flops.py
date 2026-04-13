@@ -48,7 +48,7 @@ def einsum_cost(
     """FLOP cost of an einsum operation.
 
     Delegates to ``contract_path`` from opt_einsum, which uses ``flop_count``
-    with ``op_factor`` (multiply-add = 2 FLOPs for inner products).
+    with ``op_factor`` (FMA = 1 FLOP; see ``_cost_model.FMA_COST``).
 
     Parameters
     ----------

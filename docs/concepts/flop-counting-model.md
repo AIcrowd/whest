@@ -4,6 +4,14 @@
 
 Use this page to understand how mechestim counts FLOPs and why it uses analytical counting instead of runtime measurement.
 
+## Convention: FMA = 1 operation
+
+This codebase counts a fused multiply-add (a * b + c) as a **single operation**.
+Hardware FMA units execute this in one instruction; the common textbook
+convention of counting it as 2 (one multiply + one add) is **not** used here.
+All cost formulae reflect this: a matrix multiply of dimensions
+(m, k) x (k, n) costs m*k*n operations, not 2*m*k*n.
+
 ## Why FLOPs instead of wall-clock time
 
 - **Deterministic:** The same code always produces the same FLOP count, regardless of hardware
@@ -16,7 +24,7 @@ Use this page to understand how mechestim counts FLOPs and why it uses analytica
 mechestim computes FLOP costs **analytically from tensor shapes**, not by measuring execution time.
 
 1. You call a counted operation (e.g., `me.einsum('ij,j->i', W, x)`)
-2. mechestim computes the cost from the shapes: 2 × 256 × 256 = 131,072 FLOPs
+2. mechestim computes the cost from the shapes: 256 × 256 = 65,536 FLOPs
 3. The cost is checked against the remaining budget
 4. If within budget: the operation executes and the cost is deducted
 5. If over budget: `BudgetExhaustedError` is raised, the operation does **not** execute
@@ -29,13 +37,13 @@ by the operation's weight to give the final deducted cost.
 
 | Category | Formula | Example |
 |----------|---------|---------|
-| **Einsum** | Per-step: product of dims × op_factor | `'ij,jk->ik'` → 2 × 3 × 4 × 5 = 120 |
+| **Einsum** | Per-step: product of all index dims | `'ij,jk->ik'` → 3 × 4 × 5 = 60 |
 | **Unary** (exp, log, sqrt, ...) | $\text{numel}(\text{output})$ | shape (256, 256) → 65,536 |
 | **Binary** (add, multiply, ...) | $\text{numel}(\text{output})$ | shape (256, 256) → 65,536 |
 | **Reduction** (sum, mean, max, ...) | $\text{numel}(\text{input})$ | shape (256, 256) → 65,536 |
 | **SVD** | $m \cdot n \cdot k$ | (256, 256, k=10) → 655,360 |
-| **Solve** | $2n^3/3 + n^2 \cdot n_{\text{rhs}}$ (LU) | (256, 256) solve → ~11.1M |
-| **Dot / Matmul** | Same as einsum | (256, 256) @ (256, 256) → 2 × 256³ |
+| **Solve** | $n^3/3 + n^2 \cdot n_{\text{rhs}}$ (LU) | (256, 256) solve → ~5.6M |
+| **Dot / Matmul** | Same as einsum | (256, 256) @ (256, 256) → 256³ |
 | **Free ops** | 0 | zeros, reshape, etc. |
 
 ### Sorting & search
@@ -72,7 +80,7 @@ When a tensor is a `SymmetricTensor`, costs are reduced based on the number of u
 | **Pointwise** (unary/binary) | unique_elements | $\text{numel}(\text{output})$ |
 | **Reduction** | unique_elements | $\text{numel}(\text{input})$ |
 | **Einsum** (symmetric contraction) | Symmetry-reduced (see below) | Full product |
-| **Solve** | $n^3/3 + n \cdot n_{\text{rhs}}$ (Cholesky) | $2n^3/3 + n^2 \cdot n_{\text{rhs}}$ (LU) |
+| **Solve** | $n^3/3 + n \cdot n_{\text{rhs}}$ (Cholesky) | $n^3/3 + n^2 \cdot n_{\text{rhs}}$ (LU) |
 | **Det / Slogdet** | $n^3/3$ (Cholesky) | $n^3$ (LU) |
 | **Inv** | $n^3/3 + n^3/2$ | $n^3$ |
 
@@ -121,11 +129,13 @@ total_cost = sum(step.flop_cost for step in path.steps)
 For each pairwise step, the **dense** cost is:
 
 ```
-dense_step_cost = (product of all index dimensions) × op_factor
+dense_step_cost = product of all index dimensions
 ```
 
-where `op_factor = 2` when indices are summed (multiply + add) and
-`op_factor = 1` when no indices are summed (outer product).
+Each fused multiply-add (FMA) counts as 1 operation (see
+[Convention](#convention-fma--1-operation) above), so the cost of a
+contraction step is simply the product of all index dimensions — there is
+no factor-of-2 distinction between inner products and outer products.
 
 When symmetry is present, mechestim reduces each step's cost based on
 the structure of the contraction.
@@ -205,7 +215,7 @@ actual_cost = analytical_formula(shape) × weight(op_name)
 | `add` | $\text{numel}(\text{output})$ | 1.00 | 65,536 |
 | `exp` | $\text{numel}(\text{output})$ | 10.27 | 673,095 |
 | `sin` | $\text{numel}(\text{output})$ | 18.39 | 1,205,346 |
-| `matmul` | $2n^3$ | 0.46 | 15,400,727 |
+| `matmul` | $n^3$ | 0.46 | 7,700,364 |
 | `linalg.cholesky` | $n^3/3$ | 0.76 | 4,244,635 |
 
 Weights are measured using the correction-factor methodology
@@ -216,11 +226,11 @@ instructions to analytical FLOPs, measured via `fp_arith_inst_retired`
 performance counters.
 
 Weights below 1.0 are expected for BLAS-backed operations (contractions,
-linalg decompositions). This is the **FMA effect**: the Fused Multiply-Add
-instruction computes $a \times b + c$ in one hardware instruction but
-counts as 2 analytical FLOPs. For example, `matmul` at 0.64 means the
-FMA-optimized inner loop fuses two analytical FLOPs into roughly one
-instruction.
+linalg decompositions) because highly optimized BLAS libraries can
+execute FMA-dominated inner loops with fewer total instructions than the
+analytical element count. For example, `matmul` at 0.46 reflects the
+efficiency of a tuned BLAS kernel relative to the analytical cost of
+$n^3$ FMA operations.
 
 Integer and bitwise operations (`bitwise_and`, `gcd`, `lcm`, etc.) use
 **timing-based weights** because they do not retire `fp_arith_inst_retired`

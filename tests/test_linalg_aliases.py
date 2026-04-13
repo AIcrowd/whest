@@ -86,13 +86,15 @@ class TestLinalgDiagonal:
             result = diagonal(A)
             assert numpy.allclose(result, numpy.diagonal(A))
 
-    def test_zero_cost(self):
+    def test_scan_cost(self):
         A = numpy.array([[1.0, 2.0], [3.0, 4.0]])
         with BudgetContext(flop_budget=10**6) as budget:
             from mechestim.linalg import diagonal
 
             diagonal(A)
-            assert budget.flops_used == 0
+            assert budget.flops_used == min(
+                A.shape[0], A.shape[1]
+            )  # numel(output) scan cost
 
 
 class TestLinalgMatrixTranspose:

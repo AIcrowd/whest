@@ -23,7 +23,7 @@ class TestCholesky:
             from mechestim.linalg import cholesky
 
             cholesky(A)
-            assert budget.flops_used == n**3 // 3
+            assert budget.flops_used == n**3
 
     def test_op_log(self):
         A = numpy.eye(3) * 10
@@ -59,7 +59,7 @@ class TestQR:
             from mechestim.linalg import qr
 
             qr(A)
-            expected = 2 * m * n**2 - (2 * n**3) // 3
+            expected = m * n * min(m, n)
             assert budget.flops_used == expected
 
     def test_op_log(self):
@@ -88,7 +88,7 @@ class TestEig:
             from mechestim.linalg import eig
 
             eig(A)
-            assert budget.flops_used == 10 * n**3
+            assert budget.flops_used == n**3
 
 
 class TestEigh:
@@ -109,7 +109,7 @@ class TestEigh:
             from mechestim.linalg import eigh
 
             eigh(A)
-            assert budget.flops_used == (4 * n**3) // 3
+            assert budget.flops_used == n**3
 
 
 class TestEigvals:
@@ -129,7 +129,7 @@ class TestEigvals:
             from mechestim.linalg import eigvals
 
             eigvals(A)
-            assert budget.flops_used == 7 * n**3
+            assert budget.flops_used == n**3
 
 
 class TestEigvalsh:
@@ -141,7 +141,7 @@ class TestEigvalsh:
             from mechestim.linalg import eigvalsh
 
             eigvalsh(A)
-            assert budget.flops_used == (4 * n**3) // 3
+            assert budget.flops_used == n**3
 
 
 class TestSvdvals:

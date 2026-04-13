@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+### Added
+
+- **Multi-version NumPy support.** mechestim now supports NumPy 2.0, 2.1, and 2.2
+  (`>=2.0.0,<2.3.0`). Default install resolves to NumPy 2.2. Functions not available
+  in older NumPy versions raise `UnsupportedFunctionError` with an actionable message
+  at call time (not import time).
+
+- **`matvec` and `vecmat`** — new FLOP-counted wrappers for NumPy 2.2's matrix-vector
+  and vector-matrix product ufuncs. Cost = `output_size * contracted_axis` (weight 1.0).
+
+- **`UnsupportedFunctionError`** — new exception for calling functions that require a
+  newer NumPy version than what's installed.
+
+- **CI NumPy version matrix** — tests now run against NumPy 2.0, 2.1, and 2.2.
+
 ### Changed
 
 - **Symmetric BLAS classification restored.** Pairwise contractions with

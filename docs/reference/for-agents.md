@@ -59,8 +59,8 @@ everything in one request.
   "mechestim_ref": "me.einsum",
   "numpy_ref": "np.einsum",
   "category": "counted_custom",
-  "cost_formula": "product of all index dims * op_factor",
-  "cost_formula_latex": "$\\texttt{op\\_factor} \\cdot \\prod_i d_i$",
+  "cost_formula": "product of all index dims (FMA=1)",
+  "cost_formula_latex": "$\\prod_i d_i$",
   "free": false,
   "blocked": false,
   "status": "supported",
@@ -123,12 +123,10 @@ These are pure functions — no `BudgetContext` needed.
 
 **4. Use `me.einsum` as the primary computation primitive.**
 
-Most linear algebra can be expressed as einsum. The cost follows the
-[opt_einsum](https://github.com/dgasmith/opt_einsum) convention (see
-[our fork](../api/opt-einsum.md)): `product_of_all_index_dims * op_factor`,
-where `op_factor` is 2 when there is an inner product (summed indices)
-and 1 otherwise.
-`'ij,jk->ik'` with shapes `(m, k)` and `(k, n)` costs `2 * m * k * n` FLOPs.
+Most linear algebra can be expressed as einsum. The cost is simply the
+product of all index dimensions — each FMA (fused multiply-add) counts
+as 1 operation.
+`'ij,jk->ik'` with shapes `(m, k)` and `(k, n)` costs `m * k * n` FLOPs.
 
 **5. Exploit symmetry for cost savings.**
 

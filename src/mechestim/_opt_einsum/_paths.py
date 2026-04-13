@@ -178,14 +178,19 @@ def calc_k12_flops(
         subset_sym = oracle.sym(merged_subset)
         sym12 = subset_sym.output
 
-    if sym12 is not None:
+        from mechestim._config import get_setting
+
+        idx_removed = either - k12
         cost = symmetric_flop_count(
             either,
             inner,
             2,
             size_dict,
-            output_group=sym12,
+            output_group=subset_sym.output,
             output_indices=k12,
+            inner_group=subset_sym.inner,
+            inner_indices=idx_removed if idx_removed else None,
+            use_inner_symmetry=bool(get_setting("use_inner_symmetry")),
         )
     else:
         cost = flop_count(either, inner, 2, size_dict)

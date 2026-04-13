@@ -56,6 +56,21 @@ class SymmetryError(MechEstimError):
         )
 
 
+class UnsupportedFunctionError(MechEstimError):
+    """Raised when calling a function not available in the installed NumPy."""
+
+    def __init__(self, func_name: str, *, min_version: str):
+        import numpy as _np
+
+        self.func_name = func_name
+        self.min_version = min_version
+        super().__init__(
+            f"numpy.{func_name} requires numpy >= {min_version} "
+            f"(you have numpy {_np.__version__}). "
+            f"To use it: uv pip install 'numpy>={min_version}'"
+        )
+
+
 class MechEstimWarning(UserWarning):
     """Warning issued when mechestim detects potential numerical issues."""
 

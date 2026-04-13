@@ -335,7 +335,7 @@ class TestBackwardCompatibility:
         B = numpy.ones((4, 5))
         with BudgetContext(flop_budget=10**6, quiet=True) as budget:
             result = einsum("ij,jk->ik", A, B)
-            assert budget.flops_used == 120  # 3*4*5 * op_factor(2)
+            assert budget.flops_used == 60  # 3*4*5 * op_factor(1), FMA=1
             assert result.shape == (3, 5)
 
     def test_symmetric_axes_output_still_works(self):

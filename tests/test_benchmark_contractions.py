@@ -26,10 +26,10 @@ class TestOpsLists:
 
 class TestAnalyticalCost:
     def test_dot_cost(self):
-        assert _analytical_cost("dot") == 2 * 512 * 512 * 512
+        assert _analytical_cost("dot") == 512 * 512 * 512
 
     def test_matmul_cost(self):
-        assert _analytical_cost("matmul") == 2 * 512 * 512 * 512
+        assert _analytical_cost("matmul") == 512 * 512 * 512
 
     def test_inner_cost(self):
         assert _analytical_cost("inner") == 1_000_000  # a.size, no factor of 2
@@ -44,13 +44,13 @@ class TestAnalyticalCost:
         assert _analytical_cost("outer") == 5000 * 5000
 
     def test_tensordot_cost(self):
-        assert _analytical_cost("tensordot") == 2 * 64**5
+        assert _analytical_cost("tensordot") == 64**5
 
     def test_kron_cost(self):
         assert _analytical_cost("kron") == 64**4
 
     def test_einsum_cost(self):
-        assert _analytical_cost("einsum") == 2 * 512 * 512 * 512
+        assert _analytical_cost("einsum") == 512 * 512 * 512
 
     def test_all_ops_have_cost(self):
         """Every op in CONTRACTION_OPS has an analytical cost entry."""

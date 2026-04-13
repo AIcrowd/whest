@@ -8,10 +8,10 @@ functions with FLOP counting.
 
 | Operation | Cost Formula |
 |-----------|-------------|
-| `polyval` | $2 \cdot m \cdot \text{deg}$ (Horner's method) |
+| `polyval` | $m \cdot \text{deg}$ (Horner's method, FMA=1) |
 | `polyadd`, `polysub` | $\max(n_{1}, n_{2})$ |
 | `polymul`, `polydiv` | $n_{1} \cdot n_{2}$ |
-| `polyfit` | $2m \cdot (\text{deg}+1)^2$ |
+| `polyfit` | $m \cdot (\text{deg}+1)^2$ (FMA=1) |
 | `poly` | $n^2$ |
 | `roots` | $10n^3$ (companion matrix eigendecomposition) |
 | `polyder`, `polyint` | $n$ |
@@ -24,8 +24,8 @@ import mechestim as me
 with me.BudgetContext(flop_budget=1_000_000) as budget:
     coeffs = me.array([1.0, -3.0, 2.0])  # x^2 - 3x + 2 (free)
     x = me.linspace(0, 5, 100)            # free
-    y = me.polyval(coeffs, x)             # 2 * 100 * 2 = 400 FLOPs
-    print(f"polyval cost: {budget.flops_used}")  # 400
+    y = me.polyval(coeffs, x)             # 100 * 2 = 200 FLOPs
+    print(f"polyval cost: {budget.flops_used}")  # 200
 ```
 
 ## API Reference

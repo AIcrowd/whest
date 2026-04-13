@@ -129,7 +129,7 @@ Generated from the operation registry (`_registry.py`).
 | `digitize` | `me.digitize` | `np.digitize` | counted_custom | varies | 🟠 supported | Bin search; cost = n*ceil(log2(bins)). |
 | `divide` | `me.divide` | `np.divide` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise true division. |
 | `divmod` | `me.divmod` | `np.divmod` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise (quotient, remainder) tuple. |
-| `dot` | `me.dot` | `np.dot` | counted_custom | $2 \cdot m \cdot k \cdot n$ | 🟠 supported | Dot product; cost = 2*M*N*K for matrix multiply. |
+| `dot` | `me.dot` | `np.dot` | counted_custom | $m \cdot k \cdot n$ | 🟠 supported | Dot product; cost = M*N*K for matrix multiply (FMA=1). |
 | `dsplit` | `me.dsplit` | `np.dsplit` | free | $0$ | 🟢 supported | Split array into multiple sub-arrays depth-wise. |
 | `dstack` | `me.dstack` | `np.dstack` | free | $0$ | 🟢 supported | Stack arrays depth-wise (along third axis). |
 | `ediff1d` | `me.ediff1d` | `np.ediff1d` | counted_custom | $\text{numel}(\text{input})$ | 🟠 supported | Differences between consecutive elements. |
@@ -213,7 +213,7 @@ Generated from the operation registry (`_registry.py`).
 | `imag` | `me.imag` | `np.imag` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Return imaginary part of complex array. |
 | `in1d` | `me.in1d` | `np.in1d` | counted_custom | varies | 🟠 supported | Set membership; cost = (n+m)*ceil(log2(n+m)). |
 | `indices` | `me.indices` | `np.indices` | free | $0$ | 🟢 supported | Return array representing indices of a grid. |
-| `inner` | `me.inner` | `np.inner` | counted_custom | $n$ | 🟠 supported | Inner product; cost = 2*N for 1-D, 2*N*M for n-D. |
+| `inner` | `me.inner` | `np.inner` | counted_custom | $n$ | 🟠 supported | Inner product; cost = N for 1-D, N*M for n-D (FMA=1). |
 | `insert` | `me.insert` | `np.insert` | free | $0$ | 🟢 supported | Insert values along axis before given indices. |
 | `interp` | `me.interp` | `np.interp` | counted_custom | $n \cdot \log m$ | 🟠 supported | 1-D linear interpolation. |
 | `intersect1d` | `me.intersect1d` | `np.intersect1d` | counted_custom | varies | 🟠 supported | Set intersection; cost = (n+m)*ceil(log2(n+m)). |
@@ -256,26 +256,26 @@ Generated from the operation registry (`_registry.py`).
 | `linalg.eigvalsh` | `me.linalg.eigvalsh` | `np.linalg.eigvalsh` | counted_custom | $4n^3 / 3$ | 🟠 supported | Symmetric eigenvalues. Cost: $(4/3)n^3$ (same as eigh). |
 | `linalg.inv` | `me.linalg.inv` | `np.linalg.inv` | counted_custom | $n^3$ | 🟠 supported | Matrix inverse. Cost: $n^3$ (LU + solve). |
 | `linalg.lstsq` | `me.linalg.lstsq` | `np.linalg.lstsq` | counted_custom | $m \cdot n \cdot \min(m,n)$ | 🟠 supported | Least squares. Cost: m*n*min(m,n) (LAPACK gelsd/SVD). |
-| `linalg.matmul` | `me.linalg.matmul` | `np.linalg.matmul` | counted_custom | delegates to `matmul` | 🟠 supported | Delegates to `me.matmul` which charges `2*m*k*n` FLOPs. |
-| `linalg.matrix_norm` | `me.linalg.matrix_norm` | `np.linalg.matrix_norm` | counted_custom | varies | 🟠 supported | Matrix norm. Cost depends on ord: 2*numel for Frobenius, m*n*min(m,n) for ord=2. |
+| `linalg.matmul` | `me.linalg.matmul` | `np.linalg.matmul` | counted_custom | delegates to `matmul` | 🟠 supported | Delegates to `me.matmul` which charges `m*k*n` FLOPs (FMA=1). |
+| `linalg.matrix_norm` | `me.linalg.matrix_norm` | `np.linalg.matrix_norm` | counted_custom | varies | 🟠 supported | Matrix norm. Cost depends on ord: numel for Frobenius, m*n*min(m,n) for ord=2. |
 | `linalg.matrix_power` | `me.linalg.matrix_power` | `np.linalg.matrix_power` | counted_custom | $\lfloor\log_2 k\rfloor \cdot n^3$ | 🟠 supported | Matrix power. Cost: $(\lfloor\log_2 k\rfloor + \text{popcount}(k) - 1) \cdot n^3$ (exponentiation by squaring). |
 | `linalg.matrix_rank` | `me.linalg.matrix_rank` | `np.linalg.matrix_rank` | counted_custom | $m \cdot n \cdot \min(m,n)$ | 🟠 supported | Matrix rank. Cost: m*n*min(m,n) (via SVD). |
 | `linalg.matrix_transpose` | `me.linalg.matrix_transpose` | `np.linalg.matrix_transpose` | free | $0$ | 🟢 supported | Transpose view — delegates to mechestim.matrix_transpose. Cost: 0 FLOPs. |
 | `linalg.multi_dot` | `me.linalg.multi_dot` | `np.linalg.multi_dot` | counted_custom | optimal chain | 🟠 supported | Chain matmul. Cost: sum of optimal chain matmul costs (CLRS §15.2). |
-| `linalg.norm` | `me.linalg.norm` | `np.linalg.norm` | counted_custom | varies | 🟠 supported | Norm. Cost depends on ord: numel for L1/inf, 2*numel for Frobenius, m*n*min(m,n) for ord=2. |
+| `linalg.norm` | `me.linalg.norm` | `np.linalg.norm` | counted_custom | varies | 🟠 supported | Norm. Cost depends on ord: numel for L1/inf, numel for Frobenius, m*n*min(m,n) for ord=2. |
 | `linalg.outer` | `me.linalg.outer` | `np.linalg.outer` | counted_custom | delegates to `outer` | 🟠 supported | Delegates to `me.outer` which charges `m*n` FLOPs. |
 | `linalg.pinv` | `me.linalg.pinv` | `np.linalg.pinv` | counted_custom | $m \cdot n \cdot \min(m,n)$ | 🟠 supported | Pseudoinverse. Cost: m*n*min(m,n) (via SVD). |
-| `linalg.qr` | `me.linalg.qr` | `np.linalg.qr` | counted_custom | $2mn^2 - 2n^3/3$ | 🟠 supported | QR decomposition. Cost: $2mn^2 - (2/3)n^3$ (Golub & Van Loan §5.2). |
+| `linalg.qr` | `me.linalg.qr` | `np.linalg.qr` | counted_custom | $mn^2 - n^3/3$ | 🟠 supported | QR decomposition. Cost: $mn^2 - n^3/3$ (Golub & Van Loan §5.2, FMA=1). |
 | `linalg.slogdet` | `me.linalg.slogdet` | `np.linalg.slogdet` | counted_custom | $n^3$ | 🟠 supported | Sign + log determinant. Cost: $n^3$ (LU factorization). |
-| `linalg.solve` | `me.linalg.solve` | `np.linalg.solve` | counted_custom | $2n^3/3 + n^2 \cdot n_{\text{rhs}}$ | 🟠 supported | Solve Ax=b. Cost: $2n^3/3$ (LU) + $n^2 \cdot n_{\text{rhs}}$ (back-substitution). |
+| `linalg.solve` | `me.linalg.solve` | `np.linalg.solve` | counted_custom | $n^3/3 + n^2 \cdot n_{\text{rhs}}$ | 🟠 supported | Solve Ax=b. Cost: $n^3/3$ (LU) + $n^2 \cdot n_{\text{rhs}}$ (back-substitution, FMA=1). |
 | `linalg.svd` | `me.linalg.svd` | `np.linalg.svd` | counted_custom | $m \cdot n \cdot k$ | 🟠 supported | Singular value decomposition; cost ~ O(min(m,n)*m*n). |
 | `linalg.svdvals` | `me.linalg.svdvals` | `np.linalg.svdvals` | counted_custom | $m \cdot n \cdot \min(m,n)$ | 🟠 supported | Singular values only. Cost: m*n*min(m,n) (Golub-Reinsch). |
 | `linalg.tensordot` | `me.linalg.tensordot` | `np.linalg.tensordot` | counted_custom | delegates to `tensordot` | 🟠 supported | Delegates to `me.tensordot` which charges FLOPs based on contraction. |
 | `linalg.tensorinv` | `me.linalg.tensorinv` | `np.linalg.tensorinv` | counted_custom | $n^3$ | 🟠 supported | Tensor inverse. Cost: $n^3$ after reshape (delegates to inv). |
 | `linalg.tensorsolve` | `me.linalg.tensorsolve` | `np.linalg.tensorsolve` | counted_custom | $n^3$ | 🟠 supported | Tensor solve. Cost: $n^3$ after reshape (delegates to solve). |
 | `linalg.trace` | `me.linalg.trace` | `np.linalg.trace` | counted_custom | $n$ | 🟠 supported | Matrix trace. Cost: n (sum of diagonal elements). |
-| `linalg.vecdot` | `me.linalg.vecdot` | `np.linalg.vecdot` | counted_custom | delegates to `vecdot` | 🟠 supported | Delegates to `me.vecdot` which charges `2*n` FLOPs. |
-| `linalg.vector_norm` | `me.linalg.vector_norm` | `np.linalg.vector_norm` | counted_custom | $n$ or $2n$ | 🟠 supported | Vector norm. Cost: numel (or 2*numel for general p-norm). |
+| `linalg.vecdot` | `me.linalg.vecdot` | `np.linalg.vecdot` | counted_custom | delegates to `vecdot` | 🟠 supported | Delegates to `me.vecdot` which charges `n` FLOPs (FMA=1). |
+| `linalg.vector_norm` | `me.linalg.vector_norm` | `np.linalg.vector_norm` | counted_custom | $n$ | 🟠 supported | Vector norm. Cost: numel. |
 | `linspace` | `me.linspace` | `np.linspace` | free | $0$ | 🟢 supported | Return evenly spaced numbers over interval. |
 | `load` | — | `np.load` | blacklisted | N/A | 🔴 blocked | Load arrays from .npy/.npz files. Not supported. |
 | `loadtxt` | — | `np.loadtxt` | blacklisted | N/A | 🔴 blocked | Load data from text file. Not supported. |
@@ -291,7 +291,7 @@ Generated from the operation registry (`_registry.py`).
 | `logical_xor` | `me.logical_xor` | `np.logical_xor` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise logical XOR. |
 | `logspace` | `me.logspace` | `np.logspace` | counted_custom | varies | 🟠 supported | Log-spaced generation; cost = num. |
 | `mask_indices` | `me.mask_indices` | `np.mask_indices` | free | $0$ | 🟢 supported | Return indices of mask for n x n array. |
-| `matmul` | `me.matmul` | `np.matmul` | counted_custom | $2 \cdot m \cdot k \cdot n$ | 🟠 supported | Matrix multiplication; cost = 2*M*N*K. |
+| `matmul` | `me.matmul` | `np.matmul` | counted_custom | $m \cdot k \cdot n$ | 🟠 supported | Matrix multiplication; cost = M*K*N (FMA=1). |
 | `matrix_transpose` | `me.matrix_transpose` | `np.matrix_transpose` | free | $0$ | 🟢 supported | Transpose last two dimensions (NumPy 2.x array API). |
 | `max` | `me.max` | `np.max` | counted_reduction | $\text{numel}(\text{input})$ | 🟡 supported | Maximum value of array. |
 | `maximum` | `me.maximum` | `np.maximum` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise maximum (propagates NaN). |
@@ -342,11 +342,11 @@ Generated from the operation registry (`_registry.py`).
 | `polyadd` | `me.polyadd` | `np.polyadd` | counted_custom | $\max(n_{1}, n_{2})$ | 🟠 supported | Add two polynomials. Cost: max(n1, n2) FLOPs. |
 | `polyder` | `me.polyder` | `np.polyder` | counted_custom | $n$ | 🟠 supported | Differentiate polynomial. Cost: n FLOPs. |
 | `polydiv` | `me.polydiv` | `np.polydiv` | counted_custom | $n_{1} \cdot n_{2}$ | 🟠 supported | Divide one polynomial by another. Cost: n1 * n2 FLOPs. |
-| `polyfit` | `me.polyfit` | `np.polyfit` | counted_custom | $2m \cdot (\text{deg}+1)^2$ | 🟠 supported | Least squares polynomial fit. Cost: 2 * m * (deg+1)^2 FLOPs. |
+| `polyfit` | `me.polyfit` | `np.polyfit` | counted_custom | $m \cdot (\text{deg}+1)^2$ | 🟠 supported | Least squares polynomial fit. Cost: m * (deg+1)^2 FLOPs (FMA=1). |
 | `polyint` | `me.polyint` | `np.polyint` | counted_custom | $n$ | 🟠 supported | Integrate polynomial. Cost: n FLOPs. |
 | `polymul` | `me.polymul` | `np.polymul` | counted_custom | $n_{1} \cdot n_{2}$ | 🟠 supported | Multiply polynomials. Cost: n1 * n2 FLOPs. |
 | `polysub` | `me.polysub` | `np.polysub` | counted_custom | $\max(n_{1}, n_{2})$ | 🟠 supported | Difference (subtraction) of two polynomials. Cost: max(n1, n2) FLOPs. |
-| `polyval` | `me.polyval` | `np.polyval` | counted_custom | $2 \cdot m \cdot \text{deg}$ | 🟠 supported | Evaluate polynomial at given points. Cost: 2 * m * deg FLOPs (Horner's method). |
+| `polyval` | `me.polyval` | `np.polyval` | counted_custom | $m \cdot \text{deg}$ | 🟠 supported | Evaluate polynomial at given points. Cost: m * deg FLOPs (Horner's method, FMA=1). |
 | `positive` | `me.positive` | `np.positive` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise unary plus (copy with sign preserved). |
 | `pow` | `me.pow` | `np.pow` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Alias for power (NumPy 2.x). |
 | `power` | `me.power` | `np.power` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise exponentiation x**y. |
@@ -495,7 +495,7 @@ Generated from the operation registry (`_registry.py`).
 | `unwrap` | `me.unwrap` | `np.unwrap` | counted_custom | $\text{numel}(\text{input})$ | 🟠 supported | Phase unwrap. Cost: $\text{numel}(\text{input})$ (diff + conditional adjustment). |
 | `vander` | `me.vander` | `np.vander` | counted_custom | varies | 🟠 supported | Vandermonde matrix; cost = len(x)*(N-1). |
 | `var` | `me.var` | `np.var` | counted_reduction | $\text{numel}(\text{input})$ | 🟡 supported | Variance; cost_multiplier=2 (two passes). |
-| `vdot` | `me.vdot` | `np.vdot` | counted_custom | $n$ | 🟠 supported | Dot product with conjugation; cost = 2*N. |
+| `vdot` | `me.vdot` | `np.vdot` | counted_custom | $n$ | 🟠 supported | Dot product with conjugation; cost = N (FMA=1). |
 | `vecdot` | `me.vecdot` | `np.vecdot` | counted_binary | $n$ | 🟡 supported | Vector dot product along last axis. |
 | `vsplit` | `me.vsplit` | `np.vsplit` | free | $0$ | 🟢 supported | Split array into rows. |
 | `vstack` | `me.vstack` | `np.vstack` | free | $0$ | 🟢 supported | Stack arrays vertically. |
