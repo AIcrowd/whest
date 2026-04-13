@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""numpy_audit.py — Introspect NumPy and compare against the mechestim registry.
+"""numpy_audit.py — Introspect NumPy and compare against the whest registry.
 
 Usage
 -----
@@ -24,13 +24,13 @@ import numpy as np
 
 # ---------------------------------------------------------------------------
 # Names that are intentionally excluded from the audit.
-# These are either manually handled in mechestim, are low-level C types,
+# These are either manually handled in whest, are low-level C types,
 # deprecated helpers, or class constructors that don't represent mathematical
 # operations we need to FLOP-count.
 # ---------------------------------------------------------------------------
 SKIP_NAMES: frozenset[str] = frozenset(
     [
-        # --- array construction (manually handled in mechestim) ---
+        # --- array construction (manually handled in whest) ---
         "array",
         "asarray",
         "asanyarray",
@@ -332,7 +332,7 @@ def introspect_numpy() -> Dict[str, dict]:
 
 
 def load_registry() -> Tuple[dict, dict]:
-    """Load the mechestim registry.
+    """Load the whest registry.
 
     Returns
     -------
@@ -341,7 +341,7 @@ def load_registry() -> Tuple[dict, dict]:
         Returns ``({}, {})`` if the registry does not exist yet.
     """
     try:
-        from mechestim._registry import REGISTRY, REGISTRY_META
+        from whest._registry import REGISTRY, REGISTRY_META
 
         return REGISTRY_META, REGISTRY
     except ImportError:
@@ -352,7 +352,7 @@ def compare(
     discovered: Dict[str, dict],
     registry: dict,
 ) -> Dict[str, list]:
-    """Compare discovered numpy callables against the mechestim registry.
+    """Compare discovered numpy callables against the whest registry.
 
     Parameters
     ----------
@@ -364,14 +364,14 @@ def compare(
     Returns
     -------
     dict with keys:
-        - ``covered`` — in registry and importable from mechestim
+        - ``covered`` — in registry and importable from whest
         - ``registered_not_implemented`` — in registry but not importable
         - ``unclassified`` — discovered but not in registry at all
         - ``blacklisted`` — in registry with category 'blacklisted'
         - ``stale`` — in registry but not discoverable in numpy
     """
     # Determine which registered functions are actually importable
-    import mechestim as me
+    import whest as we
 
     implemented_names = set()
     for name in registry:
@@ -467,7 +467,7 @@ def print_rich_report(
         ]
 
     table = Table(
-        title="mechestim / NumPy coverage audit",
+        title="whest / NumPy coverage audit",
         box=box.SIMPLE_HEAVY,
         show_lines=False,
         expand=True,
@@ -513,7 +513,7 @@ def print_plain_report(
 ) -> None:
     """Print a plain-text report suitable for CI logs."""
     print("=" * 60)
-    print("mechestim / NumPy coverage audit")
+    print("whest / NumPy coverage audit")
     print("=" * 60)
 
     for cat, names in comparison.items():
@@ -553,7 +553,7 @@ def print_plain_report(
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Audit NumPy callables against the mechestim registry."
+        description="Audit NumPy callables against the whest registry."
     )
     parser.add_argument(
         "--json",

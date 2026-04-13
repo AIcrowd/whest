@@ -7,8 +7,8 @@ Theorem 5.4 (Φ) from Solomonik & Demmel (2015) for a range of
 
 from math import comb
 
-from mechestim._opt_einsum._helpers import compute_size_by_dict, flop_count
-from mechestim._opt_einsum._symmetry import (
+from whest._opt_einsum._helpers import compute_size_by_dict, flop_count
+from whest._opt_einsum._symmetry import (
     IndexSymmetry,
     symmetric_flop_count,
     unique_elements,
