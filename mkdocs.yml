@@ -2,6 +2,7 @@ site_name: whest
 
 exclude_docs: |
   superpowers/
+  visualization/**/node_modules/
 site_description: >-
   NumPy-compatible math primitives with FLOP counting.
   whest is NOT a drop-in NumPy replacement — every arithmetic
