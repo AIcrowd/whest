@@ -16,10 +16,10 @@
 
 | Action | File | What changes |
 |--------|------|-------------|
-| Modify | `src/mechestim/_perm_group.py` | Add `Cycle` class, 7 Permutation methods, 6 PermutationGroup methods |
+| Modify | `src/whest/_perm_group.py` | Add `Cycle` class, 7 Permutation methods, 6 PermutationGroup methods |
 | Modify | `tests/test_perm_group.py` | Tests for all 14 additions |
-| Modify | `src/mechestim/__init__.py` | Export `Cycle` |
-| Modify | `src/mechestim/_opt_einsum/_subgraph_symmetry.py` | Dogfood: use `perm(i)` and `Permutation(cycles)` where cleaner |
+| Modify | `src/whest/__init__.py` | Export `Cycle` |
+| Modify | `src/whest/_opt_einsum/_subgraph_symmetry.py` | Dogfood: use `perm(i)` and `Permutation(cycles)` where cleaner |
 | Modify | `tests/test_subgraph_symmetry.py` | Dogfood: use `Cycle` and cycle notation in test setup |
 | Modify | `docs/api/symmetric.md` | API reference for all additions |
 | Modify | `docs/how-to/exploit-symmetry.md` | User-facing examples |
@@ -29,7 +29,7 @@
 ### Task 1: `Cycle` class and cycle-notation construction
 
 **Files:**
-- Modify: `src/mechestim/_perm_group.py`
+- Modify: `src/whest/_perm_group.py`
 - Modify: `tests/test_perm_group.py`
 
 - [ ] **Step 1: Write failing tests**
@@ -37,7 +37,7 @@
 Append to `tests/test_perm_group.py`:
 
 ```python
-from mechestim._perm_group import Cycle
+from whest._perm_group import Cycle
 
 
 class TestCycle:
@@ -109,7 +109,7 @@ Expected: ImportError / TypeError
 
 - [ ] **Step 3: Implement `Cycle` class**
 
-Add BEFORE the `Permutation` class in `src/mechestim/_perm_group.py`:
+Add BEFORE the `Permutation` class in `src/whest/_perm_group.py`:
 
 ```python
 class Cycle:
@@ -197,7 +197,7 @@ Expected: All PASS (old + new).
 - [ ] **Step 6: Commit**
 
 ```bash
-git add src/mechestim/_perm_group.py tests/test_perm_group.py
+git add src/whest/_perm_group.py tests/test_perm_group.py
 git commit -m "feat: add Cycle class and cycle-notation construction for Permutation"
 ```
 
@@ -206,7 +206,7 @@ git commit -m "feat: add Cycle class and cycle-notation construction for Permuta
 ### Task 2: Permutation methods — `__call__`, `support`, `parity`, `signature`, `transpositions`
 
 **Files:**
-- Modify: `src/mechestim/_perm_group.py`
+- Modify: `src/whest/_perm_group.py`
 - Modify: `tests/test_perm_group.py`
 
 - [ ] **Step 1: Write failing tests**
@@ -287,7 +287,7 @@ Expected: AttributeError
 
 - [ ] **Step 3: Implement the methods**
 
-Add to the `Permutation` class in `src/mechestim/_perm_group.py`:
+Add to the `Permutation` class in `src/whest/_perm_group.py`:
 
 ```python
     def __call__(self, i: int) -> int:
@@ -327,7 +327,7 @@ Expected: All PASS.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add src/mechestim/_perm_group.py tests/test_perm_group.py
+git add src/whest/_perm_group.py tests/test_perm_group.py
 git commit -m "feat: add __call__, support, parity, signature, transpositions to Permutation"
 ```
 
@@ -336,7 +336,7 @@ git commit -m "feat: add __call__, support, parity, signature, transpositions to
 ### Task 3: PermutationGroup methods — `contains`, `is_transitive`, `is_abelian`, `identity`, `equals`, `orbit`
 
 **Files:**
-- Modify: `src/mechestim/_perm_group.py`
+- Modify: `src/whest/_perm_group.py`
 - Modify: `tests/test_perm_group.py`
 
 - [ ] **Step 1: Write failing tests**
@@ -426,7 +426,7 @@ Expected: AttributeError
 
 - [ ] **Step 3: Implement the methods**
 
-Add to the `PermutationGroup` class in `src/mechestim/_perm_group.py`:
+Add to the `PermutationGroup` class in `src/whest/_perm_group.py`:
 
 ```python
     def contains(self, perm: Permutation) -> bool:
@@ -483,7 +483,7 @@ Expected: All PASS.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add src/mechestim/_perm_group.py tests/test_perm_group.py
+git add src/whest/_perm_group.py tests/test_perm_group.py
 git commit -m "feat: add contains, is_transitive, is_abelian, identity, equals, orbit to PermutationGroup"
 ```
 
@@ -492,19 +492,19 @@ git commit -m "feat: add contains, is_transitive, is_abelian, identity, equals, 
 ### Task 4: Export `Cycle`, dogfood in internal code
 
 **Files:**
-- Modify: `src/mechestim/__init__.py`
-- Modify: `src/mechestim/_opt_einsum/_subgraph_symmetry.py`
+- Modify: `src/whest/__init__.py`
+- Modify: `src/whest/_opt_einsum/_subgraph_symmetry.py`
 - Modify: `tests/test_subgraph_symmetry.py`
 
 - [ ] **Step 1: Export `Cycle` from `__init__.py`**
 
 Change the existing import line:
 ```python
-from mechestim._perm_group import Permutation, PermutationGroup  # noqa: F401
+from whest._perm_group import Permutation, PermutationGroup  # noqa: F401
 ```
 to:
 ```python
-from mechestim._perm_group import Cycle, Permutation, PermutationGroup  # noqa: F401
+from whest._perm_group import Cycle, Permutation, PermutationGroup  # noqa: F401
 ```
 
 - [ ] **Step 2: Dogfood `perm(i)` in `_subgraph_symmetry.py`**
@@ -544,7 +544,7 @@ Expected: All PASS.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add src/mechestim/__init__.py src/mechestim/_perm_group.py src/mechestim/_opt_einsum/_subgraph_symmetry.py tests/test_subgraph_symmetry.py
+git add src/whest/__init__.py src/whest/_perm_group.py src/whest/_opt_einsum/_subgraph_symmetry.py tests/test_subgraph_symmetry.py
 git commit -m "feat: export Cycle, dogfood new API in internal code"
 ```
 
@@ -558,7 +558,7 @@ git commit -m "feat: export Cycle, dogfood new API in internal code"
 
 - [ ] **Step 1: Update `docs/api/symmetric.md`**
 
-In the "Permutation Groups" section, add detailed API documentation. After the existing autodoc directive `::: mechestim._perm_group`, add an explicit API summary:
+In the "Permutation Groups" section, add detailed API documentation. After the existing autodoc directive `::: whest._perm_group`, add an explicit API summary:
 
 ```markdown
 ### Cycle
@@ -566,7 +566,7 @@ In the "Permutation Groups" section, add detailed API documentation. After the e
 Composable cycle builder matching sympy's `Cycle` API:
 
 ```python
-from mechestim import Cycle, Permutation
+from whest import Cycle, Permutation
 
 # Single cycle
 Permutation(Cycle(0, 2))                 # → (0 2)
@@ -640,12 +640,12 @@ In the "Declaring non-S_k symmetries" section, update the block swap example to 
 Block swaps are natural with cycle notation:
 
 ```python
-from mechestim import Cycle, Permutation, PermutationGroup
+from whest import Cycle, Permutation, PermutationGroup
 
 # Block swap: (i,j) ↔ (k,l) as a unit
 block_swap = Permutation(Cycle(0, 2)(1, 3))
 G = PermutationGroup(block_swap, axes=(0, 1, 2, 3))
-T = me.as_symmetric(data, symmetry=G)
+T = we.as_symmetric(data, symmetry=G)
 ```
 
 This reads naturally: "cycle 0 with 2, and cycle 1 with 3" — axes 0,1 swap

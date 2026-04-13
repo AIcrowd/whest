@@ -25,7 +25,7 @@ All other 477 functions work identically across 2.0, 2.1, and 2.2.
 ## Decisions
 
 - **Supported range:** `numpy >=2.0.0, <2.3.0`
-- **Default version:** numpy 2.2 (what `pip install mechestim` resolves to)
+- **Default version:** numpy 2.2 (what `pip install whest` resolves to)
 - **Tested versions in CI:** 2.0.2, 2.1.3, 2.2.6
 - **Unavailable function behavior:** Error at call time (not import time) with actionable message telling the user which numpy version to upgrade to
 - **Approach:** Conditional `hasattr` guards at function definition sites (same pattern as existing `ptp` guard)
@@ -41,7 +41,7 @@ New `UnsupportedFunctionError(Exception)` in a shared exceptions module (alongsi
 ### Error message format
 
 ```
-mechestim.UnsupportedFunctionError: numpy.matvec requires numpy >= 2.2
+whest.UnsupportedFunctionError: numpy.matvec requires numpy >= 2.2
 (you have numpy 2.1.3). To use it: uv pip install 'numpy>=2.2'
 ```
 
@@ -137,7 +137,7 @@ Replace exact major.minor comparison with a range check. Warn if installed numpy
 - Add `__numpy_supported__` = `">=2.0.0,<2.3.0"` (from registry metadata)
 - `__numpy_pinned__` updated to `"2.2.6"` (reference version)
 
-### `pyproject.toml` (root + mechestim-server)
+### `pyproject.toml` (root + whest-server)
 
 Change `"numpy>=2.1.0,<2.2.0"` to `"numpy>=2.0.0,<2.3.0"`.
 
@@ -181,7 +181,7 @@ Make xfails version-aware. Change `xfails.py` from a flat list to a structure ke
 Update `docs/getting-started/installation.md`:
 - Document supported range `>=2.0.0,<2.3.0`
 - Default install gets numpy 2.2
-- Users can pin lower: `uv pip install 'mechestim' 'numpy>=2.0,<2.1'`
+- Users can pin lower: `uv pip install 'whest' 'numpy>=2.0,<2.1'`
 - Note which functions are unavailable on older versions
 
 ### Changelog
@@ -193,17 +193,17 @@ Document the version range expansion as a feature.
 | File | Change |
 |---|---|
 | `pyproject.toml` | Widen numpy pin |
-| `mechestim-server/pyproject.toml` | Widen numpy pin |
-| `src/mechestim/_registry.py` | Add `matvec`/`vecmat`, add `min_numpy` fields, update meta |
-| `src/mechestim/_version_check.py` | Range check instead of exact match |
-| `src/mechestim/__init__.py` | Add `__numpy_supported__`, update `__numpy_pinned__` |
-| `src/mechestim/_pointwise.py` | Add guards for 6 functions, implement `matvec`/`vecmat` |
-| `src/mechestim/_free_ops.py` | Add guard for `unstack` |
-| `src/mechestim/data/weights.json` | Add `matvec`, `vecmat` entries |
-| `src/mechestim/data/weights.csv` | Add `matvec`, `vecmat` entries |
+| `whest-server/pyproject.toml` | Widen numpy pin |
+| `src/whest/_registry.py` | Add `matvec`/`vecmat`, add `min_numpy` fields, update meta |
+| `src/whest/_version_check.py` | Range check instead of exact match |
+| `src/whest/__init__.py` | Add `__numpy_supported__`, update `__numpy_pinned__` |
+| `src/whest/_pointwise.py` | Add guards for 6 functions, implement `matvec`/`vecmat` |
+| `src/whest/_free_ops.py` | Add guard for `unstack` |
+| `src/whest/data/weights.json` | Add `matvec`, `vecmat` entries |
+| `src/whest/data/weights.csv` | Add `matvec`, `vecmat` entries |
 | `.github/workflows/ci.yml` | Add numpy version matrix |
 | `tests/` | Add version-skip markers, stub error tests, matvec/vecmat cost tests |
 | `tests/numpy_compat/xfails.py` | Make version-aware |
 | `docs/getting-started/installation.md` | Update version docs |
 | `docs/changelog.md` | Document feature |
-| New: `src/mechestim/_exceptions.py` | `UnsupportedFunctionError` class |
+| New: `src/whest/_exceptions.py` | `UnsupportedFunctionError` class |

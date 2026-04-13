@@ -14,7 +14,7 @@ With the name change, the library becomes `whest`, imported as `import whest as 
 | Current | New |
 |---|---|
 | `mechestim` (package) | `whest` |
-| `import mechestim as me` | `import whest as we` |
+| `import whest as we` | `import whest as we` |
 | `mechestim-client` | `whest-client` |
 | `mechestim-server` | `whest-server` |
 | `mechestim_server` (module) | `whest_server` |
@@ -94,7 +94,7 @@ Vendored `_opt_einsum` subpackage: verify, likely no mechestim references.
 - String assertions referencing "mechestim" (error messages, repr output)
 
 **Examples (11 files in `examples/`):**
-- `import mechestim as me` → `import whest as we`
+- `import whest as we` → `import whest as we`
 - All `me.` alias references → `we.` (careful: only replace the module alias, not the substring "me." in words like "name.foo" — use word-boundary-aware replacement)
 
 **Benchmarks (`benchmarks/`):**

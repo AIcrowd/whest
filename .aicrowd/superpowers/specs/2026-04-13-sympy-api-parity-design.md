@@ -2,11 +2,11 @@
 
 **Date:** 2026-04-13
 **Status:** Draft
-**Scope:** `src/mechestim/_perm_group.py`, `tests/test_perm_group.py`, `docs/api/symmetric.md`
+**Scope:** `src/whest/_perm_group.py`, `tests/test_perm_group.py`, `docs/api/symmetric.md`
 
 ## Problem
 
-A user familiar with sympy's `combinatorics.Permutation` and `PermutationGroup` encounters friction when using mechestim's versions. Key API surfaces they'd immediately reach for are missing:
+A user familiar with sympy's `combinatorics.Permutation` and `PermutationGroup` encounters friction when using whest's versions. Key API surfaces they'd immediately reach for are missing:
 
 - Cycle notation construction: `Permutation([[0, 2], [1, 3]])` for block swaps
 - Callable syntax: `perm(3)` to apply a permutation
@@ -185,7 +185,7 @@ Update `docs/api/symmetric.md` to document all 12 additions in the Permutation G
 
 Add `Cycle` to `__init__.py`:
 ```python
-from mechestim._perm_group import Cycle, Permutation, PermutationGroup
+from whest._perm_group import Cycle, Permutation, PermutationGroup
 ```
 
 ## Testing

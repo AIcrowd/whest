@@ -1,4 +1,4 @@
-# Incorporating Reviewer Feedback into mechestim
+# Incorporating Reviewer Feedback into whest
 
 ## Context
 
@@ -33,7 +33,7 @@ system.
 5. Regenerate CSV, markdown, spreadsheet
 6. Accept all reviewer values exactly — including rounding sub-1 ops up to 1
 
-**Files:** `src/mechestim/data/weights.json`, `src/mechestim/data/weights.csv`,
+**Files:** `src/whest/data/weights.json`, `src/whest/data/weights.csv`,
 `docs/reference/empirical-weights.md`, Google Sheet
 
 ## Workstream B: Formula Changes
@@ -106,11 +106,11 @@ primary ops that already have weights. Assign:
   inherit its weight = 1
 - `random.bytes`, `random.random_integers`, `einsum_path`: stay excluded
 
-**Files:** `src/mechestim/_flops.py` (svd_cost, einsum op_factor),
-`src/mechestim/_pointwise.py` (dot, matmul, tensordot, kron),
-`src/mechestim/_counting_ops.py` (sort_complex, argpartition),
-`src/mechestim/_opt_einsum/_contract.py` (op_factor),
-`src/mechestim/_registry.py` (notes),
+**Files:** `src/whest/_flops.py` (svd_cost, einsum op_factor),
+`src/whest/_pointwise.py` (dot, matmul, tensordot, kron),
+`src/whest/_counting_ops.py` (sort_complex, argpartition),
+`src/whest/_opt_einsum/_contract.py` (op_factor),
+`src/whest/_registry.py` (notes),
 benchmark `_analytical_cost` functions
 
 ## Workstream C: Count Free Ops (75 ops)
@@ -163,7 +163,7 @@ metadata queries, `fft.fftfreq`, `fft.rfftfreq`, `fft.fftshift`,
 
 **Cost formula:**
 - `apply_along_axis`: `numel(output)` — inner function costs counted
-  separately via mechestim tracking
+  separately via whest tracking
 - `apply_over_axes`: `numel(output)`
 - `piecewise`: `n` (input size)
 

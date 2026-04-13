@@ -53,11 +53,11 @@ from whest._remote_array import (  # noqa: E402
 from whest._symmetric_info import SymmetryInfo  # noqa: E402
 from whest.errors import (  # noqa: E402
     BudgetExhaustedError,
+    NoBudgetContextError,
+    SymmetryError,
     WhestError,
     WhestServerError,
     WhestWarning,
-    NoBudgetContextError,
-    SymmetryError,
 )
 
 # Alias: ``me.ndarray`` refers to the RemoteArray class.

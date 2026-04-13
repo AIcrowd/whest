@@ -112,19 +112,19 @@ with we.BudgetContext(flop_budget=10**9) as budget:
         "real_if_close",
         "logical_not",
     ]:
-        test(name, getattr(me, name), SMALL_POS)
+        test(name, getattr(we, name), SMALL_POS)
 
     # arcsin, arccos, asin, acos need [-1,1]
     for name in ["arcsin", "arccos", "asin", "acos"]:
-        test(name, getattr(me, name), SMALL_UNIT)
+        test(name, getattr(we, name), SMALL_UNIT)
 
     # arctanh, atanh need (-1,1)
     for name in ["arctanh", "atanh", "atan"]:
-        test(name, getattr(me, name), SMALL_UNIT)
+        test(name, getattr(we, name), SMALL_UNIT)
 
     # acosh, arccosh need >= 1
     for name in ["acosh", "arccosh"]:
-        test(name, getattr(me, name), SMALL_GE1)
+        test(name, getattr(we, name), SMALL_GE1)
 
     # Multi-output unary
     test("modf", we.modf, SMALL_POS)
@@ -194,7 +194,7 @@ with we.BudgetContext(flop_budget=10**9) as budget:
         "nextafter",
         "heaviside",
     ]:
-        test(name, getattr(me, name), PAIR_A, PAIR_B)
+        test(name, getattr(we, name), PAIR_A, PAIR_B)
 
     # ldexp: x * 2^i
     test("ldexp", we.ldexp, PAIR_A, we.array([1, 2, 3], dtype="int64"))
@@ -209,7 +209,7 @@ with we.BudgetContext(flop_budget=10**9) as budget:
         "left_shift",
         "right_shift",
     ]:
-        test(name, getattr(me, name), INT_PAIR_A, we.array([1, 2, 1], dtype="int64"))
+        test(name, getattr(we, name), INT_PAIR_A, we.array([1, 2, 1], dtype="int64"))
 
     # gcd, lcm
     test("gcd", we.gcd, INT_PAIR_A, INT_PAIR_B)
@@ -256,7 +256,7 @@ with we.BudgetContext(flop_budget=10**9) as budget:
         "nancumsum",
         "ptp",
     ]:
-        test(name, getattr(me, name), SMALL_INT)
+        test(name, getattr(we, name), SMALL_INT)
 
     # average
     test("average", we.average, SMALL_INT)

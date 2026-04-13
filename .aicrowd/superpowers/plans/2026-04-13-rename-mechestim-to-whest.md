@@ -282,7 +282,7 @@ Expected: Zero matches.
 In all `.py` files under `examples/`:
 
 ```
-import mechestim as me → import whest as we
+import whest as we → import whest as we
 ```
 
 Then replace the module alias. This requires care — only replace `me.` when it's the module alias, not a substring of another word.
@@ -373,9 +373,9 @@ git commit -m "refactor: update tests, examples, and benchmarks for whest"
 Replace all occurrences:
 - `mechestim` → `whest` (package name, text references)
 - `github.com/aicrowd/mechestim` → `github.com/aicrowd/whest` (badge URLs, links)
-- `import mechestim as me` → `import whest as we` (code examples)
+- `import whest as we` → `import whest as we` (code examples)
 - `me.` → `we.` in code examples (same word-boundary care as examples)
-- `aicrowd.github.io/mechestim` → `aicrowd.github.io/whest` (docs URL)
+- `aicrowd.github.io/whest` → `aicrowd.github.io/whest` (docs URL)
 - "Mechanical Estimation" → appropriate new branding where it appears as a title/heading
 
 Verify:
@@ -412,12 +412,12 @@ Global find-and-replace across all `.md` files in `docs/`:
 
 ```
 mechestim → whest
-import mechestim as me → import whest as we
+import whest as we → import whest as we
 me. → we.  (in code blocks only, with word-boundary care)
 MechestimArray → WhestArray
 MechEstimError → WhestError
 github.com/aicrowd/mechestim → github.com/aicrowd/whest
-aicrowd.github.io/mechestim → aicrowd.github.io/whest
+aicrowd.github.io/whest → aicrowd.github.io/whest
 ```
 
 Verify:
@@ -458,7 +458,7 @@ Add a new entry at the top:
 ### Changed
 - Renamed package from `mechestim` to `whest` to reflect the new challenge name
   "ARC Whitebox Estimation Challenge". The import convention changes from
-  `import mechestim as me` to `import whest as we`.
+  `import whest as we` to `import whest as we`.
 ```
 
 Leave historical entries as-is — they describe what happened at that time.

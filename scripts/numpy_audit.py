@@ -377,7 +377,7 @@ def compare(
     for name in registry:
         parts = name.split(".")
         try:
-            obj = me
+            obj = we
             for part in parts:
                 obj = getattr(obj, part)
             implemented_names.add(name)

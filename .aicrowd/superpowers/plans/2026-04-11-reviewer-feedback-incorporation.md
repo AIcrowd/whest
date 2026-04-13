@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Incorporate all 453 reviewer inputs into the mechestim codebase: 4-tier weight system, formula changes, counting 75 formerly-free ops, unblocking 3 ops, and tracking status on Google Sheets.
+**Goal:** Incorporate all 453 reviewer inputs into the whest codebase: 4-tier weight system, formula changes, counting 75 formerly-free ops, unblocking 3 ops, and tracking status on Google Sheets.
 
 **Architecture:** Five workstreams executed in phases. Phase 0 sets up tracking. Phase 1 runs 3 parallel workstreams (weights, formulas, unblock). Phase 2 counts free ops (75 ops across 4 sub-batches). Phase 3 reconciles tests, docs, and the spreadsheet.
 
@@ -33,7 +33,7 @@ from pathlib import Path
 
 SID = "1Jvs01W8jI4CkTNwNdNU9B8Nb102MnhpDTcE88-Y98BQ"
 REPO_ROOT = Path(__file__).resolve().parent.parent
-WEIGHTS_PATH = REPO_ROOT / "src" / "mechestim" / "data" / "weights.json"
+WEIGHTS_PATH = REPO_ROOT / "src" / "whest" / "data" / "weights.json"
 
 def gws_get(range_str):
     result = subprocess.run(
@@ -137,7 +137,7 @@ git commit -m "feat: add Review Status tracking column to Google Sheet"
 ### Task 2: Workstream A — Apply 4-tier weight system
 
 **Files:**
-- Modify: `src/mechestim/data/weights.json`
+- Modify: `src/whest/data/weights.json`
 - Run: `scripts/generate_empirical_weights_docs.py`
 
 - [ ] **Step 1: Apply reviewer weights to weights.json**
@@ -206,7 +206,7 @@ apply_weight_tiers()
 ```bash
 uv run python -c "
 import json
-d = json.load(open('src/mechestim/data/weights.json'))
+d = json.load(open('src/whest/data/weights.json'))
 w = d['weights']
 checks = {
     'add': 1, 'sin': 16, 'exp': 16, 'std': 2, 'linalg.svd': 4,
@@ -223,13 +223,13 @@ for op, expected in checks.items():
 - [ ] **Step 4: Regenerate CSV and markdown**
 
 ```bash
-uv run python scripts/generate_empirical_weights_docs.py --weights src/mechestim/data/weights.json
+uv run python scripts/generate_empirical_weights_docs.py --weights src/whest/data/weights.json
 ```
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add -f src/mechestim/data/weights.json src/mechestim/data/weights.csv docs/reference/empirical-weights.md
+git add -f src/whest/data/weights.json src/whest/data/weights.csv docs/reference/empirical-weights.md
 git commit -m "feat(A): apply reviewer 4-tier weight system (1/2/4/16)"
 ```
 
@@ -238,19 +238,19 @@ git commit -m "feat(A): apply reviewer 4-tier weight system (1/2/4/16)"
 ### Task 3: Workstream B — Formula changes (contractions, linalg, polynomial, other)
 
 **Files:**
-- Modify: `src/mechestim/_opt_einsum/_helpers.py` (op_factor)
-- Modify: `src/mechestim/_pointwise.py` (dot, matmul, tensordot)
-- Modify: `src/mechestim/linalg/_decompositions.py` (cholesky, eig, eigh, eigvals, eigvalsh, qr)
-- Modify: `src/mechestim/linalg/_properties.py` (det, slogdet)
-- Modify: `src/mechestim/linalg/_solvers.py` (solve)
-- Modify: `src/mechestim/_polynomial.py` (polyval, roots)
-- Modify: `src/mechestim/_counting_ops.py` (sort_complex, argpartition)
-- Modify: `src/mechestim/_sorting_ops.py` (argpartition)
-- Modify: `src/mechestim/_registry.py` (update notes)
+- Modify: `src/whest/_opt_einsum/_helpers.py` (op_factor)
+- Modify: `src/whest/_pointwise.py` (dot, matmul, tensordot)
+- Modify: `src/whest/linalg/_decompositions.py` (cholesky, eig, eigh, eigvals, eigvalsh, qr)
+- Modify: `src/whest/linalg/_properties.py` (det, slogdet)
+- Modify: `src/whest/linalg/_solvers.py` (solve)
+- Modify: `src/whest/_polynomial.py` (polyval, roots)
+- Modify: `src/whest/_counting_ops.py` (sort_complex, argpartition)
+- Modify: `src/whest/_sorting_ops.py` (argpartition)
+- Modify: `src/whest/_registry.py` (update notes)
 
 - [ ] **Step 1: Change einsum op_factor — drop +1 for inner contraction**
 
-In `src/mechestim/_opt_einsum/_helpers.py`, change the `flop_count` function.
+In `src/whest/_opt_einsum/_helpers.py`, change the `flop_count` function.
 Current (line 141-145):
 ```python
     op_factor = max(1, num_terms - 1)
@@ -277,13 +277,13 @@ No change needed for `_pointwise.py` dot/matmul — they call `einsum_cost` whic
 Verify:
 ```bash
 uv run python -c "
-import mechestim as me
+import whest as we
 import numpy as np
-with me.BudgetContext(flop_budget=10**9) as ctx:
+with we.BudgetContext(flop_budget=10**9) as ctx:
     A = np.ones((32, 32))
     B = np.ones((32, 32))
     before = ctx.flops_used
-    me.matmul(A, B)
+    we.matmul(A, B)
     cost = ctx.flops_used - before
     expected = 32 * 32 * 32  # MNK, no factor of 2
     print(f'matmul(32x32): charged {cost}, expected {expected}, match={cost==expected}')
@@ -292,17 +292,17 @@ with me.BudgetContext(flop_budget=10**9) as ctx:
 
 - [ ] **Step 3: Change tensordot cost**
 
-In `src/mechestim/_pointwise.py`, the tensordot cost calculation at lines 701-710 uses `result.size * contracted`. This is already MNK (product of all dims), not 2*MNK. However, if tensordot goes through einsum internally, it would pick up the op_factor change. Verify:
+In `src/whest/_pointwise.py`, the tensordot cost calculation at lines 701-710 uses `result.size * contracted`. This is already MNK (product of all dims), not 2*MNK. However, if tensordot goes through einsum internally, it would pick up the op_factor change. Verify:
 
 ```bash
 uv run python -c "
-import mechestim as me
+import whest as we
 import numpy as np
-with me.BudgetContext(flop_budget=10**9) as ctx:
+with we.BudgetContext(flop_budget=10**9) as ctx:
     A = np.ones((4, 4, 4))
     B = np.ones((4, 4, 4))
     before = ctx.flops_used
-    me.tensordot(A, B, axes=1)
+    we.tensordot(A, B, axes=1)
     cost = ctx.flops_used - before
     print(f'tensordot: charged {cost} (should be ~4^5 = {4**5})')
 "
@@ -310,7 +310,7 @@ with me.BudgetContext(flop_budget=10**9) as ctx:
 
 - [ ] **Step 4: Change linalg decomposition formulas to n^3**
 
-In `src/mechestim/linalg/_decompositions.py`:
+In `src/whest/linalg/_decompositions.py`:
 
 ```python
 # cholesky_cost: n^3/3 -> n^3
@@ -338,7 +338,7 @@ def eigvalsh_cost(n: int) -> int:
     return max(n**3, 1)
 ```
 
-In `src/mechestim/linalg/_properties.py`:
+In `src/whest/linalg/_properties.py`:
 
 ```python
 # det_cost: 2*n^3/3 -> n^3
@@ -350,7 +350,7 @@ def slogdet_cost(n: int, symmetric: bool = False) -> int:
     return max(n**3, 1)
 ```
 
-In `src/mechestim/linalg/_solvers.py`:
+In `src/whest/linalg/_solvers.py`:
 
 ```python
 # solve_cost: 2*n^3/3 + 2*n^2 -> n^3
@@ -360,7 +360,7 @@ def solve_cost(n: int, nrhs: int = 1, symmetric: bool = False) -> int:
 
 - [ ] **Step 5: Change polynomial formulas**
 
-In `src/mechestim/_polynomial.py`:
+In `src/whest/_polynomial.py`:
 
 ```python
 # polyval_cost: 2*m*deg -> m*deg (FMA=1 op)
@@ -399,13 +399,13 @@ Add `import math` at the top of the file if not already present.
 
 - [ ] **Step 7: Change argpartition formula**
 
-In `src/mechestim/_sorting_ops.py`, find the argpartition cost calculation. Currently charges `n` per slice. Change to `n * len(kth)`:
+In `src/whest/_sorting_ops.py`, find the argpartition cost calculation. Currently charges `n` per slice. Change to `n * len(kth)`:
 
 Find the argpartition function and update the cost to account for multiple kth values.
 
 - [ ] **Step 8: Update registry notes**
 
-In `src/mechestim/_registry.py`, update the `notes` field for changed formulas:
+In `src/whest/_registry.py`, update the `notes` field for changed formulas:
 - linalg.cholesky: "Cost: $n^3$"
 - linalg.eig: "Cost: $n^3$"
 - etc.
@@ -421,7 +421,7 @@ Some tests will fail because they assert specific cost values. Fix those.
 - [ ] **Step 10: Commit**
 
 ```bash
-git add src/mechestim/ tests/
+git add src/whest/ tests/
 git commit -m "feat(B): formula changes — FMA=1, linalg n^3, polyval m*deg"
 ```
 
@@ -430,8 +430,8 @@ git commit -m "feat(B): formula changes — FMA=1, linalg n^3, polyval m*deg"
 ### Task 4: Workstream D — Unblock 3 ops
 
 **Files:**
-- Modify: `src/mechestim/_registry.py`
-- Modify: `src/mechestim/_counting_ops.py`
+- Modify: `src/whest/_registry.py`
+- Modify: `src/whest/_counting_ops.py`
 
 - [ ] **Step 1: Change registry category for 3 ops**
 
@@ -480,20 +480,20 @@ def piecewise(x, condlist, funclist, *args, **kw):
 
 - [ ] **Step 3: Export from __init__.py**
 
-Add `apply_along_axis`, `apply_over_axes`, `piecewise` to `src/mechestim/__init__.py` exports.
+Add `apply_along_axis`, `apply_over_axes`, `piecewise` to `src/whest/__init__.py` exports.
 
 - [ ] **Step 4: Test and commit**
 
 ```bash
 uv run python -c "
-import mechestim as me
+import whest as we
 import numpy as np
-with me.BudgetContext(flop_budget=10**6) as ctx:
+with we.BudgetContext(flop_budget=10**6) as ctx:
     x = np.array([0, 1, 2, 3, 4])
-    result = me.piecewise(x, [x < 2, x >= 2], [lambda x: -x, lambda x: x])
+    result = we.piecewise(x, [x < 2, x >= 2], [lambda x: -x, lambda x: x])
     print(f'piecewise: charged {ctx.flops_used} FLOPs')
 "
-git add src/mechestim/
+git add src/whest/
 git commit -m "feat(D): unblock apply_along_axis, apply_over_axes, piecewise"
 ```
 
@@ -502,8 +502,8 @@ git commit -m "feat(D): unblock apply_along_axis, apply_over_axes, piecewise"
 ### Task 5: Workstream C — Count 75 formerly-free ops
 
 **Files:**
-- Modify: `src/mechestim/_registry.py` (change categories)
-- Modify: `src/mechestim/_free_ops.py` (add budget deduction)
+- Modify: `src/whest/_registry.py` (change categories)
+- Modify: `src/whest/_free_ops.py` (add budget deduction)
 
 This is the largest task. Split into sub-batches.
 
@@ -593,7 +593,7 @@ Many tests will fail because they expect 0-cost for these ops. Fix test assertio
 - [ ] **Step 7: Commit**
 
 ```bash
-git add src/mechestim/_registry.py src/mechestim/_free_ops.py tests/
+git add src/whest/_registry.py src/whest/_free_ops.py tests/
 git commit -m "feat(C): count 75 formerly-free ops with numel-based costs"
 ```
 
@@ -633,7 +633,7 @@ Fix any remaining failures.
 - [ ] **Step 4: Regenerate weights and docs**
 
 ```bash
-uv run python scripts/generate_empirical_weights_docs.py --weights src/mechestim/data/weights.json
+uv run python scripts/generate_empirical_weights_docs.py --weights src/whest/data/weights.json
 ```
 
 - [ ] **Step 5: Update Google Sheet with Review Status**
@@ -670,7 +670,7 @@ git push origin empirical-scaling-of-op-wise-flop-counts --no-verify
 - [ ] **Step 1: Merge and push**
 
 ```bash
-cd /Users/mohanty/work/AIcrowd/challenges/alignment-research-center/mechestim
+cd /Users/mohanty/work/AIcrowd/challenges/alignment-research-center/whest
 git merge origin/empirical-scaling-of-op-wise-flop-counts --no-edit
 git push origin main --no-verify
 ```

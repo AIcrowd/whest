@@ -4,11 +4,11 @@ import pytest
 
 from whest.errors import (
     BudgetExhaustedError,
+    NoBudgetContextError,
+    SymmetryError,
     WhestError,
     WhestServerError,
     WhestWarning,
-    NoBudgetContextError,
-    SymmetryError,
     raise_from_response,
 )
 
