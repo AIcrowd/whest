@@ -311,12 +311,13 @@ class RemoteArray(metaclass=_RemoteArrayMeta):
         Element data-type string (e.g. ``"float64"``).
     """
 
-    __slots__ = ("_handle_id", "_shape", "_dtype")
+    __slots__ = ("_handle_id", "_shape", "_dtype", "_symmetry_info")
 
-    def __init__(self, handle_id: str, shape: tuple, dtype: str) -> None:
+    def __init__(self, handle_id: str, shape: tuple, dtype: str, symmetry_info=None) -> None:
         self._handle_id = handle_id
         self._shape = tuple(shape)
         self._dtype = dtype
+        self._symmetry_info = symmetry_info
 
     # -- cached metadata (no round-trip) ------------------------------------
 
@@ -331,6 +332,11 @@ class RemoteArray(metaclass=_RemoteArrayMeta):
     @property
     def dtype(self) -> str:
         return self._dtype
+
+    @property
+    def symmetry_info(self):
+        """SymmetryInfo metadata, or None if not a symmetric tensor."""
+        return self._symmetry_info
 
     @property
     def ndim(self) -> int:
@@ -634,10 +640,19 @@ def _result_from_response(resp: dict) -> Union[RemoteArray, RemoteScalar, tuple,
         return tuple(items)
 
     if "id" in result:
+        sym_info = None
+        if "symmetry_info" in result:
+            from mechestim._symmetric_info import SymmetryInfo
+            si = result["symmetry_info"]
+            sym_info = SymmetryInfo(
+                symmetric_axes=[tuple(g) for g in si["symmetric_axes"]],
+                shape=tuple(si["shape"]),
+            )
         return RemoteArray(
             handle_id=result["id"],
             shape=tuple(result["shape"]),
             dtype=result["dtype"],
+            symmetry_info=sym_info,
         )
 
     return result
@@ -664,6 +679,21 @@ def _encode_arg(arg):
         return arg._value
     if isinstance(arg, RemoteArray):
         return {"__handle__": arg.handle_id}
+    # Permutation types → wire format
+    from mechestim._perm_group import Cycle, Permutation, PermutationGroup
+    if isinstance(arg, Cycle):
+        arr = arg.list()
+        return {"__permutation__": arr}
+    if isinstance(arg, Permutation):
+        return {"__permutation__": arg.array_form}
+    if isinstance(arg, PermutationGroup):
+        return {
+            "__perm_group__": {
+                "generators": [g.array_form for g in arg.generators],
+                "degree": arg.degree,
+                "axes": list(arg.axes) if arg.axes is not None else None,
+            }
+        }
     if isinstance(arg, (list, tuple)):
         return [_encode_arg(item) for item in arg]
     return arg
