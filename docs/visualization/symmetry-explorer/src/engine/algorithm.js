@@ -728,13 +728,14 @@ export function computeBurnside(group, dimensionN) {
 
 // ─── Cost Reduction ──────────────────────────────────────────────
 
-export function computeCostReduction(burnside, group) {
+export function computeCostReduction(burnside, group, numTerms = 2) {
   const { uniqueCount, totalCount, ratio } = burnside;
 
   // Total contraction size = V * W (output elements × summed elements)
   const allCount = totalCount * burnside.wTotalCount;
-  // Dense cost: iterate over all output × inner combinations
-  const denseCost = Math.max(1, 2 * allCount);
+  // Dense cost: FMA counts as 1 op (not 2), so op_factor = max(1, num_terms - 1)
+  const opFactor = Math.max(1, numTerms - 1);
+  const denseCost = Math.max(1, opFactor * allCount);
 
   // V-only reduction: reduce output side by V symmetry
   const vReducedCost = Math.max(1, Math.round(denseCost * ratio));

@@ -67,9 +67,10 @@ export default function App() {
     [group, dimensionN]
   );
 
+  const numTerms = example?.subscripts?.length || 2;
   const cost = useMemo(
-    () => (burnside && group) ? computeCostReduction(burnside, group) : null,
-    [burnside, group]
+    () => (burnside && group) ? computeCostReduction(burnside, group, numTerms) : null,
+    [burnside, group, numTerms]
   );
 
   // Check if per-op symmetry is active for any operand
