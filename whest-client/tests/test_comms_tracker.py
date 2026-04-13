@@ -1,7 +1,7 @@
-"""Tests for mechestim._comms_tracker module."""
+"""Tests for whest._comms_tracker module."""
 
 import pytest
-from mechestim._comms_tracker import ClientCommsTracker
+from whest._comms_tracker import ClientCommsTracker
 
 
 class TestClientCommsTrackerInitialState:

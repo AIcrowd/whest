@@ -18,7 +18,7 @@ import math
 
 import pytest
 
-from mechestim._perm_group import Permutation, PermutationGroup, _dimino
+from whest._perm_group import Permutation, PermutationGroup, _dimino
 
 # ---------------------------------------------------------------------------
 # Permutation.from_cycle()

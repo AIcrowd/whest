@@ -43,7 +43,7 @@ def _setup_code(dist: str, method: str, n: int, di: int) -> str:
     seed = seeds[di % len(seeds)]
 
     # Import the distribution in setup so it's available in the bench loop
-    import_line = f"from mechestim.stats import {dist} as _dist"
+    import_line = f"from whest.stats import {dist} as _dist"
 
     if method == "ppf":
         return (

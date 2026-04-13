@@ -2,7 +2,7 @@
 
 import math
 
-from mechestim._math_compat import e, inf, nan, pi, prod
+from whest._math_compat import e, inf, nan, pi, prod
 
 
 def test_prod_basic():

@@ -10,7 +10,7 @@ from __future__ import annotations
 import struct
 
 import pytest
-from mechestim._remote_array import (
+from whest._remote_array import (
     RemoteArray,
     RemoteScalar,
     _bytes_to_list,

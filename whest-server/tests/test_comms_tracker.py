@@ -1,7 +1,7 @@
 """Tests for CommsTracker — written first (TDD)."""
 
 import pytest
-from mechestim_server._comms_tracker import CommsTracker
+from whest_server._comms_tracker import CommsTracker
 
 # ---------------------------------------------------------------------------
 # Fixtures

@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import numpy as np
 import pytest
-from mechestim_server._request_handler import RequestHandler
-from mechestim_server._session import Session
+from whest_server._request_handler import RequestHandler
+from whest_server._session import Session
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -321,7 +321,7 @@ def test_pack_result_mixed_tuple(handler, session):
 
 def test_create_from_data_size_limit(handler, session, monkeypatch):
     """create_from_data rejects arrays exceeding the size limit."""
-    import mechestim_server._request_handler as rh
+    import whest_server._request_handler as rh
 
     monkeypatch.setattr(rh, "MAX_ARRAY_BYTES", 100)  # 100 bytes limit
 
@@ -342,7 +342,7 @@ def test_create_from_data_size_limit(handler, session, monkeypatch):
 
 def test_result_array_size_limit(handler, session, monkeypatch):
     """Operations producing arrays exceeding the limit return an error."""
-    import mechestim_server._request_handler as rh
+    import whest_server._request_handler as rh
 
     monkeypatch.setattr(rh, "MAX_ARRAY_BYTES", 100)  # 100 bytes limit
 

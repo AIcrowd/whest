@@ -1,4 +1,4 @@
-"""Integration tests for MechestimServer — real ZMQ over TCP."""
+"""Integration tests for WhestServer — real ZMQ over TCP."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ import msgpack
 import numpy as np
 import pytest
 import zmq
-from mechestim_server._server import MechestimServer, _normalize_arg, _normalize_msg
+from whest_server._server import WhestServer, _normalize_arg, _normalize_msg
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -32,8 +32,8 @@ def _send(sock: zmq.Socket, msg: dict) -> dict:
 
 @pytest.fixture()
 def server_and_client():
-    """Start a MechestimServer in a daemon thread and yield a REQ client socket."""
-    server = MechestimServer(url=SERVER_URL, session_timeout_s=60.0)
+    """Start a WhestServer in a daemon thread and yield a REQ client socket."""
+    server = WhestServer(url=SERVER_URL, session_timeout_s=60.0)
     t = threading.Thread(target=server.run, daemon=True)
     t.start()
     time.sleep(0.2)  # let the server bind

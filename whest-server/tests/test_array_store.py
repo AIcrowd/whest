@@ -2,7 +2,7 @@
 
 import numpy as np
 import pytest
-from mechestim_server._array_store import ArrayStore
+from whest_server._array_store import ArrayStore
 
 # ---------------------------------------------------------------------------
 # Fixtures

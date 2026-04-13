@@ -1,7 +1,7 @@
 """Declared tensor symmetry — as_symmetric, PermutationGroup, and Cycle.
 
 Tensors with known symmetries (e.g. a symmetric matrix where A[i,j] = A[j,i])
-store fewer unique elements.  mechestim uses this to reduce FLOP counts in
+store fewer unique elements.  whest uses this to reduce FLOP counts in
 einsum contractions automatically.
 
 Run: uv run python examples/08_declared_symmetry.py
@@ -9,8 +9,8 @@ Run: uv run python examples/08_declared_symmetry.py
 
 import numpy as np
 
-import mechestim as me
-from mechestim import Cycle, Permutation, PermutationGroup
+import whest as we
+from whest import Cycle, Permutation, PermutationGroup
 
 # ---------------------------------------------------------------------------
 # 1. Symmetric matrix — simple axis declaration
@@ -21,15 +21,15 @@ n = 100
 data = np.random.randn(n, n)
 data = (data + data.T) / 2  # make it actually symmetric
 
-A_sym = me.as_symmetric(data, symmetric_axes=(0, 1))
+A_sym = we.as_symmetric(data, symmetric_axes=(0, 1))
 print(f"Shape:            {A_sym.shape}")
 print(f"Symmetry factor:  {A_sym.symmetry_info.symmetry_factor}")
 print(f"Unique elements:  {A_sym.symmetry_info.unique_elements:,} / {n * n:,}")
 
 # einsum_path sees the symmetry and reduces cost
-v = me.random.randn(n)
-_, info = me.einsum_path("ij,j->i", A_sym, v)
-_, info_dense = me.einsum_path("ij,j->i", me.array(data), v)
+v = we.random.randn(n)
+_, info = we.einsum_path("ij,j->i", A_sym, v)
+_, info_dense = we.einsum_path("ij,j->i", we.array(data), v)
 print(f"Matvec cost (symmetric): {info.optimized_cost:>10,} FLOPs")
 print(f"Matvec cost (dense):     {info_dense.optimized_cost:>10,} FLOPs")
 
@@ -50,17 +50,17 @@ T_data = (
     + raw.transpose(2, 1, 0)
 ) / 6
 
-T = me.as_symmetric(T_data, symmetric_axes=(0, 1, 2))
-M = me.random.randn(n, n)
+T = we.as_symmetric(T_data, symmetric_axes=(0, 1, 2))
+M = we.random.randn(n, n)
 
 # Pass M three times as the same object — einsum_path detects both
 # the declared S3 symmetry on T and the identity-based savings from M=M=M
-_, info_same = me.einsum_path("ijk,ai,bj,ck->abc", T, M, M, M)
+_, info_same = we.einsum_path("ijk,ai,bj,ck->abc", T, M, M, M)
 
 # Compare: three DIFFERENT matrices
-M2 = me.random.randn(n, n)
-M3 = me.random.randn(n, n)
-_, info_diff = me.einsum_path("ijk,ai,bj,ck->abc", T, M, M2, M3)
+M2 = we.random.randn(n, n)
+M3 = we.random.randn(n, n)
+_, info_diff = we.einsum_path("ijk,ai,bj,ck->abc", T, M, M2, M3)
 
 print(f"Same M (declared + identity): {info_same.optimized_cost:>12,} FLOPs")
 print(f"Diff M (declared only):       {info_diff.optimized_cost:>12,} FLOPs")
@@ -94,8 +94,8 @@ print(f"  Under D3: {D3.burnside_unique_count(size_dict):>8,}")
 print(f"  No sym:   {n**3:>8,}")
 
 # Cyclic symmetry gives less savings than full symmetric
-T_cyclic = me.as_symmetric(T_data, symmetry=C3)
-_, info_cyclic = me.einsum_path("ijk,ai,bj,ck->abc", T_cyclic, M, M, M)
+T_cyclic = we.as_symmetric(T_data, symmetry=C3)
+_, info_cyclic = we.einsum_path("ijk,ai,bj,ck->abc", T_cyclic, M, M, M)
 print(f"\nWith S3 symmetry: {info_same.optimized_cost:>12,} FLOPs")
 print(f"With C3 symmetry: {info_cyclic.optimized_cost:>12,} FLOPs")
 
@@ -115,12 +115,12 @@ print(f"  Parity:        {block_swap.parity()}")
 # This declares that result[a,b,c,d] == result[c,d,a,b]
 print("\n=== Output symmetry via einsum symmetry= parameter ===\n")
 
-X = me.random.randn(20, 20)
+X = we.random.randn(20, 20)
 block_group = PermutationGroup(block_swap, axes=(0, 1, 2, 3))
 
-with me.BudgetContext(flop_budget=10**9, quiet=True) as budget:
+with we.BudgetContext(flop_budget=10**9, quiet=True) as budget:
     # Outer product X[a,b]*X[c,d] is symmetric under block swap (a,b)↔(c,d)
-    result = me.einsum("ab,cd->abcd", X, X, symmetry=block_group)
+    result = we.einsum("ab,cd->abcd", X, X, symmetry=block_group)
 
 print(f"Result type: {type(result).__name__}")
 print(f"Result shape: {result.shape}")

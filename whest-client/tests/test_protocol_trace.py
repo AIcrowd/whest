@@ -5,8 +5,8 @@ server's decode/normalize pipeline (and vice-versa for responses),
 verifying that every key and value has the expected Python type at each
 stage.  No ZMQ sockets or live server needed.
 
-Because the ``mechestim`` namespace is split across three trees
-(``src/``, ``mechestim-client/src/``, ``mechestim-server/src/``), we
+Because the ``whest`` namespace is split across three trees
+(``src/``, ``whest-client/src/``, ``whest-server/src/``), we
 use importlib to load specific files without relying on normal
 ``import`` resolution.
 """
@@ -23,7 +23,7 @@ import msgpack
 
 # =====================================================================
 # Module loading helpers — avoids namespace collision between
-# mechestim (library) and mechestim (client) and mechestim_server.
+# whest (library) and whest (client) and whest_server.
 # =====================================================================
 
 _ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -40,8 +40,8 @@ def _load_module(name: str, path: str) -> types.ModuleType:
 
 # ── Client protocol ─────────────────────────────────────────────────
 _client_proto = _load_module(
-    "mechestim._protocol",
-    os.path.join(_ROOT, "mechestim-client", "src", "mechestim", "_protocol.py"),
+    "whest._protocol",
+    os.path.join(_ROOT, "whest-client", "src", "whest", "_protocol.py"),
 )
 encode_request = _client_proto.encode_request
 encode_create_from_data = _client_proto.encode_create_from_data
@@ -49,17 +49,17 @@ client_decode_response = _client_proto.decode_response
 client_normalize = _client_proto._normalize
 
 # ── Library registry (needed by server protocol) ────────────────────
-# Ensure the *library* mechestim._registry is importable before we
-# load the server protocol (which does ``from mechestim._registry import REGISTRY``).
+# Ensure the *library* whest._registry is importable before we
+# load the server protocol (which does ``from whest._registry import REGISTRY``).
 _lib_registry = _load_module(
-    "mechestim._registry",
-    os.path.join(_ROOT, "src", "mechestim", "_registry.py"),
+    "whest._registry",
+    os.path.join(_ROOT, "src", "whest", "_registry.py"),
 )
 
 # ── Server protocol ─────────────────────────────────────────────────
 _server_proto = _load_module(
-    "mechestim_server._protocol",
-    os.path.join(_ROOT, "mechestim-server", "src", "mechestim_server", "_protocol.py"),
+    "whest_server._protocol",
+    os.path.join(_ROOT, "whest-server", "src", "whest_server", "_protocol.py"),
 )
 server_decode_request = _server_proto.decode_request
 server_encode_response = _server_proto.encode_response
@@ -67,8 +67,8 @@ encode_fetch_response = _server_proto.encode_fetch_response
 
 # ── Server normalisation helpers ────────────────────────────────────
 _server_mod = _load_module(
-    "mechestim_server._server",
-    os.path.join(_ROOT, "mechestim-server", "src", "mechestim_server", "_server.py"),
+    "whest_server._server",
+    os.path.join(_ROOT, "whest-server", "src", "whest_server", "_server.py"),
 )
 _normalize_msg = _server_mod._normalize_msg
 _normalize_arg = _server_mod._normalize_arg

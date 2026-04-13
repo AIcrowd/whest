@@ -1,6 +1,6 @@
 """Tests for namespace support on BudgetContext and OpRecord."""
 
-from mechestim._budget import BudgetContext, OpRecord
+from whest._budget import BudgetContext, OpRecord
 
 
 def test_oprecord_has_namespace_field():

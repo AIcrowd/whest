@@ -1,9 +1,9 @@
-"""Comprehensive tests for mechestim._opt_einsum._parser to bring coverage ~95%."""
+"""Comprehensive tests for whest._opt_einsum._parser to bring coverage ~95%."""
 
 import numpy
 import pytest
 
-from mechestim._opt_einsum._parser import (
+from whest._opt_einsum._parser import (
     alpha_canonicalize,
     convert_interleaved_input,
     convert_subscripts,
@@ -110,7 +110,7 @@ class TestGenUnusedSymbols:
 
     def test_all_base_used(self):
         """When all 52 base symbols are used, should yield unicode symbols."""
-        from mechestim._opt_einsum._parser import _einsum_symbols_base
+        from whest._opt_einsum._parser import _einsum_symbols_base
 
         result = list(gen_unused_symbols(_einsum_symbols_base, 2))
         # These should be the first two unicode symbols after the base set

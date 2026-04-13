@@ -2,8 +2,8 @@
 
 import numpy
 
-from mechestim._budget import BudgetContext
-from mechestim._polynomial import (
+from whest._budget import BudgetContext
+from whest._polynomial import (
     poly,
     polyadd,
     polyder,
@@ -298,8 +298,8 @@ def test_roots_no_budget():
 # ---------------------------------------------------------------------------
 
 
-def test_import_from_mechestim():
-    import mechestim as me
+def test_import_from_whest():
+    import whest as we
 
     assert hasattr(me, "polyval")
     assert hasattr(me, "polyadd")

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import numpy as np
 import pytest
-from mechestim_server._session import Session
+from whest_server._session import Session
 
 # ---------------------------------------------------------------------------
 # Fixtures

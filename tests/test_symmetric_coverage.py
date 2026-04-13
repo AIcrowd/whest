@@ -1,4 +1,4 @@
-"""Coverage-focused tests for mechestim._symmetric.
+"""Coverage-focused tests for whest._symmetric.
 
 Targets uncovered lines to push coverage from ~74% toward ~95%.
 """
@@ -11,8 +11,8 @@ import warnings
 import numpy as np
 import pytest
 
-from mechestim._perm_group import PermutationGroup
-from mechestim._symmetric import (
+from whest._perm_group import PermutationGroup
+from whest._symmetric import (
     SymmetricTensor,
     SymmetryInfo,
     _warn_symmetry_loss,
@@ -24,7 +24,7 @@ from mechestim._symmetric import (
     validate_symmetry,
     validate_symmetry_groups,
 )
-from mechestim.errors import SymmetryError, SymmetryLossWarning
+from whest.errors import SymmetryError, SymmetryLossWarning
 
 # ============================================================================
 # Helpers
@@ -728,7 +728,7 @@ class TestReductionsKeepdims:
 
 class TestWarnSymmetryLoss:
     def test_warning_emitted_when_enabled(self):
-        from mechestim._config import configure
+        from whest._config import configure
 
         configure(symmetry_warnings=True)
         try:
@@ -741,7 +741,7 @@ class TestWarnSymmetryLoss:
             configure(symmetry_warnings=False)
 
     def test_no_warning_when_disabled(self):
-        from mechestim._config import configure
+        from whest._config import configure
 
         configure(symmetry_warnings=False)
         with warnings.catch_warnings(record=True) as w:

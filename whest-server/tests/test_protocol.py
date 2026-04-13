@@ -1,4 +1,4 @@
-"""Tests for mechestim_server._protocol module.
+"""Tests for whest_server._protocol module.
 
 TDD approach: these tests were written first, then the module was implemented.
 """
@@ -6,7 +6,7 @@ TDD approach: these tests were written first, then the module was implemented.
 import msgpack
 import numpy as np
 import pytest
-from mechestim_server._protocol import (
+from whest_server._protocol import (
     InvalidRequestError,
     decode_request,
     encode_error_response,

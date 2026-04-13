@@ -1,12 +1,12 @@
-"""Tests for mechestim._display to increase coverage to ~95%."""
+"""Tests for whest._display to increase coverage to ~95%."""
 
 from __future__ import annotations
 
 import sys
 from unittest.mock import MagicMock, patch
 
-from mechestim._budget import BudgetContext
-from mechestim._display import (
+from whest._budget import BudgetContext
+from whest._display import (
     _format_flops,
     _is_global_default_ns,
     _pct,
@@ -130,7 +130,7 @@ class TestPlainTextSummary:
     def test_single_namespace(self):
         _make_budget(flop_budget=10_000, ops=[("matmul", 3000), ("add", 1000)])
         result = _plain_text_summary()
-        assert "mechestim FLOP Budget Summary" in result
+        assert "whest FLOP Budget Summary" in result
         assert "10,000" in result
         assert "4,000" in result
         assert "matmul" in result
@@ -172,7 +172,7 @@ class TestPlainTextSummary:
 
 class TestRichNamespaceTable:
     def test_returns_table(self):
-        from mechestim._display import _rich_namespace_table
+        from whest._display import _rich_namespace_table
 
         ns_data = {
             "flop_budget": 10_000,
@@ -190,7 +190,7 @@ class TestRichNamespaceTable:
     def test_empty_ops(self):
         from rich.table import Table
 
-        from mechestim._display import _rich_namespace_table
+        from whest._display import _rich_namespace_table
 
         ns_data = {
             "flop_budget": 5000,
@@ -202,7 +202,7 @@ class TestRichNamespaceTable:
 
     def test_single_call_text(self):
         """Operations with calls==1 should show '1 call', not '1 calls'."""
-        from mechestim._display import _rich_namespace_table
+        from whest._display import _rich_namespace_table
 
         ns_data = {
             "flop_budget": 5000,
@@ -222,7 +222,7 @@ class TestRichNamespaceTable:
         assert "1 call" in output
 
     def test_multiple_calls_text(self):
-        from mechestim._display import _rich_namespace_table
+        from whest._display import _rich_namespace_table
 
         ns_data = {
             "flop_budget": 5000,
@@ -250,7 +250,7 @@ class TestRichSummary:
     def test_no_data_panel(self):
         from rich.panel import Panel
 
-        from mechestim._display import _rich_summary
+        from whest._display import _rich_summary
 
         result = _rich_summary()
         assert isinstance(result, Panel)
@@ -266,7 +266,7 @@ class TestRichSummary:
     def test_single_namespace_panel(self):
         from rich.panel import Panel
 
-        from mechestim._display import _rich_summary
+        from whest._display import _rich_summary
 
         _make_budget(flop_budget=10_000, namespace="train", ops=[("matmul", 3000)])
         result = _rich_summary()
@@ -276,7 +276,7 @@ class TestRichSummary:
         """Up to 3 namespace panels should use Columns layout."""
         from rich.panel import Panel
 
-        from mechestim._display import _rich_summary
+        from whest._display import _rich_summary
 
         _make_budget(flop_budget=5000, namespace="a", ops=[("matmul", 100)])
         _make_budget(flop_budget=5000, namespace="b", ops=[("add", 200)])
@@ -287,7 +287,7 @@ class TestRichSummary:
         """More than 3 namespace panels should render individually, not in Columns."""
         from rich.panel import Panel
 
-        from mechestim._display import _rich_summary
+        from whest._display import _rich_summary
 
         for ns in ["a", "b", "c", "d"]:
             _make_budget(flop_budget=3000, namespace=ns, ops=[("matmul", 100)])
@@ -296,7 +296,7 @@ class TestRichSummary:
 
     def test_global_default_ns_excluded_from_budget(self):
         """The implicit global default namespace should not inflate the budget total."""
-        from mechestim._display import _rich_summary
+        from whest._display import _rich_summary
 
         # A named explicit namespace
         _make_budget(flop_budget=5000, namespace="train", ops=[("matmul", 1000)])
@@ -316,7 +316,7 @@ class TestRichSummary:
 
     def test_unscoped_label(self):
         """None namespace should render as '(unscoped)' in Rich output."""
-        from mechestim._display import _rich_summary
+        from whest._display import _rich_summary
 
         _make_budget(flop_budget=5000, namespace=None, ops=[("matmul", 100)])
         import io
@@ -331,7 +331,7 @@ class TestRichSummary:
         """When all namespaces are global default, color should be green."""
         from rich.panel import Panel
 
-        from mechestim._display import _rich_summary
+        from whest._display import _rich_summary
 
         # Only the global default namespace (large budget, None ns)
         with BudgetContext(flop_budget=int(1e15), quiet=True, namespace=None) as b:
@@ -359,7 +359,7 @@ class TestRenderBudgetSummary:
         _make_budget(flop_budget=5000, ops=[("matmul", 100)])
         with patch.dict(sys.modules, {"rich": None}):
             # Force ImportError path
-            import mechestim._display as disp_mod
+            import whest._display as disp_mod
 
             # Directly test the fallback by simulating ImportError
             with patch.object(disp_mod, "_rich_summary", side_effect=ImportError):
@@ -367,7 +367,7 @@ class TestRenderBudgetSummary:
         # Test via the function itself with import mocked out
         result = render_budget_summary()
         # With Rich actually installed, this returns a Panel; test the other branch:
-        from mechestim._display import render_budget_summary as rbs
+        from whest._display import render_budget_summary as rbs
 
         # Patch 'rich' import to raise ImportError
         orig_import = (
@@ -384,7 +384,7 @@ class TestRenderBudgetSummary:
         with patch("builtins.__import__", side_effect=fake_import):
             result = rbs()
         assert isinstance(result, str)
-        assert "mechestim FLOP Budget Summary" in result
+        assert "whest FLOP Budget Summary" in result
 
 
 # ======================================================================
@@ -399,7 +399,7 @@ class TestPlainTextLive:
         with live:
             pass
         captured = capsys.readouterr()
-        assert "mechestim FLOP Budget Summary" in captured.out
+        assert "whest FLOP Budget Summary" in captured.out
 
     def test_enter_returns_self(self):
         live = _PlainTextLive()
@@ -518,7 +518,7 @@ class TestBudgetSummary:
             result = budget_summary()
         assert result is None
         captured = capsys.readouterr()
-        assert "mechestim FLOP Budget Summary" in captured.out
+        assert "whest FLOP Budget Summary" in captured.out
 
     def test_jupyter_returns_renderable(self):
         """In a Jupyter environment, should return the renderable without printing."""

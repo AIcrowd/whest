@@ -1,13 +1,13 @@
-"""Conftest that monkeypatches numpy with mechestim for compatibility testing.
+"""Conftest that monkeypatches numpy with whest for compatibility testing.
 
-This lets us run NumPy's own test suite against mechestim to verify
+This lets us run NumPy's own test suite against whest to verify
 that our interface matches NumPy's. Tests that fail due to known
 divergences are listed in xfails.py.
 
 Key trick: before patching numpy, we freeze a copy of the original
-numpy module and rebind mechestim's internal `_np` references to it.
+numpy module and rebind whest's internal `_np` references to it.
 This breaks the infinite recursion that would otherwise occur when
-mechestim functions call _np.func() → numpy.func() → me.func() → ...
+whest functions call _np.func() → numpy.func() → we.func() → ...
 """
 
 import fnmatch
@@ -17,43 +17,43 @@ import types
 import numpy as np
 import pytest
 
-import mechestim as me
-from mechestim._budget import _reset_global_default, budget_reset
-from mechestim._registry import REGISTRY
+import whest as we
+from whest._budget import _reset_global_default, budget_reset
+from whest._registry import REGISTRY
 
 from .xfails import XFAIL_PATTERNS
 
 # Functions we monkeypatch onto numpy
 _PATCHED: dict[str, object] = {}
 
-# mechestim modules whose _np we rebind, with their originals
+# whest modules whose _np we rebind, with their originals
 _REBOUND: dict[str, object] = {}
 
-# All mechestim submodules that import numpy as _np
-_MECHESTIM_MODULES_WITH_NP = [
-    "mechestim._pointwise",
-    "mechestim._free_ops",
-    "mechestim._sorting_ops",
-    "mechestim._counting_ops",
-    "mechestim._einsum",
-    "mechestim._polynomial",
-    "mechestim._unwrap",
-    "mechestim._window",
-    "mechestim._version_check",
-    "mechestim.__init__",
-    "mechestim.fft._transforms",
-    "mechestim.fft._free",
-    "mechestim.linalg._decompositions",
-    "mechestim.linalg._properties",
-    "mechestim.linalg._solvers",
-    "mechestim.linalg._compound",
-    "mechestim.linalg._svd",
-    "mechestim.linalg._aliases",
+# All whest submodules that import numpy as _np
+_WHEST_MODULES_WITH_NP = [
+    "whest._pointwise",
+    "whest._free_ops",
+    "whest._sorting_ops",
+    "whest._counting_ops",
+    "whest._einsum",
+    "whest._polynomial",
+    "whest._unwrap",
+    "whest._window",
+    "whest._version_check",
+    "whest.__init__",
+    "whest.fft._transforms",
+    "whest.fft._free",
+    "whest.linalg._decompositions",
+    "whest.linalg._properties",
+    "whest.linalg._solvers",
+    "whest.linalg._compound",
+    "whest.linalg._svd",
+    "whest.linalg._aliases",
 ]
 
 # Modules that also import numpy.random as _npr
-_MECHESTIM_MODULES_WITH_NPR = [
-    "mechestim.random",
+_WHEST_MODULES_WITH_NPR = [
+    "whest.random",
 ]
 
 
@@ -76,23 +76,23 @@ def _freeze_numpy():
     return frozen
 
 
-def _rebind_mechestim_np(frozen_np):
-    """Replace _np in all mechestim modules with the frozen copy."""
-    for mod_name in _MECHESTIM_MODULES_WITH_NP:
+def _rebind_whest_np(frozen_np):
+    """Replace _np in all whest modules with the frozen copy."""
+    for mod_name in _WHEST_MODULES_WITH_NP:
         mod = sys.modules.get(mod_name)
         if mod is not None and hasattr(mod, "_np"):
             _REBOUND[mod_name] = mod._np
             mod._np = frozen_np
     # Also rebind _npr (numpy.random) in modules that use it
-    for mod_name in _MECHESTIM_MODULES_WITH_NPR:
+    for mod_name in _WHEST_MODULES_WITH_NPR:
         mod = sys.modules.get(mod_name)
         if mod is not None and hasattr(mod, "_npr"):
             _REBOUND[mod_name + "._npr"] = mod._npr
             mod._npr = frozen_np.random
 
 
-def _restore_mechestim_np():
-    """Restore original _np references in mechestim modules."""
+def _restore_whest_np():
+    """Restore original _np references in whest modules."""
     for key, original in _REBOUND.items():
         if key.endswith("._npr"):
             mod_name = key[: -len("._npr")]
@@ -107,7 +107,7 @@ def _restore_mechestim_np():
 
 
 def _patch_numpy():
-    """Replace numpy functions with mechestim equivalents.
+    """Replace numpy functions with whest equivalents.
 
     Patches all non-blacklisted functions from the registry, including
     ufuncs, custom ops, submodule functions, and free ops. The frozen
@@ -118,7 +118,7 @@ def _patch_numpy():
         if cat == "blacklisted":
             continue
 
-        # Resolve the mechestim function
+        # Resolve the whest function
         parts = name.split(".")
         try:
             if len(parts) == 1:
@@ -146,8 +146,8 @@ def _patch_numpy():
         except (AttributeError, TypeError):
             pass
 
-        # Skip functions where mechestim delegates to a different numpy function
-        # than the one being patched (e.g., me.linalg.outer → np.outer, not
+        # Skip functions where whest delegates to a different numpy function
+        # than the one being patched (e.g., we.linalg.outer → np.outer, not
         # np.linalg.outer). Patching causes collection-time errors in tests that
         # check the real np.linalg.outer's behaviour at class-definition time.
         _SKIP_PATCH = {"linalg.outer"}
@@ -191,16 +191,16 @@ def reset_budget():
 
 
 def pytest_configure(config):
-    """Freeze numpy, rebind mechestim internals, then patch."""
+    """Freeze numpy, rebind whest internals, then patch."""
     frozen = _freeze_numpy()
-    _rebind_mechestim_np(frozen)
+    _rebind_whest_np(frozen)
     _patch_numpy()
 
 
 def pytest_unconfigure(config):
     """Restore everything."""
     _unpatch_numpy()
-    _restore_mechestim_np()
+    _restore_whest_np()
 
 
 def pytest_collection_modifyitems(config, items):
