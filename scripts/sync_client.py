@@ -52,6 +52,13 @@ def _write_or_check(path: Path, content: str, check: bool, diffs: list[str]) -> 
         print(f"  wrote {path}")
 
 
+def _generate_perm_group() -> str:
+    """Copy _perm_group.py from core (pure Python, no numpy dependency)."""
+    core_path = Path(__file__).resolve().parent.parent / "src" / "mechestim" / "_perm_group.py"
+    content = core_path.read_text()
+    return _HEADER + "\n" + content
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true",
@@ -63,6 +70,13 @@ def main():
     _write_or_check(
         _CLIENT_SRC / "_registry_data.py",
         _generate_registry_data(),
+        args.check, diffs,
+    )
+
+    print("Generating perm group classes...")
+    _write_or_check(
+        _CLIENT_SRC / "_perm_group.py",
+        _generate_perm_group(),
         args.check, diffs,
     )
 

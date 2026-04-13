@@ -53,6 +53,11 @@ from mechestim.errors import (  # noqa: E402
     NoBudgetContextError,
     SymmetryError,
 )
+from mechestim._perm_group import (  # noqa: E402
+    Cycle,
+    Permutation,
+    PermutationGroup,
+)
 
 # Alias: ``me.ndarray`` refers to the RemoteArray class.
 ndarray = RemoteArray
