@@ -1,7 +1,7 @@
 """Uniform distribution with FLOP counting.
 
-Mimics ``scipy.stats.uniform`` API. The distribution is uniform on
-``[loc, loc + scale]``.
+Mimics ``scipy.stats.uniform`` — see
+https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.uniform.html
 """
 
 from __future__ import annotations
@@ -16,18 +16,96 @@ _UNIFORM_PPF_COST = 3
 
 
 class UniformDistribution(ContinuousDistribution):
-    """Continuous uniform distribution (scipy.stats.uniform compatible)."""
+    """Continuous uniform random variable on ``[loc, loc + scale]``.
+
+    Equivalent to ``scipy.stats.uniform``.
+
+    Methods
+    -------
+    pdf(x, loc=0, scale=1)
+        Probability density function.
+    cdf(x, loc=0, scale=1)
+        Cumulative distribution function.
+    ppf(q, loc=0, scale=1)
+        Percent-point function (inverse of CDF).
+    """
 
     def __init__(self):
         super().__init__("uniform")
 
     def pdf(self, x, loc=0, scale=1):
+        """Probability density function at *x*.
+
+        Equivalent to ``scipy.stats.uniform.pdf(x, loc, scale)``.
+
+        FLOP Cost
+        ---------
+        3 * numel(x) FLOPs
+
+        Parameters
+        ----------
+        x : array_like
+            Quantiles.
+        loc : float, optional
+            Lower bound (default 0).
+        scale : float, optional
+            Width of the interval (default 1).
+
+        Returns
+        -------
+        MechestimArray
+            PDF evaluated at *x*.
+        """
         return self._deduct_and_call("pdf", _UNIFORM_PDF_COST, x, loc=loc, scale=scale)
 
     def cdf(self, x, loc=0, scale=1):
+        """Cumulative distribution function at *x*.
+
+        Equivalent to ``scipy.stats.uniform.cdf(x, loc, scale)``.
+
+        FLOP Cost
+        ---------
+        3 * numel(x) FLOPs
+
+        Parameters
+        ----------
+        x : array_like
+            Quantiles.
+        loc : float, optional
+            Lower bound (default 0).
+        scale : float, optional
+            Width of the interval (default 1).
+
+        Returns
+        -------
+        MechestimArray
+            CDF evaluated at *x*.
+        """
         return self._deduct_and_call("cdf", _UNIFORM_CDF_COST, x, loc=loc, scale=scale)
 
     def ppf(self, q, loc=0, scale=1):
+        """Percent-point function (inverse CDF) at *q*.
+
+        Equivalent to ``scipy.stats.uniform.ppf(q, loc, scale)``.
+
+        FLOP Cost
+        ---------
+        3 * numel(q) FLOPs
+
+        Parameters
+        ----------
+        q : array_like
+            Quantiles in [0, 1].
+        loc : float, optional
+            Lower bound (default 0).
+        scale : float, optional
+            Width of the interval (default 1).
+
+        Returns
+        -------
+        MechestimArray
+            PPF evaluated at *q*.
+        """
         return self._deduct_and_call("ppf", _UNIFORM_PPF_COST, q, loc=loc, scale=scale)
 
     def _compute_pdf(self, x, loc=0, scale=1):

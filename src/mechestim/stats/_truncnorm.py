@@ -1,8 +1,7 @@
 """Truncated normal distribution with FLOP counting.
 
-Mimics ``scipy.stats.truncnorm`` API. Parameters ``a`` and ``b`` are the
-standardized lower and upper bounds: the distribution is truncated to
-``[a*scale + loc, b*scale + loc]``.
+Mimics ``scipy.stats.truncnorm`` — see
+https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.truncnorm.html
 """
 
 from __future__ import annotations
@@ -32,25 +31,84 @@ def _std_norm_pdf(x):
 
 
 class TruncnormDistribution(ContinuousDistribution):
-    """Truncated normal distribution (scipy.stats.truncnorm compatible).
+    """Truncated normal continuous random variable.
 
-    ``a``, ``b`` are standardized bounds (first two positional args).
+    Equivalent to ``scipy.stats.truncnorm``.  Parameters ``a`` and ``b``
+    are **standardised** bounds — the distribution is truncated to
+    ``[a * scale + loc, b * scale + loc]``.
+
+    .. note::
+
+       ``a`` and ``b`` are the **first two positional arguments**,
+       matching scipy's signature:
+       ``truncnorm.pdf(x, a, b, loc=0, scale=1)``.
+
+    Methods
+    -------
+    pdf(x, a, b, loc=0, scale=1)
+        Probability density function.
+    cdf(x, a, b, loc=0, scale=1)
+        Cumulative distribution function.
+    ppf(q, a, b, loc=0, scale=1)
+        Percent-point function (inverse of CDF).
     """
 
     def __init__(self):
         super().__init__("truncnorm")
 
     def pdf(self, x, a, b, loc=0, scale=1):
+        """Probability density function at *x*.
+
+        Equivalent to ``scipy.stats.truncnorm.pdf(x, a, b, loc, scale)``.
+
+        FLOP Cost
+        ---------
+        30 * numel(x) FLOPs
+
+        Parameters
+        ----------
+        x : array_like
+            Quantiles.
+        a : float
+            Lower standardised bound.
+        b : float
+            Upper standardised bound.
+        loc : float, optional
+            Mean of the un-truncated normal (default 0).
+        scale : float, optional
+            Standard deviation of the un-truncated normal (default 1).
+
+        Returns
+        -------
+        MechestimArray
+            PDF evaluated at *x*.
+        """
         return self._deduct_and_call(
             "pdf", _TRUNCNORM_PDF_COST, x, a, b, loc=loc, scale=scale
         )
 
     def cdf(self, x, a, b, loc=0, scale=1):
+        """Cumulative distribution function at *x*.
+
+        Equivalent to ``scipy.stats.truncnorm.cdf(x, a, b, loc, scale)``.
+
+        FLOP Cost
+        ---------
+        30 * numel(x) FLOPs
+        """
         return self._deduct_and_call(
             "cdf", _TRUNCNORM_CDF_COST, x, a, b, loc=loc, scale=scale
         )
 
     def ppf(self, q, a, b, loc=0, scale=1):
+        """Percent-point function (inverse CDF) at *q*.
+
+        Equivalent to ``scipy.stats.truncnorm.ppf(q, a, b, loc, scale)``.
+
+        FLOP Cost
+        ---------
+        50 * numel(q) FLOPs
+        """
         return self._deduct_and_call(
             "ppf", _TRUNCNORM_PPF_COST, q, a, b, loc=loc, scale=scale
         )
@@ -61,7 +119,6 @@ class TruncnormDistribution(ContinuousDistribution):
         phi_b = _std_norm_cdf(b)
         denom = scale * (phi_b - phi_a)
         result = _std_norm_pdf(z) / denom
-        # Zero out outside [a, b] in standardized space
         return _np.where((z >= a) & (z <= b), result, 0.0)
 
     def _compute_cdf(self, x, a, b, loc=0, scale=1):
@@ -76,7 +133,6 @@ class TruncnormDistribution(ContinuousDistribution):
     def _compute_ppf(self, q, a, b, loc=0, scale=1):
         phi_a = _std_norm_cdf(a)
         phi_b = _std_norm_cdf(b)
-        # ppf = Phi_inv(Phi(a) + q * (Phi(b) - Phi(a)))
         inner = phi_a + q * (phi_b - phi_a)
         z = _ndtri(inner)
         return loc + scale * z
