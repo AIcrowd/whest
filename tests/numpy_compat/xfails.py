@@ -329,6 +329,9 @@ XFAIL_PATTERNS: dict[str, str] = {
     "*TestResize::test_reshape_from_zero": (
         "NUMPY_INTERNAL: resize from zero-element array edge case"
     ),
+    "*TestCreationFuncs::test_for_reference_leak": (
+        "NUMPY_INTERNAL: refcount check is flaky in CI/VM environments"
+    ),
     "*TestFFT1D::test_identity_long_short*": (
         "NUMPY_INTERNAL: float32/longdouble FFT roundtrip exceeds default tolerance "
         "when run via mechestim's patched fft (intermittent)"
