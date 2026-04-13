@@ -69,6 +69,7 @@ plugins:
           - api/linalg.md: "Linear algebra module (SVD, Cholesky, QR, etc.)"
           - api/fft.md: "FFT module (fft, rfft, fftn, etc.)"
           - api/random.md: "Random number generation (sampling is counted)"
+          - api/stats.md: "Statistical distributions (scipy.stats-compatible, flat per-element cost)"
           - api/polynomial.md: "Polynomial operations"
           - api/window.md: "Window functions (bartlett, hamming, etc.)"
           - api/budget.md: "BudgetContext and OpRecord classes"
@@ -118,6 +119,7 @@ nav:
     - Linear Algebra: api/linalg.md
     - FFT: api/fft.md
     - Random: api/random.md
+    - Statistical Distributions: api/stats.md
     - Polynomial: api/polynomial.md
     - Window Functions: api/window.md
     - Budget: api/budget.md

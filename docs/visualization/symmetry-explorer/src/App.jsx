@@ -110,6 +110,7 @@ export default function App() {
             examples={EXAMPLES}
             selected={exampleIdx}
             onSelect={handleSelect}
+            example={example}
             dimensionN={dimensionN}
             onDimensionChange={setDimensionN}
             onCustomExample={handleCustomExample}
