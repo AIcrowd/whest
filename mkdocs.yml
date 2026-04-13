@@ -162,3 +162,5 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - tables
+  - md_in_html
+  - attr_list
