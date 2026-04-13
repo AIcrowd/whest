@@ -7,8 +7,8 @@ export const EXAMPLES = [
     output: 'ab',
     operandNames: ['X', 'X'],
     perOpSymmetry: null,
-    description: 'XᵀX is symmetric — detects S₂ on output labels {a,b}',
-    expectedGroup: 'S₂',
+    description: 'XᵀX is symmetric — detects S2 on output labels {a,b}',
+    expectedGroup: 'S2{a,b}',
     color: '#4a7cff',
   },
   {
@@ -19,8 +19,8 @@ export const EXAMPLES = [
     output: 'abcd',
     operandNames: ['X', 'X'],
     perOpSymmetry: null,
-    description: 'Detects block S₂ — swapping (a,b)↔(c,d)',
-    expectedGroup: 'Block S₂',
+    description: 'Detects block symmetry — swapping (a,b)↔(c,d)',
+    expectedGroup: 'S2{a,c}×S2{b,d}',
     color: '#3ddc84',
   },
   {
@@ -31,8 +31,8 @@ export const EXAMPLES = [
     output: 'ijk',
     operandNames: ['A', 'A', 'A'],
     perOpSymmetry: null,
-    description: 'Directed 3-cycle weight — only cyclic rotations, not reflections → C₃',
-    expectedGroup: 'C₃',
+    description: 'Directed 3-cycle weight — only cyclic rotations, not reflections',
+    expectedGroup: 'C3{i,j,k}',
     color: '#ffb74d',
   },
   {
@@ -43,8 +43,8 @@ export const EXAMPLES = [
     output: 'ijkl',
     operandNames: ['S', 'S', 'S', 'S'],
     perOpSymmetry: 'symmetric',
-    description: 'S symmetric ⇒ per-operand S₂ collapses axes, enabling reflections → D₄',
-    expectedGroup: 'D₄',
+    description: 'S symmetric ⇒ per-operand S2 collapses axes, enabling reflections',
+    expectedGroup: 'D4{i,j,k,l}',
     color: '#bb86fc',
   },
 ];

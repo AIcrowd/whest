@@ -1,24 +1,38 @@
+import Latex from './Latex.jsx';
+
 export default function CostView({ cost }) {
   const {
     denseCost, reducedCost, ratio, speedup,
     uniqueCount, totalCount, groupName, groupOrder,
   } = cost;
 
+  const isTrivial = groupOrder <= 1;
   const pctSaved = ((1 - ratio) * 100).toFixed(1);
+
+  if (isTrivial) {
+    return (
+      <div className="cost-view">
+        <div className="burnside-trivial">
+          <div className="trivial-icon">1.0×</div>
+          <div className="trivial-text">
+            <strong>No cost reduction</strong>
+            <span>Dense cost: {denseCost.toLocaleString()} FLOPs — no symmetry to exploit.</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const formulaLatex = String.raw`\text{cost} = \text{dense\_cost} \times \frac{${uniqueCount.toLocaleString()}}{${totalCount.toLocaleString()}}`;
 
   return (
     <div className="cost-view">
       <div className="cost-formula-card">
-        <div className="cost-equation">
-          <span className="cost-term">cost</span>
-          <span className="cost-eq">=</span>
-          <span className="cost-term dense">dense_cost</span>
-          <span className="cost-op">×</span>
-          <span className="cost-fraction">
-            <span className="frac-num">{uniqueCount.toLocaleString()}</span>
-            <span className="frac-bar"></span>
-            <span className="frac-den">{totalCount.toLocaleString()}</span>
-          </span>
+        <div className="burnside-compact" style={{ marginBottom: 12 }}>
+          <code className="compact-ratio">V:{uniqueCount.toLocaleString()}/{totalCount.toLocaleString()}</code>
+        </div>
+        <div className="burnside-formula" style={{ marginBottom: 16 }}>
+          <Latex math={formulaLatex} display />
         </div>
         <div className="cost-values">
           <div className="cost-item">

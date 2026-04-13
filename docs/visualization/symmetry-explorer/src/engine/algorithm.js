@@ -29,9 +29,20 @@ export function buildBipartite(example) {
     const classOf = {};
     for (let k = 0; k < sub.length; k++) classOf[k] = k;
 
-    if (perOpSymmetry === 'symmetric') {
+    // Per-operand symmetry: supports string (legacy), per-operand array, or {type, axes} objects
+    const opSym = Array.isArray(perOpSymmetry) ? perOpSymmetry[opIdx] : perOpSymmetry;
+    if (opSym === 'symmetric') {
       // All axes in one class (full S_k on all axes of this operand)
       for (let k = 1; k < sub.length; k++) classOf[k] = 0;
+    } else if (opSym && typeof opSym === 'object' && opSym.axes) {
+      // Partial symmetry: only the specified axes collapse into one class
+      const symAxes = opSym.axes;
+      if (symAxes.length >= 2) {
+        const target = symAxes[0];
+        for (let j = 1; j < symAxes.length; j++) {
+          classOf[symAxes[j]] = target;
+        }
+      }
     }
 
     // Normalize class ids
@@ -278,6 +289,25 @@ export function runSigmaLoop(graph, matrixData) {
 
 // ─── Group Construction ───────────────────────────────────────────
 
+/**
+ * Reduce a set of generators to a minimal generating set.
+ * Greedily adds generators that strictly grow the group.
+ */
+function minimalGenerators(gens) {
+  if (gens.length <= 1) return gens;
+  const minimal = [];
+  let currentSize = 1; // just identity
+  for (const g of gens) {
+    const trial = [...minimal, g];
+    const elems = dimino(trial);
+    if (elems.length > currentSize) {
+      minimal.push(g);
+      currentSize = elems.length;
+    }
+  }
+  return minimal;
+}
+
 export function buildGroup(sigmaResults, graph) {
   const vLabels = [...graph.freeLabels].sort();
   const wLabels = [...graph.summedLabels].sort();
@@ -320,51 +350,56 @@ export function buildGroup(sigmaResults, graph) {
     });
   };
 
-  const vGens = dedup(vGenerators);
+  const vGensAll = dedup(vGenerators);
   const wGens = dedup(wGenerators);
+
+  // Reduce to a minimal generating set: only keep generators that grow the group
+  const vGens = minimalGenerators(vGensAll);
 
   const vElements = vGens.length > 0 ? dimino(vGens) : (vLabels.length > 0 ? [Permutation.identity(vLabels.length)] : []);
   const wElements = wGens.length > 0 ? dimino(wGens) : (wLabels.length > 0 ? [Permutation.identity(wLabels.length)] : []);
 
-  // Classify group
+  // Classify group — use Python PathInfo convention: S2{a,b}, C3{i,j,k}, etc.
   const vOrder = vElements.length;
   const vDegree = vLabels.length;
   let vGroupName = 'trivial';
   if (vDegree >= 2 && vOrder > 1) {
     const factorial = (n) => n <= 1 ? 1 : n * factorial(n - 1);
-    // Check for well-known groups
+    const labelSet = `{${vLabels.join(',')}}`;
     if (vOrder === factorial(vDegree)) {
-      vGroupName = `S${subscriptDigit(vDegree)}`;
+      vGroupName = `S${vDegree}${labelSet}`;
     } else if (vOrder === vDegree && vDegree >= 3) {
-      vGroupName = `C${subscriptDigit(vDegree)}`;
+      vGroupName = `C${vDegree}${labelSet}`;
     } else if (vOrder === 2 * vDegree && vDegree >= 3) {
-      vGroupName = `D${subscriptDigit(vDegree)}`;
+      vGroupName = `D${vDegree}${labelSet}`;
     } else if (vOrder === 2 && vDegree > 2) {
-      // Block S₂ or Z₂: order 2 on more than 2 labels
-      // Check if the generator has only 2-cycles (block swap)
       const gen = vGens[0];
       const cycles = gen.cyclicForm();
       const allTwoCycles = cycles.every(c => c.length === 2);
-      vGroupName = allTwoCycles && cycles.length > 1 ? 'Block S\u2082' : 'Z\u2082';
+      if (allTwoCycles && cycles.length > 1) {
+        // Format as product of S2 on each orbit
+        const orbitParts = cycles.map(c => `S2{${c.map(i => vLabels[i]).join(',')}}`);
+        vGroupName = orbitParts.join('\u00d7');  // × multiplication sign
+      } else {
+        vGroupName = `Z2${labelSet}`;
+      }
     } else if (vOrder === 2 && vDegree === 2) {
-      vGroupName = 'S\u2082';
+      vGroupName = `S2${labelSet}`;
     } else {
-      vGroupName = `|G|=${vOrder}`;
+      // Fallback: show generators in cycle notation (matches Python PermGroup⟨...⟩)
+      const genStr = vGens.map(g => g.cycleNotation(vLabels)).join(', ');
+      vGroupName = `PermGroup\u27e8${genStr}\u27e9`;
     }
   }
 
   return {
     vLabels, wLabels,
-    vGenerators: vGens, wGenerators: wGens,
+    vGenerators: vGens, vGeneratorsAll: vGensAll,
+    wGenerators: wGens,
     vElements, wElements,
     vOrder, vGroupName,
     vDegree,
   };
-}
-
-function subscriptDigit(n) {
-  const subs = '\u2080\u2081\u2082\u2083\u2084\u2085\u2086\u2087\u2088\u2089';
-  return String(n).split('').map(d => subs[parseInt(d)]).join('');
 }
 
 // ─── Burnside Counting ───────────────────────────────────────────
