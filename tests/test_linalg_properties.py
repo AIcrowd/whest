@@ -88,12 +88,13 @@ class TestNorm:
             assert budget.flops_used == 20
 
     def test_matrix_ord2_cost(self):
+        # SVD-based: 4x baked into cost function
         A = numpy.random.randn(4, 5)
         with BudgetContext(flop_budget=10**6) as budget:
             from mechestim.linalg import norm
 
             norm(A, ord=2)
-            assert budget.flops_used == 4 * 5 * 4
+            assert budget.flops_used == 4 * 4 * 5 * 4
 
     def test_matrix_ord1_cost(self):
         A = numpy.random.randn(4, 5)
