@@ -42,9 +42,9 @@
 | `cross` | $\text{numel}(\text{output})$ | Cross product of two 3-D vectors. |
 | `diff` | $\text{numel}(\text{input})$ | n-th discrete difference along axis. |
 | `digitize` | varies | Bin search; cost = n*ceil(log2(bins)). |
-| `dot` | $2 \cdot m \cdot k \cdot n$ | Dot product; cost = 2*M*N*K for matrix multiply. |
+| `dot` | $m \cdot k \cdot n$ | Dot product; cost = M*N*K for matrix multiply (FMA=1). |
 | `ediff1d` | $\text{numel}(\text{input})$ | Differences between consecutive elements. |
-| `einsum` | $\texttt{op\_factor} \cdot \prod_{i} d_{i}$ | Generalized Einstein summation. |
+| `einsum` | $\prod_{i} d_{i}$ | Generalized Einstein summation (FMA=1). |
 | `einsum_path` | $0$ | Optimize einsum contraction path (no numeric output). |
 | `fft.fft` | $5n \cdot \lceil\log_2 n\rceil$ | 1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 §1.4). |
 | `fft.fft2` | $5N \cdot \lceil\log_2 N\rceil$ | 2-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 §1.4). |
@@ -69,7 +69,7 @@
 | `histogram_bin_edges` | varies | Bin edge computation; cost = numel(a). |
 | `histogramdd` | varies | ND binning; cost = n*sum(ceil(log2(b_i))). |
 | `in1d` | varies | Set membership; cost = (n+m)*ceil(log2(n+m)). |
-| `inner` | $n$ | Inner product; cost = 2*N for 1-D, 2*N*M for n-D. |
+| `inner` | $n$ | Inner product; cost = N for 1-D, N*M for n-D (FMA=1). |
 | `interp` | $n \cdot \log m$ | 1-D linear interpolation. |
 | `intersect1d` | varies | Set intersection; cost = (n+m)*ceil(log2(n+m)). |
 | `isin` | varies | Set membership; cost = (n+m)*ceil(log2(n+m)). |
@@ -86,38 +86,38 @@
 | `linalg.eigvalsh` | $4n^3 / 3$ | Symmetric eigenvalues. Cost: $(4/3)n^3$ (same as eigh). |
 | `linalg.inv` | $n^3$ | Matrix inverse. Cost: $n^3$ (LU + solve). |
 | `linalg.lstsq` | $m \cdot n \cdot \min(m,n)$ | Least squares. Cost: m*n*min(m,n) (LAPACK gelsd/SVD). |
-| `linalg.matmul` | delegates to `matmul` | Delegates to `me.matmul` which charges `2*m*k*n` FLOPs. |
-| `linalg.matrix_norm` | varies | Matrix norm. Cost depends on ord: 2*numel for Frobenius, m*n*min(m,n) for ord=2. |
+| `linalg.matmul` | delegates to `matmul` | Delegates to `me.matmul` which charges `m*k*n` FLOPs (FMA=1). |
+| `linalg.matrix_norm` | varies | Matrix norm. Cost depends on ord: numel for Frobenius, m*n*min(m,n) for ord=2. |
 | `linalg.matrix_power` | $\lfloor\log_2 k\rfloor \cdot n^3$ | Matrix power. Cost: $(\lfloor\log_2 k\rfloor + \text{popcount}(k) - 1) \cdot n^3$ (exponentiation by squaring). |
 | `linalg.matrix_rank` | $m \cdot n \cdot \min(m,n)$ | Matrix rank. Cost: m*n*min(m,n) (via SVD). |
 | `linalg.multi_dot` | optimal chain | Chain matmul. Cost: sum of optimal chain matmul costs (CLRS §15.2). |
-| `linalg.norm` | varies | Norm. Cost depends on ord: numel for L1/inf, 2*numel for Frobenius, m*n*min(m,n) for ord=2. |
+| `linalg.norm` | varies | Norm. Cost depends on ord: numel for L1/inf, numel for Frobenius, m*n*min(m,n) for ord=2. |
 | `linalg.outer` | delegates to `outer` | Delegates to `me.outer` which charges `m*n` FLOPs. |
 | `linalg.pinv` | $m \cdot n \cdot \min(m,n)$ | Pseudoinverse. Cost: m*n*min(m,n) (via SVD). |
-| `linalg.qr` | $2mn^2 - 2n^3/3$ | QR decomposition. Cost: $2mn^2 - (2/3)n^3$ (Golub & Van Loan §5.2). |
+| `linalg.qr` | $mn^2 - n^3/3$ | QR decomposition. Cost: $mn^2 - n^3/3$ (Golub & Van Loan §5.2, FMA=1). |
 | `linalg.slogdet` | $n^3$ | Sign + log determinant. Cost: $n^3$ (LU factorization). |
-| `linalg.solve` | $2n^3/3 + n^2 \cdot n_{\text{rhs}}$ | Solve Ax=b. Cost: $2n^3/3$ (LU) + $n^2 \cdot n_{\text{rhs}}$ (back-substitution). |
+| `linalg.solve` | $n^3/3 + n^2 \cdot n_{\text{rhs}}$ | Solve Ax=b. Cost: $n^3/3$ (LU) + $n^2 \cdot n_{\text{rhs}}$ (back-substitution, FMA=1). |
 | `linalg.svd` | $m \cdot n \cdot k$ | Singular value decomposition; cost ~ O(min(m,n)*m*n). |
 | `linalg.svdvals` | $m \cdot n \cdot \min(m,n)$ | Singular values only. Cost: m*n*min(m,n) (Golub-Reinsch). |
 | `linalg.tensordot` | delegates to `tensordot` | Delegates to `me.tensordot` which charges FLOPs based on contraction. |
 | `linalg.tensorinv` | $n^3$ | Tensor inverse. Cost: $n^3$ after reshape (delegates to inv). |
 | `linalg.tensorsolve` | $n^3$ | Tensor solve. Cost: $n^3$ after reshape (delegates to solve). |
 | `linalg.trace` | $n$ | Matrix trace. Cost: n (sum of diagonal elements). |
-| `linalg.vecdot` | delegates to `vecdot` | Delegates to `me.vecdot` which charges `2*n` FLOPs. |
-| `linalg.vector_norm` | $n$ or $2n$ | Vector norm. Cost: numel (or 2*numel for general p-norm). |
+| `linalg.vecdot` | delegates to `vecdot` | Delegates to `me.vecdot` which charges `n` FLOPs (FMA=1). |
+| `linalg.vector_norm` | $n$ | Vector norm. Cost: numel. |
 | `logspace` | varies | Log-spaced generation; cost = num. |
-| `matmul` | $2 \cdot m \cdot k \cdot n$ | Matrix multiplication; cost = 2*M*N*K. |
+| `matmul` | $m \cdot k \cdot n$ | Matrix multiplication; cost = M*K*N (FMA=1). |
 | `outer` | $m \cdot n$ | Outer product of two vectors; cost = M*N. |
 | `partition` | varies | Quickselect; cost = n per slice. |
 | `poly` | $n^2$ | Polynomial from roots. Cost: $n^2$ FLOPs. |
 | `polyadd` | $\max(n_{1}, n_{2})$ | Add two polynomials. Cost: max(n1, n2) FLOPs. |
 | `polyder` | $n$ | Differentiate polynomial. Cost: n FLOPs. |
 | `polydiv` | $n_{1} \cdot n_{2}$ | Divide one polynomial by another. Cost: n1 * n2 FLOPs. |
-| `polyfit` | $2m \cdot (\text{deg}+1)^2$ | Least squares polynomial fit. Cost: 2 * m * (deg+1)^2 FLOPs. |
+| `polyfit` | $m \cdot (\text{deg}+1)^2$ | Least squares polynomial fit. Cost: m * (deg+1)^2 FLOPs (FMA=1). |
 | `polyint` | $n$ | Integrate polynomial. Cost: n FLOPs. |
 | `polymul` | $n_{1} \cdot n_{2}$ | Multiply polynomials. Cost: n1 * n2 FLOPs. |
 | `polysub` | $\max(n_{1}, n_{2})$ | Difference (subtraction) of two polynomials. Cost: max(n1, n2) FLOPs. |
-| `polyval` | $2 \cdot m \cdot \text{deg}$ | Evaluate polynomial at given points. Cost: 2 * m * deg FLOPs (Horner's method). |
+| `polyval` | $m \cdot \text{deg}$ | Evaluate polynomial at given points. Cost: m * deg FLOPs (Horner's method, FMA=1). |
 | `random.beta` | varies | Sampling; cost = numel(output). |
 | `random.binomial` | varies | Sampling; cost = numel(output). |
 | `random.bytes` | varies | Sampling; cost = numel(output). |
@@ -182,7 +182,7 @@
 | `unique_values` | varies | Sort-based unique; cost = n*ceil(log2(n)). |
 | `unwrap` | $\text{numel}(\text{input})$ | Phase unwrap. Cost: $\text{numel}(\text{input})$ (diff + conditional adjustment). |
 | `vander` | varies | Vandermonde matrix; cost = len(x)*(N-1). |
-| `vdot` | $n$ | Dot product with conjugation; cost = 2*N. |
+| `vdot` | $n$ | Dot product with conjugation; cost = N (FMA=1). |
 
 ## Free Operations (complete list)
 

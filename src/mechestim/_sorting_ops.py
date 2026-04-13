@@ -98,7 +98,7 @@ def partition(a, kth, axis=-1, **kwargs):
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     # kth can be int or sequence of ints
-    kth_count = len(kth) if hasattr(kth, '__len__') else 1
+    kth_count = len(kth) if hasattr(kth, "__len__") else 1
     if a.ndim == 0:
         cost = 1
     else:
@@ -125,7 +125,7 @@ def argpartition(a, kth, axis=-1, **kwargs):
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     # kth can be int or sequence of ints
-    kth_count = len(kth) if hasattr(kth, '__len__') else 1
+    kth_count = len(kth) if hasattr(kth, "__len__") else 1
     if a.ndim == 0:
         cost = 1
     else:

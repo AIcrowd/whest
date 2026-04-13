@@ -42,7 +42,7 @@ class StepInfo:
     """Einsum subscript for this step, e.g. ``"ijk,ai->ajk"``."""
 
     flop_cost: int
-    """Symmetry-aware FLOP cost (opt_einsum convention: includes op_factor)."""
+    """Symmetry-aware FLOP cost (FMA = 1 op)."""
 
     input_shapes: list[tuple[int, ...]]
     """Shapes of the input operands for this step."""
@@ -57,7 +57,7 @@ class StepInfo:
     """PermutationGroup of the output, or None."""
 
     dense_flop_cost: int
-    """FLOP cost without symmetry (opt_einsum convention: includes op_factor)."""
+    """FLOP cost without symmetry (FMA = 1 op)."""
 
     symmetry_savings: float
     """Fraction saved: ``1 - (flop_cost / dense_flop_cost)``. Zero when no symmetry."""
@@ -101,10 +101,10 @@ class PathInfo:
     """Per-step diagnostics."""
 
     naive_cost: int
-    """Naive (single-step) FLOP cost (opt_einsum convention with op_factor)."""
+    """Naive (single-step) FLOP cost (FMA = 1 op)."""
 
     optimized_cost: int
-    """Sum of per-step costs (opt_einsum convention with op_factor)."""
+    """Sum of per-step costs (FMA = 1 op)."""
 
     largest_intermediate: int
     """Number of elements in the largest intermediate tensor."""
@@ -138,7 +138,7 @@ class PathInfo:
 
     @property
     def opt_cost(self) -> Decimal:
-        """Legacy: opt_einsum-style cost (using flop_count with op_factor)."""
+        """Legacy: opt_einsum-style cost (FMA = 1 op)."""
         return Decimal(self._oe_opt_cost)
 
     @property
@@ -786,9 +786,9 @@ def contract_path(
 
         einsum_str = ",".join(tmp_inputs) + "->" + idx_result
 
-        # Build StepInfo — use opt_einsum cost convention (includes op_factor)
-        step_flop = cost  # already has op_factor
-        step_dense = dense_cost  # already has op_factor
+        # Build StepInfo
+        step_flop = cost
+        step_dense = dense_cost
         savings = 1.0 - (step_flop / step_dense) if step_dense > 0 else 0.0
 
         step_infos.append(
@@ -823,7 +823,7 @@ def contract_path(
 
     opt_cost = sum(cost_list)
 
-    # naive_cost already computed with flop_count (includes op_factor)
+    # naive_cost already computed with flop_count
     optimized_cost = sum(s.flop_cost for s in step_infos)
 
     path_print = PathInfo(

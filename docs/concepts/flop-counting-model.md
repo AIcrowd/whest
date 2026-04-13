@@ -4,6 +4,14 @@
 
 Use this page to understand how mechestim counts FLOPs and why it uses analytical counting instead of runtime measurement.
 
+## Convention: FMA = 1 operation
+
+This codebase counts a fused multiply-add (a * b + c) as a **single operation**.
+Hardware FMA units execute this in one instruction; the common textbook
+convention of counting it as 2 (one multiply + one add) is **not** used here.
+All cost formulae reflect this: a matrix multiply of dimensions
+(m, k) x (k, n) costs m*k*n operations, not 2*m*k*n.
+
 ## Why FLOPs instead of wall-clock time
 
 - **Deterministic:** The same code always produces the same FLOP count, regardless of hardware
@@ -16,7 +24,7 @@ Use this page to understand how mechestim counts FLOPs and why it uses analytica
 mechestim computes FLOP costs **analytically from tensor shapes**, not by measuring execution time.
 
 1. You call a counted operation (e.g., `me.einsum('ij,j->i', W, x)`)
-2. mechestim computes the cost from the shapes: 2 × 256 × 256 = 131,072 FLOPs
+2. mechestim computes the cost from the shapes: 256 × 256 = 65,536 FLOPs
 3. The cost is checked against the remaining budget
 4. If within budget: the operation executes and the cost is deducted
 5. If over budget: `BudgetExhaustedError` is raised, the operation does **not** execute
@@ -29,13 +37,13 @@ by the operation's weight to give the final deducted cost.
 
 | Category | Formula | Example |
 |----------|---------|---------|
-| **Einsum** | Per-step: product of dims × op_factor | `'ij,jk->ik'` → 2 × 3 × 4 × 5 = 120 |
+| **Einsum** | Per-step: product of all index dims | `'ij,jk->ik'` → 3 × 4 × 5 = 60 |
 | **Unary** (exp, log, sqrt, ...) | $\text{numel}(\text{output})$ | shape (256, 256) → 65,536 |
 | **Binary** (add, multiply, ...) | $\text{numel}(\text{output})$ | shape (256, 256) → 65,536 |
 | **Reduction** (sum, mean, max, ...) | $\text{numel}(\text{input})$ | shape (256, 256) → 65,536 |
 | **SVD** | $m \cdot n \cdot k$ | (256, 256, k=10) → 655,360 |
-| **Solve** | $2n^3/3 + n^2 \cdot n_{\text{rhs}}$ (LU) | (256, 256) solve → ~11.1M |
-| **Dot / Matmul** | Same as einsum | (256, 256) @ (256, 256) → 2 × 256³ |
+| **Solve** | $n^3/3 + n^2 \cdot n_{\text{rhs}}$ (LU) | (256, 256) solve → ~5.6M |
+| **Dot / Matmul** | Same as einsum | (256, 256) @ (256, 256) → 256³ |
 | **Free ops** | 0 | zeros, reshape, etc. |
 
 ### Sorting & search
@@ -72,7 +80,7 @@ When a tensor is a `SymmetricTensor`, costs are reduced based on the number of u
 | **Pointwise** (unary/binary) | unique_elements | $\text{numel}(\text{output})$ |
 | **Reduction** | unique_elements | $\text{numel}(\text{input})$ |
 | **Einsum** (symmetric contraction) | Symmetry-reduced (see below) | Full product |
-| **Solve** | $n^3/3 + n \cdot n_{\text{rhs}}$ (Cholesky) | $2n^3/3 + n^2 \cdot n_{\text{rhs}}$ (LU) |
+| **Solve** | $n^3/3 + n \cdot n_{\text{rhs}}$ (Cholesky) | $n^3/3 + n^2 \cdot n_{\text{rhs}}$ (LU) |
 | **Det / Slogdet** | $n^3/3$ (Cholesky) | $n^3$ (LU) |
 | **Inv** | $n^3/3 + n^3/2$ | $n^3$ |
 
@@ -121,54 +129,54 @@ total_cost = sum(step.flop_cost for step in path.steps)
 For each pairwise step, the **dense** cost is:
 
 ```
-dense_step_cost = (product of all index dimensions) × op_factor
+dense_step_cost = product of all index dimensions
 ```
 
-where `op_factor = 2` when indices are summed (multiply + add) and
-`op_factor = 1` when no indices are summed (outer product).
+Each fused multiply-add (FMA) counts as 1 operation (see
+[Convention](#convention-fma--1-operation) above), so the cost of a
+contraction step is simply the product of all index dimensions — there is
+no factor-of-2 distinction between inner products and outer products.
 
-When symmetry is present, mechestim reduces the cost by exploiting the
-structure of the contraction. The reduction depends on the contraction's
-shape.
+When symmetry is present, mechestim reduces each step's cost based on
+the structure of the contraction.
 
 ### Symmetric contraction cost
 
-Consider a pairwise contraction of symmetric tensors **A** (order $s + v$)
-and **B** (order $t + v$) with $v$ contracted indices, producing output
-**C** (order $s + t$). Let $\omega = s + t + v$ and let all indices have
-dimension $n$.
-
-The cost is computed using the symmetry-preserving formula from
-Solomonik & Demmel (2015):
-
-$$F = \binom{n + \omega - 1}{\omega} \left[ 1 + \binom{\omega}{s} + \binom{\omega}{t} + \binom{\omega}{v} \right] + \binom{n+s+v-1}{s+v} + \binom{n+t+v-1}{t+v} + \binom{n+s+t-1}{s+t}$$
-
-The leading term $\binom{n+\omega-1}{\omega} \approx n^\omega / \omega!$
-counts the unique elements of a fully-symmetric order-$\omega$
-intermediate. The bracket contains one multiplication plus additions for
-accumulating partial sums from each operand and for reducing into the
-output. The trailing terms are lower-order costs for operand intermediates
-and output symmetrization.
-
-This formula exploits symmetry across *all* $\omega$ index groups
-simultaneously — including contracted indices — giving much larger savings
-than reducing output elements alone. For example, a contraction with
-$s = t = v = 3$ ($\omega = 9$) achieves roughly 10× savings over the
-per-group approach at $n = 100$.
-
-### Fallback for low-order and non-uniform cases
-
-When the symmetry-preserving formula does not apply — outer products
-($v = 0$), non-uniform index dimensions, or low-order contractions where
-the addition overhead exceeds the savings — the cost falls back to:
+Each pairwise step's cost is reduced by two independent multiplicative
+factors — one for the output (V-side) indices and one for the inner
+(W-side) contracted indices:
 
 ```
-step_cost = dense_step_cost × (unique_output_elements / total_output_elements)
+step_cost = dense_step_cost
+          × (unique_output_elements / total_output_elements)
+          × (unique_inner_elements / total_inner_elements)
 ```
 
-The unique element count is computed exactly using Burnside's lemma over
-the detected permutation group. For the full symmetric group S$_k$, this
-reduces to the stars-and-bars formula $\binom{n+k-1}{k}$.
+Each ratio is computed exactly using **Burnside's lemma** over the
+permutation group detected for that step by the
+[`SubgraphSymmetryOracle`](../explanation/subgraph-symmetry.md). For the
+full symmetric group S$_k$ on $k$ equal-sized axes, Burnside reduces to
+the stars-and-bars formula $\binom{n+k-1}{k}$; for proper subgroups like
+$C_k$ or block groups the oracle returns the exact generators and
+Burnside counts over the enumerated elements.
+
+The **output (V-side) reduction** is always applied when the step's
+intermediate has a non-trivial permutation group on its free indices —
+only the unique output elements need to be computed.
+
+The **inner (W-side) reduction** is applied only when *all* labels in
+the detected inner group are present as contracted indices in that
+specific pairwise step. If any of those labels were contracted at an
+earlier step and no longer appear in the current step, the inner
+reduction is skipped (the per-step table shows this as `[W: ...]` when
+detected-but-not-applied versus `[W✓: ...]` when applied). Inner
+symmetry can be toggled globally with
+`me.configure(use_inner_symmetry=False)`.
+
+The two factors are independent; outer-product contractions (no summed
+indices) and non-uniform index dimensions are handled by the same
+formula, since Burnside's lemma makes no assumption about uniform sizes
+beyond requiring axes in the same orbit to share a dimension.
 
 ### Multi-operand contractions
 
@@ -186,12 +194,6 @@ the optimizer factors this into its ordering decisions.
 
 Use `me.einsum_path()` to inspect the per-step breakdown. See
 [Use Einsum](../how-to/use-einsum.md) for examples.
-
-### References
-
-E. Solomonik and J. Demmel, "Contracting Symmetric Tensors Using Fewer
-Multiplications," preprint, ETH Zurich, 2015.
-[doi:10.3929/ethz-a-010345741](https://doi.org/10.3929/ethz-a-010345741)
 
 ## Per-operation weights
 
@@ -213,7 +215,7 @@ actual_cost = analytical_formula(shape) × weight(op_name)
 | `add` | $\text{numel}(\text{output})$ | 1.00 | 65,536 |
 | `exp` | $\text{numel}(\text{output})$ | 10.27 | 673,095 |
 | `sin` | $\text{numel}(\text{output})$ | 18.39 | 1,205,346 |
-| `matmul` | $2n^3$ | 0.46 | 15,400,727 |
+| `matmul` | $n^3$ | 0.46 | 7,700,364 |
 | `linalg.cholesky` | $n^3/3$ | 0.76 | 4,244,635 |
 
 Weights are measured using the overhead-subtracted correction-factor

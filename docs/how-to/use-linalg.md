@@ -18,7 +18,7 @@ Use this page to learn how to use `me.linalg` operations and their FLOP costs.
 | `me.linalg.eig(A)` | $10n^3$ | General eigendecomposition |
 | `me.linalg.eigh(A)` | $4n^3/3$ | Symmetric eigendecomposition |
 | `me.linalg.cholesky(A)` | $n^3/3$ | Cholesky (symmetric positive definite) |
-| `me.linalg.qr(A)` | $2mn^2 - 2n^3/3$ | Householder QR |
+| `me.linalg.qr(A)` | $mn^2 - n^3/3$ | Householder QR (FMA=1) |
 | `me.linalg.eigvals(A)` | $10n^3$ | Eigenvalues only |
 | `me.linalg.eigvalsh(A)` | $4n^3/3$ | Symmetric eigenvalues only |
 | `me.linalg.svdvals(A)` | $m \cdot n \cdot \min(m,n)$ | Singular values only |
@@ -27,7 +27,7 @@ Use this page to learn how to use `me.linalg` operations and their FLOP costs.
 
 | Operation | Cost | Symmetric cost |
 |-----------|------|----------------|
-| `me.linalg.solve(A, b)` | $2n^3/3 + n^2 \cdot n_{\text{rhs}}$ | $n^3/3 + n \cdot n_{\text{rhs}}$ |
+| `me.linalg.solve(A, b)` | $n^3/3 + n^2 \cdot n_{\text{rhs}}$ | $n^3/3 + n \cdot n_{\text{rhs}}$ |
 | `me.linalg.inv(A)` | $n^3$ | $n^3/3 + n^3/2$ |
 | `me.linalg.lstsq(A, b)` | $m \cdot n \cdot \min(m,n)$ | — |
 | `me.linalg.pinv(A)` | $m \cdot n \cdot \min(m,n)$ | — |

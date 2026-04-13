@@ -116,7 +116,7 @@ def test_norm_cost_2d_fallback():
 
 
 def test_vector_norm_cost_p_norm():
-    # FMA=1: all vector norms cost numel (one pass over elements)
+    # FMA=1: all norms cost numel (one pass over elements)
     assert vector_norm_cost((10,), ord=3) == 10
 
 
