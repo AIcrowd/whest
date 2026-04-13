@@ -75,6 +75,7 @@ from mechestim import (
     flops,  # noqa: E402, F401
     linalg,  # noqa: E402, F401
     random,  # noqa: E402, F401
+    stats,  # noqa: E402, F401
 )
 from mechestim._connection import get_connection  # noqa: E402
 from mechestim._protocol import (  # noqa: E402
