@@ -5,7 +5,9 @@ from mechestim.stats._cauchy import cauchy  # noqa: F401
 from mechestim.stats._expon import expon  # noqa: F401
 from mechestim.stats._laplace import laplace  # noqa: F401
 from mechestim.stats._logistic import logistic  # noqa: F401
+from mechestim.stats._lognorm import lognorm  # noqa: F401
 from mechestim.stats._norm import norm  # noqa: F401
+from mechestim.stats._truncnorm import truncnorm  # noqa: F401
 from mechestim.stats._uniform import uniform  # noqa: F401
 
 __all__ = [
@@ -13,7 +15,9 @@ __all__ = [
     "expon",
     "laplace",
     "logistic",
+    "lognorm",
     "norm",
+    "truncnorm",
     "uniform",
 ]
 
