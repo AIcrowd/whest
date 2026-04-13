@@ -980,8 +980,12 @@ class TestReductionSymmetryPartialLoss:
         data = rng.random((n, n, n))
         # Full symmetrization over all 6 permutations of (0,1,2)
         perms = [
-            (0, 1, 2), (0, 2, 1), (1, 0, 2),
-            (1, 2, 0), (2, 0, 1), (2, 1, 0),
+            (0, 1, 2),
+            (0, 2, 1),
+            (1, 0, 2),
+            (1, 2, 0),
+            (2, 0, 1),
+            (2, 1, 0),
         ]
         sym = numpy.zeros_like(data)
         for p in perms:

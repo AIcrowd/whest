@@ -30,6 +30,7 @@ from mechestim.errors import SymmetryError, SymmetryLossWarning
 # Helpers
 # ============================================================================
 
+
 def _sym_matrix(n: int = 5, seed: int = 42) -> np.ndarray:
     rng = np.random.default_rng(seed)
     a = rng.standard_normal((n, n))
@@ -42,6 +43,7 @@ def _sym_3d(n: int = 4, seed: int = 7) -> np.ndarray:
     a = rng.standard_normal((n, n, n))
     # Symmetrise over all permutations of (0,1,2)
     from itertools import permutations
+
     result = sum(a.transpose(p) for p in permutations(range(3)))
     return result / 6.0
 
@@ -58,6 +60,7 @@ def _sym_4d(n1: int = 3, n2: int = 4, seed: int = 11) -> np.ndarray:
 # ============================================================================
 # validate_symmetry (lines 100-114)
 # ============================================================================
+
 
 class TestValidateSymmetry:
     def test_valid_symmetric_matrix(self):
@@ -118,6 +121,7 @@ class TestValidateSymmetry:
 # ============================================================================
 # validate_symmetry_groups (lines 128-146)
 # ============================================================================
+
 
 class TestValidateSymmetryGroups:
     def test_valid_s2_group(self):
@@ -184,6 +188,7 @@ class TestValidateSymmetryGroups:
 # is_symmetric (lines 180-193)
 # ============================================================================
 
+
 class TestIsSymmetric:
     def test_symmetric_returns_true(self):
         assert is_symmetric(_sym_matrix(), (0, 1)) is True
@@ -246,6 +251,7 @@ class TestIsSymmetric:
 # propagate_symmetry_slice (lines 245-362)
 # ============================================================================
 
+
 class TestPropagateSymmetrySlice:
     def test_full_slice_preserves(self):
         """Slicing with [:, :] preserves symmetry."""
@@ -265,9 +271,7 @@ class TestPropagateSymmetrySlice:
 
     def test_partial_slice_different_sizes_breaks(self):
         """Slicing dims to different sizes breaks symmetry."""
-        result = propagate_symmetry_slice(
-            [(0, 1)], (5, 5), (slice(0, 3), slice(0, 2))
-        )
+        result = propagate_symmetry_slice([(0, 1)], (5, 5), (slice(0, 3), slice(0, 2)))
         # Dims have different sizes, group is lost
         assert result is None
 
@@ -306,12 +310,8 @@ class TestPropagateSymmetrySlice:
 
     def test_advanced_indexing_bails(self):
         """Array or list indexing returns None."""
-        assert propagate_symmetry_slice(
-            [(0, 1)], (5, 5), (np.array([0, 1]),)
-        ) is None
-        assert propagate_symmetry_slice(
-            [(0, 1)], (5, 5), ([0, 1],)
-        ) is None
+        assert propagate_symmetry_slice([(0, 1)], (5, 5), (np.array([0, 1]),)) is None
+        assert propagate_symmetry_slice([(0, 1)], (5, 5), ([0, 1],)) is None
 
     def test_non_tuple_key_normalized(self):
         """Non-tuple key is wrapped in a tuple."""
@@ -330,9 +330,7 @@ class TestPropagateSymmetrySlice:
         """One group survives, the other doesn't."""
         # shape (3, 3, 4, 4), groups (0,1) and (2,3)
         # Index dim 0 with int, keep dims 1,2,3
-        result = propagate_symmetry_slice(
-            [(0, 1), (2, 3)], (3, 3, 4, 4), (0,)
-        )
+        result = propagate_symmetry_slice([(0, 1), (2, 3)], (3, 3, 4, 4), (0,))
         # Group (0,1): dim 0 removed -> only dim 1 survives -> lost
         # Group (2,3): both survive, remapped to (1, 2)
         assert result == [(1, 2)]
@@ -342,17 +340,14 @@ class TestPropagateSymmetrySlice:
         # shape (10, 10, 10), group (0, 1, 2)
         # Slice all to size 3
         result = propagate_symmetry_slice(
-            [(0, 1, 2)], (10, 10, 10),
-            (slice(0, 3), slice(0, 3), slice(0, 3))
+            [(0, 1, 2)], (10, 10, 10), (slice(0, 3), slice(0, 3), slice(0, 3))
         )
         assert result == [(0, 1, 2)]
 
     def test_ellipsis_with_newaxis(self):
         """Ellipsis combined with newaxis."""
         # shape (5, 5), group (0,1), key (Ellipsis, None)
-        result = propagate_symmetry_slice(
-            [(0, 1)], (5, 5), (Ellipsis, None)
-        )
+        result = propagate_symmetry_slice([(0, 1)], (5, 5), (Ellipsis, None))
         assert result == [(0, 1)]
 
     def test_step_slice(self):
@@ -375,6 +370,7 @@ class TestPropagateSymmetrySlice:
 # ============================================================================
 # propagate_symmetry_reduce (lines 385-410)
 # ============================================================================
+
 
 class TestPropagateSymmetryReduce:
     def test_reduce_none_axis(self):
@@ -415,9 +411,7 @@ class TestPropagateSymmetryReduce:
     def test_reduce_tuple_axis(self):
         """Reducing multiple axes at once."""
         # shape (3, 4, 4, 3), groups [(1,2), (0,3)]
-        result = propagate_symmetry_reduce(
-            [(1, 2), (0, 3)], 4, (0, 3), keepdims=False
-        )
+        result = propagate_symmetry_reduce([(1, 2), (0, 3)], 4, (0, 3), keepdims=False)
         # Dims 0,3 removed. Dims 1,2 become 0,1.
         assert result == [(0, 1)]
 
@@ -438,6 +432,7 @@ class TestPropagateSymmetryReduce:
 # intersect_symmetry (lines 439-465)
 # ============================================================================
 
+
 class TestIntersectSymmetry:
     def test_both_none(self):
         assert intersect_symmetry(None, None, (3,), (3,), (3,)) is None
@@ -448,9 +443,7 @@ class TestIntersectSymmetry:
 
     def test_same_groups(self):
         """Identical groups produce the intersection."""
-        result = intersect_symmetry(
-            [(0, 1)], [(0, 1)], (3, 3), (3, 3), (3, 3)
-        )
+        result = intersect_symmetry([(0, 1)], [(0, 1)], (3, 3), (3, 3), (3, 3))
         assert result == [(0, 1)]
 
     def test_different_groups(self):
@@ -467,9 +460,7 @@ class TestIntersectSymmetry:
         # output: (1, 3, 3)
         # a's dims 0,1 -> output dims 1,2
         # b's dims 1,2 -> output dims 1,2
-        result = intersect_symmetry(
-            [(0, 1)], [(1, 2)], (3, 3), (1, 3, 3), (1, 3, 3)
-        )
+        result = intersect_symmetry([(0, 1)], [(1, 2)], (3, 3), (1, 3, 3), (1, 3, 3))
         assert result == [(1, 2)]
 
     def test_broadcast_stretched_dim(self):
@@ -477,9 +468,7 @@ class TestIntersectSymmetry:
         # a: shape (1, 3), group [(0,1)] - dim 0 is size 1
         # output: (3, 3) - dim 0 stretched from 1->3
         # b: shape (3, 3), group [(0,1)]
-        result = intersect_symmetry(
-            [(0, 1)], [(0, 1)], (1, 3), (3, 3), (3, 3)
-        )
+        result = intersect_symmetry([(0, 1)], [(0, 1)], (1, 3), (3, 3), (3, 3))
         # a's dim 0 is stretched, so (0,1) group loses dim 0 -> too small
         # b's (0,1) survives but a's doesn't match -> no intersection
         assert result is None
@@ -499,6 +488,7 @@ class TestIntersectSymmetry:
 # ============================================================================
 # SymmetricTensor.__array_finalize__ (lines 507-519)
 # ============================================================================
+
 
 class TestArrayFinalize:
     def test_shape_mismatch_filters_invalid_groups(self):
@@ -540,6 +530,7 @@ class TestArrayFinalize:
 # ============================================================================
 # SymmetricTensor.__setstate__ / pickle (lines 623-647)
 # ============================================================================
+
 
 class TestPickle:
     def test_roundtrip_new_format(self):
@@ -599,6 +590,7 @@ class TestPickle:
 # as_symmetric (lines 708-717): legacy path
 # ============================================================================
 
+
 class TestAsSymmetric:
     def test_single_tuple(self):
         """Single tuple is treated as one group."""
@@ -641,6 +633,7 @@ class TestAsSymmetric:
 # ============================================================================
 # Slicing SymmetricTensor end-to-end
 # ============================================================================
+
 
 class TestSlicingEndToEnd:
     def test_ellipsis_slice(self):
@@ -707,6 +700,7 @@ class TestSlicingEndToEnd:
 # Reductions with keepdims
 # ============================================================================
 
+
 class TestReductionsKeepdims:
     """Test propagate_symmetry_reduce keepdims branching via direct calls."""
 
@@ -731,9 +725,11 @@ class TestReductionsKeepdims:
 # _warn_symmetry_loss
 # ============================================================================
 
+
 class TestWarnSymmetryLoss:
     def test_warning_emitted_when_enabled(self):
         from mechestim._config import configure
+
         configure(symmetry_warnings=True)
         try:
             with warnings.catch_warnings(record=True) as w:
@@ -746,17 +742,21 @@ class TestWarnSymmetryLoss:
 
     def test_no_warning_when_disabled(self):
         from mechestim._config import configure
+
         configure(symmetry_warnings=False)
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
             _warn_symmetry_loss([(0, 1)], "test reason", stacklevel=1)
-            symmetry_warnings = [x for x in w if issubclass(x.category, SymmetryLossWarning)]
+            symmetry_warnings = [
+                x for x in w if issubclass(x.category, SymmetryLossWarning)
+            ]
             assert len(symmetry_warnings) == 0
 
 
 # ============================================================================
 # SymmetricTensor.copy
 # ============================================================================
+
 
 class TestCopy:
     def test_copy_preserves_groups(self):
@@ -778,6 +778,7 @@ class TestCopy:
 # ============================================================================
 # SymmetryInfo edge cases
 # ============================================================================
+
 
 class TestSymmetryInfoEdgeCases:
     def test_no_groups(self):
