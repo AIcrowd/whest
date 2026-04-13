@@ -44,7 +44,7 @@ class TestArrayEquivBroadcastFail:
             from mechestim._counting_ops import array_equiv
 
             result = array_equiv(a, b)
-        assert result is np.False_  or result == False  # noqa: E712
+        assert result is np.False_ or result == False  # noqa: E712
         # Cost should be max(a.size, b.size, 1) = max(6, 20, 1) = 20
         assert budget.flops_used == 20
 
@@ -1399,9 +1399,7 @@ class TestPathInfoFormatTable:
     def test_format_table(self):
         from mechestim._opt_einsum._contract import contract_path
 
-        path, info = contract_path(
-            "ij,jk,kl->il", (2, 3), (3, 4), (4, 5), shapes=True
-        )
+        path, info = contract_path("ij,jk,kl->il", (2, 3), (3, 4), (4, 5), shapes=True)
         table = info.format_table()
         assert "Naive cost" in table
         assert "Optimized cost" in table
@@ -1409,9 +1407,7 @@ class TestPathInfoFormatTable:
     def test_format_table_verbose(self):
         from mechestim._opt_einsum._contract import contract_path
 
-        path, info = contract_path(
-            "ij,jk,kl->il", (2, 3), (3, 4), (4, 5), shapes=True
-        )
+        path, info = contract_path("ij,jk,kl->il", (2, 3), (3, 4), (4, 5), shapes=True)
         table = info.format_table(verbose=True)
         assert "subset=" in table
         assert "cumulative=" in table
@@ -1527,9 +1523,7 @@ class TestBLASClassification:
     def test_broadcast_dims_false(self):
         from mechestim._opt_einsum._blas import can_blas
 
-        result = can_blas(
-            ["ij", "jk"], "ik", set("j"), shapes=[(4, 1), (5, 6)]
-        )
+        result = can_blas(["ij", "jk"], "ik", set("j"), shapes=[(4, 1), (5, 6)])
         assert result is False
 
     def test_symm_classification(self):
@@ -1537,9 +1531,7 @@ class TestBLASClassification:
 
         # Create a symmetric group on indices i,j for left input
         sym = _make_sym_group(("i", "j"))
-        result = can_blas(
-            ["ij", "jk"], "ik", set("j"), input_groups=[sym, None]
-        )
+        result = can_blas(["ij", "jk"], "ik", set("j"), input_groups=[sym, None])
         assert result == "SYMM"
 
     def test_symv_classification(self):
@@ -1547,16 +1539,12 @@ class TestBLASClassification:
 
         sym = _make_sym_group(("j", "i", "k"))
         # "j,ijk->ik" is GEMV/EINSUM, with symmetric right input -> SYMV
-        result = can_blas(
-            ["j", "ijk"], "ik", set("j"), input_groups=[None, sym]
-        )
+        result = can_blas(["j", "ijk"], "ik", set("j"), input_groups=[None, sym])
         assert result == "SYMV"
 
     def test_sydt_classification(self):
         from mechestim._opt_einsum._blas import can_blas
 
         sym = _make_sym_group(("i", "j"))
-        result = can_blas(
-            ["ij", "ij"], "", set("ij"), input_groups=[sym, None]
-        )
+        result = can_blas(["ij", "ij"], "", set("ij"), input_groups=[sym, None])
         assert result == "SYDT"

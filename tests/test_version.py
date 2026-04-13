@@ -61,9 +61,11 @@ def test_numpy_version_in_range_no_warning():
     from mechestim._version_check import check_numpy_version
 
     major, minor = numpy.__version__.split(".")[:2]
-    range_str = f">={major}.{minor}.0,<{major}.{int(minor)+1}.0"
+    range_str = f">={major}.{minor}.0,<{major}.{int(minor) + 1}.0"
     with warnings.catch_warnings(record=True) as w:
         warnings.simplefilter("always")
         check_numpy_version(range_str)
-        mechestim_warnings = [x for x in w if issubclass(x.category, me.MechEstimWarning)]
+        mechestim_warnings = [
+            x for x in w if issubclass(x.category, me.MechEstimWarning)
+        ]
         assert len(mechestim_warnings) == 0

@@ -22,6 +22,7 @@ from mechestim._display import (
 # Helper: create a budget with some operations recorded in the accumulator
 # ---------------------------------------------------------------------------
 
+
 def _make_budget(flop_budget=10_000, namespace=None, ops=None):
     """Enter and exit a BudgetContext, deducting ops so the accumulator records it."""
     ops = ops or [("matmul", 500), ("add", 100)]
@@ -33,6 +34,7 @@ def _make_budget(flop_budget=10_000, namespace=None, ops=None):
 # ======================================================================
 # _format_flops
 # ======================================================================
+
 
 class TestFormatFlops:
     def test_zero(self):
@@ -48,6 +50,7 @@ class TestFormatFlops:
 # ======================================================================
 # _pct
 # ======================================================================
+
 
 class TestPct:
     def test_zero_total(self):
@@ -66,6 +69,7 @@ class TestPct:
 # ======================================================================
 # _usage_color
 # ======================================================================
+
 
 class TestUsageColor:
     def test_zero_budget(self):
@@ -98,6 +102,7 @@ class TestUsageColor:
 # _is_global_default_ns
 # ======================================================================
 
+
 class TestIsGlobalDefaultNs:
     def test_none_ns_big_budget(self):
         assert _is_global_default_ns(None, {"flop_budget": int(1e15)}) is True
@@ -115,6 +120,7 @@ class TestIsGlobalDefaultNs:
 # ======================================================================
 # _plain_text_summary
 # ======================================================================
+
 
 class TestPlainTextSummary:
     def test_no_data(self):
@@ -162,6 +168,7 @@ class TestPlainTextSummary:
 # ======================================================================
 # _rich_namespace_table
 # ======================================================================
+
 
 class TestRichNamespaceTable:
     def test_returns_table(self):
@@ -237,6 +244,7 @@ class TestRichNamespaceTable:
 # ======================================================================
 # _rich_summary
 # ======================================================================
+
 
 class TestRichSummary:
     def test_no_data_panel(self):
@@ -336,6 +344,7 @@ class TestRichSummary:
 # render_budget_summary
 # ======================================================================
 
+
 class TestRenderBudgetSummary:
     def test_rich_path(self):
         """When Rich is installed, returns a Rich Panel."""
@@ -361,7 +370,11 @@ class TestRenderBudgetSummary:
         from mechestim._display import render_budget_summary as rbs
 
         # Patch 'rich' import to raise ImportError
-        orig_import = __builtins__.__import__ if hasattr(__builtins__, "__import__") else __import__
+        orig_import = (
+            __builtins__.__import__
+            if hasattr(__builtins__, "__import__")
+            else __import__
+        )
 
         def fake_import(name, *args, **kwargs):
             if name == "rich":
@@ -377,6 +390,7 @@ class TestRenderBudgetSummary:
 # ======================================================================
 # _PlainTextLive
 # ======================================================================
+
 
 class TestPlainTextLive:
     def test_context_manager(self, capsys):
@@ -403,6 +417,7 @@ class TestPlainTextLive:
 # ======================================================================
 # budget_live
 # ======================================================================
+
 
 class TestBudgetLive:
     def test_rich_path_context_manager(self):
@@ -477,6 +492,7 @@ class TestBudgetLive:
 # ======================================================================
 # budget_summary
 # ======================================================================
+
 
 class TestBudgetSummary:
     def test_console_plain_text(self, capsys):

@@ -293,9 +293,7 @@ class TestConvertInterleavedInput:
     def test_basic_two_operands(self):
         a = numpy.ones((3, 4))
         b = numpy.ones((4, 5))
-        subscripts, ops = convert_interleaved_input(
-            (a, [0, 1], b, [1, 2], [0, 2])
-        )
+        subscripts, ops = convert_interleaved_input((a, [0, 1], b, [1, 2], [0, 2]))
         assert "," in subscripts
         assert "->" in subscripts
         assert len(ops) == 2
@@ -305,9 +303,7 @@ class TestConvertInterleavedInput:
     def test_no_output(self):
         a = numpy.ones((3, 4))
         b = numpy.ones((4, 5))
-        subscripts, ops = convert_interleaved_input(
-            (a, [0, 1], b, [1, 2])
-        )
+        subscripts, ops = convert_interleaved_input((a, [0, 1], b, [1, 2]))
         assert "->" not in subscripts
         assert len(ops) == 2
 
@@ -328,9 +324,7 @@ class TestConvertInterleavedInput:
 
     def test_single_operand_with_output(self):
         a = numpy.ones((3, 4))
-        subscripts, ops = convert_interleaved_input(
-            (a, [0, 1], [0, 1])
-        )
+        subscripts, ops = convert_interleaved_input((a, [0, 1], [0, 1]))
         assert "->" in subscripts
         assert len(ops) == 1
 
@@ -370,9 +364,7 @@ class TestParseEinsumInput:
 
     # --- Shapes mode ---
     def test_shapes_mode(self):
-        inp, out, ops = parse_einsum_input(
-            ("ij,jk->ik", (3, 4), (4, 5)), shapes=True
-        )
+        inp, out, ops = parse_einsum_input(("ij,jk->ik", (3, 4), (4, 5)), shapes=True)
         assert inp == "ij,jk"
         assert out == "ik"
 
@@ -487,7 +479,9 @@ class TestParseEinsumInput:
     # --- get_shape integration within parse ---
     def test_list_operand(self):
         """Lists should be converted via get_shape for dimension detection."""
-        inp, out, ops = parse_einsum_input(("ij,jk->ik", [[1, 2], [3, 4]], [[5, 6], [7, 8]]))
+        inp, out, ops = parse_einsum_input(
+            ("ij,jk->ik", [[1, 2], [3, 4]], [[5, 6], [7, 8]])
+        )
         assert inp == "ij,jk"
         assert out == "ik"
 
