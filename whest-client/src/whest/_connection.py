@@ -77,9 +77,7 @@ class Connection:
         except zmq.Again:
             # Socket is in a bad state after timeout — reset it
             self._reset_socket()
-            raise WhestServerError(
-                "server timeout: no response within timeout period"
-            )
+            raise WhestServerError("server timeout: no response within timeout period")
         t1 = time.monotonic_ns()
 
         response = decode_response(raw_response)

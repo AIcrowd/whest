@@ -66,6 +66,4 @@ __all__ = [
     "uniform",
 ]
 
-__getattr__ = _make_module_getattr(
-    module_prefix="stats.", module_label="whest.stats"
-)
+__getattr__ = _make_module_getattr(module_prefix="stats.", module_label="whest.stats")

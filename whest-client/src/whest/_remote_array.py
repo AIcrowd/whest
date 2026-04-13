@@ -452,9 +452,7 @@ class RemoteArray(metaclass=_RemoteArrayMeta):
         return _result_from_response(resp)
 
     def __setitem__(self, key, value):
-        raise TypeError(
-            "whest arrays are immutable. Cannot assign to array elements."
-        )
+        raise TypeError("whest arrays are immutable. Cannot assign to array elements.")
 
     # -- operator overloads (dispatch to server) ----------------------------
 

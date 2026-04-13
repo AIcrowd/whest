@@ -65,7 +65,5 @@ def test_numpy_version_in_range_no_warning():
     with warnings.catch_warnings(record=True) as w:
         warnings.simplefilter("always")
         check_numpy_version(range_str)
-        whest_warnings = [
-            x for x in w if issubclass(x.category, we.WhestWarning)
-        ]
+        whest_warnings = [x for x in w if issubclass(x.category, we.WhestWarning)]
         assert len(whest_warnings) == 0

@@ -35,10 +35,10 @@ fmt:  ## Auto-fix lint and format issues
 # ---------------------------------------------------------------------------
 .PHONY: test
 test:  ## Run pytest with coverage (fails if < 90%)
-	$(UV) pytest --cov=mechestim --cov-fail-under=90
+	$(UV) pytest --cov=whest --cov-fail-under=90
 
 .PHONY: test-numpy-compat
-test-numpy-compat:  ## Run NumPy's own tests against mechestim
+test-numpy-compat:  ## Run NumPy's own tests against whest
 	$(UV) pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_umath -n auto -q
 	$(UV) pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_ufunc -n auto -q
 	$(UV) pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_numeric -n auto -q
@@ -81,7 +81,7 @@ sync-client:  ## Regenerate client files from core library
 
 .PHONY: test-integration
 test-integration:  ## Run client-server integration tests
-	cd mechestim-client && $(UV) pytest tests/test_full_integration.py -v --tb=short
+	cd whest-client && $(UV) pytest tests/test_full_integration.py -v --tb=short
 
 # ---------------------------------------------------------------------------
 # Setup

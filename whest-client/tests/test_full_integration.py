@@ -24,9 +24,7 @@ _SERVER_SRC = os.path.join(_WORKTREE, "whest-server", "src")
 _REAL_SRC = os.path.join(_WORKTREE, "src")
 # Prefer the server's own venv (which has msgpack/pyzmq) for the server subprocess;
 # fall back to the worktree root venv if it doesn't exist.
-_SERVER_VENV_PYTHON = os.path.join(
-    _WORKTREE, "whest-server", ".venv", "bin", "python"
-)
+_SERVER_VENV_PYTHON = os.path.join(_WORKTREE, "whest-server", ".venv", "bin", "python")
 _ROOT_VENV_PYTHON = os.path.join(_WORKTREE, ".venv", "bin", "python")
 _VENV_PYTHON = (
     _SERVER_VENV_PYTHON if os.path.exists(_SERVER_VENV_PYTHON) else _ROOT_VENV_PYTHON
