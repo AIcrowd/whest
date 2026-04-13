@@ -1,0 +1,52 @@
+"""Laplace distribution with FLOP counting.
+
+Mimics ``scipy.stats.laplace`` API.
+"""
+
+from __future__ import annotations
+
+import numpy as _np
+
+from mechestim.stats._base import ContinuousDistribution
+
+_LAPLACE_PDF_COST = 5
+_LAPLACE_CDF_COST = 5
+_LAPLACE_PPF_COST = 5
+
+
+class LaplaceDistribution(ContinuousDistribution):
+    """Laplace distribution (scipy.stats.laplace compatible)."""
+
+    def __init__(self):
+        super().__init__("laplace")
+
+    def pdf(self, x, loc=0, scale=1):
+        return self._deduct_and_call("pdf", _LAPLACE_PDF_COST, x, loc=loc, scale=scale)
+
+    def cdf(self, x, loc=0, scale=1):
+        return self._deduct_and_call("cdf", _LAPLACE_CDF_COST, x, loc=loc, scale=scale)
+
+    def ppf(self, q, loc=0, scale=1):
+        return self._deduct_and_call("ppf", _LAPLACE_PPF_COST, q, loc=loc, scale=scale)
+
+    def _compute_pdf(self, x, loc=0, scale=1):
+        z = _np.abs(x - loc) / scale
+        return _np.exp(-z) / (2.0 * scale)
+
+    def _compute_cdf(self, x, loc=0, scale=1):
+        z = (x - loc) / scale
+        return _np.where(z <= 0, 0.5 * _np.exp(z), 1.0 - 0.5 * _np.exp(-z))
+
+    def _compute_ppf(self, q, loc=0, scale=1):
+        result = _np.where(
+            q <= 0.5,
+            loc + scale * _np.log(2.0 * _np.maximum(q, 1e-300)),
+            loc - scale * _np.log(2.0 * _np.maximum(1.0 - q, 1e-300)),
+        )
+        result = _np.where((q >= 0) & (q <= 1), result, _np.nan)
+        result = _np.where(q == 0, -_np.inf, result)
+        result = _np.where(q == 1, _np.inf, result)
+        return result
+
+
+laplace = LaplaceDistribution()

@@ -1,0 +1,48 @@
+"""Cauchy distribution with FLOP counting.
+
+Mimics ``scipy.stats.cauchy`` API.
+"""
+
+from __future__ import annotations
+
+import numpy as _np
+
+from mechestim.stats._base import ContinuousDistribution
+
+_CAUCHY_PDF_COST = 6
+_CAUCHY_CDF_COST = 5
+_CAUCHY_PPF_COST = 5
+
+
+class CauchyDistribution(ContinuousDistribution):
+    """Cauchy (Lorentz) distribution (scipy.stats.cauchy compatible)."""
+
+    def __init__(self):
+        super().__init__("cauchy")
+
+    def pdf(self, x, loc=0, scale=1):
+        return self._deduct_and_call("pdf", _CAUCHY_PDF_COST, x, loc=loc, scale=scale)
+
+    def cdf(self, x, loc=0, scale=1):
+        return self._deduct_and_call("cdf", _CAUCHY_CDF_COST, x, loc=loc, scale=scale)
+
+    def ppf(self, q, loc=0, scale=1):
+        return self._deduct_and_call("ppf", _CAUCHY_PPF_COST, q, loc=loc, scale=scale)
+
+    def _compute_pdf(self, x, loc=0, scale=1):
+        z = (x - loc) / scale
+        return 1.0 / (_np.pi * scale * (1.0 + z * z))
+
+    def _compute_cdf(self, x, loc=0, scale=1):
+        z = (x - loc) / scale
+        return 0.5 + _np.arctan(z) / _np.pi
+
+    def _compute_ppf(self, q, loc=0, scale=1):
+        result = loc + scale * _np.tan(_np.pi * (q - 0.5))
+        result = _np.where((q > 0) & (q < 1), result, _np.nan)
+        result = _np.where(q == 0, -_np.inf, result)
+        result = _np.where(q == 1, _np.inf, result)
+        return result
+
+
+cauchy = CauchyDistribution()
