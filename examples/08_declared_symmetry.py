@@ -24,7 +24,7 @@ data = (data + data.T) / 2  # make it actually symmetric
 A_sym = me.as_symmetric(data, symmetric_axes=(0, 1))
 print(f"Shape:            {A_sym.shape}")
 print(f"Symmetry factor:  {A_sym.symmetry_info.symmetry_factor}")
-print(f"Unique elements:  {A_sym.symmetry_info.unique_elements:,} / {n*n:,}")
+print(f"Unique elements:  {A_sym.symmetry_info.unique_elements:,} / {n * n:,}")
 
 # einsum_path sees the symmetry and reduces cost
 v = me.random.randn(n)
@@ -75,9 +75,15 @@ S3 = PermutationGroup.symmetric(3, axes=(0, 1, 2))
 C3 = PermutationGroup.cyclic(3, axes=(0, 1, 2))
 D3 = PermutationGroup.dihedral(3, axes=(0, 1, 2))
 
-print(f"S3 (symmetric):  order={S3.order():<3}  abelian={S3.is_abelian}  transitive={S3.is_transitive}")
-print(f"C3 (cyclic):     order={C3.order():<3}  abelian={C3.is_abelian}  transitive={C3.is_transitive}")
-print(f"D3 (dihedral):   order={D3.order():<3}  abelian={D3.is_abelian}  transitive={D3.is_transitive}")
+print(
+    f"S3 (symmetric):  order={S3.order():<3}  abelian={S3.is_abelian}  transitive={S3.is_transitive}"
+)
+print(
+    f"C3 (cyclic):     order={C3.order():<3}  abelian={C3.is_abelian}  transitive={C3.is_transitive}"
+)
+print(
+    f"D3 (dihedral):   order={D3.order():<3}  abelian={D3.is_abelian}  transitive={D3.is_transitive}"
+)
 
 # Burnside's lemma: count unique elements under group action
 size_dict = {0: n, 1: n, 2: n}
@@ -119,5 +125,7 @@ with me.BudgetContext(flop_budget=10**9, quiet=True) as budget:
 print(f"Result type: {type(result).__name__}")
 print(f"Result shape: {result.shape}")
 print(f"Symmetry factor: {result.symmetry_info.symmetry_factor}")
-print(f"Verify: result[a,b,c,d] == result[c,d,a,b]? "
-      f"{np.allclose(np.array(result), np.array(result).transpose(2, 3, 0, 1))}")
+print(
+    f"Verify: result[a,b,c,d] == result[c,d,a,b]? "
+    f"{np.allclose(np.array(result), np.array(result).transpose(2, 3, 0, 1))}"
+)

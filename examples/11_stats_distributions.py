@@ -39,13 +39,13 @@ n = 10_000
 x = me.random.randn(n)
 
 distributions = [
-    ("norm",     me.stats.norm),
-    ("uniform",  me.stats.uniform),
-    ("expon",    me.stats.expon),
-    ("cauchy",   me.stats.cauchy),
+    ("norm", me.stats.norm),
+    ("uniform", me.stats.uniform),
+    ("expon", me.stats.expon),
+    ("cauchy", me.stats.cauchy),
     ("logistic", me.stats.logistic),
-    ("laplace",  me.stats.laplace),
-    ("lognorm",  me.stats.lognorm),
+    ("laplace", me.stats.laplace),
+    ("lognorm", me.stats.lognorm),
     ("truncnorm", me.stats.truncnorm),
 ]
 
@@ -55,10 +55,10 @@ print("-" * 48)
 for name, dist in distributions:
     # Each distribution needs different args
     if name == "lognorm":
-        args = (x, 1.0)       # shape s=1.0
+        args = (x, 1.0)  # shape s=1.0
         q_args = (0.5, 1.0)
     elif name == "truncnorm":
-        args = (x, -2, 2)     # bounds a=-2, b=2
+        args = (x, -2, 2)  # bounds a=-2, b=2
         q_args = (0.5, -2, 2)
     else:
         args = (x,)

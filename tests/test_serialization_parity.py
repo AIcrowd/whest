@@ -37,10 +37,10 @@ if _SERVER_SRC not in sys.path:
 from mechestim_server._request_handler import RequestHandler  # noqa: E402
 from mechestim_server._session import Session  # noqa: E402
 
-
 # ---------------------------------------------------------------------------
 # Load client-specific modules via importlib (avoid package name collision)
 # ---------------------------------------------------------------------------
+
 
 def _load_client_module(rel_path: str, module_name: str):
     """Load a module from mechestim-client/src using importlib.
@@ -88,10 +88,10 @@ ClientCycle = _client_perm_group.Cycle
 
 import mechestim as me  # noqa: E402
 
-
 # ---------------------------------------------------------------------------
 # Fixtures: create a fresh session + handler for each test
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture()
 def handler_session():

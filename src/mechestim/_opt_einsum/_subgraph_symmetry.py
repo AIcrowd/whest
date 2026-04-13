@@ -280,8 +280,7 @@ def _build_bipartite(
         operand_labels=tuple(operand_labels),
         operand_subscripts=tuple(subscript_parts),
         per_op_groups=tuple(
-            tuple(gs) if gs is not None else None
-            for gs in per_op_groups
+            tuple(gs) if gs is not None else None for gs in per_op_groups
         ),
     )
 
@@ -448,9 +447,7 @@ def _compute_subset_symmetry(
             lbl for grp in fp_groups.values() if len(grp) >= 2 for lbl in grp
         )
         if len(v_equiv) >= 2:
-            declared = _find_declared_group_for_labels(
-                graph, subset, tuple(v_equiv)
-            )
+            declared = _find_declared_group_for_labels(graph, subset, tuple(v_equiv))
             if declared is not None:
                 v_group = declared
                 v_group._labels = tuple(v_equiv)
@@ -473,9 +470,7 @@ def _compute_subset_symmetry(
             lbl for grp in fp_groups_w.values() if len(grp) >= 2 for lbl in grp
         )
         if len(w_equiv) >= 2:
-            declared = _find_declared_group_for_labels(
-                graph, subset, tuple(w_equiv)
-            )
+            declared = _find_declared_group_for_labels(graph, subset, tuple(w_equiv))
             if declared is not None:
                 w_group = declared
                 w_group._labels = tuple(w_equiv)

@@ -58,16 +58,25 @@ class _DistributionProxy:
 
 
 # Distribution instances
-cauchy = _DistributionProxy('cauchy')
-expon = _DistributionProxy('expon')
-laplace = _DistributionProxy('laplace')
-logistic = _DistributionProxy('logistic')
-lognorm = _DistributionProxy('lognorm')
-norm = _DistributionProxy('norm')
-truncnorm = _DistributionProxy('truncnorm')
-uniform = _DistributionProxy('uniform')
+cauchy = _DistributionProxy("cauchy")
+expon = _DistributionProxy("expon")
+laplace = _DistributionProxy("laplace")
+logistic = _DistributionProxy("logistic")
+lognorm = _DistributionProxy("lognorm")
+norm = _DistributionProxy("norm")
+truncnorm = _DistributionProxy("truncnorm")
+uniform = _DistributionProxy("uniform")
 
-__all__ = ['cauchy', 'expon', 'laplace', 'logistic', 'lognorm', 'norm', 'truncnorm', 'uniform']
+__all__ = [
+    "cauchy",
+    "expon",
+    "laplace",
+    "logistic",
+    "lognorm",
+    "norm",
+    "truncnorm",
+    "uniform",
+]
 
 # Fall-through for unknown names
 __getattr__ = make_module_getattr("stats.", "mechestim.stats")

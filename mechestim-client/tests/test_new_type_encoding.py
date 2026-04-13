@@ -1,7 +1,9 @@
 """Tests for encoding/decoding new types (Permutation, PermutationGroup, Cycle, SymmetryInfo)."""
-from mechestim._perm_group import Cycle, Permutation, PermutationGroup
+
 from mechestim._remote_array import RemoteArray, _encode_arg, _result_from_response
 from mechestim._symmetric_info import SymmetryInfo
+
+from mechestim._perm_group import Cycle, Permutation, PermutationGroup
 
 
 def test_encode_permutation():

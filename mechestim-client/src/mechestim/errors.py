@@ -56,24 +56,24 @@ class MechEstimServerError(MechEstimError):
 
 _MECHESTIM_ERRORS: frozenset[str] = frozenset(
     {
-        'BudgetExhaustedError',
-        'NoBudgetContextError',
-        'SymmetryError',
-        'UnsupportedFunctionError',
+        "BudgetExhaustedError",
+        "NoBudgetContextError",
+        "SymmetryError",
+        "UnsupportedFunctionError",
     }
 )
 
 _ERROR_MAP: dict[str, type[Exception]] = {
-    'BudgetExhaustedError': BudgetExhaustedError,
-    'NoBudgetContextError': NoBudgetContextError,
-    'SymmetryError': SymmetryError,
-    'UnsupportedFunctionError': UnsupportedFunctionError,
-    'MechEstimServerError': MechEstimServerError,
-    'ValueError': ValueError,
-    'TypeError': TypeError,
-    'KeyError': KeyError,
-    'RuntimeError': RuntimeError,
-    'InvalidRequestError': MechEstimServerError,
+    "BudgetExhaustedError": BudgetExhaustedError,
+    "NoBudgetContextError": NoBudgetContextError,
+    "SymmetryError": SymmetryError,
+    "UnsupportedFunctionError": UnsupportedFunctionError,
+    "MechEstimServerError": MechEstimServerError,
+    "ValueError": ValueError,
+    "TypeError": TypeError,
+    "KeyError": KeyError,
+    "RuntimeError": RuntimeError,
+    "InvalidRequestError": MechEstimServerError,
 }
 
 

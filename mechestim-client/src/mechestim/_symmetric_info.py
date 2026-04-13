@@ -4,6 +4,7 @@ This is a read-only metadata container that records symmetry information
 reported by the server. It does NOT include SymmetricTensor or the
 computed properties that require numpy.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
