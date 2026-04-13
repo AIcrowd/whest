@@ -15,37 +15,64 @@
 
 | Category | Count | Cost Formula |
 |----------|-------|-------------|
-| Free | 138 | $0$ |
-| Unary | 73 | $\text{numel}(\text{output})$ |
-| Binary | 45 | $\text{numel}(\text{output})$ |
+| Free | 69 | $0$ |
+| Unary | 72 | $\text{numel}(\text{output})$ |
+| Binary | 47 | $\text{numel}(\text{output})$ |
 | Reduction | 37 | $\text{numel}(\text{input})$ |
-| Custom | 157 | varies |
-| Blocked | 32 | N/A |
+| Custom | 230 | varies |
+| Blocked | 29 | N/A |
 
 ## Custom Operation Costs
 
 | Operation | Cost Formula | Notes |
 |-----------|-------------|-------|
 | `allclose` | varies | Element-wise tolerance check; cost = numel(a). |
+| `append` | varies | Append values to end of array. Cost: numel(values). |
+| `apply_along_axis` | varies | Apply function along axis. Cost: numel(output). Inner function costs tracked separately. |
+| `apply_over_axes` | varies | Apply function over multiple axes. Cost: numel(output). |
+| `arange` | varies | Return evenly spaced values in given interval. Cost: numel(output). |
 | `argpartition` | varies | Indirect partition; cost = n per slice. |
 | `argsort` | varies | Indirect sort; cost = n*ceil(log2(n)) per slice. |
+| `argwhere` | varies | Find indices of non-zero elements. Cost: numel(input). |
+| `array` | varies | Create array from data. Cost: numel(input). |
 | `array_equal` | varies | Element-wise equality; cost = numel(a). |
 | `array_equiv` | varies | Element-wise equivalence; cost = numel(a). |
+| `array_split` | varies | Split array into sub-arrays (possibly unequal). Cost: numel(output). |
+| `asarray` | varies | Convert input to array. Cost: numel(input). |
+| `asarray_chkfinite` | varies | Convert to array, raising if NaN or inf. Cost: numel(input). |
 | `bartlett` | $n$ | Bartlett window. Cost: n (one linear eval per sample). |
+| `base_repr` | varies | Return string representation of number in given base. Cost: numel(input). |
+| `binary_repr` | varies | Return binary string representation of the input number. Cost: numel(input). |
 | `bincount` | varies | Integer counting; cost = numel(x). |
 | `blackman` | $3n$ | Blackman window. Cost: 3*n (three cosine terms per sample). |
+| `block` | varies | Assemble ndarray from nested list of blocks. Cost: numel(output). |
+| `bmat` | varies | Build matrix from nested list of matrices. Cost: numel(output). |
+| `broadcast_arrays` | varies | Broadcast arrays against each other. Cost: numel(output). |
+| `broadcast_to` | varies | Broadcast array to new shape. Cost: numel(output). |
+| `choose` | varies | Construct array from index array and choices. Cost: numel(output). |
 | `clip` | $\text{numel}(\text{input})$ | Clip array to [a_min, a_max] element-wise. |
+| `compress` | varies | Return selected slices along axis. Cost: numel(input). |
+| `concat` | varies | Join arrays along axis (NumPy 2.x array API alias for concatenate). Cost: numel(output). |
+| `concatenate` | varies | Join arrays along axis. Cost: numel(output). |
 | `convolve` | $n \cdot m$ | 1-D discrete convolution. |
+| `copyto` | varies | Copy values from src to dst array. Cost: num copied. |
 | `corrcoef` | $n^2 \cdot m$ | Pearson correlation coefficients. |
 | `correlate` | $n \cdot m$ | 1-D cross-correlation. |
 | `cov` | $n^2 \cdot m$ | Covariance matrix. |
 | `cross` | $\text{numel}(\text{output})$ | Cross product of two 3-D vectors. |
+| `delete` | varies | Return array with sub-arrays deleted along axis. Cost: num deleted. |
+| `diag` | varies | Extract diagonal or construct diagonal array. Cost: len(diagonal). |
+| `diagflat` | varies | Create diagonal array from flattened input. Cost: len(v). |
+| `diagonal` | varies | Return specified diagonals. Cost: numel(input). |
 | `diff` | $\text{numel}(\text{input})$ | n-th discrete difference along axis. |
 | `digitize` | varies | Bin search; cost = n*ceil(log2(bins)). |
-| `dot` | $m \cdot k \cdot n$ | Dot product; cost = M*N*K for matrix multiply (FMA=1). |
+| `dot` | $2 \cdot m \cdot k \cdot n$ | Dot product; cost = 2*M*N*K for matrix multiply. |
+| `dsplit` | varies | Split array into multiple sub-arrays depth-wise. Cost: numel(output). |
+| `dstack` | varies | Stack arrays depth-wise (along third axis). Cost: numel(output). |
 | `ediff1d` | $\text{numel}(\text{input})$ | Differences between consecutive elements. |
-| `einsum` | $\prod_{i} d_{i}$ | Generalized Einstein summation (FMA=1). |
+| `einsum` | $\text{op\_factor} \cdot \prod_i d_i$ | Generalized Einstein summation. |
 | `einsum_path` | $0$ | Optimize einsum contraction path (no numeric output). |
+| `extract` | varies | Return elements satisfying condition. Cost: numel(input). |
 | `fft.fft` | $5n \cdot \lceil\log_2 n\rceil$ | 1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 §1.4). |
 | `fft.fft2` | $5N \cdot \lceil\log_2 N\rceil$ | 2-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 §1.4). |
 | `fft.fftn` | $5N \cdot \lceil\log_2 N\rceil$ | N-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 §1.4). |
@@ -60,6 +87,17 @@
 | `fft.rfft` | $5(n/2) \cdot \lceil\log_2 n\rceil$ | 1-D real FFT. Cost: 5*(n//2)*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 §1.4). |
 | `fft.rfft2` | $5(N/2) \cdot \lceil\log_2 N\rceil$ | 2-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 §1.4). |
 | `fft.rfftn` | $5(N/2) \cdot \lceil\log_2 N\rceil$ | N-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 §1.4). |
+| `fill_diagonal` | varies | Fill main diagonal of given array. Cost: min(m,n). |
+| `flatnonzero` | varies | Return indices of non-zero elements in flattened array. Cost: numel(input). |
+| `from_dlpack` | varies | Create ndarray from DLPack object (zero-copy). Cost: numel(output). |
+| `frombuffer` | varies | Interpret buffer as 1-D array. Cost: numel(output). |
+| `fromfile` | varies | Construct array from binary/text file. Cost: numel(output). |
+| `fromfunction` | varies | Construct array by executing function over each coordinate. Cost: numel(output). |
+| `fromiter` | varies | Create array from an iterable. Cost: numel(output). |
+| `fromregex` | varies | Construct array from text file using regex. Cost: numel(output). |
+| `fromstring` | varies | Create 1-D array from string data. Cost: numel(output). |
+| `full` | varies | Create array filled with scalar value. Cost: num copied. |
+| `full_like` | varies | Array filled with scalar, same shape/type as input. Cost: numel(output). |
 | `geomspace` | varies | Geometric-spaced generation; cost = num. |
 | `gradient` | $\text{numel}(\text{input})$ | Gradient using central differences. |
 | `hamming` | $n$ | Hamming window. Cost: n (one cosine per sample). |
@@ -69,55 +107,72 @@
 | `histogram_bin_edges` | varies | Bin edge computation; cost = numel(a). |
 | `histogramdd` | varies | ND binning; cost = n*sum(ceil(log2(b_i))). |
 | `in1d` | varies | Set membership; cost = (n+m)*ceil(log2(n+m)). |
-| `inner` | $n$ | Inner product; cost = N for 1-D, N*M for n-D (FMA=1). |
+| `indices` | varies | Return array representing indices of a grid. Cost: numel(output). |
+| `inner` | $n$ | Inner product; cost = 2*N for 1-D, 2*N*M for n-D. |
+| `insert` | varies | Insert values along axis before given indices. Cost: numel(values). |
 | `interp` | $n \cdot \log m$ | 1-D linear interpolation. |
 | `intersect1d` | varies | Set intersection; cost = (n+m)*ceil(log2(n+m)). |
+| `isfinite` | varies | Test for finite values element-wise. Cost: numel(input). |
 | `isin` | varies | Set membership; cost = (n+m)*ceil(log2(n+m)). |
+| `isinf` | varies | Test for infinity element-wise. Cost: numel(input). |
+| `isnan` | varies | Test for NaN element-wise. Cost: numel(input). |
+| `ix_` | varies | Construct open mesh from multiple sequences. Cost: numel(output). |
 | `kaiser` | $3n$ | Kaiser window. Cost: 3*n (Bessel function eval per sample). |
-| `kron` | $m_{1} m_{2} \cdot n_{1} n_{2}$ | Kronecker product; cost proportional to output size. |
+| `kron` | $m_1 m_2 \cdot n_1 n_2$ | Kronecker product; cost proportional to output size. |
 | `lexsort` | varies | Multi-key sort; cost = k*n*ceil(log2(n)). |
-| `linalg.cholesky` | $n^3 / 3$ | Cholesky decomposition. Cost: $n^3/3$ (Golub & Van Loan §4.2). |
+| `linalg.cholesky` | $n^3 / 3$ | Cholesky decomposition. Cost: $n^3$. |
 | `linalg.cond` | $m \cdot n \cdot \min(m,n)$ | Condition number. Cost: m*n*min(m,n) (via SVD). |
 | `linalg.cross` | delegates to `cross` | Delegates to `me.cross` which charges `numel(output)` FLOPs. |
-| `linalg.det` | $n^3$ | Determinant. Cost: $n^3$ (LU factorization). |
-| `linalg.eig` | $10n^3$ | Eigendecomposition. Cost: $10n^3$ (Francis QR, Golub & Van Loan §7.5). |
-| `linalg.eigh` | $4n^3 / 3$ | Symmetric eigendecomposition. Cost: $(4/3)n^3$ (Golub & Van Loan §8.3). |
-| `linalg.eigvals` | $10n^3$ | Eigenvalues only. Cost: $10n^3$ (same as eig). |
-| `linalg.eigvalsh` | $4n^3 / 3$ | Symmetric eigenvalues. Cost: $(4/3)n^3$ (same as eigh). |
+| `linalg.det` | $n^3$ | Determinant. Cost: $n^3$. |
+| `linalg.eig` | $10n^3$ | Eigendecomposition. Cost: $n^3$. |
+| `linalg.eigh` | $4n^3 / 3$ | Symmetric eigendecomposition. Cost: $n^3$. |
+| `linalg.eigvals` | $10n^3$ | Eigenvalues only. Cost: $n^3$. |
+| `linalg.eigvalsh` | $4n^3 / 3$ | Symmetric eigenvalues. Cost: $n^3$. |
 | `linalg.inv` | $n^3$ | Matrix inverse. Cost: $n^3$ (LU + solve). |
 | `linalg.lstsq` | $m \cdot n \cdot \min(m,n)$ | Least squares. Cost: m*n*min(m,n) (LAPACK gelsd/SVD). |
 | `linalg.matmul` | delegates to `matmul` | Delegates to `me.matmul` which charges `m*k*n` FLOPs (FMA=1). |
-| `linalg.matrix_norm` | varies | Matrix norm. Cost depends on ord: numel for Frobenius, m*n*min(m,n) for ord=2. |
+| `linalg.matrix_norm` | varies | Matrix norm. Cost depends on ord: 2*numel for Frobenius, m*n*min(m,n) for ord=2. |
 | `linalg.matrix_power` | $\lfloor\log_2 k\rfloor \cdot n^3$ | Matrix power. Cost: $(\lfloor\log_2 k\rfloor + \text{popcount}(k) - 1) \cdot n^3$ (exponentiation by squaring). |
 | `linalg.matrix_rank` | $m \cdot n \cdot \min(m,n)$ | Matrix rank. Cost: m*n*min(m,n) (via SVD). |
 | `linalg.multi_dot` | optimal chain | Chain matmul. Cost: sum of optimal chain matmul costs (CLRS §15.2). |
-| `linalg.norm` | varies | Norm. Cost depends on ord: numel for L1/inf, numel for Frobenius, m*n*min(m,n) for ord=2. |
+| `linalg.norm` | varies | Norm. Cost depends on ord: numel for L1/inf, 2*numel for Frobenius, m*n*min(m,n) for ord=2. |
 | `linalg.outer` | delegates to `outer` | Delegates to `me.outer` which charges `m*n` FLOPs. |
 | `linalg.pinv` | $m \cdot n \cdot \min(m,n)$ | Pseudoinverse. Cost: m*n*min(m,n) (via SVD). |
-| `linalg.qr` | $mn^2 - n^3/3$ | QR decomposition. Cost: $mn^2 - n^3/3$ (Golub & Van Loan §5.2, FMA=1). |
-| `linalg.slogdet` | $n^3$ | Sign + log determinant. Cost: $n^3$ (LU factorization). |
-| `linalg.solve` | $n^3/3 + n^2 \cdot n_{\text{rhs}}$ | Solve Ax=b. Cost: $n^3/3$ (LU) + $n^2 \cdot n_{\text{rhs}}$ (back-substitution, FMA=1). |
+| `linalg.qr` | $2mn^2 - 2n^3/3$ | QR decomposition. Cost: $m \cdot n \cdot \min(m,n)$. |
+| `linalg.slogdet` | $n^3$ | Sign + log determinant. Cost: $n^3$. |
+| `linalg.solve` | $2n^3/3 + n^2 \cdot n_{\text{rhs}}$ | Solve Ax=b. Cost: $n^3$. |
 | `linalg.svd` | $m \cdot n \cdot k$ | Singular value decomposition; cost ~ O(min(m,n)*m*n). |
 | `linalg.svdvals` | $m \cdot n \cdot \min(m,n)$ | Singular values only. Cost: m*n*min(m,n) (Golub-Reinsch). |
 | `linalg.tensordot` | delegates to `tensordot` | Delegates to `me.tensordot` which charges FLOPs based on contraction. |
 | `linalg.tensorinv` | $n^3$ | Tensor inverse. Cost: $n^3$ after reshape (delegates to inv). |
 | `linalg.tensorsolve` | $n^3$ | Tensor solve. Cost: $n^3$ after reshape (delegates to solve). |
 | `linalg.trace` | $n$ | Matrix trace. Cost: n (sum of diagonal elements). |
-| `linalg.vecdot` | delegates to `vecdot` | Delegates to `me.vecdot` which charges `n` FLOPs (FMA=1). |
-| `linalg.vector_norm` | $n$ | Vector norm. Cost: numel. |
+| `linalg.vecdot` | delegates to `vecdot` | Delegates to `me.vecdot` which charges `2*n` FLOPs. |
+| `linalg.vector_norm` | $n$ or $2n$ | Vector norm. Cost: numel (or 2*numel for general p-norm). |
+| `linspace` | varies | Return evenly spaced numbers over interval. Cost: numel(output). |
 | `logspace` | varies | Log-spaced generation; cost = num. |
-| `matmul` | $m \cdot k \cdot n$ | Matrix multiplication; cost = M*K*N (FMA=1). |
+| `mask_indices` | varies | Return indices of mask for n x n array. Cost: numel(output). |
+| `matmul` | $2 \cdot m \cdot k \cdot n$ | Matrix multiplication; cost = 2*M*N*K. |
+| `meshgrid` | varies | Coordinate matrices from coordinate vectors. Cost: numel(output). |
+| `nonzero` | varies | Return indices of non-zero elements. Cost: numel(input). |
 | `outer` | $m \cdot n$ | Outer product of two vectors; cost = M*N. |
+| `packbits` | varies | Pack elements of array into bits. Cost: numel(input). |
+| `pad` | varies | Pad array. Cost: numel(output). |
 | `partition` | varies | Quickselect; cost = n per slice. |
+| `piecewise` | varies | Piecewise function. Cost: numel(input). |
+| `place` | varies | Change elements satisfying condition. Cost: numel(input). |
 | `poly` | $n^2$ | Polynomial from roots. Cost: $n^2$ FLOPs. |
-| `polyadd` | $\max(n_{1}, n_{2})$ | Add two polynomials. Cost: max(n1, n2) FLOPs. |
+| `polyadd` | $\max(n_1, n_2)$ | Add two polynomials. Cost: max(n1, n2) FLOPs. |
 | `polyder` | $n$ | Differentiate polynomial. Cost: n FLOPs. |
-| `polydiv` | $n_{1} \cdot n_{2}$ | Divide one polynomial by another. Cost: n1 * n2 FLOPs. |
-| `polyfit` | $m \cdot (\text{deg}+1)^2$ | Least squares polynomial fit. Cost: m * (deg+1)^2 FLOPs (FMA=1). |
+| `polydiv` | $n_1 \cdot n_2$ | Divide one polynomial by another. Cost: n1 * n2 FLOPs. |
+| `polyfit` | $2m \cdot (\text{deg}+1)^2$ | Least squares polynomial fit. Cost: 2 * m * (deg+1)^2 FLOPs. |
 | `polyint` | $n$ | Integrate polynomial. Cost: n FLOPs. |
-| `polymul` | $n_{1} \cdot n_{2}$ | Multiply polynomials. Cost: n1 * n2 FLOPs. |
-| `polysub` | $\max(n_{1}, n_{2})$ | Difference (subtraction) of two polynomials. Cost: max(n1, n2) FLOPs. |
-| `polyval` | $m \cdot \text{deg}$ | Evaluate polynomial at given points. Cost: m * deg FLOPs (Horner's method, FMA=1). |
+| `polymul` | $n_1 \cdot n_2$ | Multiply polynomials. Cost: n1 * n2 FLOPs. |
+| `polysub` | $\max(n_1, n_2)$ | Difference (subtraction) of two polynomials. Cost: max(n1, n2) FLOPs. |
+| `polyval` | $2 \cdot m \cdot \text{deg}$ | Evaluate polynomial at given points. Cost: $m \cdot \text{deg}$ (Horner's method, FMA=1). |
+| `put` | varies | Replace elements at given flat indices. Cost: numel(input). |
+| `put_along_axis` | varies | Put values into destination array using indices. Cost: numel(input). |
+| `putmask` | varies | Change elements of array based on condition and input values. Cost: numel(input). |
 | `random.beta` | varies | Sampling; cost = numel(output). |
 | `random.binomial` | varies | Sampling; cost = numel(output). |
 | `random.bytes` | varies | Sampling; cost = numel(output). |
@@ -165,49 +220,58 @@
 | `random.wald` | varies | Sampling; cost = numel(output). |
 | `random.weibull` | varies | Sampling; cost = numel(output). |
 | `random.zipf` | varies | Sampling; cost = numel(output). |
-| `roots` | $10n^3$ | Return roots of polynomial with given coefficients. Cost: $10n^3$ FLOPs (companion matrix eig). |
+| `ravel` | varies | Return contiguous flattened array. Cost: numel(input). |
+| `repeat` | varies | Repeat elements of an array. Cost: numel(output). |
+| `resize` | varies | Return new array with given shape by repeating. Cost: numel(output). |
+| `roll` | varies | Roll array elements along axis. Cost: numel(output). |
+| `rollaxis` | varies | Roll specified axis backwards. Cost: numel(output). |
+| `roots` | $10n^3$ | Return roots of polynomial with given coefficients. Cost: $n^3$ (companion matrix eig, simplified). |
 | `searchsorted` | varies | Binary search; cost = m*ceil(log2(n)). |
+| `select` | varies | Return array from list of choices based on conditions. Cost: numel(input). |
 | `setdiff1d` | varies | Set difference; cost = (n+m)*ceil(log2(n+m)). |
 | `setxor1d` | varies | Symmetric set difference; cost = (n+m)*ceil(log2(n+m)). |
 | `sort` | varies | Comparison sort; cost = n*ceil(log2(n)) per slice. |
-| `tensordot` | $\prod_{i} d_{i}$ | Tensor dot product along specified axes. |
+| `sort_complex` | varies | Sort complex array. Cost: $n \cdot \lceil\log_2 n\rceil$. |
+| `split` | varies | Split array into sub-arrays. Cost: numel(output). |
+| `stack` | varies | Join arrays along new axis. Cost: numel(output). |
+| `take` | varies | Take elements from array along axis. Cost: numel(output). |
+| `take_along_axis` | varies | Take values from input array by matching 1-D index. Cost: numel(output). |
+| `tensordot` | $\prod_i d_i$ | Tensor dot product along specified axes. |
+| `tile` | varies | Repeat array by tiling. Cost: numel(output). |
 | `trace` | varies | Diagonal sum; cost = min(n,m). |
 | `trapezoid` | $\text{numel}(\text{input})$ | Integrate using the trapezoidal rule. |
 | `trapz` | $\text{numel}(\text{input})$ | Alias for trapezoid (deprecated). |
+| `trim_zeros` | varies | Trim leading/trailing zeros from 1-D array. Cost: num trimmed. |
 | `union1d` | varies | Set union; cost = (n+m)*ceil(log2(n+m)). |
 | `unique` | varies | Sort-based unique; cost = n*ceil(log2(n)). |
 | `unique_all` | varies | Sort-based unique; cost = n*ceil(log2(n)). |
 | `unique_counts` | varies | Sort-based unique; cost = n*ceil(log2(n)). |
 | `unique_inverse` | varies | Sort-based unique; cost = n*ceil(log2(n)). |
 | `unique_values` | varies | Sort-based unique; cost = n*ceil(log2(n)). |
+| `unpackbits` | varies | Unpack elements of array into bits. Cost: numel(input). |
+| `unstack` | varies | Unstack array along axis into tuple of arrays (NumPy 2.x). Cost: numel(output). |
 | `unwrap` | $\text{numel}(\text{input})$ | Phase unwrap. Cost: $\text{numel}(\text{input})$ (diff + conditional adjustment). |
 | `vander` | varies | Vandermonde matrix; cost = len(x)*(N-1). |
-| `vdot` | $n$ | Dot product with conjugation; cost = N (FMA=1). |
+| `vdot` | $n$ | Dot product with conjugation; cost = 2*N. |
+| `vsplit` | varies | Split array into rows. Cost: numel(output). |
+| `vstack` | varies | Stack arrays vertically. Cost: numel(output). |
+| `where` | varies | Select elements based on condition. Cost: numel(input). |
 
 ## Free Operations (complete list)
 
-`append`, `arange`, `argwhere`, `array`, `array_split`, `asarray`, `asarray_chkfinite`, `astype`
-`atleast_1d`, `atleast_2d`, `atleast_3d`, `base_repr`, `binary_repr`, `block`, `bmat`, `broadcast_arrays`
-`broadcast_shapes`, `broadcast_to`, `can_cast`, `choose`, `column_stack`, `common_type`, `compress`, `concat`
-`concatenate`, `copy`, `copyto`, `delete`, `diag`, `diag_indices`, `diag_indices_from`, `diagflat`
-`diagonal`, `dsplit`, `dstack`, `empty`, `empty_like`, `expand_dims`, `extract`, `eye`
-`fft.fftfreq`, `fft.fftshift`, `fft.ifftshift`, `fft.rfftfreq`, `fill_diagonal`, `flatnonzero`, `flip`, `fliplr`
-`flipud`, `from_dlpack`, `frombuffer`, `fromfile`, `fromfunction`, `fromiter`, `fromregex`, `fromstring`
-`full`, `full_like`, `hsplit`, `hstack`, `identity`, `indices`, `insert`, `isdtype`
-`isfinite`, `isfortran`, `isinf`, `isnan`, `isscalar`, `issubdtype`, `iterable`, `ix_`
-`linalg.diagonal`, `linalg.matrix_transpose`, `linspace`, `mask_indices`, `matrix_transpose`, `may_share_memory`, `meshgrid`, `min_scalar_type`
-`mintypecode`, `moveaxis`, `ndim`, `nonzero`, `ones`, `ones_like`, `packbits`, `pad`
-`permute_dims`, `place`, `promote_types`, `put`, `put_along_axis`, `putmask`, `random.default_rng`, `random.get_state`
-`random.seed`, `random.set_state`, `ravel`, `ravel_multi_index`, `repeat`, `require`, `reshape`, `resize`
-`result_type`, `roll`, `rollaxis`, `rot90`, `row_stack`, `select`, `shape`, `shares_memory`
-`size`, `split`, `squeeze`, `stack`, `swapaxes`, `take`, `take_along_axis`, `tile`
-`transpose`, `tri`, `tril`, `tril_indices`, `tril_indices_from`, `trim_zeros`, `triu`, `triu_indices`
-`triu_indices_from`, `typename`, `unpackbits`, `unravel_index`, `unstack`, `vsplit`, `vstack`, `where`
-`zeros`, `zeros_like`
+`astype`, `atleast_1d`, `atleast_2d`, `atleast_3d`, `broadcast_shapes`, `can_cast`, `column_stack`, `common_type`
+`copy`, `diag_indices`, `diag_indices_from`, `empty`, `empty_like`, `expand_dims`, `eye`, `fft.fftfreq`
+`fft.fftshift`, `fft.ifftshift`, `fft.rfftfreq`, `flip`, `fliplr`, `flipud`, `hsplit`, `hstack`
+`identity`, `isdtype`, `isfortran`, `isscalar`, `issubdtype`, `iterable`, `linalg.diagonal`, `linalg.matrix_transpose`
+`matrix_transpose`, `may_share_memory`, `min_scalar_type`, `mintypecode`, `moveaxis`, `ndim`, `ones`, `ones_like`
+`permute_dims`, `promote_types`, `random.default_rng`, `random.get_state`, `random.seed`, `random.set_state`, `ravel_multi_index`, `require`
+`reshape`, `result_type`, `rot90`, `row_stack`, `shape`, `shares_memory`, `size`, `squeeze`
+`swapaxes`, `transpose`, `tri`, `tril`, `tril_indices`, `tril_indices_from`, `triu`, `triu_indices`
+`triu_indices_from`, `typename`, `unravel_index`, `zeros`, `zeros_like`
 
 ## Blocked Operations (complete list)
 
-`apply_along_axis`, `apply_over_axes`, `array2string`, `array_repr`, `array_str`, `asmatrix`, `busday_count`, `busday_offset`
-`datetime_as_string`, `datetime_data`, `format_float_positional`, `format_float_scientific`, `frompyfunc`, `genfromtxt`, `get_include`, `getbufsize`
-`geterr`, `geterrcall`, `is_busday`, `load`, `loadtxt`, `nested_iters`, `piecewise`, `save`
-`savetxt`, `savez`, `savez_compressed`, `setbufsize`, `seterr`, `seterrcall`, `show_config`, `show_runtime`
+`array2string`, `array_repr`, `array_str`, `asmatrix`, `busday_count`, `busday_offset`, `datetime_as_string`, `datetime_data`
+`format_float_positional`, `format_float_scientific`, `frompyfunc`, `genfromtxt`, `get_include`, `getbufsize`, `geterr`, `geterrcall`
+`is_busday`, `load`, `loadtxt`, `nested_iters`, `save`, `savetxt`, `savez`, `savez_compressed`
+`setbufsize`, `seterr`, `seterrcall`, `show_config`, `show_runtime`

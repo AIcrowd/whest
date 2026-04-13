@@ -10,11 +10,11 @@ half of complex transforms.
 | Operation | Cost Formula |
 |-----------|-------------|
 | `fft`, `ifft` | $5n \cdot \lceil\log_2 n\rceil$ |
-| `fft2`, `ifft2` | $5N \cdot \lceil\log_2 N\rceil$ where $N = n_{1} \cdot n_{2}$ |
-| `fftn`, `ifftn` | $5N \cdot \lceil\log_2 N\rceil$ where $N = \prod_{i} n_{i}$ |
+| `fft2`, `ifft2` | $5N \cdot \lceil\log_2 N\rceil$ where $N = n_1 \cdot n_2$ |
+| `fftn`, `ifftn` | $5N \cdot \lceil\log_2 N\rceil$ where $N = \prod_i n_i$ |
 | `rfft`, `irfft` | $5(n/2) \cdot \lceil\log_2 n\rceil$ |
-| `rfft2`, `irfft2` | $5(N/2) \cdot \lceil\log_2 N\rceil$ where $N = n_{1} \cdot n_{2}$ |
-| `rfftn`, `irfftn` | $5(N/2) \cdot \lceil\log_2 N\rceil$ where $N = \prod_{i} n_{i}$ |
+| `rfft2`, `irfft2` | $5(N/2) \cdot \lceil\log_2 N\rceil$ where $N = n_1 \cdot n_2$ |
+| `rfftn`, `irfftn` | $5(N/2) \cdot \lceil\log_2 N\rceil$ where $N = \prod_i n_i$ |
 | `hfft`, `ihfft` | $5n_{\text{out}} \cdot \lceil\log_2 n_{\text{out}}\rceil$ |
 | `fftfreq`, `rfftfreq`, `fftshift`, `ifftshift` | $0$ (free) |
 
