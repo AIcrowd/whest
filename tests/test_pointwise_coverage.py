@@ -19,63 +19,53 @@ import math
 import warnings
 
 import numpy
-import numpy as np
 import pytest
 
 from mechestim._budget import BudgetContext
 from mechestim._config import configure
-from mechestim._symmetric import SymmetricTensor, SymmetryInfo, as_symmetric
-from mechestim.errors import SymmetryLossWarning
-
 from mechestim._pointwise import (
     abs,
     add,
-    around,
-    bitwise_and,
-    clip,
-    divide,
-    exp,
-    isclose,
-    log,
-    maximum,
-    mean,
-    minimum,
-    mod,
-    multiply,
-    negative,
-    round,
-    sort_complex,
-    sqrt,
-    subtract,
-    sum,
-    # Multi-output ops
-    modf,
-    frexp,
-    divmod,
     # Reductions
     argmax,
-    std,
-    # Custom ops
-    dot,
-    matmul,
-    inner,
-    outer,
-    vdot,
-    tensordot,
-    kron,
+    around,
+    clip,
+    convolve,
+    corrcoef,
+    correlate,
+    cov,
     cross,
     # Additional custom ops
     diff,
-    gradient,
+    divmod,
+    # Custom ops
+    dot,
     ediff1d,
-    convolve,
-    correlate,
-    corrcoef,
-    cov,
-    trapezoid,
+    exp,
+    frexp,
+    gradient,
+    inner,
     interp,
+    isclose,
+    kron,
+    matmul,
+    mean,
+    modf,
+    multiply,
+    negative,
+    outer,
+    round,
+    sort_complex,
+    sqrt,
+    std,
+    subtract,
+    sum,
+    tensordot,
+    trapezoid,
+    vdot,
 )
-
+from mechestim._symmetric import SymmetricTensor, as_symmetric
+from mechestim.errors import SymmetryLossWarning
 
 # ---------------------------------------------------------------------------
 # Helpers
