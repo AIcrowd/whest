@@ -1,7 +1,7 @@
-"""Linear algebra submodule for mechestim."""
+"""Linear algebra submodule for whest."""
 
-from mechestim._registry import make_module_getattr as _make_module_getattr
-from mechestim.linalg._aliases import (  # noqa: F401
+from whest._registry import make_module_getattr as _make_module_getattr
+from whest.linalg._aliases import (  # noqa: F401
     cross,
     diagonal,
     matmul,
@@ -10,13 +10,13 @@ from mechestim.linalg._aliases import (  # noqa: F401
     tensordot,
     vecdot,
 )
-from mechestim.linalg._compound import (  # noqa: F401
+from whest.linalg._compound import (  # noqa: F401
     matrix_power,
     matrix_power_cost,
     multi_dot,
     multi_dot_cost,
 )
-from mechestim.linalg._decompositions import (  # noqa: F401
+from whest.linalg._decompositions import (  # noqa: F401
     cholesky,
     cholesky_cost,
     eig,
@@ -32,7 +32,7 @@ from mechestim.linalg._decompositions import (  # noqa: F401
     svdvals,
     svdvals_cost,
 )
-from mechestim.linalg._properties import (  # noqa: F401
+from whest.linalg._properties import (  # noqa: F401
     cond,
     cond_cost,
     det,
@@ -50,7 +50,7 @@ from mechestim.linalg._properties import (  # noqa: F401
     vector_norm,
     vector_norm_cost,
 )
-from mechestim.linalg._solvers import (  # noqa: F401
+from whest.linalg._solvers import (  # noqa: F401
     inv,
     inv_cost,
     lstsq,
@@ -64,7 +64,7 @@ from mechestim.linalg._solvers import (  # noqa: F401
     tensorsolve,
     tensorsolve_cost,
 )
-from mechestim.linalg._svd import svd  # noqa: F401
+from whest.linalg._svd import svd  # noqa: F401
 
 __all__ = [
     "svd",
@@ -101,11 +101,11 @@ __all__ = [
 ]
 
 __getattr__ = _make_module_getattr(
-    module_prefix="linalg.", module_label="mechestim.linalg"
+    module_prefix="linalg.", module_label="whest.linalg"
 )
 
 import sys as _sys  # noqa: E402
 
-from mechestim._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402
+from whest._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402
 
 _wrap_module_returns(_sys.modules[__name__], check_module=False)

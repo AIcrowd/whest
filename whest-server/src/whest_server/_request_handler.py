@@ -1,4 +1,4 @@
-"""RequestHandler — dispatches decoded request dicts to mechestim functions."""
+"""RequestHandler — dispatches decoded request dicts to whest functions."""
 
 from __future__ import annotations
 
@@ -8,8 +8,8 @@ from typing import Any
 
 import numpy as np
 
-import mechestim as me
-from mechestim_server._session import Session
+import whest as me
+from whest_server._session import Session
 
 _HANDLE_RE = re.compile(r"^a\d+$")
 
@@ -28,11 +28,11 @@ def _make_serializable(obj):
 
 
 #: Maximum allowed array size in bytes (configurable via environment variable).
-MAX_ARRAY_BYTES = int(os.environ.get("MECHESTIM_MAX_ARRAY_BYTES", 100 * 1024 * 1024))
+MAX_ARRAY_BYTES = int(os.environ.get("WHEST_MAX_ARRAY_BYTES", 100 * 1024 * 1024))
 
 
 class RequestHandler:
-    """Dispatch decoded request dicts to real mechestim functions.
+    """Dispatch decoded request dicts to real whest functions.
 
     Parameters
     ----------
@@ -68,8 +68,8 @@ class RequestHandler:
             if op == "__getitem__":
                 return self._handle_getitem(request)
 
-            # Any other op — mechestim function call
-            return self._handle_mechestim_op(request)
+            # Any other op — whest function call
+            return self._handle_whest_op(request)
 
         except me.BudgetExhaustedError as e:
             return {
@@ -102,7 +102,7 @@ class RequestHandler:
         except Exception as e:
             return {
                 "status": "error",
-                "error_type": "MechEstimServerError",
+                "error_type": "WhestServerError",
                 "message": f"internal server error: {type(e).__name__}: {e}",
             }
 
@@ -198,10 +198,10 @@ class RequestHandler:
         return self._pack_result(result)
 
     # ------------------------------------------------------------------
-    # Mechestim function dispatch
+    # Whest function dispatch
     # ------------------------------------------------------------------
 
-    def _handle_mechestim_op(self, request: dict) -> dict:
+    def _handle_whest_op(self, request: dict) -> dict:
         op = request["op"]
         raw_args = request.get("args") or []
         kwargs = request.get("kwargs") or {}
@@ -215,7 +215,7 @@ class RequestHandler:
             result = arr.astype(dtype)
             return self._pack_result(result)
 
-        func = _get_mechestim_func(op)
+        func = _get_whest_func(op)
         resolved_args = [self._resolve_arg(a) for a in raw_args]
         resolved_kwargs = {k: self._resolve_arg(v) for k, v in kwargs.items()}
 
@@ -300,7 +300,7 @@ class RequestHandler:
     # ------------------------------------------------------------------
 
     def _pack_result(self, result: Any) -> dict:
-        """Pack a mechestim function result into a response dict."""
+        """Pack a whest function result into a response dict."""
         budget = self._session.budget_status()
 
         # SymmetricTensor — ndarray subclass with symmetry metadata
@@ -407,8 +407,8 @@ class RequestHandler:
 # ---------------------------------------------------------------------------
 
 
-def _get_mechestim_func(op_name: str):
-    """Look up a mechestim function by dotted name (e.g. 'linalg.svd')."""
+def _get_whest_func(op_name: str):
+    """Look up a whest function by dotted name (e.g. 'linalg.svd')."""
     parts = op_name.split(".")
     obj = me
     for part in parts:

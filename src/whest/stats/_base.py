@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import numpy as _np
 
-from mechestim._ndarray import _asmechestim
-from mechestim._validation import require_budget
+from whest._ndarray import _aswhest
+from whest._validation import require_budget
 
 
 class ContinuousDistribution:
@@ -13,7 +13,7 @@ class ContinuousDistribution:
 
     Subclasses implement ``_compute_pdf``, ``_compute_cdf``, ``_compute_ppf``
     as pure-NumPy helpers, then call :meth:`_deduct_and_call` to wrap them
-    with budget deduction and MechestimArray conversion.
+    with budget deduction and WhestArray conversion.
     """
 
     def __init__(self, name: str):
@@ -49,7 +49,7 @@ class ContinuousDistribution:
         )
         compute_fn = getattr(self, f"_compute_{method}")
         result = compute_fn(x, *args, **kwargs)
-        return _asmechestim(result)
+        return _aswhest(result)
 
     def __repr__(self) -> str:
-        return f"<mechestim.stats.{self._name}>"
+        return f"<whest.stats.{self._name}>"

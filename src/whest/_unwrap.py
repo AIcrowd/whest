@@ -1,12 +1,12 @@
-# src/mechestim/_unwrap.py
+# src/whest/_unwrap.py
 """Unwrap wrapper with FLOP counting."""
 
 from __future__ import annotations
 
 import numpy as _np
 
-from mechestim._docstrings import attach_docstring
-from mechestim._validation import require_budget
+from whest._docstrings import attach_docstring
+from whest._validation import require_budget
 
 
 def unwrap_cost(shape: tuple[int, ...]) -> int:
@@ -48,6 +48,6 @@ attach_docstring(unwrap, _np.unwrap, "counted_custom", "numel(input) FLOPs")
 
 import sys as _sys  # noqa: E402
 
-from mechestim._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402
+from whest._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402
 
 _wrap_module_returns(_sys.modules[__name__])

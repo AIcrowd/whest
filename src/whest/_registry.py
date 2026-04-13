@@ -962,7 +962,7 @@ REGISTRY: dict[str, dict] = {
     "linalg.diagonal": {
         "category": "free",
         "module": "numpy.linalg",
-        "notes": "View of diagonal — delegates to mechestim.diagonal. Cost: 0 FLOPs.",
+        "notes": "View of diagonal — delegates to whest.diagonal. Cost: 0 FLOPs.",
     },
     "linalg.eig": {
         "category": "counted_custom",
@@ -1017,7 +1017,7 @@ REGISTRY: dict[str, dict] = {
     "linalg.matrix_transpose": {
         "category": "free",
         "module": "numpy.linalg",
-        "notes": "Transpose view — delegates to mechestim.matrix_transpose. Cost: 0 FLOPs.",
+        "notes": "Transpose view — delegates to whest.matrix_transpose. Cost: 0 FLOPs.",
     },
     "linalg.multi_dot": {
         "category": "counted_custom",
@@ -2240,122 +2240,122 @@ REGISTRY: dict[str, dict] = {
     # ------------------------------------------------------------------
     "stats.norm.pdf": {
         "category": "counted_custom",
-        "module": "mechestim.stats",
+        "module": "whest.stats",
         "notes": "Normal PDF; cost = numel(input).",
     },
     "stats.norm.cdf": {
         "category": "counted_custom",
-        "module": "mechestim.stats",
+        "module": "whest.stats",
         "notes": "Normal CDF; cost = numel(input).",
     },
     "stats.norm.ppf": {
         "category": "counted_custom",
-        "module": "mechestim.stats",
+        "module": "whest.stats",
         "notes": "Normal PPF (inverse CDF); cost = numel(input).",
     },
     "stats.uniform.pdf": {
         "category": "counted_custom",
-        "module": "mechestim.stats",
+        "module": "whest.stats",
         "notes": "Uniform PDF; cost = numel(input).",
     },
     "stats.uniform.cdf": {
         "category": "counted_custom",
-        "module": "mechestim.stats",
+        "module": "whest.stats",
         "notes": "Uniform CDF; cost = numel(input).",
     },
     "stats.uniform.ppf": {
         "category": "counted_custom",
-        "module": "mechestim.stats",
+        "module": "whest.stats",
         "notes": "Uniform PPF; cost = numel(input).",
     },
     "stats.expon.pdf": {
         "category": "counted_custom",
-        "module": "mechestim.stats",
+        "module": "whest.stats",
         "notes": "Exponential PDF; cost = numel(input).",
     },
     "stats.expon.cdf": {
         "category": "counted_custom",
-        "module": "mechestim.stats",
+        "module": "whest.stats",
         "notes": "Exponential CDF; cost = numel(input).",
     },
     "stats.expon.ppf": {
         "category": "counted_custom",
-        "module": "mechestim.stats",
+        "module": "whest.stats",
         "notes": "Exponential PPF; cost = numel(input).",
     },
     "stats.cauchy.pdf": {
         "category": "counted_custom",
-        "module": "mechestim.stats",
+        "module": "whest.stats",
         "notes": "Cauchy PDF; cost = numel(input).",
     },
     "stats.cauchy.cdf": {
         "category": "counted_custom",
-        "module": "mechestim.stats",
+        "module": "whest.stats",
         "notes": "Cauchy CDF; cost = numel(input).",
     },
     "stats.cauchy.ppf": {
         "category": "counted_custom",
-        "module": "mechestim.stats",
+        "module": "whest.stats",
         "notes": "Cauchy PPF; cost = numel(input).",
     },
     "stats.logistic.pdf": {
         "category": "counted_custom",
-        "module": "mechestim.stats",
+        "module": "whest.stats",
         "notes": "Logistic PDF; cost = numel(input).",
     },
     "stats.logistic.cdf": {
         "category": "counted_custom",
-        "module": "mechestim.stats",
+        "module": "whest.stats",
         "notes": "Logistic CDF; cost = numel(input).",
     },
     "stats.logistic.ppf": {
         "category": "counted_custom",
-        "module": "mechestim.stats",
+        "module": "whest.stats",
         "notes": "Logistic PPF; cost = numel(input).",
     },
     "stats.laplace.pdf": {
         "category": "counted_custom",
-        "module": "mechestim.stats",
+        "module": "whest.stats",
         "notes": "Laplace PDF; cost = numel(input).",
     },
     "stats.laplace.cdf": {
         "category": "counted_custom",
-        "module": "mechestim.stats",
+        "module": "whest.stats",
         "notes": "Laplace CDF; cost = numel(input).",
     },
     "stats.laplace.ppf": {
         "category": "counted_custom",
-        "module": "mechestim.stats",
+        "module": "whest.stats",
         "notes": "Laplace PPF; cost = numel(input).",
     },
     "stats.lognorm.pdf": {
         "category": "counted_custom",
-        "module": "mechestim.stats",
+        "module": "whest.stats",
         "notes": "Log-normal PDF; cost = numel(input).",
     },
     "stats.lognorm.cdf": {
         "category": "counted_custom",
-        "module": "mechestim.stats",
+        "module": "whest.stats",
         "notes": "Log-normal CDF; cost = numel(input).",
     },
     "stats.lognorm.ppf": {
         "category": "counted_custom",
-        "module": "mechestim.stats",
+        "module": "whest.stats",
         "notes": "Log-normal PPF; cost = numel(input).",
     },
     "stats.truncnorm.pdf": {
         "category": "counted_custom",
-        "module": "mechestim.stats",
+        "module": "whest.stats",
         "notes": "Truncated normal PDF; cost = numel(input).",
     },
     "stats.truncnorm.cdf": {
         "category": "counted_custom",
-        "module": "mechestim.stats",
+        "module": "whest.stats",
         "notes": "Truncated normal CDF; cost = numel(input).",
     },
     "stats.truncnorm.ppf": {
         "category": "counted_custom",
-        "module": "mechestim.stats",
+        "module": "whest.stats",
         "notes": "Truncated normal PPF; cost = numel(input).",
     },
     # ------------------------------------------------------------------
@@ -2363,78 +2363,78 @@ REGISTRY: dict[str, dict] = {
     # ------------------------------------------------------------------
     "poly": {
         "category": "counted_custom",
-        "module": "mechestim._polynomial",
+        "module": "whest._polynomial",
         "notes": "Polynomial from roots. Cost: $n^2$ FLOPs.",
     },
     "roots": {
         "category": "counted_custom",
-        "module": "mechestim._polynomial",
+        "module": "whest._polynomial",
         "notes": "Return roots of polynomial with given coefficients. Cost: $n^3$ (companion matrix eig, simplified).",
     },
     "polyadd": {
         "category": "counted_custom",
-        "module": "mechestim._polynomial",
+        "module": "whest._polynomial",
         "notes": "Add two polynomials. Cost: max(n1, n2) FLOPs.",
     },
     "polyder": {
         "category": "counted_custom",
-        "module": "mechestim._polynomial",
+        "module": "whest._polynomial",
         "notes": "Differentiate polynomial. Cost: n FLOPs.",
     },
     "polydiv": {
         "category": "counted_custom",
-        "module": "mechestim._polynomial",
+        "module": "whest._polynomial",
         "notes": "Divide one polynomial by another. Cost: n1 * n2 FLOPs.",
     },
     "polyfit": {
         "category": "counted_custom",
-        "module": "mechestim._polynomial",
+        "module": "whest._polynomial",
         "notes": "Least squares polynomial fit. Cost: 2 * m * (deg+1)^2 FLOPs.",
     },
     "polyint": {
         "category": "counted_custom",
-        "module": "mechestim._polynomial",
+        "module": "whest._polynomial",
         "notes": "Integrate polynomial. Cost: n FLOPs.",
     },
     "polymul": {
         "category": "counted_custom",
-        "module": "mechestim._polynomial",
+        "module": "whest._polynomial",
         "notes": "Multiply polynomials. Cost: n1 * n2 FLOPs.",
     },
     "polysub": {
         "category": "counted_custom",
-        "module": "mechestim._polynomial",
+        "module": "whest._polynomial",
         "notes": "Difference (subtraction) of two polynomials. Cost: max(n1, n2) FLOPs.",
     },
     "polyval": {
         "category": "counted_custom",
-        "module": "mechestim._polynomial",
+        "module": "whest._polynomial",
         "notes": "Evaluate polynomial at given points. Cost: $m \\cdot \\text{deg}$ (Horner's method, FMA=1).",
     },
     # counted_custom — window functions
     "bartlett": {
         "category": "counted_custom",
-        "module": "mechestim._window",
+        "module": "whest._window",
         "notes": "Bartlett window. Cost: n (one linear eval per sample).",
     },
     "blackman": {
         "category": "counted_custom",
-        "module": "mechestim._window",
+        "module": "whest._window",
         "notes": "Blackman window. Cost: 3*n (three cosine terms per sample).",
     },
     "hamming": {
         "category": "counted_custom",
-        "module": "mechestim._window",
+        "module": "whest._window",
         "notes": "Hamming window. Cost: n (one cosine per sample).",
     },
     "hanning": {
         "category": "counted_custom",
-        "module": "mechestim._window",
+        "module": "whest._window",
         "notes": "Hanning window. Cost: n (one cosine per sample).",
     },
     "kaiser": {
         "category": "counted_custom",
-        "module": "mechestim._window",
+        "module": "whest._window",
         "notes": "Kaiser window. Cost: 3*n (Bessel function eval per sample).",
     },
     # blacklisted — IO
@@ -2604,7 +2604,7 @@ REGISTRY: dict[str, dict] = {
     },
     "unwrap": {
         "category": "counted_custom",
-        "module": "mechestim._unwrap",
+        "module": "whest._unwrap",
         "notes": "Phase unwrap. Cost: $\\text{numel}(\\text{input})$ (diff + conditional adjustment).",
     },
 }
@@ -2631,14 +2631,14 @@ def make_module_getattr(module_prefix: str, module_label: str):
             if cat == "unclassified":
                 raise AttributeError(
                     f"{module_label} has not yet classified '{name}'. "
-                    f"Please report this at https://github.com/AIcrowd/mechestim/issues"
+                    f"Please report this at https://github.com/AIcrowd/whest/issues"
                 )
             raise AttributeError(
                 f"'{name}' is registered but not yet implemented in {module_label}. {notes}"
             )
         raise AttributeError(
             f"{module_label} does not provide '{name}'. "
-            f"See https://github.com/AIcrowd/mechestim for supported operations."
+            f"See https://github.com/AIcrowd/whest for supported operations."
         )
 
     return __getattr__

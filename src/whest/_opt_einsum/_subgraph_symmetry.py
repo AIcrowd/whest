@@ -21,8 +21,8 @@ from dataclasses import dataclass
 from itertools import permutations, product
 from typing import Any
 
-from mechestim._perm_group import Permutation as Perm
-from mechestim._perm_group import PermutationGroup
+from whest._perm_group import Permutation as Perm
+from whest._perm_group import PermutationGroup
 
 from ._symmetry import SubsetSymmetry
 

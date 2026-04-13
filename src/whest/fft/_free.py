@@ -1,11 +1,11 @@
-# src/mechestim/fft/_free.py
+# src/whest/fft/_free.py
 """Zero-FLOP FFT utility operations."""
 
 from __future__ import annotations
 
 import numpy as _np
 
-from mechestim._docstrings import attach_docstring
+from whest._docstrings import attach_docstring
 
 
 def fftfreq(n, d=1.0):

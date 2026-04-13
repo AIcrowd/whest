@@ -1,21 +1,21 @@
-"""Entry point for ``python -m mechestim_server``."""
+"""Entry point for ``python -m whest_server``."""
 
 from __future__ import annotations
 
 import argparse
 import sys
 
-from mechestim_server._server import MechestimServer
+from whest_server._server import WhestServer
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="MechEstim budget-controlled compute server",
+        description="Whest budget-controlled compute server",
     )
     parser.add_argument(
         "--url",
-        default="ipc:///tmp/mechestim.sock",
-        help="ZMQ endpoint to bind (default: ipc:///tmp/mechestim.sock)",
+        default="ipc:///tmp/whest.sock",
+        help="ZMQ endpoint to bind (default: ipc:///tmp/whest.sock)",
     )
     parser.add_argument(
         "--timeout",
@@ -26,15 +26,15 @@ def main() -> None:
     args = parser.parse_args()
 
     print(
-        f"[mechestim-server] binding to {args.url}  (timeout={args.timeout}s)",
+        f"[whest-server] binding to {args.url}  (timeout={args.timeout}s)",
         file=sys.stderr,
     )
 
-    server = MechestimServer(url=args.url, session_timeout_s=args.timeout)
+    server = WhestServer(url=args.url, session_timeout_s=args.timeout)
     try:
         server.run()
     except KeyboardInterrupt:
-        print("\n[mechestim-server] shutting down", file=sys.stderr)
+        print("\n[whest-server] shutting down", file=sys.stderr)
         server.stop()
 
 

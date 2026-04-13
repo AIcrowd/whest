@@ -2,17 +2,17 @@
 
 Every function in this module delegates directly to the corresponding
 NumPy function and costs **0 FLOPs**, so they work both inside and
-outside a :class:`~mechestim._budget.BudgetContext`.
+outside a :class:`~whest._budget.BudgetContext`.
 """
 
 from __future__ import annotations
 
 import numpy as _np
 
-from mechestim._docstrings import attach_docstring
-from mechestim._symmetric import SymmetricTensor
-from mechestim._validation import require_budget
-from mechestim.errors import UnsupportedFunctionError
+from whest._docstrings import attach_docstring
+from whest._symmetric import SymmetricTensor
+from whest._validation import require_budget
+from whest.errors import UnsupportedFunctionError
 
 
 def _symmetric_2d(result):
@@ -1448,10 +1448,10 @@ else:
 
 
 # ---------------------------------------------------------------------------
-# Wrap all free op return values as MechestimArray
+# Wrap all free op return values as WhestArray
 # ---------------------------------------------------------------------------
 
-from mechestim._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402
+from whest._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402
 
 _FREE_OPS_SKIP = {
     "shape",

@@ -7,9 +7,9 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
-from mechestim._config import get_setting
-from mechestim._perm_group import PermutationGroup
-from mechestim.errors import SymmetryError, SymmetryLossWarning
+from whest._config import get_setting
+from whest._perm_group import PermutationGroup
+from whest.errors import SymmetryError, SymmetryLossWarning
 
 
 @dataclass(frozen=True)

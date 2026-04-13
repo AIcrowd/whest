@@ -18,8 +18,8 @@ import builtins as _builtins
 import numpy as _np
 import numpy.random as _npr
 
-from mechestim._flops import _ceil_log2, sort_cost
-from mechestim._validation import require_budget
+from whest._flops import _ceil_log2, sort_cost
+from whest._validation import require_budget
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -257,12 +257,12 @@ def bytes(length):
 def __getattr__(name):
     if hasattr(_npr, name):
         return getattr(_npr, name)
-    raise AttributeError(f"mechestim.random does not provide '{name}'")
+    raise AttributeError(f"whest.random does not provide '{name}'")
 
 
 import sys as _sys  # noqa: E402
 
-from mechestim._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402
+from whest._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402
 
 _wrap_module_returns(
     _sys.modules[__name__],

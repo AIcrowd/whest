@@ -6,7 +6,7 @@ This package is a modified fork of opt_einsum by Daniel G. A. Smith et al.
   Fork date           : 2026-04-03
 
 This fork is self-contained — it depends only on Python stdlib and numpy,
-with zero imports from the host project (mechestim). It could be contributed
+with zero imports from the host project (whest). It could be contributed
 back upstream to opt_einsum as a standalone symmetry extension.
 
 
@@ -155,7 +155,7 @@ _contract.py  (vendored from opt_einsum/contract.py — HEAVILY MODIFIED)
 
   StepInfo fields:
     subscript          — einsum string for this step, e.g. "ijk,ai->ajk"
-    flop_cost          — symmetry-aware cost (mechestim formula)
+    flop_cost          — symmetry-aware cost (whest formula)
     dense_flop_cost    — cost without symmetry
     symmetry_savings   — 1 - (flop_cost / dense_flop_cost)
     input_shapes       — shapes of inputs to this step
@@ -178,7 +178,7 @@ _contract.py  (vendored from opt_einsum/contract.py — HEAVILY MODIFIED)
 _symmetry.py  (NEW — not in upstream opt_einsum)
 ──────────────────────────────────────────────────
   Entirely new module. Provides symmetry types and operations for the
-  path optimizer. Self-contained — no mechestim imports.
+  path optimizer. Self-contained — no whest imports.
 
   IndexSymmetry = list[frozenset[str]]
     Type alias. Each frozenset names indices that are symmetric under
@@ -258,7 +258,7 @@ The following were removed from contract.py (see above):
   Backend dispatch helpers — _einsum, _tensordot, _transpose
 
 Rationale: This fork is path-finding only. Execution happens in the host
-project (mechestim._einsum), which delegates to numpy.einsum for each
+project (whest._einsum), which delegates to numpy.einsum for each
 pairwise step along the optimized path.
 
 
@@ -266,7 +266,7 @@ pairwise step along the optimized path.
 HOW SYMMETRY FLOWS THROUGH THE SYSTEM
 ================================================================================
 
-The host project (mechestim) converts its SymmetryInfo objects (positional
+The host project (whest) converts its SymmetryInfo objects (positional
 integer dims like [(0,1,2)]) to IndexSymmetry (character labels like
 [frozenset("ijk")]) at the boundary, then passes them to contract_path().
 

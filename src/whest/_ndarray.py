@@ -1,12 +1,12 @@
 """Subclass of numpy.ndarray whose operators track FLOP usage.
 
-This module defines MechestimArray, a thin numpy.ndarray subclass
+This module defines WhestArray, a thin numpy.ndarray subclass
 that overrides arithmetic, matmul, unary, comparison, bitwise, and
-shift operators to route through mechestim's FLOP-counted me.*
+shift operators to route through whest's FLOP-counted me.*
 functions.
 
-Because MechestimArray inherits from numpy.ndarray, isinstance(x,
-numpy.ndarray) returns True. All me.* functions return MechestimArray.
+Because WhestArray inherits from numpy.ndarray, isinstance(x,
+numpy.ndarray) returns True. All me.* functions return WhestArray.
 """
 
 from __future__ import annotations
@@ -15,22 +15,22 @@ import numpy as _np
 
 
 def _me():
-    """Lazy import of mechestim namespace to avoid circular imports.
+    """Lazy import of whest namespace to avoid circular imports.
 
     The dunder methods need me.add, me.multiply etc. but those are
-    defined in mechestim/__init__.py which itself imports this module.
+    defined in whest/__init__.py which itself imports this module.
     Defer the import until first use.
     """
-    import mechestim as _mechestim
+    import whest as _whest
 
-    return _mechestim
+    return _whest
 
 
-class MechestimArray(_np.ndarray):
+class WhestArray(_np.ndarray):
     """A numpy ndarray subclass with FLOP-tracked operators.
 
     Behaves exactly like numpy.ndarray except that arithmetic and
-    related operators route through mechestim's counted me.* functions
+    related operators route through whest's counted me.* functions
     so the active BudgetContext sees them.
     """
 
@@ -52,11 +52,11 @@ class MechestimArray(_np.ndarray):
         passes ``return_scalar=True`` to ``__array_wrap__`` so the caller
         receives a Python scalar rather than a 0-d ndarray. The default
         ndarray behaviour respects this flag; we forward it explicitly so
-        the same behaviour holds when the input is a MechestimArray.
+        the same behaviour holds when the input is a WhestArray.
 
         For non-scalar results we let numpy preserve the subclass (the
         default behaviour) so views, slices, and ufunc outputs stay
-        MechestimArrays — keeping operator overloads and FLOP tracking
+        WhestArrays — keeping operator overloads and FLOP tracking
         intact for chained expressions.
         """
         if return_scalar:
@@ -228,7 +228,7 @@ def wrap_module_returns(module, skip_names=None, check_module=True):
 
     Walks the module's namespace, finds public functions defined in
     that module, and replaces them with wrappers that convert any
-    numpy.ndarray return value into a MechestimArray (zero-copy view).
+    numpy.ndarray return value into a WhestArray (zero-copy view).
 
     Tuple/list of arrays are also handled element-wise.
 
@@ -239,7 +239,7 @@ def wrap_module_returns(module, skip_names=None, check_module=True):
         check_module: If True (default), only wrap functions whose
                       __module__ matches the module being patched.
                       Set to False for modules that re-export from
-                      sub-modules (e.g. mechestim.linalg).
+                      sub-modules (e.g. whest.linalg).
     """
     import functools
 
@@ -261,10 +261,10 @@ def wrap_module_returns(module, skip_names=None, check_module=True):
         def wrapped(*args, _orig=original, **kwargs):
             result = _orig(*args, **kwargs)
             if isinstance(result, _np.ndarray):
-                return _asmechestim(result)
+                return _aswhest(result)
             if isinstance(result, tuple):
                 wrapped_elems = [
-                    _asmechestim(r) if isinstance(r, _np.ndarray) else r for r in result
+                    _aswhest(r) if isinstance(r, _np.ndarray) else r for r in result
                 ]
                 # Preserve named tuple type (e.g. UniqueAllResult).
                 if type(result) is not tuple and hasattr(type(result), "_fields"):
@@ -272,7 +272,7 @@ def wrap_module_returns(module, skip_names=None, check_module=True):
                 return tuple(wrapped_elems)
             if isinstance(result, list):
                 return [
-                    _asmechestim(r) if isinstance(r, _np.ndarray) else r for r in result
+                    _aswhest(r) if isinstance(r, _np.ndarray) else r for r in result
                 ]
             return result
 
@@ -281,23 +281,23 @@ def wrap_module_returns(module, skip_names=None, check_module=True):
         setattr(module, name, wrapped)
 
 
-def _asmechestim(x):
-    """Convert any array-like to MechestimArray as a zero-copy view.
+def _aswhest(x):
+    """Convert any array-like to WhestArray as a zero-copy view.
 
-    - MechestimArray: returned as-is
+    - WhestArray: returned as-is
     - numpy.ndarray subclass (e.g. SymmetricTensor): returned as-is to
       preserve subclass metadata
-    - plain numpy.ndarray: view-cast to MechestimArray (no copy). The
+    - plain numpy.ndarray: view-cast to WhestArray (no copy). The
       view does NOT own its data — callers that need OWNDATA=True on
-      the output should construct the result via mechestim's typed APIs
+      the output should construct the result via whest's typed APIs
       directly rather than relying on this conversion.
     - other: np.asarray first, then view-cast
     """
-    if isinstance(x, MechestimArray):
+    if isinstance(x, WhestArray):
         return x
     if type(x) is not _np.ndarray and isinstance(x, _np.ndarray):
         # Other ndarray subclass (e.g. SymmetricTensor) — preserve as-is.
         return x
     if isinstance(x, _np.ndarray):
-        return x.view(MechestimArray)
-    return _np.asarray(x).view(MechestimArray)
+        return x.view(WhestArray)
+    return _np.asarray(x).view(WhestArray)

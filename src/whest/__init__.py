@@ -1,8 +1,8 @@
-"""mechestim: NumPy-compatible math primitives with FLOP counting.
+"""whest: NumPy-compatible math primitives with FLOP counting.
 
 Usage::
 
-    import mechestim as me
+    import whest as me
 
     with me.BudgetContext(flop_budget=1_000_000) as budget:
         W = me.array(weight_matrix)
@@ -13,20 +13,20 @@ Usage::
 
 import numpy as _np
 
-from mechestim._registry import REGISTRY_META as _REGISTRY_META
+from whest._registry import REGISTRY_META as _REGISTRY_META
 
 __version__ = f"0.2.0+np{_np.__version__}"
 __numpy_version__ = _np.__version__
 __numpy_pinned__ = _REGISTRY_META["numpy_version"]
 __numpy_supported__ = _REGISTRY_META.get("numpy_supported", ">=2.0.0,<2.3.0")
 
-from mechestim._version_check import check_numpy_version as _check_numpy_version
+from whest._version_check import check_numpy_version as _check_numpy_version
 
 _check_numpy_version(__numpy_supported__)
 
 # --- Budget and diagnostics ---
 # --- Submodules ---
-from mechestim import (
+from whest import (
     fft,  # noqa: F401
     flops,  # noqa: F401
     linalg,  # noqa: F401
@@ -34,17 +34,17 @@ from mechestim import (
     stats,  # noqa: F401
     testing,  # noqa: F401
 )
-from mechestim._budget import (  # noqa: F401
+from whest._budget import (  # noqa: F401
     BudgetContext,
     OpRecord,
     budget,
     budget_reset,
     budget_summary_dict,
 )
-from mechestim._config import configure  # noqa: F401
+from whest._config import configure  # noqa: F401
 
 # --- Counting, histogram & generation ops (counted) ---
-from mechestim._counting_ops import (  # noqa: F401
+from whest._counting_ops import (  # noqa: F401
     allclose,
     apply_along_axis,
     apply_over_axes,
@@ -61,13 +61,13 @@ from mechestim._counting_ops import (  # noqa: F401
     trace,
     vander,
 )
-from mechestim._display import budget_live, budget_summary  # noqa: F401
+from whest._display import budget_live, budget_summary  # noqa: F401
 
 # --- Einsum ---
-from mechestim._einsum import einsum, einsum_path  # noqa: F401
+from whest._einsum import einsum, einsum_path  # noqa: F401
 
 # --- Free ops ---
-from mechestim._free_ops import (  # noqa: F401
+from whest._free_ops import (  # noqa: F401
     append,
     arange,
     argwhere,
@@ -199,13 +199,13 @@ from mechestim._free_ops import (  # noqa: F401
 )
 
 # --- Path optimization types ---
-from mechestim._opt_einsum import PathInfo, StepInfo  # noqa: F401
+from whest._opt_einsum import PathInfo, StepInfo  # noqa: F401
 
 # --- Permutation groups ---
-from mechestim._perm_group import Cycle, Permutation, PermutationGroup  # noqa: F401
+from whest._perm_group import Cycle, Permutation, PermutationGroup  # noqa: F401
 
 # --- Pointwise (counted) ---
-from mechestim._pointwise import (  # noqa: F401
+from whest._pointwise import (  # noqa: F401
     abs,
     absolute,
     acos,
@@ -385,7 +385,7 @@ from mechestim._pointwise import (  # noqa: F401
 )
 
 # --- Polynomial (counted) ---
-from mechestim._polynomial import (  # noqa: F401
+from whest._polynomial import (  # noqa: F401
     poly,
     polyadd,
     polyder,
@@ -399,7 +399,7 @@ from mechestim._polynomial import (  # noqa: F401
 )
 
 # --- Sorting, search & set ops (counted) ---
-from mechestim._sorting_ops import (  # noqa: F401
+from whest._sorting_ops import (  # noqa: F401
     argpartition,
     argsort,
     digitize,
@@ -421,7 +421,7 @@ from mechestim._sorting_ops import (  # noqa: F401
 )
 
 # --- Symmetric tensor ---
-from mechestim._symmetric import (  # noqa: F401
+from whest._symmetric import (  # noqa: F401
     SymmetricTensor,
     SymmetryInfo,
     as_symmetric,
@@ -429,10 +429,10 @@ from mechestim._symmetric import (  # noqa: F401
 )
 
 # --- Unwrap (counted) ---
-from mechestim._unwrap import unwrap  # noqa: F401
+from whest._unwrap import unwrap  # noqa: F401
 
 # --- Window functions (counted) ---
-from mechestim._window import (  # noqa: F401
+from whest._window import (  # noqa: F401
     bartlett,
     blackman,
     hamming,
@@ -441,10 +441,10 @@ from mechestim._window import (  # noqa: F401
 )
 
 # --- Errors ---
-from mechestim.errors import (  # noqa: F401
+from whest.errors import (  # noqa: F401
     BudgetExhaustedError,
-    MechEstimError,
-    MechEstimWarning,
+    WhestError,
+    WhestWarning,
     NoBudgetContextError,
     SymmetryError,
     SymmetryLossWarning,
@@ -459,7 +459,7 @@ e = _np.e
 inf = _np.inf
 nan = _np.nan
 newaxis = _np.newaxis
-from mechestim._ndarray import MechestimArray as ndarray  # noqa: E402, F401
+from whest._ndarray import WhestArray as ndarray  # noqa: E402, F401
 
 float16 = _np.float16
 float32 = _np.float32
@@ -474,8 +474,8 @@ complex64 = _np.complex64
 complex128 = _np.complex128
 
 # --- Missing dtype types and numpy utilities (re-exported as free) ---
-from mechestim import typing  # noqa: F401, E402
-from mechestim._dtypes import (  # noqa: F401, E402
+from whest import typing  # noqa: F401, E402
+from whest._dtypes import (  # noqa: F401, E402
     dtype,
     floating,
     integer,
@@ -484,7 +484,7 @@ from mechestim._dtypes import (  # noqa: F401, E402
     uint32,
     uint64,
 )
-from mechestim._errstate import (  # noqa: F401, E402
+from whest._errstate import (  # noqa: F401, E402
     broadcast,
     errstate,
     get_printoptions,
@@ -496,7 +496,7 @@ from mechestim._errstate import (  # noqa: F401, E402
     set_printoptions,
     seterr,
 )
-from mechestim._registry import make_module_getattr as _make_module_getattr
-from mechestim._type_info import finfo, iinfo  # noqa: F401, E402
+from whest._registry import make_module_getattr as _make_module_getattr
+from whest._type_info import finfo, iinfo  # noqa: F401, E402
 
-__getattr__ = _make_module_getattr(module_prefix="", module_label="mechestim")
+__getattr__ = _make_module_getattr(module_prefix="", module_label="whest")

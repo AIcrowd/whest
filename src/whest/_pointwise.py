@@ -1,4 +1,4 @@
-"""Counted pointwise operations and reductions for mechestim."""
+"""Counted pointwise operations and reductions for whest."""
 
 from __future__ import annotations
 
@@ -6,18 +6,18 @@ import builtins as _builtins
 
 import numpy as _np
 
-from mechestim._docstrings import attach_docstring
-from mechestim._flops import _ceil_log2, einsum_cost, pointwise_cost, reduction_cost
-from mechestim._ndarray import _asmechestim
-from mechestim._symmetric import (
+from whest._docstrings import attach_docstring
+from whest._flops import _ceil_log2, einsum_cost, pointwise_cost, reduction_cost
+from whest._ndarray import _aswhest
+from whest._symmetric import (
     SymmetricTensor,
     SymmetryInfo,
     _warn_symmetry_loss,
     intersect_symmetry,
     propagate_symmetry_reduce,
 )
-from mechestim._validation import check_nan_inf, require_budget
-from mechestim.errors import UnsupportedFunctionError
+from whest._validation import check_nan_inf, require_budget
+from whest.errors import UnsupportedFunctionError
 
 # ---------------------------------------------------------------------------
 # Factory helpers
@@ -37,7 +37,7 @@ def _counted_unary(np_func, op_name: str):
         if sym_info is not None:
             result = SymmetricTensor(result, symmetric_axes=sym_info.symmetric_axes)
         if sym_info is None:
-            result = _asmechestim(result)
+            result = _aswhest(result)
         return result
 
     wrapper.__name__ = op_name
@@ -57,9 +57,9 @@ def _counted_unary_multi(np_func, op_name: str):
         budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(x.shape,))
         result = np_func(x)
         if isinstance(result, tuple):
-            result = tuple(_asmechestim(r) for r in result)
+            result = tuple(_aswhest(r) for r in result)
         else:
-            result = _asmechestim(result)
+            result = _aswhest(result)
         return result
 
     wrapper.__name__ = op_name
@@ -145,7 +145,7 @@ def _counted_binary(np_func, op_name: str):
                     f"{op_name} — no symmetry groups shared by both operands",
                 )
         if not isinstance(result, SymmetricTensor):
-            result = _asmechestim(result)
+            result = _aswhest(result)
         return result
 
     wrapper.__name__ = op_name
@@ -170,9 +170,9 @@ def _counted_binary_multi(np_func, op_name: str):
         )
         result = np_func(x, y)
         if isinstance(result, tuple):
-            result = tuple(_asmechestim(r) for r in result)
+            result = tuple(_aswhest(r) for r in result)
         else:
-            result = _asmechestim(result)
+            result = _aswhest(result)
         return result
 
     wrapper.__name__ = op_name
@@ -223,7 +223,7 @@ def _counted_reduction(
         elif isinstance(result, SymmetricTensor):
             result = _np.asarray(result)
         if not isinstance(result, SymmetricTensor):
-            result = _asmechestim(result)
+            result = _aswhest(result)
         return result
 
     wrapper.__name__ = op_name

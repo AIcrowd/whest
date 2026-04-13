@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import numpy as _np
 
-from mechestim._perm_group import PermutationGroup
-from mechestim._symmetric import SymmetricTensor, validate_symmetry
-from mechestim._validation import check_nan_inf, require_budget
+from whest._perm_group import PermutationGroup
+from whest._symmetric import SymmetricTensor, validate_symmetry
+from whest._validation import check_nan_inf, require_budget
 
 
 def _symmetry_info_to_perm_groups(sym_info, subscript_chars: str):
@@ -129,7 +129,7 @@ def einsum(
         for s, chars in zip(operand_symmetries, input_parts)
     ]
 
-    from mechestim._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
+    from whest._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
 
     oracle = SubgraphSymmetryOracle(
         operands=list(operands),
@@ -138,7 +138,7 @@ def einsum(
         output_chars=output_str,
     )
 
-    from mechestim._opt_einsum import contract_path as _contract_path
+    from whest._opt_einsum import contract_path as _contract_path
 
     path, path_info = _contract_path(
         subscripts,
@@ -160,7 +160,7 @@ def einsum(
 
     # Handle output symmetry wrapping
     if symmetry is not None and isinstance(result, _np.ndarray) and result.ndim >= 2:
-        from mechestim._symmetric import validate_symmetry_groups
+        from whest._symmetric import validate_symmetry_groups
 
         perm_groups = (
             [symmetry] if isinstance(symmetry, PermutationGroup) else list(symmetry)
@@ -214,7 +214,7 @@ def einsum_path(subscripts: str, *operands, optimize: str | bool | list = "auto"
         for s, chars in zip(operand_symmetries, input_parts)
     ]
 
-    from mechestim._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
+    from whest._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
 
     oracle = SubgraphSymmetryOracle(
         operands=list(operands),
@@ -223,7 +223,7 @@ def einsum_path(subscripts: str, *operands, optimize: str | bool | list = "auto"
         output_chars=output_str,
     )
 
-    from mechestim._opt_einsum import contract_path as _contract_path
+    from whest._opt_einsum import contract_path as _contract_path
 
     path, path_info = _contract_path(
         subscripts,
@@ -237,6 +237,6 @@ def einsum_path(subscripts: str, *operands, optimize: str | bool | list = "auto"
 
 import sys as _sys  # noqa: E402
 
-from mechestim._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402
+from whest._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402
 
 _wrap_module_returns(_sys.modules[__name__], skip_names={"einsum_path"})

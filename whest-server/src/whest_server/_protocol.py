@@ -1,4 +1,4 @@
-"""Protocol layer for mechestim server — message encoding/decoding.
+"""Protocol layer for whest server — message encoding/decoding.
 
 Message format: msgpack over ZMQ.
 
@@ -14,7 +14,7 @@ from typing import Any
 
 import msgpack
 
-from mechestim._registry import REGISTRY
+from whest._registry import REGISTRY
 
 # ---------------------------------------------------------------------------
 # Whitelist

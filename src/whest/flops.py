@@ -5,7 +5,7 @@ pre-flight cost estimation without running any computation.
 """
 
 # Existing
-from mechestim._flops import (  # noqa: F401
+from whest._flops import (  # noqa: F401
     einsum_cost,
     pointwise_cost,
     reduction_cost,
@@ -13,7 +13,7 @@ from mechestim._flops import (  # noqa: F401
 )
 
 # Polynomial
-from mechestim._polynomial import (  # noqa: F401
+from whest._polynomial import (  # noqa: F401
     poly_cost,
     polyadd_cost,
     polyder_cost,
@@ -25,13 +25,13 @@ from mechestim._polynomial import (  # noqa: F401
     polyval_cost,
     roots_cost,
 )
-from mechestim._symmetric import SymmetryInfo  # noqa: F401
+from whest._symmetric import SymmetryInfo  # noqa: F401
 
 # Other
-from mechestim._unwrap import unwrap_cost  # noqa: F401
+from whest._unwrap import unwrap_cost  # noqa: F401
 
 # Window
-from mechestim._window import (  # noqa: F401
+from whest._window import (  # noqa: F401
     bartlett_cost,
     blackman_cost,
     hamming_cost,
@@ -40,7 +40,7 @@ from mechestim._window import (  # noqa: F401
 )
 
 # FFT
-from mechestim.fft._transforms import (  # noqa: F401
+from whest.fft._transforms import (  # noqa: F401
     fft_cost,
     fftn_cost,
     hfft_cost,
@@ -49,10 +49,10 @@ from mechestim.fft._transforms import (  # noqa: F401
 )
 
 # Linalg — compound
-from mechestim.linalg._compound import matrix_power_cost, multi_dot_cost  # noqa: F401
+from whest.linalg._compound import matrix_power_cost, multi_dot_cost  # noqa: F401
 
 # Linalg — decompositions
-from mechestim.linalg._decompositions import (  # noqa: F401
+from whest.linalg._decompositions import (  # noqa: F401
     cholesky_cost,
     eig_cost,
     eigh_cost,
@@ -63,7 +63,7 @@ from mechestim.linalg._decompositions import (  # noqa: F401
 )
 
 # Linalg — properties
-from mechestim.linalg._properties import (  # noqa: F401
+from whest.linalg._properties import (  # noqa: F401
     cond_cost,
     det_cost,
     matrix_norm_cost,
@@ -75,7 +75,7 @@ from mechestim.linalg._properties import (  # noqa: F401
 )
 
 # Linalg — solvers
-from mechestim.linalg._solvers import (  # noqa: F401
+from whest.linalg._solvers import (  # noqa: F401
     inv_cost,
     lstsq_cost,
     pinv_cost,

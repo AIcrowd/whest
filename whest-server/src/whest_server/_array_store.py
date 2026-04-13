@@ -7,7 +7,7 @@ import os
 import numpy as np
 
 #: Maximum number of arrays allowed in a single store (configurable via env var).
-MAX_ARRAY_COUNT = int(os.environ.get("MECHESTIM_MAX_ARRAY_COUNT", "100000"))
+MAX_ARRAY_COUNT = int(os.environ.get("WHEST_MAX_ARRAY_COUNT", "100000"))
 
 
 class ArrayStore:

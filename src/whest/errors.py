@@ -1,15 +1,15 @@
-"""Exception and warning classes for mechestim."""
+"""Exception and warning classes for whest."""
 
 from __future__ import annotations
 
-_DOCS_BASE = "https://aicrowd.github.io/mechestim/troubleshooting/common-errors"
+_DOCS_BASE = "https://aicrowd.github.io/whest/troubleshooting/common-errors"
 
 
-class MechEstimError(Exception):
-    """Base exception for all mechestim errors."""
+class WhestError(Exception):
+    """Base exception for all whest errors."""
 
 
-class BudgetExhaustedError(MechEstimError):
+class BudgetExhaustedError(WhestError):
     """Raised when an operation would exceed the FLOP budget."""
 
     def __init__(self, op_name: str, *, flop_cost: int, flops_remaining: int):
@@ -23,18 +23,18 @@ class BudgetExhaustedError(MechEstimError):
         )
 
 
-class NoBudgetContextError(MechEstimError):
+class NoBudgetContextError(WhestError):
     """Raised when a counted operation is called outside a BudgetContext."""
 
     def __init__(self):
         super().__init__(
             "No active BudgetContext. "
-            "Wrap your code in `with mechestim.BudgetContext(...):`  "
+            "Wrap your code in `with whest.BudgetContext(...):`  "
             f"See: {_DOCS_BASE}/#nobudgetcontexterror"
         )
 
 
-class SymmetryError(MechEstimError):
+class SymmetryError(WhestError):
     """Raised when a claimed tensor symmetry does not hold."""
 
     def __init__(
@@ -56,7 +56,7 @@ class SymmetryError(MechEstimError):
         )
 
 
-class UnsupportedFunctionError(MechEstimError):
+class UnsupportedFunctionError(WhestError):
     """Raised when calling a function not available in the installed NumPy."""
 
     def __init__(self, func_name: str, *, min_version: str):
@@ -71,9 +71,9 @@ class UnsupportedFunctionError(MechEstimError):
         )
 
 
-class MechEstimWarning(UserWarning):
-    """Warning issued when mechestim detects potential numerical issues."""
+class WhestWarning(UserWarning):
+    """Warning issued when whest detects potential numerical issues."""
 
 
-class SymmetryLossWarning(MechEstimWarning):
+class SymmetryLossWarning(WhestWarning):
     """Warning issued when an operation causes loss of symmetry metadata."""

@@ -1,4 +1,4 @@
-"""Input validation and NaN/Inf checking for mechestim operations."""
+"""Input validation and NaN/Inf checking for whest operations."""
 
 from __future__ import annotations
 
@@ -6,8 +6,8 @@ import warnings
 
 import numpy as np
 
-from mechestim._budget import get_active_budget
-from mechestim.errors import MechEstimWarning
+from whest._budget import get_active_budget
+from whest.errors import WhestWarning
 
 
 def require_budget():
@@ -15,7 +15,7 @@ def require_budget():
     budget = get_active_budget()
     if budget is not None:
         return budget
-    from mechestim._budget import _get_global_default
+    from whest._budget import _get_global_default
 
     return _get_global_default()
 
@@ -59,6 +59,6 @@ def check_nan_inf(result: np.ndarray, op_name: str) -> None:
         warnings.warn(
             f"{op_name} produced {nan_count} NaN and {inf_count} Inf values "
             f"in output of shape {result.shape}",
-            MechEstimWarning,
+            WhestWarning,
             stacklevel=3,
         )

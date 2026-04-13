@@ -1,4 +1,4 @@
-"""Budget context manager and operation recording for mechestim."""
+"""Budget context manager and operation recording for whest."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ import functools
 import threading
 from typing import NamedTuple
 
-from mechestim.errors import BudgetExhaustedError
+from whest.errors import BudgetExhaustedError
 
 
 class OpRecord(NamedTuple):
@@ -84,7 +84,7 @@ class BudgetContext:
         self, op_name: str, *, flop_cost: int, subscripts: str | None, shapes: tuple
     ) -> None:
         """Deduct FLOPs from the budget."""
-        from mechestim._weights import get_weight
+        from whest._weights import get_weight
 
         weight = get_weight(op_name)
         adjusted_cost = int(flop_cost * self._flop_multiplier * weight)
@@ -106,7 +106,7 @@ class BudgetContext:
 
     def summary(self) -> str:
         """Return a pretty-printed FLOP budget summary."""
-        header = "mechestim FLOP Budget Summary"
+        header = "whest FLOP Budget Summary"
         if self._namespace:
             header += f" [{self._namespace}]"
         lines = [
@@ -141,11 +141,11 @@ class BudgetContext:
         if not self._quiet:
             import sys
 
-            import mechestim
+            import whest
 
             print(
-                f"mechestim {mechestim.__version__} "
-                f"(numpy {mechestim.__numpy_version__} backend) | "
+                f"whest {whest.__version__} "
+                f"(numpy {whest.__numpy_version__} backend) | "
                 f"budget: {self._flop_budget:.2e} FLOPs",
                 file=sys.stderr,
             )
@@ -193,7 +193,7 @@ def _get_default_budget_amount() -> int:
     """Read default budget from env var, falling back to 1e15."""
     import os
 
-    raw = os.environ.get("MECHESTIM_DEFAULT_BUDGET")
+    raw = os.environ.get("WHEST_DEFAULT_BUDGET")
     if raw is not None:
         return int(float(raw))
     return int(1e15)

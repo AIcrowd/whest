@@ -1,13 +1,13 @@
-# src/mechestim/linalg/_properties.py
+# src/whest/linalg/_properties.py
 """Matrix property wrappers with FLOP counting."""
 
 from __future__ import annotations
 
 import numpy as _np
 
-from mechestim._docstrings import attach_docstring
-from mechestim._symmetric import SymmetricTensor
-from mechestim._validation import require_budget
+from whest._docstrings import attach_docstring
+from whest._symmetric import SymmetricTensor
+from whest._validation import require_budget
 
 
 def trace_cost(n: int) -> int:

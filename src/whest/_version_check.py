@@ -1,4 +1,4 @@
-"""NumPy version checking for mechestim."""
+"""NumPy version checking for whest."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ import warnings
 
 import numpy as _np
 
-from mechestim.errors import MechEstimWarning
+from whest.errors import WhestWarning
 
 
 def check_numpy_version(supported_range: str) -> None:
@@ -38,9 +38,9 @@ def check_numpy_version(supported_range: str) -> None:
 
     if not in_range:
         warnings.warn(
-            f"mechestim supports numpy {supported_range} but numpy "
+            f"whest supports numpy {supported_range} but numpy "
             f"{installed} is installed. Some functions may be missing or "
             f"behave differently.",
-            MechEstimWarning,
+            WhestWarning,
             stacklevel=3,
         )

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from mechestim.stats._erf import _erf
+from whest.stats._erf import _erf
 
 # ---------------------------------------------------------------------------
 # Acklam coefficients

@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import numpy as np
 
-import mechestim as me
-from mechestim_server._array_store import ArrayStore
-from mechestim_server._comms_tracker import CommsTracker
+import whest as me
+from whest_server._array_store import ArrayStore
+from whest_server._comms_tracker import CommsTracker
 
 
 class Session:

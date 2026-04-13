@@ -10,7 +10,7 @@ from __future__ import annotations
 import struct
 from typing import Any, Dict, Tuple, Union
 
-from mechestim._math_compat import prod as _prod
+from whest._math_compat import prod as _prod
 
 # ---------------------------------------------------------------------------
 # dtype helpers  (NO numpy -- pure struct)
@@ -370,8 +370,8 @@ class RemoteArray(metaclass=_RemoteArrayMeta):
 
         Returns ``(raw_bytes, shape, dtype)``.
         """
-        from mechestim._connection import get_connection
-        from mechestim._protocol import encode_fetch
+        from whest._connection import get_connection
+        from whest._protocol import encode_fetch
 
         resp = get_connection().send_recv(encode_fetch(self._handle_id))
         # Fetch responses may have data at top level or inside "result"
@@ -440,8 +440,8 @@ class RemoteArray(metaclass=_RemoteArrayMeta):
         For integer keys on 1-D arrays, returns the scalar value.
         For slices or indexing on 2D+ arrays, returns a RemoteArray.
         """
-        from mechestim._connection import get_connection
-        from mechestim._protocol import encode_request
+        from whest._connection import get_connection
+        from whest._protocol import encode_request
 
         # Encode the key for transmission
         encoded_key = _encode_index_key(key)
@@ -453,15 +453,15 @@ class RemoteArray(metaclass=_RemoteArrayMeta):
 
     def __setitem__(self, key, value):
         raise TypeError(
-            "mechestim arrays are immutable. Cannot assign to array elements."
+            "whest arrays are immutable. Cannot assign to array elements."
         )
 
     # -- operator overloads (dispatch to server) ----------------------------
 
     def _dispatch_op(self, op_name: str, *args: Any, **kwargs: Any) -> Any:
         """Encode and send an operation to the server, return the result."""
-        from mechestim._connection import get_connection
-        from mechestim._protocol import encode_request
+        from whest._connection import get_connection
+        from whest._protocol import encode_request
 
         encoded_args = [_encode_arg(a) for a in args]
         encoded_kwargs = {k: _encode_arg(v) for k, v in kwargs.items()}

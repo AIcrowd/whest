@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import numpy as _np
 
-from mechestim.stats._base import ContinuousDistribution
+from whest.stats._base import ContinuousDistribution
 
 
 class LogisticDistribution(ContinuousDistribution):
