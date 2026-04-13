@@ -127,7 +127,8 @@ def validate_symmetry_groups(data: np.ndarray, groups: list) -> None:
     for group in groups:
         axes = group.axes
         if axes is None:
-            raise ValueError("PermutationGroup must have axes set for tensor symmetry")
+            axes = tuple(range(group.degree))
+            group._axes = axes
         for orbit in group.orbits():
             sizes = {data.shape[axes[i]] for i in orbit}
             if len(sizes) != 1:

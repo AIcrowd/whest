@@ -170,6 +170,11 @@ class EinsumBipartite:
     # to reconstruct free-to-one-operand label sets in positional order.
     operand_subscripts: tuple[str, ...]  # parallel to operand_labels
 
+    # Declared symmetry groups per operand, preserved from construction
+    # so the fingerprint fast path can use exact declared groups instead
+    # of always promoting to S_k.
+    per_op_groups: tuple[tuple[PermutationGroup, ...] | None, ...]
+
 
 def _build_bipartite(
     operands: list[Any],
@@ -274,6 +279,10 @@ def _build_bipartite(
         identical_operand_groups=identical_operand_groups,
         operand_labels=tuple(operand_labels),
         operand_subscripts=tuple(subscript_parts),
+        per_op_groups=tuple(
+            tuple(gs) if gs is not None else None
+            for gs in per_op_groups
+        ),
     )
 
 
@@ -359,6 +368,44 @@ class SubgraphSymmetryOracle:
         return result
 
 
+def _find_declared_group_for_labels(
+    graph: EinsumBipartite,
+    subset: frozenset[int],
+    target_labels: tuple[str, ...],
+) -> PermutationGroup | None:
+    """Find a declared group covering *target_labels*, relabeled to match order.
+
+    Returns a new PermutationGroup with generators conjugated so that
+    position *i* corresponds to ``target_labels[i]``, or None if no
+    declared group covers these labels.
+    """
+    target_set = frozenset(target_labels)
+    for op_idx in subset:
+        groups = graph.per_op_groups[op_idx]
+        if groups is None:
+            continue
+        for group in groups:
+            if group._labels is None or frozenset(group._labels) != target_set:
+                continue
+            # Labels match — relabel generators if ordering differs.
+            if tuple(group._labels) == target_labels:
+                return group
+            old_labels = group._labels
+            # p[old_pos] = new_pos  (maps old label order → target order)
+            new_pos_of = {lbl: i for i, lbl in enumerate(target_labels)}
+            p = [new_pos_of[old_labels[i]] for i in range(len(old_labels))]
+            p_inv = [0] * len(p)
+            for i, pi in enumerate(p):
+                p_inv[pi] = i
+            new_gens = []
+            for gen in group.generators:
+                arr = gen.array_form
+                new_arr = [p[arr[p_inv[i]]] for i in range(len(arr))]
+                new_gens.append(Perm(new_arr))
+            return PermutationGroup(*new_gens)
+    return None
+
+
 def _compute_subset_symmetry(
     graph: EinsumBipartite,
     subset: frozenset[int],
@@ -392,7 +439,8 @@ def _compute_subset_symmetry(
         v_group._labels = v_sorted
     elif sub.v_labels and len(sub.v_labels) >= 2:
         # Fingerprint fast path: labels that share a fingerprint with at least
-        # one other V label can be freely permuted → S_k for that group.
+        # one other V label are symmetry-related.  Check for a declared group
+        # covering those labels before defaulting to S_k.
         fp_groups: dict[tuple[int, ...], list[str]] = {}
         for lbl in sub.v_labels:
             fp_groups.setdefault(col_of[lbl], []).append(lbl)
@@ -400,10 +448,17 @@ def _compute_subset_symmetry(
             lbl for grp in fp_groups.values() if len(grp) >= 2 for lbl in grp
         )
         if len(v_equiv) >= 2:
-            v_group = PermutationGroup.symmetric(
-                len(v_equiv), axes=tuple(range(len(v_equiv)))
+            declared = _find_declared_group_for_labels(
+                graph, subset, tuple(v_equiv)
             )
-            v_group._labels = tuple(v_equiv)
+            if declared is not None:
+                v_group = declared
+                v_group._labels = tuple(v_equiv)
+            else:
+                v_group = PermutationGroup.symmetric(
+                    len(v_equiv), axes=tuple(range(len(v_equiv)))
+                )
+                v_group._labels = tuple(v_equiv)
 
     # Build W-side group.
     w_group: PermutationGroup | None = None
@@ -418,10 +473,17 @@ def _compute_subset_symmetry(
             lbl for grp in fp_groups_w.values() if len(grp) >= 2 for lbl in grp
         )
         if len(w_equiv) >= 2:
-            w_group = PermutationGroup.symmetric(
-                len(w_equiv), axes=tuple(range(len(w_equiv)))
+            declared = _find_declared_group_for_labels(
+                graph, subset, tuple(w_equiv)
             )
-            w_group._labels = tuple(w_equiv)
+            if declared is not None:
+                w_group = declared
+                w_group._labels = tuple(w_equiv)
+            else:
+                w_group = PermutationGroup.symmetric(
+                    len(w_equiv), axes=tuple(range(len(w_equiv)))
+                )
+                w_group._labels = tuple(w_equiv)
 
     return SubsetSymmetry(output=v_group, inner=w_group)
 

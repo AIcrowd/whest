@@ -83,6 +83,34 @@ export const EXAMPLES = [
     color: '#94A3B8',
   },
 
+  // ── Declared C3: non-identical operands with contraction ──
+  {
+    id: 'declared-c3',
+    name: 'Declared C₃ (contraction)',
+    formula: "einsum('aijk,ab→ijkb', T, W)",
+    subscripts: ['aijk', 'ab'],
+    output: 'ijkb',
+    operandNames: ['T', 'W'],
+    perOpSymmetry: [{ type: 'cyclic', axes: [1, 2, 3] }, null],
+    description: 'T has C₃ on axes {i,j,k}, contracted with W on index a. Non-identical operands → σ-loop empty, but declared C₃ is preserved (not promoted to S₃)',
+    expectedGroup: 'C3{i,j,k}',
+    color: '#F59E0B',
+  },
+
+  // ── Declared D4: non-identical operands with contraction ──
+  {
+    id: 'declared-d4',
+    name: 'Declared D₄ (contraction)',
+    formula: "einsum('aijkl,ab→ijklb', T, W)",
+    subscripts: ['aijkl', 'ab'],
+    output: 'ijklb',
+    operandNames: ['T', 'W'],
+    perOpSymmetry: [{ type: 'dihedral', axes: [1, 2, 3, 4] }, null],
+    description: 'T has D₄ on axes {i,j,k,l}, contracted with W on index a. Detects D₄ — without the fix, wrongly promoted to S₄',
+    expectedGroup: 'D4{i,j,k,l}',
+    color: '#EC4899',
+  },
+
   // ── No symmetry despite identical operands ──
   {
     id: 'matrix-chain',

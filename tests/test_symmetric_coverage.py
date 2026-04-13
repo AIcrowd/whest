@@ -129,12 +129,12 @@ class TestValidateSymmetryGroups:
         g = PermutationGroup.symmetric(2, axes=(0, 1))
         validate_symmetry_groups(data, [g])
 
-    def test_no_axes_raises(self):
-        """Group without axes raises ValueError."""
+    def test_no_axes_defaults_to_identity(self):
+        """Group without axes defaults to axes=(0, 1, ..., degree-1)."""
         data = _sym_matrix()
         g = PermutationGroup.symmetric(2)  # no axes
-        with pytest.raises(ValueError, match="must have axes set"):
-            validate_symmetry_groups(data, [g])
+        validate_symmetry_groups(data, [g])
+        assert g.axes == (0, 1)
 
     def test_mismatched_orbit_sizes_raises(self):
         """Dimensions in same orbit with different sizes raise SymmetryError."""

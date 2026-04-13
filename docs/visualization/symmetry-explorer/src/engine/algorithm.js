@@ -31,8 +31,8 @@ export function buildBipartite(example) {
 
     // Per-operand symmetry: supports string (legacy), per-operand array, or {type, axes} objects
     const opSym = Array.isArray(perOpSymmetry) ? perOpSymmetry[opIdx] : perOpSymmetry;
-    if (opSym === 'symmetric') {
-      // All axes in one class (full S_k on all axes of this operand)
+    if (opSym === 'symmetric' || opSym === 'cyclic' || opSym === 'dihedral') {
+      // All axes in one class (group acts on all axes of this operand)
       for (let k = 1; k < sub.length; k++) classOf[k] = 0;
     } else if (opSym && typeof opSym === 'object' && opSym.axes) {
       // Partial symmetry: only the specified axes collapse into one class
@@ -308,7 +308,82 @@ function minimalGenerators(gens) {
   return minimal;
 }
 
-export function buildGroup(sigmaResults, graph) {
+/**
+ * Build generators for a declared symmetry type on a given number of axes.
+ * Returns Permutation[] or empty array.
+ */
+function declaredSymGenerators(symType, k) {
+  if (symType === 'symmetric') {
+    // S_k: adjacent transpositions
+    const gens = [];
+    for (let i = 0; i < k - 1; i++) {
+      const arr = Array.from({ length: k }, (_, j) => j);
+      arr[i] = i + 1;
+      arr[i + 1] = i;
+      gens.push(new Permutation(arr));
+    }
+    return gens;
+  }
+  if (symType === 'cyclic') {
+    return [new Permutation(Array.from({ length: k }, (_, j) => (j + 1) % k))];
+  }
+  if (symType === 'dihedral') {
+    const gens = [new Permutation(Array.from({ length: k }, (_, j) => (j + 1) % k))];
+    if (k >= 3) {
+      gens.push(new Permutation([0, ...Array.from({ length: k - 1 }, (_, j) => k - 1 - j)]));
+    }
+    return gens;
+  }
+  return [];
+}
+
+/**
+ * Find a declared symmetry group that covers a set of fingerprint-equivalent
+ * labels. Returns { generators: Permutation[] } or null.
+ *
+ * This is the JS port of _find_declared_group_for_labels — it prevents
+ * the fingerprint fast path from always promoting to S_k when a more
+ * restrictive group (C_k, D_k, etc.) was declared.
+ */
+function findDeclaredGroupForLabels(example, equivLabels) {
+  const { subscripts, perOpSymmetry } = example;
+  if (!perOpSymmetry) return null;
+  const equivSet = new Set(equivLabels);
+
+  for (let opIdx = 0; opIdx < subscripts.length; opIdx++) {
+    const opSym = Array.isArray(perOpSymmetry) ? perOpSymmetry[opIdx] : perOpSymmetry;
+    if (!opSym) continue;
+
+    // Determine which axes are covered by this symmetry declaration
+    const sub = subscripts[opIdx];
+    let coveredLabels;
+    let symType;
+    if (opSym === 'symmetric' || opSym === 'cyclic' || opSym === 'dihedral') {
+      coveredLabels = new Set(sub);
+      symType = opSym;
+    } else if (opSym && typeof opSym === 'object' && opSym.axes) {
+      coveredLabels = new Set(opSym.axes.map(ax => sub[ax]));
+      symType = opSym.type || 'symmetric';
+    } else {
+      continue;
+    }
+
+    // Check if the declared group covers exactly the equivalent labels
+    if (coveredLabels.size !== equivSet.size) continue;
+    let match = true;
+    for (const l of equivSet) {
+      if (!coveredLabels.has(l)) { match = false; break; }
+    }
+    if (!match) continue;
+
+    // Build generators for this declared group type
+    const gens = declaredSymGenerators(symType, equivLabels.length);
+    if (gens.length > 0) return { generators: gens };
+  }
+  return null;
+}
+
+export function buildGroup(sigmaResults, graph, example) {
   const vLabels = [...graph.freeLabels].sort();
   const wLabels = [...graph.summedLabels].sort();
 
@@ -350,8 +425,75 @@ export function buildGroup(sigmaResults, graph) {
     });
   };
 
-  const vGensAll = dedup(vGenerators);
-  const wGens = dedup(wGenerators);
+  let vGensAll = dedup(vGenerators);
+  let wGens = dedup(wGenerators);
+
+  // ── Fingerprint fast path ──────────────────────────────────────
+  // When the σ-loop found no generators (non-identical operands), check
+  // if fingerprint-equivalent labels exist. If a declared group covers
+  // those labels, use it; otherwise fall back to S_k.
+  // This mirrors the Python fix in _compute_subset_symmetry.
+  //
+  // When equiv labels are a proper subset of all labels, generators must
+  // be embedded into the full label space (identity on non-equiv labels).
+  const embedGens = (gens, equivLabels, allLabels) => {
+    if (equivLabels.length === allLabels.length) return gens;
+    const eqPos = equivLabels.map(l => allLabels.indexOf(l));
+    return gens.map(g => {
+      const arr = Array.from({ length: allLabels.length }, (_, i) => i);
+      for (let i = 0; i < equivLabels.length; i++) {
+        arr[eqPos[i]] = eqPos[g.arr[i]];
+      }
+      return new Permutation(arr);
+    });
+  };
+
+  if (vGensAll.length === 0 && vLabels.length >= 2) {
+    const matrixData = buildIncidenceMatrix(graph);
+    const { colFingerprints } = matrixData;
+    const fpGroups = {};
+    for (const lbl of vLabels) {
+      const fp = colFingerprints[lbl];
+      (fpGroups[fp] ??= []).push(lbl);
+    }
+    const vEquiv = Object.values(fpGroups)
+      .filter(grp => grp.length >= 2)
+      .flat()
+      .sort();
+    if (vEquiv.length >= 2) {
+      const declared = example ? findDeclaredGroupForLabels(example, vEquiv) : null;
+      let gens;
+      if (declared) {
+        gens = declared.generators;
+      } else {
+        gens = declaredSymGenerators('symmetric', vEquiv.length);
+      }
+      vGensAll = embedGens(gens, vEquiv, vLabels);
+    }
+  }
+  if (wGens.length === 0 && wLabels.length >= 2) {
+    const matrixData = buildIncidenceMatrix(graph);
+    const { colFingerprints } = matrixData;
+    const fpGroups = {};
+    for (const lbl of wLabels) {
+      const fp = colFingerprints[lbl];
+      (fpGroups[fp] ??= []).push(lbl);
+    }
+    const wEquiv = Object.values(fpGroups)
+      .filter(grp => grp.length >= 2)
+      .flat()
+      .sort();
+    if (wEquiv.length >= 2) {
+      const declared = example ? findDeclaredGroupForLabels(example, wEquiv) : null;
+      let gens;
+      if (declared) {
+        gens = declared.generators;
+      } else {
+        gens = declaredSymGenerators('symmetric', wEquiv.length);
+      }
+      wGens = embedGens(gens, wEquiv, wLabels);
+    }
+  }
 
   // Reduce to a minimal generating set: only keep generators that grow the group
   const vGens = minimalGenerators(vGensAll);
@@ -360,19 +502,31 @@ export function buildGroup(sigmaResults, graph) {
   const wElements = wGens.length > 0 ? dimino(wGens) : (wLabels.length > 0 ? [Permutation.identity(wLabels.length)] : []);
 
   // Classify group — use Python PathInfo convention: S2{a,b}, C3{i,j,k}, etc.
+  // When the group is embedded (acts on a subset of labels, fixing the rest),
+  // use the effective degree (number of moved labels) for classification, and
+  // show only the moved labels in the label set.
   const vOrder = vElements.length;
   const vDegree = vLabels.length;
   let vGroupName = 'trivial';
   if (vDegree >= 2 && vOrder > 1) {
+    // Find which labels are actually moved by any group element
+    const movedSet = new Set();
+    for (const el of vElements) {
+      for (let i = 0; i < el.arr.length; i++) {
+        if (el.arr[i] !== i) movedSet.add(i);
+      }
+    }
+    const movedLabels = [...movedSet].sort((a, b) => a - b).map(i => vLabels[i]);
+    const effectiveDegree = movedLabels.length || vDegree;
     const factorial = (n) => n <= 1 ? 1 : n * factorial(n - 1);
-    const labelSet = `{${vLabels.join(',')}}`;
-    if (vOrder === factorial(vDegree)) {
-      vGroupName = `S${vDegree}${labelSet}`;
-    } else if (vOrder === vDegree && vDegree >= 3) {
-      vGroupName = `C${vDegree}${labelSet}`;
-    } else if (vOrder === 2 * vDegree && vDegree >= 3) {
-      vGroupName = `D${vDegree}${labelSet}`;
-    } else if (vOrder === 2 && vDegree > 2) {
+    const labelSet = `{${movedLabels.length > 0 ? movedLabels.join(',') : vLabels.join(',')}}`;
+    if (vOrder === factorial(effectiveDegree)) {
+      vGroupName = `S${effectiveDegree}${labelSet}`;
+    } else if (vOrder === effectiveDegree && effectiveDegree >= 3) {
+      vGroupName = `C${effectiveDegree}${labelSet}`;
+    } else if (vOrder === 2 * effectiveDegree && effectiveDegree >= 3) {
+      vGroupName = `D${effectiveDegree}${labelSet}`;
+    } else if (vOrder === 2 && effectiveDegree > 2) {
       const gen = vGens[0];
       const cycles = gen.cyclicForm();
       const allTwoCycles = cycles.every(c => c.length === 2);
@@ -397,15 +551,23 @@ export function buildGroup(sigmaResults, graph) {
   const wDegree = wLabels.length;
   let wGroupName = 'trivial';
   if (wDegree >= 2 && wOrder > 1) {
+    const wMovedSet = new Set();
+    for (const el of wElements) {
+      for (let i = 0; i < el.arr.length; i++) {
+        if (el.arr[i] !== i) wMovedSet.add(i);
+      }
+    }
+    const wMovedLabels = [...wMovedSet].sort((a, b) => a - b).map(i => wLabels[i]);
+    const wEffectiveDegree = wMovedLabels.length || wDegree;
     const factorial = (n) => n <= 1 ? 1 : n * factorial(n - 1);
-    const wLabelSet = `{${wLabels.join(',')}}`;
-    if (wOrder === factorial(wDegree)) {
-      wGroupName = `S${wDegree}${wLabelSet}`;
-    } else if (wOrder === wDegree && wDegree >= 3) {
-      wGroupName = `C${wDegree}${wLabelSet}`;
-    } else if (wOrder === 2 * wDegree && wDegree >= 3) {
-      wGroupName = `D${wDegree}${wLabelSet}`;
-    } else if (wOrder === 2 && wDegree > 2) {
+    const wLabelSet = `{${wMovedLabels.length > 0 ? wMovedLabels.join(',') : wLabels.join(',')}}`;
+    if (wOrder === factorial(wEffectiveDegree)) {
+      wGroupName = `S${wEffectiveDegree}${wLabelSet}`;
+    } else if (wOrder === wEffectiveDegree && wEffectiveDegree >= 3) {
+      wGroupName = `C${wEffectiveDegree}${wLabelSet}`;
+    } else if (wOrder === 2 * wEffectiveDegree && wEffectiveDegree >= 3) {
+      wGroupName = `D${wEffectiveDegree}${wLabelSet}`;
+    } else if (wOrder === 2 && wEffectiveDegree > 2) {
       const gen = wGens[0];
       const cycles = gen.cyclicForm();
       const allTwoCycles = cycles.every(c => c.length === 2);
