@@ -19,6 +19,76 @@ symmetries beyond the full symmetric group S_k.
 
 ::: mechestim._perm_group
 
+### Cycle
+
+Composable cycle builder matching sympy's `Cycle` API:
+
+```python
+from mechestim import Cycle, Permutation
+
+# Single cycle
+Permutation(Cycle(0, 2))                 # → (0 2)
+
+# Chained cycles (block swap)
+Permutation(Cycle(0, 2)(1, 3))           # → (0 2)(1 3)
+
+# Equivalent list-of-lists notation
+Permutation([[0, 2], [1, 3]])            # same result
+
+# Explicit size (pad with fixed points)
+Permutation(Cycle(0, 1), size=5)         # size 5, only 0↔1 moves
+```
+
+### Permutation API
+
+Construction:
+- `Permutation([2, 0, 1])` — array form
+- `Permutation([[0, 2], [1, 3]])` — cycle notation
+- `Permutation(Cycle(0, 2)(1, 3))` — from Cycle object
+- `Permutation.identity(n)` — identity of size n
+- `Permutation.from_cycle(n, [0, 1, 2])` — single cycle
+
+Application and inspection:
+- `perm(i)` — apply: image of point i
+- `perm.support()` — set of non-fixed points
+- `perm.parity()` — 0 (even) or 1 (odd)
+- `perm.signature()` — +1 or -1
+- `perm.transpositions()` — decompose into 2-cycles
+- `perm.cyclic_form` — disjoint cycles (excluding fixed points)
+- `perm.full_cyclic_form` — disjoint cycles (including 1-cycles)
+- `perm.cycle_structure` — dict of cycle length → count
+- `perm.order` — element order (lcm of cycle lengths)
+
+Composition:
+- `p * q` — compose (p after q)
+- `~p` — inverse
+
+### PermutationGroup API
+
+Construction:
+- `PermutationGroup(*generators)` — from generator permutations
+- `PermutationGroup.symmetric(k)` — S_k
+- `PermutationGroup.cyclic(k)` — C_k
+- `PermutationGroup.dihedral(k)` — D_k
+
+Queries:
+- `group.order()` — number of elements
+- `group.degree` — number of points acted on
+- `group.elements()` — list of all elements (cached)
+- `group.contains(perm)` — membership test
+- `group.is_symmetric()` — is this S_k?
+- `group.is_transitive` — single orbit?
+- `group.is_abelian` — all elements commute?
+- `group.identity` — identity element
+- `group.equals(other)` — same group regardless of generators?
+
+Orbits:
+- `group.orbits()` — partition into orbits
+- `group.orbit(i)` — orbit of a single point
+
+Counting:
+- `group.burnside_unique_count(size_dict)` — unique tensor elements via Burnside's lemma
+
 ### Sympy Interoperability
 
 `Permutation` and `PermutationGroup` use the same internal representation
