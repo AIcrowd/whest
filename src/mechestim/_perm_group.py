@@ -318,8 +318,8 @@ class PermutationGroup:
 
         for g in self._generators:
             for i in range(self._degree):
-                if g._array_form[i] != i:
-                    union(i, g._array_form[i])
+                if g(i) != i:
+                    union(i, g(i))
 
         groups: dict[int, set[int]] = {}
         for i in range(self._degree):
@@ -365,7 +365,7 @@ class PermutationGroup:
         while queue:
             point = queue.pop()
             for g in self._generators:
-                image = g._array_form[point]
+                image = g(point)
                 if image not in visited:
                     visited.add(image)
                     queue.append(image)
