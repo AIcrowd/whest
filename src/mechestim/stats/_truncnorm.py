@@ -12,10 +12,6 @@ from mechestim.stats._base import ContinuousDistribution
 from mechestim.stats._erf import _erf
 from mechestim.stats._ndtri import _ndtri
 
-_TRUNCNORM_PDF_COST = 30
-_TRUNCNORM_CDF_COST = 30
-_TRUNCNORM_PPF_COST = 50
-
 _SQRT2 = _np.sqrt(2.0)
 _INV_SQRT_2PI = 1.0 / _np.sqrt(2.0 * _np.pi)
 
@@ -83,9 +79,7 @@ class TruncnormDistribution(ContinuousDistribution):
         MechestimArray
             PDF evaluated at *x*.
         """
-        return self._deduct_and_call(
-            "pdf", _TRUNCNORM_PDF_COST, x, a, b, loc=loc, scale=scale
-        )
+        return self._deduct_and_call("pdf", 1, x, a, b, loc=loc, scale=scale)
 
     def cdf(self, x, a, b, loc=0, scale=1):
         """Cumulative distribution function at *x*.
@@ -96,9 +90,7 @@ class TruncnormDistribution(ContinuousDistribution):
         ---------
         30 * numel(x) FLOPs
         """
-        return self._deduct_and_call(
-            "cdf", _TRUNCNORM_CDF_COST, x, a, b, loc=loc, scale=scale
-        )
+        return self._deduct_and_call("cdf", 1, x, a, b, loc=loc, scale=scale)
 
     def ppf(self, q, a, b, loc=0, scale=1):
         """Percent-point function (inverse CDF) at *q*.
@@ -109,9 +101,7 @@ class TruncnormDistribution(ContinuousDistribution):
         ---------
         50 * numel(q) FLOPs
         """
-        return self._deduct_and_call(
-            "ppf", _TRUNCNORM_PPF_COST, q, a, b, loc=loc, scale=scale
-        )
+        return self._deduct_and_call("ppf", 1, q, a, b, loc=loc, scale=scale)
 
     def _compute_pdf(self, x, a, b, loc=0, scale=1):
         z = (x - loc) / scale

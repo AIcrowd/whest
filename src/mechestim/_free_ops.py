@@ -85,17 +85,21 @@ attach_docstring(eye, _np.eye, "free", "0 FLOPs")
 
 
 def diag(v, k=0):
-    """Extract diagonal or construct diagonal array. Cost: len(diagonal)."""
+    """Extract diagonal or construct diagonal array.
+
+    Cost: numel(output) when constructing (1D→2D), min(m,n) when extracting (2D→1D).
+    """
     budget = require_budget()
     v = _np.asarray(v)
-    if v.ndim == 1:
-        cost = v.size  # constructing: len(v)
-    else:
-        # extracting diagonal from 2D
-        m, n = v.shape[0], v.shape[1] if v.ndim > 1 else v.shape[0]
-        cost = min(m, n)  # diagonal length
-    budget.deduct("diag", flop_cost=cost, subscripts=None, shapes=(v.shape,))
     result = _np.diag(v, k=k)
+    if v.ndim == 1:
+        # Constructing diagonal matrix: real work is allocating + zeroing the output
+        cost = result.size
+    else:
+        # Extracting diagonal: reads min(m,n) elements
+        m, n = v.shape[0], v.shape[1] if v.ndim > 1 else v.shape[0]
+        cost = min(m, n)
+    budget.deduct("diag", flop_cost=cost, subscripts=None, shapes=(v.shape,))
     if v.ndim == 1 and k == 0:
         return SymmetricTensor(result, symmetric_axes=[(0, 1)])
     return result
@@ -805,12 +809,12 @@ attach_docstring(diag_indices_from, _np.diag_indices_from, "free", "0 FLOPs")
 
 
 def diagflat(v, k=0):
-    """Create diagonal array from flattened input. Cost: len(v)."""
+    """Create diagonal array from flattened input. Cost: numel(output)."""
     budget = require_budget()
     v_arr = _np.asarray(v)
-    cost = v_arr.size  # len of diagonal = len of flattened input
-    budget.deduct("diagflat", flop_cost=cost, subscripts=None, shapes=(v_arr.shape,))
     result = _np.diagflat(v, k=k)
+    cost = result.size  # output is (n+|k|)×(n+|k|) matrix
+    budget.deduct("diagflat", flop_cost=cost, subscripts=None, shapes=(v_arr.shape,))
     if k == 0:
         return SymmetricTensor(result, symmetric_axes=[(0, 1)])
     return result

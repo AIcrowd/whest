@@ -279,6 +279,7 @@ def benchmark_pointwise(
             results[op] = statistics.median(dist_values)
             details[op] = {
                 "category": "counted_unary",
+                "measurement_mode": "ufunc_unary",
                 "analytical_formula": "numel(output)",
                 "analytical_flops": n,
                 "benchmark_size": f"x: ({n},)",
@@ -306,6 +307,7 @@ def benchmark_pointwise(
             results[op] = statistics.median(dist_values)
             details[op] = {
                 "category": "counted_binary",
+                "measurement_mode": "ufunc_binary",
                 "analytical_formula": "numel(output)",
                 "analytical_flops": n,
                 "benchmark_size": f"a: ({n},), b: ({n},)",
@@ -354,8 +356,10 @@ def benchmark_pointwise(
                 bm_size = f"x: ({n},), a_min=-1.0, a_max=1.0"
             else:
                 bm_size = f"x: ({n},)"
+            mm = "ufunc_unary" if category == "counted_unary" else "ufunc_binary"
             details[op] = {
                 "category": category,
+                "measurement_mode": mm,
                 "analytical_formula": "numel(output)",
                 "analytical_flops": n,
                 "benchmark_size": bm_size,

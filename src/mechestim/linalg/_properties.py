@@ -145,29 +145,28 @@ def norm_cost(shape: tuple, ord=None) -> int:
     Notes
     -----
     Cost depends on the ``ord`` parameter and input dimensionality.
-    SVD-based norms (2-norm, nuclear norm) cost m * n * min(m, n).
+
+    - Elementwise norms (Frobenius, L1, Linf, etc.): ``numel`` (weight=1 baked in).
+    - SVD-based norms (2-norm, nuclear norm): ``4 * m * n * min(m, n)``
+      (weight=4 baked in, consistent with linalg.svd weight=4).
     """
     numel = 1
     for d in shape:
         numel *= d
     numel = max(numel, 1)
     if len(shape) == 1:
-        if ord is None or ord == 2 or ord == -2:
-            return numel
-        elif ord in (1, -1, _np.inf, -_np.inf, 0):
-            return numel
-        else:
-            return 2 * numel
+        # FMA=1: all vector norms cost numel (one pass over elements)
+        return numel
     else:
         m, n = shape[-2], shape[-1]
         if ord is None or ord == "fro":
-            return 2 * numel
+            return numel
         elif ord in (1, -1, _np.inf, -_np.inf):
             return numel
         elif ord == 2 or ord == -2:
-            return m * n * min(m, n)
+            return 4 * m * n * min(m, n)  # SVD-based, weight=4 baked in
         elif ord == "nuc":
-            return m * n * min(m, n)
+            return 4 * m * n * min(m, n)  # SVD-based, weight=4 baked in
         return numel
 
 
@@ -261,20 +260,20 @@ def matrix_norm_cost(shape: tuple, ord=None) -> int:
 
     Notes
     -----
-    SVD-based norms (2-norm, nuclear norm) cost m * n * min(m, n).
-    Frobenius norm costs 2mn. Entry-sum norms cost mn.
+    - Elementwise norms (Frobenius, L1, Linf): ``numel`` (weight=1 baked in).
+    - SVD-based norms (2-norm, nuclear): ``4 * m * n * min(m, n)``
+      (weight=4 baked in, consistent with linalg.svd weight=4).
     """
     m, n = shape[-2], shape[-1]
     numel = m * n
     if ord is None or ord == "fro":
-        # Frobenius: sum of squares + sqrt = numel (FMA=1)
         return numel
     elif ord in (1, -1, _np.inf, -_np.inf):
         return numel
     elif ord == 2 or ord == -2:
-        return m * n * min(m, n)  # SVD-based
+        return 4 * m * n * min(m, n)  # SVD-based, weight=4 baked in
     elif ord == "nuc":
-        return m * n * min(m, n)  # SVD-based
+        return 4 * m * n * min(m, n)  # SVD-based, weight=4 baked in
     return numel
 
 

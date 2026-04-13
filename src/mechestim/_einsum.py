@@ -199,6 +199,9 @@ def einsum_path(subscripts: str, *operands, optimize: str | bool | list = "auto"
     info : PathInfo
         Diagnostics including per-step costs and symmetry savings.
     """
+    budget = require_budget()
+    budget.deduct("einsum_path", flop_cost=1, subscripts=None, shapes=())
+
     shapes = [op.shape for op in operands]
     operand_symmetries = [
         op.symmetry_info if isinstance(op, SymmetricTensor) else None for op in operands

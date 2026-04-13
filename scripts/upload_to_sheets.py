@@ -139,8 +139,16 @@ def _read_sheet_all(
 
 
 # Column headers that belong to the reviewer even if they appear in our CSV.
-# "Reviewer Weight" is in our CSV but always empty — the real data is on the sheet.
-_ALWAYS_PRESERVE = frozenset({"Reviewer Weight"})
+# These columns must never be overwritten by CSV data — their values on the
+# sheet are the source of truth (filled in by reviewers).
+_ALWAYS_PRESERVE = frozenset(
+    {
+        "Reviewer Weight",
+        "Reviewer Notes",
+        "Review Status",
+        "Post Review Action",
+    }
+)
 
 
 def _find_reviewer_columns(
@@ -283,6 +291,28 @@ def upload_data(sid: str, rows: list[list[str]]) -> None:
                 row.append(reviewer_vals.get(col_name, ""))
         out_data.append(row)
 
+    # --- Step 5: Apply reviewer weights to Active Weight locally ---
+    # Where the reviewer provided a numeric weight, use it as Active Weight.
+    # This avoids per-cell API writes after upload.
+    active_idx = (
+        out_headers.index("Active Weight") if "Active Weight" in out_headers else -1
+    )
+    reviewer_idx = (
+        out_headers.index("Reviewer Weight") if "Reviewer Weight" in out_headers else -1
+    )
+    if active_idx >= 0 and reviewer_idx >= 0:
+        applied = 0
+        for row in out_data:
+            rw = row[reviewer_idx].strip() if row[reviewer_idx] else ""
+            if rw and rw != "?":
+                try:
+                    float(rw)
+                    row[active_idx] = rw
+                    applied += 1
+                except ValueError:
+                    pass
+        print(f"  Applied {applied} reviewer weights to Active Weight (locally).")
+
     all_out = [out_headers] + out_data
     _upload_all_rows(sid, all_out)
 
@@ -406,11 +436,92 @@ def _number_rule(
     )
 
 
+def _gradient_rule(
+    sheet_id: int,
+    col: int,
+    num_rows: int,
+    min_color: dict,
+    mid_color: dict,
+    max_color: dict,
+) -> dict:
+    """Color scale (gradient) conditional format for a column.
+
+    Automatically adapts to the min/max values in the column — no hardcoded
+    ranges. Uses a 3-point scale: min → mid → max.
+    """
+    return {
+        "addConditionalFormatRule": {
+            "rule": {
+                "ranges": [
+                    {
+                        "sheetId": sheet_id,
+                        "startRowIndex": 1,
+                        "endRowIndex": num_rows,
+                        "startColumnIndex": col,
+                        "endColumnIndex": col + 1,
+                    }
+                ],
+                "gradientRule": {
+                    "minpoint": {
+                        "color": min_color,
+                        "type": "MIN",
+                    },
+                    "midpoint": {
+                        "color": mid_color,
+                        "type": "PERCENTILE",
+                        "value": "50",
+                    },
+                    "maxpoint": {
+                        "color": max_color,
+                        "type": "MAX",
+                    },
+                },
+            },
+            "index": 0,
+        }
+    }
+
+
 def apply_formatting(sid: str, num_rows: int, num_cols: int) -> None:
     """Apply all formatting, dropdowns, and conditional rules."""
     print("Applying formatting...")
     sheet_id = 0
     requests = []
+
+    # ---- Clear ALL existing conditional formatting first ----
+    # Without this, rules accumulate across uploads and stale rules
+    # override the new ones (Sheets evaluates top-down, first match wins).
+    # We read the current count and delete them all in reverse order.
+    try:
+        sheet_meta = gws(
+            "sheets",
+            "spreadsheets",
+            "get",
+            "--params",
+            json.dumps(
+                {
+                    "spreadsheetId": sid,
+                    "fields": "sheets.conditionalFormats",
+                }
+            ),
+        )
+        if isinstance(sheet_meta, str):
+            sheet_meta = json.loads(sheet_meta)
+        existing_rules = sheet_meta["sheets"][0].get("conditionalFormats", [])
+        if existing_rules:
+            # Delete in reverse order so indices stay valid
+            for i in range(len(existing_rules) - 1, -1, -1):
+                requests.append(
+                    {
+                        "deleteConditionalFormatRule": {
+                            "sheetId": sheet_id,
+                            "index": i,
+                        }
+                    }
+                )
+            print(f"  Clearing {len(existing_rules)} stale conditional format rules...")
+    except Exception as e:
+        print(f"  Warning: could not read existing rules: {e}")
 
     # ---- Freeze header row + column A ----
     requests.append(
@@ -429,7 +540,7 @@ def apply_formatting(sid: str, num_rows: int, num_cols: int) -> None:
     )
 
     # ---- Header row formatting ----
-    # Section A (cols 0-8): dark blue-gray bg, white text, bold
+    # Section A (cols 0-9, A-J: review columns): dark blue-gray bg, white text, bold
     requests.append(
         {
             "repeatCell": {
@@ -438,7 +549,7 @@ def apply_formatting(sid: str, num_rows: int, num_cols: int) -> None:
                     "startRowIndex": 0,
                     "endRowIndex": 1,
                     "startColumnIndex": 0,
-                    "endColumnIndex": 9,
+                    "endColumnIndex": 10,
                 },
                 "cell": {
                     "userEnteredFormat": {
@@ -454,7 +565,7 @@ def apply_formatting(sid: str, num_rows: int, num_cols: int) -> None:
             }
         }
     )
-    # Section B (cols 9-20): lighter gray bg
+    # Section B (cols 10+, K onward: evidence columns): lighter gray bg
     requests.append(
         {
             "repeatCell": {
@@ -462,7 +573,7 @@ def apply_formatting(sid: str, num_rows: int, num_cols: int) -> None:
                     "sheetId": sheet_id,
                     "startRowIndex": 0,
                     "endRowIndex": 1,
-                    "startColumnIndex": 9,
+                    "startColumnIndex": 10,
                     "endColumnIndex": num_cols,
                 },
                 "cell": {
@@ -480,7 +591,7 @@ def apply_formatting(sid: str, num_rows: int, num_cols: int) -> None:
         }
     )
 
-    # ---- Reviewer Weight column (F, index 5): light yellow bg ----
+    # ---- Reviewer Weight column (G=6): light yellow bg ----
     requests.append(
         {
             "repeatCell": {
@@ -488,8 +599,8 @@ def apply_formatting(sid: str, num_rows: int, num_cols: int) -> None:
                     "sheetId": sheet_id,
                     "startRowIndex": 1,
                     "endRowIndex": num_rows,
-                    "startColumnIndex": 5,
-                    "endColumnIndex": 6,
+                    "startColumnIndex": 6,
+                    "endColumnIndex": 7,
                 },
                 "cell": {
                     "userEnteredFormat": {
@@ -546,94 +657,111 @@ def apply_formatting(sid: str, num_rows: int, num_cols: int) -> None:
     for text, bg, fg in status_rules:
         requests.append(_text_eq_rule(sheet_id, 1, num_rows, text, bg, fg))
 
-    # ---- Conditional formatting: Weight column (E, index 4) ----
-    # Order matters: more specific rules first (Sheets evaluates top-down, first match wins)
-    weight_rules = [
-        (
-            "NUMBER_LESS",
-            "0.001",
-            _color(1, 1, 1),
-            _color(0.8, 0.1, 0.1),
-        ),  # zero FP: red text
-        (
-            "NUMBER_LESS",
-            "0.5",
-            _color(0.85, 0.95, 0.85),
-            None,
-        ),  # negligible: light green
-        ("NUMBER_LESS", "2.0", _color(0.72, 0.88, 0.72), None),  # baseline: green
-        ("NUMBER_LESS", "20.0", _color(1.0, 0.95, 0.6), None),  # moderate: yellow
-        ("NUMBER_LESS", "100.0", _color(1.0, 0.8, 0.4), None),  # heavy: orange
-        (
-            "NUMBER_GREATER_THAN_EQ",
-            "100.0",
-            _color(0.92, 0.45, 0.4),
-            None,
-        ),  # extreme: red
-    ]
-    for cond_type, value, bg, fg in weight_rules:
-        requests.append(_number_rule(sheet_id, 4, num_rows, cond_type, value, bg, fg))
+    # ---- Conditional formatting: Weight columns (E=4, F=5, G=6) ----
+    # Use gradient (color scale) so the coloring adapts to each column's
+    # actual value range — no hardcoded thresholds.
+    # Green (low weight = cheap) → Yellow (mid) → Red (high weight = expensive)
+    WEIGHT_GREEN = _color(0.72, 0.88, 0.72)  # cheap ops
+    WEIGHT_YELLOW = _color(1.0, 0.95, 0.6)  # mid-range
+    WEIGHT_RED = _color(0.92, 0.45, 0.4)  # expensive ops
+    for col_idx in (4, 5, 6):  # E, F, G
+        requests.append(
+            _gradient_rule(
+                sheet_id,
+                col_idx,
+                num_rows,
+                min_color=WEIGHT_GREEN,
+                mid_color=WEIGHT_YELLOW,
+                max_color=WEIGHT_RED,
+            )
+        )
 
-    # ---- Conditional formatting: Confidence column (H, index 7) ----
+    # ---- "?" markers in Reviewer Weight (G=6) ----
+    requests.append(
+        _text_eq_rule(
+            sheet_id,
+            6,
+            num_rows,
+            "?",
+            bg=_color(0.85, 0.75, 0.95),  # light purple
+        )
+    )
+
+    # ---- Review Status (I=8) ----
+    review_status_rules = [
+        ("accepted", _color(0.72, 0.88, 0.72), None),  # green
+        ("pending", _color(1.0, 0.95, 0.6), None),  # yellow
+        ("rejected", _color(0.95, 0.7, 0.65), None),  # red
+        ("needs-discussion", _color(0.82, 0.88, 0.95), None),  # light blue
+    ]
+    for text, bg, fg in review_status_rules:
+        requests.append(_text_eq_rule(sheet_id, 8, num_rows, text, bg, fg))
+
+    # ---- Confidence (L=11) ----
     conf_rules = [
         ("high", _color(0.72, 0.88, 0.72)),
         ("medium", _color(1.0, 0.95, 0.6)),
         ("low", _color(0.95, 0.7, 0.65)),
     ]
     for text, bg in conf_rules:
-        requests.append(_text_eq_rule(sheet_id, 7, num_rows, text, bg))
+        requests.append(_text_eq_rule(sheet_id, 11, num_rows, text, bg))
 
-    # ---- Conditional formatting: Perf/Timing Agreement (M, index 12) ----
+    # ---- Perf/Timing Agreement (Q=16) ----
     # Green: 0.5-2.0, Yellow: 0.2-0.5 or 2.0-5.0, Red: <0.2 or >5.0
     requests.append(
         _number_between_rule(
-            sheet_id, 12, num_rows, "0.5", "2.0", _color(0.72, 0.88, 0.72)
+            sheet_id, 16, num_rows, "0.5", "2.0", _color(0.72, 0.88, 0.72)
         )
     )
     requests.append(
         _number_between_rule(
-            sheet_id, 12, num_rows, "0.2", "0.5", _color(1.0, 0.95, 0.6)
+            sheet_id, 16, num_rows, "0.2", "0.5", _color(1.0, 0.95, 0.6)
         )
     )
     requests.append(
         _number_between_rule(
-            sheet_id, 12, num_rows, "2.0", "5.0", _color(1.0, 0.95, 0.6)
+            sheet_id, 16, num_rows, "2.0", "5.0", _color(1.0, 0.95, 0.6)
         )
     )
     requests.append(
         _number_rule(
-            sheet_id, 12, num_rows, "NUMBER_LESS", "0.2", _color(0.95, 0.7, 0.65)
+            sheet_id, 16, num_rows, "NUMBER_LESS", "0.2", _color(0.95, 0.7, 0.65)
         )
     )
     requests.append(
         _number_rule(
-            sheet_id, 12, num_rows, "NUMBER_GREATER", "5.0", _color(0.95, 0.7, 0.65)
+            sheet_id, 16, num_rows, "NUMBER_GREATER", "5.0", _color(0.95, 0.7, 0.65)
         )
     )
 
     # ---- Column widths ----
+    # Matches sheet layout: A-Z (see column order above)
     col_widths = {
-        0: 200,  # Operation
-        1: 140,  # Status
-        2: 140,  # Category
-        3: 180,  # Cost Formula
-        4: 90,  # Weight
-        5: 120,  # Reviewer Weight
-        6: 250,  # Effective Cost Example
-        7: 100,  # Confidence
-        8: 400,  # Notes
-        9: 300,  # Exclusion Reason
-        10: 100,  # HW FP Instructions
-        11: 100,  # Timing Weight
-        12: 100,  # Perf/Timing Agreement
-        13: 100,  # CV
-        14: 250,  # Benchmark Command
-        15: 140,  # Benchmark Size
-        16: 180,  # Total Perf Instructions
-        17: 120,  # Total Timing
-        18: 350,  # Implementation URL
-        19: 100,  # Weight Tier
-        20: 70,  # Repeats
+        0: 200,  # A: Operation
+        1: 120,  # B: Status
+        2: 140,  # C: Category
+        3: 200,  # D: Cost Formula
+        4: 110,  # E: Active Weight
+        5: 120,  # F: Empirical Weight
+        6: 120,  # G: Reviewer Weight
+        7: 200,  # H: Reviewer Notes
+        8: 120,  # I: Review Status
+        9: 250,  # J: Post Review Action
+        10: 200,  # K: Effective Cost Example
+        11: 100,  # L: Confidence
+        12: 400,  # M: Notes
+        13: 250,  # N: Exclusion Reason
+        14: 100,  # O: HW FP Instructions
+        15: 100,  # P: Timing Weight
+        16: 100,  # Q: Perf/Timing Agreement
+        17: 100,  # R: CV
+        18: 250,  # S: Benchmark Command
+        19: 140,  # T: Benchmark Size
+        20: 180,  # U: Total Perf Instructions
+        21: 120,  # V: Total Timing
+        22: 350,  # W: Implementation URL
+        23: 100,  # X: Weight Tier
+        24: 70,  # Y: Repeats
     }
     for col_idx, width in col_widths.items():
         if col_idx < num_cols:
@@ -777,7 +905,6 @@ def main():
         sid = args.spreadsheet_id
         print(f"Updating existing spreadsheet: {sid}")
         upload_data(sid, rows)
-        # Re-apply formatting (the clear + rewrite removes conditional formats)
         apply_formatting(sid, num_rows=len(rows), num_cols=len(rows[0]))
     else:
         sid = create_spreadsheet()

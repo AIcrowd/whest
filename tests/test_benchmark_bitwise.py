@@ -14,7 +14,7 @@ from benchmarks._bitwise import (
     _analytical_cost,
     benchmark_bitwise,
 )
-from benchmarks._perf import TimingResult
+from benchmarks._perf import InstructionsResult
 
 
 class TestOpsLists:
@@ -67,8 +67,10 @@ class TestAnalyticalCost:
 
 class TestBenchmarkBitwise:
     def test_returns_tuple_with_alphas_and_details(self):
-        mock_result = TimingResult(elapsed_ns=5_000_000)
-        with patch("benchmarks._bitwise.measure_flops", return_value=mock_result):
+        mock_result = InstructionsResult(instructions=5_000_000)
+        with patch(
+            "benchmarks._bitwise.measure_instructions", return_value=mock_result
+        ):
             alphas, details = benchmark_bitwise(n=1_000, repeats=1)
 
         assert isinstance(alphas, dict)
@@ -77,8 +79,10 @@ class TestBenchmarkBitwise:
         assert set(details.keys()) == set(BITWISE_OPS)
 
     def test_values_are_floats(self):
-        mock_result = TimingResult(elapsed_ns=2_000_000)
-        with patch("benchmarks._bitwise.measure_flops", return_value=mock_result):
+        mock_result = InstructionsResult(instructions=2_000_000)
+        with patch(
+            "benchmarks._bitwise.measure_instructions", return_value=mock_result
+        ):
             alphas, _details = benchmark_bitwise(n=1_000, repeats=1)
 
         for key, val in alphas.items():
@@ -87,21 +91,26 @@ class TestBenchmarkBitwise:
     def test_alpha_calculation(self):
         # elapsed_ns=10_000_000, n=1000, repeats=5
         # alpha = 10_000_000 / (1000 * 5) = 2000.0
-        mock_result = TimingResult(elapsed_ns=10_000_000)
-        with patch("benchmarks._bitwise.measure_flops", return_value=mock_result):
+        mock_result = InstructionsResult(instructions=10_000_000)
+        with patch(
+            "benchmarks._bitwise.measure_instructions", return_value=mock_result
+        ):
             alphas, _details = benchmark_bitwise(n=1_000, repeats=5)
 
         for val in alphas.values():
             assert val == pytest.approx(2000.0)
 
     def test_details_schema(self):
-        mock_result = TimingResult(elapsed_ns=1_000_000)
+        mock_result = InstructionsResult(instructions=1_000_000)
         n = 1_000
-        with patch("benchmarks._bitwise.measure_flops", return_value=mock_result):
+        with patch(
+            "benchmarks._bitwise.measure_instructions", return_value=mock_result
+        ):
             _alphas, details = benchmark_bitwise(n=n, repeats=5)
 
         expected_keys = {
             "category",
+            "measurement_mode",
             "analytical_formula",
             "analytical_flops",
             "benchmark_size",
@@ -114,7 +123,8 @@ class TestBenchmarkBitwise:
         # Check a unary op
         d = details["bitwise_not"]
         assert set(d.keys()) == expected_keys
-        assert d["category"] == "timed_unary"
+        assert d["category"] == "instructions_unary"
+        assert d["measurement_mode"] == "instructions"
         assert d["analytical_formula"] == "n"
         assert d["analytical_flops"] == n
         assert d["benchmark_size"] == f"x: ({n},)"
@@ -123,68 +133,52 @@ class TestBenchmarkBitwise:
 
         # Check a binary op
         d = details["bitwise_and"]
-        assert d["category"] == "timed_binary"
+        assert d["category"] == "instructions_binary"
         assert d["benchmark_size"] == f"a: ({n},), b: ({n},)"
 
         # Check a shift op
         d = details["left_shift"]
-        assert d["category"] == "timed_shift"
+        assert d["category"] == "instructions_shift"
         assert d["benchmark_size"] == f"a: ({n},), b: ({n},) (values 0-10)"
 
         # Check isnat
         d = details["isnat"]
-        assert d["category"] == "timed_special"
+        assert d["category"] == "instructions_special"
+        assert d["measurement_mode"] == "instructions"
         assert "datetime64" in d["benchmark_size"]
 
-    def test_forces_timing_mode(self):
-        """Verify MECHESTIM_FORCE_TIMING is set during benchmark."""
-        import os
-
-        captured_values = []
+    def test_uses_instructions_mode(self):
+        """Verify measure_instructions is called (not measure_flops)."""
+        call_count = [0]
 
         def fake_measure(setup, bench, repeats=10):
-            captured_values.append(os.environ.get("MECHESTIM_FORCE_TIMING"))
-            return TimingResult(elapsed_ns=1_000)
+            call_count[0] += 1
+            return InstructionsResult(instructions=1_000)
 
-        # Ensure env is clean before test
-        orig = os.environ.pop("MECHESTIM_FORCE_TIMING", None)
-        try:
-            with patch("benchmarks._bitwise.measure_flops", side_effect=fake_measure):
-                benchmark_bitwise(n=100, repeats=1)
+        with patch(
+            "benchmarks._bitwise.measure_instructions", side_effect=fake_measure
+        ):
+            benchmark_bitwise(n=100, repeats=1)
 
-            # All captured values should be "1"
-            assert all(v == "1" for v in captured_values)
-            # After benchmark, env should be restored (removed)
-            assert "MECHESTIM_FORCE_TIMING" not in os.environ
-        finally:
-            if orig is not None:
-                os.environ["MECHESTIM_FORCE_TIMING"] = orig
+        # measure_instructions should have been called for each op × distribution
+        assert call_count[0] > 0
 
-    def test_restores_env_on_exception(self):
-        """Verify MECHESTIM_FORCE_TIMING is restored even on error."""
-        import os
-
-        orig = os.environ.pop("MECHESTIM_FORCE_TIMING", None)
-        try:
-            os.environ["MECHESTIM_FORCE_TIMING"] = "original_value"
-            with patch(
-                "benchmarks._bitwise.measure_flops",
-                side_effect=RuntimeError("boom"),
-            ):
-                alphas, details = benchmark_bitwise(n=100, repeats=1)
-            # RuntimeError is caught inside the loop, so we get empty results
-            # but the env var should be restored
-            assert os.environ.get("MECHESTIM_FORCE_TIMING") == "original_value"
-        finally:
-            if orig is not None:
-                os.environ["MECHESTIM_FORCE_TIMING"] = orig
-            else:
-                os.environ.pop("MECHESTIM_FORCE_TIMING", None)
+    def test_handles_runtime_error(self):
+        """Verify RuntimeError in measurement is caught gracefully."""
+        with patch(
+            "benchmarks._bitwise.measure_instructions",
+            side_effect=RuntimeError("boom"),
+        ):
+            alphas, details = benchmark_bitwise(n=100, repeats=1)
+        # RuntimeError is caught inside the loop, so we get empty results
+        assert len(alphas) == 0
 
     def test_dtype_param_ignored(self):
         """dtype param exists for interface consistency but ops always use int64."""
-        mock_result = TimingResult(elapsed_ns=1_000_000)
-        with patch("benchmarks._bitwise.measure_flops", return_value=mock_result):
+        mock_result = InstructionsResult(instructions=1_000_000)
+        with patch(
+            "benchmarks._bitwise.measure_instructions", return_value=mock_result
+        ):
             a1, _ = benchmark_bitwise(n=100, dtype="int64", repeats=1)
             a2, _ = benchmark_bitwise(n=100, dtype="float64", repeats=1)
         # Should produce identical results since dtype is ignored

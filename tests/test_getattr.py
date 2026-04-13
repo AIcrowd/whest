@@ -11,10 +11,12 @@ def test_blacklisted_top_level_gives_notes():
     blacklisted = [
         n
         for n, e in REGISTRY.items()
-        if e["category"] == "blacklisted" and e["module"] == "numpy"
+        if e["category"] == "blacklisted"
+        and e["module"] == "numpy"
+        and n not in dir(me)
     ]
     if not blacklisted:
-        pytest.skip("No blacklisted top-level functions")
+        pytest.skip("No blacklisted top-level functions that aren't implemented")
     name = blacklisted[0]
     with pytest.raises(AttributeError, match="blacklisted"):
         getattr(me, name)

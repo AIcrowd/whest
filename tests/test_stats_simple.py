@@ -47,12 +47,11 @@ class TestUniformPpf:
 
     def test_flop_cost(self):
         from mechestim.stats import uniform
-        from mechestim.stats._uniform import _UNIFORM_PPF_COST
 
         q = np.random.rand(100)
         with BudgetContext(flop_budget=10**6) as b:
             uniform.ppf(q)
-            assert b.flops_used == _UNIFORM_PPF_COST * 100
+            assert b.flops_used == 100
 
 
 # ============================================================
@@ -94,12 +93,11 @@ class TestExponPpf:
 
     def test_flop_cost(self):
         from mechestim.stats import expon
-        from mechestim.stats._expon import _EXPON_PDF_COST
 
         x = np.random.rand(200)
         with BudgetContext(flop_budget=10**6) as b:
             expon.pdf(x)
-            assert b.flops_used == _EXPON_PDF_COST * 200
+            assert b.flops_used == 200
 
 
 # ============================================================
@@ -141,12 +139,11 @@ class TestCauchyPpf:
 
     def test_flop_cost(self):
         from mechestim.stats import cauchy
-        from mechestim.stats._cauchy import _CAUCHY_CDF_COST
 
         x = np.random.randn(50)
         with BudgetContext(flop_budget=10**6) as b:
             cauchy.cdf(x)
-            assert b.flops_used == _CAUCHY_CDF_COST * 50
+            assert b.flops_used == 50
 
 
 # ============================================================
@@ -188,12 +185,11 @@ class TestLogisticPpf:
 
     def test_flop_cost(self):
         from mechestim.stats import logistic
-        from mechestim.stats._logistic import _LOGISTIC_PPF_COST
 
         q = np.random.rand(80)
         with BudgetContext(flop_budget=10**6) as b:
             logistic.ppf(q)
-            assert b.flops_used == _LOGISTIC_PPF_COST * 80
+            assert b.flops_used == 80
 
 
 # ============================================================
@@ -235,9 +231,8 @@ class TestLaplacePpf:
 
     def test_flop_cost(self):
         from mechestim.stats import laplace
-        from mechestim.stats._laplace import _LAPLACE_PDF_COST
 
         x = np.random.randn(150)
         with BudgetContext(flop_budget=10**6) as b:
             laplace.pdf(x)
-            assert b.flops_used == _LAPLACE_PDF_COST * 150
+            assert b.flops_used == 150

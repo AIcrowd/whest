@@ -85,7 +85,7 @@ def hamming_cost(n: int) -> int:
 
     Notes
     -----
-    One cosine evaluation plus one linear combination per sample.
+    One FMA (cosine + scale) per sample, counted as 1 op under FMA=1.
     """
     return max(FMA_COST * n, 1)
 
@@ -115,7 +115,7 @@ def hanning_cost(n: int) -> int:
 
     Notes
     -----
-    One cosine evaluation plus one linear combination per sample.
+    One FMA (cosine + scale) per sample, counted as 1 op under FMA=1.
     """
     return max(FMA_COST * n, 1)
 

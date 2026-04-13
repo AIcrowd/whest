@@ -75,22 +75,24 @@ def test_norm_cost_1d_ord_0():
 
 
 def test_norm_cost_1d_p_norm():
-    # ord=3 triggers the else: 2 * numel
-    assert norm_cost((10,), ord=3) == 20
+    # FMA=1: all vector norms cost numel
+    assert norm_cost((10,), ord=3) == 10
 
 
 def test_norm_cost_2d_fro():
-    assert norm_cost((4, 5), ord="fro") == 2 * 20
+    # FMA=1: Frobenius norm costs numel
+    assert norm_cost((4, 5), ord="fro") == 20
 
 
 def test_norm_cost_2d_nuc():
+    # SVD-based: 4x baked in for weight=4 consistency
     m, n = 4, 5
-    assert norm_cost((m, n), ord="nuc") == m * n * min(m, n)
+    assert norm_cost((m, n), ord="nuc") == 4 * m * n * min(m, n)
 
 
 def test_norm_cost_2d_minus2():
     m, n = 4, 5
-    assert norm_cost((m, n), ord=-2) == m * n * min(m, n)
+    assert norm_cost((m, n), ord=-2) == 4 * m * n * min(m, n)
 
 
 def test_norm_cost_2d_1():
@@ -125,23 +127,25 @@ def test_vector_norm_cost_special_ords():
 
 
 def test_matrix_norm_cost_fro():
+    # FMA=1: Frobenius norm costs numel (one pass: square + accumulate)
     m, n = 3, 4
     assert matrix_norm_cost((m, n), ord="fro") == m * n
 
 
 def test_matrix_norm_cost_nuc():
+    # SVD-based: 4x baked in for weight=4 consistency
     m, n = 3, 4
-    assert matrix_norm_cost((m, n), ord="nuc") == m * n * min(m, n)
+    assert matrix_norm_cost((m, n), ord="nuc") == 4 * m * n * min(m, n)
 
 
 def test_matrix_norm_cost_2():
     m, n = 3, 4
-    assert matrix_norm_cost((m, n), ord=2) == m * n * min(m, n)
+    assert matrix_norm_cost((m, n), ord=2) == 4 * m * n * min(m, n)
 
 
 def test_matrix_norm_cost_minus2():
     m, n = 3, 4
-    assert matrix_norm_cost((m, n), ord=-2) == m * n * min(m, n)
+    assert matrix_norm_cost((m, n), ord=-2) == 4 * m * n * min(m, n)
 
 
 def test_matrix_norm_cost_1():

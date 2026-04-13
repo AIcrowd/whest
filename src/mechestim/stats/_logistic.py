@@ -10,10 +10,6 @@ import numpy as _np
 
 from mechestim.stats._base import ContinuousDistribution
 
-_LOGISTIC_PDF_COST = 8
-_LOGISTIC_CDF_COST = 5
-_LOGISTIC_PPF_COST = 5
-
 
 class LogisticDistribution(ContinuousDistribution):
     """Logistic continuous random variable.
@@ -43,7 +39,7 @@ class LogisticDistribution(ContinuousDistribution):
         ---------
         8 * numel(x) FLOPs
         """
-        return self._deduct_and_call("pdf", _LOGISTIC_PDF_COST, x, loc=loc, scale=scale)
+        return self._deduct_and_call("pdf", 1, x, loc=loc, scale=scale)
 
     def cdf(self, x, loc=0, scale=1):
         """Cumulative distribution function at *x*.
@@ -54,7 +50,7 @@ class LogisticDistribution(ContinuousDistribution):
         ---------
         5 * numel(x) FLOPs
         """
-        return self._deduct_and_call("cdf", _LOGISTIC_CDF_COST, x, loc=loc, scale=scale)
+        return self._deduct_and_call("cdf", 1, x, loc=loc, scale=scale)
 
     def ppf(self, q, loc=0, scale=1):
         """Percent-point function (inverse CDF) at *q*.
@@ -65,7 +61,7 @@ class LogisticDistribution(ContinuousDistribution):
         ---------
         5 * numel(q) FLOPs
         """
-        return self._deduct_and_call("ppf", _LOGISTIC_PPF_COST, q, loc=loc, scale=scale)
+        return self._deduct_and_call("ppf", 1, q, loc=loc, scale=scale)
 
     def _compute_pdf(self, x, loc=0, scale=1):
         z = (x - loc) / scale

@@ -239,6 +239,6 @@ class TestIntegration:
             me.zeros((10, 10))  # free
             me.ones((10, 10))  # free
             me.full((10, 10), 3.14)  # numel(output)=100
-            me.diag(np.arange(10, dtype=float))  # numel(input)=10
-            me.diagflat(np.arange(5, dtype=float))  # numel(input)=5
-            assert budget.flops_used == 100 + 10 + 5
+            me.diag(np.arange(10, dtype=float))  # numel(output)=100
+            me.diagflat(np.arange(5, dtype=float))  # numel(output)=25
+            assert budget.flops_used == 100 + 100 + 25
