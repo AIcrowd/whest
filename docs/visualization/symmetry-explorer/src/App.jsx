@@ -104,7 +104,13 @@ export default function App() {
           <div className="einsum-banner">
             <span className="einsum-label">einsum</span>
             <code className="einsum-expr">{example.formula}</code>
-            <span className="einsum-group-tag">{group.vGroupName}</span>
+            <span className="einsum-group-tag">
+              {group.vGroupName !== 'trivial'
+                ? group.vGroupName
+                : group.wGroupName !== 'trivial'
+                  ? `W: ${group.wGroupName}`
+                  : 'trivial'}
+            </span>
           </div>
         )}
 
