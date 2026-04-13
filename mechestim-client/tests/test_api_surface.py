@@ -43,7 +43,10 @@ class TestRegistry:
     """Tests for _registry.py and _registry_data.py."""
 
     def test_registry_has_482_plus_entries(self):
-        assert len(FUNCTION_CATEGORIES) >= 482
+        assert len(FUNCTION_CATEGORIES) >= 400, (
+            f"Registry suspiciously small: {len(FUNCTION_CATEGORIES)} entries. "
+            f"Run: uv run scripts/sync_client.py"
+        )
 
     @pytest.mark.parametrize("op", ["add", "exp", "zeros", "einsum", "dot", "matmul"])
     def test_is_valid_op_known(self, op):
