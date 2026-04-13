@@ -313,6 +313,7 @@ from mechestim._pointwise import (  # noqa: F401
     logical_or,
     logical_xor,
     matmul,
+    matvec,
     max,
     maximum,
     mean,
@@ -379,7 +380,6 @@ from mechestim._pointwise import (  # noqa: F401
     var,
     vdot,
     vecdot,
-    matvec,
     vecmat,
 )
 
