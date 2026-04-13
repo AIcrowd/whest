@@ -69,6 +69,51 @@ export const EXAMPLES = [
     color: '#bb86fc',
   },
 
+  // ── Declared cyclic C3: Reynolds operator ──
+  {
+    id: 'cyclic-tensor',
+    name: 'Cyclic 3-tensor (C₃)',
+    formula: "T[i,j,k] = T[j,k,i]",
+    subscripts: ['ijk'],
+    output: 'ijk',
+    operandNames: ['T'],
+    perOpSymmetry: 'cyclic',
+    description: 'Declared C₃ symmetry via PermutationGroup — T is invariant under cyclic rotation but NOT transposition',
+    expectedGroup: 'C3{i,j,k}',
+    color: '#F59E0B',
+    declared: true,
+  },
+
+  // ── Declared block swap ──
+  {
+    id: 'block-swap',
+    name: 'Block swap (ij)↔(kl)',
+    formula: "T[i,j,k,l] = T[k,l,i,j]",
+    subscripts: ['ijkl'],
+    output: 'ijkl',
+    operandNames: ['T'],
+    perOpSymmetry: 'block-swap',
+    description: 'Block swap via Cycle(0,2)(1,3) — axes swap in pairs, like 2-electron integrals (ij|kl)=(kl|ij)',
+    expectedGroup: 'S2{blocks}',
+    color: '#EC4899',
+    declared: true,
+  },
+
+  // ── Declared dihedral D4 ──
+  {
+    id: 'dihedral-grid',
+    name: 'Dihedral D₄ grid',
+    formula: "T[i,j,k,l] — D₄ symmetry",
+    subscripts: ['ijkl'],
+    output: 'ijkl',
+    operandNames: ['T'],
+    perOpSymmetry: 'dihedral',
+    description: 'Dihedral D₄ on a 4-tensor — rotations + reflections of a square. 8 of 24 permutations valid',
+    expectedGroup: 'D4{i,j,k,l}',
+    color: '#8B5CF6',
+    declared: true,
+  },
+
   // ── W-side symmetry: contracted indices ──
   {
     id: 'trace-product',
