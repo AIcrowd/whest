@@ -402,6 +402,99 @@ export function buildGroup(sigmaResults, graph) {
   };
 }
 
+// ─── Declared Symmetry (user-provided, not detected) ────────────
+
+/**
+ * Build a group directly from a declared symmetry type.
+ * Used for examples where the user declares symmetry on a single tensor
+ * (not auto-detected from identical operands in an einsum).
+ */
+export function buildDeclaredGroup(example) {
+  const labels = [...example.output].sort();
+  const k = labels.length;
+  const sym = Array.isArray(example.perOpSymmetry)
+    ? example.perOpSymmetry[0]
+    : example.perOpSymmetry;
+
+  let vGens = [];
+
+  if (sym === 'symmetric') {
+    // S_k: adjacent transpositions
+    for (let i = 0; i < k - 1; i++) {
+      const arr = Array.from({ length: k }, (_, j) => j);
+      arr[i] = i + 1;
+      arr[i + 1] = i;
+      vGens.push(new Permutation(arr));
+    }
+  } else if (sym === 'cyclic') {
+    // C_k: single k-cycle (0 → 1 → 2 → ... → k-1 → 0)
+    const arr = Array.from({ length: k }, (_, j) => (j + 1) % k);
+    vGens.push(new Permutation(arr));
+  } else if (sym === 'dihedral') {
+    // D_k: rotation + reflection
+    const rotation = Array.from({ length: k }, (_, j) => (j + 1) % k);
+    vGens.push(new Permutation(rotation));
+    if (k >= 3) {
+      const reflection = [0, ...Array.from({ length: k - 1 }, (_, j) => k - 1 - j)];
+      vGens.push(new Permutation(reflection));
+    }
+  } else if (sym === 'block-swap') {
+    // Block swap: (0,1) ↔ (2,3) via (0 2)(1 3)
+    if (k === 4) {
+      vGens.push(new Permutation([2, 3, 0, 1]));
+    }
+  }
+
+  if (vGens.length === 0) {
+    vGens = [Permutation.identity(k)];
+  }
+
+  const vElements = dimino(vGens);
+  const vOrder = vElements.length;
+  const vDegree = k;
+
+  // Classify the group name
+  const factorial = (n) => n <= 1 ? 1 : n * factorial(n - 1);
+  const labelSet = `{${labels.join(',')}}`;
+  let vGroupName = 'trivial';
+  if (vDegree >= 2 && vOrder > 1) {
+    if (vOrder === factorial(vDegree)) {
+      vGroupName = `S${vDegree}${labelSet}`;
+    } else if (vOrder === vDegree && vDegree >= 3) {
+      vGroupName = `C${vDegree}${labelSet}`;
+    } else if (vOrder === 2 * vDegree && vDegree >= 3) {
+      vGroupName = `D${vDegree}${labelSet}`;
+    } else if (vOrder === 2) {
+      const gen = vGens[0];
+      const cycles = gen.cyclicForm();
+      const allTwoCycles = cycles.every(c => c.length === 2);
+      if (allTwoCycles && cycles.length > 1) {
+        const orbitParts = cycles.map(c => `S2{${c.map(i => labels[i]).join(',')}}`);
+        vGroupName = orbitParts.join('\u00d7');
+      } else {
+        vGroupName = `S2${labelSet}`;
+      }
+    } else {
+      const genStr = vGens.map(g => g.cycleNotation(labels)).join(', ');
+      vGroupName = `PermGroup\u27e8${genStr}\u27e9`;
+    }
+  }
+
+  return {
+    vLabels: labels,
+    wLabels: [],
+    vGenerators: vGens,
+    vGeneratorsAll: vGens,
+    wGenerators: [],
+    vElements,
+    wElements: [],
+    vOrder,
+    vGroupName,
+    vDegree,
+    declared: true,
+  };
+}
+
 // ─── Burnside Counting ───────────────────────────────────────────
 
 export function computeBurnside(group, dimensionN) {
