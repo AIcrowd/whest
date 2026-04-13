@@ -195,6 +195,34 @@ class Permutation:
             return 1
         return reduce(lambda a, b: a * b // math.gcd(a, b), lengths)
 
+    def __call__(self, i: int) -> int:
+        """Apply the permutation: ``perm(i)`` returns the image of ``i``."""
+        return self._array_form[i]
+
+    def support(self) -> set[int]:
+        """Set of non-fixed points."""
+        return {i for i in range(self.size) if self._array_form[i] != i}
+
+    def parity(self) -> int:
+        """Parity: 0 if even, 1 if odd."""
+        return sum(len(c) - 1 for c in self.cyclic_form) % 2
+
+    def signature(self) -> int:
+        """Signature: +1 if even, -1 if odd."""
+        return 1 if self.parity() == 0 else -1
+
+    def transpositions(self) -> list[tuple[int, int]]:
+        """Decompose into a product of transpositions.
+
+        Each cycle (a, b, c, ...) becomes [(a, b), (a, c), ..., (a, ...)].
+        Applying them left-to-right (each prepended) reconstructs the permutation.
+        """
+        result: list[tuple[int, int]] = []
+        for cycle in self.cyclic_form:
+            for i in range(1, len(cycle)):
+                result.append((cycle[0], cycle[i]))
+        return result
+
     # --- Sympy bridge ---
 
     def as_sympy(self):

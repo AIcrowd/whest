@@ -313,3 +313,63 @@ class TestPermutationCycleNotation:
     def test_from_cycle_object(self):
         p = Permutation(Cycle(0, 2)(1, 3))
         assert p.array_form == [2, 3, 0, 1]
+
+
+class TestPermutationNewMethods:
+    def test_call(self):
+        p = Permutation([1, 2, 0])
+        assert p(0) == 1
+        assert p(1) == 2
+        assert p(2) == 0
+
+    def test_call_identity(self):
+        e = Permutation.identity(3)
+        assert e(0) == 0
+        assert e(2) == 2
+
+    def test_support(self):
+        assert Permutation([2, 3, 0, 1]).support() == {0, 1, 2, 3}
+        assert Permutation([0, 2, 1, 3]).support() == {1, 2}
+
+    def test_support_identity(self):
+        assert Permutation.identity(5).support() == set()
+
+    def test_parity_even(self):
+        assert Permutation([1, 2, 0]).parity() == 0
+
+    def test_parity_odd(self):
+        assert Permutation([1, 0, 2]).parity() == 1
+
+    def test_parity_identity(self):
+        assert Permutation.identity(3).parity() == 0
+
+    def test_parity_two_disjoint_transpositions(self):
+        assert Permutation([1, 0, 3, 2]).parity() == 0
+
+    def test_signature(self):
+        assert Permutation([1, 2, 0]).signature() == 1
+        assert Permutation([1, 0, 2]).signature() == -1
+        assert Permutation.identity(3).signature() == 1
+
+    def test_transpositions_3cycle(self):
+        t = Permutation([1, 2, 0]).transpositions()
+        assert len(t) == 2
+        result = Permutation.identity(3)
+        for a, b in t:
+            result = Permutation.from_cycle(3, [a, b]) * result
+        assert result == Permutation([1, 2, 0])
+
+    def test_transpositions_identity(self):
+        assert Permutation.identity(3).transpositions() == []
+
+    def test_transpositions_single_swap(self):
+        t = Permutation([1, 0, 2]).transpositions()
+        assert t == [(0, 1)]
+
+    def test_transpositions_two_disjoint(self):
+        t = Permutation([1, 0, 3, 2]).transpositions()
+        assert len(t) == 2
+        result = Permutation.identity(4)
+        for a, b in t:
+            result = Permutation.from_cycle(4, [a, b]) * result
+        assert result == Permutation([1, 0, 3, 2])
