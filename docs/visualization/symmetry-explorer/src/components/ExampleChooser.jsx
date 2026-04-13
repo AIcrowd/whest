@@ -143,7 +143,7 @@ function generateCustomPythonCode(variables, outputStr, dimensionN) {
 
   lines.push('');
   const subs = variables.map(v => v.subscript).join(',');
-  const out = outputStr.trim() || 'ab';
+  const out = outputStr.trim();
   const args = variables.map(v => v.name.trim() || 'X').join(', ');
   lines.push(`path, info = me.einsum_path('${subs}->${out}', ${args})`);
   lines.push(`print(info)`);
@@ -246,8 +246,7 @@ export default function ExampleChooser({
 
     const allInputLabels = new Set(variables.flatMap(v => [...v.subscript]));
     const outLabels = outputStr.trim();
-    if (!outLabels) { setError('Output subscript is empty'); return; }
-    if (!/^[a-z]+$/.test(outLabels)) { setError('Output must be lowercase letters'); return; }
+    if (outLabels && !/^[a-z]+$/.test(outLabels)) { setError('Output must be lowercase letters'); return; }
     for (const ch of outLabels) {
       if (!allInputLabels.has(ch)) {
         setError(`Output label "${ch}" not found in any input subscript`);
@@ -461,7 +460,7 @@ export default function ExampleChooser({
               className="var-input var-output"
               value={outputStr}
               onChange={e => setOutputStr(e.target.value.toLowerCase())}
-              placeholder="ab"
+              placeholder="ab (empty = scalar)"
               maxLength={12}
             />
             <button className="auto-btn" onClick={autoOutput} title="Auto-detect from subscripts">
