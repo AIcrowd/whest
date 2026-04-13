@@ -212,11 +212,11 @@ actual_cost = analytical_formula(shape) × weight(op_name)
 
 | Operation | Analytical formula | Weight | Effective cost (256x256) |
 |-----------|--------------------|--------|----------------|
-| `add` | $\text{numel}(\text{output})$ | 1.00 | 65,536 |
-| `exp` | $\text{numel}(\text{output})$ | 10.27 | 673,095 |
-| `sin` | $\text{numel}(\text{output})$ | 18.39 | 1,205,346 |
-| `matmul` | $n^3$ | 0.46 | 7,700,364 |
-| `linalg.cholesky` | $n^3/3$ | 0.76 | 4,244,635 |
+| `add` | $\text{numel}(\text{output})$ | 1 | 65,536 |
+| `exp` | $\text{numel}(\text{output})$ | 16 | 1,048,576 |
+| `sin` | $\text{numel}(\text{output})$ | 16 | 1,048,576 |
+| `matmul` | $m \cdot k \cdot n$ | 1 | 16,777,216 |
+| `linalg.cholesky` | $n^3$ | 4 | 67,108,864 |
 
 Weights are measured using the overhead-subtracted correction-factor
 methodology described in [FLOP Weight Calibration Results](../reference/empirical-weights.md).
@@ -271,10 +271,10 @@ The JSON file must have a `"weights"` key mapping operation names to floats:
 {
   "weights": {
     "add": 1.0,
-    "exp": 10.2723,
-    "sin": 18.3903,
-    "matmul": 0.4568,
-    "linalg.cholesky": 0.7606
+    "exp": 16.0,
+    "sin": 16.0,
+    "matmul": 1.0,
+    "linalg.cholesky": 4.0
   }
 }
 ```

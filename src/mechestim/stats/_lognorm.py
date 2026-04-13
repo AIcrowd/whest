@@ -12,10 +12,6 @@ from mechestim.stats._base import ContinuousDistribution
 from mechestim.stats._erf import _erf
 from mechestim.stats._ndtri import _ndtri
 
-_LOGNORM_PDF_COST = 15
-_LOGNORM_CDF_COST = 25
-_LOGNORM_PPF_COST = 45
-
 _SQRT2 = _np.sqrt(2.0)
 _INV_SQRT_2PI = 1.0 / _np.sqrt(2.0 * _np.pi)
 
@@ -69,9 +65,7 @@ class LognormDistribution(ContinuousDistribution):
         MechestimArray
             PDF evaluated at *x*.
         """
-        return self._deduct_and_call(
-            "pdf", _LOGNORM_PDF_COST, x, s, loc=loc, scale=scale
-        )
+        return self._deduct_and_call("pdf", 1, x, s, loc=loc, scale=scale)
 
     def cdf(self, x, s, loc=0, scale=1):
         """Cumulative distribution function at *x*.
@@ -82,9 +76,7 @@ class LognormDistribution(ContinuousDistribution):
         ---------
         25 * numel(x) FLOPs
         """
-        return self._deduct_and_call(
-            "cdf", _LOGNORM_CDF_COST, x, s, loc=loc, scale=scale
-        )
+        return self._deduct_and_call("cdf", 1, x, s, loc=loc, scale=scale)
 
     def ppf(self, q, s, loc=0, scale=1):
         """Percent-point function (inverse CDF) at *q*.
@@ -95,17 +87,13 @@ class LognormDistribution(ContinuousDistribution):
         ---------
         45 * numel(q) FLOPs
         """
-        return self._deduct_and_call(
-            "ppf", _LOGNORM_PPF_COST, q, s, loc=loc, scale=scale
-        )
+        return self._deduct_and_call("ppf", 1, q, s, loc=loc, scale=scale)
 
     def _compute_pdf(self, x, s, loc=0, scale=1):
         y = (x - loc) / scale
         safe_y = _np.where(y > 0, y, 1.0)  # avoid log(0)
         lny = _np.log(safe_y)
-        result = (
-            _INV_SQRT_2PI / (s * safe_y * scale) * _np.exp(-0.5 * (lny / s) ** 2)
-        )
+        result = _INV_SQRT_2PI / (s * safe_y * scale) * _np.exp(-0.5 * (lny / s) ** 2)
         return _np.where(y > 0, result, 0.0)
 
     def _compute_cdf(self, x, s, loc=0, scale=1):

@@ -204,10 +204,13 @@ methodology and validation sections:
       "perf_events": ["fp_arith_inst_retired.scalar_double", "..."]
     },
     "methodology": {
-      "version": "2.0",
-      "formula": "weight(op) = alpha(op) / alpha(add), ...",
-      "baseline_alpha": 1.564071,
-      "note": "analytical_FLOPs from mechestim registry; ..."
+      "version": "3.0",
+      "formula": "weight(op) = max(alpha_raw(op) - overhead_for_category, 0)",
+      "baseline_alpha_add_raw": 1.6001,
+      "baseline_alpha_abs_raw": 0.3001,
+      "overhead_ufunc_unary": 0.3001,
+      "overhead_ufunc_binary": 0.6001,
+      "note": "ufunc overhead subtracted per category; FMA=1"
     },
     "validation": {
       "absolute_correction_factors": {"add": 2.2001, "exp": 22.6001, "...": "..."},
@@ -225,13 +228,13 @@ methodology and validation sections:
     }
   },
   "weights": {
-    "abs": 0.2728,
+    "abs": 1.0,
     "add": 1.0,
-    "exp": 10.2723,
-    "sin": 18.3903,
-    "matmul": 0.4568,
-    "linalg.cholesky": 0.7606,
-    "fft.fft": 0.3796
+    "exp": 16.0,
+    "sin": 16.0,
+    "matmul": 1.0,
+    "linalg.cholesky": 4.0,
+    "fft.fft": 1.0
   }
 }
 ```
@@ -298,7 +301,7 @@ from mechestim._weights import load_weights, reset_weights, get_weight
 load_weights("/path/to/weights.json")
 
 # Check a weight
-print(get_weight("exp"))   # 10.2723
+print(get_weight("exp"))   # 16.0
 print(get_weight("add"))   # 1.0
 print(get_weight("foo"))   # 1.0 (unknown ops default to 1.0)
 

@@ -130,7 +130,7 @@ GENERATED_PAGES: dict[str, dict] = {
 
             | Operation | Cost Formula |
             |-----------|-------------|
-            | `polyval` | $2 \\cdot m \\cdot \\text{deg}$ (Horner's method) |
+            | `polyval` | $m \\cdot \\text{deg}$ (Horner's method, FMA=1) |
             | `polyadd`, `polysub` | $\\max(n_1, n_2)$ |
             | `polymul`, `polydiv` | $n_1 \\cdot n_2$ |
             | `polyfit` | $2m \\cdot (\\text{deg}+1)^2$ |
@@ -336,8 +336,8 @@ CUSTOM_COSTS: dict[str, tuple[str, str]] = {
         r"$\text{op\_factor} \cdot \prod_i d_i$",
     ),
     "einsum_path": ("0 (planning only)", "$0$"),
-    "dot": ("2 * m * k * n", r"$2 \cdot m \cdot k \cdot n$"),
-    "matmul": ("2 * m * k * n", r"$2 \cdot m \cdot k \cdot n$"),
+    "dot": ("m * k * n (FMA=1)", r"$m \cdot k \cdot n$"),
+    "matmul": ("m * k * n (FMA=1)", r"$m \cdot k \cdot n$"),
     "inner": ("n", "$n$"),
     "outer": ("m * n", r"$m \cdot n$"),
     "tensordot": ("product of contracted dims * output size", r"$\prod_i d_i$"),
@@ -358,18 +358,18 @@ CUSTOM_COSTS: dict[str, tuple[str, str]] = {
     "trapz": ("numel(input)", r"$\text{numel}(\text{input})$"),
     "linalg.svd": ("m * n * k", r"$m \cdot n \cdot k$"),
     "linalg.svdvals": ("m * n * min(m,n)", r"$m \cdot n \cdot \min(m,n)$"),
-    "linalg.cholesky": ("n^3 / 3", r"$n^3 / 3$"),
-    "linalg.qr": ("2mn^2 - 2n^3/3", r"$2mn^2 - 2n^3/3$"),
-    "linalg.eig": ("10n^3", r"$10n^3$"),
-    "linalg.eigh": ("4n^3 / 3", r"$4n^3 / 3$"),
-    "linalg.eigvals": ("10n^3", r"$10n^3$"),
-    "linalg.eigvalsh": ("4n^3 / 3", r"$4n^3 / 3$"),
+    "linalg.cholesky": ("n^3", r"$n^3$"),
+    "linalg.qr": ("m * n * min(m,n)", r"$m \cdot n \cdot \min(m,n)$"),
+    "linalg.eig": ("n^3", r"$n^3$"),
+    "linalg.eigh": ("n^3", r"$n^3$"),
+    "linalg.eigvals": ("n^3", r"$n^3$"),
+    "linalg.eigvalsh": ("n^3", r"$n^3$"),
     "linalg.cross": ("delegates to me.cross", r"delegates to `cross`"),
     "linalg.matmul": ("delegates to me.matmul", r"delegates to `matmul`"),
     "linalg.outer": ("delegates to me.outer", r"delegates to `outer`"),
     "linalg.tensordot": ("delegates to me.tensordot", r"delegates to `tensordot`"),
     "linalg.vecdot": ("delegates to me.vecdot", r"delegates to `vecdot`"),
-    "linalg.solve": ("2n^3/3 + n^2*nrhs", r"$2n^3/3 + n^2 \cdot n_{\text{rhs}}$"),
+    "linalg.solve": ("n^3", r"$n^3$"),
     "linalg.inv": ("n^3", r"$n^3$"),
     "linalg.lstsq": ("m * n * min(m,n)", r"$m \cdot n \cdot \min(m,n)$"),
     "linalg.pinv": ("m * n * min(m,n)", r"$m \cdot n \cdot \min(m,n)$"),
@@ -379,7 +379,7 @@ CUSTOM_COSTS: dict[str, tuple[str, str]] = {
     "linalg.det": ("n^3", r"$n^3$"),
     "linalg.slogdet": ("n^3", r"$n^3$"),
     "linalg.norm": ("depends on ord", r"varies"),
-    "linalg.vector_norm": ("n or 2n", r"$n$ or $2n$"),
+    "linalg.vector_norm": ("numel", r"$n$"),
     "linalg.matrix_norm": ("depends on ord", r"varies"),
     "linalg.cond": ("m * n * min(m,n)", r"$m \cdot n \cdot \min(m,n)$"),
     "linalg.matrix_rank": ("m * n * min(m,n)", r"$m \cdot n \cdot \min(m,n)$"),
@@ -399,7 +399,7 @@ CUSTOM_COSTS: dict[str, tuple[str, str]] = {
     "fft.irfftn": ("5(N/2) * ceil(log2(N))", r"$5(N/2) \cdot \lceil\log_2 N\rceil$"),
     "fft.hfft": ("5n * ceil(log2(n))", r"$5n \cdot \lceil\log_2 n\rceil$"),
     "fft.ihfft": ("5n * ceil(log2(n))", r"$5n \cdot \lceil\log_2 n\rceil$"),
-    "polyval": ("2 * m * deg", r"$2 \cdot m \cdot \text{deg}$"),
+    "polyval": ("m * deg (FMA=1)", r"$m \cdot \text{deg}$"),
     "polyadd": ("max(n1, n2)", r"$\max(n_1, n_2)$"),
     "polysub": ("max(n1, n2)", r"$\max(n_1, n_2)$"),
     "polyder": ("n", "$n$"),

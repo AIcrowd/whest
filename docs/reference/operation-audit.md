@@ -8,13 +8,13 @@ Generated from the operation registry (`_registry.py`).
 
 | Category | Count | Cost |
 |----------|-------|------|
-| free | 69 | 0 FLOPs |
-| counted_unary | 72 | $\text{numel}(\text{output})$ |
+| free | 80 | 0 FLOPs |
+| counted_unary | 71 | $\text{numel}(\text{output})$ |
 | counted_binary | 47 | $\text{numel}(\text{output})$ |
 | counted_reduction | 37 | $\text{numel}(\text{input})$ |
-| counted_custom | 230 | Per-operation formula |
-| blacklisted | 29 | Not available |
-| **Total** | **484** | |
+| counted_custom | 238 | Per-operation formula |
+| blacklisted | 35 | Not available |
+| **Total** | **508** | |
 
 ## All Operations
 
@@ -53,9 +53,9 @@ Generated from the operation registry (`_registry.py`).
 | `array_equal` | `me.array_equal` | `np.array_equal` | counted_custom | varies | 🟠 supported | Element-wise equality; cost = numel(a). |
 | `array_equiv` | `me.array_equiv` | `np.array_equiv` | counted_custom | varies | 🟠 supported | Element-wise equivalence; cost = numel(a). |
 | `array_repr` | — | `np.array_repr` | blacklisted | N/A | 🔴 blocked | Return string representation of array. Not supported. |
-| `array_split` | `me.array_split` | `np.array_split` | counted_custom | varies | 🟠 supported | Split array into sub-arrays (possibly unequal). Cost: numel(output). |
+| `array_split` | `me.array_split` | `np.array_split` | free | $0$ | 🟢 supported | Split array into sub-arrays (possibly unequal). Cost: numel(output). |
 | `array_str` | — | `np.array_str` | blacklisted | N/A | 🔴 blocked | Return string representation of data in array. Not supported. |
-| `asarray` | `me.asarray` | `np.asarray` | counted_custom | varies | 🟠 supported | Convert input to array. Cost: numel(input). |
+| `asarray` | `me.asarray` | `np.asarray` | free | $0$ | 🟢 supported | Convert input to array. Cost: numel(input). |
 | `asarray_chkfinite` | `me.asarray_chkfinite` | `np.asarray_chkfinite` | counted_custom | varies | 🟠 supported | Convert to array, raising if NaN or inf. Cost: numel(input). |
 | `asin` | `me.asin` | `np.asin` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Alias for arcsin (NumPy 2.x). |
 | `asinh` | `me.asinh` | `np.asinh` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Alias for arcsinh (NumPy 2.x). |
@@ -69,8 +69,8 @@ Generated from the operation registry (`_registry.py`).
 | `atleast_3d` | `me.atleast_3d` | `np.atleast_3d` | free | $0$ | 🟢 supported | View inputs as arrays with at least three dimensions. |
 | `average` | `me.average` | `np.average` | counted_reduction | $\text{numel}(\text{input})$ | 🟡 supported | Weighted average of array elements. |
 | `bartlett` | `me.bartlett` | `np.bartlett` | counted_custom | $n$ | 🟠 supported | Bartlett window. Cost: n (one linear eval per sample). |
-| `base_repr` | `me.base_repr` | `np.base_repr` | counted_custom | varies | 🟠 supported | Return string representation of number in given base. Cost: numel(input). |
-| `binary_repr` | `me.binary_repr` | `np.binary_repr` | counted_custom | varies | 🟠 supported | Return binary string representation of the input number. Cost: numel(input). |
+| `base_repr` | — | `np.base_repr` | blacklisted | N/A | 🔴 blocked | Return string representation of number in given base. Cost: numel(input). |
+| `binary_repr` | — | `np.binary_repr` | blacklisted | N/A | 🔴 blocked | Return binary string representation of the input number. Cost: numel(input). |
 | `bincount` | `me.bincount` | `np.bincount` | counted_custom | varies | 🟠 supported | Integer counting; cost = numel(x). |
 | `bitwise_and` | `me.bitwise_and` | `np.bitwise_and` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise bitwise AND. |
 | `bitwise_count` | `me.bitwise_count` | `np.bitwise_count` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Count set bits element-wise (popcount). |
@@ -83,9 +83,9 @@ Generated from the operation registry (`_registry.py`).
 | `blackman` | `me.blackman` | `np.blackman` | counted_custom | $3n$ | 🟠 supported | Blackman window. Cost: 3*n (three cosine terms per sample). |
 | `block` | `me.block` | `np.block` | counted_custom | varies | 🟠 supported | Assemble ndarray from nested list of blocks. Cost: numel(output). |
 | `bmat` | `me.bmat` | `np.bmat` | counted_custom | varies | 🟠 supported | Build matrix from nested list of matrices. Cost: numel(output). |
-| `broadcast_arrays` | `me.broadcast_arrays` | `np.broadcast_arrays` | counted_custom | varies | 🟠 supported | Broadcast arrays against each other. Cost: numel(output). |
+| `broadcast_arrays` | `me.broadcast_arrays` | `np.broadcast_arrays` | free | $0$ | 🟢 supported | Broadcast arrays against each other. Cost: numel(output). |
 | `broadcast_shapes` | `me.broadcast_shapes` | `np.broadcast_shapes` | free | $0$ | 🟢 supported | Compute broadcast shape from input shapes. |
-| `broadcast_to` | `me.broadcast_to` | `np.broadcast_to` | counted_custom | varies | 🟠 supported | Broadcast array to new shape. Cost: numel(output). |
+| `broadcast_to` | `me.broadcast_to` | `np.broadcast_to` | free | $0$ | 🟢 supported | Broadcast array to new shape. Cost: numel(output). |
 | `busday_count` | — | `np.busday_count` | blacklisted | N/A | 🔴 blocked | Count valid days between begindate and enddate. Not supported. |
 | `busday_offset` | — | `np.busday_offset` | blacklisted | N/A | 🔴 blocked | Apply offset to dates subject to valid day rules. Not supported. |
 | `can_cast` | `me.can_cast` | `np.can_cast` | free | $0$ | 🟢 supported | Returns True if cast is safe. |
@@ -129,8 +129,8 @@ Generated from the operation registry (`_registry.py`).
 | `digitize` | `me.digitize` | `np.digitize` | counted_custom | varies | 🟠 supported | Bin search; cost = n*ceil(log2(bins)). |
 | `divide` | `me.divide` | `np.divide` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise true division. |
 | `divmod` | `me.divmod` | `np.divmod` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise (quotient, remainder) tuple. |
-| `dot` | `me.dot` | `np.dot` | counted_custom | $2 \cdot m \cdot k \cdot n$ | 🟠 supported | Dot product; cost = 2*M*N*K for matrix multiply. |
-| `dsplit` | `me.dsplit` | `np.dsplit` | counted_custom | varies | 🟠 supported | Split array into multiple sub-arrays depth-wise. Cost: numel(output). |
+| `dot` | `me.dot` | `np.dot` | counted_custom | $m \cdot k \cdot n$ | 🟠 supported | Dot product; cost = M*K*N (FMA=1). |
+| `dsplit` | `me.dsplit` | `np.dsplit` | free | $0$ | 🟢 supported | Split array into multiple sub-arrays depth-wise. Cost: numel(output). |
 | `dstack` | `me.dstack` | `np.dstack` | counted_custom | varies | 🟠 supported | Stack arrays depth-wise (along third axis). Cost: numel(output). |
 | `ediff1d` | `me.ediff1d` | `np.ediff1d` | counted_custom | $\text{numel}(\text{input})$ | 🟠 supported | Differences between consecutive elements. |
 | `einsum` | `me.einsum` | `np.einsum` | counted_custom | $\text{op\_factor} \cdot \prod_i d_i$ | 🟠 supported | Generalized Einstein summation. |
@@ -178,14 +178,14 @@ Generated from the operation registry (`_registry.py`).
 | `format_float_positional` | — | `np.format_float_positional` | blacklisted | N/A | 🔴 blocked | Format floating point scalar as decimal string. Not supported. |
 | `format_float_scientific` | — | `np.format_float_scientific` | blacklisted | N/A | 🔴 blocked | Format floating point scalar as scientific notation. Not supported. |
 | `frexp` | `me.frexp` | `np.frexp` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Decompose x into mantissa and exponent element-wise. |
-| `from_dlpack` | `me.from_dlpack` | `np.from_dlpack` | counted_custom | varies | 🟠 supported | Create ndarray from DLPack object (zero-copy). Cost: numel(output). |
-| `frombuffer` | `me.frombuffer` | `np.frombuffer` | counted_custom | varies | 🟠 supported | Interpret buffer as 1-D array. Cost: numel(output). |
-| `fromfile` | `me.fromfile` | `np.fromfile` | counted_custom | varies | 🟠 supported | Construct array from binary/text file. Cost: numel(output). |
+| `from_dlpack` | `me.from_dlpack` | `np.from_dlpack` | free | $0$ | 🟢 supported | Create ndarray from DLPack object (zero-copy). Cost: numel(output). |
+| `frombuffer` | `me.frombuffer` | `np.frombuffer` | free | $0$ | 🟢 supported | Interpret buffer as 1-D array. Cost: numel(output). |
+| `fromfile` | — | `np.fromfile` | blacklisted | N/A | 🔴 blocked | Construct array from binary/text file. Cost: numel(output). |
 | `fromfunction` | `me.fromfunction` | `np.fromfunction` | counted_custom | varies | 🟠 supported | Construct array by executing function over each coordinate. Cost: numel(output). |
 | `fromiter` | `me.fromiter` | `np.fromiter` | counted_custom | varies | 🟠 supported | Create array from an iterable. Cost: numel(output). |
 | `frompyfunc` | — | `np.frompyfunc` | blacklisted | N/A | 🔴 blocked | Take arbitrary Python function and return NumPy ufunc. Not supported. |
-| `fromregex` | `me.fromregex` | `np.fromregex` | counted_custom | varies | 🟠 supported | Construct array from text file using regex. Cost: numel(output). |
-| `fromstring` | `me.fromstring` | `np.fromstring` | counted_custom | varies | 🟠 supported | Create 1-D array from string data. Cost: numel(output). |
+| `fromregex` | — | `np.fromregex` | blacklisted | N/A | 🔴 blocked | Construct array from text file using regex. Cost: numel(output). |
+| `fromstring` | — | `np.fromstring` | blacklisted | N/A | 🔴 blocked | Create 1-D array from string data. Cost: numel(output). |
 | `full` | `me.full` | `np.full` | counted_custom | varies | 🟠 supported | Create array filled with scalar value. Cost: num copied. |
 | `full_like` | `me.full_like` | `np.full_like` | counted_custom | varies | 🟠 supported | Array filled with scalar, same shape/type as input. Cost: numel(output). |
 | `gcd` | `me.gcd` | `np.gcd` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise greatest common divisor. |
@@ -213,7 +213,7 @@ Generated from the operation registry (`_registry.py`).
 | `imag` | `me.imag` | `np.imag` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Return imaginary part of complex array. |
 | `in1d` | `me.in1d` | `np.in1d` | counted_custom | varies | 🟠 supported | Set membership; cost = (n+m)*ceil(log2(n+m)). |
 | `indices` | `me.indices` | `np.indices` | counted_custom | varies | 🟠 supported | Return array representing indices of a grid. Cost: numel(output). |
-| `inner` | `me.inner` | `np.inner` | counted_custom | $n$ | 🟠 supported | Inner product; cost = 2*N for 1-D, 2*N*M for n-D. |
+| `inner` | `me.inner` | `np.inner` | counted_custom | $n$ | 🟠 supported | Inner product; cost = N (FMA=1). |
 | `insert` | `me.insert` | `np.insert` | counted_custom | varies | 🟠 supported | Insert values along axis before given indices. Cost: numel(values). |
 | `interp` | `me.interp` | `np.interp` | counted_custom | $n \cdot \log m$ | 🟠 supported | 1-D linear interpolation. |
 | `intersect1d` | `me.intersect1d` | `np.intersect1d` | counted_custom | varies | 🟠 supported | Set intersection; cost = (n+m)*ceil(log2(n+m)). |
@@ -228,7 +228,7 @@ Generated from the operation registry (`_registry.py`).
 | `isin` | `me.isin` | `np.isin` | counted_custom | varies | 🟠 supported | Set membership; cost = (n+m)*ceil(log2(n+m)). |
 | `isinf` | `me.isinf` | `np.isinf` | counted_custom | varies | 🟠 supported | Test for infinity element-wise. Cost: numel(input). |
 | `isnan` | `me.isnan` | `np.isnan` | counted_custom | varies | 🟠 supported | Test for NaN element-wise. Cost: numel(input). |
-| `isnat` | `me.isnat` | `np.isnat` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Test for NaT (not-a-time) element-wise. |
+| `isnat` | — | `np.isnat` | blacklisted | N/A | 🔴 blocked | Blacklisted per reviewer — datetime ops not in scope. |
 | `isneginf` | `me.isneginf` | `np.isneginf` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Test for negative infinity element-wise. |
 | `isposinf` | `me.isposinf` | `np.isposinf` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Test for positive infinity element-wise. |
 | `isreal` | `me.isreal` | `np.isreal` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Test if element is real (imag == 0) element-wise. |
@@ -245,15 +245,15 @@ Generated from the operation registry (`_registry.py`).
 | `less` | `me.less` | `np.less` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise x1 < x2. |
 | `less_equal` | `me.less_equal` | `np.less_equal` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise x1 <= x2. |
 | `lexsort` | `me.lexsort` | `np.lexsort` | counted_custom | varies | 🟠 supported | Multi-key sort; cost = k*n*ceil(log2(n)). |
-| `linalg.cholesky` | `me.linalg.cholesky` | `np.linalg.cholesky` | counted_custom | $n^3 / 3$ | 🟠 supported | Cholesky decomposition. Cost: $n^3$. |
+| `linalg.cholesky` | `me.linalg.cholesky` | `np.linalg.cholesky` | counted_custom | $n^3$ | 🟠 supported | Cholesky decomposition. Cost: $n^3$. |
 | `linalg.cond` | `me.linalg.cond` | `np.linalg.cond` | counted_custom | $m \cdot n \cdot \min(m,n)$ | 🟠 supported | Condition number. Cost: m*n*min(m,n) (via SVD). |
 | `linalg.cross` | `me.linalg.cross` | `np.linalg.cross` | counted_custom | delegates to `cross` | 🟠 supported | Delegates to `me.cross` which charges `numel(output)` FLOPs. |
 | `linalg.det` | `me.linalg.det` | `np.linalg.det` | counted_custom | $n^3$ | 🟠 supported | Determinant. Cost: $n^3$. |
 | `linalg.diagonal` | `me.linalg.diagonal` | `np.linalg.diagonal` | free | $0$ | 🟢 supported | View of diagonal — delegates to mechestim.diagonal. Cost: 0 FLOPs. |
-| `linalg.eig` | `me.linalg.eig` | `np.linalg.eig` | counted_custom | $10n^3$ | 🟠 supported | Eigendecomposition. Cost: $n^3$. |
-| `linalg.eigh` | `me.linalg.eigh` | `np.linalg.eigh` | counted_custom | $4n^3 / 3$ | 🟠 supported | Symmetric eigendecomposition. Cost: $n^3$. |
-| `linalg.eigvals` | `me.linalg.eigvals` | `np.linalg.eigvals` | counted_custom | $10n^3$ | 🟠 supported | Eigenvalues only. Cost: $n^3$. |
-| `linalg.eigvalsh` | `me.linalg.eigvalsh` | `np.linalg.eigvalsh` | counted_custom | $4n^3 / 3$ | 🟠 supported | Symmetric eigenvalues. Cost: $n^3$. |
+| `linalg.eig` | `me.linalg.eig` | `np.linalg.eig` | counted_custom | $n^3$ | 🟠 supported | Eigendecomposition. Cost: $n^3$. |
+| `linalg.eigh` | `me.linalg.eigh` | `np.linalg.eigh` | counted_custom | $n^3$ | 🟠 supported | Symmetric eigendecomposition. Cost: $n^3$. |
+| `linalg.eigvals` | `me.linalg.eigvals` | `np.linalg.eigvals` | counted_custom | $n^3$ | 🟠 supported | Eigenvalues only. Cost: $n^3$. |
+| `linalg.eigvalsh` | `me.linalg.eigvalsh` | `np.linalg.eigvalsh` | counted_custom | $n^3$ | 🟠 supported | Symmetric eigenvalues. Cost: $n^3$. |
 | `linalg.inv` | `me.linalg.inv` | `np.linalg.inv` | counted_custom | $n^3$ | 🟠 supported | Matrix inverse. Cost: $n^3$ (LU + solve). |
 | `linalg.lstsq` | `me.linalg.lstsq` | `np.linalg.lstsq` | counted_custom | $m \cdot n \cdot \min(m,n)$ | 🟠 supported | Least squares. Cost: m*n*min(m,n) (LAPACK gelsd/SVD). |
 | `linalg.matmul` | `me.linalg.matmul` | `np.linalg.matmul` | counted_custom | delegates to `matmul` | 🟠 supported | Delegates to `me.matmul` which charges `m*k*n` FLOPs (FMA=1). |
@@ -265,9 +265,9 @@ Generated from the operation registry (`_registry.py`).
 | `linalg.norm` | `me.linalg.norm` | `np.linalg.norm` | counted_custom | varies | 🟠 supported | Norm. Cost depends on ord: numel for L1/inf, 2*numel for Frobenius, m*n*min(m,n) for ord=2. |
 | `linalg.outer` | `me.linalg.outer` | `np.linalg.outer` | counted_custom | delegates to `outer` | 🟠 supported | Delegates to `me.outer` which charges `m*n` FLOPs. |
 | `linalg.pinv` | `me.linalg.pinv` | `np.linalg.pinv` | counted_custom | $m \cdot n \cdot \min(m,n)$ | 🟠 supported | Pseudoinverse. Cost: m*n*min(m,n) (via SVD). |
-| `linalg.qr` | `me.linalg.qr` | `np.linalg.qr` | counted_custom | $2mn^2 - 2n^3/3$ | 🟠 supported | QR decomposition. Cost: $m \cdot n \cdot \min(m,n)$. |
+| `linalg.qr` | `me.linalg.qr` | `np.linalg.qr` | counted_custom | $m \cdot n \cdot \min(m,n)$ | 🟠 supported | QR decomposition. Cost: $m \cdot n \cdot \min(m,n)$. |
 | `linalg.slogdet` | `me.linalg.slogdet` | `np.linalg.slogdet` | counted_custom | $n^3$ | 🟠 supported | Sign + log determinant. Cost: $n^3$. |
-| `linalg.solve` | `me.linalg.solve` | `np.linalg.solve` | counted_custom | $2n^3/3 + n^2 \cdot n_{\text{rhs}}$ | 🟠 supported | Solve Ax=b. Cost: $n^3$. |
+| `linalg.solve` | `me.linalg.solve` | `np.linalg.solve` | counted_custom | $n^3$ | 🟠 supported | Solve Ax=b. Cost: $n^3$. |
 | `linalg.svd` | `me.linalg.svd` | `np.linalg.svd` | counted_custom | $m \cdot n \cdot k$ | 🟠 supported | Singular value decomposition; cost ~ O(min(m,n)*m*n). |
 | `linalg.svdvals` | `me.linalg.svdvals` | `np.linalg.svdvals` | counted_custom | $m \cdot n \cdot \min(m,n)$ | 🟠 supported | Singular values only. Cost: m*n*min(m,n) (Golub-Reinsch). |
 | `linalg.tensordot` | `me.linalg.tensordot` | `np.linalg.tensordot` | counted_custom | delegates to `tensordot` | 🟠 supported | Delegates to `me.tensordot` which charges FLOPs based on contraction. |
@@ -275,7 +275,7 @@ Generated from the operation registry (`_registry.py`).
 | `linalg.tensorsolve` | `me.linalg.tensorsolve` | `np.linalg.tensorsolve` | counted_custom | $n^3$ | 🟠 supported | Tensor solve. Cost: $n^3$ after reshape (delegates to solve). |
 | `linalg.trace` | `me.linalg.trace` | `np.linalg.trace` | counted_custom | $n$ | 🟠 supported | Matrix trace. Cost: n (sum of diagonal elements). |
 | `linalg.vecdot` | `me.linalg.vecdot` | `np.linalg.vecdot` | counted_custom | delegates to `vecdot` | 🟠 supported | Delegates to `me.vecdot` which charges `2*n` FLOPs. |
-| `linalg.vector_norm` | `me.linalg.vector_norm` | `np.linalg.vector_norm` | counted_custom | $n$ or $2n$ | 🟠 supported | Vector norm. Cost: numel (or 2*numel for general p-norm). |
+| `linalg.vector_norm` | `me.linalg.vector_norm` | `np.linalg.vector_norm` | counted_custom | $n$ | 🟠 supported | Vector norm. Cost: numel (or 2*numel for general p-norm). |
 | `linspace` | `me.linspace` | `np.linspace` | counted_custom | varies | 🟠 supported | Return evenly spaced numbers over interval. Cost: numel(output). |
 | `load` | — | `np.load` | blacklisted | N/A | 🔴 blocked | Load arrays from .npy/.npz files. Not supported. |
 | `loadtxt` | — | `np.loadtxt` | blacklisted | N/A | 🔴 blocked | Load data from text file. Not supported. |
@@ -291,7 +291,7 @@ Generated from the operation registry (`_registry.py`).
 | `logical_xor` | `me.logical_xor` | `np.logical_xor` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise logical XOR. |
 | `logspace` | `me.logspace` | `np.logspace` | counted_custom | varies | 🟠 supported | Log-spaced generation; cost = num. |
 | `mask_indices` | `me.mask_indices` | `np.mask_indices` | counted_custom | varies | 🟠 supported | Return indices of mask for n x n array. Cost: numel(output). |
-| `matmul` | `me.matmul` | `np.matmul` | counted_custom | $2 \cdot m \cdot k \cdot n$ | 🟠 supported | Matrix multiplication; cost = 2*M*N*K. |
+| `matmul` | `me.matmul` | `np.matmul` | counted_custom | $m \cdot k \cdot n$ | 🟠 supported | Matrix multiplication; cost = M*K*N (FMA=1). |
 | `matrix_transpose` | `me.matrix_transpose` | `np.matrix_transpose` | free | $0$ | 🟢 supported | Transpose last two dimensions (NumPy 2.x array API). |
 | `matvec` | `me.matvec` | `np.matvec` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Matrix-vector product. Cost = output_size * contracted_axis. |
 | `max` | `me.max` | `np.max` | counted_reduction | $\text{numel}(\text{input})$ | 🟡 supported | Maximum value of array. |
@@ -347,7 +347,7 @@ Generated from the operation registry (`_registry.py`).
 | `polyint` | `me.polyint` | `np.polyint` | counted_custom | $n$ | 🟠 supported | Integrate polynomial. Cost: n FLOPs. |
 | `polymul` | `me.polymul` | `np.polymul` | counted_custom | $n_1 \cdot n_2$ | 🟠 supported | Multiply polynomials. Cost: n1 * n2 FLOPs. |
 | `polysub` | `me.polysub` | `np.polysub` | counted_custom | $\max(n_1, n_2)$ | 🟠 supported | Difference (subtraction) of two polynomials. Cost: max(n1, n2) FLOPs. |
-| `polyval` | `me.polyval` | `np.polyval` | counted_custom | $2 \cdot m \cdot \text{deg}$ | 🟠 supported | Evaluate polynomial at given points. Cost: $m \cdot \text{deg}$ (Horner's method, FMA=1). |
+| `polyval` | `me.polyval` | `np.polyval` | counted_custom | $m \cdot \text{deg}$ | 🟠 supported | Evaluate polynomial at given points. Cost: $m \cdot \text{deg}$ (Horner's method, FMA=1). |
 | `positive` | `me.positive` | `np.positive` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise unary plus (copy with sign preserved). |
 | `pow` | `me.pow` | `np.pow` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Alias for power (NumPy 2.x). |
 | `power` | `me.power` | `np.power` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise exponentiation x**y. |
@@ -411,7 +411,7 @@ Generated from the operation registry (`_registry.py`).
 | `random.wald` | `me.random.wald` | `np.random.wald` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
 | `random.weibull` | `me.random.weibull` | `np.random.weibull` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
 | `random.zipf` | `me.random.zipf` | `np.random.zipf` | counted_custom | varies | 🟠 supported | Sampling; cost = numel(output). |
-| `ravel` | `me.ravel` | `np.ravel` | counted_custom | varies | 🟠 supported | Return contiguous flattened array. Cost: numel(input). |
+| `ravel` | `me.ravel` | `np.ravel` | free | $0$ | 🟢 supported | Return contiguous flattened array. Cost: numel(input). |
 | `ravel_multi_index` | `me.ravel_multi_index` | `np.ravel_multi_index` | free | $0$ | 🟢 supported | Convert multi-dimensional index to flat index. |
 | `real` | `me.real` | `np.real` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Return real part of complex array. |
 | `real_if_close` | `me.real_if_close` | `np.real_if_close` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Return real array if imaginary part is negligible. |
@@ -425,7 +425,7 @@ Generated from the operation registry (`_registry.py`).
 | `right_shift` | `me.right_shift` | `np.right_shift` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise right bit shift (legacy name). |
 | `rint` | `me.rint` | `np.rint` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Round to nearest integer element-wise. |
 | `roll` | `me.roll` | `np.roll` | counted_custom | varies | 🟠 supported | Roll array elements along axis. Cost: numel(output). |
-| `rollaxis` | `me.rollaxis` | `np.rollaxis` | counted_custom | varies | 🟠 supported | Roll specified axis backwards. Cost: numel(output). |
+| `rollaxis` | `me.rollaxis` | `np.rollaxis` | free | $0$ | 🟢 supported | Roll specified axis backwards. Cost: numel(output). |
 | `roots` | `me.roots` | `np.roots` | counted_custom | $10n^3$ | 🟠 supported | Return roots of polynomial with given coefficients. Cost: $n^3$ (companion matrix eig, simplified). |
 | `rot90` | `me.rot90` | `np.rot90` | free | $0$ | 🟢 supported | Rotate array 90 degrees. |
 | `round` | `me.round` | `np.round` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Round to given number of decimals element-wise. |
@@ -454,11 +454,35 @@ Generated from the operation registry (`_registry.py`).
 | `sort` | `me.sort` | `np.sort` | counted_custom | varies | 🟠 supported | Comparison sort; cost = n*ceil(log2(n)) per slice. |
 | `sort_complex` | `me.sort_complex` | `np.sort_complex` | counted_custom | varies | 🟠 supported | Sort complex array. Cost: $n \cdot \lceil\log_2 n\rceil$. |
 | `spacing` | `me.spacing` | `np.spacing` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Return ULP spacing for each element. |
-| `split` | `me.split` | `np.split` | counted_custom | varies | 🟠 supported | Split array into sub-arrays. Cost: numel(output). |
+| `split` | `me.split` | `np.split` | free | $0$ | 🟢 supported | Split array into sub-arrays. Cost: numel(output). |
 | `sqrt` | `me.sqrt` | `np.sqrt` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise square root. |
 | `square` | `me.square` | `np.square` | counted_unary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise x^2. |
 | `squeeze` | `me.squeeze` | `np.squeeze` | free | $0$ | 🟢 supported | Remove size-1 dimensions. |
 | `stack` | `me.stack` | `np.stack` | counted_custom | varies | 🟠 supported | Join arrays along new axis. Cost: numel(output). |
+| `stats.cauchy.cdf` | `me.stats.cauchy.cdf` | `np.stats.cauchy.cdf` | counted_custom | $5n$ | 🟠 supported | Cauchy CDF; cost = numel(input). |
+| `stats.cauchy.pdf` | `me.stats.cauchy.pdf` | `np.stats.cauchy.pdf` | counted_custom | $6n$ | 🟠 supported | Cauchy PDF; cost = numel(input). |
+| `stats.cauchy.ppf` | `me.stats.cauchy.ppf` | `np.stats.cauchy.ppf` | counted_custom | $5n$ | 🟠 supported | Cauchy PPF; cost = numel(input). |
+| `stats.expon.cdf` | `me.stats.expon.cdf` | `np.stats.expon.cdf` | counted_custom | $5n$ | 🟠 supported | Exponential CDF; cost = numel(input). |
+| `stats.expon.pdf` | `me.stats.expon.pdf` | `np.stats.expon.pdf` | counted_custom | $5n$ | 🟠 supported | Exponential PDF; cost = numel(input). |
+| `stats.expon.ppf` | `me.stats.expon.ppf` | `np.stats.expon.ppf` | counted_custom | $5n$ | 🟠 supported | Exponential PPF; cost = numel(input). |
+| `stats.laplace.cdf` | `me.stats.laplace.cdf` | `np.stats.laplace.cdf` | counted_custom | $5n$ | 🟠 supported | Laplace CDF; cost = numel(input). |
+| `stats.laplace.pdf` | `me.stats.laplace.pdf` | `np.stats.laplace.pdf` | counted_custom | $5n$ | 🟠 supported | Laplace PDF; cost = numel(input). |
+| `stats.laplace.ppf` | `me.stats.laplace.ppf` | `np.stats.laplace.ppf` | counted_custom | $5n$ | 🟠 supported | Laplace PPF; cost = numel(input). |
+| `stats.logistic.cdf` | `me.stats.logistic.cdf` | `np.stats.logistic.cdf` | counted_custom | $5n$ | 🟠 supported | Logistic CDF; cost = numel(input). |
+| `stats.logistic.pdf` | `me.stats.logistic.pdf` | `np.stats.logistic.pdf` | counted_custom | $8n$ | 🟠 supported | Logistic PDF; cost = numel(input). |
+| `stats.logistic.ppf` | `me.stats.logistic.ppf` | `np.stats.logistic.ppf` | counted_custom | $5n$ | 🟠 supported | Logistic PPF; cost = numel(input). |
+| `stats.lognorm.cdf` | `me.stats.lognorm.cdf` | `np.stats.lognorm.cdf` | counted_custom | $25n$ | 🟠 supported | Log-normal CDF; cost = numel(input). |
+| `stats.lognorm.pdf` | `me.stats.lognorm.pdf` | `np.stats.lognorm.pdf` | counted_custom | $15n$ | 🟠 supported | Log-normal PDF; cost = numel(input). |
+| `stats.lognorm.ppf` | `me.stats.lognorm.ppf` | `np.stats.lognorm.ppf` | counted_custom | $45n$ | 🟠 supported | Log-normal PPF; cost = numel(input). |
+| `stats.norm.cdf` | `me.stats.norm.cdf` | `np.stats.norm.cdf` | counted_custom | $20n$ | 🟠 supported | Normal CDF; cost = numel(input). |
+| `stats.norm.pdf` | `me.stats.norm.pdf` | `np.stats.norm.pdf` | counted_custom | $10n$ | 🟠 supported | Normal PDF; cost = numel(input). |
+| `stats.norm.ppf` | `me.stats.norm.ppf` | `np.stats.norm.ppf` | counted_custom | $40n$ | 🟠 supported | Normal PPF (inverse CDF); cost = numel(input). |
+| `stats.truncnorm.cdf` | `me.stats.truncnorm.cdf` | `np.stats.truncnorm.cdf` | counted_custom | $30n$ | 🟠 supported | Truncated normal CDF; cost = numel(input). |
+| `stats.truncnorm.pdf` | `me.stats.truncnorm.pdf` | `np.stats.truncnorm.pdf` | counted_custom | $30n$ | 🟠 supported | Truncated normal PDF; cost = numel(input). |
+| `stats.truncnorm.ppf` | `me.stats.truncnorm.ppf` | `np.stats.truncnorm.ppf` | counted_custom | $50n$ | 🟠 supported | Truncated normal PPF; cost = numel(input). |
+| `stats.uniform.cdf` | `me.stats.uniform.cdf` | `np.stats.uniform.cdf` | counted_custom | $3n$ | 🟠 supported | Uniform CDF; cost = numel(input). |
+| `stats.uniform.pdf` | `me.stats.uniform.pdf` | `np.stats.uniform.pdf` | counted_custom | $3n$ | 🟠 supported | Uniform PDF; cost = numel(input). |
+| `stats.uniform.ppf` | `me.stats.uniform.ppf` | `np.stats.uniform.ppf` | counted_custom | $3n$ | 🟠 supported | Uniform PPF; cost = numel(input). |
 | `std` | `me.std` | `np.std` | counted_reduction | $\text{numel}(\text{input})$ | 🟡 supported | Standard deviation; cost_multiplier=2 (two passes). |
 | `subtract` | `me.subtract` | `np.subtract` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Element-wise subtraction. |
 | `sum` | `me.sum` | `np.sum` | counted_reduction | $\text{numel}(\text{input})$ | 🟡 supported | Sum of array elements. |
@@ -496,10 +520,10 @@ Generated from the operation registry (`_registry.py`).
 | `unwrap` | `me.unwrap` | `np.unwrap` | counted_custom | $\text{numel}(\text{input})$ | 🟠 supported | Phase unwrap. Cost: $\text{numel}(\text{input})$ (diff + conditional adjustment). |
 | `vander` | `me.vander` | `np.vander` | counted_custom | varies | 🟠 supported | Vandermonde matrix; cost = len(x)*(N-1). |
 | `var` | `me.var` | `np.var` | counted_reduction | $\text{numel}(\text{input})$ | 🟡 supported | Variance; cost_multiplier=2 (two passes). |
-| `vdot` | `me.vdot` | `np.vdot` | counted_custom | $n$ | 🟠 supported | Dot product with conjugation; cost = 2*N. |
+| `vdot` | `me.vdot` | `np.vdot` | counted_custom | $n$ | 🟠 supported | Dot product with conjugation; cost = N (FMA=1). |
 | `vecdot` | `me.vecdot` | `np.vecdot` | counted_binary | $n$ | 🟡 supported | Vector dot product along last axis. |
 | `vecmat` | `me.vecmat` | `np.vecmat` | counted_binary | $\text{numel}(\text{output})$ | 🟡 supported | Vector-matrix product. Cost = output_size * contracted_axis. |
-| `vsplit` | `me.vsplit` | `np.vsplit` | counted_custom | varies | 🟠 supported | Split array into rows. Cost: numel(output). |
+| `vsplit` | `me.vsplit` | `np.vsplit` | free | $0$ | 🟢 supported | Split array into rows. Cost: numel(output). |
 | `vstack` | `me.vstack` | `np.vstack` | counted_custom | varies | 🟠 supported | Stack arrays vertically. Cost: numel(output). |
 | `where` | `me.where` | `np.where` | counted_custom | varies | 🟠 supported | Select elements based on condition. Cost: numel(input). |
 | `zeros` | `me.zeros` | `np.zeros` | free | $0$ | 🟢 supported | Create zero-filled array. |

@@ -162,9 +162,12 @@ class TestBenchmarkComplex:
             packed_512_double=0,
         )
         from benchmarks._perf import InstructionsResult
+
         mock_instr = InstructionsResult(instructions=1_000_000)
-        with patch("benchmarks._complex.measure_flops", return_value=mock_result), \
-             patch("benchmarks._complex.measure_instructions", return_value=mock_instr):
+        with (
+            patch("benchmarks._complex.measure_flops", return_value=mock_result),
+            patch("benchmarks._complex.measure_instructions", return_value=mock_instr),
+        ):
             _result, details = benchmark_complex(n=5_000, repeats=1)
 
         for op in _INSTRUCTIONS_OPS:
@@ -181,9 +184,12 @@ class TestBenchmarkComplex:
             packed_512_double=0,
         )
         from benchmarks._perf import InstructionsResult
+
         mock_instr = InstructionsResult(instructions=1_000_000)
-        with patch("benchmarks._complex.measure_flops", return_value=mock_result), \
-             patch("benchmarks._complex.measure_instructions", return_value=mock_instr):
+        with (
+            patch("benchmarks._complex.measure_flops", return_value=mock_result),
+            patch("benchmarks._complex.measure_instructions", return_value=mock_instr),
+        ):
             _result, details = benchmark_complex(n=5_000, repeats=1)
 
         for op in COMPLEX_OPS:

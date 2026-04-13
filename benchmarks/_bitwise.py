@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import statistics
 
-from benchmarks._perf import measure_flops, measure_instructions
+from benchmarks._perf import measure_instructions
 
 # --- Operation lists -------------------------------------------------------
 
@@ -147,8 +147,9 @@ def benchmark_bitwise(
     results: dict[str, float] = {}
     details: dict[str, dict] = {}
 
-    def _bench_op(op: str, setup_fn, bench_code: str, category: str,
-                  size_desc: str) -> None:
+    def _bench_op(
+        op: str, setup_fn, bench_code: str, category: str, size_desc: str
+    ) -> None:
         """Benchmark a single op across distributions using instructions counter."""
         dist_values: list[float] = []
         dist_raw_totals: list[int] = []
@@ -176,19 +177,28 @@ def benchmark_bitwise(
 
     # --- Unary ops ---
     for op in UNARY_OPS:
-        _bench_op(op, _unary_setup, f"np.{op}(x)",
-                  "instructions_unary", f"x: ({n},)")
+        _bench_op(op, _unary_setup, f"np.{op}(x)", "instructions_unary", f"x: ({n},)")
 
     # --- Binary ops ---
     for op in BINARY_OPS:
         setup_fn = _gcd_lcm_setup if op in ("gcd", "lcm") else _binary_setup
-        _bench_op(op, setup_fn, f"np.{op}(a, b)",
-                  "instructions_binary", f"a: ({n},), b: ({n},)")
+        _bench_op(
+            op,
+            setup_fn,
+            f"np.{op}(a, b)",
+            "instructions_binary",
+            f"a: ({n},), b: ({n},)",
+        )
 
     # --- Shift ops ---
     for op in SHIFT_OPS:
-        _bench_op(op, _shift_setup, f"np.{op}(a, b)",
-                  "instructions_shift", f"a: ({n},), b: ({n},) (values 0-10)")
+        _bench_op(
+            op,
+            _shift_setup,
+            f"np.{op}(a, b)",
+            "instructions_shift",
+            f"a: ({n},), b: ({n},) (values 0-10)",
+        )
 
     # --- Special ops ---
     # isnat: operates on datetime64 arrays

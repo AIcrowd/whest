@@ -25,7 +25,7 @@ from __future__ import annotations
 import statistics
 from dataclasses import dataclass
 
-from benchmarks._perf import measure_flops, measure_instructions
+from benchmarks._perf import measure_flops
 
 
 @dataclass(frozen=True)
@@ -151,16 +151,14 @@ def measure_baselines(
     alpha_add = _measure_alpha(
         _binary_setups(n, dtype), "np.add(x, y, out=_out)", n, repeats
     )
-    alpha_abs = _measure_alpha(
-        _unary_setups(n, dtype), "np.abs(x)", n, repeats
-    )
+    alpha_abs = _measure_alpha(_unary_setups(n, dtype), "np.abs(x)", n, repeats)
 
     result = BaselineResult(alpha_add=alpha_add, alpha_abs=alpha_abs)
     print(f"  alpha(add) = {alpha_add:.4f}")
     print(f"  alpha(abs) = {alpha_abs:.4f} (pure unary ufunc overhead)")
-    print(f"  Derived overheads:")
+    print("  Derived overheads:")
     print(f"    ufunc_unary:     {result.overhead_ufunc_unary:.4f}")
     print(f"    ufunc_binary:    {result.overhead_ufunc_binary:.4f}")
     print(f"    ufunc_reduction: {result.overhead_ufunc_reduction:.4f}")
-    print(f"    blas/linalg:     0.0000")
+    print("    blas/linalg:     0.0000")
     return result

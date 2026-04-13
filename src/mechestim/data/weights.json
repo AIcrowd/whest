@@ -337,7 +337,31 @@
         "blackman": 24.234678,
         "hamming": 34.376693,
         "hanning": 34.376693,
-        "kaiser": 37.443897
+        "kaiser": 37.443897,
+        "stats.norm.pdf": 27.3002,
+        "stats.norm.cdf": 47.8993,
+        "stats.norm.ppf": 83.3529,
+        "stats.uniform.pdf": 0.3002,
+        "stats.uniform.cdf": 4.3002,
+        "stats.uniform.ppf": 2.3002,
+        "stats.expon.pdf": 25.3002,
+        "stats.expon.cdf": 25.3002,
+        "stats.expon.ppf": 43.3002,
+        "stats.cauchy.pdf": 6.3002,
+        "stats.cauchy.cdf": 51.3002,
+        "stats.cauchy.ppf": 64.3002,
+        "stats.logistic.pdf": 28.3002,
+        "stats.logistic.cdf": 26.3002,
+        "stats.logistic.ppf": 35.3002,
+        "stats.laplace.pdf": 25.3002,
+        "stats.laplace.cdf": 49.3002,
+        "stats.laplace.ppf": 71.3002,
+        "stats.lognorm.pdf": 62.3002,
+        "stats.lognorm.cdf": 70.2837,
+        "stats.lognorm.ppf": 106.3529,
+        "stats.truncnorm.pdf": 28.3002,
+        "stats.truncnorm.cdf": 50.8994,
+        "stats.truncnorm.ppf": 82.8208
       },
       "timing_weights": {
         "bitwise_not": 4.1882,
@@ -1416,7 +1440,7 @@
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
-        "notes": "Dot product; cost = 2*M*N*K for matrix multiply.",
+        "notes": "Dot product; cost = M*K*N (FMA=1).",
         "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L619"
       },
       "matmul": {
@@ -1446,7 +1470,7 @@
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
-        "notes": "Matrix multiplication; cost = 2*M*N*K.",
+        "notes": "Matrix multiplication; cost = M*K*N (FMA=1).",
         "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L655"
       },
       "inner": {
@@ -1476,7 +1500,7 @@
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
-        "notes": "Inner product; cost = 2*N for 1-D, 2*N*M for n-D.",
+        "notes": "Inner product; cost = N (FMA=1).",
         "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L681"
       },
       "vdot": {
@@ -1506,7 +1530,7 @@
         "baseline_bench_code": "np.add(x, y, out=_out)",
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
-        "notes": "Dot product with conjugation; cost = 2*N.",
+        "notes": "Dot product with conjugation; cost = N (FMA=1).",
         "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L739"
       },
       "vecdot": {
@@ -9358,21 +9382,23 @@
       },
       "random.bytes": {
         "category": "counted_custom",
-        "measurement_mode": "custom",
+        "measurement_mode": "timing",
         "analytical_formula": "numel(output)",
         "analytical_flops": 1,
-        "benchmark_size": "N/A",
+        "benchmark_size": "N: 10000000",
         "bench_code": "np.random.bytes(N)",
         "repeats": 0,
         "perf_instructions_total": [],
-        "distribution_alphas": [],
+        "distribution_alphas": [
+          0.861
+        ],
         "timing_ns_total": 0,
         "timing_weight": 0,
-        "perf_weight": 1,
+        "perf_weight": 0.861,
         "absolute_alpha": 1.0,
         "baseline_alpha": 1.0,
         "confidence": "high",
-        "notes": "Returns raw bytes. Timing shows 0.76x cost of add \u2014 clamped to weight=1."
+        "notes": "EC2 timing = 0.86. Fast PRNG byte generation \u2014 cheaper than add."
       },
       "isnan": {
         "category": "counted_unary",
@@ -9424,6 +9450,1355 @@
         ],
         "perf_weight": 0.3454,
         "notes": "Timing-based (fp_arith_inst_retired blind to this op). Ratio vs add=0.3454"
+      },
+      "stats.norm.pdf": {
+        "category": "counted_custom",
+        "measurement_mode": "custom",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "_dist._compute_pdf(x)",
+        "repeats": 10,
+        "perf_instructions_total": [
+          2714153591,
+          2730018817,
+          2730018858
+        ],
+        "distribution_alphas": [
+          27.14153591,
+          27.30018817,
+          27.30018858
+        ],
+        "perf_weight": 27.0,
+        "notes": "Raw alpha=27.3002, setup overhead=0.3002 subtracted. FP instruction count per element."
+      },
+      "stats.norm.cdf": {
+        "category": "counted_custom",
+        "measurement_mode": "custom",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "_dist._compute_cdf(x)",
+        "repeats": 10,
+        "perf_instructions_total": [
+          3007601731,
+          5143335657,
+          4789933658
+        ],
+        "distribution_alphas": [
+          30.07601731,
+          51.43335657,
+          47.89933658
+        ],
+        "perf_weight": 47.5991,
+        "notes": "Raw alpha=47.8993, setup overhead=0.3002 subtracted. FP instruction count per element."
+      },
+      "stats.norm.ppf": {
+        "category": "counted_custom",
+        "measurement_mode": "custom",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "_dist._compute_ppf(x)",
+        "repeats": 10,
+        "perf_instructions_total": [
+          8335593509,
+          8335291409,
+          8335097729
+        ],
+        "distribution_alphas": [
+          83.35593509,
+          83.35291409,
+          83.35097729
+        ],
+        "perf_weight": 83.0527,
+        "notes": "Raw alpha=83.3529, setup overhead=0.3002 subtracted. FP instruction count per element."
+      },
+      "stats.uniform.pdf": {
+        "category": "counted_custom",
+        "measurement_mode": "custom",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "_dist._compute_pdf(x)",
+        "repeats": 10,
+        "perf_instructions_total": [
+          14125931,
+          30018817,
+          30018858
+        ],
+        "distribution_alphas": [
+          0.14125931,
+          0.30018817,
+          0.30018858
+        ],
+        "perf_weight": 0.0,
+        "notes": "Raw alpha=0.3002, setup overhead=0.3002 subtracted. FP instruction count per element."
+      },
+      "stats.uniform.cdf": {
+        "category": "counted_custom",
+        "measurement_mode": "custom",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "_dist._compute_cdf(x)",
+        "repeats": 10,
+        "perf_instructions_total": [
+          414125921,
+          430018807,
+          430018848
+        ],
+        "distribution_alphas": [
+          4.14125921,
+          4.30018807,
+          4.30018848
+        ],
+        "perf_weight": 4.0,
+        "notes": "Raw alpha=4.3002, setup overhead=0.3002 subtracted. FP instruction count per element."
+      },
+      "stats.uniform.ppf": {
+        "category": "counted_custom",
+        "measurement_mode": "custom",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "_dist._compute_ppf(x)",
+        "repeats": 10,
+        "perf_instructions_total": [
+          230018889,
+          230018889,
+          230018889
+        ],
+        "distribution_alphas": [
+          2.30018889,
+          2.30018889,
+          2.30018889
+        ],
+        "perf_weight": 2.0,
+        "notes": "Raw alpha=2.3002, setup overhead=0.3002 subtracted. FP instruction count per element."
+      },
+      "stats.expon.pdf": {
+        "category": "counted_custom",
+        "measurement_mode": "custom",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "_dist._compute_pdf(x)",
+        "repeats": 10,
+        "perf_instructions_total": [
+          2514125921,
+          2530018807,
+          2530018848
+        ],
+        "distribution_alphas": [
+          25.14125921,
+          25.30018807,
+          25.30018848
+        ],
+        "perf_weight": 25.0,
+        "notes": "Raw alpha=25.3002, setup overhead=0.3002 subtracted. FP instruction count per element."
+      },
+      "stats.expon.cdf": {
+        "category": "counted_custom",
+        "measurement_mode": "custom",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "_dist._compute_cdf(x)",
+        "repeats": 10,
+        "perf_instructions_total": [
+          2514125921,
+          2530018807,
+          2530018848
+        ],
+        "distribution_alphas": [
+          25.14125921,
+          25.30018807,
+          25.30018848
+        ],
+        "perf_weight": 25.0,
+        "notes": "Raw alpha=25.3002, setup overhead=0.3002 subtracted. FP instruction count per element."
+      },
+      "stats.expon.ppf": {
+        "category": "counted_custom",
+        "measurement_mode": "custom",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "_dist._compute_ppf(x)",
+        "repeats": 10,
+        "perf_instructions_total": [
+          4330018889,
+          4330018889,
+          4330018889
+        ],
+        "distribution_alphas": [
+          43.30018889,
+          43.30018889,
+          43.30018889
+        ],
+        "perf_weight": 43.0,
+        "notes": "Raw alpha=43.3002, setup overhead=0.3002 subtracted. FP instruction count per element."
+      },
+      "stats.cauchy.pdf": {
+        "category": "counted_custom",
+        "measurement_mode": "custom",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "_dist._compute_pdf(x)",
+        "repeats": 10,
+        "perf_instructions_total": [
+          614125931,
+          630018817,
+          630018858
+        ],
+        "distribution_alphas": [
+          6.14125931,
+          6.30018817,
+          6.30018858
+        ],
+        "perf_weight": 6.0,
+        "notes": "Raw alpha=6.3002, setup overhead=0.3002 subtracted. FP instruction count per element."
+      },
+      "stats.cauchy.cdf": {
+        "category": "counted_custom",
+        "measurement_mode": "custom",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "_dist._compute_cdf(x)",
+        "repeats": 10,
+        "perf_instructions_total": [
+          5114125921,
+          5130018807,
+          5130018848
+        ],
+        "distribution_alphas": [
+          51.14125921,
+          51.30018807,
+          51.30018848
+        ],
+        "perf_weight": 51.0,
+        "notes": "Raw alpha=51.3002, setup overhead=0.3002 subtracted. FP instruction count per element."
+      },
+      "stats.cauchy.ppf": {
+        "category": "counted_custom",
+        "measurement_mode": "custom",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "_dist._compute_ppf(x)",
+        "repeats": 10,
+        "perf_instructions_total": [
+          6430018889,
+          6430018889,
+          6430018889
+        ],
+        "distribution_alphas": [
+          64.30018889,
+          64.30018889,
+          64.30018889
+        ],
+        "perf_weight": 64.0,
+        "notes": "Raw alpha=64.3002, setup overhead=0.3002 subtracted. FP instruction count per element."
+      },
+      "stats.logistic.pdf": {
+        "category": "counted_custom",
+        "measurement_mode": "custom",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "_dist._compute_pdf(x)",
+        "repeats": 10,
+        "perf_instructions_total": [
+          2814125921,
+          2830018807,
+          2830018848
+        ],
+        "distribution_alphas": [
+          28.14125921,
+          28.30018807,
+          28.30018848
+        ],
+        "perf_weight": 28.0,
+        "notes": "Raw alpha=28.3002, setup overhead=0.3002 subtracted. FP instruction count per element."
+      },
+      "stats.logistic.cdf": {
+        "category": "counted_custom",
+        "measurement_mode": "custom",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "_dist._compute_cdf(x)",
+        "repeats": 10,
+        "perf_instructions_total": [
+          2614125921,
+          2630018807,
+          2630018848
+        ],
+        "distribution_alphas": [
+          26.14125921,
+          26.30018807,
+          26.30018848
+        ],
+        "perf_weight": 26.0,
+        "notes": "Raw alpha=26.3002, setup overhead=0.3002 subtracted. FP instruction count per element."
+      },
+      "stats.logistic.ppf": {
+        "category": "counted_custom",
+        "measurement_mode": "custom",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "_dist._compute_ppf(x)",
+        "repeats": 10,
+        "perf_instructions_total": [
+          3530018889,
+          3530018889,
+          3530018889
+        ],
+        "distribution_alphas": [
+          35.30018889,
+          35.30018889,
+          35.30018889
+        ],
+        "perf_weight": 35.0,
+        "notes": "Raw alpha=35.3002, setup overhead=0.3002 subtracted. FP instruction count per element."
+      },
+      "stats.laplace.pdf": {
+        "category": "counted_custom",
+        "measurement_mode": "custom",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "_dist._compute_pdf(x)",
+        "repeats": 10,
+        "perf_instructions_total": [
+          2514125931,
+          2530018817,
+          2530018858
+        ],
+        "distribution_alphas": [
+          25.14125931,
+          25.30018817,
+          25.30018858
+        ],
+        "perf_weight": 25.0,
+        "notes": "Raw alpha=25.3002, setup overhead=0.3002 subtracted. FP instruction count per element."
+      },
+      "stats.laplace.cdf": {
+        "category": "counted_custom",
+        "measurement_mode": "custom",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "_dist._compute_cdf(x)",
+        "repeats": 10,
+        "perf_instructions_total": [
+          4914125921,
+          4930018807,
+          4930018848
+        ],
+        "distribution_alphas": [
+          49.14125921,
+          49.30018807,
+          49.30018848
+        ],
+        "perf_weight": 49.0,
+        "notes": "Raw alpha=49.3002, setup overhead=0.3002 subtracted. FP instruction count per element."
+      },
+      "stats.laplace.ppf": {
+        "category": "counted_custom",
+        "measurement_mode": "custom",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "_dist._compute_ppf(x)",
+        "repeats": 10,
+        "perf_instructions_total": [
+          7130018889,
+          7130018889,
+          7130018889
+        ],
+        "distribution_alphas": [
+          71.30018889,
+          71.30018889,
+          71.30018889
+        ],
+        "perf_weight": 71.0,
+        "notes": "Raw alpha=71.3002, setup overhead=0.3002 subtracted. FP instruction count per element."
+      },
+      "stats.lognorm.pdf": {
+        "category": "counted_custom",
+        "measurement_mode": "custom",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "_dist._compute_pdf(x, s=0.5)",
+        "repeats": 10,
+        "perf_instructions_total": [
+          6214125944,
+          6230018830,
+          6230018871
+        ],
+        "distribution_alphas": [
+          62.14125944,
+          62.3001883,
+          62.30018871
+        ],
+        "perf_weight": 62.0,
+        "notes": "Raw alpha=62.3002, setup overhead=0.3002 subtracted. FP instruction count per element."
+      },
+      "stats.lognorm.cdf": {
+        "category": "counted_custom",
+        "measurement_mode": "custom",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "_dist._compute_cdf(x, s=0.5)",
+        "repeats": 10,
+        "perf_instructions_total": [
+          6461856914,
+          7028367200,
+          8884587401
+        ],
+        "distribution_alphas": [
+          64.61856914,
+          70.283672,
+          88.84587401
+        ],
+        "perf_weight": 69.9835,
+        "notes": "Raw alpha=70.2837, setup overhead=0.3002 subtracted. FP instruction count per element."
+      },
+      "stats.lognorm.ppf": {
+        "category": "counted_custom",
+        "measurement_mode": "custom",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "_dist._compute_ppf(x, s=0.5)",
+        "repeats": 10,
+        "perf_instructions_total": [
+          10635593532,
+          10635291432,
+          10635097752
+        ],
+        "distribution_alphas": [
+          106.35593532,
+          106.35291432,
+          106.35097752
+        ],
+        "perf_weight": 106.0527,
+        "notes": "Raw alpha=106.3529, setup overhead=0.3002 subtracted. FP instruction count per element."
+      },
+      "stats.truncnorm.pdf": {
+        "category": "counted_custom",
+        "measurement_mode": "custom",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "_dist._compute_pdf(x, a=-2, b=2)",
+        "repeats": 10,
+        "perf_instructions_total": [
+          2814130301,
+          2830023187,
+          2830023228
+        ],
+        "distribution_alphas": [
+          28.14130301,
+          28.30023187,
+          28.30023228
+        ],
+        "perf_weight": 28.0,
+        "notes": "Raw alpha=28.3002, setup overhead=0.3002 subtracted. FP instruction count per element."
+      },
+      "stats.truncnorm.cdf": {
+        "category": "counted_custom",
+        "measurement_mode": "custom",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "_dist._compute_cdf(x, a=-2, b=2)",
+        "repeats": 10,
+        "perf_instructions_total": [
+          3307606091,
+          5443340017,
+          5089938018
+        ],
+        "distribution_alphas": [
+          33.07606091,
+          54.43340017,
+          50.89938018
+        ],
+        "perf_weight": 50.5992,
+        "notes": "Raw alpha=50.8994, setup overhead=0.3002 subtracted. FP instruction count per element."
+      },
+      "stats.truncnorm.ppf": {
+        "category": "counted_custom",
+        "measurement_mode": "custom",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 10000000,
+        "benchmark_size": "x: (10000000,)",
+        "bench_code": "_dist._compute_ppf(x, a=-2, b=2)",
+        "repeats": 10,
+        "perf_instructions_total": [
+          8282075099,
+          8282142419,
+          8282011819
+        ],
+        "distribution_alphas": [
+          82.82075099,
+          82.82142419,
+          82.82011819
+        ],
+        "perf_weight": 82.5206,
+        "notes": "Raw alpha=82.8208, setup overhead=0.3002 subtracted. FP instruction count per element."
+      },
+      "matvec": {
+        "analytical_formula": "output_size * contracted_axis",
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "notes": "EC2 timing = 0.56. BLAS matrix-vector product \u2014 efficient.",
+        "perf_weight": 0.5551,
+        "distribution_alphas": [
+          0.5551
+        ]
+      },
+      "vecmat": {
+        "analytical_formula": "output_size * contracted_axis",
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "notes": "EC2 timing = 0.61. BLAS vector-matrix product \u2014 efficient.",
+        "perf_weight": 0.6085,
+        "distribution_alphas": [
+          0.6085
+        ]
+      },
+      "append": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(values)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.9206
+        ],
+        "perf_weight": 0.9206,
+        "notes": "EC2 timing ratio vs add = 0.9206."
+      },
+      "apply_along_axis": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          1.949
+        ],
+        "perf_weight": 1.949,
+        "notes": "EC2 timing = 1.95. Note: cost formula (result.size) underestimates \u2014 actual work is input.size."
+      },
+      "apply_over_axes": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.1407
+        ],
+        "perf_weight": 0.1407,
+        "notes": "EC2 timing = 0.14. Efficient numpy reduction path."
+      },
+      "arange": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.6141
+        ],
+        "perf_weight": 0.6141,
+        "notes": "EC2 timing ratio vs add = 0.6141."
+      },
+      "argwhere": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          1.9631
+        ],
+        "perf_weight": 1.9631,
+        "notes": "EC2 timing ratio vs add = 1.9631."
+      },
+      "array": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.9035
+        ],
+        "perf_weight": 0.9035,
+        "notes": "Timing ratio vs add = 0.9035. Benchmark: 10,000,000 elements."
+      },
+      "asarray_chkfinite": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.2892
+        ],
+        "perf_weight": 0.2892,
+        "notes": "EC2 timing ratio vs add = 0.2892."
+      },
+      "block": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.0167
+        ],
+        "perf_weight": 0.0167,
+        "notes": "Formerly-free op. Timing ratio vs add = 0.0167."
+      },
+      "bmat": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          3.0046
+        ],
+        "perf_weight": 3.0046,
+        "notes": "EC2 timing = 3.00. Block matrix assembly from nested list."
+      },
+      "choose": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          8.0516
+        ],
+        "perf_weight": 8.0516,
+        "notes": "EC2 timing ratio vs add = 8.0516."
+      },
+      "compress": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          2.464
+        ],
+        "perf_weight": 2.464,
+        "notes": "EC2 timing ratio vs add = 2.4640."
+      },
+      "concat": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.9209
+        ],
+        "perf_weight": 0.9209,
+        "notes": "EC2 timing = 0.92. Memcpy (alias for concatenate)."
+      },
+      "concatenate": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.9106
+        ],
+        "perf_weight": 0.9106,
+        "notes": "EC2 timing ratio vs add = 0.9106."
+      },
+      "copyto": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          1.1734
+        ],
+        "perf_weight": 1.1734,
+        "notes": "EC2 timing ratio vs add = 1.1734."
+      },
+      "delete": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "num deleted",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          1.1182
+        ],
+        "perf_weight": 1.1182,
+        "notes": "EC2 timing ratio vs add = 1.1182."
+      },
+      "diag": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output) when 1D->2D, min(m,n) when 2D->1D",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.378
+        ],
+        "perf_weight": 0.378,
+        "notes": "EC2 timing = 0.38 (1D->2D). Formula fixed to numel(output) for construction."
+      },
+      "diagflat": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.2349
+        ],
+        "perf_weight": 0.2349,
+        "notes": "EC2 timing = 0.23. Formula fixed from len(v) to numel(output)."
+      },
+      "diagonal": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.5792
+        ],
+        "perf_weight": 0.5792,
+        "notes": "EC2 timing ratio vs add = 0.5792."
+      },
+      "dstack": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          1.1037
+        ],
+        "perf_weight": 1.1037,
+        "notes": "EC2 timing ratio vs add = 1.1037."
+      },
+      "einsum_path": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "1",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          1.0
+        ],
+        "perf_weight": 1.0,
+        "notes": "Weight=1 by design. Path planning only \u2014 intentionally charges 1 FLOP for budget tracking."
+      },
+      "extract": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          2.4549
+        ],
+        "perf_weight": 2.4549,
+        "notes": "EC2 timing ratio vs add = 2.4549."
+      },
+      "fill_diagonal": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "min(m,n)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          6.2633
+        ],
+        "perf_weight": 6.2633,
+        "notes": "EC2 timing = 6.26 per diagonal element. Strided cache misses in large matrices."
+      },
+      "flatnonzero": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.8717
+        ],
+        "perf_weight": 0.8717,
+        "notes": "EC2 timing ratio vs add = 0.8717."
+      },
+      "fromfunction": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.7226
+        ],
+        "perf_weight": 0.7226,
+        "notes": "EC2 timing ratio vs add = 0.7226."
+      },
+      "fromiter": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          20.3777
+        ],
+        "perf_weight": 20.3777,
+        "notes": "EC2 timing = 20.38. Python iterator overhead per element."
+      },
+      "full": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.5706
+        ],
+        "perf_weight": 0.5706,
+        "notes": "EC2 timing ratio vs add = 0.5706."
+      },
+      "full_like": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.5616
+        ],
+        "perf_weight": 0.5616,
+        "notes": "EC2 timing ratio vs add = 0.5616."
+      },
+      "indices": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.1694
+        ],
+        "perf_weight": 0.1694,
+        "notes": "EC2 timing ratio vs add = 0.1694."
+      },
+      "insert": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(values)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          1.6005
+        ],
+        "perf_weight": 1.6005,
+        "notes": "EC2 timing ratio vs add = 1.6005."
+      },
+      "ix_": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          1.292
+        ],
+        "perf_weight": 1.292,
+        "notes": "EC2 timing ratio vs add = 1.2920."
+      },
+      "linspace": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          1.1761
+        ],
+        "perf_weight": 1.1761,
+        "notes": "EC2 timing ratio vs add = 1.1761."
+      },
+      "mask_indices": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          4.5645
+        ],
+        "perf_weight": 4.5645,
+        "notes": "EC2 timing ratio vs add = 4.5645."
+      },
+      "meshgrid": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.1446
+        ],
+        "perf_weight": 0.1446,
+        "notes": "EC2 timing ratio vs add = 0.1446."
+      },
+      "nonzero": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.8322
+        ],
+        "perf_weight": 0.8322,
+        "notes": "EC2 timing ratio vs add = 0.8322."
+      },
+      "packbits": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.3987
+        ],
+        "perf_weight": 0.3987,
+        "notes": "EC2 timing ratio vs add = 0.3987."
+      },
+      "pad": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.9146
+        ],
+        "perf_weight": 0.9146,
+        "notes": "EC2 timing ratio vs add = 0.9146."
+      },
+      "piecewise": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          13.7055
+        ],
+        "perf_weight": 13.7055,
+        "notes": "EC2 timing ratio vs add = 13.7055."
+      },
+      "place": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          3.7818
+        ],
+        "perf_weight": 3.7818,
+        "notes": "EC2 timing ratio vs add = 3.7818."
+      },
+      "put": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.9866
+        ],
+        "perf_weight": 0.9866,
+        "notes": "EC2 timing ratio vs add = 0.9866."
+      },
+      "put_along_axis": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.031
+        ],
+        "perf_weight": 0.031,
+        "notes": "Formerly-free op. Timing ratio vs add = 0.0310."
+      },
+      "putmask": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          3.0306
+        ],
+        "perf_weight": 3.0306,
+        "notes": "EC2 timing ratio vs add = 3.0306."
+      },
+      "random.random_integers": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          3.5105
+        ],
+        "perf_weight": 3.5105,
+        "notes": "EC2 timing = 3.51. Deprecated randint wrapper."
+      },
+      "repeat": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.5985
+        ],
+        "perf_weight": 0.5985,
+        "notes": "EC2 timing ratio vs add = 0.5985."
+      },
+      "resize": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.6234
+        ],
+        "perf_weight": 0.6234,
+        "notes": "EC2 timing ratio vs add = 0.6234."
+      },
+      "roll": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.9077
+        ],
+        "perf_weight": 0.9077,
+        "notes": "EC2 timing ratio vs add = 0.9077."
+      },
+      "select": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          7.9267
+        ],
+        "perf_weight": 7.9267,
+        "notes": "EC2 timing ratio vs add = 7.9267."
+      },
+      "stack": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.9017
+        ],
+        "perf_weight": 0.9017,
+        "notes": "EC2 timing ratio vs add = 0.9017."
+      },
+      "take": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          3.8564
+        ],
+        "perf_weight": 3.8564,
+        "notes": "EC2 timing ratio vs add = 3.8564."
+      },
+      "take_along_axis": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.4811
+        ],
+        "perf_weight": 0.4811,
+        "notes": "Formerly-free op. Timing ratio vs add = 0.4811."
+      },
+      "tile": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.6244
+        ],
+        "perf_weight": 0.6244,
+        "notes": "EC2 timing ratio vs add = 0.6244."
+      },
+      "trim_zeros": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "num trimmed",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          2.3378
+        ],
+        "perf_weight": 2.3378,
+        "notes": "EC2 timing ratio vs add = 2.3378."
+      },
+      "unpackbits": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.0385
+        ],
+        "perf_weight": 0.0385,
+        "notes": "EC2 timing ratio vs add = 0.0385."
+      },
+      "unstack": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.0007
+        ],
+        "perf_weight": 0.0007,
+        "notes": "EC2 timing = 0.0007. Returns views \u2014 should be free."
+      },
+      "vstack": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(output)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          0.9082
+        ],
+        "perf_weight": 0.9082,
+        "notes": "EC2 timing ratio vs add = 0.9082."
+      },
+      "where": {
+        "category": "counted_custom",
+        "measurement_mode": "timing",
+        "analytical_formula": "numel(input)",
+        "analytical_flops": 0,
+        "benchmark_size": "N/A",
+        "bench_code": "N/A",
+        "repeats": 0,
+        "perf_instructions_total": [],
+        "distribution_alphas": [
+          3.5686
+        ],
+        "perf_weight": 3.5686,
+        "notes": "EC2 timing ratio vs add = 3.5686."
       }
     },
     "duration_seconds": 7828.9
@@ -9721,9 +11096,88 @@
     "hamming": 16.0,
     "hanning": 16.0,
     "kaiser": 16.0,
-    "random.bytes": 1,
+    "random.bytes": 1.0,
     "isnan": 1.0,
     "isinf": 1.0,
-    "isfinite": 1.0
+    "isfinite": 1.0,
+    "stats.norm.pdf": 16.0,
+    "stats.norm.cdf": 16.0,
+    "stats.norm.ppf": 16.0,
+    "stats.uniform.pdf": 1.0,
+    "stats.uniform.cdf": 1.0,
+    "stats.uniform.ppf": 1.0,
+    "stats.expon.pdf": 16.0,
+    "stats.expon.cdf": 16.0,
+    "stats.expon.ppf": 16.0,
+    "stats.cauchy.pdf": 4.0,
+    "stats.cauchy.cdf": 16.0,
+    "stats.cauchy.ppf": 16.0,
+    "stats.logistic.pdf": 16.0,
+    "stats.logistic.cdf": 16.0,
+    "stats.logistic.ppf": 16.0,
+    "stats.laplace.pdf": 16.0,
+    "stats.laplace.cdf": 16.0,
+    "stats.laplace.ppf": 16.0,
+    "stats.lognorm.pdf": 16.0,
+    "stats.lognorm.cdf": 16.0,
+    "stats.lognorm.ppf": 16.0,
+    "stats.truncnorm.pdf": 16.0,
+    "stats.truncnorm.cdf": 16.0,
+    "stats.truncnorm.ppf": 16.0,
+    "append": 1.0,
+    "apply_along_axis": 4.0,
+    "apply_over_axes": 1.0,
+    "arange": 1.0,
+    "argwhere": 4.0,
+    "array": 1.0,
+    "asarray_chkfinite": 1.0,
+    "block": 1.0,
+    "bmat": 4.0,
+    "choose": 4.0,
+    "compress": 4.0,
+    "concat": 1.0,
+    "concatenate": 1.0,
+    "copyto": 1.0,
+    "delete": 1.0,
+    "diag": 4.0,
+    "diagflat": 1.0,
+    "diagonal": 1.0,
+    "dstack": 1.0,
+    "einsum_path": 1.0,
+    "extract": 4.0,
+    "fill_diagonal": 4.0,
+    "flatnonzero": 1.0,
+    "fromfunction": 1.0,
+    "fromiter": 16.0,
+    "full": 1.0,
+    "full_like": 1.0,
+    "indices": 1.0,
+    "insert": 4.0,
+    "ix_": 1.0,
+    "linspace": 1.0,
+    "mask_indices": 4.0,
+    "meshgrid": 1.0,
+    "nonzero": 1.0,
+    "packbits": 1.0,
+    "pad": 1.0,
+    "piecewise": 4.0,
+    "place": 4.0,
+    "put": 1.0,
+    "put_along_axis": 1.0,
+    "putmask": 4.0,
+    "random.random_integers": 1.0,
+    "repeat": 1.0,
+    "resize": 1.0,
+    "roll": 1.0,
+    "select": 4.0,
+    "stack": 1.0,
+    "take": 4.0,
+    "take_along_axis": 1.0,
+    "tile": 1.0,
+    "trim_zeros": 4.0,
+    "unpackbits": 1.0,
+    "unstack": 1.0,
+    "vstack": 1.0,
+    "where": 4.0
   }
 }

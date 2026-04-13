@@ -130,7 +130,10 @@ def test_run_benchmarks_per_op_details():
 
     with (
         patch("benchmarks.runner.collect_metadata", return_value=mock_meta),
-        patch("benchmarks.runner.measure_baselines", return_value=BaselineResult(alpha_add=1.0, alpha_abs=0.0)),
+        patch(
+            "benchmarks.runner.measure_baselines",
+            return_value=BaselineResult(alpha_add=1.0, alpha_abs=0.0),
+        ),
         patch.dict(_BENCHMARK_FUNCS, mock_funcs, clear=True),
         patch("benchmarks.runner.render_terminal", return_value="summary"),
     ):
@@ -177,7 +180,10 @@ def test_run_benchmarks_backward_compat_dict_return():
 
     with (
         patch("benchmarks.runner.collect_metadata", return_value=mock_meta),
-        patch("benchmarks.runner.measure_baselines", return_value=BaselineResult(alpha_add=1.0, alpha_abs=0.0)),
+        patch(
+            "benchmarks.runner.measure_baselines",
+            return_value=BaselineResult(alpha_add=1.0, alpha_abs=0.0),
+        ),
         patch.dict(_BENCHMARK_FUNCS, mock_funcs, clear=True),
         patch("benchmarks.runner.render_terminal", return_value="summary"),
     ):

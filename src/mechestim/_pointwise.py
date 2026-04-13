@@ -983,9 +983,7 @@ def corrcoef(x, y=None, **kwargs):
     if not isinstance(x, _np.ndarray):
         x = _np.asarray(x)
     cost = _cov_cost(x, y)
-    budget.deduct(
-        "corrcoef", flop_cost=cost, subscripts=None, shapes=(x.shape,)
-    )
+    budget.deduct("corrcoef", flop_cost=cost, subscripts=None, shapes=(x.shape,))
     return _np.corrcoef(x, y=y, **kwargs)
 
 
@@ -998,9 +996,7 @@ def cov(m, y=None, **kwargs):
     if not isinstance(m, _np.ndarray):
         m = _np.asarray(m)
     cost = _cov_cost(m, y)
-    budget.deduct(
-        "cov", flop_cost=cost, subscripts=None, shapes=(m.shape,)
-    )
+    budget.deduct("cov", flop_cost=cost, subscripts=None, shapes=(m.shape,))
     return _np.cov(m, y=y, **kwargs)
 
 

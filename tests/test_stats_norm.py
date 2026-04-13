@@ -13,21 +13,23 @@ from mechestim.stats._erf import _erf, _erfc
 from mechestim.stats._ndtri import _ndtri
 from mechestim.stats._norm import norm
 
-
 # ---------------------------------------------------------------------------
 # TestErf
 # ---------------------------------------------------------------------------
+
 
 class TestErf:
     """Verify _erf against scipy.special.erf."""
 
     @pytest.fixture
     def xs(self):
-        return np.concatenate([
-            np.linspace(-6, 6, 500),
-            np.array([0.0, 0.25, 0.49, 0.5, 0.51, 1.0, 2.0, 3.99, 4.0, 4.01, 6.0]),
-            np.array([-0.25, -0.5, -1.0, -4.0, -6.0]),
-        ])
+        return np.concatenate(
+            [
+                np.linspace(-6, 6, 500),
+                np.array([0.0, 0.25, 0.49, 0.5, 0.51, 1.0, 2.0, 3.99, 4.0, 4.01, 6.0]),
+                np.array([-0.25, -0.5, -1.0, -4.0, -6.0]),
+            ]
+        )
 
     def test_accuracy(self, xs):
         result = _erf(xs)
@@ -52,15 +54,18 @@ class TestErf:
 # TestNdtri
 # ---------------------------------------------------------------------------
 
+
 class TestNdtri:
     """Verify _ndtri against scipy.special.ndtri."""
 
     @pytest.fixture
     def ps(self):
-        return np.concatenate([
-            np.linspace(0.001, 0.999, 500),
-            np.array([0.001, 0.01, 0.02425, 0.5, 0.97575, 0.99, 0.999]),
-        ])
+        return np.concatenate(
+            [
+                np.linspace(0.001, 0.999, 500),
+                np.array([0.001, 0.01, 0.02425, 0.5, 0.97575, 0.99, 0.999]),
+            ]
+        )
 
     def test_accuracy(self, ps):
         result = _ndtri(ps)
@@ -106,6 +111,7 @@ class TestNormPdf:
 # TestNormCdf
 # ---------------------------------------------------------------------------
 
+
 class TestNormCdf:
     """Verify norm.cdf against scipy.stats.norm.cdf."""
 
@@ -131,6 +137,7 @@ class TestNormCdf:
 # ---------------------------------------------------------------------------
 # TestNormPpf
 # ---------------------------------------------------------------------------
+
 
 class TestNormPpf:
     """Verify norm.ppf against scipy.stats.norm.ppf."""
@@ -166,6 +173,7 @@ class TestNormPpf:
 # FLOP cost tests
 # ---------------------------------------------------------------------------
 
+
 class TestFlopCosts:
     """Verify that FLOP deductions match expected costs."""
 
@@ -173,24 +181,25 @@ class TestFlopCosts:
         xs = np.ones(100)
         with BudgetContext(10**9, quiet=True) as ctx:
             norm.pdf(xs)
-        assert ctx.flops_used == 10 * 100
+        assert ctx.flops_used == 100
 
     def test_cdf_cost(self):
         xs = np.ones(100)
         with BudgetContext(10**9, quiet=True) as ctx:
             norm.cdf(xs)
-        assert ctx.flops_used == 20 * 100
+        assert ctx.flops_used == 100
 
     def test_ppf_cost(self):
         qs = np.ones(100) * 0.5
         with BudgetContext(10**9, quiet=True) as ctx:
             norm.ppf(qs)
-        assert ctx.flops_used == 40 * 100
+        assert ctx.flops_used == 100
 
 
 # ---------------------------------------------------------------------------
 # BudgetExhaustedError test
 # ---------------------------------------------------------------------------
+
 
 class TestBudgetExhausted:
     def test_raises(self):
@@ -203,6 +212,7 @@ class TestBudgetExhausted:
 # ---------------------------------------------------------------------------
 # repr test
 # ---------------------------------------------------------------------------
+
 
 class TestRepr:
     def test_repr(self):
