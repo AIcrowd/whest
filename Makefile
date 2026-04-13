@@ -39,14 +39,15 @@ test:  ## Run pytest with coverage (fails if < 90%)
 
 .PHONY: test-numpy-compat
 test-numpy-compat:  ## Run NumPy's own tests against whest
-	$(UV) pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_umath -n auto -q
-	$(UV) pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_ufunc -n auto -q
-	$(UV) pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_numeric -n auto -q
-	$(UV) pytest tests/numpy_compat/ --pyargs numpy.linalg.tests.test_linalg -n auto -q
-	$(UV) pytest tests/numpy_compat/ --pyargs numpy.fft.tests.test_pocketfft -n auto -q
-	$(UV) pytest tests/numpy_compat/ --pyargs numpy.fft.tests.test_helper -n auto -q
-	$(UV) pytest tests/numpy_compat/ --pyargs numpy.polynomial.tests.test_polynomial -n auto -q
-	$(UV) pytest tests/numpy_compat/ --pyargs numpy.random.tests.test_random -n auto -q
+	$(UV) pytest tests/numpy_compat/ -n auto -q \
+		--pyargs numpy._core.tests.test_umath \
+		          numpy._core.tests.test_ufunc \
+		          numpy._core.tests.test_numeric \
+		          numpy.linalg.tests.test_linalg \
+		          numpy.fft.tests.test_pocketfft \
+		          numpy.fft.tests.test_helper \
+		          numpy.polynomial.tests.test_polynomial \
+		          numpy.random.tests.test_random
 
 # ---------------------------------------------------------------------------
 # Docs  (mirrors: CI → docs job)
