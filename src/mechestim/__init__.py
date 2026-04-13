@@ -201,7 +201,7 @@ from mechestim._free_ops import (  # noqa: F401
 from mechestim._opt_einsum import PathInfo, StepInfo  # noqa: F401
 
 # --- Permutation groups ---
-from mechestim._perm_group import Permutation, PermutationGroup  # noqa: F401
+from mechestim._perm_group import Cycle, Permutation, PermutationGroup  # noqa: F401
 
 # --- Pointwise (counted) ---
 from mechestim._pointwise import (  # noqa: F401
