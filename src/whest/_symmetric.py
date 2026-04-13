@@ -211,7 +211,7 @@ def _warn_symmetry_loss(
     warnings.warn(
         f"Symmetry lost along dims {dim_str}: {reason}. "
         "Use as_symmetric() to re-tag if you know the result is symmetric. "
-        "Suppress with me.configure(symmetry_warnings=False).",
+        "Suppress with we.configure(symmetry_warnings=False).",
         SymmetryLossWarning,
         stacklevel=stacklevel,
     )

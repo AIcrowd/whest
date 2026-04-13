@@ -952,7 +952,7 @@ REGISTRY: dict[str, dict] = {
     "linalg.cross": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Delegates to `me.cross` which charges `numel(output)` FLOPs.",
+        "notes": "Delegates to `we.cross` which charges `numel(output)` FLOPs.",
     },
     "linalg.det": {
         "category": "counted_custom",
@@ -997,7 +997,7 @@ REGISTRY: dict[str, dict] = {
     "linalg.matmul": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Delegates to `me.matmul` which charges `m*k*n` FLOPs (FMA=1).",
+        "notes": "Delegates to `we.matmul` which charges `m*k*n` FLOPs (FMA=1).",
     },
     "linalg.matrix_norm": {
         "category": "counted_custom",
@@ -1032,7 +1032,7 @@ REGISTRY: dict[str, dict] = {
     "linalg.outer": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Delegates to `me.outer` which charges `m*n` FLOPs.",
+        "notes": "Delegates to `we.outer` which charges `m*n` FLOPs.",
     },
     "linalg.pinv": {
         "category": "counted_custom",
@@ -1062,7 +1062,7 @@ REGISTRY: dict[str, dict] = {
     "linalg.tensordot": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Delegates to `me.tensordot` which charges FLOPs based on contraction.",
+        "notes": "Delegates to `we.tensordot` which charges FLOPs based on contraction.",
     },
     "linalg.tensorinv": {
         "category": "counted_custom",
@@ -1082,7 +1082,7 @@ REGISTRY: dict[str, dict] = {
     "linalg.vecdot": {
         "category": "counted_custom",
         "module": "numpy.linalg",
-        "notes": "Delegates to `me.vecdot` which charges `2*n` FLOPs.",
+        "notes": "Delegates to `we.vecdot` which charges `2*n` FLOPs.",
     },
     "linalg.vector_norm": {
         "category": "counted_custom",
