@@ -76,7 +76,6 @@ else:
         raise UnsupportedFunctionError("linalg.vecdot", min_version="2.1")
 
 
-
 def diagonal(a, **kwargs):
     """Diagonal (linalg namespace). Delegates to mechestim.diagonal. Cost: 0 FLOPs."""
     return _me.diagonal(a, **kwargs)

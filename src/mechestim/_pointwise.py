@@ -309,6 +309,7 @@ else:
     def bitwise_count(*args, **kwargs):
         raise UnsupportedFunctionError("bitwise_count", min_version="2.1")
 
+
 bitwise_invert = _counted_unary(_np.bitwise_invert, "bitwise_invert")
 bitwise_not = _counted_unary(_np.bitwise_not, "bitwise_not")
 cbrt = _counted_unary(_np.cbrt, "cbrt")
@@ -560,7 +561,6 @@ else:
         raise UnsupportedFunctionError("vecmat", min_version="2.2")
 
 
-
 # Multi-output binary ops
 divmod = _counted_binary_multi(_np.divmod, "divmod")
 
@@ -629,12 +629,14 @@ else:
     def cumulative_prod(*args, **kwargs):
         raise UnsupportedFunctionError("cumulative_prod", min_version="2.1")
 
+
 if hasattr(_np, "cumulative_sum"):
     cumulative_sum = _counted_reduction(_np.cumulative_sum, "cumulative_sum")
 else:
 
     def cumulative_sum(*args, **kwargs):
         raise UnsupportedFunctionError("cumulative_sum", min_version="2.1")
+
 
 median = _counted_reduction(_np.median, "median")
 nanargmax = _counted_reduction(_np.nanargmax, "nanargmax")
