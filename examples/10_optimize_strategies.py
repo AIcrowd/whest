@@ -39,9 +39,7 @@ for name in strategies:
     dt = time.perf_counter() - t0
 
     extra = f"  (resolved to {info.optimizer_used})" if name == "auto" else ""
-    print(
-        f"{name:<12} {info.optimized_cost:>14,} {dt*1000:>10.2f}ms  {path}{extra}"
-    )
+    print(f"{name:<12} {info.optimized_cost:>14,} {dt * 1000:>10.2f}ms  {path}{extra}")
 
 print(f"\nNaive cost (no optimization): {info.naive_cost:,}")
 
@@ -56,7 +54,7 @@ with me.BudgetContext(flop_budget=10**9, quiet=True) as budget:
     for _ in range(10):
         result = me.einsum(subscripts, *operands, optimize=path)
 
-print(f"10 executions with pre-planned path:")
+print("10 executions with pre-planned path:")
 print(f"  FLOPs per call: {budget.flops_used // 10:,}")
 print(f"  Total FLOPs:    {budget.flops_used:,}")
 print(f"  Result shape:   {result.shape}")

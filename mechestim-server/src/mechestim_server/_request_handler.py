@@ -254,7 +254,9 @@ class RequestHandler:
                         for k, v in pg_data.items()
                     }
                 generators = [me.Permutation(list(g)) for g in pg_data["generators"]]
-                axes = tuple(pg_data["axes"]) if pg_data.get("axes") is not None else None
+                axes = (
+                    tuple(pg_data["axes"]) if pg_data.get("axes") is not None else None
+                )
                 return me.PermutationGroup(*generators, axes=axes)
         # Recurse into lists/tuples so that e.g. concatenate([a, b]) works
         if isinstance(arg, (list, tuple)):
@@ -302,7 +304,7 @@ class RequestHandler:
         budget = self._session.budget_status()
 
         # SymmetricTensor — ndarray subclass with symmetry metadata
-        if hasattr(me, 'SymmetricTensor') and isinstance(result, me.SymmetricTensor):
+        if hasattr(me, "SymmetricTensor") and isinstance(result, me.SymmetricTensor):
             if result.nbytes > MAX_ARRAY_BYTES:
                 return {
                     "status": "error",

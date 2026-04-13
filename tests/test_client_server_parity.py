@@ -28,6 +28,7 @@ CLIENT_SRC = ROOT / "mechestim-client" / "src"
 # Module-loading helpers
 # ---------------------------------------------------------------------------
 
+
 def _load_module(file_path: Path, module_name: str) -> types.ModuleType:
     """Load a Python source file as a module with an isolated name."""
     spec = importlib.util.spec_from_file_location(module_name, file_path)
@@ -53,6 +54,7 @@ def _load_client(relative: str, alias: str) -> types.ModuleType:
 # ---------------------------------------------------------------------------
 # TestRegistryParity
 # ---------------------------------------------------------------------------
+
 
 class TestRegistryParity:
     """core REGISTRY entries match client FUNCTION_CATEGORIES (exact set, exact categories)."""
@@ -100,6 +102,7 @@ class TestRegistryParity:
 # ---------------------------------------------------------------------------
 # TestErrorParity
 # ---------------------------------------------------------------------------
+
 
 class TestErrorParity:
     """All error/warning classes from core errors.py exist in client errors.py."""
@@ -170,6 +173,7 @@ class TestErrorParity:
 # TestSubmoduleParity
 # ---------------------------------------------------------------------------
 
+
 class TestSubmoduleParity:
     """Client has linalg, fft, random, stats submodule __init__.py files."""
 
@@ -201,6 +205,7 @@ class TestSubmoduleParity:
 # ---------------------------------------------------------------------------
 # TestPermGroupParity
 # ---------------------------------------------------------------------------
+
 
 class TestPermGroupParity:
     """Client _perm_group.py exposes Permutation, PermutationGroup, Cycle."""
@@ -234,13 +239,16 @@ class TestPermGroupParity:
                 f"Core _perm_group.py missing: {name}"
             )
 
-    def test_client_and_core_class_names_match(self, core_perm_group, client_perm_group):
+    def test_client_and_core_class_names_match(
+        self, core_perm_group, client_perm_group
+    ):
         """The set of public class names in client _perm_group must include all from core."""
+
         def _public_classes(mod: types.ModuleType) -> set[str]:
             return {
-                name for name in dir(mod)
-                if not name.startswith("_")
-                and isinstance(getattr(mod, name), type)
+                name
+                for name in dir(mod)
+                if not name.startswith("_") and isinstance(getattr(mod, name), type)
             }
 
         core_classes = _public_classes(core_perm_group)

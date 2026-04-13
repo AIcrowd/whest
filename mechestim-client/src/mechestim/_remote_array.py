@@ -313,7 +313,9 @@ class RemoteArray(metaclass=_RemoteArrayMeta):
 
     __slots__ = ("_handle_id", "_shape", "_dtype", "_symmetry_info")
 
-    def __init__(self, handle_id: str, shape: tuple, dtype: str, symmetry_info=None) -> None:
+    def __init__(
+        self, handle_id: str, shape: tuple, dtype: str, symmetry_info=None
+    ) -> None:
         self._handle_id = handle_id
         self._shape = tuple(shape)
         self._dtype = dtype
@@ -643,6 +645,7 @@ def _result_from_response(resp: dict) -> Union[RemoteArray, RemoteScalar, tuple,
         sym_info = None
         if "symmetry_info" in result:
             from mechestim._symmetric_info import SymmetryInfo
+
             si = result["symmetry_info"]
             sym_info = SymmetryInfo(
                 symmetric_axes=[tuple(g) for g in si["symmetric_axes"]],
@@ -681,6 +684,7 @@ def _encode_arg(arg):
         return {"__handle__": arg.handle_id}
     # Permutation types → wire format
     from mechestim._perm_group import Cycle, Permutation, PermutationGroup
+
     if isinstance(arg, Cycle):
         arr = arg.list()
         return {"__permutation__": arr}

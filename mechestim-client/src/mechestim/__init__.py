@@ -34,6 +34,11 @@ from mechestim._budget import (  # noqa: E402
 )
 from mechestim._display import budget_live, budget_summary  # noqa: E402
 from mechestim._math_compat import e, inf, nan, pi  # noqa: E402
+from mechestim._perm_group import (  # noqa: E402
+    Cycle,
+    Permutation,
+    PermutationGroup,
+)
 
 # ---------------------------------------------------------------------------
 # Remote types
@@ -45,6 +50,7 @@ from mechestim._remote_array import (  # noqa: E402
     _encode_arg,
     _result_from_response,
 )
+from mechestim._symmetric_info import SymmetryInfo  # noqa: E402
 from mechestim.errors import (  # noqa: E402
     BudgetExhaustedError,
     MechEstimError,
@@ -53,12 +59,6 @@ from mechestim.errors import (  # noqa: E402
     NoBudgetContextError,
     SymmetryError,
 )
-from mechestim._perm_group import (  # noqa: E402
-    Cycle,
-    Permutation,
-    PermutationGroup,
-)
-from mechestim._symmetric_info import SymmetryInfo  # noqa: E402
 
 # Alias: ``me.ndarray`` refers to the RemoteArray class.
 ndarray = RemoteArray

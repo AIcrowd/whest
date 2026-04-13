@@ -24,9 +24,13 @@ _SERVER_SRC = os.path.join(_WORKTREE, "mechestim-server", "src")
 _REAL_SRC = os.path.join(_WORKTREE, "src")
 # Prefer the server's own venv (which has msgpack/pyzmq) for the server subprocess;
 # fall back to the worktree root venv if it doesn't exist.
-_SERVER_VENV_PYTHON = os.path.join(_WORKTREE, "mechestim-server", ".venv", "bin", "python")
+_SERVER_VENV_PYTHON = os.path.join(
+    _WORKTREE, "mechestim-server", ".venv", "bin", "python"
+)
 _ROOT_VENV_PYTHON = os.path.join(_WORKTREE, ".venv", "bin", "python")
-_VENV_PYTHON = _SERVER_VENV_PYTHON if os.path.exists(_SERVER_VENV_PYTHON) else _ROOT_VENV_PYTHON
+_VENV_PYTHON = (
+    _SERVER_VENV_PYTHON if os.path.exists(_SERVER_VENV_PYTHON) else _ROOT_VENV_PYTHON
+)
 
 for _p in (_CLIENT_SRC,):
     if _p not in sys.path:
@@ -69,6 +73,7 @@ def _start_server():
 @pytest.fixture(autouse=True)
 def _reset_client():
     from mechestim._connection import reset_connection
+
     from mechestim._budget import _reset_global_default
 
     reset_connection()
@@ -121,8 +126,9 @@ class TestPointwise:
             assert result.tolist() == [10.0, 18.0, 28.0]
 
     def test_exp(self):
-        import mechestim as me
         import math
+
+        import mechestim as me
 
         with me.BudgetContext(flop_budget=1_000_000):
             a = me.array([0.0, 1.0])
@@ -337,8 +343,8 @@ class TestEinsum:
 
         with me.BudgetContext(flop_budget=1_000_000):
             A = me.array([[1.0, 2.0], [3.0, 4.0]])
-            I = me.array([[1.0, 0.0], [0.0, 1.0]])
-            C = me.einsum("ij,jk->ik", A, I)
+            eye = me.array([[1.0, 0.0], [0.0, 1.0]])
+            C = me.einsum("ij,jk->ik", A, eye)
             assert C.tolist() == [[1.0, 2.0], [3.0, 4.0]]
 
     def test_dot_product(self):
