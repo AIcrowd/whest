@@ -2,15 +2,15 @@
 
 Most ops use perf mode with complex128 input (they DO retire FP instructions
 on complex data).  Two type-check ops (``iscomplexobj``, ``isrealobj``) use
-timing mode because they inspect the dtype, not the array elements.
+the ``instructions`` counter because they inspect the dtype, not the array
+elements (so ``fp_arith_inst_retired`` reads 0).
 """
 
 from __future__ import annotations
 
-import os
 import statistics
 
-from benchmarks._perf import measure_flops
+from benchmarks._perf import measure_flops, measure_instructions
 
 COMPLEX_OPS: list[str] = [
     "angle",
@@ -26,7 +26,9 @@ COMPLEX_OPS: list[str] = [
     "isrealobj",
 ]
 
-_TIMING_ONLY_OPS: frozenset[str] = frozenset({"iscomplexobj", "isrealobj"})
+# Ops that use the ``instructions`` counter instead of ``fp_arith_inst_retired``
+# because they inspect the dtype, not the array elements.
+_INSTRUCTIONS_OPS: frozenset[str] = frozenset({"iscomplexobj", "isrealobj"})
 
 _FORMULA_STRINGS: dict[str, str] = {
     "angle": "numel(output)",
@@ -122,9 +124,9 @@ def benchmark_complex(
         # --- Determine n for this op ---
         op_n = 1_000_000 if op == "sort_complex" else n
 
-        # --- Force timing mode for type-check ops ---
-        if op in _TIMING_ONLY_OPS:
-            os.environ["MECHESTIM_FORCE_TIMING"] = "1"
+        # --- Choose measurement function ---
+        use_instructions = op in _INSTRUCTIONS_OPS
+        measure_fn = measure_instructions if use_instructions else measure_flops
 
         dist_values: list[float] = []
         dist_raw_totals: list[int] = []
@@ -132,7 +134,7 @@ def benchmark_complex(
 
         for di in range(distributions):
             # --- Build setup code ---
-            if op in _TIMING_ONLY_OPS:
+            if use_instructions:
                 setup = _timing_setup(op_n)
             elif op == "real_if_close":
                 setup = _real_if_close_setup(op_n, di)
@@ -141,7 +143,7 @@ def benchmark_complex(
                 setup = _complex_setup(op_n, seed_r, seed_i)
 
             try:
-                result = measure_flops(setup, bench, repeats=repeats)
+                result = measure_fn(setup, bench, repeats=repeats)
             except RuntimeError:
                 continue
 
@@ -150,20 +152,18 @@ def benchmark_complex(
             dist_values.append(result.total_flops / (analytical * repeats))
             dist_raw_totals.append(result.total_flops)
 
-        # --- Restore environment ---
-        if op in _TIMING_ONLY_OPS:
-            os.environ.pop("MECHESTIM_FORCE_TIMING", None)
-
         if dist_values:
             results[op] = statistics.median(dist_values)
 
-            if op in _TIMING_ONLY_OPS:
-                bm_size = f"x: ({op_n},) complex128 (type check)"
+            if use_instructions:
+                bm_size = f"x: ({op_n},) complex128 (instructions counter)"
             else:
                 bm_size = f"x: ({op_n},) complex128"
 
+            mm = "instructions" if op in _INSTRUCTIONS_OPS else "ufunc_unary"
             details[op] = {
                 "category": "counted_complex",
+                "measurement_mode": mm,
                 "analytical_formula": _FORMULA_STRINGS[op],
                 "analytical_flops": op_n,
                 "benchmark_size": bm_size,

@@ -60,20 +60,20 @@ class TestRandint:
 class TestPermutation:
     def test_cost(self):
         n = 16
-        expected = n * _ceil_log2(n)
+        # Sheet formula: numel(output)
         with BudgetContext(flop_budget=10**6, quiet=True) as budget:
             merandom.permutation(n)
-            assert budget.flops_used == expected
+            assert budget.flops_used == n
 
 
 class TestShuffle:
     def test_cost(self):
         a = numpy.arange(16)
         n = 16
-        expected = n * _ceil_log2(n)
+        # Sheet formula: numel(output)
         with BudgetContext(flop_budget=10**6, quiet=True) as budget:
             merandom.shuffle(a)
-            assert budget.flops_used == expected
+            assert budget.flops_used == n
 
 
 class TestChoiceWithReplacement:

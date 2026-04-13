@@ -196,6 +196,7 @@ def benchmark_random(
                 bm_size = f"output: ({n},)"
             details[op] = {
                 "category": "counted_custom",
+                "measurement_mode": "custom",
                 "analytical_formula": "numel(output)",
                 "analytical_flops": n,
                 "benchmark_size": bm_size,

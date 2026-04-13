@@ -45,17 +45,21 @@ def _output_size(*dims, size=None):
 def _counted_sampler(np_func, op_name):
     """Factory for simple samplers: cost = numel(output).
 
-    Passes all args/kwargs through transparently to numpy. Inspects
-    the ``size`` keyword argument (if present) for cost computation.
+    Passes all args/kwargs through transparently to numpy. Derives the
+    output size from the actual result to correctly handle ``size`` passed
+    as either a positional or keyword argument.
     """
 
     def wrapper(*args, **kwargs):
         budget = require_budget()
-        size = kwargs.get("size", None)
-        n = _output_size(size=size)
-        cost = _builtins.max(n, 1)
-        budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=((n,),))
         result = np_func(*args, **kwargs)
+        if isinstance(result, _np.ndarray):
+            n = _builtins.max(result.size, 1)
+        elif isinstance(result, (int, float, _np.integer, _np.floating)):
+            n = 1
+        else:
+            n = 1
+        budget.deduct(op_name, flop_cost=n, subscripts=None, shapes=((n,),))
         return result
 
     wrapper.__name__ = op_name
@@ -186,11 +190,11 @@ sample = _counted_size_only_sampler(_npr.sample, "random.sample")
 def permutation(x):
     """Counted version of ``numpy.random.permutation``.
 
-    Cost: sort_cost(n) = n * ceil(log2(n)) FLOPs.
+    Cost: numel(output) FLOPs.
     """
     budget = require_budget()
     n = int(x) if isinstance(x, (int, _np.integer)) else x.shape[0]
-    cost = sort_cost(n)
+    cost = _builtins.max(n, 1)
     budget.deduct("random.permutation", flop_cost=cost, subscripts=None, shapes=((n,),))
     return _npr.permutation(x)
 
@@ -198,14 +202,14 @@ def permutation(x):
 def shuffle(x, axis=0):
     """Counted version of ``numpy.random.shuffle``.
 
-    Modifies ``x`` in-place. Cost: sort_cost(n) = n * ceil(log2(n)) FLOPs.
+    Modifies ``x`` in-place. Cost: numel(output) FLOPs.
     """
     budget = require_budget()
     if hasattr(x, "shape"):
         n = x.shape[axis]
     else:
         n = len(x)
-    cost = sort_cost(n)
+    cost = _builtins.max(n, 1)
     budget.deduct("random.shuffle", flop_cost=cost, subscripts=None, shapes=((n,),))
     _npr.shuffle(x)
 

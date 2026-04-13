@@ -92,14 +92,14 @@ def test_mean_cost():
     x = numpy.ones((10, 20))
     with BudgetContext(flop_budget=10**6) as budget:
         mean(x, axis=0)
-        assert budget.flops_used == 220  # numel(input) + numel(output) = 200 + 20
+        assert budget.flops_used == 200  # numel(input) = 200
 
 
 def test_std_cost():
     x = numpy.ones((10, 20))
     with BudgetContext(flop_budget=10**6) as budget:
         std(x, axis=0)
-        assert budget.flops_used == 420  # 2*numel(input) + numel(output) = 400 + 20
+        assert budget.flops_used == 200  # numel(input) = 200
 
 
 def test_argmax_result():

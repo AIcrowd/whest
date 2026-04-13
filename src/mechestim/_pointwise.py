@@ -7,7 +7,7 @@ import builtins as _builtins
 import numpy as _np
 
 from mechestim._docstrings import attach_docstring
-from mechestim._flops import einsum_cost, pointwise_cost, reduction_cost
+from mechestim._flops import _ceil_log2, einsum_cost, pointwise_cost, reduction_cost
 from mechestim._ndarray import _asmechestim
 from mechestim._symmetric import (
     SymmetricTensor,
@@ -529,9 +529,9 @@ sum = _counted_reduction(_np.sum, "sum")
 max = _counted_reduction(_np.max, "max")
 min = _counted_reduction(_np.min, "min")
 prod = _counted_reduction(_np.prod, "prod")
-mean = _counted_reduction(_np.mean, "mean", extra_output=True)
-std = _counted_reduction(_np.std, "std", cost_multiplier=2, extra_output=True)
-var = _counted_reduction(_np.var, "var", cost_multiplier=2, extra_output=True)
+mean = _counted_reduction(_np.mean, "mean")
+std = _counted_reduction(_np.std, "std")
+var = _counted_reduction(_np.var, "var")
 argmax = _counted_reduction(_np.argmax, "argmax")
 argmin = _counted_reduction(_np.argmin, "argmin")
 cumsum = _counted_reduction(_np.cumsum, "cumsum")
@@ -545,7 +545,7 @@ all = _counted_reduction(_np.all, "all")
 amax = _counted_reduction(_np.amax, "amax")
 amin = _counted_reduction(_np.amin, "amin")
 any = _counted_reduction(_np.any, "any")
-average = _counted_reduction(_np.average, "average", extra_output=True)
+average = _counted_reduction(_np.average, "average")
 count_nonzero = _counted_reduction(_np.count_nonzero, "count_nonzero")
 cumulative_prod = _counted_reduction(_np.cumulative_prod, "cumulative_prod")
 cumulative_sum = _counted_reduction(_np.cumulative_sum, "cumulative_sum")
@@ -555,15 +555,15 @@ nanargmin = _counted_reduction(_np.nanargmin, "nanargmin")
 nancumprod = _counted_reduction(_np.nancumprod, "nancumprod")
 nancumsum = _counted_reduction(_np.nancumsum, "nancumsum")
 nanmax = _counted_reduction(_np.nanmax, "nanmax")
-nanmean = _counted_reduction(_np.nanmean, "nanmean", extra_output=True)
+nanmean = _counted_reduction(_np.nanmean, "nanmean")
 nanmedian = _counted_reduction(_np.nanmedian, "nanmedian")
 nanmin = _counted_reduction(_np.nanmin, "nanmin")
 nanpercentile = _counted_reduction(_np.nanpercentile, "nanpercentile")
 nanprod = _counted_reduction(_np.nanprod, "nanprod")
 nanquantile = _counted_reduction(_np.nanquantile, "nanquantile")
-nanstd = _counted_reduction(_np.nanstd, "nanstd", cost_multiplier=2, extra_output=True)
+nanstd = _counted_reduction(_np.nanstd, "nanstd")
 nansum = _counted_reduction(_np.nansum, "nansum")
-nanvar = _counted_reduction(_np.nanvar, "nanvar", cost_multiplier=2, extra_output=True)
+nanvar = _counted_reduction(_np.nanvar, "nanvar")
 percentile = _counted_reduction(_np.percentile, "percentile")
 quantile = _counted_reduction(_np.quantile, "quantile")
 
@@ -869,34 +869,53 @@ def correlate(a, v, mode="valid"):
 attach_docstring(correlate, _np.correlate, "counted_custom", "n * m FLOPs")
 
 
+def _cov_cost(x, y=None):
+    """Cost for corrcoef/cov: 2 * f^2 * s.
+
+    For a (f, s) input: f features, s samples.
+    Covariance requires f^2 dot products of length s, plus mean subtraction.
+    """
+    if not isinstance(x, _np.ndarray):
+        x = _np.asarray(x)
+    if x.ndim == 1:
+        f, s = 1, x.shape[0]
+    else:
+        f, s = x.shape[0], x.shape[1]
+    if y is not None:
+        y_arr = _np.asarray(y)
+        f2 = 1 if y_arr.ndim == 1 else y_arr.shape[0]
+        f += f2
+    return _builtins.max(2 * f * f * s, 1)
+
+
 def corrcoef(x, y=None, **kwargs):
-    """Counted version of np.corrcoef."""
+    """Counted version of np.corrcoef. Cost: 2 * f^2 * s FLOPs."""
     budget = require_budget()
     if not isinstance(x, _np.ndarray):
         x = _np.asarray(x)
-    cost = x.size * x.size if y is None else x.size * _np.asarray(y).size
+    cost = _cov_cost(x, y)
     budget.deduct(
-        "corrcoef", flop_cost=_builtins.max(cost, 1), subscripts=None, shapes=(x.shape,)
+        "corrcoef", flop_cost=cost, subscripts=None, shapes=(x.shape,)
     )
     return _np.corrcoef(x, y=y, **kwargs)
 
 
-attach_docstring(corrcoef, _np.corrcoef, "counted_custom", r"$n^2$ FLOPs")
+attach_docstring(corrcoef, _np.corrcoef, "counted_custom", r"$2 f^2 s$ FLOPs")
 
 
 def cov(m, y=None, **kwargs):
-    """Counted version of np.cov."""
+    """Counted version of np.cov. Cost: 2 * f^2 * s FLOPs."""
     budget = require_budget()
     if not isinstance(m, _np.ndarray):
         m = _np.asarray(m)
-    cost = m.size * m.size if y is None else m.size * _np.asarray(y).size
+    cost = _cov_cost(m, y)
     budget.deduct(
-        "cov", flop_cost=_builtins.max(cost, 1), subscripts=None, shapes=(m.shape,)
+        "cov", flop_cost=cost, subscripts=None, shapes=(m.shape,)
     )
     return _np.cov(m, y=y, **kwargs)
 
 
-attach_docstring(cov, _np.cov, "counted_custom", r"$n^2$ FLOPs")
+attach_docstring(cov, _np.cov, "counted_custom", r"$2 f^2 s$ FLOPs")
 
 
 def trapezoid(y, x=None, dx=1.0, axis=-1):
@@ -924,14 +943,18 @@ attach_docstring(trapz, _np.trapz, "counted_custom", "numel(input) FLOPs")
 
 
 def interp(x, xp, fp, **kwargs):
-    """Counted version of np.interp."""
+    """Counted version of np.interp. Cost: n * ceil(log2(len(xp))) FLOPs."""
     budget = require_budget()
     if not isinstance(x, _np.ndarray):
         x = _np.asarray(x)
+    xp_arr = _np.asarray(xp)
+    n = _builtins.max(x.size, 1)
+    xp_len = _builtins.max(xp_arr.size, 1)
+    cost = _builtins.max(n * _ceil_log2(xp_len), 1)
     budget.deduct(
-        "interp", flop_cost=_builtins.max(x.size, 1), subscripts=None, shapes=(x.shape,)
+        "interp", flop_cost=cost, subscripts=None, shapes=(x.shape, xp_arr.shape)
     )
     return _np.interp(x, xp, fp, **kwargs)
 
 
-attach_docstring(interp, _np.interp, "counted_custom", "numel(x) FLOPs")
+attach_docstring(interp, _np.interp, "counted_custom", "n * ceil(log2(xp)) FLOPs")

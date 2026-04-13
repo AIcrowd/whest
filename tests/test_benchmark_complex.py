@@ -6,7 +6,7 @@ import pytest
 
 from benchmarks._complex import (
     _FORMULA_STRINGS,
-    _TIMING_ONLY_OPS,
+    _INSTRUCTIONS_OPS,
     COMPLEX_OPS,
     benchmark_complex,
 )
@@ -34,10 +34,10 @@ class TestOpsLists:
     def test_contains_timing_only_ops(self):
         for op in ("iscomplexobj", "isrealobj"):
             assert op in COMPLEX_OPS, f"{op} missing from COMPLEX_OPS"
-            assert op in _TIMING_ONLY_OPS, f"{op} missing from _TIMING_ONLY_OPS"
+            assert op in _INSTRUCTIONS_OPS, f"{op} missing from _INSTRUCTIONS_OPS"
 
     def test_timing_only_ops_is_subset(self):
-        assert _TIMING_ONLY_OPS.issubset(set(COMPLEX_OPS))
+        assert _INSTRUCTIONS_OPS.issubset(set(COMPLEX_OPS))
 
     def test_exactly_11_ops(self):
         assert len(COMPLEX_OPS) == 11
@@ -161,29 +161,35 @@ class TestBenchmarkComplex:
             packed_256_double=0,
             packed_512_double=0,
         )
-        with patch("benchmarks._complex.measure_flops", return_value=mock_result):
+        from benchmarks._perf import InstructionsResult
+        mock_instr = InstructionsResult(instructions=1_000_000)
+        with patch("benchmarks._complex.measure_flops", return_value=mock_result), \
+             patch("benchmarks._complex.measure_instructions", return_value=mock_instr):
             _result, details = benchmark_complex(n=5_000, repeats=1)
 
-        for op in _TIMING_ONLY_OPS:
-            assert "(type check)" in details[op]["benchmark_size"], (
-                f"{op} benchmark_size missing '(type check)'"
+        for op in _INSTRUCTIONS_OPS:
+            assert "(instructions counter)" in details[op]["benchmark_size"], (
+                f"{op} benchmark_size missing '(instructions counter)'"
             )
 
-    def test_perf_ops_benchmark_size_no_type_check(self):
-        """Non-timing ops should NOT have '(type check)' in benchmark_size."""
+    def test_perf_ops_benchmark_size_no_instructions_tag(self):
+        """Non-instructions ops should NOT have '(instructions counter)' in benchmark_size."""
         mock_result = PerfResult(
             scalar_double=1_000_000,
             packed_128_double=0,
             packed_256_double=0,
             packed_512_double=0,
         )
-        with patch("benchmarks._complex.measure_flops", return_value=mock_result):
+        from benchmarks._perf import InstructionsResult
+        mock_instr = InstructionsResult(instructions=1_000_000)
+        with patch("benchmarks._complex.measure_flops", return_value=mock_result), \
+             patch("benchmarks._complex.measure_instructions", return_value=mock_instr):
             _result, details = benchmark_complex(n=5_000, repeats=1)
 
         for op in COMPLEX_OPS:
-            if op not in _TIMING_ONLY_OPS:
-                assert "(type check)" not in details[op]["benchmark_size"], (
-                    f"{op} benchmark_size should not have '(type check)'"
+            if op not in _INSTRUCTIONS_OPS:
+                assert "(instructions counter)" not in details[op]["benchmark_size"], (
+                    f"{op} benchmark_size should not have '(instructions counter)'"
                 )
 
     def test_details_keys_match_results(self):
@@ -210,6 +216,7 @@ class TestBenchmarkComplex:
 
         expected_keys = {
             "category",
+            "measurement_mode",
             "analytical_formula",
             "analytical_flops",
             "benchmark_size",

@@ -1,18 +1,18 @@
-"""Benchmark bitwise and integer operations (timing mode only).
+"""Benchmark bitwise and integer operations via ``instructions`` counter.
 
 These ops operate on integers, so ``fp_arith_inst_retired`` perf counters
-read 0. We force timing mode (``MECHESTIM_FORCE_TIMING=1``) and measure
-wall-clock time per element instead.
+read 0. We use ``perf stat -e instructions`` (total retired instructions)
+as the hardware-counter fallback — more stable and deterministic than
+wall-clock timing. Falls back to timing if ``perf`` is unavailable.
 
 Also includes ``isnat`` which operates on datetime64 arrays.
 """
 
 from __future__ import annotations
 
-import os
 import statistics
 
-from benchmarks._perf import measure_flops
+from benchmarks._perf import measure_flops, measure_instructions
 
 # --- Operation lists -------------------------------------------------------
 
@@ -147,105 +147,15 @@ def benchmark_bitwise(
     results: dict[str, float] = {}
     details: dict[str, dict] = {}
 
-    # Force timing mode — perf counters read 0 for integer ops.
-    orig = os.environ.get("MECHESTIM_FORCE_TIMING")
-    os.environ["MECHESTIM_FORCE_TIMING"] = "1"
-    try:
-        # --- Unary ops ---
-        for op in UNARY_OPS:
-            dist_values: list[float] = []
-            dist_raw_totals: list[int] = []
-            bench = ""
-            for di in range(distributions):
-                setup = _unary_setup(n, di)
-                bench = f"np.{op}(x)"
-                try:
-                    result = measure_flops(setup, bench, repeats=repeats)
-                except RuntimeError:
-                    continue
-                dist_values.append(result.total_flops / (n * repeats))
-                dist_raw_totals.append(result.total_flops)
-            if dist_values:
-                results[op] = statistics.median(dist_values)
-                details[op] = {
-                    "category": "timed_unary",
-                    "analytical_formula": _FORMULA_STRINGS[op],
-                    "analytical_flops": n,
-                    "benchmark_size": f"x: ({n},)",
-                    "bench_code": bench,
-                    "repeats": repeats,
-                    "perf_instructions_total": dist_raw_totals,
-                    "distribution_alphas": dist_values,
-                }
-
-        # --- Binary ops ---
-        for op in BINARY_OPS:
-            dist_values: list[float] = []
-            dist_raw_totals: list[int] = []
-            bench = ""
-            for di in range(distributions):
-                if op in ("gcd", "lcm"):
-                    setup = _gcd_lcm_setup(n, di)
-                else:
-                    setup = _binary_setup(n, di)
-                bench = f"np.{op}(a, b)"
-                try:
-                    result = measure_flops(setup, bench, repeats=repeats)
-                except RuntimeError:
-                    continue
-                dist_values.append(result.total_flops / (n * repeats))
-                dist_raw_totals.append(result.total_flops)
-            if dist_values:
-                results[op] = statistics.median(dist_values)
-                details[op] = {
-                    "category": "timed_binary",
-                    "analytical_formula": _FORMULA_STRINGS[op],
-                    "analytical_flops": n,
-                    "benchmark_size": f"a: ({n},), b: ({n},)",
-                    "bench_code": bench,
-                    "repeats": repeats,
-                    "perf_instructions_total": dist_raw_totals,
-                    "distribution_alphas": dist_values,
-                }
-
-        # --- Shift ops ---
-        for op in SHIFT_OPS:
-            dist_values: list[float] = []
-            dist_raw_totals: list[int] = []
-            bench = ""
-            for di in range(distributions):
-                setup = _shift_setup(n, di)
-                bench = f"np.{op}(a, b)"
-                try:
-                    result = measure_flops(setup, bench, repeats=repeats)
-                except RuntimeError:
-                    continue
-                dist_values.append(result.total_flops / (n * repeats))
-                dist_raw_totals.append(result.total_flops)
-            if dist_values:
-                results[op] = statistics.median(dist_values)
-                details[op] = {
-                    "category": "timed_shift",
-                    "analytical_formula": _FORMULA_STRINGS[op],
-                    "analytical_flops": n,
-                    "benchmark_size": f"a: ({n},), b: ({n},) (values 0-10)",
-                    "bench_code": bench,
-                    "repeats": repeats,
-                    "perf_instructions_total": dist_raw_totals,
-                    "distribution_alphas": dist_values,
-                }
-
-        # --- Special ops ---
-        # isnat: operates on datetime64 arrays
-        op = "isnat"
+    def _bench_op(op: str, setup_fn, bench_code: str, category: str,
+                  size_desc: str) -> None:
+        """Benchmark a single op across distributions using instructions counter."""
         dist_values: list[float] = []
         dist_raw_totals: list[int] = []
-        bench = ""
         for di in range(distributions):
-            setup = _isnat_setup(n, di)
-            bench = "np.isnat(x)"
+            setup = setup_fn(n, di)
             try:
-                result = measure_flops(setup, bench, repeats=repeats)
+                result = measure_instructions(setup, bench_code, repeats=repeats)
             except RuntimeError:
                 continue
             dist_values.append(result.total_flops / (n * repeats))
@@ -253,21 +163,59 @@ def benchmark_bitwise(
         if dist_values:
             results[op] = statistics.median(dist_values)
             details[op] = {
-                "category": "timed_special",
+                "category": category,
+                "measurement_mode": "instructions",
                 "analytical_formula": _FORMULA_STRINGS[op],
                 "analytical_flops": n,
-                "benchmark_size": f"x: ({n},) datetime64 with NaTs",
-                "bench_code": bench,
+                "benchmark_size": size_desc,
+                "bench_code": bench_code,
                 "repeats": repeats,
                 "perf_instructions_total": dist_raw_totals,
                 "distribution_alphas": dist_values,
             }
 
-    finally:
-        # Restore original MECHESTIM_FORCE_TIMING value.
-        if orig is None:
-            os.environ.pop("MECHESTIM_FORCE_TIMING", None)
-        else:
-            os.environ["MECHESTIM_FORCE_TIMING"] = orig
+    # --- Unary ops ---
+    for op in UNARY_OPS:
+        _bench_op(op, _unary_setup, f"np.{op}(x)",
+                  "instructions_unary", f"x: ({n},)")
+
+    # --- Binary ops ---
+    for op in BINARY_OPS:
+        setup_fn = _gcd_lcm_setup if op in ("gcd", "lcm") else _binary_setup
+        _bench_op(op, setup_fn, f"np.{op}(a, b)",
+                  "instructions_binary", f"a: ({n},), b: ({n},)")
+
+    # --- Shift ops ---
+    for op in SHIFT_OPS:
+        _bench_op(op, _shift_setup, f"np.{op}(a, b)",
+                  "instructions_shift", f"a: ({n},), b: ({n},) (values 0-10)")
+
+    # --- Special ops ---
+    # isnat: operates on datetime64 arrays
+    op = "isnat"
+    dist_values: list[float] = []
+    dist_raw_totals: list[int] = []
+    bench = "np.isnat(x)"
+    for di in range(distributions):
+        setup = _isnat_setup(n, di)
+        try:
+            result = measure_instructions(setup, bench, repeats=repeats)
+        except RuntimeError:
+            continue
+        dist_values.append(result.total_flops / (n * repeats))
+        dist_raw_totals.append(result.total_flops)
+    if dist_values:
+        results[op] = statistics.median(dist_values)
+        details[op] = {
+            "category": "instructions_special",
+            "measurement_mode": "instructions",
+            "analytical_formula": _FORMULA_STRINGS[op],
+            "analytical_flops": n,
+            "benchmark_size": f"x: ({n},) datetime64 with NaTs",
+            "bench_code": bench,
+            "repeats": repeats,
+            "perf_instructions_total": dist_raw_totals,
+            "distribution_alphas": dist_values,
+        }
 
     return results, details

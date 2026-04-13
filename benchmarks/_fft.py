@@ -185,6 +185,7 @@ def benchmark_fft(
             results[op] = statistics.median(dist_values)
             details[op] = {
                 "category": "counted_custom",
+                "measurement_mode": "custom",
                 "analytical_formula": _FORMULA_STRINGS.get(op, ""),
                 "analytical_flops": analytical,
                 "benchmark_size": benchmark_size,
