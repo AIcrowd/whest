@@ -52,7 +52,7 @@ export default function App() {
       const graph = buildBipartite(example);
       const matrixData = buildIncidenceMatrix(graph);
       const sigmaResults = runSigmaLoop(graph, matrixData);
-      const group = buildGroup(sigmaResults, graph);
+      const group = buildGroup(sigmaResults, graph, example);
       return { graph, matrixData, sigmaResults, group };
     } catch (err) {
       console.error('Pipeline error:', err);

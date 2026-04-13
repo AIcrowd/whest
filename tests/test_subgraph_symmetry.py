@@ -55,6 +55,7 @@ class TestBipartiteConstruction:
             identical_operand_groups=(),
             operand_labels=(),
             operand_subscripts=(),
+            per_op_groups=(),
         )
         assert g.u_vertices == ()
         assert g.free_labels == frozenset()
@@ -740,3 +741,69 @@ class TestGroupDisplay:
             _, info = me.einsum_path("ij,jk,ki->", A, A, A)
             table = info.format_table()
             assert "C3" in table or "G(3)" in table
+
+
+class TestDeclaredGroupNotPromoted:
+    """Declared non-S_k groups must not be silently promoted to S_k."""
+
+    def test_declared_c3_not_promoted_to_s3(self):
+        """C_3 on T in 'ijk,ai->ajk': single-operand subset {0} should
+        report C_3 on {i,j,k}, not S_3."""
+        from mechestim._perm_group import PermutationGroup
+
+        c3 = PermutationGroup.cyclic(3, axes=(0, 1, 2))
+        c3._labels = ("i", "j", "k")
+
+        T = np.ones((5, 5, 5))
+        W = np.ones((5, 5))
+
+        oracle = SubgraphSymmetryOracle(
+            operands=[T, W],
+            subscript_parts=["ijk", "ai"],
+            per_op_groups=[[c3], None],
+            output_chars="ajk",
+        )
+        # Single-operand subset: v_labels = {i,j,k} (j,k free + i crossing).
+        sym = oracle.sym(frozenset({0}))
+        assert sym.output is not None
+        assert sym.output.order() == 3, (
+            f"Expected C_3 (order 3), got order {sym.output.order()} — "
+            f"declared group was promoted to S_k"
+        )
+        assert not sym.output.is_symmetric()
+
+    def test_declared_s3_still_works(self):
+        """S_3 declared on T should still be detected as S_3."""
+        from mechestim._perm_group import PermutationGroup
+
+        s3 = PermutationGroup.symmetric(3, axes=(0, 1, 2))
+        s3._labels = ("i", "j", "k")
+
+        T = np.ones((5, 5, 5))
+        W = np.ones((5, 5))
+
+        oracle = SubgraphSymmetryOracle(
+            operands=[T, W],
+            subscript_parts=["ijk", "ai"],
+            per_op_groups=[[s3], None],
+            output_chars="ajk",
+        )
+        sym = oracle.sym(frozenset({0}))
+        assert sym.output is not None
+        assert sym.output.order() == 6
+
+    def test_no_declared_group_no_symmetry_detected(self):
+        """Without declared groups on non-identical operands, no symmetry."""
+        T = np.ones((5, 5, 5))
+        W = np.ones((5, 5))
+
+        oracle = SubgraphSymmetryOracle(
+            operands=[T, W],
+            subscript_parts=["ijk", "ai"],
+            per_op_groups=[None, None],
+            output_chars="ajk",
+        )
+        # Without declared symmetry, axes aren't merged so fingerprints
+        # differ — no symmetry detected on the single-operand subset.
+        sym = oracle.sym(frozenset({0}))
+        assert sym.output is None
