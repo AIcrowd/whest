@@ -1,9 +1,7 @@
 """Log-normal distribution with FLOP counting.
 
-Mimics ``scipy.stats.lognorm`` API. Shape parameter ``s`` is the
-standard deviation of the underlying normal distribution.
-
-scipy signature: ``lognorm.pdf(x, s, loc=0, scale=1)``
+Mimics ``scipy.stats.lognorm`` — see
+https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.html
 """
 
 from __future__ import annotations
@@ -23,33 +21,86 @@ _INV_SQRT_2PI = 1.0 / _np.sqrt(2.0 * _np.pi)
 
 
 class LognormDistribution(ContinuousDistribution):
-    """Log-normal distribution (scipy.stats.lognorm compatible).
+    """Log-normal continuous random variable.
 
-    Note: ``s`` (shape parameter) is the first positional argument,
-    matching scipy's signature.
+    Equivalent to ``scipy.stats.lognorm``.  The shape parameter ``s``
+    is the standard deviation of the underlying normal distribution.
+
+    .. note::
+
+       ``s`` is the **first positional argument** (before ``loc``/``scale``),
+       matching scipy's signature: ``lognorm.pdf(x, s, loc=0, scale=1)``.
+
+    Methods
+    -------
+    pdf(x, s, loc=0, scale=1)
+        Probability density function.
+    cdf(x, s, loc=0, scale=1)
+        Cumulative distribution function.
+    ppf(q, s, loc=0, scale=1)
+        Percent-point function (inverse of CDF).
     """
 
     def __init__(self):
         super().__init__("lognorm")
 
     def pdf(self, x, s, loc=0, scale=1):
+        """Probability density function at *x*.
+
+        Equivalent to ``scipy.stats.lognorm.pdf(x, s, loc, scale)``.
+
+        FLOP Cost
+        ---------
+        15 * numel(x) FLOPs
+
+        Parameters
+        ----------
+        x : array_like
+            Quantiles.
+        s : float
+            Shape parameter (std dev of the underlying normal).
+        loc : float, optional
+            Location parameter (default 0).
+        scale : float, optional
+            Scale parameter (default 1).
+
+        Returns
+        -------
+        MechestimArray
+            PDF evaluated at *x*.
+        """
         return self._deduct_and_call(
             "pdf", _LOGNORM_PDF_COST, x, s, loc=loc, scale=scale
         )
 
     def cdf(self, x, s, loc=0, scale=1):
+        """Cumulative distribution function at *x*.
+
+        Equivalent to ``scipy.stats.lognorm.cdf(x, s, loc, scale)``.
+
+        FLOP Cost
+        ---------
+        25 * numel(x) FLOPs
+        """
         return self._deduct_and_call(
             "cdf", _LOGNORM_CDF_COST, x, s, loc=loc, scale=scale
         )
 
     def ppf(self, q, s, loc=0, scale=1):
+        """Percent-point function (inverse CDF) at *q*.
+
+        Equivalent to ``scipy.stats.lognorm.ppf(q, s, loc, scale)``.
+
+        FLOP Cost
+        ---------
+        45 * numel(q) FLOPs
+        """
         return self._deduct_and_call(
             "ppf", _LOGNORM_PPF_COST, q, s, loc=loc, scale=scale
         )
 
     def _compute_pdf(self, x, s, loc=0, scale=1):
         y = (x - loc) / scale
-        # PDF is 0 for y <= 0
         safe_y = _np.where(y > 0, y, 1.0)  # avoid log(0)
         lny = _np.log(safe_y)
         result = (
