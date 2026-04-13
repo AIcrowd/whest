@@ -530,13 +530,36 @@ export function buildDeclaredGroup(example) {
 // ─── Burnside Counting ───────────────────────────────────────────
 
 export function computeBurnside(group, dimensionN) {
-  const sizes = Array(group.vDegree).fill(dimensionN);
-  const result = burnsideCount(group.vElements, sizes);
-  const totalCount = Math.pow(dimensionN, group.vDegree);
+  // V-side Burnside
+  const vSizes = Array(group.vDegree).fill(dimensionN);
+  const vResult = group.vDegree > 0
+    ? burnsideCount(group.vElements, vSizes)
+    : { perElement: [], totalFixed: 0, uniqueCount: 1 };
+  const vTotalCount = group.vDegree > 0 ? Math.pow(dimensionN, group.vDegree) : 1;
+
+  // W-side Burnside
+  const wDegree = group.wDegree || (group.wLabels ? group.wLabels.length : 0);
+  const wOrder = group.wOrder || 1;
+  const wSizes = Array(wDegree).fill(dimensionN);
+  const wResult = (wDegree > 0 && wOrder > 1)
+    ? burnsideCount(group.wElements, wSizes)
+    : { perElement: [], totalFixed: 0, uniqueCount: wDegree > 0 ? Math.pow(dimensionN, wDegree) : 1 };
+  const wTotalCount = wDegree > 0 ? Math.pow(dimensionN, wDegree) : 1;
+
   return {
-    ...result,
-    totalCount,
-    ratio: result.uniqueCount / totalCount,
+    // V-side
+    perElement: vResult.perElement,
+    totalFixed: vResult.totalFixed,
+    uniqueCount: vResult.uniqueCount,
+    totalCount: vTotalCount,
+    ratio: vTotalCount > 0 ? vResult.uniqueCount / vTotalCount : 1,
+    // W-side
+    wPerElement: wResult.perElement,
+    wUniqueCount: wResult.uniqueCount,
+    wTotalCount: wTotalCount,
+    wRatio: wTotalCount > 0 ? wResult.uniqueCount / wTotalCount : 1,
+    wHasSymmetry: wOrder > 1,
+    // Common
     dimensionN,
   };
 }
@@ -545,17 +568,39 @@ export function computeBurnside(group, dimensionN) {
 
 export function computeCostReduction(burnside, group) {
   const { uniqueCount, totalCount, ratio } = burnside;
-  // Simplified: assume a contraction with op_factor = 2
-  const denseCost = 2 * totalCount;
-  const reducedCost = Math.max(1, Math.round(denseCost * ratio));
+
+  // Total contraction size = V * W (output elements × summed elements)
+  const allCount = totalCount * burnside.wTotalCount;
+  // Dense cost: iterate over all output × inner combinations
+  const denseCost = Math.max(1, 2 * allCount);
+
+  // V-only reduction: reduce output side by V symmetry
+  const vReducedCost = Math.max(1, Math.round(denseCost * ratio));
+
+  // V+W combined reduction: also reduce inner loop by W symmetry
+  const combinedRatio = ratio * burnside.wRatio;
+  const combinedReducedCost = Math.max(1, Math.round(denseCost * combinedRatio));
+
   return {
     denseCost,
-    reducedCost,
+    // V-side only
+    reducedCost: vReducedCost,
     ratio,
-    speedup: denseCost / reducedCost,
+    speedup: denseCost / vReducedCost,
     uniqueCount,
     totalCount,
     groupName: group.vGroupName,
     groupOrder: group.vOrder,
+    // W-side savings (additional, shown separately)
+    wReducedCost: combinedReducedCost,
+    wRatio: burnside.wRatio,
+    wSpeedup: denseCost / combinedReducedCost,
+    wUniqueCount: burnside.wUniqueCount,
+    wTotalCount: burnside.wTotalCount,
+    wHasSymmetry: burnside.wHasSymmetry,
+    wGroupName: group.wGroupName || 'trivial',
+    // Combined
+    combinedRatio,
+    combinedReducedCost,
   };
 }
