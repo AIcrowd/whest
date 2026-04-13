@@ -373,3 +373,76 @@ class TestPermutationNewMethods:
         for a, b in t:
             result = Permutation.from_cycle(4, [a, b]) * result
         assert result == Permutation([1, 0, 3, 2])
+
+
+class TestPermutationGroupNewMethods:
+    def test_contains_member(self):
+        g = PermutationGroup.cyclic(3)
+        assert g.contains(Permutation([1, 2, 0]))
+
+    def test_contains_non_member(self):
+        g = PermutationGroup.cyclic(3)
+        assert not g.contains(Permutation([0, 2, 1]))
+
+    def test_contains_identity(self):
+        g = PermutationGroup.cyclic(3)
+        assert g.contains(Permutation.identity(3))
+
+    def test_is_transitive_true(self):
+        assert PermutationGroup.symmetric(3).is_transitive
+        assert PermutationGroup.cyclic(4).is_transitive
+
+    def test_is_transitive_false(self):
+        gen = Permutation.from_cycle(4, [0, 1])
+        g = PermutationGroup(gen)
+        assert not g.is_transitive
+
+    def test_is_abelian_cyclic(self):
+        assert PermutationGroup.cyclic(4).is_abelian
+
+    def test_is_abelian_s2(self):
+        assert PermutationGroup.symmetric(2).is_abelian
+
+    def test_is_abelian_s3_false(self):
+        assert not PermutationGroup.symmetric(3).is_abelian
+
+    def test_identity_property(self):
+        g = PermutationGroup.symmetric(4)
+        e = g.identity
+        assert e.is_identity
+        assert e.size == 4
+
+    def test_equals_same_generators(self):
+        g1 = PermutationGroup.symmetric(3)
+        g2 = PermutationGroup.symmetric(3)
+        assert g1.equals(g2)
+
+    def test_equals_different_generators_same_group(self):
+        g1 = PermutationGroup(
+            Permutation.from_cycle(3, [0, 1]),
+            Permutation.from_cycle(3, [0, 1, 2]),
+        )
+        g2 = PermutationGroup.symmetric(3)
+        assert g1.equals(g2)
+
+    def test_equals_different_groups(self):
+        g1 = PermutationGroup.cyclic(3)
+        g2 = PermutationGroup.symmetric(3)
+        assert not g1.equals(g2)
+
+    def test_orbit_transitive(self):
+        g = PermutationGroup.symmetric(3)
+        assert g.orbit(0) == frozenset({0, 1, 2})
+        assert g.orbit(1) == frozenset({0, 1, 2})
+
+    def test_orbit_intransitive(self):
+        gen = Permutation.from_cycle(5, [0, 1])
+        g = PermutationGroup(gen)
+        assert g.orbit(0) == frozenset({0, 1})
+        assert g.orbit(1) == frozenset({0, 1})
+        assert g.orbit(2) == frozenset({2})
+        assert g.orbit(4) == frozenset({4})
+
+    def test_orbit_cyclic(self):
+        g = PermutationGroup.cyclic(4)
+        assert g.orbit(0) == frozenset({0, 1, 2, 3})

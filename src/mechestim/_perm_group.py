@@ -326,6 +326,51 @@ class PermutationGroup:
             groups.setdefault(find(i), set()).add(i)
         return [frozenset(s) for s in groups.values()]
 
+    def contains(self, perm: Permutation) -> bool:
+        """Test whether *perm* is an element of this group."""
+        return perm in set(self.elements())
+
+    @property
+    def is_transitive(self) -> bool:
+        """True if the group acts transitively (single orbit)."""
+        return len(self.orbits()) == 1
+
+    @property
+    def is_abelian(self) -> bool:
+        """True if all generators commute (implies all elements commute)."""
+        gens = self._generators
+        for i in range(len(gens)):
+            for j in range(i + 1, len(gens)):
+                if gens[i] * gens[j] != gens[j] * gens[i]:
+                    return False
+        return True
+
+    @property
+    def identity(self) -> Permutation:
+        """The identity element of the group."""
+        return Permutation.identity(self._degree)
+
+    def equals(self, other: PermutationGroup) -> bool:
+        """True if *self* and *other* represent the same group (same elements)."""
+        if self._degree != other._degree:
+            return False
+        if self.order() != other.order():
+            return False
+        return set(self.elements()) == set(other.elements())
+
+    def orbit(self, alpha: int) -> frozenset[int]:
+        """Orbit of a single point under the group action (BFS)."""
+        visited: set[int] = {alpha}
+        queue: list[int] = [alpha]
+        while queue:
+            point = queue.pop()
+            for g in self._generators:
+                image = g._array_form[point]
+                if image not in visited:
+                    visited.add(image)
+                    queue.append(image)
+        return frozenset(visited)
+
     def burnside_unique_count(self, size_dict: dict[int, int]) -> int:
         """Count unique tensor elements via Burnside's lemma.
 
