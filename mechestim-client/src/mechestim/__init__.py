@@ -58,6 +58,7 @@ from mechestim._perm_group import (  # noqa: E402
     Permutation,
     PermutationGroup,
 )
+from mechestim._symmetric_info import SymmetryInfo  # noqa: E402
 
 # Alias: ``me.ndarray`` refers to the RemoteArray class.
 ndarray = RemoteArray
