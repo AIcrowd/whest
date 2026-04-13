@@ -392,13 +392,45 @@ export function buildGroup(sigmaResults, graph) {
     }
   }
 
+  // Classify W-side group the same way
+  const wOrder = wElements.length;
+  const wDegree = wLabels.length;
+  let wGroupName = 'trivial';
+  if (wDegree >= 2 && wOrder > 1) {
+    const factorial = (n) => n <= 1 ? 1 : n * factorial(n - 1);
+    const wLabelSet = `{${wLabels.join(',')}}`;
+    if (wOrder === factorial(wDegree)) {
+      wGroupName = `S${wDegree}${wLabelSet}`;
+    } else if (wOrder === wDegree && wDegree >= 3) {
+      wGroupName = `C${wDegree}${wLabelSet}`;
+    } else if (wOrder === 2 * wDegree && wDegree >= 3) {
+      wGroupName = `D${wDegree}${wLabelSet}`;
+    } else if (wOrder === 2 && wDegree > 2) {
+      const gen = wGens[0];
+      const cycles = gen.cyclicForm();
+      const allTwoCycles = cycles.every(c => c.length === 2);
+      if (allTwoCycles && cycles.length > 1) {
+        const orbitParts = cycles.map(c => `S2{${c.map(i => wLabels[i]).join(',')}}`);
+        wGroupName = orbitParts.join('\u00d7');
+      } else {
+        wGroupName = `Z2${wLabelSet}`;
+      }
+    } else if (wOrder === 2 && wDegree === 2) {
+      wGroupName = `S2${wLabelSet}`;
+    } else {
+      const genStr = wGens.map(g => g.cycleNotation(wLabels)).join(', ');
+      wGroupName = `PermGroup\u27e8${genStr}\u27e9`;
+    }
+  }
+
   return {
     vLabels, wLabels,
     vGenerators: vGens, vGeneratorsAll: vGensAll,
     wGenerators: wGens,
     vElements, wElements,
     vOrder, vGroupName,
-    vDegree,
+    wOrder, wGroupName,
+    vDegree, wDegree,
   };
 }
 

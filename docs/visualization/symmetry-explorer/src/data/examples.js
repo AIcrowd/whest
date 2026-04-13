@@ -124,7 +124,7 @@ export const EXAMPLES = [
     operandNames: ['A', 'A'],
     perOpSymmetry: null,
     description: 'No free labels — symmetry is on W (summed) side. S2{i,j} reduces the contraction cost',
-    expectedGroup: 'trivial',
+    expectedGroup: 'W: S2{i,j}',
     color: '#94A3B8',
   },
 
