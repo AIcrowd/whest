@@ -2,6 +2,128 @@ import { useState, useCallback, useMemo } from 'react';
 
 const CUSTOM_IDX = -1;
 
+/** Pure function — generates Python code for ANY example object (preset or custom). */
+function generatePythonCode(example, dimensionN) {
+  const { subscripts, output, operandNames, perOpSymmetry } = example;
+  const n = dimensionN;
+  const lines = [];
+  lines.push('import mechestim as me');
+  lines.push('from mechestim import Cycle, Permutation, PermutationGroup');
+  lines.push('');
+  lines.push(`n = ${n}`);
+
+  // Deduplicate variable definitions (same name = same object)
+  const defined = new Set();
+  for (let i = 0; i < subscripts.length; i++) {
+    const name = operandNames[i];
+    if (defined.has(name)) continue;
+    defined.add(name);
+
+    const sub = subscripts[i];
+    const rank = sub.length;
+    const shape = Array(rank).fill('n').join(', ');
+
+    // Determine per-operand symmetry
+    const opSym = Array.isArray(perOpSymmetry) ? perOpSymmetry[i] : perOpSymmetry;
+
+    if (!opSym) {
+      lines.push(`${name} = me.random.randn(${shape})`);
+    } else if (opSym === 'symmetric') {
+      if (rank === 2) {
+        lines.push(`# ${name}: symmetric matrix`);
+        lines.push(`_data = me.random.randn(${shape})`);
+        lines.push(`${name} = me.as_symmetric((_data + _data.T) / 2, symmetric_axes=(0, 1))`);
+      } else {
+        lines.push(`# ${name}: fully symmetric tensor (S${rank})`);
+        lines.push(`group = PermutationGroup.symmetric(${rank})`);
+        lines.push(`_data = me.random.randn(${shape})`);
+        lines.push(`_data = sum(me.transpose(_data, g.array_form) for g in group.elements()) / group.order()`);
+        lines.push(`${name} = me.as_symmetric(_data, symmetry=PermutationGroup.symmetric(${rank}, axes=(${[...Array(rank).keys()].join(', ')})))`);
+      }
+    }
+  }
+
+  lines.push('');
+  const subsStr = subscripts.join(',');
+  const args = operandNames.join(', ');
+  lines.push(`# Symmetry is detected automatically from identical operands`);
+  lines.push(`path, info = me.einsum_path('${subsStr}->${output}', ${args})`);
+  lines.push(`print(info)`);
+
+  return lines.join('\n');
+}
+
+/** Pure function — generates richer Python code for custom builder examples,
+ *  reflecting user-chosen symmetry types and axis selections. */
+function generateCustomPythonCode(variables, outputStr, dimensionN) {
+  const n = dimensionN;
+  const lines = [];
+  lines.push('import mechestim as me');
+  lines.push('');
+  lines.push(`n = ${n}`);
+
+  // Deduplicate variable definitions (same name = same object)
+  const defined = new Set();
+  for (const v of variables) {
+    const name = v.name.trim() || 'X';
+    if (defined.has(name)) continue;
+    defined.add(name);
+
+    const rank = v.subscript.length || 2;
+    const shape = Array(rank).fill('n').join(', ');
+
+    if (v.symmetry === 'none') {
+      lines.push(`${name} = me.random.randn(${shape})`);
+    } else if (v.symmetry === 'custom') {
+      const gens = v.generators.trim() || '(0 1)';
+      lines.push(`# ${name}: custom symmetry group`);
+      lines.push(`group = me.PermutationGroup(${gens})`);
+      lines.push(`data = me.random.randn(${shape})`);
+      lines.push(`data = sum(me.transpose(data, p.array_form) for p in group.elements) / group.order()`);
+      lines.push(`${name} = me.as_symmetric(data, symmetry=group)`);
+    } else {
+      const groupFn = v.symmetry === 'symmetric' ? 'symmetric'
+        : v.symmetry === 'cyclic' ? 'cyclic' : 'dihedral';
+      const axesArr = v.symAxes || [...Array(rank).keys()];
+      const k = axesArr.length;
+
+      if (axesArr.length === rank && v.symmetry === 'symmetric' && rank === 2) {
+        lines.push(`# ${name}: symmetric matrix`);
+        lines.push(`data = me.random.randn(${shape})`);
+        lines.push(`${name} = me.as_symmetric((data + data.T) / 2, symmetric_axes=(0, 1))`);
+      } else if (axesArr.length === rank) {
+        lines.push(`# ${name}: ${groupFn} symmetry on all ${k} axes`);
+        lines.push(`group = me.PermutationGroup.${groupFn}(${k})`);
+        lines.push(`data = me.random.randn(${shape})`);
+        lines.push(`data = sum(me.transpose(data, p.array_form) for p in group.elements) / group.order()`);
+        lines.push(`${name} = me.as_symmetric(data, symmetry=group)`);
+      } else if (axesArr.length === 2) {
+        const perm = [...Array(rank).keys()];
+        perm[axesArr[0]] = axesArr[1];
+        perm[axesArr[1]] = axesArr[0];
+        lines.push(`# ${name}: symmetric on axes (${axesArr.join(', ')})`);
+        lines.push(`data = me.random.randn(${shape})`);
+        lines.push(`${name} = me.as_symmetric((data + me.transpose(data, (${perm.join(', ')}))) / 2, symmetric_axes=(${axesArr.join(', ')}))`);
+      } else {
+        lines.push(`# ${name}: ${groupFn} symmetry on axes (${axesArr.join(', ')})`);
+        lines.push(`group = me.PermutationGroup.${groupFn}(${k}, axes=(${axesArr.join(', ')}))`);
+        lines.push(`data = me.random.randn(${shape})`);
+        lines.push(`data = sum(me.transpose(data, p.array_form) for p in group.elements) / group.order()`);
+        lines.push(`${name} = me.as_symmetric(data, symmetric_axes=(${axesArr.join(', ')}))`);
+      }
+    }
+  }
+
+  lines.push('');
+  const subs = variables.map(v => v.subscript).join(',');
+  const out = outputStr.trim() || 'ab';
+  const args = variables.map(v => v.name.trim() || 'X').join(', ');
+  lines.push(`path, info = me.einsum_path('${subs}->${out}', ${args})`);
+  lines.push(`print(info)`);
+
+  return lines.join('\n');
+}
+
 const SYM_HINTS = {
   none: 'No per-operand symmetry — each axis is independent',
   symmetric: 'S_k: full symmetric group — all axis permutations',
@@ -17,7 +139,7 @@ const SYM_LABELS = {
 };
 
 export default function ExampleChooser({
-  examples, selected, onSelect, dimensionN, onDimensionChange, onCustomExample
+  examples, selected, onSelect, example, dimensionN, onDimensionChange, onCustomExample
 }) {
   const isCustom = selected === CUSTOM_IDX;
 
@@ -158,76 +280,16 @@ export default function ExampleChooser({
     setOutputStr(out);
   }, [variables]);
 
-  // Generate equivalent Python code — uses dimensionN for concrete shapes
-  // Uses only `import mechestim as me`
+  // Generate equivalent Python code — uses dimensionN for concrete shapes.
+  // For custom examples: uses the richer per-variable generator.
+  // For preset examples: uses the example object directly.
   const pythonCode = useMemo(() => {
-    const n = dimensionN;
-    const lines = [];
-    lines.push('import mechestim as me');
-    lines.push('');
-    lines.push(`n = ${n}`);
-
-    // Deduplicate variable definitions (same name = same object)
-    const defined = new Set();
-    for (const v of variables) {
-      const name = v.name.trim() || 'X';
-      if (defined.has(name)) continue;
-      defined.add(name);
-
-      const rank = v.subscript.length || 2;
-      const shape = Array(rank).fill('n').join(', ');
-
-      if (v.symmetry === 'none') {
-        lines.push(`${name} = me.random.randn(${shape})`);
-      } else if (v.symmetry === 'custom') {
-        const gens = v.generators.trim() || '(0 1)';
-        lines.push(`# ${name}: custom symmetry group`);
-        lines.push(`group = me.PermutationGroup(${gens})`);
-        lines.push(`data = me.random.randn(${shape})`);
-        lines.push(`data = sum(me.transpose(data, p.array_form) for p in group.elements) / group.order()`);
-        lines.push(`${name} = me.as_symmetric(data, symmetry=group)`);
-      } else {
-        const groupFn = v.symmetry === 'symmetric' ? 'symmetric'
-          : v.symmetry === 'cyclic' ? 'cyclic' : 'dihedral';
-        const axesArr = v.symAxes || [...Array(rank).keys()];
-        const k = axesArr.length;
-
-        if (axesArr.length === rank && v.symmetry === 'symmetric' && rank === 2) {
-          lines.push(`# ${name}: symmetric matrix`);
-          lines.push(`data = me.random.randn(${shape})`);
-          lines.push(`${name} = me.as_symmetric((data + data.T) / 2, symmetric_axes=(0, 1))`);
-        } else if (axesArr.length === rank) {
-          lines.push(`# ${name}: ${groupFn} symmetry on all ${k} axes`);
-          lines.push(`group = me.PermutationGroup.${groupFn}(${k})`);
-          lines.push(`data = me.random.randn(${shape})`);
-          lines.push(`data = sum(me.transpose(data, p.array_form) for p in group.elements) / group.order()`);
-          lines.push(`${name} = me.as_symmetric(data, symmetry=group)`);
-        } else if (axesArr.length === 2) {
-          const perm = [...Array(rank).keys()];
-          perm[axesArr[0]] = axesArr[1];
-          perm[axesArr[1]] = axesArr[0];
-          lines.push(`# ${name}: symmetric on axes (${axesArr.join(', ')})`);
-          lines.push(`data = me.random.randn(${shape})`);
-          lines.push(`${name} = me.as_symmetric((data + me.transpose(data, (${perm.join(', ')}))) / 2, symmetric_axes=(${axesArr.join(', ')}))`);
-        } else {
-          lines.push(`# ${name}: ${groupFn} symmetry on axes (${axesArr.join(', ')})`);
-          lines.push(`group = me.PermutationGroup.${groupFn}(${k}, axes=(${axesArr.join(', ')}))`);
-          lines.push(`data = me.random.randn(${shape})`);
-          lines.push(`data = sum(me.transpose(data, p.array_form) for p in group.elements) / group.order()`);
-          lines.push(`${name} = me.as_symmetric(data, symmetric_axes=(${axesArr.join(', ')}))`);
-        }
-      }
+    if (isCustom) {
+      return generateCustomPythonCode(variables, outputStr, dimensionN);
     }
-
-    lines.push('');
-    const subs = variables.map(v => v.subscript).join(',');
-    const out = outputStr.trim() || 'ab';
-    const args = variables.map(v => v.name.trim() || 'X').join(', ');
-    lines.push(`path, info = me.einsum_path('${subs}->${out}', ${args})`);
-    lines.push(`print(info)`);
-
-    return lines.join('\n');
-  }, [variables, outputStr, dimensionN]);
+    if (!example) return '';
+    return generatePythonCode(example, dimensionN);
+  }, [isCustom, example, variables, outputStr, dimensionN]);
 
   const [copied, setCopied] = useState(false);
   const handleCopy = useCallback(() => {
@@ -385,17 +447,19 @@ export default function ExampleChooser({
           <button className="analyze-btn" onClick={handleAnalyze}>
             ▶ Analyze
           </button>
+        </div>
+      )}
 
-          {/* Python code preview */}
-          <div className="python-preview">
-            <div className="python-preview-header">
-              <span className="python-preview-label">Python equivalent</span>
-              <button className="copy-btn" onClick={handleCopy}>
-                {copied ? '✓ Copied' : 'Copy'}
-              </button>
-            </div>
-            <PythonHighlight code={pythonCode} />
+      {/* Python code preview — shown for ALL examples (preset and custom) */}
+      {example && pythonCode && (
+        <div className="python-preview">
+          <div className="python-preview-header">
+            <span className="python-preview-label">Python equivalent</span>
+            <button className="copy-btn" onClick={handleCopy}>
+              {copied ? '✓ Copied' : 'Copy'}
+            </button>
           </div>
+          <PythonHighlight code={pythonCode} />
         </div>
       )}
 
