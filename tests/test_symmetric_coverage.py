@@ -11,10 +11,11 @@ import warnings
 import numpy as np
 import pytest
 
-from mechestim._perm_group import Permutation, PermutationGroup
+from mechestim._perm_group import PermutationGroup
 from mechestim._symmetric import (
     SymmetricTensor,
     SymmetryInfo,
+    _warn_symmetry_loss,
     as_symmetric,
     intersect_symmetry,
     is_symmetric,
@@ -22,10 +23,8 @@ from mechestim._symmetric import (
     propagate_symmetry_slice,
     validate_symmetry,
     validate_symmetry_groups,
-    _warn_symmetry_loss,
 )
 from mechestim.errors import SymmetryError, SymmetryLossWarning
-
 
 # ============================================================================
 # Helpers

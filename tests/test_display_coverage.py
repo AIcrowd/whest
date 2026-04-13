@@ -5,21 +5,18 @@ from __future__ import annotations
 import sys
 from unittest.mock import MagicMock, patch
 
-import pytest
-
-from mechestim._budget import BudgetContext, budget_summary_dict
+from mechestim._budget import BudgetContext
 from mechestim._display import (
     _format_flops,
     _is_global_default_ns,
     _pct,
-    _PlainTextLive,
     _plain_text_summary,
+    _PlainTextLive,
     _usage_color,
     budget_live,
     budget_summary,
     render_budget_summary,
 )
-
 
 # ---------------------------------------------------------------------------
 # Helper: create a budget with some operations recorded in the accumulator
@@ -184,8 +181,9 @@ class TestRichNamespaceTable:
         assert isinstance(table, Table)
 
     def test_empty_ops(self):
-        from mechestim._display import _rich_namespace_table
         from rich.table import Table
+
+        from mechestim._display import _rich_namespace_table
 
         ns_data = {
             "flop_budget": 5000,
@@ -206,8 +204,9 @@ class TestRichNamespaceTable:
         }
         table = _rich_namespace_table("ns", ns_data, "green")
         # Render table to string to check content
-        from rich.console import Console
         import io
+
+        from rich.console import Console
 
         buf = io.StringIO()
         console = Console(file=buf, force_terminal=True, width=120)
@@ -224,8 +223,9 @@ class TestRichNamespaceTable:
             "operations": {"matmul": {"flop_cost": 300, "calls": 3}},
         }
         table = _rich_namespace_table("ns", ns_data, "yellow")
-        from rich.console import Console
         import io
+
+        from rich.console import Console
 
         buf = io.StringIO()
         console = Console(file=buf, force_terminal=True, width=120)
@@ -240,22 +240,25 @@ class TestRichNamespaceTable:
 
 class TestRichSummary:
     def test_no_data_panel(self):
-        from mechestim._display import _rich_summary
         from rich.panel import Panel
+
+        from mechestim._display import _rich_summary
 
         result = _rich_summary()
         assert isinstance(result, Panel)
         # Render and check "No budget data" message
-        from rich.console import Console
         import io
+
+        from rich.console import Console
 
         buf = io.StringIO()
         Console(file=buf, force_terminal=True, width=120).print(result)
         assert "No budget data" in buf.getvalue()
 
     def test_single_namespace_panel(self):
-        from mechestim._display import _rich_summary
         from rich.panel import Panel
+
+        from mechestim._display import _rich_summary
 
         _make_budget(flop_budget=10_000, namespace="train", ops=[("matmul", 3000)])
         result = _rich_summary()
@@ -263,8 +266,9 @@ class TestRichSummary:
 
     def test_multi_namespace_columns(self):
         """Up to 3 namespace panels should use Columns layout."""
-        from mechestim._display import _rich_summary
         from rich.panel import Panel
+
+        from mechestim._display import _rich_summary
 
         _make_budget(flop_budget=5000, namespace="a", ops=[("matmul", 100)])
         _make_budget(flop_budget=5000, namespace="b", ops=[("add", 200)])
@@ -273,8 +277,9 @@ class TestRichSummary:
 
     def test_more_than_3_namespaces_no_columns(self):
         """More than 3 namespace panels should render individually, not in Columns."""
-        from mechestim._display import _rich_summary
         from rich.panel import Panel
+
+        from mechestim._display import _rich_summary
 
         for ns in ["a", "b", "c", "d"]:
             _make_budget(flop_budget=3000, namespace=ns, ops=[("matmul", 100)])
@@ -292,8 +297,9 @@ class TestRichSummary:
             b.deduct("add", flop_cost=10, subscripts=None, shapes=())
         result = _rich_summary()
         # Render the panel and verify the display budget is 5000, not 1e15+5000
-        from rich.console import Console
         import io
+
+        from rich.console import Console
 
         buf = io.StringIO()
         Console(file=buf, force_terminal=True, width=120).print(result)
@@ -305,8 +311,9 @@ class TestRichSummary:
         from mechestim._display import _rich_summary
 
         _make_budget(flop_budget=5000, namespace=None, ops=[("matmul", 100)])
-        from rich.console import Console
         import io
+
+        from rich.console import Console
 
         buf = io.StringIO()
         Console(file=buf, force_terminal=True, width=120).print(_rich_summary())
@@ -314,8 +321,9 @@ class TestRichSummary:
 
     def test_no_explicit_budget(self):
         """When all namespaces are global default, color should be green."""
-        from mechestim._display import _rich_summary
         from rich.panel import Panel
+
+        from mechestim._display import _rich_summary
 
         # Only the global default namespace (large budget, None ns)
         with BudgetContext(flop_budget=int(1e15), quiet=True, namespace=None) as b:
@@ -342,7 +350,6 @@ class TestRenderBudgetSummary:
         _make_budget(flop_budget=5000, ops=[("matmul", 100)])
         with patch.dict(sys.modules, {"rich": None}):
             # Force ImportError path
-            import importlib
             import mechestim._display as disp_mod
 
             # Directly test the fallback by simulating ImportError
