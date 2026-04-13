@@ -935,8 +935,8 @@ class TestLinalgPropertiesExtended:
         x = numpy.array([1.0, 2.0, 3.0])
         with BudgetContext(flop_budget=10**9) as budget:
             norm(x, ord=3)
-        # norm_cost for general p-norm on 1-D: 2 * numel
-        assert budget.flops_used == 6
+        # FMA=1: all vector norms cost numel
+        assert budget.flops_used == 3
 
     def test_norm_matrix_2(self):
         from mechestim.linalg._properties import norm
@@ -944,8 +944,8 @@ class TestLinalgPropertiesExtended:
         a = numpy.random.rand(4, 3)
         with BudgetContext(flop_budget=10**9) as budget:
             norm(a, ord=2)
-        # SVD-based: m * n * min(m, n)
-        assert budget.flops_used == 4 * 3 * 3
+        # SVD-based: 4 * m * n * min(m, n)
+        assert budget.flops_used == 4 * 4 * 3 * 3
 
     def test_norm_matrix_nuc(self):
         from mechestim.linalg._properties import norm
@@ -953,7 +953,7 @@ class TestLinalgPropertiesExtended:
         a = numpy.random.rand(3, 5)
         with BudgetContext(flop_budget=10**9) as budget:
             norm(a, ord="nuc")
-        assert budget.flops_used == 3 * 5 * 3
+        assert budget.flops_used == 4 * 3 * 5 * 3
 
     def test_norm_matrix_1(self):
         from mechestim.linalg._properties import norm
@@ -1036,7 +1036,7 @@ class TestLinalgPropertiesExtended:
         a = numpy.random.rand(3, 4)
         with BudgetContext(flop_budget=10**9) as budget:
             matrix_norm(a, ord=2)
-        assert budget.flops_used == 3 * 4 * 3
+        assert budget.flops_used == 4 * 3 * 4 * 3
 
     def test_matrix_norm_nuc(self):
         from mechestim.linalg._properties import matrix_norm
@@ -1044,7 +1044,7 @@ class TestLinalgPropertiesExtended:
         a = numpy.random.rand(3, 4)
         with BudgetContext(flop_budget=10**9) as budget:
             matrix_norm(a, ord="nuc")
-        assert budget.flops_used == 3 * 4 * 3
+        assert budget.flops_used == 4 * 3 * 4 * 3
 
 
 # ============================================================================

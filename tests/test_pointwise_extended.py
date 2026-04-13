@@ -231,7 +231,8 @@ def test_interp():
     fp = numpy.array([0.0, 1.0, 4.0, 9.0])
     with BudgetContext(flop_budget=10**6) as budget:
         result = ops.interp(x, xp, fp)
-        assert budget.flops_used == x.size
+        # cost = n * ceil(log2(len(xp))) = 3 * ceil(log2(4)) = 3 * 2 = 6
+        assert budget.flops_used == 6
     assert result.shape == (3,)
 
 

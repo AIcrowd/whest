@@ -111,22 +111,8 @@ ALIAS_MAP: dict[str, str] = {
 # shape-dependent cost that can't be captured by a single scalar weight.
 # ---------------------------------------------------------------------------
 
-#: BLAS contraction planning ops -- no FP work.
-EXCLUDED_CONTRACTION: frozenset[str] = frozenset(
-    {
-        "einsum_path",  # planning op, no FP work
-    }
-)
-
-#: Random ops that cannot be meaningfully benchmarked with float64.
-EXCLUDED_RANDOM: frozenset[str] = frozenset(
-    {
-        "random.bytes",  # returns bytes, not FP
-        "random.random_integers",  # removed in NumPy 2.x
-    }
-)
-
-ALL_EXCLUDED = EXCLUDED_CONTRACTION | EXCLUDED_RANDOM
+# No excluded ops remaining — all counted ops are now in weights.json.
+ALL_EXCLUDED: frozenset[str] = frozenset()
 
 
 # ---------------------------------------------------------------------------

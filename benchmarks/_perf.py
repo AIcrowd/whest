@@ -73,8 +73,29 @@ class TimingResult:
         return self.elapsed_ns
 
 
-# Union type for both measurement modes
-MeasureResult = PerfResult | TimingResult
+@dataclass(frozen=True)
+class InstructionsResult:
+    """Total retired instructions measured via ``perf stat -e instructions``.
+
+    Used as a hardware-counter fallback for integer/bitwise operations
+    where ``fp_arith_inst_retired`` reads 0. More stable than wall-clock
+    timing because it is deterministic and independent of system load.
+
+    Like ``TimingResult``, the ``total_flops`` property returns the raw
+    instruction count — normalization against the baseline (``np.add``)
+    in the runner cancels units, producing valid relative weights.
+    """
+
+    instructions: int
+
+    @property
+    def total_flops(self) -> int:
+        """Return total retired instructions as a proxy for work."""
+        return self.instructions
+
+
+# Union type for all measurement modes
+MeasureResult = PerfResult | TimingResult | InstructionsResult
 
 
 def has_perf() -> bool:
@@ -203,6 +224,55 @@ def _measure_timing(setup_code: str, bench_code: str, repeats: int) -> TimingRes
         Path(tmp.name).unlink(missing_ok=True)
 
 
+def _measure_instructions(
+    setup_code: str, bench_code: str, repeats: int
+) -> InstructionsResult:
+    """Measure total retired instructions via ``perf stat -e instructions``.
+
+    This is a hardware counter that counts all retired instructions (integer,
+    FP, branch, load/store). It is deterministic and independent of system
+    load, making it a better fallback than wall-clock timing for integer
+    and bitwise operations where ``fp_arith_inst_retired`` reads 0.
+    """
+    script = _build_script(setup_code, bench_code, repeats)
+
+    tmp = tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False)
+    try:
+        tmp.write(script)
+        tmp.close()
+
+        proc = subprocess.run(
+            [
+                "perf",
+                "stat",
+                "-e",
+                "instructions",
+                "-x",
+                ",",
+                sys.executable,
+                tmp.name,
+            ],
+            capture_output=True,
+            text=True,
+        )
+        # Parse CSV: first field is count, third is event name
+        instructions = 0
+        for line in proc.stderr.splitlines():
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            parts = line.split(",")
+            if len(parts) >= 3 and "instructions" in parts[2]:
+                try:
+                    instructions = int(parts[0].strip())
+                except (ValueError, TypeError):
+                    pass
+                break
+        return InstructionsResult(instructions=instructions)
+    finally:
+        Path(tmp.name).unlink(missing_ok=True)
+
+
 def measure_flops(
     setup_code: str,
     bench_code: str,
@@ -229,3 +299,23 @@ def measure_flops(
     if has_perf():
         return _measure_perf(setup_code, bench_code, repeats)
     return _measure_timing(setup_code, bench_code, repeats)
+
+
+def measure_instructions(
+    setup_code: str,
+    bench_code: str,
+    repeats: int = 10,
+) -> InstructionsResult:
+    """Measure total retired instructions for a benchmark operation.
+
+    Uses ``perf stat -e instructions`` hardware counter. This is the
+    preferred fallback for integer/bitwise operations where
+    ``fp_arith_inst_retired`` reads 0. Requires ``perf`` to be available.
+
+    Falls back to timing if ``perf`` is not available.
+    """
+    if shutil.which("perf") is not None:
+        return _measure_instructions(setup_code, bench_code, repeats)
+    # If perf isn't available at all, fall back to timing
+    timing = _measure_timing(setup_code, bench_code, repeats)
+    return InstructionsResult(instructions=timing.elapsed_ns)

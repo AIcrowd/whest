@@ -179,6 +179,7 @@ def benchmark_polynomial(
                 bm_size = f"n={n}, degree={degree}"
             details[op] = {
                 "category": "counted_custom",
+                "measurement_mode": "custom",
                 "analytical_formula": _FORMULA_STRINGS.get(op, "n"),
                 "analytical_flops": analytical,
                 "benchmark_size": bm_size,

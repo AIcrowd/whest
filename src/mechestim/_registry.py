@@ -348,9 +348,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Element-wise approximate equality test.",
     },
     "isnat": {
-        "category": "counted_unary",
+        "category": "blacklisted",
         "module": "numpy",
-        "notes": "Test for NaT (not-a-time) element-wise.",
+        "notes": "Blacklisted per reviewer — datetime ops not in scope.",
     },
     "isneginf": {
         "category": "counted_unary",
@@ -829,12 +829,12 @@ REGISTRY: dict[str, dict] = {
     "dot": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Dot product; cost = 2*M*N*K for matrix multiply.",
+        "notes": "Dot product; cost = M*K*N (FMA=1).",
     },
     "matmul": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Matrix multiplication; cost = 2*M*N*K.",
+        "notes": "Matrix multiplication; cost = M*K*N (FMA=1).",
     },
     "einsum": {
         "category": "counted_custom",
@@ -854,7 +854,7 @@ REGISTRY: dict[str, dict] = {
     "inner": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Inner product; cost = 2*N for 1-D, 2*N*M for n-D.",
+        "notes": "Inner product; cost = N (FMA=1).",
     },
     "outer": {
         "category": "counted_custom",
@@ -869,7 +869,7 @@ REGISTRY: dict[str, dict] = {
     "vdot": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Dot product with conjugation; cost = 2*N.",
+        "notes": "Dot product with conjugation; cost = N (FMA=1).",
     },
     "kron": {
         "category": "counted_custom",
@@ -1296,7 +1296,7 @@ REGISTRY: dict[str, dict] = {
         "notes": "Stack arrays horizontally.",
     },
     "split": {
-        "category": "counted_custom",
+        "category": "free",
         "module": "numpy",
         "notes": "Split array into sub-arrays. Cost: numel(output).",
     },
@@ -1306,7 +1306,7 @@ REGISTRY: dict[str, dict] = {
         "notes": "Split array into columns.",
     },
     "vsplit": {
-        "category": "counted_custom",
+        "category": "free",
         "module": "numpy",
         "notes": "Split array into rows. Cost: numel(output).",
     },
@@ -1321,7 +1321,7 @@ REGISTRY: dict[str, dict] = {
         "notes": "Insert new size-1 axis.",
     },
     "ravel": {
-        "category": "counted_custom",
+        "category": "free",
         "module": "numpy",
         "notes": "Return contiguous flattened array. Cost: numel(input).",
     },
@@ -1401,7 +1401,7 @@ REGISTRY: dict[str, dict] = {
         "notes": "Diagonal sum; cost = min(n,m).",
     },
     "broadcast_to": {
-        "category": "counted_custom",
+        "category": "free",
         "module": "numpy",
         "notes": "Broadcast array to new shape. Cost: numel(output).",
     },
@@ -1416,7 +1416,7 @@ REGISTRY: dict[str, dict] = {
         "notes": "Cast array to specified type.",
     },
     "asarray": {
-        "category": "counted_custom",
+        "category": "free",
         "module": "numpy",
         "notes": "Convert input to array. Cost: numel(input).",
     },
@@ -1587,12 +1587,12 @@ REGISTRY: dict[str, dict] = {
         "notes": "Return number of dimensions of array.",
     },
     "dsplit": {
-        "category": "counted_custom",
+        "category": "free",
         "module": "numpy",
         "notes": "Split array into multiple sub-arrays depth-wise. Cost: numel(output).",
     },
     "array_split": {
-        "category": "counted_custom",
+        "category": "free",
         "module": "numpy",
         "notes": "Split array into sub-arrays (possibly unequal). Cost: numel(output).",
     },
@@ -1612,7 +1612,7 @@ REGISTRY: dict[str, dict] = {
         "notes": "Compute broadcast shape from input shapes.",
     },
     "broadcast_arrays": {
-        "category": "counted_custom",
+        "category": "free",
         "module": "numpy",
         "notes": "Broadcast arrays against each other. Cost: numel(output).",
     },
@@ -1672,27 +1672,27 @@ REGISTRY: dict[str, dict] = {
         "notes": "Create array from an iterable. Cost: numel(output).",
     },
     "frombuffer": {
-        "category": "counted_custom",
+        "category": "free",
         "module": "numpy",
         "notes": "Interpret buffer as 1-D array. Cost: numel(output).",
     },
     "fromstring": {
-        "category": "counted_custom",
+        "category": "blacklisted",
         "module": "numpy",
         "notes": "Create 1-D array from string data. Cost: numel(output).",
     },
     "fromfile": {
-        "category": "counted_custom",
+        "category": "blacklisted",
         "module": "numpy",
         "notes": "Construct array from binary/text file. Cost: numel(output).",
     },
     "fromregex": {
-        "category": "counted_custom",
+        "category": "blacklisted",
         "module": "numpy",
         "notes": "Construct array from text file using regex. Cost: numel(output).",
     },
     "from_dlpack": {
-        "category": "counted_custom",
+        "category": "free",
         "module": "numpy",
         "notes": "Create ndarray from DLPack object (zero-copy). Cost: numel(output).",
     },
@@ -1862,7 +1862,7 @@ REGISTRY: dict[str, dict] = {
         "notes": "Construct open mesh from multiple sequences. Cost: numel(output).",
     },
     "rollaxis": {
-        "category": "counted_custom",
+        "category": "free",
         "module": "numpy",
         "notes": "Roll specified axis backwards. Cost: numel(output).",
     },
@@ -1968,12 +1968,12 @@ REGISTRY: dict[str, dict] = {
         "notes": "Return minimum data type character that can satisfy all given types.",
     },
     "base_repr": {
-        "category": "counted_custom",
+        "category": "blacklisted",
         "module": "numpy",
         "notes": "Return string representation of number in given base. Cost: numel(input).",
     },
     "binary_repr": {
-        "category": "counted_custom",
+        "category": "blacklisted",
         "module": "numpy",
         "notes": "Return binary string representation of the input number. Cost: numel(input).",
     },
@@ -2234,6 +2234,129 @@ REGISTRY: dict[str, dict] = {
         "category": "counted_custom",
         "module": "numpy.random",
         "notes": "Sampling; cost = numel(output).",
+    },
+    # ------------------------------------------------------------------
+    # stats distributions (pdf/cdf/ppf)
+    # ------------------------------------------------------------------
+    "stats.norm.pdf": {
+        "category": "counted_custom",
+        "module": "mechestim.stats",
+        "notes": "Normal PDF; cost = numel(input).",
+    },
+    "stats.norm.cdf": {
+        "category": "counted_custom",
+        "module": "mechestim.stats",
+        "notes": "Normal CDF; cost = numel(input).",
+    },
+    "stats.norm.ppf": {
+        "category": "counted_custom",
+        "module": "mechestim.stats",
+        "notes": "Normal PPF (inverse CDF); cost = numel(input).",
+    },
+    "stats.uniform.pdf": {
+        "category": "counted_custom",
+        "module": "mechestim.stats",
+        "notes": "Uniform PDF; cost = numel(input).",
+    },
+    "stats.uniform.cdf": {
+        "category": "counted_custom",
+        "module": "mechestim.stats",
+        "notes": "Uniform CDF; cost = numel(input).",
+    },
+    "stats.uniform.ppf": {
+        "category": "counted_custom",
+        "module": "mechestim.stats",
+        "notes": "Uniform PPF; cost = numel(input).",
+    },
+    "stats.expon.pdf": {
+        "category": "counted_custom",
+        "module": "mechestim.stats",
+        "notes": "Exponential PDF; cost = numel(input).",
+    },
+    "stats.expon.cdf": {
+        "category": "counted_custom",
+        "module": "mechestim.stats",
+        "notes": "Exponential CDF; cost = numel(input).",
+    },
+    "stats.expon.ppf": {
+        "category": "counted_custom",
+        "module": "mechestim.stats",
+        "notes": "Exponential PPF; cost = numel(input).",
+    },
+    "stats.cauchy.pdf": {
+        "category": "counted_custom",
+        "module": "mechestim.stats",
+        "notes": "Cauchy PDF; cost = numel(input).",
+    },
+    "stats.cauchy.cdf": {
+        "category": "counted_custom",
+        "module": "mechestim.stats",
+        "notes": "Cauchy CDF; cost = numel(input).",
+    },
+    "stats.cauchy.ppf": {
+        "category": "counted_custom",
+        "module": "mechestim.stats",
+        "notes": "Cauchy PPF; cost = numel(input).",
+    },
+    "stats.logistic.pdf": {
+        "category": "counted_custom",
+        "module": "mechestim.stats",
+        "notes": "Logistic PDF; cost = numel(input).",
+    },
+    "stats.logistic.cdf": {
+        "category": "counted_custom",
+        "module": "mechestim.stats",
+        "notes": "Logistic CDF; cost = numel(input).",
+    },
+    "stats.logistic.ppf": {
+        "category": "counted_custom",
+        "module": "mechestim.stats",
+        "notes": "Logistic PPF; cost = numel(input).",
+    },
+    "stats.laplace.pdf": {
+        "category": "counted_custom",
+        "module": "mechestim.stats",
+        "notes": "Laplace PDF; cost = numel(input).",
+    },
+    "stats.laplace.cdf": {
+        "category": "counted_custom",
+        "module": "mechestim.stats",
+        "notes": "Laplace CDF; cost = numel(input).",
+    },
+    "stats.laplace.ppf": {
+        "category": "counted_custom",
+        "module": "mechestim.stats",
+        "notes": "Laplace PPF; cost = numel(input).",
+    },
+    "stats.lognorm.pdf": {
+        "category": "counted_custom",
+        "module": "mechestim.stats",
+        "notes": "Log-normal PDF; cost = numel(input).",
+    },
+    "stats.lognorm.cdf": {
+        "category": "counted_custom",
+        "module": "mechestim.stats",
+        "notes": "Log-normal CDF; cost = numel(input).",
+    },
+    "stats.lognorm.ppf": {
+        "category": "counted_custom",
+        "module": "mechestim.stats",
+        "notes": "Log-normal PPF; cost = numel(input).",
+    },
+    "stats.truncnorm.pdf": {
+        "category": "counted_custom",
+        "module": "mechestim.stats",
+        "notes": "Truncated normal PDF; cost = numel(input).",
+    },
+    "stats.truncnorm.cdf": {
+        "category": "counted_custom",
+        "module": "mechestim.stats",
+        "notes": "Truncated normal CDF; cost = numel(input).",
+    },
+    "stats.truncnorm.ppf": {
+        "category": "counted_custom",
+        "module": "mechestim.stats",
+        "notes": "Truncated normal PPF; cost = numel(input).",
     },
     # ------------------------------------------------------------------
     # blacklisted — poly functions

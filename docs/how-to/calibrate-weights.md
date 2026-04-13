@@ -76,43 +76,72 @@ same correction formula:
 
 | Category | Operations | Size | Normalization |
 |----------|-----------|------|---------------|
-| **Pointwise Unary** | 47 ops | 10M elements | $\alpha(\text{op}) / \alpha(\text{add})$ |
-| **Pointwise Binary** | 32 ops | 10M elements | $\alpha(\text{op}) / \alpha(\text{add})$ |
-| **Reductions** | 35 ops | 10M elements | $\alpha(\text{op}) / \alpha(\text{add})$ |
-| **Sorting** | 17 ops | 10M elements | $\alpha(\text{op}) / \alpha(\text{add})$ |
-| **FFT** | 14 FFT variants | $2^{20}$ elements | $\alpha(\text{op}) / \alpha(\text{add})$ |
-| **Linalg** | 14 decomposition/solver ops | 1024 x 1024 | $\alpha(\text{op}) / \alpha(\text{add})$ |
-| **Contractions** | 9 BLAS contraction ops | 512 x 512 / 10K vectors | $\alpha(\text{op}) / \alpha(\text{add})$ |
-| **Polynomial** | 10 polynomial ops | 1M elements, deg=100 | $\alpha(\text{op}) / \alpha(\text{add})$ |
-| **Random** | 43 random generators | 10M elements | $\alpha(\text{op}) / \alpha(\text{add})$ |
-| **Misc** | 25 misc ops | Varies per op | $\alpha(\text{op}) / \alpha(\text{add})$ |
-| **Window** | 5 window functions | 10M elements | $\alpha(\text{op}) / \alpha(\text{add})$ |
+| **Pointwise Unary** | 47 ops | 10M elements | $\max(\alpha_{\text{raw}} - \text{overhead}, 0)$ |
+| **Pointwise Binary** | 32 ops | 10M elements | $\max(\alpha_{\text{raw}} - \text{overhead}, 0)$ |
+| **Reductions** | 35 ops | 10M elements | $\max(\alpha_{\text{raw}} - \text{overhead}, 0)$ |
+| **Sorting** | 17 ops | 10M elements | $\max(\alpha_{\text{raw}} - \text{overhead}, 0)$ |
+| **FFT** | 14 FFT variants | $2^{20}$ elements | $\max(\alpha_{\text{raw}} - \text{overhead}, 0)$ |
+| **Linalg** | 14 decomposition/solver ops | 1024 x 1024 | $\max(\alpha_{\text{raw}} - \text{overhead}, 0)$ |
+| **Contractions** | 9 BLAS contraction ops | 512 x 512 / 10K vectors | $\max(\alpha_{\text{raw}} - \text{overhead}, 0)$ |
+| **Polynomial** | 10 polynomial ops | 1M elements, deg=100 | $\max(\alpha_{\text{raw}} - \text{overhead}, 0)$ |
+| **Random** | 43 random generators | 10M elements | $\max(\alpha_{\text{raw}} - \text{overhead}, 0)$ |
+| **Misc** | 25 misc ops | Varies per op | $\max(\alpha_{\text{raw}} - \text{overhead}, 0)$ |
+| **Window** | 5 window functions | 10M elements | $\max(\alpha_{\text{raw}} - \text{overhead}, 0)$ |
 | **Bitwise** | 14 bitwise/integer ops | 10M int64 elements | Timing only (integer ops produce 0 perf FP counts) |
 | **Complex** | 11 complex ops | 10M complex128 elements | Perf on complex128 (iscomplexobj/isrealobj use timing) |
 | **Linalg Delegates** | 15 linalg namespace ops | Various | Perf (same as linalg decompositions) |
 
 **Total: 291 benchmarked operations.**
 
-### Measurement methodology
+### Measurement methodology (v3)
 
-Every operation uses the same correction formula:
-
-$$
-\alpha(\text{op}) = \mathrm{median}_{D} \left[ \frac{F(\text{op})}{C(\text{op}, \text{params}) \times R} \right]
-$$
+Every operation's raw correction factor is measured as:
 
 $$
-w(\text{op}) = \frac{\alpha(\text{op})}{\alpha(\text{add})}
+\alpha_{\text{raw}}(\text{op}) = \mathrm{median}_{D} \left[ \frac{F(\text{op})}{C(\text{op}, \text{params}) \times R} \right]
 $$
 
 where $F(\text{op})$ is the SIMD-width-weighted count of retired FP instructions
 (`fp_arith_inst_retired.*`: scalar x1, 128-bit x2, 256-bit x4, 512-bit x8),
-$C$ is the analytical FLOP formula, and $R$ is the number of repeats.
+$C$ is the analytical FLOP formula (FMA = 1 op), and $R$ is the number of repeats.
 
-Where $C(\text{op}, \text{params})$ is mechestim's analytical FLOP formula
-for the operation and $R$ is the number of repetitions. The $\alpha(\text{add})$
-baseline is measured identically and used as the universal normalization
-constant for all categories.
+#### Ufunc overhead subtraction
+
+Numpy's ufunc dispatch layer generates spurious FP instructions (type checking,
+iterator setup, error-state management) that inflate measurements for
+elementwise operations. We measure this overhead using `np.abs` (which is a
+bitwise sign-bit clear, NOT an FP instruction -- all measured FP instructions
+are pure ufunc overhead), then subtract it per category:
+
+$$
+w(\text{op}) = \max\bigl(\alpha_{\text{raw}}(\text{op}) - \text{overhead}_{\text{category}}, \ 0\bigr)
+$$
+
+| Category | Overhead source | Typical value |
+|----------|----------------|---------------|
+| `ufunc_unary` | $\alpha(\texttt{abs})$ | ~0.6 |
+| `ufunc_binary` | $\alpha(\texttt{add}) - 1.0$ | ~1.2 |
+| `ufunc_reduction` | same as unary | ~0.6 |
+| `blas` / `linalg` | 0 (bypasses ufunc) | 0 |
+| `custom` (fft, sort, etc.) | 0 | 0 |
+| `instructions` (bitwise) | 0 (different counter) | 0 |
+
+**Note on BLAS/linalg FMA ops:** `fp_arith_inst_retired` counts each FMA
+as 2 retired operations (one multiply + one add). Pure-FMA ops like
+matmul will therefore show empirical weight ≈ 2.0. The reviewer can
+decide whether to keep this or override to 1.0.
+
+This replaces the v2 formula $w = \alpha(\text{op}) / \alpha(\text{add})$
+which penalized BLAS operations (that bypass the ufunc layer) with overhead
+they don't have.
+
+#### Measurement modes
+
+| Mode | Counter | Used for |
+|------|---------|----------|
+| **perf** | `fp_arith_inst_retired.*` (SIMD-weighted) | FP operations (default) |
+| **instructions** | `instructions` (total retired) | Integer/bitwise ops |
+| **timing** | `time.perf_counter_ns()` | Validation; fallback when perf unavailable |
 
 Each measurement uses:
 
@@ -175,10 +204,13 @@ methodology and validation sections:
       "perf_events": ["fp_arith_inst_retired.scalar_double", "..."]
     },
     "methodology": {
-      "version": "2.0",
-      "formula": "weight(op) = alpha(op) / alpha(add), ...",
-      "baseline_alpha": 1.564071,
-      "note": "analytical_FLOPs from mechestim registry; ..."
+      "version": "3.0",
+      "formula": "weight(op) = max(alpha_raw(op) - overhead_for_category, 0)",
+      "baseline_alpha_add_raw": 1.6001,
+      "baseline_alpha_abs_raw": 0.3001,
+      "overhead_ufunc_unary": 0.3001,
+      "overhead_ufunc_binary": 0.6001,
+      "note": "ufunc overhead subtracted per category; FMA=1"
     },
     "validation": {
       "absolute_correction_factors": {"add": 2.2001, "exp": 22.6001, "...": "..."},
@@ -196,13 +228,13 @@ methodology and validation sections:
     }
   },
   "weights": {
-    "abs": 0.2728,
+    "abs": 1.0,
     "add": 1.0,
-    "exp": 10.2723,
-    "sin": 18.3903,
-    "matmul": 0.4568,
-    "linalg.cholesky": 0.7606,
-    "fft.fft": 0.3796
+    "exp": 16.0,
+    "sin": 16.0,
+    "matmul": 1.0,
+    "linalg.cholesky": 4.0,
+    "fft.fft": 1.0
   }
 }
 ```
@@ -269,7 +301,7 @@ from mechestim._weights import load_weights, reset_weights, get_weight
 load_weights("/path/to/weights.json")
 
 # Check a weight
-print(get_weight("exp"))   # 10.2723
+print(get_weight("exp"))   # 16.0
 print(get_weight("add"))   # 1.0
 print(get_weight("foo"))   # 1.0 (unknown ops default to 1.0)
 

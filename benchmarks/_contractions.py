@@ -19,15 +19,15 @@ CONTRACTION_OPS: list[str] = [
 ]
 
 _FORMULA_STRINGS: dict[str, str] = {
-    "dot": "M*N*K (FMA=1)",
-    "matmul": "M*N*K (FMA=1)",
+    "dot": "MNK",
+    "matmul": "MNK",
     "inner": "N (a.size)",
     "vdot": "N (a.size)",
     "vecdot": "batch * K (output_size * contracted_axis)",
     "outer": "M*N",
-    "tensordot": "d^5 (axes=1, shape=(d,d,d), FMA=1)",
-    "kron": "d^4 (Kronecker, shape=(d,d)x(d,d))",
-    "einsum": "M*N*K (ij,jk->ik, FMA=1)",
+    "tensordot": "product of free * contracted dims",
+    "kron": "numel(output)",
+    "einsum": "product of index dims (FMA=1)",
 }
 
 _BENCHMARK_SIZE_STRINGS: dict[str, str] = {
@@ -277,6 +277,7 @@ def benchmark_contractions(
             results[op] = statistics.median(dist_values)
             details[op] = {
                 "category": "counted_custom",
+                "measurement_mode": "blas",
                 "analytical_formula": _FORMULA_STRINGS.get(op, ""),
                 "analytical_flops": analytical,
                 "benchmark_size": _BENCHMARK_SIZE_STRINGS.get(op, ""),

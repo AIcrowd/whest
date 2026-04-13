@@ -212,31 +212,32 @@ actual_cost = analytical_formula(shape) × weight(op_name)
 
 | Operation | Analytical formula | Weight | Effective cost (256x256) |
 |-----------|--------------------|--------|----------------|
-| `add` | $\text{numel}(\text{output})$ | 1.00 | 65,536 |
-| `exp` | $\text{numel}(\text{output})$ | 10.27 | 673,095 |
-| `sin` | $\text{numel}(\text{output})$ | 18.39 | 1,205,346 |
-| `matmul` | $n^3$ | 0.46 | 7,700,364 |
-| `linalg.cholesky` | $n^3/3$ | 0.76 | 4,244,635 |
+| `add` | $\text{numel}(\text{output})$ | 1 | 65,536 |
+| `exp` | $\text{numel}(\text{output})$ | 16 | 1,048,576 |
+| `sin` | $\text{numel}(\text{output})$ | 16 | 1,048,576 |
+| `matmul` | $m \cdot k \cdot n$ | 1 | 16,777,216 |
+| `linalg.cholesky` | $n^3$ | 4 | 67,108,864 |
 
-Weights are measured using the correction-factor methodology
-described in [FLOP Weight Calibration Results](../reference/empirical-weights.md). The
-formula is $\text{weight}(\text{op}) = \alpha(\text{op}) / \alpha(\text{add})$,
-where $\alpha(\text{op})$ is the median ratio of hardware-observed FP
-instructions to analytical FLOPs, measured via `fp_arith_inst_retired`
-performance counters.
+Weights are measured using the overhead-subtracted correction-factor
+methodology described in [FLOP Weight Calibration Results](../reference/empirical-weights.md).
+The formula is:
 
-Weights below 1.0 are expected for BLAS-backed operations (contractions,
-linalg decompositions) because highly optimized BLAS libraries can
-execute FMA-dominated inner loops with fewer total instructions than the
-analytical element count. For example, `matmul` at 0.46 reflects the
-efficiency of a tuned BLAS kernel relative to the analytical cost of
-$n^3$ FMA operations.
+$$w(\text{op}) = \max\bigl(\alpha_{\text{raw}}(\text{op}) - \text{overhead}_{\text{category}}, \ 0\bigr)$$
 
-Integer and bitwise operations (`bitwise_and`, `gcd`, `lcm`, etc.) use
-**timing-based weights** because they do not retire `fp_arith_inst_retired`
-events on the CPU. Their weights are derived from wall-clock timing
-normalized against the timing baseline of `np.add`, producing comparable
-relative costs despite the different measurement method.
+where $\alpha_{\text{raw}}$ is the median ratio of hardware-observed FP
+instructions to analytical FLOPs (FMA = 1 op), measured via
+`fp_arith_inst_retired` performance counters. The ufunc dispatch overhead
+(measured from `np.abs`, which generates zero FP arithmetic) is subtracted
+per category to remove numpy implementation noise from the weight.
+
+BLAS-backed operations (contractions, linalg) have weights near 1.0 because
+their tight FMA loops execute almost exactly 1 hardware FP instruction per
+analytical FLOP, with no ufunc overhead to subtract.
+
+Integer and bitwise operations (`bitwise_and`, `gcd`, `lcm`, etc.) use the
+`instructions` hardware counter (total retired instructions) because they
+do not retire `fp_arith_inst_retired` events. Their weights are derived from
+instruction counts normalized the same way as FP operations.
 
 Weights are loaded from a JSON config file. Without a config file, all
 weights default to 1.0 -- the analytical formulas apply unchanged.
@@ -270,10 +271,10 @@ The JSON file must have a `"weights"` key mapping operation names to floats:
 {
   "weights": {
     "add": 1.0,
-    "exp": 10.2723,
-    "sin": 18.3903,
-    "matmul": 0.4568,
-    "linalg.cholesky": 0.7606
+    "exp": 16.0,
+    "sin": 16.0,
+    "matmul": 1.0,
+    "linalg.cholesky": 4.0
   }
 }
 ```

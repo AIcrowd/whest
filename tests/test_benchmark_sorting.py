@@ -276,6 +276,7 @@ class TestBenchmarkSorting:
             "category",
             "analytical_formula",
             "analytical_flops",
+            "measurement_mode",
             "benchmark_size",
             "bench_code",
             "repeats",

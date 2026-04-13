@@ -12,10 +12,6 @@ from mechestim.stats._base import ContinuousDistribution
 from mechestim.stats._erf import _erf
 from mechestim.stats._ndtri import _ndtri
 
-_NORM_PDF_COST = 10
-_NORM_CDF_COST = 20
-_NORM_PPF_COST = 40
-
 _SQRT2 = np.sqrt(2.0)
 _INV_SQRT_2PI = 1.0 / np.sqrt(2.0 * np.pi)
 
@@ -62,7 +58,7 @@ class NormDistribution(ContinuousDistribution):
         MechestimArray
             PDF evaluated at *x*.
         """
-        return self._deduct_and_call("pdf", _NORM_PDF_COST, x, loc=loc, scale=scale)
+        return self._deduct_and_call("pdf", 1, x, loc=loc, scale=scale)
 
     def cdf(self, x, loc=0, scale=1):
         """Cumulative distribution function at *x*.
@@ -87,7 +83,7 @@ class NormDistribution(ContinuousDistribution):
         MechestimArray
             CDF evaluated at *x*.
         """
-        return self._deduct_and_call("cdf", _NORM_CDF_COST, x, loc=loc, scale=scale)
+        return self._deduct_and_call("cdf", 1, x, loc=loc, scale=scale)
 
     def ppf(self, q, loc=0, scale=1):
         """Percent-point function (inverse CDF) at *q*.
@@ -112,7 +108,7 @@ class NormDistribution(ContinuousDistribution):
         MechestimArray
             PPF evaluated at *q*.
         """
-        return self._deduct_and_call("ppf", _NORM_PPF_COST, q, loc=loc, scale=scale)
+        return self._deduct_and_call("ppf", 1, q, loc=loc, scale=scale)
 
     # --- Pure-NumPy implementations (no budget deduction) ---
 

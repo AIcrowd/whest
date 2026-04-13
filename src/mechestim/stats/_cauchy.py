@@ -10,10 +10,6 @@ import numpy as _np
 
 from mechestim.stats._base import ContinuousDistribution
 
-_CAUCHY_PDF_COST = 6
-_CAUCHY_CDF_COST = 5
-_CAUCHY_PPF_COST = 5
-
 
 class CauchyDistribution(ContinuousDistribution):
     """Cauchy (Lorentz) continuous random variable.
@@ -42,7 +38,7 @@ class CauchyDistribution(ContinuousDistribution):
         ---------
         6 * numel(x) FLOPs
         """
-        return self._deduct_and_call("pdf", _CAUCHY_PDF_COST, x, loc=loc, scale=scale)
+        return self._deduct_and_call("pdf", 1, x, loc=loc, scale=scale)
 
     def cdf(self, x, loc=0, scale=1):
         """Cumulative distribution function at *x*.
@@ -53,7 +49,7 @@ class CauchyDistribution(ContinuousDistribution):
         ---------
         5 * numel(x) FLOPs
         """
-        return self._deduct_and_call("cdf", _CAUCHY_CDF_COST, x, loc=loc, scale=scale)
+        return self._deduct_and_call("cdf", 1, x, loc=loc, scale=scale)
 
     def ppf(self, q, loc=0, scale=1):
         """Percent-point function (inverse CDF) at *q*.
@@ -64,7 +60,7 @@ class CauchyDistribution(ContinuousDistribution):
         ---------
         5 * numel(q) FLOPs
         """
-        return self._deduct_and_call("ppf", _CAUCHY_PPF_COST, q, loc=loc, scale=scale)
+        return self._deduct_and_call("ppf", 1, q, loc=loc, scale=scale)
 
     def _compute_pdf(self, x, loc=0, scale=1):
         z = (x - loc) / scale

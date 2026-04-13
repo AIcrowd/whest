@@ -23,7 +23,7 @@ import sys
 import time as _time
 from typing import Any
 
-from benchmarks._baseline import measure_baseline
+from benchmarks._baseline import BaselineResult, measure_baseline, measure_baselines
 from benchmarks._fft import benchmark_fft
 from benchmarks._linalg import benchmark_linalg
 from benchmarks._metadata import collect_metadata
@@ -65,6 +65,11 @@ try:
 except ImportError:
     benchmark_linalg_delegates = None  # type: ignore[assignment]
 
+try:
+    from benchmarks._stats import benchmark_stats
+except ImportError:
+    benchmark_stats = None  # type: ignore[assignment]
+
 
 ALL_CATEGORIES = sorted(
     {
@@ -81,6 +86,7 @@ ALL_CATEGORIES = sorted(
         "bitwise",
         "complex",
         "linalg_delegates",
+        "stats",
     }
 )
 
@@ -106,6 +112,8 @@ if benchmark_complex is not None:
     _BENCHMARK_FUNCS["complex"] = benchmark_complex
 if benchmark_linalg_delegates is not None:
     _BENCHMARK_FUNCS["linalg_delegates"] = benchmark_linalg_delegates
+if benchmark_stats is not None:
+    _BENCHMARK_FUNCS["stats"] = benchmark_stats
 
 # Approximate op counts per category (for progress bar total)
 _APPROX_OP_COUNTS: dict[str, int] = {
@@ -128,21 +136,44 @@ _APPROX_OP_COUNTS: dict[str, int] = {
 def normalize_weights(
     raw_alpha: dict[str, float], alpha_add: float
 ) -> dict[str, float]:
-    """Divide each raw alpha(op) value by *alpha_add*.
-
-    If *alpha_add* is zero (or very close), fall back to 1.0 so the raw
-    values pass through unchanged.
-
-    Parameters
-    ----------
-    raw_alpha:
-        Mapping of op names to raw alpha values (measured / analytical).
-    alpha_add:
-        The baseline alpha(add) value used as normalisation constant.
-    """
+    """Old normalization: divide by alpha(add). Kept for timing validation."""
     if alpha_add == 0:
         alpha_add = 1.0
     return {k: v / alpha_add for k, v in raw_alpha.items()}
+
+
+def normalize_weights_v2(
+    raw_alpha: dict[str, float],
+    all_details: dict[str, dict],
+    baselines: "BaselineResult",
+) -> dict[str, float]:
+    """Subtract per-category ufunc overhead and clamp to minimum 1.0.
+
+    Each operation's raw alpha is adjusted by subtracting the overhead
+    attributable to numpy's ufunc dispatch layer. The ``measurement_mode``
+    field in each op's detail dict determines which overhead to subtract:
+
+    - ``ufunc_unary``: subtract alpha(abs) — pure unary ufunc overhead
+    - ``ufunc_binary``: subtract alpha(add) - 1.0 — binary ufunc overhead
+    - ``ufunc_reduction``: same as unary
+    - ``blas``, ``linalg``, ``custom``: subtract 0 (no ufunc layer)
+    - ``instructions``: subtract 0 (different counter, different overhead)
+
+    After subtraction, clamp to 0.0 (no negative weights). Values below 1.0
+    are expected for ops with less FP work than the overhead measurement
+    (e.g., bitwise ops that generate 0 FP instructions).
+
+    Note: BLAS/linalg ops that are pure FMA loops will show weight ≈ 2.0
+    because ``fp_arith_inst_retired`` counts each FMA as 2 retired FP
+    operations. This is left as-is for the reviewer to decide whether to
+    keep weight=2 or override to weight=1.
+    """
+    weights = {}
+    for op, alpha in raw_alpha.items():
+        mode = all_details.get(op, {}).get("measurement_mode", "ufunc_unary")
+        overhead = baselines.overhead_for_mode(mode)
+        weights[op] = max(alpha - overhead, 0.0)
+    return weights
 
 
 def _compute_validation_stats(
@@ -400,11 +431,12 @@ def run_benchmarks(
     meta["benchmark_config"]["measurement_mode"] = mode
 
     # -- baseline ----------------------------------------------------------
-    _log("Measuring baseline (np.add) ...")
-    baseline_fpe = measure_baseline(dtype=dtype, repeats=repeats)
+    _log("Measuring baselines (np.add + np.abs for overhead) ...")
+    baselines = measure_baselines(dtype=dtype, repeats=repeats)
+    baseline_fpe = baselines.alpha_add  # backwards compat
 
     # -- baseline constants ---------------------------------------------------
-    _BASELINE_N = 10_000_000  # default n in measure_baseline()
+    _BASELINE_N = 10_000_000  # default n in measure_baselines()
     _BASELINE_BENCH_CODE = "np.add(x, y, out=_out)"
 
     # -- primary measurement loop ------------------------------------------
@@ -413,8 +445,8 @@ def run_benchmarks(
         cats, dtype, repeats, _log, use_rich=use_rich, console=console
     )
 
-    # -- normalise ALL categories by alpha(add) ----------------------------
-    weights = normalize_weights(raw_alphas, baseline_fpe)
+    # -- normalise: subtract per-category overhead, clamp to 1.0 -----------
+    weights = normalize_weights_v2(raw_alphas, all_details, baselines)
 
     # -- dual-mode validation (Step 1.2) -----------------------------------
     # If primary mode is perf, re-run in timing mode for validation.
@@ -476,16 +508,21 @@ def run_benchmarks(
 
     # -- methodology metadata (Step 1.3 + 1.4) ----------------------------
     meta["methodology"] = {
-        "version": "2.0",
+        "version": "3.0",
         "formula": (
-            "weight(op) = alpha(op) / alpha(add), "
-            "where alpha(op) = median(perf_instructions / analytical_FLOPs)"
+            "weight(op) = max(alpha_raw(op) - overhead_for_category, 1.0), "
+            "where alpha_raw = median(perf_instructions / analytical_FLOPs). "
+            "Overhead is subtracted per ufunc category to remove numpy dispatch noise."
         ),
-        "baseline_alpha": round(baseline_fpe, 6),
+        "baseline_alpha_add_raw": round(baselines.alpha_add, 6),
+        "baseline_alpha_abs_raw": round(baselines.alpha_abs, 6),
+        **baselines.to_dict(),
         "note": (
-            "analytical_FLOPs from mechestim registry; "
+            "analytical_FLOPs from mechestim registry (FMA=1); "
             "perf_instructions are SIMD-width-weighted "
-            "fp_arith_inst_retired counts"
+            "fp_arith_inst_retired counts; "
+            "ufunc overhead subtracted per category; "
+            "integer/bitwise ops use instructions counter"
         ),
     }
     meta["validation"] = validation

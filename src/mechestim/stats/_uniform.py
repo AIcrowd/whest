@@ -10,10 +10,6 @@ import numpy as _np
 
 from mechestim.stats._base import ContinuousDistribution
 
-_UNIFORM_PDF_COST = 3
-_UNIFORM_CDF_COST = 3
-_UNIFORM_PPF_COST = 3
-
 
 class UniformDistribution(ContinuousDistribution):
     """Continuous uniform random variable on ``[loc, loc + scale]``.
@@ -56,7 +52,7 @@ class UniformDistribution(ContinuousDistribution):
         MechestimArray
             PDF evaluated at *x*.
         """
-        return self._deduct_and_call("pdf", _UNIFORM_PDF_COST, x, loc=loc, scale=scale)
+        return self._deduct_and_call("pdf", 1, x, loc=loc, scale=scale)
 
     def cdf(self, x, loc=0, scale=1):
         """Cumulative distribution function at *x*.
@@ -81,7 +77,7 @@ class UniformDistribution(ContinuousDistribution):
         MechestimArray
             CDF evaluated at *x*.
         """
-        return self._deduct_and_call("cdf", _UNIFORM_CDF_COST, x, loc=loc, scale=scale)
+        return self._deduct_and_call("cdf", 1, x, loc=loc, scale=scale)
 
     def ppf(self, q, loc=0, scale=1):
         """Percent-point function (inverse CDF) at *q*.
@@ -106,7 +102,7 @@ class UniformDistribution(ContinuousDistribution):
         MechestimArray
             PPF evaluated at *q*.
         """
-        return self._deduct_and_call("ppf", _UNIFORM_PPF_COST, q, loc=loc, scale=scale)
+        return self._deduct_and_call("ppf", 1, q, loc=loc, scale=scale)
 
     def _compute_pdf(self, x, loc=0, scale=1):
         return _np.where((x >= loc) & (x <= loc + scale), 1.0 / scale, 0.0)

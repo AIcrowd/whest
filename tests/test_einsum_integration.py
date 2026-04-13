@@ -100,12 +100,13 @@ class TestEinsumPath:
         assert hasattr(info, "optimized_cost")
         assert hasattr(info, "speedup")
 
-    def test_zero_budget_cost(self):
+    def test_unit_budget_cost(self):
+        """einsum_path costs 1 FLOP (path planning, not computation)."""
         A = numpy.ones((10, 10))
         B = numpy.ones((10, 10))
         with BudgetContext(flop_budget=10**8, quiet=True) as budget:
             einsum_path("ij,jk->ik", A, B)
-            assert budget.flops_used == 0
+            assert budget.flops_used == 1
 
     def test_symmetric_input_shows_savings(self):
         # Use a contraction where symmetric indices survive in the output.

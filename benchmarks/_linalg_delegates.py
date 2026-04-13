@@ -32,19 +32,19 @@ LINALG_DELEGATE_OPS: list[str] = [
 _FORMULA_STRINGS: dict[str, str] = {
     "linalg.cond": "m*n*min(m,n)",
     "linalg.cross": "6*n",
-    "linalg.matmul": "M*N*K (FMA=1)",
-    "linalg.matrix_norm": "2*numel (Frobenius)",
+    "linalg.matmul": "MNK",
+    "linalg.matrix_norm": "numel",
     "linalg.matrix_power": "(ceil(log2(k))+popcount(k)-1)*n^3",
     "linalg.matrix_rank": "m*n*min(m,n)",
-    "linalg.multi_dot": "128*64*128 + 128*128*64 (FMA=1)",
-    "linalg.norm": "numel (L2)",
+    "linalg.multi_dot": "sum of chain MNK costs",
+    "linalg.norm": "numel",
     "linalg.outer": "M*N",
-    "linalg.tensordot": "d^5 (FMA=1)",
-    "linalg.tensorinv": "n^3 after reshape",
-    "linalg.tensorsolve": "n^3 after reshape",
+    "linalg.tensordot": "product of free * contracted dims",
+    "linalg.tensorinv": "n^3",
+    "linalg.tensorsolve": "n^3",
     "linalg.trace": "min(m,n)",
     "linalg.vecdot": "batch*K",
-    "linalg.vector_norm": "numel (L2)",
+    "linalg.vector_norm": "numel",
 }
 
 # NumPy 2.x-only ops — skip gracefully on older versions.
@@ -301,13 +301,13 @@ def _op_config(op: str, dtype: str) -> tuple[list[str], str, str]:
         )
 
     if short == "trace":
+        # Use np.ones instead of random arrays to avoid the setup's random
+        # number generation dominating the measurement. Trace just sums the
+        # diagonal — the values don't affect the FP instruction count.
         setups = [
-            f"import numpy as np; rng = np.random.default_rng(42); "
-            f"A = rng.standard_normal((10000, 10000)).astype(np.{d})",
-            f"import numpy as np; rng = np.random.default_rng(42); "
-            f"A = rng.uniform(0.1, 1.0, (10000, 10000)).astype(np.{d})",
-            f"import numpy as np; rng = np.random.default_rng(42); "
-            f"A = rng.standard_normal((10000, 10000)).astype(np.{d}) * 100",
+            f"import numpy as np; A = np.ones((10000, 10000), dtype=np.{d})",
+            f"import numpy as np; A = np.ones((10000, 10000), dtype=np.{d}) * 2.5",
+            f"import numpy as np; A = np.ones((10000, 10000), dtype=np.{d}) * 100",
         ]
         return setups, "np.linalg.trace(A)", "A: (10000,10000)"
 
@@ -389,6 +389,7 @@ def benchmark_linalg_delegates(
             results[op] = statistics.median(dist_values)
             details[op] = {
                 "category": "counted_custom",
+                "measurement_mode": "blas",
                 "analytical_formula": _FORMULA_STRINGS.get(op, ""),
                 "analytical_flops": analytical,
                 "benchmark_size": bm_size,

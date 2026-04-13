@@ -79,20 +79,22 @@ class TestNorm:
             assert budget.flops_used == 10
 
     def test_matrix_fro_cost(self):
+        # FMA=1: Frobenius norm costs numel
         A = numpy.random.randn(4, 5)
         with BudgetContext(flop_budget=10**6) as budget:
             from mechestim.linalg import norm
 
             norm(A)
-            assert budget.flops_used == 2 * 20
+            assert budget.flops_used == 20
 
     def test_matrix_ord2_cost(self):
+        # SVD-based: 4x baked into cost function
         A = numpy.random.randn(4, 5)
         with BudgetContext(flop_budget=10**6) as budget:
             from mechestim.linalg import norm
 
             norm(A, ord=2)
-            assert budget.flops_used == 4 * 5 * 4
+            assert budget.flops_used == 4 * 4 * 5 * 4
 
     def test_matrix_ord1_cost(self):
         A = numpy.random.randn(4, 5)
@@ -103,12 +105,13 @@ class TestNorm:
             assert budget.flops_used == 20
 
     def test_vector_p_norm_cost(self):
+        # FMA=1: p-norm costs numel
         x = numpy.random.randn(10)
         with BudgetContext(flop_budget=10**6) as budget:
             from mechestim.linalg import norm
 
             norm(x, ord=3)
-            assert budget.flops_used == 2 * 10
+            assert budget.flops_used == 10
 
 
 class TestVectorNorm:
@@ -137,6 +140,7 @@ class TestMatrixNorm:
             assert numpy.isclose(matrix_norm(A), numpy.linalg.matrix_norm(A))
 
     def test_fro_cost(self):
+        # FMA=1: Frobenius norm costs numel
         A = numpy.random.randn(3, 4)
         with BudgetContext(flop_budget=10**6) as budget:
             from mechestim.linalg import matrix_norm
