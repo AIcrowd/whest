@@ -15,7 +15,7 @@ UV    := uv run
 # Composite targets
 # ---------------------------------------------------------------------------
 .PHONY: ci
-ci: lint test test-numpy-compat docs-build  ## Run the full CI pipeline locally
+ci: lint test test-numpy-compat check-sync docs-build  ## Run the full CI pipeline locally
 
 # ---------------------------------------------------------------------------
 # Lint  (mirrors: CI → lint job)
@@ -66,6 +66,22 @@ docs-deploy:  ## Deploy docs to gh-pages (same as CI)
 	git config user.name  "github-actions[bot]"
 	git config user.email "github-actions[bot]@users.noreply.github.com"
 	$(UV) mkdocs gh-deploy --force
+
+# ---------------------------------------------------------------------------
+# Client-Server Sync
+# ---------------------------------------------------------------------------
+.PHONY: check-sync
+check-sync:  ## Verify client is in sync with core library
+	$(UV) python scripts/sync_client.py --check
+	$(UV) pytest tests/test_client_server_parity.py tests/test_serialization_parity.py -v
+
+.PHONY: sync-client
+sync-client:  ## Regenerate client files from core library
+	$(UV) python scripts/sync_client.py
+
+.PHONY: test-integration
+test-integration:  ## Run client-server integration tests
+	cd mechestim-client && $(UV) pytest tests/test_full_integration.py -v --tb=short
 
 # ---------------------------------------------------------------------------
 # Setup
