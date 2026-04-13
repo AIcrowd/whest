@@ -55,12 +55,11 @@ class TestLognormPpf:
 
     def test_flop_cost(self):
         from mechestim.stats import lognorm
-        from mechestim.stats._lognorm import _LOGNORM_PPF_COST
 
         q = np.random.rand(60)
         with BudgetContext(flop_budget=10**6) as b:
             lognorm.ppf(q, 1.0)
-            assert b.flops_used == _LOGNORM_PPF_COST * 60
+            assert b.flops_used == 60
 
 
 # ============================================================
@@ -111,16 +110,13 @@ class TestTruncnormPpf:
 
         a, b = -2, 2
         q = np.linspace(0.01, 0.99, 50)
-        roundtrip = np.asarray(
-            truncnorm.cdf(np.asarray(truncnorm.ppf(q, a, b)), a, b)
-        )
+        roundtrip = np.asarray(truncnorm.cdf(np.asarray(truncnorm.ppf(q, a, b)), a, b))
         np.testing.assert_allclose(roundtrip, q, atol=1e-11, rtol=1e-11)
 
     def test_flop_cost(self):
         from mechestim.stats import truncnorm
-        from mechestim.stats._truncnorm import _TRUNCNORM_CDF_COST
 
         x = np.random.randn(40)
         with BudgetContext(flop_budget=10**6) as b:
             truncnorm.cdf(x, -2, 2)
-            assert b.flops_used == _TRUNCNORM_CDF_COST * 40
+            assert b.flops_used == 40

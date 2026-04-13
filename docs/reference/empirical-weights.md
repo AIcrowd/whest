@@ -168,7 +168,7 @@ overhead, weights represent the true hardware cost per analytical FLOP:
 | `isposinf` | 1.0000 | 0.9379 | high | numel(output) | [\_pointwise.py:324](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L324) | Timing-based (fp_arith_inst_retired blind to this op). Ratio vs add=0.9379 |
 | `isclose` | 1.0000 | 3.0000 | medium | numel(output) | [\_pointwise.py:399](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L399) | Element-wise approximate equality test. |
 
-### Pointwise Binary (32 operations)
+### Pointwise Binary (34 operations)
 
 | Op | Active Weight | Empirical Weight | Confidence | Formula | Impl | Notes |
 |:---|-------:|-------:|:-----------|:--------|:-----|:------|
@@ -182,6 +182,8 @@ overhead, weights represent the true hardware cost per analytical FLOP:
 | `hypot` | 16.0000 | 10.5006 | high | numel(output) | [\_pointwise.py:449](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L449) | Element-wise Euclidean norm sqrt(x1^2 + x2^2). |
 | `logaddexp` | 16.0000 | 32.5991 | low | numel(output) | [\_pointwise.py:455](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L455) | log(exp(x1) + exp(x2)) element-wise. |
 | `logaddexp2` | 16.0000 | 34.0363 | low | numel(output) | [\_pointwise.py:456](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L456) | log2(2**x1 + 2**x2) element-wise. |
+| `matvec` | 1.0000 | 0.5551 |  | output_size * contracted_axis |  | EC2 timing = 0.56. BLAS matrix-vector product — efficient. |
+| `vecmat` | 1.0000 | 0.6085 |  | output_size * contracted_axis |  | EC2 timing = 0.61. BLAS vector-matrix product — efficient. |
 | `add` | 1.0000 | 1.0000 | medium | numel(output) | [\_pointwise.py:418](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L418) | Element-wise addition. |
 | `subtract` | 1.0000 | 1.0000 | medium | numel(output) | [\_pointwise.py:419](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L419) | Element-wise subtraction. |
 | `multiply` | 1.0000 | 1.0000 | medium | numel(output) | [\_pointwise.py:420](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L420) | Element-wise multiplication. |
@@ -329,10 +331,10 @@ overhead, weights represent the true hardware cost per analytical FLOP:
 
 | Op | Active Weight | Empirical Weight | Confidence | Formula | Impl | Notes |
 |:---|-------:|-------:|:-----------|:--------|:-----|:------|
-| `dot` | 1.0000 | 2.0012 | high | MNK | [\_pointwise.py:619](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L619) | Dot product; cost = 2*M*N*K for matrix multiply. |
-| `matmul` | 1.0000 | 2.0012 | high | MNK | [\_pointwise.py:655](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L655) | Matrix multiplication; cost = 2*M*N*K. |
-| `inner` | 1.0000 | 2.6010 | medium | N (a.size) | [\_pointwise.py:681](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L681) | Inner product; cost = 2*N for 1-D, 2*N*M for n-D. |
-| `vdot` | 1.0000 | 2.6010 | medium | N (a.size) | [\_pointwise.py:739](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L739) | Dot product with conjugation; cost = 2*N. |
+| `dot` | 1.0000 | 2.0012 | high | MNK | [\_pointwise.py:619](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L619) | Dot product; cost = M*K*N (FMA=1). |
+| `matmul` | 1.0000 | 2.0012 | high | MNK | [\_pointwise.py:655](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L655) | Matrix multiplication; cost = M*K*N (FMA=1). |
+| `inner` | 1.0000 | 2.6010 | medium | N (a.size) | [\_pointwise.py:681](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L681) | Inner product; cost = N (FMA=1). |
+| `vdot` | 1.0000 | 2.6010 | medium | N (a.size) | [\_pointwise.py:739](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L739) | Dot product with conjugation; cost = N (FMA=1). |
 | `vecdot` | 1.0000 | 2.6019 | medium | batch * K (output_size * contracted_axis) | [\_pointwise.py:485](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L485) | Vector dot product along last axis. |
 | `outer` | 1.0000 | 1.0002 | high | M*N | [\_pointwise.py:697](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L697) | Outer product of two vectors; cost = M*N. |
 | `tensordot` | 1.0000 | 2.0001 | high | product of free * contracted dims | [\_\_init\_\_.py:74](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/__init__.py#L74) | Tensor dot product along specified axes. |
@@ -354,7 +356,7 @@ overhead, weights represent the true hardware cost per analytical FLOP:
 | `polyint` | 1.0000 | 10.7960 | high | degree + 1 | [\_polynomial.py:140](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L140) | Integrate polynomial. Cost: n FLOPs. |
 | `poly` | 1.0000 | 2.1195 | high | degree^2 | [\_polynomial.py:204](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L204) | Polynomial from roots. Cost: $n^2$ FLOPs. |
 
-### Random (44 operations)
+### Random (45 operations)
 
 | Op | Active Weight | Empirical Weight | Confidence | Formula | Impl | Notes |
 |:---|-------:|-------:|:-----------|:--------|:-----|:------|
@@ -401,12 +403,60 @@ overhead, weights represent the true hardware cost per analytical FLOP:
 | `random.randint` | 1.0000 | 0.0001 | high | numel(output) | [\_\_init\_\_.py:158](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L158) | Sampling; cost = numel(output). |
 | `random.random` | 1.0000 | 3.0001 | high | numel(output) | [\_\_init\_\_.py:179](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L179) | Sampling; cost = numel(output). |
 | `random.random_sample` | 1.0000 | 3.0001 | high | numel(output) | [\_\_init\_\_.py:180](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L180) | Sampling; cost = numel(output). |
-| `random.bytes` | 1.0000 | 1.0000 |  | numel(output) |  | Returns raw bytes. Timing shows 0.76x cost of add — clamped to weight=1. |
+| `random.bytes` | 1.0000 | 0.8610 |  | numel(output) |  | EC2 timing = 0.86. Fast PRNG byte generation — cheaper than add. |
+| `random.random_integers` | 1.0000 | 3.5105 |  | numel(output) |  | EC2 timing = 3.51. Deprecated randint wrapper. |
 
-### Misc (28 operations)
+### Stats (24 operations)
 
 | Op | Active Weight | Empirical Weight | Confidence | Formula | Impl | Notes |
 |:---|-------:|-------:|:-----------|:--------|:-----|:------|
+| `stats.norm.pdf` | 16.0000 | 27.0000 | high | numel(input) |  | Raw alpha=27.3002, setup overhead=0.3002 subtracted. FP instruction count per element. |
+| `stats.norm.cdf` | 16.0000 | 47.5991 | low | numel(input) |  | Raw alpha=47.8993, setup overhead=0.3002 subtracted. FP instruction count per element. |
+| `stats.norm.ppf` | 16.0000 | 83.0527 | high | numel(input) |  | Raw alpha=83.3529, setup overhead=0.3002 subtracted. FP instruction count per element. |
+| `stats.expon.pdf` | 16.0000 | 25.0000 | high | numel(input) |  | Raw alpha=25.3002, setup overhead=0.3002 subtracted. FP instruction count per element. |
+| `stats.expon.cdf` | 16.0000 | 25.0000 | high | numel(input) |  | Raw alpha=25.3002, setup overhead=0.3002 subtracted. FP instruction count per element. |
+| `stats.expon.ppf` | 16.0000 | 43.0000 | high | numel(input) |  | Raw alpha=43.3002, setup overhead=0.3002 subtracted. FP instruction count per element. |
+| `stats.cauchy.cdf` | 16.0000 | 51.0000 | high | numel(input) |  | Raw alpha=51.3002, setup overhead=0.3002 subtracted. FP instruction count per element. |
+| `stats.cauchy.ppf` | 16.0000 | 64.0000 | high | numel(input) |  | Raw alpha=64.3002, setup overhead=0.3002 subtracted. FP instruction count per element. |
+| `stats.logistic.pdf` | 16.0000 | 28.0000 | high | numel(input) |  | Raw alpha=28.3002, setup overhead=0.3002 subtracted. FP instruction count per element. |
+| `stats.logistic.cdf` | 16.0000 | 26.0000 | high | numel(input) |  | Raw alpha=26.3002, setup overhead=0.3002 subtracted. FP instruction count per element. |
+| `stats.logistic.ppf` | 16.0000 | 35.0000 | high | numel(input) |  | Raw alpha=35.3002, setup overhead=0.3002 subtracted. FP instruction count per element. |
+| `stats.laplace.pdf` | 16.0000 | 25.0000 | high | numel(input) |  | Raw alpha=25.3002, setup overhead=0.3002 subtracted. FP instruction count per element. |
+| `stats.laplace.cdf` | 16.0000 | 49.0000 | high | numel(input) |  | Raw alpha=49.3002, setup overhead=0.3002 subtracted. FP instruction count per element. |
+| `stats.laplace.ppf` | 16.0000 | 71.0000 | high | numel(input) |  | Raw alpha=71.3002, setup overhead=0.3002 subtracted. FP instruction count per element. |
+| `stats.lognorm.pdf` | 16.0000 | 62.0000 | high | numel(input) |  | Raw alpha=62.3002, setup overhead=0.3002 subtracted. FP instruction count per element. |
+| `stats.lognorm.cdf` | 16.0000 | 69.9835 | medium | numel(input) |  | Raw alpha=70.2837, setup overhead=0.3002 subtracted. FP instruction count per element. |
+| `stats.lognorm.ppf` | 16.0000 | 106.0527 | high | numel(input) |  | Raw alpha=106.3529, setup overhead=0.3002 subtracted. FP instruction count per element. |
+| `stats.truncnorm.pdf` | 16.0000 | 28.0000 | high | numel(input) |  | Raw alpha=28.3002, setup overhead=0.3002 subtracted. FP instruction count per element. |
+| `stats.truncnorm.cdf` | 16.0000 | 50.5992 | low | numel(input) |  | Raw alpha=50.8994, setup overhead=0.3002 subtracted. FP instruction count per element. |
+| `stats.truncnorm.ppf` | 16.0000 | 82.5206 | high | numel(input) |  | Raw alpha=82.8208, setup overhead=0.3002 subtracted. FP instruction count per element. |
+| `stats.cauchy.pdf` | 4.0000 | 6.0000 | high | numel(input) |  | Raw alpha=6.3002, setup overhead=0.3002 subtracted. FP instruction count per element. |
+| `stats.uniform.pdf` | 1.0000 | 0.0000 | low | numel(input) |  | Raw alpha=0.3002, setup overhead=0.3002 subtracted. FP instruction count per element. |
+| `stats.uniform.cdf` | 1.0000 | 4.0000 | high | numel(input) |  | Raw alpha=4.3002, setup overhead=0.3002 subtracted. FP instruction count per element. |
+| `stats.uniform.ppf` | 1.0000 | 2.0000 | high | numel(input) |  | Raw alpha=2.3002, setup overhead=0.3002 subtracted. FP instruction count per element. |
+
+### Misc (82 operations)
+
+| Op | Active Weight | Empirical Weight | Confidence | Formula | Impl | Notes |
+|:---|-------:|-------:|:-----------|:--------|:-----|:------|
+| `fromiter` | 16.0000 | 20.3777 |  | numel(output) |  | EC2 timing = 20.38. Python iterator overhead per element. |
+| `apply_along_axis` | 4.0000 | 1.9490 |  | numel(output) |  | EC2 timing = 1.95. Note: cost formula (result.size) underestimates — actual work is input.size. |
+| `argwhere` | 4.0000 | 1.9631 |  | numel(input) |  | EC2 timing ratio vs add = 1.9631. |
+| `bmat` | 4.0000 | 3.0046 |  | numel(output) |  | EC2 timing = 3.00. Block matrix assembly from nested list. |
+| `choose` | 4.0000 | 8.0516 |  | numel(output) |  | EC2 timing ratio vs add = 8.0516. |
+| `compress` | 4.0000 | 2.4640 |  | numel(input) |  | EC2 timing ratio vs add = 2.4640. |
+| `diag` | 4.0000 | 0.3780 |  | numel(output) when 1D->2D, min(m,n) when 2D->1D |  | EC2 timing = 0.38 (1D->2D). Formula fixed to numel(output) for construction. |
+| `extract` | 4.0000 | 2.4549 |  | numel(input) |  | EC2 timing ratio vs add = 2.4549. |
+| `fill_diagonal` | 4.0000 | 6.2633 |  | min(m,n) |  | EC2 timing = 6.26 per diagonal element. Strided cache misses in large matrices. |
+| `insert` | 4.0000 | 1.6005 |  | numel(values) |  | EC2 timing ratio vs add = 1.6005. |
+| `mask_indices` | 4.0000 | 4.5645 |  | numel(output) |  | EC2 timing ratio vs add = 4.5645. |
+| `piecewise` | 4.0000 | 13.7055 |  | numel(input) |  | EC2 timing ratio vs add = 13.7055. |
+| `place` | 4.0000 | 3.7818 |  | numel(input) |  | EC2 timing ratio vs add = 3.7818. |
+| `putmask` | 4.0000 | 3.0306 |  | numel(input) |  | EC2 timing ratio vs add = 3.0306. |
+| `select` | 4.0000 | 7.9267 |  | numel(input) |  | EC2 timing ratio vs add = 7.9267. |
+| `take` | 4.0000 | 3.8564 |  | numel(output) |  | EC2 timing ratio vs add = 3.8564. |
+| `trim_zeros` | 4.0000 | 2.3378 |  | num trimmed |  | EC2 timing ratio vs add = 2.3378. |
+| `where` | 4.0000 | 3.5686 |  | numel(input) |  | EC2 timing ratio vs add = 3.5686. |
 | `allclose` | 1.0000 | 3.7001 | high | n | [\_counting\_ops.py:45](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L45) | Element-wise tolerance check; cost = numel(a). |
 | `array_equal` | 1.0000 | 0.6001 | low | n | [\_counting\_ops.py:60](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L60) | Element-wise equality; cost = numel(a). |
 | `array_equiv` | 1.0000 | 0.6001 | low | n | [\_counting\_ops.py:82](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L82) | Element-wise equivalence; cost = numel(a). |
@@ -435,6 +485,42 @@ overhead, weights represent the true hardware cost per analytical FLOP:
 | `isnan` | 1.0000 | 0.3375 | high | numel(output) |  | Timing-based (fp_arith_inst_retired blind to this op). Ratio vs add=0.3375 |
 | `isinf` | 1.0000 | 0.3493 | high | numel(output) |  | Timing-based (fp_arith_inst_retired blind to this op). Ratio vs add=0.3493 |
 | `isfinite` | 1.0000 | 0.3454 | high | numel(output) |  | Timing-based (fp_arith_inst_retired blind to this op). Ratio vs add=0.3454 |
+| `append` | 1.0000 | 0.9206 |  | numel(values) |  | EC2 timing ratio vs add = 0.9206. |
+| `apply_over_axes` | 1.0000 | 0.1407 |  | numel(output) |  | EC2 timing = 0.14. Efficient numpy reduction path. |
+| `arange` | 1.0000 | 0.6141 |  | numel(output) |  | EC2 timing ratio vs add = 0.6141. |
+| `array` | 1.0000 | 0.9035 |  | numel(input) |  | Timing ratio vs add = 0.9035. Benchmark: 10,000,000 elements. |
+| `asarray_chkfinite` | 1.0000 | 0.2892 |  | numel(input) |  | EC2 timing ratio vs add = 0.2892. |
+| `block` | 1.0000 | 0.0167 |  | numel(output) |  | Formerly-free op. Timing ratio vs add = 0.0167. |
+| `concat` | 1.0000 | 0.9209 |  | numel(output) |  | EC2 timing = 0.92. Memcpy (alias for concatenate). |
+| `concatenate` | 1.0000 | 0.9106 |  | numel(output) |  | EC2 timing ratio vs add = 0.9106. |
+| `copyto` | 1.0000 | 1.1734 |  | numel(output) |  | EC2 timing ratio vs add = 1.1734. |
+| `delete` | 1.0000 | 1.1182 |  | num deleted |  | EC2 timing ratio vs add = 1.1182. |
+| `diagflat` | 1.0000 | 0.2349 |  | numel(output) |  | EC2 timing = 0.23. Formula fixed from len(v) to numel(output). |
+| `diagonal` | 1.0000 | 0.5792 |  | numel(input) |  | EC2 timing ratio vs add = 0.5792. |
+| `dstack` | 1.0000 | 1.1037 |  | numel(output) |  | EC2 timing ratio vs add = 1.1037. |
+| `einsum_path` | 1.0000 | 1.0000 |  | 1 |  | Weight=1 by design. Path planning only — intentionally charges 1 FLOP for budget tracking. |
+| `flatnonzero` | 1.0000 | 0.8717 |  | numel(input) |  | EC2 timing ratio vs add = 0.8717. |
+| `fromfunction` | 1.0000 | 0.7226 |  | numel(output) |  | EC2 timing ratio vs add = 0.7226. |
+| `full` | 1.0000 | 0.5706 |  | numel(output) |  | EC2 timing ratio vs add = 0.5706. |
+| `full_like` | 1.0000 | 0.5616 |  | numel(output) |  | EC2 timing ratio vs add = 0.5616. |
+| `indices` | 1.0000 | 0.1694 |  | numel(output) |  | EC2 timing ratio vs add = 0.1694. |
+| `ix_` | 1.0000 | 1.2920 |  | numel(output) |  | EC2 timing ratio vs add = 1.2920. |
+| `linspace` | 1.0000 | 1.1761 |  | numel(output) |  | EC2 timing ratio vs add = 1.1761. |
+| `meshgrid` | 1.0000 | 0.1446 |  | numel(output) |  | EC2 timing ratio vs add = 0.1446. |
+| `nonzero` | 1.0000 | 0.8322 |  | numel(input) |  | EC2 timing ratio vs add = 0.8322. |
+| `packbits` | 1.0000 | 0.3987 |  | numel(input) |  | EC2 timing ratio vs add = 0.3987. |
+| `pad` | 1.0000 | 0.9146 |  | numel(output) |  | EC2 timing ratio vs add = 0.9146. |
+| `put` | 1.0000 | 0.9866 |  | numel(input) |  | EC2 timing ratio vs add = 0.9866. |
+| `put_along_axis` | 1.0000 | 0.0310 |  | numel(input) |  | Formerly-free op. Timing ratio vs add = 0.0310. |
+| `repeat` | 1.0000 | 0.5985 |  | numel(output) |  | EC2 timing ratio vs add = 0.5985. |
+| `resize` | 1.0000 | 0.6234 |  | numel(output) |  | EC2 timing ratio vs add = 0.6234. |
+| `roll` | 1.0000 | 0.9077 |  | numel(output) |  | EC2 timing ratio vs add = 0.9077. |
+| `stack` | 1.0000 | 0.9017 |  | numel(output) |  | EC2 timing ratio vs add = 0.9017. |
+| `take_along_axis` | 1.0000 | 0.4811 |  | numel(output) |  | Formerly-free op. Timing ratio vs add = 0.4811. |
+| `tile` | 1.0000 | 0.6244 |  | numel(output) |  | EC2 timing ratio vs add = 0.6244. |
+| `unpackbits` | 1.0000 | 0.0385 |  | numel(input) |  | EC2 timing ratio vs add = 0.0385. |
+| `unstack` | 1.0000 | 0.0007 |  | numel(input) |  | EC2 timing = 0.0007. Returns views — should be free. |
+| `vstack` | 1.0000 | 0.9082 |  | numel(output) |  | EC2 timing ratio vs add = 0.9082. |
 
 ### Window (5 operations)
 
@@ -485,7 +571,7 @@ overhead, weights represent the true hardware cost per analytical FLOP:
 | Category | Count | Avg Weight | Min | Max |
 |:---------|------:|-----------:|----:|----:|
 | Pointwise Unary | 47 | 8.02 | 1.0000 | 16.0000 |
-| Pointwise Binary | 32 | 5.69 | 1.0000 | 16.0000 |
+| Pointwise Binary | 34 | 5.41 | 1.0000 | 16.0000 |
 | Reductions | 35 | 1.11 | 1.0000 | 2.0000 |
 | Sorting | 17 | 1.00 | 1.0000 | 1.0000 |
 | FFT | 14 | 1.00 | 1.0000 | 1.0000 |
@@ -493,13 +579,14 @@ overhead, weights represent the true hardware cost per analytical FLOP:
 | Linalg Delegates | 15 | 1.80 | 1.0000 | 4.0000 |
 | Contractions | 9 | 1.00 | 1.0000 | 1.0000 |
 | Polynomial | 10 | 2.50 | 1.0000 | 16.0000 |
-| Random | 44 | 12.93 | 1.0000 | 16.0000 |
-| Misc | 28 | 1.00 | 1.0000 | 1.0000 |
+| Random | 45 | 12.67 | 1.0000 | 16.0000 |
+| Stats | 24 | 13.62 | 1.0000 | 16.0000 |
+| Misc | 82 | 1.80 | 1.0000 | 16.0000 |
 | Window | 5 | 13.00 | 1.0000 | 16.0000 |
 | Bitwise | 13 | 3.31 | 1.0000 | 16.0000 |
 | Complex | 11 | 2.36 | 1.0000 | 16.0000 |
 
-**Total benchmarked operations:** 294
+**Total benchmarked operations:** 375
 
 ## Validation
 

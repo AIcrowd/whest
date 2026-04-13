@@ -8,7 +8,7 @@ functions with FLOP counting.
 
 | Operation | Cost Formula |
 |-----------|-------------|
-| `polyval` | $2 \cdot m \cdot \text{deg}$ (Horner's method) |
+| `polyval` | $m \cdot \text{deg}$ (Horner's method, FMA=1) |
 | `polyadd`, `polysub` | $\max(n_1, n_2)$ |
 | `polymul`, `polydiv` | $n_1 \cdot n_2$ |
 | `polyfit` | $2m \cdot (\text{deg}+1)^2$ |

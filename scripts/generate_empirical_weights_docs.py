@@ -51,6 +51,7 @@ DISPLAY_CATEGORIES = [
     "Contractions",
     "Polynomial",
     "Random",
+    "Stats",
     "Misc",
     "Window",
     "Bitwise",
@@ -76,6 +77,8 @@ def _classify_op(op_name: str, detail_category: str) -> str:
         return "Linalg Delegates"
     if op_name.startswith("random."):
         return "Random"
+    if op_name.startswith("stats."):
+        return "Stats"
     if op_name in _CONTRACTION_OPS:
         return "Contractions"
     if op_name in _SORTING_OPS:
@@ -500,7 +503,9 @@ def build_rows(data: dict) -> list[dict]:
         row["Active Weight"] = f"{canon_weight:.4f}" if canon_weight is not None else ""
         # Empirical weight: use canonical op's perf_weight (raw benchmark measurement)
         canon_empirical = details.get(canonical, {}).get("perf_weight")
-        row["Empirical Weight"] = f"{canon_empirical:.4f}" if canon_empirical is not None else ""
+        row["Empirical Weight"] = (
+            f"{canon_empirical:.4f}" if canon_empirical is not None else ""
+        )
         row["Hardware FP Instructions (per analytical FLOP)"] = (
             f"{canon_alpha:.2f}" if canon_alpha is not None else ""
         )
@@ -746,9 +751,13 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     w()
     w("| Mode | Counter | Used for |")
     w("|------|---------|----------|")
-    w("| **perf** | `fp_arith_inst_retired.*` (SIMD-weighted) | FP operations (default) |")
+    w(
+        "| **perf** | `fp_arith_inst_retired.*` (SIMD-weighted) | FP operations (default) |"
+    )
     w("| **instructions** | `instructions` (total retired) | Integer/bitwise ops |")
-    w("| **timing** | `time.perf_counter_ns()` | Validation; fallback when perf unavailable |")
+    w(
+        "| **timing** | `time.perf_counter_ns()` | Validation; fallback when perf unavailable |"
+    )
     w()
     w("**Complex-number operations** (angle, conj, real, imag, etc.) are measured")
     w("with perf counters on complex128 input arrays. Two type-check operations")
@@ -789,7 +798,9 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     w(f"| Repeats | {bc['repeats']} per distribution |")
     w(f"| Distributions | {bc['distributions']} per operation |")
     w(f"| Methodology version | {meth['version']} |")
-    w(f"| Baseline alpha(add) | {meth.get('baseline_alpha', meth.get('baseline_alpha_add_raw', 'N/A'))} |")
+    w(
+        f"| Baseline alpha(add) | {meth.get('baseline_alpha', meth.get('baseline_alpha_add_raw', 'N/A'))} |"
+    )
     ts = meta.get("timestamp", "")
     if ts:
         w(f"    - **Date:** {ts[:10]}")
@@ -829,10 +840,14 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
         w(
             f"- **Measured timing:** {sample_detail.get('baseline_timing_ns_total', 'N/A')} ns"
         )
-        w(f"- **$\\alpha(\\text{{add}})$:** {meth.get('baseline_alpha', meth.get('baseline_alpha_add_raw', 'N/A'))}")
+        w(
+            f"- **$\\alpha(\\text{{add}})$:** {meth.get('baseline_alpha', meth.get('baseline_alpha_add_raw', 'N/A'))}"
+        )
     else:
         w("- **Benchmark command:** `np.add(x, y, out=_out)`")
-        w(f"- **$\\alpha(\\text{{add}})$:** {meth.get('baseline_alpha', meth.get('baseline_alpha_add_raw', 'N/A'))}")
+        w(
+            f"- **$\\alpha(\\text{{add}})$:** {meth.get('baseline_alpha', meth.get('baseline_alpha_add_raw', 'N/A'))}"
+        )
     w()
 
     # ------------------------------------------------------------------
@@ -862,7 +877,9 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
             continue
         w(f"### {cat} ({len(cat_rows)} operations)")
         w()
-        w("| Op | Active Weight | Empirical Weight | Confidence | Formula | Impl | Notes |")
+        w(
+            "| Op | Active Weight | Empirical Weight | Confidence | Formula | Impl | Notes |"
+        )
         w("|:---|-------:|-------:|:-----------|:--------|:-----|:------|")
         for r in cat_rows:
             op = f"`{r['Operation']}`"
@@ -887,7 +904,9 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
         if not cat_rows:
             continue
         wts = [
-            float(r["Active Weight"]) for r in cat_rows if r["Active Weight"] and r["Active Weight"] != "N/A"
+            float(r["Active Weight"])
+            for r in cat_rows
+            if r["Active Weight"] and r["Active Weight"] != "N/A"
         ]
         if not wts:
             continue
@@ -922,7 +941,9 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
             f"Rank correlation -- are the orderings consistent? |"
         )
     else:
-        w(f"*{pv.get('note', 'Correlation statistics not available (scipy missing).')}*")
+        w(
+            f"*{pv.get('note', 'Correlation statistics not available (scipy missing).')}*"
+        )
     w()
 
     max_div = pv.get("max_divergence", {})
@@ -1000,7 +1021,6 @@ def write_markdown(content: str, path: Path) -> None:
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
-
 
 
 def main() -> None:

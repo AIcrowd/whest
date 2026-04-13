@@ -14,7 +14,7 @@ from benchmarks._bitwise import (
     _analytical_cost,
     benchmark_bitwise,
 )
-from benchmarks._perf import InstructionsResult, TimingResult
+from benchmarks._perf import InstructionsResult
 
 
 class TestOpsLists:
@@ -68,7 +68,9 @@ class TestAnalyticalCost:
 class TestBenchmarkBitwise:
     def test_returns_tuple_with_alphas_and_details(self):
         mock_result = InstructionsResult(instructions=5_000_000)
-        with patch("benchmarks._bitwise.measure_instructions", return_value=mock_result):
+        with patch(
+            "benchmarks._bitwise.measure_instructions", return_value=mock_result
+        ):
             alphas, details = benchmark_bitwise(n=1_000, repeats=1)
 
         assert isinstance(alphas, dict)
@@ -78,7 +80,9 @@ class TestBenchmarkBitwise:
 
     def test_values_are_floats(self):
         mock_result = InstructionsResult(instructions=2_000_000)
-        with patch("benchmarks._bitwise.measure_instructions", return_value=mock_result):
+        with patch(
+            "benchmarks._bitwise.measure_instructions", return_value=mock_result
+        ):
             alphas, _details = benchmark_bitwise(n=1_000, repeats=1)
 
         for key, val in alphas.items():
@@ -88,7 +92,9 @@ class TestBenchmarkBitwise:
         # elapsed_ns=10_000_000, n=1000, repeats=5
         # alpha = 10_000_000 / (1000 * 5) = 2000.0
         mock_result = InstructionsResult(instructions=10_000_000)
-        with patch("benchmarks._bitwise.measure_instructions", return_value=mock_result):
+        with patch(
+            "benchmarks._bitwise.measure_instructions", return_value=mock_result
+        ):
             alphas, _details = benchmark_bitwise(n=1_000, repeats=5)
 
         for val in alphas.values():
@@ -97,7 +103,9 @@ class TestBenchmarkBitwise:
     def test_details_schema(self):
         mock_result = InstructionsResult(instructions=1_000_000)
         n = 1_000
-        with patch("benchmarks._bitwise.measure_instructions", return_value=mock_result):
+        with patch(
+            "benchmarks._bitwise.measure_instructions", return_value=mock_result
+        ):
             _alphas, details = benchmark_bitwise(n=n, repeats=5)
 
         expected_keys = {
@@ -147,7 +155,9 @@ class TestBenchmarkBitwise:
             call_count[0] += 1
             return InstructionsResult(instructions=1_000)
 
-        with patch("benchmarks._bitwise.measure_instructions", side_effect=fake_measure):
+        with patch(
+            "benchmarks._bitwise.measure_instructions", side_effect=fake_measure
+        ):
             benchmark_bitwise(n=100, repeats=1)
 
         # measure_instructions should have been called for each op × distribution
@@ -166,7 +176,9 @@ class TestBenchmarkBitwise:
     def test_dtype_param_ignored(self):
         """dtype param exists for interface consistency but ops always use int64."""
         mock_result = InstructionsResult(instructions=1_000_000)
-        with patch("benchmarks._bitwise.measure_instructions", return_value=mock_result):
+        with patch(
+            "benchmarks._bitwise.measure_instructions", return_value=mock_result
+        ):
             a1, _ = benchmark_bitwise(n=100, dtype="int64", repeats=1)
             a2, _ = benchmark_bitwise(n=100, dtype="float64", repeats=1)
         # Should produce identical results since dtype is ignored

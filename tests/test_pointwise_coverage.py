@@ -912,7 +912,8 @@ class TestAdditionalCustomOps:
         with BudgetContext(flop_budget=10**6) as budget:
             result = interp(x, xp, fp)
         assert numpy.allclose(result, [15.0, 25.0])
-        assert budget.flops_used == 2
+        # n * ceil(log2(xp_len)) = 2 * ceil(log2(3)) = 2 * 2 = 4
+        assert budget.flops_used == 4
 
     def test_interp_from_list(self):
         with BudgetContext(flop_budget=10**6):
