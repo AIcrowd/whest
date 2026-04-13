@@ -30,6 +30,7 @@ Operations that perform arithmetic. Cost is computed analytically from tensor sh
 | SVD | m × n × k | `me.linalg.svd(A, k=10)` |
 | Sort/Search | n log n per slice | `sort`, `argsort`, `unique`, `searchsorted` |
 | Random | numel(output) | `me.random.randn`, `me.random.normal`, `me.random.uniform` |
+| Stats | flat per-element (varies) | `me.stats.norm.pdf`, `me.stats.expon.cdf`, `me.stats.cauchy.ppf` |
 
 When inputs are `SymmetricTensor`, many operations automatically get reduced costs. See [Exploit Symmetry](../how-to/exploit-symmetry.md).
 

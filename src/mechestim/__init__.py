@@ -31,6 +31,7 @@ from mechestim import (
     flops,  # noqa: F401
     linalg,  # noqa: F401
     random,  # noqa: F401
+    stats,  # noqa: F401
     testing,  # noqa: F401
 )
 from mechestim._budget import (  # noqa: F401

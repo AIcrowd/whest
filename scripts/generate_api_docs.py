@@ -157,6 +157,67 @@ GENERATED_PAGES: dict[str, dict] = {
         ],
         "registry_modules": {"mechestim._polynomial"},
     },
+    "api/stats.md": {
+        "title": "Statistical Distributions",
+        "description": textwrap.dedent("""\
+            Statistical distributions from `mechestim.stats`. This submodule
+            provides a **subset of scipy.stats** — each distribution is a
+            singleton with `.pdf()`, `.cdf()`, and `.ppf()` methods that
+            match the scipy API exactly (same signatures, same numerical
+            results to within 1e-12).
+
+            Unlike NumPy operations which are direct wrappers, these functions
+            reproduce the `scipy.stats` interface so that participants can use
+            standard statistical distributions without importing scipy.
+
+            ## Cost Summary
+
+            | Distribution | pdf | cdf | ppf |
+            |-------------|-----|-----|-----|
+            | `norm` | $10n$ | $20n$ | $40n$ |
+            | `uniform` | $3n$ | $3n$ | $3n$ |
+            | `expon` | $5n$ | $5n$ | $5n$ |
+            | `cauchy` | $6n$ | $5n$ | $5n$ |
+            | `logistic` | $8n$ | $5n$ | $5n$ |
+            | `laplace` | $5n$ | $5n$ | $5n$ |
+            | `lognorm` | $15n$ | $25n$ | $45n$ |
+            | `truncnorm` | $30n$ | $30n$ | $50n$ |
+
+            where $n$ = `numel(x)` (or `numel(q)` for ppf).
+
+            ## Examples
+
+            ```python
+            import mechestim as me
+
+            with me.BudgetContext(flop_budget=1_000_000) as budget:
+                x = me.linspace(-3, 3, 1000)         # free
+                pdf_vals = me.stats.norm.pdf(x)       # 10 * 1000 = 10,000 FLOPs
+                cdf_vals = me.stats.norm.cdf(x)       # 20 * 1000 = 20,000 FLOPs
+                q = me.array([0.025, 0.975])           # free
+                bounds = me.stats.norm.ppf(q)          # 40 * 2 = 80 FLOPs
+                print(f"Total: {budget.flops_used:,}")  # 30,080
+            ```
+
+            ## Compatibility
+
+            All outputs are verified against `scipy.stats` in the test suite.
+            See `tests/test_stats_*.py`.
+
+            ## API Reference
+        """),
+        "directives": [
+            "mechestim.stats._norm",
+            "mechestim.stats._uniform",
+            "mechestim.stats._expon",
+            "mechestim.stats._cauchy",
+            "mechestim.stats._logistic",
+            "mechestim.stats._laplace",
+            "mechestim.stats._lognorm",
+            "mechestim.stats._truncnorm",
+        ],
+        "registry_modules": set(),  # stats ops are not in the numpy registry
+    },
     "api/window.md": {
         "title": "Window Functions",
         "description": textwrap.dedent("""\
@@ -354,6 +415,31 @@ CUSTOM_COSTS: dict[str, tuple[str, str]] = {
     "hanning": ("n", "$n$"),
     "kaiser": ("3n", "$3n$"),
     "unwrap": ("numel(input)", r"$\text{numel}(\text{input})$"),
+    # stats distributions (not in numpy registry — these are scipy-compatible)
+    "stats.norm.pdf": ("10n", r"$10n$"),
+    "stats.norm.cdf": ("20n", r"$20n$"),
+    "stats.norm.ppf": ("40n", r"$40n$"),
+    "stats.uniform.pdf": ("3n", r"$3n$"),
+    "stats.uniform.cdf": ("3n", r"$3n$"),
+    "stats.uniform.ppf": ("3n", r"$3n$"),
+    "stats.expon.pdf": ("5n", r"$5n$"),
+    "stats.expon.cdf": ("5n", r"$5n$"),
+    "stats.expon.ppf": ("5n", r"$5n$"),
+    "stats.cauchy.pdf": ("6n", r"$6n$"),
+    "stats.cauchy.cdf": ("5n", r"$5n$"),
+    "stats.cauchy.ppf": ("5n", r"$5n$"),
+    "stats.logistic.pdf": ("8n", r"$8n$"),
+    "stats.logistic.cdf": ("5n", r"$5n$"),
+    "stats.logistic.ppf": ("5n", r"$5n$"),
+    "stats.laplace.pdf": ("5n", r"$5n$"),
+    "stats.laplace.cdf": ("5n", r"$5n$"),
+    "stats.laplace.ppf": ("5n", r"$5n$"),
+    "stats.lognorm.pdf": ("15n", r"$15n$"),
+    "stats.lognorm.cdf": ("25n", r"$25n$"),
+    "stats.lognorm.ppf": ("45n", r"$45n$"),
+    "stats.truncnorm.pdf": ("30n", r"$30n$"),
+    "stats.truncnorm.cdf": ("30n", r"$30n$"),
+    "stats.truncnorm.ppf": ("50n", r"$50n$"),
 }
 
 CATEGORY_COST_LATEX: dict[str, tuple[str, str]] = {
