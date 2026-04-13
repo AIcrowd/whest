@@ -5,21 +5,29 @@ export default function BurnsideView({ burnside, group, dimensionN }) {
   const { vLabels, vOrder, vGroupName } = group;
 
   const isTrivial = vOrder <= 1;
-  const pct = ((uniqueCount / totalCount) * 100).toFixed(1);
+  const noVLabels = !vLabels || vLabels.length === 0;
+  const wHasSym = group.wOrder > 1;
+  const pct = totalCount > 0 ? ((uniqueCount / totalCount) * 100).toFixed(1) : '100.0';
   const saved = (100 - parseFloat(pct)).toFixed(1);
 
-  // Trivial group — no symmetry detected
-  if (isTrivial) {
+  // Trivial V-side group or no output labels
+  if (isTrivial || noVLabels) {
     return (
       <div className="burnside-view">
         <div className="burnside-compact">
-          <code className="compact-ratio compact-ratio-trivial">V:{uniqueCount.toLocaleString()}/{totalCount.toLocaleString()}</code>
+          <code className="compact-ratio compact-ratio-trivial">
+            {noVLabels ? 'scalar output' : `V:${totalCount.toLocaleString()}/${totalCount.toLocaleString()}`}
+          </code>
         </div>
         <div className="burnside-trivial">
           <div className="trivial-icon">—</div>
           <div className="trivial-text">
-            <strong>No symmetry detected</strong>
-            <span>The group is trivial (order 1). All {totalCount.toLocaleString()} elements are unique — no FLOP reduction possible.</span>
+            <strong>{noVLabels ? 'Scalar output — no V-side to reduce' : 'No V-side symmetry detected'}</strong>
+            <span>
+              {noVLabels
+                ? `The output is a scalar (no free labels). ${wHasSym ? `W-side ${group.wGroupName} symmetry may reduce the inner contraction cost.` : ''}`
+                : `The V-side group is trivial (order 1). All ${totalCount.toLocaleString()} output elements are unique — no Burnside reduction.`}
+            </span>
           </div>
         </div>
       </div>
