@@ -35,7 +35,7 @@ packages = ["src/whest", "benchmarks"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--ignore=tests/numpy_compat"
+addopts = "--ignore=tests/numpy_compat -n auto"
 
 [tool.coverage.run]
 source = ["whest"]
