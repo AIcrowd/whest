@@ -1,6 +1,6 @@
 """Tests for FLOP cost calculators."""
 
-from mechestim._flops import (
+from whest._flops import (
     einsum_cost,
     parse_einsum_subscripts,
     pointwise_cost,
@@ -73,7 +73,7 @@ def test_svd_cost_full():
     assert svd_cost(m=100, n=50, k=None) == 100 * 50 * 50
 
 
-from mechestim._symmetric import SymmetryInfo
+from whest._symmetric import SymmetryInfo
 
 
 def test_pointwise_cost_symmetric():
@@ -118,7 +118,7 @@ def test_einsum_cost_no_operand_symmetry_unchanged():
 
 
 def test_einsum_cost_matches_contract_path():
-    from mechestim._opt_einsum import contract_path
+    from whest._opt_einsum import contract_path
 
     # Verify einsum_cost delegates correctly for a simple matmul
     cost = einsum_cost("ij,jk->ik", shapes=[(3, 4), (4, 5)])
@@ -126,7 +126,7 @@ def test_einsum_cost_matches_contract_path():
     assert cost == info.optimized_cost
 
 
-from mechestim._flops import _ceil_log2, search_cost, sort_cost
+from whest._flops import _ceil_log2, search_cost, sort_cost
 
 
 class TestCeilLog2:

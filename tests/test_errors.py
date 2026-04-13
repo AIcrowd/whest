@@ -1,18 +1,18 @@
-"""Tests for mechestim error classes."""
+"""Tests for whest error classes."""
 
 import pytest
 
-from mechestim.errors import (
+from whest.errors import (
     BudgetExhaustedError,
-    MechEstimError,
-    MechEstimWarning,
+    WhestError,
+    WhestWarning,
     NoBudgetContextError,
     SymmetryError,
 )
 
 
-def test_budget_exhausted_error_is_mechestim_error():
-    with pytest.raises(MechEstimError):
+def test_budget_exhausted_error_is_whest_error():
+    with pytest.raises(WhestError):
         raise BudgetExhaustedError("einsum", flop_cost=100, flops_remaining=50)
 
 
@@ -26,8 +26,8 @@ def test_budget_exhausted_error_attributes():
     assert "50" in str(err)
 
 
-def test_no_budget_context_error_is_mechestim_error():
-    with pytest.raises(MechEstimError):
+def test_no_budget_context_error_is_whest_error():
+    with pytest.raises(WhestError):
         raise NoBudgetContextError()
 
 
@@ -43,5 +43,5 @@ def test_symmetry_error_attributes():
     assert "0, 1" in str(err)
 
 
-def test_mechestim_warning_is_warning():
-    assert issubclass(MechEstimWarning, UserWarning)
+def test_whest_warning_is_warning():
+    assert issubclass(WhestWarning, UserWarning)

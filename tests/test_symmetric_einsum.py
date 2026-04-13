@@ -3,9 +3,9 @@
 import numpy
 import pytest
 
-from mechestim._budget import BudgetContext
-from mechestim._einsum import einsum
-from mechestim._symmetric import SymmetricTensor, as_symmetric
+from whest._budget import BudgetContext
+from whest._einsum import einsum
+from whest._symmetric import SymmetricTensor, as_symmetric
 
 
 class TestEinsumSymmetricInput:
@@ -45,7 +45,7 @@ class TestEinsumSymmetricOutput:
             assert not isinstance(result, SymmetricTensor)
 
 
-from mechestim._perm_group import PermutationGroup
+from whest._perm_group import PermutationGroup
 
 
 class TestEinsumSymmetryParam:

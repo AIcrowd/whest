@@ -2,7 +2,7 @@
 
 import pytest
 
-from mechestim._budget import _reset_global_default, budget_reset
+from whest._budget import _reset_global_default, budget_reset
 
 
 @pytest.fixture(autouse=True)

@@ -3,8 +3,8 @@
 import numpy
 import pytest
 
-import mechestim as me
-from mechestim._budget import BudgetContext
+import whest as we
+from whest._budget import BudgetContext
 
 
 class TestNewUnaryOps:
@@ -125,41 +125,41 @@ class TestCustomOps:
     def test_inner(self):
         a, b = numpy.array([1.0, 2.0, 3.0]), numpy.array([4.0, 5.0, 6.0])
         with BudgetContext(flop_budget=10**6, quiet=True) as budget:
-            assert numpy.allclose(me.inner(a, b), numpy.inner(a, b))
+            assert numpy.allclose(we.inner(a, b), numpy.inner(a, b))
             assert budget.flops_used == 3
 
     def test_outer(self):
         a, b = numpy.array([1.0, 2.0]), numpy.array([3.0, 4.0, 5.0])
         with BudgetContext(flop_budget=10**6, quiet=True) as budget:
-            assert numpy.allclose(me.outer(a, b), numpy.outer(a, b))
+            assert numpy.allclose(we.outer(a, b), numpy.outer(a, b))
             assert budget.flops_used == 6
 
     def test_diff(self):
         x = numpy.array([1.0, 3.0, 6.0, 10.0])
         with BudgetContext(flop_budget=10**6, quiet=True) as budget:
-            assert numpy.allclose(me.diff(x), numpy.diff(x))
+            assert numpy.allclose(we.diff(x), numpy.diff(x))
             assert budget.flops_used == 3
 
     def test_vdot(self):
         a, b = numpy.array([1.0, 2.0, 3.0]), numpy.array([4.0, 5.0, 6.0])
         with BudgetContext(flop_budget=10**6, quiet=True) as budget:
-            assert numpy.allclose(me.vdot(a, b), numpy.vdot(a, b))
+            assert numpy.allclose(we.vdot(a, b), numpy.vdot(a, b))
 
 
 class TestNewFreeOps:
     def test_rot90(self):
         x = numpy.array([[1, 2], [3, 4]])
         with BudgetContext(flop_budget=1, quiet=True) as budget:
-            assert numpy.array_equal(me.rot90(x), numpy.rot90(x))
+            assert numpy.array_equal(we.rot90(x), numpy.rot90(x))
             assert budget.flops_used == 0
 
     def test_atleast_1d(self):
-        assert me.atleast_1d(1.0).shape == (1,)
+        assert we.atleast_1d(1.0).shape == (1,)
 
     def test_shape(self):
-        assert me.shape(numpy.eye(3)) == (3, 3)
+        assert we.shape(numpy.eye(3)) == (3, 3)
 
     def test_free_ops_outside_context(self):
-        me.rot90(numpy.eye(3))
-        me.shape(numpy.eye(3))
-        me.atleast_1d(1.0)
+        we.rot90(numpy.eye(3))
+        we.shape(numpy.eye(3))
+        we.atleast_1d(1.0)

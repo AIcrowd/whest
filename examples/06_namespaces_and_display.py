@@ -5,19 +5,19 @@ Run: uv run python examples/06_namespaces_and_display.py
 
 import numpy as np
 
-import mechestim as me
+import whest as we
 
 # ---------------------------------------------------------------------------
 # 1. Operations without an explicit BudgetContext (global default)
 # ---------------------------------------------------------------------------
-# mechestim activates a global default context automatically when no explicit
+# whest activates a global default context automatically when no explicit
 # BudgetContext is in scope.  These FLOPs are recorded under namespace=None.
 
-x = me.array(np.random.randn(64).astype(np.float32))
-W = me.array(np.random.randn(64, 64).astype(np.float32))
+x = we.array(np.random.randn(64).astype(np.float32))
+W = we.array(np.random.randn(64, 64).astype(np.float32))
 
 # A quick dot product — charged to the global default budget
-_ = me.einsum("ij,j->i", W, x)
+_ = we.einsum("ij,j->i", W, x)
 
 # ---------------------------------------------------------------------------
 # 2. Named context: "training" phase
@@ -27,34 +27,34 @@ _ = me.einsum("ij,j->i", W, x)
 
 layers = [
     (
-        me.array(np.random.randn(64, 64).astype(np.float32)),  # W1
-        me.array(np.random.randn(64).astype(np.float32)),
+        we.array(np.random.randn(64, 64).astype(np.float32)),  # W1
+        we.array(np.random.randn(64).astype(np.float32)),
     ),  # b1
     (
-        me.array(np.random.randn(64, 64).astype(np.float32)),  # W2
-        me.array(np.random.randn(64).astype(np.float32)),
+        we.array(np.random.randn(64, 64).astype(np.float32)),  # W2
+        we.array(np.random.randn(64).astype(np.float32)),
     ),  # b2
     (
-        me.array(np.random.randn(64, 64).astype(np.float32)),  # W3
-        me.array(np.random.randn(64).astype(np.float32)),
+        we.array(np.random.randn(64, 64).astype(np.float32)),  # W3
+        we.array(np.random.randn(64).astype(np.float32)),
     ),  # b3
 ]
 
 batch_size = 16
 flop_budget_train = 50_000_000  # 50 M FLOPs for 5 training forward passes
 
-with me.BudgetContext(
+with we.BudgetContext(
     flop_budget=flop_budget_train,
     namespace="training",
     quiet=True,
 ) as train_ctx:
     for step in range(5):  # 5 forward passes
-        h = me.array(np.random.randn(batch_size, 64).astype(np.float32))
+        h = we.array(np.random.randn(batch_size, 64).astype(np.float32))
         for W_layer, b in layers:
             # Linear: h @ W.T  (batch_size x 64) @ (64 x 64) -> (batch_size x 64)
-            h = me.einsum("bi,ji->bj", h, W_layer)
+            h = we.einsum("bi,ji->bj", h, W_layer)
             # Bias add and ReLU activation
-            h = me.maximum(h + b, 0)
+            h = we.maximum(h + b, 0)
 
     print(f"Training used: {train_ctx.flops_used:,} / {flop_budget_train:,} FLOPs")
 
@@ -65,12 +65,12 @@ with me.BudgetContext(
 # forward pass and label it with namespace="inference".
 
 
-@me.BudgetContext(flop_budget=5_000_000, namespace="inference", quiet=True)
+@we.BudgetContext(flop_budget=5_000_000, namespace="inference", quiet=True)
 def run_inference():
-    h = me.array(np.random.randn(batch_size, 64).astype(np.float32))
+    h = we.array(np.random.randn(batch_size, 64).astype(np.float32))
     for W_layer, b in layers:
-        h = me.einsum("bi,ji->bj", h, W_layer)
-        h = me.maximum(h + b, 0)
+        h = we.einsum("bi,ji->bj", h, W_layer)
+        h = we.maximum(h + b, 0)
     return h
 
 
@@ -80,19 +80,19 @@ print(f"Inference output shape: {output.shape}")
 # ---------------------------------------------------------------------------
 # 4. Session-wide Rich summary across all phases
 # ---------------------------------------------------------------------------
-# me.budget_summary() collects every BudgetContext that has exited (plus the
+# we.budget_summary() collects every BudgetContext that has exited (plus the
 # global default) and renders a unified table via Rich (or plain text).
 
 print("\n--- Session budget summary ---")
-me.budget_summary()
+we.budget_summary()
 
 # ---------------------------------------------------------------------------
 # 5. Programmatic access with by_namespace=True
 # ---------------------------------------------------------------------------
-# me.budget_summary_dict(by_namespace=True) returns a plain dict, useful for logging,
+# we.budget_summary_dict(by_namespace=True) returns a plain dict, useful for logging,
 # assertions, or downstream analysis.
 
-data = me.budget_summary_dict(by_namespace=True)
+data = we.budget_summary_dict(by_namespace=True)
 
 print("\n--- Per-namespace breakdown ---")
 for ns, stats in data.get("by_namespace", {}).items():

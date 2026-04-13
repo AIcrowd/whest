@@ -1,6 +1,6 @@
-"""Tests for the mechestim numpy function registry."""
+"""Tests for the whest numpy function registry."""
 
-from mechestim._registry import REGISTRY, REGISTRY_META
+from whest._registry import REGISTRY, REGISTRY_META
 
 
 def test_registry_meta_has_numpy_version():

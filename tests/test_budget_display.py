@@ -4,8 +4,8 @@ from unittest.mock import patch
 
 import pytest
 
-from mechestim._budget import BudgetContext
-from mechestim._display import _plain_text_summary, budget_live, render_budget_summary
+from whest._budget import BudgetContext
+from whest._display import _plain_text_summary, budget_live, render_budget_summary
 
 
 def test_plain_text_summary_single_namespace():

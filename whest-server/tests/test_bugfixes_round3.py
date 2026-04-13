@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import numpy as np
 import pytest
-from mechestim_server._array_store import ArrayStore
-from mechestim_server._request_handler import RequestHandler
-from mechestim_server._session import Session
+from whest_server._array_store import ArrayStore
+from whest_server._request_handler import RequestHandler
+from whest_server._session import Session
 
 # =========================================================================
 # Fixtures
@@ -126,7 +126,7 @@ class TestFix3AstypeServer:
         assert resp["result"]["dtype"] == "int32"
 
     def test_astype_in_whitelist(self):
-        from mechestim_server._protocol import WHITELIST
+        from whest_server._protocol import WHITELIST
 
         assert "astype" in WHITELIST
 
@@ -147,7 +147,7 @@ class TestFix7ArrayStoreLimit:
 
     def test_put_exceeds_limit(self, monkeypatch):
         """Exceeding the limit raises MemoryError."""
-        import mechestim_server._array_store as mod
+        import whest_server._array_store as mod
 
         monkeypatch.setattr(mod, "MAX_ARRAY_COUNT", 5)
         store = ArrayStore()
@@ -158,7 +158,7 @@ class TestFix7ArrayStoreLimit:
 
     def test_free_then_put_succeeds(self, monkeypatch):
         """After freeing arrays, new ones can be stored."""
-        import mechestim_server._array_store as mod
+        import whest_server._array_store as mod
 
         monkeypatch.setattr(mod, "MAX_ARRAY_COUNT", 3)
         store = ArrayStore()
@@ -176,7 +176,7 @@ class TestFix7ArrayStoreLimit:
 
     def test_handler_returns_error_on_memory_error(self, handler, session, monkeypatch):
         """MemoryError from ArrayStore is caught and returned as error response."""
-        import mechestim_server._array_store as mod
+        import whest_server._array_store as mod
 
         monkeypatch.setattr(mod, "MAX_ARRAY_COUNT", 2)
         # Use up slots

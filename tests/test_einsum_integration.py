@@ -3,10 +3,10 @@
 import numpy
 import pytest
 
-from mechestim._budget import BudgetContext
-from mechestim._einsum import einsum, einsum_path
-from mechestim._symmetric import SymmetricTensor, as_symmetric
-from mechestim.errors import BudgetExhaustedError
+from whest._budget import BudgetContext
+from whest._einsum import einsum, einsum_path
+from whest._symmetric import SymmetricTensor, as_symmetric
+from whest.errors import BudgetExhaustedError
 
 
 class TestMultiOperandEinsum:
@@ -200,7 +200,7 @@ class TestEinsumPath:
 
 class TestPathInfoStepInfo:
     def test_step_info_has_symmetry_fields(self):
-        from mechestim._opt_einsum._contract import StepInfo
+        from whest._opt_einsum._contract import StepInfo
 
         A = numpy.ones((5, 5))
         B = numpy.ones((5, 5))
@@ -353,10 +353,10 @@ class TestSymmetricBlasClassification:
     def test_symmetric_matmul_gets_symm_label(self):
         """einsum('ij,jk->ik', X, X) with X declared symmetric should
         report blas_type='SYMM' on the single contraction step, not 'GEMM'."""
-        import mechestim as me
+        import whest as we
 
         n = 10
-        X = me.as_symmetric(numpy.ones((n, n)), symmetric_axes=(0, 1))
+        X = we.as_symmetric(numpy.ones((n, n)), symmetric_axes=(0, 1))
         _, info = einsum_path("ij,jk->ik", X, X)
         assert len(info.steps) == 1
         assert info.steps[0].blas_type == "SYMM", (

@@ -1,7 +1,7 @@
 """Client-side tests for round-2 bugfixes (9 bugs).
 
 Unit tests use mocks -- no running server required.
-Server-side tests live in mechestim-server/tests/test_bugfixes_round2.py.
+Server-side tests live in whest-server/tests/test_bugfixes_round2.py.
 """
 
 from __future__ import annotations
@@ -33,28 +33,28 @@ class TestFix1FlopMultiplierSent:
     """flop_multiplier is included in the budget_open message."""
 
     def test_encode_budget_open_includes_multiplier(self):
-        from mechestim._protocol import encode_budget_open
+        from whest._protocol import encode_budget_open
 
         raw = encode_budget_open(1000, flop_multiplier=2.5)
         decoded = msgpack.unpackb(raw, raw=False)
         assert decoded["kwargs"]["flop_multiplier"] == 2.5
 
     def test_encode_budget_open_default_multiplier(self):
-        from mechestim._protocol import encode_budget_open
+        from whest._protocol import encode_budget_open
 
         raw = encode_budget_open(1000)
         decoded = msgpack.unpackb(raw, raw=False)
         assert decoded["kwargs"]["flop_multiplier"] == 1.0
 
     def test_enter_sends_flop_multiplier(self):
-        import mechestim._budget as bmod
-        from mechestim._budget import BudgetContext
+        import whest._budget as bmod
+        from whest._budget import BudgetContext
 
         mock_conn = _make_mock_conn({"status": "ok", "flops_used": 0})
         old = bmod._active_context
         bmod._active_context = None
         try:
-            with patch("mechestim._budget.get_connection", return_value=mock_conn):
+            with patch("whest._budget.get_connection", return_value=mock_conn):
                 ctx = BudgetContext(flop_budget=500, flop_multiplier=3.0)
                 ctx.__enter__()
                 sent_bytes = mock_conn.send_recv.call_args[0][0]
@@ -74,12 +74,12 @@ class TestFix2TransposeProperty:
     """RemoteArray.T dispatches 'transpose' to the server."""
 
     def test_T_property_exists(self):
-        from mechestim._remote_array import RemoteArray
+        from whest._remote_array import RemoteArray
 
         assert hasattr(RemoteArray, "T")
 
     def test_T_is_property(self):
-        from mechestim._remote_array import RemoteArray
+        from whest._remote_array import RemoteArray
 
         assert isinstance(
             type.__getattribute__(RemoteArray, "T"),
@@ -96,7 +96,7 @@ class TestFix3GetitemDispatches:
     """__getitem__ sends __getitem__ op to server."""
 
     def test_getitem_sends_request(self):
-        from mechestim._remote_array import RemoteArray
+        from whest._remote_array import RemoteArray
 
         mock_conn = _make_mock_conn(
             {
@@ -104,7 +104,7 @@ class TestFix3GetitemDispatches:
                 "result": {"value": 42.0, "dtype": "float64"},
             }
         )
-        with patch("mechestim._connection.get_connection", return_value=mock_conn):
+        with patch("whest._connection.get_connection", return_value=mock_conn):
             arr = RemoteArray(handle_id="a0", shape=(3,), dtype="float64")
             result = arr[1]
             mock_conn.send_recv.assert_called_once()
@@ -112,19 +112,19 @@ class TestFix3GetitemDispatches:
             assert sent["op"] == "__getitem__"
 
     def test_getitem_slice_encoding(self):
-        from mechestim._remote_array import _encode_index_key
+        from whest._remote_array import _encode_index_key
 
         key = slice(0, 5, 2)
         encoded = _encode_index_key(key)
         assert encoded == {"__slice__": [0, 5, 2]}
 
     def test_getitem_int_passthrough(self):
-        from mechestim._remote_array import _encode_index_key
+        from whest._remote_array import _encode_index_key
 
         assert _encode_index_key(3) == 3
 
     def test_getitem_tuple_encoding(self):
-        from mechestim._remote_array import _encode_index_key
+        from whest._remote_array import _encode_index_key
 
         key = (slice(1, 3), 0)
         encoded = _encode_index_key(key)
@@ -132,12 +132,12 @@ class TestFix3GetitemDispatches:
 
 
 # =========================================================================
-# Fix 4: complex packing in me.array()
+# Fix 4: complex packing in we.array()
 # =========================================================================
 
 
 class TestFix4ComplexPacking:
-    """me.array() correctly packs complex numbers."""
+    """we.array() correctly packs complex numbers."""
 
     def test_complex128_list_packing(self):
         """Complex values are split into real/imag pairs for struct.pack."""
@@ -155,7 +155,7 @@ class TestFix4ComplexPacking:
         assert isinstance(1 + 2j, (int, float, complex))
 
     def test_infer_dtype_complex(self):
-        from mechestim import _infer_dtype
+        from whest import _infer_dtype
 
         assert _infer_dtype([1 + 2j, 3.0]) == "complex128"
 
@@ -169,7 +169,7 @@ class TestFix5IterUsesGetitem:
     """__iter__ yields self[i] for each i, not plain Python values."""
 
     def test_iter_calls_getitem(self):
-        from mechestim._remote_array import RemoteArray
+        from whest._remote_array import RemoteArray
 
         calls = []
 
@@ -184,7 +184,7 @@ class TestFix5IterUsesGetitem:
             assert result == ["item_0", "item_1", "item_2"]
 
     def test_iter_0d_raises(self):
-        from mechestim._remote_array import RemoteArray
+        from whest._remote_array import RemoteArray
 
         arr = RemoteArray(handle_id="a0", shape=(), dtype="float64")
         with pytest.raises(TypeError, match="0-d"):
@@ -200,26 +200,26 @@ class TestFix6IsinstanceCheck:
     """RemoteScalar passes isinstance(s, RemoteArray) check."""
 
     def test_remote_scalar_isinstance_remote_array(self):
-        from mechestim._remote_array import RemoteArray, RemoteScalar
+        from whest._remote_array import RemoteArray, RemoteScalar
 
         s = RemoteScalar(value=3.14, dtype="float64")
         assert isinstance(s, RemoteArray)
 
     def test_ndarray_alias_works(self):
-        from mechestim._remote_array import RemoteArray, RemoteScalar
+        from whest._remote_array import RemoteArray, RemoteScalar
 
         ndarray = RemoteArray
         s = RemoteScalar(value=1.0, dtype="float64")
         assert isinstance(s, ndarray)
 
     def test_remote_array_still_isinstance(self):
-        from mechestim._remote_array import RemoteArray
+        from whest._remote_array import RemoteArray
 
         a = RemoteArray(handle_id="h1", shape=(3,), dtype="float64")
         assert isinstance(a, RemoteArray)
 
     def test_plain_object_not_instance(self):
-        from mechestim._remote_array import RemoteArray
+        from whest._remote_array import RemoteArray
 
         assert not isinstance(42, RemoteArray)
         assert not isinstance("hello", RemoteArray)
@@ -234,15 +234,15 @@ class TestFix7NestedBudgetGuard:
     """Nested BudgetContext raises RuntimeError before hitting the server."""
 
     def test_nested_raises_runtime_error(self):
-        import mechestim._budget as bmod
-        from mechestim._budget import BudgetContext
+        import whest._budget as bmod
+        from whest._budget import BudgetContext
 
         mock_conn = _make_mock_conn({"status": "ok", "flops_used": 0})
         old = bmod._active_context
         bmod._active_context = None
 
         try:
-            with patch("mechestim._budget.get_connection", return_value=mock_conn):
+            with patch("whest._budget.get_connection", return_value=mock_conn):
                 ctx1 = BudgetContext(flop_budget=1000)
                 ctx1.__enter__()
 
@@ -255,8 +255,8 @@ class TestFix7NestedBudgetGuard:
             bmod._active_context = old
 
     def test_exit_clears_active_context(self):
-        import mechestim._budget as bmod
-        from mechestim._budget import BudgetContext
+        import whest._budget as bmod
+        from whest._budget import BudgetContext
 
         responses = [
             {"status": "ok", "flops_used": 0},
@@ -268,7 +268,7 @@ class TestFix7NestedBudgetGuard:
         bmod._active_context = None
 
         try:
-            with patch("mechestim._budget.get_connection", return_value=mock_conn):
+            with patch("whest._budget.get_connection", return_value=mock_conn):
                 ctx = BudgetContext(flop_budget=1000)
                 ctx.__enter__()
                 assert bmod._active_context is ctx
@@ -279,8 +279,8 @@ class TestFix7NestedBudgetGuard:
 
     def test_exit_without_enter_is_noop(self):
         """Calling __exit__ on a context that was never opened should not crash."""
-        import mechestim._budget as bmod
-        from mechestim._budget import BudgetContext
+        import whest._budget as bmod
+        from whest._budget import BudgetContext
 
         old = bmod._active_context
         bmod._active_context = None

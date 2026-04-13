@@ -2,11 +2,11 @@
 
 import pytest
 
-import mechestim as me
+import whest as we
 
 
 def test_blacklisted_top_level_gives_notes():
-    from mechestim._registry import REGISTRY
+    from whest._registry import REGISTRY
 
     blacklisted = [
         n
@@ -23,7 +23,7 @@ def test_blacklisted_top_level_gives_notes():
 
 
 def test_registered_not_implemented_gives_message():
-    from mechestim._registry import REGISTRY
+    from whest._registry import REGISTRY
 
     # Find a counted function that isn't yet implemented
     not_impl = [
@@ -50,7 +50,7 @@ def test_fft_submodule_exists():
 
 
 def test_fft_getattr_gives_blacklist_error():
-    from mechestim._registry import REGISTRY
+    from whest._registry import REGISTRY
 
     blacklisted_fft = [
         n
@@ -61,10 +61,10 @@ def test_fft_getattr_gives_blacklist_error():
         pytest.skip("No blacklisted fft functions")
     func_name = blacklisted_fft[0].replace("fft.", "")
     with pytest.raises(AttributeError, match="blacklisted"):
-        getattr(me.fft, func_name)
+        getattr(we.fft, func_name)
 
 
 def test_linalg_getattr_consults_registry():
     """Verify that accessing a non-existent linalg attr raises AttributeError."""
     with pytest.raises(AttributeError):
-        getattr(me.linalg, "nonexistent_function_xyz")
+        getattr(we.linalg, "nonexistent_function_xyz")

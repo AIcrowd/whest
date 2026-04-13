@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import numpy as np
 import pytest
-from mechestim_server._request_handler import RequestHandler, _decode_index_key
-from mechestim_server._server import _normalize_arg
-from mechestim_server._session import Session
+from whest_server._request_handler import RequestHandler, _decode_index_key
+from whest_server._server import _normalize_arg
+from whest_server._session import Session
 
 # =========================================================================
 # Fixtures

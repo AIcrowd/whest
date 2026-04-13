@@ -1,12 +1,12 @@
-"""Tests for mechestim.errors module."""
+"""Tests for whest.errors module."""
 
 import pytest
 
-from mechestim.errors import (
+from whest.errors import (
     BudgetExhaustedError,
-    MechEstimError,
-    MechEstimServerError,
-    MechEstimWarning,
+    WhestError,
+    WhestServerError,
+    WhestWarning,
     NoBudgetContextError,
     SymmetryError,
     raise_from_response,
@@ -18,23 +18,23 @@ from mechestim.errors import (
 
 
 class TestHierarchy:
-    def test_budget_exhausted_is_mechestim_error(self):
-        assert issubclass(BudgetExhaustedError, MechEstimError)
+    def test_budget_exhausted_is_whest_error(self):
+        assert issubclass(BudgetExhaustedError, WhestError)
 
-    def test_no_budget_context_is_mechestim_error(self):
-        assert issubclass(NoBudgetContextError, MechEstimError)
+    def test_no_budget_context_is_whest_error(self):
+        assert issubclass(NoBudgetContextError, WhestError)
 
-    def test_symmetry_error_is_mechestim_error(self):
-        assert issubclass(SymmetryError, MechEstimError)
+    def test_symmetry_error_is_whest_error(self):
+        assert issubclass(SymmetryError, WhestError)
 
-    def test_server_error_is_mechestim_error(self):
-        assert issubclass(MechEstimServerError, MechEstimError)
+    def test_server_error_is_whest_error(self):
+        assert issubclass(WhestServerError, WhestError)
 
     def test_warning_is_user_warning(self):
-        assert issubclass(MechEstimWarning, UserWarning)
+        assert issubclass(WhestWarning, UserWarning)
 
-    def test_mechestim_error_is_exception(self):
-        assert issubclass(MechEstimError, Exception)
+    def test_whest_error_is_exception(self):
+        assert issubclass(WhestError, Exception)
 
 
 # ---------------------------------------------------------------------------
@@ -53,7 +53,7 @@ class TestBudgetExhaustedError:
 
     def test_default_construction(self):
         err = BudgetExhaustedError()
-        assert isinstance(err, MechEstimError)
+        assert isinstance(err, WhestError)
 
     def test_formatted_message_includes_cost(self):
         err = BudgetExhaustedError(op_name="svd", flop_cost=200, flops_remaining=10)
@@ -64,8 +64,8 @@ class TestBudgetExhaustedError:
         with pytest.raises(BudgetExhaustedError):
             raise BudgetExhaustedError(op_name="dot", flop_cost=1, flops_remaining=0)
 
-    def test_can_be_caught_as_mechestim_error(self):
-        with pytest.raises(MechEstimError):
+    def test_can_be_caught_as_whest_error(self):
+        with pytest.raises(WhestError):
             raise BudgetExhaustedError(op_name="dot")
 
 
@@ -94,8 +94,8 @@ class TestNoBudgetContextError:
 
 
 class TestSymmetryError:
-    def test_is_mechestim_error(self):
-        assert issubclass(SymmetryError, MechEstimError)
+    def test_is_whest_error(self):
+        assert issubclass(SymmetryError, WhestError)
 
     def test_default_construction(self):
         err = SymmetryError()
@@ -107,7 +107,7 @@ class TestSymmetryError:
 
     def test_dims_stored(self):
         err = SymmetryError(dims=(3, 4), max_deviation=0.5)
-        assert isinstance(err, MechEstimError)
+        assert isinstance(err, WhestError)
 
     def test_can_be_raised(self):
         with pytest.raises(SymmetryError):
@@ -115,16 +115,16 @@ class TestSymmetryError:
 
 
 # ---------------------------------------------------------------------------
-# MechEstimServerError
+# WhestServerError
 # ---------------------------------------------------------------------------
 
 
-class TestMechEstimServerError:
-    def test_is_mechestim_error(self):
-        assert issubclass(MechEstimServerError, MechEstimError)
+class TestWhestServerError:
+    def test_is_whest_error(self):
+        assert issubclass(WhestServerError, WhestError)
 
     def test_stores_message(self):
-        err = MechEstimServerError("server blew up")
+        err = WhestServerError("server blew up")
         assert "server blew up" in str(err)
 
 
@@ -147,8 +147,8 @@ class TestRaiseFromResponse:
             raise_from_response("SymmetryError", "not symmetric")
 
     def test_raises_server_error(self):
-        with pytest.raises(MechEstimServerError):
-            raise_from_response("MechEstimServerError", "internal error")
+        with pytest.raises(WhestServerError):
+            raise_from_response("WhestServerError", "internal error")
 
     def test_raises_value_error(self):
         with pytest.raises(ValueError):
@@ -167,18 +167,18 @@ class TestRaiseFromResponse:
             raise_from_response("RuntimeError", "runtime failure")
 
     def test_invalid_request_maps_to_server_error(self):
-        with pytest.raises(MechEstimServerError):
+        with pytest.raises(WhestServerError):
             raise_from_response("InvalidRequestError", "bad request")
 
     def test_unknown_type_raises_server_error(self):
-        with pytest.raises(MechEstimServerError):
+        with pytest.raises(WhestServerError):
             raise_from_response("SomeUnknownError", "mystery error")
 
     def test_message_preserved_in_raised_exception(self):
         with pytest.raises(ValueError, match="specific message"):
             raise_from_response("ValueError", "specific message")
 
-    def test_mechestim_error_message_preserved(self):
+    def test_whest_error_message_preserved(self):
         with pytest.raises(BudgetExhaustedError) as exc_info:
             raise_from_response("BudgetExhaustedError", "budget is gone")
         assert "budget is gone" in str(exc_info.value)

@@ -64,7 +64,7 @@ def _analytical_cost(op: str, **kwargs: int) -> int:
         # matmul: identical to dot for 2D
         "matmul": 512 * 512 * 512,
         # inner: dot product of two 1M-element vectors.
-        # Runtime charges a.size — matches mechestim's convention (FMA=1).
+        # Runtime charges a.size — matches whest's convention (FMA=1).
         "inner": 1_000_000,
         # vdot: same as inner for 1D real inputs.
         # Runtime charges a.size (FMA=1).

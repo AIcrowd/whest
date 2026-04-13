@@ -21,9 +21,9 @@ import warnings
 import numpy
 import pytest
 
-from mechestim._budget import BudgetContext
-from mechestim._config import configure
-from mechestim._pointwise import (
+from whest._budget import BudgetContext
+from whest._config import configure
+from whest._pointwise import (
     abs,
     add,
     # Reductions
@@ -64,8 +64,8 @@ from mechestim._pointwise import (
     trapezoid,
     vdot,
 )
-from mechestim._symmetric import SymmetricTensor, as_symmetric
-from mechestim.errors import SymmetryLossWarning
+from whest._symmetric import SymmetricTensor, as_symmetric
+from whest.errors import SymmetryLossWarning
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -456,7 +456,7 @@ class TestIscloseScalar:
 )
 class TestBitwiseCount:
     def test_bitwise_count_basic(self):
-        from mechestim._pointwise import bitwise_count
+        from whest._pointwise import bitwise_count
 
         a = numpy.array([0, 1, 3, 7, 15], dtype=numpy.uint8)
         with BudgetContext(flop_budget=10**6) as budget:
@@ -476,7 +476,7 @@ class TestBitwiseCount:
 )
 class TestVecdot:
     def test_vecdot_1d(self):
-        from mechestim._pointwise import vecdot
+        from whest._pointwise import vecdot
 
         a = numpy.array([1.0, 2.0, 3.0])
         b = numpy.array([4.0, 5.0, 6.0])
@@ -487,7 +487,7 @@ class TestVecdot:
         assert budget.flops_used == 3
 
     def test_vecdot_2d(self):
-        from mechestim._pointwise import vecdot
+        from whest._pointwise import vecdot
 
         a = numpy.ones((5, 4))
         b = numpy.ones((5, 4))
@@ -499,7 +499,7 @@ class TestVecdot:
 
     def test_vecdot_from_list(self):
         """vecdot should convert non-ndarray inputs."""
-        from mechestim._pointwise import vecdot
+        from whest._pointwise import vecdot
 
         with BudgetContext(flop_budget=10**6):
             result = vecdot([1, 2, 3], [4, 5, 6])
@@ -927,7 +927,7 @@ class TestAdditionalCustomOps:
 
 class TestTrapz:
     def test_trapz_basic(self):
-        from mechestim._pointwise import trapz
+        from whest._pointwise import trapz
 
         y = numpy.array([1.0, 2.0, 3.0])
         with warnings.catch_warnings():
@@ -937,7 +937,7 @@ class TestTrapz:
             assert budget.flops_used == 3
 
     def test_trapz_from_list(self):
-        from mechestim._pointwise import trapz
+        from whest._pointwise import trapz
 
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
@@ -952,7 +952,7 @@ class TestTrapz:
 
 class TestPtp:
     def test_ptp_basic(self):
-        from mechestim._pointwise import ptp
+        from whest._pointwise import ptp
 
         x = numpy.array([1.0, 5.0, 3.0, 2.0])
         with BudgetContext(flop_budget=10**6) as budget:
@@ -960,7 +960,7 @@ class TestPtp:
         assert numpy.isclose(result, 4.0)
 
     def test_ptp_from_list(self):
-        from mechestim._pointwise import ptp
+        from whest._pointwise import ptp
 
         with BudgetContext(flop_budget=10**6):
             result = ptp([1.0, 10.0, 5.0])

@@ -6,7 +6,7 @@ import tempfile
 
 import pytest
 
-from mechestim._weights import get_weight, load_weights, reset_weights
+from whest._weights import get_weight, load_weights, reset_weights
 
 
 def test_get_weight_default_is_one():
@@ -41,7 +41,7 @@ def test_load_weights_from_env_var(monkeypatch):
         json.dump(data, f)
         path = f.name
     try:
-        monkeypatch.setenv("MECHESTIM_WEIGHTS_FILE", path)
+        monkeypatch.setenv("WHEST_WEIGHTS_FILE", path)
         load_weights()  # no explicit path — reads env var
         assert get_weight("sqrt") == 3.8
     finally:
