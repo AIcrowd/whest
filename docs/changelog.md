@@ -4,7 +4,7 @@
 
 ### Added
 
-- **Multi-version NumPy support.** mechestim now supports NumPy 2.0, 2.1, and 2.2
+- **Multi-version NumPy support.** whest now supports NumPy 2.0, 2.1, and 2.2
   (`>=2.0.0,<2.3.0`). Default install resolves to NumPy 2.2. Functions not available
   in older NumPy versions raise `UnsupportedFunctionError` with an actionable message
   at call time (not import time).
@@ -18,6 +18,10 @@
 - **CI NumPy version matrix** — tests now run against NumPy 2.0, 2.1, and 2.2.
 
 ### Changed
+
+- **Renamed package from `mechestim` to `whest`** to reflect the new challenge
+  name "ARC Whitebox Estimation Challenge". The import convention changes from
+  `import mechestim as me` to `import whest as we`.
 
 - **Symmetric BLAS classification restored.** Pairwise contractions with
   symmetric inputs now correctly report `SYMM`, `SYMV`, or `SYDT` BLAS
@@ -77,7 +81,7 @@
 
 ### Added
 
-- **Enriched `PathInfo` display** — `me.einsum_path().format_table(verbose=False)`
+- **Enriched `PathInfo` display** — `we.einsum_path().format_table(verbose=False)`
   (called by `__str__`) now shows an `Optimizer:` header line resolving
   `optimize='auto'`/`'auto-hq'` to the inner choice that actually ran
   (e.g. `optimal`, `dynamic_programming`, `random_greedy_128`), a
@@ -103,13 +107,13 @@ Second release with unified einsum cost model, NumPy compatibility testing, and 
 
 - **Unified einsum cost model** — all einsum-like operations (einsum, dot, matmul, tensordot) now share a single cost model based on opt_einsum's contraction path optimizer
 - **Symmetry-aware path finding** — the opt_einsum path optimizer now factors symmetry savings into contraction ordering decisions, producing different (cheaper) paths for symmetric inputs
-- **NumPy compatibility test harness** — run NumPy's own test suite against mechestim via monkeypatching; 7,300+ tests passing across 7 NumPy test modules
+- **NumPy compatibility test harness** — run NumPy's own test suite against whest via monkeypatching; 7,300+ tests passing across 7 NumPy test modules
 - **Polynomial operations** — `polyval`, `polyfit`, `polymul`, `polydiv`, `polyadd`, `polysub`, `poly`, `roots`, `polyder`, `polyint` with analytical FLOP costs
 - **Window functions** — `bartlett`, `hamming`, `hanning`, `blackman`, `kaiser` with per-function cost formulas
 - **FFT module** — `fft`, `ifft`, `rfft`, `irfft`, `fft2`, `ifft2`, `fftn`, `ifftn`, `rfftn`, `irfftn` and free helpers (`fftfreq`, `rfftfreq`, `fftshift`, `ifftshift`)
-- **Client-server architecture** — `mechestim-client` and `mechestim-server` packages for sandboxed competition evaluation over ZMQ
+- **Client-server architecture** — `whest-client` and `whest-server` packages for sandboxed competition evaluation over ZMQ
 - **Global default budget** — a 1e15 FLOP budget auto-activates on first use, so explicit `BudgetContext` is no longer required for quick scripts
-- **`MECHESTIM_DEFAULT_BUDGET` env var** — configure the global default budget amount
+- **`WHEST_DEFAULT_BUDGET` env var** — configure the global default budget amount
 - **`budget_live()`** — Rich-based live-updating budget display context manager
 - **`einsum_path()`** — inspect contraction plans with per-step symmetry savings without spending budget
 - **90%+ test coverage gate** enforced in CI
@@ -117,11 +121,11 @@ Second release with unified einsum cost model, NumPy compatibility testing, and 
 ### Breaking changes
 
 - Einsum cost formula now uses `product_of_all_index_dims × op_factor` (op_factor=2 for inner products, 1 for outer products), matching opt_einsum convention. Previously used a different formula.
-- `me.dot` and `me.matmul` costs are now computed via the einsum cost model instead of separate formulas.
+- `we.dot` and `we.matmul` costs are now computed via the einsum cost model instead of separate formulas.
 
 ### Bug fixes
 
-- Accept scalars and array-likes in all mechestim functions
+- Accept scalars and array-likes in all whest functions
 - Fix symmetry-aware greedy algorithm to actually use symmetry in path selection
 - Fix `contract_path` cost reporting for output indices
 - Correctly handle `symmetric_dims` propagation through multi-step contraction paths
@@ -144,4 +148,4 @@ Initial release for warm-up round.
 - Free tensor creation and manipulation ops
 - Budget enforcement via BudgetContext
 - FLOP cost query API
-- NumPy-compatible API (`import mechestim as me`)
+- NumPy-compatible API (`import whest as we`)

@@ -2,7 +2,7 @@
 
 ## When to use this page
 
-Use this page after installing mechestim to run your first FLOP-counted computation.
+Use this page after installing whest to run your first FLOP-counted computation.
 
 ## Prerequisites
 
@@ -10,13 +10,13 @@ Use this page after installing mechestim to run your first FLOP-counted computat
 
 ## Quickest possible start
 
-You do not need to set up a budget context to start counting FLOPs. mechestim activates a global default context the first time any counted operation runs. The default budget is 1e15 FLOPs (configurable via the `MECHESTIM_DEFAULT_BUDGET` environment variable).
+You do not need to set up a budget context to start counting FLOPs. whest activates a global default context the first time any counted operation runs. The default budget is 1e15 FLOPs (configurable via the `WHEST_DEFAULT_BUDGET` environment variable).
 
 Save this as `first_budget.py`:
 
 ```python
 import math
-import mechestim as me
+import whest as we
 
 depth = 10   # number of layers
 width = 256  # hidden dimension
@@ -24,20 +24,20 @@ width = 256  # hidden dimension
 # No BudgetContext needed — the global default activates automatically
 scale = math.sqrt(2.0 / width)   # Kaiming init scale; free (no FLOPs)
 weights = [
-    me.array(me.random.randn(width, width) * scale)
+    we.array(we.random.randn(width, width) * scale)
     for _ in range(depth)
 ]
-x = me.random.randn(width)
+x = we.random.randn(width)
 
 h = x
 for W in weights:
-    h = me.einsum('ij,j->i', W, h)  # matrix-vector multiply: 256 × 256 = 65,536 FLOPs
-    h = me.maximum(h, 0)             # ReLU activation: counted
+    h = we.einsum('ij,j->i', W, h)  # matrix-vector multiply: 256 × 256 = 65,536 FLOPs
+    h = we.maximum(h, 0)             # ReLU activation: counted
 
-result = me.sum(h)                   # reduction: counted
+result = we.sum(h)                   # reduction: counted
 
 # Print a Rich-formatted summary across all namespaces
-me.budget_summary()
+we.budget_summary()
 ```
 
 Run it:
@@ -50,7 +50,7 @@ uv run python first_budget.py
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│              mechestim FLOP Budget Summary               │
+│              whest FLOP Budget Summary               │
 ├──────────────┬───────────────┬────────────┬─────────────┤
 │ Namespace    │ Budget        │ Used       │ Remaining   │
 ├──────────────┼───────────────┼────────────┼─────────────┤
@@ -77,32 +77,32 @@ When you want a tighter budget or cleaner grouping in summaries, wrap operations
 
 ```python
 import math
-import mechestim as me
+import whest as we
 
 depth = 10
 width = 256
 
-with me.BudgetContext(flop_budget=50_000_000, namespace="mlp-forward") as budget:
+with we.BudgetContext(flop_budget=50_000_000, namespace="mlp-forward") as budget:
     scale = math.sqrt(2.0 / width)
     weights = [
-        me.array(me.random.randn(width, width) * scale)
+        we.array(we.random.randn(width, width) * scale)
         for _ in range(depth)
     ]
-    x = me.random.randn(width)
+    x = we.random.randn(width)
 
     h = x
     for W in weights:
-        h = me.einsum('ij,j->i', W, h)  # matrix-vector multiply: 256 × 256 = 65,536 FLOPs
-        h = me.maximum(h, 0)             # 256 FLOPs each pass
+        h = we.einsum('ij,j->i', W, h)  # matrix-vector multiply: 256 × 256 = 65,536 FLOPs
+        h = we.maximum(h, 0)             # 256 FLOPs each pass
 
-    result = me.sum(h)                   # 256 FLOPs
+    result = we.sum(h)                   # 256 FLOPs
 
-me.budget_summary()
+we.budget_summary()
 ```
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-│              mechestim FLOP Budget Summary                │
+│              whest FLOP Budget Summary                │
 ├───────────────┬────────────┬───────────┬─────────────────┤
 │ Namespace     │ Budget     │ Used      │ Remaining       │
 ├───────────────┼────────────┼───────────┼─────────────────┤
@@ -118,50 +118,50 @@ me.budget_summary()
 
 ## Decorator form
 
-Use `@me.budget` to attach a budget directly to a function. The namespace defaults to the function name if omitted:
+Use `@we.budget` to attach a budget directly to a function. The namespace defaults to the function name if omitted:
 
 ```python
 import math
-import mechestim as me
+import whest as we
 
-@me.budget(flop_budget=50_000_000, namespace="mlp-forward")
+@we.budget(flop_budget=50_000_000, namespace="mlp-forward")
 def run_mlp(depth: int = 10, width: int = 256):
     scale = math.sqrt(2.0 / width)
     weights = [
-        me.array(me.random.randn(width, width) * scale)
+        we.array(we.random.randn(width, width) * scale)
         for _ in range(depth)
     ]
-    x = me.random.randn(width)
+    x = we.random.randn(width)
 
     h = x
     for W in weights:
-        h = me.einsum('ij,j->i', W, h)
-        h = me.maximum(h, 0)
+        h = we.einsum('ij,j->i', W, h)
+        h = we.maximum(h, 0)
 
-    return me.sum(h)
+    return we.sum(h)
 
 run_mlp()
-me.budget_summary()
+we.budget_summary()
 ```
 
-Each call to `run_mlp()` draws from the same `mlp-forward` namespace budget. Call `me.budget_summary_dict()` to retrieve the summary as a plain dict for programmatic use:
+Each call to `run_mlp()` draws from the same `mlp-forward` namespace budget. Call `we.budget_summary_dict()` to retrieve the summary as a plain dict for programmatic use:
 
 ```python
-data = me.budget_summary_dict()
+data = we.budget_summary_dict()
 # {'flop_budget': ..., 'flops_used': ..., 'flops_remaining': ..., 'operations': {...}}
 
 # For per-namespace breakdown:
-data = me.budget_summary_dict(by_namespace=True)
+data = we.budget_summary_dict(by_namespace=True)
 # data["by_namespace"]["mlp-forward"]["flops_used"] -> 1313536
 ```
 
 ## Configuring the global default budget
 
-The global default budget is 1e15 FLOPs (1 quadrillion). You can change this via the `MECHESTIM_DEFAULT_BUDGET` environment variable:
+The global default budget is 1e15 FLOPs (1 quadrillion). You can change this via the `WHEST_DEFAULT_BUDGET` environment variable:
 
 ```bash
 # Set a smaller default budget (e.g., 1 billion FLOPs)
-export MECHESTIM_DEFAULT_BUDGET=1e9
+export WHEST_DEFAULT_BUDGET=1e9
 uv run python your_script.py
 ```
 
@@ -171,11 +171,11 @@ The env var is read once when the global default is first created (on the first 
 
 **Symptom:** `BudgetExhaustedError`
 
-**Fix:** Your operations exceed the budget you set. Increase `flop_budget` on the `BudgetContext` (or decorator), reduce computation, or rely on the global default context which has a 1e15 FLOP ceiling (configurable via `MECHESTIM_DEFAULT_BUDGET`).
+**Fix:** Your operations exceed the budget you set. Increase `flop_budget` on the `BudgetContext` (or decorator), reduce computation, or rely on the global default context which has a 1e15 FLOP ceiling (configurable via `WHEST_DEFAULT_BUDGET`).
 
 **Note on `NoBudgetContextError`:** This error no longer triggers in normal use. The global default context activates automatically on first use, so bare calls outside any `with` block are safe.
 
 ## 📎 Related pages
 
-- [Migrate from NumPy](../how-to/migrate-from-numpy.md) — convert existing NumPy code to mechestim
+- [Migrate from NumPy](../how-to/migrate-from-numpy.md) — convert existing NumPy code to whest
 - [Plan Your Budget](../how-to/plan-your-budget.md) — query operation costs before executing

@@ -3,7 +3,7 @@
     {
       "name": "abs",
       "module": "numpy",
-      "mechestim_ref": "me.abs",
+      "whest_ref": "me.abs",
       "numpy_ref": "np.abs",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -16,7 +16,7 @@
     {
       "name": "absolute",
       "module": "numpy",
-      "mechestim_ref": "me.absolute",
+      "whest_ref": "me.absolute",
       "numpy_ref": "np.absolute",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -29,7 +29,7 @@
     {
       "name": "acos",
       "module": "numpy",
-      "mechestim_ref": "me.acos",
+      "whest_ref": "me.acos",
       "numpy_ref": "np.acos",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -42,7 +42,7 @@
     {
       "name": "acosh",
       "module": "numpy",
-      "mechestim_ref": "me.acosh",
+      "whest_ref": "me.acosh",
       "numpy_ref": "np.acosh",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -55,7 +55,7 @@
     {
       "name": "add",
       "module": "numpy",
-      "mechestim_ref": "me.add",
+      "whest_ref": "me.add",
       "numpy_ref": "np.add",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -68,7 +68,7 @@
     {
       "name": "all",
       "module": "numpy",
-      "mechestim_ref": "me.all",
+      "whest_ref": "me.all",
       "numpy_ref": "np.all",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -81,7 +81,7 @@
     {
       "name": "allclose",
       "module": "numpy",
-      "mechestim_ref": "me.allclose",
+      "whest_ref": "me.allclose",
       "numpy_ref": "np.allclose",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -94,7 +94,7 @@
     {
       "name": "amax",
       "module": "numpy",
-      "mechestim_ref": "me.amax",
+      "whest_ref": "me.amax",
       "numpy_ref": "np.amax",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -107,7 +107,7 @@
     {
       "name": "amin",
       "module": "numpy",
-      "mechestim_ref": "me.amin",
+      "whest_ref": "me.amin",
       "numpy_ref": "np.amin",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -120,7 +120,7 @@
     {
       "name": "angle",
       "module": "numpy",
-      "mechestim_ref": "me.angle",
+      "whest_ref": "me.angle",
       "numpy_ref": "np.angle",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -133,7 +133,7 @@
     {
       "name": "any",
       "module": "numpy",
-      "mechestim_ref": "me.any",
+      "whest_ref": "me.any",
       "numpy_ref": "np.any",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -146,7 +146,7 @@
     {
       "name": "append",
       "module": "numpy",
-      "mechestim_ref": "me.append",
+      "whest_ref": "me.append",
       "numpy_ref": "np.append",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -159,7 +159,7 @@
     {
       "name": "apply_along_axis",
       "module": "numpy",
-      "mechestim_ref": "me.apply_along_axis",
+      "whest_ref": "me.apply_along_axis",
       "numpy_ref": "np.apply_along_axis",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -172,7 +172,7 @@
     {
       "name": "apply_over_axes",
       "module": "numpy",
-      "mechestim_ref": "me.apply_over_axes",
+      "whest_ref": "me.apply_over_axes",
       "numpy_ref": "np.apply_over_axes",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -185,7 +185,7 @@
     {
       "name": "arange",
       "module": "numpy",
-      "mechestim_ref": "me.arange",
+      "whest_ref": "me.arange",
       "numpy_ref": "np.arange",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -198,7 +198,7 @@
     {
       "name": "arccos",
       "module": "numpy",
-      "mechestim_ref": "me.arccos",
+      "whest_ref": "me.arccos",
       "numpy_ref": "np.arccos",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -211,7 +211,7 @@
     {
       "name": "arccosh",
       "module": "numpy",
-      "mechestim_ref": "me.arccosh",
+      "whest_ref": "me.arccosh",
       "numpy_ref": "np.arccosh",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -224,7 +224,7 @@
     {
       "name": "arcsin",
       "module": "numpy",
-      "mechestim_ref": "me.arcsin",
+      "whest_ref": "me.arcsin",
       "numpy_ref": "np.arcsin",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -237,7 +237,7 @@
     {
       "name": "arcsinh",
       "module": "numpy",
-      "mechestim_ref": "me.arcsinh",
+      "whest_ref": "me.arcsinh",
       "numpy_ref": "np.arcsinh",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -250,7 +250,7 @@
     {
       "name": "arctan",
       "module": "numpy",
-      "mechestim_ref": "me.arctan",
+      "whest_ref": "me.arctan",
       "numpy_ref": "np.arctan",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -263,7 +263,7 @@
     {
       "name": "arctan2",
       "module": "numpy",
-      "mechestim_ref": "me.arctan2",
+      "whest_ref": "me.arctan2",
       "numpy_ref": "np.arctan2",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -276,7 +276,7 @@
     {
       "name": "arctanh",
       "module": "numpy",
-      "mechestim_ref": "me.arctanh",
+      "whest_ref": "me.arctanh",
       "numpy_ref": "np.arctanh",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -289,7 +289,7 @@
     {
       "name": "argmax",
       "module": "numpy",
-      "mechestim_ref": "me.argmax",
+      "whest_ref": "me.argmax",
       "numpy_ref": "np.argmax",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -302,7 +302,7 @@
     {
       "name": "argmin",
       "module": "numpy",
-      "mechestim_ref": "me.argmin",
+      "whest_ref": "me.argmin",
       "numpy_ref": "np.argmin",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -315,7 +315,7 @@
     {
       "name": "argpartition",
       "module": "numpy",
-      "mechestim_ref": "me.argpartition",
+      "whest_ref": "me.argpartition",
       "numpy_ref": "np.argpartition",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -328,7 +328,7 @@
     {
       "name": "argsort",
       "module": "numpy",
-      "mechestim_ref": "me.argsort",
+      "whest_ref": "me.argsort",
       "numpy_ref": "np.argsort",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -341,7 +341,7 @@
     {
       "name": "argwhere",
       "module": "numpy",
-      "mechestim_ref": "me.argwhere",
+      "whest_ref": "me.argwhere",
       "numpy_ref": "np.argwhere",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -354,7 +354,7 @@
     {
       "name": "around",
       "module": "numpy",
-      "mechestim_ref": "me.around",
+      "whest_ref": "me.around",
       "numpy_ref": "np.around",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -367,7 +367,7 @@
     {
       "name": "array",
       "module": "numpy",
-      "mechestim_ref": "me.array",
+      "whest_ref": "me.array",
       "numpy_ref": "np.array",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -380,7 +380,7 @@
     {
       "name": "array2string",
       "module": "numpy",
-      "mechestim_ref": "me.array2string",
+      "whest_ref": "me.array2string",
       "numpy_ref": "np.array2string",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -393,7 +393,7 @@
     {
       "name": "array_equal",
       "module": "numpy",
-      "mechestim_ref": "me.array_equal",
+      "whest_ref": "me.array_equal",
       "numpy_ref": "np.array_equal",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -406,7 +406,7 @@
     {
       "name": "array_equiv",
       "module": "numpy",
-      "mechestim_ref": "me.array_equiv",
+      "whest_ref": "me.array_equiv",
       "numpy_ref": "np.array_equiv",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -419,7 +419,7 @@
     {
       "name": "array_repr",
       "module": "numpy",
-      "mechestim_ref": "me.array_repr",
+      "whest_ref": "me.array_repr",
       "numpy_ref": "np.array_repr",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -432,7 +432,7 @@
     {
       "name": "array_split",
       "module": "numpy",
-      "mechestim_ref": "me.array_split",
+      "whest_ref": "me.array_split",
       "numpy_ref": "np.array_split",
       "category": "free",
       "cost_formula": "0",
@@ -445,7 +445,7 @@
     {
       "name": "array_str",
       "module": "numpy",
-      "mechestim_ref": "me.array_str",
+      "whest_ref": "me.array_str",
       "numpy_ref": "np.array_str",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -458,7 +458,7 @@
     {
       "name": "asarray",
       "module": "numpy",
-      "mechestim_ref": "me.asarray",
+      "whest_ref": "me.asarray",
       "numpy_ref": "np.asarray",
       "category": "free",
       "cost_formula": "0",
@@ -471,7 +471,7 @@
     {
       "name": "asarray_chkfinite",
       "module": "numpy",
-      "mechestim_ref": "me.asarray_chkfinite",
+      "whest_ref": "me.asarray_chkfinite",
       "numpy_ref": "np.asarray_chkfinite",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -484,7 +484,7 @@
     {
       "name": "asin",
       "module": "numpy",
-      "mechestim_ref": "me.asin",
+      "whest_ref": "me.asin",
       "numpy_ref": "np.asin",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -497,7 +497,7 @@
     {
       "name": "asinh",
       "module": "numpy",
-      "mechestim_ref": "me.asinh",
+      "whest_ref": "me.asinh",
       "numpy_ref": "np.asinh",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -510,7 +510,7 @@
     {
       "name": "asmatrix",
       "module": "numpy",
-      "mechestim_ref": "me.asmatrix",
+      "whest_ref": "me.asmatrix",
       "numpy_ref": "np.asmatrix",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -523,7 +523,7 @@
     {
       "name": "astype",
       "module": "numpy",
-      "mechestim_ref": "me.astype",
+      "whest_ref": "me.astype",
       "numpy_ref": "np.astype",
       "category": "free",
       "cost_formula": "0",
@@ -536,7 +536,7 @@
     {
       "name": "atan",
       "module": "numpy",
-      "mechestim_ref": "me.atan",
+      "whest_ref": "me.atan",
       "numpy_ref": "np.atan",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -549,7 +549,7 @@
     {
       "name": "atan2",
       "module": "numpy",
-      "mechestim_ref": "me.atan2",
+      "whest_ref": "me.atan2",
       "numpy_ref": "np.atan2",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -562,7 +562,7 @@
     {
       "name": "atanh",
       "module": "numpy",
-      "mechestim_ref": "me.atanh",
+      "whest_ref": "me.atanh",
       "numpy_ref": "np.atanh",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -575,7 +575,7 @@
     {
       "name": "atleast_1d",
       "module": "numpy",
-      "mechestim_ref": "me.atleast_1d",
+      "whest_ref": "me.atleast_1d",
       "numpy_ref": "np.atleast_1d",
       "category": "free",
       "cost_formula": "0",
@@ -588,7 +588,7 @@
     {
       "name": "atleast_2d",
       "module": "numpy",
-      "mechestim_ref": "me.atleast_2d",
+      "whest_ref": "me.atleast_2d",
       "numpy_ref": "np.atleast_2d",
       "category": "free",
       "cost_formula": "0",
@@ -601,7 +601,7 @@
     {
       "name": "atleast_3d",
       "module": "numpy",
-      "mechestim_ref": "me.atleast_3d",
+      "whest_ref": "me.atleast_3d",
       "numpy_ref": "np.atleast_3d",
       "category": "free",
       "cost_formula": "0",
@@ -614,7 +614,7 @@
     {
       "name": "average",
       "module": "numpy",
-      "mechestim_ref": "me.average",
+      "whest_ref": "me.average",
       "numpy_ref": "np.average",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -626,8 +626,8 @@
     },
     {
       "name": "bartlett",
-      "module": "mechestim._window",
-      "mechestim_ref": "me.bartlett",
+      "module": "whest._window",
+      "whest_ref": "me.bartlett",
       "numpy_ref": "np.bartlett",
       "category": "counted_custom",
       "cost_formula": "n",
@@ -640,7 +640,7 @@
     {
       "name": "base_repr",
       "module": "numpy",
-      "mechestim_ref": "me.base_repr",
+      "whest_ref": "me.base_repr",
       "numpy_ref": "np.base_repr",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -653,7 +653,7 @@
     {
       "name": "binary_repr",
       "module": "numpy",
-      "mechestim_ref": "me.binary_repr",
+      "whest_ref": "me.binary_repr",
       "numpy_ref": "np.binary_repr",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -666,7 +666,7 @@
     {
       "name": "bincount",
       "module": "numpy",
-      "mechestim_ref": "me.bincount",
+      "whest_ref": "me.bincount",
       "numpy_ref": "np.bincount",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -679,7 +679,7 @@
     {
       "name": "bitwise_and",
       "module": "numpy",
-      "mechestim_ref": "me.bitwise_and",
+      "whest_ref": "me.bitwise_and",
       "numpy_ref": "np.bitwise_and",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -692,7 +692,7 @@
     {
       "name": "bitwise_count",
       "module": "numpy",
-      "mechestim_ref": "me.bitwise_count",
+      "whest_ref": "me.bitwise_count",
       "numpy_ref": "np.bitwise_count",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -705,7 +705,7 @@
     {
       "name": "bitwise_invert",
       "module": "numpy",
-      "mechestim_ref": "me.bitwise_invert",
+      "whest_ref": "me.bitwise_invert",
       "numpy_ref": "np.bitwise_invert",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -718,7 +718,7 @@
     {
       "name": "bitwise_left_shift",
       "module": "numpy",
-      "mechestim_ref": "me.bitwise_left_shift",
+      "whest_ref": "me.bitwise_left_shift",
       "numpy_ref": "np.bitwise_left_shift",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -731,7 +731,7 @@
     {
       "name": "bitwise_not",
       "module": "numpy",
-      "mechestim_ref": "me.bitwise_not",
+      "whest_ref": "me.bitwise_not",
       "numpy_ref": "np.bitwise_not",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -744,7 +744,7 @@
     {
       "name": "bitwise_or",
       "module": "numpy",
-      "mechestim_ref": "me.bitwise_or",
+      "whest_ref": "me.bitwise_or",
       "numpy_ref": "np.bitwise_or",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -757,7 +757,7 @@
     {
       "name": "bitwise_right_shift",
       "module": "numpy",
-      "mechestim_ref": "me.bitwise_right_shift",
+      "whest_ref": "me.bitwise_right_shift",
       "numpy_ref": "np.bitwise_right_shift",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -770,7 +770,7 @@
     {
       "name": "bitwise_xor",
       "module": "numpy",
-      "mechestim_ref": "me.bitwise_xor",
+      "whest_ref": "me.bitwise_xor",
       "numpy_ref": "np.bitwise_xor",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -782,8 +782,8 @@
     },
     {
       "name": "blackman",
-      "module": "mechestim._window",
-      "mechestim_ref": "me.blackman",
+      "module": "whest._window",
+      "whest_ref": "me.blackman",
       "numpy_ref": "np.blackman",
       "category": "counted_custom",
       "cost_formula": "3n",
@@ -796,7 +796,7 @@
     {
       "name": "block",
       "module": "numpy",
-      "mechestim_ref": "me.block",
+      "whest_ref": "me.block",
       "numpy_ref": "np.block",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -809,7 +809,7 @@
     {
       "name": "bmat",
       "module": "numpy",
-      "mechestim_ref": "me.bmat",
+      "whest_ref": "me.bmat",
       "numpy_ref": "np.bmat",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -822,7 +822,7 @@
     {
       "name": "broadcast_arrays",
       "module": "numpy",
-      "mechestim_ref": "me.broadcast_arrays",
+      "whest_ref": "me.broadcast_arrays",
       "numpy_ref": "np.broadcast_arrays",
       "category": "free",
       "cost_formula": "0",
@@ -835,7 +835,7 @@
     {
       "name": "broadcast_shapes",
       "module": "numpy",
-      "mechestim_ref": "me.broadcast_shapes",
+      "whest_ref": "me.broadcast_shapes",
       "numpy_ref": "np.broadcast_shapes",
       "category": "free",
       "cost_formula": "0",
@@ -848,7 +848,7 @@
     {
       "name": "broadcast_to",
       "module": "numpy",
-      "mechestim_ref": "me.broadcast_to",
+      "whest_ref": "me.broadcast_to",
       "numpy_ref": "np.broadcast_to",
       "category": "free",
       "cost_formula": "0",
@@ -861,7 +861,7 @@
     {
       "name": "busday_count",
       "module": "numpy",
-      "mechestim_ref": "me.busday_count",
+      "whest_ref": "me.busday_count",
       "numpy_ref": "np.busday_count",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -874,7 +874,7 @@
     {
       "name": "busday_offset",
       "module": "numpy",
-      "mechestim_ref": "me.busday_offset",
+      "whest_ref": "me.busday_offset",
       "numpy_ref": "np.busday_offset",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -887,7 +887,7 @@
     {
       "name": "can_cast",
       "module": "numpy",
-      "mechestim_ref": "me.can_cast",
+      "whest_ref": "me.can_cast",
       "numpy_ref": "np.can_cast",
       "category": "free",
       "cost_formula": "0",
@@ -900,7 +900,7 @@
     {
       "name": "cbrt",
       "module": "numpy",
-      "mechestim_ref": "me.cbrt",
+      "whest_ref": "me.cbrt",
       "numpy_ref": "np.cbrt",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -913,7 +913,7 @@
     {
       "name": "ceil",
       "module": "numpy",
-      "mechestim_ref": "me.ceil",
+      "whest_ref": "me.ceil",
       "numpy_ref": "np.ceil",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -926,7 +926,7 @@
     {
       "name": "choose",
       "module": "numpy",
-      "mechestim_ref": "me.choose",
+      "whest_ref": "me.choose",
       "numpy_ref": "np.choose",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -939,7 +939,7 @@
     {
       "name": "clip",
       "module": "numpy",
-      "mechestim_ref": "me.clip",
+      "whest_ref": "me.clip",
       "numpy_ref": "np.clip",
       "category": "counted_custom",
       "cost_formula": "numel(input)",
@@ -952,7 +952,7 @@
     {
       "name": "column_stack",
       "module": "numpy",
-      "mechestim_ref": "me.column_stack",
+      "whest_ref": "me.column_stack",
       "numpy_ref": "np.column_stack",
       "category": "free",
       "cost_formula": "0",
@@ -965,7 +965,7 @@
     {
       "name": "common_type",
       "module": "numpy",
-      "mechestim_ref": "me.common_type",
+      "whest_ref": "me.common_type",
       "numpy_ref": "np.common_type",
       "category": "free",
       "cost_formula": "0",
@@ -978,7 +978,7 @@
     {
       "name": "compress",
       "module": "numpy",
-      "mechestim_ref": "me.compress",
+      "whest_ref": "me.compress",
       "numpy_ref": "np.compress",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -991,7 +991,7 @@
     {
       "name": "concat",
       "module": "numpy",
-      "mechestim_ref": "me.concat",
+      "whest_ref": "me.concat",
       "numpy_ref": "np.concat",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -1004,7 +1004,7 @@
     {
       "name": "concatenate",
       "module": "numpy",
-      "mechestim_ref": "me.concatenate",
+      "whest_ref": "me.concatenate",
       "numpy_ref": "np.concatenate",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -1017,7 +1017,7 @@
     {
       "name": "conj",
       "module": "numpy",
-      "mechestim_ref": "me.conj",
+      "whest_ref": "me.conj",
       "numpy_ref": "np.conj",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -1030,7 +1030,7 @@
     {
       "name": "conjugate",
       "module": "numpy",
-      "mechestim_ref": "me.conjugate",
+      "whest_ref": "me.conjugate",
       "numpy_ref": "np.conjugate",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -1043,7 +1043,7 @@
     {
       "name": "convolve",
       "module": "numpy",
-      "mechestim_ref": "me.convolve",
+      "whest_ref": "me.convolve",
       "numpy_ref": "np.convolve",
       "category": "counted_custom",
       "cost_formula": "n * m",
@@ -1056,7 +1056,7 @@
     {
       "name": "copy",
       "module": "numpy",
-      "mechestim_ref": "me.copy",
+      "whest_ref": "me.copy",
       "numpy_ref": "np.copy",
       "category": "free",
       "cost_formula": "0",
@@ -1069,7 +1069,7 @@
     {
       "name": "copysign",
       "module": "numpy",
-      "mechestim_ref": "me.copysign",
+      "whest_ref": "me.copysign",
       "numpy_ref": "np.copysign",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -1082,7 +1082,7 @@
     {
       "name": "copyto",
       "module": "numpy",
-      "mechestim_ref": "me.copyto",
+      "whest_ref": "me.copyto",
       "numpy_ref": "np.copyto",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -1095,7 +1095,7 @@
     {
       "name": "corrcoef",
       "module": "numpy",
-      "mechestim_ref": "me.corrcoef",
+      "whest_ref": "me.corrcoef",
       "numpy_ref": "np.corrcoef",
       "category": "counted_custom",
       "cost_formula": "n^2 * m",
@@ -1108,7 +1108,7 @@
     {
       "name": "correlate",
       "module": "numpy",
-      "mechestim_ref": "me.correlate",
+      "whest_ref": "me.correlate",
       "numpy_ref": "np.correlate",
       "category": "counted_custom",
       "cost_formula": "n * m",
@@ -1121,7 +1121,7 @@
     {
       "name": "cos",
       "module": "numpy",
-      "mechestim_ref": "me.cos",
+      "whest_ref": "me.cos",
       "numpy_ref": "np.cos",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -1134,7 +1134,7 @@
     {
       "name": "cosh",
       "module": "numpy",
-      "mechestim_ref": "me.cosh",
+      "whest_ref": "me.cosh",
       "numpy_ref": "np.cosh",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -1147,7 +1147,7 @@
     {
       "name": "count_nonzero",
       "module": "numpy",
-      "mechestim_ref": "me.count_nonzero",
+      "whest_ref": "me.count_nonzero",
       "numpy_ref": "np.count_nonzero",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -1160,7 +1160,7 @@
     {
       "name": "cov",
       "module": "numpy",
-      "mechestim_ref": "me.cov",
+      "whest_ref": "me.cov",
       "numpy_ref": "np.cov",
       "category": "counted_custom",
       "cost_formula": "n^2 * m",
@@ -1173,7 +1173,7 @@
     {
       "name": "cross",
       "module": "numpy",
-      "mechestim_ref": "me.cross",
+      "whest_ref": "me.cross",
       "numpy_ref": "np.cross",
       "category": "counted_custom",
       "cost_formula": "numel(output)",
@@ -1186,7 +1186,7 @@
     {
       "name": "cumprod",
       "module": "numpy",
-      "mechestim_ref": "me.cumprod",
+      "whest_ref": "me.cumprod",
       "numpy_ref": "np.cumprod",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -1199,7 +1199,7 @@
     {
       "name": "cumsum",
       "module": "numpy",
-      "mechestim_ref": "me.cumsum",
+      "whest_ref": "me.cumsum",
       "numpy_ref": "np.cumsum",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -1212,7 +1212,7 @@
     {
       "name": "cumulative_prod",
       "module": "numpy",
-      "mechestim_ref": "me.cumulative_prod",
+      "whest_ref": "me.cumulative_prod",
       "numpy_ref": "np.cumulative_prod",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -1225,7 +1225,7 @@
     {
       "name": "cumulative_sum",
       "module": "numpy",
-      "mechestim_ref": "me.cumulative_sum",
+      "whest_ref": "me.cumulative_sum",
       "numpy_ref": "np.cumulative_sum",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -1238,7 +1238,7 @@
     {
       "name": "datetime_as_string",
       "module": "numpy",
-      "mechestim_ref": "me.datetime_as_string",
+      "whest_ref": "me.datetime_as_string",
       "numpy_ref": "np.datetime_as_string",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -1251,7 +1251,7 @@
     {
       "name": "datetime_data",
       "module": "numpy",
-      "mechestim_ref": "me.datetime_data",
+      "whest_ref": "me.datetime_data",
       "numpy_ref": "np.datetime_data",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -1264,7 +1264,7 @@
     {
       "name": "deg2rad",
       "module": "numpy",
-      "mechestim_ref": "me.deg2rad",
+      "whest_ref": "me.deg2rad",
       "numpy_ref": "np.deg2rad",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -1277,7 +1277,7 @@
     {
       "name": "degrees",
       "module": "numpy",
-      "mechestim_ref": "me.degrees",
+      "whest_ref": "me.degrees",
       "numpy_ref": "np.degrees",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -1290,7 +1290,7 @@
     {
       "name": "delete",
       "module": "numpy",
-      "mechestim_ref": "me.delete",
+      "whest_ref": "me.delete",
       "numpy_ref": "np.delete",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -1303,7 +1303,7 @@
     {
       "name": "diag",
       "module": "numpy",
-      "mechestim_ref": "me.diag",
+      "whest_ref": "me.diag",
       "numpy_ref": "np.diag",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -1316,7 +1316,7 @@
     {
       "name": "diag_indices",
       "module": "numpy",
-      "mechestim_ref": "me.diag_indices",
+      "whest_ref": "me.diag_indices",
       "numpy_ref": "np.diag_indices",
       "category": "free",
       "cost_formula": "0",
@@ -1329,7 +1329,7 @@
     {
       "name": "diag_indices_from",
       "module": "numpy",
-      "mechestim_ref": "me.diag_indices_from",
+      "whest_ref": "me.diag_indices_from",
       "numpy_ref": "np.diag_indices_from",
       "category": "free",
       "cost_formula": "0",
@@ -1342,7 +1342,7 @@
     {
       "name": "diagflat",
       "module": "numpy",
-      "mechestim_ref": "me.diagflat",
+      "whest_ref": "me.diagflat",
       "numpy_ref": "np.diagflat",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -1355,7 +1355,7 @@
     {
       "name": "diagonal",
       "module": "numpy",
-      "mechestim_ref": "me.diagonal",
+      "whest_ref": "me.diagonal",
       "numpy_ref": "np.diagonal",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -1368,7 +1368,7 @@
     {
       "name": "diff",
       "module": "numpy",
-      "mechestim_ref": "me.diff",
+      "whest_ref": "me.diff",
       "numpy_ref": "np.diff",
       "category": "counted_custom",
       "cost_formula": "numel(input)",
@@ -1381,7 +1381,7 @@
     {
       "name": "digitize",
       "module": "numpy",
-      "mechestim_ref": "me.digitize",
+      "whest_ref": "me.digitize",
       "numpy_ref": "np.digitize",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -1394,7 +1394,7 @@
     {
       "name": "divide",
       "module": "numpy",
-      "mechestim_ref": "me.divide",
+      "whest_ref": "me.divide",
       "numpy_ref": "np.divide",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -1407,7 +1407,7 @@
     {
       "name": "divmod",
       "module": "numpy",
-      "mechestim_ref": "me.divmod",
+      "whest_ref": "me.divmod",
       "numpy_ref": "np.divmod",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -1420,7 +1420,7 @@
     {
       "name": "dot",
       "module": "numpy",
-      "mechestim_ref": "me.dot",
+      "whest_ref": "me.dot",
       "numpy_ref": "np.dot",
       "category": "counted_custom",
       "cost_formula": "m * k * n (FMA=1)",
@@ -1433,7 +1433,7 @@
     {
       "name": "dsplit",
       "module": "numpy",
-      "mechestim_ref": "me.dsplit",
+      "whest_ref": "me.dsplit",
       "numpy_ref": "np.dsplit",
       "category": "free",
       "cost_formula": "0",
@@ -1446,7 +1446,7 @@
     {
       "name": "dstack",
       "module": "numpy",
-      "mechestim_ref": "me.dstack",
+      "whest_ref": "me.dstack",
       "numpy_ref": "np.dstack",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -1459,7 +1459,7 @@
     {
       "name": "ediff1d",
       "module": "numpy",
-      "mechestim_ref": "me.ediff1d",
+      "whest_ref": "me.ediff1d",
       "numpy_ref": "np.ediff1d",
       "category": "counted_custom",
       "cost_formula": "numel(input)",
@@ -1472,7 +1472,7 @@
     {
       "name": "einsum",
       "module": "numpy",
-      "mechestim_ref": "me.einsum",
+      "whest_ref": "me.einsum",
       "numpy_ref": "np.einsum",
       "category": "counted_custom",
       "cost_formula": "op_factor * product of all index dims",
@@ -1485,7 +1485,7 @@
     {
       "name": "einsum_path",
       "module": "numpy",
-      "mechestim_ref": "me.einsum_path",
+      "whest_ref": "me.einsum_path",
       "numpy_ref": "np.einsum_path",
       "category": "counted_custom",
       "cost_formula": "0 (planning only)",
@@ -1498,7 +1498,7 @@
     {
       "name": "empty",
       "module": "numpy",
-      "mechestim_ref": "me.empty",
+      "whest_ref": "me.empty",
       "numpy_ref": "np.empty",
       "category": "free",
       "cost_formula": "0",
@@ -1511,7 +1511,7 @@
     {
       "name": "empty_like",
       "module": "numpy",
-      "mechestim_ref": "me.empty_like",
+      "whest_ref": "me.empty_like",
       "numpy_ref": "np.empty_like",
       "category": "free",
       "cost_formula": "0",
@@ -1524,7 +1524,7 @@
     {
       "name": "equal",
       "module": "numpy",
-      "mechestim_ref": "me.equal",
+      "whest_ref": "me.equal",
       "numpy_ref": "np.equal",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -1537,7 +1537,7 @@
     {
       "name": "exp",
       "module": "numpy",
-      "mechestim_ref": "me.exp",
+      "whest_ref": "me.exp",
       "numpy_ref": "np.exp",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -1550,7 +1550,7 @@
     {
       "name": "exp2",
       "module": "numpy",
-      "mechestim_ref": "me.exp2",
+      "whest_ref": "me.exp2",
       "numpy_ref": "np.exp2",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -1563,7 +1563,7 @@
     {
       "name": "expand_dims",
       "module": "numpy",
-      "mechestim_ref": "me.expand_dims",
+      "whest_ref": "me.expand_dims",
       "numpy_ref": "np.expand_dims",
       "category": "free",
       "cost_formula": "0",
@@ -1576,7 +1576,7 @@
     {
       "name": "expm1",
       "module": "numpy",
-      "mechestim_ref": "me.expm1",
+      "whest_ref": "me.expm1",
       "numpy_ref": "np.expm1",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -1589,7 +1589,7 @@
     {
       "name": "extract",
       "module": "numpy",
-      "mechestim_ref": "me.extract",
+      "whest_ref": "me.extract",
       "numpy_ref": "np.extract",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -1602,7 +1602,7 @@
     {
       "name": "eye",
       "module": "numpy",
-      "mechestim_ref": "me.eye",
+      "whest_ref": "me.eye",
       "numpy_ref": "np.eye",
       "category": "free",
       "cost_formula": "0",
@@ -1615,7 +1615,7 @@
     {
       "name": "fabs",
       "module": "numpy",
-      "mechestim_ref": "me.fabs",
+      "whest_ref": "me.fabs",
       "numpy_ref": "np.fabs",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -1628,7 +1628,7 @@
     {
       "name": "fft.fft",
       "module": "numpy.fft",
-      "mechestim_ref": "me.fft.fft",
+      "whest_ref": "me.fft.fft",
       "numpy_ref": "np.fft.fft",
       "category": "counted_custom",
       "cost_formula": "5n * ceil(log2(n))",
@@ -1641,7 +1641,7 @@
     {
       "name": "fft.fft2",
       "module": "numpy.fft",
-      "mechestim_ref": "me.fft.fft2",
+      "whest_ref": "me.fft.fft2",
       "numpy_ref": "np.fft.fft2",
       "category": "counted_custom",
       "cost_formula": "5N * ceil(log2(N))",
@@ -1654,7 +1654,7 @@
     {
       "name": "fft.fftfreq",
       "module": "numpy.fft",
-      "mechestim_ref": "me.fft.fftfreq",
+      "whest_ref": "me.fft.fftfreq",
       "numpy_ref": "np.fft.fftfreq",
       "category": "free",
       "cost_formula": "0",
@@ -1667,7 +1667,7 @@
     {
       "name": "fft.fftn",
       "module": "numpy.fft",
-      "mechestim_ref": "me.fft.fftn",
+      "whest_ref": "me.fft.fftn",
       "numpy_ref": "np.fft.fftn",
       "category": "counted_custom",
       "cost_formula": "5N * ceil(log2(N))",
@@ -1680,7 +1680,7 @@
     {
       "name": "fft.fftshift",
       "module": "numpy.fft",
-      "mechestim_ref": "me.fft.fftshift",
+      "whest_ref": "me.fft.fftshift",
       "numpy_ref": "np.fft.fftshift",
       "category": "free",
       "cost_formula": "0",
@@ -1693,7 +1693,7 @@
     {
       "name": "fft.hfft",
       "module": "numpy.fft",
-      "mechestim_ref": "me.fft.hfft",
+      "whest_ref": "me.fft.hfft",
       "numpy_ref": "np.fft.hfft",
       "category": "counted_custom",
       "cost_formula": "5n * ceil(log2(n))",
@@ -1706,7 +1706,7 @@
     {
       "name": "fft.ifft",
       "module": "numpy.fft",
-      "mechestim_ref": "me.fft.ifft",
+      "whest_ref": "me.fft.ifft",
       "numpy_ref": "np.fft.ifft",
       "category": "counted_custom",
       "cost_formula": "5n * ceil(log2(n))",
@@ -1719,7 +1719,7 @@
     {
       "name": "fft.ifft2",
       "module": "numpy.fft",
-      "mechestim_ref": "me.fft.ifft2",
+      "whest_ref": "me.fft.ifft2",
       "numpy_ref": "np.fft.ifft2",
       "category": "counted_custom",
       "cost_formula": "5N * ceil(log2(N))",
@@ -1732,7 +1732,7 @@
     {
       "name": "fft.ifftn",
       "module": "numpy.fft",
-      "mechestim_ref": "me.fft.ifftn",
+      "whest_ref": "me.fft.ifftn",
       "numpy_ref": "np.fft.ifftn",
       "category": "counted_custom",
       "cost_formula": "5N * ceil(log2(N))",
@@ -1745,7 +1745,7 @@
     {
       "name": "fft.ifftshift",
       "module": "numpy.fft",
-      "mechestim_ref": "me.fft.ifftshift",
+      "whest_ref": "me.fft.ifftshift",
       "numpy_ref": "np.fft.ifftshift",
       "category": "free",
       "cost_formula": "0",
@@ -1758,7 +1758,7 @@
     {
       "name": "fft.ihfft",
       "module": "numpy.fft",
-      "mechestim_ref": "me.fft.ihfft",
+      "whest_ref": "me.fft.ihfft",
       "numpy_ref": "np.fft.ihfft",
       "category": "counted_custom",
       "cost_formula": "5n * ceil(log2(n))",
@@ -1771,7 +1771,7 @@
     {
       "name": "fft.irfft",
       "module": "numpy.fft",
-      "mechestim_ref": "me.fft.irfft",
+      "whest_ref": "me.fft.irfft",
       "numpy_ref": "np.fft.irfft",
       "category": "counted_custom",
       "cost_formula": "5(n/2) * ceil(log2(n))",
@@ -1784,7 +1784,7 @@
     {
       "name": "fft.irfft2",
       "module": "numpy.fft",
-      "mechestim_ref": "me.fft.irfft2",
+      "whest_ref": "me.fft.irfft2",
       "numpy_ref": "np.fft.irfft2",
       "category": "counted_custom",
       "cost_formula": "5(N/2) * ceil(log2(N))",
@@ -1797,7 +1797,7 @@
     {
       "name": "fft.irfftn",
       "module": "numpy.fft",
-      "mechestim_ref": "me.fft.irfftn",
+      "whest_ref": "me.fft.irfftn",
       "numpy_ref": "np.fft.irfftn",
       "category": "counted_custom",
       "cost_formula": "5(N/2) * ceil(log2(N))",
@@ -1810,7 +1810,7 @@
     {
       "name": "fft.rfft",
       "module": "numpy.fft",
-      "mechestim_ref": "me.fft.rfft",
+      "whest_ref": "me.fft.rfft",
       "numpy_ref": "np.fft.rfft",
       "category": "counted_custom",
       "cost_formula": "5(n/2) * ceil(log2(n))",
@@ -1823,7 +1823,7 @@
     {
       "name": "fft.rfft2",
       "module": "numpy.fft",
-      "mechestim_ref": "me.fft.rfft2",
+      "whest_ref": "me.fft.rfft2",
       "numpy_ref": "np.fft.rfft2",
       "category": "counted_custom",
       "cost_formula": "5(N/2) * ceil(log2(N))",
@@ -1836,7 +1836,7 @@
     {
       "name": "fft.rfftfreq",
       "module": "numpy.fft",
-      "mechestim_ref": "me.fft.rfftfreq",
+      "whest_ref": "me.fft.rfftfreq",
       "numpy_ref": "np.fft.rfftfreq",
       "category": "free",
       "cost_formula": "0",
@@ -1849,7 +1849,7 @@
     {
       "name": "fft.rfftn",
       "module": "numpy.fft",
-      "mechestim_ref": "me.fft.rfftn",
+      "whest_ref": "me.fft.rfftn",
       "numpy_ref": "np.fft.rfftn",
       "category": "counted_custom",
       "cost_formula": "5(N/2) * ceil(log2(N))",
@@ -1862,7 +1862,7 @@
     {
       "name": "fill_diagonal",
       "module": "numpy",
-      "mechestim_ref": "me.fill_diagonal",
+      "whest_ref": "me.fill_diagonal",
       "numpy_ref": "np.fill_diagonal",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -1875,7 +1875,7 @@
     {
       "name": "fix",
       "module": "numpy",
-      "mechestim_ref": "me.fix",
+      "whest_ref": "me.fix",
       "numpy_ref": "np.fix",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -1888,7 +1888,7 @@
     {
       "name": "flatnonzero",
       "module": "numpy",
-      "mechestim_ref": "me.flatnonzero",
+      "whest_ref": "me.flatnonzero",
       "numpy_ref": "np.flatnonzero",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -1901,7 +1901,7 @@
     {
       "name": "flip",
       "module": "numpy",
-      "mechestim_ref": "me.flip",
+      "whest_ref": "me.flip",
       "numpy_ref": "np.flip",
       "category": "free",
       "cost_formula": "0",
@@ -1914,7 +1914,7 @@
     {
       "name": "fliplr",
       "module": "numpy",
-      "mechestim_ref": "me.fliplr",
+      "whest_ref": "me.fliplr",
       "numpy_ref": "np.fliplr",
       "category": "free",
       "cost_formula": "0",
@@ -1927,7 +1927,7 @@
     {
       "name": "flipud",
       "module": "numpy",
-      "mechestim_ref": "me.flipud",
+      "whest_ref": "me.flipud",
       "numpy_ref": "np.flipud",
       "category": "free",
       "cost_formula": "0",
@@ -1940,7 +1940,7 @@
     {
       "name": "float_power",
       "module": "numpy",
-      "mechestim_ref": "me.float_power",
+      "whest_ref": "me.float_power",
       "numpy_ref": "np.float_power",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -1953,7 +1953,7 @@
     {
       "name": "floor",
       "module": "numpy",
-      "mechestim_ref": "me.floor",
+      "whest_ref": "me.floor",
       "numpy_ref": "np.floor",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -1966,7 +1966,7 @@
     {
       "name": "floor_divide",
       "module": "numpy",
-      "mechestim_ref": "me.floor_divide",
+      "whest_ref": "me.floor_divide",
       "numpy_ref": "np.floor_divide",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -1979,7 +1979,7 @@
     {
       "name": "fmax",
       "module": "numpy",
-      "mechestim_ref": "me.fmax",
+      "whest_ref": "me.fmax",
       "numpy_ref": "np.fmax",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -1992,7 +1992,7 @@
     {
       "name": "fmin",
       "module": "numpy",
-      "mechestim_ref": "me.fmin",
+      "whest_ref": "me.fmin",
       "numpy_ref": "np.fmin",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -2005,7 +2005,7 @@
     {
       "name": "fmod",
       "module": "numpy",
-      "mechestim_ref": "me.fmod",
+      "whest_ref": "me.fmod",
       "numpy_ref": "np.fmod",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -2018,7 +2018,7 @@
     {
       "name": "format_float_positional",
       "module": "numpy",
-      "mechestim_ref": "me.format_float_positional",
+      "whest_ref": "me.format_float_positional",
       "numpy_ref": "np.format_float_positional",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -2031,7 +2031,7 @@
     {
       "name": "format_float_scientific",
       "module": "numpy",
-      "mechestim_ref": "me.format_float_scientific",
+      "whest_ref": "me.format_float_scientific",
       "numpy_ref": "np.format_float_scientific",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -2044,7 +2044,7 @@
     {
       "name": "frexp",
       "module": "numpy",
-      "mechestim_ref": "me.frexp",
+      "whest_ref": "me.frexp",
       "numpy_ref": "np.frexp",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -2057,7 +2057,7 @@
     {
       "name": "from_dlpack",
       "module": "numpy",
-      "mechestim_ref": "me.from_dlpack",
+      "whest_ref": "me.from_dlpack",
       "numpy_ref": "np.from_dlpack",
       "category": "free",
       "cost_formula": "0",
@@ -2070,7 +2070,7 @@
     {
       "name": "frombuffer",
       "module": "numpy",
-      "mechestim_ref": "me.frombuffer",
+      "whest_ref": "me.frombuffer",
       "numpy_ref": "np.frombuffer",
       "category": "free",
       "cost_formula": "0",
@@ -2083,7 +2083,7 @@
     {
       "name": "fromfile",
       "module": "numpy",
-      "mechestim_ref": "me.fromfile",
+      "whest_ref": "me.fromfile",
       "numpy_ref": "np.fromfile",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -2096,7 +2096,7 @@
     {
       "name": "fromfunction",
       "module": "numpy",
-      "mechestim_ref": "me.fromfunction",
+      "whest_ref": "me.fromfunction",
       "numpy_ref": "np.fromfunction",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -2109,7 +2109,7 @@
     {
       "name": "fromiter",
       "module": "numpy",
-      "mechestim_ref": "me.fromiter",
+      "whest_ref": "me.fromiter",
       "numpy_ref": "np.fromiter",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -2122,7 +2122,7 @@
     {
       "name": "frompyfunc",
       "module": "numpy",
-      "mechestim_ref": "me.frompyfunc",
+      "whest_ref": "me.frompyfunc",
       "numpy_ref": "np.frompyfunc",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -2135,7 +2135,7 @@
     {
       "name": "fromregex",
       "module": "numpy",
-      "mechestim_ref": "me.fromregex",
+      "whest_ref": "me.fromregex",
       "numpy_ref": "np.fromregex",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -2148,7 +2148,7 @@
     {
       "name": "fromstring",
       "module": "numpy",
-      "mechestim_ref": "me.fromstring",
+      "whest_ref": "me.fromstring",
       "numpy_ref": "np.fromstring",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -2161,7 +2161,7 @@
     {
       "name": "full",
       "module": "numpy",
-      "mechestim_ref": "me.full",
+      "whest_ref": "me.full",
       "numpy_ref": "np.full",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -2174,7 +2174,7 @@
     {
       "name": "full_like",
       "module": "numpy",
-      "mechestim_ref": "me.full_like",
+      "whest_ref": "me.full_like",
       "numpy_ref": "np.full_like",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -2187,7 +2187,7 @@
     {
       "name": "gcd",
       "module": "numpy",
-      "mechestim_ref": "me.gcd",
+      "whest_ref": "me.gcd",
       "numpy_ref": "np.gcd",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -2200,7 +2200,7 @@
     {
       "name": "genfromtxt",
       "module": "numpy",
-      "mechestim_ref": "me.genfromtxt",
+      "whest_ref": "me.genfromtxt",
       "numpy_ref": "np.genfromtxt",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -2213,7 +2213,7 @@
     {
       "name": "geomspace",
       "module": "numpy",
-      "mechestim_ref": "me.geomspace",
+      "whest_ref": "me.geomspace",
       "numpy_ref": "np.geomspace",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -2226,7 +2226,7 @@
     {
       "name": "get_include",
       "module": "numpy",
-      "mechestim_ref": "me.get_include",
+      "whest_ref": "me.get_include",
       "numpy_ref": "np.get_include",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -2239,7 +2239,7 @@
     {
       "name": "getbufsize",
       "module": "numpy",
-      "mechestim_ref": "me.getbufsize",
+      "whest_ref": "me.getbufsize",
       "numpy_ref": "np.getbufsize",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -2252,7 +2252,7 @@
     {
       "name": "geterr",
       "module": "numpy",
-      "mechestim_ref": "me.geterr",
+      "whest_ref": "me.geterr",
       "numpy_ref": "np.geterr",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -2265,7 +2265,7 @@
     {
       "name": "geterrcall",
       "module": "numpy",
-      "mechestim_ref": "me.geterrcall",
+      "whest_ref": "me.geterrcall",
       "numpy_ref": "np.geterrcall",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -2278,7 +2278,7 @@
     {
       "name": "gradient",
       "module": "numpy",
-      "mechestim_ref": "me.gradient",
+      "whest_ref": "me.gradient",
       "numpy_ref": "np.gradient",
       "category": "counted_custom",
       "cost_formula": "numel(input)",
@@ -2291,7 +2291,7 @@
     {
       "name": "greater",
       "module": "numpy",
-      "mechestim_ref": "me.greater",
+      "whest_ref": "me.greater",
       "numpy_ref": "np.greater",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -2304,7 +2304,7 @@
     {
       "name": "greater_equal",
       "module": "numpy",
-      "mechestim_ref": "me.greater_equal",
+      "whest_ref": "me.greater_equal",
       "numpy_ref": "np.greater_equal",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -2316,8 +2316,8 @@
     },
     {
       "name": "hamming",
-      "module": "mechestim._window",
-      "mechestim_ref": "me.hamming",
+      "module": "whest._window",
+      "whest_ref": "me.hamming",
       "numpy_ref": "np.hamming",
       "category": "counted_custom",
       "cost_formula": "n",
@@ -2329,8 +2329,8 @@
     },
     {
       "name": "hanning",
-      "module": "mechestim._window",
-      "mechestim_ref": "me.hanning",
+      "module": "whest._window",
+      "whest_ref": "me.hanning",
       "numpy_ref": "np.hanning",
       "category": "counted_custom",
       "cost_formula": "n",
@@ -2343,7 +2343,7 @@
     {
       "name": "heaviside",
       "module": "numpy",
-      "mechestim_ref": "me.heaviside",
+      "whest_ref": "me.heaviside",
       "numpy_ref": "np.heaviside",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -2356,7 +2356,7 @@
     {
       "name": "histogram",
       "module": "numpy",
-      "mechestim_ref": "me.histogram",
+      "whest_ref": "me.histogram",
       "numpy_ref": "np.histogram",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -2369,7 +2369,7 @@
     {
       "name": "histogram2d",
       "module": "numpy",
-      "mechestim_ref": "me.histogram2d",
+      "whest_ref": "me.histogram2d",
       "numpy_ref": "np.histogram2d",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -2382,7 +2382,7 @@
     {
       "name": "histogram_bin_edges",
       "module": "numpy",
-      "mechestim_ref": "me.histogram_bin_edges",
+      "whest_ref": "me.histogram_bin_edges",
       "numpy_ref": "np.histogram_bin_edges",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -2395,7 +2395,7 @@
     {
       "name": "histogramdd",
       "module": "numpy",
-      "mechestim_ref": "me.histogramdd",
+      "whest_ref": "me.histogramdd",
       "numpy_ref": "np.histogramdd",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -2408,7 +2408,7 @@
     {
       "name": "hsplit",
       "module": "numpy",
-      "mechestim_ref": "me.hsplit",
+      "whest_ref": "me.hsplit",
       "numpy_ref": "np.hsplit",
       "category": "free",
       "cost_formula": "0",
@@ -2421,7 +2421,7 @@
     {
       "name": "hstack",
       "module": "numpy",
-      "mechestim_ref": "me.hstack",
+      "whest_ref": "me.hstack",
       "numpy_ref": "np.hstack",
       "category": "free",
       "cost_formula": "0",
@@ -2434,7 +2434,7 @@
     {
       "name": "hypot",
       "module": "numpy",
-      "mechestim_ref": "me.hypot",
+      "whest_ref": "me.hypot",
       "numpy_ref": "np.hypot",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -2447,7 +2447,7 @@
     {
       "name": "i0",
       "module": "numpy",
-      "mechestim_ref": "me.i0",
+      "whest_ref": "me.i0",
       "numpy_ref": "np.i0",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -2460,7 +2460,7 @@
     {
       "name": "identity",
       "module": "numpy",
-      "mechestim_ref": "me.identity",
+      "whest_ref": "me.identity",
       "numpy_ref": "np.identity",
       "category": "free",
       "cost_formula": "0",
@@ -2473,7 +2473,7 @@
     {
       "name": "imag",
       "module": "numpy",
-      "mechestim_ref": "me.imag",
+      "whest_ref": "me.imag",
       "numpy_ref": "np.imag",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -2486,7 +2486,7 @@
     {
       "name": "in1d",
       "module": "numpy",
-      "mechestim_ref": "me.in1d",
+      "whest_ref": "me.in1d",
       "numpy_ref": "np.in1d",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -2499,7 +2499,7 @@
     {
       "name": "indices",
       "module": "numpy",
-      "mechestim_ref": "me.indices",
+      "whest_ref": "me.indices",
       "numpy_ref": "np.indices",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -2512,7 +2512,7 @@
     {
       "name": "inner",
       "module": "numpy",
-      "mechestim_ref": "me.inner",
+      "whest_ref": "me.inner",
       "numpy_ref": "np.inner",
       "category": "counted_custom",
       "cost_formula": "n",
@@ -2525,7 +2525,7 @@
     {
       "name": "insert",
       "module": "numpy",
-      "mechestim_ref": "me.insert",
+      "whest_ref": "me.insert",
       "numpy_ref": "np.insert",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -2538,7 +2538,7 @@
     {
       "name": "interp",
       "module": "numpy",
-      "mechestim_ref": "me.interp",
+      "whest_ref": "me.interp",
       "numpy_ref": "np.interp",
       "category": "counted_custom",
       "cost_formula": "n * log(m)",
@@ -2551,7 +2551,7 @@
     {
       "name": "intersect1d",
       "module": "numpy",
-      "mechestim_ref": "me.intersect1d",
+      "whest_ref": "me.intersect1d",
       "numpy_ref": "np.intersect1d",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -2564,7 +2564,7 @@
     {
       "name": "invert",
       "module": "numpy",
-      "mechestim_ref": "me.invert",
+      "whest_ref": "me.invert",
       "numpy_ref": "np.invert",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -2577,7 +2577,7 @@
     {
       "name": "is_busday",
       "module": "numpy",
-      "mechestim_ref": "me.is_busday",
+      "whest_ref": "me.is_busday",
       "numpy_ref": "np.is_busday",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -2590,7 +2590,7 @@
     {
       "name": "isclose",
       "module": "numpy",
-      "mechestim_ref": "me.isclose",
+      "whest_ref": "me.isclose",
       "numpy_ref": "np.isclose",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -2603,7 +2603,7 @@
     {
       "name": "iscomplex",
       "module": "numpy",
-      "mechestim_ref": "me.iscomplex",
+      "whest_ref": "me.iscomplex",
       "numpy_ref": "np.iscomplex",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -2616,7 +2616,7 @@
     {
       "name": "iscomplexobj",
       "module": "numpy",
-      "mechestim_ref": "me.iscomplexobj",
+      "whest_ref": "me.iscomplexobj",
       "numpy_ref": "np.iscomplexobj",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -2629,7 +2629,7 @@
     {
       "name": "isdtype",
       "module": "numpy",
-      "mechestim_ref": "me.isdtype",
+      "whest_ref": "me.isdtype",
       "numpy_ref": "np.isdtype",
       "category": "free",
       "cost_formula": "0",
@@ -2642,7 +2642,7 @@
     {
       "name": "isfinite",
       "module": "numpy",
-      "mechestim_ref": "me.isfinite",
+      "whest_ref": "me.isfinite",
       "numpy_ref": "np.isfinite",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -2655,7 +2655,7 @@
     {
       "name": "isfortran",
       "module": "numpy",
-      "mechestim_ref": "me.isfortran",
+      "whest_ref": "me.isfortran",
       "numpy_ref": "np.isfortran",
       "category": "free",
       "cost_formula": "0",
@@ -2668,7 +2668,7 @@
     {
       "name": "isin",
       "module": "numpy",
-      "mechestim_ref": "me.isin",
+      "whest_ref": "me.isin",
       "numpy_ref": "np.isin",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -2681,7 +2681,7 @@
     {
       "name": "isinf",
       "module": "numpy",
-      "mechestim_ref": "me.isinf",
+      "whest_ref": "me.isinf",
       "numpy_ref": "np.isinf",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -2694,7 +2694,7 @@
     {
       "name": "isnan",
       "module": "numpy",
-      "mechestim_ref": "me.isnan",
+      "whest_ref": "me.isnan",
       "numpy_ref": "np.isnan",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -2707,7 +2707,7 @@
     {
       "name": "isnat",
       "module": "numpy",
-      "mechestim_ref": "me.isnat",
+      "whest_ref": "me.isnat",
       "numpy_ref": "np.isnat",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -2720,7 +2720,7 @@
     {
       "name": "isneginf",
       "module": "numpy",
-      "mechestim_ref": "me.isneginf",
+      "whest_ref": "me.isneginf",
       "numpy_ref": "np.isneginf",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -2733,7 +2733,7 @@
     {
       "name": "isposinf",
       "module": "numpy",
-      "mechestim_ref": "me.isposinf",
+      "whest_ref": "me.isposinf",
       "numpy_ref": "np.isposinf",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -2746,7 +2746,7 @@
     {
       "name": "isreal",
       "module": "numpy",
-      "mechestim_ref": "me.isreal",
+      "whest_ref": "me.isreal",
       "numpy_ref": "np.isreal",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -2759,7 +2759,7 @@
     {
       "name": "isrealobj",
       "module": "numpy",
-      "mechestim_ref": "me.isrealobj",
+      "whest_ref": "me.isrealobj",
       "numpy_ref": "np.isrealobj",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -2772,7 +2772,7 @@
     {
       "name": "isscalar",
       "module": "numpy",
-      "mechestim_ref": "me.isscalar",
+      "whest_ref": "me.isscalar",
       "numpy_ref": "np.isscalar",
       "category": "free",
       "cost_formula": "0",
@@ -2785,7 +2785,7 @@
     {
       "name": "issubdtype",
       "module": "numpy",
-      "mechestim_ref": "me.issubdtype",
+      "whest_ref": "me.issubdtype",
       "numpy_ref": "np.issubdtype",
       "category": "free",
       "cost_formula": "0",
@@ -2798,7 +2798,7 @@
     {
       "name": "iterable",
       "module": "numpy",
-      "mechestim_ref": "me.iterable",
+      "whest_ref": "me.iterable",
       "numpy_ref": "np.iterable",
       "category": "free",
       "cost_formula": "0",
@@ -2811,7 +2811,7 @@
     {
       "name": "ix_",
       "module": "numpy",
-      "mechestim_ref": "me.ix_",
+      "whest_ref": "me.ix_",
       "numpy_ref": "np.ix_",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -2823,8 +2823,8 @@
     },
     {
       "name": "kaiser",
-      "module": "mechestim._window",
-      "mechestim_ref": "me.kaiser",
+      "module": "whest._window",
+      "whest_ref": "me.kaiser",
       "numpy_ref": "np.kaiser",
       "category": "counted_custom",
       "cost_formula": "3n",
@@ -2837,7 +2837,7 @@
     {
       "name": "kron",
       "module": "numpy",
-      "mechestim_ref": "me.kron",
+      "whest_ref": "me.kron",
       "numpy_ref": "np.kron",
       "category": "counted_custom",
       "cost_formula": "m1*m2 * n1*n2",
@@ -2850,7 +2850,7 @@
     {
       "name": "lcm",
       "module": "numpy",
-      "mechestim_ref": "me.lcm",
+      "whest_ref": "me.lcm",
       "numpy_ref": "np.lcm",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -2863,7 +2863,7 @@
     {
       "name": "ldexp",
       "module": "numpy",
-      "mechestim_ref": "me.ldexp",
+      "whest_ref": "me.ldexp",
       "numpy_ref": "np.ldexp",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -2876,7 +2876,7 @@
     {
       "name": "left_shift",
       "module": "numpy",
-      "mechestim_ref": "me.left_shift",
+      "whest_ref": "me.left_shift",
       "numpy_ref": "np.left_shift",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -2889,7 +2889,7 @@
     {
       "name": "less",
       "module": "numpy",
-      "mechestim_ref": "me.less",
+      "whest_ref": "me.less",
       "numpy_ref": "np.less",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -2902,7 +2902,7 @@
     {
       "name": "less_equal",
       "module": "numpy",
-      "mechestim_ref": "me.less_equal",
+      "whest_ref": "me.less_equal",
       "numpy_ref": "np.less_equal",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -2915,7 +2915,7 @@
     {
       "name": "lexsort",
       "module": "numpy",
-      "mechestim_ref": "me.lexsort",
+      "whest_ref": "me.lexsort",
       "numpy_ref": "np.lexsort",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -2928,7 +2928,7 @@
     {
       "name": "linalg.cholesky",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.cholesky",
+      "whest_ref": "me.linalg.cholesky",
       "numpy_ref": "np.linalg.cholesky",
       "category": "counted_custom",
       "cost_formula": "n^3",
@@ -2941,7 +2941,7 @@
     {
       "name": "linalg.cond",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.cond",
+      "whest_ref": "me.linalg.cond",
       "numpy_ref": "np.linalg.cond",
       "category": "counted_custom",
       "cost_formula": "m * n * min(m,n)",
@@ -2954,7 +2954,7 @@
     {
       "name": "linalg.cross",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.cross",
+      "whest_ref": "me.linalg.cross",
       "numpy_ref": "np.linalg.cross",
       "category": "counted_custom",
       "cost_formula": "delegates to me.cross",
@@ -2967,7 +2967,7 @@
     {
       "name": "linalg.det",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.det",
+      "whest_ref": "me.linalg.det",
       "numpy_ref": "np.linalg.det",
       "category": "counted_custom",
       "cost_formula": "n^3",
@@ -2980,7 +2980,7 @@
     {
       "name": "linalg.diagonal",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.diagonal",
+      "whest_ref": "me.linalg.diagonal",
       "numpy_ref": "np.linalg.diagonal",
       "category": "free",
       "cost_formula": "0",
@@ -2988,12 +2988,12 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "View of diagonal \u2014 delegates to mechestim.diagonal. Cost: 0 FLOPs."
+      "notes": "View of diagonal \u2014 delegates to whest.diagonal. Cost: 0 FLOPs."
     },
     {
       "name": "linalg.eig",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.eig",
+      "whest_ref": "me.linalg.eig",
       "numpy_ref": "np.linalg.eig",
       "category": "counted_custom",
       "cost_formula": "n^3",
@@ -3006,7 +3006,7 @@
     {
       "name": "linalg.eigh",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.eigh",
+      "whest_ref": "me.linalg.eigh",
       "numpy_ref": "np.linalg.eigh",
       "category": "counted_custom",
       "cost_formula": "n^3",
@@ -3019,7 +3019,7 @@
     {
       "name": "linalg.eigvals",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.eigvals",
+      "whest_ref": "me.linalg.eigvals",
       "numpy_ref": "np.linalg.eigvals",
       "category": "counted_custom",
       "cost_formula": "n^3",
@@ -3032,7 +3032,7 @@
     {
       "name": "linalg.eigvalsh",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.eigvalsh",
+      "whest_ref": "me.linalg.eigvalsh",
       "numpy_ref": "np.linalg.eigvalsh",
       "category": "counted_custom",
       "cost_formula": "n^3",
@@ -3045,7 +3045,7 @@
     {
       "name": "linalg.inv",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.inv",
+      "whest_ref": "me.linalg.inv",
       "numpy_ref": "np.linalg.inv",
       "category": "counted_custom",
       "cost_formula": "n^3",
@@ -3058,7 +3058,7 @@
     {
       "name": "linalg.lstsq",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.lstsq",
+      "whest_ref": "me.linalg.lstsq",
       "numpy_ref": "np.linalg.lstsq",
       "category": "counted_custom",
       "cost_formula": "m * n * min(m,n)",
@@ -3071,7 +3071,7 @@
     {
       "name": "linalg.matmul",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.matmul",
+      "whest_ref": "me.linalg.matmul",
       "numpy_ref": "np.linalg.matmul",
       "category": "counted_custom",
       "cost_formula": "delegates to me.matmul",
@@ -3084,7 +3084,7 @@
     {
       "name": "linalg.matrix_norm",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.matrix_norm",
+      "whest_ref": "me.linalg.matrix_norm",
       "numpy_ref": "np.linalg.matrix_norm",
       "category": "counted_custom",
       "cost_formula": "depends on ord",
@@ -3097,7 +3097,7 @@
     {
       "name": "linalg.matrix_power",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.matrix_power",
+      "whest_ref": "me.linalg.matrix_power",
       "numpy_ref": "np.linalg.matrix_power",
       "category": "counted_custom",
       "cost_formula": "log2(k) * n^3",
@@ -3110,7 +3110,7 @@
     {
       "name": "linalg.matrix_rank",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.matrix_rank",
+      "whest_ref": "me.linalg.matrix_rank",
       "numpy_ref": "np.linalg.matrix_rank",
       "category": "counted_custom",
       "cost_formula": "m * n * min(m,n)",
@@ -3123,7 +3123,7 @@
     {
       "name": "linalg.matrix_transpose",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.matrix_transpose",
+      "whest_ref": "me.linalg.matrix_transpose",
       "numpy_ref": "np.linalg.matrix_transpose",
       "category": "free",
       "cost_formula": "0",
@@ -3131,12 +3131,12 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Transpose view \u2014 delegates to mechestim.matrix_transpose. Cost: 0 FLOPs."
+      "notes": "Transpose view \u2014 delegates to whest.matrix_transpose. Cost: 0 FLOPs."
     },
     {
       "name": "linalg.multi_dot",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.multi_dot",
+      "whest_ref": "me.linalg.multi_dot",
       "numpy_ref": "np.linalg.multi_dot",
       "category": "counted_custom",
       "cost_formula": "optimal chain cost",
@@ -3149,7 +3149,7 @@
     {
       "name": "linalg.norm",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.norm",
+      "whest_ref": "me.linalg.norm",
       "numpy_ref": "np.linalg.norm",
       "category": "counted_custom",
       "cost_formula": "depends on ord",
@@ -3162,7 +3162,7 @@
     {
       "name": "linalg.outer",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.outer",
+      "whest_ref": "me.linalg.outer",
       "numpy_ref": "np.linalg.outer",
       "category": "counted_custom",
       "cost_formula": "delegates to me.outer",
@@ -3175,7 +3175,7 @@
     {
       "name": "linalg.pinv",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.pinv",
+      "whest_ref": "me.linalg.pinv",
       "numpy_ref": "np.linalg.pinv",
       "category": "counted_custom",
       "cost_formula": "m * n * min(m,n)",
@@ -3188,7 +3188,7 @@
     {
       "name": "linalg.qr",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.qr",
+      "whest_ref": "me.linalg.qr",
       "numpy_ref": "np.linalg.qr",
       "category": "counted_custom",
       "cost_formula": "m * n * min(m,n)",
@@ -3201,7 +3201,7 @@
     {
       "name": "linalg.slogdet",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.slogdet",
+      "whest_ref": "me.linalg.slogdet",
       "numpy_ref": "np.linalg.slogdet",
       "category": "counted_custom",
       "cost_formula": "n^3",
@@ -3214,7 +3214,7 @@
     {
       "name": "linalg.solve",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.solve",
+      "whest_ref": "me.linalg.solve",
       "numpy_ref": "np.linalg.solve",
       "category": "counted_custom",
       "cost_formula": "n^3",
@@ -3227,7 +3227,7 @@
     {
       "name": "linalg.svd",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.svd",
+      "whest_ref": "me.linalg.svd",
       "numpy_ref": "np.linalg.svd",
       "category": "counted_custom",
       "cost_formula": "m * n * k",
@@ -3240,7 +3240,7 @@
     {
       "name": "linalg.svdvals",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.svdvals",
+      "whest_ref": "me.linalg.svdvals",
       "numpy_ref": "np.linalg.svdvals",
       "category": "counted_custom",
       "cost_formula": "m * n * min(m,n)",
@@ -3253,7 +3253,7 @@
     {
       "name": "linalg.tensordot",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.tensordot",
+      "whest_ref": "me.linalg.tensordot",
       "numpy_ref": "np.linalg.tensordot",
       "category": "counted_custom",
       "cost_formula": "delegates to me.tensordot",
@@ -3266,7 +3266,7 @@
     {
       "name": "linalg.tensorinv",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.tensorinv",
+      "whest_ref": "me.linalg.tensorinv",
       "numpy_ref": "np.linalg.tensorinv",
       "category": "counted_custom",
       "cost_formula": "n^3",
@@ -3279,7 +3279,7 @@
     {
       "name": "linalg.tensorsolve",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.tensorsolve",
+      "whest_ref": "me.linalg.tensorsolve",
       "numpy_ref": "np.linalg.tensorsolve",
       "category": "counted_custom",
       "cost_formula": "n^3",
@@ -3292,7 +3292,7 @@
     {
       "name": "linalg.trace",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.trace",
+      "whest_ref": "me.linalg.trace",
       "numpy_ref": "np.linalg.trace",
       "category": "counted_custom",
       "cost_formula": "n",
@@ -3305,7 +3305,7 @@
     {
       "name": "linalg.vecdot",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.vecdot",
+      "whest_ref": "me.linalg.vecdot",
       "numpy_ref": "np.linalg.vecdot",
       "category": "counted_custom",
       "cost_formula": "delegates to me.vecdot",
@@ -3318,7 +3318,7 @@
     {
       "name": "linalg.vector_norm",
       "module": "numpy.linalg",
-      "mechestim_ref": "me.linalg.vector_norm",
+      "whest_ref": "me.linalg.vector_norm",
       "numpy_ref": "np.linalg.vector_norm",
       "category": "counted_custom",
       "cost_formula": "numel",
@@ -3331,7 +3331,7 @@
     {
       "name": "linspace",
       "module": "numpy",
-      "mechestim_ref": "me.linspace",
+      "whest_ref": "me.linspace",
       "numpy_ref": "np.linspace",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -3344,7 +3344,7 @@
     {
       "name": "load",
       "module": "numpy",
-      "mechestim_ref": "me.load",
+      "whest_ref": "me.load",
       "numpy_ref": "np.load",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -3357,7 +3357,7 @@
     {
       "name": "loadtxt",
       "module": "numpy",
-      "mechestim_ref": "me.loadtxt",
+      "whest_ref": "me.loadtxt",
       "numpy_ref": "np.loadtxt",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -3370,7 +3370,7 @@
     {
       "name": "log",
       "module": "numpy",
-      "mechestim_ref": "me.log",
+      "whest_ref": "me.log",
       "numpy_ref": "np.log",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -3383,7 +3383,7 @@
     {
       "name": "log10",
       "module": "numpy",
-      "mechestim_ref": "me.log10",
+      "whest_ref": "me.log10",
       "numpy_ref": "np.log10",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -3396,7 +3396,7 @@
     {
       "name": "log1p",
       "module": "numpy",
-      "mechestim_ref": "me.log1p",
+      "whest_ref": "me.log1p",
       "numpy_ref": "np.log1p",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -3409,7 +3409,7 @@
     {
       "name": "log2",
       "module": "numpy",
-      "mechestim_ref": "me.log2",
+      "whest_ref": "me.log2",
       "numpy_ref": "np.log2",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -3422,7 +3422,7 @@
     {
       "name": "logaddexp",
       "module": "numpy",
-      "mechestim_ref": "me.logaddexp",
+      "whest_ref": "me.logaddexp",
       "numpy_ref": "np.logaddexp",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -3435,7 +3435,7 @@
     {
       "name": "logaddexp2",
       "module": "numpy",
-      "mechestim_ref": "me.logaddexp2",
+      "whest_ref": "me.logaddexp2",
       "numpy_ref": "np.logaddexp2",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -3448,7 +3448,7 @@
     {
       "name": "logical_and",
       "module": "numpy",
-      "mechestim_ref": "me.logical_and",
+      "whest_ref": "me.logical_and",
       "numpy_ref": "np.logical_and",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -3461,7 +3461,7 @@
     {
       "name": "logical_not",
       "module": "numpy",
-      "mechestim_ref": "me.logical_not",
+      "whest_ref": "me.logical_not",
       "numpy_ref": "np.logical_not",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -3474,7 +3474,7 @@
     {
       "name": "logical_or",
       "module": "numpy",
-      "mechestim_ref": "me.logical_or",
+      "whest_ref": "me.logical_or",
       "numpy_ref": "np.logical_or",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -3487,7 +3487,7 @@
     {
       "name": "logical_xor",
       "module": "numpy",
-      "mechestim_ref": "me.logical_xor",
+      "whest_ref": "me.logical_xor",
       "numpy_ref": "np.logical_xor",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -3500,7 +3500,7 @@
     {
       "name": "logspace",
       "module": "numpy",
-      "mechestim_ref": "me.logspace",
+      "whest_ref": "me.logspace",
       "numpy_ref": "np.logspace",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -3513,7 +3513,7 @@
     {
       "name": "mask_indices",
       "module": "numpy",
-      "mechestim_ref": "me.mask_indices",
+      "whest_ref": "me.mask_indices",
       "numpy_ref": "np.mask_indices",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -3526,7 +3526,7 @@
     {
       "name": "matmul",
       "module": "numpy",
-      "mechestim_ref": "me.matmul",
+      "whest_ref": "me.matmul",
       "numpy_ref": "np.matmul",
       "category": "counted_custom",
       "cost_formula": "m * k * n (FMA=1)",
@@ -3539,7 +3539,7 @@
     {
       "name": "matrix_transpose",
       "module": "numpy",
-      "mechestim_ref": "me.matrix_transpose",
+      "whest_ref": "me.matrix_transpose",
       "numpy_ref": "np.matrix_transpose",
       "category": "free",
       "cost_formula": "0",
@@ -3552,7 +3552,7 @@
     {
       "name": "matvec",
       "module": "numpy",
-      "mechestim_ref": "me.matvec",
+      "whest_ref": "me.matvec",
       "numpy_ref": "np.matvec",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -3565,7 +3565,7 @@
     {
       "name": "max",
       "module": "numpy",
-      "mechestim_ref": "me.max",
+      "whest_ref": "me.max",
       "numpy_ref": "np.max",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -3578,7 +3578,7 @@
     {
       "name": "maximum",
       "module": "numpy",
-      "mechestim_ref": "me.maximum",
+      "whest_ref": "me.maximum",
       "numpy_ref": "np.maximum",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -3591,7 +3591,7 @@
     {
       "name": "may_share_memory",
       "module": "numpy",
-      "mechestim_ref": "me.may_share_memory",
+      "whest_ref": "me.may_share_memory",
       "numpy_ref": "np.may_share_memory",
       "category": "free",
       "cost_formula": "0",
@@ -3604,7 +3604,7 @@
     {
       "name": "mean",
       "module": "numpy",
-      "mechestim_ref": "me.mean",
+      "whest_ref": "me.mean",
       "numpy_ref": "np.mean",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -3617,7 +3617,7 @@
     {
       "name": "median",
       "module": "numpy",
-      "mechestim_ref": "me.median",
+      "whest_ref": "me.median",
       "numpy_ref": "np.median",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -3630,7 +3630,7 @@
     {
       "name": "meshgrid",
       "module": "numpy",
-      "mechestim_ref": "me.meshgrid",
+      "whest_ref": "me.meshgrid",
       "numpy_ref": "np.meshgrid",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -3643,7 +3643,7 @@
     {
       "name": "min",
       "module": "numpy",
-      "mechestim_ref": "me.min",
+      "whest_ref": "me.min",
       "numpy_ref": "np.min",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -3656,7 +3656,7 @@
     {
       "name": "min_scalar_type",
       "module": "numpy",
-      "mechestim_ref": "me.min_scalar_type",
+      "whest_ref": "me.min_scalar_type",
       "numpy_ref": "np.min_scalar_type",
       "category": "free",
       "cost_formula": "0",
@@ -3669,7 +3669,7 @@
     {
       "name": "minimum",
       "module": "numpy",
-      "mechestim_ref": "me.minimum",
+      "whest_ref": "me.minimum",
       "numpy_ref": "np.minimum",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -3682,7 +3682,7 @@
     {
       "name": "mintypecode",
       "module": "numpy",
-      "mechestim_ref": "me.mintypecode",
+      "whest_ref": "me.mintypecode",
       "numpy_ref": "np.mintypecode",
       "category": "free",
       "cost_formula": "0",
@@ -3695,7 +3695,7 @@
     {
       "name": "mod",
       "module": "numpy",
-      "mechestim_ref": "me.mod",
+      "whest_ref": "me.mod",
       "numpy_ref": "np.mod",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -3708,7 +3708,7 @@
     {
       "name": "modf",
       "module": "numpy",
-      "mechestim_ref": "me.modf",
+      "whest_ref": "me.modf",
       "numpy_ref": "np.modf",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -3721,7 +3721,7 @@
     {
       "name": "moveaxis",
       "module": "numpy",
-      "mechestim_ref": "me.moveaxis",
+      "whest_ref": "me.moveaxis",
       "numpy_ref": "np.moveaxis",
       "category": "free",
       "cost_formula": "0",
@@ -3734,7 +3734,7 @@
     {
       "name": "multiply",
       "module": "numpy",
-      "mechestim_ref": "me.multiply",
+      "whest_ref": "me.multiply",
       "numpy_ref": "np.multiply",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -3747,7 +3747,7 @@
     {
       "name": "nan_to_num",
       "module": "numpy",
-      "mechestim_ref": "me.nan_to_num",
+      "whest_ref": "me.nan_to_num",
       "numpy_ref": "np.nan_to_num",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -3760,7 +3760,7 @@
     {
       "name": "nanargmax",
       "module": "numpy",
-      "mechestim_ref": "me.nanargmax",
+      "whest_ref": "me.nanargmax",
       "numpy_ref": "np.nanargmax",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -3773,7 +3773,7 @@
     {
       "name": "nanargmin",
       "module": "numpy",
-      "mechestim_ref": "me.nanargmin",
+      "whest_ref": "me.nanargmin",
       "numpy_ref": "np.nanargmin",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -3786,7 +3786,7 @@
     {
       "name": "nancumprod",
       "module": "numpy",
-      "mechestim_ref": "me.nancumprod",
+      "whest_ref": "me.nancumprod",
       "numpy_ref": "np.nancumprod",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -3799,7 +3799,7 @@
     {
       "name": "nancumsum",
       "module": "numpy",
-      "mechestim_ref": "me.nancumsum",
+      "whest_ref": "me.nancumsum",
       "numpy_ref": "np.nancumsum",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -3812,7 +3812,7 @@
     {
       "name": "nanmax",
       "module": "numpy",
-      "mechestim_ref": "me.nanmax",
+      "whest_ref": "me.nanmax",
       "numpy_ref": "np.nanmax",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -3825,7 +3825,7 @@
     {
       "name": "nanmean",
       "module": "numpy",
-      "mechestim_ref": "me.nanmean",
+      "whest_ref": "me.nanmean",
       "numpy_ref": "np.nanmean",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -3838,7 +3838,7 @@
     {
       "name": "nanmedian",
       "module": "numpy",
-      "mechestim_ref": "me.nanmedian",
+      "whest_ref": "me.nanmedian",
       "numpy_ref": "np.nanmedian",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -3851,7 +3851,7 @@
     {
       "name": "nanmin",
       "module": "numpy",
-      "mechestim_ref": "me.nanmin",
+      "whest_ref": "me.nanmin",
       "numpy_ref": "np.nanmin",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -3864,7 +3864,7 @@
     {
       "name": "nanpercentile",
       "module": "numpy",
-      "mechestim_ref": "me.nanpercentile",
+      "whest_ref": "me.nanpercentile",
       "numpy_ref": "np.nanpercentile",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -3877,7 +3877,7 @@
     {
       "name": "nanprod",
       "module": "numpy",
-      "mechestim_ref": "me.nanprod",
+      "whest_ref": "me.nanprod",
       "numpy_ref": "np.nanprod",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -3890,7 +3890,7 @@
     {
       "name": "nanquantile",
       "module": "numpy",
-      "mechestim_ref": "me.nanquantile",
+      "whest_ref": "me.nanquantile",
       "numpy_ref": "np.nanquantile",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -3903,7 +3903,7 @@
     {
       "name": "nanstd",
       "module": "numpy",
-      "mechestim_ref": "me.nanstd",
+      "whest_ref": "me.nanstd",
       "numpy_ref": "np.nanstd",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -3916,7 +3916,7 @@
     {
       "name": "nansum",
       "module": "numpy",
-      "mechestim_ref": "me.nansum",
+      "whest_ref": "me.nansum",
       "numpy_ref": "np.nansum",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -3929,7 +3929,7 @@
     {
       "name": "nanvar",
       "module": "numpy",
-      "mechestim_ref": "me.nanvar",
+      "whest_ref": "me.nanvar",
       "numpy_ref": "np.nanvar",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -3942,7 +3942,7 @@
     {
       "name": "ndim",
       "module": "numpy",
-      "mechestim_ref": "me.ndim",
+      "whest_ref": "me.ndim",
       "numpy_ref": "np.ndim",
       "category": "free",
       "cost_formula": "0",
@@ -3955,7 +3955,7 @@
     {
       "name": "negative",
       "module": "numpy",
-      "mechestim_ref": "me.negative",
+      "whest_ref": "me.negative",
       "numpy_ref": "np.negative",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -3968,7 +3968,7 @@
     {
       "name": "nested_iters",
       "module": "numpy",
-      "mechestim_ref": "me.nested_iters",
+      "whest_ref": "me.nested_iters",
       "numpy_ref": "np.nested_iters",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -3981,7 +3981,7 @@
     {
       "name": "nextafter",
       "module": "numpy",
-      "mechestim_ref": "me.nextafter",
+      "whest_ref": "me.nextafter",
       "numpy_ref": "np.nextafter",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -3994,7 +3994,7 @@
     {
       "name": "nonzero",
       "module": "numpy",
-      "mechestim_ref": "me.nonzero",
+      "whest_ref": "me.nonzero",
       "numpy_ref": "np.nonzero",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4007,7 +4007,7 @@
     {
       "name": "not_equal",
       "module": "numpy",
-      "mechestim_ref": "me.not_equal",
+      "whest_ref": "me.not_equal",
       "numpy_ref": "np.not_equal",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -4020,7 +4020,7 @@
     {
       "name": "ones",
       "module": "numpy",
-      "mechestim_ref": "me.ones",
+      "whest_ref": "me.ones",
       "numpy_ref": "np.ones",
       "category": "free",
       "cost_formula": "0",
@@ -4033,7 +4033,7 @@
     {
       "name": "ones_like",
       "module": "numpy",
-      "mechestim_ref": "me.ones_like",
+      "whest_ref": "me.ones_like",
       "numpy_ref": "np.ones_like",
       "category": "free",
       "cost_formula": "0",
@@ -4046,7 +4046,7 @@
     {
       "name": "outer",
       "module": "numpy",
-      "mechestim_ref": "me.outer",
+      "whest_ref": "me.outer",
       "numpy_ref": "np.outer",
       "category": "counted_custom",
       "cost_formula": "m * n",
@@ -4059,7 +4059,7 @@
     {
       "name": "packbits",
       "module": "numpy",
-      "mechestim_ref": "me.packbits",
+      "whest_ref": "me.packbits",
       "numpy_ref": "np.packbits",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4072,7 +4072,7 @@
     {
       "name": "pad",
       "module": "numpy",
-      "mechestim_ref": "me.pad",
+      "whest_ref": "me.pad",
       "numpy_ref": "np.pad",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4085,7 +4085,7 @@
     {
       "name": "partition",
       "module": "numpy",
-      "mechestim_ref": "me.partition",
+      "whest_ref": "me.partition",
       "numpy_ref": "np.partition",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4098,7 +4098,7 @@
     {
       "name": "percentile",
       "module": "numpy",
-      "mechestim_ref": "me.percentile",
+      "whest_ref": "me.percentile",
       "numpy_ref": "np.percentile",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -4111,7 +4111,7 @@
     {
       "name": "permute_dims",
       "module": "numpy",
-      "mechestim_ref": "me.permute_dims",
+      "whest_ref": "me.permute_dims",
       "numpy_ref": "np.permute_dims",
       "category": "free",
       "cost_formula": "0",
@@ -4124,7 +4124,7 @@
     {
       "name": "piecewise",
       "module": "numpy",
-      "mechestim_ref": "me.piecewise",
+      "whest_ref": "me.piecewise",
       "numpy_ref": "np.piecewise",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4137,7 +4137,7 @@
     {
       "name": "place",
       "module": "numpy",
-      "mechestim_ref": "me.place",
+      "whest_ref": "me.place",
       "numpy_ref": "np.place",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4149,8 +4149,8 @@
     },
     {
       "name": "poly",
-      "module": "mechestim._polynomial",
-      "mechestim_ref": "me.poly",
+      "module": "whest._polynomial",
+      "whest_ref": "me.poly",
       "numpy_ref": "np.poly",
       "category": "counted_custom",
       "cost_formula": "n^2",
@@ -4162,8 +4162,8 @@
     },
     {
       "name": "polyadd",
-      "module": "mechestim._polynomial",
-      "mechestim_ref": "me.polyadd",
+      "module": "whest._polynomial",
+      "whest_ref": "me.polyadd",
       "numpy_ref": "np.polyadd",
       "category": "counted_custom",
       "cost_formula": "max(n1, n2)",
@@ -4175,8 +4175,8 @@
     },
     {
       "name": "polyder",
-      "module": "mechestim._polynomial",
-      "mechestim_ref": "me.polyder",
+      "module": "whest._polynomial",
+      "whest_ref": "me.polyder",
       "numpy_ref": "np.polyder",
       "category": "counted_custom",
       "cost_formula": "n",
@@ -4188,8 +4188,8 @@
     },
     {
       "name": "polydiv",
-      "module": "mechestim._polynomial",
-      "mechestim_ref": "me.polydiv",
+      "module": "whest._polynomial",
+      "whest_ref": "me.polydiv",
       "numpy_ref": "np.polydiv",
       "category": "counted_custom",
       "cost_formula": "n1 * n2",
@@ -4201,8 +4201,8 @@
     },
     {
       "name": "polyfit",
-      "module": "mechestim._polynomial",
-      "mechestim_ref": "me.polyfit",
+      "module": "whest._polynomial",
+      "whest_ref": "me.polyfit",
       "numpy_ref": "np.polyfit",
       "category": "counted_custom",
       "cost_formula": "2m * (deg+1)^2",
@@ -4214,8 +4214,8 @@
     },
     {
       "name": "polyint",
-      "module": "mechestim._polynomial",
-      "mechestim_ref": "me.polyint",
+      "module": "whest._polynomial",
+      "whest_ref": "me.polyint",
       "numpy_ref": "np.polyint",
       "category": "counted_custom",
       "cost_formula": "n",
@@ -4227,8 +4227,8 @@
     },
     {
       "name": "polymul",
-      "module": "mechestim._polynomial",
-      "mechestim_ref": "me.polymul",
+      "module": "whest._polynomial",
+      "whest_ref": "me.polymul",
       "numpy_ref": "np.polymul",
       "category": "counted_custom",
       "cost_formula": "n1 * n2",
@@ -4240,8 +4240,8 @@
     },
     {
       "name": "polysub",
-      "module": "mechestim._polynomial",
-      "mechestim_ref": "me.polysub",
+      "module": "whest._polynomial",
+      "whest_ref": "me.polysub",
       "numpy_ref": "np.polysub",
       "category": "counted_custom",
       "cost_formula": "max(n1, n2)",
@@ -4253,8 +4253,8 @@
     },
     {
       "name": "polyval",
-      "module": "mechestim._polynomial",
-      "mechestim_ref": "me.polyval",
+      "module": "whest._polynomial",
+      "whest_ref": "me.polyval",
       "numpy_ref": "np.polyval",
       "category": "counted_custom",
       "cost_formula": "m * deg (FMA=1)",
@@ -4267,7 +4267,7 @@
     {
       "name": "positive",
       "module": "numpy",
-      "mechestim_ref": "me.positive",
+      "whest_ref": "me.positive",
       "numpy_ref": "np.positive",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -4280,7 +4280,7 @@
     {
       "name": "pow",
       "module": "numpy",
-      "mechestim_ref": "me.pow",
+      "whest_ref": "me.pow",
       "numpy_ref": "np.pow",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -4293,7 +4293,7 @@
     {
       "name": "power",
       "module": "numpy",
-      "mechestim_ref": "me.power",
+      "whest_ref": "me.power",
       "numpy_ref": "np.power",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -4306,7 +4306,7 @@
     {
       "name": "prod",
       "module": "numpy",
-      "mechestim_ref": "me.prod",
+      "whest_ref": "me.prod",
       "numpy_ref": "np.prod",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -4319,7 +4319,7 @@
     {
       "name": "promote_types",
       "module": "numpy",
-      "mechestim_ref": "me.promote_types",
+      "whest_ref": "me.promote_types",
       "numpy_ref": "np.promote_types",
       "category": "free",
       "cost_formula": "0",
@@ -4332,7 +4332,7 @@
     {
       "name": "ptp",
       "module": "numpy",
-      "mechestim_ref": "me.ptp",
+      "whest_ref": "me.ptp",
       "numpy_ref": "np.ptp",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -4345,7 +4345,7 @@
     {
       "name": "put",
       "module": "numpy",
-      "mechestim_ref": "me.put",
+      "whest_ref": "me.put",
       "numpy_ref": "np.put",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4358,7 +4358,7 @@
     {
       "name": "put_along_axis",
       "module": "numpy",
-      "mechestim_ref": "me.put_along_axis",
+      "whest_ref": "me.put_along_axis",
       "numpy_ref": "np.put_along_axis",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4371,7 +4371,7 @@
     {
       "name": "putmask",
       "module": "numpy",
-      "mechestim_ref": "me.putmask",
+      "whest_ref": "me.putmask",
       "numpy_ref": "np.putmask",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4384,7 +4384,7 @@
     {
       "name": "quantile",
       "module": "numpy",
-      "mechestim_ref": "me.quantile",
+      "whest_ref": "me.quantile",
       "numpy_ref": "np.quantile",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -4397,7 +4397,7 @@
     {
       "name": "rad2deg",
       "module": "numpy",
-      "mechestim_ref": "me.rad2deg",
+      "whest_ref": "me.rad2deg",
       "numpy_ref": "np.rad2deg",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -4410,7 +4410,7 @@
     {
       "name": "radians",
       "module": "numpy",
-      "mechestim_ref": "me.radians",
+      "whest_ref": "me.radians",
       "numpy_ref": "np.radians",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -4423,7 +4423,7 @@
     {
       "name": "random.beta",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.beta",
+      "whest_ref": "me.random.beta",
       "numpy_ref": "np.random.beta",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4436,7 +4436,7 @@
     {
       "name": "random.binomial",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.binomial",
+      "whest_ref": "me.random.binomial",
       "numpy_ref": "np.random.binomial",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4449,7 +4449,7 @@
     {
       "name": "random.bytes",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.bytes",
+      "whest_ref": "me.random.bytes",
       "numpy_ref": "np.random.bytes",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4462,7 +4462,7 @@
     {
       "name": "random.chisquare",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.chisquare",
+      "whest_ref": "me.random.chisquare",
       "numpy_ref": "np.random.chisquare",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4475,7 +4475,7 @@
     {
       "name": "random.choice",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.choice",
+      "whest_ref": "me.random.choice",
       "numpy_ref": "np.random.choice",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4488,7 +4488,7 @@
     {
       "name": "random.default_rng",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.default_rng",
+      "whest_ref": "me.random.default_rng",
       "numpy_ref": "np.random.default_rng",
       "category": "free",
       "cost_formula": "0",
@@ -4501,7 +4501,7 @@
     {
       "name": "random.dirichlet",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.dirichlet",
+      "whest_ref": "me.random.dirichlet",
       "numpy_ref": "np.random.dirichlet",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4514,7 +4514,7 @@
     {
       "name": "random.exponential",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.exponential",
+      "whest_ref": "me.random.exponential",
       "numpy_ref": "np.random.exponential",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4527,7 +4527,7 @@
     {
       "name": "random.f",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.f",
+      "whest_ref": "me.random.f",
       "numpy_ref": "np.random.f",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4540,7 +4540,7 @@
     {
       "name": "random.gamma",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.gamma",
+      "whest_ref": "me.random.gamma",
       "numpy_ref": "np.random.gamma",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4553,7 +4553,7 @@
     {
       "name": "random.geometric",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.geometric",
+      "whest_ref": "me.random.geometric",
       "numpy_ref": "np.random.geometric",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4566,7 +4566,7 @@
     {
       "name": "random.get_state",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.get_state",
+      "whest_ref": "me.random.get_state",
       "numpy_ref": "np.random.get_state",
       "category": "free",
       "cost_formula": "0",
@@ -4579,7 +4579,7 @@
     {
       "name": "random.gumbel",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.gumbel",
+      "whest_ref": "me.random.gumbel",
       "numpy_ref": "np.random.gumbel",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4592,7 +4592,7 @@
     {
       "name": "random.hypergeometric",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.hypergeometric",
+      "whest_ref": "me.random.hypergeometric",
       "numpy_ref": "np.random.hypergeometric",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4605,7 +4605,7 @@
     {
       "name": "random.laplace",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.laplace",
+      "whest_ref": "me.random.laplace",
       "numpy_ref": "np.random.laplace",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4618,7 +4618,7 @@
     {
       "name": "random.logistic",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.logistic",
+      "whest_ref": "me.random.logistic",
       "numpy_ref": "np.random.logistic",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4631,7 +4631,7 @@
     {
       "name": "random.lognormal",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.lognormal",
+      "whest_ref": "me.random.lognormal",
       "numpy_ref": "np.random.lognormal",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4644,7 +4644,7 @@
     {
       "name": "random.logseries",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.logseries",
+      "whest_ref": "me.random.logseries",
       "numpy_ref": "np.random.logseries",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4657,7 +4657,7 @@
     {
       "name": "random.multinomial",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.multinomial",
+      "whest_ref": "me.random.multinomial",
       "numpy_ref": "np.random.multinomial",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4670,7 +4670,7 @@
     {
       "name": "random.multivariate_normal",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.multivariate_normal",
+      "whest_ref": "me.random.multivariate_normal",
       "numpy_ref": "np.random.multivariate_normal",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4683,7 +4683,7 @@
     {
       "name": "random.negative_binomial",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.negative_binomial",
+      "whest_ref": "me.random.negative_binomial",
       "numpy_ref": "np.random.negative_binomial",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4696,7 +4696,7 @@
     {
       "name": "random.noncentral_chisquare",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.noncentral_chisquare",
+      "whest_ref": "me.random.noncentral_chisquare",
       "numpy_ref": "np.random.noncentral_chisquare",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4709,7 +4709,7 @@
     {
       "name": "random.noncentral_f",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.noncentral_f",
+      "whest_ref": "me.random.noncentral_f",
       "numpy_ref": "np.random.noncentral_f",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4722,7 +4722,7 @@
     {
       "name": "random.normal",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.normal",
+      "whest_ref": "me.random.normal",
       "numpy_ref": "np.random.normal",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4735,7 +4735,7 @@
     {
       "name": "random.pareto",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.pareto",
+      "whest_ref": "me.random.pareto",
       "numpy_ref": "np.random.pareto",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4748,7 +4748,7 @@
     {
       "name": "random.permutation",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.permutation",
+      "whest_ref": "me.random.permutation",
       "numpy_ref": "np.random.permutation",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4761,7 +4761,7 @@
     {
       "name": "random.poisson",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.poisson",
+      "whest_ref": "me.random.poisson",
       "numpy_ref": "np.random.poisson",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4774,7 +4774,7 @@
     {
       "name": "random.power",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.power",
+      "whest_ref": "me.random.power",
       "numpy_ref": "np.random.power",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4787,7 +4787,7 @@
     {
       "name": "random.rand",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.rand",
+      "whest_ref": "me.random.rand",
       "numpy_ref": "np.random.rand",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4800,7 +4800,7 @@
     {
       "name": "random.randint",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.randint",
+      "whest_ref": "me.random.randint",
       "numpy_ref": "np.random.randint",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4813,7 +4813,7 @@
     {
       "name": "random.randn",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.randn",
+      "whest_ref": "me.random.randn",
       "numpy_ref": "np.random.randn",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4826,7 +4826,7 @@
     {
       "name": "random.random",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.random",
+      "whest_ref": "me.random.random",
       "numpy_ref": "np.random.random",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4839,7 +4839,7 @@
     {
       "name": "random.random_integers",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.random_integers",
+      "whest_ref": "me.random.random_integers",
       "numpy_ref": "np.random.random_integers",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4852,7 +4852,7 @@
     {
       "name": "random.random_sample",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.random_sample",
+      "whest_ref": "me.random.random_sample",
       "numpy_ref": "np.random.random_sample",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4865,7 +4865,7 @@
     {
       "name": "random.ranf",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.ranf",
+      "whest_ref": "me.random.ranf",
       "numpy_ref": "np.random.ranf",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4878,7 +4878,7 @@
     {
       "name": "random.rayleigh",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.rayleigh",
+      "whest_ref": "me.random.rayleigh",
       "numpy_ref": "np.random.rayleigh",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4891,7 +4891,7 @@
     {
       "name": "random.sample",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.sample",
+      "whest_ref": "me.random.sample",
       "numpy_ref": "np.random.sample",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4904,7 +4904,7 @@
     {
       "name": "random.seed",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.seed",
+      "whest_ref": "me.random.seed",
       "numpy_ref": "np.random.seed",
       "category": "free",
       "cost_formula": "0",
@@ -4917,7 +4917,7 @@
     {
       "name": "random.set_state",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.set_state",
+      "whest_ref": "me.random.set_state",
       "numpy_ref": "np.random.set_state",
       "category": "free",
       "cost_formula": "0",
@@ -4930,7 +4930,7 @@
     {
       "name": "random.shuffle",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.shuffle",
+      "whest_ref": "me.random.shuffle",
       "numpy_ref": "np.random.shuffle",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4943,7 +4943,7 @@
     {
       "name": "random.standard_cauchy",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.standard_cauchy",
+      "whest_ref": "me.random.standard_cauchy",
       "numpy_ref": "np.random.standard_cauchy",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4956,7 +4956,7 @@
     {
       "name": "random.standard_exponential",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.standard_exponential",
+      "whest_ref": "me.random.standard_exponential",
       "numpy_ref": "np.random.standard_exponential",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4969,7 +4969,7 @@
     {
       "name": "random.standard_gamma",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.standard_gamma",
+      "whest_ref": "me.random.standard_gamma",
       "numpy_ref": "np.random.standard_gamma",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4982,7 +4982,7 @@
     {
       "name": "random.standard_normal",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.standard_normal",
+      "whest_ref": "me.random.standard_normal",
       "numpy_ref": "np.random.standard_normal",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -4995,7 +4995,7 @@
     {
       "name": "random.standard_t",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.standard_t",
+      "whest_ref": "me.random.standard_t",
       "numpy_ref": "np.random.standard_t",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -5008,7 +5008,7 @@
     {
       "name": "random.triangular",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.triangular",
+      "whest_ref": "me.random.triangular",
       "numpy_ref": "np.random.triangular",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -5021,7 +5021,7 @@
     {
       "name": "random.uniform",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.uniform",
+      "whest_ref": "me.random.uniform",
       "numpy_ref": "np.random.uniform",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -5034,7 +5034,7 @@
     {
       "name": "random.vonmises",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.vonmises",
+      "whest_ref": "me.random.vonmises",
       "numpy_ref": "np.random.vonmises",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -5047,7 +5047,7 @@
     {
       "name": "random.wald",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.wald",
+      "whest_ref": "me.random.wald",
       "numpy_ref": "np.random.wald",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -5060,7 +5060,7 @@
     {
       "name": "random.weibull",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.weibull",
+      "whest_ref": "me.random.weibull",
       "numpy_ref": "np.random.weibull",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -5073,7 +5073,7 @@
     {
       "name": "random.zipf",
       "module": "numpy.random",
-      "mechestim_ref": "me.random.zipf",
+      "whest_ref": "me.random.zipf",
       "numpy_ref": "np.random.zipf",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -5086,7 +5086,7 @@
     {
       "name": "ravel",
       "module": "numpy",
-      "mechestim_ref": "me.ravel",
+      "whest_ref": "me.ravel",
       "numpy_ref": "np.ravel",
       "category": "free",
       "cost_formula": "0",
@@ -5099,7 +5099,7 @@
     {
       "name": "ravel_multi_index",
       "module": "numpy",
-      "mechestim_ref": "me.ravel_multi_index",
+      "whest_ref": "me.ravel_multi_index",
       "numpy_ref": "np.ravel_multi_index",
       "category": "free",
       "cost_formula": "0",
@@ -5112,7 +5112,7 @@
     {
       "name": "real",
       "module": "numpy",
-      "mechestim_ref": "me.real",
+      "whest_ref": "me.real",
       "numpy_ref": "np.real",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -5125,7 +5125,7 @@
     {
       "name": "real_if_close",
       "module": "numpy",
-      "mechestim_ref": "me.real_if_close",
+      "whest_ref": "me.real_if_close",
       "numpy_ref": "np.real_if_close",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -5138,7 +5138,7 @@
     {
       "name": "reciprocal",
       "module": "numpy",
-      "mechestim_ref": "me.reciprocal",
+      "whest_ref": "me.reciprocal",
       "numpy_ref": "np.reciprocal",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -5151,7 +5151,7 @@
     {
       "name": "remainder",
       "module": "numpy",
-      "mechestim_ref": "me.remainder",
+      "whest_ref": "me.remainder",
       "numpy_ref": "np.remainder",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -5164,7 +5164,7 @@
     {
       "name": "repeat",
       "module": "numpy",
-      "mechestim_ref": "me.repeat",
+      "whest_ref": "me.repeat",
       "numpy_ref": "np.repeat",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -5177,7 +5177,7 @@
     {
       "name": "require",
       "module": "numpy",
-      "mechestim_ref": "me.require",
+      "whest_ref": "me.require",
       "numpy_ref": "np.require",
       "category": "free",
       "cost_formula": "0",
@@ -5190,7 +5190,7 @@
     {
       "name": "reshape",
       "module": "numpy",
-      "mechestim_ref": "me.reshape",
+      "whest_ref": "me.reshape",
       "numpy_ref": "np.reshape",
       "category": "free",
       "cost_formula": "0",
@@ -5203,7 +5203,7 @@
     {
       "name": "resize",
       "module": "numpy",
-      "mechestim_ref": "me.resize",
+      "whest_ref": "me.resize",
       "numpy_ref": "np.resize",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -5216,7 +5216,7 @@
     {
       "name": "result_type",
       "module": "numpy",
-      "mechestim_ref": "me.result_type",
+      "whest_ref": "me.result_type",
       "numpy_ref": "np.result_type",
       "category": "free",
       "cost_formula": "0",
@@ -5229,7 +5229,7 @@
     {
       "name": "right_shift",
       "module": "numpy",
-      "mechestim_ref": "me.right_shift",
+      "whest_ref": "me.right_shift",
       "numpy_ref": "np.right_shift",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -5242,7 +5242,7 @@
     {
       "name": "rint",
       "module": "numpy",
-      "mechestim_ref": "me.rint",
+      "whest_ref": "me.rint",
       "numpy_ref": "np.rint",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -5255,7 +5255,7 @@
     {
       "name": "roll",
       "module": "numpy",
-      "mechestim_ref": "me.roll",
+      "whest_ref": "me.roll",
       "numpy_ref": "np.roll",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -5268,7 +5268,7 @@
     {
       "name": "rollaxis",
       "module": "numpy",
-      "mechestim_ref": "me.rollaxis",
+      "whest_ref": "me.rollaxis",
       "numpy_ref": "np.rollaxis",
       "category": "free",
       "cost_formula": "0",
@@ -5280,8 +5280,8 @@
     },
     {
       "name": "roots",
-      "module": "mechestim._polynomial",
-      "mechestim_ref": "me.roots",
+      "module": "whest._polynomial",
+      "whest_ref": "me.roots",
       "numpy_ref": "np.roots",
       "category": "counted_custom",
       "cost_formula": "10n^3",
@@ -5294,7 +5294,7 @@
     {
       "name": "rot90",
       "module": "numpy",
-      "mechestim_ref": "me.rot90",
+      "whest_ref": "me.rot90",
       "numpy_ref": "np.rot90",
       "category": "free",
       "cost_formula": "0",
@@ -5307,7 +5307,7 @@
     {
       "name": "round",
       "module": "numpy",
-      "mechestim_ref": "me.round",
+      "whest_ref": "me.round",
       "numpy_ref": "np.round",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -5320,7 +5320,7 @@
     {
       "name": "row_stack",
       "module": "numpy",
-      "mechestim_ref": "me.row_stack",
+      "whest_ref": "me.row_stack",
       "numpy_ref": "np.row_stack",
       "category": "free",
       "cost_formula": "0",
@@ -5333,7 +5333,7 @@
     {
       "name": "save",
       "module": "numpy",
-      "mechestim_ref": "me.save",
+      "whest_ref": "me.save",
       "numpy_ref": "np.save",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -5346,7 +5346,7 @@
     {
       "name": "savetxt",
       "module": "numpy",
-      "mechestim_ref": "me.savetxt",
+      "whest_ref": "me.savetxt",
       "numpy_ref": "np.savetxt",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -5359,7 +5359,7 @@
     {
       "name": "savez",
       "module": "numpy",
-      "mechestim_ref": "me.savez",
+      "whest_ref": "me.savez",
       "numpy_ref": "np.savez",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -5372,7 +5372,7 @@
     {
       "name": "savez_compressed",
       "module": "numpy",
-      "mechestim_ref": "me.savez_compressed",
+      "whest_ref": "me.savez_compressed",
       "numpy_ref": "np.savez_compressed",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -5385,7 +5385,7 @@
     {
       "name": "searchsorted",
       "module": "numpy",
-      "mechestim_ref": "me.searchsorted",
+      "whest_ref": "me.searchsorted",
       "numpy_ref": "np.searchsorted",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -5398,7 +5398,7 @@
     {
       "name": "select",
       "module": "numpy",
-      "mechestim_ref": "me.select",
+      "whest_ref": "me.select",
       "numpy_ref": "np.select",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -5411,7 +5411,7 @@
     {
       "name": "setbufsize",
       "module": "numpy",
-      "mechestim_ref": "me.setbufsize",
+      "whest_ref": "me.setbufsize",
       "numpy_ref": "np.setbufsize",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -5424,7 +5424,7 @@
     {
       "name": "setdiff1d",
       "module": "numpy",
-      "mechestim_ref": "me.setdiff1d",
+      "whest_ref": "me.setdiff1d",
       "numpy_ref": "np.setdiff1d",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -5437,7 +5437,7 @@
     {
       "name": "seterr",
       "module": "numpy",
-      "mechestim_ref": "me.seterr",
+      "whest_ref": "me.seterr",
       "numpy_ref": "np.seterr",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -5450,7 +5450,7 @@
     {
       "name": "seterrcall",
       "module": "numpy",
-      "mechestim_ref": "me.seterrcall",
+      "whest_ref": "me.seterrcall",
       "numpy_ref": "np.seterrcall",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -5463,7 +5463,7 @@
     {
       "name": "setxor1d",
       "module": "numpy",
-      "mechestim_ref": "me.setxor1d",
+      "whest_ref": "me.setxor1d",
       "numpy_ref": "np.setxor1d",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -5476,7 +5476,7 @@
     {
       "name": "shape",
       "module": "numpy",
-      "mechestim_ref": "me.shape",
+      "whest_ref": "me.shape",
       "numpy_ref": "np.shape",
       "category": "free",
       "cost_formula": "0",
@@ -5489,7 +5489,7 @@
     {
       "name": "shares_memory",
       "module": "numpy",
-      "mechestim_ref": "me.shares_memory",
+      "whest_ref": "me.shares_memory",
       "numpy_ref": "np.shares_memory",
       "category": "free",
       "cost_formula": "0",
@@ -5502,7 +5502,7 @@
     {
       "name": "show_config",
       "module": "numpy",
-      "mechestim_ref": "me.show_config",
+      "whest_ref": "me.show_config",
       "numpy_ref": "np.show_config",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -5515,7 +5515,7 @@
     {
       "name": "show_runtime",
       "module": "numpy",
-      "mechestim_ref": "me.show_runtime",
+      "whest_ref": "me.show_runtime",
       "numpy_ref": "np.show_runtime",
       "category": "blacklisted",
       "cost_formula": "N/A",
@@ -5528,7 +5528,7 @@
     {
       "name": "sign",
       "module": "numpy",
-      "mechestim_ref": "me.sign",
+      "whest_ref": "me.sign",
       "numpy_ref": "np.sign",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -5541,7 +5541,7 @@
     {
       "name": "signbit",
       "module": "numpy",
-      "mechestim_ref": "me.signbit",
+      "whest_ref": "me.signbit",
       "numpy_ref": "np.signbit",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -5554,7 +5554,7 @@
     {
       "name": "sin",
       "module": "numpy",
-      "mechestim_ref": "me.sin",
+      "whest_ref": "me.sin",
       "numpy_ref": "np.sin",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -5567,7 +5567,7 @@
     {
       "name": "sinc",
       "module": "numpy",
-      "mechestim_ref": "me.sinc",
+      "whest_ref": "me.sinc",
       "numpy_ref": "np.sinc",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -5580,7 +5580,7 @@
     {
       "name": "sinh",
       "module": "numpy",
-      "mechestim_ref": "me.sinh",
+      "whest_ref": "me.sinh",
       "numpy_ref": "np.sinh",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -5593,7 +5593,7 @@
     {
       "name": "size",
       "module": "numpy",
-      "mechestim_ref": "me.size",
+      "whest_ref": "me.size",
       "numpy_ref": "np.size",
       "category": "free",
       "cost_formula": "0",
@@ -5606,7 +5606,7 @@
     {
       "name": "sort",
       "module": "numpy",
-      "mechestim_ref": "me.sort",
+      "whest_ref": "me.sort",
       "numpy_ref": "np.sort",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -5619,7 +5619,7 @@
     {
       "name": "sort_complex",
       "module": "numpy",
-      "mechestim_ref": "me.sort_complex",
+      "whest_ref": "me.sort_complex",
       "numpy_ref": "np.sort_complex",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -5632,7 +5632,7 @@
     {
       "name": "spacing",
       "module": "numpy",
-      "mechestim_ref": "me.spacing",
+      "whest_ref": "me.spacing",
       "numpy_ref": "np.spacing",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -5645,7 +5645,7 @@
     {
       "name": "split",
       "module": "numpy",
-      "mechestim_ref": "me.split",
+      "whest_ref": "me.split",
       "numpy_ref": "np.split",
       "category": "free",
       "cost_formula": "0",
@@ -5658,7 +5658,7 @@
     {
       "name": "sqrt",
       "module": "numpy",
-      "mechestim_ref": "me.sqrt",
+      "whest_ref": "me.sqrt",
       "numpy_ref": "np.sqrt",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -5671,7 +5671,7 @@
     {
       "name": "square",
       "module": "numpy",
-      "mechestim_ref": "me.square",
+      "whest_ref": "me.square",
       "numpy_ref": "np.square",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -5684,7 +5684,7 @@
     {
       "name": "squeeze",
       "module": "numpy",
-      "mechestim_ref": "me.squeeze",
+      "whest_ref": "me.squeeze",
       "numpy_ref": "np.squeeze",
       "category": "free",
       "cost_formula": "0",
@@ -5697,7 +5697,7 @@
     {
       "name": "stack",
       "module": "numpy",
-      "mechestim_ref": "me.stack",
+      "whest_ref": "me.stack",
       "numpy_ref": "np.stack",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -5709,8 +5709,8 @@
     },
     {
       "name": "stats.cauchy.cdf",
-      "module": "mechestim.stats",
-      "mechestim_ref": "me.stats.cauchy.cdf",
+      "module": "whest.stats",
+      "whest_ref": "me.stats.cauchy.cdf",
       "numpy_ref": "np.stats.cauchy.cdf",
       "category": "counted_custom",
       "cost_formula": "5n",
@@ -5722,8 +5722,8 @@
     },
     {
       "name": "stats.cauchy.pdf",
-      "module": "mechestim.stats",
-      "mechestim_ref": "me.stats.cauchy.pdf",
+      "module": "whest.stats",
+      "whest_ref": "me.stats.cauchy.pdf",
       "numpy_ref": "np.stats.cauchy.pdf",
       "category": "counted_custom",
       "cost_formula": "6n",
@@ -5735,8 +5735,8 @@
     },
     {
       "name": "stats.cauchy.ppf",
-      "module": "mechestim.stats",
-      "mechestim_ref": "me.stats.cauchy.ppf",
+      "module": "whest.stats",
+      "whest_ref": "me.stats.cauchy.ppf",
       "numpy_ref": "np.stats.cauchy.ppf",
       "category": "counted_custom",
       "cost_formula": "5n",
@@ -5748,8 +5748,8 @@
     },
     {
       "name": "stats.expon.cdf",
-      "module": "mechestim.stats",
-      "mechestim_ref": "me.stats.expon.cdf",
+      "module": "whest.stats",
+      "whest_ref": "me.stats.expon.cdf",
       "numpy_ref": "np.stats.expon.cdf",
       "category": "counted_custom",
       "cost_formula": "5n",
@@ -5761,8 +5761,8 @@
     },
     {
       "name": "stats.expon.pdf",
-      "module": "mechestim.stats",
-      "mechestim_ref": "me.stats.expon.pdf",
+      "module": "whest.stats",
+      "whest_ref": "me.stats.expon.pdf",
       "numpy_ref": "np.stats.expon.pdf",
       "category": "counted_custom",
       "cost_formula": "5n",
@@ -5774,8 +5774,8 @@
     },
     {
       "name": "stats.expon.ppf",
-      "module": "mechestim.stats",
-      "mechestim_ref": "me.stats.expon.ppf",
+      "module": "whest.stats",
+      "whest_ref": "me.stats.expon.ppf",
       "numpy_ref": "np.stats.expon.ppf",
       "category": "counted_custom",
       "cost_formula": "5n",
@@ -5787,8 +5787,8 @@
     },
     {
       "name": "stats.laplace.cdf",
-      "module": "mechestim.stats",
-      "mechestim_ref": "me.stats.laplace.cdf",
+      "module": "whest.stats",
+      "whest_ref": "me.stats.laplace.cdf",
       "numpy_ref": "np.stats.laplace.cdf",
       "category": "counted_custom",
       "cost_formula": "5n",
@@ -5800,8 +5800,8 @@
     },
     {
       "name": "stats.laplace.pdf",
-      "module": "mechestim.stats",
-      "mechestim_ref": "me.stats.laplace.pdf",
+      "module": "whest.stats",
+      "whest_ref": "me.stats.laplace.pdf",
       "numpy_ref": "np.stats.laplace.pdf",
       "category": "counted_custom",
       "cost_formula": "5n",
@@ -5813,8 +5813,8 @@
     },
     {
       "name": "stats.laplace.ppf",
-      "module": "mechestim.stats",
-      "mechestim_ref": "me.stats.laplace.ppf",
+      "module": "whest.stats",
+      "whest_ref": "me.stats.laplace.ppf",
       "numpy_ref": "np.stats.laplace.ppf",
       "category": "counted_custom",
       "cost_formula": "5n",
@@ -5826,8 +5826,8 @@
     },
     {
       "name": "stats.logistic.cdf",
-      "module": "mechestim.stats",
-      "mechestim_ref": "me.stats.logistic.cdf",
+      "module": "whest.stats",
+      "whest_ref": "me.stats.logistic.cdf",
       "numpy_ref": "np.stats.logistic.cdf",
       "category": "counted_custom",
       "cost_formula": "5n",
@@ -5839,8 +5839,8 @@
     },
     {
       "name": "stats.logistic.pdf",
-      "module": "mechestim.stats",
-      "mechestim_ref": "me.stats.logistic.pdf",
+      "module": "whest.stats",
+      "whest_ref": "me.stats.logistic.pdf",
       "numpy_ref": "np.stats.logistic.pdf",
       "category": "counted_custom",
       "cost_formula": "8n",
@@ -5852,8 +5852,8 @@
     },
     {
       "name": "stats.logistic.ppf",
-      "module": "mechestim.stats",
-      "mechestim_ref": "me.stats.logistic.ppf",
+      "module": "whest.stats",
+      "whest_ref": "me.stats.logistic.ppf",
       "numpy_ref": "np.stats.logistic.ppf",
       "category": "counted_custom",
       "cost_formula": "5n",
@@ -5865,8 +5865,8 @@
     },
     {
       "name": "stats.lognorm.cdf",
-      "module": "mechestim.stats",
-      "mechestim_ref": "me.stats.lognorm.cdf",
+      "module": "whest.stats",
+      "whest_ref": "me.stats.lognorm.cdf",
       "numpy_ref": "np.stats.lognorm.cdf",
       "category": "counted_custom",
       "cost_formula": "25n",
@@ -5878,8 +5878,8 @@
     },
     {
       "name": "stats.lognorm.pdf",
-      "module": "mechestim.stats",
-      "mechestim_ref": "me.stats.lognorm.pdf",
+      "module": "whest.stats",
+      "whest_ref": "me.stats.lognorm.pdf",
       "numpy_ref": "np.stats.lognorm.pdf",
       "category": "counted_custom",
       "cost_formula": "15n",
@@ -5891,8 +5891,8 @@
     },
     {
       "name": "stats.lognorm.ppf",
-      "module": "mechestim.stats",
-      "mechestim_ref": "me.stats.lognorm.ppf",
+      "module": "whest.stats",
+      "whest_ref": "me.stats.lognorm.ppf",
       "numpy_ref": "np.stats.lognorm.ppf",
       "category": "counted_custom",
       "cost_formula": "45n",
@@ -5904,8 +5904,8 @@
     },
     {
       "name": "stats.norm.cdf",
-      "module": "mechestim.stats",
-      "mechestim_ref": "me.stats.norm.cdf",
+      "module": "whest.stats",
+      "whest_ref": "me.stats.norm.cdf",
       "numpy_ref": "np.stats.norm.cdf",
       "category": "counted_custom",
       "cost_formula": "20n",
@@ -5917,8 +5917,8 @@
     },
     {
       "name": "stats.norm.pdf",
-      "module": "mechestim.stats",
-      "mechestim_ref": "me.stats.norm.pdf",
+      "module": "whest.stats",
+      "whest_ref": "me.stats.norm.pdf",
       "numpy_ref": "np.stats.norm.pdf",
       "category": "counted_custom",
       "cost_formula": "10n",
@@ -5930,8 +5930,8 @@
     },
     {
       "name": "stats.norm.ppf",
-      "module": "mechestim.stats",
-      "mechestim_ref": "me.stats.norm.ppf",
+      "module": "whest.stats",
+      "whest_ref": "me.stats.norm.ppf",
       "numpy_ref": "np.stats.norm.ppf",
       "category": "counted_custom",
       "cost_formula": "40n",
@@ -5943,8 +5943,8 @@
     },
     {
       "name": "stats.truncnorm.cdf",
-      "module": "mechestim.stats",
-      "mechestim_ref": "me.stats.truncnorm.cdf",
+      "module": "whest.stats",
+      "whest_ref": "me.stats.truncnorm.cdf",
       "numpy_ref": "np.stats.truncnorm.cdf",
       "category": "counted_custom",
       "cost_formula": "30n",
@@ -5956,8 +5956,8 @@
     },
     {
       "name": "stats.truncnorm.pdf",
-      "module": "mechestim.stats",
-      "mechestim_ref": "me.stats.truncnorm.pdf",
+      "module": "whest.stats",
+      "whest_ref": "me.stats.truncnorm.pdf",
       "numpy_ref": "np.stats.truncnorm.pdf",
       "category": "counted_custom",
       "cost_formula": "30n",
@@ -5969,8 +5969,8 @@
     },
     {
       "name": "stats.truncnorm.ppf",
-      "module": "mechestim.stats",
-      "mechestim_ref": "me.stats.truncnorm.ppf",
+      "module": "whest.stats",
+      "whest_ref": "me.stats.truncnorm.ppf",
       "numpy_ref": "np.stats.truncnorm.ppf",
       "category": "counted_custom",
       "cost_formula": "50n",
@@ -5982,8 +5982,8 @@
     },
     {
       "name": "stats.uniform.cdf",
-      "module": "mechestim.stats",
-      "mechestim_ref": "me.stats.uniform.cdf",
+      "module": "whest.stats",
+      "whest_ref": "me.stats.uniform.cdf",
       "numpy_ref": "np.stats.uniform.cdf",
       "category": "counted_custom",
       "cost_formula": "3n",
@@ -5995,8 +5995,8 @@
     },
     {
       "name": "stats.uniform.pdf",
-      "module": "mechestim.stats",
-      "mechestim_ref": "me.stats.uniform.pdf",
+      "module": "whest.stats",
+      "whest_ref": "me.stats.uniform.pdf",
       "numpy_ref": "np.stats.uniform.pdf",
       "category": "counted_custom",
       "cost_formula": "3n",
@@ -6008,8 +6008,8 @@
     },
     {
       "name": "stats.uniform.ppf",
-      "module": "mechestim.stats",
-      "mechestim_ref": "me.stats.uniform.ppf",
+      "module": "whest.stats",
+      "whest_ref": "me.stats.uniform.ppf",
       "numpy_ref": "np.stats.uniform.ppf",
       "category": "counted_custom",
       "cost_formula": "3n",
@@ -6022,7 +6022,7 @@
     {
       "name": "std",
       "module": "numpy",
-      "mechestim_ref": "me.std",
+      "whest_ref": "me.std",
       "numpy_ref": "np.std",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -6035,7 +6035,7 @@
     {
       "name": "subtract",
       "module": "numpy",
-      "mechestim_ref": "me.subtract",
+      "whest_ref": "me.subtract",
       "numpy_ref": "np.subtract",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -6048,7 +6048,7 @@
     {
       "name": "sum",
       "module": "numpy",
-      "mechestim_ref": "me.sum",
+      "whest_ref": "me.sum",
       "numpy_ref": "np.sum",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -6061,7 +6061,7 @@
     {
       "name": "swapaxes",
       "module": "numpy",
-      "mechestim_ref": "me.swapaxes",
+      "whest_ref": "me.swapaxes",
       "numpy_ref": "np.swapaxes",
       "category": "free",
       "cost_formula": "0",
@@ -6074,7 +6074,7 @@
     {
       "name": "take",
       "module": "numpy",
-      "mechestim_ref": "me.take",
+      "whest_ref": "me.take",
       "numpy_ref": "np.take",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -6087,7 +6087,7 @@
     {
       "name": "take_along_axis",
       "module": "numpy",
-      "mechestim_ref": "me.take_along_axis",
+      "whest_ref": "me.take_along_axis",
       "numpy_ref": "np.take_along_axis",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -6100,7 +6100,7 @@
     {
       "name": "tan",
       "module": "numpy",
-      "mechestim_ref": "me.tan",
+      "whest_ref": "me.tan",
       "numpy_ref": "np.tan",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -6113,7 +6113,7 @@
     {
       "name": "tanh",
       "module": "numpy",
-      "mechestim_ref": "me.tanh",
+      "whest_ref": "me.tanh",
       "numpy_ref": "np.tanh",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -6126,7 +6126,7 @@
     {
       "name": "tensordot",
       "module": "numpy",
-      "mechestim_ref": "me.tensordot",
+      "whest_ref": "me.tensordot",
       "numpy_ref": "np.tensordot",
       "category": "counted_custom",
       "cost_formula": "product of contracted dims * output size",
@@ -6139,7 +6139,7 @@
     {
       "name": "tile",
       "module": "numpy",
-      "mechestim_ref": "me.tile",
+      "whest_ref": "me.tile",
       "numpy_ref": "np.tile",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -6152,7 +6152,7 @@
     {
       "name": "trace",
       "module": "numpy",
-      "mechestim_ref": "me.trace",
+      "whest_ref": "me.trace",
       "numpy_ref": "np.trace",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -6165,7 +6165,7 @@
     {
       "name": "transpose",
       "module": "numpy",
-      "mechestim_ref": "me.transpose",
+      "whest_ref": "me.transpose",
       "numpy_ref": "np.transpose",
       "category": "free",
       "cost_formula": "0",
@@ -6178,7 +6178,7 @@
     {
       "name": "trapezoid",
       "module": "numpy",
-      "mechestim_ref": "me.trapezoid",
+      "whest_ref": "me.trapezoid",
       "numpy_ref": "np.trapezoid",
       "category": "counted_custom",
       "cost_formula": "numel(input)",
@@ -6191,7 +6191,7 @@
     {
       "name": "trapz",
       "module": "numpy",
-      "mechestim_ref": "me.trapz",
+      "whest_ref": "me.trapz",
       "numpy_ref": "np.trapz",
       "category": "counted_custom",
       "cost_formula": "numel(input)",
@@ -6204,7 +6204,7 @@
     {
       "name": "tri",
       "module": "numpy",
-      "mechestim_ref": "me.tri",
+      "whest_ref": "me.tri",
       "numpy_ref": "np.tri",
       "category": "free",
       "cost_formula": "0",
@@ -6217,7 +6217,7 @@
     {
       "name": "tril",
       "module": "numpy",
-      "mechestim_ref": "me.tril",
+      "whest_ref": "me.tril",
       "numpy_ref": "np.tril",
       "category": "free",
       "cost_formula": "0",
@@ -6230,7 +6230,7 @@
     {
       "name": "tril_indices",
       "module": "numpy",
-      "mechestim_ref": "me.tril_indices",
+      "whest_ref": "me.tril_indices",
       "numpy_ref": "np.tril_indices",
       "category": "free",
       "cost_formula": "0",
@@ -6243,7 +6243,7 @@
     {
       "name": "tril_indices_from",
       "module": "numpy",
-      "mechestim_ref": "me.tril_indices_from",
+      "whest_ref": "me.tril_indices_from",
       "numpy_ref": "np.tril_indices_from",
       "category": "free",
       "cost_formula": "0",
@@ -6256,7 +6256,7 @@
     {
       "name": "trim_zeros",
       "module": "numpy",
-      "mechestim_ref": "me.trim_zeros",
+      "whest_ref": "me.trim_zeros",
       "numpy_ref": "np.trim_zeros",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -6269,7 +6269,7 @@
     {
       "name": "triu",
       "module": "numpy",
-      "mechestim_ref": "me.triu",
+      "whest_ref": "me.triu",
       "numpy_ref": "np.triu",
       "category": "free",
       "cost_formula": "0",
@@ -6282,7 +6282,7 @@
     {
       "name": "triu_indices",
       "module": "numpy",
-      "mechestim_ref": "me.triu_indices",
+      "whest_ref": "me.triu_indices",
       "numpy_ref": "np.triu_indices",
       "category": "free",
       "cost_formula": "0",
@@ -6295,7 +6295,7 @@
     {
       "name": "triu_indices_from",
       "module": "numpy",
-      "mechestim_ref": "me.triu_indices_from",
+      "whest_ref": "me.triu_indices_from",
       "numpy_ref": "np.triu_indices_from",
       "category": "free",
       "cost_formula": "0",
@@ -6308,7 +6308,7 @@
     {
       "name": "true_divide",
       "module": "numpy",
-      "mechestim_ref": "me.true_divide",
+      "whest_ref": "me.true_divide",
       "numpy_ref": "np.true_divide",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -6321,7 +6321,7 @@
     {
       "name": "trunc",
       "module": "numpy",
-      "mechestim_ref": "me.trunc",
+      "whest_ref": "me.trunc",
       "numpy_ref": "np.trunc",
       "category": "counted_unary",
       "cost_formula": "numel(output)",
@@ -6334,7 +6334,7 @@
     {
       "name": "typename",
       "module": "numpy",
-      "mechestim_ref": "me.typename",
+      "whest_ref": "me.typename",
       "numpy_ref": "np.typename",
       "category": "free",
       "cost_formula": "0",
@@ -6347,7 +6347,7 @@
     {
       "name": "union1d",
       "module": "numpy",
-      "mechestim_ref": "me.union1d",
+      "whest_ref": "me.union1d",
       "numpy_ref": "np.union1d",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -6360,7 +6360,7 @@
     {
       "name": "unique",
       "module": "numpy",
-      "mechestim_ref": "me.unique",
+      "whest_ref": "me.unique",
       "numpy_ref": "np.unique",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -6373,7 +6373,7 @@
     {
       "name": "unique_all",
       "module": "numpy",
-      "mechestim_ref": "me.unique_all",
+      "whest_ref": "me.unique_all",
       "numpy_ref": "np.unique_all",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -6386,7 +6386,7 @@
     {
       "name": "unique_counts",
       "module": "numpy",
-      "mechestim_ref": "me.unique_counts",
+      "whest_ref": "me.unique_counts",
       "numpy_ref": "np.unique_counts",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -6399,7 +6399,7 @@
     {
       "name": "unique_inverse",
       "module": "numpy",
-      "mechestim_ref": "me.unique_inverse",
+      "whest_ref": "me.unique_inverse",
       "numpy_ref": "np.unique_inverse",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -6412,7 +6412,7 @@
     {
       "name": "unique_values",
       "module": "numpy",
-      "mechestim_ref": "me.unique_values",
+      "whest_ref": "me.unique_values",
       "numpy_ref": "np.unique_values",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -6425,7 +6425,7 @@
     {
       "name": "unpackbits",
       "module": "numpy",
-      "mechestim_ref": "me.unpackbits",
+      "whest_ref": "me.unpackbits",
       "numpy_ref": "np.unpackbits",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -6438,7 +6438,7 @@
     {
       "name": "unravel_index",
       "module": "numpy",
-      "mechestim_ref": "me.unravel_index",
+      "whest_ref": "me.unravel_index",
       "numpy_ref": "np.unravel_index",
       "category": "free",
       "cost_formula": "0",
@@ -6451,7 +6451,7 @@
     {
       "name": "unstack",
       "module": "numpy",
-      "mechestim_ref": "me.unstack",
+      "whest_ref": "me.unstack",
       "numpy_ref": "np.unstack",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -6463,8 +6463,8 @@
     },
     {
       "name": "unwrap",
-      "module": "mechestim._unwrap",
-      "mechestim_ref": "me.unwrap",
+      "module": "whest._unwrap",
+      "whest_ref": "me.unwrap",
       "numpy_ref": "np.unwrap",
       "category": "counted_custom",
       "cost_formula": "numel(input)",
@@ -6477,7 +6477,7 @@
     {
       "name": "vander",
       "module": "numpy",
-      "mechestim_ref": "me.vander",
+      "whest_ref": "me.vander",
       "numpy_ref": "np.vander",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -6490,7 +6490,7 @@
     {
       "name": "var",
       "module": "numpy",
-      "mechestim_ref": "me.var",
+      "whest_ref": "me.var",
       "numpy_ref": "np.var",
       "category": "counted_reduction",
       "cost_formula": "numel(input)",
@@ -6503,7 +6503,7 @@
     {
       "name": "vdot",
       "module": "numpy",
-      "mechestim_ref": "me.vdot",
+      "whest_ref": "me.vdot",
       "numpy_ref": "np.vdot",
       "category": "counted_custom",
       "cost_formula": "n",
@@ -6516,7 +6516,7 @@
     {
       "name": "vecdot",
       "module": "numpy",
-      "mechestim_ref": "me.vecdot",
+      "whest_ref": "me.vecdot",
       "numpy_ref": "np.vecdot",
       "category": "counted_binary",
       "cost_formula": "n",
@@ -6529,7 +6529,7 @@
     {
       "name": "vecmat",
       "module": "numpy",
-      "mechestim_ref": "me.vecmat",
+      "whest_ref": "me.vecmat",
       "numpy_ref": "np.vecmat",
       "category": "counted_binary",
       "cost_formula": "numel(output)",
@@ -6542,7 +6542,7 @@
     {
       "name": "vsplit",
       "module": "numpy",
-      "mechestim_ref": "me.vsplit",
+      "whest_ref": "me.vsplit",
       "numpy_ref": "np.vsplit",
       "category": "free",
       "cost_formula": "0",
@@ -6555,7 +6555,7 @@
     {
       "name": "vstack",
       "module": "numpy",
-      "mechestim_ref": "me.vstack",
+      "whest_ref": "me.vstack",
       "numpy_ref": "np.vstack",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -6568,7 +6568,7 @@
     {
       "name": "where",
       "module": "numpy",
-      "mechestim_ref": "me.where",
+      "whest_ref": "me.where",
       "numpy_ref": "np.where",
       "category": "counted_custom",
       "cost_formula": "per-operation",
@@ -6581,7 +6581,7 @@
     {
       "name": "zeros",
       "module": "numpy",
-      "mechestim_ref": "me.zeros",
+      "whest_ref": "me.zeros",
       "numpy_ref": "np.zeros",
       "category": "free",
       "cost_formula": "0",
@@ -6594,7 +6594,7 @@
     {
       "name": "zeros_like",
       "module": "numpy",
-      "mechestim_ref": "me.zeros_like",
+      "whest_ref": "me.zeros_like",
       "numpy_ref": "np.zeros_like",
       "category": "free",
       "cost_formula": "0",

@@ -9,4 +9,4 @@ and data movement. These never consume budget.
 
 ## API Reference
 
-::: mechestim._free_ops
+::: whest._free_ops

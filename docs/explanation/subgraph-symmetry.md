@@ -427,7 +427,7 @@ reduction applies. In contrast, for a multi-step path where `a` and `b`
 are contracted in separate steps, each step only sees one of those
 labels — the inner reduction is correctly skipped.
 
-This behaviour is controlled by `me.configure(use_inner_symmetry=True/False)`.
+This behaviour is controlled by `we.configure(use_inner_symmetry=True/False)`.
 In the contraction path table, `[W✓: ...]` indicates the inner reduction was
 applied, while `[W: ...]` indicates it was detected but not applied at that
 step.
