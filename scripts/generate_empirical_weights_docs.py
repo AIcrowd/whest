@@ -230,7 +230,8 @@ CSV_COLUMNS = [
     "Status",
     "Category",
     "Cost Formula",
-    "Weight",
+    "Active Weight",
+    "Empirical Weight",
     "Reviewer Weight",
     "Effective Cost Example",
     "Confidence",
@@ -409,12 +410,8 @@ _ALIAS_MAP = {
 # Exclusion sets with reasons
 _EXCLUSIONS = {
     "random_excluded": (
-        frozenset({"random.bytes", "random.random_integers"}),
-        "Returns bytes or removed in NumPy 2.x",
-    ),
-    "no_fp_work": (
-        frozenset({"einsum_path"}),
-        "Planning operation — no floating-point computation",
+        frozenset({"random.random_integers"}),
+        "Removed in NumPy 2.x",
     ),
 }
 
@@ -430,6 +427,9 @@ def build_rows(data: dict) -> list[dict]:
     details = data["meta"]["per_op_details"]
     timing_weights = data["meta"]["validation"].get("timing_weights", {})
     abs_alphas = data["meta"]["validation"].get("absolute_correction_factors", {})
+    empirical_before_review = data["meta"]["validation"].get(
+        "empirical_weights_before_review", {}
+    )
     add_weight = weights.get("add", 1.0)
 
     rows = []
@@ -449,13 +449,19 @@ def build_rows(data: dict) -> list[dict]:
         absolute_alpha = abs_alphas.get(op_name, d.get("absolute_alpha", 0.0))
         formula = d.get("analytical_formula", "")
 
+        # Empirical weight: raw perf measurement before reviewer adjustments
+        empirical_w = empirical_before_review.get(
+            op_name, d.get("perf_weight", perf_weight)
+        )
+
         row = {
             # Section A: Review
             "Operation": op_name,
             "Status": "benchmarked",
             "Category": display_cat,
             "Cost Formula": formula,
-            "Weight": f"{perf_weight:.4f}",
+            "Active Weight": f"{perf_weight:.4f}",
+            "Empirical Weight": f"{empirical_w:.4f}" if empirical_w is not None else "",
             "Reviewer Weight": "",
             "Effective Cost Example": _effective_cost_example(
                 formula, perf_weight, analytical_flops
@@ -491,9 +497,12 @@ def build_rows(data: dict) -> list[dict]:
         row = _empty_row(
             alias, "alias", reason, entry.get("category", ""), entry.get("notes", "")
         )
-        row["Weight"] = f"{canon_weight:.4f}" if canon_weight else ""
+        row["Active Weight"] = f"{canon_weight:.4f}" if canon_weight is not None else ""
+        # Empirical weight: use canonical op's perf_weight (raw benchmark measurement)
+        canon_empirical = details.get(canonical, {}).get("perf_weight")
+        row["Empirical Weight"] = f"{canon_empirical:.4f}" if canon_empirical is not None else ""
         row["Hardware FP Instructions (per analytical FLOP)"] = (
-            f"{canon_alpha:.2f}" if canon_alpha else ""
+            f"{canon_alpha:.2f}" if canon_alpha is not None else ""
         )
         rows.append(row)
 
@@ -523,7 +532,8 @@ def build_rows(data: dict) -> list[dict]:
                 "free",
                 entry.get("notes", ""),
             )
-            row["Weight"] = "0"
+            row["Active Weight"] = "0"
+            row["Empirical Weight"] = ""
             row["Cost Formula"] = "0"
             rows.append(row)
 
@@ -553,7 +563,7 @@ def build_rows(data: dict) -> list[dict]:
         key=lambda r: (
             status_order.get(r["Status"], 99),
             cat_order.get(r["Category"], 999),
-            -float(r["Weight"]) if r["Weight"] else 0,
+            -float(r["Active Weight"]) if r["Active Weight"] else 0,
         )
     )
     return rows
@@ -653,27 +663,34 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     # ------------------------------------------------------------------
     w("## Methodology")
     w()
-    w("### The correction formula")
+    w("### The correction formula (v3 — overhead-subtracted)")
     w()
-    w("Every weight is computed from the same two-step formula:")
+    w("The raw correction factor is measured as:")
     w()
     w("$$")
     w(
-        "\\alpha(\\text{op}) = \\mathrm{median}_{D} "
+        "\\alpha_{\\text{raw}}(\\text{op}) = \\mathrm{median}_{D} "
         "\\left[ \\frac{F(\\text{op})}"
         "{C(\\text{op}, \\text{params}) \\times R} \\right]"
     )
     w("$$")
     w()
+    w("The weight is computed by subtracting numpy's ufunc dispatch overhead:")
+    w()
     w("$$")
-    w("w(\\text{op}) = \\frac{\\alpha(\\text{op})}{\\alpha(\\text{add})}")
+    w(
+        "w(\\text{op}) = \\max\\bigl("
+        "\\alpha_{\\text{raw}}(\\text{op}) - "
+        "\\text{overhead}_{\\text{category}}, \\ 0\\bigr)"
+    )
     w("$$")
     w()
     w("Where:")
     w()
     w(
-        "- $\\alpha(\\text{op})$ is the **raw correction factor** -- the ratio of "
-        "hardware-observed FP instructions to the analytical FLOP count."
+        "- $\\alpha_{\\text{raw}}(\\text{op})$ is the **raw correction factor** -- "
+        "the ratio of hardware-observed FP instructions to the analytical FLOP "
+        "count (FMA = 1 op)."
     )
     w(
         "- $F(\\text{op})$ is the total SIMD-width-weighted count of retired "
@@ -686,6 +703,40 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     )
     w("- $R$ is the number of repeats per distribution.")
     w("- The **median** across 3 input distributions is reported.")
+    w(
+        "- $\\text{overhead}_{\\text{category}}$ is the ufunc dispatch overhead "
+        "measured from `np.abs` (bitwise sign-clear, generates zero FP arithmetic "
+        "— all measured FP instructions are pure overhead). Subtracted per "
+        "category to remove numpy implementation noise."
+    )
+    w()
+
+    # ------------------------------------------------------------------
+    # Ufunc overhead subtraction
+    # ------------------------------------------------------------------
+    w("### Ufunc overhead subtraction")
+    w()
+    w("Numpy's ufunc dispatch layer generates spurious FP instructions (type")
+    w("resolution, iterator setup, error-state management) even for operations")
+    w("that perform no FP arithmetic. This overhead is measured and subtracted:")
+    w()
+    w("| Category | Overhead source | Typical value |")
+    w("|----------|----------------|---------------|")
+    w("| `ufunc_unary` | $\\alpha(\\texttt{abs})$ | ~0.3 |")
+    w("| `ufunc_binary` | $\\alpha(\\texttt{add}) - 1.0$ | ~0.6 |")
+    w("| `ufunc_reduction` | same as unary | ~0.3 |")
+    w("| `blas` / `linalg` | 0 (bypasses ufunc) | 0 |")
+    w("| `custom` (fft, sort, etc.) | 0 | 0 |")
+    w("| `instructions` (bitwise) | 0 (different counter) | 0 |")
+    w()
+    w("After subtraction, weights are clamped to a minimum of 0. Values below 1.0")
+    w("are expected for ops with less FP work than the overhead measurement")
+    w("(e.g., bitwise ops that generate 0 FP instructions).")
+    w()
+    w("**Note on BLAS/linalg FMA ops:** `fp_arith_inst_retired` counts each FMA")
+    w("as 2 retired operations (one multiply + one add). Pure-FMA ops like")
+    w("matmul will therefore show empirical weight ≈ 2.0. The reviewer can")
+    w("decide whether to keep this or override to 1.0.")
     w()
 
     # ------------------------------------------------------------------
@@ -693,20 +744,15 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     # ------------------------------------------------------------------
     w("### Measurement modes by category")
     w()
-    w("Most operations are measured with hardware performance counters (perf mode).")
-    w("Two categories use alternative measurement:")
-    w()
-    w("**Bitwise/integer operations** (bitwise_and, gcd, lcm, etc.) are measured")
-    w("with wall-clock timing instead of perf counters, because integer ALU")
-    w("operations do not retire `fp_arith_inst_retired` events. The timing weight")
-    w("is normalized against the timing baseline of `np.add`, producing comparable")
-    w("relative costs. Input arrays use int64 dtype.")
+    w("| Mode | Counter | Used for |")
+    w("|------|---------|----------|")
+    w("| **perf** | `fp_arith_inst_retired.*` (SIMD-weighted) | FP operations (default) |")
+    w("| **instructions** | `instructions` (total retired) | Integer/bitwise ops |")
+    w("| **timing** | `time.perf_counter_ns()` | Validation; fallback when perf unavailable |")
     w()
     w("**Complex-number operations** (angle, conj, real, imag, etc.) are measured")
-    w("with perf counters on complex128 input arrays, which generate real")
-    w("floating-point instructions for the underlying real/imaginary arithmetic.")
-    w("Two type-check operations (`iscomplexobj`, `isrealobj`) use timing mode")
-    w("as they perform a single type check rather than per-element FP work.")
+    w("with perf counters on complex128 input arrays. Two type-check operations")
+    w("(`iscomplexobj`, `isrealobj`) use the `instructions` counter.")
     w()
 
     # ------------------------------------------------------------------
@@ -743,7 +789,7 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     w(f"| Repeats | {bc['repeats']} per distribution |")
     w(f"| Distributions | {bc['distributions']} per operation |")
     w(f"| Methodology version | {meth['version']} |")
-    w(f"| Baseline alpha(add) | {meth['baseline_alpha']} |")
+    w(f"| Baseline alpha(add) | {meth.get('baseline_alpha', meth.get('baseline_alpha_add_raw', 'N/A'))} |")
     ts = meta.get("timestamp", "")
     if ts:
         w(f"    - **Date:** {ts[:10]}")
@@ -757,7 +803,9 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     # ------------------------------------------------------------------
     w("## Baseline details")
     w()
-    w("All weights are normalized against element-wise addition (`np.add`):")
+    w("Ufunc overhead is measured from `np.abs` (bitwise, zero FP arithmetic)")
+    w("and `np.add` (1 FP add per element). After subtracting per-category")
+    w("overhead, weights represent the true hardware cost per analytical FLOP:")
     w()
 
     # Find the first op that has baseline details
@@ -781,10 +829,10 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
         w(
             f"- **Measured timing:** {sample_detail.get('baseline_timing_ns_total', 'N/A')} ns"
         )
-        w(f"- **$\\alpha(\\text{{add}})$:** {meth['baseline_alpha']}")
+        w(f"- **$\\alpha(\\text{{add}})$:** {meth.get('baseline_alpha', meth.get('baseline_alpha_add_raw', 'N/A'))}")
     else:
         w("- **Benchmark command:** `np.add(x, y, out=_out)`")
-        w(f"- **$\\alpha(\\text{{add}})$:** {meth['baseline_alpha']}")
+        w(f"- **$\\alpha(\\text{{add}})$:** {meth.get('baseline_alpha', meth.get('baseline_alpha_add_raw', 'N/A'))}")
     w()
 
     # ------------------------------------------------------------------
@@ -814,16 +862,17 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
             continue
         w(f"### {cat} ({len(cat_rows)} operations)")
         w()
-        w("| Op | Weight | Confidence | Formula | Impl | Notes |")
-        w("|:---|-------:|:-----------|:--------|:-----|:------|")
+        w("| Op | Active Weight | Empirical Weight | Confidence | Formula | Impl | Notes |")
+        w("|:---|-------:|-------:|:-----------|:--------|:-----|:------|")
         for r in cat_rows:
             op = f"`{r['Operation']}`"
-            wt = _format_weight(r["Weight"])
+            aw = _format_weight(r["Active Weight"])
+            ew = _format_weight(r["Empirical Weight"])
             conf = r["Confidence"]
             formula = r["Cost Formula"]
             impl = _impl_link(r["Implementation"])
             notes = r["Notes"]
-            w(f"| {op} | {wt} | {conf} | {formula} | {impl} | {notes} |")
+            w(f"| {op} | {aw} | {ew} | {conf} | {formula} | {impl} | {notes} |")
         w()
 
     # ------------------------------------------------------------------
@@ -838,7 +887,7 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
         if not cat_rows:
             continue
         wts = [
-            float(r["Weight"]) for r in cat_rows if r["Weight"] and r["Weight"] != "N/A"
+            float(r["Active Weight"]) for r in cat_rows if r["Active Weight"] and r["Active Weight"] != "N/A"
         ]
         if not wts:
             continue
@@ -861,16 +910,19 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     w()
     w("### Correlation statistics")
     w()
-    w("| Metric | Value | Interpretation |")
-    w("|--------|------:|:---------------|")
-    w(
-        f"| Pearson $r$ | {pv['pearson_r']:.4f} | "
-        f"Linear correlation between perf and timing weight vectors. |"
-    )
-    w(
-        f"| Spearman $\\rho$ | {pv['spearman_rho']:.4f} | "
-        f"Rank correlation -- are the orderings consistent? |"
-    )
+    if "pearson_r" in pv:
+        w("| Metric | Value | Interpretation |")
+        w("|--------|------:|:---------------|")
+        w(
+            f"| Pearson $r$ | {pv['pearson_r']:.4f} | "
+            f"Linear correlation between perf and timing weight vectors. |"
+        )
+        w(
+            f"| Spearman $\\rho$ | {pv['spearman_rho']:.4f} | "
+            f"Rank correlation -- are the orderings consistent? |"
+        )
+    else:
+        w(f"*{pv.get('note', 'Correlation statistics not available (scipy missing).')}*")
     w()
 
     max_div = pv.get("max_divergence", {})
@@ -948,6 +1000,7 @@ def write_markdown(content: str, path: Path) -> None:
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+
 
 
 def main() -> None:

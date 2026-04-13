@@ -89,6 +89,7 @@ class TestBenchmarkReductions:
 
         expected_detail_keys = {
             "category",
+            "measurement_mode",
             "analytical_formula",
             "analytical_flops",
             "benchmark_size",

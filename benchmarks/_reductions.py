@@ -123,6 +123,7 @@ def benchmark_reductions(
             results[op] = statistics.median(dist_values)
             details[op] = {
                 "category": "counted_reduction",
+                "measurement_mode": "ufunc_reduction",
                 "analytical_formula": "numel(input)",
                 "analytical_flops": n,
                 "benchmark_size": f"x: ({n},)",

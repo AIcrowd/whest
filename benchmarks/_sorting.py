@@ -278,6 +278,7 @@ def benchmark_sorting(
                 bm_size = f"x: ({n},)"
             details[op] = {
                 "category": "counted_custom",
+                "measurement_mode": "custom",
                 "analytical_formula": _FORMULA_STRINGS.get(op, "n"),
                 "analytical_flops": analytical,
                 "benchmark_size": bm_size,

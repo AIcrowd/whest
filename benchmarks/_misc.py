@@ -636,6 +636,7 @@ def benchmark_misc(
             display_bench = bench[0] if isinstance(bench, list) else bench
             details[op] = {
                 "category": "counted_custom",
+                "measurement_mode": "custom",
                 "analytical_formula": _FORMULA_STRINGS.get(op, "n"),
                 "analytical_flops": analytical,
                 "benchmark_size": _benchmark_size_str(op),

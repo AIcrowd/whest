@@ -5,6 +5,7 @@ import os
 import tempfile
 from unittest.mock import patch
 
+from benchmarks._baseline import BaselineResult
 from benchmarks.runner import (
     _BENCHMARK_FUNCS,
     _unpack_benchmark_result,
@@ -52,13 +53,16 @@ def test_run_benchmarks_writes_json():
         "window": lambda **kw: ({"bartlett": 1.0}, {}),
     }
 
+    # With zero overhead, normalize_weights_v2 just clamps to max(alpha, 1.0)
+    mock_baselines = BaselineResult(alpha_add=1.0, alpha_abs=0.0)
+
     with tempfile.NamedTemporaryFile(suffix=".json", delete=False) as f:
         output_path = f.name
 
     try:
         with (
             patch("benchmarks.runner.collect_metadata", return_value=mock_meta),
-            patch("benchmarks.runner.measure_baseline", return_value=1.0),
+            patch("benchmarks.runner.measure_baselines", return_value=mock_baselines),
             patch.dict(_BENCHMARK_FUNCS, mock_funcs),
             patch("benchmarks.runner.render_terminal", return_value="summary"),
         ):
@@ -73,6 +77,7 @@ def test_run_benchmarks_writes_json():
             data = json.load(f)
         assert "meta" in data
         assert "weights" in data
+        # With zero overhead: weight = max(alpha - 0, 1.0)
         assert data["weights"]["exp"] == 18.3
         assert data["weights"]["linalg.cholesky"] == 1.15
     finally:
@@ -108,6 +113,7 @@ def test_run_benchmarks_per_op_details():
     sample_details = {
         "exp": {
             "category": "counted_unary",
+            "measurement_mode": "ufunc_unary",
             "analytical_formula": "numel(output)",
             "analytical_flops": 10_000_000,
             "benchmark_size": "n=10000000",
@@ -124,7 +130,7 @@ def test_run_benchmarks_per_op_details():
 
     with (
         patch("benchmarks.runner.collect_metadata", return_value=mock_meta),
-        patch("benchmarks.runner.measure_baseline", return_value=1.0),
+        patch("benchmarks.runner.measure_baselines", return_value=BaselineResult(alpha_add=1.0, alpha_abs=0.0)),
         patch.dict(_BENCHMARK_FUNCS, mock_funcs, clear=True),
         patch("benchmarks.runner.render_terminal", return_value="summary"),
     ):
@@ -171,7 +177,7 @@ def test_run_benchmarks_backward_compat_dict_return():
 
     with (
         patch("benchmarks.runner.collect_metadata", return_value=mock_meta),
-        patch("benchmarks.runner.measure_baseline", return_value=1.0),
+        patch("benchmarks.runner.measure_baselines", return_value=BaselineResult(alpha_add=1.0, alpha_abs=0.0)),
         patch.dict(_BENCHMARK_FUNCS, mock_funcs, clear=True),
         patch("benchmarks.runner.render_terminal", return_value="summary"),
     ):

@@ -41,11 +41,12 @@ class TestHamming:
             assert numpy.allclose(hamming(10), numpy.hamming(10))
 
     def test_cost(self):
+        # Sheet formula: n (FMA=1)
         with BudgetContext(flop_budget=10**6) as budget:
             from mechestim import hamming
 
             hamming(10)
-            assert budget.flops_used == 20
+            assert budget.flops_used == 10
 
 
 class TestHanning:
@@ -56,11 +57,12 @@ class TestHanning:
             assert numpy.allclose(hanning(10), numpy.hanning(10))
 
     def test_cost(self):
+        # Sheet formula: n (FMA=1)
         with BudgetContext(flop_budget=10**6) as budget:
             from mechestim import hanning
 
             hanning(10)
-            assert budget.flops_used == 20
+            assert budget.flops_used == 10
 
 
 class TestKaiser:

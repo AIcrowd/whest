@@ -346,9 +346,9 @@ REGISTRY: dict[str, dict] = {
         "notes": "Element-wise approximate equality test.",
     },
     "isnat": {
-        "category": "counted_unary",
+        "category": "blacklisted",
         "module": "numpy",
-        "notes": "Test for NaT (not-a-time) element-wise.",
+        "notes": "Blacklisted per reviewer — datetime ops not in scope.",
     },
     "isneginf": {
         "category": "counted_unary",

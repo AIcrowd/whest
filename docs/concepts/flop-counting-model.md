@@ -216,25 +216,26 @@ actual_cost = analytical_formula(shape) × weight(op_name)
 | `matmul` | $2n^3$ | 0.46 | 15,400,727 |
 | `linalg.cholesky` | $n^3/3$ | 0.76 | 4,244,635 |
 
-Weights are measured using the correction-factor methodology
-described in [FLOP Weight Calibration Results](../reference/empirical-weights.md). The
-formula is $\text{weight}(\text{op}) = \alpha(\text{op}) / \alpha(\text{add})$,
-where $\alpha(\text{op})$ is the median ratio of hardware-observed FP
-instructions to analytical FLOPs, measured via `fp_arith_inst_retired`
-performance counters.
+Weights are measured using the overhead-subtracted correction-factor
+methodology described in [FLOP Weight Calibration Results](../reference/empirical-weights.md).
+The formula is:
 
-Weights below 1.0 are expected for BLAS-backed operations (contractions,
-linalg decompositions). This is the **FMA effect**: the Fused Multiply-Add
-instruction computes $a \times b + c$ in one hardware instruction but
-counts as 2 analytical FLOPs. For example, `matmul` at 0.64 means the
-FMA-optimized inner loop fuses two analytical FLOPs into roughly one
-instruction.
+$$w(\text{op}) = \max\bigl(\alpha_{\text{raw}}(\text{op}) - \text{overhead}_{\text{category}}, \ 0\bigr)$$
 
-Integer and bitwise operations (`bitwise_and`, `gcd`, `lcm`, etc.) use
-**timing-based weights** because they do not retire `fp_arith_inst_retired`
-events on the CPU. Their weights are derived from wall-clock timing
-normalized against the timing baseline of `np.add`, producing comparable
-relative costs despite the different measurement method.
+where $\alpha_{\text{raw}}$ is the median ratio of hardware-observed FP
+instructions to analytical FLOPs (FMA = 1 op), measured via
+`fp_arith_inst_retired` performance counters. The ufunc dispatch overhead
+(measured from `np.abs`, which generates zero FP arithmetic) is subtracted
+per category to remove numpy implementation noise from the weight.
+
+BLAS-backed operations (contractions, linalg) have weights near 1.0 because
+their tight FMA loops execute almost exactly 1 hardware FP instruction per
+analytical FLOP, with no ufunc overhead to subtract.
+
+Integer and bitwise operations (`bitwise_and`, `gcd`, `lcm`, etc.) use the
+`instructions` hardware counter (total retired instructions) because they
+do not retire `fp_arith_inst_retired` events. Their weights are derived from
+instruction counts normalized the same way as FP operations.
 
 Weights are loaded from a JSON config file. Without a config file, all
 weights default to 1.0 -- the analytical formulas apply unchanged.

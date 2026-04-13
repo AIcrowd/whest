@@ -188,6 +188,7 @@ def benchmark_linalg(
                 bm_size = f"A: ({n},{n})"
             details[op] = {
                 "category": "counted_custom",
+                "measurement_mode": "blas",
                 "analytical_formula": _FORMULA_STRINGS.get(op, ""),
                 "analytical_flops": analytical,
                 "benchmark_size": bm_size,

@@ -80,13 +80,13 @@ def hamming_cost(n: int) -> int:
     Returns
     -------
     int
-        Estimated FLOP count: 2n.
+        Estimated FLOP count: n.
 
     Notes
     -----
-    One cosine evaluation plus one linear combination per sample.
+    One FMA (cosine + scale) per sample, counted as 1 op under FMA=1.
     """
-    return max(2 * n, 1)
+    return max(n, 1)
 
 
 def hamming(M):
@@ -96,7 +96,7 @@ def hamming(M):
     return _np.hamming(M)
 
 
-attach_docstring(hamming, _np.hamming, "counted_custom", "2n FLOPs")
+attach_docstring(hamming, _np.hamming, "counted_custom", "n FLOPs")
 
 
 def hanning_cost(n: int) -> int:
@@ -110,13 +110,13 @@ def hanning_cost(n: int) -> int:
     Returns
     -------
     int
-        Estimated FLOP count: 2n.
+        Estimated FLOP count: n.
 
     Notes
     -----
-    One cosine evaluation plus one linear combination per sample.
+    One FMA (cosine + scale) per sample, counted as 1 op under FMA=1.
     """
-    return max(2 * n, 1)
+    return max(n, 1)
 
 
 def hanning(M):
@@ -126,7 +126,7 @@ def hanning(M):
     return _np.hanning(M)
 
 
-attach_docstring(hanning, _np.hanning, "counted_custom", "2n FLOPs")
+attach_docstring(hanning, _np.hanning, "counted_custom", "n FLOPs")
 
 
 def kaiser_cost(n: int) -> int:
