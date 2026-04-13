@@ -85,6 +85,12 @@ class RequestHandler:
             }
         except me.SymmetryError as e:
             return {"status": "error", "error_type": "SymmetryError", "message": str(e)}
+        except me.UnsupportedFunctionError as e:
+            return {
+                "status": "error",
+                "error_type": "UnsupportedFunctionError",
+                "message": str(e),
+            }
         except (ValueError, TypeError) as e:
             return {
                 "status": "error",
@@ -235,6 +241,21 @@ class RequestHandler:
                 if isinstance(handle, bytes):
                     handle = handle.decode("utf-8")
                 return self._session.get_array(handle)
+            # Permutation wire format
+            perm_data = arg.get("__permutation__") or arg.get(b"__permutation__")
+            if perm_data is not None:
+                return me.Permutation(list(perm_data))
+            # PermutationGroup wire format
+            pg_data = arg.get("__perm_group__") or arg.get(b"__perm_group__")
+            if pg_data is not None:
+                if isinstance(pg_data, dict):
+                    pg_data = {
+                        (k.decode("utf-8") if isinstance(k, bytes) else k): v
+                        for k, v in pg_data.items()
+                    }
+                generators = [me.Permutation(list(g)) for g in pg_data["generators"]]
+                axes = tuple(pg_data["axes"]) if pg_data.get("axes") is not None else None
+                return me.PermutationGroup(*generators, axes=axes)
         # Recurse into lists/tuples so that e.g. concatenate([a, b]) works
         if isinstance(arg, (list, tuple)):
             resolved = [self._resolve_arg(item) for item in arg]
@@ -279,6 +300,24 @@ class RequestHandler:
     def _pack_result(self, result: Any) -> dict:
         """Pack a mechestim function result into a response dict."""
         budget = self._session.budget_status()
+
+        # SymmetricTensor — ndarray subclass with symmetry metadata
+        if hasattr(me, 'SymmetricTensor') and isinstance(result, me.SymmetricTensor):
+            if result.nbytes > MAX_ARRAY_BYTES:
+                return {
+                    "status": "error",
+                    "error_type": "ValueError",
+                    "message": f"result array too large: {result.nbytes} bytes exceeds {MAX_ARRAY_BYTES} byte limit",
+                }
+            handle = self._session.store_array(np.asarray(result))
+            meta = self._session.array_metadata(handle)
+            si = result.symmetry_info
+            if si is not None:
+                meta["symmetry_info"] = {
+                    "symmetric_axes": [list(g) for g in si.symmetric_axes],
+                    "shape": list(si.shape),
+                }
+            return {"status": "ok", "result": meta, "budget": budget}
 
         if isinstance(result, np.ndarray):
             if result.nbytes > MAX_ARRAY_BYTES:

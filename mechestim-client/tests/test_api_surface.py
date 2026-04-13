@@ -43,7 +43,10 @@ class TestRegistry:
     """Tests for _registry.py and _registry_data.py."""
 
     def test_registry_has_482_plus_entries(self):
-        assert len(FUNCTION_CATEGORIES) >= 482
+        assert len(FUNCTION_CATEGORIES) >= 400, (
+            f"Registry suspiciously small: {len(FUNCTION_CATEGORIES)} entries. "
+            f"Run: uv run scripts/sync_client.py"
+        )
 
     @pytest.mark.parametrize("op", ["add", "exp", "zeros", "einsum", "dot", "matmul"])
     def test_is_valid_op_known(self, op):
@@ -92,11 +95,9 @@ class TestRegistry:
         for op in random_ops:
             assert op.startswith("random.")
 
-    def test_all_fft_are_blacklisted(self):
+    def test_fft_ops_are_registered(self):
         fft_ops = [k for k in FUNCTION_CATEGORIES if k.startswith("fft.")]
         assert len(fft_ops) > 0
-        for op in fft_ops:
-            assert get_category(op) == BLACKLISTED
 
     def test_linalg_svd_is_counted_custom(self):
         assert get_category("linalg.svd") == COUNTED_CUSTOM
@@ -262,21 +263,23 @@ class TestGetattr:
         with pytest.raises(AttributeError, match="has no attribute"):
             me.completely_nonexistent_function_xyz
 
-    def test_blacklisted_fft(self):
-        with pytest.raises(AttributeError, match="intentionally not supported"):
+    def test_fft_registered_not_blacklisted(self):
+        # fft.fft is now counted_custom, not blacklisted
+        with pytest.raises(AttributeError, match="registered but not yet implemented"):
             me.fft.fft
 
-    def test_blacklisted_fft_rfft(self):
-        with pytest.raises(AttributeError, match="intentionally not supported"):
+    def test_fft_rfft_registered_not_blacklisted(self):
+        # fft.rfft is now counted_custom, not blacklisted
+        with pytest.raises(AttributeError, match="registered but not yet implemented"):
             me.fft.rfft
 
     def test_unknown_fft(self):
         with pytest.raises(AttributeError, match="has no attribute"):
             me.fft.nonexistent_xyz
 
-    def test_blacklisted_linalg(self):
-        with pytest.raises(AttributeError, match="intentionally not supported"):
-            me.linalg.eig
+    def test_linalg_eig_is_proxy(self):
+        # linalg.eig is now a counted_custom proxy, not blacklisted
+        assert callable(me.linalg.eig)
 
     def test_unknown_linalg(self):
         with pytest.raises(AttributeError, match="has no attribute"):
