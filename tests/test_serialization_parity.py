@@ -4,9 +4,9 @@ Verifies that objects survive the client-encode → server-decode cycle by
 importing client and server code directly (no ZMQ/network required).
 
 Path setup:
-- Core: src/  (package: mechestim, found via root pyproject.toml)
-- Client: mechestim-client/src/  (loaded with importlib for client-specific modules)
-- Server: mechestim-server/src/  (added to sys.path for mechestim_server)
+- Core: src/  (package: whest, found via root pyproject.toml)
+- Client: whest-client/src/  (loaded with importlib for client-specific modules)
+- Server: whest-server/src/  (added to sys.path for whest_server)
 """
 
 from __future__ import annotations
@@ -19,23 +19,23 @@ import numpy as np
 import pytest
 
 # ---------------------------------------------------------------------------
-# Path setup: add mechestim-server/src so mechestim_server is importable
+# Path setup: add whest-server/src so whest_server is importable
 # ---------------------------------------------------------------------------
 
 _ROOT = Path(__file__).parent.parent
-_SERVER_SRC = str(_ROOT / "mechestim-server" / "src")
-_CLIENT_SRC = str(_ROOT / "mechestim-client" / "src")
+_SERVER_SRC = str(_ROOT / "whest-server" / "src")
+_CLIENT_SRC = str(_ROOT / "whest-client" / "src")
 
 if _SERVER_SRC not in sys.path:
     sys.path.insert(0, _SERVER_SRC)
 
 
 # ---------------------------------------------------------------------------
-# Import server modules (mechestim_server uses sys.path above)
+# Import server modules (whest_server uses sys.path above)
 # ---------------------------------------------------------------------------
 
-from mechestim_server._request_handler import RequestHandler  # noqa: E402
-from mechestim_server._session import Session  # noqa: E402
+from whest_server._request_handler import RequestHandler  # noqa: E402
+from whest_server._session import Session  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # Load client-specific modules via importlib (avoid package name collision)
@@ -43,10 +43,10 @@ from mechestim_server._session import Session  # noqa: E402
 
 
 def _load_client_module(rel_path: str, module_name: str):
-    """Load a module from mechestim-client/src using importlib.
+    """Load a module from whest-client/src using importlib.
 
     The loaded module is registered in sys.modules under *module_name* so
-    that intra-package imports (e.g. ``from mechestim._math_compat import ...``)
+    that intra-package imports (e.g. ``from whest._math_compat import ...``)
     resolve correctly within the client package namespace.
     """
     if module_name in sys.modules:
@@ -61,18 +61,18 @@ def _load_client_module(rel_path: str, module_name: str):
 
 
 # Load client sub-modules in dependency order so internal imports resolve.
-# Each is registered under its canonical dotted name inside the mechestim package
+# Each is registered under its canonical dotted name inside the whest package
 # that the core already occupies, but these sub-modules don't exist in core so
 # there's no collision risk.
-_load_client_module("mechestim/_constants.py", "mechestim._constants")
-_load_client_module("mechestim/_math_compat.py", "mechestim._math_compat")
-_load_client_module("mechestim/_symmetric_info.py", "mechestim._symmetric_info")
-_load_client_module("mechestim/_perm_group.py", "mechestim._perm_group")
+_load_client_module("whest/_constants.py", "whest._constants")
+_load_client_module("whest/_math_compat.py", "whest._math_compat")
+_load_client_module("whest/_symmetric_info.py", "whest._symmetric_info")
+_load_client_module("whest/_perm_group.py", "whest._perm_group")
 _client_remote_array = _load_client_module(
-    "mechestim/_remote_array.py", "mechestim._remote_array"
+    "whest/_remote_array.py", "whest._remote_array"
 )
 # Re-load perm_group so we have a local reference (it may already be cached)
-_client_perm_group = sys.modules["mechestim._perm_group"]
+_client_perm_group = sys.modules["whest._perm_group"]
 
 _encode_arg = _client_remote_array._encode_arg
 _result_from_response = _client_remote_array._result_from_response
@@ -83,10 +83,10 @@ ClientCycle = _client_perm_group.Cycle
 
 
 # ---------------------------------------------------------------------------
-# Core mechestim (from root pyproject.toml / src/)
+# Core whest (from root pyproject.toml / src/)
 # ---------------------------------------------------------------------------
 
-import mechestim as me  # noqa: E402
+import whest as we  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # Fixtures: create a fresh session + handler for each test
@@ -121,11 +121,11 @@ class TestPermutationRoundTrip:
         assert "__permutation__" in encoded
         assert encoded["__permutation__"] == [2, 0, 1]
 
-        # Server resolves it back to a mechestim Permutation
+        # Server resolves it back to a whest Permutation
         _, handler = handler_session
         resolved = handler._resolve_arg(encoded)
 
-        assert isinstance(resolved, me.Permutation)
+        assert isinstance(resolved, we.Permutation)
         assert resolved.array_form == [2, 0, 1]
 
     def test_permutation_identity(self, handler_session):
@@ -135,7 +135,7 @@ class TestPermutationRoundTrip:
         _, handler = handler_session
         resolved = handler._resolve_arg(encoded)
 
-        assert isinstance(resolved, me.Permutation)
+        assert isinstance(resolved, we.Permutation)
         assert resolved.array_form == [0, 1, 2, 3]
         assert resolved.is_identity
 
@@ -153,7 +153,7 @@ class TestPermutationRoundTrip:
         _, handler = handler_session
         resolved = handler._resolve_arg(encoded)
 
-        assert isinstance(resolved, me.PermutationGroup)
+        assert isinstance(resolved, we.PermutationGroup)
         assert resolved.degree == 3
         # S_3 has 6 elements
         assert resolved.order() == 6
@@ -166,7 +166,7 @@ class TestPermutationRoundTrip:
         _, handler = handler_session
         resolved = handler._resolve_arg(encoded)
 
-        assert isinstance(resolved, me.PermutationGroup)
+        assert isinstance(resolved, we.PermutationGroup)
         assert resolved.degree == 2
         assert resolved.axes == (0, 1)
 
@@ -181,7 +181,7 @@ class TestPermutationRoundTrip:
         _, handler = handler_session
         resolved = handler._resolve_arg(encoded)
 
-        assert isinstance(resolved, me.Permutation)
+        assert isinstance(resolved, we.Permutation)
         # Cycle(0,2)(1,3): 0->2, 2->0, 1->3, 3->1 → array form [2,3,0,1]
         assert resolved.array_form == [2, 3, 0, 1]
 
@@ -193,7 +193,7 @@ class TestPermutationRoundTrip:
         _, handler = handler_session
         resolved = handler._resolve_arg(encoded)
 
-        assert isinstance(resolved, me.Permutation)
+        assert isinstance(resolved, we.Permutation)
         assert resolved.array_form == [1, 0]
 
     def test_permutation_in_list(self, handler_session):
@@ -209,7 +209,7 @@ class TestPermutationRoundTrip:
         resolved = handler._resolve_arg(encoded)
 
         assert isinstance(resolved, list)
-        assert isinstance(resolved[0], me.Permutation)
+        assert isinstance(resolved[0], we.Permutation)
         assert resolved[0].array_form == [1, 0, 2]
         assert resolved[1] == 42
 
@@ -233,7 +233,7 @@ class TestSymmetryInfoRoundTrip:
     def test_symmetric_tensor_pack_unpack(self, handler_session):
         """as_symmetric → _pack_result → _result_from_response → SymmetryInfo present."""
         data = self._make_symmetric_array()
-        sym_tensor = me.as_symmetric(data, symmetric_axes=(0, 1))
+        sym_tensor = we.as_symmetric(data, symmetric_axes=(0, 1))
 
         session, handler = handler_session
         packed = handler._pack_result(sym_tensor)
@@ -276,7 +276,7 @@ class TestSymmetryInfoRoundTrip:
         rng = np.random.default_rng(7)
         raw = rng.random((4, 4))
         data = (raw + raw.T) / 2.0
-        sym_tensor = me.as_symmetric(data, symmetric_axes=(0, 1))
+        sym_tensor = we.as_symmetric(data, symmetric_axes=(0, 1))
 
         session, handler = handler_session
         packed = handler._pack_result(sym_tensor)
@@ -295,7 +295,7 @@ class TestSymmetryInfoRoundTrip:
         raw = (raw + raw.transpose(1, 0, 2, 3)) / 2.0
         # Symmetrize axes 2,3
         raw = (raw + raw.transpose(0, 1, 3, 2)) / 2.0
-        sym_tensor = me.as_symmetric(raw, symmetric_axes=[(0, 1), (2, 3)])
+        sym_tensor = we.as_symmetric(raw, symmetric_axes=[(0, 1), (2, 3)])
 
         session, handler = handler_session
         packed = handler._pack_result(sym_tensor)

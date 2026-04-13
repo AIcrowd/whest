@@ -2,8 +2,8 @@
 
 import numpy as np
 import pytest
-from mechestim_server._request_handler import RequestHandler
-from mechestim_server._session import Session
+from whest_server._request_handler import RequestHandler
+from whest_server._session import Session
 
 
 @pytest.fixture
@@ -15,16 +15,16 @@ def handler():
 
 
 def test_resolve_permutation(handler):
-    import mechestim as me
+    import whest as we
 
     arg = {"__permutation__": [2, 0, 1]}
     result = handler._resolve_arg(arg)
-    assert isinstance(result, me.Permutation)
+    assert isinstance(result, we.Permutation)
     assert result.array_form == [2, 0, 1]
 
 
 def test_resolve_perm_group(handler):
-    import mechestim as me
+    import whest as we
 
     arg = {
         "__perm_group__": {
@@ -34,15 +34,15 @@ def test_resolve_perm_group(handler):
         }
     }
     result = handler._resolve_arg(arg)
-    assert isinstance(result, me.PermutationGroup)
+    assert isinstance(result, we.PermutationGroup)
     assert result.degree == 3
 
 
 def test_pack_symmetric_tensor(handler):
-    import mechestim as me
+    import whest as we
 
     arr = np.array([[1.0, 2.0], [2.0, 3.0]])
-    st = me.as_symmetric(arr, symmetric_axes=[[0, 1]])
+    st = we.as_symmetric(arr, symmetric_axes=[[0, 1]])
     result = handler._pack_result(st)
     assert result["status"] == "ok"
     assert "symmetry_info" in result["result"]

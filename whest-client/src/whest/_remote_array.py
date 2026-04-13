@@ -644,7 +644,7 @@ def _result_from_response(resp: dict) -> Union[RemoteArray, RemoteScalar, tuple,
     if "id" in result:
         sym_info = None
         if "symmetry_info" in result:
-            from mechestim._symmetric_info import SymmetryInfo
+            from whest._symmetric_info import SymmetryInfo
 
             si = result["symmetry_info"]
             sym_info = SymmetryInfo(
@@ -683,7 +683,7 @@ def _encode_arg(arg):
     if isinstance(arg, RemoteArray):
         return {"__handle__": arg.handle_id}
     # Permutation types → wire format
-    from mechestim._perm_group import Cycle, Permutation, PermutationGroup
+    from whest._perm_group import Cycle, Permutation, PermutationGroup
 
     if isinstance(arg, Cycle):
         arr = arg.list()

@@ -746,20 +746,22 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
 
     # Also add stats.* ops — distribution methods (pdf/cdf/ppf) are registered
     # as e.g. "stats.cauchy.cdf" but the docs reference the module containing
-    # the distribution class (mechestim.stats._cauchy).  Mark stats ops as
+    # the distribution class (whest.stats._cauchy).  Mark stats ops as
     # covered when the corresponding module directive exists.
-    stats_directive_modules = {d for d in covered_modules if "mechestim.stats._" in d}
+    stats_directive_modules = {
+        d for d in covered_modules if "whest.stats._" in d
+    }
     if stats_directive_modules:
         for name, info in registry.items():
             if (
-                info["module"] == "mechestim.stats"
+                info["module"] == "whest.stats"
                 and info["category"] != "blacklisted"
                 and name.startswith("stats.")
             ):
-                # e.g. "stats.cauchy.cdf" → check mechestim.stats._cauchy
+                # e.g. "stats.cauchy.cdf" → check whest.stats._cauchy
                 parts = name.split(".")
                 if len(parts) >= 3:
-                    dist_module = f"mechestim.stats._{parts[1]}"
+                    dist_module = f"whest.stats._{parts[1]}"
                     if dist_module in stats_directive_modules:
                         all_covered_names.add(name)
 
