@@ -14,7 +14,26 @@ operand symmetries to walk through the algorithm step by step:
 5. **Burnside Counting** — counting unique elements under the symmetry group
 6. **Cost Reduction** — FLOP savings from symmetry
 
-<iframe src="../../visualization/symmetry-explorer/dist/index.html" style="width: 100%; height: 2400px; border: 1px solid #e0e0e0; border-radius: 8px;" loading="lazy" title="Subgraph Symmetry Explorer"></iframe>
+<style>
+.symmetry-explorer-frame {
+  width: calc(100% + 2rem);
+  margin-left: -1rem;
+  margin-right: -1rem;
+  height: 2400px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #F8F9F9;
+}
+@media (min-width: 76.25em) {
+  .symmetry-explorer-frame {
+    width: calc(100% + 4rem);
+    margin-left: -2rem;
+    margin-right: -2rem;
+  }
+}
+</style>
+
+<iframe class="symmetry-explorer-frame" src="../../visualization/symmetry-explorer/dist/index.html" loading="lazy" title="Subgraph Symmetry Explorer"></iframe>
 
 !!! tip "Standalone mode"
     You can also run the explorer locally for a better experience:
