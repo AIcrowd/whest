@@ -7,7 +7,6 @@ import mechestim as me
 from mechestim._budget import BudgetContext
 from mechestim.errors import UnsupportedFunctionError
 
-
 # ---------------------------------------------------------------------------
 # UnsupportedFunctionError
 # ---------------------------------------------------------------------------
