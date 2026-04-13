@@ -69,10 +69,10 @@ export const EXAMPLES = [
     color: '#bb86fc',
   },
 
-  // ── Declared cyclic C3: Reynolds operator ──
+  // ── Declared cyclic C3: identity einsum ──
   {
     id: 'cyclic-tensor',
-    name: 'Cyclic 3-tensor (C₃)',
+    name: 'Cyclic C₃ tensor',
     formula: "einsum('ijk→ijk', T_cyc)",
     subscripts: ['ijk'],
     output: 'ijk',
@@ -84,7 +84,7 @@ export const EXAMPLES = [
     declared: true,
   },
 
-  // ── Declared block swap ──
+  // ── Declared block-swap ──
   {
     id: 'block-swap',
     name: 'Block swap (ij)↔(kl)',
@@ -94,7 +94,7 @@ export const EXAMPLES = [
     operandNames: ['T_blk'],
     perOpSymmetry: 'block-swap',
     description: 'Block swap — T[i,j,k,l] = T[k,l,i,j]. Like 2-electron integrals (ij|kl)=(kl|ij)',
-    expectedGroup: 'S2{blocks}',
+    expectedGroup: 'S2{i,k}×S2{j,l}',
     color: '#EC4899',
     declared: true,
   },
@@ -102,7 +102,7 @@ export const EXAMPLES = [
   // ── Declared dihedral D4 ──
   {
     id: 'dihedral-grid',
-    name: 'Dihedral D₄ grid',
+    name: 'Dihedral D₄ tensor',
     formula: "einsum('ijkl→ijkl', T_dih)",
     subscripts: ['ijkl'],
     output: 'ijkl',
