@@ -1,4 +1,5 @@
 export const EXAMPLES = [
+  // ── Classic: S2 on output ──
   {
     id: 'gram',
     name: 'Gram matrix',
@@ -11,6 +12,22 @@ export const EXAMPLES = [
     expectedGroup: 'S2{a,b}',
     color: '#4a7cff',
   },
+
+  // ── S3 build-up: 3 identical operands ──
+  {
+    id: 'triple-outer',
+    name: 'Triple outer (S3)',
+    formula: "einsum('ia,ib,ic→abc', X, X, X)",
+    subscripts: ['ia', 'ib', 'ic'],
+    output: 'abc',
+    operandNames: ['X', 'X', 'X'],
+    perOpSymmetry: null,
+    description: '3 identical operands → full S3 on output. Shows how S3 needs all 3! = 6 permutations',
+    expectedGroup: 'S3{a,b,c}',
+    color: '#23B761',
+  },
+
+  // ── Block symmetry ──
   {
     id: 'outer',
     name: 'Outer product',
@@ -23,6 +40,8 @@ export const EXAMPLES = [
     expectedGroup: 'S2{a,c}×S2{b,d}',
     color: '#3ddc84',
   },
+
+  // ── C3: cyclic only, no reflections ──
   {
     id: 'triangle',
     name: 'Directed triangle',
@@ -31,10 +50,12 @@ export const EXAMPLES = [
     output: 'ijk',
     operandNames: ['A', 'A', 'A'],
     perOpSymmetry: null,
-    description: 'Directed 3-cycle weight — only cyclic rotations, not reflections',
+    description: 'Cyclic chain — only rotations are valid (not reflections), so C3 not S3',
     expectedGroup: 'C3{i,j,k}',
     color: '#ffb74d',
   },
+
+  // ── D4: per-operand symmetry enables reflections ──
   {
     id: 'four-cycle',
     name: 'Undirected 4-cycle',
@@ -43,8 +64,50 @@ export const EXAMPLES = [
     output: 'ijkl',
     operandNames: ['S', 'S', 'S', 'S'],
     perOpSymmetry: 'symmetric',
-    description: 'S symmetric ⇒ per-operand S2 collapses axes, enabling reflections',
+    description: 'S symmetric ⇒ axes collapse, enabling reflections. C4 + reflections = D4',
     expectedGroup: 'D4{i,j,k,l}',
     color: '#bb86fc',
+  },
+
+  // ── W-side symmetry: contracted indices ──
+  {
+    id: 'trace-product',
+    name: 'Tr(A·A)',
+    formula: "einsum('ij,ji→', A, A)",
+    subscripts: ['ij', 'ji'],
+    output: '',
+    operandNames: ['A', 'A'],
+    perOpSymmetry: null,
+    description: 'No free labels — symmetry is on W (summed) side. S2{i,j} reduces the contraction cost',
+    expectedGroup: 'trivial',
+    color: '#94A3B8',
+  },
+
+  // ── No symmetry despite identical operands ──
+  {
+    id: 'matrix-chain',
+    name: 'A·A (no symmetry)',
+    formula: "einsum('ij,jk→ik', A, A)",
+    subscripts: ['ij', 'jk'],
+    output: 'ik',
+    operandNames: ['A', 'A'],
+    perOpSymmetry: null,
+    description: 'Identical operands but different subscript structure → σ-loop finds no valid π',
+    expectedGroup: 'trivial',
+    color: '#D1D5DB',
+  },
+
+  // ── Mixed operands: no symmetry ──
+  {
+    id: 'mixed-chain',
+    name: 'A·B·A (mixed)',
+    formula: "einsum('ij,jk,kl→il', A, B, A)",
+    subscripts: ['ij', 'jk', 'kl'],
+    output: 'il',
+    operandNames: ['A', 'B', 'A'],
+    perOpSymmetry: null,
+    description: 'A appears twice but B breaks the chain — no identical group forms',
+    expectedGroup: 'trivial',
+    color: '#E5E7EB',
   },
 ];
