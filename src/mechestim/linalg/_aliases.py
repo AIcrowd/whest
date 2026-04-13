@@ -56,14 +56,24 @@ attach_docstring(
 )
 
 
-def vecdot(a, b, **kwargs):
-    """Vector dot product (linalg namespace). Delegates to mechestim.vecdot."""
-    return _me.vecdot(a, b, **kwargs)
+if hasattr(_np.linalg, "vecdot"):
 
+    def vecdot(a, b, **kwargs):
+        """Vector dot product (linalg namespace). Delegates to mechestim.vecdot."""
+        return _me.vecdot(a, b, **kwargs)
 
-attach_docstring(
-    vecdot, _np.linalg.vecdot, "linalg", "0 FLOPs (delegates to mechestim.vecdot)"
-)
+    attach_docstring(
+        vecdot,
+        _np.linalg.vecdot,
+        "linalg",
+        "0 FLOPs (delegates to mechestim.vecdot)",
+    )
+
+else:
+    from mechestim.errors import UnsupportedFunctionError
+
+    def vecdot(*args, **kwargs):
+        raise UnsupportedFunctionError("linalg.vecdot", min_version="2.1")
 
 
 def diagonal(a, **kwargs):

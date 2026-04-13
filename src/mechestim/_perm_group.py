@@ -20,6 +20,53 @@ import math
 from functools import reduce
 
 
+class Cycle:
+    """Composable cycle builder, matching sympy's Cycle API.
+
+    Build permutations by composing disjoint or overlapping cycles::
+
+        Cycle(0, 2)(1, 3)     # → (0 2)(1 3)
+        Permutation(Cycle(0, 2)(1, 3))  # → Permutation([2, 3, 0, 1])
+    """
+
+    __slots__ = ("_mapping",)
+
+    def __init__(self, *cycle: int) -> None:
+        self._mapping: dict[int, int] = {}
+        if cycle:
+            for i in range(len(cycle)):
+                self._mapping[cycle[i]] = cycle[(i + 1) % len(cycle)]
+
+    def __call__(self, *cycle: int) -> Cycle:
+        """Compose another cycle, returning a new Cycle."""
+        new = Cycle()
+        new._mapping = dict(self._mapping)
+        if cycle:
+            new_cycle_map: dict[int, int] = {}
+            for i in range(len(cycle)):
+                new_cycle_map[cycle[i]] = cycle[(i + 1) % len(cycle)]
+            combined: dict[int, int] = {}
+            all_points = set(new._mapping) | set(new_cycle_map)
+            for x in all_points:
+                y = new._mapping.get(x, x)
+                z = new_cycle_map.get(y, y)
+                if z != x:
+                    combined[x] = z
+            new._mapping = combined
+        return new
+
+    def list(self, size: int | None = None) -> list[int]:
+        """Return array form. Size inferred from max element + 1 if not given."""
+        if size is None:
+            size = max(self._mapping.keys(), default=-1) + 1
+            size = max(size, max(self._mapping.values(), default=-1) + 1)
+        arr = list(range(size))
+        for k, v in self._mapping.items():
+            if k < size:
+                arr[k] = v
+        return arr
+
+
 class Permutation:
     """A permutation on {0, 1, ..., n-1} in array form.
 
@@ -29,8 +76,24 @@ class Permutation:
 
     __slots__ = ("_array_form",)
 
-    def __init__(self, array_form: list[int] | tuple[int, ...]) -> None:
-        self._array_form = tuple(array_form)
+    def __init__(
+        self,
+        array_form: list[int] | tuple[int, ...] | Cycle,
+        size: int | None = None,
+    ) -> None:
+        if isinstance(array_form, Cycle):
+            self._array_form = tuple(array_form.list(size))
+        elif array_form and isinstance(array_form[0], (list, tuple)):
+            # Cycle notation: list of lists
+            c = Cycle()
+            for cycle in array_form:
+                c = c(*cycle)
+            self._array_form = tuple(c.list(size))
+        else:
+            arr = list(array_form)
+            if size is not None and size > len(arr):
+                arr.extend(range(len(arr), size))
+            self._array_form = tuple(arr)
 
     @property
     def size(self) -> int:
@@ -132,6 +195,34 @@ class Permutation:
             return 1
         return reduce(lambda a, b: a * b // math.gcd(a, b), lengths)
 
+    def __call__(self, i: int) -> int:
+        """Apply the permutation: ``perm(i)`` returns the image of ``i``."""
+        return self._array_form[i]
+
+    def support(self) -> set[int]:
+        """Set of non-fixed points."""
+        return {i for i in range(self.size) if self._array_form[i] != i}
+
+    def parity(self) -> int:
+        """Parity: 0 if even, 1 if odd."""
+        return sum(len(c) - 1 for c in self.cyclic_form) % 2
+
+    def signature(self) -> int:
+        """Signature: +1 if even, -1 if odd."""
+        return 1 if self.parity() == 0 else -1
+
+    def transpositions(self) -> list[tuple[int, int]]:
+        """Decompose into a product of transpositions.
+
+        Each cycle (a, b, c, ...) becomes [(a, b), (a, c), ..., (a, ...)].
+        Applying them left-to-right (each prepended) reconstructs the permutation.
+        """
+        result: list[tuple[int, int]] = []
+        for cycle in self.cyclic_form:
+            for i in range(1, len(cycle)):
+                result.append((cycle[0], cycle[i]))
+        return result
+
     # --- Sympy bridge ---
 
     def as_sympy(self):
@@ -227,13 +318,58 @@ class PermutationGroup:
 
         for g in self._generators:
             for i in range(self._degree):
-                if g._array_form[i] != i:
-                    union(i, g._array_form[i])
+                if g(i) != i:
+                    union(i, g(i))
 
         groups: dict[int, set[int]] = {}
         for i in range(self._degree):
             groups.setdefault(find(i), set()).add(i)
         return [frozenset(s) for s in groups.values()]
+
+    def contains(self, perm: Permutation) -> bool:
+        """Test whether *perm* is an element of this group."""
+        return perm in set(self.elements())
+
+    @property
+    def is_transitive(self) -> bool:
+        """True if the group acts transitively (single orbit)."""
+        return len(self.orbits()) == 1
+
+    @property
+    def is_abelian(self) -> bool:
+        """True if all generators commute (implies all elements commute)."""
+        gens = self._generators
+        for i in range(len(gens)):
+            for j in range(i + 1, len(gens)):
+                if gens[i] * gens[j] != gens[j] * gens[i]:
+                    return False
+        return True
+
+    @property
+    def identity(self) -> Permutation:
+        """The identity element of the group."""
+        return Permutation.identity(self._degree)
+
+    def equals(self, other: PermutationGroup) -> bool:
+        """True if *self* and *other* represent the same group (same elements)."""
+        if self._degree != other._degree:
+            return False
+        if self.order() != other.order():
+            return False
+        return set(self.elements()) == set(other.elements())
+
+    def orbit(self, alpha: int) -> frozenset[int]:
+        """Orbit of a single point under the group action (BFS)."""
+        visited: set[int] = {alpha}
+        queue: list[int] = [alpha]
+        while queue:
+            point = queue.pop()
+            for g in self._generators:
+                image = g(point)
+                if image not in visited:
+                    visited.add(image)
+                    queue.append(image)
+        return frozenset(visited)
 
     def burnside_unique_count(self, size_dict: dict[int, int]) -> int:
         """Count unique tensor elements via Burnside's lemma.

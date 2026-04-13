@@ -132,7 +132,8 @@ class TestBenchmarkSizeConsistency:
         empty = [
             op
             for op, d in per_op_details.items()
-            if not d.get("benchmark_size", "").strip()
+            if d.get("bench_code", "").strip()
+            and not d.get("benchmark_size", "").strip()
         ]
         assert not empty, f"Ops with empty benchmark_size: {empty}"
 

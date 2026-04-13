@@ -6,7 +6,7 @@ import math
 
 import pytest
 
-from mechestim._perm_group import Permutation, PermutationGroup
+from mechestim._perm_group import Cycle, Permutation, PermutationGroup
 
 
 class TestPermutation:
@@ -251,3 +251,198 @@ class TestSympyBridge:
         g2 = PermutationGroup.from_sympy(sg)
         assert g2.order() == 6
         assert g2.is_symmetric()
+
+
+class TestCycle:
+    def test_single_cycle(self):
+        c = Cycle(0, 2)
+        p = Permutation(c)
+        assert p.array_form == [2, 1, 0]
+
+    def test_chained_cycles(self):
+        c = Cycle(0, 2)(1, 3)
+        p = Permutation(c)
+        assert p.array_form == [2, 3, 0, 1]
+
+    def test_three_cycle(self):
+        c = Cycle(0, 1, 2)
+        p = Permutation(c)
+        assert p.array_form == [1, 2, 0]
+
+    def test_chained_three_cycles(self):
+        c = Cycle(0, 1, 2)(3, 4)
+        p = Permutation(c)
+        assert p.array_form == [1, 2, 0, 4, 3]
+
+    def test_with_explicit_size(self):
+        c = Cycle(0, 1)
+        p = Permutation(c, size=5)
+        assert p.size == 5
+        assert p.array_form == [1, 0, 2, 3, 4]
+
+    def test_empty_cycle(self):
+        c = Cycle()
+        p = Permutation(c, size=3)
+        assert p.is_identity
+        assert p.size == 3
+
+    def test_cycle_list_method(self):
+        c = Cycle(0, 2)(1, 3)
+        assert c.list() == [2, 3, 0, 1]
+        assert c.list(6) == [2, 3, 0, 1, 4, 5]
+
+
+class TestPermutationCycleNotation:
+    def test_list_of_lists(self):
+        p = Permutation([[0, 2], [1, 3]])
+        assert p.array_form == [2, 3, 0, 1]
+
+    def test_single_cycle_list(self):
+        p = Permutation([[0, 1, 2]])
+        assert p.array_form == [1, 2, 0]
+
+    def test_list_of_lists_with_size(self):
+        p = Permutation([[0, 1]], size=5)
+        assert p.size == 5
+        assert p.array_form == [1, 0, 2, 3, 4]
+
+    def test_array_form_still_works(self):
+        p = Permutation([2, 0, 1])
+        assert p.array_form == [2, 0, 1]
+
+    def test_from_cycle_object(self):
+        p = Permutation(Cycle(0, 2)(1, 3))
+        assert p.array_form == [2, 3, 0, 1]
+
+
+class TestPermutationNewMethods:
+    def test_call(self):
+        p = Permutation([1, 2, 0])
+        assert p(0) == 1
+        assert p(1) == 2
+        assert p(2) == 0
+
+    def test_call_identity(self):
+        e = Permutation.identity(3)
+        assert e(0) == 0
+        assert e(2) == 2
+
+    def test_support(self):
+        assert Permutation([2, 3, 0, 1]).support() == {0, 1, 2, 3}
+        assert Permutation([0, 2, 1, 3]).support() == {1, 2}
+
+    def test_support_identity(self):
+        assert Permutation.identity(5).support() == set()
+
+    def test_parity_even(self):
+        assert Permutation([1, 2, 0]).parity() == 0
+
+    def test_parity_odd(self):
+        assert Permutation([1, 0, 2]).parity() == 1
+
+    def test_parity_identity(self):
+        assert Permutation.identity(3).parity() == 0
+
+    def test_parity_two_disjoint_transpositions(self):
+        assert Permutation([1, 0, 3, 2]).parity() == 0
+
+    def test_signature(self):
+        assert Permutation([1, 2, 0]).signature() == 1
+        assert Permutation([1, 0, 2]).signature() == -1
+        assert Permutation.identity(3).signature() == 1
+
+    def test_transpositions_3cycle(self):
+        t = Permutation([1, 2, 0]).transpositions()
+        assert len(t) == 2
+        result = Permutation.identity(3)
+        for a, b in t:
+            result = Permutation.from_cycle(3, [a, b]) * result
+        assert result == Permutation([1, 2, 0])
+
+    def test_transpositions_identity(self):
+        assert Permutation.identity(3).transpositions() == []
+
+    def test_transpositions_single_swap(self):
+        t = Permutation([1, 0, 2]).transpositions()
+        assert t == [(0, 1)]
+
+    def test_transpositions_two_disjoint(self):
+        t = Permutation([1, 0, 3, 2]).transpositions()
+        assert len(t) == 2
+        result = Permutation.identity(4)
+        for a, b in t:
+            result = Permutation.from_cycle(4, [a, b]) * result
+        assert result == Permutation([1, 0, 3, 2])
+
+
+class TestPermutationGroupNewMethods:
+    def test_contains_member(self):
+        g = PermutationGroup.cyclic(3)
+        assert g.contains(Permutation([1, 2, 0]))
+
+    def test_contains_non_member(self):
+        g = PermutationGroup.cyclic(3)
+        assert not g.contains(Permutation([0, 2, 1]))
+
+    def test_contains_identity(self):
+        g = PermutationGroup.cyclic(3)
+        assert g.contains(Permutation.identity(3))
+
+    def test_is_transitive_true(self):
+        assert PermutationGroup.symmetric(3).is_transitive
+        assert PermutationGroup.cyclic(4).is_transitive
+
+    def test_is_transitive_false(self):
+        gen = Permutation.from_cycle(4, [0, 1])
+        g = PermutationGroup(gen)
+        assert not g.is_transitive
+
+    def test_is_abelian_cyclic(self):
+        assert PermutationGroup.cyclic(4).is_abelian
+
+    def test_is_abelian_s2(self):
+        assert PermutationGroup.symmetric(2).is_abelian
+
+    def test_is_abelian_s3_false(self):
+        assert not PermutationGroup.symmetric(3).is_abelian
+
+    def test_identity_property(self):
+        g = PermutationGroup.symmetric(4)
+        e = g.identity
+        assert e.is_identity
+        assert e.size == 4
+
+    def test_equals_same_generators(self):
+        g1 = PermutationGroup.symmetric(3)
+        g2 = PermutationGroup.symmetric(3)
+        assert g1.equals(g2)
+
+    def test_equals_different_generators_same_group(self):
+        g1 = PermutationGroup(
+            Permutation.from_cycle(3, [0, 1]),
+            Permutation.from_cycle(3, [0, 1, 2]),
+        )
+        g2 = PermutationGroup.symmetric(3)
+        assert g1.equals(g2)
+
+    def test_equals_different_groups(self):
+        g1 = PermutationGroup.cyclic(3)
+        g2 = PermutationGroup.symmetric(3)
+        assert not g1.equals(g2)
+
+    def test_orbit_transitive(self):
+        g = PermutationGroup.symmetric(3)
+        assert g.orbit(0) == frozenset({0, 1, 2})
+        assert g.orbit(1) == frozenset({0, 1, 2})
+
+    def test_orbit_intransitive(self):
+        gen = Permutation.from_cycle(5, [0, 1])
+        g = PermutationGroup(gen)
+        assert g.orbit(0) == frozenset({0, 1})
+        assert g.orbit(1) == frozenset({0, 1})
+        assert g.orbit(2) == frozenset({2})
+        assert g.orbit(4) == frozenset({4})
+
+    def test_orbit_cyclic(self):
+        g = PermutationGroup.cyclic(4)
+        assert g.orbit(0) == frozenset({0, 1, 2, 3})

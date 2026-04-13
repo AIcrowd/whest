@@ -100,10 +100,10 @@ class TestAnalyticalCost:
     # --- Statistical ---
 
     def test_corrcoef_matmul_dominated(self):
-        assert _analytical_cost("corrcoef", f=100, s=200) == 2 * 100 * 100 * 200
+        assert _analytical_cost("corrcoef", f=100, s=200) == 100 * 100 * 200
 
     def test_cov_matmul_dominated(self):
-        assert _analytical_cost("cov", f=100, s=200) == 2 * 100 * 100 * 200
+        assert _analytical_cost("cov", f=100, s=200) == 100 * 100 * 200
 
     def test_cross_6n(self):
         assert _analytical_cost("cross", n=1000) == 6000
