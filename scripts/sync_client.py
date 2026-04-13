@@ -20,9 +20,7 @@ _HEADER = """\
 # Regenerate: uv run scripts/sync_client.py
 """
 
-_CLIENT_SRC = (
-    Path(__file__).resolve().parent.parent / "whest-client" / "src" / "whest"
-)
+_CLIENT_SRC = Path(__file__).resolve().parent.parent / "whest-client" / "src" / "whest"
 
 
 def _generate_registry_data() -> str:
@@ -123,9 +121,7 @@ def _generate_errors() -> str:
     _WHEST_ERROR_NAMES = [
         name
         for name, base, _ in _CLASSES
-        if "Warning" not in name
-        and name != "WhestError"
-        and name != "WhestServerError"
+        if "Warning" not in name and name != "WhestError" and name != "WhestServerError"
     ]
 
     lines = [

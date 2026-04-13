@@ -24,11 +24,7 @@ from whest._budget import BudgetContext
 # ---------------------------------------------------------------------------
 
 WEIGHTS_JSON = (
-    Path(__file__).resolve().parent.parent
-    / "src"
-    / "whest"
-    / "data"
-    / "weights.json"
+    Path(__file__).resolve().parent.parent / "src" / "whest" / "data" / "weights.json"
 )
 
 

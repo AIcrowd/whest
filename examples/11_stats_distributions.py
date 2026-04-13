@@ -39,13 +39,13 @@ n = 10_000
 x = we.random.randn(n)
 
 distributions = [
-    ("norm",     we.stats.norm),
-    ("uniform",  we.stats.uniform),
-    ("expon",    we.stats.expon),
-    ("cauchy",   we.stats.cauchy),
+    ("norm", we.stats.norm),
+    ("uniform", we.stats.uniform),
+    ("expon", we.stats.expon),
+    ("cauchy", we.stats.cauchy),
     ("logistic", we.stats.logistic),
-    ("laplace",  we.stats.laplace),
-    ("lognorm",  we.stats.lognorm),
+    ("laplace", we.stats.laplace),
+    ("lognorm", we.stats.lognorm),
     ("truncnorm", we.stats.truncnorm),
 ]
 

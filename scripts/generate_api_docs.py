@@ -748,9 +748,7 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
     # as e.g. "stats.cauchy.cdf" but the docs reference the module containing
     # the distribution class (whest.stats._cauchy).  Mark stats ops as
     # covered when the corresponding module directive exists.
-    stats_directive_modules = {
-        d for d in covered_modules if "whest.stats._" in d
-    }
+    stats_directive_modules = {d for d in covered_modules if "whest.stats._" in d}
     if stats_directive_modules:
         for name, info in registry.items():
             if (

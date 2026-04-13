@@ -245,12 +245,8 @@ XFAIL_PATTERNS: dict[str, str] = {
     # NumPy's TestClip tests use assert_array_strict_equal which compares
     # ndarray.flags including OWNDATA. The data and shape are correct;
     # only the OWNDATA flag differs. Same root cause for several other tests.
-    "*TestClip::test_simple_int": (
-        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
-    ),
-    "*TestClip::test_simple_double": (
-        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
-    ),
+    "*TestClip::test_simple_int": ("OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"),
+    "*TestClip::test_simple_double": ("OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"),
     "*TestClip::test_simple_complex": (
         "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
     ),
@@ -272,9 +268,7 @@ XFAIL_PATTERNS: dict[str, str] = {
     "*TestClip::test_simple_int64_out": (
         "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
     ),
-    "*TestClip::test_array_double": (
-        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
-    ),
+    "*TestClip::test_array_double": ("OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"),
     "*TestClip::test_clip_func_takes_out": (
         "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
     ),
@@ -299,27 +293,13 @@ XFAIL_PATTERNS: dict[str, str] = {
     "*TestClip::test_clip_with_out_simple_int32": (
         "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
     ),
-    "*TestClip::test_type_cast_01": (
-        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
-    ),
-    "*TestClip::test_type_cast_02": (
-        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
-    ),
-    "*TestClip::test_type_cast_03": (
-        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
-    ),
-    "*TestClip::test_type_cast_04": (
-        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
-    ),
-    "*TestClip::test_type_cast_05": (
-        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
-    ),
-    "*TestClip::test_type_cast_06": (
-        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
-    ),
-    "*TestClip::test_type_cast_09": (
-        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
-    ),
+    "*TestClip::test_type_cast_01": ("OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"),
+    "*TestClip::test_type_cast_02": ("OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"),
+    "*TestClip::test_type_cast_03": ("OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"),
+    "*TestClip::test_type_cast_04": ("OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"),
+    "*TestClip::test_type_cast_05": ("OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"),
+    "*TestClip::test_type_cast_06": ("OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"),
+    "*TestClip::test_type_cast_09": ("OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"),
     # ------------------------------------------------------------------ #
     # NUMPY_INTERNAL — fromiter/resize edge cases                         #
     # ------------------------------------------------------------------ #

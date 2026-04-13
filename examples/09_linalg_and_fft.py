@@ -17,11 +17,11 @@ print("=== Decomposition costs (256x256 matrix) ===\n")
 n = 256
 
 decomps = [
-    ("SVD",       we.flops.svd_cost(n, n)),
+    ("SVD", we.flops.svd_cost(n, n)),
     ("SVD (k=16)", we.flops.svd_cost(n, n, k=16)),
-    ("QR",        we.flops.qr_cost(n, n)),
-    ("Cholesky",  we.flops.cholesky_cost(n)),
-    ("Eigh",      we.flops.eigh_cost(n)),
+    ("QR", we.flops.qr_cost(n, n)),
+    ("Cholesky", we.flops.cholesky_cost(n)),
+    ("Eigh", we.flops.eigh_cost(n)),
 ]
 
 print(f"{'Decomposition':<16} {'FLOPs':>14}")
@@ -79,10 +79,9 @@ shapes = [(10, 200), (200, 5), (5, 300)]
 optimal_cost = we.flops.multi_dot_cost(shapes)
 
 # Naive left-to-right: (A@B)@C
-left_right = (
-    we.flops.einsum_cost("ij,jk->ik", shapes=[shapes[0], shapes[1]])
-    + we.flops.einsum_cost("ij,jk->ik", shapes=[(10, 5), shapes[2]])
-)
+left_right = we.flops.einsum_cost(
+    "ij,jk->ik", shapes=[shapes[0], shapes[1]]
+) + we.flops.einsum_cost("ij,jk->ik", shapes=[(10, 5), shapes[2]])
 
 print(f"Optimal (multi_dot): {optimal_cost:>10,} FLOPs")
 print(f"Left-to-right:       {left_right:>10,} FLOPs")
