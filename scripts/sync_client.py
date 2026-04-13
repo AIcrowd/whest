@@ -52,6 +52,97 @@ def _write_or_check(path: Path, content: str, check: bool, diffs: list[str]) -> 
         print(f"  wrote {path}")
 
 
+def _generate_errors() -> str:
+    """Generate errors.py for the client from core mechestim.errors."""
+    # Classes with custom __init__ that need message-based constructors
+    _CUSTOM_INIT_CLASSES = {
+        "BudgetExhaustedError",
+        "NoBudgetContextError",
+        "SymmetryError",
+        "UnsupportedFunctionError",
+    }
+
+    # (class_name, base_class, docstring) in declaration order
+    _CLASSES = [
+        ("MechEstimError", "Exception", "Base exception for all mechestim errors."),
+        ("BudgetExhaustedError", "MechEstimError", "Raised when an operation would exceed the FLOP budget."),
+        ("NoBudgetContextError", "MechEstimError", "Raised when a counted operation is called outside a BudgetContext."),
+        ("SymmetryError", "MechEstimError", "Raised when a claimed tensor symmetry does not hold."),
+        ("UnsupportedFunctionError", "MechEstimError", "Raised when calling a function not available in the installed NumPy."),
+        ("MechEstimWarning", "UserWarning", "Warning issued when mechestim detects potential numerical issues."),
+        ("SymmetryLossWarning", "MechEstimWarning", "Warning issued when an operation causes loss of symmetry metadata."),
+        # client-only
+        ("MechEstimServerError", "MechEstimError", "Server-side error that does not map to a more specific exception."),
+    ]
+
+    # Mechestim error class names (excludes warnings) for _MECHESTIM_ERRORS frozenset
+    _MECHESTIM_ERROR_NAMES = [
+        name for name, base, _ in _CLASSES
+        if "Warning" not in name and name != "MechEstimError" and name != "MechEstimServerError"
+    ]
+
+    lines = [
+        _HEADER,
+        '"""Custom exceptions and warnings for the mechestim client."""\n\n',
+        "from __future__ import annotations\n\n\n",
+    ]
+
+    for cls_name, base, doc in _CLASSES:
+        lines.append(f"class {cls_name}({base}):\n")
+        lines.append(f'    """{doc}"""\n')
+        if cls_name in _CUSTOM_INIT_CLASSES:
+            lines.append("\n")
+            lines.append('    def __init__(self, message: str = "") -> None:\n')
+            lines.append("        super().__init__(message)\n")
+        lines.append("\n\n")
+
+    # _MECHESTIM_ERRORS frozenset
+    lines.append("# ---------------------------------------------------------------------------\n")
+    lines.append("# Error map and dispatcher\n")
+    lines.append("# ---------------------------------------------------------------------------\n\n")
+    lines.append("_MECHESTIM_ERRORS: frozenset[str] = frozenset(\n")
+    lines.append("    {\n")
+    for name in _MECHESTIM_ERROR_NAMES:
+        lines.append(f"        {name!r},\n")
+    lines.append("    }\n")
+    lines.append(")\n\n")
+
+    # _ERROR_MAP dict
+    lines.append("_ERROR_MAP: dict[str, type[Exception]] = {\n")
+    for name in _MECHESTIM_ERROR_NAMES:
+        lines.append(f"    {name!r}: {name},\n")
+    lines.append(f"    {'MechEstimServerError'!r}: MechEstimServerError,\n")
+    for std_name, mapped in [
+        ("ValueError", "ValueError"),
+        ("TypeError", "TypeError"),
+        ("KeyError", "KeyError"),
+        ("RuntimeError", "RuntimeError"),
+        ("InvalidRequestError", "MechEstimServerError"),
+    ]:
+        lines.append(f"    {std_name!r}: {mapped},\n")
+    lines.append("}\n\n\n")
+
+    # raise_from_response function
+    lines.append(
+        'def raise_from_response(error_type: str, message: str) -> None:\n'
+        '    """Map *error_type* string to an exception class and raise it.\n\n'
+        '    Unknown error types are treated as :class:`MechEstimServerError`.\n'
+        '    """\n'
+        '    # Ensure message is a str (server may send bytes if it contains non-ASCII)\n'
+        '    if isinstance(message, bytes):\n'
+        '        message = message.decode("utf-8", errors="replace")\n'
+        '    if isinstance(error_type, bytes):\n'
+        '        error_type = error_type.decode("utf-8", errors="replace")\n'
+        '\n'
+        '    exc_cls = _ERROR_MAP.get(error_type, MechEstimServerError)\n'
+        '    if error_type in _MECHESTIM_ERRORS:\n'
+        '        raise exc_cls(message=message)\n'
+        '    raise exc_cls(message)\n'
+    )
+
+    return "".join(lines)
+
+
 def _generate_perm_group() -> str:
     """Copy _perm_group.py from core (pure Python, no numpy dependency)."""
     core_path = Path(__file__).resolve().parent.parent / "src" / "mechestim" / "_perm_group.py"
@@ -70,6 +161,13 @@ def main():
     _write_or_check(
         _CLIENT_SRC / "_registry_data.py",
         _generate_registry_data(),
+        args.check, diffs,
+    )
+
+    print("Generating errors...")
+    _write_or_check(
+        _CLIENT_SRC / "errors.py",
+        _generate_errors(),
         args.check, diffs,
     )
 
