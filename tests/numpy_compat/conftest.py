@@ -122,10 +122,10 @@ def _patch_numpy():
         parts = name.split(".")
         try:
             if len(parts) == 1:
-                me_fn = getattr(me, name)
+                we_fn = getattr(we, name)
             elif len(parts) == 2:
-                submod = getattr(me, parts[0])
-                me_fn = getattr(submod, parts[1])
+                submod = getattr(we, parts[0])
+                we_fn = getattr(submod, parts[1])
             else:
                 continue
         except AttributeError:
@@ -159,12 +159,12 @@ def _patch_numpy():
             if len(parts) == 1:
                 if hasattr(np, name):
                     _PATCHED[name] = getattr(np, name)
-                    setattr(np, name, me_fn)
+                    setattr(np, name, we_fn)
             elif len(parts) == 2:
                 np_submod = getattr(np, parts[0])
                 if hasattr(np_submod, parts[1]):
                     _PATCHED[name] = getattr(np_submod, parts[1])
-                    setattr(np_submod, parts[1], me_fn)
+                    setattr(np_submod, parts[1], we_fn)
         except (AttributeError, TypeError):
             continue
 

@@ -123,10 +123,10 @@ def test_unstack_works():
 
 def test_all_version_gated_functions_importable():
     """All version-gated functions should be importable regardless of numpy version."""
-    assert hasattr(me, "vecdot")
-    assert hasattr(me, "matvec")
-    assert hasattr(me, "vecmat")
-    assert hasattr(me, "bitwise_count")
-    assert hasattr(me, "cumulative_sum")
-    assert hasattr(me, "cumulative_prod")
-    assert hasattr(me, "unstack")
+    assert hasattr(we, "vecdot")
+    assert hasattr(we, "matvec")
+    assert hasattr(we, "vecmat")
+    assert hasattr(we, "bitwise_count")
+    assert hasattr(we, "cumulative_sum")
+    assert hasattr(we, "cumulative_prod")
+    assert hasattr(we, "unstack")

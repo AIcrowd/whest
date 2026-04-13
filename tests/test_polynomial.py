@@ -301,13 +301,13 @@ def test_roots_no_budget():
 def test_import_from_whest():
     import whest as we
 
-    assert hasattr(me, "polyval")
-    assert hasattr(me, "polyadd")
-    assert hasattr(me, "polysub")
-    assert hasattr(me, "polyder")
-    assert hasattr(me, "polyint")
-    assert hasattr(me, "polymul")
-    assert hasattr(me, "polydiv")
-    assert hasattr(me, "polyfit")
-    assert hasattr(me, "poly")
-    assert hasattr(me, "roots")
+    assert hasattr(we, "polyval")
+    assert hasattr(we, "polyadd")
+    assert hasattr(we, "polysub")
+    assert hasattr(we, "polyder")
+    assert hasattr(we, "polyint")
+    assert hasattr(we, "polymul")
+    assert hasattr(we, "polydiv")
+    assert hasattr(we, "polyfit")
+    assert hasattr(we, "poly")
+    assert hasattr(we, "roots")

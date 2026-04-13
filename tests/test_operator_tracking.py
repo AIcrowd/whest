@@ -76,11 +76,11 @@ def test_binary_arith_flops_match_function(name, op, func_name):
     else:
         a = we.array([1.0, 2.0, 3.0, 4.0])
         b = we.array([0.5, 1.5, 2.5, 3.5])
-    me_func = getattr(me, func_name)
+    we_func = getattr(we, func_name)
     with we.BudgetContext(flop_budget=int(1e9)) as b1:
         op(a, b)
     with we.BudgetContext(flop_budget=int(1e9)) as b2:
-        me_func(a, b)
+        we_func(a, b)
     assert b1.flops_used == b2.flops_used, (
         f"{name}: operator used {b1.flops_used} FLOPs, function used {b2.flops_used}"
     )
@@ -146,11 +146,11 @@ def test_binary_compare_result_matches_numpy(name, op, func_name):
 def test_binary_compare_flops_match_function(name, op, func_name):
     a = we.array([1.0, 2.0, 3.0, 4.0])
     b = we.array([2.0, 2.0, 2.0, 2.0])
-    me_func = getattr(me, func_name)
+    we_func = getattr(we, func_name)
     with we.BudgetContext(flop_budget=int(1e9)) as b1:
         op(a, b)
     with we.BudgetContext(flop_budget=int(1e9)) as b2:
-        me_func(a, b)
+        we_func(a, b)
     assert b1.flops_used == b2.flops_used
 
 
@@ -190,11 +190,11 @@ def test_binary_bitwise_result_matches_numpy(name, op, func_name):
 def test_binary_bitwise_flops_match_function(name, op, func_name):
     a = we.array([1, 2, 3, 4], dtype=we.int32)
     b = we.array([2, 2, 2, 2], dtype=we.int32)
-    me_func = getattr(me, func_name)
+    we_func = getattr(we, func_name)
     with we.BudgetContext(flop_budget=int(1e9)) as b1:
         op(a, b)
     with we.BudgetContext(flop_budget=int(1e9)) as b2:
-        me_func(a, b)
+        we_func(a, b)
     assert b1.flops_used == b2.flops_used
 
 
@@ -223,11 +223,11 @@ def test_unary_arith_result_matches_numpy(name, op, func_name):
 @pytest.mark.parametrize("name,op,func_name", UNARY_ARITHMETIC)
 def test_unary_arith_flops_match_function(name, op, func_name):
     a = we.array([-2.0, -1.0, 1.0, 2.0])
-    me_func = getattr(me, func_name)
+    we_func = getattr(we, func_name)
     with we.BudgetContext(flop_budget=int(1e9)) as b1:
         op(a)
     with we.BudgetContext(flop_budget=int(1e9)) as b2:
-        me_func(a)
+        we_func(a)
     assert b1.flops_used == b2.flops_used
 
 
@@ -252,11 +252,11 @@ def test_unary_bitwise_result_matches_numpy(name, op, func_name):
 @pytest.mark.parametrize("name,op,func_name", UNARY_BITWISE)
 def test_unary_bitwise_flops_match_function(name, op, func_name):
     a = we.array([1, 2, 3, 4], dtype=we.int32)
-    me_func = getattr(me, func_name)
+    we_func = getattr(we, func_name)
     with we.BudgetContext(flop_budget=int(1e9)) as b1:
         op(a)
     with we.BudgetContext(flop_budget=int(1e9)) as b2:
-        me_func(a)
+        we_func(a)
     assert b1.flops_used == b2.flops_used
 
 

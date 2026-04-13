@@ -40,7 +40,7 @@ def test_budget_context_quiet_suppresses_banner(capsys):
 
 
 def test_numpy_supported_attribute():
-    assert hasattr(me, "__numpy_supported__")
+    assert hasattr(we, "__numpy_supported__")
     assert ">=" in we.__numpy_supported__
     assert "<" in we.__numpy_supported__
 
