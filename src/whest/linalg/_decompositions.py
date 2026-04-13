@@ -1,4 +1,4 @@
-# src/mechestim/linalg/_decompositions.py
+# src/whest/linalg/_decompositions.py
 """Matrix decomposition wrappers with FLOP counting.
 
 Each operation has a co-located cost function documenting the formula,
@@ -9,8 +9,8 @@ from __future__ import annotations
 
 import numpy as _np
 
-from mechestim._docstrings import attach_docstring
-from mechestim._validation import require_budget
+from whest._docstrings import attach_docstring
+from whest._validation import require_budget
 
 
 def cholesky_cost(n: int) -> int:

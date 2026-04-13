@@ -1,9 +1,9 @@
-"""Configurable per-operation FLOP weights for mechestim.
+"""Configurable per-operation FLOP weights for whest.
 
 Weights are multiplicative constants applied to analytical FLOP costs.
 Without a weights file, all weights default to 1.0 (backward compatible).
 
-Set MECHESTIM_WEIGHTS_FILE=/path/to/weights.json to load custom weights.
+Set WHEST_WEIGHTS_FILE=/path/to/weights.json to load custom weights.
 The JSON must have a "weights" key mapping op_name -> float multiplier.
 """
 
@@ -39,7 +39,7 @@ def load_weights(path: str | None = None) -> None:
     ----------
     path : str or None
         Path to weights JSON file. If None, reads from the
-        ``MECHESTIM_WEIGHTS_FILE`` environment variable. If neither
+        ``WHEST_WEIGHTS_FILE`` environment variable. If neither
         is set, does nothing.
 
     Raises
@@ -50,7 +50,7 @@ def load_weights(path: str | None = None) -> None:
         If the file contains invalid JSON.
     """
     if path is None:
-        path = os.environ.get("MECHESTIM_WEIGHTS_FILE")
+        path = os.environ.get("WHEST_WEIGHTS_FILE")
     if path is None:
         return
     with open(path) as f:

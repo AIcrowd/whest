@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import numpy as _np
 
-from mechestim._flops import svd_cost
-from mechestim._validation import check_nan_inf, require_budget
+from whest._flops import svd_cost
+from whest._validation import check_nan_inf, require_budget
 
 
 def svd(
@@ -47,7 +47,7 @@ def svd(
 
     Notes
     -----
-    **mechestim cost:** m × n × k FLOPs.
+    **whest cost:** m × n × k FLOPs.
 
     See Also
     --------

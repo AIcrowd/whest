@@ -1,4 +1,4 @@
-"""Global configuration for mechestim."""
+"""Global configuration for whest."""
 
 from __future__ import annotations
 
@@ -9,12 +9,12 @@ _SETTINGS: dict[str, object] = {
 
 
 def configure(**kwargs: object) -> None:
-    """Update mechestim global settings.
+    """Update whest global settings.
 
     Parameters
     ----------
     symmetry_warnings : bool
-        If ``False``, suppress :class:`~mechestim.errors.SymmetryLossWarning`
+        If ``False``, suppress :class:`~whest.errors.SymmetryLossWarning`
         warnings.  Default ``True``.
     use_inner_symmetry : bool
         If ``True``, exploit inner (W-side) symmetry to reduce FLOP costs

@@ -1,10 +1,10 @@
-"""Docstring inheritance helper for mechestim wrappers."""
+"""Docstring inheritance helper for whest wrappers."""
 
 from __future__ import annotations
 
 
 def attach_docstring(wrapper, np_func, category: str, cost_description: str) -> None:
-    """Attach NumPy's docstring to a mechestim wrapper with a FLOP Cost section.
+    """Attach NumPy's docstring to a whest wrapper with a FLOP Cost section.
 
     Inserts a dedicated "FLOP Cost" section after the summary line(s),
     before the Parameters section. This keeps cost info prominent and

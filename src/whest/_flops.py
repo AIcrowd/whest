@@ -1,4 +1,4 @@
-"""FLOP cost calculators for mechestim operations."""
+"""FLOP cost calculators for whest operations."""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ from collections import Counter
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from mechestim._symmetric import SymmetryInfo
+    from whest._symmetric import SymmetryInfo
 
 
 def parse_einsum_subscripts(subscripts: str) -> tuple[list[list[str]], list[str]]:
@@ -64,12 +64,12 @@ def einsum_cost(
     int
         Estimated FLOP count.
     """
-    from mechestim._opt_einsum import contract_path
+    from whest._opt_einsum import contract_path
 
     # Convert SymmetryInfo -> PermutationGroup for oracle
     oracle = None
     if operand_symmetries and any(s is not None for s in operand_symmetries):
-        from mechestim._einsum import _symmetry_info_to_perm_groups
+        from whest._einsum import _symmetry_info_to_perm_groups
 
         input_parts = subscripts.replace(" ", "").split("->")[0].split(",")
         output_str = subscripts.split("->")[1] if "->" in subscripts else ""
@@ -79,7 +79,7 @@ def einsum_cost(
             for sym, chars in zip(operand_symmetries, input_parts)
         ]
 
-        from mechestim._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
+        from whest._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
 
         # Use sentinel objects as operands (identity-based detection not needed here)
         sentinel_operands = [object() for _ in range(len(input_parts))]

@@ -8,9 +8,9 @@ from __future__ import annotations
 
 import numpy as np
 
-from mechestim.stats._base import ContinuousDistribution
-from mechestim.stats._erf import _erf
-from mechestim.stats._ndtri import _ndtri
+from whest.stats._base import ContinuousDistribution
+from whest.stats._erf import _erf
+from whest.stats._ndtri import _ndtri
 
 _SQRT2 = np.sqrt(2.0)
 _INV_SQRT_2PI = 1.0 / np.sqrt(2.0 * np.pi)
@@ -55,7 +55,7 @@ class NormDistribution(ContinuousDistribution):
 
         Returns
         -------
-        MechestimArray
+        WhestArray
             PDF evaluated at *x*.
         """
         return self._deduct_and_call("pdf", 1, x, loc=loc, scale=scale)
@@ -80,7 +80,7 @@ class NormDistribution(ContinuousDistribution):
 
         Returns
         -------
-        MechestimArray
+        WhestArray
             CDF evaluated at *x*.
         """
         return self._deduct_and_call("cdf", 1, x, loc=loc, scale=scale)
@@ -105,7 +105,7 @@ class NormDistribution(ContinuousDistribution):
 
         Returns
         -------
-        MechestimArray
+        WhestArray
             PPF evaluated at *q*.
         """
         return self._deduct_and_call("ppf", 1, q, loc=loc, scale=scale)

@@ -1,9 +1,9 @@
-"""Client-side BudgetContext proxy that delegates to the mechestim server."""
+"""Client-side BudgetContext proxy that delegates to the whest server."""
 
 from __future__ import annotations
 
-from mechestim._connection import get_connection
-from mechestim._protocol import (
+from whest._connection import get_connection
+from whest._protocol import (
     encode_budget_close,
     encode_budget_open,
     encode_budget_status,
@@ -56,7 +56,7 @@ class BudgetContext:
     Example
     -------
     >>> with BudgetContext(flop_budget=1_000_000) as ctx:
-    ...     result = mechestim.dot(a, b)
+    ...     result = whest.dot(a, b)
     ...     print(ctx.summary())
     """
 
@@ -290,7 +290,7 @@ _global_default = None
 def _get_default_budget_amount():
     import os
 
-    raw = os.environ.get("MECHESTIM_DEFAULT_BUDGET")
+    raw = os.environ.get("WHEST_DEFAULT_BUDGET")
     if raw is not None:
         return int(float(raw))
     return int(1e15)

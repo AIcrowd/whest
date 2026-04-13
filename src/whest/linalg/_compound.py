@@ -6,9 +6,9 @@ import math
 
 import numpy as _np
 
-from mechestim._cost_model import FMA_COST
-from mechestim._docstrings import attach_docstring
-from mechestim._validation import require_budget
+from whest._cost_model import FMA_COST
+from whest._docstrings import attach_docstring
+from whest._validation import require_budget
 
 
 def _popcount(n: int) -> int:

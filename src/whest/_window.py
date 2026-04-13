@@ -1,13 +1,13 @@
-# src/mechestim/_window.py
+# src/whest/_window.py
 """Window function wrappers with FLOP counting."""
 
 from __future__ import annotations
 
 import numpy as _np
 
-from mechestim._cost_model import FMA_COST
-from mechestim._docstrings import attach_docstring
-from mechestim._validation import require_budget
+from whest._cost_model import FMA_COST
+from whest._docstrings import attach_docstring
+from whest._validation import require_budget
 
 
 def bartlett_cost(n: int) -> int:
@@ -161,6 +161,6 @@ attach_docstring(kaiser, _np.kaiser, "counted_custom", "3n FLOPs")
 
 import sys as _sys  # noqa: E402
 
-from mechestim._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402
+from whest._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402
 
 _wrap_module_returns(_sys.modules[__name__])

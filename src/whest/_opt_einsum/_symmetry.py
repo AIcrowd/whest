@@ -12,7 +12,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Collection
 
-from mechestim._perm_group import PermutationGroup
+from whest._perm_group import PermutationGroup
 
 from ._helpers import flop_count
 

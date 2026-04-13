@@ -272,7 +272,7 @@ class PathInfo:
             than reverse-engineering from the cost ratio.  Shows separate
             V (output) and W (inner) ratios when both contribute.
             """
-            from mechestim._opt_einsum._symmetry import unique_elements
+            from whest._opt_einsum._symmetry import unique_elements
 
             if step.flop_cost == step.dense_flop_cost:
                 return "-"
@@ -325,8 +325,8 @@ class PathInfo:
 
         header_lines = [
             f"  Complete contraction:  {self.eq}",
-            f"      Naive cost (mechestim):  {self.naive_cost:,}",
-            f"  Optimized cost (mechestim):  {self.optimized_cost:,}",
+            f"      Naive cost (whest):  {self.naive_cost:,}",
+            f"  Optimized cost (whest):  {self.optimized_cost:,}",
             f"                     Speedup:  {self.speedup:.3f}x",
             f"       Largest intermediate:  {self.largest_intermediate:,} elements",
         ]
@@ -703,7 +703,7 @@ def contract_path(
             # Per-operand free index counts for Φ cost model.
             _free_counts = tuple(len(s - idx_removed) for s in _pre_input_sets)
 
-            from mechestim._config import get_setting
+            from whest._config import get_setting
 
             _use_inner = bool(get_setting("use_inner_symmetry"))
 

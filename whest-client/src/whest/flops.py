@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Sequence, Tuple, Union
 
-from mechestim._math_compat import prod as _prod
+from whest._math_compat import prod as _prod
 
 # ---------------------------------------------------------------------------
 # Local cost functions (no server needed)
@@ -76,8 +76,8 @@ def einsum_cost(subscripts: str, shapes: Sequence[Tuple[int, ...]]) -> int:
     int
         Estimated FLOP cost.
     """
-    from mechestim._connection import get_connection
-    from mechestim._protocol import encode_request
+    from whest._connection import get_connection
+    from whest._protocol import encode_request
 
     conn = get_connection()
     resp = conn.send_recv(
@@ -107,8 +107,8 @@ def svd_cost(m: int, n: int, k: int = 0) -> int:
     int
         Estimated FLOP cost.
     """
-    from mechestim._connection import get_connection
-    from mechestim._protocol import encode_request
+    from whest._connection import get_connection
+    from whest._protocol import encode_request
 
     conn = get_connection()
     resp = conn.send_recv(

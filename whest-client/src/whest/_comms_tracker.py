@@ -4,7 +4,7 @@ from __future__ import annotations
 
 
 class ClientCommsTracker:
-    """Accumulates network statistics for mechestim client requests."""
+    """Accumulates network statistics for whest client requests."""
 
     def __init__(self) -> None:
         self._request_count: int = 0

@@ -1,4 +1,4 @@
-# src/mechestim/fft/_transforms.py
+# src/whest/fft/_transforms.py
 """FFT transform wrappers with FLOP counting.
 
 Cost model: 5 * N * log2(N) for complex DFT of length N (Cooley-Tukey radix-2).
@@ -11,8 +11,8 @@ import math
 
 import numpy as _np
 
-from mechestim._docstrings import attach_docstring
-from mechestim._validation import require_budget
+from whest._docstrings import attach_docstring
+from whest._validation import require_budget
 
 
 def fft_cost(n: int) -> int:
@@ -472,6 +472,6 @@ attach_docstring(
 
 import sys as _sys  # noqa: E402
 
-from mechestim._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402
+from whest._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402
 
 _wrap_module_returns(_sys.modules[__name__])

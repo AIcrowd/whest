@@ -19,7 +19,7 @@ def _has_symmetric_input(
     if input_groups is None:
         return False, False
 
-    from mechestim._perm_group import PermutationGroup
+    from whest._perm_group import PermutationGroup
 
     def _is_symmetric(sym, input_chars: set[str]) -> bool:
         if sym is None:

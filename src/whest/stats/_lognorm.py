@@ -8,9 +8,9 @@ from __future__ import annotations
 
 import numpy as _np
 
-from mechestim.stats._base import ContinuousDistribution
-from mechestim.stats._erf import _erf
-from mechestim.stats._ndtri import _ndtri
+from whest.stats._base import ContinuousDistribution
+from whest.stats._erf import _erf
+from whest.stats._ndtri import _ndtri
 
 _SQRT2 = _np.sqrt(2.0)
 _INV_SQRT_2PI = 1.0 / _np.sqrt(2.0 * _np.pi)
@@ -62,7 +62,7 @@ class LognormDistribution(ContinuousDistribution):
 
         Returns
         -------
-        MechestimArray
+        WhestArray
             PDF evaluated at *x*.
         """
         return self._deduct_and_call("pdf", 1, x, s, loc=loc, scale=scale)

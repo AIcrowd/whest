@@ -1,4 +1,4 @@
-"""MechestimServer -- ZMQ REP loop that dispatches requests to a Session + RequestHandler."""
+"""WhestServer -- ZMQ REP loop that dispatches requests to a Session + RequestHandler."""
 
 from __future__ import annotations
 
@@ -8,24 +8,24 @@ from time import monotonic, perf_counter_ns
 import msgpack
 import zmq
 
-from mechestim_server._protocol import (
+from whest_server._protocol import (
     InvalidRequestError,
     decode_request,
     encode_error_response,
     encode_response,
     validate_request,
 )
-from mechestim_server._request_handler import RequestHandler
-from mechestim_server._session import Session
+from whest_server._request_handler import RequestHandler
+from whest_server._session import Session
 
 
-class MechestimServer:
-    """ZMQ REP server for the mechestim budget-controlled compute service.
+class WhestServer:
+    """ZMQ REP server for the whest budget-controlled compute service.
 
     Parameters
     ----------
     url:
-        ZMQ endpoint to bind (e.g. ``"ipc:///tmp/mechestim.sock"`` or
+        ZMQ endpoint to bind (e.g. ``"ipc:///tmp/whest.sock"`` or
         ``"tcp://127.0.0.1:15555"``).
     session_timeout_s:
         Seconds of inactivity after which an open session is reaped.
@@ -33,7 +33,7 @@ class MechestimServer:
 
     def __init__(
         self,
-        url: str = "ipc:///tmp/mechestim.sock",
+        url: str = "ipc:///tmp/whest.sock",
         session_timeout_s: float = 60.0,
     ) -> None:
         self._url = url
@@ -159,7 +159,7 @@ class MechestimServer:
         except Exception as enc_err:
             # Response serialization failed -- return error instead of crashing
             response_bytes = encode_error_response(
-                "MechEstimServerError",
+                "WhestServerError",
                 f"failed to serialize response: {type(enc_err).__name__}",
             )
 
@@ -255,7 +255,7 @@ class MechestimServer:
             return
         if monotonic() - self._last_activity > self._session_timeout_s:
             print(
-                "[mechestim-server] session timed out -- reaping",
+                "[whest-server] session timed out -- reaping",
                 file=sys.stderr,
             )
             self._session.close()

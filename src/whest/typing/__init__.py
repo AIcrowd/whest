@@ -2,14 +2,14 @@
 
 Usage::
 
-    from mechestim.typing import NDArray, ArrayLike
+    from whest.typing import NDArray, ArrayLike
 
     def predict(x: NDArray) -> NDArray:
         ...
 
-All names are plain aliases to numpy.typing. Because MechestimArray
+All names are plain aliases to numpy.typing. Because WhestArray
 is a subclass of numpy.ndarray, annotations like `NDArray[float32]`
-accept mechestim arrays without any runtime overhead.
+accept whest arrays without any runtime overhead.
 """
 
 from __future__ import annotations

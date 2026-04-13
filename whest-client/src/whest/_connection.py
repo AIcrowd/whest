@@ -1,4 +1,4 @@
-"""ZMQ REQ socket wrapper for the mechestim client."""
+"""ZMQ REQ socket wrapper for the whest client."""
 
 from __future__ import annotations
 
@@ -7,10 +7,10 @@ import time
 
 import zmq
 
-from mechestim._protocol import decode_response
-from mechestim.errors import raise_from_response
+from whest._protocol import decode_response
+from whest.errors import raise_from_response
 
-_DEFAULT_URL = "ipc:///tmp/mechestim.sock"
+_DEFAULT_URL = "ipc:///tmp/whest.sock"
 _DEFAULT_TIMEOUT_MS = 30_000
 
 
@@ -20,8 +20,8 @@ class Connection:
     Parameters
     ----------
     url:
-        ZMQ endpoint to connect to.  Defaults to the ``MECHESTIM_SERVER_URL``
-        environment variable, or ``ipc:///tmp/mechestim.sock`` if unset.
+        ZMQ endpoint to connect to.  Defaults to the ``WHEST_SERVER_URL``
+        environment variable, or ``ipc:///tmp/whest.sock`` if unset.
     timeout_ms:
         Send/receive timeout in milliseconds.  Defaults to 30 000 ms.
     """
@@ -29,7 +29,7 @@ class Connection:
     def __init__(
         self, url: str | None = None, timeout_ms: int = _DEFAULT_TIMEOUT_MS
     ) -> None:
-        self.url: str = url or os.environ.get("MECHESTIM_SERVER_URL", _DEFAULT_URL)
+        self.url: str = url or os.environ.get("WHEST_SERVER_URL", _DEFAULT_URL)
         self.timeout_ms: int = timeout_ms
         self._context: zmq.Context | None = None
         self._socket: zmq.Socket | None = None
@@ -66,7 +66,7 @@ class Connection:
         Raises the appropriate exception if the response has
         ``"status": "error"``.
         """
-        from mechestim.errors import MechEstimServerError
+        from whest.errors import WhestServerError
 
         sock = self._ensure_connected()
 
@@ -77,7 +77,7 @@ class Connection:
         except zmq.Again:
             # Socket is in a bad state after timeout — reset it
             self._reset_socket()
-            raise MechEstimServerError(
+            raise WhestServerError(
                 "server timeout: no response within timeout period"
             )
         t1 = time.monotonic_ns()
@@ -89,7 +89,7 @@ class Connection:
 
         if response.get("status") == "error":
             raise_from_response(
-                response.get("error_type", "MechEstimServerError"),
+                response.get("error_type", "WhestServerError"),
                 response.get("message", ""),
             )
 

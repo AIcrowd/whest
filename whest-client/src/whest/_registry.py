@@ -1,12 +1,12 @@
-"""Registry helpers for the mechestim client API surface.
+"""Registry helpers for the whest client API surface.
 
-Thin wrapper around :mod:`mechestim._registry_data` that provides category
+Thin wrapper around :mod:`whest._registry_data` that provides category
 constants and lookup functions.
 """
 
 from __future__ import annotations
 
-from mechestim._registry_data import FUNCTION_CATEGORIES
+from whest._registry_data import FUNCTION_CATEGORIES
 
 # ---------------------------------------------------------------------------
 # Category constants

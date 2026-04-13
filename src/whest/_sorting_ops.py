@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import numpy as _np
 
-from mechestim._docstrings import attach_docstring
-from mechestim._flops import search_cost, sort_cost
-from mechestim._validation import require_budget
+from whest._docstrings import attach_docstring
+from whest._flops import search_cost, sort_cost
+from whest._validation import require_budget
 
 
 def _sort_cost_nd(a: _np.ndarray, axis: int) -> int:
@@ -401,6 +401,6 @@ attach_docstring(
 
 import sys as _sys  # noqa: E402
 
-from mechestim._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402
+from whest._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402
 
 _wrap_module_returns(_sys.modules[__name__])

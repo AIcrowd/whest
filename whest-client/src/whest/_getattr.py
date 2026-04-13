@@ -7,7 +7,7 @@ registered-but-unimplemented, or completely unknown names.
 
 from __future__ import annotations
 
-from mechestim._registry import BLACKLISTED, get_category
+from whest._registry import BLACKLISTED, get_category
 
 
 def make_module_getattr(module_prefix: str, module_label: str):
@@ -17,11 +17,11 @@ def make_module_getattr(module_prefix: str, module_label: str):
     ----------
     module_prefix:
         Prefix prepended before looking up the registry, e.g. ``"fft."``
-        for the ``mechestim.fft`` submodule.  Pass ``""`` for the top-level
+        for the ``whest.fft`` submodule.  Pass ``""`` for the top-level
         package.
     module_label:
         Human-readable module name used in error messages, e.g.
-        ``"mechestim.fft"``.
+        ``"whest.fft"``.
     """
 
     def __getattr__(name: str):
@@ -35,7 +35,7 @@ def make_module_getattr(module_prefix: str, module_label: str):
         if category == BLACKLISTED:
             raise AttributeError(
                 f"'{module_label}.{name}' is intentionally not supported "
-                f"in mechestim. This function is blacklisted because it "
+                f"in whest. This function is blacklisted because it "
                 f"involves I/O, string formatting, or system-level "
                 f"operations that are not meaningful in a remote-compute "
                 f"environment."

@@ -15,7 +15,7 @@ from __future__ import annotations
 from functools import reduce
 from typing import Iterable
 
-from mechestim._constants import e, inf, nan, pi
+from whest._constants import e, inf, nan, pi
 
 __all__ = ["prod", "pi", "e", "inf", "nan"]
 

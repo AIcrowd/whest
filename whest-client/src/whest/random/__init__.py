@@ -1,12 +1,12 @@
-"""mechestim.random — random number generation submodule proxy."""
+"""whest.random — random number generation submodule proxy."""
 
 from __future__ import annotations
 
-from mechestim._connection import get_connection
-from mechestim._getattr import make_module_getattr
-from mechestim._protocol import encode_request
-from mechestim._registry import iter_proxyable
-from mechestim._remote_array import (
+from whest._connection import get_connection
+from whest._getattr import make_module_getattr
+from whest._protocol import encode_request
+from whest._registry import iter_proxyable
+from whest._remote_array import (
     RemoteArray,
     RemoteScalar,
     _encode_arg,
@@ -42,4 +42,4 @@ for _qname in _random_ops:
 del _qname, _short, _random_ops
 
 # Fall-through for unknown / blacklisted names
-__getattr__ = make_module_getattr("random.", "mechestim.random")
+__getattr__ = make_module_getattr("random.", "whest.random")

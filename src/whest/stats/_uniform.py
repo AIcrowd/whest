@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import numpy as _np
 
-from mechestim.stats._base import ContinuousDistribution
+from whest.stats._base import ContinuousDistribution
 
 
 class UniformDistribution(ContinuousDistribution):
@@ -49,7 +49,7 @@ class UniformDistribution(ContinuousDistribution):
 
         Returns
         -------
-        MechestimArray
+        WhestArray
             PDF evaluated at *x*.
         """
         return self._deduct_and_call("pdf", 1, x, loc=loc, scale=scale)
@@ -74,7 +74,7 @@ class UniformDistribution(ContinuousDistribution):
 
         Returns
         -------
-        MechestimArray
+        WhestArray
             CDF evaluated at *x*.
         """
         return self._deduct_and_call("cdf", 1, x, loc=loc, scale=scale)
@@ -99,7 +99,7 @@ class UniformDistribution(ContinuousDistribution):
 
         Returns
         -------
-        MechestimArray
+        WhestArray
             PPF evaluated at *q*.
         """
         return self._deduct_and_call("ppf", 1, q, loc=loc, scale=scale)

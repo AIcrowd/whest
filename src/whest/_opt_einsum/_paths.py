@@ -178,7 +178,7 @@ def calc_k12_flops(
         subset_sym = oracle.sym(merged_subset)
         sym12 = subset_sym.output
 
-        from mechestim._config import get_setting
+        from whest._config import get_setting
 
         idx_removed = either - k12
         cost = symmetric_flop_count(

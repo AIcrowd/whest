@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from mechestim._budget import budget_summary_dict
+from whest._budget import budget_summary_dict
 
 
 def _format_flops(n: int) -> str:
@@ -36,7 +36,7 @@ def _plain_text_summary() -> str:
         return "No budget data recorded yet."
 
     lines = [
-        "mechestim FLOP Budget Summary",
+        "whest FLOP Budget Summary",
         "=" * 50,
         f"  Total budget:    {_format_flops(data['flop_budget']):>20}",
         f"  Used:            {_format_flops(data['flops_used']):>20}  ({_pct(data['flops_used'], data['flop_budget'])})",
@@ -143,7 +143,7 @@ def _rich_summary():
 
     data = budget_summary_dict(by_namespace=True)
     if data["flops_used"] == 0 and not data.get("by_namespace"):
-        return Panel("No budget data recorded yet.", title="mechestim Budget")
+        return Panel("No budget data recorded yet.", title="whest Budget")
 
     by_ns = data.get("by_namespace", {})
 
@@ -216,7 +216,7 @@ def _rich_summary():
 
     return Panel(
         Group(*renderables),
-        title="[bold cyan]mechestim FLOP Budget Summary[/bold cyan]",
+        title="[bold cyan]whest FLOP Budget Summary[/bold cyan]",
         border_style="cyan",
     )
 

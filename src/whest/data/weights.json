@@ -43,7 +43,7 @@
       "overhead_ufunc_binary": 0.6000959800000001,
       "overhead_ufunc_reduction": 0.30009597,
       "normalization": "subtract per-category ufunc overhead, clamp to min 1.0",
-      "note": "analytical_FLOPs from mechestim registry (FMA=1); perf_instructions are SIMD-width-weighted fp_arith_inst_retired counts; ufunc overhead subtracted per category; integer/bitwise ops use instructions counter"
+      "note": "analytical_FLOPs from whest registry (FMA=1); perf_instructions are SIMD-width-weighted fp_arith_inst_retired counts; ufunc overhead subtracted per category; integer/bitwise ops use instructions counter"
     },
     "validation": {
       "absolute_correction_factors": {
@@ -691,7 +691,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise bitwise NOT.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L306"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L306"
       },
       "bitwise_invert": {
         "category": "instructions_unary",
@@ -721,7 +721,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise bitwise invert (alias for bitwise_not).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L305"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L305"
       },
       "bitwise_count": {
         "category": "instructions_unary",
@@ -751,7 +751,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Count set bits element-wise (popcount).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L304"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L304"
       },
       "invert": {
         "category": "instructions_unary",
@@ -781,7 +781,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Bitwise NOT element-wise.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L319"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L319"
       },
       "bitwise_and": {
         "category": "instructions_binary",
@@ -811,7 +811,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise bitwise AND.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L433"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L433"
       },
       "bitwise_or": {
         "category": "instructions_binary",
@@ -841,7 +841,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise bitwise OR.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L435"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L435"
       },
       "bitwise_xor": {
         "category": "instructions_binary",
@@ -871,7 +871,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise bitwise XOR.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L437"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L437"
       },
       "gcd": {
         "category": "instructions_binary",
@@ -901,7 +901,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise greatest common divisor.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L445"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L445"
       },
       "lcm": {
         "category": "instructions_binary",
@@ -931,7 +931,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise least common multiple.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L450"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L450"
       },
       "bitwise_left_shift": {
         "category": "instructions_shift",
@@ -961,7 +961,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise left bit shift.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L434"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L434"
       },
       "bitwise_right_shift": {
         "category": "instructions_shift",
@@ -991,7 +991,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise right bit shift.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L436"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L436"
       },
       "left_shift": {
         "category": "instructions_shift",
@@ -1021,7 +1021,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise left bit shift (legacy name).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L452"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L452"
       },
       "right_shift": {
         "category": "instructions_shift",
@@ -1051,7 +1051,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise right bit shift (legacy name).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L464"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L464"
       },
       "isnat": {
         "category": "instructions_special",
@@ -1081,7 +1081,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Weight=1.0. datetime64 array overhead dominates measurement (noop=248 instr/elem, isnat=232). Actual NaT check is trivial.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L322"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L322"
       },
       "angle": {
         "category": "counted_complex",
@@ -1111,7 +1111,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Return angle of complex argument element-wise.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L267"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L267"
       },
       "conj": {
         "category": "counted_complex",
@@ -1141,7 +1141,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Complex conjugate element-wise.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L308"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L308"
       },
       "conjugate": {
         "category": "counted_complex",
@@ -1171,7 +1171,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Complex conjugate element-wise.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L309"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L309"
       },
       "imag": {
         "category": "counted_complex",
@@ -1201,7 +1201,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Return imaginary part of complex array.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L318"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L318"
       },
       "real": {
         "category": "counted_complex",
@@ -1231,7 +1231,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Return real part of complex array.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L333"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L333"
       },
       "real_if_close": {
         "category": "counted_complex",
@@ -1261,7 +1261,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Return real array if imaginary part is negligible.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L334"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L334"
       },
       "iscomplex": {
         "category": "counted_complex",
@@ -1291,7 +1291,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Test if element is complex element-wise.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L320"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L320"
       },
       "isreal": {
         "category": "counted_complex",
@@ -1321,7 +1321,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Test if element is real (imag == 0) element-wise.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L325"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L325"
       },
       "sort_complex": {
         "category": "counted_complex",
@@ -1351,7 +1351,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sort complex array. Cost: $n \\cdot \\lceil\\log_2 n\\rceil$.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L376"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L376"
       },
       "iscomplexobj": {
         "category": "counted_complex",
@@ -1381,7 +1381,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Return True if input is a complex type or array.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L321"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L321"
       },
       "isrealobj": {
         "category": "counted_complex",
@@ -1411,7 +1411,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Return True if x is a not complex type or array.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L326"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L326"
       },
       "dot": {
         "category": "counted_custom",
@@ -1441,7 +1441,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Dot product; cost = M*K*N (FMA=1).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L619"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L619"
       },
       "matmul": {
         "category": "counted_custom",
@@ -1471,7 +1471,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Matrix multiplication; cost = M*K*N (FMA=1).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L655"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L655"
       },
       "inner": {
         "category": "counted_custom",
@@ -1501,7 +1501,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Inner product; cost = N (FMA=1).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L681"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L681"
       },
       "vdot": {
         "category": "counted_custom",
@@ -1531,7 +1531,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Dot product with conjugation; cost = N (FMA=1).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L739"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L739"
       },
       "vecdot": {
         "category": "counted_custom",
@@ -1561,7 +1561,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Vector dot product along last axis.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L485"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L485"
       },
       "outer": {
         "category": "counted_custom",
@@ -1591,7 +1591,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Outer product of two vectors; cost = M*N.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L697"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L697"
       },
       "tensordot": {
         "category": "counted_custom",
@@ -1621,7 +1621,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Tensor dot product along specified axes.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/__init__.py#L74"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/__init__.py#L74"
       },
       "kron": {
         "category": "counted_custom",
@@ -1651,7 +1651,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Kronecker product; cost proportional to output size.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L755"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L755"
       },
       "einsum": {
         "category": "counted_custom",
@@ -1681,7 +1681,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Generalized Einstein summation.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_einsum.py#L139"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_einsum.py#L139"
       },
       "fft.fft": {
         "category": "counted_custom",
@@ -1711,7 +1711,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/fft/_transforms.py#L173"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L173"
       },
       "fft.ifft": {
         "category": "counted_custom",
@@ -1741,7 +1741,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Inverse 1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/fft/_transforms.py#L189"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L189"
       },
       "fft.rfft": {
         "category": "counted_custom",
@@ -1771,7 +1771,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "1-D real FFT. Cost: 5*(n//2)*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/fft/_transforms.py#L205"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L205"
       },
       "fft.irfft": {
         "category": "counted_custom",
@@ -1801,7 +1801,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Inverse 1-D real FFT. Cost: 5*(n//2)*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/fft/_transforms.py#L221"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L221"
       },
       "fft.fft2": {
         "category": "counted_custom",
@@ -1831,7 +1831,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "2-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/fft/_transforms.py#L242"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L242"
       },
       "fft.ifft2": {
         "category": "counted_custom",
@@ -1861,7 +1861,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Inverse 2-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/fft/_transforms.py#L265"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L265"
       },
       "fft.rfft2": {
         "category": "counted_custom",
@@ -1891,7 +1891,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "2-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/fft/_transforms.py#L288"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L288"
       },
       "fft.irfft2": {
         "category": "counted_custom",
@@ -1921,7 +1921,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Inverse 2-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/fft/_transforms.py#L314"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L314"
       },
       "fft.fftn": {
         "category": "counted_custom",
@@ -1951,7 +1951,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "N-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/fft/_transforms.py#L339"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L339"
       },
       "fft.ifftn": {
         "category": "counted_custom",
@@ -1981,7 +1981,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Inverse N-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/fft/_transforms.py#L363"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L363"
       },
       "fft.rfftn": {
         "category": "counted_custom",
@@ -2011,7 +2011,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "N-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/fft/_transforms.py#L387"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L387"
       },
       "fft.irfftn": {
         "category": "counted_custom",
@@ -2041,7 +2041,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Inverse N-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/fft/_transforms.py#L423"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L423"
       },
       "fft.hfft": {
         "category": "counted_custom",
@@ -2071,7 +2071,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "FFT of Hermitian-symmetric signal. Cost: 5*n_out*ceil(log2(n_out)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/fft/_transforms.py#L443"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L443"
       },
       "fft.ihfft": {
         "category": "counted_custom",
@@ -2101,7 +2101,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Inverse FFT of Hermitian signal. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/fft/_transforms.py#L462"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L462"
       },
       "linalg.cholesky": {
         "category": "counted_custom",
@@ -2131,7 +2131,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Cholesky decomposition. Cost: $n^3$.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L45"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_decompositions.py#L45"
       },
       "linalg.qr": {
         "category": "counted_custom",
@@ -2161,7 +2161,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "QR decomposition. Cost: $m \\cdot n \\cdot \\min(m,n)$.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L83"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_decompositions.py#L83"
       },
       "linalg.eig": {
         "category": "counted_custom",
@@ -2191,7 +2191,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Eigendecomposition. Cost: $n^3$.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L119"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_decompositions.py#L119"
       },
       "linalg.eigh": {
         "category": "counted_custom",
@@ -2221,7 +2221,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Symmetric eigendecomposition. Cost: $n^3$.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L155"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_decompositions.py#L155"
       },
       "linalg.eigvals": {
         "category": "counted_custom",
@@ -2251,7 +2251,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Eigenvalues only. Cost: $n^3$.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L192"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_decompositions.py#L192"
       },
       "linalg.eigvalsh": {
         "category": "counted_custom",
@@ -2281,7 +2281,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Symmetric eigenvalues. Cost: $n^3$.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L228"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_decompositions.py#L228"
       },
       "linalg.svd": {
         "category": "counted_custom",
@@ -2311,7 +2311,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Singular value decomposition; cost ~ O(min(m,n)*m*n).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_svd.py#L67"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_svd.py#L67"
       },
       "linalg.svdvals": {
         "category": "counted_custom",
@@ -2341,7 +2341,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Singular values only. Cost: m*n*min(m,n) (Golub-Reinsch).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_decompositions.py#L274"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_decompositions.py#L274"
       },
       "linalg.solve": {
         "category": "counted_custom",
@@ -2371,7 +2371,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Solve Ax=b. Cost: $n^3$.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_solvers.py#L50"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_solvers.py#L50"
       },
       "linalg.inv": {
         "category": "counted_custom",
@@ -2401,7 +2401,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Matrix inverse. Cost: $n^3$ (LU + solve).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_solvers.py#L92"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_solvers.py#L92"
       },
       "linalg.lstsq": {
         "category": "counted_custom",
@@ -2431,7 +2431,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Least squares. Cost: m*n*min(m,n) (LAPACK gelsd/SVD).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_solvers.py#L138"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_solvers.py#L138"
       },
       "linalg.pinv": {
         "category": "counted_custom",
@@ -2461,7 +2461,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Pseudoinverse. Cost: m*n*min(m,n) (via SVD).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_solvers.py#L178"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_solvers.py#L178"
       },
       "linalg.det": {
         "category": "counted_custom",
@@ -2491,7 +2491,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Determinant. Cost: $n^3$.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_properties.py#L84"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L84"
       },
       "linalg.slogdet": {
         "category": "counted_custom",
@@ -2521,7 +2521,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sign + log determinant. Cost: $n^3$.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_properties.py#L123"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L123"
       },
       "linalg.cond": {
         "category": "counted_custom",
@@ -2551,7 +2551,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Condition number. Cost: m*n*min(m,n) (via SVD).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_properties.py#L339"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L339"
       },
       "linalg.cross": {
         "category": "counted_custom",
@@ -2639,7 +2639,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Weight=1 (baked into cost function). Elementwise norms cost numel. SVD-based norms (ord=2, nuc) cost 4*m*n*min(m,n) \u2014 the 4x is baked in for SVD consistency.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_properties.py#L289"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L289"
       },
       "linalg.matrix_power": {
         "category": "counted_custom",
@@ -2669,7 +2669,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Matrix power. Cost: $(\\lfloor\\log_2 k\\rfloor + \\text{popcount}(k) - 1) \\cdot n^3$ (exponentiation by squaring).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_compound.py#L116"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_compound.py#L116"
       },
       "linalg.matrix_rank": {
         "category": "counted_custom",
@@ -2699,7 +2699,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Matrix rank. Cost: m*n*min(m,n) (via SVD).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_properties.py#L383"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L383"
       },
       "linalg.multi_dot": {
         "category": "counted_custom",
@@ -2729,7 +2729,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Chain matmul. Cost: sum of optimal chain matmul costs (CLRS \u00a715.2).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_compound.py#L68"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_compound.py#L68"
       },
       "linalg.norm": {
         "category": "counted_custom",
@@ -2759,7 +2759,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Weight=1 (baked into cost function). Elementwise norms cost numel. SVD-based norms (ord=2, nuc) cost 4*m*n*min(m,n) \u2014 the 4x is baked in for SVD consistency.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_properties.py#L187"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L187"
       },
       "linalg.outer": {
         "category": "counted_custom",
@@ -2847,7 +2847,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Weight=4 (same as linalg.inv). Reshapes to 2D then calls inv. Cost n^3 in formula.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_solvers.py#L269"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_solvers.py#L269"
       },
       "linalg.tensorsolve": {
         "category": "counted_custom",
@@ -2877,7 +2877,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Weight=4 (same as linalg.solve). Reshapes to 2D then calls solve. Cost n^3 in formula.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_solvers.py#L224"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_solvers.py#L224"
       },
       "linalg.trace": {
         "category": "counted_custom",
@@ -2907,7 +2907,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Blacklisted per reviewer \u2014 datetime ops not in scope.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_properties.py#L45"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L45"
       },
       "linalg.vecdot": {
         "category": "counted_custom",
@@ -2966,7 +2966,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Vector norm. Cost: numel (or 2*numel for general p-norm).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/_properties.py#L238"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L238"
       },
       "allclose": {
         "category": "counted_custom",
@@ -2996,7 +2996,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise tolerance check; cost = numel(a).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L45"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L45"
       },
       "array_equal": {
         "category": "counted_custom",
@@ -3026,7 +3026,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise equality; cost = numel(a).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L60"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L60"
       },
       "array_equiv": {
         "category": "counted_custom",
@@ -3056,7 +3056,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise equivalence; cost = numel(a).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L82"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L82"
       },
       "clip": {
         "category": "counted_unary",
@@ -3086,7 +3086,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Clip array to [a_min, a_max] element-wise.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L505"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L505"
       },
       "diff": {
         "category": "counted_custom",
@@ -3116,7 +3116,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "n-th discrete difference along axis.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L791"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L791"
       },
       "ediff1d": {
         "category": "counted_custom",
@@ -3146,7 +3146,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Differences between consecutive elements.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L821"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L821"
       },
       "gradient": {
         "category": "counted_custom",
@@ -3176,7 +3176,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Gradient using central differences.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L807"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L807"
       },
       "unwrap": {
         "category": "counted_custom",
@@ -3206,7 +3206,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Phase unwrap. Cost: $\\text{numel}(\\text{input})$ (diff + conditional adjustment).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_unwrap.py#L40"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_unwrap.py#L40"
       },
       "convolve": {
         "category": "counted_custom",
@@ -3236,7 +3236,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "1-D discrete convolution.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L841"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L841"
       },
       "correlate": {
         "category": "counted_custom",
@@ -3266,7 +3266,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "1-D cross-correlation.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L861"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L861"
       },
       "corrcoef": {
         "category": "counted_custom",
@@ -3296,7 +3296,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Pearson correlation coefficients.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L898"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L898"
       },
       "cov": {
         "category": "counted_custom",
@@ -3326,7 +3326,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Covariance matrix.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L913"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L913"
       },
       "cross": {
         "category": "counted_custom",
@@ -3356,7 +3356,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Cross product of two 3-D vectors.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/linalg/__init__.py#L72"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/__init__.py#L72"
       },
       "histogram": {
         "category": "counted_custom",
@@ -3386,7 +3386,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Binning; cost = n*ceil(log2(bins)).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L106"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L106"
       },
       "histogram2d": {
         "category": "counted_custom",
@@ -3416,7 +3416,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "2D binning; cost = n*(ceil(log2(bx))+ceil(log2(by))).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L148"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L148"
       },
       "histogramdd": {
         "category": "counted_custom",
@@ -3446,7 +3446,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "ND binning; cost = n*sum(ceil(log2(b_i))).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L189"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L189"
       },
       "histogram_bin_edges": {
         "category": "counted_custom",
@@ -3476,7 +3476,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Bin edge computation; cost = numel(a).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L207"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L207"
       },
       "digitize": {
         "category": "counted_custom",
@@ -3506,7 +3506,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Bin search; cost = n*ceil(log2(bins)).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L197"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L197"
       },
       "bincount": {
         "category": "counted_custom",
@@ -3536,7 +3536,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Integer counting; cost = numel(x).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L221"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L221"
       },
       "interp": {
         "category": "counted_custom",
@@ -3566,7 +3566,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "1-D linear interpolation.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L955"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L955"
       },
       "trace": {
         "category": "counted_custom",
@@ -3596,7 +3596,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Re-benchmarked with np.ones setup to avoid random-gen overhead. Trace is a sum of diagonal \u2014 mode=ufunc_reduction.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L26"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L26"
       },
       "trapezoid": {
         "category": "counted_custom",
@@ -3626,7 +3626,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Integrate using the trapezoidal rule.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L926"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L926"
       },
       "logspace": {
         "category": "counted_custom",
@@ -3656,7 +3656,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Log-spaced generation; cost = num.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L236"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L236"
       },
       "geomspace": {
         "category": "counted_custom",
@@ -3686,7 +3686,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Geometric-spaced generation; cost = num.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L246"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L246"
       },
       "vander": {
         "category": "counted_custom",
@@ -3716,7 +3716,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Vandermonde matrix; cost = len(x)*(N-1).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_counting_ops.py#L260"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L260"
       },
       "abs": {
         "category": "counted_unary",
@@ -3746,7 +3746,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to this op). Ratio vs add=0.8690",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L249"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L249"
       },
       "negative": {
         "category": "counted_unary",
@@ -3776,7 +3776,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to this op). Ratio vs add=0.8447",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L250"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L250"
       },
       "positive": {
         "category": "counted_unary",
@@ -3806,7 +3806,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to this op). Ratio vs add=0.9146",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L330"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L330"
       },
       "exp": {
         "category": "counted_unary",
@@ -3836,7 +3836,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise e^x.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L245"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L245"
       },
       "exp2": {
         "category": "counted_unary",
@@ -3866,7 +3866,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise 2^x.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L313"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L313"
       },
       "expm1": {
         "category": "counted_unary",
@@ -3896,7 +3896,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise e^x - 1 (accurate near zero).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L314"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L314"
       },
       "log": {
         "category": "counted_unary",
@@ -3926,7 +3926,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise natural logarithm.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L246"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L246"
       },
       "log2": {
         "category": "counted_unary",
@@ -3956,7 +3956,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise base-2 logarithm.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L247"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L247"
       },
       "log10": {
         "category": "counted_unary",
@@ -3986,7 +3986,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise base-10 logarithm.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L248"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L248"
       },
       "log1p": {
         "category": "counted_unary",
@@ -4016,7 +4016,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise log(1+x) (accurate near zero).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L327"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L327"
       },
       "sqrt": {
         "category": "counted_unary",
@@ -4046,7 +4046,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise square root.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L251"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L251"
       },
       "cbrt": {
         "category": "counted_unary",
@@ -4076,7 +4076,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise cube root.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L307"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L307"
       },
       "square": {
         "category": "counted_unary",
@@ -4106,7 +4106,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise x^2.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L252"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L252"
       },
       "reciprocal": {
         "category": "counted_unary",
@@ -4136,7 +4136,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise 1/x.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L335"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L335"
       },
       "sin": {
         "category": "counted_unary",
@@ -4166,7 +4166,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise sine.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L253"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L253"
       },
       "cos": {
         "category": "counted_unary",
@@ -4196,7 +4196,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise cosine.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L254"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L254"
       },
       "tan": {
         "category": "counted_unary",
@@ -4226,7 +4226,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise tangent.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L379"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L379"
       },
       "arcsin": {
         "category": "counted_unary",
@@ -4256,7 +4256,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise inverse sine.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L270"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L270"
       },
       "arccos": {
         "category": "counted_unary",
@@ -4286,7 +4286,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise inverse cosine.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L268"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L268"
       },
       "arctan": {
         "category": "counted_unary",
@@ -4316,7 +4316,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise inverse tangent.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L272"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L272"
       },
       "sinh": {
         "category": "counted_unary",
@@ -4346,7 +4346,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise hyperbolic sine.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L365"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L365"
       },
       "cosh": {
         "category": "counted_unary",
@@ -4376,7 +4376,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise hyperbolic cosine.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L310"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L310"
       },
       "tanh": {
         "category": "counted_unary",
@@ -4406,7 +4406,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise hyperbolic tangent.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L255"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L255"
       },
       "arcsinh": {
         "category": "counted_unary",
@@ -4436,7 +4436,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise inverse hyperbolic sine.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L271"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L271"
       },
       "arccosh": {
         "category": "counted_unary",
@@ -4466,7 +4466,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise inverse hyperbolic cosine.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L269"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L269"
       },
       "arctanh": {
         "category": "counted_unary",
@@ -4496,7 +4496,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise inverse hyperbolic tangent.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L273"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L273"
       },
       "ceil": {
         "category": "counted_unary",
@@ -4526,7 +4526,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to this op). Ratio vs add=0.8783",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L257"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L257"
       },
       "floor": {
         "category": "counted_unary",
@@ -4556,7 +4556,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to this op). Ratio vs add=0.8783",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L258"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L258"
       },
       "trunc": {
         "category": "counted_unary",
@@ -4586,7 +4586,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to this op). Ratio vs add=0.8777",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L380"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L380"
       },
       "rint": {
         "category": "counted_unary",
@@ -4616,7 +4616,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to this op). Ratio vs add=0.8722",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L336"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L336"
       },
       "sign": {
         "category": "counted_unary",
@@ -4646,7 +4646,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to this op). Ratio vs add=1.0057",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L256"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L256"
       },
       "signbit": {
         "category": "counted_unary",
@@ -4676,7 +4676,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to this op). Ratio vs add=0.3407",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L363"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L363"
       },
       "fabs": {
         "category": "counted_unary",
@@ -4706,7 +4706,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to this op). Ratio vs add=1.1184",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L315"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L315"
       },
       "deg2rad": {
         "category": "counted_unary",
@@ -4736,7 +4736,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Alias for radians.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L311"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L311"
       },
       "rad2deg": {
         "category": "counted_unary",
@@ -4766,7 +4766,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Alias for degrees.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L331"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L331"
       },
       "degrees": {
         "category": "counted_unary",
@@ -4796,7 +4796,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Convert radians to degrees element-wise.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L312"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L312"
       },
       "radians": {
         "category": "counted_unary",
@@ -4826,7 +4826,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Convert degrees to radians element-wise.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L332"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L332"
       },
       "logical_not": {
         "category": "counted_unary",
@@ -4856,7 +4856,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to this op). Ratio vs add=0.4378",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L328"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L328"
       },
       "frexp": {
         "category": "counted_unary",
@@ -4886,7 +4886,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Decompose x into mantissa and exponent element-wise.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L384"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L384"
       },
       "modf": {
         "category": "counted_unary",
@@ -4916,7 +4916,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Return fractional and integral parts element-wise.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L383"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L383"
       },
       "sinc": {
         "category": "counted_unary",
@@ -4944,7 +4944,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Re-benchmarked on c6i.metal with correct input. \u03b1_raw=41.4251, overhead=0.3001, weight=41.1250",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L364"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L364"
       },
       "i0": {
         "category": "counted_unary",
@@ -4972,7 +4972,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Re-benchmarked on c6i.metal with correct input. \u03b1_raw=111.6746, overhead=0.3001, weight=111.3745",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L317"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L317"
       },
       "spacing": {
         "category": "counted_unary",
@@ -5002,7 +5002,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Return ULP spacing for each element.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L378"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L378"
       },
       "nan_to_num": {
         "category": "counted_unary",
@@ -5030,7 +5030,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to this op). Ratio vs add=3.0865",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L329"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L329"
       },
       "isneginf": {
         "category": "counted_unary",
@@ -5060,7 +5060,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to this op). Ratio vs add=0.8331",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L323"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L323"
       },
       "isposinf": {
         "category": "counted_unary",
@@ -5090,7 +5090,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to this op). Ratio vs add=0.9379",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L324"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L324"
       },
       "add": {
         "category": "counted_binary",
@@ -5120,7 +5120,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise addition.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L418"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L418"
       },
       "subtract": {
         "category": "counted_binary",
@@ -5150,7 +5150,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise subtraction.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L419"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L419"
       },
       "multiply": {
         "category": "counted_binary",
@@ -5180,7 +5180,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise multiplication.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L420"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L420"
       },
       "divide": {
         "category": "counted_binary",
@@ -5210,7 +5210,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise true division.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L421"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L421"
       },
       "true_divide": {
         "category": "counted_binary",
@@ -5240,7 +5240,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise true division (explicit).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L465"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L465"
       },
       "floor_divide": {
         "category": "counted_binary",
@@ -5270,7 +5270,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise floor division.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L441"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L441"
       },
       "power": {
         "category": "counted_binary",
@@ -5300,7 +5300,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise exponentiation x**y.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L424"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L424"
       },
       "float_power": {
         "category": "counted_binary",
@@ -5330,7 +5330,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise exponentiation in float64.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L440"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L440"
       },
       "mod": {
         "category": "counted_binary",
@@ -5360,7 +5360,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise modulo.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L425"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L425"
       },
       "remainder": {
         "category": "counted_binary",
@@ -5390,7 +5390,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise remainder (same as mod).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L463"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L463"
       },
       "fmod": {
         "category": "counted_binary",
@@ -5420,7 +5420,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to comparisons). Ratio vs add=5.5996",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L444"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L444"
       },
       "maximum": {
         "category": "counted_binary",
@@ -5450,7 +5450,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise maximum (propagates NaN).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L422"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L422"
       },
       "minimum": {
         "category": "counted_binary",
@@ -5480,7 +5480,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise minimum (propagates NaN).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L423"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L423"
       },
       "fmax": {
         "category": "counted_binary",
@@ -5510,7 +5510,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise maximum ignoring NaN.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L442"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L442"
       },
       "fmin": {
         "category": "counted_binary",
@@ -5540,7 +5540,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise minimum ignoring NaN.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L443"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L443"
       },
       "greater": {
         "category": "counted_binary",
@@ -5570,7 +5570,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to comparisons). Ratio vs add=0.5759",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L446"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L446"
       },
       "greater_equal": {
         "category": "counted_binary",
@@ -5600,7 +5600,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to comparisons). Ratio vs add=0.5734",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L447"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L447"
       },
       "less": {
         "category": "counted_binary",
@@ -5630,7 +5630,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to comparisons). Ratio vs add=0.5761",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L453"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L453"
       },
       "less_equal": {
         "category": "counted_binary",
@@ -5660,7 +5660,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to comparisons). Ratio vs add=0.5745",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L454"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L454"
       },
       "equal": {
         "category": "counted_binary",
@@ -5690,7 +5690,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to comparisons). Ratio vs add=0.5761",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L439"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L439"
       },
       "not_equal": {
         "category": "counted_binary",
@@ -5720,7 +5720,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to comparisons). Ratio vs add=0.5736",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L461"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L461"
       },
       "logical_and": {
         "category": "counted_binary",
@@ -5750,7 +5750,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to comparisons). Ratio vs add=0.8026",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L457"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L457"
       },
       "logical_or": {
         "category": "counted_binary",
@@ -5780,7 +5780,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to comparisons). Ratio vs add=0.7986",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L458"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L458"
       },
       "logical_xor": {
         "category": "counted_binary",
@@ -5810,7 +5810,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to comparisons). Ratio vs add=0.8007",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L459"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L459"
       },
       "arctan2": {
         "category": "counted_binary",
@@ -5840,7 +5840,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise arctan(y/x) considering quadrant.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L431"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L431"
       },
       "hypot": {
         "category": "counted_binary",
@@ -5870,7 +5870,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise Euclidean norm sqrt(x1^2 + x2^2).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L449"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L449"
       },
       "copysign": {
         "category": "counted_binary",
@@ -5900,7 +5900,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to comparisons). Ratio vs add=1.1021",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L438"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L438"
       },
       "nextafter": {
         "category": "counted_binary",
@@ -5930,7 +5930,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based weight (fp_arith_inst_retired blind to this op). Ratio vs add=5.7999",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L460"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L460"
       },
       "logaddexp": {
         "category": "counted_binary",
@@ -5960,7 +5960,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "log(exp(x1) + exp(x2)) element-wise.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L455"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L455"
       },
       "logaddexp2": {
         "category": "counted_binary",
@@ -5990,7 +5990,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "log2(2**x1 + 2**x2) element-wise.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L456"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L456"
       },
       "ldexp": {
         "category": "counted_binary",
@@ -6018,7 +6018,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to comparisons). Ratio vs add=3.3667",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L451"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L451"
       },
       "isclose": {
         "category": "counted_binary",
@@ -6048,7 +6048,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Element-wise approximate equality test.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L399"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L399"
       },
       "heaviside": {
         "category": "counted_binary",
@@ -6078,7 +6078,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based (fp_arith_inst_retired blind to comparisons). Ratio vs add=1.3916",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L448"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L448"
       },
       "polyval": {
         "category": "counted_custom",
@@ -6108,7 +6108,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Evaluate polynomial at given points. Cost: $m \\cdot \\text{deg}$ (Horner's method, FMA=1).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L78"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L78"
       },
       "polyfit": {
         "category": "counted_custom",
@@ -6138,7 +6138,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Least squares polynomial fit. Cost: 2 * m * (deg+1)^2 FLOPs.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L187"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L187"
       },
       "polyadd": {
         "category": "counted_custom",
@@ -6168,7 +6168,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Add two polynomials. Cost: max(n1, n2) FLOPs.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L96"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L96"
       },
       "polysub": {
         "category": "counted_custom",
@@ -6198,7 +6198,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Difference (subtraction) of two polynomials. Cost: max(n1, n2) FLOPs.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L113"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L113"
       },
       "polymul": {
         "category": "counted_custom",
@@ -6228,7 +6228,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Multiply polynomials. Cost: n1 * n2 FLOPs.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L158"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L158"
       },
       "polydiv": {
         "category": "counted_custom",
@@ -6258,7 +6258,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Divide one polynomial by another. Cost: n1 * n2 FLOPs.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L174"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L174"
       },
       "polyder": {
         "category": "counted_custom",
@@ -6288,7 +6288,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Differentiate polynomial. Cost: n FLOPs.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L127"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L127"
       },
       "polyint": {
         "category": "counted_custom",
@@ -6318,7 +6318,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Integrate polynomial. Cost: n FLOPs.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L140"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L140"
       },
       "poly": {
         "category": "counted_custom",
@@ -6348,7 +6348,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Polynomial from roots. Cost: $n^2$ FLOPs.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L204"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L204"
       },
       "roots": {
         "category": "counted_custom",
@@ -6378,7 +6378,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Return roots of polynomial with given coefficients. Cost: $n^3$ (companion matrix eig, simplified).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_polynomial.py#L217"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L217"
       },
       "random.standard_normal": {
         "category": "counted_custom",
@@ -6408,7 +6408,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L119"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L119"
       },
       "random.uniform": {
         "category": "counted_custom",
@@ -6438,7 +6438,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L118"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L118"
       },
       "random.standard_exponential": {
         "category": "counted_custom",
@@ -6468,7 +6468,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L121"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L121"
       },
       "random.standard_cauchy": {
         "category": "counted_custom",
@@ -6498,7 +6498,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L133"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L133"
       },
       "random.standard_gamma": {
         "category": "counted_custom",
@@ -6528,7 +6528,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L135"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L135"
       },
       "random.standard_t": {
         "category": "counted_custom",
@@ -6558,7 +6558,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L134"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L134"
       },
       "random.poisson": {
         "category": "counted_custom",
@@ -6588,7 +6588,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L124"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L124"
       },
       "random.binomial": {
         "category": "counted_custom",
@@ -6618,7 +6618,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L125"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L125"
       },
       "random.permutation": {
         "category": "counted_custom",
@@ -6648,7 +6648,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Shuffle; cost = n*ceil(log2(n)).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L198"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L198"
       },
       "random.shuffle": {
         "category": "counted_custom",
@@ -6678,7 +6678,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Shuffle; cost = n*ceil(log2(n)).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L213"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L213"
       },
       "random.beta": {
         "category": "counted_custom",
@@ -6708,7 +6708,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L151"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L151"
       },
       "random.chisquare": {
         "category": "counted_custom",
@@ -6738,7 +6738,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L145"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L145"
       },
       "random.choice": {
         "category": "counted_custom",
@@ -6768,7 +6768,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output) if replace, n*ceil(log2(n)) if not.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L237"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L237"
       },
       "random.dirichlet": {
         "category": "counted_custom",
@@ -6798,7 +6798,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L157"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L157"
       },
       "random.exponential": {
         "category": "counted_custom",
@@ -6828,7 +6828,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L123"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L123"
       },
       "random.f": {
         "category": "counted_custom",
@@ -6858,7 +6858,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L150"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L150"
       },
       "random.gamma": {
         "category": "counted_custom",
@@ -6888,7 +6888,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L152"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L152"
       },
       "random.geometric": {
         "category": "counted_custom",
@@ -6918,7 +6918,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L126"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L126"
       },
       "random.gumbel": {
         "category": "counted_custom",
@@ -6948,7 +6948,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L138"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L138"
       },
       "random.hypergeometric": {
         "category": "counted_custom",
@@ -6978,7 +6978,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L127"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L127"
       },
       "random.laplace": {
         "category": "counted_custom",
@@ -7008,7 +7008,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L139"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L139"
       },
       "random.logistic": {
         "category": "counted_custom",
@@ -7038,7 +7038,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L140"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L140"
       },
       "random.lognormal": {
         "category": "counted_custom",
@@ -7068,7 +7068,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L141"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L141"
       },
       "random.logseries": {
         "category": "counted_custom",
@@ -7098,7 +7098,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L129"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L129"
       },
       "random.multinomial": {
         "category": "counted_custom",
@@ -7128,7 +7128,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L153"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L153"
       },
       "random.multivariate_normal": {
         "category": "counted_custom",
@@ -7158,7 +7158,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L155"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L155"
       },
       "random.negative_binomial": {
         "category": "counted_custom",
@@ -7188,7 +7188,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L128"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L128"
       },
       "random.noncentral_chisquare": {
         "category": "counted_custom",
@@ -7218,7 +7218,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L147"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L147"
       },
       "random.noncentral_f": {
         "category": "counted_custom",
@@ -7248,7 +7248,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L149"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L149"
       },
       "random.normal": {
         "category": "counted_custom",
@@ -7278,7 +7278,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L117"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L117"
       },
       "random.pareto": {
         "category": "counted_custom",
@@ -7308,7 +7308,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L131"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L131"
       },
       "random.power": {
         "category": "counted_custom",
@@ -7338,7 +7338,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L130"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L130"
       },
       "random.rand": {
         "category": "counted_custom",
@@ -7368,7 +7368,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L109"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L109"
       },
       "random.randint": {
         "category": "counted_custom",
@@ -7398,7 +7398,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L158"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L158"
       },
       "random.randn": {
         "category": "counted_custom",
@@ -7428,7 +7428,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L110"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L110"
       },
       "random.random": {
         "category": "counted_custom",
@@ -7458,7 +7458,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L179"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L179"
       },
       "random.random_sample": {
         "category": "counted_custom",
@@ -7488,7 +7488,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L180"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L180"
       },
       "random.rayleigh": {
         "category": "counted_custom",
@@ -7518,7 +7518,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L132"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L132"
       },
       "random.triangular": {
         "category": "counted_custom",
@@ -7548,7 +7548,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L144"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L144"
       },
       "random.vonmises": {
         "category": "counted_custom",
@@ -7578,7 +7578,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L142"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L142"
       },
       "random.wald": {
         "category": "counted_custom",
@@ -7608,7 +7608,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L143"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L143"
       },
       "random.weibull": {
         "category": "counted_custom",
@@ -7638,7 +7638,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L136"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L136"
       },
       "random.zipf": {
         "category": "counted_custom",
@@ -7668,7 +7668,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sampling; cost = numel(output).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/random/__init__.py#L137"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L137"
       },
       "sum": {
         "category": "counted_reduction",
@@ -7698,7 +7698,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sum of array elements.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L528"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L528"
       },
       "prod": {
         "category": "counted_reduction",
@@ -7728,7 +7728,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Product of array elements.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L531"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L531"
       },
       "mean": {
         "category": "counted_reduction",
@@ -7758,7 +7758,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Arithmetic mean of array elements.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L532"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L532"
       },
       "std": {
         "category": "counted_reduction",
@@ -7788,7 +7788,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Standard deviation; cost_multiplier=2 (two passes).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L533"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L533"
       },
       "var": {
         "category": "counted_reduction",
@@ -7818,7 +7818,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Variance; cost_multiplier=2 (two passes).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L534"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L534"
       },
       "max": {
         "category": "counted_reduction",
@@ -7848,7 +7848,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Maximum value of array.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L529"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L529"
       },
       "min": {
         "category": "counted_reduction",
@@ -7878,7 +7878,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Minimum value of array.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L530"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L530"
       },
       "argmax": {
         "category": "counted_reduction",
@@ -7908,7 +7908,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based weight (fp_arith_inst_retired blind to this op). Ratio vs add=0.2320",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L535"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L535"
       },
       "argmin": {
         "category": "counted_reduction",
@@ -7938,7 +7938,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based weight (fp_arith_inst_retired blind to this op). Ratio vs add=0.2313",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L536"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L536"
       },
       "any": {
         "category": "counted_reduction",
@@ -7968,7 +7968,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based weight (fp_arith_inst_retired blind to this op). Ratio vs add=0.2513",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L547"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L547"
       },
       "all": {
         "category": "counted_reduction",
@@ -7998,7 +7998,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based weight (fp_arith_inst_retired blind to this op). Ratio vs add=0.2525",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L544"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L544"
       },
       "cumsum": {
         "category": "counted_reduction",
@@ -8028,7 +8028,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Cumulative sum of array elements.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L537"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L537"
       },
       "cumprod": {
         "category": "counted_reduction",
@@ -8058,7 +8058,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Cumulative product of array elements.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L538"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L538"
       },
       "nansum": {
         "category": "counted_reduction",
@@ -8088,7 +8088,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sum ignoring NaNs.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L565"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L565"
       },
       "nanmean": {
         "category": "counted_reduction",
@@ -8118,7 +8118,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Mean ignoring NaNs.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L558"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L558"
       },
       "nanstd": {
         "category": "counted_reduction",
@@ -8148,7 +8148,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Standard deviation ignoring NaNs.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L564"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L564"
       },
       "nanvar": {
         "category": "counted_reduction",
@@ -8178,7 +8178,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Variance ignoring NaNs.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L566"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L566"
       },
       "nanmax": {
         "category": "counted_reduction",
@@ -8208,7 +8208,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Maximum ignoring NaNs.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L557"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L557"
       },
       "nanmin": {
         "category": "counted_reduction",
@@ -8238,7 +8238,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Minimum ignoring NaNs.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L560"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L560"
       },
       "nanprod": {
         "category": "counted_reduction",
@@ -8268,7 +8268,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Product ignoring NaNs.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L562"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L562"
       },
       "median": {
         "category": "counted_reduction",
@@ -8298,7 +8298,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based weight (fp_arith_inst_retired blind to this op). Ratio vs add=5.3855",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L552"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L552"
       },
       "nanmedian": {
         "category": "counted_reduction",
@@ -8328,7 +8328,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based weight (fp_arith_inst_retired blind to this op). Ratio vs add=5.7796",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L559"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L559"
       },
       "percentile": {
         "category": "counted_reduction",
@@ -8358,7 +8358,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based weight (fp_arith_inst_retired blind to this op). Ratio vs add=6.5693",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L567"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L567"
       },
       "nanpercentile": {
         "category": "counted_reduction",
@@ -8388,7 +8388,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based weight (fp_arith_inst_retired blind to this op). Ratio vs add=6.9821",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L561"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L561"
       },
       "quantile": {
         "category": "counted_reduction",
@@ -8418,7 +8418,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based weight (fp_arith_inst_retired blind to this op). Ratio vs add=6.5837",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L568"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L568"
       },
       "nanquantile": {
         "category": "counted_reduction",
@@ -8448,7 +8448,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based weight (fp_arith_inst_retired blind to this op). Ratio vs add=6.9870",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L563"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L563"
       },
       "count_nonzero": {
         "category": "counted_reduction",
@@ -8478,7 +8478,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based weight (fp_arith_inst_retired blind to this op). Ratio vs add=0.7773",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L549"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L549"
       },
       "average": {
         "category": "counted_reduction",
@@ -8508,7 +8508,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Weighted average of array elements.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L548"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L548"
       },
       "nanargmax": {
         "category": "counted_reduction",
@@ -8538,7 +8538,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based weight (fp_arith_inst_retired blind to this op). Ratio vs add=1.4897",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L553"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L553"
       },
       "nanargmin": {
         "category": "counted_reduction",
@@ -8568,7 +8568,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Timing-based weight (fp_arith_inst_retired blind to this op). Ratio vs add=1.4777",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L554"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L554"
       },
       "ptp": {
         "category": "counted_reduction",
@@ -8598,7 +8598,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Peak-to-peak (max - min) range of array.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L581"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L581"
       },
       "nancumprod": {
         "category": "counted_reduction",
@@ -8628,7 +8628,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Cumulative product ignoring NaNs.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L555"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L555"
       },
       "nancumsum": {
         "category": "counted_reduction",
@@ -8658,7 +8658,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Cumulative sum ignoring NaNs.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L556"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L556"
       },
       "cumulative_sum": {
         "category": "counted_reduction",
@@ -8688,7 +8688,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Cumulative sum (NumPy 2.x array API).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L551"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L551"
       },
       "cumulative_prod": {
         "category": "counted_reduction",
@@ -8718,7 +8718,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Cumulative product (NumPy 2.x array API).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_pointwise.py#L550"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L550"
       },
       "sort": {
         "category": "counted_custom",
@@ -8748,7 +8748,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Comparison sort; cost = n*ceil(log2(n)) per slice.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L43"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L43"
       },
       "argsort": {
         "category": "counted_custom",
@@ -8778,7 +8778,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Indirect sort; cost = n*ceil(log2(n)) per slice.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L62"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L62"
       },
       "lexsort": {
         "category": "counted_custom",
@@ -8808,7 +8808,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Multi-key sort; cost = k*n*ceil(log2(n)).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L88"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L88"
       },
       "partition": {
         "category": "counted_custom",
@@ -8838,7 +8838,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Quickselect; cost = n per slice.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L113"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L113"
       },
       "argpartition": {
         "category": "counted_custom",
@@ -8868,7 +8868,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Indirect partition; cost = n per slice.",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L140"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L140"
       },
       "searchsorted": {
         "category": "counted_custom",
@@ -8898,7 +8898,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Binary search; cost = m*ceil(log2(n)).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L170"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L170"
       },
       "unique": {
         "category": "counted_custom",
@@ -8928,7 +8928,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L231"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L231"
       },
       "in1d": {
         "category": "counted_custom",
@@ -8958,7 +8958,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Set membership; cost = (n+m)*ceil(log2(n+m)).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L317"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L317"
       },
       "isin": {
         "category": "counted_custom",
@@ -8988,7 +8988,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Set membership; cost = (n+m)*ceil(log2(n+m)).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L330"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L330"
       },
       "intersect1d": {
         "category": "counted_custom",
@@ -9018,7 +9018,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Set intersection; cost = (n+m)*ceil(log2(n+m)).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L344"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L344"
       },
       "setdiff1d": {
         "category": "counted_custom",
@@ -9048,7 +9048,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Set difference; cost = (n+m)*ceil(log2(n+m)).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L376"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L376"
       },
       "setxor1d": {
         "category": "counted_custom",
@@ -9078,7 +9078,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Symmetric set difference; cost = (n+m)*ceil(log2(n+m)).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L393"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L393"
       },
       "union1d": {
         "category": "counted_custom",
@@ -9108,7 +9108,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Set union; cost = (n+m)*ceil(log2(n+m)).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L361"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L361"
       },
       "unique_all": {
         "category": "counted_custom",
@@ -9138,7 +9138,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L243"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L243"
       },
       "unique_counts": {
         "category": "counted_custom",
@@ -9168,7 +9168,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L256"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L256"
       },
       "unique_inverse": {
         "category": "counted_custom",
@@ -9198,7 +9198,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L272"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L272"
       },
       "unique_values": {
         "category": "counted_custom",
@@ -9228,7 +9228,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_sorting_ops.py#L288"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L288"
       },
       "bartlett": {
         "category": "counted_custom",
@@ -9258,7 +9258,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Bartlett window. Cost: n (one linear eval per sample).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_window.py#L35"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_window.py#L35"
       },
       "blackman": {
         "category": "counted_custom",
@@ -9288,7 +9288,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Blackman window. Cost: 3*n (three cosine terms per sample).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_window.py#L65"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_window.py#L65"
       },
       "hamming": {
         "category": "counted_custom",
@@ -9318,7 +9318,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Hamming window. Cost: n (one cosine per sample).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_window.py#L95"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_window.py#L95"
       },
       "hanning": {
         "category": "counted_custom",
@@ -9348,7 +9348,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Hanning window. Cost: n (one cosine per sample).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_window.py#L125"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_window.py#L125"
       },
       "kaiser": {
         "category": "counted_custom",
@@ -9378,7 +9378,7 @@
         "baseline_perf_instructions_total": 160009598.0,
         "baseline_timing_ns_total": 195797715.0,
         "notes": "Kaiser window. Cost: 3*n (Bessel function eval per sample).",
-        "cost_impl_url": "https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_window.py#L155"
+        "cost_impl_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_window.py#L155"
       },
       "random.bytes": {
         "category": "counted_custom",

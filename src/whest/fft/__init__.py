@@ -1,13 +1,13 @@
-"""FFT submodule for mechestim."""
+"""FFT submodule for whest."""
 
-from mechestim._registry import make_module_getattr as _make_module_getattr
-from mechestim.fft._free import (  # noqa: F401
+from whest._registry import make_module_getattr as _make_module_getattr
+from whest.fft._free import (  # noqa: F401
     fftfreq,
     fftshift,
     ifftshift,
     rfftfreq,
 )
-from mechestim.fft._transforms import (  # noqa: F401
+from whest.fft._transforms import (  # noqa: F401
     fft,
     fft2,
     fft_cost,
@@ -50,4 +50,4 @@ __all__ = [
     "ifftshift",
 ]
 
-__getattr__ = _make_module_getattr(module_prefix="fft.", module_label="mechestim.fft")
+__getattr__ = _make_module_getattr(module_prefix="fft.", module_label="whest.fft")

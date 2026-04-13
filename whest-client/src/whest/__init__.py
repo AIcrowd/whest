@@ -1,9 +1,9 @@
-"""mechestim — transparent proxy to a remote mechestim server.
+"""whest — transparent proxy to a remote whest server.
 
 This module exposes a numpy-like API where every operation is dispatched
 to a remote server over ZMQ.  Participants use it as::
 
-    import mechestim as me
+    import whest as me
 
     with me.BudgetContext(flop_budget=1_000_000) as ctx:
         a = me.array([[1.0, 2.0], [3.0, 4.0]])
@@ -26,15 +26,15 @@ __version__ = "0.1.0"
 # ---------------------------------------------------------------------------
 # Budget
 # ---------------------------------------------------------------------------
-from mechestim._budget import (  # noqa: E402
+from whest._budget import (  # noqa: E402
     BudgetContext,
     OpRecord,
     budget,
     budget_summary_dict,
 )
-from mechestim._display import budget_live, budget_summary  # noqa: E402
-from mechestim._math_compat import e, inf, nan, pi  # noqa: E402
-from mechestim._perm_group import (  # noqa: E402
+from whest._display import budget_live, budget_summary  # noqa: E402
+from whest._math_compat import e, inf, nan, pi  # noqa: E402
+from whest._perm_group import (  # noqa: E402
     Cycle,
     Permutation,
     PermutationGroup,
@@ -43,19 +43,19 @@ from mechestim._perm_group import (  # noqa: E402
 # ---------------------------------------------------------------------------
 # Remote types
 # ---------------------------------------------------------------------------
-from mechestim._remote_array import (  # noqa: E402
+from whest._remote_array import (  # noqa: E402
     _DTYPE_INFO,
     RemoteArray,
     RemoteScalar,
     _encode_arg,
     _result_from_response,
 )
-from mechestim._symmetric_info import SymmetryInfo  # noqa: E402
-from mechestim.errors import (  # noqa: E402
+from whest._symmetric_info import SymmetryInfo  # noqa: E402
+from whest.errors import (  # noqa: E402
     BudgetExhaustedError,
-    MechEstimError,
-    MechEstimServerError,
-    MechEstimWarning,
+    WhestError,
+    WhestServerError,
+    WhestWarning,
     NoBudgetContextError,
     SymmetryError,
 )
@@ -70,15 +70,15 @@ ndarray = RemoteArray
 # ---------------------------------------------------------------------------
 # Submodules (imported so ``me.linalg``, ``me.random``, ``me.fft`` work)
 # ---------------------------------------------------------------------------
-from mechestim import (
+from whest import (
     fft,  # noqa: E402, F401
     flops,  # noqa: E402, F401
     linalg,  # noqa: E402, F401
     random,  # noqa: E402, F401
     stats,  # noqa: E402, F401
 )
-from mechestim._connection import get_connection  # noqa: E402
-from mechestim._protocol import (  # noqa: E402
+from whest._connection import get_connection  # noqa: E402
+from whest._protocol import (  # noqa: E402
     encode_create_from_data,
     encode_request,
 )
@@ -86,14 +86,14 @@ from mechestim._protocol import (  # noqa: E402
 # ---------------------------------------------------------------------------
 # Registry
 # ---------------------------------------------------------------------------
-from mechestim._registry import (  # noqa: E402
+from whest._registry import (  # noqa: E402
     BLACKLISTED,
     FUNCTION_CATEGORIES,
     get_category,
     is_valid_op,
     iter_proxyable,
 )
-from mechestim._registry_data import FUNCTION_CATEGORIES as _FC  # noqa: E402
+from whest._registry_data import FUNCTION_CATEGORIES as _FC  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # Constants (no server round-trip needed)
@@ -330,9 +330,9 @@ del _op_name  # clean up loop variable
 # We import the factory but define the function inline so we can also
 # check against names that are already defined in the module namespace.
 
-from mechestim._getattr import make_module_getattr as _make_module_getattr  # noqa: E402
+from whest._getattr import make_module_getattr as _make_module_getattr  # noqa: E402
 
-_module_getattr = _make_module_getattr("", "mechestim")
+_module_getattr = _make_module_getattr("", "whest")
 
 
 def __getattr__(name: str):
