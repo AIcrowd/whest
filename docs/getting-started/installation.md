@@ -2,26 +2,26 @@
 
 ## When to use this page
 
-Use this page when setting up mechestim for the first time.
+Use this page when setting up whest for the first time.
 
 ## Install as a dependency
 
 ```bash
-uv add git+https://github.com/AIcrowd/mechestim.git
+uv add git+https://github.com/AIcrowd/whest.git
 ```
 
 ## Install for development
 
 ```bash
-git clone https://github.com/AIcrowd/mechestim.git
-cd mechestim
+git clone https://github.com/AIcrowd/whest.git
+cd whest
 uv sync --all-extras
 ```
 
 ## ✅ Verify installation
 
 ```bash
-uv run python -c "import mechestim as me; print(me.__version__)"
+uv run python -c "import whest as we; print(we.__version__)"
 ```
 
 ## 🔍 What you'll see
@@ -30,13 +30,13 @@ uv run python -c "import mechestim as me; print(me.__version__)"
 0.2.0+np2.2.6
 ```
 
-The version string includes the installed NumPy version suffix. If you see a version number, mechestim is installed correctly.
+The version string includes the installed NumPy version suffix. If you see a version number, whest is installed correctly.
 
 ## ⚠️ Common pitfalls
 
 **Symptom:** `ImportError: numpy version mismatch`
 
-**Fix:** mechestim supports NumPy >=2.0.0,<2.3.0 (default install uses NumPy 2.2). Using `uv` handles this automatically. If you installed manually, check your NumPy version:
+**Fix:** whest supports NumPy >=2.0.0,<2.3.0 (default install uses NumPy 2.2). Using `uv` handles this automatically. If you installed manually, check your NumPy version:
 
 ```bash
 uv run python -c "import numpy; print(numpy.__version__)"

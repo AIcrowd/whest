@@ -22,27 +22,27 @@ This starts two containers:
 
 | Service | Image | Role |
 |---------|-------|------|
-| `backend` | `Dockerfile.server` | Runs mechestim server, listens on IPC socket |
-| `participant` | `Dockerfile.participant-hardened` | Runs participant code with mechestim-client only |
+| `backend` | `Dockerfile.server` | Runs whest server, listens on IPC socket |
+| `participant` | `Dockerfile.participant-hardened` | Runs participant code with whest-client only |
 
 The containers share an IPC socket volume for communication.
 
 ## Without Docker
 
 From a source checkout, start both processes from the repository root so the
-server can import the local `src/mechestim` package:
+server can import the local `src/whest` package:
 
 ```bash
 # Terminal 1: Start the server
-PYTHONPATH=src:mechestim-server/src \
+PYTHONPATH=src:whest-server/src \
   uv run --with pyzmq --with msgpack \
-  python -m mechestim_server --url ipc:///tmp/mechestim.sock
+  python -m whest_server --url ipc:///tmp/whest.sock
 ```
 
 ```bash
 # Terminal 2: Run client code
-export MECHESTIM_SERVER_URL=ipc:///tmp/mechestim.sock
-PYTHONPATH=mechestim-client/src \
+export WHEST_SERVER_URL=ipc:///tmp/whest.sock
+PYTHONPATH=whest-client/src \
   uv run --with pyzmq --with msgpack python your_script.py
 ```
 
@@ -50,17 +50,17 @@ For TCP (e.g., across machines):
 
 ```bash
 # Server
-PYTHONPATH=src:mechestim-server/src \
+PYTHONPATH=src:whest-server/src \
   uv run --with pyzmq --with msgpack \
-  python -m mechestim_server --url tcp://0.0.0.0:15555
+  python -m whest_server --url tcp://0.0.0.0:15555
 
 # Client
-export MECHESTIM_SERVER_URL=tcp://server-host:15555
-PYTHONPATH=mechestim-client/src \
+export WHEST_SERVER_URL=tcp://server-host:15555
+PYTHONPATH=whest-client/src \
   uv run --with pyzmq --with msgpack python your_script.py
 ```
 
-If you already have `mechestim-client` and `mechestim-server` installed into
+If you already have `whest-client` and `whest-server` installed into
 separate environments, the shorter `cd ... && uv run ...` workflow also works.
 The commands above are the reproducible source-checkout path.
 
@@ -68,11 +68,11 @@ The commands above are the reproducible source-checkout path.
 
 **Symptom:** `Connection refused` or `timeout`
 
-**Fix:** Ensure the server is running before starting the client. Check that `MECHESTIM_SERVER_URL` matches the server's `--url` argument.
+**Fix:** Ensure the server is running before starting the client. Check that `WHEST_SERVER_URL` matches the server's `--url` argument.
 
 **Symptom:** Port conflict
 
-**Fix:** Change the port in both the server `--url` and client `MECHESTIM_SERVER_URL`.
+**Fix:** Change the port in both the server `--url` and client `WHEST_SERVER_URL`.
 
 ## 📎 Related pages
 

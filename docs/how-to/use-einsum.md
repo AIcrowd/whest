@@ -2,7 +2,7 @@
 
 ## When to use this page
 
-Use this page to understand `me.einsum` — the core computation primitive in mechestim.
+Use this page to understand `we.einsum` — the core computation primitive in whest.
 
 ## Prerequisites
 
@@ -11,28 +11,28 @@ Use this page to understand `me.einsum` — the core computation primitive in me
 ## Common patterns
 
 ```python
-import mechestim as me
+import whest as we
 
-with me.BudgetContext(flop_budget=10**8) as budget:
-    A = me.ones((256, 256))
-    B = me.ones((256, 256))
-    x = me.ones((256,))
+with we.BudgetContext(flop_budget=10**8) as budget:
+    A = we.ones((256, 256))
+    B = we.ones((256, 256))
+    x = we.ones((256,))
 
     # Matrix-vector multiply: cost = m × k
-    y = me.einsum('ij,j->i', A, x)           # 256 × 256 = 65,536 FLOPs
+    y = we.einsum('ij,j->i', A, x)           # 256 × 256 = 65,536 FLOPs
 
     # Matrix multiply: cost = m × k × n
-    C = me.einsum('ij,jk->ik', A, B)         # 256 × 256 × 256 = 16,777,216 FLOPs
+    C = we.einsum('ij,jk->ik', A, B)         # 256 × 256 × 256 = 16,777,216 FLOPs
 
     # Outer product: cost = i × j
-    outer = me.einsum('i,j->ij', x, x)       # 256 × 256 = 65,536 FLOPs
+    outer = we.einsum('i,j->ij', x, x)       # 256 × 256 = 65,536 FLOPs
 
     # Trace: cost = i
-    tr = me.einsum('ii->', A)                 # 256 FLOPs
+    tr = we.einsum('ii->', A)                 # 256 FLOPs
 
     # Batched matmul: cost = b × m × k × n
-    batch = me.ones((4, 256, 256))
-    out = me.einsum('bij,bjk->bik', batch, batch)  # 4 × 256 × 256 × 256 FLOPs
+    batch = we.ones((4, 256, 256))
+    out = we.einsum('bij,bjk->bik', batch, batch)  # 4 × 256 × 256 × 256 FLOPs
 
     print(budget.summary())
 ```
@@ -54,36 +54,36 @@ For `'ij,jk->ik'` with shapes `(256, 256)` and `(256, 256)`:
 - Indices: i=256, j=256, k=256
 - Cost: 256 x 256 x 256 = 16,777,216
 
-For multi-operand einsums (3+ tensors), mechestim automatically decomposes the contraction into optimal pairwise steps. The total cost is the sum of per-step costs.
+For multi-operand einsums (3+ tensors), whest automatically decomposes the contraction into optimal pairwise steps. The total cost is the sum of per-step costs.
 
 When symmetric tensors are involved, each step's cost is further reduced by the ratio of unique output elements to total output elements. See [Exploit Symmetry Savings](exploit-symmetry.md#symmetry-in-einsum) for details.
 
-## me.dot and me.matmul
+## we.dot and we.matmul
 
-`me.dot(A, B)` and `me.matmul(A, B)` are equivalent to the corresponding einsum and have the same FLOP cost.
+`we.dot(A, B)` and `we.matmul(A, B)` are equivalent to the corresponding einsum and have the same FLOP cost.
 
 ## Symmetric tensors
 
 There are two separate symmetry declarations — one for inputs, one for outputs:
 
-**Input symmetry** — wrap with `me.as_symmetric()` before passing to einsum. The optimizer automatically uses symmetry to choose the best contraction order and charges reduced costs:
+**Input symmetry** — wrap with `we.as_symmetric()` before passing to einsum. The optimizer automatically uses symmetry to choose the best contraction order and charges reduced costs:
 
 ```python
-with me.BudgetContext(flop_budget=10**8) as budget:
-    S = me.as_symmetric(np.eye(10), symmetric_axes=(0, 1))  # 55 unique elements
-    v = me.ones((10,))
+with we.BudgetContext(flop_budget=10**8) as budget:
+    S = we.as_symmetric(np.eye(10), symmetric_axes=(0, 1))  # 55 unique elements
+    v = we.ones((10,))
 
-    result = me.einsum('ij,j->i', S, v)  # cost reduced by input symmetry
+    result = we.einsum('ij,j->i', S, v)  # cost reduced by input symmetry
 ```
 
 **Output symmetry** — pass `symmetric_axes` to `einsum()` to declare that the result is symmetric. This wraps the output as a `SymmetricTensor` so downstream operations benefit from reduced costs. It does NOT affect the cost of this einsum — it's a declaration about the result's structure:
 
 ```python
-with me.BudgetContext(flop_budget=10**8) as budget:
-    X = me.array(np.random.randn(100, 10))
+with we.BudgetContext(flop_budget=10**8) as budget:
+    X = we.array(np.random.randn(100, 10))
 
     # X^T X is always symmetric — declare output axes (0,1) as symmetric
-    C = me.einsum('ki,kj->ij', X, X, symmetric_axes=[(0, 1)])
+    C = we.einsum('ki,kj->ij', X, X, symmetric_axes=[(0, 1)])
 
     print(type(C))  # <class 'SymmetricTensor'>
     # C can now be passed to other operations with automatic cost savings
@@ -93,10 +93,10 @@ For the full symmetry guide, see [Exploit Symmetry Savings](./exploit-symmetry.m
 
 ## Inspecting costs
 
-`me.einsum_path()` previews the contraction plan without executing or spending any budget:
+`we.einsum_path()` previews the contraction plan without executing or spending any budget:
 
 ```python
-path, info = me.einsum_path('ijk,ai,bj,ck->abc', T, A, B, C)
+path, info = we.einsum_path('ijk,ai,bj,ck->abc', T, A, B, C)
 
 print(info)
 # Prints a multi-line table with a header (complete contraction, naive
@@ -106,7 +106,7 @@ print(info)
 # FLOPs, savings percentage, BLAS label, unique/dense element counts, and
 # the symmetry transformation. See the Exploit Symmetry guide for a
 # worked example:
-# https://github.com/AIcrowd/mechestim/blob/main/docs/how-to/exploit-symmetry.md#example
+# https://github.com/AIcrowd/whest/blob/main/docs/how-to/exploit-symmetry.md#example
 
 # Call info.format_table(verbose=True) to get an indented detail row per
 # step with the merged operand subset, the intermediate's output shape,
@@ -119,50 +119,50 @@ print(f"Speedup:        {info.speedup:.1f}x")
 print(f"Optimizer used: {info.optimizer_used}")
 ```
 
-`me.flops.einsum_cost()` returns the same cost that `einsum()` would deduct — one source of truth:
+`we.flops.einsum_cost()` returns the same cost that `einsum()` would deduct — one source of truth:
 
 ```python
-cost = me.flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
+cost = we.flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
 print(f"Matmul cost: {cost:,}")  # 16,777,216
 ```
 
 ## Custom contraction paths
 
-By default mechestim finds the optimal contraction order automatically. You can override this by passing an explicit path — a list of int-tuples specifying which operand positions to contract at each step:
+By default whest finds the optimal contraction order automatically. You can override this by passing an explicit path — a list of int-tuples specifying which operand positions to contract at each step:
 
 ```python
-import mechestim as me
+import whest as we
 
-A = me.ones((3, 4))
-B = me.ones((4, 5))
-C = me.ones((5, 6))
+A = we.ones((3, 4))
+B = we.ones((4, 5))
+C = we.ones((5, 6))
 
 # Plan first, execute later
-path, info = me.einsum_path('ij,jk,kl->il', A, B, C)
+path, info = we.einsum_path('ij,jk,kl->il', A, B, C)
 print(f"Optimal path: {path}")  # e.g. [(0, 1), (0, 1)]
 
 # Execute with the planned path
-with me.BudgetContext(flop_budget=10**8) as budget:
-    result = me.einsum('ij,jk,kl->il', A, B, C, optimize=path)
+with we.BudgetContext(flop_budget=10**8) as budget:
+    result = we.einsum('ij,jk,kl->il', A, B, C, optimize=path)
 ```
 
 You can also specify a completely custom path. Each tuple names the positions (in the current operand list) to contract; the result is appended to the end:
 
 ```python
 # Force B×C first (positions 1,2), then A×result (positions 0,1)
-result = me.einsum('ij,jk,kl->il', A, B, C, optimize=[(1, 2), (0, 1)])
+result = we.einsum('ij,jk,kl->il', A, B, C, optimize=[(1, 2), (0, 1)])
 
 # Force A×B first (positions 0,1), then result×C (positions 0,1)
-result = me.einsum('ij,jk,kl->il', A, B, C, optimize=[(0, 1), (0, 1)])
+result = we.einsum('ij,jk,kl->il', A, B, C, optimize=[(0, 1), (0, 1)])
 ```
 
-Different paths may have different FLOP costs. Use `me.einsum_path()` to compare — it returns the cost without executing or spending budget.
+Different paths may have different FLOP costs. Use `we.einsum_path()` to compare — it returns the cost without executing or spending budget.
 
 ## ⚠️ Common pitfalls
 
 **Symptom:** Unexpectedly high FLOP cost
 
-**Fix:** Check all index dimensions. A subscript like `'ijkl,jklm->im'` multiplies all five dimension sizes together. Use `me.flops.einsum_cost()` or `me.einsum_path()` to preview costs before executing.
+**Fix:** Check all index dimensions. A subscript like `'ijkl,jklm->im'` multiplies all five dimension sizes together. Use `we.flops.einsum_cost()` or `we.einsum_path()` to preview costs before executing.
 
 ## 📎 Related pages
 

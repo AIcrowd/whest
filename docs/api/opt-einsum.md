@@ -1,6 +1,6 @@
 # Path Optimizer (opt_einsum fork)
 
-mechestim includes a vendored fork of [opt_einsum](https://github.com/dgasmith/opt_einsum) by Daniel G. A. Smith and Johnnie Gray (MIT license). The fork lives at [`src/mechestim/_opt_einsum/`](https://github.com/AIcrowd/mechestim/tree/main/src/mechestim/_opt_einsum) and is used internally by `me.einsum()` and `me.einsum_path()`.
+whest includes a vendored fork of [opt_einsum](https://github.com/dgasmith/opt_einsum) by Daniel G. A. Smith and Johnnie Gray (MIT license). The fork lives at [`src/whest/_opt_einsum/`](https://github.com/AIcrowd/whest/tree/main/src/whest/_opt_einsum) and is used internally by `we.einsum()` and `we.einsum_path()`.
 
 ## What is opt_einsum?
 
@@ -20,11 +20,11 @@ This fork extends opt_einsum with **symmetry-aware path finding**. When input te
 
 ## What was removed from upstream
 
-- Execution logic (`contract`, `_core_contract`) — mechestim handles execution via `numpy.einsum`
+- Execution logic (`contract`, `_core_contract`) — whest handles execution via `numpy.einsum`
 - Backend dispatch (JAX, TensorFlow, PyTorch, Theano, CuPy)
 - Intermediate caching/sharing layer
 
-The fork is **self-contained** (zero imports from mechestim, depends only on Python stdlib + numpy) and could be contributed back upstream.
+The fork is **self-contained** (zero imports from whest, depends only on Python stdlib + numpy) and could be contributed back upstream.
 
 ## Path algorithms
 
@@ -64,9 +64,9 @@ See [Symmetric Tensors API](./symmetric.md#pathinfo) for the full dataclass refe
 
 ### `symmetry_oracle` parameter
 
-`contract_path` and related path algorithms accept an optional `symmetry_oracle` keyword argument. This is a `SubgraphSymmetryOracle` instance (from `mechestim._opt_einsum._subgraph_symmetry`) that provides symmetry information for each intermediate tensor encountered during path search.
+`contract_path` and related path algorithms accept an optional `symmetry_oracle` keyword argument. This is a `SubgraphSymmetryOracle` instance (from `whest._opt_einsum._subgraph_symmetry`) that provides symmetry information for each intermediate tensor encountered during path search.
 
-The oracle is constructed once per `contract_path` call by `me.einsum` and `me.einsum_path`. It is plumbed through `_PATH_OPTIONS` so that every algorithm receives it. Most users never interact with this directly.
+The oracle is constructed once per `contract_path` call by `we.einsum` and `we.einsum_path`. It is plumbed through `_PATH_OPTIONS` so that every algorithm receives it. Most users never interact with this directly.
 
 The oracle's `sym()` method returns a `SubsetSymmetry` dataclass. Access
 `.output` for the output tensor's symmetry (used by all path algorithms) and
@@ -88,4 +88,4 @@ Upstream opt_einsum silently ignores unknown kwargs. This fork enforces that `sy
 
 ## Attribution
 
-See the [NOTICE](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/_opt_einsum/NOTICE) file for a detailed file-by-file changelog of all modifications from upstream.
+See the [NOTICE](https://github.com/AIcrowd/whest/blob/main/src/whest/_opt_einsum/NOTICE) file for a detailed file-by-file changelog of all modifications from upstream.

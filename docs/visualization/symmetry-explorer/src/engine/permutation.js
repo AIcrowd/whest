@@ -1,5 +1,5 @@
 /**
- * Minimal permutation group library — JS port of mechestim/_perm_group.py
+ * Minimal permutation group library — JS port of whest/_perm_group.py
  */
 
 export class Permutation {
@@ -72,7 +72,7 @@ export class Permutation {
 
 /**
  * Dimino's algorithm — enumerate all group elements from generators.
- * Port of mechestim/_perm_group.py:341-374
+ * Port of whest/_perm_group.py:341-374
  */
 export function dimino(generators) {
   const n = generators[0].size;
@@ -111,7 +111,7 @@ export function dimino(generators) {
 
 /**
  * Burnside's lemma: count unique tensor elements.
- * Port of mechestim/_perm_group.py:238-272
+ * Port of whest/_perm_group.py:238-272
  *
  * @param {Permutation[]} elements - all group elements
  * @param {number[]} sizes - dimension size for each position

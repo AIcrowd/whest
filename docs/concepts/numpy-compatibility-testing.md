@@ -1,40 +1,40 @@
 # NumPy Compatibility Testing
 
-mechestim's goal is to be a drop-in replacement for NumPy: `import mechestim as np` should work for all supported functions. To verify this, we run NumPy's own test suite against mechestim.
+whest's goal is to be a drop-in replacement for NumPy: `import whest as np` should work for all supported functions. To verify this, we run NumPy's own test suite against whest.
 
 ## How it works
 
-A pytest conftest at `tests/numpy_compat/conftest.py` monkeypatches numpy functions with their mechestim equivalents at session start. When we point pytest at NumPy's installed test files using `--pyargs`, every test that calls `np.sum(...)`, `np.mean(...)`, etc. actually calls mechestim's version.
+A pytest conftest at `tests/numpy_compat/conftest.py` monkeypatches numpy functions with their whest equivalents at session start. When we point pytest at NumPy's installed test files using `--pyargs`, every test that calls `np.sum(...)`, `np.mean(...)`, etc. actually calls whest's version.
 
 ```
-NumPy test file                conftest.py               mechestim
-  calls np.sum(x)  ──────>   np.sum = me.sum   ──────>  me.sum(x)
+NumPy test file                conftest.py               whest
+  calls np.sum(x)  ──────>   np.sum = we.sum   ──────>  we.sum(x)
   asserts result              (monkeypatch)              (FLOP-counted)
 ```
 
 ### Avoiding infinite recursion
 
-mechestim functions internally call numpy (e.g., `me.dot` calls `_np.dot`). Since `_np` IS the numpy module, patching `numpy.dot = me.dot` would cause infinite recursion: `me.dot` → `_np.dot` → `numpy.dot` → `me.dot` → ...
+whest functions internally call numpy (e.g., `we.dot` calls `_np.dot`). Since `_np` IS the numpy module, patching `numpy.dot = we.dot` would cause infinite recursion: `we.dot` → `_np.dot` → `numpy.dot` → `we.dot` → ...
 
-We solve this by **freezing numpy before patching**: the conftest creates a snapshot of the numpy module (and its submodules like `numpy.linalg`, `numpy.fft`), then rebinds every mechestim module's `_np` reference to the frozen copy. Now mechestim's internal calls go to the original numpy functions, while the test suite sees mechestim's versions.
+We solve this by **freezing numpy before patching**: the conftest creates a snapshot of the numpy module (and its submodules like `numpy.linalg`, `numpy.fft`), then rebinds every whest module's `_np` reference to the frozen copy. Now whest's internal calls go to the original numpy functions, while the test suite sees whest's versions.
 
 ```python
 # Simplified flow in conftest.py:
 frozen_np = freeze_numpy()           # snapshot of original numpy
-rebind_mechestim_np(frozen_np)       # me._np → frozen copy
-patch_numpy()                        # np.sum = me.sum, etc.
-# Now: test calls np.sum → me.sum → frozen_np.sum (original) ✓
+rebind_whest_np(frozen_np)       # we._np → frozen copy
+patch_numpy()                        # np.sum = we.sum, etc.
+# Now: test calls np.sum → we.sum → frozen_np.sum (original) ✓
 ```
 
 ## What gets patched
 
-Of mechestim's 482 registered functions, most non-ufunc functions are patched onto numpy during testing. The only categories skipped:
+Of whest's 482 registered functions, most non-ufunc functions are patched onto numpy during testing. The only categories skipped:
 
 | Category | Count | Why skipped |
 |----------|-------|-------------|
-| Ufuncs | 101 | mechestim functions are plain callables, not ufuncs -- they lack `.reduce`, `.accumulate`, `.outer`, `.nargs`. Tests check these attributes at collection time. |
+| Ufuncs | 101 | whest functions are plain callables, not ufuncs -- they lack `.reduce`, `.accumulate`, `.outer`, `.nargs`. Tests check these attributes at collection time. |
 | Blacklisted | 32 | Intentionally unsupported |
-| `linalg.outer` | 1 | `me.linalg.outer` delegates to `np.outer` (not `np.linalg.outer`), which has different validation behavior |
+| `linalg.outer` | 1 | `we.linalg.outer` delegates to `np.outer` (not `np.linalg.outer`), which has different validation behavior |
 
 Everything else -- free ops, counted custom ops (dot, einsum, etc.), submodule functions (linalg, fft), reductions, and special functions -- is patched.
 
@@ -82,12 +82,12 @@ Tests that fail due to known, accepted differences are tracked in `tests/numpy_c
 | Category | Meaning | Examples |
 |----------|---------|---------|
 | `NOT_IMPLEMENTED` | Function exists but lacks a kwarg or edge case | Missing `out=`, `where=`, `subok=` kwargs |
-| `UNSUPPORTED_DTYPE` | mechestim doesn't support this dtype | timedelta, object arrays |
+| `UNSUPPORTED_DTYPE` | whest doesn't support this dtype | timedelta, object arrays |
 | `UFUNC_INTERNALS` | Test relies on ufunc protocol | `.reduce`, `__array_ufunc__` |
 | `BUDGET_SIDE_EFFECT` | Test assumes no global state changes | Budget deduction during assertions |
 | `NUMPY_INTERNAL` | Test uses numpy internals | `_umath_tests`, internal type tables |
 
-The linalg suite has the most xfails (255) because mechestim's linalg wrappers don't support stacked/batched arrays, 0-size arrays, or some advanced kwargs that numpy's linalg tests exercise extensively.
+The linalg suite has the most xfails (255) because whest's linalg wrappers don't support stacked/batched arrays, 0-size arrays, or some advanced kwargs that numpy's linalg tests exercise extensively.
 
 ### Triaging new failures
 
@@ -100,6 +100,6 @@ The linalg suite has the most xfails (255) because mechestim's linalg wrappers d
 
 We considered alternatives:
 
-- **Array subclass with `__array_ufunc__`**: Would intercept ufunc calls, but mechestim arrays are plain `numpy.ndarray` by design -- no custom tensor class.
-- **Running tests with `import mechestim as np`**: NumPy's test files import from `numpy._core`, `numpy.testing`, etc. -- can't redirect all internal imports.
+- **Array subclass with `__array_ufunc__`**: Would intercept ufunc calls, but whest arrays are plain `numpy.ndarray` by design -- no custom tensor class.
+- **Running tests with `import whest as np`**: NumPy's test files import from `numpy._core`, `numpy.testing`, etc. -- can't redirect all internal imports.
 - **Monkeypatching with frozen numpy**: Simple, works with NumPy's existing test infrastructure, tests exactly what users experience (same function signatures), and the frozen-numpy trick prevents infinite recursion.

@@ -3,7 +3,7 @@
 ## When to use this page
 
 Use this page to measure per-operation FLOP weights empirically and produce
-a weights config file for mechestim.
+a weights config file for whest.
 
 ## Prerequisites
 
@@ -12,13 +12,13 @@ a weights config file for mechestim.
 
 ## Why calibrate?
 
-mechestim's analytical cost formulas treat all pointwise operations equally
+whest's analytical cost formulas treat all pointwise operations equally
 -- `exp`, `log`, `sin`, and `abs` all cost $\text{numel}(\text{output})$
 FLOPs. Per-operation weights correct for the fact that transcendental
 functions like `exp` decompose into many more basic floating-point
 operations than simple functions like `abs`.
 
-After calibration, a call to `me.exp(x)` on a 1000-element array might
+After calibration, a call to `we.exp(x)` on a 1000-element array might
 cost 14,450 weighted FLOPs instead of 1,000 unweighted FLOPs -- reflecting
 the approximately 14.4 basic FP instructions that the `exp` polynomial
 approximation uses internally.
@@ -37,13 +37,13 @@ python -m benchmarks.runner \
 
 This benchmarks all operation categories and writes:
 
-- `weights.json` -- the weights config for mechestim
+- `weights.json` -- the weights config for whest
 - `report.html` -- a human-readable HTML dashboard
 
 To use the weights:
 
 ```bash
-export MECHESTIM_WEIGHTS_FILE=weights.json
+export WHEST_WEIGHTS_FILE=weights.json
 python your_code.py
 ```
 
@@ -239,7 +239,7 @@ methodology and validation sections:
 }
 ```
 
-mechestim reads only the `"weights"` dict at runtime. The `"meta"` section
+whest reads only the `"weights"` dict at runtime. The `"meta"` section
 is for human reference, the HTML dashboard, and scientific reproducibility.
 
 ### How weights are interpreted
@@ -295,7 +295,7 @@ The validation section in `meta.validation.perf_vs_timing` reports:
 You can load and reset weights from Python:
 
 ```python
-from mechestim._weights import load_weights, reset_weights, get_weight
+from whest._weights import load_weights, reset_weights, get_weight
 
 # Load from a specific file
 load_weights("/path/to/weights.json")

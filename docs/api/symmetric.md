@@ -3,12 +3,12 @@
 First-class symmetric tensor support for automatic FLOP cost reductions.
 
 `SymmetricTensor` is an `ndarray` subclass that carries symmetry metadata
-through operations. When passed to any mechestim operation, the cost is
+through operations. When passed to any whest operation, the cost is
 automatically reduced based on the number of unique elements.
 
 See [Exploit Symmetry Savings](../how-to/exploit-symmetry.md) for usage patterns.
 
-::: mechestim._symmetric
+::: whest._symmetric
 
 ---
 
@@ -17,14 +17,14 @@ See [Exploit Symmetry Savings](../how-to/exploit-symmetry.md) for usage patterns
 First-class permutation group support for declaring and inspecting tensor
 symmetries beyond the full symmetric group S_k.
 
-::: mechestim._perm_group
+::: whest._perm_group
 
 ### Cycle
 
 Composable cycle builder matching sympy's `Cycle` API:
 
 ```python
-from mechestim import Cycle, Permutation
+from whest import Cycle, Permutation
 
 # Single cycle
 Permutation(Cycle(0, 2))                 # → (0 2)
@@ -95,9 +95,9 @@ Counting:
 (integer array form) as sympy's `combinatorics` module. Convert with:
 
 - `perm.as_sympy()` → `sympy.combinatorics.Permutation`
-- `Permutation.from_sympy(sp)` → mechestim `Permutation`
+- `Permutation.from_sympy(sp)` → whest `Permutation`
 - `group.as_sympy()` → `sympy.combinatorics.PermutationGroup`
-- `PermutationGroup.from_sympy(spg, axes=...)` → mechestim `PermutationGroup`
+- `PermutationGroup.from_sympy(spg, axes=...)` → whest `PermutationGroup`
 
 Requires `pip install sympy`. Sympy is not a required dependency.
 
@@ -105,9 +105,9 @@ Requires `pip install sympy`. Sympy is not a required dependency.
 
 ## PathInfo
 
-Contraction path with per-step diagnostics. Returned by `me.einsum_path()`.
+Contraction path with per-step diagnostics. Returned by `we.einsum_path()`.
 
-::: mechestim.PathInfo
+::: whest.PathInfo
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -142,7 +142,7 @@ symmetry savings are what they are.
 Per-step contraction info within a `PathInfo`. Each step represents one
 pairwise contraction along the optimal path.
 
-::: mechestim.StepInfo
+::: whest.StepInfo
 
 | Field | Type | Description |
 |-------|------|-------------|

@@ -1,7 +1,7 @@
 # Symmetry Explorer
 
 Interactive visualization of the subgraph symmetry detection algorithm used by
-`mechestim.einsum` to find and exploit permutation symmetry in einsum
+`whest.einsum` to find and exploit permutation symmetry in einsum
 expressions.
 
 Choose a preset example or define your own einsum expression with custom
