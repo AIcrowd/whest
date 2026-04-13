@@ -2,24 +2,13 @@ import { useState, useCallback, useMemo } from 'react';
 
 const CUSTOM_IDX = -1;
 
-/** Helper: generate the Reynolds operator symmetrization snippet. */
-function reynoldsSnippet(varName, shape, groupExpr) {
-  return [
-    `_data = numpy.random.randn(${shape})`,
-    `_group = ${groupExpr}`,
-    `_data = sum(numpy.transpose(_data, g.array_form) for g in _group.elements()) / _group.order()`,
-    `${varName} = me.as_symmetric(_data, symmetry=${groupExpr.replace(/^_group$/, groupExpr)})`,
-  ];
-}
-
-/** Pure function — generates Python code for ANY example object (preset or custom). */
+/** Pure function — generates Python code for ANY example object (preset or custom).
+ *  All code uses only `import mechestim as me` — no numpy import needed. */
 function generatePythonCode(example, dimensionN) {
   const { subscripts, output, operandNames, perOpSymmetry } = example;
   const n = dimensionN;
   const lines = [];
-  lines.push('import numpy');
   lines.push('import mechestim as me');
-  lines.push('from mechestim import Cycle, Permutation, PermutationGroup');
   lines.push('');
   lines.push(`n = ${n}`);
 
@@ -38,40 +27,39 @@ function generatePythonCode(example, dimensionN) {
     const opSym = Array.isArray(perOpSymmetry) ? perOpSymmetry[i] : perOpSymmetry;
 
     if (!opSym) {
-      lines.push(`${name} = numpy.random.randn(${shape})`);
+      lines.push(`${name} = me.random.randn(${shape})`);
     } else if (opSym === 'symmetric') {
       if (rank === 2) {
         lines.push(`# ${name}: symmetric matrix (S2)`);
-        lines.push(`_data = numpy.random.randn(${shape})`);
+        lines.push(`_data = me.random.randn(${shape})`);
         lines.push(`${name} = me.as_symmetric((_data + _data.T) / 2, symmetric_axes=(0, 1))`);
       } else {
         const axes = [...Array(rank).keys()].join(', ');
         lines.push(`# ${name}: fully symmetric tensor (S${rank}) via Reynolds operator`);
-        lines.push(`_group = PermutationGroup.symmetric(${rank}, axes=(${axes}))`);
-        lines.push(`_data = numpy.random.randn(${shape})`);
-        lines.push(`_data = sum(numpy.transpose(_data, g.array_form) for g in _group.elements()) / _group.order()`);
+        lines.push(`_group = me.PermutationGroup.symmetric(${rank}, axes=(${axes}))`);
+        lines.push(`_data = me.random.randn(${shape})`);
+        lines.push(`_data = sum(me.transpose(_data, g.array_form) for g in _group.elements()) / _group.order()`);
         lines.push(`${name} = me.as_symmetric(_data, symmetry=_group)`);
       }
     } else if (opSym === 'cyclic') {
       const axes = [...Array(rank).keys()].join(', ');
       lines.push(`# ${name}: cyclic symmetry (C${rank}) — T[i,j,k] = T[j,k,i] but T[i,j,k] ≠ T[j,i,k]`);
-      lines.push(`_group = PermutationGroup.cyclic(${rank}, axes=(${axes}))`);
-      lines.push(`_data = numpy.random.randn(${shape})`);
-      lines.push(`_data = sum(numpy.transpose(_data, g.array_form) for g in _group.elements()) / _group.order()`);
+      lines.push(`_group = me.PermutationGroup.cyclic(${rank}, axes=(${axes}))`);
+      lines.push(`_data = me.random.randn(${shape})`);
+      lines.push(`_data = sum(me.transpose(_data, g.array_form) for g in _group.elements()) / _group.order()`);
       lines.push(`${name} = me.as_symmetric(_data, symmetry=_group)`);
     } else if (opSym === 'dihedral') {
       const axes = [...Array(rank).keys()].join(', ');
       lines.push(`# ${name}: dihedral symmetry (D${rank}) — rotations + reflections`);
-      lines.push(`_group = PermutationGroup.dihedral(${rank}, axes=(${axes}))`);
-      lines.push(`_data = numpy.random.randn(${shape})`);
-      lines.push(`_data = sum(numpy.transpose(_data, g.array_form) for g in _group.elements()) / _group.order()`);
+      lines.push(`_group = me.PermutationGroup.dihedral(${rank}, axes=(${axes}))`);
+      lines.push(`_data = me.random.randn(${shape})`);
+      lines.push(`_data = sum(me.transpose(_data, g.array_form) for g in _group.elements()) / _group.order()`);
       lines.push(`${name} = me.as_symmetric(_data, symmetry=_group)`);
     } else if (opSym === 'block-swap') {
-      // Block swap: (0,1) ↔ (2,3) via Cycle(0,2)(1,3)
       lines.push(`# ${name}: block swap — axes (0,1) swap with (2,3) as a unit`);
-      lines.push(`_group = PermutationGroup(Permutation(Cycle(0, 2)(1, 3)), axes=(0, 1, 2, 3))`);
-      lines.push(`_data = numpy.random.randn(${shape})`);
-      lines.push(`_data = sum(numpy.transpose(_data, g.array_form) for g in _group.elements()) / _group.order()`);
+      lines.push(`_group = me.PermutationGroup(me.Permutation(me.Cycle(0, 2)(1, 3)), axes=(0, 1, 2, 3))`);
+      lines.push(`_data = me.random.randn(${shape})`);
+      lines.push(`_data = sum(me.transpose(_data, g.array_form) for g in _group.elements()) / _group.order()`);
       lines.push(`${name} = me.as_symmetric(_data, symmetry=_group)`);
     }
   }
@@ -97,13 +85,12 @@ function generatePythonCode(example, dimensionN) {
 }
 
 /** Pure function — generates richer Python code for custom builder examples,
- *  reflecting user-chosen symmetry types and axis selections. */
+ *  reflecting user-chosen symmetry types and axis selections.
+ *  All code uses only `import mechestim as me`. */
 function generateCustomPythonCode(variables, outputStr, dimensionN) {
   const n = dimensionN;
   const lines = [];
-  lines.push('import numpy');
   lines.push('import mechestim as me');
-  lines.push('from mechestim import Cycle, Permutation, PermutationGroup');
   lines.push('');
   lines.push(`n = ${n}`);
 
@@ -118,21 +105,20 @@ function generateCustomPythonCode(variables, outputStr, dimensionN) {
     const shape = Array(rank).fill('n').join(', ');
 
     if (v.symmetry === 'none') {
-      lines.push(`${name} = numpy.random.randn(${shape})`);
+      lines.push(`${name} = me.random.randn(${shape})`);
     } else if (v.symmetry === 'custom') {
       // Parse cycle notation string like "(0 1)(2 3)" into valid Python
       const gens = v.generators.trim() || '(0, 1)';
-      // Convert "(0 1)(2 3)" → "Cycle(0, 1)(2, 3)"
+      // Convert "(0 1)(2 3)" → "me.Cycle(0, 1)(2, 3)"
       const pyGens = gens.replace(/\((\d[\d\s,]*)\)/g, (_, inner) => {
         const nums = inner.trim().split(/[\s,]+/).join(', ');
         return `(${nums})`;
       });
-      // If it starts with "(", wrap in Cycle
-      const genExpr = pyGens.startsWith('(') ? `Cycle${pyGens}` : pyGens;
+      const genExpr = pyGens.startsWith('(') ? `me.Cycle${pyGens}` : pyGens;
       lines.push(`# ${name}: custom symmetry group`);
-      lines.push(`_group = PermutationGroup(Permutation(${genExpr}), axes=(${[...Array(rank).keys()].join(', ')}))`);
-      lines.push(`_data = numpy.random.randn(${shape})`);
-      lines.push(`_data = sum(numpy.transpose(_data, g.array_form) for g in _group.elements()) / _group.order()`);
+      lines.push(`_group = me.PermutationGroup(me.Permutation(${genExpr}), axes=(${[...Array(rank).keys()].join(', ')}))`);
+      lines.push(`_data = me.random.randn(${shape})`);
+      lines.push(`_data = sum(me.transpose(_data, g.array_form) for g in _group.elements()) / _group.order()`);
       lines.push(`${name} = me.as_symmetric(_data, symmetry=_group)`);
     } else {
       const groupFn = v.symmetry === 'symmetric' ? 'symmetric'
@@ -142,14 +128,14 @@ function generateCustomPythonCode(variables, outputStr, dimensionN) {
 
       if (axesArr.length === rank && v.symmetry === 'symmetric' && rank === 2) {
         lines.push(`# ${name}: symmetric matrix (S2)`);
-        lines.push(`_data = numpy.random.randn(${shape})`);
+        lines.push(`_data = me.random.randn(${shape})`);
         lines.push(`${name} = me.as_symmetric((_data + _data.T) / 2, symmetric_axes=(0, 1))`);
       } else {
         const axes = axesArr.join(', ');
         lines.push(`# ${name}: ${groupFn} symmetry on axes (${axes})`);
-        lines.push(`_group = PermutationGroup.${groupFn}(${k}, axes=(${axes}))`);
-        lines.push(`_data = numpy.random.randn(${shape})`);
-        lines.push(`_data = sum(numpy.transpose(_data, g.array_form) for g in _group.elements()) / _group.order()`);
+        lines.push(`_group = me.PermutationGroup.${groupFn}(${k}, axes=(${axes}))`);
+        lines.push(`_data = me.random.randn(${shape})`);
+        lines.push(`_data = sum(me.transpose(_data, g.array_form) for g in _group.elements()) / _group.order()`);
         lines.push(`${name} = me.as_symmetric(_data, symmetry=_group)`);
       }
     }
