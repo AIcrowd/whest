@@ -19,3 +19,14 @@ packages = ["src/mechestim_server"]
 
 [project.scripts]
 mechestim-server = "mechestim_server.__main__:main"
+
+[tool.uv.sources]
+mechestim = { path = "../", editable = true }
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
