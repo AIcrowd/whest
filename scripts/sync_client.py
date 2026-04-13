@@ -150,6 +150,100 @@ def _generate_perm_group() -> str:
     return _HEADER + "\n" + content
 
 
+def _generate_stats_init() -> str:
+    """Generate stats/__init__.py with proxy distribution objects."""
+    import mechestim.stats as core_stats
+
+    dist_names = sorted(core_stats.__all__)
+
+    lines = [_HEADER]
+    lines.append('"""mechestim.stats \u2014 statistical distributions submodule proxy."""\n\n')
+    lines.append("from __future__ import annotations\n\n")
+    lines.append("from mechestim._connection import get_connection\n")
+    lines.append("from mechestim._getattr import make_module_getattr\n")
+    lines.append("from mechestim._protocol import encode_request\n")
+    lines.append("from mechestim._remote_array import (\n")
+    lines.append("    _encode_arg,\n")
+    lines.append("    _result_from_response,\n")
+    lines.append(")\n\n\n")
+
+    # _DistributionProxy class with pdf, cdf, ppf
+    lines.append("class _DistributionProxy:\n")
+    lines.append('    """Proxy for a server-side statistical distribution."""\n\n')
+    lines.append("    def __init__(self, name: str) -> None:\n")
+    lines.append("        self._name = name\n\n")
+    lines.append("    def __repr__(self) -> str:\n")
+    lines.append('        return f"<mechestim.stats.{self._name}>"\n\n')
+
+    for method in ("pdf", "cdf", "ppf"):
+        lines.append(f"    def {method}(self, x, *args, **kwargs):\n")
+        lines.append(f'        """Dispatch stats.{{self._name}}.{method} to the server."""\n')
+        lines.append("        conn = get_connection()\n")
+        lines.append(f'        op = f"stats.{{self._name}}.{method}"\n')
+        lines.append("        encoded_args = [_encode_arg(x)] + [_encode_arg(a) for a in args]\n")
+        lines.append("        encoded_kwargs = {k: _encode_arg(v) for k, v in kwargs.items()}\n")
+        lines.append("        resp = conn.send_recv(\n")
+        lines.append("            encode_request(op, args=encoded_args, kwargs=encoded_kwargs)\n")
+        lines.append("        )\n")
+        lines.append("        return _result_from_response(resp)\n\n")
+
+    # Distribution instances
+    lines.append("\n# Distribution instances\n")
+    for name in dist_names:
+        lines.append(f'{name} = _DistributionProxy({name!r})\n')
+
+    lines.append(f"\n__all__ = {dist_names!r}\n\n")
+    lines.append("# Fall-through for unknown names\n")
+    lines.append('__getattr__ = make_module_getattr("stats.", "mechestim.stats")\n')
+
+    return "".join(lines)
+
+
+def _generate_linalg_init() -> str:
+    """Generate linalg/__init__.py with proxies for all linalg ops."""
+    from mechestim._registry import REGISTRY
+
+    linalg_ops = sorted(
+        name[len("linalg."):]
+        for name, entry in REGISTRY.items()
+        if name.startswith("linalg.") and entry["category"] != "blacklisted"
+    )
+
+    lines = [_HEADER]
+    lines.append('"""mechestim.linalg \u2014 linear algebra submodule proxy."""\n\n')
+    lines.append("from __future__ import annotations\n\n")
+    lines.append("from mechestim._connection import get_connection\n")
+    lines.append("from mechestim._getattr import make_module_getattr\n")
+    lines.append("from mechestim._protocol import encode_request\n")
+    lines.append("from mechestim._remote_array import (\n")
+    lines.append("    _encode_arg,\n")
+    lines.append("    _result_from_response,\n")
+    lines.append(")\n\n\n")
+
+    lines.append("def _make_linalg_proxy(op_name: str):\n")
+    lines.append('    """Create a proxy function for ``linalg.<op_name>``."""\n')
+    lines.append('    qualified = f"linalg.{op_name}"\n\n')
+    lines.append("    def proxy(*args, **kwargs):\n")
+    lines.append("        conn = get_connection()\n")
+    lines.append("        encoded_args = [_encode_arg(a) for a in args]\n")
+    lines.append("        encoded_kwargs = {k: _encode_arg(v) for k, v in kwargs.items()}\n")
+    lines.append("        resp = conn.send_recv(\n")
+    lines.append("            encode_request(qualified, args=encoded_args, kwargs=encoded_kwargs)\n")
+    lines.append("        )\n")
+    lines.append("        return _result_from_response(resp)\n\n")
+    lines.append('    proxy.__name__ = op_name\n')
+    lines.append('    proxy.__qualname__ = f"linalg.{op_name}"\n')
+    lines.append("    return proxy\n\n\n")
+
+    for op in linalg_ops:
+        lines.append(f'{op} = _make_linalg_proxy({op!r})\n')
+
+    lines.append('\n# Fall-through for blacklisted / unknown names\n')
+    lines.append('__getattr__ = make_module_getattr("linalg.", "mechestim.linalg")\n')
+
+    return "".join(lines)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true",
@@ -175,6 +269,20 @@ def main():
     _write_or_check(
         _CLIENT_SRC / "_perm_group.py",
         _generate_perm_group(),
+        args.check, diffs,
+    )
+
+    print("Generating stats proxy...")
+    _write_or_check(
+        _CLIENT_SRC / "stats" / "__init__.py",
+        _generate_stats_init(),
+        args.check, diffs,
+    )
+
+    print("Generating linalg proxy...")
+    _write_or_check(
+        _CLIENT_SRC / "linalg" / "__init__.py",
+        _generate_linalg_init(),
         args.check, diffs,
     )
 
