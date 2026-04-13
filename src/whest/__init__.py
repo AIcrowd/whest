@@ -443,12 +443,12 @@ from whest._window import (  # noqa: F401
 # --- Errors ---
 from whest.errors import (  # noqa: F401
     BudgetExhaustedError,
-    WhestError,
-    WhestWarning,
     NoBudgetContextError,
     SymmetryError,
     SymmetryLossWarning,
     UnsupportedFunctionError,
+    WhestError,
+    WhestWarning,
 )
 
 # --- NumPy constants and types ---
