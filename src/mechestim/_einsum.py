@@ -77,11 +77,23 @@ def einsum(
           to contract at that step; the result is appended to the end.
         - ``False``: treated as ``'auto'``.
     symmetric_axes : list of tuple of int, optional
-        **Output** dimension symmetry groups. Declares that the result
-        is symmetric in the given axes and wraps it as a
+        **Output** dimension symmetry groups (S_k only). Declares that the
+        result is symmetric in the given axes and wraps it as a
         ``SymmetricTensor``. For example, ``[(0, 1)]`` means the output
         satisfies ``result[i,j,...] == result[j,i,...]``. This does NOT
         declare input symmetry — use ``me.as_symmetric()`` for that.
+        Mutually exclusive with *symmetry*.
+    symmetry : PermutationGroup or list of PermutationGroup, optional
+        **Output** permutation group symmetry. Declares that the result
+        is symmetric under the given ``PermutationGroup``(s) and wraps it
+        as a ``SymmetricTensor``. Unlike *symmetric_axes* (which always
+        means S_k), this supports any permutation group — for example,
+        ``PermutationGroup.cyclic(3, axes=(0, 1, 2))`` declares cyclic
+        symmetry where ``result[i,j,k] == result[j,k,i] == result[k,i,j]``
+        but ``result[i,j,k]`` need not equal ``result[j,i,k]``.
+        Each group must have ``axes`` set. Mutually exclusive with
+        *symmetric_axes*. This does NOT declare input symmetry — use
+        ``me.as_symmetric()`` for that.
 
     Returns
     -------
@@ -95,7 +107,9 @@ def einsum(
     NoBudgetContextError
         If called outside a ``BudgetContext``.
     SymmetryError
-        If ``symmetric_axes`` is provided but the result is not symmetric.
+        If ``symmetric_axes`` or ``symmetry`` is provided but the result
+        does not satisfy the declared symmetry. Validation checks the
+        data against each generator of the group.
     """
     if symmetric_axes is not None and symmetry is not None:
         raise ValueError("symmetric_axes and symmetry are mutually exclusive")
