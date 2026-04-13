@@ -28,7 +28,6 @@ import pytest
 
 from mechestim._budget import BudgetContext
 
-
 # ============================================================================
 # _counting_ops
 # ============================================================================
@@ -241,7 +240,6 @@ class TestCheckNanInf:
 
     def test_float_with_inf(self):
         from mechestim._validation import check_nan_inf
-        from mechestim.errors import MechEstimWarning
 
         arr = numpy.array([1.0, float("inf"), -float("inf")])
         with warnings.catch_warnings(record=True) as w:
@@ -252,7 +250,6 @@ class TestCheckNanInf:
 
     def test_complex_with_nan(self):
         from mechestim._validation import check_nan_inf
-        from mechestim.errors import MechEstimWarning
 
         arr = numpy.array([1 + 0j, float("nan") + 0j])
         with warnings.catch_warnings(record=True) as w:
@@ -1537,7 +1534,6 @@ class TestBLASClassification:
 
     def test_symm_classification(self):
         from mechestim._opt_einsum._blas import can_blas
-        from mechestim._perm_group import PermutationGroup
 
         # Create a symmetric group on indices i,j for left input
         sym = _make_sym_group(("i", "j"))
@@ -1558,7 +1554,6 @@ class TestBLASClassification:
 
     def test_sydt_classification(self):
         from mechestim._opt_einsum._blas import can_blas
-        from mechestim._perm_group import PermutationGroup
 
         sym = _make_sym_group(("i", "j"))
         result = can_blas(
