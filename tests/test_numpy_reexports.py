@@ -46,7 +46,7 @@ NEW_EXPORTS = [
 @pytest.mark.parametrize("name,expected", NEW_EXPORTS)
 def test_reexport_identity(name, expected):
     """Every new whest export is identical to its numpy counterpart."""
-    actual = getattr(me, name)
+    actual = getattr(we, name)
     assert actual is expected, f"we.{name} is {actual!r}, expected {expected!r}"
 
 

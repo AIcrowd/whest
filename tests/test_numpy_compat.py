@@ -41,10 +41,10 @@ class TestUnaryOps:
         ],
     )
     def test_unary(self, op_name):
-        me_fn = getattr(me, op_name)
+        we_fn = getattr(we, op_name)
         np_fn = getattr(numpy, op_name)
         inp = self.x_pos if op_name in ("log", "log2", "log10", "sqrt") else self.x
-        assert numpy.allclose(me_fn(inp), np_fn(inp), equal_nan=True)
+        assert numpy.allclose(we_fn(inp), np_fn(inp), equal_nan=True)
 
 
 class TestBinaryOps:
@@ -69,10 +69,10 @@ class TestBinaryOps:
         ],
     )
     def test_binary(self, op_name):
-        me_fn = getattr(me, op_name)
+        we_fn = getattr(we, op_name)
         np_fn = getattr(numpy, op_name)
         a, b = numpy.abs(self.a) + 0.1, numpy.abs(self.b) + 0.1
-        assert numpy.allclose(me_fn(a, b), np_fn(a, b))
+        assert numpy.allclose(we_fn(a, b), np_fn(a, b))
 
 
 class TestReductions:
@@ -84,16 +84,16 @@ class TestReductions:
 
     @pytest.mark.parametrize("op_name", ["sum", "max", "min", "mean", "prod"])
     def test_reduction_full(self, op_name):
-        me_fn = getattr(me, op_name)
+        we_fn = getattr(we, op_name)
         np_fn = getattr(numpy, op_name)
-        assert numpy.allclose(me_fn(self.x), np_fn(self.x))
+        assert numpy.allclose(we_fn(self.x), np_fn(self.x))
 
     @pytest.mark.parametrize("op_name", ["sum", "max", "min", "mean"])
     def test_reduction_axis(self, op_name):
-        me_fn = getattr(me, op_name)
+        we_fn = getattr(we, op_name)
         np_fn = getattr(numpy, op_name)
-        assert numpy.allclose(me_fn(self.x, axis=0), np_fn(self.x, axis=0))
-        assert numpy.allclose(me_fn(self.x, axis=1), np_fn(self.x, axis=1))
+        assert numpy.allclose(we_fn(self.x, axis=0), np_fn(self.x, axis=0))
+        assert numpy.allclose(we_fn(self.x, axis=1), np_fn(self.x, axis=1))
 
 
 class TestEinsum:

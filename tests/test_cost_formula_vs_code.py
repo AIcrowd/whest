@@ -55,7 +55,7 @@ def _cost_of(fn, *args, **kwargs) -> int:
 
 
 @pytest.fixture(scope="module")
-def me():
+def we():
     import whest
 
     return whest
@@ -150,19 +150,19 @@ def _unary_input(name):
 
 
 @pytest.mark.parametrize("name", _UNARY_NUMEL)
-def test_unary_numel(name, me, formulas):
-    fn = getattr(me, name)
+def test_unary_numel(name, we, formulas):
+    fn = getattr(we, name)
     inp = _unary_input(name)
     cost = _cost_of(fn, inp)
     assert cost == 100, f"{name}: expected numel=100, got {cost}"
 
 
-def test_isclose_numel(me):
+def test_isclose_numel(we):
     a = numpy.random.rand(10, 10)
     assert _cost_of(we.isclose, a, a) == 100
 
 
-def test_isnat_numel(me):
+def test_isnat_numel(we):
     dt = numpy.array(["2024-01-01", "2024-01-02"], dtype="datetime64")
     assert _cost_of(we.isnat, dt) == 2
 
@@ -216,7 +216,7 @@ _BINARY_NUMEL = [
 
 
 @pytest.mark.parametrize("name", _BINARY_NUMEL)
-def test_binary_numel(name, me):
+def test_binary_numel(name, we):
     if name in (
         "bitwise_and",
         "bitwise_or",
@@ -236,12 +236,12 @@ def test_binary_numel(name, me):
     else:
         a = numpy.random.rand(10, 10)
         b = numpy.random.rand(10, 10) + 0.1
-    fn = getattr(me, name)
+    fn = getattr(we, name)
     cost = _cost_of(fn, a, b)
     assert cost == 100, f"{name}: expected numel=100, got {cost}"
 
 
-def test_vecdot_batch_times_k(me):
+def test_vecdot_batch_times_k(we):
     # formula: batch * K (output_size * contracted_axis)
     cost = _cost_of(we.vecdot, numpy.random.rand(5, 10), numpy.random.rand(5, 10))
     assert cost == 50, f"vecdot: expected 5*10=50, got {cost}"
@@ -286,31 +286,31 @@ _REDUCTION_NUMEL = [
 
 
 @pytest.mark.parametrize("name", _REDUCTION_NUMEL)
-def test_reduction_numel(name, me):
+def test_reduction_numel(name, we):
     a = numpy.random.rand(10, 10)
-    fn = getattr(me, name)
+    fn = getattr(we, name)
     cost = _cost_of(fn, a)
     assert cost == 100, f"{name}: expected numel(input)=100, got {cost}"
 
 
 @pytest.mark.parametrize("name", ["percentile", "nanpercentile"])
-def test_percentile_numel(name, me):
+def test_percentile_numel(name, we):
     a = numpy.random.rand(10, 10)
-    cost = _cost_of(getattr(me, name), a, q=50)
+    cost = _cost_of(getattr(we, name), a, q=50)
     assert cost == 100, f"{name}: expected numel(input)=100, got {cost}"
 
 
 @pytest.mark.parametrize("name", ["quantile", "nanquantile"])
-def test_quantile_numel(name, me):
+def test_quantile_numel(name, we):
     a = numpy.random.rand(10, 10)
-    cost = _cost_of(getattr(me, name), a, q=0.5)
+    cost = _cost_of(getattr(we, name), a, q=0.5)
     assert cost == 100, f"{name}: expected numel(input)=100, got {cost}"
 
 
 @pytest.mark.parametrize("name", ["cumulative_sum", "cumulative_prod"])
-def test_cumulative_numel(name, me):
+def test_cumulative_numel(name, we):
     a = numpy.random.rand(10, 10)
-    cost = _cost_of(getattr(me, name), a, axis=0)
+    cost = _cost_of(getattr(we, name), a, axis=0)
     assert cost == 100, f"{name}: expected numel(input)=100, got {cost}"
 
 
@@ -319,32 +319,32 @@ def test_cumulative_numel(name, me):
 # ---------------------------------------------------------------------------
 
 
-def test_matmul_mnk(me):
+def test_matmul_mnk(we):
     assert (
         _cost_of(we.matmul, numpy.random.rand(10, 10), numpy.random.rand(10, 10))
         == 1000
     )
 
 
-def test_dot_mnk(me):
+def test_dot_mnk(we):
     assert (
         _cost_of(we.dot, numpy.random.rand(10, 10), numpy.random.rand(10, 10)) == 1000
     )
 
 
-def test_inner_n(me):
+def test_inner_n(we):
     assert _cost_of(we.inner, numpy.random.rand(20), numpy.random.rand(20)) == 20
 
 
-def test_vdot_n(me):
+def test_vdot_n(we):
     assert _cost_of(we.vdot, numpy.random.rand(20), numpy.random.rand(20)) == 20
 
 
-def test_outer_mn(me):
+def test_outer_mn(we):
     assert _cost_of(we.outer, numpy.random.rand(10), numpy.random.rand(15)) == 150
 
 
-def test_tensordot_contracted(me):
+def test_tensordot_contracted(we):
     assert (
         _cost_of(
             we.tensordot,
@@ -356,16 +356,16 @@ def test_tensordot_contracted(me):
     )
 
 
-def test_kron_numel_output(me):
+def test_kron_numel_output(we):
     assert _cost_of(we.kron, numpy.random.rand(3, 3), numpy.random.rand(2, 2)) == 36
 
 
-def test_cross_6n(me):
+def test_cross_6n(we):
     # cross charges r.size * 3
     assert _cost_of(we.cross, numpy.random.rand(5, 3), numpy.random.rand(5, 3)) == 45
 
 
-def test_einsum_mnk(me):
+def test_einsum_mnk(we):
     assert (
         _cost_of(
             we.einsum, "ij,jk->ik", numpy.random.rand(10, 10), numpy.random.rand(10, 10)
@@ -374,7 +374,7 @@ def test_einsum_mnk(me):
     )
 
 
-def test_einsum_path_cost_1(me):
+def test_einsum_path_cost_1(we):
     assert (
         _cost_of(
             we.einsum_path,
@@ -392,51 +392,51 @@ def test_einsum_path_cost_1(me):
 
 
 class TestLinalgDecompositions:
-    def test_cholesky_n3(self, me):
+    def test_cholesky_n3(self, we):
         S = numpy.eye(8) + numpy.random.rand(8, 8)
         S = S @ S.T
         assert _cost_of(we.linalg.cholesky, S) == 512
 
-    def test_qr_mnk(self, me):
+    def test_qr_mnk(self, we):
         assert _cost_of(we.linalg.qr, numpy.random.rand(10, 5)) == 250
 
     @pytest.mark.parametrize("name", ["eig", "eigvals"])
-    def test_eig_n3(self, name, me):
+    def test_eig_n3(self, name, we):
         assert _cost_of(getattr(we.linalg, name), numpy.random.rand(8, 8)) == 512
 
     @pytest.mark.parametrize("name", ["eigh", "eigvalsh"])
-    def test_eigh_n3(self, name, me):
+    def test_eigh_n3(self, name, we):
         S = numpy.eye(8) + numpy.random.rand(8, 8)
         S = S @ S.T
         assert _cost_of(getattr(we.linalg, name), S) == 512
 
-    def test_svd_mnk(self, me):
+    def test_svd_mnk(self, we):
         assert _cost_of(we.linalg.svd, numpy.random.rand(10, 5)) == 250
 
-    def test_svdvals_mnk(self, me):
+    def test_svdvals_mnk(self, we):
         assert _cost_of(we.linalg.svdvals, numpy.random.rand(10, 5)) == 250
 
 
 class TestLinalgSolvers:
-    def test_solve_n3(self, me):
+    def test_solve_n3(self, we):
         assert (
             _cost_of(we.linalg.solve, numpy.random.rand(8, 8), numpy.random.rand(8))
             == 512
         )
 
-    def test_inv_n3(self, me):
+    def test_inv_n3(self, we):
         assert _cost_of(we.linalg.inv, numpy.random.rand(8, 8)) == 512
 
-    def test_lstsq_mnk(self, me):
+    def test_lstsq_mnk(self, we):
         assert (
             _cost_of(we.linalg.lstsq, numpy.random.rand(10, 5), numpy.random.rand(10))
             == 250
         )
 
-    def test_pinv_mnk(self, me):
+    def test_pinv_mnk(self, we):
         assert _cost_of(we.linalg.pinv, numpy.random.rand(10, 5)) == 250
 
-    def test_tensorsolve_n3(self, me):
+    def test_tensorsolve_n3(self, we):
         assert (
             _cost_of(
                 we.linalg.tensorsolve,
@@ -446,44 +446,44 @@ class TestLinalgSolvers:
             == 64
         )
 
-    def test_tensorinv_n3(self, me):
+    def test_tensorinv_n3(self, we):
         assert _cost_of(we.linalg.tensorinv, numpy.eye(4).reshape(2, 2, 2, 2)) == 64
 
 
 class TestLinalgProperties:
-    def test_det_n3(self, me):
+    def test_det_n3(self, we):
         assert _cost_of(we.linalg.det, numpy.random.rand(8, 8)) == 512
 
-    def test_slogdet_n3(self, me):
+    def test_slogdet_n3(self, we):
         assert _cost_of(we.linalg.slogdet, numpy.random.rand(8, 8)) == 512
 
-    def test_cond_mnk(self, me):
+    def test_cond_mnk(self, we):
         assert _cost_of(we.linalg.cond, numpy.random.rand(8, 8)) == 512
 
-    def test_matrix_rank_mnk(self, me):
+    def test_matrix_rank_mnk(self, we):
         assert _cost_of(we.linalg.matrix_rank, numpy.random.rand(10, 5)) == 250
 
-    def test_trace(self, me):
+    def test_trace(self, we):
         assert _cost_of(we.trace, numpy.random.rand(8, 8)) == 8
 
-    def test_linalg_trace(self, me):
+    def test_linalg_trace(self, we):
         assert _cost_of(we.linalg.trace, numpy.random.rand(8, 8)) == 8
 
-    def test_vector_norm_numel(self, me):
+    def test_vector_norm_numel(self, we):
         assert _cost_of(we.linalg.vector_norm, numpy.random.rand(20)) == 20
 
-    def test_matrix_norm_numel(self, me):
+    def test_matrix_norm_numel(self, we):
         assert _cost_of(we.linalg.matrix_norm, numpy.random.rand(8, 8)) == 64
 
-    def test_norm_vector_numel(self, me):
+    def test_norm_vector_numel(self, we):
         assert _cost_of(we.linalg.norm, numpy.random.rand(20)) == 20
 
-    def test_norm_matrix_numel(self, me):
+    def test_norm_matrix_numel(self, we):
         assert _cost_of(we.linalg.norm, numpy.random.rand(8, 8)) == 64
 
 
 class TestLinalgDelegates:
-    def test_matmul_mnk(self, me):
+    def test_matmul_mnk(self, we):
         assert (
             _cost_of(
                 we.linalg.matmul, numpy.random.rand(10, 10), numpy.random.rand(10, 10)
@@ -491,13 +491,13 @@ class TestLinalgDelegates:
             == 1000
         )
 
-    def test_outer_mn(self, me):
+    def test_outer_mn(self, we):
         assert (
             _cost_of(we.linalg.outer, numpy.random.rand(10), numpy.random.rand(15))
             == 150
         )
 
-    def test_vecdot(self, me):
+    def test_vecdot(self, we):
         assert (
             _cost_of(
                 we.linalg.vecdot, numpy.random.rand(5, 10), numpy.random.rand(5, 10)
@@ -505,13 +505,13 @@ class TestLinalgDelegates:
             == 50
         )
 
-    def test_cross(self, me):
+    def test_cross(self, we):
         assert (
             _cost_of(we.linalg.cross, numpy.random.rand(5, 3), numpy.random.rand(5, 3))
             == 45
         )
 
-    def test_matrix_power(self, me):
+    def test_matrix_power(self, we):
         # k=4: ceil(log2(4))=2, popcount(4)=1, (2+1-1)*8^3 = 1024
         assert _cost_of(we.linalg.matrix_power, numpy.random.rand(8, 8), 4) == 1024
 
@@ -522,7 +522,7 @@ class TestLinalgDelegates:
 
 
 class TestPolynomial:
-    def test_polyval_m_times_deg(self, me):
+    def test_polyval_m_times_deg(self, we):
         assert (
             _cost_of(
                 we.polyval,
@@ -532,32 +532,32 @@ class TestPolynomial:
             == 80
         )
 
-    def test_polyadd(self, me):
+    def test_polyadd(self, we):
         assert _cost_of(we.polyadd, numpy.ones(5), numpy.ones(3)) == 5
 
-    def test_polysub(self, me):
+    def test_polysub(self, we):
         assert _cost_of(we.polysub, numpy.ones(5), numpy.ones(3)) == 5
 
-    def test_polyder(self, me):
+    def test_polyder(self, we):
         assert _cost_of(we.polyder, numpy.ones(5)) == 5
 
-    def test_polyint(self, me):
+    def test_polyint(self, we):
         assert _cost_of(we.polyint, numpy.ones(5)) == 5
 
-    def test_polymul(self, me):
+    def test_polymul(self, we):
         assert _cost_of(we.polymul, numpy.ones(5), numpy.ones(3)) == 15
 
-    def test_polydiv(self, me):
+    def test_polydiv(self, we):
         assert _cost_of(we.polydiv, numpy.ones(5), numpy.ones(3)) == 15
 
-    def test_polyfit(self, me):
+    def test_polyfit(self, we):
         x = numpy.random.rand(20)
         assert _cost_of(we.polyfit, x, numpy.random.rand(20), 2) == 360
 
-    def test_poly(self, me):
+    def test_poly(self, we):
         assert _cost_of(we.poly, numpy.ones(5)) == 25
 
-    def test_roots(self, me):
+    def test_roots(self, we):
         assert _cost_of(we.roots, numpy.array([1.0, 2.0, 3.0, 4.0, 5.0])) == 64
 
 
@@ -567,22 +567,22 @@ class TestPolynomial:
 
 
 class TestSorting:
-    def test_sort_nlogn(self, me):
+    def test_sort_nlogn(self, we):
         assert _cost_of(we.sort, numpy.random.rand(100)) == 700
 
-    def test_argsort_nlogn(self, me):
+    def test_argsort_nlogn(self, we):
         assert _cost_of(we.argsort, numpy.random.rand(100)) == 700
 
-    def test_sort_complex_nlogn(self, me):
+    def test_sort_complex_nlogn(self, we):
         assert _cost_of(we.sort_complex, numpy.random.rand(100)) == 700
 
-    def test_partition_n(self, me):
+    def test_partition_n(self, we):
         assert _cost_of(we.partition, numpy.random.rand(100), 50) == 100
 
-    def test_argpartition_n(self, me):
+    def test_argpartition_n(self, we):
         assert _cost_of(we.argpartition, numpy.random.rand(100), 50) == 100
 
-    def test_searchsorted(self, me):
+    def test_searchsorted(self, we):
         # 10 * ceil(log2(64)) = 60
         assert (
             _cost_of(
@@ -593,7 +593,7 @@ class TestSorting:
             == 60
         )
 
-    def test_digitize(self, me):
+    def test_digitize(self, we):
         assert (
             _cost_of(
                 we.digitize, numpy.random.rand(10), numpy.sort(numpy.random.rand(64))
@@ -601,7 +601,7 @@ class TestSorting:
             == 60
         )
 
-    def test_unique_nlogn(self, me):
+    def test_unique_nlogn(self, we):
         assert _cost_of(we.unique, numpy.random.rand(100)) == 700
 
 
@@ -609,10 +609,10 @@ class TestSetOps:
     @pytest.mark.parametrize(
         "name", ["in1d", "isin", "intersect1d", "union1d", "setdiff1d", "setxor1d"]
     )
-    def test_set_op_cost(self, name, me):
+    def test_set_op_cost(self, name, we):
         # (100+50)*ceil(log2(150)) = 150*8 = 1200
         cost = _cost_of(
-            getattr(me, name), numpy.random.rand(100), numpy.random.rand(50)
+            getattr(we, name), numpy.random.rand(100), numpy.random.rand(50)
         )
         assert cost == 1200, f"{name}: expected 1200, got {cost}"
 
@@ -623,19 +623,19 @@ class TestSetOps:
 
 
 class TestWindows:
-    def test_bartlett_n(self, me):
+    def test_bartlett_n(self, we):
         assert _cost_of(we.bartlett, 20) == 20
 
-    def test_hamming_n(self, me):
+    def test_hamming_n(self, we):
         assert _cost_of(we.hamming, 20) == 20
 
-    def test_hanning_n(self, me):
+    def test_hanning_n(self, we):
         assert _cost_of(we.hanning, 20) == 20
 
-    def test_blackman_3n(self, me):
+    def test_blackman_3n(self, we):
         assert _cost_of(we.blackman, 20) == 60
 
-    def test_kaiser_3n(self, me):
+    def test_kaiser_3n(self, we):
         assert _cost_of(we.kaiser, 20, 5.0) == 60
 
 
@@ -645,14 +645,14 @@ class TestWindows:
 
 
 class TestStatistics:
-    def test_corrcoef_2f2s(self, me):
+    def test_corrcoef_2f2s(self, we):
         # 3 features, 10 samples → 2*3^2*10 = 180
         assert _cost_of(we.corrcoef, numpy.random.rand(3, 10)) == 180
 
-    def test_cov_2f2s(self, me):
+    def test_cov_2f2s(self, we):
         assert _cost_of(we.cov, numpy.random.rand(3, 10)) == 180
 
-    def test_interp_n_log_xp(self, me):
+    def test_interp_n_log_xp(self, we):
         # 10 * ceil(log2(32)) = 50
         assert (
             _cost_of(
@@ -671,42 +671,42 @@ class TestStatistics:
 
 
 class TestFreeOps:
-    def test_append_numel_values(self, me):
+    def test_append_numel_values(self, we):
         assert _cost_of(we.append, numpy.array([1, 2, 3]), [4, 5]) == 2
 
-    def test_delete_num_deleted(self, me):
+    def test_delete_num_deleted(self, we):
         assert _cost_of(we.delete, numpy.array([1, 2, 3, 4, 5]), [0, 2]) == 2
 
-    def test_insert_numel_values(self, me):
+    def test_insert_numel_values(self, we):
         assert _cost_of(we.insert, numpy.array([1, 2, 3]), 1, [10, 20]) == 2
 
-    def test_trim_zeros_num_trimmed(self, me):
+    def test_trim_zeros_num_trimmed(self, we):
         assert _cost_of(we.trim_zeros, numpy.array([0, 0, 1, 2, 0, 0])) == 4
 
-    def test_diag_1d(self, me):
+    def test_diag_1d(self, we):
         # 1D->2D: cost = numel(output) = 3*3 = 9
         assert _cost_of(we.diag, numpy.array([1, 2, 3])) == 9
 
-    def test_diag_2d(self, me):
+    def test_diag_2d(self, we):
         assert _cost_of(we.diag, numpy.random.rand(5, 5)) == 5
 
-    def test_fill_diagonal(self, me):
+    def test_fill_diagonal(self, we):
         assert _cost_of(we.fill_diagonal, numpy.zeros((5, 5)), 1.0) == 5
 
-    def test_copyto_with_where(self, me):
+    def test_copyto_with_where(self, we):
         mask = numpy.array([True, False] * 5)
         assert _cost_of(we.copyto, numpy.zeros(10), numpy.ones(10), where=mask) == 5
 
-    def test_copyto_no_where(self, me):
+    def test_copyto_no_where(self, we):
         assert _cost_of(we.copyto, numpy.zeros(10), numpy.ones(10)) == 10
 
-    def test_arange(self, me):
+    def test_arange(self, we):
         assert _cost_of(we.arange, 20) == 20
 
-    def test_full(self, me):
+    def test_full(self, we):
         assert _cost_of(we.full, (3, 4), 1.0) == 12
 
-    def test_concatenate(self, me):
+    def test_concatenate(self, we):
         assert (
             _cost_of(we.concatenate, [numpy.random.rand(5), numpy.random.rand(3)]) == 8
         )
@@ -718,10 +718,10 @@ class TestFreeOps:
 
 
 class TestFFT:
-    def test_fft_5nlogn(self, me):
+    def test_fft_5nlogn(self, we):
         assert _cost_of(we.fft.fft, numpy.random.rand(64)) == 1920
 
-    def test_rfft_5_half_nlogn(self, me):
+    def test_rfft_5_half_nlogn(self, we):
         assert _cost_of(we.fft.rfft, numpy.random.rand(64)) == 960
 
 
@@ -731,35 +731,35 @@ class TestFFT:
 
 
 class TestRandom:
-    def test_rand(self, me):
+    def test_rand(self, we):
         assert _cost_of(we.random.rand, 100) == 100
 
-    def test_randn(self, me):
+    def test_randn(self, we):
         assert _cost_of(we.random.randn, 100) == 100
 
-    def test_normal_positional_size(self, me):
+    def test_normal_positional_size(self, we):
         """Regression: size passed as positional arg must be detected."""
         assert _cost_of(we.random.normal, 0, 1, 100) == 100
 
-    def test_uniform_positional_size(self, me):
+    def test_uniform_positional_size(self, we):
         assert _cost_of(we.random.uniform, 0, 1, 100) == 100
 
-    def test_beta_positional_size(self, me):
+    def test_beta_positional_size(self, we):
         assert _cost_of(we.random.beta, 2, 5, 100) == 100
 
-    def test_normal_kwarg_size(self, me):
+    def test_normal_kwarg_size(self, we):
         assert _cost_of(we.random.normal, 0, 1, size=50) == 50
 
-    def test_normal_scalar(self, me):
+    def test_normal_scalar(self, we):
         assert _cost_of(we.random.normal, 0, 1) == 1
 
-    def test_permutation_numel(self, me):
+    def test_permutation_numel(self, we):
         assert _cost_of(we.random.permutation, 100) == 100
 
-    def test_shuffle_numel(self, me):
+    def test_shuffle_numel(self, we):
         assert _cost_of(we.random.shuffle, numpy.arange(100)) == 100
 
-    def test_choice_with_replacement(self, me):
+    def test_choice_with_replacement(self, we):
         assert (
             _cost_of(we.random.choice, numpy.arange(200), size=100, replace=True) == 100
         )
@@ -773,47 +773,47 @@ class TestRandom:
 class TestStats:
     """All stats methods charge numel(input) * 1 = numel(input) FLOPs."""
 
-    def test_norm_pdf(self, me):
+    def test_norm_pdf(self, we):
         assert _cost_of(we.stats.norm.pdf, numpy.random.rand(100)) == 100
 
-    def test_norm_cdf(self, me):
+    def test_norm_cdf(self, we):
         assert _cost_of(we.stats.norm.cdf, numpy.random.rand(100)) == 100
 
-    def test_norm_ppf(self, me):
+    def test_norm_ppf(self, we):
         assert _cost_of(we.stats.norm.ppf, numpy.random.rand(100) * 0.98 + 0.01) == 100
 
-    def test_uniform_pdf(self, me):
+    def test_uniform_pdf(self, we):
         assert _cost_of(we.stats.uniform.pdf, numpy.random.rand(100)) == 100
 
-    def test_uniform_cdf(self, me):
+    def test_uniform_cdf(self, we):
         assert _cost_of(we.stats.uniform.cdf, numpy.random.rand(100)) == 100
 
-    def test_uniform_ppf(self, me):
+    def test_uniform_ppf(self, we):
         assert _cost_of(we.stats.uniform.ppf, numpy.random.rand(100)) == 100
 
-    def test_expon_pdf(self, me):
+    def test_expon_pdf(self, we):
         assert _cost_of(we.stats.expon.pdf, numpy.random.rand(100)) == 100
 
-    def test_cauchy_pdf(self, me):
+    def test_cauchy_pdf(self, we):
         assert _cost_of(we.stats.cauchy.pdf, numpy.random.rand(100)) == 100
 
-    def test_logistic_cdf(self, me):
+    def test_logistic_cdf(self, we):
         assert _cost_of(we.stats.logistic.cdf, numpy.random.rand(100)) == 100
 
-    def test_laplace_ppf(self, me):
+    def test_laplace_ppf(self, we):
         assert (
             _cost_of(we.stats.laplace.ppf, numpy.random.rand(100) * 0.98 + 0.01) == 100
         )
 
-    def test_lognorm_pdf(self, me):
+    def test_lognorm_pdf(self, we):
         assert (
             _cost_of(we.stats.lognorm.pdf, numpy.abs(numpy.random.rand(100)) + 0.1, 0.5)
             == 100
         )
 
-    def test_truncnorm_cdf(self, me):
+    def test_truncnorm_cdf(self, we):
         assert _cost_of(we.stats.truncnorm.cdf, numpy.random.rand(100), -2, 2) == 100
 
-    def test_scalar_input(self, me):
+    def test_scalar_input(self, we):
         """Scalar input should charge 1 FLOP."""
         assert _cost_of(we.stats.norm.pdf, 0.0) == 1

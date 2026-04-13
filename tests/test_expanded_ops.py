@@ -36,10 +36,10 @@ class TestNewUnaryOps:
     )
     def test_unary_matches_numpy(self, op_name):
         x = numpy.array([0.1, 0.5, 0.9])
-        me_func = getattr(me, op_name)
+        we_func = getattr(we, op_name)
         np_func = getattr(numpy, op_name)
         with BudgetContext(flop_budget=10**6, quiet=True):
-            result = me_func(x)
+            result = we_func(x)
             assert numpy.allclose(result, np_func(x), equal_nan=True)
 
     @pytest.mark.parametrize(
@@ -56,9 +56,9 @@ class TestNewUnaryOps:
     )
     def test_unary_charges_numel(self, op_name):
         x = numpy.ones((3, 4))
-        me_func = getattr(me, op_name)
+        we_func = getattr(we, op_name)
         with BudgetContext(flop_budget=10**6, quiet=True) as budget:
-            me_func(x)
+            we_func(x)
             assert budget.flops_used == 12
 
 
@@ -89,10 +89,10 @@ class TestNewBinaryOps:
     def test_binary_matches_numpy(self, op_name):
         x = numpy.array([1.0, 2.0, 3.0])
         y = numpy.array([2.0, 1.0, 4.0])
-        me_func = getattr(me, op_name)
+        we_func = getattr(we, op_name)
         np_func = getattr(numpy, op_name)
         with BudgetContext(flop_budget=10**6, quiet=True):
-            result = me_func(x, y)
+            result = we_func(x, y)
             assert numpy.allclose(result, np_func(x, y), equal_nan=True)
 
 
@@ -113,10 +113,10 @@ class TestNewReductionOps:
     )
     def test_reduction_matches_numpy(self, op_name):
         x = numpy.array([[1.0, 2.0, 3.0], [4.0, 0.0, 6.0]])
-        me_func = getattr(me, op_name)
+        we_func = getattr(we, op_name)
         np_func = getattr(numpy, op_name)
         with BudgetContext(flop_budget=10**6, quiet=True):
-            result = me_func(x)
+            result = we_func(x)
             expected = np_func(x)
             assert numpy.allclose(result, expected, equal_nan=True)
 

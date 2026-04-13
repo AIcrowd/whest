@@ -169,9 +169,9 @@ class TestPublicAPI:
     def test_import_from_whest(self):
         import whest as we
 
-        assert hasattr(me, "SymmetricTensor")
-        assert hasattr(me, "SymmetryInfo")
-        assert hasattr(me, "as_symmetric")
+        assert hasattr(we, "SymmetricTensor")
+        assert hasattr(we, "SymmetryInfo")
+        assert hasattr(we, "as_symmetric")
 
     def test_import_symmetry_info_from_flops(self):
         from whest.flops import SymmetryInfo
