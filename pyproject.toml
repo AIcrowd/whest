@@ -15,6 +15,7 @@ dev = [
     "psutil>=5.9",
     "rich>=13.0",
     "ruff>=0.4",
+    "scipy>=1.10",
 ]
 docs = [
     "mkdocs-material",
@@ -57,6 +58,7 @@ select = ["E", "F", "W", "I"]
 [tool.ruff.lint.per-file-ignores]
 # Public re-exports: imports are intentionally "unused" from ruff's perspective
 "src/mechestim/random/__init__.py" = ["F401"]
+"src/mechestim/stats/__init__.py" = ["F401"]
 # Deferred imports after version-check call trigger E402; compact guards use E701
 "src/mechestim/__init__.py" = ["E402"]
 "src/mechestim/fft/_transforms.py" = ["E701"]
