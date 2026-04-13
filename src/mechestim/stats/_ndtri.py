@@ -1,6 +1,16 @@
 """Inverse standard normal CDF (ndtri) via Acklam's algorithm + Newton refinement.
 
 Accuracy: ~1e-12 against scipy.special.ndtri.
+
+References
+----------
+.. [1] Peter J. Acklam, "An algorithm for computing the inverse normal
+   cumulative distribution function," 2004.
+   https://web.archive.org/web/20151030215612/http://home.online.no/~pjacklam/notes/invnorm/
+   (Rational approximation coefficients; algorithm made freely available by the author.)
+
+.. [2] StackedBoxes, "Acklam's Normal Quantile Function," 2017.
+   https://stackedboxes.org/2017/05/01/acklams-normal-quantile-function/
 """
 
 from __future__ import annotations
@@ -65,6 +75,9 @@ def _ndtri(p):
 
     Maps probability *p* in (0, 1) to the quantile *x* such that
     Phi(x) = p, where Phi is the standard normal CDF.
+
+    Uses Acklam's rational approximation [1]_ with one Newton-Raphson
+    refinement step for ~1e-12 accuracy.
 
     Edge cases: p=0 -> -inf, p=1 -> +inf, p<0 or p>1 -> nan.
     """
