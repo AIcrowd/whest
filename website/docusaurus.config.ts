@@ -92,7 +92,7 @@ const config: Config = {
       copyright: `Copyright \u00a9 ${new Date().getFullYear()} AIcrowd. Built with Docusaurus.`,
     },
     prism: {
-      theme: prismThemes.github,
+      theme: prismThemes.dracula,
       darkTheme: prismThemes.dracula,
       additionalLanguages: ['python', 'bash', 'json'],
     },
