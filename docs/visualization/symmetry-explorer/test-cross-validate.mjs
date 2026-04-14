@@ -105,6 +105,7 @@ const PRESET_EXPECTED = {
   'trace-product':'W: S2{i,j}',
   'declared-c3':  'C3{i,j,k}',
   'declared-d4':  'D4{i,j,k,l}',
+  'frobenius':    'W: S2{i,j}',
   'matrix-chain': 'trivial',
   'mixed-chain':  'trivial',
 };

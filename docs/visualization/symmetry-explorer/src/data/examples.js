@@ -127,6 +127,20 @@ export const EXAMPLES = [
     expression: { subscripts: 'ij,jk', output: 'ik', operandNames: 'A, A' },
   },
 
+  // ── Frobenius inner product: Source C detection ──
+  {
+    id: 'frobenius',
+    name: 'Frobenius ⟨A,A⟩',
+    formula: "einsum('ij,ij→', A, A)",
+    description: 'Same subscripts on identical operands — operand swap gives identity. W-side S2{i,j} detected via coordinated axis relabeling (Source C)',
+    expectedGroup: 'W: S2{i,j}',
+    color: '#06b6d4',
+    variables: [
+      { name: 'A', rank: 2, symmetry: 'none', symAxes: null, generators: '' },
+    ],
+    expression: { subscripts: 'ij,ij', output: '', operandNames: 'A, A' },
+  },
+
   // ── Mixed operands: no symmetry ──
   {
     id: 'mixed-chain',
