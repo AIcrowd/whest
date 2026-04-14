@@ -26,7 +26,7 @@ with we.BudgetContext(flop_budget=10_000_000) as budget:
     print(budget.summary())
 
 # Outside the context — summarises every namespace recorded this session
-print(we.budget_summary())
+we.budget_summary()
 ```
 
 The summary shows cost per operation type, sorted by highest cost first.
