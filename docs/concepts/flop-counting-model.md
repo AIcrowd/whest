@@ -323,7 +323,7 @@ with we.BudgetContext(flop_budget=10**6, namespace="training") as budget:
     ...
 ```
 
-Namespaces do not affect FLOP counting or budget enforcement — they only appear in `we.budget_summary()` output.
+Namespaces do not affect FLOP counting or budget enforcement — they appear as section headers in `we.budget_summary()` output after the context exits, grouping that context's operations under the namespace label.
 
 ## Related pages
 

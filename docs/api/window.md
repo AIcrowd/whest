@@ -21,7 +21,7 @@ import whest as we
 
 with we.BudgetContext(flop_budget=1_000_000) as budget:
     win = we.hamming(256)   # 256 FLOPs
-    win2 = we.kaiser(256)   # 768 FLOPs (3 * 256)
+    win2 = we.kaiser(256, 14.0)   # 768 FLOPs (3 * 256)
     print(f"Window cost: {budget.flops_used}")  # 1024
 ```
 

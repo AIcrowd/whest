@@ -28,7 +28,7 @@ patch_numpy()                        # np.sum = we.sum, etc.
 
 ## What gets patched
 
-Of whest's 482 registered functions, most non-ufunc functions are patched onto numpy during testing. The only categories skipped:
+Of whest's 508 registered functions, most non-ufunc functions are patched onto numpy during testing. The only categories skipped:
 
 | Category | Count | Why skipped |
 |----------|-------|-------------|

@@ -42,7 +42,7 @@ class NormDistribution(ContinuousDistribution):
 
         FLOP Cost
         ---------
-        10 * numel(x) FLOPs
+        1 * numel(x) FLOPs
 
         Parameters
         ----------
@@ -67,7 +67,7 @@ class NormDistribution(ContinuousDistribution):
 
         FLOP Cost
         ---------
-        20 * numel(x) FLOPs
+        1 * numel(x) FLOPs
 
         Parameters
         ----------
@@ -92,7 +92,7 @@ class NormDistribution(ContinuousDistribution):
 
         FLOP Cost
         ---------
-        40 * numel(q) FLOPs
+        1 * numel(q) FLOPs
 
         Parameters
         ----------

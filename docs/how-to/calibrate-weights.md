@@ -300,8 +300,8 @@ from whest._weights import load_weights, reset_weights, get_weight
 # Load from a specific file
 load_weights("/path/to/weights.json")
 
-# Check a weight
-print(get_weight("exp"))   # 16.0
+# Check a weight (values depend on your weights.json; defaults without a file are all 1.0)
+print(get_weight("exp"))   # e.g. 16.0 after calibration; 1.0 if no weights loaded
 print(get_weight("add"))   # 1.0
 print(get_weight("foo"))   # 1.0 (unknown ops default to 1.0)
 

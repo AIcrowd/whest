@@ -10,7 +10,7 @@ import whest as we
 
 # Einsum cost
 cost = we.flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
-print(f"Matmul: {cost:,} FLOPs")  # 33,554,432
+print(f"Matmul: {cost:,} FLOPs")  # 16,777,216
 
 # SVD cost
 cost = we.flops.svd_cost(m=256, n=256, k=10)

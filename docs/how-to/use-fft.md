@@ -29,7 +29,7 @@ Real-valued transforms (`rfft`, `irfft`, `rfftn`, `irfftn`) cost roughly half of
 import whest as we
 
 with we.BudgetContext(flop_budget=1_000_000) as budget:
-    # Generate a signal (free)
+    # Generate a signal (costs numel(output) = 1,024 FLOPs)
     signal = we.random.randn(1024)
 
     # Forward FFT: 5 * 1024 * 10 = 51,200 FLOPs
@@ -41,7 +41,7 @@ with we.BudgetContext(flop_budget=1_000_000) as budget:
     # Frequency bins (free)
     freqs = we.fft.fftfreq(1024)
 
-    print(f"Total FFT cost: {budget.flops_used:,}")  # 102,400
+    print(f"Total FFT cost: {budget.flops_used:,}")  # 103,424
 ```
 
 ## Real vs complex transforms
@@ -52,7 +52,7 @@ When your input is real-valued (which is common in signal processing), prefer `r
 import whest as we
 
 with we.BudgetContext(flop_budget=1_000_000) as budget:
-    signal = we.random.randn(1024)
+    signal = we.random.randn(1024)  # 1,024 FLOPs
 
     # Complex FFT: 51,200 FLOPs
     spec_complex = we.fft.fft(signal)
@@ -64,7 +64,7 @@ with we.BudgetContext(flop_budget=1_000_000) as budget:
 
     rfft_cost = budget.flops_used - budget_after_fft
 
-    print(f"fft cost:  {budget_after_fft:,}")   # 51,200
+    print(f"fft cost:  {budget_after_fft:,}")   # 52,224 (randn 1,024 + fft 51,200)
     print(f"rfft cost: {rfft_cost:,}")           # 25,600
 ```
 
@@ -78,7 +78,7 @@ Use `fft2` for 2-D transforms (e.g., images) and `fftn` for arbitrary dimensions
 import whest as we
 
 with we.BudgetContext(flop_budget=10**8) as budget:
-    # 2-D image (free to create)
+    # 2-D image (costs numel(output) = 65,536 FLOPs)
     image = we.random.randn(256, 256)
 
     # 2-D FFT

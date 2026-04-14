@@ -36,7 +36,7 @@ class CauchyDistribution(ContinuousDistribution):
 
         FLOP Cost
         ---------
-        6 * numel(x) FLOPs
+        1 * numel(x) FLOPs
         """
         return self._deduct_and_call("pdf", 1, x, loc=loc, scale=scale)
 
@@ -47,7 +47,7 @@ class CauchyDistribution(ContinuousDistribution):
 
         FLOP Cost
         ---------
-        5 * numel(x) FLOPs
+        1 * numel(x) FLOPs
         """
         return self._deduct_and_call("cdf", 1, x, loc=loc, scale=scale)
 
@@ -58,7 +58,7 @@ class CauchyDistribution(ContinuousDistribution):
 
         FLOP Cost
         ---------
-        5 * numel(q) FLOPs
+        1 * numel(q) FLOPs
         """
         return self._deduct_and_call("ppf", 1, q, loc=loc, scale=scale)
 

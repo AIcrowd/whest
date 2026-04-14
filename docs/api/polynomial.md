@@ -22,10 +22,10 @@ functions with FLOP counting.
 import whest as we
 
 with we.BudgetContext(flop_budget=1_000_000) as budget:
-    coeffs = we.array([1.0, -3.0, 2.0])  # x^2 - 3x + 2 (free)
-    x = we.linspace(0, 5, 100)            # free
-    y = we.polyval(coeffs, x)             # 2 * 100 * 2 = 400 FLOPs
-    print(f"polyval cost: {budget.flops_used}")  # 400
+    coeffs = we.array([1.0, -3.0, 2.0])  # x^2 - 3x + 2 (3 FLOPs)
+    x = we.linspace(0, 5, 100)            # 100 FLOPs
+    y = we.polyval(coeffs, x)             # 100 * 2 = 200 FLOPs
+    print(f"polyval cost: {budget.flops_used}")  # 303
 ```
 
 ## API Reference

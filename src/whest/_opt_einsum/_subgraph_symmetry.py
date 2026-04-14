@@ -6,12 +6,12 @@ builds a bipartite graph once and exposes ``.sym(subset)`` which returns
 a ``SubsetSymmetry`` with ``.output`` (V-side) and ``.inner`` (W-side)
 symmetries, computed lazily on first access and cached.
 
-The detection algorithm iterates over generators from two sources:
-per-operand internal symmetry generators (Source A) and identical-operand
-swap generators (Source B). For each generator σ, the induced column
-permutation π is derived via column-fingerprint hash lookup. The
-collected π generators are closed into a PermutationGroup via Dimino's
-algorithm.
+Each axis of each operand gets its own U-vertex in the bipartite graph
+(no axis merging). The σ-loop iterates over generators from two sources:
+(A) per-operand internal symmetry generators and (B) identical-operand
+swap generators. For each generator, the induced column permutation π
+is derived via column-fingerprint hash lookup. The collected π generators
+are closed into a PermutationGroup via Dimino's algorithm. f7af5cc
 
 See docs/explanation/subgraph-symmetry.md for the algorithm walkthrough.
 """
@@ -19,7 +19,6 @@ See docs/explanation/subgraph-symmetry.md for the algorithm walkthrough.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from itertools import permutations, product
 from typing import Any
 
 from whest._perm_group import Permutation as Perm
@@ -78,7 +77,21 @@ def _collect_pi_permutations(
     col_of: dict[str, tuple[int, ...]],
     fp_to_labels: dict[tuple[int, ...], set[str]],
 ) -> tuple[list[Perm], list[Perm]]:
-    """Collect all valid π's as Permutation objects for V and W labels.
+    """Collect V and W permutation generators via the expanded σ-loop.
+
+    Generators come from two sources:
+
+    Source A — per-operand internal symmetry generators.  For each operand
+    in the subset that has declared groups, each generator's array form
+    (mapped through ``group.axes``) permutes U-vertex positions within
+    that operand's block.
+
+    Source B — identical-operand swap generators.  For each pair of
+    adjacent operands in an identical-operand group, an adjacent
+    transposition that swaps their entire U-vertex blocks.
+
+    For each generator, the induced column permutation π is derived via
+    ``_derive_pi_canonical``.
 
     Returns
     -------
@@ -95,21 +108,107 @@ def _collect_pi_permutations(
     v_idx = {lbl: i for i, lbl in enumerate(v_sorted)}
     w_idx = {lbl: i for i, lbl in enumerate(w_sorted)}
 
-    for tilde_sigma in _enumerate_id_group_permutations(sub.id_groups):
-        # Skip identity σ — it always gives π = identity.
-        if not tilde_sigma or all(tilde_sigma.get(k, k) == k for k in tilde_sigma):
-            continue
+    n_rows = len(row_order)
+    identity_row = tuple(range(n_rows))
 
-        sigma_row_perm = _lift_operand_perm_to_u(tilde_sigma, row_order, graph)
-        if sigma_row_perm is None:
+    # Map: operand_idx -> list of positions in row_order belonging to it.
+    op_to_u_indices: dict[int, list[int]] = {}
+    for pos, u_idx in enumerate(row_order):
+        op = graph.u_operand[u_idx]
+        op_to_u_indices.setdefault(op, []).append(pos)
+
+    # Collect row-permutation generators, then derive π for each.
+    row_perm_generators: list[tuple[int, ...]] = []
+
+    # --- Source A: per-operand internal symmetry generators ---
+    for op_idx in sorted(set(graph.u_operand[u] for u in row_order)):
+        groups = graph.per_op_groups[op_idx]
+        if groups is None:
+            continue
+        positions = op_to_u_indices.get(op_idx, [])
+        if not positions:
+            continue
+        for group in groups:
+            if group._labels is None:
+                continue
+            # Map group axis indices to positions within this operand's
+            # block in row_order. group.axes[i] is the tensor axis index
+            # that group position i acts on. Since we no longer merge,
+            # each axis position in the subscript maps 1:1 to a U-vertex.
+            # The operand's subscript gives us the axis->position mapping.
+            subscript = graph.operand_subscripts[op_idx]
+            # group._labels are the subscript chars the group acts on.
+            # For each generator, we need to map its array_form through
+            # the axis indirection to produce a row permutation.
+            # Build: group_pos -> row_order position
+            # group._labels[g_pos] is the char at group position g_pos.
+            # We need to find which axis position in the subscript that
+            # char corresponds to, respecting group.axes.
+            if group.axes is not None:
+                # group.axes[g_pos] = tensor axis index
+                gpos_to_rowpos = {}
+                for g_pos in range(group.degree):
+                    axis_idx = group.axes[g_pos]
+                    if axis_idx < len(positions):
+                        gpos_to_rowpos[g_pos] = positions[axis_idx]
+            else:
+                # Default: group position i acts on operand axis i
+                gpos_to_rowpos = {}
+                for g_pos in range(group.degree):
+                    if g_pos < len(positions):
+                        gpos_to_rowpos[g_pos] = positions[g_pos]
+
+            for gen in group.generators:
+                arr = gen.array_form
+                # Build row permutation: start from identity, then
+                # permute the positions that this generator acts on.
+                row_perm = list(identity_row)
+                is_identity = True
+                for g_pos in range(len(arr)):
+                    if arr[g_pos] != g_pos:
+                        src = gpos_to_rowpos.get(g_pos)
+                        dst = gpos_to_rowpos.get(arr[g_pos])
+                        if src is not None and dst is not None:
+                            row_perm[src] = identity_row[dst]
+                            is_identity = False
+                if not is_identity:
+                    row_perm_generators.append(tuple(row_perm))
+
+    # --- Source B: identical-operand swap generators ---
+    for group in sub.id_groups:
+        group_sorted = sorted(group)
+        for idx in range(len(group_sorted) - 1):
+            op_a = group_sorted[idx]
+            op_b = group_sorted[idx + 1]
+            pos_a = op_to_u_indices.get(op_a, [])
+            pos_b = op_to_u_indices.get(op_b, [])
+            if len(pos_a) != len(pos_b):
+                continue  # block sizes must match
+            row_perm = list(identity_row)
+            for pa, pb in zip(pos_a, pos_b):
+                row_perm[pa] = identity_row[pb]
+                row_perm[pb] = identity_row[pa]
+            row_perm_generators.append(tuple(row_perm))
+
+    # --- Build a group on row positions and enumerate all elements ---
+    if not row_perm_generators:
+        return v_perms, w_perms
+
+    row_gens = [Perm(list(g)) for g in row_perm_generators]
+    row_group = PermutationGroup(*row_gens)
+
+    for sigma_perm in row_group.elements():
+        sigma_row_perm = sigma_perm.array_form
+        # Skip identity σ — it always gives π = identity.
+        if all(sigma_row_perm[k] == k for k in range(n_rows)):
             continue
 
         # Compute σ(M)'s column fingerprints.
         sigma_col_of: dict[str, tuple[int, ...]] = {}
         for label in all_labels:
             sigma_col_of[label] = tuple(
-                graph.incidence[sigma_row_perm[k]].get(label, 0)
-                for k in range(len(row_order))
+                graph.incidence[row_order[sigma_row_perm[k]]].get(label, 0)
+                for k in range(n_rows)
             )
 
         # Derive π.
@@ -136,12 +235,11 @@ def _collect_pi_permutations(
 class EinsumBipartite:
     """Bipartite graph representation of an einsum expression.
 
-    Left vertices U: one per (operand_idx, equivalence-class-id).
-    An equivalence class within an operand is a maximal set of axes
-    identified by that operand's declared symmetry partition. For a
-    dense operand with subscript "ai" we get two U vertices — one for
-    class {a}, one for class {i}. For a fully symmetric operand T with
-    subscript "ij" we get one U vertex for class {i, j}.
+    Left vertices U: one per (operand_idx, axis_position). Each axis of
+    each operand gets its own U-vertex (no merging). For a dense operand
+    with subscript "ai" we get two U vertices — one for axis 0 ({a}),
+    one for axis 1 ({i}). A fully symmetric operand T with subscript
+    "ij" also gets two U vertices — one per axis.
 
     Right vertices are labels, partitioned at the top level into
     free_labels (V, the final output) and summed_labels (W, contracted
@@ -208,39 +306,12 @@ def _build_bipartite(
         operand_labels.append(frozenset(sub))
         groups = per_op_groups[op_idx]
 
-        # Build equivalence classes on the axes of this operand.
-        # Each axis (position in sub) starts in its own singleton class.
-        # Declared symmetry groups merge axes into classes via orbit
-        # analysis on the PermutationGroup.
+        # Each axis gets its own U-vertex (no merging). The σ-loop handles
+        # symmetry detection via per-operand generators instead.
         class_of_position: dict[int, int] = {k: k for k in range(len(sub))}
 
-        if groups is not None:
-            for group in groups:
-                if group._labels is None:
-                    continue
-                for orbit in group.orbits():
-                    if len(orbit) < 2:
-                        continue
-                    chars_in_orbit = {group._labels[i] for i in orbit}
-                    positions_in_orbit = [
-                        k for k, c in enumerate(sub) if c in chars_in_orbit
-                    ]
-                    if len(positions_in_orbit) >= 2:
-                        canonical = positions_in_orbit[0]
-                        for k in positions_in_orbit[1:]:
-                            class_of_position[k] = class_of_position[canonical]
-
-        # Normalize class ids to 0..num_classes-1 in order of first occurrence
-        class_order: dict[int, int] = {}
-        for k in range(len(sub)):
-            c = class_of_position[k]
-            if c not in class_order:
-                class_order[c] = len(class_order)
-            class_of_position[k] = class_order[c]
-
-        # Build one U vertex per class, with incidence = label multiplicity
-        # across axes in the class.
-        num_classes = len(class_order)
+        # Build one U vertex per axis, with incidence = label multiplicity.
+        num_classes = len(sub)
         class_incidence: list[dict[str, int]] = [dict() for _ in range(num_classes)]
         class_labels: list[set[str]] = [set() for _ in range(num_classes)]
         for k, c in enumerate(sub):
@@ -368,44 +439,6 @@ class SubgraphSymmetryOracle:
         return result
 
 
-def _find_declared_group_for_labels(
-    graph: EinsumBipartite,
-    subset: frozenset[int],
-    target_labels: tuple[str, ...],
-) -> PermutationGroup | None:
-    """Find a declared group covering *target_labels*, relabeled to match order.
-
-    Returns a new PermutationGroup with generators conjugated so that
-    position *i* corresponds to ``target_labels[i]``, or None if no
-    declared group covers these labels.
-    """
-    target_set = frozenset(target_labels)
-    for op_idx in subset:
-        groups = graph.per_op_groups[op_idx]
-        if groups is None:
-            continue
-        for group in groups:
-            if group._labels is None or frozenset(group._labels) != target_set:
-                continue
-            # Labels match — relabel generators if ordering differs.
-            if tuple(group._labels) == target_labels:
-                return group
-            old_labels = group._labels
-            # p[old_pos] = new_pos  (maps old label order → target order)
-            new_pos_of = {lbl: i for i, lbl in enumerate(target_labels)}
-            p = [new_pos_of[old_labels[i]] for i in range(len(old_labels))]
-            p_inv = [0] * len(p)
-            for i, pi in enumerate(p):
-                p_inv[pi] = i
-            new_gens = []
-            for gen in group.generators:
-                arr = gen.array_form
-                new_arr = [p[arr[p_inv[i]]] for i in range(len(arr))]
-                new_gens.append(Perm(new_arr))
-            return PermutationGroup(*new_gens)
-    return None
-
-
 def _compute_subset_symmetry(
     graph: EinsumBipartite,
     subset: frozenset[int],
@@ -432,122 +465,16 @@ def _compute_subset_symmetry(
     v_sorted = tuple(sorted(sub.v_labels))
     w_sorted = tuple(sorted(sub.w_labels))
 
-    # Build V-side group.
+    # Build V-side group (only from σ-loop results, no fast path).
     v_group: PermutationGroup | None = None
     if v_perms:
         v_group = PermutationGroup(*v_perms, axes=tuple(range(len(v_sorted))))
         v_group._labels = v_sorted
-    elif sub.v_labels and len(sub.v_labels) >= 2:
-        # Fingerprint fast path: labels that share a fingerprint with at least
-        # one other V label are symmetry-related.  Check for a declared group
-        # covering those labels before defaulting to S_k.
-        fp_groups: dict[tuple[int, ...], list[str]] = {}
-        for lbl in sub.v_labels:
-            fp_groups.setdefault(col_of[lbl], []).append(lbl)
-        v_equiv = sorted(
-            lbl for grp in fp_groups.values() if len(grp) >= 2 for lbl in grp
-        )
-        if len(v_equiv) >= 2:
-            declared = _find_declared_group_for_labels(graph, subset, tuple(v_equiv))
-            if declared is not None:
-                v_group = declared
-                v_group._labels = tuple(v_equiv)
-            else:
-                v_group = PermutationGroup.symmetric(
-                    len(v_equiv), axes=tuple(range(len(v_equiv)))
-                )
-                v_group._labels = tuple(v_equiv)
 
-    # Build W-side group.
+    # Build W-side group (only from σ-loop results, no fast path).
     w_group: PermutationGroup | None = None
     if w_perms:
         w_group = PermutationGroup(*w_perms, axes=tuple(range(len(w_sorted))))
         w_group._labels = w_sorted
-    elif sub.w_labels and len(sub.w_labels) >= 2:
-        fp_groups_w: dict[tuple[int, ...], list[str]] = {}
-        for lbl in sub.w_labels:
-            fp_groups_w.setdefault(col_of[lbl], []).append(lbl)
-        w_equiv = sorted(
-            lbl for grp in fp_groups_w.values() if len(grp) >= 2 for lbl in grp
-        )
-        if len(w_equiv) >= 2:
-            declared = _find_declared_group_for_labels(graph, subset, tuple(w_equiv))
-            if declared is not None:
-                w_group = declared
-                w_group._labels = tuple(w_equiv)
-            else:
-                w_group = PermutationGroup.symmetric(
-                    len(w_equiv), axes=tuple(range(len(w_equiv)))
-                )
-                w_group._labels = tuple(w_equiv)
 
     return SubsetSymmetry(output=v_group, inner=w_group)
-
-
-def _enumerate_id_group_permutations(
-    id_groups: tuple[tuple[int, ...], ...],
-) -> list[dict[int, int]]:
-    """Enumerate all permutations that permute within each identical-operand group.
-
-    Returns a list of mappings {original_op_idx -> permuted_op_idx}.
-    The identity is included. For groups g1, g2, ... of sizes k1, k2, ...,
-    there are k1! * k2! * ... total permutations.
-    """
-    per_group_perms: list[list[dict[int, int]]] = []
-    for group in id_groups:
-        group_list = list(group)
-        perms_for_group: list[dict[int, int]] = []
-        for p in permutations(group_list):
-            perms_for_group.append(dict(zip(group_list, p)))
-        per_group_perms.append(perms_for_group)
-
-    if not per_group_perms:
-        return [dict()]  # identity only
-
-    result: list[dict[int, int]] = []
-    for combo in product(*per_group_perms):
-        merged: dict[int, int] = {}
-        for d in combo:
-            merged.update(d)
-        result.append(merged)
-    return result
-
-
-def _lift_operand_perm_to_u(
-    tilde_sigma: dict[int, int],
-    row_order: tuple[int, ...],
-    graph: EinsumBipartite,
-) -> tuple[int, ...] | None:
-    """Lift a permutation of operands to a permutation of U-vertices.
-
-    For each U vertex in row_order belonging to operand i (where
-    tilde_sigma[i] = j), find the U vertex of operand j in the same
-    positional class. If the lift is not well-defined, return None.
-
-    Returns a tuple of length len(row_order) where element k is the
-    U-vertex index that row_order[k] maps TO under sigma.
-    """
-    # Build an operand-local class ordering: for each operand, list its
-    # U-vertex indices in the order they appear in graph.u_vertices.
-    operand_to_u_vertices: dict[int, list[int]] = {}
-    for u_idx, op_idx in enumerate(graph.u_operand):
-        operand_to_u_vertices.setdefault(op_idx, []).append(u_idx)
-
-    # Build row_order's per-operand position map: for each row index k,
-    # determine which operand it belongs to and its class-position within
-    # that operand (i.e., its index in operand_to_u_vertices[op]).
-    result = list(row_order)
-    for k, u_idx in enumerate(row_order):
-        op_idx = graph.u_operand[u_idx]
-        if op_idx not in tilde_sigma or tilde_sigma[op_idx] == op_idx:
-            continue  # identity on this operand
-        j_op = tilde_sigma[op_idx]
-        # Which class-position within operand op_idx is this U vertex?
-        op_classes = operand_to_u_vertices[op_idx]
-        pos = op_classes.index(u_idx)
-        # Map to the class-position in operand j_op
-        j_classes = operand_to_u_vertices.get(j_op, [])
-        if pos >= len(j_classes):
-            return None  # class count mismatch; lift undefined
-        result[k] = j_classes[pos]
-    return tuple(result)

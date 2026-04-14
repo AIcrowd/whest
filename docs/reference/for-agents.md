@@ -13,7 +13,7 @@ counting. Every arithmetic operation is charged against a budget. Code that
 works with NumPy may fail or behave differently with whest:
 
 - All counted operations require an active `BudgetContext`
-- 32 operations are blocked entirely (I/O, config, state)
+- 35 operations are blocked entirely (I/O, config, state)
 - `sort`, `argsort`, `trace`, `random.*` sampling ops are now **counted** (not free)
 - Costs are analytical (from tensor shapes), not measured at runtime
 
@@ -23,7 +23,7 @@ works with NumPy may fail or behave differently with whest:
 |----------|--------|----------|
 | [llms.txt](/llms.txt) | Markdown | Start here. Curated index of all doc pages with one-line descriptions. Under 4K tokens. |
 | [llms-full.txt](/llms-full.txt) | Markdown | Complete docs in one file. Use if your context window is large enough (~115KB). |
-| [ops.json](../ops.json) | JSON | Machine-readable manifest of all 482 operations. Query programmatically for name, category, cost formula, status. |
+| [ops.json](../ops.json) | JSON | Machine-readable manifest of all 508 operations. Query programmatically for name, category, cost formula, status. |
 | [FLOP Cost Cheat Sheet](./cheat-sheet.md) | Markdown | Dense reference of every operation's cost. Optimized for agent context windows. |
 | [Operation Audit](./operation-audit.md) | Markdown | 7-column searchable table: operation, whest ref, NumPy ref, category, cost, status, notes. |
 
@@ -99,9 +99,11 @@ def my_forward_pass(x):
 
 **2. Know what's free and what's counted.**
 
-Free (0 FLOPs): `zeros`, `ones`, `array`, `reshape`, `transpose`,
-`concatenate`, `linspace`, `where`, `copy`, `random.seed`, `random.get_state`,
-`random.set_state`, `random.default_rng`.
+Free (0 FLOPs): `zeros`, `ones`, `reshape`, `transpose`, `copy`,
+`random.seed`, `random.get_state`, `random.set_state`, `random.default_rng`.
+
+Custom cost (numel FLOPs): `array`, `linspace`, `arange`, `concatenate`, `where`.
+These are NOT free — each charges `numel(output)` FLOPs against the budget.
 
 Counted: `einsum`, `dot`, `matmul`, `exp`, `log`, `add`, `multiply`, `sum`,
 `mean`, all `linalg.*`, all `fft.*`, `sort`, `argsort`, `trace`,
@@ -141,6 +143,7 @@ as 1 operation.
 |---------|-------------|-----|
 | Using `np.einsum` instead of `we.einsum` | FLOPs not counted, budget not checked | Always use `we.*` for operations you want tracked |
 | Skipping `BudgetContext` entirely | No error (global default handles it), but budget is harder to track and namespace | Use an explicit `BudgetContext` for any work you want to measure or label |
+| Assuming `array`, `linspace`, `concatenate`, `where` are free | Underestimates budget usage — each charges `numel(output)` FLOPs | These are custom-cost ops, not free; check the cheat sheet |
 | Assuming `sort` is free | Underestimates budget usage | `sort` costs `n*ceil(log2(n))` per slice — check the cheat sheet |
 | Using `we.save()` or `we.load()` | `AttributeError` — blocked | Use `numpy` directly for I/O |
 | Nesting two explicit `BudgetContext` blocks | `RuntimeError` | Use a single explicit context; nesting with the global default is fine |
@@ -148,6 +151,6 @@ as 1 operation.
 ## 📎 Related pages
 
 - [FLOP Cost Cheat Sheet](./cheat-sheet.md) — every operation's cost at a glance
-- [Operation Audit](./operation-audit.md) — full 482-operation inventory
+- [Operation Audit](./operation-audit.md) — full 508-operation inventory
 - [Exploit Symmetry](../how-to/exploit-symmetry.md) — detailed symmetry guide
 - [Common Errors](../troubleshooting/common-errors.md) — error messages and fixes
