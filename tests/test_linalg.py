@@ -11,7 +11,7 @@ def test_svd_full_result():
     numpy.random.seed(42)
     A = numpy.random.randn(10, 5)
     with BudgetContext(flop_budget=10**6) as budget:
-        U, S, Vt = svd(A)
+        U, S, Vt = svd(A, full_matrices=False)
         U_np, S_np, Vt_np = numpy.linalg.svd(A, full_matrices=False)
         assert numpy.allclose(S, S_np)
         assert U.shape == (10, 5)
