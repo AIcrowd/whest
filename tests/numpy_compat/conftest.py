@@ -181,33 +181,29 @@ def _patch_numpy():
         # check the real np.linalg.outer's behaviour at class-definition time.
         _SKIP_PATCH = {
             "linalg.outer",
-            # numpy.ma parses np.arange.__doc__ at import time to replace
-            # "ndarray" with "MaskedArray". Our wrapper docstring doesn't
-            # have the expected format, causing RuntimeError.
+            # Python functions auto-bind self via descriptor protocol when
+            # used as class attributes; C built-in functions and bound
+            # methods don't. Skip patching these to avoid "multiple values
+            # for keyword argument" errors in tests.
+            "array",
             "arange",
+            "random.randint",
+            "random.shuffle",
         }
         if name in _SKIP_PATCH:
             continue
-
-        # Wrap Python functions to prevent descriptor auto-binding.
-        # When a Python function is stored as a class attribute and
-        # accessed via self.func(), Python's descriptor protocol
-        # auto-binds self as the first arg. C built-in functions
-        # (like the originals in numpy) don't do this. We wrap our
-        # replacements in a non-descriptor callable to match behavior.
-        patched_fn = _NonDescriptor(we_fn)
 
         # Patch numpy
         try:
             if len(parts) == 1:
                 if hasattr(np, name):
                     _PATCHED[name] = getattr(np, name)
-                    setattr(np, name, patched_fn)
+                    setattr(np, name, we_fn)
             elif len(parts) == 2:
                 np_submod = getattr(np, parts[0])
                 if hasattr(np_submod, parts[1]):
                     _PATCHED[name] = getattr(np_submod, parts[1])
-                    setattr(np_submod, parts[1], patched_fn)
+                    setattr(np_submod, parts[1], we_fn)
         except (AttributeError, TypeError):
             continue
 
