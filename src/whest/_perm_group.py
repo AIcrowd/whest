@@ -409,8 +409,7 @@ class PermutationGroup:
             return PermutationGroup(*self._generators, axes=self._axes)
         frozen = frozenset(subset)
         surviving = [
-            g for g in self.elements()
-            if frozenset(g(x) for x in frozen) == frozen
+            g for g in self.elements() if frozenset(g(x) for x in frozen) == frozen
         ]
         if not surviving:
             surviving = [Permutation.identity(self._degree)]

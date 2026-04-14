@@ -107,7 +107,8 @@ def _counted_binary(np_func, op_name: str):
             )
             out_sym_axes = (
                 [g.axes for g in out_groups if g.axes is not None]
-                if out_groups else None
+                if out_groups
+                else None
             )
 
         out_sym_info = (
@@ -125,7 +126,9 @@ def _counted_binary(np_func, op_name: str):
         result = np_func(x_orig, y_orig)
         check_nan_inf(result, op_name)
         if out_sym_axes:
-            result = SymmetricTensor(result, symmetric_axes=out_sym_axes, perm_groups=out_groups)
+            result = SymmetricTensor(
+                result, symmetric_axes=out_sym_axes, perm_groups=out_groups
+            )
             # Warn if either input had more symmetry.
             input_axes = set()
             if x_sym:
@@ -213,13 +216,18 @@ def _counted_reduction(
             if new_groups is not None:
                 result = _np.asarray(result).view(SymmetricTensor)
                 result._symmetry_groups = new_groups
-                result._symmetric_axes = [g.axes for g in new_groups if g.axes is not None]
+                result._symmetric_axes = [
+                    g.axes for g in new_groups if g.axes is not None
+                ]
                 # Warn if any group changed (order decreased or axes changed).
                 old_axes_set = {g.axes for g in perm_groups if g.axes is not None}
                 new_axes_set = {g.axes for g in new_groups if g.axes is not None}
                 if old_axes_set != new_axes_set:
-                    lost = [g.axes for g in perm_groups
-                            if g.axes is not None and g.axes not in new_axes_set]
+                    lost = [
+                        g.axes
+                        for g in perm_groups
+                        if g.axes is not None and g.axes not in new_axes_set
+                    ]
                     if lost:
                         _warn_symmetry_loss(lost, f"{op_name} reduced dims")
             else:

@@ -272,7 +272,9 @@ class TestIsSymmetric:
 class TestPropagateSymmetrySlice:
     def test_full_slice_preserves(self):
         """Slicing with [:, :] preserves symmetry."""
-        result = propagate_symmetry_slice([_sg(0, 1)], (5, 5), (slice(None), slice(None)))
+        result = propagate_symmetry_slice(
+            [_sg(0, 1)], (5, 5), (slice(None), slice(None))
+        )
         _assert_groups_equal(result, [(0, 1)])
 
     def test_integer_index_removes_dim(self):
@@ -283,12 +285,16 @@ class TestPropagateSymmetrySlice:
 
     def test_partial_slice_resizes(self):
         """Partial slice that changes size but keeps both dims."""
-        result = propagate_symmetry_slice([_sg(0, 1)], (5, 5), (slice(0, 3), slice(0, 3)))
+        result = propagate_symmetry_slice(
+            [_sg(0, 1)], (5, 5), (slice(0, 3), slice(0, 3))
+        )
         _assert_groups_equal(result, [(0, 1)])
 
     def test_partial_slice_different_sizes_breaks(self):
         """Slicing dims to different sizes breaks symmetry."""
-        result = propagate_symmetry_slice([_sg(0, 1)], (5, 5), (slice(0, 3), slice(0, 2)))
+        result = propagate_symmetry_slice(
+            [_sg(0, 1)], (5, 5), (slice(0, 3), slice(0, 2))
+        )
         # Dims have different sizes, group is lost
         assert result is None
 
@@ -327,7 +333,9 @@ class TestPropagateSymmetrySlice:
 
     def test_advanced_indexing_bails(self):
         """Array or list indexing returns None."""
-        assert propagate_symmetry_slice([_sg(0, 1)], (5, 5), (np.array([0, 1]),)) is None
+        assert (
+            propagate_symmetry_slice([_sg(0, 1)], (5, 5), (np.array([0, 1]),)) is None
+        )
         assert propagate_symmetry_slice([_sg(0, 1)], (5, 5), ([0, 1],)) is None
 
     def test_non_tuple_key_normalized(self):
@@ -428,7 +436,9 @@ class TestPropagateSymmetryReduce:
     def test_reduce_tuple_axis(self):
         """Reducing multiple axes at once."""
         # shape (3, 4, 4, 3), groups [(1,2), (0,3)]
-        result = propagate_symmetry_reduce([_sg(1, 2), _sg(0, 3)], 4, (0, 3), keepdims=False)
+        result = propagate_symmetry_reduce(
+            [_sg(1, 2), _sg(0, 3)], 4, (0, 3), keepdims=False
+        )
         # Dims 0,3 removed. Dims 1,2 become 0,1.
         _assert_groups_equal(result, [(0, 1)])
 
@@ -477,7 +487,9 @@ class TestIntersectSymmetry:
         # output: (1, 3, 3)
         # a's dims 0,1 -> output dims 1,2
         # b's dims 1,2 -> output dims 1,2
-        result = intersect_symmetry([_sg(0, 1)], [_sg(1, 2)], (3, 3), (1, 3, 3), (1, 3, 3))
+        result = intersect_symmetry(
+            [_sg(0, 1)], [_sg(1, 2)], (3, 3), (1, 3, 3), (1, 3, 3)
+        )
         _assert_groups_equal(result, [(1, 2)])
 
     def test_broadcast_stretched_dim(self):
@@ -832,7 +844,9 @@ class TestPropagateSliceGeneralGroups:
         """C_4 on {0,1,2,3}, slice axes {1,3} → pointwise stab of {1,3} = trivial."""
         g = PermutationGroup.cyclic(4, axes=(0, 1, 2, 3))
         # Pointwise stabilizer: each of 1,3 must map to itself. Only identity does.
-        result = propagate_symmetry_slice([g], (5, 5, 5, 5), (slice(None), 0, slice(None), 0))
+        result = propagate_symmetry_slice(
+            [g], (5, 5, 5, 5), (slice(None), 0, slice(None), 0)
+        )
         assert result is None
 
     def test_s3_slice_one_axis_s2_survives(self):
@@ -846,7 +860,9 @@ class TestPropagateSliceGeneralGroups:
     def test_d4_slice_one_axis(self):
         """D_4 on {0,1,2,3}, slice axis 0 → pointwise stab of {0}, restricted."""
         g = PermutationGroup.dihedral(4, axes=(0, 1, 2, 3))
-        result = propagate_symmetry_slice([g], (5, 5, 5, 5), (0, slice(None), slice(None), slice(None)))
+        result = propagate_symmetry_slice(
+            [g], (5, 5, 5, 5), (0, slice(None), slice(None), slice(None))
+        )
         assert result is not None
         assert len(result) == 1
         stab = result[0]
@@ -859,7 +875,9 @@ class TestPropagateSliceGeneralGroups:
         g1 = PermutationGroup.cyclic(3, axes=(0, 1, 2))
         g2 = PermutationGroup.symmetric(2, axes=(3, 4))
         result = propagate_symmetry_slice(
-            [g1, g2], (5, 5, 5, 5, 5), (0, slice(None), slice(None), slice(None), slice(None))
+            [g1, g2],
+            (5, 5, 5, 5, 5),
+            (0, slice(None), slice(None), slice(None), slice(None)),
         )
         assert result is not None
         assert len(result) == 1
@@ -868,7 +886,9 @@ class TestPropagateSliceGeneralGroups:
     def test_no_axes_removed_group_unchanged(self):
         """Full slice preserves group unchanged."""
         g = PermutationGroup.cyclic(3, axes=(0, 1, 2))
-        result = propagate_symmetry_slice([g], (5, 5, 5), (slice(None), slice(None), slice(None)))
+        result = propagate_symmetry_slice(
+            [g], (5, 5, 5), (slice(None), slice(None), slice(None))
+        )
         assert result is not None
         assert len(result) == 1
         assert result[0].order() == 3
@@ -953,7 +973,9 @@ class TestIntersectSymmetryGeneralGroups:
         """Groups on different axes don't intersect → None."""
         g1 = PermutationGroup.symmetric(2, axes=(0, 1))
         g2 = PermutationGroup.symmetric(2, axes=(2, 3))
-        result = intersect_symmetry([g1], [g2], (5, 5, 5, 5), (5, 5, 5, 5), (5, 5, 5, 5))
+        result = intersect_symmetry(
+            [g1], [g2], (5, 5, 5, 5), (5, 5, 5, 5), (5, 5, 5, 5)
+        )
         assert result is None
 
 
