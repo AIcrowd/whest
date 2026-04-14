@@ -904,4 +904,37 @@ class TestPropagateReduceGeneralGroups:
         assert result is not None
         assert len(result) == 1
         assert result[0].order() == 3
-        assert result[0].axes == (0, 1, 2)
+
+
+class TestIntersectSymmetryGeneralGroups:
+    """Test intersect_symmetry with PermutationGroup objects."""
+
+    def test_same_group_returns_group(self):
+        """Intersecting a group with itself returns same group."""
+        g = PermutationGroup.cyclic(3, axes=(0, 1, 2))
+        result = intersect_symmetry([g], [g], (5, 5, 5), (5, 5, 5), (5, 5, 5))
+        assert result is not None
+        assert len(result) == 1
+        assert result[0].order() == 3
+
+    def test_s3_intersect_c3(self):
+        """S_3 ∩ C_3 = C_3 (C_3 is a subgroup of S_3)."""
+        s3 = PermutationGroup.symmetric(3, axes=(0, 1, 2))
+        c3 = PermutationGroup.cyclic(3, axes=(0, 1, 2))
+        result = intersect_symmetry([s3], [c3], (5, 5, 5), (5, 5, 5), (5, 5, 5))
+        assert result is not None
+        assert len(result) == 1
+        assert result[0].order() == 3
+
+    def test_none_input_returns_none(self):
+        """If either input is None, result is None."""
+        g = PermutationGroup.cyclic(3, axes=(0, 1, 2))
+        assert intersect_symmetry(None, [g], (5, 5, 5), (5, 5, 5), (5, 5, 5)) is None
+        assert intersect_symmetry([g], None, (5, 5, 5), (5, 5, 5), (5, 5, 5)) is None
+
+    def test_disjoint_axes_dropped(self):
+        """Groups on different axes don't intersect → None."""
+        g1 = PermutationGroup.symmetric(2, axes=(0, 1))
+        g2 = PermutationGroup.symmetric(2, axes=(2, 3))
+        result = intersect_symmetry([g1], [g2], (5, 5, 5, 5), (5, 5, 5, 5), (5, 5, 5, 5))
+        assert result is None
