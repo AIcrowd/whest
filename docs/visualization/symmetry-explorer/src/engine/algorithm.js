@@ -376,6 +376,22 @@ function findDeclaredGroupForLabels(example, equivLabels) {
     }
     if (!match) continue;
 
+    // Custom generators: build Permutation objects from cycle arrays
+    if (symType === 'custom' && opSym.generators) {
+      // opSym.generators is [[[0,1],[2,3]], [[0,2],[1,3]]]
+      const gens = opSym.generators.map(cycles => {
+        const arr = Array.from({ length: equivLabels.length }, (_, i) => i);
+        for (const cycle of cycles) {
+          for (let i = 0; i < cycle.length; i++) {
+            arr[cycle[i]] = cycle[(i + 1) % cycle.length];
+          }
+        }
+        return new Permutation(arr);
+      }).filter(p => !p.isIdentity);
+      if (gens.length > 0) return { generators: gens };
+      return null;
+    }
+
     // Build generators for this declared group type
     const gens = declaredSymGenerators(symType, equivLabels.length);
     if (gens.length > 0) return { generators: gens };
