@@ -1,0 +1,123 @@
+# Timing Budget Tightening & Duration Tracking
+
+**Date:** 2026-04-14  
+**Status:** Approved  
+**Scope:** `src/whest/_budget.py`, `src/whest/_display.py`, 8 op modules, client package, tests
+
+## Problem
+
+The timing budget system has three gaps:
+
+1. **Enforcement gap:** Wall-clock deadline is only checked *before* an operation in `deduct()`. A long-running numpy call can overshoot the deadline, and the error won't fire until the *next* `deduct()` call — which may never come if the participant's code exits the budget context.
+
+2. **Duration tracking gap:** 72 of 201 `budget.deduct()` call sites (across 8 files) don't use the `with budget.deduct(...)` context manager pattern, so `OpRecord.duration` is `None` for those ops. This includes all pointwise ops (add, exp, multiply — the most frequently called) and all linalg ops. Four tests are xfail'd because of this.
+
+3. **UX gap:** The entry banner doesn't mention the wall-clock limit. The Rich and plain-text session summaries (`_display.py`) don't render any timing data, even though `budget_summary_dict()` already provides it.
+
+## Decisions
+
+### Why not signal-based enforcement (`SIGALRM`)?
+
+We explicitly opt for cooperative checking over signal-based preemption for multiple reasons:
+
+- **C extensions block signal delivery.** Python signal handlers only run between bytecodes. When numpy is inside a LAPACK/BLAS call (the operations where timing matters most), `SIGALRM` cannot interrupt — the handler runs only after the C call returns, providing no benefit over cooperative checking.
+- **POSIX only.** `signal.alarm()` doesn't exist on Windows. Participants develop locally on multiple platforms.
+- **Integer-second granularity only.** `signal.alarm()` takes an `int`.
+- **Main thread only.** Signals are delivered to the main thread regardless of which thread set the alarm.
+
+**The hard enforcement boundary is the container/OS level.** Whest submissions run inside Docker containers with kernel-level time limits (cgroups/rlimit). The in-library `wall_time_limit_s` serves as a UX feature: it gives participants a clean, informative `TimeExhaustedError` (with op name, elapsed time, configured limit) rather than a brutal container kill.
+
+## Changes
+
+### 1. Post-op deadline check in `_OpTimer.__exit__`
+
+**File:** `src/whest/_budget.py`
+
+Add a deadline check in `_OpTimer.__exit__` after recording the duration. If the deadline has passed and no existing exception is propagating (`exc[0] is None`), raise `TimeExhaustedError` immediately.
+
+This bounds the overshoot to the duration of a single numpy call — the error fires as soon as that call returns, rather than waiting for the next `deduct()`.
+
+A comment block above `_OpTimer` documents the cooperative enforcement model and references container-level kernel limits as the hard boundary.
+
+### 2. Complete duration tracking across all op modules
+
+Convert all bare `budget.deduct()` calls to `with budget.deduct(...)` context managers so every operation records its wall-clock duration.
+
+**Files and call site counts:**
+
+| File | Sites | Notes |
+|------|-------|-------|
+| `_pointwise.py` | 32 | Fix in ~5 factory functions, covers all 32 ops |
+| `_counting_ops.py` | 15 | Mechanical wrapping |
+| `linalg/_decompositions.py` | 7 | cholesky, qr, eig, eigh, eigvals, eigvalsh, svdvals |
+| `linalg/_properties.py` | 8 | det, norm, cond, matrix_rank, slogdet, trace, diagonal, cross |
+| `linalg/_solvers.py` | 6 | solve, lstsq, inv, pinv, tensorsolve, tensorinv |
+| `linalg/_compound.py` | 2 | multi_dot, matrix_power |
+| `linalg/_svd.py` | 1 | svd |
+| `linalg/_aliases.py` | 1 | dot alias |
+
+**Pattern:** Each bare call like:
+```python
+budget.deduct("linalg.cholesky", flop_cost=cost, subscripts=None, shapes=(a.shape,))
+return _np.linalg.cholesky(a, upper=upper)
+```
+Becomes:
+```python
+with budget.deduct("linalg.cholesky", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+    result = _np.linalg.cholesky(a, upper=upper)
+return result
+```
+
+For pointwise factory functions, the change goes in the factory body, not at each generated function.
+
+### 3. Remove all timing-related xfails
+
+**Must be removed — explicit tracking list:**
+
+| File | Line(s) | Test | Reason for xfail |
+|------|---------|------|-------------------|
+| `tests/test_budget.py` | 230 | `test_oprecord_durations_populated` | Duration tracking incomplete |
+| `tests/test_budget.py` | 244 | `test_durations_populated_across_op_types` | Duration tracking incomplete |
+| `tests/test_client_server_parity.py` | 151 | `test_client_has_all_core_error_classes` | `TimeExhaustedError` missing from client |
+| `tests/test_client_server_parity.py` | 161 | `test_client_error_classes_are_exceptions` | `TimeExhaustedError` missing from client |
+
+All four xfail markers must be removed and the tests must pass after the changes.
+
+### 4. Add `TimeExhaustedError` to client package
+
+The client `errors.py` is auto-generated by `scripts/sync_client.py`. The fix goes in `_generate_errors()`:
+
+- Add `("TimeExhaustedError", "WhestError", "Raised when an operation exceeds the wall-clock time limit.")` to the `_CLASSES` list
+- Add `"TimeExhaustedError"` to the `_CUSTOM_INIT_CLASSES` set
+
+Then re-run `uv run scripts/sync_client.py` to regenerate `whest-client/src/whest/errors.py`. This resolves the two client-server parity xfails.
+
+### 5. Participant UX — banner and display improvements
+
+**Banner (`_budget.py` `__enter__`):**
+When `wall_time_limit_s` is set, append the time limit:
+```
+whest 0.1.0 (numpy 2.2.0 backend) | budget: 1.00e+06 FLOPs | time limit: 5.0s
+```
+When not set, banner is unchanged.
+
+**Plain-text summary (`_display.py` `_plain_text_summary()`):**
+Add timing section using data already available from `budget_summary_dict()`:
+- Wall time
+- Tracked time (absolute + percentage)
+- Untracked time (absolute + percentage)
+- Per-op timing breakdown where duration data exists
+
+**Rich summary (`_display.py` `_rich_summary()`):**
+- Add timing rows to the session totals table (wall time, tracked %, untracked %)
+- Add per-op timing column in namespace tables where duration data is available
+- Follow existing Rich styling patterns (colors, panels, etc.)
+
+Note: `_display.py` renders both the Rich path (`_rich_summary()`) and the plain-text fallback (`_plain_text_summary()`). Both must be updated. The data is already available from `budget_summary_dict()` — the `wall_time_s` and `total_tracked_time` fields exist but are currently unused by both display functions. Per-op duration data needs to be added to `BudgetAccumulator.get_data()` to flow through to the display layer.
+
+## Out of Scope
+
+- Signal-based or thread-based preemption (see Decisions section)
+- Changes to container-level timeout configuration
+- Live "time remaining" warnings during execution
+- Changes to `BudgetContext.summary()` (per-context method — already renders timing correctly)
