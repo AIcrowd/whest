@@ -3,7 +3,7 @@
  * labeled group boxes for U axis-classes (left), V free and W summed (right).
  */
 
-export default function BipartiteGraph({ graph, example }) {
+export default function BipartiteGraph({ graph, example, variableColors }) {
   const { uVertices, incidence, freeLabels, summedLabels, identicalGroups } = graph;
 
   const vLabels = [...freeLabels].sort();
@@ -44,16 +44,20 @@ export default function BipartiteGraph({ graph, example }) {
 
   opKeys.forEach((opIdx, gi) => {
     const indices = opGroups[opIdx];
-    const colors = identicalGroups.length > 0
-      ? getGroupColor(opIdx, identicalGroups)
-      : { fill: 'rgba(250,158,51,0.04)', stroke: 'rgba(250,158,51,0.25)' };
+    const vcName = example.operandNames?.[opIdx];
+    const vc = variableColors?.[vcName];
+    const colors = vc
+      ? { fill: `${vc.color}08`, stroke: `${vc.color}4D` }
+      : identicalGroups.length > 0
+        ? getGroupColor(opIdx, identicalGroups)
+        : { fill: 'rgba(250,158,51,0.04)', stroke: 'rgba(250,158,51,0.25)' };
 
     const boxTop = leftY;
     indices.forEach((uIdx, j) => {
       uPositions[uIdx] = boxTop + leftBoxPadY + nodeR + j * ySpacing;
     });
     const boxBottom = boxTop + leftBoxPadY * 2 + nodeR * 2 + (indices.length - 1) * ySpacing;
-    opBoxes.push({ opIdx, top: boxTop, bottom: boxBottom, indices, colors });
+    opBoxes.push({ opIdx, top: boxTop, bottom: boxBottom, indices, colors, vc });
     leftY = boxBottom + 16; // gap between operand groups
   });
 
@@ -108,7 +112,7 @@ export default function BipartiteGraph({ graph, example }) {
         </defs>
 
         {/* ── U operand group boxes (left) ── */}
-        {opBoxes.map(({ opIdx, top, bottom, colors }) => {
+        {opBoxes.map(({ opIdx, top, bottom, colors, vc }) => {
           const opName = example.operandNames?.[opIdx] || `Op${opIdx}`;
           const label = `${opName}${example.operandNames?.filter((n, i) => n === opName).length > 1 ? ` (${opIdx})` : ''}`;
           return (
@@ -121,7 +125,7 @@ export default function BipartiteGraph({ graph, example }) {
               <LabelBadge
                 x={lbLeft + 12} y={top}
                 text={label}
-                color="#FA9E33" bg="#F8F9F9"
+                color={vc?.color || '#FA9E33'} bg="#F8F9F9"
               />
             </g>
           );
@@ -168,6 +172,9 @@ export default function BipartiteGraph({ graph, example }) {
           const labelStr = [...u.labels].sort().join(',');
           const pillW = Math.max(32, labelStr.length * 7.5 + 18);
           const edgeStartX = leftX + pillW / 2 + 2;
+          const eOpName = example.operandNames?.[u.opIdx];
+          const eVc = variableColors?.[eOpName];
+          const edgeColor = eVc?.color || '#D9DCDC';
           return [...vLabels, ...wLabels].map((lbl) => {
             const mult = incidence[uIdx][lbl] || 0;
             if (mult === 0) return null;
@@ -175,9 +182,9 @@ export default function BipartiteGraph({ graph, example }) {
             return (
               <path key={`e-${uIdx}-${lbl}`}
                 d={bezier(edgeStartX, uy, rightX - nodeR - 4, ry)}
-                fill="none" stroke="#D9DCDC"
+                fill="none" stroke={edgeColor}
                 strokeWidth={Math.max(1.5, mult * 1.5)}
-                opacity={0.7}
+                opacity={0.45}
               />
             );
           });
@@ -191,14 +198,18 @@ export default function BipartiteGraph({ graph, example }) {
           const pillW = Math.max(32, labelStr.length * charW + 18);
           const pillH = 28;
           const pillR = pillH / 2;
+          const nOpName = example.operandNames?.[u.opIdx];
+          const nVc = variableColors?.[nOpName];
+          const nodeColor = nVc?.color || '#FA9E33';
+          const hasSymmetry = nVc?.symmetry && nVc.symmetry !== 'none';
           return (
             <g key={`u-${i}`}>
               <rect x={leftX - pillW / 2} y={y - pillH / 2}
                 width={pillW} height={pillH} rx={pillR}
-                fill="white" stroke="#FA9E33" strokeWidth={1.5}
+                fill="white" stroke={nodeColor} strokeWidth={hasSymmetry ? 2.5 : 1.5}
                 filter="url(#node-shadow)" />
               <text x={leftX} y={y + 1} textAnchor="middle" dominantBaseline="middle"
-                fill="#FA9E33" fontSize={11} fontWeight={500}
+                fill={nodeColor} fontSize={11} fontWeight={500}
                 fontFamily="'IBM Plex Mono', monospace">
                 {labelStr}
               </text>
