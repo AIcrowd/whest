@@ -64,6 +64,16 @@ If you already have `whest-client` and `whest-server` installed into
 separate environments, the shorter `cd ... && uv run ...` workflow also works.
 The commands above are the reproducible source-checkout path.
 
+## Time limit enforcement
+
+Submissions run under two layers of time enforcement:
+
+1. **In-library (cooperative):** `BudgetContext(wall_time_limit_s=N)` checks the deadline before and after each numpy call. When exceeded, it raises `TimeExhaustedError` with diagnostic info (which operation, elapsed time, configured limit). This is a UX feature — it gives participants a clean error message.
+
+2. **Container-level (hard):** The Docker container enforces a kernel-level time limit via cgroups/rlimit. If the in-library check doesn't catch the overshoot (e.g., a single very long numpy call), the container delivers `SIGKILL`. This is the ultimate backstop — no Python code can escape it.
+
+Signal-based preemption (`SIGALRM`) is deliberately not used because Python signal handlers cannot interrupt C extensions (numpy/LAPACK/BLAS), making them ineffective for exactly the operations where time limits matter most.
+
 ## ⚠️ Common pitfalls
 
 **Symptom:** `Connection refused` or `timeout`

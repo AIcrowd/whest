@@ -216,6 +216,43 @@ uv run python your_script.py
 
 The env var is read once when the global default is first created (on the first counted operation). It accepts any numeric value that Python's `float()` can parse (e.g., `1e9`, `1000000000`, `5e12`).
 
+## Adding a wall-clock time limit
+
+In competition evaluation, your code runs under both a FLOP budget and a wall-clock time limit. You can test this locally by passing `wall_time_limit_s`:
+
+```python
+import whest as we
+
+with we.BudgetContext(flop_budget=50_000_000, wall_time_limit_s=2.0, namespace="timed") as budget:
+    W = we.ones((256, 256))
+    x = we.ones((256,))
+    for _ in range(100):
+        x = we.einsum('ij,j->i', W, x)
+        x = we.maximum(x, 0)
+
+print(budget.summary())
+```
+
+The summary now includes timing data:
+
+```
+  Wall time:       0.045s
+  Tracked time:    0.038s  (84.4%)
+  Untracked time:  0.007s  (15.6%)
+
+  By operation (time):
+    einsum           0.032s  (84.2%)  [100 calls]
+    maximum          0.006s  (15.8%)  [100 calls]
+```
+
+If your code exceeds the time limit, you'll see:
+
+```
+whest.errors.TimeExhaustedError: einsum: wall-clock time 2.003s exceeds limit 2.000s
+```
+
+See [Common Errors](../troubleshooting/common-errors.md#timeexhaustederror) for how to diagnose and fix this.
+
 ## ⚠️ Common pitfalls
 
 **Symptom:** `BudgetExhaustedError`
