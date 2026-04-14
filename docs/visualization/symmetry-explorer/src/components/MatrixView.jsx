@@ -1,4 +1,4 @@
-export default function MatrixView({ matrixData, graph, example }) {
+export default function MatrixView({ matrixData, graph, example, variableColors }) {
   const { matrix, labels, colFingerprints, fpToLabels } = matrixData;
   const { uVertices, freeLabels } = graph;
 
@@ -33,7 +33,18 @@ export default function MatrixView({ matrixData, graph, example }) {
               return (
                 <tr key={rIdx}>
                   <td className="row-label">
-                    <span className="op-tag">Op{u.opIdx}</span>·{lblStr}
+                    {(() => {
+                      const opName = example.operandNames?.[u.opIdx] || `Op${u.opIdx}`;
+                      const vc = variableColors?.[opName];
+                      return (
+                        <>
+                          <span className="op-tag" style={vc ? { color: vc.color, borderColor: `${vc.color}33` } : {}}>
+                            {opName}
+                          </span>
+                          ·{lblStr}
+                        </>
+                      );
+                    })()}
                   </td>
                   {row.map((val, cIdx) => (
                     <td key={cIdx}
