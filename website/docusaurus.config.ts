@@ -61,7 +61,10 @@ const config: Config = {
     },
   ],
 
-  plugins: ['./src/plugins/plugin-llmstxt'],
+  plugins: [
+    './src/plugins/plugin-llmstxt',
+    './src/plugins/plugin-api-docs',
+  ],
 
   themeConfig: {
     image: 'img/logo.png',
