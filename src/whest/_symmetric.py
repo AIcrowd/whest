@@ -639,33 +639,30 @@ class SymmetricTensor(np.ndarray):
         if not isinstance(result, np.ndarray) or result.ndim == 0:
             return result if not isinstance(result, np.ndarray) else np.asarray(result)
 
-        if not self._symmetric_axes:
+        if not self._symmetry_groups:
             return np.asarray(result)
 
-        new_groups = propagate_symmetry_slice(self._symmetric_axes, self.shape, key)
+        new_groups = propagate_symmetry_slice(self._symmetry_groups, self.shape, key)
         if new_groups is not None:
             out = np.asarray(result).view(SymmetricTensor)
-            out._symmetric_axes = new_groups
-            out._symmetry_groups = [
-                PermutationGroup.symmetric(len(g), axes=g)
-                for g in new_groups
-                if len(g) >= 2
-            ]
+            out._symmetry_groups = new_groups
+            out._symmetric_axes = [g.axes for g in new_groups if g.axes is not None]
             # Warn if symmetry was partially lost.
-            old_set = set(self._symmetric_axes)
-            new_set = set(new_groups)
-            if new_set != old_set:
-                lost = [g for g in self._symmetric_axes if g not in new_set]
-                if lost:
+            if len(new_groups) < len(self._symmetry_groups):
+                lost_axes = [
+                    g.axes for g in self._symmetry_groups
+                    if g.axes is not None
+                ]
+                if lost_axes:
                     _warn_symmetry_loss(
-                        lost, "slicing changed dim sizes or removed dims"
+                        lost_axes, "slicing changed dim sizes or removed dims"
                     )
             return out
         else:
-            # All symmetry lost.
-            if self._symmetric_axes:
+            if self._symmetry_groups:
                 _warn_symmetry_loss(
-                    self._symmetric_axes, "slicing removed all symmetric dim groups"
+                    [g.axes for g in self._symmetry_groups if g.axes is not None],
+                    "slicing removed all symmetric dim groups",
                 )
             return np.asarray(result)
 
