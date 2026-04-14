@@ -42,7 +42,7 @@ def array(object, dtype=None, **kwargs):
     return result
 
 
-attach_docstring(array, _np.array, "free", "0 FLOPs")
+attach_docstring(array, _np.array, "counted_custom", "numel(input) FLOPs")
 
 
 def zeros(shape, dtype=float, **kwargs):
@@ -117,7 +117,7 @@ def arange(*args, **kwargs):
     return result
 
 
-attach_docstring(arange, _np.arange, "free", "0 FLOPs")
+attach_docstring(arange, _np.arange, "counted_custom", "numel(output) FLOPs")
 
 
 def linspace(start, stop, num=50, **kwargs):
@@ -133,7 +133,7 @@ def linspace(start, stop, num=50, **kwargs):
     return result
 
 
-attach_docstring(linspace, _np.linspace, "free", "0 FLOPs")
+attach_docstring(linspace, _np.linspace, "counted_custom", "numel(output) FLOPs")
 
 
 def zeros_like(a, dtype=None, **kwargs):
@@ -242,7 +242,7 @@ def concatenate(arrays, axis=0, **kwargs):
     return result
 
 
-attach_docstring(concatenate, _np.concatenate, "free", "0 FLOPs")
+attach_docstring(concatenate, _np.concatenate, "counted_custom", "numel(output) FLOPs")
 
 
 def stack(arrays, axis=0, **kwargs):
