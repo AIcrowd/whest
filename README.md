@@ -193,7 +193,7 @@ including triple products and block symmetries.
 
 **Budget is always active.** A global default budget (1e15 FLOPs, configurable via `WHEST_DEFAULT_BUDGET` env var) activates automatically. Use an explicit `BudgetContext` to set a custom limit.
 
-**32 operations are blocked.** I/O, config, and system-level functions (`save`, `load`, `set_printoptions`, etc.) raise `AttributeError` by design. These have no meaningful FLOP cost and are not part of the competition API.
+**35 operations are blocked.** I/O, config, and system-level functions (`save`, `load`, `set_printoptions`, etc.) raise `AttributeError` by design. These have no meaningful FLOP cost and are not part of the competition API.
 
 **sort, argsort, trace, and random sampling all have analytical FLOP costs** based on their algorithmic complexity.
 

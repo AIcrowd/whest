@@ -5,7 +5,7 @@
 **NumPy-compatible math primitives with analytical FLOP counting.**
 
 !!! warning "whest is not a drop-in NumPy replacement"
-    Operations have analytical FLOP costs and 32 operations are blocked.
+    Operations have analytical FLOP costs and 35 operations are blocked.
     A `BudgetContext` is optional — a global default activates automatically — but
     using one explicitly gives you budget limits, namespacing, and summaries.
     See [Operation Categories](concepts/operation-categories.md).

@@ -2,13 +2,13 @@
 # FLOP Cost Cheat Sheet
 
 > **whest is NOT NumPy.** All computation requires a `BudgetContext`.
-> Some operations cost FLOPs, some are free, and 32 are blocked entirely.
+> Some operations cost FLOPs, some are free, and 35 are blocked entirely.
 
 ## Key Constraints
 
 - All counted operations require an active `BudgetContext`
 - Budget is checked *before* execution — exceeding it raises `BudgetExhaustedError`
-- 32 operations are blocked (I/O, config, state functions)
+- 35 operations are blocked (I/O, config, state functions)
 - `sort`, `argsort`, `trace`, and random sampling are **counted** with analytical FLOP costs
 
 ## Cost by Category
