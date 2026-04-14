@@ -92,4 +92,4 @@ whest.errors.SymmetryError: Tensor not symmetric along axes (0, 1): max deviatio
 ## 📎 Related pages
 
 - [Debug Budget Overruns](../how-to/debug-budget-overruns.md) — diagnose which operations are expensive
-- [Error Reference (API)](../api/errors.md) — full error class documentation
+- [API Reference](../api/) — full error class documentation
