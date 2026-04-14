@@ -468,56 +468,75 @@ def propagate_symmetry_reduce(
 
 
 def intersect_symmetry(
-    dims_a: list[tuple[int, ...]] | None,
-    dims_b: list[tuple[int, ...]] | None,
+    groups_a: list[PermutationGroup] | None,
+    groups_b: list[PermutationGroup] | None,
     shape_a: tuple[int, ...],
     shape_b: tuple[int, ...],
     output_shape: tuple[int, ...],
-) -> list[tuple[int, ...]] | None:
-    """Intersect symmetry groups for binary ops, accounting for broadcasting."""
-    if dims_a is None or dims_b is None:
+) -> list[PermutationGroup] | None:
+    """Intersect symmetry groups for binary ops, accounting for broadcasting.
+
+    Parameters
+    ----------
+    groups_a, groups_b : list of PermutationGroup or None
+    shape_a, shape_b : input shapes
+    output_shape : broadcast output shape
+    """
+    if groups_a is None or groups_b is None:
         return None
 
     ndim_out = len(output_shape)
     ndim_a = len(shape_a)
     ndim_b = len(shape_b)
 
-    # Align dims to the right (broadcasting alignment).
     offset_a = ndim_out - ndim_a
     offset_b = ndim_out - ndim_b
 
-    # Remap to output dim indices.
-    def _remap(dims: list[tuple[int, ...]], offset: int) -> list[tuple[int, ...]]:
-        return [tuple(d + offset for d in g) for g in dims]
-
-    aligned_a = _remap(dims_a, offset_a)
-    aligned_b = _remap(dims_b, offset_b)
-
-    # Identify broadcast-stretched dims for each input.
-    def _remove_stretched(
-        groups: list[tuple[int, ...]],
-        input_shape: tuple[int, ...],
-        offset: int,
-    ) -> list[tuple[int, ...]]:
+    def _remap_axes(groups: list[PermutationGroup], offset: int, input_shape: tuple[int, ...]):
+        """Remap group axes to output dims and remove broadcast-stretched dims."""
         result = []
         for group in groups:
-            surviving = []
-            for d in group:
-                orig_d = d - offset
-                if 0 <= orig_d < len(input_shape):
-                    if input_shape[orig_d] == 1 and output_shape[d] > 1:
-                        continue  # stretched
-                surviving.append(d)
-            if len(surviving) >= 2:
-                result.append(tuple(sorted(surviving)))
+            if group.axes is None:
+                continue
+            new_axes = []
+            local_kept = []
+            for local_idx, tensor_dim in enumerate(group.axes):
+                out_dim = tensor_dim + offset
+                # Check if broadcast-stretched (size 1 → larger).
+                if 0 <= tensor_dim < len(input_shape):
+                    if input_shape[tensor_dim] == 1 and output_shape[out_dim] > 1:
+                        continue  # stretched — remove from group
+                new_axes.append(out_dim)
+                local_kept.append(local_idx)
+            if len(local_kept) >= 2:
+                restricted = group.restrict(tuple(local_kept))
+                if restricted.order() > 1:
+                    result.append(PermutationGroup(
+                        *restricted.generators, axes=tuple(new_axes)
+                    ))
         return result
 
-    cleaned_a = _remove_stretched(aligned_a, shape_a, offset_a)
-    cleaned_b = _remove_stretched(aligned_b, shape_b, offset_b)
+    aligned_a = _remap_axes(groups_a, offset_a, shape_a)
+    aligned_b = _remap_axes(groups_b, offset_b, shape_b)
 
-    # Intersect: keep groups present in both.
-    set_b = set(tuple(g) for g in cleaned_b)
-    intersection = [g for g in cleaned_a if tuple(g) in set_b]
+    # Intersect: for groups acting on the same output axes, compute element intersection.
+    b_by_axes: dict[tuple[int, ...], PermutationGroup] = {}
+    for g in aligned_b:
+        if g.axes is not None:
+            b_by_axes[g.axes] = g
+
+    intersection: list[PermutationGroup] = []
+    for ga in aligned_a:
+        if ga.axes is None:
+            continue
+        gb = b_by_axes.get(ga.axes)
+        if gb is None:
+            continue
+        # Element-set intersection.
+        common_elements = set(ga.elements()) & set(gb.elements())
+        if len(common_elements) <= 1:
+            continue
+        intersection.append(PermutationGroup(*common_elements, axes=ga.axes))
 
     return intersection if intersection else None
 
