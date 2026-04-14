@@ -58,7 +58,7 @@ scale = we.sqrt(we.array(2 / 256))
 W = we.multiply(we.random.randn(256, 256), scale)
 x = we.einsum('ij,j->i', W, we.random.randn(256))
 
-print(we.budget_summary())
+we.budget_summary()
 ```
 
 For budget limits and namespacing, use an explicit `BudgetContext`:
@@ -82,23 +82,34 @@ with we.BudgetContext(flop_budget=10**8, namespace="mlp-forward") as budget:
         if i < depth - 1:
             h = we.maximum(h, 0)           # ReLU
 
-print(we.budget_summary())
+we.budget_summary()
 ```
 
 ```
 whest FLOP Budget Summary
-==============================
-  Namespace:        mlp-forward
-  Total budget:     100,000,000
-  Used:               1,312,001  (1.3%)
-  Remaining:         98,687,999  (98.7%)
+==================================================
+  Total budget:             100,000,000
+  Used:                         984,322  (1.0%)
+  Remaining:                 99,015,678  (99.0%)
 
-  By operation:
-    einsum                655,360  ( 50.0%)  [5 calls]
-    random.randn          327,936  ( 25.0%)  [6 calls]
-    multiply              327,680  ( 25.0%)  [5 calls]
-    maximum                 1,024  (  0.1%)  [4 calls]
-    sqrt                        1  (  0.0%)  [1 call]
+  [mlp-forward]
+    Budget:       100,000,000
+    Used:             984,322  (1.0%)
+    Operations:
+      random.randn              327,936  ( 33.3%)  [6 calls]
+      multiply                  327,680  ( 33.3%)  [5 calls]
+      einsum                    327,680  ( 33.3%)  [5 calls]
+      maximum                     1,024  (  0.1%)  [4 calls]
+      array                           1  (  0.0%)  [1 call]
+      sqrt                            1  (  0.0%)  [1 call]
+
+  All operations (session total):
+    random.randn              327,936  ( 33.3%)  [6 calls]
+    multiply                  327,680  ( 33.3%)  [5 calls]
+    einsum                    327,680  ( 33.3%)  [5 calls]
+    maximum                     1,024  (  0.1%)  [4 calls]
+    array                           1  (  0.0%)  [1 call]
+    sqrt                            1  (  0.0%)  [1 call]
 ```
 
 ## Installation
