@@ -382,12 +382,23 @@ def propagate_symmetry_slice(
 
 
 def propagate_symmetry_reduce(
-    symmetric_axes: list[tuple[int, ...]],
+    groups: list[PermutationGroup],
     ndim: int,
     axis: int | tuple[int, ...] | None,
     keepdims: bool = False,
-) -> list[tuple[int, ...]] | None:
+) -> list[PermutationGroup] | None:
     """Compute new symmetry groups after a reduction.
+
+    Parameters
+    ----------
+    groups : list of PermutationGroup
+        Each group has ``axes`` indicating which tensor dimensions it acts on.
+    ndim : int
+        Original tensor rank.
+    axis : int, tuple of int, or None
+        Axes being reduced.
+    keepdims : bool
+        Whether reduced dims are kept at size 1.
 
     Returns *None* if no symmetry survives.
     """
@@ -396,37 +407,64 @@ def propagate_symmetry_reduce(
 
     # Normalize axis.
     if isinstance(axis, int):
-        axes = (axis % ndim,)
+        axes_set = {axis % ndim}
     else:
-        axes = tuple(a % ndim for a in axis)
-    axes_set = set(axes)
+        axes_set = {a % ndim for a in axis}
 
-    if keepdims:
-        # Reduced dims stay but have size 1 → pull from groups.
-        new_groups: list[tuple[int, ...]] = []
-        for group in symmetric_axes:
-            surviving = tuple(d for d in group if d not in axes_set)
-            if len(surviving) >= 2:
-                new_groups.append(surviving)
-        return new_groups if new_groups else None
-    else:
-        # Removed dims — renumber.
-        old_to_new: dict[int, int] = {}
+    # Build old→new mapping (only needed when not keepdims).
+    old_to_new: dict[int, int] = {}
+    if not keepdims:
         new_idx = 0
         for d in range(ndim):
             if d not in axes_set:
                 old_to_new[d] = new_idx
                 new_idx += 1
+    else:
+        old_to_new = {d: d for d in range(ndim)}
 
-        new_groups = []
-        for group in symmetric_axes:
-            surviving = []
-            for d in group:
-                if d in old_to_new:
-                    surviving.append(old_to_new[d])
-            if len(surviving) >= 2:
-                new_groups.append(tuple(sorted(surviving)))
-        return new_groups if new_groups else None
+    new_groups: list[PermutationGroup] = []
+    for group in groups:
+        grp_axes = group.axes
+        if grp_axes is None:
+            continue
+
+        # Map tensor axes to group-local indices.
+        local_reduced: set[int] = set()
+        local_kept: list[int] = []
+        for local_idx, tensor_dim in enumerate(grp_axes):
+            if tensor_dim in axes_set:
+                local_reduced.add(local_idx)
+            else:
+                local_kept.append(local_idx)
+
+        if not local_reduced:
+            # Group is entirely outside the reduced axes — just remap.
+            new_axes = tuple(old_to_new[grp_axes[i]] for i in range(group.degree))
+            new_groups.append(PermutationGroup(*group.generators, axes=new_axes))
+            continue
+
+        if not local_kept:
+            # All axes in this group are reduced — group vanishes from output.
+            continue
+
+        # Setwise stabilizer: elements mapping reduced axes among themselves.
+        stab = group.setwise_stabilizer(local_reduced)
+
+        # Restrict to kept local indices.
+        kept_tuple = tuple(local_kept)
+        if len(kept_tuple) < 2:
+            continue
+
+        restricted = stab.restrict(kept_tuple)
+        if restricted.order() <= 1:
+            continue
+
+        # Remap to new tensor axis numbering.
+        new_axes = tuple(old_to_new[grp_axes[k]] for k in kept_tuple)
+        final = PermutationGroup(*restricted.generators, axes=new_axes)
+        new_groups.append(final)
+
+    return new_groups if new_groups else None
 
 
 def intersect_symmetry(
