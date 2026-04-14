@@ -273,6 +273,20 @@ def test_summary_includes_time_section():
     assert "Tracked time:" in summary
 
 
+def test_deduct_without_with_leaves_duration_none():
+    """Calling deduct() without 'with' leaves OpRecord.duration as None."""
+    from whest._budget import BudgetContext
+
+    ctx = BudgetContext(flop_budget=int(1e9), quiet=True)
+    ctx.__enter__()
+    # Call deduct without using 'with' — discard the returned _OpTimer
+    ctx.deduct("test_op", flop_cost=10, subscripts=None, shapes=((10,),))
+    ctx.__exit__(None, None, None)
+    assert len(ctx.op_log) == 1
+    assert ctx.op_log[0].duration is None
+    assert ctx.op_log[0].timestamp is not None
+
+
 import threading
 
 
