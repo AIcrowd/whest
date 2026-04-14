@@ -8,7 +8,7 @@ source, and assumptions. Cost functions are pure (shape params) -> int.
 from __future__ import annotations
 
 import numpy as _np
-from numpy.linalg._linalg import EigResult, EighResult, QRResult
+from numpy.linalg._linalg import EighResult, EigResult, QRResult
 
 from whest._docstrings import attach_docstring
 from whest._validation import require_budget

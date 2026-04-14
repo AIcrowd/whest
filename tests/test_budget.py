@@ -179,6 +179,7 @@ def test_budget_context_untracked_time():
 
 def test_wall_time_limit_raises_time_exhausted():
     import pytest
+
     import whest
     from whest.errors import TimeExhaustedError
     with pytest.raises(TimeExhaustedError) as exc_info:

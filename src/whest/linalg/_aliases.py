@@ -26,8 +26,9 @@ attach_docstring(
 def cross(x1, x2, /, *, axis=-1):
     """Cross product (linalg namespace). Uses np.linalg.cross for strict validation."""
     import builtins as _builtins
-    from whest._validation import require_budget
+
     from whest._ndarray import _aswhest
+    from whest._validation import require_budget
     budget = require_budget()
     # np.linalg.cross validates dimensionality (must be exactly 2 or 3)
     result = _np.linalg.cross(x1, x2, axis=axis)

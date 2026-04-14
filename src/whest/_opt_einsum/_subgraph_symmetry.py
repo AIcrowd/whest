@@ -137,7 +137,7 @@ def _collect_pi_permutations(
             # that group position i acts on. Since we no longer merge,
             # each axis position in the subscript maps 1:1 to a U-vertex.
             # The operand's subscript gives us the axis->position mapping.
-            graph.operand_subscripts[op_idx]
+            subscript = graph.operand_subscripts[op_idx]
             # group._labels are the subscript chars the group acts on.
             # For each generator, we need to map its array_form through
             # the axis indirection to produce a row permutation.
