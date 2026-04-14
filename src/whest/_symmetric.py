@@ -504,7 +504,9 @@ def intersect_symmetry(
     offset_a = ndim_out - ndim_a
     offset_b = ndim_out - ndim_b
 
-    def _remap_axes(groups: list[PermutationGroup], offset: int, input_shape: tuple[int, ...]):
+    def _remap_axes(
+        groups: list[PermutationGroup], offset: int, input_shape: tuple[int, ...]
+    ):
         """Remap group axes to output dims and remove broadcast-stretched dims."""
         result = []
         for group in groups:
@@ -523,9 +525,9 @@ def intersect_symmetry(
             if len(local_kept) >= 2:
                 restricted = group.restrict(tuple(local_kept))
                 if restricted.order() > 1:
-                    result.append(PermutationGroup(
-                        *restricted.generators, axes=tuple(new_axes)
-                    ))
+                    result.append(
+                        PermutationGroup(*restricted.generators, axes=tuple(new_axes))
+                    )
         return result
 
     aligned_a = _remap_axes(groups_a, offset_a, shape_a)
@@ -670,8 +672,7 @@ class SymmetricTensor(np.ndarray):
             # Warn if symmetry was partially lost.
             if len(new_groups) < len(self._symmetry_groups):
                 lost_axes = [
-                    g.axes for g in self._symmetry_groups
-                    if g.axes is not None
+                    g.axes for g in self._symmetry_groups if g.axes is not None
                 ]
                 if lost_axes:
                     _warn_symmetry_loss(
