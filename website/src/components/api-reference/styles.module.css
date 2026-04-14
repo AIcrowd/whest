@@ -23,29 +23,31 @@
   flex: 1;
   min-width: 200px;
   padding: 0.5rem 0.75rem;
-  border: 1px solid var(--ifm-color-emphasis-300);
+  border: 1px solid var(--whest-gray-200, #E3E8EE);
   border-radius: 6px;
   font-size: 0.875rem;
   font-family: var(--ifm-font-family-base);
   background: var(--ifm-background-color);
   color: var(--ifm-font-color-base);
+  transition: all 0.15s ease;
 }
 
 .searchInput:focus {
   outline: none;
   border-color: var(--ifm-color-primary);
-  box-shadow: 0 0 0 2px rgba(64, 81, 181, 0.15);
+  box-shadow: 0 0 0 2px rgba(240, 82, 77, 0.15);
 }
 
 .moduleSelect {
   padding: 0.5rem 0.75rem;
-  border: 1px solid var(--ifm-color-emphasis-300);
+  border: 1px solid var(--whest-gray-200, #E3E8EE);
   border-radius: 6px;
   font-size: 0.875rem;
   font-family: var(--ifm-font-family-base);
   background: var(--ifm-background-color);
   color: var(--ifm-font-color-base);
   min-width: 160px;
+  transition: all 0.15s ease;
 }
 
 .moduleSelect:focus {
@@ -57,7 +59,7 @@
 .toggleGroup {
   display: flex;
   gap: 0;
-  border: 1px solid var(--ifm-color-emphasis-300);
+  border: 1px solid var(--whest-gray-200, #E3E8EE);
   border-radius: 6px;
   overflow: hidden;
 }
@@ -70,8 +72,8 @@
   font-size: 0.8rem;
   font-family: var(--ifm-font-family-base);
   cursor: pointer;
-  border-right: 1px solid var(--ifm-color-emphasis-300);
-  transition: background 0.15s, color 0.15s;
+  border-right: 1px solid var(--whest-gray-200, #E3E8EE);
+  transition: all 0.15s ease;
 }
 
 .toggleBtn:last-child {
@@ -79,7 +81,7 @@
 }
 
 .toggleBtn:hover {
-  background: var(--ifm-color-emphasis-100);
+  background: var(--whest-gray-50, #F6F8FA);
 }
 
 .toggleBtnActive {
@@ -101,7 +103,7 @@
 /* ── Table ────────────────────────────────────────────── */
 .tableWrap {
   overflow-x: auto;
-  border: 1px solid var(--ifm-color-emphasis-200);
+  border: 1px solid var(--whest-gray-200, #E3E8EE);
   border-radius: 8px;
 }
 
@@ -109,47 +111,39 @@
   width: 100%;
   border: none;
   border-collapse: collapse;
-  font-size: 0.84rem;
+  font-size: 14px;
   margin: 0;
 }
 
 .opsTable thead th {
   position: sticky;
   top: 0;
-  background: var(--ifm-background-surface-color, #f8f9fa);
+  background: var(--whest-gray-50, #F6F8FA);
   font-weight: 600;
   text-align: left;
-  padding: 0.6rem 0.75rem;
-  border-bottom: 2px solid var(--ifm-color-emphasis-200);
+  padding: 10px 16px;
+  border-bottom: 2px solid var(--whest-gray-200, #E3E8EE);
   white-space: nowrap;
 }
 
-[data-theme='dark'] .opsTable thead th {
-  background: #2a2a3a;
-}
-
 .opsTable td {
-  padding: 0.5rem 0.75rem;
-  border-bottom: 1px solid var(--ifm-color-emphasis-100);
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--whest-gray-50, #F6F8FA);
   vertical-align: middle;
 }
 
 /* ── Row ──────────────────────────────────────────────── */
 .opRow {
   cursor: pointer;
-  transition: background 0.1s;
+  transition: all 0.15s ease;
 }
 
 .opRow:hover {
-  background: var(--ifm-color-emphasis-50, rgba(0,0,0,0.02));
-}
-
-[data-theme='dark'] .opRow:hover {
-  background: rgba(255,255,255,0.03);
+  background: var(--whest-bg, #FAFBFC);
 }
 
 .opRowExpanded {
-  background: var(--ifm-color-emphasis-50, rgba(0,0,0,0.02));
+  background: var(--whest-bg, #FAFBFC);
 }
 
 .opName code {
@@ -190,12 +184,8 @@
 /* ── Detail row ───────────────────────────────────────── */
 .detailRow td {
   padding: 0.75rem 1rem;
-  background: var(--ifm-color-emphasis-50, #fafbfc);
-  border-bottom: 2px solid var(--ifm-color-emphasis-200);
-}
-
-[data-theme='dark'] .detailRow td {
-  background: #1e1e2e;
+  background: var(--whest-bg, #FAFBFC);
+  border-bottom: 2px solid var(--whest-gray-200, #E3E8EE);
 }
 
 .detailGrid {
@@ -219,7 +209,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--ifm-font-color-secondary);
+  color: var(--whest-gray-400, #AAACAD);
 }
 
 /* ── Badge ────────────────────────────────────────────── */
@@ -238,29 +228,14 @@
   color: #166534;
 }
 
-[data-theme='dark'] .badge--free {
-  background: #14532d;
-  color: #86efac;
-}
-
 .badge--blocked {
   background: #fee2e2;
   color: #991b1b;
 }
 
-[data-theme='dark'] .badge--blocked {
-  background: #7f1d1d;
-  color: #fca5a5;
-}
-
 .badge--counted {
   background: #dbeafe;
   color: #1e40af;
-}
-
-[data-theme='dark'] .badge--counted {
-  background: #1e3a5f;
-  color: #93c5fd;
 }
 
 /* ── Status chip ──────────────────────────────────────── */
@@ -285,21 +260,6 @@
 .status--partial {
   background: #fef9c3;
   color: #854d0e;
-}
-
-[data-theme='dark'] .status--supported {
-  background: #14532d;
-  color: #86efac;
-}
-
-[data-theme='dark'] .status--blocked {
-  background: #7f1d1d;
-  color: #fca5a5;
-}
-
-[data-theme='dark'] .status--partial {
-  background: #713f12;
-  color: #fde68a;
 }
 
 /* ── No results ───────────────────────────────────────── */
