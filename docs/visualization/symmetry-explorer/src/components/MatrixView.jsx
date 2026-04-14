@@ -16,6 +16,7 @@ export default function MatrixView({ matrixData, graph, example, variableColors 
           uVertices={uVertices}
           example={example}
           freeLabels={freeLabels}
+          variableColors={variableColors}
           label="M"
         />
       </div>

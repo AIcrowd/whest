@@ -4,7 +4,7 @@ import IncidenceMatrix from './IncidenceMatrix.jsx';
 
 const STAGE_LABELS = ['M', 'σ(M)', 'π(σ(M))'];
 
-export default function SigmaLoop({ results, graph, matrixData, example }) {
+export default function SigmaLoop({ results, graph, matrixData, example, variableColors }) {
   const { uVertices, freeLabels } = graph;
   const uLabels = buildUVertexLabels(uVertices, example);
   const labels = matrixData.labels;
@@ -185,6 +185,7 @@ export default function SigmaLoop({ results, graph, matrixData, example }) {
                 uVertices={uVertices}
                 example={example}
                 freeLabels={freeLabels}
+                variableColors={variableColors}
                 rowPerm={stages[stage].rowPerm}
                 colPerm={stages[stage].colPerm}
                 movedRows={stages[stage].movedRows}
@@ -229,9 +230,11 @@ export default function SigmaLoop({ results, graph, matrixData, example }) {
           detailIdx={modalIdx}
           labels={labels}
           uVertices={uVertices}
+          example={example}
           freeLabels={freeLabels}
           uLabels={uLabels}
           originalMatrix={originalMatrix}
+          variableColors={variableColors}
           onSelectDetail={(origIdx) => setModalIdx(origIdx)}
           onBack={() => setModalIdx(null)}
           onClose={() => { setShowRejected(false); setModalIdx(null); }}
@@ -246,7 +249,7 @@ export default function SigmaLoop({ results, graph, matrixData, example }) {
 
 function RejectedModal({
   rejectedPairs, allPairs, detailIdx,
-  labels, uVertices, freeLabels, uLabels, originalMatrix,
+  labels, uVertices, example, freeLabels, uLabels, originalMatrix, variableColors,
   onSelectDetail, onBack, onClose, fmtSigma,
 }) {
   const pair = detailIdx !== null ? allPairs[detailIdx] : null;
@@ -290,6 +293,7 @@ function RejectedModal({
             freeLabels={freeLabels}
             uLabels={uLabels}
             originalMatrix={originalMatrix}
+            variableColors={variableColors}
             onBack={onBack}
             fmtSigma={fmtSigma}
           />
@@ -301,7 +305,7 @@ function RejectedModal({
 
 /* ── Rejected Detail — M → σ(M) with animation, no π step ── */
 
-function RejectedDetail({ pair, labels, uVertices, example, freeLabels, uLabels, originalMatrix, onBack, fmtSigma }) {
+function RejectedDetail({ pair, labels, uVertices, example, freeLabels, uLabels, originalMatrix, variableColors, onBack, fmtSigma }) {
   const [showSigma, setShowSigma] = useState(false);
 
   // Build moved rows set
@@ -342,6 +346,7 @@ function RejectedDetail({ pair, labels, uVertices, example, freeLabels, uLabels,
         uVertices={uVertices}
         example={example}
         freeLabels={freeLabels}
+        variableColors={variableColors}
         rowPerm={showSigma ? pair.sigmaRowPerm : null}
         movedRows={showSigma ? movedRows : null}
         animate={true}

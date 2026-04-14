@@ -20,6 +20,7 @@ export default function IncidenceMatrix({
   uVertices,       // from graph — for building row labels
   example,         // for building row labels via buildUVertexLabels
   freeLabels,      // Set<string> — V labels (colored blue)
+  variableColors,  // { [name]: { color } } — per-variable colors for row labels
   rowPerm,         // number[] | null — row ordering (null = identity)
   colPerm,         // number[] | null — column reordering (null = identity)
   movedRows,       // Set<number> | null — highlighted rows
@@ -111,16 +112,14 @@ export default function IncidenceMatrix({
                 transform: `translateY(${headerH + visualRow * cellH}px)`,
                 height: cellH,
               }}>
-              {/* Row label — colored by V/W membership */}
-              <div className={`inc-row-label ${
-                (() => {
-                  const u = uVertices[uIdx];
-                  const lbl = u.labels ? [...u.labels][0] : null;
-                  if (lbl && freeLabels?.has(lbl)) return 'inc-col-v';
-                  if (lbl) return 'inc-col-w';
-                  return '';
-                })()
-              }`} style={{ width: labelW }}>
+              {/* Row label — colored by variable */}
+              <div className="inc-row-label" style={{
+                width: labelW,
+                color: (() => {
+                  const opName = example?.operandNames?.[uVertices[uIdx]?.opIdx];
+                  return variableColors?.[opName]?.color || 'var(--gray-400)';
+                })(),
+              }}>
                 {uLabels[uIdx]}
               </div>
               {/* Cells */}
