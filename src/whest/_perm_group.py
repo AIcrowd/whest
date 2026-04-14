@@ -371,6 +371,26 @@ class PermutationGroup:
                     queue.append(image)
         return frozenset(visited)
 
+    def pointwise_stabilizer(self, fixed: set[int]) -> PermutationGroup:
+        """Subgroup of elements that fix every point in *fixed*.
+
+        Parameters
+        ----------
+        fixed : set of int
+            Group-local indices that must map to themselves.
+
+        Returns
+        -------
+        PermutationGroup
+            The pointwise stabilizer subgroup (same degree).
+        """
+        if not fixed:
+            return PermutationGroup(*self._generators, axes=self._axes)
+        surviving = [g for g in self.elements() if all(g(p) == p for p in fixed)]
+        if not surviving:
+            surviving = [Permutation.identity(self._degree)]
+        return PermutationGroup(*surviving, axes=self._axes)
+
     def burnside_unique_count(self, size_dict: dict[int, int]) -> int:
         """Count unique tensor elements via Burnside's lemma.
 
