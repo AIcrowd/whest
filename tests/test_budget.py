@@ -224,6 +224,25 @@ def test_oprecord_durations_populated():
     assert all(r.duration >= 0 for r in add_records)
 
 
+def test_durations_populated_across_op_types():
+    """Verify durations populated for various operation types."""
+    import whest
+    with whest.BudgetContext(flop_budget=int(1e12)) as b:
+        a = whest.array([1.0, 2.0, 3.0])       # free_ops (charged)
+        c = whest.add(a, whest.ones((3,)))       # pointwise binary (Task 3)
+        d = whest.exp(c)                         # pointwise unary (Task 3)
+        e = whest.sum(d)                         # reduction (Task 3)
+        f = whest.concatenate([a, c])            # free_ops (charged)
+        g = whest.linspace(0, 1, 10)             # free_ops (charged)
+        h = whest.dot(a, a)                      # standalone pointwise
+        i = whest.sort(a.copy())                 # sorting
+
+    records_without = [r for r in b.op_log if r.duration is None]
+    assert len(records_without) == 0, (
+        f"Ops missing duration: {[r.op_name for r in records_without]}"
+    )
+
+
 def test_budget_factory_passes_wall_time_limit():
     import whest
     b = whest.budget(flop_budget=int(1e9), wall_time_limit_s=2.0)

@@ -42,8 +42,9 @@ def trace(a, offset=0, axis1=0, axis2=1, dtype=None, out=None):
         n = min(n, a.shape[axis1] + offset)
     n = max(n, 0)
     cost = trace_cost(n)
-    budget.deduct("linalg.trace", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.trace(a, offset=offset, axis1=axis1, axis2=axis2, dtype=dtype, out=out)
+    with budget.deduct("linalg.trace", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+        result = _np.trace(a, offset=offset, axis1=axis1, axis2=axis2, dtype=dtype, out=out)
+    return result
 
 
 attach_docstring(trace, _np.trace, "linalg", r"$n$ FLOPs")
@@ -81,8 +82,9 @@ def det(a):
     n = a.shape[0]
     is_symmetric = isinstance(a, SymmetricTensor)
     cost = det_cost(n, symmetric=is_symmetric)
-    budget.deduct("linalg.det", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.linalg.det(a)
+    with budget.deduct("linalg.det", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+        result = _np.linalg.det(a)
+    return result
 
 
 attach_docstring(det, _np.linalg.det, "linalg", r"$n^3$ FLOPs")
@@ -120,8 +122,9 @@ def slogdet(a):
     n = a.shape[0]
     is_symmetric = isinstance(a, SymmetricTensor)
     cost = slogdet_cost(n, symmetric=is_symmetric)
-    budget.deduct("linalg.slogdet", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.linalg.slogdet(a)
+    with budget.deduct("linalg.slogdet", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+        result = _np.linalg.slogdet(a)
+    return result
 
 
 attach_docstring(slogdet, _np.linalg.slogdet, "linalg", r"$n^3$ FLOPs")
@@ -182,8 +185,9 @@ def norm(x, ord=None, axis=None, keepdims=False):
     else:
         effective_shape = tuple(x.shape[ax] for ax in axis)
     cost = norm_cost(effective_shape, ord=ord)
-    budget.deduct("linalg.norm", flop_cost=cost, subscripts=None, shapes=(x.shape,))
-    return _np.linalg.norm(x, ord=ord, axis=axis, keepdims=keepdims)
+    with budget.deduct("linalg.norm", flop_cost=cost, subscripts=None, shapes=(x.shape,)):
+        result = _np.linalg.norm(x, ord=ord, axis=axis, keepdims=keepdims)
+    return result
 
 
 attach_docstring(
@@ -232,10 +236,11 @@ def vector_norm(x, ord=2, axis=None, keepdims=False):
     else:
         effective_shape = x.shape
     cost = vector_norm_cost(effective_shape, ord=ord)
-    budget.deduct(
+    with budget.deduct(
         "linalg.vector_norm", flop_cost=cost, subscripts=None, shapes=(x.shape,)
-    )
-    return _np.linalg.vector_norm(x, ord=ord, axis=axis, keepdims=keepdims)
+    ):
+        result = _np.linalg.vector_norm(x, ord=ord, axis=axis, keepdims=keepdims)
+    return result
 
 
 attach_docstring(
@@ -283,10 +288,11 @@ def matrix_norm(x, ord="fro", keepdims=False):
     if not isinstance(x, _np.ndarray):
         x = _np.asarray(x)
     cost = matrix_norm_cost(x.shape, ord=ord)
-    budget.deduct(
+    with budget.deduct(
         "linalg.matrix_norm", flop_cost=cost, subscripts=None, shapes=(x.shape,)
-    )
-    return _np.linalg.matrix_norm(x, ord=ord, keepdims=keepdims)
+    ):
+        result = _np.linalg.matrix_norm(x, ord=ord, keepdims=keepdims)
+    return result
 
 
 attach_docstring(
@@ -334,8 +340,9 @@ def cond(x, p=None):
         raise ValueError(f"Input must be 2D, got {x.ndim}D")
     m, n = x.shape
     cost = cond_cost(m, n, p=p)
-    budget.deduct("linalg.cond", flop_cost=cost, subscripts=None, shapes=(x.shape,))
-    return _np.linalg.cond(x, p=p)
+    with budget.deduct("linalg.cond", flop_cost=cost, subscripts=None, shapes=(x.shape,)):
+        result = _np.linalg.cond(x, p=p)
+    return result
 
 
 attach_docstring(
@@ -377,10 +384,11 @@ def matrix_rank(A, tol=None, hermitian=False):
         raise ValueError(f"Input must be 2D, got {A.ndim}D")
     m, n = A.shape
     cost = matrix_rank_cost(m, n)
-    budget.deduct(
+    with budget.deduct(
         "linalg.matrix_rank", flop_cost=cost, subscripts=None, shapes=(A.shape,)
-    )
-    return _np.linalg.matrix_rank(A, tol=tol, hermitian=hermitian)
+    ):
+        result = _np.linalg.matrix_rank(A, tol=tol, hermitian=hermitian)
+    return result
 
 
 attach_docstring(

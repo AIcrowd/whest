@@ -148,15 +148,14 @@ def einsum(
         symmetry_oracle=oracle,
     )
 
-    budget.deduct(
+    with budget.deduct(
         "einsum",
         flop_cost=path_info.optimized_cost,
         subscripts=subscripts,
         shapes=tuple(shapes),
-    )
-
-    # Execute pairwise steps
-    result = _execute_pairwise(path_info, list(operands))
+    ):
+        # Execute pairwise steps
+        result = _execute_pairwise(path_info, list(operands))
 
     # Handle output symmetry wrapping
     if symmetry is not None and isinstance(result, _np.ndarray) and result.ndim >= 2:
@@ -200,9 +199,8 @@ def einsum_path(subscripts: str, *operands, optimize: str | bool | list = "auto"
         Diagnostics including per-step costs and symmetry savings.
     """
     budget = require_budget()
-    budget.deduct("einsum_path", flop_cost=1, subscripts=None, shapes=())
-
-    shapes = [op.shape for op in operands]
+    with budget.deduct("einsum_path", flop_cost=1, subscripts=None, shapes=()):
+        shapes = [op.shape for op in operands]
     operand_symmetries = [
         op.symmetry_info if isinstance(op, SymmetricTensor) else None for op in operands
     ]

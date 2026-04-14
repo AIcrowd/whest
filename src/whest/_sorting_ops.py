@@ -40,8 +40,9 @@ def sort(a, axis=-1, **kwargs):
     else:
         ax = axis % a.ndim
         cost = _sort_cost_nd(a, ax)
-    budget.deduct("sort", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.sort(a, axis=axis, **kwargs)
+    with budget.deduct("sort", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+        result = _np.sort(a, axis=axis, **kwargs)
+    return result
 
 
 attach_docstring(sort, _np.sort, "counted_custom", "n*ceil(log2(n)) FLOPs per slice")
@@ -59,8 +60,9 @@ def argsort(a, axis=-1, **kwargs):
     else:
         ax = axis % a.ndim
         cost = _sort_cost_nd(a, ax)
-    budget.deduct("argsort", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.argsort(a, axis=axis, **kwargs)
+    with budget.deduct("argsort", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+        result = _np.argsort(a, axis=axis, **kwargs)
+    return result
 
 
 attach_docstring(
@@ -85,8 +87,9 @@ def lexsort(keys, axis=-1):
         n = first.shape[axis] if first.ndim > 0 else 1
         cost = max(k * sort_cost(n), 1)
     shapes = tuple(_np.asarray(key).shape for key in keys_list)
-    budget.deduct("lexsort", flop_cost=cost, subscripts=None, shapes=shapes)
-    return _np.lexsort(keys_list, axis=axis)
+    with budget.deduct("lexsort", flop_cost=cost, subscripts=None, shapes=shapes):
+        result = _np.lexsort(keys_list, axis=axis)
+    return result
 
 
 attach_docstring(lexsort, _np.lexsort, "counted_custom", "k*n*ceil(log2(n)) FLOPs")
@@ -110,8 +113,9 @@ def partition(a, kth, axis=-1, **kwargs):
             numel *= d
         num_slices = numel // n if n > 0 else 1
         cost = max(num_slices * n * kth_count, 1)
-    budget.deduct("partition", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.partition(a, kth, axis=axis, **kwargs)
+    with budget.deduct("partition", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+        result = _np.partition(a, kth, axis=axis, **kwargs)
+    return result
 
 
 attach_docstring(
@@ -137,8 +141,9 @@ def argpartition(a, kth, axis=-1, **kwargs):
             numel *= d
         num_slices = numel // n if n > 0 else 1
         cost = max(num_slices * n * kth_count, 1)
-    budget.deduct("argpartition", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.argpartition(a, kth, axis=axis, **kwargs)
+    with budget.deduct("argpartition", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+        result = _np.argpartition(a, kth, axis=axis, **kwargs)
+    return result
 
 
 attach_docstring(
@@ -166,13 +171,14 @@ def searchsorted(a, v, **kwargs):
     n = a.shape[0] if a.ndim > 0 else 1
     m = max(v_arr.size, 1)
     cost = search_cost(m, n)
-    budget.deduct(
+    with budget.deduct(
         "searchsorted",
         flop_cost=cost,
         subscripts=None,
         shapes=(a.shape, v_arr.shape),
-    )
-    return _np.searchsorted(a, v, **kwargs)
+    ):
+        result = _np.searchsorted(a, v, **kwargs)
+    return result
 
 
 attach_docstring(
@@ -193,13 +199,14 @@ def digitize(x, bins, **kwargs):
     bins_arr = _np.asarray(bins)
     n = max(x_arr.size, 1)
     cost = search_cost(n, max(len(bins_arr), 1))
-    budget.deduct(
+    with budget.deduct(
         "digitize",
         flop_cost=cost,
         subscripts=None,
         shapes=(x_arr.shape, bins_arr.shape),
-    )
-    return _np.digitize(x, bins, **kwargs)
+    ):
+        result = _np.digitize(x, bins, **kwargs)
+    return result
 
 
 attach_docstring(
@@ -228,8 +235,9 @@ def unique(ar, **kwargs):
     budget = require_budget()
     ar_arr = _np.asarray(ar)
     cost = _unique_cost(ar_arr)
-    budget.deduct("unique", flop_cost=cost, subscripts=None, shapes=(ar_arr.shape,))
-    return _np.unique(ar_arr, **kwargs)
+    with budget.deduct("unique", flop_cost=cost, subscripts=None, shapes=(ar_arr.shape,)):
+        result = _np.unique(ar_arr, **kwargs)
+    return result
 
 
 attach_docstring(unique, _np.unique, "counted_custom", "n*ceil(log2(n)) FLOPs")
@@ -240,8 +248,9 @@ def unique_all(x, /):
     budget = require_budget()
     x_arr = _np.asarray(x)
     cost = _unique_cost(x_arr)
-    budget.deduct("unique_all", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,))
-    return _np.unique_all(x_arr)
+    with budget.deduct("unique_all", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,)):
+        result = _np.unique_all(x_arr)
+    return result
 
 
 attach_docstring(unique_all, _np.unique_all, "counted_custom", "n*ceil(log2(n)) FLOPs")
@@ -252,10 +261,11 @@ def unique_counts(x, /):
     budget = require_budget()
     x_arr = _np.asarray(x)
     cost = _unique_cost(x_arr)
-    budget.deduct(
+    with budget.deduct(
         "unique_counts", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,)
-    )
-    return _np.unique_counts(x_arr)
+    ):
+        result = _np.unique_counts(x_arr)
+    return result
 
 
 attach_docstring(
@@ -268,10 +278,11 @@ def unique_inverse(x, /):
     budget = require_budget()
     x_arr = _np.asarray(x)
     cost = _unique_cost(x_arr)
-    budget.deduct(
+    with budget.deduct(
         "unique_inverse", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,)
-    )
-    return _np.unique_inverse(x_arr)
+    ):
+        result = _np.unique_inverse(x_arr)
+    return result
 
 
 attach_docstring(
@@ -284,10 +295,11 @@ def unique_values(x, /):
     budget = require_budget()
     x_arr = _np.asarray(x)
     cost = _unique_cost(x_arr)
-    budget.deduct(
+    with budget.deduct(
         "unique_values", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,)
-    )
-    return _np.unique_values(x_arr)
+    ):
+        result = _np.unique_values(x_arr)
+    return result
 
 
 attach_docstring(
@@ -314,8 +326,9 @@ def in1d(ar1, ar2, **kwargs):
     a1 = _np.asarray(ar1)
     a2 = _np.asarray(ar2)
     cost = _set_cost(a1, a2)
-    budget.deduct("in1d", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape))
-    return _np.in1d(ar1, ar2, **kwargs)
+    with budget.deduct("in1d", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)):
+        result = _np.in1d(ar1, ar2, **kwargs)
+    return result
 
 
 attach_docstring(in1d, _np.in1d, "counted_custom", "(n+m)*ceil(log2(n+m)) FLOPs")
@@ -327,8 +340,9 @@ def isin(element, test_elements, **kwargs):
     el = _np.asarray(element)
     te = _np.asarray(test_elements)
     cost = _set_cost(el, te)
-    budget.deduct("isin", flop_cost=cost, subscripts=None, shapes=(el.shape, te.shape))
-    return _np.isin(element, test_elements, **kwargs)
+    with budget.deduct("isin", flop_cost=cost, subscripts=None, shapes=(el.shape, te.shape)):
+        result = _np.isin(element, test_elements, **kwargs)
+    return result
 
 
 attach_docstring(isin, _np.isin, "counted_custom", "(n+m)*ceil(log2(n+m)) FLOPs")
@@ -340,10 +354,11 @@ def intersect1d(ar1, ar2, **kwargs):
     a1 = _np.asarray(ar1)
     a2 = _np.asarray(ar2)
     cost = _set_cost(a1, a2)
-    budget.deduct(
+    with budget.deduct(
         "intersect1d", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
-    )
-    return _np.intersect1d(ar1, ar2, **kwargs)
+    ):
+        result = _np.intersect1d(ar1, ar2, **kwargs)
+    return result
 
 
 attach_docstring(
@@ -357,10 +372,11 @@ def union1d(ar1, ar2):
     a1 = _np.asarray(ar1)
     a2 = _np.asarray(ar2)
     cost = _set_cost(a1, a2)
-    budget.deduct(
+    with budget.deduct(
         "union1d", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
-    )
-    return _np.union1d(ar1, ar2)
+    ):
+        result = _np.union1d(ar1, ar2)
+    return result
 
 
 attach_docstring(union1d, _np.union1d, "counted_custom", "(n+m)*ceil(log2(n+m)) FLOPs")
@@ -372,10 +388,11 @@ def setdiff1d(ar1, ar2, **kwargs):
     a1 = _np.asarray(ar1)
     a2 = _np.asarray(ar2)
     cost = _set_cost(a1, a2)
-    budget.deduct(
+    with budget.deduct(
         "setdiff1d", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
-    )
-    return _np.setdiff1d(ar1, ar2, **kwargs)
+    ):
+        result = _np.setdiff1d(ar1, ar2, **kwargs)
+    return result
 
 
 attach_docstring(
@@ -389,10 +406,11 @@ def setxor1d(ar1, ar2, **kwargs):
     a1 = _np.asarray(ar1)
     a2 = _np.asarray(ar2)
     cost = _set_cost(a1, a2)
-    budget.deduct(
+    with budget.deduct(
         "setxor1d", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
-    )
-    return _np.setxor1d(ar1, ar2, **kwargs)
+    ):
+        result = _np.setxor1d(ar1, ar2, **kwargs)
+    return result
 
 
 attach_docstring(

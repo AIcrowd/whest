@@ -199,8 +199,9 @@ def permutation(x):
     budget = require_budget()
     n = int(x) if isinstance(x, (int, _np.integer)) else x.shape[0]
     cost = _builtins.max(n, 1)
-    budget.deduct("random.permutation", flop_cost=cost, subscripts=None, shapes=((n,),))
-    return _npr.permutation(x)
+    with budget.deduct("random.permutation", flop_cost=cost, subscripts=None, shapes=((n,),)):
+        result = _npr.permutation(x)
+    return result
 
 
 def shuffle(x, axis=0):
@@ -214,8 +215,8 @@ def shuffle(x, axis=0):
     else:
         n = len(x)
     cost = _builtins.max(n, 1)
-    budget.deduct("random.shuffle", flop_cost=cost, subscripts=None, shapes=((n,),))
-    _npr.shuffle(x)
+    with budget.deduct("random.shuffle", flop_cost=cost, subscripts=None, shapes=((n,),)):
+        _npr.shuffle(x)
 
 
 def choice(a, size=None, replace=True, p=None):
@@ -233,13 +234,15 @@ def choice(a, size=None, replace=True, p=None):
     if replace:
         out_size = _output_size(size=size)
         cost = _builtins.max(out_size, 1)
-        budget.deduct(
+        with budget.deduct(
             "random.choice", flop_cost=cost, subscripts=None, shapes=((out_size,),)
-        )
+        ):
+            result = _npr.choice(a, size=size, replace=replace, p=p)
     else:
         cost = sort_cost(n)
-        budget.deduct("random.choice", flop_cost=cost, subscripts=None, shapes=((n,),))
-    return _npr.choice(a, size=size, replace=replace, p=p)
+        with budget.deduct("random.choice", flop_cost=cost, subscripts=None, shapes=((n,),)):
+            result = _npr.choice(a, size=size, replace=replace, p=p)
+    return result
 
 
 def bytes(length):
@@ -249,8 +252,9 @@ def bytes(length):
     """
     budget = require_budget()
     cost = _builtins.max(int(length), 1)
-    budget.deduct("random.bytes", flop_cost=cost, subscripts=None, shapes=((length,),))
-    return _npr.bytes(length)
+    with budget.deduct("random.bytes", flop_cost=cost, subscripts=None, shapes=((length,),)):
+        result = _npr.bytes(length)
+    return result
 
 
 # ---------------------------------------------------------------------------
