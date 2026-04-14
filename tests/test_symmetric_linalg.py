@@ -2,9 +2,9 @@
 
 import numpy
 
-import mechestim.linalg as la
-from mechestim._budget import BudgetContext
-from mechestim._symmetric import SymmetricTensor, as_symmetric
+import whest.linalg as la
+from whest._budget import BudgetContext
+from whest._symmetric import SymmetricTensor, as_symmetric
 
 
 class TestEighValidation:

@@ -47,7 +47,7 @@ jobs:
         run: uv pip install 'numpy~=${{ matrix.numpy-version }}.0'
 
       - name: Run tests with coverage
-        run: uv run pytest --cov=mechestim --cov-fail-under=85
+        run: uv run pytest --cov=whest --cov-fail-under=85
 
       - name: NumPy compatibility tests
         if: matrix.numpy-version == '2.2'
@@ -96,11 +96,11 @@ jobs:
       - name: Install core + server dependencies
         run: |
           uv sync --all-extras
-          cd mechestim-server && uv sync
+          cd whest-server && uv sync
 
       - name: Run integration tests
         run: |
-          cd mechestim-client && uv run pytest tests/test_full_integration.py -v --tb=short
+          cd whest-client && uv run pytest tests/test_full_integration.py -v --tb=short
 
   docs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'

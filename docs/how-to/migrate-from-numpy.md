@@ -2,7 +2,7 @@
 
 ## When to use this page
 
-Use this page when converting existing NumPy code to mechestim.
+Use this page when converting existing NumPy code to whest.
 
 ## Prerequisites
 
@@ -24,30 +24,30 @@ h = np.dot(W, x)
 h = np.maximum(h, 0)
 ```
 
-**After (mechestim) — simplest form:**
+**After (whest) — simplest form:**
 
 ```python
-import mechestim as me
+import whest as we
 
 # No setup needed — global default budget tracks FLOPs automatically
-W = me.random.randn(256, 256)
-x = me.random.randn(256)
-h = me.dot(W, x)
-h = me.maximum(h, 0)
+W = we.random.randn(256, 256)
+x = we.random.randn(256)
+h = we.dot(W, x)
+h = we.maximum(h, 0)
 
-me.budget_summary()  # see what you spent
+we.budget_summary()  # see what you spent
 ```
 
-**After (mechestim) — with explicit budget control:**
+**After (whest) — with explicit budget control:**
 
 ```python
-import mechestim as me
+import whest as we
 
-with me.BudgetContext(flop_budget=20_000_000) as budget:
-    W = me.random.randn(256, 256)
-    x = me.random.randn(256)
-    h = me.dot(W, x)
-    h = me.maximum(h, 0)
+with we.BudgetContext(flop_budget=20_000_000) as budget:
+    W = we.random.randn(256, 256)
+    x = we.random.randn(256)
+    h = we.dot(W, x)
+    h = we.maximum(h, 0)
 ```
 
 ## What stays the same
@@ -58,24 +58,24 @@ with me.BudgetContext(flop_budget=20_000_000) as budget:
 
 ## What changes
 
-| NumPy | mechestim | Notes |
+| NumPy | whest | Notes |
 |-------|-----------|-------|
-| `import numpy as np` | `import mechestim as me` | Drop-in replacement |
+| `import numpy as np` | `import whest as we` | Drop-in replacement |
 | Call ops anywhere | Works anywhere too | A global default budget auto-activates; use explicit `BudgetContext` for limits and namespacing |
-| `np.linalg.svd(A)` | `me.linalg.svd(A, k=10)` | Truncated SVD with explicit `k` |
-| Plain `ndarray` only | `SymmetricTensor` available | Wrap with `me.as_symmetric()` for cost savings |
+| `np.linalg.svd(A)` | `we.linalg.svd(A, k=10)` | Truncated SVD with explicit `k` |
+| Plain `ndarray` only | `SymmetricTensor` available | Wrap with `we.as_symmetric()` for cost savings |
 | All NumPy ops available | Most available, 32 blacklisted | I/O and config ops raise `AttributeError` |
 | No cost tracking | Automatic FLOP counting | Every counted op deducts from budget |
 
 ## Common pitfalls
 
-**Symptom:** `AttributeError` when calling an I/O or config function (e.g., `me.save`, `me.seterr`)
+**Symptom:** `AttributeError` when calling an I/O or config function (e.g., `we.save`, `we.seterr`)
 
 **Fix:** 32 operations are blacklisted because they are I/O, configuration, or datetime functions with no FLOP cost. See [Operation Categories](../concepts/operation-categories.md) for the full list. Use `numpy` directly for these.
 
-**Symptom:** Using `np.linalg.svd` instead of `me.linalg.svd`
+**Symptom:** Using `np.linalg.svd` instead of `we.linalg.svd`
 
-**Fix:** If you import NumPy alongside mechestim, make sure to use `me.` for operations you want counted. Operations called through `np.` bypass FLOP counting entirely.
+**Fix:** If you import NumPy alongside whest, make sure to use `we.` for operations you want counted. Operations called through `np.` bypass FLOP counting entirely.
 
 ## 📎 Related pages
 

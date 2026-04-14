@@ -9,8 +9,8 @@ import math
 
 import numpy
 
-from mechestim._budget import BudgetContext
-from mechestim.fft import (
+from whest._budget import BudgetContext
+from whest.fft import (
     fft,
     fft2,
     fftn,
@@ -26,7 +26,7 @@ from mechestim.fft import (
     rfft2,
     rfftn,
 )
-from mechestim.fft._transforms import (
+from whest.fft._transforms import (
     fft_cost,
     fftn_cost,
     hfft_cost,

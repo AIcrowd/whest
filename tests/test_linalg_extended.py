@@ -3,9 +3,9 @@
 import numpy
 import pytest
 
-from mechestim._budget import BudgetContext
-from mechestim._symmetric import as_symmetric
-from mechestim.linalg._decompositions import (
+from whest._budget import BudgetContext
+from whest._symmetric import as_symmetric
+from whest.linalg._decompositions import (
     cholesky,
     cholesky_cost,
     eig,
@@ -21,7 +21,7 @@ from mechestim.linalg._decompositions import (
     svdvals,
     svdvals_cost,
 )
-from mechestim.linalg._properties import (
+from whest.linalg._properties import (
     cond,
     det,
     det_cost,

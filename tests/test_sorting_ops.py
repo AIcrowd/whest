@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import numpy
 
-from mechestim._budget import BudgetContext
-from mechestim._flops import search_cost, sort_cost
-from mechestim._sorting_ops import (
+from whest._budget import BudgetContext
+from whest._flops import search_cost, sort_cost
+from whest._sorting_ops import (
     argpartition,
     argsort,
     digitize,

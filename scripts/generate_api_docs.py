@@ -32,44 +32,44 @@ REF_DIR = DOCS / "reference"
 
 def load_registry() -> dict[str, dict]:
     sys.path.insert(0, str(ROOT / "src"))
-    from mechestim._registry import REGISTRY  # type: ignore
+    from whest._registry import REGISTRY  # type: ignore
 
     return REGISTRY
 
 
 # ---------------------------------------------------------------------------
-# Module mapping: which mechestim source modules cover which registry ops
+# Module mapping: which whest source modules cover which registry ops
 # ---------------------------------------------------------------------------
 
 # Maps (registry module, category prefix) → list of mkdocstrings directives
 # and the doc page they belong to.
 #
 # Existing pages (not generated):
-#   counted-ops.md  → ::: mechestim._pointwise, ::: mechestim._einsum.einsum
-#   free-ops.md     → ::: mechestim._free_ops
+#   counted-ops.md  → ::: whest._pointwise, ::: whest._einsum.einsum
+#   free-ops.md     → ::: whest._free_ops
 #
 # Generated pages:
 GENERATED_PAGES: dict[str, dict] = {
     "api/linalg.md": {
         "title": "Linear Algebra",
         "description": (
-            "Operations from `mechestim.linalg`. "
+            "Operations from `whest.linalg`. "
             "Cost formulas vary per operation — see each function's docstring."
         ),
         "directives": [
-            "mechestim.linalg._svd",
-            "mechestim.linalg._decompositions",
-            "mechestim.linalg._solvers",
-            "mechestim.linalg._properties",
-            "mechestim.linalg._compound",
-            "mechestim.linalg._aliases",
+            "whest.linalg._svd",
+            "whest.linalg._decompositions",
+            "whest.linalg._solvers",
+            "whest.linalg._properties",
+            "whest.linalg._compound",
+            "whest.linalg._aliases",
         ],
         "registry_modules": {"numpy.linalg"},
     },
     "api/fft.md": {
         "title": "FFT",
         "description": textwrap.dedent("""\
-            Fast Fourier Transform operations from `mechestim.fft`. All FFT
+            Fast Fourier Transform operations from `whest.fft`. All FFT
             transforms are counted. Real-valued transforms (`rfft`) cost roughly
             half of complex transforms.
 
@@ -89,41 +89,41 @@ GENERATED_PAGES: dict[str, dict] = {
             ## Examples
 
             ```python
-            import mechestim as me
+            import whest as we
 
-            with me.BudgetContext(flop_budget=1_000_000) as budget:
-                signal = me.random.randn(1024)    # free
-                spectrum = me.fft.fft(signal)     # 5 * 1024 * 10 = 51,200 FLOPs
-                freqs = me.fft.fftfreq(1024)      # free
+            with we.BudgetContext(flop_budget=1_000_000) as budget:
+                signal = we.random.randn(1024)    # free
+                spectrum = we.fft.fft(signal)     # 5 * 1024 * 10 = 51,200 FLOPs
+                freqs = we.fft.fftfreq(1024)      # free
                 print(f"FFT cost: {budget.flops_used:,}")  # 51,200
             ```
 
             ## API Reference
         """),
         "directives": [
-            "mechestim.fft._transforms",
-            "mechestim.fft._free",
+            "whest.fft._transforms",
+            "whest.fft._free",
         ],
         "registry_modules": {"numpy.fft"},
     },
     "api/random.md": {
         "title": "Random",
         "description": (
-            "Random number generation from `mechestim.random`. "
+            "Random number generation from `whest.random`. "
             "Sampling operations are **counted** — each sample costs "
             "`numel(output)` FLOPs, and shuffle/permutation costs "
             "`n * ceil(log2(n))` FLOPs. Only configuration helpers "
             "(`seed`, `get_state`, `set_state`, `default_rng`) are free (0 FLOPs)."
         ),
         "directives": [
-            "mechestim.random",
+            "whest.random",
         ],
         "registry_modules": {"numpy.random"},
     },
     "api/polynomial.md": {
         "title": "Polynomial",
         "description": textwrap.dedent("""\
-            Polynomial operations from `mechestim`. These wrap NumPy's polynomial
+            Polynomial operations from `whest`. These wrap NumPy's polynomial
             functions with FLOP counting.
 
             ## Cost Summary
@@ -141,26 +141,26 @@ GENERATED_PAGES: dict[str, dict] = {
             ## Examples
 
             ```python
-            import mechestim as me
+            import whest as we
 
-            with me.BudgetContext(flop_budget=1_000_000) as budget:
-                coeffs = me.array([1.0, -3.0, 2.0])  # x^2 - 3x + 2 (free)
-                x = me.linspace(0, 5, 100)            # free
-                y = me.polyval(coeffs, x)             # 2 * 100 * 2 = 400 FLOPs
+            with we.BudgetContext(flop_budget=1_000_000) as budget:
+                coeffs = we.array([1.0, -3.0, 2.0])  # x^2 - 3x + 2 (free)
+                x = we.linspace(0, 5, 100)            # free
+                y = we.polyval(coeffs, x)             # 2 * 100 * 2 = 400 FLOPs
                 print(f"polyval cost: {budget.flops_used}")  # 400
             ```
 
             ## API Reference
         """),
         "directives": [
-            "mechestim._polynomial",
+            "whest._polynomial",
         ],
-        "registry_modules": {"mechestim._polynomial"},
+        "registry_modules": {"whest._polynomial"},
     },
     "api/stats.md": {
         "title": "Statistical Distributions",
         "description": textwrap.dedent("""\
-            Statistical distributions from `mechestim.stats`. This submodule
+            Statistical distributions from `whest.stats`. This submodule
             provides a **subset of scipy.stats** — each distribution is a
             singleton with `.pdf()`, `.cdf()`, and `.ppf()` methods that
             match the scipy API exactly (same signatures, same numerical
@@ -188,14 +188,14 @@ GENERATED_PAGES: dict[str, dict] = {
             ## Examples
 
             ```python
-            import mechestim as me
+            import whest as we
 
-            with me.BudgetContext(flop_budget=1_000_000) as budget:
-                x = me.linspace(-3, 3, 1000)         # free
-                pdf_vals = me.stats.norm.pdf(x)       # 10 * 1000 = 10,000 FLOPs
-                cdf_vals = me.stats.norm.cdf(x)       # 20 * 1000 = 20,000 FLOPs
-                q = me.array([0.025, 0.975])           # free
-                bounds = me.stats.norm.ppf(q)          # 40 * 2 = 80 FLOPs
+            with we.BudgetContext(flop_budget=1_000_000) as budget:
+                x = we.linspace(-3, 3, 1000)         # free
+                pdf_vals = we.stats.norm.pdf(x)       # 10 * 1000 = 10,000 FLOPs
+                cdf_vals = we.stats.norm.cdf(x)       # 20 * 1000 = 20,000 FLOPs
+                q = we.array([0.025, 0.975])           # free
+                bounds = we.stats.norm.ppf(q)          # 40 * 2 = 80 FLOPs
                 print(f"Total: {budget.flops_used:,}")  # 30,080
             ```
 
@@ -207,21 +207,21 @@ GENERATED_PAGES: dict[str, dict] = {
             ## API Reference
         """),
         "directives": [
-            "mechestim.stats._norm",
-            "mechestim.stats._uniform",
-            "mechestim.stats._expon",
-            "mechestim.stats._cauchy",
-            "mechestim.stats._logistic",
-            "mechestim.stats._laplace",
-            "mechestim.stats._lognorm",
-            "mechestim.stats._truncnorm",
+            "whest.stats._norm",
+            "whest.stats._uniform",
+            "whest.stats._expon",
+            "whest.stats._cauchy",
+            "whest.stats._logistic",
+            "whest.stats._laplace",
+            "whest.stats._lognorm",
+            "whest.stats._truncnorm",
         ],
         "registry_modules": set(),  # stats ops are not in the numpy registry
     },
     "api/window.md": {
         "title": "Window Functions",
         "description": textwrap.dedent("""\
-            Window function wrappers from `mechestim`. These generate window
+            Window function wrappers from `whest`. These generate window
             arrays used in signal processing (e.g., for windowed FFTs).
 
             ## Cost Summary
@@ -237,20 +237,20 @@ GENERATED_PAGES: dict[str, dict] = {
             ## Examples
 
             ```python
-            import mechestim as me
+            import whest as we
 
-            with me.BudgetContext(flop_budget=1_000_000) as budget:
-                win = me.hamming(256)   # 256 FLOPs
-                win2 = me.kaiser(256)   # 768 FLOPs (3 * 256)
+            with we.BudgetContext(flop_budget=1_000_000) as budget:
+                win = we.hamming(256)   # 256 FLOPs
+                win2 = we.kaiser(256)   # 768 FLOPs (3 * 256)
                 print(f"Window cost: {budget.flops_used}")  # 1024
             ```
 
             ## API Reference
         """),
         "directives": [
-            "mechestim._window",
+            "whest._window",
         ],
-        "registry_modules": {"mechestim._window"},
+        "registry_modules": {"whest._window"},
     },
 }
 
@@ -364,11 +364,11 @@ CUSTOM_COSTS: dict[str, tuple[str, str]] = {
     "linalg.eigh": ("n^3", r"$n^3$"),
     "linalg.eigvals": ("n^3", r"$n^3$"),
     "linalg.eigvalsh": ("n^3", r"$n^3$"),
-    "linalg.cross": ("delegates to me.cross", r"delegates to `cross`"),
-    "linalg.matmul": ("delegates to me.matmul", r"delegates to `matmul`"),
-    "linalg.outer": ("delegates to me.outer", r"delegates to `outer`"),
-    "linalg.tensordot": ("delegates to me.tensordot", r"delegates to `tensordot`"),
-    "linalg.vecdot": ("delegates to me.vecdot", r"delegates to `vecdot`"),
+    "linalg.cross": ("delegates to we.cross", r"delegates to `cross`"),
+    "linalg.matmul": ("delegates to we.matmul", r"delegates to `matmul`"),
+    "linalg.outer": ("delegates to we.outer", r"delegates to `outer`"),
+    "linalg.tensordot": ("delegates to we.tensordot", r"delegates to `tensordot`"),
+    "linalg.vecdot": ("delegates to we.vecdot", r"delegates to `vecdot`"),
     "linalg.solve": ("n^3", r"$n^3$"),
     "linalg.inv": ("n^3", r"$n^3$"),
     "linalg.lstsq": ("m * n * min(m,n)", r"$m \cdot n \cdot \min(m,n)$"),
@@ -457,15 +457,15 @@ CATEGORY_COST_LATEX: dict[str, tuple[str, str]] = {
 # ---------------------------------------------------------------------------
 
 
-def mechestim_ref(name: str, module: str) -> str:
-    """Derive the mechestim call reference from an op name and registry module."""
+def whest_ref(name: str, module: str) -> str:
+    """Derive the whest call reference from an op name and registry module."""
     if module == "numpy.linalg":
-        return f"`me.linalg.{name.removeprefix('linalg.')}`"
+        return f"`we.linalg.{name.removeprefix('linalg.')}`"
     if module == "numpy.fft":
-        return f"`me.fft.{name.removeprefix('fft.')}`"
+        return f"`we.fft.{name.removeprefix('fft.')}`"
     if module == "numpy.random":
-        return f"`me.random.{name.removeprefix('random.')}`"
-    return f"`me.{name}`"
+        return f"`we.random.{name.removeprefix('random.')}`"
+    return f"`we.{name}`"
 
 
 def numpy_ref(name: str, module: str) -> str:
@@ -499,7 +499,7 @@ def generate_audit_page(registry: dict[str, dict]) -> None:
         HEADER,
         "# Operation Audit",
         "",
-        "Complete inventory of every NumPy operation and its mechestim status.",
+        "Complete inventory of every NumPy operation and its whest status.",
         "Generated from the operation registry (`_registry.py`).",
         "",
         "## Summary",
@@ -518,12 +518,12 @@ def generate_audit_page(registry: dict[str, dict]) -> None:
 
     lines.append("## All Operations")
     lines.append("")
-    lines.append("| Operation | mechestim | NumPy | Category | Cost | Status | Notes |")
+    lines.append("| Operation | whest | NumPy | Category | Cost | Status | Notes |")
     lines.append("|-----------|-----------|-------|----------|------|--------|-------|")
     for name, info in sorted(registry.items()):
         cat = info["category"]
         mod = info["module"]
-        me_ref = mechestim_ref(name, mod)
+        me_ref = whest_ref(name, mod)
         np_ref = numpy_ref(name, mod)
         _, latex = cost_for_op(name, cat)
         emoji = CATEGORY_EMOJI.get(cat, "")
@@ -552,7 +552,7 @@ def generate_ops_json(registry: dict[str, dict]) -> None:
             {
                 "name": name,
                 "module": mod,
-                "mechestim_ref": mechestim_ref(name, mod).strip("`"),
+                "whest_ref": whest_ref(name, mod).strip("`"),
                 "numpy_ref": numpy_ref(name, mod).strip("`"),
                 "category": cat,
                 "cost_formula": plain,
@@ -581,7 +581,7 @@ def generate_cheat_sheet(registry: dict[str, dict]) -> None:
         HEADER,
         "# FLOP Cost Cheat Sheet",
         "",
-        "> **mechestim is NOT NumPy.** All computation requires a `BudgetContext`.",
+        "> **whest is NOT NumPy.** All computation requires a `BudgetContext`.",
         "> Some operations cost FLOPs, some are free, and 32 are blocked entirely.",
         "",
         "## Key Constraints",
@@ -649,9 +649,9 @@ def update_counted_ops_page(registry: dict[str, dict]) -> None:
 
     additions = []
     for module_directive, label in [
-        ("mechestim._polynomial", "polynomial"),
-        ("mechestim._window", "window"),
-        ("mechestim._unwrap", "unwrap"),
+        ("whest._polynomial", "polynomial"),
+        ("whest._window", "window"),
+        ("whest._unwrap", "unwrap"),
     ]:
         if f"::: {module_directive}" not in content:
             additions.append(f"\n::: {module_directive}")
@@ -715,9 +715,9 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
     for md_file in API_DIR.glob("*.md"):
         for directive in extract_directives_from_file(md_file):
             names = get_module_public_names(directive)
-            # Handle single-function directives like mechestim._einsum.einsum
+            # Handle single-function directives like whest._einsum.einsum
             if not names:
-                # Could be a function path like mechestim._einsum.einsum
+                # Could be a function path like whest._einsum.einsum
                 parts = directive.rsplit(".", 1)
                 if len(parts) == 2:
                     mod_path, func_name = parts
@@ -734,8 +734,8 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
         all_covered_names.update(names)
 
     # Also add random.* ops — the random module uses __getattr__ passthrough,
-    # so we check that random ops are covered if mechestim.random directive exists
-    random_directive_exists = any("mechestim.random" in d for d in covered_modules)
+    # so we check that random ops are covered if whest.random directive exists
+    random_directive_exists = any("whest.random" in d for d in covered_modules)
     if random_directive_exists:
         for name, info in registry.items():
             if info["module"] == "numpy.random" and info["category"] != "blacklisted":
@@ -746,20 +746,20 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
 
     # Also add stats.* ops — distribution methods (pdf/cdf/ppf) are registered
     # as e.g. "stats.cauchy.cdf" but the docs reference the module containing
-    # the distribution class (mechestim.stats._cauchy).  Mark stats ops as
+    # the distribution class (whest.stats._cauchy).  Mark stats ops as
     # covered when the corresponding module directive exists.
-    stats_directive_modules = {d for d in covered_modules if "mechestim.stats._" in d}
+    stats_directive_modules = {d for d in covered_modules if "whest.stats._" in d}
     if stats_directive_modules:
         for name, info in registry.items():
             if (
-                info["module"] == "mechestim.stats"
+                info["module"] == "whest.stats"
                 and info["category"] != "blacklisted"
                 and name.startswith("stats.")
             ):
-                # e.g. "stats.cauchy.cdf" → check mechestim.stats._cauchy
+                # e.g. "stats.cauchy.cdf" → check whest.stats._cauchy
                 parts = name.split(".")
                 if len(parts) >= 3:
-                    dist_module = f"mechestim.stats._{parts[1]}"
+                    dist_module = f"whest.stats._{parts[1]}"
                     if dist_module in stats_directive_modules:
                         all_covered_names.add(name)
 
@@ -818,7 +818,7 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Generate API docs from mechestim registry"
+        description="Generate API docs from whest registry"
     )
     parser.add_argument(
         "--verify", action="store_true", help="Verify coverage only (no generation)"

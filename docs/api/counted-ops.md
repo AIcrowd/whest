@@ -14,18 +14,18 @@ See [FLOP Counting Model](../concepts/flop-counting-model.md) for full details.
 
 ## API Reference
 
-::: mechestim._einsum.einsum
+::: whest._einsum.einsum
 
-::: mechestim._einsum.einsum_path
+::: whest._einsum.einsum_path
 
-::: mechestim._pointwise
+::: whest._pointwise
 
-::: mechestim._polynomial
+::: whest._polynomial
 
-::: mechestim._window
+::: whest._window
 
-::: mechestim._unwrap
+::: whest._unwrap
 
-::: mechestim._sorting_ops
+::: whest._sorting_ops
 
-::: mechestim._counting_ops
+::: whest._counting_ops

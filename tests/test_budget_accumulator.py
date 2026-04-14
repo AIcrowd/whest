@@ -1,6 +1,6 @@
 """Tests for BudgetAccumulator and budget_summary_dict()."""
 
-from mechestim._budget import (
+from whest._budget import (
     BudgetContext,
     NamespaceRecord,
     budget_reset,

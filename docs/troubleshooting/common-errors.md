@@ -2,7 +2,7 @@
 
 ## When to use this page
 
-Use this page when you encounter an error from mechestim and need to understand what went wrong.
+Use this page when you encounter an error from whest and need to understand what went wrong.
 
 ---
 
@@ -11,7 +11,7 @@ Use this page when you encounter an error from mechestim and need to understand 
 **Symptom:**
 
 ```
-mechestim.errors.BudgetExhaustedError: einsum would cost 16,777,216 FLOPs but only 1,000,000 remain
+whest.errors.BudgetExhaustedError: einsum would cost 16,777,216 FLOPs but only 1,000,000 remain
 ```
 
 **Why:** The operation you called would exceed the remaining FLOP budget. The operation did **not** execute.
@@ -25,31 +25,31 @@ mechestim.errors.BudgetExhaustedError: einsum would cost 16,777,216 FLOPs but on
 **Symptom:**
 
 ```
-mechestim.errors.NoBudgetContextError: No active BudgetContext. Wrap your code in `with mechestim.BudgetContext(...):`
+whest.errors.NoBudgetContextError: No active BudgetContext. Wrap your code in `with whest.BudgetContext(...):`
 ```
 
-**Why:** A counted operation (like `me.einsum`, `me.exp`, etc.) was called with no active budget session.
+**Why:** A counted operation (like `we.einsum`, `we.exp`, etc.) was called with no active budget session.
 
-**In the core library:** This error is unlikely in normal use. mechestim automatically activates a global default budget, so operations run freely without any explicit setup. If you do see this error in the core library, it may indicate the global default was somehow torn down — restarting your session should resolve it.
+**In the core library:** This error is unlikely in normal use. whest automatically activates a global default budget, so operations run freely without any explicit setup. If you do see this error in the core library, it may indicate the global default was somehow torn down — restarting your session should resolve it.
 
 **In the client-server model:** The server requires an open session. If your code runs on the server without a `BudgetContext`, this error will fire. Fix it by wrapping your computation:
 
 ```python
-with me.BudgetContext(flop_budget=10_000_000) as budget:
+with we.BudgetContext(flop_budget=10_000_000) as budget:
     # your code here
 ```
 
 ---
 
-## AttributeError: module 'mechestim' has no attribute '...'
+## AttributeError: module 'whest' has no attribute '...'
 
 **Symptom:**
 
 ```
-AttributeError: module 'mechestim' has no attribute 'save'. mechestim does not support this operation.
+AttributeError: module 'whest' has no attribute 'save'. whest does not support this operation.
 ```
 
-**Why:** The NumPy function you're trying to use is blocked by mechestim (I/O, config, and system-level functions are not part of the competition API).
+**Why:** The NumPy function you're trying to use is blocked by whest (I/O, config, and system-level functions are not part of the competition API).
 
 **Fix:** Check [Operation Categories](../concepts/operation-categories.md) for supported operations, or see the [Operation Audit](../reference/operation-audit.md) for the complete list.
 
@@ -76,10 +76,10 @@ RuntimeError: Cannot nest BudgetContexts
 **Symptom:**
 
 ```
-mechestim.errors.SymmetryError: Tensor not symmetric along axes (0, 1): max deviation = 0.5
+whest.errors.SymmetryError: Tensor not symmetric along axes (0, 1): max deviation = 0.5
 ```
 
-**Why:** You called `me.as_symmetric()` to declare that a tensor is symmetric along certain axes, but the actual data does not satisfy the symmetry within tolerance.
+**Why:** You called `we.as_symmetric()` to declare that a tensor is symmetric along certain axes, but the actual data does not satisfy the symmetry within tolerance.
 
 **Fix:** Verify that the tensor truly has the claimed symmetry (e.g., `A[i,j] == A[j,i]`). If it's approximately symmetric, you may need to symmetrise it first: `A = (A + A.T) / 2`.
 

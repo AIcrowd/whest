@@ -13,22 +13,22 @@ Use this page to learn how to query operation costs before running them.
 These functions work **outside** a BudgetContext — they compute costs from shapes without executing anything.
 
 ```python
-import mechestim as me
+import whest as we
 
 # Einsum cost
-cost = me.flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
+cost = we.flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
 print(f"Matmul cost: {cost:,}")         # 16,777,216 (256³, FMA=1)
 
 # SVD cost
-cost = me.flops.svd_cost(m=256, n=256, k=10)
+cost = we.flops.svd_cost(m=256, n=256, k=10)
 print(f"SVD cost: {cost:,}")            # 655,360
 
 # Pointwise cost (unary/binary ops)
-cost = me.flops.pointwise_cost(shape=(256, 256))
+cost = we.flops.pointwise_cost(shape=(256, 256))
 print(f"Pointwise cost: {cost:,}")      # 65,536
 
 # Reduction cost
-cost = me.flops.reduction_cost(input_shape=(256, 256))
+cost = we.flops.reduction_cost(input_shape=(256, 256))
 print(f"Reduction cost: {cost:,}")      # 65,536
 ```
 
@@ -37,13 +37,13 @@ print(f"Reduction cost: {cost:,}")      # 65,536
 Plan a multi-step computation before executing:
 
 ```python
-import mechestim as me
+import whest as we
 
 # Plan
 steps = [
-    ("einsum ij,j->i", me.flops.einsum_cost('ij,j->i', shapes=[(256, 256), (256,)])),
-    ("ReLU (maximum)", me.flops.pointwise_cost(shape=(256,))),
-    ("sum reduction", me.flops.reduction_cost(input_shape=(256,))),
+    ("einsum ij,j->i", we.flops.einsum_cost('ij,j->i', shapes=[(256, 256), (256,)])),
+    ("ReLU (maximum)", we.flops.pointwise_cost(shape=(256,))),
+    ("sum reduction", we.flops.reduction_cost(input_shape=(256,))),
 ]
 
 total = sum(cost for _, cost in steps)
@@ -69,20 +69,20 @@ Total                     131,584
 
 ## Multi-operand einsum planning with `einsum_path`
 
-For multi-operand einsums (3+ operands), `me.einsum_path()` is more
-informative than `me.flops.einsum_cost()` because it shows the step-by-step
+For multi-operand einsums (3+ operands), `we.einsum_path()` is more
+informative than `we.flops.einsum_cost()` because it shows the step-by-step
 contraction breakdown with per-step symmetry savings:
 
 ```python
-import mechestim as me
+import whest as we
 import numpy as np
 
-T = me.as_symmetric(np.random.randn(50, 50, 50), symmetric_axes=(0, 1, 2))
-A = me.ones((50, 50))
-B = me.ones((50, 50))
-C = me.ones((50, 50))
+T = we.as_symmetric(np.random.randn(50, 50, 50), symmetric_axes=(0, 1, 2))
+A = we.ones((50, 50))
+B = we.ones((50, 50))
+C = we.ones((50, 50))
 
-path, info = me.einsum_path('ijk,ai,bj,ck->abc', T, A, B, C)
+path, info = we.einsum_path('ijk,ai,bj,ck->abc', T, A, B, C)
 
 print(f"Optimized cost: {info.optimized_cost:,}")
 print(f"Naive cost:     {info.naive_cost:,}")
@@ -91,8 +91,8 @@ print(f"Largest intermediate: {info.largest_intermediate:,} elements")
 print(info)  # full per-step table
 ```
 
-`me.einsum_path()` has **zero budget cost** — it plans the contraction path
-without executing anything. Use it alongside `me.flops.einsum_cost()` for
+`we.einsum_path()` has **zero budget cost** — it plans the contraction path
+without executing anything. Use it alongside `we.flops.einsum_cost()` for
 comprehensive planning.
 
 ## Using namespaces to track phases
@@ -100,19 +100,19 @@ comprehensive planning.
 Use the `namespace` parameter to label different computation phases:
 
 ```python
-with me.BudgetContext(flop_budget=total, namespace="forward") as budget:
+with we.BudgetContext(flop_budget=total, namespace="forward") as budget:
     # forward pass here
     ...
 
-with me.BudgetContext(flop_budget=total, namespace="backward") as budget:
+with we.BudgetContext(flop_budget=total, namespace="backward") as budget:
     # backward pass here
     ...
 
 # Session-wide summary across all phases
-me.budget_summary()
+we.budget_summary()
 ```
 
-`me.budget_summary_dict(by_namespace=True)` returns a dict with per-namespace breakdowns for programmatic analysis.
+`we.budget_summary_dict(by_namespace=True)` returns a dict with per-namespace breakdowns for programmatic analysis.
 
 ## 📎 Related pages
 

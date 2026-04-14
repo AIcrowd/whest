@@ -1,13 +1,13 @@
 <div align="center">
-<img src="docs/assets/logo/logo.png" alt="mechestim" height="80">
-<h1>mechestim</h1>
+<img src="docs/assets/logo/logo.png" alt="whest" height="80">
+<h1>whest</h1>
 <p><strong>NumPy-compatible math primitives with analytical FLOP counting</strong></p>
 </div>
 
 <div align="center">
 
-[![CI](https://github.com/AIcrowd/mechestim/actions/workflows/ci.yml/badge.svg)](https://github.com/AIcrowd/mechestim/actions/workflows/ci.yml)
-[![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://aicrowd.github.io/mechestim/)
+[![CI](https://github.com/AIcrowd/whest/actions/workflows/ci.yml/badge.svg)](https://github.com/AIcrowd/whest/actions/workflows/ci.yml)
+[![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://aicrowd.github.io/whest/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)]()
@@ -18,12 +18,12 @@
 
 ---
 
-**mechestim** is a drop-in replacement for a subset of NumPy that counts floating-point operations as you compute. Algorithms submitted to the ARC Mechanistic Estimation Challenge are scored by their analytical FLOP cost, not wall-clock time, so researchers can focus on **algorithmic innovation** rather than hardware tuning. Every arithmetic call deducts from a fixed budget; exceed it and execution stops immediately.
+**whest** is a drop-in replacement for a subset of NumPy that counts floating-point operations as you compute. Algorithms submitted to the ARC Mechanistic Estimation Challenge are scored by their analytical FLOP cost, not wall-clock time, so researchers can focus on **algorithmic innovation** rather than hardware tuning. Every arithmetic call deducts from a fixed budget; exceed it and execution stops immediately.
 
-## Why mechestim?
+## Why whest?
 
 <table>
-<tr><th>NumPy</th><th>mechestim</th></tr>
+<tr><th>NumPy</th><th>whest</th></tr>
 <tr>
 <td>
 
@@ -53,25 +53,25 @@ for i, W in enumerate(weights):
 <td>
 
 ```python
-import mechestim as me
+import whest as we
 
 depth, width = 5, 256
 
 # Weight init
-scale = me.sqrt(2 / width)
+scale = we.sqrt(2 / width)
 weights = [
-    me.random.randn(width, width) * scale
+    we.random.randn(width, width) * scale
     for _ in range(depth)
 ]
 
 # Forward pass
-x = me.random.randn(width)
+x = we.random.randn(width)
 h = x
 for i, W in enumerate(weights):
-    h = me.einsum('ij,j->i', W, h)
+    h = we.einsum('ij,j->i', W, h)
     if i < depth - 1:
-        h = me.maximum(h, 0)
-me.budget_summary()  # 984,321 FLOPs
+        h = we.maximum(h, 0)
+we.budget_summary()  # 984,321 FLOPs
 ```
 
 </td>
@@ -80,7 +80,7 @@ me.budget_summary()  # 984,321 FLOPs
 
 ## Key Features
 
-- **NumPy-compatible API** -- `import mechestim as me` and write familiar NumPy code
+- **NumPy-compatible API** -- `import whest as we` and write familiar NumPy code
 - **Analytical FLOP counting** -- deterministic, hardware-independent cost tracking
 - **Budget enforcement** -- operations are checked before execution; exceeding the budget raises a clear error
 - **Symmetry-aware einsum** -- automatic FLOP savings for repeated operands and declared symmetry groups
@@ -91,12 +91,12 @@ me.budget_summary()  # 984,321 FLOPs
 
 | Module | Operations | Cost Model | Status |
 |--------|-----------|------------|--------|
-| Core (`me.*`) | 367 | Varies by category (unary, binary, reduction, free) | Supported |
-| `me.linalg` | 31 | Per-operation formulas | Supported |
-| `me.fft` | 18 | `5n * ceil(log2(n))` for transforms | Supported |
-| `me.random` | 51 | `numel(output)` per sample; shuffle: `n*ceil(log2(n))` | Supported |
-| `me.polynomial` | 10 | Per-operation formulas | Supported |
-| `me.window` | 5 | `n` to `3n` per window | Supported |
+| Core (`we.*`) | 367 | Varies by category (unary, binary, reduction, free) | Supported |
+| `we.linalg` | 31 | Per-operation formulas | Supported |
+| `we.fft` | 18 | `5n * ceil(log2(n))` for transforms | Supported |
+| `we.random` | 51 | `numel(output)` per sample; shuffle: `n*ceil(log2(n))` | Supported |
+| `we.polynomial` | 10 | Per-operation formulas | Supported |
+| `we.window` | 5 | `n` to `3n` per window | Supported |
 | **Total** | **450 supported** | | **32 blocked** |
 
 Blocked operations (I/O, config, and system calls) raise a helpful `AttributeError` with a link to the docs.
@@ -106,37 +106,37 @@ Blocked operations (I/O, config, and system calls) raise a helpful `AttributeErr
 ### Installation
 
 ```bash
-pip install git+https://github.com/AIcrowd/mechestim.git
+pip install git+https://github.com/AIcrowd/whest.git
 # or
-uv add git+https://github.com/AIcrowd/mechestim.git
+uv add git+https://github.com/AIcrowd/whest.git
 ```
 
 ### Basic Usage
 
 ```python
-import mechestim as me
+import whest as we
 
 depth, width = 5, 256
 
-with me.BudgetContext(flop_budget=10**8) as budget:
+with we.BudgetContext(flop_budget=10**8) as budget:
     # Weight init
-    scale = me.sqrt(2 / width)
-    weights = [me.random.randn(width, width) * scale
+    scale = we.sqrt(2 / width)
+    weights = [we.random.randn(width, width) * scale
                for _ in range(depth)]
 
     # Forward pass
-    x = me.random.randn(width)
+    x = we.random.randn(width)
     h = x
     for i, W in enumerate(weights):
-        h = me.einsum('ij,j->i', W, h)
+        h = we.einsum('ij,j->i', W, h)
         if i < depth - 1:
-            h = me.maximum(h, 0)
+            h = we.maximum(h, 0)
 
     print(budget.summary())
 ```
 
 ```
-mechestim FLOP Budget Summary
+whest FLOP Budget Summary
 =============================
   Total budget:     100,000,000
   Used:                 984,321  (1.0%)
@@ -153,26 +153,26 @@ mechestim FLOP Budget Summary
 
 ```python
 # Query FLOP costs without running anything (no BudgetContext needed)
-cost = me.flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
+cost = we.flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
 print(f"Matmul cost: {cost:,}")  # 33,554,432
 
-cost = me.flops.svd_cost(m=256, n=256, k=10)
+cost = we.flops.svd_cost(m=256, n=256, k=10)
 print(f"SVD cost: {cost:,}")     # 655,360
 ```
 
 ### Symmetry Savings
 
-When you pass the same array object multiple times, mechestim automatically
+When you pass the same array object multiple times, whest automatically
 detects the symmetry and reduces the FLOP count:
 
 ```python
-with me.BudgetContext(flop_budget=10**8) as budget:
-    X = me.ones((100, 100))
+with we.BudgetContext(flop_budget=10**8) as budget:
+    X = we.ones((100, 100))
 
     # Gram matrix: both operands are the same X.
-    # mechestim auto-detects this and induces S2{j,k} on the output,
+    # whest auto-detects this and induces S2{j,k} on the output,
     # giving ~1/2 the dense cost (since R[j,k] = R[k,j]).
-    R = me.einsum("ij,ik->jk", X, X)
+    R = we.einsum("ij,ik->jk", X, X)
     print(f"Cost with equal-operand detection: {budget.flops_used:,}")
 ```
 
@@ -186,11 +186,11 @@ including triple products and block symmetries.
 1. **FLOPs are tracked automatically.** A global default budget activates on first use, or you can wrap code in an explicit `BudgetContext` for a custom limit. Free ops (tensor creation, reshaping) cost 0 FLOPs.
 2. **FLOP costs are analytical.** Costs are computed from tensor shapes, not measured from execution. A matmul of `(m, k) @ (k, n)` always costs `2 * m * k * n` FLOPs regardless of hardware.
 3. **Budget is checked before execution.** If an operation would exceed the remaining budget, `BudgetExhaustedError` is raised and the operation does not run.
-4. **All tensors are plain `numpy.ndarray`.** There is no custom tensor class and no hidden state. You can pass mechestim arrays to any NumPy-compatible library.
+4. **All tensors are plain `numpy.ndarray`.** There is no custom tensor class and no hidden state. You can pass whest arrays to any NumPy-compatible library.
 
 ## Sharp Edges
 
-**Budget is always active.** A global default budget (1e15 FLOPs, configurable via `MECHESTIM_DEFAULT_BUDGET` env var) activates automatically. Use an explicit `BudgetContext` to set a custom limit.
+**Budget is always active.** A global default budget (1e15 FLOPs, configurable via `WHEST_DEFAULT_BUDGET` env var) activates automatically. Use an explicit `BudgetContext` to set a custom limit.
 
 **32 operations are blocked.** I/O, config, and system-level functions (`save`, `load`, `set_printoptions`, etc.) raise `AttributeError` by design. These have no meaningful FLOP cost and are not part of the competition API.
 
@@ -200,7 +200,7 @@ including triple products and block symmetries.
 
 **Cost is analytical, not wall-clock.** Two operations with the same shapes always report the same FLOP cost, regardless of data values, cache effects, or hardware. This is intentional -- it makes scores reproducible across machines.
 
-**SymmetricTensor propagation rules.** Symmetry metadata (used by einsum for FLOP savings) propagates through reshaping, slicing, and unary pointwise operations (e.g., `exp`, `log`). Binary pointwise operations (e.g., `add`, `multiply`) intersect the symmetry groups of both operands. Reductions may drop symmetry on the reduced axis. If the result doesn't carry the symmetry you expect, declare symmetry groups explicitly with `me.as_symmetric()`.
+**SymmetricTensor propagation rules.** Symmetry metadata (used by einsum for FLOP savings) propagates through reshaping, slicing, and unary pointwise operations (e.g., `exp`, `log`). Binary pointwise operations (e.g., `add`, `multiply`) intersect the symmetry groups of both operands. Reductions may drop symmetry on the reduced axis. If the result doesn't carry the symmetry you expect, declare symmetry groups explicitly with `we.as_symmetric()`.
 
 ## Documentation
 
@@ -238,8 +238,8 @@ including triple products and block symmetries.
 ## Development
 
 ```bash
-git clone https://github.com/AIcrowd/mechestim.git
-cd mechestim
+git clone https://github.com/AIcrowd/whest.git
+cd whest
 make install
 make test                      # core test suite
 make docs-serve                # local docs at http://127.0.0.1:8000
@@ -251,11 +251,11 @@ For the monorepo layout, client/server workflows, and generated-doc rules, see
 ## Citation
 
 ```bibtex
-@misc{mechestim2026,
-  title  = {mechestim: NumPy-compatible math primitives with FLOP counting},
+@misc{whest2026,
+  title  = {whest: NumPy-compatible math primitives with FLOP counting},
   author = {AIcrowd},
   year   = {2026},
-  url    = {https://github.com/AIcrowd/mechestim},
+  url    = {https://github.com/AIcrowd/whest},
   note   = {Built for the ARC Mechanistic Estimation Challenge}
 }
 ```

@@ -1,13 +1,14 @@
-site_name: mechestim
+site_name: whest
 
 exclude_docs: |
   superpowers/
+  visualization/**/node_modules/
 site_description: >-
   NumPy-compatible math primitives with FLOP counting.
-  mechestim is NOT a drop-in NumPy replacement — every arithmetic
+  whest is NOT a drop-in NumPy replacement — every arithmetic
   operation is counted and charged against a FLOP budget.
-site_url: https://aicrowd.github.io/mechestim/
-repo_url: https://github.com/AIcrowd/mechestim
+site_url: https://aicrowd.github.io/whest/
+repo_url: https://github.com/AIcrowd/whest
 
 theme:
   name: material
@@ -39,10 +40,10 @@ plugins:
   - llmstxt-md:
       sections:
         "Getting Started":
-          - getting-started/installation.md: "Install mechestim and verify setup"
+          - getting-started/installation.md: "Install whest and verify setup"
           - getting-started/first-budget.md: "Create your first FLOP budget"
         "How-To Guides":
-          - how-to/migrate-from-numpy.md: "Migrate existing NumPy code to mechestim"
+          - how-to/migrate-from-numpy.md: "Migrate existing NumPy code to whest"
           - how-to/use-einsum.md: "Einstein summation patterns and costs"
           - how-to/exploit-symmetry.md: "Save FLOPs via symmetry detection"
           - how-to/use-linalg.md: "Linear algebra operations and costs"
@@ -59,7 +60,7 @@ plugins:
           - explanation/symmetry-explorer.md: "Interactive visualization of einsum symmetry detection"
         "Architecture":
           - architecture/client-server.md: "Client-server architecture for sandboxed execution"
-          - architecture/docker.md: "Running mechestim with Docker and Docker Compose"
+          - architecture/docker.md: "Running whest with Docker and Docker Compose"
         "Development":
           - development/contributing.md: "Repository layout, local workflows, and generated-doc rules"
         "API Reference":

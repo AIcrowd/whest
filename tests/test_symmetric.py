@@ -6,14 +6,14 @@ import numpy
 import numpy as np
 import pytest
 
-from mechestim._budget import BudgetContext
-from mechestim._perm_group import PermutationGroup
-from mechestim._symmetric import (
+from whest._budget import BudgetContext
+from whest._perm_group import PermutationGroup
+from whest._symmetric import (
     SymmetricTensor,
     SymmetryInfo,
     as_symmetric,
 )
-from mechestim.errors import SymmetryError
+from whest.errors import SymmetryError
 
 
 class TestSymmetryInfo:
@@ -166,15 +166,15 @@ class TestSymmetricTensor:
 
 
 class TestPublicAPI:
-    def test_import_from_mechestim(self):
-        import mechestim as me
+    def test_import_from_whest(self):
+        import whest as we
 
-        assert hasattr(me, "SymmetricTensor")
-        assert hasattr(me, "SymmetryInfo")
-        assert hasattr(me, "as_symmetric")
+        assert hasattr(we, "SymmetricTensor")
+        assert hasattr(we, "SymmetryInfo")
+        assert hasattr(we, "as_symmetric")
 
     def test_import_symmetry_info_from_flops(self):
-        from mechestim.flops import SymmetryInfo
+        from whest.flops import SymmetryInfo
 
         assert SymmetryInfo is not None
 
@@ -182,61 +182,61 @@ class TestPublicAPI:
 class TestEndToEnd:
     def test_covprop_workflow(self):
         """Simulate a covprop-like workflow: build covariance, do pointwise, solve."""
-        import mechestim as me
+        import whest as we
 
         n, d = 5, 20
         X = numpy.random.randn(d, n)
 
         with BudgetContext(flop_budget=10**8, quiet=True) as budget:
             # Build symmetric covariance: X^T X -> symmetric
-            cov = me.einsum("ki,kj->ij", X, X, symmetric_axes=[(0, 1)])
+            cov = we.einsum("ki,kj->ij", X, X, symmetric_axes=[(0, 1)])
             assert isinstance(cov, SymmetricTensor)
             cov_cost = budget.flops_used
 
             # Pointwise on symmetric matrix — should get savings
             before = budget.flops_used
-            exp_cov = me.exp(cov)
+            exp_cov = we.exp(cov)
             pointwise_cost_actual = budget.flops_used - before
             assert isinstance(exp_cov, SymmetricTensor)
             assert pointwise_cost_actual == n * (n + 1) // 2  # 15
 
             # Solve with symmetric matrix — should use Cholesky cost
             # Make it positive definite first
-            cov_pd = cov + me.multiply(
-                me.as_symmetric(numpy.eye(n), symmetric_axes=(0, 1)),
+            cov_pd = cov + we.multiply(
+                we.as_symmetric(numpy.eye(n), symmetric_axes=(0, 1)),
                 numpy.asarray(float(n)),
             )
             b = numpy.ones(n)
             before = budget.flops_used
-            x = me.linalg.solve(cov_pd, b)
+            x = we.linalg.solve(cov_pd, b)
             solve_cost_actual = budget.flops_used - before
             assert not isinstance(x, SymmetricTensor)
             assert solve_cost_actual == n**3  # simplified to n^3
 
     def test_symmetry_preserved_through_chain(self):
         """Chain of unary ops preserves symmetry."""
-        import mechestim as me
+        import whest as we
 
         data = numpy.eye(4) + 0.5
-        S = me.as_symmetric(data, symmetric_axes=(0, 1))
+        S = we.as_symmetric(data, symmetric_axes=(0, 1))
 
         with BudgetContext(flop_budget=10**8, quiet=True):
-            r1 = me.exp(S)
+            r1 = we.exp(S)
             assert isinstance(r1, SymmetricTensor)
-            r2 = me.log(r1)
+            r2 = we.log(r1)
             assert isinstance(r2, SymmetricTensor)
-            r3 = me.sqrt(me.abs(r2))
+            r3 = we.sqrt(we.abs(r2))
             assert isinstance(r3, SymmetricTensor)
 
     def test_symmetry_lost_on_matmul(self):
         """Matmul does not preserve symmetry."""
-        import mechestim as me
+        import whest as we
 
-        A = me.as_symmetric(numpy.eye(3), symmetric_axes=(0, 1))
+        A = we.as_symmetric(numpy.eye(3), symmetric_axes=(0, 1))
         B = numpy.ones((3, 3))
 
         with BudgetContext(flop_budget=10**8, quiet=True):
-            result = me.einsum("ij,jk->ik", A, B)
+            result = we.einsum("ij,jk->ik", A, B)
             assert not isinstance(result, SymmetricTensor)
 
 

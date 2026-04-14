@@ -6,7 +6,7 @@ Use this page to understand which operations cost FLOPs, which are free, and whi
 
 ## Three categories
 
-Every NumPy function falls into one of three categories in mechestim:
+Every NumPy function falls into one of three categories in whest:
 
 ### 🟢 Free operations (0 FLOPs)
 
@@ -23,14 +23,14 @@ Operations that perform arithmetic. Cost is computed analytically from tensor sh
 | Unary | numel(output) | `exp`, `log`, `sqrt`, `abs`, `sin`, `cos`, `tanh`, `ceil`, `floor` |
 | Binary | numel(output) | `add`, `multiply`, `maximum`, `divide`, `power`, `subtract` |
 | Reduction | numel(input) | `sum`, `mean`, `max`, `min`, `std`, `var`, `argmax`, `nansum` |
-| Einsum | product of all index dims | `me.einsum(...)` |
-| Dot/Matmul | equivalent einsum | `me.dot(A, B)`, `A @ B` |
-| Linalg | per-operation formula | `me.linalg.solve`, `me.linalg.eigh`, `me.linalg.cholesky` |
-| FFT | 5 N log N | `me.fft.fft`, `me.fft.rfft`, `me.fft.fft2` |
-| SVD | m × n × k | `me.linalg.svd(A, k=10)` |
+| Einsum | product of all index dims | `we.einsum(...)` |
+| Dot/Matmul | equivalent einsum | `we.dot(A, B)`, `A @ B` |
+| Linalg | per-operation formula | `we.linalg.solve`, `we.linalg.eigh`, `we.linalg.cholesky` |
+| FFT | 5 N log N | `we.fft.fft`, `we.fft.rfft`, `we.fft.fft2` |
+| SVD | m × n × k | `we.linalg.svd(A, k=10)` |
 | Sort/Search | n log n per slice | `sort`, `argsort`, `unique`, `searchsorted` |
-| Random | numel(output) | `me.random.randn`, `me.random.normal`, `me.random.uniform` |
-| Stats | flat per-element (varies) | `me.stats.norm.pdf`, `me.stats.expon.cdf`, `me.stats.cauchy.ppf` |
+| Random | numel(output) | `we.random.randn`, `we.random.normal`, `we.random.uniform` |
+| Stats | flat per-element (varies) | `we.stats.norm.pdf`, `we.stats.expon.cdf`, `we.stats.cauchy.ppf` |
 
 When inputs are `SymmetricTensor`, many operations automatically get reduced costs. See [Exploit Symmetry](../how-to/exploit-symmetry.md).
 
@@ -39,8 +39,8 @@ When inputs are `SymmetricTensor`, many operations automatically get reduced cos
 Operations not relevant to numerical computation. Calling them raises an `AttributeError`. These are I/O, configuration, datetime, and display functions that have no meaningful FLOP cost.
 
 ```python
-me.save(array, "file.npy")
-# AttributeError: 'save' is blacklisted in mechestim (I/O operation).
+we.save(array, "file.npy")
+# AttributeError: 'save' is blacklisted in whest (I/O operation).
 ```
 
 **Blacklisted categories:** I/O (`save`, `load`, `loadtxt`, `savetxt`, `savez`, `genfromtxt`), configuration (`seterr`, `geterr`, `setbufsize`), datetime (`busday_count`, `is_busday`), display (`array2string`, `array_repr`), functional (`apply_along_axis`, `piecewise`, `frompyfunc`).

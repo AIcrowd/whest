@@ -146,9 +146,7 @@ def _render_terminal_rich(
         f"Mode      : {mode}"
         + (" (wall-clock proxy)" if mode == "timing" else " (hardware counters)"),
     ]
-    console.print(
-        Panel("\n".join(header_lines), title="mechestim FLOP Weight Benchmark")
-    )
+    console.print(Panel("\n".join(header_lines), title="whest FLOP Weight Benchmark"))
 
     categories = _categorize_weights(weights)
 
@@ -192,7 +190,7 @@ def _render_terminal_plain(
     bc = meta.get("benchmark_config", {})
 
     lines.append("=" * 70)
-    lines.append("  mechestim FLOP Weight Benchmark")
+    lines.append("  whest FLOP Weight Benchmark")
     lines.append("=" * 70)
     lines.append(f"  Timestamp : {meta.get('timestamp', 'N/A')[:19]}")
     lines.append(f"  CPU       : {hw.get('cpu_model', 'N/A')}")
@@ -240,7 +238,7 @@ def render_html(
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>mechestim FLOP Weight Benchmark</title>
+<title>whest FLOP Weight Benchmark</title>
 <style>
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
          max-width: 960px; margin: 2rem auto; padding: 0 1rem; color: #333; }
@@ -260,7 +258,7 @@ def render_html(
 </style>
 </head>
 <body>
-<h1>mechestim FLOP Weight Benchmark</h1>
+<h1>whest FLOP Weight Benchmark</h1>
 """)
 
     parts.append('<div class="meta">')

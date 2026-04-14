@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import numpy
 
-from mechestim._budget import BudgetContext
-from mechestim._counting_ops import (
+from whest._budget import BudgetContext
+from whest._counting_ops import (
     allclose,
     array_equal,
     array_equiv,

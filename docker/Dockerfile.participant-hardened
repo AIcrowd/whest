@@ -5,12 +5,12 @@ FROM python:3.10-slim AS builder
 
 WORKDIR /build
 
-# Install mechestim-client (with pyzmq and msgpack)
-COPY mechestim-client/ /build/mechestim-client/
-RUN pip install --no-cache-dir /build/mechestim-client/
+# Install whest-client (with pyzmq and msgpack)
+COPY whest-client/ /build/whest-client/
+RUN pip install --no-cache-dir /build/whest-client/
 
 # Verify the client installed and numpy is NOT available
-RUN python -c "import mechestim; print(f'mechestim-client {mechestim.__version__} installed')"
+RUN python -c "import whest; print(f'whest-client {whest.__version__} installed')"
 RUN ! python -c "import numpy" 2>/dev/null && echo "GOOD: numpy is not installed"
 
 # Copy lockdown scripts
@@ -18,7 +18,7 @@ COPY docker/lockdown/ /build/lockdown/
 
 # Generate _constants.py from the real math module BEFORE stripping
 RUN python /build/lockdown/generate_constants.py \
-    $(python -c "import sysconfig; print(sysconfig.get_paths()['purelib'])")/mechestim/_constants.py
+    $(python -c "import sysconfig; print(sysconfig.get_paths()['purelib'])")/whest/_constants.py
 
 # Collect needed shared libraries BEFORE stripping (needs full access)
 RUN python /build/lockdown/collect_libs.py /needed-libs
@@ -34,7 +34,7 @@ RUN SITE=$(python -c "import sysconfig; print(sysconfig.get_paths()['purelib'])"
 
 # Verify lockdown works
 RUN ! python -c "import numpy" 2>/dev/null && echo "GOOD: numpy is not installed"
-RUN python -c "import mechestim; print('GOOD: mechestim loads under lockdown')"
+RUN python -c "import whest; print('GOOD: whest loads under lockdown')"
 
 # =============================================================================
 # Stage 2: Final — minimal base with only what we need
@@ -67,7 +67,7 @@ RUN find /bin /sbin /usr/bin /usr/sbin -type f -o -type l 2>/dev/null | \
 # Copy the entrypoint
 COPY docker/entrypoint.py /entrypoint.py
 
-ENV MECHESTIM_SERVER_URL=ipc:///ipc/mechestim.sock
+ENV WHEST_SERVER_URL=ipc:///ipc/whest.sock
 ENV PYTHONDONTWRITEBYTECODE=1
 
 ENTRYPOINT ["/usr/local/bin/python3.10", "/entrypoint.py"]

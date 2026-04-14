@@ -2,7 +2,7 @@
 
 ## When to use this page
 
-Use this page to understand how mechestim counts FLOPs and why it uses analytical counting instead of runtime measurement.
+Use this page to understand how whest counts FLOPs and why it uses analytical counting instead of runtime measurement.
 
 ## Convention: FMA = 1 operation
 
@@ -21,10 +21,10 @@ All cost formulae reflect this: a matrix multiply of dimensions
 
 ## How costs are computed
 
-mechestim computes FLOP costs **analytically from tensor shapes**, not by measuring execution time.
+whest computes FLOP costs **analytically from tensor shapes**, not by measuring execution time.
 
-1. You call a counted operation (e.g., `me.einsum('ij,j->i', W, x)`)
-2. mechestim computes the cost from the shapes: 256 × 256 = 65,536 FLOPs
+1. You call a counted operation (e.g., `we.einsum('ij,j->i', W, x)`)
+2. whest computes the cost from the shapes: 256 × 256 = 65,536 FLOPs
 3. The cost is checked against the remaining budget
 4. If within budget: the operation executes and the cost is deducted
 5. If over budget: `BudgetExhaustedError` is raised, the operation does **not** execute
@@ -92,7 +92,7 @@ Symmetry that reduces einsum costs comes from two complementary sources,
 both unified under the **subgraph symmetry detection** algorithm:
 
 1. **Declared per-operand symmetry.** When an operand is wrapped with
-   `me.as_symmetric()`, its symmetry groups are embedded in the bipartite
+   `we.as_symmetric()`, its symmetry groups are embedded in the bipartite
    graph as U-vertex equivalence classes. These propagate into intermediate
    tensors automatically.
 
@@ -116,7 +116,7 @@ for the algorithm walkthrough.
 ## Einsum cost model
 
 Every einsum — regardless of the number of operands — is decomposed into
-pairwise contraction steps along an optimal path (found via mechestim's
+pairwise contraction steps along an optimal path (found via whest's
 [opt_einsum fork](../api/opt-einsum.md)).
 The total cost is the sum of per-step costs:
 
@@ -133,11 +133,11 @@ dense_step_cost = product of all index dimensions
 ```
 
 Each fused multiply-add (FMA) counts as 1 operation (see
-[Convention](#convention-fma--1-operation) above), so the cost of a
+[Convention](#convention-fma-1-operation) above), so the cost of a
 contraction step is simply the product of all index dimensions — there is
 no factor-of-2 distinction between inner products and outer products.
 
-When symmetry is present, mechestim reduces each step's cost based on
+When symmetry is present, whest reduces each step's cost based on
 the structure of the contraction.
 
 ### Symmetric contraction cost
@@ -171,7 +171,7 @@ earlier step and no longer appear in the current step, the inner
 reduction is skipped (the per-step table shows this as `[W: ...]` when
 detected-but-not-applied versus `[W✓: ...]` when applied). Inner
 symmetry can be toggled globally with
-`me.configure(use_inner_symmetry=False)`.
+`we.configure(use_inner_symmetry=False)`.
 
 The two factors are independent; outer-product contractions (no summed
 indices) and non-uniform index dimensions are handled by the same
@@ -192,7 +192,7 @@ through intermediates — if an early contraction produces a symmetric
 intermediate, subsequent steps benefit from the reduced element count, and
 the optimizer factors this into its ordering decisions.
 
-Use `me.einsum_path()` to inspect the per-step breakdown. See
+Use `we.einsum_path()` to inspect the per-step breakdown. See
 [Use Einsum](../how-to/use-einsum.md) for examples.
 
 ## Per-operation weights
@@ -258,11 +258,11 @@ per-element cost, and both apply independently.
 
 ### Loading a weights config
 
-Set the `MECHESTIM_WEIGHTS_FILE` environment variable to load weights at
+Set the `WHEST_WEIGHTS_FILE` environment variable to load weights at
 import time:
 
 ```bash
-export MECHESTIM_WEIGHTS_FILE=/path/to/weights.json
+export WHEST_WEIGHTS_FILE=/path/to/weights.json
 ```
 
 The JSON file must have a `"weights"` key mapping operation names to floats:
@@ -303,7 +303,7 @@ The `benchmarks/` package in this repository automates both methods. See
 The `flop_multiplier` parameter in `BudgetContext` scales all costs:
 
 ```python
-with me.BudgetContext(flop_budget=10**6, flop_multiplier=2.0) as budget:
+with we.BudgetContext(flop_budget=10**6, flop_multiplier=2.0) as budget:
     # Every operation costs 2× its normal FLOP count
     ...
 ```
@@ -318,12 +318,12 @@ weights scale each operation individually.
 The `namespace` parameter in `BudgetContext` is a display-only label for grouping operations in summaries:
 
 ```python
-with me.BudgetContext(flop_budget=10**6, namespace="training") as budget:
+with we.BudgetContext(flop_budget=10**6, namespace="training") as budget:
     # Operations are tagged with "training" for display
     ...
 ```
 
-Namespaces do not affect FLOP counting or budget enforcement — they only appear in `me.budget_summary()` output.
+Namespaces do not affect FLOP counting or budget enforcement — they only appear in `we.budget_summary()` output.
 
 ## Related pages
 

@@ -2,7 +2,7 @@
 
 ## When to use this page
 
-Use this page when you are working on the mechestim repository itself rather than
+Use this page when you are working on the whest repository itself rather than
 only consuming the published API.
 
 ## Repository layout
@@ -11,12 +11,12 @@ This repository contains three Python packages plus docs and Docker assets:
 
 | Path | Purpose |
 |------|---------|
-| `src/mechestim/` | Core library backed by NumPy |
-| `mechestim-client/src/mechestim/` | Client proxy used in sandboxed participant environments |
-| `mechestim-server/src/mechestim_server/` | ZMQ server that executes the real library |
+| `src/whest/` | Core library backed by NumPy |
+| `whest-client/src/whest/` | Client proxy used in sandboxed participant environments |
+| `whest-server/src/whest_server/` | ZMQ server that executes the real library |
 | `tests/` | Core library test suite |
-| `mechestim-client/tests/` | Client unit, integration, and adversarial tests |
-| `mechestim-server/tests/` | Server unit tests |
+| `whest-client/tests/` | Client unit, integration, and adversarial tests |
+| `whest-server/tests/` | Server unit tests |
 | `docs/` | MkDocs source |
 | `scripts/generate_api_docs.py` | Generates the API/reference inventory pages |
 | `docker/` | Local client-server and hardened evaluation images |
@@ -26,8 +26,8 @@ This repository contains three Python packages plus docs and Docker assets:
 For normal work on the core package, docs, and root test suite:
 
 ```bash
-git clone https://github.com/AIcrowd/mechestim.git
-cd mechestim
+git clone https://github.com/AIcrowd/whest.git
+cd whest
 make install
 ```
 
@@ -38,10 +38,10 @@ make install
 The root environment covers the core package, linting, docs, and the main test
 suite. The client and server each also have their own `pyproject.toml`.
 
-One important caveat: `mechestim-server` depends on the local `mechestim`
+One important caveat: `whest-server` depends on the local `whest`
 package, which is not resolved from a package index in a fresh source checkout.
 For server development, run commands from the repository root with
-`PYTHONPATH=src:mechestim-server/src` instead of relying on `cd mechestim-server
+`PYTHONPATH=src:whest-server/src` instead of relying on `cd whest-server
 && uv run ...`.
 
 ## Common commands
@@ -70,7 +70,7 @@ The client package is independently installable, so its test suite can run via
 its own project file:
 
 ```bash
-uv run --project mechestim-client pytest mechestim-client/tests
+uv run --project whest-client pytest whest-client/tests
 ```
 
 Client integration and adversarial tests start a real server subprocess using
@@ -82,16 +82,16 @@ Run server tests from the repository root so the local core package is on
 `PYTHONPATH`:
 
 ```bash
-PYTHONPATH=src:mechestim-server/src \
-  uv run --with pyzmq --with msgpack pytest mechestim-server/tests
+PYTHONPATH=src:whest-server/src \
+  uv run --with pyzmq --with msgpack pytest whest-server/tests
 ```
 
 To launch the server manually from a source checkout:
 
 ```bash
-PYTHONPATH=src:mechestim-server/src \
+PYTHONPATH=src:whest-server/src \
   uv run --with pyzmq --with msgpack \
-  python -m mechestim_server --url ipc:///tmp/mechestim.sock
+  python -m whest_server --url ipc:///tmp/whest.sock
 ```
 
 ## Running client and server together without Docker
@@ -101,15 +101,15 @@ correctly:
 
 ```bash
 # Terminal 1
-PYTHONPATH=src:mechestim-server/src \
+PYTHONPATH=src:whest-server/src \
   uv run --with pyzmq --with msgpack \
-  python -m mechestim_server --url ipc:///tmp/mechestim.sock
+  python -m whest_server --url ipc:///tmp/whest.sock
 ```
 
 ```bash
 # Terminal 2
-export MECHESTIM_SERVER_URL=ipc:///tmp/mechestim.sock
-PYTHONPATH=mechestim-client/src \
+export WHEST_SERVER_URL=ipc:///tmp/whest.sock
+PYTHONPATH=whest-client/src \
   uv run --with pyzmq --with msgpack python your_script.py
 ```
 

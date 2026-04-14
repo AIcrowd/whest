@@ -10,33 +10,33 @@ Use this page when you hit a `BudgetExhaustedError` and need to find which opera
 
 ## Reading the budget summary
 
-Call `budget.summary()` at any point inside a `BudgetContext`, or call `me.budget_summary()` outside a context for a session-wide summary across all namespaces:
+Call `budget.summary()` at any point inside a `BudgetContext`, or call `we.budget_summary()` outside a context for a session-wide summary across all namespaces:
 
 ```python
-import mechestim as me
+import whest as we
 
-with me.BudgetContext(flop_budget=10_000_000) as budget:
-    A = me.ones((256, 256))
-    x = me.ones((256,))
+with we.BudgetContext(flop_budget=10_000_000) as budget:
+    A = we.ones((256, 256))
+    x = we.ones((256,))
 
-    h = me.einsum('ij,j->i', A, x)
-    h = me.exp(h)
-    h = me.sum(h)
+    h = we.einsum('ij,j->i', A, x)
+    h = we.exp(h)
+    h = we.sum(h)
 
     print(budget.summary())
 
 # Outside the context — summarises every namespace recorded this session
-print(me.budget_summary())
+print(we.budget_summary())
 ```
 
 The summary shows cost per operation type, sorted by highest cost first.
 
 ## Session-wide programmatic analysis
 
-Use `me.budget_summary_dict()` to retrieve aggregated budget data as a dict for automated analysis (e.g. in tests or notebooks):
+Use `we.budget_summary_dict()` to retrieve aggregated budget data as a dict for automated analysis (e.g. in tests or notebooks):
 
 ```python
-data = me.budget_summary_dict()
+data = we.budget_summary_dict()
 print(f"Budget: {data['flop_budget']:,}")
 print(f"Used:   {data['flops_used']:,}")
 print(f"Left:   {data['flops_remaining']:,}")
@@ -66,18 +66,18 @@ Each `OpRecord` contains:
 
 ## Live budget display
 
-Use `me.budget_live()` as a context manager for a Rich-based live-updating display that refreshes as operations run. This is useful when running long computations and you want to watch budget consumption in real time:
+Use `we.budget_live()` as a context manager for a Rich-based live-updating display that refreshes as operations run. This is useful when running long computations and you want to watch budget consumption in real time:
 
 ```python
-import mechestim as me
+import whest as we
 
-with me.budget_live():
-    with me.BudgetContext(flop_budget=10**8, namespace="training") as budget:
+with we.budget_live():
+    with we.BudgetContext(flop_budget=10**8, namespace="training") as budget:
         for i in range(100):
-            W = me.ones((256, 256))
-            x = me.ones((256,))
-            h = me.einsum('ij,j->i', W, x)
-            h = me.exp(h)
+            W = we.ones((256, 256))
+            x = we.ones((256,))
+            h = we.einsum('ij,j->i', W, x)
+            h = we.exp(h)
             # The live display updates automatically as FLOPs are consumed
 ```
 

@@ -8,8 +8,8 @@ from unittest.mock import patch
 
 import pytest
 
-from mechestim._budget import BudgetContext
-from mechestim._display import (
+from whest._budget import BudgetContext
+from whest._display import (
     _format_flops,
     _is_global_default_ns,
     _pct,
@@ -156,7 +156,7 @@ def test_budget_summary_plain_text_prints(capsys):
     # budget_summary prints and returns None in non-IPython
     assert result is None
     captured = capsys.readouterr()
-    assert "summary_test" in captured.out or "mechestim" in captured.out
+    assert "summary_test" in captured.out or "whest" in captured.out
 
 
 def test_budget_summary_with_rich_returns_none(capsys):

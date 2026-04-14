@@ -3,8 +3,8 @@
 import numpy
 import pytest
 
-from mechestim._budget import BudgetContext
-from mechestim._pointwise import (
+from whest._budget import BudgetContext
+from whest._pointwise import (
     add,
     argmax,
     clip,

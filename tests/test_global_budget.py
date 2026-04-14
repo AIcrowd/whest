@@ -5,12 +5,12 @@ from unittest.mock import patch
 
 import pytest
 
-from mechestim._budget import (
+from whest._budget import (
     BudgetContext,
     _reset_global_default,
     get_active_budget,
 )
-from mechestim._validation import require_budget
+from whest._validation import require_budget
 
 
 @pytest.fixture(autouse=True)
@@ -45,7 +45,7 @@ def test_explicit_context_overrides_global():
 
 def test_global_default_env_var():
     _reset_global_default()
-    with patch.dict(os.environ, {"MECHESTIM_DEFAULT_BUDGET": "1e9"}):
+    with patch.dict(os.environ, {"WHEST_DEFAULT_BUDGET": "1e9"}):
         budget = require_budget()
         assert budget.flop_budget == int(1e9)
 

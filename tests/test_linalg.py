@@ -1,10 +1,10 @@
-"""Tests for mechestim.linalg.svd."""
+"""Tests for whest.linalg.svd."""
 
 import numpy
 import pytest
 
-from mechestim._budget import BudgetContext
-from mechestim.linalg import svd
+from whest._budget import BudgetContext
+from whest.linalg import svd
 
 
 def test_svd_full_result():
@@ -70,7 +70,7 @@ def test_svd_op_log():
 
 
 def test_linalg_unsupported():
-    from mechestim import linalg
+    from whest import linalg
 
     with pytest.raises(
         AttributeError,

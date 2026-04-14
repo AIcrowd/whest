@@ -1,10 +1,10 @@
-"""Tests for mechestim.random counted wrappers."""
+"""Tests for whest.random counted wrappers."""
 
 import numpy
 
-from mechestim import random as merandom
-from mechestim._budget import BudgetContext
-from mechestim._flops import _ceil_log2
+from whest import random as merandom
+from whest._budget import BudgetContext
+from whest._flops import _ceil_log2
 
 
 class TestSeed:

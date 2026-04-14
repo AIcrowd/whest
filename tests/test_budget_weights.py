@@ -6,9 +6,9 @@ import tempfile
 
 import pytest
 
-from mechestim._budget import BudgetContext
-from mechestim._weights import load_weights, reset_weights
-from mechestim.errors import BudgetExhaustedError
+from whest._budget import BudgetContext
+from whest._weights import load_weights, reset_weights
+from whest.errors import BudgetExhaustedError
 
 
 def test_deduct_applies_weight():

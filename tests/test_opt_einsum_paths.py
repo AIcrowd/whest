@@ -3,7 +3,7 @@ Tests the accuracy of the opt_einsum paths in addition to unit tests for
 the various path helper functions.
 
 Vendored from opt_einsum/tests/test_paths.py with import changes:
-  - opt_einsum -> mechestim._opt_einsum
+  - opt_einsum -> whest._opt_einsum
   - oe.helpers.X -> oe._helpers.X
   - oe.paths.X -> oe._paths.X
   - oe.path_random.X -> oe._path_random.X
@@ -16,10 +16,10 @@ from typing import Any
 
 import pytest
 
-from mechestim import _opt_einsum as oe
-from mechestim._opt_einsum._parser import get_symbol
-from mechestim._opt_einsum._testing import build_shapes, rand_equation
-from mechestim._opt_einsum._typing import (
+from whest import _opt_einsum as oe
+from whest._opt_einsum._parser import get_symbol
+from whest._opt_einsum._testing import build_shapes, rand_equation
+from whest._opt_einsum._typing import (
     ArrayIndexType,
     OptimizeKind,
     PathType,

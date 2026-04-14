@@ -102,11 +102,11 @@ def has_perf() -> bool:
     """Return True if the ``perf`` binary is on PATH.
 
     The check can be overridden by setting the environment variable
-    ``MECHESTIM_FORCE_TIMING=1``, which forces timing mode regardless
+    ``WHEST_FORCE_TIMING=1``, which forces timing mode regardless
     of whether ``perf`` is available.  This is used by the dual-mode
     validation loop to re-run benchmarks in timing mode.
     """
-    if os.environ.get("MECHESTIM_FORCE_TIMING") == "1":
+    if os.environ.get("WHEST_FORCE_TIMING") == "1":
         return False
     return shutil.which("perf") is not None
 

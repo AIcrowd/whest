@@ -19,10 +19,10 @@ from pathlib import Path
 
 import pytest
 
-from mechestim._registry import REGISTRY
+from whest._registry import REGISTRY
 
 ROOT = Path(__file__).resolve().parent.parent
-WEIGHTS_PATH = ROOT / "src" / "mechestim" / "data" / "weights.json"
+WEIGHTS_PATH = ROOT / "src" / "whest" / "data" / "weights.json"
 DOCS_PATH = ROOT / "docs" / "reference" / "empirical-weights.md"
 
 # Ensure benchmarks package is importable.

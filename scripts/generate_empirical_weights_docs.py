@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """Generate enriched empirical-weights documentation from weights.json.
 
-Reads ``src/mechestim/data/weights.json`` (which must contain
+Reads ``src/whest/data/weights.json`` (which must contain
 ``meta.per_op_details``) and produces:
 
 1. ``docs/reference/empirical-weights.csv`` -- 25-column review spreadsheet.
@@ -30,8 +30,8 @@ from pathlib import Path
 # ---------------------------------------------------------------------------
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-WEIGHTS_PATH = REPO_ROOT / "src" / "mechestim" / "data" / "weights.json"
-CSV_OUT = REPO_ROOT / "src" / "mechestim" / "data" / "weights.csv"
+WEIGHTS_PATH = REPO_ROOT / "src" / "whest" / "data" / "weights.json"
+CSV_OUT = REPO_ROOT / "src" / "whest" / "data" / "weights.csv"
 MD_OUT = REPO_ROOT / "docs" / "reference" / "empirical-weights.md"
 
 # ---------------------------------------------------------------------------
@@ -424,7 +424,7 @@ def build_rows(data: dict) -> list[dict]:
 
     Includes benchmarked ops, aliases, and excluded ops with reasons.
     """
-    from mechestim._registry import REGISTRY
+    from whest._registry import REGISTRY
 
     weights = data["weights"]
     details = data["meta"]["per_op_details"]
@@ -549,7 +549,7 @@ def build_rows(data: dict) -> list[dict]:
                 _empty_row(
                     name,
                     "blacklisted",
-                    "Intentionally unsupported in mechestim",
+                    "Intentionally unsupported in whest",
                     "blacklisted",
                     entry.get("notes", ""),
                 )
@@ -602,12 +602,12 @@ def _impl_link(url: str) -> str:
     if not url:
         return ""
     # Extract file:line from URL
-    # https://github.com/.../src/mechestim/_pointwise.py#L253
+    # https://github.com/.../src/whest/_pointwise.py#L253
     parts = url.split("/blob/main/")
     if len(parts) < 2:
         return f"[link]({url})"
     file_part = parts[1]
-    # src/mechestim/_pointwise.py#L253 -> _pointwise.py:253
+    # src/whest/_pointwise.py#L253 -> _pointwise.py:253
     path_and_anchor = file_part.split("#L")
     filename = Path(path_and_anchor[0]).name
     # Escape underscores in filename to prevent markdown emphasis
@@ -649,7 +649,7 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     w("## Introduction")
     w()
     w("Per-operation FLOP weights are multiplicative correction factors that bridge")
-    w("the gap between mechestim's analytical cost formulas and the actual")
+    w("the gap between whest's analytical cost formulas and the actual")
     w("floating-point instruction cost observed on hardware. When weights are")
     w("loaded, the effective cost of an operation becomes:")
     w()
@@ -703,7 +703,7 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
         "`fp_arith_inst_retired.*` (scalar x1, 128-bit x2, 256-bit x4, 512-bit x8)."
     )
     w(
-        "- $C(\\text{op}, \\text{params})$ is the analytical FLOP count from mechestim's "
+        "- $C(\\text{op}, \\text{params})$ is the analytical FLOP count from whest's "
         "cost formula (e.g., `numel(output)` for pointwise ops)."
     )
     w("- $R$ is the number of repeats per distribution.")
@@ -854,7 +854,7 @@ def generate_markdown(rows: list[dict], data: dict) -> str:
     # Download link
     # ------------------------------------------------------------------
     w(
-        "**[Download full review spreadsheet (CSV)](https://github.com/AIcrowd/mechestim/blob/main/src/mechestim/data/weights.csv)**"
+        "**[Download full review spreadsheet (CSV)](https://github.com/AIcrowd/whest/blob/main/src/whest/data/weights.csv)**"
     )
     w()
 

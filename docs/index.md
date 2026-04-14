@@ -1,10 +1,10 @@
-<img src="assets/logo/logo.png" alt="mechestim logo" style="height: 80px;">
+<img src="assets/logo/logo.png" alt="whest logo" style="height: 80px;">
 
-# mechestim
+# whest
 
 **NumPy-compatible math primitives with analytical FLOP counting.**
 
-!!! warning "mechestim is not a drop-in NumPy replacement"
+!!! warning "whest is not a drop-in NumPy replacement"
     Operations have analytical FLOP costs and 32 operations are blocked.
     A `BudgetContext` is optional — a global default activates automatically — but
     using one explicitly gives you budget limits, namespacing, and summaries.
@@ -22,7 +22,7 @@ Pick the path that matches what you need right now.
 - [Common Errors](./troubleshooting/common-errors.md)
 - [Error Reference](./api/errors.md)
 
-## 📈 I want to write efficient code with mechestim
+## 📈 I want to write efficient code with whest
 
 - [Migrate from NumPy](./how-to/migrate-from-numpy.md)
 - [Use Einsum](./how-to/use-einsum.md)
@@ -51,42 +51,42 @@ Pick the path that matches what you need right now.
 Operations run freely without any setup — the global default budget tracks FLOPs automatically:
 
 ```python
-import mechestim as me
+import whest as we
 
 # No BudgetContext needed — the global default is active
-scale = me.sqrt(me.array(2 / 256))
-W = me.multiply(me.random.randn(256, 256), scale)
-x = me.einsum('ij,j->i', W, me.random.randn(256))
+scale = we.sqrt(we.array(2 / 256))
+W = we.multiply(we.random.randn(256, 256), scale)
+x = we.einsum('ij,j->i', W, we.random.randn(256))
 
-print(me.budget_summary())
+print(we.budget_summary())
 ```
 
 For budget limits and namespacing, use an explicit `BudgetContext`:
 
 ```python
-import mechestim as me
+import whest as we
 
 depth, width = 5, 256
 
-with me.BudgetContext(flop_budget=10**8, namespace="mlp-forward") as budget:
+with we.BudgetContext(flop_budget=10**8, namespace="mlp-forward") as budget:
     # Weight init — randn and multiply are both counted
-    scale = me.sqrt(me.array(2 / width))
-    weights = [me.multiply(me.random.randn(width, width), scale)
+    scale = we.sqrt(we.array(2 / width))
+    weights = [we.multiply(we.random.randn(width, width), scale)
                for _ in range(depth)]
 
     # Forward pass
-    x = me.random.randn(width)
+    x = we.random.randn(width)
     h = x
     for i, W in enumerate(weights):
-        h = me.einsum('ij,j->i', W, h)    # linear layer
+        h = we.einsum('ij,j->i', W, h)    # linear layer
         if i < depth - 1:
-            h = me.maximum(h, 0)           # ReLU
+            h = we.maximum(h, 0)           # ReLU
 
-print(me.budget_summary())
+print(we.budget_summary())
 ```
 
 ```
-mechestim FLOP Budget Summary
+whest FLOP Budget Summary
 ==============================
   Namespace:        mlp-forward
   Total budget:     100,000,000
@@ -104,7 +104,7 @@ mechestim FLOP Budget Summary
 ## Installation
 
 ```bash
-uv add git+https://github.com/AIcrowd/mechestim.git
+uv add git+https://github.com/AIcrowd/whest.git
 ```
 
 ## Full Taxonomy

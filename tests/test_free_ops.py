@@ -2,8 +2,8 @@
 
 import numpy
 
-from mechestim import _free_ops as ops
-from mechestim._budget import BudgetContext
+from whest import _free_ops as ops
+from whest._budget import BudgetContext
 
 
 def test_zeros():

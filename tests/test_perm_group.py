@@ -6,7 +6,7 @@ import math
 
 import pytest
 
-from mechestim._perm_group import Cycle, Permutation, PermutationGroup
+from whest._perm_group import Cycle, Permutation, PermutationGroup
 
 
 class TestPermutation:

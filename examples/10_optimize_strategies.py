@@ -1,6 +1,6 @@
 """Comparing einsum optimize strategies.
 
-``me.einsum_path`` accepts an ``optimize=`` parameter to choose how the
+``we.einsum_path`` accepts an ``optimize=`` parameter to choose how the
 contraction path is found.  Different strategies trade planning time for
 path quality.
 
@@ -9,17 +9,17 @@ Run: uv run python examples/10_optimize_strategies.py
 
 import time
 
-import mechestim as me
+import whest as we
 
 # ---------------------------------------------------------------------------
 # 1. Set up a 5-operand contraction (big enough for strategies to differ)
 # ---------------------------------------------------------------------------
 n = 50
-A = me.random.randn(n, n)
-B = me.random.randn(n, n)
-C = me.random.randn(n, n)
-D = me.random.randn(n, n)
-E = me.random.randn(n, n)
+A = we.random.randn(n, n)
+B = we.random.randn(n, n)
+C = we.random.randn(n, n)
+D = we.random.randn(n, n)
+E = we.random.randn(n, n)
 
 subscripts = "ab,bc,cd,de,ef->af"
 operands = (A, B, C, D, E)
@@ -35,7 +35,7 @@ print("-" * 65)
 
 for name in strategies:
     t0 = time.perf_counter()
-    path, info = me.einsum_path(subscripts, *operands, optimize=name)
+    path, info = we.einsum_path(subscripts, *operands, optimize=name)
     dt = time.perf_counter() - t0
 
     extra = f"  (resolved to {info.optimizer_used})" if name == "auto" else ""
@@ -48,11 +48,11 @@ print(f"\nNaive cost (no optimization): {info.naive_cost:,}")
 # ---------------------------------------------------------------------------
 print("\n=== Plan once, execute many ===\n")
 
-path, info = me.einsum_path(subscripts, *operands, optimize="optimal")
+path, info = we.einsum_path(subscripts, *operands, optimize="optimal")
 
-with me.BudgetContext(flop_budget=10**9, quiet=True) as budget:
+with we.BudgetContext(flop_budget=10**9, quiet=True) as budget:
     for _ in range(10):
-        result = me.einsum(subscripts, *operands, optimize=path)
+        result = we.einsum(subscripts, *operands, optimize=path)
 
 print("10 executions with pre-planned path:")
 print(f"  FLOPs per call: {budget.flops_used // 10:,}")

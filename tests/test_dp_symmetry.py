@@ -5,8 +5,8 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from mechestim._opt_einsum import contract_path
-from mechestim._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
+from whest._opt_einsum import contract_path
+from whest._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
 
 
 class TestDPAcceptsOracle:

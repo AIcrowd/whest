@@ -2,7 +2,7 @@
 
 ## When to use this page
 
-Use this page to learn how to use `me.fft` operations and understand their FLOP costs.
+Use this page to learn how to use `we.fft` operations and understand their FLOP costs.
 
 ## Prerequisites
 
@@ -26,20 +26,20 @@ Real-valued transforms (`rfft`, `irfft`, `rfftn`, `irfftn`) cost roughly half of
 ## Basic usage
 
 ```python
-import mechestim as me
+import whest as we
 
-with me.BudgetContext(flop_budget=1_000_000) as budget:
+with we.BudgetContext(flop_budget=1_000_000) as budget:
     # Generate a signal (free)
-    signal = me.random.randn(1024)
+    signal = we.random.randn(1024)
 
     # Forward FFT: 5 * 1024 * 10 = 51,200 FLOPs
-    spectrum = me.fft.fft(signal)
+    spectrum = we.fft.fft(signal)
 
     # Inverse FFT: same cost
-    reconstructed = me.fft.ifft(spectrum)
+    reconstructed = we.fft.ifft(spectrum)
 
     # Frequency bins (free)
-    freqs = me.fft.fftfreq(1024)
+    freqs = we.fft.fftfreq(1024)
 
     print(f"Total FFT cost: {budget.flops_used:,}")  # 102,400
 ```
@@ -49,18 +49,18 @@ with me.BudgetContext(flop_budget=1_000_000) as budget:
 When your input is real-valued (which is common in signal processing), prefer `rfft` over `fft` — it costs half as much:
 
 ```python
-import mechestim as me
+import whest as we
 
-with me.BudgetContext(flop_budget=1_000_000) as budget:
-    signal = me.random.randn(1024)
+with we.BudgetContext(flop_budget=1_000_000) as budget:
+    signal = we.random.randn(1024)
 
     # Complex FFT: 51,200 FLOPs
-    spec_complex = me.fft.fft(signal)
+    spec_complex = we.fft.fft(signal)
 
     budget_after_fft = budget.flops_used
 
     # Real FFT: 25,600 FLOPs
-    spec_real = me.fft.rfft(signal)
+    spec_real = we.fft.rfft(signal)
 
     rfft_cost = budget.flops_used - budget_after_fft
 
@@ -75,19 +75,19 @@ The output of `rfft` has shape `(n//2 + 1,)` instead of `(n,)`, since the negati
 Use `fft2` for 2-D transforms (e.g., images) and `fftn` for arbitrary dimensions:
 
 ```python
-import mechestim as me
+import whest as we
 
-with me.BudgetContext(flop_budget=10**8) as budget:
+with we.BudgetContext(flop_budget=10**8) as budget:
     # 2-D image (free to create)
-    image = me.random.randn(256, 256)
+    image = we.random.randn(256, 256)
 
     # 2-D FFT
-    spectrum_2d = me.fft.fft2(image)
+    spectrum_2d = we.fft.fft2(image)
     print(f"2D FFT cost: {budget.flops_used:,}")
 
     # N-D FFT with explicit shape
-    volume = me.random.randn(32, 32, 32)
-    spectrum_3d = me.fft.fftn(volume)
+    volume = we.random.randn(32, 32, 32)
+    spectrum_3d = we.fft.fftn(volume)
 ```
 
 ## Windowed FFT pattern
@@ -95,19 +95,19 @@ with me.BudgetContext(flop_budget=10**8) as budget:
 A common signal processing pattern — window the signal before FFT to reduce spectral leakage:
 
 ```python
-import mechestim as me
+import whest as we
 
-with me.BudgetContext(flop_budget=1_000_000) as budget:
-    signal = me.random.randn(1024)
+with we.BudgetContext(flop_budget=1_000_000) as budget:
+    signal = we.random.randn(1024)
 
     # Window function (counted — hamming costs n FLOPs)
-    window = me.hamming(1024)
+    window = we.hamming(1024)
 
     # Apply window (counted — multiply costs n FLOPs)
-    windowed = me.multiply(signal, window)
+    windowed = we.multiply(signal, window)
 
     # FFT (counted)
-    spectrum = me.fft.rfft(windowed)
+    spectrum = we.fft.rfft(windowed)
 
     print(budget.summary())
 ```
@@ -115,7 +115,7 @@ with me.BudgetContext(flop_budget=1_000_000) as budget:
 ## Query costs before running
 
 ```python
-from mechestim.flops import fft_cost, rfft_cost
+from whest.flops import fft_cost, rfft_cost
 
 # Check cost of a large FFT before committing budget
 n = 2**20  # ~1 million points
@@ -125,7 +125,7 @@ print(f"Real FFT:    {rfft_cost(n):,} FLOPs")   # 52,428,800
 
 ## ⚠️ Common pitfalls
 
-**Symptom:** Using `me.fft.fft` on real data when `me.fft.rfft` would suffice
+**Symptom:** Using `we.fft.fft` on real data when `we.fft.rfft` would suffice
 
 **Fix:** `rfft` costs half as much. If your input is real-valued, always prefer `rfft`/`irfft` over `fft`/`ifft`.
 

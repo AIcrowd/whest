@@ -7,7 +7,7 @@ These are all trivial pass-throughs to numpy so we just need to execute them.
 import numpy
 import pytest
 
-import mechestim._free_ops as ops
+import whest._free_ops as ops
 
 # ---------------------------------------------------------------------------
 # Helper

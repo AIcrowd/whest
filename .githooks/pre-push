@@ -2,5 +2,6 @@
 set -euo pipefail
 
 echo "Running pre-push checks (lint + test)..."
-make ci
+uv sync --all-extras --quiet
+make lint test
 echo "All checks passed!"
