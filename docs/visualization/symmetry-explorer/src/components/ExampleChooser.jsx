@@ -1,205 +1,224 @@
 import { useState, useCallback, useMemo } from 'react';
+import { validateAll } from '../engine/validation.js';
+import { generatePython } from '../engine/pythonCodegen.js';
+import { buildVariableColors, SYMMETRY_ICONS } from '../engine/colorPalette.js';
+import { parseCycleNotation, generatorIndices } from '../engine/cycleParser.js';
+
+// ---------------------------------------------------------------------------
+// Constants
+// ---------------------------------------------------------------------------
 
 const CUSTOM_IDX = -1;
 
-/** Pure function — generates Python code for ANY example object (preset or custom).
- *  All code uses only `import whest as me` — no numpy import needed. */
-function generatePythonCode(example, dimensionN) {
-  const { subscripts, output, operandNames, perOpSymmetry } = example;
-  const n = dimensionN;
-  const lines = [];
-  lines.push('import whest as me');
-  lines.push('');
-  lines.push(`n = ${n}`);
-
-  // Deduplicate variable definitions (same name = same object)
-  const defined = new Set();
-  for (let i = 0; i < subscripts.length; i++) {
-    const name = operandNames[i];
-    if (defined.has(name)) continue;
-    defined.add(name);
-
-    const sub = subscripts[i];
-    const rank = sub.length;
-    const shape = Array(rank).fill('n').join(', ');
-
-    // Determine per-operand symmetry
-    const opSym = Array.isArray(perOpSymmetry) ? perOpSymmetry[i] : perOpSymmetry;
-
-    if (!opSym) {
-      lines.push(`${name} = we.random.randn(${shape})`);
-    } else if (opSym === 'symmetric') {
-      if (rank === 2) {
-        lines.push(`# ${name}: symmetric matrix (S2)`);
-        lines.push(`_data = we.random.randn(${shape})`);
-        lines.push(`${name} = we.as_symmetric((_data + _data.T) / 2, symmetric_axes=(0, 1))`);
-      } else {
-        const axes = [...Array(rank).keys()].join(', ');
-        lines.push(`# ${name}: fully symmetric tensor (S${rank}) via Reynolds operator`);
-        lines.push(`_group = we.PermutationGroup.symmetric(${rank}, axes=(${axes}))`);
-        lines.push(`_data = we.random.randn(${shape})`);
-        lines.push(`_data = sum(we.transpose(_data, g.array_form) for g in _group.elements()) / _group.order()`);
-        lines.push(`${name} = we.as_symmetric(_data, symmetry=_group)`);
-      }
-    } else if (opSym === 'cyclic') {
-      const axes = [...Array(rank).keys()].join(', ');
-      lines.push(`# ${name}: cyclic symmetry (C${rank}) — T[i,j,k] = T[j,k,i] but T[i,j,k] ≠ T[j,i,k]`);
-      lines.push(`_group = we.PermutationGroup.cyclic(${rank}, axes=(${axes}))`);
-      lines.push(`_data = we.random.randn(${shape})`);
-      lines.push(`_data = sum(we.transpose(_data, g.array_form) for g in _group.elements()) / _group.order()`);
-      lines.push(`${name} = we.as_symmetric(_data, symmetry=_group)`);
-    } else if (opSym === 'dihedral') {
-      const axes = [...Array(rank).keys()].join(', ');
-      lines.push(`# ${name}: dihedral symmetry (D${rank}) — rotations + reflections`);
-      lines.push(`_group = we.PermutationGroup.dihedral(${rank}, axes=(${axes}))`);
-      lines.push(`_data = we.random.randn(${shape})`);
-      lines.push(`_data = sum(we.transpose(_data, g.array_form) for g in _group.elements()) / _group.order()`);
-      lines.push(`${name} = we.as_symmetric(_data, symmetry=_group)`);
-    } else if (opSym === 'block-swap') {
-      lines.push(`# ${name}: block swap — axes (0,1) swap with (2,3) as a unit`);
-      lines.push(`_group = we.PermutationGroup(we.Permutation(we.Cycle(0, 2)(1, 3)), axes=(0, 1, 2, 3))`);
-      lines.push(`_data = we.random.randn(${shape})`);
-      lines.push(`_data = sum(we.transpose(_data, g.array_form) for g in _group.elements()) / _group.order()`);
-      lines.push(`${name} = we.as_symmetric(_data, symmetry=_group)`);
-    }
-  }
-
-  lines.push('');
-
-  // For declared-symmetry examples (single tensor, no einsum), show inspection
-  if (example.declared) {
-    lines.push(`# Inspect the symmetry`);
-    lines.push(`print(f"Group order: {${operandNames[0]}.symmetry_info.groups[0].order()}")`);
-    lines.push(`print(f"Is full symmetric: {${operandNames[0]}.symmetry_info.groups[0].is_symmetric()}")`);
-    lines.push(`print(f"Unique elements: {${operandNames[0]}.symmetry_info.unique_elements}")`);
-    lines.push(`print(f"Dense elements:  {${operandNames[0]}.size}")`);
-  } else {
-    const subsStr = subscripts.join(',');
-    const args = operandNames.join(', ');
-    lines.push(`# Symmetry is detected automatically from identical operands`);
-    lines.push(`path, info = we.einsum_path('${subsStr}->${output}', ${args})`);
-    lines.push(`print(info)`);
-  }
-
-  return lines.join('\n');
-}
-
-/** Pure function — generates richer Python code for custom builder examples,
- *  reflecting user-chosen symmetry types and axis selections.
- *  All code uses only `import whest as me`. */
-function generateCustomPythonCode(variables, outputStr, dimensionN) {
-  const n = dimensionN;
-  const lines = [];
-  lines.push('import whest as me');
-  lines.push('');
-  lines.push(`n = ${n}`);
-
-  // Deduplicate variable definitions (same name = same object)
-  const defined = new Set();
-  for (const v of variables) {
-    const name = v.name.trim() || 'X';
-    if (defined.has(name)) continue;
-    defined.add(name);
-
-    const rank = v.subscript.length || 2;
-    const shape = Array(rank).fill('n').join(', ');
-
-    if (v.symmetry === 'none') {
-      lines.push(`${name} = we.random.randn(${shape})`);
-    } else if (v.symmetry === 'custom') {
-      // Parse cycle notation string like "(0 1)(2 3)" into valid Python
-      const gens = v.generators.trim() || '(0, 1)';
-      // Convert "(0 1)(2 3)" → "we.Cycle(0, 1)(2, 3)"
-      const pyGens = gens.replace(/\((\d[\d\s,]*)\)/g, (_, inner) => {
-        const nums = inner.trim().split(/[\s,]+/).join(', ');
-        return `(${nums})`;
-      });
-      const genExpr = pyGens.startsWith('(') ? `we.Cycle${pyGens}` : pyGens;
-      lines.push(`# ${name}: custom symmetry group`);
-      lines.push(`_group = we.PermutationGroup(we.Permutation(${genExpr}), axes=(${[...Array(rank).keys()].join(', ')}))`);
-      lines.push(`_data = we.random.randn(${shape})`);
-      lines.push(`_data = sum(we.transpose(_data, g.array_form) for g in _group.elements()) / _group.order()`);
-      lines.push(`${name} = we.as_symmetric(_data, symmetry=_group)`);
-    } else {
-      const groupFn = v.symmetry === 'symmetric' ? 'symmetric'
-        : v.symmetry === 'cyclic' ? 'cyclic' : 'dihedral';
-      const axesArr = v.symAxes || [...Array(rank).keys()];
-      const k = axesArr.length;
-
-      if (axesArr.length === rank && v.symmetry === 'symmetric' && rank === 2) {
-        lines.push(`# ${name}: symmetric matrix (S2)`);
-        lines.push(`_data = we.random.randn(${shape})`);
-        lines.push(`${name} = we.as_symmetric((_data + _data.T) / 2, symmetric_axes=(0, 1))`);
-      } else {
-        const axes = axesArr.join(', ');
-        lines.push(`# ${name}: ${groupFn} symmetry on axes (${axes})`);
-        lines.push(`_group = we.PermutationGroup.${groupFn}(${k}, axes=(${axes}))`);
-        lines.push(`_data = we.random.randn(${shape})`);
-        lines.push(`_data = sum(we.transpose(_data, g.array_form) for g in _group.elements()) / _group.order()`);
-        lines.push(`${name} = we.as_symmetric(_data, symmetry=_group)`);
-      }
-    }
-  }
-
-  lines.push('');
-  const subs = variables.map(v => v.subscript).join(',');
-  const out = outputStr.trim();
-  const args = variables.map(v => v.name.trim() || 'X').join(', ');
-  lines.push(`path, info = we.einsum_path('${subs}->${out}', ${args})`);
-  lines.push(`print(info)`);
-
-  return lines.join('\n');
-}
-
-const SYM_HINTS = {
-  none: 'No per-operand symmetry — each axis is independent',
-  symmetric: 'S_k: full symmetric group — all axis permutations',
-  cyclic: 'C_k: cyclic group — only cyclic rotations of axes',
-  dihedral: 'D_k: dihedral group — cyclic rotations + reflections',
-  custom: 'Custom generators in cycle notation — e.g. (0 1)(2 3)',
-};
-
+const SYM_TYPES = ['none', 'symmetric', 'cyclic', 'dihedral', 'custom'];
 const SYM_LABELS = {
-  symmetric: 'S',
-  cyclic: 'C',
-  dihedral: 'D',
+  none: 'dense',
+  symmetric: 'S_k',
+  cyclic: 'C_k',
+  dihedral: 'D_k',
+  custom: 'custom',
 };
+
+/** Compute the order of a named symmetry group on k axes. */
+function groupOrder(symmetry, k) {
+  switch (symmetry) {
+    case 'symmetric': {
+      let f = 1;
+      for (let i = 2; i <= k; i++) f *= i;
+      return f;
+    }
+    case 'cyclic':
+      return k;
+    case 'dihedral':
+      return 2 * k;
+    default:
+      return 1;
+  }
+}
+
+/** Human-readable group name for the summary badge. */
+function badgeLabel(variable) {
+  const { symmetry, rank, symAxes, generators } = variable;
+  if (symmetry === 'none') return 'dense';
+  if (symmetry === 'custom') {
+    if (!generators || !generators.trim()) return 'custom';
+    const parsed = parseCycleNotation(generators);
+    if (parsed.error || !parsed.generators) return 'custom';
+    // Try to compute order from generators — not trivial in general,
+    // so just show generator count.
+    return `custom (${parsed.generators.length} gen${parsed.generators.length !== 1 ? 's' : ''})`;
+  }
+  const k = (symAxes && symAxes.length) || rank;
+  const prefix = symmetry === 'symmetric' ? 'S' : symmetry === 'cyclic' ? 'C' : 'D';
+  const order = groupOrder(symmetry, k);
+  return `${prefix}${k}`;
+}
+
+function badgeOrder(variable) {
+  const { symmetry, rank, symAxes } = variable;
+  if (symmetry === 'none') return null;
+  if (symmetry === 'custom') return null;
+  const k = (symAxes && symAxes.length) || rank;
+  return groupOrder(symmetry, k);
+}
+
+// ---------------------------------------------------------------------------
+// Load preset helper
+// ---------------------------------------------------------------------------
+
+/**
+ * Given an EXAMPLES entry, extract the state shape:
+ * { variables, subscriptsStr, outputStr, operandNamesStr }
+ */
+function presetToState(ex) {
+  return {
+    variables: ex.variables.map(v => ({
+      name: v.name,
+      rank: v.rank,
+      symmetry: v.symmetry || 'none',
+      symAxes: v.symAxes ? [...v.symAxes] : null,
+      generators: v.generators || '',
+    })),
+    subscriptsStr: ex.expression.subscripts,
+    outputStr: ex.expression.output,
+    operandNamesStr: ex.expression.operandNames,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Build perOpSymmetry for the onCustomExample callback
+// ---------------------------------------------------------------------------
+
+/**
+ * Map each operand SLOT to its symmetry descriptor.
+ *
+ * The operand names string (e.g. "T, W") references variables by name.
+ * Each slot gets the symmetry of the variable it references, translated
+ * into the perOpSymmetry format the algorithm engine expects.
+ */
+function buildPerOpSymmetry(variables, operandNamesStr, subscriptsStr) {
+  const varMap = new Map();
+  for (const v of variables) {
+    varMap.set(v.name.trim(), v);
+  }
+
+  const opNames = operandNamesStr.split(',').map(s => s.trim()).filter(Boolean);
+  const subs = subscriptsStr.split(',').map(s => s.trim());
+
+  return opNames.map((name, i) => {
+    const v = varMap.get(name);
+    if (!v || v.symmetry === 'none') return null;
+
+    const sub = subs[i] || '';
+    const allAxes = sub.length;
+
+    if (v.symmetry === 'symmetric') {
+      // If ALL axes of this operand are symmetric, return shorthand
+      if (!v.symAxes || v.symAxes.length === allAxes) return 'symmetric';
+      return { type: 'symmetric', axes: [...v.symAxes] };
+    }
+    if (v.symmetry === 'cyclic') {
+      if (!v.symAxes || v.symAxes.length === allAxes) {
+        return { type: 'cyclic', axes: [...Array(allAxes).keys()] };
+      }
+      return { type: 'cyclic', axes: [...v.symAxes] };
+    }
+    if (v.symmetry === 'dihedral') {
+      if (!v.symAxes || v.symAxes.length === allAxes) {
+        return { type: 'dihedral', axes: [...Array(allAxes).keys()] };
+      }
+      return { type: 'dihedral', axes: [...v.symAxes] };
+    }
+    if (v.symmetry === 'custom') {
+      const parsed = parseCycleNotation(v.generators || '');
+      const axes = v.symAxes || [...Array(allAxes).keys()];
+      return {
+        type: 'custom',
+        axes: [...axes],
+        generators: parsed.generators || [],
+      };
+    }
+
+    return null;
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Component
+// ---------------------------------------------------------------------------
 
 export default function ExampleChooser({
-  examples, selected, onSelect, example, dimensionN, onDimensionChange, onCustomExample
+  examples, selected, onSelect, example, dimensionN, onDimensionChange, onCustomExample,
 }) {
-  const isCustom = selected === CUSTOM_IDX;
+  // ── State ──────────────────────────────────────────────────────────────
 
-  const [variables, setVariables] = useState([
-    { name: 'X', subscript: 'ia', symmetry: 'none', symAxes: null, generators: '' },
-    { name: 'X', subscript: 'ib', symmetry: 'none', symAxes: null, generators: '' },
-  ]);
-  const [outputStr, setOutputStr] = useState('ab');
-  const [error, setError] = useState(null);
+  const initial = presetToState(examples[0]);
+
+  const [variables, setVariables] = useState(initial.variables);
+  const [subscriptsStr, setSubscriptsStr] = useState(initial.subscriptsStr);
+  const [outputStr, setOutputStr] = useState(initial.outputStr);
+  const [operandNamesStr, setOperandNamesStr] = useState(initial.operandNamesStr);
+  const [activePresetIdx, setActivePresetIdx] = useState(0);
+
+  const [copied, setCopied] = useState(false);
+
+  // ── Load preset ────────────────────────────────────────────────────────
+
+  const loadPreset = useCallback((idx) => {
+    const state = presetToState(examples[idx]);
+    setVariables(state.variables);
+    setSubscriptsStr(state.subscriptsStr);
+    setOutputStr(state.outputStr);
+    setOperandNamesStr(state.operandNamesStr);
+    setActivePresetIdx(idx);
+    onSelect(idx);
+  }, [examples, onSelect]);
+
+  // ── Mark dirty (no longer a preset) ────────────────────────────────────
+
+  const markCustom = useCallback(() => {
+    setActivePresetIdx(CUSTOM_IDX);
+  }, []);
+
+  // ── Variable mutations ─────────────────────────────────────────────────
 
   const updateVar = useCallback((idx, field, value) => {
     setVariables(prev => {
       const next = [...prev];
       next[idx] = { ...next[idx], [field]: value };
-      if (field === 'symmetry' && value !== 'none' && value !== 'custom') {
-        const sub = next[idx].subscript;
-        next[idx].symAxes = sub ? [...sub].map((_, i) => i) : [];
-        next[idx].generators = '';
+
+      // Side-effects on symmetry change
+      if (field === 'symmetry') {
+        if (value === 'none') {
+          next[idx].symAxes = null;
+          next[idx].generators = '';
+        } else if (value === 'custom') {
+          // Keep symAxes if present, default to all axes
+          if (!next[idx].symAxes) {
+            next[idx].symAxes = [...Array(next[idx].rank).keys()];
+          }
+        } else {
+          // Named group: default symAxes to all axes
+          next[idx].symAxes = [...Array(next[idx].rank).keys()];
+          next[idx].generators = '';
+        }
       }
-      if (field === 'symmetry' && value === 'none') {
-        next[idx].symAxes = null;
-        next[idx].generators = '';
+
+      // When rank changes, clamp symAxes
+      if (field === 'rank') {
+        const newRank = value;
+        if (next[idx].symAxes) {
+          next[idx].symAxes = next[idx].symAxes.filter(a => a < newRank);
+        }
+        if (next[idx].symmetry !== 'none' && next[idx].symmetry !== 'custom') {
+          next[idx].symAxes = [...Array(newRank).keys()];
+        }
       }
-      if (field === 'symmetry' && value === 'custom') {
-        next[idx].symAxes = null;
-      }
-      if (field === 'subscript' && next[idx].symmetry !== 'none' && next[idx].symmetry !== 'custom') {
-        next[idx].symAxes = value ? [...value].map((_, i) => i) : [];
-      }
+
       return next;
     });
-    setError(null);
-  }, []);
+    markCustom();
+  }, [markCustom]);
 
   const toggleAxis = useCallback((varIdx, axisIdx) => {
     setVariables(prev => {
@@ -208,116 +227,63 @@ export default function ExampleChooser({
       const axes = new Set(v.symAxes || []);
       if (axes.has(axisIdx)) axes.delete(axisIdx);
       else axes.add(axisIdx);
-      v.symAxes = [...axes].sort();
+      v.symAxes = [...axes].sort((a, b) => a - b);
       next[varIdx] = v;
       return next;
     });
-    setError(null);
-  }, []);
+    markCustom();
+  }, [markCustom]);
 
   const addVar = useCallback(() => {
-    setVariables(prev => [...prev, { name: 'A', subscript: '', symmetry: 'none', symAxes: null, generators: '' }]);
-    setError(null);
-  }, []);
+    setVariables(prev => [
+      ...prev,
+      { name: 'A', rank: 2, symmetry: 'none', symAxes: null, generators: '' },
+    ]);
+    markCustom();
+  }, [markCustom]);
 
   const removeVar = useCallback((idx) => {
-    setVariables(prev => prev.length <= 2 ? prev : prev.filter((_, i) => i !== idx));
-    setError(null);
-  }, []);
+    setVariables(prev => (prev.length <= 1 ? prev : prev.filter((_, i) => i !== idx)));
+    markCustom();
+  }, [markCustom]);
 
-  const handleAnalyze = useCallback(() => {
-    for (let i = 0; i < variables.length; i++) {
-      const v = variables[i];
-      if (!v.name.trim()) { setError(`Variable ${i + 1}: name is empty`); return; }
-      if (!v.subscript.trim()) { setError(`Variable ${i + 1}: subscript is empty`); return; }
-      if (!/^[a-z]+$/.test(v.subscript)) {
-        setError(`Variable ${i + 1}: subscript must be lowercase letters (got "${v.subscript}")`);
-        return;
-      }
-      if (v.symmetry !== 'none' && v.symmetry !== 'custom' && (!v.symAxes || v.symAxes.length < 2)) {
-        setError(`Variable ${i + 1}: symmetry requires at least 2 axes selected`);
-        return;
-      }
-      if (v.symmetry === 'custom' && !v.generators.trim()) {
-        setError(`Variable ${i + 1}: enter at least one generator in cycle notation`);
-        return;
-      }
-    }
+  // ── Expression mutations ───────────────────────────────────────────────
 
-    const allInputLabels = new Set(variables.flatMap(v => [...v.subscript]));
-    const outLabels = outputStr.trim();
-    if (outLabels && !/^[a-z]+$/.test(outLabels)) { setError('Output must be lowercase letters'); return; }
-    for (const ch of outLabels) {
-      if (!allInputLabels.has(ch)) {
-        setError(`Output label "${ch}" not found in any input subscript`);
-        return;
-      }
-    }
+  const handleSubscriptsChange = useCallback((val) => {
+    setSubscriptsStr(val);
+    markCustom();
+  }, [markCustom]);
 
-    const subscripts = variables.map(v => v.subscript);
-    const operandNames = variables.map(v => v.name.trim());
+  const handleOutputChange = useCallback((val) => {
+    setOutputStr(val);
+    markCustom();
+  }, [markCustom]);
 
-    const perOpSymmetry = variables.map(v => {
-      if (v.symmetry === 'none') return null;
-      if (v.symmetry === 'custom') {
-        // Parse generators — for graph construction, custom generators collapse
-        // all axes that appear in any cycle together
-        return 'symmetric'; // conservative: collapse all axes
-      }
-      const allAxes = v.subscript.length;
-      if (v.symAxes && v.symAxes.length === allAxes) return 'symmetric';
-      return { type: v.symmetry, axes: v.symAxes };
-    });
-    const hasAnySym = perOpSymmetry.some(s => s !== null);
+  const handleOperandNamesChange = useCallback((val) => {
+    setOperandNamesStr(val);
+    markCustom();
+  }, [markCustom]);
 
-    const subsStr = subscripts.join(',') + '→' + outLabels;
-    const argsStr = operandNames.join(', ');
-    const formula = `einsum('${subsStr}', ${argsStr})`;
+  // ── Variable colors ────────────────────────────────────────────────────
 
-    const customExample = {
-      id: 'custom',
-      name: 'Custom',
-      formula,
-      subscripts,
-      output: outLabels,
-      operandNames,
-      perOpSymmetry: hasAnySym ? perOpSymmetry : null,
-      description: 'User-defined expression',
-      expectedGroup: '',
-      color: '#7C3AED',
-    };
+  const varColors = useMemo(() => buildVariableColors(variables), [variables]);
 
-    setError(null);
-    onCustomExample(customExample);
-  }, [variables, outputStr, onCustomExample]);
+  // ── Validation ─────────────────────────────────────────────────────────
 
-  const autoOutput = useCallback(() => {
-    const counts = {};
-    for (const v of variables) {
-      for (const ch of v.subscript) {
-        counts[ch] = (counts[ch] || 0) + 1;
-      }
-    }
-    const out = Object.entries(counts)
-      .filter(([, c]) => c === 1)
-      .map(([ch]) => ch)
-      .sort()
-      .join('');
-    setOutputStr(out);
-  }, [variables]);
+  const validation = useMemo(
+    () => validateAll(variables, subscriptsStr, outputStr, operandNamesStr),
+    [variables, subscriptsStr, outputStr, operandNamesStr],
+  );
 
-  // Generate equivalent Python code — uses dimensionN for concrete shapes.
-  // For custom examples: uses the richer per-variable generator.
-  // For preset examples: uses the example object directly.
-  const pythonCode = useMemo(() => {
-    if (isCustom) {
-      return generateCustomPythonCode(variables, outputStr, dimensionN);
-    }
-    if (!example) return '';
-    return generatePythonCode(example, dimensionN);
-  }, [isCustom, example, variables, outputStr, dimensionN]);
+  // ── Python code ────────────────────────────────────────────────────────
 
-  const [copied, setCopied] = useState(false);
+  const pythonCode = useMemo(
+    () => generatePython(variables, subscriptsStr, outputStr, operandNamesStr, dimensionN),
+    [variables, subscriptsStr, outputStr, operandNamesStr, dimensionN],
+  );
+
+  // ── Copy handler ───────────────────────────────────────────────────────
+
   const handleCopy = useCallback(() => {
     navigator.clipboard.writeText(pythonCode).then(() => {
       setCopied(true);
@@ -325,15 +291,48 @@ export default function ExampleChooser({
     });
   }, [pythonCode]);
 
+  // ── Analyze handler ────────────────────────────────────────────────────
+
+  const handleAnalyze = useCallback(() => {
+    if (!validation.valid) return;
+
+    const subs = subscriptsStr.split(',').map(s => s.trim());
+    const out = outputStr.trim();
+    const opsArr = operandNamesStr.split(',').map(s => s.trim()).filter(Boolean);
+    const perOpSymArr = buildPerOpSymmetry(variables, operandNamesStr, subscriptsStr);
+    const hasAnySym = perOpSymArr.some(s => s !== null);
+
+    const formula = `einsum('${subscriptsStr}->${out}', ${opsArr.join(', ')})`;
+
+    const customExample = {
+      id: activePresetIdx >= 0 ? examples[activePresetIdx].id : 'custom',
+      name: activePresetIdx >= 0 ? examples[activePresetIdx].name : 'Custom',
+      formula,
+      subscripts: subs,
+      output: out,
+      operandNames: opsArr,
+      perOpSymmetry: hasAnySym ? perOpSymArr : null,
+      description: activePresetIdx >= 0 ? examples[activePresetIdx].description : 'User-defined expression',
+      expectedGroup: activePresetIdx >= 0 ? examples[activePresetIdx].expectedGroup : '',
+      color: activePresetIdx >= 0 ? examples[activePresetIdx].color : '#7C3AED',
+    };
+
+    onCustomExample(customExample);
+  }, [validation, variables, subscriptsStr, outputStr, operandNamesStr, activePresetIdx, examples, onCustomExample]);
+
+  // ── Render ─────────────────────────────────────────────────────────────
+
   return (
     <div className="example-chooser">
+
+      {/* ── 1. Preset grid ── */}
       <div className="example-grid">
         {examples.map((ex, i) => (
           <button
             key={ex.id}
-            className={`example-card ${selected === i ? 'active' : ''}`}
+            className={`example-card ${activePresetIdx === i ? 'active' : ''}`}
             style={{ '--accent': ex.color }}
-            onClick={() => onSelect(i)}
+            onClick={() => loadPreset(i)}
           >
             <div className="example-name">{ex.name}</div>
             <code className="example-formula">{ex.formula}</code>
@@ -341,154 +340,181 @@ export default function ExampleChooser({
             <div className="example-desc">{ex.description}</div>
           </button>
         ))}
+      </div>
 
-        <button
-          className={`example-card example-card-custom ${isCustom ? 'active' : ''}`}
-          style={{ '--accent': '#7C3AED' }}
-          onClick={() => onSelect(CUSTOM_IDX)}
-        >
-          <div className="example-name">+ Custom</div>
-          <div className="example-desc">Define your own einsum expression and operand symmetries</div>
+      {/* ── 2. Variable cards ── */}
+      <div className="builder-section-label">Variables</div>
+      <div className="var-cards">
+        {variables.map((v, i) => {
+          const vc = varColors[v.name] || {};
+          const color = vc.color || '#888';
+
+          return (
+            <div
+              key={i}
+              className="var-card"
+              style={{ borderColor: color }}
+            >
+              <div className="var-card-header">
+                {/* Name input */}
+                <input
+                  className="var-name-input"
+                  value={v.name}
+                  onChange={e => updateVar(i, 'name', e.target.value)}
+                  placeholder="X"
+                  maxLength={8}
+                />
+
+                {/* Rank stepper */}
+                <div className="rank-stepper">
+                  <button
+                    onClick={() => updateVar(i, 'rank', Math.max(1, v.rank - 1))}
+                    disabled={v.rank <= 1}
+                  >-</button>
+                  <span className="rank-value">{v.rank}</span>
+                  <button
+                    onClick={() => updateVar(i, 'rank', Math.min(8, v.rank + 1))}
+                    disabled={v.rank >= 8}
+                  >+</button>
+                </div>
+
+                {/* Remove button */}
+                <button
+                  className="var-remove-btn"
+                  onClick={() => removeVar(i)}
+                  disabled={variables.length <= 1}
+                  title="Remove variable"
+                >
+                  &#x2715;
+                </button>
+              </div>
+
+              {/* Symmetry type toggles */}
+              <div className="sym-toggles">
+                {SYM_TYPES.map(st => (
+                  <button
+                    key={st}
+                    className={`sym-toggle ${v.symmetry === st ? 'active' : ''}`}
+                    onClick={() => updateVar(i, 'symmetry', st)}
+                  >
+                    {SYMMETRY_ICONS[st] ? `${SYMMETRY_ICONS[st]} ` : ''}{SYM_LABELS[st]}
+                  </button>
+                ))}
+              </div>
+
+              {/* Axis chips (for named groups and custom) */}
+              {v.symmetry !== 'none' && v.rank > 0 && (
+                <div className="axis-chips-row">
+                  {Array.from({ length: v.rank }, (_, ai) => {
+                    const isSelected = v.symAxes && v.symAxes.includes(ai);
+                    return (
+                      <button
+                        key={ai}
+                        className={`axis-chip ${isSelected ? 'selected' : ''}`}
+                        onClick={() => toggleAxis(i, ai)}
+                        title={`Axis ${ai}`}
+                      >
+                        {ai}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Cycle notation input (custom only) */}
+              {v.symmetry === 'custom' && (
+                <>
+                  <input
+                    className="gen-input"
+                    value={v.generators}
+                    onChange={e => updateVar(i, 'generators', e.target.value)}
+                    placeholder="(0 1)(2 3), (0 2)(1 3)"
+                  />
+                  <span className="gen-hint">
+                    Cycle notation, comma-separated generators. E.g. <code>(0 1)</code> swaps axes 0 and 1.
+                  </span>
+                </>
+              )}
+
+              {/* Summary badge */}
+              <div className="sym-badge" style={{ backgroundColor: color }}>
+                {badgeLabel(v)}
+                {badgeOrder(v) != null && (
+                  <span className="sym-order"> |{badgeOrder(v)}|</span>
+                )}
+              </div>
+            </div>
+          );
+        })}
+
+        {/* Add variable card */}
+        <button className="var-card var-card-add" onClick={addVar}>
+          + Add Variable
         </button>
       </div>
 
-      {isCustom && (
-        <div className="custom-builder">
-          <h4 className="builder-heading">Define Variables</h4>
+      {/* ── 3. Expression panel ── */}
+      <div className="builder-section-label">Expression</div>
+      <div className="expr-panel">
+        <div className="expr-row">
+          <span className="expr-chrome">einsum('</span>
+          <input
+            className={`expr-input ${validation.errors.some(e => e.includes('subscript') || e.includes('Subscript') || e.includes('operand')) ? 'has-error' : ''}`}
+            value={subscriptsStr}
+            onChange={e => handleSubscriptsChange(e.target.value.toLowerCase())}
+            placeholder="ia,ib"
+          />
+          <span className="expr-chrome">-&gt;</span>
+          <input
+            className={`expr-input ${validation.errors.some(e => e.includes('utput')) ? 'has-error' : ''}`}
+            value={outputStr}
+            onChange={e => handleOutputChange(e.target.value.toLowerCase())}
+            placeholder="ab"
+          />
+          <span className="expr-chrome">',</span>
+          <input
+            className={`expr-input ${validation.errors.some(e => e.includes('operand') || e.includes('Operand')) ? 'has-error' : ''}`}
+            value={operandNamesStr}
+            onChange={e => handleOperandNamesChange(e.target.value)}
+            placeholder="X, X"
+          />
+          <span className="expr-chrome">)</span>
+        </div>
+        <div className="expr-panel-label">
+          subscripts &rarr; output, operands
+        </div>
+      </div>
 
-          <div className="var-list">
-            {variables.map((v, i) => (
-              <div key={i} className="var-card">
-                <div className="var-row">
-                  <div className="var-field">
-                    <span className="var-field-label">Name</span>
-                    <input
-                      className="var-input var-name"
-                      value={v.name}
-                      onChange={e => updateVar(i, 'name', e.target.value)}
-                      placeholder="X"
-                      maxLength={8}
-                    />
-                  </div>
-                  <div className="var-field var-field-grow">
-                    <span className="var-field-label">Subscript</span>
-                    <input
-                      className="var-input var-subscript"
-                      value={v.subscript}
-                      onChange={e => updateVar(i, 'subscript', e.target.value.toLowerCase())}
-                      placeholder="ij"
-                      maxLength={12}
-                    />
-                  </div>
-                  <div className="var-field">
-                    <span className="var-field-label">Symmetry</span>
-                    <select
-                      className="var-select"
-                      value={v.symmetry}
-                      onChange={e => updateVar(i, 'symmetry', e.target.value)}
-                      title={SYM_HINTS[v.symmetry]}
-                    >
-                      <option value="none">dense</option>
-                      <option value="symmetric">S_k (symmetric)</option>
-                      <option value="cyclic">C_k (cyclic)</option>
-                      <option value="dihedral">D_k (dihedral)</option>
-                      <option value="custom">Custom generators</option>
-                    </select>
-                  </div>
-                  <button
-                    className="var-remove"
-                    onClick={() => removeVar(i)}
-                    disabled={variables.length <= 2}
-                    title="Remove variable"
-                  >
-                    ✕
-                  </button>
-                </div>
+      {/* ── 4. Real-time validation errors ── */}
+      {validation.errors.length > 0 && (
+        <div className="validation-errors">
+          {validation.errors.map((err, i) => (
+            <div key={i} className="validation-error">{err}</div>
+          ))}
+        </div>
+      )}
 
-                {/* Axis selector for named groups */}
-                {v.symmetry !== 'none' && v.symmetry !== 'custom' && v.subscript.length > 0 && (
-                  <div className="axis-selector">
-                    <span className="axis-label">Symmetric axes:</span>
-                    <div className="axis-chips">
-                      {[...v.subscript].map((ch, ai) => {
-                        const active = v.symAxes && v.symAxes.includes(ai);
-                        return (
-                          <button
-                            key={ai}
-                            className={`axis-chip ${active ? 'axis-active' : ''}`}
-                            onClick={() => toggleAxis(i, ai)}
-                            title={`Axis ${ai}: label "${ch}"`}
-                          >
-                            {ch}
-                          </button>
-                        );
-                      })}
-                    </div>
-                    <span className="axis-hint">
-                      {v.symAxes && v.symAxes.length >= 2
-                        ? `${SYM_LABELS[v.symmetry]}(${v.symAxes.map(a => v.subscript[a]).join(',')})`
-                        : 'select ≥ 2 axes'}
-                    </span>
-                  </div>
-                )}
+      {/* ── Analyze button ── */}
+      <button
+        className="analyze-btn"
+        onClick={handleAnalyze}
+        disabled={!validation.valid}
+      >
+        &#x25B6; Analyze
+      </button>
 
-                {/* Generator input for custom groups */}
-                {v.symmetry === 'custom' && (
-                  <div className="generator-input">
-                    <span className="axis-label">Generators (cycle notation):</span>
-                    <input
-                      className="var-input generator-text"
-                      value={v.generators}
-                      onChange={e => updateVar(i, 'generators', e.target.value)}
-                      placeholder="(0 1)(2 3), (0 2)(1 3)"
-                    />
-                    <span className="axis-hint">
-                      Use 0-indexed axis positions, e.g. <code>(0 1)</code> swaps first two axes.
-                      Separate multiple generators with commas.
-                    </span>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-
-          <button className="add-var-btn" onClick={addVar}>+ Add Variable</button>
-
-          <div className="output-row">
-            <label className="output-label">Output →</label>
-            <input
-              className="var-input var-output"
-              value={outputStr}
-              onChange={e => setOutputStr(e.target.value.toLowerCase())}
-              placeholder="ab (empty = scalar)"
-              maxLength={12}
-            />
-            <button className="auto-btn" onClick={autoOutput} title="Auto-detect from subscripts">
-              auto
-            </button>
-          </div>
-
-          {error && <div className="builder-error">{error}</div>}
-
-          <button className="analyze-btn" onClick={handleAnalyze}>
-            ▶ Analyze
+      {/* ── 5. Real-time Python preview ── */}
+      <div className="python-preview">
+        <div className="python-preview-header">
+          <span className="python-preview-label">Python equivalent</span>
+          <button className="copy-btn" onClick={handleCopy}>
+            {copied ? '\u2713 Copied' : 'Copy'}
           </button>
         </div>
-      )}
+        <PythonHighlight code={pythonCode} />
+      </div>
 
-      {/* Python code preview — shown for ALL examples (preset and custom) */}
-      {example && pythonCode && (
-        <div className="python-preview">
-          <div className="python-preview-header">
-            <span className="python-preview-label">Python equivalent</span>
-            <button className="copy-btn" onClick={handleCopy}>
-              {copied ? '✓ Copied' : 'Copy'}
-            </button>
-          </div>
-          <PythonHighlight code={pythonCode} />
-        </div>
-      )}
-
+      {/* ── 6. Dimension slider ── */}
       <div className="dimension-slider">
         <label>
           Dimension <strong>n = {dimensionN}</strong>
@@ -500,13 +526,17 @@ export default function ExampleChooser({
             onChange={e => onDimensionChange(Number(e.target.value))}
           />
         </label>
-        <span className="dim-hint">Affects Burnside counts & cost (steps 6-7)</span>
+        <span className="dim-hint">Affects Burnside counts &amp; cost (steps 6-7)</span>
       </div>
     </div>
   );
 }
 
-/** Lightweight Python syntax highlighting via regex → spans */
+// ---------------------------------------------------------------------------
+// Python syntax highlighting (kept from previous implementation)
+// ---------------------------------------------------------------------------
+
+/** Lightweight Python syntax highlighting via regex -> spans */
 function PythonHighlight({ code }) {
   const html = useMemo(() => highlightPython(code), [code]);
   return (
@@ -517,7 +547,7 @@ function PythonHighlight({ code }) {
 }
 
 function highlightPython(code) {
-  // Tokenize then reassemble with spans — avoids regex-on-HTML issues
+  // Tokenize then reassemble with spans -- avoids regex-on-HTML issues
   const tokens = [];
   const lines = code.split('\n');
 
@@ -580,7 +610,7 @@ function highlightPython(code) {
       } else if (KEYWORDS.has(word)) {
         result += `<span class="hl-kw">${esc(word)}</span>`;
       } else {
-        // Check if next non-space char is '(' → function call
+        // Check if next non-space char is '(' -> function call
         const after = text.slice(re.lastIndex).match(/^\s*\(/);
         if (after) {
           result += `<span class="hl-fn">${esc(word)}</span>`;
