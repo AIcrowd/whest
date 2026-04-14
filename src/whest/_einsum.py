@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import functools
+
 import numpy as _np
 
+from whest._config import get_setting
 from whest._perm_group import PermutationGroup
 from whest._symmetric import SymmetricTensor, validate_symmetry
 from whest._validation import check_nan_inf, require_budget
@@ -68,6 +71,81 @@ def _identity_pattern(operands):
         if len(positions) >= 2
     )
     return groups if groups else None
+
+
+def _make_path_cache(maxsize):
+    """Create a new lru_cache-wrapped path computation function."""
+
+    @functools.lru_cache(maxsize=maxsize)
+    def _compute(subscripts, shapes, optimize, symmetry_fingerprint, identity_pattern):
+        from whest._perm_group import Permutation
+
+        input_parts = subscripts.split("->")[0].split(",")
+        output_str = subscripts.split("->")[1] if "->" in subscripts else ""
+
+        perm_groups = []
+        for fp_entry, chars in zip(symmetry_fingerprint, input_parts):
+            if fp_entry is None:
+                perm_groups.append(None)
+                continue
+            groups = []
+            for axes, gen_arrays in fp_entry:
+                gens = [Permutation(list(g)) for g in gen_arrays]
+                group = PermutationGroup(*gens, axes=axes)
+                labels = tuple(chars[ax] for ax in axes)
+                group._labels = labels
+                groups.append(group)
+            perm_groups.append(groups if groups else None)
+
+        # Build dummy operands for oracle (only shapes + identity matter)
+        dummy_ops = [_np.empty(s) for s in shapes]
+        # Re-alias dummies to match the identity_pattern
+        if identity_pattern is not None:
+            for group in identity_pattern:
+                canonical = dummy_ops[group[0]]
+                for pos in group[1:]:
+                    dummy_ops[pos] = canonical
+
+        from whest._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
+
+        oracle = SubgraphSymmetryOracle(
+            operands=dummy_ops,
+            subscript_parts=input_parts,
+            per_op_groups=perm_groups,
+            output_chars=output_str,
+        )
+
+        from whest._opt_einsum import contract_path as _contract_path
+
+        _path, path_info = _contract_path(
+            subscripts,
+            *shapes,
+            shapes=True,
+            optimize=optimize if not isinstance(optimize, tuple) else list(optimize),
+            symmetry_oracle=oracle,
+        )
+        return path_info
+
+    return _compute
+
+
+_path_cache = _make_path_cache(4096)
+
+
+def _rebuild_einsum_cache():
+    """Rebuild the path cache with the current configured maxsize."""
+    global _path_cache
+    _path_cache = _make_path_cache(int(get_setting("einsum_path_cache_size")))
+
+
+def clear_einsum_cache():
+    """Clear the einsum path cache."""
+    _path_cache.cache_clear()
+
+
+def einsum_cache_info():
+    """Return cache statistics (hits, misses, maxsize, currsize)."""
+    return _path_cache.cache_info()
 
 
 def _execute_pairwise(path_info, operands: list):
@@ -157,44 +235,30 @@ def einsum(
         raise ValueError("symmetric_axes and symmetry are mutually exclusive")
 
     budget = require_budget()
-    shapes = [op.shape for op in operands]
-
-    operand_symmetries = [
-        op.symmetry_info if isinstance(op, SymmetricTensor) else None for op in operands
-    ]
+    shapes = tuple(tuple(op.shape) for op in operands)
 
     input_parts = subscripts.split("->")[0].split(",")
-    output_str = subscripts.split("->")[1] if "->" in subscripts else ""
 
-    perm_groups = [
-        _symmetry_info_to_perm_groups(s, chars)
-        for s, chars in zip(operand_symmetries, input_parts)
-    ]
+    # Build cache key components
+    sym_fp = _symmetry_fingerprint(operands, input_parts)
+    id_pat = _identity_pattern(operands)
 
-    from whest._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
+    # Normalize optimize for hashability
+    if optimize is False:
+        opt_key = "auto"
+    elif isinstance(optimize, list):
+        opt_key = tuple(tuple(t) for t in optimize)
+    else:
+        opt_key = optimize
 
-    oracle = SubgraphSymmetryOracle(
-        operands=list(operands),
-        subscript_parts=input_parts,
-        per_op_groups=perm_groups,
-        output_chars=output_str,
-    )
-
-    from whest._opt_einsum import contract_path as _contract_path
-
-    path, path_info = _contract_path(
-        subscripts,
-        *shapes,
-        shapes=True,
-        optimize=optimize if optimize is not False else "auto",
-        symmetry_oracle=oracle,
-    )
+    # Get cached PathInfo (or compute on miss)
+    path_info = _path_cache(subscripts, shapes, opt_key, sym_fp, id_pat)
 
     budget.deduct(
         "einsum",
         flop_cost=path_info.optimized_cost,
         subscripts=subscripts,
-        shapes=tuple(shapes),
+        shapes=shapes,
     )
 
     # Execute pairwise steps
@@ -204,12 +268,12 @@ def einsum(
     if symmetry is not None and isinstance(result, _np.ndarray) and result.ndim >= 2:
         from whest._symmetric import validate_symmetry_groups
 
-        perm_groups = (
+        perm_groups_out = (
             [symmetry] if isinstance(symmetry, PermutationGroup) else list(symmetry)
         )
-        validate_symmetry_groups(result, perm_groups)
-        sym_axes = [g.axes for g in perm_groups if g.axes is not None]
-        result = SymmetricTensor(result, sym_axes, perm_groups=perm_groups)
+        validate_symmetry_groups(result, perm_groups_out)
+        sym_axes = [g.axes for g in perm_groups_out if g.axes is not None]
+        result = SymmetricTensor(result, sym_axes, perm_groups=perm_groups_out)
     elif symmetric_axes and isinstance(result, _np.ndarray) and result.ndim >= 2:
         validate_symmetry(result, symmetric_axes)
         result = SymmetricTensor(result, symmetric_axes=symmetric_axes)
@@ -244,37 +308,21 @@ def einsum_path(subscripts: str, *operands, optimize: str | bool | list = "auto"
     budget = require_budget()
     budget.deduct("einsum_path", flop_cost=1, subscripts=None, shapes=())
 
-    shapes = [op.shape for op in operands]
-    operand_symmetries = [
-        op.symmetry_info if isinstance(op, SymmetricTensor) else None for op in operands
-    ]
+    shapes = tuple(tuple(op.shape) for op in operands)
     input_parts = subscripts.split("->")[0].split(",")
-    output_str = subscripts.split("->")[1] if "->" in subscripts else ""
 
-    perm_groups = [
-        _symmetry_info_to_perm_groups(s, chars)
-        for s, chars in zip(operand_symmetries, input_parts)
-    ]
+    sym_fp = _symmetry_fingerprint(operands, input_parts)
+    id_pat = _identity_pattern(operands)
 
-    from whest._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
+    if optimize is False:
+        opt_key = "auto"
+    elif isinstance(optimize, list):
+        opt_key = tuple(tuple(t) for t in optimize)
+    else:
+        opt_key = optimize
 
-    oracle = SubgraphSymmetryOracle(
-        operands=list(operands),
-        subscript_parts=input_parts,
-        per_op_groups=perm_groups,
-        output_chars=output_str,
-    )
-
-    from whest._opt_einsum import contract_path as _contract_path
-
-    path, path_info = _contract_path(
-        subscripts,
-        *shapes,
-        shapes=True,
-        optimize=optimize if optimize is not False else "auto",
-        symmetry_oracle=oracle,
-    )
-    return list(path), path_info
+    path_info = _path_cache(subscripts, shapes, opt_key, sym_fp, id_pat)
+    return list(path_info.path), path_info
 
 
 import sys as _sys  # noqa: E402
