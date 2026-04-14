@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import builtins as _builtins
+import inspect as _inspect
 
 import numpy as _np
 
@@ -236,6 +237,10 @@ def _counted_reduction(
     if extra_output:
         cost_desc += " + numel(output)"
     attach_docstring(wrapper, np_func, "counted_reduction", cost_desc)
+    try:
+        wrapper.__signature__ = _inspect.signature(np_func)
+    except (ValueError, TypeError):
+        pass
     return wrapper
 
 
