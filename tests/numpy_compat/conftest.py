@@ -153,6 +153,8 @@ def _patch_numpy():
         _SKIP_PATCH = {
             "linalg.outer",
             "array",  # Python function auto-binds self when used as class attribute; C built-in doesn't
+            "random.randint",  # Plain Python function auto-binds self; C method doesn't
+            "random.shuffle",  # Same descriptor binding issue
         }
         if name in _SKIP_PATCH:
             continue
