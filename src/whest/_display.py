@@ -76,6 +76,17 @@ def _plain_text_summary() -> str:
                 f"    {op_name:<20} {_format_flops(op_info['flop_cost']):>12}  ({op_pct:>6})  [{op_info['calls']} {call_word}]"
             )
 
+    # Timing information
+    wall_time = data.get("wall_time_s")
+    tracked_time = data.get("total_tracked_time")
+    if wall_time is not None:
+        tracked = tracked_time or 0.0
+        untracked = wall_time - tracked
+        lines.append("")
+        lines.append(f"  Wall time:       {wall_time:.3f}s")
+        lines.append(f"  Tracked time:    {tracked:.3f}s")
+        lines.append(f"  Untracked time:  {untracked:.3f}s")
+
     return "\n".join(lines)
 
 
@@ -102,16 +113,20 @@ def _rich_namespace_table(label: str, ns_data: dict, color: str):
     table.add_column("Operation", style="dim")
     table.add_column("FLOPs", justify="right")
     table.add_column("%", justify="right")
+    table.add_column("Time", justify="right", style="dim")
     table.add_column("Calls", justify="right", style="dim")
 
     ops = ns_data.get("operations", {})
     for op_name, op_info in sorted(ops.items(), key=lambda x: -x[1]["flop_cost"]):
         op_pct = _pct(op_info["flop_cost"], ns_data["flops_used"])
         call_word = "call" if op_info["calls"] == 1 else "calls"
+        dur = op_info.get("duration", 0.0)
+        time_str = f"{dur:.3f}s" if dur > 0 else ""
         table.add_row(
             op_name,
             _format_flops(op_info["flop_cost"]),
             op_pct,
+            time_str,
             f"{op_info['calls']} {call_word}",
         )
 
@@ -122,10 +137,12 @@ def _rich_namespace_table(label: str, ns_data: dict, color: str):
         Text(_format_flops(ns_data["flops_used"]), style=f"bold {color}"),
         Text(_pct(ns_data["flops_used"], ns_data["flop_budget"]), style=color),
         "",
+        "",
     )
     table.add_row(
         Text("Remaining", style="bold"),
         Text(_format_flops(remaining), style="bold"),
+        "",
         "",
         "",
     )
@@ -183,6 +200,28 @@ def _rich_summary():
         totals.add_row(
             "Remaining",
             f"{_format_flops(display_remaining)}  ({_pct(display_remaining, display_budget)})",
+        )
+
+    # Timing rows
+    wall_time = data.get("wall_time_s")
+    tracked_time = data.get("total_tracked_time")
+    if wall_time is not None:
+        tracked_pct = (
+            100 * (tracked_time or 0.0) / wall_time if wall_time > 0 else 0.0
+        )
+        untracked = wall_time - (tracked_time or 0.0)
+        untracked_pct = 100 * untracked / wall_time if wall_time > 0 else 0.0
+        totals.add_section()
+        totals.add_row("Wall time", f"{wall_time:.3f}s")
+        totals.add_row(
+            "Tracked",
+            Text(
+                f"{(tracked_time or 0.0):.3f}s  ({tracked_pct:.1f}%)", style="dim"
+            ),
+        )
+        totals.add_row(
+            "Untracked",
+            Text(f"{untracked:.3f}s  ({untracked_pct:.1f}%)", style="dim"),
         )
 
     renderables = [totals]
