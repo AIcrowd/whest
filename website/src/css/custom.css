@@ -1,59 +1,75 @@
 /* ══════════════════════════════════════════════════════════
-   whest docs — design system ported from whestbench-explorer
+   whest docs — Apple Marketing + Stripe Docs design system
    ══════════════════════════════════════════════════════════ */
 
-/* ── Fonts ──────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700&display=swap');
+/* ── 1. Google Fonts ──────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700&display=swap');
 
-/* ── Design tokens ──────────────────────────────────────── */
+/* ── 2. :root design tokens ──────────────────────────────── */
 :root {
-  /* Primary (coral) */
+  /* Accent (coral) */
   --ifm-color-primary: #F0524D;
-  --ifm-color-primary-dark: #EE403A;
-  --ifm-color-primary-darker: #D23934;
-  --ifm-color-primary-darkest: #B52E2A;
+  --ifm-color-primary-dark: #D23934;
+  --ifm-color-primary-darker: #B52E2A;
+  --ifm-color-primary-darkest: #9A2521;
   --ifm-color-primary-light: #F36B67;
   --ifm-color-primary-lighter: #F7A09D;
   --ifm-color-primary-lightest: #FEF2F1;
+  --whest-coral-hover: #D23934;
+  --whest-coral-light: #FEF2F1;
+  --whest-coral-lighter: #FFF5F5;
 
-  /* Neutrals */
-  --whest-white: #FFFFFF;
-  --whest-gray-50: #F8F9F9;
+  /* Surfaces */
+  --whest-bg: #FAFBFC;
+  --whest-surface: #FFFFFF;
+
+  /* Grays */
+  --whest-gray-50: #F6F8FA;
   --whest-gray-100: #F1F3F5;
-  --whest-gray-200: #D9DCDC;
+  --whest-gray-200: #E3E8EE;
   --whest-gray-400: #AAACAD;
   --whest-gray-600: #5D5F60;
   --whest-gray-900: #292C2D;
 
-  /* Typography */
+  /* Code (Stripe navy) */
+  --whest-code-bg: #0F1B2D;
+  --whest-code-text: #E8F0FE;
+
+  /* Semantic */
+  --whest-success: #23B761;
+  --whest-warning: #FA9E33;
+
+  /* Infima overrides */
   --ifm-font-family-base: 'Inter', system-ui, -apple-system, sans-serif;
   --ifm-font-family-monospace: 'IBM Plex Mono', 'SF Mono', SFMono-Regular, monospace;
   --font-accent: 'Montserrat', 'Inter', system-ui, sans-serif;
-  --ifm-font-size-base: 100%; /* 16px — readable body text for docs */
+  --ifm-font-size-base: 100%;
+  --ifm-line-height-base: 1.6;
   --ifm-code-font-size: 0.875em;
-  --ifm-line-height-base: 1.65;
 
-  /* Colors */
   --ifm-heading-color: var(--whest-gray-900);
   --ifm-font-color-base: var(--whest-gray-900);
   --ifm-font-color-secondary: var(--whest-gray-600);
-  --ifm-background-color: var(--whest-gray-50);
-  --ifm-background-surface-color: var(--whest-white);
+  --ifm-background-color: var(--whest-bg);
+  --ifm-background-surface-color: var(--whest-surface);
 
-  /* Layout */
   --ifm-global-radius: 8px;
   --ifm-code-border-radius: 8px;
 
-  /* Misc */
+  /* Shadows */
+  --whest-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --whest-shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+  /* Highlighted code line */
   --docusaurus-highlighted-code-line-bg: rgba(240, 82, 77, 0.08);
 }
 
-/* ── Disable dark mode (light-only, matching explorer) ─── */
+/* ── 3. Dark mode override (light-only site) ─────────────── */
 [data-theme='dark'] {
   --ifm-color-primary: #F0524D;
-  --ifm-color-primary-dark: #EE403A;
-  --ifm-color-primary-darker: #D23934;
-  --ifm-color-primary-darkest: #B52E2A;
+  --ifm-color-primary-dark: #D23934;
+  --ifm-color-primary-darker: #B52E2A;
+  --ifm-color-primary-darkest: #9A2521;
   --ifm-color-primary-light: #F36B67;
   --ifm-color-primary-lighter: #F7A09D;
   --ifm-color-primary-lightest: #FEF2F1;
@@ -61,32 +77,36 @@
   --ifm-heading-color: var(--whest-gray-900);
   --ifm-font-color-base: var(--whest-gray-900);
   --ifm-font-color-secondary: var(--whest-gray-600);
-  --ifm-background-color: var(--whest-gray-50);
-  --ifm-background-surface-color: var(--whest-white);
+  --ifm-background-color: var(--whest-bg);
+  --ifm-background-surface-color: var(--whest-surface);
 }
 
-/* ── Page background & base font ──────────────────────── */
+/* ── 4. html/body base ───────────────────────────────────── */
 html {
-  font-size: 16px !important; /* override Infima's 87.5% (14px) default */
+  font-size: 16px !important;
 }
 
 body {
-  font-size: 1rem !important; /* override Infima's 0.9375rem body size */
-  background: var(--whest-gray-50);
+  font-size: 1rem !important;
+  background: var(--whest-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* ── Navbar ───────────────────────────────────────────── */
+/* ── 5. Navbar ───────────────────────────────────────────── */
 .navbar {
-  background-color: var(--whest-white);
+  background-color: var(--whest-surface);
   border-bottom: 1px solid var(--whest-gray-200);
   box-shadow: none;
-  padding: 14px 28px;
+  height: 56px;
+  padding: 0 24px;
+  transition: box-shadow 0.15s ease;
 }
 
 .navbar__title {
   font-family: var(--font-accent);
   font-weight: 700;
-  font-size: 18px;
+  font-size: 17px;
   letter-spacing: -0.02em;
   color: var(--whest-gray-900);
 }
@@ -95,6 +115,7 @@ body {
   color: var(--whest-gray-600);
   font-size: 14px;
   font-weight: 500;
+  transition: color 0.15s ease;
 }
 
 .navbar__link:hover,
@@ -102,21 +123,22 @@ body {
   color: var(--ifm-color-primary);
 }
 
-/* ── Sidebar ─────────────────────────────────────────── */
+/* ── 6. Sidebar ──────────────────────────────────────────── */
 .theme-doc-sidebar-container {
   border-right: 1px solid var(--whest-gray-200) !important;
 }
 
 nav.menu {
-  background: var(--whest-white);
+  background: var(--whest-surface);
   padding: 16px;
 }
 
 .menu__link {
-  font-size: 0.85rem;
+  font-size: 14px;
   color: var(--whest-gray-600);
   border-radius: 6px;
-  padding: 6px 10px;
+  padding: 6px 12px;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
 .menu__link:hover {
@@ -127,7 +149,8 @@ nav.menu {
 .menu__link--active {
   color: var(--ifm-color-primary) !important;
   font-weight: 600;
-  background: var(--ifm-color-primary-lightest);
+  background: var(--whest-coral-light);
+  border-left: 3px solid var(--ifm-color-primary);
 }
 
 .menu__list-item-collapsible .menu__link {
@@ -138,58 +161,151 @@ nav.menu {
   color: var(--whest-gray-400);
 }
 
-/* ── Headings ────────────────────────────────────────── */
+/* ── 7. Headings ─────────────────────────────────────────── */
 h1 {
   font-family: var(--font-accent);
   font-weight: 700;
+  font-size: 32px;
   letter-spacing: -0.02em;
   color: var(--whest-gray-900);
 }
 
 h2 {
   font-weight: 600;
+  font-size: 24px;
   color: var(--whest-gray-900);
   border-bottom: 1px solid var(--whest-gray-200);
   padding-bottom: 0.4rem;
+  margin-top: 48px;
 }
 
 h3 {
   font-weight: 600;
+  font-size: 18px;
   color: var(--whest-gray-900);
+  margin-top: 32px;
 }
 
-/* ── Inline code ─────────────────────────────────────── */
+/* ── 8. Body text & links ────────────────────────────────── */
+.markdown p,
+.markdown li {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--whest-gray-900);
+  margin-bottom: 16px;
+}
+
+.markdown a {
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+  transition: color 0.15s ease, text-decoration 0.15s ease;
+}
+
+.markdown a:hover {
+  color: var(--whest-coral-hover);
+  text-decoration: underline;
+}
+
+/* ── 9. Inline code ──────────────────────────────────────── */
 :not(pre) > code {
   font-family: var(--ifm-font-family-monospace);
   background-color: var(--whest-gray-100);
   border: none;
   border-radius: 4px;
   padding: 2px 6px;
-  font-size: 0.875em;
+  font-size: 14px;
   color: var(--whest-gray-600);
 }
 
-/* ── Code blocks ─────────────────────────────────────── */
+/* ── 10. Code blocks + Prism tokens ──────────────────────── */
 pre {
+  background-color: var(--whest-code-bg) !important;
   border-radius: 8px;
-  border: 1px solid var(--whest-gray-200);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 16px 20px;
+}
+
+pre code {
+  color: var(--whest-code-text);
+  font-size: 13.5px;
+  line-height: 1.55;
 }
 
 .prism-code {
   font-family: var(--ifm-font-family-monospace);
+  background-color: var(--whest-code-bg) !important;
 }
 
-/* ── Tables ──────────────────────────────────────────── */
-table {
+/* Prism token overrides */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: #637777;
+}
+
+.token.keyword,
+.token.tag,
+.token.property {
+  color: #c792ea;
+}
+
+.token.string,
+.token.attr-value {
+  color: #a5d6ff;
+}
+
+.token.function {
+  color: #7ee787;
+}
+
+.token.number {
+  color: #f9ae58;
+}
+
+.token.operator,
+.token.entity,
+.token.url {
+  color: #79c0ff;
+}
+
+.token.builtin,
+.token.class-name {
+  color: #ffa657;
+}
+
+.token.boolean,
+.token.constant {
+  color: #79c0ff;
+}
+
+.token.punctuation {
+  color: #a2a8b4;
+}
+
+/* Code block title bar */
+.codeBlockTitle_node_modules-\@docusaurus-theme-classic-lib-theme-CodeBlock-Content-styles-module,
+[class*="codeBlockTitle"] {
+  background-color: rgba(255, 255, 255, 0.04) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--whest-gray-400);
+  font-size: 12px;
+  font-family: var(--ifm-font-family-monospace);
+}
+
+/* ── 11. Tables ──────────────────────────────────────────── */
+.markdown table {
   border: 1px solid var(--whest-gray-200);
   border-radius: 8px;
   overflow: hidden;
-  font-size: 13px;
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
 }
 
-table th {
-  background-color: var(--whest-white);
-  font-size: 0.8rem;
+.markdown table th {
+  background-color: var(--whest-gray-50);
+  font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -198,31 +314,38 @@ table th {
   border-bottom: 1px solid var(--whest-gray-200);
 }
 
-table td {
-  font-size: 0.875rem;
+.markdown table td {
+  font-size: 14px;
   color: var(--whest-gray-600);
-  padding: 8px 14px;
+  padding: 10px 14px;
   border-bottom: 1px solid var(--whest-gray-100);
 }
 
-table tr:hover {
-  background: var(--whest-gray-50);
+.markdown table tr:hover {
+  background: var(--whest-bg);
 }
 
-table tr:last-child td {
+.markdown table tr:last-child td {
   border-bottom: none;
 }
 
-/* ── Admonitions ─────────────────────────────────────── */
+/* ── 12. Admonitions ─────────────────────────────────────── */
 .theme-admonition {
   border-radius: 8px;
   border-left-width: 4px;
+  background: var(--whest-surface);
+  box-shadow: var(--whest-shadow-sm);
 }
 
-/* ── TOC (right sidebar) ────────────────────────────── */
+/* ── 13. TOC (right sidebar) ─────────────────────────────── */
+.table-of-contents {
+  border-left: 1px solid var(--whest-gray-200);
+}
+
 .table-of-contents__link {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--whest-gray-400);
+  transition: color 0.15s ease;
 }
 
 .table-of-contents__link:hover,
@@ -230,43 +353,114 @@ table tr:last-child td {
   color: var(--ifm-color-primary);
 }
 
-/* ── Breadcrumbs ─────────────────────────────────────── */
-.breadcrumbs__link {
-  font-size: 12px;
-  color: var(--whest-gray-400);
-}
-
-/* ── Footer ──────────────────────────────────────────── */
+/* ── 14. Footer ──────────────────────────────────────────── */
 .footer {
-  background: var(--whest-white);
+  background: var(--whest-surface);
   border-top: 1px solid var(--whest-gray-200);
   color: var(--whest-gray-400);
-  padding: 16px;
+  padding: 20px;
   text-align: center;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .footer--light {
-  background: var(--whest-white);
+  background: var(--whest-surface);
 }
 
-/* ── Content width ───────────────────────────────────── */
-.markdown {
-  max-width: 52rem;
-}
-
-/* ── Pagination ──────────────────────────────────────── */
+/* ── 15. Pagination ──────────────────────────────────────── */
 .pagination-nav__link {
   border: 1px solid var(--whest-gray-200);
   border-radius: 8px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .pagination-nav__link:hover {
   border-color: var(--ifm-color-primary);
+  box-shadow: var(--whest-shadow-sm);
 }
 
-/* ── Doc page background ─────────────────────────────── */
+.pagination-nav__sublabel {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--whest-gray-400);
+}
+
+/* ── 16. Content width ───────────────────────────────────── */
+.markdown {
+  max-width: 720px;
+}
+
+/* ── Breadcrumbs ─────────────────────────────────────────── */
+.breadcrumbs__link {
+  font-size: 12px;
+  color: var(--whest-gray-400);
+  transition: color 0.15s ease;
+}
+
+.breadcrumbs__link:hover {
+  color: var(--ifm-color-primary);
+}
+
+/* ── Doc page background ─────────────────────────────────── */
 .docMainContainer_node_modules-\@docusaurus-theme-classic-lib-theme-DocPage-Layout-Main-styles-module,
 [class*="docMainContainer"] {
-  background: var(--whest-gray-50);
+  background: var(--whest-bg);
 }
+
+/* ── 17. Responsive ──────────────────────────────────────── */
+
+/* Mobile: <= 735px */
+@media (max-width: 735px) {
+  h1 {
+    font-size: 26px;
+  }
+
+  h2 {
+    font-size: 20px;
+    margin-top: 32px;
+  }
+
+  h3 {
+    font-size: 16px;
+    margin-top: 24px;
+  }
+
+  .markdown {
+    max-width: 100%;
+    padding: 0 16px;
+  }
+
+  pre {
+    border-radius: 0;
+    margin-left: -16px;
+    margin-right: -16px;
+    padding: 16px;
+  }
+
+  .navbar {
+    height: 48px;
+    padding: 0 16px;
+  }
+
+  .navbar__title {
+    font-size: 15px;
+  }
+}
+
+/* Tablet: 736px - 1068px */
+@media (min-width: 736px) and (max-width: 1068px) {
+  h1 {
+    font-size: 28px;
+  }
+
+  .markdown {
+    max-width: 100%;
+  }
+
+  .navbar {
+    padding: 0 20px;
+  }
+}
+
+/* Desktop: > 1068px — defaults apply */
