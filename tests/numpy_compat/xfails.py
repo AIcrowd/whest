@@ -5,13 +5,14 @@ Tests matching these patterns are marked xfail when running NumPy's
 test suite against whest.
 
 Current state (2026-04-14):
-    test_umath:     4,668 passed, 0 failed  (13 xfailed)
-    test_ufunc:       795 passed, 0 failed   (7 xfailed)
-    test_numeric:   1,567 passed, 0 failed   (4 xfailed — was 20, fixed 16)
-    test_linalg:      398 passed, 0 failed  (42 xfailed — was 255, fixed 213 after ndim guards/batch)
-    test_pocketfft:   148 passed, 0 failed   (0 xfailed — was 34, fixed all)
-    test_polynomial:  600 passed, 0 failed   (2 xfailed)
-    test_random:      135 passed, 0 failed   (7 xfailed — was 8, fixed shuffle)
+    Total:          7,788 passed, 0 failed, 121 xfailed, 2 xpassed
+    test_umath:     4,668 passed  (14 xfailed)
+    test_ufunc:       795 passed   (7 xfailed)
+    test_numeric:   1,567 passed   (4 xfailed — was 20, fixed 16; refined 3 patterns)
+    test_linalg:      395 passed  (42 xfailed — was 255, fixed 213 after ndim guards/batch)
+    test_pocketfft:   148 passed   (0 xfailed — was 34, fixed all)
+    test_polynomial:  600 passed   (2 xfailed)
+    test_random:      139 passed   (6 xfailed — was 8, fixed shuffle + unpacking)
 
 What we patch (55 functions):
     Non-ufunc reductions and special functions (all, any, amax, amin,
@@ -169,8 +170,8 @@ XFAIL_PATTERNS: dict[str, str] = {
     "*TestRandomDist::test_shuffle": (
         "WRAPPER_SIGNATURE: whest shuffle is a plain function, not a bound method"
     ),
-    "*TestRandomDist::test_shuffle_no_object_unpacking*": (
-        "WRAPPER_SIGNATURE: whest shuffle is a plain function, not a bound method"
+    "*TestRandomDist::test_shuffle_no_object_unpacking[False*": (
+        "SUBCLASS_RETURN: WhestArray subclass object unpacking differs from ndarray"
     ),
     # ------------------------------------------------------------------ #
     # SUBCLASS_RETURN — WhestArray subclass propagation               #
@@ -235,9 +236,6 @@ XFAIL_PATTERNS: dict[str, str] = {
     "*TestClip::test_simple_inplace_02": (
         "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
     ),
-    "*TestClip::test_simple_int32_inout*": (
-        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
-    ),
     "*TestClip::test_simple_int32_out": (
         "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
     ),
@@ -282,20 +280,16 @@ XFAIL_PATTERNS: dict[str, str] = {
     # ------------------------------------------------------------------ #
     # NUMPY_INTERNAL — fromiter/resize edge cases                         #
     # ------------------------------------------------------------------ #
-    "*TestFromiter::test_growth_and_complicated_dtypes*": (
-        "NUMPY_INTERNAL: fromiter with object dtype interacts unexpectedly with patched np"
-    ),
     "*TestResize::test_reshape_from_zero": (
         "NUMPY_INTERNAL: resize from zero-element array edge case"
     ),
-    "*TestCreationFuncs::test_for_reference_leak": (
-        "NUMPY_INTERNAL: refcount check is flaky in CI/VM environments"
+    "*TestFromiter::test_growth_and_complicated_dtypes*i,O*": (
+        "NUMPY_INTERNAL: fromiter with object dtype interacts unexpectedly with patched np"
+    ),
+    "*TestClip::test_simple_int32_inout*unsafe*": (
+        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA on unsafe cast"
     ),
     "*TestOut::test_out_wrap_no_leak": (
         "NUMPY_INTERNAL: refcount check sees unexpected count due to WhestArray subclass wrapping"
-    ),
-    "*TestFFT1D::test_identity_long_short*": (
-        "NUMPY_INTERNAL: float32/longdouble FFT roundtrip exceeds default tolerance "
-        "when run via whest's patched fft (intermittent)"
     ),
 }
