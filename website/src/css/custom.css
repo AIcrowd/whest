@@ -402,10 +402,16 @@ pre code {
   color: var(--ifm-color-primary);
 }
 
-/* ── Doc page background ─────────────────────────────────── */
-.docMainContainer_node_modules-\@docusaurus-theme-classic-lib-theme-DocPage-Layout-Main-styles-module,
+/* ── Doc page layout ────────────────────────────────────── */
 [class*="docMainContainer"] {
   background: var(--whest-bg);
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+/* Ensure the doc item container has comfortable inner padding */
+[class*="docItemContainer"] {
+  padding-top: 24px;
 }
 
 /* ── 17. Responsive ──────────────────────────────────────── */
