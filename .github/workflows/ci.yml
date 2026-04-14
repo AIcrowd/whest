@@ -60,7 +60,7 @@ jobs:
           uv run pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_umath -n auto -q
           uv run pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_ufunc -n auto -q
           uv run pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_numeric -n auto -q \
-            --deselect numpy/_core/tests/test_numeric.py::TestCreationFuncs::test_for_reference_leak
+            -k "not test_for_reference_leak"
           uv run pytest tests/numpy_compat/ --pyargs numpy.linalg.tests.test_linalg -n auto -q
           uv run pytest tests/numpy_compat/ --pyargs numpy.fft.tests.test_pocketfft -n auto -q
           uv run pytest tests/numpy_compat/ --pyargs numpy.fft.tests.test_helper -n auto -q
