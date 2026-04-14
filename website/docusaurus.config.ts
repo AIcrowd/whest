@@ -69,7 +69,6 @@ const config: Config = {
     },
     navbar: {
       title: 'whest',
-      style: 'primary',
       logo: {
         alt: 'whest logo',
         src: 'img/logo.png',
