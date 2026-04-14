@@ -72,21 +72,23 @@ def svd(a, full_matrices=True, compute_uv=True, hermitian=False, *, k=None):
     effective_k = k if k is not None else min(m, n)
     batch = _batch_size(a.shape)
     cost = svd_cost(m, n, effective_k) * batch if not _has_zero_dim(a.shape) else 0
-    budget.deduct("linalg.svd", flop_cost=cost, subscripts=None, shapes=(a.shape,))
+    with budget.deduct("linalg.svd", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+        if compute_uv:
+            # When k is specified, always use economy decomposition then slice.
+            fm = full_matrices if k is None else False
+            U, S, Vt = _np.linalg.svd(a, full_matrices=fm, hermitian=hermitian)
+            if k is not None:
+                S = S[..., :k]
+                U = U[..., :k]
+                Vt = Vt[..., :k, :]
+            check_nan_inf(S, "linalg.svd")
+        else:
+            S = _np.linalg.svd(a, compute_uv=False, hermitian=hermitian)
+            if k is not None:
+                S = S[..., :k]
+            check_nan_inf(S, "linalg.svd")
 
     if compute_uv:
-        # When k is specified, always use economy decomposition then slice.
-        fm = full_matrices if k is None else False
-        U, S, Vt = _np.linalg.svd(a, full_matrices=fm, hermitian=hermitian)
-        if k is not None:
-            S = S[..., :k]
-            U = U[..., :k]
-            Vt = Vt[..., :k, :]
-        check_nan_inf(S, "linalg.svd")
         return SVDResult(U, S, Vt)
     else:
-        S = _np.linalg.svd(a, compute_uv=False, hermitian=hermitian)
-        if k is not None:
-            S = S[..., :k]
-        check_nan_inf(S, "linalg.svd")
         return S
