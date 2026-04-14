@@ -938,3 +938,27 @@ class TestIntersectSymmetryGeneralGroups:
         g2 = PermutationGroup.symmetric(2, axes=(2, 3))
         result = intersect_symmetry([g1], [g2], (5, 5, 5, 5), (5, 5, 5, 5), (5, 5, 5, 5))
         assert result is None
+
+
+class TestSymmetricTensorGeneralGroups:
+    """End-to-end tests: SymmetricTensor with general groups through slice/reduce."""
+
+    def test_c3_tensor_slice_loses_symmetry(self):
+        """SymmetricTensor with C_3, slicing one axis -> no symmetry."""
+        arr = np.zeros((3, 3, 3))
+        g = PermutationGroup.cyclic(3, axes=(0, 1, 2))
+        t = SymmetricTensor(arr, symmetric_axes=[(0, 1, 2)], perm_groups=[g])
+        result = t[:, :, 0]
+        assert not isinstance(result, SymmetricTensor) or not result.symmetric_axes
+
+    def test_s3_tensor_slice_keeps_s2(self):
+        """SymmetricTensor with S_3, slicing one axis -> S_2 survives."""
+        arr = np.zeros((3, 3, 3))
+        g = PermutationGroup.symmetric(3, axes=(0, 1, 2))
+        t = SymmetricTensor(arr, symmetric_axes=[(0, 1, 2)], perm_groups=[g])
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            result = t[:, :, 0]
+        assert isinstance(result, SymmetricTensor)
+        assert len(result._symmetry_groups) == 1
+        assert result._symmetry_groups[0].order() == 2
