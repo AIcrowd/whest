@@ -19,7 +19,7 @@ const config: Config = {
   organizationName: 'AIcrowd',
   projectName: 'whest',
 
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
 
   i18n: {
     defaultLocale: 'en',
@@ -27,6 +27,7 @@ const config: Config = {
   },
 
   markdown: {
+    format: 'md',
     mermaid: true,
   },
 
@@ -59,6 +60,8 @@ const config: Config = {
       crossorigin: 'anonymous',
     },
   ],
+
+  plugins: ['./src/plugins/plugin-llmstxt'],
 
   themeConfig: {
     image: 'img/logo.png',

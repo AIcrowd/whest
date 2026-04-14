@@ -1,0 +1,116 @@
+.hero {
+  text-align: center;
+  padding: 4rem 1rem 3rem;
+}
+
+.logo {
+  height: 80px;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  letter-spacing: -0.02em;
+  margin: 1rem 0 0.5rem;
+}
+
+.tagline {
+  font-size: 1.2rem;
+  color: #555;
+  max-width: 500px;
+  margin: 0 auto 2rem;
+}
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.primaryButton {
+  background-color: var(--ifm-color-primary);
+  color: #fff;
+  border-radius: 8px;
+  padding: 0.6rem 1.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.primaryButton:hover {
+  color: #fff;
+  opacity: 0.9;
+  text-decoration: none;
+}
+
+.secondaryButton {
+  border: 1px solid #e5e7eb;
+  color: #555;
+  border-radius: 8px;
+  padding: 0.6rem 1.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: border-color 0.2s;
+}
+
+.secondaryButton:hover {
+  color: #333;
+  border-color: #ccc;
+  text-decoration: none;
+}
+
+.cardsSection {
+  padding: 2rem 1rem 3rem;
+}
+
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.card {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 1.5rem;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  text-decoration: none;
+  color: inherit;
+}
+
+.cardTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.cardDescription {
+  font-size: 0.95rem;
+  color: #666;
+  margin: 0;
+}
+
+.codeSection {
+  padding: 2rem 1rem 4rem;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.codeSectionTitle {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #1a1a2e;
+}
