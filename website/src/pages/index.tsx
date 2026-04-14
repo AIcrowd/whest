@@ -39,7 +39,7 @@ const cards = [
     emoji: '\u{1F4D6}',
     title: 'API Reference',
     description: 'All 482 operations with interactive search',
-    link: '/api/counted-ops',
+    link: '/api',
   },
 ];
 
@@ -67,7 +67,7 @@ export default function Home(): React.JSX.Element {
           <Link className={styles.primaryButton} to="/getting-started/installation">
             Get Started
           </Link>
-          <Link className={styles.secondaryButton} to="/api/counted-ops">
+          <Link className={styles.secondaryButton} to="/api">
             API Reference
           </Link>
         </div>

@@ -139,6 +139,6 @@ print(f"Real FFT:    {rfft_cost(n):,} FLOPs")   # 52,428,800
 
 ## 📎 Related pages
 
-- [FFT API Reference](../api/fft.md) — full function signatures and docstrings
+- [API Reference](../api/) — full function signatures and docstrings
 - [Plan Your Budget](./plan-your-budget.md) — general cost estimation workflow
 - [FLOP Counting Model](../concepts/flop-counting-model.md) — how all costs are computed

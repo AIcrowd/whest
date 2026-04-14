@@ -47,7 +47,7 @@ drop the trailing `/index.md` from the URL:
 |--------------------------|---------------------------|
 | `.../getting-started/installation/index.md` | `.../getting-started/installation/` |
 | `.../how-to/use-einsum/index.md` | `.../how-to/use-einsum/` |
-| `.../api/linalg/index.md` | `.../api/linalg/` |
+| `.../api/index.md` | `.../api/` |
 
 If you have a large context window, fetch `llms-full.txt` instead to get
 everything in one request.

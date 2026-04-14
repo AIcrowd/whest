@@ -121,7 +121,7 @@ for the algorithm walkthrough.
 
 Every einsum — regardless of the number of operands — is decomposed into
 pairwise contraction steps along an optimal path (found via whest's
-[opt_einsum fork](../api/opt-einsum.md)).
+[opt_einsum fork](../api/)).
 The total cost is the sum of per-step costs:
 
 ```
