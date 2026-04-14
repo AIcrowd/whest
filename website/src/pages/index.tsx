@@ -4,42 +4,54 @@ import Link from '@docusaurus/Link';
 import CodeBlock from '@theme/CodeBlock';
 import styles from './index.module.css';
 
-const cards = [
+const features = [
   {
-    emoji: '\u{1F680}',
+    number: '508',
+    label: 'Operations',
+    desc: 'NumPy-compatible operations with analytical FLOP costs',
+  },
+  {
+    number: '0',
+    label: 'Runtime overhead',
+    desc: 'Costs computed from tensor shapes, not measured at runtime',
+  },
+  {
+    number: '\u221E',
+    label: 'Composable',
+    desc: 'Budget contexts, namespaces, and per-operation breakdowns',
+  },
+];
+
+const navCards = [
+  {
     title: 'Get Started',
-    description: 'Install whest and create your first FLOP budget',
+    desc: 'Install whest and create your first FLOP budget',
     link: '/getting-started/installation',
   },
   {
-    emoji: '\u{1F6E0}',
-    title: 'Troubleshoot',
-    description: 'Common errors and fixes',
-    link: '/troubleshooting/common-errors',
-  },
-  {
-    emoji: '\u{1F4C8}',
-    title: 'Write Efficient Code',
-    description: 'Migrate from NumPy, use einsum, exploit symmetry',
+    title: 'Migrate from NumPy',
+    desc: 'Convert existing code with FLOP annotations',
     link: '/how-to/migrate-from-numpy',
   },
   {
-    emoji: '\u{1F9E0}',
-    title: 'Understand the Model',
-    description: 'How FLOP costs are computed analytically',
+    title: 'API Reference',
+    desc: 'Search all 508 operations with interactive filters',
+    link: '/api',
+  },
+  {
+    title: 'FLOP Counting Model',
+    desc: 'How costs are computed analytically',
     link: '/concepts/flop-counting-model',
   },
   {
-    emoji: '\u{1F3D7}',
-    title: 'Architecture',
-    description: 'Client-server model and Docker setup',
-    link: '/architecture/client-server',
+    title: 'Symmetry Explorer',
+    desc: 'Interactive einsum symmetry visualization',
+    link: '/explanation/symmetry-explorer',
   },
   {
-    emoji: '\u{1F4D6}',
-    title: 'API Reference',
-    description: 'All 482 operations with interactive search',
-    link: '/api',
+    title: 'For AI Agents',
+    desc: 'Machine-readable resources and rules',
+    link: '/reference/for-agents',
   },
 ];
 
@@ -54,15 +66,18 @@ we.budget_summary()`;
 
 export default function Home(): React.JSX.Element {
   return (
-    <Layout title="Home" description="NumPy-compatible math primitives with analytical FLOP counting">
+    <Layout
+      title="Home"
+      description="NumPy-compatible math primitives with analytical FLOP counting"
+    >
       {/* Hero */}
-      <div className={styles.hero}>
-        <img src="/whest/img/logo.png" alt="whest logo" className={styles.logo} />
-        <h1 className={styles.title}>whest</h1>
-        <p className={styles.tagline}>
-          NumPy-compatible math primitives with analytical FLOP counting
+      <section className={styles.hero}>
+        <h1 className={styles.heroTitle}>Count every FLOP.</h1>
+        <p className={styles.heroSubtitle}>
+          NumPy-compatible math primitives with analytical FLOP counting.
+          Set budgets, track costs, and understand your compute.
         </p>
-        <div className={styles.buttons}>
+        <div className={styles.heroButtons}>
           <Link className={styles.primaryButton} to="/getting-started/installation">
             Get Started
           </Link>
@@ -70,27 +85,41 @@ export default function Home(): React.JSX.Element {
             API Reference
           </Link>
         </div>
-      </div>
+        <code className={styles.heroInstall}>
+          uv add git+https://github.com/AIcrowd/whest.git
+        </code>
+      </section>
 
-      {/* Navigation Cards */}
-      <div className={styles.cardsSection}>
-        <div className={styles.cardsGrid}>
-          {cards.map((card) => (
-            <Link key={card.title} className={styles.card} to={card.link}>
-              <div className={styles.cardTitle}>
-                {card.emoji} {card.title}
-              </div>
-              <p className={styles.cardDescription}>{card.description}</p>
+      {/* Feature numbers */}
+      <section className={styles.features}>
+        {features.map((f) => (
+          <div key={f.label} className={styles.featureItem}>
+            <span className={styles.featureNumber}>{f.number}</span>
+            <span className={styles.featureLabel}>{f.label}</span>
+            <p className={styles.featureDesc}>{f.desc}</p>
+          </div>
+        ))}
+      </section>
+
+      {/* Code example */}
+      <section className={styles.codeSection}>
+        <h2 className={styles.codeSectionTitle}>See it in action</h2>
+        <CodeBlock language="python">{exampleCode}</CodeBlock>
+      </section>
+
+      {/* Navigation cards */}
+      <section className={styles.navSection}>
+        <h2 className={styles.navSectionTitle}>Explore the docs</h2>
+        <div className={styles.navGrid}>
+          {navCards.map((card) => (
+            <Link key={card.title} className={styles.navCard} to={card.link}>
+              <span className={styles.navCardArrow} aria-hidden="true">&rarr;</span>
+              <div className={styles.navCardTitle}>{card.title}</div>
+              <p className={styles.navCardDesc}>{card.desc}</p>
             </Link>
           ))}
         </div>
-      </div>
-
-      {/* Quick Code Example */}
-      <div className={styles.codeSection}>
-        <h2 className={styles.codeSectionTitle}>Quick Example</h2>
-        <CodeBlock language="python">{exampleCode}</CodeBlock>
-      </div>
+      </section>
     </Layout>
   );
 }
