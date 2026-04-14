@@ -811,15 +811,12 @@ class TestPropagateSliceGeneralGroups:
         result = propagate_symmetry_slice([g], (5, 5, 5), (slice(None), slice(None), 0))
         assert result is None
 
-    def test_c4_slice_two_axes_c2_survives(self):
-        """C_4 on {0,1,2,3}, slice axes {1,3} → C_2 on output {0,1}."""
+    def test_c4_slice_two_axes_no_symmetry(self):
+        """C_4 on {0,1,2,3}, slice axes {1,3} → pointwise stab of {1,3} = trivial."""
         g = PermutationGroup.cyclic(4, axes=(0, 1, 2, 3))
+        # Pointwise stabilizer: each of 1,3 must map to itself. Only identity does.
         result = propagate_symmetry_slice([g], (5, 5, 5, 5), (slice(None), 0, slice(None), 0))
-        assert result is not None
-        assert len(result) == 1
-        assert result[0].degree == 2
-        assert result[0].order() == 2
-        assert result[0].axes == (0, 1)
+        assert result is None
 
     def test_s3_slice_one_axis_s2_survives(self):
         """S_3 on {0,1,2}, slice axis 2 → S_2 on {0,1}. Same as old behavior."""

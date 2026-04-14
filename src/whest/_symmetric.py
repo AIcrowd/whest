@@ -337,9 +337,10 @@ def propagate_symmetry_slice(
         if not local_kept:
             continue
 
-        # Setwise stabilizer: elements that map the set of removed axes to itself.
-        # This allows permutations among removed axes that share the same slice value.
-        stab = group.setwise_stabilizer(local_removed)
+        # Pointwise stabilizer: each removed axis must map to itself.
+        # (Setwise would only be valid when all removed axes share the
+        # same slice value, which we can't determine in general.)
+        stab = group.pointwise_stabilizer(local_removed)
 
         # Among surviving axes, check for size mismatches.
         size_map: dict[int, int] = {}
