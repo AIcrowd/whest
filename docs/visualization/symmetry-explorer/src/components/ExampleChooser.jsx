@@ -1,7 +1,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import { validateAll } from '../engine/validation.js';
 import { generatePython } from '../engine/pythonCodegen.js';
-import { buildVariableColors, SYMMETRY_ICONS } from '../engine/colorPalette.js';
+import { buildVariableColors, SYMMETRY_ICONS, contrastText } from '../engine/colorPalette.js';
 import { parseCycleNotation, generatorIndices } from '../engine/cycleParser.js';
 
 // ---------------------------------------------------------------------------
@@ -437,10 +437,10 @@ export default function ExampleChooser({
               )}
 
               {/* Summary badge */}
-              <div className="sym-badge" style={{ backgroundColor: color }}>
+              <div className="sym-badge" style={{ backgroundColor: color, color: contrastText(color) }}>
                 {badgeLabel(v)}
                 {badgeOrder(v) != null && (
-                  <span className="sym-order"> |{badgeOrder(v)}|</span>
+                  <span className="sym-order"> order {badgeOrder(v)}</span>
                 )}
               </div>
             </div>
@@ -462,21 +462,21 @@ export default function ExampleChooser({
             className={`expr-input ${validation.errors.some(e => e.includes('subscript') || e.includes('Subscript') || e.includes('operand')) ? 'has-error' : ''}`}
             value={subscriptsStr}
             onChange={e => handleSubscriptsChange(e.target.value.toLowerCase())}
-            placeholder="ia,ib"
+            placeholder="e.g. ia,ib"
           />
           <span className="expr-chrome">-&gt;</span>
           <input
             className={`expr-input ${validation.errors.some(e => e.includes('utput')) ? 'has-error' : ''}`}
             value={outputStr}
             onChange={e => handleOutputChange(e.target.value.toLowerCase())}
-            placeholder="ab"
+            placeholder="e.g. ab (empty = scalar)"
           />
           <span className="expr-chrome">',</span>
           <input
             className={`expr-input ${validation.errors.some(e => e.includes('operand') || e.includes('Operand')) ? 'has-error' : ''}`}
             value={operandNamesStr}
             onChange={e => handleOperandNamesChange(e.target.value)}
-            placeholder="X, X"
+            placeholder="e.g. X, X"
           />
           <span className="expr-chrome">)</span>
         </div>

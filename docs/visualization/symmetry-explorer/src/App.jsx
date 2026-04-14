@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback } from 'react';
 import { EXAMPLES } from './data/examples.js';
 import { parseCycleNotation } from './engine/cycleParser.js';
+import { buildVariableColors } from './engine/colorPalette.js';
 import {
   buildBipartite, buildIncidenceMatrix, runSigmaLoop,
   buildGroup, computeBurnside, computeCostReduction,
@@ -64,11 +65,15 @@ export default function App() {
   const [exampleIdx, setExampleIdx] = useState(0);
   const [customExample, setCustomExample] = useState(null);
   const [dimensionN, setDimensionN] = useState(5);
-  const [variableColors, setVariableColors] = useState({});
-
   // Resolve the active example: preset or custom
   const isCustom = exampleIdx === CUSTOM_IDX;
   const example = isCustom ? customExample : EXAMPLES[exampleIdx];
+
+  // Derive variable colors from the example's variables (works for both presets and custom)
+  const variableColors = useMemo(() => {
+    if (example?.variables) return buildVariableColors(example.variables);
+    return {};
+  }, [example]);
 
   // Normalize the example for algorithm consumption
   const normalizedExample = useMemo(() => example ? normalizeExample(example) : null, [example]);
@@ -79,9 +84,8 @@ export default function App() {
   }, []);
 
   // Handle custom example submission
-  const handleCustomExample = useCallback((ex, colors) => {
+  const handleCustomExample = useCallback((ex) => {
     setCustomExample(ex);
-    setVariableColors(colors || {});
     setExampleIdx(CUSTOM_IDX);
   }, []);
 
@@ -202,6 +206,7 @@ export default function App() {
                 graph={graph}
                 matrixData={matrixData}
                 example={normalizedExample}
+                variableColors={variableColors}
               />
             </section>
 

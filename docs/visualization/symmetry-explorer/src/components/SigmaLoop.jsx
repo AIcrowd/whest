@@ -1,9 +1,12 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { buildUVertexLabels } from '../engine/uVertexLabel.js';
+import IncidenceMatrix from './IncidenceMatrix.jsx';
 
 const STAGE_LABELS = ['M', 'σ(M)', 'π(σ(M))'];
 
-export default function SigmaLoop({ results, graph, matrixData, example }) {
+export default function SigmaLoop({ results, graph, matrixData, example, variableColors }) {
   const { uVertices, freeLabels } = graph;
+  const uLabels = buildUVertexLabels(uVertices, example);
   const labels = matrixData.labels;
   const originalMatrix = matrixData.matrix;
 
@@ -11,9 +14,13 @@ export default function SigmaLoop({ results, graph, matrixData, example }) {
   const [stage, setStage] = useState(0); // 0=M, 1=σ(M), 2=π(σ(M))
   const [playing, setPlaying] = useState(false);
   const playRef = useRef(false);
+  const [showRejected, setShowRejected] = useState(false);
+  const [modalIdx, setModalIdx] = useState(null); // index into allPairs for rejected modal
 
   // Filter results
   const allPairs = results.filter(r => !r.skipped);
+  const validPairs = allPairs.filter(r => r.isValid);
+  const rejectedPairs = allPairs.filter(r => !r.isValid);
 
   // Auto-select first valid pair (only on example change)
   const resultsKey = results.length + ':' + results.filter(r => r.isValid).length;
@@ -25,6 +32,8 @@ export default function SigmaLoop({ results, graph, matrixData, example }) {
     setStage(0);
     setPlaying(false);
     playRef.current = false;
+    setShowRejected(false);
+    setModalIdx(null);
   }, [resultsKey]);
 
   const selected = selectedIdx !== null ? allPairs[selectedIdx] : null;
@@ -96,21 +105,36 @@ export default function SigmaLoop({ results, graph, matrixData, example }) {
         </div>
       </div>
 
-      {/* Pair selector chips */}
-      <div className="pair-selector">
-        <span className="pair-selector-label">Select (σ, π) pair:</span>
-        <div className="pair-chips">
-          {allPairs.map((r, i) => (
-            <button key={i}
-              className={`pair-chip ${r.isValid ? 'pair-valid' : 'pair-invalid'} ${selectedIdx === i ? 'pair-active' : ''}`}
-              onClick={() => handleSelectPair(i)}>
-              <span className="pair-sigma">σ = {fmtSigma(r.sigma)}</span>
-              {r.isValid && <span className="pair-pi">π = {fmtPi(r.pi)}</span>}
-              {!r.isValid && <span className="pair-rejected">✗</span>}
-            </button>
-          ))}
+      {/* Valid pairs — shown inline */}
+      {validPairs.length > 0 && (
+        <div className="pair-selector">
+          <span className="pair-selector-label">Valid (σ, π) pairs:</span>
+          <div className="pair-chips">
+            {validPairs.map((r) => {
+              const origIdx = allPairs.indexOf(r);
+              return (
+                <button key={origIdx}
+                  className={`pair-chip pair-valid ${selectedIdx === origIdx ? 'pair-active' : ''}`}
+                  onClick={() => handleSelectPair(origIdx)}>
+                  <span className="pair-sigma">σ = {fmtSigma(r.sigmaRowPerm, uLabels)}</span>
+                  <span className="pair-pi">π = {fmtPi(r.pi)}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* Rejected pairs — opens modal list */}
+      {rejectedPairs.length > 0 && (
+        <div className="rejected-section">
+          <button
+            className="rejected-toggle"
+            onClick={() => setShowRejected(true)}>
+            ▸ {rejectedPairs.length} rejected σ{rejectedPairs.length !== 1 ? "'s" : ''}
+          </button>
+        </div>
+      )}
 
       {/* Animation panel */}
       {selected && (
@@ -152,16 +176,22 @@ export default function SigmaLoop({ results, graph, matrixData, example }) {
             </button>
           </div>
 
-          {/* Animated matrix */}
+          {/* Animated matrix — uses shared IncidenceMatrix */}
           {stages && (
             <div className="anim-matrix-container">
-              <AnimatedMatrix
-                stage={stages[stage]}
-                stageIdx={stage}
-                labels={labels}
+              <IncidenceMatrix
+                matrix={stages[stage].matrix}
+                colLabels={stages[stage].colOrder}
                 uVertices={uVertices}
+                example={example}
                 freeLabels={freeLabels}
-                isValid={selected.isValid}
+                variableColors={variableColors}
+                rowPerm={stages[stage].rowPerm}
+                colPerm={stages[stage].colPerm}
+                movedRows={stages[stage].movedRows}
+                movedCols={stages[stage].movedCols}
+                animate={true}
+                label={STAGE_LABELS[stage]}
               />
               {stage === 2 && selected.isValid && (
                 <div className="recovery-badge">= M ✓</div>
@@ -191,11 +221,145 @@ export default function SigmaLoop({ results, graph, matrixData, example }) {
           )}
         </div>
       )}
+
+      {/* Modal for rejected σ — list or detail view */}
+      {(showRejected || modalIdx !== null) && (
+        <RejectedModal
+          rejectedPairs={rejectedPairs}
+          allPairs={allPairs}
+          detailIdx={modalIdx}
+          labels={labels}
+          uVertices={uVertices}
+          example={example}
+          freeLabels={freeLabels}
+          uLabels={uLabels}
+          originalMatrix={originalMatrix}
+          variableColors={variableColors}
+          onSelectDetail={(origIdx) => setModalIdx(origIdx)}
+          onBack={() => setModalIdx(null)}
+          onClose={() => { setShowRejected(false); setModalIdx(null); }}
+          fmtSigma={fmtSigma}
+        />
+      )}
     </div>
   );
 }
 
-/* ── Animated Matrix ── */
+/* ── Rejected Modal — list view + detail view ── */
+
+function RejectedModal({
+  rejectedPairs, allPairs, detailIdx,
+  labels, uVertices, example, freeLabels, uLabels, originalMatrix, variableColors,
+  onSelectDetail, onBack, onClose, fmtSigma,
+}) {
+  const pair = detailIdx !== null ? allPairs[detailIdx] : null;
+
+  return (
+    <div className="rejected-modal-overlay" onClick={onClose}>
+      <div className="rejected-modal" onClick={e => e.stopPropagation()}>
+        <div className="rejected-modal-header">
+          <h4>{pair ? 'Rejected σ — Detail' : `${rejectedPairs.length} Rejected σ's`}</h4>
+          <button className="rejected-modal-close" onClick={onClose}>✕</button>
+        </div>
+
+        {/* List view */}
+        {!pair && (
+          <div className="rejected-list">
+            {rejectedPairs.map((r, i) => {
+              const origIdx = allPairs.indexOf(r);
+              return (
+                <button key={origIdx} className="rejected-list-item"
+                  onClick={() => onSelectDetail(origIdx)}>
+                  <span className="rejected-list-sigma">
+                    σ = {fmtSigma(r.sigmaRowPerm, uLabels)}
+                  </span>
+                  <span className="rejected-list-reason">
+                    {r.reason || 'no valid π'}
+                  </span>
+                  <span className="rejected-list-arrow">→</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Detail view — shows M → σ(M) using shared IncidenceMatrix */}
+        {pair && (
+          <RejectedDetail
+            pair={pair}
+            labels={labels}
+            uVertices={uVertices}
+            example={example}
+            freeLabels={freeLabels}
+            uLabels={uLabels}
+            originalMatrix={originalMatrix}
+            variableColors={variableColors}
+            onBack={onBack}
+            fmtSigma={fmtSigma}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ── Rejected Detail — M → σ(M) with animation, no π step ── */
+
+function RejectedDetail({ pair, labels, uVertices, example, freeLabels, uLabels, originalMatrix, variableColors, onBack, fmtSigma }) {
+  const [showSigma, setShowSigma] = useState(false);
+
+  // Build moved rows set
+  const movedRows = new Set();
+  if (pair.sigmaRowPerm) {
+    pair.sigmaRowPerm.forEach((uIdx, k) => {
+      if (uIdx !== k) movedRows.add(k);
+    });
+  }
+
+  return (
+    <>
+      <button className="rejected-back" onClick={onBack}>
+        ← Back to list
+      </button>
+      <div className="rejected-modal-sigma">
+        σ = {fmtSigma(pair.sigmaRowPerm, uLabels)}
+      </div>
+      <p className="rejected-modal-reason">{pair.reason || 'No valid π found'}</p>
+
+      <div className="rejected-detail-controls">
+        <button
+          className={`ctrl-btn ${!showSigma ? 'ctrl-btn-active' : ''}`}
+          onClick={() => setShowSigma(false)}>
+          M
+        </button>
+        <span className="rejected-detail-arrow">→</span>
+        <button
+          className={`ctrl-btn ${showSigma ? 'ctrl-btn-active' : ''}`}
+          onClick={() => setShowSigma(true)}>
+          σ(M)
+        </button>
+      </div>
+
+      <IncidenceMatrix
+        matrix={showSigma ? pair.sigmaMatrix : originalMatrix}
+        colLabels={labels}
+        uVertices={uVertices}
+        example={example}
+        freeLabels={freeLabels}
+        variableColors={variableColors}
+        rowPerm={showSigma ? pair.sigmaRowPerm : null}
+        movedRows={showSigma ? movedRows : null}
+        animate={true}
+        label={showSigma ? 'σ(M)' : 'M'}
+        compact={true}
+      />
+
+      {/* Fingerprints are now shown by IncidenceMatrix automatically */}
+    </>
+  );
+}
+
+/* ── Animated Matrix (legacy, now unused — kept for reference) ── */
 
 /**
  * AnimatedMatrix — rows are positioned absolutely and animate their Y position
@@ -205,12 +369,12 @@ export default function SigmaLoop({ results, graph, matrixData, example }) {
  * row cards. Each card has a stable React key (the U-vertex index it represents)
  * and its `top` position is computed from the current stage's row ordering.
  */
-function AnimatedMatrix({ stage, stageIdx, labels, uVertices, freeLabels, isValid }) {
+function AnimatedMatrix({ stage, stageIdx, labels, uVertices, freeLabels, isValid, uLabels }) {
   const { matrix, colOrder, rowPerm, movedRows, movedCols, colPerm } = stage;
   const numCols = colOrder.length;
   const ROW_H = 38;
   const HEADER_H = 32;
-  const COL_W = 70; // px per column
+  const COL_W = 70;
   const LABEL_W = 90;
   const numRows = matrix.length;
   const containerH = HEADER_H + numRows * ROW_H + 8;
@@ -267,7 +431,7 @@ function AnimatedMatrix({ stage, stageIdx, labels, uVertices, freeLabels, isVali
                 height: ROW_H,
               }}>
               <div className="card-row-label" style={{ width: LABEL_W }}>
-                <span className="op-tag">Op{u.opIdx}</span>·{lblStr}
+                {uLabels?.[uIdx] || `Op${u.opIdx}·${lblStr}`}
               </div>
               {/* Cells — each positioned absolutely for column animation */}
               {rowData.map((val, ci) => {
@@ -383,20 +547,20 @@ function computeStages(result, originalMatrix, labels, uVertices) {
 
 /* ── Formatting helpers ── */
 
-function fmtSigma(sigma) {
-  const entries = Object.entries(sigma).filter(([k, v]) => Number(k) !== v);
-  if (entries.length === 0) return 'e';
+function fmtSigma(sigmaRowPerm, uLabels) {
+  if (!sigmaRowPerm) return 'e';
+  // Build cycle notation on U-vertex labels from the row permutation
+  const n = sigmaRowPerm.length;
   const visited = new Set();
   const cycles = [];
-  for (const [k] of entries) {
-    const kn = Number(k);
-    if (visited.has(kn)) continue;
+  for (let i = 0; i < n; i++) {
+    if (visited.has(i) || sigmaRowPerm[i] === i) continue;
     const cycle = [];
-    let cur = kn;
+    let cur = i;
     while (!visited.has(cur)) {
       visited.add(cur);
-      cycle.push(cur);
-      cur = sigma[cur] ?? cur;
+      cycle.push(uLabels?.[cur] ?? `r${cur}`);
+      cur = sigmaRowPerm[cur];
     }
     if (cycle.length > 1) cycles.push(cycle);
   }

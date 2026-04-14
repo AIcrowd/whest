@@ -316,6 +316,42 @@ export function runSigmaLoop(graph, matrixData, example) {
     }
   }
 
+  // ── Source C: coordinated axis relabeling for identical operands ──
+  // When identical operands share the same subscript, axis permutations
+  // applied uniformly across all copies relabel dummy indices.
+  // Only valid for W-side (summed) axes — free labels would change the output.
+  const subscripts = example?.subscripts || [];
+  for (const group of identicalGroups) {
+    // Check all operands have the same subscript
+    const groupSubs = group.map(op => subscripts[op]);
+    if (new Set(groupSubs).size !== 1 || !groupSubs[0]) continue;
+    const sub = groupSubs[0];
+    const rank = sub.length;
+    if (rank < 2) continue;
+    // Find W-only axis positions
+    const wAxes = [];
+    for (let ax = 0; ax < rank; ax++) {
+      if (wLabels.has(sub[ax])) wAxes.push(ax);
+    }
+    if (wAxes.length < 2) continue;
+    // Adjacent transpositions on W-only axes
+    for (let idx = 0; idx < wAxes.length - 1; idx++) {
+      const axA = wAxes[idx];
+      const axB = wAxes[idx + 1];
+      const rowPerm = [...identityRow];
+      let isId = true;
+      for (const opIdx of group) {
+        const positions = opToUIndices[opIdx] || [];
+        if (axA >= positions.length || axB >= positions.length) continue;
+        const pa = positions[axA], pb = positions[axB];
+        rowPerm[pa] = identityRow[pb];
+        rowPerm[pb] = identityRow[pa];
+        isId = false;
+      }
+      if (!isId) rowPermGenerators.push({ perm: rowPerm, label: `Axis swap ${axA}↔${axB}` });
+    }
+  }
+
   // ── Build group from all generators, enumerate all elements via Dimino ──
   if (rowPermGenerators.length === 0) return results;
 
@@ -323,6 +359,9 @@ export function runSigmaLoop(graph, matrixData, example) {
   const allRowPerms = dimino(permGens);
 
   // ── Derive π for each non-identity group element ──
+  // Build a label for each row so we can describe σ in human-readable form.
+  // Each row is "OpN·label" — we build an operand-level sigma mapping from
+  // the row permutation by tracking which operand positions get swapped.
   for (const sigmaPerm of allRowPerms) {
     const sigmaRowPerm = sigmaPerm.arr;
     if (sigmaPerm.isIdentity) {

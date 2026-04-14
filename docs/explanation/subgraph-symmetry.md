@@ -204,7 +204,7 @@ used by the sigma-loop (below) to derive pi in O(1) per label via hash lookup.
 ### σ loop: derive π from generators
 
 The sigma-loop iterates over **generators** of the row-permutation group on M,
-drawn from two sources:
+drawn from three sources:
 
 - **Source A — per-operand internal symmetry generators.** For each operand
   that carries a declared `PermutationGroup`, each generator of that group is
@@ -217,7 +217,20 @@ drawn from two sources:
   `(op_i, op_{i+1})` are used as generators. Each such swap is lifted to a row
   permutation that exchanges the rows of the two operands.
 
-For each generator `σ`:
+- **Source C — coordinated axis relabeling.** When identical operands share
+  the same subscript pattern (e.g. both have subscript `ij`), permuting axes
+  uniformly across all copies is equivalent to relabeling dummy indices.
+  Adjacent transpositions on W-only (summed) axes are generated, applied to
+  every copy simultaneously. This is restricted to W-side labels because
+  relabeling free (output) labels would change the output tensor. Example:
+  `einsum('ij,ij->', A, A)` — swapping axis 0↔1 on both copies gives the
+  row permutation `[1,0,3,2]`, which yields `π: i→j, j→i` (W-side S₂{i,j}).
+
+All generators are collected and passed to Dimino's algorithm to build the
+full row-permutation group. The sigma-loop then iterates over **all elements**
+of this group (not just the generators), deriving π for each.
+
+For each group element `σ`:
 
 1. Lift `σ` to a row permutation on M.
 2. Compute `σ(M)`'s column fingerprints: `σ·col(c)` for each label `c`.
@@ -481,13 +494,24 @@ The oracle returns a `SubsetSymmetry` dataclass with `.output` (V-side) and
 The oracle evaluates each subset at most once. For a contract with `N` operands
 and groups of sizes `k₁, k₂, …`:
 
-- Number of subsets visited: at most `2^N` (usually much less — path algorithms
-  visit only O(N²) subsets in practice for greedy and branch-bounded search).
-- Per-subset cost: `O(m! · poly(n))` where `m = max(kᵢ)`.
-- Total: `O(2^N · m! · poly(n))`, dominated by the path algorithm itself.
+- **Generator collection:** Source A contributes O(rank) generators per operand
+  with declared symmetry (1 for C_k, 2 for D_k, k-1 for S_k). Source B
+  contributes k-1 generators per identical group. Source C contributes at most
+  rank-1 generators per identical group with matching subscripts. Total
+  generators: `g = O(N · rank)`.
+- **Group enumeration:** Dimino's algorithm builds the full row-permutation
+  group from the generators. If the group has order `|G|`, this costs
+  `O(|G| · g)` compositions.
+- **π derivation:** For each of the `|G|` group elements, deriving π costs
+  `O(n_labels)` via fingerprint hash lookup.
+- **Per-subset total:** `O(|G| · (g + n_labels))`.
+- **Number of subsets visited:** at most `2^N` (usually much less — path
+  algorithms visit only O(N²) subsets in practice).
+- **Total:** `O(2^N · |G| · (g + n_labels))`.
 
-For the common case of a single pair of identical operands (`m = 2`):
-per-subset cost is `O(poly(n))`.
+For the common case of a single pair of identical operands (`|G| = 2`, `g = 1`):
+per-subset cost is `O(n_labels)`. For larger groups (e.g. S₄ with `|G| = 24`),
+the cost is still modest because the number of labels is small in practice.
 
 ---
 
