@@ -200,6 +200,44 @@ def _collect_pi_permutations(
                 row_perm[pb] = identity_row[pa]
             row_perm_generators.append(tuple(row_perm))
 
+    # --- Source C: coordinated axis relabeling for identical operands ---
+    # When identical operands share the same subscript pattern, permuting
+    # axes uniformly across all copies is equivalent to relabeling dummy
+    # indices.  Only valid when BOTH labels involved in the swap are
+    # summed (W-side) — relabeling free (V-side) labels changes the output.
+    # Generate adjacent transpositions on W-only axis pairs, applied to
+    # every copy simultaneously.
+    for group in sub.id_groups:
+        group_sorted = sorted(group)
+        # Check all operands in this group have the same subscript
+        subs_list = [graph.operand_subscripts[op] for op in group_sorted]
+        if len(set(subs_list)) != 1:
+            continue  # different subscripts — can't do coordinated relabeling
+        subscript = subs_list[0]
+        rank = len(subscript)
+        if rank < 2:
+            continue
+        # Find which axis positions have W-only (summed) labels
+        w_axes = [ax for ax in range(rank) if subscript[ax] in sub.w_labels]
+        if len(w_axes) < 2:
+            continue
+        # Generate adjacent transpositions on W-only axes
+        for idx in range(len(w_axes) - 1):
+            ax_a = w_axes[idx]
+            ax_b = w_axes[idx + 1]
+            row_perm = list(identity_row)
+            is_identity = True
+            for op_idx in group_sorted:
+                positions = op_to_u_indices.get(op_idx, [])
+                if ax_a >= len(positions) or ax_b >= len(positions):
+                    continue
+                pa, pb = positions[ax_a], positions[ax_b]
+                row_perm[pa] = identity_row[pb]
+                row_perm[pb] = identity_row[pa]
+                is_identity = False
+            if not is_identity:
+                row_perm_generators.append(tuple(row_perm))
+
     # --- Build a group on row positions and enumerate all elements ---
     if not row_perm_generators:
         return v_perms, w_perms

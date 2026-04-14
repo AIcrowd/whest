@@ -219,23 +219,14 @@ class TestWSideSymmetry:
         A = we.random.randn(N, N)
         assert _detect_order("ij,jk,ki->i", A, A, A) == 1
 
-    @pytest.mark.xfail(
-        reason="Frobenius inner product requires coordinated cross-operand "
-        "axis relabeling (Source C), which is not yet implemented. "
-        "The old fingerprint fast path covered this; the new "
-        "generator-based approach does not.",
-        strict=True,
-    )
     def test_frobenius_inner_product_w_s2(self):
         """einsum('ij,ij->', A, A): Frobenius inner product.
 
         sum_{i,j} A[i,j]*A[i,j] = sum_{j,i} A[j,i]*A[j,i] — relabeling
         dummy indices i↔j gives the same sum. So W-side S2{i,j} should hold.
 
-        However, swapping operands gives identity π (same subscripts), and
-        no per-operand symmetry is declared. Detecting this requires
-        coordinated axis relabeling across all operands simultaneously
-        (a "Source C" generator), which is not yet implemented.
+        Detected via Source C: coordinated axis relabeling across all
+        identical operands with the same subscript pattern.
         """
         A = we.random.randn(N, N)
         assert _detect_order("ij,ij->", A, A) == 2
