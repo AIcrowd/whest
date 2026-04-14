@@ -267,6 +267,22 @@ def test_budget_factory_passes_wall_time_limit():
     assert b.wall_time_limit_s == 2.0
 
 
+def test_plain_text_summary_includes_timing():
+    """Plain-text summary should show wall time and tracked/untracked."""
+    import whest
+    from whest._display import _plain_text_summary
+
+    whest.budget_reset()
+    with whest.BudgetContext(flop_budget=int(1e12), namespace="test", quiet=True):
+        a = whest.ones((100,))
+        _ = whest.add(a, a)
+
+    text = _plain_text_summary()
+    assert "Wall time:" in text
+    assert "Tracked time:" in text
+    assert "Untracked time:" in text
+
+
 def test_namespace_record_includes_time():
     import whest
 

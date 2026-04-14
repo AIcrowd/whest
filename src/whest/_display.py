@@ -87,6 +87,42 @@ def _plain_text_summary() -> str:
         lines.append(f"  Tracked time:    {tracked:.3f}s")
         lines.append(f"  Untracked time:  {untracked:.3f}s")
 
+    # Timing section
+    wall_time = data.get("wall_time_s")
+    tracked_time = data.get("total_tracked_time")
+    if wall_time is not None:
+        untracked = wall_time - (tracked_time or 0.0)
+        tracked_pct = (
+            100 * (tracked_time or 0.0) / wall_time if wall_time > 0 else 0.0
+        )
+        untracked_pct = 100 * untracked / wall_time if wall_time > 0 else 0.0
+        lines += [
+            "",
+            f"  Wall time:       {wall_time:.3f}s",
+            f"  Tracked time:    {(tracked_time or 0.0):.3f}s  ({tracked_pct:.1f}%)",
+            f"  Untracked time:  {untracked:.3f}s  ({untracked_pct:.1f}%)",
+        ]
+
+        # Per-op timing breakdown
+        op_durations = {}
+        op_calls = {}
+        for op_name, op_info in ops.items():
+            dur = op_info.get("duration", 0.0)
+            if dur > 0:
+                op_durations[op_name] = dur
+                op_calls[op_name] = op_info["calls"]
+        if op_durations:
+            lines += ["", "  By operation (time):"]
+            for op_name, dur in sorted(
+                op_durations.items(), key=lambda x: -x[1]
+            ):
+                op_pct = 100 * dur / (tracked_time or 1.0)
+                n = op_calls[op_name]
+                call_word = "call" if n == 1 else "calls"
+                lines.append(
+                    f"    {op_name:<20} {dur:.3f}s  ({op_pct:5.1f}%)  [{n} {call_word}]"
+                )
+
     return "\n".join(lines)
 
 
