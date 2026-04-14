@@ -476,11 +476,23 @@ def intersect_symmetry(
 ) -> list[PermutationGroup] | None:
     """Intersect symmetry groups for binary ops, accounting for broadcasting.
 
+    For groups acting on the same output axes, computes the element-set
+    intersection.  Broadcast-stretched dimensions (size 1 → larger) are
+    removed from groups before intersecting.
+
     Parameters
     ----------
     groups_a, groups_b : list of PermutationGroup or None
-    shape_a, shape_b : input shapes
-    output_shape : broadcast output shape
+        Symmetry groups for each operand.
+    shape_a, shape_b : tuple of int
+        Input shapes (before broadcasting).
+    output_shape : tuple of int
+        Broadcast output shape.
+
+    Returns
+    -------
+    list of PermutationGroup or None
+        Groups present in both operands, or *None* if no shared symmetry.
     """
     if groups_a is None or groups_b is None:
         return None
@@ -635,6 +647,14 @@ class SymmetricTensor(np.ndarray):
     # -- slicing with symmetry propagation --
 
     def __getitem__(self, key):  # type: ignore[override]
+        """Index with symmetry propagation.
+
+        Computes the pointwise-stabilizer subgroup for axes removed by
+        integer indexing, then restricts surviving groups to the output
+        axes.  Returns a plain ``ndarray`` when no symmetry survives.
+        Emits :class:`~whest.errors.SymmetryLossWarning` on partial or
+        total symmetry loss.
+        """
         result = super().__getitem__(key)
         if not isinstance(result, np.ndarray) or result.ndim == 0:
             return result if not isinstance(result, np.ndarray) else np.asarray(result)
