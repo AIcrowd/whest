@@ -214,10 +214,14 @@ def _counted_reduction(
                 result = _np.asarray(result).view(SymmetricTensor)
                 result._symmetry_groups = new_groups
                 result._symmetric_axes = [g.axes for g in new_groups if g.axes is not None]
-                if len(new_groups) < len(perm_groups):
-                    lost_axes = [g.axes for g in perm_groups if g.axes is not None]
-                    if lost_axes:
-                        _warn_symmetry_loss(lost_axes, f"{op_name} reduced dims")
+                # Warn if any group changed (order decreased or axes changed).
+                old_axes_set = {g.axes for g in perm_groups if g.axes is not None}
+                new_axes_set = {g.axes for g in new_groups if g.axes is not None}
+                if old_axes_set != new_axes_set:
+                    lost = [g.axes for g in perm_groups
+                            if g.axes is not None and g.axes not in new_axes_set]
+                    if lost:
+                        _warn_symmetry_loss(lost, f"{op_name} reduced dims")
             else:
                 if isinstance(result, SymmetricTensor):
                     result = _np.asarray(result)
