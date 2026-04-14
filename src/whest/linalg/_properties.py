@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import numpy as _np
+from numpy.linalg._linalg import SlogdetResult
 
 from whest._docstrings import attach_docstring
 from whest._symmetric import SymmetricTensor
@@ -120,7 +121,8 @@ def slogdet(a):
     is_symmetric = isinstance(a, SymmetricTensor)
     cost = slogdet_cost(n, symmetric=is_symmetric) * batch if not _has_zero_dim(a.shape) else 0
     budget.deduct("linalg.slogdet", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.linalg.slogdet(a)
+    result = _np.linalg.slogdet(a)
+    return SlogdetResult(*result)
 
 
 attach_docstring(slogdet, _np.linalg.slogdet, "linalg", r"$n^3$ FLOPs")

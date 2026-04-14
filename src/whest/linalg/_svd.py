@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import numpy as _np
+from numpy.linalg._linalg import SVDResult
 
 from whest._flops import svd_cost
 from whest._validation import check_nan_inf, require_budget
@@ -61,21 +62,30 @@ def svd(a, full_matrices=True, compute_uv=True, hermitian=False, *, k=None):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
+    if a.ndim < 2:
+        raise ValueError(
+            f"svd requires a 2D (or batched) array, got shape {a.shape}"
+        )
     m, n = a.shape[-2], a.shape[-1]
+    if k is not None and k > min(m, n):
+        raise ValueError(
+            f"k={k} exceeds min(m, n)={min(m, n)} for array shape {a.shape}"
+        )
     effective_k = k if k is not None else min(m, n)
     batch = _batch_size(a.shape)
     cost = svd_cost(m, n, effective_k) * batch if not _has_zero_dim(a.shape) else 0
     budget.deduct("linalg.svd", flop_cost=cost, subscripts=None, shapes=(a.shape,))
 
     if compute_uv:
-        U, S, Vt = _np.linalg.svd(a, full_matrices=full_matrices, hermitian=hermitian)
+        # When k is specified, always use economy decomposition then slice.
+        fm = full_matrices if k is None else False
+        U, S, Vt = _np.linalg.svd(a, full_matrices=fm, hermitian=hermitian)
         if k is not None:
             S = S[..., :k]
-            if not full_matrices:
-                U = U[..., :k]
-                Vt = Vt[..., :k, :]
+            U = U[..., :k]
+            Vt = Vt[..., :k, :]
         check_nan_inf(S, "linalg.svd")
-        return U, S, Vt
+        return SVDResult(U, S, Vt)
     else:
         S = _np.linalg.svd(a, compute_uv=False, hermitian=hermitian)
         if k is not None:

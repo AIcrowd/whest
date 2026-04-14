@@ -8,6 +8,7 @@ source, and assumptions. Cost functions are pure (shape params) -> int.
 from __future__ import annotations
 
 import numpy as _np
+from numpy.linalg._linalg import EigResult, EighResult, QRResult
 
 from whest._docstrings import attach_docstring
 from whest._validation import require_budget
@@ -80,7 +81,10 @@ def qr(a, mode="reduced"):
     batch = _batch_size(a.shape)
     cost = qr_cost(m, n) * batch if not _has_zero_dim(a.shape) else 0
     budget.deduct("linalg.qr", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.linalg.qr(a, mode=mode)
+    result = _np.linalg.qr(a, mode=mode)
+    if mode in ("reduced", "complete"):
+        return QRResult(*result)
+    return result
 
 
 attach_docstring(qr, _np.linalg.qr, "linalg", r"$m \cdot n \cdot \min(m,n)$ FLOPs")
@@ -115,7 +119,8 @@ def eig(a):
     batch = _batch_size(a.shape)
     cost = eig_cost(n) * batch if not _has_zero_dim(a.shape) else 0
     budget.deduct("linalg.eig", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.linalg.eig(a)
+    result = _np.linalg.eig(a)
+    return EigResult(*result)
 
 
 attach_docstring(eig, _np.linalg.eig, "linalg", r"$n^3$ FLOPs")
@@ -150,8 +155,8 @@ def eigh(a, UPLO="L"):
     batch = _batch_size(a.shape)
     cost = eigh_cost(n) * batch if not _has_zero_dim(a.shape) else 0
     budget.deduct("linalg.eigh", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    vals, vecs = _np.linalg.eigh(a, UPLO=UPLO)
-    return _np.asarray(vals), _np.asarray(vecs)
+    result = _np.linalg.eigh(a, UPLO=UPLO)
+    return EighResult(_np.asarray(result.eigenvalues), _np.asarray(result.eigenvectors))
 
 
 attach_docstring(eigh, _np.linalg.eigh, "linalg", r"$n^3$ FLOPs")
