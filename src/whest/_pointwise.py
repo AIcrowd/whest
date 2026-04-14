@@ -406,7 +406,9 @@ def sort_complex(a):
     n = a.size
     log2n = math.ceil(math.log2(n)) if n > 1 else 1
     cost = n * log2n
-    with budget.deduct("sort_complex", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+    with budget.deduct(
+        "sort_complex", flop_cost=cost, subscripts=None, shapes=(a.shape,)
+    ):
         result = _np.sort_complex(a)
     return result
 
@@ -432,7 +434,9 @@ def isclose(a, b, **kwargs):
         b = _np.asarray(b)
     output_shape = _np.broadcast_shapes(a.shape, b.shape)
     cost = pointwise_cost(output_shape)
-    with budget.deduct("isclose", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)):
+    with budget.deduct(
+        "isclose", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+    ):
         result = _np.isclose(a, b, **kwargs)
     if (
         a_is_scalar
@@ -519,8 +523,14 @@ if hasattr(_np, "vecdot"):
         # Cost = output_elements * contracted_axis_size
         # For vecdot, the last axis is contracted.
         contracted = a.shape[-1] if a.ndim > 0 else 1
-        out_shape = _np.broadcast_shapes(a.shape[:-1], b.shape[:-1]) if a.ndim > 0 else ()
-        cost = _builtins.max(int(_np.prod(out_shape)) * contracted, 1) if out_shape else contracted
+        out_shape = (
+            _np.broadcast_shapes(a.shape[:-1], b.shape[:-1]) if a.ndim > 0 else ()
+        )
+        cost = (
+            _builtins.max(int(_np.prod(out_shape)) * contracted, 1)
+            if out_shape
+            else contracted
+        )
         with budget.deduct(
             "vecdot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
         ):
@@ -550,7 +560,10 @@ if hasattr(_np, "matvec"):
         # output shape: (..., m) where m = a.shape[-2]
         out_m = a.shape[-2] if a.ndim >= 2 else 1
         batch = a.shape[:-2] if a.ndim > 2 else ()
-        cost = _builtins.max(int(_np.prod(batch)) * out_m * contracted if batch else out_m * contracted, 1)
+        cost = _builtins.max(
+            int(_np.prod(batch)) * out_m * contracted if batch else out_m * contracted,
+            1,
+        )
         with budget.deduct(
             "matvec", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
         ):
@@ -580,7 +593,10 @@ if hasattr(_np, "vecmat"):
         # output shape: (..., m) where m = b.shape[-1]
         out_m = b.shape[-1] if b.ndim >= 2 else 1
         batch = b.shape[:-2] if b.ndim > 2 else ()
-        cost = _builtins.max(int(_np.prod(batch)) * out_m * contracted if batch else out_m * contracted, 1)
+        cost = _builtins.max(
+            int(_np.prod(batch)) * out_m * contracted if batch else out_m * contracted,
+            1,
+        )
         with budget.deduct(
             "vecmat", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
         ):
@@ -733,7 +749,9 @@ def dot(a, b):
         )
     else:
         cost = a.size * b.size
-    with budget.deduct("dot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)):
+    with budget.deduct(
+        "dot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+    ):
         result = _np.dot(a, b)
     check_nan_inf(result, "dot")
     return result
@@ -769,7 +787,9 @@ def matmul(a, b):
         )
     else:
         cost = a.size * b.size
-    with budget.deduct("matmul", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)):
+    with budget.deduct(
+        "matmul", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+    ):
         with _np.errstate(divide="ignore", over="ignore", invalid="ignore"):
             result = _np.matmul(a, b)
     check_nan_inf(result, "matmul")
@@ -796,7 +816,9 @@ def inner(a, b):
         if (a.ndim <= 1 and b.ndim <= 1)
         else a.size * (b.shape[-1] if b.ndim > 1 else 1)
     )
-    with budget.deduct("inner", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)):
+    with budget.deduct(
+        "inner", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+    ):
         result = _np.inner(a, b)
     return result
 
@@ -812,7 +834,9 @@ def outer(a, b, out=None):
     if not isinstance(b, _np.ndarray):
         b = _np.asarray(b)
     cost = a.size * b.size
-    with budget.deduct("outer", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)):
+    with budget.deduct(
+        "outer", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+    ):
         result = _np.outer(a, b, out=out)
     return result
 
@@ -861,7 +885,9 @@ def vdot(a, b):
     if not isinstance(b, _np.ndarray):
         b = _np.asarray(b)
     cost = a.size
-    with budget.deduct("vdot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)):
+    with budget.deduct(
+        "vdot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+    ):
         result = _np.vdot(a, b)
     return result
 
@@ -920,7 +946,9 @@ def diff(a, n=1, axis=-1, **kwargs):
     # Pre-compute output size: along the diff axis, size decreases by n
     ax = axis if axis >= 0 else axis + a.ndim
     out_axis_len = a.shape[ax] - n
-    cost = _builtins.max(int(_np.prod(a.shape[:ax])) * out_axis_len * int(_np.prod(a.shape[ax + 1:])), 1)
+    cost = _builtins.max(
+        int(_np.prod(a.shape[:ax])) * out_axis_len * int(_np.prod(a.shape[ax + 1 :])), 1
+    )
     with budget.deduct(
         "diff",
         flop_cost=cost,
@@ -940,7 +968,9 @@ def gradient(f, *varargs, **kwargs):
     budget = require_budget()
     if not isinstance(f, _np.ndarray):
         f = _np.asarray(f)
-    with budget.deduct("gradient", flop_cost=f.size, subscripts=None, shapes=(f.shape,)):
+    with budget.deduct(
+        "gradient", flop_cost=f.size, subscripts=None, shapes=(f.shape,)
+    ):
         result = _np.gradient(f, *varargs, **kwargs)
     return result
 
@@ -1073,7 +1103,9 @@ def trapezoid(y, x=None, dx=1.0, axis=-1):
     budget = require_budget()
     if not isinstance(y, _np.ndarray):
         y = _np.asarray(y)
-    with budget.deduct("trapezoid", flop_cost=y.size, subscripts=None, shapes=(y.shape,)):
+    with budget.deduct(
+        "trapezoid", flop_cost=y.size, subscripts=None, shapes=(y.shape,)
+    ):
         result = _np.trapezoid(y, x=x, dx=dx, axis=axis)
     return result
 

@@ -44,7 +44,9 @@ def trace(x, /, *, offset=0, dtype=None):
         n = min(n, x.shape[-2] + offset)
     n = max(n, 0)
     cost = trace_cost(n)
-    with budget.deduct("linalg.trace", flop_cost=cost, subscripts=None, shapes=(x.shape,)):
+    with budget.deduct(
+        "linalg.trace", flop_cost=cost, subscripts=None, shapes=(x.shape,)
+    ):
         result = _np.linalg.trace(x, offset=offset, dtype=dtype)
     return result
 
@@ -85,7 +87,9 @@ def det(a):
     cost = (
         det_cost(n, symmetric=is_symmetric) * batch if not _has_zero_dim(a.shape) else 0
     )
-    with budget.deduct("linalg.det", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+    with budget.deduct(
+        "linalg.det", flop_cost=cost, subscripts=None, shapes=(a.shape,)
+    ):
         result = _np.linalg.det(a)
     return result
 
@@ -128,7 +132,9 @@ def slogdet(a):
         if not _has_zero_dim(a.shape)
         else 0
     )
-    with budget.deduct("linalg.slogdet", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+    with budget.deduct(
+        "linalg.slogdet", flop_cost=cost, subscripts=None, shapes=(a.shape,)
+    ):
         result = _np.linalg.slogdet(a)
     return SlogdetResult(*result)
 
@@ -202,7 +208,9 @@ def norm(x, ord=None, axis=None, keepdims=False):
     except (IndexError, ValueError):
         # Let numpy raise the proper error with the right type/message
         return _np.linalg.norm(x, ord=ord, axis=axis, keepdims=keepdims)
-    with budget.deduct("linalg.norm", flop_cost=cost, subscripts=None, shapes=(x.shape,)):
+    with budget.deduct(
+        "linalg.norm", flop_cost=cost, subscripts=None, shapes=(x.shape,)
+    ):
         result = _np.linalg.norm(x, ord=ord, axis=axis, keepdims=keepdims)
     return result
 
@@ -356,7 +364,9 @@ def cond(x, p=None):
     m, n = x.shape[-2], x.shape[-1]
     batch = _batch_size(x.shape)
     cost = cond_cost(m, n, p=p) * batch if not _has_zero_dim(x.shape) else 0
-    with budget.deduct("linalg.cond", flop_cost=cost, subscripts=None, shapes=(x.shape,)):
+    with budget.deduct(
+        "linalg.cond", flop_cost=cost, subscripts=None, shapes=(x.shape,)
+    ):
         result = _np.linalg.cond(x, p=p)
     return result
 

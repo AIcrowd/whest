@@ -25,7 +25,9 @@ def trace(a, offset=0, axis1=0, axis2=1, dtype=None, out=None):
     a = _np.asarray(a)
     cost = _builtins.max(_builtins.min(a.shape[axis1], a.shape[axis2]), 1)
     with budget.deduct("trace", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.trace(a, offset=offset, axis1=axis1, axis2=axis2, dtype=dtype, out=out)
+        result = _np.trace(
+            a, offset=offset, axis1=axis1, axis2=axis2, dtype=dtype, out=out
+        )
     return result
 
 
@@ -324,7 +326,9 @@ def apply_over_axes(func, a, axes):
         a = _np.asarray(a)
     result = _np.apply_over_axes(func, a, axes)
     cost = result.size if hasattr(result, "size") else 1
-    with budget.deduct("apply_over_axes", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+    with budget.deduct(
+        "apply_over_axes", flop_cost=cost, subscripts=None, shapes=(a.shape,)
+    ):
         pass
     return result
 
