@@ -23,6 +23,20 @@ class BudgetExhaustedError(WhestError):
         )
 
 
+class TimeExhaustedError(WhestError):
+    """Raised when an operation exceeds the wall-clock time limit."""
+
+    def __init__(self, op_name: str, *, elapsed_s: float, limit_s: float):
+        self.op_name = op_name
+        self.elapsed_s = elapsed_s
+        self.limit_s = limit_s
+        super().__init__(
+            f"{op_name}: wall-clock time {elapsed_s:.3f}s exceeds "
+            f"limit {limit_s:.3f}s. "
+            f"See: {_DOCS_BASE}/#timeexhaustederror"
+        )
+
+
 class NoBudgetContextError(WhestError):
     """Raised when a counted operation is called outside a BudgetContext."""
 

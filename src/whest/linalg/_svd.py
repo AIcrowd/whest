@@ -64,8 +64,8 @@ def svd(
     if not (1 <= k <= min(m, n)):
         raise ValueError(f"k must satisfy 1 <= k <= min(m, n) = {min(m, n)}, got k={k}")
     cost = svd_cost(m, n, k)
-    budget.deduct("linalg.svd", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    U, S, Vt = _np.linalg.svd(a, full_matrices=False)
+    with budget.deduct("linalg.svd", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+        U, S, Vt = _np.linalg.svd(a, full_matrices=False)
     U = U[:, :k]
     S = S[:k]
     Vt = Vt[:k, :]

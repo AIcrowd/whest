@@ -37,11 +37,12 @@ def unwrap(p, discont=None, axis=-1, *, period=6.283185307179586):
     if not isinstance(p, _np.ndarray):
         p = _np.asarray(p)
     cost = unwrap_cost(p.shape)
-    budget.deduct("unwrap", flop_cost=cost, subscripts=None, shapes=(p.shape,))
     kwargs = {"axis": axis, "period": period}
     if discont is not None:
         kwargs["discont"] = discont
-    return _np.unwrap(p, **kwargs)
+    with budget.deduct("unwrap", flop_cost=cost, subscripts=None, shapes=(p.shape,)):
+        result = _np.unwrap(p, **kwargs)
+    return result
 
 
 attach_docstring(unwrap, _np.unwrap, "counted_custom", "numel(input) FLOPs")

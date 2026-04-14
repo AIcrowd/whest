@@ -75,8 +75,9 @@ def polyval(p, x):
     deg = len(p) - 1
     m = x.size
     cost = polyval_cost(deg, m)
-    budget.deduct("polyval", flop_cost=cost, subscripts=None, shapes=(p.shape, x.shape))
-    return _np.polyval(p, x)
+    with budget.deduct("polyval", flop_cost=cost, subscripts=None, shapes=(p.shape, x.shape)):
+        result = _np.polyval(p, x)
+    return result
 
 
 attach_docstring(
@@ -92,10 +93,11 @@ def polyadd(a1, a2):
     n1 = len(a1)
     n2 = len(a2)
     cost = polyadd_cost(n1, n2)
-    budget.deduct(
+    with budget.deduct(
         "polyadd", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
-    )
-    return _np.polyadd(a1, a2)
+    ):
+        result = _np.polyadd(a1, a2)
+    return result
 
 
 attach_docstring(polyadd, _np.polyadd, "counted_custom", "max(n1, n2) FLOPs")
@@ -109,10 +111,11 @@ def polysub(a1, a2):
     n1 = len(a1)
     n2 = len(a2)
     cost = polysub_cost(n1, n2)
-    budget.deduct(
+    with budget.deduct(
         "polysub", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
-    )
-    return _np.polysub(a1, a2)
+    ):
+        result = _np.polysub(a1, a2)
+    return result
 
 
 attach_docstring(polysub, _np.polysub, "counted_custom", "max(n1, n2) FLOPs")
@@ -124,8 +127,9 @@ def polyder(p, m=1):
     p = _np.asarray(p)
     n = len(p)
     cost = polyder_cost(n)
-    budget.deduct("polyder", flop_cost=cost, subscripts=None, shapes=(p.shape,))
-    return _np.polyder(p, m=m)
+    with budget.deduct("polyder", flop_cost=cost, subscripts=None, shapes=(p.shape,)):
+        result = _np.polyder(p, m=m)
+    return result
 
 
 attach_docstring(polyder, _np.polyder, "counted_custom", "n FLOPs (n = len(coeffs))")
@@ -137,10 +141,12 @@ def polyint(p, m=1, k=None):
     p = _np.asarray(p)
     n = len(p)
     cost = polyint_cost(n)
-    budget.deduct("polyint", flop_cost=cost, subscripts=None, shapes=(p.shape,))
-    if k is None:
-        return _np.polyint(p, m=m)
-    return _np.polyint(p, m=m, k=k)
+    with budget.deduct("polyint", flop_cost=cost, subscripts=None, shapes=(p.shape,)):
+        if k is None:
+            result = _np.polyint(p, m=m)
+        else:
+            result = _np.polyint(p, m=m, k=k)
+    return result
 
 
 attach_docstring(polyint, _np.polyint, "counted_custom", "n FLOPs (n = len(coeffs))")
@@ -154,10 +160,11 @@ def polymul(a1, a2):
     n1 = len(a1)
     n2 = len(a2)
     cost = polymul_cost(n1, n2)
-    budget.deduct(
+    with budget.deduct(
         "polymul", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
-    )
-    return _np.polymul(a1, a2)
+    ):
+        result = _np.polymul(a1, a2)
+    return result
 
 
 attach_docstring(polymul, _np.polymul, "counted_custom", "n1 * n2 FLOPs")
@@ -171,8 +178,9 @@ def polydiv(u, v):
     n1 = len(u)
     n2 = len(v)
     cost = polydiv_cost(n1, n2)
-    budget.deduct("polydiv", flop_cost=cost, subscripts=None, shapes=(u.shape, v.shape))
-    return _np.polydiv(u, v)
+    with budget.deduct("polydiv", flop_cost=cost, subscripts=None, shapes=(u.shape, v.shape)):
+        result = _np.polydiv(u, v)
+    return result
 
 
 attach_docstring(polydiv, _np.polydiv, "counted_custom", "n1 * n2 FLOPs")
@@ -184,8 +192,9 @@ def polyfit(x, y, deg, **kwargs):
     x = _np.asarray(x)
     m = len(x)
     cost = polyfit_cost(m, deg)
-    budget.deduct("polyfit", flop_cost=cost, subscripts=None, shapes=(x.shape,))
-    return _np.polyfit(x, y, deg, **kwargs)
+    with budget.deduct("polyfit", flop_cost=cost, subscripts=None, shapes=(x.shape,)):
+        result = _np.polyfit(x, y, deg, **kwargs)
+    return result
 
 
 attach_docstring(polyfit, _np.polyfit, "counted_custom", "2 * m * (deg+1)^2 FLOPs")
@@ -201,8 +210,9 @@ def poly(seq_of_zeros):
     else:
         n = len(seq)
     cost = poly_cost(n)
-    budget.deduct("poly", flop_cost=cost, subscripts=None, shapes=(seq.shape,))
-    return _np.poly(seq_of_zeros)
+    with budget.deduct("poly", flop_cost=cost, subscripts=None, shapes=(seq.shape,)):
+        result = _np.poly(seq_of_zeros)
+    return result
 
 
 attach_docstring(poly, _np.poly, "counted_custom", "n^2 FLOPs")
@@ -214,8 +224,9 @@ def roots(p):
     p = _np.asarray(p)
     n = len(p) - 1  # degree = number of roots
     cost = roots_cost(n)
-    budget.deduct("roots", flop_cost=cost, subscripts=None, shapes=(p.shape,))
-    return _np.roots(p)
+    with budget.deduct("roots", flop_cost=cost, subscripts=None, shapes=(p.shape,)):
+        result = _np.roots(p)
+    return result
 
 
 attach_docstring(

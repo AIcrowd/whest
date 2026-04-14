@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import functools
 import threading
+import time
 from typing import NamedTuple
 
 from whest.errors import BudgetExhaustedError
@@ -18,6 +19,39 @@ class OpRecord(NamedTuple):
     flop_cost: int
     cumulative: int
     namespace: str | None = None
+    timestamp: float | None = None   # seconds since context __enter__
+    duration: float | None = None    # wall-clock seconds of the numpy call
+
+
+class _OpTimer:
+    """Lightweight timer returned by BudgetContext.deduct().
+
+    Use as a context manager to measure wall-clock duration of the
+    numpy operation that follows the FLOP deduction::
+
+        with budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(...)):
+            result = np_func(x)
+
+    If used without ``with``, duration stays ``None`` on the OpRecord.
+    """
+
+    __slots__ = ("_budget", "_start")
+
+    def __init__(self, budget: "BudgetContext"):
+        self._budget = budget
+        self._start: float | None = None
+
+    def __enter__(self) -> "_OpTimer":
+        self._start = time.perf_counter()
+        return self
+
+    def __exit__(self, *exc: object) -> bool:
+        if self._start is not None:
+            duration = time.perf_counter() - self._start
+            log = self._budget._op_log
+            log[-1] = log[-1]._replace(duration=duration)
+            self._budget._total_tracked_time += duration
+        return False
 
 
 _thread_local = threading.local()
@@ -45,6 +79,7 @@ class BudgetContext:
         flop_multiplier: float = 1.0,
         quiet: bool = False,
         namespace: str | None = None,
+        wall_time_limit_s: float | None = None,
     ):
         if flop_budget <= 0:
             raise ValueError(f"flop_budget must be > 0, got {flop_budget}")
@@ -55,6 +90,11 @@ class BudgetContext:
         self._quiet = quiet
         self._namespace = namespace
         self._previous_budget: BudgetContext | None = None
+        self._wall_time_limit_s = wall_time_limit_s
+        self._start_time: float | None = None
+        self._deadline: float | None = None
+        self._wall_time_s: float | None = None
+        self._total_tracked_time: float = 0.0
 
     @property
     def flop_budget(self) -> int:
@@ -80,10 +120,34 @@ class BudgetContext:
     def namespace(self) -> str | None:
         return self._namespace
 
+    @property
+    def wall_time_limit_s(self) -> float | None:
+        return self._wall_time_limit_s
+
+    @property
+    def wall_time_s(self) -> float | None:
+        return self._wall_time_s
+
+    @property
+    def elapsed_s(self) -> float:
+        if self._start_time is None:
+            return 0.0
+        return time.perf_counter() - self._start_time
+
+    @property
+    def total_tracked_time(self) -> float:
+        return self._total_tracked_time
+
+    @property
+    def untracked_time(self) -> float | None:
+        if self._wall_time_s is None:
+            return None
+        return self._wall_time_s - self._total_tracked_time
+
     def deduct(
         self, op_name: str, *, flop_cost: int, subscripts: str | None, shapes: tuple
-    ) -> None:
-        """Deduct FLOPs from the budget."""
+    ) -> _OpTimer:
+        """Deduct FLOPs from the budget and return a timer context manager."""
         from whest._weights import get_weight
 
         weight = get_weight(op_name)
@@ -93,6 +157,10 @@ class BudgetContext:
                 op_name, flop_cost=adjusted_cost, flops_remaining=self.flops_remaining
             )
         self._flops_used += adjusted_cost
+
+        now = time.perf_counter()
+        timestamp = now - self._start_time if self._start_time is not None else None
+
         self._op_log.append(
             OpRecord(
                 op_name=op_name,
@@ -101,11 +169,25 @@ class BudgetContext:
                 flop_cost=adjusted_cost,
                 cumulative=self._flops_used,
                 namespace=self._namespace,
+                timestamp=timestamp,
             )
         )
 
+        if self._deadline is not None and now > self._deadline:
+            from whest.errors import TimeExhaustedError
+
+            raise TimeExhaustedError(
+                op_name,
+                elapsed_s=now - self._start_time,
+                limit_s=self._wall_time_limit_s,
+            )
+
+        return _OpTimer(self)
+
     def summary(self) -> str:
         """Return a pretty-printed FLOP budget summary."""
+        from collections import Counter
+
         header = "whest FLOP Budget Summary"
         if self._namespace:
             header += f" [{self._namespace}]"
@@ -118,18 +200,42 @@ class BudgetContext:
             "",
             "  By operation:",
         ]
-        from collections import Counter
 
         cost_by_op: dict[str, int] = {}
         count_by_op: Counter[str] = Counter()
+        time_by_op: dict[str, float] = {}
         for rec in self._op_log:
             cost_by_op[rec.op_name] = cost_by_op.get(rec.op_name, 0) + rec.flop_cost
             count_by_op[rec.op_name] += 1
+            if rec.duration is not None:
+                time_by_op[rec.op_name] = time_by_op.get(rec.op_name, 0.0) + rec.duration
         for op_name, cost in sorted(cost_by_op.items(), key=lambda x: -x[1]):
             pct = 100 * cost / self._flops_used if self._flops_used > 0 else 0
             lines.append(
                 f"    {op_name:<16} {cost:>12,}  ({pct:5.1f}%)  [{count_by_op[op_name]} call{'s' if count_by_op[op_name] != 1 else ''}]"
             )
+
+        if self._wall_time_s is not None:
+            tracked = self._total_tracked_time
+            wall = self._wall_time_s
+            untracked = wall - tracked
+            tracked_pct = 100 * tracked / wall if wall > 0 else 0.0
+            untracked_pct = 100 * untracked / wall if wall > 0 else 0.0
+            lines += [
+                "",
+                f"  Wall time:       {wall:.3f}s",
+                f"  Tracked time:    {tracked:.3f}s  ({tracked_pct:.1f}%)",
+                f"  Untracked time:  {untracked:.3f}s  ({untracked_pct:.1f}%)",
+            ]
+            if time_by_op:
+                lines += ["", "  By operation (time):"]
+                for op_name, op_time in sorted(time_by_op.items(), key=lambda x: -x[1]):
+                    op_pct = 100 * op_time / tracked if tracked > 0 else 0.0
+                    n = count_by_op[op_name]
+                    lines.append(
+                        f"    {op_name:<16} {op_time:.3f}s  ({op_pct:.1f}%)  [{n} call{'s' if n != 1 else ''}]"
+                    )
+
         return "\n".join(lines)
 
     def __enter__(self) -> BudgetContext:
@@ -138,6 +244,9 @@ class BudgetContext:
             raise RuntimeError("Cannot nest BudgetContexts")
         self._previous_budget = current  # save (may be global default or None)
         _thread_local.active_budget = self
+        self._start_time = time.perf_counter()
+        if self._wall_time_limit_s is not None:
+            self._deadline = self._start_time + self._wall_time_limit_s
         if not self._quiet:
             import sys
 
@@ -152,6 +261,8 @@ class BudgetContext:
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+        if self._start_time is not None:
+            self._wall_time_s = time.perf_counter() - self._start_time
         _accumulator.record(self)
         _thread_local.active_budget = self._previous_budget  # restore previous
         return None
@@ -172,6 +283,7 @@ def budget(
     flop_multiplier: float = 1.0,
     quiet: bool = False,
     namespace: str | None = None,
+    wall_time_limit_s: float | None = None,
 ) -> BudgetContext:
     """Create a BudgetContext usable as both a context manager and decorator."""
     return BudgetContext(
@@ -179,6 +291,7 @@ def budget(
         flop_multiplier=flop_multiplier,
         quiet=quiet,
         namespace=namespace,
+        wall_time_limit_s=wall_time_limit_s,
     )
 
 
@@ -235,6 +348,8 @@ class NamespaceRecord(NamedTuple):
     flop_budget: int
     flops_used: int
     op_log: list[OpRecord]
+    wall_time_s: float | None = None
+    total_tracked_time: float | None = None
 
 
 class BudgetAccumulator:
@@ -251,6 +366,8 @@ class BudgetAccumulator:
                 flop_budget=ctx.flop_budget,
                 flops_used=ctx.flops_used,
                 op_log=list(ctx.op_log),
+                wall_time_s=ctx.wall_time_s,
+                total_tracked_time=ctx.total_tracked_time,
             )
         )
 
@@ -259,6 +376,8 @@ class BudgetAccumulator:
         total_budget = 0
         total_used = 0
         ops: dict[str, dict] = {}
+        total_wall_time: float | None = None
+        total_tracked: float | None = None
 
         for rec in self._records:
             total_budget += rec.flop_budget
@@ -268,12 +387,18 @@ class BudgetAccumulator:
                     ops[op.op_name] = {"flop_cost": 0, "calls": 0}
                 ops[op.op_name]["flop_cost"] += op.flop_cost
                 ops[op.op_name]["calls"] += 1
+            if rec.wall_time_s is not None:
+                total_wall_time = (total_wall_time or 0.0) + rec.wall_time_s
+            if rec.total_tracked_time is not None:
+                total_tracked = (total_tracked or 0.0) + rec.total_tracked_time
 
         result = {
             "flop_budget": total_budget,
             "flops_used": total_used,
             "flops_remaining": total_budget - total_used,
             "operations": ops,
+            "wall_time_s": total_wall_time,
+            "total_tracked_time": total_tracked,
         }
 
         if by_namespace:
@@ -281,9 +406,19 @@ class BudgetAccumulator:
             for rec in self._records:
                 ns = rec.namespace
                 if ns not in by_ns:
-                    by_ns[ns] = {"flop_budget": 0, "flops_used": 0, "operations": {}}
+                    by_ns[ns] = {
+                        "flop_budget": 0,
+                        "flops_used": 0,
+                        "operations": {},
+                        "wall_time_s": None,
+                        "total_tracked_time": None,
+                    }
                 by_ns[ns]["flop_budget"] += rec.flop_budget
                 by_ns[ns]["flops_used"] += rec.flops_used
+                if rec.wall_time_s is not None:
+                    by_ns[ns]["wall_time_s"] = (by_ns[ns]["wall_time_s"] or 0.0) + rec.wall_time_s
+                if rec.total_tracked_time is not None:
+                    by_ns[ns]["total_tracked_time"] = (by_ns[ns]["total_tracked_time"] or 0.0) + rec.total_tracked_time
                 for op in rec.op_log:
                     if op.op_name not in by_ns[ns]["operations"]:
                         by_ns[ns]["operations"][op.op_name] = {

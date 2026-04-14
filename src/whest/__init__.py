@@ -451,6 +451,7 @@ from whest.errors import (  # noqa: F401
     NoBudgetContextError,
     SymmetryError,
     SymmetryLossWarning,
+    TimeExhaustedError,
     UnsupportedFunctionError,
     WhestError,
     WhestWarning,

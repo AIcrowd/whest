@@ -41,14 +41,14 @@ class ContinuousDistribution:
         x = _np.asarray(x, dtype=_np.float64)
         n = max(x.size, 1)
         op_name = f"stats.{self._name}.{method}"
-        budget.deduct(
+        compute_fn = getattr(self, f"_compute_{method}")
+        with budget.deduct(
             op_name,
             flop_cost=cost_per_elem * n,
             subscripts=None,
             shapes=(x.shape,),
-        )
-        compute_fn = getattr(self, f"_compute_{method}")
-        result = compute_fn(x, *args, **kwargs)
+        ):
+            result = compute_fn(x, *args, **kwargs)
         return _aswhest(result)
 
     def __repr__(self) -> str:

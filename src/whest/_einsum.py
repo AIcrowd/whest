@@ -280,15 +280,14 @@ def einsum(
     inner_sym = bool(get_setting("use_inner_symmetry"))
     path_info = _path_cache(subscripts, shapes, opt_key, sym_fp, id_pat, inner_sym)
 
-    budget.deduct(
+    with budget.deduct(
         "einsum",
         flop_cost=path_info.optimized_cost,
         subscripts=subscripts,
-        shapes=shapes,
-    )
-
-    # Execute pairwise steps
-    result = _execute_pairwise(path_info, list(operands))
+        shapes=tuple(shapes),
+    ):
+        # Execute pairwise steps
+        result = _execute_pairwise(path_info, list(operands))
 
     # Handle output symmetry wrapping
     if symmetry is not None and isinstance(result, _np.ndarray) and result.ndim >= 2:
@@ -332,9 +331,8 @@ def einsum_path(subscripts: str, *operands, optimize: str | bool | list = "auto"
         Diagnostics including per-step costs and symmetry savings.
     """
     budget = require_budget()
-    budget.deduct("einsum_path", flop_cost=1, subscripts=None, shapes=())
-
-    shapes = tuple(tuple(op.shape) for op in operands)
+    with budget.deduct("einsum_path", flop_cost=1, subscripts=None, shapes=()):
+        shapes = tuple(tuple(op.shape) for op in operands)
     input_parts = subscripts.split("->")[0].split(",")
 
     sym_fp = _symmetry_fingerprint(operands, input_parts)

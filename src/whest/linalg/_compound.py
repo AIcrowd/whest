@@ -65,10 +65,11 @@ def multi_dot(arrays, *, out=None):
     arrays = [a if isinstance(a, _np.ndarray) else _np.asarray(a) for a in arrays]
     shapes = [arr.shape for arr in arrays]
     cost = multi_dot_cost(shapes)
-    budget.deduct(
+    with budget.deduct(
         "linalg.multi_dot", flop_cost=cost, subscripts=None, shapes=tuple(shapes)
-    )
-    return _np.linalg.multi_dot(arrays, out=out)
+    ):
+        result = _np.linalg.multi_dot(arrays, out=out)
+    return result
 
 
 attach_docstring(
@@ -113,10 +114,11 @@ def matrix_power(a, n):
         raise ValueError(f"Input must be square 2D array, got shape {a.shape}")
     size = a.shape[0]
     cost = matrix_power_cost(size, n)
-    budget.deduct(
+    with budget.deduct(
         "linalg.matrix_power", flop_cost=cost, subscripts=None, shapes=(a.shape,)
-    )
-    return _np.linalg.matrix_power(a, n)
+    ):
+        result = _np.linalg.matrix_power(a, n)
+    return result
 
 
 attach_docstring(
