@@ -247,3 +247,27 @@ def test_budget_factory_passes_wall_time_limit():
     import whest
     b = whest.budget(flop_budget=int(1e9), wall_time_limit_s=2.0)
     assert b.wall_time_limit_s == 2.0
+
+
+def test_namespace_record_includes_time():
+    import whest
+    whest.budget_reset()
+    with whest.BudgetContext(flop_budget=int(1e9), namespace="test", quiet=True) as b:
+        _ = whest.add(whest.ones((10,)), whest.ones((10,)))
+    data = whest.budget_summary_dict(by_namespace=True)
+    assert "wall_time_s" in data
+    assert data["wall_time_s"] is not None
+    assert data["wall_time_s"] > 0
+    assert "total_tracked_time" in data
+    ns_data = data["by_namespace"]["test"]
+    assert "wall_time_s" in ns_data
+    whest.budget_reset()
+
+
+def test_summary_includes_time_section():
+    import whest
+    with whest.BudgetContext(flop_budget=int(1e9), quiet=True) as b:
+        _ = whest.add(whest.ones((10,)), whest.ones((10,)))
+    summary = b.summary()
+    assert "Wall time:" in summary
+    assert "Tracked time:" in summary
