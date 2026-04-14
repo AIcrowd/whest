@@ -50,7 +50,7 @@ function parseGenerator(text) {
       return { cycles: null, error: "Empty cycle ()" };
     }
 
-    const tokens = inner.split(/\s+/);
+    const tokens = inner.split(/[\s,]+/);
     if (tokens.length < 2) {
       return {
         cycles: null,

@@ -68,9 +68,9 @@ export function validateAll(variables, subscripts, output, operandNames) {
         }
 
         // 7. Custom generator cycle indices must be within range of selected axes count
-        if (parsed) {
+        if (parsed && parsed.generators) {
           const axesCount = Array.isArray(v.symAxes) ? v.symAxes.length : v.rank;
-          const indices = generatorIndices(parsed);
+          const indices = generatorIndices(parsed.generators);
           for (const idx of indices) {
             if (idx >= axesCount) {
               errors.push(
@@ -78,6 +78,10 @@ export function validateAll(variables, subscripts, output, operandNames) {
               );
             }
           }
+        } else if (parsed && parsed.error) {
+          errors.push(
+            `Variable "${v.name}": ${parsed.error}`
+          );
         }
       }
     }

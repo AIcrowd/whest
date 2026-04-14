@@ -6,6 +6,7 @@ import {
   buildBipartite, buildIncidenceMatrix, runSigmaLoop,
   buildGroup, computeBurnside, computeCostReduction,
 } from './engine/algorithm.js';
+import PresetSidebar from './components/PresetSidebar.jsx';
 import ExampleChooser from './components/ExampleChooser.jsx';
 import BipartiteGraph from './components/BipartiteGraph.jsx';
 import MatrixView from './components/MatrixView.jsx';
@@ -65,6 +66,7 @@ export default function App() {
   const [exampleIdx, setExampleIdx] = useState(0);
   const [customExample, setCustomExample] = useState(null);
   const [dimensionN, setDimensionN] = useState(5);
+  const [isDirty, setIsDirty] = useState(false);
   // Resolve the active example: preset or custom
   const isCustom = exampleIdx === CUSTOM_IDX;
   const example = isCustom ? customExample : EXAMPLES[exampleIdx];
@@ -81,12 +83,19 @@ export default function App() {
   // Handle preset selection
   const handleSelect = useCallback((idx) => {
     setExampleIdx(idx);
+    setIsDirty(false);
   }, []);
 
   // Handle custom example submission
   const handleCustomExample = useCallback((ex) => {
     setCustomExample(ex);
     setExampleIdx(CUSTOM_IDX);
+    setIsDirty(false);
+  }, []);
+
+  // Handle config edits (before Analyze is clicked)
+  const handleDirty = useCallback(() => {
+    setIsDirty(true);
   }, []);
 
   // Run the full algorithm pipeline
@@ -123,6 +132,11 @@ export default function App() {
     (Array.isArray(normalizedExample.perOpSymmetry) && normalizedExample.perOpSymmetry.some(s => s === 'symmetric' || (s && typeof s === 'object')))
   );
 
+  // Handle switching to custom mode from sidebar
+  const handleCustomMode = useCallback(() => {
+    setExampleIdx(CUSTOM_IDX);
+  }, []);
+
   return (
     <div className="app">
       <header className="app-header">
@@ -139,116 +153,123 @@ export default function App() {
         ))}
       </nav>
 
-      <main className="main">
-        {/* -- Prominent einsum banner -- */}
-        {example && group && (
-          <div className="einsum-banner">
-            <span className="einsum-label">einsum</span>
-            <code className="einsum-expr">{example.formula}</code>
-            <span className="einsum-group-tag">
-              {group.vGroupName !== 'trivial'
-                ? group.vGroupName
-                : group.wGroupName !== 'trivial'
-                  ? `W: ${group.wGroupName}`
-                  : 'trivial'}
-            </span>
-          </div>
-        )}
+      <div className="app-body">
+        <PresetSidebar
+          examples={EXAMPLES}
+          selected={exampleIdx}
+          onSelect={handleSelect}
+          onCustom={handleCustomMode}
+        />
 
-        <section id="example" className="section">
-          <SectionHeader num={1} title="Choose an Example" />
-          <ExampleChooser
-            examples={EXAMPLES}
-            selected={exampleIdx}
-            onSelect={handleSelect}
-            example={example}
-            dimensionN={dimensionN}
-            onDimensionChange={setDimensionN}
-            onCustomExample={handleCustomExample}
-          />
-        </section>
+        <main className="main">
+          {/* -- Prominent einsum banner -- */}
+          {example && group && (
+            <div className="einsum-banner">
+              <span className="einsum-label">einsum</span>
+              <code className="einsum-expr">{example.formula}</code>
+              <span className="einsum-group-tag">
+                {group.vGroupName !== 'trivial'
+                  ? group.vGroupName
+                  : group.wGroupName !== 'trivial'
+                    ? `W: ${group.wGroupName}`
+                    : 'trivial'}
+              </span>
+            </div>
+          )}
 
-        {/* Only render pipeline sections when we have results */}
-        {pipeline && example && (
-          <>
-            <section id="graph" className="section">
-              <SectionHeader num={2} title="Bipartite Graph" />
-              <p className="section-desc">
-                Left vertices (U) are operand axis-classes. Right vertices are index labels,
-                partitioned into <span className="pill pill-v">V free</span> and{' '}
-                <span className="pill pill-w">W summed</span>.
-                {hasPerOpSym && (
-                  <> Per-operand symmetry <em>collapses</em> each operand's axes into a single U-vertex.</>
-                )}
-              </p>
-              <BipartiteGraph graph={graph} example={normalizedExample} variableColors={variableColors} />
-            </section>
+          <section id="example" className="section">
+            <SectionHeader num={1} title="Configure Example" />
+            <ExampleChooser
+              example={example}
+              dimensionN={dimensionN}
+              onDimensionChange={setDimensionN}
+              onCustomExample={handleCustomExample}
+              onDirty={handleDirty}
+            />
+          </section>
 
-            <section id="matrix" className="section">
-              <SectionHeader num={3} title="Incidence Matrix M" />
-              <p className="section-desc">
-                Each cell M[u, l] is the multiplicity of label l in axis-class u.
-                Column fingerprints (reading down each column) identify structurally equivalent labels.
-              </p>
-              <MatrixView matrixData={matrixData} graph={graph} example={normalizedExample} variableColors={variableColors} />
-            </section>
+          {/* Only render pipeline sections when we have results */}
+          {pipeline && example && (
+            <div className={isDirty ? 'pipeline-stale' : undefined}>
+              <section id="graph" className="section">
+                <SectionHeader num={2} title="Bipartite Graph" />
+                <p className="section-desc">
+                  Left vertices (U) are operand axis-classes. Right vertices are index labels,
+                  partitioned into <span className="pill pill-v">V free</span> and{' '}
+                  <span className="pill pill-w">W summed</span>.
+                  {hasPerOpSym && (
+                    <> Per-operand symmetry <em>collapses</em> each operand's axes into a single U-vertex.</>
+                  )}
+                </p>
+                <BipartiteGraph graph={graph} example={normalizedExample} variableColors={variableColors} group={group} />
+              </section>
 
-            <section id="sigma" className="section">
-              <SectionHeader num={4} title="σ-Loop & π Detection" />
-              <p className="section-desc">
-                When identical operands are swapped (σ), the incidence matrix M gets its
-                rows shuffled into σ(M). We search for a column relabeling π that
-                recovers the original: π(σ(M)) = M. If such a π exists and
-                respects the V/W partition, it reveals a symmetry of the einsum expression.
-              </p>
-              <SigmaLoop
-                results={sigmaResults}
-                graph={graph}
-                matrixData={matrixData}
-                example={normalizedExample}
-                variableColors={variableColors}
-              />
-            </section>
+              <section id="matrix" className="section">
+                <SectionHeader num={3} title="Incidence Matrix M" />
+                <p className="section-desc">
+                  Each cell M[u, l] is the multiplicity of label l in axis-class u.
+                  Column fingerprints (reading down each column) identify structurally equivalent labels.
+                </p>
+                <MatrixView matrixData={matrixData} graph={graph} example={normalizedExample} variableColors={variableColors} />
+              </section>
 
-            <section id="group" className="section">
-              <SectionHeader num={5} title="Group Construction" />
-              <p className="section-desc">
-                Collected π's are generators. Dimino's algorithm enumerates all group elements
-                by composing generators until closure.
-              </p>
-              <GroupView group={group} sigmaResults={sigmaResults} graph={graph} example={normalizedExample} />
-            </section>
+              <section id="sigma" className="section">
+                <SectionHeader num={4} title="σ-Loop & π Detection" />
+                <p className="section-desc">
+                  When identical operands are swapped (σ), the incidence matrix M gets its
+                  rows shuffled into σ(M). We search for a column relabeling π that
+                  recovers the original: π(σ(M)) = M. If such a π exists and
+                  respects the V/W partition, it reveals a symmetry of the einsum expression.
+                </p>
+                <SigmaLoop
+                  results={sigmaResults}
+                  graph={graph}
+                  matrixData={matrixData}
+                  example={normalizedExample}
+                  variableColors={variableColors}
+                />
+              </section>
 
-            <section id="burnside" className="section">
-              <SectionHeader num={6} title="Burnside Counting" />
-              <p className="section-desc">
-                Each group element fixes a different number of tuples based on its cycle structure.
-                Burnside's lemma counts the unique orbits.
-              </p>
-              <BurnsideView
-                burnside={burnside}
-                group={group}
-                dimensionN={dimensionN}
-              />
-            </section>
+              <section id="group" className="section">
+                <SectionHeader num={5} title="Group Construction" />
+                <p className="section-desc">
+                  Collected π's are generators. Dimino's algorithm enumerates all group elements
+                  by composing generators until closure.
+                </p>
+                <GroupView group={group} sigmaResults={sigmaResults} graph={graph} example={normalizedExample} />
+              </section>
 
-            <section id="cost" className="section">
-              <SectionHeader num={7} title="Cost Reduction" />
-              <p className="section-desc">
-                The FLOP cost is reduced by the ratio of unique to total elements.
-              </p>
-              <CostView cost={cost} numOperands={normalizedExample?.subscripts?.length || 0} />
-            </section>
-          </>
-        )}
+              <section id="burnside" className="section">
+                <SectionHeader num={6} title="Burnside Counting" />
+                <p className="section-desc">
+                  Each group element fixes a different number of tuples based on its cycle structure.
+                  Burnside's lemma counts the unique orbits.
+                </p>
+                <BurnsideView
+                  burnside={burnside}
+                  group={group}
+                  dimensionN={dimensionN}
+                />
+              </section>
 
-        {/* Show prompt when custom is selected but no expression analyzed yet */}
-        {isCustom && !pipeline && (
-          <div className="custom-prompt">
-            Define your variables and einsum expression above, then click <strong>Analyze</strong> to explore the symmetry detection algorithm.
-          </div>
-        )}
-      </main>
+              <section id="cost" className="section">
+                <SectionHeader num={7} title="Cost Reduction" />
+                <p className="section-desc">
+                  The FLOP cost is reduced by the ratio of unique to total elements.
+                </p>
+                <CostView cost={cost} numOperands={normalizedExample?.subscripts?.length || 0} />
+              </section>
+            </div>
+          )}
+
+          {/* Show prompt when custom is selected but no expression analyzed yet */}
+          {isCustom && !pipeline && (
+            <div className="custom-prompt">
+              Define your variables and einsum expression above, then click <strong>Analyze</strong> to explore the symmetry detection algorithm.
+            </div>
+          )}
+        </main>
+      </div>
     </div>
   );
 }

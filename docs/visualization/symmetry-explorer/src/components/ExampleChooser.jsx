@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { validateAll } from '../engine/validation.js';
 import { generatePython } from '../engine/pythonCodegen.js';
 import { buildVariableColors, SYMMETRY_ICONS, contrastText } from '../engine/colorPalette.js';
@@ -7,8 +7,6 @@ import { parseCycleNotation, generatorIndices } from '../engine/cycleParser.js';
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
-
-const CUSTOM_IDX = -1;
 
 const SYM_TYPES = ['none', 'symmetric', 'cyclic', 'dihedral', 'custom'];
 const SYM_LABELS = {
@@ -148,37 +146,34 @@ function buildPerOpSymmetry(variables, operandNamesStr, subscriptsStr) {
 // ---------------------------------------------------------------------------
 
 export default function ExampleChooser({
-  examples, selected, onSelect, example, dimensionN, onDimensionChange, onCustomExample,
+  example, dimensionN, onDimensionChange, onCustomExample, onDirty,
 }) {
   // ── State ──────────────────────────────────────────────────────────────
 
-  const initial = presetToState(examples[0]);
+  const initial = example?.variables ? presetToState(example) : { variables: [], subscriptsStr: '', outputStr: '', operandNamesStr: '' };
 
   const [variables, setVariables] = useState(initial.variables);
   const [subscriptsStr, setSubscriptsStr] = useState(initial.subscriptsStr);
   const [outputStr, setOutputStr] = useState(initial.outputStr);
   const [operandNamesStr, setOperandNamesStr] = useState(initial.operandNamesStr);
-  const [activePresetIdx, setActivePresetIdx] = useState(0);
 
   const [copied, setCopied] = useState(false);
 
-  // ── Load preset ────────────────────────────────────────────────────────
+  // ── Sync state when example prop changes (preset selected from sidebar) ──
 
-  const loadPreset = useCallback((idx) => {
-    const state = presetToState(examples[idx]);
+  useEffect(() => {
+    if (!example || !example.variables) return;
+    const state = presetToState(example);
     setVariables(state.variables);
     setSubscriptsStr(state.subscriptsStr);
     setOutputStr(state.outputStr);
     setOperandNamesStr(state.operandNamesStr);
-    setActivePresetIdx(idx);
-    onSelect(idx);
-  }, [examples, onSelect]);
+  }, [example]);
 
-  // ── Mark dirty (no longer a preset) ────────────────────────────────────
-
+  // ── Mark dirty (user edited fields) ────────────────────────────────────
   const markCustom = useCallback(() => {
-    setActivePresetIdx(CUSTOM_IDX);
-  }, []);
+    if (onDirty) onDirty();
+  }, [onDirty]);
 
   // ── Variable mutations ─────────────────────────────────────────────────
 
@@ -305,44 +300,27 @@ export default function ExampleChooser({
     const formula = `einsum('${subscriptsStr}->${out}', ${opsArr.join(', ')})`;
 
     const customExample = {
-      id: activePresetIdx >= 0 ? examples[activePresetIdx].id : 'custom',
-      name: activePresetIdx >= 0 ? examples[activePresetIdx].name : 'Custom',
+      id: example?.id || 'custom',
+      name: example?.name || 'Custom',
       formula,
       subscripts: subs,
       output: out,
       operandNames: opsArr,
       perOpSymmetry: hasAnySym ? perOpSymArr : null,
-      description: activePresetIdx >= 0 ? examples[activePresetIdx].description : 'User-defined expression',
-      expectedGroup: activePresetIdx >= 0 ? examples[activePresetIdx].expectedGroup : '',
-      color: activePresetIdx >= 0 ? examples[activePresetIdx].color : '#7C3AED',
+      description: example?.description || 'User-defined expression',
+      expectedGroup: example?.expectedGroup || '',
+      color: example?.color || '#7C3AED',
     };
 
     onCustomExample(customExample);
-  }, [validation, variables, subscriptsStr, outputStr, operandNamesStr, activePresetIdx, examples, onCustomExample]);
+  }, [validation, variables, subscriptsStr, outputStr, operandNamesStr, example, onCustomExample]);
 
   // ── Render ─────────────────────────────────────────────────────────────
 
   return (
     <div className="example-chooser">
 
-      {/* ── 1. Preset grid ── */}
-      <div className="example-grid">
-        {examples.map((ex, i) => (
-          <button
-            key={ex.id}
-            className={`example-card ${activePresetIdx === i ? 'active' : ''}`}
-            style={{ '--accent': ex.color }}
-            onClick={() => loadPreset(i)}
-          >
-            <div className="example-name">{ex.name}</div>
-            <code className="example-formula">{ex.formula}</code>
-            <div className="example-group">{ex.expectedGroup}</div>
-            <div className="example-desc">{ex.description}</div>
-          </button>
-        ))}
-      </div>
-
-      {/* ── 2. Variable cards ── */}
+      {/* ── 1. Variable cards ── */}
       <div className="builder-section-label">Variables</div>
       <div className="var-cards">
         {variables.map((v, i) => {
