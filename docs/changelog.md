@@ -4,6 +4,12 @@
 
 ### Added
 
+- **Einsum path caching.** Contraction paths are now cached in a module-level
+  LRU cache (default 4096 entries). Repeated `we.einsum()` calls with the same
+  subscripts, shapes, optimizer, and symmetry structure reuse the cached path
+  instead of recomputing it. New public API: `we.clear_einsum_cache()`,
+  `we.einsum_cache_info()`, and `we.configure(einsum_path_cache_size=N)`.
+
 - **Multi-version NumPy support.** whest now supports NumPy 2.0, 2.1, and 2.2
   (`>=2.0.0,<2.3.0`). Default install resolves to NumPy 2.2. Functions not available
   in older NumPy versions raise `UnsupportedFunctionError` with an actionable message

@@ -139,12 +139,25 @@ def _rebuild_einsum_cache():
 
 
 def clear_einsum_cache():
-    """Clear the einsum path cache."""
+    """Clear the einsum path cache.
+
+    Discards all cached contraction paths. Subsequent ``einsum()`` and
+    ``einsum_path()`` calls will recompute paths from scratch.
+    """
     _path_cache.cache_clear()
 
 
 def einsum_cache_info():
-    """Return cache statistics (hits, misses, maxsize, currsize)."""
+    """Return einsum path cache statistics.
+
+    Returns a named tuple with ``hits``, ``misses``, ``maxsize``, and
+    ``currsize`` fields (the standard ``functools.lru_cache`` statistics).
+
+    Example::
+
+        info = we.einsum_cache_info()
+        print(f"Cache hit rate: {info.hits / max(info.hits + info.misses, 1):.0%}")
+    """
     return _path_cache.cache_info()
 
 
@@ -178,6 +191,11 @@ def einsum(
     All contractions go through opt_einsum's ``contract_path`` to find an
     optimal pairwise decomposition. The FLOP cost uses opt_einsum's cost
     model where FMA = 1 operation (see ``_cost_model.FMA_COST``).
+
+    Contraction paths are cached in a module-level LRU cache keyed on
+    (subscripts, shapes, optimizer, symmetry structure, operand identity).
+    Repeated calls with the same inputs skip path recomputation entirely.
+    See ``clear_einsum_cache()`` and ``einsum_cache_info()``.
 
     Parameters
     ----------
