@@ -11,7 +11,6 @@
  */
 export function buildUVertexLabels(uVertices, example) {
   const opNames = example?.operandNames || [];
-  const subscripts = example?.subscripts || [];
 
   // Count occurrences of each operand name to decide whether to show index
   const nameCounts = {};
@@ -31,7 +30,6 @@ export function buildUVertexLabels(uVertices, example) {
   return uVertices.map(u => {
     const opIdx = u.opIdx;
     const name = opNames[opIdx] || `Op${opIdx}`;
-    const sub = subscripts[opIdx] || '';
     const lbl = [...(u.labels || [])].sort().join(',');
 
     // Find which axis position this label is at

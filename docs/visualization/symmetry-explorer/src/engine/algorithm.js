@@ -4,6 +4,7 @@
  */
 
 import { Permutation, dimino, burnsideCount } from './permutation.js';
+import { buildFullGroup, classifyPi } from './fullGroup.js';
 
 // ─── Bipartite Graph Construction ─────────────────────────────────
 
@@ -12,7 +13,7 @@ import { Permutation, dimino, burnsideCount } from './permutation.js';
  * Port of _build_bipartite (subgraph_symmetry.py:174-277)
  */
 export function buildBipartite(example) {
-  const { subscripts, output, operandNames, perOpSymmetry } = example;
+  const { subscripts, output, operandNames } = example;
   const numOps = subscripts.length;
 
   const uVertices = [];  // { opIdx, classId, labels: Set<string> }
@@ -83,7 +84,7 @@ export function buildBipartite(example) {
 // ─── Incidence Matrix ─────────────────────────────────────────────
 
 export function buildIncidenceMatrix(graph) {
-  const { uVertices, incidence, allLabels, freeLabels, summedLabels } = graph;
+  const { uVertices, incidence, allLabels } = graph;
   const labels = allLabels;
   const matrix = uVertices.map((_, rowIdx) =>
     labels.map(lbl => incidence[rowIdx][lbl] || 0)
@@ -100,7 +101,6 @@ export function buildIncidenceMatrix(graph) {
 
   // Row labels for display
   const rowLabels = uVertices.map(u => {
-    const opName = `${graph.operandLabels[u.opIdx] ? '' : ''}Op${u.opIdx}`;
     return { opIdx: u.opIdx, classId: u.classId, labels: u.labels };
   });
 
@@ -108,73 +108,6 @@ export function buildIncidenceMatrix(graph) {
 }
 
 // ─── σ-Loop: enumerate operand permutations ───────────────────────
-
-function enumeratePermutations(groups) {
-  // Enumerate all permutations within each identical-operand group.
-  // Returns list of {opIdx -> permutedOpIdx} mappings.
-  function permsOfGroup(group) {
-    const result = [];
-    const arr = [...group];
-    function permute(start) {
-      if (start === arr.length) {
-        const mapping = {};
-        arr.forEach((val, i) => mapping[group[i]] = val);
-        result.push(mapping);
-        return;
-      }
-      for (let i = start; i < arr.length; i++) {
-        [arr[start], arr[i]] = [arr[i], arr[start]];
-        permute(start + 1);
-        [arr[start], arr[i]] = [arr[i], arr[start]];
-      }
-    }
-    permute(0);
-    return result;
-  }
-
-  const perGroupPerms = groups.map(permsOfGroup);
-  if (perGroupPerms.length === 0) return [{}];
-
-  // Cartesian product across groups
-  function cartesian(arrays, idx = 0) {
-    if (idx === arrays.length) return [{}];
-    const rest = cartesian(arrays, idx + 1);
-    const result = [];
-    for (const p of arrays[idx]) {
-      for (const r of rest) {
-        result.push({ ...p, ...r });
-      }
-    }
-    return result;
-  }
-  return cartesian(perGroupPerms);
-}
-
-/**
- * Lift operand permutation σ to U-vertex row permutation.
- * Port of _lift_operand_perm_to_u (subgraph_symmetry.py:458-495)
- */
-function liftSigmaToU(sigma, rowOrder, graph) {
-  const opToUVertices = {};
-  for (let uIdx = 0; uIdx < graph.uOperand.length; uIdx++) {
-    const opIdx = graph.uOperand[uIdx];
-    (opToUVertices[opIdx] ??= []).push(uIdx);
-  }
-
-  const result = [...rowOrder];
-  for (let k = 0; k < rowOrder.length; k++) {
-    const uIdx = rowOrder[k];
-    const opIdx = graph.uOperand[uIdx];
-    if (!(opIdx in sigma) || sigma[opIdx] === opIdx) continue;
-    const jOp = sigma[opIdx];
-    const opClasses = opToUVertices[opIdx];
-    const pos = opClasses.indexOf(uIdx);
-    const jClasses = opToUVertices[jOp] || [];
-    if (pos >= jClasses.length) return null;
-    result[k] = jClasses[pos];
-  }
-  return result;
-}
 
 /**
  * Derive π from σ(M) via column fingerprint matching.
@@ -185,6 +118,10 @@ function derivePi(sigmaColOf, fpToLabels, vLabels, wLabels) {
   const used = new Set();
   const allLabels = [...vLabels, ...wLabels].sort();
 
+  // In the full-group model, π may legitimately mix V and W labels.
+  // Cross V/W actions are part of the detected symmetry, so we only require
+  // a bijective fingerprint match here and do not reintroduce the old
+  // partition-preserving rejection.
   for (const label of allLabels) {
     const fp = sigmaColOf[label];
     const candidates = fpToLabels[fp];
@@ -196,12 +133,6 @@ function derivePi(sigmaColOf, fpToLabels, vLabels, wLabels) {
     if (pick === null) return null;
     pi[label] = pick;
     used.add(pick);
-  }
-
-  // Validate V→V and W→W
-  for (const [lbl, target] of Object.entries(pi)) {
-    if (vLabels.has(lbl) && !vLabels.has(target)) return null;
-    if (wLabels.has(lbl) && !wLabels.has(target)) return null;
   }
 
   return pi;
@@ -365,7 +296,19 @@ export function runSigmaLoop(graph, matrixData, example) {
   for (const sigmaPerm of allRowPerms) {
     const sigmaRowPerm = sigmaPerm.arr;
     if (sigmaPerm.isIdentity) {
-      results.push({ sigma: {}, isIdentity: true, skipped: true });
+      const identityPi = Object.fromEntries(allLabels.map((label) => [label, label]));
+      results.push({
+        sigma: {},
+        isIdentity: true,
+        skipped: true,
+        pi: identityPi,
+        isValid: true,
+        piIsIdentity: true,
+        piKind: 'identity',
+        piCrossesVw: false,
+        piMovesV: false,
+        piMovesW: false,
+      });
       continue;
     }
 
@@ -392,11 +335,18 @@ export function runSigmaLoop(graph, matrixData, example) {
       continue;
     }
 
-    const piIsIdentity = Object.entries(pi).every(([k, v]) => k === v);
+    const {
+      piIsIdentity,
+      piKind,
+      crosses: piCrossesVw,
+      movesV: piMovesV,
+      movesW: piMovesW,
+    } = classifyPi(pi, vLabels, wLabels);
 
     results.push({
       sigma: {}, sigmaRowPerm, sigmaMatrix, sigmaColOf, pi,
-      isValid: true, piIsIdentity,
+      isValid: true, piIsIdentity, piKind,
+      piCrossesVw, piMovesV, piMovesW,
     });
   }
 
@@ -453,7 +403,8 @@ function declaredSymGenerators(symType, k) {
   return [];
 }
 
-export function buildGroup(sigmaResults, graph, example) {
+export function buildGroup(sigmaResults, graph) {
+  const allLabels = [...graph.allLabels].sort();
   const vLabels = [...graph.freeLabels].sort();
   const wLabels = [...graph.summedLabels].sort();
 
@@ -467,22 +418,35 @@ export function buildGroup(sigmaResults, graph, example) {
 
   for (const r of sigmaResults) {
     if (!r.isValid || r.skipped || r.piIsIdentity) continue;
+    if (r.piKind !== 'v-only' && r.piKind !== 'w-only') continue;
     const { pi } = r;
 
     // Restrict π to V labels
-    if (vLabels.length >= 2) {
-      const arr = vLabels.map(l => vIdx[pi[l] ?? l]);
+    if (r.piKind === 'v-only' && vLabels.length >= 2) {
+      const arr = vLabels.map((l) => {
+        const target = pi[l];
+        return vLabels.includes(target) ? vIdx[target] : vIdx[l];
+      });
       const perm = new Permutation(arr);
       if (!perm.isIdentity) vGenerators.push(perm);
     }
 
     // Restrict π to W labels
-    if (wLabels.length >= 2) {
-      const arr = wLabels.map(l => wIdx[pi[l] ?? l]);
+    if (r.piKind === 'w-only' && wLabels.length >= 2) {
+      const arr = wLabels.map((l) => {
+        const target = pi[l];
+        return wLabels.includes(target) ? wIdx[target] : wIdx[l];
+      });
       const perm = new Permutation(arr);
       if (!perm.isIdentity) wGenerators.push(perm);
     }
   }
+
+  const validPiResults = sigmaResults
+    .filter((r) => r.isValid && r.pi)
+    .map((r) => ({ ...r }));
+
+  const fullGroup = buildFullGroup(allLabels, validPiResults, vLabels, wLabels);
 
   // Deduplicate generators
   const dedup = (gens) => {
@@ -495,11 +459,12 @@ export function buildGroup(sigmaResults, graph, example) {
     });
   };
 
-  let vGensAll = dedup(vGenerators);
-  let wGens = dedup(wGenerators);
+  const vGensAll = dedup(vGenerators);
+  const wGensAll = dedup(wGenerators);
 
   // Reduce to a minimal generating set: only keep generators that grow the group
   const vGens = minimalGenerators(vGensAll);
+  const wGens = minimalGenerators(wGensAll);
 
   const vElements = vGens.length > 0 ? dimino(vGens) : (vLabels.length > 0 ? [Permutation.identity(vLabels.length)] : []);
   const wElements = wGens.length > 0 ? dimino(wGens) : (wLabels.length > 0 ? [Permutation.identity(wLabels.length)] : []);
@@ -589,6 +554,7 @@ export function buildGroup(sigmaResults, graph, example) {
   }
 
   return {
+    allLabels,
     vLabels, wLabels,
     vGenerators: vGens, vGeneratorsAll: vGensAll,
     wGenerators: wGens,
@@ -596,6 +562,13 @@ export function buildGroup(sigmaResults, graph, example) {
     vOrder, vGroupName,
     wOrder, wGroupName,
     vDegree, wDegree,
+    fullGenerators: fullGroup.fullGenerators,
+    fullElements: fullGroup.fullElements,
+    fullOrder: fullGroup.fullOrder,
+    fullDegree: fullGroup.fullDegree,
+    fullGroupName: fullGroup.fullGroupName,
+    actionSummary: fullGroup.actionSummary,
+    validPiResults: fullGroup.validPiResults,
   };
 }
 
@@ -695,36 +668,56 @@ export function buildDeclaredGroup(example) {
 // ─── Burnside Counting ───────────────────────────────────────────
 
 export function computeBurnside(group, dimensionN) {
-  // V-side Burnside
-  const vSizes = Array(group.vDegree).fill(dimensionN);
-  const vResult = group.vDegree > 0
-    ? burnsideCount(group.vElements, vSizes)
-    : { perElement: [], totalFixed: 0, uniqueCount: 1 };
-  const vTotalCount = group.vDegree > 0 ? Math.pow(dimensionN, group.vDegree) : 1;
+  const fullDegree = group.fullDegree ?? group.allLabels?.length ?? 0;
+  const fullElements = group.fullElements ?? (fullDegree > 0 ? [Permutation.identity(fullDegree)] : []);
+  const fullSizes = Array(fullDegree).fill(dimensionN);
+  const fullResult = fullDegree > 0
+    ? burnsideCount(fullElements, fullSizes)
+    : { perElement: [], totalFixed: 1, uniqueCount: 1 };
+  const totalTupleCount = Math.pow(dimensionN, fullDegree);
+  const orbitCount = fullResult.uniqueCount;
 
-  // W-side Burnside
-  const wDegree = group.wDegree || (group.wLabels ? group.wLabels.length : 0);
-  const wOrder = group.wOrder || 1;
+  const vDegree = group.vDegree ?? group.vLabels?.length ?? 0;
+  const vElements = group.vElements ?? (vDegree > 0 ? [Permutation.identity(vDegree)] : []);
+  const vSizes = Array(vDegree).fill(dimensionN);
+  const vResult = vDegree > 0
+    ? burnsideCount(vElements, vSizes)
+    : { perElement: [], totalFixed: 1, uniqueCount: 1 };
+  const totalCount = Math.pow(dimensionN, vDegree);
+  const ratio = totalCount > 0 ? vResult.uniqueCount / totalCount : 1;
+
+  const wDegree = group.wDegree ?? group.wLabels?.length ?? 0;
+  const wOrder = group.wOrder ?? group.wElements?.length ?? 1;
+  const wElements = group.wElements ?? (wDegree > 0 ? [Permutation.identity(wDegree)] : []);
   const wSizes = Array(wDegree).fill(dimensionN);
   const wResult = (wDegree > 0 && wOrder > 1)
-    ? burnsideCount(group.wElements, wSizes)
-    : { perElement: [], totalFixed: 0, uniqueCount: wDegree > 0 ? Math.pow(dimensionN, wDegree) : 1 };
-  const wTotalCount = wDegree > 0 ? Math.pow(dimensionN, wDegree) : 1;
+    ? burnsideCount(wElements, wSizes)
+    : {
+        perElement: [],
+        totalFixed: wDegree > 0 ? Math.pow(dimensionN, wDegree) : 1,
+        uniqueCount: wDegree > 0 ? Math.pow(dimensionN, wDegree) : 1,
+      };
+  const wTotalCount = Math.pow(dimensionN, wDegree);
+  const wRatio = wTotalCount > 0 ? wResult.uniqueCount / wTotalCount : 1;
 
   return {
-    // V-side
+    // Legacy split V/W fields for existing callers.
     perElement: vResult.perElement,
     totalFixed: vResult.totalFixed,
     uniqueCount: vResult.uniqueCount,
-    totalCount: vTotalCount,
-    ratio: vTotalCount > 0 ? vResult.uniqueCount / vTotalCount : 1,
-    // W-side
+    totalCount,
+    ratio,
     wPerElement: wResult.perElement,
     wUniqueCount: wResult.uniqueCount,
-    wTotalCount: wTotalCount,
-    wRatio: wTotalCount > 0 ? wResult.uniqueCount / wTotalCount : 1,
+    wTotalCount,
+    wRatio,
     wHasSymmetry: wOrder > 1,
-    // Common
+    // New full-group fields for the Task 3 model.
+    fullPerElement: fullResult.perElement,
+    fullTotalFixed: fullResult.totalFixed,
+    orbitCount,
+    totalTupleCount,
+    evaluationCost: orbitCount,
     dimensionN,
   };
 }
@@ -770,3 +763,5 @@ export function computeCostReduction(burnside, group, numTerms = 2) {
     combinedReducedCost,
   };
 }
+
+export { analyzeExample } from './pipeline.js';

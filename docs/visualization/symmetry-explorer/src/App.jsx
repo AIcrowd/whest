@@ -2,11 +2,8 @@ import { useState, useMemo, useCallback } from 'react';
 import { EXAMPLES } from './data/examples.js';
 import { parseCycleNotation } from './engine/cycleParser.js';
 import { buildVariableColors } from './engine/colorPalette.js';
-import {
-  buildBipartite, buildIncidenceMatrix, runSigmaLoop,
-  buildGroup, computeBurnside, computeCostReduction,
-} from './engine/algorithm.js';
-import PresetSidebar from './components/PresetSidebar.jsx';
+import { analyzeExample } from './engine/pipeline.js';
+import { pickDefaultOrbitRow } from './engine/teachingModel.js';
 import ExampleChooser from './components/ExampleChooser.jsx';
 import BipartiteGraph from './components/BipartiteGraph.jsx';
 import MatrixView from './components/MatrixView.jsx';
@@ -14,6 +11,8 @@ import SigmaLoop from './components/SigmaLoop.jsx';
 import GroupView from './components/GroupView.jsx';
 import BurnsideView from './components/BurnsideView.jsx';
 import CostView from './components/CostView.jsx';
+import PseudocodeRail from './components/PseudocodeRail.jsx';
+import OrbitInspector from './components/OrbitInspector.jsx';
 import './styles.css';
 
 const STEPS = [
@@ -22,8 +21,9 @@ const STEPS = [
   { id: 'matrix', num: 3, title: 'Incidence Matrix M' },
   { id: 'sigma', num: 4, title: 'σ-Loop & π Detection' },
   { id: 'group', num: 5, title: 'Group Construction' },
-  { id: 'burnside', num: 6, title: 'Burnside Counting' },
-  { id: 'cost', num: 7, title: 'Cost Reduction' },
+  { id: 'framework', num: 6, title: 'Mental Framework' },
+  { id: 'burnside', num: 7, title: 'Burnside For Evaluation Cost' },
+  { id: 'cost', num: 8, title: 'Reduction Cost' },
 ];
 
 const CUSTOM_IDX = -1;
@@ -66,7 +66,7 @@ export default function App() {
   const [exampleIdx, setExampleIdx] = useState(0);
   const [customExample, setCustomExample] = useState(null);
   const [dimensionN, setDimensionN] = useState(5);
-  const [isDirty, setIsDirty] = useState(false);
+  const [selectedOrbitIdx, setSelectedOrbitIdx] = useState(-1);
   // Resolve the active example: preset or custom
   const isCustom = exampleIdx === CUSTOM_IDX;
   const example = isCustom ? customExample : EXAMPLES[exampleIdx];
@@ -83,59 +83,45 @@ export default function App() {
   // Handle preset selection
   const handleSelect = useCallback((idx) => {
     setExampleIdx(idx);
-    setIsDirty(false);
   }, []);
 
   // Handle custom example submission
   const handleCustomExample = useCallback((ex) => {
     setCustomExample(ex);
     setExampleIdx(CUSTOM_IDX);
-    setIsDirty(false);
   }, []);
 
-  // Handle config edits (before Analyze is clicked)
-  const handleDirty = useCallback(() => {
-    setIsDirty(true);
-  }, []);
-
-  // Run the full algorithm pipeline
-  const pipeline = useMemo(() => {
-    if (!normalizedExample) return null;
+  const analysis = useMemo(() => {
+    if (!example) return null;
     try {
-      const graph = buildBipartite(normalizedExample);
-      const matrixData = buildIncidenceMatrix(graph);
-      const sigmaResults = runSigmaLoop(graph, matrixData, normalizedExample);
-      const group = buildGroup(sigmaResults, graph, normalizedExample);
-      return { graph, matrixData, sigmaResults, group };
+      return analyzeExample(example, dimensionN);
     } catch (err) {
       console.error('Pipeline error:', err);
       return null;
     }
-  }, [normalizedExample]);
+  }, [example, dimensionN]);
 
-  const { graph, matrixData, sigmaResults, group } = pipeline || {};
+  const {
+    graph,
+    matrixData,
+    sigmaResults,
+    symmetry: group,
+    burnside,
+    costModel: cost,
+  } = analysis || {};
 
-  const burnside = useMemo(
-    () => group ? computeBurnside(group, dimensionN) : null,
-    [group, dimensionN]
-  );
-
-  const numTerms = normalizedExample?.subscripts?.length || 2;
-  const cost = useMemo(
-    () => (burnside && group) ? computeCostReduction(burnside, group, numTerms) : null,
-    [burnside, group, numTerms]
-  );
+  const resolvedSelectedOrbitIdx = useMemo(() => {
+    const orbitRows = cost?.orbitRows ?? [];
+    if (orbitRows.length === 0) return -1;
+    if (selectedOrbitIdx >= 0 && selectedOrbitIdx < orbitRows.length) return selectedOrbitIdx;
+    return pickDefaultOrbitRow(orbitRows);
+  }, [cost, selectedOrbitIdx]);
 
   // Check if per-op symmetry is active for any operand
   const hasPerOpSym = normalizedExample && (
     normalizedExample.perOpSymmetry === 'symmetric' ||
     (Array.isArray(normalizedExample.perOpSymmetry) && normalizedExample.perOpSymmetry.some(s => s === 'symmetric' || (s && typeof s === 'object')))
   );
-
-  // Handle switching to custom mode from sidebar
-  const handleCustomMode = useCallback(() => {
-    setExampleIdx(CUSTOM_IDX);
-  }, []);
 
   return (
     <div className="app">
@@ -153,44 +139,34 @@ export default function App() {
         ))}
       </nav>
 
-      <div className="app-body">
-        <PresetSidebar
-          examples={EXAMPLES}
-          selected={exampleIdx}
-          onSelect={handleSelect}
-          onCustom={handleCustomMode}
-        />
-
-        <main className="main">
+      <main className="main main-full">
           {/* -- Prominent einsum banner -- */}
           {example && group && (
             <div className="einsum-banner">
               <span className="einsum-label">einsum</span>
               <code className="einsum-expr">{example.formula}</code>
               <span className="einsum-group-tag">
-                {group.vGroupName !== 'trivial'
-                  ? group.vGroupName
-                  : group.wGroupName !== 'trivial'
-                    ? `W: ${group.wGroupName}`
-                    : 'trivial'}
+                {group.fullGroupName || 'trivial'}
               </span>
             </div>
           )}
 
           <section id="example" className="section">
-            <SectionHeader num={1} title="Configure Example" />
+            <SectionHeader num={1} title="Choose an Example" />
             <ExampleChooser
+              examples={EXAMPLES}
+              selected={exampleIdx}
+              onSelect={handleSelect}
               example={example}
               dimensionN={dimensionN}
               onDimensionChange={setDimensionN}
               onCustomExample={handleCustomExample}
-              onDirty={handleDirty}
             />
           </section>
 
           {/* Only render pipeline sections when we have results */}
-          {pipeline && example && (
-            <div className={isDirty ? 'pipeline-stale' : undefined}>
+          {analysis && example && (
+            <>
               <section id="graph" className="section">
                 <SectionHeader num={2} title="Bipartite Graph" />
                 <p className="section-desc">
@@ -198,10 +174,10 @@ export default function App() {
                   partitioned into <span className="pill pill-v">V free</span> and{' '}
                   <span className="pill pill-w">W summed</span>.
                   {hasPerOpSym && (
-                    <> Per-operand symmetry <em>collapses</em> each operand's axes into a single U-vertex.</>
+                    <> Per-operand symmetry <em>collapses</em> each operand&apos;s axes into a single U-vertex.</>
                   )}
                 </p>
-                <BipartiteGraph graph={graph} example={normalizedExample} variableColors={variableColors} group={group} />
+                <BipartiteGraph graph={graph} example={normalizedExample} variableColors={variableColors} />
               </section>
 
               <section id="matrix" className="section">
@@ -218,8 +194,8 @@ export default function App() {
                 <p className="section-desc">
                   When identical operands are swapped (σ), the incidence matrix M gets its
                   rows shuffled into σ(M). We search for a column relabeling π that
-                  recovers the original: π(σ(M)) = M. If such a π exists and
-                  respects the V/W partition, it reveals a symmetry of the einsum expression.
+                  recovers the original: π(σ(M)) = M. Valid π mappings are kept on the
+                  full label set, so cross V/W symmetries are surfaced instead of discarded.
                 </p>
                 <SigmaLoop
                   results={sigmaResults}
@@ -233,17 +209,38 @@ export default function App() {
               <section id="group" className="section">
                 <SectionHeader num={5} title="Group Construction" />
                 <p className="section-desc">
-                  Collected π's are generators. Dimino's algorithm enumerates all group elements
-                  by composing generators until closure.
+                  Collected π&apos;s are generators for one full symmetry group on the active labels.
+                  Dimino&apos;s algorithm enumerates all group elements by composing generators until closure.
                 </p>
-                <GroupView group={group} sigmaResults={sigmaResults} graph={graph} example={normalizedExample} />
+                <GroupView group={group} />
+              </section>
+
+              <section id="framework" className="section">
+                <SectionHeader num={6} title="Mental Framework: Compute Once, Reduce Many" />
+                <p className="section-desc">
+                  This is the mental model for everything that follows. The group-theory machinery
+                  only tells us what <code>RepSet</code> and <code>Outs(rep)</code> are for this
+                  contraction step.
+                </p>
+                <div className="mental-model-grid">
+                  <PseudocodeRail activeStepId="framework" selectedOrbitRow={cost?.orbitRows?.[resolvedSelectedOrbitIdx] ?? null} />
+                  <OrbitInspector
+                    orbitRows={cost?.orbitRows ?? []}
+                    selectedOrbitIdx={resolvedSelectedOrbitIdx}
+                    onSelectOrbit={setSelectedOrbitIdx}
+                    kicker="Orbit Example"
+                    title="Selected orbit driving the code comments"
+                    description="Pick one representative orbit here. The code comments on the left update to show the same rep, its projected outputs, and one concrete coeff value."
+                  />
+                </div>
               </section>
 
               <section id="burnside" className="section">
-                <SectionHeader num={6} title="Burnside Counting" />
+                <SectionHeader num={7} title="Burnside For Evaluation Cost" />
                 <p className="section-desc">
-                  Each group element fixes a different number of tuples based on its cycle structure.
-                  Burnside's lemma counts the unique orbits.
+                  Burnside&apos;s lemma counts full tuple orbits under the full group. In the mental
+                  framework above, this is the line that loops over <code>RepSet</code> and
+                  increments <code>evaluation_cost</code>.
                 </p>
                 <BurnsideView
                   burnside={burnside}
@@ -253,23 +250,24 @@ export default function App() {
               </section>
 
               <section id="cost" className="section">
-                <SectionHeader num={7} title="Cost Reduction" />
+                <SectionHeader num={8} title="Reduction Cost" />
                 <p className="section-desc">
-                  The FLOP cost is reduced by the ratio of unique to total elements.
+                  Reduction cost counts how many output bins the symmetry-compressed representatives
+                  still update. In the mental framework above, this is the inner loop over
+                  <code>Outs(rep)</code>, not the Burnside count itself.
                 </p>
-                <CostView cost={cost} numOperands={normalizedExample?.subscripts?.length || 0} />
+                <CostView costModel={cost} />
               </section>
-            </div>
+            </>
           )}
 
           {/* Show prompt when custom is selected but no expression analyzed yet */}
-          {isCustom && !pipeline && (
+          {isCustom && !analysis && (
             <div className="custom-prompt">
               Define your variables and einsum expression above, then click <strong>Analyze</strong> to explore the symmetry detection algorithm.
             </div>
           )}
-        </main>
-      </div>
+      </main>
     </div>
   );
 }

@@ -1,12 +1,14 @@
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { validateAll } from '../engine/validation.js';
 import { generatePython } from '../engine/pythonCodegen.js';
 import { buildVariableColors, SYMMETRY_ICONS, contrastText } from '../engine/colorPalette.js';
-import { parseCycleNotation, generatorIndices } from '../engine/cycleParser.js';
+import { parseCycleNotation } from '../engine/cycleParser.js';
 
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
+
+const CUSTOM_IDX = -1;
 
 const SYM_TYPES = ['none', 'symmetric', 'cyclic', 'dihedral', 'custom'];
 const SYM_LABELS = {
@@ -48,7 +50,6 @@ function badgeLabel(variable) {
   }
   const k = (symAxes && symAxes.length) || rank;
   const prefix = symmetry === 'symmetric' ? 'S' : symmetry === 'cyclic' ? 'C' : 'D';
-  const order = groupOrder(symmetry, k);
   return `${prefix}${k}`;
 }
 
@@ -146,34 +147,37 @@ function buildPerOpSymmetry(variables, operandNamesStr, subscriptsStr) {
 // ---------------------------------------------------------------------------
 
 export default function ExampleChooser({
-  example, dimensionN, onDimensionChange, onCustomExample, onDirty,
+  examples, onSelect, dimensionN, onDimensionChange, onCustomExample,
 }) {
   // ── State ──────────────────────────────────────────────────────────────
 
-  const initial = example?.variables ? presetToState(example) : { variables: [], subscriptsStr: '', outputStr: '', operandNamesStr: '' };
+  const initial = presetToState(examples[0]);
 
   const [variables, setVariables] = useState(initial.variables);
   const [subscriptsStr, setSubscriptsStr] = useState(initial.subscriptsStr);
   const [outputStr, setOutputStr] = useState(initial.outputStr);
   const [operandNamesStr, setOperandNamesStr] = useState(initial.operandNamesStr);
+  const [activePresetIdx, setActivePresetIdx] = useState(0);
 
   const [copied, setCopied] = useState(false);
 
-  // ── Sync state when example prop changes (preset selected from sidebar) ──
+  // ── Load preset ────────────────────────────────────────────────────────
 
-  useEffect(() => {
-    if (!example || !example.variables) return;
-    const state = presetToState(example);
+  const loadPreset = useCallback((idx) => {
+    const state = presetToState(examples[idx]);
     setVariables(state.variables);
     setSubscriptsStr(state.subscriptsStr);
     setOutputStr(state.outputStr);
     setOperandNamesStr(state.operandNamesStr);
-  }, [example]);
+    setActivePresetIdx(idx);
+    onSelect(idx);
+  }, [examples, onSelect]);
 
-  // ── Mark dirty (user edited fields) ────────────────────────────────────
+  // ── Mark dirty (no longer a preset) ────────────────────────────────────
+
   const markCustom = useCallback(() => {
-    if (onDirty) onDirty();
-  }, [onDirty]);
+    setActivePresetIdx(CUSTOM_IDX);
+  }, []);
 
   // ── Variable mutations ─────────────────────────────────────────────────
 
@@ -300,27 +304,44 @@ export default function ExampleChooser({
     const formula = `einsum('${subscriptsStr}->${out}', ${opsArr.join(', ')})`;
 
     const customExample = {
-      id: example?.id || 'custom',
-      name: example?.name || 'Custom',
+      id: activePresetIdx >= 0 ? examples[activePresetIdx].id : 'custom',
+      name: activePresetIdx >= 0 ? examples[activePresetIdx].name : 'Custom',
       formula,
       subscripts: subs,
       output: out,
       operandNames: opsArr,
       perOpSymmetry: hasAnySym ? perOpSymArr : null,
-      description: example?.description || 'User-defined expression',
-      expectedGroup: example?.expectedGroup || '',
-      color: example?.color || '#7C3AED',
+      description: activePresetIdx >= 0 ? examples[activePresetIdx].description : 'User-defined expression',
+      expectedGroup: activePresetIdx >= 0 ? examples[activePresetIdx].expectedGroup : '',
+      color: activePresetIdx >= 0 ? examples[activePresetIdx].color : '#7C3AED',
     };
 
     onCustomExample(customExample);
-  }, [validation, variables, subscriptsStr, outputStr, operandNamesStr, example, onCustomExample]);
+  }, [validation, variables, subscriptsStr, outputStr, operandNamesStr, activePresetIdx, examples, onCustomExample]);
 
   // ── Render ─────────────────────────────────────────────────────────────
 
   return (
     <div className="example-chooser">
 
-      {/* ── 1. Variable cards ── */}
+      {/* ── 1. Preset grid ── */}
+      <div className="example-grid">
+        {examples.map((ex, i) => (
+          <button
+            key={ex.id}
+            className={`example-card ${activePresetIdx === i ? 'active' : ''}`}
+            style={{ '--accent': ex.color }}
+            onClick={() => loadPreset(i)}
+          >
+            <div className="example-name">{ex.name}</div>
+            <code className="example-formula">{ex.formula}</code>
+            <div className="example-group">{ex.expectedGroup}</div>
+            <div className="example-desc">{ex.description}</div>
+          </button>
+        ))}
+      </div>
+
+      {/* ── 2. Variable cards ── */}
       <div className="builder-section-label">Variables</div>
       <div className="var-cards">
         {variables.map((v, i) => {

@@ -8,8 +8,9 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "node test-cross-validate.mjs",
-    "test:verbose": "node test-cross-validate.mjs --verbose"
+    "test": "node --test tests/**/*.test.mjs",
+    "test:engine": "node --test tests/engine/*.test.mjs",
+    "verify": "npm run lint && npm run test && npm run build"
   },
   "dependencies": {
     "katex": "^0.16.45",

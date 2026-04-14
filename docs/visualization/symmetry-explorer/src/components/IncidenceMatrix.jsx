@@ -23,7 +23,6 @@ export default function IncidenceMatrix({
   variableColors,  // { [name]: { color } } — per-variable colors for row labels
   rowPerm,         // number[] | null — row ordering (null = identity)
   colPerm,         // number[] | null — column reordering (null = identity)
-  movedRows,       // Set<number> | null — highlighted rows
   movedCols,       // Set<number> | null — highlighted columns
   animate,         // boolean — enable CSS transitions
   label,           // string | null — title above the matrix (e.g. "M", "σ(M)")
@@ -45,7 +44,6 @@ export default function IncidenceMatrix({
   const containerW = labelW + numCols * cellW;
 
   // Which rows/cols are moved
-  const movedRowSet = movedRows || new Set();
   const movedColSet = movedCols || new Set();
 
   // Inverse row perm: positionOf[uIdx] = visual row

@@ -41,16 +41,14 @@ function parseGenerator(text) {
   // Match each (...) group
   const cycleRe = /\(([^)]*)\)/g;
   let match;
-  let consumed = "";
 
   while ((match = cycleRe.exec(text)) !== null) {
-    consumed += match[0];
     const inner = match[1].trim();
     if (inner.length === 0) {
       return { cycles: null, error: "Empty cycle ()" };
     }
 
-    const tokens = inner.split(/[\s,]+/);
+    const tokens = inner.split(/\s+/);
     if (tokens.length < 2) {
       return {
         cycles: null,

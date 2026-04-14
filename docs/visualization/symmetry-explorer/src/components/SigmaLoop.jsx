@@ -1,40 +1,48 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { buildUVertexLabels } from '../engine/uVertexLabel.js';
 import IncidenceMatrix from './IncidenceMatrix.jsx';
 
 const STAGE_LABELS = ['M', 'σ(M)', 'π(σ(M))'];
 
 export default function SigmaLoop({ results, graph, matrixData, example, variableColors }) {
+  const allPairs = results.filter((result) => !result.skipped);
+  const validPairs = allPairs.filter((result) => result.isValid);
+  const rejectedPairs = allPairs.filter((result) => !result.isValid);
+  const resultsKey = `${results.length}:${validPairs.length}`;
+
+  return (
+    <SigmaLoopInner
+      key={resultsKey}
+      allPairs={allPairs}
+      validPairs={validPairs}
+      rejectedPairs={rejectedPairs}
+      graph={graph}
+      matrixData={matrixData}
+      example={example}
+      variableColors={variableColors}
+      results={results}
+    />
+  );
+}
+
+function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData, example, variableColors, results }) {
   const { uVertices, freeLabels } = graph;
   const uLabels = buildUVertexLabels(uVertices, example);
   const labels = matrixData.labels;
   const originalMatrix = matrixData.matrix;
 
-  const [selectedIdx, setSelectedIdx] = useState(null);
+  const initialSelectedIdx = validPairs.length > 0
+    ? allPairs.indexOf(validPairs[0])
+    : allPairs.length > 0
+      ? 0
+      : null;
+
+  const [selectedIdx, setSelectedIdx] = useState(initialSelectedIdx);
   const [stage, setStage] = useState(0); // 0=M, 1=σ(M), 2=π(σ(M))
   const [playing, setPlaying] = useState(false);
   const playRef = useRef(false);
   const [showRejected, setShowRejected] = useState(false);
   const [modalIdx, setModalIdx] = useState(null); // index into allPairs for rejected modal
-
-  // Filter results
-  const allPairs = results.filter(r => !r.skipped);
-  const validPairs = allPairs.filter(r => r.isValid);
-  const rejectedPairs = allPairs.filter(r => !r.isValid);
-
-  // Auto-select first valid pair (only on example change)
-  const resultsKey = results.length + ':' + results.filter(r => r.isValid).length;
-  useEffect(() => {
-    const firstValid = allPairs.findIndex(r => r.isValid);
-    if (firstValid >= 0) setSelectedIdx(firstValid);
-    else if (allPairs.length > 0) setSelectedIdx(0);
-    else setSelectedIdx(null);
-    setStage(0);
-    setPlaying(false);
-    playRef.current = false;
-    setShowRejected(false);
-    setModalIdx(null);
-  }, [resultsKey]);
 
   const selected = selectedIdx !== null ? allPairs[selectedIdx] : null;
 
@@ -42,24 +50,24 @@ export default function SigmaLoop({ results, graph, matrixData, example, variabl
   const stages = computeStages(selected, originalMatrix, labels, uVertices);
 
   // Playback
-  const stepForward = useCallback(() => {
+  function stepForward() {
     setStage(s => {
       const max = selected?.isValid ? 2 : 1;
       return Math.min(s + 1, max);
     });
-  }, [selected]);
+  }
 
-  const reset = useCallback(() => {
+  function reset() {
     setStage(0);
     setPlaying(false);
     playRef.current = false;
-  }, []);
+  }
 
   useEffect(() => {
     playRef.current = playing;
     if (!playing) return;
     const max = selected?.isValid ? 2 : 1;
-    if (stage >= max) { setPlaying(false); return; }
+    if (stage >= max) return;
     const timer = setTimeout(() => {
       if (!playRef.current) return;
       setStage(s => {
@@ -118,6 +126,9 @@ export default function SigmaLoop({ results, graph, matrixData, example, variabl
                   onClick={() => handleSelectPair(origIdx)}>
                   <span className="pair-sigma">σ = {fmtSigma(r.sigmaRowPerm, uLabels)}</span>
                   <span className="pair-pi">π = {fmtPi(r.pi)}</span>
+                  <span className={`pair-kind pair-kind-${r.piKind || 'identity'}`}>
+                    {kindLabel(r.piKind)}
+                  </span>
                 </button>
               );
             })}
@@ -217,6 +228,9 @@ export default function SigmaLoop({ results, graph, matrixData, example, variabl
                   </div>
                 ))}
               </div>
+              <p className="sigma-caption">
+                {kindCaption(selected.piKind)}
+              </p>
             </div>
           )}
         </div>
@@ -245,6 +259,30 @@ export default function SigmaLoop({ results, graph, matrixData, example, variabl
   );
 }
 
+function kindLabel(kind) {
+  if (kind === 'cross') return 'cross V/W';
+  if (kind === 'v-only') return 'V only';
+  if (kind === 'w-only') return 'W only';
+  if (kind === 'correlated') return 'correlated';
+  return 'identity';
+}
+
+function kindCaption(kind) {
+  if (kind === 'cross') {
+    return 'This symmetry keeps one evaluation representative but can still update multiple output bins because it crosses the V/W boundary.';
+  }
+  if (kind === 'w-only') {
+    return 'This symmetry preserves the output bin and only compresses the summed side, so it can reduce both evaluation and reduction work.';
+  }
+  if (kind === 'v-only') {
+    return 'This symmetry acts only on output labels, so it shrinks the representative set but can still scatter into multiple output bins.';
+  }
+  if (kind === 'correlated') {
+    return 'This symmetry acts on both V and W without crossing between them, so the full group still matters even though the V/W roles stay separate.';
+  }
+  return 'Identity mappings leave the tuple structure unchanged.';
+}
+
 /* ── Rejected Modal — list view + detail view ── */
 
 function RejectedModal({
@@ -265,7 +303,7 @@ function RejectedModal({
         {/* List view */}
         {!pair && (
           <div className="rejected-list">
-            {rejectedPairs.map((r, i) => {
+            {rejectedPairs.map((r) => {
               const origIdx = allPairs.indexOf(r);
               return (
                 <button key={origIdx} className="rejected-list-item"
@@ -359,104 +397,6 @@ function RejectedDetail({ pair, labels, uVertices, example, freeLabels, uLabels,
   );
 }
 
-/* ── Animated Matrix (legacy, now unused — kept for reference) ── */
-
-/**
- * AnimatedMatrix — rows are positioned absolutely and animate their Y position
- * when σ shuffles them, creating a "moving cards" effect.
- *
- * Instead of rendering a table, we render a column header row + individual
- * row cards. Each card has a stable React key (the U-vertex index it represents)
- * and its `top` position is computed from the current stage's row ordering.
- */
-function AnimatedMatrix({ stage, stageIdx, labels, uVertices, freeLabels, isValid, uLabels }) {
-  const { matrix, colOrder, rowPerm, movedRows, movedCols, colPerm } = stage;
-  const numCols = colOrder.length;
-  const ROW_H = 38;
-  const HEADER_H = 32;
-  const COL_W = 70;
-  const LABEL_W = 90;
-  const numRows = matrix.length;
-  const containerH = HEADER_H + numRows * ROW_H + 8;
-  const containerW = LABEL_W + numCols * COL_W;
-
-  // Row positions: positionOf[uVertexIdx] = visualRow
-  const positionOf = {};
-  rowPerm.forEach((uIdx, visualRow) => { positionOf[uIdx] = visualRow; });
-
-  const identity = Array.from({ length: numRows }, (_, i) => i);
-  const movedUIndices = new Set();
-  rowPerm.forEach((uIdx, k) => { if (uIdx !== k) movedUIndices.add(uIdx); });
-
-  // Column positions: if colPerm exists, columns animate to new X positions
-  // colPerm[origIdx] = targetIdx (where does orig column move to?)
-  const colPositions = colOrder.map((_, ci) => {
-    if (colPerm) return colPerm[ci]; // animated target
-    return ci; // identity
-  });
-
-  return (
-    <div className="anim-matrix-wrap">
-      <div className="anim-matrix-label">{STAGE_LABELS[stageIdx]}</div>
-      <div className="card-matrix" style={{ height: containerH, width: containerW }}>
-        {/* Column headers — FIXED positions (labels are the coordinate system) */}
-        {colOrder.map((lbl, ci) => {
-          const isMoved = movedCols.has(ci);
-          return (
-            <div key={`hdr-${lbl}`}
-              className={`card-col-header-abs ${isMoved ? 'col-moved' : ''} ${freeLabels.has(lbl) ? 'col-v' : 'col-w'}`}
-              style={{
-                transform: `translateX(${LABEL_W + ci * COL_W}px)`,
-                width: COL_W,
-                height: HEADER_H,
-              }}>
-              {lbl}
-            </div>
-          );
-        })}
-
-        {/* Row cards */}
-        {identity.map(uIdx => {
-          const visualRow = positionOf[uIdx];
-          const u = uVertices[uIdx];
-          const lblStr = [...u.labels].sort().join(',');
-          const isMoved = movedUIndices.has(uIdx);
-          const rowData = matrix[visualRow];
-
-          return (
-            <div key={uIdx}
-              className={`card-row ${isMoved ? 'card-row-moved' : ''}`}
-              style={{
-                transform: `translateY(${HEADER_H + visualRow * ROW_H}px)`,
-                height: ROW_H,
-              }}>
-              <div className="card-row-label" style={{ width: LABEL_W }}>
-                {uLabels?.[uIdx] || `Op${u.opIdx}·${lblStr}`}
-              </div>
-              {/* Cells — each positioned absolutely for column animation */}
-              {rowData.map((val, ci) => {
-                const xPos = colPositions[ci];
-                const isCellMoved = movedCols.has(ci);
-                return (
-                  <div key={`${uIdx}-${ci}`}
-                    className={`card-cell-abs ${val > 0 ? 'cell-active' : ''} ${isCellMoved ? 'cell-col-moved' : ''}`}
-                    style={{
-                      transform: `translateX(${LABEL_W + xPos * COL_W}px)`,
-                      width: COL_W,
-                      height: ROW_H,
-                    }}>
-                    {val}
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
 /* ── Compute stage data ── */
 
 function computeStages(result, originalMatrix, labels, uVertices) {
@@ -518,17 +458,10 @@ function computeStages(result, originalMatrix, labels, uVertices) {
   const piInv = {};
   Object.entries(result.pi).forEach(([k, v]) => { piInv[v] = k; });
 
-  const piSigmaMatrix = result.sigmaMatrix.map(row => {
-    return labels.map(lbl => {
-      const srcLbl = piInv[lbl] || lbl;
-      return row[colIdxMap[srcLbl]];
-    });
-  });
-
   // colPerm: where does each column's DATA card slide to?
   // π maps label c → π(c). The data that was under column c slides to column π(c).
   // colPerm[origColIdx] = targetColIdx
-  const colPerm = labels.map((lbl, i) => {
+  const colPerm = labels.map((lbl) => {
     const target = result.pi[lbl] || lbl;
     return colIdxMap[target];
   });

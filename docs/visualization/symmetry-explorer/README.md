@@ -1,16 +1,66 @@
-# React + Vite
+# Symmetry Explorer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interactive React/Vite explorer for understanding `einsum` symmetry detection, full-label `π` mappings, Burnside evaluation counting, and orbit-projected reduction cost.
 
-Currently, two official plugins are available:
+## Development
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+cd /Users/mohanty/.codex/worktrees/0775/whest/docs/visualization/symmetry-explorer
+npm install
+npm run dev -- --host 127.0.0.1
+```
 
-## React Compiler
+Open [http://127.0.0.1:5173/](http://127.0.0.1:5173/).
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Test and verify
 
-## Expanding the ESLint configuration
+```bash
+cd /Users/mohanty/.codex/worktrees/0775/whest/docs/visualization/symmetry-explorer
+npm run test
+npm run verify
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+`npm run verify` runs:
+
+- ESLint across the explorer source
+- the Node-based engine and teaching-model tests
+- a production Vite build
+
+## Visual smoke check
+
+```bash
+cd /Users/mohanty/.codex/worktrees/0775/whest/docs/visualization/symmetry-explorer
+npm run dev -- --host 127.0.0.1
+npx playwright screenshot http://127.0.0.1:5173 /tmp/symmetry-explorer.png
+```
+
+When checking the UI, verify:
+
+- the pseudocode rail stays visible while scrolling
+- the `σ`/`π` step surfaces `cross`, `V-only`, `W-only`, and `correlated` behavior
+- Group Construction treats the full group on active labels as the primary object
+- Burnside is framed as evaluation cost
+- the cost section explains reduction cost through orbit-projected output updates
+
+## Explorer model
+
+The explorer now teaches the cost model directly through:
+
+```python
+evaluation_cost = 0
+reduction_cost = 0
+
+for rep in RepSet:
+    base_val = product_of_operand_entries_at(rep)
+    evaluation_cost += max(num_terms - 1, 0)
+
+    for out in Outs(rep):
+        R[out] += coeff(rep, out) * base_val
+        reduction_cost += 1
+```
+
+with:
+
+- `RepSet`: one representative from each full symmetry orbit
+- `Outs(rep)`: distinct output bins reached by that orbit
+- `coeff(rep, out)`: multiplicity of dense tuples in that orbit landing in that output bin

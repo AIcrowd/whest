@@ -1,7 +1,7 @@
 import IncidenceMatrix from './IncidenceMatrix.jsx';
 
 export default function MatrixView({ matrixData, graph, example, variableColors }) {
-  const { matrix, labels, colFingerprints, fpToLabels } = matrixData;
+  const { matrix, labels, fpToLabels } = matrixData;
   const { uVertices, freeLabels } = graph;
 
   // Check if any fingerprints are equivalent
