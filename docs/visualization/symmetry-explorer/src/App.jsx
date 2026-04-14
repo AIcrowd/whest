@@ -1,5 +1,6 @@
 import { useState, useMemo, useCallback } from 'react';
 import { EXAMPLES } from './data/examples.js';
+import { parseCycleNotation } from './engine/cycleParser.js';
 import {
   buildBipartite, buildIncidenceMatrix, runSigmaLoop,
   buildGroup, computeBurnside, computeCostReduction,
@@ -25,14 +26,52 @@ const STEPS = [
 
 const CUSTOM_IDX = -1;
 
+/**
+ * Convert the new preset format (with `variables` and `expression` fields)
+ * to the algorithm-compatible format (with top-level `subscripts`, `output`,
+ * `operandNames`, `perOpSymmetry`).
+ */
+function normalizeExample(example) {
+  // Already normalized (from onCustomExample callback)
+  if (Array.isArray(example.subscripts)) return example;
+  // Convert new preset format
+  const { expression, variables } = example;
+  if (!expression) return example;
+  const subsArr = expression.subscripts.split(',').map(s => s.trim());
+  const opsArr = expression.operandNames.split(',').map(s => s.trim());
+  const perOpSymmetry = opsArr.map(opName => {
+    const v = variables.find(v => v.name === opName);
+    if (!v || v.symmetry === 'none') return null;
+    const axes = v.symAxes || [...Array(v.rank).keys()];
+    if (v.symmetry === 'symmetric' && axes.length === v.rank) return 'symmetric';
+    if (v.symmetry === 'custom' && v.generators) {
+      const { generators } = parseCycleNotation(v.generators);
+      return { type: 'custom', axes, generators };
+    }
+    return { type: v.symmetry, axes };
+  });
+  const hasAnySym = perOpSymmetry.some(s => s !== null);
+  return {
+    ...example,
+    subscripts: subsArr,
+    output: expression.output,
+    operandNames: opsArr,
+    perOpSymmetry: hasAnySym ? perOpSymmetry : null,
+  };
+}
+
 export default function App() {
   const [exampleIdx, setExampleIdx] = useState(0);
   const [customExample, setCustomExample] = useState(null);
   const [dimensionN, setDimensionN] = useState(5);
+  const [variableColors, setVariableColors] = useState({});
 
   // Resolve the active example: preset or custom
   const isCustom = exampleIdx === CUSTOM_IDX;
   const example = isCustom ? customExample : EXAMPLES[exampleIdx];
+
+  // Normalize the example for algorithm consumption
+  const normalizedExample = useMemo(() => example ? normalizeExample(example) : null, [example]);
 
   // Handle preset selection
   const handleSelect = useCallback((idx) => {
@@ -40,25 +79,26 @@ export default function App() {
   }, []);
 
   // Handle custom example submission
-  const handleCustomExample = useCallback((ex) => {
+  const handleCustomExample = useCallback((ex, colors) => {
     setCustomExample(ex);
+    setVariableColors(colors || {});
     setExampleIdx(CUSTOM_IDX);
   }, []);
 
   // Run the full algorithm pipeline
   const pipeline = useMemo(() => {
-    if (!example) return null;
+    if (!normalizedExample) return null;
     try {
-      const graph = buildBipartite(example);
+      const graph = buildBipartite(normalizedExample);
       const matrixData = buildIncidenceMatrix(graph);
       const sigmaResults = runSigmaLoop(graph, matrixData);
-      const group = buildGroup(sigmaResults, graph, example);
+      const group = buildGroup(sigmaResults, graph, normalizedExample);
       return { graph, matrixData, sigmaResults, group };
     } catch (err) {
       console.error('Pipeline error:', err);
       return null;
     }
-  }, [example]);
+  }, [normalizedExample]);
 
   const { graph, matrixData, sigmaResults, group } = pipeline || {};
 
@@ -67,16 +107,16 @@ export default function App() {
     [group, dimensionN]
   );
 
-  const numTerms = example?.subscripts?.length || 2;
+  const numTerms = normalizedExample?.subscripts?.length || 2;
   const cost = useMemo(
     () => (burnside && group) ? computeCostReduction(burnside, group, numTerms) : null,
     [burnside, group, numTerms]
   );
 
   // Check if per-op symmetry is active for any operand
-  const hasPerOpSym = example && (
-    example.perOpSymmetry === 'symmetric' ||
-    (Array.isArray(example.perOpSymmetry) && example.perOpSymmetry.some(s => s === 'symmetric'))
+  const hasPerOpSym = normalizedExample && (
+    normalizedExample.perOpSymmetry === 'symmetric' ||
+    (Array.isArray(normalizedExample.perOpSymmetry) && normalizedExample.perOpSymmetry.some(s => s === 'symmetric' || (s && typeof s === 'object')))
   );
 
   return (
@@ -96,7 +136,7 @@ export default function App() {
       </nav>
 
       <main className="main">
-        {/* ── Prominent einsum banner ── */}
+        {/* -- Prominent einsum banner -- */}
         {example && group && (
           <div className="einsum-banner">
             <span className="einsum-label">einsum</span>
@@ -137,16 +177,16 @@ export default function App() {
                   <> Per-operand symmetry <em>collapses</em> each operand's axes into a single U-vertex.</>
                 )}
               </p>
-              <BipartiteGraph graph={graph} example={example} />
+              <BipartiteGraph graph={graph} example={normalizedExample} variableColors={variableColors} />
             </section>
 
             <section id="matrix" className="section">
               <SectionHeader num={3} title="Incidence Matrix M" />
               <p className="section-desc">
-                Each cell M[u, ℓ] is the multiplicity of label ℓ in axis-class u.
+                Each cell M[u, l] is the multiplicity of label l in axis-class u.
                 Column fingerprints (reading down each column) identify structurally equivalent labels.
               </p>
-              <MatrixView matrixData={matrixData} graph={graph} example={example} />
+              <MatrixView matrixData={matrixData} graph={graph} example={normalizedExample} variableColors={variableColors} />
             </section>
 
             <section id="sigma" className="section">
@@ -161,7 +201,7 @@ export default function App() {
                 results={sigmaResults}
                 graph={graph}
                 matrixData={matrixData}
-                example={example}
+                example={normalizedExample}
               />
             </section>
 
@@ -171,7 +211,7 @@ export default function App() {
                 Collected π's are generators. Dimino's algorithm enumerates all group elements
                 by composing generators until closure.
               </p>
-              <GroupView group={group} sigmaResults={sigmaResults} graph={graph} example={example} />
+              <GroupView group={group} sigmaResults={sigmaResults} graph={graph} example={normalizedExample} />
             </section>
 
             <section id="burnside" className="section">
@@ -192,7 +232,7 @@ export default function App() {
               <p className="section-desc">
                 The FLOP cost is reduced by the ratio of unique to total elements.
               </p>
-              <CostView cost={cost} numOperands={example?.subscripts?.length || 0} />
+              <CostView cost={cost} numOperands={normalizedExample?.subscripts?.length || 0} />
             </section>
           </>
         )}
