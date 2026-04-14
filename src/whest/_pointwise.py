@@ -271,6 +271,7 @@ absolute = _counted_unary(_np.absolute, "absolute")
 acos = _counted_unary(_np.acos, "acos")
 acosh = _counted_unary(_np.acosh, "acosh")
 angle = _counted_unary(_np.angle, "angle")
+angle.__signature__ = _inspect.signature(_np.angle)
 arccos = _counted_unary(_np.arccos, "arccos")
 arccosh = _counted_unary(_np.arccosh, "arccosh")
 arcsin = _counted_unary(_np.arcsin, "arcsin")
@@ -327,24 +328,31 @@ exp2 = _counted_unary(_np.exp2, "exp2")
 expm1 = _counted_unary(_np.expm1, "expm1")
 fabs = _counted_unary(_np.fabs, "fabs")
 fix = _counted_unary(_np.fix, "fix")
+fix.__signature__ = _inspect.signature(_np.fix)
 i0 = _counted_unary(_np.i0, "i0")
 imag = _counted_unary(_np.imag, "imag")
+imag.__signature__ = _inspect.signature(_np.imag)
 invert = _counted_unary(_np.invert, "invert")
 iscomplex = _counted_unary(_np.iscomplex, "iscomplex")
 iscomplexobj = _counted_unary(_np.iscomplexobj, "iscomplexobj")
 isnat = _counted_unary(_np.isnat, "isnat")
 isneginf = _counted_unary(_np.isneginf, "isneginf")
+isneginf.__signature__ = _inspect.signature(_np.isneginf)
 isposinf = _counted_unary(_np.isposinf, "isposinf")
+isposinf.__signature__ = _inspect.signature(_np.isposinf)
 isreal = _counted_unary(_np.isreal, "isreal")
 isrealobj = _counted_unary(_np.isrealobj, "isrealobj")
 log1p = _counted_unary(_np.log1p, "log1p")
 logical_not = _counted_unary(_np.logical_not, "logical_not")
 nan_to_num = _counted_unary(_np.nan_to_num, "nan_to_num")
+nan_to_num.__signature__ = _inspect.signature(_np.nan_to_num)
 positive = _counted_unary(_np.positive, "positive")
 rad2deg = _counted_unary(_np.rad2deg, "rad2deg")
 radians = _counted_unary(_np.radians, "radians")
 real = _counted_unary(_np.real, "real")
+real.__signature__ = _inspect.signature(_np.real)
 real_if_close = _counted_unary(_np.real_if_close, "real_if_close")
+real_if_close.__signature__ = _inspect.signature(_np.real_if_close)
 reciprocal = _counted_unary(_np.reciprocal, "reciprocal")
 rint = _counted_unary(_np.rint, "rint")
 
@@ -426,6 +434,7 @@ def isclose(a, b, **kwargs):
 
 
 attach_docstring(isclose, _np.isclose, "counted_unary", "numel(output) FLOPs")
+isclose.__signature__ = _inspect.signature(_np.isclose)
 
 
 # ---------------------------------------------------------------------------
@@ -599,6 +608,7 @@ def clip(a, a_min=None, a_max=None, out=None, **kwargs):
 
 
 attach_docstring(clip, _np.clip, "counted_custom", "numel(input) FLOPs")
+clip.__signature__ = _inspect.signature(_np.clip)
 
 
 # ---------------------------------------------------------------------------
@@ -873,6 +883,7 @@ def cross(a, b, **kwargs):
 
 
 attach_docstring(cross, _np.cross, "counted_custom", "output_size * 3 FLOPs")
+cross.__signature__ = _inspect.signature(_np.cross)
 
 
 def diff(a, n=1, axis=-1, **kwargs):
@@ -891,6 +902,7 @@ def diff(a, n=1, axis=-1, **kwargs):
 
 
 attach_docstring(diff, _np.diff, "counted_custom", "numel(output) FLOPs")
+diff.__signature__ = _inspect.signature(_np.diff)
 
 
 def gradient(f, *varargs, **kwargs):
@@ -903,6 +915,7 @@ def gradient(f, *varargs, **kwargs):
 
 
 attach_docstring(gradient, _np.gradient, "counted_custom", "numel(input) FLOPs")
+gradient.__signature__ = _inspect.signature(_np.gradient)
 
 
 def ediff1d(ary, **kwargs):
@@ -921,6 +934,7 @@ def ediff1d(ary, **kwargs):
 
 
 attach_docstring(ediff1d, _np.ediff1d, "counted_custom", "numel(output) FLOPs")
+ediff1d.__signature__ = _inspect.signature(_np.ediff1d)
 
 
 def convolve(a, v, mode="full"):
@@ -993,6 +1007,7 @@ def corrcoef(x, y=None, **kwargs):
 
 
 attach_docstring(corrcoef, _np.corrcoef, "counted_custom", r"$2 f^2 s$ FLOPs")
+corrcoef.__signature__ = _inspect.signature(_np.corrcoef)
 
 
 def cov(m, y=None, **kwargs):
@@ -1006,6 +1021,7 @@ def cov(m, y=None, **kwargs):
 
 
 attach_docstring(cov, _np.cov, "counted_custom", r"$2 f^2 s$ FLOPs")
+cov.__signature__ = _inspect.signature(_np.cov)
 
 
 def trapezoid(y, x=None, dx=1.0, axis=-1):
@@ -1048,3 +1064,4 @@ def interp(x, xp, fp, **kwargs):
 
 
 attach_docstring(interp, _np.interp, "counted_custom", "n * ceil(log2(xp)) FLOPs")
+interp.__signature__ = _inspect.signature(_np.interp)

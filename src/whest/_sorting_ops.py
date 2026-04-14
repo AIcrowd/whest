@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import inspect as _inspect
+
 import numpy as _np
 
 from whest._docstrings import attach_docstring
@@ -45,6 +47,7 @@ def sort(a, axis=-1, **kwargs):
 
 
 attach_docstring(sort, _np.sort, "counted_custom", "n*ceil(log2(n)) FLOPs per slice")
+sort.__signature__ = _inspect.signature(_np.sort)
 
 
 def argsort(a, axis=-1, **kwargs):
@@ -66,6 +69,7 @@ def argsort(a, axis=-1, **kwargs):
 attach_docstring(
     argsort, _np.argsort, "counted_custom", "n*ceil(log2(n)) FLOPs per slice"
 )
+argsort.__signature__ = _inspect.signature(_np.argsort)
 
 
 def lexsort(keys, axis=-1):
@@ -117,6 +121,7 @@ def partition(a, kth, axis=-1, **kwargs):
 attach_docstring(
     partition, _np.partition, "counted_custom", "n FLOPs per slice (linear quickselect)"
 )
+partition.__signature__ = _inspect.signature(_np.partition)
 
 
 def argpartition(a, kth, axis=-1, **kwargs):
@@ -147,6 +152,7 @@ attach_docstring(
     "counted_custom",
     "n FLOPs per slice (linear quickselect)",
 )
+argpartition.__signature__ = _inspect.signature(_np.argpartition)
 
 
 # ---------------------------------------------------------------------------
@@ -181,6 +187,7 @@ attach_docstring(
     "counted_custom",
     "m*ceil(log2(n)) FLOPs (m queries into sorted array of size n)",
 )
+searchsorted.__signature__ = _inspect.signature(_np.searchsorted)
 
 
 def digitize(x, bins, **kwargs):
@@ -208,6 +215,7 @@ attach_docstring(
     "counted_custom",
     "n*ceil(log2(len(bins))) FLOPs",
 )
+digitize.__signature__ = _inspect.signature(_np.digitize)
 
 
 # ---------------------------------------------------------------------------
@@ -233,6 +241,7 @@ def unique(ar, **kwargs):
 
 
 attach_docstring(unique, _np.unique, "counted_custom", "n*ceil(log2(n)) FLOPs")
+unique.__signature__ = _inspect.signature(_np.unique)
 
 
 def unique_all(x, /):
@@ -319,6 +328,7 @@ def in1d(ar1, ar2, **kwargs):
 
 
 attach_docstring(in1d, _np.in1d, "counted_custom", "(n+m)*ceil(log2(n+m)) FLOPs")
+in1d.__signature__ = _inspect.signature(_np.in1d)
 
 
 def isin(element, test_elements, **kwargs):
@@ -332,6 +342,7 @@ def isin(element, test_elements, **kwargs):
 
 
 attach_docstring(isin, _np.isin, "counted_custom", "(n+m)*ceil(log2(n+m)) FLOPs")
+isin.__signature__ = _inspect.signature(_np.isin)
 
 
 def intersect1d(ar1, ar2, **kwargs):
@@ -349,6 +360,7 @@ def intersect1d(ar1, ar2, **kwargs):
 attach_docstring(
     intersect1d, _np.intersect1d, "counted_custom", "(n+m)*ceil(log2(n+m)) FLOPs"
 )
+intersect1d.__signature__ = _inspect.signature(_np.intersect1d)
 
 
 def union1d(ar1, ar2):
@@ -381,6 +393,7 @@ def setdiff1d(ar1, ar2, **kwargs):
 attach_docstring(
     setdiff1d, _np.setdiff1d, "counted_custom", "(n+m)*ceil(log2(n+m)) FLOPs"
 )
+setdiff1d.__signature__ = _inspect.signature(_np.setdiff1d)
 
 
 def setxor1d(ar1, ar2, **kwargs):
@@ -398,6 +411,7 @@ def setxor1d(ar1, ar2, **kwargs):
 attach_docstring(
     setxor1d, _np.setxor1d, "counted_custom", "(n+m)*ceil(log2(n+m)) FLOPs"
 )
+setxor1d.__signature__ = _inspect.signature(_np.setxor1d)
 
 import sys as _sys  # noqa: E402
 

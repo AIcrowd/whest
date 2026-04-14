@@ -7,6 +7,8 @@ outside a :class:`~whest._budget.BudgetContext`.
 
 from __future__ import annotations
 
+import inspect as _inspect
+
 import numpy as _np
 
 from whest._docstrings import attach_docstring
@@ -1487,5 +1489,123 @@ _FREE_OPS_SKIP = {
 }
 
 import sys as _sys  # noqa: E402
+
+# ---------------------------------------------------------------------------
+# Signature conformance: set __signature__ to match numpy exactly
+# ---------------------------------------------------------------------------
+_this_module = _sys.modules[__name__]
+
+def _set_sig(func_name, np_func):
+    """Set __signature__ of a module-level function to match numpy."""
+    fn = globals().get(func_name)
+    if fn is not None and callable(np_func):
+        try:
+            fn.__signature__ = _inspect.signature(np_func)
+        except (ValueError, TypeError):
+            pass
+
+# Functions with *args/**kwargs that need numpy's signature
+_set_sig("arange", _np.arange)
+_set_sig("array", _np.array)
+_set_sig("zeros", _np.zeros)
+_set_sig("ones", _np.ones)
+_set_sig("full", _np.full)
+_set_sig("eye", _np.eye)
+_set_sig("linspace", _np.linspace)
+_set_sig("zeros_like", _np.zeros_like)
+_set_sig("ones_like", _np.ones_like)
+_set_sig("full_like", _np.full_like)
+_set_sig("empty", _np.empty)
+_set_sig("empty_like", _np.empty_like)
+_set_sig("identity", _np.identity)
+_set_sig("reshape", _np.reshape)
+_set_sig("concatenate", _np.concatenate)
+_set_sig("stack", _np.stack)
+_set_sig("vstack", _np.vstack)
+_set_sig("hstack", _np.hstack)
+_set_sig("ravel", _np.ravel)
+_set_sig("copy", _np.copy)
+_set_sig("pad", _np.pad)
+_set_sig("broadcast_to", _np.broadcast_to)
+_set_sig("meshgrid", _np.meshgrid)
+_set_sig("asarray", _np.asarray)
+_set_sig("astype", _np.astype)
+_set_sig("append", _np.append)
+_set_sig("argwhere", _np.argwhere)
+_set_sig("array_split", _np.array_split)
+_set_sig("asarray_chkfinite", _np.asarray_chkfinite)
+_set_sig("atleast_1d", _np.atleast_1d)
+_set_sig("atleast_2d", _np.atleast_2d)
+_set_sig("atleast_3d", _np.atleast_3d)
+_set_sig("base_repr", _np.base_repr)
+_set_sig("binary_repr", _np.binary_repr)
+_set_sig("block", _np.block)
+_set_sig("bmat", _np.bmat)
+_set_sig("broadcast_arrays", _np.broadcast_arrays)
+_set_sig("broadcast_shapes", _np.broadcast_shapes)
+_set_sig("can_cast", _np.can_cast)
+_set_sig("choose", _np.choose)
+_set_sig("column_stack", _np.column_stack)
+_set_sig("common_type", _np.common_type)
+_set_sig("compress", _np.compress)
+_set_sig("concat", _np.concat)
+_set_sig("delete", _np.delete)
+_set_sig("diag_indices", _np.diag_indices)
+_set_sig("diag_indices_from", _np.diag_indices_from)
+_set_sig("dsplit", _np.dsplit)
+_set_sig("dstack", _np.dstack)
+_set_sig("extract", _np.extract)
+_set_sig("flatnonzero", _np.flatnonzero)
+_set_sig("fliplr", _np.fliplr)
+_set_sig("flipud", _np.flipud)
+_set_sig("from_dlpack", _np.from_dlpack)
+_set_sig("frombuffer", _np.frombuffer)
+_set_sig("fromfile", _np.fromfile)
+_set_sig("fromfunction", _np.fromfunction)
+_set_sig("fromiter", _np.fromiter)
+_set_sig("fromregex", _np.fromregex)
+_set_sig("fromstring", _np.fromstring)
+_set_sig("indices", _np.indices)
+_set_sig("insert", _np.insert)
+_set_sig("isdtype", _np.isdtype)
+_set_sig("isfortran", _np.isfortran)
+_set_sig("isin", _np.isin)
+_set_sig("isnan", _np.isnan)
+_set_sig("isfinite", _np.isfinite)
+_set_sig("isinf", _np.isinf)
+_set_sig("isscalar", _np.isscalar)
+_set_sig("issubdtype", _np.issubdtype)
+_set_sig("iterable", _np.iterable)
+_set_sig("ix_", _np.ix_)
+_set_sig("mask_indices", _np.mask_indices)
+_set_sig("matrix_transpose", _np.matrix_transpose)
+_set_sig("may_share_memory", _np.may_share_memory)
+_set_sig("min_scalar_type", _np.min_scalar_type)
+_set_sig("mintypecode", _np.mintypecode)
+_set_sig("ndim", _np.ndim)
+_set_sig("nonzero", _np.nonzero)
+_set_sig("permute_dims", _np.permute_dims)
+_set_sig("put", _np.put)
+_set_sig("require", _np.require)
+_set_sig("resize", _np.resize)
+_set_sig("rollaxis", _np.rollaxis)
+_set_sig("rot90", _np.rot90)
+_set_sig("row_stack", _np.row_stack)
+_set_sig("shape", _np.shape)
+_set_sig("size", _np.size)
+_set_sig("take", _np.take)
+_set_sig("take_along_axis", _np.take_along_axis)
+_set_sig("tri", _np.tri)
+_set_sig("tril_indices", _np.tril_indices)
+_set_sig("tril_indices_from", _np.tril_indices_from)
+_set_sig("trim_zeros", _np.trim_zeros)
+_set_sig("triu_indices", _np.triu_indices)
+_set_sig("triu_indices_from", _np.triu_indices_from)
+_set_sig("typename", _np.typename)
+_set_sig("unravel_index", _np.unravel_index)
+if hasattr(_np, "unstack"):
+    _set_sig("unstack", _np.unstack)
+
+del _set_sig, _this_module
 
 _wrap_module_returns(_sys.modules[__name__], skip_names=_FREE_OPS_SKIP)

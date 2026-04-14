@@ -7,6 +7,7 @@ Each function charges a FLOP cost to the active budget.
 from __future__ import annotations
 
 import builtins as _builtins
+import inspect as _inspect
 
 import numpy as _np
 
@@ -19,12 +20,12 @@ from whest._validation import require_budget
 # ---------------------------------------------------------------------------
 
 
-def trace(a, offset=0, axis1=0, axis2=1, dtype=None):
+def trace(a, offset=0, axis1=0, axis2=1, dtype=None, out=None):
     budget = require_budget()
     a = _np.asarray(a)
     cost = _builtins.max(_builtins.min(a.shape[axis1], a.shape[axis2]), 1)
     budget.deduct("trace", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.trace(a, offset=offset, axis1=axis1, axis2=axis2, dtype=dtype)
+    return _np.trace(a, offset=offset, axis1=axis1, axis2=axis2, dtype=dtype, out=out)
 
 
 attach_docstring(
@@ -48,6 +49,7 @@ def allclose(a, b, **kwargs):
 
 
 attach_docstring(allclose, _np.allclose, "counted_custom", "numel(a) FLOPs")
+allclose.__signature__ = _inspect.signature(_np.allclose)
 
 
 def array_equal(a, b, **kwargs):
@@ -63,6 +65,7 @@ def array_equal(a, b, **kwargs):
 
 
 attach_docstring(array_equal, _np.array_equal, "counted_custom", "numel(a) FLOPs")
+array_equal.__signature__ = _inspect.signature(_np.array_equal)
 
 
 def array_equiv(a, b):
@@ -85,6 +88,7 @@ def array_equiv(a, b):
 
 
 attach_docstring(array_equiv, _np.array_equiv, "counted_custom", "numel(a) FLOPs")
+array_equiv.__signature__ = _inspect.signature(_np.array_equiv)
 
 
 # ---------------------------------------------------------------------------
@@ -113,6 +117,7 @@ attach_docstring(
     "counted_custom",
     "n * ceil(log2(bins)) FLOPs when bins is int; n FLOPs otherwise",
 )
+histogram.__signature__ = _inspect.signature(_np.histogram)
 
 
 def histogram2d(x, y, bins=10, **kwargs):
@@ -156,6 +161,7 @@ attach_docstring(
     "counted_custom",
     "n * (ceil(log2(bx)) + ceil(log2(by))) FLOPs when bins is int pair; n FLOPs otherwise",
 )
+histogram2d.__signature__ = _inspect.signature(_np.histogram2d)
 
 
 def histogramdd(sample, bins=10, **kwargs):
@@ -197,6 +203,7 @@ attach_docstring(
     "counted_custom",
     "n * d * ceil(log2(bins)) FLOPs when bins is int; n FLOPs otherwise",
 )
+histogramdd.__signature__ = _inspect.signature(_np.histogramdd)
 
 
 def histogram_bin_edges(a, bins=10, **kwargs):
@@ -212,6 +219,7 @@ def histogram_bin_edges(a, bins=10, **kwargs):
 attach_docstring(
     histogram_bin_edges, _np.histogram_bin_edges, "counted_custom", "numel(a) FLOPs"
 )
+histogram_bin_edges.__signature__ = _inspect.signature(_np.histogram_bin_edges)
 
 
 def bincount(x, **kwargs):
@@ -223,6 +231,10 @@ def bincount(x, **kwargs):
 
 
 attach_docstring(bincount, _np.bincount, "counted_custom", "numel(x) FLOPs")
+try:
+    bincount.__signature__ = _inspect.signature(_np.bincount)
+except (ValueError, TypeError):
+    pass
 
 
 # ---------------------------------------------------------------------------
@@ -238,6 +250,7 @@ def logspace(start, stop, num=50, **kwargs):
 
 
 attach_docstring(logspace, _np.logspace, "counted_custom", "num FLOPs")
+logspace.__signature__ = _inspect.signature(_np.logspace)
 
 
 def geomspace(start, stop, num=50, **kwargs):
@@ -248,6 +261,7 @@ def geomspace(start, stop, num=50, **kwargs):
 
 
 attach_docstring(geomspace, _np.geomspace, "counted_custom", "num FLOPs")
+geomspace.__signature__ = _inspect.signature(_np.geomspace)
 
 
 def vander(x, N=None, **kwargs):
@@ -262,6 +276,7 @@ def vander(x, N=None, **kwargs):
 
 
 attach_docstring(vander, _np.vander, "counted_custom", "len(x) * (N-1) FLOPs")
+vander.__signature__ = _inspect.signature(_np.vander)
 
 # ---------------------------------------------------------------------------
 # Apply & piecewise (formerly blacklisted)

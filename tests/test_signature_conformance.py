@@ -14,7 +14,7 @@ import whest as we
 
 # Whest-only keyword extensions that numpy doesn't have
 ALLOWED_EXTRA_PARAMS = {
-    "einsum": {"symmetric_axes", "symmetry"},
+    "einsum": {"symmetric_axes", "symmetry", "subscripts"},
     "linalg.svd": {"k"},
     "linalg.svdvals": {"k"},
 }

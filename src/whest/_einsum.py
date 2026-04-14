@@ -43,6 +43,7 @@ def _execute_pairwise(path_info, operands: list):
 def einsum(
     subscripts: str,
     *operands: _np.ndarray,
+    out=None,
     optimize: str | bool | list = "auto",
     symmetric_axes: list[tuple[int, ...]] | None = None,
     symmetry: PermutationGroup | list[PermutationGroup] | None = None,  # NEW
@@ -157,6 +158,11 @@ def einsum(
 
     # Execute pairwise steps
     result = _execute_pairwise(path_info, list(operands))
+
+    # Handle out= parameter
+    if out is not None:
+        _np.copyto(out, result)
+        result = out
 
     # Handle output symmetry wrapping
     if symmetry is not None and isinstance(result, _np.ndarray) and result.ndim >= 2:
