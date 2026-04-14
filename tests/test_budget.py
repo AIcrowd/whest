@@ -339,6 +339,57 @@ def test_thread_isolation_time_tracking():
     assert results["slow"] >= 0.05
 
 
+def test_pointwise_ops_have_duration():
+    """Pointwise factory ops (add, exp, sum) must record duration."""
+    import whest
+
+    with whest.BudgetContext(flop_budget=int(1e12)) as b:
+        a = whest.ones((100,))
+        _ = whest.add(a, a)
+        _ = whest.exp(a)
+        _ = whest.sum(a)
+
+    for rec in b.op_log:
+        if rec.op_name in ("add", "exp", "sum"):
+            assert rec.duration is not None, f"{rec.op_name} missing duration"
+            assert rec.duration >= 0, f"{rec.op_name} has negative duration"
+
+
+def test_linalg_ops_have_duration():
+    """Linalg ops must record duration."""
+    import whest
+
+    with whest.BudgetContext(flop_budget=int(1e12)) as b:
+        A = whest.array([[1.0, 2.0], [3.0, 4.0]])
+        _ = whest.linalg.det(A)
+        _ = whest.linalg.solve(A, whest.array([1.0, 2.0]))
+        _ = whest.linalg.svd(A)
+        _ = whest.linalg.cholesky(A @ A.T + 2 * whest.eye(2))
+
+    linalg_records = [r for r in b.op_log if r.op_name.startswith("linalg.")]
+    assert len(linalg_records) >= 4
+    for rec in linalg_records:
+        assert rec.duration is not None, f"{rec.op_name} missing duration"
+        assert rec.duration >= 0, f"{rec.op_name} has negative duration"
+
+
+def test_counting_ops_have_duration():
+    """Counting ops (trace, histogram, bincount, etc.) must record duration."""
+    import whest
+
+    with whest.BudgetContext(flop_budget=int(1e12)) as b:
+        a = whest.array([1.0, 2.0, 3.0, 4.0])
+        _ = whest.trace(whest.eye(3))
+        _ = whest.histogram(a, bins=5)
+        _ = whest.logspace(0, 1, 10)
+
+    counting_ops = {"trace", "histogram", "logspace"}
+    for rec in b.op_log:
+        if rec.op_name in counting_ops:
+            assert rec.duration is not None, f"{rec.op_name} missing duration"
+            assert rec.duration >= 0, f"{rec.op_name} has negative duration"
+
+
 def test_post_op_deadline_check():
     """_OpTimer.__exit__ raises TimeExhaustedError if deadline passed during op."""
     import time

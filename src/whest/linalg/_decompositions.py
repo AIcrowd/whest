@@ -43,8 +43,9 @@ def cholesky(a, /, *, upper=False):
     n = a.shape[-1]
     batch = _batch_size(a.shape)
     cost = cholesky_cost(n) * batch if not _has_zero_dim(a.shape) else 0
-    budget.deduct("linalg.cholesky", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.linalg.cholesky(a, upper=upper)
+    with budget.deduct("linalg.cholesky", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+        result = _np.linalg.cholesky(a, upper=upper)
+    return result
 
 
 attach_docstring(cholesky, _np.linalg.cholesky, "linalg", r"$n^3$ FLOPs")
@@ -80,8 +81,8 @@ def qr(a, mode="reduced"):
     m, n = a.shape[-2], a.shape[-1]
     batch = _batch_size(a.shape)
     cost = qr_cost(m, n) * batch if not _has_zero_dim(a.shape) else 0
-    budget.deduct("linalg.qr", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    result = _np.linalg.qr(a, mode=mode)
+    with budget.deduct("linalg.qr", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+        result = _np.linalg.qr(a, mode=mode)
     if mode in ("reduced", "complete"):
         return QRResult(*result)
     return result
@@ -118,8 +119,8 @@ def eig(a):
     n = a.shape[-1]
     batch = _batch_size(a.shape)
     cost = eig_cost(n) * batch if not _has_zero_dim(a.shape) else 0
-    budget.deduct("linalg.eig", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    result = _np.linalg.eig(a)
+    with budget.deduct("linalg.eig", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+        result = _np.linalg.eig(a)
     return EigResult(*result)
 
 
@@ -154,8 +155,8 @@ def eigh(a, UPLO="L"):
     n = a.shape[-1]
     batch = _batch_size(a.shape)
     cost = eigh_cost(n) * batch if not _has_zero_dim(a.shape) else 0
-    budget.deduct("linalg.eigh", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    result = _np.linalg.eigh(a, UPLO=UPLO)
+    with budget.deduct("linalg.eigh", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+        result = _np.linalg.eigh(a, UPLO=UPLO)
     return EighResult(_np.asarray(result.eigenvalues), _np.asarray(result.eigenvectors))
 
 
@@ -190,8 +191,9 @@ def eigvals(a):
     n = a.shape[-1]
     batch = _batch_size(a.shape)
     cost = eigvals_cost(n) * batch if not _has_zero_dim(a.shape) else 0
-    budget.deduct("linalg.eigvals", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.linalg.eigvals(a)
+    with budget.deduct("linalg.eigvals", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+        result = _np.linalg.eigvals(a)
+    return result
 
 
 attach_docstring(eigvals, _np.linalg.eigvals, "linalg", r"$n^3$ FLOPs")
@@ -225,8 +227,9 @@ def eigvalsh(a, UPLO="L"):
     n = a.shape[-1]
     batch = _batch_size(a.shape)
     cost = eigvalsh_cost(n) * batch if not _has_zero_dim(a.shape) else 0
-    budget.deduct("linalg.eigvalsh", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.linalg.eigvalsh(a, UPLO=UPLO)
+    with budget.deduct("linalg.eigvalsh", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+        result = _np.linalg.eigvalsh(a, UPLO=UPLO)
+    return result
 
 
 attach_docstring(eigvalsh, _np.linalg.eigvalsh, "linalg", r"$n^3$ FLOPs")
@@ -270,8 +273,8 @@ def svdvals(x, /, *, k: int | None = None):
     if min(m, n) > 0 and not (1 <= k <= min(m, n)):
         raise ValueError(f"k must satisfy 1 <= k <= min(m, n) = {min(m, n)}, got k={k}")
     cost = svdvals_cost(m, n, k) * batch if not _has_zero_dim(x.shape) else 0
-    budget.deduct("linalg.svdvals", flop_cost=cost, subscripts=None, shapes=(x.shape,))
-    result = _np.linalg.svdvals(x)
+    with budget.deduct("linalg.svdvals", flop_cost=cost, subscripts=None, shapes=(x.shape,)):
+        result = _np.linalg.svdvals(x)
     if k < min(m, n):
         result = result[..., :k]
     return result

@@ -59,8 +59,9 @@ def solve(a, b):
     n = a.shape[-1]
     batch = _batch_size(a.shape)
     cost = solve_cost(n) * batch if not _has_zero_dim(a.shape) else 0
-    budget.deduct("linalg.solve", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.linalg.solve(a, b)
+    with budget.deduct("linalg.solve", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+        result = _np.linalg.solve(a, b)
+    return result
 
 
 attach_docstring(solve, _np.linalg.solve, "linalg", r"$n^3$ FLOPs")
@@ -102,8 +103,8 @@ def inv(a):
     cost = (
         inv_cost(n, symmetric=is_symmetric) * batch if not _has_zero_dim(a.shape) else 0
     )
-    budget.deduct("linalg.inv", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    result = _np.linalg.inv(a)
+    with budget.deduct("linalg.inv", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+        result = _np.linalg.inv(a)
     if is_symmetric:
         result = as_symmetric(result, symmetric_axes=(0, 1))
     return result
@@ -147,8 +148,9 @@ def lstsq(a, b, rcond=None):
     m, n = a.shape[-2], a.shape[-1]
     batch = _batch_size(a.shape)
     cost = lstsq_cost(m, n) * batch if not _has_zero_dim(a.shape) else 0
-    budget.deduct("linalg.lstsq", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.linalg.lstsq(a, b, rcond=rcond)
+    with budget.deduct("linalg.lstsq", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+        result = _np.linalg.lstsq(a, b, rcond=rcond)
+    return result
 
 
 attach_docstring(
@@ -186,13 +188,14 @@ def pinv(a, rcond=None, hermitian=False, *, rtol=None):
     m, n = a.shape[-2], a.shape[-1]
     batch = _batch_size(a.shape)
     cost = pinv_cost(m, n) * batch if not _has_zero_dim(a.shape) else 0
-    budget.deduct("linalg.pinv", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     kwargs = {"hermitian": hermitian}
     if rcond is not None:
         kwargs["rcond"] = rcond
     if rtol is not None:
         kwargs["rtol"] = rtol
-    return _np.linalg.pinv(a, **kwargs)
+    with budget.deduct("linalg.pinv", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+        result = _np.linalg.pinv(a, **kwargs)
+    return result
 
 
 attach_docstring(
@@ -233,10 +236,11 @@ def tensorsolve(a, b, axes=None):
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     cost = tensorsolve_cost(a.shape)
-    budget.deduct(
+    with budget.deduct(
         "linalg.tensorsolve", flop_cost=cost, subscripts=None, shapes=(a.shape,)
-    )
-    return _np.linalg.tensorsolve(a, b, axes=axes)
+    ):
+        result = _np.linalg.tensorsolve(a, b, axes=axes)
+    return result
 
 
 attach_docstring(
@@ -278,10 +282,11 @@ def tensorinv(a, ind=2):
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     cost = tensorinv_cost(a.shape, ind=ind)
-    budget.deduct(
+    with budget.deduct(
         "linalg.tensorinv", flop_cost=cost, subscripts=None, shapes=(a.shape,)
-    )
-    return _np.linalg.tensorinv(a, ind=ind)
+    ):
+        result = _np.linalg.tensorinv(a, ind=ind)
+    return result
 
 
 attach_docstring(
