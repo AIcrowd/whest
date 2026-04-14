@@ -1,6 +1,9 @@
+import { buildUVertexLabels } from '../engine/uVertexLabel.js';
+
 export default function MatrixView({ matrixData, graph, example, variableColors }) {
   const { matrix, labels, colFingerprints, fpToLabels } = matrixData;
   const { uVertices, freeLabels } = graph;
+  const uLabels = buildUVertexLabels(uVertices, example);
 
   // Group fingerprints by value to highlight equivalent columns
   const fpColors = {};
@@ -37,12 +40,9 @@ export default function MatrixView({ matrixData, graph, example, variableColors 
                       const opName = example.operandNames?.[u.opIdx] || `Op${u.opIdx}`;
                       const vc = variableColors?.[opName];
                       return (
-                        <>
-                          <span className="op-tag" style={vc ? { color: vc.color, borderColor: `${vc.color}33` } : {}}>
-                            {opName}
-                          </span>
-                          ·{lblStr}
-                        </>
+                        <span className="op-tag" style={vc ? { color: vc.color, borderColor: `${vc.color}33` } : {}}>
+                          {uLabels[rIdx]}
+                        </span>
                       );
                     })()}
                   </td>
@@ -75,9 +75,9 @@ export default function MatrixView({ matrixData, graph, example, variableColors 
           })}
         </div>
         {Object.keys(fpColors).length > 0 ? (
-          <p className="fp-note">Labels sharing a fingerprint are structurally equivalent → fast-path S<sub>k</sub> detection.</p>
+          <p className="fp-note">Labels sharing a fingerprint are structurally equivalent — the σ-loop uses these to derive π.</p>
         ) : (
-          <p className="fp-note">All fingerprints are distinct — no fast-path equivalences. Detection requires the σ-loop.</p>
+          <p className="fp-note">All fingerprints are distinct — no equivalences among labels.</p>
         )}
       </div>
     </div>

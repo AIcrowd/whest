@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { buildUVertexLabels } from '../engine/uVertexLabel.js';
 
 const STAGE_LABELS = ['M', 'σ(M)', 'π(σ(M))'];
 
 export default function SigmaLoop({ results, graph, matrixData, example }) {
   const { uVertices, freeLabels } = graph;
+  const uLabels = buildUVertexLabels(uVertices, example);
   const labels = matrixData.labels;
   const originalMatrix = matrixData.matrix;
 
@@ -104,7 +106,7 @@ export default function SigmaLoop({ results, graph, matrixData, example }) {
             <button key={i}
               className={`pair-chip ${r.isValid ? 'pair-valid' : 'pair-invalid'} ${selectedIdx === i ? 'pair-active' : ''}`}
               onClick={() => handleSelectPair(i)}>
-              <span className="pair-sigma">σ = {fmtSigma(r.sigma)}</span>
+              <span className="pair-sigma">σ = {fmtSigma(r.sigmaRowPerm, uLabels)}</span>
               {r.isValid && <span className="pair-pi">π = {fmtPi(r.pi)}</span>}
               {!r.isValid && <span className="pair-rejected">✗</span>}
             </button>
@@ -162,6 +164,7 @@ export default function SigmaLoop({ results, graph, matrixData, example }) {
                 uVertices={uVertices}
                 freeLabels={freeLabels}
                 isValid={selected.isValid}
+                uLabels={uLabels}
               />
               {stage === 2 && selected.isValid && (
                 <div className="recovery-badge">= M ✓</div>
@@ -205,7 +208,7 @@ export default function SigmaLoop({ results, graph, matrixData, example }) {
  * row cards. Each card has a stable React key (the U-vertex index it represents)
  * and its `top` position is computed from the current stage's row ordering.
  */
-function AnimatedMatrix({ stage, stageIdx, labels, uVertices, freeLabels, isValid }) {
+function AnimatedMatrix({ stage, stageIdx, labels, uVertices, freeLabels, isValid, uLabels }) {
   const { matrix, colOrder, rowPerm, movedRows, movedCols, colPerm } = stage;
   const numCols = colOrder.length;
   const ROW_H = 38;
@@ -267,7 +270,7 @@ function AnimatedMatrix({ stage, stageIdx, labels, uVertices, freeLabels, isVali
                 height: ROW_H,
               }}>
               <div className="card-row-label" style={{ width: LABEL_W }}>
-                <span className="op-tag">Op{u.opIdx}</span>·{lblStr}
+                {uLabels?.[uIdx] || `Op${u.opIdx}·${lblStr}`}
               </div>
               {/* Cells — each positioned absolutely for column animation */}
               {rowData.map((val, ci) => {
@@ -383,41 +386,20 @@ function computeStages(result, originalMatrix, labels, uVertices) {
 
 /* ── Formatting helpers ── */
 
-function fmtSigma(sigma) {
-  // Label-level swaps (Source A/C: axis permutations within operands)
-  if (sigma._labelSwap) {
-    const ls = sigma._labelSwap;
-    const entries = Object.entries(ls).filter(([k, v]) => k !== v);
-    if (entries.length === 0) return 'e';
-    const visited = new Set();
-    const cycles = [];
-    for (const [k] of entries) {
-      if (visited.has(k)) continue;
-      const cycle = [];
-      let cur = k;
-      while (!visited.has(cur)) {
-        visited.add(cur);
-        cycle.push(cur);
-        cur = ls[cur] ?? cur;
-      }
-      if (cycle.length > 1) cycles.push(cycle);
-    }
-    return cycles.map(c => '(' + c.join(' ') + ')').join('') || 'e';
-  }
-  // Operand-level swaps (Source B)
-  const entries = Object.entries(sigma).filter(([k, v]) => Number(k) !== v);
-  if (entries.length === 0) return 'e';
+function fmtSigma(sigmaRowPerm, uLabels) {
+  if (!sigmaRowPerm) return 'e';
+  // Build cycle notation on U-vertex labels from the row permutation
+  const n = sigmaRowPerm.length;
   const visited = new Set();
   const cycles = [];
-  for (const [k] of entries) {
-    const kn = Number(k);
-    if (visited.has(kn)) continue;
+  for (let i = 0; i < n; i++) {
+    if (visited.has(i) || sigmaRowPerm[i] === i) continue;
     const cycle = [];
-    let cur = kn;
+    let cur = i;
     while (!visited.has(cur)) {
       visited.add(cur);
-      cycle.push(cur);
-      cur = sigma[cur] ?? cur;
+      cycle.push(uLabels?.[cur] ?? `r${cur}`);
+      cur = sigmaRowPerm[cur];
     }
     if (cycle.length > 1) cycles.push(cycle);
   }

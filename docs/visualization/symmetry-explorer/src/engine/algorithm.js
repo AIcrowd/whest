@@ -369,37 +369,6 @@ export function runSigmaLoop(graph, matrixData, example) {
       continue;
     }
 
-    // Build an operand-level sigma description from the row permutation.
-    // For each row k, if sigmaRowPerm[k] belongs to a different operand,
-    // record that operand mapping.
-    const sigmaDesc = {};
-    let hasOpSwap = false;
-    for (let k = 0; k < nRows; k++) {
-      const fromOp = uOperand[rowOrder[k]];
-      const toOp = uOperand[rowOrder[sigmaRowPerm[k]]];
-      if (fromOp !== toOp) {
-        sigmaDesc[fromOp] = toOp;
-        hasOpSwap = true;
-      }
-    }
-    // For axis-level swaps (Source A/C), describe using subscript labels
-    if (!hasOpSwap) {
-      // Build label-level description: which subscript labels get swapped
-      const labelSwap = {};
-      for (let k = 0; k < nRows; k++) {
-        if (sigmaRowPerm[k] !== k) {
-          const fromLabel = graph.uVertices[rowOrder[k]]?.labels;
-          const toLabel = graph.uVertices[rowOrder[sigmaRowPerm[k]]]?.labels;
-          if (fromLabel?.size === 1 && toLabel?.size === 1) {
-            const fl = [...fromLabel][0];
-            const tl = [...toLabel][0];
-            if (fl !== tl) labelSwap[fl] = tl;
-          }
-        }
-      }
-      sigmaDesc._labelSwap = labelSwap;
-    }
-
     // Compute σ(M) column fingerprints
     const sigmaColOf = {};
     for (const label of allLabels) {
@@ -417,7 +386,7 @@ export function runSigmaLoop(graph, matrixData, example) {
     const pi = derivePi(sigmaColOf, fpToLabels, vLabels, wLabels);
     if (!pi) {
       results.push({
-        sigma: sigmaDesc, sigmaRowPerm, sigmaMatrix, sigmaColOf,
+        sigma: {}, sigmaRowPerm, sigmaMatrix, sigmaColOf,
         isValid: false, reason: 'No matching π (fingerprint mismatch)',
       });
       continue;
@@ -426,7 +395,7 @@ export function runSigmaLoop(graph, matrixData, example) {
     const piIsIdentity = Object.entries(pi).every(([k, v]) => k === v);
 
     results.push({
-      sigma: sigmaDesc, sigmaRowPerm, sigmaMatrix, sigmaColOf, pi,
+      sigma: {}, sigmaRowPerm, sigmaMatrix, sigmaColOf, pi,
       isValid: true, piIsIdentity,
     });
   }
