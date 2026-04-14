@@ -227,7 +227,6 @@ def test_oprecord_has_timestamp_and_duration_fields():
     assert rec.duration is None
 
 
-@pytest.mark.xfail(reason="Duration tracking not yet implemented for all op types")
 def test_oprecord_durations_populated():
     """OpRecord durations are populated for ops using with-deduct pattern."""
     import whest
@@ -241,7 +240,6 @@ def test_oprecord_durations_populated():
     assert all(r.duration >= 0 for r in add_records)
 
 
-@pytest.mark.xfail(reason="Duration tracking not yet implemented for all op types")
 def test_durations_populated_across_op_types():
     """Verify durations populated for various operation types."""
     import whest
