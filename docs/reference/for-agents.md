@@ -99,9 +99,11 @@ def my_forward_pass(x):
 
 **2. Know what's free and what's counted.**
 
-Free (0 FLOPs): `zeros`, `ones`, `array`, `reshape`, `transpose`,
-`concatenate`, `linspace`, `where`, `copy`, `random.seed`, `random.get_state`,
-`random.set_state`, `random.default_rng`.
+Free (0 FLOPs): `zeros`, `ones`, `reshape`, `transpose`, `copy`,
+`random.seed`, `random.get_state`, `random.set_state`, `random.default_rng`.
+
+Custom cost (numel FLOPs): `array`, `linspace`, `arange`, `concatenate`, `where`.
+These are NOT free — each charges `numel(output)` FLOPs against the budget.
 
 Counted: `einsum`, `dot`, `matmul`, `exp`, `log`, `add`, `multiply`, `sum`,
 `mean`, all `linalg.*`, all `fft.*`, `sort`, `argsort`, `trace`,
@@ -141,6 +143,7 @@ as 1 operation.
 |---------|-------------|-----|
 | Using `np.einsum` instead of `we.einsum` | FLOPs not counted, budget not checked | Always use `we.*` for operations you want tracked |
 | Skipping `BudgetContext` entirely | No error (global default handles it), but budget is harder to track and namespace | Use an explicit `BudgetContext` for any work you want to measure or label |
+| Assuming `array`, `linspace`, `concatenate`, `where` are free | Underestimates budget usage — each charges `numel(output)` FLOPs | These are custom-cost ops, not free; check the cheat sheet |
 | Assuming `sort` is free | Underestimates budget usage | `sort` costs `n*ceil(log2(n))` per slice — check the cheat sheet |
 | Using `we.save()` or `we.load()` | `AttributeError` — blocked | Use `numpy` directly for I/O |
 | Nesting two explicit `BudgetContext` blocks | `RuntimeError` | Use a single explicit context; nesting with the global default is fine |
