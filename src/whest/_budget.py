@@ -474,9 +474,12 @@ class BudgetAccumulator:
                         by_ns[ns]["operations"][op.op_name] = {
                             "flop_cost": 0,
                             "calls": 0,
+                            "duration": 0.0,
                         }
                     by_ns[ns]["operations"][op.op_name]["flop_cost"] += op.flop_cost
                     by_ns[ns]["operations"][op.op_name]["calls"] += 1
+                    if op.duration is not None:
+                        by_ns[ns]["operations"][op.op_name]["duration"] += op.duration
             result["by_namespace"] = by_ns
 
         return result

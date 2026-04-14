@@ -424,3 +424,23 @@ def test_post_op_deadline_check():
             with timer:
                 time.sleep(0.1)  # Exceeds 0.05s limit
     assert exc_info.value.elapsed_s >= 0.05
+
+
+def test_budget_summary_dict_includes_op_duration():
+    """budget_summary_dict() should include per-op duration."""
+    import whest
+
+    whest.budget_reset()
+    with whest.BudgetContext(flop_budget=int(1e12), namespace="test", quiet=True):
+        a = whest.ones((100,))
+        _ = whest.add(a, a)
+
+    data = whest.budget_summary_dict(by_namespace=True)
+    ops = data["operations"]
+    assert "add" in ops
+    assert "duration" in ops["add"]
+    assert ops["add"]["duration"] >= 0
+
+    ns_ops = data["by_namespace"]["test"]["operations"]
+    assert "add" in ns_ops
+    assert "duration" in ns_ops["add"]
