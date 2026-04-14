@@ -391,6 +391,31 @@ class PermutationGroup:
             surviving = [Permutation.identity(self._degree)]
         return PermutationGroup(*surviving, axes=self._axes)
 
+    def setwise_stabilizer(self, subset: set[int]) -> PermutationGroup:
+        """Subgroup of elements that map *subset* to itself as a set.
+
+        Parameters
+        ----------
+        subset : set of int
+            Group-local indices. The subgroup consists of elements g where
+            {g(x) for x in subset} == subset.
+
+        Returns
+        -------
+        PermutationGroup
+            The setwise stabilizer subgroup (same degree).
+        """
+        if not subset or subset == set(range(self._degree)):
+            return PermutationGroup(*self._generators, axes=self._axes)
+        frozen = frozenset(subset)
+        surviving = [
+            g for g in self.elements()
+            if frozenset(g(x) for x in frozen) == frozen
+        ]
+        if not surviving:
+            surviving = [Permutation.identity(self._degree)]
+        return PermutationGroup(*surviving, axes=self._axes)
+
     def burnside_unique_count(self, size_dict: dict[int, int]) -> int:
         """Count unique tensor elements via Burnside's lemma.
 
