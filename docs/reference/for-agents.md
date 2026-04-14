@@ -21,8 +21,8 @@ works with NumPy may fail or behave differently with whest:
 
 | Resource | Format | Use case |
 |----------|--------|----------|
-| [llms.txt](../../llms.txt) | Markdown | Start here. Curated index of all doc pages with one-line descriptions. Under 4K tokens. |
-| [llms-full.txt](../../llms-full.txt) | Markdown | Complete docs in one file. Use if your context window is large enough (~115KB). |
+| [llms.txt](/llms.txt) | Markdown | Start here. Curated index of all doc pages with one-line descriptions. Under 4K tokens. |
+| [llms-full.txt](/llms-full.txt) | Markdown | Complete docs in one file. Use if your context window is large enough (~115KB). |
 | [ops.json](../ops.json) | JSON | Machine-readable manifest of all 482 operations. Query programmatically for name, category, cost formula, status. |
 | [FLOP Cost Cheat Sheet](./cheat-sheet.md) | Markdown | Dense reference of every operation's cost. Optimized for agent context windows. |
 | [Operation Audit](./operation-audit.md) | Markdown | 7-column searchable table: operation, whest ref, NumPy ref, category, cost, status, notes. |
