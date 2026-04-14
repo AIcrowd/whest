@@ -99,7 +99,9 @@ def inv(a):
     n = a.shape[-1]
     batch = _batch_size(a.shape)
     is_symmetric = isinstance(a, SymmetricTensor)
-    cost = inv_cost(n, symmetric=is_symmetric) * batch if not _has_zero_dim(a.shape) else 0
+    cost = (
+        inv_cost(n, symmetric=is_symmetric) * batch if not _has_zero_dim(a.shape) else 0
+    )
     budget.deduct("linalg.inv", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     result = _np.linalg.inv(a)
     if is_symmetric:

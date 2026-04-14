@@ -51,6 +51,7 @@ class _NonDescriptor:
     def __getattr__(self, name):
         return getattr(self._fn, name)
 
+
 # Functions we monkeypatch onto numpy
 _PATCHED: dict[str, object] = {}
 

@@ -101,4 +101,3 @@ __all__ = [
 ]
 
 __getattr__ = _make_module_getattr(module_prefix="linalg.", module_label="whest.linalg")
-

@@ -35,7 +35,9 @@ def array(object, dtype=None, **kwargs):
     # Pre-compute cost from input to keep numpy call inside the timer
     _probe = _np.asarray(object)
     cost = max(_probe.size, 1)
-    with budget.deduct("array", flop_cost=cost, subscripts=None, shapes=(_probe.shape,)):
+    with budget.deduct(
+        "array", flop_cost=cost, subscripts=None, shapes=(_probe.shape,)
+    ):
         result = _np.array(object, dtype=dtype, **kwargs)
     return result
 
@@ -282,7 +284,9 @@ def split(ary, indices_or_sections, axis=0):
     budget = require_budget()
     ary_arr = _np.asarray(ary)
     cost = ary_arr.size
-    with budget.deduct("split", flop_cost=cost, subscripts=None, shapes=(ary_arr.shape,)):
+    with budget.deduct(
+        "split", flop_cost=cost, subscripts=None, shapes=(ary_arr.shape,)
+    ):
         result = _np.split(ary, indices_or_sections, axis=axis)
     return result
 
@@ -303,7 +307,9 @@ def vsplit(ary, indices_or_sections):
     budget = require_budget()
     ary_arr = _np.asarray(ary)
     cost = ary_arr.size
-    with budget.deduct("vsplit", flop_cost=cost, subscripts=None, shapes=(ary_arr.shape,)):
+    with budget.deduct(
+        "vsplit", flop_cost=cost, subscripts=None, shapes=(ary_arr.shape,)
+    ):
         result = _np.vsplit(ary, indices_or_sections)
     return result
 
@@ -353,7 +359,9 @@ def where(condition, x=None, y=None):
     budget = require_budget()
     cond_arr = _np.asarray(condition)
     cost = cond_arr.size
-    with budget.deduct("where", flop_cost=cost, subscripts=None, shapes=(cond_arr.shape,)):
+    with budget.deduct(
+        "where", flop_cost=cost, subscripts=None, shapes=(cond_arr.shape,)
+    ):
         if x is None and y is None:
             result = _np.where(condition)
         else:
@@ -460,7 +468,9 @@ def diagonal(a, offset=0, axis1=0, axis2=1):
     else:
         diag_len = max(min(m + offset, n), 0)
     cost = max(diag_len, 1)
-    with budget.deduct("diagonal", flop_cost=cost, subscripts=None, shapes=(a_arr.shape,)):
+    with budget.deduct(
+        "diagonal", flop_cost=cost, subscripts=None, shapes=(a_arr.shape,)
+    ):
         result = _np.diagonal(a, offset=offset, axis1=axis1, axis2=axis2)
     return result
 
@@ -510,7 +520,9 @@ def asarray(a, dtype=None, **kwargs):
     # Pre-compute cost; asarray on an already-array is a no-op
     _probe = _np.asarray(a)
     cost = max(_probe.size, 1)
-    with budget.deduct("asarray", flop_cost=cost, subscripts=None, shapes=(_probe.shape,)):
+    with budget.deduct(
+        "asarray", flop_cost=cost, subscripts=None, shapes=(_probe.shape,)
+    ):
         result = _np.asarray(a, dtype=dtype, **kwargs)
     return result
 
@@ -536,7 +548,9 @@ def isfinite(x, **kwargs):
     budget = require_budget()
     x_arr = _np.asarray(x)
     cost = x_arr.size
-    with budget.deduct("isfinite", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,)):
+    with budget.deduct(
+        "isfinite", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,)
+    ):
         result = _np.isfinite(x, **kwargs)
     return result
 
@@ -579,7 +593,9 @@ def argwhere(a, *args, **kwargs):
     budget = require_budget()
     a_arr = _np.asarray(a)
     cost = a_arr.size
-    with budget.deduct("argwhere", flop_cost=cost, subscripts=None, shapes=(a_arr.shape,)):
+    with budget.deduct(
+        "argwhere", flop_cost=cost, subscripts=None, shapes=(a_arr.shape,)
+    ):
         result = _np.argwhere(a, *args, **kwargs)
     return result
 
@@ -768,7 +784,9 @@ def compress(condition, a, *args, **kwargs):
         if hasattr(result, "__len__")
         else 1
     )
-    with budget.deduct("compress", flop_cost=cost, subscripts=None, shapes=(result.shape,)):
+    with budget.deduct(
+        "compress", flop_cost=cost, subscripts=None, shapes=(result.shape,)
+    ):
         pass  # numpy call already executed above
     return result
 
@@ -842,7 +860,9 @@ def diagflat(v, k=0):
     v_arr = _np.asarray(v)
     result = _np.diagflat(v, k=k)
     cost = result.size  # output is (n+|k|)×(n+|k|) matrix
-    with budget.deduct("diagflat", flop_cost=cost, subscripts=None, shapes=(v_arr.shape,)):
+    with budget.deduct(
+        "diagflat", flop_cost=cost, subscripts=None, shapes=(v_arr.shape,)
+    ):
         pass  # numpy call already executed above
     if k == 0:
         return SymmetricTensor(result, symmetric_axes=[(0, 1)])
@@ -857,7 +877,9 @@ def dsplit(ary, *args, **kwargs):
     budget = require_budget()
     ary_arr = _np.asarray(ary)
     cost = ary_arr.size
-    with budget.deduct("dsplit", flop_cost=cost, subscripts=None, shapes=(ary_arr.shape,)):
+    with budget.deduct(
+        "dsplit", flop_cost=cost, subscripts=None, shapes=(ary_arr.shape,)
+    ):
         result = _np.dsplit(ary, *args, **kwargs)
     return result
 
@@ -883,7 +905,9 @@ def extract(condition, arr, *args, **kwargs):
     budget = require_budget()
     arr_np = _np.asarray(arr)
     cost = arr_np.size
-    with budget.deduct("extract", flop_cost=cost, subscripts=None, shapes=(arr_np.shape,)):
+    with budget.deduct(
+        "extract", flop_cost=cost, subscripts=None, shapes=(arr_np.shape,)
+    ):
         result = _np.extract(condition, arr, *args, **kwargs)
     return result
 
@@ -911,7 +935,9 @@ def flatnonzero(a, *args, **kwargs):
     budget = require_budget()
     a_arr = _np.asarray(a)
     cost = a_arr.size
-    with budget.deduct("flatnonzero", flop_cost=cost, subscripts=None, shapes=(a_arr.shape,)):
+    with budget.deduct(
+        "flatnonzero", flop_cost=cost, subscripts=None, shapes=(a_arr.shape,)
+    ):
         result = _np.flatnonzero(a, *args, **kwargs)
     return result
 
@@ -1171,7 +1197,9 @@ def nonzero(a, *args, **kwargs):
     budget = require_budget()
     a_arr = _np.asarray(a)
     cost = a_arr.size
-    with budget.deduct("nonzero", flop_cost=cost, subscripts=None, shapes=(a_arr.shape,)):
+    with budget.deduct(
+        "nonzero", flop_cost=cost, subscripts=None, shapes=(a_arr.shape,)
+    ):
         result = _np.nonzero(a, *args, **kwargs)
     return result
 
@@ -1190,7 +1218,9 @@ def packbits(a, *args, **kwargs):
         if hasattr(result, "__len__")
         else 1
     )
-    with budget.deduct("packbits", flop_cost=cost, subscripts=None, shapes=(result.shape,)):
+    with budget.deduct(
+        "packbits", flop_cost=cost, subscripts=None, shapes=(result.shape,)
+    ):
         pass  # numpy call already executed above
     return result
 
@@ -1211,7 +1241,9 @@ def place(arr, mask, vals, *args, **kwargs):
     budget = require_budget()
     arr_np = _np.asarray(arr)
     cost = arr_np.size
-    with budget.deduct("place", flop_cost=cost, subscripts=None, shapes=(arr_np.shape,)):
+    with budget.deduct(
+        "place", flop_cost=cost, subscripts=None, shapes=(arr_np.shape,)
+    ):
         result = _np.place(arr, mask, vals, *args, **kwargs)
     return result
 
@@ -1260,7 +1292,9 @@ def putmask(a, mask, values, *args, **kwargs):
     budget = require_budget()
     a_arr = _np.asarray(a)
     cost = a_arr.size
-    with budget.deduct("putmask", flop_cost=cost, subscripts=None, shapes=(a_arr.shape,)):
+    with budget.deduct(
+        "putmask", flop_cost=cost, subscripts=None, shapes=(a_arr.shape,)
+    ):
         result = _np.putmask(a, mask, values, *args, **kwargs)
     return result
 
@@ -1471,7 +1505,9 @@ def unpackbits(a, *args, **kwargs):
         if hasattr(result, "__len__")
         else 1
     )
-    with budget.deduct("unpackbits", flop_cost=cost, subscripts=None, shapes=(result.shape,)):
+    with budget.deduct(
+        "unpackbits", flop_cost=cost, subscripts=None, shapes=(result.shape,)
+    ):
         pass  # numpy call already executed above
     return result
 
@@ -1494,7 +1530,9 @@ if hasattr(_np, "unstack"):
         budget = require_budget()
         x_arr = _np.asarray(x)
         cost = x_arr.size
-        with budget.deduct("unstack", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,)):
+        with budget.deduct(
+            "unstack", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,)
+        ):
             result = _np.unstack(x, *args, **kwargs)
         return result
 
@@ -1552,6 +1590,7 @@ import sys as _sys  # noqa: E402
 # ---------------------------------------------------------------------------
 _this_module = _sys.modules[__name__]
 
+
 def _set_sig(func_name, np_func):
     """Set __signature__ of a module-level function to match numpy."""
     fn = globals().get(func_name)
@@ -1560,6 +1599,7 @@ def _set_sig(func_name, np_func):
             fn.__signature__ = _inspect.signature(np_func)
         except (ValueError, TypeError):
             pass
+
 
 # Functions with *args/**kwargs that need numpy's signature
 _set_sig("arange", _np.arange)

@@ -29,6 +29,7 @@ def cross(x1, x2, /, *, axis=-1):
 
     from whest._ndarray import _aswhest
     from whest._validation import require_budget
+
     budget = require_budget()
     # np.linalg.cross validates dimensionality (must be exactly 2 or 3)
     result = _np.linalg.cross(x1, x2, axis=axis)

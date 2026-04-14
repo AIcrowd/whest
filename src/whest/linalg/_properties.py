@@ -81,7 +81,9 @@ def det(a):
     n = a.shape[-1]
     batch = _batch_size(a.shape)
     is_symmetric = isinstance(a, SymmetricTensor)
-    cost = det_cost(n, symmetric=is_symmetric) * batch if not _has_zero_dim(a.shape) else 0
+    cost = (
+        det_cost(n, symmetric=is_symmetric) * batch if not _has_zero_dim(a.shape) else 0
+    )
     budget.deduct("linalg.det", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.det(a)
 
@@ -119,7 +121,11 @@ def slogdet(a):
     n = a.shape[-1]
     batch = _batch_size(a.shape)
     is_symmetric = isinstance(a, SymmetricTensor)
-    cost = slogdet_cost(n, symmetric=is_symmetric) * batch if not _has_zero_dim(a.shape) else 0
+    cost = (
+        slogdet_cost(n, symmetric=is_symmetric) * batch
+        if not _has_zero_dim(a.shape)
+        else 0
+    )
     budget.deduct("linalg.slogdet", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     result = _np.linalg.slogdet(a)
     return SlogdetResult(*result)

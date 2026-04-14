@@ -146,7 +146,9 @@ def argpartition(a, kth, axis=-1, **kwargs):
             numel *= d
         num_slices = numel // n if n > 0 else 1
         cost = max(num_slices * n * kth_count, 1)
-    with budget.deduct("argpartition", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+    with budget.deduct(
+        "argpartition", flop_cost=cost, subscripts=None, shapes=(a.shape,)
+    ):
         result = _np.argpartition(a, kth, axis=axis, **kwargs)
     return result
 
@@ -243,7 +245,9 @@ def unique(ar, **kwargs):
     budget = require_budget()
     ar_arr = _np.asarray(ar)
     cost = _unique_cost(ar_arr)
-    with budget.deduct("unique", flop_cost=cost, subscripts=None, shapes=(ar_arr.shape,)):
+    with budget.deduct(
+        "unique", flop_cost=cost, subscripts=None, shapes=(ar_arr.shape,)
+    ):
         result = _np.unique(ar_arr, **kwargs)
     return result
 
@@ -257,7 +261,9 @@ def unique_all(x, /):
     budget = require_budget()
     x_arr = _np.asarray(x)
     cost = _unique_cost(x_arr)
-    with budget.deduct("unique_all", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,)):
+    with budget.deduct(
+        "unique_all", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,)
+    ):
         result = _np.unique_all(x_arr)
     return result
 
@@ -335,7 +341,9 @@ def in1d(ar1, ar2, **kwargs):
     a1 = _np.asarray(ar1)
     a2 = _np.asarray(ar2)
     cost = _set_cost(a1, a2)
-    with budget.deduct("in1d", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)):
+    with budget.deduct(
+        "in1d", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
+    ):
         result = _np.in1d(ar1, ar2, **kwargs)
     return result
 
@@ -350,7 +358,9 @@ def isin(element, test_elements, **kwargs):
     el = _np.asarray(element)
     te = _np.asarray(test_elements)
     cost = _set_cost(el, te)
-    with budget.deduct("isin", flop_cost=cost, subscripts=None, shapes=(el.shape, te.shape)):
+    with budget.deduct(
+        "isin", flop_cost=cost, subscripts=None, shapes=(el.shape, te.shape)
+    ):
         result = _np.isin(element, test_elements, **kwargs)
     return result
 

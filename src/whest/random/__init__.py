@@ -212,7 +212,9 @@ def permutation(x):
     budget = require_budget()
     n = int(x) if isinstance(x, (int, _np.integer)) else x.shape[0]
     cost = _builtins.max(n, 1)
-    with budget.deduct("random.permutation", flop_cost=cost, subscripts=None, shapes=((n,),)):
+    with budget.deduct(
+        "random.permutation", flop_cost=cost, subscripts=None, shapes=((n,),)
+    ):
         result = _npr.permutation(x)
     return result
 
@@ -228,7 +230,9 @@ def shuffle(x):
     else:
         n = len(x)
     cost = _builtins.max(n, 1)
-    with budget.deduct("random.shuffle", flop_cost=cost, subscripts=None, shapes=((n,),)):
+    with budget.deduct(
+        "random.shuffle", flop_cost=cost, subscripts=None, shapes=((n,),)
+    ):
         _npr.shuffle(x)
 
 
@@ -253,7 +257,9 @@ def choice(a, size=None, replace=True, p=None):
             result = _npr.choice(a, size=size, replace=replace, p=p)
     else:
         cost = sort_cost(n)
-        with budget.deduct("random.choice", flop_cost=cost, subscripts=None, shapes=((n,),)):
+        with budget.deduct(
+            "random.choice", flop_cost=cost, subscripts=None, shapes=((n,),)
+        ):
             result = _npr.choice(a, size=size, replace=replace, p=p)
     return result
 
@@ -265,7 +271,9 @@ def bytes(length):
     """
     budget = require_budget()
     cost = _builtins.max(int(length), 1)
-    with budget.deduct("random.bytes", flop_cost=cost, subscripts=None, shapes=((length,),)):
+    with budget.deduct(
+        "random.bytes", flop_cost=cost, subscripts=None, shapes=((length,),)
+    ):
         result = _npr.bytes(length)
     return result
 

@@ -77,7 +77,9 @@ def polyval(p, x):
     deg = len(p) - 1
     m = x.size
     cost = polyval_cost(deg, m)
-    with budget.deduct("polyval", flop_cost=cost, subscripts=None, shapes=(p.shape, x.shape)):
+    with budget.deduct(
+        "polyval", flop_cost=cost, subscripts=None, shapes=(p.shape, x.shape)
+    ):
         result = _np.polyval(p, x)
     return result
 
@@ -180,7 +182,9 @@ def polydiv(u, v):
     n1 = len(u)
     n2 = len(v)
     cost = polydiv_cost(n1, n2)
-    with budget.deduct("polydiv", flop_cost=cost, subscripts=None, shapes=(u.shape, v.shape)):
+    with budget.deduct(
+        "polydiv", flop_cost=cost, subscripts=None, shapes=(u.shape, v.shape)
+    ):
         result = _np.polydiv(u, v)
     return result
 

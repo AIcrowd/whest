@@ -318,7 +318,9 @@ def irfft2(a, s=None, axes=(-2, -1), norm=None, out=None):
             for i, si in enumerate(s)
         )
     cost = _batch_count_nd(a, axes) * rfftn_cost(s_for_cost)
-    with budget.deduct("fft.irfft2", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+    with budget.deduct(
+        "fft.irfft2", flop_cost=cost, subscripts=None, shapes=(a.shape,)
+    ):
         result = _np.fft.irfft2(a, s=s, axes=axes, norm=norm, out=out)
     return result
 
@@ -431,7 +433,9 @@ def irfftn(a, s=None, axes=None, norm=None, out=None):
             for i, si in enumerate(s)
         )
     cost = _batch_count_nd(a, axes) * rfftn_cost(s_for_cost)
-    with budget.deduct("fft.irfftn", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+    with budget.deduct(
+        "fft.irfftn", flop_cost=cost, subscripts=None, shapes=(a.shape,)
+    ):
         result = _np.fft.irfftn(a, s=s, axes=axes, norm=norm, out=out)
     return result
 

@@ -19,8 +19,8 @@ class OpRecord(NamedTuple):
     flop_cost: int
     cumulative: int
     namespace: str | None = None
-    timestamp: float | None = None   # seconds since context __enter__
-    duration: float | None = None    # wall-clock seconds of the numpy call
+    timestamp: float | None = None  # seconds since context __enter__
+    duration: float | None = None  # wall-clock seconds of the numpy call
 
 
 class _OpTimer:
@@ -208,7 +208,9 @@ class BudgetContext:
             cost_by_op[rec.op_name] = cost_by_op.get(rec.op_name, 0) + rec.flop_cost
             count_by_op[rec.op_name] += 1
             if rec.duration is not None:
-                time_by_op[rec.op_name] = time_by_op.get(rec.op_name, 0.0) + rec.duration
+                time_by_op[rec.op_name] = (
+                    time_by_op.get(rec.op_name, 0.0) + rec.duration
+                )
         for op_name, cost in sorted(cost_by_op.items(), key=lambda x: -x[1]):
             pct = 100 * cost / self._flops_used if self._flops_used > 0 else 0
             lines.append(
@@ -416,9 +418,13 @@ class BudgetAccumulator:
                 by_ns[ns]["flop_budget"] += rec.flop_budget
                 by_ns[ns]["flops_used"] += rec.flops_used
                 if rec.wall_time_s is not None:
-                    by_ns[ns]["wall_time_s"] = (by_ns[ns]["wall_time_s"] or 0.0) + rec.wall_time_s
+                    by_ns[ns]["wall_time_s"] = (
+                        by_ns[ns]["wall_time_s"] or 0.0
+                    ) + rec.wall_time_s
                 if rec.total_tracked_time is not None:
-                    by_ns[ns]["total_tracked_time"] = (by_ns[ns]["total_tracked_time"] or 0.0) + rec.total_tracked_time
+                    by_ns[ns]["total_tracked_time"] = (
+                        by_ns[ns]["total_tracked_time"] or 0.0
+                    ) + rec.total_tracked_time
                 for op in rec.op_log:
                     if op.op_name not in by_ns[ns]["operations"]:
                         by_ns[ns]["operations"][op.op_name] = {

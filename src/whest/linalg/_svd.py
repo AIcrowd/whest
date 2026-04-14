@@ -63,9 +63,7 @@ def svd(a, full_matrices=True, compute_uv=True, hermitian=False, *, k=None):
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     if a.ndim < 2:
-        raise ValueError(
-            f"svd requires a 2D (or batched) array, got shape {a.shape}"
-        )
+        raise ValueError(f"svd requires a 2D (or batched) array, got shape {a.shape}")
     m, n = a.shape[-2], a.shape[-1]
     if k is not None and k > min(m, n):
         raise ValueError(

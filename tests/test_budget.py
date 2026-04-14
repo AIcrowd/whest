@@ -112,6 +112,7 @@ def test_summary():
 
 def test_time_exhausted_error_attributes():
     from whest.errors import TimeExhaustedError
+
     err = TimeExhaustedError("matmul", elapsed_s=1.5, limit_s=1.0)
     assert err.op_name == "matmul"
     assert err.elapsed_s == 1.5
@@ -123,6 +124,7 @@ def test_time_exhausted_error_attributes():
 
 def test_time_exhausted_error_is_whest_error():
     from whest.errors import TimeExhaustedError, WhestError
+
     err = TimeExhaustedError("add", elapsed_s=2.0, limit_s=1.0)
     assert isinstance(err, WhestError)
 
@@ -132,6 +134,7 @@ import time as _time
 
 def test_budget_context_tracks_wall_time():
     import whest
+
     with whest.BudgetContext(flop_budget=int(1e9)) as b:
         _ = whest.ones((100,))
         _time.sleep(0.01)
@@ -141,12 +144,14 @@ def test_budget_context_tracks_wall_time():
 
 def test_budget_context_wall_time_none_before_exit():
     import whest
+
     b = whest.BudgetContext(flop_budget=int(1e9))
     assert b.wall_time_s is None
 
 
 def test_budget_context_elapsed_s_live():
     import whest
+
     with whest.BudgetContext(flop_budget=int(1e9)) as b:
         _time.sleep(0.01)
         assert b.elapsed_s >= 0.01
@@ -154,6 +159,7 @@ def test_budget_context_elapsed_s_live():
 
 def test_budget_context_wall_time_limit_s_property():
     import whest
+
     b = whest.BudgetContext(flop_budget=int(1e9), wall_time_limit_s=5.0)
     assert b.wall_time_limit_s == 5.0
     b2 = whest.BudgetContext(flop_budget=int(1e9))
@@ -162,6 +168,7 @@ def test_budget_context_wall_time_limit_s_property():
 
 def test_budget_context_total_tracked_time():
     import whest
+
     with whest.BudgetContext(flop_budget=int(1e9)) as b:
         _ = whest.add(whest.ones((1000,)), whest.ones((1000,)))
     assert b.total_tracked_time >= 0
@@ -170,6 +177,7 @@ def test_budget_context_total_tracked_time():
 
 def test_budget_context_untracked_time():
     import whest
+
     with whest.BudgetContext(flop_budget=int(1e9)) as b:
         _ = whest.add(whest.ones((1000,)), whest.ones((1000,)))
         _time.sleep(0.01)
@@ -182,6 +190,7 @@ def test_wall_time_limit_raises_time_exhausted():
 
     import whest
     from whest.errors import TimeExhaustedError
+
     with pytest.raises(TimeExhaustedError) as exc_info:
         with whest.BudgetContext(flop_budget=int(1e15), wall_time_limit_s=0.001):
             a = whest.ones((10,))
@@ -193,6 +202,7 @@ def test_wall_time_limit_raises_time_exhausted():
 
 def test_oprecord_timestamps_monotonic():
     import whest
+
     with whest.BudgetContext(flop_budget=int(1e9)) as b:
         a = whest.ones((10,))
         for _ in range(5):
@@ -205,9 +215,13 @@ def test_oprecord_timestamps_monotonic():
 
 def test_oprecord_has_timestamp_and_duration_fields():
     import whest
+
     rec = whest.OpRecord(
-        op_name="add", subscripts=None, shapes=((3,),),
-        flop_cost=3, cumulative=3,
+        op_name="add",
+        subscripts=None,
+        shapes=((3,),),
+        flop_cost=3,
+        cumulative=3,
     )
     assert rec.timestamp is None
     assert rec.duration is None
@@ -216,6 +230,7 @@ def test_oprecord_has_timestamp_and_duration_fields():
 def test_oprecord_durations_populated():
     """OpRecord durations are populated for ops using with-deduct pattern."""
     import whest
+
     with whest.BudgetContext(flop_budget=int(1e9)) as b:
         a = whest.ones((10,))
         _ = whest.add(a, a)
@@ -228,15 +243,16 @@ def test_oprecord_durations_populated():
 def test_durations_populated_across_op_types():
     """Verify durations populated for various operation types."""
     import whest
+
     with whest.BudgetContext(flop_budget=int(1e12)) as b:
-        a = whest.array([1.0, 2.0, 3.0])       # free_ops (charged)
-        c = whest.add(a, whest.ones((3,)))       # pointwise binary (Task 3)
-        d = whest.exp(c)                         # pointwise unary (Task 3)
-        e = whest.sum(d)                         # reduction (Task 3)
-        f = whest.concatenate([a, c])            # free_ops (charged)
-        g = whest.linspace(0, 1, 10)             # free_ops (charged)
-        h = whest.dot(a, a)                      # standalone pointwise
-        i = whest.sort(a.copy())                 # sorting
+        a = whest.array([1.0, 2.0, 3.0])  # free_ops (charged)
+        c = whest.add(a, whest.ones((3,)))  # pointwise binary (Task 3)
+        d = whest.exp(c)  # pointwise unary (Task 3)
+        e = whest.sum(d)  # reduction (Task 3)
+        f = whest.concatenate([a, c])  # free_ops (charged)
+        g = whest.linspace(0, 1, 10)  # free_ops (charged)
+        h = whest.dot(a, a)  # standalone pointwise
+        i = whest.sort(a.copy())  # sorting
 
     records_without = [r for r in b.op_log if r.duration is None]
     assert len(records_without) == 0, (
@@ -246,12 +262,14 @@ def test_durations_populated_across_op_types():
 
 def test_budget_factory_passes_wall_time_limit():
     import whest
+
     b = whest.budget(flop_budget=int(1e9), wall_time_limit_s=2.0)
     assert b.wall_time_limit_s == 2.0
 
 
 def test_namespace_record_includes_time():
     import whest
+
     whest.budget_reset()
     with whest.BudgetContext(flop_budget=int(1e9), namespace="test", quiet=True) as b:
         _ = whest.add(whest.ones((10,)), whest.ones((10,)))
@@ -267,6 +285,7 @@ def test_namespace_record_includes_time():
 
 def test_summary_includes_time_section():
     import whest
+
     with whest.BudgetContext(flop_budget=int(1e9), quiet=True) as b:
         _ = whest.add(whest.ones((10,)), whest.ones((10,)))
     summary = b.summary()
