@@ -14,11 +14,11 @@
 
 </div>
 
-*Built for the [ARC Mechanistic Estimation Challenge](https://aicrowd.com) by [AIcrowd](https://aicrowd.com)*
+*Built for the [ARC Whitebox Estimation Challenge](https://aicrowd.com) by [AIcrowd](https://aicrowd.com)*
 
 ---
 
-**whest** is a drop-in replacement for a subset of NumPy that counts floating-point operations as you compute. Algorithms submitted to the ARC Mechanistic Estimation Challenge are scored by their analytical FLOP cost, not wall-clock time, so researchers can focus on **algorithmic innovation** rather than hardware tuning. Every arithmetic call deducts from a fixed budget; exceed it and execution stops immediately.
+**whest** is a drop-in replacement for a subset of NumPy that counts floating-point operations as you compute. Algorithms submitted to the ARC Whitebox Estimation Challenge are scored by their analytical FLOP cost, not wall-clock time, so researchers can focus on **algorithmic innovation** rather than hardware tuning. Every arithmetic call deducts from a fixed budget; exceed it and execution stops immediately.
 
 ## Why whest?
 
@@ -91,13 +91,13 @@ we.budget_summary()  # 984,321 FLOPs
 
 | Module | Operations | Cost Model | Status |
 |--------|-----------|------------|--------|
-| Core (`we.*`) | 367 | Varies by category (unary, binary, reduction, free) | Supported |
+| Core (`we.*`) | 339 | Varies by category (unary, binary, reduction, free) | Supported |
 | `we.linalg` | 31 | Per-operation formulas | Supported |
 | `we.fft` | 18 | `5n * ceil(log2(n))` for transforms | Supported |
 | `we.random` | 51 | `numel(output)` per sample; shuffle: `n*ceil(log2(n))` | Supported |
+| `we.stats` | 24 | Per-distribution CDF/PDF/PPF formulas | Supported |
 | `we.polynomial` | 10 | Per-operation formulas | Supported |
-| `we.window` | 5 | `n` to `3n` per window | Supported |
-| **Total** | **450 supported** | | **32 blocked** |
+| **Total** | **473 supported** | | **35 blocked** |
 
 Blocked operations (I/O, config, and system calls) raise a helpful `AttributeError` with a link to the docs.
 
@@ -186,7 +186,7 @@ including triple products and block symmetries.
 1. **FLOPs are tracked automatically.** A global default budget activates on first use, or you can wrap code in an explicit `BudgetContext` for a custom limit. Free ops (tensor creation, reshaping) cost 0 FLOPs.
 2. **FLOP costs are analytical.** Costs are computed from tensor shapes, not measured from execution. A matmul of `(m, k) @ (k, n)` always costs `2 * m * k * n` FLOPs regardless of hardware.
 3. **Budget is checked before execution.** If an operation would exceed the remaining budget, `BudgetExhaustedError` is raised and the operation does not run.
-4. **All tensors are plain `numpy.ndarray`.** There is no custom tensor class and no hidden state. You can pass whest arrays to any NumPy-compatible library.
+4. **All tensors are plain `numpy.ndarray`.** Standard whest arrays are regular NumPy arrays with no hidden state. `SymmetricTensor` is a lightweight `ndarray` subclass that carries symmetry metadata for einsum savings — it works everywhere a normal array does.
 
 ## Sharp Edges
 
@@ -256,7 +256,7 @@ For the monorepo layout, client/server workflows, and generated-doc rules, see
   author = {AIcrowd},
   year   = {2026},
   url    = {https://github.com/AIcrowd/whest},
-  note   = {Built for the ARC Mechanistic Estimation Challenge}
+  note   = {Built for the ARC Whitebox Estimation Challenge}
 }
 ```
 
