@@ -43,15 +43,14 @@ const cards = [
   },
 ];
 
-const exampleCode = `import whest.np as wnp
-from whest import BudgetContext
+const exampleCode = `import whest as we
 
-with BudgetContext(max_flops=1e9) as ctx:
-    a = wnp.random.randn(512, 512)
-    b = wnp.random.randn(512, 512)
-    c = wnp.matmul(a, b)
+with we.BudgetContext(flop_budget=10**8, namespace="demo") as budget:
+    scale = we.sqrt(we.array(2 / 256))
+    W = we.multiply(we.random.randn(256, 256), scale)
+    x = we.einsum('ij,j->i', W, we.random.randn(256))
 
-print(f"FLOPs used: {ctx.flops_used:,.0f}")`;
+we.budget_summary()`;
 
 export default function Home(): React.JSX.Element {
   return (
