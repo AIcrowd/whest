@@ -4,10 +4,12 @@
 from __future__ import annotations
 
 import numpy as _np
+from numpy.linalg._linalg import SlogdetResult
 
 from whest._docstrings import attach_docstring
 from whest._symmetric import SymmetricTensor
 from whest._validation import require_budget
+from whest.linalg._solvers import _batch_size, _has_zero_dim
 
 
 def trace_cost(n: int) -> int:
@@ -30,24 +32,23 @@ def trace_cost(n: int) -> int:
     return max(n, 1)
 
 
-def trace(a, offset=0, axis1=0, axis2=1, dtype=None, out=None):
-    """Matrix trace with FLOP counting."""
+def trace(x, /, *, offset=0, dtype=None):
+    """Matrix trace with FLOP counting (numpy 2.0 linalg.trace signature)."""
     budget = require_budget()
-    if not isinstance(a, _np.ndarray):
-        a = _np.asarray(a)
-    n = min(a.shape[axis1], a.shape[axis2])
+    if not isinstance(x, _np.ndarray):
+        x = _np.asarray(x)
+    n = min(x.shape[-2], x.shape[-1])
     if offset > 0:
-        n = min(n, a.shape[axis2] - offset)
+        n = min(n, x.shape[-1] - offset)
     elif offset < 0:
-        n = min(n, a.shape[axis1] + offset)
+        n = min(n, x.shape[-2] + offset)
     n = max(n, 0)
     cost = trace_cost(n)
-    with budget.deduct("linalg.trace", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.trace(a, offset=offset, axis1=axis1, axis2=axis2, dtype=dtype, out=out)
-    return result
+    budget.deduct("linalg.trace", flop_cost=cost, subscripts=None, shapes=(x.shape,))
+    return _np.linalg.trace(x, offset=offset, dtype=dtype)
 
 
-attach_docstring(trace, _np.trace, "linalg", r"$n$ FLOPs")
+attach_docstring(trace, _np.linalg.trace, "linalg", r"$n$ FLOPs")
 
 
 def det_cost(n: int, symmetric: bool = False) -> int:
@@ -77,14 +78,12 @@ def det(a):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
-    if a.ndim != 2 or a.shape[0] != a.shape[1]:
-        raise ValueError(f"Input must be square 2D array, got shape {a.shape}")
-    n = a.shape[0]
+    n = a.shape[-1]
+    batch = _batch_size(a.shape)
     is_symmetric = isinstance(a, SymmetricTensor)
-    cost = det_cost(n, symmetric=is_symmetric)
-    with budget.deduct("linalg.det", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.linalg.det(a)
-    return result
+    cost = det_cost(n, symmetric=is_symmetric) * batch if not _has_zero_dim(a.shape) else 0
+    budget.deduct("linalg.det", flop_cost=cost, subscripts=None, shapes=(a.shape,))
+    return _np.linalg.det(a)
 
 
 attach_docstring(det, _np.linalg.det, "linalg", r"$n^3$ FLOPs")
@@ -117,14 +116,13 @@ def slogdet(a):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
-    if a.ndim != 2 or a.shape[0] != a.shape[1]:
-        raise ValueError(f"Input must be square 2D array, got shape {a.shape}")
-    n = a.shape[0]
+    n = a.shape[-1]
+    batch = _batch_size(a.shape)
     is_symmetric = isinstance(a, SymmetricTensor)
-    cost = slogdet_cost(n, symmetric=is_symmetric)
-    with budget.deduct("linalg.slogdet", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.linalg.slogdet(a)
-    return result
+    cost = slogdet_cost(n, symmetric=is_symmetric) * batch if not _has_zero_dim(a.shape) else 0
+    budget.deduct("linalg.slogdet", flop_cost=cost, subscripts=None, shapes=(a.shape,))
+    result = _np.linalg.slogdet(a)
+    return SlogdetResult(*result)
 
 
 attach_docstring(slogdet, _np.linalg.slogdet, "linalg", r"$n^3$ FLOPs")
@@ -178,16 +176,26 @@ def norm(x, ord=None, axis=None, keepdims=False):
     budget = require_budget()
     if not isinstance(x, _np.ndarray):
         x = _np.asarray(x)
-    if axis is None:
-        effective_shape = x.shape
-    elif isinstance(axis, int):
-        effective_shape = (x.shape[axis],)
-    else:
-        effective_shape = tuple(x.shape[ax] for ax in axis)
-    cost = norm_cost(effective_shape, ord=ord)
-    with budget.deduct("linalg.norm", flop_cost=cost, subscripts=None, shapes=(x.shape,)):
-        result = _np.linalg.norm(x, ord=ord, axis=axis, keepdims=keepdims)
-    return result
+    # Compute effective shape for FLOP cost, guarding against invalid axis.
+    # If axis is out of bounds or ord is invalid, numpy will raise the correct
+    # error (AxisError / ValueError); we skip budget deduction in that case.
+    try:
+        if axis is None:
+            effective_shape = x.shape
+        elif isinstance(axis, int):
+            ndim = x.ndim
+            norm_axis = axis + ndim if axis < 0 else axis
+            if norm_axis < 0 or norm_axis >= max(ndim, 1):
+                return _np.linalg.norm(x, ord=ord, axis=axis, keepdims=keepdims)
+            effective_shape = (x.shape[norm_axis],) if ndim > 0 else ()
+        else:
+            effective_shape = tuple(x.shape[ax] for ax in axis)
+        cost = norm_cost(effective_shape, ord=ord)
+    except (IndexError, ValueError):
+        # Let numpy raise the proper error with the right type/message
+        return _np.linalg.norm(x, ord=ord, axis=axis, keepdims=keepdims)
+    budget.deduct("linalg.norm", flop_cost=cost, subscripts=None, shapes=(x.shape,))
+    return _np.linalg.norm(x, ord=ord, axis=axis, keepdims=keepdims)
 
 
 attach_docstring(
@@ -236,11 +244,10 @@ def vector_norm(x, ord=2, axis=None, keepdims=False):
     else:
         effective_shape = x.shape
     cost = vector_norm_cost(effective_shape, ord=ord)
-    with budget.deduct(
+    budget.deduct(
         "linalg.vector_norm", flop_cost=cost, subscripts=None, shapes=(x.shape,)
-    ):
-        result = _np.linalg.vector_norm(x, ord=ord, axis=axis, keepdims=keepdims)
-    return result
+    )
+    return _np.linalg.vector_norm(x, ord=ord, axis=axis, keepdims=keepdims)
 
 
 attach_docstring(
@@ -288,11 +295,10 @@ def matrix_norm(x, ord="fro", keepdims=False):
     if not isinstance(x, _np.ndarray):
         x = _np.asarray(x)
     cost = matrix_norm_cost(x.shape, ord=ord)
-    with budget.deduct(
+    budget.deduct(
         "linalg.matrix_norm", flop_cost=cost, subscripts=None, shapes=(x.shape,)
-    ):
-        result = _np.linalg.matrix_norm(x, ord=ord, keepdims=keepdims)
-    return result
+    )
+    return _np.linalg.matrix_norm(x, ord=ord, keepdims=keepdims)
 
 
 attach_docstring(
@@ -336,13 +342,11 @@ def cond(x, p=None):
     budget = require_budget()
     if not isinstance(x, _np.ndarray):
         x = _np.asarray(x)
-    if x.ndim != 2:
-        raise ValueError(f"Input must be 2D, got {x.ndim}D")
-    m, n = x.shape
-    cost = cond_cost(m, n, p=p)
-    with budget.deduct("linalg.cond", flop_cost=cost, subscripts=None, shapes=(x.shape,)):
-        result = _np.linalg.cond(x, p=p)
-    return result
+    m, n = x.shape[-2], x.shape[-1]
+    batch = _batch_size(x.shape)
+    cost = cond_cost(m, n, p=p) * batch if not _has_zero_dim(x.shape) else 0
+    budget.deduct("linalg.cond", flop_cost=cost, subscripts=None, shapes=(x.shape,))
+    return _np.linalg.cond(x, p=p)
 
 
 attach_docstring(
@@ -375,20 +379,23 @@ def matrix_rank_cost(m: int, n: int) -> int:
     return max(m * n * min(m, n), 1)
 
 
-def matrix_rank(A, tol=None, hermitian=False):
+def matrix_rank(A, tol=None, hermitian=False, *, rtol=None):
     """Matrix rank with FLOP counting."""
     budget = require_budget()
     if not isinstance(A, _np.ndarray):
         A = _np.asarray(A)
-    if A.ndim != 2:
-        raise ValueError(f"Input must be 2D, got {A.ndim}D")
-    m, n = A.shape
-    cost = matrix_rank_cost(m, n)
-    with budget.deduct(
+    m, n = A.shape[-2], A.shape[-1]
+    batch = _batch_size(A.shape)
+    cost = matrix_rank_cost(m, n) * batch if not _has_zero_dim(A.shape) else 0
+    budget.deduct(
         "linalg.matrix_rank", flop_cost=cost, subscripts=None, shapes=(A.shape,)
-    ):
-        result = _np.linalg.matrix_rank(A, tol=tol, hermitian=hermitian)
-    return result
+    )
+    kwargs = {"hermitian": hermitian}
+    if tol is not None:
+        kwargs["tol"] = tol
+    if rtol is not None:
+        kwargs["rtol"] = rtol
+    return _np.linalg.matrix_rank(A, **kwargs)
 
 
 attach_docstring(

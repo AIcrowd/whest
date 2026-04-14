@@ -9,6 +9,7 @@ import numpy as _np
 from whest._cost_model import FMA_COST
 from whest._docstrings import attach_docstring
 from whest._validation import require_budget
+from whest.linalg._solvers import _batch_size, _has_zero_dim
 
 
 def _popcount(n: int) -> int:
@@ -65,11 +66,10 @@ def multi_dot(arrays, *, out=None):
     arrays = [a if isinstance(a, _np.ndarray) else _np.asarray(a) for a in arrays]
     shapes = [arr.shape for arr in arrays]
     cost = multi_dot_cost(shapes)
-    with budget.deduct(
+    budget.deduct(
         "linalg.multi_dot", flop_cost=cost, subscripts=None, shapes=tuple(shapes)
-    ):
-        result = _np.linalg.multi_dot(arrays, out=out)
-    return result
+    )
+    return _np.linalg.multi_dot(arrays, out=out)
 
 
 attach_docstring(
@@ -110,15 +110,13 @@ def matrix_power(a, n):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
-    if a.ndim != 2 or a.shape[0] != a.shape[1]:
-        raise ValueError(f"Input must be square 2D array, got shape {a.shape}")
-    size = a.shape[0]
-    cost = matrix_power_cost(size, n)
-    with budget.deduct(
+    size = a.shape[-1]
+    batch = _batch_size(a.shape)
+    cost = matrix_power_cost(size, n) * batch if not _has_zero_dim(a.shape) else 0
+    budget.deduct(
         "linalg.matrix_power", flop_cost=cost, subscripts=None, shapes=(a.shape,)
-    ):
-        result = _np.linalg.matrix_power(a, n)
-    return result
+    )
+    return _np.linalg.matrix_power(a, n)
 
 
 attach_docstring(

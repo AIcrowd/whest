@@ -8,17 +8,23 @@ import numpy as _np
 from whest._docstrings import attach_docstring
 
 
-def fftfreq(n, d=1.0):
+def fftfreq(n, d=1.0, device=None):
     """FFT sample frequencies. Cost: 0 FLOPs."""
-    return _np.fft.fftfreq(n, d=d)
+    kwargs = {}
+    if device is not None:
+        kwargs['device'] = device
+    return _np.fft.fftfreq(n, d=d, **kwargs)
 
 
 attach_docstring(fftfreq, _np.fft.fftfreq, "free", "0 FLOPs")
 
 
-def rfftfreq(n, d=1.0):
+def rfftfreq(n, d=1.0, device=None):
     """Real FFT sample frequencies. Cost: 0 FLOPs."""
-    return _np.fft.rfftfreq(n, d=d)
+    kwargs = {}
+    if device is not None:
+        kwargs['device'] = device
+    return _np.fft.rfftfreq(n, d=d, **kwargs)
 
 
 attach_docstring(rfftfreq, _np.fft.rfftfreq, "free", "0 FLOPs")

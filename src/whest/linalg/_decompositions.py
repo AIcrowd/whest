@@ -8,9 +8,11 @@ source, and assumptions. Cost functions are pure (shape params) -> int.
 from __future__ import annotations
 
 import numpy as _np
+from numpy.linalg._linalg import EigResult, EighResult, QRResult
 
 from whest._docstrings import attach_docstring
 from whest._validation import require_budget
+from whest.linalg._solvers import _batch_size, _has_zero_dim
 
 
 def cholesky_cost(n: int) -> int:
@@ -33,18 +35,16 @@ def cholesky_cost(n: int) -> int:
     return max(n**3, 1)
 
 
-def cholesky(a):
+def cholesky(a, /, *, upper=False):
     """Cholesky decomposition with FLOP counting."""
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
-    if a.ndim != 2 or a.shape[0] != a.shape[1]:
-        raise ValueError(f"Input must be square 2D array, got shape {a.shape}")
-    n = a.shape[0]
-    cost = cholesky_cost(n)
-    with budget.deduct("linalg.cholesky", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.linalg.cholesky(a)
-    return result
+    n = a.shape[-1]
+    batch = _batch_size(a.shape)
+    cost = cholesky_cost(n) * batch if not _has_zero_dim(a.shape) else 0
+    budget.deduct("linalg.cholesky", flop_cost=cost, subscripts=None, shapes=(a.shape,))
+    return _np.linalg.cholesky(a, upper=upper)
 
 
 attach_docstring(cholesky, _np.linalg.cholesky, "linalg", r"$n^3$ FLOPs")
@@ -77,12 +77,13 @@ def qr(a, mode="reduced"):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
-    if a.ndim != 2:
-        raise ValueError(f"Input must be 2D, got {a.ndim}D")
-    m, n = a.shape
-    cost = qr_cost(m, n)
-    with budget.deduct("linalg.qr", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.linalg.qr(a, mode=mode)
+    m, n = a.shape[-2], a.shape[-1]
+    batch = _batch_size(a.shape)
+    cost = qr_cost(m, n) * batch if not _has_zero_dim(a.shape) else 0
+    budget.deduct("linalg.qr", flop_cost=cost, subscripts=None, shapes=(a.shape,))
+    result = _np.linalg.qr(a, mode=mode)
+    if mode in ("reduced", "complete"):
+        return QRResult(*result)
     return result
 
 
@@ -114,13 +115,12 @@ def eig(a):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
-    if a.ndim != 2 or a.shape[0] != a.shape[1]:
-        raise ValueError(f"Input must be square 2D array, got shape {a.shape}")
-    n = a.shape[0]
-    cost = eig_cost(n)
-    with budget.deduct("linalg.eig", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.linalg.eig(a)
-    return result
+    n = a.shape[-1]
+    batch = _batch_size(a.shape)
+    cost = eig_cost(n) * batch if not _has_zero_dim(a.shape) else 0
+    budget.deduct("linalg.eig", flop_cost=cost, subscripts=None, shapes=(a.shape,))
+    result = _np.linalg.eig(a)
+    return EigResult(*result)
 
 
 attach_docstring(eig, _np.linalg.eig, "linalg", r"$n^3$ FLOPs")
@@ -151,13 +151,12 @@ def eigh(a, UPLO="L"):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
-    if a.ndim != 2 or a.shape[0] != a.shape[1]:
-        raise ValueError(f"Input must be square 2D array, got shape {a.shape}")
-    n = a.shape[0]
-    cost = eigh_cost(n)
-    with budget.deduct("linalg.eigh", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        vals, vecs = _np.linalg.eigh(a, UPLO=UPLO)
-    return _np.asarray(vals), _np.asarray(vecs)
+    n = a.shape[-1]
+    batch = _batch_size(a.shape)
+    cost = eigh_cost(n) * batch if not _has_zero_dim(a.shape) else 0
+    budget.deduct("linalg.eigh", flop_cost=cost, subscripts=None, shapes=(a.shape,))
+    result = _np.linalg.eigh(a, UPLO=UPLO)
+    return EighResult(_np.asarray(result.eigenvalues), _np.asarray(result.eigenvectors))
 
 
 attach_docstring(eigh, _np.linalg.eigh, "linalg", r"$n^3$ FLOPs")
@@ -188,13 +187,11 @@ def eigvals(a):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
-    if a.ndim != 2 or a.shape[0] != a.shape[1]:
-        raise ValueError(f"Input must be square 2D array, got shape {a.shape}")
-    n = a.shape[0]
-    cost = eigvals_cost(n)
-    with budget.deduct("linalg.eigvals", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.linalg.eigvals(a)
-    return result
+    n = a.shape[-1]
+    batch = _batch_size(a.shape)
+    cost = eigvals_cost(n) * batch if not _has_zero_dim(a.shape) else 0
+    budget.deduct("linalg.eigvals", flop_cost=cost, subscripts=None, shapes=(a.shape,))
+    return _np.linalg.eigvals(a)
 
 
 attach_docstring(eigvals, _np.linalg.eigvals, "linalg", r"$n^3$ FLOPs")
@@ -225,13 +222,11 @@ def eigvalsh(a, UPLO="L"):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
-    if a.ndim != 2 or a.shape[0] != a.shape[1]:
-        raise ValueError(f"Input must be square 2D array, got shape {a.shape}")
-    n = a.shape[0]
-    cost = eigvalsh_cost(n)
-    with budget.deduct("linalg.eigvalsh", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.linalg.eigvalsh(a, UPLO=UPLO)
-    return result
+    n = a.shape[-1]
+    batch = _batch_size(a.shape)
+    cost = eigvalsh_cost(n) * batch if not _has_zero_dim(a.shape) else 0
+    budget.deduct("linalg.eigvalsh", flop_cost=cost, subscripts=None, shapes=(a.shape,))
+    return _np.linalg.eigvalsh(a, UPLO=UPLO)
 
 
 attach_docstring(eigvalsh, _np.linalg.eigvalsh, "linalg", r"$n^3$ FLOPs")
@@ -263,21 +258,22 @@ def svdvals_cost(m: int, n: int, k: int | None = None) -> int:
     return max(m * n * k, 1)
 
 
-def svdvals(a, k: int | None = None):
+def svdvals(x, /, *, k: int | None = None):
     """Singular values with FLOP counting."""
     budget = require_budget()
-    if not isinstance(a, _np.ndarray):
-        a = _np.asarray(a)
-    if a.ndim != 2:
-        raise ValueError(f"Input must be 2D, got {a.ndim}D")
-    m, n = a.shape
+    if not isinstance(x, _np.ndarray):
+        x = _np.asarray(x)
+    m, n = x.shape[-2], x.shape[-1]
+    batch = _batch_size(x.shape)
     if k is None:
         k = min(m, n)
-    if not (1 <= k <= min(m, n)):
+    if min(m, n) > 0 and not (1 <= k <= min(m, n)):
         raise ValueError(f"k must satisfy 1 <= k <= min(m, n) = {min(m, n)}, got k={k}")
-    cost = svdvals_cost(m, n, k)
-    with budget.deduct("linalg.svdvals", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.linalg.svdvals(a)[:k]
+    cost = svdvals_cost(m, n, k) * batch if not _has_zero_dim(x.shape) else 0
+    budget.deduct("linalg.svdvals", flop_cost=cost, subscripts=None, shapes=(x.shape,))
+    result = _np.linalg.svdvals(x)
+    if k < min(m, n):
+        result = result[..., :k]
     return result
 
 

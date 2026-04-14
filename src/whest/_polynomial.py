@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import inspect as _inspect
+
 import numpy as _np
 
 from whest._docstrings import attach_docstring
@@ -198,6 +200,7 @@ def polyfit(x, y, deg, **kwargs):
 
 
 attach_docstring(polyfit, _np.polyfit, "counted_custom", "2 * m * (deg+1)^2 FLOPs")
+polyfit.__signature__ = _inspect.signature(_np.polyfit)
 
 
 def poly(seq_of_zeros):

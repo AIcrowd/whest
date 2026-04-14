@@ -14,6 +14,7 @@ Any attribute not listed here is forwarded to ``numpy.random`` via
 from __future__ import annotations
 
 import builtins as _builtins
+import inspect as _inspect
 
 import numpy as _np
 import numpy.random as _npr
@@ -68,6 +69,10 @@ def _counted_sampler(np_func, op_name):
     wrapper.__doc__ = (
         f"Counted version of ``numpy.random.{op_name}``. Cost: numel(output) FLOPs."
     )
+    try:
+        wrapper.__signature__ = _inspect.signature(np_func)
+    except (ValueError, TypeError):
+        pass
     return wrapper
 
 
@@ -90,6 +95,10 @@ def _counted_dims_sampler(np_func, op_name):
     wrapper.__doc__ = (
         f"Counted version of ``numpy.random.{op_name}``. Cost: numel(output) FLOPs."
     )
+    try:
+        wrapper.__signature__ = _inspect.signature(np_func)
+    except (ValueError, TypeError):
+        pass
     return wrapper
 
 
@@ -177,6 +186,10 @@ def _counted_size_only_sampler(np_func, op_name):
     wrapper.__doc__ = (
         f"Counted version of ``numpy.random.{op_name}``. Cost: numel(output) FLOPs."
     )
+    try:
+        wrapper.__signature__ = _inspect.signature(np_func)
+    except (ValueError, TypeError):
+        pass
     return wrapper
 
 
@@ -204,14 +217,14 @@ def permutation(x):
     return result
 
 
-def shuffle(x, axis=0):
+def shuffle(x):
     """Counted version of ``numpy.random.shuffle``.
 
     Modifies ``x`` in-place. Cost: numel(output) FLOPs.
     """
     budget = require_budget()
     if hasattr(x, "shape"):
-        n = x.shape[axis]
+        n = x.shape[0]
     else:
         n = len(x)
     cost = _builtins.max(n, 1)

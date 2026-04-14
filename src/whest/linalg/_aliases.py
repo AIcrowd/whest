@@ -13,9 +13,9 @@ import whest as _me
 from whest._docstrings import attach_docstring
 
 
-def matmul(a, b):
+def matmul(x1, x2, /):
     """Matrix multiply (linalg namespace). Delegates to whest.matmul."""
-    return _me.matmul(a, b)
+    return _me.matmul(x1, x2)
 
 
 attach_docstring(
@@ -23,9 +23,24 @@ attach_docstring(
 )
 
 
-def cross(a, b, **kwargs):
-    """Cross product (linalg namespace). Delegates to whest.cross."""
-    return _me.cross(a, b, **kwargs)
+def cross(x1, x2, /, *, axis=-1):
+    """Cross product (linalg namespace). Uses np.linalg.cross for strict validation."""
+    import builtins as _builtins
+    from whest._validation import require_budget
+    from whest._ndarray import _aswhest
+    budget = require_budget()
+    # np.linalg.cross validates dimensionality (must be exactly 2 or 3)
+    result = _np.linalg.cross(x1, x2, axis=axis)
+    r = _np.asarray(result)
+    budget.deduct(
+        "linalg.cross",
+        flop_cost=_builtins.max(r.size * 3, 1),
+        subscripts=None,
+        shapes=(_np.asarray(x1).shape, _np.asarray(x2).shape),
+    )
+    if isinstance(result, _np.ndarray):
+        return _aswhest(result)
+    return result
 
 
 attach_docstring(
@@ -33,9 +48,9 @@ attach_docstring(
 )
 
 
-def outer(a, b, out=None):
+def outer(x1, x2, /):
     """Outer product (linalg namespace). Delegates to whest.outer."""
-    return _me.outer(a, b, out=out)
+    return _me.outer(x1, x2)
 
 
 attach_docstring(
@@ -43,9 +58,9 @@ attach_docstring(
 )
 
 
-def tensordot(a, b, axes=2):
+def tensordot(x1, x2, /, *, axes=2):
     """Tensor dot product (linalg namespace). Delegates to whest.tensordot."""
-    return _me.tensordot(a, b, axes=axes)
+    return _me.tensordot(x1, x2, axes=axes)
 
 
 attach_docstring(
@@ -58,9 +73,9 @@ attach_docstring(
 
 if hasattr(_np.linalg, "vecdot"):
 
-    def vecdot(a, b, **kwargs):
+    def vecdot(x1, x2, /, *, axis=-1):
         """Vector dot product (linalg namespace). Delegates to whest.vecdot."""
-        return _me.vecdot(a, b, **kwargs)
+        return _me.vecdot(x1, x2, axis=axis)
 
     attach_docstring(
         vecdot,
@@ -76,17 +91,17 @@ else:
         raise UnsupportedFunctionError("linalg.vecdot", min_version="2.1")
 
 
-def diagonal(a, **kwargs):
+def diagonal(x, /, *, offset=0):
     """Diagonal (linalg namespace). Delegates to whest.diagonal. Cost: 0 FLOPs."""
-    return _me.diagonal(a, **kwargs)
+    return _me.diagonal(x, offset=offset, axis1=-2, axis2=-1)
 
 
 attach_docstring(diagonal, _np.linalg.diagonal, "linalg", "0 FLOPs (free)")
 
 
-def matrix_transpose(a):
+def matrix_transpose(x, /):
     """Transpose (linalg namespace). Delegates to whest.matrix_transpose. Cost: 0 FLOPs."""
-    return _me.matrix_transpose(a)
+    return _me.matrix_transpose(x)
 
 
 attach_docstring(

@@ -7,6 +7,7 @@ Each function charges a FLOP cost to the active budget.
 from __future__ import annotations
 
 import builtins as _builtins
+import inspect as _inspect
 
 import numpy as _np
 
@@ -19,13 +20,12 @@ from whest._validation import require_budget
 # ---------------------------------------------------------------------------
 
 
-def trace(a, offset=0, axis1=0, axis2=1, dtype=None):
+def trace(a, offset=0, axis1=0, axis2=1, dtype=None, out=None):
     budget = require_budget()
     a = _np.asarray(a)
     cost = _builtins.max(_builtins.min(a.shape[axis1], a.shape[axis2]), 1)
-    with budget.deduct("trace", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.trace(a, offset=offset, axis1=axis1, axis2=axis2, dtype=dtype)
-    return result
+    budget.deduct("trace", flop_cost=cost, subscripts=None, shapes=(a.shape,))
+    return _np.trace(a, offset=offset, axis1=axis1, axis2=axis2, dtype=dtype, out=out)
 
 
 attach_docstring(
@@ -42,14 +42,14 @@ def allclose(a, b, **kwargs):
     for d in out_shape:
         numel *= d
     cost = _builtins.max(numel, 1)
-    with budget.deduct(
+    budget.deduct(
         "allclose", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
-    ):
-        result = _np.allclose(a, b, **kwargs)
-    return result
+    )
+    return _np.allclose(a, b, **kwargs)
 
 
 attach_docstring(allclose, _np.allclose, "counted_custom", "numel(a) FLOPs")
+allclose.__signature__ = _inspect.signature(_np.allclose)
 
 
 def array_equal(a, b, **kwargs):
@@ -58,14 +58,14 @@ def array_equal(a, b, **kwargs):
     b = _np.asarray(b)
     # array_equal does not broadcast; returns False on shape mismatch
     cost = _builtins.max(a.size, b.size, 1)
-    with budget.deduct(
+    budget.deduct(
         "array_equal", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
-    ):
-        result = _np.array_equal(a, b, **kwargs)
-    return result
+    )
+    return _np.array_equal(a, b, **kwargs)
 
 
 attach_docstring(array_equal, _np.array_equal, "counted_custom", "numel(a) FLOPs")
+array_equal.__signature__ = _inspect.signature(_np.array_equal)
 
 
 def array_equiv(a, b):
@@ -81,14 +81,14 @@ def array_equiv(a, b):
         cost = _builtins.max(numel, 1)
     except ValueError:
         cost = _builtins.max(a.size, b.size, 1)
-    with budget.deduct(
+    budget.deduct(
         "array_equiv", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
-    ):
-        result = _np.array_equiv(a, b)
-    return result
+    )
+    return _np.array_equiv(a, b)
 
 
 attach_docstring(array_equiv, _np.array_equiv, "counted_custom", "numel(a) FLOPs")
+array_equiv.__signature__ = _inspect.signature(_np.array_equiv)
 
 
 # ---------------------------------------------------------------------------
@@ -107,9 +107,8 @@ def histogram(a, bins=10, **kwargs):
     else:
         bins_arr = _np.asarray(bins)
         cost = _builtins.max(n * _ceil_log2(_builtins.len(bins_arr)), 1)
-    with budget.deduct("histogram", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.histogram(a, bins=bins, **kwargs)
-    return result
+    budget.deduct("histogram", flop_cost=cost, subscripts=None, shapes=(a.shape,))
+    return _np.histogram(a, bins=bins, **kwargs)
 
 
 attach_docstring(
@@ -118,6 +117,7 @@ attach_docstring(
     "counted_custom",
     "n * ceil(log2(bins)) FLOPs when bins is int; n FLOPs otherwise",
 )
+histogram.__signature__ = _inspect.signature(_np.histogram)
 
 
 def histogram2d(x, y, bins=10, **kwargs):
@@ -149,11 +149,10 @@ def histogram2d(x, y, bins=10, **kwargs):
     else:
         cost = _builtins.max(n, 1)
 
-    with budget.deduct(
+    budget.deduct(
         "histogram2d", flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape)
-    ):
-        result = _np.histogram2d(x, y, bins=bins, **kwargs)
-    return result
+    )
+    return _np.histogram2d(x, y, bins=bins, **kwargs)
 
 
 attach_docstring(
@@ -162,6 +161,7 @@ attach_docstring(
     "counted_custom",
     "n * (ceil(log2(bx)) + ceil(log2(by))) FLOPs when bins is int pair; n FLOPs otherwise",
 )
+histogram2d.__signature__ = _inspect.signature(_np.histogram2d)
 
 
 def histogramdd(sample, bins=10, **kwargs):
@@ -191,11 +191,10 @@ def histogramdd(sample, bins=10, **kwargs):
     else:
         cost = _builtins.max(n, 1)
 
-    with budget.deduct(
+    budget.deduct(
         "histogramdd", flop_cost=cost, subscripts=None, shapes=(sample.shape,)
-    ):
-        result = _np.histogramdd(sample, bins=bins, **kwargs)
-    return result
+    )
+    return _np.histogramdd(sample, bins=bins, **kwargs)
 
 
 attach_docstring(
@@ -204,34 +203,38 @@ attach_docstring(
     "counted_custom",
     "n * d * ceil(log2(bins)) FLOPs when bins is int; n FLOPs otherwise",
 )
+histogramdd.__signature__ = _inspect.signature(_np.histogramdd)
 
 
 def histogram_bin_edges(a, bins=10, **kwargs):
     budget = require_budget()
     a = _np.asarray(a)
     cost = _builtins.max(a.size, 1)
-    with budget.deduct(
+    budget.deduct(
         "histogram_bin_edges", flop_cost=cost, subscripts=None, shapes=(a.shape,)
-    ):
-        result = _np.histogram_bin_edges(a, bins=bins, **kwargs)
-    return result
+    )
+    return _np.histogram_bin_edges(a, bins=bins, **kwargs)
 
 
 attach_docstring(
     histogram_bin_edges, _np.histogram_bin_edges, "counted_custom", "numel(a) FLOPs"
 )
+histogram_bin_edges.__signature__ = _inspect.signature(_np.histogram_bin_edges)
 
 
 def bincount(x, **kwargs):
     budget = require_budget()
     x = _np.asarray(x)
     cost = _builtins.max(x.size, 1)
-    with budget.deduct("bincount", flop_cost=cost, subscripts=None, shapes=(x.shape,)):
-        result = _np.bincount(x, **kwargs)
-    return result
+    budget.deduct("bincount", flop_cost=cost, subscripts=None, shapes=(x.shape,))
+    return _np.bincount(x, **kwargs)
 
 
 attach_docstring(bincount, _np.bincount, "counted_custom", "numel(x) FLOPs")
+try:
+    bincount.__signature__ = _inspect.signature(_np.bincount)
+except (ValueError, TypeError):
+    pass
 
 
 # ---------------------------------------------------------------------------
@@ -242,23 +245,23 @@ attach_docstring(bincount, _np.bincount, "counted_custom", "numel(x) FLOPs")
 def logspace(start, stop, num=50, **kwargs):
     budget = require_budget()
     cost = _builtins.max(num, 1)
-    with budget.deduct("logspace", flop_cost=cost, subscripts=None, shapes=((num,),)):
-        result = _np.logspace(start, stop, num=num, **kwargs)
-    return result
+    budget.deduct("logspace", flop_cost=cost, subscripts=None, shapes=((num,),))
+    return _np.logspace(start, stop, num=num, **kwargs)
 
 
 attach_docstring(logspace, _np.logspace, "counted_custom", "num FLOPs")
+logspace.__signature__ = _inspect.signature(_np.logspace)
 
 
 def geomspace(start, stop, num=50, **kwargs):
     budget = require_budget()
     cost = _builtins.max(num, 1)
-    with budget.deduct("geomspace", flop_cost=cost, subscripts=None, shapes=((num,),)):
-        result = _np.geomspace(start, stop, num=num, **kwargs)
-    return result
+    budget.deduct("geomspace", flop_cost=cost, subscripts=None, shapes=((num,),))
+    return _np.geomspace(start, stop, num=num, **kwargs)
 
 
 attach_docstring(geomspace, _np.geomspace, "counted_custom", "num FLOPs")
+geomspace.__signature__ = _inspect.signature(_np.geomspace)
 
 
 def vander(x, N=None, **kwargs):
@@ -268,12 +271,12 @@ def vander(x, N=None, **kwargs):
     if N is None:
         N = n
     cost = _builtins.max(n * (N - 1), 1)
-    with budget.deduct("vander", flop_cost=cost, subscripts=None, shapes=(x.shape,)):
-        result = _np.vander(x, N=N, **kwargs)
-    return result
+    budget.deduct("vander", flop_cost=cost, subscripts=None, shapes=(x.shape,))
+    return _np.vander(x, N=N, **kwargs)
 
 
 attach_docstring(vander, _np.vander, "counted_custom", "len(x) * (N-1) FLOPs")
+vander.__signature__ = _inspect.signature(_np.vander)
 
 # ---------------------------------------------------------------------------
 # Apply & piecewise (formerly blacklisted)
@@ -287,10 +290,9 @@ def apply_along_axis(func1d, axis, arr, *args, **kwargs):
         arr = _np.asarray(arr)
     result = _np.apply_along_axis(func1d, axis, arr, *args, **kwargs)
     cost = result.size if hasattr(result, "size") else 1
-    with budget.deduct(
+    budget.deduct(
         "apply_along_axis", flop_cost=cost, subscripts=None, shapes=(arr.shape,)
-    ):
-        pass  # numpy call already executed above
+    )
     return result
 
 
@@ -309,8 +311,7 @@ def apply_over_axes(func, a, axes):
         a = _np.asarray(a)
     result = _np.apply_over_axes(func, a, axes)
     cost = result.size if hasattr(result, "size") else 1
-    with budget.deduct("apply_over_axes", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        pass  # numpy call already executed above
+    budget.deduct("apply_over_axes", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return result
 
 
@@ -329,8 +330,7 @@ def piecewise(x, condlist, funclist, *args, **kw):
         x = _np.asarray(x)
     result = _np.piecewise(x, condlist, funclist, *args, **kw)
     cost = x.size
-    with budget.deduct("piecewise", flop_cost=cost, subscripts=None, shapes=(x.shape,)):
-        pass  # numpy call already executed above
+    budget.deduct("piecewise", flop_cost=cost, subscripts=None, shapes=(x.shape,))
     return result
 
 
