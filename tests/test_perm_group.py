@@ -546,3 +546,53 @@ class TestSetwiseStabilizer:
         g = PermutationGroup.dihedral(4)
         stab = g.setwise_stabilizer({0, 2})
         assert stab.order() == 4
+
+
+class TestRestrict:
+    def test_s3_restrict_to_pair(self):
+        """S_3 pointwise-stabilizer of {2}, restricted to {0,1} → S_2."""
+        g = PermutationGroup.symmetric(3, axes=(10, 20, 30))
+        stab = g.pointwise_stabilizer({2})
+        r = stab.restrict((0, 1))
+        assert r.degree == 2
+        assert r.order() == 2
+        assert r.axes == (10, 20)
+
+    def test_c4_setwise_restrict(self):
+        """C_4 setwise-stabilizer of {1,3}, restricted to {0,2} → C_2."""
+        g = PermutationGroup.cyclic(4, axes=(0, 1, 2, 3))
+        stab = g.setwise_stabilizer({1, 3})
+        r = stab.restrict((0, 2))
+        assert r.degree == 2
+        assert r.order() == 2
+        assert r.axes == (0, 2)
+        # The non-identity element swaps 0↔1 (re-indexed from 0↔2)
+        elems = r.elements()
+        non_id = [e for e in elems if not e.is_identity]
+        assert len(non_id) == 1
+        assert non_id[0](0) == 1 and non_id[0](1) == 0
+
+    def test_restrict_preserves_identity(self):
+        """Restricting a trivial group gives a trivial group."""
+        g = PermutationGroup.cyclic(3)
+        stab = g.pointwise_stabilizer({0, 1, 2})  # trivial
+        r = stab.restrict((0, 1))
+        assert r.degree == 2
+        assert r.order() == 1
+
+    def test_restrict_single_point(self):
+        """Restricting to a single point gives degree-1 trivial group."""
+        g = PermutationGroup.symmetric(3)
+        stab = g.pointwise_stabilizer({1, 2})
+        r = stab.restrict((0,))
+        assert r.degree == 1
+        assert r.order() == 1
+
+    def test_restrict_no_axes(self):
+        """Restrict works when group has no axes metadata."""
+        g = PermutationGroup.symmetric(3)
+        stab = g.pointwise_stabilizer({2})
+        r = stab.restrict((0, 1))
+        assert r.degree == 2
+        assert r.order() == 2
+        assert r.axes is None
