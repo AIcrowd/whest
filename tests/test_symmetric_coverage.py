@@ -800,3 +800,61 @@ class TestSymmetryInfoEdgeCases:
         """Groups with < 2 dims don't produce auto PermutationGroup."""
         info = SymmetryInfo(symmetric_axes=[(0,)], shape=(3,))
         assert len(info.groups) == 0
+
+
+class TestPropagateSliceGeneralGroups:
+    """Test propagate_symmetry_slice with non-S_k groups."""
+
+    def test_c3_slice_one_axis_no_symmetry(self):
+        """C_3 on {0,1,2}, slice axis 2 → no symmetry survives."""
+        g = PermutationGroup.cyclic(3, axes=(0, 1, 2))
+        result = propagate_symmetry_slice([g], (5, 5, 5), (slice(None), slice(None), 0))
+        assert result is None
+
+    def test_c4_slice_two_axes_c2_survives(self):
+        """C_4 on {0,1,2,3}, slice axes {1,3} → C_2 on output {0,1}."""
+        g = PermutationGroup.cyclic(4, axes=(0, 1, 2, 3))
+        result = propagate_symmetry_slice([g], (5, 5, 5, 5), (slice(None), 0, slice(None), 0))
+        assert result is not None
+        assert len(result) == 1
+        assert result[0].degree == 2
+        assert result[0].order() == 2
+        assert result[0].axes == (0, 1)
+
+    def test_s3_slice_one_axis_s2_survives(self):
+        """S_3 on {0,1,2}, slice axis 2 → S_2 on {0,1}. Same as old behavior."""
+        g = PermutationGroup.symmetric(3, axes=(0, 1, 2))
+        result = propagate_symmetry_slice([g], (5, 5, 5), (slice(None), slice(None), 0))
+        assert result is not None
+        assert len(result) == 1
+        assert result[0].order() == 2
+
+    def test_d4_slice_one_axis(self):
+        """D_4 on {0,1,2,3}, slice axis 0 → pointwise stab of {0}, restricted."""
+        g = PermutationGroup.dihedral(4, axes=(0, 1, 2, 3))
+        result = propagate_symmetry_slice([g], (5, 5, 5, 5), (0, slice(None), slice(None), slice(None)))
+        assert result is not None
+        assert len(result) == 1
+        stab = result[0]
+        assert stab.degree == 3
+        for elem in stab.elements():
+            assert elem.size == 3
+
+    def test_multiple_groups_independent(self):
+        """Two independent groups, slice removes axis from one."""
+        g1 = PermutationGroup.cyclic(3, axes=(0, 1, 2))
+        g2 = PermutationGroup.symmetric(2, axes=(3, 4))
+        result = propagate_symmetry_slice(
+            [g1, g2], (5, 5, 5, 5, 5), (0, slice(None), slice(None), slice(None), slice(None))
+        )
+        assert result is not None
+        assert len(result) == 1
+        assert result[0].order() == 2
+
+    def test_no_axes_removed_group_unchanged(self):
+        """Full slice preserves group unchanged."""
+        g = PermutationGroup.cyclic(3, axes=(0, 1, 2))
+        result = propagate_symmetry_slice([g], (5, 5, 5), (slice(None), slice(None), slice(None)))
+        assert result is not None
+        assert len(result) == 1
+        assert result[0].order() == 3

@@ -223,21 +223,27 @@ def _warn_symmetry_loss(
 
 
 def propagate_symmetry_slice(
-    symmetric_axes: list[tuple[int, ...]],
+    groups: list[PermutationGroup],
     shape: tuple[int, ...],
     key,
-) -> list[tuple[int, ...]] | None:
+) -> list[PermutationGroup] | None:
     """Compute new symmetry groups after ``__getitem__(key)``.
+
+    Parameters
+    ----------
+    groups : list of PermutationGroup
+        Each group has ``axes`` indicating which tensor dimensions it acts on.
+    shape : tuple of int
+        Original tensor shape.
+    key : indexing key
 
     Returns *None* if no symmetry survives (caller should return plain ndarray).
     """
     ndim = len(shape)
 
-    # Normalize key to a tuple.
     if not isinstance(key, tuple):
         key = (key,)
 
-    # Advanced indexing (ndarray / list) → bail out.
     for k in key:
         if isinstance(k, (np.ndarray, list)):
             return None
@@ -251,27 +257,23 @@ def propagate_symmetry_slice(
                 raise IndexError("only one Ellipsis allowed")
             ellipsis_seen = True
             n_newaxis_in_key = sum(1 for kk in key if kk is None)
-            n_explicit = len(key) - 1 - n_newaxis_in_key  # -1 for Ellipsis
+            n_explicit = len(key) - 1 - n_newaxis_in_key
             n_fill = ndim - n_explicit
             expanded.extend([slice(None)] * n_fill)
         else:
             expanded.append(k)
     if not ellipsis_seen:
-        # Pad with slice(None) for unspecified trailing dims.
         n_newaxis = sum(1 for k in expanded if k is None)
         while len(expanded) - n_newaxis < ndim:
             expanded.append(slice(None))
     key_expanded = expanded
 
-    # Walk through the key, tracking each original dim.
-    # old_dim_idx tracks which original dim we're consuming.
+    # Classify each original dim.
     old_dim_idx = 0
-    # For each original dim: "removed", ("kept", new_size), or "untouched"
     dim_actions: dict[int, str | tuple] = {}
 
     for k in key_expanded:
         if k is None:
-            # np.newaxis — adds a dim, doesn't consume an original dim.
             continue
         if old_dim_idx >= ndim:
             break
@@ -279,7 +281,6 @@ def propagate_symmetry_slice(
             dim_actions[old_dim_idx] = "removed"
             old_dim_idx += 1
         elif isinstance(k, slice):
-            # Compute resulting size for this dim.
             start, stop, step = k.indices(shape[old_dim_idx])
             new_size = max(0, (stop - start + (step - (1 if step > 0 else -1))) // step)
             if new_size == shape[old_dim_idx]:
@@ -288,23 +289,18 @@ def propagate_symmetry_slice(
                 dim_actions[old_dim_idx] = ("resized", new_size)
             old_dim_idx += 1
         else:
-            # Unknown indexer — bail.
             return None
 
-    # Fill remaining dims as untouched.
     while old_dim_idx < ndim:
         dim_actions[old_dim_idx] = "untouched"
         old_dim_idx += 1
 
-    # Build old→new dim mapping (removed dims get None).
+    # Build old→new dim mapping.
     removed_dims = {d for d, a in dim_actions.items() if a == "removed"}
     old_to_new: dict[int, int | None] = {}
-    new_idx = 0
-    # Account for newaxis insertions: they shift new indices.
-    # Simple approach: count newaxis positions before each original dim.
     newaxis_positions: list[int] = []
     orig_idx = 0
-    for i, k in enumerate(key_expanded):
+    for k in key_expanded:
         if k is None:
             newaxis_positions.append(orig_idx)
         else:
@@ -312,7 +308,6 @@ def propagate_symmetry_slice(
 
     new_idx = 0
     for d in range(ndim):
-        # Insert newaxis dims that come before this original dim.
         while newaxis_positions and newaxis_positions[0] <= d:
             newaxis_positions.pop(0)
             new_idx += 1
@@ -322,43 +317,65 @@ def propagate_symmetry_slice(
             old_to_new[d] = new_idx
             new_idx += 1
 
-    # Remap symmetry groups.
-    new_groups: list[tuple[int, ...]] = []
-    for group in symmetric_axes:
-        # Collect surviving dims with their effective sizes.
-        surviving_with_size: list[tuple[int, int]] = []  # (new_dim, size)
-        for d in group:
-            action = dim_actions.get(d, "untouched")
-            if action == "removed":
-                continue
-            new_d = old_to_new.get(d)
-            if new_d is None:
-                continue
-            if isinstance(action, tuple) and action[0] == "resized":
-                surviving_with_size.append((new_d, action[1]))
-            else:
-                surviving_with_size.append((new_d, shape[d]))
-
-        if not surviving_with_size:
+    # Process each group.
+    new_groups: list[PermutationGroup] = []
+    for group in groups:
+        axes = group.axes
+        if axes is None:
             continue
 
-        # Group by size — only dims with the same size can stay in a group.
-        # Use the most common size (the untouched original size).
-        from collections import Counter
+        # Map tensor axes to group-local indices.
+        local_removed: set[int] = set()
+        local_kept: list[int] = []
+        for local_idx, tensor_dim in enumerate(axes):
+            action = dim_actions.get(tensor_dim, "untouched")
+            if action == "removed":
+                local_removed.add(local_idx)
+            else:
+                local_kept.append(local_idx)
 
-        size_counts = Counter(s for _, s in surviving_with_size)
-        # Pick the original (untouched) size as the canonical one.
-        # That's the size that appears for untouched dims.
-        original_size = shape[group[0]]
-        if original_size in size_counts:
-            canonical_size = original_size
-        else:
-            # All dims were resized; pick the most common size.
-            canonical_size = size_counts.most_common(1)[0][0]
+        if not local_kept:
+            continue
 
-        same_size_dims = [d for d, s in surviving_with_size if s == canonical_size]
-        if len(same_size_dims) >= 2:
-            new_groups.append(tuple(sorted(same_size_dims)))
+        # Setwise stabilizer: elements that map the set of removed axes to itself.
+        # This allows permutations among removed axes that share the same slice value.
+        stab = group.setwise_stabilizer(local_removed)
+
+        # Among surviving axes, check for size mismatches.
+        size_map: dict[int, int] = {}
+        for local_idx in local_kept:
+            tensor_dim = axes[local_idx]
+            action = dim_actions.get(tensor_dim, "untouched")
+            if isinstance(action, tuple) and action[0] == "resized":
+                size_map[local_idx] = action[1]
+            else:
+                size_map[local_idx] = shape[tensor_dim]
+
+        sizes = set(size_map.values())
+        if len(sizes) > 1:
+            for sz in sizes:
+                same_size = {li for li, s in size_map.items() if s == sz}
+                complement = set(local_kept) - same_size
+                if complement:
+                    stab = stab.setwise_stabilizer(same_size)
+
+        # Restrict to kept local indices.
+        kept_tuple = tuple(local_kept)
+        if len(kept_tuple) < 2:
+            continue
+
+        restricted = stab.restrict(kept_tuple)
+
+        if restricted.order() <= 1:
+            continue
+
+        # Remap axes to new tensor dim numbering.
+        new_axes = tuple(old_to_new[axes[k]] for k in kept_tuple)
+        if any(a is None for a in new_axes):
+            continue
+
+        final = PermutationGroup(*restricted.generators, axes=new_axes)
+        new_groups.append(final)
 
     return new_groups if new_groups else None
 
