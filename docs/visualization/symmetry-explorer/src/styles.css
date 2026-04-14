@@ -1197,7 +1197,73 @@ code, .mono { font-family: var(--font-mono); }
 }
 .rejected-back:hover { border-color: var(--coral); color: var(--coral); }
 
-/* Modal matrices: inherit from .matrix-table, no overrides needed */
+.rejected-detail-controls {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 12px; justify-content: center;
+}
+.rejected-detail-arrow { color: var(--gray-400); font-size: 16px; }
+.ctrl-btn-active {
+  background: var(--gray-900); color: var(--white);
+  border-color: var(--gray-900);
+}
+
+/* ─── Shared Incidence Matrix ────────── */
+
+.inc-matrix-outer { margin-bottom: 8px; display: flex; flex-direction: column; align-items: center; }
+.inc-matrix-label {
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--gray-400);
+  margin-bottom: 4px; font-family: var(--font-sans); text-align: center;
+}
+
+.inc-matrix {
+  position: relative;
+  font-family: var(--font-mono); font-size: 12px;
+}
+
+.inc-col-header {
+  position: absolute; top: 0; left: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 500; font-size: 12px;
+  color: var(--gray-400);
+}
+.inc-col-header.inc-col-v { color: var(--accent-blue); }
+.inc-col-header.inc-col-w { color: var(--accent-green); }
+.inc-col-header.inc-moved { color: var(--coral); font-weight: 600; }
+
+.inc-row {
+  position: absolute; left: 0; width: 100%;
+  display: flex; align-items: center;
+}
+.inc-row-moved .inc-row-label { color: var(--coral); font-weight: 600; }
+
+.inc-row-label {
+  position: absolute; left: 0; top: 0; height: 100%;
+  display: flex; align-items: center; justify-content: flex-end;
+  padding-right: 10px;
+  font-size: 11px; color: var(--gray-400); white-space: nowrap;
+  font-family: var(--font-mono);
+}
+
+.inc-cell {
+  position: absolute; top: 0; left: 0;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--gray-200);
+  color: var(--gray-600);
+  background: var(--white);
+}
+.inc-cell.inc-cell-active {
+  background: rgba(250, 158, 51, 0.08);
+  color: var(--accent-amber); font-weight: 600;
+}
+.inc-cell.inc-cell-col-moved {
+  background: rgba(74, 124, 255, 0.06);
+  border-color: rgba(74, 124, 255, 0.2);
+}
+.inc-row-moved .inc-cell {
+  background: rgba(240, 82, 77, 0.04);
+  border-color: rgba(240, 82, 77, 0.15);
+}
 
 .rejected-modal-fingerprints { margin-top: 12px; }
 

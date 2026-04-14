@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { buildUVertexLabels } from '../engine/uVertexLabel.js';
+import IncidenceMatrix from './IncidenceMatrix.jsx';
 
 const STAGE_LABELS = ['M', 'σ(M)', 'π(σ(M))'];
 
@@ -175,17 +176,21 @@ export default function SigmaLoop({ results, graph, matrixData, example }) {
             </button>
           </div>
 
-          {/* Animated matrix */}
+          {/* Animated matrix — uses shared IncidenceMatrix */}
           {stages && (
             <div className="anim-matrix-container">
-              <AnimatedMatrix
-                stage={stages[stage]}
-                stageIdx={stage}
-                labels={labels}
+              <IncidenceMatrix
+                matrix={stages[stage].matrix}
+                colLabels={stages[stage].colOrder}
                 uVertices={uVertices}
+                example={example}
                 freeLabels={freeLabels}
-                isValid={selected.isValid}
-                uLabels={uLabels}
+                rowPerm={stages[stage].rowPerm}
+                colPerm={stages[stage].colPerm}
+                movedRows={stages[stage].movedRows}
+                movedCols={stages[stage].movedCols}
+                animate={true}
+                label={STAGE_LABELS[stage]}
               />
               {stage === 2 && selected.isValid && (
                 <div className="recovery-badge">= M ✓</div>
@@ -275,90 +280,93 @@ function RejectedModal({
           </div>
         )}
 
-        {/* Detail view */}
+        {/* Detail view — shows M → σ(M) using shared IncidenceMatrix */}
         {pair && (
-          <>
-            <button className="rejected-back" onClick={onBack}>
-              ← Back to list
-            </button>
-            <div className="rejected-modal-sigma">
-              σ = {fmtSigma(pair.sigmaRowPerm, uLabels)}
-            </div>
-            <p className="rejected-modal-reason">{pair.reason || 'No valid π found'}</p>
-
-            <div className="rejected-modal-matrices">
-              <div className="rejected-modal-matrix">
-                <div className="rejected-modal-matrix-label">M (original)</div>
-                <table className="matrix-table matrix-table-sm">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      {labels.map(lbl => (
-                        <th key={lbl} className={freeLabels.has(lbl) ? 'col-v' : 'col-w'}>{lbl}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {originalMatrix.map((row, rIdx) => (
-                      <tr key={rIdx}>
-                        <td className="row-label"><span className="op-tag">{uLabels[rIdx]}</span></td>
-                        {row.map((val, cIdx) => (
-                          <td key={cIdx} className={`matrix-cell ${val > 0 ? 'cell-active' : ''}`}>{val}</td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div className="rejected-modal-arrow">→</div>
-              <div className="rejected-modal-matrix">
-                <div className="rejected-modal-matrix-label">σ(M)</div>
-                <table className="matrix-table matrix-table-sm">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      {labels.map(lbl => (
-                        <th key={lbl} className={freeLabels.has(lbl) ? 'col-v' : 'col-w'}>{lbl}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {pair.sigmaMatrix?.map((row, rIdx) => (
-                      <tr key={rIdx}>
-                        <td className="row-label">
-                          <span className="op-tag">{uLabels[pair.sigmaRowPerm?.[rIdx]]}</span>
-                        </td>
-                        {row.map((val, cIdx) => (
-                          <td key={cIdx} className={`matrix-cell ${val > 0 ? 'cell-active' : ''}`}>{val}</td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {pair.sigmaColOf && (
-              <div className="rejected-modal-fingerprints">
-                <div className="rejected-modal-matrix-label">σ(M) column fingerprints</div>
-                <div className="fp-grid">
-                  {labels.map(lbl => (
-                    <div key={lbl} className="fp-item">
-                      <span className="fp-label">{lbl}</span>
-                      <code className="fp-value">({pair.sigmaColOf[lbl]?.replace(/,/g, ', ')})</code>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </>
+          <RejectedDetail
+            pair={pair}
+            labels={labels}
+            uVertices={uVertices}
+            example={example}
+            freeLabels={freeLabels}
+            uLabels={uLabels}
+            originalMatrix={originalMatrix}
+            onBack={onBack}
+            fmtSigma={fmtSigma}
+          />
         )}
       </div>
     </div>
   );
 }
 
-/* ── Animated Matrix ── */
+/* ── Rejected Detail — M → σ(M) with animation, no π step ── */
+
+function RejectedDetail({ pair, labels, uVertices, example, freeLabels, uLabels, originalMatrix, onBack, fmtSigma }) {
+  const [showSigma, setShowSigma] = useState(false);
+
+  // Build moved rows set
+  const movedRows = new Set();
+  if (pair.sigmaRowPerm) {
+    pair.sigmaRowPerm.forEach((uIdx, k) => {
+      if (uIdx !== k) movedRows.add(k);
+    });
+  }
+
+  return (
+    <>
+      <button className="rejected-back" onClick={onBack}>
+        ← Back to list
+      </button>
+      <div className="rejected-modal-sigma">
+        σ = {fmtSigma(pair.sigmaRowPerm, uLabels)}
+      </div>
+      <p className="rejected-modal-reason">{pair.reason || 'No valid π found'}</p>
+
+      <div className="rejected-detail-controls">
+        <button
+          className={`ctrl-btn ${!showSigma ? 'ctrl-btn-active' : ''}`}
+          onClick={() => setShowSigma(false)}>
+          M
+        </button>
+        <span className="rejected-detail-arrow">→</span>
+        <button
+          className={`ctrl-btn ${showSigma ? 'ctrl-btn-active' : ''}`}
+          onClick={() => setShowSigma(true)}>
+          σ(M)
+        </button>
+      </div>
+
+      <IncidenceMatrix
+        matrix={showSigma ? pair.sigmaMatrix : originalMatrix}
+        colLabels={labels}
+        uVertices={uVertices}
+        example={example}
+        freeLabels={freeLabels}
+        rowPerm={showSigma ? pair.sigmaRowPerm : null}
+        movedRows={showSigma ? movedRows : null}
+        animate={true}
+        label={showSigma ? 'σ(M)' : 'M'}
+        compact={true}
+      />
+
+      {showSigma && pair.sigmaColOf && (
+        <div className="rejected-modal-fingerprints">
+          <div className="rejected-modal-matrix-label">σ(M) column fingerprints</div>
+          <div className="fp-grid">
+            {labels.map(lbl => (
+              <div key={lbl} className="fp-item">
+                <span className="fp-label">{lbl}</span>
+                <code className="fp-value">({pair.sigmaColOf[lbl]?.replace(/,/g, ', ')})</code>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+/* ── Animated Matrix (legacy, now unused — kept for reference) ── */
 
 /**
  * AnimatedMatrix — rows are positioned absolutely and animate their Y position

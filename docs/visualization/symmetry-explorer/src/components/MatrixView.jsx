@@ -1,9 +1,8 @@
-import { buildUVertexLabels } from '../engine/uVertexLabel.js';
+import IncidenceMatrix from './IncidenceMatrix.jsx';
 
 export default function MatrixView({ matrixData, graph, example, variableColors }) {
   const { matrix, labels, colFingerprints, fpToLabels } = matrixData;
   const { uVertices, freeLabels } = graph;
-  const uLabels = buildUVertexLabels(uVertices, example);
 
   // Group fingerprints by value to highlight equivalent columns
   const fpColors = {};
@@ -18,45 +17,14 @@ export default function MatrixView({ matrixData, graph, example, variableColors 
   return (
     <div className="matrix-view">
       <div className="matrix-wrapper">
-        <table className="matrix-table">
-          <thead>
-            <tr>
-              <th></th>
-              {labels.map(lbl => (
-                <th key={lbl} className={freeLabels.has(lbl) ? 'col-v' : 'col-w'}>
-                  {lbl}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {matrix.map((row, rIdx) => {
-              const u = uVertices[rIdx];
-              const lblStr = [...u.labels].sort().join(',');
-              return (
-                <tr key={rIdx}>
-                  <td className="row-label">
-                    {(() => {
-                      const opName = example.operandNames?.[u.opIdx] || `Op${u.opIdx}`;
-                      const vc = variableColors?.[opName];
-                      return (
-                        <span className="op-tag" style={vc ? { color: vc.color, borderColor: `${vc.color}33` } : {}}>
-                          {uLabels[rIdx]}
-                        </span>
-                      );
-                    })()}
-                  </td>
-                  {row.map((val, cIdx) => (
-                    <td key={cIdx}
-                      className={`matrix-cell ${val > 0 ? 'cell-active' : ''}`}>
-                      {val}
-                    </td>
-                  ))}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        <IncidenceMatrix
+          matrix={matrix}
+          colLabels={labels}
+          uVertices={uVertices}
+          example={example}
+          freeLabels={freeLabels}
+          label="M"
+        />
       </div>
 
       <div className="fingerprints">
