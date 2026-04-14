@@ -27,7 +27,7 @@ const config: Config = {
   },
 
   markdown: {
-    format: 'md',
+    format: 'detect',
     mermaid: true,
   },
 
