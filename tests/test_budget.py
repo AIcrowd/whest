@@ -271,3 +271,33 @@ def test_summary_includes_time_section():
     summary = b.summary()
     assert "Wall time:" in summary
     assert "Tracked time:" in summary
+
+
+import threading
+
+
+def test_thread_isolation_time_tracking():
+    """Two threads with separate BudgetContexts track time independently."""
+    import whest
+    from whest._budget import _reset_global_default
+
+    results = {}
+
+    def worker(name, sleep_time):
+        _reset_global_default()
+        with whest.BudgetContext(flop_budget=int(1e9), quiet=True) as b:
+            _ = whest.add(whest.ones((10,)), whest.ones((10,)))
+            _time.sleep(sleep_time)
+            _ = whest.add(whest.ones((10,)), whest.ones((10,)))
+        results[name] = b.wall_time_s
+
+    t1 = threading.Thread(target=worker, args=("fast", 0.01))
+    t2 = threading.Thread(target=worker, args=("slow", 0.05))
+    t1.start()
+    t2.start()
+    t1.join()
+    t2.join()
+
+    assert results["fast"] < results["slow"]
+    assert results["fast"] >= 0.01
+    assert results["slow"] >= 0.05
