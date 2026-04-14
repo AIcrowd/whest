@@ -151,6 +151,16 @@ def _collect_pi_permutations(
                     axis_idx = group.axes[g_pos]
                     if axis_idx < len(positions):
                         gpos_to_rowpos[g_pos] = positions[axis_idx]
+            elif group._labels is not None:
+                # No axes, but _labels maps group positions to subscript
+                # chars.  Find the subscript position of each label.
+                gpos_to_rowpos = {}
+                for g_pos in range(group.degree):
+                    lbl = group._labels[g_pos]
+                    # Find position of this label in the subscript
+                    sub_pos = subscript.find(lbl)
+                    if sub_pos >= 0 and sub_pos < len(positions):
+                        gpos_to_rowpos[g_pos] = positions[sub_pos]
             else:
                 # Default: group position i acts on operand axis i
                 gpos_to_rowpos = {}
