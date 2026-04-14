@@ -91,7 +91,7 @@ export default function App() {
     try {
       const graph = buildBipartite(normalizedExample);
       const matrixData = buildIncidenceMatrix(graph);
-      const sigmaResults = runSigmaLoop(graph, matrixData);
+      const sigmaResults = runSigmaLoop(graph, matrixData, normalizedExample);
       const group = buildGroup(sigmaResults, graph, normalizedExample);
       return { graph, matrixData, sigmaResults, group };
     } catch (err) {

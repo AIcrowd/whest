@@ -24,26 +24,10 @@ export function buildBipartite(example) {
     const sub = subscripts[opIdx];
     operandLabels.push(new Set(sub));
 
-    // Build equivalence classes on axes.
-    // Each axis starts in its own class. Per-op symmetry merges them.
+    // Each axis gets its own class (one U-vertex per axis).
+    // No axis merging — per-operand symmetry handled by σ-loop generators.
     const classOf = {};
     for (let k = 0; k < sub.length; k++) classOf[k] = k;
-
-    // Per-operand symmetry: supports string (legacy), per-operand array, or {type, axes} objects
-    const opSym = Array.isArray(perOpSymmetry) ? perOpSymmetry[opIdx] : perOpSymmetry;
-    if (opSym === 'symmetric' || opSym === 'cyclic' || opSym === 'dihedral') {
-      // All axes in one class (group acts on all axes of this operand)
-      for (let k = 1; k < sub.length; k++) classOf[k] = 0;
-    } else if (opSym && typeof opSym === 'object' && opSym.axes) {
-      // Partial symmetry: only the specified axes collapse into one class
-      const symAxes = opSym.axes;
-      if (symAxes.length >= 2) {
-        const target = symAxes[0];
-        for (let j = 1; j < symAxes.length; j++) {
-          classOf[symAxes[j]] = target;
-        }
-      }
-    }
 
     // Normalize class ids
     const classOrder = {};
@@ -224,34 +208,47 @@ function derivePi(sigmaColOf, fpToLabels, vLabels, wLabels) {
 }
 
 /**
- * Run the full σ-loop. Returns results for each σ.
+ * Convert cycle-array notation [[0,1],[2,3]] to array-form permutation of length k.
  */
-export function runSigmaLoop(graph, matrixData) {
-  const { identicalGroups, freeLabels, summedLabels, allLabels, incidence } = graph;
-  const { colFingerprints, fpToLabels } = matrixData;
+function cyclesToArrayForm(cycles, k) {
+  const arr = Array.from({ length: k }, (_, i) => i);
+  for (const cycle of cycles) {
+    for (let i = 0; i < cycle.length; i++) {
+      arr[cycle[i]] = cycle[(i + 1) % cycle.length];
+    }
+  }
+  return arr;
+}
+
+/**
+ * Run the full σ-loop. Returns results for each σ generator.
+ *
+ * Sources of σ generators:
+ *   A) Per-operand declared symmetry → row permutations within one operand
+ *   B) Identical-operand groups → adjacent swap generators between operands
+ */
+export function runSigmaLoop(graph, matrixData, example) {
+  const { freeLabels, summedLabels, allLabels, incidence, uOperand } = graph;
+  const { fpToLabels } = matrixData;
 
   const vLabels = freeLabels;
   const wLabels = summedLabels;
   const rowOrder = Array.from({ length: graph.uVertices.length }, (_, i) => i);
 
-  const allSigmas = enumeratePermutations(identicalGroups);
+  // Build opToUIndices: operand index → list of row positions in rowOrder
+  const opToUIndices = {};
+  for (let k = 0; k < rowOrder.length; k++) {
+    const opIdx = uOperand[rowOrder[k]];
+    (opToUIndices[opIdx] ??= []).push(k);
+  }
+
   const results = [];
 
-  for (const sigma of allSigmas) {
-    // Check if identity
-    const isIdentity = Object.entries(sigma).every(([k, v]) => Number(k) === v);
-    if (isIdentity || Object.keys(sigma).length === 0) {
-      results.push({ sigma, isIdentity: true, skipped: true });
-      continue;
-    }
-
-    // Lift to U
-    const sigmaRowPerm = liftSigmaToU(sigma, rowOrder, graph);
-    if (!sigmaRowPerm) {
-      results.push({ sigma, isValid: false, reason: 'Lift failed' });
-      continue;
-    }
-
+  /**
+   * Process a single row permutation (sigma on rows of M).
+   * Computes σ(M), derives π, and appends to results.
+   */
+  function processSigmaRow(sigmaRowPerm, sourceLabel) {
     // Compute σ(M) column fingerprints
     const sigmaColOf = {};
     for (const label of allLabels) {
@@ -269,19 +266,90 @@ export function runSigmaLoop(graph, matrixData) {
     const pi = derivePi(sigmaColOf, fpToLabels, vLabels, wLabels);
     if (!pi) {
       results.push({
-        sigma, sigmaRowPerm, sigmaMatrix, sigmaColOf,
+        sigma: { _source: sourceLabel }, sigmaRowPerm, sigmaMatrix, sigmaColOf,
         isValid: false, reason: 'No matching π (fingerprint mismatch)',
       });
-      continue;
+      return;
     }
 
     // Check for identity π
     const piIsIdentity = Object.entries(pi).every(([k, v]) => k === v);
 
     results.push({
-      sigma, sigmaRowPerm, sigmaMatrix, sigmaColOf, pi,
+      sigma: { _source: sourceLabel }, sigmaRowPerm, sigmaMatrix, sigmaColOf, pi,
       isValid: true, piIsIdentity,
     });
+  }
+
+  // ── Source A: per-operand declared symmetry generators ──
+  const perOpSymmetry = example?.perOpSymmetry;
+  if (perOpSymmetry) {
+    const subscripts = example.subscripts;
+    for (let opIdx = 0; opIdx < subscripts.length; opIdx++) {
+      const opSym = Array.isArray(perOpSymmetry) ? perOpSymmetry[opIdx] : perOpSymmetry;
+      if (!opSym) continue;
+
+      const sub = subscripts[opIdx];
+      let symType, symAxes;
+      if (typeof opSym === 'string') {
+        symType = opSym;
+        symAxes = Array.from({ length: sub.length }, (_, i) => i);
+      } else if (opSym && typeof opSym === 'object') {
+        symType = opSym.type || 'symmetric';
+        symAxes = opSym.axes || Array.from({ length: sub.length }, (_, i) => i);
+      } else {
+        continue;
+      }
+
+      // Get generators for this symmetry type
+      let gens;
+      if (symType === 'custom' && opSym.generators) {
+        gens = opSym.generators.map(cycles => cyclesToArrayForm(cycles, symAxes.length))
+          .filter(arr => !arr.every((v, i) => v === i));
+      } else {
+        gens = declaredSymGenerators(symType, symAxes.length).map(p => p.arr);
+      }
+
+      // Map each generator (acting on symAxes positions) to a row permutation
+      const uIndices = opToUIndices[opIdx];
+      if (!uIndices || uIndices.length === 0) continue;
+
+      for (const genArr of gens) {
+        // genArr permutes positions within symAxes of this operand.
+        // Map to row permutation: symAxes[i] -> row position uIndices[symAxes[i]]
+        const sigmaRowPerm = [...rowOrder];
+        let isId = true;
+        for (let i = 0; i < symAxes.length; i++) {
+          const fromRow = uIndices[symAxes[i]];
+          const toRow = uIndices[symAxes[genArr[i]]];
+          if (fromRow !== undefined && toRow !== undefined) {
+            sigmaRowPerm[fromRow] = rowOrder[toRow];
+            if (fromRow !== toRow) isId = false;
+          }
+        }
+        if (isId) continue;
+        processSigmaRow(sigmaRowPerm, `Op${opIdx} sym`);
+      }
+    }
+  }
+
+  // ── Source B: identical-operand adjacent swap generators ──
+  const { identicalGroups } = graph;
+  for (const group of identicalGroups) {
+    for (let g = 0; g < group.length - 1; g++) {
+      const iOp = group[g];
+      const jOp = group[g + 1];
+      // Build sigma that swaps operand iOp <-> jOp
+      const sigma = { [iOp]: jOp, [jOp]: iOp };
+      const sigmaRowPerm = liftSigmaToU(sigma, rowOrder, graph);
+      if (!sigmaRowPerm) {
+        results.push({
+          sigma, isValid: false, reason: 'Lift failed',
+        });
+        continue;
+      }
+      processSigmaRow(sigmaRowPerm, `Swap Op${iOp}↔Op${jOp}`);
+    }
   }
 
   return results;
@@ -337,68 +405,6 @@ function declaredSymGenerators(symType, k) {
   return [];
 }
 
-/**
- * Find a declared symmetry group that covers a set of fingerprint-equivalent
- * labels. Returns { generators: Permutation[] } or null.
- *
- * This is the JS port of _find_declared_group_for_labels — it prevents
- * the fingerprint fast path from always promoting to S_k when a more
- * restrictive group (C_k, D_k, etc.) was declared.
- */
-function findDeclaredGroupForLabels(example, equivLabels) {
-  const { subscripts, perOpSymmetry } = example;
-  if (!perOpSymmetry) return null;
-  const equivSet = new Set(equivLabels);
-
-  for (let opIdx = 0; opIdx < subscripts.length; opIdx++) {
-    const opSym = Array.isArray(perOpSymmetry) ? perOpSymmetry[opIdx] : perOpSymmetry;
-    if (!opSym) continue;
-
-    // Determine which axes are covered by this symmetry declaration
-    const sub = subscripts[opIdx];
-    let coveredLabels;
-    let symType;
-    if (opSym === 'symmetric' || opSym === 'cyclic' || opSym === 'dihedral') {
-      coveredLabels = new Set(sub);
-      symType = opSym;
-    } else if (opSym && typeof opSym === 'object' && opSym.axes) {
-      coveredLabels = new Set(opSym.axes.map(ax => sub[ax]));
-      symType = opSym.type || 'symmetric';
-    } else {
-      continue;
-    }
-
-    // Check if the declared group covers exactly the equivalent labels
-    if (coveredLabels.size !== equivSet.size) continue;
-    let match = true;
-    for (const l of equivSet) {
-      if (!coveredLabels.has(l)) { match = false; break; }
-    }
-    if (!match) continue;
-
-    // Custom generators: build Permutation objects from cycle arrays
-    if (symType === 'custom' && opSym.generators) {
-      // opSym.generators is [[[0,1],[2,3]], [[0,2],[1,3]]]
-      const gens = opSym.generators.map(cycles => {
-        const arr = Array.from({ length: equivLabels.length }, (_, i) => i);
-        for (const cycle of cycles) {
-          for (let i = 0; i < cycle.length; i++) {
-            arr[cycle[i]] = cycle[(i + 1) % cycle.length];
-          }
-        }
-        return new Permutation(arr);
-      }).filter(p => !p.isIdentity);
-      if (gens.length > 0) return { generators: gens };
-      return null;
-    }
-
-    // Build generators for this declared group type
-    const gens = declaredSymGenerators(symType, equivLabels.length);
-    if (gens.length > 0) return { generators: gens };
-  }
-  return null;
-}
-
 export function buildGroup(sigmaResults, graph, example) {
   const vLabels = [...graph.freeLabels].sort();
   const wLabels = [...graph.summedLabels].sort();
@@ -443,73 +449,6 @@ export function buildGroup(sigmaResults, graph, example) {
 
   let vGensAll = dedup(vGenerators);
   let wGens = dedup(wGenerators);
-
-  // ── Fingerprint fast path ──────────────────────────────────────
-  // When the σ-loop found no generators (non-identical operands), check
-  // if fingerprint-equivalent labels exist. If a declared group covers
-  // those labels, use it; otherwise fall back to S_k.
-  // This mirrors the Python fix in _compute_subset_symmetry.
-  //
-  // When equiv labels are a proper subset of all labels, generators must
-  // be embedded into the full label space (identity on non-equiv labels).
-  const embedGens = (gens, equivLabels, allLabels) => {
-    if (equivLabels.length === allLabels.length) return gens;
-    const eqPos = equivLabels.map(l => allLabels.indexOf(l));
-    return gens.map(g => {
-      const arr = Array.from({ length: allLabels.length }, (_, i) => i);
-      for (let i = 0; i < equivLabels.length; i++) {
-        arr[eqPos[i]] = eqPos[g.arr[i]];
-      }
-      return new Permutation(arr);
-    });
-  };
-
-  if (vGensAll.length === 0 && vLabels.length >= 2) {
-    const matrixData = buildIncidenceMatrix(graph);
-    const { colFingerprints } = matrixData;
-    const fpGroups = {};
-    for (const lbl of vLabels) {
-      const fp = colFingerprints[lbl];
-      (fpGroups[fp] ??= []).push(lbl);
-    }
-    const vEquiv = Object.values(fpGroups)
-      .filter(grp => grp.length >= 2)
-      .flat()
-      .sort();
-    if (vEquiv.length >= 2) {
-      const declared = example ? findDeclaredGroupForLabels(example, vEquiv) : null;
-      let gens;
-      if (declared) {
-        gens = declared.generators;
-      } else {
-        gens = declaredSymGenerators('symmetric', vEquiv.length);
-      }
-      vGensAll = embedGens(gens, vEquiv, vLabels);
-    }
-  }
-  if (wGens.length === 0 && wLabels.length >= 2) {
-    const matrixData = buildIncidenceMatrix(graph);
-    const { colFingerprints } = matrixData;
-    const fpGroups = {};
-    for (const lbl of wLabels) {
-      const fp = colFingerprints[lbl];
-      (fpGroups[fp] ??= []).push(lbl);
-    }
-    const wEquiv = Object.values(fpGroups)
-      .filter(grp => grp.length >= 2)
-      .flat()
-      .sort();
-    if (wEquiv.length >= 2) {
-      const declared = example ? findDeclaredGroupForLabels(example, wEquiv) : null;
-      let gens;
-      if (declared) {
-        gens = declared.generators;
-      } else {
-        gens = declaredSymGenerators('symmetric', wEquiv.length);
-      }
-      wGens = embedGens(gens, wEquiv, wLabels);
-    }
-  }
 
   // Reduce to a minimal generating set: only keep generators that grow the group
   const vGens = minimalGenerators(vGensAll);
