@@ -6,17 +6,20 @@
  * produces the lookup map consumed by every visualisation layer.
  */
 
+// Operand colors — chosen to avoid V-free blue (#4A7CFF) and W-summed
+// slate (#64748B).  Warm/saturated tones that stay distinct from each
+// other and from the V/W semantic colors.
 export const PALETTE = [
-  '#4a7cff',
-  '#ffb74d',
-  '#bb86fc',
-  '#ec4899',
-  '#22c55e',
-  '#94a3b8',
-  '#ef4444',
-  '#06b6d4',
-  '#f59e0b',
-  '#8b5cf6',
+  '#E85D04',   // burnt orange
+  '#9B5DE5',   // vivid purple
+  '#00BBF9',   // cyan
+  '#F15BB5',   // hot pink
+  '#00F5D4',   // mint/teal
+  '#FEE440',   // bright yellow
+  '#D62828',   // deep red
+  '#06D6A0',   // emerald
+  '#118AB2',   // ocean blue (darker, distinct from V-blue)
+  '#073B4C',   // dark teal
 ];
 
 export const SYMMETRY_ICONS = {
