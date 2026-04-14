@@ -485,9 +485,9 @@ attach_docstring(meshgrid, _np.meshgrid, "free", "0 FLOPs")
 # ---------------------------------------------------------------------------
 
 
-def astype(x, dtype):
-    """Cast array to *dtype*. Wraps ``x.astype(dtype)``. Cost: 0 FLOPs."""
-    return x.astype(dtype)
+def astype(x, dtype, /, *, copy=True, device=None):
+    """Cast array to *dtype*. Wraps ``np.astype(x, dtype)``. Cost: 0 FLOPs."""
+    return _np.astype(x, dtype, copy=copy, device=device)
 
 
 def asarray(a, dtype=None, **kwargs):

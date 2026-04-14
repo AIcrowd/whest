@@ -584,7 +584,7 @@ divmod = _counted_binary_multi(_np.divmod, "divmod")
 # ---------------------------------------------------------------------------
 
 
-def clip(a, a_min=None, a_max=None, out=None, **kwargs):
+def clip(a, *args, out=None, **kwargs):
     """Counted version of np.clip. Cost = numel(input) or unique_elements if symmetric."""
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
@@ -592,14 +592,8 @@ def clip(a, a_min=None, a_max=None, out=None, **kwargs):
     sym_info = a.symmetry_info if isinstance(a, SymmetricTensor) else None
     cost = pointwise_cost(a.shape, symmetry_info=sym_info)
     budget.deduct("clip", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    # numpy forbids min=/max= kwargs when a_min/a_max positional args are given;
-    # handle the case where caller uses min=/max= keyword style
-    if "min" in kwargs or "max" in kwargs:
-        if a_min is None and "min" in kwargs:
-            a_min = kwargs.pop("min")
-        if a_max is None and "max" in kwargs:
-            a_max = kwargs.pop("max")
-    result = _np.clip(a, a_min, a_max, out=out, **kwargs)
+    # Delegate all argument handling (validation, min/max/a_min/a_max) to numpy
+    result = _np.clip(a, *args, out=out, **kwargs)
     if a.dtype.kind in ("f", "c"):
         check_nan_inf(result, "clip")
     if sym_info is not None:
@@ -819,9 +813,14 @@ def tensordot(a, b, axes=2):
             contracted *= a.shape[a.ndim - axes + i]
         cost = _builtins.max(result.size * contracted, 1)
     else:
+        ax0 = axes[0]
         contracted = 1
-        for i in axes[0]:
-            contracted *= a.shape[i]
+        if isinstance(ax0, int):
+            # axes=(scalar, scalar) form — single axis contracted
+            contracted *= a.shape[ax0] if ax0 < a.ndim else 1
+        else:
+            for i in ax0:
+                contracted *= a.shape[i]
         cost = _builtins.max(result.size * contracted, 1)
     budget.deduct(
         "tensordot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)

@@ -24,8 +24,23 @@ attach_docstring(
 
 
 def cross(x1, x2, /, *, axis=-1):
-    """Cross product (linalg namespace). Delegates to whest.cross."""
-    return _me.cross(x1, x2, axis=axis)
+    """Cross product (linalg namespace). Uses np.linalg.cross for strict validation."""
+    import builtins as _builtins
+    from whest._validation import require_budget
+    from whest._ndarray import _aswhest
+    budget = require_budget()
+    # np.linalg.cross validates dimensionality (must be exactly 2 or 3)
+    result = _np.linalg.cross(x1, x2, axis=axis)
+    r = _np.asarray(result)
+    budget.deduct(
+        "linalg.cross",
+        flop_cost=_builtins.max(r.size * 3, 1),
+        subscripts=None,
+        shapes=(_np.asarray(x1).shape, _np.asarray(x2).shape),
+    )
+    if isinstance(result, _np.ndarray):
+        return _aswhest(result)
+    return result
 
 
 attach_docstring(
@@ -78,7 +93,7 @@ else:
 
 def diagonal(x, /, *, offset=0):
     """Diagonal (linalg namespace). Delegates to whest.diagonal. Cost: 0 FLOPs."""
-    return _me.diagonal(x, offset=offset)
+    return _me.diagonal(x, offset=offset, axis1=-2, axis2=-1)
 
 
 attach_docstring(diagonal, _np.linalg.diagonal, "linalg", "0 FLOPs (free)")

@@ -4,12 +4,12 @@ Each entry maps a test node ID (or pattern) to a reason string.
 Tests matching these patterns are marked xfail when running NumPy's
 test suite against whest.
 
-Current state (2026-04-14):
-    Total:          7,760 passed, 28 failed, 63 xfailed, 0 xpassed
+Current state (2026-04-14, after 7 trivial fixes):
+    Total:          ~2,017 passed, 43 xfailed, 0 xpassed (test_numeric + test_linalg)
     test_umath:     ~4,668 passed  (11 xfailed — removed test_ufunc_override_where)
     test_ufunc:       ~795 passed   (4 xfailed — removed scalar_equal, struct_ufunc, safe_casting)
-    test_numeric:   ~1,567 passed   (4 xfailed — removed all OWNDATA_VIEW TestClip patterns)
-    test_linalg:      ~395 passed  (30 xfailed — removed matrix_*, QR modes, EighCases, SVD types)
+    test_numeric:   ~1,580 passed   (0 xfailed for tensordot/clip/astype/LikeFuncs — all fixed)
+    test_linalg:      ~437 passed  (27 xfailed — cross/diagonal/bad_args now fixed)
     test_pocketfft:    148 passed   (0 xfailed)
     test_polynomial:   600 passed   (2 xfailed)
     test_random:       139 passed   (5 xfailed — removed test_shuffle_no_object_unpacking[False*])
@@ -23,6 +23,9 @@ Fixes applied:
     subclass fixes:     test_ufunc_override_where, test_scalar_equal, test_struct_ufunc,
                         test_safe_casting, test_non_array_input removed.
     random fix:         test_shuffle_no_object_unpacking[False*] removed.
+    7 trivial fixes:    _aswhest order='A', linalg.diagonal axis=-2/-1, linalg.cross
+                        validation, tensordot int axes, norm axis validation,
+                        clip argument validation, astype copy/device kwargs.
 
 What we patch (55 functions):
     Non-ufunc reductions and special functions (all, any, amax, amin,
@@ -58,30 +61,12 @@ XFAIL_PATTERNS: dict[str, str] = {
         "NOT_IMPLEMENTED: whest isclose doesn't support NEP 50 promotion"
     ),
     # ------------------------------------------------------------------ #
-    # test_numeric.py — new divergences from expanded numpy patching      #
-    # ------------------------------------------------------------------ #
-    "*TestTensordot::test_zero_dimension": (
-        "NOT_IMPLEMENTED: whest clip doesn't handle 0-d arrays identically"
-    ),
-    "*TestClip::test_clip_min_max_args": (
-        "NOT_IMPLEMENTED: whest clip doesn't enforce strict a_min/a_max/min/max argument validation"
-    ),
-    "*TestAsType::test_astype": (
-        "NOT_IMPLEMENTED: whest free ops astype behavior differs"
-    ),
-    # ------------------------------------------------------------------ #
     # test_linalg.py — remaining failures after ndim guards/batch fixes   #
     # ------------------------------------------------------------------ #
     # Most batch/0-size/generalized cases now pass. Remaining failures
-    # are: cross/diagonal edge cases, cond NaN, eig/inv/lstsq/solve
-    # sq_cases precision differences, matrix_rank, bad_args validation,
-    # pinv hermitian/generalized cases.
-    "*test_linalg*::test_cross": (
-        "NOT_IMPLEMENTED: whest cross doesn't raise ValueError for 2D arrays"
-    ),
-    "*test_linalg*::test_diagonal": (
-        "NOT_IMPLEMENTED: whest linalg.diagonal behavior differs"
-    ),
+    # are: cond NaN, eig/inv/lstsq/solve sq_cases precision differences,
+    # matrix_rank, pinv hermitian/generalized cases.
+    # (cross/diagonal/bad_args/tensordot/clip/astype now pass)
     "*test_linalg*::TestCond::test_nan": (
         "NOT_IMPLEMENTED: whest cond doesn't handle NaN inputs correctly"
     ),
@@ -108,15 +93,6 @@ XFAIL_PATTERNS: dict[str, str] = {
     ),
     "*test_linalg*::TestMatrixRank::test_matrix_rank": (
         "NOT_IMPLEMENTED: whest matrix_rank behavior differs"
-    ),
-    "*test_linalg*::TestNormDouble::test_bad_args": (
-        "NOT_IMPLEMENTED: whest norm doesn't validate ord argument like np.linalg.norm"
-    ),
-    "*test_linalg*::TestNormInt64::test_bad_args": (
-        "NOT_IMPLEMENTED: whest norm doesn't validate ord argument like np.linalg.norm"
-    ),
-    "*test_linalg*::TestNormSingle::test_bad_args": (
-        "NOT_IMPLEMENTED: whest norm doesn't validate ord argument like np.linalg.norm"
     ),
     "*test_linalg*::TestPinvHermitian::test_herm_cases": (
         "NOT_IMPLEMENTED: whest pinv hermitian cases differ"
@@ -223,21 +199,6 @@ XFAIL_PATTERNS: dict[str, str] = {
         "SUBCLASS_RETURN: _aswhest OWNDATA copy interacts with _symmetric_2d wrapping"
     ),
     "*TestCreationFuncs::test_empty": (
-        "SUBCLASS_RETURN: _aswhest OWNDATA copy interacts with _symmetric_2d wrapping"
-    ),
-    "*TestCreationFuncs::test_full": (
-        "SUBCLASS_RETURN: _aswhest OWNDATA copy interacts with _symmetric_2d wrapping"
-    ),
-    "*TestLikeFuncs::test_empty_like": (
-        "SUBCLASS_RETURN: _aswhest OWNDATA copy interacts with _symmetric_2d wrapping"
-    ),
-    "*TestLikeFuncs::test_filled_like": (
-        "SUBCLASS_RETURN: _aswhest OWNDATA copy interacts with _symmetric_2d wrapping"
-    ),
-    "*TestLikeFuncs::test_ones_like": (
-        "SUBCLASS_RETURN: _aswhest OWNDATA copy interacts with _symmetric_2d wrapping"
-    ),
-    "*TestLikeFuncs::test_zeros_like": (
         "SUBCLASS_RETURN: _aswhest OWNDATA copy interacts with _symmetric_2d wrapping"
     ),
     "*TestStdVar::test_out_scalar": (

@@ -176,13 +176,24 @@ def norm(x, ord=None, axis=None, keepdims=False):
     budget = require_budget()
     if not isinstance(x, _np.ndarray):
         x = _np.asarray(x)
-    if axis is None:
-        effective_shape = x.shape
-    elif isinstance(axis, int):
-        effective_shape = (x.shape[axis],)
-    else:
-        effective_shape = tuple(x.shape[ax] for ax in axis)
-    cost = norm_cost(effective_shape, ord=ord)
+    # Compute effective shape for FLOP cost, guarding against invalid axis.
+    # If axis is out of bounds or ord is invalid, numpy will raise the correct
+    # error (AxisError / ValueError); we skip budget deduction in that case.
+    try:
+        if axis is None:
+            effective_shape = x.shape
+        elif isinstance(axis, int):
+            ndim = x.ndim
+            norm_axis = axis + ndim if axis < 0 else axis
+            if norm_axis < 0 or norm_axis >= max(ndim, 1):
+                return _np.linalg.norm(x, ord=ord, axis=axis, keepdims=keepdims)
+            effective_shape = (x.shape[norm_axis],) if ndim > 0 else ()
+        else:
+            effective_shape = tuple(x.shape[ax] for ax in axis)
+        cost = norm_cost(effective_shape, ord=ord)
+    except (IndexError, ValueError):
+        # Let numpy raise the proper error with the right type/message
+        return _np.linalg.norm(x, ord=ord, axis=axis, keepdims=keepdims)
     budget.deduct("linalg.norm", flop_cost=cost, subscripts=None, shapes=(x.shape,))
     return _np.linalg.norm(x, ord=ord, axis=axis, keepdims=keepdims)
 

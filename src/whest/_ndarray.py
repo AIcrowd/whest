@@ -74,7 +74,7 @@ class WhestArray(_np.ndarray):
             and out_arr.flags.owndata
             and not result.flags.owndata
         ):
-            result = result.copy(order='K')
+            result = result.copy(order='A')
         return result
 
     # ----- Binary arithmetic -----
@@ -315,10 +315,10 @@ def _aswhest(x):
     if isinstance(x, _np.ndarray):
         result = x.view(WhestArray)
         if x.flags.owndata:
-            result = result.copy(order='K')
+            result = result.copy(order='A')
         return result
     arr = _np.asarray(x)
     result = arr.view(WhestArray)
     if arr.flags.owndata:
-        result = result.copy(order='K')
+        result = result.copy(order='A')
     return result
