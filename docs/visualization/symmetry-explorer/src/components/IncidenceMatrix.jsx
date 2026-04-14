@@ -57,6 +57,25 @@ export default function IncidenceMatrix({
 
   const transitionStyle = animate ? { transition: 'transform 0.5s ease' } : {};
 
+  // Compute column fingerprints from the displayed matrix
+  const fingerprints = {};
+  const fpToLabels = {};
+  for (let ci = 0; ci < numCols; ci++) {
+    const lbl = colLabels[ci];
+    const fp = matrix.map(row => row[ci]).join(', ');
+    fingerprints[lbl] = fp;
+    (fpToLabels[fp] ??= new Set()).add(lbl);
+  }
+  // Color equivalent fingerprints
+  const fpColorPalette = ['#4a7cff', '#3ddc84', '#ffb74d', '#bb86fc', '#ff5252'];
+  const fpColors = {};
+  let fpColorIdx = 0;
+  for (const [fp, lblSet] of Object.entries(fpToLabels)) {
+    if (lblSet.size >= 2) {
+      fpColors[fp] = fpColorPalette[fpColorIdx++ % fpColorPalette.length];
+    }
+  }
+
   return (
     <div className="inc-matrix-outer">
       {label && <div className="inc-matrix-label">{label}</div>}
@@ -92,8 +111,16 @@ export default function IncidenceMatrix({
                 transform: `translateY(${headerH + visualRow * cellH}px)`,
                 height: cellH,
               }}>
-              {/* Row label */}
-              <div className="inc-row-label" style={{ width: labelW }}>
+              {/* Row label — colored by V/W membership */}
+              <div className={`inc-row-label ${
+                (() => {
+                  const u = uVertices[uIdx];
+                  const lbl = u.labels ? [...u.labels][0] : null;
+                  if (lbl && freeLabels?.has(lbl)) return 'inc-col-v';
+                  if (lbl) return 'inc-col-w';
+                  return '';
+                })()
+              }`} style={{ width: labelW }}>
                 {uLabels[uIdx]}
               </div>
               {/* Cells */}
@@ -112,6 +139,21 @@ export default function IncidenceMatrix({
                   </div>
                 );
               })}
+            </div>
+          );
+        })}
+      </div>
+      {/* Column fingerprints */}
+      <div className="inc-fingerprints-header">Column Fingerprints</div>
+      <div className="inc-fingerprints">
+        {colLabels.map(lbl => {
+          const fp = fingerprints[lbl];
+          const eqColor = fpColors[fp];
+          return (
+            <div key={lbl} className="inc-fp-item" style={eqColor ? { borderColor: eqColor } : {}}>
+              <span className={`inc-fp-label ${freeLabels?.has(lbl) ? 'inc-col-v' : 'inc-col-w'}`}>{lbl}</span>
+              <code className="inc-fp-value">({fp})</code>
+              {eqColor && <span className="inc-fp-eq" style={{ background: eqColor }}>≡</span>}
             </div>
           );
         })}

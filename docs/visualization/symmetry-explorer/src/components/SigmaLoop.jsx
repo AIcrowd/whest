@@ -349,19 +349,7 @@ function RejectedDetail({ pair, labels, uVertices, example, freeLabels, uLabels,
         compact={true}
       />
 
-      {showSigma && pair.sigmaColOf && (
-        <div className="rejected-modal-fingerprints">
-          <div className="rejected-modal-matrix-label">σ(M) column fingerprints</div>
-          <div className="fp-grid">
-            {labels.map(lbl => (
-              <div key={lbl} className="fp-item">
-                <span className="fp-label">{lbl}</span>
-                <code className="fp-value">({pair.sigmaColOf[lbl]?.replace(/,/g, ', ')})</code>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      {/* Fingerprints are now shown by IncidenceMatrix automatically */}
     </>
   );
 }

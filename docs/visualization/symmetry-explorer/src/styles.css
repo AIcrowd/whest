@@ -1244,6 +1244,8 @@ code, .mono { font-family: var(--font-mono); }
   font-size: 11px; color: var(--gray-400); white-space: nowrap;
   font-family: var(--font-mono);
 }
+.inc-row-label.inc-col-v { color: var(--accent-blue); }
+.inc-row-label.inc-col-w { color: var(--accent-green); }
 
 .inc-cell {
   position: absolute; top: 0; left: 0;
@@ -1263,6 +1265,32 @@ code, .mono { font-family: var(--font-mono); }
 .inc-row-moved .inc-cell {
   background: rgba(240, 82, 77, 0.04);
   border-color: rgba(240, 82, 77, 0.15);
+}
+
+.inc-fingerprints-header {
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--gray-400);
+  margin-top: 14px; margin-bottom: 6px;
+  font-family: var(--font-sans); text-align: center;
+}
+
+.inc-fingerprints {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-top: 10px; justify-content: center;
+}
+.inc-fp-item {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid var(--gray-200); border-radius: var(--radius-pill);
+  background: var(--white); font-size: 11px;
+  font-family: var(--font-mono);
+}
+.inc-fp-label { font-weight: 600; }
+.inc-fp-value { color: var(--gray-600); font-size: 10px; }
+.inc-fp-eq {
+  width: 16px; height: 16px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--white); font-size: 9px; font-weight: 700;
 }
 
 .rejected-modal-fingerprints { margin-top: 12px; }
