@@ -1,0 +1,115 @@
+.wrapper {
+  margin: 1rem 0;
+}
+
+/* ── Filter input ─────────────────────────────────────── */
+.filterRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.filterInput {
+  flex: 1;
+  max-width: 360px;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.85rem;
+  font-family: var(--ifm-font-family-base);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.filterInput:focus {
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--ifm-color-primary) 25%, transparent);
+}
+
+.rowCount {
+  font-size: 0.8rem;
+  color: #666;
+  margin-left: auto;
+}
+
+/* ── Table ─────────────────────────────────────────────── */
+.tableContainer {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+/* ── Header ────────────────────────────────────────────── */
+.table thead th {
+  background: #f8f9fa;
+  color: #1a1a2e;
+  font-weight: 600;
+  text-align: left;
+  padding: 0.55rem 0.75rem;
+  border-bottom: 2px solid #dee2e6;
+  white-space: nowrap;
+  user-select: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.table thead th:hover {
+  background: #eef0f3;
+}
+
+.stickyHeader thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.sortIndicator {
+  margin-left: 0.35rem;
+  opacity: 0.5;
+  font-size: 0.75em;
+}
+
+.sortActive {
+  opacity: 1;
+}
+
+/* ── Body ──────────────────────────────────────────────── */
+.table tbody td {
+  padding: 0.45rem 0.75rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ── Dark-mode adjustments ─────────────────────────────── */
+[data-theme='dark'] .filterInput {
+  background: var(--ifm-background-color);
+  border-color: #444;
+  color: #ddd;
+}
+
+[data-theme='dark'] .rowCount {
+  color: #aaa;
+}
+
+[data-theme='dark'] .table thead th {
+  background: #2a2a3e;
+  color: #e0e0e0;
+  border-bottom-color: #444;
+}
+
+[data-theme='dark'] .table thead th:hover {
+  background: #33334d;
+}
+
+[data-theme='dark'] .table tbody td {
+  border-bottom-color: #333;
+}
