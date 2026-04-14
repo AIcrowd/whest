@@ -855,3 +855,53 @@ class TestPropagateSliceGeneralGroups:
         assert result is not None
         assert len(result) == 1
         assert result[0].order() == 3
+
+
+class TestPropagateReduceGeneralGroups:
+    """Test propagate_symmetry_reduce with non-S_k groups."""
+
+    def test_c4_reduce_13_c2_survives(self):
+        """C_4 on {0,1,2,3}, reduce axes {1,3} → C_2 on output {0,1}."""
+        g = PermutationGroup.cyclic(4, axes=(0, 1, 2, 3))
+        result = propagate_symmetry_reduce([g], 4, (1, 3), keepdims=False)
+        assert result is not None
+        assert len(result) == 1
+        assert result[0].order() == 2
+        assert result[0].axes == (0, 1)
+
+    def test_c3_reduce_one_axis_trivial(self):
+        """C_3 on {0,1,2}, reduce axis 2 → only identity survives → no group."""
+        g = PermutationGroup.cyclic(3, axes=(0, 1, 2))
+        result = propagate_symmetry_reduce([g], 3, 2, keepdims=False)
+        assert result is None
+
+    def test_s3_reduce_one_axis_s2(self):
+        """S_3 on {0,1,2}, reduce axis 2 → S_2 on {0,1}. Matches old behavior."""
+        g = PermutationGroup.symmetric(3, axes=(0, 1, 2))
+        result = propagate_symmetry_reduce([g], 3, 2, keepdims=False)
+        assert result is not None
+        assert result[0].order() == 2
+
+    def test_reduce_none_returns_none(self):
+        """axis=None reduces everything → no symmetry."""
+        g = PermutationGroup.cyclic(3, axes=(0, 1, 2))
+        result = propagate_symmetry_reduce([g], 3, None)
+        assert result is None
+
+    def test_c4_reduce_keepdims(self):
+        """C_4 on {0,1,2,3}, reduce axes {1,3} keepdims=True → C_2."""
+        g = PermutationGroup.cyclic(4, axes=(0, 1, 2, 3))
+        result = propagate_symmetry_reduce([g], 4, (1, 3), keepdims=True)
+        assert result is not None
+        assert len(result) == 1
+        assert result[0].order() == 2
+        assert result[0].axes == (0, 2)
+
+    def test_reduce_disjoint_axis(self):
+        """Reduce an axis not in the group → group unchanged, axes renumbered."""
+        g = PermutationGroup.cyclic(3, axes=(1, 2, 3))
+        result = propagate_symmetry_reduce([g], 4, 0, keepdims=False)
+        assert result is not None
+        assert len(result) == 1
+        assert result[0].order() == 3
+        assert result[0].axes == (0, 1, 2)
