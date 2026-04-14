@@ -58,10 +58,24 @@ class WhestArray(_np.ndarray):
         default behaviour) so views, slices, and ufunc outputs stay
         WhestArrays — keeping operator overloads and FLOP tracking
         intact for chained expressions.
+
+        When the ufunc allocated a fresh output array (out_arr.owndata is
+        True), numpy's view-casting to WhestArray loses the OWNDATA flag.
+        We copy the result in that case so the WhestArray correctly reports
+        OWNDATA=True, matching the flag semantics of the underlying data.
         """
         if return_scalar:
             return out_arr[()]
-        return super().__array_wrap__(out_arr, context, return_scalar)
+        result = super().__array_wrap__(out_arr, context, return_scalar)
+        # numpy's view-cast drops OWNDATA; restore it when the ufunc
+        # allocated a fresh buffer (out_arr owns its data).
+        if (
+            isinstance(result, WhestArray)
+            and out_arr.flags.owndata
+            and not result.flags.owndata
+        ):
+            result = result.copy()
+        return result
 
     # ----- Binary arithmetic -----
 
@@ -282,16 +296,16 @@ def wrap_module_returns(module, skip_names=None, check_module=True):
 
 
 def _aswhest(x):
-    """Convert any array-like to WhestArray as a zero-copy view.
+    """Convert any array-like to WhestArray, preserving OWNDATA flag.
 
     - WhestArray: returned as-is
     - numpy.ndarray subclass (e.g. SymmetricTensor): returned as-is to
       preserve subclass metadata
-    - plain numpy.ndarray: view-cast to WhestArray (no copy). The
-      view does NOT own its data — callers that need OWNDATA=True on
-      the output should construct the result via whest's typed APIs
-      directly rather than relying on this conversion.
-    - other: np.asarray first, then view-cast
+    - plain numpy.ndarray that owns its data: copied so OWNDATA is
+      preserved on the resulting WhestArray
+    - plain numpy.ndarray view (OWNDATA=False): view-cast to WhestArray
+      (zero-copy); OWNDATA remains False, which is correct for views
+    - other: np.asarray first, then same logic as plain ndarray
     """
     if isinstance(x, WhestArray):
         return x
@@ -299,5 +313,12 @@ def _aswhest(x):
         # Other ndarray subclass (e.g. SymmetricTensor) — preserve as-is.
         return x
     if isinstance(x, _np.ndarray):
-        return x.view(WhestArray)
-    return _np.asarray(x).view(WhestArray)
+        result = x.view(WhestArray)
+        if x.flags.owndata:
+            result = result.copy()
+        return result
+    arr = _np.asarray(x)
+    result = arr.view(WhestArray)
+    if arr.flags.owndata:
+        result = result.copy()
+    return result
