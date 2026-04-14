@@ -384,6 +384,27 @@ function computeStages(result, originalMatrix, labels, uVertices) {
 /* ── Formatting helpers ── */
 
 function fmtSigma(sigma) {
+  // Label-level swaps (Source A/C: axis permutations within operands)
+  if (sigma._labelSwap) {
+    const ls = sigma._labelSwap;
+    const entries = Object.entries(ls).filter(([k, v]) => k !== v);
+    if (entries.length === 0) return 'e';
+    const visited = new Set();
+    const cycles = [];
+    for (const [k] of entries) {
+      if (visited.has(k)) continue;
+      const cycle = [];
+      let cur = k;
+      while (!visited.has(cur)) {
+        visited.add(cur);
+        cycle.push(cur);
+        cur = ls[cur] ?? cur;
+      }
+      if (cycle.length > 1) cycles.push(cycle);
+    }
+    return cycles.map(c => '(' + c.join(' ') + ')').join('') || 'e';
+  }
+  // Operand-level swaps (Source B)
   const entries = Object.entries(sigma).filter(([k, v]) => Number(k) !== v);
   if (entries.length === 0) return 'e';
   const visited = new Set();

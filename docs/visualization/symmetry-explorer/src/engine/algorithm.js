@@ -359,11 +359,45 @@ export function runSigmaLoop(graph, matrixData, example) {
   const allRowPerms = dimino(permGens);
 
   // ── Derive π for each non-identity group element ──
+  // Build a label for each row so we can describe σ in human-readable form.
+  // Each row is "OpN·label" — we build an operand-level sigma mapping from
+  // the row permutation by tracking which operand positions get swapped.
   for (const sigmaPerm of allRowPerms) {
     const sigmaRowPerm = sigmaPerm.arr;
     if (sigmaPerm.isIdentity) {
       results.push({ sigma: {}, isIdentity: true, skipped: true });
       continue;
+    }
+
+    // Build an operand-level sigma description from the row permutation.
+    // For each row k, if sigmaRowPerm[k] belongs to a different operand,
+    // record that operand mapping.
+    const sigmaDesc = {};
+    let hasOpSwap = false;
+    for (let k = 0; k < nRows; k++) {
+      const fromOp = uOperand[rowOrder[k]];
+      const toOp = uOperand[rowOrder[sigmaRowPerm[k]]];
+      if (fromOp !== toOp) {
+        sigmaDesc[fromOp] = toOp;
+        hasOpSwap = true;
+      }
+    }
+    // For axis-level swaps (Source A/C), describe using subscript labels
+    if (!hasOpSwap) {
+      // Build label-level description: which subscript labels get swapped
+      const labelSwap = {};
+      for (let k = 0; k < nRows; k++) {
+        if (sigmaRowPerm[k] !== k) {
+          const fromLabel = graph.uVertices[rowOrder[k]]?.labels;
+          const toLabel = graph.uVertices[rowOrder[sigmaRowPerm[k]]]?.labels;
+          if (fromLabel?.size === 1 && toLabel?.size === 1) {
+            const fl = [...fromLabel][0];
+            const tl = [...toLabel][0];
+            if (fl !== tl) labelSwap[fl] = tl;
+          }
+        }
+      }
+      sigmaDesc._labelSwap = labelSwap;
     }
 
     // Compute σ(M) column fingerprints
@@ -383,7 +417,7 @@ export function runSigmaLoop(graph, matrixData, example) {
     const pi = derivePi(sigmaColOf, fpToLabels, vLabels, wLabels);
     if (!pi) {
       results.push({
-        sigma: {}, sigmaRowPerm, sigmaMatrix, sigmaColOf,
+        sigma: sigmaDesc, sigmaRowPerm, sigmaMatrix, sigmaColOf,
         isValid: false, reason: 'No matching π (fingerprint mismatch)',
       });
       continue;
@@ -392,7 +426,7 @@ export function runSigmaLoop(graph, matrixData, example) {
     const piIsIdentity = Object.entries(pi).every(([k, v]) => k === v);
 
     results.push({
-      sigma: {}, sigmaRowPerm, sigmaMatrix, sigmaColOf, pi,
+      sigma: sigmaDesc, sigmaRowPerm, sigmaMatrix, sigmaColOf, pi,
       isValid: true, piIsIdentity,
     });
   }
