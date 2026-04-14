@@ -818,8 +818,8 @@ code, .mono { font-family: var(--font-mono); }
 }
 
 .cell-active {
-  background: rgba(250, 158, 51, 0.08);
-  color: var(--accent-amber);
+  background: rgba(34, 197, 94, 0.08);
+  color: #16a34a;
   font-weight: 600;
 }
 
@@ -1255,8 +1255,8 @@ code, .mono { font-family: var(--font-mono); }
   background: var(--white);
 }
 .inc-cell.inc-cell-active {
-  background: rgba(250, 158, 51, 0.08);
-  color: var(--accent-amber); font-weight: 600;
+  background: rgba(34, 197, 94, 0.08);
+  color: #16a34a; font-weight: 600;
 }
 .inc-cell.inc-cell-col-moved {
   background: rgba(74, 124, 255, 0.06);
@@ -1286,7 +1286,13 @@ code, .mono { font-family: var(--font-mono); }
   font-family: var(--font-mono);
 }
 .inc-fp-label { font-weight: 600; }
+.inc-fp-label.inc-col-v { color: var(--accent-blue); }
+.inc-fp-label.inc-col-w { color: #64748B; }
 .inc-fp-value { color: var(--gray-600); font-size: 10px; }
+
+/* Color the fingerprint pill border to match V/W */
+.inc-fp-item:has(.inc-col-v) { border-color: rgba(74, 124, 255, 0.3); }
+.inc-fp-item:has(.inc-col-w) { border-color: rgba(100, 116, 139, 0.3); }
 .inc-fp-eq {
   width: 16px; height: 16px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
@@ -1502,8 +1508,8 @@ code, .mono { font-family: var(--font-mono); }
 }
 
 .card-cell-abs.cell-active {
-  background: rgba(250, 158, 51, 0.08);
-  color: var(--accent-amber);
+  background: rgba(34, 197, 94, 0.08);
+  color: #16a34a;
   font-weight: 600;
 }
 

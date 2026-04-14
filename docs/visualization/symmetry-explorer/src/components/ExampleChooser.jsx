@@ -440,7 +440,7 @@ export default function ExampleChooser({
               <div className="sym-badge" style={{ backgroundColor: color }}>
                 {badgeLabel(v)}
                 {badgeOrder(v) != null && (
-                  <span className="sym-order"> |{badgeOrder(v)}|</span>
+                  <span className="sym-order"> order {badgeOrder(v)}</span>
                 )}
               </div>
             </div>
