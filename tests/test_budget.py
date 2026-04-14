@@ -337,3 +337,21 @@ def test_thread_isolation_time_tracking():
     assert results["fast"] < results["slow"]
     assert results["fast"] >= 0.01
     assert results["slow"] >= 0.05
+
+
+def test_post_op_deadline_check():
+    """_OpTimer.__exit__ raises TimeExhaustedError if deadline passed during op."""
+    import time
+
+    import pytest
+
+    import whest
+    from whest.errors import TimeExhaustedError
+
+    with pytest.raises(TimeExhaustedError) as exc_info:
+        with whest.BudgetContext(flop_budget=int(1e15), wall_time_limit_s=0.05) as b:
+            a = whest.ones((10,))
+            timer = b.deduct("test_op", flop_cost=1, subscripts=None, shapes=((10,),))
+            with timer:
+                time.sleep(0.1)  # Exceeds 0.05s limit
+    assert exc_info.value.elapsed_s >= 0.05
