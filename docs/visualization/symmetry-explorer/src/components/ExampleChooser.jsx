@@ -462,21 +462,21 @@ export default function ExampleChooser({
             className={`expr-input ${validation.errors.some(e => e.includes('subscript') || e.includes('Subscript') || e.includes('operand')) ? 'has-error' : ''}`}
             value={subscriptsStr}
             onChange={e => handleSubscriptsChange(e.target.value.toLowerCase())}
-            placeholder="ia,ib"
+            placeholder="e.g. ia,ib"
           />
           <span className="expr-chrome">-&gt;</span>
           <input
             className={`expr-input ${validation.errors.some(e => e.includes('utput')) ? 'has-error' : ''}`}
             value={outputStr}
             onChange={e => handleOutputChange(e.target.value.toLowerCase())}
-            placeholder="ab"
+            placeholder="e.g. ab (empty = scalar)"
           />
           <span className="expr-chrome">',</span>
           <input
             className={`expr-input ${validation.errors.some(e => e.includes('operand') || e.includes('Operand')) ? 'has-error' : ''}`}
             value={operandNamesStr}
             onChange={e => handleOperandNamesChange(e.target.value)}
-            placeholder="X, X"
+            placeholder="e.g. X, X"
           />
           <span className="expr-chrome">)</span>
         </div>
