@@ -13,9 +13,13 @@ export default function SigmaLoop({ results, graph, matrixData, example }) {
   const [stage, setStage] = useState(0); // 0=M, 1=σ(M), 2=π(σ(M))
   const [playing, setPlaying] = useState(false);
   const playRef = useRef(false);
+  const [showRejected, setShowRejected] = useState(false);
+  const [modalIdx, setModalIdx] = useState(null); // index into allPairs for rejected modal
 
   // Filter results
   const allPairs = results.filter(r => !r.skipped);
+  const validPairs = allPairs.filter(r => r.isValid);
+  const rejectedPairs = allPairs.filter(r => !r.isValid);
 
   // Auto-select first valid pair (only on example change)
   const resultsKey = results.length + ':' + results.filter(r => r.isValid).length;
@@ -27,6 +31,8 @@ export default function SigmaLoop({ results, graph, matrixData, example }) {
     setStage(0);
     setPlaying(false);
     playRef.current = false;
+    setShowRejected(false);
+    setModalIdx(null);
   }, [resultsKey]);
 
   const selected = selectedIdx !== null ? allPairs[selectedIdx] : null;
@@ -98,21 +104,36 @@ export default function SigmaLoop({ results, graph, matrixData, example }) {
         </div>
       </div>
 
-      {/* Pair selector chips */}
-      <div className="pair-selector">
-        <span className="pair-selector-label">Select (σ, π) pair:</span>
-        <div className="pair-chips">
-          {allPairs.map((r, i) => (
-            <button key={i}
-              className={`pair-chip ${r.isValid ? 'pair-valid' : 'pair-invalid'} ${selectedIdx === i ? 'pair-active' : ''}`}
-              onClick={() => handleSelectPair(i)}>
-              <span className="pair-sigma">σ = {fmtSigma(r.sigmaRowPerm, uLabels)}</span>
-              {r.isValid && <span className="pair-pi">π = {fmtPi(r.pi)}</span>}
-              {!r.isValid && <span className="pair-rejected">✗</span>}
-            </button>
-          ))}
+      {/* Valid pairs — shown inline */}
+      {validPairs.length > 0 && (
+        <div className="pair-selector">
+          <span className="pair-selector-label">Valid (σ, π) pairs:</span>
+          <div className="pair-chips">
+            {validPairs.map((r) => {
+              const origIdx = allPairs.indexOf(r);
+              return (
+                <button key={origIdx}
+                  className={`pair-chip pair-valid ${selectedIdx === origIdx ? 'pair-active' : ''}`}
+                  onClick={() => handleSelectPair(origIdx)}>
+                  <span className="pair-sigma">σ = {fmtSigma(r.sigmaRowPerm, uLabels)}</span>
+                  <span className="pair-pi">π = {fmtPi(r.pi)}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* Rejected pairs — opens modal list */}
+      {rejectedPairs.length > 0 && (
+        <div className="rejected-section">
+          <button
+            className="rejected-toggle"
+            onClick={() => setShowRejected(true)}>
+            ▸ {rejectedPairs.length} rejected σ{rejectedPairs.length !== 1 ? "'s" : ''}
+          </button>
+        </div>
+      )}
 
       {/* Animation panel */}
       {selected && (
@@ -194,6 +215,145 @@ export default function SigmaLoop({ results, graph, matrixData, example }) {
           )}
         </div>
       )}
+
+      {/* Modal for rejected σ — list or detail view */}
+      {(showRejected || modalIdx !== null) && (
+        <RejectedModal
+          rejectedPairs={rejectedPairs}
+          allPairs={allPairs}
+          detailIdx={modalIdx}
+          labels={labels}
+          uVertices={uVertices}
+          freeLabels={freeLabels}
+          uLabels={uLabels}
+          originalMatrix={originalMatrix}
+          onSelectDetail={(origIdx) => setModalIdx(origIdx)}
+          onBack={() => setModalIdx(null)}
+          onClose={() => { setShowRejected(false); setModalIdx(null); }}
+          fmtSigma={fmtSigma}
+        />
+      )}
+    </div>
+  );
+}
+
+/* ── Rejected Modal — list view + detail view ── */
+
+function RejectedModal({
+  rejectedPairs, allPairs, detailIdx,
+  labels, uVertices, freeLabels, uLabels, originalMatrix,
+  onSelectDetail, onBack, onClose, fmtSigma,
+}) {
+  const pair = detailIdx !== null ? allPairs[detailIdx] : null;
+
+  return (
+    <div className="rejected-modal-overlay" onClick={onClose}>
+      <div className="rejected-modal" onClick={e => e.stopPropagation()}>
+        <div className="rejected-modal-header">
+          <h4>{pair ? 'Rejected σ — Detail' : `${rejectedPairs.length} Rejected σ's`}</h4>
+          <button className="rejected-modal-close" onClick={onClose}>✕</button>
+        </div>
+
+        {/* List view */}
+        {!pair && (
+          <div className="rejected-list">
+            {rejectedPairs.map((r, i) => {
+              const origIdx = allPairs.indexOf(r);
+              return (
+                <button key={origIdx} className="rejected-list-item"
+                  onClick={() => onSelectDetail(origIdx)}>
+                  <span className="rejected-list-sigma">
+                    σ = {fmtSigma(r.sigmaRowPerm, uLabels)}
+                  </span>
+                  <span className="rejected-list-reason">
+                    {r.reason || 'no valid π'}
+                  </span>
+                  <span className="rejected-list-arrow">→</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Detail view */}
+        {pair && (
+          <>
+            <button className="rejected-back" onClick={onBack}>
+              ← Back to list
+            </button>
+            <div className="rejected-modal-sigma">
+              σ = {fmtSigma(pair.sigmaRowPerm, uLabels)}
+            </div>
+            <p className="rejected-modal-reason">{pair.reason || 'No valid π found'}</p>
+
+            <div className="rejected-modal-matrices">
+              <div className="rejected-modal-matrix">
+                <div className="rejected-modal-matrix-label">M (original)</div>
+                <table className="matrix-table matrix-table-sm">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      {labels.map(lbl => (
+                        <th key={lbl} className={freeLabels.has(lbl) ? 'col-v' : 'col-w'}>{lbl}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {originalMatrix.map((row, rIdx) => (
+                      <tr key={rIdx}>
+                        <td className="row-label"><span className="op-tag">{uLabels[rIdx]}</span></td>
+                        {row.map((val, cIdx) => (
+                          <td key={cIdx} className={`matrix-cell ${val > 0 ? 'cell-active' : ''}`}>{val}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="rejected-modal-arrow">→</div>
+              <div className="rejected-modal-matrix">
+                <div className="rejected-modal-matrix-label">σ(M)</div>
+                <table className="matrix-table matrix-table-sm">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      {labels.map(lbl => (
+                        <th key={lbl} className={freeLabels.has(lbl) ? 'col-v' : 'col-w'}>{lbl}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {pair.sigmaMatrix?.map((row, rIdx) => (
+                      <tr key={rIdx}>
+                        <td className="row-label">
+                          <span className="op-tag">{uLabels[pair.sigmaRowPerm?.[rIdx]]}</span>
+                        </td>
+                        {row.map((val, cIdx) => (
+                          <td key={cIdx} className={`matrix-cell ${val > 0 ? 'cell-active' : ''}`}>{val}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {pair.sigmaColOf && (
+              <div className="rejected-modal-fingerprints">
+                <div className="rejected-modal-matrix-label">σ(M) column fingerprints</div>
+                <div className="fp-grid">
+                  {labels.map(lbl => (
+                    <div key={lbl} className="fp-item">
+                      <span className="fp-label">{lbl}</span>
+                      <code className="fp-value">({pair.sigmaColOf[lbl]?.replace(/,/g, ', ')})</code>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 }
