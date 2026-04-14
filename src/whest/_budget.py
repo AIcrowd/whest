@@ -461,13 +461,18 @@ def budget_summary_dict(by_namespace: bool = False) -> dict:
         ``"flops_remaining"``, ``"operations"``, and optionally
         ``"by_namespace"``.
     """
+    acc_copy = BudgetAccumulator()
+    acc_copy._records = list(_accumulator._records)
+
+    # Include the currently active budget context (not yet recorded via __exit__)
+    active = get_active_budget()
+    if active is not None and active is not _global_default and active.flops_used > 0:
+        acc_copy.record(active)
     # Include the global default if it has been used
-    if _global_default is not None and _global_default.flops_used > 0:
-        acc_copy = BudgetAccumulator()
-        acc_copy._records = list(_accumulator._records)
+    elif _global_default is not None and _global_default.flops_used > 0:
         acc_copy.record(_global_default)
-        return acc_copy.get_data(by_namespace=by_namespace)
-    return _accumulator.get_data(by_namespace=by_namespace)
+
+    return acc_copy.get_data(by_namespace=by_namespace)
 
 
 def budget_reset() -> None:
