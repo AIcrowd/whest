@@ -7,11 +7,12 @@ a ``SubsetSymmetry`` with ``.output`` (V-side) and ``.inner`` (W-side)
 symmetries, computed lazily on first access and cached.
 
 Each axis of each operand gets its own U-vertex in the bipartite graph
-(no axis merging). The σ-loop iterates over generators from two sources:
-(A) per-operand internal symmetry generators and (B) identical-operand
-swap generators. For each generator, the induced column permutation π
-is derived via column-fingerprint hash lookup. The collected π generators
-are closed into a PermutationGroup via Dimino's algorithm. f7af5cc
+(no axis merging). The σ-loop iterates over generators from three sources:
+(A) per-operand internal symmetry generators, (B) identical-operand swap
+generators, and (C) coordinated axis relabeling for identical operands
+with the same subscript (W-side only). Dimino's algorithm builds the full
+row-permutation group from these generators, and π is derived for each
+group element via column-fingerprint hash lookup.
 
 See docs/explanation/subgraph-symmetry.md for the algorithm walkthrough.
 """
