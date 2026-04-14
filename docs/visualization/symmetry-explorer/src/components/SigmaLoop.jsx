@@ -373,7 +373,7 @@ function AnimatedMatrix({ stage, stageIdx, labels, uVertices, freeLabels, isVali
   const numCols = colOrder.length;
   const ROW_H = 38;
   const HEADER_H = 32;
-  const COL_W = 70; // px per column
+  const COL_W = 70;
   const LABEL_W = 90;
   const numRows = matrix.length;
   const containerH = HEADER_H + numRows * ROW_H + 8;

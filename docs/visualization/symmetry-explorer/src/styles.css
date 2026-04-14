@@ -786,10 +786,10 @@ code, .mono { font-family: var(--font-mono); }
 }
 
 .matrix-table th {
-  padding: 6px 14px;
+  padding: 8px 18px;
   font-weight: 500;
   color: var(--gray-400);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .col-v { color: var(--accent-blue) !important; }
@@ -797,9 +797,9 @@ code, .mono { font-family: var(--font-mono); }
 
 .row-label {
   text-align: right;
-  padding-right: 12px;
+  padding-right: 14px;
   color: var(--gray-400);
-  font-size: 11px;
+  font-size: 12px;
   white-space: nowrap;
 }
 
@@ -809,8 +809,8 @@ code, .mono { font-family: var(--font-mono); }
 }
 
 .matrix-cell {
-  width: 40px;
-  height: 36px;
+  width: 54px;
+  height: 38px;
   text-align: center;
   border: 1px solid var(--gray-200);
   color: var(--gray-600);
@@ -1097,16 +1097,16 @@ code, .mono { font-family: var(--font-mono); }
 
 /* ─── Rejected toggle & modal ───────── */
 
-.rejected-section { margin-top: 12px; }
+.rejected-section { margin-top: 16px; margin-bottom: 8px; }
 
 .rejected-toggle {
-  background: none; border: 1px solid var(--gray-200);
+  background: var(--coral-light); border: 1px solid var(--coral);
   border-radius: var(--radius-pill);
-  padding: 4px 14px; font-size: 12px; font-weight: 500;
-  color: var(--gray-400); cursor: pointer;
+  padding: 6px 16px; font-size: 12px; font-weight: 600;
+  color: var(--coral); cursor: pointer;
   font-family: var(--font-sans); transition: all 0.2s;
 }
-.rejected-toggle:hover { border-color: var(--coral); color: var(--coral); }
+.rejected-toggle:hover { background: var(--coral); color: var(--white); }
 
 .rejected-chips { margin-top: 8px; }
 
@@ -1197,8 +1197,7 @@ code, .mono { font-family: var(--font-mono); }
 }
 .rejected-back:hover { border-color: var(--coral); color: var(--coral); }
 
-.matrix-table-sm { font-size: 12px; }
-.matrix-table-sm th, .matrix-table-sm td { padding: 4px 8px; }
+/* Modal matrices: inherit from .matrix-table, no overrides needed */
 
 .rejected-modal-fingerprints { margin-top: 12px; }
 
