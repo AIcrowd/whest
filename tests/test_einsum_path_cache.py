@@ -1,10 +1,9 @@
 """Tests for einsum path caching."""
 
 import numpy
-import pytest
 
 from whest._config import configure, get_setting
-from whest._einsum import _symmetry_fingerprint, _identity_pattern
+from whest._einsum import _identity_pattern, _symmetry_fingerprint
 from whest._symmetric import SymmetricTensor
 
 
@@ -73,7 +72,7 @@ def test_identity_pattern_mixed():
 
 
 from whest._budget import BudgetContext
-from whest._einsum import einsum, clear_einsum_cache, einsum_cache_info
+from whest._einsum import clear_einsum_cache, einsum, einsum_cache_info
 
 
 def test_cache_hit_on_repeated_call():
