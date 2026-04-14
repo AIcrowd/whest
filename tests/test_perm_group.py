@@ -217,10 +217,17 @@ class TestBurnsideCount:
             g.burnside_unique_count({0: 3, 1: 5})
 
 
+try:
+    import sympy as _sympy_check  # noqa: F401
+
+    _sympy_available = True
+except ImportError:
+    _sympy_available = False
+
+
+@pytest.mark.skipif(not _sympy_available, reason="sympy not installed")
 class TestSympyBridge:
     """Tests that require sympy. Skipped if sympy is not installed."""
-
-    sympy = pytest.importorskip("sympy")
 
     def test_permutation_round_trip(self):
         from sympy.combinatorics import Permutation as SPerm
@@ -446,3 +453,48 @@ class TestPermutationGroupNewMethods:
     def test_orbit_cyclic(self):
         g = PermutationGroup.cyclic(4)
         assert g.orbit(0) == frozenset({0, 1, 2, 3})
+
+
+class TestPointwiseStabilizer:
+    def test_s3_fix_one_point(self):
+        """S_3 fixing point 2 → {id, (0 1)} = S_2."""
+        g = PermutationGroup.symmetric(3)
+        stab = g.pointwise_stabilizer({2})
+        assert stab.order() == 2
+        assert stab.degree == 3
+        for elem in stab.elements():
+            assert elem(2) == 2
+
+    def test_c3_fix_one_point(self):
+        """C_3 fixing any single point → trivial group."""
+        g = PermutationGroup.cyclic(3)
+        for pt in range(3):
+            stab = g.pointwise_stabilizer({pt})
+            assert stab.order() == 1
+
+    def test_c4_fix_two_points(self):
+        """C_4 fixing {1,3} pointwise → only identity."""
+        g = PermutationGroup.cyclic(4)
+        stab = g.pointwise_stabilizer({1, 3})
+        assert stab.order() == 1
+
+    def test_s4_fix_two_points(self):
+        """S_4 fixing {0,1} pointwise → S_2 on {2,3}."""
+        g = PermutationGroup.symmetric(4)
+        stab = g.pointwise_stabilizer({0, 1})
+        assert stab.order() == 2
+        for elem in stab.elements():
+            assert elem(0) == 0
+            assert elem(1) == 1
+
+    def test_fix_empty_set(self):
+        """Fixing empty set returns the full group."""
+        g = PermutationGroup.cyclic(4)
+        stab = g.pointwise_stabilizer(set())
+        assert stab.order() == g.order()
+
+    def test_fix_all_points(self):
+        """Fixing all points returns trivial group."""
+        g = PermutationGroup.symmetric(3)
+        stab = g.pointwise_stabilizer({0, 1, 2})
+        assert stab.order() == 1
