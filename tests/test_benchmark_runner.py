@@ -63,7 +63,7 @@ def test_run_benchmarks_writes_json():
         with (
             patch("benchmarks.runner.collect_metadata", return_value=mock_meta),
             patch("benchmarks.runner.measure_baselines", return_value=mock_baselines),
-            patch.dict(_BENCHMARK_FUNCS, mock_funcs),
+            patch.dict(_BENCHMARK_FUNCS, mock_funcs, clear=True),
             patch("benchmarks.runner.render_terminal", return_value="summary"),
         ):
             run_benchmarks(
