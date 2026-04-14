@@ -1087,8 +1087,12 @@ code, .mono { font-family: var(--font-mono); }
 .pair-chip.pair-invalid { border-left: 3px solid var(--coral); opacity: 0.6; }
 .pair-chip.pair-invalid.pair-active { opacity: 1; }
 
-.pair-sigma { font-weight: 500; }
-.pair-pi { color: var(--success); font-size: 10px; }
+.pair-sigma {
+  font-weight: 500; font-size: 11px;
+  font-family: var(--font-mono);
+  word-break: break-word;
+}
+.pair-pi { color: var(--success); font-size: 10px; font-family: var(--font-mono); }
 .pair-rejected { color: var(--coral); font-weight: 600; }
 
 /* ─── Animation Panel ───────────────── */
@@ -1370,6 +1374,33 @@ code, .mono { font-family: var(--font-mono); }
 }
 
 /* ─── Group View ─────────────────────── */
+
+.group-side-section {
+  margin-bottom: 24px;
+}
+
+.group-side-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-600);
+  margin-bottom: 12px;
+  font-family: var(--font-sans);
+}
+
+.group-side-title .pill {
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.group-side-note {
+  font-size: 12px;
+  color: var(--gray-400);
+  margin-bottom: 12px;
+  font-family: var(--font-sans);
+}
 
 .group-summary-row {
   display: flex;
