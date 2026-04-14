@@ -41,7 +41,7 @@ print(f"Budget: {data['flop_budget']:,}")
 print(f"Used:   {data['flops_used']:,}")
 print(f"Left:   {data['flops_remaining']:,}")
 for op_name, op_data in data["operations"].items():
-    print(f"  {op_name}: {op_data['flops']:,} ({op_data['calls']} calls)")
+    print(f"  {op_name}: {op_data['flop_cost']:,} ({op_data['calls']} calls)")
 ```
 
 ## Inspecting the operation log
