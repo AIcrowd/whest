@@ -23,6 +23,34 @@ from whest._registry import REGISTRY
 
 from .xfails import XFAIL_PATTERNS
 
+
+class _NonDescriptor:
+    """Callable wrapper that prevents Python descriptor auto-binding.
+
+    Python functions implement ``__get__`` so when stored as a class
+    attribute and accessed via ``self.func()``, Python auto-binds
+    ``self`` as the first positional argument. C built-in functions
+    don't do this.  Wrapping in ``_NonDescriptor`` makes our Python
+    replacements behave like C built-ins for attribute access.
+    """
+
+    def __init__(self, fn):
+        self._fn = fn
+        # Copy key attributes so introspection (numpy.ma docstring
+        # parsing, inspect.signature, etc.) sees the original metadata.
+        self.__name__ = getattr(fn, "__name__", "")
+        self.__qualname__ = getattr(fn, "__qualname__", self.__name__)
+        self.__doc__ = getattr(fn, "__doc__", None)
+        self.__module__ = getattr(fn, "__module__", None)
+        self.__signature__ = getattr(fn, "__signature__", None)
+        self.__wrapped__ = fn
+
+    def __call__(self, *args, **kwargs):
+        return self._fn(*args, **kwargs)
+
+    def __getattr__(self, name):
+        return getattr(self._fn, name)
+
 # Functions we monkeypatch onto numpy
 _PATCHED: dict[str, object] = {}
 
@@ -152,24 +180,33 @@ def _patch_numpy():
         # check the real np.linalg.outer's behaviour at class-definition time.
         _SKIP_PATCH = {
             "linalg.outer",
-            "array",  # Python function auto-binds self when used as class attribute; C built-in doesn't
-            "random.randint",  # Plain Python function auto-binds self; C method doesn't
-            "random.shuffle",  # Same descriptor binding issue
+            # numpy.ma parses np.arange.__doc__ at import time to replace
+            # "ndarray" with "MaskedArray". Our wrapper docstring doesn't
+            # have the expected format, causing RuntimeError.
+            "arange",
         }
         if name in _SKIP_PATCH:
             continue
+
+        # Wrap Python functions to prevent descriptor auto-binding.
+        # When a Python function is stored as a class attribute and
+        # accessed via self.func(), Python's descriptor protocol
+        # auto-binds self as the first arg. C built-in functions
+        # (like the originals in numpy) don't do this. We wrap our
+        # replacements in a non-descriptor callable to match behavior.
+        patched_fn = _NonDescriptor(we_fn)
 
         # Patch numpy
         try:
             if len(parts) == 1:
                 if hasattr(np, name):
                     _PATCHED[name] = getattr(np, name)
-                    setattr(np, name, we_fn)
+                    setattr(np, name, patched_fn)
             elif len(parts) == 2:
                 np_submod = getattr(np, parts[0])
                 if hasattr(np_submod, parts[1]):
                     _PATCHED[name] = getattr(np_submod, parts[1])
-                    setattr(np_submod, parts[1], we_fn)
+                    setattr(np_submod, parts[1], patched_fn)
         except (AttributeError, TypeError):
             continue
 
