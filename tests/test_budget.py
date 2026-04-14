@@ -108,3 +108,20 @@ def test_summary():
         assert "800" in s
         assert "einsum" in s
         assert "exp" in s
+
+
+def test_time_exhausted_error_attributes():
+    from whest.errors import TimeExhaustedError
+    err = TimeExhaustedError("matmul", elapsed_s=1.5, limit_s=1.0)
+    assert err.op_name == "matmul"
+    assert err.elapsed_s == 1.5
+    assert err.limit_s == 1.0
+    assert "matmul" in str(err)
+    assert "1.500" in str(err)
+    assert "1.000" in str(err)
+
+
+def test_time_exhausted_error_is_whest_error():
+    from whest.errors import TimeExhaustedError, WhestError
+    err = TimeExhaustedError("add", elapsed_s=2.0, limit_s=1.0)
+    assert isinstance(err, WhestError)
