@@ -64,7 +64,12 @@ from whest._counting_ops import (  # noqa: F401
 from whest._display import budget_live, budget_summary  # noqa: F401
 
 # --- Einsum ---
-from whest._einsum import einsum, einsum_path  # noqa: F401
+from whest._einsum import (  # noqa: F401
+    clear_einsum_cache,
+    einsum,
+    einsum_cache_info,
+    einsum_path,
+)
 
 # --- Free ops ---
 from whest._free_ops import (  # noqa: F401

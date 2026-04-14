@@ -158,6 +158,37 @@ result = we.einsum('ij,jk,kl->il', A, B, C, optimize=[(0, 1), (0, 1)])
 
 Different paths may have different FLOP costs. Use `we.einsum_path()` to compare — it returns the cost without executing or spending budget.
 
+## Path caching
+
+Contraction paths are cached automatically in a module-level LRU cache.
+When you call `we.einsum()` with the same subscripts, shapes, optimizer,
+and symmetry structure, the path is reused from cache instead of being
+recomputed. This makes repeated einsums in loops essentially free in
+path-finding overhead:
+
+```python
+with we.BudgetContext(flop_budget=10**9) as budget:
+    for i in range(1000):
+        y = we.einsum('ij,j->i', A, x)  # path computed once, reused 999 times
+```
+
+`we.einsum_path()` shares the same cache, so planning a path warms the
+cache for subsequent `we.einsum()` calls and vice versa.
+
+### Cache management
+
+```python
+# Inspect cache statistics
+info = we.einsum_cache_info()
+print(f"Hits: {info.hits}, Misses: {info.misses}, Size: {info.currsize}/{info.maxsize}")
+
+# Clear the cache (e.g., to free memory or force recomputation)
+we.clear_einsum_cache()
+
+# Change the cache size (default 4096 entries, rebuilds the cache)
+we.configure(einsum_path_cache_size=8192)
+```
+
 ## ⚠️ Common pitfalls
 
 **Symptom:** Unexpectedly high FLOP cost
