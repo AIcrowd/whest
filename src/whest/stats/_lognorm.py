@@ -47,7 +47,7 @@ class LognormDistribution(ContinuousDistribution):
 
         FLOP Cost
         ---------
-        15 * numel(x) FLOPs
+        1 * numel(x) FLOPs
 
         Parameters
         ----------
@@ -74,7 +74,7 @@ class LognormDistribution(ContinuousDistribution):
 
         FLOP Cost
         ---------
-        25 * numel(x) FLOPs
+        1 * numel(x) FLOPs
         """
         return self._deduct_and_call("cdf", 1, x, s, loc=loc, scale=scale)
 
@@ -85,7 +85,7 @@ class LognormDistribution(ContinuousDistribution):
 
         FLOP Cost
         ---------
-        45 * numel(q) FLOPs
+        1 * numel(q) FLOPs
         """
         return self._deduct_and_call("ppf", 1, q, s, loc=loc, scale=scale)
 
