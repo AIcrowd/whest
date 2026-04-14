@@ -498,3 +498,51 @@ class TestPointwiseStabilizer:
         g = PermutationGroup.symmetric(3)
         stab = g.pointwise_stabilizer({0, 1, 2})
         assert stab.order() == 1
+
+
+class TestSetwiseStabilizer:
+    def test_c4_setwise_13(self):
+        """C_4 setwise stabilizer of {1,3} → {id, rot²} = C_2."""
+        g = PermutationGroup.cyclic(4)
+        stab = g.setwise_stabilizer({1, 3})
+        assert stab.order() == 2
+        for elem in stab.elements():
+            assert {elem(1), elem(3)} == {1, 3}
+
+    def test_c3_setwise_any_pair(self):
+        """C_3 setwise stabilizer of any 2-element subset → trivial."""
+        g = PermutationGroup.cyclic(3)
+        stab = g.setwise_stabilizer({0, 1})
+        assert stab.order() == 1
+
+    def test_s3_setwise_pair(self):
+        """S_3 setwise stabilizer of {0,1} → {id, (0 1)} = S_2."""
+        g = PermutationGroup.symmetric(3)
+        stab = g.setwise_stabilizer({0, 1})
+        assert stab.order() == 2
+        for elem in stab.elements():
+            assert {elem(0), elem(1)} == {0, 1}
+
+    def test_s4_setwise_pair(self):
+        """S_4 setwise stabilizer of {0,1}: 2! × 2! = 4 elements."""
+        g = PermutationGroup.symmetric(4)
+        stab = g.setwise_stabilizer({0, 1})
+        assert stab.order() == 4
+
+    def test_empty_set(self):
+        """Setwise stabilizer of empty set is the full group."""
+        g = PermutationGroup.cyclic(4)
+        stab = g.setwise_stabilizer(set())
+        assert stab.order() == g.order()
+
+    def test_full_set(self):
+        """Setwise stabilizer of the full set is the full group."""
+        g = PermutationGroup.symmetric(3)
+        stab = g.setwise_stabilizer({0, 1, 2})
+        assert stab.order() == g.order()
+
+    def test_d4_setwise(self):
+        """D_4 setwise stabilizer of {0,2} (opposite corners)."""
+        g = PermutationGroup.dihedral(4)
+        stab = g.setwise_stabilizer({0, 2})
+        assert stab.order() == 4
