@@ -751,7 +751,8 @@ def matmul(a, b):
     else:
         cost = a.size * b.size
     budget.deduct("matmul", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
-    result = _np.matmul(a, b)
+    with _np.errstate(divide="ignore", over="ignore", invalid="ignore"):
+        result = _np.matmul(a, b)
     check_nan_inf(result, "matmul")
     return result
 
