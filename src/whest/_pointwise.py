@@ -87,21 +87,28 @@ def _counted_binary(np_func, op_name: str):
         y_is_scalar = y.ndim == 0
 
         # Determine output symmetry.
+        out_groups: list | None = None
         out_sym_axes: list | None = None
         if x_sym and y_is_scalar:
+            out_groups = x_sym.groups if x_sym.groups else None
             out_sym_axes = x_sym.symmetric_axes
         elif y_sym and x_is_scalar:
+            out_groups = y_sym.groups if y_sym.groups else None
             out_sym_axes = y_sym.symmetric_axes
         elif x_sym or y_sym:
-            # Use intersection (handles both exact-match and partial-overlap).
-            x_axes = x_sym.symmetric_axes if x_sym else []
-            y_axes = y_sym.symmetric_axes if y_sym else []
-            out_sym_axes = intersect_symmetry(
-                x_axes if x_axes else None,
-                y_axes if y_axes else None,
+            x_groups = x_sym.groups if x_sym else []
+            y_groups = y_sym.groups if y_sym else []
+            out_groups = intersect_symmetry(
+                x_groups if x_groups else None,
+                y_groups if y_groups else None,
                 x.shape,
                 y.shape,
                 output_shape,
+            )
+            out_sym_axes = (
+                [g.axes for g in out_groups if g.axes is not None]
+                if out_groups
+                else None
             )
 
         out_sym_info = (
@@ -119,15 +126,17 @@ def _counted_binary(np_func, op_name: str):
         result = np_func(x_orig, y_orig)
         check_nan_inf(result, op_name)
         if out_sym_axes:
-            result = SymmetricTensor(result, symmetric_axes=out_sym_axes)
+            result = SymmetricTensor(
+                result, symmetric_axes=out_sym_axes, perm_groups=out_groups
+            )
             # Warn if either input had more symmetry.
-            input_groups = set()
+            input_axes = set()
             if x_sym:
-                input_groups.update(x_sym.symmetric_axes)
+                input_axes.update(x_sym.symmetric_axes)
             if y_sym:
-                input_groups.update(y_sym.symmetric_axes)
+                input_axes.update(y_sym.symmetric_axes)
             out_set = set(out_sym_axes)
-            lost = [g for g in input_groups if g not in out_set]
+            lost = [g for g in input_axes if g not in out_set]
             if lost:
                 _warn_symmetry_loss(
                     lost, f"{op_name} — groups not shared by both operands"
@@ -200,25 +209,33 @@ def _counted_reduction(
         # Propagate symmetry through reduction.
         if sym_info is not None:
             keepdims = kwargs.get("keepdims", False)
+            perm_groups = sym_info.groups if sym_info.groups else []
             new_groups = propagate_symmetry_reduce(
-                sym_info.symmetric_axes, len(a.shape), axis, keepdims=keepdims
+                perm_groups, len(a.shape), axis, keepdims=keepdims
             )
             if new_groups is not None:
                 result = _np.asarray(result).view(SymmetricTensor)
-                result._symmetric_axes = new_groups
-                # Warn if groups were partially lost.
-                old_set = set(sym_info.symmetric_axes)
-                new_set = set(new_groups)
-                if new_set != old_set:
-                    lost = [g for g in sym_info.symmetric_axes if g not in new_set]
+                result._symmetry_groups = new_groups
+                result._symmetric_axes = [
+                    g.axes for g in new_groups if g.axes is not None
+                ]
+                # Warn if any group changed (order decreased or axes changed).
+                old_axes_set = {g.axes for g in perm_groups if g.axes is not None}
+                new_axes_set = {g.axes for g in new_groups if g.axes is not None}
+                if old_axes_set != new_axes_set:
+                    lost = [
+                        g.axes
+                        for g in perm_groups
+                        if g.axes is not None and g.axes not in new_axes_set
+                    ]
                     if lost:
                         _warn_symmetry_loss(lost, f"{op_name} reduced dims")
             else:
                 if isinstance(result, SymmetricTensor):
                     result = _np.asarray(result)
-                if sym_info.symmetric_axes:
+                if perm_groups:
                     _warn_symmetry_loss(
-                        sym_info.symmetric_axes,
+                        [g.axes for g in perm_groups if g.axes is not None],
                         f"{op_name} removed all symmetric dim groups",
                     )
         elif isinstance(result, SymmetricTensor):
