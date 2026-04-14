@@ -77,7 +77,14 @@ def _make_path_cache(maxsize):
     """Create a new lru_cache-wrapped path computation function."""
 
     @functools.lru_cache(maxsize=maxsize)
-    def _compute(subscripts, shapes, optimize, symmetry_fingerprint, identity_pattern):
+    def _compute(
+        subscripts,
+        shapes,
+        optimize,
+        symmetry_fingerprint,
+        identity_pattern,
+        use_inner_symmetry=True,
+    ):
         from whest._perm_group import Permutation
 
         input_parts = subscripts.split("->")[0].split(",")
@@ -270,7 +277,8 @@ def einsum(
         opt_key = optimize
 
     # Get cached PathInfo (or compute on miss)
-    path_info = _path_cache(subscripts, shapes, opt_key, sym_fp, id_pat)
+    inner_sym = bool(get_setting("use_inner_symmetry"))
+    path_info = _path_cache(subscripts, shapes, opt_key, sym_fp, id_pat, inner_sym)
 
     budget.deduct(
         "einsum",
@@ -339,7 +347,8 @@ def einsum_path(subscripts: str, *operands, optimize: str | bool | list = "auto"
     else:
         opt_key = optimize
 
-    path_info = _path_cache(subscripts, shapes, opt_key, sym_fp, id_pat)
+    inner_sym = bool(get_setting("use_inner_symmetry"))
+    path_info = _path_cache(subscripts, shapes, opt_key, sym_fp, id_pat, inner_sym)
     return list(path_info.path), path_info
 
 
