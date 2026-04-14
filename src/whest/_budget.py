@@ -23,6 +23,32 @@ class OpRecord(NamedTuple):
     duration: float | None = None  # wall-clock seconds of the numpy call
 
 
+# ---------------------------------------------------------------------------
+# Why cooperative (not signal-based) deadline enforcement?
+#
+# We deliberately avoid SIGALRM / signal-based preemption because:
+# 1. Python signal handlers only run between bytecodes — they cannot
+#    interrupt C extensions (numpy/LAPACK/BLAS), which are exactly the
+#    operations where time limits matter most.
+# 2. signal.alarm() is POSIX-only (no Windows) and integer-second only.
+# 3. Signals are main-thread-only and can interfere with numpy internals.
+#
+# The hard enforcement boundary is the container/OS level: whest
+# submissions run inside Docker containers with kernel-level time limits
+# (cgroups / rlimit) that deliver SIGKILL when exceeded.
+#
+# The in-library wall_time_limit_s is a UX feature: it gives participants
+# a clean, informative TimeExhaustedError (with op name, elapsed time,
+# and configured limit) rather than a brutal container kill.
+#
+# The deadline is checked:
+# 1. Pre-op: in BudgetContext.deduct() before the numpy call starts.
+# 2. Post-op: in _OpTimer.__exit__() after the numpy call completes.
+#
+# This bounds overshoot to the duration of a single numpy call.
+# ---------------------------------------------------------------------------
+
+
 class _OpTimer:
     """Lightweight timer returned by BudgetContext.deduct().
 
@@ -45,12 +71,26 @@ class _OpTimer:
         self._start = time.perf_counter()
         return self
 
-    def __exit__(self, *exc: object) -> bool:
+    def __exit__(self, exc_type, exc_val, exc_tb) -> bool:
         if self._start is not None:
             duration = time.perf_counter() - self._start
             log = self._budget._op_log
             log[-1] = log[-1]._replace(duration=duration)
             self._budget._total_tracked_time += duration
+
+            # Post-op deadline check: only if no exception is already propagating
+            if (
+                exc_type is None
+                and self._budget._deadline is not None
+                and time.perf_counter() > self._budget._deadline
+            ):
+                from whest.errors import TimeExhaustedError
+
+                raise TimeExhaustedError(
+                    log[-1].op_name,
+                    elapsed_s=time.perf_counter() - self._budget._start_time,
+                    limit_s=self._budget._wall_time_limit_s,
+                )
         return False
 
 
@@ -254,12 +294,14 @@ class BudgetContext:
 
             import whest
 
-            print(
+            banner = (
                 f"whest {whest.__version__} "
                 f"(numpy {whest.__numpy_version__} backend) | "
-                f"budget: {self._flop_budget:.2e} FLOPs",
-                file=sys.stderr,
+                f"budget: {self._flop_budget:.2e} FLOPs"
             )
+            if self._wall_time_limit_s is not None:
+                banner += f" | time limit: {self._wall_time_limit_s:.1f}s"
+            print(banner, file=sys.stderr)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
@@ -386,9 +428,11 @@ class BudgetAccumulator:
             total_used += rec.flops_used
             for op in rec.op_log:
                 if op.op_name not in ops:
-                    ops[op.op_name] = {"flop_cost": 0, "calls": 0}
+                    ops[op.op_name] = {"flop_cost": 0, "calls": 0, "duration": 0.0}
                 ops[op.op_name]["flop_cost"] += op.flop_cost
                 ops[op.op_name]["calls"] += 1
+                if op.duration is not None:
+                    ops[op.op_name]["duration"] += op.duration
             if rec.wall_time_s is not None:
                 total_wall_time = (total_wall_time or 0.0) + rec.wall_time_s
             if rec.total_tracked_time is not None:
@@ -430,9 +474,12 @@ class BudgetAccumulator:
                         by_ns[ns]["operations"][op.op_name] = {
                             "flop_cost": 0,
                             "calls": 0,
+                            "duration": 0.0,
                         }
                     by_ns[ns]["operations"][op.op_name]["flop_cost"] += op.flop_cost
                     by_ns[ns]["operations"][op.op_name]["calls"] += 1
+                    if op.duration is not None:
+                        by_ns[ns]["operations"][op.op_name]["duration"] += op.duration
             result["by_namespace"] = by_ns
 
         return result

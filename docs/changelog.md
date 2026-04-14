@@ -4,6 +4,19 @@
 
 ### Added
 
+- **Wall-clock time limits.** `BudgetContext` now accepts `wall_time_limit_s` to
+  set a wall-clock deadline. When exceeded, `TimeExhaustedError` is raised at the
+  next operation boundary with diagnostic info (operation name, elapsed time, limit).
+  The deadline is checked both before and after each numpy call (cooperative
+  enforcement). The entry banner shows the time limit when set.
+
+- **Per-operation duration tracking.** Every operation now records its wall-clock
+  duration in `OpRecord.duration`. The budget summary (both plain-text and Rich)
+  shows wall time, tracked/untracked breakdown, and per-operation timing. Use
+  `budget.summary()` or `we.budget_summary()` to see the timing data.
+
+- **`TimeExhaustedError`** added to both the core library and the client package.
+
 - **Einsum path caching.** Contraction paths are now cached in a module-level
   LRU cache (default 4096 entries). Repeated `we.einsum()` calls with the same
   subscripts, shapes, optimizer, and symmetry structure reuse the cached path

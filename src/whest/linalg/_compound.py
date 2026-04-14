@@ -66,10 +66,11 @@ def multi_dot(arrays, *, out=None):
     arrays = [a if isinstance(a, _np.ndarray) else _np.asarray(a) for a in arrays]
     shapes = [arr.shape for arr in arrays]
     cost = multi_dot_cost(shapes)
-    budget.deduct(
+    with budget.deduct(
         "linalg.multi_dot", flop_cost=cost, subscripts=None, shapes=tuple(shapes)
-    )
-    return _np.linalg.multi_dot(arrays, out=out)
+    ):
+        result = _np.linalg.multi_dot(arrays, out=out)
+    return result
 
 
 attach_docstring(
@@ -113,10 +114,11 @@ def matrix_power(a, n):
     size = a.shape[-1]
     batch = _batch_size(a.shape)
     cost = matrix_power_cost(size, n) * batch if not _has_zero_dim(a.shape) else 0
-    budget.deduct(
+    with budget.deduct(
         "linalg.matrix_power", flop_cost=cost, subscripts=None, shapes=(a.shape,)
-    )
-    return _np.linalg.matrix_power(a, n)
+    ):
+        result = _np.linalg.matrix_power(a, n)
+    return result
 
 
 attach_docstring(
