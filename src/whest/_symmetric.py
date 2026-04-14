@@ -236,8 +236,12 @@ def propagate_symmetry_slice(
     shape : tuple of int
         Original tensor shape.
     key : indexing key
+        The slicing/indexing key.
 
-    Returns *None* if no symmetry survives (caller should return plain ndarray).
+    Returns
+    -------
+    list of PermutationGroup or None
+        Surviving groups, or ``None`` if no symmetry survives.
     """
     ndim = len(shape)
 
@@ -400,7 +404,10 @@ def propagate_symmetry_reduce(
     keepdims : bool
         Whether reduced dims are kept at size 1.
 
-    Returns *None* if no symmetry survives.
+    Returns
+    -------
+    list of PermutationGroup or None
+        Surviving groups, or ``None`` if no symmetry survives.
     """
     if axis is None:
         return None
