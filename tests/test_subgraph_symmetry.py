@@ -83,7 +83,7 @@ class TestBuildBipartite:
         }
         assert all(row[next(iter(row))] == 1 for row in g.incidence)
 
-    def test_fully_symmetric_operand_collapses_to_one_u(self):
+    def test_symmetric_operand_keeps_separate_u_vertices(self):
         T = np.zeros((3, 3))
         per_op = [[_sym_group("i", "j")]]  # T symmetric in (i, j)
         g = _build_bipartite(
@@ -92,10 +92,10 @@ class TestBuildBipartite:
             per_op_groups=per_op,
             output_chars="ij",
         )
-        # One U vertex for the class {i, j}
-        assert len(g.u_vertices) == 1
-        assert g.incidence[0] == {"i": 1, "j": 1}
-        assert g.u_labels[0] == frozenset({"i", "j"})
+        # Two U vertices — one per axis (no merging).
+        assert len(g.u_vertices) == 2
+        assert g.incidence[0] == {"i": 1}
+        assert g.incidence[1] == {"j": 1}
 
     def test_repeated_axis_in_subscript_gives_multiplicity(self):
         # einsum('iij->ij', T) — axis i appears twice in T
@@ -163,17 +163,18 @@ class TestBuildBipartite:
             per_op_groups=[[_sym_group("i", "j")], None, None],
             output_chars="ab",
         )
-        # T (op 0) has one U vertex for class {i, j}
+        # T (op 0) has two U vertices (one per axis, no merging): {i}, {j}
         # S1 (op 1) has two U vertices: {a}, {i}
         # S2 (op 2) has two U vertices: {b}, {j}
-        assert len(g.u_vertices) == 5
+        assert len(g.u_vertices) == 6
         assert g.identical_operand_groups == ((1, 2),)
         assert g.free_labels == frozenset("ab")
         assert g.summed_labels == frozenset("ij")
-        # T's row has incidence {i: 1, j: 1}
+        # T's rows have incidence {i: 1} and {j: 1}
         t_rows = [row for u, row in zip(g.u_operand, g.incidence) if u == 0]
-        assert len(t_rows) == 1
-        assert t_rows[0] == {"i": 1, "j": 1}
+        assert len(t_rows) == 2
+        assert {"i": 1} in t_rows
+        assert {"j": 1} in t_rows
 
 
 class TestSubsetInduction:
