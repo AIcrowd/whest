@@ -5,14 +5,24 @@ Tests matching these patterns are marked xfail when running NumPy's
 test suite against whest.
 
 Current state (2026-04-14):
-    Total:          7,788 passed, 0 failed, 121 xfailed, 2 xpassed
-    test_umath:     4,668 passed  (14 xfailed)
-    test_ufunc:       795 passed   (7 xfailed)
-    test_numeric:   1,567 passed   (4 xfailed — was 20, fixed 16; refined 3 patterns)
-    test_linalg:      395 passed  (42 xfailed — was 255, fixed 213 after ndim guards/batch)
-    test_pocketfft:   148 passed   (0 xfailed — was 34, fixed all)
-    test_polynomial:  600 passed   (2 xfailed)
-    test_random:      139 passed   (6 xfailed — was 8, fixed shuffle + unpacking)
+    Total:          7,760 passed, 28 failed, 63 xfailed, 0 xpassed
+    test_umath:     ~4,668 passed  (11 xfailed — removed test_ufunc_override_where)
+    test_ufunc:       ~795 passed   (4 xfailed — removed scalar_equal, struct_ufunc, safe_casting)
+    test_numeric:   ~1,567 passed   (4 xfailed — removed all OWNDATA_VIEW TestClip patterns)
+    test_linalg:      ~395 passed  (30 xfailed — removed matrix_*, QR modes, EighCases, SVD types)
+    test_pocketfft:    148 passed   (0 xfailed)
+    test_polynomial:   600 passed   (2 xfailed)
+    test_random:       139 passed   (5 xfailed — removed test_shuffle_no_object_unpacking[False*])
+
+Fixes applied:
+    OWNDATA fix:        All TestClip OWNDATA_VIEW patterns removed (clip now owns its data).
+    array-skip fix:     TestNorm matrix tests, TestQR modes, TestEighCases removed
+                        (array patching skipped, numpy linalg functions work natively).
+    named-tuple fix:    TestSVD::test_types*, TestSVDHermitian::test_types* removed
+                        (svd now returns proper named tuple).
+    subclass fixes:     test_ufunc_override_where, test_scalar_equal, test_struct_ufunc,
+                        test_safe_casting, test_non_array_input removed.
+    random fix:         test_shuffle_no_object_unpacking[False*] removed.
 
 What we patch (55 functions):
     Non-ufunc reductions and special functions (all, any, amax, amin,
@@ -63,8 +73,9 @@ XFAIL_PATTERNS: dict[str, str] = {
     # test_linalg.py — remaining failures after ndim guards/batch fixes   #
     # ------------------------------------------------------------------ #
     # Most batch/0-size/generalized cases now pass. Remaining failures
-    # are: matrix norm (no ord arg), raw QR mode, sq_cases precision
-    # differences, SVD full mode, and cross/diagonal edge cases.
+    # are: cross/diagonal edge cases, cond NaN, eig/inv/lstsq/solve
+    # sq_cases precision differences, matrix_rank, bad_args validation,
+    # pinv hermitian/generalized cases.
     "*test_linalg*::test_cross": (
         "NOT_IMPLEMENTED: whest cross doesn't raise ValueError for 2D arrays"
     ),
@@ -76,9 +87,6 @@ XFAIL_PATTERNS: dict[str, str] = {
     ),
     "*test_linalg*::TestEig::test_sq_cases": (
         "NOT_IMPLEMENTED: whest eig sq_cases differ (precision/dtype)"
-    ),
-    "*test_linalg*::TestEighCases::*": (
-        "NOT_IMPLEMENTED: whest eigh doesn't support generalized/stacked cases"
     ),
     "*test_linalg*::TestInv::test_sq_cases": (
         "NOT_IMPLEMENTED: whest inv sq_cases differ (precision/dtype)"
@@ -92,29 +100,14 @@ XFAIL_PATTERNS: dict[str, str] = {
     "*test_linalg*::TestNormDouble::test_bad_args": (
         "NOT_IMPLEMENTED: whest norm doesn't validate ord argument like np.linalg.norm"
     ),
-    "*test_linalg*::TestNormDouble::test_matrix_*": (
-        "NOT_IMPLEMENTED: whest norm doesn't support matrix norm (ord arg)"
-    ),
     "*test_linalg*::TestNormInt64::test_bad_args": (
         "NOT_IMPLEMENTED: whest norm doesn't validate ord argument like np.linalg.norm"
-    ),
-    "*test_linalg*::TestNormInt64::test_matrix_*": (
-        "NOT_IMPLEMENTED: whest norm doesn't support matrix norm (ord arg)"
     ),
     "*test_linalg*::TestNormSingle::test_bad_args": (
         "NOT_IMPLEMENTED: whest norm doesn't validate ord argument like np.linalg.norm"
     ),
-    "*test_linalg*::TestNormSingle::test_matrix_*": (
-        "NOT_IMPLEMENTED: whest norm doesn't support matrix norm (ord arg)"
-    ),
     "*test_linalg*::TestPinvHermitian::test_herm_cases": (
         "NOT_IMPLEMENTED: whest pinv hermitian cases differ"
-    ),
-    "*test_linalg*::TestQR::test_mode_all_but_economic": (
-        "NOT_IMPLEMENTED: whest qr doesn't support non-economic modes"
-    ),
-    "*test_linalg*::TestQR::test_mode_raw": (
-        "NOT_IMPLEMENTED: whest qr doesn't support raw mode"
     ),
     "*test_linalg*::TestSolve::test_sq_cases": (
         "NOT_IMPLEMENTED: whest solve sq_cases differ (precision/dtype)"
@@ -122,14 +115,8 @@ XFAIL_PATTERNS: dict[str, str] = {
     "*test_linalg*::TestSVD::test_sq_cases": (
         "NOT_IMPLEMENTED: whest svd sq_cases differ"
     ),
-    "*test_linalg*::TestSVD::test_types*": (
-        "NOT_IMPLEMENTED: whest svd type cases differ"
-    ),
     "*test_linalg*::TestSVDHermitian::test_herm_cases": (
         "NOT_IMPLEMENTED: whest svd hermitian cases differ"
-    ),
-    "*test_linalg*::TestSVDHermitian::test_types*": (
-        "NOT_IMPLEMENTED: whest svd hermitian type cases differ"
     ),
     # ------------------------------------------------------------------ #
     # test_polynomial.py — divergences                                    #
@@ -170,9 +157,6 @@ XFAIL_PATTERNS: dict[str, str] = {
     "*TestRandomDist::test_shuffle": (
         "WRAPPER_SIGNATURE: whest shuffle is a plain function, not a bound method"
     ),
-    "*TestRandomDist::test_shuffle_no_object_unpacking[False*": (
-        "SUBCLASS_RETURN: WhestArray subclass object unpacking differs from ndarray"
-    ),
     # ------------------------------------------------------------------ #
     # SUBCLASS_RETURN — WhestArray subclass propagation               #
     # ------------------------------------------------------------------ #
@@ -184,29 +168,14 @@ XFAIL_PATTERNS: dict[str, str] = {
     "*TestSpecialMethods::test_priority": (
         "SUBCLASS_RETURN: ndarray subclass propagates through ufunc with __array_priority__"
     ),
-    "*TestSpecialMethods::test_ufunc_override_where": (
-        "SUBCLASS_RETURN: WhestArray __array_ufunc__ interaction with other override classes"
-    ),
     "*TestUfunc::test_scalar_reduction": (
         "SUBCLASS_RETURN: ufunc reduction on WhestArray returns subclass instead of scalar"
-    ),
-    "*TestUfunc::test_scalar_equal": (
-        "SUBCLASS_RETURN: scalar comparison returns WhestArray instead of bool"
-    ),
-    "*TestUfunc::test_struct_ufunc": (
-        "SUBCLASS_RETURN: structured ufunc result preserves WhestArray subclass"
-    ),
-    "*TestUfunc::test_safe_casting": (
-        "SUBCLASS_RETURN: safe casting check sees WhestArray subclass"
     ),
     "*TestUfunc::test_broadcast": (
         "SUBCLASS_RETURN: broadcast result preserves WhestArray subclass"
     ),
     "*TestNonzero::test_return_type": (
         "SUBCLASS_RETURN: nonzero returns WhestArray instead of plain ndarray tuple"
-    ),
-    "*TestRequire::test_non_array_input": (
-        "SUBCLASS_RETURN: np.require called on WhestArray returns subclass"
     ),
     "*TestRequire::test_ensure_array": (
         "SUBCLASS_RETURN: np.require with subok=False can't strip WhestArray"
@@ -218,66 +187,6 @@ XFAIL_PATTERNS: dict[str, str] = {
         "SUBCLASS_RETURN: pinv result type assertion sees WhestArray subclass"
     ),
     # ------------------------------------------------------------------ #
-    # OWNDATA_VIEW — _aswhest view-cast loses OWNDATA flag            #
-    # ------------------------------------------------------------------ #
-    # whest's _aswhest wraps numpy results via .view(WhestArray)
-    # which produces a view (OWNDATA=False) rather than an owning array.
-    # NumPy's TestClip tests use assert_array_strict_equal which compares
-    # ndarray.flags including OWNDATA. The data and shape are correct;
-    # only the OWNDATA flag differs. Same root cause for several other tests.
-    "*TestClip::test_simple_int": ("OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"),
-    "*TestClip::test_simple_double": ("OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"),
-    "*TestClip::test_simple_complex": (
-        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
-    ),
-    "*TestClip::test_simple_inplace_01": (
-        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
-    ),
-    "*TestClip::test_simple_inplace_02": (
-        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
-    ),
-    "*TestClip::test_simple_int32_out": (
-        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
-    ),
-    "*TestClip::test_simple_int64_inout": (
-        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
-    ),
-    "*TestClip::test_simple_int64_out": (
-        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
-    ),
-    "*TestClip::test_array_double": ("OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"),
-    "*TestClip::test_clip_func_takes_out": (
-        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
-    ),
-    "*TestClip::test_clip_inplace_array": (
-        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
-    ),
-    "*TestClip::test_clip_inplace_simple": (
-        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
-    ),
-    "*TestClip::test_clip_non_contig": (
-        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
-    ),
-    "*TestClip::test_clip_with_out_array_int32": (
-        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
-    ),
-    "*TestClip::test_clip_with_out_array_outint32": (
-        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
-    ),
-    "*TestClip::test_clip_with_out_simple2": (
-        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
-    ),
-    "*TestClip::test_clip_with_out_simple_int32": (
-        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"
-    ),
-    "*TestClip::test_type_cast_01": ("OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"),
-    "*TestClip::test_type_cast_02": ("OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"),
-    "*TestClip::test_type_cast_03": ("OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"),
-    "*TestClip::test_type_cast_04": ("OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"),
-    "*TestClip::test_type_cast_05": ("OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"),
-    "*TestClip::test_type_cast_06": ("OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"),
-    "*TestClip::test_type_cast_09": ("OWNDATA_VIEW: _aswhest view-cast loses OWNDATA"),
-    # ------------------------------------------------------------------ #
     # NUMPY_INTERNAL — fromiter/resize edge cases                         #
     # ------------------------------------------------------------------ #
     "*TestResize::test_reshape_from_zero": (
@@ -285,9 +194,6 @@ XFAIL_PATTERNS: dict[str, str] = {
     ),
     "*TestFromiter::test_growth_and_complicated_dtypes*i,O*": (
         "NUMPY_INTERNAL: fromiter with object dtype interacts unexpectedly with patched np"
-    ),
-    "*TestClip::test_simple_int32_inout*unsafe*": (
-        "OWNDATA_VIEW: _aswhest view-cast loses OWNDATA on unsafe cast"
     ),
     "*TestOut::test_out_wrap_no_leak": (
         "NUMPY_INTERNAL: refcount check sees unexpected count due to WhestArray subclass wrapping"
