@@ -24,8 +24,9 @@ def trace(a, offset=0, axis1=0, axis2=1, dtype=None, out=None):
     budget = require_budget()
     a = _np.asarray(a)
     cost = _builtins.max(_builtins.min(a.shape[axis1], a.shape[axis2]), 1)
-    budget.deduct("trace", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.trace(a, offset=offset, axis1=axis1, axis2=axis2, dtype=dtype, out=out)
+    with budget.deduct("trace", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+        result = _np.trace(a, offset=offset, axis1=axis1, axis2=axis2, dtype=dtype, out=out)
+    return result
 
 
 attach_docstring(
@@ -42,10 +43,11 @@ def allclose(a, b, **kwargs):
     for d in out_shape:
         numel *= d
     cost = _builtins.max(numel, 1)
-    budget.deduct(
+    with budget.deduct(
         "allclose", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
-    )
-    return _np.allclose(a, b, **kwargs)
+    ):
+        result = _np.allclose(a, b, **kwargs)
+    return result
 
 
 attach_docstring(allclose, _np.allclose, "counted_custom", "numel(a) FLOPs")
@@ -58,10 +60,11 @@ def array_equal(a, b, **kwargs):
     b = _np.asarray(b)
     # array_equal does not broadcast; returns False on shape mismatch
     cost = _builtins.max(a.size, b.size, 1)
-    budget.deduct(
+    with budget.deduct(
         "array_equal", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
-    )
-    return _np.array_equal(a, b, **kwargs)
+    ):
+        result = _np.array_equal(a, b, **kwargs)
+    return result
 
 
 attach_docstring(array_equal, _np.array_equal, "counted_custom", "numel(a) FLOPs")
@@ -81,10 +84,11 @@ def array_equiv(a, b):
         cost = _builtins.max(numel, 1)
     except ValueError:
         cost = _builtins.max(a.size, b.size, 1)
-    budget.deduct(
+    with budget.deduct(
         "array_equiv", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
-    )
-    return _np.array_equiv(a, b)
+    ):
+        result = _np.array_equiv(a, b)
+    return result
 
 
 attach_docstring(array_equiv, _np.array_equiv, "counted_custom", "numel(a) FLOPs")
@@ -107,8 +111,9 @@ def histogram(a, bins=10, **kwargs):
     else:
         bins_arr = _np.asarray(bins)
         cost = _builtins.max(n * _ceil_log2(_builtins.len(bins_arr)), 1)
-    budget.deduct("histogram", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.histogram(a, bins=bins, **kwargs)
+    with budget.deduct("histogram", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+        result = _np.histogram(a, bins=bins, **kwargs)
+    return result
 
 
 attach_docstring(
@@ -149,10 +154,11 @@ def histogram2d(x, y, bins=10, **kwargs):
     else:
         cost = _builtins.max(n, 1)
 
-    budget.deduct(
+    with budget.deduct(
         "histogram2d", flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape)
-    )
-    return _np.histogram2d(x, y, bins=bins, **kwargs)
+    ):
+        result = _np.histogram2d(x, y, bins=bins, **kwargs)
+    return result
 
 
 attach_docstring(
@@ -191,10 +197,11 @@ def histogramdd(sample, bins=10, **kwargs):
     else:
         cost = _builtins.max(n, 1)
 
-    budget.deduct(
+    with budget.deduct(
         "histogramdd", flop_cost=cost, subscripts=None, shapes=(sample.shape,)
-    )
-    return _np.histogramdd(sample, bins=bins, **kwargs)
+    ):
+        result = _np.histogramdd(sample, bins=bins, **kwargs)
+    return result
 
 
 attach_docstring(
@@ -210,10 +217,11 @@ def histogram_bin_edges(a, bins=10, **kwargs):
     budget = require_budget()
     a = _np.asarray(a)
     cost = _builtins.max(a.size, 1)
-    budget.deduct(
+    with budget.deduct(
         "histogram_bin_edges", flop_cost=cost, subscripts=None, shapes=(a.shape,)
-    )
-    return _np.histogram_bin_edges(a, bins=bins, **kwargs)
+    ):
+        result = _np.histogram_bin_edges(a, bins=bins, **kwargs)
+    return result
 
 
 attach_docstring(
@@ -226,8 +234,9 @@ def bincount(x, **kwargs):
     budget = require_budget()
     x = _np.asarray(x)
     cost = _builtins.max(x.size, 1)
-    budget.deduct("bincount", flop_cost=cost, subscripts=None, shapes=(x.shape,))
-    return _np.bincount(x, **kwargs)
+    with budget.deduct("bincount", flop_cost=cost, subscripts=None, shapes=(x.shape,)):
+        result = _np.bincount(x, **kwargs)
+    return result
 
 
 attach_docstring(bincount, _np.bincount, "counted_custom", "numel(x) FLOPs")
@@ -245,8 +254,9 @@ except (ValueError, TypeError):
 def logspace(start, stop, num=50, **kwargs):
     budget = require_budget()
     cost = _builtins.max(num, 1)
-    budget.deduct("logspace", flop_cost=cost, subscripts=None, shapes=((num,),))
-    return _np.logspace(start, stop, num=num, **kwargs)
+    with budget.deduct("logspace", flop_cost=cost, subscripts=None, shapes=((num,),)):
+        result = _np.logspace(start, stop, num=num, **kwargs)
+    return result
 
 
 attach_docstring(logspace, _np.logspace, "counted_custom", "num FLOPs")
@@ -256,8 +266,9 @@ logspace.__signature__ = _inspect.signature(_np.logspace)
 def geomspace(start, stop, num=50, **kwargs):
     budget = require_budget()
     cost = _builtins.max(num, 1)
-    budget.deduct("geomspace", flop_cost=cost, subscripts=None, shapes=((num,),))
-    return _np.geomspace(start, stop, num=num, **kwargs)
+    with budget.deduct("geomspace", flop_cost=cost, subscripts=None, shapes=((num,),)):
+        result = _np.geomspace(start, stop, num=num, **kwargs)
+    return result
 
 
 attach_docstring(geomspace, _np.geomspace, "counted_custom", "num FLOPs")
@@ -271,8 +282,9 @@ def vander(x, N=None, **kwargs):
     if N is None:
         N = n
     cost = _builtins.max(n * (N - 1), 1)
-    budget.deduct("vander", flop_cost=cost, subscripts=None, shapes=(x.shape,))
-    return _np.vander(x, N=N, **kwargs)
+    with budget.deduct("vander", flop_cost=cost, subscripts=None, shapes=(x.shape,)):
+        result = _np.vander(x, N=N, **kwargs)
+    return result
 
 
 attach_docstring(vander, _np.vander, "counted_custom", "len(x) * (N-1) FLOPs")
@@ -290,9 +302,10 @@ def apply_along_axis(func1d, axis, arr, *args, **kwargs):
         arr = _np.asarray(arr)
     result = _np.apply_along_axis(func1d, axis, arr, *args, **kwargs)
     cost = result.size if hasattr(result, "size") else 1
-    budget.deduct(
+    with budget.deduct(
         "apply_along_axis", flop_cost=cost, subscripts=None, shapes=(arr.shape,)
-    )
+    ):
+        pass
     return result
 
 
@@ -311,7 +324,8 @@ def apply_over_axes(func, a, axes):
         a = _np.asarray(a)
     result = _np.apply_over_axes(func, a, axes)
     cost = result.size if hasattr(result, "size") else 1
-    budget.deduct("apply_over_axes", flop_cost=cost, subscripts=None, shapes=(a.shape,))
+    with budget.deduct("apply_over_axes", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+        pass
     return result
 
 
@@ -330,7 +344,8 @@ def piecewise(x, condlist, funclist, *args, **kw):
         x = _np.asarray(x)
     result = _np.piecewise(x, condlist, funclist, *args, **kw)
     cost = x.size
-    budget.deduct("piecewise", flop_cost=cost, subscripts=None, shapes=(x.shape,))
+    with budget.deduct("piecewise", flop_cost=cost, subscripts=None, shapes=(x.shape,)):
+        pass
     return result
 
 
