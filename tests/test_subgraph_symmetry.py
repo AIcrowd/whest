@@ -807,3 +807,60 @@ class TestDeclaredGroupNotPromoted:
         # differ — no symmetry detected on the single-operand subset.
         sym = oracle.sym(frozenset({0}))
         assert sym.output is None
+
+
+class TestC3AxisMergingBug:
+    """Regression test: C3 orbit-based merging must not produce false S2."""
+
+    def test_c3_self_contraction_no_false_s2(self):
+        """einsum('ijk,jki->ik', T, T) with C3 on T must be trivial.
+
+        Bug: orbit-based merging collapsed {i,j,k} into one U-vertex,
+        causing the fingerprint fast path to falsely detect S2{i,k}.
+        The result is numerically NOT symmetric: Result[i,k] != Result[k,i].
+        """
+        from whest._perm_group import PermutationGroup
+
+        n = 4
+        c3 = PermutationGroup.cyclic(3, axes=(0, 1, 2))
+        c3._labels = ("i", "j", "k")
+
+        T = np.ones((n, n, n))
+        # Use identical Python objects for the two T operands
+        oracle = SubgraphSymmetryOracle(
+            operands=[T, T],
+            subscript_parts=["ijk", "jki"],
+            per_op_groups=[[c3], [c3]],
+            output_chars="ik",
+        )
+        sym = oracle.sym(frozenset({0, 1}))
+        # Must NOT detect S2 — result is not symmetric
+        if sym.output is not None:
+            assert sym.output.order() == 1, (
+                f"Expected trivial (order 1), got order {sym.output.order()} — "
+                f"C3 orbit merging produced false symmetry"
+            )
+
+    def test_c3_declared_uses_sigma_loop(self):
+        """Declared C3 on T in 'aijk,ab->ijkb' should be found via σ-loop
+        generators, not the (now-removed) fingerprint fast path."""
+        from whest._perm_group import PermutationGroup
+
+        n = 4
+        c3 = PermutationGroup.cyclic(3, axes=(1, 2, 3))
+        c3._labels = ("a", "i", "j", "k")
+
+        T = np.ones((n, n, n, n))
+        W = np.ones((n, n))
+
+        oracle = SubgraphSymmetryOracle(
+            operands=[T, W],
+            subscript_parts=["aijk", "ab"],
+            per_op_groups=[[c3], None],
+            output_chars="ijkb",
+        )
+        sym = oracle.sym(frozenset({0, 1}))
+        assert sym.output is not None
+        assert sym.output.order() == 3, (
+            f"Expected C3 (order 3), got order {sym.output.order()}"
+        )
