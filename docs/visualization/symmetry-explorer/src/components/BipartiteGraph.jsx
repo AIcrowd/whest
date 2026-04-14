@@ -145,19 +145,19 @@ export default function BipartiteGraph({ graph, example, variableColors }) {
             <rect
               x={rbLeft} y={wBoxTop}
               width={rbFullW} height={wBoxH}
-              rx={14} fill="rgba(35,183,97,0.03)" stroke="rgba(35,183,97,0.2)" strokeWidth={1.5}
+              rx={14} fill="rgba(100,116,139,0.03)" stroke="rgba(100,116,139,0.2)" strokeWidth={1.5}
             />
-            <LabelBadge x={rbLeft + 12} y={wBoxTop} text="W (summed)" color="#23B761" bg="#F8F9F9" />
+            <LabelBadge x={rbLeft + 12} y={wBoxTop} text="W (summed)" color="#64748B" bg="#F8F9F9" />
           </g>
         ) : (
           <g>
             <rect
               x={rbLeft} y={wBoxTop}
               width={rbFullW} height={wBoxH}
-              rx={14} fill="rgba(35,183,97,0.02)"
-              stroke="rgba(35,183,97,0.15)" strokeWidth={1.5} strokeDasharray="6,4"
+              rx={14} fill="rgba(100,116,139,0.02)"
+              stroke="rgba(100,116,139,0.15)" strokeWidth={1.5} strokeDasharray="6,4"
             />
-            <LabelBadge x={rbLeft + 12} y={wBoxTop} text="W (summed)" color="#23B761" bg="#F8F9F9" />
+            <LabelBadge x={rbLeft + 12} y={wBoxTop} text="W (summed)" color="#64748B" bg="#F8F9F9" />
             <text x={rightX} y={wBoxTop + wBoxH / 2 + 4}
               textAnchor="middle" fontSize={11} fill="#AAACAD"
               fontFamily="'Inter', sans-serif" fontStyle="italic">
@@ -240,10 +240,10 @@ export default function BipartiteGraph({ graph, example, variableColors }) {
           return (
             <g key={`w-${lbl}`}>
               <circle cx={rightX} cy={y} r={nodeR}
-                fill="white" stroke="#23B761" strokeWidth={1.5}
+                fill="white" stroke="#64748B" strokeWidth={1.5}
                 filter="url(#node-shadow)" />
               <text x={rightX} y={y + 1} textAnchor="middle" dominantBaseline="middle"
-                fill="#23B761" fontSize={11} fontWeight={600}
+                fill="#64748B" fontSize={11} fontWeight={600}
                 fontFamily="'IBM Plex Mono', monospace">
                 {lbl}
               </text>

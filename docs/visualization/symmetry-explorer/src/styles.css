@@ -272,9 +272,9 @@ code, .mono { font-family: var(--font-mono); }
 }
 
 .pill-w {
-  background: rgba(35, 183, 97, 0.08);
-  color: var(--accent-green);
-  border: 1px solid rgba(35, 183, 97, 0.25);
+  background: rgba(100, 116, 139, 0.08);
+  color: #64748B;
+  border: 1px solid rgba(100, 116, 139, 0.25);
 }
 
 /* ─── Example Chooser ────────────────── */
@@ -793,7 +793,7 @@ code, .mono { font-family: var(--font-mono); }
 }
 
 .col-v { color: var(--accent-blue) !important; }
-.col-w { color: var(--accent-green) !important; }
+.col-w { color: #64748B !important; }
 
 .row-label {
   text-align: right;
@@ -1228,7 +1228,7 @@ code, .mono { font-family: var(--font-mono); }
   color: var(--gray-400);
 }
 .inc-col-header.inc-col-v { color: var(--accent-blue); }
-.inc-col-header.inc-col-w { color: var(--accent-green); }
+.inc-col-header.inc-col-w { color: #64748B; }
 .inc-col-header.inc-moved { color: var(--coral); font-weight: 600; }
 
 .inc-row {
@@ -1245,7 +1245,7 @@ code, .mono { font-family: var(--font-mono); }
   font-family: var(--font-mono);
 }
 .inc-row-label.inc-col-v { color: var(--accent-blue); }
-.inc-row-label.inc-col-w { color: var(--accent-green); }
+.inc-row-label.inc-col-w { color: #64748B; }
 
 .inc-cell {
   position: absolute; top: 0; left: 0;
