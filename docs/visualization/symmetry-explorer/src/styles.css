@@ -2321,7 +2321,7 @@ code, .mono { font-family: var(--font-mono); }
   font-family: var(--font-mono); font-weight: 600;
 }
 .sym-order {
-  font-size: 10px; color: var(--gray-400); margin-left: 2px;
+  font-size: 10px; opacity: 0.8; margin-left: 2px;
   font-weight: 500;
 }
 

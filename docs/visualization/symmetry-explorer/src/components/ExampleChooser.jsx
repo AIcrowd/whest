@@ -1,7 +1,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import { validateAll } from '../engine/validation.js';
 import { generatePython } from '../engine/pythonCodegen.js';
-import { buildVariableColors, SYMMETRY_ICONS } from '../engine/colorPalette.js';
+import { buildVariableColors, SYMMETRY_ICONS, contrastText } from '../engine/colorPalette.js';
 import { parseCycleNotation, generatorIndices } from '../engine/cycleParser.js';
 
 // ---------------------------------------------------------------------------
@@ -437,7 +437,7 @@ export default function ExampleChooser({
               )}
 
               {/* Summary badge */}
-              <div className="sym-badge" style={{ backgroundColor: color }}>
+              <div className="sym-badge" style={{ backgroundColor: color, color: contrastText(color) }}>
                 {badgeLabel(v)}
                 {badgeOrder(v) != null && (
                   <span className="sym-order"> order {badgeOrder(v)}</span>

@@ -31,6 +31,22 @@ export const SYMMETRY_ICONS = {
 };
 
 /**
+ * Return '#fff' or '#000' depending on which contrasts better with the
+ * given hex background color (WCAG relative luminance formula).
+ */
+export function contrastText(hex) {
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+  // sRGB linearisation
+  const R = r <= 0.03928 ? r / 12.92 : ((r + 0.055) / 1.055) ** 2.4;
+  const G = g <= 0.03928 ? g / 12.92 : ((g + 0.055) / 1.055) ** 2.4;
+  const B = b <= 0.03928 ? b / 12.92 : ((b + 0.055) / 1.055) ** 2.4;
+  const L = 0.2126 * R + 0.7152 * G + 0.0722 * B;
+  return L > 0.4 ? '#000' : '#fff';
+}
+
+/**
  * Derive a human-readable symmetry label.
  *
  * - none      → 'dense'
