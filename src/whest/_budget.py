@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import functools
 import threading
+import time
 from typing import NamedTuple
 
 from whest.errors import BudgetExhaustedError
@@ -18,6 +19,39 @@ class OpRecord(NamedTuple):
     flop_cost: int
     cumulative: int
     namespace: str | None = None
+    timestamp: float | None = None   # seconds since context __enter__
+    duration: float | None = None    # wall-clock seconds of the numpy call
+
+
+class _OpTimer:
+    """Lightweight timer returned by BudgetContext.deduct().
+
+    Use as a context manager to measure wall-clock duration of the
+    numpy operation that follows the FLOP deduction::
+
+        with budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(...)):
+            result = np_func(x)
+
+    If used without ``with``, duration stays ``None`` on the OpRecord.
+    """
+
+    __slots__ = ("_budget", "_start")
+
+    def __init__(self, budget: "BudgetContext"):
+        self._budget = budget
+        self._start: float | None = None
+
+    def __enter__(self) -> "_OpTimer":
+        self._start = time.perf_counter()
+        return self
+
+    def __exit__(self, *exc: object) -> bool:
+        if self._start is not None:
+            duration = time.perf_counter() - self._start
+            log = self._budget._op_log
+            log[-1] = log[-1]._replace(duration=duration)
+            self._budget._total_tracked_time += duration
+        return False
 
 
 _thread_local = threading.local()
@@ -45,6 +79,7 @@ class BudgetContext:
         flop_multiplier: float = 1.0,
         quiet: bool = False,
         namespace: str | None = None,
+        wall_time_limit_s: float | None = None,
     ):
         if flop_budget <= 0:
             raise ValueError(f"flop_budget must be > 0, got {flop_budget}")
@@ -55,6 +90,11 @@ class BudgetContext:
         self._quiet = quiet
         self._namespace = namespace
         self._previous_budget: BudgetContext | None = None
+        self._wall_time_limit_s = wall_time_limit_s
+        self._start_time: float | None = None
+        self._deadline: float | None = None
+        self._wall_time_s: float | None = None
+        self._total_tracked_time: float = 0.0
 
     @property
     def flop_budget(self) -> int:
@@ -80,10 +120,34 @@ class BudgetContext:
     def namespace(self) -> str | None:
         return self._namespace
 
+    @property
+    def wall_time_limit_s(self) -> float | None:
+        return self._wall_time_limit_s
+
+    @property
+    def wall_time_s(self) -> float | None:
+        return self._wall_time_s
+
+    @property
+    def elapsed_s(self) -> float:
+        if self._start_time is None:
+            return 0.0
+        return time.perf_counter() - self._start_time
+
+    @property
+    def total_tracked_time(self) -> float:
+        return self._total_tracked_time
+
+    @property
+    def untracked_time(self) -> float | None:
+        if self._wall_time_s is None:
+            return None
+        return self._wall_time_s - self._total_tracked_time
+
     def deduct(
         self, op_name: str, *, flop_cost: int, subscripts: str | None, shapes: tuple
-    ) -> None:
-        """Deduct FLOPs from the budget."""
+    ) -> _OpTimer:
+        """Deduct FLOPs from the budget and return a timer context manager."""
         from whest._weights import get_weight
 
         weight = get_weight(op_name)
@@ -93,6 +157,10 @@ class BudgetContext:
                 op_name, flop_cost=adjusted_cost, flops_remaining=self.flops_remaining
             )
         self._flops_used += adjusted_cost
+
+        now = time.perf_counter()
+        timestamp = now - self._start_time if self._start_time is not None else None
+
         self._op_log.append(
             OpRecord(
                 op_name=op_name,
@@ -101,8 +169,20 @@ class BudgetContext:
                 flop_cost=adjusted_cost,
                 cumulative=self._flops_used,
                 namespace=self._namespace,
+                timestamp=timestamp,
             )
         )
+
+        if self._deadline is not None and now > self._deadline:
+            from whest.errors import TimeExhaustedError
+
+            raise TimeExhaustedError(
+                op_name,
+                elapsed_s=now - self._start_time,
+                limit_s=self._wall_time_limit_s,
+            )
+
+        return _OpTimer(self)
 
     def summary(self) -> str:
         """Return a pretty-printed FLOP budget summary."""
@@ -138,6 +218,9 @@ class BudgetContext:
             raise RuntimeError("Cannot nest BudgetContexts")
         self._previous_budget = current  # save (may be global default or None)
         _thread_local.active_budget = self
+        self._start_time = time.perf_counter()
+        if self._wall_time_limit_s is not None:
+            self._deadline = self._start_time + self._wall_time_limit_s
         if not self._quiet:
             import sys
 
@@ -152,6 +235,8 @@ class BudgetContext:
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+        if self._start_time is not None:
+            self._wall_time_s = time.perf_counter() - self._start_time
         _accumulator.record(self)
         _thread_local.active_budget = self._previous_budget  # restore previous
         return None
@@ -172,6 +257,7 @@ def budget(
     flop_multiplier: float = 1.0,
     quiet: bool = False,
     namespace: str | None = None,
+    wall_time_limit_s: float | None = None,
 ) -> BudgetContext:
     """Create a BudgetContext usable as both a context manager and decorator."""
     return BudgetContext(
@@ -179,6 +265,7 @@ def budget(
         flop_multiplier=flop_multiplier,
         quiet=quiet,
         namespace=namespace,
+        wall_time_limit_s=wall_time_limit_s,
     )
 
 

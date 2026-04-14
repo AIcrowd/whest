@@ -125,3 +125,94 @@ def test_time_exhausted_error_is_whest_error():
     from whest.errors import TimeExhaustedError, WhestError
     err = TimeExhaustedError("add", elapsed_s=2.0, limit_s=1.0)
     assert isinstance(err, WhestError)
+
+
+import time as _time
+
+
+def test_budget_context_tracks_wall_time():
+    import whest
+    with whest.BudgetContext(flop_budget=int(1e9)) as b:
+        _ = whest.ones((100,))
+        _time.sleep(0.01)
+    assert b.wall_time_s is not None
+    assert b.wall_time_s >= 0.01
+
+
+def test_budget_context_wall_time_none_before_exit():
+    import whest
+    b = whest.BudgetContext(flop_budget=int(1e9))
+    assert b.wall_time_s is None
+
+
+def test_budget_context_elapsed_s_live():
+    import whest
+    with whest.BudgetContext(flop_budget=int(1e9)) as b:
+        _time.sleep(0.01)
+        assert b.elapsed_s >= 0.01
+
+
+def test_budget_context_wall_time_limit_s_property():
+    import whest
+    b = whest.BudgetContext(flop_budget=int(1e9), wall_time_limit_s=5.0)
+    assert b.wall_time_limit_s == 5.0
+    b2 = whest.BudgetContext(flop_budget=int(1e9))
+    assert b2.wall_time_limit_s is None
+
+
+def test_budget_context_total_tracked_time():
+    import whest
+    with whest.BudgetContext(flop_budget=int(1e9)) as b:
+        _ = whest.add(whest.ones((1000,)), whest.ones((1000,)))
+    assert b.total_tracked_time >= 0
+    assert b.total_tracked_time <= b.wall_time_s
+
+
+def test_budget_context_untracked_time():
+    import whest
+    with whest.BudgetContext(flop_budget=int(1e9)) as b:
+        _ = whest.add(whest.ones((1000,)), whest.ones((1000,)))
+        _time.sleep(0.01)
+    assert b.untracked_time is not None
+    assert b.untracked_time >= 0
+
+
+def test_wall_time_limit_raises_time_exhausted():
+    import pytest
+    import whest
+    from whest.errors import TimeExhaustedError
+    with pytest.raises(TimeExhaustedError) as exc_info:
+        with whest.BudgetContext(flop_budget=int(1e15), wall_time_limit_s=0.001):
+            a = whest.ones((10,))
+            for _ in range(100_000):
+                a = whest.add(a, a)
+    assert exc_info.value.limit_s == 0.001
+    assert exc_info.value.elapsed_s >= 0.001
+
+
+def test_oprecord_timestamps_monotonic():
+    import whest
+    with whest.BudgetContext(flop_budget=int(1e9)) as b:
+        a = whest.ones((10,))
+        for _ in range(5):
+            a = whest.add(a, a)
+    timestamps = [r.timestamp for r in b.op_log if r.timestamp is not None]
+    assert len(timestamps) >= 5
+    for i in range(1, len(timestamps)):
+        assert timestamps[i] >= timestamps[i - 1]
+
+
+def test_oprecord_has_timestamp_and_duration_fields():
+    import whest
+    rec = whest.OpRecord(
+        op_name="add", subscripts=None, shapes=((3,),),
+        flop_cost=3, cumulative=3,
+    )
+    assert rec.timestamp is None
+    assert rec.duration is None
+
+
+def test_budget_factory_passes_wall_time_limit():
+    import whest
+    b = whest.budget(flop_budget=int(1e9), wall_time_limit_s=2.0)
+    assert b.wall_time_limit_s == 2.0
