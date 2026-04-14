@@ -32,8 +32,8 @@ def _counted_unary(np_func, op_name: str):
             x = _np.asarray(x)
         sym_info = x.symmetry_info if isinstance(x, SymmetricTensor) else None
         cost = pointwise_cost(x.shape, symmetry_info=sym_info)
-        budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(x.shape,))
-        result = np_func(x)
+        with budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(x.shape,)):
+            result = np_func(x)
         check_nan_inf(result, op_name)
         if sym_info is not None:
             result = SymmetricTensor(result, symmetric_axes=sym_info.symmetric_axes)
@@ -55,8 +55,8 @@ def _counted_unary_multi(np_func, op_name: str):
         if not isinstance(x, _np.ndarray):
             x = _np.asarray(x)
         cost = pointwise_cost(x.shape)
-        budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(x.shape,))
-        result = np_func(x)
+        with budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(x.shape,)):
+            result = np_func(x)
         if isinstance(result, tuple):
             result = tuple(_aswhest(r) for r in result)
         else:
@@ -117,13 +117,13 @@ def _counted_binary(np_func, op_name: str):
             else None
         )
         cost = pointwise_cost(output_shape, symmetry_info=out_sym_info)
-        budget.deduct(
+        with budget.deduct(
             op_name, flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape)
-        )
-        # Call the underlying ufunc with the ORIGINAL inputs so that
-        # Python-scalar dtype promotion (NEP 50) and FloatingPointError
-        # propagation (np.errstate) work exactly as in plain numpy.
-        result = np_func(x_orig, y_orig)
+        ):
+            # Call the underlying ufunc with the ORIGINAL inputs so that
+            # Python-scalar dtype promotion (NEP 50) and FloatingPointError
+            # propagation (np.errstate) work exactly as in plain numpy.
+            result = np_func(x_orig, y_orig)
         check_nan_inf(result, op_name)
         if out_sym_axes:
             result = SymmetricTensor(
@@ -175,10 +175,10 @@ def _counted_binary_multi(np_func, op_name: str):
             y = _np.asarray(y)
         output_shape = _np.broadcast_shapes(x.shape, y.shape)
         cost = pointwise_cost(output_shape)
-        budget.deduct(
+        with budget.deduct(
             op_name, flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape)
-        )
-        result = np_func(x, y)
+        ):
+            result = np_func(x, y)
         if isinstance(result, tuple):
             result = tuple(_aswhest(r) for r in result)
         else:
@@ -200,11 +200,21 @@ def _counted_reduction(
             a = _np.asarray(a)
         sym_info = a.symmetry_info if isinstance(a, SymmetricTensor) else None
         cost = reduction_cost(a.shape, axis, symmetry_info=sym_info) * cost_multiplier
-        result = np_func(a, axis=axis, **kwargs)
         if extra_output:
-            out_shape = _np.asarray(result).shape
-            cost += pointwise_cost(out_shape)
-        budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(a.shape,))
+            # Pre-compute extra cost from output shape without running numpy yet
+            if axis is None:
+                extra_cost = 1  # scalar output
+            else:
+                ax = axis if axis >= 0 else axis + a.ndim
+                keepdims = kwargs.get("keepdims", False)
+                if keepdims:
+                    out_shape = a.shape[:ax] + (1,) + a.shape[ax + 1 :]
+                else:
+                    out_shape = a.shape[:ax] + a.shape[ax + 1 :]
+                extra_cost = pointwise_cost(out_shape)
+            cost += extra_cost
+        with budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+            result = np_func(a, axis=axis, **kwargs)
 
         # Propagate symmetry through reduction.
         if sym_info is not None:
@@ -305,8 +315,8 @@ def around(a, decimals=0, out=None):
         a = _np.asarray(a)
     sym_info = a.symmetry_info if isinstance(a, SymmetricTensor) else None
     cost = pointwise_cost(a.shape, symmetry_info=sym_info)
-    budget.deduct("around", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    result = _np.around(a, decimals=decimals, out=out)
+    with budget.deduct("around", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+        result = _np.around(a, decimals=decimals, out=out)
     check_nan_inf(result, "around")
     if sym_info is not None:
         result = SymmetricTensor(result, symmetric_axes=sym_info.symmetric_axes)
@@ -382,8 +392,8 @@ def round(a, decimals=0, out=None):
         a = _np.asarray(a)
     sym_info = a.symmetry_info if isinstance(a, SymmetricTensor) else None
     cost = pointwise_cost(a.shape, symmetry_info=sym_info)
-    budget.deduct("round", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    result = _np.round(a, decimals=decimals, out=out)
+    with budget.deduct("round", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+        result = _np.round(a, decimals=decimals, out=out)
     check_nan_inf(result, "round")
     if sym_info is not None:
         result = SymmetricTensor(result, symmetric_axes=sym_info.symmetric_axes)
@@ -413,8 +423,11 @@ def sort_complex(a):
     n = a.size
     log2n = math.ceil(math.log2(n)) if n > 1 else 1
     cost = n * log2n
-    budget.deduct("sort_complex", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    return _np.sort_complex(a)
+    with budget.deduct(
+        "sort_complex", flop_cost=cost, subscripts=None, shapes=(a.shape,)
+    ):
+        result = _np.sort_complex(a)
+    return result
 
 
 spacing = _counted_unary(_np.spacing, "spacing")
@@ -438,8 +451,10 @@ def isclose(a, b, **kwargs):
         b = _np.asarray(b)
     output_shape = _np.broadcast_shapes(a.shape, b.shape)
     cost = pointwise_cost(output_shape)
-    budget.deduct("isclose", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
-    result = _np.isclose(a, b, **kwargs)
+    with budget.deduct(
+        "isclose", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+    ):
+        result = _np.isclose(a, b, **kwargs)
     if (
         a_is_scalar
         and b_is_scalar
@@ -522,14 +537,21 @@ if hasattr(_np, "vecdot"):
             a = _np.asarray(a)
         if not isinstance(b, _np.ndarray):
             b = _np.asarray(b)
-        result = _np.vecdot(a, b, **kwargs)
         # Cost = output_elements * contracted_axis_size
         # For vecdot, the last axis is contracted.
         contracted = a.shape[-1] if a.ndim > 0 else 1
-        cost = result.size * contracted
-        budget.deduct(
-            "vecdot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+        out_shape = (
+            _np.broadcast_shapes(a.shape[:-1], b.shape[:-1]) if a.ndim > 0 else ()
         )
+        cost = (
+            _builtins.max(int(_np.prod(out_shape)) * contracted, 1)
+            if out_shape
+            else contracted
+        )
+        with budget.deduct(
+            "vecdot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+        ):
+            result = _np.vecdot(a, b, **kwargs)
         return result
 
 else:
@@ -551,12 +573,18 @@ if hasattr(_np, "matvec"):
             a = _np.asarray(a)
         if not isinstance(b, _np.ndarray):
             b = _np.asarray(b)
-        result = _np.matvec(a, b, **kwargs)
         contracted = a.shape[-1] if a.ndim > 0 else 1
-        cost = result.size * contracted
-        budget.deduct(
-            "matvec", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+        # output shape: (..., m) where m = a.shape[-2]
+        out_m = a.shape[-2] if a.ndim >= 2 else 1
+        batch = a.shape[:-2] if a.ndim > 2 else ()
+        cost = _builtins.max(
+            int(_np.prod(batch)) * out_m * contracted if batch else out_m * contracted,
+            1,
         )
+        with budget.deduct(
+            "matvec", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+        ):
+            result = _np.matvec(a, b, **kwargs)
         return result
 
 else:
@@ -578,12 +606,18 @@ if hasattr(_np, "vecmat"):
             a = _np.asarray(a)
         if not isinstance(b, _np.ndarray):
             b = _np.asarray(b)
-        result = _np.vecmat(a, b, **kwargs)
         contracted = a.shape[-1] if a.ndim > 0 else 1
-        cost = result.size * contracted
-        budget.deduct(
-            "vecmat", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+        # output shape: (..., m) where m = b.shape[-1]
+        out_m = b.shape[-1] if b.ndim >= 2 else 1
+        batch = b.shape[:-2] if b.ndim > 2 else ()
+        cost = _builtins.max(
+            int(_np.prod(batch)) * out_m * contracted if batch else out_m * contracted,
+            1,
         )
+        with budget.deduct(
+            "vecmat", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+        ):
+            result = _np.vecmat(a, b, **kwargs)
         return result
 
 else:
@@ -608,9 +642,9 @@ def clip(a, *args, out=None, **kwargs):
         a = _np.asarray(a)
     sym_info = a.symmetry_info if isinstance(a, SymmetricTensor) else None
     cost = pointwise_cost(a.shape, symmetry_info=sym_info)
-    budget.deduct("clip", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-    # Delegate all argument handling (validation, min/max/a_min/a_max) to numpy
-    result = _np.clip(a, *args, out=out, **kwargs)
+    with budget.deduct("clip", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+        # Delegate all argument handling (validation, min/max/a_min/a_max) to numpy
+        result = _np.clip(a, *args, out=out, **kwargs)
     if a.dtype.kind in ("f", "c"):
         check_nan_inf(result, "clip")
     if sym_info is not None:
@@ -693,8 +727,9 @@ else:
         if not isinstance(a, _np.ndarray):
             a = _np.asarray(a)
         cost = reduction_cost(a.shape, axis)
-        budget.deduct("ptp", flop_cost=cost, subscripts=None, shapes=(a.shape,))
-        return _np.max(a, axis=axis, **kwargs) - _np.min(a, axis=axis, **kwargs)
+        with budget.deduct("ptp", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+            result = _np.max(a, axis=axis, **kwargs) - _np.min(a, axis=axis, **kwargs)
+        return result
 
     attach_docstring(ptp, _np.max, "counted_reduction", "numel(input) FLOPs")
 
@@ -731,8 +766,10 @@ def dot(a, b):
         )
     else:
         cost = a.size * b.size
-    budget.deduct("dot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
-    result = _np.dot(a, b)
+    with budget.deduct(
+        "dot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+    ):
+        result = _np.dot(a, b)
     check_nan_inf(result, "dot")
     return result
 
@@ -767,9 +804,11 @@ def matmul(a, b):
         )
     else:
         cost = a.size * b.size
-    budget.deduct("matmul", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
-    with _np.errstate(divide="ignore", over="ignore", invalid="ignore"):
-        result = _np.matmul(a, b)
+    with budget.deduct(
+        "matmul", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+    ):
+        with _np.errstate(divide="ignore", over="ignore", invalid="ignore"):
+            result = _np.matmul(a, b)
     check_nan_inf(result, "matmul")
     return result
 
@@ -794,8 +833,10 @@ def inner(a, b):
         if (a.ndim <= 1 and b.ndim <= 1)
         else a.size * (b.shape[-1] if b.ndim > 1 else 1)
     )
-    budget.deduct("inner", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
-    result = _np.inner(a, b)
+    with budget.deduct(
+        "inner", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+    ):
+        result = _np.inner(a, b)
     return result
 
 
@@ -810,8 +851,11 @@ def outer(a, b, out=None):
     if not isinstance(b, _np.ndarray):
         b = _np.asarray(b)
     cost = a.size * b.size
-    budget.deduct("outer", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
-    return _np.outer(a, b, out=out)
+    with budget.deduct(
+        "outer", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+    ):
+        result = _np.outer(a, b, out=out)
+    return result
 
 
 attach_docstring(outer, _np.outer, "counted_custom", "m * n FLOPs")
@@ -824,12 +868,10 @@ def tensordot(a, b, axes=2):
         a = _np.asarray(a)
     if not isinstance(b, _np.ndarray):
         b = _np.asarray(b)
-    result = _np.tensordot(a, b, axes=axes)
     if isinstance(axes, int):
         contracted = 1
         for i in range(axes):
             contracted *= a.shape[a.ndim - axes + i]
-        cost = _builtins.max(result.size * contracted, 1)
     else:
         ax0 = axes[0]
         contracted = 1
@@ -839,10 +881,13 @@ def tensordot(a, b, axes=2):
         else:
             for i in ax0:
                 contracted *= a.shape[i]
-        cost = _builtins.max(result.size * contracted, 1)
-    budget.deduct(
+    # output_size * contracted = (a.size / contracted) * (b.size / contracted) * contracted
+    # = a.size * b.size / contracted
+    cost = _builtins.max(a.size * b.size // contracted, 1) if contracted > 0 else 1
+    with budget.deduct(
         "tensordot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
-    )
+    ):
+        result = _np.tensordot(a, b, axes=axes)
     return result
 
 
@@ -857,8 +902,11 @@ def vdot(a, b):
     if not isinstance(b, _np.ndarray):
         b = _np.asarray(b)
     cost = a.size
-    budget.deduct("vdot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape))
-    return _np.vdot(a, b)
+    with budget.deduct(
+        "vdot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+    ):
+        result = _np.vdot(a, b)
+    return result
 
 
 attach_docstring(vdot, _np.vdot, "counted_custom", "size of input FLOPs")
@@ -871,10 +919,12 @@ def kron(a, b):
         a = _np.asarray(a)
     if not isinstance(b, _np.ndarray):
         b = _np.asarray(b)
-    result = _np.kron(a, b)
-    budget.deduct(
-        "kron", flop_cost=result.size, subscripts=None, shapes=(a.shape, b.shape)
-    )
+    # kron output size = a.size * b.size
+    cost = _builtins.max(a.size * b.size, 1)
+    with budget.deduct(
+        "kron", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+    ):
+        result = _np.kron(a, b)
     return result
 
 
@@ -888,14 +938,17 @@ def cross(a, b, **kwargs):
         a = _np.asarray(a)
     if not isinstance(b, _np.ndarray):
         b = _np.asarray(b)
+    # np.cross supports axisa/axisb/axisc kwargs that change output shape,
+    # so we compute the result first, then deduct based on actual output size.
     result = _np.cross(a, b, **kwargs)
-    r = _np.asarray(result)
-    budget.deduct(
+    cost = _builtins.max(_np.asarray(result).size * 3, 1)
+    with budget.deduct(
         "cross",
-        flop_cost=_builtins.max(r.size * 3, 1),
+        flop_cost=cost,
         subscripts=None,
         shapes=(a.shape, b.shape),
-    )
+    ):
+        pass  # numpy call already done; timer records near-zero duration
     return result
 
 
@@ -908,13 +961,19 @@ def diff(a, n=1, axis=-1, **kwargs):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
-    result = _np.diff(a, n=n, axis=axis, **kwargs)
-    budget.deduct(
+    # Pre-compute output size: along the diff axis, size decreases by n
+    ax = axis if axis >= 0 else axis + a.ndim
+    out_axis_len = a.shape[ax] - n
+    cost = _builtins.max(
+        int(_np.prod(a.shape[:ax])) * out_axis_len * int(_np.prod(a.shape[ax + 1 :])), 1
+    )
+    with budget.deduct(
         "diff",
-        flop_cost=_builtins.max(result.size, 1),
+        flop_cost=cost,
         subscripts=None,
         shapes=(a.shape,),
-    )
+    ):
+        result = _np.diff(a, n=n, axis=axis, **kwargs)
     return result
 
 
@@ -927,8 +986,11 @@ def gradient(f, *varargs, **kwargs):
     budget = require_budget()
     if not isinstance(f, _np.ndarray):
         f = _np.asarray(f)
-    budget.deduct("gradient", flop_cost=f.size, subscripts=None, shapes=(f.shape,))
-    return _np.gradient(f, *varargs, **kwargs)
+    with budget.deduct(
+        "gradient", flop_cost=f.size, subscripts=None, shapes=(f.shape,)
+    ):
+        result = _np.gradient(f, *varargs, **kwargs)
+    return result
 
 
 attach_docstring(gradient, _np.gradient, "counted_custom", "numel(input) FLOPs")
@@ -940,13 +1002,22 @@ def ediff1d(ary, **kwargs):
     budget = require_budget()
     if not isinstance(ary, _np.ndarray):
         ary = _np.asarray(ary)
-    result = _np.ediff1d(ary, **kwargs)
-    budget.deduct(
+    # Output size = ary.size - 1 (plus any to_begin/to_end extras)
+    to_begin = kwargs.get("to_begin", None)
+    to_end = kwargs.get("to_end", None)
+    extra = 0
+    if to_begin is not None:
+        extra += _np.asarray(to_begin).size
+    if to_end is not None:
+        extra += _np.asarray(to_end).size
+    cost = _builtins.max(ary.size - 1 + extra, 1)
+    with budget.deduct(
         "ediff1d",
-        flop_cost=_builtins.max(result.size, 1),
+        flop_cost=cost,
         subscripts=None,
         shapes=(ary.shape,),
-    )
+    ):
+        result = _np.ediff1d(ary, **kwargs)
     return result
 
 
@@ -961,13 +1032,14 @@ def convolve(a, v, mode="full"):
         a = _np.asarray(a)
     if not isinstance(v, _np.ndarray):
         v = _np.asarray(v)
-    result = _np.convolve(a, v, mode=mode)
-    budget.deduct(
+    cost = _builtins.max(a.size * v.size, 1)
+    with budget.deduct(
         "convolve",
-        flop_cost=_builtins.max(a.size * v.size, 1),
+        flop_cost=cost,
         subscripts=None,
         shapes=(a.shape, v.shape),
-    )
+    ):
+        result = _np.convolve(a, v, mode=mode)
     return result
 
 
@@ -981,13 +1053,14 @@ def correlate(a, v, mode="valid"):
         a = _np.asarray(a)
     if not isinstance(v, _np.ndarray):
         v = _np.asarray(v)
-    result = _np.correlate(a, v, mode=mode)
-    budget.deduct(
+    cost = _builtins.max(a.size * v.size, 1)
+    with budget.deduct(
         "correlate",
-        flop_cost=_builtins.max(a.size * v.size, 1),
+        flop_cost=cost,
         subscripts=None,
         shapes=(a.shape, v.shape),
-    )
+    ):
+        result = _np.correlate(a, v, mode=mode)
     return result
 
 
@@ -1019,8 +1092,9 @@ def corrcoef(x, y=None, **kwargs):
     if not isinstance(x, _np.ndarray):
         x = _np.asarray(x)
     cost = _cov_cost(x, y)
-    budget.deduct("corrcoef", flop_cost=cost, subscripts=None, shapes=(x.shape,))
-    return _np.corrcoef(x, y=y, **kwargs)
+    with budget.deduct("corrcoef", flop_cost=cost, subscripts=None, shapes=(x.shape,)):
+        result = _np.corrcoef(x, y=y, **kwargs)
+    return result
 
 
 attach_docstring(corrcoef, _np.corrcoef, "counted_custom", r"$2 f^2 s$ FLOPs")
@@ -1033,8 +1107,9 @@ def cov(m, y=None, **kwargs):
     if not isinstance(m, _np.ndarray):
         m = _np.asarray(m)
     cost = _cov_cost(m, y)
-    budget.deduct("cov", flop_cost=cost, subscripts=None, shapes=(m.shape,))
-    return _np.cov(m, y=y, **kwargs)
+    with budget.deduct("cov", flop_cost=cost, subscripts=None, shapes=(m.shape,)):
+        result = _np.cov(m, y=y, **kwargs)
+    return result
 
 
 attach_docstring(cov, _np.cov, "counted_custom", r"$2 f^2 s$ FLOPs")
@@ -1046,8 +1121,11 @@ def trapezoid(y, x=None, dx=1.0, axis=-1):
     budget = require_budget()
     if not isinstance(y, _np.ndarray):
         y = _np.asarray(y)
-    budget.deduct("trapezoid", flop_cost=y.size, subscripts=None, shapes=(y.shape,))
-    return _np.trapezoid(y, x=x, dx=dx, axis=axis)
+    with budget.deduct(
+        "trapezoid", flop_cost=y.size, subscripts=None, shapes=(y.shape,)
+    ):
+        result = _np.trapezoid(y, x=x, dx=dx, axis=axis)
+    return result
 
 
 attach_docstring(trapezoid, _np.trapezoid, "counted_custom", "numel(input) FLOPs")
@@ -1058,8 +1136,9 @@ def trapz(y, x=None, dx=1.0, axis=-1):
     budget = require_budget()
     if not isinstance(y, _np.ndarray):
         y = _np.asarray(y)
-    budget.deduct("trapz", flop_cost=y.size, subscripts=None, shapes=(y.shape,))
-    return _np.trapz(y, x=x, dx=dx, axis=axis)
+    with budget.deduct("trapz", flop_cost=y.size, subscripts=None, shapes=(y.shape,)):
+        result = _np.trapz(y, x=x, dx=dx, axis=axis)
+    return result
 
 
 attach_docstring(trapz, _np.trapz, "counted_custom", "numel(input) FLOPs")
@@ -1074,10 +1153,11 @@ def interp(x, xp, fp, **kwargs):
     n = _builtins.max(x.size, 1)
     xp_len = _builtins.max(xp_arr.size, 1)
     cost = _builtins.max(n * _ceil_log2(xp_len), 1)
-    budget.deduct(
+    with budget.deduct(
         "interp", flop_cost=cost, subscripts=None, shapes=(x.shape, xp_arr.shape)
-    )
-    return _np.interp(x, xp, fp, **kwargs)
+    ):
+        result = _np.interp(x, xp, fp, **kwargs)
+    return result
 
 
 attach_docstring(interp, _np.interp, "counted_custom", "n * ceil(log2(xp)) FLOPs")

@@ -73,6 +73,7 @@ def _generate_errors() -> str:
         "BudgetExhaustedError",
         "NoBudgetContextError",
         "SymmetryError",
+        "TimeExhaustedError",
         "UnsupportedFunctionError",
     }
 
@@ -83,6 +84,11 @@ def _generate_errors() -> str:
             "BudgetExhaustedError",
             "WhestError",
             "Raised when an operation would exceed the FLOP budget.",
+        ),
+        (
+            "TimeExhaustedError",
+            "WhestError",
+            "Raised when an operation exceeds the wall-clock time limit.",
         ),
         (
             "NoBudgetContextError",

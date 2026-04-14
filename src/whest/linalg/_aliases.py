@@ -31,15 +31,19 @@ def cross(x1, x2, /, *, axis=-1):
     from whest._validation import require_budget
 
     budget = require_budget()
-    # np.linalg.cross validates dimensionality (must be exactly 2 or 3)
-    result = _np.linalg.cross(x1, x2, axis=axis)
-    r = _np.asarray(result)
-    budget.deduct(
+    x1_arr = _np.asarray(x1)
+    x2_arr = _np.asarray(x2)
+    out_shape = _np.broadcast_shapes(x1_arr.shape, x2_arr.shape)
+    out_size = 1
+    for d in out_shape:
+        out_size *= d
+    with budget.deduct(
         "linalg.cross",
-        flop_cost=_builtins.max(r.size * 3, 1),
+        flop_cost=_builtins.max(out_size * 3, 1),
         subscripts=None,
-        shapes=(_np.asarray(x1).shape, _np.asarray(x2).shape),
-    )
+        shapes=(x1_arr.shape, x2_arr.shape),
+    ):
+        result = _np.linalg.cross(x1, x2, axis=axis)
     if isinstance(result, _np.ndarray):
         return _aswhest(result)
     return result

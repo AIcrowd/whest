@@ -17,6 +17,13 @@ class BudgetExhaustedError(WhestError):
         super().__init__(message)
 
 
+class TimeExhaustedError(WhestError):
+    """Raised when an operation exceeds the wall-clock time limit."""
+
+    def __init__(self, message: str = "") -> None:
+        super().__init__(message)
+
+
 class NoBudgetContextError(WhestError):
     """Raised when a counted operation is called outside a BudgetContext."""
 
@@ -57,6 +64,7 @@ class WhestServerError(WhestError):
 _WHEST_ERRORS: frozenset[str] = frozenset(
     {
         "BudgetExhaustedError",
+        "TimeExhaustedError",
         "NoBudgetContextError",
         "SymmetryError",
         "UnsupportedFunctionError",
@@ -65,6 +73,7 @@ _WHEST_ERRORS: frozenset[str] = frozenset(
 
 _ERROR_MAP: dict[str, type[Exception]] = {
     "BudgetExhaustedError": BudgetExhaustedError,
+    "TimeExhaustedError": TimeExhaustedError,
     "NoBudgetContextError": NoBudgetContextError,
     "SymmetryError": SymmetryError,
     "UnsupportedFunctionError": UnsupportedFunctionError,

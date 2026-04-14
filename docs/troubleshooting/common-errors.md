@@ -85,6 +85,26 @@ whest.errors.SymmetryError: Tensor not symmetric along axes (0, 1): max deviatio
 
 ---
 
+## TimeExhaustedError
+
+**Symptom:**
+
+```
+whest.errors.TimeExhaustedError: matmul: wall-clock time 5.003s exceeds limit 5.000s
+```
+
+**Why:** Your computation exceeded the wall-clock time limit set via `wall_time_limit_s` on the `BudgetContext`. The deadline is checked cooperatively — before each operation starts and after each operation completes — so the reported elapsed time may slightly exceed the limit by the duration of the last numpy call.
+
+**Fix:**
+
+1. **Optimise your code** — use `budget.summary()` to see which operations take the most wall-clock time and FLOP budget. Reducing the number of operations or using smaller matrices will help.
+2. **Increase the time limit** — if you control the `BudgetContext`, pass a larger `wall_time_limit_s`.
+3. **Check for unintended Python overhead** — the `Untracked time` in the summary shows time spent outside numpy calls (Python loops, data preparation). If this is large, your bottleneck may be Python code rather than linear algebra.
+
+**Note:** In competition evaluation, the container also enforces a hard kernel-level time limit via cgroups. The in-library `TimeExhaustedError` gives you a clean error message with diagnostic info (which operation, how long you ran, what the limit was), whereas hitting the container limit results in a kill with no diagnostics.
+
+---
+
 ## 📎 Related pages
 
 - [Debug Budget Overruns](../how-to/debug-budget-overruns.md) — diagnose which operations are expensive

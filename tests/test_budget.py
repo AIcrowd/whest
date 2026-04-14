@@ -227,7 +227,6 @@ def test_oprecord_has_timestamp_and_duration_fields():
     assert rec.duration is None
 
 
-@pytest.mark.xfail(reason="Duration tracking not yet implemented for all op types")
 def test_oprecord_durations_populated():
     """OpRecord durations are populated for ops using with-deduct pattern."""
     import whest
@@ -241,7 +240,6 @@ def test_oprecord_durations_populated():
     assert all(r.duration >= 0 for r in add_records)
 
 
-@pytest.mark.xfail(reason="Duration tracking not yet implemented for all op types")
 def test_durations_populated_across_op_types():
     """Verify durations populated for various operation types."""
     import whest
@@ -267,6 +265,22 @@ def test_budget_factory_passes_wall_time_limit():
 
     b = whest.budget(flop_budget=int(1e9), wall_time_limit_s=2.0)
     assert b.wall_time_limit_s == 2.0
+
+
+def test_plain_text_summary_includes_timing():
+    """Plain-text summary should show wall time and tracked/untracked."""
+    import whest
+    from whest._display import _plain_text_summary
+
+    whest.budget_reset()
+    with whest.BudgetContext(flop_budget=int(1e12), namespace="test", quiet=True):
+        a = whest.ones((100,))
+        _ = whest.add(a, a)
+
+    text = _plain_text_summary()
+    assert "Wall time:" in text
+    assert "Tracked time:" in text
+    assert "Untracked time:" in text
 
 
 def test_namespace_record_includes_time():
@@ -337,3 +351,112 @@ def test_thread_isolation_time_tracking():
     assert results["fast"] < results["slow"]
     assert results["fast"] >= 0.01
     assert results["slow"] >= 0.05
+
+
+def test_pointwise_ops_have_duration():
+    """Pointwise factory ops (add, exp, sum) must record duration."""
+    import whest
+
+    with whest.BudgetContext(flop_budget=int(1e12)) as b:
+        a = whest.ones((100,))
+        _ = whest.add(a, a)
+        _ = whest.exp(a)
+        _ = whest.sum(a)
+
+    for rec in b.op_log:
+        if rec.op_name in ("add", "exp", "sum"):
+            assert rec.duration is not None, f"{rec.op_name} missing duration"
+            assert rec.duration >= 0, f"{rec.op_name} has negative duration"
+
+
+def test_linalg_ops_have_duration():
+    """Linalg ops must record duration."""
+    import whest
+
+    with whest.BudgetContext(flop_budget=int(1e12)) as b:
+        A = whest.array([[1.0, 2.0], [3.0, 4.0]])
+        _ = whest.linalg.det(A)
+        _ = whest.linalg.solve(A, whest.array([1.0, 2.0]))
+        _ = whest.linalg.svd(A)
+        _ = whest.linalg.cholesky(A @ A.T + 2 * whest.eye(2))
+
+    linalg_records = [r for r in b.op_log if r.op_name.startswith("linalg.")]
+    assert len(linalg_records) >= 4
+    for rec in linalg_records:
+        assert rec.duration is not None, f"{rec.op_name} missing duration"
+        assert rec.duration >= 0, f"{rec.op_name} has negative duration"
+
+
+def test_counting_ops_have_duration():
+    """Counting ops (trace, histogram, bincount, etc.) must record duration."""
+    import whest
+
+    with whest.BudgetContext(flop_budget=int(1e12)) as b:
+        a = whest.array([1.0, 2.0, 3.0, 4.0])
+        _ = whest.trace(whest.eye(3))
+        _ = whest.histogram(a, bins=5)
+        _ = whest.logspace(0, 1, 10)
+
+    counting_ops = {"trace", "histogram", "logspace"}
+    for rec in b.op_log:
+        if rec.op_name in counting_ops:
+            assert rec.duration is not None, f"{rec.op_name} missing duration"
+            assert rec.duration >= 0, f"{rec.op_name} has negative duration"
+
+
+def test_banner_shows_time_limit(capsys):
+    """Banner should include time limit when wall_time_limit_s is set."""
+    import whest
+
+    with whest.BudgetContext(flop_budget=int(1e6), wall_time_limit_s=5.0):
+        pass
+    captured = capsys.readouterr()
+    assert "time limit: 5.0s" in captured.err
+
+
+def test_banner_no_time_limit(capsys):
+    """Banner should not mention time limit when wall_time_limit_s is None."""
+    import whest
+
+    with whest.BudgetContext(flop_budget=int(1e6)):
+        pass
+    captured = capsys.readouterr()
+    assert "time limit" not in captured.err
+
+
+def test_post_op_deadline_check():
+    """_OpTimer.__exit__ raises TimeExhaustedError if deadline passed during op."""
+    import time
+
+    import pytest
+
+    import whest
+    from whest.errors import TimeExhaustedError
+
+    with pytest.raises(TimeExhaustedError) as exc_info:
+        with whest.BudgetContext(flop_budget=int(1e15), wall_time_limit_s=0.05) as b:
+            a = whest.ones((10,))
+            timer = b.deduct("test_op", flop_cost=1, subscripts=None, shapes=((10,),))
+            with timer:
+                time.sleep(0.1)  # Exceeds 0.05s limit
+    assert exc_info.value.elapsed_s >= 0.05
+
+
+def test_budget_summary_dict_includes_op_duration():
+    """budget_summary_dict() should include per-op duration."""
+    import whest
+
+    whest.budget_reset()
+    with whest.BudgetContext(flop_budget=int(1e12), namespace="test", quiet=True):
+        a = whest.ones((100,))
+        _ = whest.add(a, a)
+
+    data = whest.budget_summary_dict(by_namespace=True)
+    ops = data["operations"]
+    assert "add" in ops
+    assert "duration" in ops["add"]
+    assert ops["add"]["duration"] >= 0
+
+    ns_ops = data["by_namespace"]["test"]["operations"]
+    assert "add" in ns_ops
+    assert "duration" in ns_ops["add"]
