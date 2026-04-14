@@ -137,14 +137,15 @@ with we.BudgetContext(flop_budget=10**8) as budget:
 
 ```
 whest FLOP Budget Summary
-=============================
+=========================
   Total budget:     100,000,000
   Used:                 984,321  (1.0%)
   Remaining:         99,015,679  (99.0%)
 
   By operation:
-    einsum                655,360  ( 66.6%)  [5 calls]
     random.randn          327,936  ( 33.3%)  [6 calls]
+    multiply              327,680  ( 33.3%)  [5 calls]
+    einsum                327,680  ( 33.3%)  [5 calls]
     maximum                 1,024  (  0.1%)  [4 calls]
     sqrt                        1  (  0.0%)  [1 call]
 ```
@@ -154,7 +155,7 @@ whest FLOP Budget Summary
 ```python
 # Query FLOP costs without running anything (no BudgetContext needed)
 cost = we.flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
-print(f"Matmul cost: {cost:,}")  # 33,554,432
+print(f"Matmul cost: {cost:,}")  # 16,777,216
 
 cost = we.flops.svd_cost(m=256, n=256, k=10)
 print(f"SVD cost: {cost:,}")     # 655,360
@@ -184,7 +185,7 @@ including triple products and block symmetries.
 ## How It Works
 
 1. **FLOPs are tracked automatically.** A global default budget activates on first use, or you can wrap code in an explicit `BudgetContext` for a custom limit. Free ops (tensor creation, reshaping) cost 0 FLOPs.
-2. **FLOP costs are analytical.** Costs are computed from tensor shapes, not measured from execution. A matmul of `(m, k) @ (k, n)` always costs `2 * m * k * n` FLOPs regardless of hardware.
+2. **FLOP costs are analytical.** Costs are computed from tensor shapes, not measured from execution. A matmul of `(m, k) @ (k, n)` always costs `m * k * n` FLOPs regardless of hardware.
 3. **Budget is checked before execution.** If an operation would exceed the remaining budget, `BudgetExhaustedError` is raised and the operation does not run.
 4. **All tensors are plain `numpy.ndarray`.** Standard whest arrays are regular NumPy arrays with no hidden state. `SymmetricTensor` is a lightweight `ndarray` subclass that carries symmetry metadata for einsum savings — it works everywhere a normal array does.
 
@@ -192,7 +193,7 @@ including triple products and block symmetries.
 
 **Budget is always active.** A global default budget (1e15 FLOPs, configurable via `WHEST_DEFAULT_BUDGET` env var) activates automatically. Use an explicit `BudgetContext` to set a custom limit.
 
-**32 operations are blocked.** I/O, config, and system-level functions (`save`, `load`, `set_printoptions`, etc.) raise `AttributeError` by design. These have no meaningful FLOP cost and are not part of the competition API.
+**35 operations are blocked.** I/O, config, and system-level functions (`save`, `load`, `set_printoptions`, etc.) raise `AttributeError` by design. These have no meaningful FLOP cost and are not part of the competition API.
 
 **sort, argsort, trace, and random sampling all have analytical FLOP costs** based on their algorithmic complexity.
 

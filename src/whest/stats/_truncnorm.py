@@ -59,7 +59,7 @@ class TruncnormDistribution(ContinuousDistribution):
 
         FLOP Cost
         ---------
-        30 * numel(x) FLOPs
+        1 * numel(x) FLOPs
 
         Parameters
         ----------
@@ -88,7 +88,7 @@ class TruncnormDistribution(ContinuousDistribution):
 
         FLOP Cost
         ---------
-        30 * numel(x) FLOPs
+        1 * numel(x) FLOPs
         """
         return self._deduct_and_call("cdf", 1, x, a, b, loc=loc, scale=scale)
 
@@ -99,7 +99,7 @@ class TruncnormDistribution(ContinuousDistribution):
 
         FLOP Cost
         ---------
-        50 * numel(q) FLOPs
+        1 * numel(q) FLOPs
         """
         return self._deduct_and_call("ppf", 1, q, a, b, loc=loc, scale=scale)
 

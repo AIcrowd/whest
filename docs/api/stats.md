@@ -13,18 +13,35 @@ standard statistical distributions without importing scipy.
 
 ## Cost Summary
 
-| Distribution | pdf | cdf | ppf |
-|-------------|-----|-----|-----|
-| `norm` | $10n$ | $20n$ | $40n$ |
-| `uniform` | $3n$ | $3n$ | $3n$ |
-| `expon` | $5n$ | $5n$ | $5n$ |
-| `cauchy` | $6n$ | $5n$ | $5n$ |
-| `logistic` | $8n$ | $5n$ | $5n$ |
-| `laplace` | $5n$ | $5n$ | $5n$ |
-| `lognorm` | $15n$ | $25n$ | $45n$ |
-| `truncnorm` | $30n$ | $30n$ | $50n$ |
+All methods have analytical cost $1 \times n$ where $n$ = `numel(x)` (or `numel(q)` for ppf).
+Effective FLOPs charged = Analytical Cost × Weight. Weights can be customized via `WHEST_WEIGHTS_FILE` or `we.load_weights()`.
 
-where $n$ = `numel(x)` (or `numel(q)` for ppf).
+| Distribution | Method | Analytical Cost | Active Weight |
+|-------------|--------|----------------|---------------|
+| `norm` | pdf | $n$ | 16 |
+| `norm` | cdf | $n$ | 16 |
+| `norm` | ppf | $n$ | 16 |
+| `uniform` | pdf | $n$ | 1 |
+| `uniform` | cdf | $n$ | 1 |
+| `uniform` | ppf | $n$ | 1 |
+| `expon` | pdf | $n$ | 16 |
+| `expon` | cdf | $n$ | 16 |
+| `expon` | ppf | $n$ | 16 |
+| `cauchy` | pdf | $n$ | 4 |
+| `cauchy` | cdf | $n$ | 16 |
+| `cauchy` | ppf | $n$ | 16 |
+| `logistic` | pdf | $n$ | 16 |
+| `logistic` | cdf | $n$ | 16 |
+| `logistic` | ppf | $n$ | 16 |
+| `laplace` | pdf | $n$ | 16 |
+| `laplace` | cdf | $n$ | 16 |
+| `laplace` | ppf | $n$ | 16 |
+| `lognorm` | pdf | $n$ | 16 |
+| `lognorm` | cdf | $n$ | 16 |
+| `lognorm` | ppf | $n$ | 16 |
+| `truncnorm` | pdf | $n$ | 16 |
+| `truncnorm` | cdf | $n$ | 16 |
+| `truncnorm` | ppf | $n$ | 16 |
 
 ## Examples
 
@@ -32,12 +49,12 @@ where $n$ = `numel(x)` (or `numel(q)` for ppf).
 import whest as we
 
 with we.BudgetContext(flop_budget=1_000_000) as budget:
-    x = we.linspace(-3, 3, 1000)         # free
-    pdf_vals = we.stats.norm.pdf(x)       # 10 * 1000 = 10,000 FLOPs
-    cdf_vals = we.stats.norm.cdf(x)       # 20 * 1000 = 20,000 FLOPs
-    q = we.array([0.025, 0.975])           # free
-    bounds = we.stats.norm.ppf(q)          # 40 * 2 = 80 FLOPs
-    print(f"Total: {budget.flops_used:,}")  # 30,080
+    x = we.linspace(-3, 3, 1000)         # 1,000 FLOPs
+    pdf_vals = we.stats.norm.pdf(x)       # 1 * 1000 = 1,000 FLOPs
+    cdf_vals = we.stats.norm.cdf(x)       # 1 * 1000 = 1,000 FLOPs
+    q = we.array([0.025, 0.975])           # 2 FLOPs
+    bounds = we.stats.norm.ppf(q)          # 1 * 2 = 2 FLOPs
+    print(f"Total: {budget.flops_used:,}")  # 3,004
 ```
 
 ## Compatibility

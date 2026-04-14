@@ -3,9 +3,13 @@
 Zero-cost operations (0 FLOPs) for tensor creation, reshaping, indexing,
 and data movement. These never consume budget.
 
-**Includes:** `array`, `zeros`, `ones`, `eye`, `arange`, `linspace`,
-`reshape`, `transpose`, `concatenate`, `stack`, `split`,
-`where`, `copy`, `astype`, and 140+ more.
+**Includes:** `zeros`, `ones`, `eye`, `reshape`, `transpose`, `stack`,
+`split`, `where`, `copy`, `astype`, and 140+ more.
+
+> **Note:** `array`, `linspace`, `arange`, and `concatenate` are **not**
+> free. Each charges `numel(output)` FLOPs (one per output element) and
+> is classified as a custom-cost operation. See their entries in the API
+> reference below for details.
 
 ## API Reference
 

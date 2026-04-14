@@ -36,7 +36,7 @@ class UniformDistribution(ContinuousDistribution):
 
         FLOP Cost
         ---------
-        3 * numel(x) FLOPs
+        1 * numel(x) FLOPs
 
         Parameters
         ----------
@@ -61,7 +61,7 @@ class UniformDistribution(ContinuousDistribution):
 
         FLOP Cost
         ---------
-        3 * numel(x) FLOPs
+        1 * numel(x) FLOPs
 
         Parameters
         ----------
@@ -86,7 +86,7 @@ class UniformDistribution(ContinuousDistribution):
 
         FLOP Cost
         ---------
-        3 * numel(q) FLOPs
+        1 * numel(q) FLOPs
 
         Parameters
         ----------

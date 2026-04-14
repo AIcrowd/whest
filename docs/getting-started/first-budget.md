@@ -31,12 +31,12 @@ x = we.random.randn(width)
 
 h = x
 for W in weights:
-    h = we.einsum('ij,j->i', W, h)  # matrix-vector multiply: 256 × 256 = 65,536 FLOPs
+    h = we.einsum('ij,j->i', W, h)  # matrix-vector multiply
     h = we.maximum(h, 0)             # ReLU activation: counted
 
 result = we.sum(h)                   # reduction: counted
 
-# Print a Rich-formatted summary across all namespaces
+# Print a summary across all namespaces
 we.budget_summary()
 ```
 
@@ -49,19 +49,30 @@ uv run python first_budget.py
 ## 🔍 What you'll see
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│              whest FLOP Budget Summary               │
-├──────────────┬───────────────┬────────────┬─────────────┤
-│ Namespace    │ Budget        │ Used       │ Remaining   │
-├──────────────┼───────────────┼────────────┼─────────────┤
-│ (default)    │ 1.00e+15      │ 1,969,152  │ ~1.00e+15   │
-└──────────────┴───────────────┴────────────┴─────────────┘
+whest FLOP Budget Summary
+==================================================
+  Total budget:    1,000,000,000,000,000
+  Used:                       2,624,512  (0.0%)
+  Remaining:        999,999,997,375,488  (100.0%)
 
-  (default) — by operation
-    einsum        1,310,720  ( 66.6%)  [10 calls]
-    random.randn    655,616  ( 33.3%)  [11 calls]
-    maximum           2,560  (  0.1%)  [10 calls]
-    sum                 256  (  0.0%)   [1 call]
+  [(default)]
+    Budget:  1,000,000,000,000,000
+    Used:           2,624,512  (0.0%)
+    Operations:
+      random.randn              655,616  ( 25.0%)  [11 calls]
+      multiply                  655,360  ( 25.0%)  [10 calls]
+      array                     655,360  ( 25.0%)  [10 calls]
+      einsum                    655,360  ( 25.0%)  [10 calls]
+      maximum                     2,560  (  0.1%)  [10 calls]
+      sum                           256  (  0.0%)  [1 call]
+
+  All operations (session total):
+    random.randn              655,616  ( 25.0%)  [11 calls]
+    multiply                  655,360  ( 25.0%)  [10 calls]
+    array                     655,360  ( 25.0%)  [10 calls]
+    einsum                    655,360  ( 25.0%)  [10 calls]
+    maximum                     2,560  (  0.1%)  [10 calls]
+    sum                           256  (  0.0%)  [1 call]
 ```
 
 **Reading the output:**
@@ -69,7 +80,7 @@ uv run python first_budget.py
 - **Namespace:** `(default)` is the auto-created global context; named contexts appear here once you add them
 - **Used / Remaining:** how much of the budget has been consumed across all calls
 - **By operation:** breakdown of costs per operation type and call count
-- The 10-layer MLP spends two-thirds of FLOPs on `einsum` (matrix multiplies) and one-third on random number generation; activations (`maximum`) are comparatively cheap
+- The 10-layer MLP spreads FLOPs roughly equally across `random.randn`, `multiply`, `array`, and `einsum` (~25% each); activations (`maximum`) are comparatively cheap
 
 ## Explicit context with a namespace
 
@@ -92,28 +103,39 @@ with we.BudgetContext(flop_budget=50_000_000, namespace="mlp-forward") as budget
 
     h = x
     for W in weights:
-        h = we.einsum('ij,j->i', W, h)  # matrix-vector multiply: 256 × 256 = 65,536 FLOPs
-        h = we.maximum(h, 0)             # 256 FLOPs each pass
+        h = we.einsum('ij,j->i', W, h)  # matrix-vector multiply
+        h = we.maximum(h, 0)             # ReLU activation: counted
 
-    result = we.sum(h)                   # 256 FLOPs
+    result = we.sum(h)                   # reduction: counted
 
 we.budget_summary()
 ```
 
 ```
-┌──────────────────────────────────────────────────────────┐
-│              whest FLOP Budget Summary                │
-├───────────────┬────────────┬───────────┬─────────────────┤
-│ Namespace     │ Budget     │ Used      │ Remaining       │
-├───────────────┼────────────┼───────────┼─────────────────┤
-│ mlp-forward   │ 50,000,000 │ 1,969,152 │ 48,030,848      │
-└───────────────┴────────────┴───────────┴─────────────────┘
+whest FLOP Budget Summary
+==================================================
+  Total budget:              50,000,000
+  Used:                       2,624,512  (5.2%)
+  Remaining:                 47,375,488  (94.8%)
 
-  mlp-forward — by operation
-    einsum        1,310,720  ( 66.6%)  [10 calls]
-    random.randn    655,616  ( 33.3%)  [11 calls]
-    maximum           2,560  (  0.1%)  [10 calls]
-    sum                 256  (  0.0%)   [1 call]
+  [mlp-forward]
+    Budget:        50,000,000
+    Used:           2,624,512  (5.2%)
+    Operations:
+      random.randn              655,616  ( 25.0%)  [11 calls]
+      multiply                  655,360  ( 25.0%)  [10 calls]
+      array                     655,360  ( 25.0%)  [10 calls]
+      einsum                    655,360  ( 25.0%)  [10 calls]
+      maximum                     2,560  (  0.1%)  [10 calls]
+      sum                           256  (  0.0%)  [1 call]
+
+  All operations (session total):
+    random.randn              655,616  ( 25.0%)  [11 calls]
+    multiply                  655,360  ( 25.0%)  [10 calls]
+    array                     655,360  ( 25.0%)  [10 calls]
+    einsum                    655,360  ( 25.0%)  [10 calls]
+    maximum                     2,560  (  0.1%)  [10 calls]
+    sum                           256  (  0.0%)  [1 call]
 ```
 
 ## Decorator form
@@ -144,6 +166,33 @@ run_mlp()
 we.budget_summary()
 ```
 
+```
+whest FLOP Budget Summary
+==================================================
+  Total budget:              50,000,000
+  Used:                       2,624,512  (5.2%)
+  Remaining:                 47,375,488  (94.8%)
+
+  [mlp-forward]
+    Budget:        50,000,000
+    Used:           2,624,512  (5.2%)
+    Operations:
+      random.randn              655,616  ( 25.0%)  [11 calls]
+      multiply                  655,360  ( 25.0%)  [10 calls]
+      array                     655,360  ( 25.0%)  [10 calls]
+      einsum                    655,360  ( 25.0%)  [10 calls]
+      maximum                     2,560  (  0.1%)  [10 calls]
+      sum                           256  (  0.0%)  [1 call]
+
+  All operations (session total):
+    random.randn              655,616  ( 25.0%)  [11 calls]
+    multiply                  655,360  ( 25.0%)  [10 calls]
+    array                     655,360  ( 25.0%)  [10 calls]
+    einsum                    655,360  ( 25.0%)  [10 calls]
+    maximum                     2,560  (  0.1%)  [10 calls]
+    sum                           256  (  0.0%)  [1 call]
+```
+
 Each call to `run_mlp()` draws from the same `mlp-forward` namespace budget. Call `we.budget_summary_dict()` to retrieve the summary as a plain dict for programmatic use:
 
 ```python
@@ -152,7 +201,7 @@ data = we.budget_summary_dict()
 
 # For per-namespace breakdown:
 data = we.budget_summary_dict(by_namespace=True)
-# data["by_namespace"]["mlp-forward"]["flops_used"] -> 1313536
+# data["by_namespace"]["mlp-forward"]["flops_used"] -> 2624512
 ```
 
 ## Configuring the global default budget

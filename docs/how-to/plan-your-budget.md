@@ -60,11 +60,11 @@ Output:
 ```
 Operation                   FLOPs
 ----------------------------------
-einsum ij,j->i            131,072
+einsum ij,j->i             65,536
 ReLU (maximum)                256
 sum reduction                 256
 ----------------------------------
-Total                     131,584
+Total                      66,048
 ```
 
 ## Multi-operand einsum planning with `einsum_path`

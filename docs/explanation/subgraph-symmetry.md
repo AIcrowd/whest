@@ -141,6 +141,8 @@ This property makes the subset key canonical. The oracle stores results in a
 subsequent calls with the same subset.
 
 ```python
+from whest._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
+
 # One oracle per contract_path call
 oracle = SubgraphSymmetryOracle(
     operands=list(operands),
