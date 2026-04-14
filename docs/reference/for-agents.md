@@ -130,7 +130,22 @@ product of all index dimensions — each FMA (fused multiply-add) counts
 as 1 operation.
 `'ij,jk->ik'` with shapes `(m, k)` and `(k, n)` costs `m * k * n` FLOPs.
 
-**5. Exploit symmetry for cost savings.**
+**5. Use `wall_time_limit_s` for time-limited execution.**
+
+In competition evaluation, submissions run under both a FLOP budget and a
+wall-clock time limit. Test locally with:
+
+```python
+with we.BudgetContext(flop_budget=10**9, wall_time_limit_s=5.0) as budget:
+    # your code — must complete within 5 seconds
+    ...
+```
+
+If the time limit is exceeded, `TimeExhaustedError` is raised at the next
+operation boundary. The error includes the operation name, elapsed time, and
+configured limit for diagnostics.
+
+**6. Exploit symmetry for cost savings.**
 
 - Use `symmetric_axes` for symmetric outputs:
   `we.einsum('ki,kj->ij', X, X, symmetric_axes=[(0, 1)])`
@@ -147,6 +162,7 @@ as 1 operation.
 | Assuming `sort` is free | Underestimates budget usage | `sort` costs `n*ceil(log2(n))` per slice — check the cheat sheet |
 | Using `we.save()` or `we.load()` | `AttributeError` — blocked | Use `numpy` directly for I/O |
 | Nesting two explicit `BudgetContext` blocks | `RuntimeError` | Use a single explicit context; nesting with the global default is fine |
+| Ignoring `wall_time_limit_s` in testing | `TimeExhaustedError` in competition | Test with a time limit locally to catch slow code early |
 
 ## 📎 Related pages
 
