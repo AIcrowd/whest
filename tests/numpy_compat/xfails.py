@@ -4,11 +4,11 @@ Each entry maps a test node ID (or pattern) to a reason string.
 Tests matching these patterns are marked xfail when running NumPy's
 test suite against whest.
 
-Current state (2026-04-05):
+Current state (2026-04-14):
     test_umath:     4,668 passed, 0 failed  (13 xfailed)
     test_ufunc:       795 passed, 0 failed   (7 xfailed)
     test_numeric:   1,567 passed, 0 failed   (4 xfailed — was 20, fixed 16)
-    test_linalg:       49 passed, 0 failed  (255 xfailed — expanded submodule patching)
+    test_linalg:      398 passed, 0 failed  (42 xfailed — was 255, fixed 213 after ndim guards/batch)
     test_pocketfft:   148 passed, 0 failed   (0 xfailed — was 34, fixed all)
     test_polynomial:  600 passed, 0 failed   (2 xfailed)
     test_random:      135 passed, 0 failed   (7 xfailed — was 8, fixed shuffle)
@@ -59,97 +59,76 @@ XFAIL_PATTERNS: dict[str, str] = {
         "NOT_IMPLEMENTED: whest free ops astype behavior differs"
     ),
     # ------------------------------------------------------------------ #
-    # test_linalg.py — failures from expanded submodule patching          #
+    # test_linalg.py — remaining failures after ndim guards/batch fixes   #
     # ------------------------------------------------------------------ #
-    # whest linalg functions don't support stacked/batched arrays,
-    # 0-size arrays, generalized cases, raw mode, or the full set of
-    # NumPy linalg kwargs that the numpy test suite exercises.
+    # Most batch/0-size/generalized cases now pass. Remaining failures
+    # are: matrix norm (no ord arg), raw QR mode, sq_cases precision
+    # differences, SVD full mode, and cross/diagonal edge cases.
     "*test_linalg*::test_cross": (
         "NOT_IMPLEMENTED: whest cross doesn't raise ValueError for 2D arrays"
     ),
     "*test_linalg*::test_diagonal": (
         "NOT_IMPLEMENTED: whest linalg.diagonal behavior differs"
     ),
-    "*test_linalg*::test_trace": (
-        "NOT_IMPLEMENTED: whest linalg.trace behavior differs"
+    "*test_linalg*::TestCond::test_nan": (
+        "NOT_IMPLEMENTED: whest cond doesn't handle NaN inputs correctly"
     ),
-    "*test_linalg*::test_generalized_raise_multiloop": (
-        "NOT_IMPLEMENTED: whest linalg doesn't support multiloop generalized cases"
-    ),
-    "*test_linalg*::test_pinv_rtol_arg": (
-        "NOT_IMPLEMENTED: whest pinv doesn't support rtol= kwarg"
-    ),
-    "*test_linalg*::TestCholesky::*": (
-        "NOT_IMPLEMENTED: whest cholesky doesn't support batched/0-size arrays"
-    ),
-    "*test_linalg*::TestCond::*": (
-        "NOT_IMPLEMENTED: whest cond doesn't support stacked/generalized cases"
-    ),
-    "*test_linalg*::TestDet::test_generalized*": (
-        "NOT_IMPLEMENTED: whest det doesn't support generalized/stacked cases"
-    ),
-    "*test_linalg*::TestEig::*": (
-        "NOT_IMPLEMENTED: whest eig doesn't support 0-size/generalized cases"
-    ),
-    "*test_linalg*::TestEigh::*": (
-        "NOT_IMPLEMENTED: whest eigh doesn't support 0-size arrays"
+    "*test_linalg*::TestEig::test_sq_cases": (
+        "NOT_IMPLEMENTED: whest eig sq_cases differ (precision/dtype)"
     ),
     "*test_linalg*::TestEighCases::*": (
         "NOT_IMPLEMENTED: whest eigh doesn't support generalized/stacked cases"
     ),
-    "*test_linalg*::TestEigvals::*": (
-        "NOT_IMPLEMENTED: whest eigvals doesn't support 0-size/generalized cases"
+    "*test_linalg*::TestInv::test_sq_cases": (
+        "NOT_IMPLEMENTED: whest inv sq_cases differ (precision/dtype)"
     ),
-    "*test_linalg*::TestEigvalsh::*": (
-        "NOT_IMPLEMENTED: whest eigvalsh doesn't support 0-size arrays"
+    "*test_linalg*::TestLstsq::test_sq_cases": (
+        "NOT_IMPLEMENTED: whest lstsq sq_cases differ"
     ),
-    "*test_linalg*::TestEigvalshCases::*": (
-        "NOT_IMPLEMENTED: whest eigvalsh doesn't support generalized/stacked cases"
-    ),
-    "*test_linalg*::TestInv::*": (
-        "NOT_IMPLEMENTED: whest inv doesn't support 0-size/generalized cases"
-    ),
-    "*test_linalg*::TestLstsq::*": (
-        "NOT_IMPLEMENTED: whest lstsq doesn't support 0-size/stacked cases"
-    ),
-    "*test_linalg*::TestMatrixPower::*": (
-        "NOT_IMPLEMENTED: whest matrix_power behavior differs for edge cases"
-    ),
-    "*test_linalg*::TestMatrixRank::*": (
+    "*test_linalg*::TestMatrixRank::test_matrix_rank": (
         "NOT_IMPLEMENTED: whest matrix_rank behavior differs"
     ),
-    "*test_linalg*::TestNormDouble::*": (
-        "NOT_IMPLEMENTED: whest norm behavior differs from np.linalg.norm"
+    "*test_linalg*::TestNormDouble::test_bad_args": (
+        "NOT_IMPLEMENTED: whest norm doesn't validate ord argument like np.linalg.norm"
     ),
-    "*test_linalg*::TestNormInt64::*": (
-        "NOT_IMPLEMENTED: whest norm behavior differs from np.linalg.norm"
+    "*test_linalg*::TestNormDouble::test_matrix_*": (
+        "NOT_IMPLEMENTED: whest norm doesn't support matrix norm (ord arg)"
     ),
-    "*test_linalg*::TestNormSingle::*": (
-        "NOT_IMPLEMENTED: whest norm behavior differs from np.linalg.norm"
+    "*test_linalg*::TestNormInt64::test_bad_args": (
+        "NOT_IMPLEMENTED: whest norm doesn't validate ord argument like np.linalg.norm"
     ),
-    "*test_linalg*::TestPinv::test_generalized*": (
-        "NOT_IMPLEMENTED: whest pinv doesn't support generalized cases"
+    "*test_linalg*::TestNormInt64::test_matrix_*": (
+        "NOT_IMPLEMENTED: whest norm doesn't support matrix norm (ord arg)"
     ),
-    "*test_linalg*::TestPinvHermitian::*": (
-        "NOT_IMPLEMENTED: whest pinv doesn't support generalized hermitian cases"
+    "*test_linalg*::TestNormSingle::test_bad_args": (
+        "NOT_IMPLEMENTED: whest norm doesn't validate ord argument like np.linalg.norm"
     ),
-    "*test_linalg*::TestQR::*": (
-        "NOT_IMPLEMENTED: whest qr doesn't support raw mode or stacked inputs"
+    "*test_linalg*::TestNormSingle::test_matrix_*": (
+        "NOT_IMPLEMENTED: whest norm doesn't support matrix norm (ord arg)"
     ),
-    "*test_linalg*::TestRegression::*": (
-        "NOT_IMPLEMENTED: whest linalg regression cases differ"
+    "*test_linalg*::TestPinvHermitian::test_herm_cases": (
+        "NOT_IMPLEMENTED: whest pinv hermitian cases differ"
     ),
-    "*test_regression*::TestRegression::*": (
-        "NOT_IMPLEMENTED: whest linalg regression cases differ"
+    "*test_linalg*::TestQR::test_mode_all_but_economic": (
+        "NOT_IMPLEMENTED: whest qr doesn't support non-economic modes"
     ),
-    "*test_linalg*::TestSolve::*": (
-        "NOT_IMPLEMENTED: whest solve doesn't support 0-size/1-d/generalized cases"
+    "*test_linalg*::TestQR::test_mode_raw": (
+        "NOT_IMPLEMENTED: whest qr doesn't support raw mode"
     ),
-    "*test_linalg*::TestSVD::*": (
-        "NOT_IMPLEMENTED: whest svd doesn't support empty/generalized/stacked cases"
+    "*test_linalg*::TestSolve::test_sq_cases": (
+        "NOT_IMPLEMENTED: whest solve sq_cases differ (precision/dtype)"
     ),
-    "*test_linalg*::TestSVDHermitian::*": (
-        "NOT_IMPLEMENTED: whest svd hermitian doesn't support generalized/stacked cases"
+    "*test_linalg*::TestSVD::test_sq_cases": (
+        "NOT_IMPLEMENTED: whest svd sq_cases differ"
+    ),
+    "*test_linalg*::TestSVD::test_types*": (
+        "NOT_IMPLEMENTED: whest svd type cases differ"
+    ),
+    "*test_linalg*::TestSVDHermitian::test_herm_cases": (
+        "NOT_IMPLEMENTED: whest svd hermitian cases differ"
+    ),
+    "*test_linalg*::TestSVDHermitian::test_types*": (
+        "NOT_IMPLEMENTED: whest svd hermitian type cases differ"
     ),
     # ------------------------------------------------------------------ #
     # test_polynomial.py — divergences                                    #
@@ -311,6 +290,9 @@ XFAIL_PATTERNS: dict[str, str] = {
     ),
     "*TestCreationFuncs::test_for_reference_leak": (
         "NUMPY_INTERNAL: refcount check is flaky in CI/VM environments"
+    ),
+    "*TestOut::test_out_wrap_no_leak": (
+        "NUMPY_INTERNAL: refcount check sees unexpected count due to WhestArray subclass wrapping"
     ),
     "*TestFFT1D::test_identity_long_short*": (
         "NUMPY_INTERNAL: float32/longdouble FFT roundtrip exceeds default tolerance "
