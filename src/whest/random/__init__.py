@@ -59,7 +59,8 @@ def _counted_sampler(np_func, op_name):
             n = 1
         else:
             n = 1
-        budget.deduct(op_name, flop_cost=n, subscripts=None, shapes=((n,),))
+        with budget.deduct(op_name, flop_cost=n, subscripts=None, shapes=((n,),)):
+            pass  # numpy already executed
         return result
 
     wrapper.__name__ = op_name
@@ -77,10 +78,12 @@ def _counted_dims_sampler(np_func, op_name):
         budget = require_budget()
         n = int(_np.prod(dims)) if dims else 1
         cost = _builtins.max(n, 1)
-        budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=((n,),))
-        if dims:
-            return np_func(*dims)
-        return np_func()
+        with budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=((n,),)):
+            if dims:
+                result = np_func(*dims)
+            else:
+                result = np_func()
+        return result
 
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name
@@ -165,8 +168,9 @@ def _counted_size_only_sampler(np_func, op_name):
         budget = require_budget()
         n = _output_size(size=size)
         cost = _builtins.max(n, 1)
-        budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=((n,),))
-        return np_func(size=size)
+        with budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=((n,),)):
+            result = np_func(size=size)
+        return result
 
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name

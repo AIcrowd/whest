@@ -31,8 +31,8 @@ def _counted_unary(np_func, op_name: str):
             x = _np.asarray(x)
         sym_info = x.symmetry_info if isinstance(x, SymmetricTensor) else None
         cost = pointwise_cost(x.shape, symmetry_info=sym_info)
-        budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(x.shape,))
-        result = np_func(x)
+        with budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(x.shape,)):
+            result = np_func(x)
         check_nan_inf(result, op_name)
         if sym_info is not None:
             result = SymmetricTensor(result, symmetric_axes=sym_info.symmetric_axes)
@@ -54,8 +54,8 @@ def _counted_unary_multi(np_func, op_name: str):
         if not isinstance(x, _np.ndarray):
             x = _np.asarray(x)
         cost = pointwise_cost(x.shape)
-        budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(x.shape,))
-        result = np_func(x)
+        with budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(x.shape,)):
+            result = np_func(x)
         if isinstance(result, tuple):
             result = tuple(_aswhest(r) for r in result)
         else:
@@ -109,13 +109,13 @@ def _counted_binary(np_func, op_name: str):
             else None
         )
         cost = pointwise_cost(output_shape, symmetry_info=out_sym_info)
-        budget.deduct(
+        with budget.deduct(
             op_name, flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape)
-        )
-        # Call the underlying ufunc with the ORIGINAL inputs so that
-        # Python-scalar dtype promotion (NEP 50) and FloatingPointError
-        # propagation (np.errstate) work exactly as in plain numpy.
-        result = np_func(x_orig, y_orig)
+        ):
+            # Call the underlying ufunc with the ORIGINAL inputs so that
+            # Python-scalar dtype promotion (NEP 50) and FloatingPointError
+            # propagation (np.errstate) work exactly as in plain numpy.
+            result = np_func(x_orig, y_orig)
         check_nan_inf(result, op_name)
         if out_sym_axes:
             result = SymmetricTensor(result, symmetric_axes=out_sym_axes)
@@ -165,10 +165,10 @@ def _counted_binary_multi(np_func, op_name: str):
             y = _np.asarray(y)
         output_shape = _np.broadcast_shapes(x.shape, y.shape)
         cost = pointwise_cost(output_shape)
-        budget.deduct(
+        with budget.deduct(
             op_name, flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape)
-        )
-        result = np_func(x, y)
+        ):
+            result = np_func(x, y)
         if isinstance(result, tuple):
             result = tuple(_aswhest(r) for r in result)
         else:
@@ -190,11 +190,17 @@ def _counted_reduction(
             a = _np.asarray(a)
         sym_info = a.symmetry_info if isinstance(a, SymmetricTensor) else None
         cost = reduction_cost(a.shape, axis, symmetry_info=sym_info) * cost_multiplier
-        result = np_func(a, axis=axis, **kwargs)
+        with budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+            result = np_func(a, axis=axis, **kwargs)
         if extra_output:
             out_shape = _np.asarray(result).shape
-            cost += pointwise_cost(out_shape)
-        budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(a.shape,))
+            extra = pointwise_cost(out_shape)
+            budget._flops_used += extra
+            last = budget._op_log[-1]
+            budget._op_log[-1] = last._replace(
+                flop_cost=last.flop_cost + extra,
+                cumulative=budget._flops_used,
+            )
 
         # Propagate symmetry through reduction.
         if sym_info is not None:

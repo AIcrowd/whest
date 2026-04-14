@@ -212,6 +212,18 @@ def test_oprecord_has_timestamp_and_duration_fields():
     assert rec.duration is None
 
 
+def test_oprecord_durations_populated():
+    """OpRecord durations are populated for ops using with-deduct pattern."""
+    import whest
+    with whest.BudgetContext(flop_budget=int(1e9)) as b:
+        a = whest.ones((10,))
+        _ = whest.add(a, a)
+    add_records = [r for r in b.op_log if r.op_name == "add"]
+    assert len(add_records) >= 1
+    assert all(r.duration is not None for r in add_records)
+    assert all(r.duration >= 0 for r in add_records)
+
+
 def test_budget_factory_passes_wall_time_limit():
     import whest
     b = whest.budget(flop_budget=int(1e9), wall_time_limit_s=2.0)
