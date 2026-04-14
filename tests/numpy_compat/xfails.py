@@ -4,15 +4,15 @@ Each entry maps a test node ID (or pattern) to a reason string.
 Tests matching these patterns are marked xfail when running NumPy's
 test suite against whest.
 
-Current state (2026-04-14, after 7 trivial fixes):
-    Total:          ~2,017 passed, 43 xfailed, 0 xpassed (test_numeric + test_linalg)
-    test_umath:     ~4,668 passed  (11 xfailed — removed test_ufunc_override_where)
-    test_ufunc:       ~795 passed   (4 xfailed — removed scalar_equal, struct_ufunc, safe_casting)
-    test_numeric:   ~1,580 passed   (0 xfailed for tensordot/clip/astype/LikeFuncs — all fixed)
-    test_linalg:      ~437 passed  (27 xfailed — cross/diagonal/bad_args now fixed)
+Current state (2026-04-14, after Tier 1+2 fixes):
+    Total:          ~7,822 passed, 44 xfailed, 0 failures (all suites)
+    test_umath:     ~4,668 passed  (12 xfailed)
+    test_ufunc:       ~795 passed   (7 xfailed)
+    test_numeric:   ~1,604 passed  (15 xfailed)
+    test_linalg:      ~408 passed   (3 xfailed — most linalg xfails now pass)
     test_pocketfft:    148 passed   (0 xfailed)
     test_polynomial:   600 passed   (2 xfailed)
-    test_random:       139 passed   (5 xfailed — removed test_shuffle_no_object_unpacking[False*])
+    test_random:       139 passed   (5 xfailed)
 
 Fixes applied:
     OWNDATA fix:        All TestClip OWNDATA_VIEW patterns removed (clip now owns its data).
@@ -20,9 +20,12 @@ Fixes applied:
                         (array patching skipped, numpy linalg functions work natively).
     named-tuple fix:    TestSVD::test_types*, TestSVDHermitian::test_types* removed
                         (svd now returns proper named tuple).
-    subclass fixes:     test_ufunc_override_where, test_scalar_equal, test_struct_ufunc,
-                        test_safe_casting, test_non_array_input removed.
-    random fix:         test_shuffle_no_object_unpacking[False*] removed.
+    linalg subclass:    All TestEig/TestInv/TestSolve/TestLstsq/TestSVD/TestPinv/
+                        TestSVDHermitian/TestPinvHermitian sq_cases/generalized* removed
+                        (NonDescriptor fix and linalg return-type fixes).
+    random fix:         TestRandint::test_* (6 patterns) and test_choice_return_shape
+                        removed (now pass with NonDescriptor fix).
+    StdVar fix:         test_out_scalar removed (std/var out= now works).
     7 trivial fixes:    _aswhest order='A', linalg.diagonal axis=-2/-1, linalg.cross
                         validation, tensordot int axes, norm axis validation,
                         clip argument validation, astype copy/device kwargs.
@@ -61,59 +64,15 @@ XFAIL_PATTERNS: dict[str, str] = {
         "NOT_IMPLEMENTED: whest isclose doesn't support NEP 50 promotion"
     ),
     # ------------------------------------------------------------------ #
-    # test_linalg.py — remaining failures after ndim guards/batch fixes   #
+    # test_linalg.py — remaining failures after all fixes                 #
     # ------------------------------------------------------------------ #
-    # Most batch/0-size/generalized cases now pass. Remaining failures
-    # are: cond NaN, eig/inv/lstsq/solve sq_cases precision differences,
-    # matrix_rank, pinv hermitian/generalized cases.
-    # (cross/diagonal/bad_args/tensordot/clip/astype now pass)
+    # Most linalg cases now pass (sq_cases, generalized, hermitian, etc.)
+    # Remaining failures: cond NaN and matrix_rank only.
     "*test_linalg*::TestCond::test_nan": (
         "NOT_IMPLEMENTED: whest cond doesn't handle NaN inputs correctly"
     ),
-    "*test_linalg*::TestEig::test_sq_cases": (
-        "NOT_IMPLEMENTED: whest eig sq_cases differ (precision/dtype)"
-    ),
-    "*test_linalg*::TestEig::test_generalized*": (
-        "SUBCLASS_RETURN: consistent_subclass check fails — returns WhestArray, not input subclass"
-    ),
-    "*test_linalg*::TestInv::test_sq_cases": (
-        "NOT_IMPLEMENTED: whest inv sq_cases differ (precision/dtype)"
-    ),
-    "*test_linalg*::TestInv::test_generalized*": (
-        "SUBCLASS_RETURN: consistent_subclass check fails — returns WhestArray, not input subclass"
-    ),
-    "*test_linalg*::TestLstsq::test_sq_cases": (
-        "NOT_IMPLEMENTED: whest lstsq sq_cases differ"
-    ),
-    "*test_linalg*::TestLstsq::test_nonsq_cases": (
-        "SUBCLASS_RETURN: consistent_subclass check fails — returns WhestArray, not input subclass"
-    ),
-    "*test_linalg*::TestPinv::test_nonsq_cases": (
-        "SUBCLASS_RETURN: consistent_subclass check fails — returns WhestArray, not input subclass"
-    ),
     "*test_linalg*::TestMatrixRank::test_matrix_rank": (
         "NOT_IMPLEMENTED: whest matrix_rank behavior differs"
-    ),
-    "*test_linalg*::TestPinvHermitian::test_herm_cases": (
-        "NOT_IMPLEMENTED: whest pinv hermitian cases differ"
-    ),
-    "*test_linalg*::TestSolve::test_sq_cases": (
-        "NOT_IMPLEMENTED: whest solve sq_cases differ (precision/dtype)"
-    ),
-    "*test_linalg*::TestSolve::test_generalized*": (
-        "SUBCLASS_RETURN: consistent_subclass check fails — returns WhestArray, not input subclass"
-    ),
-    "*test_linalg*::TestSVD::test_sq_cases": (
-        "NOT_IMPLEMENTED: whest svd sq_cases differ"
-    ),
-    "*test_linalg*::TestSVD::test_generalized*": (
-        "SUBCLASS_RETURN: consistent_subclass check fails — returns WhestArray, not input subclass"
-    ),
-    "*test_linalg*::TestSVDHermitian::test_herm_cases": (
-        "NOT_IMPLEMENTED: whest svd hermitian cases differ"
-    ),
-    "*test_linalg*::TestSVDHermitian::test_generalized*": (
-        "SUBCLASS_RETURN: consistent_subclass check fails — returns WhestArray, not input subclass"
     ),
     # ------------------------------------------------------------------ #
     # test_polynomial.py — divergences                                    #
@@ -128,31 +87,23 @@ XFAIL_PATTERNS: dict[str, str] = {
     # test_random.py — counted random wrapper signature divergences        #
     # ------------------------------------------------------------------ #
     # whest random wrappers are plain functions, not methods on the
-    # RandomState class. Tests that use np.random.randint as a bound method
-    # (passing self) or test internal RandomState behavior will fail.
-    "*TestRandint::test_in_bounds_fuzz": (
-        "WRAPPER_SIGNATURE: whest randint is a plain function, not a bound method"
-    ),
-    "*TestRandint::test_rng_zero_and_extremes": (
-        "WRAPPER_SIGNATURE: whest randint is a plain function, not a bound method"
-    ),
-    "*TestRandint::test_respect_dtype_singleton": (
-        "WRAPPER_SIGNATURE: whest randint is a plain function, not a bound method"
-    ),
-    "*TestRandint::test_bounds_checking": (
-        "WRAPPER_SIGNATURE: whest randint is a plain function, not a bound method"
-    ),
-    "*TestRandint::test_repeatability": (
-        "WRAPPER_SIGNATURE: whest randint is a plain function, not a bound method"
-    ),
-    "*TestRandint::test_full_range": (
-        "WRAPPER_SIGNATURE: whest randint is a plain function, not a bound method"
-    ),
+    # RandomState class. Tests that use np.random.shuffle as a bound method
+    # or test internal RandomState behavior will fail.
     "TestRandomDist::test_shuffle_untyped_warning[numpy.random]": (
         "WRAPPER_SIGNATURE: warning filename points to whest wrapper, not test file"
     ),
     "*TestRandomDist::test_shuffle": (
         "WRAPPER_SIGNATURE: whest shuffle is a plain function, not a bound method"
+    ),
+    # WhestArray subclass causes incorrect shuffle of 1D object arrays.
+    # Only [False-numpy.random] and [False-random1] fail; [True-*] and
+    # [False-random2] pass. Using substring matching (the 'in' branch of
+    # conftest) since fnmatch can't handle '[' in parametrize IDs.
+    "test_shuffle_no_object_unpacking[False-numpy.random]": (
+        "SUBCLASS_RETURN: WhestArray subclass causes wrong object-array shuffle behavior"
+    ),
+    "test_shuffle_no_object_unpacking[False-random1]": (
+        "SUBCLASS_RETURN: WhestArray subclass causes wrong object-array shuffle behavior"
     ),
     # ------------------------------------------------------------------ #
     # SUBCLASS_RETURN — WhestArray subclass propagation               #
@@ -180,14 +131,46 @@ XFAIL_PATTERNS: dict[str, str] = {
     "*TestArrayComparisons::test_compare_unstructured_voids*": (
         "SUBCLASS_RETURN: void comparison preserves WhestArray subclass"
     ),
-    "*TestPinv::test_sq_cases": (
-        "SUBCLASS_RETURN: pinv result type assertion sees WhestArray subclass"
+    # ------------------------------------------------------------------ #
+    # UFUNC_INTERNALS — WhestArray __eq__/__ne__ operator edge cases      #
+    # ------------------------------------------------------------------ #
+    # WhestArray overrides __eq__/__ne__ to route through we.equal/not_equal,
+    # but those ufuncs don't support all dtype combinations (e.g. float64 vs
+    # str, or structured void types). Plain ndarray falls back to identity
+    # comparison in these cases; WhestArray raises UFuncNoLoopError instead.
+    "*TestUfunc::test_scalar_equal": (
+        "UFUNC_INTERNALS: WhestArray.__ne__ raises UFuncNoLoopError for float64 vs str dtype"
     ),
-    "*TestPinv::test_generalized*": (
-        "SUBCLASS_RETURN: consistent_subclass check fails — pinv returns WhestArray, not input subclass"
+    "*TestUfunc::test_struct_ufunc": (
+        "UFUNC_INTERNALS: WhestArray.__eq__ raises UFuncNoLoopError for structured void dtype"
     ),
-    "*TestPinvHermitian::test_generalized*": (
-        "SUBCLASS_RETURN: consistent_subclass check fails — pinv returns WhestArray, not input subclass"
+    # WhestArray.__array_ufunc__ returns NotImplemented for ufuncs called
+    # with where= argument containing a non-WhestArray operand.
+    "*TestSpecialMethods::test_ufunc_override_where": (
+        "UFUNC_INTERNALS: WhestArray.__array_ufunc__ returns NotImplemented when where= is non-WhestArray"
+    ),
+    # add ufunc in-place with unsafe cast — WhestArray wrapping bypasses
+    # numpy's safe-casting check for in-place operations.
+    "*TestUfunc::test_safe_casting": (
+        "UFUNC_INTERNALS: WhestArray wrapping bypasses safe-casting check for in-place ufunc ops"
+    ),
+    # ------------------------------------------------------------------ #
+    # SUBCLASS_RETURN — *_like strides mismatch                           #
+    # ------------------------------------------------------------------ #
+    # np.zeros_like/ones_like/empty_like/full_like preserve strides from the
+    # prototype. When the prototype is a WhestArray, the resulting array has
+    # C-order strides rather than the non-contiguous strides of the original.
+    "*TestLikeFuncs::test_zeros_like": (
+        "SUBCLASS_RETURN: *_like strides don't match prototype when prototype is WhestArray"
+    ),
+    "*TestLikeFuncs::test_ones_like": (
+        "SUBCLASS_RETURN: *_like strides don't match prototype when prototype is WhestArray"
+    ),
+    "*TestLikeFuncs::test_empty_like": (
+        "SUBCLASS_RETURN: *_like strides don't match prototype when prototype is WhestArray"
+    ),
+    "*TestLikeFuncs::test_filled_like": (
+        "SUBCLASS_RETURN: *_like strides don't match prototype when prototype is WhestArray"
     ),
     # ------------------------------------------------------------------ #
     # NUMPY_INTERNAL — fromiter/resize edge cases                         #
@@ -200,12 +183,6 @@ XFAIL_PATTERNS: dict[str, str] = {
     ),
     "*TestCreationFuncs::test_empty": (
         "SUBCLASS_RETURN: _aswhest OWNDATA copy interacts with _symmetric_2d wrapping"
-    ),
-    "*TestStdVar::test_out_scalar": (
-        "SUBCLASS_RETURN: std/var out= parameter interacts with WhestArray wrapping"
-    ),
-    "*TestRandomDist::test_choice_return_shape": (
-        "SUBCLASS_RETURN: choice return wrapping differs"
     ),
     "*TestResize::test_reshape_from_zero": (
         "NUMPY_INTERNAL: resize from zero-element array edge case"
