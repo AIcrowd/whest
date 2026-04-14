@@ -24,10 +24,10 @@ half of complex transforms.
 import whest as we
 
 with we.BudgetContext(flop_budget=1_000_000) as budget:
-    signal = we.random.randn(1024)    # 1,024 FLOPs
+    signal = we.random.randn(1024)    # free
     spectrum = we.fft.fft(signal)     # 5 * 1024 * 10 = 51,200 FLOPs
     freqs = we.fft.fftfreq(1024)      # free
-    print(f"FFT cost: {budget.flops_used:,}")  # 52,224
+    print(f"FFT cost: {budget.flops_used:,}")  # 51,200
 ```
 
 ## API Reference

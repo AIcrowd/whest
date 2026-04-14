@@ -7,13 +7,15 @@ Python results. Requires Node.js installed.
 
 from __future__ import annotations
 
-import subprocess
 import shutil
+import subprocess
 from pathlib import Path
 
 import pytest
 
-EXPLORER_DIR = Path(__file__).parent.parent / "docs" / "visualization" / "symmetry-explorer"
+EXPLORER_DIR = (
+    Path(__file__).parent.parent / "docs" / "visualization" / "symmetry-explorer"
+)
 TEST_SCRIPT = EXPLORER_DIR / "test-cross-validate.mjs"
 
 
