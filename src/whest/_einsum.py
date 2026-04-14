@@ -28,6 +28,48 @@ def _symmetry_info_to_perm_groups(sym_info, subscript_chars: str):
     return groups if groups else None
 
 
+def _symmetry_fingerprint(operands, input_parts):
+    """Build a hashable symmetry fingerprint for cache keying.
+
+    For each operand, captures None (no symmetry) or a tuple of
+    (axes, generator_array_forms) per PermutationGroup. This fully
+    determines the symmetry structure without referencing tensor values.
+    """
+    parts = []
+    for op, chars in zip(operands, input_parts):
+        if not isinstance(op, SymmetricTensor) or op.symmetry_info is None:
+            parts.append(None)
+            continue
+        groups = op.symmetry_info.groups or []
+        group_fps = []
+        for g in groups:
+            axes = g.axes
+            gens = tuple(tuple(gen.array_form) for gen in g.generators)
+            group_fps.append((axes, gens))
+        parts.append(tuple(group_fps) if group_fps else None)
+    return tuple(parts)
+
+
+def _identity_pattern(operands):
+    """Build a hashable pattern of which operands are the same Python object.
+
+    Returns None if all operands are distinct objects (common case).
+    Otherwise returns a tuple of tuples, where each inner tuple lists
+    positions sharing the same object identity (only groups of size >= 2).
+
+    This mirrors the identical_operand_groups logic in _build_bipartite.
+    """
+    id_to_positions: dict[int, list[int]] = {}
+    for idx, op in enumerate(operands):
+        id_to_positions.setdefault(id(op), []).append(idx)
+    groups = tuple(
+        tuple(positions)
+        for positions in id_to_positions.values()
+        if len(positions) >= 2
+    )
+    return groups if groups else None
+
+
 def _execute_pairwise(path_info, operands: list):
     """Execute pairwise contractions according to the optimized path."""
     ops = list(operands)
