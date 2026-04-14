@@ -2008,3 +2008,125 @@ code, .mono { font-family: var(--font-mono); }
   .cost-equation { font-size: 13px; }
   .speedup-number { font-size: 2.2rem; }
 }
+
+/* ── Variable Cards ── */
+.var-cards { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+
+.var-card {
+  flex: 1; min-width: 200px; max-width: 320px;
+  border-radius: 10px; padding: 14px;
+  background: rgba(0,0,0,0.08); border: 1.5px solid rgba(148,163,184,0.2);
+  transition: border-color 0.15s;
+}
+
+.var-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+
+.var-name-input {
+  font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: bold;
+  background: rgba(0,0,0,0.15); border: 1px solid rgba(148,163,184,0.15);
+  border-radius: 4px; padding: 2px 8px; width: 80px; color: inherit;
+}
+
+.rank-stepper { display: flex; align-items: center; gap: 4px; }
+.rank-stepper button {
+  width: 22px; height: 22px; border-radius: 4px;
+  background: rgba(148,163,184,0.08); border: 1px solid rgba(148,163,184,0.15);
+  color: #94a3b8; cursor: pointer; font-size: 12px;
+  display: flex; align-items: center; justify-content: center;
+  line-height: 1;
+}
+.rank-stepper button:hover { background: rgba(148,163,184,0.15); }
+.rank-stepper .rank-value {
+  font-family: 'IBM Plex Mono', monospace; font-size: 14px;
+  width: 20px; text-align: center;
+}
+
+/* Symmetry type toggle */
+.sym-toggles { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 10px; }
+.sym-toggle {
+  padding: 4px 10px; border-radius: 4px; font-size: 11px;
+  background: rgba(148,163,184,0.06); border: 1px solid rgba(148,163,184,0.15);
+  cursor: pointer; color: #94a3b8; transition: all 0.15s;
+}
+.sym-toggle:hover { background: rgba(148,163,184,0.12); }
+.sym-toggle.active { border-color: currentColor; background: rgba(124,58,237,0.08); }
+
+/* Axis chips */
+.axis-chips-row { display: flex; gap: 4px; margin-bottom: 8px; flex-wrap: wrap; }
+.axis-chip {
+  padding: 3px 10px; border-radius: 4px; font-size: 11px;
+  background: rgba(148,163,184,0.06); border: 1px solid rgba(148,163,184,0.12);
+  cursor: pointer; color: #64748b; transition: all 0.15s;
+}
+.axis-chip:hover { background: rgba(148,163,184,0.12); }
+.axis-chip.selected { border-color: currentColor; }
+
+/* Summary badge */
+.sym-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: 4px; font-size: 11px;
+}
+.sym-order { font-size: 10px; color: #64748b; margin-left: 4px; }
+
+/* Variable remove button */
+.var-remove-btn {
+  background: none; border: none; color: #475569; font-size: 16px;
+  cursor: pointer; padding: 2px 6px; border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+}
+.var-remove-btn:hover { color: #ef4444; background: rgba(239,68,68,0.08); }
+.var-remove-btn:disabled { opacity: 0.3; cursor: default; }
+.var-remove-btn:disabled:hover { color: #475569; background: none; }
+
+/* Add variable card */
+.var-card-add {
+  flex: 1; min-width: 200px; max-width: 320px;
+  border: 1.5px dashed rgba(148,163,184,0.2); border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: #64748b; font-size: 13px; cursor: pointer; padding: 14px;
+  transition: border-color 0.15s, color 0.15s;
+  background: none;
+}
+.var-card-add:hover { border-color: rgba(148,163,184,0.4); color: #94a3b8; }
+
+/* Generator input */
+.gen-input {
+  font-family: 'IBM Plex Mono', monospace; font-size: 13px;
+  padding: 6px 10px; background: rgba(0,0,0,0.2);
+  border: 1px solid rgba(148,163,184,0.15); border-radius: 4px;
+  width: 100%; color: inherit; margin-top: 4px;
+  box-sizing: border-box;
+}
+.gen-input::placeholder { color: #475569; }
+.gen-hint { font-size: 10px; color: #475569; margin-top: 2px; }
+
+/* Expression panel */
+.expr-panel { margin: 16px 0; }
+.expr-panel-label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
+  color: #7c3aed; margin-bottom: 6px;
+}
+.expr-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.expr-chrome { color: #64748b; font-family: 'IBM Plex Mono', monospace; font-size: 13px; white-space: nowrap; }
+.expr-input {
+  flex: 1; min-width: 80px;
+  font-family: 'IBM Plex Mono', monospace; font-size: 14px;
+  padding: 6px 10px; background: rgba(0,0,0,0.2);
+  border: 1px solid rgba(148,163,184,0.15); border-radius: 4px; color: inherit;
+}
+.expr-input::placeholder { color: #475569; }
+.expr-input.has-error { border-color: rgba(239,68,68,0.5); }
+
+/* Validation errors */
+.validation-errors { margin-top: 8px; }
+.validation-error {
+  color: #ef4444; font-size: 12px; padding: 2px 0;
+  display: flex; align-items: center; gap: 6px;
+}
+.validation-error::before { content: '\26A0'; font-size: 11px; }
+
+/* Variable section heading */
+.builder-section-label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
+  color: #7c3aed; margin-bottom: 8px; font-weight: 600;
+}
