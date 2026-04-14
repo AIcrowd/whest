@@ -35,6 +35,11 @@ htmlcov/
 # mkdocs generated site
 site/
 
+# Docusaurus
+website/node_modules/
+website/build/
+website/.docusaurus/
+
 # Claude Code session data
 .claude/
 

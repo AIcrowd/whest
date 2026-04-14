@@ -1,0 +1,166 @@
+/* ── Fonts ──────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ── Infima variable overrides ─────────────────────────── */
+:root {
+  --ifm-color-primary: #4051b5;
+  --ifm-color-primary-dark: #3948a3;
+  --ifm-color-primary-darker: #36449a;
+  --ifm-color-primary-darkest: #2c387f;
+  --ifm-color-primary-light: #4a5bc0;
+  --ifm-color-primary-lighter: #5465c4;
+  --ifm-color-primary-lightest: #6e7dd0;
+
+  --ifm-font-family-base: 'Inter', system-ui, -apple-system, sans-serif;
+  --ifm-font-family-monospace: 'JetBrains Mono', SFMono-Regular, Menlo, monospace;
+  --ifm-code-font-size: 0.82em;
+
+  --ifm-heading-color: #1a1a2e;
+
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #7b8de0;
+  --ifm-color-primary-dark: #6178d9;
+  --ifm-color-primary-darker: #546dd5;
+  --ifm-color-primary-darkest: #3550c5;
+  --ifm-color-primary-light: #95a2e7;
+  --ifm-color-primary-lighter: #a2adeb;
+  --ifm-color-primary-lightest: #c8cff3;
+
+  --ifm-heading-color: #e0e0e0;
+
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* ── Navbar (white) ────────────────────────────────────── */
+.navbar {
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.navbar__title {
+  color: #1a1a2e;
+  font-weight: 600;
+}
+
+.navbar__link {
+  color: #555;
+}
+
+.navbar__link:hover {
+  color: #1a1a2e;
+}
+
+[data-theme='dark'] .navbar {
+  background-color: var(--ifm-background-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme='dark'] .navbar__title {
+  color: var(--ifm-heading-color);
+}
+
+/* ── Footer (light) ────────────────────────────────────── */
+.footer--light {
+  background-color: #fafafa;
+  border-top: 1px solid #eee;
+  color: #666;
+}
+
+[data-theme='dark'] .footer--light {
+  background-color: var(--ifm-background-surface-color);
+  border-top-color: #333;
+  color: #aaa;
+}
+
+/* ── Headings ──────────────────────────────────────────── */
+h1 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-weight: 600;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.4rem;
+}
+
+[data-theme='dark'] h2 {
+  border-bottom-color: #333;
+}
+
+h3 {
+  font-weight: 600;
+}
+
+/* ── Inline code ───────────────────────────────────────── */
+:not(pre) > code {
+  background-color: #f0f1f4;
+  border: none;
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+  color: #d63384;
+}
+
+[data-theme='dark'] :not(pre) > code {
+  background-color: #2a2a3a;
+  color: #e89bc0;
+}
+
+/* ── Code blocks ───────────────────────────────────────── */
+pre {
+  border-radius: 8px;
+}
+
+/* ── Tables ────────────────────────────────────────────── */
+table {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 0.82rem;
+}
+
+table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #1a1a2e;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+table td {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+table tr:last-child td {
+  border-bottom: none;
+}
+
+[data-theme='dark'] table {
+  border-color: #444;
+}
+
+[data-theme='dark'] table th {
+  background-color: #2a2a3a;
+  color: var(--ifm-heading-color);
+  border-bottom-color: #444;
+}
+
+[data-theme='dark'] table td {
+  border-bottom-color: #333;
+}
+
+/* ── Sidebar ───────────────────────────────────────────── */
+.menu__list-item {
+  font-size: 0.85rem;
+}
+
+.theme-doc-sidebar-menu .menu__link--active {
+  font-weight: 600;
+}
+
+/* ── Content width ─────────────────────────────────────── */
+.markdown {
+  max-width: 52rem;
+}
