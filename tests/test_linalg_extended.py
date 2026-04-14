@@ -315,10 +315,11 @@ def test_cholesky_non_square_raises():
             cholesky(numpy.ones((3, 4)))
 
 
-def test_qr_non_2d_raises():
-    with pytest.raises(ValueError):
-        with BudgetContext(flop_budget=10**6):
-            qr(numpy.ones((2, 3, 4)))
+def test_qr_batched():
+    """Batched QR works (ndim > 2 is supported)."""
+    with BudgetContext(flop_budget=10**9):
+        Q, R = qr(numpy.ones((2, 3, 4)))
+    assert Q.shape[0] == 2  # batch dim preserved
 
 
 def test_eig_non_square_raises():
@@ -345,10 +346,11 @@ def test_eigvalsh_non_square_raises():
             eigvalsh(numpy.ones((3, 4)))
 
 
-def test_svdvals_non_2d_raises():
-    with pytest.raises(ValueError):
-        with BudgetContext(flop_budget=10**6):
-            svdvals(numpy.ones((2, 3, 4)))
+def test_svdvals_batched():
+    """Batched svdvals works (ndim > 2 is supported)."""
+    with BudgetContext(flop_budget=10**9):
+        sv = svdvals(numpy.ones((2, 3, 4)))
+    assert sv.shape == (2, 3)  # batch dim preserved, min(3,4)=3 singular values
 
 
 # ---------------------------------------------------------------------------
@@ -404,13 +406,15 @@ def test_slogdet_non_square_raises():
             slogdet(numpy.ones((3, 4)))
 
 
-def test_cond_non_2d_raises():
-    with pytest.raises(ValueError):
-        with BudgetContext(flop_budget=10**6):
-            cond(numpy.ones((2, 3, 4)))
+def test_cond_batched():
+    """Batched cond works (ndim > 2 is supported)."""
+    with BudgetContext(flop_budget=10**9):
+        c = cond(numpy.ones((2, 3, 4)))
+    assert c.shape == (2,)  # batch dim preserved
 
 
-def test_matrix_rank_non_2d_raises():
-    with pytest.raises(ValueError):
-        with BudgetContext(flop_budget=10**6):
-            matrix_rank(numpy.ones((2, 3, 4)))
+def test_matrix_rank_batched():
+    """Batched matrix_rank works (ndim > 2 is supported)."""
+    with BudgetContext(flop_budget=10**9):
+        r = matrix_rank(numpy.ones((2, 3, 4)))
+    assert r.shape == (2,)  # batch dim preserved

@@ -10,6 +10,21 @@ from whest._symmetric import SymmetricTensor, as_symmetric
 from whest._validation import require_budget
 
 
+def _batch_size(shape):
+    """Number of matrices in a batched array."""
+    if len(shape) <= 2:
+        return 1
+    result = 1
+    for d in shape[:-2]:
+        result *= d
+    return result
+
+
+def _has_zero_dim(shape):
+    """Check if any matrix dimension is zero."""
+    return len(shape) >= 2 and (shape[-2] == 0 or shape[-1] == 0)
+
+
 def solve_cost(n: int, nrhs: int = 1, symmetric: bool = False) -> int:
     r"""FLOP cost of solving a linear system Ax = b.
 
@@ -39,14 +54,11 @@ def solve(a, b):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
-    if a.ndim != 2 or a.shape[0] != a.shape[1]:
-        raise ValueError(f"First argument must be square 2D array, got shape {a.shape}")
-    n = a.shape[0]
     if not isinstance(b, _np.ndarray):
         b = _np.asarray(b)
-    nrhs = b.shape[1] if b.ndim == 2 else 1
-    is_symmetric = isinstance(a, SymmetricTensor)
-    cost = solve_cost(n, nrhs=nrhs, symmetric=is_symmetric)
+    n = a.shape[-1]
+    batch = _batch_size(a.shape)
+    cost = solve_cost(n) * batch if not _has_zero_dim(a.shape) else 0
     budget.deduct("linalg.solve", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.solve(a, b)
 
@@ -84,11 +96,10 @@ def inv(a):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
-    if a.ndim != 2 or a.shape[0] != a.shape[1]:
-        raise ValueError(f"Input must be square 2D array, got shape {a.shape}")
-    n = a.shape[0]
+    n = a.shape[-1]
+    batch = _batch_size(a.shape)
     is_symmetric = isinstance(a, SymmetricTensor)
-    cost = inv_cost(n, symmetric=is_symmetric)
+    cost = inv_cost(n, symmetric=is_symmetric) * batch if not _has_zero_dim(a.shape) else 0
     budget.deduct("linalg.inv", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     result = _np.linalg.inv(a)
     if is_symmetric:
@@ -131,10 +142,9 @@ def lstsq(a, b, rcond=None):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
-    if a.ndim != 2:
-        raise ValueError(f"First argument must be 2D, got {a.ndim}D")
-    m, n = a.shape
-    cost = lstsq_cost(m, n)
+    m, n = a.shape[-2], a.shape[-1]
+    batch = _batch_size(a.shape)
+    cost = lstsq_cost(m, n) * batch if not _has_zero_dim(a.shape) else 0
     budget.deduct("linalg.lstsq", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     return _np.linalg.lstsq(a, b, rcond=rcond)
 
@@ -166,19 +176,20 @@ def pinv_cost(m: int, n: int) -> int:
     return max(m * n * min(m, n), 1)
 
 
-def pinv(a, rcond=None, hermitian=False):
+def pinv(a, rcond=None, hermitian=False, *, rtol=None):
     """Pseudoinverse with FLOP counting."""
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
-    if a.ndim != 2:
-        raise ValueError(f"Input must be 2D, got {a.ndim}D")
-    m, n = a.shape
-    cost = pinv_cost(m, n)
+    m, n = a.shape[-2], a.shape[-1]
+    batch = _batch_size(a.shape)
+    cost = pinv_cost(m, n) * batch if not _has_zero_dim(a.shape) else 0
     budget.deduct("linalg.pinv", flop_cost=cost, subscripts=None, shapes=(a.shape,))
     kwargs = {"hermitian": hermitian}
     if rcond is not None:
         kwargs["rcond"] = rcond
+    if rtol is not None:
+        kwargs["rtol"] = rtol
     return _np.linalg.pinv(a, **kwargs)
 
 
