@@ -243,43 +243,11 @@ export function runSigmaLoop(graph, matrixData, example) {
   }
 
   const results = [];
+  const nRows = rowOrder.length;
+  const identityRow = Array.from({ length: nRows }, (_, i) => i);
 
-  /**
-   * Process a single row permutation (sigma on rows of M).
-   * Computes σ(M), derives π, and appends to results.
-   */
-  function processSigmaRow(sigmaRowPerm, sourceLabel) {
-    // Compute σ(M) column fingerprints
-    const sigmaColOf = {};
-    for (const label of allLabels) {
-      sigmaColOf[label] = rowOrder.map(
-        (_, k) => incidence[sigmaRowPerm[k]][label] || 0
-      ).join(',');
-    }
-
-    // Build σ(M) matrix for display
-    const sigmaMatrix = sigmaRowPerm.map(uIdx =>
-      allLabels.map(lbl => incidence[uIdx][lbl] || 0)
-    );
-
-    // Derive π
-    const pi = derivePi(sigmaColOf, fpToLabels, vLabels, wLabels);
-    if (!pi) {
-      results.push({
-        sigma: { _source: sourceLabel }, sigmaRowPerm, sigmaMatrix, sigmaColOf,
-        isValid: false, reason: 'No matching π (fingerprint mismatch)',
-      });
-      return;
-    }
-
-    // Check for identity π
-    const piIsIdentity = Object.entries(pi).every(([k, v]) => k === v);
-
-    results.push({
-      sigma: { _source: sourceLabel }, sigmaRowPerm, sigmaMatrix, sigmaColOf, pi,
-      isValid: true, piIsIdentity,
-    });
-  }
+  // ── Collect row-permutation generators from both sources ──
+  const rowPermGenerators = [];  // { perm: number[], label: string }
 
   // ── Source A: per-operand declared symmetry generators ──
   const perOpSymmetry = example?.perOpSymmetry;
@@ -310,25 +278,22 @@ export function runSigmaLoop(graph, matrixData, example) {
         gens = declaredSymGenerators(symType, symAxes.length).map(p => p.arr);
       }
 
-      // Map each generator (acting on symAxes positions) to a row permutation
+      // Map each generator to a row permutation
       const uIndices = opToUIndices[opIdx];
       if (!uIndices || uIndices.length === 0) continue;
 
       for (const genArr of gens) {
-        // genArr permutes positions within symAxes of this operand.
-        // Map to row permutation: symAxes[i] -> row position uIndices[symAxes[i]]
-        const sigmaRowPerm = [...rowOrder];
+        const rowPerm = [...identityRow];
         let isId = true;
         for (let i = 0; i < symAxes.length; i++) {
           const fromRow = uIndices[symAxes[i]];
           const toRow = uIndices[symAxes[genArr[i]]];
           if (fromRow !== undefined && toRow !== undefined) {
-            sigmaRowPerm[fromRow] = rowOrder[toRow];
+            rowPerm[fromRow] = identityRow[toRow];
             if (fromRow !== toRow) isId = false;
           }
         }
-        if (isId) continue;
-        processSigmaRow(sigmaRowPerm, `Op${opIdx} sym`);
+        if (!isId) rowPermGenerators.push({ perm: rowPerm, label: `Op${opIdx} sym` });
       }
     }
   }
@@ -339,17 +304,61 @@ export function runSigmaLoop(graph, matrixData, example) {
     for (let g = 0; g < group.length - 1; g++) {
       const iOp = group[g];
       const jOp = group[g + 1];
-      // Build sigma that swaps operand iOp <-> jOp
-      const sigma = { [iOp]: jOp, [jOp]: iOp };
-      const sigmaRowPerm = liftSigmaToU(sigma, rowOrder, graph);
-      if (!sigmaRowPerm) {
-        results.push({
-          sigma, isValid: false, reason: 'Lift failed',
-        });
-        continue;
+      const posA = opToUIndices[iOp] || [];
+      const posB = opToUIndices[jOp] || [];
+      if (posA.length !== posB.length) continue;
+      const rowPerm = [...identityRow];
+      for (let p = 0; p < posA.length; p++) {
+        rowPerm[posA[p]] = identityRow[posB[p]];
+        rowPerm[posB[p]] = identityRow[posA[p]];
       }
-      processSigmaRow(sigmaRowPerm, `Swap Op${iOp}↔Op${jOp}`);
+      rowPermGenerators.push({ perm: rowPerm, label: `Swap Op${iOp}↔Op${jOp}` });
     }
+  }
+
+  // ── Build group from all generators, enumerate all elements via Dimino ──
+  if (rowPermGenerators.length === 0) return results;
+
+  const permGens = rowPermGenerators.map(g => new Permutation(g.perm));
+  const allRowPerms = dimino(permGens);
+
+  // ── Derive π for each non-identity group element ──
+  for (const sigmaPerm of allRowPerms) {
+    const sigmaRowPerm = sigmaPerm.arr;
+    if (sigmaPerm.isIdentity) {
+      results.push({ sigma: {}, isIdentity: true, skipped: true });
+      continue;
+    }
+
+    // Compute σ(M) column fingerprints
+    const sigmaColOf = {};
+    for (const label of allLabels) {
+      sigmaColOf[label] = rowOrder.map(
+        (_, k) => incidence[sigmaRowPerm[k]][label] || 0
+      ).join(',');
+    }
+
+    // Build σ(M) matrix for display
+    const sigmaMatrix = sigmaRowPerm.map(uIdx =>
+      allLabels.map(lbl => incidence[uIdx][lbl] || 0)
+    );
+
+    // Derive π
+    const pi = derivePi(sigmaColOf, fpToLabels, vLabels, wLabels);
+    if (!pi) {
+      results.push({
+        sigma: {}, sigmaRowPerm, sigmaMatrix, sigmaColOf,
+        isValid: false, reason: 'No matching π (fingerprint mismatch)',
+      });
+      continue;
+    }
+
+    const piIsIdentity = Object.entries(pi).every(([k, v]) => k === v);
+
+    results.push({
+      sigma: {}, sigmaRowPerm, sigmaMatrix, sigmaColOf, pi,
+      isValid: true, piIsIdentity,
+    });
   }
 
   return results;
