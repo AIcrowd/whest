@@ -137,7 +137,7 @@ dense_step_cost = product of all index dimensions
 ```
 
 Each fused multiply-add (FMA) counts as 1 operation (see
-[Convention](#convention-fma-1-operation) above), so the cost of a
+[Convention](#convention-fma--1-operation) above), so the cost of a
 contraction step is simply the product of all index dimensions — there is
 no factor-of-2 distinction between inner products and outer products.
 

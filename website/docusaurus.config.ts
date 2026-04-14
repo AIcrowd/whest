@@ -70,8 +70,8 @@ const config: Config = {
     image: 'img/logo.png',
     colorMode: {
       defaultMode: 'light',
-      disableSwitch: false,
-      respectPrefersColorScheme: true,
+      disableSwitch: true,
+      respectPrefersColorScheme: false,
     },
     navbar: {
       title: 'whest',
@@ -80,12 +80,6 @@ const config: Config = {
         src: 'img/logo.png',
       },
       items: [
-        {
-          type: 'docSidebar',
-          sidebarId: 'docs',
-          position: 'left',
-          label: 'Docs',
-        },
         {
           href: 'https://github.com/AIcrowd/whest',
           label: 'GitHub',
