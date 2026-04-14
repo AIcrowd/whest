@@ -92,9 +92,7 @@ def _plain_text_summary() -> str:
     tracked_time = data.get("total_tracked_time")
     if wall_time is not None:
         untracked = wall_time - (tracked_time or 0.0)
-        tracked_pct = (
-            100 * (tracked_time or 0.0) / wall_time if wall_time > 0 else 0.0
-        )
+        tracked_pct = 100 * (tracked_time or 0.0) / wall_time if wall_time > 0 else 0.0
         untracked_pct = 100 * untracked / wall_time if wall_time > 0 else 0.0
         lines += [
             "",
@@ -113,9 +111,7 @@ def _plain_text_summary() -> str:
                 op_calls[op_name] = op_info["calls"]
         if op_durations:
             lines += ["", "  By operation (time):"]
-            for op_name, dur in sorted(
-                op_durations.items(), key=lambda x: -x[1]
-            ):
+            for op_name, dur in sorted(op_durations.items(), key=lambda x: -x[1]):
                 op_pct = 100 * dur / (tracked_time or 1.0)
                 n = op_calls[op_name]
                 call_word = "call" if n == 1 else "calls"
@@ -242,18 +238,14 @@ def _rich_summary():
     wall_time = data.get("wall_time_s")
     tracked_time = data.get("total_tracked_time")
     if wall_time is not None:
-        tracked_pct = (
-            100 * (tracked_time or 0.0) / wall_time if wall_time > 0 else 0.0
-        )
+        tracked_pct = 100 * (tracked_time or 0.0) / wall_time if wall_time > 0 else 0.0
         untracked = wall_time - (tracked_time or 0.0)
         untracked_pct = 100 * untracked / wall_time if wall_time > 0 else 0.0
         totals.add_section()
         totals.add_row("Wall time", f"{wall_time:.3f}s")
         totals.add_row(
             "Tracked",
-            Text(
-                f"{(tracked_time or 0.0):.3f}s  ({tracked_pct:.1f}%)", style="dim"
-            ),
+            Text(f"{(tracked_time or 0.0):.3f}s  ({tracked_pct:.1f}%)", style="dim"),
         )
         totals.add_row(
             "Untracked",

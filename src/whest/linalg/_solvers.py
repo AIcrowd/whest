@@ -59,7 +59,9 @@ def solve(a, b):
     n = a.shape[-1]
     batch = _batch_size(a.shape)
     cost = solve_cost(n) * batch if not _has_zero_dim(a.shape) else 0
-    with budget.deduct("linalg.solve", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+    with budget.deduct(
+        "linalg.solve", flop_cost=cost, subscripts=None, shapes=(a.shape,)
+    ):
         result = _np.linalg.solve(a, b)
     return result
 
@@ -103,7 +105,9 @@ def inv(a):
     cost = (
         inv_cost(n, symmetric=is_symmetric) * batch if not _has_zero_dim(a.shape) else 0
     )
-    with budget.deduct("linalg.inv", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+    with budget.deduct(
+        "linalg.inv", flop_cost=cost, subscripts=None, shapes=(a.shape,)
+    ):
         result = _np.linalg.inv(a)
     if is_symmetric:
         result = as_symmetric(result, symmetric_axes=(0, 1))
@@ -148,7 +152,9 @@ def lstsq(a, b, rcond=None):
     m, n = a.shape[-2], a.shape[-1]
     batch = _batch_size(a.shape)
     cost = lstsq_cost(m, n) * batch if not _has_zero_dim(a.shape) else 0
-    with budget.deduct("linalg.lstsq", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+    with budget.deduct(
+        "linalg.lstsq", flop_cost=cost, subscripts=None, shapes=(a.shape,)
+    ):
         result = _np.linalg.lstsq(a, b, rcond=rcond)
     return result
 
@@ -193,7 +199,9 @@ def pinv(a, rcond=None, hermitian=False, *, rtol=None):
         kwargs["rcond"] = rcond
     if rtol is not None:
         kwargs["rtol"] = rtol
-    with budget.deduct("linalg.pinv", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+    with budget.deduct(
+        "linalg.pinv", flop_cost=cost, subscripts=None, shapes=(a.shape,)
+    ):
         result = _np.linalg.pinv(a, **kwargs)
     return result
 

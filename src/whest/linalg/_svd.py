@@ -72,7 +72,9 @@ def svd(a, full_matrices=True, compute_uv=True, hermitian=False, *, k=None):
     effective_k = k if k is not None else min(m, n)
     batch = _batch_size(a.shape)
     cost = svd_cost(m, n, effective_k) * batch if not _has_zero_dim(a.shape) else 0
-    with budget.deduct("linalg.svd", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+    with budget.deduct(
+        "linalg.svd", flop_cost=cost, subscripts=None, shapes=(a.shape,)
+    ):
         if compute_uv:
             # When k is specified, always use economy decomposition then slice.
             fm = full_matrices if k is None else False
