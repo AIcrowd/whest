@@ -27,8 +27,8 @@
   --whest-gray-50: #F6F8FA;
   --whest-gray-100: #F1F3F5;
   --whest-gray-200: #E3E8EE;
-  --whest-gray-400: #AAACAD;
-  --whest-gray-600: #5D5F60;
+  --whest-gray-400: #868B8E;
+  --whest-gray-600: #484B4D;
   --whest-gray-900: #292C2D;
 
   /* Code (Stripe navy) */
@@ -214,7 +214,7 @@ h3 {
   border-radius: 4px;
   padding: 2px 6px;
   font-size: 14px;
-  color: var(--whest-gray-600);
+  color: var(--whest-gray-900);
 }
 
 /* ── 10. Code blocks + Prism tokens ──────────────────────── */
@@ -404,7 +404,7 @@ pre code {
 
 /* ── Doc page layout ────────────────────────────────────── */
 [class*="docMainContainer"] {
-  background: var(--whest-bg);
+  background: var(--whest-surface);
   padding-left: 32px;
   padding-right: 32px;
 }
