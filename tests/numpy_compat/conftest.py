@@ -150,7 +150,10 @@ def _patch_numpy():
         # than the one being patched (e.g., we.linalg.outer → np.outer, not
         # np.linalg.outer). Patching causes collection-time errors in tests that
         # check the real np.linalg.outer's behaviour at class-definition time.
-        _SKIP_PATCH = {"linalg.outer"}
+        _SKIP_PATCH = {
+            "linalg.outer",
+            "array",  # Python function auto-binds self when used as class attribute; C built-in doesn't
+        }
         if name in _SKIP_PATCH:
             continue
 
