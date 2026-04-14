@@ -29,7 +29,9 @@
   --ifm-font-family-base: 'Inter', system-ui, -apple-system, sans-serif;
   --ifm-font-family-monospace: 'IBM Plex Mono', 'SF Mono', SFMono-Regular, monospace;
   --font-accent: 'Montserrat', 'Inter', system-ui, sans-serif;
-  --ifm-code-font-size: 0.84em;
+  --ifm-font-size-base: 100%; /* 16px — readable body text for docs */
+  --ifm-code-font-size: 0.875em;
+  --ifm-line-height-base: 1.65;
 
   /* Colors */
   --ifm-heading-color: var(--whest-gray-900);
@@ -63,8 +65,13 @@
   --ifm-background-surface-color: var(--whest-white);
 }
 
-/* ── Page background ──────────────────────────────────── */
+/* ── Page background & base font ──────────────────────── */
+html {
+  font-size: 16px !important; /* override Infima's 87.5% (14px) default */
+}
+
 body {
+  font-size: 1rem !important; /* override Infima's 0.9375rem body size */
   background: var(--whest-gray-50);
 }
 
@@ -106,7 +113,7 @@ nav.menu {
 }
 
 .menu__link {
-  font-size: 13px;
+  font-size: 0.85rem;
   color: var(--whest-gray-600);
   border-radius: 6px;
   padding: 6px 10px;
@@ -157,8 +164,8 @@ h3 {
   background-color: var(--whest-gray-100);
   border: none;
   border-radius: 4px;
-  padding: 1px 5px;
-  font-size: 0.84em;
+  padding: 2px 6px;
+  font-size: 0.875em;
   color: var(--whest-gray-600);
 }
 
@@ -182,20 +189,19 @@ table {
 
 table th {
   background-color: var(--whest-white);
-  font-size: 10px;
+  font-size: 0.8rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--whest-gray-400);
-  padding: 8px 12px;
+  padding: 10px 14px;
   border-bottom: 1px solid var(--whest-gray-200);
 }
 
 table td {
-  font-family: var(--ifm-font-family-monospace);
-  font-size: 11px;
+  font-size: 0.875rem;
   color: var(--whest-gray-600);
-  padding: 6px 12px;
+  padding: 8px 14px;
   border-bottom: 1px solid var(--whest-gray-100);
 }
 
