@@ -40,7 +40,7 @@ Operations not relevant to numerical computation. Calling them raises an `Attrib
 
 ```python
 we.save(array, "file.npy")
-# AttributeError: 'save' is blacklisted in whest (I/O operation).
+# AttributeError: whest does not support 'save' (blacklisted). Save array to .npy file. Not supported.. Did you mean: 'ravel'?
 ```
 
 **Blacklisted categories:** I/O (`save`, `load`, `loadtxt`, `savetxt`, `savez`, `genfromtxt`), configuration (`seterr`, `geterr`, `setbufsize`), datetime (`busday_count`, `is_busday`), display (`array2string`, `array_repr`), functional (`apply_along_axis`, `piecewise`, `frompyfunc`).
