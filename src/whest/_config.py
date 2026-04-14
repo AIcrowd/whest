@@ -31,6 +31,11 @@ def configure(**kwargs: object) -> None:
             raise ValueError(f"Unknown setting: {key!r}")
         _SETTINGS[key] = value
 
+    if "einsum_path_cache_size" in kwargs:
+        from whest._einsum import _rebuild_einsum_cache
+
+        _rebuild_einsum_cache()
+
 
 def get_setting(key: str) -> object:
     """Return the current value of a global setting."""

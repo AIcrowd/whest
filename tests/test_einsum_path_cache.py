@@ -176,3 +176,38 @@ def test_einsum_same_object_cached():
     numpy.testing.assert_array_equal(r1, r2)
     info = einsum_cache_info()
     assert info.hits >= 1
+
+
+def test_configure_rebuilds_cache():
+    """Changing einsum_path_cache_size should rebuild the cache."""
+    A = numpy.ones((3, 4))
+    B = numpy.ones((4, 5))
+    with BudgetContext(flop_budget=10**6):
+        einsum("ij,jk->ik", A, B)
+    assert einsum_cache_info().currsize >= 1
+
+    original = get_setting("einsum_path_cache_size")
+    try:
+        configure(einsum_path_cache_size=128)
+        # Cache should be rebuilt (empty)
+        assert einsum_cache_info().currsize == 0
+        assert einsum_cache_info().maxsize == 128
+    finally:
+        configure(einsum_path_cache_size=original)
+
+
+import whest
+
+
+def test_public_api_clear():
+    whest.clear_einsum_cache()
+    info = whest.einsum_cache_info()
+    assert info.currsize == 0
+
+
+def test_public_api_cache_info():
+    info = whest.einsum_cache_info()
+    assert hasattr(info, "hits")
+    assert hasattr(info, "misses")
+    assert hasattr(info, "maxsize")
+    assert hasattr(info, "currsize")
