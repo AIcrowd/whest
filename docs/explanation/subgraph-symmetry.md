@@ -28,11 +28,13 @@ Subgraph symmetry detection achieves all three.
 
 The core data structure is a bipartite graph over the einsum expression.
 
-**Left vertices (U):** One U-vertex per equivalence class of axes within each
-operand. For a dense operand with subscript `"ai"`, each axis is its own class,
-producing two U-vertices. For a `SymmetricTensor` with subscript `"ij"` and
-declared symmetry `S₂{i,j}`, both axes are in the same class, producing one
-U-vertex.
+**Left vertices (U):** One U-vertex per axis of each operand. For a dense
+operand with subscript `"ai"`, each axis produces its own U-vertex (two total).
+For a `SymmetricTensor` with subscript `"ij"` and declared symmetry `S₂{i,j}`,
+both axes still produce separate U-vertices — per-operand symmetry does not
+affect the graph topology. Instead, per-operand symmetry is handled entirely
+by the expanded sigma-loop (see below), which uses the declared symmetry
+generators as an additional source of row permutations.
 
 **Right vertices (labels):** One right vertex per unique index label. Labels are
 partitioned into:
@@ -41,7 +43,7 @@ partitioned into:
 - **W (summed labels):** contracted entirely within the current subset.
 
 **Incidence:** An edge from U-vertex `u` to label `c` has weight equal to the
-multiplicity of `c` in the axes belonging to class `u`.
+multiplicity of `c` in the axes belonging to U-vertex `u`.
 
 **Identical-operand groups:** Operands that are the same Python object are
 grouped. These groups are the source of induced symmetry.
@@ -55,7 +57,7 @@ Subscripts:  ij,  ai,  bj  →  ab
 Operands:    T    A    B
 ```
 
-U-vertices (dense operands, one class per axis):
+U-vertices (one per axis):
 
 - `(T, 0)` — label set `{i}`
 - `(T, 1)` — label set `{j}`
@@ -73,7 +75,7 @@ objects.
 #### Full bipartite graph
 
 ```
-   U (axis classes)                 Labels
+   U (axes)                         Labels
    ─────────────────               ──────
                                    V (free):
    (A, 0) ───────────────────────── a
@@ -175,29 +177,45 @@ The V/W partition is part of the labelled structure, so legitimate
 automorphisms must preserve it — `π(V) ⊆ V` and `π(W) ⊆ W` — and any
 `π` with a cycle crossing V↔W is rejected.
 
-The algorithm enumerates the finitely many `σ`'s (the identity plus the
-non-trivial permutations of each identical-operand group) and, for each
-one, recovers the unique `π` (up to fingerprint collisions) satisfying
-the equation above. The collected `π`'s become generators of the
-detected `PermutationGroup` on labels.
+The algorithm iterates over **generators** of the row-permutation group
+(per-operand symmetry generators and identical-operand swap generators)
+and, for each one, recovers the unique `π` (up to fingerprint collisions)
+satisfying the equation above. The collected `π`'s become generators of the
+detected `PermutationGroup` on labels, closed via Dimino's algorithm.
 
-Given M for a subset, detection proceeds in two passes:
+Given M for a subset, detection proceeds as follows:
 
-### Fast path: fingerprint equivalences
+### Column fingerprints
 
 For each label `c`, compute its column fingerprint `col(c)` — the tuple of
 incidence values down the rows of M. Labels with identical fingerprints are
-symmetry-equivalent. Group V-labels (and separately W-labels) by fingerprint;
-any group of size ≥ 2 becomes a per-index symmetry group.
+*candidates* for symmetry equivalence. The fingerprint-to-label mapping is
+used by the sigma-loop (below) to derive pi in O(1) per label via hash lookup.
 
-This catches symmetry arising from declared per-operand symmetry (e.g., a
-`SymmetricTensor` where two axes collapse into one U-vertex, giving their
-labels the same fingerprint) without needing to enumerate any operand
-permutations.
+!!! note "Removed fast path"
+    Earlier versions had a standalone fast path that detected S_k whenever
+    labels shared a fingerprint, without running the sigma-loop. This was
+    incorrect for non-S_k groups (see the C3 bug note below) and has been
+    removed. Fingerprints are now used only for pi derivation inside the
+    sigma-loop — they are not a standalone detection mechanism.
 
-### σ loop: derive π per operand permutation
+### σ loop: derive π from generators
 
-For each permutation `σ` of the identical-operand groups:
+The sigma-loop iterates over **generators** of the row-permutation group on M,
+drawn from two sources:
+
+- **Source A — per-operand internal symmetry generators.** For each operand
+  that carries a declared `PermutationGroup`, each generator of that group is
+  lifted to a row permutation on M (permuting only the rows belonging to that
+  operand). This captures symmetry that was previously handled by orbit-based
+  axis merging.
+
+- **Source B — identical-operand swap generators.** For each group of k
+  identical operands (same Python object), the k-1 adjacent transpositions
+  `(op_i, op_{i+1})` are used as generators. Each such swap is lifted to a row
+  permutation that exchanges the rows of the two operands.
+
+For each generator `σ`:
 
 1. Lift `σ` to a row permutation on M.
 2. Compute `σ(M)`'s column fingerprints: `σ·col(c)` for each label `c`.
@@ -213,10 +231,9 @@ For each permutation `σ` of the identical-operand groups:
    of the detected `PermutationGroup`.
 
 The σ-loop collects all non-identity π restrictions as `Permutation` objects.
-These generators are passed to `PermutationGroup(...)` to build the exact
-symmetry group on V (and separately on W). The fingerprint fast-path handles
-the common case where labels share column fingerprints, yielding S_k directly
-without running the σ-loop.
+These generators are passed to Dimino's algorithm (via `PermutationGroup(...)`)
+to close the group and build the exact symmetry group on V (and separately
+on W).
 
 ### Worked example: `einsum('ab,cd->abcd', X, X)`
 
@@ -225,7 +242,7 @@ U-vertex per axis (four total), one label per column, and no W-labels
 (nothing is contracted):
 
 ```
-   U (axis classes)                 Labels
+   U (axes)                         Labels
    ─────────────────               ──────
    operand X₀:                     V (all free):
      X₀ · a ─────────────────────── a
@@ -251,7 +268,7 @@ u1_c  [ 0  0  1  0 ]
 u1_d  [ 0  0  0  1 ]
 ```
 
-**Fast path:** All four fingerprints are distinct — no equivalences.
+**Fingerprints:** All four fingerprints are distinct — no label collisions.
 
 **σ loop:** The only nontrivial σ swaps operands 0 and 1, permuting rows
 (0↔2, 1↔3). We ask: *what relabeling π of the columns turns `σ(M)` back
@@ -321,7 +338,7 @@ block S₂: `{(a,b), (c,d)}`.
 This computes XᵀX, which is symmetric. The detection derives this from the
 bipartite graph alone.
 
-U-vertices (dense X, one class per axis):
+U-vertices (one per axis):
 
 - `(X₀, 0)` — label `i` (subscript `ia`, axis 0)
 - `(X₀, 1)` — label `a` (subscript `ia`, axis 1)
@@ -332,7 +349,7 @@ Labels: V = `{a, b}` (output), W = `{i}` (contracted). X₀ and X₁ are the
 same Python object — one identical-operand group of size 2.
 
 ```
-   U (axis classes)                 Labels
+   U (axes)                         Labels
    ─────────────────               ──────
    operand X₀:                     V (free):
      X₀ · a ─────────────────────── a
@@ -356,8 +373,8 @@ X₁ · i [ 0  0  1 ]
 X₁ · b [ 0  1  0 ]
 ```
 
-**Fast path:** `col(a) = (0,1,0,0)`, `col(b) = (0,0,0,1)`, `col(i) = (1,0,1,0)`.
-All three are distinct — no fingerprint equivalences.
+**Fingerprints:** `col(a) = (0,1,0,0)`, `col(b) = (0,0,0,1)`, `col(i) = (1,0,1,0)`.
+All three are distinct — no label collisions.
 
 **σ loop:** The only nontrivial σ swaps operands 0 and 1, permuting rows
 (0↔2, 1↔3):
@@ -402,6 +419,28 @@ be an automorphism of the *labelled* graph.
 Cycle structure on V: single 2-cycle (a b) → **per-index S₂{a, b}**.
 The oracle reports this as the output symmetry — XᵀX is symmetric in its
 two indices, which is exactly what we expect.
+
+### Cautionary note: the C3 axis-merging bug
+
+`einsum('ijk,jki->ik', T, T)` with C3 symmetry declared on T was falsely
+detected as having S2{i,k} output symmetry. The root cause was orbit-based
+axis merging in the bipartite graph construction.
+
+C3 acting on {i,j,k} has a single orbit {i,j,k}, so all three axes were
+merged into one U-vertex per operand. With merged vertices, labels `i` and
+`k` received identical column fingerprints, and the fingerprint fast path
+promoted them to S2{i,k}. However, C3 contains only 3-cycles — no
+transpositions — so the 2-cycle (i k) is not a valid automorphism.
+
+The fix has two parts:
+
+1. **Removed orbit-based merging.** Each axis now gets its own U-vertex
+   regardless of declared symmetry. This ensures that the graph topology
+   faithfully reflects the actual incidence structure.
+2. **Expanded the sigma-loop.** Per-operand symmetry generators are fed
+   directly into the sigma-loop (Source A above) alongside identical-operand
+   swap generators (Source B). Dimino's algorithm closes the group from the
+   discovered pi generators, producing C3 (not S2) for this case.
 
 ### V-side and W-side
 

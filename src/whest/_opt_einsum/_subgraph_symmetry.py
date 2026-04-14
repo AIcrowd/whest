@@ -6,11 +6,12 @@ builds a bipartite graph once and exposes ``.sym(subset)`` which returns
 a ``SubsetSymmetry`` with ``.output`` (V-side) and ``.inner`` (W-side)
 symmetries, computed lazily on first access and cached.
 
-The detection algorithm derives the induced column permutation π for
-each operand permutation σ via column-fingerprint hash lookup, then
-collects the resulting Permutation objects to build a PermutationGroup
-directly. A fingerprint fast-path detects S_k symmetry without running
-the σ-loop when all labels on a side share the same column fingerprint.
+The detection algorithm iterates over generators from two sources:
+per-operand internal symmetry generators (Source A) and identical-operand
+swap generators (Source B). For each generator σ, the induced column
+permutation π is derived via column-fingerprint hash lookup. The
+collected π generators are closed into a PermutationGroup via Dimino's
+algorithm.
 
 See docs/explanation/subgraph-symmetry.md for the algorithm walkthrough.
 """
