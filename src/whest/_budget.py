@@ -294,12 +294,14 @@ class BudgetContext:
 
             import whest
 
-            print(
+            banner = (
                 f"whest {whest.__version__} "
                 f"(numpy {whest.__numpy_version__} backend) | "
-                f"budget: {self._flop_budget:.2e} FLOPs",
-                file=sys.stderr,
+                f"budget: {self._flop_budget:.2e} FLOPs"
             )
+            if self._wall_time_limit_s is not None:
+                banner += f" | time limit: {self._wall_time_limit_s:.1f}s"
+            print(banner, file=sys.stderr)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
@@ -426,9 +428,11 @@ class BudgetAccumulator:
             total_used += rec.flops_used
             for op in rec.op_log:
                 if op.op_name not in ops:
-                    ops[op.op_name] = {"flop_cost": 0, "calls": 0}
+                    ops[op.op_name] = {"flop_cost": 0, "calls": 0, "duration": 0.0}
                 ops[op.op_name]["flop_cost"] += op.flop_cost
                 ops[op.op_name]["calls"] += 1
+                if op.duration is not None:
+                    ops[op.op_name]["duration"] += op.duration
             if rec.wall_time_s is not None:
                 total_wall_time = (total_wall_time or 0.0) + rec.wall_time_s
             if rec.total_tracked_time is not None:

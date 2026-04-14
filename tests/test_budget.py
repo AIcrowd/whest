@@ -388,6 +388,26 @@ def test_counting_ops_have_duration():
             assert rec.duration >= 0, f"{rec.op_name} has negative duration"
 
 
+def test_banner_shows_time_limit(capsys):
+    """Banner should include time limit when wall_time_limit_s is set."""
+    import whest
+
+    with whest.BudgetContext(flop_budget=int(1e6), wall_time_limit_s=5.0):
+        pass
+    captured = capsys.readouterr()
+    assert "time limit: 5.0s" in captured.err
+
+
+def test_banner_no_time_limit(capsys):
+    """Banner should not mention time limit when wall_time_limit_s is None."""
+    import whest
+
+    with whest.BudgetContext(flop_budget=int(1e6)):
+        pass
+    captured = capsys.readouterr()
+    assert "time limit" not in captured.err
+
+
 def test_post_op_deadline_check():
     """_OpTimer.__exit__ raises TimeExhaustedError if deadline passed during op."""
     import time
