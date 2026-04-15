@@ -1,4 +1,6 @@
 import { useState, useCallback, useMemo, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { validateAll } from '../engine/validation.js';
 import { generatePython } from '../engine/pythonCodegen.js';
 import { buildVariableColors, SYMMETRY_ICONS, contrastText } from '../engine/colorPalette.js';
@@ -6,6 +8,8 @@ import { parseCycleNotation } from '../engine/cycleParser.js';
 import { cn } from '../lib/utils.js';
 import { CUSTOM_IDX, getPresetSummary, presetToState, resolvePresetSelection } from '../lib/presetSelection.js';
 import CaseBadge from './CaseBadge.jsx';
+import ExplorerField from './ExplorerField.jsx';
+import ExplorerSectionCard from './ExplorerSectionCard.jsx';
 import PythonCodeBlock from './PythonCodeBlock.jsx';
 
 const SYM_TYPES = ['none', 'symmetric', 'cyclic', 'dihedral', 'custom'];
@@ -275,15 +279,13 @@ export default function ExampleChooser({
   }, [activePresetIdx, examples, onCustomExample, onDirtyChange, operandNamesStr, outputStr, subscriptsStr, validation.valid, variables]);
 
   const builderContent = (
-    <div className="rounded-2xl border border-gray-200 bg-white p-5">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-coral">Act 1</p>
-          <h2 className="font-accent text-xl font-bold tracking-tight text-gray-900">{act?.heading}</h2>
-          <p className="mt-1 text-sm italic text-gray-600">{act?.why}</p>
-        </div>
-      </div>
-
+    <ExplorerSectionCard
+      eyebrow="Act 1"
+      title={act?.heading}
+      description={act?.why}
+      className="border-gray-200 bg-white"
+      contentClassName="pt-5"
+    >
       {checkpointItems.length > 0 && (
         <div className="mt-4 grid gap-3 rounded-xl border border-gray-200 bg-gray-50 p-4 sm:grid-cols-2">
           {checkpointItems.map((item) => (
@@ -310,8 +312,8 @@ export default function ExampleChooser({
                   style={{ borderColor: color }}
                 >
                   <div className="mb-1 flex items-center gap-1.5">
-                    <input
-                      className="w-16 rounded border border-gray-200 px-1.5 py-0.5 text-xs font-mono focus:border-coral focus:outline-none focus:ring-2 focus:ring-coral/30"
+                    <Input
+                      className="h-auto w-16 rounded border border-gray-200 px-1.5 py-0.5 text-xs font-mono focus:border-coral focus:ring-coral/30"
                       value={variable.name}
                       onChange={(event) => updateVar(idx, 'name', event.target.value)}
                       placeholder="X"
@@ -319,41 +321,49 @@ export default function ExampleChooser({
                     />
 
                     <div className="flex items-center gap-1">
-                      <button
+                      <Button
                         type="button"
-                        className="h-6 w-6 rounded border border-gray-200 text-xs hover:bg-gray-50 disabled:opacity-30"
+                        variant="outline"
+                        size="icon-xs"
+                        className="h-6 w-6 rounded border-gray-200 text-xs hover:bg-gray-50 disabled:opacity-30"
                         onClick={() => updateVar(idx, 'rank', Math.max(1, variable.rank - 1))}
                         disabled={variable.rank <= 1}
                       >
                         -
-                      </button>
+                      </Button>
                       <span className="w-4 text-center text-sm font-mono">{variable.rank}</span>
-                      <button
+                      <Button
                         type="button"
-                        className="h-6 w-6 rounded border border-gray-200 text-xs hover:bg-gray-50 disabled:opacity-30"
+                        variant="outline"
+                        size="icon-xs"
+                        className="h-6 w-6 rounded border-gray-200 text-xs hover:bg-gray-50 disabled:opacity-30"
                         onClick={() => updateVar(idx, 'rank', Math.min(8, variable.rank + 1))}
                         disabled={variable.rank >= 8}
                       >
                         +
-                      </button>
+                      </Button>
                     </div>
 
-                    <button
+                    <Button
                       type="button"
-                      className="ml-auto flex h-5 w-5 items-center justify-center rounded-full text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500 disabled:opacity-20"
+                      variant="ghost"
+                      size="icon-xs"
+                      className="ml-auto flex h-5 w-5 rounded-full p-0 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500 disabled:opacity-20"
                       onClick={() => removeVar(idx)}
                       disabled={variables.length <= 1}
                       title="Remove variable"
                     >
                       ×
-                    </button>
+                    </Button>
                   </div>
 
                   <div className="mb-1 flex flex-wrap gap-1">
                     {SYM_TYPES.map((symType) => (
-                      <button
+                      <Button
                         key={symType}
                         type="button"
+                        variant="outline"
+                        size="xs"
                         className={cn(
                           'cursor-pointer rounded-full border px-2 py-0.5 text-[10px] font-medium transition-colors',
                           variable.symmetry === symType
@@ -364,7 +374,7 @@ export default function ExampleChooser({
                       >
                         {SYMMETRY_ICONS[symType] ? `${SYMMETRY_ICONS[symType]} ` : ''}
                         {SYM_LABELS[symType]}
-                      </button>
+                      </Button>
                     ))}
                   </div>
 
@@ -373,9 +383,11 @@ export default function ExampleChooser({
                       {Array.from({ length: variable.rank }, (_, axisIdx) => {
                         const isSelected = variable.symAxes && variable.symAxes.includes(axisIdx);
                         return (
-                          <button
+                          <Button
                             key={axisIdx}
                             type="button"
+                            variant="outline"
+                            size="icon-xs"
                             className={cn(
                               'h-6 w-6 rounded-full border text-[10px] font-mono transition-colors',
                               isSelected
@@ -386,24 +398,27 @@ export default function ExampleChooser({
                             title={`Axis ${axisIdx}`}
                           >
                             {axisIdx}
-                          </button>
+                          </Button>
                         );
                       })}
                     </div>
                   )}
 
                   {variable.symmetry === 'custom' && (
-                    <>
-                      <input
-                        className="mb-1 w-full rounded border border-gray-200 px-2 py-1 text-xs font-mono focus:border-coral focus:outline-none focus:ring-2 focus:ring-coral/30"
-                        value={variable.generators}
-                        onChange={(event) => updateVar(idx, 'generators', event.target.value)}
-                        placeholder="(0 1)(2 3), (0 2)(1 3)"
-                      />
-                      <span className="block text-[10px] leading-tight text-gray-400">
-                        Cycle notation, comma-separated generators. E.g. <code className="rounded bg-gray-100 px-1">(0 1)</code> swaps axes 0 and 1.
-                      </span>
-                    </>
+                    <ExplorerField
+                      label="Generators"
+                      className="mb-1"
+                      labelClassName="text-[10px] tracking-[0.18em] text-gray-400"
+                      inputClassName="h-auto border-gray-200 px-2 py-1 text-xs font-mono focus:border-coral focus:ring-coral/30"
+                      value={variable.generators}
+                      onChange={(event) => updateVar(idx, 'generators', event.target.value)}
+                      placeholder="(0 1)(2 3), (0 2)(1 3)"
+                      hint={(
+                        <>
+                          Cycle notation, comma-separated generators. E.g. <code className="rounded bg-gray-100 px-1">(0 1)</code> swaps axes 0 and 1.
+                        </>
+                      )}
+                    />
                   )}
 
                   <div
@@ -419,13 +434,14 @@ export default function ExampleChooser({
               );
             })}
 
-            <button
+            <Button
               type="button"
-              className="self-center rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 transition-colors hover:border-gray-400 hover:bg-gray-50"
+              variant="outline"
+              className="self-center border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 transition-colors hover:border-gray-400 hover:bg-gray-50"
               onClick={addVar}
             >
               + Add Variable
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -435,9 +451,9 @@ export default function ExampleChooser({
             <div className="flex flex-wrap items-start gap-2">
               <span className="whitespace-nowrap pt-1.5 font-mono text-sm font-semibold text-coral">einsum(&#39;</span>
               <div className="flex min-w-[60px] flex-1 flex-col items-center">
-                <input
+                <Input
                   className={cn(
-                    'w-full rounded-lg border border-gray-200 px-3 py-1.5 font-mono text-sm focus:border-coral focus:outline-none focus:ring-2 focus:ring-coral/30',
+                    'h-auto w-full rounded-lg border border-gray-200 px-3 py-1.5 font-mono text-sm focus:border-coral focus:ring-coral/30',
                     validation.errors.some((error) => error.includes('subscript') || error.includes('Subscript') || error.includes('operand')) && 'border-red-300',
                   )}
                   value={subscriptsStr}
@@ -448,9 +464,9 @@ export default function ExampleChooser({
               </div>
               <span className="whitespace-nowrap pt-1.5 font-mono text-sm text-gray-400">&rarr;</span>
               <div className="flex min-w-[60px] flex-1 flex-col items-center">
-                <input
+                <Input
                   className={cn(
-                    'w-full rounded-lg border border-gray-200 px-3 py-1.5 font-mono text-sm focus:border-coral focus:outline-none focus:ring-2 focus:ring-coral/30',
+                    'h-auto w-full rounded-lg border border-gray-200 px-3 py-1.5 font-mono text-sm focus:border-coral focus:ring-coral/30',
                     validation.errors.some((error) => error.includes('utput')) && 'border-red-300',
                   )}
                   value={outputStr}
@@ -461,9 +477,9 @@ export default function ExampleChooser({
               </div>
               <span className="whitespace-nowrap pt-1.5 font-mono text-sm text-gray-400">&#39;,</span>
               <div className="flex min-w-[60px] flex-1 flex-col items-center">
-                <input
+                <Input
                   className={cn(
-                    'w-full rounded-lg border border-gray-200 px-3 py-1.5 font-mono text-sm focus:border-coral focus:outline-none focus:ring-2 focus:ring-coral/30',
+                    'h-auto w-full rounded-lg border border-gray-200 px-3 py-1.5 font-mono text-sm focus:border-coral focus:ring-coral/30',
                     validation.errors.some((error) => error.includes('operand') || error.includes('Operand')) && 'border-red-300',
                   )}
                   value={operandNamesStr}
@@ -473,14 +489,14 @@ export default function ExampleChooser({
                 <span className="mt-1 text-[9px] font-semibold uppercase tracking-wider text-gray-400">operands</span>
               </div>
               <span className="whitespace-nowrap pt-1.5 font-mono text-sm text-gray-400">)</span>
-              <button
+              <Button
                 type="button"
-                className="shrink-0 whitespace-nowrap rounded-lg bg-coral px-5 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-coral-hover hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-40"
+                className="shrink-0 whitespace-nowrap bg-coral px-5 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-coral-hover hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-40"
                 onClick={handleAnalyze}
                 disabled={!validation.valid}
               >
                 &#x25B6; Analyze
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -496,14 +512,14 @@ export default function ExampleChooser({
           </div>
         )}
       </div>
-    </div>
+    </ExplorerSectionCard>
   );
 
   return (
     <div className="space-y-6">
       <div className="md:hidden" aria-label="Mobile preset examples">
         <div className="grid gap-2">
-          <button
+          <Button
             type="button"
             className={cn(
               'rounded-xl border px-4 py-3 text-left transition-colors',
@@ -524,14 +540,15 @@ export default function ExampleChooser({
             </div>
             <code className="mt-1 block text-[11px] text-gray-500">Define your own contraction</code>
             <p className="mt-1 text-xs text-gray-600">Keep the current builder state and switch into custom mode.</p>
-          </button>
+          </Button>
 
           {presetSummaries.map((summary, idx) => (
-            <button
+            <Button
               key={summary.id}
               type="button"
+              variant="outline"
               onClick={() => loadPreset(idx)}
-              className="flex w-full items-start gap-3 rounded-xl border border-gray-200 px-3 py-2.5 text-left"
+              className="flex h-auto w-full items-start gap-3 border-gray-200 px-3 py-2.5 text-left"
             >
               <span className="mt-0.5 h-full min-h-10 w-1 shrink-0 rounded-full" style={{ backgroundColor: summary.color }} />
               <span className="min-w-0 flex-1">
@@ -542,7 +559,7 @@ export default function ExampleChooser({
                 <code className="mt-1 block truncate text-[11px] text-gray-500">{summary.formula}</code>
                 <span className="mt-1 block text-[11px] text-gray-400">{summary.expectedGroup}</span>
               </span>
-            </button>
+            </Button>
           ))}
         </div>
       </div>

@@ -9,11 +9,16 @@ function read(relativePath) {
 test('symmetry explorer is pinned to shared primitives', () => {
   const app = read('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx');
   const exampleChooser = read('./components/symmetry-aware-einsum-contractions/components/ExampleChooser.jsx');
+  const caseBadge = read('./components/symmetry-aware-einsum-contractions/components/CaseBadge.jsx');
   const totalCostView = read('./components/symmetry-aware-einsum-contractions/components/TotalCostView.jsx');
   const styles = read('./components/symmetry-aware-einsum-contractions/styles.css');
 
   assert.match(app, /ExplorerSectionCard/);
   assert.match(exampleChooser, /ExplorerField/);
+  assert.match(exampleChooser, /Button/);
+  assert.match(exampleChooser, /Input/);
+  assert.match(exampleChooser, /ExplorerSectionCard/);
+  assert.match(caseBadge, /Badge/);
   assert.match(totalCostView, /Table/);
   assert.match(totalCostView, /ExplorerMetricCard/);
 

@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { Badge } from '@/components/ui/badge';
 import Latex from './Latex.jsx';
 import { getCasePresentation } from './casePresentation.js';
 import { cn } from '../lib/utils.js';
@@ -66,8 +67,9 @@ export default function CaseBadge({
 
   return (
     <>
-      <span
+      <Badge
         ref={ref}
+        variant="outline"
         className={cn(
           'inline-flex shrink-0 items-center border font-mono',
           getBadgeClasses(variant, size),
@@ -85,7 +87,7 @@ export default function CaseBadge({
         onMouseLeave={tooltip ? () => setShowTooltip(false) : undefined}
       >
         {label}
-      </span>
+      </Badge>
 
       {showTooltip && tooltip && (
         <div
