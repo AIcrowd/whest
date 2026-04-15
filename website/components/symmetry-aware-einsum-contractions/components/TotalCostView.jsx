@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 
 function InlineCodeList({ values }) {
   if (!values?.length) return <span className="text-muted-foreground">—</span>;
-  return <code className="font-mono text-xs text-foreground">{values.join(', ')}</code>;
+  return <code className="font-mono text-sm text-foreground">{values.join(', ')}</code>;
 }
 
 export default function TotalCostView({ costModel, componentData, dimensionN, numTerms = 1 }) {
@@ -32,30 +32,30 @@ export default function TotalCostView({ costModel, componentData, dimensionN, nu
         <Table className="text-sm">
           <TableHeader className="bg-surface-raised">
             <TableRow className="border-border hover:bg-surface-raised">
-              <TableHead className="px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-muted">Case</TableHead>
-              <TableHead className="px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-muted">Labels</TableHead>
-              <TableHead className="px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-muted">V (free)</TableHead>
-              <TableHead className="px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-muted">W (summed)</TableHead>
-              <TableHead className="px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-muted">Group</TableHead>
+              <TableHead className="px-4 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">Case</TableHead>
+              <TableHead className="px-4 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">Labels</TableHead>
+              <TableHead className="px-4 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">V (free)</TableHead>
+              <TableHead className="px-4 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">W (summed)</TableHead>
+              <TableHead className="px-4 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">Group</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody className="divide-y divide-border">
             {components.map((comp, idx) => (
               <TableRow key={`comp-row-${idx}`} className="border-0 bg-surface hover:bg-surface-raised">
-                <TableCell className="px-4 py-2.5">
+                <TableCell className="px-4 py-3 text-sm">
                   <CaseBadge caseType={comp.caseType} size="sm" interactive={false} />
                 </TableCell>
-                <TableCell className="px-4 py-2.5">
+                <TableCell className="px-4 py-3 text-sm">
                   <InlineCodeList values={comp.labels ?? []} />
                 </TableCell>
-                <TableCell className="px-4 py-2.5">
+                <TableCell className="px-4 py-3 text-sm">
                   <InlineCodeList values={comp.va ?? []} />
                 </TableCell>
-                <TableCell className="px-4 py-2.5">
+                <TableCell className="px-4 py-3 text-sm">
                   <InlineCodeList values={comp.wa ?? []} />
                 </TableCell>
-                <TableCell className="px-4 py-2.5">
-                  <code className="font-mono text-xs text-foreground">{comp.groupName ?? '—'}</code>
+                <TableCell className="px-4 py-3 text-sm">
+                  <code className="font-mono text-sm text-foreground">{comp.groupName ?? '—'}</code>
                 </TableCell>
               </TableRow>
             ))}

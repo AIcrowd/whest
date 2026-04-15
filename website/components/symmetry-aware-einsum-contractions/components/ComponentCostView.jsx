@@ -51,9 +51,9 @@ function ComponentCard({ comp, dimensionN, fallbackReductionCost }) {
     >
       <div className="flex flex-wrap items-center gap-2">
         <CaseBadge caseType={comp.caseType} interactive={false} />
-        <code className="text-sm text-gray-700">{`{${(comp.labels ?? []).join(', ')}}`}</code>
-        <span className="text-xs text-gray-400">{comp.groupName || 'trivial'}</span>
-        {comp.order > 1 && <span className="text-xs font-mono text-gray-400">|G|={comp.order}</span>}
+        <code className="text-sm text-foreground">{`{${(comp.labels ?? []).join(', ')}}`}</code>
+        <span className="text-sm text-muted-foreground">{comp.groupName || 'trivial'}</span>
+        {comp.order > 1 && <span className="text-sm font-mono text-muted-foreground">|G|={comp.order}</span>}
       </div>
 
       <div className="grid gap-3 md:grid-cols-3">
@@ -79,7 +79,7 @@ function ComponentCard({ comp, dimensionN, fallbackReductionCost }) {
           }
           className="border-0 bg-gray-50 shadow-none"
           valueClassName="font-sans text-sm font-semibold text-gray-700"
-          detailClassName="text-gray-500"
+          detailClassName="text-muted-foreground"
         />
       </div>
     </div>
@@ -112,8 +112,8 @@ export default function ComponentCostView({
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
         <div className="rounded-xl border border-gray-200 bg-white p-4">
-          <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-500">Interaction Graph</div>
-          <p className="mt-1 text-sm text-gray-700">
+          <div className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">Interaction Graph</div>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
             These independent components come from the label interaction graph induced by the detected group generators.
           </p>
           <div className="mt-4 flex justify-center">
@@ -141,8 +141,8 @@ export default function ComponentCostView({
 
       {needsOrbitInspector && (
         <div className="rounded-xl border border-gray-200 bg-white p-4">
-          <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-500">Orbit Enumeration</div>
-          <p className="mt-1 text-sm text-gray-700">
+          <div className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">Orbit Enumeration</div>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
             Cases C and E need orbit enumeration because no closed-form stabilizer shortcut applies.
           </p>
           <div className="mt-4">

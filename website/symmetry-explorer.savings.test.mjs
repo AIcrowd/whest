@@ -36,6 +36,10 @@ test('TotalCostView renders savings totals with shared table and metric primitiv
   assert.match(totalCostSource, /TableHeader/);
   assert.match(totalCostSource, /TableBody/);
   assert.match(totalCostSource, /ExplorerMetricCard/);
+  assert.doesNotMatch(totalCostSource, /text-xs font-semibold uppercase tracking-wide/);
+  assert.match(totalCostSource, /px-4 py-3 text-sm font-semibold uppercase tracking-\[0\.16em\] text-muted-foreground/);
+  assert.match(totalCostSource, /px-4 py-3 text-sm/);
+  assert.match(totalCostSource, /font-mono text-sm text-foreground/);
   assert.match(totalCostSource, /border-coral\/30 bg-coral-light/);
   assert.match(totalCostSource, /border-green-600\/20 bg-green-600\/5/);
 });
@@ -44,7 +48,9 @@ test('ComponentCostView composes component summaries from shared metric primitiv
   const componentCostSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/ComponentCostView.jsx', import.meta.url), 'utf8');
 
   assert.doesNotMatch(componentCostSource, /function MetricCard/);
+  assert.doesNotMatch(componentCostSource, /text-\[11px\]/);
   assert.match(componentCostSource, /ExplorerMetricCard/);
+  assert.match(componentCostSource, /text-sm font-semibold uppercase tracking-\[0\.16em\] text-muted-foreground/);
   assert.match(componentCostSource, /label=\"Method\"/);
   assert.match(componentCostSource, /DecisionTree/);
 });
