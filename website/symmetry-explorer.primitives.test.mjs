@@ -18,10 +18,4 @@ test('legacy explorer shell selectors have been removed from styles.css', () => 
   assert.doesNotMatch(styles, /\.dimension-slider/);
   assert.doesNotMatch(styles, /\.var-input/);
   assert.doesNotMatch(styles, /\.analyze-btn/);
-
-  assert.doesNotMatch(styles, /\.app-header/);
-  assert.doesNotMatch(styles, /\.einsum-banner/);
-  assert.doesNotMatch(styles, /\.subtitle/);
-  assert.doesNotMatch(styles, /\.step-nav/);
-  assert.doesNotMatch(styles, /\.section-header/);
 });

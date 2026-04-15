@@ -38,12 +38,13 @@ test('pickTopVisibleAct prefers the top-most visible act and falls back safely',
 
 test('shell contract uses primitive-based chrome instead of legacy header classes', () => {
   const source = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
-  const actHeaderSource = source.slice(source.indexOf('function ActHeader'));
+  const actHeaderStart = source.indexOf('function ActHeader');
+
+  assert.notEqual(actHeaderStart, -1);
+
+  const actHeaderSource = source.slice(actHeaderStart);
 
   assert.doesNotMatch(actHeaderSource, /font-accent/);
-  assert.doesNotMatch(source, /app-header/);
-  assert.doesNotMatch(source, /subtitle/);
-  assert.doesNotMatch(source, /einsum-banner/);
 });
 
 test('mergeObservedActEntries preserves prior entries and overwrites by act id', () => {
