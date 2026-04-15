@@ -495,9 +495,9 @@ def normalize_area(module: str) -> str:
         return "core"
     if module.startswith("numpy."):
         return module.removeprefix("numpy.")
-    if module.startswith("whest."):
-        return module.removeprefix("whest.").lstrip("_")
-    return module.split(".")[-1].lstrip("_")
+    if module == "whest.stats":
+        return "stats"
+    return "core"
 
 
 def slug_for_operation(name: str) -> str:
