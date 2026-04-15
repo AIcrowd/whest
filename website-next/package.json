@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && node scripts/generate-llmstxt.mjs",
     "start": "next start"
   },
   "dependencies": {
@@ -12,6 +12,7 @@
     "fumadocs-core": "^16.7.15",
     "fumadocs-mdx": "^14.2.14",
     "fumadocs-ui": "^16.7.15",
+    "jsdom": "^27.0.1",
     "katex": "^0.16.45",
     "mermaid": "^11.14.0",
     "next": "^16.2.3",
