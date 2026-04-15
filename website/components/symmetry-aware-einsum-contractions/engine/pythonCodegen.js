@@ -115,17 +115,6 @@ export function generatePython(variables, subscripts, output, operandNames, dime
   lines.push(`n = ${dimensionN}`);
   lines.push('');
 
-  // --- Helper (only when needed) --------------------------------------------
-  const needsHelper = variables.some((v) => v.symmetry !== 'none');
-  if (needsHelper) {
-    lines.push('def my_symmetrize(shape, group):');
-    lines.push('    """Random tensor with given symmetry (Reynolds averaged)."""');
-    lines.push('    data = we.random.randn(*shape)');
-    lines.push('    data = sum(we.transpose(data, g.array_form) for g in group.elements()) / group.order()');
-    lines.push('    return we.as_symmetric(data, symmetry=group)');
-    lines.push('');
-  }
-
   // --- Variables ------------------------------------------------------------
   lines.push('# --- Variables ---');
 
@@ -139,7 +128,10 @@ export function generatePython(variables, subscripts, output, operandNames, dime
       lines.push(`${v.name} = we.random.randn(${new Array(v.rank).fill('n').join(', ')})`);
     } else {
       const group = buildGroupExpr(v);
-      lines.push(`${v.name} = my_symmetrize(${shape}, ${group})`);
+      lines.push(`${v.name} = we.symmetrize(`);
+      lines.push(`    ${shape},`);
+      lines.push(`    ${group}`);
+      lines.push(')');
     }
   }
 

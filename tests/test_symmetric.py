@@ -12,6 +12,7 @@ from whest._symmetric import (
     SymmetricTensor,
     SymmetryInfo,
     as_symmetric,
+    symmetrize,
 )
 from whest.errors import SymmetryError
 
@@ -172,6 +173,19 @@ class TestPublicAPI:
         assert hasattr(we, "SymmetricTensor")
         assert hasattr(we, "SymmetryInfo")
         assert hasattr(we, "as_symmetric")
+        assert hasattr(we, "symmetrize")
+
+    def test_symmetrize(self):
+        group = PermutationGroup.symmetric(2, axes=(0, 1))
+        S = symmetrize((4, 4), group)
+
+        assert isinstance(S, SymmetricTensor)
+        assert S.symmetric_axes == [(0, 1)]
+        assert S.is_symmetric((0, 1))
+
+    def test_symmetrize_invalid_shape_raises(self):
+        with pytest.raises(SymmetryError):
+            symmetrize((2, 3), PermutationGroup.symmetric(2, axes=(0, 1)))
 
     def test_import_symmetry_info_from_flops(self):
         from whest.flops import SymmetryInfo

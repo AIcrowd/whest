@@ -149,31 +149,17 @@ This is the explicit-group equivalent of `symmetric_axes=[(0, 1), (2, 3)]`.
 
 ## Generating example data with the Reynolds operator
 
-When you want example tensors for arbitrary groups, the cleanest pattern is to
-average arbitrary data over the group action. This is the Reynolds operator:
+When you want example tensors for arbitrary groups, prefer ``we.symmetrize``.
+It is a handy helper that applies the Reynolds operator.
+Use ``we.symmetrize`` for randomized example data generation, and
+``we.as_symmetric`` when you already have concrete data to validate and tag.
 
-`R_G(T) = (1 / |G|) * sum_{g in G} g · T`
+``R_G(T) = (1 / |G|) * sum_{g in G} g · T``
 
 ```python
-def symmetrize_with_group(shape, symmetry_group):
-    raw_data = we.random.randn(*shape)
-    group_axes = (
-        symmetry_group.axes
-        if symmetry_group.axes is not None
-        else tuple(range(symmetry_group.degree))
-    )
-    accumulated = we.zeros_like(raw_data)
-
-    for group_element in symmetry_group.elements():
-        axis_permutation = list(range(len(shape)))
-        for group_index, tensor_axis in enumerate(group_axes):
-            axis_permutation[tensor_axis] = group_axes[group_element.array_form[group_index]]
-        accumulated = accumulated + we.transpose(raw_data, axis_permutation)
-
-    return we.as_symmetric(
-        accumulated / symmetry_group.order(),
-        symmetry=symmetry_group,
-    )
+S = we.symmetrize((4, 4, 4), s3_group)
+T = we.symmetrize((4, 4, 4), c3_group)
+U = we.symmetrize((4, 4, 4, 4), d4_group)
 ```
 
 This helper is ideal for docs, tests, and experiments:
@@ -188,13 +174,13 @@ s3_group = we.PermutationGroup.symmetric(3, axes=(0, 1, 2))
 c3_group = we.PermutationGroup.cyclic(3, axes=(0, 1, 2))
 d4_group = we.PermutationGroup.dihedral(4, axes=(0, 1, 2, 3))
 
-s3_tensor = symmetrize_with_group((4, 4, 4), s3_group)
-c3_tensor = symmetrize_with_group((4, 4, 4), c3_group)
-d4_tensor = symmetrize_with_group((4, 4, 4, 4), d4_group)
+s3_tensor = we.symmetrize((4, 4, 4), s3_group)
+c3_tensor = we.symmetrize((4, 4, 4), c3_group)
+d4_tensor = we.symmetrize((4, 4, 4, 4), d4_group)
 ```
 
 The propagation examples below assume `import whest as we` and
-`symmetrize_with_group(...)` from the earlier sections.
+`we.symmetrize(...)` from the earlier sections.
 
 ## Symmetry propagation at a glance
 
@@ -253,8 +239,8 @@ The difference between full and non-full groups matters immediately:
 s3_group = we.PermutationGroup.symmetric(3, axes=(0, 1, 2))
 c3_group = we.PermutationGroup.cyclic(3, axes=(0, 1, 2))
 
-s3_tensor = symmetrize_with_group((4, 4, 4), s3_group)
-c3_tensor = symmetrize_with_group((4, 4, 4), c3_group)
+s3_tensor = we.symmetrize((4, 4, 4), s3_group)
+c3_tensor = we.symmetrize((4, 4, 4), c3_group)
 
 s3_slice = s3_tensor[:, :, 0]
 c3_slice = c3_tensor[:, :, 0]
@@ -275,9 +261,9 @@ s3_group = we.PermutationGroup.symmetric(3, axes=(0, 1, 2))
 c3_group = we.PermutationGroup.cyclic(3, axes=(0, 1, 2))
 c4_group = we.PermutationGroup.cyclic(4, axes=(0, 1, 2, 3))
 
-s3_tensor = symmetrize_with_group((4, 4, 4), s3_group)
-c3_tensor = symmetrize_with_group((4, 4, 4), c3_group)
-c4_tensor = symmetrize_with_group((4, 4, 4, 4), c4_group)
+s3_tensor = we.symmetrize((4, 4, 4), s3_group)
+c3_tensor = we.symmetrize((4, 4, 4), c3_group)
+c4_tensor = we.symmetrize((4, 4, 4, 4), c4_group)
 
 s3_reduced = we.sum(s3_tensor, axis=0)
 c3_reduced = we.sum(c3_tensor, axis=2)
@@ -306,8 +292,8 @@ not just matching tuples of axis numbers.
 s3_group = we.PermutationGroup.symmetric(3, axes=(0, 1, 2))
 c3_group = we.PermutationGroup.cyclic(3, axes=(0, 1, 2))
 
-s3_tensor = symmetrize_with_group((4, 4, 4), s3_group)
-c3_tensor = symmetrize_with_group((4, 4, 4), c3_group)
+s3_tensor = we.symmetrize((4, 4, 4), s3_group)
+c3_tensor = we.symmetrize((4, 4, 4), c3_group)
 
 intersection_tensor = we.add(s3_tensor, c3_tensor)
 ```

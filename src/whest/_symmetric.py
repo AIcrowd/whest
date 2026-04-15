@@ -114,6 +114,72 @@ def validate_symmetry(
                     raise SymmetryError(axes=group, max_deviation=max_dev)
 
 
+def symmetrize(
+    shape: tuple[int, ...] | list[int],
+    group: PermutationGroup,
+) -> SymmetricTensor:
+    """Construct a random tensor with the requested permutation-group symmetry.
+
+    This is a convenience helper for generating symmetric test data via the
+    Reynolds operator:
+
+    ``R_G(T) = (1 / |G|) * sum_{g in G} g · T``
+
+    Parameters
+    ----------
+    shape
+        Desired output shape.
+    group
+        Symmetry group to average over. If ``group.axes`` is ``None``, axes are
+        interpreted as ``tuple(range(group.degree))``.
+
+    Returns
+    -------
+    SymmetricTensor
+        A randomly generated tensor with the given symmetry, validated and wrapped
+        as a :class:`SymmetricTensor`.
+
+    Raises
+    ------
+    ValueError
+        If ``shape`` cannot be interpreted as a sequence of dimensions.
+    SymmetryError
+        If the projected result cannot be validated as symmetric for ``group``.
+
+    Notes
+    -----
+    ``symmetrize`` performs exact Reynolds averaging internally and then delegates
+    to :func:`as_symmetric` so the result participates in downstream symmetry
+    tracking and validation in the usual way.
+
+    Examples
+    --------
+    >>> import whest as we
+    >>> S = we.symmetrize((4, 4), we.PermutationGroup.symmetric(2, axes=(0, 1)))
+    >>> S.is_symmetric((0, 1))
+    True
+    """
+    if not isinstance(shape, tuple):
+        try:
+            shape = tuple(shape)
+        except TypeError as exc:
+            raise ValueError("shape must be a sequence of integers") from exc
+    else:
+        shape = tuple(shape)
+
+    data = np.random.randn(*shape)
+    group_axes = group.axes if group.axes is not None else tuple(range(group.degree))
+    symmetrized = np.zeros_like(data)
+
+    for g in group.elements():
+        perm = list(range(len(shape)))
+        for local_idx, tensor_axis in enumerate(group_axes):
+            perm[tensor_axis] = group_axes[g.array_form[local_idx]]
+        symmetrized = symmetrized + np.transpose(data, perm)
+
+    return as_symmetric(symmetrized / group.order(), symmetry=group)
+
+
 def validate_symmetry_groups(data: np.ndarray, groups: list) -> None:
     """Validate that *data* is symmetric under the given PermutationGroups.
 

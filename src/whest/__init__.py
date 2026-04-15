@@ -432,6 +432,7 @@ from whest._symmetric import (  # noqa: F401
     SymmetryInfo,
     as_symmetric,
     is_symmetric,
+    symmetrize,
 )
 
 # --- Unwrap (counted) ---
