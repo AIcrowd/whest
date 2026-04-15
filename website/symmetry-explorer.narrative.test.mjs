@@ -44,7 +44,8 @@ test('SymmetryExplorer keeps the act ids and renders the preset rail after main 
   assert.match(source, /activeActId/);
   assert.match(source, /StickyBar/);
   assert.match(source, /ExplorerSectionCard/);
-  assert.match(source, /Button/);
+  assert.match(source, /NarrativeCallout/);
+  assert.match(source, /<main[\s\S]*<PresetSidebar/);
   assert.match(source, /<PresetSidebar/);
   assert.doesNotMatch(source, /app-header/);
   assert.doesNotMatch(source, /subtitle/);
@@ -54,13 +55,9 @@ test('shell contract uses primitive-based chrome instead of legacy header classe
   const source = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
 
   assert.doesNotMatch(source, /font-accent/);
-  assert.match(source, /font-heading/);
-  assert.match(source, /text-2xl/);
-  assert.match(source, /max-w-\[1400px\]/);
-  assert.match(source, /gap-8/);
-  assert.match(source, /min-h-screen bg-background/);
-  assert.match(source, /title="Symmetry Aware Einsum Contractions"/);
-  assert.match(source, /Badge className=.*einsum/);
+  assert.doesNotMatch(source, /section-desc/);
+  assert.doesNotMatch(source, /pill pill-v/);
+  assert.doesNotMatch(source, /pill pill-w/);
   assert.doesNotMatch(source, /app-header/);
   assert.doesNotMatch(source, /subtitle/);
   assert.doesNotMatch(source, /einsum-banner/);

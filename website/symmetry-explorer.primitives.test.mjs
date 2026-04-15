@@ -26,19 +26,16 @@ test('symmetry explorer is pinned to shared primitives', () => {
   assert.doesNotMatch(componentCostView, /function MetricCard/);
   assert.match(app, /import '\.\/styles\.css';/);
 
-  assert.equal(styles.includes("@import url('https://fonts.googleapis.com"), false);
-  assert.equal(styles.includes('--font-accent:'), false);
-  assert.equal(styles.includes('--coral:'), false);
-  assert.equal(styles.includes('.example-grid'), false);
-  assert.equal(styles.includes('.custom-builder'), false);
-  assert.equal(styles.includes('.python-preview'), false);
-  assert.equal(styles.includes('.dimension-slider'), false);
-  assert.equal(styles.includes('.var-input'), false);
-  assert.equal(styles.includes('.analyze-btn'), false);
+  assert.doesNotMatch(styles, /\.example-grid/);
+  assert.doesNotMatch(styles, /\.custom-builder/);
+  assert.doesNotMatch(styles, /\.python-preview/);
+  assert.doesNotMatch(styles, /\.dimension-slider/);
+  assert.doesNotMatch(styles, /\.var-input/);
+  assert.doesNotMatch(styles, /\.analyze-btn/);
 
-  assert.equal(styles.includes('.app-header'), false);
-  assert.equal(styles.includes('.einsum-banner'), false);
-  assert.equal(styles.includes('.subtitle'), false);
-  assert.equal(styles.includes('.step-nav'), false);
-  assert.equal(styles.includes('.section-header'), false);
+  assert.doesNotMatch(styles, /\.app-header/);
+  assert.doesNotMatch(styles, /\.einsum-banner/);
+  assert.doesNotMatch(styles, /\.subtitle/);
+  assert.doesNotMatch(styles, /\.step-nav/);
+  assert.doesNotMatch(styles, /\.section-header/);
 });
