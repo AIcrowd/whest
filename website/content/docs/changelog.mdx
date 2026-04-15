@@ -21,7 +21,7 @@ title: Changelog
 - **`TimeExhaustedError`** added to both the core library and the client package.
 
 - **Einsum path caching.** Contraction paths are now cached in a module-level
-  LRU cache (default 4096 entries). Repeated `we.einsum()` calls with the same
+  LRU cache (default 4096 entries). Repeated <OpRef name="einsum" /> calls with the same
   subscripts, shapes, optimizer, and symmetry structure reuse the cached path
   instead of recomputing it. New public API: `we.clear_einsum_cache()`,
   `we.einsum_cache_info()`, and `we.configure(einsum_path_cache_size=N)`.
@@ -103,7 +103,8 @@ title: Changelog
 
 ### Added
 
-- **Enriched `PathInfo` display** — `we.einsum_path().format_table(verbose=False)`
+- **Enriched `PathInfo` display** — <OpRef name="einsum_path" /> now produces a `PathInfo`
+  whose `format_table(verbose=False)`
   (called by `__str__`) now shows an `Optimizer:` header line resolving
   `optimize='auto'`/`'auto-hq'` to the inner choice that actually ran
   (e.g. `optimal`, `dynamic_programming`, `random_greedy_128`), a
@@ -143,7 +144,7 @@ Second release with unified einsum cost model, NumPy compatibility testing, and 
 ### Breaking changes
 
 - Einsum cost formula now uses `product_of_all_index_dims × op_factor` (op_factor=2 for inner products, 1 for outer products), matching opt_einsum convention. Previously used a different formula.
-- `we.dot` and `we.matmul` costs are now computed via the einsum cost model instead of separate formulas.
+- <OpRef name="dot" /> and <OpRef name="matmul" /> costs are now computed via the einsum cost model instead of separate formulas.
 
 ### Bug fixes
 

@@ -67,7 +67,7 @@ with we.BudgetContext(flop_budget=20_000_000) as budget:
 |-------|-----------|-------|
 | `import numpy as np` | `import whest as we` | Drop-in replacement |
 | Call ops anywhere | Works anywhere too | A global default budget auto-activates; use explicit `BudgetContext` for limits and namespacing |
-| `np.linalg.svd(A)` | `we.linalg.svd(A, k=10)` | Truncated SVD with explicit `k` |
+| `np.linalg.svd(A)` | <OpRef name="linalg.svd" /> | Truncated SVD with explicit `k` |
 | Plain `ndarray` only | `SymmetricTensor` available | Wrap with `we.as_symmetric()` for cost savings |
 | All NumPy ops available | Most available, 32 blacklisted | I/O and config ops raise `AttributeError` |
 | No cost tracking | Automatic FLOP counting | Every counted op deducts from budget |
@@ -78,7 +78,7 @@ with we.BudgetContext(flop_budget=20_000_000) as budget:
 
 **Fix:** 32 operations are blacklisted because they are I/O, configuration, or datetime functions with no FLOP cost. See [Operation Categories](../understanding/operation-categories) for the full list. Use `numpy` directly for these.
 
-**Symptom:** Using `np.linalg.svd` instead of `we.linalg.svd`
+**Symptom:** Using `np.linalg.svd` instead of <OpRef name="linalg.svd" />
 
 **Fix:** If you import NumPy alongside whest, make sure to use `we.` for operations you want counted. Operations called through `np.` bypass FLOP counting entirely.
 

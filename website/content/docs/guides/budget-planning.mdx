@@ -34,7 +34,7 @@ cost = we.flops.reduction_cost(input_shape=(256, 256))
 print(f"Reduction cost: {cost:,}")      # 65,536
 ```
 
-For multi-operand einsums (3+ operands), use `we.einsum_path()` to see the step-by-step contraction breakdown with per-step costs and symmetry savings:
+For multi-operand einsums (3+ operands), use <OpRef name="einsum_path" /> to see the step-by-step contraction breakdown with per-step costs and symmetry savings:
 
 ```python
 path, info = we.einsum_path('ijk,ai,bj,ck->abc', T, A, B, C)
@@ -44,7 +44,7 @@ print(f"Speedup:        {info.speedup:.1f}x")
 print(info)  # full per-step table
 ```
 
-`we.einsum_path()` does not execute the contraction, but it does record a nominal 1-FLOP planning event so the path query itself is still visible in the operation log.
+<OpRef name="einsum_path" /> does not execute the contraction, but it does record a nominal 1-FLOP planning event so the path query itself is still visible in the operation log.
 
 ### Budget breakdown example
 

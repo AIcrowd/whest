@@ -131,9 +131,9 @@ print(f"Real FFT:    {rfft_cost(n):,} FLOPs")   # 52,428,800
 
 ## ⚠️ Common pitfalls
 
-**Symptom:** Using `we.fft.fft` on real data when `we.fft.rfft` would suffice
+**Symptom:** Using <OpRef name="fft.fft" /> on real data when <OpRef name="fft.rfft" /> would suffice
 
-**Fix:** `rfft` costs half as much. If your input is real-valued, always prefer `rfft`/`irfft` over `fft`/`ifft`.
+**Fix:** <OpRef name="fft.rfft" /> costs half as much. If your input is real-valued, always prefer `rfft`/`irfft` over `fft`/`ifft`.
 
 **Symptom:** Unexpectedly high cost for multi-dimensional FFT
 

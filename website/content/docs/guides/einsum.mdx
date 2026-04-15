@@ -2,7 +2,7 @@
 title: "Einsum Patterns"
 ---
 
-*Use this page to understand `we.einsum` -- the core computation primitive in whest.*
+*Use this page to understand <OpRef name="einsum" /> -- the core computation primitive in whest.*
 
 **You will learn:**
 - How to write common einsum patterns and understand their FLOP costs
@@ -64,9 +64,9 @@ For multi-operand einsums (3+ tensors), whest automatically decomposes the contr
 
 When symmetric tensors are involved, each step's cost is further reduced by the ratio of unique output elements to total output elements. See [Exploit Symmetry Savings](exploit-symmetry.md#symmetry-in-einsum) for details.
 
-## we.dot and we.matmul
+## Dot And Matmul
 
-`we.dot(A, B)` and `we.matmul(A, B)` are equivalent to the corresponding einsum and have the same FLOP cost.
+<OpRef name="dot" /> and <OpRef name="matmul" /> are equivalent to the corresponding einsum and have the same FLOP cost.
 
 ## Symmetric tensors
 
@@ -99,7 +99,7 @@ For the full symmetry guide, see [Exploit Symmetry Savings](./symmetry).
 
 ## Inspecting costs
 
-`we.einsum_path()` previews the contraction plan without executing the contraction itself. Planning is cheap: it records a nominal 1-FLOP `einsum_path` event, but none of the contraction FLOPs are spent.
+<OpRef name="einsum_path" /> previews the contraction plan without executing the contraction itself. Planning is cheap: it records a nominal 1-FLOP `einsum_path` event, but none of the contraction FLOPs are spent.
 
 ```python
 import whest as we
@@ -182,12 +182,12 @@ result = we.einsum('ij,jk,kl->il', A, B, C, optimize=[(1, 2), (0, 1)])
 result = we.einsum('ij,jk,kl->il', A, B, C, optimize=[(0, 1), (0, 1)])
 ```
 
-Different paths may have different FLOP costs. Use `we.einsum_path()` to compare — it returns the plan without executing the contraction.
+Different paths may have different FLOP costs. Use <OpRef name="einsum_path" /> to compare — it returns the plan without executing the contraction.
 
 ## Path caching
 
 Contraction paths are cached automatically in a module-level LRU cache.
-When you call `we.einsum()` with the same subscripts, shapes, optimizer,
+When you call <OpRef name="einsum" /> with the same subscripts, shapes, optimizer,
 and symmetry structure, the path is reused from cache instead of being
 recomputed. This makes repeated einsums in loops essentially free in
 path-finding overhead:
@@ -198,8 +198,8 @@ with we.BudgetContext(flop_budget=10**9) as budget:
         y = we.einsum('ij,j->i', A, x)  # path computed once, reused 999 times
 ```
 
-`we.einsum_path()` shares the same cache, so planning a path warms the
-cache for subsequent `we.einsum()` calls and vice versa.
+<OpRef name="einsum_path" /> shares the same cache, so planning a path warms the
+cache for subsequent <OpRef name="einsum" /> calls and vice versa.
 
 ### Cache management
 
@@ -219,7 +219,7 @@ we.configure(einsum_path_cache_size=8192)
 
 **Symptom:** Unexpectedly high FLOP cost
 
-**Fix:** Check all index dimensions. A subscript like `'ijkl,jklm->im'` multiplies all five dimension sizes together. Use `we.flops.einsum_cost()` or `we.einsum_path()` to preview costs before executing.
+**Fix:** Check all index dimensions. A subscript like `'ijkl,jklm->im'` multiplies all five dimension sizes together. Use `we.flops.einsum_cost()` or <OpRef name="einsum_path" /> to preview costs before executing.
 
 ## 📎 Related pages
 

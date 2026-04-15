@@ -29,7 +29,7 @@ All cost formulae reflect this: a matrix multiply of dimensions
 
 whest computes FLOP costs **analytically from tensor shapes**, not by measuring execution time.
 
-1. You call a counted operation (e.g., `we.einsum('ij,j->i', W, x)`)
+1. You call a counted operation (e.g., <OpRef name="einsum" />)
 2. whest computes the cost from the shapes: 256 × 256 = 65,536 FLOPs
 3. The cost is checked against the remaining budget
 4. If within budget: the operation executes and the cost is deducted
@@ -198,7 +198,7 @@ through intermediates — if an early contraction produces a symmetric
 intermediate, subsequent steps benefit from the reduced element count, and
 the optimizer factors this into its ordering decisions.
 
-Use `we.einsum_path()` to inspect the per-step breakdown. See
+Use <OpRef name="einsum_path" /> to inspect the per-step breakdown. See
 [Use Einsum](../guides/einsum) for examples.
 
 ## Per-operation weights

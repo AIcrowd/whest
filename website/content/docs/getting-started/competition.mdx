@@ -118,9 +118,9 @@ print(f"This matmul will cost {cost:,} FLOPs")  # 16,777,216
 
 **Exploit symmetry for savings.** If your tensors are symmetric, wrapping them with `we.as_symmetric()` can halve pointwise costs and significantly reduce einsum costs. See [Symmetry Savings](/docs/guides/symmetry) for details.
 
-**Prefer cheaper operations.** A matrix-vector product via `we.einsum('ij,j->i', A, x)` costs `m*n` FLOPs, while a full matrix-matrix multiply costs `m*n*k`. Avoid computing more than you need.
+**Prefer cheaper operations.** A matrix-vector product via <OpRef name="einsum" /> costs `m*n` FLOPs, while a full matrix-matrix multiply costs `m*n*k`. Avoid computing more than you need.
 
-**Watch out for hidden costs.** Operations like `we.array()`, `we.concatenate()`, and `we.where()` are *not* free -- each charges `numel(output)` FLOPs. Check the cost of any operation you are unsure about.
+**Watch out for hidden costs.** Operations like <OpRef name="array" />, <OpRef name="concatenate" />, and <OpRef name="where" /> are *not* free -- each charges `numel(output)` FLOPs. Check the cost of any operation you are unsure about.
 
 ## When things go wrong
 

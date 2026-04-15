@@ -28,14 +28,14 @@ Operations that perform arithmetic. Cost is computed analytically from tensor sh
 | Unary | numel(output) | `exp`, `log`, `sqrt`, `abs`, `sin`, `cos`, `tanh`, `ceil`, `floor` |
 | Binary | numel(output) | `add`, `multiply`, `maximum`, `divide`, `power`, `subtract` |
 | Reduction | numel(input) | `sum`, `mean`, `max`, `min`, `std`, `var`, `argmax`, `nansum` |
-| Einsum | product of all index dims | `we.einsum(...)` |
-| Dot/Matmul | equivalent einsum | `we.dot(A, B)`, `A @ B` |
-| Linalg | per-operation formula | `we.linalg.solve`, `we.linalg.eigh`, `we.linalg.cholesky` |
-| FFT | 5 N log N | `we.fft.fft`, `we.fft.rfft`, `we.fft.fft2` |
-| SVD | m × n × k | `we.linalg.svd(A, k=10)` |
+| Einsum | product of all index dims | <OpRef name="einsum" /> |
+| Dot/Matmul | equivalent einsum | <OpRef name="dot" />, `A @ B` |
+| Linalg | per-operation formula | <OpRef name="linalg.solve" />, <OpRef name="linalg.eigh" />, <OpRef name="linalg.cholesky" /> |
+| FFT | 5 N log N | <OpRef name="fft.fft" />, <OpRef name="fft.rfft" />, <OpRef name="fft.fft2" /> |
+| SVD | m × n × k | <OpRef name="linalg.svd" /> |
 | Sort/Search | n log n per slice | `sort`, `argsort`, `unique`, `searchsorted` |
-| Random | numel(output) | `we.random.randn`, `we.random.normal`, `we.random.uniform` |
-| Stats | flat per-element (varies) | `we.stats.norm.pdf`, `we.stats.expon.cdf`, `we.stats.cauchy.ppf` |
+| Random | numel(output) | <OpRef name="random.randn" />, <OpRef name="random.normal" />, <OpRef name="random.uniform" /> |
+| Stats | flat per-element (varies) | <OpRef name="stats.norm.pdf" />, <OpRef name="stats.expon.cdf" />, <OpRef name="stats.cauchy.ppf" /> |
 
 When inputs are `SymmetricTensor`, many operations automatically get reduced costs. See [Exploit Symmetry](../guides/symmetry).
 

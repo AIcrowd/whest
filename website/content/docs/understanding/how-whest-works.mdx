@@ -12,7 +12,7 @@ title: "How whest Works"
 
 ## The wrapping pattern
 
-whest exposes a NumPy-compatible API. When you write `import whest as we` and call `we.einsum(...)`, you get a function that behaves like `np.einsum(...)` but with FLOP counting layered on top.
+whest exposes a NumPy-compatible API. When you write `import whest as we` and call <OpRef name="einsum" />, you get a function that behaves like `np.einsum(...)` but with FLOP counting layered on top.
 
 Under the hood, whest re-exports wrapped versions of NumPy functions. The `whest/__init__.py` module imports from internal modules that each handle a category of operations:
 
@@ -31,11 +31,11 @@ When you call a counted operation, whest computes its FLOP cost analytically fro
 
 | Category | Cost formula | Example |
 |----------|-------------|---------|
-| Pointwise unary | `numel(output)` | `we.exp(x)` on shape (256, 256) costs 65,536 |
-| Pointwise binary | `numel(output)` | `we.add(a, b)` with broadcast output (256, 256) costs 65,536 |
-| Reduction | `numel(input)` | `we.sum(x)` on shape (256, 256) costs 65,536 |
+| Pointwise unary | `numel(output)` | <OpRef name="exp" /> on shape (256, 256) costs 65,536 |
+| Pointwise binary | `numel(output)` | <OpRef name="add" /> with broadcast output (256, 256) costs 65,536 |
+| Reduction | `numel(input)` | <OpRef name="sum" /> on shape (256, 256) costs 65,536 |
 | Einsum | product of all index dimensions | `'ij,jk->ik'` with shapes (m, k), (k, n) costs m * k * n |
-| Free | 0 | `we.zeros(...)`, `we.reshape(...)`, `we.transpose(...)` |
+| Free | 0 | <OpRef name="zeros" />, <OpRef name="reshape" />, <OpRef name="transpose" /> |
 
 The cost is always deterministic -- the same shapes produce the same FLOP count regardless of the data values or the hardware running the code.
 
@@ -57,7 +57,7 @@ If no explicit `BudgetContext` is active, whest automatically creates a global d
 
 ### The flow of a single call
 
-Here is what happens when you call `we.matmul(A, B)` with shapes (100, 200) and (200, 50):
+Here is what happens when you call <OpRef name="matmul" /> with shapes (100, 200) and (200, 50):
 
 ```
 User calls we.matmul(A, B)

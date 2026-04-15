@@ -151,7 +151,7 @@ NumPy test file                conftest.py               whest
 
 #### Avoiding infinite recursion
 
-whest functions internally call numpy (e.g., `we.dot` calls `_np.dot`). Since `_np` IS the numpy module, patching `numpy.dot = we.dot` would cause infinite recursion: `we.dot` → `_np.dot` → `numpy.dot` → `we.dot` → ...
+whest functions internally call numpy (e.g., <OpRef name="dot" /> calls `_np.dot`). Since `_np` IS the numpy module, patching `numpy.dot` to route through <OpRef name="dot" /> would cause infinite recursion: <OpRef name="dot" /> → `_np.dot` → `numpy.dot` → <OpRef name="dot" /> → ...
 
 We solve this by **freezing numpy before patching**: the conftest creates a snapshot of the numpy module (and its submodules like `numpy.linalg`, `numpy.fft`), then rebinds every whest module's `_np` reference to the frozen copy. Now whest's internal calls go to the original numpy functions, while the test suite sees whest's versions.
 
@@ -171,7 +171,7 @@ Of whest's 508 registered functions, most non-ufunc functions are patched onto n
 |----------|-------|-------------|
 | Ufuncs | 101 | whest functions are plain callables, not ufuncs -- they lack `.reduce`, `.accumulate`, `.outer`, `.nargs`. Tests check these attributes at collection time. |
 | Blacklisted | 32 | Intentionally unsupported |
-| `linalg.outer` | 1 | `we.linalg.outer` delegates to `np.outer` (not `np.linalg.outer`), which has different validation behavior |
+| `linalg.outer` | 1 | <OpRef name="linalg.outer" /> delegates to `np.outer` (not `np.linalg.outer`), which has different validation behavior |
 
 Everything else -- free ops, counted custom ops (dot, einsum, etc.), submodule functions (linalg, fft), reductions, and special functions -- is patched.
 

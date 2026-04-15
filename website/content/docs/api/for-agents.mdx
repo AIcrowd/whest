@@ -130,7 +130,7 @@ cost = we.flops.svd_cost(m=256, n=256, k=10)
 
 These are pure functions — no `BudgetContext` needed.
 
-**4. Use `we.einsum` as the primary computation primitive.**
+**4. Use <OpRef name="einsum" /> as the primary computation primitive.**
 
 Most linear algebra can be expressed as einsum. The cost is simply the
 product of all index dimensions — each FMA (fused multiply-add) counts
@@ -155,7 +155,7 @@ configured limit for diagnostics.
 **6. Exploit symmetry for cost savings.**
 
 - Use `symmetric_axes` for symmetric outputs:
-  `we.einsum('ki,kj->ij', X, X, symmetric_axes=[(0, 1)])`
+  <OpRef name="einsum" /> with `symmetric_axes=[(0, 1)]`, e.g. `'ki,kj->ij'`
 - Wrap known-symmetric matrices with `we.as_symmetric(data, symmetric_axes=(0, 1))`
   for automatic savings in downstream ops
 
@@ -163,7 +163,7 @@ configured limit for diagnostics.
 
 | Mistake | What happens | Fix |
 |---------|-------------|-----|
-| Using `np.einsum` instead of `we.einsum` | FLOPs not counted, budget not checked | Always use `we.*` for operations you want tracked |
+| Using `np.einsum` instead of <OpRef name="einsum" /> | FLOPs not counted, budget not checked | Always use `we.*` for operations you want tracked |
 | Skipping `BudgetContext` entirely | No error (global default handles it), but budget is harder to track and namespace | Use an explicit `BudgetContext` for any work you want to measure or label |
 | Assuming `array`, `linspace`, `concatenate`, `where` are free | Underestimates budget usage — each charges `numel(output)` FLOPs | These are custom-cost ops, not free; check the cheat sheet |
 | Assuming `sort` is free | Underestimates budget usage | `sort` costs `n*ceil(log2(n))` per slice — check the cheat sheet |

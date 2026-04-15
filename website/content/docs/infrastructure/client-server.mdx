@@ -49,7 +49,7 @@ The client-server model enforces this isolation:
 
 2. **Client** is a drop-in replacement (`import whest as we`) that proxies every operation to the server over ZMQ (msgpack-encoded messages).
 
-3. **Arrays stay on the server.** The client holds lightweight `RemoteArray` handles that reference server-side data. When you call `we.einsum(...)`, the client sends the operation and handle IDs to the server, which executes it and returns a new handle.
+3. **Arrays stay on the server.** The client holds lightweight `RemoteArray` handles that reference server-side data. When you call <OpRef name="einsum" />, the client sends the operation and handle IDs to the server, which executes it and returns a new handle.
 
 4. **Budget enforcement happens server-side.** The client cannot manipulate FLOP counts.
 

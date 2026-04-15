@@ -19,14 +19,14 @@ title: "Linear Algebra"
 
 | Operation | Cost | Weight | Notes |
 |-----------|------|--------|-------|
-| `we.linalg.svd(A, k=k)` | $m \cdot n \cdot k$ | 4.0 | Truncated SVD |
-| `we.linalg.eig(A)` | $10n^3$ | 4.0 | General eigendecomposition |
-| `we.linalg.eigh(A)` | $4n^3/3$ | 4.0 | Symmetric eigendecomposition |
-| `we.linalg.cholesky(A)` | $n^3/3$ | 4.0 | Cholesky (symmetric positive definite) |
-| `we.linalg.qr(A)` | $mn^2 - n^3/3$ | 4.0 | Householder QR (FMA=1) |
-| `we.linalg.eigvals(A)` | $10n^3$ | 4.0 | Eigenvalues only |
-| `we.linalg.eigvalsh(A)` | $4n^3/3$ | 4.0 | Symmetric eigenvalues only |
-| `we.linalg.svdvals(A)` | $m \cdot n \cdot \min(m,n)$ | 4.0 | Singular values only |
+| <OpRef name="linalg.svd" /> | $m \cdot n \cdot k$ | 4.0 | Truncated SVD |
+| <OpRef name="linalg.eig" /> | $10n^3$ | 4.0 | General eigendecomposition |
+| <OpRef name="linalg.eigh" /> | $4n^3/3$ | 4.0 | Symmetric eigendecomposition |
+| <OpRef name="linalg.cholesky" /> | $n^3/3$ | 4.0 | Cholesky (symmetric positive definite) |
+| <OpRef name="linalg.qr" /> | $mn^2 - n^3/3$ | 4.0 | Householder QR (FMA=1) |
+| <OpRef name="linalg.eigvals" /> | $10n^3$ | 4.0 | Eigenvalues only |
+| <OpRef name="linalg.eigvalsh" /> | $4n^3/3$ | 4.0 | Symmetric eigenvalues only |
+| <OpRef name="linalg.svdvals" /> | $m \cdot n \cdot \min(m,n)$ | 4.0 | Singular values only |
 
 ### Solvers
 
@@ -36,10 +36,10 @@ ignored in the cost model.
 
 | Operation | Cost | Weight |
 |-----------|------|--------|
-| `we.linalg.solve(A, b)` | $n^3$ | 4.0 |
-| `we.linalg.inv(A)` | $n^3$ | 4.0 |
-| `we.linalg.lstsq(A, b)` | $m \cdot n \cdot \min(m,n)$ | 4.0 |
-| `we.linalg.pinv(A)` | $m \cdot n \cdot \min(m,n)$ | 4.0 |
+| <OpRef name="linalg.solve" /> | $n^3$ | 4.0 |
+| <OpRef name="linalg.inv" /> | $n^3$ | 4.0 |
+| <OpRef name="linalg.lstsq" /> | $m \cdot n \cdot \min(m,n)$ | 4.0 |
+| <OpRef name="linalg.pinv" /> | $m \cdot n \cdot \min(m,n)$ | 4.0 |
 
 `inv` of a symmetric matrix returns a `SymmetricTensor`.
 
@@ -47,19 +47,19 @@ ignored in the cost model.
 
 | Operation | Cost | Weight |
 |-----------|------|--------|
-| `we.linalg.det(A)` | $n^3$ | 4.0 |
-| `we.linalg.slogdet(A)` | $n^3$ | 4.0 |
-| `we.linalg.norm(x)` | depends on ord | varies |
-| `we.linalg.cond(A)` | $m \cdot n \cdot \min(m,n)$ | varies |
-| `we.linalg.matrix_rank(A)` | $m \cdot n \cdot \min(m,n)$ | varies |
-| `we.linalg.trace(A)` | $n$ | varies |
+| <OpRef name="linalg.det" /> | $n^3$ | 4.0 |
+| <OpRef name="linalg.slogdet" /> | $n^3$ | 4.0 |
+| <OpRef name="linalg.norm" /> | depends on ord | varies |
+| <OpRef name="linalg.cond" /> | $m \cdot n \cdot \min(m,n)$ | varies |
+| <OpRef name="linalg.matrix_rank" /> | $m \cdot n \cdot \min(m,n)$ | varies |
+| <OpRef name="linalg.trace" /> | $n$ | varies |
 
 ### Compound
 
 | Operation | Cost | Notes |
 |-----------|------|-------|
-| `we.linalg.multi_dot(arrays)` | Optimal chain ordering | Uses `np.linalg.multi_dot` |
-| `we.linalg.matrix_power(A, n)` | $n^3 \times \text\{exponent\}$ | Repeated squaring |
+| <OpRef name="linalg.multi_dot" /> | Optimal chain ordering | Uses `np.linalg.multi_dot` |
+| <OpRef name="linalg.matrix_power" /> | $n^3 \times \text\{exponent\}$ | Repeated squaring |
 
 ## Symmetric input savings
 
@@ -93,7 +93,7 @@ print(f"Solve cost: {cost:,}")  # 16,777,216 (= 256^3; symmetric/nrhs params cur
 
 ## Common pitfalls
 
-**Symptom:** Using `numpy.linalg.svd` instead of `we.linalg.svd`
+**Symptom:** Using `numpy.linalg.svd` instead of <OpRef name="linalg.svd" />
 
 **Fix:** Operations called through `numpy` directly bypass FLOP counting. Always use `we.linalg.*`.
 
