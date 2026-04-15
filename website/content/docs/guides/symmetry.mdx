@@ -25,9 +25,8 @@ Wrap an existing symmetric array with `we.as_symmetric()`:
 
 ```python
 import whest as we
-import numpy as np
 
-data = np.array([[2.0, 1.0], [1.0, 3.0]])
+data = we.array([[2.0, 1.0], [1.0, 3.0]])
 S = we.as_symmetric(data, symmetric_axes=(0, 1))
 ```
 
@@ -54,7 +53,7 @@ Once a tensor is wrapped as `SymmetricTensor`, all downstream operations automat
 
 ```python
 with we.BudgetContext(flop_budget=10**8) as budget:
-    S = we.as_symmetric(np.eye(10), symmetric_axes=(0, 1))
+    S = we.eye(10)  # eye returns a SymmetricTensor
 
     # Pointwise: costs 55 FLOPs (10*11/2 unique elements) instead of 100
     result = we.exp(S)

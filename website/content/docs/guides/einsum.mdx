@@ -76,7 +76,7 @@ There are two separate symmetry declarations — one for inputs, one for outputs
 
 ```python
 with we.BudgetContext(flop_budget=10**8) as budget:
-    S = we.as_symmetric(np.eye(10), symmetric_axes=(0, 1))  # 55 unique elements
+    S = we.as_symmetric(we.eye(10), symmetric_axes=(0, 1))  # 55 unique elements
     v = we.ones((10,))
 
     result = we.einsum('ij,j->i', S, v)  # cost reduced by input symmetry
@@ -86,7 +86,7 @@ with we.BudgetContext(flop_budget=10**8) as budget:
 
 ```python
 with we.BudgetContext(flop_budget=10**8) as budget:
-    X = we.array(np.random.randn(100, 10))
+    X = we.random.randn(100, 10)
 
     # X^T X is always symmetric — declare output axes (0,1) as symmetric
     C = we.einsum('ki,kj->ij', X, X, symmetric_axes=[(0, 1)])
@@ -99,31 +99,51 @@ For the full symmetry guide, see [Exploit Symmetry Savings](./symmetry).
 
 ## Inspecting costs
 
-`we.einsum_path()` previews the contraction plan without executing or spending any budget:
+`we.einsum_path()` previews the contraction plan without executing the contraction itself. Planning is cheap: it records a nominal 1-FLOP `einsum_path` event, but none of the contraction FLOPs are spent.
 
 ```python
+import whest as we
+
+n = 10
+T = we.as_symmetric(we.ones((n, n, n)), symmetric_axes=(0, 1, 2))
+A = we.random.randn(n, n)
+B = we.random.randn(n, n)
+C = we.random.randn(n, n)
+
 path, info = we.einsum_path('ijk,ai,bj,ck->abc', T, A, B, C)
 
+print(f"Path: {path}")
 print(info)
-# Prints a multi-line table with a header (complete contraction, naive
-# cost, optimized cost, speedup, largest intermediate, index sizes, and
-# the name of the optimizer that ran) followed by one row per contraction
-# step showing the path-supplied contract tuple, subscript, FLOPs, dense
-# FLOPs, savings percentage, BLAS label, unique/dense element counts, and
-# the symmetry transformation. See the Exploit Symmetry guide for a
-# worked example:
-# See the Symmetry guide: /docs/guides/symmetry
-
-# Call info.format_table(verbose=True) to get an indented detail row per
-# step with the merged operand subset, the intermediate's output shape,
-# and the running cumulative cost — useful when debugging why a particular
-# step's savings are what they are.
-
 print(f"Naive cost:     {info.naive_cost:,}")
 print(f"Optimized cost: {info.optimized_cost:,}")
 print(f"Speedup:        {info.speedup:.1f}x")
 print(f"Optimizer used: {info.optimizer_used}")
 ```
+
+```text
+Path: [(0, 1), (0, 2), (0, 1)]
+  Complete contraction:  ijk,ai,bj,ck->abc
+      Naive cost (whest):  3,000,000
+  Optimized cost (whest):  25,500
+                     Speedup:  117.647x
+       Largest intermediate:  1,000 elements
+                Index sizes:  a=b=c=i=j=k=10
+                  Optimizer:  optimal
+--------------------------------------------------------------------------------------------------------------------------------------------
+step  contract  subscript                                flops     dense_flops   savings  blas      unique/total  symmetry (inputs → output)
+--------------------------------------------------------------------------------------------------------------------------------------------
+   0  (0, 1)    ai,ijk->ajk                              5,500          10,000    45.0%  SYMM      V:550/1,000   - × S3{i,j,k} → S2{j,k}
+   1  (0, 2)    ajk,bj->akb                             10,000          10,000     0.0%  TDOT      -             S2{j,k} × - → -
+   2  (0, 1)    akb,ck->abc                             10,000          10,000     0.0%  TDOT      -             -
+Naive cost:     3,000,000
+Optimized cost: 25,500
+Speedup:        117.6x
+Optimizer used: optimal
+```
+
+The printed table gives you the contraction order, naive-vs-optimized FLOP counts, largest intermediate, grouped index sizes, and one row per pairwise contraction step. Each step shows the chosen contract tuple, dense baseline, savings, BLAS tag, and any symmetry that survived into the intermediate.
+
+For per-step debugging, call `print(info.format_table(verbose=True))`. The verbose view adds indented rows with the merged operand subset, the intermediate output shape, and the running cumulative cost.
 
 `we.flops.einsum_cost()` returns the same cost that `einsum()` would deduct — one source of truth:
 
@@ -162,7 +182,7 @@ result = we.einsum('ij,jk,kl->il', A, B, C, optimize=[(1, 2), (0, 1)])
 result = we.einsum('ij,jk,kl->il', A, B, C, optimize=[(0, 1), (0, 1)])
 ```
 
-Different paths may have different FLOP costs. Use `we.einsum_path()` to compare — it returns the cost without executing or spending budget.
+Different paths may have different FLOP costs. Use `we.einsum_path()` to compare — it returns the plan without executing the contraction.
 
 ## Path caching
 

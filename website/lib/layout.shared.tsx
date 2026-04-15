@@ -6,7 +6,7 @@ export function baseOptions(): BaseLayoutProps {
     nav: {
       title: (
         <>
-          <Image src="/whest/logo.png" alt="whest" width={36} height={36} />
+          <Image src="/logo.png" alt="whest" width={36} height={36} />
           <span className="font-semibold">whest</span>
         </>
       ),
