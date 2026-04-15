@@ -177,8 +177,8 @@ attach_docstring(polymul, _np.polymul, "counted_custom", "n1 * n2 FLOPs")
 def polydiv(u, v):
     """Divide one polynomial by another. Wraps ``numpy.polydiv``."""
     budget = require_budget()
-    u = _np.asarray(u)
-    v = _np.asarray(v)
+    u = _np.atleast_1d(_np.asarray(u))
+    v = _np.atleast_1d(_np.asarray(v))
     n1 = len(u)
     n2 = len(v)
     cost = polydiv_cost(n1, n2)
