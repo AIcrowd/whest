@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google';
 import { Provider } from '@/components/provider';
 import type { ReactNode } from 'react';
+import 'katex/dist/katex.css';
 import './global.css';
 
 const inter = Inter({
