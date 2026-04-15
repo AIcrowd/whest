@@ -68,9 +68,7 @@ def test_summary_without_namespace():
 
 
 def test_namespace_scope_builds_dotted_paths():
-    with we.BudgetContext(
-        flop_budget=1000, namespace="predict", quiet=True
-    ) as ctx:
+    with we.BudgetContext(flop_budget=1000, namespace="predict", quiet=True) as ctx:
         with we.namespace("precompute"):
             ctx.deduct("add", flop_cost=10, subscripts=None, shapes=())
         with we.namespace("fallback"):
@@ -96,9 +94,7 @@ def test_budget_context_preserves_literal_root_namespace():
 
 
 def test_namespace_scope_restores_previous_namespace_after_exception():
-    with we.BudgetContext(
-        flop_budget=1000, namespace="predict", quiet=True
-    ) as ctx:
+    with we.BudgetContext(flop_budget=1000, namespace="predict", quiet=True) as ctx:
         with pytest.raises(RuntimeError, match="boom"):
             with we.namespace("precompute"):
                 assert ctx.namespace == "predict.precompute"

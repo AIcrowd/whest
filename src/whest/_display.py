@@ -37,7 +37,9 @@ def _call_label(calls: int) -> str:
     return f"{calls} call{'s' if calls != 1 else ''}"
 
 
-def _sorted_namespace_rows(by_namespace: dict[str | None, dict]) -> list[tuple[str | None, dict]]:
+def _sorted_namespace_rows(
+    by_namespace: dict[str | None, dict],
+) -> list[tuple[str | None, dict]]:
     return sorted(
         by_namespace.items(),
         key=lambda item: (-item[1]["flops_used"], _namespace_label(item[0])),
@@ -72,7 +74,9 @@ def _format_budget_summary_text(
     ops = data.get("operations", {})
     if ops:
         lines += ["", "  By operation:"]
-        for op_name, op_info in sorted(ops.items(), key=lambda item: -item[1]["flop_cost"]):
+        for op_name, op_info in sorted(
+            ops.items(), key=lambda item: -item[1]["flop_cost"]
+        ):
             lines.append(
                 f"    {op_name:<20} {_format_flops(op_info['flop_cost']):>12}  ({_pct(op_info['flop_cost'], data['flops_used']):>6})  [{_call_label(op_info['calls'])}]"
             )
@@ -95,7 +99,9 @@ def _format_budget_summary_text(
     }
     if tracked_time > 0 and op_durations:
         lines += ["", "  By operation (time):"]
-        for op_name, duration in sorted(op_durations.items(), key=lambda item: -item[1]):
+        for op_name, duration in sorted(
+            op_durations.items(), key=lambda item: -item[1]
+        ):
             lines.append(
                 f"    {op_name:<20} {duration:.3f}s  ({_pct(duration, tracked_time):>6})  [{_call_label(ops[op_name]['calls'])}]"
             )
@@ -239,7 +245,9 @@ def _rich_totals_table(data: dict):
         table.add_row("Wall time", f"{wall_time:.3f}s")
         table.add_row(
             "Tracked",
-            Text(f"{tracked_time:.3f}s  ({_pct(tracked_time, wall_time)})", style="dim"),
+            Text(
+                f"{tracked_time:.3f}s  ({_pct(tracked_time, wall_time)})", style="dim"
+            ),
         )
         table.add_row(
             "Untracked",
@@ -320,9 +328,13 @@ def _rich_summary(by_namespace: bool = False):
 
     renderables = [_rich_totals_table(data)]
     if by_namespace and data.get("by_namespace"):
-        renderables.append(_rich_attribution_table(data["by_namespace"], data["flops_used"]))
+        renderables.append(
+            _rich_attribution_table(data["by_namespace"], data["flops_used"])
+        )
     if data.get("operations"):
-        renderables.append(_rich_operations_table(data["operations"], data["flops_used"]))
+        renderables.append(
+            _rich_operations_table(data["operations"], data["flops_used"])
+        )
 
     return Panel(
         Group(*renderables),
