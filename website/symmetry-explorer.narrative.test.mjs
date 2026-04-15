@@ -5,11 +5,11 @@ import fs from 'node:fs';
 import {
   EXPLORER_ACTS,
   buildAnalysisCheckpoint,
-} from './components/symmetry-explorer/components/explorerNarrative.js';
+} from './components/symmetry-aware-einsum-contractions/components/explorerNarrative.js';
 import {
   mergeObservedActEntries,
   pickTopVisibleAct,
-} from './components/symmetry-explorer/lib/activeAct.js';
+} from './components/symmetry-aware-einsum-contractions/lib/activeAct.js';
 
 test('EXPLORER_ACTS defines the four narrative acts in story order', () => {
   assert.deepEqual(
@@ -37,7 +37,7 @@ test('pickTopVisibleAct prefers the top-most visible act and falls back safely',
 });
 
 test('SymmetryExplorer keeps the act ids and renders the preset rail after main content', () => {
-  const source = fs.readFileSync(new URL('./components/symmetry-explorer/SymmetryExplorer.jsx', import.meta.url), 'utf8');
+  const source = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
   ['id="setup"', 'id="structure"', 'id="proof"', 'id="savings"'].forEach((needle) => {
     assert.match(source, new RegExp(needle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   });

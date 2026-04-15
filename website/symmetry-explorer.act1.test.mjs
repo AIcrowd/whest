@@ -3,9 +3,9 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 test('Act 1 uses a desktop preset rail and a mobile preset fallback', () => {
-  const appSource = fs.readFileSync(new URL('./components/symmetry-explorer/SymmetryExplorer.jsx', import.meta.url), 'utf8');
-  const chooserSource = fs.readFileSync(new URL('./components/symmetry-explorer/components/ExampleChooser.jsx', import.meta.url), 'utf8');
-  const sidebarSource = fs.readFileSync(new URL('./components/symmetry-explorer/components/PresetSidebar.jsx', import.meta.url), 'utf8');
+  const appSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
+  const chooserSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/ExampleChooser.jsx', import.meta.url), 'utf8');
+  const sidebarSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/PresetSidebar.jsx', import.meta.url), 'utf8');
 
   assert.match(appSource, /PresetSidebar/);
   assert.match(appSource, /selectedPresetIdx=\{selectedPresetIdx\}/);
@@ -17,8 +17,8 @@ test('Act 1 uses a desktop preset rail and a mobile preset fallback', () => {
 });
 
 test('ExampleChooser uses the shared Python code block and the wider 70\\/30 row', () => {
-  const chooserSource = fs.readFileSync(new URL('./components/symmetry-explorer/components/ExampleChooser.jsx', import.meta.url), 'utf8');
-  const codeBlockSource = fs.readFileSync(new URL('./components/symmetry-explorer/components/PythonCodeBlock.jsx', import.meta.url), 'utf8');
+  const chooserSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/ExampleChooser.jsx', import.meta.url), 'utf8');
+  const codeBlockSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/PythonCodeBlock.jsx', import.meta.url), 'utf8');
 
   assert.match(chooserSource, /PythonCodeBlock/);
   assert.match(chooserSource, /lg:grid-cols-\[minmax\(0,7fr\)_minmax\(320px,3fr\)\]/);
@@ -29,7 +29,7 @@ test('ExampleChooser uses the shared Python code block and the wider 70\\/30 row
 });
 
 test('PresetSidebar keeps preset rows compact but still shows the output symmetry', () => {
-  const sidebarSource = fs.readFileSync(new URL('./components/symmetry-explorer/components/PresetSidebar.jsx', import.meta.url), 'utf8');
+  const sidebarSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/PresetSidebar.jsx', import.meta.url), 'utf8');
   assert.match(sidebarSource, /CaseBadge/);
   assert.match(sidebarSource, /summary\.expectedGroup/);
 });

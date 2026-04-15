@@ -1,15 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { EXAMPLES } from './components/symmetry-explorer/data/examples.js';
+import { EXAMPLES } from './components/symmetry-aware-einsum-contractions/data/examples.js';
 import {
   CUSTOM_IDX,
   getPresetControlSelection,
   getPresetSummary,
   presetToState,
   resolvePresetSelection,
-} from './components/symmetry-explorer/lib/presetSelection.js';
-import { reduceMentalModelVisibility } from './components/symmetry-explorer/lib/mentalModelState.js';
+} from './components/symmetry-aware-einsum-contractions/lib/presetSelection.js';
+import { reduceMentalModelVisibility } from './components/symmetry-aware-einsum-contractions/lib/mentalModelState.js';
 
 test('resolvePresetSelection keeps custom mode without requesting a preset reload', () => {
   assert.deepEqual(resolvePresetSelection(EXAMPLES, CUSTOM_IDX), {

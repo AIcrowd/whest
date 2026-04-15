@@ -8,7 +8,7 @@ import {
   getFocusedLines,
   pickDefaultOrbitRow,
   tokenizePseudocodeLine,
-} from './components/symmetry-explorer/engine/teachingModel.js';
+} from './components/symmetry-aware-einsum-contractions/engine/teachingModel.js';
 
 test('PSEUDOCODE_LINES defines a stable teaching scaffold', () => {
   assert.equal(Array.isArray(PSEUDOCODE_LINES), true);

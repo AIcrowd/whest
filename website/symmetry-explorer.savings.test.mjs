@@ -3,9 +3,9 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 test('Acts 2-4 are sequenced around the inline savings narrative', () => {
-  const appSource = fs.readFileSync(new URL('./components/symmetry-explorer/SymmetryExplorer.jsx', import.meta.url), 'utf8');
-  const componentCostSource = fs.readFileSync(new URL('./components/symmetry-explorer/components/ComponentCostView.jsx', import.meta.url), 'utf8');
-  const totalCostSource = fs.readFileSync(new URL('./components/symmetry-explorer/components/TotalCostView.jsx', import.meta.url), 'utf8');
+  const appSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
+  const componentCostSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/ComponentCostView.jsx', import.meta.url), 'utf8');
+  const totalCostSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/TotalCostView.jsx', import.meta.url), 'utf8');
 
   assert.match(appSource, /EXPLORER_ACTS\[1\]\.heading/);
   assert.match(appSource, /EXPLORER_ACTS\[2\]\.heading/);
@@ -16,7 +16,7 @@ test('Acts 2-4 are sequenced around the inline savings narrative', () => {
 });
 
 test('Act 4 opens the Mental Framework in a modal using the shared code block', () => {
-  const appSource = fs.readFileSync(new URL('./components/symmetry-explorer/SymmetryExplorer.jsx', import.meta.url), 'utf8');
+  const appSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
 
   assert.doesNotMatch(appSource, /<PseudocodeRail/);
   assert.match(appSource, /showMentalModel/);

@@ -57,7 +57,7 @@ function normalizeExample(example) {
   };
 }
 
-export default function App() {
+export default function SymmetryAwareEinsumContractionsApp() {
   const [exampleIdx, setExampleIdx] = useState(0);
   const [customExample, setCustomExample] = useState(null);
   const [dimensionN, setDimensionN] = useState(5);
