@@ -77,6 +77,17 @@ test('symmetry guide avoids overclaiming Reynolds helper exactness', async () =>
   assert.match(source, /validation tolerances/);
 });
 
+test('symmetry guide explains why the einsum savings example is cheaper', async () => {
+  const source = await readSymmetryGuide();
+
+  assert.doesNotMatch(source, /the output is symmetric in `\(0, 1\)`/);
+  assert.match(source, /repeated `x` operand/);
+  assert.match(
+    source,
+    /does not reduce that `einsum`'s own cost by itself/,
+  );
+});
+
 test('symmetry guide documents the current unary pointwise caveat for non-full groups', async () => {
   const source = await readSymmetryGuide();
 
@@ -137,6 +148,27 @@ intersection_tensor = we.add(s3_tensor, c3_tensor)
 unary_c3 = we.exp(c3_tensor)
 unary_d4 = we.exp(d4_tensor)
 
+with we.BudgetContext(flop_budget=10**8) as budget:
+    repeated_input = we.ones((5, 3))
+    repeated_einsum = we.einsum(
+        'ki,kj->ij',
+        repeated_input,
+        repeated_input,
+        symmetric_axes=[(0, 1)],
+    )
+    repeated_einsum_cost = budget.flops_used
+
+with we.BudgetContext(flop_budget=10**8) as budget:
+    distinct_left = we.ones((5, 3))
+    distinct_right = we.ones((5, 3))
+    distinct_einsum = we.einsum(
+        'ki,kj->ij',
+        distinct_left,
+        distinct_right,
+        symmetric_axes=[(0, 1)],
+    )
+    distinct_einsum_cost = budget.flops_used
+
 left_tensor = we.as_symmetric(
     we.ones((3, 3, 5, 5)),
     symmetric_axes=[(0, 1), (2, 3)],
@@ -172,6 +204,10 @@ print(json.dumps({
     "broadcast_has_symmetry": hasattr(broadcast_sum, "symmetry_info"),
     "unary_c3_orders": [group.order() for group in unary_c3.symmetry_info.groups],
     "unary_d4_orders": [group.order() for group in unary_d4.symmetry_info.groups],
+    "repeated_einsum_cost": repeated_einsum_cost,
+    "distinct_einsum_cost": distinct_einsum_cost,
+    "repeated_einsum_type": type(repeated_einsum).__name__,
+    "distinct_einsum_type": type(distinct_einsum).__name__,
 }))
 `);
   const runtimeBehavior = JSON.parse(stdout.trim());
@@ -194,6 +230,10 @@ print(json.dumps({
     broadcast_has_symmetry: false,
     unary_c3_orders: [6],
     unary_d4_orders: [24],
+    repeated_einsum_cost: 30,
+    distinct_einsum_cost: 45,
+    repeated_einsum_type: 'SymmetricTensor',
+    distinct_einsum_type: 'SymmetricTensor',
   });
 });
 

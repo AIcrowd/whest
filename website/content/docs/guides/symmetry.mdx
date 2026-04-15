@@ -21,8 +21,11 @@ instead of dense ones.
 | Operation | Dense cost | Symmetry-aware cost | Why it drops |
 |-----------|------------|---------------------|--------------|
 | `we.exp(s2_matrix)` | `n^2` | `n * (n + 1) / 2` | only unique matrix entries matter |
-| `we.einsum('ki,kj->ij', x, x, symmetric_axes=[(0, 1)])` | `m * n^2` | `m * n * (n + 1) / 2` | the output is symmetric in `(0, 1)` |
+| `we.einsum('ki,kj->ij', x, x, symmetric_axes=[(0, 1)])` | `m * n^2` | `m * n * (n + 1) / 2` | the repeated `x` operand lets whest detect symmetric output and reduce the cost |
 | `we.einsum('i,j,k->ijk', v, v, v)` | `n^3` | symmetry-reduced | repeated operands induce output symmetry |
+
+By contrast, `symmetric_axes` on an `einsum` output tags the result for downstream
+operations; it does not reduce that `einsum`'s own cost by itself.
 
 ## Quick start
 
