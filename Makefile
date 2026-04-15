@@ -53,13 +53,13 @@ test-numpy-compat:  ## Run NumPy's own tests against whest
 # Docs  (mirrors: CI → docs job)
 # ---------------------------------------------------------------------------
 .PHONY: docs-build
-docs-build:  ## Generate API data and build Docusaurus site
+docs-build:  ## Generate API data and build website
 	$(UV) python scripts/generate_api_docs.py
 	cd website && npm run build
 
 .PHONY: docs-serve
 docs-serve:  ## Serve docs locally with live reload
-	cd website && npm start
+	cd website && npm run dev
 
 .PHONY: docs-deploy
 docs-deploy:  ## Docs deploy is handled by CI on push to main
