@@ -51,6 +51,7 @@ test('styles.css keeps the header hierarchy and banner spacing from the parity b
 
   assert.match(styles, /\.symmetry-aware-einsum-contractions-page-shell\s*\{\s*[^}]*font-size:\s*14px;/s);
   assert.match(styles, /\.app-header h1\s*\{\s*[^}]*font-size:\s*30px;/s);
+  assert.match(styles, /\.subtitle\s*\{\s*[^}]*color:\s*var\(--gray-500\);/s);
   assert.match(styles, /\.subtitle\s*\{\s*[^}]*font-size:\s*14px;/s);
   assert.match(styles, /\.einsum-banner\s*\{\s*[^}]*padding:\s*16px 24px;/s);
 });

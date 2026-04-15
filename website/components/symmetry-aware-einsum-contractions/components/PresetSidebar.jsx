@@ -41,8 +41,8 @@ export default function PresetSidebar({
                 Freeform
               </span>
             </span>
-            <code className="mt-1 block truncate text-[11px] text-gray-500">Define your own contraction</code>
-            <span className="mt-1 block text-[11px] text-gray-400">
+            <code className="mt-1 block truncate text-xs text-gray-500">Define your own contraction</code>
+            <span className="mt-1 block text-xs text-gray-400">
               Keep the current builder state and switch into custom mode.
             </span>
           </span>

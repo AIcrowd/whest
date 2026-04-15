@@ -32,6 +32,8 @@ test('PresetSidebar keeps preset rows compact but still shows the output symmetr
   const sidebarSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/PresetSidebar.jsx', import.meta.url), 'utf8');
   assert.match(sidebarSource, /w-\[19rem\]/);
   assert.match(sidebarSource, /px-3\.5 py-3/);
+  assert.match(sidebarSource, /Define your own contraction/);
+  assert.match(sidebarSource, /Keep the current builder state/);
   assert.match(sidebarSource, /text-xs text-gray-500/);
   assert.match(sidebarSource, /text-xs text-gray-400/);
   assert.match(sidebarSource, /CaseBadge/);
