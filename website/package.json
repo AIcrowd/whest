@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build && node scripts/generate-llmstxt.mjs",
+    "test": "node --test docs-whest-examples.test.mjs symmetry-guide.test.mjs einsum-links.test.mjs",
     "start": "next start"
   },
   "dependencies": {
