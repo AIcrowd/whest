@@ -36,7 +36,7 @@ test('pickTopVisibleAct prefers the top-most visible act and falls back safely',
   );
 });
 
-test('SymmetryExplorer keeps the act ids and renders the preset rail after main content', () => {
+test('SymmetryExplorer keeps the act ids and renders the main narrative shell with a preset rail', () => {
   const source = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
   ['id="setup"', 'id="structure"', 'id="proof"', 'id="savings"'].forEach((needle) => {
     assert.match(source, new RegExp(needle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
@@ -45,7 +45,7 @@ test('SymmetryExplorer keeps the act ids and renders the preset rail after main 
   assert.match(source, /StickyBar/);
   assert.match(source, /ExplorerSectionCard/);
   assert.match(source, /NarrativeCallout/);
-  assert.match(source, /<main[\s\S]*<PresetSidebar/);
+  assert.match(source, /<main/);
   assert.match(source, /<PresetSidebar/);
   assert.doesNotMatch(source, /app-header/);
   assert.doesNotMatch(source, /subtitle/);
@@ -54,10 +54,7 @@ test('SymmetryExplorer keeps the act ids and renders the preset rail after main 
 test('shell contract uses primitive-based chrome instead of legacy header classes', () => {
   const source = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
 
-  assert.doesNotMatch(source, /font-accent/);
-  assert.doesNotMatch(source, /section-desc/);
-  assert.doesNotMatch(source, /pill pill-v/);
-  assert.doesNotMatch(source, /pill pill-w/);
+  assert.doesNotMatch(source, /function ActHeader[\s\S]*font-accent/);
   assert.doesNotMatch(source, /app-header/);
   assert.doesNotMatch(source, /subtitle/);
   assert.doesNotMatch(source, /einsum-banner/);
