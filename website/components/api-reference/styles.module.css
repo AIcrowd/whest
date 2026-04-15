@@ -466,35 +466,6 @@
   padding: 0 0.2rem;
 }
 
-.docOutputBlock {
-  margin-top: 1rem;
-  border: 1px solid hsl(var(--border));
-  border-radius: 0.9rem;
-  background: hsl(var(--secondary));
-  overflow: hidden;
-}
-
-.docOutputLabel {
-  margin: 0;
-  padding: 0.7rem 1rem;
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: hsl(var(--muted-foreground));
-  border-bottom: 1px solid hsl(var(--border));
-}
-
-.docOutput {
-  margin: 0;
-  padding: 1rem;
-  overflow-x: auto;
-  white-space: pre-wrap;
-  font-family: var(--fd-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
-  font-size: 0.84rem;
-  line-height: 1.65;
-}
-
 .docNav {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

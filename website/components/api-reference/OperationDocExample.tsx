@@ -1,4 +1,5 @@
 import {CodeBlock, Pre} from 'fumadocs-ui/components/codeblock';
+import RichOutputPre from '../rich-output-pre';
 import styles from './styles.module.css';
 import type {DocExample} from './op-doc-types';
 
@@ -17,12 +18,7 @@ export default function OperationDocExample({example}: {example?: DocExample | n
       >
         <Pre>{example.code}</Pre>
       </CodeBlock>
-      {example.output ? (
-        <div className={styles.docOutputBlock}>
-          <p className={styles.docOutputLabel}>Output</p>
-          <pre className={styles.docOutput}>{example.output}</pre>
-        </div>
-      ) : null}
+      {example.output ? <RichOutputPre title="output">{example.output}</RichOutputPre> : null}
     </section>
   );
 }
