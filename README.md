@@ -1,5 +1,5 @@
 <div align="center">
-<img src="docs/assets/logo/logo.png" alt="whest" height="80">
+<img src="website/public/logo.png" alt="whest" height="80">
 <h1>whest</h1>
 <p><strong>NumPy-compatible math primitives with analytical FLOP counting</strong></p>
 </div>
