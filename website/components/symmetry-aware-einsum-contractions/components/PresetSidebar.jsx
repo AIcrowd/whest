@@ -64,14 +64,14 @@ export default function PresetSidebar({
               className="absolute inset-y-3 left-0.5 w-1 rounded-full"
               style={{ backgroundColor: summary.color }}
             />
-            <div className="flex items-center gap-2 pl-3">
+            <span className="flex items-center gap-2 pl-3">
               {summary.caseType && (
                 <CaseBadge caseType={summary.caseType} size="xs" variant="compact" interactive={false} />
               )}
               <Badge variant="outline" className="text-[10px] font-semibold uppercase tracking-[0.18em]">
                 {summary.expectedGroup}
               </Badge>
-            </div>
+            </span>
             <code className="mt-1 block truncate pl-3 text-xs text-gray-500">{summary.formula}</code>
             <span className="mt-1 block pl-3 text-xs text-gray-400">{summary.expectedGroup}</span>
           </ExplorerSidebarItem>

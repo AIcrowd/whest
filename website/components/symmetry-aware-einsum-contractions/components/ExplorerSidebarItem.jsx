@@ -25,14 +25,14 @@ function ExplorerSidebarItem({
       )}
       {...props}
     >
-      <div className="px-3">
-        <div className="min-w-0 space-y-1">
+      <span className="px-3">
+        <span className="min-w-0 space-y-1">
           {badge ? <Badge variant={active ? 'default' : 'outline'} className={badgeClassName}>{badge}</Badge> : null}
-          {title ? <div className="font-heading text-sm font-medium text-foreground">{title}</div> : null}
-          {description ? <div className="text-xs text-muted-foreground">{description}</div> : null}
+          {title ? <span className="block font-heading text-sm font-medium text-foreground">{title}</span> : null}
+          {description ? <span className="block text-xs text-muted-foreground">{description}</span> : null}
           {children}
-        </div>
-      </div>
+        </span>
+      </span>
     </Component>
   );
 }
