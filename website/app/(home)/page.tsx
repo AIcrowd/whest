@@ -42,7 +42,7 @@ const navCards = [
   {
     title: 'Symmetry Explorer',
     desc: 'Interactive einsum symmetry visualization',
-    link: '/docs/explanation/symmetry-explorer',
+    link: '/symmetry-aware-einsum-contractions',
   },
   {
     title: 'For AI Agents',
