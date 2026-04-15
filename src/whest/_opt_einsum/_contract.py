@@ -320,7 +320,9 @@ class PathInfo:
         result.append_text(self._rich_symmetry_token_text(out_part))
         if w_part != "-":
             result.append("  [", style="dim")
-            result.append("W✓" if step.inner_applied else "W", style=_RICH_SYMMETRY_STYLES["W"])
+            result.append(
+                "W✓" if step.inner_applied else "W", style=_RICH_SYMMETRY_STYLES["W"]
+            )
             result.append(": ", style="dim")
             result.append_text(self._rich_symmetry_token_text(w_part))
             result.append("]", style="dim")
@@ -386,7 +388,9 @@ class PathInfo:
                 border_style=speedup_border,
             )
         )
-        savings_style = "bold green" if self.optimized_cost < self.naive_cost else "bold"
+        savings_style = (
+            "bold green" if self.optimized_cost < self.naive_cost else "bold"
+        )
         savings_border = "green" if self.optimized_cost < self.naive_cost else "dim"
         pills.append(
             self._rich_metric_pill(
@@ -548,7 +552,11 @@ class PathInfo:
                 parts.append(f"V:{out_unique:,}/{out_total:,}")
 
         if step.inner_applied and step.inner_group is not None:
-            lhs = step.subscript.split("->")[0] if "->" in step.subscript else step.subscript
+            lhs = (
+                step.subscript.split("->")[0]
+                if "->" in step.subscript
+                else step.subscript
+            )
             out_str = step.subscript.split("->")[1] if "->" in step.subscript else ""
             contracted = frozenset(lhs.replace(",", "")) - frozenset(out_str)
             if contracted:
@@ -590,7 +598,8 @@ class PathInfo:
         from rich.table import Table
 
         any_unique = any(
-            s.dense_flop_cost > 0 and s.flop_cost != s.dense_flop_cost for s in self.steps
+            s.dense_flop_cost > 0 and s.flop_cost != s.dense_flop_cost
+            for s in self.steps
         )
 
         contract_width = max(
@@ -614,7 +623,9 @@ class PathInfo:
         )
         savings_width = max(
             len("savings"),
-            max((len(f"{step.symmetry_savings:0.1%}") for step in self.steps), default=0),
+            max(
+                (len(f"{step.symmetry_savings:0.1%}") for step in self.steps), default=0
+            ),
         )
         blas_width = max(
             len("blas"),
@@ -630,7 +641,10 @@ class PathInfo:
         if any_unique:
             unique_width = max(
                 len("unique/total"),
-                max((len(self._fmt_unique_dense(step)) for step in self.steps), default=0),
+                max(
+                    (len(self._fmt_unique_dense(step)) for step in self.steps),
+                    default=0,
+                ),
             )
 
         table = Table(

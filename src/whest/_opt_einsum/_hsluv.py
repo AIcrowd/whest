@@ -49,9 +49,8 @@ def _get_bounds(lightness: float) -> list[tuple[float, float]]:
         for t in range(2):
             top1 = (284517 * m1 - 94839 * m3) * sub2
             top2 = (
-                (838422 * m3 + 769860 * m2 + 731718 * m1) * lightness * sub2
-                - 769860 * t * lightness
-            )
+                838422 * m3 + 769860 * m2 + 731718 * m1
+            ) * lightness * sub2 - 769860 * t * lightness
             bottom = (632260 * m3 - 126452 * m2) * sub2 + 126452 * t
             result.append((top1 / bottom, top2 / bottom))
 
@@ -67,7 +66,9 @@ def _max_chroma_for_lh(lightness: float, hue: float) -> float:
     return min(length for length in lengths if length >= 0)
 
 
-def _dot_product(left: tuple[float, float, float], right: tuple[float, float, float]) -> float:
+def _dot_product(
+    left: tuple[float, float, float], right: tuple[float, float, float]
+) -> float:
     return sum(left_value * right_value for left_value, right_value in zip(left, right))
 
 

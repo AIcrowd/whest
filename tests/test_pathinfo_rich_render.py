@@ -106,9 +106,10 @@ def test_active_labels_do_not_collide_within_one_expression(d4_case_info):
     rgbs = {label: _rgb_from_style(style) for label, style in styles.items()}
 
     assert len(set(styles.values())) == len(labels)
-    assert min(
-        dist(rgbs[left], rgbs[right]) for left, right in combinations(labels, 2)
-    ) > 80
+    assert (
+        min(dist(rgbs[left], rgbs[right]) for left, right in combinations(labels, 2))
+        > 80
+    )
 
 
 def test_symmetry_class_styles_are_consistent_on_real_cases():
