@@ -1,40 +1,82 @@
-import { SYMMETRY_ICONS } from '../engine/colorPalette.js';
+import { useMemo } from 'react';
+import { cn } from '../lib/utils.js';
+import { getPresetSummary } from '../lib/presetSelection.js';
+import CaseBadge from './CaseBadge.jsx';
 
 const CUSTOM_IDX = -1;
 
-export default function PresetSidebar({ examples, selected, onSelect, onCustom }) {
+export default function PresetSidebar({
+  examples,
+  selectedPresetIdx,
+  onSelect,
+  onCustom,
+}) {
+  const presetSummaries = useMemo(() => examples.map(getPresetSummary), [examples]);
+
   return (
-    <aside className="sidebar">
-      <div className="sidebar-header">Presets</div>
-      <button
-        className={`sidebar-item sidebar-item-custom ${selected === CUSTOM_IDX ? 'active' : ''}`}
-        onClick={onCustom}
-      >
-        <div className="sidebar-item-accent" style={{ backgroundColor: '#7C3AED' }} />
-        <div className="sidebar-item-content">
-          <div className="sidebar-item-name">✎ Custom</div>
-          <code className="sidebar-item-formula">Define your own</code>
-        </div>
-      </button>
-      <nav className="sidebar-list">
-        {examples.map((ex, i) => (
+    <aside
+      aria-label="Preset examples"
+      className="sticky top-20 hidden max-h-[calc(100vh-5rem)] w-[18rem] shrink-0 self-start overflow-y-auto md:block"
+    >
+      <div className="px-2 pb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-gray-400">
+        Presets
+      </div>
+
+      <div className="space-y-1">
+        <button
+          type="button"
+          className={cn(
+            'group flex w-full items-start gap-3 rounded-xl px-3 py-2.5 text-left transition-colors',
+            selectedPresetIdx === CUSTOM_IDX
+              ? 'bg-coral-light/50 ring-1 ring-coral/30'
+              : 'hover:bg-gray-50',
+          )}
+          onClick={onCustom}
+        >
+          <span className="mt-0.5 h-full min-h-10 w-1 shrink-0 rounded-full bg-coral" />
+          <span className="min-w-0 flex-1">
+            <span className="flex items-center gap-2">
+              <span className="truncate text-sm font-medium text-gray-900">Custom</span>
+              <span className="rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-gray-500">
+                Freeform
+              </span>
+            </span>
+            <code className="mt-1 block truncate text-[11px] text-gray-500">Define your own contraction</code>
+            <span className="mt-1 block text-[11px] text-gray-400">
+              Keep the current builder state and switch into custom mode.
+            </span>
+          </span>
+        </button>
+
+        {presetSummaries.map((summary, idx) => (
           <button
-            key={ex.id}
-            className={`sidebar-item ${selected === i ? 'active' : ''}`}
-            onClick={() => onSelect(i)}
+            key={summary.id}
+            type="button"
+            className={cn(
+              'group flex w-full items-start gap-3 rounded-xl px-3 py-2.5 text-left transition-colors',
+              selectedPresetIdx === idx
+                ? 'bg-coral-light/50 ring-1 ring-coral/30'
+                : 'hover:bg-gray-50',
+            )}
+            onClick={() => onSelect(idx)}
           >
-            <div
-              className="sidebar-item-accent"
-              style={{ backgroundColor: ex.color }}
+            <span
+              className="mt-0.5 h-full min-h-10 w-1 shrink-0 rounded-full"
+              style={{ backgroundColor: summary.color }}
             />
-            <div className="sidebar-item-content">
-              <div className="sidebar-item-name">{ex.name}</div>
-              <code className="sidebar-item-formula">{ex.formula}</code>
-              <span className="sidebar-item-group">{ex.expectedGroup}</span>
-            </div>
+            <span className="min-w-0 flex-1">
+              <span className="flex items-center gap-2">
+                <span className="truncate text-sm font-medium text-gray-900">{summary.name}</span>
+                {summary.caseType && (
+                  <CaseBadge caseType={summary.caseType} size="xs" variant="compact" interactive={false} />
+                )}
+              </span>
+              <code className="mt-1 block truncate text-[11px] text-gray-500">{summary.formula}</code>
+              <span className="mt-1 block text-[11px] text-gray-400">{summary.expectedGroup}</span>
+            </span>
           </button>
         ))}
-      </nav>
+      </div>
     </aside>
   );
 }

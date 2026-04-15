@@ -7,6 +7,7 @@ import {
 } from './algorithm.js';
 import { parseCycleNotation } from './cycleParser.js';
 import { computeExactCostModel } from './costModel.js';
+import { decomposeAndClassify } from './componentDecomposition.js';
 
 function normalizeExample(example) {
   if (!example) return null;
@@ -49,6 +50,13 @@ export function analyzeExample(example, dimensionN) {
   const matrixData = buildIncidenceMatrix(graph);
   const sigmaResults = runSigmaLoop(graph, matrixData, normalizedExample);
   const symmetry = buildGroup(sigmaResults, graph, normalizedExample);
+  const componentData = decomposeAndClassify(
+    symmetry.allLabels,
+    symmetry.vLabels,
+    symmetry.wLabels,
+    symmetry.fullGenerators,
+    symmetry.fullElements,
+  );
   const burnside = computeBurnside(symmetry, dimensionN);
   const costModel = computeExactCostModel({
     labels: symmetry.allLabels,
@@ -58,5 +66,5 @@ export function analyzeExample(example, dimensionN) {
     numTerms: normalizedExample.subscripts.length,
   });
 
-  return { graph, matrixData, sigmaResults, symmetry, burnside, costModel };
+  return { graph, matrixData, sigmaResults, symmetry, componentData, burnside, costModel };
 }

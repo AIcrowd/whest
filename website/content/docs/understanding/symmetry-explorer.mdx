@@ -9,25 +9,25 @@ title: "Symmetry Explorer"
 - How symmetry is detected step-by-step for any einsum expression
 - How FLOP savings are computed from the detected symmetry group
 
-Choose a preset example or define your own einsum expression with custom operand symmetries to walk through the algorithm step by step:
+Choose a preset example or define your own einsum expression with custom operand symmetries to walk through the explorer’s four-act narrative:
 
-1. **Bipartite Graph** — how operands and index labels form the graph
-2. **Incidence Matrix M** — the matrix representation and column fingerprints
-3. **σ-Loop & π Detection** — animated row/column shuffles showing how π recovers M
-4. **Group Construction** — from valid π's to generators via Dimino's algorithm
-5. **Burnside Counting** — counting unique elements under the symmetry group
-6. **Cost Reduction** — FLOP savings from symmetry
+1. **Set up the contraction** — inspect a preset or build a custom expression, then compare the expected symmetry with the analyzed result
+2. **Expose the structure** — view the bipartite graph and incidence matrix that encode the contraction
+3. **Prove the symmetry** — follow the σ-loop and generator construction that recover the detected group
+4. **Price the savings** — connect orbit structure to multiplication and accumulation savings
 
 <SymmetryExplorer />
 
-<Callout type="info" title="Standalone mode">
-You can also run the explorer locally for a better experience:
+<Callout type="info" title="Local development">
+Run the docs app locally and open the explorer on its real route:
 
 ```bash
-cd docs/visualization/symmetry-explorer
+cd website
 npm install
 npm run dev
 ```
+
+Then open `/docs/understanding/symmetry-explorer`.
 </Callout>
 
 ## Related pages

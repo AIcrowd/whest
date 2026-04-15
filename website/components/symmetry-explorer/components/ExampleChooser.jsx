@@ -1,14 +1,12 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { validateAll } from '../engine/validation.js';
 import { generatePython } from '../engine/pythonCodegen.js';
 import { buildVariableColors, SYMMETRY_ICONS, contrastText } from '../engine/colorPalette.js';
 import { parseCycleNotation } from '../engine/cycleParser.js';
-
-// ---------------------------------------------------------------------------
-// Constants
-// ---------------------------------------------------------------------------
-
-const CUSTOM_IDX = -1;
+import { cn } from '../lib/utils.js';
+import { CUSTOM_IDX, getPresetSummary, presetToState, resolvePresetSelection } from '../lib/presetSelection.js';
+import CaseBadge from './CaseBadge.jsx';
+import PythonCodeBlock from './PythonCodeBlock.jsx';
 
 const SYM_TYPES = ['none', 'symmetric', 'cyclic', 'dihedral', 'custom'];
 const SYM_LABELS = {
@@ -19,13 +17,12 @@ const SYM_LABELS = {
   custom: 'custom',
 };
 
-/** Compute the order of a named symmetry group on k axes. */
 function groupOrder(symmetry, k) {
   switch (symmetry) {
     case 'symmetric': {
-      let f = 1;
-      for (let i = 2; i <= k; i++) f *= i;
-      return f;
+      let factorial = 1;
+      for (let i = 2; i <= k; i += 1) factorial *= i;
+      return factorial;
     }
     case 'cyclic':
       return k;
@@ -36,7 +33,6 @@ function groupOrder(symmetry, k) {
   }
 }
 
-/** Human-readable group name for the summary badge. */
 function badgeLabel(variable) {
   const { symmetry, rank, symAxes, generators } = variable;
   if (symmetry === 'none') return 'dense';
@@ -44,8 +40,6 @@ function badgeLabel(variable) {
     if (!generators || !generators.trim()) return 'custom';
     const parsed = parseCycleNotation(generators);
     if (parsed.error || !parsed.generators) return 'custom';
-    // Try to compute order from generators — not trivial in general,
-    // so just show generator count.
     return `custom (${parsed.generators.length} gen${parsed.generators.length !== 1 ? 's' : ''})`;
   }
   const k = (symAxes && symAxes.length) || rank;
@@ -55,82 +49,46 @@ function badgeLabel(variable) {
 
 function badgeOrder(variable) {
   const { symmetry, rank, symAxes } = variable;
-  if (symmetry === 'none') return null;
-  if (symmetry === 'custom') return null;
+  if (symmetry === 'none' || symmetry === 'custom') return null;
   const k = (symAxes && symAxes.length) || rank;
   return groupOrder(symmetry, k);
 }
 
-// ---------------------------------------------------------------------------
-// Load preset helper
-// ---------------------------------------------------------------------------
-
-/**
- * Given an EXAMPLES entry, extract the state shape:
- * { variables, subscriptsStr, outputStr, operandNamesStr }
- */
-function presetToState(ex) {
-  return {
-    variables: ex.variables.map(v => ({
-      name: v.name,
-      rank: v.rank,
-      symmetry: v.symmetry || 'none',
-      symAxes: v.symAxes ? [...v.symAxes] : null,
-      generators: v.generators || '',
-    })),
-    subscriptsStr: ex.expression.subscripts,
-    outputStr: ex.expression.output,
-    operandNamesStr: ex.expression.operandNames,
-  };
-}
-
-// ---------------------------------------------------------------------------
-// Build perOpSymmetry for the onCustomExample callback
-// ---------------------------------------------------------------------------
-
-/**
- * Map each operand SLOT to its symmetry descriptor.
- *
- * The operand names string (e.g. "T, W") references variables by name.
- * Each slot gets the symmetry of the variable it references, translated
- * into the perOpSymmetry format the algorithm engine expects.
- */
 function buildPerOpSymmetry(variables, operandNamesStr, subscriptsStr) {
   const varMap = new Map();
-  for (const v of variables) {
-    varMap.set(v.name.trim(), v);
+  for (const variable of variables) {
+    varMap.set(variable.name.trim(), variable);
   }
 
-  const opNames = operandNamesStr.split(',').map(s => s.trim()).filter(Boolean);
-  const subs = subscriptsStr.split(',').map(s => s.trim());
+  const opNames = operandNamesStr.split(',').map((part) => part.trim()).filter(Boolean);
+  const subs = subscriptsStr.split(',').map((part) => part.trim());
 
-  return opNames.map((name, i) => {
-    const v = varMap.get(name);
-    if (!v || v.symmetry === 'none') return null;
+  return opNames.map((name, idx) => {
+    const variable = varMap.get(name);
+    if (!variable || variable.symmetry === 'none') return null;
 
-    const sub = subs[i] || '';
+    const sub = subs[idx] || '';
     const allAxes = sub.length;
 
-    if (v.symmetry === 'symmetric') {
-      // If ALL axes of this operand are symmetric, return shorthand
-      if (!v.symAxes || v.symAxes.length === allAxes) return 'symmetric';
-      return { type: 'symmetric', axes: [...v.symAxes] };
+    if (variable.symmetry === 'symmetric') {
+      if (!variable.symAxes || variable.symAxes.length === allAxes) return 'symmetric';
+      return { type: 'symmetric', axes: [...variable.symAxes] };
     }
-    if (v.symmetry === 'cyclic') {
-      if (!v.symAxes || v.symAxes.length === allAxes) {
+    if (variable.symmetry === 'cyclic') {
+      if (!variable.symAxes || variable.symAxes.length === allAxes) {
         return { type: 'cyclic', axes: [...Array(allAxes).keys()] };
       }
-      return { type: 'cyclic', axes: [...v.symAxes] };
+      return { type: 'cyclic', axes: [...variable.symAxes] };
     }
-    if (v.symmetry === 'dihedral') {
-      if (!v.symAxes || v.symAxes.length === allAxes) {
+    if (variable.symmetry === 'dihedral') {
+      if (!variable.symAxes || variable.symAxes.length === allAxes) {
         return { type: 'dihedral', axes: [...Array(allAxes).keys()] };
       }
-      return { type: 'dihedral', axes: [...v.symAxes] };
+      return { type: 'dihedral', axes: [...variable.symAxes] };
     }
-    if (v.symmetry === 'custom') {
-      const parsed = parseCycleNotation(v.generators || '');
-      const axes = v.symAxes || [...Array(allAxes).keys()];
+    if (variable.symmetry === 'custom') {
+      const parsed = parseCycleNotation(variable.generators || '');
+      const axes = variable.symAxes || [...Array(allAxes).keys()];
       return {
         type: 'custom',
         axes: [...axes],
@@ -142,72 +100,89 @@ function buildPerOpSymmetry(variables, operandNamesStr, subscriptsStr) {
   });
 }
 
-// ---------------------------------------------------------------------------
-// Component
-// ---------------------------------------------------------------------------
-
 export default function ExampleChooser({
-  examples, onSelect, dimensionN, onDimensionChange, onCustomExample,
+  examples,
+  onSelect,
+  selectedPresetIdx = 0,
+  dimensionN,
+  onCustom,
+  onCustomExample,
+  onDirtyChange,
+  act,
+  checkpointItems = [],
 }) {
-  // ── State ──────────────────────────────────────────────────────────────
-
-  const initial = presetToState(examples[0]);
+  const initialSelection = resolvePresetSelection(examples, selectedPresetIdx);
+  const initialPresetIdx = initialSelection.activePresetIdx >= 0 ? initialSelection.activePresetIdx : 0;
+  const initial = initialSelection.presetState ?? presetToState(examples[initialPresetIdx]);
 
   const [variables, setVariables] = useState(initial.variables);
   const [subscriptsStr, setSubscriptsStr] = useState(initial.subscriptsStr);
   const [outputStr, setOutputStr] = useState(initial.outputStr);
   const [operandNamesStr, setOperandNamesStr] = useState(initial.operandNamesStr);
-  const [activePresetIdx, setActivePresetIdx] = useState(0);
+  const [activePresetIdx, setActivePresetIdx] = useState(initialPresetIdx);
 
-  const [copied, setCopied] = useState(false);
-
-  // ── Load preset ────────────────────────────────────────────────────────
+  const presetSummaries = useMemo(() => examples.map(getPresetSummary), [examples]);
 
   const loadPreset = useCallback((idx) => {
-    const state = presetToState(examples[idx]);
-    setVariables(state.variables);
-    setSubscriptsStr(state.subscriptsStr);
-    setOutputStr(state.outputStr);
-    setOperandNamesStr(state.operandNamesStr);
-    setActivePresetIdx(idx);
+    const selection = resolvePresetSelection(examples, idx);
+    if (selection.kind !== 'preset') return;
+    const { presetState } = selection;
+    setVariables(presetState.variables);
+    setSubscriptsStr(presetState.subscriptsStr);
+    setOutputStr(presetState.outputStr);
+    setOperandNamesStr(presetState.operandNamesStr);
+    setActivePresetIdx(selection.activePresetIdx);
     onSelect(idx);
-  }, [examples, onSelect]);
+    onDirtyChange?.(false);
+  }, [examples, onDirtyChange, onSelect]);
 
-  // ── Mark dirty (no longer a preset) ────────────────────────────────────
+  useEffect(() => {
+    const selection = resolvePresetSelection(examples, selectedPresetIdx);
+
+    if (selection.kind === 'custom' || selection.kind === 'invalid') {
+      setActivePresetIdx(CUSTOM_IDX);
+      return;
+    }
+
+    const { presetState } = selection;
+    setVariables(presetState.variables);
+    setSubscriptsStr(presetState.subscriptsStr);
+    setOutputStr(presetState.outputStr);
+    setOperandNamesStr(presetState.operandNamesStr);
+    setActivePresetIdx(selection.activePresetIdx);
+    if (selection.dirtyState === 'clear') {
+      onDirtyChange?.(false);
+    }
+  }, [examples, onDirtyChange, selectedPresetIdx]);
 
   const markCustom = useCallback(() => {
     setActivePresetIdx(CUSTOM_IDX);
-  }, []);
-
-  // ── Variable mutations ─────────────────────────────────────────────────
+    onDirtyChange?.(true);
+  }, [onDirtyChange]);
 
   const updateVar = useCallback((idx, field, value) => {
-    setVariables(prev => {
+    setVariables((prev) => {
       const next = [...prev];
       next[idx] = { ...next[idx], [field]: value };
 
-      // Side-effects on symmetry change
       if (field === 'symmetry') {
         if (value === 'none') {
           next[idx].symAxes = null;
           next[idx].generators = '';
         } else if (value === 'custom') {
-          // Keep symAxes if present, default to all axes
           if (!next[idx].symAxes) {
             next[idx].symAxes = [...Array(next[idx].rank).keys()];
           }
         } else {
-          // Named group: default symAxes to all axes
           next[idx].symAxes = [...Array(next[idx].rank).keys()];
           next[idx].generators = '';
         }
       }
 
-      // When rank changes, clamp symAxes
       if (field === 'rank') {
         const newRank = value;
         if (next[idx].symAxes) {
-          next[idx].symAxes = next[idx].symAxes.filter(a => a < newRank);
+          next[idx].symAxes = next[idx].symAxes.filter((axis) => axis < newRank);
         }
         if (next[idx].symmetry !== 'none' && next[idx].symmetry !== 'custom') {
           next[idx].symAxes = [...Array(newRank).keys()];
@@ -220,21 +195,21 @@ export default function ExampleChooser({
   }, [markCustom]);
 
   const toggleAxis = useCallback((varIdx, axisIdx) => {
-    setVariables(prev => {
+    setVariables((prev) => {
       const next = [...prev];
-      const v = { ...next[varIdx] };
-      const axes = new Set(v.symAxes || []);
+      const variable = { ...next[varIdx] };
+      const axes = new Set(variable.symAxes || []);
       if (axes.has(axisIdx)) axes.delete(axisIdx);
       else axes.add(axisIdx);
-      v.symAxes = [...axes].sort((a, b) => a - b);
-      next[varIdx] = v;
+      variable.symAxes = [...axes].sort((a, b) => a - b);
+      next[varIdx] = variable;
       return next;
     });
     markCustom();
   }, [markCustom]);
 
   const addVar = useCallback(() => {
-    setVariables(prev => [
+    setVariables((prev) => [
       ...prev,
       { name: 'A', rank: 2, symmetry: 'none', symAxes: null, generators: '' },
     ]);
@@ -242,64 +217,43 @@ export default function ExampleChooser({
   }, [markCustom]);
 
   const removeVar = useCallback((idx) => {
-    setVariables(prev => (prev.length <= 1 ? prev : prev.filter((_, i) => i !== idx)));
+    setVariables((prev) => (prev.length <= 1 ? prev : prev.filter((_, i) => i !== idx)));
     markCustom();
   }, [markCustom]);
 
-  // ── Expression mutations ───────────────────────────────────────────────
-
-  const handleSubscriptsChange = useCallback((val) => {
-    setSubscriptsStr(val);
+  const handleSubscriptsChange = useCallback((value) => {
+    setSubscriptsStr(value);
     markCustom();
   }, [markCustom]);
 
-  const handleOutputChange = useCallback((val) => {
-    setOutputStr(val);
+  const handleOutputChange = useCallback((value) => {
+    setOutputStr(value);
     markCustom();
   }, [markCustom]);
 
-  const handleOperandNamesChange = useCallback((val) => {
-    setOperandNamesStr(val);
+  const handleOperandNamesChange = useCallback((value) => {
+    setOperandNamesStr(value);
     markCustom();
   }, [markCustom]);
-
-  // ── Variable colors ────────────────────────────────────────────────────
 
   const varColors = useMemo(() => buildVariableColors(variables), [variables]);
-
-  // ── Validation ─────────────────────────────────────────────────────────
-
   const validation = useMemo(
     () => validateAll(variables, subscriptsStr, outputStr, operandNamesStr),
     [variables, subscriptsStr, outputStr, operandNamesStr],
   );
-
-  // ── Python code ────────────────────────────────────────────────────────
-
   const pythonCode = useMemo(
     () => generatePython(variables, subscriptsStr, outputStr, operandNamesStr, dimensionN),
     [variables, subscriptsStr, outputStr, operandNamesStr, dimensionN],
   );
 
-  // ── Copy handler ───────────────────────────────────────────────────────
-
-  const handleCopy = useCallback(() => {
-    navigator.clipboard.writeText(pythonCode).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
-  }, [pythonCode]);
-
-  // ── Analyze handler ────────────────────────────────────────────────────
-
   const handleAnalyze = useCallback(() => {
     if (!validation.valid) return;
 
-    const subs = subscriptsStr.split(',').map(s => s.trim());
+    const subs = subscriptsStr.split(',').map((part) => part.trim());
     const out = outputStr.trim();
-    const opsArr = operandNamesStr.split(',').map(s => s.trim()).filter(Boolean);
+    const opsArr = operandNamesStr.split(',').map((part) => part.trim()).filter(Boolean);
     const perOpSymArr = buildPerOpSymmetry(variables, operandNamesStr, subscriptsStr);
-    const hasAnySym = perOpSymArr.some(s => s !== null);
+    const hasAnySym = perOpSymArr.some((symmetry) => symmetry !== null);
 
     const formula = `einsum('${subscriptsStr}->${out}', ${opsArr.join(', ')})`;
 
@@ -317,321 +271,292 @@ export default function ExampleChooser({
     };
 
     onCustomExample(customExample);
-  }, [validation, variables, subscriptsStr, outputStr, operandNamesStr, activePresetIdx, examples, onCustomExample]);
+    onDirtyChange?.(false);
+  }, [activePresetIdx, examples, onCustomExample, onDirtyChange, operandNamesStr, outputStr, subscriptsStr, validation.valid, variables]);
 
-  // ── Render ─────────────────────────────────────────────────────────────
-
-  return (
-    <div className="example-chooser">
-
-      {/* ── 1. Preset grid ── */}
-      <div className="example-grid">
-        {examples.map((ex, i) => (
-          <button
-            key={ex.id}
-            className={`example-card ${activePresetIdx === i ? 'active' : ''}`}
-            style={{ '--accent': ex.color }}
-            onClick={() => loadPreset(i)}
-          >
-            <div className="example-name">{ex.name}</div>
-            <code className="example-formula">{ex.formula}</code>
-            <div className="example-group">{ex.expectedGroup}</div>
-            <div className="example-desc">{ex.description}</div>
-          </button>
-        ))}
+  const builderContent = (
+    <div className="rounded-2xl border border-gray-200 bg-white p-5">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-coral">Act 1</p>
+          <h2 className="font-accent text-xl font-bold tracking-tight text-gray-900">{act?.heading}</h2>
+          <p className="mt-1 text-sm italic text-gray-600">{act?.why}</p>
+        </div>
       </div>
 
-      {/* ── 2. Variable cards ── */}
-      <div className="builder-section-label">Variables</div>
-      <div className="var-cards">
-        {variables.map((v, i) => {
-          const vc = varColors[v.name] || {};
-          const color = vc.color || '#888';
-
-          return (
-            <div
-              key={i}
-              className="var-card"
-              style={{ borderColor: color }}
-            >
-              <div className="var-card-header">
-                {/* Name input */}
-                <input
-                  className="var-name-input"
-                  value={v.name}
-                  onChange={e => updateVar(i, 'name', e.target.value)}
-                  placeholder="X"
-                  maxLength={8}
-                />
-
-                {/* Rank stepper */}
-                <div className="rank-stepper">
-                  <button
-                    onClick={() => updateVar(i, 'rank', Math.max(1, v.rank - 1))}
-                    disabled={v.rank <= 1}
-                  >-</button>
-                  <span className="rank-value">{v.rank}</span>
-                  <button
-                    onClick={() => updateVar(i, 'rank', Math.min(8, v.rank + 1))}
-                    disabled={v.rank >= 8}
-                  >+</button>
-                </div>
-
-                {/* Remove button */}
-                <button
-                  className="var-remove-btn"
-                  onClick={() => removeVar(i)}
-                  disabled={variables.length <= 1}
-                  title="Remove variable"
-                >
-                  &#x2715;
-                </button>
-              </div>
-
-              {/* Symmetry type toggles */}
-              <div className="sym-toggles">
-                {SYM_TYPES.map(st => (
-                  <button
-                    key={st}
-                    className={`sym-toggle ${v.symmetry === st ? 'active' : ''}`}
-                    onClick={() => updateVar(i, 'symmetry', st)}
-                  >
-                    {SYMMETRY_ICONS[st] ? `${SYMMETRY_ICONS[st]} ` : ''}{SYM_LABELS[st]}
-                  </button>
-                ))}
-              </div>
-
-              {/* Axis chips (for named groups and custom) */}
-              {v.symmetry !== 'none' && v.rank > 0 && (
-                <div className="axis-chips-row">
-                  {Array.from({ length: v.rank }, (_, ai) => {
-                    const isSelected = v.symAxes && v.symAxes.includes(ai);
-                    return (
-                      <button
-                        key={ai}
-                        className={`axis-chip ${isSelected ? 'selected' : ''}`}
-                        onClick={() => toggleAxis(i, ai)}
-                        title={`Axis ${ai}`}
-                      >
-                        {ai}
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-
-              {/* Cycle notation input (custom only) */}
-              {v.symmetry === 'custom' && (
-                <>
-                  <input
-                    className="gen-input"
-                    value={v.generators}
-                    onChange={e => updateVar(i, 'generators', e.target.value)}
-                    placeholder="(0 1)(2 3), (0 2)(1 3)"
-                  />
-                  <span className="gen-hint">
-                    Cycle notation, comma-separated generators. E.g. <code>(0 1)</code> swaps axes 0 and 1.
-                  </span>
-                </>
-              )}
-
-              {/* Summary badge */}
-              <div className="sym-badge" style={{ backgroundColor: color, color: contrastText(color) }}>
-                {badgeLabel(v)}
-                {badgeOrder(v) != null && (
-                  <span className="sym-order"> order {badgeOrder(v)}</span>
-                )}
-              </div>
+      {checkpointItems.length > 0 && (
+        <div className="mt-4 grid gap-3 rounded-xl border border-gray-200 bg-gray-50 p-4 sm:grid-cols-2">
+          {checkpointItems.map((item) => (
+            <div key={item.label}>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400">{item.label}</div>
+              <div className="mt-1 text-sm text-gray-700">{item.value}</div>
             </div>
-          );
-        })}
-
-        {/* Add variable card */}
-        <button className="var-card var-card-add" onClick={addVar}>
-          + Add Variable
-        </button>
-      </div>
-
-      {/* ── 3. Expression panel ── */}
-      <div className="builder-section-label">Expression</div>
-      <div className="expr-panel">
-        <div className="expr-row">
-          <span className="expr-chrome">einsum('</span>
-          <input
-            className={`expr-input ${validation.errors.some(e => e.includes('subscript') || e.includes('Subscript') || e.includes('operand')) ? 'has-error' : ''}`}
-            value={subscriptsStr}
-            onChange={e => handleSubscriptsChange(e.target.value.toLowerCase())}
-            placeholder="e.g. ia,ib"
-          />
-          <span className="expr-chrome">-&gt;</span>
-          <input
-            className={`expr-input ${validation.errors.some(e => e.includes('utput')) ? 'has-error' : ''}`}
-            value={outputStr}
-            onChange={e => handleOutputChange(e.target.value.toLowerCase())}
-            placeholder="e.g. ab (empty = scalar)"
-          />
-          <span className="expr-chrome">',</span>
-          <input
-            className={`expr-input ${validation.errors.some(e => e.includes('operand') || e.includes('Operand')) ? 'has-error' : ''}`}
-            value={operandNamesStr}
-            onChange={e => handleOperandNamesChange(e.target.value)}
-            placeholder="e.g. X, X"
-          />
-          <span className="expr-chrome">)</span>
-        </div>
-        <div className="expr-panel-label">
-          subscripts &rarr; output, operands
-        </div>
-      </div>
-
-      {/* ── 4. Real-time validation errors ── */}
-      {validation.errors.length > 0 && (
-        <div className="validation-errors">
-          {validation.errors.map((err, i) => (
-            <div key={i} className="validation-error">{err}</div>
           ))}
         </div>
       )}
 
-      {/* ── Analyze button ── */}
-      <button
-        className="analyze-btn"
-        onClick={handleAnalyze}
-        disabled={!validation.valid}
-      >
-        &#x25B6; Analyze
-      </button>
+      <div className="mt-6 space-y-4">
+        <div>
+          <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500">Variables</div>
+          <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+            {variables.map((variable, idx) => {
+              const variableColor = varColors[variable.name] || {};
+              const color = variableColor.color || '#888';
 
-      {/* ── 5. Real-time Python preview ── */}
-      <div className="python-preview">
-        <div className="python-preview-header">
-          <span className="python-preview-label">Python equivalent</span>
-          <button className="copy-btn" onClick={handleCopy}>
-            {copied ? '\u2713 Copied' : 'Copy'}
-          </button>
+              return (
+                <div
+                  key={`${variable.name}-${idx}`}
+                  className="rounded-lg border p-2"
+                  style={{ borderColor: color }}
+                >
+                  <div className="mb-1 flex items-center gap-1.5">
+                    <input
+                      className="w-16 rounded border border-gray-200 px-1.5 py-0.5 text-xs font-mono focus:border-coral focus:outline-none focus:ring-2 focus:ring-coral/30"
+                      value={variable.name}
+                      onChange={(event) => updateVar(idx, 'name', event.target.value)}
+                      placeholder="X"
+                      maxLength={8}
+                    />
+
+                    <div className="flex items-center gap-1">
+                      <button
+                        type="button"
+                        className="h-6 w-6 rounded border border-gray-200 text-xs hover:bg-gray-50 disabled:opacity-30"
+                        onClick={() => updateVar(idx, 'rank', Math.max(1, variable.rank - 1))}
+                        disabled={variable.rank <= 1}
+                      >
+                        -
+                      </button>
+                      <span className="w-4 text-center text-sm font-mono">{variable.rank}</span>
+                      <button
+                        type="button"
+                        className="h-6 w-6 rounded border border-gray-200 text-xs hover:bg-gray-50 disabled:opacity-30"
+                        onClick={() => updateVar(idx, 'rank', Math.min(8, variable.rank + 1))}
+                        disabled={variable.rank >= 8}
+                      >
+                        +
+                      </button>
+                    </div>
+
+                    <button
+                      type="button"
+                      className="ml-auto flex h-5 w-5 items-center justify-center rounded-full text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500 disabled:opacity-20"
+                      onClick={() => removeVar(idx)}
+                      disabled={variables.length <= 1}
+                      title="Remove variable"
+                    >
+                      ×
+                    </button>
+                  </div>
+
+                  <div className="mb-1 flex flex-wrap gap-1">
+                    {SYM_TYPES.map((symType) => (
+                      <button
+                        key={symType}
+                        type="button"
+                        className={cn(
+                          'cursor-pointer rounded-full border px-2 py-0.5 text-[10px] font-medium transition-colors',
+                          variable.symmetry === symType
+                            ? 'border-gray-900 bg-gray-900 text-white'
+                            : 'border-gray-200 bg-white text-gray-600 hover:border-gray-400',
+                        )}
+                        onClick={() => updateVar(idx, 'symmetry', symType)}
+                      >
+                        {SYMMETRY_ICONS[symType] ? `${SYMMETRY_ICONS[symType]} ` : ''}
+                        {SYM_LABELS[symType]}
+                      </button>
+                    ))}
+                  </div>
+
+                  {variable.symmetry !== 'none' && variable.rank > 0 && (
+                    <div className="mb-1 flex flex-wrap gap-1">
+                      {Array.from({ length: variable.rank }, (_, axisIdx) => {
+                        const isSelected = variable.symAxes && variable.symAxes.includes(axisIdx);
+                        return (
+                          <button
+                            key={axisIdx}
+                            type="button"
+                            className={cn(
+                              'h-6 w-6 rounded-full border text-[10px] font-mono transition-colors',
+                              isSelected
+                                ? 'border-gray-900 bg-gray-900 text-white'
+                                : 'border-gray-200 bg-white text-gray-500 hover:border-gray-400',
+                            )}
+                            onClick={() => toggleAxis(idx, axisIdx)}
+                            title={`Axis ${axisIdx}`}
+                          >
+                            {axisIdx}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {variable.symmetry === 'custom' && (
+                    <>
+                      <input
+                        className="mb-1 w-full rounded border border-gray-200 px-2 py-1 text-xs font-mono focus:border-coral focus:outline-none focus:ring-2 focus:ring-coral/30"
+                        value={variable.generators}
+                        onChange={(event) => updateVar(idx, 'generators', event.target.value)}
+                        placeholder="(0 1)(2 3), (0 2)(1 3)"
+                      />
+                      <span className="block text-[10px] leading-tight text-gray-400">
+                        Cycle notation, comma-separated generators. E.g. <code className="rounded bg-gray-100 px-1">(0 1)</code> swaps axes 0 and 1.
+                      </span>
+                    </>
+                  )}
+
+                  <div
+                    className="mt-2 inline-block rounded-full px-2.5 py-1 text-xs font-semibold"
+                    style={{ backgroundColor: color, color: contrastText(color) }}
+                  >
+                    {badgeLabel(variable)}
+                    {badgeOrder(variable) != null && (
+                      <span className="opacity-70"> order {badgeOrder(variable)}</span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+
+            <button
+              type="button"
+              className="self-center rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 transition-colors hover:border-gray-400 hover:bg-gray-50"
+              onClick={addVar}
+            >
+              + Add Variable
+            </button>
+          </div>
         </div>
-        <PythonHighlight code={pythonCode} />
-      </div>
 
-      {/* ── 6. Dimension slider ── */}
-      <div className="dimension-slider">
-        <label>
-          Dimension <strong>n = {dimensionN}</strong>
-          <input
-            type="range"
-            min={2}
-            max={20}
-            value={dimensionN}
-            onChange={e => onDimensionChange(Number(e.target.value))}
-          />
-        </label>
-        <span className="dim-hint">Affects Burnside counts &amp; cost (steps 6-7)</span>
+        <div>
+          <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500">Expression</div>
+          <div className="my-4">
+            <div className="flex flex-wrap items-start gap-2">
+              <span className="whitespace-nowrap pt-1.5 font-mono text-sm font-semibold text-coral">einsum(&#39;</span>
+              <div className="flex min-w-[60px] flex-1 flex-col items-center">
+                <input
+                  className={cn(
+                    'w-full rounded-lg border border-gray-200 px-3 py-1.5 font-mono text-sm focus:border-coral focus:outline-none focus:ring-2 focus:ring-coral/30',
+                    validation.errors.some((error) => error.includes('subscript') || error.includes('Subscript') || error.includes('operand')) && 'border-red-300',
+                  )}
+                  value={subscriptsStr}
+                  onChange={(event) => handleSubscriptsChange(event.target.value.toLowerCase())}
+                  placeholder="ia,ib"
+                />
+                <span className="mt-1 text-[9px] font-semibold uppercase tracking-wider text-gray-400">subscripts</span>
+              </div>
+              <span className="whitespace-nowrap pt-1.5 font-mono text-sm text-gray-400">&rarr;</span>
+              <div className="flex min-w-[60px] flex-1 flex-col items-center">
+                <input
+                  className={cn(
+                    'w-full rounded-lg border border-gray-200 px-3 py-1.5 font-mono text-sm focus:border-coral focus:outline-none focus:ring-2 focus:ring-coral/30',
+                    validation.errors.some((error) => error.includes('utput')) && 'border-red-300',
+                  )}
+                  value={outputStr}
+                  onChange={(event) => handleOutputChange(event.target.value.toLowerCase())}
+                  placeholder="ab"
+                />
+                <span className="mt-1 text-[9px] font-semibold uppercase tracking-wider text-gray-400">output</span>
+              </div>
+              <span className="whitespace-nowrap pt-1.5 font-mono text-sm text-gray-400">&#39;,</span>
+              <div className="flex min-w-[60px] flex-1 flex-col items-center">
+                <input
+                  className={cn(
+                    'w-full rounded-lg border border-gray-200 px-3 py-1.5 font-mono text-sm focus:border-coral focus:outline-none focus:ring-2 focus:ring-coral/30',
+                    validation.errors.some((error) => error.includes('operand') || error.includes('Operand')) && 'border-red-300',
+                  )}
+                  value={operandNamesStr}
+                  onChange={(event) => handleOperandNamesChange(event.target.value)}
+                  placeholder="X, X"
+                />
+                <span className="mt-1 text-[9px] font-semibold uppercase tracking-wider text-gray-400">operands</span>
+              </div>
+              <span className="whitespace-nowrap pt-1.5 font-mono text-sm text-gray-400">)</span>
+              <button
+                type="button"
+                className="shrink-0 whitespace-nowrap rounded-lg bg-coral px-5 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-coral-hover hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-40"
+                onClick={handleAnalyze}
+                disabled={!validation.valid}
+              >
+                &#x25B6; Analyze
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {validation.errors.length > 0 && (
+          <div className="space-y-0.5 rounded-lg border border-red-200 bg-red-50 px-3 py-2">
+            {validation.errors.map((error, idx) => (
+              <div key={idx} className="flex items-center gap-1.5 text-xs text-red-600">
+                <span className="shrink-0 text-red-400">&#x26A0;</span>
+                {error}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
-}
 
-// ---------------------------------------------------------------------------
-// Python syntax highlighting (kept from previous implementation)
-// ---------------------------------------------------------------------------
-
-/** Lightweight Python syntax highlighting via regex -> spans */
-function PythonHighlight({ code }) {
-  const html = useMemo(() => highlightPython(code), [code]);
   return (
-    <pre className="python-code">
-      <code dangerouslySetInnerHTML={{ __html: html }} />
-    </pre>
+    <div className="space-y-6">
+      <div className="md:hidden" aria-label="Mobile preset examples">
+        <div className="grid gap-2">
+          <button
+            type="button"
+            className={cn(
+              'rounded-xl border px-4 py-3 text-left transition-colors',
+              activePresetIdx === CUSTOM_IDX
+                ? 'border-coral bg-coral-light/50'
+                : 'border-gray-200 hover:border-gray-300',
+            )}
+            onClick={() => {
+              setActivePresetIdx(CUSTOM_IDX);
+              onCustom?.();
+            }}
+          >
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium text-gray-900">Custom</span>
+              <span className="rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-gray-500">
+                Freeform
+              </span>
+            </div>
+            <code className="mt-1 block text-[11px] text-gray-500">Define your own contraction</code>
+            <p className="mt-1 text-xs text-gray-600">Keep the current builder state and switch into custom mode.</p>
+          </button>
+
+          {presetSummaries.map((summary, idx) => (
+            <button
+              key={summary.id}
+              type="button"
+              onClick={() => loadPreset(idx)}
+              className="flex w-full items-start gap-3 rounded-xl border border-gray-200 px-3 py-2.5 text-left"
+            >
+              <span className="mt-0.5 h-full min-h-10 w-1 shrink-0 rounded-full" style={{ backgroundColor: summary.color }} />
+              <span className="min-w-0 flex-1">
+                <span className="flex items-center gap-2">
+                  <span className="truncate text-sm font-medium text-gray-900">{summary.name}</span>
+                  {summary.caseType && <CaseBadge caseType={summary.caseType} size="xs" variant="compact" interactive={false} />}
+                </span>
+                <code className="mt-1 block truncate text-[11px] text-gray-500">{summary.formula}</code>
+                <span className="mt-1 block text-[11px] text-gray-400">{summary.expectedGroup}</span>
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,7fr)_minmax(320px,3fr)]">
+        <div className="min-w-0">{builderContent}</div>
+        <div className="min-w-0">
+          <PythonCodeBlock
+            code={pythonCode}
+            title="Reference Code"
+            description="This is a generated Python sketch of the contraction you are about to analyze."
+          />
+        </div>
+      </div>
+    </div>
   );
-}
-
-function highlightPython(code) {
-  // Tokenize then reassemble with spans -- avoids regex-on-HTML issues
-  const tokens = [];
-  const lines = code.split('\n');
-
-  for (const line of lines) {
-    let rest = line;
-
-    // Extract comment first
-    const commentIdx = rest.indexOf('#');
-    let comment = '';
-    if (commentIdx >= 0) {
-      comment = rest.slice(commentIdx);
-      rest = rest.slice(0, commentIdx);
-    }
-
-    // Extract strings from the non-comment part
-    let i = 0;
-    while (i < rest.length) {
-      const ch = rest[i];
-      if (ch === "'" || ch === '"') {
-        // Find matching close
-        const close = rest.indexOf(ch, i + 1);
-        if (close >= 0) {
-          // Push text before string
-          if (i > 0) tokens.push({ type: 'code', text: rest.slice(0, i) });
-          tokens.push({ type: 'str', text: rest.slice(i, close + 1) });
-          rest = rest.slice(close + 1);
-          i = 0;
-          continue;
-        }
-      }
-      i++;
-    }
-
-    // Remaining code
-    if (rest) tokens.push({ type: 'code', text: rest });
-    if (comment) tokens.push({ type: 'comment', text: comment });
-    tokens.push({ type: 'newline' });
-  }
-
-  // Render tokens to HTML
-  const KEYWORDS = new Set(['import', 'from', 'as', 'for', 'in', 'if', 'else', 'def', 'return',
-    'class', 'sum', 'range', 'list', 'True', 'False', 'None']);
-
-  function esc(s) {
-    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  }
-
-  function highlightCode(text) {
-    // Single-pass tokenizer to avoid nested span issues
-    const re = /(\b\d+\.?\d*\b)|(\b[a-zA-Z_]\w*\b)/g;
-    let result = '';
-    let last = 0;
-    let match;
-    while ((match = re.exec(text)) !== null) {
-      result += esc(text.slice(last, match.index));
-      const num = match[1];
-      const word = match[2];
-      if (num) {
-        result += `<span class="hl-num">${esc(num)}</span>`;
-      } else if (KEYWORDS.has(word)) {
-        result += `<span class="hl-kw">${esc(word)}</span>`;
-      } else {
-        // Check if next non-space char is '(' -> function call
-        const after = text.slice(re.lastIndex).match(/^\s*\(/);
-        if (after) {
-          result += `<span class="hl-fn">${esc(word)}</span>`;
-        } else {
-          result += esc(word);
-        }
-      }
-      last = re.lastIndex;
-    }
-    result += esc(text.slice(last));
-    return result;
-  }
-
-  const parts = [];
-  for (const tok of tokens) {
-    if (tok.type === 'newline') parts.push('\n');
-    else if (tok.type === 'str') parts.push(`<span class="hl-str">${esc(tok.text)}</span>`);
-    else if (tok.type === 'comment') parts.push(`<span class="hl-cmt">${esc(tok.text)}</span>`);
-    else parts.push(highlightCode(tok.text));
-  }
-
-  // Remove trailing newline
-  const result = parts.join('');
-  return result.endsWith('\n') ? result.slice(0, -1) : result;
 }

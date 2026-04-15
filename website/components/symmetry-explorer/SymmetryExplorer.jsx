@@ -1,30 +1,25 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { EXAMPLES } from './data/examples.js';
 import { parseCycleNotation } from './engine/cycleParser.js';
 import { buildVariableColors } from './engine/colorPalette.js';
 import { analyzeExample } from './engine/pipeline.js';
-import { pickDefaultOrbitRow } from './engine/teachingModel.js';
+import { buildMentalModelCode, pickDefaultOrbitRow } from './engine/teachingModel.js';
+import StickyBar from './components/StickyBar.jsx';
+import { EXPLORER_ACTS, buildAnalysisCheckpoint } from './components/explorerNarrative.js';
+import NarrativeCallout from './components/NarrativeCallout.jsx';
 import ExampleChooser from './components/ExampleChooser.jsx';
+import PresetSidebar from './components/PresetSidebar.jsx';
 import BipartiteGraph from './components/BipartiteGraph.jsx';
 import MatrixView from './components/MatrixView.jsx';
 import SigmaLoop from './components/SigmaLoop.jsx';
 import GroupView from './components/GroupView.jsx';
-import BurnsideView from './components/BurnsideView.jsx';
-import CostView from './components/CostView.jsx';
-import PseudocodeRail from './components/PseudocodeRail.jsx';
-import OrbitInspector from './components/OrbitInspector.jsx';
+import PythonCodeBlock from './components/PythonCodeBlock.jsx';
+import ComponentCostView from './components/ComponentCostView.jsx';
+import TotalCostView from './components/TotalCostView.jsx';
+import { mergeObservedActEntries, pickTopVisibleAct } from './lib/activeAct.js';
+import { getPresetControlSelection } from './lib/presetSelection.js';
+import { reduceMentalModelVisibility } from './lib/mentalModelState.js';
 import './styles.css';
-
-const STEPS = [
-  { id: 'example', num: 1, title: 'Choose Example' },
-  { id: 'graph', num: 2, title: 'Bipartite Graph' },
-  { id: 'matrix', num: 3, title: 'Incidence Matrix M' },
-  { id: 'sigma', num: 4, title: 'σ-Loop & π Detection' },
-  { id: 'group', num: 5, title: 'Group Construction' },
-  { id: 'framework', num: 6, title: 'Mental Framework' },
-  { id: 'burnside', num: 7, title: 'Burnside For Evaluation Cost' },
-  { id: 'cost', num: 8, title: 'Reduction Cost' },
-];
 
 const CUSTOM_IDX = -1;
 
@@ -67,9 +62,15 @@ export default function App() {
   const [customExample, setCustomExample] = useState(null);
   const [dimensionN, setDimensionN] = useState(5);
   const [selectedOrbitIdx, setSelectedOrbitIdx] = useState(-1);
+  const [activeActId, setActiveActId] = useState(EXPLORER_ACTS[0].id);
+  const [isDirty, setIsDirty] = useState(false);
+  const [showMentalModel, setShowMentalModel] = useState(false);
+  const observedEntriesRef = useRef(new Map());
+
   // Resolve the active example: preset or custom
   const isCustom = exampleIdx === CUSTOM_IDX;
   const example = isCustom ? customExample : EXAMPLES[exampleIdx];
+  const selectedPresetIdx = getPresetControlSelection(exampleIdx, isDirty);
 
   // Derive variable colors from the example's variables (works for both presets and custom)
   const variableColors = useMemo(() => {
@@ -82,13 +83,24 @@ export default function App() {
 
   // Handle preset selection
   const handleSelect = useCallback((idx) => {
+    setShowMentalModel((isOpen) => reduceMentalModelVisibility(isOpen, 'selectPreset'));
     setExampleIdx(idx);
+    setIsDirty(false);
+    setSelectedOrbitIdx(-1);
   }, []);
 
   // Handle custom example submission
   const handleCustomExample = useCallback((ex) => {
+    setShowMentalModel((isOpen) => reduceMentalModelVisibility(isOpen, 'customExample'));
     setCustomExample(ex);
     setExampleIdx(CUSTOM_IDX);
+    setSelectedOrbitIdx(-1);
+  }, []);
+
+  const handleCustomMode = useCallback(() => {
+    setShowMentalModel((isOpen) => reduceMentalModelVisibility(isOpen, 'customMode'));
+    setExampleIdx(CUSTOM_IDX);
+    setSelectedOrbitIdx(-1);
   }, []);
 
   const analysis = useMemo(() => {
@@ -106,7 +118,7 @@ export default function App() {
     matrixData,
     sigmaResults,
     symmetry: group,
-    burnside,
+    componentData,
     costModel: cost,
   } = analysis || {};
 
@@ -117,11 +129,39 @@ export default function App() {
     return pickDefaultOrbitRow(orbitRows);
   }, [cost, selectedOrbitIdx]);
 
+  const mentalModelCode = useMemo(
+    () => buildMentalModelCode(cost?.orbitRows?.[resolvedSelectedOrbitIdx] ?? null),
+    [cost, resolvedSelectedOrbitIdx],
+  );
+
   // Check if per-op symmetry is active for any operand
   const hasPerOpSym = normalizedExample && (
     normalizedExample.perOpSymmetry === 'symmetric' ||
     (Array.isArray(normalizedExample.perOpSymmetry) && normalizedExample.perOpSymmetry.some(s => s === 'symmetric' || (s && typeof s === 'object')))
   );
+
+  useEffect(() => {
+    const sections = EXPLORER_ACTS
+      .map(({ id }) => document.getElementById(id))
+      .filter(Boolean);
+
+    observedEntriesRef.current = new Map();
+
+    if (sections.length === 0) return undefined;
+
+    const observer = new IntersectionObserver((entries) => {
+      observedEntriesRef.current = mergeObservedActEntries(observedEntriesRef.current, entries);
+      setActiveActId((current) => pickTopVisibleAct(Array.from(observedEntriesRef.current.values()), current));
+    }, {
+      rootMargin: '-18% 0px -55% 0px',
+      threshold: [0, 0.2, 0.5],
+    });
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, [analysis, example]);
+
+  const checkpointItems = buildAnalysisCheckpoint({ example: normalizedExample, group });
 
   return (
     <div className="app">
@@ -130,16 +170,16 @@ export default function App() {
         <p className="subtitle">Interactive walkthrough of <em>einsum symmetry detection</em></p>
       </header>
 
-      <nav className="step-nav">
-        {STEPS.map(s => (
-          <a key={s.id} href={`#${s.id}`} className="step-link">
-            <span className="step-num">{s.num}</span>
-            <span className="step-title">{s.title}</span>
-          </a>
-        ))}
-      </nav>
+      <StickyBar
+        example={example}
+        group={group}
+        dimensionN={dimensionN}
+        onDimensionChange={setDimensionN}
+        activeActId={activeActId}
+      />
 
-      <main className="main main-full">
+      <div className="mx-auto flex max-w-[1600px] items-start gap-8 px-6 pb-16 md:px-10">
+      <main className="main main-full min-w-0 flex-1">
           {/* -- Prominent einsum banner -- */}
           {example && group && (
             <div className="einsum-banner">
@@ -151,25 +191,31 @@ export default function App() {
             </div>
           )}
 
-          <section id="example" className="section">
-            <SectionHeader num={1} title="Choose an Example" />
+          <section id="setup" className="section scroll-mt-24">
             <ExampleChooser
               examples={EXAMPLES}
-              selected={exampleIdx}
               onSelect={handleSelect}
-              example={example}
+              selectedPresetIdx={selectedPresetIdx}
               dimensionN={dimensionN}
-              onDimensionChange={setDimensionN}
+              onCustom={handleCustomMode}
               onCustomExample={handleCustomExample}
+              onDirtyChange={setIsDirty}
+              act={EXPLORER_ACTS[0]}
+              checkpointItems={checkpointItems}
             />
           </section>
 
           {/* Only render pipeline sections when we have results */}
           {analysis && example && (
             <>
-              <section id="graph" className="section">
-                <SectionHeader num={2} title="Bipartite Graph" />
-                <p className="section-desc">
+              <section id="structure" className="section scroll-mt-24 border-t border-gray-200 pt-10 pb-6">
+                <ActHeader
+                  number={2}
+                  heading={EXPLORER_ACTS[1].heading}
+                  question={EXPLORER_ACTS[1].question}
+                />
+                <NarrativeCallout label="Why this matters">{EXPLORER_ACTS[1].why}</NarrativeCallout>
+                <p className="section-desc mt-4">
                   Left vertices (U) are operand axis-classes. Right vertices are index labels,
                   partitioned into <span className="pill pill-v">V free</span> and{' '}
                   <span className="pill pill-w">W summed</span>.
@@ -177,86 +223,119 @@ export default function App() {
                     <> Per-operand symmetry <em>collapses</em> each operand&apos;s axes into a single U-vertex.</>
                   )}
                 </p>
-                <BipartiteGraph graph={graph} example={normalizedExample} variableColors={variableColors} />
-              </section>
-
-              <section id="matrix" className="section">
-                <SectionHeader num={3} title="Incidence Matrix M" />
-                <p className="section-desc">
-                  Each cell M[u, l] is the multiplicity of label l in axis-class u.
-                  Column fingerprints (reading down each column) identify structurally equivalent labels.
-                </p>
-                <MatrixView matrixData={matrixData} graph={graph} example={normalizedExample} variableColors={variableColors} />
-              </section>
-
-              <section id="sigma" className="section">
-                <SectionHeader num={4} title="σ-Loop & π Detection" />
-                <p className="section-desc">
-                  When identical operands are swapped (σ), the incidence matrix M gets its
-                  rows shuffled into σ(M). We search for a column relabeling π that
-                  recovers the original: π(σ(M)) = M. Valid π mappings are kept on the
-                  full label set, so cross V/W symmetries are surfaced instead of discarded.
-                </p>
-                <SigmaLoop
-                  results={sigmaResults}
-                  graph={graph}
-                  matrixData={matrixData}
-                  example={normalizedExample}
-                  variableColors={variableColors}
-                />
-              </section>
-
-              <section id="group" className="section">
-                <SectionHeader num={5} title="Group Construction" />
-                <p className="section-desc">
-                  Collected π&apos;s are generators for one full symmetry group on the active labels.
-                  Dimino&apos;s algorithm enumerates all group elements by composing generators until closure.
-                </p>
-                <GroupView group={group} />
-              </section>
-
-              <section id="framework" className="section">
-                <SectionHeader num={6} title="Mental Framework: Compute Once, Reduce Many" />
-                <p className="section-desc">
-                  This is the mental model for everything that follows. The group-theory machinery
-                  only tells us what <code>RepSet</code> and <code>Outs(rep)</code> are for this
-                  contraction step.
-                </p>
-                <div className="mental-model-grid">
-                  <PseudocodeRail activeStepId="framework" selectedOrbitRow={cost?.orbitRows?.[resolvedSelectedOrbitIdx] ?? null} />
-                  <OrbitInspector
-                    orbitRows={cost?.orbitRows ?? []}
-                    selectedOrbitIdx={resolvedSelectedOrbitIdx}
-                    onSelectOrbit={setSelectedOrbitIdx}
-                    kicker="Orbit Example"
-                    title="Selected orbit driving the code comments"
-                    description="Pick one representative orbit here. The code comments on the left update to show the same rep, its projected outputs, and one concrete coeff value."
-                  />
+                <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+                  <div>
+                    <h3 className="mb-2 font-accent text-sm font-semibold text-gray-900">Bipartite Graph</h3>
+                    <BipartiteGraph graph={graph} example={normalizedExample} variableColors={variableColors} />
+                  </div>
+                  <div>
+                    <h3 className="mb-2 font-accent text-sm font-semibold text-gray-900">Incidence Matrix M</h3>
+                    <MatrixView matrixData={matrixData} graph={graph} example={normalizedExample} variableColors={variableColors} />
+                  </div>
+                </div>
+                <p className="mt-4 text-sm text-gray-600">{EXPLORER_ACTS[1].bridge}</p>
+                <div className="mt-4">
+                  <NarrativeCallout label="Takeaway" tone="accent">{EXPLORER_ACTS[1].takeaway}</NarrativeCallout>
                 </div>
               </section>
 
-              <section id="burnside" className="section">
-                <SectionHeader num={7} title="Burnside For Evaluation Cost" />
-                <p className="section-desc">
-                  Burnside&apos;s lemma counts full tuple orbits under the full group. In the mental
-                  framework above, this is the line that loops over <code>RepSet</code> and
-                  increments <code>evaluation_cost</code>.
-                </p>
-                <BurnsideView
-                  burnside={burnside}
-                  group={group}
-                  dimensionN={dimensionN}
+              <section id="proof" className="section scroll-mt-24 border-t border-gray-200 pt-10 pb-6">
+                <ActHeader
+                  number={3}
+                  heading={EXPLORER_ACTS[2].heading}
+                  question={EXPLORER_ACTS[2].question}
                 />
+                <NarrativeCallout label="Why this matters">{EXPLORER_ACTS[2].why}</NarrativeCallout>
+                <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+                  <div>
+                    <h3 className="mb-2 font-accent text-sm font-semibold text-gray-900">σ-Loop & π Detection</h3>
+                    <SigmaLoop
+                      results={sigmaResults}
+                      graph={graph}
+                      matrixData={matrixData}
+                      example={normalizedExample}
+                      variableColors={variableColors}
+                    />
+                  </div>
+                  <div>
+                    <h3 className="mb-2 font-accent text-sm font-semibold text-gray-900">Group Construction</h3>
+                    <GroupView group={group} />
+                  </div>
+                </div>
+                <p className="mt-4 text-sm text-gray-600">{EXPLORER_ACTS[2].bridge}</p>
+                <div className="mt-4">
+                  <NarrativeCallout label="Takeaway" tone="accent">{EXPLORER_ACTS[2].takeaway}</NarrativeCallout>
+                </div>
               </section>
 
-              <section id="cost" className="section">
-                <SectionHeader num={8} title="Reduction Cost" />
-                <p className="section-desc">
-                  Reduction cost counts how many output bins the symmetry-compressed representatives
-                  still update. In the mental framework above, this is the inner loop over
-                  <code>Outs(rep)</code>, not the Burnside count itself.
-                </p>
-                <CostView costModel={cost} />
+              <section id="savings" className="section scroll-mt-24 border-t border-gray-200 pt-10 pb-6">
+                <ActHeader
+                  number={4}
+                  heading={EXPLORER_ACTS[3].heading}
+                  question={EXPLORER_ACTS[3].question}
+                />
+                <div className="mt-6 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                  <div className="max-w-3xl">
+                    <NarrativeCallout label="Why this matters">{EXPLORER_ACTS[3].why}</NarrativeCallout>
+                  </div>
+                  <button
+                    type="button"
+                    className="inline-flex w-full items-center justify-center rounded-full border border-coral/25 bg-coral-light px-4 py-2 text-sm font-semibold text-coral transition-colors hover:border-coral/40 hover:bg-coral-light/80 lg:w-auto lg:self-start"
+                    aria-label="Open mental framework"
+                    onClick={() => setShowMentalModel(true)}
+                  >
+                    Open mental framework
+                  </button>
+                </div>
+
+                {showMentalModel && (
+                  <div
+                    className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 backdrop-blur-sm"
+                    onClick={() => setShowMentalModel(false)}
+                  >
+                    <div
+                      className="max-h-[85vh] w-[min(960px,92vw)] overflow-y-auto rounded-xl bg-white shadow-2xl"
+                      role="dialog"
+                      aria-modal="true"
+                      aria-labelledby="mental-framework-modal-title"
+                      onClick={(event) => event.stopPropagation()}
+                    >
+                      <div className="px-5 pb-5 pt-0">
+                        <PythonCodeBlock
+                          code={mentalModelCode}
+                          title="Mental Framework"
+                          description="Read this as the mental model for the rest of Act 4: first count one symmetry-unique multiplication representative, then count every distinct output-bin update it causes."
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div className="mt-6">
+                  <ComponentCostView
+                    componentData={componentData}
+                    costModel={cost}
+                    dimensionN={dimensionN}
+                    allLabels={group.allLabels}
+                    vLabels={group.vLabels}
+                    selectedOrbitIdx={resolvedSelectedOrbitIdx}
+                    onSelectOrbit={setSelectedOrbitIdx}
+                  />
+                </div>
+
+                <div className="mt-6">
+                  <TotalCostView
+                    costModel={cost}
+                    componentData={componentData}
+                    dimensionN={dimensionN}
+                    numTerms={normalizedExample?.subscripts?.length ?? 1}
+                  />
+                </div>
+
+                <p className="mt-4 text-sm text-gray-600">{EXPLORER_ACTS[3].bridge}</p>
+                <div className="mt-4">
+                  <NarrativeCallout label="Takeaway" tone="accent">{EXPLORER_ACTS[3].takeaway}</NarrativeCallout>
+                </div>
               </section>
             </>
           )}
@@ -268,15 +347,28 @@ export default function App() {
             </div>
           )}
       </main>
+      <PresetSidebar
+        examples={EXAMPLES}
+        selectedPresetIdx={selectedPresetIdx}
+        onSelect={handleSelect}
+        onCustom={handleCustomMode}
+      />
+      </div>
     </div>
   );
 }
 
-function SectionHeader({ num, title }) {
+function ActHeader({ number, heading, question }) {
   return (
-    <div className="section-header">
-      <span className="section-num">{num}</span>
-      <h2>{title}</h2>
+    <div className="mb-8 flex items-start gap-4">
+      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-coral text-sm font-mono font-bold text-white">
+        {number}
+      </span>
+      <div className="flex-1">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-coral">Act {number}</p>
+        <h2 className="font-accent text-xl font-bold tracking-tight text-gray-900">{heading}</h2>
+        <p className="mt-1 text-sm italic text-gray-600">{question}</p>
+      </div>
     </div>
   );
 }
