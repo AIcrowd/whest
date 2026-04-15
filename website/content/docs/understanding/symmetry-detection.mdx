@@ -268,7 +268,10 @@ npm run dev
 
 ## Worked examples
 
-### Block symmetry: `einsum('ab,cd->abcd', X, X)`
+Click to expand each example.
+
+<Accordions>
+<Accordion title="Block symmetry: einsum('ab,cd->abcd', X, X)">
 
 Consider two identical dense matrices `X`. The bipartite graph has one
 U-vertex per axis (four total), one label per column, and no W-labels
@@ -299,7 +302,8 @@ pi(a) = c,  pi(b) = d,  pi(c) = a,  pi(d) = b
 So pi = (a c)(b d). Two disjoint 2-cycles from one sigma. The result is
 **block S_2: `{(a,b), (c,d)}`**.
 
-### Per-index symmetry: `einsum('ia,ib->ab', X, X)`
+</Accordion>
+<Accordion title="Per-index symmetry: einsum('ia,ib->ab', X, X)">
 
 This computes X^T X, which is symmetric. U-vertices:
 
@@ -316,7 +320,8 @@ pi(a) = b,  pi(b) = a,  pi(i) = i
 Cycle structure on V: single 2-cycle (a b) -- **per-index `S_2{a, b}`**.
 X^T X is symmetric in its two output indices, as expected.
 
-### Cautionary note: the C3 axis-merging bug
+</Accordion>
+<Accordion title="Cautionary note: the C3 axis-merging bug">
 
 `einsum('ijk,jki->ik', T, T)` with C3 symmetry declared on T was falsely
 detected as having `S_2{i,k}` output symmetry. The root cause was orbit-based
@@ -337,6 +342,9 @@ The fix has two parts:
    directly into the sigma-loop (Source A) alongside identical-operand
    swap generators (Source B). Dimino's algorithm closes the group from the
    discovered pi generators, producing C3 (not S2) for this case.
+
+</Accordion>
+</Accordions>
 
 ## V-side and W-side
 
@@ -370,7 +378,8 @@ When the generated group equals S_k (the full symmetric group, checked via
 When the group is a proper subgroup (e.g., C_3 from `einsum('ij,jk,ki->', A, A, A)`),
 Burnside's lemma gives the exact unique element count.
 
-### Worked example: tr(A^3)
+<Accordions>
+<Accordion title="Worked example: tr(A³)">
 
 For `einsum('ij,jk,ki->', A, A, A)` with the same n x n matrix A:
 
@@ -385,6 +394,9 @@ For `einsum('ij,jk,ki->', A, A, A)` with the same n x n matrix A:
 
 For n=10: 340 unique elements instead of 220 (S_3), giving a more accurate
 (higher) FLOP estimate.
+
+</Accordion>
+</Accordions>
 
 ## Complexity bound
 

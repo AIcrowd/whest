@@ -1,5 +1,6 @@
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { MDXComponents } from 'mdx/types';
+import { Accordions, Accordion } from 'fumadocs-ui/components/accordion';
 import ApiReference from './api-reference';
 import SymmetryExplorer from './symmetry-explorer';
 import SortableTable from './shared/SortableTable';
@@ -12,6 +13,8 @@ export function getMDXComponents(components?: MDXComponents) {
     SymmetryExplorer,
     SortableTable,
     Mermaid,
+    Accordions,
+    Accordion,
     ...components,
   } satisfies MDXComponents;
 }
