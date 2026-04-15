@@ -8,7 +8,9 @@ const configUrl = pathToFileURL(path.join(websiteRoot, 'next.config.mjs')).href;
 
 async function loadConfig(nodeEnv) {
   const previousNodeEnv = process.env.NODE_ENV;
+  const previousFumadocsMdx = process.env._FUMADOCS_MDX;
   process.env.NODE_ENV = nodeEnv;
+  process.env._FUMADOCS_MDX = '1';
 
   try {
     const module = await import(
@@ -20,6 +22,12 @@ async function loadConfig(nodeEnv) {
       delete process.env.NODE_ENV;
     } else {
       process.env.NODE_ENV = previousNodeEnv;
+    }
+
+    if (previousFumadocsMdx === undefined) {
+      delete process.env._FUMADOCS_MDX;
+    } else {
+      process.env._FUMADOCS_MDX = previousFumadocsMdx;
     }
   }
 }
