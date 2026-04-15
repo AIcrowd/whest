@@ -17,15 +17,19 @@ test('operation doc parity components are split into dedicated renderers', async
   const sectionSource = await readSource('components/api-reference/OperationDocSection.tsx');
   const exampleSource = await readSource('components/api-reference/OperationDocExample.tsx');
   const navSource = await readSource('components/api-reference/OperationDocNav.tsx');
+  const linkSource = await readSource('components/api-reference/OperationDocLink.tsx');
 
   assert.match(typeSource, /export interface OperationDocRecord/);
   assert.match(headerSource, /show source/i);
   assert.match(overlaySource, /Weight/);
   assert.match(sectionSource, /Parameters/);
   assert.match(sectionSource, /Returns/);
+  assert.match(sectionSource, /OperationDocLink/);
   assert.match(exampleSource, /CodeBlock/);
+  assert.match(linkSource, /canonical/i);
   assert.match(navSource, /Previous/);
   assert.match(navSource, /Next/);
+  assert.match(navSource, /OperationDocLink/);
 });
 
 test('histogram structured manifest carries parity-ready content', async () => {

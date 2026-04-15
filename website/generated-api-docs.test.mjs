@@ -43,6 +43,8 @@ test('api reference table is flattened and link-aware', async () => {
 
   assert.match(operationRow, /from 'next\/link'/);
   assert.match(operationRow, /href/);
+  assert.match(operationRow, /styles\.opLink/);
+  assert.doesNotMatch(operationRow, /<code>{op\.whest_ref}<\/code>/);
   assert.doesNotMatch(operationRow, /expanded|onToggle|detailRow/);
 
   assert.match(filterBar, /All areas/);

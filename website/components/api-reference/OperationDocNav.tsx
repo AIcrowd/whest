@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import OperationDocLink from './OperationDocLink';
 import styles from './styles.module.css';
 import type {OperationNavLink} from './op-doc-types';
 
@@ -16,13 +16,16 @@ function NavCard({
   }
 
   return (
-    <Link
+    <OperationDocLink
       href={link.href}
+      label={
+        <>
+          <span className={styles.docNavLabel}>{title}</span>
+          <span className={styles.docNavValue}>{link.label}</span>
+        </>
+      }
       className={`${styles.docNavCard} ${align === 'right' ? styles.docNavCardRight : ''}`}
-    >
-      <span className={styles.docNavLabel}>{title}</span>
-      <span className={styles.docNavValue}>{link.label}</span>
-    </Link>
+    />
   );
 }
 

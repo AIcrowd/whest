@@ -154,8 +154,18 @@
   text-decoration: none;
 }
 
-.opName a:hover code {
+.opName a:hover .opLink {
   text-decoration: underline;
+}
+
+.opLink {
+  color: #c83c38;
+  font-weight: 550;
+  text-decoration: none;
+}
+
+.opLinkMuted {
+  color: hsl(var(--muted-foreground));
 }
 
 .opWeight {

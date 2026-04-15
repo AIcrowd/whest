@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import OperationDocLink from './OperationDocLink';
 import styles from './styles.module.css';
 import type {DocField, DocLink} from './op-doc-types';
 
@@ -16,19 +16,14 @@ function joinBody(lines: string[]) {
 function renderLink(link: DocLink) {
   const label = link.label.startsWith('we.') ? link.label : `we.${link.label}`;
 
-  if (link.href) {
-    return <Link href={link.href}>{label}</Link>;
-  }
-
-  if (link.external_url) {
-    return (
-      <a href={link.external_url} target="_blank" rel="noreferrer">
-        {link.label}
-      </a>
-    );
-  }
-
-  return <span>{label}</span>;
+  return (
+    <OperationDocLink
+      label={link.href ? label : link.label}
+      href={link.href}
+      externalUrl={link.external_url}
+      muted={!link.href && !link.external_url}
+    />
+  );
 }
 
 export default function OperationDocSection(props: OperationDocSectionProps) {

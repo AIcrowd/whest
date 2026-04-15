@@ -33,7 +33,7 @@ function renderFormula(op: Operation) {
 }
 
 export default function OperationRow({op}: {op: Operation}): React.ReactElement {
-  const opLabel = <code>{op.whest_ref}</code>;
+  const opLabel = <span className={styles.opLink}>{op.whest_ref}</span>;
 
   return (
     <tr className={styles.opRow}>
