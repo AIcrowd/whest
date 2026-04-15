@@ -677,7 +677,7 @@ def render_operation_stub(op: OperationDocRecord) -> str:
     """Render a generated standalone MDX page stub for one canonical operation."""
     return (
         f'---\n'
-        f'title: "{op.name}"\n'
+        f'title: "{op.whest_ref}"\n'
         f'---\n\n'
         f"{HEADER}\n"
         f'<OperationDocPage name="{op.name}" />\n'

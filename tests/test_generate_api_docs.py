@@ -75,7 +75,9 @@ def test_write_generated_operation_artifacts(tmp_path):
     assert page_path.exists()
     assert docs_manifest_path.exists()
     assert refs_manifest_path.exists()
-    assert '<OperationDocPage name="absolute" />' in page_path.read_text()
+    page_text = page_path.read_text()
+    assert 'title: "`we.absolute`"' in page_text
+    assert '<OperationDocPage name="absolute" />' in page_text
 
     refs_manifest = mod.json.loads(refs_manifest_path.read_text())
     assert refs_manifest["abs"]["label"] == "`we.absolute`"
