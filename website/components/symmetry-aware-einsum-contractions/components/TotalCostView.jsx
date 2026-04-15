@@ -1,5 +1,12 @@
 import CaseBadge from './CaseBadge.jsx';
+import ExplorerMetricCard from './ExplorerMetricCard.jsx';
 import NarrativeCallout from './NarrativeCallout.jsx';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+
+function InlineCodeList({ values }) {
+  if (!values?.length) return <span className="text-muted-foreground">—</span>;
+  return <code className="font-mono text-xs text-foreground">{values.join(', ')}</code>;
+}
 
 export default function TotalCostView({ costModel, componentData, dimensionN, numTerms = 1 }) {
   if (!costModel || !componentData) return null;
@@ -21,89 +28,83 @@ export default function TotalCostView({ costModel, componentData, dimensionN, nu
         These totals combine the representative multiplications and the remaining output-bin updates into the final symmetry-aware contraction cost.
       </NarrativeCallout>
 
-      <div className="overflow-x-auto rounded-xl border border-border bg-white shadow-sm">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-border bg-surface-raised">
-              <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-muted">Case</th>
-              <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-muted">Labels</th>
-              <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-muted">V (free)</th>
-              <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-muted">W (summed)</th>
-              <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-muted">Group</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-border">
+      <div className="rounded-xl border border-border bg-white shadow-sm">
+        <Table className="text-sm">
+          <TableHeader className="bg-surface-raised">
+            <TableRow className="border-border hover:bg-surface-raised">
+              <TableHead className="px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-muted">Case</TableHead>
+              <TableHead className="px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-muted">Labels</TableHead>
+              <TableHead className="px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-muted">V (free)</TableHead>
+              <TableHead className="px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-muted">W (summed)</TableHead>
+              <TableHead className="px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-muted">Group</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody className="divide-y divide-border">
             {components.map((comp, idx) => (
-              <tr key={`comp-row-${idx}`} className="bg-surface transition-colors hover:bg-surface-raised">
-                <td className="px-4 py-2.5">
+              <TableRow key={`comp-row-${idx}`} className="border-0 bg-surface hover:bg-surface-raised">
+                <TableCell className="px-4 py-2.5">
                   <CaseBadge caseType={comp.caseType} size="sm" interactive={false} />
-                </td>
-                <td className="px-4 py-2.5">
-                  <code className="font-mono text-xs text-foreground">{(comp.labels ?? []).join(', ')}</code>
-                </td>
-                <td className="px-4 py-2.5">
-                  {(comp.va ?? []).length > 0
-                    ? <code className="font-mono text-xs text-foreground">{comp.va.join(', ')}</code>
-                    : <span className="text-muted">—</span>}
-                </td>
-                <td className="px-4 py-2.5">
-                  {(comp.wa ?? []).length > 0
-                    ? <code className="font-mono text-xs text-foreground">{comp.wa.join(', ')}</code>
-                    : <span className="text-muted">—</span>}
-                </td>
-                <td className="px-4 py-2.5">
+                </TableCell>
+                <TableCell className="px-4 py-2.5">
+                  <InlineCodeList values={comp.labels ?? []} />
+                </TableCell>
+                <TableCell className="px-4 py-2.5">
+                  <InlineCodeList values={comp.va ?? []} />
+                </TableCell>
+                <TableCell className="px-4 py-2.5">
+                  <InlineCodeList values={comp.wa ?? []} />
+                </TableCell>
+                <TableCell className="px-4 py-2.5">
                   <code className="font-mono text-xs text-foreground">{comp.groupName ?? '—'}</code>
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <div className="rounded-xl border border-border bg-surface p-5">
-          <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted">Multiplication Cost</div>
-          <div className="text-3xl font-mono font-bold text-foreground">{evaluationCost.toLocaleString()}</div>
-          <div className="mt-1 text-xs text-muted">
-            {orbitCount.toLocaleString()} multiplication orbit{orbitCount !== 1 ? 's' : ''}
-          </div>
-        </div>
-
-        <div className="rounded-xl border border-border bg-surface p-5">
-          <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted">Accumulation Cost</div>
-          <div className="text-3xl font-mono font-bold text-foreground">{reductionCost.toLocaleString()}</div>
-          <div className="mt-1 text-xs text-muted">distinct output-bin updates</div>
-        </div>
-
-        <div className="rounded-xl border border-coral/30 bg-coral-light p-5">
-          <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted">Total Cost</div>
-          <div className="text-3xl font-mono font-bold text-foreground">{totalCost.toLocaleString()}</div>
-          <div className="mt-1 text-xs text-muted">multiplication + accumulation</div>
-        </div>
+        <ExplorerMetricCard
+          label="Multiplication Cost"
+          value={evaluationCost.toLocaleString()}
+          detail={`${orbitCount.toLocaleString()} multiplication orbit${orbitCount !== 1 ? 's' : ''}`}
+        />
+        <ExplorerMetricCard
+          label="Accumulation Cost"
+          value={reductionCost.toLocaleString()}
+          detail="distinct output-bin updates"
+        />
+        <ExplorerMetricCard
+          label="Total Cost"
+          value={totalCost.toLocaleString()}
+          detail="multiplication + accumulation"
+          className="border-coral/30 bg-coral-light"
+        />
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <div className="rounded-xl border border-border bg-surface p-5">
-          <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted">Dense Cost</div>
-          <div className="text-3xl font-mono font-bold text-foreground">{denseTotalCost.toLocaleString()}</div>
-          <div className="mt-1 text-xs text-muted">
-            {Math.max(numTerms - 1, 0)} × n<sup>{allLabelCount}</sup> + n<sup>{allLabelCount}</sup> with n={dimensionN}
-          </div>
-        </div>
-
-        <div className="rounded-xl border border-border bg-surface p-5">
-          <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted">Symmetry-Aware Cost</div>
-          <div className="text-3xl font-mono font-bold text-foreground">{totalCost.toLocaleString()}</div>
-          <div className="mt-1 text-xs text-muted">multiplication + accumulation under full orbit model</div>
-        </div>
-
-        <div className="rounded-xl border border-green-600/20 bg-green-600/5 p-5">
-          <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted">Savings</div>
-          <div className="text-3xl font-mono font-bold text-green-700">{savings.toLocaleString()}</div>
-          <div className="mt-1 text-xs text-gray-400">
-            {savings === 0 ? '1.0× (no savings)' : `${totalSpeedup}× speedup (${savingsPct}%)`}
-          </div>
-        </div>
+        <ExplorerMetricCard
+          label="Dense Cost"
+          value={denseTotalCost.toLocaleString()}
+          detail={
+            <>
+              {Math.max(numTerms - 1, 0)} × n<sup>{allLabelCount}</sup> + n<sup>{allLabelCount}</sup> with n={dimensionN}
+            </>
+          }
+        />
+        <ExplorerMetricCard
+          label="Symmetry-Aware Cost"
+          value={totalCost.toLocaleString()}
+          detail="multiplication + accumulation under full orbit model"
+        />
+        <ExplorerMetricCard
+          label="Savings"
+          value={savings.toLocaleString()}
+          detail={savings === 0 ? '1.0× (no savings)' : `${totalSpeedup}× speedup (${savingsPct}%)`}
+          className="border-green-600/20 bg-green-600/5"
+          valueClassName="text-green-700"
+          detailClassName="text-gray-400"
+        />
       </div>
 
       <NarrativeCallout label="Takeaway" tone="accent">

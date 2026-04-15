@@ -29,12 +29,22 @@ test('Act 4 opens the Mental Framework in a modal using the shared code block', 
   assert.match(appSource, /setShowMentalModel\(\(isOpen\) => reduceMentalModelVisibility\(isOpen, 'customExample'\)\)/);
 });
 
-test('TotalCostView restores the denser savings emphasis cards and totals', () => {
+test('TotalCostView renders savings totals with shared table and metric primitives', () => {
   const totalCostSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/TotalCostView.jsx', import.meta.url), 'utf8');
 
   assert.match(totalCostSource, /space-y-8/);
-  assert.match(totalCostSource, /overflow-x-auto rounded-xl border border-border bg-white shadow-sm/);
-  assert.match(totalCostSource, /rounded-xl border border-coral\/30 bg-coral-light p-5/);
-  assert.match(totalCostSource, /rounded-xl border border-green-600\/20 bg-green-600\/5 p-5/);
-  assert.match(totalCostSource, /text-3xl font-mono font-bold/);
+  assert.match(totalCostSource, /TableHeader/);
+  assert.match(totalCostSource, /TableBody/);
+  assert.match(totalCostSource, /ExplorerMetricCard/);
+  assert.match(totalCostSource, /border-coral\/30 bg-coral-light/);
+  assert.match(totalCostSource, /border-green-600\/20 bg-green-600\/5/);
+});
+
+test('ComponentCostView composes component summaries from shared metric primitives', () => {
+  const componentCostSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/ComponentCostView.jsx', import.meta.url), 'utf8');
+
+  assert.doesNotMatch(componentCostSource, /function MetricCard/);
+  assert.match(componentCostSource, /ExplorerMetricCard/);
+  assert.match(componentCostSource, /label=\"Method\"/);
+  assert.match(componentCostSource, /DecisionTree/);
 });

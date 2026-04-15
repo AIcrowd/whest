@@ -10,6 +10,7 @@ test('symmetry explorer is pinned to shared primitives', () => {
   const app = read('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx');
   const exampleChooser = read('./components/symmetry-aware-einsum-contractions/components/ExampleChooser.jsx');
   const caseBadge = read('./components/symmetry-aware-einsum-contractions/components/CaseBadge.jsx');
+  const componentCostView = read('./components/symmetry-aware-einsum-contractions/components/ComponentCostView.jsx');
   const totalCostView = read('./components/symmetry-aware-einsum-contractions/components/TotalCostView.jsx');
   const styles = read('./components/symmetry-aware-einsum-contractions/styles.css');
 
@@ -21,8 +22,12 @@ test('symmetry explorer is pinned to shared primitives', () => {
   assert.match(caseBadge, /Badge/);
   assert.match(totalCostView, /Table/);
   assert.match(totalCostView, /ExplorerMetricCard/);
+  assert.match(componentCostView, /ExplorerMetricCard/);
+  assert.doesNotMatch(componentCostView, /function MetricCard/);
 
   assert.equal(styles.includes('.app-header'), false);
   assert.equal(styles.includes('.einsum-banner'), false);
   assert.equal(styles.includes('.subtitle'), false);
+  assert.equal(styles.includes('.step-nav'), false);
+  assert.equal(styles.includes('.section-header'), false);
 });

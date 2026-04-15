@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { burnsideCount } from '../engine/permutation.js';
 import { CASE_META } from '../engine/componentDecomposition.js';
 import CaseBadge from './CaseBadge.jsx';
+import ExplorerMetricCard from './ExplorerMetricCard.jsx';
 import NarrativeCallout from './NarrativeCallout.jsx';
 import OrbitInspector from './OrbitInspector.jsx';
 import { DecisionTree, LabelInteractionGraph } from './ComponentView.jsx';
@@ -39,16 +40,6 @@ function methodLabel(comp) {
   return CASE_META[comp.caseType]?.method ?? 'orbit enumeration';
 }
 
-function MetricCard({ label, value, caption }) {
-  return (
-    <div className="rounded-lg bg-gray-50 p-3">
-      <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-gray-500">{label}</div>
-      <div className="mt-2 text-2xl font-mono font-bold text-gray-900">{value.toLocaleString()}</div>
-      <div className="mt-1 text-xs text-gray-500">{caption}</div>
-    </div>
-  );
-}
-
 function ComponentCard({ comp, dimensionN, fallbackReductionCost }) {
   const multiplicationOrbits = computeMultiplicationOrbits(comp, dimensionN);
   const accumulationCost = computeAccumulationCost(comp, dimensionN, fallbackReductionCost);
@@ -66,23 +57,30 @@ function ComponentCard({ comp, dimensionN, fallbackReductionCost }) {
       </div>
 
       <div className="grid gap-3 md:grid-cols-3">
-        <MetricCard
+        <ExplorerMetricCard
           label="Mult Orbits"
-          value={multiplicationOrbits}
-          caption="Burnside on the component group"
+          value={multiplicationOrbits.toLocaleString()}
+          detail="Burnside on the component group"
+          className="border-0 bg-gray-50 shadow-none"
         />
-        <MetricCard
+        <ExplorerMetricCard
           label="Accum ρ"
-          value={accumulationCost}
-          caption={comp.caseType === 'D' ? 'Burnside on Hₐ' : comp.caseType === 'A' ? 'No accumulation savings' : 'Orbit projection'}
+          value={accumulationCost.toLocaleString()}
+          detail={comp.caseType === 'D' ? 'Burnside on Hₐ' : comp.caseType === 'A' ? 'No accumulation savings' : 'Orbit projection'}
+          className="border-0 bg-gray-50 shadow-none"
         />
-        <div className="rounded-lg bg-gray-50 p-3">
-          <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-gray-500">Method</div>
-          <div className="mt-2 text-sm text-gray-700">{methodLabel(comp)}</div>
-          <div className="mt-2 text-xs text-gray-500">
-            V: {(comp.va ?? []).join(', ') || '—'} | W: {(comp.wa ?? []).join(', ') || '—'}
-          </div>
-        </div>
+        <ExplorerMetricCard
+          label="Method"
+          value={methodLabel(comp)}
+          detail={
+            <>
+              V: {(comp.va ?? []).join(', ') || '—'} | W: {(comp.wa ?? []).join(', ') || '—'}
+            </>
+          }
+          className="border-0 bg-gray-50 shadow-none"
+          valueClassName="font-sans text-sm font-semibold text-gray-700"
+          detailClassName="text-gray-500"
+        />
       </div>
     </div>
   );
