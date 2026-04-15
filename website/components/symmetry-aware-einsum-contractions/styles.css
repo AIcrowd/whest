@@ -72,6 +72,11 @@ code, .mono { font-family: var(--font-mono); }
   min-height: 100vh;
 }
 
+.symmetry-aware-einsum-contractions-page .app {
+  max-width: none;
+  width: 100%;
+}
+
 .main-full {
   min-width: 0;
 }

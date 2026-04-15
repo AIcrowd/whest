@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <main className="min-h-screen bg-background">
+    <main className="symmetry-aware-einsum-contractions-page min-h-screen bg-background">
       <SymmetryAwareEinsumContractionsApp />
     </main>
   );

@@ -19,6 +19,29 @@ test('standalone route renders the renamed symmetry-aware app', async () => {
   assert.match(routeSource, /title:\s*'Symmetry Aware Einsum Contractions'/);
 });
 
+test('standalone route provides a dedicated full-width shell for the app', async () => {
+  const routeFile = path.join(
+    websiteRoot,
+    'app',
+    'symmetry-aware-einsum-contractions',
+    'page.tsx',
+  );
+  const routeSource = await readFile(routeFile, 'utf8');
+  const stylesFile = path.join(
+    websiteRoot,
+    'components',
+    'symmetry-aware-einsum-contractions',
+    'styles.css',
+  );
+  const stylesSource = await readFile(stylesFile, 'utf8');
+
+  assert.match(routeSource, /symmetry-aware-einsum-contractions-page/);
+  assert.match(
+    stylesSource,
+    /\.symmetry-aware-einsum-contractions-page \.app\s*\{[\s\S]*max-width:\s*none;/,
+  );
+});
+
 test('renamed feature entry exports the symmetry-aware app component', async () => {
   const entryFile = path.join(
     websiteRoot,
