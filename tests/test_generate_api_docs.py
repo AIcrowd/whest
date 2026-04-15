@@ -161,3 +161,77 @@ def test_load_whest_example_html_renders_fenced_code(tmp_path):
 
     assert '<pre><code class="language-python">' in html
     assert "we.absolute(x)" in html
+
+
+def test_parse_numpy_docstring_builds_structured_sections():
+    mod = load_generate_api_docs_module()
+
+    raw_doc = """
+    Compute the histogram of a dataset.
+
+    Parameters
+    ----------
+    a : array_like
+        Input data.
+    bins : int or sequence, optional
+        Bin count or edges.
+
+    Returns
+    -------
+    hist : ndarray
+        Histogram values.
+    bin_edges : ndarray
+        Bin boundaries.
+
+    See Also
+    --------
+    numpy.histogram_bin_edges, numpy.digitize
+
+    Notes
+    -----
+    All but the last bin is half-open.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> np.histogram([0, 1, 1, 2], bins=[0, 1, 2, 3])
+    (array([1, 2, 1]), array([0, 1, 2, 3]))
+    """
+
+    doc = mod.parse_numpy_docstring(raw_doc)
+
+    assert doc.summary == "Compute the histogram of a dataset."
+    assert doc.parameters[0].name == "a"
+    assert doc.parameters[0].type == "array_like"
+    assert doc.returns[1].name == "bin_edges"
+    assert doc.see_also[0].target == "numpy.histogram_bin_edges"
+    assert "half-open" in doc.notes[0]
+    assert "np.histogram" in doc.examples[0].code
+
+
+def test_rewrite_api_refs_swaps_numpy_symbols_for_whest():
+    mod = load_generate_api_docs_module()
+
+    rewritten = mod.rewrite_api_refs(
+        "Use np.histogram with numpy.digitize or numpy.histogram_bin_edges."
+    )
+
+    assert "np.histogram" not in rewritten
+    assert "numpy.digitize" not in rewritten
+    assert "we.histogram" in rewritten
+    assert "we.digitize" in rewritten
+    assert "we.histogram_bin_edges" in rewritten
+
+
+def test_derive_example_from_doctest_keeps_code_and_output():
+    mod = load_generate_api_docs_module()
+
+    example = mod.derive_example_from_upstream(
+        ">>> import numpy as np\n"
+        ">>> np.histogram([0, 1, 1, 2], bins=[0, 1, 2, 3])\n"
+        "(array([1, 2, 1]), array([0, 1, 2, 3]))"
+    )
+
+    assert "import whest as we" in example.code
+    assert "we.histogram" in example.code
+    assert "array([1, 2, 1])" in example.output

@@ -492,6 +492,36 @@ class OperationDocRecord:
     whest_examples_html: str
 
 
+@dataclass(slots=True)
+class DocField:
+    name: str
+    type: str
+    description: list[str]
+
+
+@dataclass(slots=True)
+class DocLink:
+    label: str
+    target: str
+    description: str = ""
+
+
+@dataclass(slots=True)
+class DocExample:
+    code: str
+    output: str = ""
+
+
+@dataclass(slots=True)
+class ParsedDoc:
+    summary: str
+    parameters: list[DocField]
+    returns: list[DocField]
+    see_also: list[DocLink]
+    notes: list[str]
+    examples: list[DocExample]
+
+
 # ---------------------------------------------------------------------------
 # Helper functions for op references and cost lookup
 # ---------------------------------------------------------------------------
@@ -551,6 +581,113 @@ def cost_for_op(name: str, category: str) -> tuple[str, str]:
     if name in CUSTOM_COSTS:
         return CUSTOM_COSTS[name]
     return CATEGORY_COST_LATEX.get(category, ("unknown", "unknown"))
+
+
+NUMPY_REF_PATTERN = re.compile(r"\b(?:np|numpy)\.(?=[A-Za-z_])")
+
+
+def rewrite_api_refs(text: str) -> str:
+    """Rewrite NumPy API references to their whest equivalents."""
+    return NUMPY_REF_PATTERN.sub("we.", text)
+
+
+def _split_paragraphs(lines: list[str]) -> list[str]:
+    paragraphs: list[str] = []
+    current: list[str] = []
+    for line in lines:
+        if line.strip():
+            current.append(line.rstrip())
+            continue
+        if current:
+            paragraphs.append(" ".join(part.strip() for part in current).strip())
+            current = []
+    if current:
+        paragraphs.append(" ".join(part.strip() for part in current).strip())
+    return paragraphs
+
+
+def derive_example_from_upstream(example_block: str) -> DocExample:
+    """Derive a single whest example from a doctest-style upstream snippet."""
+    code_lines: list[str] = []
+    output_lines: list[str] = []
+    seen_output = False
+
+    for raw_line in textwrap.dedent(example_block).strip("\n").splitlines():
+        stripped = raw_line.lstrip()
+        if stripped.startswith(">>>"):
+            seen_output = False
+            code = stripped[3:]
+            if code.startswith(" "):
+                code = code[1:]
+            code_lines.append(code.rstrip())
+            continue
+        if stripped.startswith("..."):
+            code = stripped[3:]
+            if code.startswith(" "):
+                code = code[1:]
+            code_lines.append(code.rstrip())
+            continue
+        if stripped == "":
+            if seen_output:
+                output_lines.append("")
+            elif code_lines:
+                code_lines.append("")
+            continue
+
+        seen_output = True
+        output_lines.append(raw_line.rstrip())
+
+    code = rewrite_api_refs("\n".join(code_lines).strip())
+    code = code.replace("import numpy as np", "import whest as we")
+    output = "\n".join(output_lines).strip()
+    return DocExample(code=code, output=output)
+
+
+def parse_numpy_docstring(raw_doc: str) -> ParsedDoc:
+    """Parse a NumPy-style docstring into a structured internal model."""
+    try:
+        from numpydoc.docscrape import NumpyDocString
+    except ImportError as exc:  # pragma: no cover - environment issue
+        raise RuntimeError("numpydoc is required to parse upstream docstrings") from exc
+
+    doc = NumpyDocString(textwrap.dedent(raw_doc).strip("\n"))
+
+    summary = " ".join(part.strip() for part in doc["Summary"]).strip()
+
+    parameters = [
+        DocField(name=name, type=type_, description=[line.rstrip() for line in desc])
+        for name, type_, desc in doc["Parameters"]
+    ]
+    returns = [
+        DocField(name=name, type=type_, description=[line.rstrip() for line in desc])
+        for name, type_, desc in doc["Returns"]
+    ]
+    see_also: list[DocLink] = []
+    for entry in doc["See Also"]:
+        if not entry:
+            continue
+        targets, desc = entry
+        description = " ".join(desc).strip() if desc else ""
+        if isinstance(targets, list):
+            for target, _ in targets:
+                see_also.append(
+                    DocLink(label=target, target=target, description=description)
+                )
+            continue
+        see_also.append(DocLink(label=targets, target=targets, description=description))
+    notes = _split_paragraphs(list(doc["Notes"]))
+
+    example_text = "\n".join(line.rstrip() for line in doc["Examples"]).strip()
+    examples = [DocExample(code=example_text)] if example_text else []
+
+    return ParsedDoc(
+        summary=summary,
+        parameters=parameters,
+        returns=returns,
+        see_also=see_also,
+        notes=notes,
+        examples=examples,
+    )
 
 
 ALIAS_NOTE_PATTERN = re.compile(r"alias for ([\w./]+)", re.IGNORECASE)
