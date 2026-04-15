@@ -12,20 +12,20 @@ function ExplorerSectionCard({
   ...props
 }) {
   return (
-    <Card className={cn('gap-0', className)} {...props}>
+    <Card className={cn('border-border/70 shadow-sm', className)} {...props}>
       {(title || description || eyebrow || action) && (
-        <CardHeader className="border-b border-border">
-          <div className="flex items-start justify-between gap-3">
-            <div className="space-y-1">
-              {eyebrow ? <CardDescription className="text-[11px] font-semibold uppercase tracking-[0.18em]">{eyebrow}</CardDescription> : null}
-              {title ? <CardTitle>{title}</CardTitle> : null}
-              {description ? <CardDescription>{description}</CardDescription> : null}
+        <CardHeader className="border-b border-border/70">
+          <div className="flex items-start justify-between gap-2.5">
+            <div className="space-y-2">
+              {eyebrow ? <CardDescription className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">{eyebrow}</CardDescription> : null}
+              {title ? <CardTitle className="text-lg leading-tight">{title}</CardTitle> : null}
+              {description ? <CardDescription className="text-sm leading-6">{description}</CardDescription> : null}
             </div>
             {action ? <CardAction>{action}</CardAction> : null}
           </div>
         </CardHeader>
       )}
-      <CardContent className={cn('pt-4', contentClassName)}>
+      <CardContent className={cn('pt-5', contentClassName)}>
         {children}
       </CardContent>
     </Card>

@@ -176,16 +176,16 @@ export default function SymmetryAwareEinsumContractionsApp() {
         activeActId={activeActId}
       />
 
-      <div className="mx-auto flex max-w-[1400px] flex-col gap-6 px-6 pb-16 pt-6 md:px-10">
+      <div className="mx-auto flex max-w-[1400px] flex-col gap-8 px-6 pb-20 pt-8 md:px-8 lg:px-10">
         <ExplorerSectionCard
           eyebrow="Interactive walkthrough"
           title="Symmetry Aware Einsum Contractions"
           description={<><em>Symmetry detection for einsum contractions</em>, explained as a four-act explorer.</>}
           className="border-border/70 shadow-sm"
-          contentClassName="pt-5"
+          contentClassName="pt-6"
         >
           {example && group ? (
-            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div className="flex min-w-0 flex-wrap items-center gap-2">
                 <Badge className="bg-coral text-white hover:bg-coral">einsum</Badge>
                 <code className="truncate rounded-md bg-muted px-3 py-1.5 font-mono text-sm text-foreground">
@@ -195,12 +195,12 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   {group.fullGroupName || 'trivial'}
                 </Badge>
               </div>
-              <p className="max-w-2xl text-sm text-muted-foreground">
+              <p className="max-w-2xl text-sm leading-6 text-muted-foreground">
                 Start in Act 1 to choose a preset or build a custom contraction, then follow the graph, proof, and savings views in order.
               </p>
             </div>
           ) : (
-            <p className="max-w-3xl text-sm text-muted-foreground">
+            <p className="max-w-3xl text-sm leading-6 text-muted-foreground">
               Choose a preset or define your own contraction to walk through structure detection, group construction, and symmetry-aware pricing.
             </p>
           )}
@@ -242,11 +242,11 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   </p>
                   <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
                     <div>
-                      <h3 className="mb-2 font-accent text-sm font-semibold text-gray-900">Bipartite Graph</h3>
+                      <h3 className="mb-2 font-heading text-base font-semibold text-gray-900">Bipartite Graph</h3>
                       <BipartiteGraph graph={graph} example={normalizedExample} variableColors={variableColors} />
                     </div>
                     <div>
-                      <h3 className="mb-2 font-accent text-sm font-semibold text-gray-900">Incidence Matrix M</h3>
+                      <h3 className="mb-2 font-heading text-base font-semibold text-gray-900">Incidence Matrix M</h3>
                       <MatrixView matrixData={matrixData} graph={graph} example={normalizedExample} variableColors={variableColors} />
                     </div>
                   </div>
@@ -265,7 +265,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   <NarrativeCallout label="Why this matters">{EXPLORER_ACTS[2].why}</NarrativeCallout>
                   <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
                     <div>
-                      <h3 className="mb-2 font-accent text-sm font-semibold text-gray-900">σ-Loop & π Detection</h3>
+                      <h3 className="mb-2 font-heading text-base font-semibold text-gray-900">σ-Loop & π Detection</h3>
                       <SigmaLoop
                         results={sigmaResults}
                         graph={graph}
@@ -275,7 +275,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       />
                     </div>
                     <div>
-                      <h3 className="mb-2 font-accent text-sm font-semibold text-gray-900">Group Construction</h3>
+                      <h3 className="mb-2 font-heading text-base font-semibold text-gray-900">Group Construction</h3>
                       <GroupView group={group} />
                     </div>
                   </div>
@@ -392,14 +392,14 @@ export default function SymmetryAwareEinsumContractionsApp() {
 
 function ActHeader({ number, heading, question }) {
   return (
-    <div className="mb-8 flex items-start gap-4">
+    <div className="mb-8 flex items-start gap-5">
       <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-coral text-sm font-mono font-bold text-white">
         {number}
       </span>
-      <div className="flex-1">
+      <div className="flex-1 space-y-1.5">
         <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-coral">Act {number}</p>
-        <h2 className="font-accent text-xl font-bold tracking-tight text-gray-900">{heading}</h2>
-        <p className="mt-1 text-sm italic text-gray-600">{question}</p>
+        <h2 className="font-heading text-2xl font-semibold tracking-tight text-gray-900">{heading}</h2>
+        <p className="text-sm italic leading-6 text-gray-600">{question}</p>
       </div>
     </div>
   );

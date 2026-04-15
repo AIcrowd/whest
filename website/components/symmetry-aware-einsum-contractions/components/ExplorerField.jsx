@@ -14,13 +14,13 @@ function ExplorerField({
   const inputId = id ?? props.name;
 
   return (
-    <label className={cn('grid gap-1.5', className)} htmlFor={inputId}>
+    <label className={cn('grid gap-2', className)} htmlFor={inputId}>
       {label ? (
         <span className={cn('text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground', labelClassName)}>
           {label}
         </span>
       ) : null}
-      <Input id={inputId} aria-invalid={error ? 'true' : undefined} className={inputClassName} {...props} />
+      <Input id={inputId} aria-invalid={error ? 'true' : undefined} className={cn('text-sm', inputClassName)} {...props} />
       {hint ? <span className="text-xs text-muted-foreground">{hint}</span> : null}
       {error ? <span className="text-xs text-destructive">{error}</span> : null}
     </label>

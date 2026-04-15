@@ -88,7 +88,7 @@ function highlightPython(code) {
 function PythonHighlight({ code }) {
   const html = useMemo(() => highlightPython(code), [code]);
   return (
-    <pre className="overflow-x-auto whitespace-pre-wrap rounded-lg bg-gray-900 p-4 font-mono text-xs leading-relaxed text-gray-300">
+    <pre className="overflow-x-auto whitespace-pre-wrap rounded-xl bg-slate-950 p-5 font-mono text-sm leading-7 text-slate-300">
       <code dangerouslySetInnerHTML={{ __html: html }} />
     </pre>
   );
@@ -113,7 +113,6 @@ export default function PythonCodeBlock({
       eyebrow={title}
       description={description}
       className="border-border/70 bg-muted/20"
-      contentClassName="pt-4"
       action={(
         <Button
           type="button"
