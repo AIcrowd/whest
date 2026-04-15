@@ -543,6 +543,13 @@ def generate_audit_page(registry: dict[str, dict]) -> None:
 
 def generate_ops_json(registry: dict[str, dict]) -> None:
     """Generate docs/ops.json — machine-readable operation manifest."""
+    # Load empirical weights if available
+    weights_path = ROOT / "src" / "whest" / "data" / "weights.json"
+    weights: dict[str, float] = {}
+    if weights_path.exists():
+        raw = json.loads(weights_path.read_text())
+        weights = raw.get("weights", {})
+
     ops = []
     for name, info in sorted(registry.items()):
         cat = info["category"]
@@ -561,6 +568,7 @@ def generate_ops_json(registry: dict[str, dict]) -> None:
                 "blocked": cat == "blacklisted",
                 "status": "blocked" if cat == "blacklisted" else "supported",
                 "notes": info.get("notes", ""),
+                "weight": weights.get(name, 1.0),
             }
         )
     out = DOCS / "ops.json"

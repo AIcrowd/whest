@@ -11,7 +11,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise absolute value; alias for absolute."
+      "notes": "Element-wise absolute value; alias for absolute.",
+      "weight": 1.0
     },
     {
       "name": "absolute",
@@ -24,7 +25,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise absolute value."
+      "notes": "Element-wise absolute value.",
+      "weight": 1.0
     },
     {
       "name": "acos",
@@ -37,7 +39,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Alias for arccos (NumPy 2.x)."
+      "notes": "Alias for arccos (NumPy 2.x).",
+      "weight": 1.0
     },
     {
       "name": "acosh",
@@ -50,7 +53,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Alias for arccosh (NumPy 2.x)."
+      "notes": "Alias for arccosh (NumPy 2.x).",
+      "weight": 1.0
     },
     {
       "name": "add",
@@ -63,7 +67,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise addition."
+      "notes": "Element-wise addition.",
+      "weight": 1.0
     },
     {
       "name": "all",
@@ -76,7 +81,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Test whether all array elements are true."
+      "notes": "Test whether all array elements are true.",
+      "weight": 1.0
     },
     {
       "name": "allclose",
@@ -89,7 +95,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise tolerance check; cost = numel(a)."
+      "notes": "Element-wise tolerance check; cost = numel(a).",
+      "weight": 1.0
     },
     {
       "name": "amax",
@@ -102,7 +109,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Maximum value of array (alias for max/numpy.amax)."
+      "notes": "Maximum value of array (alias for max/numpy.amax).",
+      "weight": 1.0
     },
     {
       "name": "amin",
@@ -115,7 +123,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Minimum value of array (alias for min/numpy.amin)."
+      "notes": "Minimum value of array (alias for min/numpy.amin).",
+      "weight": 1.0
     },
     {
       "name": "angle",
@@ -128,7 +137,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return angle of complex argument element-wise."
+      "notes": "Return angle of complex argument element-wise.",
+      "weight": 16.0
     },
     {
       "name": "any",
@@ -141,7 +151,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Test whether any array element is true."
+      "notes": "Test whether any array element is true.",
+      "weight": 1.0
     },
     {
       "name": "append",
@@ -154,7 +165,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Append values to end of array. Cost: numel(values)."
+      "notes": "Append values to end of array. Cost: numel(values).",
+      "weight": 1.0
     },
     {
       "name": "apply_along_axis",
@@ -167,7 +179,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Apply function along axis. Cost: numel(output). Inner function costs tracked separately."
+      "notes": "Apply function along axis. Cost: numel(output). Inner function costs tracked separately.",
+      "weight": 4.0
     },
     {
       "name": "apply_over_axes",
@@ -180,7 +193,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Apply function over multiple axes. Cost: numel(output)."
+      "notes": "Apply function over multiple axes. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "arange",
@@ -193,7 +207,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return evenly spaced values in given interval. Cost: numel(output)."
+      "notes": "Return evenly spaced values in given interval. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "arccos",
@@ -206,7 +221,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise inverse cosine."
+      "notes": "Element-wise inverse cosine.",
+      "weight": 16.0
     },
     {
       "name": "arccosh",
@@ -219,7 +235,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise inverse hyperbolic cosine."
+      "notes": "Element-wise inverse hyperbolic cosine.",
+      "weight": 16.0
     },
     {
       "name": "arcsin",
@@ -232,7 +249,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise inverse sine."
+      "notes": "Element-wise inverse sine.",
+      "weight": 16.0
     },
     {
       "name": "arcsinh",
@@ -245,7 +263,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise inverse hyperbolic sine."
+      "notes": "Element-wise inverse hyperbolic sine.",
+      "weight": 16.0
     },
     {
       "name": "arctan",
@@ -258,7 +277,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise inverse tangent."
+      "notes": "Element-wise inverse tangent.",
+      "weight": 16.0
     },
     {
       "name": "arctan2",
@@ -271,7 +291,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise arctan(y/x) considering quadrant."
+      "notes": "Element-wise arctan(y/x) considering quadrant.",
+      "weight": 16.0
     },
     {
       "name": "arctanh",
@@ -284,7 +305,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise inverse hyperbolic tangent."
+      "notes": "Element-wise inverse hyperbolic tangent.",
+      "weight": 16.0
     },
     {
       "name": "argmax",
@@ -297,7 +319,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Index of maximum value."
+      "notes": "Index of maximum value.",
+      "weight": 1.0
     },
     {
       "name": "argmin",
@@ -310,7 +333,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Index of minimum value."
+      "notes": "Index of minimum value.",
+      "weight": 1.0
     },
     {
       "name": "argpartition",
@@ -323,7 +347,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Indirect partition; cost = n per slice."
+      "notes": "Indirect partition; cost = n per slice.",
+      "weight": 1.0
     },
     {
       "name": "argsort",
@@ -336,7 +361,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Indirect sort; cost = n*ceil(log2(n)) per slice."
+      "notes": "Indirect sort; cost = n*ceil(log2(n)) per slice.",
+      "weight": 1.0
     },
     {
       "name": "argwhere",
@@ -349,7 +375,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Find indices of non-zero elements. Cost: numel(input)."
+      "notes": "Find indices of non-zero elements. Cost: numel(input).",
+      "weight": 4.0
     },
     {
       "name": "around",
@@ -362,7 +389,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Alias for round."
+      "notes": "Alias for round.",
+      "weight": 1.0
     },
     {
       "name": "array",
@@ -375,7 +403,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Create array from data. Cost: numel(input)."
+      "notes": "Create array from data. Cost: numel(input).",
+      "weight": 1.0
     },
     {
       "name": "array2string",
@@ -388,7 +417,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Return string representation of array. Not supported."
+      "notes": "Return string representation of array. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "array_equal",
@@ -401,7 +431,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise equality; cost = numel(a)."
+      "notes": "Element-wise equality; cost = numel(a).",
+      "weight": 1.0
     },
     {
       "name": "array_equiv",
@@ -414,7 +445,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise equivalence; cost = numel(a)."
+      "notes": "Element-wise equivalence; cost = numel(a).",
+      "weight": 1.0
     },
     {
       "name": "array_repr",
@@ -427,7 +459,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Return string representation of array. Not supported."
+      "notes": "Return string representation of array. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "array_split",
@@ -440,7 +473,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Split array into sub-arrays (possibly unequal). Cost: numel(output)."
+      "notes": "Split array into sub-arrays (possibly unequal). Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "array_str",
@@ -453,7 +487,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Return string representation of data in array. Not supported."
+      "notes": "Return string representation of data in array. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "asarray",
@@ -466,7 +501,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Convert input to array. Cost: numel(input)."
+      "notes": "Convert input to array. Cost: numel(input).",
+      "weight": 1.0
     },
     {
       "name": "asarray_chkfinite",
@@ -479,7 +515,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Convert to array, raising if NaN or inf. Cost: numel(input)."
+      "notes": "Convert to array, raising if NaN or inf. Cost: numel(input).",
+      "weight": 1.0
     },
     {
       "name": "asin",
@@ -492,7 +529,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Alias for arcsin (NumPy 2.x)."
+      "notes": "Alias for arcsin (NumPy 2.x).",
+      "weight": 1.0
     },
     {
       "name": "asinh",
@@ -505,7 +543,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Alias for arcsinh (NumPy 2.x)."
+      "notes": "Alias for arcsinh (NumPy 2.x).",
+      "weight": 1.0
     },
     {
       "name": "asmatrix",
@@ -518,7 +557,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Interpret input as matrix (deprecated). Not supported."
+      "notes": "Interpret input as matrix (deprecated). Not supported.",
+      "weight": 1.0
     },
     {
       "name": "astype",
@@ -531,7 +571,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Cast array to specified type."
+      "notes": "Cast array to specified type.",
+      "weight": 1.0
     },
     {
       "name": "atan",
@@ -544,7 +585,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Alias for arctan (NumPy 2.x)."
+      "notes": "Alias for arctan (NumPy 2.x).",
+      "weight": 1.0
     },
     {
       "name": "atan2",
@@ -557,7 +599,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Alias for arctan2 (NumPy 2.x)."
+      "notes": "Alias for arctan2 (NumPy 2.x).",
+      "weight": 1.0
     },
     {
       "name": "atanh",
@@ -570,7 +613,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Alias for arctanh (NumPy 2.x)."
+      "notes": "Alias for arctanh (NumPy 2.x).",
+      "weight": 1.0
     },
     {
       "name": "atleast_1d",
@@ -583,7 +627,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "View inputs as arrays with at least one dimension."
+      "notes": "View inputs as arrays with at least one dimension.",
+      "weight": 1.0
     },
     {
       "name": "atleast_2d",
@@ -596,7 +641,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "View inputs as arrays with at least two dimensions."
+      "notes": "View inputs as arrays with at least two dimensions.",
+      "weight": 1.0
     },
     {
       "name": "atleast_3d",
@@ -609,7 +655,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "View inputs as arrays with at least three dimensions."
+      "notes": "View inputs as arrays with at least three dimensions.",
+      "weight": 1.0
     },
     {
       "name": "average",
@@ -622,7 +669,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Weighted average of array elements."
+      "notes": "Weighted average of array elements.",
+      "weight": 1.0
     },
     {
       "name": "bartlett",
@@ -635,7 +683,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Bartlett window. Cost: n (one linear eval per sample)."
+      "notes": "Bartlett window. Cost: n (one linear eval per sample).",
+      "weight": 1.0
     },
     {
       "name": "base_repr",
@@ -648,7 +697,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Return string representation of number in given base. Cost: numel(input)."
+      "notes": "Return string representation of number in given base. Cost: numel(input).",
+      "weight": 1.0
     },
     {
       "name": "binary_repr",
@@ -661,7 +711,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Return binary string representation of the input number. Cost: numel(input)."
+      "notes": "Return binary string representation of the input number. Cost: numel(input).",
+      "weight": 1.0
     },
     {
       "name": "bincount",
@@ -674,7 +725,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Integer counting; cost = numel(x)."
+      "notes": "Integer counting; cost = numel(x).",
+      "weight": 1.0
     },
     {
       "name": "bitwise_and",
@@ -687,7 +739,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise bitwise AND."
+      "notes": "Element-wise bitwise AND.",
+      "weight": 1.0
     },
     {
       "name": "bitwise_count",
@@ -700,7 +753,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Count set bits element-wise (popcount)."
+      "notes": "Count set bits element-wise (popcount).",
+      "weight": 1.0
     },
     {
       "name": "bitwise_invert",
@@ -713,7 +767,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise bitwise invert (alias for bitwise_not)."
+      "notes": "Element-wise bitwise invert (alias for bitwise_not).",
+      "weight": 1.0
     },
     {
       "name": "bitwise_left_shift",
@@ -726,7 +781,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise left bit shift."
+      "notes": "Element-wise left bit shift.",
+      "weight": 1.0
     },
     {
       "name": "bitwise_not",
@@ -739,7 +795,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise bitwise NOT."
+      "notes": "Element-wise bitwise NOT.",
+      "weight": 1.0
     },
     {
       "name": "bitwise_or",
@@ -752,7 +809,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise bitwise OR."
+      "notes": "Element-wise bitwise OR.",
+      "weight": 1.0
     },
     {
       "name": "bitwise_right_shift",
@@ -765,7 +823,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise right bit shift."
+      "notes": "Element-wise right bit shift.",
+      "weight": 1.0
     },
     {
       "name": "bitwise_xor",
@@ -778,7 +837,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise bitwise XOR."
+      "notes": "Element-wise bitwise XOR.",
+      "weight": 1.0
     },
     {
       "name": "blackman",
@@ -791,7 +851,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Blackman window. Cost: 3*n (three cosine terms per sample)."
+      "notes": "Blackman window. Cost: 3*n (three cosine terms per sample).",
+      "weight": 16.0
     },
     {
       "name": "block",
@@ -804,7 +865,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Assemble ndarray from nested list of blocks. Cost: numel(output)."
+      "notes": "Assemble ndarray from nested list of blocks. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "bmat",
@@ -817,7 +879,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Build matrix from nested list of matrices. Cost: numel(output)."
+      "notes": "Build matrix from nested list of matrices. Cost: numel(output).",
+      "weight": 4.0
     },
     {
       "name": "broadcast_arrays",
@@ -830,7 +893,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Broadcast arrays against each other. Cost: numel(output)."
+      "notes": "Broadcast arrays against each other. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "broadcast_shapes",
@@ -843,7 +907,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Compute broadcast shape from input shapes."
+      "notes": "Compute broadcast shape from input shapes.",
+      "weight": 1.0
     },
     {
       "name": "broadcast_to",
@@ -856,7 +921,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Broadcast array to new shape. Cost: numel(output)."
+      "notes": "Broadcast array to new shape. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "busday_count",
@@ -869,7 +935,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Count valid days between begindate and enddate. Not supported."
+      "notes": "Count valid days between begindate and enddate. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "busday_offset",
@@ -882,7 +949,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Apply offset to dates subject to valid day rules. Not supported."
+      "notes": "Apply offset to dates subject to valid day rules. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "can_cast",
@@ -895,7 +963,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Returns True if cast is safe."
+      "notes": "Returns True if cast is safe.",
+      "weight": 1.0
     },
     {
       "name": "cbrt",
@@ -908,7 +977,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise cube root."
+      "notes": "Element-wise cube root.",
+      "weight": 16.0
     },
     {
       "name": "ceil",
@@ -921,7 +991,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise ceiling."
+      "notes": "Element-wise ceiling.",
+      "weight": 1.0
     },
     {
       "name": "choose",
@@ -934,7 +1005,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Construct array from index array and choices. Cost: numel(output)."
+      "notes": "Construct array from index array and choices. Cost: numel(output).",
+      "weight": 4.0
     },
     {
       "name": "clip",
@@ -947,7 +1019,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Clip array to [a_min, a_max] element-wise."
+      "notes": "Clip array to [a_min, a_max] element-wise.",
+      "weight": 1.0
     },
     {
       "name": "column_stack",
@@ -960,7 +1033,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Stack 1-D arrays as columns into 2-D array."
+      "notes": "Stack 1-D arrays as columns into 2-D array.",
+      "weight": 1.0
     },
     {
       "name": "common_type",
@@ -973,7 +1047,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Return scalar type common to all input arrays."
+      "notes": "Return scalar type common to all input arrays.",
+      "weight": 1.0
     },
     {
       "name": "compress",
@@ -986,7 +1061,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return selected slices along axis. Cost: numel(input)."
+      "notes": "Return selected slices along axis. Cost: numel(input).",
+      "weight": 4.0
     },
     {
       "name": "concat",
@@ -999,7 +1075,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Join arrays along axis (NumPy 2.x array API alias for concatenate). Cost: numel(output)."
+      "notes": "Join arrays along axis (NumPy 2.x array API alias for concatenate). Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "concatenate",
@@ -1012,7 +1089,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Join arrays along axis. Cost: numel(output)."
+      "notes": "Join arrays along axis. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "conj",
@@ -1025,7 +1103,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Complex conjugate element-wise."
+      "notes": "Complex conjugate element-wise.",
+      "weight": 1.0
     },
     {
       "name": "conjugate",
@@ -1038,7 +1117,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Complex conjugate element-wise."
+      "notes": "Complex conjugate element-wise.",
+      "weight": 1.0
     },
     {
       "name": "convolve",
@@ -1051,7 +1131,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "1-D discrete convolution."
+      "notes": "1-D discrete convolution.",
+      "weight": 1.0
     },
     {
       "name": "copy",
@@ -1064,7 +1145,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Return array copy."
+      "notes": "Return array copy.",
+      "weight": 1.0
     },
     {
       "name": "copysign",
@@ -1077,7 +1159,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Copy sign of x2 to magnitude of x1 element-wise."
+      "notes": "Copy sign of x2 to magnitude of x1 element-wise.",
+      "weight": 1.0
     },
     {
       "name": "copyto",
@@ -1090,7 +1173,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Copy values from src to dst array. Cost: num copied."
+      "notes": "Copy values from src to dst array. Cost: num copied.",
+      "weight": 1.0
     },
     {
       "name": "corrcoef",
@@ -1103,7 +1187,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Pearson correlation coefficients."
+      "notes": "Pearson correlation coefficients.",
+      "weight": 1.0
     },
     {
       "name": "correlate",
@@ -1116,7 +1201,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "1-D cross-correlation."
+      "notes": "1-D cross-correlation.",
+      "weight": 1.0
     },
     {
       "name": "cos",
@@ -1129,7 +1215,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise cosine."
+      "notes": "Element-wise cosine.",
+      "weight": 16.0
     },
     {
       "name": "cosh",
@@ -1142,7 +1229,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise hyperbolic cosine."
+      "notes": "Element-wise hyperbolic cosine.",
+      "weight": 16.0
     },
     {
       "name": "count_nonzero",
@@ -1155,7 +1243,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Count non-zero elements."
+      "notes": "Count non-zero elements.",
+      "weight": 1.0
     },
     {
       "name": "cov",
@@ -1168,7 +1257,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Covariance matrix."
+      "notes": "Covariance matrix.",
+      "weight": 1.0
     },
     {
       "name": "cross",
@@ -1181,7 +1271,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Cross product of two 3-D vectors."
+      "notes": "Cross product of two 3-D vectors.",
+      "weight": 1.0
     },
     {
       "name": "cumprod",
@@ -1194,7 +1285,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Cumulative product of array elements."
+      "notes": "Cumulative product of array elements.",
+      "weight": 1.0
     },
     {
       "name": "cumsum",
@@ -1207,7 +1299,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Cumulative sum of array elements."
+      "notes": "Cumulative sum of array elements.",
+      "weight": 1.0
     },
     {
       "name": "cumulative_prod",
@@ -1220,7 +1313,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Cumulative product (NumPy 2.x array API)."
+      "notes": "Cumulative product (NumPy 2.x array API).",
+      "weight": 1.0
     },
     {
       "name": "cumulative_sum",
@@ -1233,7 +1327,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Cumulative sum (NumPy 2.x array API)."
+      "notes": "Cumulative sum (NumPy 2.x array API).",
+      "weight": 1.0
     },
     {
       "name": "datetime_as_string",
@@ -1246,7 +1341,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Convert datetime array to string representation. Not supported."
+      "notes": "Convert datetime array to string representation. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "datetime_data",
@@ -1259,7 +1355,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Get information about the step size of datetime dtype. Not supported."
+      "notes": "Get information about the step size of datetime dtype. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "deg2rad",
@@ -1272,7 +1369,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Alias for radians."
+      "notes": "Alias for radians.",
+      "weight": 1.0
     },
     {
       "name": "degrees",
@@ -1285,7 +1383,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Convert radians to degrees element-wise."
+      "notes": "Convert radians to degrees element-wise.",
+      "weight": 1.0
     },
     {
       "name": "delete",
@@ -1298,7 +1397,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return array with sub-arrays deleted along axis. Cost: num deleted."
+      "notes": "Return array with sub-arrays deleted along axis. Cost: num deleted.",
+      "weight": 1.0
     },
     {
       "name": "diag",
@@ -1311,7 +1411,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Extract diagonal or construct diagonal array. Cost: len(diagonal)."
+      "notes": "Extract diagonal or construct diagonal array. Cost: len(diagonal).",
+      "weight": 4.0
     },
     {
       "name": "diag_indices",
@@ -1324,7 +1425,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Return indices to access main diagonal of n-D array."
+      "notes": "Return indices to access main diagonal of n-D array.",
+      "weight": 1.0
     },
     {
       "name": "diag_indices_from",
@@ -1337,7 +1439,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Return indices to access main diagonal of given array."
+      "notes": "Return indices to access main diagonal of given array.",
+      "weight": 1.0
     },
     {
       "name": "diagflat",
@@ -1350,7 +1453,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Create diagonal array from flattened input. Cost: len(v)."
+      "notes": "Create diagonal array from flattened input. Cost: len(v).",
+      "weight": 1.0
     },
     {
       "name": "diagonal",
@@ -1363,7 +1467,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return specified diagonals. Cost: numel(input)."
+      "notes": "Return specified diagonals. Cost: numel(input).",
+      "weight": 1.0
     },
     {
       "name": "diff",
@@ -1376,7 +1481,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "n-th discrete difference along axis."
+      "notes": "n-th discrete difference along axis.",
+      "weight": 1.0
     },
     {
       "name": "digitize",
@@ -1389,7 +1495,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Bin search; cost = n*ceil(log2(bins))."
+      "notes": "Bin search; cost = n*ceil(log2(bins)).",
+      "weight": 1.0
     },
     {
       "name": "divide",
@@ -1402,7 +1509,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise true division."
+      "notes": "Element-wise true division.",
+      "weight": 1.0
     },
     {
       "name": "divmod",
@@ -1415,7 +1523,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise (quotient, remainder) tuple."
+      "notes": "Element-wise (quotient, remainder) tuple.",
+      "weight": 1.0
     },
     {
       "name": "dot",
@@ -1428,7 +1537,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Dot product; cost = M*K*N (FMA=1)."
+      "notes": "Dot product; cost = M*K*N (FMA=1).",
+      "weight": 1.0
     },
     {
       "name": "dsplit",
@@ -1441,7 +1551,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Split array into multiple sub-arrays depth-wise. Cost: numel(output)."
+      "notes": "Split array into multiple sub-arrays depth-wise. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "dstack",
@@ -1454,7 +1565,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Stack arrays depth-wise (along third axis). Cost: numel(output)."
+      "notes": "Stack arrays depth-wise (along third axis). Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "ediff1d",
@@ -1467,7 +1579,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Differences between consecutive elements."
+      "notes": "Differences between consecutive elements.",
+      "weight": 1.0
     },
     {
       "name": "einsum",
@@ -1480,7 +1593,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Generalized Einstein summation."
+      "notes": "Generalized Einstein summation.",
+      "weight": 1.0
     },
     {
       "name": "einsum_path",
@@ -1493,7 +1607,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Optimize einsum contraction path (no numeric output)."
+      "notes": "Optimize einsum contraction path (no numeric output).",
+      "weight": 1.0
     },
     {
       "name": "empty",
@@ -1506,7 +1621,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Uninitialized array allocation."
+      "notes": "Uninitialized array allocation.",
+      "weight": 1.0
     },
     {
       "name": "empty_like",
@@ -1519,7 +1635,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Uninitialized array with same shape/type as input."
+      "notes": "Uninitialized array with same shape/type as input.",
+      "weight": 1.0
     },
     {
       "name": "equal",
@@ -1532,7 +1649,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise x1 == x2."
+      "notes": "Element-wise x1 == x2.",
+      "weight": 1.0
     },
     {
       "name": "exp",
@@ -1545,7 +1663,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise e^x."
+      "notes": "Element-wise e^x.",
+      "weight": 16.0
     },
     {
       "name": "exp2",
@@ -1558,7 +1677,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise 2^x."
+      "notes": "Element-wise 2^x.",
+      "weight": 16.0
     },
     {
       "name": "expand_dims",
@@ -1571,7 +1691,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Insert new size-1 axis."
+      "notes": "Insert new size-1 axis.",
+      "weight": 1.0
     },
     {
       "name": "expm1",
@@ -1584,7 +1705,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise e^x - 1 (accurate near zero)."
+      "notes": "Element-wise e^x - 1 (accurate near zero).",
+      "weight": 16.0
     },
     {
       "name": "extract",
@@ -1597,7 +1719,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return elements satisfying condition. Cost: numel(input)."
+      "notes": "Return elements satisfying condition. Cost: numel(input).",
+      "weight": 4.0
     },
     {
       "name": "eye",
@@ -1610,7 +1733,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Create identity matrix."
+      "notes": "Create identity matrix.",
+      "weight": 1.0
     },
     {
       "name": "fabs",
@@ -1623,7 +1747,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise absolute value (always float)."
+      "notes": "Element-wise absolute value (always float).",
+      "weight": 1.0
     },
     {
       "name": "fft.fft",
@@ -1636,7 +1761,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4)."
+      "notes": "1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
+      "weight": 1.0
     },
     {
       "name": "fft.fft2",
@@ -1649,7 +1775,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "2-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4)."
+      "notes": "2-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
+      "weight": 1.0
     },
     {
       "name": "fft.fftfreq",
@@ -1662,7 +1789,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "FFT sample frequencies. No arithmetic; returns index array."
+      "notes": "FFT sample frequencies. No arithmetic; returns index array.",
+      "weight": 1.0
     },
     {
       "name": "fft.fftn",
@@ -1675,7 +1803,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "N-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4)."
+      "notes": "N-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
+      "weight": 1.0
     },
     {
       "name": "fft.fftshift",
@@ -1688,7 +1817,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Shift zero-frequency component to center. No arithmetic; index reordering only."
+      "notes": "Shift zero-frequency component to center. No arithmetic; index reordering only.",
+      "weight": 1.0
     },
     {
       "name": "fft.hfft",
@@ -1701,7 +1831,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "FFT of Hermitian-symmetric signal. Cost: 5*n_out*ceil(log2(n_out)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4)."
+      "notes": "FFT of Hermitian-symmetric signal. Cost: 5*n_out*ceil(log2(n_out)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
+      "weight": 1.0
     },
     {
       "name": "fft.ifft",
@@ -1714,7 +1845,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Inverse 1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4)."
+      "notes": "Inverse 1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
+      "weight": 1.0
     },
     {
       "name": "fft.ifft2",
@@ -1727,7 +1859,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Inverse 2-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4)."
+      "notes": "Inverse 2-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
+      "weight": 1.0
     },
     {
       "name": "fft.ifftn",
@@ -1740,7 +1873,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Inverse N-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4)."
+      "notes": "Inverse N-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
+      "weight": 1.0
     },
     {
       "name": "fft.ifftshift",
@@ -1753,7 +1887,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Inverse of fftshift. No arithmetic; index reordering only."
+      "notes": "Inverse of fftshift. No arithmetic; index reordering only.",
+      "weight": 1.0
     },
     {
       "name": "fft.ihfft",
@@ -1766,7 +1901,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Inverse FFT of Hermitian signal. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4)."
+      "notes": "Inverse FFT of Hermitian signal. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
+      "weight": 1.0
     },
     {
       "name": "fft.irfft",
@@ -1779,7 +1915,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Inverse 1-D real FFT. Cost: 5*(n//2)*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4)."
+      "notes": "Inverse 1-D real FFT. Cost: 5*(n//2)*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
+      "weight": 1.0
     },
     {
       "name": "fft.irfft2",
@@ -1792,7 +1929,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Inverse 2-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4)."
+      "notes": "Inverse 2-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
+      "weight": 1.0
     },
     {
       "name": "fft.irfftn",
@@ -1805,7 +1943,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Inverse N-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4)."
+      "notes": "Inverse N-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
+      "weight": 1.0
     },
     {
       "name": "fft.rfft",
@@ -1818,7 +1957,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "1-D real FFT. Cost: 5*(n//2)*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4)."
+      "notes": "1-D real FFT. Cost: 5*(n//2)*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
+      "weight": 1.0
     },
     {
       "name": "fft.rfft2",
@@ -1831,7 +1971,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "2-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4)."
+      "notes": "2-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
+      "weight": 1.0
     },
     {
       "name": "fft.rfftfreq",
@@ -1844,7 +1985,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Real FFT sample frequencies. No arithmetic; returns index array."
+      "notes": "Real FFT sample frequencies. No arithmetic; returns index array.",
+      "weight": 1.0
     },
     {
       "name": "fft.rfftn",
@@ -1857,7 +1999,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "N-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4)."
+      "notes": "N-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
+      "weight": 1.0
     },
     {
       "name": "fill_diagonal",
@@ -1870,7 +2013,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Fill main diagonal of given array. Cost: min(m,n)."
+      "notes": "Fill main diagonal of given array. Cost: min(m,n).",
+      "weight": 4.0
     },
     {
       "name": "fix",
@@ -1883,7 +2027,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Round toward zero element-wise (alias for trunc)."
+      "notes": "Round toward zero element-wise (alias for trunc).",
+      "weight": 1.0
     },
     {
       "name": "flatnonzero",
@@ -1896,7 +2041,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return indices of non-zero elements in flattened array. Cost: numel(input)."
+      "notes": "Return indices of non-zero elements in flattened array. Cost: numel(input).",
+      "weight": 1.0
     },
     {
       "name": "flip",
@@ -1909,7 +2055,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Reverse order of elements along axis."
+      "notes": "Reverse order of elements along axis.",
+      "weight": 1.0
     },
     {
       "name": "fliplr",
@@ -1922,7 +2069,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Flip array left-right."
+      "notes": "Flip array left-right.",
+      "weight": 1.0
     },
     {
       "name": "flipud",
@@ -1935,7 +2083,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Flip array up-down."
+      "notes": "Flip array up-down.",
+      "weight": 1.0
     },
     {
       "name": "float_power",
@@ -1948,7 +2097,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise exponentiation in float64."
+      "notes": "Element-wise exponentiation in float64.",
+      "weight": 16.0
     },
     {
       "name": "floor",
@@ -1961,7 +2111,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise floor."
+      "notes": "Element-wise floor.",
+      "weight": 1.0
     },
     {
       "name": "floor_divide",
@@ -1974,7 +2125,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise floor division."
+      "notes": "Element-wise floor division.",
+      "weight": 16.0
     },
     {
       "name": "fmax",
@@ -1987,7 +2139,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise maximum ignoring NaN."
+      "notes": "Element-wise maximum ignoring NaN.",
+      "weight": 1.0
     },
     {
       "name": "fmin",
@@ -2000,7 +2153,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise minimum ignoring NaN."
+      "notes": "Element-wise minimum ignoring NaN.",
+      "weight": 1.0
     },
     {
       "name": "fmod",
@@ -2013,7 +2167,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise C-style fmod (remainder toward zero)."
+      "notes": "Element-wise C-style fmod (remainder toward zero).",
+      "weight": 16.0
     },
     {
       "name": "format_float_positional",
@@ -2026,7 +2181,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Format floating point scalar as decimal string. Not supported."
+      "notes": "Format floating point scalar as decimal string. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "format_float_scientific",
@@ -2039,7 +2195,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Format floating point scalar as scientific notation. Not supported."
+      "notes": "Format floating point scalar as scientific notation. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "frexp",
@@ -2052,7 +2209,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Decompose x into mantissa and exponent element-wise."
+      "notes": "Decompose x into mantissa and exponent element-wise.",
+      "weight": 1.0
     },
     {
       "name": "from_dlpack",
@@ -2065,7 +2223,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Create ndarray from DLPack object (zero-copy). Cost: numel(output)."
+      "notes": "Create ndarray from DLPack object (zero-copy). Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "frombuffer",
@@ -2078,7 +2237,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Interpret buffer as 1-D array. Cost: numel(output)."
+      "notes": "Interpret buffer as 1-D array. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "fromfile",
@@ -2091,7 +2251,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Construct array from binary/text file. Cost: numel(output)."
+      "notes": "Construct array from binary/text file. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "fromfunction",
@@ -2104,7 +2265,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Construct array by executing function over each coordinate. Cost: numel(output)."
+      "notes": "Construct array by executing function over each coordinate. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "fromiter",
@@ -2117,7 +2279,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Create array from an iterable. Cost: numel(output)."
+      "notes": "Create array from an iterable. Cost: numel(output).",
+      "weight": 16.0
     },
     {
       "name": "frompyfunc",
@@ -2130,7 +2293,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Take arbitrary Python function and return NumPy ufunc. Not supported."
+      "notes": "Take arbitrary Python function and return NumPy ufunc. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "fromregex",
@@ -2143,7 +2307,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Construct array from text file using regex. Cost: numel(output)."
+      "notes": "Construct array from text file using regex. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "fromstring",
@@ -2156,7 +2321,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Create 1-D array from string data. Cost: numel(output)."
+      "notes": "Create 1-D array from string data. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "full",
@@ -2169,7 +2335,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Create array filled with scalar value. Cost: num copied."
+      "notes": "Create array filled with scalar value. Cost: num copied.",
+      "weight": 1.0
     },
     {
       "name": "full_like",
@@ -2182,7 +2349,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Array filled with scalar, same shape/type as input. Cost: numel(output)."
+      "notes": "Array filled with scalar, same shape/type as input. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "gcd",
@@ -2195,7 +2363,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise greatest common divisor."
+      "notes": "Element-wise greatest common divisor.",
+      "weight": 16.0
     },
     {
       "name": "genfromtxt",
@@ -2208,7 +2377,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Load data from text file with missing values. Not supported."
+      "notes": "Load data from text file with missing values. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "geomspace",
@@ -2221,7 +2391,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Geometric-spaced generation; cost = num."
+      "notes": "Geometric-spaced generation; cost = num.",
+      "weight": 1.0
     },
     {
       "name": "get_include",
@@ -2234,7 +2405,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Return directory containing NumPy C header files. Not supported."
+      "notes": "Return directory containing NumPy C header files. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "getbufsize",
@@ -2247,7 +2419,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Return size of buffer used in ufuncs. Not supported."
+      "notes": "Return size of buffer used in ufuncs. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "geterr",
@@ -2260,7 +2433,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Get current way of handling floating-point errors. Not supported."
+      "notes": "Get current way of handling floating-point errors. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "geterrcall",
@@ -2273,7 +2447,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Return current callback function for floating-point errors. Not supported."
+      "notes": "Return current callback function for floating-point errors. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "gradient",
@@ -2286,7 +2461,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Gradient using central differences."
+      "notes": "Gradient using central differences.",
+      "weight": 1.0
     },
     {
       "name": "greater",
@@ -2299,7 +2475,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise x1 > x2."
+      "notes": "Element-wise x1 > x2.",
+      "weight": 1.0
     },
     {
       "name": "greater_equal",
@@ -2312,7 +2489,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise x1 >= x2."
+      "notes": "Element-wise x1 >= x2.",
+      "weight": 1.0
     },
     {
       "name": "hamming",
@@ -2325,7 +2503,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Hamming window. Cost: n (one cosine per sample)."
+      "notes": "Hamming window. Cost: n (one cosine per sample).",
+      "weight": 16.0
     },
     {
       "name": "hanning",
@@ -2338,7 +2517,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Hanning window. Cost: n (one cosine per sample)."
+      "notes": "Hanning window. Cost: n (one cosine per sample).",
+      "weight": 16.0
     },
     {
       "name": "heaviside",
@@ -2351,7 +2531,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Heaviside step function element-wise."
+      "notes": "Heaviside step function element-wise.",
+      "weight": 1.0
     },
     {
       "name": "histogram",
@@ -2364,7 +2545,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Binning; cost = n*ceil(log2(bins))."
+      "notes": "Binning; cost = n*ceil(log2(bins)).",
+      "weight": 1.0
     },
     {
       "name": "histogram2d",
@@ -2377,7 +2559,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "2D binning; cost = n*(ceil(log2(bx))+ceil(log2(by)))."
+      "notes": "2D binning; cost = n*(ceil(log2(bx))+ceil(log2(by))).",
+      "weight": 1.0
     },
     {
       "name": "histogram_bin_edges",
@@ -2390,7 +2573,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Bin edge computation; cost = numel(a)."
+      "notes": "Bin edge computation; cost = numel(a).",
+      "weight": 1.0
     },
     {
       "name": "histogramdd",
@@ -2403,7 +2587,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "ND binning; cost = n*sum(ceil(log2(b_i)))."
+      "notes": "ND binning; cost = n*sum(ceil(log2(b_i))).",
+      "weight": 1.0
     },
     {
       "name": "hsplit",
@@ -2416,7 +2601,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Split array into columns."
+      "notes": "Split array into columns.",
+      "weight": 1.0
     },
     {
       "name": "hstack",
@@ -2429,7 +2615,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Stack arrays horizontally."
+      "notes": "Stack arrays horizontally.",
+      "weight": 1.0
     },
     {
       "name": "hypot",
@@ -2442,7 +2629,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise Euclidean norm sqrt(x1^2 + x2^2)."
+      "notes": "Element-wise Euclidean norm sqrt(x1^2 + x2^2).",
+      "weight": 16.0
     },
     {
       "name": "i0",
@@ -2455,7 +2643,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Modified Bessel function of order 0, element-wise."
+      "notes": "Modified Bessel function of order 0, element-wise.",
+      "weight": 16.0
     },
     {
       "name": "identity",
@@ -2468,7 +2657,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Create square identity matrix."
+      "notes": "Create square identity matrix.",
+      "weight": 1.0
     },
     {
       "name": "imag",
@@ -2481,7 +2671,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return imaginary part of complex array."
+      "notes": "Return imaginary part of complex array.",
+      "weight": 1.0
     },
     {
       "name": "in1d",
@@ -2494,7 +2685,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Set membership; cost = (n+m)*ceil(log2(n+m))."
+      "notes": "Set membership; cost = (n+m)*ceil(log2(n+m)).",
+      "weight": 1.0
     },
     {
       "name": "indices",
@@ -2507,7 +2699,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return array representing indices of a grid. Cost: numel(output)."
+      "notes": "Return array representing indices of a grid. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "inner",
@@ -2520,7 +2713,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Inner product; cost = N (FMA=1)."
+      "notes": "Inner product; cost = N (FMA=1).",
+      "weight": 1.0
     },
     {
       "name": "insert",
@@ -2533,7 +2727,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Insert values along axis before given indices. Cost: numel(values)."
+      "notes": "Insert values along axis before given indices. Cost: numel(values).",
+      "weight": 4.0
     },
     {
       "name": "interp",
@@ -2546,7 +2741,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "1-D linear interpolation."
+      "notes": "1-D linear interpolation.",
+      "weight": 1.0
     },
     {
       "name": "intersect1d",
@@ -2559,7 +2755,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Set intersection; cost = (n+m)*ceil(log2(n+m))."
+      "notes": "Set intersection; cost = (n+m)*ceil(log2(n+m)).",
+      "weight": 1.0
     },
     {
       "name": "invert",
@@ -2572,7 +2769,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Bitwise NOT element-wise."
+      "notes": "Bitwise NOT element-wise.",
+      "weight": 1.0
     },
     {
       "name": "is_busday",
@@ -2585,7 +2783,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Calculates which of given dates are valid days. Not supported."
+      "notes": "Calculates which of given dates are valid days. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "isclose",
@@ -2598,7 +2797,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise approximate equality test."
+      "notes": "Element-wise approximate equality test.",
+      "weight": 1.0
     },
     {
       "name": "iscomplex",
@@ -2611,7 +2811,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Test if element is complex element-wise."
+      "notes": "Test if element is complex element-wise.",
+      "weight": 1.0
     },
     {
       "name": "iscomplexobj",
@@ -2624,7 +2825,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return True if input is a complex type or array."
+      "notes": "Return True if input is a complex type or array.",
+      "weight": 1.0
     },
     {
       "name": "isdtype",
@@ -2637,7 +2839,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Return True if array or dtype is of specified kind (NumPy 2.x)."
+      "notes": "Return True if array or dtype is of specified kind (NumPy 2.x).",
+      "weight": 1.0
     },
     {
       "name": "isfinite",
@@ -2650,7 +2853,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Test for finite values element-wise. Cost: numel(input)."
+      "notes": "Test for finite values element-wise. Cost: numel(input).",
+      "weight": 1.0
     },
     {
       "name": "isfortran",
@@ -2663,7 +2867,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Return True if array is Fortran contiguous."
+      "notes": "Return True if array is Fortran contiguous.",
+      "weight": 1.0
     },
     {
       "name": "isin",
@@ -2676,7 +2881,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Set membership; cost = (n+m)*ceil(log2(n+m))."
+      "notes": "Set membership; cost = (n+m)*ceil(log2(n+m)).",
+      "weight": 1.0
     },
     {
       "name": "isinf",
@@ -2689,7 +2895,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Test for infinity element-wise. Cost: numel(input)."
+      "notes": "Test for infinity element-wise. Cost: numel(input).",
+      "weight": 1.0
     },
     {
       "name": "isnan",
@@ -2702,7 +2909,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Test for NaN element-wise. Cost: numel(input)."
+      "notes": "Test for NaN element-wise. Cost: numel(input).",
+      "weight": 1.0
     },
     {
       "name": "isnat",
@@ -2715,7 +2923,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Blacklisted per reviewer \u2014 datetime ops not in scope."
+      "notes": "Blacklisted per reviewer \u2014 datetime ops not in scope.",
+      "weight": 1.0
     },
     {
       "name": "isneginf",
@@ -2728,7 +2937,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Test for negative infinity element-wise."
+      "notes": "Test for negative infinity element-wise.",
+      "weight": 1.0
     },
     {
       "name": "isposinf",
@@ -2741,7 +2951,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Test for positive infinity element-wise."
+      "notes": "Test for positive infinity element-wise.",
+      "weight": 1.0
     },
     {
       "name": "isreal",
@@ -2754,7 +2965,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Test if element is real (imag == 0) element-wise."
+      "notes": "Test if element is real (imag == 0) element-wise.",
+      "weight": 1.0
     },
     {
       "name": "isrealobj",
@@ -2767,7 +2979,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return True if x is a not complex type or array."
+      "notes": "Return True if x is a not complex type or array.",
+      "weight": 1.0
     },
     {
       "name": "isscalar",
@@ -2780,7 +2993,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Return True if input is a scalar."
+      "notes": "Return True if input is a scalar.",
+      "weight": 1.0
     },
     {
       "name": "issubdtype",
@@ -2793,7 +3007,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Return True if first argument is lower in type hierarchy."
+      "notes": "Return True if first argument is lower in type hierarchy.",
+      "weight": 1.0
     },
     {
       "name": "iterable",
@@ -2806,7 +3021,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Return True if object is iterable."
+      "notes": "Return True if object is iterable.",
+      "weight": 1.0
     },
     {
       "name": "ix_",
@@ -2819,7 +3035,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Construct open mesh from multiple sequences. Cost: numel(output)."
+      "notes": "Construct open mesh from multiple sequences. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "kaiser",
@@ -2832,7 +3049,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Kaiser window. Cost: 3*n (Bessel function eval per sample)."
+      "notes": "Kaiser window. Cost: 3*n (Bessel function eval per sample).",
+      "weight": 16.0
     },
     {
       "name": "kron",
@@ -2845,7 +3063,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Kronecker product; cost proportional to output size."
+      "notes": "Kronecker product; cost proportional to output size.",
+      "weight": 1.0
     },
     {
       "name": "lcm",
@@ -2858,7 +3077,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise least common multiple."
+      "notes": "Element-wise least common multiple.",
+      "weight": 16.0
     },
     {
       "name": "ldexp",
@@ -2871,7 +3091,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return x1 * 2**x2 element-wise."
+      "notes": "Return x1 * 2**x2 element-wise.",
+      "weight": 1.0
     },
     {
       "name": "left_shift",
@@ -2884,7 +3105,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise left bit shift (legacy name)."
+      "notes": "Element-wise left bit shift (legacy name).",
+      "weight": 1.0
     },
     {
       "name": "less",
@@ -2897,7 +3119,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise x1 < x2."
+      "notes": "Element-wise x1 < x2.",
+      "weight": 1.0
     },
     {
       "name": "less_equal",
@@ -2910,7 +3133,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise x1 <= x2."
+      "notes": "Element-wise x1 <= x2.",
+      "weight": 1.0
     },
     {
       "name": "lexsort",
@@ -2923,7 +3147,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Multi-key sort; cost = k*n*ceil(log2(n))."
+      "notes": "Multi-key sort; cost = k*n*ceil(log2(n)).",
+      "weight": 1.0
     },
     {
       "name": "linalg.cholesky",
@@ -2936,7 +3161,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Cholesky decomposition. Cost: $n^3$."
+      "notes": "Cholesky decomposition. Cost: $n^3$.",
+      "weight": 4.0
     },
     {
       "name": "linalg.cond",
@@ -2949,7 +3175,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Condition number. Cost: m*n*min(m,n) (via SVD)."
+      "notes": "Condition number. Cost: m*n*min(m,n) (via SVD).",
+      "weight": 4.0
     },
     {
       "name": "linalg.cross",
@@ -2962,7 +3189,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Delegates to `we.cross` which charges `numel(output)` FLOPs."
+      "notes": "Delegates to `we.cross` which charges `numel(output)` FLOPs.",
+      "weight": 1.0
     },
     {
       "name": "linalg.det",
@@ -2975,7 +3203,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Determinant. Cost: $n^3$."
+      "notes": "Determinant. Cost: $n^3$.",
+      "weight": 4.0
     },
     {
       "name": "linalg.diagonal",
@@ -2988,7 +3217,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "View of diagonal \u2014 delegates to whest.diagonal. Cost: 0 FLOPs."
+      "notes": "View of diagonal \u2014 delegates to whest.diagonal. Cost: 0 FLOPs.",
+      "weight": 1.0
     },
     {
       "name": "linalg.eig",
@@ -3001,7 +3231,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Eigendecomposition. Cost: $n^3$."
+      "notes": "Eigendecomposition. Cost: $n^3$.",
+      "weight": 4.0
     },
     {
       "name": "linalg.eigh",
@@ -3014,7 +3245,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Symmetric eigendecomposition. Cost: $n^3$."
+      "notes": "Symmetric eigendecomposition. Cost: $n^3$.",
+      "weight": 4.0
     },
     {
       "name": "linalg.eigvals",
@@ -3027,7 +3259,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Eigenvalues only. Cost: $n^3$."
+      "notes": "Eigenvalues only. Cost: $n^3$.",
+      "weight": 4.0
     },
     {
       "name": "linalg.eigvalsh",
@@ -3040,7 +3273,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Symmetric eigenvalues. Cost: $n^3$."
+      "notes": "Symmetric eigenvalues. Cost: $n^3$.",
+      "weight": 4.0
     },
     {
       "name": "linalg.inv",
@@ -3053,7 +3287,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Matrix inverse. Cost: $n^3$ (LU + solve)."
+      "notes": "Matrix inverse. Cost: $n^3$ (LU + solve).",
+      "weight": 4.0
     },
     {
       "name": "linalg.lstsq",
@@ -3066,7 +3301,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Least squares. Cost: m*n*min(m,n) (LAPACK gelsd/SVD)."
+      "notes": "Least squares. Cost: m*n*min(m,n) (LAPACK gelsd/SVD).",
+      "weight": 4.0
     },
     {
       "name": "linalg.matmul",
@@ -3079,7 +3315,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Delegates to `we.matmul` which charges `m*k*n` FLOPs (FMA=1)."
+      "notes": "Delegates to `we.matmul` which charges `m*k*n` FLOPs (FMA=1).",
+      "weight": 1.0
     },
     {
       "name": "linalg.matrix_norm",
@@ -3092,7 +3329,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Matrix norm. Cost depends on ord: 2*numel for Frobenius, m*n*min(m,n) for ord=2."
+      "notes": "Matrix norm. Cost depends on ord: 2*numel for Frobenius, m*n*min(m,n) for ord=2.",
+      "weight": 1.0
     },
     {
       "name": "linalg.matrix_power",
@@ -3105,7 +3343,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Matrix power. Cost: $(\\lfloor\\log_2 k\\rfloor + \\text{popcount}(k) - 1) \\cdot n^3$ (exponentiation by squaring)."
+      "notes": "Matrix power. Cost: $(\\lfloor\\log_2 k\\rfloor + \\text{popcount}(k) - 1) \\cdot n^3$ (exponentiation by squaring).",
+      "weight": 1.0
     },
     {
       "name": "linalg.matrix_rank",
@@ -3118,7 +3357,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Matrix rank. Cost: m*n*min(m,n) (via SVD)."
+      "notes": "Matrix rank. Cost: m*n*min(m,n) (via SVD).",
+      "weight": 4.0
     },
     {
       "name": "linalg.matrix_transpose",
@@ -3131,7 +3371,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Transpose view \u2014 delegates to whest.matrix_transpose. Cost: 0 FLOPs."
+      "notes": "Transpose view \u2014 delegates to whest.matrix_transpose. Cost: 0 FLOPs.",
+      "weight": 1.0
     },
     {
       "name": "linalg.multi_dot",
@@ -3144,7 +3385,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Chain matmul. Cost: sum of optimal chain matmul costs (CLRS \u00a715.2)."
+      "notes": "Chain matmul. Cost: sum of optimal chain matmul costs (CLRS \u00a715.2).",
+      "weight": 1.0
     },
     {
       "name": "linalg.norm",
@@ -3157,7 +3399,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Norm. Cost depends on ord: numel for L1/inf, 2*numel for Frobenius, m*n*min(m,n) for ord=2."
+      "notes": "Norm. Cost depends on ord: numel for L1/inf, 2*numel for Frobenius, m*n*min(m,n) for ord=2.",
+      "weight": 1.0
     },
     {
       "name": "linalg.outer",
@@ -3170,7 +3413,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Delegates to `we.outer` which charges `m*n` FLOPs."
+      "notes": "Delegates to `we.outer` which charges `m*n` FLOPs.",
+      "weight": 1.0
     },
     {
       "name": "linalg.pinv",
@@ -3183,7 +3427,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Pseudoinverse. Cost: m*n*min(m,n) (via SVD)."
+      "notes": "Pseudoinverse. Cost: m*n*min(m,n) (via SVD).",
+      "weight": 4.0
     },
     {
       "name": "linalg.qr",
@@ -3196,7 +3441,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "QR decomposition. Cost: $m \\cdot n \\cdot \\min(m,n)$."
+      "notes": "QR decomposition. Cost: $m \\cdot n \\cdot \\min(m,n)$.",
+      "weight": 4.0
     },
     {
       "name": "linalg.slogdet",
@@ -3209,7 +3455,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sign + log determinant. Cost: $n^3$."
+      "notes": "Sign + log determinant. Cost: $n^3$.",
+      "weight": 4.0
     },
     {
       "name": "linalg.solve",
@@ -3222,7 +3469,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Solve Ax=b. Cost: $n^3$."
+      "notes": "Solve Ax=b. Cost: $n^3$.",
+      "weight": 4.0
     },
     {
       "name": "linalg.svd",
@@ -3235,7 +3483,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Singular value decomposition; cost ~ O(min(m,n)*m*n)."
+      "notes": "Singular value decomposition; cost ~ O(min(m,n)*m*n).",
+      "weight": 4.0
     },
     {
       "name": "linalg.svdvals",
@@ -3248,7 +3497,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Singular values only. Cost: m*n*min(m,n) (Golub-Reinsch)."
+      "notes": "Singular values only. Cost: m*n*min(m,n) (Golub-Reinsch).",
+      "weight": 4.0
     },
     {
       "name": "linalg.tensordot",
@@ -3261,7 +3511,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Delegates to `we.tensordot` which charges FLOPs based on contraction."
+      "notes": "Delegates to `we.tensordot` which charges FLOPs based on contraction.",
+      "weight": 1.0
     },
     {
       "name": "linalg.tensorinv",
@@ -3274,7 +3525,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Tensor inverse. Cost: $n^3$ after reshape (delegates to inv)."
+      "notes": "Tensor inverse. Cost: $n^3$ after reshape (delegates to inv).",
+      "weight": 4.0
     },
     {
       "name": "linalg.tensorsolve",
@@ -3287,7 +3539,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Tensor solve. Cost: $n^3$ after reshape (delegates to solve)."
+      "notes": "Tensor solve. Cost: $n^3$ after reshape (delegates to solve).",
+      "weight": 4.0
     },
     {
       "name": "linalg.trace",
@@ -3300,7 +3553,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Matrix trace. Cost: n (sum of diagonal elements)."
+      "notes": "Matrix trace. Cost: n (sum of diagonal elements).",
+      "weight": 1.0
     },
     {
       "name": "linalg.vecdot",
@@ -3313,7 +3567,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Delegates to `we.vecdot` which charges `2*n` FLOPs."
+      "notes": "Delegates to `we.vecdot` which charges `2*n` FLOPs.",
+      "weight": 1.0
     },
     {
       "name": "linalg.vector_norm",
@@ -3326,7 +3581,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Vector norm. Cost: numel (or 2*numel for general p-norm)."
+      "notes": "Vector norm. Cost: numel (or 2*numel for general p-norm).",
+      "weight": 1.0
     },
     {
       "name": "linspace",
@@ -3339,7 +3595,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return evenly spaced numbers over interval. Cost: numel(output)."
+      "notes": "Return evenly spaced numbers over interval. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "load",
@@ -3352,7 +3609,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Load arrays from .npy/.npz files. Not supported."
+      "notes": "Load arrays from .npy/.npz files. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "loadtxt",
@@ -3365,7 +3623,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Load data from text file. Not supported."
+      "notes": "Load data from text file. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "log",
@@ -3378,7 +3637,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise natural logarithm."
+      "notes": "Element-wise natural logarithm.",
+      "weight": 16.0
     },
     {
       "name": "log10",
@@ -3391,7 +3651,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise base-10 logarithm."
+      "notes": "Element-wise base-10 logarithm.",
+      "weight": 16.0
     },
     {
       "name": "log1p",
@@ -3404,7 +3665,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise log(1+x) (accurate near zero)."
+      "notes": "Element-wise log(1+x) (accurate near zero).",
+      "weight": 16.0
     },
     {
       "name": "log2",
@@ -3417,7 +3679,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise base-2 logarithm."
+      "notes": "Element-wise base-2 logarithm.",
+      "weight": 16.0
     },
     {
       "name": "logaddexp",
@@ -3430,7 +3693,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "log(exp(x1) + exp(x2)) element-wise."
+      "notes": "log(exp(x1) + exp(x2)) element-wise.",
+      "weight": 16.0
     },
     {
       "name": "logaddexp2",
@@ -3443,7 +3707,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "log2(2**x1 + 2**x2) element-wise."
+      "notes": "log2(2**x1 + 2**x2) element-wise.",
+      "weight": 16.0
     },
     {
       "name": "logical_and",
@@ -3456,7 +3721,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise logical AND."
+      "notes": "Element-wise logical AND.",
+      "weight": 1.0
     },
     {
       "name": "logical_not",
@@ -3469,7 +3735,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise logical NOT."
+      "notes": "Element-wise logical NOT.",
+      "weight": 1.0
     },
     {
       "name": "logical_or",
@@ -3482,7 +3749,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise logical OR."
+      "notes": "Element-wise logical OR.",
+      "weight": 1.0
     },
     {
       "name": "logical_xor",
@@ -3495,7 +3763,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise logical XOR."
+      "notes": "Element-wise logical XOR.",
+      "weight": 1.0
     },
     {
       "name": "logspace",
@@ -3508,7 +3777,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Log-spaced generation; cost = num."
+      "notes": "Log-spaced generation; cost = num.",
+      "weight": 1.0
     },
     {
       "name": "mask_indices",
@@ -3521,7 +3791,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return indices of mask for n x n array. Cost: numel(output)."
+      "notes": "Return indices of mask for n x n array. Cost: numel(output).",
+      "weight": 4.0
     },
     {
       "name": "matmul",
@@ -3534,7 +3805,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Matrix multiplication; cost = M*K*N (FMA=1)."
+      "notes": "Matrix multiplication; cost = M*K*N (FMA=1).",
+      "weight": 1.0
     },
     {
       "name": "matrix_transpose",
@@ -3547,7 +3819,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Transpose last two dimensions (NumPy 2.x array API)."
+      "notes": "Transpose last two dimensions (NumPy 2.x array API).",
+      "weight": 1.0
     },
     {
       "name": "matvec",
@@ -3560,7 +3833,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Matrix-vector product. Cost = output_size * contracted_axis."
+      "notes": "Matrix-vector product. Cost = output_size * contracted_axis.",
+      "weight": 1.0
     },
     {
       "name": "max",
@@ -3573,7 +3847,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Maximum value of array."
+      "notes": "Maximum value of array.",
+      "weight": 1.0
     },
     {
       "name": "maximum",
@@ -3586,7 +3861,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise maximum (propagates NaN)."
+      "notes": "Element-wise maximum (propagates NaN).",
+      "weight": 1.0
     },
     {
       "name": "may_share_memory",
@@ -3599,7 +3875,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Determine if two arrays might share memory."
+      "notes": "Determine if two arrays might share memory.",
+      "weight": 1.0
     },
     {
       "name": "mean",
@@ -3612,7 +3889,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Arithmetic mean of array elements."
+      "notes": "Arithmetic mean of array elements.",
+      "weight": 1.0
     },
     {
       "name": "median",
@@ -3625,7 +3903,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Median of array elements (sorts internally)."
+      "notes": "Median of array elements (sorts internally).",
+      "weight": 1.0
     },
     {
       "name": "meshgrid",
@@ -3638,7 +3917,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Coordinate matrices from coordinate vectors. Cost: numel(output)."
+      "notes": "Coordinate matrices from coordinate vectors. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "min",
@@ -3651,7 +3931,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Minimum value of array."
+      "notes": "Minimum value of array.",
+      "weight": 1.0
     },
     {
       "name": "min_scalar_type",
@@ -3664,7 +3945,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Return the minimum scalar type for a value."
+      "notes": "Return the minimum scalar type for a value.",
+      "weight": 1.0
     },
     {
       "name": "minimum",
@@ -3677,7 +3959,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise minimum (propagates NaN)."
+      "notes": "Element-wise minimum (propagates NaN).",
+      "weight": 1.0
     },
     {
       "name": "mintypecode",
@@ -3690,7 +3973,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Return minimum data type character that can satisfy all given types."
+      "notes": "Return minimum data type character that can satisfy all given types.",
+      "weight": 1.0
     },
     {
       "name": "mod",
@@ -3703,7 +3987,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise modulo."
+      "notes": "Element-wise modulo.",
+      "weight": 16.0
     },
     {
       "name": "modf",
@@ -3716,7 +4001,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return fractional and integral parts element-wise."
+      "notes": "Return fractional and integral parts element-wise.",
+      "weight": 1.0
     },
     {
       "name": "moveaxis",
@@ -3729,7 +4015,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Move axes to new positions."
+      "notes": "Move axes to new positions.",
+      "weight": 1.0
     },
     {
       "name": "multiply",
@@ -3742,7 +4029,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise multiplication."
+      "notes": "Element-wise multiplication.",
+      "weight": 1.0
     },
     {
       "name": "nan_to_num",
@@ -3755,7 +4043,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Replace NaN/inf with finite numbers element-wise."
+      "notes": "Replace NaN/inf with finite numbers element-wise.",
+      "weight": 1.0
     },
     {
       "name": "nanargmax",
@@ -3768,7 +4057,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Index of maximum ignoring NaNs."
+      "notes": "Index of maximum ignoring NaNs.",
+      "weight": 1.0
     },
     {
       "name": "nanargmin",
@@ -3781,7 +4071,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Index of minimum ignoring NaNs."
+      "notes": "Index of minimum ignoring NaNs.",
+      "weight": 1.0
     },
     {
       "name": "nancumprod",
@@ -3794,7 +4085,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Cumulative product ignoring NaNs."
+      "notes": "Cumulative product ignoring NaNs.",
+      "weight": 1.0
     },
     {
       "name": "nancumsum",
@@ -3807,7 +4099,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Cumulative sum ignoring NaNs."
+      "notes": "Cumulative sum ignoring NaNs.",
+      "weight": 1.0
     },
     {
       "name": "nanmax",
@@ -3820,7 +4113,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Maximum ignoring NaNs."
+      "notes": "Maximum ignoring NaNs.",
+      "weight": 1.0
     },
     {
       "name": "nanmean",
@@ -3833,7 +4127,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Mean ignoring NaNs."
+      "notes": "Mean ignoring NaNs.",
+      "weight": 1.0
     },
     {
       "name": "nanmedian",
@@ -3846,7 +4141,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Median ignoring NaNs."
+      "notes": "Median ignoring NaNs.",
+      "weight": 1.0
     },
     {
       "name": "nanmin",
@@ -3859,7 +4155,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Minimum ignoring NaNs."
+      "notes": "Minimum ignoring NaNs.",
+      "weight": 1.0
     },
     {
       "name": "nanpercentile",
@@ -3872,7 +4169,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "q-th percentile ignoring NaNs."
+      "notes": "q-th percentile ignoring NaNs.",
+      "weight": 1.0
     },
     {
       "name": "nanprod",
@@ -3885,7 +4183,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Product ignoring NaNs."
+      "notes": "Product ignoring NaNs.",
+      "weight": 1.0
     },
     {
       "name": "nanquantile",
@@ -3898,7 +4197,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "q-th quantile ignoring NaNs."
+      "notes": "q-th quantile ignoring NaNs.",
+      "weight": 1.0
     },
     {
       "name": "nanstd",
@@ -3911,7 +4211,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Standard deviation ignoring NaNs."
+      "notes": "Standard deviation ignoring NaNs.",
+      "weight": 2.0
     },
     {
       "name": "nansum",
@@ -3924,7 +4225,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sum ignoring NaNs."
+      "notes": "Sum ignoring NaNs.",
+      "weight": 1.0
     },
     {
       "name": "nanvar",
@@ -3937,7 +4239,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Variance ignoring NaNs."
+      "notes": "Variance ignoring NaNs.",
+      "weight": 2.0
     },
     {
       "name": "ndim",
@@ -3950,7 +4253,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Return number of dimensions of array."
+      "notes": "Return number of dimensions of array.",
+      "weight": 1.0
     },
     {
       "name": "negative",
@@ -3963,7 +4267,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise negation."
+      "notes": "Element-wise negation.",
+      "weight": 1.0
     },
     {
       "name": "nested_iters",
@@ -3976,7 +4281,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Create nested iterators for multi-index broadcasting. Not supported."
+      "notes": "Create nested iterators for multi-index broadcasting. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "nextafter",
@@ -3989,7 +4295,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return next float after x1 toward x2 element-wise."
+      "notes": "Return next float after x1 toward x2 element-wise.",
+      "weight": 1.0
     },
     {
       "name": "nonzero",
@@ -4002,7 +4309,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return indices of non-zero elements. Cost: numel(input)."
+      "notes": "Return indices of non-zero elements. Cost: numel(input).",
+      "weight": 1.0
     },
     {
       "name": "not_equal",
@@ -4015,7 +4323,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise x1 != x2."
+      "notes": "Element-wise x1 != x2.",
+      "weight": 1.0
     },
     {
       "name": "ones",
@@ -4028,7 +4337,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Create one-filled array."
+      "notes": "Create one-filled array.",
+      "weight": 1.0
     },
     {
       "name": "ones_like",
@@ -4041,7 +4351,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Array of ones with same shape/type as input."
+      "notes": "Array of ones with same shape/type as input.",
+      "weight": 1.0
     },
     {
       "name": "outer",
@@ -4054,7 +4365,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Outer product of two vectors; cost = M*N."
+      "notes": "Outer product of two vectors; cost = M*N.",
+      "weight": 1.0
     },
     {
       "name": "packbits",
@@ -4067,7 +4379,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Pack elements of array into bits. Cost: numel(input)."
+      "notes": "Pack elements of array into bits. Cost: numel(input).",
+      "weight": 1.0
     },
     {
       "name": "pad",
@@ -4080,7 +4393,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Pad array. Cost: numel(output)."
+      "notes": "Pad array. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "partition",
@@ -4093,7 +4407,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Quickselect; cost = n per slice."
+      "notes": "Quickselect; cost = n per slice.",
+      "weight": 1.0
     },
     {
       "name": "percentile",
@@ -4106,7 +4421,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "q-th percentile of array elements."
+      "notes": "q-th percentile of array elements.",
+      "weight": 1.0
     },
     {
       "name": "permute_dims",
@@ -4119,7 +4435,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Permute dimensions (NumPy 2.x array API)."
+      "notes": "Permute dimensions (NumPy 2.x array API).",
+      "weight": 1.0
     },
     {
       "name": "piecewise",
@@ -4132,7 +4449,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Piecewise function. Cost: numel(input)."
+      "notes": "Piecewise function. Cost: numel(input).",
+      "weight": 4.0
     },
     {
       "name": "place",
@@ -4145,7 +4463,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Change elements satisfying condition. Cost: numel(input)."
+      "notes": "Change elements satisfying condition. Cost: numel(input).",
+      "weight": 4.0
     },
     {
       "name": "poly",
@@ -4158,7 +4477,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Polynomial from roots. Cost: $n^2$ FLOPs."
+      "notes": "Polynomial from roots. Cost: $n^2$ FLOPs.",
+      "weight": 1.0
     },
     {
       "name": "polyadd",
@@ -4171,7 +4491,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Add two polynomials. Cost: max(n1, n2) FLOPs."
+      "notes": "Add two polynomials. Cost: max(n1, n2) FLOPs.",
+      "weight": 1.0
     },
     {
       "name": "polyder",
@@ -4184,7 +4505,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Differentiate polynomial. Cost: n FLOPs."
+      "notes": "Differentiate polynomial. Cost: n FLOPs.",
+      "weight": 1.0
     },
     {
       "name": "polydiv",
@@ -4197,7 +4519,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Divide one polynomial by another. Cost: n1 * n2 FLOPs."
+      "notes": "Divide one polynomial by another. Cost: n1 * n2 FLOPs.",
+      "weight": 1.0
     },
     {
       "name": "polyfit",
@@ -4210,7 +4533,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Least squares polynomial fit. Cost: 2 * m * (deg+1)^2 FLOPs."
+      "notes": "Least squares polynomial fit. Cost: 2 * m * (deg+1)^2 FLOPs.",
+      "weight": 1.0
     },
     {
       "name": "polyint",
@@ -4223,7 +4547,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Integrate polynomial. Cost: n FLOPs."
+      "notes": "Integrate polynomial. Cost: n FLOPs.",
+      "weight": 1.0
     },
     {
       "name": "polymul",
@@ -4236,7 +4561,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Multiply polynomials. Cost: n1 * n2 FLOPs."
+      "notes": "Multiply polynomials. Cost: n1 * n2 FLOPs.",
+      "weight": 1.0
     },
     {
       "name": "polysub",
@@ -4249,7 +4575,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Difference (subtraction) of two polynomials. Cost: max(n1, n2) FLOPs."
+      "notes": "Difference (subtraction) of two polynomials. Cost: max(n1, n2) FLOPs.",
+      "weight": 1.0
     },
     {
       "name": "polyval",
@@ -4262,7 +4589,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Evaluate polynomial at given points. Cost: $m \\cdot \\text{deg}$ (Horner's method, FMA=1)."
+      "notes": "Evaluate polynomial at given points. Cost: $m \\cdot \\text{deg}$ (Horner's method, FMA=1).",
+      "weight": 1.0
     },
     {
       "name": "positive",
@@ -4275,7 +4603,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise unary plus (copy with sign preserved)."
+      "notes": "Element-wise unary plus (copy with sign preserved).",
+      "weight": 1.0
     },
     {
       "name": "pow",
@@ -4288,7 +4617,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Alias for power (NumPy 2.x)."
+      "notes": "Alias for power (NumPy 2.x).",
+      "weight": 1.0
     },
     {
       "name": "power",
@@ -4301,7 +4631,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise exponentiation x**y."
+      "notes": "Element-wise exponentiation x**y.",
+      "weight": 16.0
     },
     {
       "name": "prod",
@@ -4314,7 +4645,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Product of array elements."
+      "notes": "Product of array elements.",
+      "weight": 1.0
     },
     {
       "name": "promote_types",
@@ -4327,7 +4659,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Return smallest type to which both types may be safely cast."
+      "notes": "Return smallest type to which both types may be safely cast.",
+      "weight": 1.0
     },
     {
       "name": "ptp",
@@ -4340,7 +4673,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Peak-to-peak (max - min) range of array."
+      "notes": "Peak-to-peak (max - min) range of array.",
+      "weight": 1.0
     },
     {
       "name": "put",
@@ -4353,7 +4687,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Replace elements at given flat indices. Cost: numel(input)."
+      "notes": "Replace elements at given flat indices. Cost: numel(input).",
+      "weight": 1.0
     },
     {
       "name": "put_along_axis",
@@ -4366,7 +4701,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Put values into destination array using indices. Cost: numel(input)."
+      "notes": "Put values into destination array using indices. Cost: numel(input).",
+      "weight": 1.0
     },
     {
       "name": "putmask",
@@ -4379,7 +4715,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Change elements of array based on condition and input values. Cost: numel(input)."
+      "notes": "Change elements of array based on condition and input values. Cost: numel(input).",
+      "weight": 4.0
     },
     {
       "name": "quantile",
@@ -4392,7 +4729,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "q-th quantile of array elements."
+      "notes": "q-th quantile of array elements.",
+      "weight": 1.0
     },
     {
       "name": "rad2deg",
@@ -4405,7 +4743,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Alias for degrees."
+      "notes": "Alias for degrees.",
+      "weight": 1.0
     },
     {
       "name": "radians",
@@ -4418,7 +4757,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Convert degrees to radians element-wise."
+      "notes": "Convert degrees to radians element-wise.",
+      "weight": 1.0
     },
     {
       "name": "random.beta",
@@ -4431,7 +4771,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.binomial",
@@ -4444,7 +4785,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.bytes",
@@ -4457,7 +4799,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 1.0
     },
     {
       "name": "random.chisquare",
@@ -4470,7 +4813,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.choice",
@@ -4483,7 +4827,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output) if replace, n*ceil(log2(n)) if not."
+      "notes": "Sampling; cost = numel(output) if replace, n*ceil(log2(n)) if not.",
+      "weight": 1.0
     },
     {
       "name": "random.default_rng",
@@ -4496,7 +4841,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Construct a new Generator with default BitGenerator."
+      "notes": "Construct a new Generator with default BitGenerator.",
+      "weight": 1.0
     },
     {
       "name": "random.dirichlet",
@@ -4509,7 +4855,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.exponential",
@@ -4522,7 +4869,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.f",
@@ -4535,7 +4883,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.gamma",
@@ -4548,7 +4897,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.geometric",
@@ -4561,7 +4911,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.get_state",
@@ -4574,7 +4925,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Return tuple representing internal state of generator."
+      "notes": "Return tuple representing internal state of generator.",
+      "weight": 1.0
     },
     {
       "name": "random.gumbel",
@@ -4587,7 +4939,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.hypergeometric",
@@ -4600,7 +4953,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.laplace",
@@ -4613,7 +4967,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.logistic",
@@ -4626,7 +4981,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.lognormal",
@@ -4639,7 +4995,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.logseries",
@@ -4652,7 +5009,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.multinomial",
@@ -4665,7 +5023,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.multivariate_normal",
@@ -4678,7 +5037,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.negative_binomial",
@@ -4691,7 +5051,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.noncentral_chisquare",
@@ -4704,7 +5065,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.noncentral_f",
@@ -4717,7 +5079,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.normal",
@@ -4730,7 +5093,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.pareto",
@@ -4743,7 +5107,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.permutation",
@@ -4756,7 +5121,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Shuffle; cost = n*ceil(log2(n))."
+      "notes": "Shuffle; cost = n*ceil(log2(n)).",
+      "weight": 1.0
     },
     {
       "name": "random.poisson",
@@ -4769,7 +5135,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.power",
@@ -4782,7 +5149,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.rand",
@@ -4795,7 +5163,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 1.0
     },
     {
       "name": "random.randint",
@@ -4808,7 +5177,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 1.0
     },
     {
       "name": "random.randn",
@@ -4821,7 +5191,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.random",
@@ -4834,7 +5205,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 1.0
     },
     {
       "name": "random.random_integers",
@@ -4847,7 +5219,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 1.0
     },
     {
       "name": "random.random_sample",
@@ -4860,7 +5233,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 1.0
     },
     {
       "name": "random.ranf",
@@ -4873,7 +5247,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 1.0
     },
     {
       "name": "random.rayleigh",
@@ -4886,7 +5261,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.sample",
@@ -4899,7 +5275,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 1.0
     },
     {
       "name": "random.seed",
@@ -4912,7 +5289,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Seed random number generator."
+      "notes": "Seed random number generator.",
+      "weight": 1.0
     },
     {
       "name": "random.set_state",
@@ -4925,7 +5303,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Set internal state of generator."
+      "notes": "Set internal state of generator.",
+      "weight": 1.0
     },
     {
       "name": "random.shuffle",
@@ -4938,7 +5317,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Shuffle; cost = n*ceil(log2(n))."
+      "notes": "Shuffle; cost = n*ceil(log2(n)).",
+      "weight": 1.0
     },
     {
       "name": "random.standard_cauchy",
@@ -4951,7 +5331,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.standard_exponential",
@@ -4964,7 +5345,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.standard_gamma",
@@ -4977,7 +5359,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.standard_normal",
@@ -4990,7 +5373,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.standard_t",
@@ -5003,7 +5387,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.triangular",
@@ -5016,7 +5401,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.uniform",
@@ -5029,7 +5415,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 1.0
     },
     {
       "name": "random.vonmises",
@@ -5042,7 +5429,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.wald",
@@ -5055,7 +5443,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.weibull",
@@ -5068,7 +5457,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "random.zipf",
@@ -5081,7 +5471,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sampling; cost = numel(output)."
+      "notes": "Sampling; cost = numel(output).",
+      "weight": 16.0
     },
     {
       "name": "ravel",
@@ -5094,7 +5485,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Return contiguous flattened array. Cost: numel(input)."
+      "notes": "Return contiguous flattened array. Cost: numel(input).",
+      "weight": 1.0
     },
     {
       "name": "ravel_multi_index",
@@ -5107,7 +5499,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Convert multi-dimensional index to flat index."
+      "notes": "Convert multi-dimensional index to flat index.",
+      "weight": 1.0
     },
     {
       "name": "real",
@@ -5120,7 +5513,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return real part of complex array."
+      "notes": "Return real part of complex array.",
+      "weight": 1.0
     },
     {
       "name": "real_if_close",
@@ -5133,7 +5527,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return real array if imaginary part is negligible."
+      "notes": "Return real array if imaginary part is negligible.",
+      "weight": 1.0
     },
     {
       "name": "reciprocal",
@@ -5146,7 +5541,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise 1/x."
+      "notes": "Element-wise 1/x.",
+      "weight": 1.0
     },
     {
       "name": "remainder",
@@ -5159,7 +5555,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise remainder (same as mod)."
+      "notes": "Element-wise remainder (same as mod).",
+      "weight": 16.0
     },
     {
       "name": "repeat",
@@ -5172,7 +5569,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Repeat elements of an array. Cost: numel(output)."
+      "notes": "Repeat elements of an array. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "require",
@@ -5185,7 +5583,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Return array that satisfies requirements."
+      "notes": "Return array that satisfies requirements.",
+      "weight": 1.0
     },
     {
       "name": "reshape",
@@ -5198,7 +5597,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Reshape array without copying."
+      "notes": "Reshape array without copying.",
+      "weight": 1.0
     },
     {
       "name": "resize",
@@ -5211,7 +5611,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return new array with given shape by repeating. Cost: numel(output)."
+      "notes": "Return new array with given shape by repeating. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "result_type",
@@ -5224,7 +5625,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Return type that results from applying NumPy type promotion."
+      "notes": "Return type that results from applying NumPy type promotion.",
+      "weight": 1.0
     },
     {
       "name": "right_shift",
@@ -5237,7 +5639,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise right bit shift (legacy name)."
+      "notes": "Element-wise right bit shift (legacy name).",
+      "weight": 1.0
     },
     {
       "name": "rint",
@@ -5250,7 +5653,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Round to nearest integer element-wise."
+      "notes": "Round to nearest integer element-wise.",
+      "weight": 1.0
     },
     {
       "name": "roll",
@@ -5263,7 +5667,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Roll array elements along axis. Cost: numel(output)."
+      "notes": "Roll array elements along axis. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "rollaxis",
@@ -5276,7 +5681,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Roll specified axis backwards. Cost: numel(output)."
+      "notes": "Roll specified axis backwards. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "roots",
@@ -5289,7 +5695,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return roots of polynomial with given coefficients. Cost: $n^3$ (companion matrix eig, simplified)."
+      "notes": "Return roots of polynomial with given coefficients. Cost: $n^3$ (companion matrix eig, simplified).",
+      "weight": 16.0
     },
     {
       "name": "rot90",
@@ -5302,7 +5709,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Rotate array 90 degrees."
+      "notes": "Rotate array 90 degrees.",
+      "weight": 1.0
     },
     {
       "name": "round",
@@ -5315,7 +5723,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Round to given number of decimals element-wise."
+      "notes": "Round to given number of decimals element-wise.",
+      "weight": 1.0
     },
     {
       "name": "row_stack",
@@ -5328,7 +5737,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Stack arrays vertically (alias for vstack)."
+      "notes": "Stack arrays vertically (alias for vstack).",
+      "weight": 1.0
     },
     {
       "name": "save",
@@ -5341,7 +5751,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Save array to .npy file. Not supported."
+      "notes": "Save array to .npy file. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "savetxt",
@@ -5354,7 +5765,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Save array to text file. Not supported."
+      "notes": "Save array to text file. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "savez",
@@ -5367,7 +5779,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Save multiple arrays to .npz file. Not supported."
+      "notes": "Save multiple arrays to .npz file. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "savez_compressed",
@@ -5380,7 +5793,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Save multiple arrays to compressed .npz file. Not supported."
+      "notes": "Save multiple arrays to compressed .npz file. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "searchsorted",
@@ -5393,7 +5807,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Binary search; cost = m*ceil(log2(n))."
+      "notes": "Binary search; cost = m*ceil(log2(n)).",
+      "weight": 1.0
     },
     {
       "name": "select",
@@ -5406,7 +5821,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return array from list of choices based on conditions. Cost: numel(input)."
+      "notes": "Return array from list of choices based on conditions. Cost: numel(input).",
+      "weight": 4.0
     },
     {
       "name": "setbufsize",
@@ -5419,7 +5835,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Set size of buffer used in ufuncs. Not supported."
+      "notes": "Set size of buffer used in ufuncs. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "setdiff1d",
@@ -5432,7 +5849,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Set difference; cost = (n+m)*ceil(log2(n+m))."
+      "notes": "Set difference; cost = (n+m)*ceil(log2(n+m)).",
+      "weight": 1.0
     },
     {
       "name": "seterr",
@@ -5445,7 +5863,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Set how floating-point errors are handled. Not supported."
+      "notes": "Set how floating-point errors are handled. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "seterrcall",
@@ -5458,7 +5877,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Set callback function for floating-point errors. Not supported."
+      "notes": "Set callback function for floating-point errors. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "setxor1d",
@@ -5471,7 +5891,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Symmetric set difference; cost = (n+m)*ceil(log2(n+m))."
+      "notes": "Symmetric set difference; cost = (n+m)*ceil(log2(n+m)).",
+      "weight": 1.0
     },
     {
       "name": "shape",
@@ -5484,7 +5905,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Return shape of array."
+      "notes": "Return shape of array.",
+      "weight": 1.0
     },
     {
       "name": "shares_memory",
@@ -5497,7 +5919,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Determine if two arrays share memory."
+      "notes": "Determine if two arrays share memory.",
+      "weight": 1.0
     },
     {
       "name": "show_config",
@@ -5510,7 +5933,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Show NumPy build configuration. Not supported."
+      "notes": "Show NumPy build configuration. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "show_runtime",
@@ -5523,7 +5947,8 @@
       "free": false,
       "blocked": true,
       "status": "blocked",
-      "notes": "Show runtime info. Not supported."
+      "notes": "Show runtime info. Not supported.",
+      "weight": 1.0
     },
     {
       "name": "sign",
@@ -5536,7 +5961,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise sign function."
+      "notes": "Element-wise sign function.",
+      "weight": 1.0
     },
     {
       "name": "signbit",
@@ -5549,7 +5975,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Returns True for elements with negative sign bit."
+      "notes": "Returns True for elements with negative sign bit.",
+      "weight": 1.0
     },
     {
       "name": "sin",
@@ -5562,7 +5989,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise sine."
+      "notes": "Element-wise sine.",
+      "weight": 16.0
     },
     {
       "name": "sinc",
@@ -5575,7 +6003,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Normalized sinc function element-wise."
+      "notes": "Normalized sinc function element-wise.",
+      "weight": 16.0
     },
     {
       "name": "sinh",
@@ -5588,7 +6017,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise hyperbolic sine."
+      "notes": "Element-wise hyperbolic sine.",
+      "weight": 16.0
     },
     {
       "name": "size",
@@ -5601,7 +6031,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Return number of elements in array."
+      "notes": "Return number of elements in array.",
+      "weight": 1.0
     },
     {
       "name": "sort",
@@ -5614,7 +6045,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Comparison sort; cost = n*ceil(log2(n)) per slice."
+      "notes": "Comparison sort; cost = n*ceil(log2(n)) per slice.",
+      "weight": 1.0
     },
     {
       "name": "sort_complex",
@@ -5627,7 +6059,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sort complex array. Cost: $n \\cdot \\lceil\\log_2 n\\rceil$."
+      "notes": "Sort complex array. Cost: $n \\cdot \\lceil\\log_2 n\\rceil$.",
+      "weight": 1.0
     },
     {
       "name": "spacing",
@@ -5640,7 +6073,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Return ULP spacing for each element."
+      "notes": "Return ULP spacing for each element.",
+      "weight": 1.0
     },
     {
       "name": "split",
@@ -5653,7 +6087,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Split array into sub-arrays. Cost: numel(output)."
+      "notes": "Split array into sub-arrays. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "sqrt",
@@ -5666,7 +6101,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise square root."
+      "notes": "Element-wise square root.",
+      "weight": 1.0
     },
     {
       "name": "square",
@@ -5679,7 +6115,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise x^2."
+      "notes": "Element-wise x^2.",
+      "weight": 1.0
     },
     {
       "name": "squeeze",
@@ -5692,7 +6129,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Remove size-1 dimensions."
+      "notes": "Remove size-1 dimensions.",
+      "weight": 1.0
     },
     {
       "name": "stack",
@@ -5705,7 +6143,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Join arrays along new axis. Cost: numel(output)."
+      "notes": "Join arrays along new axis. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "stats.cauchy.cdf",
@@ -5718,7 +6157,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Cauchy CDF; cost = numel(input)."
+      "notes": "Cauchy CDF; cost = numel(input).",
+      "weight": 16.0
     },
     {
       "name": "stats.cauchy.pdf",
@@ -5731,7 +6171,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Cauchy PDF; cost = numel(input)."
+      "notes": "Cauchy PDF; cost = numel(input).",
+      "weight": 4.0
     },
     {
       "name": "stats.cauchy.ppf",
@@ -5744,7 +6185,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Cauchy PPF; cost = numel(input)."
+      "notes": "Cauchy PPF; cost = numel(input).",
+      "weight": 16.0
     },
     {
       "name": "stats.expon.cdf",
@@ -5757,7 +6199,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Exponential CDF; cost = numel(input)."
+      "notes": "Exponential CDF; cost = numel(input).",
+      "weight": 16.0
     },
     {
       "name": "stats.expon.pdf",
@@ -5770,7 +6213,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Exponential PDF; cost = numel(input)."
+      "notes": "Exponential PDF; cost = numel(input).",
+      "weight": 16.0
     },
     {
       "name": "stats.expon.ppf",
@@ -5783,7 +6227,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Exponential PPF; cost = numel(input)."
+      "notes": "Exponential PPF; cost = numel(input).",
+      "weight": 16.0
     },
     {
       "name": "stats.laplace.cdf",
@@ -5796,7 +6241,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Laplace CDF; cost = numel(input)."
+      "notes": "Laplace CDF; cost = numel(input).",
+      "weight": 16.0
     },
     {
       "name": "stats.laplace.pdf",
@@ -5809,7 +6255,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Laplace PDF; cost = numel(input)."
+      "notes": "Laplace PDF; cost = numel(input).",
+      "weight": 16.0
     },
     {
       "name": "stats.laplace.ppf",
@@ -5822,7 +6269,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Laplace PPF; cost = numel(input)."
+      "notes": "Laplace PPF; cost = numel(input).",
+      "weight": 16.0
     },
     {
       "name": "stats.logistic.cdf",
@@ -5835,7 +6283,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Logistic CDF; cost = numel(input)."
+      "notes": "Logistic CDF; cost = numel(input).",
+      "weight": 16.0
     },
     {
       "name": "stats.logistic.pdf",
@@ -5848,7 +6297,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Logistic PDF; cost = numel(input)."
+      "notes": "Logistic PDF; cost = numel(input).",
+      "weight": 16.0
     },
     {
       "name": "stats.logistic.ppf",
@@ -5861,7 +6311,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Logistic PPF; cost = numel(input)."
+      "notes": "Logistic PPF; cost = numel(input).",
+      "weight": 16.0
     },
     {
       "name": "stats.lognorm.cdf",
@@ -5874,7 +6325,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Log-normal CDF; cost = numel(input)."
+      "notes": "Log-normal CDF; cost = numel(input).",
+      "weight": 16.0
     },
     {
       "name": "stats.lognorm.pdf",
@@ -5887,7 +6339,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Log-normal PDF; cost = numel(input)."
+      "notes": "Log-normal PDF; cost = numel(input).",
+      "weight": 16.0
     },
     {
       "name": "stats.lognorm.ppf",
@@ -5900,7 +6353,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Log-normal PPF; cost = numel(input)."
+      "notes": "Log-normal PPF; cost = numel(input).",
+      "weight": 16.0
     },
     {
       "name": "stats.norm.cdf",
@@ -5913,7 +6367,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Normal CDF; cost = numel(input)."
+      "notes": "Normal CDF; cost = numel(input).",
+      "weight": 16.0
     },
     {
       "name": "stats.norm.pdf",
@@ -5926,7 +6381,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Normal PDF; cost = numel(input)."
+      "notes": "Normal PDF; cost = numel(input).",
+      "weight": 16.0
     },
     {
       "name": "stats.norm.ppf",
@@ -5939,7 +6395,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Normal PPF (inverse CDF); cost = numel(input)."
+      "notes": "Normal PPF (inverse CDF); cost = numel(input).",
+      "weight": 16.0
     },
     {
       "name": "stats.truncnorm.cdf",
@@ -5952,7 +6409,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Truncated normal CDF; cost = numel(input)."
+      "notes": "Truncated normal CDF; cost = numel(input).",
+      "weight": 16.0
     },
     {
       "name": "stats.truncnorm.pdf",
@@ -5965,7 +6423,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Truncated normal PDF; cost = numel(input)."
+      "notes": "Truncated normal PDF; cost = numel(input).",
+      "weight": 16.0
     },
     {
       "name": "stats.truncnorm.ppf",
@@ -5978,7 +6437,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Truncated normal PPF; cost = numel(input)."
+      "notes": "Truncated normal PPF; cost = numel(input).",
+      "weight": 16.0
     },
     {
       "name": "stats.uniform.cdf",
@@ -5991,7 +6451,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Uniform CDF; cost = numel(input)."
+      "notes": "Uniform CDF; cost = numel(input).",
+      "weight": 1.0
     },
     {
       "name": "stats.uniform.pdf",
@@ -6004,7 +6465,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Uniform PDF; cost = numel(input)."
+      "notes": "Uniform PDF; cost = numel(input).",
+      "weight": 1.0
     },
     {
       "name": "stats.uniform.ppf",
@@ -6017,7 +6479,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Uniform PPF; cost = numel(input)."
+      "notes": "Uniform PPF; cost = numel(input).",
+      "weight": 1.0
     },
     {
       "name": "std",
@@ -6030,7 +6493,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Standard deviation; cost_multiplier=2 (two passes)."
+      "notes": "Standard deviation; cost_multiplier=2 (two passes).",
+      "weight": 2.0
     },
     {
       "name": "subtract",
@@ -6043,7 +6507,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise subtraction."
+      "notes": "Element-wise subtraction.",
+      "weight": 1.0
     },
     {
       "name": "sum",
@@ -6056,7 +6521,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sum of array elements."
+      "notes": "Sum of array elements.",
+      "weight": 1.0
     },
     {
       "name": "swapaxes",
@@ -6069,7 +6535,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Interchange two axes of an array."
+      "notes": "Interchange two axes of an array.",
+      "weight": 1.0
     },
     {
       "name": "take",
@@ -6082,7 +6549,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Take elements from array along axis. Cost: numel(output)."
+      "notes": "Take elements from array along axis. Cost: numel(output).",
+      "weight": 4.0
     },
     {
       "name": "take_along_axis",
@@ -6095,7 +6563,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Take values from input array by matching 1-D index. Cost: numel(output)."
+      "notes": "Take values from input array by matching 1-D index. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "tan",
@@ -6108,7 +6577,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise tangent."
+      "notes": "Element-wise tangent.",
+      "weight": 16.0
     },
     {
       "name": "tanh",
@@ -6121,7 +6591,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise hyperbolic tangent."
+      "notes": "Element-wise hyperbolic tangent.",
+      "weight": 16.0
     },
     {
       "name": "tensordot",
@@ -6134,7 +6605,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Tensor dot product along specified axes."
+      "notes": "Tensor dot product along specified axes.",
+      "weight": 1.0
     },
     {
       "name": "tile",
@@ -6147,7 +6619,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Repeat array by tiling. Cost: numel(output)."
+      "notes": "Repeat array by tiling. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "trace",
@@ -6160,7 +6633,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Diagonal sum; cost = min(n,m)."
+      "notes": "Diagonal sum; cost = min(n,m).",
+      "weight": 1.0
     },
     {
       "name": "transpose",
@@ -6173,7 +6647,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Permute array dimensions."
+      "notes": "Permute array dimensions.",
+      "weight": 1.0
     },
     {
       "name": "trapezoid",
@@ -6186,7 +6661,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Integrate using the trapezoidal rule."
+      "notes": "Integrate using the trapezoidal rule.",
+      "weight": 1.0
     },
     {
       "name": "trapz",
@@ -6199,7 +6675,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Alias for trapezoid (deprecated)."
+      "notes": "Alias for trapezoid (deprecated).",
+      "weight": 1.0
     },
     {
       "name": "tri",
@@ -6212,7 +6689,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Array with ones at and below given diagonal."
+      "notes": "Array with ones at and below given diagonal.",
+      "weight": 1.0
     },
     {
       "name": "tril",
@@ -6225,7 +6703,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Lower triangle of array."
+      "notes": "Lower triangle of array.",
+      "weight": 1.0
     },
     {
       "name": "tril_indices",
@@ -6238,7 +6717,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Return lower-triangle indices for n x n array."
+      "notes": "Return lower-triangle indices for n x n array.",
+      "weight": 1.0
     },
     {
       "name": "tril_indices_from",
@@ -6251,7 +6731,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Return lower-triangle indices for given array."
+      "notes": "Return lower-triangle indices for given array.",
+      "weight": 1.0
     },
     {
       "name": "trim_zeros",
@@ -6264,7 +6745,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Trim leading/trailing zeros from 1-D array. Cost: num trimmed."
+      "notes": "Trim leading/trailing zeros from 1-D array. Cost: num trimmed.",
+      "weight": 4.0
     },
     {
       "name": "triu",
@@ -6277,7 +6759,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Upper triangle of array."
+      "notes": "Upper triangle of array.",
+      "weight": 1.0
     },
     {
       "name": "triu_indices",
@@ -6290,7 +6773,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Return upper-triangle indices for n x n array."
+      "notes": "Return upper-triangle indices for n x n array.",
+      "weight": 1.0
     },
     {
       "name": "triu_indices_from",
@@ -6303,7 +6787,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Return upper-triangle indices for given array."
+      "notes": "Return upper-triangle indices for given array.",
+      "weight": 1.0
     },
     {
       "name": "true_divide",
@@ -6316,7 +6801,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Element-wise true division (explicit)."
+      "notes": "Element-wise true division (explicit).",
+      "weight": 1.0
     },
     {
       "name": "trunc",
@@ -6329,7 +6815,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Truncate toward zero element-wise."
+      "notes": "Truncate toward zero element-wise.",
+      "weight": 1.0
     },
     {
       "name": "typename",
@@ -6342,7 +6829,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Return description of given data type code."
+      "notes": "Return description of given data type code.",
+      "weight": 1.0
     },
     {
       "name": "union1d",
@@ -6355,7 +6843,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Set union; cost = (n+m)*ceil(log2(n+m))."
+      "notes": "Set union; cost = (n+m)*ceil(log2(n+m)).",
+      "weight": 1.0
     },
     {
       "name": "unique",
@@ -6368,7 +6857,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sort-based unique; cost = n*ceil(log2(n))."
+      "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
+      "weight": 1.0
     },
     {
       "name": "unique_all",
@@ -6381,7 +6871,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sort-based unique; cost = n*ceil(log2(n))."
+      "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
+      "weight": 1.0
     },
     {
       "name": "unique_counts",
@@ -6394,7 +6885,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sort-based unique; cost = n*ceil(log2(n))."
+      "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
+      "weight": 1.0
     },
     {
       "name": "unique_inverse",
@@ -6407,7 +6899,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sort-based unique; cost = n*ceil(log2(n))."
+      "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
+      "weight": 1.0
     },
     {
       "name": "unique_values",
@@ -6420,7 +6913,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Sort-based unique; cost = n*ceil(log2(n))."
+      "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
+      "weight": 1.0
     },
     {
       "name": "unpackbits",
@@ -6433,7 +6927,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Unpack elements of array into bits. Cost: numel(input)."
+      "notes": "Unpack elements of array into bits. Cost: numel(input).",
+      "weight": 1.0
     },
     {
       "name": "unravel_index",
@@ -6446,7 +6941,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Convert flat index to multi-dimensional index."
+      "notes": "Convert flat index to multi-dimensional index.",
+      "weight": 1.0
     },
     {
       "name": "unstack",
@@ -6459,7 +6955,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Unstack array along axis into tuple of arrays (NumPy 2.x). Cost: numel(output)."
+      "notes": "Unstack array along axis into tuple of arrays (NumPy 2.x). Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "unwrap",
@@ -6472,7 +6969,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Phase unwrap. Cost: $\\text{numel}(\\text{input})$ (diff + conditional adjustment)."
+      "notes": "Phase unwrap. Cost: $\\text{numel}(\\text{input})$ (diff + conditional adjustment).",
+      "weight": 1.0
     },
     {
       "name": "vander",
@@ -6485,7 +6983,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Vandermonde matrix; cost = len(x)*(N-1)."
+      "notes": "Vandermonde matrix; cost = len(x)*(N-1).",
+      "weight": 1.0
     },
     {
       "name": "var",
@@ -6498,7 +6997,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Variance; cost_multiplier=2 (two passes)."
+      "notes": "Variance; cost_multiplier=2 (two passes).",
+      "weight": 2.0
     },
     {
       "name": "vdot",
@@ -6511,7 +7011,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Dot product with conjugation; cost = N (FMA=1)."
+      "notes": "Dot product with conjugation; cost = N (FMA=1).",
+      "weight": 1.0
     },
     {
       "name": "vecdot",
@@ -6524,7 +7025,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Vector dot product along last axis."
+      "notes": "Vector dot product along last axis.",
+      "weight": 1.0
     },
     {
       "name": "vecmat",
@@ -6537,7 +7039,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Vector-matrix product. Cost = output_size * contracted_axis."
+      "notes": "Vector-matrix product. Cost = output_size * contracted_axis.",
+      "weight": 1.0
     },
     {
       "name": "vsplit",
@@ -6550,7 +7053,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Split array into rows. Cost: numel(output)."
+      "notes": "Split array into rows. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "vstack",
@@ -6563,7 +7067,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Stack arrays vertically. Cost: numel(output)."
+      "notes": "Stack arrays vertically. Cost: numel(output).",
+      "weight": 1.0
     },
     {
       "name": "where",
@@ -6576,7 +7081,8 @@
       "free": false,
       "blocked": false,
       "status": "supported",
-      "notes": "Select elements based on condition. Cost: numel(input)."
+      "notes": "Select elements based on condition. Cost: numel(input).",
+      "weight": 4.0
     },
     {
       "name": "zeros",
@@ -6589,7 +7095,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Create zero-filled array."
+      "notes": "Create zero-filled array.",
+      "weight": 1.0
     },
     {
       "name": "zeros_like",
@@ -6602,7 +7109,8 @@
       "free": true,
       "blocked": false,
       "status": "supported",
-      "notes": "Array of zeros with same shape/type as input."
+      "notes": "Array of zeros with same shape/type as input.",
+      "weight": 1.0
     }
   ],
   "total": 508
