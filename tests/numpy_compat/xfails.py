@@ -4,14 +4,14 @@ Each entry maps a test node ID (or pattern) to a reason string.
 Tests matching these patterns are marked xfail when running NumPy's
 test suite against whest.
 
-Current state (2026-04-14, after Tier 1+2 fixes):
-    Total:          ~7,822 passed, 44 xfailed, 0 failures (all suites)
+Current state (2026-04-14, after Tier 1+2+3 fixes):
+    Total:          ~7,861 passed, 46 xfailed, 0 failures (all suites)
     test_umath:     ~4,668 passed  (12 xfailed)
-    test_ufunc:       ~795 passed   (7 xfailed)
-    test_numeric:   ~1,604 passed  (15 xfailed)
-    test_linalg:      ~408 passed   (3 xfailed — most linalg xfails now pass)
+    test_ufunc:       ~795 passed   (3 xfailed — 4 stale xfails removed)
+    test_numeric:   ~1,604 passed  (14 xfailed — nep50_isclose fixed)
+    test_linalg:      ~408 passed   (0 xfailed — cond NaN + matrix_rank fixed)
     test_pocketfft:    148 passed   (0 xfailed)
-    test_polynomial:   600 passed   (2 xfailed)
+    test_polynomial:   600 passed   (1 xfailed — polydiv scalar fixed)
     test_random:       139 passed   (5 xfailed)
 
 Fixes applied:
@@ -29,6 +29,11 @@ Fixes applied:
     7 trivial fixes:    _aswhest order='A', linalg.diagonal axis=-2/-1, linalg.cross
                         validation, tensordot int axes, norm axis validation,
                         clip argument validation, astype copy/device kwargs.
+    Tier 3 fixes:       cond NaN (SVD fallback per-matrix), matrix_rank 1D input,
+                        polydiv scalar input (atleast_1d), isclose NEP 50 type
+                        promotion (keep Python scalars un-coerced).
+    4 stale xfails removed: test_scalar_equal, test_struct_ufunc,
+                        test_ufunc_override_where, test_safe_casting.
 
 What we patch (55 functions):
     Non-ufunc reductions and special functions (all, any, amax, amin,
@@ -57,29 +62,8 @@ Categories for failures:
 
 XFAIL_PATTERNS: dict[str, str] = {
     # ------------------------------------------------------------------ #
-    # test_numeric.py — isclose divergences                               #
-    # ------------------------------------------------------------------ #
-    # whest's isclose is a counted wrapper; NEP 50 promotion not supported.
-    "*TestIsclose::test_nep50_isclose": (
-        "NOT_IMPLEMENTED: whest isclose doesn't support NEP 50 promotion"
-    ),
-    # ------------------------------------------------------------------ #
-    # test_linalg.py — remaining failures after all fixes                 #
-    # ------------------------------------------------------------------ #
-    # Most linalg cases now pass (sq_cases, generalized, hermitian, etc.)
-    # Remaining failures: cond NaN and matrix_rank only.
-    "*test_linalg*::TestCond::test_nan": (
-        "NOT_IMPLEMENTED: whest cond doesn't handle NaN inputs correctly"
-    ),
-    "*test_linalg*::TestMatrixRank::test_matrix_rank": (
-        "NOT_IMPLEMENTED: whest matrix_rank behavior differs"
-    ),
-    # ------------------------------------------------------------------ #
     # test_polynomial.py — divergences                                    #
     # ------------------------------------------------------------------ #
-    "*TestMisc::test_result_type": (
-        "NOT_IMPLEMENTED: whest polynomial result_type differs"
-    ),
     "*TestEvaluation::test_polyval": (
         "NOT_IMPLEMENTED: whest polyval doesn't support masked arrays"
     ),
@@ -136,29 +120,6 @@ XFAIL_PATTERNS: dict[str, str] = {
     ),
     "*TestArrayComparisons::test_compare_unstructured_voids*": (
         "SUBCLASS_RETURN: void comparison preserves WhestArray subclass"
-    ),
-    # ------------------------------------------------------------------ #
-    # UFUNC_INTERNALS — WhestArray __eq__/__ne__ operator edge cases      #
-    # ------------------------------------------------------------------ #
-    # WhestArray overrides __eq__/__ne__ to route through we.equal/not_equal,
-    # but those ufuncs don't support all dtype combinations (e.g. float64 vs
-    # str, or structured void types). Plain ndarray falls back to identity
-    # comparison in these cases; WhestArray raises UFuncNoLoopError instead.
-    "*TestUfunc::test_scalar_equal": (
-        "UFUNC_INTERNALS: WhestArray.__ne__ raises UFuncNoLoopError for float64 vs str dtype"
-    ),
-    "*TestUfunc::test_struct_ufunc": (
-        "UFUNC_INTERNALS: WhestArray.__eq__ raises UFuncNoLoopError for structured void dtype"
-    ),
-    # WhestArray.__array_ufunc__ returns NotImplemented for ufuncs called
-    # with where= argument containing a non-WhestArray operand.
-    "*TestSpecialMethods::test_ufunc_override_where": (
-        "UFUNC_INTERNALS: WhestArray.__array_ufunc__ returns NotImplemented when where= is non-WhestArray"
-    ),
-    # add ufunc in-place with unsafe cast — WhestArray wrapping bypasses
-    # numpy's safe-casting check for in-place operations.
-    "*TestUfunc::test_safe_casting": (
-        "UFUNC_INTERNALS: WhestArray wrapping bypasses safe-casting check for in-place ufunc ops"
     ),
     # ------------------------------------------------------------------ #
     # SUBCLASS_RETURN — *_like strides mismatch                           #

@@ -445,14 +445,15 @@ def isclose(a, b, **kwargs):
     budget = require_budget()
     a_is_scalar = not isinstance(a, _np.ndarray) and _np.ndim(a) == 0
     b_is_scalar = not isinstance(b, _np.ndarray) and _np.ndim(b) == 0
-    if not isinstance(a, _np.ndarray):
-        a = _np.asarray(a)
-    if not isinstance(b, _np.ndarray):
-        b = _np.asarray(b)
-    output_shape = _np.broadcast_shapes(a.shape, b.shape)
+    # Keep Python scalars as-is so NEP 50 type promotion works correctly
+    # (converting them to np.asarray before passing would coerce to float64
+    # and break float32 vs Python-float comparisons).
+    a_arr = a if isinstance(a, _np.ndarray) else _np.asarray(a)
+    b_arr = b if isinstance(b, _np.ndarray) else _np.asarray(b)
+    output_shape = _np.broadcast_shapes(a_arr.shape, b_arr.shape)
     cost = pointwise_cost(output_shape)
     with budget.deduct(
-        "isclose", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
+        "isclose", flop_cost=cost, subscripts=None, shapes=(a_arr.shape, b_arr.shape)
     ):
         result = _np.isclose(a, b, **kwargs)
     if (

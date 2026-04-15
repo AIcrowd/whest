@@ -364,10 +364,30 @@ def cond(x, p=None):
     m, n = x.shape[-2], x.shape[-1]
     batch = _batch_size(x.shape)
     cost = cond_cost(m, n, p=p) * batch if not _has_zero_dim(x.shape) else 0
+    has_nan = not _has_zero_dim(x.shape) and bool(_np.any(_np.isnan(x)))
     with budget.deduct(
         "linalg.cond", flop_cost=cost, subscripts=None, shapes=(x.shape,)
     ):
-        result = _np.linalg.cond(x, p=p)
+        if has_nan and x.ndim > 2:
+            # Batch with NaN: process each matrix individually so NaN
+            # propagates per-matrix rather than SVD failing the whole batch.
+            batch_shape = x.shape[:-2]
+            flat = x.reshape(-1, x.shape[-2], x.shape[-1])
+            out = _np.empty(flat.shape[0], dtype=_np.float64)
+            for i in range(flat.shape[0]):
+                try:
+                    out[i] = _np.linalg.cond(flat[i], p=p)
+                except _np.linalg.LinAlgError:
+                    out[i] = _np.nan
+            result = out.reshape(batch_shape)
+        elif has_nan:
+            # Single matrix with NaN: SVD may fail; return NaN instead.
+            try:
+                result = _np.linalg.cond(x, p=p)
+            except _np.linalg.LinAlgError:
+                result = _np.float64(_np.nan)
+        else:
+            result = _np.linalg.cond(x, p=p)
     return result
 
 
@@ -406,9 +426,14 @@ def matrix_rank(A, tol=None, hermitian=False, *, rtol=None):
     budget = require_budget()
     if not isinstance(A, _np.ndarray):
         A = _np.asarray(A)
-    m, n = A.shape[-2], A.shape[-1]
-    batch = _batch_size(A.shape)
-    cost = matrix_rank_cost(m, n) * batch if not _has_zero_dim(A.shape) else 0
+    if A.ndim < 2:
+        # 0D or 1D: cost is trivial, let numpy handle shape/semantics
+        cost = max(A.size, 1)
+        batch = 1
+    else:
+        m, n = A.shape[-2], A.shape[-1]
+        batch = _batch_size(A.shape)
+        cost = matrix_rank_cost(m, n) * batch if not _has_zero_dim(A.shape) else 0
     kwargs = {"hermitian": hermitian}
     if tol is not None:
         kwargs["tol"] = tol
