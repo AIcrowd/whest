@@ -16,6 +16,7 @@ export interface Operation {
   blocked: boolean;
   status: string;
   notes: string;
+  weight?: number;
 }
 
 interface OperationRowProps {
@@ -64,6 +65,10 @@ export default function OperationRow({op, expanded, onToggle}: OperationRowProps
                 <span className={`${styles.statusChip} ${styles[`status--${op.status}`]}`}>
                   {op.status}
                 </span>
+              </div>
+              <div className={styles.detailItem}>
+                <span className={styles.detailLabel}>Empirical Weight</span>
+                <span>{op.weight && op.weight !== 1.0 ? `${op.weight}×` : '1.0× (default)'}</span>
               </div>
               {op.notes && (
                 <div className={`${styles.detailItem} ${styles.detailItemFull}`}>
