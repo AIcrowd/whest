@@ -172,8 +172,13 @@ class TestProtocol:
             use_bin_type=True,
         )
         result = decode_response(payload)
-        assert result["result"]["budget_breakdown"]["by_namespace"][None]["flops_used"] == 1
-        assert result["result"]["budget_breakdown"]["by_namespace"]["phase"]["calls"] == 1
+        assert (
+            result["result"]["budget_breakdown"]["by_namespace"][None]["flops_used"]
+            == 1
+        )
+        assert (
+            result["result"]["budget_breakdown"]["by_namespace"]["phase"]["calls"] == 1
+        )
 
     def test_normalize_preserves_small_binary_data(self):
         """FIX 2 (client): small binary array data must NOT be decoded."""
