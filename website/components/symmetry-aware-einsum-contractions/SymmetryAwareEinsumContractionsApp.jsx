@@ -16,6 +16,7 @@ import BipartiteGraph from './components/BipartiteGraph.jsx';
 import MatrixView from './components/MatrixView.jsx';
 import SigmaLoop from './components/SigmaLoop.jsx';
 import GroupView from './components/GroupView.jsx';
+import RoleBadge from './components/RoleBadge.jsx';
 import PythonCodeBlock from './components/PythonCodeBlock.jsx';
 import ComponentCostView from './components/ComponentCostView.jsx';
 import TotalCostView from './components/TotalCostView.jsx';
@@ -25,10 +26,6 @@ import { reduceMentalModelVisibility } from './lib/mentalModelState.js';
 import './styles.css';
 
 const CUSTOM_IDX = -1;
-const ROLE_BADGE_CLASSNAMES = {
-  v: 'mx-1 inline-flex rounded-full border border-sky-200 bg-sky-50 px-2 py-0.5 align-middle font-mono text-[11px] font-semibold text-sky-700',
-  w: 'mx-1 inline-flex rounded-full border border-slate-200 bg-slate-100 px-2 py-0.5 align-middle font-mono text-[11px] font-semibold text-slate-700',
-};
 
 /**
  * Convert the new preset format (with `variables` and `expression` fields)
@@ -238,8 +235,8 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   <NarrativeCallout label="Why this matters">{EXPLORER_ACTS[1].why}</NarrativeCallout>
                   <p className="mt-4 text-sm leading-7 text-foreground">
                     Left vertices (U) are operand axis-classes. Right vertices are index labels,
-                    partitioned into <span className={ROLE_BADGE_CLASSNAMES.v}>V free</span> and
-                    <span className={ROLE_BADGE_CLASSNAMES.w}>W summed</span>.
+                    partitioned into <RoleBadge role="v">V free</RoleBadge> and
+                    <RoleBadge role="w">W summed</RoleBadge>.
                     {hasPerOpSym && (
                       <> Per-operand symmetry <em>collapses</em> each operand&apos;s axes into a single U-vertex.</>
                     )}

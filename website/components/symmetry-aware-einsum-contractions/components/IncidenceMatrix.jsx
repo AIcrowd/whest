@@ -13,6 +13,7 @@ export const CELL_W = 70;
 export const CELL_H = 38;
 export const HEADER_H = 32;
 export const LABEL_W = 90;
+const DEFAULT_LABEL_COLOR = '#9ca3af';
 
 export default function IncidenceMatrix({
   matrix,          // number[][] — the matrix data to display
@@ -115,7 +116,7 @@ export default function IncidenceMatrix({
                 width: labelW,
                 color: (() => {
                   const opName = example?.operandNames?.[uVertices[uIdx]?.opIdx];
-                  return variableColors?.[opName]?.color || 'var(--gray-400)';
+                  return variableColors?.[opName]?.color || DEFAULT_LABEL_COLOR;
                 })(),
               }}>
                 {uLabels[uIdx]}
