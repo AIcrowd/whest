@@ -1,0 +1,15 @@
+{
+  "title": "Documentation",
+  "pages": [
+    "getting-started",
+    "how-to",
+    "concepts",
+    "architecture",
+    "explanation",
+    "development",
+    "api",
+    "reference",
+    "troubleshooting",
+    "changelog"
+  ]
+}
