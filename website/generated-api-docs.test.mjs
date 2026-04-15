@@ -20,18 +20,14 @@ test('mdx components register the standalone operation doc renderer', async () =
 test('operation doc page renderer keeps the required section order', async () => {
   const source = await readSource('components/api-reference/OperationDocPage.tsx');
 
-  const quickInfo = source.indexOf('Quick Info');
-  const whestInfo = source.indexOf('Whest-Specific Info');
-  const apiDocs = source.indexOf('API Docs');
-  const examples = source.indexOf('Whest Examples');
-
-  assert.ok(quickInfo >= 0, 'missing Quick Info section');
-  assert.ok(whestInfo > quickInfo, 'Whest-Specific Info should follow Quick Info');
-  assert.ok(apiDocs > whestInfo, 'API Docs should follow Whest-Specific Info');
-  assert.ok(examples > apiDocs, 'Whest Examples should be last');
-  assert.match(source, /Latex/);
-  assert.match(source, /No API docs available/i);
-  assert.match(source, /No examples available/i);
+  assert.match(source, /OperationDocHeader/);
+  assert.match(source, /OperationDocOverlay/);
+  assert.match(source, /OperationDocSection/);
+  assert.match(source, /OperationDocExample/);
+  assert.match(source, /OperationDocNav/);
+  assert.doesNotMatch(source, /Whest Examples/);
+  assert.doesNotMatch(source, /No API docs available/i);
+  assert.doesNotMatch(source, /No examples available/i);
 });
 
 test('api reference table is flattened and link-aware', async () => {

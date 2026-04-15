@@ -227,7 +227,7 @@
 }
 
 .docEyebrow {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.35rem;
   font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -235,20 +235,86 @@
   color: hsl(var(--muted-foreground));
 }
 
+.docHeader {
+  margin: 0 0 2rem;
+}
+
+.docTitle {
+  margin: 0;
+  font-size: clamp(2rem, 3vw, 2.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
 .docSignature {
-  margin-top: -0.25rem;
+  margin: 0.6rem 0 0;
   color: hsl(var(--muted-foreground));
+}
+
+.docSignature code {
+  padding: 0;
+  color: inherit;
+  background: none;
+  font-size: 0.96rem;
+}
+
+.docSummary {
+  max-width: 70ch;
+  margin: 1rem 0 0;
+  font-size: 1.03rem;
+  line-height: 1.7;
+  color: hsl(var(--foreground));
+}
+
+.docProvenance {
+  margin: 0.85rem 0 0;
+  font-size: 0.92rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.docProvenance a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.docActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.docAction {
+  color: #c83c38;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.docAction:hover {
+  text-decoration: underline;
+}
+
+.docOverlay {
+  margin: 0 0 2.5rem;
+  padding: 1.25rem 1.35rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 1rem;
+  background: linear-gradient(180deg, rgba(255, 252, 250, 0.95), rgba(255, 255, 255, 1));
+  box-shadow: 0 18px 44px rgba(15, 23, 42, 0.06);
 }
 
 .docMetaGrid,
 .docDenseGrid {
   display: grid;
   gap: 0.9rem;
-  margin: 1rem 0 1.5rem;
+  margin: 0;
 }
 
 .docMetaGrid {
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  margin-bottom: 1rem;
 }
 
 .docDenseGrid {
@@ -284,12 +350,184 @@
   margin: 0;
 }
 
+.docMetaValue {
+  line-height: 1.55;
+}
+
 .docFormula :global(.katex-display) {
-  margin: 0.25rem 0 0;
+  margin: 0;
 }
 
 .docPlaceholder {
   color: hsl(var(--muted-foreground));
+}
+
+.docSection {
+  margin: 0 0 2.4rem;
+}
+
+.docSection h2 {
+  margin: 0 0 1rem;
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+}
+
+.docDefinitionList {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+}
+
+.docDefinitionItem {
+  display: grid;
+  gap: 0.35rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.docDefinitionItem:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.docDefinitionTerm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: baseline;
+  margin: 0;
+}
+
+.docDefinitionTerm code {
+  padding: 0;
+  color: hsl(var(--foreground));
+  background: none;
+  font-size: 0.98rem;
+  font-weight: 650;
+}
+
+.docDefinitionType {
+  color: hsl(var(--muted-foreground));
+  font-size: 0.92rem;
+}
+
+.docDefinitionBody {
+  margin: 0;
+  max-width: 74ch;
+  line-height: 1.7;
+  color: hsl(var(--foreground));
+}
+
+.docParagraph {
+  max-width: 74ch;
+  margin: 0 0 1rem;
+  line-height: 1.7;
+}
+
+.docParagraph:last-child {
+  margin-bottom: 0;
+}
+
+.docLinkList {
+  display: grid;
+  gap: 0.7rem;
+  padding-left: 1.1rem;
+  margin: 0;
+}
+
+.docLinkList a {
+  color: #c83c38;
+  text-decoration: none;
+}
+
+.docLinkList a:hover {
+  text-decoration: underline;
+}
+
+.docLinkDescription {
+  color: hsl(var(--muted-foreground));
+}
+
+.docCodeBlock {
+  margin: 0;
+}
+
+.docCodeViewport {
+  padding: 0 0.2rem;
+}
+
+.docOutputBlock {
+  margin-top: 1rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.9rem;
+  background: hsl(var(--secondary));
+  overflow: hidden;
+}
+
+.docOutputLabel {
+  margin: 0;
+  padding: 0.7rem 1rem;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.docOutput {
+  margin: 0;
+  padding: 1rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  font-family: var(--fd-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
+  font-size: 0.84rem;
+  line-height: 1.65;
+}
+
+.docNav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 3rem;
+}
+
+.docNavCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.95rem;
+  text-decoration: none;
+  color: inherit;
+  background: hsl(var(--background));
+}
+
+.docNavCard:hover {
+  border-color: rgba(200, 60, 56, 0.35);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+.docNavCardMuted {
+  visibility: hidden;
+}
+
+.docNavCardRight {
+  text-align: right;
+}
+
+.docNavLabel {
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+}
+
+.docNavValue {
+  font-size: 0.98rem;
+  font-weight: 600;
 }
 
 .status--partial {
