@@ -83,7 +83,7 @@ html > body[data-scroll-locked] {
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
+  --sidebar: oklch(0.98 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
   --sidebar-primary-foreground: oklch(0.985 0 0);
@@ -137,4 +137,48 @@ html > body[data-scroll-locked] {
   html {
     @apply font-sans;
   }
+}
+
+/* ── Dark code blocks (Dracula-inspired) ────────────── */
+pre:has(code) {
+  background-color: #0F1B2D !important;
+  color: #E8F0FE;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+pre code {
+  color: #E8F0FE;
+}
+
+/* Syntax token overrides for dark bg */
+pre .token-comment { color: #637777; }
+pre .token-keyword { color: #c792ea; }
+pre .token-string { color: #a5d6ff; }
+pre .token-function { color: #7ee787; }
+pre .token-number { color: #f9ae58; }
+pre .token-operator { color: #79c0ff; }
+pre .token-builtin { color: #ffa657; }
+pre .token-punctuation { color: #a2a8b4; }
+
+/* Fumadocs uses Shiki — override its inline styles */
+pre [style*="color"] {
+  color: inherit !important;
+}
+
+figure[data-rehype-pretty-code-figure] pre {
+  background-color: #0F1B2D !important;
+}
+
+figure[data-rehype-pretty-code-figure] code {
+  color: #E8F0FE;
+}
+
+/* ── Spacious Apple-like feel ───────────────────────── */
+.prose {
+  max-width: 720px;
+}
+
+/* Increase content padding for breathing room */
+main {
+  padding-top: 1rem;
 }
