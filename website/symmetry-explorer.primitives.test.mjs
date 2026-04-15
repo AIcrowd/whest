@@ -25,6 +25,15 @@ test('symmetry explorer is pinned to shared primitives', () => {
   assert.match(componentCostView, /ExplorerMetricCard/);
   assert.doesNotMatch(componentCostView, /function MetricCard/);
 
+  assert.equal(styles.includes("@import url('https://fonts.googleapis.com"), false);
+  assert.equal(styles.includes(':root {'), false);
+  assert.equal(styles.includes('body {'), false);
+  assert.equal(styles.includes('.section {'), false);
+  assert.equal(styles.includes('.example-grid'), false);
+  assert.equal(styles.includes('.custom-builder'), false);
+  assert.equal(styles.includes('.python-preview'), false);
+  assert.equal(styles.includes('.dimension-slider'), false);
+
   assert.equal(styles.includes('.app-header'), false);
   assert.equal(styles.includes('.einsum-banner'), false);
   assert.equal(styles.includes('.subtitle'), false);

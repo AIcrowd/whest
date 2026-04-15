@@ -51,6 +51,9 @@ test('SymmetryExplorer keeps the act ids and renders the preset rail after main 
 test('shell contract uses primitive-based chrome instead of legacy header classes', () => {
   const source = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
 
+  assert.doesNotMatch(source, /font-accent/);
+  assert.match(source, /font-heading text-2xl font-semibold/);
+  assert.match(source, /max-w-\[1400px\] flex-col gap-8/);
   assert.match(source, /min-h-screen bg-background/);
   assert.match(source, /title="Symmetry Aware Einsum Contractions"/);
   assert.match(source, /Badge className="bg-coral text-white hover:bg-coral">einsum/);
