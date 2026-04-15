@@ -48,14 +48,15 @@ test('SymmetryExplorer keeps the act ids and renders the preset rail after main 
   assert.ok(source.indexOf('<main') < source.indexOf('<PresetSidebar'));
 });
 
-test('styles.css keeps the header hierarchy and banner spacing from the parity baseline', () => {
-  const styles = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/styles.css', import.meta.url), 'utf8');
+test('shell contract uses primitive-based chrome instead of legacy header classes', () => {
+  const source = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
 
-  assert.match(styles, /\.symmetry-aware-einsum-contractions-page-shell\s*\{\s*[^}]*font-size:\s*14px;/s);
-  assert.match(styles, /\.app-header h1\s*\{\s*[^}]*font-size:\s*30px;/s);
-  assert.match(styles, /\.subtitle\s*\{\s*[^}]*color:\s*var\(--gray-500\);/s);
-  assert.match(styles, /\.subtitle\s*\{\s*[^}]*font-size:\s*14px;/s);
-  assert.match(styles, /\.einsum-banner\s*\{\s*[^}]*padding:\s*16px 24px;/s);
+  assert.match(source, /min-h-screen bg-background/);
+  assert.match(source, /title="Symmetry Aware Einsum Contractions"/);
+  assert.match(source, /Badge className="bg-coral text-white hover:bg-coral">einsum/);
+  assert.doesNotMatch(source, /app-header/);
+  assert.doesNotMatch(source, /subtitle/);
+  assert.doesNotMatch(source, /einsum-banner/);
 });
 
 test('buildAnalysisCheckpoint summarizes the analyzed contraction state', () => {

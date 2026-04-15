@@ -1,5 +1,6 @@
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { EXPLORER_ACTS } from './explorerNarrative.js';
 
 export default function StickyBar({ example, group, dimensionN, onDimensionChange, activeActId }) {
@@ -24,15 +25,13 @@ export default function StickyBar({ example, group, dimensionN, onDimensionChang
           {EXPLORER_ACTS.map((act, idx) => {
             const isActive = activeActId === act.id;
             return (
-              <Button
+              <a
                 key={act.id}
-                type="button"
-                size="sm"
-                variant={isActive ? 'secondary' : 'ghost'}
-                className={isActive ? 'bg-coral-light text-coral hover:bg-coral-light/80' : 'text-muted-foreground'}
-                onClick={() => {
-                  window.location.hash = act.id;
-                }}
+                href={`#${act.id}`}
+                className={cn(
+                  buttonVariants({ size: 'sm', variant: isActive ? 'secondary' : 'ghost' }),
+                  isActive ? 'bg-coral-light text-coral hover:bg-coral-light/80' : 'text-muted-foreground',
+                )}
               >
                 <Badge
                   variant={isActive ? 'default' : 'outline'}
@@ -41,7 +40,7 @@ export default function StickyBar({ example, group, dimensionN, onDimensionChang
                   {idx + 1}
                 </Badge>
                 {act.navTitle}
-              </Button>
+              </a>
             );
           })}
         </nav>

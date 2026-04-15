@@ -25,64 +25,56 @@ export default function PresetSidebar({
       </div>
 
       <div className="space-y-1">
-        <button
-          type="button"
-          className="block w-full text-left"
+        <ExplorerSidebarItem
+          as="button"
+          active={selectedPresetIdx === CUSTOM_IDX}
+          title="Custom"
+          badge="Freeform"
+          badgeClassName="bg-gray-100 text-gray-500"
+          className={cn(
+            'relative px-3.5 py-3',
+            selectedPresetIdx === CUSTOM_IDX
+              ? 'bg-coral-light/50 ring-coral/30'
+              : 'hover:bg-gray-50',
+          )}
           onClick={onCustom}
         >
+          <span className="absolute inset-y-3 left-0.5 w-1 rounded-full bg-coral" />
+          <code className="mt-1 block truncate pl-3 text-xs text-gray-500">Define your own contraction</code>
+          <span className="mt-1 block pl-3 text-xs text-gray-400">
+            Keep the current builder state and switch into custom mode.
+          </span>
+        </ExplorerSidebarItem>
+
+        {presetSummaries.map((summary, idx) => (
           <ExplorerSidebarItem
-            active={selectedPresetIdx === CUSTOM_IDX}
-            title="Custom"
-            badge="Freeform"
-            badgeClassName="bg-gray-100 text-gray-500"
+            key={summary.id}
+            as="button"
+            active={selectedPresetIdx === idx}
+            title={summary.name}
             className={cn(
               'relative px-3.5 py-3',
-              selectedPresetIdx === CUSTOM_IDX
+              selectedPresetIdx === idx
                 ? 'bg-coral-light/50 ring-coral/30'
                 : 'hover:bg-gray-50',
             )}
-          >
-            <span className="absolute inset-y-3 left-0.5 w-1 rounded-full bg-coral" />
-            <code className="mt-1 block truncate pl-3 text-xs text-gray-500">Define your own contraction</code>
-            <span className="mt-1 block pl-3 text-xs text-gray-400">
-              Keep the current builder state and switch into custom mode.
-            </span>
-          </ExplorerSidebarItem>
-        </button>
-
-        {presetSummaries.map((summary, idx) => (
-          <button
-            key={summary.id}
-            type="button"
-            className="block w-full text-left"
             onClick={() => onSelect(idx)}
           >
-            <ExplorerSidebarItem
-              active={selectedPresetIdx === idx}
-              title={summary.name}
-              className={cn(
-                'relative px-3.5 py-3',
-                selectedPresetIdx === idx
-                  ? 'bg-coral-light/50 ring-coral/30'
-                  : 'hover:bg-gray-50',
+            <span
+              className="absolute inset-y-3 left-0.5 w-1 rounded-full"
+              style={{ backgroundColor: summary.color }}
+            />
+            <div className="flex items-center gap-2 pl-3">
+              {summary.caseType && (
+                <CaseBadge caseType={summary.caseType} size="xs" variant="compact" interactive={false} />
               )}
-            >
-              <span
-                className="absolute inset-y-3 left-0.5 w-1 rounded-full"
-                style={{ backgroundColor: summary.color }}
-              />
-              <div className="flex items-center gap-2 pl-3">
-                {summary.caseType && (
-                  <CaseBadge caseType={summary.caseType} size="xs" variant="compact" interactive={false} />
-                )}
-                <Badge variant="outline" className="text-[10px] font-semibold uppercase tracking-[0.18em]">
-                  {summary.expectedGroup}
-                </Badge>
-              </div>
-              <code className="mt-1 block truncate pl-3 text-xs text-gray-500">{summary.formula}</code>
-              <span className="mt-1 block pl-3 text-xs text-gray-400">{summary.expectedGroup}</span>
-            </ExplorerSidebarItem>
-          </button>
+              <Badge variant="outline" className="text-[10px] font-semibold uppercase tracking-[0.18em]">
+                {summary.expectedGroup}
+              </Badge>
+            </div>
+            <code className="mt-1 block truncate pl-3 text-xs text-gray-500">{summary.formula}</code>
+            <span className="mt-1 block pl-3 text-xs text-gray-400">{summary.expectedGroup}</span>
+          </ExplorerSidebarItem>
         ))}
       </div>
     </aside>

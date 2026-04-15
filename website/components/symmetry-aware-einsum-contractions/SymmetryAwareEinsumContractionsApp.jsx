@@ -318,7 +318,20 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         aria-labelledby="mental-framework-modal-title"
                         onClick={(event) => event.stopPropagation()}
                       >
-                        <div className="px-5 pb-5 pt-0">
+                        <div className="flex items-center justify-between gap-4 border-b border-border/70 px-5 py-4">
+                          <h2 id="mental-framework-modal-title" className="sr-only">Mental Framework</h2>
+                          <div className="text-sm font-medium text-foreground">Mental Framework</div>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            aria-label="Close mental framework"
+                            onClick={() => setShowMentalModel(false)}
+                          >
+                            Close
+                          </Button>
+                        </div>
+                        <div className="px-5 pb-5 pt-5">
                           <PythonCodeBlock
                             code={mentalModelCode}
                             title="Mental Framework"
