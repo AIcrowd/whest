@@ -6,7 +6,7 @@ title: "Symmetry Savings"
 
 **You will learn:**
 - How to declare full and non-full tensor symmetries with `we.as_symmetric()`
-- How to generate exact example tensors for arbitrary permutation groups
+- How to generate example tensors for arbitrary permutation groups
 - How slicing, reductions, and binary pointwise ops preserve, weaken, or drop symmetry metadata
 - When to re-tag results with `we.as_symmetric()` after conservative propagation
 
@@ -146,7 +146,7 @@ two_group_tensor = we.as_symmetric(
 
 This is the explicit-group equivalent of `symmetric_axes=[(0, 1), (2, 3)]`.
 
-## Generating exact example data with the Reynolds operator
+## Generating example data with the Reynolds operator
 
 When you want example tensors for arbitrary groups, the cleanest pattern is to
 average arbitrary data over the group action. This is the Reynolds operator:
@@ -178,7 +178,8 @@ def symmetrize_with_group(shape, symmetry_group):
 This helper is ideal for docs, tests, and experiments:
 
 - it works for `S_k`, `C_k`, `D_k`, and custom generator sets
-- it produces data that exactly satisfies the declared symmetry
+- in exact arithmetic it projects onto the invariant subspace, and in practice
+  `we.as_symmetric()` validates the result with its usual validation tolerances
 - it keeps examples consistent across symmetry classes
 
 ```python
@@ -190,6 +191,9 @@ s3_tensor = symmetrize_with_group((4, 4, 4), s3_group)
 c3_tensor = symmetrize_with_group((4, 4, 4), c3_group)
 d4_tensor = symmetrize_with_group((4, 4, 4, 4), d4_group)
 ```
+
+The propagation examples below assume `import whest as we` and
+`symmetrize_with_group(...)` from the earlier sections.
 
 ## Symmetry propagation at a glance
 
