@@ -17,7 +17,7 @@ test('symmetry explorer is pinned to shared primitives', () => {
   assert.match(totalCostView, /Table/);
   assert.match(totalCostView, /ExplorerMetricCard/);
 
-  assert.doesNotMatch(styles, /\.app-header\s*\{/);
-  assert.doesNotMatch(styles, /\.einsum-banner\s*\{/);
-  assert.doesNotMatch(styles, /\.subtitle\s*\{/);
+  assert.equal(styles.includes('.app-header'), false);
+  assert.equal(styles.includes('.einsum-banner'), false);
+  assert.equal(styles.includes('.subtitle'), false);
 });

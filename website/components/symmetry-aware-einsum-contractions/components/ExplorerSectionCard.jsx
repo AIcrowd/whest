@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '../lib/utils.js';
 
 function ExplorerSectionCard({
@@ -21,7 +21,7 @@ function ExplorerSectionCard({
               {title ? <CardTitle>{title}</CardTitle> : null}
               {description ? <CardDescription>{description}</CardDescription> : null}
             </div>
-            {action ? <div className="shrink-0">{action}</div> : null}
+            {action ? <CardAction>{action}</CardAction> : null}
           </div>
         </CardHeader>
       )}
