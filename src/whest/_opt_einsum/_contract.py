@@ -8,12 +8,15 @@ format_const_einsum_str, shape_only.
 from collections.abc import Collection
 from dataclasses import dataclass, field
 from decimal import Decimal
+from functools import cached_property
+from hashlib import sha1
 from typing import Any, Literal, overload
 
 from . import _blas as blas
 from . import _helpers as helpers
 from . import _parser as parser
 from . import _paths as paths
+from ._hsluv import qualitative_hsluv_palette, rgb_distance_hex
 from ._subgraph_symmetry import SubgraphSymmetryOracle
 from ._symmetry import PermutationGroup, symmetric_flop_count
 from ._typing import (
@@ -28,6 +31,18 @@ __all__ = [
     "PathInfo",
     "StepInfo",
 ]
+
+_RICH_LABEL_STYLES = [
+    f"bold {color}"
+    for color in qualitative_hsluv_palette(64, lightness=0.5, saturation=0.9)
+]
+
+_RICH_SYMMETRY_STYLES = {
+    "S": "bold bright_cyan",
+    "C": "bold bright_magenta",
+    "D": "bold bright_yellow",
+    "W": "bold bright_green",
+}
 
 ## Common types
 
@@ -145,6 +160,545 @@ class PathInfo:
     def eq(self) -> str:
         return f"{self.input_subscripts}->{self.output_subscript}"
 
+    @staticmethod
+    def _preferred_label_style_index(label: str) -> int | None:
+        """Return the preferred stable palette slot for a label."""
+        if not label or not label[0].isalpha():
+            return None
+        return int.from_bytes(sha1(label.encode("utf-8")).digest()[:2], "big") % len(
+            _RICH_LABEL_STYLES
+        )
+
+    @cached_property
+    def _label_styles(self) -> dict[str, str]:
+        """Assign non-colliding styles for the active labels in this expression."""
+        labels = list(dict.fromkeys(ch for ch in self.eq if ch.isalpha()))
+        used_slots: set[int] = set()
+        styles: dict[str, str] = {}
+        total_slots = len(_RICH_LABEL_STYLES)
+
+        for label in labels:
+            preferred = self._preferred_label_style_index(label)
+            if preferred is None:
+                styles[label] = "bold"
+                continue
+
+            if not used_slots:
+                used_slots.add(preferred)
+                styles[label] = _RICH_LABEL_STYLES[preferred]
+                continue
+
+            best_slot = None
+            best_score = None
+            for slot, style in enumerate(_RICH_LABEL_STYLES):
+                if slot in used_slots:
+                    continue
+
+                color = style.rsplit(" ", 1)[-1]
+                min_distance = min(
+                    rgb_distance_hex(
+                        color, _RICH_LABEL_STYLES[used_slot].rsplit(" ", 1)[-1]
+                    )
+                    for used_slot in used_slots
+                )
+                circular_preference_distance = min(
+                    (slot - preferred) % total_slots,
+                    (preferred - slot) % total_slots,
+                )
+                score = (min_distance, -circular_preference_distance)
+                if best_score is None or score > best_score:
+                    best_score = score
+                    best_slot = slot
+
+            assert best_slot is not None
+            used_slots.add(best_slot)
+            styles[label] = _RICH_LABEL_STYLES[best_slot]
+
+        return styles
+
+    def _label_style(self, label: str) -> str:
+        """Return the resolved style for a label within this expression."""
+        return self._label_styles.get(label, "bold")
+
+    def _style_text_charwise(self, text: str):
+        from rich.text import Text
+
+        result = Text()
+        for ch in text:
+            if ch.isalpha():
+                result.append(ch, style=self._label_style(ch))
+            elif ch in ",->[]{}()<>✓×:":
+                result.append(ch, style="dim")
+            else:
+                result.append(ch)
+        return result
+
+    def _rich_eq_text(self):
+        """Render the full einsum expression with global label styling."""
+        from rich.text import Text
+
+        result = Text()
+        prefix = "Complete contraction: "
+        result.append(prefix, style="bold")
+        result.append_text(self._style_text_charwise(self.eq))
+        return result
+
+    def _rich_subscript_text(self, subscript: str):
+        """Render a subscript or step expression with global label styling."""
+        return self._style_text_charwise(subscript)
+
+    def _rich_index_sizes_text(self):
+        """Render the index-size summary with label styling."""
+        return self._style_text_charwise(self._fmt_index_sizes())
+
+    def _rich_symmetry_token_text(self, token: str):
+        from rich.text import Text
+
+        if token == "-":
+            return Text("-", style="dim")
+        if token in {"×", "→"}:
+            return Text(token, style="dim")
+        if token.startswith("PermGroup⟨"):
+            return self._style_text_charwise(token)
+
+        result = Text()
+        if token.startswith("W"):
+            sym_style = _RICH_SYMMETRY_STYLES["W"]
+            result.append("W", style=sym_style)
+            if token.startswith("W✓"):
+                result.append("✓", style=sym_style)
+            if ":" in token:
+                result.append(":", style=sym_style)
+            remainder = token.split(":", 1)[1].lstrip() if ":" in token else token[1:]
+            if remainder:
+                result.append(" ", style="dim")
+                result.append_text(self._rich_symmetry_token_text(remainder))
+            return result
+
+        if token[0] in _RICH_SYMMETRY_STYLES and token[1:].split("{", 1)[0].isdigit():
+            prefix = token[0]
+            digits = []
+            i = 1
+            while i < len(token) and token[i].isdigit():
+                digits.append(token[i])
+                i += 1
+            result.append(prefix, style=_RICH_SYMMETRY_STYLES[prefix])
+            result.append("".join(digits), style=_RICH_SYMMETRY_STYLES[prefix])
+            if i < len(token) and token[i] == "{":
+                result.append("{", style="dim")
+                i += 1
+                while i < len(token) and token[i] != "}":
+                    ch = token[i]
+                    if ch.isalpha():
+                        result.append(ch, style=self._label_style(ch))
+                    elif ch == ",":
+                        result.append(ch, style="dim")
+                    else:
+                        result.append(ch)
+                    i += 1
+                if i < len(token) and token[i] == "}":
+                    result.append("}", style="dim")
+                return result
+
+        return self._style_text_charwise(token)
+
+    def _rich_step_sym_text(self, step: StepInfo):
+        from rich.text import Text
+
+        in_parts = [self._fmt_sym(s) for s in step.input_groups]
+        out_part = self._fmt_sym(step.output_group)
+        w_part = self._fmt_sym(step.inner_group)
+        if all(p == "-" for p in in_parts) and out_part == "-" and w_part == "-":
+            return Text("-", style="dim")
+
+        result = Text()
+        for idx, part in enumerate(in_parts):
+            if idx:
+                result.append(" × ", style="dim")
+            result.append_text(self._rich_symmetry_token_text(part))
+        result.append(" → ", style="dim")
+        result.append_text(self._rich_symmetry_token_text(out_part))
+        if w_part != "-":
+            result.append("  [", style="dim")
+            result.append("W✓" if step.inner_applied else "W", style=_RICH_SYMMETRY_STYLES["W"])
+            result.append(": ", style="dim")
+            result.append_text(self._rich_symmetry_token_text(w_part))
+            result.append("]", style="dim")
+        return result
+
+    def _fmt_overall_savings(self) -> str:
+        """Format total optimized-vs-dense savings for the whole contraction."""
+        if self.naive_cost <= 0:
+            return "0.0%"
+        return f"{1 - (self.optimized_cost / self.naive_cost):.1%}"
+
+    def _rich_metric_pill(
+        self,
+        label: str,
+        value: str | Any,
+        *,
+        highlight: bool = False,
+        value_style: str | None = None,
+        border_style: str | None = None,
+    ):
+        from rich import box
+        from rich.panel import Panel
+        from rich.text import Text
+
+        resolved_value_style = value_style or ("bold cyan" if highlight else "bold")
+        resolved_border_style = border_style or ("cyan" if highlight else "dim")
+        body = Text()
+        body.append(label, style="bold")
+        body.append(": ", style="dim")
+        if not value:
+            body.append("-", style=resolved_value_style)
+        elif isinstance(value, Text):
+            if highlight:
+                value = value.copy()
+                value.stylize(resolved_value_style)
+            body.append_text(value)
+        else:
+            body.append(str(value), style=resolved_value_style)
+        return Panel.fit(
+            body,
+            box=box.ROUNDED,
+            padding=(0, 1),
+            border_style=resolved_border_style,
+        )
+
+    def _rich_summary_strip(self):
+        from rich.columns import Columns
+
+        pills = []
+        pills.append(self._rich_metric_pill("Naive cost", f"{self.naive_cost:,}"))
+        pills.append(
+            self._rich_metric_pill(
+                "Optimized cost", f"{self.optimized_cost:,}", highlight=True
+            )
+        )
+        speedup_style = "bold green" if self.speedup > 1 else "bold"
+        speedup_border = "green" if self.speedup > 1 else "dim"
+        pills.append(
+            self._rich_metric_pill(
+                "Speedup",
+                f"{self.speedup:.3f}x",
+                value_style=speedup_style,
+                border_style=speedup_border,
+            )
+        )
+        savings_style = "bold green" if self.optimized_cost < self.naive_cost else "bold"
+        savings_border = "green" if self.optimized_cost < self.naive_cost else "dim"
+        pills.append(
+            self._rich_metric_pill(
+                "Savings",
+                self._fmt_overall_savings(),
+                value_style=savings_style,
+                border_style=savings_border,
+            )
+        )
+        pills.append(
+            self._rich_metric_pill(
+                "Largest intermediate", f"{self.largest_intermediate:,} elements"
+            )
+        )
+        if self.size_dict:
+            pills.append(
+                self._rich_metric_pill("Index sizes", self._rich_index_sizes_text())
+            )
+        if self.optimizer_used:
+            pills.append(self._rich_metric_pill("Optimizer", self.optimizer_used))
+        return Columns(pills, expand=True, equal=False, padding=(0, 1))
+
+    def _rich_verbose_detail_text(
+        self, step: StepInfo, cumulative: int, *, step_index: int | None = None
+    ):
+        from rich.text import Text
+
+        shape = (
+            "(" + ",".join(str(d) for d in step.output_shape) + ")"
+            if step.output_shape
+            else "()"
+        )
+        result = Text()
+        if step_index is not None:
+            result.append(f"step {step_index}: ", style="dim")
+        result.append("subset=", style="dim")
+        result.append(self._fmt_subset(step.merged_subset), style="bold")
+        result.append("\n")
+        result.append("out_shape=", style="dim")
+        result.append(shape, style="bold")
+        result.append("\n")
+        result.append("cumulative=", style="dim")
+        result.append(f"{cumulative:,}", style="bold cyan")
+        return result
+
+    @staticmethod
+    def _try_named_group(k: int, order: int) -> str | None:
+        """Return the named prefix (e.g. 'S3') if recognised, else None."""
+        if order == 1:
+            return None
+        from math import factorial
+
+        if order == factorial(k):
+            return f"S{k}"
+        if order == k:
+            return f"C{k}"
+        if order == 2 * k and k >= 3:
+            return f"D{k}"
+        return None
+
+    @staticmethod
+    def _fmt_generators(group: PermutationGroup, labels: tuple) -> str:
+        """Format generators in cycle notation with labels."""
+        parts = []
+        for gen in group.generators:
+            if gen.is_identity:
+                continue
+            cycles = gen.cyclic_form
+            if not cycles:
+                continue
+            perm_str = "".join(
+                "(" + " ".join(labels[i] for i in cycle) + ")" for cycle in cycles
+            )
+            parts.append(perm_str)
+        return ", ".join(parts) if parts else "e"
+
+    def _fmt_sym(self, group: PermutationGroup | None) -> str:
+        """Format a PermutationGroup for display."""
+        if group is None:
+            return "-"
+        labels = group._labels or tuple(str(i) for i in range(group.degree))
+        k = group.degree
+        order = group.order()
+
+        name = self._try_named_group(k, order)
+        if name is not None:
+            return f"{name}{{{','.join(labels)}}}"
+
+        orbits = [orb for orb in group.orbits() if len(orb) >= 2]
+        if not orbits:
+            return "-"
+
+        if len(orbits) == 1:
+            orbit = orbits[0]
+            moved_labels = tuple(labels[i] for i in sorted(orbit))
+            mk = len(moved_labels)
+            name = self._try_named_group(mk, order)
+            if name is not None:
+                return f"{name}{{{','.join(moved_labels)}}}"
+
+        gen_str = self._fmt_generators(group, labels)
+        return f"PermGroup⟨{gen_str}⟩"
+
+    def _fmt_step_sym(self, step: StepInfo) -> str:
+        """Format inputs→output symmetry transformation for one step."""
+        in_parts = [self._fmt_sym(s) for s in step.input_groups]
+        out_part = self._fmt_sym(step.output_group)
+        w_part = self._fmt_sym(step.inner_group)
+        if all(p == "-" for p in in_parts) and out_part == "-" and w_part == "-":
+            return ""
+        result = f"{' × '.join(in_parts)} → {out_part}"
+        if w_part != "-":
+            w_prefix = "W✓" if step.inner_applied else "W"
+            result += f"  [{w_prefix}: {w_part}]"
+        return result
+
+    def _fmt_index_sizes(self) -> str:
+        """Format index sizes compactly. Groups indices with the same size."""
+        if not self.size_dict:
+            return ""
+        from collections import defaultdict
+
+        by_size: dict[int, list[str]] = defaultdict(list)
+        for idx, sz in self.size_dict.items():
+            by_size[sz].append(idx)
+        parts = []
+        for sz, idxs in sorted(by_size.items(), key=lambda kv: (-len(kv[1]), -kv[0])):
+            idxs_sorted = sorted(idxs)
+            parts.append(f"{'='.join(idxs_sorted)}={sz}")
+        return ", ".join(parts)
+
+    @staticmethod
+    def _fmt_contract(step: StepInfo) -> str:
+        """Format the path-supplied contraction tuple, e.g. '(0, 1)'."""
+        if not step.path_indices:
+            return "-"
+        if len(step.path_indices) == 2:
+            return f"({step.path_indices[0]}, {step.path_indices[1]})"
+        return "(" + ",".join(str(p) for p in step.path_indices) + ")"
+
+    def _fmt_unique_dense(self, step: StepInfo) -> str:
+        """Show output and inner unique/dense element counts."""
+        from math import prod
+
+        from whest._opt_einsum._symmetry import unique_elements
+
+        if step.flop_cost == step.dense_flop_cost:
+            return "-"
+
+        parts: list[str] = []
+
+        if step.output_group is not None and step.output_shape:
+            out_str = step.subscript.split("->")[1] if "->" in step.subscript else ""
+            out_total = prod(step.output_shape)
+            out_unique = unique_elements(
+                frozenset(out_str), self.size_dict, perm_group=step.output_group
+            )
+            if out_unique != out_total:
+                parts.append(f"V:{out_unique:,}/{out_total:,}")
+
+        if step.inner_applied and step.inner_group is not None:
+            lhs = step.subscript.split("->")[0] if "->" in step.subscript else step.subscript
+            out_str = step.subscript.split("->")[1] if "->" in step.subscript else ""
+            contracted = frozenset(lhs.replace(",", "")) - frozenset(out_str)
+            if contracted:
+                inner_total = prod(self.size_dict[c] for c in contracted)
+                inner_unique = unique_elements(
+                    contracted, self.size_dict, perm_group=step.inner_group
+                )
+                if inner_unique != inner_total:
+                    parts.append(f"W:{inner_unique:,}/{inner_total:,}")
+
+        return " ".join(parts) if parts else "-"
+
+    @staticmethod
+    def _fmt_subset(s: frozenset[int] | None) -> str:
+        if s is None:
+            return "-"
+        if not s:
+            return "{}"
+        return "{" + ",".join(str(i) for i in sorted(s)) + "}"
+
+    def _header_lines(self) -> list[str]:
+        sizes_line = self._fmt_index_sizes()
+        header_lines = [
+            f"  Complete contraction:  {self.eq}",
+            f"      Naive cost (whest):  {self.naive_cost:,}",
+            f"  Optimized cost (whest):  {self.optimized_cost:,}",
+            f"                     Speedup:  {self.speedup:.3f}x",
+            f"                     Savings:  {self._fmt_overall_savings()}",
+            f"       Largest intermediate:  {self.largest_intermediate:,} elements",
+        ]
+        if sizes_line:
+            header_lines.append(f"                Index sizes:  {sizes_line}")
+        if self.optimizer_used:
+            header_lines.append(f"                  Optimizer:  {self.optimizer_used}")
+        return header_lines
+
+    def _rich_step_table(self, verbose: bool = False):
+        from rich import box
+        from rich.table import Table
+
+        any_unique = any(
+            s.dense_flop_cost > 0 and s.flop_cost != s.dense_flop_cost for s in self.steps
+        )
+
+        contract_width = max(
+            len("contract"),
+            max((len(self._fmt_contract(step)) for step in self.steps), default=0),
+        )
+        subscript_width = min(
+            24,
+            max(
+                len("subscript"),
+                max((len(step.subscript) for step in self.steps), default=0),
+            ),
+        )
+        flops_width = max(
+            len("flops"),
+            max((len(f"{step.flop_cost:,}") for step in self.steps), default=0),
+        )
+        dense_width = max(
+            len("dense_flops"),
+            max((len(f"{step.dense_flop_cost:,}") for step in self.steps), default=0),
+        )
+        savings_width = max(
+            len("savings"),
+            max((len(f"{step.symmetry_savings:0.1%}") for step in self.steps), default=0),
+        )
+        blas_width = max(
+            len("blas"),
+            max(
+                (
+                    len(str(step.blas_type) if step.blas_type else "-")
+                    for step in self.steps
+                ),
+                default=0,
+            ),
+        )
+        unique_width = None
+        if any_unique:
+            unique_width = max(
+                len("unique/total"),
+                max((len(self._fmt_unique_dense(step)) for step in self.steps), default=0),
+            )
+
+        table = Table(
+            show_header=True,
+            header_style="bold",
+            expand=True,
+            box=box.HEAVY,
+            pad_edge=False,
+            padding=(0, 1),
+            collapse_padding=True,
+        )
+        table.add_column("step", justify="right", no_wrap=True, width=len("step"))
+        table.add_column("contract", justify="left", no_wrap=True, width=contract_width)
+        table.add_column("subscript", overflow="fold", width=subscript_width)
+        table.add_column("flops", justify="right", no_wrap=True, width=flops_width)
+        table.add_column(
+            "dense_flops", justify="right", no_wrap=True, width=dense_width
+        )
+        table.add_column("savings", justify="right", no_wrap=True, width=savings_width)
+        table.add_column("blas", no_wrap=True, width=blas_width)
+        if any_unique:
+            table.add_column("unique/total", no_wrap=True, width=unique_width)
+        table.add_column(
+            "symmetry (inputs → output)",
+            overflow="fold",
+            min_width=len("symmetry (inputs → output)"),
+            ratio=1,
+        )
+
+        cumulative = 0
+        for i, step in enumerate(self.steps):
+            row = [
+                str(i),
+                self._fmt_contract(step),
+                self._rich_subscript_text(step.subscript),
+                f"{step.flop_cost:,}",
+                f"{step.dense_flop_cost:,}",
+                f"{step.symmetry_savings:>7.1%}",
+                str(step.blas_type) if step.blas_type else "-",
+            ]
+            if any_unique:
+                row.append(self._fmt_unique_dense(step))
+            row.append(self._rich_step_sym_text(step) or "-")
+            table.add_row(*row)
+            if verbose:
+                cumulative += step.flop_cost
+                detail_row = [""] * len(table.columns)
+                detail_row[2] = self._rich_verbose_detail_text(step, cumulative)
+                detail_row[-1] = self._rich_verbose_detail_text(
+                    step, cumulative, step_index=i
+                )
+                table.add_row(*detail_row)
+
+        return table
+
+    def _rich_renderable(self, verbose: bool = False):
+        from rich.console import Group
+        from rich.panel import Panel
+
+        expr = self._rich_eq_text()
+        summary = self._rich_summary_strip()
+        table = self._rich_step_table(verbose=verbose)
+        return Panel(
+            Group(expr, summary, table),
+            title="[bold cyan]einsum_path[/bold cyan]",
+            border_style="cyan",
+        )
+
     def format_table(self, verbose: bool = False) -> str:
         """Render the path info as a printable table.
 
@@ -158,182 +712,9 @@ class PathInfo:
             Useful for debugging why a particular step's savings are what
             they are. Default False.
         """
-        from math import prod
-
-        def _try_named_group(k: int, order: int) -> str | None:
-            """Return the named prefix (e.g. 'S3') if recognised, else None."""
-            if order == 1:
-                return None
-            from math import factorial
-
-            if order == factorial(k):
-                return f"S{k}"
-            if order == k:
-                return f"C{k}"
-            if order == 2 * k and k >= 3:
-                return f"D{k}"
-            return None
-
-        def _fmt_generators(group: PermutationGroup, labels: tuple) -> str:
-            """Format generators in cycle notation with labels."""
-            parts = []
-            for gen in group.generators:
-                if gen.is_identity:
-                    continue
-                cycles = gen.cyclic_form
-                if not cycles:
-                    continue
-                perm_str = "".join(
-                    "(" + " ".join(labels[i] for i in cycle) + ")" for cycle in cycles
-                )
-                parts.append(perm_str)
-            return ", ".join(parts) if parts else "e"
-
-        def fmt_sym(group: PermutationGroup | None) -> str:
-            """Format a PermutationGroup for display.
-
-            Strategy:
-            1. Named groups on all labels: S3{i,j,k}, C4{a,b,c,d}, etc.
-            2. Fixed points present, single non-trivial orbit: drop fixed
-               points and try named recognition on the orbit labels.
-            3. Fallback: show generators in cycle notation with labels.
-            """
-            if group is None:
-                return "-"
-            labels = group._labels or tuple(str(i) for i in range(group.degree))
-            k = group.degree
-            order = group.order()
-
-            # Try named recognition on full group.
-            name = _try_named_group(k, order)
-            if name is not None:
-                return f"{name}{{{','.join(labels)}}}"
-
-            # Find non-trivial orbits (size >= 2).
-            orbits = [orb for orb in group.orbits() if len(orb) >= 2]
-            if not orbits:
-                return "-"
-
-            # Single non-trivial orbit: try named recognition on moved labels.
-            if len(orbits) == 1:
-                orbit = orbits[0]
-                moved_labels = tuple(labels[i] for i in sorted(orbit))
-                mk = len(moved_labels)
-                name = _try_named_group(mk, order)
-                if name is not None:
-                    return f"{name}{{{','.join(moved_labels)}}}"
-
-            # Fallback: generators in cycle notation.
-            gen_str = _fmt_generators(group, labels)
-            return f"PermGroup\u27e8{gen_str}\u27e9"
-
-        def fmt_step_sym(step: StepInfo) -> str:
-            """Format inputs→output symmetry transformation for one step."""
-            in_parts = [fmt_sym(s) for s in step.input_groups]
-            out_part = fmt_sym(step.output_group)
-            w_part = fmt_sym(step.inner_group)
-            if all(p == "-" for p in in_parts) and out_part == "-" and w_part == "-":
-                return ""
-            result = f"{' × '.join(in_parts)} → {out_part}"
-            if w_part != "-":
-                w_prefix = "W\u2713" if step.inner_applied else "W"
-                result += f"  [{w_prefix}: {w_part}]"
-            return result
-
-        def fmt_index_sizes() -> str:
-            """Format index sizes compactly. Groups indices with the same size."""
-            if not self.size_dict:
-                return ""
-            from collections import defaultdict
-
-            by_size: dict[int, list[str]] = defaultdict(list)
-            for idx, sz in self.size_dict.items():
-                by_size[sz].append(idx)
-            parts = []
-            for sz, idxs in sorted(
-                by_size.items(), key=lambda kv: (-len(kv[1]), -kv[0])
-            ):
-                idxs_sorted = sorted(idxs)
-                parts.append(f"{'='.join(idxs_sorted)}={sz}")
-            return ", ".join(parts)
-
-        def fmt_contract(step: StepInfo) -> str:
-            """Format the path-supplied contraction tuple, e.g. '(0, 1)'."""
-            if not step.path_indices:
-                return "-"
-            if len(step.path_indices) == 2:
-                return f"({step.path_indices[0]}, {step.path_indices[1]})"
-            return "(" + ",".join(str(p) for p in step.path_indices) + ")"
-
-        def fmt_unique_dense(step: StepInfo) -> str:
-            """Show output and inner unique/dense element counts.
-
-            Computes real unique counts from the PermutationGroups rather
-            than reverse-engineering from the cost ratio.  Shows separate
-            V (output) and W (inner) ratios when both contribute.
-            """
-            from whest._opt_einsum._symmetry import unique_elements
-
-            if step.flop_cost == step.dense_flop_cost:
-                return "-"
-
-            parts: list[str] = []
-
-            # Output (V) unique/dense
-            if step.output_group is not None and step.output_shape:
-                out_str = (
-                    step.subscript.split("->")[1] if "->" in step.subscript else ""
-                )
-                out_total = prod(step.output_shape)
-                out_unique = unique_elements(
-                    frozenset(out_str), self.size_dict, perm_group=step.output_group
-                )
-                if out_unique != out_total:
-                    parts.append(f"V:{out_unique:,}/{out_total:,}")
-
-            # Inner (W) unique/dense
-            if step.inner_applied and step.inner_group is not None:
-                lhs = (
-                    step.subscript.split("->")[0]
-                    if "->" in step.subscript
-                    else step.subscript
-                )
-                out_str = (
-                    step.subscript.split("->")[1] if "->" in step.subscript else ""
-                )
-                contracted = frozenset(lhs.replace(",", "")) - frozenset(out_str)
-                if contracted:
-                    inner_total = prod(self.size_dict[c] for c in contracted)
-                    inner_unique = unique_elements(
-                        contracted, self.size_dict, perm_group=step.inner_group
-                    )
-                    if inner_unique != inner_total:
-                        parts.append(f"W:{inner_unique:,}/{inner_total:,}")
-
-            return " ".join(parts) if parts else "-"
-
-        def fmt_subset(s: frozenset[int] | None) -> str:
-            if s is None:
-                return "-"
-            if not s:
-                return "{}"
-            return "{" + ",".join(str(i) for i in sorted(s)) + "}"
-
-        sym_strs = [fmt_step_sym(s) for s in self.steps]
+        sym_strs = [self._fmt_step_sym(s) for s in self.steps]
         max_sym_width = max((len(s) for s in sym_strs), default=0)
-        sizes_line = fmt_index_sizes()
-
-        header_lines = [
-            f"  Complete contraction:  {self.eq}",
-            f"      Naive cost (whest):  {self.naive_cost:,}",
-            f"  Optimized cost (whest):  {self.optimized_cost:,}",
-            f"                     Speedup:  {self.speedup:.3f}x",
-            f"       Largest intermediate:  {self.largest_intermediate:,} elements",
-        ]
-        if sizes_line:
-            header_lines.append(f"                Index sizes:  {sizes_line}")
-        if self.optimizer_used:
-            header_lines.append(f"                  Optimizer:  {self.optimizer_used}")
+        header_lines = self._header_lines()
 
         # Common columns: step, contract, subscript, flops, dense_flops, savings, blas
         # Plus: symmetry (when any step has symmetry) and unique/dense (when any
@@ -343,13 +724,13 @@ class PathInfo:
             for s in self.steps
         )
 
-        contract_strs = [fmt_contract(s) for s in self.steps]
+        contract_strs = [self._fmt_contract(s) for s in self.steps]
         contract_col_width = max(
             len("contract"), max((len(c) for c in contract_strs), default=0)
         )
         unique_col_width = max(
             len("unique/total"),
-            max((len(fmt_unique_dense(s)) for s in self.steps), default=0),
+            max((len(self._fmt_unique_dense(s)) for s in self.steps), default=0),
         )
 
         # Build the header line
@@ -384,7 +765,7 @@ class PathInfo:
                 f"{blas_label:<8}",
             ]
             if any_unique:
-                row_parts.append(f"{fmt_unique_dense(step):<{unique_col_width}}")
+                row_parts.append(f"{self._fmt_unique_dense(step):<{unique_col_width}}")
             sym_str = sym_strs[i] or "-"
             if len(sym_str) > sym_col_width:
                 sym_str = sym_str[: sym_col_width - 1] + "…"
@@ -395,7 +776,7 @@ class PathInfo:
             if verbose:
                 # Indented details row: subset, out_shape, cumulative cost.
                 # Aligned under the subscript column for visual clarity.
-                subset_str = fmt_subset(step.merged_subset)
+                subset_str = self._fmt_subset(step.merged_subset)
                 shape_str = (
                     "(" + ",".join(str(d) for d in step.output_shape) + ")"
                     if step.output_shape
@@ -409,6 +790,33 @@ class PathInfo:
                 lines.append("        " + "  ".join(detail_parts))
 
         return "\n".join(lines)
+
+    def __rich__(self):
+        return self._rich_renderable()
+
+    def print(self, verbose: bool = False) -> None:
+        """Print using Rich when available, otherwise plain text.
+
+        Notes
+        -----
+        Builtin ``print(info)`` still goes through ``__str__`` and remains
+        the plain-text fallback. This convenience method chooses the Rich
+        renderer whenever Rich is importable, including the Rich verbose
+        layout when ``verbose=True``.
+        """
+        import builtins
+
+        try:
+            from rich.console import Console
+        except ImportError:
+            builtins.print(self.format_table(verbose=verbose))
+            return None
+
+        if verbose:
+            Console().print(self._rich_renderable(verbose=True))
+        else:
+            Console().print(self)
+        return None
 
     def __str__(self) -> str:
         return self.format_table(verbose=False)

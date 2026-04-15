@@ -1,5 +1,7 @@
 """Integration tests for symmetry-aware einsum with path optimization."""
 
+from unittest.mock import patch
+
 import numpy
 import pytest
 
@@ -328,6 +330,71 @@ class TestPathInfoDebugFields:
         assert len(first_subset) == 2
         # Final step covers all 3 original ops
         assert info.steps[-1].merged_subset == frozenset({0, 1, 2})
+
+    def test_format_table_default_includes_overall_savings(self):
+        A = numpy.ones((5, 5))
+        B = numpy.ones((5, 5))
+        C = numpy.ones((5, 5))
+        _, info = einsum_path("ij,jk,kl->il", A, B, C, optimize="greedy")
+
+        table = info.format_table()
+
+        assert "Savings:" in table
+        assert "80.0%" in table
+
+    def test_rich_console_renders_table(self):
+        pytest.importorskip("rich")
+
+        import io
+
+        from rich.console import Console
+
+        A = numpy.ones((5, 5))
+        B = numpy.ones((5, 5))
+        C = numpy.ones((5, 5))
+        _, info = einsum_path("ij,jk,kl->il", A, B, C, optimize="greedy")
+
+        buf = io.StringIO()
+        Console(file=buf, force_terminal=True, width=140).print(info)
+        output = buf.getvalue()
+
+        assert "┏" in output
+        assert "einsum_path" in output
+        assert "Complete contraction" in output
+
+    def test_print_method_uses_rich_when_available(self, capsys):
+        pytest.importorskip("rich")
+
+        A = numpy.ones((5, 5))
+        B = numpy.ones((5, 5))
+        C = numpy.ones((5, 5))
+        _, info = einsum_path("ij,jk,kl->il", A, B, C, optimize="greedy")
+
+        info.print()
+        captured = capsys.readouterr()
+
+        assert "einsum_path" in captured.out
+        assert "Complete contraction" in captured.out
+
+    def test_print_method_falls_back_to_plain_text_without_rich(self, capsys):
+        A = numpy.ones((5, 5))
+        B = numpy.ones((5, 5))
+        C = numpy.ones((5, 5))
+        _, info = einsum_path("ij,jk,kl->il", A, B, C, optimize="greedy")
+
+        orig_import = __import__
+
+        def fake_import(name, *args, **kwargs):
+            if name == "rich" or name.startswith("rich."):
+                raise ImportError("no rich")
+            return orig_import(name, *args, **kwargs)
+
+        with patch("builtins.__import__", side_effect=fake_import):
+            info.print()
+
+        captured = capsys.readouterr()
+        assert "Complete contraction:" in captured.out
+        assert "Optimizer:" in captured.out
 
 
 class TestBackwardCompatibility:

@@ -175,6 +175,16 @@ _contract.py  (vendored from opt_einsum/contract.py — HEAVILY MODIFIED)
     size_dict          — index label → dimension size
     (legacy fields for backward compat with upstream tests)
 
+_hsluv.py  (vendored/adapted from hsluv-python — MIT)
+──────────────────────────────────────────────────
+  New local helper for deterministic terminal label palettes.
+  - Adapted from the MIT-licensed hsluv-python reference implementation:
+      https://github.com/hsluv/hsluv-python
+  - Vendors only the conversion path needed for HSLuv → RGB/hex.
+  - Adds `qualitative_hsluv_palette()` for high-separation categorical colors.
+  - Palette construction is inspired by seaborn's `husl_palette`, but this
+    fork does not vendor seaborn code or add a seaborn dependency.
+
 _symmetry.py  (NEW — not in upstream opt_einsum)
 ──────────────────────────────────────────────────
   Entirely new module. Provides symmetry types and operations for the
