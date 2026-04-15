@@ -511,7 +511,9 @@ def display_type_for_category(category: str) -> str:
         return "blocked"
     if category == "free":
         return "free"
-    return "counted"
+    if category.startswith("counted_") and category != "counted_custom":
+        return "counted"
+    return "custom"
 
 
 def whest_ref(name: str, module: str) -> str:

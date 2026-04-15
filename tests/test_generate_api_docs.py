@@ -27,3 +27,12 @@ def test_normalize_area_and_slug_for_supported_ops():
     assert mod.slug_for_operation("absolute") == "absolute"
     assert mod.slug_for_operation("linalg.svd") == "linalg-svd"
     assert mod.slug_for_operation("stats.norm.pdf") == "stats-norm-pdf"
+
+
+def test_display_type_for_category():
+    mod = load_generate_api_docs_module()
+
+    assert mod.display_type_for_category("free") == "free"
+    assert mod.display_type_for_category("counted_unary") == "counted"
+    assert mod.display_type_for_category("counted_custom") == "custom"
+    assert mod.display_type_for_category("blacklisted") == "blocked"
