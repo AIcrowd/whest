@@ -38,3 +38,9 @@ def test_custom_op_has_whest_cost():
     doc = we.dot.__doc__
     assert doc is not None
     assert "FLOP Cost" in doc
+
+
+def test_histogram_docstring_still_inherits_numpy_summary():
+    doc = we.histogram.__doc__
+    assert doc is not None
+    assert "Compute the histogram of a dataset." in doc

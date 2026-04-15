@@ -488,8 +488,20 @@ class OperationDocRecord:
     notes: str
     aliases: list[str]
     signature: str
-    api_docs_html: str
-    whest_examples_html: str
+    summary: str = ""
+    provenance_label: str = ""
+    provenance_url: str = ""
+    whest_source_url: str = ""
+    upstream_source_url: str = ""
+    parameters: list["DocField"] | None = None
+    returns: list["DocField"] | None = None
+    see_also: list["DocLink"] | None = None
+    notes_sections: list[str] | None = None
+    example: "DocExample | None" = None
+    previous: "OperationNavLink | None" = None
+    next: "OperationNavLink | None" = None
+    api_docs_html: str = ""
+    whest_examples_html: str = ""
 
 
 @dataclass(slots=True)
@@ -504,12 +516,22 @@ class DocLink:
     label: str
     target: str
     description: str = ""
+    href: str | None = None
+    external_url: str | None = None
 
 
 @dataclass(slots=True)
 class DocExample:
     code: str
     output: str = ""
+    source: str = "derived"
+
+
+@dataclass(slots=True)
+class OperationNavLink:
+    name: str
+    href: str
+    label: str
 
 
 @dataclass(slots=True)
@@ -690,6 +712,157 @@ def parse_numpy_docstring(raw_doc: str) -> ParsedDoc:
     )
 
 
+def docs_url_for_operation(name: str, module: str) -> str:
+    """Return the upstream reference docs URL for a supported operation."""
+    if module == "numpy.linalg":
+        return (
+            "https://numpy.org/doc/stable/reference/generated/"
+            f"numpy.linalg.{name.removeprefix('linalg.')}.html"
+        )
+    if module == "numpy.fft":
+        return (
+            "https://numpy.org/doc/stable/reference/generated/"
+            f"numpy.fft.{name.removeprefix('fft.')}.html"
+        )
+    if module == "numpy.random":
+        return (
+            "https://numpy.org/doc/stable/reference/generated/"
+            f"numpy.random.{name.removeprefix('random.')}.html"
+        )
+    if module == "whest.stats":
+        dist_name = name.split(".")[1]
+        return (
+            "https://docs.scipy.org/doc/scipy/reference/generated/"
+            f"scipy.stats.{dist_name}.html"
+        )
+    return f"https://numpy.org/doc/stable/reference/generated/numpy.{name}.html"
+
+
+def _repo_source_url(
+    obj: object, *, repo_blob_root: str, package_root: Path | None = None
+) -> str:
+    """Build a GitHub source URL for an imported object when inspect can locate it."""
+    target = inspect.unwrap(obj)
+    try:
+        source_path = Path(
+            inspect.getsourcefile(target) or inspect.getfile(target)
+        ).resolve()
+        _, start_line = inspect.getsourcelines(target)
+    except (OSError, TypeError):  # pragma: no cover - inspect support varies by object
+        return ""
+
+    if package_root is None:
+        try:
+            relative = source_path.relative_to(ROOT)
+        except ValueError:
+            return ""
+    else:
+        try:
+            relative = source_path.relative_to(package_root.parent)
+        except ValueError:
+            return ""
+
+    return f"{repo_blob_root}/{relative.as_posix()}#L{start_line}"
+
+
+def _resolve_attr(root: object, dotted_name: str) -> object:
+    current = root
+    for part in dotted_name.split("."):
+        current = getattr(current, part)
+    return current
+
+
+def resolve_live_objects(name: str, module: str) -> tuple[object, object | None]:
+    """Resolve the live whest object and its upstream NumPy/SciPy counterpart."""
+    import numpy as np
+
+    import whest as we
+
+    if module == "numpy.linalg":
+        short_name = name.removeprefix("linalg.")
+        return getattr(we.linalg, short_name), getattr(np.linalg, short_name, None)
+    if module == "numpy.fft":
+        short_name = name.removeprefix("fft.")
+        return getattr(we.fft, short_name), getattr(np.fft, short_name, None)
+    if module == "numpy.random":
+        short_name = name.removeprefix("random.")
+        return getattr(we.random, short_name), getattr(np.random, short_name, None)
+    if module == "whest.stats":
+        try:
+            from scipy import stats as scipy_stats
+        except Exception:  # pragma: no cover - scipy availability is environment specific
+            scipy_stats = None
+        return _resolve_attr(we, name), (
+            _resolve_attr(scipy_stats, name.removeprefix("stats."))
+            if scipy_stats is not None
+            else None
+        )
+    return getattr(we, name), getattr(np, name, None)
+
+
+def _rewrite_doc_field(field: DocField) -> DocField:
+    return DocField(
+        name=field.name,
+        type=rewrite_api_refs(field.type),
+        description=[rewrite_api_refs(line) for line in field.description],
+    )
+
+
+def _rewrite_doc_link(link: DocLink) -> DocLink:
+    rewritten_target = rewrite_api_refs(link.target)
+    return DocLink(
+        label=rewrite_api_refs(link.label),
+        target=rewritten_target.removeprefix("we."),
+        description=rewrite_api_refs(link.description),
+        href="",
+        external_url="",
+    )
+
+
+def build_structured_doc(
+    name: str, module: str, owned_example_html: str = ""
+) -> tuple[str, ParsedDoc, DocExample | None, str, str]:
+    """Resolve live objects and build the structured doc model for one op."""
+    import numpy as np
+
+    whest_obj, upstream_obj = resolve_live_objects(name, module)
+    raw_doc = inspect.getdoc(upstream_obj) or inspect.getdoc(whest_obj) or ""
+    parsed = parse_numpy_docstring(raw_doc)
+
+    parsed.summary = rewrite_api_refs(parsed.summary)
+    parsed.parameters = [_rewrite_doc_field(field) for field in parsed.parameters]
+    parsed.returns = [_rewrite_doc_field(field) for field in parsed.returns]
+    parsed.see_also = [_rewrite_doc_link(link) for link in parsed.see_also]
+    parsed.notes = [rewrite_api_refs(note) for note in parsed.notes]
+
+    example: DocExample | None = None
+    if owned_example_html:
+        example = None
+    elif parsed.examples:
+        example = derive_example_from_upstream(parsed.examples[0].code)
+
+    try:
+        signature = f"{whest_ref(name, module).strip('`')}{inspect.signature(whest_obj)}"
+    except (TypeError, ValueError):
+        signature = f"{whest_ref(name, module).strip('`')}(...)"
+
+    whest_source_url = _repo_source_url(
+        whest_obj,
+        repo_blob_root="https://github.com/AIcrowd/whest/blob/main",
+    )
+
+    upstream_source_url = ""
+    if upstream_obj is not None:
+        numpy_root = Path(np.__file__).resolve().parent
+        upstream_source_url = _repo_source_url(
+            upstream_obj,
+            repo_blob_root=f"https://github.com/numpy/numpy/blob/v{np.__version__}",
+            package_root=numpy_root,
+        )
+
+    return signature, parsed, example, whest_source_url, upstream_source_url
+
+
 ALIAS_NOTE_PATTERN = re.compile(r"alias for ([\w./]+)", re.IGNORECASE)
 ALIAS_REASON_PATTERN = re.compile(r"Alias of ([\w./]+)", re.IGNORECASE)
 EXAMPLE_FENCE_PATTERN = re.compile(
@@ -765,12 +938,24 @@ def example_file_for(name: str, example_root: Path) -> Path:
     return example_root / f"{name}.mdx"
 
 
-def build_example_coverage(names: list[str], example_root: Path) -> dict[str, dict]:
-    """Compute owned-example coverage for canonical operation pages."""
+def build_example_coverage(
+    records: list[OperationDocRecord], example_root: Path
+) -> dict[str, dict]:
+    """Compute example coverage for canonical operation pages."""
     coverage: dict[str, dict] = {}
-    for name in names:
+    for record in records:
+        name = record.name
         path = example_file_for(name, example_root)
         if not path.exists():
+            if record.example is not None:
+                coverage[name] = {
+                    "has_whest_examples": False,
+                    "has_inherited_examples": True,
+                    "example_count": 1,
+                    "example_sources": [record.provenance_url] if record.provenance_url else [],
+                    "coverage_status": "derived",
+                }
+                continue
             coverage[name] = {
                 "has_whest_examples": False,
                 "has_inherited_examples": False,
@@ -883,6 +1068,10 @@ def build_operation_doc_records(registry: dict[str, dict]) -> list[OperationDocR
 
         module = info["module"]
         cost_plain, cost_latex = cost_for_op(name, info["category"])
+        owned_example_html = load_whest_example_html(name, API_EXAMPLES_DIR)
+        signature, parsed_doc, derived_example, whest_source_url, upstream_source_url = (
+            build_structured_doc(name, module, owned_example_html)
+        )
         records.append(
             OperationDocRecord(
                 name=name,
@@ -899,11 +1088,37 @@ def build_operation_doc_records(registry: dict[str, dict]) -> list[OperationDocR
                 weight=weight,
                 notes=info.get("notes", ""),
                 aliases=aliases,
-                signature=f"{whest_ref(name, module).strip('`')}(...)",
+                signature=signature,
+                summary=parsed_doc.summary,
+                provenance_label="Adapted from NumPy docs",
+                provenance_url=docs_url_for_operation(name, module),
+                whest_source_url=whest_source_url,
+                upstream_source_url=upstream_source_url,
+                parameters=parsed_doc.parameters,
+                returns=parsed_doc.returns,
+                see_also=parsed_doc.see_also,
+                notes_sections=parsed_doc.notes,
+                example=derived_example,
                 api_docs_html="",
-                whest_examples_html=load_whest_example_html(name, API_EXAMPLES_DIR),
+                whest_examples_html=owned_example_html,
             )
         )
+
+    for index, record in enumerate(records):
+        if index > 0:
+            previous = records[index - 1]
+            record.previous = OperationNavLink(
+                name=previous.name,
+                href=previous.href,
+                label=previous.whest_ref.strip("`"),
+            )
+        if index + 1 < len(records):
+            nxt = records[index + 1]
+            record.next = OperationNavLink(
+                name=nxt.name,
+                href=nxt.href,
+                label=nxt.whest_ref.strip("`"),
+            )
 
     return records
 
@@ -912,7 +1127,7 @@ def render_operation_stub(op: OperationDocRecord) -> str:
     """Render a generated standalone MDX page stub for one canonical operation."""
     return (
         f'---\n'
-        f'title: "{op.whest_ref}"\n'
+        f'title: "{op.whest_ref.strip("`")}"\n'
         f'---\n\n'
         f'<OperationDocPage name="{op.name}" />\n'
     )
@@ -1317,9 +1532,7 @@ def main():
     generate_ops_json(registry)
     records = build_operation_doc_records(registry)
     write_operation_doc_artifacts(records, WEBSITE)
-    example_coverage = build_example_coverage(
-        [record.name for record in records], API_EXAMPLES_DIR
-    )
+    example_coverage = build_example_coverage(records, API_EXAMPLES_DIR)
     write_example_coverage_artifact(example_coverage, WEBSITE)
 
     print("\nDone. Run with --verify to check coverage.")

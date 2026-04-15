@@ -61,8 +61,43 @@ def test_write_generated_operation_artifacts(tmp_path):
             notes="Element-wise absolute value.",
             aliases=["abs"],
             signature="we.absolute(...)",
-            api_docs_html="",
-            whest_examples_html="",
+            summary="Return the absolute value element-wise.",
+            provenance_label="Adapted from NumPy docs",
+            provenance_url="https://numpy.org/doc/stable/reference/generated/numpy.absolute.html",
+            whest_source_url="https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L249",
+            upstream_source_url="https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py#L1",
+            parameters=[
+                mod.DocField(
+                    name="x",
+                    type="array_like",
+                    description=["Input array."],
+                )
+            ],
+            returns=[
+                mod.DocField(
+                    name="absolute",
+                    type="ndarray",
+                    description=["Absolute values of `x`."],
+                )
+            ],
+            see_also=[
+                mod.DocLink(
+                    label="we.fabs",
+                    target="fabs",
+                    description="Absolute value for floats.",
+                )
+            ],
+            notes_sections=["For complex input, `absolute` returns the magnitude."],
+            example=mod.DocExample(
+                code="import whest as we\n\nwe.absolute([-1, 2, -3])",
+                output="array([1, 2, 3])",
+            ),
+            previous=None,
+            next=mod.OperationNavLink(
+                name="add",
+                href="/docs/api/ops/add",
+                label="we.add",
+            ),
         )
     ]
 
@@ -76,8 +111,19 @@ def test_write_generated_operation_artifacts(tmp_path):
     assert docs_manifest_path.exists()
     assert refs_manifest_path.exists()
     page_text = page_path.read_text()
-    assert 'title: "`we.absolute`"' in page_text
+    assert 'title: "we.absolute"' in page_text
     assert '<OperationDocPage name="absolute" />' in page_text
+
+    docs_manifest = mod.json.loads(docs_manifest_path.read_text())
+    absolute = docs_manifest["absolute"]
+    assert absolute["summary"] == "Return the absolute value element-wise."
+    assert absolute["provenance_label"] == "Adapted from NumPy docs"
+    assert absolute["parameters"][0]["name"] == "x"
+    assert absolute["returns"][0]["name"] == "absolute"
+    assert absolute["see_also"][0]["target"] == "fabs"
+    assert absolute["notes_sections"][0].startswith("For complex input")
+    assert "we.absolute" in absolute["example"]["code"]
+    assert absolute["next"]["href"] == "/docs/api/ops/add"
 
     refs_manifest = mod.json.loads(refs_manifest_path.read_text())
     assert refs_manifest["abs"]["label"] == "`we.absolute`"
@@ -141,10 +187,104 @@ def test_example_coverage_marks_owned_examples(tmp_path):
         "```python\nwith we.BudgetContext(...):\n    y = we.absolute(x)\n```"
     )
 
-    coverage = mod.build_example_coverage(["absolute", "sum"], example_root=example_dir)
+    records = [
+        mod.OperationDocRecord(
+            name="absolute",
+            canonical_name="absolute",
+            slug="absolute",
+            href="/docs/api/ops/absolute",
+            area="core",
+            whest_ref="`we.absolute`",
+            numpy_ref="`np.absolute`",
+            category="counted_unary",
+            display_type="counted",
+            cost_formula="numel(output)",
+            cost_formula_latex=r"$\text{numel}(\text{output})$",
+            weight=1.0,
+            notes="Element-wise absolute value.",
+            aliases=[],
+            signature="we.absolute(x)",
+            summary="Return the absolute value element-wise.",
+            provenance_label="Adapted from NumPy docs",
+            provenance_url="https://numpy.org/doc/stable/reference/generated/numpy.absolute.html",
+            whest_source_url="https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L249",
+            upstream_source_url="https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py#L1",
+            parameters=[],
+            returns=[],
+            see_also=[],
+            notes_sections=[],
+            example=mod.DocExample(code="import whest as we\nwe.absolute(x)"),
+            previous=None,
+            next=None,
+        ),
+        mod.OperationDocRecord(
+            name="sum",
+            canonical_name="sum",
+            slug="sum",
+            href="/docs/api/ops/sum",
+            area="core",
+            whest_ref="`we.sum`",
+            numpy_ref="`np.sum`",
+            category="counted_reduction",
+            display_type="counted",
+            cost_formula="numel(input)",
+            cost_formula_latex=r"$\text{numel}(\text{input})$",
+            weight=1.0,
+            notes="Reduction sum.",
+            aliases=[],
+            signature="we.sum(x)",
+            summary="Sum array elements over a given axis.",
+            provenance_label="Adapted from NumPy docs",
+            provenance_url="https://numpy.org/doc/stable/reference/generated/numpy.sum.html",
+            whest_source_url="https://github.com/AIcrowd/whest/blob/main/src/whest/_reductions.py#L1",
+            upstream_source_url="https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L1",
+            parameters=[],
+            returns=[],
+            see_also=[],
+            notes_sections=[],
+            example=mod.DocExample(code="import whest as we\nwe.sum(x)", output="6"),
+            previous=None,
+            next=None,
+        ),
+        mod.OperationDocRecord(
+            name="zeros",
+            canonical_name="zeros",
+            slug="zeros",
+            href="/docs/api/ops/zeros",
+            area="core",
+            whest_ref="`we.zeros`",
+            numpy_ref="`np.zeros`",
+            category="free",
+            display_type="free",
+            cost_formula="0",
+            cost_formula_latex="$0$",
+            weight=1.0,
+            notes="Allocate zeros.",
+            aliases=[],
+            signature="we.zeros(shape)",
+            summary="Return a new array of given shape and type, filled with zeros.",
+            provenance_label="Adapted from NumPy docs",
+            provenance_url="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html",
+            whest_source_url="https://github.com/AIcrowd/whest/blob/main/src/whest/__init__.py#L1",
+            upstream_source_url="https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L1",
+            parameters=[],
+            returns=[],
+            see_also=[],
+            notes_sections=[],
+            example=None,
+            previous=None,
+            next=None,
+        ),
+    ]
+
+    coverage = mod.build_example_coverage(records, example_root=example_dir)
 
     assert coverage["absolute"]["has_whest_examples"] is True
+    assert coverage["absolute"]["coverage_status"] == "owned"
     assert coverage["sum"]["has_whest_examples"] is False
+    assert coverage["sum"]["has_inherited_examples"] is True
+    assert coverage["sum"]["coverage_status"] == "derived"
+    assert coverage["zeros"]["coverage_status"] == "missing"
     assert coverage["absolute"]["example_count"] == 1
 
 
