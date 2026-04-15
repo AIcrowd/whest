@@ -137,7 +137,8 @@ class Session:
         Returns
         -------
         dict with keys:
-            budget_summary: str — human-readable FLOP budget summary
+            budget_summary: str — human-readable FLOP budget summary,
+                including a namespace section when labeled ops were recorded
             comms_summary: dict — CommsTracker summary
 
         Raises
@@ -148,10 +149,13 @@ class Session:
         if not self._is_open:
             raise RuntimeError("Session is already closed.")
 
-        budget_summary = self._budget_ctx.summary()
-        comms_summary = self._comms_tracker.summary()
+        show_namespaces = any(
+            op.namespace is not None for op in self._budget_ctx.op_log
+        )
 
         self._budget_ctx.__exit__(None, None, None)
+        budget_summary = self._budget_ctx.summary(by_namespace=show_namespaces)
+        comms_summary = self._comms_tracker.summary()
         self._store.clear()
         self._is_open = False
 

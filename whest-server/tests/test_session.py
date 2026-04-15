@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import numpy as np
 import pytest
+import whest as me
 from whest_server._session import Session
 
 # ---------------------------------------------------------------------------
@@ -166,6 +167,20 @@ def test_close_returns_budget_summary(session):
     result = session.close()
     assert "budget_summary" in result
     assert isinstance(result["budget_summary"], str)
+
+
+def test_close_keeps_flat_summary_for_unlabeled_sessions(session):
+    result = session.close()
+    assert "By namespace:" not in result["budget_summary"]
+
+
+def test_close_includes_namespace_breakdown_when_session_is_labeled(session):
+    with me.namespace("phase"):
+        session.budget_context.deduct("add", flop_cost=1, subscripts=None, shapes=())
+
+    result = session.close()
+    assert "By namespace:" in result["budget_summary"]
+    assert "phase" in result["budget_summary"]
 
 
 def test_close_returns_comms_summary(session):
