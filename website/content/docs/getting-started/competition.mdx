@@ -30,7 +30,7 @@ we.budget_summary()
 
 If your code exceeds the budget, whest raises `BudgetExhaustedError` *before* the offending operation executes. The error message includes the cost of the failed operation and the remaining budget.
 
-The `namespace` parameter labels your context in the budget summary so you can distinguish different phases of your solution.
+The `namespace` parameter sets the root namespace prefix for that budget context. Nested `we.namespace(...)` scopes extend it with dotted segments, but they do not create child budgets or split the FLOP limit into separate pools.
 
 ## Decorator form
 
@@ -65,7 +65,7 @@ If the wall-clock time is exceeded, whest raises `TimeExhaustedError`. The timer
 
 ## Reading the budget summary
 
-Call `we.budget_summary()` after your computation to see where FLOPs went:
+Call `we.budget_summary()` after your computation to see where FLOPs went; pass `by_namespace=True` when you want namespace attribution:
 
 ```text title="__rich_output__"
 \x1b[36m\u256d\u2500\x1b[0m\x1b[36m\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\x1b[0m\x1b[36m \x1b[0m\x1b[1;36mwhest FLOP Budget Summary\x1b[0m\x1b[36m \x1b[0m\x1b[36m\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\x1b[0m\x1b[36m\u2500\u256e\x1b[0m
@@ -90,9 +90,9 @@ Call `we.budget_summary()` after your computation to see where FLOPs went:
 Key things to look for:
 
 - **Budget / Used / Remaining:** the top rows show the explicit competition budget, current spend, and remaining headroom
-- **Namespace panel:** `solver` is the label from your `BudgetContext`, so separate phases can be tracked independently
+- **By namespace:** use `we.budget_summary(by_namespace=True)` or `budget.summary(by_namespace=True)` when you want a namespace breakdown; `solver` is the root prefix and nested scopes show up as dotted paths like `solver.precompute`
 - **By operation:** this toy pass is dominated by the single `einsum`; `exp` and `sum` are tiny by comparison
-- **Namespace footer:** the subtitle repeats the namespace budget, which is useful once you have several active phases
+- **Flat default:** the default summary stays flat unless you opt into `by_namespace=True`
 
 For programmatic access, use `we.budget_summary_dict()`:
 
@@ -102,7 +102,8 @@ print(f"Used: {data['flops_used']:,} / {data['flop_budget']:,}")
 
 # Per-namespace breakdown:
 data = we.budget_summary_dict(by_namespace=True)
-print(data["by_namespace"]["forward-pass"]["flops_used"])
+print(data["by_namespace"]["solver"]["flops_used"])
+print(data["by_namespace"]["solver.precompute"]["flops_used"])
 ```
 
 ## Quick tips for competition

@@ -321,15 +321,28 @@ weights scale each operation individually.
 
 ## Namespaces
 
-The `namespace` parameter in `BudgetContext` is a display-only label for grouping operations in summaries:
+Use `we.namespace(...)` to create nested namespace scopes inside an active `BudgetContext`. The `namespace` parameter on `BudgetContext` sets the root namespace prefix for operations in that context:
 
 ```python
-with we.BudgetContext(flop_budget=10**6, namespace="training") as budget:
-    # Operations are tagged with "training" for display
-    ...
+with we.BudgetContext(flop_budget=10**6, namespace="predict") as budget:
+    with we.namespace("precompute"):
+        stats = we.mean(x)
+
+    with we.namespace("fallback"):
+        with we.namespace("sampling"):
+            sample = we.add(stats, 1)
+
+    print(budget.summary(by_namespace=True))
 ```
 
-Namespaces do not affect FLOP counting or budget enforcement — they appear as section headers in `we.budget_summary()` output after the context exits, grouping that context's operations under the namespace label.
+Namespaces are hierarchical and exact per operation. `we.namespace("precompute")` inside `namespace="predict"` records operations as `predict.precompute`, and nested scopes append dotted segments such as `predict.fallback.sampling`.
+
+Namespaces do not create child budgets or separate time limits. They only change attribution. `budget.summary()` and `we.budget_summary()` stay flat by default; `budget.summary(by_namespace=True)` and `we.budget_summary(by_namespace=True)` opt into a `By namespace` section. The structured forms, `budget.summary_dict(by_namespace=True)` and `we.budget_summary_dict(by_namespace=True)`, return the same exact buckets keyed by the full namespace path or `None` for unlabeled operations.
+
+```python
+data = budget.summary_dict(by_namespace=True)
+print(data["by_namespace"]["predict.fallback.sampling"]["flops_used"])
+```
 
 ## Related pages
 
