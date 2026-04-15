@@ -30,6 +30,9 @@ test('ExampleChooser uses the shared Python code block and the wider 70\\/30 row
 
 test('PresetSidebar keeps preset rows compact but still shows the output symmetry', () => {
   const sidebarSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/PresetSidebar.jsx', import.meta.url), 'utf8');
+  assert.match(sidebarSource, /w-\[19rem\]/);
+  assert.match(sidebarSource, /text-xs text-gray-500/);
+  assert.match(sidebarSource, /text-xs text-gray-400/);
   assert.match(sidebarSource, /CaseBadge/);
   assert.match(sidebarSource, /summary\.expectedGroup/);
 });

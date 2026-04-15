@@ -55,6 +55,7 @@ html {
 body {
   font-family: var(--font-sans);
   color: var(--gray-900);
+  font-size: 14px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
@@ -91,23 +92,23 @@ code, .mono { font-family: var(--font-mono); }
 
 .app-header {
   text-align: center;
-  padding: 32px 0 12px;
+  padding: 40px 0 16px;
   border-bottom: 1px solid var(--gray-200);
 }
 
 .app-header h1 {
   font-family: var(--font-accent);
-  font-size: 22px;
+  font-size: 30px;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--gray-900);
 }
 
 .subtitle {
-  color: var(--gray-400);
-  font-size: 12px;
-  font-weight: 400;
-  margin-top: 4px;
+  margin-top: 6px;
+  color: #6b7280;
+  font-size: 14px;
+  font-style: italic;
 }
 
 .subtitle em {
@@ -125,8 +126,8 @@ code, .mono { font-family: var(--font-mono); }
   background: var(--white);
   border: 2px solid var(--coral);
   border-radius: var(--radius);
-  padding: 14px 24px;
-  margin-bottom: 32px;
+  padding: 16px 24px;
+  margin-bottom: 28px;
   box-shadow: 0 2px 12px rgba(240, 82, 77, 0.08);
 }
 
