@@ -886,6 +886,11 @@ def build_structured_doc(
             repo_blob_root=f"https://github.com/numpy/numpy/blob/v{np.__version__}",
             package_root=numpy_root,
         )
+        if not upstream_source_url and isinstance(upstream_obj, np.ufunc):
+            upstream_source_url = (
+                "https://github.com/numpy/numpy/blob/"
+                f"v{np.__version__}/numpy/_core/code_generators/ufunc_docstrings.py"
+            )
 
     return signature, parsed, example, whest_source_url, upstream_source_url
 

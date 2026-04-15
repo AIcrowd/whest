@@ -496,3 +496,12 @@ def test_build_example_coverage_prefers_override_then_derived():
     assert coverage["absolute"]["example_source"] == "override"
     assert coverage["sum"]["example_source"] == "derived"
     assert coverage["mean"]["example_source"] == "missing"
+
+
+def test_build_structured_doc_provides_upstream_source_for_ufuncs():
+    mod = load_generate_api_docs_module()
+
+    _, _, _, _, upstream_source_url = mod.build_structured_doc("absolute", "numpy")
+
+    assert upstream_source_url
+    assert "ufunc_docstrings.py" in upstream_source_url

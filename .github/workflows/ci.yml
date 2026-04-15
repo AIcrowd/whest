@@ -148,7 +148,7 @@ jobs:
         run: cd website && node scripts/check-op-links.mjs
 
       - name: Run website smoke tests
-        run: cd website && node --test generated-api-docs.test.mjs op-ref-lint.test.mjs docs-whest-examples.test.mjs rich-output.test.mjs
+        run: cd website && node --test generated-api-docs.test.mjs op-ref-lint.test.mjs docs-whest-examples.test.mjs rich-output.test.mjs op-doc-parity.test.mjs
 
       - name: Build website
         run: cd website && npm run build

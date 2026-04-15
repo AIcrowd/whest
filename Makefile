@@ -57,7 +57,7 @@ docs-build:  ## Generate API data and build website
 	$(UV) python scripts/generate_api_docs.py
 	$(UV) python scripts/generate_api_docs.py --verify
 	cd website && node scripts/check-op-links.mjs
-	cd website && node --test generated-api-docs.test.mjs op-ref-lint.test.mjs docs-whest-examples.test.mjs rich-output.test.mjs
+	cd website && node --test generated-api-docs.test.mjs op-ref-lint.test.mjs docs-whest-examples.test.mjs rich-output.test.mjs op-doc-parity.test.mjs
 	cd website && npm run build
 
 .PHONY: docs-serve

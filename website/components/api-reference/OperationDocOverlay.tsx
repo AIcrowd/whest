@@ -19,7 +19,8 @@ export default function OperationDocOverlay({op}: {op: OperationDocRecord}) {
   const aliases = op.aliases.length ? op.aliases.map((alias) => `we.${alias}`).join(', ') : 'None';
 
   return (
-    <section className={styles.docOverlay} aria-label="whest overlay">
+    <section className={styles.docOverlay} aria-labelledby="operation-quick-info">
+      <h2 id="operation-quick-info">Quick Info</h2>
       <div className={styles.docMetaGrid}>
         <div className={styles.docMetaCard}>
           <span className={styles.docMetaLabel}>Area</span>
@@ -56,7 +57,7 @@ export default function OperationDocOverlay({op}: {op: OperationDocRecord}) {
         </div>
         {op.notes ? (
           <div className={`${styles.docDenseItem} ${styles.docDenseItemWide}`}>
-            <span className={styles.docMetaLabel}>Whest Notes</span>
+            <span className={styles.docMetaLabel}>Whest Context</span>
             <p className={styles.docBodyText}>{op.notes}</p>
           </div>
         ) : null}
