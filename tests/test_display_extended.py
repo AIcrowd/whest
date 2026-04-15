@@ -157,6 +157,26 @@ def test_budget_summary_plain_text_prints(capsys):
     assert result is None
     captured = capsys.readouterr()
     assert "summary_test" in captured.out or "whest" in captured.out
+    assert "By namespace:" not in captured.out
+
+
+def test_budget_summary_by_namespace_prints_section_only_when_requested(capsys):
+    import whest as we
+
+    with BudgetContext(flop_budget=1000, namespace="predict", quiet=True) as ctx:
+        with we.namespace("precompute"):
+            with ctx.deduct("op1", flop_cost=100, subscripts=None, shapes=()):
+                pass
+
+    with patch.dict(
+        "sys.modules",
+        {"rich": None, "rich.console": None, "rich.panel": None},
+    ):
+        result = budget_summary(by_namespace=True)
+    assert result is None
+    captured = capsys.readouterr()
+    assert "By namespace:" in captured.out
+    assert "predict.precompute" in captured.out
 
 
 def test_budget_summary_with_rich_returns_none(capsys):
@@ -185,7 +205,7 @@ def test_render_budget_summary_rich_with_multiple_namespaces():
         with BudgetContext(flop_budget=1000, namespace=ns, quiet=True) as ctx:
             ctx.deduct("op", flop_cost=100, subscripts=None, shapes=())
 
-    result = render_budget_summary()
+    result = render_budget_summary(by_namespace=True)
     from rich.panel import Panel
 
     assert isinstance(result, Panel)

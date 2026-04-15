@@ -138,6 +138,60 @@ def namespace(name: str) -> _NamespaceScope:
     return _NamespaceScope(budget, _validate_namespace_segment(name))
 
 
+def _update_operation_summary(ops: dict[str, dict], op: OpRecord) -> None:
+    bucket = ops.setdefault(
+        op.op_name,
+        {
+            "flop_cost": 0,
+            "calls": 0,
+            "duration": 0.0,
+        },
+    )
+    bucket["flop_cost"] += op.flop_cost
+    bucket["calls"] += 1
+    if op.duration is not None:
+        bucket["duration"] += op.duration
+
+
+def _summarize_operations(op_log: list[OpRecord]) -> dict[str, dict]:
+    ops: dict[str, dict] = {}
+    for op in op_log:
+        _update_operation_summary(ops, op)
+    return ops
+
+
+def _summarize_by_namespace(op_log: list[OpRecord]) -> dict[str | None, dict]:
+    by_namespace: dict[str | None, dict] = {}
+    for op in op_log:
+        bucket = by_namespace.setdefault(
+            op.namespace,
+            {
+                "flops_used": 0,
+                "calls": 0,
+                "tracked_time_s": 0.0,
+                "operations": {},
+            },
+        )
+        bucket["flops_used"] += op.flop_cost
+        bucket["calls"] += 1
+        if op.duration is not None:
+            bucket["tracked_time_s"] += op.duration
+        _update_operation_summary(bucket["operations"], op)
+    return by_namespace
+
+
+def _timing_summary(
+    wall_time_s: float | None, tracked_time_s: float | None
+) -> tuple[float | None, float, float | None]:
+    tracked = tracked_time_s or 0.0
+    if wall_time_s is None:
+        return None, tracked, None
+    untracked = wall_time_s - tracked
+    if untracked < 0 and abs(untracked) < 1e-12:
+        untracked = 0.0
+    return wall_time_s, tracked, max(untracked, 0.0)
+
+
 class BudgetContext:
     """Context manager for FLOP budget enforcement.
 
@@ -266,61 +320,40 @@ class BudgetContext:
 
         return _OpTimer(self)
 
-    def summary(self) -> str:
+    def summary_dict(self, by_namespace: bool = False) -> dict:
+        """Return structured summary data for this budget context."""
+        wall_time = self._wall_time_s
+        if wall_time is None and self._start_time is not None:
+            wall_time = self.elapsed_s
+        wall_time, tracked_time, untracked_time = _timing_summary(
+            wall_time, self._total_tracked_time
+        )
+
+        result = {
+            "flop_budget": self._flop_budget,
+            "flops_used": self._flops_used,
+            "flops_remaining": self.flops_remaining,
+            "operations": _summarize_operations(self._op_log),
+            "wall_time_s": wall_time,
+            "tracked_time_s": tracked_time,
+            "untracked_time_s": untracked_time,
+        }
+        if by_namespace:
+            result["by_namespace"] = _summarize_by_namespace(self._op_log)
+        return result
+
+    def summary(self, by_namespace: bool = False) -> str:
         """Return a pretty-printed FLOP budget summary."""
-        from collections import Counter
+        from whest._display import _format_budget_summary_text
 
         header = "whest FLOP Budget Summary"
         if self.namespace:
             header += f" [{self.namespace}]"
-        lines = [
-            header,
-            "=" * len(header),
-            f"  Total budget:  {self._flop_budget:>14,}",
-            f"  Used:          {self._flops_used:>14,}  ({100 * self._flops_used / self._flop_budget:.1f}%)",
-            f"  Remaining:     {self.flops_remaining:>14,}  ({100 * self.flops_remaining / self._flop_budget:.1f}%)",
-            "",
-            "  By operation:",
-        ]
-
-        cost_by_op: dict[str, int] = {}
-        count_by_op: Counter[str] = Counter()
-        time_by_op: dict[str, float] = {}
-        for rec in self._op_log:
-            cost_by_op[rec.op_name] = cost_by_op.get(rec.op_name, 0) + rec.flop_cost
-            count_by_op[rec.op_name] += 1
-            if rec.duration is not None:
-                time_by_op[rec.op_name] = (
-                    time_by_op.get(rec.op_name, 0.0) + rec.duration
-                )
-        for op_name, cost in sorted(cost_by_op.items(), key=lambda x: -x[1]):
-            pct = 100 * cost / self._flops_used if self._flops_used > 0 else 0
-            lines.append(
-                f"    {op_name:<16} {cost:>12,}  ({pct:5.1f}%)  [{count_by_op[op_name]} call{'s' if count_by_op[op_name] != 1 else ''}]"
-            )
-
-        if self._wall_time_s is not None:
-            tracked = self._total_tracked_time
-            wall = self._wall_time_s
-            untracked = wall - tracked
-            tracked_pct = 100 * tracked / wall if wall > 0 else 0.0
-            untracked_pct = 100 * untracked / wall if wall > 0 else 0.0
-            lines += [
-                "",
-                f"  Wall time:       {wall:.3f}s",
-                f"  Tracked time:    {tracked:.3f}s  ({tracked_pct:.1f}%)",
-                f"  Untracked time:  {untracked:.3f}s  ({untracked_pct:.1f}%)",
-            ]
-            if time_by_op:
-                lines += ["", "  By operation (time):"]
-                for op_name, op_time in sorted(time_by_op.items(), key=lambda x: -x[1]):
-                    op_pct = 100 * op_time / tracked if tracked > 0 else 0.0
-                    n = count_by_op[op_name]
-                    lines.append(
-                        f"    {op_name:<16} {op_time:.3f}s  ({op_pct:.1f}%)  [{n} call{'s' if n != 1 else ''}]"
-                    )
-
-        return "\n".join(lines)
+        return _format_budget_summary_text(
+            self.summary_dict(by_namespace=by_namespace),
+            by_namespace=by_namespace,
+            header=header,
+        )
 
     def _push_namespace(self, segment: str) -> None:
         self._namespace_stack.append(segment)
@@ -471,75 +504,35 @@ class BudgetAccumulator:
         """Return aggregated budget data across all recorded contexts."""
         total_budget = 0
         total_used = 0
-        ops: dict[str, dict] = {}
         total_wall_time: float | None = None
         total_tracked: float | None = None
+        all_ops: list[OpRecord] = []
 
         for rec in self._records:
             total_budget += rec.flop_budget
             total_used += rec.flops_used
-            for op in rec.op_log:
-                if op.op_name not in ops:
-                    ops[op.op_name] = {"flop_cost": 0, "calls": 0, "duration": 0.0}
-                ops[op.op_name]["flop_cost"] += op.flop_cost
-                ops[op.op_name]["calls"] += 1
-                if op.duration is not None:
-                    ops[op.op_name]["duration"] += op.duration
+            all_ops.extend(rec.op_log)
             if rec.wall_time_s is not None:
                 total_wall_time = (total_wall_time or 0.0) + rec.wall_time_s
             if rec.total_tracked_time is not None:
                 total_tracked = (total_tracked or 0.0) + rec.total_tracked_time
 
+        wall_time, tracked_time, untracked_time = _timing_summary(
+            total_wall_time, total_tracked
+        )
+
         result = {
             "flop_budget": total_budget,
             "flops_used": total_used,
             "flops_remaining": total_budget - total_used,
-            "operations": ops,
-            "wall_time_s": total_wall_time,
-            "total_tracked_time": total_tracked,
+            "operations": _summarize_operations(all_ops),
+            "wall_time_s": wall_time,
+            "tracked_time_s": tracked_time,
+            "untracked_time_s": untracked_time,
         }
 
         if by_namespace:
-            by_ns: dict[str | None, dict] = {}
-            for rec in self._records:
-                root_ns = rec.namespace
-
-                def ensure_group(ns: str | None) -> dict:
-                    if ns not in by_ns:
-                        by_ns[ns] = {
-                            "flop_budget": 0,
-                            "flops_used": 0,
-                            "operations": {},
-                            "wall_time_s": None,
-                            "total_tracked_time": None,
-                        }
-                    return by_ns[ns]
-
-                root_group = ensure_group(root_ns)
-                root_group["flop_budget"] += rec.flop_budget
-                if rec.wall_time_s is not None:
-                    root_group["wall_time_s"] = (
-                        root_group["wall_time_s"] or 0.0
-                    ) + rec.wall_time_s
-                if rec.total_tracked_time is not None:
-                    root_group["total_tracked_time"] = (
-                        root_group["total_tracked_time"] or 0.0
-                    ) + rec.total_tracked_time
-                for op in rec.op_log:
-                    op_ns = op.namespace if op.namespace is not None else root_ns
-                    group = ensure_group(op_ns)
-                    if op.op_name not in group["operations"]:
-                        group["operations"][op.op_name] = {
-                            "flop_cost": 0,
-                            "calls": 0,
-                            "duration": 0.0,
-                        }
-                    group["operations"][op.op_name]["flop_cost"] += op.flop_cost
-                    group["operations"][op.op_name]["calls"] += 1
-                    if op.duration is not None:
-                        group["operations"][op.op_name]["duration"] += op.duration
-                    group["flops_used"] += op.flop_cost
-            result["by_namespace"] = by_ns
+            result["by_namespace"] = _summarize_by_namespace(all_ops)
 
         return result
 
@@ -564,8 +557,9 @@ def budget_summary_dict(by_namespace: bool = False) -> dict:
     -------
     dict
         Dictionary with keys ``"flop_budget"``, ``"flops_used"``,
-        ``"flops_remaining"``, ``"operations"``, and optionally
-        ``"by_namespace"``.
+        ``"flops_remaining"``, ``"operations"``, ``"wall_time_s"``,
+        ``"tracked_time_s"``, ``"untracked_time_s"``, and optionally
+        ``"by_namespace"`` with exact attribution buckets.
     """
     acc_copy = BudgetAccumulator()
     acc_copy._records = list(_accumulator._records)
