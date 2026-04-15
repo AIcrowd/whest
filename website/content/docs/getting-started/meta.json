@@ -1,4 +1,8 @@
 {
   "title": "Getting Started",
-  "pages": ["installation", "first-budget"]
+  "pages": [
+    "installation",
+    "quickstart",
+    "competition"
+  ]
 }
