@@ -1,4 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import ExplorerSectionCard from './ExplorerSectionCard.jsx';
 
 function highlightPython(code) {
   const tokens = [];
@@ -107,18 +109,25 @@ export default function PythonCodeBlock({
   }, [code]);
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
-      <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-500">{title}</div>
-      <p className="mt-1 text-xs text-gray-600">{description}</p>
-      <div className="relative mt-3">
-        <button
-          className="absolute right-2 top-2 z-10 rounded p-1.5 text-gray-400 transition-colors hover:bg-gray-700 hover:text-white"
+    <ExplorerSectionCard
+      eyebrow={title}
+      description={description}
+      className="border-border/70 bg-muted/20"
+      contentClassName="pt-4"
+      action={(
+        <Button
+          type="button"
+          size="sm"
+          variant={copied ? 'secondary' : 'outline'}
           onClick={handleCopy}
         >
           {copied ? 'Copied' : 'Copy'}
-        </button>
+        </Button>
+      )}
+    >
+      <div className="relative">
         <PythonHighlight code={code} />
       </div>
-    </div>
+    </ExplorerSectionCard>
   );
 }

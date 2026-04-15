@@ -11,6 +11,8 @@ test('Act 1 uses a desktop preset rail and a mobile preset fallback', () => {
   assert.match(appSource, /selectedPresetIdx=\{selectedPresetIdx\}/);
   assert.match(appSource, /getPresetControlSelection\(exampleIdx, isDirty\)/);
   assert.match(sidebarSource, /aria-label="Preset examples"/);
+  assert.match(sidebarSource, /ExplorerSidebarItem/);
+  assert.match(sidebarSource, /Badge/);
   assert.match(sidebarSource, /expectedGroup/);
   assert.match(chooserSource, /aria-label="Mobile preset examples"/);
   assert.match(chooserSource, /expectedGroup/);
@@ -26,6 +28,8 @@ test('ExampleChooser uses the shared Python code block and the wider 70\\/30 row
   assert.match(chooserSource, /Reference Code/);
   assert.match(codeBlockSource, /navigator\.clipboard\.writeText/);
   assert.match(codeBlockSource, /function highlightPython/);
+  assert.match(codeBlockSource, /ExplorerSectionCard/);
+  assert.match(codeBlockSource, /Button/);
 });
 
 test('PresetSidebar keeps preset rows compact but still shows the output symmetry', () => {

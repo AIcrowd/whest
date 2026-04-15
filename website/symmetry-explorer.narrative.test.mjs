@@ -43,6 +43,8 @@ test('SymmetryExplorer keeps the act ids and renders the preset rail after main 
   });
   assert.match(source, /activeActId/);
   assert.match(source, /StickyBar/);
+  assert.match(source, /ExplorerSectionCard/);
+  assert.match(source, /Button/);
   assert.ok(source.indexOf('<main') < source.indexOf('<PresetSidebar'));
 });
 

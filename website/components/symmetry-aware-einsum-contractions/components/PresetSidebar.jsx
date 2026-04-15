@@ -1,7 +1,9 @@
 import { useMemo } from 'react';
+import { Badge } from '@/components/ui/badge';
 import { cn } from '../lib/utils.js';
 import { getPresetSummary } from '../lib/presetSelection.js';
 import CaseBadge from './CaseBadge.jsx';
+import ExplorerSidebarItem from './ExplorerSidebarItem.jsx';
 
 const CUSTOM_IDX = -1;
 
@@ -25,55 +27,61 @@ export default function PresetSidebar({
       <div className="space-y-1">
         <button
           type="button"
-          className={cn(
-            'group flex w-full items-start gap-3 rounded-xl px-3.5 py-3 text-left transition-colors',
-            selectedPresetIdx === CUSTOM_IDX
-              ? 'bg-coral-light/50 ring-1 ring-coral/30'
-              : 'hover:bg-gray-50',
-          )}
+          className="block w-full text-left"
           onClick={onCustom}
         >
-          <span className="mt-0.5 h-full min-h-10 w-1 shrink-0 rounded-full bg-coral" />
-          <span className="min-w-0 flex-1">
-            <span className="flex items-center gap-2">
-              <span className="truncate text-sm font-medium text-gray-900">Custom</span>
-              <span className="rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-gray-500">
-                Freeform
-              </span>
-            </span>
-            <code className="mt-1 block truncate text-xs text-gray-500">Define your own contraction</code>
-            <span className="mt-1 block text-xs text-gray-400">
+          <ExplorerSidebarItem
+            active={selectedPresetIdx === CUSTOM_IDX}
+            title="Custom"
+            badge="Freeform"
+            badgeClassName="bg-gray-100 text-gray-500"
+            className={cn(
+              'relative px-3.5 py-3',
+              selectedPresetIdx === CUSTOM_IDX
+                ? 'bg-coral-light/50 ring-coral/30'
+                : 'hover:bg-gray-50',
+            )}
+          >
+            <span className="absolute inset-y-3 left-0.5 w-1 rounded-full bg-coral" />
+            <code className="mt-1 block truncate pl-3 text-xs text-gray-500">Define your own contraction</code>
+            <span className="mt-1 block pl-3 text-xs text-gray-400">
               Keep the current builder state and switch into custom mode.
             </span>
-          </span>
+          </ExplorerSidebarItem>
         </button>
 
         {presetSummaries.map((summary, idx) => (
           <button
             key={summary.id}
             type="button"
-            className={cn(
-              'group flex w-full items-start gap-3 rounded-xl px-3.5 py-3 text-left transition-colors',
-              selectedPresetIdx === idx
-                ? 'bg-coral-light/50 ring-1 ring-coral/30'
-                : 'hover:bg-gray-50',
-            )}
+            className="block w-full text-left"
             onClick={() => onSelect(idx)}
           >
-            <span
-              className="mt-0.5 h-full min-h-10 w-1 shrink-0 rounded-full"
-              style={{ backgroundColor: summary.color }}
-            />
-            <span className="min-w-0 flex-1">
-              <span className="flex items-center gap-2">
-                <span className="truncate text-sm font-medium text-gray-900">{summary.name}</span>
+            <ExplorerSidebarItem
+              active={selectedPresetIdx === idx}
+              title={summary.name}
+              className={cn(
+                'relative px-3.5 py-3',
+                selectedPresetIdx === idx
+                  ? 'bg-coral-light/50 ring-coral/30'
+                  : 'hover:bg-gray-50',
+              )}
+            >
+              <span
+                className="absolute inset-y-3 left-0.5 w-1 rounded-full"
+                style={{ backgroundColor: summary.color }}
+              />
+              <div className="flex items-center gap-2 pl-3">
                 {summary.caseType && (
                   <CaseBadge caseType={summary.caseType} size="xs" variant="compact" interactive={false} />
                 )}
-              </span>
-              <code className="mt-1 block truncate text-xs text-gray-500">{summary.formula}</code>
-              <span className="mt-1 block text-xs text-gray-400">{summary.expectedGroup}</span>
-            </span>
+                <Badge variant="outline" className="text-[10px] font-semibold uppercase tracking-[0.18em]">
+                  {summary.expectedGroup}
+                </Badge>
+              </div>
+              <code className="mt-1 block truncate pl-3 text-xs text-gray-500">{summary.formula}</code>
+              <span className="mt-1 block pl-3 text-xs text-gray-400">{summary.expectedGroup}</span>
+            </ExplorerSidebarItem>
           </button>
         ))}
       </div>
