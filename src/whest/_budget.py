@@ -102,6 +102,42 @@ def get_active_budget() -> BudgetContext | None:
     return getattr(_thread_local, "active_budget", None)
 
 
+class _NamespaceScope:
+    __slots__ = ("_budget", "_segment")
+
+    def __init__(self, budget: "BudgetContext", segment: str):
+        self._budget = budget
+        self._segment = segment
+
+    def __enter__(self) -> "BudgetContext":
+        self._budget._push_namespace(self._segment)
+        return self._budget
+
+    def __exit__(self, exc_type, exc_val, exc_tb) -> bool:
+        self._budget._pop_namespace(self._segment)
+        return False
+
+
+def _validate_namespace_segment(name: str) -> str:
+    if not isinstance(name, str):
+        raise ValueError("namespace segment must be a string")
+    segment = name.strip()
+    if not segment:
+        raise ValueError("namespace segment must be non-empty")
+    if "." in segment:
+        raise ValueError("namespace segment must not contain '.'")
+    return segment
+
+
+def namespace(name: str) -> _NamespaceScope:
+    from whest.errors import NoBudgetContextError
+
+    budget = get_active_budget()
+    if budget is None:
+        raise NoBudgetContextError()
+    return _NamespaceScope(budget, _validate_namespace_segment(name))
+
+
 class BudgetContext:
     """Context manager for FLOP budget enforcement.
 
@@ -128,7 +164,8 @@ class BudgetContext:
         self._flops_used = 0
         self._op_log: list[OpRecord] = []
         self._quiet = quiet
-        self._namespace = namespace
+        self._root_namespace = namespace
+        self._namespace_stack: list[str] = []
         self._previous_budget: BudgetContext | None = None
         self._wall_time_limit_s = wall_time_limit_s
         self._start_time: float | None = None
@@ -158,7 +195,12 @@ class BudgetContext:
 
     @property
     def namespace(self) -> str | None:
-        return self._namespace
+        if not self._namespace_stack:
+            return self._root_namespace
+        suffix = ".".join(self._namespace_stack)
+        if self._root_namespace is None:
+            return suffix
+        return f"{self._root_namespace}.{suffix}"
 
     @property
     def wall_time_limit_s(self) -> float | None:
@@ -208,7 +250,7 @@ class BudgetContext:
                 shapes=shapes,
                 flop_cost=adjusted_cost,
                 cumulative=self._flops_used,
-                namespace=self._namespace,
+                namespace=self.namespace,
                 timestamp=timestamp,
             )
         )
@@ -229,8 +271,8 @@ class BudgetContext:
         from collections import Counter
 
         header = "whest FLOP Budget Summary"
-        if self._namespace:
-            header += f" [{self._namespace}]"
+        if self.namespace:
+            header += f" [{self.namespace}]"
         lines = [
             header,
             "=" * len(header),
@@ -279,6 +321,16 @@ class BudgetContext:
                     )
 
         return "\n".join(lines)
+
+    def _push_namespace(self, segment: str) -> None:
+        self._namespace_stack.append(segment)
+
+    def _pop_namespace(self, expected: str) -> None:
+        actual = self._namespace_stack.pop()
+        if actual != expected:
+            raise RuntimeError(
+                f"Namespace stack corrupted: expected {expected!r}, got {actual!r}"
+            )
 
     def __enter__(self) -> BudgetContext:
         current = get_active_budget()
@@ -450,36 +502,43 @@ class BudgetAccumulator:
         if by_namespace:
             by_ns: dict[str | None, dict] = {}
             for rec in self._records:
-                ns = rec.namespace
-                if ns not in by_ns:
-                    by_ns[ns] = {
-                        "flop_budget": 0,
-                        "flops_used": 0,
-                        "operations": {},
-                        "wall_time_s": None,
-                        "total_tracked_time": None,
-                    }
-                by_ns[ns]["flop_budget"] += rec.flop_budget
-                by_ns[ns]["flops_used"] += rec.flops_used
+                root_ns = rec.namespace
+
+                def ensure_group(ns: str | None) -> dict:
+                    if ns not in by_ns:
+                        by_ns[ns] = {
+                            "flop_budget": 0,
+                            "flops_used": 0,
+                            "operations": {},
+                            "wall_time_s": None,
+                            "total_tracked_time": None,
+                        }
+                    return by_ns[ns]
+
+                root_group = ensure_group(root_ns)
+                root_group["flop_budget"] += rec.flop_budget
                 if rec.wall_time_s is not None:
-                    by_ns[ns]["wall_time_s"] = (
-                        by_ns[ns]["wall_time_s"] or 0.0
+                    root_group["wall_time_s"] = (
+                        root_group["wall_time_s"] or 0.0
                     ) + rec.wall_time_s
                 if rec.total_tracked_time is not None:
-                    by_ns[ns]["total_tracked_time"] = (
-                        by_ns[ns]["total_tracked_time"] or 0.0
+                    root_group["total_tracked_time"] = (
+                        root_group["total_tracked_time"] or 0.0
                     ) + rec.total_tracked_time
                 for op in rec.op_log:
-                    if op.op_name not in by_ns[ns]["operations"]:
-                        by_ns[ns]["operations"][op.op_name] = {
+                    op_ns = op.namespace if op.namespace is not None else root_ns
+                    group = ensure_group(op_ns)
+                    if op.op_name not in group["operations"]:
+                        group["operations"][op.op_name] = {
                             "flop_cost": 0,
                             "calls": 0,
                             "duration": 0.0,
                         }
-                    by_ns[ns]["operations"][op.op_name]["flop_cost"] += op.flop_cost
-                    by_ns[ns]["operations"][op.op_name]["calls"] += 1
+                    group["operations"][op.op_name]["flop_cost"] += op.flop_cost
+                    group["operations"][op.op_name]["calls"] += 1
                     if op.duration is not None:
-                        by_ns[ns]["operations"][op.op_name]["duration"] += op.duration
+                        group["operations"][op.op_name]["duration"] += op.duration
+                    group["flops_used"] += op.flop_cost
             result["by_namespace"] = by_ns
 
         return result

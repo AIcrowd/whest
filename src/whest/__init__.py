@@ -40,6 +40,7 @@ from whest._budget import (  # noqa: F401
     budget,
     budget_reset,
     budget_summary_dict,
+    namespace,
 )
 from whest._config import configure  # noqa: F401
 

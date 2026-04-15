@@ -1,5 +1,8 @@
 """Tests for namespace support on BudgetContext and OpRecord."""
 
+import pytest
+
+import whest as we
 from whest._budget import BudgetContext, OpRecord
 
 
@@ -62,3 +65,60 @@ def test_summary_without_namespace():
         s = ctx.summary()
         assert "100" in s.replace(",", "")
         assert "[" not in s.split("\n")[0]  # no bracket in header
+
+
+def test_namespace_scope_builds_dotted_paths():
+    with we.BudgetContext(
+        flop_budget=1000, namespace="predict", quiet=True
+    ) as ctx:
+        with we.namespace("precompute"):
+            ctx.deduct("add", flop_cost=10, subscripts=None, shapes=())
+        with we.namespace("fallback"):
+            with we.namespace("sampling"):
+                ctx.deduct("mul", flop_cost=20, subscripts=None, shapes=())
+
+    assert [rec.namespace for rec in ctx.op_log] == [
+        "predict.precompute",
+        "predict.fallback.sampling",
+    ]
+
+
+def test_budget_context_preserves_literal_root_namespace():
+    with we.BudgetContext(
+        flop_budget=1000, namespace="predict..raw", quiet=True
+    ) as ctx:
+        with we.namespace("precompute"):
+            assert ctx.namespace == "predict..raw.precompute"
+            ctx.deduct("add", flop_cost=10, subscripts=None, shapes=())
+
+    assert ctx.namespace == "predict..raw"
+    assert ctx.op_log[0].namespace == "predict..raw.precompute"
+
+
+def test_namespace_scope_restores_previous_namespace_after_exception():
+    with we.BudgetContext(
+        flop_budget=1000, namespace="predict", quiet=True
+    ) as ctx:
+        with pytest.raises(RuntimeError, match="boom"):
+            with we.namespace("precompute"):
+                assert ctx.namespace == "predict.precompute"
+                raise RuntimeError("boom")
+
+        assert ctx.namespace == "predict"
+        ctx.deduct("add", flop_cost=10, subscripts=None, shapes=())
+
+    assert ctx.op_log[0].namespace == "predict"
+
+
+def test_namespace_scope_requires_active_budget():
+    with pytest.raises(we.NoBudgetContextError):
+        with we.namespace("precompute"):
+            pass
+
+
+@pytest.mark.parametrize("name", [None, 3, "", "   ", "a.b"])
+def test_namespace_scope_rejects_invalid_segment(name):
+    with we.BudgetContext(flop_budget=1000, quiet=True):
+        with pytest.raises(ValueError):
+            with we.namespace(name):  # type: ignore[arg-type]
+                pass

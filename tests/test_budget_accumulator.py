@@ -49,6 +49,23 @@ def test_budget_summary_dict_by_namespace():
     assert data["by_namespace"]["eval"]["flops_used"] == 50
 
 
+def test_budget_summary_dict_by_namespace_uses_nested_op_namespace():
+    import whest as we
+
+    with BudgetContext(flop_budget=1000, namespace="predict..raw", quiet=True) as ctx:
+        with we.namespace("precompute"):
+            ctx.deduct("add", flop_cost=25, subscripts=None, shapes=())
+
+    data = budget_summary_dict(by_namespace=True)
+    assert "predict..raw.precompute" in data["by_namespace"]
+    assert (
+        data["by_namespace"]["predict..raw.precompute"]["operations"]["add"][
+            "flop_cost"
+        ]
+        == 25
+    )
+
+
 def test_budget_summary_dict_accumulates_across_contexts():
     with BudgetContext(flop_budget=1000, namespace="a", quiet=True) as ctx:
         ctx.deduct("add", flop_cost=100, subscripts=None, shapes=())
