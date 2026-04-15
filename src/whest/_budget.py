@@ -552,10 +552,10 @@ _accumulator = BudgetAccumulator()
 def _snapshot_records() -> list[NamespaceRecord]:
     records = list(_accumulator._records)
     active = get_active_budget()
+    if _global_default is not None and _global_default.flops_used > 0:
+        records.append(_snapshot_namespace_record(_global_default))
     if active is not None and active is not _global_default and active.flops_used > 0:
         records.append(_snapshot_namespace_record(active))
-    elif _global_default is not None and _global_default.flops_used > 0:
-        records.append(_snapshot_namespace_record(_global_default))
     return records
 
 

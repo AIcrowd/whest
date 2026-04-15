@@ -510,6 +510,22 @@ def test_budget_summary_dict_shows_live_timing_for_active_context():
         )
 
 
+def test_budget_summary_dict_includes_global_default_while_explicit_context_is_open():
+    import whest
+
+    a = whest.ones((10,))
+    _ = whest.add(a, a)
+
+    with whest.BudgetContext(flop_budget=100, quiet=True) as budget:
+        with budget.deduct("mul", flop_cost=7, subscripts=None, shapes=()):
+            pass
+
+        live = whest.budget_summary_dict()
+        assert live["flops_used"] == 17
+        assert live["operations"]["add"]["flop_cost"] == 10
+        assert live["operations"]["mul"]["flop_cost"] == 7
+
+
 def test_budget_context_summary_dict_by_namespace_uses_exact_op_namespace():
     import whest
 
