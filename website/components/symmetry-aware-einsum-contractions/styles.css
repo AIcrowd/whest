@@ -54,9 +54,9 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background: var(--gray-50);
+  background: var(--white);
   color: var(--gray-900);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
@@ -66,15 +66,20 @@ code, .mono { font-family: var(--font-mono); }
 /* ─── App Layout ─────────────────────── */
 
 .app {
-  max-width: 960px;
+  max-width: 1600px;
   margin: 0 auto;
   padding: 0 24px 80px;
   min-height: 100vh;
 }
 
-.symmetry-aware-einsum-contractions-page .app {
-  max-width: none;
+.symmetry-aware-einsum-contractions-page-shell {
   width: 100%;
+}
+
+.app-shell {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
 }
 
 .main-full {

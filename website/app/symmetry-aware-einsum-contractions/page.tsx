@@ -9,7 +9,9 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <main className="symmetry-aware-einsum-contractions-page min-h-screen bg-background">
-      <SymmetryAwareEinsumContractionsApp />
+      <div className="symmetry-aware-einsum-contractions-page-shell w-full">
+        <SymmetryAwareEinsumContractionsApp />
+      </div>
     </main>
   );
 }

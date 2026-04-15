@@ -19,7 +19,7 @@ test('standalone route renders the renamed symmetry-aware app', async () => {
   assert.match(routeSource, /title:\s*'Symmetry Aware Einsum Contractions'/);
 });
 
-test('standalone route provides a dedicated full-width shell for the app', async () => {
+test('standalone route provides a dedicated bounded shell for the app', async () => {
   const routeFile = path.join(
     websiteRoot,
     'app',
@@ -35,8 +35,9 @@ test('standalone route provides a dedicated full-width shell for the app', async
   );
   const stylesSource = await readFile(stylesFile, 'utf8');
 
-  assert.match(routeSource, /symmetry-aware-einsum-contractions-page/);
-  assert.match(
+  assert.match(routeSource, /symmetry-aware-einsum-contractions-page-shell/);
+  assert.match(stylesSource, /\.app\s*\{[\s\S]*max-width:\s*1600px;/);
+  assert.doesNotMatch(
     stylesSource,
     /\.symmetry-aware-einsum-contractions-page \.app\s*\{[\s\S]*max-width:\s*none;/,
   );

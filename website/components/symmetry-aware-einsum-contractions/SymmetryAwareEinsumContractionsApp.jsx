@@ -178,8 +178,8 @@ export default function SymmetryAwareEinsumContractionsApp() {
         activeActId={activeActId}
       />
 
-      <div className="mx-auto flex max-w-[1600px] items-start gap-8 px-6 pb-16 md:px-10">
-      <main className="main main-full min-w-0 flex-1">
+      <div className="app-shell px-6 pb-16 md:px-10">
+        <main className="main main-full min-w-0 flex-1">
           {/* -- Prominent einsum banner -- */}
           {example && group && (
             <div className="einsum-banner">
@@ -346,13 +346,13 @@ export default function SymmetryAwareEinsumContractionsApp() {
               Define your variables and einsum expression above, then click <strong>Analyze</strong> to explore the symmetry detection algorithm.
             </div>
           )}
-      </main>
-      <PresetSidebar
-        examples={EXAMPLES}
-        selectedPresetIdx={selectedPresetIdx}
-        onSelect={handleSelect}
-        onCustom={handleCustomMode}
-      />
+        </main>
+        <PresetSidebar
+          examples={EXAMPLES}
+          selectedPresetIdx={selectedPresetIdx}
+          onSelect={handleSelect}
+          onCustom={handleCustomMode}
+        />
       </div>
     </div>
   );
