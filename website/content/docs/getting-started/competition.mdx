@@ -1,0 +1,124 @@
+---
+title: "Competition Guide"
+---
+
+*Everything you need to compete within a FLOP budget.*
+
+**You will learn:**
+- How to set budget limits with `BudgetContext`
+- How to use the `@we.budget` decorator form
+- How wall-time limits work via `wall_time_limit_s`
+- How to read budget summaries
+- Common competition pitfalls and tips
+
+## Setting a FLOP budget
+
+Every competition submission runs inside a FLOP budget. Use `BudgetContext` to declare how many FLOPs your code is allowed to spend:
+
+```python
+import whest as we
+
+with we.BudgetContext(flop_budget=50_000_000, namespace="solver") as budget:
+    A = we.ones((256, 256))
+    x = we.ones((256,))
+    h = we.einsum('ij,j->i', A, x)
+    h = we.exp(h)
+    result = we.sum(h)
+
+we.budget_summary()
+```
+
+If your code exceeds the budget, whest raises `BudgetExhaustedError` *before* the offending operation executes. The error message includes the cost of the failed operation and the remaining budget.
+
+The `namespace` parameter labels your context in the budget summary so you can distinguish different phases of your solution.
+
+## Decorator form
+
+For cleaner code, use `@we.budget` to attach a budget directly to a function. The namespace defaults to the function name if omitted:
+
+```python
+import whest as we
+
+@we.budget(flop_budget=50_000_000, namespace="forward-pass")
+def forward(W, x):
+    h = we.einsum('ij,j->i', W, x)
+    h = we.maximum(h, 0)
+    return we.sum(h)
+
+result = forward(W, x)
+we.budget_summary()
+```
+
+Each call to the decorated function draws from the same namespace budget. This is equivalent to wrapping the function body in a `BudgetContext`.
+
+## Wall-time limits
+
+In addition to FLOP budgets, competitions may enforce a wall-clock time limit via `wall_time_limit_s`. This prevents solutions from stalling on operations that are analytically cheap but slow in practice:
+
+```python
+with we.BudgetContext(flop_budget=10**9, wall_time_limit_s=60.0) as budget:
+    # Must finish within 60 seconds AND within 1 billion FLOPs
+    ...
+```
+
+If the wall-clock time is exceeded, whest raises `TimeExhaustedError`. The timer starts when the context is entered and is checked after each counted operation.
+
+## Reading the budget summary
+
+Call `we.budget_summary()` after your computation to see where FLOPs went:
+
+```
+whest FLOP Budget Summary
+==================================================
+  Total budget:              50,000,000
+  Used:                       2,624,512  (5.2%)
+  Remaining:                 47,375,488  (94.8%)
+
+  [forward-pass]
+    Budget:        50,000,000
+    Used:           2,624,512  (5.2%)
+    Operations:
+      einsum                    655,360  ( 25.0%)  [10 calls]
+      random.randn              655,616  ( 25.0%)  [11 calls]
+      multiply                  655,360  ( 25.0%)  [10 calls]
+      maximum                     2,560  (  0.1%)  [10 calls]
+      sum                           256  (  0.0%)  [1 call]
+```
+
+Key things to look for:
+
+- **Used / Remaining:** how much of the budget has been consumed
+- **By operation:** breakdown of costs per operation type and call count -- look here to find your most expensive operations
+- **Namespace grouping:** each `BudgetContext` namespace gets its own section
+
+For programmatic access, use `we.budget_summary_dict()`:
+
+```python
+data = we.budget_summary_dict()
+print(f"Used: {data['flops_used']:,} / {data['flop_budget']:,}")
+
+# Per-namespace breakdown:
+data = we.budget_summary_dict(by_namespace=True)
+print(data["by_namespace"]["forward-pass"]["flops_used"])
+```
+
+## Quick tips for competition
+
+**Check costs before committing budget.** Use cost query functions to estimate before executing:
+
+```python
+cost = we.flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
+print(f"This matmul will cost {cost:,} FLOPs")  # 16,777,216
+```
+
+**Use namespaces for phases.** Split your solution into named phases (e.g., `"init"`, `"solve"`, `"refine"`) so the budget summary shows exactly where FLOPs are spent.
+
+**Exploit symmetry for savings.** If your tensors are symmetric, wrapping them with `we.as_symmetric()` can halve pointwise costs and significantly reduce einsum costs. See [Symmetry Savings](/docs/guides/symmetry) for details.
+
+**Prefer cheaper operations.** A matrix-vector product via `we.einsum('ij,j->i', A, x)` costs `m*n` FLOPs, while a full matrix-matrix multiply costs `m*n*k`. Avoid computing more than you need.
+
+**Watch out for hidden costs.** Operations like `we.array()`, `we.concatenate()`, and `we.where()` are *not* free -- each charges `numel(output)` FLOPs. Check the cost of any operation you are unsure about.
+
+## When things go wrong
+
+If you hit `BudgetExhaustedError`, see [Budget Planning & Debugging](/docs/guides/budget-planning) for a systematic approach to diagnosing overruns and reducing costs.

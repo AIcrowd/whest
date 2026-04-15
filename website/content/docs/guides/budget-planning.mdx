@@ -1,0 +1,155 @@
+---
+title: "Budget Planning & Debugging"
+---
+
+*Estimate costs before running and diagnose overruns after.*
+
+**You will learn:**
+- How to use cost query functions to estimate FLOPs without executing
+- How to read and interpret the budget summary
+- How to diagnose expensive operations using the operation log
+- Optimization strategies for reducing FLOP consumption
+
+## Estimate before running
+
+whest provides cost query functions that compute FLOP costs from shapes without executing anything or touching the budget. Use these to plan before committing FLOPs:
+
+```python
+import whest as we
+
+# Einsum cost
+cost = we.flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
+print(f"Matmul cost: {cost:,}")         # 16,777,216 (256^3, FMA=1)
+
+# SVD cost
+cost = we.flops.svd_cost(m=256, n=256, k=10)
+print(f"SVD cost: {cost:,}")            # 655,360
+
+# Pointwise cost (unary/binary ops like exp, add, multiply)
+cost = we.flops.pointwise_cost(shape=(256, 256))
+print(f"Pointwise cost: {cost:,}")      # 65,536
+
+# Reduction cost (sum, mean, max, etc.)
+cost = we.flops.reduction_cost(input_shape=(256, 256))
+print(f"Reduction cost: {cost:,}")      # 65,536
+```
+
+For multi-operand einsums (3+ operands), use `we.einsum_path()` to see the step-by-step contraction breakdown with per-step costs and symmetry savings:
+
+```python
+path, info = we.einsum_path('ijk,ai,bj,ck->abc', T, A, B, C)
+print(f"Optimized cost: {info.optimized_cost:,}")
+print(f"Naive cost:     {info.naive_cost:,}")
+print(f"Speedup:        {info.speedup:.1f}x")
+print(info)  # full per-step table
+```
+
+`we.einsum_path()` has zero budget cost -- it plans the contraction path without executing anything.
+
+### Budget breakdown example
+
+Plan a multi-step computation before executing:
+
+```python
+steps = [
+    ("einsum ij,j->i", we.flops.einsum_cost('ij,j->i', shapes=[(256, 256), (256,)])),
+    ("ReLU (maximum)", we.flops.pointwise_cost(shape=(256,))),
+    ("sum reduction", we.flops.reduction_cost(input_shape=(256,))),
+]
+
+total = sum(cost for _, cost in steps)
+print(f"{'Operation':<20} {'FLOPs':>12}")
+print("-" * 34)
+for name, cost in steps:
+    print(f"{name:<20} {cost:>12,}")
+print("-" * 34)
+print(f"{'Total':<20} {total:>12,}")
+```
+
+## Read the budget summary
+
+Call `we.budget_summary()` after your computation for a human-readable breakdown, or `budget.summary()` inside a context:
+
+```python
+with we.BudgetContext(flop_budget=10_000_000) as budget:
+    A = we.ones((256, 256))
+    x = we.ones((256,))
+    h = we.einsum('ij,j->i', A, x)
+    h = we.exp(h)
+    h = we.sum(h)
+    print(budget.summary())
+```
+
+The summary shows cost per operation type, sorted by highest cost first. Look for operations consuming a disproportionate share of the budget.
+
+For programmatic analysis, use `we.budget_summary_dict()`:
+
+```python
+data = we.budget_summary_dict()
+print(f"Budget: {data['flop_budget']:,}")
+print(f"Used:   {data['flops_used']:,}")
+print(f"Left:   {data['flops_remaining']:,}")
+for op_name, op_data in data["operations"].items():
+    print(f"  {op_name}: {op_data['flop_cost']:,} ({op_data['calls']} calls)")
+```
+
+Use `we.budget_summary_dict(by_namespace=True)` for per-namespace breakdowns.
+
+## Diagnose overruns
+
+When you hit a `BudgetExhaustedError`, the budget's operation log gives per-call detail:
+
+```python
+for record in budget.op_log:
+    print(f"{record.op_name:<16} cost={record.flop_cost:>12,}  cumulative={record.cumulative:>12,}")
+```
+
+Each `OpRecord` contains:
+
+| Field | Description |
+|-------|-------------|
+| `op_name` | Operation name (e.g., `"einsum"`, `"exp"`) |
+| `namespace` | Namespace label from the BudgetContext |
+| `subscripts` | Einsum subscript string, or `None` |
+| `shapes` | Tuple of input shapes |
+| `flop_cost` | FLOP cost of this single call |
+| `cumulative` | Running total after this call |
+
+Look for the operation where `cumulative` jumps sharply -- that is your most expensive call.
+
+For real-time monitoring during long computations, use the live budget display:
+
+```python
+with we.budget_live():
+    with we.BudgetContext(flop_budget=10**8, namespace="training") as budget:
+        for i in range(100):
+            # ... computation ...
+            pass
+        # The live display updates automatically as FLOPs are consumed
+```
+
+## What to do next
+
+Once you have identified the expensive operations, apply these strategies:
+
+1. **Reduce dimensions.** If `random.randn(1024, 1024)` is too expensive, try smaller arrays. A 512x512 matrix costs 1/4 the FLOPs of a 1024x1024 matrix for a matmul.
+
+2. **Exploit symmetry.** If operands are symmetric, use `we.as_symmetric()` to halve pointwise costs and significantly reduce einsum costs. See [Symmetry Savings](/docs/guides/symmetry).
+
+3. **Use cheaper operations.** A matrix-vector product costs `m*n` FLOPs, while a matrix-matrix product costs `m*n*k`. Avoid computing full matrix products when you only need a few rows or a single vector result.
+
+4. **Increase budget.** If the computation is genuinely needed and you have headroom, raise `flop_budget` on the `BudgetContext`.
+
+5. **Split into phases.** Use namespaces to budget different phases independently, so an expensive initialization does not crowd out the main computation:
+
+```python
+with we.BudgetContext(flop_budget=init_budget, namespace="init") as b1:
+    # initialization
+    ...
+
+with we.BudgetContext(flop_budget=solve_budget, namespace="solve") as b2:
+    # main computation
+    ...
+
+we.budget_summary()  # shows both phases separately
+```
