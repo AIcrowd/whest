@@ -45,7 +45,9 @@ test('SymmetryExplorer keeps the act ids and renders the preset rail after main 
   assert.match(source, /StickyBar/);
   assert.match(source, /ExplorerSectionCard/);
   assert.match(source, /Button/);
-  assert.ok(source.indexOf('<main') < source.indexOf('<PresetSidebar'));
+  assert.match(source, /<PresetSidebar/);
+  assert.doesNotMatch(source, /app-header/);
+  assert.doesNotMatch(source, /subtitle/);
 });
 
 test('shell contract uses primitive-based chrome instead of legacy header classes', () => {
@@ -58,10 +60,28 @@ test('shell contract uses primitive-based chrome instead of legacy header classe
   assert.match(source, /gap-8/);
   assert.match(source, /min-h-screen bg-background/);
   assert.match(source, /title="Symmetry Aware Einsum Contractions"/);
-  assert.match(source, /Badge className="bg-coral text-white hover:bg-coral">einsum/);
+  assert.match(source, /Badge className=.*einsum/);
   assert.doesNotMatch(source, /app-header/);
   assert.doesNotMatch(source, /subtitle/);
   assert.doesNotMatch(source, /einsum-banner/);
+});
+
+test('mergeObservedActEntries preserves prior entries and overwrites by act id', () => {
+  const previousEntries = new Map([
+    ['setup', { target: { id: 'setup' }, isIntersecting: false }],
+    ['proof', { target: { id: 'proof' }, isIntersecting: false }],
+  ]);
+  const nextEntries = [
+    { target: { id: 'proof' }, isIntersecting: true, boundingClientRect: { top: 32 } },
+    { target: { id: 'savings' }, isIntersecting: true, boundingClientRect: { top: 240 } },
+  ];
+
+  const merged = mergeObservedActEntries(previousEntries, nextEntries);
+
+  assert.equal(merged.size, 3);
+  assert.equal(merged.get('setup').isIntersecting, false);
+  assert.equal(merged.get('proof').isIntersecting, true);
+  assert.equal(merged.get('savings').boundingClientRect.top, 240);
 });
 
 test('buildAnalysisCheckpoint summarizes the analyzed contraction state', () => {

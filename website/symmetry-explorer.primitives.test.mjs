@@ -24,6 +24,7 @@ test('symmetry explorer is pinned to shared primitives', () => {
   assert.match(totalCostView, /ExplorerMetricCard/);
   assert.match(componentCostView, /ExplorerMetricCard/);
   assert.doesNotMatch(componentCostView, /function MetricCard/);
+  assert.match(app, /import '\.\/styles\.css';/);
 
   assert.equal(styles.includes("@import url('https://fonts.googleapis.com"), false);
   assert.equal(styles.includes('--font-accent:'), false);
