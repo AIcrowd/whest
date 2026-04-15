@@ -48,3 +48,12 @@ test('histogram structured manifest carries parity-ready content', async () => {
   assert.ok(histogram.previous);
   assert.ok(histogram.next);
 });
+
+test('operation doc examples reuse the shared docs output renderer', async () => {
+  const exampleSource = await readSource('components/api-reference/OperationDocExample.tsx');
+
+  assert.match(exampleSource, /RichOutputPre/);
+  assert.match(exampleSource, /CodeBlock/);
+  assert.doesNotMatch(exampleSource, /docOutputBlock/);
+  assert.doesNotMatch(exampleSource, /docOutputLabel/);
+});
