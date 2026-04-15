@@ -19,7 +19,7 @@ test('standalone route renders the renamed symmetry-aware app', async () => {
   assert.match(routeSource, /title:\s*'Symmetry Aware Einsum Contractions'/);
 });
 
-test('standalone route provides a dedicated bounded shell for the app', async () => {
+test('standalone route keeps a thin shell while the app owns its internal styles', async () => {
   const routeFile = path.join(
     websiteRoot,
     'app',
@@ -27,20 +27,17 @@ test('standalone route provides a dedicated bounded shell for the app', async ()
     'page.tsx',
   );
   const routeSource = await readFile(routeFile, 'utf8');
-  const stylesFile = path.join(
+  const appFile = path.join(
     websiteRoot,
     'components',
     'symmetry-aware-einsum-contractions',
-    'styles.css',
+    'SymmetryAwareEinsumContractionsApp.jsx',
   );
-  const stylesSource = await readFile(stylesFile, 'utf8');
+  const appSource = await readFile(appFile, 'utf8');
 
   assert.match(routeSource, /symmetry-aware-einsum-contractions-page-shell/);
-  assert.match(stylesSource, /\.app\s*\{[\s\S]*max-width:\s*1600px;/);
-  assert.doesNotMatch(
-    stylesSource,
-    /\.symmetry-aware-einsum-contractions-page \.app\s*\{[\s\S]*max-width:\s*none;/,
-  );
+  assert.match(appSource, /import '\.\/styles\.css';/);
+  assert.doesNotMatch(routeSource, /styles\.css/);
 });
 
 test('renamed feature entry exports the symmetry-aware app component', async () => {

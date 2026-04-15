@@ -21,3 +21,13 @@ test('understanding meta no longer exposes the embedded symmetry-explorer page',
 
   assert.doesNotMatch(source, /"symmetry-explorer"/);
 });
+
+test('MDX SymmetryExplorer resolves to a standalone launch handoff instead of the live app', async () => {
+  const file = path.join(websiteRoot, 'components', 'mdx.tsx');
+  const source = await readFile(file, 'utf8');
+
+  assert.match(source, /function SymmetryExplorerStandaloneHandoff/);
+  assert.match(source, /SymmetryExplorer:\s*SymmetryExplorerStandaloneHandoff/);
+  assert.match(source, /href="\/symmetry-aware-einsum-contractions"/);
+  assert.doesNotMatch(source, /SymmetryExplorer:\s*SymmetryAwareEinsumContractionsApp/);
+});
