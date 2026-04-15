@@ -2,14 +2,11 @@
   "title": "Documentation",
   "pages": [
     "getting-started",
-    "how-to",
-    "concepts",
-    "architecture",
-    "explanation",
-    "development",
+    "guides",
+    "understanding",
     "api",
-    "reference",
-    "troubleshooting",
+    "infrastructure",
+    "development",
     "changelog"
   ]
 }
