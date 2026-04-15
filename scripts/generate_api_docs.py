@@ -708,7 +708,6 @@ def render_operation_stub(op: OperationDocRecord) -> str:
         f'---\n'
         f'title: "{op.whest_ref}"\n'
         f'---\n\n'
-        f"{HEADER}\n"
         f'<OperationDocPage name="{op.name}" />\n'
     )
 

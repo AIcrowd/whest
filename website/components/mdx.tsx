@@ -4,6 +4,7 @@ import type { ComponentProps } from 'react';
 import { Accordions, Accordion } from 'fumadocs-ui/components/accordion';
 import { CodeBlock, Pre } from 'fumadocs-ui/components/codeblock';
 import ApiReference from './api-reference';
+import OperationDocPage from './api-reference/OperationDocPage';
 import SymmetryExplorer from './symmetry-explorer';
 import SortableTable from './shared/SortableTable';
 import Mermaid from './mermaid';
@@ -27,6 +28,7 @@ export function getMDXComponents(components?: MDXComponents) {
     ...defaultMdxComponents,
     pre: DocsPre,
     ApiReference,
+    OperationDocPage,
     SymmetryExplorer,
     SortableTable,
     Mermaid,

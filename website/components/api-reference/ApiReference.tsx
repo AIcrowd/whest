@@ -12,11 +12,10 @@ interface ApiReferenceProps {
 export default function ApiReference({operations}: ApiReferenceProps): React.ReactElement {
   const [search, setSearch] = useState('');
   const [costFilter, setCostFilter] = useState<CostFilter>('all');
-  const [moduleFilter, setModuleFilter] = useState('');
-  const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
+  const [areaFilter, setAreaFilter] = useState('');
 
-  const modules = useMemo(
-    () => Array.from(new Set(operations.map((op) => op.module))).sort(),
+  const areas = useMemo(
+    () => Array.from(new Set(operations.map((op) => op.area))).sort(),
     [operations],
   );
 
@@ -32,22 +31,22 @@ export default function ApiReference({operations}: ApiReferenceProps): React.Rea
       if (costFilter === 'free' && !op.free) return false;
       if (costFilter === 'blocked' && !op.blocked) return false;
       if (costFilter === 'counted' && (op.free || op.blocked)) return false;
-      // module filter
-      if (moduleFilter && op.module !== moduleFilter) return false;
+      // area filter
+      if (areaFilter && op.area !== areaFilter) return false;
       return true;
     });
-  }, [operations, search, costFilter, moduleFilter]);
+  }, [operations, search, costFilter, areaFilter]);
 
   return (
     <div className={styles.apiReference}>
       <FilterBar
         search={search}
-        onSearchChange={(v) => { setSearch(v); setExpandedIdx(null); }}
+        onSearchChange={setSearch}
         costFilter={costFilter}
-        onCostFilterChange={(v) => { setCostFilter(v); setExpandedIdx(null); }}
-        module={moduleFilter}
-        onModuleChange={(v) => { setModuleFilter(v); setExpandedIdx(null); }}
-        modules={modules}
+        onCostFilterChange={setCostFilter}
+        area={areaFilter}
+        onAreaChange={setAreaFilter}
+        areas={areas}
         resultCount={filtered.length}
         totalCount={operations.length}
       />
@@ -56,20 +55,15 @@ export default function ApiReference({operations}: ApiReferenceProps): React.Rea
           <thead>
             <tr>
               <th>Operation</th>
-              <th>Module</th>
+              <th>Area</th>
               <th>Type</th>
+              <th>Weight</th>
               <th>Cost Formula</th>
-              <th></th>
             </tr>
           </thead>
           <tbody>
-            {filtered.map((op, i) => (
-              <OperationRow
-                key={op.whest_ref}
-                op={op}
-                expanded={expandedIdx === i}
-                onToggle={() => setExpandedIdx(expandedIdx === i ? null : i)}
-              />
+            {filtered.map((op) => (
+              <OperationRow key={op.name} op={op} />
             ))}
             {filtered.length === 0 && (
               <tr>

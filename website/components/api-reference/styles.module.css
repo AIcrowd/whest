@@ -38,7 +38,7 @@
   box-shadow: 0 0 0 2px rgba(240, 82, 77, 0.15);
 }
 
-.moduleSelect {
+.areaSelect {
   padding: 0.5rem 0.75rem;
   border: 1px solid hsl(var(--border));
   border-radius: 6px;
@@ -50,7 +50,7 @@
   transition: all 0.15s ease;
 }
 
-.moduleSelect:focus {
+.areaSelect:focus {
   outline: none;
   border-color: #F0524D;
 }
@@ -136,15 +136,10 @@
 
 /* ── Row ──────────────────────────────────────────────── */
 .opRow {
-  cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .opRow:hover {
-  background: hsl(var(--muted));
-}
-
-.opRowExpanded {
   background: hsl(var(--muted));
 }
 
@@ -155,69 +150,30 @@
   padding: 0;
 }
 
-.opModule {
+.opName a {
+  text-decoration: none;
+}
+
+.opName a:hover code {
+  text-decoration: underline;
+}
+
+.opWeight {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.opFormula {
+  white-space: nowrap;
   color: hsl(var(--muted-foreground));
 }
 
-.opFormula code {
-  font-size: 0.78rem;
-  background: none;
-  padding: 0;
-  color: hsl(var(--muted-foreground));
-}
-
-/* ── Arrow ────────────────────────────────────────────── */
-.opArrow {
-  width: 28px;
-  text-align: center;
-}
-
-.arrow {
-  display: inline-block;
-  font-size: 0.65rem;
-  color: hsl(var(--muted-foreground));
-  transition: transform 0.15s;
-}
-
-.arrowOpen {
-  transform: rotate(90deg);
-}
-
-/* ── Detail row ───────────────────────────────────────── */
-.detailRow td {
-  padding: 0.75rem 1rem;
-  background: hsl(var(--muted));
-  border-bottom: 2px solid hsl(var(--border));
-}
-
-.detailGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 0.6rem 1.5rem;
-}
-
-.detailItem {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-}
-
-.detailItemFull {
-  grid-column: 1 / -1;
-}
-
-.detailLabel {
-  font-size: 0.72rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: hsl(var(--muted-foreground));
-}
-
-/* ── Badge ────────────────────────────────────────────── */
-.badge {
-  display: inline-block;
-  padding: 0.15rem 0.55rem;
+.areaChip,
+.typeChip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.18rem 0.6rem;
   border-radius: 999px;
   font-size: 0.72rem;
   font-weight: 600;
@@ -225,38 +181,115 @@
   white-space: nowrap;
 }
 
-.badge--free {
+.area--core {
+  background: #f3e8ff;
+  color: #7c3aed;
+}
+
+.area--linalg {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.area--fft {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.area--random {
   background: #dcfce7;
   color: #166534;
 }
 
-.badge--blocked {
+.area--stats {
   background: #fee2e2;
-  color: #991b1b;
+  color: #b91c1c;
 }
 
-.badge--counted {
+.type--counted {
   background: #dbeafe;
   color: #1e40af;
 }
 
-/* ── Status chip ──────────────────────────────────────── */
-.statusChip {
-  display: inline-block;
-  padding: 0.1rem 0.45rem;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  font-weight: 500;
+.type--custom {
+  background: #fde68a;
+  color: #92400e;
 }
 
-.status--supported {
+.type--free {
   background: #dcfce7;
   color: #166534;
 }
 
-.status--blocked {
+.type--blocked {
   background: #fee2e2;
   color: #991b1b;
+}
+
+.docEyebrow {
+  margin-bottom: 0.5rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+}
+
+.docSignature {
+  margin-top: -0.25rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.docMetaGrid,
+.docDenseGrid {
+  display: grid;
+  gap: 0.9rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.docMetaGrid {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.docDenseGrid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.docMetaCard,
+.docDenseItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.85rem;
+  background: hsl(var(--background));
+}
+
+.docDenseItemWide {
+  grid-column: 1 / -1;
+}
+
+.docMetaLabel {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+}
+
+.docMetaValue,
+.docBodyText,
+.docPlaceholder {
+  margin: 0;
+}
+
+.docFormula :global(.katex-display) {
+  margin: 0.25rem 0 0;
+}
+
+.docPlaceholder {
+  color: hsl(var(--muted-foreground));
 }
 
 .status--partial {

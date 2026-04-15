@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import CostBadge from './CostBadge';
+import Link from 'next/link';
+import Latex, {stripMathDelimiters} from '../shared/Latex';
 import styles from './styles.module.css';
 
 export interface Operation {
@@ -16,76 +17,39 @@ export interface Operation {
   blocked: boolean;
   status: string;
   notes: string;
-  weight?: number;
+  weight: number;
+  area: 'core' | 'linalg' | 'fft' | 'random' | 'stats';
+  display_type: 'counted' | 'custom' | 'free' | 'blocked';
+  href?: string;
 }
 
-interface OperationRowProps {
-  op: Operation;
-  expanded: boolean;
-  onToggle: () => void;
+function renderFormula(op: Operation) {
+  const latex = op.cost_formula_latex.trim();
+  if (latex.startsWith('$') && latex.endsWith('$')) {
+    return <Latex math={stripMathDelimiters(latex)} />;
+  }
+
+  return <span>{op.cost_formula || '\u2014'}</span>;
 }
 
-export default function OperationRow({op, expanded, onToggle}: OperationRowProps): React.ReactElement {
+export default function OperationRow({op}: {op: Operation}): React.ReactElement {
+  const opLabel = <code>{op.whest_ref}</code>;
+
   return (
-    <>
-      <tr
-        className={`${styles.opRow} ${expanded ? styles.opRowExpanded : ''}`}
-        onClick={onToggle}
-      >
-        <td className={styles.opName}>
-          <code>{op.whest_ref}</code>
-        </td>
-        <td className={styles.opModule}>{op.module}</td>
-        <td>
-          <CostBadge free={op.free} blocked={op.blocked} />
-        </td>
-        <td className={styles.opFormula}>
-          <code>{op.cost_formula || '\u2014'}</code>
-        </td>
-        <td className={styles.opArrow}>
-          <span className={`${styles.arrow} ${expanded ? styles.arrowOpen : ''}`}>
-            &#9654;
-          </span>
-        </td>
-      </tr>
-      {expanded && (
-        <tr className={styles.detailRow}>
-          <td colSpan={5}>
-            <div className={styles.detailGrid}>
-              <div className={styles.detailItem}>
-                <span className={styles.detailLabel}>NumPy ref</span>
-                <code>{op.numpy_ref}</code>
-              </div>
-              <div className={styles.detailItem}>
-                <span className={styles.detailLabel}>Category</span>
-                <span>{op.category}</span>
-              </div>
-              <div className={styles.detailItem}>
-                <span className={styles.detailLabel}>Status</span>
-                <span className={`${styles.statusChip} ${styles[`status--${op.status}`]}`}>
-                  {op.status}
-                </span>
-              </div>
-              <div className={styles.detailItem}>
-                <span className={styles.detailLabel}>Empirical Weight</span>
-                <span>{op.weight && op.weight !== 1.0 ? `${op.weight}×` : '1.0× (default)'}</span>
-              </div>
-              {op.notes && (
-                <div className={`${styles.detailItem} ${styles.detailItemFull}`}>
-                  <span className={styles.detailLabel}>Notes</span>
-                  <span>{op.notes}</span>
-                </div>
-              )}
-              {op.cost_formula && (
-                <div className={`${styles.detailItem} ${styles.detailItemFull}`}>
-                  <span className={styles.detailLabel}>Cost formula</span>
-                  <code>{op.cost_formula}</code>
-                </div>
-              )}
-            </div>
-          </td>
-        </tr>
-      )}
-    </>
+    <tr className={styles.opRow}>
+      <td className={styles.opName}>
+        {op.href ? <Link href={op.href}>{opLabel}</Link> : opLabel}
+      </td>
+      <td>
+        <span className={`${styles.areaChip} ${styles[`area--${op.area}`]}`}>{op.area}</span>
+      </td>
+      <td>
+        <span className={`${styles.typeChip} ${styles[`type--${op.display_type}`]}`}>
+          {op.display_type}
+        </span>
+      </td>
+      <td className={styles.opWeight}>{op.weight.toFixed(1)}&times;</td>
+      <td className={styles.opFormula}>{renderFormula(op)}</td>
+    </tr>
   );
 }
