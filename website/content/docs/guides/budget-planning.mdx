@@ -96,7 +96,13 @@ for op_name, op_data in data["operations"].items():
 Use `we.budget_summary_dict(by_namespace=True)` for exact per-namespace breakdowns keyed by the full dotted path:
 
 ```python
-data = we.budget_summary_dict(by_namespace=True)
+with we.BudgetContext(flop_budget=1000, namespace="predict") as budget:
+    x = we.ones((1,))
+    with we.namespace("fallback"):
+        with we.namespace("sampling"):
+            sample = we.add(x, 1)
+
+data = budget.summary_dict(by_namespace=True)
 print(data["by_namespace"]["predict.fallback.sampling"]["flops_used"])
 ```
 
@@ -114,7 +120,7 @@ Each `OpRecord` contains:
 | Field | Description |
 |-------|-------------|
 | `op_name` | Operation name (e.g., `"einsum"`, `"exp"`) |
-| `namespace` | Namespace label from the BudgetContext |
+| `namespace` | Effective namespace path recorded for that operation |
 | `subscripts` | Einsum subscript string, or `None` |
 | `shapes` | Tuple of input shapes |
 | `flop_cost` | FLOP cost of this single call |
@@ -148,7 +154,7 @@ Once you have identified the expensive operations, apply these strategies:
 5. **Split into phases.** Use namespaces to attribute different phases without splitting the FLOP budget into child budgets:
 
 ```python
-with we.BudgetContext(flop_budget=init_budget + solve_budget, namespace="solver") as budget:
+with we.BudgetContext(flop_budget=10**8, namespace="solver") as budget:
     with we.namespace("init"):
         # initialization
         ...

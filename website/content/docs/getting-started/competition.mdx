@@ -24,8 +24,6 @@ with we.BudgetContext(flop_budget=50_000_000, namespace="solver") as budget:
     h = we.einsum('ij,j->i', A, x)
     h = we.exp(h)
     result = we.sum(h)
-
-we.budget_summary()
 ```
 
 If your code exceeds the budget, whest raises `BudgetExhaustedError` *before* the offending operation executes. The error message includes the cost of the failed operation and the remaining budget.
@@ -34,7 +32,7 @@ The `namespace` parameter sets the root namespace prefix for that budget context
 
 ## Decorator form
 
-For cleaner code, use `@we.budget` to attach a budget directly to a function. The namespace defaults to the function name if omitted:
+For cleaner code, use `@we.budget` to attach a budget directly to a function:
 
 ```python
 import whest as we
@@ -49,7 +47,7 @@ result = forward(W, x)
 we.budget_summary()
 ```
 
-Each call to the decorated function draws from the same namespace budget. This is equivalent to wrapping the function body in a `BudgetContext`.
+Each call to the decorated function runs inside the same `BudgetContext`; the namespace is only the root prefix used for attribution, not a separate budget pool. Repeated calls reuse that context and keep accumulating on the same budget and operation log.
 
 ## Wall-time limits
 
@@ -65,32 +63,46 @@ If the wall-clock time is exceeded, whest raises `TimeExhaustedError`. The timer
 
 ## Reading the budget summary
 
-Call `we.budget_summary()` after your computation to see where FLOPs went; pass `by_namespace=True` when you want namespace attribution:
+Call `budget.summary()` when you want the current context's summary, or `we.budget_summary()` for the accumulated session/global view. Both stay flat by default; use `by_namespace=True` only when you want a namespace breakdown:
 
-```text title="__rich_output__"
-\x1b[36m\u256d\u2500\x1b[0m\x1b[36m\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\x1b[0m\x1b[36m \x1b[0m\x1b[1;36mwhest FLOP Budget Summary\x1b[0m\x1b[36m \x1b[0m\x1b[36m\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\x1b[0m\x1b[36m\u2500\u256e\x1b[0m
-\x1b[36m\u2502\x1b[0m \x1b[1m \x1b[0m\x1b[1mBudget                   \x1b[0m\x1b[1m \x1b[0m                                      50,000,000  \x1b[36m\u2502\x1b[0m
-\x1b[36m\u2502\x1b[0m \x1b[1m \x1b[0m\x1b[1mUsed                     \x1b[0m\x1b[1m \x1b[0m \x1b[32m                                 66,048  (0.1%)\x1b[0m  \x1b[36m\u2502\x1b[0m
-\x1b[36m\u2502\x1b[0m \x1b[1m \x1b[0m\x1b[1mRemaining                \x1b[0m\x1b[1m \x1b[0m                             49,933,952  (99.9%)  \x1b[36m\u2502\x1b[0m
-\x1b[36m\u2502\x1b[0m \x1b[32m\u256d\u2500\x1b[0m\x1b[32m\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\x1b[0m\x1b[32m \x1b[0m\x1b[1;32msolver\x1b[0m\x1b[32m \x1b[0m\x1b[32m\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\x1b[0m\x1b[32m\u2500\u256e\x1b[0m                              \x1b[36m\u2502\x1b[0m
-\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u250f\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2513 \x1b[32m\u2502\x1b[0m                              \x1b[36m\u2502\x1b[0m
-\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2503\x1b[1m \x1b[0m\x1b[1mOperation\x1b[0m\x1b[1m \x1b[0m\u2503\x1b[1m \x1b[0m\x1b[1m     FLOPs\x1b[0m\x1b[1m \x1b[0m\u2503\x1b[1m \x1b[0m\x1b[1m    %\x1b[0m\x1b[1m \x1b[0m\u2503\x1b[1m \x1b[0m\x1b[1m Calls\x1b[0m\x1b[1m \x1b[0m\u2503 \x1b[32m\u2502\x1b[0m                              \x1b[36m\u2502\x1b[0m
-\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2521\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2547\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2547\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2547\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2529 \x1b[32m\u2502\x1b[0m                              \x1b[36m\u2502\x1b[0m
-\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2502\x1b[2m \x1b[0m\x1b[2meinsum   \x1b[0m\x1b[2m \x1b[0m\u2502     65,536 \u2502 99.2% \u2502\x1b[2m \x1b[0m\x1b[2m1 call\x1b[0m\x1b[2m \x1b[0m\u2502 \x1b[32m\u2502\x1b[0m                              \x1b[36m\u2502\x1b[0m
-\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2502\x1b[2m \x1b[0m\x1b[2mexp      \x1b[0m\x1b[2m \x1b[0m\u2502        256 \u2502  0.4% \u2502\x1b[2m \x1b[0m\x1b[2m1 call\x1b[0m\x1b[2m \x1b[0m\u2502 \x1b[32m\u2502\x1b[0m                              \x1b[36m\u2502\x1b[0m
-\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2502\x1b[2m \x1b[0m\x1b[2msum      \x1b[0m\x1b[2m \x1b[0m\u2502        256 \u2502  0.4% \u2502\x1b[2m \x1b[0m\x1b[2m1 call\x1b[0m\x1b[2m \x1b[0m\u2502 \x1b[32m\u2502\x1b[0m                              \x1b[36m\u2502\x1b[0m
-\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524 \x1b[32m\u2502\x1b[0m                              \x1b[36m\u2502\x1b[0m
-\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2502\x1b[2m \x1b[0m\x1b[1;2mUsed     \x1b[0m\x1b[2m \x1b[0m\u2502 \x1b[1;32m    66,048\x1b[0m \u2502 \x1b[32m 0.1%\x1b[0m \u2502\x1b[2m \x1b[0m\x1b[2m      \x1b[0m\x1b[2m \x1b[0m\u2502 \x1b[32m\u2502\x1b[0m                              \x1b[36m\u2502\x1b[0m
-\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2502\x1b[2m \x1b[0m\x1b[1;2mRemaining\x1b[0m\x1b[2m \x1b[0m\u2502 \x1b[1m49,933,952\x1b[0m \u2502       \u2502\x1b[2m \x1b[0m\x1b[2m      \x1b[0m\x1b[2m \x1b[0m\u2502 \x1b[32m\u2502\x1b[0m                              \x1b[36m\u2502\x1b[0m
-\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518 \x1b[32m\u2502\x1b[0m                              \x1b[36m\u2502\x1b[0m
-\x1b[36m\u2502\x1b[0m \x1b[32m\u2570\u2500\x1b[0m\x1b[32m\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\x1b[0m\x1b[32m \x1b[0m\x1b[2;32mBudget: 50,000,000\x1b[0m\x1b[32m \x1b[0m\x1b[32m\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\x1b[0m\x1b[32m\u2500\u256f\x1b[0m                              \x1b[36m\u2502\x1b[0m
-\x1b[36m\u2570\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256f\x1b[0m
+```python
+print(budget.summary())                   # context summary, flat by default
+print(budget.summary(by_namespace=True))  # context summary with namespaces
+we.budget_summary()                       # session/global summary
+we.budget_summary(by_namespace=True)      # session/global summary with namespaces
+```
+
+The block below shows `print(budget.summary(by_namespace=True))` for the `solver` context:
+
+```text
+whest FLOP Budget Summary [solver]
+==================================
+  Total budget:              50,000,000
+  Used:                          66,048  (0.1%)
+  Remaining:                 49,933,952  (99.9%)
+
+  By namespace:
+    solver                         66,048  (100.0%)  [3 calls]  0.000s
+
+  By operation:
+    einsum                     65,536  ( 99.2%)  [1 call]
+    exp                           256  (  0.4%)  [1 call]
+    sum                           256  (  0.4%)  [1 call]
+
+  Wall time:             ...s
+  Tracked time:          ...s  ( ...%)
+  Untracked time:        ...s  ( ...%)
+
+  By operation (time):
+    einsum                 ...s  ( ...%)  [1 call]
+    sum                    ...s  ( ...%)  [1 call]
+    exp                    ...s  ( ...%)  [1 call]
 ```
 
 Key things to look for:
 
 - **Budget / Used / Remaining:** the top rows show the explicit competition budget, current spend, and remaining headroom
-- **By namespace:** use `we.budget_summary(by_namespace=True)` or `budget.summary(by_namespace=True)` when you want a namespace breakdown; `solver` is the root prefix and nested scopes show up as dotted paths like `solver.precompute`
+- **By namespace:** `solver` is the root prefix, and nested scopes show up as dotted paths like `solver.precompute`. Use `budget.summary(by_namespace=True)` for the current context or `we.budget_summary(by_namespace=True)` for the accumulated session/global view
 - **By operation:** this toy pass is dominated by the single `einsum`; `exp` and `sum` are tiny by comparison
 - **Flat default:** the default summary stays flat unless you opt into `by_namespace=True`
 
@@ -103,7 +115,6 @@ print(f"Used: {data['flops_used']:,} / {data['flop_budget']:,}")
 # Per-namespace breakdown:
 data = we.budget_summary_dict(by_namespace=True)
 print(data["by_namespace"]["solver"]["flops_used"])
-print(data["by_namespace"]["solver.precompute"]["flops_used"])
 ```
 
 ## Quick tips for competition
@@ -121,7 +132,7 @@ print(f"This matmul will cost {cost:,} FLOPs")  # 16,777,216
 
 **Prefer cheaper operations.** A matrix-vector product via `we.einsum('ij,j->i', A, x)` costs `m*n` FLOPs, while a full matrix-matrix multiply costs `m*n*k`. Avoid computing more than you need.
 
-**Watch out for hidden costs.** Operations like `we.array()`, `we.concatenate()`, and `we.where()` are *not* free -- each charges `numel(output)` FLOPs. Check the cost of any operation you are unsure about.
+**Watch out for hidden costs.** Operations like `we.array()` and `we.concatenate()` are *not* free -- they charge `numel(output)` FLOPs, and `we.where()` charges `numel(condition)`. Check the cost of any operation you are unsure about.
 
 ## When things go wrong
 

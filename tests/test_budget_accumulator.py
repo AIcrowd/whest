@@ -115,3 +115,66 @@ def test_budget_reset():
     data = budget_summary_dict()
     assert data["flops_used"] == 0
     assert data["operations"] == {}
+
+
+def test_budget_summary_dict_does_not_double_count_reused_decorator_context():
+    import whest as we
+    from whest._budget import get_active_budget
+
+    seen_totals = []
+
+    @we.budget(flop_budget=5000, namespace="dec", quiet=True)
+    def compute():
+        ctx = get_active_budget()
+        assert ctx is not None
+        ctx.deduct("add", flop_cost=10, subscripts=None, shapes=())
+        seen_totals.append(we.budget_summary_dict()["flops_used"])
+
+    compute()
+    compute()
+
+    data = we.budget_summary_dict()
+    assert seen_totals == [10, 20]
+    assert data["flop_budget"] == 5000
+    assert data["flops_used"] == 20
+    assert data["operations"]["add"]["flop_cost"] == 20
+    assert data["operations"]["add"]["calls"] == 2
+
+
+def test_reused_decorator_context_resets_live_timing_state_between_calls():
+    import time
+
+    import whest as we
+    from whest._budget import get_active_budget
+
+    budget_ctx = we.budget(flop_budget=5000, namespace="dec", quiet=True)
+    seen_ctx_wall_times = []
+    seen_context_live_wall_times = []
+    seen_global_live_wall_times = []
+
+    @budget_ctx
+    def compute(post_sleep_s: float) -> None:
+        ctx = get_active_budget()
+        assert ctx is budget_ctx
+        seen_ctx_wall_times.append(ctx.wall_time_s)
+
+        with ctx.deduct("add", flop_cost=10, subscripts=None, shapes=()):
+            pass
+
+        seen_context_live_wall_times.append(ctx.summary_dict()["wall_time_s"])
+        seen_global_live_wall_times.append(we.budget_summary_dict()["wall_time_s"])
+
+        if post_sleep_s:
+            time.sleep(post_sleep_s)
+
+    compute(0.03)
+    first_closed_wall_time = budget_ctx.wall_time_s
+    compute(0.0)
+
+    assert first_closed_wall_time is not None
+    assert first_closed_wall_time >= 0.03
+    assert seen_ctx_wall_times == [None, None]
+    assert seen_context_live_wall_times[1] is not None
+    assert seen_context_live_wall_times[1] < first_closed_wall_time / 2
+    assert seen_global_live_wall_times[1] is not None
+    assert seen_global_live_wall_times[1] < first_closed_wall_time * 1.5

@@ -5,6 +5,7 @@ from __future__ import annotations
 import functools
 import threading
 import time
+import weakref
 from typing import NamedTuple
 
 from whest.errors import BudgetExhaustedError
@@ -95,6 +96,7 @@ class _OpTimer:
 
 
 _thread_local = threading.local()
+_all_budget_contexts: weakref.WeakSet["BudgetContext"] = weakref.WeakSet()
 
 
 def get_active_budget() -> BudgetContext | None:
@@ -226,6 +228,11 @@ class BudgetContext:
         self._deadline: float | None = None
         self._wall_time_s: float | None = None
         self._total_tracked_time: float = 0.0
+        self._recorded_flops_used = 0
+        self._recorded_op_count = 0
+        self._recorded_tracked_time = 0.0
+        self._budget_recorded = False
+        _all_budget_contexts.add(self)
 
     @property
     def flop_budget(self) -> int:
@@ -365,6 +372,39 @@ class BudgetContext:
                 f"Namespace stack corrupted: expected {expected!r}, got {actual!r}"
             )
 
+    def _snapshot_record(self) -> "NamespaceRecord":
+        wall_time = self.wall_time_s
+        if wall_time is None and self._start_time is not None:
+            wall_time = self.elapsed_s
+
+        tracked_delta = self._total_tracked_time - self._recorded_tracked_time
+        if tracked_delta < 0 and abs(tracked_delta) < 1e-12:
+            tracked_delta = 0.0
+
+        return NamespaceRecord(
+            namespace=self.namespace,
+            flop_budget=0 if self._budget_recorded else self.flop_budget,
+            flops_used=max(self._flops_used - self._recorded_flops_used, 0),
+            op_log=list(self._op_log[self._recorded_op_count :]),
+            wall_time_s=wall_time,
+            total_tracked_time=max(tracked_delta, 0.0),
+        )
+
+    def _has_unrecorded_activity(self) -> bool:
+        return self._flops_used > self._recorded_flops_used
+
+    def _mark_recorded(self) -> None:
+        self._recorded_flops_used = self._flops_used
+        self._recorded_op_count = len(self._op_log)
+        self._recorded_tracked_time = self._total_tracked_time
+        self._budget_recorded = True
+
+    def _mark_reset_baseline(self) -> None:
+        self._recorded_flops_used = self._flops_used
+        self._recorded_op_count = len(self._op_log)
+        self._recorded_tracked_time = self._total_tracked_time
+        self._budget_recorded = False
+
     def __enter__(self) -> BudgetContext:
         current = get_active_budget()
         if current is not None and current is not _global_default:
@@ -372,6 +412,8 @@ class BudgetContext:
         self._previous_budget = current  # save (may be global default or None)
         _thread_local.active_budget = self
         self._start_time = time.perf_counter()
+        self._wall_time_s = None
+        self._deadline = None
         if self._wall_time_limit_s is not None:
             self._deadline = self._start_time + self._wall_time_limit_s
         if not self._quiet:
@@ -482,17 +524,7 @@ class NamespaceRecord(NamedTuple):
 
 
 def _snapshot_namespace_record(ctx: BudgetContext) -> NamespaceRecord:
-    wall_time = ctx.wall_time_s
-    if wall_time is None and ctx._start_time is not None:
-        wall_time = ctx.elapsed_s
-    return NamespaceRecord(
-        namespace=ctx.namespace,
-        flop_budget=ctx.flop_budget,
-        flops_used=ctx.flops_used,
-        op_log=list(ctx.op_log),
-        wall_time_s=wall_time,
-        total_tracked_time=ctx.total_tracked_time,
-    )
+    return ctx._snapshot_record()
 
 
 class BudgetAccumulator:
@@ -504,6 +536,7 @@ class BudgetAccumulator:
     def record(self, ctx: BudgetContext) -> None:
         """Snapshot a BudgetContext and store it."""
         self._records.append(_snapshot_namespace_record(ctx))
+        ctx._mark_recorded()
 
     def get_data(self, by_namespace: bool = False) -> dict:
         """Return aggregated budget data across all recorded contexts."""
@@ -552,9 +585,13 @@ _accumulator = BudgetAccumulator()
 def _snapshot_records() -> list[NamespaceRecord]:
     records = list(_accumulator._records)
     active = get_active_budget()
-    if _global_default is not None and _global_default.flops_used > 0:
+    if _global_default is not None and _global_default._has_unrecorded_activity():
         records.append(_snapshot_namespace_record(_global_default))
-    if active is not None and active is not _global_default and active.flops_used > 0:
+    if (
+        active is not None
+        and active is not _global_default
+        and active._has_unrecorded_activity()
+    ):
         records.append(_snapshot_namespace_record(active))
     return records
 
@@ -584,3 +621,5 @@ def budget_summary_dict(by_namespace: bool = False) -> dict:
 def budget_reset() -> None:
     """Clear all accumulated budget data. Core library only."""
     _accumulator.reset()
+    for ctx in list(_all_budget_contexts):
+        ctx._mark_reset_baseline()
