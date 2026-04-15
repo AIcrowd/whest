@@ -32,8 +32,7 @@ works with NumPy may fail or behave differently with whest:
 | [llms.txt](pathname:///llms.txt) | Markdown | Start here. Curated index of all doc pages with one-line descriptions. Under 4K tokens. |
 | [llms-full.txt](pathname:///llms-full.txt) | Markdown | Complete docs in one file. Use if your context window is large enough (~115KB). |
 | [ops.json](pathname:///ops.json) | JSON | Machine-readable manifest of all 508 operations. Query programmatically for name, category, cost formula, status. |
-| [FLOP Cost Cheat Sheet](./cheat-sheet.md) | Markdown | Dense reference of every operation's cost. Optimized for agent context windows. |
-| [Operation Audit](./operation-audit.md) | Markdown | 7-column searchable table: operation, whest ref, NumPy ref, category, cost, status, notes. |
+| [API Reference](./) | Markdown | Dense reference of every operation's cost and full operation inventory. |
 
 ### How to use llms.txt
 
@@ -50,7 +49,7 @@ drop the trailing `/index.md` from the URL:
 | Agent URL (raw markdown) | Human URL (rendered HTML) |
 |--------------------------|---------------------------|
 | `.../getting-started/installation/index.md` | `.../getting-started/installation/` |
-| `.../how-to/use-einsum/index.md` | `.../how-to/use-einsum/` |
+| `.../guides/einsum/index.md` | `.../guides/einsum/` |
 | `.../api/index.md` | `.../api/` |
 
 If you have a large context window, fetch `llms-full.txt` instead to get
@@ -120,7 +119,7 @@ Counted: `einsum`, `dot`, `matmul`, `exp`, `log`, `add`, `multiply`, `sum`,
 Blocked: `save`, `load`, `geterr`, `seterr`, and 28 others. These raise
 `AttributeError`.
 
-When in doubt, check `ops.json` or the [cheat sheet](./cheat-sheet.md).
+When in doubt, check `ops.json` or the [API Reference](./).
 
 **3. Use `we.flops.*` to estimate costs before running.**
 
@@ -158,7 +157,5 @@ as 1 operation.
 
 ## 📎 Related pages
 
-- [FLOP Cost Cheat Sheet](./cheat-sheet.md) — every operation's cost at a glance
-- [Operation Audit](./operation-audit.md) — full 508-operation inventory
-- [Exploit Symmetry](../how-to/exploit-symmetry.md) — detailed symmetry guide
-- [Common Errors](../troubleshooting/common-errors.md) — error messages and fixes
+- [API Reference](./) — full operation inventory and cost reference
+- [Exploit Symmetry](../guides/symmetry) — detailed symmetry guide

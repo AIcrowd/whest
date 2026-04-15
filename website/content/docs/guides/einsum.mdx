@@ -12,7 +12,7 @@ title: "Einsum Patterns"
 
 ## Prerequisites
 
-- [Your First Budget](../getting-started/first-budget.md)
+- [Quickstart](../getting-started/quickstart)
 
 ## Common patterns
 
@@ -95,7 +95,7 @@ with we.BudgetContext(flop_budget=10**8) as budget:
     # C can now be passed to other operations with automatic cost savings
 ```
 
-For the full symmetry guide, see [Exploit Symmetry Savings](./exploit-symmetry.md).
+For the full symmetry guide, see [Exploit Symmetry Savings](./symmetry).
 
 ## Inspecting costs
 
@@ -112,7 +112,7 @@ print(info)
 # FLOPs, savings percentage, BLAS label, unique/dense element counts, and
 # the symmetry transformation. See the Exploit Symmetry guide for a
 # worked example:
-# https://github.com/AIcrowd/whest/blob/main/docs/how-to/exploit-symmetry.md#example
+# See the Symmetry guide: /docs/guides/symmetry
 
 # Call info.format_table(verbose=True) to get an indented detail row per
 # step with the merged operand subset, the intermediate's output shape,
@@ -203,7 +203,7 @@ we.configure(einsum_path_cache_size=8192)
 
 ## 📎 Related pages
 
-- [Exploit Symmetry](./exploit-symmetry.md) — full guide to symmetry mechanisms
+- [Exploit Symmetry](./symmetry) — full guide to symmetry mechanisms
 - [API Reference](../api/) — algorithms, symmetry support, and operation details
-- [Plan Your Budget](./plan-your-budget.md) — query costs before executing
-- [FLOP Counting Model](../concepts/flop-counting-model.md) — how costs are computed
+- [Plan Your Budget](./budget-planning) — query costs before executing
+- [FLOP Counting Model](../understanding/flop-counting-model) — how costs are computed
