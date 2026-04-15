@@ -1,0 +1,174 @@
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/shadcn.css';
+@import 'fumadocs-ui/css/preset.css';
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+html {
+  scrollbar-gutter: stable;
+}
+
+html > body[data-scroll-locked] {
+  margin-right: 0px !important;
+  --removed-body-scroll-bar-size: 0px !important;
+}
+
+@theme inline {
+  --font-heading: var(--font-sans);
+  --font-sans: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  /* whestbench-explorer palette */
+  --background: oklch(1 0 0);                      /* #FFFFFF */
+  --foreground: oklch(0.291 0.005 219.9);           /* gray-900 #292C2D */
+  --card: oklch(1 0 0);                             /* #FFFFFF */
+  --card-foreground: oklch(0.291 0.005 219.9);      /* gray-900 */
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.291 0.005 219.9);
+  --primary: oklch(0.654 0.195 25.9);               /* coral #F0524D */
+  --primary-foreground: oklch(1 0 0);                /* white */
+  --secondary: oklch(0.981 0.001 201.2);             /* gray-50 #F8F9F9 */
+  --secondary-foreground: oklch(0.291 0.005 219.9);  /* gray-900 */
+  --muted: oklch(0.963 0.004 248.2);                 /* gray-100 #F1F3F5 */
+  --muted-foreground: oklch(0.484 0.003 229.3);      /* gray-600 #5D5F60 */
+  --accent: oklch(0.970 0.013 22.9);                 /* coral-light #FEF2F1 */
+  --accent-foreground: oklch(0.291 0.005 219.9);     /* gray-900 */
+  --destructive: oklch(0.575 0.191 27.0);            /* coral-hover #D23934 */
+  --border: oklch(0.892 0.003 198.3);                /* gray-200 #D9DCDC */
+  --input: oklch(0.892 0.003 198.3);                 /* gray-200 */
+  --ring: oklch(0.654 0.195 25.9);                   /* coral (focus ring) */
+  --chart-1: oklch(0.654 0.195 25.9);               /* coral */
+  --chart-2: oklch(0.686 0.172 151.7);               /* success #23B761 */
+  --chart-3: oklch(0.776 0.157 64.7);                /* warning #FA9E33 */
+  --chart-4: oklch(0.743 0.003 229.6);               /* gray-400 */
+  --chart-5: oklch(0.484 0.003 229.3);               /* gray-600 */
+  --radius: 0.5rem;
+  --sidebar: oklch(0.981 0.001 201.2);               /* gray-50 #F8F9F9 */
+  --sidebar-foreground: oklch(0.291 0.005 219.9);    /* gray-900 */
+  --sidebar-primary: oklch(0.654 0.195 25.9);        /* coral */
+  --sidebar-primary-foreground: oklch(1 0 0);         /* white */
+  --sidebar-accent: oklch(0.970 0.013 22.9);          /* coral-light #FEF2F1 */
+  --sidebar-accent-foreground: oklch(0.291 0.005 219.9);
+  --sidebar-border: oklch(0.892 0.003 198.3);         /* gray-200 */
+  --sidebar-ring: oklch(0.654 0.195 25.9);             /* coral */
+}
+
+.dark {
+  /* whestbench palette — dark mode */
+  --background: oklch(0.205 0.005 220);              /* dark bg */
+  --foreground: oklch(0.963 0.004 248.2);            /* gray-100 as text */
+  --card: oklch(0.250 0.005 220);
+  --card-foreground: oklch(0.963 0.004 248.2);
+  --popover: oklch(0.250 0.005 220);
+  --popover-foreground: oklch(0.963 0.004 248.2);
+  --primary: oklch(0.694 0.195 25.9);                /* slightly lighter coral */
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.291 0.005 219.9);
+  --secondary-foreground: oklch(0.963 0.004 248.2);
+  --muted: oklch(0.291 0.005 219.9);
+  --muted-foreground: oklch(0.743 0.003 229.6);      /* gray-400 */
+  --accent: oklch(0.350 0.020 25.9);                  /* dark coral tint */
+  --accent-foreground: oklch(0.963 0.004 248.2);
+  --destructive: oklch(0.654 0.195 25.9);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.654 0.195 25.9);                    /* coral */
+  --chart-1: oklch(0.654 0.195 25.9);
+  --chart-2: oklch(0.686 0.172 151.7);
+  --chart-3: oklch(0.776 0.157 64.7);
+  --chart-4: oklch(0.743 0.003 229.6);
+  --chart-5: oklch(0.484 0.003 229.3);
+  --sidebar: oklch(0.230 0.005 220);
+  --sidebar-foreground: oklch(0.963 0.004 248.2);
+  --sidebar-primary: oklch(0.694 0.195 25.9);         /* coral */
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.350 0.020 25.9);
+  --sidebar-accent-foreground: oklch(0.963 0.004 248.2);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.654 0.195 25.9);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+/* Code block styling is handled by Shiki themes in source.config.ts */
+
+/* ── Spacious Apple-like feel ───────────────────────── */
+.prose {
+  max-width: 720px;
+}
+
+/* Fix 1: Heading hierarchy — widen gap between H1 and H2 */
+.prose h1 {
+  font-size: 2rem; /* 32px vs H2's 24px */
+}
+
+/* Code block background: let Shiki's github theme handle it */
+
+/* Fix 3: Inline code — coral tint background, no border */
+.prose code:not(pre code) {
+  font-size: 0.875em;
+  background: var(--accent);
+  color: hsl(var(--primary));
+  border: none;
+}
+
+/* Fix 4: Breadcrumb-to-H1 spacing */
+.prose h1:first-child {
+  margin-top: 1rem;
+}
+
+/* Increase content padding for breathing room */
+main {
+  padding-top: 1rem;
+}

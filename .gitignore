@@ -35,6 +35,11 @@ htmlcov/
 # mkdocs generated site
 site/
 
+# Website (Fumadocs / Next.js)
+website/node_modules/
+website/.next/
+website/out/
+
 # Claude Code session data
 .claude/
 

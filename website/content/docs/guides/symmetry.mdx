@@ -1,0 +1,118 @@
+---
+title: "Symmetry Savings"
+---
+
+*Reduce FLOP costs when your tensors have symmetry.*
+
+**You will learn:**
+- How to create a `SymmetricTensor` with `we.as_symmetric()`
+- How to declare custom symmetries with `PermutationGroup`
+- How symmetry automatically reduces operation costs
+- Common pitfalls when working with symmetric tensors
+
+## Why symmetry matters
+
+Many computations involve symmetric tensors -- covariance matrices, quadratic forms, moment tensors. A symmetric n x n matrix has only `n*(n+1)/2` unique elements instead of `n^2`. When whest knows a tensor is symmetric, it charges FLOP costs based on unique elements rather than total elements, giving substantial savings:
+
+| Operation | Standard cost | Symmetric cost | Savings |
+|-----------|--------------|----------------|---------|
+| `we.exp(S)` on 100x100 | 10,000 | 5,050 | 49.5% |
+| `we.einsum('ki,kj->ij', X, X)` | m * n^2 | m * n*(n+1)/2 | ~50% |
+
+## Creating a SymmetricTensor
+
+Wrap an existing symmetric array with `we.as_symmetric()`:
+
+```python
+import whest as we
+
+data = we.array([[2.0, 1.0], [1.0, 3.0]])
+S = we.as_symmetric(data, symmetric_axes=(0, 1))
+```
+
+`as_symmetric` validates that the data is actually symmetric (within tolerance `atol=1e-6, rtol=1e-5`). If it is not, `SymmetryError` is raised.
+
+For higher-order tensors with partial symmetry, pass a list of axis groups:
+
+```python
+# 4-tensor where axes (0,1) and (2,3) are each separately symmetric
+S = we.as_symmetric(data, symmetric_axes=[(0, 1), (2, 3)])
+```
+
+Several creation functions return `SymmetricTensor` automatically when the result is symmetric by construction:
+
+```python
+I = we.eye(10)          # SymmetricTensor, axes (0, 1)
+D = we.diag(v)          # SymmetricTensor if v is 1D and k == 0
+Z = we.zeros((10, 10))  # SymmetricTensor (square)
+```
+
+## Automatic cost savings
+
+Once a tensor is wrapped as `SymmetricTensor`, all downstream operations automatically get reduced costs:
+
+```python
+with we.BudgetContext(flop_budget=10**8) as budget:
+    S = we.eye(10)  # eye returns a SymmetricTensor
+
+    # Pointwise: costs 55 FLOPs (10*11/2 unique elements) instead of 100
+    result = we.exp(S)
+    print(f"exp cost: {budget.flops_used}")  # 55
+```
+
+Symmetry also works with einsum. Use `symmetric_axes` to declare that the output is symmetric:
+
+```python
+# C = X^T @ X is symmetric -- declare it for automatic savings
+C = we.einsum('ki,kj->ij', X, X, symmetric_axes=[(0, 1)])
+# C is now a SymmetricTensor -- downstream ops benefit automatically
+```
+
+When you pass the same Python object as multiple operands, whest detects the repetition automatically and derives output symmetry without any declaration:
+
+```python
+X = we.ones((100, 100))
+# Both operands are the same object -- S2{j,k} detected automatically
+R = we.einsum("ij,ik->jk", X, X)
+# ~1/2 dense cost because R[j,k] = R[k,j]
+```
+
+## Declaring custom symmetries
+
+The `symmetric_axes` parameter declares the full symmetric group S_k -- meaning any rearrangement of those axes preserves the tensor. Some tensors have weaker symmetry. For example, a tensor with cyclic symmetry (rotations only, not reflections) has group C_3, not S_3.
+
+Use `PermutationGroup` for non-S_k symmetries:
+
+```python
+import whest as we
+
+# Cyclic symmetry C_3 on axes 0, 1, 2
+T = we.as_symmetric(data, symmetry=we.PermutationGroup.cyclic(3, axes=(0, 1, 2)))
+
+# Inspect the group
+T.symmetry_info.groups[0].order()          # 3
+T.symmetry_info.groups[0].is_symmetric()   # False (not full S_3)
+T.symmetry_info.unique_elements            # exact via Burnside's lemma
+```
+
+A weaker symmetry group means more unique elements and less cost reduction. For 3 axes with n=10:
+
+| Group | Unique elements | Reduction |
+|-------|----------------|-----------|
+| S_3 (full symmetric) | 220 | 78% saved |
+| C_3 (cyclic only) | 340 | 66% saved |
+| No symmetry | 1,000 | 0% saved |
+
+## Common pitfalls
+
+**`SymmetryError` when wrapping:** The data must actually be symmetric within tolerance. Check your computation or use a tighter numerical method.
+
+**Expected `SymmetricTensor` but got plain ndarray:** Symmetry propagation is conservative. Operations like matmul (`S @ T`) always strip symmetry because the result is not guaranteed symmetric. If you know the result is symmetric, re-wrap with `we.as_symmetric()`.
+
+**`SymmetryLossWarning` appearing unexpectedly:** This warning tells you symmetry metadata was lost. Check whether the result is still symmetric -- if so, re-tag with `as_symmetric()`. To suppress: `we.configure(symmetry_warnings=False)`.
+
+**Using `X.copy()` instead of `X` for repeated operands:** Automatic symmetry detection uses Python identity (`is`). `X` and `X` are detected as the same object; `X` and `X.copy()` are not. Pass the same reference to trigger automatic savings.
+
+## Going deeper
+
+For the full algorithm behind symmetry detection -- the bipartite graph representation, sigma-loop, and Burnside counting -- see [Symmetry Detection Deep Dive](/docs/understanding/symmetry-detection).

@@ -1,0 +1,11 @@
+{
+  "title": "Guides",
+  "pages": [
+    "migrate-from-numpy",
+    "einsum",
+    "symmetry",
+    "linalg",
+    "fft",
+    "budget-planning"
+  ]
+}
