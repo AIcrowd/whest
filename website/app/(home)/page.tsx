@@ -64,11 +64,11 @@ export default function HomePage() {
   return (
     <main>
       {/* Hero */}
-      <section className="bg-gradient-to-b from-red-50 to-white text-center py-20 px-6">
-        <h1 className="text-5xl font-bold tracking-tight text-gray-900 mb-4 leading-tight">
+      <section className="bg-gradient-to-b from-red-50 to-white dark:from-[#1a1020] dark:to-transparent text-center py-20 px-6">
+        <h1 className="text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4 leading-tight">
           Count every FLOP.
         </h1>
-        <p className="text-lg text-gray-500 max-w-xl mx-auto mb-8 leading-relaxed">
+        <p className="text-lg text-gray-500 dark:text-gray-400 max-w-xl mx-auto mb-8 leading-relaxed">
           NumPy-compatible math primitives with analytical FLOP counting. Set
           budgets, track costs, and understand your compute.
         </p>
@@ -81,12 +81,12 @@ export default function HomePage() {
           </Link>
           <Link
             href="/docs/api"
-            className="border border-gray-200 text-gray-900 px-6 py-2.5 rounded-lg font-semibold hover:border-[#F0524D] hover:text-[#F0524D] transition-all no-underline"
+            className="border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 px-6 py-2.5 rounded-lg font-semibold hover:border-[#F0524D] hover:text-[#F0524D] transition-all no-underline"
           >
             API Reference
           </Link>
         </div>
-        <code className="inline-block bg-[#0F1B2D] text-[#E8F0FE] px-5 py-2.5 rounded-lg font-mono text-sm">
+        <code className="inline-block bg-[#0F1B2D] text-[#E8F0FE] px-5 py-2.5 rounded-lg font-mono text-sm max-w-full overflow-x-auto">
           uv add git+https://github.com/AIcrowd/whest.git
         </code>
       </section>
@@ -98,10 +98,10 @@ export default function HomePage() {
             <span className="text-4xl font-bold text-[#F0524D] leading-none mb-2">
               {f.number}
             </span>
-            <span className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">
+            <span className="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-3">
               {f.label}
             </span>
-            <p className="text-sm text-gray-500 max-w-[280px] m-0 leading-relaxed">
+            <p className="text-sm text-gray-500 dark:text-gray-400 max-w-[280px] m-0 leading-relaxed">
               {f.desc}
             </p>
           </div>
@@ -110,7 +110,7 @@ export default function HomePage() {
 
       {/* Code example */}
       <section className="max-w-2xl mx-auto px-6 pb-16">
-        <h2 className="text-center text-2xl font-bold tracking-tight text-gray-900 mb-6">
+        <h2 className="text-center text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-6">
           See it in action
         </h2>
         <pre className="bg-[#0F1B2D] text-[#E8F0FE] rounded-xl p-5 overflow-x-auto text-sm leading-relaxed">
@@ -120,7 +120,7 @@ export default function HomePage() {
 
       {/* Navigation cards */}
       <section className="max-w-4xl mx-auto px-6 pb-20">
-        <h2 className="text-center text-2xl font-bold tracking-tight text-gray-900 mb-8">
+        <h2 className="text-center text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-8">
           Explore the docs
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -128,7 +128,7 @@ export default function HomePage() {
             <Link
               key={card.title}
               href={card.link}
-              className="group relative border border-gray-200 rounded-xl p-6 no-underline text-inherit hover:border-[#F0524D] hover:-translate-y-0.5 transition-all hover:shadow-md"
+              className="group relative border border-gray-200 dark:border-gray-700 rounded-xl p-6 no-underline text-inherit hover:border-[#F0524D] hover:-translate-y-0.5 transition-all hover:shadow-md"
             >
               <span
                 className="absolute top-5 right-5 text-lg text-gray-400 transition-all group-hover:translate-x-1 group-hover:text-[#F0524D]"
@@ -136,10 +136,10 @@ export default function HomePage() {
               >
                 &rarr;
               </span>
-              <div className="text-base font-semibold text-gray-900 mb-1.5">
+              <div className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-1.5">
                 {card.title}
               </div>
-              <p className="text-sm text-gray-500 m-0 leading-relaxed">
+              <p className="text-sm text-gray-500 dark:text-gray-400 m-0 leading-relaxed">
                 {card.desc}
               </p>
             </Link>

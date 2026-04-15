@@ -43,6 +43,7 @@ with we.BudgetContext(flop_budget=1_000_000) as budget:
     # Frequency bins (free)
     freqs = we.fft.fftfreq(1024)
 
+    # Total: randn 1,024 + fft 51,200 + ifft 51,200 + fftfreq 0 = 103,424
     print(f"Total FFT cost: {budget.flops_used:,}")  # 103,424
 ```
 

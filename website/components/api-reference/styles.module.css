@@ -23,12 +23,12 @@
   flex: 1;
   min-width: 200px;
   padding: 0.5rem 0.75rem;
-  border: 1px solid #E3E8EE;
+  border: 1px solid hsl(var(--border));
   border-radius: 6px;
   font-size: 0.875rem;
   font-family: inherit;
-  background: #FFFFFF;
-  color: #292C2D;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
   transition: all 0.15s ease;
 }
 
@@ -40,12 +40,12 @@
 
 .moduleSelect {
   padding: 0.5rem 0.75rem;
-  border: 1px solid #E3E8EE;
+  border: 1px solid hsl(var(--border));
   border-radius: 6px;
   font-size: 0.875rem;
   font-family: inherit;
-  background: #FFFFFF;
-  color: #292C2D;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
   min-width: 160px;
   transition: all 0.15s ease;
 }
@@ -59,7 +59,7 @@
 .toggleGroup {
   display: flex;
   gap: 0;
-  border: 1px solid #E3E8EE;
+  border: 1px solid hsl(var(--border));
   border-radius: 6px;
   overflow: hidden;
 }
@@ -67,12 +67,12 @@
 .toggleBtn {
   padding: 0.35rem 0.85rem;
   border: none;
-  background: #FFFFFF;
-  color: #484B4D;
+  background: hsl(var(--background));
+  color: hsl(var(--muted-foreground));
   font-size: 0.8rem;
   font-family: inherit;
   cursor: pointer;
-  border-right: 1px solid #E3E8EE;
+  border-right: 1px solid hsl(var(--border));
   transition: all 0.15s ease;
 }
 
@@ -81,7 +81,7 @@
 }
 
 .toggleBtn:hover {
-  background: #F6F8FA;
+  background: hsl(var(--secondary));
 }
 
 .toggleBtnActive {
@@ -95,7 +95,7 @@
 
 .resultCount {
   font-size: 0.82rem;
-  color: #484B4D;
+  color: hsl(var(--muted-foreground));
   white-space: nowrap;
   margin-left: auto;
 }
@@ -105,7 +105,7 @@
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   max-width: calc(100vw - 2rem);
-  border: 1px solid #E3E8EE;
+  border: 1px solid hsl(var(--border));
   border-radius: 8px;
 }
 
@@ -120,17 +120,17 @@
 .opsTable thead th {
   position: sticky;
   top: 0;
-  background: #F6F8FA;
+  background: hsl(var(--secondary));
   font-weight: 600;
   text-align: left;
   padding: 10px 16px;
-  border-bottom: 2px solid #E3E8EE;
+  border-bottom: 2px solid hsl(var(--border));
   white-space: nowrap;
 }
 
 .opsTable td {
   padding: 10px 16px;
-  border-bottom: 1px solid #F6F8FA;
+  border-bottom: 1px solid hsl(var(--secondary));
   vertical-align: middle;
 }
 
@@ -141,11 +141,11 @@
 }
 
 .opRow:hover {
-  background: #FAFBFC;
+  background: hsl(var(--muted));
 }
 
 .opRowExpanded {
-  background: #FAFBFC;
+  background: hsl(var(--muted));
 }
 
 .opName code {
@@ -156,14 +156,14 @@
 }
 
 .opModule {
-  color: #484B4D;
+  color: hsl(var(--muted-foreground));
 }
 
 .opFormula code {
   font-size: 0.78rem;
   background: none;
   padding: 0;
-  color: #484B4D;
+  color: hsl(var(--muted-foreground));
 }
 
 /* ── Arrow ────────────────────────────────────────────── */
@@ -175,7 +175,7 @@
 .arrow {
   display: inline-block;
   font-size: 0.65rem;
-  color: #484B4D;
+  color: hsl(var(--muted-foreground));
   transition: transform 0.15s;
 }
 
@@ -186,8 +186,8 @@
 /* ── Detail row ───────────────────────────────────────── */
 .detailRow td {
   padding: 0.75rem 1rem;
-  background: #FAFBFC;
-  border-bottom: 2px solid #E3E8EE;
+  background: hsl(var(--muted));
+  border-bottom: 2px solid hsl(var(--border));
 }
 
 .detailGrid {
@@ -211,7 +211,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: #AAACAD;
+  color: hsl(var(--muted-foreground));
 }
 
 /* ── Badge ────────────────────────────────────────────── */
@@ -268,6 +268,6 @@
 .noResults {
   text-align: center;
   padding: 2rem;
-  color: #484B4D;
+  color: hsl(var(--muted-foreground));
   font-style: italic;
 }
