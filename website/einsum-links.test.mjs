@@ -14,5 +14,6 @@ test('einsum guide links to the current symmetry guide path', async () => {
   const source = await readFile(einsumGuidePath, 'utf8');
 
   assert.doesNotMatch(source, /exploit-symmetry\.md/);
+  assert.doesNotMatch(source, /\[Exploit Symmetry(?: Savings)?\]\(\.\/symmetry\)/);
   assert.match(source, /\[Symmetry Savings\]\(\.\/symmetry\)/);
 });
