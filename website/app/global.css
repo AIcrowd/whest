@@ -153,10 +153,7 @@ html > body[data-scroll-locked] {
   font-size: 2rem; /* 32px vs H2's 24px */
 }
 
-/* Fix 2: Code block background — subtle tint to distinguish from page */
-.prose pre {
-  background: var(--muted) !important;
-}
+/* Code block background: let Shiki's github theme handle it */
 
 /* Fix 3: Inline code size — bump from 13px to 14px */
 .prose code:not(pre code) {
