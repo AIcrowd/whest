@@ -1,10 +1,10 @@
 #!/usr/bin/env python
-"""generate_api_docs.py — Generate API reference pages and verify coverage.
+"""generate_api_docs.py — Generate API reference data and verify coverage.
 
 Usage
 -----
-    python scripts/generate_api_docs.py              # generate all docs
-    python scripts/generate_api_docs.py --verify     # check coverage only
+    python scripts/generate_api_docs.py              # generate API data
+    python scripts/generate_api_docs.py --verify     # verify API data only
 """
 
 from __future__ import annotations
@@ -21,6 +21,11 @@ from pathlib import Path
 # Paths
 # ---------------------------------------------------------------------------
 ROOT = Path(__file__).resolve().parent.parent
+WEBSITE = ROOT / "website"
+PUBLIC_DIR = WEBSITE / "public"
+API_INDEX_PATH = WEBSITE / "content" / "docs" / "api" / "index.mdx"
+# Legacy MkDocs paths kept for helper functions that are no longer invoked by
+# the current docs pipeline. The active build path only emits website/public/ops.json.
 DOCS = ROOT / "docs"
 API_DIR = DOCS / "api"
 REF_DIR = DOCS / "reference"
@@ -542,7 +547,7 @@ def generate_audit_page(registry: dict[str, dict]) -> None:
 
 
 def generate_ops_json(registry: dict[str, dict]) -> None:
-    """Generate docs/ops.json — machine-readable operation manifest."""
+    """Generate website/public/ops.json — machine-readable operation manifest."""
     # Load empirical weights if available
     weights_path = ROOT / "src" / "whest" / "data" / "weights.json"
     weights: dict[str, float] = {}
@@ -571,7 +576,8 @@ def generate_ops_json(registry: dict[str, dict]) -> None:
                 "weight": weights.get(name, 1.0),
             }
         )
-    out = DOCS / "ops.json"
+    PUBLIC_DIR.mkdir(parents=True, exist_ok=True)
+    out = PUBLIC_DIR / "ops.json"
     out.write_text(json.dumps({"operations": ops, "total": len(ops)}, indent=2))
     print(f"  Generated ops.json ({len(ops)} operations)")
 
@@ -709,102 +715,28 @@ def extract_directives_from_file(path: Path) -> list[str]:
 
 
 def verify_coverage(registry: dict[str, dict]) -> bool:
-    """Verify that every non-blacklisted op is covered by an API doc page."""
-    # Collect all non-blacklisted ops grouped by registry module
-    ops_by_module: dict[str, set[str]] = {}
-    for name, info in registry.items():
-        if info["category"] == "blacklisted":
-            continue
-        module = info["module"]
-        ops_by_module.setdefault(module, set()).add(name)
-
-    # Collect all modules referenced by ::: directives across all API pages
-    covered_modules: dict[str, set[str]] = {}  # directive → set of public names
-    for md_file in API_DIR.glob("*.md"):
-        for directive in extract_directives_from_file(md_file):
-            names = get_module_public_names(directive)
-            # Handle single-function directives like whest._einsum.einsum
-            if not names:
-                # Could be a function path like whest._einsum.einsum
-                parts = directive.rsplit(".", 1)
-                if len(parts) == 2:
-                    mod_path, func_name = parts
-                    try:
-                        mod = importlib.import_module(mod_path)
-                        if hasattr(mod, func_name):
-                            names = {func_name}
-                    except ImportError:
-                        pass
-            covered_modules[directive] = names
-
-    all_covered_names: set[str] = set()
-    for names in covered_modules.values():
-        all_covered_names.update(names)
-
-    # Also add random.* ops — the random module uses __getattr__ passthrough,
-    # so we check that random ops are covered if whest.random directive exists
-    random_directive_exists = any("whest.random" in d for d in covered_modules)
-    if random_directive_exists:
-        for name, info in registry.items():
-            if info["module"] == "numpy.random" and info["category"] != "blacklisted":
-                # Strip the "random." prefix for matching
-                bare_name = name.removeprefix("random.")
-                all_covered_names.add(name)
-                all_covered_names.add(bare_name)
-
-    # Also add stats.* ops — distribution methods (pdf/cdf/ppf) are registered
-    # as e.g. "stats.cauchy.cdf" but the docs reference the module containing
-    # the distribution class (whest.stats._cauchy).  Mark stats ops as
-    # covered when the corresponding module directive exists.
-    stats_directive_modules = {d for d in covered_modules if "whest.stats._" in d}
-    if stats_directive_modules:
-        for name, info in registry.items():
-            if (
-                info["module"] == "whest.stats"
-                and info["category"] != "blacklisted"
-                and name.startswith("stats.")
-            ):
-                # e.g. "stats.cauchy.cdf" → check whest.stats._cauchy
-                parts = name.split(".")
-                if len(parts) >= 3:
-                    dist_module = f"whest.stats._{parts[1]}"
-                    if dist_module in stats_directive_modules:
-                        all_covered_names.add(name)
-
-    # Check: which non-blacklisted ops are missing?
-    missing = []
-    for name, info in sorted(registry.items()):
-        if info["category"] == "blacklisted":
-            continue
-
-        # Check if the op name (possibly prefixed) is covered
-        bare = name.split(".")[-1]  # e.g., "linalg.svd" → "svd"
-        if name in all_covered_names or bare in all_covered_names:
-            continue
-
-        missing.append((name, info["category"], info["module"]))
-
-    if missing:
-        print(f"\nMISSING from API docs ({len(missing)} ops):\n")
-        for name, cat, mod in missing:
-            print(f"  {name:40s} {cat:20s} {mod}")
-        print("\nRun 'python scripts/generate_api_docs.py' to regenerate.")
+    """Verify the generated API reference data matches the registry."""
+    if not API_INDEX_PATH.exists():
+        print(f"\nAPI index NOT FOUND at {API_INDEX_PATH}")
         return False
-    else:
-        total_non_bl = sum(
-            1 for i in registry.values() if i["category"] != "blacklisted"
-        )
-        print(
-            f"\nAll {total_non_bl} non-blacklisted operations are covered in API docs."
-        )
 
-    # Verify ops.json exists and covers all ops
-    ops_json_path = DOCS / "ops.json"
+    api_index = API_INDEX_PATH.read_text()
+    if "<ApiReference />" not in api_index:
+        print(f"\nAPI index at {API_INDEX_PATH} no longer renders <ApiReference />")
+        return False
+
+    print("API index renders the interactive ApiReference component.")
+
+    ops_json_path = PUBLIC_DIR / "ops.json"
     if not ops_json_path.exists():
         print(f"\nops.json NOT FOUND at {ops_json_path}")
         return False
 
     ops_data = json.loads(ops_json_path.read_text())
+    if "operations" not in ops_data:
+        print(f"\nops.json missing 'operations' key at {ops_json_path}")
+        return False
+
     ops_names = {op["name"] for op in ops_data["operations"]}
     registry_names = set(registry.keys())
     missing_from_json = registry_names - ops_names
@@ -813,8 +745,8 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
         for name in sorted(missing_from_json):
             print(f"  {name}")
         return False
-    else:
-        print(f"ops.json covers all {len(ops_names)} operations.")
+
+    print(f"ops.json covers all {len(ops_names)} operations.")
 
     return True
 
@@ -826,7 +758,7 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Generate API docs from whest registry"
+        description="Generate API reference data from the whest registry"
     )
     parser.add_argument(
         "--verify", action="store_true", help="Verify coverage only (no generation)"
@@ -839,23 +771,8 @@ def main():
         ok = verify_coverage(registry)
         sys.exit(0 if ok else 1)
 
-    print("Generating API reference pages...")
-
-    # Generate new submodule pages
-    for page_path, page_info in GENERATED_PAGES.items():
-        generate_api_page(page_path, page_info)
-
-    # Update counted-ops to include polynomial/window/unwrap
-    update_counted_ops_page(registry)
-
-    # Generate audit page
-    generate_audit_page(registry)
-
-    # Generate ops.json
+    print("Generating API reference data...")
     generate_ops_json(registry)
-
-    # Generate cheat sheet
-    generate_cheat_sheet(registry)
 
     print("\nDone. Run with --verify to check coverage.")
 
