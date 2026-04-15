@@ -32,39 +32,96 @@ SKIP_FILES = {"index.md"}
 # Navigation ordering derived from mkdocs.yml.
 # Maps directory name → (position, sidebar label, [ordered page stems]).
 NAV_ORDER: dict[str, tuple[int, str, list[str]]] = {
-    "getting-started": (1, "Getting Started", [
-        "installation", "first-budget",
-    ]),
-    "how-to": (2, "How-To Guides", [
-        "migrate-from-numpy", "use-einsum", "exploit-symmetry",
-        "use-linalg", "use-fft", "plan-your-budget",
-        "calibrate-weights", "debug-budget-overruns",
-    ]),
-    "concepts": (3, "Concepts", [
-        "flop-counting-model", "operation-categories",
-        "numpy-compatibility-testing",
-    ]),
-    "architecture": (4, "Architecture", [
-        "client-server", "docker",
-    ]),
-    "explanation": (5, "Explanation", [
-        "subgraph-symmetry", "symmetry-explorer",
-    ]),
-    "development": (6, "Development", [
-        "contributing",
-    ]),
-    "api": (7, "API Reference", [
-        "counted-ops", "free-ops", "symmetric", "linalg", "fft",
-        "random", "stats", "polynomial", "window", "budget",
-        "flops", "opt-einsum", "errors",
-    ]),
-    "reference": (8, "Reference", [
-        "for-agents", "operation-audit", "empirical-weights",
-        "cheat-sheet",
-    ]),
-    "troubleshooting": (9, "Troubleshooting", [
-        "common-errors",
-    ]),
+    "getting-started": (
+        1,
+        "Getting Started",
+        [
+            "installation",
+            "first-budget",
+        ],
+    ),
+    "how-to": (
+        2,
+        "How-To Guides",
+        [
+            "migrate-from-numpy",
+            "use-einsum",
+            "exploit-symmetry",
+            "use-linalg",
+            "use-fft",
+            "plan-your-budget",
+            "calibrate-weights",
+            "debug-budget-overruns",
+        ],
+    ),
+    "concepts": (
+        3,
+        "Concepts",
+        [
+            "flop-counting-model",
+            "operation-categories",
+            "numpy-compatibility-testing",
+        ],
+    ),
+    "architecture": (
+        4,
+        "Architecture",
+        [
+            "client-server",
+            "docker",
+        ],
+    ),
+    "explanation": (
+        5,
+        "Explanation",
+        [
+            "subgraph-symmetry",
+            "symmetry-explorer",
+        ],
+    ),
+    "development": (
+        6,
+        "Development",
+        [
+            "contributing",
+        ],
+    ),
+    "api": (
+        7,
+        "API Reference",
+        [
+            "counted-ops",
+            "free-ops",
+            "symmetric",
+            "linalg",
+            "fft",
+            "random",
+            "stats",
+            "polynomial",
+            "window",
+            "budget",
+            "flops",
+            "opt-einsum",
+            "errors",
+        ],
+    ),
+    "reference": (
+        8,
+        "Reference",
+        [
+            "for-agents",
+            "operation-audit",
+            "empirical-weights",
+            "cheat-sheet",
+        ],
+    ),
+    "troubleshooting": (
+        9,
+        "Troubleshooting",
+        [
+            "common-errors",
+        ],
+    ),
 }
 
 # Sidebar labels for individual pages (from mkdocs.yml nav entries).
@@ -283,12 +340,12 @@ def migrate(*, dry_run: bool = False) -> None:
         if cat is None:
             continue
         cat_path = DST_DOCS / dir_name / "_category_.json"
-        print(f"  {dir_name}/_category_.json  (label={cat['label']!r}, position={cat['position']})")
+        print(
+            f"  {dir_name}/_category_.json  (label={cat['label']!r}, position={cat['position']})"
+        )
         if not dry_run:
             cat_path.parent.mkdir(parents=True, exist_ok=True)
-            cat_path.write_text(
-                json.dumps(cat, indent=2) + "\n", encoding="utf-8"
-            )
+            cat_path.write_text(json.dumps(cat, indent=2) + "\n", encoding="utf-8")
 
     print(f"\n{'[DRY RUN] ' if dry_run else ''}Done.")
 
