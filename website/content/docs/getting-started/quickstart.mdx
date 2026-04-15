@@ -1,0 +1,91 @@
+---
+title: "Quickstart"
+---
+
+*Run your first FLOP-counted computation in under 2 minutes.*
+
+**You will learn:**
+- How to run a FLOP-counted computation with the global default budget
+- How to read the budget summary output
+
+## Prerequisites
+
+- [Installation](./installation.md)
+
+## Quickest possible start
+
+You do not need to set up a budget context to start counting FLOPs. whest activates a global default context the first time any counted operation runs. The default budget is 1e15 FLOPs (configurable via the `WHEST_DEFAULT_BUDGET` environment variable).
+
+Save this as `first_budget.py`:
+
+```python
+import math
+import whest as we
+
+depth = 10   # number of layers
+width = 256  # hidden dimension
+
+# No BudgetContext needed — the global default activates automatically
+scale = math.sqrt(2.0 / width)   # Kaiming init scale; free (no FLOPs)
+weights = [
+    we.array(we.random.randn(width, width) * scale)
+    for _ in range(depth)
+]
+x = we.random.randn(width)
+
+h = x
+for W in weights:
+    h = we.einsum('ij,j->i', W, h)  # matrix-vector multiply
+    h = we.maximum(h, 0)             # ReLU activation: counted
+
+result = we.sum(h)                   # reduction: counted
+
+# Print a summary across all namespaces
+we.budget_summary()
+```
+
+Run it:
+
+```bash
+uv run python first_budget.py
+```
+
+## What you'll see
+
+```
+whest FLOP Budget Summary
+==================================================
+  Total budget:    1,000,000,000,000,000
+  Used:                       2,624,512  (0.0%)
+  Remaining:        999,999,997,375,488  (100.0%)
+
+  [(default)]
+    Budget:  1,000,000,000,000,000
+    Used:           2,624,512  (0.0%)
+    Operations:
+      random.randn              655,616  ( 25.0%)  [11 calls]
+      multiply                  655,360  ( 25.0%)  [10 calls]
+      array                     655,360  ( 25.0%)  [10 calls]
+      einsum                    655,360  ( 25.0%)  [10 calls]
+      maximum                     2,560  (  0.1%)  [10 calls]
+      sum                           256  (  0.0%)  [1 call]
+
+  All operations (session total):
+    random.randn              655,616  ( 25.0%)  [11 calls]
+    multiply                  655,360  ( 25.0%)  [10 calls]
+    array                     655,360  ( 25.0%)  [10 calls]
+    einsum                    655,360  ( 25.0%)  [10 calls]
+    maximum                     2,560  (  0.1%)  [10 calls]
+    sum                           256  (  0.0%)  [1 call]
+```
+
+**Reading the output:**
+
+- **Namespace:** `(default)` is the auto-created global context; named contexts appear here once you add them
+- **Used / Remaining:** how much of the budget has been consumed across all calls
+- **By operation:** breakdown of costs per operation type and call count
+- The 10-layer MLP spreads FLOPs roughly equally across `random.randn`, `multiply`, `array`, and `einsum` (~25% each); activations (`maximum`) are comparatively cheap
+
+## Next steps
+
+Ready for budget limits? See the [Competition Guide](/docs/getting-started/competition).
