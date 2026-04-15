@@ -17,6 +17,15 @@ test('Act 1 uses a desktop preset rail and a mobile preset fallback', () => {
   assert.match(chooserSource, /aria-label="Mobile preset examples"/);
   assert.match(chooserSource, /<Button[\s\S]*variant="outline"[\s\S]*h-auto[\s\S]*items-start[\s\S]*justify-start/);
   assert.match(chooserSource, /<span className="flex items-center gap-2">/);
+  assert.match(
+    chooserSource,
+    /activePresetIdx === idx[\s\S]*border-coral bg-coral-light\/50 ring-2 ring-coral\/30[\s\S]*border-gray-200 hover:border-gray-300/,
+  );
+  assert.match(chooserSource, /gap-3 px-4 py-3/);
+  assert.match(chooserSource, /text-sm text-gray-500/);
+  assert.match(chooserSource, /text-sm text-gray-400/);
+  assert.doesNotMatch(chooserSource, /text-\[10px\]/);
+  assert.doesNotMatch(chooserSource, /text-\[11px\]/);
   assert.match(chooserSource, /expectedGroup/);
 });
 
@@ -38,14 +47,24 @@ test('ExampleChooser uses the shared Python code block and the wider 70\\/30 row
   assert.match(codeBlockSource, /Button/);
 });
 
-test('PresetSidebar keeps preset rows compact but still shows the output symmetry', () => {
+test('PresetSidebar widens the rail and uses shared text sizing while still showing the output symmetry', () => {
   const sidebarSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/PresetSidebar.jsx', import.meta.url), 'utf8');
-  assert.match(sidebarSource, /w-\[19rem\]/);
+  assert.match(sidebarSource, /w-\[21rem\]/);
   assert.match(sidebarSource, /px-3\.5 py-3/);
   assert.match(sidebarSource, /Define your own contraction/);
   assert.match(sidebarSource, /Keep the current builder state/);
-  assert.match(sidebarSource, /text-xs text-gray-500/);
-  assert.match(sidebarSource, /text-xs text-gray-400/);
+  assert.match(sidebarSource, /text-xs font-semibold uppercase tracking-\[0\.18em\] text-muted-foreground/);
+  assert.match(sidebarSource, /text-xs font-semibold uppercase tracking-\[0\.18em\]/);
+  assert.match(sidebarSource, /text-sm text-gray-500/);
+  assert.match(sidebarSource, /text-sm text-gray-400/);
+  assert.doesNotMatch(sidebarSource, /text-\[10px\]/);
+  assert.doesNotMatch(sidebarSource, /text-\[11px\]/);
   assert.match(sidebarSource, /CaseBadge/);
   assert.match(sidebarSource, /summary\.expectedGroup/);
+});
+
+test('CaseBadge compact variant uses the shared xs scale instead of micro text sizes', () => {
+  const badgeSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/CaseBadge.jsx', import.meta.url), 'utf8');
+  assert.match(badgeSource, /variant === 'compact'/);
+  assert.match(badgeSource, /h-\[18px\] w-\[18px\] justify-center rounded text-xs font-bold/);
 });

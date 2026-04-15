@@ -290,7 +290,7 @@ export default function ExampleChooser({
         <div className="mt-4 grid gap-3 rounded-xl border border-gray-200 bg-gray-50 p-4 sm:grid-cols-2">
           {checkpointItems.map((item) => (
             <div key={item.label}>
-              <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400">{item.label}</div>
+              <div className="text-sm font-semibold uppercase tracking-[0.18em] text-gray-400">{item.label}</div>
               <div className="mt-1 text-sm text-gray-700">{item.value}</div>
             </div>
           ))}
@@ -299,7 +299,7 @@ export default function ExampleChooser({
 
       <div className="mt-6 space-y-4">
         <div>
-          <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500">Variables</div>
+          <div className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-gray-500">Variables</div>
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
             {variables.map((variable, idx) => {
               const variableColor = varColors[variable.name] || {};
@@ -313,7 +313,7 @@ export default function ExampleChooser({
                 >
                   <div className="mb-1 flex items-center gap-1.5">
                     <Input
-                      className="h-auto w-16 rounded border border-gray-200 px-1.5 py-0.5 text-xs font-mono focus:border-coral focus:ring-coral/30"
+                      className="h-auto w-20 rounded border border-gray-200 px-2.5 py-1.5 text-sm font-mono focus:border-coral focus:ring-coral/30"
                       value={variable.name}
                       onChange={(event) => updateVar(idx, 'name', event.target.value)}
                       placeholder="X"
@@ -325,7 +325,7 @@ export default function ExampleChooser({
                         type="button"
                         variant="outline"
                         size="icon-xs"
-                        className="h-6 w-6 rounded border-gray-200 text-xs hover:bg-gray-50 disabled:opacity-30"
+                        className="h-8 w-8 rounded border-gray-200 text-sm hover:bg-gray-50 disabled:opacity-30"
                         onClick={() => updateVar(idx, 'rank', Math.max(1, variable.rank - 1))}
                         disabled={variable.rank <= 1}
                       >
@@ -336,7 +336,7 @@ export default function ExampleChooser({
                         type="button"
                         variant="outline"
                         size="icon-xs"
-                        className="h-6 w-6 rounded border-gray-200 text-xs hover:bg-gray-50 disabled:opacity-30"
+                        className="h-8 w-8 rounded border-gray-200 text-sm hover:bg-gray-50 disabled:opacity-30"
                         onClick={() => updateVar(idx, 'rank', Math.min(8, variable.rank + 1))}
                         disabled={variable.rank >= 8}
                       >
@@ -365,7 +365,7 @@ export default function ExampleChooser({
                         variant="outline"
                         size="xs"
                         className={cn(
-                          'cursor-pointer rounded-full border px-2 py-0.5 text-[10px] font-medium transition-colors',
+                          'cursor-pointer rounded-full border px-2.5 py-1 text-xs font-medium transition-colors',
                           variable.symmetry === symType
                             ? 'border-gray-900 bg-gray-900 text-white'
                             : 'border-gray-200 bg-white text-gray-600 hover:border-gray-400',
@@ -389,7 +389,7 @@ export default function ExampleChooser({
                             variant="outline"
                             size="icon-xs"
                             className={cn(
-                              'h-6 w-6 rounded-full border text-[10px] font-mono transition-colors',
+                              'h-8 w-8 rounded-full border text-sm font-mono transition-colors',
                               isSelected
                                 ? 'border-gray-900 bg-gray-900 text-white'
                                 : 'border-gray-200 bg-white text-gray-500 hover:border-gray-400',
@@ -408,8 +408,8 @@ export default function ExampleChooser({
                     <ExplorerField
                       label="Generators"
                       className="mb-1"
-                      labelClassName="text-[10px] tracking-[0.18em] text-gray-400"
-                      inputClassName="h-auto border-gray-200 px-2 py-1 text-xs font-mono focus:border-coral focus:ring-coral/30"
+                      labelClassName="text-sm font-semibold uppercase tracking-[0.18em] text-gray-400"
+                      inputClassName="h-auto border-gray-200 px-3 py-1.5 text-sm font-mono focus:border-coral focus:ring-coral/30"
                       value={variable.generators}
                       onChange={(event) => updateVar(idx, 'generators', event.target.value)}
                       placeholder="(0 1)(2 3), (0 2)(1 3)"
@@ -437,7 +437,7 @@ export default function ExampleChooser({
             <Button
               type="button"
               variant="outline"
-              className="self-center border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 transition-colors hover:border-gray-400 hover:bg-gray-50"
+              className="self-center border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 transition-colors hover:border-gray-400 hover:bg-gray-50"
               onClick={addVar}
             >
               + Add Variable
@@ -446,7 +446,7 @@ export default function ExampleChooser({
         </div>
 
         <div>
-          <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500">Expression</div>
+          <div className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-gray-500">Expression</div>
           <div className="my-4">
             <div className="flex flex-wrap items-start gap-2">
               <span className="whitespace-nowrap pt-1.5 font-mono text-sm font-semibold text-coral">einsum(&#39;</span>
@@ -460,7 +460,7 @@ export default function ExampleChooser({
                   onChange={(event) => handleSubscriptsChange(event.target.value.toLowerCase())}
                   placeholder="ia,ib"
                 />
-                <span className="mt-1 text-[9px] font-semibold uppercase tracking-wider text-gray-400">subscripts</span>
+                <span className="mt-1 text-sm font-semibold uppercase tracking-[0.18em] text-gray-400">subscripts</span>
               </div>
               <span className="whitespace-nowrap pt-1.5 font-mono text-sm text-gray-400">&rarr;</span>
               <div className="flex min-w-[60px] flex-1 flex-col items-center">
@@ -473,7 +473,7 @@ export default function ExampleChooser({
                   onChange={(event) => handleOutputChange(event.target.value.toLowerCase())}
                   placeholder="ab"
                 />
-                <span className="mt-1 text-[9px] font-semibold uppercase tracking-wider text-gray-400">output</span>
+                <span className="mt-1 text-sm font-semibold uppercase tracking-[0.18em] text-gray-400">output</span>
               </div>
               <span className="whitespace-nowrap pt-1.5 font-mono text-sm text-gray-400">&#39;,</span>
               <div className="flex min-w-[60px] flex-1 flex-col items-center">
@@ -486,7 +486,7 @@ export default function ExampleChooser({
                   onChange={(event) => handleOperandNamesChange(event.target.value)}
                   placeholder="X, X"
                 />
-                <span className="mt-1 text-[9px] font-semibold uppercase tracking-wider text-gray-400">operands</span>
+                <span className="mt-1 text-sm font-semibold uppercase tracking-[0.18em] text-gray-400">operands</span>
               </div>
               <span className="whitespace-nowrap pt-1.5 font-mono text-sm text-gray-400">)</span>
               <Button
@@ -535,12 +535,12 @@ export default function ExampleChooser({
           >
             <span className="flex items-center gap-2">
               <span className="text-sm font-medium text-gray-900">Custom</span>
-              <span className="rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-gray-500">
+              <span className="rounded-full bg-gray-100 px-2.5 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">
                 Freeform
               </span>
             </span>
-            <code className="mt-1 block text-[11px] text-gray-500">Define your own contraction</code>
-            <span className="mt-1 text-xs text-gray-600">Keep the current builder state and switch into custom mode.</span>
+            <code className="mt-1 block text-sm text-gray-500">Define your own contraction</code>
+            <span className="mt-1 text-sm text-gray-600">Keep the current builder state and switch into custom mode.</span>
           </Button>
 
           {presetSummaries.map((summary, idx) => (
@@ -549,7 +549,12 @@ export default function ExampleChooser({
               type="button"
               variant="outline"
               onClick={() => loadPreset(idx)}
-              className="flex h-auto w-full items-start justify-start gap-3 border-gray-200 px-3 py-2.5 text-left"
+              className={cn(
+                'flex h-auto w-full items-start justify-start gap-3 px-4 py-3 text-left transition-colors',
+                activePresetIdx === idx
+                  ? 'border-coral bg-coral-light/50 ring-2 ring-coral/30'
+                  : 'border-gray-200 hover:border-gray-300',
+              )}
             >
               <span className="mt-0.5 h-full min-h-10 w-1 shrink-0 rounded-full" style={{ backgroundColor: summary.color }} />
               <span className="min-w-0 flex-1">
@@ -557,8 +562,8 @@ export default function ExampleChooser({
                   <span className="truncate text-sm font-medium text-gray-900">{summary.name}</span>
                   {summary.caseType && <CaseBadge caseType={summary.caseType} size="xs" variant="compact" interactive={false} />}
                 </span>
-                <code className="mt-1 block truncate text-[11px] text-gray-500">{summary.formula}</code>
-                <span className="mt-1 block text-[11px] text-gray-400">{summary.expectedGroup}</span>
+                <code className="mt-1 block truncate text-sm text-gray-500">{summary.formula}</code>
+                <span className="mt-1 block text-sm text-gray-400">{summary.expectedGroup}</span>
               </span>
             </Button>
           ))}
