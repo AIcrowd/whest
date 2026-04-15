@@ -141,6 +141,15 @@ jobs:
       - name: Generate API data
         run: uv run python scripts/generate_api_docs.py
 
+      - name: Verify generated API artifacts
+        run: uv run python scripts/generate_api_docs.py --verify
+
+      - name: Check op links
+        run: cd website && node scripts/check-op-links.mjs
+
+      - name: Run website smoke tests
+        run: cd website && node --test generated-api-docs.test.mjs op-ref-lint.test.mjs docs-whest-examples.test.mjs rich-output.test.mjs
+
       - name: Build website
         run: cd website && npm run build
 
