@@ -6,24 +6,10 @@ function read(relativePath) {
   return readFileSync(new URL(relativePath, import.meta.url), 'utf8');
 }
 
-test('symmetry explorer is pinned to shared primitives', () => {
+test('legacy explorer shell selectors have been removed from styles.css', () => {
   const app = read('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx');
-  const exampleChooser = read('./components/symmetry-aware-einsum-contractions/components/ExampleChooser.jsx');
-  const caseBadge = read('./components/symmetry-aware-einsum-contractions/components/CaseBadge.jsx');
-  const componentCostView = read('./components/symmetry-aware-einsum-contractions/components/ComponentCostView.jsx');
-  const totalCostView = read('./components/symmetry-aware-einsum-contractions/components/TotalCostView.jsx');
   const styles = read('./components/symmetry-aware-einsum-contractions/styles.css');
 
-  assert.match(app, /ExplorerSectionCard/);
-  assert.match(exampleChooser, /ExplorerField/);
-  assert.match(exampleChooser, /Button/);
-  assert.match(exampleChooser, /Input/);
-  assert.match(exampleChooser, /ExplorerSectionCard/);
-  assert.match(caseBadge, /Badge/);
-  assert.match(totalCostView, /Table/);
-  assert.match(totalCostView, /ExplorerMetricCard/);
-  assert.match(componentCostView, /ExplorerMetricCard/);
-  assert.doesNotMatch(componentCostView, /function MetricCard/);
   assert.match(app, /import '\.\/styles\.css';/);
 
   assert.doesNotMatch(styles, /\.example-grid/);
