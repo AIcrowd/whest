@@ -3,6 +3,7 @@ import type { MDXComponents } from 'mdx/types';
 import ApiReference from './api-reference';
 import SymmetryExplorer from './symmetry-explorer';
 import SortableTable from './shared/SortableTable';
+import Mermaid from './mermaid';
 
 export function getMDXComponents(components?: MDXComponents) {
   return {
@@ -10,6 +11,7 @@ export function getMDXComponents(components?: MDXComponents) {
     ApiReference,
     SymmetryExplorer,
     SortableTable,
+    Mermaid,
     ...components,
   } satisfies MDXComponents;
 }
