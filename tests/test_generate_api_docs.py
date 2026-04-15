@@ -78,4 +78,6 @@ def test_write_generated_operation_artifacts(tmp_path):
     assert '<OperationDocPage name="absolute" />' in page_path.read_text()
 
     refs_manifest = mod.json.loads(refs_manifest_path.read_text())
-    assert refs_manifest["abs"] == "/docs/api/ops/absolute"
+    assert refs_manifest["abs"]["label"] == "`we.absolute`"
+    assert refs_manifest["abs"]["href"] == "/docs/api/ops/absolute"
+    assert refs_manifest["abs"]["canonical_name"] == "absolute"

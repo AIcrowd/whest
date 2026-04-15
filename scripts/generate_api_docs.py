@@ -704,15 +704,23 @@ def write_operation_doc_artifacts(
             existing_page.unlink()
 
     docs_manifest: dict[str, dict[str, object]] = {}
-    refs_manifest: dict[str, str] = {}
+    refs_manifest: dict[str, dict[str, str]] = {}
 
     for record in sorted(records, key=lambda op: op.name):
         stub_path = op_docs_dir / f"{record.slug}.mdx"
         stub_path.write_text(render_operation_stub(record))
         docs_manifest[record.name] = asdict(record)
-        refs_manifest[record.name] = record.href
+        refs_manifest[record.name] = {
+            "label": record.whest_ref,
+            "href": record.href,
+            "canonical_name": record.canonical_name,
+        }
         for alias in record.aliases:
-            refs_manifest[alias] = record.href
+            refs_manifest[alias] = {
+                "label": record.whest_ref,
+                "href": record.href,
+                "canonical_name": record.canonical_name,
+            }
 
     write_json(generated_dir / "op-docs.json", docs_manifest)
     write_json(generated_dir / "op-refs.json", refs_manifest)
@@ -1009,9 +1017,15 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
         return False
 
     op_refs = json.loads(op_refs_path.read_text())
-    if op_refs.get("abs") != "/docs/api/ops/absolute":
+    abs_ref = op_refs.get("abs")
+    if (
+        not isinstance(abs_ref, dict)
+        or abs_ref.get("label") != "`we.absolute`"
+        or abs_ref.get("href") != "/docs/api/ops/absolute"
+        or abs_ref.get("canonical_name") != "absolute"
+    ):
         print(
-            "\nop-refs.json missing alias mapping "
+            "\nop-refs.json missing structured alias entry for "
             "'abs' -> '/docs/api/ops/absolute'"
         )
         return False
