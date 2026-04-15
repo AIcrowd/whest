@@ -10,12 +10,14 @@ Usage
 from __future__ import annotations
 
 import argparse
+import csv
 import importlib
 import inspect
 import json
+import re
 import sys
 import textwrap
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
@@ -24,12 +26,16 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 WEBSITE = ROOT / "website"
 PUBLIC_DIR = WEBSITE / "public"
+GENERATED_DIR = WEBSITE / ".generated"
 API_INDEX_PATH = WEBSITE / "content" / "docs" / "api" / "index.mdx"
+OP_DOCS_DIR = WEBSITE / "content" / "docs" / "api" / "ops"
 # Legacy MkDocs paths kept for helper functions that are no longer invoked by
 # the current docs pipeline. The active build path only emits website/public/ops.json.
 DOCS = ROOT / "docs"
 API_DIR = DOCS / "api"
 REF_DIR = DOCS / "reference"
+WEIGHTS_PATH = ROOT / "src" / "whest" / "data" / "weights.json"
+WEIGHTS_CSV_PATH = ROOT / "src" / "whest" / "data" / "weights.csv"
 
 # ---------------------------------------------------------------------------
 # Registry loading
@@ -545,6 +551,176 @@ def cost_for_op(name: str, category: str) -> tuple[str, str]:
     return CATEGORY_COST_LATEX.get(category, ("unknown", "unknown"))
 
 
+ALIAS_NOTE_PATTERN = re.compile(r"alias for ([\w./]+)", re.IGNORECASE)
+ALIAS_REASON_PATTERN = re.compile(r"Alias of ([\w./]+)", re.IGNORECASE)
+
+
+def choose_alias_target(raw_target: str, registry: dict[str, dict]) -> str | None:
+    """Return the first canonical registry target encoded in alias metadata."""
+    cleaned = raw_target.strip().rstrip(").,;:")
+    candidates = [part.strip().rstrip(").,;:") for part in cleaned.split("/")]
+    for candidate in candidates:
+        if candidate in registry:
+            return candidate
+    return None
+
+
+def load_alias_map(registry: dict[str, dict]) -> dict[str, str]:
+    """Derive alias -> canonical mappings from registry notes and weights metadata."""
+    alias_map: dict[str, str] = {}
+
+    for name, info in registry.items():
+        match = ALIAS_NOTE_PATTERN.search(info.get("notes", ""))
+        if not match:
+            continue
+        target = choose_alias_target(match.group(1), registry)
+        if target and target != name:
+            alias_map[name] = target
+
+    if WEIGHTS_CSV_PATH.exists():
+        with WEIGHTS_CSV_PATH.open(newline="") as handle:
+            for row in csv.DictReader(handle):
+                if row.get("Status") != "alias":
+                    continue
+                name = row.get("Operation", "").strip()
+                if not name or name in alias_map or name not in registry:
+                    continue
+                reason = row.get("Exclusion Reason", "")
+                match = ALIAS_REASON_PATTERN.search(reason)
+                if not match:
+                    continue
+                target = choose_alias_target(match.group(1), registry)
+                if not target or target == name:
+                    continue
+                # Prefer registry-authored canonical targets when metadata disagrees.
+                if alias_map.get(target) == name:
+                    continue
+                alias_map[name] = target
+
+    return alias_map
+
+
+def resolve_canonical_name(name: str, alias_map: dict[str, str]) -> str:
+    """Resolve an alias chain to its canonical target."""
+    current = name
+    seen = {current}
+    while current in alias_map and alias_map[current] not in seen:
+        current = alias_map[current]
+        seen.add(current)
+    return current
+
+
+def load_operation_weights() -> dict[str, float]:
+    """Load per-operation weights for docs manifests."""
+    if not WEIGHTS_PATH.exists():
+        return {}
+    raw = json.loads(WEIGHTS_PATH.read_text())
+    return raw.get("weights", {})
+
+
+def build_operation_doc_records(registry: dict[str, dict]) -> list[OperationDocRecord]:
+    """Build canonical operation doc records for supported operations."""
+    alias_map = load_alias_map(registry)
+    alias_groups: dict[str, list[str]] = {}
+    for alias in sorted(alias_map):
+        canonical = resolve_canonical_name(alias, alias_map)
+        if canonical == alias or canonical not in registry:
+            continue
+        alias_groups.setdefault(canonical, []).append(alias)
+
+    weights = load_operation_weights()
+    records: list[OperationDocRecord] = []
+    for name, info in sorted(registry.items()):
+        if info["category"] == "blacklisted":
+            continue
+        if resolve_canonical_name(name, alias_map) != name:
+            continue
+
+        aliases = sorted(alias_groups.get(name, []))
+        weight = weights.get(name)
+        if weight is None:
+            for alias in aliases:
+                if alias in weights:
+                    weight = weights[alias]
+                    break
+        if weight is None:
+            weight = 1.0
+
+        module = info["module"]
+        cost_plain, cost_latex = cost_for_op(name, info["category"])
+        records.append(
+            OperationDocRecord(
+                name=name,
+                canonical_name=name,
+                slug=slug_for_operation(name),
+                href=f"/docs/api/ops/{slug_for_operation(name)}",
+                area=normalize_area(module),
+                whest_ref=whest_ref(name, module),
+                numpy_ref=numpy_ref(name, module),
+                category=info["category"],
+                display_type=display_type_for_category(info["category"]),
+                cost_formula=cost_plain,
+                cost_formula_latex=cost_latex,
+                weight=weight,
+                notes=info.get("notes", ""),
+                aliases=aliases,
+                signature=f"{whest_ref(name, module).strip('`')}(...)",
+                api_docs_html="",
+                whest_examples_html="",
+            )
+        )
+
+    return records
+
+
+def render_operation_stub(op: OperationDocRecord) -> str:
+    """Render a generated standalone MDX page stub for one canonical operation."""
+    return (
+        f'---\n'
+        f'title: "{op.name}"\n'
+        f'---\n\n'
+        f"{HEADER}\n"
+        f'<OperationDocPage name="{op.name}" />\n'
+    )
+
+
+def write_json(path: Path, payload: object) -> None:
+    """Write a deterministic JSON artifact with trailing newline."""
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+
+
+def write_operation_doc_artifacts(
+    records: list[OperationDocRecord], website_root: Path
+) -> None:
+    """Emit standalone MDX stubs plus generated operation manifests."""
+    op_docs_dir = website_root / "content" / "docs" / "api" / "ops"
+    generated_dir = website_root / ".generated"
+    op_docs_dir.mkdir(parents=True, exist_ok=True)
+    generated_dir.mkdir(parents=True, exist_ok=True)
+
+    expected_pages = {record.slug for record in records}
+    for existing_page in op_docs_dir.glob("*.mdx"):
+        if existing_page.stem not in expected_pages:
+            existing_page.unlink()
+
+    docs_manifest: dict[str, dict[str, object]] = {}
+    refs_manifest: dict[str, str] = {}
+
+    for record in sorted(records, key=lambda op: op.name):
+        stub_path = op_docs_dir / f"{record.slug}.mdx"
+        stub_path.write_text(render_operation_stub(record))
+        docs_manifest[record.name] = asdict(record)
+        refs_manifest[record.name] = record.href
+        for alias in record.aliases:
+            refs_manifest[alias] = record.href
+
+    write_json(generated_dir / "op-docs.json", docs_manifest)
+    write_json(generated_dir / "op-refs.json", refs_manifest)
+    print(f"  Generated {len(records)} standalone operation stubs")
+    print(f"  Generated {generated_dir / 'op-docs.json'}")
+    print(f"  Generated {generated_dir / 'op-refs.json'}")
+
+
 def assert_supported_docs_env() -> None:
     """Fail fast unless the docs generator is running on supported NumPy."""
     try:
@@ -617,12 +793,7 @@ def generate_audit_page(registry: dict[str, dict]) -> None:
 
 def generate_ops_json(registry: dict[str, dict]) -> None:
     """Generate website/public/ops.json — machine-readable operation manifest."""
-    # Load empirical weights if available
-    weights_path = ROOT / "src" / "whest" / "data" / "weights.json"
-    weights: dict[str, float] = {}
-    if weights_path.exists():
-        raw = json.loads(weights_path.read_text())
-        weights = raw.get("weights", {})
+    weights = load_operation_weights()
 
     ops = []
     for name, info in sorted(registry.items()):
@@ -817,6 +988,36 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
 
     print(f"ops.json covers all {len(ops_names)} operations.")
 
+    op_docs_path = GENERATED_DIR / "op-docs.json"
+    if not op_docs_path.exists():
+        print(f"\nop-docs.json NOT FOUND at {op_docs_path}")
+        return False
+
+    op_refs_path = GENERATED_DIR / "op-refs.json"
+    if not op_refs_path.exists():
+        print(f"\nop-refs.json NOT FOUND at {op_refs_path}")
+        return False
+
+    sample_op_page = OP_DOCS_DIR / "absolute.mdx"
+    if not sample_op_page.exists():
+        print(f"\nGenerated operation page NOT FOUND at {sample_op_page}")
+        return False
+
+    op_docs = json.loads(op_docs_path.read_text())
+    if "absolute" not in op_docs:
+        print(f"\nop-docs.json missing canonical entry for 'absolute' at {op_docs_path}")
+        return False
+
+    op_refs = json.loads(op_refs_path.read_text())
+    if op_refs.get("abs") != "/docs/api/ops/absolute":
+        print(
+            "\nop-refs.json missing alias mapping "
+            "'abs' -> '/docs/api/ops/absolute'"
+        )
+        return False
+
+    print("Generated operation doc manifests and stub pages are present.")
+
     return True
 
 
@@ -843,6 +1044,7 @@ def main():
 
     print("Generating API reference data...")
     generate_ops_json(registry)
+    write_operation_doc_artifacts(build_operation_doc_records(registry), WEBSITE)
 
     print("\nDone. Run with --verify to check coverage.")
 

@@ -39,3 +39,43 @@ def test_display_type_for_category():
     assert mod.display_type_for_category("counted_unary") == "counted"
     assert mod.display_type_for_category("counted_custom") == "custom"
     assert mod.display_type_for_category("blacklisted") == "blocked"
+
+
+def test_write_generated_operation_artifacts(tmp_path):
+    mod = load_generate_api_docs_module()
+
+    records = [
+        mod.OperationDocRecord(
+            name="absolute",
+            canonical_name="absolute",
+            slug="absolute",
+            href="/docs/api/ops/absolute",
+            area="core",
+            whest_ref="`we.absolute`",
+            numpy_ref="`np.absolute`",
+            category="counted_unary",
+            display_type="counted",
+            cost_formula="numel(output)",
+            cost_formula_latex=r"$\text{numel}(\text{output})$",
+            weight=1.0,
+            notes="Element-wise absolute value.",
+            aliases=["abs"],
+            signature="we.absolute(...)",
+            api_docs_html="",
+            whest_examples_html="",
+        )
+    ]
+
+    mod.write_operation_doc_artifacts(records, tmp_path)
+
+    page_path = tmp_path / "content" / "docs" / "api" / "ops" / "absolute.mdx"
+    docs_manifest_path = tmp_path / ".generated" / "op-docs.json"
+    refs_manifest_path = tmp_path / ".generated" / "op-refs.json"
+
+    assert page_path.exists()
+    assert docs_manifest_path.exists()
+    assert refs_manifest_path.exists()
+    assert '<OperationDocPage name="absolute" />' in page_path.read_text()
+
+    refs_manifest = mod.json.loads(refs_manifest_path.read_text())
+    assert refs_manifest["abs"] == "/docs/api/ops/absolute"
