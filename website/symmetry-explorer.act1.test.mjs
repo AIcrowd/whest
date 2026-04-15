@@ -66,5 +66,6 @@ test('PresetSidebar widens the rail and uses shared text sizing while still show
 test('CaseBadge compact variant uses the shared xs scale instead of micro text sizes', () => {
   const badgeSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/CaseBadge.jsx', import.meta.url), 'utf8');
   assert.match(badgeSource, /variant === 'compact'/);
-  assert.match(badgeSource, /h-\[18px\] w-\[18px\] justify-center rounded text-xs font-bold/);
+  assert.match(badgeSource, /size === 'xs'[\s\S]*h-4 w-4 justify-center rounded text-xs font-bold/);
+  assert.doesNotMatch(badgeSource, /text-\[9px\]/);
 });

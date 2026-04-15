@@ -20,7 +20,7 @@ const CASE_COLORS = {
 function getBadgeClasses(variant, size) {
   if (variant === 'compact') {
     return size === 'xs'
-      ? 'h-4 w-4 justify-center rounded text-[9px] font-bold'
+      ? 'h-4 w-4 justify-center rounded text-xs font-bold'
       : 'h-[18px] w-[18px] justify-center rounded text-xs font-bold';
   }
 
