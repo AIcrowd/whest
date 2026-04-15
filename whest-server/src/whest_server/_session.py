@@ -139,6 +139,8 @@ class Session:
         dict with keys:
             budget_summary: str — human-readable FLOP budget summary,
                 including a namespace section when labeled ops were recorded
+            budget_breakdown: dict — machine-readable summary data with
+                ``by_namespace`` buckets for direct ingestion
             comms_summary: dict — CommsTracker summary
 
         Raises
@@ -149,11 +151,12 @@ class Session:
         if not self._is_open:
             raise RuntimeError("Session is already closed.")
 
-        show_namespaces = any(
-            op.namespace is not None for op in self._budget_ctx.op_log
-        )
-
         self._budget_ctx.__exit__(None, None, None)
+        budget_breakdown = self._budget_ctx.summary_dict(by_namespace=True)
+        show_namespaces = any(
+            namespace is not None
+            for namespace in budget_breakdown.get("by_namespace", {})
+        )
         budget_summary = self._budget_ctx.summary(by_namespace=show_namespaces)
         comms_summary = self._comms_tracker.summary()
         self._store.clear()
@@ -161,5 +164,6 @@ class Session:
 
         return {
             "budget_summary": budget_summary,
+            "budget_breakdown": budget_breakdown,
             "comms_summary": comms_summary,
         }

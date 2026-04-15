@@ -131,8 +131,30 @@ def test_budget_close_returns_summary(server_and_client):
     assert resp["status"] == "ok"
     result = resp["result"]
     assert "budget_summary" in result
+    assert "budget_breakdown" in result
     assert "comms_summary" in result
+    assert isinstance(result["budget_breakdown"], dict)
     assert result["comms_summary"]["request_count"] >= 1
+
+
+def test_budget_close_returns_structured_namespace_breakdown(server_and_client):
+    """budget_close returns machine-readable namespace data when labels exist."""
+    server, client = server_and_client
+
+    _send(client, {"op": "budget_open", "flop_budget": 1_000_000})
+
+    ctx = server._session.budget_context
+    ctx._push_namespace("phase")
+    try:
+        ctx.deduct("add", flop_cost=1, subscripts=None, shapes=())
+    finally:
+        ctx._pop_namespace("phase")
+
+    resp = _send(client, {"op": "budget_close"})
+    assert resp["status"] == "ok"
+    result = resp["result"]
+    assert result["budget_breakdown"]["by_namespace"]["phase"]["flops_used"] == 1
+    assert result["budget_breakdown"]["by_namespace"]["phase"]["calls"] == 1
 
 
 def test_error_no_session(server_and_client):

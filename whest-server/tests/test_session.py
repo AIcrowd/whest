@@ -4,8 +4,9 @@ from __future__ import annotations
 
 import numpy as np
 import pytest
-import whest as me
 from whest_server._session import Session
+
+import whest as me
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -169,9 +170,17 @@ def test_close_returns_budget_summary(session):
     assert isinstance(result["budget_summary"], str)
 
 
+def test_close_returns_budget_breakdown(session):
+    result = session.close()
+    assert "budget_breakdown" in result
+    assert isinstance(result["budget_breakdown"], dict)
+    assert "by_namespace" in result["budget_breakdown"]
+
+
 def test_close_keeps_flat_summary_for_unlabeled_sessions(session):
     result = session.close()
     assert "By namespace:" not in result["budget_summary"]
+    assert result["budget_breakdown"]["by_namespace"] == {}
 
 
 def test_close_includes_namespace_breakdown_when_session_is_labeled(session):
@@ -181,6 +190,16 @@ def test_close_includes_namespace_breakdown_when_session_is_labeled(session):
     result = session.close()
     assert "By namespace:" in result["budget_summary"]
     assert "phase" in result["budget_summary"]
+    assert result["budget_breakdown"]["by_namespace"]["phase"]["flops_used"] == 1
+    assert result["budget_breakdown"]["by_namespace"]["phase"]["calls"] == 1
+
+
+def test_close_budget_breakdown_keeps_unlabeled_ops_structured(session):
+    session.budget_context.deduct("add", flop_cost=1, subscripts=None, shapes=())
+
+    result = session.close()
+    assert result["budget_breakdown"]["by_namespace"][None]["flops_used"] == 1
+    assert result["budget_breakdown"]["by_namespace"][None]["calls"] == 1
 
 
 def test_close_returns_comms_summary(session):
