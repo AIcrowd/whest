@@ -19,16 +19,15 @@ You do not need to set up a budget context to start counting FLOPs. whest activa
 Save this as `first_budget.py`:
 
 ```python
-import math
 import whest as we
 
 depth = 10   # number of layers
 width = 256  # hidden dimension
 
 # No BudgetContext needed — the global default activates automatically
-scale = math.sqrt(2.0 / width)   # Kaiming init scale; free (no FLOPs)
+scale = we.sqrt(2.0 / width)     # Kaiming init scale: counted through whest
 weights = [
-    we.array(we.random.randn(width, width) * scale)
+    we.array(we.multiply(we.random.randn(width, width), scale))
     for _ in range(depth)
 ]
 x = we.random.randn(width)
@@ -52,39 +51,35 @@ uv run python first_budget.py
 
 ## What you'll see
 
-```
-whest FLOP Budget Summary
-==================================================
-  Total budget:    1,000,000,000,000,000
-  Used:                       2,624,512  (0.0%)
-  Remaining:        999,999,997,375,488  (100.0%)
-
-  [(default)]
-    Budget:  1,000,000,000,000,000
-    Used:           2,624,512  (0.0%)
-    Operations:
-      random.randn              655,616  ( 25.0%)  [11 calls]
-      multiply                  655,360  ( 25.0%)  [10 calls]
-      array                     655,360  ( 25.0%)  [10 calls]
-      einsum                    655,360  ( 25.0%)  [10 calls]
-      maximum                     2,560  (  0.1%)  [10 calls]
-      sum                           256  (  0.0%)  [1 call]
-
-  All operations (session total):
-    random.randn              655,616  ( 25.0%)  [11 calls]
-    multiply                  655,360  ( 25.0%)  [10 calls]
-    array                     655,360  ( 25.0%)  [10 calls]
-    einsum                    655,360  ( 25.0%)  [10 calls]
-    maximum                     2,560  (  0.1%)  [10 calls]
-    sum                           256  (  0.0%)  [1 call]
+```text title="__rich_output__"
+\x1b[36m\u256d\u2500\x1b[0m\x1b[36m\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\x1b[0m\x1b[36m \x1b[0m\x1b[1;36mwhest FLOP Budget Summary\x1b[0m\x1b[36m \x1b[0m\x1b[36m\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\x1b[0m\x1b[36m\u2500\u256e\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[1m \x1b[0m\x1b[1mUsed                \x1b[0m\x1b[1m \x1b[0m \x1b[32m                                       2,624,513  ()\x1b[0m  \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u256d\u2500\x1b[0m\x1b[32m\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\x1b[0m\x1b[32m \x1b[0m\x1b[1;32m(unscoped)\x1b[0m\x1b[32m \x1b[0m\x1b[32m\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\x1b[0m\x1b[32m\u2500\u256e\x1b[0m                \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u250f\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2513 \x1b[32m\u2502\x1b[0m                \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2503\x1b[1m \x1b[0m\x1b[1mOperation   \x1b[0m\x1b[1m \x1b[0m\u2503\x1b[1m \x1b[0m\x1b[1m              FLOPs\x1b[0m\x1b[1m \x1b[0m\u2503\x1b[1m \x1b[0m\x1b[1m    %\x1b[0m\x1b[1m \x1b[0m\u2503\x1b[1m \x1b[0m\x1b[1m   Calls\x1b[0m\x1b[1m \x1b[0m\u2503 \x1b[32m\u2502\x1b[0m                \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2521\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2547\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2547\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2547\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2529 \x1b[32m\u2502\x1b[0m                \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2502\x1b[2m \x1b[0m\x1b[2mrandom.randn\x1b[0m\x1b[2m \x1b[0m\u2502             655,616 \u2502 25.0% \u2502\x1b[2m \x1b[0m\x1b[2m11 calls\x1b[0m\x1b[2m \x1b[0m\u2502 \x1b[32m\u2502\x1b[0m                \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2502\x1b[2m \x1b[0m\x1b[2mmultiply    \x1b[0m\x1b[2m \x1b[0m\u2502             655,360 \u2502 25.0% \u2502\x1b[2m \x1b[0m\x1b[2m10 calls\x1b[0m\x1b[2m \x1b[0m\u2502 \x1b[32m\u2502\x1b[0m                \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2502\x1b[2m \x1b[0m\x1b[2marray       \x1b[0m\x1b[2m \x1b[0m\u2502             655,360 \u2502 25.0% \u2502\x1b[2m \x1b[0m\x1b[2m10 calls\x1b[0m\x1b[2m \x1b[0m\u2502 \x1b[32m\u2502\x1b[0m                \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2502\x1b[2m \x1b[0m\x1b[2meinsum      \x1b[0m\x1b[2m \x1b[0m\u2502             655,360 \u2502 25.0% \u2502\x1b[2m \x1b[0m\x1b[2m10 calls\x1b[0m\x1b[2m \x1b[0m\u2502 \x1b[32m\u2502\x1b[0m                \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2502\x1b[2m \x1b[0m\x1b[2mmaximum     \x1b[0m\x1b[2m \x1b[0m\u2502               2,560 \u2502  0.1% \u2502\x1b[2m \x1b[0m\x1b[2m10 calls\x1b[0m\x1b[2m \x1b[0m\u2502 \x1b[32m\u2502\x1b[0m                \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2502\x1b[2m \x1b[0m\x1b[2msum         \x1b[0m\x1b[2m \x1b[0m\u2502                 256 \u2502  0.0% \u2502\x1b[2m \x1b[0m\x1b[2m  1 call\x1b[0m\x1b[2m \x1b[0m\u2502 \x1b[32m\u2502\x1b[0m                \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2502\x1b[2m \x1b[0m\x1b[2msqrt        \x1b[0m\x1b[2m \x1b[0m\u2502                   1 \u2502  0.0% \u2502\x1b[2m \x1b[0m\x1b[2m  1 call\x1b[0m\x1b[2m \x1b[0m\u2502 \x1b[32m\u2502\x1b[0m                \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524 \x1b[32m\u2502\x1b[0m                \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2502\x1b[2m \x1b[0m\x1b[1;2mUsed        \x1b[0m\x1b[2m \x1b[0m\u2502 \x1b[1;32m          2,624,513\x1b[0m \u2502 \x1b[32m 0.0%\x1b[0m \u2502\x1b[2m \x1b[0m\x1b[2m        \x1b[0m\x1b[2m \x1b[0m\u2502 \x1b[32m\u2502\x1b[0m                \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2502\x1b[2m \x1b[0m\x1b[1;2mRemaining   \x1b[0m\x1b[2m \x1b[0m\u2502 \x1b[1m999,999,997,375,487\x1b[0m \u2502       \u2502\x1b[2m \x1b[0m\x1b[2m        \x1b[0m\x1b[2m \x1b[0m\u2502 \x1b[32m\u2502\x1b[0m                \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518 \x1b[32m\u2502\x1b[0m                \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u2570\u2500\x1b[0m\x1b[32m\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\x1b[0m\x1b[32m \x1b[0m\x1b[2;32mimplicit global budget\x1b[0m\x1b[32m \x1b[0m\x1b[32m\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\x1b[0m\x1b[32m\u2500\u256f\x1b[0m                \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2570\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256f\x1b[0m
 ```
 
 **Reading the output:**
 
-- **Namespace:** `(default)` is the auto-created global context; named contexts appear here once you add them
-- **Used / Remaining:** how much of the budget has been consumed across all calls
-- **By operation:** breakdown of costs per operation type and call count
-- The 10-layer MLP spreads FLOPs roughly equally across `random.randn`, `multiply`, `array`, and `einsum` (~25% each); activations (`maximum`) are comparatively cheap
+- **Outer panel:** the Rich title bar shows you are looking at the session-wide FLOP summary
+- **Top row:** `Used` is the total FLOP count spent so far across the current session
+- **Namespace panel:** `(unscoped)` is the implicit global default namespace, and the subtitle notes that it is using the implicit global budget
+- **Operations table:** the 10-layer MLP spreads FLOPs roughly equally across `random.randn`, `multiply`, `array`, and `einsum` (~25% each); activations (`maximum`) are comparatively cheap, and the Kaiming scale `sqrt` adds just 1 FLOP
+- **Bottom rows:** `Used` and `Remaining` summarize the budget state for that namespace
 
 ## Next steps
 

@@ -44,7 +44,7 @@ print(f"Speedup:        {info.speedup:.1f}x")
 print(info)  # full per-step table
 ```
 
-`we.einsum_path()` has zero budget cost -- it plans the contraction path without executing anything.
+`we.einsum_path()` does not execute the contraction, but it does record a nominal 1-FLOP planning event so the path query itself is still visible in the operation log.
 
 ### Budget breakdown example
 

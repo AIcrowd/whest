@@ -67,29 +67,32 @@ If the wall-clock time is exceeded, whest raises `TimeExhaustedError`. The timer
 
 Call `we.budget_summary()` after your computation to see where FLOPs went:
 
-```
-whest FLOP Budget Summary
-==================================================
-  Total budget:              50,000,000
-  Used:                       2,624,512  (5.2%)
-  Remaining:                 47,375,488  (94.8%)
-
-  [forward-pass]
-    Budget:        50,000,000
-    Used:           2,624,512  (5.2%)
-    Operations:
-      einsum                    655,360  ( 25.0%)  [10 calls]
-      random.randn              655,616  ( 25.0%)  [11 calls]
-      multiply                  655,360  ( 25.0%)  [10 calls]
-      maximum                     2,560  (  0.1%)  [10 calls]
-      sum                           256  (  0.0%)  [1 call]
+```text title="__rich_output__"
+\x1b[36m\u256d\u2500\x1b[0m\x1b[36m\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\x1b[0m\x1b[36m \x1b[0m\x1b[1;36mwhest FLOP Budget Summary\x1b[0m\x1b[36m \x1b[0m\x1b[36m\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\x1b[0m\x1b[36m\u2500\u256e\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[1m \x1b[0m\x1b[1mBudget                   \x1b[0m\x1b[1m \x1b[0m                                      50,000,000  \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[1m \x1b[0m\x1b[1mUsed                     \x1b[0m\x1b[1m \x1b[0m \x1b[32m                                 66,048  (0.1%)\x1b[0m  \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[1m \x1b[0m\x1b[1mRemaining                \x1b[0m\x1b[1m \x1b[0m                             49,933,952  (99.9%)  \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u256d\u2500\x1b[0m\x1b[32m\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\x1b[0m\x1b[32m \x1b[0m\x1b[1;32msolver\x1b[0m\x1b[32m \x1b[0m\x1b[32m\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\x1b[0m\x1b[32m\u2500\u256e\x1b[0m                              \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u250f\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2513 \x1b[32m\u2502\x1b[0m                              \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2503\x1b[1m \x1b[0m\x1b[1mOperation\x1b[0m\x1b[1m \x1b[0m\u2503\x1b[1m \x1b[0m\x1b[1m     FLOPs\x1b[0m\x1b[1m \x1b[0m\u2503\x1b[1m \x1b[0m\x1b[1m    %\x1b[0m\x1b[1m \x1b[0m\u2503\x1b[1m \x1b[0m\x1b[1m Calls\x1b[0m\x1b[1m \x1b[0m\u2503 \x1b[32m\u2502\x1b[0m                              \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2521\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2547\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2547\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2547\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2529 \x1b[32m\u2502\x1b[0m                              \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2502\x1b[2m \x1b[0m\x1b[2meinsum   \x1b[0m\x1b[2m \x1b[0m\u2502     65,536 \u2502 99.2% \u2502\x1b[2m \x1b[0m\x1b[2m1 call\x1b[0m\x1b[2m \x1b[0m\u2502 \x1b[32m\u2502\x1b[0m                              \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2502\x1b[2m \x1b[0m\x1b[2mexp      \x1b[0m\x1b[2m \x1b[0m\u2502        256 \u2502  0.4% \u2502\x1b[2m \x1b[0m\x1b[2m1 call\x1b[0m\x1b[2m \x1b[0m\u2502 \x1b[32m\u2502\x1b[0m                              \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2502\x1b[2m \x1b[0m\x1b[2msum      \x1b[0m\x1b[2m \x1b[0m\u2502        256 \u2502  0.4% \u2502\x1b[2m \x1b[0m\x1b[2m1 call\x1b[0m\x1b[2m \x1b[0m\u2502 \x1b[32m\u2502\x1b[0m                              \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524 \x1b[32m\u2502\x1b[0m                              \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2502\x1b[2m \x1b[0m\x1b[1;2mUsed     \x1b[0m\x1b[2m \x1b[0m\u2502 \x1b[1;32m    66,048\x1b[0m \u2502 \x1b[32m 0.1%\x1b[0m \u2502\x1b[2m \x1b[0m\x1b[2m      \x1b[0m\x1b[2m \x1b[0m\u2502 \x1b[32m\u2502\x1b[0m                              \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2502\x1b[2m \x1b[0m\x1b[1;2mRemaining\x1b[0m\x1b[2m \x1b[0m\u2502 \x1b[1m49,933,952\x1b[0m \u2502       \u2502\x1b[2m \x1b[0m\x1b[2m      \x1b[0m\x1b[2m \x1b[0m\u2502 \x1b[32m\u2502\x1b[0m                              \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u2502\x1b[0m \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518 \x1b[32m\u2502\x1b[0m                              \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2502\x1b[0m \x1b[32m\u2570\u2500\x1b[0m\x1b[32m\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\x1b[0m\x1b[32m \x1b[0m\x1b[2;32mBudget: 50,000,000\x1b[0m\x1b[32m \x1b[0m\x1b[32m\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\x1b[0m\x1b[32m\u2500\u256f\x1b[0m                              \x1b[36m\u2502\x1b[0m
+\x1b[36m\u2570\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256f\x1b[0m
 ```
 
 Key things to look for:
 
-- **Used / Remaining:** how much of the budget has been consumed
-- **By operation:** breakdown of costs per operation type and call count -- look here to find your most expensive operations
-- **Namespace grouping:** each `BudgetContext` namespace gets its own section
+- **Budget / Used / Remaining:** the top rows show the explicit competition budget, current spend, and remaining headroom
+- **Namespace panel:** `solver` is the label from your `BudgetContext`, so separate phases can be tracked independently
+- **By operation:** this toy pass is dominated by the single `einsum`; `exp` and `sum` are tiny by comparison
+- **Namespace footer:** the subtitle repeats the namespace budget, which is useful once you have several active phases
 
 For programmatic access, use `we.budget_summary_dict()`:
 
