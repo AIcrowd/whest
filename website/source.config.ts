@@ -10,5 +10,11 @@ export default defineConfig({
   mdxOptions: {
     remarkPlugins: [remarkMath],
     rehypePlugins: (v) => [rehypeKatex, ...v],
+    rehypeCodeOptions: {
+      themes: {
+        light: 'github-light',
+        dark: 'github-dark',
+      },
+    },
   },
 });
