@@ -1,0 +1,4 @@
+{
+  "title": "How-To Guides",
+  "pages": ["migrate-from-numpy", "use-einsum", "exploit-symmetry", "use-linalg", "use-fft", "plan-your-budget", "calibrate-weights", "debug-budget-overruns"]
+}
