@@ -1,3 +1,10 @@
+import { Badge } from '@/components/ui/badge';
+
+const ROLE_BADGE_CLASSNAMES = {
+  v: 'border-sky-200 bg-sky-50 font-mono text-[11px] font-semibold text-sky-700 hover:bg-sky-50',
+  w: 'border-slate-200 bg-slate-100 font-mono text-[11px] font-semibold text-slate-700 hover:bg-slate-100',
+};
+
 function actionTags(actionSummary = {}) {
   const tags = [];
   if (actionSummary.hasCross) tags.push({ key: 'cross', className: 'group-tag-cross', text: 'cross V/W present' });
@@ -41,12 +48,12 @@ export default function GroupView({ group }) {
 
         <div className="group-split-summary">
           <div className="group-split-card">
-            <span className="pill pill-v">V</span>
+            <Badge variant="outline" className={ROLE_BADGE_CLASSNAMES.v}>V</Badge>
             <strong>{group.vGroupName || 'trivial'}</strong>
             <span>{group.vLabels.length} free label{group.vLabels.length === 1 ? '' : 's'}</span>
           </div>
           <div className="group-split-card">
-            <span className="pill pill-w">W</span>
+            <Badge variant="outline" className={ROLE_BADGE_CLASSNAMES.w}>W</Badge>
             <strong>{group.wLabels.length > 0 ? (group.wGroupName || 'trivial') : 'none'}</strong>
             <span>{group.wLabels.length} summed label{group.wLabels.length === 1 ? '' : 's'}</span>
           </div>

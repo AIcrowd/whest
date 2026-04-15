@@ -25,6 +25,10 @@ import { reduceMentalModelVisibility } from './lib/mentalModelState.js';
 import './styles.css';
 
 const CUSTOM_IDX = -1;
+const ROLE_BADGE_CLASSNAMES = {
+  v: 'mx-1 inline-flex rounded-full border border-sky-200 bg-sky-50 px-2 py-0.5 align-middle font-mono text-[11px] font-semibold text-sky-700',
+  w: 'mx-1 inline-flex rounded-full border border-slate-200 bg-slate-100 px-2 py-0.5 align-middle font-mono text-[11px] font-semibold text-slate-700',
+};
 
 /**
  * Convert the new preset format (with `variables` and `expression` fields)
@@ -208,7 +212,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
 
         <div className="flex flex-col gap-8 md:flex-row md:items-start">
           <main className="min-w-0 flex-1">
-            <section id="setup" className="section scroll-mt-24">
+            <section id="setup" className="mb-12 scroll-mt-24">
               <ExampleChooser
                 examples={EXAMPLES}
                 onSelect={handleSelect}
@@ -225,17 +229,17 @@ export default function SymmetryAwareEinsumContractionsApp() {
             {/* Only render pipeline sections when we have results */}
             {analysis && example && (
               <>
-                <section id="structure" className="section scroll-mt-24 border-t border-gray-200 pt-10 pb-6">
+                <section id="structure" className="mb-12 scroll-mt-24 border-t border-gray-200 pb-6 pt-10">
                   <ActHeader
                     number={2}
                     heading={EXPLORER_ACTS[1].heading}
                     question={EXPLORER_ACTS[1].question}
                   />
                   <NarrativeCallout label="Why this matters">{EXPLORER_ACTS[1].why}</NarrativeCallout>
-                  <p className="section-desc mt-4">
+                  <p className="mt-4 text-sm leading-7 text-foreground">
                     Left vertices (U) are operand axis-classes. Right vertices are index labels,
-                    partitioned into <span className="pill pill-v">V free</span> and{' '}
-                    <span className="pill pill-w">W summed</span>.
+                    partitioned into <span className={ROLE_BADGE_CLASSNAMES.v}>V free</span> and
+                    <span className={ROLE_BADGE_CLASSNAMES.w}>W summed</span>.
                     {hasPerOpSym && (
                       <> Per-operand symmetry <em>collapses</em> each operand&apos;s axes into a single U-vertex.</>
                     )}
@@ -256,7 +260,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   </div>
                 </section>
 
-                <section id="proof" className="section scroll-mt-24 border-t border-gray-200 pt-10 pb-6">
+                <section id="proof" className="mb-12 scroll-mt-24 border-t border-gray-200 pb-6 pt-10">
                   <ActHeader
                     number={3}
                     heading={EXPLORER_ACTS[2].heading}
@@ -285,7 +289,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   </div>
                 </section>
 
-                <section id="savings" className="section scroll-mt-24 border-t border-gray-200 pt-10 pb-6">
+                <section id="savings" className="mb-12 scroll-mt-24 border-t border-gray-200 pb-6 pt-10">
                   <ActHeader
                     number={4}
                     heading={EXPLORER_ACTS[3].heading}
@@ -373,8 +377,8 @@ export default function SymmetryAwareEinsumContractionsApp() {
 
             {/* Show prompt when custom is selected but no expression analyzed yet */}
             {isCustom && !analysis && (
-              <div className="custom-prompt">
-                Define your variables and einsum expression above, then click <strong>Analyze</strong> to explore the symmetry detection algorithm.
+              <div className="rounded-lg border border-dashed border-border bg-background px-5 py-10 text-center text-sm text-muted-foreground">
+                Define your variables and einsum expression above, then click <strong className="font-semibold text-coral">Analyze</strong> to explore the symmetry detection algorithm.
               </div>
             )}
           </main>

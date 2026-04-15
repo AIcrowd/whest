@@ -8,9 +8,15 @@ function read(relativePath) {
 
 test('legacy explorer shell selectors have been removed from styles.css', () => {
   const app = read('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx');
+  const groupView = read('./components/symmetry-aware-einsum-contractions/components/GroupView.jsx');
   const styles = read('./components/symmetry-aware-einsum-contractions/styles.css');
 
   assert.match(app, /import '\.\/styles\.css';/);
+  assert.doesNotMatch(app, /section-desc/);
+  assert.doesNotMatch(app, /pill pill-v/);
+  assert.doesNotMatch(app, /pill pill-w/);
+  assert.doesNotMatch(groupView, /pill pill-v/);
+  assert.doesNotMatch(groupView, /pill pill-w/);
 
   assert.doesNotMatch(styles, /\.example-grid/);
   assert.doesNotMatch(styles, /\.custom-builder/);
@@ -18,4 +24,13 @@ test('legacy explorer shell selectors have been removed from styles.css', () => 
   assert.doesNotMatch(styles, /\.dimension-slider/);
   assert.doesNotMatch(styles, /\.var-input/);
   assert.doesNotMatch(styles, /\.analyze-btn/);
+  assert.doesNotMatch(styles, /^\.section\s*\{/m);
+  assert.doesNotMatch(styles, /\.section-desc/);
+  assert.doesNotMatch(styles, /^\.pill\s*\{/m);
+  assert.doesNotMatch(styles, /\.pill-v/);
+  assert.doesNotMatch(styles, /\.pill-w/);
+
+  assert.match(styles, /\.pseudocode-editor/);
+  assert.match(styles, /\.matrix-table/);
+  assert.match(styles, /\.orbit-detail-card/);
 });
