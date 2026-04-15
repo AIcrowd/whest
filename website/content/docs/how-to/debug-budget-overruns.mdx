@@ -91,6 +91,16 @@ If Rich is not installed, `budget_live()` falls back to printing a plain-text su
 
 **Fix:** The budget is checked **before** execution. The failing operation's cost is in the error message — compare it with `budget.flops_remaining`.
 
+## What to do next
+
+Once you've identified the expensive operations, here are common strategies:
+
+- **Reduce dimensions**: If `random.randn(1024, 1024)` is too expensive, try smaller arrays
+- **Exploit symmetry**: If operands are symmetric, use `SymmetricTensor` to halve costs (see [Exploit Symmetry](./exploit-symmetry.md))
+- **Use cheaper operations**: `we.matmul` is often cheaper than equivalent `we.einsum` for simple cases
+- **Increase budget**: If the computation is genuinely needed, raise `flop_budget`
+- **Split into phases**: Use namespaces to budget different phases independently
+
 ## 📎 Related pages
 
 - [Plan Your Budget](./plan-your-budget.md) — predict costs before running
