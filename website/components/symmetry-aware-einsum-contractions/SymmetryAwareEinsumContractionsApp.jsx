@@ -166,8 +166,8 @@ export default function SymmetryAwareEinsumContractionsApp() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>Subgraph Symmetry Explorer</h1>
-        <p className="subtitle">Interactive walkthrough of <em>einsum symmetry detection</em></p>
+        <h1>Symmetry Aware Einsum Contractions</h1>
+        <p className="subtitle">Interactive walkthrough of <em>symmetry detection for einsum contractions</em></p>
       </header>
 
       <StickyBar
