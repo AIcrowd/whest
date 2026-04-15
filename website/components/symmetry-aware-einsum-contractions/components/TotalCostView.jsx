@@ -16,12 +16,12 @@ export default function TotalCostView({ costModel, componentData, dimensionN, nu
   const { components = [] } = componentData;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <NarrativeCallout label="Why this matters">
         These totals combine the representative multiplications and the remaining output-bin updates into the final symmetry-aware contraction cost.
       </NarrativeCallout>
 
-      <div className="overflow-x-auto rounded-lg border border-border">
+      <div className="overflow-x-auto rounded-xl border border-border bg-white shadow-sm">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border bg-surface-raised">
@@ -61,45 +61,45 @@ export default function TotalCostView({ costModel, componentData, dimensionN, nu
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <div className="rounded-lg border border-border bg-surface p-4">
+        <div className="rounded-xl border border-border bg-surface p-5">
           <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted">Multiplication Cost</div>
-          <div className="text-2xl font-mono font-bold text-foreground">{evaluationCost.toLocaleString()}</div>
+          <div className="text-3xl font-mono font-bold text-foreground">{evaluationCost.toLocaleString()}</div>
           <div className="mt-1 text-xs text-muted">
             {orbitCount.toLocaleString()} multiplication orbit{orbitCount !== 1 ? 's' : ''}
           </div>
         </div>
 
-        <div className="rounded-lg border border-border bg-surface p-4">
+        <div className="rounded-xl border border-border bg-surface p-5">
           <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted">Accumulation Cost</div>
-          <div className="text-2xl font-mono font-bold text-foreground">{reductionCost.toLocaleString()}</div>
+          <div className="text-3xl font-mono font-bold text-foreground">{reductionCost.toLocaleString()}</div>
           <div className="mt-1 text-xs text-muted">distinct output-bin updates</div>
         </div>
 
-        <div className="rounded-lg border border-coral/30 bg-coral-light p-4">
+        <div className="rounded-xl border border-coral/30 bg-coral-light p-5">
           <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted">Total Cost</div>
-          <div className="text-2xl font-mono font-bold text-foreground">{totalCost.toLocaleString()}</div>
+          <div className="text-3xl font-mono font-bold text-foreground">{totalCost.toLocaleString()}</div>
           <div className="mt-1 text-xs text-muted">multiplication + accumulation</div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <div className="rounded-lg border border-border bg-surface p-4">
+        <div className="rounded-xl border border-border bg-surface p-5">
           <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted">Dense Cost</div>
-          <div className="text-2xl font-mono font-bold text-foreground">{denseTotalCost.toLocaleString()}</div>
+          <div className="text-3xl font-mono font-bold text-foreground">{denseTotalCost.toLocaleString()}</div>
           <div className="mt-1 text-xs text-muted">
             {Math.max(numTerms - 1, 0)} × n<sup>{allLabelCount}</sup> + n<sup>{allLabelCount}</sup> with n={dimensionN}
           </div>
         </div>
 
-        <div className="rounded-lg border border-border bg-surface p-4">
+        <div className="rounded-xl border border-border bg-surface p-5">
           <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted">Symmetry-Aware Cost</div>
-          <div className="text-2xl font-mono font-bold text-foreground">{totalCost.toLocaleString()}</div>
+          <div className="text-3xl font-mono font-bold text-foreground">{totalCost.toLocaleString()}</div>
           <div className="mt-1 text-xs text-muted">multiplication + accumulation under full orbit model</div>
         </div>
 
-        <div className="rounded-lg border border-green-600/20 bg-green-600/5 p-4">
+        <div className="rounded-xl border border-green-600/20 bg-green-600/5 p-5">
           <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted">Savings</div>
-          <div className="text-2xl font-mono font-bold text-green-700">{savings.toLocaleString()}</div>
+          <div className="text-3xl font-mono font-bold text-green-700">{savings.toLocaleString()}</div>
           <div className="mt-1 text-xs text-gray-400">
             {savings === 0 ? '1.0× (no savings)' : `${totalSpeedup}× speedup (${savingsPct}%)`}
           </div>

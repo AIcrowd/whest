@@ -21,7 +21,7 @@ test('ExampleChooser uses the shared Python code block and the wider 70\\/30 row
   const codeBlockSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/PythonCodeBlock.jsx', import.meta.url), 'utf8');
 
   assert.match(chooserSource, /PythonCodeBlock/);
-  assert.match(chooserSource, /lg:grid-cols-\[minmax\(0,7fr\)_minmax\(320px,3fr\)\]/);
+  assert.match(chooserSource, /lg:grid-cols-\[minmax\(0,7fr\)_minmax\(360px,3fr\)\]/);
   assert.match(chooserSource, /checkpointItems\.length > 0/);
   assert.match(chooserSource, /Reference Code/);
   assert.match(codeBlockSource, /navigator\.clipboard\.writeText/);

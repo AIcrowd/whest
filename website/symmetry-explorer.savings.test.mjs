@@ -28,3 +28,13 @@ test('Act 4 opens the Mental Framework in a modal using the shared code block', 
   assert.match(appSource, /setShowMentalModel\(\(isOpen\) => reduceMentalModelVisibility\(isOpen, 'customMode'\)\)/);
   assert.match(appSource, /setShowMentalModel\(\(isOpen\) => reduceMentalModelVisibility\(isOpen, 'customExample'\)\)/);
 });
+
+test('TotalCostView restores the denser savings emphasis cards and totals', () => {
+  const totalCostSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/TotalCostView.jsx', import.meta.url), 'utf8');
+
+  assert.match(totalCostSource, /space-y-8/);
+  assert.match(totalCostSource, /overflow-x-auto rounded-xl border border-border bg-white shadow-sm/);
+  assert.match(totalCostSource, /rounded-xl border border-coral\/30 bg-coral-light p-5/);
+  assert.match(totalCostSource, /rounded-xl border border-green-600\/20 bg-green-600\/5 p-5/);
+  assert.match(totalCostSource, /text-3xl font-mono font-bold/);
+});

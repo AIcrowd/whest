@@ -2621,6 +2621,25 @@ code, .mono { font-family: var(--font-mono); }
 
 /* ─── Responsive ─────────────────────── */
 
+@media (max-width: 1024px) {
+  .app-shell {
+    gap: 1.5rem;
+    padding: 0 20px 56px;
+  }
+}
+
+@media (max-width: 767px) {
+  .app { max-width: 100%; }
+  .app-header { padding: 28px 0 12px; }
+  .app-header h1 { font-size: 26px; }
+  .subtitle { font-size: 13px; }
+  .einsum-banner {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 14px 16px;
+  }
+}
+
 @media (max-width: 700px) {
   .app { padding: 0 12px 40px; }
   .mental-model-grid { grid-template-columns: 1fr; }

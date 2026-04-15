@@ -547,7 +547,7 @@ export default function ExampleChooser({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,7fr)_minmax(320px,3fr)]">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,7fr)_minmax(360px,3fr)]">
         <div className="min-w-0">{builderContent}</div>
         <div className="min-w-0">
           <PythonCodeBlock
