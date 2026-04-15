@@ -53,20 +53,17 @@ test-numpy-compat:  ## Run NumPy's own tests against whest
 # Docs  (mirrors: CI → docs job)
 # ---------------------------------------------------------------------------
 .PHONY: docs-build
-docs-build:  ## Generate + verify API docs, then build the site
+docs-build:  ## Generate API data and build website
 	$(UV) python scripts/generate_api_docs.py
-	$(UV) python scripts/generate_api_docs.py --verify
-	$(UV) mkdocs build --strict
+	cd website && npm run build
 
 .PHONY: docs-serve
 docs-serve:  ## Serve docs locally with live reload
-	$(UV) mkdocs serve
+	cd website && npm run dev
 
 .PHONY: docs-deploy
-docs-deploy:  ## Deploy docs to gh-pages (same as CI)
-	git config user.name  "github-actions[bot]"
-	git config user.email "github-actions[bot]@users.noreply.github.com"
-	$(UV) mkdocs gh-deploy --force
+docs-deploy:  ## Docs deploy is handled by CI on push to main
+	@echo "Docs deploy is handled by CI on push to main"
 
 # ---------------------------------------------------------------------------
 # Client-Server Sync

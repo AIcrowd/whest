@@ -1,0 +1,36 @@
+---
+title: "Symmetry Explorer"
+---
+
+*Interactive visualization of whest's symmetry detection algorithm.*
+
+**You will learn:**
+- How the bipartite graph, incidence matrix, and sigma-loop work visually
+- How symmetry is detected step-by-step for any einsum expression
+- How FLOP savings are computed from the detected symmetry group
+
+Choose a preset example or define your own einsum expression with custom operand symmetries to walk through the algorithm step by step:
+
+1. **Bipartite Graph** — how operands and index labels form the graph
+2. **Incidence Matrix M** — the matrix representation and column fingerprints
+3. **σ-Loop & π Detection** — animated row/column shuffles showing how π recovers M
+4. **Group Construction** — from valid π's to generators via Dimino's algorithm
+5. **Burnside Counting** — counting unique elements under the symmetry group
+6. **Cost Reduction** — FLOP savings from symmetry
+
+<SymmetryExplorer />
+
+<Callout type="info" title="Standalone mode">
+You can also run the explorer locally for a better experience:
+
+```bash
+cd docs/visualization/symmetry-explorer
+npm install
+npm run dev
+```
+</Callout>
+
+## Related pages
+
+- [Symmetry Detection Deep Dive](/docs/understanding/symmetry-detection) — the full algorithm walkthrough
+- [Symmetry Savings](/docs/guides/symmetry) — practical guide to using symmetry in your code

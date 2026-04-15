@@ -17,11 +17,7 @@ dev = [
     "ruff>=0.4",
     "scipy>=1.10",
 ]
-docs = [
-    "mkdocs-material",
-    "mkdocstrings[python]",
-    "mkdocs-llmstxt-md",
-]
+docs = []
 sympy = [
     "sympy>=1.11",
 ]

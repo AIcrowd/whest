@@ -125,25 +125,27 @@ jobs:
       - name: Set up Python
         run: uv python install 3.12
 
-      - name: Install dependencies
+      - name: Install Python dependencies
         run: uv sync --all-extras
 
-      - name: Build symmetry explorer
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: |
-          cd docs/visualization/symmetry-explorer
-          npm ci
-          npm run build
+          cache: 'npm'
+          cache-dependency-path: website/package-lock.json
 
-      - name: Generate API docs
-        run: |
-          uv run python scripts/generate_api_docs.py
-          uv run python scripts/generate_api_docs.py --verify
+      - name: Install website dependencies
+        run: cd website && npm ci
 
-      - name: Deploy docs
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          uv run mkdocs gh-deploy --force
+      - name: Generate API data
+        run: uv run python scripts/generate_api_docs.py
+
+      - name: Build website
+        run: cd website && npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: website/out
