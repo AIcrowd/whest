@@ -26,45 +26,34 @@ const BASE_PATH = '/whest';
 const SECTIONS = {
   'Getting Started': {
     'getting-started/installation': 'Install whest and verify setup',
-    'getting-started/first-budget': 'Create your first FLOP budget',
+    'getting-started/quickstart': 'Run your first FLOP-counted computation',
+    'getting-started/competition': 'Everything you need to compete within a FLOP budget',
   },
-  'How-To Guides': {
-    'how-to/migrate-from-numpy': 'Migrate existing NumPy code to whest',
-    'how-to/use-einsum': 'Einstein summation patterns and costs',
-    'how-to/exploit-symmetry': 'Save FLOPs via symmetry detection',
-    'how-to/use-linalg': 'Linear algebra operations and costs',
-    'how-to/use-fft': 'FFT operations, real vs complex, and costs',
-    'how-to/plan-your-budget': 'Query FLOP costs before executing',
-    'how-to/calibrate-weights': 'Measure per-operation FLOP weights with perf counters',
-    'how-to/debug-budget-overruns': 'Diagnose and fix budget overruns',
+  'Guides': {
+    'guides/migrate-from-numpy': 'Migrate existing NumPy code to whest',
+    'guides/einsum': 'Einsum patterns, costs, and optimization',
+    'guides/symmetry': 'Reduce FLOP costs with symmetric tensors',
+    'guides/linalg': 'Linear algebra operations and costs',
+    'guides/fft': 'FFT operations, real vs complex, and costs',
+    'guides/budget-planning': 'Estimate costs and diagnose budget overruns',
   },
-  'Concepts': {
-    'concepts/flop-counting-model': 'How FLOP costs are computed analytically',
-    'concepts/operation-categories': 'Free vs counted vs blocked operations',
-    'concepts/numpy-compatibility-testing': 'NumPy compatibility test suite coverage',
-  },
-  'Explanation': {
-    'explanation/subgraph-symmetry': 'Algorithm walkthrough for subgraph symmetry detection',
-    'explanation/symmetry-explorer': 'Interactive visualization of einsum symmetry detection',
-  },
-  'Architecture': {
-    'architecture/client-server': 'Client-server architecture for sandboxed execution',
-    'architecture/docker': 'Running whest with Docker and Docker Compose',
-  },
-  'Development': {
-    'development/contributing': 'Repository layout, local workflows, and generated-doc rules',
+  'Understanding whest': {
+    'understanding/how-whest-works': 'How whest wraps NumPy to count every FLOP',
+    'understanding/flop-counting-model': 'Analytical FLOP cost formulas and conventions',
+    'understanding/operation-categories': 'Free vs counted vs blocked operations',
+    'understanding/symmetry-detection': 'Subgraph symmetry detection algorithm deep dive',
+    'understanding/calibration': 'Empirical weight calibration methodology',
   },
   'API Reference': {
-    'api': 'Complete API reference for all 482 operations',
+    'api': 'Interactive searchable reference for all 508 operations',
+    'api/for-agents': 'Machine-readable resources and rules for AI coding assistants',
   },
-  'Reference': {
-    'reference/for-agents': 'Guide for AI coding assistants',
-    'reference/operation-audit': 'Complete 482-operation inventory with costs',
-    'reference/empirical-weights': 'FLOP weight calibration results from hardware perf counters',
-    'reference/cheat-sheet': 'Quick FLOP cost reference for all operations',
+  'Infrastructure': {
+    'infrastructure/client-server': 'Client-server architecture for competition evaluation',
+    'infrastructure/docker': 'Running whest with Docker',
   },
-  'Troubleshooting': {
-    'troubleshooting/common-errors': 'Common errors and fixes',
+  'Development': {
+    'development/contributing': 'Repository layout, local workflows, and test suite',
   },
   'Changelog': {
     'changelog': 'Release history and breaking changes',
