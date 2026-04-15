@@ -54,9 +54,7 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background: var(--white);
   color: var(--gray-900);
-  font-size: 14px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
@@ -74,6 +72,9 @@ code, .mono { font-family: var(--font-mono); }
 
 .symmetry-aware-einsum-contractions-page-shell {
   width: 100%;
+  min-height: 100vh;
+  background: var(--white);
+  font-size: 14px;
 }
 
 .app-shell {
