@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Handle, Position, ReactFlow } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { cn } from '../lib/utils';
@@ -12,6 +12,13 @@ const NODE_R = 14;
 const COLOR_V = '#4A7CFF';
 const COLOR_W = '#94A3B8';
 const COMP_COLORS = ['#4A7CFF', '#23B761', '#FA9E33', '#7C3AED', '#F0524D'];
+const CASE_NODE_COLORS = {
+  A: CASE_META.A?.color ?? '#4A7CFF',
+  B: CASE_META.B?.color ?? '#94A3B8',
+  C: CASE_META.C?.color ?? '#FA9E33',
+  D: CASE_META.D?.color ?? '#23B761',
+  E: CASE_META.E?.color ?? '#F0524D',
+};
 const LEAF_W = 146;
 const LEAF_H = 44;
 const QUESTION_W = 158;
@@ -123,14 +130,14 @@ export function LabelInteractionGraph({ allLabels = [], vLabels = [], interactio
 function QuestionNode({ data }) {
   return (
     <div
-      className="box-border flex h-full w-full items-center justify-center rounded-md border border-gray-200 bg-white px-3 py-1.5 text-center text-[11px] font-mono leading-tight text-gray-900 shadow-sm transition-colors hover:border-gray-400"
-      onMouseEnter={data.onHover}
-      onMouseLeave={data.onLeave}
+      className="box-border flex h-full w-full cursor-help items-center justify-center rounded-md border border-gray-200 bg-white px-3 py-1.5 text-center text-[11px] font-mono leading-tight text-gray-900 shadow-sm transition-colors hover:border-gray-400"
+      title={data.title}
+      data-tree-node={data.nodeId}
     >
-      <Handle id="top" type="target" position={Position.Top} className="opacity-0" />
+      <Handle id="top" type="target" position={Position.Top} className="pointer-events-none opacity-0" />
       {data.text}
-      <Handle id="bottom" type="source" position={Position.Bottom} className="opacity-0" />
-      <Handle type="source" position={Position.Left} id="yes" className="opacity-0" />
+      <Handle id="bottom" type="source" position={Position.Bottom} className="pointer-events-none opacity-0" />
+      <Handle type="source" position={Position.Left} id="yes" className="pointer-events-none opacity-0" />
     </div>
   );
 }
@@ -139,19 +146,18 @@ function LeafNode({ data }) {
   return (
     <div
       className={cn(
-        'box-border flex h-full w-full items-center justify-center rounded-lg border px-2 py-0.5 text-center text-[10px] leading-tight font-accent font-bold whitespace-nowrap transition-colors',
-        data.hovered ? 'text-white' : 'text-gray-900',
+        'box-border flex h-full w-full cursor-help items-center justify-center rounded-lg border px-2 py-0.5 text-center text-[10px] leading-tight font-accent font-bold whitespace-nowrap transition-colors text-gray-900',
       )}
       style={{
-        backgroundColor: data.hovered ? data.color : `${data.color}20`,
+        backgroundColor: `${data.color}20`,
         borderColor: data.color,
         borderWidth: 2,
       }}
-      onMouseEnter={data.onHover}
-      onMouseLeave={data.onLeave}
+      title={data.title}
+      data-tree-node={data.nodeId}
     >
-      <Handle type="target" position={Position.Right} className="opacity-0" id="right" />
-      <Handle type="target" position={Position.Top} className="opacity-0" id="top" />
+      <Handle type="target" position={Position.Right} className="pointer-events-none opacity-0" id="right" />
+      <Handle type="target" position={Position.Top} className="pointer-events-none opacity-0" id="top" />
       {data.text}
     </div>
   );
@@ -162,10 +168,42 @@ const dtNodeTypes = {
   leaf: LeafNode,
 };
 
+const DecisionTreeGraph = memo(function DecisionTreeGraph({
+  nodes,
+  edges,
+  onNodeMouseEnter,
+  onNodeMouseLeave,
+}) {
+  return (
+    <ReactFlow
+      nodes={nodes}
+      edges={edges}
+      nodeTypes={dtNodeTypes}
+      className="h-full w-full"
+      defaultEdgeOptions={{ type: 'step', style: { strokeWidth: 2 } }}
+      fitViewOptions={{ padding: 0.15 }}
+      fitView
+      onNodeMouseEnter={onNodeMouseEnter}
+      onNodeMouseLeave={onNodeMouseLeave}
+      panOnDrag={false}
+      zoomOnScroll={false}
+      zoomOnPinch={false}
+      zoomOnDoubleClick={false}
+      nodesDraggable={false}
+      nodesConnectable={false}
+      elementsSelectable={false}
+      preventScrolling={false}
+      proOptions={{ hideAttribution: true }}
+    />
+  );
+});
+
 export function DecisionTree() {
   const [hoveredNode, setHoveredNode] = useState(null);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0, flipped: false });
   const wrapRef = useRef(null);
+  const hideTimerRef = useRef(null);
+  const hoveredNodeRef = useRef(null);
 
   const tooltips = {
     q1: {
@@ -212,9 +250,11 @@ export function DecisionTree() {
     },
   };
 
-  const handleMouseEnter = (nodeId, evt) => {
-    if (!evt?.currentTarget) return;
-    const rect = evt.currentTarget.getBoundingClientRect();
+  const openTooltipForNode = useCallback((nodeId, rect) => {
+    if (hoveredNodeRef.current === nodeId) {
+      return;
+    }
+    if (!rect) return;
     const tooltipW = 280;
     const tooltipH = 126;
     let x = rect.left + rect.width / 2;
@@ -227,19 +267,47 @@ export function DecisionTree() {
       y = rect.bottom + 8;
       flipped = true;
     }
-    setTooltipPos({ x, y, flipped });
     setHoveredNode(nodeId);
-  };
+    hoveredNodeRef.current = nodeId;
+    setTooltipPos({ x, y, flipped });
+  }, []);
 
-  const handleMouseLeave = () => setHoveredNode(null);
+  const cancelHide = useCallback(() => {
+    if (hideTimerRef.current) {
+      clearTimeout(hideTimerRef.current);
+      hideTimerRef.current = null;
+    }
+  }, []);
 
-  const caseColors = {
-    A: CASE_META.A?.color ?? '#4A7CFF',
-    B: CASE_META.B?.color ?? '#94A3B8',
-    C: CASE_META.C?.color ?? '#FA9E33',
-    D: CASE_META.D?.color ?? '#23B761',
-    E: CASE_META.E?.color ?? '#F0524D',
-  };
+  const hideTooltip = useCallback(() => {
+    cancelHide();
+    hideTimerRef.current = setTimeout(() => {
+      hoveredNodeRef.current = null;
+      setHoveredNode(null);
+    }, 80);
+  }, [cancelHide]);
+
+  const handleNodeMouseEnter = useCallback((evt, node) => {
+    cancelHide();
+    const nodeEl =
+      evt?.target instanceof Element
+        ? evt.target.closest('.react-flow__node')
+        : null;
+    if (nodeEl) {
+      openTooltipForNode(node.id, nodeEl.getBoundingClientRect());
+      return;
+    }
+
+    const selector = `.react-flow__node[data-id="${node.id}"]`;
+    const fallbackEl = document.querySelector(selector);
+    if (fallbackEl) {
+      openTooltipForNode(node.id, fallbackEl.getBoundingClientRect());
+    }
+  }, [cancelHide, openTooltipForNode]);
+
+  const handleNodeMouseLeave = useCallback(() => hideTooltip(), [hideTooltip]);
+
+  useEffect(() => () => cancelHide(), [cancelHide]);
 
   const nodes = useMemo(
     () => [
@@ -250,8 +318,8 @@ export function DecisionTree() {
         style: { width: QUESTION_W, height: QUESTION_H },
         data: {
           text: 'W₀ = ∅ ?',
-          onHover: (e) => handleMouseEnter('q1', e),
-          onLeave: handleMouseLeave,
+          title: 'Check: W-labels present?',
+          nodeId: 'q1',
         },
       },
       {
@@ -260,10 +328,9 @@ export function DecisionTree() {
         type: 'leaf',
         data: {
           text: 'Case A: V-only',
-          color: caseColors.A,
-          hovered: hoveredNode === 'a',
-          onHover: (e) => handleMouseEnter('a', e),
-          onLeave: handleMouseLeave,
+          title: 'Case A: V-only',
+          nodeId: 'a',
+          color: CASE_NODE_COLORS.A,
         },
         style: { width: LEAF_W, height: LEAF_H },
       },
@@ -274,8 +341,8 @@ export function DecisionTree() {
         style: { width: QUESTION_W, height: QUESTION_H },
         data: {
           text: 'V₀ = ∅ ?',
-          onHover: (e) => handleMouseEnter('q2', e),
-          onLeave: handleMouseLeave,
+          title: 'Check: V-labels present?',
+          nodeId: 'q2',
         },
       },
       {
@@ -284,10 +351,9 @@ export function DecisionTree() {
         type: 'leaf',
         data: {
           text: 'Case B: W-only',
-          color: caseColors.B,
-          hovered: hoveredNode === 'b',
-          onHover: (e) => handleMouseEnter('b', e),
-          onLeave: handleMouseLeave,
+          title: 'Case B: W-only',
+          nodeId: 'b',
+          color: CASE_NODE_COLORS.B,
         },
         style: { width: LEAF_W, height: LEAF_H },
       },
@@ -298,8 +364,8 @@ export function DecisionTree() {
         style: { width: QUESTION_W, height: QUESTION_H },
         data: {
           text: 'Cross V/W gens?',
-          onHover: (e) => handleMouseEnter('q3', e),
-          onLeave: handleMouseLeave,
+          title: 'Check: cross-boundary generators?',
+          nodeId: 'q3',
         },
       },
       {
@@ -308,10 +374,9 @@ export function DecisionTree() {
         type: 'leaf',
         data: {
           text: 'Case C: Correlated',
-          color: caseColors.C,
-          hovered: hoveredNode === 'c',
-          onHover: (e) => handleMouseEnter('c', e),
-          onLeave: handleMouseLeave,
+          title: 'Case C: Correlated',
+          nodeId: 'c',
+          color: CASE_NODE_COLORS.C,
         },
         style: { width: LEAF_W, height: LEAF_H },
       },
@@ -322,8 +387,8 @@ export function DecisionTree() {
         style: { width: QUESTION_W, height: QUESTION_H },
         data: {
           text: 'Gₐ = Sym(Lₐ) ?',
-          onHover: (e) => handleMouseEnter('q4', e),
-          onLeave: handleMouseLeave,
+          title: 'Check: full symmetric group?',
+          nodeId: 'q4',
         },
       },
       {
@@ -332,10 +397,9 @@ export function DecisionTree() {
         type: 'leaf',
         data: {
           text: 'Case D: Cross (Young)',
-          color: caseColors.D,
-          hovered: hoveredNode === 'd',
-          onHover: (e) => handleMouseEnter('d', e),
-          onLeave: handleMouseLeave,
+          title: 'Case D: Cross (Young)',
+          nodeId: 'd',
+          color: CASE_NODE_COLORS.D,
         },
         style: { width: LEAF_W, height: LEAF_H },
       },
@@ -345,15 +409,14 @@ export function DecisionTree() {
         type: 'leaf',
         data: {
           text: 'Case E: Cross (general)',
-          color: caseColors.E,
-          hovered: hoveredNode === 'e',
-          onHover: (e) => handleMouseEnter('e', e),
-          onLeave: handleMouseLeave,
+          title: 'Case E: Cross (general)',
+          nodeId: 'e',
+          color: CASE_NODE_COLORS.E,
         },
         style: { width: LEAF_W, height: LEAF_H },
       },
     ],
-    [caseColors, hoveredNode],
+    [],
   );
 
   const edges = useMemo(
@@ -451,23 +514,11 @@ export function DecisionTree() {
       </summary>
       <div className="relative p-2" ref={wrapRef}>
         <div className="h-[440px] w-full min-w-0">
-          <ReactFlow
+          <DecisionTreeGraph
             nodes={nodes}
             edges={edges}
-            nodeTypes={dtNodeTypes}
-            className="h-full w-full"
-            defaultEdgeOptions={{ type: 'step', style: { strokeWidth: 2 } }}
-            fitViewOptions={{ padding: 0.15 }}
-            fitView
-            panOnDrag={false}
-            zoomOnScroll={false}
-            zoomOnPinch={false}
-            zoomOnDoubleClick={false}
-            nodesDraggable={false}
-            nodesConnectable={false}
-            elementsSelectable={false}
-            preventScrolling={false}
-            proOptions={{ hideAttribution: true }}
+            onNodeMouseEnter={handleNodeMouseEnter}
+            onNodeMouseLeave={handleNodeMouseLeave}
           />
         </div>
 
