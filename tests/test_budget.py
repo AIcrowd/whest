@@ -491,6 +491,25 @@ def test_budget_context_summary_dict_live_and_closed():
     )
 
 
+def test_budget_summary_dict_shows_live_timing_for_active_context():
+    import time
+
+    import whest
+
+    with whest.BudgetContext(flop_budget=100, quiet=True) as budget:
+        with budget.deduct("add", flop_cost=10, subscripts=None, shapes=()):
+            pass
+        time.sleep(0.01)
+
+        live = whest.budget_summary_dict()
+        assert live["wall_time_s"] is not None
+        assert live["wall_time_s"] >= 0.01
+        assert live["tracked_time_s"] >= 0.0
+        assert live["untracked_time_s"] == pytest.approx(
+            live["wall_time_s"] - live["tracked_time_s"], abs=1e-6
+        )
+
+
 def test_budget_context_summary_dict_by_namespace_uses_exact_op_namespace():
     import whest
 

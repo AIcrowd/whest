@@ -9,6 +9,7 @@ import pytest
 
 from whest._budget import BudgetContext
 from whest._display import (
+    _display_totals,
     _format_flops,
     _is_global_default_ns,
     _pct,
@@ -254,6 +255,17 @@ class TestRichNamespaceTable:
 
 
 class TestRichSummary:
+    def test_display_totals_exclude_implicit_global_default_budget(self):
+        _make_budget(flop_budget=5000, namespace="train", ops=[("matmul", 1000)])
+        with BudgetContext(flop_budget=int(1e15), quiet=True, namespace=None) as b:
+            b.deduct("add", flop_cost=10, subscripts=None, shapes=())
+
+        totals = _display_totals()
+        assert totals["has_explicit_budget"] is True
+        assert totals["budget"] == 5000
+        assert totals["used"] == 1010
+        assert totals["remaining"] == 3990
+
     def test_no_data_panel(self):
         pytest.importorskip("rich")
         from rich.panel import Panel

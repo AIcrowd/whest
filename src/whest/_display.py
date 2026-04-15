@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from whest._budget import budget_summary_dict
+from whest._budget import _snapshot_records, budget_summary_dict
 
 
 def _format_flops(n: int) -> str:
@@ -119,6 +119,39 @@ def _is_global_default_ns(ns, ns_data: dict) -> bool:
     return ns is None and ns_data.get("flop_budget", 0) >= _GLOBAL_DEFAULT_BUDGET
 
 
+def _display_totals(data: dict | None = None) -> dict:
+    """Compute user-facing totals, hiding the implicit global default budget."""
+    if data is None:
+        data = budget_summary_dict()
+
+    explicit_budget = 0
+    explicit_used = 0
+    for record in _snapshot_records():
+        if record.namespace is None and record.flop_budget >= _GLOBAL_DEFAULT_BUDGET:
+            explicit_used += record.flops_used
+        else:
+            explicit_budget += record.flop_budget
+            explicit_used += record.flops_used
+
+    has_explicit_budget = explicit_budget > 0
+    if has_explicit_budget:
+        return {
+            "has_explicit_budget": True,
+            "budget": explicit_budget,
+            "used": explicit_used,
+            "remaining": explicit_budget - explicit_used,
+            "color": _usage_color(explicit_used, explicit_budget),
+        }
+
+    return {
+        "has_explicit_budget": False,
+        "budget": data["flop_budget"],
+        "used": data["flops_used"],
+        "remaining": data["flops_remaining"],
+        "color": "green",
+    }
+
+
 def _rich_namespace_table(label: str, ns_data: dict, color: str):
     """Build a Rich Table for a single namespace bucket."""
     from rich.table import Table
@@ -178,19 +211,25 @@ def _rich_totals_table(data: dict):
     table.add_column("label", style="bold")
     table.add_column("value", justify="right")
 
-    color = _usage_color(data["flops_used"], data["flop_budget"])
-    table.add_row("Budget", _format_flops(data["flop_budget"]))
+    totals = _display_totals(data)
+    if totals["has_explicit_budget"]:
+        table.add_row("Budget", _format_flops(totals["budget"]))
     table.add_row(
         "Used",
         Text(
-            f"{_format_flops(data['flops_used'])}  ({_pct(data['flops_used'], data['flop_budget'])})",
-            style=color,
+            (
+                f"{_format_flops(totals['used'])}  ({_pct(totals['used'], totals['budget'])})"
+                if totals["has_explicit_budget"]
+                else _format_flops(totals["used"])
+            ),
+            style=totals["color"],
         ),
     )
-    table.add_row(
-        "Remaining",
-        f"{_format_flops(data['flops_remaining'])}  ({_pct(data['flops_remaining'], data['flop_budget'])})",
-    )
+    if totals["has_explicit_budget"]:
+        table.add_row(
+            "Remaining",
+            f"{_format_flops(totals['remaining'])}  ({_pct(totals['remaining'], totals['budget'])})",
+        )
 
     wall_time = data.get("wall_time_s")
     tracked_time = data.get("tracked_time_s", 0.0)

@@ -481,6 +481,20 @@ class NamespaceRecord(NamedTuple):
     total_tracked_time: float | None = None
 
 
+def _snapshot_namespace_record(ctx: BudgetContext) -> NamespaceRecord:
+    wall_time = ctx.wall_time_s
+    if wall_time is None and ctx._start_time is not None:
+        wall_time = ctx.elapsed_s
+    return NamespaceRecord(
+        namespace=ctx.namespace,
+        flop_budget=ctx.flop_budget,
+        flops_used=ctx.flops_used,
+        op_log=list(ctx.op_log),
+        wall_time_s=wall_time,
+        total_tracked_time=ctx.total_tracked_time,
+    )
+
+
 class BudgetAccumulator:
     """Collects budget records across multiple BudgetContext sessions."""
 
@@ -489,16 +503,7 @@ class BudgetAccumulator:
 
     def record(self, ctx: BudgetContext) -> None:
         """Snapshot a BudgetContext and store it."""
-        self._records.append(
-            NamespaceRecord(
-                namespace=ctx.namespace,
-                flop_budget=ctx.flop_budget,
-                flops_used=ctx.flops_used,
-                op_log=list(ctx.op_log),
-                wall_time_s=ctx.wall_time_s,
-                total_tracked_time=ctx.total_tracked_time,
-            )
-        )
+        self._records.append(_snapshot_namespace_record(ctx))
 
     def get_data(self, by_namespace: bool = False) -> dict:
         """Return aggregated budget data across all recorded contexts."""
@@ -544,6 +549,16 @@ class BudgetAccumulator:
 _accumulator = BudgetAccumulator()
 
 
+def _snapshot_records() -> list[NamespaceRecord]:
+    records = list(_accumulator._records)
+    active = get_active_budget()
+    if active is not None and active is not _global_default and active.flops_used > 0:
+        records.append(_snapshot_namespace_record(active))
+    elif _global_default is not None and _global_default.flops_used > 0:
+        records.append(_snapshot_namespace_record(_global_default))
+    return records
+
+
 def budget_summary_dict(by_namespace: bool = False) -> dict:
     """Return aggregated budget data across all recorded contexts.
 
@@ -562,16 +577,7 @@ def budget_summary_dict(by_namespace: bool = False) -> dict:
         ``"by_namespace"`` with exact attribution buckets.
     """
     acc_copy = BudgetAccumulator()
-    acc_copy._records = list(_accumulator._records)
-
-    # Include the currently active budget context (not yet recorded via __exit__)
-    active = get_active_budget()
-    if active is not None and active is not _global_default and active.flops_used > 0:
-        acc_copy.record(active)
-    # Include the global default if it has been used
-    elif _global_default is not None and _global_default.flops_used > 0:
-        acc_copy.record(_global_default)
-
+    acc_copy._records = _snapshot_records()
     return acc_copy.get_data(by_namespace=by_namespace)
 
 
