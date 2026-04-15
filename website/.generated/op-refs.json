@@ -2,2366 +2,2366 @@
   "abs": {
     "canonical_name": "absolute",
     "href": "/docs/api/ops/absolute",
-    "label": "`we.absolute`"
+    "label": "we.absolute"
   },
   "absolute": {
     "canonical_name": "absolute",
     "href": "/docs/api/ops/absolute",
-    "label": "`we.absolute`"
+    "label": "we.absolute"
   },
   "acos": {
     "canonical_name": "arccos",
     "href": "/docs/api/ops/arccos",
-    "label": "`we.arccos`"
+    "label": "we.arccos"
   },
   "acosh": {
     "canonical_name": "arccosh",
     "href": "/docs/api/ops/arccosh",
-    "label": "`we.arccosh`"
+    "label": "we.arccosh"
   },
   "add": {
     "canonical_name": "add",
     "href": "/docs/api/ops/add",
-    "label": "`we.add`"
+    "label": "we.add"
   },
   "all": {
     "canonical_name": "all",
     "href": "/docs/api/ops/all",
-    "label": "`we.all`"
+    "label": "we.all"
   },
   "allclose": {
     "canonical_name": "allclose",
     "href": "/docs/api/ops/allclose",
-    "label": "`we.allclose`"
+    "label": "we.allclose"
   },
   "amax": {
     "canonical_name": "max",
     "href": "/docs/api/ops/max",
-    "label": "`we.max`"
+    "label": "we.max"
   },
   "amin": {
     "canonical_name": "min",
     "href": "/docs/api/ops/min",
-    "label": "`we.min`"
+    "label": "we.min"
   },
   "angle": {
     "canonical_name": "angle",
     "href": "/docs/api/ops/angle",
-    "label": "`we.angle`"
+    "label": "we.angle"
   },
   "any": {
     "canonical_name": "any",
     "href": "/docs/api/ops/any",
-    "label": "`we.any`"
+    "label": "we.any"
   },
   "append": {
     "canonical_name": "append",
     "href": "/docs/api/ops/append",
-    "label": "`we.append`"
+    "label": "we.append"
   },
   "apply_along_axis": {
     "canonical_name": "apply_along_axis",
     "href": "/docs/api/ops/apply_along_axis",
-    "label": "`we.apply_along_axis`"
+    "label": "we.apply_along_axis"
   },
   "apply_over_axes": {
     "canonical_name": "apply_over_axes",
     "href": "/docs/api/ops/apply_over_axes",
-    "label": "`we.apply_over_axes`"
+    "label": "we.apply_over_axes"
   },
   "arange": {
     "canonical_name": "arange",
     "href": "/docs/api/ops/arange",
-    "label": "`we.arange`"
+    "label": "we.arange"
   },
   "arccos": {
     "canonical_name": "arccos",
     "href": "/docs/api/ops/arccos",
-    "label": "`we.arccos`"
+    "label": "we.arccos"
   },
   "arccosh": {
     "canonical_name": "arccosh",
     "href": "/docs/api/ops/arccosh",
-    "label": "`we.arccosh`"
+    "label": "we.arccosh"
   },
   "arcsin": {
     "canonical_name": "arcsin",
     "href": "/docs/api/ops/arcsin",
-    "label": "`we.arcsin`"
+    "label": "we.arcsin"
   },
   "arcsinh": {
     "canonical_name": "arcsinh",
     "href": "/docs/api/ops/arcsinh",
-    "label": "`we.arcsinh`"
+    "label": "we.arcsinh"
   },
   "arctan": {
     "canonical_name": "arctan",
     "href": "/docs/api/ops/arctan",
-    "label": "`we.arctan`"
+    "label": "we.arctan"
   },
   "arctan2": {
     "canonical_name": "arctan2",
     "href": "/docs/api/ops/arctan2",
-    "label": "`we.arctan2`"
+    "label": "we.arctan2"
   },
   "arctanh": {
     "canonical_name": "arctanh",
     "href": "/docs/api/ops/arctanh",
-    "label": "`we.arctanh`"
+    "label": "we.arctanh"
   },
   "argmax": {
     "canonical_name": "argmax",
     "href": "/docs/api/ops/argmax",
-    "label": "`we.argmax`"
+    "label": "we.argmax"
   },
   "argmin": {
     "canonical_name": "argmin",
     "href": "/docs/api/ops/argmin",
-    "label": "`we.argmin`"
+    "label": "we.argmin"
   },
   "argpartition": {
     "canonical_name": "argpartition",
     "href": "/docs/api/ops/argpartition",
-    "label": "`we.argpartition`"
+    "label": "we.argpartition"
   },
   "argsort": {
     "canonical_name": "argsort",
     "href": "/docs/api/ops/argsort",
-    "label": "`we.argsort`"
+    "label": "we.argsort"
   },
   "argwhere": {
     "canonical_name": "argwhere",
     "href": "/docs/api/ops/argwhere",
-    "label": "`we.argwhere`"
+    "label": "we.argwhere"
   },
   "around": {
     "canonical_name": "rint",
     "href": "/docs/api/ops/rint",
-    "label": "`we.rint`"
+    "label": "we.rint"
   },
   "array": {
     "canonical_name": "array",
     "href": "/docs/api/ops/array",
-    "label": "`we.array`"
+    "label": "we.array"
   },
   "array_equal": {
     "canonical_name": "array_equal",
     "href": "/docs/api/ops/array_equal",
-    "label": "`we.array_equal`"
+    "label": "we.array_equal"
   },
   "array_equiv": {
     "canonical_name": "array_equiv",
     "href": "/docs/api/ops/array_equiv",
-    "label": "`we.array_equiv`"
+    "label": "we.array_equiv"
   },
   "array_split": {
     "canonical_name": "array_split",
     "href": "/docs/api/ops/array_split",
-    "label": "`we.array_split`"
+    "label": "we.array_split"
   },
   "asarray": {
     "canonical_name": "asarray",
     "href": "/docs/api/ops/asarray",
-    "label": "`we.asarray`"
+    "label": "we.asarray"
   },
   "asarray_chkfinite": {
     "canonical_name": "asarray_chkfinite",
     "href": "/docs/api/ops/asarray_chkfinite",
-    "label": "`we.asarray_chkfinite`"
+    "label": "we.asarray_chkfinite"
   },
   "asin": {
     "canonical_name": "arcsin",
     "href": "/docs/api/ops/arcsin",
-    "label": "`we.arcsin`"
+    "label": "we.arcsin"
   },
   "asinh": {
     "canonical_name": "arcsinh",
     "href": "/docs/api/ops/arcsinh",
-    "label": "`we.arcsinh`"
+    "label": "we.arcsinh"
   },
   "astype": {
     "canonical_name": "astype",
     "href": "/docs/api/ops/astype",
-    "label": "`we.astype`"
+    "label": "we.astype"
   },
   "atan": {
     "canonical_name": "arctan",
     "href": "/docs/api/ops/arctan",
-    "label": "`we.arctan`"
+    "label": "we.arctan"
   },
   "atan2": {
     "canonical_name": "arctan2",
     "href": "/docs/api/ops/arctan2",
-    "label": "`we.arctan2`"
+    "label": "we.arctan2"
   },
   "atanh": {
     "canonical_name": "arctanh",
     "href": "/docs/api/ops/arctanh",
-    "label": "`we.arctanh`"
+    "label": "we.arctanh"
   },
   "atleast_1d": {
     "canonical_name": "atleast_1d",
     "href": "/docs/api/ops/atleast_1d",
-    "label": "`we.atleast_1d`"
+    "label": "we.atleast_1d"
   },
   "atleast_2d": {
     "canonical_name": "atleast_2d",
     "href": "/docs/api/ops/atleast_2d",
-    "label": "`we.atleast_2d`"
+    "label": "we.atleast_2d"
   },
   "atleast_3d": {
     "canonical_name": "atleast_3d",
     "href": "/docs/api/ops/atleast_3d",
-    "label": "`we.atleast_3d`"
+    "label": "we.atleast_3d"
   },
   "average": {
     "canonical_name": "average",
     "href": "/docs/api/ops/average",
-    "label": "`we.average`"
+    "label": "we.average"
   },
   "bartlett": {
     "canonical_name": "bartlett",
     "href": "/docs/api/ops/bartlett",
-    "label": "`we.bartlett`"
+    "label": "we.bartlett"
   },
   "bincount": {
     "canonical_name": "bincount",
     "href": "/docs/api/ops/bincount",
-    "label": "`we.bincount`"
+    "label": "we.bincount"
   },
   "bitwise_and": {
     "canonical_name": "bitwise_and",
     "href": "/docs/api/ops/bitwise_and",
-    "label": "`we.bitwise_and`"
+    "label": "we.bitwise_and"
   },
   "bitwise_count": {
     "canonical_name": "bitwise_count",
     "href": "/docs/api/ops/bitwise_count",
-    "label": "`we.bitwise_count`"
+    "label": "we.bitwise_count"
   },
   "bitwise_invert": {
     "canonical_name": "bitwise_not",
     "href": "/docs/api/ops/bitwise_not",
-    "label": "`we.bitwise_not`"
+    "label": "we.bitwise_not"
   },
   "bitwise_left_shift": {
     "canonical_name": "bitwise_left_shift",
     "href": "/docs/api/ops/bitwise_left_shift",
-    "label": "`we.bitwise_left_shift`"
+    "label": "we.bitwise_left_shift"
   },
   "bitwise_not": {
     "canonical_name": "bitwise_not",
     "href": "/docs/api/ops/bitwise_not",
-    "label": "`we.bitwise_not`"
+    "label": "we.bitwise_not"
   },
   "bitwise_or": {
     "canonical_name": "bitwise_or",
     "href": "/docs/api/ops/bitwise_or",
-    "label": "`we.bitwise_or`"
+    "label": "we.bitwise_or"
   },
   "bitwise_right_shift": {
     "canonical_name": "bitwise_right_shift",
     "href": "/docs/api/ops/bitwise_right_shift",
-    "label": "`we.bitwise_right_shift`"
+    "label": "we.bitwise_right_shift"
   },
   "bitwise_xor": {
     "canonical_name": "bitwise_xor",
     "href": "/docs/api/ops/bitwise_xor",
-    "label": "`we.bitwise_xor`"
+    "label": "we.bitwise_xor"
   },
   "blackman": {
     "canonical_name": "blackman",
     "href": "/docs/api/ops/blackman",
-    "label": "`we.blackman`"
+    "label": "we.blackman"
   },
   "block": {
     "canonical_name": "block",
     "href": "/docs/api/ops/block",
-    "label": "`we.block`"
+    "label": "we.block"
   },
   "bmat": {
     "canonical_name": "bmat",
     "href": "/docs/api/ops/bmat",
-    "label": "`we.bmat`"
+    "label": "we.bmat"
   },
   "broadcast_arrays": {
     "canonical_name": "broadcast_arrays",
     "href": "/docs/api/ops/broadcast_arrays",
-    "label": "`we.broadcast_arrays`"
+    "label": "we.broadcast_arrays"
   },
   "broadcast_shapes": {
     "canonical_name": "broadcast_shapes",
     "href": "/docs/api/ops/broadcast_shapes",
-    "label": "`we.broadcast_shapes`"
+    "label": "we.broadcast_shapes"
   },
   "broadcast_to": {
     "canonical_name": "broadcast_to",
     "href": "/docs/api/ops/broadcast_to",
-    "label": "`we.broadcast_to`"
+    "label": "we.broadcast_to"
   },
   "can_cast": {
     "canonical_name": "can_cast",
     "href": "/docs/api/ops/can_cast",
-    "label": "`we.can_cast`"
+    "label": "we.can_cast"
   },
   "cbrt": {
     "canonical_name": "cbrt",
     "href": "/docs/api/ops/cbrt",
-    "label": "`we.cbrt`"
+    "label": "we.cbrt"
   },
   "ceil": {
     "canonical_name": "ceil",
     "href": "/docs/api/ops/ceil",
-    "label": "`we.ceil`"
+    "label": "we.ceil"
   },
   "choose": {
     "canonical_name": "choose",
     "href": "/docs/api/ops/choose",
-    "label": "`we.choose`"
+    "label": "we.choose"
   },
   "clip": {
     "canonical_name": "clip",
     "href": "/docs/api/ops/clip",
-    "label": "`we.clip`"
+    "label": "we.clip"
   },
   "column_stack": {
     "canonical_name": "column_stack",
     "href": "/docs/api/ops/column_stack",
-    "label": "`we.column_stack`"
+    "label": "we.column_stack"
   },
   "common_type": {
     "canonical_name": "common_type",
     "href": "/docs/api/ops/common_type",
-    "label": "`we.common_type`"
+    "label": "we.common_type"
   },
   "compress": {
     "canonical_name": "compress",
     "href": "/docs/api/ops/compress",
-    "label": "`we.compress`"
+    "label": "we.compress"
   },
   "concat": {
     "canonical_name": "concatenate",
     "href": "/docs/api/ops/concatenate",
-    "label": "`we.concatenate`"
+    "label": "we.concatenate"
   },
   "concatenate": {
     "canonical_name": "concatenate",
     "href": "/docs/api/ops/concatenate",
-    "label": "`we.concatenate`"
+    "label": "we.concatenate"
   },
   "conj": {
     "canonical_name": "conj",
     "href": "/docs/api/ops/conj",
-    "label": "`we.conj`"
+    "label": "we.conj"
   },
   "conjugate": {
     "canonical_name": "conjugate",
     "href": "/docs/api/ops/conjugate",
-    "label": "`we.conjugate`"
+    "label": "we.conjugate"
   },
   "convolve": {
     "canonical_name": "convolve",
     "href": "/docs/api/ops/convolve",
-    "label": "`we.convolve`"
+    "label": "we.convolve"
   },
   "copy": {
     "canonical_name": "copy",
     "href": "/docs/api/ops/copy",
-    "label": "`we.copy`"
+    "label": "we.copy"
   },
   "copysign": {
     "canonical_name": "copysign",
     "href": "/docs/api/ops/copysign",
-    "label": "`we.copysign`"
+    "label": "we.copysign"
   },
   "copyto": {
     "canonical_name": "copyto",
     "href": "/docs/api/ops/copyto",
-    "label": "`we.copyto`"
+    "label": "we.copyto"
   },
   "corrcoef": {
     "canonical_name": "corrcoef",
     "href": "/docs/api/ops/corrcoef",
-    "label": "`we.corrcoef`"
+    "label": "we.corrcoef"
   },
   "correlate": {
     "canonical_name": "correlate",
     "href": "/docs/api/ops/correlate",
-    "label": "`we.correlate`"
+    "label": "we.correlate"
   },
   "cos": {
     "canonical_name": "cos",
     "href": "/docs/api/ops/cos",
-    "label": "`we.cos`"
+    "label": "we.cos"
   },
   "cosh": {
     "canonical_name": "cosh",
     "href": "/docs/api/ops/cosh",
-    "label": "`we.cosh`"
+    "label": "we.cosh"
   },
   "count_nonzero": {
     "canonical_name": "count_nonzero",
     "href": "/docs/api/ops/count_nonzero",
-    "label": "`we.count_nonzero`"
+    "label": "we.count_nonzero"
   },
   "cov": {
     "canonical_name": "cov",
     "href": "/docs/api/ops/cov",
-    "label": "`we.cov`"
+    "label": "we.cov"
   },
   "cross": {
     "canonical_name": "cross",
     "href": "/docs/api/ops/cross",
-    "label": "`we.cross`"
+    "label": "we.cross"
   },
   "cumprod": {
     "canonical_name": "cumprod",
     "href": "/docs/api/ops/cumprod",
-    "label": "`we.cumprod`"
+    "label": "we.cumprod"
   },
   "cumsum": {
     "canonical_name": "cumsum",
     "href": "/docs/api/ops/cumsum",
-    "label": "`we.cumsum`"
+    "label": "we.cumsum"
   },
   "cumulative_prod": {
     "canonical_name": "cumulative_prod",
     "href": "/docs/api/ops/cumulative_prod",
-    "label": "`we.cumulative_prod`"
+    "label": "we.cumulative_prod"
   },
   "cumulative_sum": {
     "canonical_name": "cumulative_sum",
     "href": "/docs/api/ops/cumulative_sum",
-    "label": "`we.cumulative_sum`"
+    "label": "we.cumulative_sum"
   },
   "deg2rad": {
     "canonical_name": "radians",
     "href": "/docs/api/ops/radians",
-    "label": "`we.radians`"
+    "label": "we.radians"
   },
   "degrees": {
     "canonical_name": "degrees",
     "href": "/docs/api/ops/degrees",
-    "label": "`we.degrees`"
+    "label": "we.degrees"
   },
   "delete": {
     "canonical_name": "delete",
     "href": "/docs/api/ops/delete",
-    "label": "`we.delete`"
+    "label": "we.delete"
   },
   "diag": {
     "canonical_name": "diag",
     "href": "/docs/api/ops/diag",
-    "label": "`we.diag`"
+    "label": "we.diag"
   },
   "diag_indices": {
     "canonical_name": "diag_indices",
     "href": "/docs/api/ops/diag_indices",
-    "label": "`we.diag_indices`"
+    "label": "we.diag_indices"
   },
   "diag_indices_from": {
     "canonical_name": "diag_indices_from",
     "href": "/docs/api/ops/diag_indices_from",
-    "label": "`we.diag_indices_from`"
+    "label": "we.diag_indices_from"
   },
   "diagflat": {
     "canonical_name": "diagflat",
     "href": "/docs/api/ops/diagflat",
-    "label": "`we.diagflat`"
+    "label": "we.diagflat"
   },
   "diagonal": {
     "canonical_name": "diagonal",
     "href": "/docs/api/ops/diagonal",
-    "label": "`we.diagonal`"
+    "label": "we.diagonal"
   },
   "diff": {
     "canonical_name": "diff",
     "href": "/docs/api/ops/diff",
-    "label": "`we.diff`"
+    "label": "we.diff"
   },
   "digitize": {
     "canonical_name": "digitize",
     "href": "/docs/api/ops/digitize",
-    "label": "`we.digitize`"
+    "label": "we.digitize"
   },
   "divide": {
     "canonical_name": "divide",
     "href": "/docs/api/ops/divide",
-    "label": "`we.divide`"
+    "label": "we.divide"
   },
   "divmod": {
     "canonical_name": "floor_divide",
     "href": "/docs/api/ops/floor_divide",
-    "label": "`we.floor_divide`"
+    "label": "we.floor_divide"
   },
   "dot": {
     "canonical_name": "dot",
     "href": "/docs/api/ops/dot",
-    "label": "`we.dot`"
+    "label": "we.dot"
   },
   "dsplit": {
     "canonical_name": "dsplit",
     "href": "/docs/api/ops/dsplit",
-    "label": "`we.dsplit`"
+    "label": "we.dsplit"
   },
   "dstack": {
     "canonical_name": "dstack",
     "href": "/docs/api/ops/dstack",
-    "label": "`we.dstack`"
+    "label": "we.dstack"
   },
   "ediff1d": {
     "canonical_name": "ediff1d",
     "href": "/docs/api/ops/ediff1d",
-    "label": "`we.ediff1d`"
+    "label": "we.ediff1d"
   },
   "einsum": {
     "canonical_name": "einsum",
     "href": "/docs/api/ops/einsum",
-    "label": "`we.einsum`"
+    "label": "we.einsum"
   },
   "einsum_path": {
     "canonical_name": "einsum_path",
     "href": "/docs/api/ops/einsum_path",
-    "label": "`we.einsum_path`"
+    "label": "we.einsum_path"
   },
   "empty": {
     "canonical_name": "empty",
     "href": "/docs/api/ops/empty",
-    "label": "`we.empty`"
+    "label": "we.empty"
   },
   "empty_like": {
     "canonical_name": "empty_like",
     "href": "/docs/api/ops/empty_like",
-    "label": "`we.empty_like`"
+    "label": "we.empty_like"
   },
   "equal": {
     "canonical_name": "equal",
     "href": "/docs/api/ops/equal",
-    "label": "`we.equal`"
+    "label": "we.equal"
   },
   "exp": {
     "canonical_name": "exp",
     "href": "/docs/api/ops/exp",
-    "label": "`we.exp`"
+    "label": "we.exp"
   },
   "exp2": {
     "canonical_name": "exp2",
     "href": "/docs/api/ops/exp2",
-    "label": "`we.exp2`"
+    "label": "we.exp2"
   },
   "expand_dims": {
     "canonical_name": "expand_dims",
     "href": "/docs/api/ops/expand_dims",
-    "label": "`we.expand_dims`"
+    "label": "we.expand_dims"
   },
   "expm1": {
     "canonical_name": "expm1",
     "href": "/docs/api/ops/expm1",
-    "label": "`we.expm1`"
+    "label": "we.expm1"
   },
   "extract": {
     "canonical_name": "extract",
     "href": "/docs/api/ops/extract",
-    "label": "`we.extract`"
+    "label": "we.extract"
   },
   "eye": {
     "canonical_name": "eye",
     "href": "/docs/api/ops/eye",
-    "label": "`we.eye`"
+    "label": "we.eye"
   },
   "fabs": {
     "canonical_name": "fabs",
     "href": "/docs/api/ops/fabs",
-    "label": "`we.fabs`"
+    "label": "we.fabs"
   },
   "fft.fft": {
     "canonical_name": "fft.fft",
     "href": "/docs/api/ops/fft-fft",
-    "label": "`we.fft.fft`"
+    "label": "we.fft.fft"
   },
   "fft.fft2": {
     "canonical_name": "fft.fft2",
     "href": "/docs/api/ops/fft-fft2",
-    "label": "`we.fft.fft2`"
+    "label": "we.fft.fft2"
   },
   "fft.fftfreq": {
     "canonical_name": "fft.fftfreq",
     "href": "/docs/api/ops/fft-fftfreq",
-    "label": "`we.fft.fftfreq`"
+    "label": "we.fft.fftfreq"
   },
   "fft.fftn": {
     "canonical_name": "fft.fftn",
     "href": "/docs/api/ops/fft-fftn",
-    "label": "`we.fft.fftn`"
+    "label": "we.fft.fftn"
   },
   "fft.fftshift": {
     "canonical_name": "fft.fftshift",
     "href": "/docs/api/ops/fft-fftshift",
-    "label": "`we.fft.fftshift`"
+    "label": "we.fft.fftshift"
   },
   "fft.hfft": {
     "canonical_name": "fft.hfft",
     "href": "/docs/api/ops/fft-hfft",
-    "label": "`we.fft.hfft`"
+    "label": "we.fft.hfft"
   },
   "fft.ifft": {
     "canonical_name": "fft.ifft",
     "href": "/docs/api/ops/fft-ifft",
-    "label": "`we.fft.ifft`"
+    "label": "we.fft.ifft"
   },
   "fft.ifft2": {
     "canonical_name": "fft.ifft2",
     "href": "/docs/api/ops/fft-ifft2",
-    "label": "`we.fft.ifft2`"
+    "label": "we.fft.ifft2"
   },
   "fft.ifftn": {
     "canonical_name": "fft.ifftn",
     "href": "/docs/api/ops/fft-ifftn",
-    "label": "`we.fft.ifftn`"
+    "label": "we.fft.ifftn"
   },
   "fft.ifftshift": {
     "canonical_name": "fft.ifftshift",
     "href": "/docs/api/ops/fft-ifftshift",
-    "label": "`we.fft.ifftshift`"
+    "label": "we.fft.ifftshift"
   },
   "fft.ihfft": {
     "canonical_name": "fft.ihfft",
     "href": "/docs/api/ops/fft-ihfft",
-    "label": "`we.fft.ihfft`"
+    "label": "we.fft.ihfft"
   },
   "fft.irfft": {
     "canonical_name": "fft.irfft",
     "href": "/docs/api/ops/fft-irfft",
-    "label": "`we.fft.irfft`"
+    "label": "we.fft.irfft"
   },
   "fft.irfft2": {
     "canonical_name": "fft.irfft2",
     "href": "/docs/api/ops/fft-irfft2",
-    "label": "`we.fft.irfft2`"
+    "label": "we.fft.irfft2"
   },
   "fft.irfftn": {
     "canonical_name": "fft.irfftn",
     "href": "/docs/api/ops/fft-irfftn",
-    "label": "`we.fft.irfftn`"
+    "label": "we.fft.irfftn"
   },
   "fft.rfft": {
     "canonical_name": "fft.rfft",
     "href": "/docs/api/ops/fft-rfft",
-    "label": "`we.fft.rfft`"
+    "label": "we.fft.rfft"
   },
   "fft.rfft2": {
     "canonical_name": "fft.rfft2",
     "href": "/docs/api/ops/fft-rfft2",
-    "label": "`we.fft.rfft2`"
+    "label": "we.fft.rfft2"
   },
   "fft.rfftfreq": {
     "canonical_name": "fft.rfftfreq",
     "href": "/docs/api/ops/fft-rfftfreq",
-    "label": "`we.fft.rfftfreq`"
+    "label": "we.fft.rfftfreq"
   },
   "fft.rfftn": {
     "canonical_name": "fft.rfftn",
     "href": "/docs/api/ops/fft-rfftn",
-    "label": "`we.fft.rfftn`"
+    "label": "we.fft.rfftn"
   },
   "fill_diagonal": {
     "canonical_name": "fill_diagonal",
     "href": "/docs/api/ops/fill_diagonal",
-    "label": "`we.fill_diagonal`"
+    "label": "we.fill_diagonal"
   },
   "fix": {
     "canonical_name": "trunc",
     "href": "/docs/api/ops/trunc",
-    "label": "`we.trunc`"
+    "label": "we.trunc"
   },
   "flatnonzero": {
     "canonical_name": "flatnonzero",
     "href": "/docs/api/ops/flatnonzero",
-    "label": "`we.flatnonzero`"
+    "label": "we.flatnonzero"
   },
   "flip": {
     "canonical_name": "flip",
     "href": "/docs/api/ops/flip",
-    "label": "`we.flip`"
+    "label": "we.flip"
   },
   "fliplr": {
     "canonical_name": "fliplr",
     "href": "/docs/api/ops/fliplr",
-    "label": "`we.fliplr`"
+    "label": "we.fliplr"
   },
   "flipud": {
     "canonical_name": "flipud",
     "href": "/docs/api/ops/flipud",
-    "label": "`we.flipud`"
+    "label": "we.flipud"
   },
   "float_power": {
     "canonical_name": "float_power",
     "href": "/docs/api/ops/float_power",
-    "label": "`we.float_power`"
+    "label": "we.float_power"
   },
   "floor": {
     "canonical_name": "floor",
     "href": "/docs/api/ops/floor",
-    "label": "`we.floor`"
+    "label": "we.floor"
   },
   "floor_divide": {
     "canonical_name": "floor_divide",
     "href": "/docs/api/ops/floor_divide",
-    "label": "`we.floor_divide`"
+    "label": "we.floor_divide"
   },
   "fmax": {
     "canonical_name": "fmax",
     "href": "/docs/api/ops/fmax",
-    "label": "`we.fmax`"
+    "label": "we.fmax"
   },
   "fmin": {
     "canonical_name": "fmin",
     "href": "/docs/api/ops/fmin",
-    "label": "`we.fmin`"
+    "label": "we.fmin"
   },
   "fmod": {
     "canonical_name": "fmod",
     "href": "/docs/api/ops/fmod",
-    "label": "`we.fmod`"
+    "label": "we.fmod"
   },
   "frexp": {
     "canonical_name": "frexp",
     "href": "/docs/api/ops/frexp",
-    "label": "`we.frexp`"
+    "label": "we.frexp"
   },
   "from_dlpack": {
     "canonical_name": "from_dlpack",
     "href": "/docs/api/ops/from_dlpack",
-    "label": "`we.from_dlpack`"
+    "label": "we.from_dlpack"
   },
   "frombuffer": {
     "canonical_name": "frombuffer",
     "href": "/docs/api/ops/frombuffer",
-    "label": "`we.frombuffer`"
+    "label": "we.frombuffer"
   },
   "fromfunction": {
     "canonical_name": "fromfunction",
     "href": "/docs/api/ops/fromfunction",
-    "label": "`we.fromfunction`"
+    "label": "we.fromfunction"
   },
   "fromiter": {
     "canonical_name": "fromiter",
     "href": "/docs/api/ops/fromiter",
-    "label": "`we.fromiter`"
+    "label": "we.fromiter"
   },
   "full": {
     "canonical_name": "full",
     "href": "/docs/api/ops/full",
-    "label": "`we.full`"
+    "label": "we.full"
   },
   "full_like": {
     "canonical_name": "full_like",
     "href": "/docs/api/ops/full_like",
-    "label": "`we.full_like`"
+    "label": "we.full_like"
   },
   "gcd": {
     "canonical_name": "gcd",
     "href": "/docs/api/ops/gcd",
-    "label": "`we.gcd`"
+    "label": "we.gcd"
   },
   "geomspace": {
     "canonical_name": "geomspace",
     "href": "/docs/api/ops/geomspace",
-    "label": "`we.geomspace`"
+    "label": "we.geomspace"
   },
   "gradient": {
     "canonical_name": "gradient",
     "href": "/docs/api/ops/gradient",
-    "label": "`we.gradient`"
+    "label": "we.gradient"
   },
   "greater": {
     "canonical_name": "greater",
     "href": "/docs/api/ops/greater",
-    "label": "`we.greater`"
+    "label": "we.greater"
   },
   "greater_equal": {
     "canonical_name": "greater_equal",
     "href": "/docs/api/ops/greater_equal",
-    "label": "`we.greater_equal`"
+    "label": "we.greater_equal"
   },
   "hamming": {
     "canonical_name": "hamming",
     "href": "/docs/api/ops/hamming",
-    "label": "`we.hamming`"
+    "label": "we.hamming"
   },
   "hanning": {
     "canonical_name": "hanning",
     "href": "/docs/api/ops/hanning",
-    "label": "`we.hanning`"
+    "label": "we.hanning"
   },
   "heaviside": {
     "canonical_name": "heaviside",
     "href": "/docs/api/ops/heaviside",
-    "label": "`we.heaviside`"
+    "label": "we.heaviside"
   },
   "histogram": {
     "canonical_name": "histogram",
     "href": "/docs/api/ops/histogram",
-    "label": "`we.histogram`"
+    "label": "we.histogram"
   },
   "histogram2d": {
     "canonical_name": "histogram2d",
     "href": "/docs/api/ops/histogram2d",
-    "label": "`we.histogram2d`"
+    "label": "we.histogram2d"
   },
   "histogram_bin_edges": {
     "canonical_name": "histogram_bin_edges",
     "href": "/docs/api/ops/histogram_bin_edges",
-    "label": "`we.histogram_bin_edges`"
+    "label": "we.histogram_bin_edges"
   },
   "histogramdd": {
     "canonical_name": "histogramdd",
     "href": "/docs/api/ops/histogramdd",
-    "label": "`we.histogramdd`"
+    "label": "we.histogramdd"
   },
   "hsplit": {
     "canonical_name": "hsplit",
     "href": "/docs/api/ops/hsplit",
-    "label": "`we.hsplit`"
+    "label": "we.hsplit"
   },
   "hstack": {
     "canonical_name": "hstack",
     "href": "/docs/api/ops/hstack",
-    "label": "`we.hstack`"
+    "label": "we.hstack"
   },
   "hypot": {
     "canonical_name": "hypot",
     "href": "/docs/api/ops/hypot",
-    "label": "`we.hypot`"
+    "label": "we.hypot"
   },
   "i0": {
     "canonical_name": "i0",
     "href": "/docs/api/ops/i0",
-    "label": "`we.i0`"
+    "label": "we.i0"
   },
   "identity": {
     "canonical_name": "identity",
     "href": "/docs/api/ops/identity",
-    "label": "`we.identity`"
+    "label": "we.identity"
   },
   "imag": {
     "canonical_name": "imag",
     "href": "/docs/api/ops/imag",
-    "label": "`we.imag`"
+    "label": "we.imag"
   },
   "in1d": {
     "canonical_name": "in1d",
     "href": "/docs/api/ops/in1d",
-    "label": "`we.in1d`"
+    "label": "we.in1d"
   },
   "indices": {
     "canonical_name": "indices",
     "href": "/docs/api/ops/indices",
-    "label": "`we.indices`"
+    "label": "we.indices"
   },
   "inner": {
     "canonical_name": "inner",
     "href": "/docs/api/ops/inner",
-    "label": "`we.inner`"
+    "label": "we.inner"
   },
   "insert": {
     "canonical_name": "insert",
     "href": "/docs/api/ops/insert",
-    "label": "`we.insert`"
+    "label": "we.insert"
   },
   "interp": {
     "canonical_name": "interp",
     "href": "/docs/api/ops/interp",
-    "label": "`we.interp`"
+    "label": "we.interp"
   },
   "intersect1d": {
     "canonical_name": "intersect1d",
     "href": "/docs/api/ops/intersect1d",
-    "label": "`we.intersect1d`"
+    "label": "we.intersect1d"
   },
   "invert": {
     "canonical_name": "invert",
     "href": "/docs/api/ops/invert",
-    "label": "`we.invert`"
+    "label": "we.invert"
   },
   "isclose": {
     "canonical_name": "isclose",
     "href": "/docs/api/ops/isclose",
-    "label": "`we.isclose`"
+    "label": "we.isclose"
   },
   "iscomplex": {
     "canonical_name": "iscomplex",
     "href": "/docs/api/ops/iscomplex",
-    "label": "`we.iscomplex`"
+    "label": "we.iscomplex"
   },
   "iscomplexobj": {
     "canonical_name": "iscomplexobj",
     "href": "/docs/api/ops/iscomplexobj",
-    "label": "`we.iscomplexobj`"
+    "label": "we.iscomplexobj"
   },
   "isdtype": {
     "canonical_name": "isdtype",
     "href": "/docs/api/ops/isdtype",
-    "label": "`we.isdtype`"
+    "label": "we.isdtype"
   },
   "isfinite": {
     "canonical_name": "isfinite",
     "href": "/docs/api/ops/isfinite",
-    "label": "`we.isfinite`"
+    "label": "we.isfinite"
   },
   "isfortran": {
     "canonical_name": "isfortran",
     "href": "/docs/api/ops/isfortran",
-    "label": "`we.isfortran`"
+    "label": "we.isfortran"
   },
   "isin": {
     "canonical_name": "isin",
     "href": "/docs/api/ops/isin",
-    "label": "`we.isin`"
+    "label": "we.isin"
   },
   "isinf": {
     "canonical_name": "isinf",
     "href": "/docs/api/ops/isinf",
-    "label": "`we.isinf`"
+    "label": "we.isinf"
   },
   "isnan": {
     "canonical_name": "isnan",
     "href": "/docs/api/ops/isnan",
-    "label": "`we.isnan`"
+    "label": "we.isnan"
   },
   "isneginf": {
     "canonical_name": "isneginf",
     "href": "/docs/api/ops/isneginf",
-    "label": "`we.isneginf`"
+    "label": "we.isneginf"
   },
   "isposinf": {
     "canonical_name": "isposinf",
     "href": "/docs/api/ops/isposinf",
-    "label": "`we.isposinf`"
+    "label": "we.isposinf"
   },
   "isreal": {
     "canonical_name": "isreal",
     "href": "/docs/api/ops/isreal",
-    "label": "`we.isreal`"
+    "label": "we.isreal"
   },
   "isrealobj": {
     "canonical_name": "isrealobj",
     "href": "/docs/api/ops/isrealobj",
-    "label": "`we.isrealobj`"
+    "label": "we.isrealobj"
   },
   "isscalar": {
     "canonical_name": "isscalar",
     "href": "/docs/api/ops/isscalar",
-    "label": "`we.isscalar`"
+    "label": "we.isscalar"
   },
   "issubdtype": {
     "canonical_name": "issubdtype",
     "href": "/docs/api/ops/issubdtype",
-    "label": "`we.issubdtype`"
+    "label": "we.issubdtype"
   },
   "iterable": {
     "canonical_name": "iterable",
     "href": "/docs/api/ops/iterable",
-    "label": "`we.iterable`"
+    "label": "we.iterable"
   },
   "ix_": {
     "canonical_name": "ix_",
     "href": "/docs/api/ops/ix_",
-    "label": "`we.ix_`"
+    "label": "we.ix_"
   },
   "kaiser": {
     "canonical_name": "kaiser",
     "href": "/docs/api/ops/kaiser",
-    "label": "`we.kaiser`"
+    "label": "we.kaiser"
   },
   "kron": {
     "canonical_name": "kron",
     "href": "/docs/api/ops/kron",
-    "label": "`we.kron`"
+    "label": "we.kron"
   },
   "lcm": {
     "canonical_name": "lcm",
     "href": "/docs/api/ops/lcm",
-    "label": "`we.lcm`"
+    "label": "we.lcm"
   },
   "ldexp": {
     "canonical_name": "ldexp",
     "href": "/docs/api/ops/ldexp",
-    "label": "`we.ldexp`"
+    "label": "we.ldexp"
   },
   "left_shift": {
     "canonical_name": "left_shift",
     "href": "/docs/api/ops/left_shift",
-    "label": "`we.left_shift`"
+    "label": "we.left_shift"
   },
   "less": {
     "canonical_name": "less",
     "href": "/docs/api/ops/less",
-    "label": "`we.less`"
+    "label": "we.less"
   },
   "less_equal": {
     "canonical_name": "less_equal",
     "href": "/docs/api/ops/less_equal",
-    "label": "`we.less_equal`"
+    "label": "we.less_equal"
   },
   "lexsort": {
     "canonical_name": "lexsort",
     "href": "/docs/api/ops/lexsort",
-    "label": "`we.lexsort`"
+    "label": "we.lexsort"
   },
   "linalg.cholesky": {
     "canonical_name": "linalg.cholesky",
     "href": "/docs/api/ops/linalg-cholesky",
-    "label": "`we.linalg.cholesky`"
+    "label": "we.linalg.cholesky"
   },
   "linalg.cond": {
     "canonical_name": "linalg.cond",
     "href": "/docs/api/ops/linalg-cond",
-    "label": "`we.linalg.cond`"
+    "label": "we.linalg.cond"
   },
   "linalg.cross": {
     "canonical_name": "linalg.cross",
     "href": "/docs/api/ops/linalg-cross",
-    "label": "`we.linalg.cross`"
+    "label": "we.linalg.cross"
   },
   "linalg.det": {
     "canonical_name": "linalg.det",
     "href": "/docs/api/ops/linalg-det",
-    "label": "`we.linalg.det`"
+    "label": "we.linalg.det"
   },
   "linalg.diagonal": {
     "canonical_name": "linalg.diagonal",
     "href": "/docs/api/ops/linalg-diagonal",
-    "label": "`we.linalg.diagonal`"
+    "label": "we.linalg.diagonal"
   },
   "linalg.eig": {
     "canonical_name": "linalg.eig",
     "href": "/docs/api/ops/linalg-eig",
-    "label": "`we.linalg.eig`"
+    "label": "we.linalg.eig"
   },
   "linalg.eigh": {
     "canonical_name": "linalg.eigh",
     "href": "/docs/api/ops/linalg-eigh",
-    "label": "`we.linalg.eigh`"
+    "label": "we.linalg.eigh"
   },
   "linalg.eigvals": {
     "canonical_name": "linalg.eigvals",
     "href": "/docs/api/ops/linalg-eigvals",
-    "label": "`we.linalg.eigvals`"
+    "label": "we.linalg.eigvals"
   },
   "linalg.eigvalsh": {
     "canonical_name": "linalg.eigvalsh",
     "href": "/docs/api/ops/linalg-eigvalsh",
-    "label": "`we.linalg.eigvalsh`"
+    "label": "we.linalg.eigvalsh"
   },
   "linalg.inv": {
     "canonical_name": "linalg.inv",
     "href": "/docs/api/ops/linalg-inv",
-    "label": "`we.linalg.inv`"
+    "label": "we.linalg.inv"
   },
   "linalg.lstsq": {
     "canonical_name": "linalg.lstsq",
     "href": "/docs/api/ops/linalg-lstsq",
-    "label": "`we.linalg.lstsq`"
+    "label": "we.linalg.lstsq"
   },
   "linalg.matmul": {
     "canonical_name": "linalg.matmul",
     "href": "/docs/api/ops/linalg-matmul",
-    "label": "`we.linalg.matmul`"
+    "label": "we.linalg.matmul"
   },
   "linalg.matrix_norm": {
     "canonical_name": "linalg.matrix_norm",
     "href": "/docs/api/ops/linalg-matrix_norm",
-    "label": "`we.linalg.matrix_norm`"
+    "label": "we.linalg.matrix_norm"
   },
   "linalg.matrix_power": {
     "canonical_name": "linalg.matrix_power",
     "href": "/docs/api/ops/linalg-matrix_power",
-    "label": "`we.linalg.matrix_power`"
+    "label": "we.linalg.matrix_power"
   },
   "linalg.matrix_rank": {
     "canonical_name": "linalg.matrix_rank",
     "href": "/docs/api/ops/linalg-matrix_rank",
-    "label": "`we.linalg.matrix_rank`"
+    "label": "we.linalg.matrix_rank"
   },
   "linalg.matrix_transpose": {
     "canonical_name": "linalg.matrix_transpose",
     "href": "/docs/api/ops/linalg-matrix_transpose",
-    "label": "`we.linalg.matrix_transpose`"
+    "label": "we.linalg.matrix_transpose"
   },
   "linalg.multi_dot": {
     "canonical_name": "linalg.multi_dot",
     "href": "/docs/api/ops/linalg-multi_dot",
-    "label": "`we.linalg.multi_dot`"
+    "label": "we.linalg.multi_dot"
   },
   "linalg.norm": {
     "canonical_name": "linalg.norm",
     "href": "/docs/api/ops/linalg-norm",
-    "label": "`we.linalg.norm`"
+    "label": "we.linalg.norm"
   },
   "linalg.outer": {
     "canonical_name": "linalg.outer",
     "href": "/docs/api/ops/linalg-outer",
-    "label": "`we.linalg.outer`"
+    "label": "we.linalg.outer"
   },
   "linalg.pinv": {
     "canonical_name": "linalg.pinv",
     "href": "/docs/api/ops/linalg-pinv",
-    "label": "`we.linalg.pinv`"
+    "label": "we.linalg.pinv"
   },
   "linalg.qr": {
     "canonical_name": "linalg.qr",
     "href": "/docs/api/ops/linalg-qr",
-    "label": "`we.linalg.qr`"
+    "label": "we.linalg.qr"
   },
   "linalg.slogdet": {
     "canonical_name": "linalg.slogdet",
     "href": "/docs/api/ops/linalg-slogdet",
-    "label": "`we.linalg.slogdet`"
+    "label": "we.linalg.slogdet"
   },
   "linalg.solve": {
     "canonical_name": "linalg.solve",
     "href": "/docs/api/ops/linalg-solve",
-    "label": "`we.linalg.solve`"
+    "label": "we.linalg.solve"
   },
   "linalg.svd": {
     "canonical_name": "linalg.svd",
     "href": "/docs/api/ops/linalg-svd",
-    "label": "`we.linalg.svd`"
+    "label": "we.linalg.svd"
   },
   "linalg.svdvals": {
     "canonical_name": "linalg.svdvals",
     "href": "/docs/api/ops/linalg-svdvals",
-    "label": "`we.linalg.svdvals`"
+    "label": "we.linalg.svdvals"
   },
   "linalg.tensordot": {
     "canonical_name": "linalg.tensordot",
     "href": "/docs/api/ops/linalg-tensordot",
-    "label": "`we.linalg.tensordot`"
+    "label": "we.linalg.tensordot"
   },
   "linalg.tensorinv": {
     "canonical_name": "linalg.tensorinv",
     "href": "/docs/api/ops/linalg-tensorinv",
-    "label": "`we.linalg.tensorinv`"
+    "label": "we.linalg.tensorinv"
   },
   "linalg.tensorsolve": {
     "canonical_name": "linalg.tensorsolve",
     "href": "/docs/api/ops/linalg-tensorsolve",
-    "label": "`we.linalg.tensorsolve`"
+    "label": "we.linalg.tensorsolve"
   },
   "linalg.trace": {
     "canonical_name": "linalg.trace",
     "href": "/docs/api/ops/linalg-trace",
-    "label": "`we.linalg.trace`"
+    "label": "we.linalg.trace"
   },
   "linalg.vecdot": {
     "canonical_name": "linalg.vecdot",
     "href": "/docs/api/ops/linalg-vecdot",
-    "label": "`we.linalg.vecdot`"
+    "label": "we.linalg.vecdot"
   },
   "linalg.vector_norm": {
     "canonical_name": "linalg.vector_norm",
     "href": "/docs/api/ops/linalg-vector_norm",
-    "label": "`we.linalg.vector_norm`"
+    "label": "we.linalg.vector_norm"
   },
   "linspace": {
     "canonical_name": "linspace",
     "href": "/docs/api/ops/linspace",
-    "label": "`we.linspace`"
+    "label": "we.linspace"
   },
   "log": {
     "canonical_name": "log",
     "href": "/docs/api/ops/log",
-    "label": "`we.log`"
+    "label": "we.log"
   },
   "log10": {
     "canonical_name": "log10",
     "href": "/docs/api/ops/log10",
-    "label": "`we.log10`"
+    "label": "we.log10"
   },
   "log1p": {
     "canonical_name": "log1p",
     "href": "/docs/api/ops/log1p",
-    "label": "`we.log1p`"
+    "label": "we.log1p"
   },
   "log2": {
     "canonical_name": "log2",
     "href": "/docs/api/ops/log2",
-    "label": "`we.log2`"
+    "label": "we.log2"
   },
   "logaddexp": {
     "canonical_name": "logaddexp",
     "href": "/docs/api/ops/logaddexp",
-    "label": "`we.logaddexp`"
+    "label": "we.logaddexp"
   },
   "logaddexp2": {
     "canonical_name": "logaddexp2",
     "href": "/docs/api/ops/logaddexp2",
-    "label": "`we.logaddexp2`"
+    "label": "we.logaddexp2"
   },
   "logical_and": {
     "canonical_name": "logical_and",
     "href": "/docs/api/ops/logical_and",
-    "label": "`we.logical_and`"
+    "label": "we.logical_and"
   },
   "logical_not": {
     "canonical_name": "logical_not",
     "href": "/docs/api/ops/logical_not",
-    "label": "`we.logical_not`"
+    "label": "we.logical_not"
   },
   "logical_or": {
     "canonical_name": "logical_or",
     "href": "/docs/api/ops/logical_or",
-    "label": "`we.logical_or`"
+    "label": "we.logical_or"
   },
   "logical_xor": {
     "canonical_name": "logical_xor",
     "href": "/docs/api/ops/logical_xor",
-    "label": "`we.logical_xor`"
+    "label": "we.logical_xor"
   },
   "logspace": {
     "canonical_name": "logspace",
     "href": "/docs/api/ops/logspace",
-    "label": "`we.logspace`"
+    "label": "we.logspace"
   },
   "mask_indices": {
     "canonical_name": "mask_indices",
     "href": "/docs/api/ops/mask_indices",
-    "label": "`we.mask_indices`"
+    "label": "we.mask_indices"
   },
   "matmul": {
     "canonical_name": "matmul",
     "href": "/docs/api/ops/matmul",
-    "label": "`we.matmul`"
+    "label": "we.matmul"
   },
   "matrix_transpose": {
     "canonical_name": "matrix_transpose",
     "href": "/docs/api/ops/matrix_transpose",
-    "label": "`we.matrix_transpose`"
+    "label": "we.matrix_transpose"
   },
   "matvec": {
     "canonical_name": "matvec",
     "href": "/docs/api/ops/matvec",
-    "label": "`we.matvec`"
+    "label": "we.matvec"
   },
   "max": {
     "canonical_name": "max",
     "href": "/docs/api/ops/max",
-    "label": "`we.max`"
+    "label": "we.max"
   },
   "maximum": {
     "canonical_name": "maximum",
     "href": "/docs/api/ops/maximum",
-    "label": "`we.maximum`"
+    "label": "we.maximum"
   },
   "may_share_memory": {
     "canonical_name": "may_share_memory",
     "href": "/docs/api/ops/may_share_memory",
-    "label": "`we.may_share_memory`"
+    "label": "we.may_share_memory"
   },
   "mean": {
     "canonical_name": "mean",
     "href": "/docs/api/ops/mean",
-    "label": "`we.mean`"
+    "label": "we.mean"
   },
   "median": {
     "canonical_name": "median",
     "href": "/docs/api/ops/median",
-    "label": "`we.median`"
+    "label": "we.median"
   },
   "meshgrid": {
     "canonical_name": "meshgrid",
     "href": "/docs/api/ops/meshgrid",
-    "label": "`we.meshgrid`"
+    "label": "we.meshgrid"
   },
   "min": {
     "canonical_name": "min",
     "href": "/docs/api/ops/min",
-    "label": "`we.min`"
+    "label": "we.min"
   },
   "min_scalar_type": {
     "canonical_name": "min_scalar_type",
     "href": "/docs/api/ops/min_scalar_type",
-    "label": "`we.min_scalar_type`"
+    "label": "we.min_scalar_type"
   },
   "minimum": {
     "canonical_name": "minimum",
     "href": "/docs/api/ops/minimum",
-    "label": "`we.minimum`"
+    "label": "we.minimum"
   },
   "mintypecode": {
     "canonical_name": "mintypecode",
     "href": "/docs/api/ops/mintypecode",
-    "label": "`we.mintypecode`"
+    "label": "we.mintypecode"
   },
   "mod": {
     "canonical_name": "mod",
     "href": "/docs/api/ops/mod",
-    "label": "`we.mod`"
+    "label": "we.mod"
   },
   "modf": {
     "canonical_name": "modf",
     "href": "/docs/api/ops/modf",
-    "label": "`we.modf`"
+    "label": "we.modf"
   },
   "moveaxis": {
     "canonical_name": "moveaxis",
     "href": "/docs/api/ops/moveaxis",
-    "label": "`we.moveaxis`"
+    "label": "we.moveaxis"
   },
   "multiply": {
     "canonical_name": "multiply",
     "href": "/docs/api/ops/multiply",
-    "label": "`we.multiply`"
+    "label": "we.multiply"
   },
   "nan_to_num": {
     "canonical_name": "nan_to_num",
     "href": "/docs/api/ops/nan_to_num",
-    "label": "`we.nan_to_num`"
+    "label": "we.nan_to_num"
   },
   "nanargmax": {
     "canonical_name": "nanargmax",
     "href": "/docs/api/ops/nanargmax",
-    "label": "`we.nanargmax`"
+    "label": "we.nanargmax"
   },
   "nanargmin": {
     "canonical_name": "nanargmin",
     "href": "/docs/api/ops/nanargmin",
-    "label": "`we.nanargmin`"
+    "label": "we.nanargmin"
   },
   "nancumprod": {
     "canonical_name": "nancumprod",
     "href": "/docs/api/ops/nancumprod",
-    "label": "`we.nancumprod`"
+    "label": "we.nancumprod"
   },
   "nancumsum": {
     "canonical_name": "nancumsum",
     "href": "/docs/api/ops/nancumsum",
-    "label": "`we.nancumsum`"
+    "label": "we.nancumsum"
   },
   "nanmax": {
     "canonical_name": "nanmax",
     "href": "/docs/api/ops/nanmax",
-    "label": "`we.nanmax`"
+    "label": "we.nanmax"
   },
   "nanmean": {
     "canonical_name": "nanmean",
     "href": "/docs/api/ops/nanmean",
-    "label": "`we.nanmean`"
+    "label": "we.nanmean"
   },
   "nanmedian": {
     "canonical_name": "nanmedian",
     "href": "/docs/api/ops/nanmedian",
-    "label": "`we.nanmedian`"
+    "label": "we.nanmedian"
   },
   "nanmin": {
     "canonical_name": "nanmin",
     "href": "/docs/api/ops/nanmin",
-    "label": "`we.nanmin`"
+    "label": "we.nanmin"
   },
   "nanpercentile": {
     "canonical_name": "nanpercentile",
     "href": "/docs/api/ops/nanpercentile",
-    "label": "`we.nanpercentile`"
+    "label": "we.nanpercentile"
   },
   "nanprod": {
     "canonical_name": "nanprod",
     "href": "/docs/api/ops/nanprod",
-    "label": "`we.nanprod`"
+    "label": "we.nanprod"
   },
   "nanquantile": {
     "canonical_name": "nanquantile",
     "href": "/docs/api/ops/nanquantile",
-    "label": "`we.nanquantile`"
+    "label": "we.nanquantile"
   },
   "nanstd": {
     "canonical_name": "nanstd",
     "href": "/docs/api/ops/nanstd",
-    "label": "`we.nanstd`"
+    "label": "we.nanstd"
   },
   "nansum": {
     "canonical_name": "nansum",
     "href": "/docs/api/ops/nansum",
-    "label": "`we.nansum`"
+    "label": "we.nansum"
   },
   "nanvar": {
     "canonical_name": "nanvar",
     "href": "/docs/api/ops/nanvar",
-    "label": "`we.nanvar`"
+    "label": "we.nanvar"
   },
   "ndim": {
     "canonical_name": "ndim",
     "href": "/docs/api/ops/ndim",
-    "label": "`we.ndim`"
+    "label": "we.ndim"
   },
   "negative": {
     "canonical_name": "negative",
     "href": "/docs/api/ops/negative",
-    "label": "`we.negative`"
+    "label": "we.negative"
   },
   "nextafter": {
     "canonical_name": "nextafter",
     "href": "/docs/api/ops/nextafter",
-    "label": "`we.nextafter`"
+    "label": "we.nextafter"
   },
   "nonzero": {
     "canonical_name": "nonzero",
     "href": "/docs/api/ops/nonzero",
-    "label": "`we.nonzero`"
+    "label": "we.nonzero"
   },
   "not_equal": {
     "canonical_name": "not_equal",
     "href": "/docs/api/ops/not_equal",
-    "label": "`we.not_equal`"
+    "label": "we.not_equal"
   },
   "ones": {
     "canonical_name": "ones",
     "href": "/docs/api/ops/ones",
-    "label": "`we.ones`"
+    "label": "we.ones"
   },
   "ones_like": {
     "canonical_name": "ones_like",
     "href": "/docs/api/ops/ones_like",
-    "label": "`we.ones_like`"
+    "label": "we.ones_like"
   },
   "outer": {
     "canonical_name": "outer",
     "href": "/docs/api/ops/outer",
-    "label": "`we.outer`"
+    "label": "we.outer"
   },
   "packbits": {
     "canonical_name": "packbits",
     "href": "/docs/api/ops/packbits",
-    "label": "`we.packbits`"
+    "label": "we.packbits"
   },
   "pad": {
     "canonical_name": "pad",
     "href": "/docs/api/ops/pad",
-    "label": "`we.pad`"
+    "label": "we.pad"
   },
   "partition": {
     "canonical_name": "partition",
     "href": "/docs/api/ops/partition",
-    "label": "`we.partition`"
+    "label": "we.partition"
   },
   "percentile": {
     "canonical_name": "percentile",
     "href": "/docs/api/ops/percentile",
-    "label": "`we.percentile`"
+    "label": "we.percentile"
   },
   "permute_dims": {
     "canonical_name": "permute_dims",
     "href": "/docs/api/ops/permute_dims",
-    "label": "`we.permute_dims`"
+    "label": "we.permute_dims"
   },
   "piecewise": {
     "canonical_name": "piecewise",
     "href": "/docs/api/ops/piecewise",
-    "label": "`we.piecewise`"
+    "label": "we.piecewise"
   },
   "place": {
     "canonical_name": "place",
     "href": "/docs/api/ops/place",
-    "label": "`we.place`"
+    "label": "we.place"
   },
   "poly": {
     "canonical_name": "poly",
     "href": "/docs/api/ops/poly",
-    "label": "`we.poly`"
+    "label": "we.poly"
   },
   "polyadd": {
     "canonical_name": "polyadd",
     "href": "/docs/api/ops/polyadd",
-    "label": "`we.polyadd`"
+    "label": "we.polyadd"
   },
   "polyder": {
     "canonical_name": "polyder",
     "href": "/docs/api/ops/polyder",
-    "label": "`we.polyder`"
+    "label": "we.polyder"
   },
   "polydiv": {
     "canonical_name": "polydiv",
     "href": "/docs/api/ops/polydiv",
-    "label": "`we.polydiv`"
+    "label": "we.polydiv"
   },
   "polyfit": {
     "canonical_name": "polyfit",
     "href": "/docs/api/ops/polyfit",
-    "label": "`we.polyfit`"
+    "label": "we.polyfit"
   },
   "polyint": {
     "canonical_name": "polyint",
     "href": "/docs/api/ops/polyint",
-    "label": "`we.polyint`"
+    "label": "we.polyint"
   },
   "polymul": {
     "canonical_name": "polymul",
     "href": "/docs/api/ops/polymul",
-    "label": "`we.polymul`"
+    "label": "we.polymul"
   },
   "polysub": {
     "canonical_name": "polysub",
     "href": "/docs/api/ops/polysub",
-    "label": "`we.polysub`"
+    "label": "we.polysub"
   },
   "polyval": {
     "canonical_name": "polyval",
     "href": "/docs/api/ops/polyval",
-    "label": "`we.polyval`"
+    "label": "we.polyval"
   },
   "positive": {
     "canonical_name": "positive",
     "href": "/docs/api/ops/positive",
-    "label": "`we.positive`"
+    "label": "we.positive"
   },
   "pow": {
     "canonical_name": "power",
     "href": "/docs/api/ops/power",
-    "label": "`we.power`"
+    "label": "we.power"
   },
   "power": {
     "canonical_name": "power",
     "href": "/docs/api/ops/power",
-    "label": "`we.power`"
+    "label": "we.power"
   },
   "prod": {
     "canonical_name": "prod",
     "href": "/docs/api/ops/prod",
-    "label": "`we.prod`"
+    "label": "we.prod"
   },
   "promote_types": {
     "canonical_name": "promote_types",
     "href": "/docs/api/ops/promote_types",
-    "label": "`we.promote_types`"
+    "label": "we.promote_types"
   },
   "ptp": {
     "canonical_name": "ptp",
     "href": "/docs/api/ops/ptp",
-    "label": "`we.ptp`"
+    "label": "we.ptp"
   },
   "put": {
     "canonical_name": "put",
     "href": "/docs/api/ops/put",
-    "label": "`we.put`"
+    "label": "we.put"
   },
   "put_along_axis": {
     "canonical_name": "put_along_axis",
     "href": "/docs/api/ops/put_along_axis",
-    "label": "`we.put_along_axis`"
+    "label": "we.put_along_axis"
   },
   "putmask": {
     "canonical_name": "putmask",
     "href": "/docs/api/ops/putmask",
-    "label": "`we.putmask`"
+    "label": "we.putmask"
   },
   "quantile": {
     "canonical_name": "quantile",
     "href": "/docs/api/ops/quantile",
-    "label": "`we.quantile`"
+    "label": "we.quantile"
   },
   "rad2deg": {
     "canonical_name": "degrees",
     "href": "/docs/api/ops/degrees",
-    "label": "`we.degrees`"
+    "label": "we.degrees"
   },
   "radians": {
     "canonical_name": "radians",
     "href": "/docs/api/ops/radians",
-    "label": "`we.radians`"
+    "label": "we.radians"
   },
   "random.beta": {
     "canonical_name": "random.beta",
     "href": "/docs/api/ops/random-beta",
-    "label": "`we.random.beta`"
+    "label": "we.random.beta"
   },
   "random.binomial": {
     "canonical_name": "random.binomial",
     "href": "/docs/api/ops/random-binomial",
-    "label": "`we.random.binomial`"
+    "label": "we.random.binomial"
   },
   "random.bytes": {
     "canonical_name": "random.bytes",
     "href": "/docs/api/ops/random-bytes",
-    "label": "`we.random.bytes`"
+    "label": "we.random.bytes"
   },
   "random.chisquare": {
     "canonical_name": "random.chisquare",
     "href": "/docs/api/ops/random-chisquare",
-    "label": "`we.random.chisquare`"
+    "label": "we.random.chisquare"
   },
   "random.choice": {
     "canonical_name": "random.choice",
     "href": "/docs/api/ops/random-choice",
-    "label": "`we.random.choice`"
+    "label": "we.random.choice"
   },
   "random.default_rng": {
     "canonical_name": "random.default_rng",
     "href": "/docs/api/ops/random-default_rng",
-    "label": "`we.random.default_rng`"
+    "label": "we.random.default_rng"
   },
   "random.dirichlet": {
     "canonical_name": "random.dirichlet",
     "href": "/docs/api/ops/random-dirichlet",
-    "label": "`we.random.dirichlet`"
+    "label": "we.random.dirichlet"
   },
   "random.exponential": {
     "canonical_name": "random.exponential",
     "href": "/docs/api/ops/random-exponential",
-    "label": "`we.random.exponential`"
+    "label": "we.random.exponential"
   },
   "random.f": {
     "canonical_name": "random.f",
     "href": "/docs/api/ops/random-f",
-    "label": "`we.random.f`"
+    "label": "we.random.f"
   },
   "random.gamma": {
     "canonical_name": "random.gamma",
     "href": "/docs/api/ops/random-gamma",
-    "label": "`we.random.gamma`"
+    "label": "we.random.gamma"
   },
   "random.geometric": {
     "canonical_name": "random.geometric",
     "href": "/docs/api/ops/random-geometric",
-    "label": "`we.random.geometric`"
+    "label": "we.random.geometric"
   },
   "random.get_state": {
     "canonical_name": "random.get_state",
     "href": "/docs/api/ops/random-get_state",
-    "label": "`we.random.get_state`"
+    "label": "we.random.get_state"
   },
   "random.gumbel": {
     "canonical_name": "random.gumbel",
     "href": "/docs/api/ops/random-gumbel",
-    "label": "`we.random.gumbel`"
+    "label": "we.random.gumbel"
   },
   "random.hypergeometric": {
     "canonical_name": "random.hypergeometric",
     "href": "/docs/api/ops/random-hypergeometric",
-    "label": "`we.random.hypergeometric`"
+    "label": "we.random.hypergeometric"
   },
   "random.laplace": {
     "canonical_name": "random.laplace",
     "href": "/docs/api/ops/random-laplace",
-    "label": "`we.random.laplace`"
+    "label": "we.random.laplace"
   },
   "random.logistic": {
     "canonical_name": "random.logistic",
     "href": "/docs/api/ops/random-logistic",
-    "label": "`we.random.logistic`"
+    "label": "we.random.logistic"
   },
   "random.lognormal": {
     "canonical_name": "random.lognormal",
     "href": "/docs/api/ops/random-lognormal",
-    "label": "`we.random.lognormal`"
+    "label": "we.random.lognormal"
   },
   "random.logseries": {
     "canonical_name": "random.logseries",
     "href": "/docs/api/ops/random-logseries",
-    "label": "`we.random.logseries`"
+    "label": "we.random.logseries"
   },
   "random.multinomial": {
     "canonical_name": "random.multinomial",
     "href": "/docs/api/ops/random-multinomial",
-    "label": "`we.random.multinomial`"
+    "label": "we.random.multinomial"
   },
   "random.multivariate_normal": {
     "canonical_name": "random.multivariate_normal",
     "href": "/docs/api/ops/random-multivariate_normal",
-    "label": "`we.random.multivariate_normal`"
+    "label": "we.random.multivariate_normal"
   },
   "random.negative_binomial": {
     "canonical_name": "random.negative_binomial",
     "href": "/docs/api/ops/random-negative_binomial",
-    "label": "`we.random.negative_binomial`"
+    "label": "we.random.negative_binomial"
   },
   "random.noncentral_chisquare": {
     "canonical_name": "random.noncentral_chisquare",
     "href": "/docs/api/ops/random-noncentral_chisquare",
-    "label": "`we.random.noncentral_chisquare`"
+    "label": "we.random.noncentral_chisquare"
   },
   "random.noncentral_f": {
     "canonical_name": "random.noncentral_f",
     "href": "/docs/api/ops/random-noncentral_f",
-    "label": "`we.random.noncentral_f`"
+    "label": "we.random.noncentral_f"
   },
   "random.normal": {
     "canonical_name": "random.normal",
     "href": "/docs/api/ops/random-normal",
-    "label": "`we.random.normal`"
+    "label": "we.random.normal"
   },
   "random.pareto": {
     "canonical_name": "random.pareto",
     "href": "/docs/api/ops/random-pareto",
-    "label": "`we.random.pareto`"
+    "label": "we.random.pareto"
   },
   "random.permutation": {
     "canonical_name": "random.permutation",
     "href": "/docs/api/ops/random-permutation",
-    "label": "`we.random.permutation`"
+    "label": "we.random.permutation"
   },
   "random.poisson": {
     "canonical_name": "random.poisson",
     "href": "/docs/api/ops/random-poisson",
-    "label": "`we.random.poisson`"
+    "label": "we.random.poisson"
   },
   "random.power": {
     "canonical_name": "random.power",
     "href": "/docs/api/ops/random-power",
-    "label": "`we.random.power`"
+    "label": "we.random.power"
   },
   "random.rand": {
     "canonical_name": "random.rand",
     "href": "/docs/api/ops/random-rand",
-    "label": "`we.random.rand`"
+    "label": "we.random.rand"
   },
   "random.randint": {
     "canonical_name": "random.randint",
     "href": "/docs/api/ops/random-randint",
-    "label": "`we.random.randint`"
+    "label": "we.random.randint"
   },
   "random.randn": {
     "canonical_name": "random.randn",
     "href": "/docs/api/ops/random-randn",
-    "label": "`we.random.randn`"
+    "label": "we.random.randn"
   },
   "random.random": {
     "canonical_name": "random.random",
     "href": "/docs/api/ops/random-random",
-    "label": "`we.random.random`"
+    "label": "we.random.random"
   },
   "random.random_integers": {
     "canonical_name": "random.random_integers",
     "href": "/docs/api/ops/random-random_integers",
-    "label": "`we.random.random_integers`"
+    "label": "we.random.random_integers"
   },
   "random.random_sample": {
     "canonical_name": "random.random_sample",
     "href": "/docs/api/ops/random-random_sample",
-    "label": "`we.random.random_sample`"
+    "label": "we.random.random_sample"
   },
   "random.ranf": {
     "canonical_name": "random.random_sample",
     "href": "/docs/api/ops/random-random_sample",
-    "label": "`we.random.random_sample`"
+    "label": "we.random.random_sample"
   },
   "random.rayleigh": {
     "canonical_name": "random.rayleigh",
     "href": "/docs/api/ops/random-rayleigh",
-    "label": "`we.random.rayleigh`"
+    "label": "we.random.rayleigh"
   },
   "random.sample": {
     "canonical_name": "random.random_sample",
     "href": "/docs/api/ops/random-random_sample",
-    "label": "`we.random.random_sample`"
+    "label": "we.random.random_sample"
   },
   "random.seed": {
     "canonical_name": "random.seed",
     "href": "/docs/api/ops/random-seed",
-    "label": "`we.random.seed`"
+    "label": "we.random.seed"
   },
   "random.set_state": {
     "canonical_name": "random.set_state",
     "href": "/docs/api/ops/random-set_state",
-    "label": "`we.random.set_state`"
+    "label": "we.random.set_state"
   },
   "random.shuffle": {
     "canonical_name": "random.shuffle",
     "href": "/docs/api/ops/random-shuffle",
-    "label": "`we.random.shuffle`"
+    "label": "we.random.shuffle"
   },
   "random.standard_cauchy": {
     "canonical_name": "random.standard_cauchy",
     "href": "/docs/api/ops/random-standard_cauchy",
-    "label": "`we.random.standard_cauchy`"
+    "label": "we.random.standard_cauchy"
   },
   "random.standard_exponential": {
     "canonical_name": "random.standard_exponential",
     "href": "/docs/api/ops/random-standard_exponential",
-    "label": "`we.random.standard_exponential`"
+    "label": "we.random.standard_exponential"
   },
   "random.standard_gamma": {
     "canonical_name": "random.standard_gamma",
     "href": "/docs/api/ops/random-standard_gamma",
-    "label": "`we.random.standard_gamma`"
+    "label": "we.random.standard_gamma"
   },
   "random.standard_normal": {
     "canonical_name": "random.standard_normal",
     "href": "/docs/api/ops/random-standard_normal",
-    "label": "`we.random.standard_normal`"
+    "label": "we.random.standard_normal"
   },
   "random.standard_t": {
     "canonical_name": "random.standard_t",
     "href": "/docs/api/ops/random-standard_t",
-    "label": "`we.random.standard_t`"
+    "label": "we.random.standard_t"
   },
   "random.triangular": {
     "canonical_name": "random.triangular",
     "href": "/docs/api/ops/random-triangular",
-    "label": "`we.random.triangular`"
+    "label": "we.random.triangular"
   },
   "random.uniform": {
     "canonical_name": "random.uniform",
     "href": "/docs/api/ops/random-uniform",
-    "label": "`we.random.uniform`"
+    "label": "we.random.uniform"
   },
   "random.vonmises": {
     "canonical_name": "random.vonmises",
     "href": "/docs/api/ops/random-vonmises",
-    "label": "`we.random.vonmises`"
+    "label": "we.random.vonmises"
   },
   "random.wald": {
     "canonical_name": "random.wald",
     "href": "/docs/api/ops/random-wald",
-    "label": "`we.random.wald`"
+    "label": "we.random.wald"
   },
   "random.weibull": {
     "canonical_name": "random.weibull",
     "href": "/docs/api/ops/random-weibull",
-    "label": "`we.random.weibull`"
+    "label": "we.random.weibull"
   },
   "random.zipf": {
     "canonical_name": "random.zipf",
     "href": "/docs/api/ops/random-zipf",
-    "label": "`we.random.zipf`"
+    "label": "we.random.zipf"
   },
   "ravel": {
     "canonical_name": "ravel",
     "href": "/docs/api/ops/ravel",
-    "label": "`we.ravel`"
+    "label": "we.ravel"
   },
   "ravel_multi_index": {
     "canonical_name": "ravel_multi_index",
     "href": "/docs/api/ops/ravel_multi_index",
-    "label": "`we.ravel_multi_index`"
+    "label": "we.ravel_multi_index"
   },
   "real": {
     "canonical_name": "real",
     "href": "/docs/api/ops/real",
-    "label": "`we.real`"
+    "label": "we.real"
   },
   "real_if_close": {
     "canonical_name": "real_if_close",
     "href": "/docs/api/ops/real_if_close",
-    "label": "`we.real_if_close`"
+    "label": "we.real_if_close"
   },
   "reciprocal": {
     "canonical_name": "reciprocal",
     "href": "/docs/api/ops/reciprocal",
-    "label": "`we.reciprocal`"
+    "label": "we.reciprocal"
   },
   "remainder": {
     "canonical_name": "remainder",
     "href": "/docs/api/ops/remainder",
-    "label": "`we.remainder`"
+    "label": "we.remainder"
   },
   "repeat": {
     "canonical_name": "repeat",
     "href": "/docs/api/ops/repeat",
-    "label": "`we.repeat`"
+    "label": "we.repeat"
   },
   "require": {
     "canonical_name": "require",
     "href": "/docs/api/ops/require",
-    "label": "`we.require`"
+    "label": "we.require"
   },
   "reshape": {
     "canonical_name": "reshape",
     "href": "/docs/api/ops/reshape",
-    "label": "`we.reshape`"
+    "label": "we.reshape"
   },
   "resize": {
     "canonical_name": "resize",
     "href": "/docs/api/ops/resize",
-    "label": "`we.resize`"
+    "label": "we.resize"
   },
   "result_type": {
     "canonical_name": "result_type",
     "href": "/docs/api/ops/result_type",
-    "label": "`we.result_type`"
+    "label": "we.result_type"
   },
   "right_shift": {
     "canonical_name": "right_shift",
     "href": "/docs/api/ops/right_shift",
-    "label": "`we.right_shift`"
+    "label": "we.right_shift"
   },
   "rint": {
     "canonical_name": "rint",
     "href": "/docs/api/ops/rint",
-    "label": "`we.rint`"
+    "label": "we.rint"
   },
   "roll": {
     "canonical_name": "roll",
     "href": "/docs/api/ops/roll",
-    "label": "`we.roll`"
+    "label": "we.roll"
   },
   "rollaxis": {
     "canonical_name": "rollaxis",
     "href": "/docs/api/ops/rollaxis",
-    "label": "`we.rollaxis`"
+    "label": "we.rollaxis"
   },
   "roots": {
     "canonical_name": "roots",
     "href": "/docs/api/ops/roots",
-    "label": "`we.roots`"
+    "label": "we.roots"
   },
   "rot90": {
     "canonical_name": "rot90",
     "href": "/docs/api/ops/rot90",
-    "label": "`we.rot90`"
+    "label": "we.rot90"
   },
   "round": {
     "canonical_name": "rint",
     "href": "/docs/api/ops/rint",
-    "label": "`we.rint`"
+    "label": "we.rint"
   },
   "row_stack": {
     "canonical_name": "vstack",
     "href": "/docs/api/ops/vstack",
-    "label": "`we.vstack`"
+    "label": "we.vstack"
   },
   "searchsorted": {
     "canonical_name": "searchsorted",
     "href": "/docs/api/ops/searchsorted",
-    "label": "`we.searchsorted`"
+    "label": "we.searchsorted"
   },
   "select": {
     "canonical_name": "select",
     "href": "/docs/api/ops/select",
-    "label": "`we.select`"
+    "label": "we.select"
   },
   "setdiff1d": {
     "canonical_name": "setdiff1d",
     "href": "/docs/api/ops/setdiff1d",
-    "label": "`we.setdiff1d`"
+    "label": "we.setdiff1d"
   },
   "setxor1d": {
     "canonical_name": "setxor1d",
     "href": "/docs/api/ops/setxor1d",
-    "label": "`we.setxor1d`"
+    "label": "we.setxor1d"
   },
   "shape": {
     "canonical_name": "shape",
     "href": "/docs/api/ops/shape",
-    "label": "`we.shape`"
+    "label": "we.shape"
   },
   "shares_memory": {
     "canonical_name": "shares_memory",
     "href": "/docs/api/ops/shares_memory",
-    "label": "`we.shares_memory`"
+    "label": "we.shares_memory"
   },
   "sign": {
     "canonical_name": "sign",
     "href": "/docs/api/ops/sign",
-    "label": "`we.sign`"
+    "label": "we.sign"
   },
   "signbit": {
     "canonical_name": "signbit",
     "href": "/docs/api/ops/signbit",
-    "label": "`we.signbit`"
+    "label": "we.signbit"
   },
   "sin": {
     "canonical_name": "sin",
     "href": "/docs/api/ops/sin",
-    "label": "`we.sin`"
+    "label": "we.sin"
   },
   "sinc": {
     "canonical_name": "sinc",
     "href": "/docs/api/ops/sinc",
-    "label": "`we.sinc`"
+    "label": "we.sinc"
   },
   "sinh": {
     "canonical_name": "sinh",
     "href": "/docs/api/ops/sinh",
-    "label": "`we.sinh`"
+    "label": "we.sinh"
   },
   "size": {
     "canonical_name": "size",
     "href": "/docs/api/ops/size",
-    "label": "`we.size`"
+    "label": "we.size"
   },
   "sort": {
     "canonical_name": "sort",
     "href": "/docs/api/ops/sort",
-    "label": "`we.sort`"
+    "label": "we.sort"
   },
   "sort_complex": {
     "canonical_name": "sort_complex",
     "href": "/docs/api/ops/sort_complex",
-    "label": "`we.sort_complex`"
+    "label": "we.sort_complex"
   },
   "spacing": {
     "canonical_name": "spacing",
     "href": "/docs/api/ops/spacing",
-    "label": "`we.spacing`"
+    "label": "we.spacing"
   },
   "split": {
     "canonical_name": "split",
     "href": "/docs/api/ops/split",
-    "label": "`we.split`"
+    "label": "we.split"
   },
   "sqrt": {
     "canonical_name": "sqrt",
     "href": "/docs/api/ops/sqrt",
-    "label": "`we.sqrt`"
+    "label": "we.sqrt"
   },
   "square": {
     "canonical_name": "square",
     "href": "/docs/api/ops/square",
-    "label": "`we.square`"
+    "label": "we.square"
   },
   "squeeze": {
     "canonical_name": "squeeze",
     "href": "/docs/api/ops/squeeze",
-    "label": "`we.squeeze`"
+    "label": "we.squeeze"
   },
   "stack": {
     "canonical_name": "stack",
     "href": "/docs/api/ops/stack",
-    "label": "`we.stack`"
+    "label": "we.stack"
   },
   "stats.cauchy.cdf": {
     "canonical_name": "stats.cauchy.cdf",
     "href": "/docs/api/ops/stats-cauchy-cdf",
-    "label": "`we.stats.cauchy.cdf`"
+    "label": "we.stats.cauchy.cdf"
   },
   "stats.cauchy.pdf": {
     "canonical_name": "stats.cauchy.pdf",
     "href": "/docs/api/ops/stats-cauchy-pdf",
-    "label": "`we.stats.cauchy.pdf`"
+    "label": "we.stats.cauchy.pdf"
   },
   "stats.cauchy.ppf": {
     "canonical_name": "stats.cauchy.ppf",
     "href": "/docs/api/ops/stats-cauchy-ppf",
-    "label": "`we.stats.cauchy.ppf`"
+    "label": "we.stats.cauchy.ppf"
   },
   "stats.expon.cdf": {
     "canonical_name": "stats.expon.cdf",
     "href": "/docs/api/ops/stats-expon-cdf",
-    "label": "`we.stats.expon.cdf`"
+    "label": "we.stats.expon.cdf"
   },
   "stats.expon.pdf": {
     "canonical_name": "stats.expon.pdf",
     "href": "/docs/api/ops/stats-expon-pdf",
-    "label": "`we.stats.expon.pdf`"
+    "label": "we.stats.expon.pdf"
   },
   "stats.expon.ppf": {
     "canonical_name": "stats.expon.ppf",
     "href": "/docs/api/ops/stats-expon-ppf",
-    "label": "`we.stats.expon.ppf`"
+    "label": "we.stats.expon.ppf"
   },
   "stats.laplace.cdf": {
     "canonical_name": "stats.laplace.cdf",
     "href": "/docs/api/ops/stats-laplace-cdf",
-    "label": "`we.stats.laplace.cdf`"
+    "label": "we.stats.laplace.cdf"
   },
   "stats.laplace.pdf": {
     "canonical_name": "stats.laplace.pdf",
     "href": "/docs/api/ops/stats-laplace-pdf",
-    "label": "`we.stats.laplace.pdf`"
+    "label": "we.stats.laplace.pdf"
   },
   "stats.laplace.ppf": {
     "canonical_name": "stats.laplace.ppf",
     "href": "/docs/api/ops/stats-laplace-ppf",
-    "label": "`we.stats.laplace.ppf`"
+    "label": "we.stats.laplace.ppf"
   },
   "stats.logistic.cdf": {
     "canonical_name": "stats.logistic.cdf",
     "href": "/docs/api/ops/stats-logistic-cdf",
-    "label": "`we.stats.logistic.cdf`"
+    "label": "we.stats.logistic.cdf"
   },
   "stats.logistic.pdf": {
     "canonical_name": "stats.logistic.pdf",
     "href": "/docs/api/ops/stats-logistic-pdf",
-    "label": "`we.stats.logistic.pdf`"
+    "label": "we.stats.logistic.pdf"
   },
   "stats.logistic.ppf": {
     "canonical_name": "stats.logistic.ppf",
     "href": "/docs/api/ops/stats-logistic-ppf",
-    "label": "`we.stats.logistic.ppf`"
+    "label": "we.stats.logistic.ppf"
   },
   "stats.lognorm.cdf": {
     "canonical_name": "stats.lognorm.cdf",
     "href": "/docs/api/ops/stats-lognorm-cdf",
-    "label": "`we.stats.lognorm.cdf`"
+    "label": "we.stats.lognorm.cdf"
   },
   "stats.lognorm.pdf": {
     "canonical_name": "stats.lognorm.pdf",
     "href": "/docs/api/ops/stats-lognorm-pdf",
-    "label": "`we.stats.lognorm.pdf`"
+    "label": "we.stats.lognorm.pdf"
   },
   "stats.lognorm.ppf": {
     "canonical_name": "stats.lognorm.ppf",
     "href": "/docs/api/ops/stats-lognorm-ppf",
-    "label": "`we.stats.lognorm.ppf`"
+    "label": "we.stats.lognorm.ppf"
   },
   "stats.norm.cdf": {
     "canonical_name": "stats.norm.cdf",
     "href": "/docs/api/ops/stats-norm-cdf",
-    "label": "`we.stats.norm.cdf`"
+    "label": "we.stats.norm.cdf"
   },
   "stats.norm.pdf": {
     "canonical_name": "stats.norm.pdf",
     "href": "/docs/api/ops/stats-norm-pdf",
-    "label": "`we.stats.norm.pdf`"
+    "label": "we.stats.norm.pdf"
   },
   "stats.norm.ppf": {
     "canonical_name": "stats.norm.ppf",
     "href": "/docs/api/ops/stats-norm-ppf",
-    "label": "`we.stats.norm.ppf`"
+    "label": "we.stats.norm.ppf"
   },
   "stats.truncnorm.cdf": {
     "canonical_name": "stats.truncnorm.cdf",
     "href": "/docs/api/ops/stats-truncnorm-cdf",
-    "label": "`we.stats.truncnorm.cdf`"
+    "label": "we.stats.truncnorm.cdf"
   },
   "stats.truncnorm.pdf": {
     "canonical_name": "stats.truncnorm.pdf",
     "href": "/docs/api/ops/stats-truncnorm-pdf",
-    "label": "`we.stats.truncnorm.pdf`"
+    "label": "we.stats.truncnorm.pdf"
   },
   "stats.truncnorm.ppf": {
     "canonical_name": "stats.truncnorm.ppf",
     "href": "/docs/api/ops/stats-truncnorm-ppf",
-    "label": "`we.stats.truncnorm.ppf`"
+    "label": "we.stats.truncnorm.ppf"
   },
   "stats.uniform.cdf": {
     "canonical_name": "stats.uniform.cdf",
     "href": "/docs/api/ops/stats-uniform-cdf",
-    "label": "`we.stats.uniform.cdf`"
+    "label": "we.stats.uniform.cdf"
   },
   "stats.uniform.pdf": {
     "canonical_name": "stats.uniform.pdf",
     "href": "/docs/api/ops/stats-uniform-pdf",
-    "label": "`we.stats.uniform.pdf`"
+    "label": "we.stats.uniform.pdf"
   },
   "stats.uniform.ppf": {
     "canonical_name": "stats.uniform.ppf",
     "href": "/docs/api/ops/stats-uniform-ppf",
-    "label": "`we.stats.uniform.ppf`"
+    "label": "we.stats.uniform.ppf"
   },
   "std": {
     "canonical_name": "std",
     "href": "/docs/api/ops/std",
-    "label": "`we.std`"
+    "label": "we.std"
   },
   "subtract": {
     "canonical_name": "subtract",
     "href": "/docs/api/ops/subtract",
-    "label": "`we.subtract`"
+    "label": "we.subtract"
   },
   "sum": {
     "canonical_name": "sum",
     "href": "/docs/api/ops/sum",
-    "label": "`we.sum`"
+    "label": "we.sum"
   },
   "swapaxes": {
     "canonical_name": "swapaxes",
     "href": "/docs/api/ops/swapaxes",
-    "label": "`we.swapaxes`"
+    "label": "we.swapaxes"
   },
   "take": {
     "canonical_name": "take",
     "href": "/docs/api/ops/take",
-    "label": "`we.take`"
+    "label": "we.take"
   },
   "take_along_axis": {
     "canonical_name": "take_along_axis",
     "href": "/docs/api/ops/take_along_axis",
-    "label": "`we.take_along_axis`"
+    "label": "we.take_along_axis"
   },
   "tan": {
     "canonical_name": "tan",
     "href": "/docs/api/ops/tan",
-    "label": "`we.tan`"
+    "label": "we.tan"
   },
   "tanh": {
     "canonical_name": "tanh",
     "href": "/docs/api/ops/tanh",
-    "label": "`we.tanh`"
+    "label": "we.tanh"
   },
   "tensordot": {
     "canonical_name": "tensordot",
     "href": "/docs/api/ops/tensordot",
-    "label": "`we.tensordot`"
+    "label": "we.tensordot"
   },
   "tile": {
     "canonical_name": "tile",
     "href": "/docs/api/ops/tile",
-    "label": "`we.tile`"
+    "label": "we.tile"
   },
   "trace": {
     "canonical_name": "trace",
     "href": "/docs/api/ops/trace",
-    "label": "`we.trace`"
+    "label": "we.trace"
   },
   "transpose": {
     "canonical_name": "transpose",
     "href": "/docs/api/ops/transpose",
-    "label": "`we.transpose`"
+    "label": "we.transpose"
   },
   "trapezoid": {
     "canonical_name": "trapezoid",
     "href": "/docs/api/ops/trapezoid",
-    "label": "`we.trapezoid`"
+    "label": "we.trapezoid"
   },
   "trapz": {
     "canonical_name": "trapezoid",
     "href": "/docs/api/ops/trapezoid",
-    "label": "`we.trapezoid`"
+    "label": "we.trapezoid"
   },
   "tri": {
     "canonical_name": "tri",
     "href": "/docs/api/ops/tri",
-    "label": "`we.tri`"
+    "label": "we.tri"
   },
   "tril": {
     "canonical_name": "tril",
     "href": "/docs/api/ops/tril",
-    "label": "`we.tril`"
+    "label": "we.tril"
   },
   "tril_indices": {
     "canonical_name": "tril_indices",
     "href": "/docs/api/ops/tril_indices",
-    "label": "`we.tril_indices`"
+    "label": "we.tril_indices"
   },
   "tril_indices_from": {
     "canonical_name": "tril_indices_from",
     "href": "/docs/api/ops/tril_indices_from",
-    "label": "`we.tril_indices_from`"
+    "label": "we.tril_indices_from"
   },
   "trim_zeros": {
     "canonical_name": "trim_zeros",
     "href": "/docs/api/ops/trim_zeros",
-    "label": "`we.trim_zeros`"
+    "label": "we.trim_zeros"
   },
   "triu": {
     "canonical_name": "triu",
     "href": "/docs/api/ops/triu",
-    "label": "`we.triu`"
+    "label": "we.triu"
   },
   "triu_indices": {
     "canonical_name": "triu_indices",
     "href": "/docs/api/ops/triu_indices",
-    "label": "`we.triu_indices`"
+    "label": "we.triu_indices"
   },
   "triu_indices_from": {
     "canonical_name": "triu_indices_from",
     "href": "/docs/api/ops/triu_indices_from",
-    "label": "`we.triu_indices_from`"
+    "label": "we.triu_indices_from"
   },
   "true_divide": {
     "canonical_name": "true_divide",
     "href": "/docs/api/ops/true_divide",
-    "label": "`we.true_divide`"
+    "label": "we.true_divide"
   },
   "trunc": {
     "canonical_name": "trunc",
     "href": "/docs/api/ops/trunc",
-    "label": "`we.trunc`"
+    "label": "we.trunc"
   },
   "typename": {
     "canonical_name": "typename",
     "href": "/docs/api/ops/typename",
-    "label": "`we.typename`"
+    "label": "we.typename"
   },
   "union1d": {
     "canonical_name": "union1d",
     "href": "/docs/api/ops/union1d",
-    "label": "`we.union1d`"
+    "label": "we.union1d"
   },
   "unique": {
     "canonical_name": "unique",
     "href": "/docs/api/ops/unique",
-    "label": "`we.unique`"
+    "label": "we.unique"
   },
   "unique_all": {
     "canonical_name": "unique_all",
     "href": "/docs/api/ops/unique_all",
-    "label": "`we.unique_all`"
+    "label": "we.unique_all"
   },
   "unique_counts": {
     "canonical_name": "unique_counts",
     "href": "/docs/api/ops/unique_counts",
-    "label": "`we.unique_counts`"
+    "label": "we.unique_counts"
   },
   "unique_inverse": {
     "canonical_name": "unique_inverse",
     "href": "/docs/api/ops/unique_inverse",
-    "label": "`we.unique_inverse`"
+    "label": "we.unique_inverse"
   },
   "unique_values": {
     "canonical_name": "unique_values",
     "href": "/docs/api/ops/unique_values",
-    "label": "`we.unique_values`"
+    "label": "we.unique_values"
   },
   "unpackbits": {
     "canonical_name": "unpackbits",
     "href": "/docs/api/ops/unpackbits",
-    "label": "`we.unpackbits`"
+    "label": "we.unpackbits"
   },
   "unravel_index": {
     "canonical_name": "unravel_index",
     "href": "/docs/api/ops/unravel_index",
-    "label": "`we.unravel_index`"
+    "label": "we.unravel_index"
   },
   "unstack": {
     "canonical_name": "unstack",
     "href": "/docs/api/ops/unstack",
-    "label": "`we.unstack`"
+    "label": "we.unstack"
   },
   "unwrap": {
     "canonical_name": "unwrap",
     "href": "/docs/api/ops/unwrap",
-    "label": "`we.unwrap`"
+    "label": "we.unwrap"
   },
   "vander": {
     "canonical_name": "vander",
     "href": "/docs/api/ops/vander",
-    "label": "`we.vander`"
+    "label": "we.vander"
   },
   "var": {
     "canonical_name": "var",
     "href": "/docs/api/ops/var",
-    "label": "`we.var`"
+    "label": "we.var"
   },
   "vdot": {
     "canonical_name": "vdot",
     "href": "/docs/api/ops/vdot",
-    "label": "`we.vdot`"
+    "label": "we.vdot"
   },
   "vecdot": {
     "canonical_name": "vecdot",
     "href": "/docs/api/ops/vecdot",
-    "label": "`we.vecdot`"
+    "label": "we.vecdot"
   },
   "vecmat": {
     "canonical_name": "vecmat",
     "href": "/docs/api/ops/vecmat",
-    "label": "`we.vecmat`"
+    "label": "we.vecmat"
   },
   "vsplit": {
     "canonical_name": "vsplit",
     "href": "/docs/api/ops/vsplit",
-    "label": "`we.vsplit`"
+    "label": "we.vsplit"
   },
   "vstack": {
     "canonical_name": "vstack",
     "href": "/docs/api/ops/vstack",
-    "label": "`we.vstack`"
+    "label": "we.vstack"
   },
   "where": {
     "canonical_name": "where",
     "href": "/docs/api/ops/where",
-    "label": "`we.where`"
+    "label": "we.where"
   },
   "zeros": {
     "canonical_name": "zeros",
     "href": "/docs/api/ops/zeros",
-    "label": "`we.zeros`"
+    "label": "we.zeros"
   },
   "zeros_like": {
     "canonical_name": "zeros_like",
     "href": "/docs/api/ops/zeros_like",
-    "label": "`we.zeros_like`"
+    "label": "we.zeros_like"
   }
 }

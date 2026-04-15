@@ -51,8 +51,8 @@ def test_write_generated_operation_artifacts(tmp_path):
             slug="absolute",
             href="/docs/api/ops/absolute",
             area="core",
-            whest_ref="`we.absolute`",
-            numpy_ref="`np.absolute`",
+            whest_ref="we.absolute",
+            numpy_ref="np.absolute",
             category="counted_unary",
             display_type="counted",
             cost_formula="numel(output)",
@@ -70,14 +70,14 @@ def test_write_generated_operation_artifacts(tmp_path):
                 mod.DocField(
                     name="x",
                     type="array_like",
-                    description=["Input array."],
+                    body=["Input array."],
                 )
             ],
             returns=[
                 mod.DocField(
                     name="absolute",
                     type="ndarray",
-                    description=["Absolute values of `x`."],
+                    body=["Absolute values of `x`."],
                 )
             ],
             see_also=[
@@ -93,11 +93,7 @@ def test_write_generated_operation_artifacts(tmp_path):
                 output="array([1, 2, 3])",
             ),
             previous=None,
-            next=mod.OperationNavLink(
-                name="add",
-                href="/docs/api/ops/add",
-                label="we.add",
-            ),
+            next=mod.OperationNavLink(href="/docs/api/ops/add", label="we.add"),
         )
     ]
 
@@ -119,6 +115,7 @@ def test_write_generated_operation_artifacts(tmp_path):
     assert absolute["summary"] == "Return the absolute value element-wise."
     assert absolute["provenance_label"] == "Adapted from NumPy docs"
     assert absolute["parameters"][0]["name"] == "x"
+    assert absolute["parameters"][0]["body"] == ["Input array."]
     assert absolute["returns"][0]["name"] == "absolute"
     assert absolute["see_also"][0]["target"] == "fabs"
     assert absolute["notes_sections"][0].startswith("For complex input")
@@ -126,7 +123,7 @@ def test_write_generated_operation_artifacts(tmp_path):
     assert absolute["next"]["href"] == "/docs/api/ops/add"
 
     refs_manifest = mod.json.loads(refs_manifest_path.read_text())
-    assert refs_manifest["abs"]["label"] == "`we.absolute`"
+    assert refs_manifest["abs"]["label"] == "we.absolute"
     assert refs_manifest["abs"]["href"] == "/docs/api/ops/absolute"
     assert refs_manifest["abs"]["canonical_name"] == "absolute"
 
@@ -194,8 +191,8 @@ def test_example_coverage_marks_owned_examples(tmp_path):
             slug="absolute",
             href="/docs/api/ops/absolute",
             area="core",
-            whest_ref="`we.absolute`",
-            numpy_ref="`np.absolute`",
+            whest_ref="we.absolute",
+            numpy_ref="np.absolute",
             category="counted_unary",
             display_type="counted",
             cost_formula="numel(output)",
@@ -223,8 +220,8 @@ def test_example_coverage_marks_owned_examples(tmp_path):
             slug="sum",
             href="/docs/api/ops/sum",
             area="core",
-            whest_ref="`we.sum`",
-            numpy_ref="`np.sum`",
+            whest_ref="we.sum",
+            numpy_ref="np.sum",
             category="counted_reduction",
             display_type="counted",
             cost_formula="numel(input)",
@@ -252,8 +249,8 @@ def test_example_coverage_marks_owned_examples(tmp_path):
             slug="zeros",
             href="/docs/api/ops/zeros",
             area="core",
-            whest_ref="`we.zeros`",
-            numpy_ref="`np.zeros`",
+            whest_ref="we.zeros",
+            numpy_ref="np.zeros",
             category="free",
             display_type="free",
             cost_formula="0",
@@ -375,3 +372,127 @@ def test_derive_example_from_doctest_keeps_code_and_output():
     assert "import whest as we" in example.code
     assert "we.histogram" in example.code
     assert "array([1, 2, 1])" in example.output
+
+
+def test_derive_example_from_doctest_ignores_plot_prose():
+    mod = load_generate_api_docs_module()
+
+    example = mod.derive_example_from_upstream(
+        ">>> import numpy as np\n"
+        ">>> np.histogram([1, 2, 1], bins=[0, 1, 2, 3])\n"
+        "(array([0, 2, 1]), array([0, 1, 2, 3]))\n"
+        "\n"
+        "Automated Bin Selection Methods example.\n"
+        "\n"
+        ".. plot::\n"
+        "    :include-source:\n"
+        "\n"
+        "    import matplotlib.pyplot as plt\n"
+    )
+
+    assert "plot::" not in example.output
+    assert "Automated Bin Selection Methods" not in example.output
+    assert "import whest as we" in example.code
+    assert "we.histogram" in example.code
+
+
+def test_resolve_doc_link_sets_internal_and_external_urls():
+    mod = load_generate_api_docs_module()
+
+    internal = mod.resolve_doc_link(
+        mod.DocLink(
+            label="numpy.histogram_bin_edges",
+            target="numpy.histogram_bin_edges",
+            description="Bin helper.",
+        ),
+        alias_map={},
+        supported_ops={"histogram_bin_edges"},
+    )
+    external = mod.resolve_doc_link(
+        mod.DocLink(
+            label="scipy.linalg.svd",
+            target="scipy.linalg.svd",
+            description="Similar function in SciPy.",
+        ),
+        alias_map={},
+        supported_ops={"svd"},
+    )
+
+    assert internal.href == "/docs/api/ops/histogram_bin_edges"
+    assert internal.external_url == ""
+    assert external.href == ""
+    assert external.external_url == (
+        "https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.svd.html"
+    )
+
+
+def test_write_generated_operation_artifacts_emit_structured_parity_fields(tmp_path):
+    mod = load_generate_api_docs_module()
+
+    records = [
+        mod.OperationDocRecord(
+            name="absolute",
+            canonical_name="absolute",
+            slug="absolute",
+            href="/docs/api/ops/absolute",
+            area="core",
+            whest_ref="we.absolute",
+            numpy_ref="np.absolute",
+            category="counted_unary",
+            display_type="counted",
+            cost_formula="numel(output)",
+            cost_formula_latex=r"$\text{numel}(\text{output})$",
+            weight=1.0,
+            notes="Element-wise absolute value.",
+            aliases=["abs"],
+            signature="we.absolute(x, /, out=None, *, where=True)",
+            summary="Calculate the absolute value element-wise.",
+            provenance_label="Adapted from NumPy docs",
+            provenance_url="https://numpy.org/doc/stable/reference/generated/numpy.absolute.html",
+            whest_source_url="https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L10",
+            upstream_source_url="https://github.com/numpy/numpy/blob/main/numpy/_core/code_generators/ufunc_docstrings.py",
+            parameters=[mod.DocField(name="x", type="array_like", body=["Input array."])],
+            returns=[mod.DocField(name="absolute", type="ndarray", body=["Absolute value of x."])],
+            see_also=[mod.DocLink(label="we.fabs", target="fabs", href="/docs/api/ops/fabs")],
+            notes_sections=["Supports broadcasting."],
+            example=mod.DocExample(
+                code="import whest as we\nwe.absolute([-1, 2])",
+                output="array([1, 2])",
+                source="derived",
+            ),
+            previous=None,
+            next=mod.OperationNavLink(label="we.add", href="/docs/api/ops/add"),
+        )
+    ]
+
+    mod.write_operation_doc_artifacts(records, tmp_path)
+
+    manifest = mod.json.loads((tmp_path / ".generated" / "op-docs.json").read_text())
+    absolute = manifest["absolute"]
+
+    assert absolute["summary"] == "Calculate the absolute value element-wise."
+    assert absolute["provenance_label"] == "Adapted from NumPy docs"
+    assert absolute["parameters"][0]["name"] == "x"
+    assert absolute["parameters"][0]["body"] == ["Input array."]
+    assert absolute["returns"][0]["name"] == "absolute"
+    assert absolute["see_also"][0]["href"] == "/docs/api/ops/fabs"
+    assert absolute["notes_sections"][0] == "Supports broadcasting."
+    assert absolute["example"]["source"] == "derived"
+    assert absolute["next"]["href"] == "/docs/api/ops/add"
+
+
+def test_build_example_coverage_prefers_override_then_derived():
+    mod = load_generate_api_docs_module()
+
+    override = mod.DocExample(code="override()", output="", source="override")
+    derived = mod.DocExample(code="derived()", output="", source="derived")
+
+    coverage = mod.build_example_coverage(
+        ["absolute", "sum", "mean"],
+        overrides={"absolute": override},
+        derived_examples={"sum": derived},
+    )
+
+    assert coverage["absolute"]["example_source"] == "override"
+    assert coverage["sum"]["example_source"] == "derived"
+    assert coverage["mean"]["example_source"] == "missing"

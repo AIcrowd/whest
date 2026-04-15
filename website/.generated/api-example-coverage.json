@@ -2,6 +2,7 @@
   "absolute": {
     "coverage_status": "owned",
     "example_count": 1,
+    "example_source": "owned",
     "example_sources": [
       "/Users/mohanty/.codex/worktrees/a3ee/whest/website/content/api-examples/absolute.mdx"
     ],
@@ -11,6 +12,7 @@
   "add": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.add.html"
     ],
@@ -20,6 +22,7 @@
   "all": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.all.html"
     ],
@@ -29,6 +32,7 @@
   "allclose": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.allclose.html"
     ],
@@ -38,6 +42,7 @@
   "angle": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.angle.html"
     ],
@@ -47,6 +52,7 @@
   "any": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.any.html"
     ],
@@ -56,6 +62,7 @@
   "append": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.append.html"
     ],
@@ -65,6 +72,7 @@
   "apply_along_axis": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.apply_along_axis.html"
     ],
@@ -74,6 +82,7 @@
   "apply_over_axes": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.apply_over_axes.html"
     ],
@@ -83,6 +92,7 @@
   "arange": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.arange.html"
     ],
@@ -92,6 +102,7 @@
   "arccos": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.arccos.html"
     ],
@@ -101,6 +112,7 @@
   "arccosh": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.arccosh.html"
     ],
@@ -110,6 +122,7 @@
   "arcsin": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.arcsin.html"
     ],
@@ -119,6 +132,7 @@
   "arcsinh": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.arcsinh.html"
     ],
@@ -128,6 +142,7 @@
   "arctan": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.arctan.html"
     ],
@@ -137,6 +152,7 @@
   "arctan2": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.arctan2.html"
     ],
@@ -146,6 +162,7 @@
   "arctanh": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.arctanh.html"
     ],
@@ -155,6 +172,7 @@
   "argmax": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.argmax.html"
     ],
@@ -164,6 +182,7 @@
   "argmin": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.argmin.html"
     ],
@@ -173,6 +192,7 @@
   "argpartition": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.argpartition.html"
     ],
@@ -182,6 +202,7 @@
   "argsort": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.argsort.html"
     ],
@@ -191,6 +212,7 @@
   "argwhere": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.argwhere.html"
     ],
@@ -200,6 +222,7 @@
   "array": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.array.html"
     ],
@@ -209,6 +232,7 @@
   "array_equal": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.array_equal.html"
     ],
@@ -218,6 +242,7 @@
   "array_equiv": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.array_equiv.html"
     ],
@@ -227,6 +252,7 @@
   "array_split": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.array_split.html"
     ],
@@ -236,6 +262,7 @@
   "asarray": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.asarray.html"
     ],
@@ -245,6 +272,7 @@
   "asarray_chkfinite": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.asarray_chkfinite.html"
     ],
@@ -254,6 +282,7 @@
   "astype": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.astype.html"
     ],
@@ -263,6 +292,7 @@
   "atleast_1d": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.atleast_1d.html"
     ],
@@ -272,6 +302,7 @@
   "atleast_2d": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.atleast_2d.html"
     ],
@@ -281,6 +312,7 @@
   "atleast_3d": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.atleast_3d.html"
     ],
@@ -290,6 +322,7 @@
   "average": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.average.html"
     ],
@@ -299,6 +332,7 @@
   "bartlett": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.bartlett.html"
     ],
@@ -308,6 +342,7 @@
   "bincount": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.bincount.html"
     ],
@@ -317,6 +352,7 @@
   "bitwise_and": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.bitwise_and.html"
     ],
@@ -326,6 +362,7 @@
   "bitwise_count": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.bitwise_count.html"
     ],
@@ -335,6 +372,7 @@
   "bitwise_left_shift": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.bitwise_left_shift.html"
     ],
@@ -344,6 +382,7 @@
   "bitwise_not": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.bitwise_not.html"
     ],
@@ -353,6 +392,7 @@
   "bitwise_or": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.bitwise_or.html"
     ],
@@ -362,6 +402,7 @@
   "bitwise_right_shift": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.bitwise_right_shift.html"
     ],
@@ -371,6 +412,7 @@
   "bitwise_xor": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.bitwise_xor.html"
     ],
@@ -380,6 +422,7 @@
   "blackman": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.blackman.html"
     ],
@@ -389,6 +432,7 @@
   "block": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.block.html"
     ],
@@ -398,6 +442,7 @@
   "bmat": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.bmat.html"
     ],
@@ -407,6 +452,7 @@
   "broadcast_arrays": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.broadcast_arrays.html"
     ],
@@ -416,6 +462,7 @@
   "broadcast_shapes": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.broadcast_shapes.html"
     ],
@@ -425,6 +472,7 @@
   "broadcast_to": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.broadcast_to.html"
     ],
@@ -434,6 +482,7 @@
   "can_cast": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.can_cast.html"
     ],
@@ -443,6 +492,7 @@
   "cbrt": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.cbrt.html"
     ],
@@ -452,6 +502,7 @@
   "ceil": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.ceil.html"
     ],
@@ -461,6 +512,7 @@
   "choose": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.choose.html"
     ],
@@ -470,6 +522,7 @@
   "clip": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.clip.html"
     ],
@@ -479,6 +532,7 @@
   "column_stack": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.column_stack.html"
     ],
@@ -488,6 +542,7 @@
   "common_type": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.common_type.html"
     ],
@@ -497,6 +552,7 @@
   "compress": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.compress.html"
     ],
@@ -506,6 +562,7 @@
   "concatenate": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html"
     ],
@@ -515,6 +572,7 @@
   "conj": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.conj.html"
     ],
@@ -524,6 +582,7 @@
   "conjugate": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.conjugate.html"
     ],
@@ -533,6 +592,7 @@
   "convolve": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.convolve.html"
     ],
@@ -542,6 +602,7 @@
   "copy": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.copy.html"
     ],
@@ -551,6 +612,7 @@
   "copysign": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.copysign.html"
     ],
@@ -560,6 +622,7 @@
   "copyto": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.copyto.html"
     ],
@@ -569,6 +632,7 @@
   "corrcoef": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.corrcoef.html"
     ],
@@ -578,6 +642,7 @@
   "correlate": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.correlate.html"
     ],
@@ -587,6 +652,7 @@
   "cos": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.cos.html"
     ],
@@ -596,6 +662,7 @@
   "cosh": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.cosh.html"
     ],
@@ -605,6 +672,7 @@
   "count_nonzero": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.count_nonzero.html"
     ],
@@ -614,6 +682,7 @@
   "cov": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.cov.html"
     ],
@@ -623,6 +692,7 @@
   "cross": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.cross.html"
     ],
@@ -632,6 +702,7 @@
   "cumprod": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.cumprod.html"
     ],
@@ -641,6 +712,7 @@
   "cumsum": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.cumsum.html"
     ],
@@ -650,6 +722,7 @@
   "cumulative_prod": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.cumulative_prod.html"
     ],
@@ -659,6 +732,7 @@
   "cumulative_sum": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.cumulative_sum.html"
     ],
@@ -668,6 +742,7 @@
   "degrees": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.degrees.html"
     ],
@@ -677,6 +752,7 @@
   "delete": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.delete.html"
     ],
@@ -686,6 +762,7 @@
   "diag": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.diag.html"
     ],
@@ -695,6 +772,7 @@
   "diag_indices": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.diag_indices.html"
     ],
@@ -704,6 +782,7 @@
   "diag_indices_from": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.diag_indices_from.html"
     ],
@@ -713,6 +792,7 @@
   "diagflat": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.diagflat.html"
     ],
@@ -722,6 +802,7 @@
   "diagonal": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.diagonal.html"
     ],
@@ -731,6 +812,7 @@
   "diff": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.diff.html"
     ],
@@ -740,6 +822,7 @@
   "digitize": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.digitize.html"
     ],
@@ -749,6 +832,7 @@
   "divide": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.divide.html"
     ],
@@ -758,6 +842,7 @@
   "dot": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.dot.html"
     ],
@@ -767,6 +852,7 @@
   "dsplit": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.dsplit.html"
     ],
@@ -776,6 +862,7 @@
   "dstack": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.dstack.html"
     ],
@@ -785,6 +872,7 @@
   "ediff1d": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.ediff1d.html"
     ],
@@ -794,6 +882,7 @@
   "einsum": {
     "coverage_status": "owned",
     "example_count": 1,
+    "example_source": "owned",
     "example_sources": [
       "/Users/mohanty/.codex/worktrees/a3ee/whest/website/content/api-examples/einsum.mdx"
     ],
@@ -803,6 +892,7 @@
   "einsum_path": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.einsum_path.html"
     ],
@@ -812,6 +902,7 @@
   "empty": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.empty.html"
     ],
@@ -821,6 +912,7 @@
   "empty_like": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.empty_like.html"
     ],
@@ -830,6 +922,7 @@
   "equal": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.equal.html"
     ],
@@ -839,6 +932,7 @@
   "exp": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.exp.html"
     ],
@@ -848,6 +942,7 @@
   "exp2": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.exp2.html"
     ],
@@ -857,6 +952,7 @@
   "expand_dims": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.expand_dims.html"
     ],
@@ -866,6 +962,7 @@
   "expm1": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.expm1.html"
     ],
@@ -875,6 +972,7 @@
   "extract": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.extract.html"
     ],
@@ -884,6 +982,7 @@
   "eye": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.eye.html"
     ],
@@ -893,6 +992,7 @@
   "fabs": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.fabs.html"
     ],
@@ -902,6 +1002,7 @@
   "fft.fft": {
     "coverage_status": "owned",
     "example_count": 1,
+    "example_source": "owned",
     "example_sources": [
       "/Users/mohanty/.codex/worktrees/a3ee/whest/website/content/api-examples/fft.fft.mdx"
     ],
@@ -911,6 +1012,7 @@
   "fft.fft2": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.fft.fft2.html"
     ],
@@ -920,6 +1022,7 @@
   "fft.fftfreq": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.fft.fftfreq.html"
     ],
@@ -929,6 +1032,7 @@
   "fft.fftn": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.fft.fftn.html"
     ],
@@ -938,6 +1042,7 @@
   "fft.fftshift": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.fft.fftshift.html"
     ],
@@ -947,6 +1052,7 @@
   "fft.hfft": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.fft.hfft.html"
     ],
@@ -956,6 +1062,7 @@
   "fft.ifft": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.fft.ifft.html"
     ],
@@ -965,6 +1072,7 @@
   "fft.ifft2": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.fft.ifft2.html"
     ],
@@ -974,6 +1082,7 @@
   "fft.ifftn": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.fft.ifftn.html"
     ],
@@ -983,6 +1092,7 @@
   "fft.ifftshift": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.fft.ifftshift.html"
     ],
@@ -992,6 +1102,7 @@
   "fft.ihfft": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.fft.ihfft.html"
     ],
@@ -1001,6 +1112,7 @@
   "fft.irfft": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.fft.irfft.html"
     ],
@@ -1010,6 +1122,7 @@
   "fft.irfft2": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.fft.irfft2.html"
     ],
@@ -1019,6 +1132,7 @@
   "fft.irfftn": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.fft.irfftn.html"
     ],
@@ -1028,6 +1142,7 @@
   "fft.rfft": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.fft.rfft.html"
     ],
@@ -1037,6 +1152,7 @@
   "fft.rfft2": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.fft.rfft2.html"
     ],
@@ -1046,6 +1162,7 @@
   "fft.rfftfreq": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.fft.rfftfreq.html"
     ],
@@ -1055,6 +1172,7 @@
   "fft.rfftn": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.fft.rfftn.html"
     ],
@@ -1064,6 +1182,7 @@
   "fill_diagonal": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.fill_diagonal.html"
     ],
@@ -1073,6 +1192,7 @@
   "flatnonzero": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.flatnonzero.html"
     ],
@@ -1082,6 +1202,7 @@
   "flip": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.flip.html"
     ],
@@ -1091,6 +1212,7 @@
   "fliplr": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.fliplr.html"
     ],
@@ -1100,6 +1222,7 @@
   "flipud": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.flipud.html"
     ],
@@ -1109,6 +1232,7 @@
   "float_power": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.float_power.html"
     ],
@@ -1118,6 +1242,7 @@
   "floor": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.floor.html"
     ],
@@ -1127,6 +1252,7 @@
   "floor_divide": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.floor_divide.html"
     ],
@@ -1136,6 +1262,7 @@
   "fmax": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.fmax.html"
     ],
@@ -1145,6 +1272,7 @@
   "fmin": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.fmin.html"
     ],
@@ -1154,6 +1282,7 @@
   "fmod": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.fmod.html"
     ],
@@ -1163,6 +1292,7 @@
   "frexp": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.frexp.html"
     ],
@@ -1172,6 +1302,7 @@
   "from_dlpack": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.from_dlpack.html"
     ],
@@ -1181,6 +1312,7 @@
   "frombuffer": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.frombuffer.html"
     ],
@@ -1190,6 +1322,7 @@
   "fromfunction": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.fromfunction.html"
     ],
@@ -1199,6 +1332,7 @@
   "fromiter": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.fromiter.html"
     ],
@@ -1208,6 +1342,7 @@
   "full": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.full.html"
     ],
@@ -1217,6 +1352,7 @@
   "full_like": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.full_like.html"
     ],
@@ -1226,6 +1362,7 @@
   "gcd": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.gcd.html"
     ],
@@ -1235,6 +1372,7 @@
   "geomspace": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.geomspace.html"
     ],
@@ -1244,6 +1382,7 @@
   "gradient": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.gradient.html"
     ],
@@ -1253,6 +1392,7 @@
   "greater": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.greater.html"
     ],
@@ -1262,6 +1402,7 @@
   "greater_equal": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.greater_equal.html"
     ],
@@ -1271,6 +1412,7 @@
   "hamming": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.hamming.html"
     ],
@@ -1280,6 +1422,7 @@
   "hanning": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.hanning.html"
     ],
@@ -1289,6 +1432,7 @@
   "heaviside": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.heaviside.html"
     ],
@@ -1298,6 +1442,7 @@
   "histogram": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.histogram.html"
     ],
@@ -1307,6 +1452,7 @@
   "histogram2d": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.histogram2d.html"
     ],
@@ -1316,6 +1462,7 @@
   "histogram_bin_edges": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.histogram_bin_edges.html"
     ],
@@ -1325,6 +1472,7 @@
   "histogramdd": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.histogramdd.html"
     ],
@@ -1334,6 +1482,7 @@
   "hsplit": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.hsplit.html"
     ],
@@ -1343,6 +1492,7 @@
   "hstack": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.hstack.html"
     ],
@@ -1352,6 +1502,7 @@
   "hypot": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.hypot.html"
     ],
@@ -1361,6 +1512,7 @@
   "i0": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.i0.html"
     ],
@@ -1370,6 +1522,7 @@
   "identity": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.identity.html"
     ],
@@ -1379,6 +1532,7 @@
   "imag": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.imag.html"
     ],
@@ -1388,6 +1542,7 @@
   "in1d": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.in1d.html"
     ],
@@ -1397,6 +1552,7 @@
   "indices": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.indices.html"
     ],
@@ -1406,6 +1562,7 @@
   "inner": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.inner.html"
     ],
@@ -1415,6 +1572,7 @@
   "insert": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.insert.html"
     ],
@@ -1424,6 +1582,7 @@
   "interp": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.interp.html"
     ],
@@ -1433,6 +1592,7 @@
   "intersect1d": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.intersect1d.html"
     ],
@@ -1442,6 +1602,7 @@
   "invert": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.invert.html"
     ],
@@ -1451,6 +1612,7 @@
   "isclose": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.isclose.html"
     ],
@@ -1460,6 +1622,7 @@
   "iscomplex": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.iscomplex.html"
     ],
@@ -1469,6 +1632,7 @@
   "iscomplexobj": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.iscomplexobj.html"
     ],
@@ -1478,6 +1642,7 @@
   "isdtype": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.isdtype.html"
     ],
@@ -1487,6 +1652,7 @@
   "isfinite": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.isfinite.html"
     ],
@@ -1496,6 +1662,7 @@
   "isfortran": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.isfortran.html"
     ],
@@ -1505,6 +1672,7 @@
   "isin": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.isin.html"
     ],
@@ -1514,6 +1682,7 @@
   "isinf": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.isinf.html"
     ],
@@ -1523,6 +1692,7 @@
   "isnan": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.isnan.html"
     ],
@@ -1532,6 +1702,7 @@
   "isneginf": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.isneginf.html"
     ],
@@ -1541,6 +1712,7 @@
   "isposinf": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.isposinf.html"
     ],
@@ -1550,6 +1722,7 @@
   "isreal": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.isreal.html"
     ],
@@ -1559,6 +1732,7 @@
   "isrealobj": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.isrealobj.html"
     ],
@@ -1568,6 +1742,7 @@
   "isscalar": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.isscalar.html"
     ],
@@ -1577,6 +1752,7 @@
   "issubdtype": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.issubdtype.html"
     ],
@@ -1586,6 +1762,7 @@
   "iterable": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.iterable.html"
     ],
@@ -1595,6 +1772,7 @@
   "ix_": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.ix_.html"
     ],
@@ -1604,6 +1782,7 @@
   "kaiser": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.kaiser.html"
     ],
@@ -1613,6 +1792,7 @@
   "kron": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.kron.html"
     ],
@@ -1622,6 +1802,7 @@
   "lcm": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.lcm.html"
     ],
@@ -1631,6 +1812,7 @@
   "ldexp": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.ldexp.html"
     ],
@@ -1640,6 +1822,7 @@
   "left_shift": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.left_shift.html"
     ],
@@ -1649,6 +1832,7 @@
   "less": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.less.html"
     ],
@@ -1658,6 +1842,7 @@
   "less_equal": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.less_equal.html"
     ],
@@ -1667,6 +1852,7 @@
   "lexsort": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.lexsort.html"
     ],
@@ -1676,6 +1862,7 @@
   "linalg.cholesky": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.cholesky.html"
     ],
@@ -1685,6 +1872,7 @@
   "linalg.cond": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.cond.html"
     ],
@@ -1694,6 +1882,7 @@
   "linalg.cross": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.cross.html"
     ],
@@ -1703,6 +1892,7 @@
   "linalg.det": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.det.html"
     ],
@@ -1712,6 +1902,7 @@
   "linalg.diagonal": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.diagonal.html"
     ],
@@ -1721,6 +1912,7 @@
   "linalg.eig": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.eig.html"
     ],
@@ -1730,6 +1922,7 @@
   "linalg.eigh": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.eigh.html"
     ],
@@ -1739,6 +1932,7 @@
   "linalg.eigvals": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.eigvals.html"
     ],
@@ -1748,6 +1942,7 @@
   "linalg.eigvalsh": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.eigvalsh.html"
     ],
@@ -1757,6 +1952,7 @@
   "linalg.inv": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.inv.html"
     ],
@@ -1766,6 +1962,7 @@
   "linalg.lstsq": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.lstsq.html"
     ],
@@ -1775,6 +1972,7 @@
   "linalg.matmul": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.matmul.html"
     ],
@@ -1784,6 +1982,7 @@
   "linalg.matrix_norm": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.matrix_norm.html"
     ],
@@ -1793,6 +1992,7 @@
   "linalg.matrix_power": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.matrix_power.html"
     ],
@@ -1802,6 +2002,7 @@
   "linalg.matrix_rank": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.matrix_rank.html"
     ],
@@ -1811,6 +2012,7 @@
   "linalg.matrix_transpose": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.matrix_transpose.html"
     ],
@@ -1820,6 +2022,7 @@
   "linalg.multi_dot": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.multi_dot.html"
     ],
@@ -1829,6 +2032,7 @@
   "linalg.norm": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.norm.html"
     ],
@@ -1838,6 +2042,7 @@
   "linalg.outer": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.outer.html"
     ],
@@ -1847,6 +2052,7 @@
   "linalg.pinv": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.pinv.html"
     ],
@@ -1856,6 +2062,7 @@
   "linalg.qr": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.qr.html"
     ],
@@ -1865,6 +2072,7 @@
   "linalg.slogdet": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.slogdet.html"
     ],
@@ -1874,6 +2082,7 @@
   "linalg.solve": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.solve.html"
     ],
@@ -1883,6 +2092,7 @@
   "linalg.svd": {
     "coverage_status": "owned",
     "example_count": 1,
+    "example_source": "owned",
     "example_sources": [
       "/Users/mohanty/.codex/worktrees/a3ee/whest/website/content/api-examples/linalg.svd.mdx"
     ],
@@ -1892,6 +2102,7 @@
   "linalg.svdvals": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.svdvals.html"
     ],
@@ -1901,6 +2112,7 @@
   "linalg.tensordot": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.tensordot.html"
     ],
@@ -1910,6 +2122,7 @@
   "linalg.tensorinv": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.tensorinv.html"
     ],
@@ -1919,6 +2132,7 @@
   "linalg.tensorsolve": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.tensorsolve.html"
     ],
@@ -1928,6 +2142,7 @@
   "linalg.trace": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.trace.html"
     ],
@@ -1937,6 +2152,7 @@
   "linalg.vecdot": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.vecdot.html"
     ],
@@ -1946,6 +2162,7 @@
   "linalg.vector_norm": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linalg.vector_norm.html"
     ],
@@ -1955,6 +2172,7 @@
   "linspace": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.linspace.html"
     ],
@@ -1964,6 +2182,7 @@
   "log": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.log.html"
     ],
@@ -1973,6 +2192,7 @@
   "log10": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.log10.html"
     ],
@@ -1982,6 +2202,7 @@
   "log1p": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.log1p.html"
     ],
@@ -1991,6 +2212,7 @@
   "log2": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.log2.html"
     ],
@@ -2000,6 +2222,7 @@
   "logaddexp": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.logaddexp.html"
     ],
@@ -2009,6 +2232,7 @@
   "logaddexp2": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.logaddexp2.html"
     ],
@@ -2018,6 +2242,7 @@
   "logical_and": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.logical_and.html"
     ],
@@ -2027,6 +2252,7 @@
   "logical_not": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.logical_not.html"
     ],
@@ -2036,6 +2262,7 @@
   "logical_or": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.logical_or.html"
     ],
@@ -2045,6 +2272,7 @@
   "logical_xor": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.logical_xor.html"
     ],
@@ -2054,6 +2282,7 @@
   "logspace": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.logspace.html"
     ],
@@ -2063,6 +2292,7 @@
   "mask_indices": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.mask_indices.html"
     ],
@@ -2072,6 +2302,7 @@
   "matmul": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.matmul.html"
     ],
@@ -2081,6 +2312,7 @@
   "matrix_transpose": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.matrix_transpose.html"
     ],
@@ -2090,6 +2322,7 @@
   "matvec": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.matvec.html"
     ],
@@ -2099,6 +2332,7 @@
   "max": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.max.html"
     ],
@@ -2108,6 +2342,7 @@
   "maximum": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.maximum.html"
     ],
@@ -2117,6 +2352,7 @@
   "may_share_memory": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.may_share_memory.html"
     ],
@@ -2126,6 +2362,7 @@
   "mean": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.mean.html"
     ],
@@ -2135,6 +2372,7 @@
   "median": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.median.html"
     ],
@@ -2144,6 +2382,7 @@
   "meshgrid": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html"
     ],
@@ -2153,6 +2392,7 @@
   "min": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.min.html"
     ],
@@ -2162,6 +2402,7 @@
   "min_scalar_type": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.min_scalar_type.html"
     ],
@@ -2171,6 +2412,7 @@
   "minimum": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.minimum.html"
     ],
@@ -2180,6 +2422,7 @@
   "mintypecode": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.mintypecode.html"
     ],
@@ -2189,6 +2432,7 @@
   "mod": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.mod.html"
     ],
@@ -2198,6 +2442,7 @@
   "modf": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.modf.html"
     ],
@@ -2207,6 +2452,7 @@
   "moveaxis": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.moveaxis.html"
     ],
@@ -2216,6 +2462,7 @@
   "multiply": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.multiply.html"
     ],
@@ -2225,6 +2472,7 @@
   "nan_to_num": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.nan_to_num.html"
     ],
@@ -2234,6 +2482,7 @@
   "nanargmax": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.nanargmax.html"
     ],
@@ -2243,6 +2492,7 @@
   "nanargmin": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.nanargmin.html"
     ],
@@ -2252,6 +2502,7 @@
   "nancumprod": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.nancumprod.html"
     ],
@@ -2261,6 +2512,7 @@
   "nancumsum": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.nancumsum.html"
     ],
@@ -2270,6 +2522,7 @@
   "nanmax": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.nanmax.html"
     ],
@@ -2279,6 +2532,7 @@
   "nanmean": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.nanmean.html"
     ],
@@ -2288,6 +2542,7 @@
   "nanmedian": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.nanmedian.html"
     ],
@@ -2297,6 +2552,7 @@
   "nanmin": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.nanmin.html"
     ],
@@ -2306,6 +2562,7 @@
   "nanpercentile": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.nanpercentile.html"
     ],
@@ -2315,6 +2572,7 @@
   "nanprod": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.nanprod.html"
     ],
@@ -2324,6 +2582,7 @@
   "nanquantile": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.nanquantile.html"
     ],
@@ -2333,6 +2592,7 @@
   "nanstd": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.nanstd.html"
     ],
@@ -2342,6 +2602,7 @@
   "nansum": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.nansum.html"
     ],
@@ -2351,6 +2612,7 @@
   "nanvar": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.nanvar.html"
     ],
@@ -2360,6 +2622,7 @@
   "ndim": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.ndim.html"
     ],
@@ -2369,6 +2632,7 @@
   "negative": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.negative.html"
     ],
@@ -2378,6 +2642,7 @@
   "nextafter": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.nextafter.html"
     ],
@@ -2387,6 +2652,7 @@
   "nonzero": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.nonzero.html"
     ],
@@ -2396,6 +2662,7 @@
   "not_equal": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.not_equal.html"
     ],
@@ -2405,6 +2672,7 @@
   "ones": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.ones.html"
     ],
@@ -2414,6 +2682,7 @@
   "ones_like": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.ones_like.html"
     ],
@@ -2423,6 +2692,7 @@
   "outer": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.outer.html"
     ],
@@ -2432,6 +2702,7 @@
   "packbits": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.packbits.html"
     ],
@@ -2441,6 +2712,7 @@
   "pad": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.pad.html"
     ],
@@ -2450,6 +2722,7 @@
   "partition": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.partition.html"
     ],
@@ -2459,6 +2732,7 @@
   "percentile": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.percentile.html"
     ],
@@ -2468,6 +2742,7 @@
   "permute_dims": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.permute_dims.html"
     ],
@@ -2477,6 +2752,7 @@
   "piecewise": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.piecewise.html"
     ],
@@ -2486,6 +2762,7 @@
   "place": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.place.html"
     ],
@@ -2495,6 +2772,7 @@
   "poly": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.poly.html"
     ],
@@ -2504,6 +2782,7 @@
   "polyadd": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.polyadd.html"
     ],
@@ -2513,6 +2792,7 @@
   "polyder": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.polyder.html"
     ],
@@ -2522,6 +2802,7 @@
   "polydiv": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.polydiv.html"
     ],
@@ -2531,6 +2812,7 @@
   "polyfit": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.polyfit.html"
     ],
@@ -2540,6 +2822,7 @@
   "polyint": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.polyint.html"
     ],
@@ -2549,6 +2832,7 @@
   "polymul": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.polymul.html"
     ],
@@ -2558,6 +2842,7 @@
   "polysub": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.polysub.html"
     ],
@@ -2567,6 +2852,7 @@
   "polyval": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.polyval.html"
     ],
@@ -2576,6 +2862,7 @@
   "positive": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.positive.html"
     ],
@@ -2585,6 +2872,7 @@
   "power": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.power.html"
     ],
@@ -2594,6 +2882,7 @@
   "prod": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.prod.html"
     ],
@@ -2603,6 +2892,7 @@
   "promote_types": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.promote_types.html"
     ],
@@ -2612,6 +2902,7 @@
   "ptp": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.ptp.html"
     ],
@@ -2621,6 +2912,7 @@
   "put": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.put.html"
     ],
@@ -2630,6 +2922,7 @@
   "put_along_axis": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.put_along_axis.html"
     ],
@@ -2639,6 +2932,7 @@
   "putmask": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.putmask.html"
     ],
@@ -2648,6 +2942,7 @@
   "quantile": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.quantile.html"
     ],
@@ -2657,6 +2952,7 @@
   "radians": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.radians.html"
     ],
@@ -2666,6 +2962,7 @@
   "random.beta": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -2673,6 +2970,7 @@
   "random.binomial": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.binomial.html"
     ],
@@ -2682,6 +2980,7 @@
   "random.bytes": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.bytes.html"
     ],
@@ -2691,6 +2990,7 @@
   "random.chisquare": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.chisquare.html"
     ],
@@ -2700,6 +3000,7 @@
   "random.choice": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.choice.html"
     ],
@@ -2709,6 +3010,7 @@
   "random.default_rng": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.default_rng.html"
     ],
@@ -2718,6 +3020,7 @@
   "random.dirichlet": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.dirichlet.html"
     ],
@@ -2727,6 +3030,7 @@
   "random.exponential": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.exponential.html"
     ],
@@ -2736,6 +3040,7 @@
   "random.f": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.f.html"
     ],
@@ -2745,6 +3050,7 @@
   "random.gamma": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.gamma.html"
     ],
@@ -2754,6 +3060,7 @@
   "random.geometric": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.geometric.html"
     ],
@@ -2763,6 +3070,7 @@
   "random.get_state": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -2770,6 +3078,7 @@
   "random.gumbel": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.gumbel.html"
     ],
@@ -2779,6 +3088,7 @@
   "random.hypergeometric": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.hypergeometric.html"
     ],
@@ -2788,6 +3098,7 @@
   "random.laplace": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.laplace.html"
     ],
@@ -2797,6 +3108,7 @@
   "random.logistic": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.logistic.html"
     ],
@@ -2806,6 +3118,7 @@
   "random.lognormal": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.lognormal.html"
     ],
@@ -2815,6 +3128,7 @@
   "random.logseries": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.logseries.html"
     ],
@@ -2824,6 +3138,7 @@
   "random.multinomial": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.multinomial.html"
     ],
@@ -2833,6 +3148,7 @@
   "random.multivariate_normal": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.multivariate_normal.html"
     ],
@@ -2842,6 +3158,7 @@
   "random.negative_binomial": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.negative_binomial.html"
     ],
@@ -2851,6 +3168,7 @@
   "random.noncentral_chisquare": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.noncentral_chisquare.html"
     ],
@@ -2860,6 +3178,7 @@
   "random.noncentral_f": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.noncentral_f.html"
     ],
@@ -2869,6 +3188,7 @@
   "random.normal": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.normal.html"
     ],
@@ -2878,6 +3198,7 @@
   "random.pareto": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.pareto.html"
     ],
@@ -2887,6 +3208,7 @@
   "random.permutation": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.permutation.html"
     ],
@@ -2896,6 +3218,7 @@
   "random.poisson": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.poisson.html"
     ],
@@ -2905,6 +3228,7 @@
   "random.power": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.power.html"
     ],
@@ -2914,6 +3238,7 @@
   "random.rand": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.rand.html"
     ],
@@ -2923,6 +3248,7 @@
   "random.randint": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.randint.html"
     ],
@@ -2932,6 +3258,7 @@
   "random.randn": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.randn.html"
     ],
@@ -2941,6 +3268,7 @@
   "random.random": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -2948,6 +3276,7 @@
   "random.random_integers": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.random_integers.html"
     ],
@@ -2957,6 +3286,7 @@
   "random.random_sample": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.random_sample.html"
     ],
@@ -2966,6 +3296,7 @@
   "random.rayleigh": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.rayleigh.html"
     ],
@@ -2975,6 +3306,7 @@
   "random.seed": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -2982,6 +3314,7 @@
   "random.set_state": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -2989,6 +3322,7 @@
   "random.shuffle": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.shuffle.html"
     ],
@@ -2998,6 +3332,7 @@
   "random.standard_cauchy": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.standard_cauchy.html"
     ],
@@ -3007,6 +3342,7 @@
   "random.standard_exponential": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.standard_exponential.html"
     ],
@@ -3016,6 +3352,7 @@
   "random.standard_gamma": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.standard_gamma.html"
     ],
@@ -3025,6 +3362,7 @@
   "random.standard_normal": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.standard_normal.html"
     ],
@@ -3034,6 +3372,7 @@
   "random.standard_t": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.standard_t.html"
     ],
@@ -3043,6 +3382,7 @@
   "random.triangular": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.triangular.html"
     ],
@@ -3052,6 +3392,7 @@
   "random.uniform": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.uniform.html"
     ],
@@ -3061,6 +3402,7 @@
   "random.vonmises": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.vonmises.html"
     ],
@@ -3070,6 +3412,7 @@
   "random.wald": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.wald.html"
     ],
@@ -3079,6 +3422,7 @@
   "random.weibull": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.weibull.html"
     ],
@@ -3088,6 +3432,7 @@
   "random.zipf": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.random.zipf.html"
     ],
@@ -3097,6 +3442,7 @@
   "ravel": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.ravel.html"
     ],
@@ -3106,6 +3452,7 @@
   "ravel_multi_index": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.ravel_multi_index.html"
     ],
@@ -3115,6 +3462,7 @@
   "real": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.real.html"
     ],
@@ -3124,6 +3472,7 @@
   "real_if_close": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.real_if_close.html"
     ],
@@ -3133,6 +3482,7 @@
   "reciprocal": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.reciprocal.html"
     ],
@@ -3142,6 +3492,7 @@
   "remainder": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.remainder.html"
     ],
@@ -3151,6 +3502,7 @@
   "repeat": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.repeat.html"
     ],
@@ -3160,6 +3512,7 @@
   "require": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.require.html"
     ],
@@ -3169,6 +3522,7 @@
   "reshape": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.reshape.html"
     ],
@@ -3178,6 +3532,7 @@
   "resize": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.resize.html"
     ],
@@ -3187,6 +3542,7 @@
   "result_type": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.result_type.html"
     ],
@@ -3196,6 +3552,7 @@
   "right_shift": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.right_shift.html"
     ],
@@ -3205,6 +3562,7 @@
   "rint": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.rint.html"
     ],
@@ -3214,6 +3572,7 @@
   "roll": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.roll.html"
     ],
@@ -3223,6 +3582,7 @@
   "rollaxis": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.rollaxis.html"
     ],
@@ -3232,6 +3592,7 @@
   "roots": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.roots.html"
     ],
@@ -3241,6 +3602,7 @@
   "rot90": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.rot90.html"
     ],
@@ -3250,6 +3612,7 @@
   "searchsorted": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.searchsorted.html"
     ],
@@ -3259,6 +3622,7 @@
   "select": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.select.html"
     ],
@@ -3268,6 +3632,7 @@
   "setdiff1d": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.setdiff1d.html"
     ],
@@ -3277,6 +3642,7 @@
   "setxor1d": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.setxor1d.html"
     ],
@@ -3286,6 +3652,7 @@
   "shape": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.shape.html"
     ],
@@ -3295,6 +3662,7 @@
   "shares_memory": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.shares_memory.html"
     ],
@@ -3304,6 +3672,7 @@
   "sign": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.sign.html"
     ],
@@ -3313,6 +3682,7 @@
   "signbit": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.signbit.html"
     ],
@@ -3322,6 +3692,7 @@
   "sin": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.sin.html"
     ],
@@ -3331,6 +3702,7 @@
   "sinc": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.sinc.html"
     ],
@@ -3340,6 +3712,7 @@
   "sinh": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.sinh.html"
     ],
@@ -3349,6 +3722,7 @@
   "size": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.size.html"
     ],
@@ -3358,6 +3732,7 @@
   "sort": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.sort.html"
     ],
@@ -3367,6 +3742,7 @@
   "sort_complex": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.sort_complex.html"
     ],
@@ -3376,6 +3752,7 @@
   "spacing": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.spacing.html"
     ],
@@ -3385,6 +3762,7 @@
   "split": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.split.html"
     ],
@@ -3394,6 +3772,7 @@
   "sqrt": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.sqrt.html"
     ],
@@ -3403,6 +3782,7 @@
   "square": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.square.html"
     ],
@@ -3412,6 +3792,7 @@
   "squeeze": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.squeeze.html"
     ],
@@ -3421,6 +3802,7 @@
   "stack": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.stack.html"
     ],
@@ -3430,6 +3812,7 @@
   "stats.cauchy.cdf": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -3437,6 +3820,7 @@
   "stats.cauchy.pdf": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -3444,6 +3828,7 @@
   "stats.cauchy.ppf": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -3451,6 +3836,7 @@
   "stats.expon.cdf": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -3458,6 +3844,7 @@
   "stats.expon.pdf": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -3465,6 +3852,7 @@
   "stats.expon.ppf": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -3472,6 +3860,7 @@
   "stats.laplace.cdf": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -3479,6 +3868,7 @@
   "stats.laplace.pdf": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -3486,6 +3876,7 @@
   "stats.laplace.ppf": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -3493,6 +3884,7 @@
   "stats.logistic.cdf": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -3500,6 +3892,7 @@
   "stats.logistic.pdf": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -3507,6 +3900,7 @@
   "stats.logistic.ppf": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -3514,6 +3908,7 @@
   "stats.lognorm.cdf": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -3521,6 +3916,7 @@
   "stats.lognorm.pdf": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -3528,6 +3924,7 @@
   "stats.lognorm.ppf": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -3535,6 +3932,7 @@
   "stats.norm.cdf": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -3542,6 +3940,7 @@
   "stats.norm.pdf": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -3549,6 +3948,7 @@
   "stats.norm.ppf": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -3556,6 +3956,7 @@
   "stats.truncnorm.cdf": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -3563,6 +3964,7 @@
   "stats.truncnorm.pdf": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -3570,6 +3972,7 @@
   "stats.truncnorm.ppf": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -3577,6 +3980,7 @@
   "stats.uniform.cdf": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -3584,6 +3988,7 @@
   "stats.uniform.pdf": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -3591,6 +3996,7 @@
   "stats.uniform.ppf": {
     "coverage_status": "missing",
     "example_count": 0,
+    "example_source": "missing",
     "example_sources": [],
     "has_inherited_examples": false,
     "has_whest_examples": false
@@ -3598,6 +4004,7 @@
   "std": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.std.html"
     ],
@@ -3607,6 +4014,7 @@
   "subtract": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.subtract.html"
     ],
@@ -3616,6 +4024,7 @@
   "sum": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.sum.html"
     ],
@@ -3625,6 +4034,7 @@
   "swapaxes": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.swapaxes.html"
     ],
@@ -3634,6 +4044,7 @@
   "take": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.take.html"
     ],
@@ -3643,6 +4054,7 @@
   "take_along_axis": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.take_along_axis.html"
     ],
@@ -3652,6 +4064,7 @@
   "tan": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.tan.html"
     ],
@@ -3661,6 +4074,7 @@
   "tanh": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.tanh.html"
     ],
@@ -3670,6 +4084,7 @@
   "tensordot": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.tensordot.html"
     ],
@@ -3679,6 +4094,7 @@
   "tile": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.tile.html"
     ],
@@ -3688,6 +4104,7 @@
   "trace": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.trace.html"
     ],
@@ -3697,6 +4114,7 @@
   "transpose": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.transpose.html"
     ],
@@ -3706,6 +4124,7 @@
   "trapezoid": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.trapezoid.html"
     ],
@@ -3715,6 +4134,7 @@
   "tri": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.tri.html"
     ],
@@ -3724,6 +4144,7 @@
   "tril": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.tril.html"
     ],
@@ -3733,6 +4154,7 @@
   "tril_indices": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.tril_indices.html"
     ],
@@ -3742,6 +4164,7 @@
   "tril_indices_from": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.tril_indices_from.html"
     ],
@@ -3751,6 +4174,7 @@
   "trim_zeros": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.trim_zeros.html"
     ],
@@ -3760,6 +4184,7 @@
   "triu": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.triu.html"
     ],
@@ -3769,6 +4194,7 @@
   "triu_indices": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.triu_indices.html"
     ],
@@ -3778,6 +4204,7 @@
   "triu_indices_from": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.triu_indices_from.html"
     ],
@@ -3787,6 +4214,7 @@
   "true_divide": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.true_divide.html"
     ],
@@ -3796,6 +4224,7 @@
   "trunc": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.trunc.html"
     ],
@@ -3805,6 +4234,7 @@
   "typename": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.typename.html"
     ],
@@ -3814,6 +4244,7 @@
   "union1d": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.union1d.html"
     ],
@@ -3823,6 +4254,7 @@
   "unique": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.unique.html"
     ],
@@ -3832,6 +4264,7 @@
   "unique_all": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.unique_all.html"
     ],
@@ -3841,6 +4274,7 @@
   "unique_counts": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.unique_counts.html"
     ],
@@ -3850,6 +4284,7 @@
   "unique_inverse": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.unique_inverse.html"
     ],
@@ -3859,6 +4294,7 @@
   "unique_values": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.unique_values.html"
     ],
@@ -3868,6 +4304,7 @@
   "unpackbits": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.unpackbits.html"
     ],
@@ -3877,6 +4314,7 @@
   "unravel_index": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.unravel_index.html"
     ],
@@ -3886,6 +4324,7 @@
   "unstack": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.unstack.html"
     ],
@@ -3895,6 +4334,7 @@
   "unwrap": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.unwrap.html"
     ],
@@ -3904,6 +4344,7 @@
   "vander": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.vander.html"
     ],
@@ -3913,6 +4354,7 @@
   "var": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.var.html"
     ],
@@ -3922,6 +4364,7 @@
   "vdot": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.vdot.html"
     ],
@@ -3931,6 +4374,7 @@
   "vecdot": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.vecdot.html"
     ],
@@ -3940,6 +4384,7 @@
   "vecmat": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.vecmat.html"
     ],
@@ -3949,6 +4394,7 @@
   "vsplit": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.vsplit.html"
     ],
@@ -3958,6 +4404,7 @@
   "vstack": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.vstack.html"
     ],
@@ -3967,6 +4414,7 @@
   "where": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.where.html"
     ],
@@ -3976,6 +4424,7 @@
   "zeros": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.zeros.html"
     ],
@@ -3985,6 +4434,7 @@
   "zeros_like": {
     "coverage_status": "derived",
     "example_count": 1,
+    "example_source": "derived",
     "example_sources": [
       "https://numpy.org/doc/stable/reference/generated/numpy.zeros_like.html"
     ],

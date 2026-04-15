@@ -10,6 +10,7 @@ Usage
 from __future__ import annotations
 
 import argparse
+import doctest
 import csv
 import html
 import importlib
@@ -508,7 +509,7 @@ class OperationDocRecord:
 class DocField:
     name: str
     type: str
-    description: list[str]
+    body: list[str]
 
 
 @dataclass(slots=True)
@@ -529,7 +530,6 @@ class DocExample:
 
 @dataclass(slots=True)
 class OperationNavLink:
-    name: str
     href: str
     label: str
 
@@ -579,23 +579,23 @@ def display_type_for_category(category: str) -> str:
 def whest_ref(name: str, module: str) -> str:
     """Derive the whest call reference from an op name and registry module."""
     if module == "numpy.linalg":
-        return f"`we.linalg.{name.removeprefix('linalg.')}`"
+        return f"we.linalg.{name.removeprefix('linalg.')}"
     if module == "numpy.fft":
-        return f"`we.fft.{name.removeprefix('fft.')}`"
+        return f"we.fft.{name.removeprefix('fft.')}"
     if module == "numpy.random":
-        return f"`we.random.{name.removeprefix('random.')}`"
-    return f"`we.{name}`"
+        return f"we.random.{name.removeprefix('random.')}"
+    return f"we.{name}"
 
 
 def numpy_ref(name: str, module: str) -> str:
     """Derive the NumPy call reference from an op name and registry module."""
     if module == "numpy.linalg":
-        return f"`np.linalg.{name.removeprefix('linalg.')}`"
+        return f"np.linalg.{name.removeprefix('linalg.')}"
     if module == "numpy.fft":
-        return f"`np.fft.{name.removeprefix('fft.')}`"
+        return f"np.fft.{name.removeprefix('fft.')}"
     if module == "numpy.random":
-        return f"`np.random.{name.removeprefix('random.')}`"
-    return f"`np.{name}`"
+        return f"np.random.{name.removeprefix('random.')}"
+    return f"np.{name}"
 
 
 def cost_for_op(name: str, category: str) -> tuple[str, str]:
@@ -630,38 +630,25 @@ def _split_paragraphs(lines: list[str]) -> list[str]:
 
 def derive_example_from_upstream(example_block: str) -> DocExample:
     """Derive a single whest example from a doctest-style upstream snippet."""
-    code_lines: list[str] = []
-    output_lines: list[str] = []
-    seen_output = False
+    parser = doctest.DocTestParser()
+    parsed = parser.get_doctest(
+        textwrap.dedent(example_block).strip("\n"), {}, "whest-example", "", 0
+    )
 
-    for raw_line in textwrap.dedent(example_block).strip("\n").splitlines():
-        stripped = raw_line.lstrip()
-        if stripped.startswith(">>>"):
-            seen_output = False
-            code = stripped[3:]
-            if code.startswith(" "):
-                code = code[1:]
-            code_lines.append(code.rstrip())
-            continue
-        if stripped.startswith("..."):
-            code = stripped[3:]
-            if code.startswith(" "):
-                code = code[1:]
-            code_lines.append(code.rstrip())
-            continue
-        if stripped == "":
-            if seen_output:
-                output_lines.append("")
-            elif code_lines:
-                code_lines.append("")
-            continue
+    code_parts: list[str] = []
+    output_parts: list[str] = []
+    for example in parsed.examples:
+        source = rewrite_api_refs(example.source).strip()
+        source = source.replace("import numpy as np", "import whest as we")
+        if source:
+            code_parts.append(source.rstrip())
 
-        seen_output = True
-        output_lines.append(raw_line.rstrip())
+        want = rewrite_api_refs(example.want).strip()
+        if want:
+            output_parts.append(want.rstrip())
 
-    code = rewrite_api_refs("\n".join(code_lines).strip())
-    code = code.replace("import numpy as np", "import whest as we")
-    output = "\n".join(output_lines).strip()
+    code = "\n\n".join(code_parts).strip()
+    output = "\n\n".join(output_parts).strip()
     return DocExample(code=code, output=output)
 
 
@@ -677,11 +664,11 @@ def parse_numpy_docstring(raw_doc: str) -> ParsedDoc:
     summary = " ".join(part.strip() for part in doc["Summary"]).strip()
 
     parameters = [
-        DocField(name=name, type=type_, description=[line.rstrip() for line in desc])
+        DocField(name=name, type=type_, body=[line.rstrip() for line in desc])
         for name, type_, desc in doc["Parameters"]
     ]
     returns = [
-        DocField(name=name, type=type_, description=[line.rstrip() for line in desc])
+        DocField(name=name, type=type_, body=[line.rstrip() for line in desc])
         for name, type_, desc in doc["Returns"]
     ]
     see_also: list[DocLink] = []
@@ -804,7 +791,7 @@ def _rewrite_doc_field(field: DocField) -> DocField:
     return DocField(
         name=field.name,
         type=rewrite_api_refs(field.type),
-        description=[rewrite_api_refs(line) for line in field.description],
+        body=[rewrite_api_refs(line) for line in field.body],
     )
 
 
@@ -819,32 +806,72 @@ def _rewrite_doc_link(link: DocLink) -> DocLink:
     )
 
 
+def _external_docs_url(target: str) -> str:
+    """Return an upstream documentation URL for unresolved references."""
+    if target.startswith("scipy."):
+        return f"https://docs.scipy.org/doc/scipy/reference/generated/{target}.html"
+    if target.startswith("numpy."):
+        return f"https://numpy.org/doc/stable/reference/generated/{target}.html"
+    return ""
+
+
+def resolve_doc_link(
+    link: DocLink, *, alias_map: dict[str, str], supported_ops: set[str]
+) -> DocLink:
+    """Resolve a parsed see-also entry into internal and external link targets."""
+    rewritten = _rewrite_doc_link(link)
+    canonical_target = resolve_canonical_name(rewritten.target, alias_map)
+    href = (
+        f"/docs/api/ops/{slug_for_operation(canonical_target)}"
+        if canonical_target in supported_ops
+        else ""
+    )
+    external_url = "" if href else _external_docs_url(link.target)
+    if not external_url and not href and link.target.startswith(("numpy.", "scipy.")):
+        external_url = _external_docs_url(link.target)
+    return DocLink(
+        label=rewritten.label,
+        target=canonical_target,
+        description=rewritten.description,
+        href=href,
+        external_url=external_url,
+    )
+
+
 def build_structured_doc(
-    name: str, module: str, owned_example_html: str = ""
+    name: str,
+    module: str,
+    owned_example_html: str = "",
+    *,
+    alias_map: dict[str, str] | None = None,
+    supported_ops: set[str] | None = None,
 ) -> tuple[str, ParsedDoc, DocExample | None, str, str]:
     """Resolve live objects and build the structured doc model for one op."""
     import numpy as np
 
     whest_obj, upstream_obj = resolve_live_objects(name, module)
+    alias_map = alias_map or {}
+    supported_ops = supported_ops or set()
     raw_doc = inspect.getdoc(upstream_obj) or inspect.getdoc(whest_obj) or ""
     parsed = parse_numpy_docstring(raw_doc)
 
     parsed.summary = rewrite_api_refs(parsed.summary)
     parsed.parameters = [_rewrite_doc_field(field) for field in parsed.parameters]
     parsed.returns = [_rewrite_doc_field(field) for field in parsed.returns]
-    parsed.see_also = [_rewrite_doc_link(link) for link in parsed.see_also]
+    parsed.see_also = [
+        resolve_doc_link(link, alias_map=alias_map, supported_ops=supported_ops)
+        for link in parsed.see_also
+    ]
     parsed.notes = [rewrite_api_refs(note) for note in parsed.notes]
 
     example: DocExample | None = None
-    if owned_example_html:
-        example = None
-    elif parsed.examples:
+    if parsed.examples:
         example = derive_example_from_upstream(parsed.examples[0].code)
 
     try:
-        signature = f"{whest_ref(name, module).strip('`')}{inspect.signature(whest_obj)}"
+        signature = f"{whest_ref(name, module)}{inspect.signature(whest_obj)}"
     except (TypeError, ValueError):
-        signature = f"{whest_ref(name, module).strip('`')}(...)"
+        signature = f"{whest_ref(name, module)}(...)"
 
     whest_source_url = _repo_source_url(
         whest_obj,
@@ -939,40 +966,75 @@ def example_file_for(name: str, example_root: Path) -> Path:
 
 
 def build_example_coverage(
-    records: list[OperationDocRecord], example_root: Path
+    operations: list[OperationDocRecord | str],
+    example_root: Path | None = None,
+    *,
+    overrides: dict[str, DocExample] | None = None,
+    derived_examples: dict[str, DocExample] | None = None,
 ) -> dict[str, dict]:
     """Compute example coverage for canonical operation pages."""
+    overrides = overrides or {}
+    derived_examples = derived_examples or {}
     coverage: dict[str, dict] = {}
-    for record in records:
-        name = record.name
-        path = example_file_for(name, example_root)
-        if not path.exists():
-            if record.example is not None:
-                coverage[name] = {
-                    "has_whest_examples": False,
-                    "has_inherited_examples": True,
-                    "example_count": 1,
-                    "example_sources": [record.provenance_url] if record.provenance_url else [],
-                    "coverage_status": "derived",
-                }
-                continue
+
+    for item in operations:
+        if isinstance(item, OperationDocRecord):
+            name = item.name
+            record_example = item.example
+            provenance_url = item.provenance_url
+        else:
+            name = item
+            record_example = None
+            provenance_url = ""
+
+        if name in overrides:
+            example = overrides[name]
             coverage[name] = {
-                "has_whest_examples": False,
+                "has_whest_examples": True,
                 "has_inherited_examples": False,
-                "example_count": 0,
-                "example_sources": [],
-                "coverage_status": "missing",
+                "example_count": 1,
+                "example_sources": ["override"],
+                "coverage_status": "override",
+                "example_source": example.source,
             }
             continue
 
-        source = path.read_text()
-        example_count = len(EXAMPLE_FENCE_PATTERN.findall(source)) or 1
+        if example_root is not None:
+            path = example_file_for(name, example_root)
+            if path.exists():
+                source = path.read_text()
+                example_count = len(EXAMPLE_FENCE_PATTERN.findall(source)) or 1
+                coverage[name] = {
+                    "has_whest_examples": True,
+                    "has_inherited_examples": False,
+                    "example_count": example_count,
+                    "example_sources": [str(path)],
+                    "coverage_status": "owned",
+                    "example_source": "owned",
+                }
+                continue
+
+        if name in derived_examples or record_example is not None:
+            example = derived_examples.get(name, record_example)
+            if example is None:
+                example = DocExample(code="", source="derived")
+            coverage[name] = {
+                "has_whest_examples": False,
+                "has_inherited_examples": True,
+                "example_count": 1,
+                "example_sources": [provenance_url or "derived"],
+                "coverage_status": "derived",
+                "example_source": example.source,
+            }
+            continue
+
         coverage[name] = {
-            "has_whest_examples": True,
+            "has_whest_examples": False,
             "has_inherited_examples": False,
-            "example_count": example_count,
-            "example_sources": [str(path)],
-            "coverage_status": "owned",
+            "example_count": 0,
+            "example_sources": [],
+            "coverage_status": "missing",
+            "example_source": "missing",
         }
 
     return coverage
@@ -1050,6 +1112,11 @@ def build_operation_doc_records(registry: dict[str, dict]) -> list[OperationDocR
     alias_map = load_alias_map(registry)
     alias_groups = build_alias_groups(registry, alias_map)
     weights = load_operation_weights()
+    supported_ops = {
+        name
+        for name, info in registry.items()
+        if info["category"] != "blacklisted" and resolve_canonical_name(name, alias_map) == name
+    }
     records: list[OperationDocRecord] = []
     for name, info in sorted(registry.items()):
         if info["category"] == "blacklisted":
@@ -1070,7 +1137,13 @@ def build_operation_doc_records(registry: dict[str, dict]) -> list[OperationDocR
         cost_plain, cost_latex = cost_for_op(name, info["category"])
         owned_example_html = load_whest_example_html(name, API_EXAMPLES_DIR)
         signature, parsed_doc, derived_example, whest_source_url, upstream_source_url = (
-            build_structured_doc(name, module, owned_example_html)
+            build_structured_doc(
+                name,
+                module,
+                owned_example_html,
+                alias_map=alias_map,
+                supported_ops=supported_ops,
+            )
         )
         records.append(
             OperationDocRecord(
@@ -1108,16 +1181,14 @@ def build_operation_doc_records(registry: dict[str, dict]) -> list[OperationDocR
         if index > 0:
             previous = records[index - 1]
             record.previous = OperationNavLink(
-                name=previous.name,
                 href=previous.href,
-                label=previous.whest_ref.strip("`"),
+                label=previous.whest_ref,
             )
         if index + 1 < len(records):
             nxt = records[index + 1]
             record.next = OperationNavLink(
-                name=nxt.name,
                 href=nxt.href,
-                label=nxt.whest_ref.strip("`"),
+                label=nxt.whest_ref,
             )
 
     return records
@@ -1127,7 +1198,7 @@ def render_operation_stub(op: OperationDocRecord) -> str:
     """Render a generated standalone MDX page stub for one canonical operation."""
     return (
         f'---\n'
-        f'title: "{op.whest_ref.strip("`")}"\n'
+        f'title: "{op.whest_ref}"\n'
         f'---\n\n'
         f'<OperationDocPage name="{op.name}" />\n'
     )
@@ -1250,7 +1321,7 @@ def generate_audit_page(registry: dict[str, dict]) -> None:
         if cat == "blacklisted":
             me_ref = "\u2014"
         lines.append(
-            f"| `{name}` | {me_ref} | {np_ref} | {cat} | {latex} | {status_display} | {notes} |"
+            f"| `{name}` | `{me_ref}` | `{np_ref}` | {cat} | {latex} | {status_display} | {notes} |"
         )
     lines.append("")
     out = REF_DIR / "operation-audit.md"
@@ -1273,8 +1344,8 @@ def generate_ops_json(registry: dict[str, dict]) -> None:
             {
                 "name": name,
                 "module": mod,
-                "whest_ref": whest_ref(name, mod).strip("`"),
-                "numpy_ref": numpy_ref(name, mod).strip("`"),
+                "whest_ref": whest_ref(name, mod),
+                "numpy_ref": numpy_ref(name, mod),
                 "category": cat,
                 "cost_formula": plain,
                 "cost_formula_latex": latex,
@@ -1492,7 +1563,7 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
     abs_ref = op_refs.get("abs")
     if (
         not isinstance(abs_ref, dict)
-        or abs_ref.get("label") != "`we.absolute`"
+        or abs_ref.get("label") != "we.absolute"
         or abs_ref.get("href") != "/docs/api/ops/absolute"
         or abs_ref.get("canonical_name") != "absolute"
     ):
