@@ -15,6 +15,7 @@ import inspect
 import json
 import sys
 import textwrap
+from dataclasses import dataclass
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
@@ -458,8 +459,59 @@ CATEGORY_COST_LATEX: dict[str, tuple[str, str]] = {
 
 
 # ---------------------------------------------------------------------------
+# Operation doc model
+# ---------------------------------------------------------------------------
+
+
+@dataclass(slots=True)
+class OperationDocRecord:
+    name: str
+    canonical_name: str
+    slug: str
+    href: str
+    area: str
+    whest_ref: str
+    numpy_ref: str
+    category: str
+    display_type: str
+    cost_formula: str
+    cost_formula_latex: str
+    weight: float
+    notes: str
+    aliases: list[str]
+    signature: str
+    api_docs_html: str
+    whest_examples_html: str
+
+
+# ---------------------------------------------------------------------------
 # Helper functions for op references and cost lookup
 # ---------------------------------------------------------------------------
+
+
+def normalize_area(module: str) -> str:
+    """Map a registry module name to its doc area."""
+    if module in {"numpy", "whest"}:
+        return "core"
+    if module.startswith("numpy."):
+        return module.removeprefix("numpy.")
+    if module.startswith("whest."):
+        return module.removeprefix("whest.").lstrip("_")
+    return module.split(".")[-1].lstrip("_")
+
+
+def slug_for_operation(name: str) -> str:
+    """Return a URL-safe slug for an operation name."""
+    return name.replace(".", "-")
+
+
+def display_type_for_category(category: str) -> str:
+    """Return the UI display type for a registry category."""
+    if category == "blacklisted":
+        return "blocked"
+    if category == "free":
+        return "free"
+    return "counted"
 
 
 def whest_ref(name: str, module: str) -> str:
@@ -489,6 +541,21 @@ def cost_for_op(name: str, category: str) -> tuple[str, str]:
     if name in CUSTOM_COSTS:
         return CUSTOM_COSTS[name]
     return CATEGORY_COST_LATEX.get(category, ("unknown", "unknown"))
+
+
+def assert_supported_docs_env() -> None:
+    """Fail fast unless the docs generator is running on supported NumPy."""
+    try:
+        import numpy as np
+        from numpy.lib import NumpyVersion
+    except Exception as exc:  # pragma: no cover - import failure is environment-specific
+        raise RuntimeError("generate_api_docs.py requires NumPy >= 2.0,<2.3") from exc
+
+    version = NumpyVersion(np.__version__)
+    if not (NumpyVersion("2.0.0") <= version < NumpyVersion("2.3.0")):
+        raise RuntimeError(
+            f"generate_api_docs.py requires NumPy >= 2.0,<2.3; found {np.__version__}"
+        )
 
 
 def generate_audit_page(registry: dict[str, dict]) -> None:
@@ -765,6 +832,7 @@ def main():
     )
     args = parser.parse_args()
 
+    assert_supported_docs_env()
     registry = load_registry()
 
     if args.verify:
