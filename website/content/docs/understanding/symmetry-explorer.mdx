@@ -2,35 +2,8 @@
 title: "Symmetry Explorer"
 ---
 
-*Interactive visualization of whest's symmetry detection algorithm.*
+`Symmetry Explorer` is now available as the standalone interactive tool **Symmetry Aware Einsum Contractions**.
 
-**You will learn:**
-- How the bipartite graph, incidence matrix, and sigma-loop work visually
-- How symmetry is detected step-by-step for any einsum expression
-- How FLOP savings are computed from the detected symmetry group
+Open it in a new tab:
 
-Choose a preset example or define your own einsum expression with custom operand symmetries to walk through the explorer’s four-act narrative:
-
-1. **Set up the contraction** — inspect a preset or build a custom expression, then compare the expected symmetry with the analyzed result
-2. **Expose the structure** — view the bipartite graph and incidence matrix that encode the contraction
-3. **Prove the symmetry** — follow the σ-loop and generator construction that recover the detected group
-4. **Price the savings** — connect orbit structure to multiplication and accumulation savings
-
-<SymmetryExplorer />
-
-<Callout type="info" title="Local development">
-Run the docs app locally and open the explorer on its real route:
-
-```bash
-cd website
-npm install
-npm run dev
-```
-
-Then open `/docs/understanding/symmetry-explorer`.
-</Callout>
-
-## Related pages
-
-- [Symmetry Detection Deep Dive](/docs/understanding/symmetry-detection) — the full algorithm walkthrough
-- [Symmetry Savings](/docs/guides/symmetry) — practical guide to using symmetry in your code
+- [Launch Symmetry Aware Einsum Contractions](/symmetry-aware-einsum-contractions)
