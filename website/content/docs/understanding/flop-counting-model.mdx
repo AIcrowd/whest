@@ -90,7 +90,7 @@ When a tensor is a `SymmetricTensor`, costs are reduced based on the number of u
 | **Det / Slogdet** | $n^3/3$ (Cholesky) | $n^3$ (LU) |
 | **Inv** | $n^3/3 + n^3/2$ | $n^3$ |
 
-See [Exploit Symmetry Savings](../how-to/exploit-symmetry.md) for usage details.
+See [Exploit Symmetry Savings](../guides/symmetry) for usage details.
 
 ### Subgraph symmetry detection
 
@@ -114,9 +114,9 @@ tensor that is both `SymmetricTensor` and also repeated in the subscript
 benefits from both contributions simultaneously.
 
 See the
-[exploit-symmetry guide](../how-to/exploit-symmetry.md#automatic-symmetry-from-repeated-operands)
+[symmetry guide](../guides/symmetry)
 for usage examples, and the
-[subgraph symmetry explanation](../explanation/subgraph-symmetry.md)
+[subgraph symmetry explanation](./symmetry-detection)
 for the algorithm walkthrough.
 
 ## Einsum cost model
@@ -160,7 +160,7 @@ step_cost = dense_step_cost
 
 Each ratio is computed exactly using **Burnside's lemma** over the
 permutation group detected for that step by the
-[`SubgraphSymmetryOracle`](../explanation/subgraph-symmetry.md). For the
+[`SubgraphSymmetryOracle`](./symmetry-detection). For the
 full symmetric group S$_k$ on $k$ equal-sized axes, Burnside reduces to
 the stars-and-bars formula $\binom\{n+k-1\}\{k\}$; for proper subgroups like
 $C_k$ or block groups the oracle returns the exact generators and
@@ -199,7 +199,7 @@ intermediate, subsequent steps benefit from the reduced element count, and
 the optimizer factors this into its ordering decisions.
 
 Use `we.einsum_path()` to inspect the per-step breakdown. See
-[Use Einsum](../how-to/use-einsum.md) for examples.
+[Use Einsum](../guides/einsum) for examples.
 
 ## Per-operation weights
 
@@ -225,7 +225,7 @@ actual_cost = analytical_formula(shape) × weight(op_name)
 | `linalg.cholesky` | $n^3$ | 4 | 67,108,864 |
 
 Weights are measured using the overhead-subtracted correction-factor
-methodology described in [FLOP Weight Calibration Results](../reference/empirical-weights.md).
+methodology described in [FLOP Weight Calibration Results](./calibration).
 The formula is:
 
 $$w(\text\{op\}) = \max\bigl(\alpha_\{\text\{raw\}\}(\text\{op\}) - \text\{overhead\}_\{\text\{category\}\}, \ 0\bigr)$$
@@ -286,7 +286,7 @@ The JSON file must have a `"weights"` key mapping operation names to floats:
 ```
 
 Operations not listed in the file default to 1.0. See
-[Calibrate Weights](../how-to/calibrate-weights.md) for how to generate
+[Calibrate Weights](./calibration) for how to generate
 this file.
 
 ### Where weights come from
@@ -302,7 +302,7 @@ Weights can be determined in two ways:
    platform.
 
 The `benchmarks/` package in this repository automates both methods. See
-[Calibrate Weights](../how-to/calibrate-weights.md).
+[Calibrate Weights](./calibration).
 
 ## FLOP multiplier
 
@@ -333,6 +333,6 @@ Namespaces do not affect FLOP counting or budget enforcement — they appear as 
 
 ## Related pages
 
-- [Operation Categories](./operation-categories.md) — which operations are free, counted, or unsupported
-- [Plan Your Budget](../how-to/plan-your-budget.md) — query costs before running
-- [Calibrate Weights](../how-to/calibrate-weights.md) — measure per-operation weights empirically
+- [Operation Categories](./operation-categories) — which operations are free, counted, or unsupported
+- [Budget Planning](../guides/budget-planning) — query costs before running
+- [Calibrate Weights](./calibration) — measure per-operation weights empirically
