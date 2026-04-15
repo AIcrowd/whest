@@ -5,6 +5,7 @@ import { Accordions, Accordion } from 'fumadocs-ui/components/accordion';
 import { CodeBlock, Pre } from 'fumadocs-ui/components/codeblock';
 import ApiReference from './api-reference';
 import OperationDocPage from './api-reference/OperationDocPage';
+import OpRef from './op-ref';
 import SymmetryExplorer from './symmetry-explorer';
 import SortableTable from './shared/SortableTable';
 import Mermaid from './mermaid';
@@ -29,6 +30,7 @@ export function getMDXComponents(components?: MDXComponents) {
     pre: DocsPre,
     ApiReference,
     OperationDocPage,
+    OpRef,
     SymmetryExplorer,
     SortableTable,
     Mermaid,
