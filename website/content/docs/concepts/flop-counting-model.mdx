@@ -2,9 +2,13 @@
 title: "FLOP Counting Model"
 ---
 
-## When to use this page
+*Use this page to understand how whest counts FLOPs and why it uses analytical counting instead of runtime measurement.*
 
-Use this page to understand how whest counts FLOPs and why it uses analytical counting instead of runtime measurement.
+**You will learn:**
+- How whest computes FLOP costs analytically from tensor shapes
+- How cost formulas work for each operation category (einsum, linalg, FFT, etc.)
+- How symmetry savings and per-operation weights modify costs
+- How the FLOP multiplier and namespaces interact with the cost model
 
 ## Convention: FMA = 1 operation
 

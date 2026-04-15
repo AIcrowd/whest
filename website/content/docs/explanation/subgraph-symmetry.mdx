@@ -2,9 +2,13 @@
 title: "Subgraph Symmetry Detection"
 ---
 
-## When to use this page
+*Use this page to understand the internals of whest's symmetry detection algorithm. This is contributor-level detail -- most users should start with the [Exploit Symmetry](../how-to/exploit-symmetry.md) how-to guide instead.*
 
-Use this page to understand the internals of whest's symmetry detection algorithm. This is contributor-level detail -- most users should start with the [Exploit Symmetry](../how-to/exploit-symmetry.md) how-to guide instead.
+**You will learn:**
+- How the bipartite graph is constructed from einsum subscripts
+- How the subset-keyed oracle detects and caches symmetry lazily
+- How the sigma-loop derives label permutations from row permutations
+- How Burnside's lemma counts unique elements for exact FLOP reduction
 
 **TL;DR:** whest detects when an einsum expression has symmetry that allows computing fewer FLOPs. It does this by building a bipartite graph from the einsum subscripts, finding column permutations that preserve the graph structure, and using group theory to count how many unique terms exist. The savings can be dramatic -- a symmetric matrix multiplication can cost half as many FLOPs.
 
