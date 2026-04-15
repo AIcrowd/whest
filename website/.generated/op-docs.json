@@ -17,7 +17,7 @@
     "signature": "we.absolute(...)",
     "slug": "absolute",
     "weight": 1.0,
-    "whest_examples_html": "",
+    "whest_examples_html": "<pre><code class=\"language-python\">import whest as we\n\nwith we.BudgetContext(flop_budget=10) as budget:\n    y = we.absolute([-2.0, 3.0])\n    assert y.tolist() == [2.0, 3.0]\n    assert budget.flops_used &gt;= y.size</code></pre>",
     "whest_ref": "`we.absolute`"
   },
   "add": {
@@ -1709,7 +1709,7 @@
     "signature": "we.einsum(...)",
     "slug": "einsum",
     "weight": 1.0,
-    "whest_examples_html": "",
+    "whest_examples_html": "<pre><code class=\"language-python\">import whest as we\n\nwith we.BudgetContext(flop_budget=10_000) as budget:\n    left = we.reshape(we.arange(6.0), (2, 3))\n    right = we.reshape(we.arange(9.0), (3, 3))\n    product = we.einsum(&#x27;ik,kj-&gt;ij&#x27;, left, right)\n    assert product.shape == (2, 3)\n    assert budget.flops_used &gt; 0</code></pre>",
     "whest_ref": "`we.einsum`"
   },
   "einsum_path": {
@@ -1937,7 +1937,7 @@
     "signature": "we.fft.fft(...)",
     "slug": "fft-fft",
     "weight": 1.0,
-    "whest_examples_html": "",
+    "whest_examples_html": "<pre><code class=\"language-python\">import whest as we\n\nwith we.BudgetContext(flop_budget=20_000) as budget:\n    signal = we.linspace(0.0, 1.0, 16)\n    spectrum = we.fft.fft(signal)\n    assert spectrum.shape == (16,)\n    assert budget.flops_used &gt; 0</code></pre>",
     "whest_ref": "`we.fft.fft`"
   },
   "fft.fft2": {
@@ -4010,7 +4010,7 @@
     "signature": "we.linalg.svd(...)",
     "slug": "linalg-svd",
     "weight": 4.0,
-    "whest_examples_html": "",
+    "whest_examples_html": "<pre><code class=\"language-python\">import whest as we\n\nwith we.BudgetContext(flop_budget=50_000) as budget:\n    matrix = we.reshape(we.arange(12.0), (3, 4))\n    u, s, vt = we.linalg.svd(matrix, full_matrices=False)\n    assert u.shape == (3, 3)\n    assert s.shape == (3,)\n    assert vt.shape == (3, 4)\n    assert budget.flops_used &gt; 0</code></pre>",
     "whest_ref": "`we.linalg.svd`"
   },
   "linalg.svdvals": {

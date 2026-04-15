@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import html
 import importlib
 import inspect
 import json
@@ -29,6 +30,7 @@ PUBLIC_DIR = WEBSITE / "public"
 GENERATED_DIR = WEBSITE / ".generated"
 API_INDEX_PATH = WEBSITE / "content" / "docs" / "api" / "index.mdx"
 OP_DOCS_DIR = WEBSITE / "content" / "docs" / "api" / "ops"
+API_EXAMPLES_DIR = WEBSITE / "content" / "api-examples"
 # Legacy MkDocs paths kept for helper functions that are no longer invoked by
 # the current docs pipeline. The active build path only emits website/public/ops.json.
 DOCS = ROOT / "docs"
@@ -553,6 +555,9 @@ def cost_for_op(name: str, category: str) -> tuple[str, str]:
 
 ALIAS_NOTE_PATTERN = re.compile(r"alias for ([\w./]+)", re.IGNORECASE)
 ALIAS_REASON_PATTERN = re.compile(r"Alias of ([\w./]+)", re.IGNORECASE)
+EXAMPLE_FENCE_PATTERN = re.compile(
+    r"```(?P<lang>[A-Za-z0-9_-]+)?\n(?P<body>[\s\S]*?)```", re.MULTILINE
+)
 
 
 def choose_alias_target(raw_target: str, registry: dict[str, dict]) -> str | None:
@@ -616,6 +621,70 @@ def load_operation_weights() -> dict[str, float]:
         return {}
     raw = json.loads(WEIGHTS_PATH.read_text())
     return raw.get("weights", {})
+
+
+def example_file_for(name: str, example_root: Path) -> Path:
+    """Return the owned-example path for a canonical operation name."""
+    return example_root / f"{name}.mdx"
+
+
+def build_example_coverage(names: list[str], example_root: Path) -> dict[str, dict]:
+    """Compute owned-example coverage for canonical operation pages."""
+    coverage: dict[str, dict] = {}
+    for name in names:
+        path = example_file_for(name, example_root)
+        if not path.exists():
+            coverage[name] = {
+                "has_whest_examples": False,
+                "has_inherited_examples": False,
+                "example_count": 0,
+                "example_sources": [],
+                "coverage_status": "missing",
+            }
+            continue
+
+        source = path.read_text()
+        example_count = len(EXAMPLE_FENCE_PATTERN.findall(source)) or 1
+        coverage[name] = {
+            "has_whest_examples": True,
+            "has_inherited_examples": False,
+            "example_count": example_count,
+            "example_sources": [str(path)],
+            "coverage_status": "owned",
+        }
+
+    return coverage
+
+
+def render_example_markdown_html(source: str) -> str:
+    """Render simple MDX example snippets into HTML for the op-doc manifest."""
+    rendered: list[str] = []
+    cursor = 0
+    for match in EXAMPLE_FENCE_PATTERN.finditer(source):
+        prose = source[cursor : match.start()].strip()
+        if prose:
+            rendered.append(f"<p>{html.escape(prose)}</p>")
+
+        language = (match.group("lang") or "").strip()
+        class_attr = f' class="language-{html.escape(language)}"' if language else ""
+        body = html.escape(match.group("body").rstrip("\n"))
+        rendered.append(f"<pre><code{class_attr}>{body}</code></pre>")
+        cursor = match.end()
+
+    trailing = source[cursor:].strip()
+    if trailing:
+        rendered.append(f"<p>{html.escape(trailing)}</p>")
+
+    return "\n".join(rendered)
+
+
+def load_whest_example_html(name: str, example_root: Path) -> str:
+    """Load and render owned whest examples for a canonical operation."""
+    path = example_file_for(name, example_root)
+    if not path.exists():
+        return ""
+
+    return render_example_markdown_html(path.read_text())
 
 
 def build_alias_groups(
@@ -695,7 +764,7 @@ def build_operation_doc_records(registry: dict[str, dict]) -> list[OperationDocR
                 aliases=aliases,
                 signature=f"{whest_ref(name, module).strip('`')}(...)",
                 api_docs_html="",
-                whest_examples_html="",
+                whest_examples_html=load_whest_example_html(name, API_EXAMPLES_DIR),
             )
         )
 
@@ -755,6 +824,16 @@ def write_operation_doc_artifacts(
     print(f"  Generated {len(records)} standalone operation stubs")
     print(f"  Generated {generated_dir / 'op-docs.json'}")
     print(f"  Generated {generated_dir / 'op-refs.json'}")
+
+
+def write_example_coverage_artifact(
+    coverage: dict[str, dict], website_root: Path
+) -> None:
+    """Write the owned-example coverage manifest."""
+    generated_dir = website_root / ".generated"
+    generated_dir.mkdir(parents=True, exist_ok=True)
+    write_json(generated_dir / "api-example-coverage.json", coverage)
+    print(f"  Generated {generated_dir / 'api-example-coverage.json'}")
 
 
 def assert_supported_docs_env() -> None:
@@ -1042,6 +1121,11 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
         print(f"\nop-refs.json NOT FOUND at {op_refs_path}")
         return False
 
+    example_coverage_path = GENERATED_DIR / "api-example-coverage.json"
+    if not example_coverage_path.exists():
+        print(f"\napi-example-coverage.json NOT FOUND at {example_coverage_path}")
+        return False
+
     sample_op_page = OP_DOCS_DIR / "absolute.mdx"
     if not sample_op_page.exists():
         print(f"\nGenerated operation page NOT FOUND at {sample_op_page}")
@@ -1066,7 +1150,7 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
         )
         return False
 
-    print("Generated operation doc manifests and stub pages are present.")
+    print("Generated operation doc manifests, stub pages, and example coverage are present.")
 
     return True
 
@@ -1094,7 +1178,12 @@ def main():
 
     print("Generating API reference data...")
     generate_ops_json(registry)
-    write_operation_doc_artifacts(build_operation_doc_records(registry), WEBSITE)
+    records = build_operation_doc_records(registry)
+    write_operation_doc_artifacts(records, WEBSITE)
+    example_coverage = build_example_coverage(
+        [record.name for record in records], API_EXAMPLES_DIR
+    )
+    write_example_coverage_artifact(example_coverage, WEBSITE)
 
     print("\nDone. Run with --verify to check coverage.")
 

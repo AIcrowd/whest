@@ -1,0 +1,9 @@
+```python
+import whest as we
+
+with we.BudgetContext(flop_budget=20_000) as budget:
+    signal = we.linspace(0.0, 1.0, 16)
+    spectrum = we.fft.fft(signal)
+    assert spectrum.shape == (16,)
+    assert budget.flops_used > 0
+```

@@ -1,0 +1,8 @@
+```python
+import whest as we
+
+with we.BudgetContext(flop_budget=10) as budget:
+    y = we.absolute([-2.0, 3.0])
+    assert y.tolist() == [2.0, 3.0]
+    assert budget.flops_used >= y.size
+```

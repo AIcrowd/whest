@@ -130,3 +130,34 @@ def test_generate_ops_json_preserves_alias_weights(tmp_path):
     assert operations["abs"]["weight"] == 7.0
     assert operations["floor_divide"]["weight"] == 16.0
     assert operations["divmod"]["weight"] == 16.0
+
+
+def test_example_coverage_marks_owned_examples(tmp_path):
+    mod = load_generate_api_docs_module()
+
+    example_dir = tmp_path / "content" / "api-examples"
+    example_dir.mkdir(parents=True, exist_ok=True)
+    (example_dir / "absolute.mdx").write_text(
+        "```python\nwith we.BudgetContext(...):\n    y = we.absolute(x)\n```"
+    )
+
+    coverage = mod.build_example_coverage(["absolute", "sum"], example_root=example_dir)
+
+    assert coverage["absolute"]["has_whest_examples"] is True
+    assert coverage["sum"]["has_whest_examples"] is False
+    assert coverage["absolute"]["example_count"] == 1
+
+
+def test_load_whest_example_html_renders_fenced_code(tmp_path):
+    mod = load_generate_api_docs_module()
+
+    example_dir = tmp_path / "content" / "api-examples"
+    example_dir.mkdir(parents=True, exist_ok=True)
+    (example_dir / "absolute.mdx").write_text(
+        "```python\nimport whest as we\n\nwith we.BudgetContext(...):\n    y = we.absolute(x)\n```"
+    )
+
+    html = mod.load_whest_example_html("absolute", example_root=example_dir)
+
+    assert '<pre><code class="language-python">' in html
+    assert "we.absolute(x)" in html

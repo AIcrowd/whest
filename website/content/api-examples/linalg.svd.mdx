@@ -1,0 +1,11 @@
+```python
+import whest as we
+
+with we.BudgetContext(flop_budget=50_000) as budget:
+    matrix = we.reshape(we.arange(12.0), (3, 4))
+    u, s, vt = we.linalg.svd(matrix, full_matrices=False)
+    assert u.shape == (3, 3)
+    assert s.shape == (3,)
+    assert vt.shape == (3, 4)
+    assert budget.flops_used > 0
+```

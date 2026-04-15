@@ -1,0 +1,10 @@
+```python
+import whest as we
+
+with we.BudgetContext(flop_budget=10_000) as budget:
+    left = we.reshape(we.arange(6.0), (2, 3))
+    right = we.reshape(we.arange(9.0), (3, 3))
+    product = we.einsum('ik,kj->ij', left, right)
+    assert product.shape == (2, 3)
+    assert budget.flops_used > 0
+```

@@ -1,0 +1,3160 @@
+{
+  "absolute": {
+    "coverage_status": "owned",
+    "example_count": 1,
+    "example_sources": [
+      "/Users/mohanty/.codex/worktrees/a3ee/whest/website/content/api-examples/absolute.mdx"
+    ],
+    "has_inherited_examples": false,
+    "has_whest_examples": true
+  },
+  "add": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "all": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "allclose": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "angle": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "any": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "append": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "apply_along_axis": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "apply_over_axes": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "arange": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "arccos": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "arccosh": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "arcsin": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "arcsinh": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "arctan": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "arctan2": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "arctanh": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "argmax": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "argmin": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "argpartition": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "argsort": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "argwhere": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "array": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "array_equal": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "array_equiv": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "array_split": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "asarray": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "asarray_chkfinite": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "astype": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "atleast_1d": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "atleast_2d": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "atleast_3d": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "average": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "bartlett": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "bincount": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "bitwise_and": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "bitwise_count": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "bitwise_left_shift": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "bitwise_not": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "bitwise_or": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "bitwise_right_shift": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "bitwise_xor": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "blackman": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "block": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "bmat": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "broadcast_arrays": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "broadcast_shapes": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "broadcast_to": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "can_cast": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "cbrt": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "ceil": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "choose": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "clip": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "column_stack": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "common_type": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "compress": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "concatenate": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "conj": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "conjugate": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "convolve": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "copy": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "copysign": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "copyto": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "corrcoef": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "correlate": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "cos": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "cosh": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "count_nonzero": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "cov": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "cross": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "cumprod": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "cumsum": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "cumulative_prod": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "cumulative_sum": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "degrees": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "delete": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "diag": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "diag_indices": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "diag_indices_from": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "diagflat": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "diagonal": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "diff": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "digitize": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "divide": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "dot": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "dsplit": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "dstack": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "ediff1d": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "einsum": {
+    "coverage_status": "owned",
+    "example_count": 1,
+    "example_sources": [
+      "/Users/mohanty/.codex/worktrees/a3ee/whest/website/content/api-examples/einsum.mdx"
+    ],
+    "has_inherited_examples": false,
+    "has_whest_examples": true
+  },
+  "einsum_path": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "empty": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "empty_like": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "equal": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "exp": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "exp2": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "expand_dims": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "expm1": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "extract": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "eye": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "fabs": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "fft.fft": {
+    "coverage_status": "owned",
+    "example_count": 1,
+    "example_sources": [
+      "/Users/mohanty/.codex/worktrees/a3ee/whest/website/content/api-examples/fft.fft.mdx"
+    ],
+    "has_inherited_examples": false,
+    "has_whest_examples": true
+  },
+  "fft.fft2": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "fft.fftfreq": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "fft.fftn": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "fft.fftshift": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "fft.hfft": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "fft.ifft": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "fft.ifft2": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "fft.ifftn": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "fft.ifftshift": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "fft.ihfft": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "fft.irfft": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "fft.irfft2": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "fft.irfftn": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "fft.rfft": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "fft.rfft2": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "fft.rfftfreq": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "fft.rfftn": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "fill_diagonal": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "flatnonzero": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "flip": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "fliplr": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "flipud": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "float_power": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "floor": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "floor_divide": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "fmax": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "fmin": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "fmod": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "frexp": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "from_dlpack": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "frombuffer": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "fromfunction": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "fromiter": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "full": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "full_like": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "gcd": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "geomspace": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "gradient": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "greater": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "greater_equal": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "hamming": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "hanning": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "heaviside": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "histogram": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "histogram2d": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "histogram_bin_edges": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "histogramdd": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "hsplit": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "hstack": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "hypot": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "i0": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "identity": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "imag": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "in1d": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "indices": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "inner": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "insert": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "interp": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "intersect1d": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "invert": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "isclose": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "iscomplex": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "iscomplexobj": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "isdtype": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "isfinite": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "isfortran": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "isin": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "isinf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "isnan": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "isneginf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "isposinf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "isreal": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "isrealobj": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "isscalar": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "issubdtype": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "iterable": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "ix_": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "kaiser": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "kron": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "lcm": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "ldexp": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "left_shift": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "less": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "less_equal": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "lexsort": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.cholesky": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.cond": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.cross": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.det": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.diagonal": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.eig": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.eigh": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.eigvals": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.eigvalsh": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.inv": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.lstsq": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.matmul": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.matrix_norm": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.matrix_power": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.matrix_rank": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.matrix_transpose": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.multi_dot": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.norm": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.outer": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.pinv": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.qr": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.slogdet": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.solve": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.svd": {
+    "coverage_status": "owned",
+    "example_count": 1,
+    "example_sources": [
+      "/Users/mohanty/.codex/worktrees/a3ee/whest/website/content/api-examples/linalg.svd.mdx"
+    ],
+    "has_inherited_examples": false,
+    "has_whest_examples": true
+  },
+  "linalg.svdvals": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.tensordot": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.tensorinv": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.tensorsolve": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.trace": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.vecdot": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linalg.vector_norm": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "linspace": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "log": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "log10": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "log1p": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "log2": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "logaddexp": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "logaddexp2": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "logical_and": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "logical_not": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "logical_or": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "logical_xor": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "logspace": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "mask_indices": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "matmul": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "matrix_transpose": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "matvec": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "max": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "maximum": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "may_share_memory": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "mean": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "median": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "meshgrid": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "min": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "min_scalar_type": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "minimum": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "mintypecode": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "mod": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "modf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "moveaxis": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "multiply": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "nan_to_num": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "nanargmax": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "nanargmin": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "nancumprod": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "nancumsum": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "nanmax": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "nanmean": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "nanmedian": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "nanmin": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "nanpercentile": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "nanprod": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "nanquantile": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "nanstd": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "nansum": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "nanvar": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "ndim": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "negative": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "nextafter": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "nonzero": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "not_equal": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "ones": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "ones_like": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "outer": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "packbits": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "pad": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "partition": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "percentile": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "permute_dims": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "piecewise": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "place": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "poly": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "polyadd": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "polyder": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "polydiv": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "polyfit": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "polyint": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "polymul": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "polysub": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "polyval": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "positive": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "power": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "prod": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "promote_types": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "ptp": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "put": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "put_along_axis": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "putmask": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "quantile": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "radians": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.beta": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.binomial": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.bytes": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.chisquare": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.choice": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.default_rng": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.dirichlet": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.exponential": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.f": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.gamma": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.geometric": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.get_state": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.gumbel": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.hypergeometric": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.laplace": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.logistic": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.lognormal": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.logseries": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.multinomial": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.multivariate_normal": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.negative_binomial": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.noncentral_chisquare": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.noncentral_f": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.normal": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.pareto": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.permutation": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.poisson": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.power": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.rand": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.randint": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.randn": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.random": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.random_integers": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.random_sample": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.rayleigh": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.seed": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.set_state": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.shuffle": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.standard_cauchy": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.standard_exponential": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.standard_gamma": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.standard_normal": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.standard_t": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.triangular": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.uniform": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.vonmises": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.wald": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.weibull": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "random.zipf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "ravel": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "ravel_multi_index": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "real": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "real_if_close": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "reciprocal": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "remainder": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "repeat": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "require": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "reshape": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "resize": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "result_type": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "right_shift": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "rint": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "roll": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "rollaxis": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "roots": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "rot90": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "searchsorted": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "select": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "setdiff1d": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "setxor1d": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "shape": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "shares_memory": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "sign": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "signbit": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "sin": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "sinc": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "sinh": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "size": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "sort": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "sort_complex": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "spacing": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "split": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "sqrt": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "square": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "squeeze": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "stack": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "stats.cauchy.cdf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "stats.cauchy.pdf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "stats.cauchy.ppf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "stats.expon.cdf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "stats.expon.pdf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "stats.expon.ppf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "stats.laplace.cdf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "stats.laplace.pdf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "stats.laplace.ppf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "stats.logistic.cdf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "stats.logistic.pdf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "stats.logistic.ppf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "stats.lognorm.cdf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "stats.lognorm.pdf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "stats.lognorm.ppf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "stats.norm.cdf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "stats.norm.pdf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "stats.norm.ppf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "stats.truncnorm.cdf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "stats.truncnorm.pdf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "stats.truncnorm.ppf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "stats.uniform.cdf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "stats.uniform.pdf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "stats.uniform.ppf": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "std": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "subtract": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "sum": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "swapaxes": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "take": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "take_along_axis": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "tan": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "tanh": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "tensordot": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "tile": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "trace": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "transpose": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "trapezoid": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "tri": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "tril": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "tril_indices": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "tril_indices_from": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "trim_zeros": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "triu": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "triu_indices": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "triu_indices_from": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "true_divide": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "trunc": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "typename": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "union1d": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "unique": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "unique_all": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "unique_counts": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "unique_inverse": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "unique_values": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "unpackbits": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "unravel_index": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "unstack": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "unwrap": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "vander": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "var": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "vdot": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "vecdot": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "vecmat": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "vsplit": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "vstack": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "where": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "zeros": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  },
+  "zeros_like": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_sources": [],
+    "has_inherited_examples": false,
+    "has_whest_examples": false
+  }
+}
