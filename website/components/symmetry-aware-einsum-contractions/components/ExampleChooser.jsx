@@ -521,8 +521,9 @@ export default function ExampleChooser({
         <div className="grid gap-2">
           <Button
             type="button"
+            variant="outline"
             className={cn(
-              'rounded-xl border px-4 py-3 text-left transition-colors',
+              'h-auto flex-col items-start justify-start rounded-xl border px-4 py-3 text-left transition-colors',
               activePresetIdx === CUSTOM_IDX
                 ? 'border-coral bg-coral-light/50'
                 : 'border-gray-200 hover:border-gray-300',
@@ -532,14 +533,14 @@ export default function ExampleChooser({
               onCustom?.();
             }}
           >
-            <div className="flex items-center gap-2">
+            <span className="flex items-center gap-2">
               <span className="text-sm font-medium text-gray-900">Custom</span>
               <span className="rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-gray-500">
                 Freeform
               </span>
-            </div>
+            </span>
             <code className="mt-1 block text-[11px] text-gray-500">Define your own contraction</code>
-            <p className="mt-1 text-xs text-gray-600">Keep the current builder state and switch into custom mode.</p>
+            <span className="mt-1 text-xs text-gray-600">Keep the current builder state and switch into custom mode.</span>
           </Button>
 
           {presetSummaries.map((summary, idx) => (
@@ -548,7 +549,7 @@ export default function ExampleChooser({
               type="button"
               variant="outline"
               onClick={() => loadPreset(idx)}
-              className="flex h-auto w-full items-start gap-3 border-gray-200 px-3 py-2.5 text-left"
+              className="flex h-auto w-full items-start justify-start gap-3 border-gray-200 px-3 py-2.5 text-left"
             >
               <span className="mt-0.5 h-full min-h-10 w-1 shrink-0 rounded-full" style={{ backgroundColor: summary.color }} />
               <span className="min-w-0 flex-1">

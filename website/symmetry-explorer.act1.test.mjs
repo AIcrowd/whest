@@ -15,6 +15,8 @@ test('Act 1 uses a desktop preset rail and a mobile preset fallback', () => {
   assert.match(sidebarSource, /Badge/);
   assert.match(sidebarSource, /expectedGroup/);
   assert.match(chooserSource, /aria-label="Mobile preset examples"/);
+  assert.match(chooserSource, /<Button[\s\S]*variant="outline"[\s\S]*h-auto[\s\S]*items-start[\s\S]*justify-start/);
+  assert.match(chooserSource, /<span className="flex items-center gap-2">/);
   assert.match(chooserSource, /expectedGroup/);
 });
 
