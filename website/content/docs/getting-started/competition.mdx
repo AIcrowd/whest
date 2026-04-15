@@ -74,18 +74,18 @@ we.budget_summary(by_namespace=True)      # session/global summary with namespac
 
 The block below shows `print(budget.summary(by_namespace=True))` for the `solver` context:
 
-```text
-whest FLOP Budget Summary [solver]
-==================================
+```text title="__rich_output__"
+\x1b[36mwhest FLOP Budget Summary [solver]\x1b[0m
+\x1b[2m==================================\x1b[0m
   Total budget:              50,000,000
-  Used:                          66,048  (0.1%)
+  \x1b[32mUsed:\x1b[0m                          66,048  (0.1%)
   Remaining:                 49,933,952  (99.9%)
 
-  By namespace:
+  \x1b[1mBy namespace:\x1b[0m
     solver                         66,048  (100.0%)  [3 calls]  0.000s
 
-  By operation:
-    einsum                     65,536  ( 99.2%)  [1 call]
+  \x1b[1mBy operation:\x1b[0m
+    \x1b[31meinsum\x1b[0m                     65,536  ( 99.2%)  [1 call]
     exp                           256  (  0.4%)  [1 call]
     sum                           256  (  0.4%)  [1 call]
 
@@ -93,7 +93,7 @@ whest FLOP Budget Summary [solver]
   Tracked time:          ...s  ( ...%)
   Untracked time:        ...s  ( ...%)
 
-  By operation (time):
+  \x1b[1mBy operation (time):\x1b[0m
     einsum                 ...s  ( ...%)  [1 call]
     sum                    ...s  ( ...%)  [1 call]
     exp                    ...s  ( ...%)  [1 call]

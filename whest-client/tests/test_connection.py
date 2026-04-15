@@ -154,6 +154,27 @@ class TestProtocol:
         result = decode_response(payload)
         assert isinstance(result["handle"], str)
 
+    def test_decode_response_allows_unscoped_namespace_keys(self):
+        from whest._protocol import decode_response
+
+        payload = msgpack.packb(
+            {
+                "status": "ok",
+                "result": {
+                    "budget_breakdown": {
+                        "by_namespace": {
+                            None: {"flops_used": 1, "calls": 1},
+                            "phase": {"flops_used": 2, "calls": 1},
+                        }
+                    }
+                },
+            },
+            use_bin_type=True,
+        )
+        result = decode_response(payload)
+        assert result["result"]["budget_breakdown"]["by_namespace"][None]["flops_used"] == 1
+        assert result["result"]["budget_breakdown"]["by_namespace"]["phase"]["calls"] == 1
+
     def test_normalize_preserves_small_binary_data(self):
         """FIX 2 (client): small binary array data must NOT be decoded."""
         import struct

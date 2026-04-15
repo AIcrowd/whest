@@ -79,5 +79,5 @@ def decode_response(raw: bytes) -> dict:
 
     Binary data fields (raw array bytes) stay as bytes.
     """
-    decoded = msgpack.unpackb(raw, raw=True)
+    decoded = msgpack.unpackb(raw, raw=True, strict_map_key=False)
     return _normalize(decoded)

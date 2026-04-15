@@ -51,23 +51,23 @@ uv run python first_budget.py
 
 ## What you'll see
 
-```text
-whest FLOP Budget Summary
-=========================
+```text title="__rich_output__"
+\x1b[36mwhest FLOP Budget Summary\x1b[0m
+\x1b[2m=========================\x1b[0m
   Total budget:    1,000,000,000,000,000
-  Used:                       2,624,513  (0.0%)
+  \x1b[32mUsed:\x1b[0m                       2,624,513  (0.0%)
   Remaining:        999,999,997,375,487  (100.0%)
 
-  By operation:
+  \x1b[1mBy operation:\x1b[0m
     random.randn              655,616  ( 25.0%)  [11 calls]
     multiply                  655,360  ( 25.0%)  [10 calls]
     array                     655,360  ( 25.0%)  [10 calls]
-    einsum                    655,360  ( 25.0%)  [10 calls]
+    \x1b[31meinsum\x1b[0m                    655,360  ( 25.0%)  [10 calls]
     maximum                     2,560  (  0.1%)  [10 calls]
     sum                           256  (  0.0%)  [1 call]
     sqrt                            1  (  0.0%)  [1 call]
 
-  By operation (time):
+  \x1b[1mBy operation (time):\x1b[0m
     random.randn           ...s  ( ...%)  [11 calls]
     multiply               ...s  ( ...%)  [10 calls]
     einsum                 ...s  ( ...%)  [10 calls]
