@@ -77,6 +77,15 @@ test('symmetry guide avoids overclaiming Reynolds helper exactness', async () =>
   assert.match(source, /validation tolerances/);
 });
 
+test('symmetry guide documents the current unary pointwise caveat for non-full groups', async () => {
+  const source = await readSymmetryGuide();
+
+  assert.doesNotMatch(source, /unary pointwise ops keep the same groups/);
+  assert.match(source, /Unary pointwise ops preserve symmetry-aware costs and keep the same symmetric axes/);
+  assert.match(source, /non-full groups such as `C_k` or `D_k`, the current implementation widens the metadata to full symmetry on those axes/);
+  assert.match(source, /`we\.exp\(c3_tensor\)` still gets symmetry-aware cost savings, but the result is currently tagged as full symmetry on `\(0, 1, 2\)`/);
+});
+
 test('symmetry guide representative propagation claims match runtime behavior', async () => {
   const stdout = await runPythonInRepo(`
 import json
@@ -118,11 +127,15 @@ c4_group = we.PermutationGroup.cyclic(4, axes=(0, 1, 2, 3))
 s3_tensor = symmetrize_with_group((4, 4, 4), s3_group)
 c3_tensor = symmetrize_with_group((4, 4, 4), c3_group)
 c4_tensor = symmetrize_with_group((4, 4, 4, 4), c4_group)
+d4_group = we.PermutationGroup.dihedral(4, axes=(0, 1, 2, 3))
+d4_tensor = symmetrize_with_group((4, 4, 4, 4), d4_group)
 
 s3_slice = s3_tensor[:, :, 0]
 c3_slice = c3_tensor[:, :, 0]
 c4_reduced = we.sum(c4_tensor, axis=(1, 3))
 intersection_tensor = we.add(s3_tensor, c3_tensor)
+unary_c3 = we.exp(c3_tensor)
+unary_d4 = we.exp(d4_tensor)
 
 left_tensor = we.as_symmetric(
     we.ones((3, 3, 5, 5)),
@@ -157,6 +170,8 @@ print(json.dumps({
     "shared_group_type": type(shared_group_tensor).__name__,
     "shared_group_axes": [group.axes for group in shared_group_tensor.symmetry_info.groups],
     "broadcast_has_symmetry": hasattr(broadcast_sum, "symmetry_info"),
+    "unary_c3_orders": [group.order() for group in unary_c3.symmetry_info.groups],
+    "unary_d4_orders": [group.order() for group in unary_d4.symmetry_info.groups],
 }))
 `);
   const runtimeBehavior = JSON.parse(stdout.trim());
@@ -177,6 +192,8 @@ print(json.dumps({
     shared_group_type: 'SymmetricTensor',
     shared_group_axes: [[0, 1]],
     broadcast_has_symmetry: false,
+    unary_c3_orders: [6],
+    unary_d4_orders: [24],
   });
 });
 

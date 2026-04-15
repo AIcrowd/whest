@@ -44,9 +44,7 @@ with we.BudgetContext(flop_budget=10**6) as budget:
 ```
 
 `we.as_symmetric()` validates the data first. After that, whest propagates
-symmetry metadata algebraically through many operations. Unary pointwise ops
-usually preserve symmetry. Slicing, reductions, and binary pointwise ops can
-weaken it or remove it entirely.
+symmetry metadata algebraically through many operations. Unary pointwise ops preserve symmetry-aware costs and keep the same symmetric axes. For non-full groups such as `C_k` or `D_k`, the current implementation widens the metadata to full symmetry on those axes. Slicing, reductions, and binary pointwise ops can weaken it or remove it entirely.
 
 ## How to declare symmetry
 
@@ -203,7 +201,7 @@ surviving group.
 
 | Operation | Result type | Rule |
 |-----------|-------------|------|
-| `we.exp(s3_tensor)` | `SymmetricTensor` | unary pointwise ops keep the same groups |
+| `we.exp(s3_tensor)` | `SymmetricTensor` | unary pointwise ops preserve symmetric axes; non-full groups are currently widened to full symmetry on those axes |
 | `we.add(s3_tensor, c3_tensor)` | `SymmetricTensor` or `ndarray` | binary pointwise ops keep the intersection of both operands' groups |
 | `s2_matrix * 3` | `SymmetricTensor` | scalar binary ops preserve the tensor's groups |
 | `s2_matrix[0]` | `ndarray` | integer indexing removes one axis; no nontrivial group survives |
@@ -213,6 +211,8 @@ surviving group.
 | `we.sum(s3_tensor, axis=0)` | `SymmetricTensor` | reductions keep the surviving setwise stabilizer subgroup |
 | `we.sum(d4_tensor, axis=(1, 3))` | `SymmetricTensor` | reductions can keep a proper subgroup like `C_2` |
 | `s2_matrix @ s2_matrix` | `ndarray` | matrix products are not assumed symmetric in general |
+
+`we.exp(c3_tensor)` still gets symmetry-aware cost savings, but the result is currently tagged as full symmetry on `(0, 1, 2)` rather than preserving the original `C_3` subgroup exactly.
 
 ## Slicing rules
 
@@ -380,6 +380,9 @@ change.
 
 The propagation rules are easier to predict if you keep three ideas in mind:
 
+- **Unary pointwise ops** currently rebuild results from `symmetric_axes`, so
+  they preserve the same symmetric axes but not exact subgroup identity for
+  `C_k`, `D_k`, or custom groups
 - **Slicing** uses the pointwise stabilizer of the removed axes
 - **Reductions** use the setwise stabilizer of the reduced axes
 - **Binary pointwise ops** use intersection of both operands' groups after
