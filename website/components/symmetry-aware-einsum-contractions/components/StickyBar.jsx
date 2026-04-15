@@ -6,15 +6,15 @@ import { EXPLORER_ACTS } from './explorerNarrative.js';
 export default function StickyBar({ example, group, dimensionN, onDimensionChange, activeActId }) {
   return (
     <div className="sticky top-0 z-40 border-b border-border/70 bg-background/95 backdrop-blur-sm">
-      <div className="mx-auto flex max-w-[1400px] flex-col gap-4 px-6 py-4 md:flex-row md:items-center md:justify-between md:px-8">
+      <div className="mx-auto flex max-w-[1460px] flex-col gap-4 px-6 py-4 md:flex-row md:items-center md:justify-between md:px-8">
         {example && (
           <div className="flex min-w-0 shrink items-center gap-2">
-            <Badge className="shrink-0 bg-coral text-white hover:bg-coral">einsum</Badge>
-            <code className="truncate text-sm font-mono text-foreground">
+            <Badge className="shrink-0">einsum</Badge>
+            <code className="truncate rounded-md border border-primary/20 bg-primary/10 px-2.5 py-1 text-sm font-mono font-medium text-primary shadow-sm">
               {example.formula}
             </code>
             {group && (
-              <Badge variant="outline" className="shrink-0 border-coral/30 bg-coral-light text-coral">
+              <Badge variant="outline" className="shrink-0 border-primary/25 bg-primary/10 text-primary">
                 {group.fullGroupName || 'trivial'}
               </Badge>
             )}
@@ -30,12 +30,12 @@ export default function StickyBar({ example, group, dimensionN, onDimensionChang
                 href={`#${act.id}`}
                 className={cn(
                   buttonVariants({ size: 'sm', variant: isActive ? 'secondary' : 'ghost' }),
-                  isActive ? 'bg-coral-light text-coral hover:bg-coral-light/80' : 'text-muted-foreground',
+                  isActive ? 'bg-primary/10 text-primary hover:bg-primary/15' : 'text-muted-foreground',
                 )}
               >
                 <Badge
                   variant={isActive ? 'default' : 'outline'}
-                  className={isActive ? 'bg-coral text-white' : 'text-muted-foreground'}
+                  className={isActive ? '' : 'text-muted-foreground'}
                 >
                   {idx + 1}
                 </Badge>

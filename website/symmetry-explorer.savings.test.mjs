@@ -20,7 +20,7 @@ test('Act 4 opens the Mental Framework in a modal using the shared code block', 
 
   assert.doesNotMatch(appSource, /<PseudocodeRail/);
   assert.match(appSource, /showMentalModel/);
-  assert.match(appSource, /Open mental framework/);
+  assert.match(appSource, /Open Mental Framework/);
   assert.match(appSource, /buildMentalModelCode/);
   assert.match(appSource, /PythonCodeBlock/);
   assert.match(appSource, /reduceMentalModelVisibility/);

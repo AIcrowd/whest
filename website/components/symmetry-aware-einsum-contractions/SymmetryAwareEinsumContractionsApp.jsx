@@ -177,7 +177,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
         activeActId={activeActId}
       />
 
-      <div className="mx-auto flex max-w-[1400px] flex-col gap-8 px-6 pb-20 pt-8 md:px-8 lg:px-10">
+      <div className="mx-auto flex max-w-[1460px] flex-col gap-8 px-6 pb-20 pt-8 md:px-8 lg:px-10">
         <ExplorerSectionCard
           eyebrow="Interactive walkthrough"
           title="Symmetry Aware Einsum Contractions"
@@ -188,11 +188,11 @@ export default function SymmetryAwareEinsumContractionsApp() {
           {example && group ? (
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div className="flex min-w-0 flex-wrap items-center gap-2">
-                <Badge className="bg-coral text-white hover:bg-coral">einsum</Badge>
-                <code className="truncate rounded-md bg-muted px-3 py-1.5 font-mono text-sm text-foreground">
+                <Badge>einsum</Badge>
+                <code className="truncate rounded-md border border-primary/20 bg-primary/10 px-3 py-1.5 font-mono text-sm font-medium text-primary shadow-sm">
                   {example.formula}
                 </code>
-                <Badge variant="outline" className="border-coral/30 bg-coral-light text-coral">
+                <Badge variant="outline" className="border-primary/25 bg-primary/10 text-primary">
                   {group.fullGroupName || 'trivial'}
                 </Badge>
               </div>
@@ -208,6 +208,12 @@ export default function SymmetryAwareEinsumContractionsApp() {
         </ExplorerSectionCard>
 
         <div className="flex flex-col gap-8 md:flex-row md:items-start">
+          <PresetSidebar
+            examples={EXAMPLES}
+            selectedPresetIdx={selectedPresetIdx}
+            onSelect={handleSelect}
+            onCustom={handleCustomMode}
+          />
           <main className="min-w-0 flex-1">
             <section id="setup" className="mb-12 scroll-mt-24">
               <ExampleChooser
@@ -298,12 +304,12 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     </div>
                     <Button
                       type="button"
-                      variant="secondary"
-                      className="w-full bg-coral-light text-coral hover:bg-coral-light/80 lg:w-auto lg:self-start"
+                      size="lg"
+                      className="w-full gap-2 font-semibold shadow-sm lg:w-auto lg:self-start"
                       aria-label="Open mental framework"
                       onClick={() => setShowMentalModel(true)}
                     >
-                      Open mental framework
+                      Open Mental Framework
                     </Button>
                   </div>
 
@@ -379,12 +385,6 @@ export default function SymmetryAwareEinsumContractionsApp() {
               </div>
             )}
           </main>
-          <PresetSidebar
-            examples={EXAMPLES}
-            selectedPresetIdx={selectedPresetIdx}
-            onSelect={handleSelect}
-            onCustom={handleCustomMode}
-          />
         </div>
       </div>
     </div>

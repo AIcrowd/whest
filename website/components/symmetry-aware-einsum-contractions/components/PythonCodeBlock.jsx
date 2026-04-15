@@ -89,7 +89,10 @@ function PythonHighlight({ code }) {
   const html = useMemo(() => highlightPython(code), [code]);
   return (
     <pre className="overflow-x-auto whitespace-pre-wrap rounded-xl bg-slate-950 p-5 font-mono text-sm leading-7 text-slate-300">
-      <code dangerouslySetInnerHTML={{ __html: html }} />
+      <code
+        className="[&_.hl-cmt]:text-slate-500 [&_.hl-fn]:font-semibold [&_.hl-fn]:text-sky-300 [&_.hl-kw]:font-semibold [&_.hl-kw]:text-rose-300 [&_.hl-num]:text-amber-300 [&_.hl-str]:text-emerald-300"
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
     </pre>
   );
 }

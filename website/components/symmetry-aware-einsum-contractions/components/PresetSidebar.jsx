@@ -18,9 +18,9 @@ export default function PresetSidebar({
   return (
     <aside
       aria-label="Preset examples"
-      className="sticky top-20 hidden max-h-[calc(100vh-5rem)] w-[21rem] shrink-0 self-start overflow-y-auto md:block"
+      className="sticky top-20 hidden max-h-[calc(100vh-5rem)] w-[20rem] shrink-0 self-start overflow-y-auto md:block xl:w-[20.5rem]"
     >
-      <div className="px-2 pb-3 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+      <div className="px-2 pb-3 text-xs font-semibold uppercase tracking-[0.18em] text-primary/75">
         Presets
       </div>
 

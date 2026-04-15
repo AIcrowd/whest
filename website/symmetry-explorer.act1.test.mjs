@@ -10,6 +10,7 @@ test('Act 1 uses a desktop preset rail and a mobile preset fallback', () => {
   assert.match(appSource, /PresetSidebar/);
   assert.match(appSource, /selectedPresetIdx=\{selectedPresetIdx\}/);
   assert.match(appSource, /getPresetControlSelection\(exampleIdx, isDirty\)/);
+  assert.match(appSource, /<PresetSidebar[\s\S]*<main className="min-w-0 flex-1">/);
   assert.match(sidebarSource, /aria-label="Preset examples"/);
   assert.match(sidebarSource, /ExplorerSidebarItem/);
   assert.match(sidebarSource, /Badge/);
@@ -45,16 +46,17 @@ test('ExampleChooser uses the shared Python code block and the wider 70\\/30 row
   assert.match(codeBlockSource, /function highlightPython/);
   assert.match(codeBlockSource, /ExplorerSectionCard/);
   assert.match(codeBlockSource, /Button/);
+  assert.match(codeBlockSource, /\[&_\.hl-kw\]:font-semibold/);
+  assert.match(codeBlockSource, /\[&_\.hl-str\]:text-emerald-300/);
 });
 
 test('PresetSidebar widens the rail and uses shared text sizing while still showing the output symmetry', () => {
   const sidebarSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/PresetSidebar.jsx', import.meta.url), 'utf8');
-  assert.match(sidebarSource, /w-\[21rem\]/);
+  assert.match(sidebarSource, /w-\[20rem\]/);
   assert.match(sidebarSource, /px-3\.5 py-3/);
   assert.match(sidebarSource, /Define your own contraction/);
   assert.match(sidebarSource, /Keep the current builder state/);
-  assert.match(sidebarSource, /text-xs font-semibold uppercase tracking-\[0\.18em\] text-muted-foreground/);
-  assert.match(sidebarSource, /text-xs font-semibold uppercase tracking-\[0\.18em\]/);
+  assert.match(sidebarSource, /text-xs font-semibold uppercase tracking-\[0\.18em\] text-primary\/75/);
   assert.match(sidebarSource, /text-sm text-gray-500/);
   assert.match(sidebarSource, /text-sm text-gray-400/);
   assert.doesNotMatch(sidebarSource, /text-\[10px\]/);
