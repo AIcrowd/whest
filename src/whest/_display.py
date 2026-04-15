@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from whest._budget import budget_summary_dict
+from whest._budget import _snapshot_records, budget_summary_dict
 
 
 def _format_flops(n: int) -> str:
@@ -10,7 +10,7 @@ def _format_flops(n: int) -> str:
     return f"{n:,}"
 
 
-def _pct(used: int, total: int) -> str:
+def _pct(used: int | float, total: int | float) -> str:
     """Return a percentage string."""
     if total == 0:
         return "0.0%"
@@ -29,97 +29,92 @@ def _usage_color(used: int, total: int) -> str:
     return "red"
 
 
-def _plain_text_summary() -> str:
-    """Render a plain-text budget summary across all namespaces."""
-    data = budget_summary_dict(by_namespace=True)
-    if data["flops_used"] == 0 and not data.get("by_namespace"):
+def _namespace_label(ns: str | None) -> str:
+    return ns if ns is not None else "(unlabeled)"
+
+
+def _call_label(calls: int) -> str:
+    return f"{calls} call{'s' if calls != 1 else ''}"
+
+
+def _sorted_namespace_rows(
+    by_namespace: dict[str | None, dict],
+) -> list[tuple[str | None, dict]]:
+    return sorted(
+        by_namespace.items(),
+        key=lambda item: (-item[1]["flops_used"], _namespace_label(item[0])),
+    )
+
+
+def _format_budget_summary_text(
+    data: dict,
+    *,
+    by_namespace: bool = False,
+    header: str = "whest FLOP Budget Summary",
+) -> str:
+    """Render structured budget data as plain text."""
+    if data["flops_used"] == 0 and not data.get("operations"):
         return "No budget data recorded yet."
 
     lines = [
-        "whest FLOP Budget Summary",
-        "=" * 50,
+        header,
+        "=" * len(header),
         f"  Total budget:    {_format_flops(data['flop_budget']):>20}",
         f"  Used:            {_format_flops(data['flops_used']):>20}  ({_pct(data['flops_used'], data['flop_budget'])})",
         f"  Remaining:       {_format_flops(data['flops_remaining']):>20}  ({_pct(data['flops_remaining'], data['flop_budget'])})",
     ]
 
-    by_ns = data.get("by_namespace", {})
-    if by_ns:
-        lines.append("")
-        for ns, ns_data in by_ns.items():
-            label = ns if ns is not None else "(default)"
-            lines.append(f"  [{label}]")
-            lines.append(f"    Budget:  {_format_flops(ns_data['flop_budget']):>16}")
+    if by_namespace and data.get("by_namespace"):
+        lines += ["", "  By namespace:"]
+        for namespace, bucket in _sorted_namespace_rows(data["by_namespace"]):
             lines.append(
-                f"    Used:    {_format_flops(ns_data['flops_used']):>16}  ({_pct(ns_data['flops_used'], ns_data['flop_budget'])})"
+                f"    {_namespace_label(namespace):<24} {_format_flops(bucket['flops_used']):>12}  ({_pct(bucket['flops_used'], data['flops_used']):>6})  [{_call_label(bucket['calls'])}]  {bucket['tracked_time_s']:.3f}s"
             )
-            ops = ns_data.get("operations", {})
-            if ops:
-                lines.append("    Operations:")
-                for op_name, op_info in sorted(
-                    ops.items(), key=lambda x: -x[1]["flop_cost"]
-                ):
-                    call_word = "call" if op_info["calls"] == 1 else "calls"
-                    op_pct = _pct(op_info["flop_cost"], ns_data["flops_used"])
-                    lines.append(
-                        f"      {op_name:<20} {_format_flops(op_info['flop_cost']):>12}  ({op_pct:>6})  [{op_info['calls']} {call_word}]"
-                    )
-            lines.append("")
 
     ops = data.get("operations", {})
     if ops:
-        lines.append("  All operations (session total):")
-        for op_name, op_info in sorted(ops.items(), key=lambda x: -x[1]["flop_cost"]):
-            call_word = "call" if op_info["calls"] == 1 else "calls"
-            op_pct = _pct(op_info["flop_cost"], data["flops_used"])
+        lines += ["", "  By operation:"]
+        for op_name, op_info in sorted(
+            ops.items(), key=lambda item: -item[1]["flop_cost"]
+        ):
             lines.append(
-                f"    {op_name:<20} {_format_flops(op_info['flop_cost']):>12}  ({op_pct:>6})  [{op_info['calls']} {call_word}]"
+                f"    {op_name:<20} {_format_flops(op_info['flop_cost']):>12}  ({_pct(op_info['flop_cost'], data['flops_used']):>6})  [{_call_label(op_info['calls'])}]"
             )
 
-    # Timing information
     wall_time = data.get("wall_time_s")
-    tracked_time = data.get("total_tracked_time")
-    if wall_time is not None:
-        tracked = tracked_time or 0.0
-        untracked = wall_time - tracked
-        lines.append("")
-        lines.append(f"  Wall time:       {wall_time:.3f}s")
-        lines.append(f"  Tracked time:    {tracked:.3f}s")
-        lines.append(f"  Untracked time:  {untracked:.3f}s")
-
-    # Timing section
-    wall_time = data.get("wall_time_s")
-    tracked_time = data.get("total_tracked_time")
-    if wall_time is not None:
-        untracked = wall_time - (tracked_time or 0.0)
-        tracked_pct = 100 * (tracked_time or 0.0) / wall_time if wall_time > 0 else 0.0
-        untracked_pct = 100 * untracked / wall_time if wall_time > 0 else 0.0
+    tracked_time = data.get("tracked_time_s", 0.0)
+    untracked_time = data.get("untracked_time_s")
+    if wall_time is not None and untracked_time is not None:
         lines += [
             "",
             f"  Wall time:       {wall_time:.3f}s",
-            f"  Tracked time:    {(tracked_time or 0.0):.3f}s  ({tracked_pct:.1f}%)",
-            f"  Untracked time:  {untracked:.3f}s  ({untracked_pct:.1f}%)",
+            f"  Tracked time:    {tracked_time:.3f}s  ({_pct(tracked_time, wall_time)})",
+            f"  Untracked time:  {untracked_time:.3f}s  ({_pct(untracked_time, wall_time)})",
         ]
 
-        # Per-op timing breakdown
-        op_durations = {}
-        op_calls = {}
-        for op_name, op_info in ops.items():
-            dur = op_info.get("duration", 0.0)
-            if dur > 0:
-                op_durations[op_name] = dur
-                op_calls[op_name] = op_info["calls"]
-        if op_durations:
-            lines += ["", "  By operation (time):"]
-            for op_name, dur in sorted(op_durations.items(), key=lambda x: -x[1]):
-                op_pct = 100 * dur / (tracked_time or 1.0)
-                n = op_calls[op_name]
-                call_word = "call" if n == 1 else "calls"
-                lines.append(
-                    f"    {op_name:<20} {dur:.3f}s  ({op_pct:5.1f}%)  [{n} {call_word}]"
-                )
+    op_durations = {
+        op_name: op_info["duration"]
+        for op_name, op_info in ops.items()
+        if op_info.get("duration", 0.0) > 0
+    }
+    if tracked_time > 0 and op_durations:
+        lines += ["", "  By operation (time):"]
+        for op_name, duration in sorted(
+            op_durations.items(), key=lambda item: -item[1]
+        ):
+            lines.append(
+                f"    {op_name:<20} {duration:.3f}s  ({_pct(duration, tracked_time):>6})  [{_call_label(ops[op_name]['calls'])}]"
+            )
 
     return "\n".join(lines)
+
+
+def _plain_text_summary(by_namespace: bool = False) -> str:
+    """Render a plain-text budget summary."""
+    return _format_budget_summary_text(
+        budget_summary_dict(by_namespace=by_namespace),
+        by_namespace=by_namespace,
+    )
 
 
 _GLOBAL_DEFAULT_BUDGET = int(1e15)
@@ -130,8 +125,41 @@ def _is_global_default_ns(ns, ns_data: dict) -> bool:
     return ns is None and ns_data.get("flop_budget", 0) >= _GLOBAL_DEFAULT_BUDGET
 
 
+def _display_totals(data: dict | None = None) -> dict:
+    """Compute user-facing totals, hiding the implicit global default budget."""
+    if data is None:
+        data = budget_summary_dict()
+
+    explicit_budget = 0
+    explicit_used = 0
+    for record in _snapshot_records():
+        if record.namespace is None and record.flop_budget >= _GLOBAL_DEFAULT_BUDGET:
+            explicit_used += record.flops_used
+        else:
+            explicit_budget += record.flop_budget
+            explicit_used += record.flops_used
+
+    has_explicit_budget = explicit_budget > 0
+    if has_explicit_budget:
+        return {
+            "has_explicit_budget": True,
+            "budget": explicit_budget,
+            "used": explicit_used,
+            "remaining": explicit_budget - explicit_used,
+            "color": _usage_color(explicit_used, explicit_budget),
+        }
+
+    return {
+        "has_explicit_budget": False,
+        "budget": data["flop_budget"],
+        "used": data["flops_used"],
+        "remaining": data["flops_remaining"],
+        "color": "green",
+    }
+
+
 def _rich_namespace_table(label: str, ns_data: dict, color: str):
-    """Build a Rich Table for a single namespace."""
+    """Build a Rich Table for a single namespace bucket."""
     from rich.table import Table
     from rich.text import Text
 
@@ -149,137 +177,164 @@ def _rich_namespace_table(label: str, ns_data: dict, color: str):
     table.add_column("Calls", justify="right", style="dim")
 
     ops = ns_data.get("operations", {})
-    for op_name, op_info in sorted(ops.items(), key=lambda x: -x[1]["flop_cost"]):
-        op_pct = _pct(op_info["flop_cost"], ns_data["flops_used"])
-        call_word = "call" if op_info["calls"] == 1 else "calls"
+    total = ns_data.get("flop_budget", ns_data.get("flops_used", 0))
+    for op_name, op_info in sorted(ops.items(), key=lambda item: -item[1]["flop_cost"]):
         dur = op_info.get("duration", 0.0)
-        time_str = f"{dur:.3f}s" if dur > 0 else ""
         table.add_row(
             op_name,
             _format_flops(op_info["flop_cost"]),
-            op_pct,
-            time_str,
-            f"{op_info['calls']} {call_word}",
+            _pct(op_info["flop_cost"], total),
+            f"{dur:.3f}s" if dur > 0 else "",
+            _call_label(op_info["calls"]),
         )
 
     table.add_section()
-    remaining = ns_data["flop_budget"] - ns_data["flops_used"]
     table.add_row(
         Text("Used", style="bold"),
-        Text(_format_flops(ns_data["flops_used"]), style=f"bold {color}"),
-        Text(_pct(ns_data["flops_used"], ns_data["flop_budget"]), style=color),
+        Text(_format_flops(ns_data.get("flops_used", 0)), style=f"bold {color}"),
+        Text(_pct(ns_data.get("flops_used", 0), total), style=color),
         "",
         "",
     )
-    table.add_row(
-        Text("Remaining", style="bold"),
-        Text(_format_flops(remaining), style="bold"),
-        "",
-        "",
-        "",
-    )
+    if "flop_budget" in ns_data:
+        remaining = ns_data["flop_budget"] - ns_data.get("flops_used", 0)
+        table.add_row(
+            Text("Remaining", style="bold"),
+            Text(_format_flops(remaining), style="bold"),
+            "",
+            "",
+            "",
+        )
 
     return table
 
 
-def _rich_summary():
-    """Render a Rich-formatted budget summary with nested namespace panels."""
-    from rich.columns import Columns
-    from rich.console import Group
-    from rich.panel import Panel
+def _rich_totals_table(data: dict):
     from rich.table import Table
     from rich.text import Text
 
-    data = budget_summary_dict(by_namespace=True)
-    if data["flops_used"] == 0 and not data.get("by_namespace"):
-        return Panel("No budget data recorded yet.", title="whest Budget")
+    table = Table(show_header=False, expand=True, padding=(0, 1), box=None)
+    table.add_column("label", style="bold")
+    table.add_column("value", justify="right")
 
-    by_ns = data.get("by_namespace", {})
-
-    # Compute display totals excluding the global default's inflated budget
-    explicit_budget = 0
-    explicit_used = 0
-    for ns, ns_data in by_ns.items():
-        if _is_global_default_ns(ns, ns_data):
-            # Only count the used FLOPs, not the huge budget
-            explicit_used += ns_data["flops_used"]
-        else:
-            explicit_budget += ns_data["flop_budget"]
-            explicit_used += ns_data["flops_used"]
-
-    has_explicit = explicit_budget > 0
-    display_budget = explicit_budget if has_explicit else data["flop_budget"]
-    display_used = explicit_used
-    display_remaining = (
-        display_budget - display_used if has_explicit else data["flops_remaining"]
-    )
-    color = _usage_color(display_used, display_budget) if has_explicit else "green"
-
-    # Session totals bar
-    totals = Table(show_header=False, expand=True, padding=(0, 1), box=None)
-    totals.add_column("label", style="bold")
-    totals.add_column("value", justify="right")
-    if has_explicit:
-        totals.add_row("Budget", _format_flops(display_budget))
-    totals.add_row(
+    totals = _display_totals(data)
+    if totals["has_explicit_budget"]:
+        table.add_row("Budget", _format_flops(totals["budget"]))
+    table.add_row(
         "Used",
         Text(
-            f"{_format_flops(display_used)}  ({_pct(display_used, display_budget) if has_explicit else ''})",
-            style=color,
+            (
+                f"{_format_flops(totals['used'])}  ({_pct(totals['used'], totals['budget'])})"
+                if totals["has_explicit_budget"]
+                else _format_flops(totals["used"])
+            ),
+            style=totals["color"],
         ),
     )
-    if has_explicit:
-        totals.add_row(
+    if totals["has_explicit_budget"]:
+        table.add_row(
             "Remaining",
-            f"{_format_flops(display_remaining)}  ({_pct(display_remaining, display_budget)})",
+            f"{_format_flops(totals['remaining'])}  ({_pct(totals['remaining'], totals['budget'])})",
         )
 
-    # Timing rows
     wall_time = data.get("wall_time_s")
-    tracked_time = data.get("total_tracked_time")
-    if wall_time is not None:
-        tracked_pct = 100 * (tracked_time or 0.0) / wall_time if wall_time > 0 else 0.0
-        untracked = wall_time - (tracked_time or 0.0)
-        untracked_pct = 100 * untracked / wall_time if wall_time > 0 else 0.0
-        totals.add_section()
-        totals.add_row("Wall time", f"{wall_time:.3f}s")
-        totals.add_row(
+    tracked_time = data.get("tracked_time_s", 0.0)
+    untracked_time = data.get("untracked_time_s")
+    if wall_time is not None and untracked_time is not None:
+        table.add_section()
+        table.add_row("Wall time", f"{wall_time:.3f}s")
+        table.add_row(
             "Tracked",
-            Text(f"{(tracked_time or 0.0):.3f}s  ({tracked_pct:.1f}%)", style="dim"),
+            Text(
+                f"{tracked_time:.3f}s  ({_pct(tracked_time, wall_time)})", style="dim"
+            ),
         )
-        totals.add_row(
+        table.add_row(
             "Untracked",
-            Text(f"{untracked:.3f}s  ({untracked_pct:.1f}%)", style="dim"),
+            Text(
+                f"{untracked_time:.3f}s  ({_pct(untracked_time, wall_time)})",
+                style="dim",
+            ),
         )
 
-    renderables = [totals]
+    return table
 
-    # Per-namespace panels
-    if by_ns:
-        ns_panels = []
-        for ns, ns_data in by_ns.items():
-            is_default = _is_global_default_ns(ns, ns_data)
-            label = ns if ns is not None else "(unscoped)"
-            ns_color = _usage_color(ns_data["flops_used"], ns_data["flop_budget"])
-            ns_table = _rich_namespace_table(label, ns_data, ns_color)
-            if is_default:
-                subtitle = "[dim]implicit global budget[/dim]"
-            else:
-                subtitle = f"[dim]Budget: {_format_flops(ns_data['flop_budget'])}[/dim]"
-            ns_panel = Panel(
-                ns_table,
-                title=f"[bold]{label}[/bold]",
-                subtitle=subtitle,
-                border_style=ns_color,
-                expand=True,
-            )
-            ns_panels.append(ns_panel)
 
-        if len(ns_panels) <= 3:
-            renderables.append(Columns(ns_panels, equal=True, expand=True))
-        else:
-            for p in ns_panels:
-                renderables.append(p)
+def _rich_attribution_table(by_ns: dict[str | None, dict], total_flops_used: int):
+    from rich.table import Table
+
+    table = Table(
+        title="By namespace",
+        show_header=True,
+        header_style="bold",
+        expand=True,
+        padding=(0, 1),
+    )
+    table.add_column("Namespace")
+    table.add_column("FLOPs", justify="right")
+    table.add_column("%", justify="right")
+    table.add_column("Calls", justify="right")
+    table.add_column("Tracked", justify="right")
+
+    for namespace, bucket in _sorted_namespace_rows(by_ns):
+        table.add_row(
+            _namespace_label(namespace),
+            _format_flops(bucket["flops_used"]),
+            _pct(bucket["flops_used"], total_flops_used),
+            str(bucket["calls"]),
+            f"{bucket['tracked_time_s']:.3f}s",
+        )
+
+    return table
+
+
+def _rich_operations_table(ops: dict[str, dict], total_flops_used: int):
+    from rich.table import Table
+
+    table = Table(
+        title="By operation",
+        show_header=True,
+        header_style="bold",
+        expand=True,
+        padding=(0, 1),
+    )
+    table.add_column("Operation", style="dim")
+    table.add_column("FLOPs", justify="right")
+    table.add_column("%", justify="right")
+    table.add_column("Time", justify="right", style="dim")
+    table.add_column("Calls", justify="right", style="dim")
+
+    for op_name, op_info in sorted(ops.items(), key=lambda item: -item[1]["flop_cost"]):
+        duration = op_info.get("duration", 0.0)
+        table.add_row(
+            op_name,
+            _format_flops(op_info["flop_cost"]),
+            _pct(op_info["flop_cost"], total_flops_used),
+            f"{duration:.3f}s" if duration > 0 else "",
+            _call_label(op_info["calls"]),
+        )
+
+    return table
+
+
+def _rich_summary(by_namespace: bool = False):
+    """Render a Rich-formatted budget summary."""
+    from rich.console import Group
+    from rich.panel import Panel
+
+    data = budget_summary_dict(by_namespace=by_namespace)
+    if data["flops_used"] == 0 and not data.get("operations"):
+        return Panel("No budget data recorded yet.", title="whest Budget")
+
+    renderables = [_rich_totals_table(data)]
+    if by_namespace and data.get("by_namespace"):
+        renderables.append(
+            _rich_attribution_table(data["by_namespace"], data["flops_used"])
+        )
+    if data.get("operations"):
+        renderables.append(
+            _rich_operations_table(data["operations"], data["flops_used"])
+        )
 
     return Panel(
         Group(*renderables),
@@ -288,55 +343,62 @@ def _rich_summary():
     )
 
 
-def render_budget_summary():
+def render_budget_summary(by_namespace: bool = False):
     """Return a Rich renderable if Rich is installed, otherwise plain text."""
     try:
         import rich  # noqa: F401
 
-        return _rich_summary()
+        return _rich_summary(by_namespace=by_namespace)
     except ImportError:
-        return _plain_text_summary()
+        return _plain_text_summary(by_namespace=by_namespace)
 
 
 class _PlainTextLive:
     """Fallback live display that prints summary on exit."""
 
+    def __init__(self, by_namespace: bool = False):
+        self._by_namespace = by_namespace
+
     def __enter__(self):
         return self
 
     def __exit__(self, *args):
-        print(_plain_text_summary())
+        print(_plain_text_summary(by_namespace=self._by_namespace))
         return None
 
 
-def budget_live():
+def budget_live(by_namespace: bool = False):
     """Return a live-updating budget display context manager."""
     try:
         from rich.live import Live
 
         class _RichBudgetLive:
-            def __init__(self):
+            def __init__(self, by_namespace: bool):
+                self._by_namespace = by_namespace
                 self._live = None
 
             def __enter__(self):
-                self._live = Live(_rich_summary(), refresh_per_second=2)
+                self._live = Live(
+                    _rich_summary(by_namespace=self._by_namespace),
+                    refresh_per_second=2,
+                )
                 self._live.__enter__()
                 return self
 
             def __exit__(self, *args):
                 if self._live is not None:
-                    self._live.update(_rich_summary())
+                    self._live.update(_rich_summary(by_namespace=self._by_namespace))
                     self._live.__exit__(*args)
                 return None
 
-        return _RichBudgetLive()
+        return _RichBudgetLive(by_namespace)
     except ImportError:
-        return _PlainTextLive()
+        return _PlainTextLive(by_namespace=by_namespace)
 
 
-def budget_summary():
+def budget_summary(by_namespace: bool = False):
     """Print or return the session-wide budget summary."""
-    result = render_budget_summary()
+    result = render_budget_summary(by_namespace=by_namespace)
     try:
         get_ipython  # noqa: F821
         return result

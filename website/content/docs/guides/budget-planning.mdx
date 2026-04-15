@@ -68,7 +68,7 @@ print(f"{'Total':<20} {total:>12,}")
 
 ## Read the budget summary
 
-Call `we.budget_summary()` after your computation for a human-readable breakdown, or `budget.summary()` inside a context:
+Call `we.budget_summary()` after your computation for a human-readable breakdown, or `budget.summary()` inside a context. Pass `by_namespace=True` when you want dotted namespace attribution:
 
 ```python
 with we.BudgetContext(flop_budget=10_000_000) as budget:
@@ -80,7 +80,7 @@ with we.BudgetContext(flop_budget=10_000_000) as budget:
     print(budget.summary())
 ```
 
-The summary shows cost per operation type, sorted by highest cost first. Look for operations consuming a disproportionate share of the budget.
+The summary shows cost per operation type, sorted by highest cost first. Look for operations consuming a disproportionate share of the budget. When you opt into `by_namespace=True`, the display adds a namespace breakdown for the exact dotted paths recorded in that run.
 
 For programmatic analysis, use `we.budget_summary_dict()`:
 
@@ -93,7 +93,18 @@ for op_name, op_data in data["operations"].items():
     print(f"  {op_name}: {op_data['flop_cost']:,} ({op_data['calls']} calls)")
 ```
 
-Use `we.budget_summary_dict(by_namespace=True)` for per-namespace breakdowns.
+Use `we.budget_summary_dict(by_namespace=True)` for exact per-namespace breakdowns keyed by the full dotted path:
+
+```python
+with we.BudgetContext(flop_budget=1000, namespace="predict") as budget:
+    x = we.ones((1,))
+    with we.namespace("fallback"):
+        with we.namespace("sampling"):
+            sample = we.add(x, 1)
+
+data = budget.summary_dict(by_namespace=True)
+print(data["by_namespace"]["predict.fallback.sampling"]["flops_used"])
+```
 
 ## Diagnose overruns
 
@@ -109,7 +120,7 @@ Each `OpRecord` contains:
 | Field | Description |
 |-------|-------------|
 | `op_name` | Operation name (e.g., `"einsum"`, `"exp"`) |
-| `namespace` | Namespace label from the BudgetContext |
+| `namespace` | Effective namespace path recorded for that operation |
 | `subscripts` | Einsum subscript string, or `None` |
 | `shapes` | Tuple of input shapes |
 | `flop_cost` | FLOP cost of this single call |
@@ -140,16 +151,17 @@ Once you have identified the expensive operations, apply these strategies:
 
 4. **Increase budget.** If the computation is genuinely needed and you have headroom, raise `flop_budget` on the `BudgetContext`.
 
-5. **Split into phases.** Use namespaces to budget different phases independently, so an expensive initialization does not crowd out the main computation:
+5. **Split into phases.** Use namespaces to attribute different phases without splitting the FLOP budget into child budgets:
 
 ```python
-with we.BudgetContext(flop_budget=init_budget, namespace="init") as b1:
-    # initialization
-    ...
+with we.BudgetContext(flop_budget=10**8, namespace="solver") as budget:
+    with we.namespace("init"):
+        # initialization
+        ...
 
-with we.BudgetContext(flop_budget=solve_budget, namespace="solve") as b2:
-    # main computation
-    ...
+    with we.namespace("solve"):
+        # main computation
+        ...
 
-we.budget_summary()  # shows both phases separately
+print(budget.summary(by_namespace=True))
 ```

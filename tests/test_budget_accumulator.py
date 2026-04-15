@@ -35,18 +35,62 @@ def test_budget_summary_dict_unlabeled():
 
 
 def test_budget_summary_dict_by_namespace():
-    with BudgetContext(flop_budget=1000, namespace="train", quiet=True) as ctx:
-        ctx.deduct("add", flop_cost=100, subscripts=None, shapes=())
-    with BudgetContext(flop_budget=500, namespace="eval", quiet=True) as ctx:
-        ctx.deduct("mul", flop_cost=50, subscripts=None, shapes=())
+    import whest as we
+
+    with BudgetContext(flop_budget=1000, namespace="predict", quiet=True) as ctx:
+        with ctx.deduct("mul", flop_cost=10, subscripts=None, shapes=()):
+            pass
+        with we.namespace("precompute"):
+            with ctx.deduct("add", flop_cost=25, subscripts=None, shapes=()):
+                pass
+    with BudgetContext(flop_budget=500, namespace="predict", quiet=True) as ctx:
+        with we.namespace("precompute"):
+            with ctx.deduct("add", flop_cost=15, subscripts=None, shapes=()):
+                pass
+    with BudgetContext(flop_budget=250, quiet=True) as ctx:
+        with ctx.deduct("sum", flop_cost=5, subscripts=None, shapes=()):
+            pass
 
     data = budget_summary_dict(by_namespace=True)
-    assert data["flops_used"] == 150
-    assert data["flop_budget"] == 1500
-    assert "train" in data["by_namespace"]
-    assert data["by_namespace"]["train"]["flops_used"] == 100
-    assert "eval" in data["by_namespace"]
-    assert data["by_namespace"]["eval"]["flops_used"] == 50
+    assert data["flops_used"] == 55
+    assert set(data["by_namespace"]) == {"predict", "predict.precompute", None}
+
+    root_bucket = data["by_namespace"]["predict"]
+    assert root_bucket["flops_used"] == 10
+    assert root_bucket["calls"] == 1
+    assert root_bucket["tracked_time_s"] >= 0
+    assert root_bucket["operations"]["mul"]["flop_cost"] == 10
+    assert "flop_budget" not in root_bucket
+    assert "wall_time_s" not in root_bucket
+    assert "untracked_time_s" not in root_bucket
+
+    nested_bucket = data["by_namespace"]["predict.precompute"]
+    assert nested_bucket["flops_used"] == 40
+    assert nested_bucket["calls"] == 2
+    assert nested_bucket["tracked_time_s"] >= 0
+    assert nested_bucket["operations"]["add"]["flop_cost"] == 40
+    assert nested_bucket["operations"]["add"]["calls"] == 2
+
+    unlabeled_bucket = data["by_namespace"][None]
+    assert unlabeled_bucket["flops_used"] == 5
+    assert unlabeled_bucket["calls"] == 1
+
+
+def test_budget_summary_dict_by_namespace_uses_nested_op_namespace():
+    import whest as we
+
+    with BudgetContext(flop_budget=1000, namespace="predict..raw", quiet=True) as ctx:
+        with we.namespace("precompute"):
+            ctx.deduct("add", flop_cost=25, subscripts=None, shapes=())
+
+    data = budget_summary_dict(by_namespace=True)
+    assert "predict..raw.precompute" in data["by_namespace"]
+    assert (
+        data["by_namespace"]["predict..raw.precompute"]["operations"]["add"][
+            "flop_cost"
+        ]
+        == 25
+    )
 
 
 def test_budget_summary_dict_accumulates_across_contexts():
@@ -59,6 +103,9 @@ def test_budget_summary_dict_accumulates_across_contexts():
     assert data["flops_used"] == 400
     assert data["operations"]["add"]["flop_cost"] == 400
     assert data["operations"]["add"]["calls"] == 2
+    assert data["tracked_time_s"] == 0.0
+    assert data["untracked_time_s"] is not None
+    assert data["untracked_time_s"] >= 0
 
 
 def test_budget_reset():
@@ -68,3 +115,66 @@ def test_budget_reset():
     data = budget_summary_dict()
     assert data["flops_used"] == 0
     assert data["operations"] == {}
+
+
+def test_budget_summary_dict_does_not_double_count_reused_decorator_context():
+    import whest as we
+    from whest._budget import get_active_budget
+
+    seen_totals = []
+
+    @we.budget(flop_budget=5000, namespace="dec", quiet=True)
+    def compute():
+        ctx = get_active_budget()
+        assert ctx is not None
+        ctx.deduct("add", flop_cost=10, subscripts=None, shapes=())
+        seen_totals.append(we.budget_summary_dict()["flops_used"])
+
+    compute()
+    compute()
+
+    data = we.budget_summary_dict()
+    assert seen_totals == [10, 20]
+    assert data["flop_budget"] == 5000
+    assert data["flops_used"] == 20
+    assert data["operations"]["add"]["flop_cost"] == 20
+    assert data["operations"]["add"]["calls"] == 2
+
+
+def test_reused_decorator_context_resets_live_timing_state_between_calls():
+    import time
+
+    import whest as we
+    from whest._budget import get_active_budget
+
+    budget_ctx = we.budget(flop_budget=5000, namespace="dec", quiet=True)
+    seen_ctx_wall_times = []
+    seen_context_live_wall_times = []
+    seen_global_live_wall_times = []
+
+    @budget_ctx
+    def compute(post_sleep_s: float) -> None:
+        ctx = get_active_budget()
+        assert ctx is budget_ctx
+        seen_ctx_wall_times.append(ctx.wall_time_s)
+
+        with ctx.deduct("add", flop_cost=10, subscripts=None, shapes=()):
+            pass
+
+        seen_context_live_wall_times.append(ctx.summary_dict()["wall_time_s"])
+        seen_global_live_wall_times.append(we.budget_summary_dict()["wall_time_s"])
+
+        if post_sleep_s:
+            time.sleep(post_sleep_s)
+
+    compute(0.03)
+    first_closed_wall_time = budget_ctx.wall_time_s
+    compute(0.0)
+
+    assert first_closed_wall_time is not None
+    assert first_closed_wall_time >= 0.03
+    assert seen_ctx_wall_times == [None, None]
+    assert seen_context_live_wall_times[1] is not None
+    assert seen_context_live_wall_times[1] < first_closed_wall_time / 2
+    assert seen_global_live_wall_times[1] is not None
+    assert seen_global_live_wall_times[1] < first_closed_wall_time * 1.5

@@ -48,7 +48,7 @@ by the operation's weight to give the final deducted cost.
 | **Binary** (add, multiply, ...) | $\text\{numel\}(\text\{output\})$ | shape (256, 256) → 65,536 |
 | **Reduction** (sum, mean, max, ...) | $\text\{numel\}(\text\{input\})$ | shape (256, 256) → 65,536 |
 | **SVD** | $m \cdot n \cdot k$ | (256, 256, k=10) → 655,360 |
-| **Solve** | $n^3/3 + n^2 \cdot n_\{\text\{rhs\}\}$ (LU) | (256, 256) solve → ~5.6M |
+| **Solve** | $n^3$ | (256, 256) solve → 16,777,216 |
 | **Dot / Matmul** | Same as einsum | (256, 256) @ (256, 256) → 256³ |
 | **Free ops** | 0 | zeros, reshape, etc. |
 
@@ -86,9 +86,9 @@ When a tensor is a `SymmetricTensor`, costs are reduced based on the number of u
 | **Pointwise** (unary/binary) | unique_elements | $\text\{numel\}(\text\{output\})$ |
 | **Reduction** | unique_elements | $\text\{numel\}(\text\{input\})$ |
 | **Einsum** (symmetric contraction) | Symmetry-reduced (see below) | Full product |
-| **Solve** | $n^3/3 + n \cdot n_\{\text\{rhs\}\}$ (Cholesky) | $n^3/3 + n^2 \cdot n_\{\text\{rhs\}\}$ (LU) |
-| **Det / Slogdet** | $n^3/3$ (Cholesky) | $n^3$ (LU) |
-| **Inv** | $n^3/3 + n^3/2$ | $n^3$ |
+| **Solve** | $n^3$ | $n^3$ |
+| **Det / Slogdet** | $n^3$ | $n^3$ |
+| **Inv** | $n^3/3 + n^3$ | $n^3$ |
 
 See [Exploit Symmetry Savings](../guides/symmetry) for usage details.
 
@@ -321,15 +321,28 @@ weights scale each operation individually.
 
 ## Namespaces
 
-The `namespace` parameter in `BudgetContext` is a display-only label for grouping operations in summaries:
+Use `we.namespace(...)` to create nested namespace scopes inside an active `BudgetContext`. The `namespace` parameter on `BudgetContext` sets the root namespace prefix for operations in that context:
 
 ```python
-with we.BudgetContext(flop_budget=10**6, namespace="training") as budget:
-    # Operations are tagged with "training" for display
-    ...
+with we.BudgetContext(flop_budget=10**6, namespace="predict") as budget:
+    with we.namespace("precompute"):
+        stats = we.mean(x)
+
+    with we.namespace("fallback"):
+        with we.namespace("sampling"):
+            sample = we.add(stats, 1)
+
+    print(budget.summary(by_namespace=True))
 ```
 
-Namespaces do not affect FLOP counting or budget enforcement — they appear as section headers in `we.budget_summary()` output after the context exits, grouping that context's operations under the namespace label.
+Namespaces are hierarchical and exact per operation. `we.namespace("precompute")` inside `namespace="predict"` records operations as `predict.precompute`, and nested scopes append dotted segments such as `predict.fallback.sampling`.
+
+Namespaces do not create child budgets or separate time limits. They only change attribution. `budget.summary()` and `we.budget_summary()` stay flat by default; `budget.summary(by_namespace=True)` and `we.budget_summary(by_namespace=True)` opt into a `By namespace` section. The structured forms, `budget.summary_dict(by_namespace=True)` and `we.budget_summary_dict(by_namespace=True)`, return the same exact buckets keyed by the full namespace path or `None` for unlabeled operations.
+
+```python
+data = budget.summary_dict(by_namespace=True)
+print(data["by_namespace"]["predict.fallback.sampling"]["flops_used"])
+```
 
 ## Related pages
 

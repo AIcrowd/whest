@@ -293,9 +293,11 @@ def test_namespace_record_includes_time():
     assert "wall_time_s" in data
     assert data["wall_time_s"] is not None
     assert data["wall_time_s"] > 0
-    assert "total_tracked_time" in data
+    assert "tracked_time_s" in data
+    assert "untracked_time_s" in data
     ns_data = data["by_namespace"]["test"]
-    assert "wall_time_s" in ns_data
+    assert "tracked_time_s" in ns_data
+    assert "wall_time_s" not in ns_data
     whest.budget_reset()
 
 
@@ -460,3 +462,86 @@ def test_budget_summary_dict_includes_op_duration():
     ns_ops = data["by_namespace"]["test"]["operations"]
     assert "add" in ns_ops
     assert "duration" in ns_ops["add"]
+
+
+def test_budget_context_summary_dict_live_and_closed():
+    import time
+
+    budget = BudgetContext(flop_budget=100, quiet=True)
+    with budget:
+        with budget.deduct("add", flop_cost=10, subscripts=None, shapes=()):
+            time.sleep(0.01)
+        live = budget.summary_dict()
+        assert live["flop_budget"] == 100
+        assert live["flops_used"] == 10
+        assert live["flops_remaining"] == 90
+        assert live["wall_time_s"] is not None
+        assert live["tracked_time_s"] >= 0.01
+        assert live["untracked_time_s"] == pytest.approx(
+            live["wall_time_s"] - live["tracked_time_s"], abs=1e-6
+        )
+        assert live["operations"]["add"]["calls"] == 1
+        assert live["operations"]["add"]["duration"] >= 0.01
+
+    closed = budget.summary_dict()
+    assert closed["wall_time_s"] is not None
+    assert closed["tracked_time_s"] >= 0.01
+    assert closed["untracked_time_s"] == pytest.approx(
+        closed["wall_time_s"] - closed["tracked_time_s"], abs=1e-6
+    )
+
+
+def test_budget_summary_dict_shows_live_timing_for_active_context():
+    import time
+
+    import whest
+
+    with whest.BudgetContext(flop_budget=100, quiet=True) as budget:
+        with budget.deduct("add", flop_cost=10, subscripts=None, shapes=()):
+            pass
+        time.sleep(0.01)
+
+        live = whest.budget_summary_dict()
+        assert live["wall_time_s"] is not None
+        assert live["wall_time_s"] >= 0.01
+        assert live["tracked_time_s"] >= 0.0
+        assert live["untracked_time_s"] == pytest.approx(
+            live["wall_time_s"] - live["tracked_time_s"], abs=1e-6
+        )
+
+
+def test_budget_summary_dict_includes_global_default_while_explicit_context_is_open():
+    import whest
+
+    a = whest.ones((10,))
+    _ = whest.add(a, a)
+
+    with whest.BudgetContext(flop_budget=100, quiet=True) as budget:
+        with budget.deduct("mul", flop_cost=7, subscripts=None, shapes=()):
+            pass
+
+        live = whest.budget_summary_dict()
+        assert live["flops_used"] == 17
+        assert live["operations"]["add"]["flop_cost"] == 10
+        assert live["operations"]["mul"]["flop_cost"] == 7
+
+
+def test_budget_context_summary_dict_by_namespace_uses_exact_op_namespace():
+    import whest
+
+    with whest.BudgetContext(
+        flop_budget=1000, namespace="predict..raw", quiet=True
+    ) as budget:
+        with budget.deduct("mul", flop_cost=5, subscripts=None, shapes=()):
+            pass
+        with whest.namespace("precompute"):
+            with budget.deduct("add", flop_cost=25, subscripts=None, shapes=()):
+                pass
+
+    data = budget.summary_dict(by_namespace=True)
+    assert set(data["by_namespace"]) == {"predict..raw", "predict..raw.precompute"}
+    assert data["by_namespace"]["predict..raw"]["flops_used"] == 5
+    assert data["by_namespace"]["predict..raw"]["calls"] == 1
+    assert data["by_namespace"]["predict..raw.precompute"]["flops_used"] == 25
+    assert data["by_namespace"]["predict..raw.precompute"]["calls"] == 1
+    assert "flop_budget" not in data["by_namespace"]["predict..raw.precompute"]

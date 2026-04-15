@@ -5,8 +5,11 @@ from __future__ import annotations
 import sys
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 from whest._budget import BudgetContext
 from whest._display import (
+    _display_totals,
     _format_flops,
     _is_global_default_ns,
     _pct,
@@ -139,14 +142,15 @@ class TestPlainTextSummary:
     def test_multiple_namespaces(self):
         _make_budget(flop_budget=5000, namespace="train", ops=[("matmul", 2000)])
         _make_budget(flop_budget=3000, namespace="eval", ops=[("add", 500)])
-        result = _plain_text_summary()
-        assert "[train]" in result
-        assert "[eval]" in result
+        result = _plain_text_summary(by_namespace=True)
+        assert "By namespace:" in result
+        assert "train" in result
+        assert "eval" in result
 
     def test_default_namespace_label(self):
         _make_budget(flop_budget=5000, namespace=None, ops=[("matmul", 100)])
-        result = _plain_text_summary()
-        assert "(default)" in result
+        result = _plain_text_summary(by_namespace=True)
+        assert "(unlabeled)" in result
 
     def test_single_call_word(self):
         _make_budget(flop_budget=5000, ops=[("matmul", 100)])
@@ -162,7 +166,7 @@ class TestPlainTextSummary:
     def test_all_operations_section(self):
         _make_budget(flop_budget=5000, ops=[("matmul", 100)])
         result = _plain_text_summary()
-        assert "All operations (session total):" in result
+        assert "  By operation:" in result
 
 
 # ======================================================================
@@ -172,6 +176,7 @@ class TestPlainTextSummary:
 
 class TestRichNamespaceTable:
     def test_returns_table(self):
+        pytest.importorskip("rich")
         from whest._display import _rich_namespace_table
 
         ns_data = {
@@ -188,6 +193,7 @@ class TestRichNamespaceTable:
         assert isinstance(table, Table)
 
     def test_empty_ops(self):
+        pytest.importorskip("rich")
         from rich.table import Table
 
         from whest._display import _rich_namespace_table
@@ -202,6 +208,7 @@ class TestRichNamespaceTable:
 
     def test_single_call_text(self):
         """Operations with calls==1 should show '1 call', not '1 calls'."""
+        pytest.importorskip("rich")
         from whest._display import _rich_namespace_table
 
         ns_data = {
@@ -222,6 +229,7 @@ class TestRichNamespaceTable:
         assert "1 call" in output
 
     def test_multiple_calls_text(self):
+        pytest.importorskip("rich")
         from whest._display import _rich_namespace_table
 
         ns_data = {
@@ -247,7 +255,19 @@ class TestRichNamespaceTable:
 
 
 class TestRichSummary:
+    def test_display_totals_exclude_implicit_global_default_budget(self):
+        _make_budget(flop_budget=5000, namespace="train", ops=[("matmul", 1000)])
+        with BudgetContext(flop_budget=int(1e15), quiet=True, namespace=None) as b:
+            b.deduct("add", flop_cost=10, subscripts=None, shapes=())
+
+        totals = _display_totals()
+        assert totals["has_explicit_budget"] is True
+        assert totals["budget"] == 5000
+        assert totals["used"] == 1010
+        assert totals["remaining"] == 3990
+
     def test_no_data_panel(self):
+        pytest.importorskip("rich")
         from rich.panel import Panel
 
         from whest._display import _rich_summary
@@ -264,38 +284,42 @@ class TestRichSummary:
         assert "No budget data" in buf.getvalue()
 
     def test_single_namespace_panel(self):
+        pytest.importorskip("rich")
         from rich.panel import Panel
 
         from whest._display import _rich_summary
 
         _make_budget(flop_budget=10_000, namespace="train", ops=[("matmul", 3000)])
-        result = _rich_summary()
+        result = _rich_summary(by_namespace=True)
         assert isinstance(result, Panel)
 
     def test_multi_namespace_columns(self):
-        """Up to 3 namespace panels should use Columns layout."""
+        """Multiple namespace buckets render in the attribution table."""
+        pytest.importorskip("rich")
         from rich.panel import Panel
 
         from whest._display import _rich_summary
 
         _make_budget(flop_budget=5000, namespace="a", ops=[("matmul", 100)])
         _make_budget(flop_budget=5000, namespace="b", ops=[("add", 200)])
-        result = _rich_summary()
+        result = _rich_summary(by_namespace=True)
         assert isinstance(result, Panel)
 
     def test_more_than_3_namespaces_no_columns(self):
-        """More than 3 namespace panels should render individually, not in Columns."""
+        """More than 3 namespace buckets still render in one summary panel."""
+        pytest.importorskip("rich")
         from rich.panel import Panel
 
         from whest._display import _rich_summary
 
         for ns in ["a", "b", "c", "d"]:
             _make_budget(flop_budget=3000, namespace=ns, ops=[("matmul", 100)])
-        result = _rich_summary()
+        result = _rich_summary(by_namespace=True)
         assert isinstance(result, Panel)
 
     def test_global_default_ns_excluded_from_budget(self):
-        """The implicit global default namespace should not inflate the budget total."""
+        """Namespace rendering uses attribution buckets rather than pseudo-budgets."""
+        pytest.importorskip("rich")
         from whest._display import _rich_summary
 
         # A named explicit namespace
@@ -303,8 +327,7 @@ class TestRichSummary:
         # Simulate the global default (None namespace, budget >= 1e15)
         with BudgetContext(flop_budget=int(1e15), quiet=True, namespace=None) as b:
             b.deduct("add", flop_cost=10, subscripts=None, shapes=())
-        result = _rich_summary()
-        # Render the panel and verify the display budget is 5000, not 1e15+5000
+        result = _rich_summary(by_namespace=True)
         import io
 
         from rich.console import Console
@@ -312,10 +335,12 @@ class TestRichSummary:
         buf = io.StringIO()
         Console(file=buf, force_terminal=True, width=120).print(result)
         output = buf.getvalue()
-        assert "5,000" in output
+        assert "By namespace" in output
+        assert "(unlabeled)" in output
 
     def test_unscoped_label(self):
-        """None namespace should render as '(unscoped)' in Rich output."""
+        """None namespace should render as '(unlabeled)' in Rich output."""
+        pytest.importorskip("rich")
         from whest._display import _rich_summary
 
         _make_budget(flop_budget=5000, namespace=None, ops=[("matmul", 100)])
@@ -324,11 +349,14 @@ class TestRichSummary:
         from rich.console import Console
 
         buf = io.StringIO()
-        Console(file=buf, force_terminal=True, width=120).print(_rich_summary())
-        assert "(unscoped)" in buf.getvalue()
+        Console(file=buf, force_terminal=True, width=120).print(
+            _rich_summary(by_namespace=True)
+        )
+        assert "(unlabeled)" in buf.getvalue()
 
     def test_no_explicit_budget(self):
-        """When all namespaces are global default, color should be green."""
+        """A pure default-budget session still renders as a Rich panel."""
+        pytest.importorskip("rich")
         from rich.panel import Panel
 
         from whest._display import _rich_summary
@@ -336,7 +364,7 @@ class TestRichSummary:
         # Only the global default namespace (large budget, None ns)
         with BudgetContext(flop_budget=int(1e15), quiet=True, namespace=None) as b:
             b.deduct("matmul", flop_cost=100, subscripts=None, shapes=())
-        result = _rich_summary()
+        result = _rich_summary(by_namespace=True)
         assert isinstance(result, Panel)
 
 
@@ -348,6 +376,7 @@ class TestRichSummary:
 class TestRenderBudgetSummary:
     def test_rich_path(self):
         """When Rich is installed, returns a Rich Panel."""
+        pytest.importorskip("rich")
         from rich.panel import Panel
 
         _make_budget(flop_budget=5000, ops=[("matmul", 100)])
@@ -422,6 +451,7 @@ class TestPlainTextLive:
 class TestBudgetLive:
     def test_rich_path_context_manager(self):
         """With Rich installed, budget_live returns a _RichBudgetLive."""
+        pytest.importorskip("rich")
         _make_budget(flop_budget=5000, ops=[("matmul", 100)])
         live = budget_live()
         # Should have __enter__ and __exit__
@@ -432,6 +462,7 @@ class TestBudgetLive:
 
     def test_rich_path_enter_exit(self):
         """_RichBudgetLive enters and exits the Rich Live context."""
+        pytest.importorskip("rich")
         _make_budget(flop_budget=5000, ops=[("matmul", 100)])
         live = budget_live()
         # Patch the Rich Live to avoid actual terminal output
@@ -459,6 +490,7 @@ class TestBudgetLive:
 
     def test_rich_live_full_cycle(self, capsys):
         """Full enter/exit cycle with Rich Live mocked."""
+        pytest.importorskip("rich")
         _make_budget(flop_budget=5000, ops=[("matmul", 100)])
 
         mock_live_instance = MagicMock()
@@ -475,6 +507,7 @@ class TestBudgetLive:
 
     def test_rich_live_exit_updates(self):
         """_RichBudgetLive.__exit__ should call update before closing."""
+        pytest.importorskip("rich")
         _make_budget(flop_budget=5000, ops=[("matmul", 100)])
 
         mock_live_instance = MagicMock()
