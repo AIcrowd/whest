@@ -83,3 +83,50 @@ def test_write_generated_operation_artifacts(tmp_path):
     assert refs_manifest["abs"]["label"] == "`we.absolute`"
     assert refs_manifest["abs"]["href"] == "/docs/api/ops/absolute"
     assert refs_manifest["abs"]["canonical_name"] == "absolute"
+
+
+def test_generate_ops_json_preserves_alias_weights(tmp_path):
+    mod = load_generate_api_docs_module()
+
+    registry = {
+        "abs": {
+            "category": "counted_unary",
+            "module": "numpy",
+            "notes": "Alias row.",
+        },
+        "absolute": {
+            "category": "counted_unary",
+            "module": "numpy",
+            "notes": "Canonical row.",
+        },
+        "divmod": {
+            "category": "counted_binary",
+            "module": "numpy",
+            "notes": "Alias row.",
+        },
+        "floor_divide": {
+            "category": "counted_binary",
+            "module": "numpy",
+            "notes": "Canonical row.",
+        },
+    }
+
+    mod.PUBLIC_DIR = tmp_path
+    mod.load_alias_map = lambda _registry: {
+        "abs": "absolute",
+        "divmod": "floor_divide",
+    }
+    mod.load_operation_weights = lambda: {
+        "abs": 7.0,
+        "floor_divide": 16.0,
+    }
+
+    mod.generate_ops_json(registry)
+
+    ops_manifest = mod.json.loads((tmp_path / "ops.json").read_text())
+    operations = {entry["name"]: entry for entry in ops_manifest["operations"]}
+
+    assert operations["absolute"]["weight"] == 7.0
+    assert operations["abs"]["weight"] == 7.0
+    assert operations["floor_divide"]["weight"] == 16.0
+    assert operations["divmod"]["weight"] == 16.0

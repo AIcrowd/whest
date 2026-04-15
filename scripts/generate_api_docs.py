@@ -618,16 +618,46 @@ def load_operation_weights() -> dict[str, float]:
     return raw.get("weights", {})
 
 
-def build_operation_doc_records(registry: dict[str, dict]) -> list[OperationDocRecord]:
-    """Build canonical operation doc records for supported operations."""
-    alias_map = load_alias_map(registry)
+def build_alias_groups(
+    registry: dict[str, dict], alias_map: dict[str, str]
+) -> dict[str, list[str]]:
+    """Group aliases by resolved canonical name."""
     alias_groups: dict[str, list[str]] = {}
     for alias in sorted(alias_map):
         canonical = resolve_canonical_name(alias, alias_map)
         if canonical == alias or canonical not in registry:
             continue
         alias_groups.setdefault(canonical, []).append(alias)
+    return alias_groups
 
+
+def resolve_operation_weight(
+    name: str,
+    registry: dict[str, dict],
+    weights: dict[str, float],
+    alias_map: dict[str, str],
+    alias_groups: dict[str, list[str]] | None = None,
+) -> float:
+    """Resolve a stable weight for canonical and alias rows."""
+    canonical = resolve_canonical_name(name, alias_map)
+    if canonical in weights:
+        return weights[canonical]
+
+    aliases = alias_groups.get(canonical, []) if alias_groups is not None else []
+    for alias in aliases:
+        if alias in weights:
+            return weights[alias]
+
+    if canonical not in registry and name in weights:
+        return weights[name]
+
+    return 1.0
+
+
+def build_operation_doc_records(registry: dict[str, dict]) -> list[OperationDocRecord]:
+    """Build canonical operation doc records for supported operations."""
+    alias_map = load_alias_map(registry)
+    alias_groups = build_alias_groups(registry, alias_map)
     weights = load_operation_weights()
     records: list[OperationDocRecord] = []
     for name, info in sorted(registry.items()):
@@ -637,14 +667,13 @@ def build_operation_doc_records(registry: dict[str, dict]) -> list[OperationDocR
             continue
 
         aliases = sorted(alias_groups.get(name, []))
-        weight = weights.get(name)
-        if weight is None:
-            for alias in aliases:
-                if alias in weights:
-                    weight = weights[alias]
-                    break
-        if weight is None:
-            weight = 1.0
+        weight = resolve_operation_weight(
+            name=name,
+            registry=registry,
+            weights=weights,
+            alias_map=alias_map,
+            alias_groups=alias_groups,
+        )
 
         module = info["module"]
         cost_plain, cost_latex = cost_for_op(name, info["category"])
@@ -802,6 +831,8 @@ def generate_audit_page(registry: dict[str, dict]) -> None:
 def generate_ops_json(registry: dict[str, dict]) -> None:
     """Generate website/public/ops.json — machine-readable operation manifest."""
     weights = load_operation_weights()
+    alias_map = load_alias_map(registry)
+    alias_groups = build_alias_groups(registry, alias_map)
 
     ops = []
     for name, info in sorted(registry.items()):
@@ -821,7 +852,13 @@ def generate_ops_json(registry: dict[str, dict]) -> None:
                 "blocked": cat == "blacklisted",
                 "status": "blocked" if cat == "blacklisted" else "supported",
                 "notes": info.get("notes", ""),
-                "weight": weights.get(name, 1.0),
+                "weight": resolve_operation_weight(
+                    name=name,
+                    registry=registry,
+                    weights=weights,
+                    alias_map=alias_map,
+                    alias_groups=alias_groups,
+                ),
             }
         )
     PUBLIC_DIR.mkdir(parents=True, exist_ok=True)

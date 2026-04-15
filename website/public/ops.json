@@ -40,7 +40,7 @@
       "blocked": false,
       "status": "supported",
       "notes": "Alias for arccos (NumPy 2.x).",
-      "weight": 1.0
+      "weight": 16.0
     },
     {
       "name": "acosh",
@@ -54,7 +54,7 @@
       "blocked": false,
       "status": "supported",
       "notes": "Alias for arccosh (NumPy 2.x).",
-      "weight": 1.0
+      "weight": 16.0
     },
     {
       "name": "add",
@@ -530,7 +530,7 @@
       "blocked": false,
       "status": "supported",
       "notes": "Alias for arcsin (NumPy 2.x).",
-      "weight": 1.0
+      "weight": 16.0
     },
     {
       "name": "asinh",
@@ -544,7 +544,7 @@
       "blocked": false,
       "status": "supported",
       "notes": "Alias for arcsinh (NumPy 2.x).",
-      "weight": 1.0
+      "weight": 16.0
     },
     {
       "name": "asmatrix",
@@ -586,7 +586,7 @@
       "blocked": false,
       "status": "supported",
       "notes": "Alias for arctan (NumPy 2.x).",
-      "weight": 1.0
+      "weight": 16.0
     },
     {
       "name": "atan2",
@@ -600,7 +600,7 @@
       "blocked": false,
       "status": "supported",
       "notes": "Alias for arctan2 (NumPy 2.x).",
-      "weight": 1.0
+      "weight": 16.0
     },
     {
       "name": "atanh",
@@ -614,7 +614,7 @@
       "blocked": false,
       "status": "supported",
       "notes": "Alias for arctanh (NumPy 2.x).",
-      "weight": 1.0
+      "weight": 16.0
     },
     {
       "name": "atleast_1d",
@@ -1524,7 +1524,7 @@
       "blocked": false,
       "status": "supported",
       "notes": "Element-wise (quotient, remainder) tuple.",
-      "weight": 1.0
+      "weight": 16.0
     },
     {
       "name": "dot",
@@ -4618,7 +4618,7 @@
       "blocked": false,
       "status": "supported",
       "notes": "Alias for power (NumPy 2.x).",
-      "weight": 1.0
+      "weight": 16.0
     },
     {
       "name": "power",
