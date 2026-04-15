@@ -1,4 +1,4 @@
-"""Validate that weights.json and the empirical-weights docs cover all counted operations.
+"""Validate that weights.json and the migrated docs cover all counted operations.
 
 This test ensures that every non-free, non-blacklisted operation in the
 registry either:
@@ -7,8 +7,9 @@ registry either:
   3. Is listed in a benchmark module's ops list (weights pending generation), OR
   4. Falls into a documented exclusion category (bitwise, complex, etc.)
 
-It also validates that the docs/reference/empirical-weights.md mentions every
-operation that has a weight.
+It also validates that:
+  1. The calibration guide still documents the measurement methodology, and
+  2. The generated API reference data still exposes every weighted operation.
 """
 
 from __future__ import annotations
@@ -23,7 +24,8 @@ from whest._registry import REGISTRY
 
 ROOT = Path(__file__).resolve().parent.parent
 WEIGHTS_PATH = ROOT / "src" / "whest" / "data" / "weights.json"
-DOCS_PATH = ROOT / "docs" / "reference" / "empirical-weights.md"
+DOCS_PATH = ROOT / "website" / "content" / "docs" / "understanding" / "calibration.mdx"
+OPS_INDEX_PATH = ROOT / "website" / "public" / "ops.json"
 
 # Ensure benchmarks package is importable.
 if str(ROOT) not in sys.path:
@@ -132,9 +134,18 @@ def weights() -> dict[str, float]:
 
 @pytest.fixture(scope="module")
 def docs_text() -> str:
-    """Load empirical-weights.md."""
-    assert DOCS_PATH.exists(), f"empirical-weights.md not found at {DOCS_PATH}"
+    """Load the calibration guide."""
+    assert DOCS_PATH.exists(), f"calibration guide not found at {DOCS_PATH}"
     return DOCS_PATH.read_text()
+
+
+@pytest.fixture(scope="module")
+def api_operations() -> dict[str, dict]:
+    """Load the generated API reference operation index."""
+    assert OPS_INDEX_PATH.exists(), f"ops.json not found at {OPS_INDEX_PATH}"
+    data = json.loads(OPS_INDEX_PATH.read_text())
+    assert "operations" in data, "ops.json missing 'operations' key"
+    return {entry["name"]: entry for entry in data["operations"]}
 
 
 @pytest.fixture(scope="module")
@@ -241,18 +252,31 @@ class TestWeightsJsonCoverage:
 
 
 class TestDocsWeightCoverage:
-    """Verify empirical-weights.md mentions all weighted operations."""
+    """Verify calibration docs and API reference expose weighted operations."""
 
-    def test_all_weighted_ops_appear_in_docs(
+    def test_all_weighted_ops_appear_in_api_reference(
         self,
         weights: dict[str, float],
-        docs_text: str,
+        api_operations: dict[str, dict],
     ):
-        """Every op in weights.json should appear in the markdown."""
-        missing = [name for name in sorted(weights) if f"`{name}`" not in docs_text]
+        """Every weighted op should appear in the generated API reference data."""
+        missing = [name for name in sorted(weights) if name not in api_operations]
         assert not missing, (
-            f"{len(missing)} weighted ops missing from docs:\n"
+            f"{len(missing)} weighted ops missing from API reference data:\n"
             + "\n".join(f"  {name}" for name in missing[:20])
+        )
+
+        mismatched = {
+            name: (expected, api_operations[name]["weight"])
+            for name, expected in weights.items()
+            if api_operations[name]["weight"] != expected
+        }
+        assert not mismatched, (
+            "ops.json weights diverge from weights.json for:\n"
+            + "\n".join(
+                f"  {name}: weights.json={expected}, ops.json={actual}"
+                for name, (expected, actual) in sorted(mismatched.items())[:20]
+            )
         )
 
     def test_docs_mentions_measurement_mode(self, docs_text: str):
@@ -260,5 +284,7 @@ class TestDocsWeightCoverage:
         assert "perf" in docs_text, "Docs should mention perf measurement mode"
 
     def test_docs_mentions_baseline(self, docs_text: str):
-        """Docs should mention add as the baseline."""
-        assert "add" in docs_text and "baseline" in docs_text.lower()
+        """Docs should explain that add is the normalization baseline."""
+        assert ("np.add" in docs_text or "`add`" in docs_text) and (
+            "baseline" in docs_text.lower() or "normalized" in docs_text.lower()
+        )
