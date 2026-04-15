@@ -5,114 +5,393 @@ title: "Symmetry Savings"
 *Reduce FLOP costs when your tensors have symmetry.*
 
 **You will learn:**
-- How to create a `SymmetricTensor` with `we.as_symmetric()`
-- How to declare custom symmetries with `PermutationGroup`
-- How symmetry automatically reduces operation costs
-- Common pitfalls when working with symmetric tensors
+- How to declare full and non-full tensor symmetries with `we.as_symmetric()`
+- How to generate exact example tensors for arbitrary permutation groups
+- How slicing, reductions, and binary pointwise ops preserve, weaken, or drop symmetry metadata
+- When to re-tag results with `we.as_symmetric()` after conservative propagation
 
 ## Why symmetry matters
 
-Many computations involve symmetric tensors -- covariance matrices, quadratic forms, moment tensors. A symmetric n x n matrix has only `n*(n+1)/2` unique elements instead of `n^2`. When whest knows a tensor is symmetric, it charges FLOP costs based on unique elements rather than total elements, giving substantial savings:
+Many tensors contain repeated structure. A symmetric matrix has only
+`n * (n + 1) / 2` unique elements instead of `n^2`, and higher-order tensors
+with permutation symmetry can shrink the effective element count even more.
+When whest knows a tensor's symmetry, it charges FLOPs based on unique elements
+instead of dense ones.
 
-| Operation | Standard cost | Symmetric cost | Savings |
-|-----------|--------------|----------------|---------|
-| `we.exp(S)` on 100x100 | 10,000 | 5,050 | 49.5% |
-| `we.einsum('ki,kj->ij', X, X)` | m * n^2 | m * n*(n+1)/2 | ~50% |
+| Operation | Dense cost | Symmetry-aware cost | Why it drops |
+|-----------|------------|---------------------|--------------|
+| `we.exp(s2_matrix)` | `n^2` | `n * (n + 1) / 2` | only unique matrix entries matter |
+| `we.einsum('ki,kj->ij', x, x, symmetric_axes=[(0, 1)])` | `m * n^2` | `m * n * (n + 1) / 2` | the output is symmetric in `(0, 1)` |
+| `we.einsum('i,j,k->ijk', v, v, v)` | `n^3` | symmetry-reduced | repeated operands induce output symmetry |
 
-## Creating a SymmetricTensor
-
-Wrap an existing symmetric array with `we.as_symmetric()`:
-
-```python
-import whest as we
-
-data = we.array([[2.0, 1.0], [1.0, 3.0]])
-S = we.as_symmetric(data, symmetric_axes=(0, 1))
-```
-
-`as_symmetric` validates that the data is actually symmetric (within tolerance `atol=1e-6, rtol=1e-5`). If it is not, `SymmetryError` is raised.
-
-For higher-order tensors with partial symmetry, pass a list of axis groups:
-
-```python
-# 4-tensor where axes (0,1) and (2,3) are each separately symmetric
-S = we.as_symmetric(data, symmetric_axes=[(0, 1), (2, 3)])
-```
-
-Several creation functions return `SymmetricTensor` automatically when the result is symmetric by construction:
-
-```python
-I = we.eye(10)          # SymmetricTensor, axes (0, 1)
-D = we.diag(v)          # SymmetricTensor if v is 1D and k == 0
-Z = we.zeros((10, 10))  # SymmetricTensor (square)
-```
-
-## Automatic cost savings
-
-Once a tensor is wrapped as `SymmetricTensor`, all downstream operations automatically get reduced costs:
-
-```python
-with we.BudgetContext(flop_budget=10**8) as budget:
-    S = we.eye(10)  # eye returns a SymmetricTensor
-
-    # Pointwise: costs 55 FLOPs (10*11/2 unique elements) instead of 100
-    result = we.exp(S)
-    print(f"exp cost: {budget.flops_used}")  # 55
-```
-
-Symmetry also works with einsum. Use `symmetric_axes` to declare that the output is symmetric:
-
-```python
-# C = X^T @ X is symmetric -- declare it for automatic savings
-C = we.einsum('ki,kj->ij', X, X, symmetric_axes=[(0, 1)])
-# C is now a SymmetricTensor -- downstream ops benefit automatically
-```
-
-When you pass the same Python object as multiple operands, whest detects the repetition automatically and derives output symmetry without any declaration:
-
-```python
-X = we.ones((100, 100))
-# Both operands are the same object -- S2{j,k} detected automatically
-R = we.einsum("ij,ik->jk", X, X)
-# ~1/2 dense cost because R[j,k] = R[k,j]
-```
-
-## Declaring custom symmetries
-
-The `symmetric_axes` parameter declares the full symmetric group S_k -- meaning any rearrangement of those axes preserves the tensor. Some tensors have weaker symmetry. For example, a tensor with cyclic symmetry (rotations only, not reflections) has group C_3, not S_3.
-
-Use `PermutationGroup` for non-S_k symmetries:
+## Quick start
 
 ```python
 import whest as we
 
-# Cyclic symmetry C_3 on axes 0, 1, 2
-T = we.as_symmetric(data, symmetry=we.PermutationGroup.cyclic(3, axes=(0, 1, 2)))
+with we.BudgetContext(flop_budget=10**6) as budget:
+    s2_matrix = we.as_symmetric(
+        we.array([[2.0, 1.0], [1.0, 3.0]]),
+        symmetric_axes=(0, 1),
+    )
 
-# Inspect the group
-T.symmetry_info.groups[0].order()          # 3
-T.symmetry_info.groups[0].is_symmetric()   # False (not full S_3)
-T.symmetry_info.unique_elements            # exact via Burnside's lemma
+    exp_s2_matrix = we.exp(s2_matrix)
+    sliced_row = s2_matrix[0]
+
+    print(type(exp_s2_matrix).__name__)  # SymmetricTensor
+    print(type(sliced_row).__name__)     # ndarray
+    print(budget.flops_used)
 ```
 
-A weaker symmetry group means more unique elements and less cost reduction. For 3 axes with n=10:
+`we.as_symmetric()` validates the data first. After that, whest propagates
+symmetry metadata algebraically through many operations. Unary pointwise ops
+usually preserve symmetry. Slicing, reductions, and binary pointwise ops can
+weaken it or remove it entirely.
 
-| Group | Unique elements | Reduction |
-|-------|----------------|-----------|
-| S_3 (full symmetric) | 220 | 78% saved |
-| C_3 (cyclic only) | 340 | 66% saved |
-| No symmetry | 1,000 | 0% saved |
+## How to declare symmetry
 
-## Common pitfalls
+### Full symmetric shorthand with `symmetric_axes`
 
-**`SymmetryError` when wrapping:** The data must actually be symmetric within tolerance. Check your computation or use a tighter numerical method.
+Use `symmetric_axes` when the tensor is invariant under every permutation of a
+set of axes.
 
-**Expected `SymmetricTensor` but got plain ndarray:** Symmetry propagation is conservative. Operations like matmul (`S @ T`) always strip symmetry because the result is not guaranteed symmetric. If you know the result is symmetric, re-wrap with `we.as_symmetric()`.
+```python
+import whest as we
 
-**`SymmetryLossWarning` appearing unexpectedly:** This warning tells you symmetry metadata was lost. Check whether the result is still symmetric -- if so, re-tag with `as_symmetric()`. To suppress: `we.configure(symmetry_warnings=False)`.
+matrix_data = we.array([[2.0, 1.0], [1.0, 3.0]])
+s2_matrix = we.as_symmetric(matrix_data, symmetric_axes=(0, 1))
+```
 
-**Using `X.copy()` instead of `X` for repeated operands:** Automatic symmetry detection uses Python identity (`is`). `X` and `X` are detected as the same object; `X` and `X.copy()` are not. Pass the same reference to trigger automatic savings.
+This is the most common declaration: full `S_2` symmetry on matrix axes
+`(0, 1)`.
+
+### Multiple independent full symmetric groups
+
+```python
+block_tensor_data = we.ones((2, 2, 3, 3))
+block_s2_tensor = we.as_symmetric(
+    block_tensor_data,
+    symmetric_axes=[(0, 1), (2, 3)],
+)
+```
+
+This declares one full symmetric group on axes `(0, 1)` and another on
+`(2, 3)`.
+
+### Explicit full symmetric groups with `PermutationGroup.symmetric`
+
+```python
+s3_group = we.PermutationGroup.symmetric(3, axes=(0, 1, 2))
+s3_tensor = we.as_symmetric(
+    we.ones((4, 4, 4)),
+    symmetry=s3_group,
+)
+```
+
+This is equivalent in meaning to `symmetric_axes=(0, 1, 2)`, but explicit
+groups are useful once you want to inspect or combine them directly.
+
+### Cyclic symmetry with `PermutationGroup.cyclic`
+
+```python
+c3_group = we.PermutationGroup.cyclic(3, axes=(0, 1, 2))
+c3_tensor = we.as_symmetric(
+    we.ones((4, 4, 4)),
+    symmetry=c3_group,
+)
+```
+
+`C_3` means rotations are allowed, but reflections are not. This is weaker
+than `S_3`, so it usually gives fewer savings.
+
+### Dihedral symmetry with `PermutationGroup.dihedral`
+
+```python
+d4_group = we.PermutationGroup.dihedral(4, axes=(0, 1, 2, 3))
+d4_tensor = we.as_symmetric(
+    we.ones((4, 4, 4, 4)),
+    symmetry=d4_group,
+)
+```
+
+`D_4` includes both rotations and reflections of a four-position structure.
+
+### Arbitrary subgroups from custom generators
+
+```python
+opposite_pair_swap_group = we.PermutationGroup(
+    we.Permutation(we.Cycle(0, 2)(1, 3)),
+    axes=(0, 1, 2, 3),
+)
+
+opposite_pair_swap_tensor = we.as_symmetric(
+    we.ones((4, 4, 4, 4)),
+    symmetry=opposite_pair_swap_group,
+)
+```
+
+Use this form when the built-in constructors do not describe your symmetry.
+
+### Multiple explicit groups on one tensor
+
+```python
+row_swap_group = we.PermutationGroup.symmetric(2, axes=(0, 1))
+column_swap_group = we.PermutationGroup.symmetric(2, axes=(2, 3))
+
+two_group_tensor = we.as_symmetric(
+    we.ones((3, 3, 5, 5)),
+    symmetry=[row_swap_group, column_swap_group],
+)
+```
+
+This is the explicit-group equivalent of `symmetric_axes=[(0, 1), (2, 3)]`.
+
+## Generating exact example data with the Reynolds operator
+
+When you want example tensors for arbitrary groups, the cleanest pattern is to
+average arbitrary data over the group action. This is the Reynolds operator:
+
+`R_G(T) = (1 / |G|) * sum_{g in G} g · T`
+
+```python
+def symmetrize_with_group(shape, symmetry_group):
+    raw_data = we.random.randn(*shape)
+    group_axes = (
+        symmetry_group.axes
+        if symmetry_group.axes is not None
+        else tuple(range(symmetry_group.degree))
+    )
+    accumulated = we.zeros_like(raw_data)
+
+    for group_element in symmetry_group.elements():
+        axis_permutation = list(range(len(shape)))
+        for group_index, tensor_axis in enumerate(group_axes):
+            axis_permutation[tensor_axis] = group_axes[group_element.array_form[group_index]]
+        accumulated = accumulated + we.transpose(raw_data, axis_permutation)
+
+    return we.as_symmetric(
+        accumulated / symmetry_group.order(),
+        symmetry=symmetry_group,
+    )
+```
+
+This helper is ideal for docs, tests, and experiments:
+
+- it works for `S_k`, `C_k`, `D_k`, and custom generator sets
+- it produces data that exactly satisfies the declared symmetry
+- it keeps examples consistent across symmetry classes
+
+```python
+s3_group = we.PermutationGroup.symmetric(3, axes=(0, 1, 2))
+c3_group = we.PermutationGroup.cyclic(3, axes=(0, 1, 2))
+d4_group = we.PermutationGroup.dihedral(4, axes=(0, 1, 2, 3))
+
+s3_tensor = symmetrize_with_group((4, 4, 4), s3_group)
+c3_tensor = symmetrize_with_group((4, 4, 4), c3_group)
+d4_tensor = symmetrize_with_group((4, 4, 4, 4), d4_group)
+```
+
+## Symmetry propagation at a glance
+
+Symmetry propagation is conservative. Whest keeps symmetry metadata only when
+the operation's structure guarantees that the output still respects the
+surviving group.
+
+| Operation | Result type | Rule |
+|-----------|-------------|------|
+| `we.exp(s3_tensor)` | `SymmetricTensor` | unary pointwise ops keep the same groups |
+| `we.add(s3_tensor, c3_tensor)` | `SymmetricTensor` or `ndarray` | binary pointwise ops keep the intersection of both operands' groups |
+| `s2_matrix * 3` | `SymmetricTensor` | scalar binary ops preserve the tensor's groups |
+| `s2_matrix[0]` | `ndarray` | integer indexing removes one axis; no nontrivial group survives |
+| `s2_matrix[:3, :3]` | `SymmetricTensor` | equal-size slices can preserve symmetry |
+| `s2_matrix[:3, :2]` | `ndarray` | unequal-size slices break symmetry between those axes |
+| `s2_matrix[we.array([0, 1])]` | `ndarray` | advanced indexing drops symmetry conservatively |
+| `we.sum(s3_tensor, axis=0)` | `SymmetricTensor` | reductions keep the surviving setwise stabilizer subgroup |
+| `we.sum(d4_tensor, axis=(1, 3))` | `SymmetricTensor` | reductions can keep a proper subgroup like `C_2` |
+| `s2_matrix @ s2_matrix` | `ndarray` | matrix products are not assumed symmetric in general |
+
+## Slicing rules
+
+Slicing uses the **pointwise stabilizer** of the removed axes. Informally:
+every removed axis must stay fixed under any surviving group element.
+
+```python
+s2_matrix = we.as_symmetric(
+    we.ones((6, 6)),
+    symmetric_axes=(0, 1),
+)
+
+same_size_slice = s2_matrix[:3, :3]
+different_size_slice = s2_matrix[:3, :2]
+expanded_s2_matrix = s2_matrix[we.newaxis, :, :]
+advanced_index_slice = s2_matrix[we.array([0, 1])]
+```
+
+What happens here:
+
+- `same_size_slice` stays symmetric because both surviving axes still have the
+  same size
+- `different_size_slice` loses symmetry because the two axes no longer match
+- `expanded_s2_matrix` keeps the same `S_2` action, but the axes are renumbered
+  from `(0, 1)` to `(1, 2)`
+- `advanced_index_slice` returns a plain `ndarray`; whest does not attempt to
+  propagate symmetry through array/list indexing
+
+`Ellipsis` behaves like NumPy's normal expansion rules. It can change which
+axes remain, but it does not change the propagation rule itself.
+
+The difference between full and non-full groups matters immediately:
+
+```python
+s3_group = we.PermutationGroup.symmetric(3, axes=(0, 1, 2))
+c3_group = we.PermutationGroup.cyclic(3, axes=(0, 1, 2))
+
+s3_tensor = symmetrize_with_group((4, 4, 4), s3_group)
+c3_tensor = symmetrize_with_group((4, 4, 4), c3_group)
+
+s3_slice = s3_tensor[:, :, 0]
+c3_slice = c3_tensor[:, :, 0]
+```
+
+- `s3_slice` keeps an `S_2` subgroup on the surviving axes
+- `c3_slice` loses all nontrivial symmetry, because `C_3` has no non-identity
+  element that fixes one point
+
+## Reduction rules
+
+Reductions use the **setwise stabilizer** of the reduced axes. Informally:
+reduced axes are allowed to permute among themselves, because summation treats
+all positions along the reduced set equivalently.
+
+```python
+s3_group = we.PermutationGroup.symmetric(3, axes=(0, 1, 2))
+c3_group = we.PermutationGroup.cyclic(3, axes=(0, 1, 2))
+c4_group = we.PermutationGroup.cyclic(4, axes=(0, 1, 2, 3))
+
+s3_tensor = symmetrize_with_group((4, 4, 4), s3_group)
+c3_tensor = symmetrize_with_group((4, 4, 4), c3_group)
+c4_tensor = symmetrize_with_group((4, 4, 4, 4), c4_group)
+
+s3_reduced = we.sum(s3_tensor, axis=0)
+c3_reduced = we.sum(c3_tensor, axis=2)
+c4_reduced = we.sum(c4_tensor, axis=(1, 3))
+c4_keepdims = we.sum(c4_tensor, axis=(1, 3), keepdims=True)
+```
+
+What happens here:
+
+- `s3_reduced` keeps an `S_2` subgroup on the remaining axes
+- `c3_reduced` loses all nontrivial symmetry
+- `c4_reduced` keeps a `C_2` subgroup
+- `c4_keepdims` keeps the same surviving subgroup, but the output axes stay in
+  their original tensor positions because `keepdims=True`
+
+Reducing an axis that is not in a symmetry group leaves that group alone, apart
+from any axis renumbering caused by the removed dimension.
+
+## Binary pointwise ops and broadcasting
+
+Binary pointwise ops keep only the symmetry present in **both** operands. For
+general groups, that means element-set intersection on matching output axes,
+not just matching tuples of axis numbers.
+
+```python
+s3_group = we.PermutationGroup.symmetric(3, axes=(0, 1, 2))
+c3_group = we.PermutationGroup.cyclic(3, axes=(0, 1, 2))
+
+s3_tensor = symmetrize_with_group((4, 4, 4), s3_group)
+c3_tensor = symmetrize_with_group((4, 4, 4), c3_group)
+
+intersection_tensor = we.add(s3_tensor, c3_tensor)
+```
+
+`intersection_tensor` keeps `C_3`, because `C_3` is the common subgroup of
+`S_3` and `C_3`.
+
+Multiple groups are handled independently:
+
+```python
+left_tensor = we.as_symmetric(
+    we.ones((3, 3, 5, 5)),
+    symmetric_axes=[(0, 1), (2, 3)],
+)
+right_tensor = we.as_symmetric(
+    we.ones((3, 3, 5, 5)),
+    symmetric_axes=[(0, 1)],
+)
+
+shared_group_tensor = we.add(left_tensor, right_tensor)
+```
+
+`shared_group_tensor` keeps symmetry on `(0, 1)` and loses the independent
+group on `(2, 3)`.
+
+Broadcasting matters too:
+
+```python
+stretched_s2_tensor = we.as_symmetric(
+    we.ones((1, 1, 4)),
+    symmetry=we.PermutationGroup.symmetric(2, axes=(0, 1)),
+)
+
+plain_tensor = we.ones((3, 3, 4))
+broadcast_sum = we.add(stretched_s2_tensor, plain_tensor)
+```
+
+Before group intersection, any axis stretched from size `1` to a larger output
+size is removed from the candidate group. That is why broadcasted singleton
+axes do not automatically stay symmetric after a binary op.
+
+## Warnings, conservative behavior, and re-tagging
+
+Whest propagates symmetry metadata conservatively. When the operation does not
+guarantee that the declared symmetry survives, the result falls back to a plain
+`ndarray`.
+
+```python
+s2_matrix = we.as_symmetric(
+    we.ones((6, 6)),
+    symmetric_axes=(0, 1),
+)
+
+row_slice = s2_matrix[0]
+```
+
+`row_slice` is a plain `ndarray`, not a `SymmetricTensor`. That is expected.
+
+`SymmetryLossWarning` tells you that metadata was dropped or weakened during an
+operation. If you know more about the result than the conservative propagation
+rule does, you can re-tag it with `we.as_symmetric()`.
+
+```python
+we.configure(symmetry_warnings=False)
+```
+
+One important caveat: the current implementation does **not** report every
+possible partial weakening via `SymmetryLossWarning`. Treat the warning system
+as helpful guidance, not as a complete audit of every same-axis subgroup
+change.
+
+## Under the hood
+
+The propagation rules are easier to predict if you keep three ideas in mind:
+
+- **Slicing** uses the pointwise stabilizer of the removed axes
+- **Reductions** use the setwise stabilizer of the reduced axes
+- **Binary pointwise ops** use intersection of both operands' groups after
+  broadcast alignment
+
+After computing the surviving subgroup, whest restricts it to the axes still
+present in the output and remaps those axes to the output tensor's numbering.
+
+That is why:
+
+- slicing one axis of `S_3` leaves `S_2`
+- slicing one axis of `C_3` leaves nothing nontrivial
+- reducing `{1, 3}` of `C_4` can still leave `C_2`
 
 ## Going deeper
 
-For the full algorithm behind symmetry detection -- the bipartite graph representation, sigma-loop, and Burnside counting -- see [Symmetry Detection Deep Dive](/docs/understanding/symmetry-detection).
+- [Einsum Patterns](./einsum) — how declared and induced symmetry interact with `we.einsum`
+- [Symmetry Detection Deep Dive](/docs/understanding/symmetry-detection) — the full detection algorithm for `einsum`
+- [Symmetry Explorer](/docs/understanding/symmetry-explorer) — experiment with symmetry interactively
