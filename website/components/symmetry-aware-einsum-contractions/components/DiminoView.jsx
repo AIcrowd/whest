@@ -73,6 +73,17 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
         <p className="mt-2 max-w-[62ch] text-sm leading-6 text-muted-foreground">
           Each valid π induces a candidate permutation. We keep it only if adding it enlarges the subgroup generated so far.
         </p>
+        {group ? (
+          <div className="mt-3 rounded-lg border border-border bg-surface-raised px-3 py-2 text-xs leading-5 text-muted-foreground">
+            <div className="font-semibold text-foreground">
+              {group.fullGroupName} · order {group.fullOrder}
+            </div>
+            <div className="mt-1">
+              {`${group.fullDegree} active labels: ${group.allLabels.join(', ')}`}
+              {group.fullGenerators?.length ? ` · ${group.fullGenerators.length} generator${group.fullGenerators.length === 1 ? '' : 's'}` : ''}
+            </div>
+          </div>
+        ) : null}
       </div>
 
       {!selectedPair ? (

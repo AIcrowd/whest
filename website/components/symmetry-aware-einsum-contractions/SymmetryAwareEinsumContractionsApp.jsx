@@ -15,7 +15,6 @@ import PresetSidebar from './components/PresetSidebar.jsx';
 import BipartiteGraph from './components/BipartiteGraph.jsx';
 import MatrixView from './components/MatrixView.jsx';
 import SigmaLoop from './components/SigmaLoop.jsx';
-import GroupView from './components/GroupView.jsx';
 import DiminoView from './components/DiminoView.jsx';
 import RoleBadge from './components/RoleBadge.jsx';
 import PythonCodeBlock from './components/PythonCodeBlock.jsx';
@@ -315,14 +314,11 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       </div>
                       <div>
                         <h3 className="mb-2 font-heading text-base font-semibold text-gray-900">Generator Construction</h3>
-                        <GroupView group={group} />
-                        <div className="mt-4">
-                          <DiminoView
-                            group={group}
-                            sigmaResults={sigmaResults}
-                            selectedPairIndex={selectedSigmaPairIndex}
-                          />
-                        </div>
+                        <DiminoView
+                          group={group}
+                          sigmaResults={sigmaResults}
+                          selectedPairIndex={selectedSigmaPairIndex}
+                        />
                       </div>
                     </div>
                     <div className="mt-4">
