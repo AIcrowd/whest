@@ -6,15 +6,18 @@ import { EXPLORER_ACTS } from './explorerNarrative.js';
 function symmetryLabel(variable) {
   if (!variable || variable.symmetry === 'none') return 'dense';
   const k = (variable.symAxes && variable.symAxes.length) || variable.rank;
+  const axes = Array.isArray(variable.symAxes) ? variable.symAxes : null;
+  const hasExplicitPartialAxes = axes && axes.length > 0 && axes.length < variable.rank;
+
   switch (variable.symmetry) {
     case 'symmetric':
-      return `S${k}`;
+      return hasExplicitPartialAxes ? `S${k}{${axes.join(',')}}` : `S${k}`;
     case 'cyclic':
-      return `C${k}`;
+      return hasExplicitPartialAxes ? `C${k}{${axes.join(',')}}` : `C${k}`;
     case 'dihedral':
-      return `D${k}`;
+      return hasExplicitPartialAxes ? `D${k}{${axes.join(',')}}` : `D${k}`;
     case 'custom':
-      return 'custom';
+      return hasExplicitPartialAxes ? `custom{${axes.join(',')}}` : 'custom';
     default:
       return null;
   }
