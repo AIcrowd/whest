@@ -247,7 +247,7 @@ export default function ComponentCostView({
           selectedOrbitIdx={selectedOrbitIdx}
           onSelectOrbit={onSelectOrbit}
           showHeader={false}
-          formulaMath={ORBIT_ENUMERATION_FORMULA}
+          formulaMath={null}
           dimensionN={dimensionN}
           componentContext={orbitModalComponent}
         />

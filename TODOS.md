@@ -128,3 +128,51 @@ but not landed in commits C1–C5.
   cases only. Our JS engine is heterogeneous-first. A Python harness extension
   taking `sizes: Sequence[int]` would let us keep running Python ground-truth
   as we extend the regime ladder.
+
+## Follow-ups from final UI code review
+
+Captured after the branch-wide review post-C9. None block the merge, but worth
+tracking.
+
+### `useKeyboardShortcuts` re-subscribe churn
+- `lib/useKeyboardShortcuts.js` calls `useEffect` with the `bindings` object in
+  the dep array. The consumer in `SymmetryAwareEinsumContractionsApp.jsx` passes
+  an inline object literal, so the effect tears down + reattaches the listener
+  on every render.
+- Fix: stash `bindings` in a `useRef` updated on every render, run the effect
+  with an empty dep array, and dispatch through the ref. One-line change.
+
+### Playground URL sync should debounce
+- `Playground.jsx` pushes `history.replaceState` on every keystroke in the
+  subscripts/output inputs. `replaceState` is cheap but noisy for extensions
+  watching history.
+- Fix: wrap the URL update in a 150 ms debounce.
+
+### FormulaPopover is not keyboard-closable
+- Current implementation closes on mousedown-outside but not on Escape.
+- Fix: add a `keydown` listener for `Escape` in the same effect.
+
+### Animation ignores `prefers-reduced-motion`
+- `@keyframes trace-in` fires unconditionally. Add a `@media
+  (prefers-reduced-motion: reduce) { .animate-trace-in { animation: none; } }`
+  block in `styles.css`.
+
+### Wire BipartiteGraph.highlightedLabels from orbit hover
+- The `highlightedLabels` prop was added in C9 but has no active caller. Plan
+  called for "orbit hover coloring" — need a state handler in the orbit
+  inspector that sets the labels of the hovered orbit and passes them down.
+
+### Extract `PLAYGROUND_SUBSCRIPT_INPUT_ID` constant
+- Currently the id `'playground-subscripts'` is hard-coded in two places
+  (the Playground input + the `'/'` keyboard shortcut handler in the app).
+  Extract to a named constant to avoid silent breakage on rename.
+
+### Clamp Playground operand rank to [1, 8]
+- `updateOperandRank` clamps to `max(1, floor(v))` but the input advertises
+  `max={8}`. Upper-bound the clamp so the pipeline doesn't receive very large
+  ranks.
+
+### Focus trap for ExplorerModal
+- Current `role="dialog"` + `aria-modal="true"` but no tab-focus trap inside.
+  For accessibility completeness, add a focus trap (or use a library like
+  focus-trap-react already in the tailwind ecosystem).
