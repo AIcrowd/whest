@@ -25,6 +25,8 @@ import TotalCostView from './components/TotalCostView.jsx';
 import { mergeObservedActEntries, pickTopVisibleAct } from './lib/activeAct.js';
 import { getPresetControlSelection } from './lib/presetSelection.js';
 import { reduceMentalModelVisibility } from './lib/mentalModelState.js';
+import Playground from './components/Playground.jsx';
+import { useKeyboardShortcuts } from './lib/useKeyboardShortcuts.js';
 import './styles.css';
 
 const CUSTOM_IDX = -1;
@@ -200,6 +202,24 @@ export default function SymmetryAwareEinsumContractionsApp() {
   }, [analysis, example]);
 
   const checkpointItems = buildAnalysisCheckpoint({ example: normalizedExample, group });
+
+  useKeyboardShortcuts({
+    ArrowLeft: () => {
+      if (selectedPresetIdx == null) return;
+      const target = Math.max(0, (selectedPresetIdx ?? 0) - 1);
+      handleSelect(target);
+    },
+    ArrowRight: () => {
+      if (selectedPresetIdx == null) return;
+      const target = Math.min(EXAMPLES.length - 1, (selectedPresetIdx ?? 0) + 1);
+      handleSelect(target);
+    },
+    r: () => handleSelect(Math.floor(Math.random() * EXAMPLES.length)),
+    '/': () => {
+      const el = document.getElementById('playground-subscripts');
+      if (el) el.focus();
+    },
+  });
 
   return (
     <div className="min-h-screen bg-background">
@@ -462,6 +482,18 @@ export default function SymmetryAwareEinsumContractionsApp() {
                 Define your variables and einsum expression above, then click <strong className="font-semibold text-coral">Analyze</strong> to explore the symmetry detection algorithm.
               </div>
             )}
+
+            <section id="playground" className="mb-12 scroll-mt-24">
+              <ExplorerSectionCard
+                eyebrow="Playground"
+                title="Tinker freely"
+                description="Edit the expression, operand shapes, and cluster sizes. Watch which regime fires. The URL mirrors your state — paste to share."
+                className="border-gray-200 bg-white"
+                contentClassName="pt-5"
+              >
+                <Playground />
+              </ExplorerSectionCard>
+            </section>
             </div>
           </main>
         </div>
