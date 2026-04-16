@@ -209,6 +209,9 @@ export default function SymmetryAwareEinsumContractionsApp() {
               >
                 <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[0].interpretation}</NarrativeCallout>
                 <NarrativeCallout label="Algorithm" tone="algorithm">{EXPLORER_ACTS[0].algorithm}</NarrativeCallout>
+                <p className="mt-4 text-sm leading-7 text-foreground">
+                  This act specifies declared input symmetry only. It fixes the operands and labels before any detected contraction symmetry is considered.
+                </p>
                 <ExampleChooser
                   examples={EXAMPLES}
                   onSelect={handleSelect}
@@ -239,6 +242,9 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   >
                     <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[1].interpretation}</NarrativeCallout>
                     <NarrativeCallout label="Algorithm" tone="algorithm">{EXPLORER_ACTS[1].algorithm}</NarrativeCallout>
+                    <p className="mt-4 text-sm leading-7 text-foreground">
+                      Declared input symmetry changes the encoding before any detected contraction symmetry is computed.
+                    </p>
                     <p className="mt-4 text-sm leading-7 text-foreground">
                       Left vertices (U) are operand axis-classes. Right vertices are index labels,
                       partitioned into <RoleBadge role="v">V free</RoleBadge> and
@@ -273,6 +279,9 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   >
                     <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[2].interpretation}</NarrativeCallout>
                     <NarrativeCallout label="Algorithm" tone="algorithm">{EXPLORER_ACTS[2].algorithm}</NarrativeCallout>
+                    <p className="mt-4 text-sm leading-7 text-foreground">
+                      Detected contraction symmetry is a property of the whole einsum expression, not just one input tensor.
+                    </p>
                     <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
                       <div>
                         <h3 className="mb-2 font-heading text-base font-semibold text-gray-900">σ-Loop & π Detection</h3>
@@ -316,6 +325,9 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   >
                     <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[3].interpretation}</NarrativeCallout>
                     <NarrativeCallout label="Algorithm" tone="algorithm">{EXPLORER_ACTS[3].algorithm}</NarrativeCallout>
+                    <p className="mt-4 text-sm leading-7 text-foreground">
+                      The detected global action may have been influenced by declared input symmetry, but it is the object being decomposed.
+                    </p>
                     <div className="grid gap-4 md:grid-cols-2">
                       <NarrativeCallout label="Component Story">{COMPONENT_STORY_TEXT}</NarrativeCallout>
                     </div>
