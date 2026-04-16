@@ -157,7 +157,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
               const origIdx = allPairs.indexOf(r);
               return (
                 <button key={origIdx}
-                  className={`pair-chip pair-valid ${selectedIdx === origIdx ? 'pair-active' : ''}`}
+                  className="pair-chip pair-valid"
                   onClick={() => handleSelectPair(origIdx)}>
                   <span className="pair-sigma">σ = {fmtSigma(r.sigmaRowPerm, uLabels)}</span>
                   <span className="pair-pi">π = {fmtPi(r.pi)}</span>
