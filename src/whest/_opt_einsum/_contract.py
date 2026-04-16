@@ -16,7 +16,7 @@ from . import _blas as blas
 from . import _helpers as helpers
 from . import _parser as parser
 from . import _paths as paths
-from ._hsluv import qualitative_hsluv_palette, rgb_distance_hex
+from ._hsluv import rgb_distance_hex, rich_label_palette
 from ._subgraph_symmetry import SubgraphSymmetryOracle
 from ._symmetry import PermutationGroup, symmetric_flop_count
 from ._typing import (
@@ -30,11 +30,6 @@ __all__ = [
     "contract_path",
     "PathInfo",
     "StepInfo",
-]
-
-_RICH_LABEL_STYLES = [
-    f"bold {color}"
-    for color in qualitative_hsluv_palette(64, lightness=0.5, saturation=0.9)
 ]
 
 _RICH_SYMMETRY_STYLES = {
@@ -161,44 +156,46 @@ class PathInfo:
         return f"{self.input_subscripts}->{self.output_subscript}"
 
     @staticmethod
-    def _preferred_label_style_index(label: str) -> int | None:
+    def _preferred_label_style_index(label: str, total_slots: int) -> int | None:
         """Return the preferred stable palette slot for a label."""
         if not label or not label[0].isalpha():
             return None
-        return int.from_bytes(sha1(label.encode("utf-8")).digest()[:2], "big") % len(
-            _RICH_LABEL_STYLES
+        return int.from_bytes(sha1(label.encode("utf-8")).digest()[:2], "big") % (
+            total_slots
         )
 
     @cached_property
     def _label_styles(self) -> dict[str, str]:
         """Assign non-colliding styles for the active labels in this expression."""
         labels = list(dict.fromkeys(ch for ch in self.eq if ch.isalpha()))
+        slot_count = max(64, len(labels))
+        label_styles = tuple(
+            f"bold {color}" for color in rich_label_palette(slot_count)
+        )
         used_slots: set[int] = set()
         styles: dict[str, str] = {}
-        total_slots = len(_RICH_LABEL_STYLES)
+        total_slots = len(label_styles)
 
         for label in labels:
-            preferred = self._preferred_label_style_index(label)
+            preferred = self._preferred_label_style_index(label, total_slots)
             if preferred is None:
                 styles[label] = "bold"
                 continue
 
             if not used_slots:
                 used_slots.add(preferred)
-                styles[label] = _RICH_LABEL_STYLES[preferred]
+                styles[label] = label_styles[preferred]
                 continue
 
-            best_slot = None
-            best_score = None
-            for slot, style in enumerate(_RICH_LABEL_STYLES):
+            best_slot: int | None = None
+            best_score: tuple[float, int] | None = None
+            for slot, style in enumerate(label_styles):
                 if slot in used_slots:
                     continue
 
                 color = style.rsplit(" ", 1)[-1]
                 min_distance = min(
-                    rgb_distance_hex(
-                        color, _RICH_LABEL_STYLES[used_slot].rsplit(" ", 1)[-1]
-                    )
+                    rgb_distance_hex(color, label_styles[used_slot].rsplit(" ", 1)[-1])
                     for used_slot in used_slots
                 )
                 circular_preference_distance = min(
@@ -212,7 +209,7 @@ class PathInfo:
 
             assert best_slot is not None
             used_slots.add(best_slot)
-            styles[label] = _RICH_LABEL_STYLES[best_slot]
+            styles[label] = label_styles[best_slot]
 
         return styles
 

@@ -11,6 +11,7 @@ See NOTICE in this package for attribution details.
 from __future__ import annotations
 
 import math
+from functools import lru_cache
 
 _M = (
     (3.240969941904521, -1.537383177570093, -0.498610760293),
@@ -27,6 +28,75 @@ _REF_U = 0.19783000664283
 _REF_V = 0.46831999493879
 _KAPPA = 903.2962962
 _EPSILON = 0.0088564516
+
+# Frozen to preserve the current Rich label colors. Keep this in sync with
+# qualitative_hsluv_palette(64, lightness=0.5, saturation=0.9).
+PRECOMPUTED_QUALITATIVE_HSLUV_PALETTE_64 = (
+    "#E3245A",
+    "#2F70EF",
+    "#228921",
+    "#B92FED",
+    "#987022",
+    "#268389",
+    "#7B5EF0",
+    "#D529A6",
+    "#D14923",
+    "#5E8222",
+    "#238755",
+    "#2A7CBC",
+    "#E7232C",
+    "#9D4AF0",
+    "#5569F0",
+    "#DD2680",
+    "#C82CCA",
+    "#B75F22",
+    "#7C7B22",
+    "#408722",
+    "#24856F",
+    "#22893B",
+    "#2C76D5",
+    "#2880A3",
+    "#E62443",
+    "#DF3623",
+    "#6864F0",
+    "#D92893",
+    "#8D55F0",
+    "#AC3DF0",
+    "#426DF0",
+    "#E1256D",
+    "#CF2AB8",
+    "#C12EDC",
+    "#A86822",
+    "#C55522",
+    "#6D7E22",
+    "#4F8422",
+    "#318822",
+    "#8A7622",
+    "#2E73E2",
+    "#25847C",
+    "#278196",
+    "#228848",
+    "#238662",
+    "#22892E",
+    "#2B79C8",
+    "#297EAF",
+    "#E42B23",
+    "#D84023",
+    "#E5244F",
+    "#E72337",
+    "#A544F0",
+    "#845AF0",
+    "#C52DD3",
+    "#CC2BC1",
+    "#DC278A",
+    "#5F67F0",
+    "#7161F0",
+    "#D22AAF",
+    "#9550F0",
+    "#D7289D",
+    "#DF2676",
+    "#4B6BF0",
+)
 
 
 def _distance_line_from_origin(line: tuple[float, float]) -> float:
@@ -145,6 +215,13 @@ def rgb_distance_hex(left: str, right: str) -> float:
     left_rgb = _hex_to_rgb(left)
     right_rgb = _hex_to_rgb(right)
     return math.dist(left_rgb, right_rgb)
+
+
+@lru_cache(maxsize=None)
+def rich_label_palette(slot_count: int) -> tuple[str, ...]:
+    if slot_count <= 64:
+        return PRECOMPUTED_QUALITATIVE_HSLUV_PALETTE_64
+    return tuple(qualitative_hsluv_palette(slot_count, lightness=0.5, saturation=0.9))
 
 
 def qualitative_hsluv_palette(
