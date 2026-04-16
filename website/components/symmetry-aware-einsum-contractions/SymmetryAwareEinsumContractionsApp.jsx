@@ -246,6 +246,9 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       Declared input symmetry changes the encoding before any detected contraction symmetry is computed.
                     </p>
                     <p className="mt-4 text-sm leading-7 text-foreground">
+                      {EXPLORER_ACTS[1].bridge}
+                    </p>
+                    <p className="mt-4 text-sm leading-7 text-foreground">
                       Left vertices (U) are operand axis-classes. Right vertices are index labels,
                       partitioned into <RoleBadge role="v">V free</RoleBadge> and
                       <RoleBadge role="w">W summed</RoleBadge>.
@@ -281,6 +284,9 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     <NarrativeCallout label="Algorithm" tone="algorithm">{EXPLORER_ACTS[2].algorithm}</NarrativeCallout>
                     <p className="mt-4 text-sm leading-7 text-foreground">
                       Detected contraction symmetry is a property of the whole einsum expression, not just one input tensor.
+                    </p>
+                    <p className="mt-4 text-sm leading-7 text-foreground">
+                      {EXPLORER_ACTS[2].bridge}
                     </p>
                     <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
                       <div>
@@ -327,6 +333,9 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     <NarrativeCallout label="Algorithm" tone="algorithm">{EXPLORER_ACTS[3].algorithm}</NarrativeCallout>
                     <p className="mt-4 text-sm leading-7 text-foreground">
                       The detected global action may have been influenced by declared input symmetry, but it is the object being decomposed.
+                    </p>
+                    <p className="mt-4 text-sm leading-7 text-foreground">
+                      {EXPLORER_ACTS[3].bridge}
                     </p>
                     <div className="grid gap-4 md:grid-cols-2">
                       <NarrativeCallout label="Component Story">{COMPONENT_STORY_TEXT}</NarrativeCallout>

@@ -44,6 +44,23 @@ test('Acts 1 through 4 expose the new narrative metadata fields', () => {
   }
 });
 
+test('Acts 2 through 4 surface the named procedures used by the algorithm', () => {
+  const joinedCopy = EXPLORER_ACTS
+    .slice(1, 4)
+    .flatMap(({ heading, question, interpretation, algorithm, produces }) => [
+      heading,
+      question,
+      interpretation,
+      algorithm,
+      produces,
+    ])
+    .join(' ');
+
+  assert.match(joinedCopy, /incidence matrix/i);
+  assert.match(joinedCopy, /Dimino/i);
+  assert.match(joinedCopy, /orbit enumeration/i);
+});
+
 test('acts 1 through 4 explicitly distinguish declared and detected symmetry', () => {
   const appSource = fs.readFileSync(
     new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url),
