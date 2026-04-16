@@ -67,12 +67,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
   const remainingValidPairs = validPairs.slice(VISIBLE_VALID_PAIR_LIMIT);
   const provenance = group?.generatorSelection;
   const selectedPermutationKey = selected?.pi ? permutationKeyFromPi(selected.pi, group?.allLabels || labels) : null;
-  const selectedPiCard = provenance?.validPiCards?.find((card) => card.permutationKey === selectedPermutationKey) ?? null;
-  const selectedCandidateKey = selectedPiCard?.permutationKey ?? null;
-  const selectedCandidate = provenance?.candidatePermutations?.find((candidate) => candidate.permutationKey === selectedCandidateKey) ?? null;
-  const selectedGeneratorIndex = selectedCandidate
-    ? (group?.fullGenerators || []).findIndex((generator) => generator.key() === selectedCandidate.permutationKey)
-    : -1;
+  const selectedCandidate = provenance?.candidatePermutations?.find((candidate) => candidate.permutationKey === selectedPermutationKey) ?? null;
 
   const closeAllModals = () => {
     setShowRejected(false);
@@ -292,32 +287,9 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
                     <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Ordered active labels</div>
                     <code className="mt-1 block font-mono text-foreground">{`[${labels.join(', ')}]`}</code>
                   </div>
-
-                  {selectedCandidate ? (
-                    <div className="space-y-3">
-                      <div className="text-sm text-muted-foreground">
-                        {selectedCandidate.kept
-                          ? 'This candidate is kept and passed to Dimino as one of the input generators.'
-                          : 'This candidate is redundant, so it is not passed to Dimino.'}
-                      </div>
-                      <div>
-                        <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Generator selection</div>
-                        <div className="mt-1 flex flex-wrap items-center gap-2">
-                          <span
-                            className={`inline-flex rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${
-                              selectedCandidate.kept && selectedGeneratorIndex >= 0
-                                ? 'border-coral bg-coral-light/60 text-coral'
-                                : 'border-slate-300 bg-slate-50 text-slate-600'
-                            }`}
-                          >
-                            {selectedCandidate.kept && selectedGeneratorIndex >= 0
-                              ? `chosen as Generator ${selectedGeneratorIndex + 1}`
-                              : 'redundant'}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  ) : null}
+                  <div className="text-sm text-muted-foreground">
+                    This π induces candidate permutation {selectedCandidate ? selectedCandidate.cycleNotation : '—'} on the ordered active labels. The right panel tests whether adding it enlarges the generated subgroup.
+                  </div>
                 </div>
               </div>
             </>
