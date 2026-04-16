@@ -11,16 +11,24 @@ import {
   pickTopVisibleAct,
 } from './components/symmetry-aware-einsum-contractions/lib/activeAct.js';
 
-test('EXPLORER_ACTS defines the four narrative acts in story order', () => {
+test('EXPLORER_ACTS defines the five narrative acts in the updated story order', () => {
   assert.deepEqual(
     EXPLORER_ACTS.map(({ id, navTitle, heading }) => ({ id, navTitle, heading })),
     [
-      { id: 'setup', navTitle: 'Set Up', heading: 'Set Up The Contraction' },
-      { id: 'structure', navTitle: 'See Structure', heading: 'See The Structure' },
-      { id: 'proof', navTitle: 'Prove Symmetry', heading: 'Prove The Symmetry' },
-      { id: 'savings', navTitle: 'Price Savings', heading: 'Price The Savings' },
+      { id: 'setup', navTitle: 'Set Up', heading: 'Specify the Contraction' },
+      { id: 'structure', navTitle: 'See Structure', heading: 'Encode the Structure' },
+      { id: 'proof', navTitle: 'Prove Symmetry', heading: 'Detect and Generate the Symmetry Group' },
+      { id: 'savings', navTitle: 'Detect Structure', heading: 'Decompose the Group Action' },
+      { id: 'price-savings', navTitle: 'Price Savings', heading: 'Price Savings' },
     ],
   );
+});
+
+test('Acts 1 through 4 ask algorithmic questions rather than product-tour questions', () => {
+  assert.match(EXPLORER_ACTS[0].question, /what exact einsum/i);
+  assert.match(EXPLORER_ACTS[1].question, /represent this contraction/i);
+  assert.match(EXPLORER_ACTS[2].question, /what full group do they generate/i);
+  assert.match(EXPLORER_ACTS[3].question, /group is known/i);
 });
 
 test('pickTopVisibleAct prefers the top-most visible act and falls back safely', () => {
@@ -38,13 +46,8 @@ test('pickTopVisibleAct prefers the top-most visible act and falls back safely',
 
 test('shell contract uses primitive-based chrome instead of legacy header classes', () => {
   const source = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
-  const actHeaderStart = source.indexOf('function ActHeader');
-
-  assert.notEqual(actHeaderStart, -1);
-
-  const actHeaderSource = source.slice(actHeaderStart);
-
-  assert.doesNotMatch(actHeaderSource, /font-accent/);
+  assert.match(source, /ExplorerSectionCard/);
+  assert.doesNotMatch(source, /font-accent/);
 });
 
 test('mergeObservedActEntries preserves prior entries and overwrites by act id', () => {
