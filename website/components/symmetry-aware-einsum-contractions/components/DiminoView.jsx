@@ -50,25 +50,50 @@ function ProofSection({ title, children }) {
 
 export default function DiminoView({ group, sigmaResults = [], selectedPairIndex = null }) {
   const orderedLabels = group?.allLabels || [];
+  const validPairs = useMemo(() => sigmaResults.filter((result) => !result.skipped), [sigmaResults]);
   const selectedPair = useMemo(() => {
-    const allPairs = sigmaResults.filter((result) => !result.skipped);
-    if (selectedPairIndex === null || selectedPairIndex < 0 || selectedPairIndex >= allPairs.length) {
-      return null;
+    if (selectedPairIndex === null || selectedPairIndex < 0 || selectedPairIndex >= validPairs.length) {
+      return validPairs[0] ?? null;
     }
-    return allPairs[selectedPairIndex] ?? null;
-  }, [selectedPairIndex, sigmaResults]);
+    return validPairs[selectedPairIndex] ?? validPairs[0] ?? null;
+  }, [selectedPairIndex, validPairs]);
   const selectedPermutationKey = selectedPair?.pi ? permutationKeyFromPi(selectedPair.pi, orderedLabels) : null;
-  const candidate = useMemo(
-    () => group?.generatorSelection?.candidatePermutations?.find((entry) => entry.permutationKey === selectedPermutationKey) ?? null,
-    [group?.generatorSelection?.candidatePermutations, selectedPermutationKey],
+  const candidatePermutations = group?.generatorSelection?.candidatePermutations || [];
+  const matchedCandidate = useMemo(
+    () => candidatePermutations.find((entry) => entry.permutationKey === selectedPermutationKey) ?? null,
+    [candidatePermutations, selectedPermutationKey],
   );
+  const candidate = matchedCandidate ?? candidatePermutations[0] ?? null;
   const closureNewElements = useMemo(() => newElementsFromClosure(candidate), [candidate]);
   const decisionKeepsCandidate = Boolean(candidate?.kept);
   const hasMergedProvenance = (candidate?.sourcePiIds?.length || 0) > 1;
+  const usingPairFallback = selectedPairIndex === null || selectedPairIndex < 0 || selectedPairIndex >= validPairs.length;
+  const usingCandidateFallback = Boolean(selectedPair && !matchedCandidate && candidate && candidate === candidatePermutations[0]);
+
+  if (!selectedPair || !candidate) {
+    return (
+      <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+        <h3 className="font-heading text-base font-semibold text-gray-900">Generator Construction</h3>
+        <p className="mt-2 text-sm leading-6 text-muted-foreground">
+          Select a valid `(σ, π)` pair on the left to test the candidate permutation it induces.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
       <div>
+        {usingPairFallback ? (
+          <div className="rounded-lg border border-dashed border-border bg-surface-raised px-3 py-2 text-xs leading-5 text-muted-foreground">
+            No exact pair is selected yet, so this panel is showing the first valid `(σ, π)` pair as a stable fallback.
+          </div>
+        ) : null}
+        {usingCandidateFallback ? (
+          <div className="mt-3 rounded-lg border border-dashed border-border bg-surface-raised px-3 py-2 text-xs leading-5 text-muted-foreground">
+            The selected pair does not map to a unique candidate permutation, so this panel is showing the first candidate permutation as a stable fallback.
+          </div>
+        ) : null}
         <p className="mt-2 max-w-[62ch] text-sm leading-6 text-muted-foreground">
           Each valid π induces a candidate permutation. We keep it only if adding it enlarges the subgroup generated so far.
         </p>
