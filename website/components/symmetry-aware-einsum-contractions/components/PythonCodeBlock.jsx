@@ -100,8 +100,8 @@ function PythonHighlight({ code }) {
 
 export default function PythonCodeBlock({
   code,
-  title = 'Reference Code',
-  description = 'This is a generated Python sketch of the contraction you are about to analyze.',
+  title,
+  description,
   className,
   contentClassName,
 }) {
@@ -114,6 +114,31 @@ export default function PythonCodeBlock({
     });
   }, [code]);
 
+  const codeBody = (
+    <div className="relative min-h-0 flex-1">
+      <PythonHighlight code={code} />
+      <Button
+        type="button"
+        size="icon-sm"
+        variant="outline"
+        className="absolute right-3 top-3 z-10 size-7 border-white/25 bg-slate-900/85 text-slate-200 hover:bg-slate-900"
+        onClick={handleCopy}
+        aria-label={copied ? 'Copied' : 'Copy code'}
+        title={copied ? 'Copied' : 'Copy code'}
+      >
+        {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
+      </Button>
+    </div>
+  );
+
+  if (!title && !description) {
+    return (
+      <div className={['flex min-h-0 flex-col', className, contentClassName].filter(Boolean).join(' ')}>
+        {codeBody}
+      </div>
+    );
+  }
+
   return (
     <ExplorerSectionCard
       eyebrow={title}
@@ -122,20 +147,7 @@ export default function PythonCodeBlock({
       contentClassName={['pt-5', 'min-h-0', 'flex', 'flex-col', contentClassName].filter(Boolean).join(' ')}
       action={null}
     >
-      <div className="relative min-h-0 flex-1">
-        <PythonHighlight code={code} />
-        <Button
-          type="button"
-          size="icon-sm"
-          variant="outline"
-          className="absolute right-3 top-3 z-10 size-7 border-white/25 bg-slate-900/85 text-slate-200 hover:bg-slate-900"
-          onClick={handleCopy}
-          aria-label={copied ? 'Copied' : 'Copy code'}
-          title={copied ? 'Copied' : 'Copy code'}
-        >
-          {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
-        </Button>
-      </div>
+      {codeBody}
     </ExplorerSectionCard>
   );
 }

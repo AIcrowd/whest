@@ -3,6 +3,61 @@ import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { EXPLORER_ACTS } from './explorerNarrative.js';
 
+// Character-by-character renderer for a subscript/output *label region*
+// (e.g. "ia,ib,ic" or "abc"). Letters matching `hoveredLabels` swap to
+// pitch black with a coral underline; everything else passes through.
+// Layout is stable: no bold (glyph widths stay fixed), no padding/ring
+// (no per-char circle outlines).
+function SubscriptTokens({ text, hoveredLabels }) {
+  const chars = Array.from(String(text ?? ''));
+  const hasHover = hoveredLabels instanceof Set && hoveredLabels.size > 0;
+  return (
+    <>
+      {chars.map((ch, idx) => {
+        const isLetter = /[A-Za-z]/.test(ch);
+        const isHit = hasHover && isLetter && hoveredLabels.has(ch);
+        if (!isHit) return <span key={idx}>{ch}</span>;
+        // `decoration-coral` / `text-coral` are NOT defined in this Tailwind
+        // theme — only `--primary` / `--color-primary` resolve to the coral
+        // hex. `text-black` gives the strong contrast against the coral-tint
+        // badge background that plain coral text can't.
+        return (
+          <span
+            key={idx}
+            className="text-black underline decoration-primary decoration-2 underline-offset-2"
+          >
+            {ch}
+          </span>
+        );
+      })}
+    </>
+  );
+}
+
+// Renders the einsum formula with per-region tokenization. Only the
+// subscript + output label regions are highlight-able — so hovering a
+// label like `i` no longer lights up the `i` in "einsum". We rebuild from
+// `example.expression` (structured) rather than walking the display string,
+// so the visible formula always matches the authoritative subscripts.
+function FormulaHighlighted({ example, hoveredLabels }) {
+  const expr = example?.expression;
+  if (!expr || typeof expr.subscripts !== 'string') {
+    // Pre-normalized or malformed example — fall back to the raw string
+    // with no highlighting. Better than crashing or silently highlighting
+    // the wrong characters.
+    return <>{example?.formula ?? ''}</>;
+  }
+  return (
+    <>
+      <span>{"einsum('"}</span>
+      <SubscriptTokens text={expr.subscripts} hoveredLabels={hoveredLabels} />
+      <span>{'→'}</span>
+      <SubscriptTokens text={expr.output ?? ''} hoveredLabels={hoveredLabels} />
+      <span>{`', ${expr.operandNames ?? ''})`}</span>
+    </>
+  );
+}
+
 function symmetryLabel(variable) {
   if (!variable || variable.symmetry === 'none') return 'dense';
   const k = (variable.symAxes && variable.symAxes.length) || variable.rank;
@@ -40,7 +95,7 @@ function ParameterSymmetryRow({ variables = [] }) {
   );
 }
 
-export default function StickyBar({ example, group, activeActId }) {
+export default function StickyBar({ example, group, activeActId, hoveredLabels = null }) {
   const variables = example?.variables ?? [];
 
   return (
@@ -84,7 +139,7 @@ export default function StickyBar({ example, group, activeActId }) {
               <div className="flex flex-wrap items-center gap-2">
                 <Badge className="shrink-0">einsum</Badge>
                 <code className="block rounded-md border border-primary/20 bg-primary/10 px-2.5 py-1 text-sm font-mono font-medium text-primary shadow-sm">
-                  {example.formula}
+                  <FormulaHighlighted example={example} hoveredLabels={hoveredLabels} />
                 </code>
                 {group && (
                   <Badge variant="outline" className="shrink-0 border-primary/25 bg-primary/10 text-primary">

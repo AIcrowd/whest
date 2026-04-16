@@ -77,11 +77,16 @@ test('acts 1 through 4 explicitly distinguish declared and detected symmetry', (
     new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url),
     'utf8',
   );
+  const narrativeSource = fs.readFileSync(
+    new URL('./components/symmetry-aware-einsum-contractions/components/explorerNarrative.js', import.meta.url),
+    'utf8',
+  );
   const act5Start = appSource.indexOf('<section id={EXPLORER_ACTS[4].id}');
   const shellActsSource = act5Start >= 0 ? appSource.slice(0, act5Start) : appSource;
+  const combined = `${shellActsSource}\n${narrativeSource}`;
 
-  const declaredMatches = shellActsSource.match(/declared input symmetry/gi) ?? [];
-  const detectedMatches = shellActsSource.match(/detected contraction symmetry/gi) ?? [];
+  const declaredMatches = combined.match(/declared input symmetry/gi) ?? [];
+  const detectedMatches = combined.match(/detected contraction symmetry/gi) ?? [];
 
   assert.ok(declaredMatches.length >= 2);
   assert.ok(detectedMatches.length >= 2);

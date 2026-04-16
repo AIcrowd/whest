@@ -38,8 +38,6 @@ test('ExampleChooser uses the shared Python code block and current builder primi
   assert.match(chooserSource, /ExplorerField/);
   assert.match(chooserSource, /Button/);
   assert.match(chooserSource, /Input/);
-  assert.match(chooserSource, /checkpointItems\.length > 0/);
-  assert.match(chooserSource, /Reference Code/);
   assert.match(codeBlockSource, /navigator\.clipboard\.writeText/);
   assert.match(codeBlockSource, /function highlightPython/);
   assert.match(codeBlockSource, /ExplorerSectionCard/);

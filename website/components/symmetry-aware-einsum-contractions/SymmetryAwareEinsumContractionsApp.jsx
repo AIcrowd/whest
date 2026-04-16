@@ -8,7 +8,7 @@ import { analyzeExample } from './engine/pipeline.js';
 import { buildMentalModelCode, pickDefaultOrbitRow } from './engine/teachingModel.js';
 import StickyBar from './components/StickyBar.jsx';
 import ExplorerSectionCard from './components/ExplorerSectionCard.jsx';
-import { EXPLORER_ACTS, buildAnalysisCheckpoint } from './components/explorerNarrative.js';
+import { EXPLORER_ACTS } from './components/explorerNarrative.js';
 import NarrativeCallout from './components/NarrativeCallout.jsx';
 import ExampleChooser from './components/ExampleChooser.jsx';
 import PresetSidebar from './components/PresetSidebar.jsx';
@@ -78,6 +78,19 @@ export default function SymmetryAwareEinsumContractionsApp() {
   const [activeActId, setActiveActId] = useState(EXPLORER_ACTS[0].id);
   const [isDirty, setIsDirty] = useState(false);
   const [showMentalModel, setShowMentalModel] = useState(false);
+  // Cross-highlight payload emitted by the Act-4 Interaction Graph on hover.
+  // `labels` → halo those characters in the StickyBar einsum equation;
+  // `leafKeys` → spotlight matching leaves in the DecisionLadder.
+  const [graphHover, setGraphHover] = useState(null);
+  const handleGraphHover = useCallback((payload) => setGraphHover(payload), []);
+  const hoveredLabelSet = useMemo(
+    () => (graphHover?.labels?.length ? new Set(graphHover.labels) : null),
+    [graphHover],
+  );
+  const spotlightLeafSet = useMemo(
+    () => (graphHover?.leafKeys?.length ? new Set(graphHover.leafKeys) : null),
+    [graphHover],
+  );
   const observedEntriesRef = useRef(new Map());
 
   // Resolve the active example: preset or custom
@@ -199,8 +212,6 @@ export default function SymmetryAwareEinsumContractionsApp() {
     return () => observer.disconnect();
   }, [analysis, example]);
 
-  const checkpointItems = buildAnalysisCheckpoint({ example: normalizedExample, group });
-
   useKeyboardShortcuts({
     ArrowLeft: () => {
       if (selectedPresetIdx == null) return;
@@ -221,6 +232,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
         example={previewExample ?? example}
         group={group}
         activeActId={activeActId}
+        hoveredLabels={hoveredLabelSet}
       />
 
       <div className="w-full pb-20 pt-8">
@@ -257,21 +269,19 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[0].interpretation}</NarrativeCallout>
                   <NarrativeCallout label="Approach" tone="algorithm">{EXPLORER_ACTS[0].algorithm}</NarrativeCallout>
                 </div>
-                <p className="mt-4 text-sm leading-7 text-foreground">
-                  This act specifies declared input symmetry only. It fixes the operands and labels before any detected contraction symmetry is considered.
-                </p>
-                <ExampleChooser
-                  examples={EXAMPLES}
-                  onSelect={handleSelect}
-                  selectedPresetIdx={selectedPresetIdx}
-                  dimensionN={dimensionN}
-                  onDimensionChange={setDefaultSize}
-                  onCustom={handleCustomMode}
-                  onCustomExample={handleCustomExample}
-                  onPreviewChange={setPreviewExample}
-                  onDirtyChange={setIsDirty}
-                  checkpointItems={checkpointItems}
-                />
+                <div className="mt-6">
+                  <ExampleChooser
+                    examples={EXAMPLES}
+                    onSelect={handleSelect}
+                    selectedPresetIdx={selectedPresetIdx}
+                    dimensionN={dimensionN}
+                    onDimensionChange={setDefaultSize}
+                    onCustom={handleCustomMode}
+                    onCustomExample={handleCustomExample}
+                    onPreviewChange={setPreviewExample}
+                    onDirtyChange={setIsDirty}
+                  />
+                </div>
                 <div className="mt-4">
                   <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[0].produces}</NarrativeCallout>
                 </div>
@@ -417,8 +427,11 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       dimensionN={dimensionN}
                       allLabels={group.allLabels}
                       vLabels={group.vLabels}
+                      fullGenerators={group.fullGenerators}
                       selectedOrbitIdx={resolvedSelectedOrbitIdx}
                       onSelectOrbit={setSelectedOrbitIdx}
+                      onGraphHover={handleGraphHover}
+                      spotlightLeafIds={spotlightLeafSet}
                     />
                   </div>
 

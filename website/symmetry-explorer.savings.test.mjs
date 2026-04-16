@@ -11,7 +11,10 @@ test('Acts 2-4 are sequenced around the inline savings narrative', () => {
   assert.match(appSource, /EXPLORER_ACTS\[2\]\.heading/);
   assert.match(appSource, /EXPLORER_ACTS\[3\]\.heading/);
   assert.match(appSource, /We now decompose the detected global action/);
-  assert.match(componentCostSource, /independent components/);
+  // Interaction Graph card caption must name the math (edge = co-permuted)
+  // AND the consequence (components factor the cost). See fizzy-nibbling-turtle plan.
+  assert.match(componentCostSource, /moves together/);
+  assert.match(componentCostSource, /factor the cost into independent sub-problems/);
   assert.match(appSource, /EXPLORER_ACTS\[4\]\.question/);
   assert.doesNotMatch(totalCostSource, /payoff of the previous acts/);
 });

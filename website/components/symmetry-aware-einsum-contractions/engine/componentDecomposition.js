@@ -91,14 +91,19 @@ class UnionFind {
 export function buildLabelInteractionGraph(allLabels, generators) {
   const n = allLabels.length;
   const uf = new UnionFind(n);
+  // Each edge is a 3-tuple [fromIdx, toIdx, generatorIdx]. The generator index
+  // lets the UI attribute an edge back to the specific σ that introduced it
+  // (see LabelInteractionGraph's edge tooltips). Downstream consumers that
+  // only destructure [a, b] still work — the third element is silently
+  // dropped by array destructuring.
   const edges = [];
 
-  for (const gen of generators) {
+  generators.forEach((gen, generatorIdx) => {
     const movedByThisGen = [];
     for (let i = 0; i < n; i += 1) {
       if (gen.arr[i] !== i) {
         movedByThisGen.push(i);
-        edges.push([i, gen.arr[i]]);
+        edges.push([i, gen.arr[i], generatorIdx]);
         uf.union(i, gen.arr[i]);
       }
     }
@@ -106,7 +111,7 @@ export function buildLabelInteractionGraph(allLabels, generators) {
     for (let j = 1; j < movedByThisGen.length; j += 1) {
       uf.union(movedByThisGen[0], movedByThisGen[j]);
     }
-  }
+  });
 
   const componentMap = new Map();
   for (let i = 0; i < n; i += 1) {

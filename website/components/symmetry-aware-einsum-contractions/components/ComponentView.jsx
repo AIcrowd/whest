@@ -1,4 +1,5 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Controls, Handle, Position, ReactFlow, ReactFlowProvider } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { cn } from '../lib/utils';
@@ -58,83 +59,406 @@ function dedupEdges(edges) {
   });
 }
 
-export function LabelInteractionGraph({ allLabels = [], vLabels = [], interactionGraph = {} }) {
+// Viewport-aware tooltip positioning shared with DecisionTree/DecisionLadder.
+// Tooltip lives in a React portal attached to document.body so it escapes any
+// ancestor transforms (the PanZoomCanvas wrapping this SVG creates one).
+function computeGraphTooltipPos(rect) {
+  const tooltipW = 288;
+  const tooltipH = 200;
+  const vw = document.documentElement.clientWidth;
+  const vh = document.documentElement.clientHeight;
+  let x = rect.left + rect.width / 2;
+  x = Math.max(tooltipW / 2 + 8, Math.min(x, vw - tooltipW / 2 - 16));
+  const roomAbove = rect.top;
+  const roomBelow = vh - rect.bottom;
+  if (roomAbove >= tooltipH + 12) return { x, y: rect.top - 8, flipped: false };
+  if (roomBelow >= tooltipH + 12) return { x, y: rect.bottom + 8, flipped: true };
+  const flipped = roomBelow > roomAbove;
+  return { x, y: flipped ? rect.bottom + 8 : rect.top - 8, flipped };
+}
+
+export function LabelInteractionGraph({
+  allLabels = [],
+  vLabels = [],
+  interactionGraph = {},
+  components: richComponents = null,
+  fullGenerators = null,
+  onHover = null,
+}) {
   const n = allLabels.length;
+
+  const vSet = useMemo(() => new Set(vLabels), [vLabels]);
+  const { edges = [], components: graphComponents = [] } = interactionGraph;
+  const uniqueEdges = useMemo(() => dedupEdges(edges), [edges]);
+  const positions = useMemo(
+    () => allLabels.map((_, idx) => circlePos(idx, allLabels.length, ORBIT_R)),
+    [allLabels],
+  );
+
+  // Prefer the rich components (which carry caseType -> canonical CASE_META
+  // colors shared with the DecisionLadder and CaseBadge). Fall back to the raw
+  // index-array components from the interaction graph if they weren't threaded
+  // through — in that case hulls use the old rotating palette as before.
+  const hullData = useMemo(
+    () =>
+      (richComponents ?? graphComponents).map((entry, compIdx) => {
+        if (Array.isArray(entry)) {
+          return {
+            indices: entry,
+            color: COMP_COLORS[compIdx % COMP_COLORS.length],
+            comp: null,
+          };
+        }
+        const indices = entry?.indices ?? [];
+        const caseColor = CASE_NODE_COLORS[entry?.caseType];
+        return {
+          indices,
+          color: caseColor ?? COMP_COLORS[compIdx % COMP_COLORS.length],
+          comp: entry,
+        };
+      }),
+    [richComponents, graphComponents],
+  );
+
+  // Label index -> rich component (used inside node tooltips).
+  const labelToComp = useMemo(() => {
+    const map = new Array(n).fill(null);
+    hullData.forEach((hull) => {
+      if (!hull.comp) return;
+      for (const idx of hull.indices) map[idx] = hull.comp;
+    });
+    return map;
+  }, [hullData, n]);
+
+  // ─── Tooltip state (mirrors the DecisionTree/DecisionLadder pattern) ────
+  const [hovered, setHovered] = useState(null);
+  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0, flipped: false });
+  const hideTimerRef = useRef(null);
+  const hoveredKeyRef = useRef(null);
+  const wrapRef = useRef(null);
+
+  const cancelHide = useCallback(() => {
+    if (hideTimerRef.current) {
+      clearTimeout(hideTimerRef.current);
+      hideTimerRef.current = null;
+    }
+  }, []);
+
+  // Emit a structured cross-highlight payload whenever the hover target
+  // changes. Consumers (App → StickyBar / DecisionLadder) use this to halo
+  // matching einsum letters in the top bar and spotlight matching ladder
+  // leaves.
+  const buildHoverPayload = useCallback(
+    (target) => {
+      if (!target) return null;
+      if (target.kind === 'node') {
+        const label = allLabels[target.idx];
+        return label ? { labels: [label], leafKeys: [] } : null;
+      }
+      if (target.kind === 'edge') {
+        const edge = uniqueEdges[target.idx];
+        if (!edge) return null;
+        const [a, b] = edge;
+        const labs = [allLabels[a], allLabels[b]].filter(Boolean);
+        return { labels: labs, leafKeys: [] };
+      }
+      if (target.kind === 'hull') {
+        const hull = hullData[target.idx];
+        if (!hull?.comp) return null;
+        const leafKeys = [
+          hull.comp.caseType,
+          hull.comp.shape,
+          hull.comp.accumulation?.regimeId,
+        ].filter(Boolean);
+        return { labels: hull.comp.labels ?? [], leafKeys };
+      }
+      return null;
+    },
+    [allLabels, uniqueEdges, hullData],
+  );
+
+  const hideTooltip = useCallback(() => {
+    cancelHide();
+    hideTimerRef.current = setTimeout(() => {
+      hoveredKeyRef.current = null;
+      setHovered(null);
+      if (onHover) onHover(null);
+    }, 80);
+  }, [cancelHide, onHover]);
+
+  const openTooltip = useCallback(
+    (target, rect) => {
+      if (!rect) return;
+      const key = `${target.kind}:${target.idx}`;
+      if (hoveredKeyRef.current === key) {
+        cancelHide();
+        return;
+      }
+      cancelHide();
+      hoveredKeyRef.current = key;
+      setHovered(target);
+      setTooltipPos(computeGraphTooltipPos(rect));
+      if (onHover) onHover(buildHoverPayload(target));
+    },
+    [cancelHide, onHover, buildHoverPayload],
+  );
+
+  useEffect(() => () => cancelHide(), [cancelHide]);
+
+  // Defensive dismissal — same causes as DecisionTree's tooltip: scroll,
+  // resize, Escape, pointerdown outside the SVG (includes pan gesture start),
+  // blur.
+  useEffect(() => {
+    if (!hovered) return undefined;
+    const dismiss = () => {
+      cancelHide();
+      hoveredKeyRef.current = null;
+      setHovered(null);
+      if (onHover) onHover(null);
+    };
+    const dismissOnEscape = (event) => {
+      if (event.key === 'Escape') dismiss();
+    };
+    const dismissIfOutside = (event) => {
+      const target = event.target;
+      if (!(target instanceof Node)) return dismiss();
+      if (wrapRef.current && wrapRef.current.contains(target)) return;
+      dismiss();
+    };
+
+    window.addEventListener('scroll', dismiss, true);
+    window.addEventListener('resize', dismiss);
+    window.addEventListener('keydown', dismissOnEscape);
+    window.addEventListener('pointerdown', dismissIfOutside);
+    window.addEventListener('blur', dismiss);
+
+    return () => {
+      window.removeEventListener('scroll', dismiss, true);
+      window.removeEventListener('resize', dismiss);
+      window.removeEventListener('keydown', dismissOnEscape);
+      window.removeEventListener('pointerdown', dismissIfOutside);
+      window.removeEventListener('blur', dismiss);
+    };
+  }, [hovered, cancelHide, onHover]);
+
+  const tooltipContent = useMemo(() => {
+    if (!hovered) return null;
+
+    if (hovered.kind === 'node') {
+      const label = allLabels[hovered.idx];
+      if (label === undefined) return null;
+      const isV = vSet.has(label);
+      const comp = labelToComp[hovered.idx];
+      const meta = comp?.caseType ? CASE_META[comp.caseType] : null;
+      return (
+        <>
+          <div className="mb-1 flex items-center gap-2">
+            <span
+              className="inline-block size-2.5 rounded-full"
+              style={{ backgroundColor: isV ? COLOR_V : COLOR_W }}
+            />
+            <span className="text-xs font-bold uppercase tracking-wide">Label</span>
+            <span className="font-mono text-sm text-white">{label}</span>
+          </div>
+          <div className="text-[11px] text-gray-300">
+            {isV ? 'Free (V) — appears in the output' : 'Summed (W) — contracted away'}
+          </div>
+          {comp && (
+            <div className="mt-2 text-[11px] text-gray-300">
+              <span className="text-gray-400">Component:</span>{' '}
+              <span className="font-mono text-gray-100">{`{${comp.labels.join(', ')}}`}</span>
+            </div>
+          )}
+          {meta && (
+            <div className="mt-1 text-[11px] text-gray-300">
+              <span className="font-semibold text-white">{meta.label}</span>
+              <span className="text-gray-400"> — {meta.description}</span>
+            </div>
+          )}
+        </>
+      );
+    }
+
+    if (hovered.kind === 'edge') {
+      const edge = uniqueEdges[hovered.idx];
+      if (!edge) return null;
+      const [a, b, genIdx] = edge;
+      const gen = Number.isInteger(genIdx) ? fullGenerators?.[genIdx] : null;
+      let cycle = null;
+      try {
+        cycle = gen?.cycleNotation?.(allLabels) ?? null;
+      } catch {
+        cycle = null;
+      }
+      return (
+        <>
+          <div className="mb-1 text-xs font-bold uppercase tracking-wide">
+            {Number.isInteger(genIdx) ? `Generator σ${genIdx + 1}` : 'Generator'}
+          </div>
+          {cycle ? (
+            <div className="font-mono text-[11px] text-gray-100">{cycle}</div>
+          ) : null}
+          <div className="mt-2 text-[11px] text-gray-300">
+            Labels{' '}
+            <span className="font-mono text-gray-100">{allLabels[a]}</span> and{' '}
+            <span className="font-mono text-gray-100">{allLabels[b]}</span> are
+            moved together by this generator of <span className="font-mono text-gray-100">G</span>.
+          </div>
+        </>
+      );
+    }
+
+    if (hovered.kind === 'hull') {
+      const hull = hullData[hovered.idx];
+      const comp = hull?.comp;
+      if (!comp) return null;
+      const meta = CASE_META[comp.caseType];
+      return (
+        <>
+          <div className="mb-1 text-xs font-bold uppercase tracking-wide">
+            {meta?.label ?? 'Component'}
+          </div>
+          {meta?.description ? (
+            <div className="text-[11px] text-gray-300">{meta.description}</div>
+          ) : null}
+          {meta?.method ? (
+            <div className="mt-1 font-mono text-[11px] text-gray-100">{meta.method}</div>
+          ) : null}
+          <div className="mt-2 text-[11px] text-gray-300">
+            <span className="text-gray-400">Labels:</span>{' '}
+            <span className="font-mono text-gray-100">{comp.labels?.join(', ') ?? '—'}</span>
+          </div>
+          {comp.groupName && comp.groupName !== 'trivial' ? (
+            <div className="text-[11px] text-gray-300">
+              <span className="text-gray-400">Symmetry:</span>{' '}
+              <span className="font-mono text-gray-100">{comp.groupName}</span>
+            </div>
+          ) : null}
+        </>
+      );
+    }
+
+    return null;
+  }, [hovered, allLabels, vSet, labelToComp, uniqueEdges, fullGenerators, hullData]);
+
   if (n === 0) return null;
 
-  const vSet = new Set(vLabels);
-  const { edges = [], components = [] } = interactionGraph;
-  const uniqueEdges = dedupEdges(edges);
-  const positions = allLabels.map((_, idx) => circlePos(idx, n, ORBIT_R));
-  const labelToComp = new Array(n).fill(-1);
-  components.forEach((comp, compIdx) => {
-    comp.forEach((idx) => {
-      labelToComp[idx] = compIdx;
-    });
-  });
-
   return (
-    <svg
-      className="w-full max-w-[220px]"
-      viewBox={`0 0 ${GRAPH_SIZE} ${GRAPH_SIZE}`}
-      aria-label="Label interaction graph"
-    >
-      {components.map((comp, compIdx) => {
-        if (comp.length <= 1) return null;
-        const points = comp.map((idx) => positions[idx]);
-        return (
-          <polygon
-            key={`comp-${compIdx}`}
-            points={points.map((point) => `${point.x},${point.y}`).join(' ')}
-            fill={COMP_COLORS[compIdx % COMP_COLORS.length]}
-            fillOpacity={0.08}
-            stroke={COMP_COLORS[compIdx % COMP_COLORS.length]}
-            strokeDasharray="4 3"
-            strokeOpacity={0.45}
-          />
-        );
-      })}
+    <>
+      <svg
+        ref={wrapRef}
+        className="w-full max-w-[220px]"
+        viewBox={`0 0 ${GRAPH_SIZE} ${GRAPH_SIZE}`}
+        aria-label="Label interaction graph"
+      >
+        {hullData.map((hull, compIdx) => {
+          if (hull.indices.length <= 1) return null;
+          const points = hull.indices.map((idx) => positions[idx]);
+          return (
+            <polygon
+              key={`comp-${compIdx}`}
+              points={points.map((point) => `${point.x},${point.y}`).join(' ')}
+              fill={hull.color}
+              fillOpacity={0.08}
+              stroke={hull.color}
+              strokeDasharray="4 3"
+              strokeOpacity={0.55}
+              style={{ cursor: 'help' }}
+              onMouseEnter={(e) =>
+                openTooltip({ kind: 'hull', idx: compIdx }, e.currentTarget.getBoundingClientRect())
+              }
+              onMouseLeave={hideTooltip}
+            />
+          );
+        })}
 
-      {uniqueEdges.map(([a, b], edgeIdx) => {
-        const pa = positions[a];
-        const pb = positions[b];
-        if (!pa || !pb) return null;
-        return (
-          <line
-            key={`edge-${edgeIdx}`}
-            x1={pa.x}
-            y1={pa.y}
-            x2={pb.x}
-            y2={pb.y}
-            stroke="#6B7280"
-            strokeWidth={1}
-            strokeOpacity={0.45}
-          />
-        );
-      })}
+        {uniqueEdges.map(([a, b], edgeIdx) => {
+          const pa = positions[a];
+          const pb = positions[b];
+          if (!pa || !pb) return null;
+          return (
+            <g key={`edge-${edgeIdx}`}>
+              {/* Transparent wide hit area — 1 px edges are un-hoverable. */}
+              <line
+                x1={pa.x}
+                y1={pa.y}
+                x2={pb.x}
+                y2={pb.y}
+                stroke="transparent"
+                strokeWidth={10}
+                style={{ cursor: 'help' }}
+                onMouseEnter={(e) =>
+                  openTooltip(
+                    { kind: 'edge', idx: edgeIdx },
+                    e.currentTarget.getBoundingClientRect(),
+                  )
+                }
+                onMouseLeave={hideTooltip}
+              />
+              <line
+                x1={pa.x}
+                y1={pa.y}
+                x2={pb.x}
+                y2={pb.y}
+                stroke="#6B7280"
+                strokeWidth={1}
+                strokeOpacity={0.45}
+                pointerEvents="none"
+              />
+            </g>
+          );
+        })}
 
-      {allLabels.map((label, idx) => {
-        const { x, y } = positions[idx];
-        const isV = vSet.has(label);
-        return (
-          <g key={`node-${label}`}>
-            <circle cx={x} cy={y} r={NODE_R} fill={isV ? COLOR_V : COLOR_W} stroke="#F9FAFB" strokeWidth={2} />
-            <text
-              x={x}
-              y={y}
-              textAnchor="middle"
-              dominantBaseline="central"
-              fontSize={12}
-              fontFamily="ui-monospace, monospace"
-              fontWeight={600}
-              fill="#FFFFFF"
+        {allLabels.map((label, idx) => {
+          const { x, y } = positions[idx];
+          const isV = vSet.has(label);
+          return (
+            <g
+              key={`node-${label}`}
+              style={{ cursor: 'help' }}
+              onMouseEnter={(e) =>
+                openTooltip({ kind: 'node', idx }, e.currentTarget.getBoundingClientRect())
+              }
+              onMouseLeave={hideTooltip}
             >
-              {label}
-            </text>
-          </g>
-        );
-      })}
-    </svg>
+              <circle cx={x} cy={y} r={NODE_R} fill={isV ? COLOR_V : COLOR_W} stroke="#F9FAFB" strokeWidth={2} />
+              <text
+                x={x}
+                y={y}
+                textAnchor="middle"
+                dominantBaseline="central"
+                fontSize={12}
+                fontFamily="ui-monospace, monospace"
+                fontWeight={600}
+                fill="#FFFFFF"
+                pointerEvents="none"
+              >
+                {label}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+
+      {hovered && typeof document !== 'undefined'
+        ? createPortal(
+            <div
+              className="pointer-events-none fixed z-[9999] w-72 rounded-md bg-gray-900 px-3.5 py-3 text-white shadow-2xl"
+              style={{
+                left: tooltipPos.x,
+                top: tooltipPos.y,
+                transform: tooltipPos.flipped
+                  ? 'translateX(-50%)'
+                  : 'translateX(-50%) translateY(-100%)',
+              }}
+              role="tooltip"
+            >
+              {tooltipContent}
+            </div>,
+            document.body,
+          )
+        : null}
+    </>
   );
 }
 

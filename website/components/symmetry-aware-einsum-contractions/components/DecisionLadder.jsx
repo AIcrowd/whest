@@ -182,18 +182,29 @@ function SourceNode({ data }) {
 
 function LeafNode({ data }) {
   const bg = data.active ? mixWithWhite(data.color, 0.72) : mixWithWhite(data.color, 0.88);
+  // Spotlight > active > idle. Spotlight is a coral ring (matches the
+  // StickyBar halo color) so the cross-highlight reads as "these two
+  // surfaces are talking about the same thing".
+  const SPOTLIGHT_RING = '#F0524D';
+  const shadow = data.spotlight
+    ? `0 0 0 10px ${SPOTLIGHT_RING}33, 0 0 0 6px ${mixWithWhite(data.color, 0.6)}`
+    : data.active
+      ? `0 0 0 6px ${mixWithWhite(data.color, 0.65)}`
+      : undefined;
+  const borderColor = data.spotlight ? SPOTLIGHT_RING : data.color;
   return (
     <div
       className="box-border flex h-full w-full cursor-help items-center justify-center whitespace-nowrap rounded-lg px-2 py-0.5 text-center text-sm font-bold leading-tight shadow-sm transition-all hover:shadow"
       style={{
         backgroundColor: bg,
-        borderColor: data.color,
-        borderWidth: data.active ? 3 : 2,
+        borderColor,
+        borderWidth: data.spotlight ? 3 : data.active ? 3 : 2,
         borderStyle: 'solid',
         color: '#0F172A',
-        boxShadow: data.active ? `0 0 0 6px ${mixWithWhite(data.color, 0.65)}` : undefined,
+        boxShadow: shadow,
       }}
       data-tree-node={data.nodeId}
+      data-leaf-spotlight={data.spotlight ? 'true' : undefined}
     >
       <Handle id="right" type="target" position={Position.Right} className="pointer-events-none opacity-0" />
       <Handle id="top" type="target" position={Position.Top} className="pointer-events-none opacity-0" />
@@ -246,10 +257,13 @@ function tooltipFor(nodeId) {
 
 // ─── Layout ──────────────────────────────────────────────────────────
 
-function buildLadderLayout(activeLeafIds) {
+function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
   const active = activeLeafIds instanceof Set
     ? activeLeafIds
     : new Set(activeLeafIds || []);
+  const spotlight = spotlightLeafIds instanceof Set
+    ? spotlightLeafIds
+    : new Set(spotlightLeafIds || []);
   const nodes = [];
   const edges = [];
 
@@ -264,6 +278,7 @@ function buildLadderLayout(activeLeafIds) {
         text: spec.label,
         color: spec.color,
         active: active.has(leafId),
+        spotlight: spotlight.has(leafId),
         nodeId: leafId,
       },
     };
@@ -389,6 +404,7 @@ export default function DecisionLadder({
   activeRegimeId = null,
   activeShapeId = null,
   activeLeafIds = null,
+  spotlightLeafIds = null,
 }) {
   // Highlighting policy: every detected leaf across all components gets a
   // halo (including shape leaves like `trivial` / `allVisible`). The
@@ -410,9 +426,15 @@ export default function DecisionLadder({
   const hideTimerRef = useRef(null);
   const hoveredNodeRef = useRef(null);
 
+  const effectiveSpotlight = useMemo(() => {
+    if (!spotlightLeafIds) return new Set();
+    if (spotlightLeafIds instanceof Set) return spotlightLeafIds;
+    return new Set(spotlightLeafIds);
+  }, [spotlightLeafIds]);
+
   const { nodes, edges } = useMemo(
-    () => buildLadderLayout(effectiveLeafIds),
-    [effectiveLeafIds],
+    () => buildLadderLayout(effectiveLeafIds, effectiveSpotlight),
+    [effectiveLeafIds, effectiveSpotlight],
   );
 
   const openTooltipForNode = useCallback((nodeId, rect) => {

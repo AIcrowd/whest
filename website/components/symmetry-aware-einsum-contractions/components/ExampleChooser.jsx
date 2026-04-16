@@ -114,7 +114,6 @@ export default function ExampleChooser({
   onCustomExample,
   onPreviewChange,
   onDirtyChange,
-  checkpointItems = [],
 }) {
   const initialSelection = resolvePresetSelection(examples, selectedPresetIdx);
   const initialPresetIdx = initialSelection.activePresetIdx >= 0 ? initialSelection.activePresetIdx : 0;
@@ -302,18 +301,7 @@ export default function ExampleChooser({
 
   const builderContent = (
     <>
-      {checkpointItems.length > 0 && (
-        <div className="mt-4 grid gap-3 rounded-xl border border-gray-200 bg-gray-50 p-4 sm:grid-cols-2">
-          {checkpointItems.map((item) => (
-            <div key={item.label}>
-              <div className="text-sm font-semibold uppercase tracking-[0.18em] text-gray-400">{item.label}</div>
-              <div className="mt-1 text-sm text-gray-700">{item.value}</div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      <div className="mt-6 space-y-4">
+      <div className="space-y-4">
         <div>
           <div className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-gray-500">Variables</div>
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
@@ -615,8 +603,6 @@ export default function ExampleChooser({
         <div className="min-w-0 h-full">
           <PythonCodeBlock
             code={pythonCode}
-            title="Reference Code"
-            description="This is a generated Python sketch of the contraction you are about to analyze."
             className="h-full"
             contentClassName="h-full"
           />

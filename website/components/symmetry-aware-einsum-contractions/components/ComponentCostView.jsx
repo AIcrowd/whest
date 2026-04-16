@@ -184,14 +184,74 @@ function ComponentSummaryTable({
   );
 }
 
+// Compact stat read next to the card's title. Three numbers that answer
+// "how big / connected is this graph" at a glance, in the same visual
+// register as the rest of Act 4 (uppercase eyebrow + mono numeral).
+function InteractionGraphMetricStrip({ labelCount, edgeCount, componentCount }) {
+  const cells = [
+    { label: 'labels', value: labelCount },
+    { label: 'edges', value: edgeCount },
+    { label: 'components', value: componentCount },
+  ];
+  return (
+    <div className="flex shrink-0 items-stretch gap-1.5">
+      {cells.map((cell) => (
+        <div
+          key={cell.label}
+          className="flex flex-col items-center rounded-md border border-border/70 bg-surface-raised px-2 py-1"
+        >
+          <span className="font-mono text-sm font-semibold leading-tight text-foreground">
+            {cell.value}
+          </span>
+          <span className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+            {cell.label}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// Inline legend for the graph's visual vocabulary. The V/W dot colors here
+// must match LabelInteractionGraph's COLOR_V / COLOR_W so the legend stays
+// truthful — see ComponentView.jsx.
+function InteractionGraphLegend() {
+  return (
+    <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11px] text-muted-foreground">
+      <span className="inline-flex items-center gap-1.5">
+        <span className="inline-block size-2.5 rounded-full" style={{ backgroundColor: '#4A7CFF' }} />
+        free label (<Latex math="V" />)
+      </span>
+      <span className="inline-flex items-center gap-1.5">
+        <span className="inline-block size-2.5 rounded-full" style={{ backgroundColor: '#94A3B8' }} />
+        summed label (<Latex math="W" />)
+      </span>
+      <span className="inline-flex items-center gap-1.5">
+        <span className="inline-block h-px w-5" style={{ backgroundColor: '#6B7280' }} />
+        edge: co-permuted by some <Latex math="\sigma \in G" />
+      </span>
+      <span className="inline-flex items-center gap-1.5">
+        <span
+          className="inline-block size-2.5 rounded-sm border"
+          style={{ borderStyle: 'dashed', borderColor: '#94A3B8' }}
+        />
+        hull: one independent component (Case A–E)
+      </span>
+    </div>
+  );
+}
+
 export default function ComponentCostView({
   componentData,
   costModel,
   dimensionN,
   allLabels,
   vLabels,
+  fullGenerators,
   selectedOrbitIdx,
   onSelectOrbit,
+  onGraphHover,
+  spotlightLeafIds,
 }) {
   if (!componentData || !costModel) return null;
 
@@ -205,10 +265,20 @@ export default function ComponentCostView({
     <div className="min-w-0 space-y-6">
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="rounded-xl border border-gray-200 bg-white p-4">
-          <div className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">Interaction Graph</div>
-          <p className="mt-2 text-sm leading-6 text-muted-foreground">
-            These independent components come from the label interaction graph induced by the detected group generators.
-          </p>
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <div className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">Interaction Graph</div>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                Nodes are <strong className="font-semibold text-foreground">labels</strong>; an edge marks labels that a generator of&nbsp;
+                <Latex math="G" />&nbsp;moves together. Disjoint components factor the cost into independent sub-problems — each one lands on a case in the decision tree below.
+              </p>
+            </div>
+            <InteractionGraphMetricStrip
+              labelCount={allLabels.length}
+              edgeCount={componentData.interactionGraph?.edges?.length ?? 0}
+              componentCount={components.length}
+            />
+          </div>
           <PanZoomCanvas
             className="mt-4 h-[620px]"
             ariaLabel="Interaction graph (zoomable)"
@@ -217,8 +287,12 @@ export default function ComponentCostView({
               allLabels={allLabels}
               vLabels={vLabels}
               interactionGraph={componentData.interactionGraph}
+              components={components}
+              fullGenerators={fullGenerators}
+              onHover={onGraphHover}
             />
           </PanZoomCanvas>
+          <InteractionGraphLegend />
         </div>
 
         <div className="flex flex-col gap-6">
@@ -247,6 +321,7 @@ export default function ComponentCostView({
             activeLeafIds={components
               .flatMap((c) => [c.accumulation?.regimeId, c.shape])
               .filter(Boolean)}
+            spotlightLeafIds={spotlightLeafIds}
           />
         </div>
       </div>
