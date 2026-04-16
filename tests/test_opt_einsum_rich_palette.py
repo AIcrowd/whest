@@ -16,7 +16,9 @@ def _alpha_symbols(count: int) -> list[str]:
     return symbols
 
 
-def _pathinfo_for_expression(input_subscripts: str, output_subscript: str = "") -> PathInfo:
+def _pathinfo_for_expression(
+    input_subscripts: str, output_subscript: str = ""
+) -> PathInfo:
     return PathInfo(
         path=[],
         steps=[],
@@ -44,8 +46,7 @@ def test_rich_label_palette_64_does_not_call_generator(monkeypatch) -> None:
     monkeypatch.setattr(hsluv, "qualitative_hsluv_palette", _explode)
 
     assert (
-        hsluv.rich_label_palette(64)
-        == hsluv.PRECOMPUTED_QUALITATIVE_HSLUV_PALETTE_64
+        hsluv.rich_label_palette(64) == hsluv.PRECOMPUTED_QUALITATIVE_HSLUV_PALETTE_64
     )
 
 

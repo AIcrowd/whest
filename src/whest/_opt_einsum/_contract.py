@@ -169,7 +169,9 @@ class PathInfo:
         """Assign non-colliding styles for the active labels in this expression."""
         labels = list(dict.fromkeys(ch for ch in self.eq if ch.isalpha()))
         slot_count = max(64, len(labels))
-        label_styles = tuple(f"bold {color}" for color in rich_label_palette(slot_count))
+        label_styles = tuple(
+            f"bold {color}" for color in rich_label_palette(slot_count)
+        )
         used_slots: set[int] = set()
         styles: dict[str, str] = {}
         total_slots = len(label_styles)
@@ -193,9 +195,7 @@ class PathInfo:
 
                 color = style.rsplit(" ", 1)[-1]
                 min_distance = min(
-                    rgb_distance_hex(
-                        color, label_styles[used_slot].rsplit(" ", 1)[-1]
-                    )
+                    rgb_distance_hex(color, label_styles[used_slot].rsplit(" ", 1)[-1])
                     for used_slot in used_slots
                 )
                 circular_preference_distance = min(

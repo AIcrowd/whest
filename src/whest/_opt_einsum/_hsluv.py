@@ -221,9 +221,7 @@ def rgb_distance_hex(left: str, right: str) -> float:
 def rich_label_palette(slot_count: int) -> tuple[str, ...]:
     if slot_count <= 64:
         return PRECOMPUTED_QUALITATIVE_HSLUV_PALETTE_64
-    return tuple(
-        qualitative_hsluv_palette(slot_count, lightness=0.5, saturation=0.9)
-    )
+    return tuple(qualitative_hsluv_palette(slot_count, lightness=0.5, saturation=0.9))
 
 
 def qualitative_hsluv_palette(
