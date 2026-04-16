@@ -14,14 +14,9 @@ test('symmetry explorer acts use interpretation, algorithm, and output framing',
   );
   const act5Start = appSource.indexOf('<section id={EXPLORER_ACTS[4].id}');
   const shellActsSource = act5Start >= 0 ? appSource.slice(0, act5Start) : appSource;
-  const chooserSource = fs.readFileSync(
-    new URL('./components/symmetry-aware-einsum-contractions/components/ExampleChooser.jsx', import.meta.url),
-    'utf8',
-  );
-  const shellSource = `${shellActsSource}\n${chooserSource}`;
 
-  assert.equal(countMatches(shellSource, /label="Interpretation"/g), 4);
-  assert.equal(countMatches(shellSource, /label="Algorithm"/g), 4);
-  assert.equal(countMatches(shellSource, /label="What this produces"/g), 4);
-  assert.doesNotMatch(shellSource, /label="Why this matters"|label="Takeaway"/);
+  assert.equal(countMatches(shellActsSource, /label="Interpretation"/g), 4);
+  assert.equal(countMatches(shellActsSource, /label="Algorithm"/g), 4);
+  assert.equal(countMatches(shellActsSource, /label="What this produces"/g), 4);
+  assert.doesNotMatch(shellActsSource, /label="Why this matters"|label="Takeaway"/);
 });

@@ -9,8 +9,6 @@ import { cn } from '../lib/utils.js';
 import { CUSTOM_IDX, getPresetSummary, presetToState, resolvePresetSelection } from '../lib/presetSelection.js';
 import CaseBadge from './CaseBadge.jsx';
 import ExplorerField from './ExplorerField.jsx';
-import ExplorerSectionCard from './ExplorerSectionCard.jsx';
-import NarrativeCallout from './NarrativeCallout.jsx';
 import PythonCodeBlock from './PythonCodeBlock.jsx';
 import SymmetryBadge from './SymmetryBadge.jsx';
 
@@ -115,7 +113,6 @@ export default function ExampleChooser({
   onCustom,
   onCustomExample,
   onDirtyChange,
-  act,
   checkpointItems = [],
 }) {
   const initialSelection = resolvePresetSelection(examples, selectedPresetIdx);
@@ -282,15 +279,7 @@ export default function ExampleChooser({
   }, [activePresetIdx, examples, onCustomExample, onDirtyChange, operandNamesStr, outputStr, subscriptsStr, validation.valid, variables]);
 
   const builderContent = (
-    <ExplorerSectionCard
-      eyebrow="Act 1"
-      title={act?.heading}
-      description={act?.question}
-      className="h-full border-gray-200 bg-white"
-      contentClassName="pt-5"
-    >
-      <NarrativeCallout label="Interpretation">{act?.interpretation}</NarrativeCallout>
-      <NarrativeCallout label="Algorithm" tone="algorithm">{act?.algorithm}</NarrativeCallout>
+    <>
       {checkpointItems.length > 0 && (
         <div className="mt-4 grid gap-3 rounded-xl border border-gray-200 bg-gray-50 p-4 sm:grid-cols-2">
           {checkpointItems.map((item) => (
@@ -301,10 +290,6 @@ export default function ExampleChooser({
           ))}
         </div>
       )}
-
-      <div className="mt-4">
-        <NarrativeCallout label="What this produces" tone="accent">{act?.produces}</NarrativeCallout>
-      </div>
 
       <div className="mt-6 space-y-4">
         <div>
@@ -538,7 +523,7 @@ export default function ExampleChooser({
           </div>
         )}
       </div>
-    </ExplorerSectionCard>
+    </>
   );
 
   return (

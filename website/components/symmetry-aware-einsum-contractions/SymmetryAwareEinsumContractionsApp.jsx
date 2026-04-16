@@ -107,7 +107,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
     setShowMentalModel((isOpen) => reduceMentalModelVisibility(isOpen, 'customMode'));
     setExampleIdx(CUSTOM_IDX);
     setSelectedOrbitIdx(-1);
-  }, [customExample]);
+  }, []);
 
   const analysis = useMemo(() => {
     if (!example) return null;
@@ -200,18 +200,30 @@ export default function SymmetryAwareEinsumContractionsApp() {
           <main className="min-w-0 flex-1">
             <div className="mx-auto flex max-w-[1460px] flex-col px-6 md:px-8 lg:px-10">
             <section id={EXPLORER_ACTS[0].id} className="mb-12 scroll-mt-24">
-              <ExampleChooser
-                examples={EXAMPLES}
-                onSelect={handleSelect}
-                selectedPresetIdx={selectedPresetIdx}
-                dimensionN={dimensionN}
-                onDimensionChange={setDimensionN}
-                onCustom={handleCustomMode}
-                onCustomExample={handleCustomExample}
-                onDirtyChange={setIsDirty}
-                act={EXPLORER_ACTS[0]}
-                checkpointItems={checkpointItems}
-              />
+              <ExplorerSectionCard
+                eyebrow="Act 1"
+                title={EXPLORER_ACTS[0].heading}
+                description={EXPLORER_ACTS[0].question}
+                className="border-gray-200 bg-white"
+                contentClassName="pt-5"
+              >
+                <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[0].interpretation}</NarrativeCallout>
+                <NarrativeCallout label="Algorithm" tone="algorithm">{EXPLORER_ACTS[0].algorithm}</NarrativeCallout>
+                <ExampleChooser
+                  examples={EXAMPLES}
+                  onSelect={handleSelect}
+                  selectedPresetIdx={selectedPresetIdx}
+                  dimensionN={dimensionN}
+                  onDimensionChange={setDimensionN}
+                  onCustom={handleCustomMode}
+                  onCustomExample={handleCustomExample}
+                  onDirtyChange={setIsDirty}
+                  checkpointItems={checkpointItems}
+                />
+                <div className="mt-4">
+                  <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[0].produces}</NarrativeCallout>
+                </div>
+              </ExplorerSectionCard>
             </section>
 
             {/* Only render pipeline sections when we have results */}
