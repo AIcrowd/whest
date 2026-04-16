@@ -46,7 +46,7 @@ function OperationDocBreadcrumb({ op }: { op: OperationDocRecord }) {
   const topic = getTopicForOperation(op);
   const items: Array<{ label: string; href?: string }> = [
     { label: 'NumPy reference', href: '/docs/api' },
-    { label: 'Routines and objects by topic', href: '/docs/api/ops' },
+    { label: 'Routines and objects by topic', href: '/docs/api' },
     topic,
     { label: formatFullNumpyRef(op.numpy_ref) },
   ];
