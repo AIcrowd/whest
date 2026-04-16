@@ -64,9 +64,9 @@ export default function PresetSidebar({
               className="absolute inset-y-3 left-0.5 w-1 rounded-full"
               style={{ backgroundColor: summary.color }}
             />
-            <span className="flex items-center gap-2 pl-3">
+            <span className="flex flex-wrap items-center gap-2 pl-3">
               {summary.regimeId && (
-                <CaseBadge regimeId={summary.regimeId} caseType={summary.caseType} size="xs" variant="compact" />
+                <CaseBadge regimeId={summary.regimeId} caseType={summary.caseType} size="sm" variant="pill" />
               )}
               <SymmetryBadge value={summary.expectedGroup} />
             </span>

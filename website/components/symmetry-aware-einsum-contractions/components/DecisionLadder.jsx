@@ -2,7 +2,7 @@ import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from '
 import { Controls, Handle, Position, ReactFlow, ReactFlowProvider } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import Latex from './Latex.jsx';
-import GlossaryProse from './GlossaryProse.jsx';
+import GlossaryList from './GlossaryList.jsx';
 import { SHAPE_SPEC } from '../engine/shapeSpec.js';
 import { REGIME_SPEC } from '../engine/regimeSpec.js';
 
@@ -191,6 +191,7 @@ function LeafNode({ data }) {
         borderWidth: data.active ? 3 : 2,
         borderStyle: 'solid',
         color: '#0F172A',
+        boxShadow: data.active ? `0 0 0 6px ${mixWithWhite(data.color, 0.65)}` : undefined,
       }}
       data-tree-node={data.nodeId}
     >
@@ -245,7 +246,10 @@ function tooltipFor(nodeId) {
 
 // ─── Layout ──────────────────────────────────────────────────────────
 
-function buildLadderLayout(activeLeafId) {
+function buildLadderLayout(activeLeafIds) {
+  const active = activeLeafIds instanceof Set
+    ? activeLeafIds
+    : new Set(activeLeafIds || []);
   const nodes = [];
   const edges = [];
 
@@ -259,7 +263,7 @@ function buildLadderLayout(activeLeafId) {
       data: {
         text: spec.label,
         color: spec.color,
-        active: activeLeafId === leafId,
+        active: active.has(leafId),
         nodeId: leafId,
       },
     };
@@ -381,10 +385,24 @@ const DecisionLadderGraph = memo(function DecisionLadderGraph({
 
 // ─── Component ────────────────────────────────────────────────────────
 
-export default function DecisionLadder({ activeRegimeId = null, activeShapeId = null }) {
-  // A component's "active leaf" is either a shape (trivial/allVisible/allSummed)
-  // when the ladder short-circuited, or a regime id when the mixed path ran.
-  const activeLeafId = activeRegimeId || activeShapeId || null;
+export default function DecisionLadder({
+  activeRegimeId = null,
+  activeShapeId = null,
+  activeLeafIds = null,
+}) {
+  // Highlighting policy: every detected leaf across all components gets a
+  // halo (including shape leaves like `trivial` / `allVisible`). The
+  // `activeLeafIds` prop is the authoritative source; legacy single-value
+  // props stay as a fallback for callers not yet migrated.
+  const effectiveLeafIds = useMemo(() => {
+    if (Array.isArray(activeLeafIds) || activeLeafIds instanceof Set) {
+      return new Set(activeLeafIds);
+    }
+    const legacy = [];
+    if (activeRegimeId) legacy.push(activeRegimeId);
+    if (activeShapeId) legacy.push(activeShapeId);
+    return new Set(legacy);
+  }, [activeLeafIds, activeRegimeId, activeShapeId]);
 
   const [hoveredNode, setHoveredNode] = useState(null);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0, flipped: false });
@@ -392,7 +410,10 @@ export default function DecisionLadder({ activeRegimeId = null, activeShapeId = 
   const hideTimerRef = useRef(null);
   const hoveredNodeRef = useRef(null);
 
-  const { nodes, edges } = useMemo(() => buildLadderLayout(activeLeafId), [activeLeafId]);
+  const { nodes, edges } = useMemo(
+    () => buildLadderLayout(effectiveLeafIds),
+    [effectiveLeafIds],
+  );
 
   const openTooltipForNode = useCallback((nodeId, rect) => {
     if (hoveredNodeRef.current === nodeId) return;
@@ -532,7 +553,8 @@ export default function DecisionLadder({ activeRegimeId = null, activeShapeId = 
           )}
           {activeTooltip.glossary && (
             <div className="mt-3 whitespace-normal break-words border-t border-gray-700 pt-3 text-[11px] leading-relaxed text-gray-300">
-              <GlossaryProse text={activeTooltip.glossary} />
+              <div className="mb-1.5 text-[10px] uppercase tracking-wider text-gray-500">Where</div>
+              <GlossaryList entries={activeTooltip.glossary} />
             </div>
           )}
         </div>

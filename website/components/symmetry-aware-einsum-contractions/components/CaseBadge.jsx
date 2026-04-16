@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import Latex from './Latex.jsx';
-import GlossaryProse from './GlossaryProse.jsx';
+import GlossaryList from './GlossaryList.jsx';
 import { getRegimePresentation } from './regimePresentation.js';
 import { cn } from '../lib/utils.js';
 
@@ -48,6 +48,7 @@ export default function CaseBadge({
   size = 'sm',
   variant = 'pill',
   interactive = true,
+  active = false,
   className,
 }) {
   const [showTooltip, setShowTooltip] = useState(false);
@@ -122,7 +123,8 @@ export default function CaseBadge({
           ref={ref}
           variant="outline"
           className={cn(
-            'inline-flex shrink-0 items-center border font-mono',
+            'inline-flex items-center border font-mono',
+            variant === 'compact' ? 'shrink-0' : '',
             getBadgeClasses(variant, size),
             tooltip && 'cursor-help',
             className,
@@ -131,6 +133,9 @@ export default function CaseBadge({
             backgroundColor: colors.bg,
             color: colors.text,
             borderColor: colors.border,
+            boxShadow: active
+              ? `0 0 0 4px ${colors.bg}, 0 0 0 5px ${colors.border}`
+              : undefined,
           }}
           aria-label={presentation.label}
         >
@@ -164,8 +169,9 @@ export default function CaseBadge({
             </div>
           )}
           {tooltip.glossary && (
-            <div className="mt-3 whitespace-normal break-words text-xs leading-relaxed text-gray-300">
-              <GlossaryProse text={tooltip.glossary} />
+            <div className="mt-3 whitespace-normal break-words border-t border-gray-700 pt-3 text-xs leading-relaxed text-gray-300">
+              <div className="mb-1.5 text-[10px] uppercase tracking-wider text-gray-500">Where</div>
+              <GlossaryList entries={tooltip.glossary} />
             </div>
           )}
           <div

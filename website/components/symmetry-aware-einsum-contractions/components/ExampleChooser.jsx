@@ -591,9 +591,9 @@ export default function ExampleChooser({
             >
               <span className="mt-0.5 h-full min-h-10 w-1 shrink-0 rounded-full" style={{ backgroundColor: summary.color }} />
               <span className="min-w-0 flex-1">
-                <span className="flex items-center gap-2">
+                <span className="flex flex-wrap items-center gap-2">
                   <span className="truncate text-sm font-medium text-gray-900">{summary.name}</span>
-                  {summary.regimeId && <CaseBadge regimeId={summary.regimeId} caseType={summary.caseType} size="xs" variant="compact" />}
+                  {summary.regimeId && <CaseBadge regimeId={summary.regimeId} caseType={summary.caseType} size="sm" variant="pill" />}
                   <SymmetryBadge value={summary.expectedGroup} className="shrink-0" />
                 </span>
                 <code className="mt-1 block truncate text-sm text-gray-500">{summary.formula}</code>

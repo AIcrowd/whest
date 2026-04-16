@@ -11,6 +11,8 @@ import DecisionLadder from './DecisionLadder.jsx';
 import PanZoomCanvas from './PanZoomCanvas.jsx';
 import { getCasePresentation, getRegimePresentation } from './regimePresentation.js';
 import ExplorerModal from './ExplorerModal.jsx';
+import MultiplicationCostCard from './MultiplicationCostCard.jsx';
+import AccumulationHardCard from './AccumulationHardCard.jsx';
 
 function isTrivial(comp) {
   return comp.caseType === 'trivial';
@@ -219,10 +221,34 @@ export default function ComponentCostView({
           </PanZoomCanvas>
         </div>
 
-        <DecisionLadder
-          activeRegimeId={components[0]?.accumulation?.regimeId ?? null}
-          activeShapeId={components[0]?.shape ?? null}
-        />
+        <div className="flex flex-col gap-6">
+          <MultiplicationCostCard
+            components={components.map((comp) => ({
+              ...comp,
+              multiplicationCount: computeMultiplicationOrbits(comp, dimensionN),
+            }))}
+          />
+          <AccumulationHardCard />
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-gray-200 bg-white p-4">
+        <div className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+          Classification Tree
+        </div>
+        <p className="mt-2 text-sm leading-6 text-muted-foreground">
+          Each component is routed through a yes/no spine that dispatches to the
+          cheapest applicable closed form, or to brute-force orbit projection
+          when nothing else fits. The highlighted leaf on the left is where the
+          current example lands.
+        </p>
+        <div className="mt-4">
+          <DecisionLadder
+            activeLeafIds={components
+              .flatMap((c) => [c.accumulation?.regimeId, c.shape])
+              .filter(Boolean)}
+          />
+        </div>
       </div>
 
       <ComponentSummaryTable
