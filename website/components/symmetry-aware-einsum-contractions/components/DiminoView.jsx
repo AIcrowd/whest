@@ -9,8 +9,8 @@ function permutationKeyFromPi(pi, orderedLabels) {
 }
 
 function fmtPiMapping(pi, labels) {
-  if (!pi || !labels?.length) return '';
-  return labels.map((label) => `${label}${pi[label]}`).join(', ');
+  if (!pi || !labels?.length) return '—';
+  return labels.map((label) => `${label} → ${pi[label]}`).join(', ');
 }
 
 function newElementsFromClosure(candidate) {
@@ -71,13 +71,13 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
       <div>
         <h3 className="font-heading text-base font-semibold text-gray-900">Generator Construction</h3>
         <p className="mt-2 max-w-[62ch] text-sm leading-6 text-muted-foreground">
-          Each valid  induces a candidate permutation. We keep it only if adding it enlarges the subgroup generated so far.
+          Each valid π induces a candidate permutation. We keep it only if adding it enlarges the subgroup generated so far.
         </p>
       </div>
 
       {!selectedPair ? (
         <div className="mt-4 rounded-lg border border-dashed border-border bg-surface-raised p-4 text-sm leading-6 text-muted-foreground">
-          Select a valid (, ) pair on the left to inspect the single candidate-construction step it induces.
+          Select a valid (σ, π) pair on the left to inspect the single candidate-construction step it induces.
         </div>
       ) : !candidate ? (
         <div className="mt-4 rounded-lg border border-dashed border-border bg-surface-raised p-4 text-sm leading-6 text-muted-foreground">
@@ -85,14 +85,14 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
         </div>
       ) : (
         <div className="mt-4 space-y-4">
-          <ProofSection title="Current candidate from ">
+          <ProofSection title="Current candidate from π">
             <div className="space-y-3">
               <div className="perm-card generator dimino-new">
                 <code className="perm-notation">{candidate.cycleNotation}</code>
-                <span className="perm-structure">candidate induced by the selected valid </span>
+                <span className="perm-structure">candidate induced by the selected valid π</span>
               </div>
               <div className="text-sm leading-6 text-muted-foreground">
-                {`Selected  mapping: ${fmtPiMapping(selectedPair.pi, orderedLabels)}`}
+                {`Selected π mapping: ${fmtPiMapping(selectedPair.pi, orderedLabels)}`}
               </div>
             </div>
           </ProofSection>
@@ -150,7 +150,7 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
 
           {hasMergedProvenance ? (
             <div className="rounded-lg border border-border bg-white p-3 text-xs leading-6 text-muted-foreground">
-              {`Provenance note: ${candidate.sourcePiIds.length} valid  mappings collapse to this same candidate permutation, so they share this closure decision.`}
+              {`Provenance note: ${candidate.sourcePiIds.length} valid π mappings collapse to this same candidate permutation, so they share this closure decision.`}
             </div>
           ) : null}
         </div>
