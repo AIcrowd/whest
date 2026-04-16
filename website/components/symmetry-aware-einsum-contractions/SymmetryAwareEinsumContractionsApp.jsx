@@ -16,9 +16,10 @@ import BipartiteGraph from './components/BipartiteGraph.jsx';
 import MatrixView from './components/MatrixView.jsx';
 import SigmaLoop from './components/SigmaLoop.jsx';
 import GroupView from './components/GroupView.jsx';
+import DiminoView from './components/DiminoView.jsx';
 import RoleBadge from './components/RoleBadge.jsx';
 import PythonCodeBlock from './components/PythonCodeBlock.jsx';
-import ComponentCostView, { COMPONENT_STORY_TEXT } from './components/ComponentCostView.jsx';
+import ComponentCostView from './components/ComponentCostView.jsx';
 import TotalCostView from './components/TotalCostView.jsx';
 import { mergeObservedActEntries, pickTopVisibleAct } from './lib/activeAct.js';
 import { getPresetControlSelection } from './lib/presetSelection.js';
@@ -69,6 +70,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
   const [previewExample, setPreviewExample] = useState(EXAMPLES[DEFAULT_EXAMPLE_IDX]);
   const [dimensionN, setDimensionN] = useState(5);
   const [selectedOrbitIdx, setSelectedOrbitIdx] = useState(-1);
+  const [selectedSigmaPairIndex, setSelectedSigmaPairIndex] = useState(null);
   const [activeActId, setActiveActId] = useState(EXPLORER_ACTS[0].id);
   const [isDirty, setIsDirty] = useState(false);
   const [showMentalModel, setShowMentalModel] = useState(false);
@@ -212,7 +214,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
               >
                 <div className="grid gap-4 md:grid-cols-2">
                   <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[0].interpretation}</NarrativeCallout>
-                  <NarrativeCallout label="Algorithm" tone="algorithm">{EXPLORER_ACTS[0].algorithm}</NarrativeCallout>
+                  <NarrativeCallout label="Approach" tone="algorithm">{EXPLORER_ACTS[0].algorithm}</NarrativeCallout>
                 </div>
                 <p className="mt-4 text-sm leading-7 text-foreground">
                   This act specifies declared input symmetry only. It fixes the operands and labels before any detected contraction symmetry is considered.
@@ -248,7 +250,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   >
                     <div className="grid gap-4 md:grid-cols-2">
                       <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[1].interpretation}</NarrativeCallout>
-                      <NarrativeCallout label="Algorithm" tone="algorithm">{EXPLORER_ACTS[1].algorithm}</NarrativeCallout>
+                      <NarrativeCallout label="Approach" tone="algorithm">{EXPLORER_ACTS[1].algorithm}</NarrativeCallout>
                     </div>
                     <p className="mt-4 text-sm leading-7 text-foreground">
                       Declared input symmetry changes the encoding before any detected contraction symmetry is computed.
@@ -290,11 +292,8 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   >
                     <div className="grid gap-4 md:grid-cols-2">
                       <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[2].interpretation}</NarrativeCallout>
-                      <NarrativeCallout label="Algorithm" tone="algorithm">{EXPLORER_ACTS[2].algorithm}</NarrativeCallout>
+                      <NarrativeCallout label="Approach" tone="algorithm">{EXPLORER_ACTS[2].algorithm}</NarrativeCallout>
                     </div>
-                    <p className="mt-4 text-sm leading-7 text-foreground">
-                      Detected contraction symmetry is a property of the whole einsum expression, not just one input tensor.
-                    </p>
                     <p className="mt-4 text-sm leading-7 text-foreground">
                       {EXPLORER_ACTS[2].bridge}
                     </p>
@@ -307,11 +306,20 @@ export default function SymmetryAwareEinsumContractionsApp() {
                           matrixData={matrixData}
                           example={normalizedExample}
                           variableColors={variableColors}
+                          group={group}
+                          onSelectedPairChange={setSelectedSigmaPairIndex}
                         />
                       </div>
                       <div>
                         <h3 className="mb-2 font-heading text-base font-semibold text-gray-900">Group Construction</h3>
                         <GroupView group={group} />
+                        <div className="mt-4">
+                          <DiminoView
+                            group={group}
+                            sigmaResults={sigmaResults}
+                            selectedPairIndex={selectedSigmaPairIndex}
+                          />
+                        </div>
                       </div>
                     </div>
                     <div className="mt-4">
@@ -341,17 +349,15 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   >
                     <div className="grid gap-4 md:grid-cols-2">
                       <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[3].interpretation}</NarrativeCallout>
-                      <NarrativeCallout label="Algorithm" tone="algorithm">{EXPLORER_ACTS[3].algorithm}</NarrativeCallout>
+                      <NarrativeCallout label="Approach" tone="algorithm">{EXPLORER_ACTS[3].algorithm}</NarrativeCallout>
                     </div>
                     <p className="mt-4 text-sm leading-7 text-foreground">
-                      The detected global action may have been influenced by declared input symmetry, but it is the object being decomposed.
+                      We now decompose the detected global action, which may have been induced in part by declared
+                      input symmetry, into independent components. Each component contributes its own multiplication
+                      representatives and accumulation rule, so the savings can be understood locally before they are
+                      combined. When no analytic shortcut is valid for a component, orbit enumeration is not a fallback
+                      but the exact counting procedure.
                     </p>
-                    <p className="mt-4 text-sm leading-7 text-foreground">
-                      {EXPLORER_ACTS[3].bridge}
-                    </p>
-                    <div className="grid gap-4 md:grid-cols-2">
-                      <NarrativeCallout label="Component Story">{COMPONENT_STORY_TEXT}</NarrativeCallout>
-                    </div>
 
                   {showMentalModel && (
                     <div
@@ -398,7 +404,6 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       vLabels={group.vLabels}
                       selectedOrbitIdx={resolvedSelectedOrbitIdx}
                       onSelectOrbit={setSelectedOrbitIdx}
-                      showComponentStory={false}
                     />
                   </div>
 
@@ -416,7 +421,9 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >
-                    <NarrativeCallout label="Why this matters">{EXPLORER_ACTS[4].why}</NarrativeCallout>
+                    <p className="text-sm leading-7 text-foreground">
+                      {EXPLORER_ACTS[4].why}
+                    </p>
 
                     <div className="mt-6">
                       <TotalCostView
@@ -425,11 +432,6 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         dimensionN={dimensionN}
                         numTerms={normalizedExample?.subscripts?.length ?? 1}
                       />
-                    </div>
-
-                    <p className="mt-4 text-sm text-gray-600">{EXPLORER_ACTS[4].bridge}</p>
-                    <div className="mt-4">
-                      <NarrativeCallout label="Takeaway" tone="accent">{EXPLORER_ACTS[4].takeaway}</NarrativeCallout>
                     </div>
                   </ExplorerSectionCard>
                 </section>

@@ -5,7 +5,7 @@ import IncidenceMatrix from './IncidenceMatrix.jsx';
 const STAGE_LABELS = ['M', 'σ(M)', 'π(σ(M))'];
 const VISIBLE_VALID_PAIR_LIMIT = 5;
 
-export default function SigmaLoop({ results, graph, matrixData, example, variableColors }) {
+export default function SigmaLoop({ results, graph, matrixData, example, variableColors, group, onSelectedPairChange }) {
   const allPairs = results.filter((result) => !result.skipped);
   const validPairs = allPairs.filter((result) => result.isValid);
   const rejectedPairs = allPairs.filter((result) => !result.isValid);
@@ -22,11 +22,13 @@ export default function SigmaLoop({ results, graph, matrixData, example, variabl
       example={example}
       variableColors={variableColors}
       results={results}
+      group={group}
+      onSelectedPairChange={onSelectedPairChange}
     />
   );
 }
 
-function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData, example, variableColors, results }) {
+function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData, example, variableColors, results, group, onSelectedPairChange }) {
   const { uVertices, freeLabels } = graph;
   const uLabels = buildUVertexLabels(uVertices, example);
   const labels = matrixData.labels;
@@ -49,6 +51,14 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
   const selected = selectedIdx !== null ? allPairs[selectedIdx] : null;
   const inlineValidPairs = validPairs.slice(0, VISIBLE_VALID_PAIR_LIMIT);
   const remainingValidPairs = validPairs.slice(VISIBLE_VALID_PAIR_LIMIT);
+  const provenance = group?.generatorSelection;
+  const selectedPermutationKey = selected?.pi ? permutationKeyFromPi(selected.pi, group?.allLabels || labels) : null;
+  const selectedPiCard = provenance?.validPiCards?.find((card) => card.permutationKey === selectedPermutationKey) ?? null;
+  const selectedCandidateKey = selectedPiCard?.permutationKey ?? null;
+  const selectedCandidate = provenance?.candidatePermutations?.find((candidate) => candidate.permutationKey === selectedCandidateKey) ?? null;
+  const selectedGeneratorIndex = selectedCandidate
+    ? (group?.fullGenerators || []).findIndex((generator) => generator.key() === selectedCandidate.permutationKey)
+    : -1;
 
   const closeAllModals = () => {
     setShowRejected(false);
@@ -99,6 +109,10 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
     }, 900);
     return () => clearTimeout(timer);
   }, [playing, stage, selected]);
+
+  useEffect(() => {
+    onSelectedPairChange?.(selectedIdx);
+  }, [selectedIdx, onSelectedPairChange]);
 
   function handleSelectPair(idx) {
     setSelectedIdx(idx);
@@ -246,22 +260,53 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
           )}
 
           {/* π mapping detail (when at stage 1 or 2 and valid) */}
-          {selected.isValid && selected.pi && stage >= 1 && (
-            <div className="pi-detail-panel">
-              <h5>π mapping</h5>
-              <div className="pi-arrows">
-                {Object.entries(selected.pi).map(([from, to]) => (
-                  <div key={from} className={`pi-arrow ${from !== to ? 'moved' : 'fixed'}`}>
-                    <span>{from}</span>
-                    <span className="arrow">→</span>
-                    <span>{to}</span>
+          {selected.isValid && selected.pi && (
+            <>
+              <div className="pi-detail-panel">
+                <h5>π mapping</h5>
+                <div className="pi-arrows">
+                  {Object.entries(selected.pi).map(([from, to]) => (
+                    <div key={from} className={`pi-arrow ${from !== to ? 'moved' : 'fixed'}`}>
+                      <span>{from}</span>
+                      <span className="arrow">→</span>
+                      <span>{to}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-4 space-y-3 text-sm">
+                  <div>
+                    <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Ordered active labels</div>
+                    <code className="mt-1 block font-mono text-foreground">{`[${labels.join(', ')}]`}</code>
                   </div>
-                ))}
+
+                  {selectedCandidate ? (
+                    <div className="space-y-3">
+                      <div className="text-sm text-muted-foreground">
+                        {selectedCandidate.kept
+                          ? 'This candidate is kept and passed to Dimino as one of the input generators.'
+                          : 'This candidate is redundant, so it is not passed to Dimino.'}
+                      </div>
+                      <div>
+                        <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Generator selection</div>
+                        <div className="mt-1 flex flex-wrap items-center gap-2">
+                          <span
+                            className={`inline-flex rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${
+                              selectedCandidate.kept && selectedGeneratorIndex >= 0
+                                ? 'border-coral bg-coral-light/60 text-coral'
+                                : 'border-slate-300 bg-slate-50 text-slate-600'
+                            }`}
+                          >
+                            {selectedCandidate.kept && selectedGeneratorIndex >= 0
+                              ? `chosen as Generator ${selectedGeneratorIndex + 1}`
+                              : 'redundant'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ) : null}
+                </div>
               </div>
-              <p className="sigma-caption">
-                {kindCaption(selected.piKind)}
-              </p>
-            </div>
+            </>
           )}
         </div>
       )}
@@ -606,4 +651,12 @@ function fmtPi(pi) {
     if (cycle.length > 1) cycles.push(cycle);
   }
   return cycles.map(c => '(' + c.join(' ') + ')').join('') || 'e';
+}
+
+function permutationKeyFromPi(pi, orderedLabels) {
+  if (!pi || !orderedLabels?.length) return null;
+  const indexByLabel = new Map(orderedLabels.map((label, index) => [label, index]));
+  const arr = orderedLabels.map((label) => indexByLabel.get(pi[label]));
+  if (arr.some((value) => value === undefined)) return null;
+  return arr.join(',');
 }
