@@ -120,8 +120,14 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
   }, [playing, stage, selected]);
 
   useEffect(() => {
-    onSelectedPairChange?.(selectedIdx);
-  }, [selectedIdx, onSelectedPairChange]);
+    if (selectedIdx === null) {
+      onSelectedPairChange?.(null);
+      return;
+    }
+    const selectedPair = allPairs[selectedIdx];
+    const validPairIndex = selectedPair?.isValid ? validPairs.indexOf(selectedPair) : null;
+    onSelectedPairChange?.(validPairIndex !== -1 ? validPairIndex : null);
+  }, [selectedIdx, allPairs, validPairs, onSelectedPairChange]);
 
   function handleSelectPair(idx) {
     setSelectedIdx(idx);
