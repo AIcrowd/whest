@@ -6,9 +6,10 @@ import OrbitInspector from './OrbitInspector.jsx';
 import RoleBadge from './RoleBadge.jsx';
 import SymmetryBadge from './SymmetryBadge.jsx';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { DecisionTree, LabelInteractionGraph } from './ComponentView.jsx';
+import { LabelInteractionGraph } from './ComponentView.jsx';
+import DecisionLadder from './DecisionLadder.jsx';
 import PanZoomCanvas from './PanZoomCanvas.jsx';
-import { getCasePresentation } from './casePresentation.js';
+import { getCasePresentation, getRegimePresentation } from './regimePresentation.js';
 
 function isTrivial(comp) {
   return comp.caseType === 'trivial';
@@ -50,6 +51,20 @@ function computeAccumulationCost(comp, dimensionN, fallbackReductionCost) {
     default:
       return fallbackReductionCost;
   }
+}
+
+function accumulationCount(comp) {
+  return comp.accumulation?.count ?? null;
+}
+
+function accumulationFormula(comp) {
+  return comp.accumulation?.latex ?? null;
+}
+
+function multiplicationOrbits(comp) {
+  return comp.accumulation?.count != null
+    ? (comp.multiplication?.count ?? null)
+    : (comp.multiplication?.count ?? null);
 }
 
 function methodLabel(comp) {
@@ -153,7 +168,9 @@ function ComponentSummaryTable({
                   <code className="font-mono text-xs text-foreground">{multiplicationOrbits.toLocaleString()}</code>
                 </TableCell>
                 <TableCell className="px-3 py-2">
-                  <code className="font-mono text-xs text-foreground">{accumulationCost.toLocaleString()}</code>
+                  {accumulationCount(comp) !== null
+                    ? <code className="font-mono text-xs text-foreground">{accumulationCount(comp).toLocaleString()}</code>
+                    : <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] text-amber-800">Unavailable</span>}
                 </TableCell>
               </TableRow>
             );
@@ -201,7 +218,8 @@ export default function ComponentCostView({
           </PanZoomCanvas>
         </div>
 
-        <DecisionTree components={components} />
+        {/* DecisionTree replaced by DecisionLadder (Task 5.5) */}
+        <DecisionLadder activeRegimeId={components[0]?.accumulation?.regimeId ?? null} />
       </div>
 
       <ComponentSummaryTable

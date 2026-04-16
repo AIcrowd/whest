@@ -1,4 +1,13 @@
 /**
+ * @deprecated This spec predates the 2-layer shape/regime split.
+ * New code should consume {@link SHAPE_SPEC} (`engine/shapeSpec.js`) and
+ * {@link REGIME_SPEC} (`engine/regimeSpec.js`) instead. This file is kept
+ * only to preserve the existing classification-spec tests and the legacy
+ * `CLASSIFICATION_LEAVES` mapping used by a few presets. Remove once all
+ * consumers have migrated (tracked in TODOS.md).
+ */
+
+/**
  * Component Classification Spec
  *
  * Single source of truth for the case-classification decision tree.
