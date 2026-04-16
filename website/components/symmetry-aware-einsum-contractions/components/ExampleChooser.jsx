@@ -450,14 +450,20 @@ export default function ExampleChooser({
               );
             })}
 
-            <Button
+            <button
               type="button"
-              variant="outline"
-              className="self-center border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 transition-colors hover:border-gray-400 hover:bg-gray-50"
               onClick={addVar}
+              aria-label="Add variable"
+              className="group flex min-h-[140px] flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-300 p-4 text-gray-500 transition-colors hover:border-gray-400 hover:bg-gray-50 hover:text-gray-700 focus:outline-none focus-visible:border-gray-500 focus-visible:ring-2 focus-visible:ring-coral/30"
             >
-              + Add Variable
-            </Button>
+              <span
+                aria-hidden="true"
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-current text-xl leading-none"
+              >
+                +
+              </span>
+              <span className="text-sm font-medium">Add variable</span>
+            </button>
           </div>
         </div>
 

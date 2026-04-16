@@ -47,7 +47,6 @@ export default function MultiplicationCostCard({ components = [] }) {
                   caseType={comp.caseType}
                   size="xs"
                   variant="pill"
-                  interactive={false}
                 />
                 <span className="truncate text-gray-600">
                   {comp.labels?.join(', ') || '∅'}

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Badge } from '@/components/ui/badge';
 import Latex from './Latex.jsx';
 import GlossaryList from './GlossaryList.jsx';
@@ -9,6 +10,18 @@ const TOOLTIP_WIDTH = 460;
 const TOOLTIP_HEIGHT = 340;
 const VIEWPORT_PADDING = 16;
 const TOOLTIP_OFFSET = 8;
+
+/**
+ * Module-level coordinator: at most one CaseBadge tooltip is visible at a time.
+ * When a badge opens its tooltip it broadcasts its identity; any other
+ * subscriber that is currently open closes itself. This prevents overlapping
+ * tooltips from fighting each other when the mouse path crosses multiple
+ * pills (the original "overlap weirdness" bug).
+ */
+const tooltipSubscribers = new Set();
+function broadcastTooltipOpen(ownerId) {
+  for (const notify of tooltipSubscribers) notify(ownerId);
+}
 
 /**
  * Mix a #RRGGBB hex color with white to produce a soft background tint.
@@ -54,6 +67,18 @@ export default function CaseBadge({
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0, flipped: false });
   const ref = useRef(null);
+  const ownerIdRef = useRef(null);
+  if (ownerIdRef.current === null) ownerIdRef.current = Symbol('case-badge');
+
+  // Subscribe to peer openings: when any other CaseBadge opens its tooltip,
+  // close ours so that only one is ever visible at a time.
+  useEffect(() => {
+    const notify = (openedOwnerId) => {
+      if (openedOwnerId !== ownerIdRef.current) setShowTooltip(false);
+    };
+    tooltipSubscribers.add(notify);
+    return () => { tooltipSubscribers.delete(notify); };
+  }, []);
 
   // Prefer explicit regimeId; fall back to legacy caseType for callers not yet migrated.
   const id = regimeId ?? caseType;
@@ -77,6 +102,7 @@ export default function CaseBadge({
     }
 
     setTooltipPos({ x, y, flipped });
+    broadcastTooltipOpen(ownerIdRef.current);
     setShowTooltip(true);
   };
 
@@ -143,7 +169,7 @@ export default function CaseBadge({
         </Badge>
       </span>
 
-      {showTooltip && tooltip && (
+      {showTooltip && tooltip && typeof document !== 'undefined' && createPortal(
         <div
           className="pointer-events-none fixed z-[9999] w-[460px] max-w-[calc(100vw-2rem)] rounded-lg bg-gray-900 px-4 py-3.5 text-white shadow-2xl"
           style={{
@@ -186,7 +212,8 @@ export default function CaseBadge({
                 : 'translateX(-50%)',
             }}
           />
-        </div>
+        </div>,
+        document.body,
       )}
     </>
   );

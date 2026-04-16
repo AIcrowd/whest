@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { analyzeExample } from '../engine/pipeline.js';
 import { encodePlaygroundState, decodePlaygroundState } from '../lib/urlState.js';
-import LabelClusterPanel from './LabelClusterPanel.jsx';
+import LabelClusterPanel from './LabelClusterPanel.wip.jsx';
 import RegimeTrace from './RegimeTrace.jsx';
 import Latex from './Latex.jsx';
 

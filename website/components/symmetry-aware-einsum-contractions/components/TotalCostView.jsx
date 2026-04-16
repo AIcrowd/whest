@@ -65,7 +65,11 @@ function ComponentRecap({ components }) {
           key={`component-recap-${idx}`}
           className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-raised px-2.5 py-1 text-xs text-muted-foreground"
         >
-          <CaseBadge caseType={comp.caseType} size="xs" />
+          <CaseBadge
+            regimeId={comp.accumulation?.regimeId ?? comp.shape ?? comp.caseType}
+            caseType={comp.caseType}
+            size="xs"
+          />
           <span className="font-mono">{`{${(comp.labels ?? []).join(', ')}}`}</span>
         </span>
       ))}
