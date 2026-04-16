@@ -216,13 +216,10 @@ export default function ExampleChooser({
   }, [markCustom]);
 
   const addVar = useCallback(() => {
-    setVariables((prev) => {
-      const name = String.fromCharCode(65 + prev.length);
-      return [
-        ...prev,
-        { name, rank: 2, symmetry: 'none', symAxes: null, generators: '' },
-      ];
-    });
+    setVariables((prev) => [
+      ...prev,
+      { name: 'A', rank: 2, symmetry: 'none', symAxes: null, generators: '' },
+    ]);
     markCustom();
   }, [markCustom]);
 
