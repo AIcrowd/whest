@@ -16,6 +16,8 @@
 
 *Built for the [ARC Whitebox Estimation Challenge](https://aicrowd.com) by [AIcrowd](https://aicrowd.com)*
 
+Dispatch integration with `AIcrowd/whest-docs` was verified on 2026-04-16.
+
 ---
 
 **whest** is a drop-in replacement for a subset of NumPy that counts floating-point operations as you compute. Algorithms submitted to the ARC Whitebox Estimation Challenge are scored by their analytical FLOP cost, not wall-clock time, so researchers can focus on **algorithmic innovation** rather than hardware tuning. Every arithmetic call deducts from a fixed budget; exceed it and execution stops immediately.
