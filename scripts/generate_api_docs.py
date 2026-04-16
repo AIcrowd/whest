@@ -3021,10 +3021,13 @@ def write_operation_doc_artifacts(
     docs_manifest: dict[str, dict[str, object]] = {}
     refs_manifest: dict[str, dict[str, str]] = {}
     ops_index: list[dict[str, object]] = []
+    # Emit `{ default: unknown }` — consumers cast to `OperationDocRecord`
+    # themselves (app/docs/api/ops/[slug]/page.tsx). TypeScript's inferred
+    # type of the imported JSON is too wide (e.g. `type: string` vs a
+    # literal union like `"field_list"`) to line up with the record's
+    # narrow discriminated unions, which breaks `next build`.
     import_map_lines = [
-        "import type { OperationDocRecord } from '@/components/api-reference/op-doc-types';",
-        "",
-        "export const opDocImports: Record<string, () => Promise<{ default: OperationDocRecord }>> = {",
+        "export const opDocImports: Record<string, () => Promise<{ default: unknown }>> = {",
     ]
 
     for record in sorted(records, key=lambda op: op.name):
