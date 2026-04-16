@@ -1,131 +1,399 @@
 {
-  "schema_version": 1,
-  "slug": "rint",
   "detail_href": "/docs/api/ops/rint/",
   "detail_json_href": "/api-data/ops/rint.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29-L42",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.rint.html"
-  },
-  "op": {
-    "name": "rint",
-    "module": "numpy",
-    "whest_ref": "we.rint",
-    "numpy_ref": "np.rint",
-    "category": "counted_unary",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "numel(output)",
-    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "notes": "Round to nearest integer element-wise.",
-    "summary": "Round elements of the array to the nearest integer.",
-    "signature": "we.rint(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature])"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Round elements of the array to the nearest integer."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Round elements of the array to the nearest integer."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
-          {
-            "name": "x",
-            "type": "array_like",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Input array."
-              }
-            ]
-          },
-          {
-            "name": "out",
-            "type": "ndarray, None, or tuple of ndarray and None, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
-              }
-            ]
-          },
-          {
-            "name": "where",
-            "type": "array_like, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the `out` array will be set to the ufunc result.\nElsewhere, the `out` array will retain its original value.\nNote that if an uninitialized `out` array is created via the default\n``out=None``, locations within it where the condition is False will\nremain uninitialized."
-              }
-            ]
-          },
-          {
-            "name": "**kwargs",
-            "type": "",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "For other keyword-only arguments, see the\n:ref:`ufunc docs <ufuncs.kwargs>`."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "out",
-            "type": "ndarray or scalar",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Output array is same shape and type as `x`.\nThis is a scalar if `x` is a scalar."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "notes",
-        "title": "Notes",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "For values exactly halfway between rounded decimal values, NumPy\nrounds to the nearest even value. Thus 1.5 and 2.5 round to 2.0,\n-0.5 and 0.5 round to 0.0, etc."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Input array."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Input array."
+                  }
+                ],
+                "name": "x",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray, None, or tuple of ndarray and None, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
+                  }
+                ],
+                "name": "out",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "out"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " array will be set to the ufunc result.\nElsewhere, the "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "out"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " array will retain its original value.\nNote that if an uninitialized "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "out"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " array is created via the default\n"
+                      },
+                      {
+                        "kind": "code",
+                        "text": "out=None"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", locations within it where the condition is False will\nremain uninitialized."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "out"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " array will be set to the ufunc result.\nElsewhere, the "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "out"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " array will retain its original value.\nNote that if an uninitialized "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "out"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " array is created via the default\n"
+                  },
+                  {
+                    "kind": "code",
+                    "text": "out=None"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", locations within it where the condition is False will\nremain uninitialized."
+                  }
+                ],
+                "name": "where",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "For other keyword-only arguments, see the\n"
+                      },
+                      {
+                        "display_text": "ufunc docs",
+                        "explicit_title": true,
+                        "external_url": "",
+                        "href": "",
+                        "kind": "role_reference",
+                        "original_target": "ufuncs.kwargs",
+                        "role": "ref",
+                        "suppress_link": false,
+                        "target": "ufuncs.kwargs",
+                        "unresolved": true
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "For other keyword-only arguments, see the\n"
+                  },
+                  {
+                    "display_text": "ufunc docs",
+                    "explicit_title": true,
+                    "external_url": "",
+                    "href": "",
+                    "kind": "role_reference",
+                    "original_target": "ufuncs.kwargs",
+                    "role": "ref",
+                    "suppress_link": false,
+                    "target": "ufuncs.kwargs",
+                    "unresolved": true
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
+                  }
+                ],
+                "name": "**kwargs",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
       },
       {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> a = np.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])\n>>> np.rint(a)\narray([-2., -2., -0.,  0.,  2.,  2.,  2.])"
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Output array is same shape and type as "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "x"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ".\nThis is a scalar if "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "x"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is a scalar."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray or scalar",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Output array is same shape and type as "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "x"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ".\nThis is a scalar if "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "x"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is a scalar."
+                  }
+                ],
+                "name": "out",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Returns"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "fix, ceil, floor, trunc"
+            "links": [
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/trunc",
+                "label": "we.trunc",
+                "original_target": "fix",
+                "role": "",
+                "target": "trunc",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/ceil",
+                "label": "we.ceil",
+                "original_target": "ceil",
+                "role": "",
+                "target": "ceil",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/floor",
+                "label": "we.floor",
+                "original_target": "floor",
+                "role": "",
+                "target": "floor",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/trunc",
+                "label": "we.trunc",
+                "original_target": "trunc",
+                "role": "",
+                "target": "trunc",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
           }
-        ]
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "For values exactly halfway between rounded decimal values, NumPy\nrounds to the nearest even value. Thus 1.5 and 2.5 round to 2.0,\n-0.5 and 0.5 round to 0.0, etc."
+              }
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Notes"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.rint(a)"
+              },
+              {
+                "kind": "output",
+                "text": "array([-2., -2., -0.,  0.,  2.,  2.,  2.])"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_unary",
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "module": "numpy",
+    "name": "rint",
+    "notes": "Round to nearest integer element-wise.",
+    "numpy_ref": "np.rint",
+    "signature": "we.rint(x)",
+    "status": "supported",
+    "summary": "Round elements of the array to the nearest integer.",
+    "weight": 1.0,
+    "whest_ref": "we.rint"
+  },
+  "schema_version": 1,
+  "slug": "rint",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29"
   }
 }

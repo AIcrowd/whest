@@ -1,133 +1,463 @@
 {
-  "schema_version": 1,
-  "slug": "select",
   "detail_href": "/docs/api/ops/select/",
   "detail_json_href": "/api-data/ops/select.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L1371-L1378",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.select.html"
-  },
-  "op": {
-    "name": "select",
-    "module": "numpy",
-    "whest_ref": "we.select",
-    "numpy_ref": "np.select",
-    "category": "counted_custom",
-    "status": "supported",
-    "weight": 4.0,
-    "cost_formula": "per-operation",
-    "cost_formula_latex": "varies",
-    "notes": "Return array from list of choices based on conditions. Cost: numel(input).",
-    "summary": "Return an array drawn from elements in choicelist, depending on conditions.",
-    "signature": "we.select(condlist, choicelist, default=0)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Return an array drawn from elements in choicelist, depending on conditions."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Return an array drawn from elements in choicelist, depending on conditions."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
-          {
-            "name": "condlist",
-            "type": "list of bool ndarrays",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "The list of conditions which determine from which array in `choicelist`\nthe output elements are taken. When multiple conditions are satisfied,\nthe first one encountered in `condlist` is used."
-              }
-            ]
-          },
-          {
-            "name": "choicelist",
-            "type": "list of ndarrays",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "The list of arrays from which the output elements are taken. It has\nto be of the same length as `condlist`."
-              }
-            ]
-          },
-          {
-            "name": "default",
-            "type": "scalar, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "The element inserted in `output` when all conditions evaluate to False."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "output",
-            "type": "ndarray",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "The output at position m is the m-th element of the array in\n`choicelist` where the m-th element of the corresponding array in\n`condlist` is True."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np"
-          },
-          {
-            "type": "paragraph",
-            "text": "Beginning with an array of integers from 0 to 5 (inclusive),\nelements less than ``3`` are negated, elements greater than ``3``\nare squared, and elements not meeting either of these conditions\n(exactly ``3``) are replaced with a `default` value of ``42``."
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> x = np.arange(6)\n>>> condlist = [x<3, x>3]\n>>> choicelist = [x, x**2]\n>>> np.select(condlist, choicelist, 42)\narray([ 0,  1,  2, 42, 16, 25])"
-          },
-          {
-            "type": "paragraph",
-            "text": "When multiple conditions are satisfied, the first one encountered in\n`condlist` is used."
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> condlist = [x<=4, x>3]\n>>> choicelist = [x, x**2]\n>>> np.select(condlist, choicelist, 55)\narray([ 0,  1,  2,  3,  4, 25])"
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The list of conditions which determine from which array in "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "choicelist"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "\nthe output elements are taken. When multiple conditions are satisfied,\nthe first one encountered in "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "condlist"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is used."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "list of bool ndarrays",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The list of conditions which determine from which array in "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "choicelist"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "\nthe output elements are taken. When multiple conditions are satisfied,\nthe first one encountered in "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "condlist"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is used."
+                  }
+                ],
+                "name": "condlist",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The list of arrays from which the output elements are taken. It has\nto be of the same length as "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "condlist"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "list of ndarrays",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The list of arrays from which the output elements are taken. It has\nto be of the same length as "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "condlist"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
+                  }
+                ],
+                "name": "choicelist",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The element inserted in "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "output"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " when all conditions evaluate to False."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "scalar, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The element inserted in "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "output"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " when all conditions evaluate to False."
+                  }
+                ],
+                "name": "default",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "where \u2014 Return elements from one of two arrays depending on condition."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The output at position m is the m-th element of the array in\n"
+                      },
+                      {
+                        "kind": "code",
+                        "text": "choicelist"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " where the m-th element of the corresponding array in\n"
+                      },
+                      {
+                        "kind": "code",
+                        "text": "condlist"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is True."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The output at position m is the m-th element of the array in\n"
+                  },
+                  {
+                    "kind": "code",
+                    "text": "choicelist"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " where the m-th element of the corresponding array in\n"
+                  },
+                  {
+                    "kind": "code",
+                    "text": "condlist"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is True."
+                  }
+                ],
+                "name": "output",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
+          }
+        ],
+        "title": "Returns"
+      },
+      {
+        "blocks": [
+          {
+            "links": [
+              {
+                "description": "Return elements from one of two arrays depending on condition.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Return elements from one of two arrays depending on condition."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/where",
+                "label": "we.where",
+                "original_target": "where",
+                "role": "",
+                "target": "where",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/take",
+                "label": "we.take",
+                "original_target": "take",
+                "role": "",
+                "target": "take",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/choose",
+                "label": "we.choose",
+                "original_target": "choose",
+                "role": "",
+                "target": "choose",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/compress",
+                "label": "we.compress",
+                "original_target": "compress",
+                "role": "",
+                "target": "compress",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/diag",
+                "label": "we.diag",
+                "original_target": "diag",
+                "role": "",
+                "target": "diag",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/diagonal",
+                "label": "we.diagonal",
+                "original_target": "diagonal",
+                "role": "",
+                "target": "diagonal",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
+          }
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              }
+            ],
+            "type": "doctest_block"
           },
           {
-            "type": "paragraph",
-            "text": "take, choose, compress, diag, diagonal"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Beginning with an array of integers from 0 to 5 (inclusive),\nelements less than "
+              },
+              {
+                "kind": "code",
+                "text": "3"
+              },
+              {
+                "kind": "text",
+                "text": " are negated, elements greater than "
+              },
+              {
+                "kind": "code",
+                "text": "3"
+              },
+              {
+                "kind": "text",
+                "text": "\nare squared, and elements not meeting either of these conditions\n(exactly "
+              },
+              {
+                "kind": "code",
+                "text": "3"
+              },
+              {
+                "kind": "text",
+                "text": ") are replaced with a "
+              },
+              {
+                "kind": "code",
+                "text": "default"
+              },
+              {
+                "kind": "text",
+                "text": " value of "
+              },
+              {
+                "kind": "code",
+                "text": "42"
+              },
+              {
+                "kind": "text",
+                "text": "."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x = we.arange(6)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "condlist = [x<3, x>3]"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "choicelist = [x, x**2]"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.select(condlist, choicelist, 42)"
+              },
+              {
+                "kind": "output",
+                "text": "array([ 0,  1,  2, 42, 16, 25])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "When multiple conditions are satisfied, the first one encountered in\n"
+              },
+              {
+                "kind": "code",
+                "text": "condlist"
+              },
+              {
+                "kind": "text",
+                "text": " is used."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "condlist = [x<=4, x>3]"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "choicelist = [x, x**2]"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.select(condlist, choicelist, 55)"
+              },
+              {
+                "kind": "output",
+                "text": "array([ 0,  1,  2,  3,  4, 25])"
+              }
+            ],
+            "type": "doctest_block"
           }
-        ]
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_custom",
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "module": "numpy",
+    "name": "select",
+    "notes": "Return array from list of choices based on conditions. Cost: numel(input).",
+    "numpy_ref": "np.select",
+    "signature": "we.select(condlist, choicelist, default=0)",
+    "status": "supported",
+    "summary": "Return an array drawn from elements in choicelist, depending on conditions.",
+    "weight": 4.0,
+    "whest_ref": "we.select"
+  },
+  "schema_version": 1,
+  "slug": "select",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L786",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1371"
   }
 }

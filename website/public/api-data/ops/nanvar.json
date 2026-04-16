@@ -1,239 +1,786 @@
 {
-  "schema_version": 1,
-  "slug": "nanvar",
   "detail_href": "/docs/api/ops/nanvar/",
   "detail_json_href": "/api-data/ops/nanvar.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L197-L255",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.nanvar.html"
-  },
-  "op": {
-    "name": "nanvar",
-    "module": "numpy",
-    "whest_ref": "we.nanvar",
-    "numpy_ref": "np.nanvar",
-    "category": "counted_reduction",
-    "status": "supported",
-    "weight": 2.0,
-    "cost_formula": "numel(input)",
-    "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "notes": "Variance ignoring NaNs.",
-    "summary": "Compute the variance along the specified axis, while ignoring NaNs.",
-    "signature": "we.nanvar(a, axis=None, dtype=None, out=None, ddof=0, keepdims=<no value>, *, where=<no value>, mean=<no value>, correction=<no value>)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Compute the variance along the specified axis, while ignoring NaNs."
-          },
-          {
-            "type": "paragraph",
-            "text": "Returns the variance of the array elements, a measure of the spread of\na distribution.  The variance is computed for the flattened array by\ndefault, otherwise over the specified axis."
-          },
-          {
-            "type": "paragraph",
-            "text": "For all-NaN slices or slices with zero degrees of freedom, NaN is\nreturned and a `RuntimeWarning` is raised."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Compute the variance along the specified axis, while ignoring NaNs."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
+        "blocks": [
           {
-            "name": "a",
-            "type": "array_like",
-            "desc_blocks": [
+            "inline": [
               {
-                "type": "paragraph",
-                "text": "Array containing numbers whose variance is desired.  If `a` is not an\narray, a conversion is attempted."
+                "kind": "text",
+                "text": "Returns the variance of the array elements, a measure of the spread of\na distribution.  The variance is computed for the flattened array by\ndefault, otherwise over the specified axis."
               }
-            ]
+            ],
+            "type": "paragraph"
           },
           {
-            "name": "axis",
-            "type": "{int, tuple of int, None}, optional",
-            "desc_blocks": [
+            "inline": [
               {
-                "type": "paragraph",
-                "text": "Axis or axes along which the variance is computed.  The default is to compute\nthe variance of the flattened array."
-              }
-            ]
-          },
-          {
-            "name": "dtype",
-            "type": "data-type, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Type to use in computing the variance.  For arrays of integer type\nthe default is `float64`; for arrays of float types it is the same as\nthe array type."
-              }
-            ]
-          },
-          {
-            "name": "out",
-            "type": "ndarray, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Alternate output array in which to place the result.  It must have\nthe same shape as the expected output, but the type is cast if\nnecessary."
-              }
-            ]
-          },
-          {
-            "name": "ddof",
-            "type": "{int, float}, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "\"Delta Degrees of Freedom\": the divisor used in the calculation is\n``N - ddof``, where ``N`` represents the number of non-NaN\nelements. By default `ddof` is zero."
-              }
-            ]
-          },
-          {
-            "name": "keepdims",
-            "type": "bool, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "If this is set to True, the axes which are reduced are left\nin the result as dimensions with size one. With this option,\nthe result will broadcast correctly against the original `a`."
-              }
-            ]
-          },
-          {
-            "name": "where",
-            "type": "array_like of bool, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Elements to include in the variance. See `~numpy.ufunc.reduce` for\ndetails."
+                "kind": "text",
+                "text": "For all-NaN slices or slices with zero degrees of freedom, NaN is\nreturned and a "
               },
               {
-                "type": "directive",
-                "name": "versionadded:: 1.22.0",
-                "body": "",
-                "raw": ".. versionadded:: 1.22.0"
-              }
-            ]
-          },
-          {
-            "name": "mean",
-            "type": "array_like, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Provide the mean to prevent its recalculation. The mean should have\na shape as if it was calculated with ``keepdims=True``.\nThe axis for the calculation of the mean should be the same as used in\nthe call to this var function."
+                "kind": "code",
+                "text": "RuntimeWarning"
               },
               {
-                "type": "directive",
-                "name": "versionadded:: 2.0.0",
-                "body": "",
-                "raw": ".. versionadded:: 2.0.0"
+                "kind": "text",
+                "text": " is raised."
               }
-            ]
-          },
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Extended Summary"
+      },
+      {
+        "blocks": [
           {
-            "name": "correction",
-            "type": "{int, float}, optional",
-            "desc_blocks": [
+            "items": [
               {
-                "type": "paragraph",
-                "text": "Array API compatible name for the ``ddof`` parameter. Only one of them\ncan be provided at the same time."
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Array containing numbers whose variance is desired.  If "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "a"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is not an\narray, a conversion is attempted."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Array containing numbers whose variance is desired.  If "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "a"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is not an\narray, a conversion is attempted."
+                  }
+                ],
+                "name": "a",
+                "type": "field_list"
               },
               {
-                "type": "directive",
-                "name": "versionadded:: 2.0.0",
-                "body": "",
-                "raw": ".. versionadded:: 2.0.0"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "variance",
-            "type": "ndarray, see dtype parameter above",
-            "desc_blocks": [
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Axis or axes along which the variance is computed.  The default is to compute\nthe variance of the flattened array."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "{int, tuple of int, None}, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Axis or axes along which the variance is computed.  The default is to compute\nthe variance of the flattened array."
+                  }
+                ],
+                "name": "axis",
+                "type": "field_list"
+              },
               {
-                "type": "paragraph",
-                "text": "If `out` is None, return a new array containing the variance,\notherwise return a reference to the output array. If ddof is >= the\nnumber of non-NaN elements in a slice or the slice contains only\nNaNs, then the result for that slice is NaN."
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Type to use in computing the variance.  For arrays of integer type\nthe default is "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "float64"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "; for arrays of float types it is the same as\nthe array type."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "data-type, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Type to use in computing the variance.  For arrays of integer type\nthe default is "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "float64"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "; for arrays of float types it is the same as\nthe array type."
+                  }
+                ],
+                "name": "dtype",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Alternate output array in which to place the result.  It must have\nthe same shape as the expected output, but the type is cast if\nnecessary."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Alternate output array in which to place the result.  It must have\nthe same shape as the expected output, but the type is cast if\nnecessary."
+                  }
+                ],
+                "name": "out",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "\"Delta Degrees of Freedom\": the divisor used in the calculation is\n"
+                      },
+                      {
+                        "kind": "code",
+                        "text": "N - ddof"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", where "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "N"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " represents the number of non-NaN\nelements. By default "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "ddof"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is zero."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "{int, float}, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "\"Delta Degrees of Freedom\": the divisor used in the calculation is\n"
+                  },
+                  {
+                    "kind": "code",
+                    "text": "N - ddof"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", where "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "N"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " represents the number of non-NaN\nelements. By default "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "ddof"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is zero."
+                  }
+                ],
+                "name": "ddof",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If this is set to True, the axes which are reduced are left\nin the result as dimensions with size one. With this option,\nthe result will broadcast correctly against the original "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "a"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "bool, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "If this is set to True, the axes which are reduced are left\nin the result as dimensions with size one. With this option,\nthe result will broadcast correctly against the original "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "a"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
+                  }
+                ],
+                "name": "keepdims",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Elements to include in the variance. See "
+                      },
+                      {
+                        "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.ufunc.reduce.html",
+                        "href": "",
+                        "kind": "link",
+                        "target": "ufunc.reduce",
+                        "text": "reduce"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " for\ndetails."
+                      }
+                    ],
+                    "type": "paragraph"
+                  },
+                  {
+                    "argument_inline": [],
+                    "content_blocks": [],
+                    "directive": "versionadded",
+                    "options": [],
+                    "raw_source": ".. versionadded:: 1.22.0",
+                    "supported": true,
+                    "type": "directive_block",
+                    "version": "1.22.0"
+                  }
+                ],
+                "data_type": "array_like of bool, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Elements to include in the variance. See "
+                  },
+                  {
+                    "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.ufunc.reduce.html",
+                    "href": "",
+                    "kind": "link",
+                    "target": "ufunc.reduce",
+                    "text": "reduce"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " for\ndetails."
+                  }
+                ],
+                "name": "where",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Provide the mean to prevent its recalculation. The mean should have\na shape as if it was calculated with "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "keepdims=True"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ".\nThe axis for the calculation of the mean should be the same as used in\nthe call to this var function."
+                      }
+                    ],
+                    "type": "paragraph"
+                  },
+                  {
+                    "argument_inline": [],
+                    "content_blocks": [],
+                    "directive": "versionadded",
+                    "options": [],
+                    "raw_source": ".. versionadded:: 2.0.0",
+                    "supported": true,
+                    "type": "directive_block",
+                    "version": "2.0.0"
+                  }
+                ],
+                "data_type": "array_like, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Provide the mean to prevent its recalculation. The mean should have\na shape as if it was calculated with "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "keepdims=True"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ".\nThe axis for the calculation of the mean should be the same as used in\nthe call to this var function."
+                  }
+                ],
+                "name": "mean",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Array API compatible name for the "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "ddof"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " parameter. Only one of them\ncan be provided at the same time."
+                      }
+                    ],
+                    "type": "paragraph"
+                  },
+                  {
+                    "argument_inline": [],
+                    "content_blocks": [],
+                    "directive": "versionadded",
+                    "options": [],
+                    "raw_source": ".. versionadded:: 2.0.0",
+                    "supported": true,
+                    "type": "directive_block",
+                    "version": "2.0.0"
+                  }
+                ],
+                "data_type": "{int, float}, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Array API compatible name for the "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "ddof"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " parameter. Only one of them\ncan be provided at the same time."
+                  }
+                ],
+                "name": "correction",
+                "type": "field_list"
               }
-            ]
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
       },
       {
-        "kind": "notes",
-        "title": "Notes",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "The variance is the average of the squared deviations from the mean,\ni.e.,  ``var = mean(abs(x - x.mean())**2)``."
-          },
-          {
-            "type": "paragraph",
-            "text": "The mean is normally calculated as ``x.sum() / N``, where ``N = len(x)``.\nIf, however, `ddof` is specified, the divisor ``N - ddof`` is used\ninstead.  In standard statistical practice, ``ddof=1`` provides an\nunbiased estimator of the variance of a hypothetical infinite\npopulation.  ``ddof=0`` provides a maximum likelihood estimate of the\nvariance for normally distributed variables."
-          },
-          {
-            "type": "paragraph",
-            "text": "Note that for complex numbers, the absolute value is taken before\nsquaring, so that the result is always real and nonnegative."
-          },
-          {
-            "type": "paragraph",
-            "text": "For floating-point input, the variance is computed using the same\nprecision the input has.  Depending on the input data, this can cause\nthe results to be inaccurate, especially for `float32` (see example\nbelow).  Specifying a higher-accuracy accumulator using the ``dtype``\nkeyword can alleviate this issue."
-          },
-          {
-            "type": "paragraph",
-            "text": "For this function to work on sub-classes of ndarray, they must define\n`sum` with the kwarg `keepdims`"
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "out"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is None, return a new array containing the variance,\notherwise return a reference to the output array. If ddof is >= the\nnumber of non-NaN elements in a slice or the slice contains only\nNaNs, then the result for that slice is NaN."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray, see dtype parameter above",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "If "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "out"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is None, return a new array containing the variance,\notherwise return a reference to the output array. If ddof is >= the\nnumber of non-NaN elements in a slice or the slice contains only\nNaNs, then the result for that slice is NaN."
+                  }
+                ],
+                "name": "variance",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Returns"
       },
       {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> a = np.array([[1, np.nan], [3, 4]])\n>>> np.nanvar(a)\n1.5555555555555554\n>>> np.nanvar(a, axis=0)\narray([1.,  0.])\n>>> np.nanvar(a, axis=1)\narray([0.,  0.25])  # may vary"
+            "links": [
+              {
+                "description": "Standard deviation",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Standard deviation"
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/std",
+                "label": "we.std",
+                "original_target": "std",
+                "role": "",
+                "target": "std",
+                "unresolved": false
+              },
+              {
+                "description": "Average",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Average"
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/mean",
+                "label": "we.mean",
+                "original_target": "mean",
+                "role": "",
+                "target": "mean",
+                "unresolved": false
+              },
+              {
+                "description": "Variance while not ignoring NaNs",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Variance while not ignoring NaNs"
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/var",
+                "label": "we.var",
+                "original_target": "var",
+                "role": "",
+                "target": "var",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/nanstd",
+                "label": "we.nanstd",
+                "original_target": "nanstd",
+                "role": "",
+                "target": "nanstd",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/nanmean",
+                "label": "we.nanmean",
+                "original_target": "nanmean",
+                "role": "",
+                "target": "nanmean",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.ufuncs-output-type.html",
+                "href": "",
+                "label": "ufuncs-output-type",
+                "original_target": "ufuncs-output-type",
+                "role": "ref",
+                "target": "ufuncs-output-type",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
           }
-        ]
+        ],
+        "title": "See also"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "std \u2014 Standard deviation"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "The variance is the average of the squared deviations from the mean,\ni.e.,  "
+              },
+              {
+                "kind": "code",
+                "text": "var = mean(abs(x - x.mean())**2)"
+              },
+              {
+                "kind": "text",
+                "text": "."
+              }
+            ],
+            "type": "paragraph"
           },
           {
-            "type": "paragraph",
-            "text": "mean \u2014 Average"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "The mean is normally calculated as "
+              },
+              {
+                "kind": "code",
+                "text": "x.sum() / N"
+              },
+              {
+                "kind": "text",
+                "text": ", where "
+              },
+              {
+                "kind": "code",
+                "text": "N = len(x)"
+              },
+              {
+                "kind": "text",
+                "text": ".\nIf, however, "
+              },
+              {
+                "kind": "code",
+                "text": "ddof"
+              },
+              {
+                "kind": "text",
+                "text": " is specified, the divisor "
+              },
+              {
+                "kind": "code",
+                "text": "N - ddof"
+              },
+              {
+                "kind": "text",
+                "text": " is used\ninstead.  In standard statistical practice, "
+              },
+              {
+                "kind": "code",
+                "text": "ddof=1"
+              },
+              {
+                "kind": "text",
+                "text": " provides an\nunbiased estimator of the variance of a hypothetical infinite\npopulation.  "
+              },
+              {
+                "kind": "code",
+                "text": "ddof=0"
+              },
+              {
+                "kind": "text",
+                "text": " provides a maximum likelihood estimate of the\nvariance for normally distributed variables."
+              }
+            ],
+            "type": "paragraph"
           },
           {
-            "type": "paragraph",
-            "text": "var \u2014 Variance while not ignoring NaNs"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Note that for complex numbers, the absolute value is taken before\nsquaring, so that the result is always real and nonnegative."
+              }
+            ],
+            "type": "paragraph"
           },
           {
-            "type": "paragraph",
-            "text": "nanstd, nanmean"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "For floating-point input, the variance is computed using the same\nprecision the input has.  Depending on the input data, this can cause\nthe results to be inaccurate, especially for "
+              },
+              {
+                "kind": "code",
+                "text": "float32"
+              },
+              {
+                "kind": "text",
+                "text": " (see example\nbelow).  Specifying a higher-accuracy accumulator using the "
+              },
+              {
+                "kind": "code",
+                "text": "dtype"
+              },
+              {
+                "kind": "text",
+                "text": "\nkeyword can alleviate this issue."
+              }
+            ],
+            "type": "paragraph"
           },
           {
-            "type": "paragraph",
-            "text": "ufuncs-output-type"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "For this function to work on sub-classes of ndarray, they must define\n"
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/sum",
+                "kind": "link",
+                "target": "sum",
+                "text": "sum"
+              },
+              {
+                "kind": "text",
+                "text": " with the kwarg "
+              },
+              {
+                "kind": "code",
+                "text": "keepdims"
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Notes"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.array([[1, we.nan], [3, 4]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.nanvar(a)"
+              },
+              {
+                "kind": "output",
+                "text": "1.5555555555555554"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.nanvar(a, axis=0)"
+              },
+              {
+                "kind": "output",
+                "text": "array([1.,  0.])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.nanvar(a, axis=1)"
+              },
+              {
+                "kind": "output",
+                "text": "array([0.,  0.25])  # may vary"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_reduction",
+    "cost_formula": "numel(input)",
+    "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "module": "numpy",
+    "name": "nanvar",
+    "notes": "Variance ignoring NaNs.",
+    "numpy_ref": "np.nanvar",
+    "signature": "we.nanvar(a, axis=None, dtype=None, out=None, ddof=0, keepdims=<no value>, *, where=<no value>, mean=<no value>, correction=<no value>)",
+    "status": "supported",
+    "summary": "Compute the variance along the specified axis, while ignoring NaNs.",
+    "weight": 2.0,
+    "whest_ref": "we.nanvar"
+  },
+  "schema_version": 1,
+  "slug": "nanvar",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_nanfunctions_impl.py#L1715",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L197"
   }
 }

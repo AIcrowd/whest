@@ -1,179 +1,456 @@
 {
-  "schema_version": 1,
-  "slug": "stack",
   "detail_href": "/docs/api/ops/stack/",
   "detail_json_href": "/api-data/ops/stack.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L250-L256",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.stack.html"
-  },
-  "op": {
-    "name": "stack",
-    "module": "numpy",
-    "whest_ref": "we.stack",
-    "numpy_ref": "np.stack",
-    "category": "counted_custom",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "per-operation",
-    "cost_formula_latex": "varies",
-    "notes": "Join arrays along new axis. Cost: numel(output).",
-    "summary": "Join a sequence of arrays along a new axis.",
-    "signature": "we.stack(arrays, axis=0, out=None, *, dtype=None, casting='same_kind')"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Join a sequence of arrays along a new axis."
-          },
-          {
-            "type": "paragraph",
-            "text": "The ``axis`` parameter specifies the index of the new axis in the\ndimensions of the result. For example, if ``axis=0`` it will be the first\ndimension and if ``axis=-1`` it will be the last dimension."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Join a sequence of arrays along a new axis."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
+        "blocks": [
           {
-            "name": "arrays",
-            "type": "sequence of ndarrays",
-            "desc_blocks": [
+            "inline": [
               {
-                "type": "paragraph",
-                "text": "Each array must have the same shape. In the case of a single ndarray\narray_like input, it will be treated as a sequence of arrays; i.e.,\neach element along the zeroth axis is treated as a separate array."
-              }
-            ]
-          },
-          {
-            "name": "axis",
-            "type": "int, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "The axis in the result array along which the input arrays are stacked."
-              }
-            ]
-          },
-          {
-            "name": "out",
-            "type": "ndarray, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "If provided, the destination to place the result. The shape must be\ncorrect, matching that of what stack would have returned if no\nout argument were specified."
-              }
-            ]
-          },
-          {
-            "name": "dtype",
-            "type": "str or dtype",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "If provided, the destination array will have this dtype. Cannot be\nprovided together with `out`."
+                "kind": "text",
+                "text": "The "
               },
               {
-                "type": "directive",
-                "name": "versionadded:: 1.24",
-                "body": "",
-                "raw": ".. versionadded:: 1.24"
-              }
-            ]
-          },
-          {
-            "name": "casting",
-            "type": "{'no', 'equiv', 'safe', 'same_kind', 'unsafe'}, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Controls what kind of data casting may occur. Defaults to 'same_kind'."
+                "kind": "code",
+                "text": "axis"
               },
               {
-                "type": "directive",
-                "name": "versionadded:: 1.24",
-                "body": "",
-                "raw": ".. versionadded:: 1.24"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "stacked",
-            "type": "ndarray",
-            "desc_blocks": [
+                "kind": "text",
+                "text": " parameter specifies the index of the new axis in the\ndimensions of the result. For example, if "
+              },
               {
-                "type": "paragraph",
-                "text": "The stacked array has one more dimension than the input arrays."
+                "kind": "code",
+                "text": "axis=0"
+              },
+              {
+                "kind": "text",
+                "text": " it will be the first\ndimension and if "
+              },
+              {
+                "kind": "code",
+                "text": "axis=-1"
+              },
+              {
+                "kind": "text",
+                "text": " it will be the last dimension."
               }
-            ]
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Extended Summary"
       },
       {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> rng = np.random.default_rng()\n>>> arrays = [rng.normal(size=(3,4)) for _ in range(10)]\n>>> np.stack(arrays, axis=0).shape\n(10, 3, 4)"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> np.stack(arrays, axis=1).shape\n(3, 10, 4)"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> np.stack(arrays, axis=2).shape\n(3, 4, 10)"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> a = np.array([1, 2, 3])\n>>> b = np.array([4, 5, 6])\n>>> np.stack((a, b))\narray([[1, 2, 3],\n       [4, 5, 6]])"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> np.stack((a, b), axis=-1)\narray([[1, 4],\n       [2, 5],\n       [3, 6]])"
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Each array must have the same shape. In the case of a single ndarray\narray_like input, it will be treated as a sequence of arrays; i.e.,\neach element along the zeroth axis is treated as a separate array."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "sequence of ndarrays",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Each array must have the same shape. In the case of a single ndarray\narray_like input, it will be treated as a sequence of arrays; i.e.,\neach element along the zeroth axis is treated as a separate array."
+                  }
+                ],
+                "name": "arrays",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The axis in the result array along which the input arrays are stacked."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "int, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The axis in the result array along which the input arrays are stacked."
+                  }
+                ],
+                "name": "axis",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If provided, the destination to place the result. The shape must be\ncorrect, matching that of what stack would have returned if no\nout argument were specified."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "If provided, the destination to place the result. The shape must be\ncorrect, matching that of what stack would have returned if no\nout argument were specified."
+                  }
+                ],
+                "name": "out",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If provided, the destination array will have this dtype. Cannot be\nprovided together with "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "out"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
+                      }
+                    ],
+                    "type": "paragraph"
+                  },
+                  {
+                    "argument_inline": [],
+                    "content_blocks": [],
+                    "directive": "versionadded",
+                    "options": [],
+                    "raw_source": ".. versionadded:: 1.24",
+                    "supported": true,
+                    "type": "directive_block",
+                    "version": "1.24"
+                  }
+                ],
+                "data_type": "str or dtype",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "If provided, the destination array will have this dtype. Cannot be\nprovided together with "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "out"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
+                  }
+                ],
+                "name": "dtype",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Controls what kind of data casting may occur. Defaults to 'same_kind'."
+                      }
+                    ],
+                    "type": "paragraph"
+                  },
+                  {
+                    "argument_inline": [],
+                    "content_blocks": [],
+                    "directive": "versionadded",
+                    "options": [],
+                    "raw_source": ".. versionadded:: 1.24",
+                    "supported": true,
+                    "type": "directive_block",
+                    "version": "1.24"
+                  }
+                ],
+                "data_type": "{'no', 'equiv', 'safe', 'same_kind', 'unsafe'}, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Controls what kind of data casting may occur. Defaults to 'same_kind'."
+                  }
+                ],
+                "name": "casting",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "concatenate \u2014 Join a sequence of arrays along an existing axis."
-          },
-          {
-            "type": "paragraph",
-            "text": "block \u2014 Assemble an nd-array from nested lists of blocks."
-          },
-          {
-            "type": "paragraph",
-            "text": "split \u2014 Split array into a list of multiple sub-arrays of equal size."
-          },
-          {
-            "type": "paragraph",
-            "text": "unstack \u2014 Split an array into a tuple of sub-arrays along an axis."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The stacked array has one more dimension than the input arrays."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The stacked array has one more dimension than the input arrays."
+                  }
+                ],
+                "name": "stacked",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Returns"
+      },
+      {
+        "blocks": [
+          {
+            "links": [
+              {
+                "description": "Join a sequence of arrays along an existing axis.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Join a sequence of arrays along an existing axis."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/concatenate",
+                "label": "we.concatenate",
+                "original_target": "concatenate",
+                "role": "",
+                "target": "concatenate",
+                "unresolved": false
+              },
+              {
+                "description": "Assemble an nd-array from nested lists of blocks.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Assemble an nd-array from nested lists of blocks."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/block",
+                "label": "we.block",
+                "original_target": "block",
+                "role": "",
+                "target": "block",
+                "unresolved": false
+              },
+              {
+                "description": "Split array into a list of multiple sub-arrays of equal size.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Split array into a list of multiple sub-arrays of equal size."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/split",
+                "label": "we.split",
+                "original_target": "split",
+                "role": "",
+                "target": "split",
+                "unresolved": false
+              },
+              {
+                "description": "Split an array into a tuple of sub-arrays along an axis.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Split an array into a tuple of sub-arrays along an axis."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/unstack",
+                "label": "we.unstack",
+                "original_target": "unstack",
+                "role": "",
+                "target": "unstack",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
+          }
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "rng = we.random.default_rng()"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "arrays = [rng.normal(size=(3,4)) for _ in range(10)]"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.stack(arrays, axis=0).shape"
+              },
+              {
+                "kind": "output",
+                "text": "(10, 3, 4)"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.stack(arrays, axis=1).shape"
+              },
+              {
+                "kind": "output",
+                "text": "(3, 10, 4)"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.stack(arrays, axis=2).shape"
+              },
+              {
+                "kind": "output",
+                "text": "(3, 4, 10)"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.array([1, 2, 3])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "b = we.array([4, 5, 6])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.stack((a, b))"
+              },
+              {
+                "kind": "output",
+                "text": "array([[1, 2, 3],"
+              },
+              {
+                "kind": "output",
+                "text": "       [4, 5, 6]])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.stack((a, b), axis=-1)"
+              },
+              {
+                "kind": "output",
+                "text": "array([[1, 4],"
+              },
+              {
+                "kind": "output",
+                "text": "       [2, 5],"
+              },
+              {
+                "kind": "output",
+                "text": "       [3, 6]])"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_custom",
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "module": "numpy",
+    "name": "stack",
+    "notes": "Join arrays along new axis. Cost: numel(output).",
+    "numpy_ref": "np.stack",
+    "signature": "we.stack(arrays, axis=0, out=None, *, dtype=None, casting='same_kind')",
+    "status": "supported",
+    "summary": "Join a sequence of arrays along a new axis.",
+    "weight": 1.0,
+    "whest_ref": "we.stack"
+  },
+  "schema_version": 1,
+  "slug": "stack",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/shape_base.py#L380",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L250"
   }
 }

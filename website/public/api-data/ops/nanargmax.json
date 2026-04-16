@@ -1,133 +1,290 @@
 {
-  "schema_version": 1,
-  "slug": "nanargmax",
   "detail_href": "/docs/api/ops/nanargmax/",
   "detail_json_href": "/api-data/ops/nanargmax.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L197-L255",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.nanargmax.html"
-  },
-  "op": {
-    "name": "nanargmax",
-    "module": "numpy",
-    "whest_ref": "we.nanargmax",
-    "numpy_ref": "np.nanargmax",
-    "category": "counted_reduction",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "numel(input)",
-    "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "notes": "Index of maximum ignoring NaNs.",
-    "summary": "Return the indices of the maximum values in the specified axis ignoring NaNs. For all-NaN slices ``ValueError`` is raised. Warning: the results cannot be trusted if a slice contains only NaNs and -Infs.",
-    "signature": "we.nanargmax(a, axis=None, out=None, *, keepdims=<no value>)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Return the indices of the maximum values in the specified axis ignoring\nNaNs. For all-NaN slices ``ValueError`` is raised. Warning: the\nresults cannot be trusted if a slice contains only NaNs and -Infs."
-          }
-        ]
-      },
-      {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
-          {
-            "name": "a",
-            "type": "array_like",
-            "desc_blocks": [
+            "inline": [
               {
-                "type": "paragraph",
-                "text": "Input data."
-              }
-            ]
-          },
-          {
-            "name": "axis",
-            "type": "int, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Axis along which to operate.  By default flattened input is used."
-              }
-            ]
-          },
-          {
-            "name": "out",
-            "type": "array, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "If provided, the result will be inserted into this array. It should\nbe of the appropriate shape and dtype."
+                "kind": "text",
+                "text": "Return the indices of the maximum values in the specified axis ignoring NaNs. For all-NaN slices "
               },
               {
-                "type": "directive",
-                "name": "versionadded:: 1.22.0",
-                "body": "",
-                "raw": ".. versionadded:: 1.22.0"
-              }
-            ]
-          },
-          {
-            "name": "keepdims",
-            "type": "bool, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "If this is set to True, the axes which are reduced are left\nin the result as dimensions with size one. With this option,\nthe result will broadcast correctly against the array."
+                "kind": "code",
+                "text": "ValueError"
               },
               {
-                "type": "directive",
-                "name": "versionadded:: 1.22.0",
-                "body": "",
-                "raw": ".. versionadded:: 1.22.0"
+                "kind": "text",
+                "text": " is raised. Warning: the results cannot be trusted if a slice contains only NaNs and -Infs."
               }
-            ]
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
+        "blocks": [
           {
-            "name": "index_array",
-            "type": "ndarray",
-            "desc_blocks": [
+            "items": [
               {
-                "type": "paragraph",
-                "text": "An array of indices or a single index value."
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Input data."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Input data."
+                  }
+                ],
+                "name": "a",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Axis along which to operate.  By default flattened input is used."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "int, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Axis along which to operate.  By default flattened input is used."
+                  }
+                ],
+                "name": "axis",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If provided, the result will be inserted into this array. It should\nbe of the appropriate shape and dtype."
+                      }
+                    ],
+                    "type": "paragraph"
+                  },
+                  {
+                    "argument_inline": [],
+                    "content_blocks": [],
+                    "directive": "versionadded",
+                    "options": [],
+                    "raw_source": ".. versionadded:: 1.22.0",
+                    "supported": true,
+                    "type": "directive_block",
+                    "version": "1.22.0"
+                  }
+                ],
+                "data_type": "array, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "If provided, the result will be inserted into this array. It should\nbe of the appropriate shape and dtype."
+                  }
+                ],
+                "name": "out",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If this is set to True, the axes which are reduced are left\nin the result as dimensions with size one. With this option,\nthe result will broadcast correctly against the array."
+                      }
+                    ],
+                    "type": "paragraph"
+                  },
+                  {
+                    "argument_inline": [],
+                    "content_blocks": [],
+                    "directive": "versionadded",
+                    "options": [],
+                    "raw_source": ".. versionadded:: 1.22.0",
+                    "supported": true,
+                    "type": "directive_block",
+                    "version": "1.22.0"
+                  }
+                ],
+                "data_type": "bool, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "If this is set to True, the axes which are reduced are left\nin the result as dimensions with size one. With this option,\nthe result will broadcast correctly against the array."
+                  }
+                ],
+                "name": "keepdims",
+                "type": "field_list"
               }
-            ]
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
       },
       {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> a = np.array([[np.nan, 4], [2, 3]])\n>>> np.argmax(a)\n0\n>>> np.nanargmax(a)\n1\n>>> np.nanargmax(a, axis=0)\narray([1, 0])\n>>> np.nanargmax(a, axis=1)\narray([1, 1])"
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "An array of indices or a single index value."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "An array of indices or a single index value."
+                  }
+                ],
+                "name": "index_array",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Returns"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "argmax, nanargmin"
+            "links": [
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/argmax",
+                "label": "we.argmax",
+                "original_target": "argmax",
+                "role": "",
+                "target": "argmax",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/nanargmin",
+                "label": "we.nanargmin",
+                "original_target": "nanargmin",
+                "role": "",
+                "target": "nanargmin",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
           }
-        ]
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.array([[we.nan, 4], [2, 3]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.argmax(a)"
+              },
+              {
+                "kind": "output",
+                "text": "0"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.nanargmax(a)"
+              },
+              {
+                "kind": "output",
+                "text": "1"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.nanargmax(a, axis=0)"
+              },
+              {
+                "kind": "output",
+                "text": "array([1, 0])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.nanargmax(a, axis=1)"
+              },
+              {
+                "kind": "output",
+                "text": "array([1, 1])"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_reduction",
+    "cost_formula": "numel(input)",
+    "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "module": "numpy",
+    "name": "nanargmax",
+    "notes": "Index of maximum ignoring NaNs.",
+    "numpy_ref": "np.nanargmax",
+    "signature": "we.nanargmax(a, axis=None, out=None, *, keepdims=<no value>)",
+    "status": "supported",
+    "summary": "Return the indices of the maximum values in the specified axis ignoring NaNs. For all-NaN slices ``ValueError`` is raised. Warning: the results cannot be trusted if a slice contains only NaNs and -Infs.",
+    "weight": 1.0,
+    "whest_ref": "we.nanargmax"
+  },
+  "schema_version": 1,
+  "slug": "nanargmax",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_nanfunctions_impl.py#L572",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L197"
   }
 }

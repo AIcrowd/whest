@@ -1,134 +1,379 @@
 {
-  "schema_version": 1,
-  "slug": "put",
   "detail_href": "/docs/api/ops/put/",
   "detail_json_href": "/api-data/ops/put.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L1262-L1269",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.put.html"
-  },
-  "op": {
-    "name": "put",
-    "module": "numpy",
-    "whest_ref": "we.put",
-    "numpy_ref": "np.put",
-    "category": "counted_custom",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "per-operation",
-    "cost_formula_latex": "varies",
-    "notes": "Replace elements at given flat indices. Cost: numel(input).",
-    "summary": "Replaces specified elements of an array with given values.",
-    "signature": "we.put(a, ind, v, mode='raise')"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Replaces specified elements of an array with given values."
-          },
-          {
-            "type": "paragraph",
-            "text": "The indexing works on the flattened target array. `put` is roughly\nequivalent to:"
-          },
-          {
-            "type": "paragraph",
-            "text": "::"
-          },
-          {
-            "type": "paragraph",
-            "text": "    a.flat[ind] = v"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Replaces specified elements of an array with given values."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
+        "blocks": [
           {
-            "name": "a",
-            "type": "ndarray",
-            "desc_blocks": [
+            "inline": [
               {
-                "type": "paragraph",
-                "text": "Target array."
-              }
-            ]
-          },
-          {
-            "name": "ind",
-            "type": "array_like",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Target indices, interpreted as integers."
-              }
-            ]
-          },
-          {
-            "name": "v",
-            "type": "array_like",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Values to place in `a` at target indices. If `v` is shorter than\n`ind` it will be repeated as necessary."
-              }
-            ]
-          },
-          {
-            "name": "mode",
-            "type": "{'raise', 'wrap', 'clip'}, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Specifies how out-of-bounds indices will behave."
+                "kind": "text",
+                "text": "The indexing works on the flattened target array. "
               },
               {
-                "type": "paragraph",
-                "text": "* 'raise' -- raise an error (default)\n* 'wrap' -- wrap around\n* 'clip' -- clip to the range"
+                "external_url": "",
+                "href": "/docs/api/ops/put",
+                "kind": "link",
+                "target": "put",
+                "text": "put"
               },
               {
-                "type": "paragraph",
-                "text": "'clip' mode means that all indices that are too large are replaced\nby the index that addresses the last element along that axis. Note\nthat this disables indexing with negative numbers. In 'raise' mode,\nif an exception occurs the target array may still be modified."
+                "kind": "text",
+                "text": " is roughly\nequivalent to:"
               }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "examples",
-        "title": "Examples",
-        "blocks": [
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> a = np.arange(5)\n>>> np.put(a, [0, 2], [-44, -55])\n>>> a\narray([-44,   1, -55,   3,   4])"
+            ],
+            "type": "paragraph"
           },
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> a = np.arange(5)\n>>> np.put(a, 22, -5, mode='clip')\n>>> a\narray([ 0,  1,  2,  3, -5])"
+            "language": null,
+            "text": "a.flat[ind] = v",
+            "type": "literal_block"
           }
-        ]
+        ],
+        "title": "Extended Summary"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "putmask, place"
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Target array."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Target array."
+                  }
+                ],
+                "name": "a",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Target indices, interpreted as integers."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Target indices, interpreted as integers."
+                  }
+                ],
+                "name": "ind",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Values to place in "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "a"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " at target indices. If "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "v"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is shorter than\n"
+                      },
+                      {
+                        "kind": "code",
+                        "text": "ind"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " it will be repeated as necessary."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Values to place in "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "a"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " at target indices. If "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "v"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is shorter than\n"
+                  },
+                  {
+                    "kind": "code",
+                    "text": "ind"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " it will be repeated as necessary."
+                  }
+                ],
+                "name": "v",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Specifies how out-of-bounds indices will behave."
+                      }
+                    ],
+                    "type": "paragraph"
+                  },
+                  {
+                    "items": [
+                      {
+                        "blocks": [
+                          {
+                            "inline": [
+                              {
+                                "kind": "text",
+                                "text": "'raise' -- raise an error (default)"
+                              }
+                            ],
+                            "type": "paragraph"
+                          }
+                        ]
+                      },
+                      {
+                        "blocks": [
+                          {
+                            "inline": [
+                              {
+                                "kind": "text",
+                                "text": "'wrap' -- wrap around"
+                              }
+                            ],
+                            "type": "paragraph"
+                          }
+                        ]
+                      },
+                      {
+                        "blocks": [
+                          {
+                            "inline": [
+                              {
+                                "kind": "text",
+                                "text": "'clip' -- clip to the range"
+                              }
+                            ],
+                            "type": "paragraph"
+                          }
+                        ]
+                      }
+                    ],
+                    "ordered": false,
+                    "type": "list"
+                  },
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "'clip' mode means that all indices that are too large are replaced\nby the index that addresses the last element along that axis. Note\nthat this disables indexing with negative numbers. In 'raise' mode,\nif an exception occurs the target array may still be modified."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "{'raise', 'wrap', 'clip'}, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Specifies how out-of-bounds indices will behave."
+                  }
+                ],
+                "name": "mode",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
+          }
+        ],
+        "title": "Parameters"
+      },
+      {
+        "blocks": [
+          {
+            "links": [
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/putmask",
+                "label": "we.putmask",
+                "original_target": "putmask",
+                "role": "",
+                "target": "putmask",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/place",
+                "label": "we.place",
+                "original_target": "place",
+                "role": "",
+                "target": "place",
+                "unresolved": false
+              },
+              {
+                "description": "Put elements by matching the array and the index arrays",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Put elements by matching the array and the index arrays"
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/put_along_axis",
+                "label": "we.put_along_axis",
+                "original_target": "put_along_axis",
+                "role": "",
+                "target": "put_along_axis",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
+          }
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.arange(5)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.put(a, [0, 2], [-44, -55])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a"
+              },
+              {
+                "kind": "output",
+                "text": "array([-44,   1, -55,   3,   4])"
+              }
+            ],
+            "type": "doctest_block"
           },
           {
-            "type": "paragraph",
-            "text": "put_along_axis \u2014 Put elements by matching the array and the index arrays"
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.arange(5)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.put(a, 22, -5, mode='clip')"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a"
+              },
+              {
+                "kind": "output",
+                "text": "array([ 0,  1,  2,  3, -5])"
+              }
+            ],
+            "type": "doctest_block"
           }
-        ]
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_custom",
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "module": "numpy",
+    "name": "put",
+    "notes": "Replace elements at given flat indices. Cost: numel(input).",
+    "numpy_ref": "np.put",
+    "signature": "we.put(a, ind, v, mode='raise')",
+    "status": "supported",
+    "summary": "Replaces specified elements of an array with given values.",
+    "weight": 1.0,
+    "whest_ref": "we.put"
+  },
+  "schema_version": 1,
+  "slug": "put",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L513",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1262"
   }
 }

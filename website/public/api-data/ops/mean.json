@@ -1,217 +1,782 @@
 {
-  "schema_version": 1,
-  "slug": "mean",
   "detail_href": "/docs/api/ops/mean/",
   "detail_json_href": "/api-data/ops/mean.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L197-L255",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.mean.html"
-  },
-  "op": {
-    "name": "mean",
-    "module": "numpy",
-    "whest_ref": "we.mean",
-    "numpy_ref": "np.mean",
-    "category": "counted_reduction",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "numel(input)",
-    "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "notes": "Arithmetic mean of array elements.",
-    "summary": "Compute the arithmetic mean along the specified axis.",
-    "signature": "we.mean(a, axis=None, dtype=None, out=None, keepdims=<no value>, *, where=<no value>)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Compute the arithmetic mean along the specified axis."
-          },
-          {
-            "type": "paragraph",
-            "text": "Returns the average of the array elements.  The average is taken over\nthe flattened array by default, otherwise over the specified axis.\n`float64` intermediate and return values are used for integer inputs."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Compute the arithmetic mean along the specified axis."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
+        "blocks": [
           {
-            "name": "a",
-            "type": "array_like",
-            "desc_blocks": [
+            "inline": [
               {
-                "type": "paragraph",
-                "text": "Array containing numbers whose mean is desired. If `a` is not an\narray, a conversion is attempted."
-              }
-            ]
-          },
-          {
-            "name": "axis",
-            "type": "None or int or tuple of ints, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Axis or axes along which the means are computed. The default is to\ncompute the mean of the flattened array."
+                "kind": "text",
+                "text": "Returns the average of the array elements.  The average is taken over\nthe flattened array by default, otherwise over the specified axis.\n"
               },
               {
-                "type": "paragraph",
-                "text": "If this is a tuple of ints, a mean is performed over multiple axes,\ninstead of a single axis or all the axes as before."
-              }
-            ]
-          },
-          {
-            "name": "dtype",
-            "type": "data-type, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Type to use in computing the mean.  For integer inputs, the default\nis `float64`; for floating point inputs, it is the same as the\ninput dtype."
-              }
-            ]
-          },
-          {
-            "name": "out",
-            "type": "ndarray, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Alternate output array in which to place the result.  The default\nis ``None``; if provided, it must have the same shape as the\nexpected output, but the type will be cast if necessary.\nSee :ref:`ufuncs-output-type` for more details.\nSee :ref:`ufuncs-output-type` for more details."
-              }
-            ]
-          },
-          {
-            "name": "keepdims",
-            "type": "bool, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "If this is set to True, the axes which are reduced are left\nin the result as dimensions with size one. With this option,\nthe result will broadcast correctly against the input array."
+                "kind": "code",
+                "text": "float64"
               },
               {
-                "type": "paragraph",
-                "text": "If the default value is passed, then `keepdims` will not be\npassed through to the `mean` method of sub-classes of\n`ndarray`, however any non-default value will be.  If the\nsub-class' method does not implement `keepdims` any\nexceptions will be raised."
+                "kind": "text",
+                "text": " intermediate and return values are used for integer inputs."
               }
-            ]
-          },
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Extended Summary"
+      },
+      {
+        "blocks": [
           {
-            "name": "where",
-            "type": "array_like of bool, optional",
-            "desc_blocks": [
+            "items": [
               {
-                "type": "paragraph",
-                "text": "Elements to include in the mean. See `~numpy.ufunc.reduce` for details."
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Array containing numbers whose mean is desired. If "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "a"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is not an\narray, a conversion is attempted."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Array containing numbers whose mean is desired. If "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "a"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is not an\narray, a conversion is attempted."
+                  }
+                ],
+                "name": "a",
+                "type": "field_list"
               },
               {
-                "type": "directive",
-                "name": "versionadded:: 1.20.0",
-                "body": "",
-                "raw": ".. versionadded:: 1.20.0"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "m",
-            "type": "ndarray, see dtype parameter above",
-            "desc_blocks": [
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Axis or axes along which the means are computed. The default is to\ncompute the mean of the flattened array."
+                      }
+                    ],
+                    "type": "paragraph"
+                  },
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If this is a tuple of ints, a mean is performed over multiple axes,\ninstead of a single axis or all the axes as before."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "None or int or tuple of ints, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Axis or axes along which the means are computed. The default is to\ncompute the mean of the flattened array."
+                  }
+                ],
+                "name": "axis",
+                "type": "field_list"
+              },
               {
-                "type": "paragraph",
-                "text": "If `out=None`, returns a new array containing the mean values,\notherwise a reference to the output array is returned."
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Type to use in computing the mean.  For integer inputs, the default\nis "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "float64"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "; for floating point inputs, it is the same as the\ninput dtype."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "data-type, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Type to use in computing the mean.  For integer inputs, the default\nis "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "float64"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "; for floating point inputs, it is the same as the\ninput dtype."
+                  }
+                ],
+                "name": "dtype",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Alternate output array in which to place the result.  The default\nis "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "None"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "; if provided, it must have the same shape as the\nexpected output, but the type will be cast if necessary.\nSee "
+                      },
+                      {
+                        "display_text": "ufuncs-output-type",
+                        "explicit_title": false,
+                        "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.ufuncs-output-type.html",
+                        "href": "",
+                        "kind": "role_reference",
+                        "original_target": "ufuncs-output-type",
+                        "role": "ref",
+                        "suppress_link": false,
+                        "target": "ufuncs-output-type",
+                        "unresolved": false
+                      },
+                      {
+                        "kind": "text",
+                        "text": " for more details.\nSee "
+                      },
+                      {
+                        "display_text": "ufuncs-output-type",
+                        "explicit_title": false,
+                        "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.ufuncs-output-type.html",
+                        "href": "",
+                        "kind": "role_reference",
+                        "original_target": "ufuncs-output-type",
+                        "role": "ref",
+                        "suppress_link": false,
+                        "target": "ufuncs-output-type",
+                        "unresolved": false
+                      },
+                      {
+                        "kind": "text",
+                        "text": " for more details."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Alternate output array in which to place the result.  The default\nis "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "None"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "; if provided, it must have the same shape as the\nexpected output, but the type will be cast if necessary.\nSee "
+                  },
+                  {
+                    "display_text": "ufuncs-output-type",
+                    "explicit_title": false,
+                    "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.ufuncs-output-type.html",
+                    "href": "",
+                    "kind": "role_reference",
+                    "original_target": "ufuncs-output-type",
+                    "role": "ref",
+                    "suppress_link": false,
+                    "target": "ufuncs-output-type",
+                    "unresolved": false
+                  },
+                  {
+                    "kind": "text",
+                    "text": " for more details.\nSee "
+                  },
+                  {
+                    "display_text": "ufuncs-output-type",
+                    "explicit_title": false,
+                    "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.ufuncs-output-type.html",
+                    "href": "",
+                    "kind": "role_reference",
+                    "original_target": "ufuncs-output-type",
+                    "role": "ref",
+                    "suppress_link": false,
+                    "target": "ufuncs-output-type",
+                    "unresolved": false
+                  },
+                  {
+                    "kind": "text",
+                    "text": " for more details."
+                  }
+                ],
+                "name": "out",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If this is set to True, the axes which are reduced are left\nin the result as dimensions with size one. With this option,\nthe result will broadcast correctly against the input array."
+                      }
+                    ],
+                    "type": "paragraph"
+                  },
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If the default value is passed, then "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "keepdims"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " will not be\npassed through to the "
+                      },
+                      {
+                        "external_url": "",
+                        "href": "/docs/api/ops/mean",
+                        "kind": "link",
+                        "target": "mean",
+                        "text": "mean"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " method of sub-classes of\n"
+                      },
+                      {
+                        "kind": "code",
+                        "text": "ndarray"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", however any non-default value will be.  If the\nsub-class' method does not implement "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "keepdims"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " any\nexceptions will be raised."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "bool, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "If this is set to True, the axes which are reduced are left\nin the result as dimensions with size one. With this option,\nthe result will broadcast correctly against the input array."
+                  }
+                ],
+                "name": "keepdims",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Elements to include in the mean. See "
+                      },
+                      {
+                        "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.ufunc.reduce.html",
+                        "href": "",
+                        "kind": "link",
+                        "target": "ufunc.reduce",
+                        "text": "reduce"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " for details."
+                      }
+                    ],
+                    "type": "paragraph"
+                  },
+                  {
+                    "argument_inline": [],
+                    "content_blocks": [],
+                    "directive": "versionadded",
+                    "options": [],
+                    "raw_source": ".. versionadded:: 1.20.0",
+                    "supported": true,
+                    "type": "directive_block",
+                    "version": "1.20.0"
+                  }
+                ],
+                "data_type": "array_like of bool, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Elements to include in the mean. See "
+                  },
+                  {
+                    "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.ufunc.reduce.html",
+                    "href": "",
+                    "kind": "link",
+                    "target": "ufunc.reduce",
+                    "text": "reduce"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " for details."
+                  }
+                ],
+                "name": "where",
+                "type": "field_list"
               }
-            ]
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
       },
       {
-        "kind": "notes",
-        "title": "Notes",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "The arithmetic mean is the sum of the elements along the axis divided\nby the number of elements."
-          },
-          {
-            "type": "paragraph",
-            "text": "Note that for floating-point input, the mean is computed using the\nsame precision the input has.  Depending on the input data, this can\ncause the results to be inaccurate, especially for `float32` (see\nexample below).  Specifying a higher-precision accumulator using the\n`dtype` keyword can alleviate this issue."
-          },
-          {
-            "type": "paragraph",
-            "text": "By default, `float16` results are computed using `float32` intermediates\nfor extra precision."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "out=None"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", returns a new array containing the mean values,\notherwise a reference to the output array is returned."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray, see dtype parameter above",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "If "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "out=None"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", returns a new array containing the mean values,\notherwise a reference to the output array is returned."
+                  }
+                ],
+                "name": "m",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Returns"
       },
       {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> a = np.array([[1, 2], [3, 4]])\n>>> np.mean(a)\n2.5\n>>> np.mean(a, axis=0)\narray([2., 3.])\n>>> np.mean(a, axis=1)\narray([1.5, 3.5])"
-          },
-          {
-            "type": "paragraph",
-            "text": "In single precision, `mean` can be inaccurate:"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> a = np.zeros((2, 512*512), dtype=np.float32)\n>>> a[0, :] = 1.0\n>>> a[1, :] = 0.1\n>>> np.mean(a)\nnp.float32(0.54999924)"
-          },
-          {
-            "type": "paragraph",
-            "text": "Computing the mean in float64 is more accurate:"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> np.mean(a, dtype=np.float64)\n0.55000000074505806 # may vary"
-          },
-          {
-            "type": "paragraph",
-            "text": "Computing the mean in timedelta64 is available:"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> b = np.array([1, 3], dtype=\"timedelta64[D]\")\n>>> np.mean(b)\nnp.timedelta64(2,'D')"
-          },
-          {
-            "type": "paragraph",
-            "text": "Specifying a where argument:"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> a = np.array([[5, 9, 13], [14, 10, 12], [11, 15, 19]])\n>>> np.mean(a)\n12.0\n>>> np.mean(a, where=[[True], [False], [False]])\n9.0"
+            "links": [
+              {
+                "description": "Weighted average",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Weighted average"
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/average",
+                "label": "we.average",
+                "original_target": "average",
+                "role": "",
+                "target": "average",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/std",
+                "label": "we.std",
+                "original_target": "std",
+                "role": "",
+                "target": "std",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/var",
+                "label": "we.var",
+                "original_target": "var",
+                "role": "",
+                "target": "var",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/nanmean",
+                "label": "we.nanmean",
+                "original_target": "nanmean",
+                "role": "",
+                "target": "nanmean",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/nanstd",
+                "label": "we.nanstd",
+                "original_target": "nanstd",
+                "role": "",
+                "target": "nanstd",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/nanvar",
+                "label": "we.nanvar",
+                "original_target": "nanvar",
+                "role": "",
+                "target": "nanvar",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
           }
-        ]
+        ],
+        "title": "See also"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "average \u2014 Weighted average"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "The arithmetic mean is the sum of the elements along the axis divided\nby the number of elements."
+              }
+            ],
+            "type": "paragraph"
           },
           {
-            "type": "paragraph",
-            "text": "std, var, nanmean, nanstd, nanvar"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Note that for floating-point input, the mean is computed using the\nsame precision the input has.  Depending on the input data, this can\ncause the results to be inaccurate, especially for "
+              },
+              {
+                "kind": "code",
+                "text": "float32"
+              },
+              {
+                "kind": "text",
+                "text": " (see\nexample below).  Specifying a higher-precision accumulator using the\n"
+              },
+              {
+                "kind": "code",
+                "text": "dtype"
+              },
+              {
+                "kind": "text",
+                "text": " keyword can alleviate this issue."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "By default, "
+              },
+              {
+                "kind": "code",
+                "text": "float16"
+              },
+              {
+                "kind": "text",
+                "text": " results are computed using "
+              },
+              {
+                "kind": "code",
+                "text": "float32"
+              },
+              {
+                "kind": "text",
+                "text": " intermediates\nfor extra precision."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Notes"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.array([[1, 2], [3, 4]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.mean(a)"
+              },
+              {
+                "kind": "output",
+                "text": "2.5"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.mean(a, axis=0)"
+              },
+              {
+                "kind": "output",
+                "text": "array([2., 3.])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.mean(a, axis=1)"
+              },
+              {
+                "kind": "output",
+                "text": "array([1.5, 3.5])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "In single precision, "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/mean",
+                "kind": "link",
+                "target": "mean",
+                "text": "mean"
+              },
+              {
+                "kind": "text",
+                "text": " can be inaccurate:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.zeros((2, 512*512), dtype=we.float32)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a[0, :] = 1.0"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a[1, :] = 0.1"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.mean(a)"
+              },
+              {
+                "kind": "output",
+                "text": "we.float32(0.54999924)"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Computing the mean in float64 is more accurate:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.mean(a, dtype=we.float64)"
+              },
+              {
+                "kind": "output",
+                "text": "0.55000000074505806 # may vary"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Computing the mean in timedelta64 is available:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "b = we.array([1, 3], dtype=\"timedelta64[D]\")"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.mean(b)"
+              },
+              {
+                "kind": "output",
+                "text": "we.timedelta64(2,'D')"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Specifying a where argument:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.array([[5, 9, 13], [14, 10, 12], [11, 15, 19]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.mean(a)"
+              },
+              {
+                "kind": "output",
+                "text": "12.0"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.mean(a, where=[[True], [False], [False]])"
+              },
+              {
+                "kind": "output",
+                "text": "9.0"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_reduction",
+    "cost_formula": "numel(input)",
+    "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "module": "numpy",
+    "name": "mean",
+    "notes": "Arithmetic mean of array elements.",
+    "numpy_ref": "np.mean",
+    "signature": "we.mean(a, axis=None, dtype=None, out=None, keepdims=<no value>, *, where=<no value>)",
+    "status": "supported",
+    "summary": "Compute the arithmetic mean along the specified axis.",
+    "weight": 1.0,
+    "whest_ref": "we.mean"
+  },
+  "schema_version": 1,
+  "slug": "mean",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L3735",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L197"
   }
 }

@@ -1,133 +1,298 @@
 {
-  "schema_version": 1,
-  "slug": "blackman",
   "detail_href": "/docs/api/ops/blackman/",
   "detail_json_href": "/api-data/ops/blackman.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L64-L69",
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L3058-L3155"
-  },
-  "op": {
-    "name": "blackman",
-    "module": "whest._window",
-    "whest_ref": "we.blackman",
-    "numpy_ref": "np.blackman",
-    "category": "counted_custom",
-    "status": "supported",
-    "weight": 16.0,
-    "cost_formula": "3n",
-    "cost_formula_latex": "$3n$",
-    "notes": "Blackman window. Cost: 3*n (three cosine terms per sample).",
-    "summary": "Return the Blackman window.",
-    "signature": "we.blackman(M)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Return the Blackman window."
-          },
-          {
-            "type": "paragraph",
-            "text": "The Blackman window is a taper formed by using the first three\nterms of a summation of cosines. It was designed to have close to the\nminimal leakage possible.  It is close to optimal, only slightly worse\nthan a Kaiser window."
-          }
-        ]
-      },
-      {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
-          {
-            "name": "M",
-            "type": "int",
-            "desc_blocks": [
+            "inline": [
               {
-                "type": "paragraph",
-                "text": "Number of points in the output window. If zero or less, an empty\narray is returned."
+                "kind": "text",
+                "text": "Return the Blackman window."
               }
-            ]
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
+        "blocks": [
           {
-            "name": "out",
-            "type": "ndarray",
-            "desc_blocks": [
+            "inline": [
               {
-                "type": "paragraph",
-                "text": "The window, with the maximum value normalized to one (the value one\nappears only if the number of samples is odd)."
+                "kind": "text",
+                "text": "The Blackman window is a taper formed by using the first three\nterms of a summation of cosines. It was designed to have close to the\nminimal leakage possible.  It is close to optimal, only slightly worse\nthan a Kaiser window."
               }
-            ]
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Extended Summary"
       },
       {
-        "kind": "notes",
-        "title": "Notes",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "The Blackman window is defined as"
-          },
-          {
-            "type": "directive",
-            "name": "math::  w(n) = 0.42 - 0.5 \\cos(2\\pi n/M) + 0.08 \\cos(4\\pi n/M)",
-            "body": "",
-            "raw": ".. math::  w(n) = 0.42 - 0.5 \\cos(2\\pi n/M) + 0.08 \\cos(4\\pi n/M)"
-          },
-          {
-            "type": "paragraph",
-            "text": "Most references to the Blackman window come from the signal processing\nliterature, where it is used as one of many windowing functions for\nsmoothing values.  It is also known as an apodization (which means\n\"removing the foot\", i.e. smoothing discontinuities at the beginning\nand end of the sampled signal) or tapering function. It is known as a\n\"near optimal\" tapering function, almost as good (by some measures)\nas the kaiser window."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Number of points in the output window. If zero or less, an empty\narray is returned."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "int",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Number of points in the output window. If zero or less, an empty\narray is returned."
+                  }
+                ],
+                "name": "M",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
       },
       {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> import matplotlib.pyplot as plt\n>>> np.blackman(12)\narray([-1.38777878e-17,   3.26064346e-02,   1.59903635e-01, # may vary\n        4.14397981e-01,   7.36045180e-01,   9.67046769e-01,\n        9.67046769e-01,   7.36045180e-01,   4.14397981e-01,\n        1.59903635e-01,   3.26064346e-02,  -1.38777878e-17])"
-          },
-          {
-            "type": "paragraph",
-            "text": "Plot the window and the frequency response."
-          },
-          {
-            "type": "directive",
-            "name": "plot",
-            "body": "    :include-source:",
-            "raw": ".. plot::\n    :include-source:"
-          },
-          {
-            "type": "paragraph",
-            "text": "    import matplotlib.pyplot as plt\n    from numpy.fft import fft, fftshift\n    window = np.blackman(51)\n    plt.plot(window)\n    plt.title(\"Blackman window\")\n    plt.ylabel(\"Amplitude\")\n    plt.xlabel(\"Sample\")\n    plt.show()  # doctest: +SKIP"
-          },
-          {
-            "type": "paragraph",
-            "text": "    plt.figure()\n    A = fft(window, 2048) / 25.5\n    mag = np.abs(fftshift(A))\n    freq = np.linspace(-0.5, 0.5, len(A))\n    with np.errstate(divide='ignore', invalid='ignore'):\n        response = 20 * np.log10(mag)\n    response = np.clip(response, -100, 100)\n    plt.plot(freq, response)\n    plt.title(\"Frequency response of Blackman window\")\n    plt.ylabel(\"Magnitude [dB]\")\n    plt.xlabel(\"Normalized frequency [cycles per sample]\")\n    plt.axis('tight')\n    plt.show()"
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The window, with the maximum value normalized to one (the value one\nappears only if the number of samples is odd)."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The window, with the maximum value normalized to one (the value one\nappears only if the number of samples is odd)."
+                  }
+                ],
+                "name": "out",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Returns"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "bartlett, hamming, hanning, kaiser"
+            "links": [
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/bartlett",
+                "label": "we.bartlett",
+                "original_target": "bartlett",
+                "role": "",
+                "target": "bartlett",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/hamming",
+                "label": "we.hamming",
+                "original_target": "hamming",
+                "role": "",
+                "target": "hamming",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/hanning",
+                "label": "we.hanning",
+                "original_target": "hanning",
+                "role": "",
+                "target": "hanning",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/kaiser",
+                "label": "we.kaiser",
+                "original_target": "kaiser",
+                "role": "",
+                "target": "kaiser",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
           }
-        ]
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "The Blackman window is defined as"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "formulas": [
+              "w(n) = 0.42 - 0.5 \\cos(2\\pi n/M) + 0.08 \\cos(4\\pi n/M)"
+            ],
+            "type": "math_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Most references to the Blackman window come from the signal processing\nliterature, where it is used as one of many windowing functions for\nsmoothing values.  It is also known as an apodization (which means\n\"removing the foot\", i.e. smoothing discontinuities at the beginning\nand end of the sampled signal) or tapering function. It is known as a\n\"near optimal\" tapering function, almost as good (by some measures)\nas the kaiser window."
+              }
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Notes"
+      },
+      {
+        "blocks": [
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Blackman, R.B. and Tukey, J.W., (1958) The measurement of power spectra,\nDover Publications, New York."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Oppenheim, A.V., and R.W. Schafer. Discrete-Time Signal Processing.\nUpper Saddle River, NJ: Prentice-Hall, 1999, pp. 468-471."
+              }
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "References"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import matplotlib.pyplot as plt"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.blackman(12)"
+              },
+              {
+                "kind": "output",
+                "text": "array([-1.38777878e-17,   3.26064346e-02,   1.59903635e-01, # may vary"
+              },
+              {
+                "kind": "output",
+                "text": "        4.14397981e-01,   7.36045180e-01,   9.67046769e-01,"
+              },
+              {
+                "kind": "output",
+                "text": "        9.67046769e-01,   7.36045180e-01,   4.14397981e-01,"
+              },
+              {
+                "kind": "output",
+                "text": "        1.59903635e-01,   3.26064346e-02,  -1.38777878e-17])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Plot the window and the frequency response."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "argument_inline": [],
+            "content_blocks": [
+              {
+                "language": "python",
+                "text": "import matplotlib.pyplot as plt\nfrom we.fft import fft, fftshift\nwindow = we.blackman(51)\nplt.plot(window)\nplt.title(\"Blackman window\")\nplt.ylabel(\"Amplitude\")\nplt.xlabel(\"Sample\")\nplt.show()  # doctest: +SKIP\n\nplt.figure()\nA = fft(window, 2048) / 25.5\nmag = we.abs(fftshift(A))\nfreq = we.linspace(-0.5, 0.5, len(A))\nwith we.errstate(divide='ignore', invalid='ignore'):\n    response = 20 * we.log10(mag)\nresponse = we.clip(response, -100, 100)\nplt.plot(freq, response)\nplt.title(\"Frequency response of Blackman window\")\nplt.ylabel(\"Magnitude [dB]\")\nplt.xlabel(\"Normalized frequency [cycles per sample]\")\nplt.axis('tight')\nplt.show()",
+                "type": "literal_block"
+              }
+            ],
+            "directive": "plot",
+            "options": [
+              {
+                "name": "include-source",
+                "value": ""
+              }
+            ],
+            "raw_source": ".. plot::\n    :include-source:\n\n    import matplotlib.pyplot as plt\n    from numpy.fft import fft, fftshift\n    window = np.blackman(51)\n    plt.plot(window)\n    plt.title(\"Blackman window\")\n    plt.ylabel(\"Amplitude\")\n    plt.xlabel(\"Sample\")\n    plt.show()  # doctest: +SKIP\n\n    plt.figure()\n    A = fft(window, 2048) / 25.5\n    mag = np.abs(fftshift(A))\n    freq = np.linspace(-0.5, 0.5, len(A))\n    with np.errstate(divide='ignore', invalid='ignore'):\n        response = 20 * np.log10(mag)\n    response = np.clip(response, -100, 100)\n    plt.plot(freq, response)\n    plt.title(\"Frequency response of Blackman window\")\n    plt.ylabel(\"Magnitude [dB]\")\n    plt.xlabel(\"Normalized frequency [cycles per sample]\")\n    plt.axis('tight')\n    plt.show()",
+            "supported": true,
+            "type": "directive_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_custom",
+    "cost_formula": "3n",
+    "cost_formula_latex": "$3n$",
+    "module": "whest._window",
+    "name": "blackman",
+    "notes": "Blackman window. Cost: 3*n (three cosine terms per sample).",
+    "numpy_ref": "np.blackman",
+    "signature": "we.blackman(M)",
+    "status": "supported",
+    "summary": "Return the Blackman window.",
+    "weight": 16.0,
+    "whest_ref": "we.blackman"
+  },
+  "schema_version": 1,
+  "slug": "blackman",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L3058",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_window.py#L64"
   }
 }

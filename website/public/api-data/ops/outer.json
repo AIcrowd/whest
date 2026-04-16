@@ -1,148 +1,491 @@
 {
-  "schema_version": 1,
-  "slug": "outer",
   "detail_href": "/docs/api/ops/outer/",
   "detail_json_href": "/api-data/ops/outer.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L847-L859",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.outer.html"
-  },
-  "op": {
-    "name": "outer",
-    "module": "numpy",
-    "whest_ref": "we.outer",
-    "numpy_ref": "np.outer",
-    "category": "counted_custom",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "m * n",
-    "cost_formula_latex": "$m \\cdot n$",
-    "notes": "Outer product of two vectors; cost = M*N.",
-    "summary": "Compute the outer product of two vectors.",
-    "signature": "we.outer(a, b, out=None)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Compute the outer product of two vectors."
-          },
-          {
-            "type": "paragraph",
-            "text": "Given two vectors `a` and `b` of length ``M`` and ``N``, respectively,\nthe outer product [1]_ is::"
-          },
-          {
-            "type": "paragraph",
-            "text": "  [[a_0*b_0  a_0*b_1 ... a_0*b_{N-1} ]\n   [a_1*b_0    .\n   [ ...          .\n   [a_{M-1}*b_0            a_{M-1}*b_{N-1} ]]"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Compute the outer product of two vectors."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
-          {
-            "name": "a",
-            "type": "(M,) array_like",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "First input vector.  Input is flattened if\nnot already 1-dimensional."
-              }
-            ]
-          },
-          {
-            "name": "b",
-            "type": "(N,) array_like",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Second input vector.  Input is flattened if\nnot already 1-dimensional."
-              }
-            ]
-          },
-          {
-            "name": "out",
-            "type": "(M, N) ndarray, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "A location where the result is stored"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "out",
-            "type": "(M, N) ndarray",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "``out[i, j] = a[i] * b[j]``"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Make a (*very* coarse) grid for computing a Mandelbrot set:"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Given two vectors "
+              },
+              {
+                "kind": "code",
+                "text": "a"
+              },
+              {
+                "kind": "text",
+                "text": " and "
+              },
+              {
+                "kind": "code",
+                "text": "b"
+              },
+              {
+                "kind": "text",
+                "text": " of length "
+              },
+              {
+                "kind": "code",
+                "text": "M"
+              },
+              {
+                "kind": "text",
+                "text": " and "
+              },
+              {
+                "kind": "code",
+                "text": "N"
+              },
+              {
+                "kind": "text",
+                "text": ", respectively,\nthe outer product "
+              },
+              {
+                "kind": "text",
+                "text": "[1]_"
+              },
+              {
+                "kind": "text",
+                "text": " is:"
+              }
+            ],
+            "type": "paragraph"
           },
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> rl = np.outer(np.ones((5,)), np.linspace(-2, 2, 5))\n>>> rl\narray([[-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.]])\n>>> im = np.outer(1j*np.linspace(2, -2, 5), np.ones((5,)))\n>>> im\narray([[0.+2.j, 0.+2.j, 0.+2.j, 0.+2.j, 0.+2.j],\n       [0.+1.j, 0.+1.j, 0.+1.j, 0.+1.j, 0.+1.j],\n       [0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j],\n       [0.-1.j, 0.-1.j, 0.-1.j, 0.-1.j, 0.-1.j],\n       [0.-2.j, 0.-2.j, 0.-2.j, 0.-2.j, 0.-2.j]])\n>>> grid = rl + im\n>>> grid\narray([[-2.+2.j, -1.+2.j,  0.+2.j,  1.+2.j,  2.+2.j],\n       [-2.+1.j, -1.+1.j,  0.+1.j,  1.+1.j,  2.+1.j],\n       [-2.+0.j, -1.+0.j,  0.+0.j,  1.+0.j,  2.+0.j],\n       [-2.-1.j, -1.-1.j,  0.-1.j,  1.-1.j,  2.-1.j],\n       [-2.-2.j, -1.-2.j,  0.-2.j,  1.-2.j,  2.-2.j]])"
-          },
-          {
-            "type": "paragraph",
-            "text": "An example using a \"vector\" of letters:"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> x = np.array(['a', 'b', 'c'], dtype=object)\n>>> np.outer(x, [1, 2, 3])\narray([['a', 'aa', 'aaa'],\n       ['b', 'bb', 'bbb'],\n       ['c', 'cc', 'ccc']], dtype=object)"
+            "language": null,
+            "text": "[[a_0*b_0  a_0*b_1 ... a_0*b_{N-1} ]\n [a_1*b_0    .\n [ ...          .\n [a_{M-1}*b_0            a_{M-1}*b_{N-1} ]]",
+            "type": "literal_block"
           }
-        ]
+        ],
+        "title": "Extended Summary"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "inner"
-          },
-          {
-            "type": "paragraph",
-            "text": "einsum \u2014 ``einsum('i,j->ij', a.ravel(), b.ravel())`` is the equivalent."
-          },
-          {
-            "type": "paragraph",
-            "text": "ufunc.outer \u2014 A generalization to dimensions other than 1D and other operations. ``np.multiply.outer(a.ravel(), b.ravel())`` is the equivalent."
-          },
-          {
-            "type": "paragraph",
-            "text": "linalg.outer \u2014 An Array API compatible variation of ``np.outer``, which accepts 1-dimensional inputs only."
-          },
-          {
-            "type": "paragraph",
-            "text": "tensordot \u2014 ``np.tensordot(a.ravel(), b.ravel(), axes=((), ()))`` is the equivalent."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "First input vector.  Input is flattened if\nnot already 1-dimensional."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "(M,) array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "First input vector.  Input is flattened if\nnot already 1-dimensional."
+                  }
+                ],
+                "name": "a",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Second input vector.  Input is flattened if\nnot already 1-dimensional."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "(N,) array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Second input vector.  Input is flattened if\nnot already 1-dimensional."
+                  }
+                ],
+                "name": "b",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "A location where the result is stored"
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "(M, N) ndarray, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "A location where the result is stored"
+                  }
+                ],
+                "name": "out",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
+      },
+      {
+        "blocks": [
+          {
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "code",
+                        "text": "out[i, j] = a[i] * b[j]"
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "(M, N) ndarray",
+                "inline": [
+                  {
+                    "kind": "code",
+                    "text": "out[i, j] = a[i] * b[j]"
+                  }
+                ],
+                "name": "out",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
+          }
+        ],
+        "title": "Returns"
+      },
+      {
+        "blocks": [
+          {
+            "links": [
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/inner",
+                "label": "we.inner",
+                "original_target": "inner",
+                "role": "",
+                "target": "inner",
+                "unresolved": false
+              },
+              {
+                "description": "``einsum('i,j->ij', a.ravel(), b.ravel())`` is the equivalent.",
+                "description_inline": [
+                  {
+                    "kind": "code",
+                    "text": "einsum('i,j->ij', a.ravel(), b.ravel())"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is the equivalent."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/einsum",
+                "label": "we.einsum",
+                "original_target": "einsum",
+                "role": "",
+                "target": "einsum",
+                "unresolved": false
+              },
+              {
+                "description": "A generalization to dimensions other than 1D and other operations. ``we.multiply.outer(a.ravel(), b.ravel())`` is the equivalent.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "A generalization to dimensions other than 1D and other operations. "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "we.multiply.outer(a.ravel(), b.ravel())"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is the equivalent."
+                  }
+                ],
+                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.ufunc.outer.html",
+                "href": "",
+                "label": "ufunc.outer",
+                "original_target": "ufunc.outer",
+                "role": "",
+                "target": "ufunc.outer",
+                "unresolved": false
+              },
+              {
+                "description": "An Array API compatible variation of ``we.outer``, which accepts 1-dimensional inputs only.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "An Array API compatible variation of "
+                  },
+                  {
+                    "external_url": "",
+                    "href": "/docs/api/ops/outer",
+                    "kind": "link",
+                    "target": "outer",
+                    "text": "we.outer"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", which accepts 1-dimensional inputs only."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/linalg-outer",
+                "label": "we.linalg.outer",
+                "original_target": "linalg.outer",
+                "role": "",
+                "target": "linalg.outer",
+                "unresolved": false
+              },
+              {
+                "description": "``we.tensordot(a.ravel(), b.ravel(), axes=((), ()))`` is the equivalent.",
+                "description_inline": [
+                  {
+                    "kind": "code",
+                    "text": "we.tensordot(a.ravel(), b.ravel(), axes=((), ()))"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is the equivalent."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/tensordot",
+                "label": "we.tensordot",
+                "original_target": "tensordot",
+                "role": "",
+                "target": "tensordot",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
+          }
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "raw_kind": "footnote",
+            "raw_text": "1\n\nG. H. Golub and C. F. Van Loan, Matrix Computations, 3rd\ned., Baltimore, MD, Johns Hopkins University Press, 1996,\npg. 8.",
+            "type": "raw_block"
+          }
+        ],
+        "title": "References"
+      },
+      {
+        "blocks": [
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Make a ("
+              },
+              {
+                "kind": "emphasis",
+                "text": "very"
+              },
+              {
+                "kind": "text",
+                "text": " coarse) grid for computing a Mandelbrot set:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "rl = we.outer(we.ones((5,)), we.linspace(-2, 2, 5))"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "rl"
+              },
+              {
+                "kind": "output",
+                "text": "array([[-2., -1.,  0.,  1.,  2.],"
+              },
+              {
+                "kind": "output",
+                "text": "       [-2., -1.,  0.,  1.,  2.],"
+              },
+              {
+                "kind": "output",
+                "text": "       [-2., -1.,  0.,  1.,  2.],"
+              },
+              {
+                "kind": "output",
+                "text": "       [-2., -1.,  0.,  1.,  2.],"
+              },
+              {
+                "kind": "output",
+                "text": "       [-2., -1.,  0.,  1.,  2.]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "im = we.outer(1j*we.linspace(2, -2, 5), we.ones((5,)))"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "im"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0.+2.j, 0.+2.j, 0.+2.j, 0.+2.j, 0.+2.j],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0.+1.j, 0.+1.j, 0.+1.j, 0.+1.j, 0.+1.j],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0.-1.j, 0.-1.j, 0.-1.j, 0.-1.j, 0.-1.j],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0.-2.j, 0.-2.j, 0.-2.j, 0.-2.j, 0.-2.j]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "grid = rl + im"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "grid"
+              },
+              {
+                "kind": "output",
+                "text": "array([[-2.+2.j, -1.+2.j,  0.+2.j,  1.+2.j,  2.+2.j],"
+              },
+              {
+                "kind": "output",
+                "text": "       [-2.+1.j, -1.+1.j,  0.+1.j,  1.+1.j,  2.+1.j],"
+              },
+              {
+                "kind": "output",
+                "text": "       [-2.+0.j, -1.+0.j,  0.+0.j,  1.+0.j,  2.+0.j],"
+              },
+              {
+                "kind": "output",
+                "text": "       [-2.-1.j, -1.-1.j,  0.-1.j,  1.-1.j,  2.-1.j],"
+              },
+              {
+                "kind": "output",
+                "text": "       [-2.-2.j, -1.-2.j,  0.-2.j,  1.-2.j,  2.-2.j]])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "An example using a \"vector\" of letters:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x = we.array(['a', 'b', 'c'], dtype=object)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.outer(x, [1, 2, 3])"
+              },
+              {
+                "kind": "output",
+                "text": "array([['a', 'aa', 'aaa'],"
+              },
+              {
+                "kind": "output",
+                "text": "       ['b', 'bb', 'bbb'],"
+              },
+              {
+                "kind": "output",
+                "text": "       ['c', 'cc', 'ccc']], dtype=object)"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_custom",
+    "cost_formula": "m * n",
+    "cost_formula_latex": "$m \\cdot n$",
+    "module": "numpy",
+    "name": "outer",
+    "notes": "Outer product of two vectors; cost = M*N.",
+    "numpy_ref": "np.outer",
+    "signature": "we.outer(a, b, out=None)",
+    "status": "supported",
+    "summary": "Compute the outer product of two vectors.",
+    "weight": 1.0,
+    "whest_ref": "we.outer"
+  },
+  "schema_version": 1,
+  "slug": "outer",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L876",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L847"
   }
 }

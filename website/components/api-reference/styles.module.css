@@ -38,7 +38,7 @@
   box-shadow: 0 0 0 2px rgba(240, 82, 77, 0.15);
 }
 
-.moduleSelect {
+.areaSelect {
   padding: 0.5rem 0.75rem;
   border: 1px solid hsl(var(--border));
   border-radius: 6px;
@@ -50,7 +50,7 @@
   transition: all 0.15s ease;
 }
 
-.moduleSelect:focus {
+.areaSelect:focus {
   outline: none;
   border-color: #F0524D;
 }
@@ -143,49 +143,80 @@
   background: hsl(var(--muted));
 }
 
-.opLink {
+.opName code {
   font-weight: 500;
   color: #F0524D;
+  background: none;
+  padding: 0;
+}
+
+.opName a {
   text-decoration: none;
 }
 
-.opLink:hover {
+.opName a:hover .opLink {
   text-decoration: underline;
-  text-underline-offset: 0.18em;
 }
 
-.opModule {
+.opLink {
+  color: #c83c38;
+  font-weight: 550;
+  text-decoration: none;
+}
+
+.opLinkMuted {
   color: hsl(var(--muted-foreground));
 }
 
-.opFormula code {
-  font-size: 0.78rem;
-  background: none;
-  padding: 0;
-  color: hsl(var(--muted-foreground));
+.opWeight {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
-/* ── Arrow ────────────────────────────────────────────── */
-.opArrow {
+.weightChip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3.6rem;
+  padding: 0.18rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
   white-space: nowrap;
 }
 
-.detailLink {
-  color: hsl(var(--primary));
-  font-size: 0.875rem;
-  font-weight: 500;
-  text-decoration: none;
+.weight--1 {
+  background: hsl(var(--secondary));
+  color: hsl(var(--muted-foreground));
 }
 
-.detailLink:hover {
-  text-decoration: underline;
-  text-underline-offset: 0.18em;
+.weight--2 {
+  background: #dbeafe;
+  color: #1d4ed8;
 }
 
-/* ── Badge ────────────────────────────────────────────── */
-.badge {
-  display: inline-block;
-  padding: 0.15rem 0.55rem;
+.weight--4 {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.weight--16 {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.opFormula {
+  white-space: nowrap;
+  color: hsl(var(--muted-foreground));
+}
+
+.areaChip,
+.typeChip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.18rem 0.6rem;
   border-radius: 999px;
   font-size: 0.72rem;
   font-weight: 600;
@@ -193,38 +224,441 @@
   white-space: nowrap;
 }
 
-.badge--free {
+.area--core {
+  background: #f3e8ff;
+  color: #7c3aed;
+}
+
+.area--linalg {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.area--fft {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.area--random {
   background: #dcfce7;
   color: #166534;
 }
 
-.badge--blocked {
+.area--stats {
   background: #fee2e2;
-  color: #991b1b;
+  color: #b91c1c;
 }
 
-.badge--counted {
+.type--counted {
   background: #dbeafe;
   color: #1e40af;
 }
 
-/* ── Status chip ──────────────────────────────────────── */
-.statusChip {
-  display: inline-block;
-  padding: 0.1rem 0.45rem;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  font-weight: 500;
+.type--custom {
+  background: #fde68a;
+  color: #92400e;
 }
 
-.status--supported {
+.type--free {
   background: #dcfce7;
   color: #166534;
 }
 
-.status--blocked {
+.type--blocked {
   background: #fee2e2;
   color: #991b1b;
+}
+
+.docHeader {
+  margin: 0 0 0.9rem;
+}
+
+.docSignatureBlock {
+  margin: 0 0 0.8rem;
+}
+
+.docSignatureActions {
+  float: right;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  margin: 0.1rem 0 0 1rem;
+  white-space: nowrap;
+}
+
+.docSignature {
+  margin: 0;
+  font-size: 1.06rem;
+  line-height: 1.35;
+}
+
+.docSignatureBlock::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.docSignatureNamespace {
+  font-weight: 700;
+  color: hsl(var(--foreground));
+}
+
+.docSignatureFunction {
+  font-weight: 800;
+  color: var(--color-primary);
+}
+
+.docSignatureParams {
+  font-family: var(--fd-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
+  font-style: italic;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+}
+
+.docSummary {
+  max-width: 70ch;
+  margin: 0.4rem 0 0;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: hsl(var(--foreground));
+}
+
+.docMetaLine {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1rem;
+  margin-top: 0.55rem;
+}
+
+.docProvenance {
+  margin: 0;
+  font-size: 0.92rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.docProvenance a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.docAction {
+  color: #1e90a8;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.docAction:hover {
+  text-decoration: underline;
+}
+
+.docSourceLink {
+  color: #0b8ea5;
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.12em;
+}
+
+.docSourceLink:hover {
+  color: #087f94;
+}
+
+@media (max-width: 860px) {
+  .docSignatureActions {
+    float: none;
+    margin: 0.3rem 0 0;
+  }
+}
+
+.docOverlay {
+  margin: 0 0 1.5rem;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.85rem;
+  background: linear-gradient(180deg, rgba(255, 252, 250, 0.95), rgba(255, 255, 255, 1));
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+}
+
+.docOverlay h2 {
+  margin: 0 0 0.65rem;
+  font-size: 1rem;
+  letter-spacing: -0.015em;
+}
+
+.docMetaGrid,
+.docDenseGrid {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+}
+
+.docMetaGrid {
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  margin-bottom: 0.45rem;
+}
+
+.docDenseGrid {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.docMetaCard,
+.docDenseItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.55rem;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.7rem;
+  background: hsl(var(--background));
+}
+
+.docDenseItemWide {
+  grid-column: 1 / -1;
+  align-items: flex-start;
+}
+
+.docMetaLabel {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+  white-space: nowrap;
+}
+
+.docMetaValue,
+.docBodyText,
+.docPlaceholder {
+  margin: 0;
+}
+
+.docMetaValue {
+  line-height: 1.35;
+  font-size: 0.92rem;
+}
+
+.docFormula :global(.katex-display) {
+  margin: 0;
+}
+
+.docFormula {
+  font-size: 0.92rem;
+}
+
+.docPlaceholder {
+  color: hsl(var(--muted-foreground));
+}
+
+.docSection {
+  margin: 0 0 2.4rem;
+}
+
+.docSection h2 {
+  margin: 0 0 1rem;
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+}
+
+.docSectionBar {
+  display: block;
+  margin: 0 0 0.7rem !important;
+  padding: 0.18rem 0.5rem;
+  font-size: 0.96rem !important;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.01em !important;
+  background: hsl(var(--secondary));
+  border-radius: 0;
+}
+
+.docDefinitionList {
+  margin: 0;
+  padding-left: 1.15rem;
+}
+
+.docDefinitionItem {
+  margin: 0 0 1.2rem;
+}
+
+.docDefinitionTerm {
+  margin: 0;
+}
+
+.docDefinitionLead {
+  display: flex;
+  align-items: baseline;
+  gap: 0.22rem;
+  flex-wrap: wrap;
+  max-width: 74ch;
+}
+
+.docDefinitionName {
+  font-weight: 700;
+  color: hsl(var(--foreground));
+}
+
+.docDefinitionSeparator {
+  color: hsl(var(--foreground));
+}
+
+.docDefinitionType {
+  color: hsl(var(--foreground));
+  font-style: italic;
+  font-size: 0.96rem;
+}
+
+.docDefinitionBody {
+  margin: 0;
+  padding-left: 1.4rem;
+  max-width: 74ch;
+  line-height: 1.62;
+  color: hsl(var(--foreground));
+}
+
+.docFieldParagraph {
+  max-width: 74ch;
+  margin: 0 0 0.85rem;
+  line-height: 1.62;
+}
+
+.docFieldParagraph:last-child {
+  margin-bottom: 0;
+}
+
+.docMathBlock,
+.docNestedMathBlock {
+  max-width: 74ch;
+}
+
+.docMathBlock {
+  margin: 0 0 1rem;
+}
+
+.docNestedMathBlock {
+  margin: 0 0 0.85rem;
+}
+
+.docMathBlock :global(.katex-display),
+.docNestedMathBlock :global(.katex-display) {
+  margin: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.1rem 0;
+}
+
+.docSubDefinitionList {
+  margin: 0.65rem 0 0;
+  padding-left: 1.2rem;
+}
+
+.docSubDefinitionItem {
+  margin: 0 0 0.9rem;
+}
+
+.docSubDefinitionItem:last-child {
+  margin-bottom: 0;
+}
+
+.docSubDefinitionTerm {
+  margin: 0;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+}
+
+.docSubDefinitionBody {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.docInlineEmphasis {
+  font-style: italic;
+}
+
+.docParagraph {
+  max-width: 74ch;
+  margin: 0 0 1rem;
+  line-height: 1.7;
+}
+
+.docParagraph:last-child {
+  margin-bottom: 0;
+}
+
+.docLinkList {
+  display: grid;
+  gap: 0.7rem;
+  padding-left: 1.1rem;
+  margin: 0;
+}
+
+.docLinkList a {
+  color: #c83c38;
+  text-decoration: none;
+}
+
+.docLinkList a:hover {
+  text-decoration: underline;
+}
+
+.docLinkDescription {
+  color: hsl(var(--muted-foreground));
+}
+
+.docDirective {
+  max-width: 74ch;
+  margin: 0 0 1rem;
+  padding: 0.7rem 0.85rem;
+  border-left: 3px solid #c83c38;
+  border-radius: 0.55rem;
+  background: rgba(200, 60, 56, 0.06);
+  line-height: 1.65;
+}
+
+.docDirectiveBody {
+  margin-top: 0.6rem;
+}
+
+.docDirectiveBody > :global(*) + :global(*) {
+  margin-top: 0.55rem;
+}
+
+.docLiteralBlock {
+  max-width: 74ch;
+  margin: 0 0 1rem;
+  padding: 0.8rem 0.95rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.7rem;
+  background: hsl(var(--secondary));
+  overflow-x: auto;
+  white-space: pre;
+  font-family: var(--fd-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.docNestedList {
+  margin: 0.2rem 0 0.85rem 1.1rem;
+  padding-left: 0.9rem;
+}
+
+.docNestedList li + li {
+  margin-top: 0.45rem;
+}
+
+.docRawBlock {
+  max-width: 74ch;
+  margin: 0 0 1rem;
+}
+
+.docOutputSpacing {
+  margin-top: 1rem;
 }
 
 .status--partial {

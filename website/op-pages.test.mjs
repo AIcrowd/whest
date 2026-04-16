@@ -11,12 +11,10 @@ async function readSource(relativePath) {
 }
 
 test('/docs/api table links rows to standalone op pages', async () => {
-  const source = await readSource('components/api-reference/OperationRow.tsx');
+  const source = await readSource('components/api-reference/index.tsx');
 
   assert.match(source, /detail_href/);
-  assert.match(source, /href=\{op\.detail_href\}/);
-  assert.doesNotMatch(source, /expanded/);
-  assert.doesNotMatch(source, /onToggle/);
+  assert.match(source, /href:\s*op\.blocked \? undefined : op\.detail_href/);
 });
 
 test('op route is present and avoids runtime filesystem access', async () => {
@@ -26,4 +24,13 @@ test('op route is present and avoids runtime filesystem access', async () => {
   assert.match(source, /opDocImports/);
   assert.doesNotMatch(source, /node:fs|node:fs\/promises|from 'fs'|from "fs"/);
   assert.doesNotMatch(source, /process\.cwd\(/);
+});
+
+test('op pages use the dedicated numpy-style renderer stack', async () => {
+  const pageSource = await readSource('components/api-reference/OperationDocPage.tsx');
+
+  assert.match(pageSource, /OperationDocHeader/);
+  assert.match(pageSource, /OperationDocOverlay/);
+  assert.match(pageSource, /OperationDocBody/);
+  assert.match(pageSource, /OperationDocSignature/);
 });

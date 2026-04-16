@@ -1,147 +1,578 @@
 {
-  "schema_version": 1,
-  "slug": "log1p",
   "detail_href": "/docs/api/ops/log1p/",
   "detail_json_href": "/api-data/ops/log1p.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29-L42",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.log1p.html"
-  },
-  "op": {
-    "name": "log1p",
-    "module": "numpy",
-    "whest_ref": "we.log1p",
-    "numpy_ref": "np.log1p",
-    "category": "counted_unary",
-    "status": "supported",
-    "weight": 16.0,
-    "cost_formula": "numel(output)",
-    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "notes": "Element-wise log(1+x) (accurate near zero).",
-    "summary": "Return the natural logarithm of one plus the input array, element-wise.",
-    "signature": "we.log1p(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature])"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Return the natural logarithm of one plus the input array, element-wise."
-          },
-          {
-            "type": "paragraph",
-            "text": "Calculates ``log(1 + x)``."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Return the natural logarithm of one plus the input array, element-wise."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
-          {
-            "name": "x",
-            "type": "array_like",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Input values."
-              }
-            ]
-          },
-          {
-            "name": "out",
-            "type": "ndarray, None, or tuple of ndarray and None, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
-              }
-            ]
-          },
-          {
-            "name": "where",
-            "type": "array_like, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the `out` array will be set to the ufunc result.\nElsewhere, the `out` array will retain its original value.\nNote that if an uninitialized `out` array is created via the default\n``out=None``, locations within it where the condition is False will\nremain uninitialized."
-              }
-            ]
-          },
-          {
-            "name": "**kwargs",
-            "type": "",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "For other keyword-only arguments, see the\n:ref:`ufunc docs <ufuncs.kwargs>`."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "y",
-            "type": "ndarray",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Natural logarithm of `1 + x`, element-wise.\nThis is a scalar if `x` is a scalar."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "notes",
-        "title": "Notes",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "For real-valued input, `log1p` is accurate also for `x` so small\nthat `1 + x == 1` in floating-point accuracy."
-          },
-          {
-            "type": "paragraph",
-            "text": "Logarithm is a multivalued function: for each `x` there is an infinite\nnumber of `z` such that `exp(z) = 1 + x`. The convention is to return\nthe `z` whose imaginary part lies in `[-pi, pi]`."
-          },
-          {
-            "type": "paragraph",
-            "text": "For real-valued input data types, `log1p` always returns real output.\nFor each value that cannot be expressed as a real number or infinity,\nit yields ``nan`` and sets the `invalid` floating point error flag."
-          },
-          {
-            "type": "paragraph",
-            "text": "For complex-valued input, `log1p` is a complex analytical function that\nhas a branch cut `[-inf, -1]` and is continuous from above on it.\n`log1p` handles the floating-point negative zero as an infinitesimal\nnegative number, conforming to the C99 standard."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Calculates "
+              },
+              {
+                "kind": "code",
+                "text": "log(1 + x)"
+              },
+              {
+                "kind": "text",
+                "text": "."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Extended Summary"
       },
       {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> np.log1p(1e-99)\n1e-99\n>>> np.log(1 + 1e-99)\n0.0"
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Input values."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Input values."
+                  }
+                ],
+                "name": "x",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray, None, or tuple of ndarray and None, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
+                  }
+                ],
+                "name": "out",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "out"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " array will be set to the ufunc result.\nElsewhere, the "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "out"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " array will retain its original value.\nNote that if an uninitialized "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "out"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " array is created via the default\n"
+                      },
+                      {
+                        "kind": "code",
+                        "text": "out=None"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", locations within it where the condition is False will\nremain uninitialized."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "out"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " array will be set to the ufunc result.\nElsewhere, the "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "out"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " array will retain its original value.\nNote that if an uninitialized "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "out"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " array is created via the default\n"
+                  },
+                  {
+                    "kind": "code",
+                    "text": "out=None"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", locations within it where the condition is False will\nremain uninitialized."
+                  }
+                ],
+                "name": "where",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "For other keyword-only arguments, see the\n"
+                      },
+                      {
+                        "display_text": "ufunc docs",
+                        "explicit_title": true,
+                        "external_url": "",
+                        "href": "",
+                        "kind": "role_reference",
+                        "original_target": "ufuncs.kwargs",
+                        "role": "ref",
+                        "suppress_link": false,
+                        "target": "ufuncs.kwargs",
+                        "unresolved": true
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "For other keyword-only arguments, see the\n"
+                  },
+                  {
+                    "display_text": "ufunc docs",
+                    "explicit_title": true,
+                    "external_url": "",
+                    "href": "",
+                    "kind": "role_reference",
+                    "original_target": "ufuncs.kwargs",
+                    "role": "ref",
+                    "suppress_link": false,
+                    "target": "ufuncs.kwargs",
+                    "unresolved": true
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
+                  }
+                ],
+                "name": "**kwargs",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "expm1 \u2014 ``exp(x) - 1``, the inverse of `log1p`."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Natural logarithm of "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "1 + x"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", element-wise.\nThis is a scalar if "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "x"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is a scalar."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Natural logarithm of "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "1 + x"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", element-wise.\nThis is a scalar if "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "x"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is a scalar."
+                  }
+                ],
+                "name": "y",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Returns"
+      },
+      {
+        "blocks": [
+          {
+            "links": [
+              {
+                "description": "``exp(x) - 1``, the inverse of `log1p`.",
+                "description_inline": [
+                  {
+                    "kind": "code",
+                    "text": "exp(x) - 1"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", the inverse of "
+                  },
+                  {
+                    "external_url": "",
+                    "href": "/docs/api/ops/log1p",
+                    "kind": "link",
+                    "target": "log1p",
+                    "text": "log1p"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/expm1",
+                "label": "we.expm1",
+                "original_target": "expm1",
+                "role": "",
+                "target": "expm1",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
+          }
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "For real-valued input, "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/log1p",
+                "kind": "link",
+                "target": "log1p",
+                "text": "log1p"
+              },
+              {
+                "kind": "text",
+                "text": " is accurate also for "
+              },
+              {
+                "kind": "code",
+                "text": "x"
+              },
+              {
+                "kind": "text",
+                "text": " so small\nthat "
+              },
+              {
+                "kind": "code",
+                "text": "1 + x == 1"
+              },
+              {
+                "kind": "text",
+                "text": " in floating-point accuracy."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Logarithm is a multivalued function: for each "
+              },
+              {
+                "kind": "code",
+                "text": "x"
+              },
+              {
+                "kind": "text",
+                "text": " there is an infinite\nnumber of "
+              },
+              {
+                "kind": "code",
+                "text": "z"
+              },
+              {
+                "kind": "text",
+                "text": " such that "
+              },
+              {
+                "kind": "code",
+                "text": "exp(z) = 1 + x"
+              },
+              {
+                "kind": "text",
+                "text": ". The convention is to return\nthe "
+              },
+              {
+                "kind": "code",
+                "text": "z"
+              },
+              {
+                "kind": "text",
+                "text": " whose imaginary part lies in "
+              },
+              {
+                "kind": "code",
+                "text": "[-pi, pi]"
+              },
+              {
+                "kind": "text",
+                "text": "."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "For real-valued input data types, "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/log1p",
+                "kind": "link",
+                "target": "log1p",
+                "text": "log1p"
+              },
+              {
+                "kind": "text",
+                "text": " always returns real output.\nFor each value that cannot be expressed as a real number or infinity,\nit yields "
+              },
+              {
+                "kind": "code",
+                "text": "nan"
+              },
+              {
+                "kind": "text",
+                "text": " and sets the "
+              },
+              {
+                "kind": "code",
+                "text": "invalid"
+              },
+              {
+                "kind": "text",
+                "text": " floating point error flag."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "For complex-valued input, "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/log1p",
+                "kind": "link",
+                "target": "log1p",
+                "text": "log1p"
+              },
+              {
+                "kind": "text",
+                "text": " is a complex analytical function that\nhas a branch cut "
+              },
+              {
+                "kind": "code",
+                "text": "[-inf, -1]"
+              },
+              {
+                "kind": "text",
+                "text": " and is continuous from above on it.\n"
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/log1p",
+                "kind": "link",
+                "target": "log1p",
+                "text": "log1p"
+              },
+              {
+                "kind": "text",
+                "text": " handles the floating-point negative zero as an infinitesimal\nnegative number, conforming to the C99 standard."
+              }
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Notes"
+      },
+      {
+        "blocks": [
+          {
+            "raw_kind": "footnote",
+            "raw_text": "1\n\nM. Abramowitz and I.A. Stegun, \"Handbook of Mathematical Functions\",\n10th printing, 1964, pp. 67.\nhttps://personal.math.ubc.ca/~cbm/aands/page_67.htm",
+            "type": "raw_block"
+          },
+          {
+            "raw_kind": "footnote",
+            "raw_text": "2\n\nWikipedia, \"Logarithm\". https://en.wikipedia.org/wiki/Logarithm",
+            "type": "raw_block"
+          }
+        ],
+        "title": "References"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.log1p(1e-99)"
+              },
+              {
+                "kind": "output",
+                "text": "1e-99"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.log(1 + 1e-99)"
+              },
+              {
+                "kind": "output",
+                "text": "0.0"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_unary",
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "module": "numpy",
+    "name": "log1p",
+    "notes": "Element-wise log(1+x) (accurate near zero).",
+    "numpy_ref": "np.log1p",
+    "signature": "we.log1p(x)",
+    "status": "supported",
+    "summary": "Return the natural logarithm of one plus the input array, element-wise.",
+    "weight": 16.0,
+    "whest_ref": "we.log1p"
+  },
+  "schema_version": 1,
+  "slug": "log1p",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29"
   }
 }

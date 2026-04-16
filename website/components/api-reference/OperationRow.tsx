@@ -2,14 +2,11 @@
 
 import React from 'react';
 import Link from 'next/link';
-import CostBadge from './CostBadge';
+import Latex, {stripMathDelimiters} from '../shared/Latex';
 import styles from './styles.module.css';
 
 export interface Operation {
   name: string;
-  slug: string;
-  detail_href: string;
-  detail_json_href: string;
   module: string;
   whest_ref: string;
   numpy_ref: string;
@@ -20,34 +17,57 @@ export interface Operation {
   blocked: boolean;
   status: string;
   notes: string;
-  summary: string;
-  weight?: number;
+  weight: number;
+  area: 'core' | 'linalg' | 'fft' | 'random' | 'stats';
+  display_type: 'counted' | 'custom' | 'free' | 'blocked';
+  href?: string;
 }
 
-interface OperationRowProps {
-  op: Operation;
+function renderFormula(op: Operation) {
+  const latex = op.cost_formula_latex.trim();
+  if (latex.startsWith('$') && latex.endsWith('$')) {
+    return <Latex math={stripMathDelimiters(latex)} />;
+  }
+
+  return <span>{op.cost_formula || '\u2014'}</span>;
 }
 
-export default function OperationRow({op}: OperationRowProps): React.ReactElement {
+function weightBucket(weight: number) {
+  if (weight >= 16) return 'weight--16';
+  if (weight >= 4) return 'weight--4';
+  if (weight >= 2) return 'weight--2';
+  return 'weight--1';
+}
+
+function formatWeight(weight: number) {
+  return Number.isInteger(weight) ? `${weight}×` : `${weight.toFixed(1)}×`;
+}
+
+export default function OperationRow({op}: {op: Operation}): React.ReactElement {
+  const opLabel = <span className={styles.opLink}>{op.whest_ref}</span>;
+
   return (
     <tr className={styles.opRow}>
       <td className={styles.opName}>
-        <Link href={op.detail_href} className={styles.opLink}>
-          {op.whest_ref}
-        </Link>
+        {op.href ? <Link href={op.href}>{opLabel}</Link> : opLabel}
       </td>
-      <td className={styles.opModule}>{op.module}</td>
       <td>
-        <CostBadge free={op.free} blocked={op.blocked} />
+        <span className={`${styles.areaChip} ${styles[`area--${op.area}`]}`}>{op.area}</span>
       </td>
-      <td className={styles.opFormula}>
-        <code>{op.cost_formula || '\u2014'}</code>
+      <td>
+        <span className={`${styles.typeChip} ${styles[`type--${op.display_type}`]}`}>
+          {op.display_type}
+        </span>
       </td>
-      <td className={styles.opArrow}>
-        <Link href={op.detail_href} className={styles.detailLink}>
-          Details
-        </Link>
+      <td className={styles.opWeight}>
+        <span
+          className={`${styles.weightChip} ${styles[weightBucket(op.weight)]}`}
+          title={`Empirical weight ${op.weight.toFixed(1)}×`}
+        >
+          {formatWeight(op.weight)}
+        </span>
       </td>
+      <td className={styles.opFormula}>{renderFormula(op)}</td>
     </tr>
   );
 }

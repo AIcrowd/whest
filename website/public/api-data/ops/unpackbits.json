@@ -1,130 +1,471 @@
 {
-  "schema_version": 1,
-  "slug": "unpackbits",
   "detail_href": "/docs/api/ops/unpackbits/",
   "detail_json_href": "/api-data/ops/unpackbits.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L1497-L1512",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.unpackbits.html"
-  },
-  "op": {
-    "name": "unpackbits",
-    "module": "numpy",
-    "whest_ref": "we.unpackbits",
-    "numpy_ref": "np.unpackbits",
-    "category": "counted_custom",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "per-operation",
-    "cost_formula_latex": "varies",
-    "notes": "Unpack elements of array into bits. Cost: numel(input).",
-    "summary": "Unpacks elements of a uint8 array into a binary-valued output array.",
-    "signature": "we.unpackbits(a, /, axis=None, count=None, bitorder='big')"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Unpacks elements of a uint8 array into a binary-valued output array."
-          },
-          {
-            "type": "paragraph",
-            "text": "Each element of `a` represents a bit-field that should be unpacked\ninto a binary-valued output array. The shape of the output array is\neither 1-D (if `axis` is ``None``) or the same shape as the input\narray with unpacking done along the axis specified."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Unpacks elements of a uint8 array into a binary-valued output array."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
-          {
-            "name": "a",
-            "type": "ndarray, uint8 type",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Input array."
-              }
-            ]
-          },
-          {
-            "name": "axis",
-            "type": "int, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "The dimension over which bit-unpacking is done.\n``None`` implies unpacking the flattened array."
-              }
-            ]
-          },
-          {
-            "name": "count",
-            "type": "int or None, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "The number of elements to unpack along `axis`, provided as a way\nof undoing the effect of packing a size that is not a multiple\nof eight. A non-negative number means to only unpack `count`\nbits. A negative number means to trim off that many bits from\nthe end. ``None`` means to unpack the entire array (the\ndefault). Counts larger than the available number of bits will\nadd zero padding to the output. Negative counts must not\nexceed the available number of bits."
-              }
-            ]
-          },
-          {
-            "name": "bitorder",
-            "type": "{'big', 'little'}, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "The order of the returned bits. 'big' will mimic bin(val),\n``3 = 0b00000011 => [0, 0, 0, 0, 0, 0, 1, 1]``, 'little' will reverse\nthe order to ``[1, 1, 0, 0, 0, 0, 0, 0]``.\nDefaults to 'big'."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "unpacked",
-            "type": "ndarray, uint8 type",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "The elements are binary-valued (0 or 1)."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> a = np.array([[2], [7], [23]], dtype=np.uint8)\n>>> a\narray([[ 2],\n       [ 7],\n       [23]], dtype=uint8)\n>>> b = np.unpackbits(a, axis=1)\n>>> b\narray([[0, 0, 0, 0, 0, 0, 1, 0],\n       [0, 0, 0, 0, 0, 1, 1, 1],\n       [0, 0, 0, 1, 0, 1, 1, 1]], dtype=uint8)\n>>> c = np.unpackbits(a, axis=1, count=-3)\n>>> c\narray([[0, 0, 0, 0, 0],\n       [0, 0, 0, 0, 0],\n       [0, 0, 0, 1, 0]], dtype=uint8)"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> p = np.packbits(b, axis=0)\n>>> np.unpackbits(p, axis=0)\narray([[0, 0, 0, 0, 0, 0, 1, 0],\n       [0, 0, 0, 0, 0, 1, 1, 1],\n       [0, 0, 0, 1, 0, 1, 1, 1],\n       [0, 0, 0, 0, 0, 0, 0, 0],\n       [0, 0, 0, 0, 0, 0, 0, 0],\n       [0, 0, 0, 0, 0, 0, 0, 0],\n       [0, 0, 0, 0, 0, 0, 0, 0],\n       [0, 0, 0, 0, 0, 0, 0, 0]], dtype=uint8)\n>>> np.array_equal(b, np.unpackbits(p, axis=0, count=b.shape[0]))\nTrue"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Each element of "
+              },
+              {
+                "kind": "code",
+                "text": "a"
+              },
+              {
+                "kind": "text",
+                "text": " represents a bit-field that should be unpacked\ninto a binary-valued output array. The shape of the output array is\neither 1-D (if "
+              },
+              {
+                "kind": "code",
+                "text": "axis"
+              },
+              {
+                "kind": "text",
+                "text": " is "
+              },
+              {
+                "kind": "code",
+                "text": "None"
+              },
+              {
+                "kind": "text",
+                "text": ") or the same shape as the input\narray with unpacking done along the axis specified."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Extended Summary"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "packbits \u2014 Packs the elements of a binary-valued array into bits in a uint8 array."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Input array."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray, uint8 type",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Input array."
+                  }
+                ],
+                "name": "a",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The dimension over which bit-unpacking is done.\n"
+                      },
+                      {
+                        "kind": "code",
+                        "text": "None"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " implies unpacking the flattened array."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "int, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The dimension over which bit-unpacking is done.\n"
+                  },
+                  {
+                    "kind": "code",
+                    "text": "None"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " implies unpacking the flattened array."
+                  }
+                ],
+                "name": "axis",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The number of elements to unpack along "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "axis"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", provided as a way\nof undoing the effect of packing a size that is not a multiple\nof eight. A non-negative number means to only unpack "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "count"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "\nbits. A negative number means to trim off that many bits from\nthe end. "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "None"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " means to unpack the entire array (the\ndefault). Counts larger than the available number of bits will\nadd zero padding to the output. Negative counts must not\nexceed the available number of bits."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "int or None, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The number of elements to unpack along "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "axis"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", provided as a way\nof undoing the effect of packing a size that is not a multiple\nof eight. A non-negative number means to only unpack "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "count"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "\nbits. A negative number means to trim off that many bits from\nthe end. "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "None"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " means to unpack the entire array (the\ndefault). Counts larger than the available number of bits will\nadd zero padding to the output. Negative counts must not\nexceed the available number of bits."
+                  }
+                ],
+                "name": "count",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The order of the returned bits. 'big' will mimic bin(val),\n"
+                      },
+                      {
+                        "kind": "code",
+                        "text": "3 = 0b00000011 => [0, 0, 0, 0, 0, 0, 1, 1]"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", 'little' will reverse\nthe order to "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "[1, 1, 0, 0, 0, 0, 0, 0]"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ".\nDefaults to 'big'."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "{'big', 'little'}, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The order of the returned bits. 'big' will mimic bin(val),\n"
+                  },
+                  {
+                    "kind": "code",
+                    "text": "3 = 0b00000011 => [0, 0, 0, 0, 0, 0, 1, 1]"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", 'little' will reverse\nthe order to "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "[1, 1, 0, 0, 0, 0, 0, 0]"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ".\nDefaults to 'big'."
+                  }
+                ],
+                "name": "bitorder",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
+      },
+      {
+        "blocks": [
+          {
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The elements are binary-valued (0 or 1)."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray, uint8 type",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The elements are binary-valued (0 or 1)."
+                  }
+                ],
+                "name": "unpacked",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
+          }
+        ],
+        "title": "Returns"
+      },
+      {
+        "blocks": [
+          {
+            "links": [
+              {
+                "description": "Packs the elements of a binary-valued array into bits in a uint8 array.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Packs the elements of a binary-valued array into bits in a uint8 array."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/packbits",
+                "label": "we.packbits",
+                "original_target": "packbits",
+                "role": "",
+                "target": "packbits",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
+          }
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.array([[2], [7], [23]], dtype=we.uint8)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a"
+              },
+              {
+                "kind": "output",
+                "text": "array([[ 2],"
+              },
+              {
+                "kind": "output",
+                "text": "       [ 7],"
+              },
+              {
+                "kind": "output",
+                "text": "       [23]], dtype=uint8)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "b = we.unpackbits(a, axis=1)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "b"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0, 0, 0, 0, 0, 0, 1, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 0, 0, 0, 0, 1, 1, 1],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 0, 0, 1, 0, 1, 1, 1]], dtype=uint8)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "c = we.unpackbits(a, axis=1, count=-3)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "c"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0, 0, 0, 0, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 0, 0, 0, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 0, 0, 1, 0]], dtype=uint8)"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "p = we.packbits(b, axis=0)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.unpackbits(p, axis=0)"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0, 0, 0, 0, 0, 0, 1, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 0, 0, 0, 0, 1, 1, 1],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 0, 0, 1, 0, 1, 1, 1],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 0, 0, 0, 0, 0, 0, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 0, 0, 0, 0, 0, 0, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 0, 0, 0, 0, 0, 0, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 0, 0, 0, 0, 0, 0, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 0, 0, 0, 0, 0, 0, 0]], dtype=uint8)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.array_equal(b, we.unpackbits(p, axis=0, count=b.shape[0]))"
+              },
+              {
+                "kind": "output",
+                "text": "True"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_custom",
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "module": "numpy",
+    "name": "unpackbits",
+    "notes": "Unpack elements of array into bits. Cost: numel(input).",
+    "numpy_ref": "np.unpackbits",
+    "signature": "we.unpackbits(a, *args, **kwargs)",
+    "status": "supported",
+    "summary": "Unpacks elements of a uint8 array into a binary-valued output array.",
+    "weight": 1.0,
+    "whest_ref": "we.unpackbits"
+  },
+  "schema_version": 1,
+  "slug": "unpackbits",
+  "source": {
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.unpackbits.html",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1497"
   }
 }

@@ -1,141 +1,518 @@
 {
-  "schema_version": 1,
-  "slug": "sqrt",
   "detail_href": "/docs/api/ops/sqrt/",
   "detail_json_href": "/api-data/ops/sqrt.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29-L42",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.sqrt.html"
-  },
-  "op": {
-    "name": "sqrt",
-    "module": "numpy",
-    "whest_ref": "we.sqrt",
-    "numpy_ref": "np.sqrt",
-    "category": "counted_unary",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "numel(output)",
-    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "notes": "Element-wise square root.",
-    "summary": "Return the non-negative square-root of an array, element-wise.",
-    "signature": "we.sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature])"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Return the non-negative square-root of an array, element-wise."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Return the non-negative square-root of an array, element-wise."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
-          {
-            "name": "x",
-            "type": "array_like",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "The values whose square-roots are required."
-              }
-            ]
-          },
-          {
-            "name": "out",
-            "type": "ndarray, None, or tuple of ndarray and None, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
-              }
-            ]
-          },
-          {
-            "name": "where",
-            "type": "array_like, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the `out` array will be set to the ufunc result.\nElsewhere, the `out` array will retain its original value.\nNote that if an uninitialized `out` array is created via the default\n``out=None``, locations within it where the condition is False will\nremain uninitialized."
-              }
-            ]
-          },
-          {
-            "name": "**kwargs",
-            "type": "",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "For other keyword-only arguments, see the\n:ref:`ufunc docs <ufuncs.kwargs>`."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "y",
-            "type": "ndarray",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "An array of the same shape as `x`, containing the positive\nsquare-root of each element in `x`.  If any element in `x` is\ncomplex, a complex array is returned (and the square-roots of\nnegative reals are calculated).  If all of the elements in `x`\nare real, so is `y`, with negative elements returning ``nan``.\nIf `out` was provided, `y` is a reference to it.\nThis is a scalar if `x` is a scalar."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "notes",
-        "title": "Notes",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "*sqrt* has--consistent with common convention--as its branch cut the\nreal \"interval\" [`-inf`, 0), and is continuous from above on it.\nA branch cut is a curve in the complex plane across which a given\ncomplex function fails to be continuous."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The values whose square-roots are required."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The values whose square-roots are required."
+                  }
+                ],
+                "name": "x",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray, None, or tuple of ndarray and None, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
+                  }
+                ],
+                "name": "out",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "out"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " array will be set to the ufunc result.\nElsewhere, the "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "out"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " array will retain its original value.\nNote that if an uninitialized "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "out"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " array is created via the default\n"
+                      },
+                      {
+                        "kind": "code",
+                        "text": "out=None"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", locations within it where the condition is False will\nremain uninitialized."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "out"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " array will be set to the ufunc result.\nElsewhere, the "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "out"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " array will retain its original value.\nNote that if an uninitialized "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "out"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " array is created via the default\n"
+                  },
+                  {
+                    "kind": "code",
+                    "text": "out=None"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", locations within it where the condition is False will\nremain uninitialized."
+                  }
+                ],
+                "name": "where",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "For other keyword-only arguments, see the\n"
+                      },
+                      {
+                        "display_text": "ufunc docs",
+                        "explicit_title": true,
+                        "external_url": "",
+                        "href": "",
+                        "kind": "role_reference",
+                        "original_target": "ufuncs.kwargs",
+                        "role": "ref",
+                        "suppress_link": false,
+                        "target": "ufuncs.kwargs",
+                        "unresolved": true
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "For other keyword-only arguments, see the\n"
+                  },
+                  {
+                    "display_text": "ufunc docs",
+                    "explicit_title": true,
+                    "external_url": "",
+                    "href": "",
+                    "kind": "role_reference",
+                    "original_target": "ufuncs.kwargs",
+                    "role": "ref",
+                    "suppress_link": false,
+                    "target": "ufuncs.kwargs",
+                    "unresolved": true
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
+                  }
+                ],
+                "name": "**kwargs",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
       },
       {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> np.sqrt([1,4,9])\narray([ 1.,  2.,  3.])"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> np.sqrt([4, -1, -3+4J])\narray([ 2.+0.j,  0.+1.j,  1.+2.j])"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> np.sqrt([4, -1, np.inf])\narray([ 2., nan, inf])"
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "An array of the same shape as "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "x"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", containing the positive\nsquare-root of each element in "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "x"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ".  If any element in "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "x"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is\ncomplex, a complex array is returned (and the square-roots of\nnegative reals are calculated).  If all of the elements in "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "x"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "\nare real, so is "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "y"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", with negative elements returning "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "nan"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ".\nIf "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "out"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " was provided, "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "y"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is a reference to it.\nThis is a scalar if "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "x"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is a scalar."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "An array of the same shape as "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "x"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", containing the positive\nsquare-root of each element in "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "x"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ".  If any element in "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "x"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is\ncomplex, a complex array is returned (and the square-roots of\nnegative reals are calculated).  If all of the elements in "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "x"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "\nare real, so is "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "y"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", with negative elements returning "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "nan"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ".\nIf "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "out"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " was provided, "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "y"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is a reference to it.\nThis is a scalar if "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "x"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is a scalar."
+                  }
+                ],
+                "name": "y",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Returns"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "emath.sqrt \u2014 A version which returns complex numbers when given negative reals. Note that 0.0 and -0.0 are handled differently for complex inputs."
+            "links": [
+              {
+                "description": "A version which returns complex numbers when given negative reals. Note that 0.0 and -0.0 are handled differently for complex inputs.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "A version which returns complex numbers when given negative reals. Note that 0.0 and -0.0 are handled differently for complex inputs."
+                  }
+                ],
+                "external_url": "",
+                "href": "",
+                "label": "emath.sqrt",
+                "original_target": "emath.sqrt",
+                "role": "",
+                "target": "emath.sqrt",
+                "unresolved": true
+              }
+            ],
+            "type": "link_list"
           }
-        ]
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "inline": [
+              {
+                "kind": "emphasis",
+                "text": "sqrt"
+              },
+              {
+                "kind": "text",
+                "text": " has--consistent with common convention--as its branch cut the\nreal \"interval\" ["
+              },
+              {
+                "kind": "code",
+                "text": "-inf"
+              },
+              {
+                "kind": "text",
+                "text": ", 0), and is continuous from above on it.\nA branch cut is a curve in the complex plane across which a given\ncomplex function fails to be continuous."
+              }
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Notes"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.sqrt([1,4,9])"
+              },
+              {
+                "kind": "output",
+                "text": "array([ 1.,  2.,  3.])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.sqrt([4, -1, -3+4J])"
+              },
+              {
+                "kind": "output",
+                "text": "array([ 2.+0.j,  0.+1.j,  1.+2.j])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.sqrt([4, -1, we.inf])"
+              },
+              {
+                "kind": "output",
+                "text": "array([ 2., nan, inf])"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_unary",
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "module": "numpy",
+    "name": "sqrt",
+    "notes": "Element-wise square root.",
+    "numpy_ref": "np.sqrt",
+    "signature": "we.sqrt(x)",
+    "status": "supported",
+    "summary": "Return the non-negative square-root of an array, element-wise.",
+    "weight": 1.0,
+    "whest_ref": "we.sqrt"
+  },
+  "schema_version": 1,
+  "slug": "sqrt",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29"
   }
 }

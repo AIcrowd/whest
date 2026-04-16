@@ -1,68 +1,168 @@
 {
-  "schema_version": 1,
-  "slug": "array_split",
   "detail_href": "/docs/api/ops/array_split/",
   "detail_json_href": "/api-data/ops/array_split.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L606-L615",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.array_split.html"
-  },
-  "op": {
-    "name": "array_split",
-    "module": "numpy",
-    "whest_ref": "we.array_split",
-    "numpy_ref": "np.array_split",
-    "category": "free",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "0",
-    "cost_formula_latex": "$0$",
-    "notes": "Split array into sub-arrays (possibly unequal). Cost: numel(output).",
-    "summary": "Split an array into multiple sub-arrays.",
-    "signature": "we.array_split(ary, indices_or_sections, axis=0)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Split an array into multiple sub-arrays."
-          },
-          {
-            "type": "paragraph",
-            "text": "Please refer to the ``split`` documentation.  The only difference\nbetween these functions is that ``array_split`` allows\n`indices_or_sections` to be an integer that does *not* equally\ndivide the axis. For an array of length l that should be split\ninto n sections, it returns l % n sub-arrays of size l//n + 1\nand the rest of size l//n."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Split an array into multiple sub-arrays."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> x = np.arange(8.0)\n>>> np.array_split(x, 3)\n[array([0.,  1.,  2.]), array([3.,  4.,  5.]), array([6.,  7.])]"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> x = np.arange(9)\n>>> np.array_split(x, 4)\n[array([0, 1, 2]), array([3, 4]), array([5, 6]), array([7, 8])]"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Please refer to the "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/split",
+                "kind": "link",
+                "target": "split",
+                "text": "split"
+              },
+              {
+                "kind": "text",
+                "text": " documentation.  The only difference\nbetween these functions is that "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/array_split",
+                "kind": "link",
+                "target": "array_split",
+                "text": "array_split"
+              },
+              {
+                "kind": "text",
+                "text": " allows\n"
+              },
+              {
+                "kind": "code",
+                "text": "indices_or_sections"
+              },
+              {
+                "kind": "text",
+                "text": " to be an integer that does "
+              },
+              {
+                "kind": "emphasis",
+                "text": "not"
+              },
+              {
+                "kind": "text",
+                "text": " equally\ndivide the axis. For an array of length l that should be split\ninto n sections, it returns l % n sub-arrays of size l//n + 1\nand the rest of size l//n."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Extended Summary"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "split \u2014 Split array into multiple sub-arrays of equal size."
+            "links": [
+              {
+                "description": "Split array into multiple sub-arrays of equal size.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Split array into multiple sub-arrays of equal size."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/split",
+                "label": "we.split",
+                "original_target": "split",
+                "role": "",
+                "target": "split",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
           }
-        ]
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x = we.arange(8.0)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.array_split(x, 3)"
+              },
+              {
+                "kind": "output",
+                "text": "[array([0.,  1.,  2.]), array([3.,  4.,  5.]), array([6.,  7.])]"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x = we.arange(9)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.array_split(x, 4)"
+              },
+              {
+                "kind": "output",
+                "text": "[array([0, 1, 2]), array([3, 4]), array([5, 6]), array([7, 8])]"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "free",
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "module": "numpy",
+    "name": "array_split",
+    "notes": "Split array into sub-arrays (possibly unequal). Cost: numel(output).",
+    "numpy_ref": "np.array_split",
+    "signature": "we.array_split(ary, indices_or_sections, axis=0)",
+    "status": "supported",
+    "summary": "Split an array into multiple sub-arrays.",
+    "weight": 1.0,
+    "whest_ref": "we.array_split"
+  },
+  "schema_version": 1,
+  "slug": "array_split",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L742",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L606"
   }
 }

@@ -1,131 +1,448 @@
 {
-  "schema_version": 1,
-  "slug": "diag",
   "detail_href": "/docs/api/ops/diag/",
   "detail_json_href": "/api-data/ops/diag.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L88-L107",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.diag.html"
-  },
-  "op": {
-    "name": "diag",
-    "module": "numpy",
-    "whest_ref": "we.diag",
-    "numpy_ref": "np.diag",
-    "category": "counted_custom",
-    "status": "supported",
-    "weight": 4.0,
-    "cost_formula": "per-operation",
-    "cost_formula_latex": "varies",
-    "notes": "Extract diagonal or construct diagonal array. Cost: len(diagonal).",
-    "summary": "Extract a diagonal or construct a diagonal array.",
-    "signature": "we.diag(v, k=0)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Extract a diagonal or construct a diagonal array."
-          },
-          {
-            "type": "paragraph",
-            "text": "See the more detailed documentation for ``numpy.diagonal`` if you use this\nfunction to extract a diagonal and wish to write to the resulting array;\nwhether it returns a copy or a view depends on what version of numpy you\nare using."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Extract a diagonal or construct a diagonal array."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
-          {
-            "name": "v",
-            "type": "array_like",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "If `v` is a 2-D array, return a copy of its `k`-th diagonal.\nIf `v` is a 1-D array, return a 2-D array with `v` on the `k`-th\ndiagonal."
-              }
-            ]
-          },
-          {
-            "name": "k",
-            "type": "int, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Diagonal in question. The default is 0. Use `k>0` for diagonals\nabove the main diagonal, and `k<0` for diagonals below the main\ndiagonal."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "out",
-            "type": "ndarray",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "The extracted diagonal or constructed diagonal array."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> x = np.arange(9).reshape((3,3))\n>>> x\narray([[0, 1, 2],\n       [3, 4, 5],\n       [6, 7, 8]])"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> np.diag(x)\narray([0, 4, 8])\n>>> np.diag(x, k=1)\narray([1, 5])\n>>> np.diag(x, k=-1)\narray([3, 7])"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> np.diag(np.diag(x))\narray([[0, 0, 0],\n       [0, 4, 0],\n       [0, 0, 8]])"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "See the more detailed documentation for "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/diagonal",
+                "kind": "link",
+                "target": "diagonal",
+                "text": "we.diagonal"
+              },
+              {
+                "kind": "text",
+                "text": " if you use this\nfunction to extract a diagonal and wish to write to the resulting array;\nwhether it returns a copy or a view depends on what version of numpy you\nare using."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Extended Summary"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "diagonal \u2014 Return specified diagonals."
-          },
-          {
-            "type": "paragraph",
-            "text": "diagflat \u2014 Create a 2-D array with the flattened input as a diagonal."
-          },
-          {
-            "type": "paragraph",
-            "text": "trace \u2014 Sum along diagonals."
-          },
-          {
-            "type": "paragraph",
-            "text": "triu \u2014 Upper triangle of an array."
-          },
-          {
-            "type": "paragraph",
-            "text": "tril \u2014 Lower triangle of an array."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "v"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is a 2-D array, return a copy of its "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "k"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "-th diagonal.\nIf "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "v"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is a 1-D array, return a 2-D array with "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "v"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " on the "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "k"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "-th\ndiagonal."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "If "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "v"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is a 2-D array, return a copy of its "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "k"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "-th diagonal.\nIf "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "v"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is a 1-D array, return a 2-D array with "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "v"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " on the "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "k"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "-th\ndiagonal."
+                  }
+                ],
+                "name": "v",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Diagonal in question. The default is 0. Use "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "k>0"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " for diagonals\nabove the main diagonal, and "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "k<0"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " for diagonals below the main\ndiagonal."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "int, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Diagonal in question. The default is 0. Use "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "k>0"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " for diagonals\nabove the main diagonal, and "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "k<0"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " for diagonals below the main\ndiagonal."
+                  }
+                ],
+                "name": "k",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
+      },
+      {
+        "blocks": [
+          {
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The extracted diagonal or constructed diagonal array."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The extracted diagonal or constructed diagonal array."
+                  }
+                ],
+                "name": "out",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
+          }
+        ],
+        "title": "Returns"
+      },
+      {
+        "blocks": [
+          {
+            "links": [
+              {
+                "description": "Return specified diagonals.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Return specified diagonals."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/diagonal",
+                "label": "we.diagonal",
+                "original_target": "diagonal",
+                "role": "",
+                "target": "diagonal",
+                "unresolved": false
+              },
+              {
+                "description": "Create a 2-D array with the flattened input as a diagonal.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Create a 2-D array with the flattened input as a diagonal."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/diagflat",
+                "label": "we.diagflat",
+                "original_target": "diagflat",
+                "role": "",
+                "target": "diagflat",
+                "unresolved": false
+              },
+              {
+                "description": "Sum along diagonals.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Sum along diagonals."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/trace",
+                "label": "we.trace",
+                "original_target": "trace",
+                "role": "",
+                "target": "trace",
+                "unresolved": false
+              },
+              {
+                "description": "Upper triangle of an array.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Upper triangle of an array."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/triu",
+                "label": "we.triu",
+                "original_target": "triu",
+                "role": "",
+                "target": "triu",
+                "unresolved": false
+              },
+              {
+                "description": "Lower triangle of an array.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Lower triangle of an array."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/tril",
+                "label": "we.tril",
+                "original_target": "tril",
+                "role": "",
+                "target": "tril",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
+          }
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x = we.arange(9).reshape((3,3))"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0, 1, 2],"
+              },
+              {
+                "kind": "output",
+                "text": "       [3, 4, 5],"
+              },
+              {
+                "kind": "output",
+                "text": "       [6, 7, 8]])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.diag(x)"
+              },
+              {
+                "kind": "output",
+                "text": "array([0, 4, 8])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.diag(x, k=1)"
+              },
+              {
+                "kind": "output",
+                "text": "array([1, 5])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.diag(x, k=-1)"
+              },
+              {
+                "kind": "output",
+                "text": "array([3, 7])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.diag(we.diag(x))"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0, 0, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 4, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 0, 8]])"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_custom",
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "module": "numpy",
+    "name": "diag",
+    "notes": "Extract diagonal or construct diagonal array. Cost: len(diagonal).",
+    "numpy_ref": "np.diag",
+    "signature": "we.diag(v, k=0)",
+    "status": "supported",
+    "summary": "Extract a diagonal or construct a diagonal array.",
+    "weight": 4.0,
+    "whest_ref": "we.diag"
+  },
+  "schema_version": 1,
+  "slug": "diag",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L245",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L88"
   }
 }

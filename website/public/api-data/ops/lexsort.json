@@ -1,185 +1,717 @@
 {
-  "schema_version": 1,
-  "slug": "lexsort",
   "detail_href": "/docs/api/ops/lexsort/",
   "detail_json_href": "/api-data/ops/lexsort.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L77-L96",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.lexsort.html"
-  },
-  "op": {
-    "name": "lexsort",
-    "module": "numpy",
-    "whest_ref": "we.lexsort",
-    "numpy_ref": "np.lexsort",
-    "category": "counted_custom",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "per-operation",
-    "cost_formula_latex": "varies",
-    "notes": "Multi-key sort; cost = k*n*ceil(log2(n)).",
-    "summary": "Perform an indirect stable sort using a sequence of keys.",
-    "signature": "we.lexsort(keys, axis=-1)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Perform an indirect stable sort using a sequence of keys."
-          },
-          {
-            "type": "paragraph",
-            "text": "Given multiple sorting keys, lexsort returns an array of integer indices\nthat describes the sort order by multiple keys. The last key in the\nsequence is used for the primary sort order, ties are broken by the\nsecond-to-last key, and so on."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Perform an indirect stable sort using a sequence of keys."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
-          {
-            "name": "keys",
-            "type": "(k, m, n, ...) array-like",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "The `k` keys to be sorted. The *last* key (e.g, the last\nrow if `keys` is a 2D array) is the primary sort key.\nEach element of `keys` along the zeroth axis must be\nan array-like object of the same shape."
-              }
-            ]
-          },
-          {
-            "name": "axis",
-            "type": "int, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Axis to be indirectly sorted. By default, sort over the last axis\nof each sequence. Separate slices along `axis` sorted over\nindependently; see last example."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "indices",
-            "type": "(m, n, ...) ndarray of ints",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Array of indices that sort the keys along the specified axis."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Sort names: first by surname, then by name."
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> surnames =    ('Hertz',    'Galilei', 'Hertz')\n>>> first_names = ('Heinrich', 'Galileo', 'Gustav')\n>>> ind = np.lexsort((first_names, surnames))\n>>> ind\narray([1, 2, 0])"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> [surnames[i] + \", \" + first_names[i] for i in ind]\n['Galilei, Galileo', 'Hertz, Gustav', 'Hertz, Heinrich']"
-          },
-          {
-            "type": "paragraph",
-            "text": "Sort according to two numerical keys, first by elements\nof ``a``, then breaking ties according to elements of ``b``:"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> a = [1, 5, 1, 4, 3, 4, 4]  # First sequence\n>>> b = [9, 4, 0, 4, 0, 2, 1]  # Second sequence\n>>> ind = np.lexsort((b, a))  # Sort by `a`, then by `b`\n>>> ind\narray([2, 0, 4, 6, 5, 3, 1])\n>>> [(a[i], b[i]) for i in ind]\n[(1, 0), (1, 9), (3, 0), (4, 1), (4, 2), (4, 4), (5, 4)]"
-          },
-          {
-            "type": "paragraph",
-            "text": "Compare against `argsort`, which would sort each key independently."
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> np.argsort((b, a), kind='stable')\narray([[2, 4, 6, 5, 1, 3, 0],\n       [0, 2, 4, 3, 5, 6, 1]])"
-          },
-          {
-            "type": "paragraph",
-            "text": "To sort lexicographically with `argsort`, we would need to provide a\nstructured array."
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> x = np.array([(ai, bi) for ai, bi in zip(a, b)],\n...              dtype = np.dtype([('x', int), ('y', int)]))\n>>> np.argsort(x)  # or np.argsort(x, order=('x', 'y'))\narray([2, 0, 4, 6, 5, 3, 1])"
-          },
-          {
-            "type": "paragraph",
-            "text": "The zeroth axis of `keys` always corresponds with the sequence of keys,\nso 2D arrays are treated just like other sequences of keys."
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> arr = np.asarray([b, a])\n>>> ind2 = np.lexsort(arr)\n>>> np.testing.assert_equal(ind2, ind)"
-          },
-          {
-            "type": "paragraph",
-            "text": "Accordingly, the `axis` parameter refers to an axis of *each* key, not of\nthe `keys` argument itself. For instance, the array ``arr`` is treated as\na sequence of two 1-D keys, so specifying ``axis=0`` is equivalent to\nusing the default axis, ``axis=-1``."
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> np.testing.assert_equal(np.lexsort(arr, axis=0),\n...                         np.lexsort(arr, axis=-1))"
-          },
-          {
-            "type": "paragraph",
-            "text": "For higher-dimensional arrays, the axis parameter begins to matter. The\nresulting array has the same shape as each key, and the values are what\nwe would expect if `lexsort` were performed on corresponding slices\nof the keys independently. For instance,"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> x = [[1, 2, 3, 4],\n...      [4, 3, 2, 1],\n...      [2, 1, 4, 3]]\n>>> y = [[2, 2, 1, 1],\n...      [1, 2, 1, 2],\n...      [1, 1, 2, 1]]\n>>> np.lexsort((x, y), axis=1)\narray([[2, 3, 0, 1],\n       [2, 0, 3, 1],\n       [1, 0, 3, 2]])"
-          },
-          {
-            "type": "paragraph",
-            "text": "Each row of the result is what we would expect if we were to perform\n`lexsort` on the corresponding row of the keys:"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> for i in range(3):\n...     print(np.lexsort((x[i], y[i])))\n[2 3 0 1]\n[2 0 3 1]\n[1 0 3 2]"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Given multiple sorting keys, lexsort returns an array of integer indices\nthat describes the sort order by multiple keys. The last key in the\nsequence is used for the primary sort order, ties are broken by the\nsecond-to-last key, and so on."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Extended Summary"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "argsort \u2014 Indirect sort."
-          },
-          {
-            "type": "paragraph",
-            "text": "ndarray.sort \u2014 In-place sort."
-          },
-          {
-            "type": "paragraph",
-            "text": "sort \u2014 Return a sorted copy of an array."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "k"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " keys to be sorted. The "
+                      },
+                      {
+                        "kind": "emphasis",
+                        "text": "last"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " key (e.g, the last\nrow if "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "keys"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is a 2D array) is the primary sort key.\nEach element of "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "keys"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " along the zeroth axis must be\nan array-like object of the same shape."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "(k, m, n, ...) array-like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "k"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " keys to be sorted. The "
+                  },
+                  {
+                    "kind": "emphasis",
+                    "text": "last"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " key (e.g, the last\nrow if "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "keys"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is a 2D array) is the primary sort key.\nEach element of "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "keys"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " along the zeroth axis must be\nan array-like object of the same shape."
+                  }
+                ],
+                "name": "keys",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Axis to be indirectly sorted. By default, sort over the last axis\nof each sequence. Separate slices along "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "axis"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " sorted over\nindependently; see last example."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "int, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Axis to be indirectly sorted. By default, sort over the last axis\nof each sequence. Separate slices along "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "axis"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " sorted over\nindependently; see last example."
+                  }
+                ],
+                "name": "axis",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
+      },
+      {
+        "blocks": [
+          {
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Array of indices that sort the keys along the specified axis."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "(m, n, ...) ndarray of ints",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Array of indices that sort the keys along the specified axis."
+                  }
+                ],
+                "name": "indices",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
+          }
+        ],
+        "title": "Returns"
+      },
+      {
+        "blocks": [
+          {
+            "links": [
+              {
+                "description": "Indirect sort.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Indirect sort."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/argsort",
+                "label": "we.argsort",
+                "original_target": "argsort",
+                "role": "",
+                "target": "argsort",
+                "unresolved": false
+              },
+              {
+                "description": "In-place sort.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "In-place sort."
+                  }
+                ],
+                "external_url": "",
+                "href": "",
+                "label": "ndarray.sort",
+                "original_target": "ndarray.sort",
+                "role": "",
+                "target": "ndarray.sort",
+                "unresolved": true
+              },
+              {
+                "description": "Return a sorted copy of an array.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Return a sorted copy of an array."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/sort",
+                "label": "we.sort",
+                "original_target": "sort",
+                "role": "",
+                "target": "sort",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
+          }
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Sort names: first by surname, then by name."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "surnames =    ('Hertz',    'Galilei', 'Hertz')"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "first_names = ('Heinrich', 'Galileo', 'Gustav')"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "ind = we.lexsort((first_names, surnames))"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "ind"
+              },
+              {
+                "kind": "output",
+                "text": "array([1, 2, 0])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "[surnames[i] + \", \" + first_names[i] for i in ind]"
+              },
+              {
+                "kind": "output",
+                "text": "['Galilei, Galileo', 'Hertz, Gustav', 'Hertz, Heinrich']"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Sort according to two numerical keys, first by elements\nof "
+              },
+              {
+                "kind": "code",
+                "text": "a"
+              },
+              {
+                "kind": "text",
+                "text": ", then breaking ties according to elements of "
+              },
+              {
+                "kind": "code",
+                "text": "b"
+              },
+              {
+                "kind": "text",
+                "text": ":"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = [1, 5, 1, 4, 3, 4, 4]  # First sequence"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "b = [9, 4, 0, 4, 0, 2, 1]  # Second sequence"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "ind = we.lexsort((b, a))  # Sort by `a`, then by `b`"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "ind"
+              },
+              {
+                "kind": "output",
+                "text": "array([2, 0, 4, 6, 5, 3, 1])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "[(a[i], b[i]) for i in ind]"
+              },
+              {
+                "kind": "output",
+                "text": "[(1, 0), (1, 9), (3, 0), (4, 1), (4, 2), (4, 4), (5, 4)]"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Compare against "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/argsort",
+                "kind": "link",
+                "target": "argsort",
+                "text": "argsort"
+              },
+              {
+                "kind": "text",
+                "text": ", which would sort each key independently."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.argsort((b, a), kind='stable')"
+              },
+              {
+                "kind": "output",
+                "text": "array([[2, 4, 6, 5, 1, 3, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 2, 4, 3, 5, 6, 1]])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "To sort lexicographically with "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/argsort",
+                "kind": "link",
+                "target": "argsort",
+                "text": "argsort"
+              },
+              {
+                "kind": "text",
+                "text": ", we would need to provide a\nstructured array."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x = we.array([(ai, bi) for ai, bi in zip(a, b)],"
+              },
+              {
+                "kind": "input",
+                "prompt": "...",
+                "text": "dtype = we.dtype([('x', int), ('y', int)]))"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.argsort(x)  # or we.argsort(x, order=('x', 'y'))"
+              },
+              {
+                "kind": "output",
+                "text": "array([2, 0, 4, 6, 5, 3, 1])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "The zeroth axis of "
+              },
+              {
+                "kind": "code",
+                "text": "keys"
+              },
+              {
+                "kind": "text",
+                "text": " always corresponds with the sequence of keys,\nso 2D arrays are treated just like other sequences of keys."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "arr = we.asarray([b, a])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "ind2 = we.lexsort(arr)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.testing.assert_equal(ind2, ind)"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Accordingly, the "
+              },
+              {
+                "kind": "code",
+                "text": "axis"
+              },
+              {
+                "kind": "text",
+                "text": " parameter refers to an axis of "
+              },
+              {
+                "kind": "emphasis",
+                "text": "each"
+              },
+              {
+                "kind": "text",
+                "text": " key, not of\nthe "
+              },
+              {
+                "kind": "code",
+                "text": "keys"
+              },
+              {
+                "kind": "text",
+                "text": " argument itself. For instance, the array "
+              },
+              {
+                "kind": "code",
+                "text": "arr"
+              },
+              {
+                "kind": "text",
+                "text": " is treated as\na sequence of two 1-D keys, so specifying "
+              },
+              {
+                "kind": "code",
+                "text": "axis=0"
+              },
+              {
+                "kind": "text",
+                "text": " is equivalent to\nusing the default axis, "
+              },
+              {
+                "kind": "code",
+                "text": "axis=-1"
+              },
+              {
+                "kind": "text",
+                "text": "."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.testing.assert_equal(we.lexsort(arr, axis=0),"
+              },
+              {
+                "kind": "input",
+                "prompt": "...",
+                "text": "we.lexsort(arr, axis=-1))"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "For higher-dimensional arrays, the axis parameter begins to matter. The\nresulting array has the same shape as each key, and the values are what\nwe would expect if "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/lexsort",
+                "kind": "link",
+                "target": "lexsort",
+                "text": "lexsort"
+              },
+              {
+                "kind": "text",
+                "text": " were performed on corresponding slices\nof the keys independently. For instance,"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x = [[1, 2, 3, 4],"
+              },
+              {
+                "kind": "input",
+                "prompt": "...",
+                "text": "[4, 3, 2, 1],"
+              },
+              {
+                "kind": "input",
+                "prompt": "...",
+                "text": "[2, 1, 4, 3]]"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "y = [[2, 2, 1, 1],"
+              },
+              {
+                "kind": "input",
+                "prompt": "...",
+                "text": "[1, 2, 1, 2],"
+              },
+              {
+                "kind": "input",
+                "prompt": "...",
+                "text": "[1, 1, 2, 1]]"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.lexsort((x, y), axis=1)"
+              },
+              {
+                "kind": "output",
+                "text": "array([[2, 3, 0, 1],"
+              },
+              {
+                "kind": "output",
+                "text": "       [2, 0, 3, 1],"
+              },
+              {
+                "kind": "output",
+                "text": "       [1, 0, 3, 2]])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Each row of the result is what we would expect if we were to perform\n"
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/lexsort",
+                "kind": "link",
+                "target": "lexsort",
+                "text": "lexsort"
+              },
+              {
+                "kind": "text",
+                "text": " on the corresponding row of the keys:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "for i in range(3):"
+              },
+              {
+                "kind": "input",
+                "prompt": "...",
+                "text": "print(we.lexsort((x[i], y[i])))"
+              },
+              {
+                "kind": "output",
+                "text": "[2 3 0 1]"
+              },
+              {
+                "kind": "output",
+                "text": "[2 0 3 1]"
+              },
+              {
+                "kind": "output",
+                "text": "[1 0 3 2]"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_custom",
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "module": "numpy",
+    "name": "lexsort",
+    "notes": "Multi-key sort; cost = k*n*ceil(log2(n)).",
+    "numpy_ref": "np.lexsort",
+    "signature": "we.lexsort(keys, axis=-1)",
+    "status": "supported",
+    "summary": "Perform an indirect stable sort using a sequence of keys.",
+    "weight": 1.0,
+    "whest_ref": "we.lexsort"
+  },
+  "schema_version": 1,
+  "slug": "lexsort",
+  "source": {
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.lexsort.html",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L77"
   }
 }

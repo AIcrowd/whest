@@ -1,191 +1,773 @@
 {
-  "schema_version": 1,
-  "slug": "meshgrid",
   "detail_href": "/docs/api/ops/meshgrid/",
   "detail_json_href": "/api-data/ops/meshgrid.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L493-L502",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html"
-  },
-  "op": {
-    "name": "meshgrid",
-    "module": "numpy",
-    "whest_ref": "we.meshgrid",
-    "numpy_ref": "np.meshgrid",
-    "category": "counted_custom",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "per-operation",
-    "cost_formula_latex": "varies",
-    "notes": "Coordinate matrices from coordinate vectors. Cost: numel(output).",
-    "summary": "Return a tuple of coordinate matrices from coordinate vectors.",
-    "signature": "we.meshgrid(*xi, copy=True, sparse=False, indexing='xy')"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Return a tuple of coordinate matrices from coordinate vectors."
-          },
-          {
-            "type": "paragraph",
-            "text": "Make N-D coordinate arrays for vectorized evaluations of\nN-D scalar/vector fields over N-D grids, given\none-dimensional coordinate arrays x1, x2,..., xn."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Return a tuple of coordinate matrices from coordinate vectors."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
+        "blocks": [
           {
-            "name": "x1, x2,..., xn",
-            "type": "array_like",
-            "desc_blocks": [
+            "inline": [
               {
-                "type": "paragraph",
-                "text": "1-D arrays representing the coordinates of a grid."
+                "kind": "text",
+                "text": "Make N-D coordinate arrays for vectorized evaluations of\nN-D scalar/vector fields over N-D grids, given\none-dimensional coordinate arrays x1, x2,..., xn."
               }
-            ]
-          },
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Extended Summary"
+      },
+      {
+        "blocks": [
           {
-            "name": "indexing",
-            "type": "{'xy', 'ij'}, optional",
-            "desc_blocks": [
+            "items": [
               {
-                "type": "paragraph",
-                "text": "Cartesian ('xy', default) or matrix ('ij') indexing of output.\nSee Notes for more details."
-              }
-            ]
-          },
-          {
-            "name": "sparse",
-            "type": "bool, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "If True the shape of the returned coordinate array for dimension *i*\nis reduced from ``(N1, ..., Ni, ... Nn)`` to\n``(1, ..., 1, Ni, 1, ..., 1)``.  These sparse coordinate grids are\nintended to be use with :ref:`basics.broadcasting`.  When all\ncoordinates are used in an expression, broadcasting still leads to a\nfully-dimensonal result array."
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "1-D arrays representing the coordinates of a grid."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "1-D arrays representing the coordinates of a grid."
+                  }
+                ],
+                "name": "x1, x2,..., xn",
+                "type": "field_list"
               },
               {
-                "type": "paragraph",
-                "text": "Default is False."
-              }
-            ]
-          },
-          {
-            "name": "copy",
-            "type": "bool, optional",
-            "desc_blocks": [
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Cartesian ('xy', default) or matrix ('ij') indexing of output.\nSee Notes for more details."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "{'xy', 'ij'}, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Cartesian ('xy', default) or matrix ('ij') indexing of output.\nSee Notes for more details."
+                  }
+                ],
+                "name": "indexing",
+                "type": "field_list"
+              },
               {
-                "type": "paragraph",
-                "text": "If False, a view into the original arrays are returned in order to\nconserve memory.  Default is True.  Please note that\n``sparse=False, copy=False`` will likely return non-contiguous\narrays.  Furthermore, more than one element of a broadcast array\nmay refer to a single memory location.  If you need to write to the\narrays, make copies first."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "X1, X2,..., XN",
-            "type": "tuple of ndarrays",
-            "desc_blocks": [
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If True the shape of the returned coordinate array for dimension "
+                      },
+                      {
+                        "kind": "emphasis",
+                        "text": "i"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "\nis reduced from "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "(N1, ..., Ni, ... Nn)"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " to\n"
+                      },
+                      {
+                        "kind": "code",
+                        "text": "(1, ..., 1, Ni, 1, ..., 1)"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ".  These sparse coordinate grids are\nintended to be use with "
+                      },
+                      {
+                        "display_text": "basics.broadcasting",
+                        "explicit_title": false,
+                        "external_url": "",
+                        "href": "",
+                        "kind": "role_reference",
+                        "original_target": "basics.broadcasting",
+                        "role": "ref",
+                        "suppress_link": false,
+                        "target": "basics.broadcasting",
+                        "unresolved": true
+                      },
+                      {
+                        "kind": "text",
+                        "text": ".  When all\ncoordinates are used in an expression, broadcasting still leads to a\nfully-dimensonal result array."
+                      }
+                    ],
+                    "type": "paragraph"
+                  },
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Default is False."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "bool, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "If True the shape of the returned coordinate array for dimension "
+                  },
+                  {
+                    "kind": "emphasis",
+                    "text": "i"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "\nis reduced from "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "(N1, ..., Ni, ... Nn)"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " to\n"
+                  },
+                  {
+                    "kind": "code",
+                    "text": "(1, ..., 1, Ni, 1, ..., 1)"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ".  These sparse coordinate grids are\nintended to be use with "
+                  },
+                  {
+                    "display_text": "basics.broadcasting",
+                    "explicit_title": false,
+                    "external_url": "",
+                    "href": "",
+                    "kind": "role_reference",
+                    "original_target": "basics.broadcasting",
+                    "role": "ref",
+                    "suppress_link": false,
+                    "target": "basics.broadcasting",
+                    "unresolved": true
+                  },
+                  {
+                    "kind": "text",
+                    "text": ".  When all\ncoordinates are used in an expression, broadcasting still leads to a\nfully-dimensonal result array."
+                  }
+                ],
+                "name": "sparse",
+                "type": "field_list"
+              },
               {
-                "type": "paragraph",
-                "text": "For vectors `x1`, `x2`,..., `xn` with lengths ``Ni=len(xi)``,\nreturns ``(N1, N2, N3,..., Nn)`` shaped arrays if indexing='ij'\nor ``(N2, N1, N3,..., Nn)`` shaped arrays if indexing='xy'\nwith the elements of `xi` repeated to fill the matrix along\nthe first dimension for `x1`, the second for `x2` and so on."
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If False, a view into the original arrays are returned in order to\nconserve memory.  Default is True.  Please note that\n"
+                      },
+                      {
+                        "kind": "code",
+                        "text": "sparse=False, copy=False"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " will likely return non-contiguous\narrays.  Furthermore, more than one element of a broadcast array\nmay refer to a single memory location.  If you need to write to the\narrays, make copies first."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "bool, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "If False, a view into the original arrays are returned in order to\nconserve memory.  Default is True.  Please note that\n"
+                  },
+                  {
+                    "kind": "code",
+                    "text": "sparse=False, copy=False"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " will likely return non-contiguous\narrays.  Furthermore, more than one element of a broadcast array\nmay refer to a single memory location.  If you need to write to the\narrays, make copies first."
+                  }
+                ],
+                "name": "copy",
+                "type": "field_list"
               }
-            ]
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
       },
       {
-        "kind": "notes",
-        "title": "Notes",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "This function supports both indexing conventions through the indexing\nkeyword argument.  Giving the string 'ij' returns a meshgrid with\nmatrix indexing, while 'xy' returns a meshgrid with Cartesian indexing.\nIn the 2-D case with inputs of length M and N, the outputs are of shape\n(N, M) for 'xy' indexing and (M, N) for 'ij' indexing.  In the 3-D case\nwith inputs of length M, N and P, outputs are of shape (N, M, P) for\n'xy' indexing and (M, N, P) for 'ij' indexing.  The difference is\nillustrated by the following code snippet::"
-          },
-          {
-            "type": "paragraph",
-            "text": "    xv, yv = np.meshgrid(x, y, indexing='ij')\n    for i in range(nx):\n        for j in range(ny):\n            # treat xv[i,j], yv[i,j]"
-          },
-          {
-            "type": "paragraph",
-            "text": "    xv, yv = np.meshgrid(x, y, indexing='xy')\n    for i in range(nx):\n        for j in range(ny):\n            # treat xv[j,i], yv[j,i]"
-          },
-          {
-            "type": "paragraph",
-            "text": "In the 1-D and 0-D case, the indexing and sparse keywords have no effect."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "For vectors "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "x1"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "x2"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ",..., "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "xn"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " with lengths "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "Ni=len(xi)"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ",\nreturns "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "(N1, N2, N3,..., Nn)"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " shaped arrays if indexing='ij'\nor "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "(N2, N1, N3,..., Nn)"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " shaped arrays if indexing='xy'\nwith the elements of "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "xi"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " repeated to fill the matrix along\nthe first dimension for "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "x1"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", the second for "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "x2"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " and so on."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "tuple of ndarrays",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "For vectors "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "x1"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "x2"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ",..., "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "xn"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " with lengths "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "Ni=len(xi)"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ",\nreturns "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "(N1, N2, N3,..., Nn)"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " shaped arrays if indexing='ij'\nor "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "(N2, N1, N3,..., Nn)"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " shaped arrays if indexing='xy'\nwith the elements of "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "xi"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " repeated to fill the matrix along\nthe first dimension for "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "x1"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", the second for "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "x2"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " and so on."
+                  }
+                ],
+                "name": "X1, X2,..., XN",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Returns"
       },
       {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> nx, ny = (3, 2)\n>>> x = np.linspace(0, 1, nx)\n>>> y = np.linspace(0, 1, ny)\n>>> xv, yv = np.meshgrid(x, y)\n>>> xv\narray([[0. , 0.5, 1. ],\n       [0. , 0.5, 1. ]])\n>>> yv\narray([[0.,  0.,  0.],\n       [1.,  1.,  1.]])"
-          },
-          {
-            "type": "paragraph",
-            "text": "The result of `meshgrid` is a coordinate grid:"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import matplotlib.pyplot as plt\n>>> plt.plot(xv, yv, marker='o', color='k', linestyle='none')\n>>> plt.show()"
-          },
-          {
-            "type": "paragraph",
-            "text": "You can create sparse output arrays to save memory and computation time."
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> xv, yv = np.meshgrid(x, y, sparse=True)\n>>> xv\narray([[0. ,  0.5,  1. ]])\n>>> yv\narray([[0.],\n       [1.]])"
-          },
-          {
-            "type": "paragraph",
-            "text": "`meshgrid` is very useful to evaluate functions on a grid. If the\nfunction depends on all coordinates, both dense and sparse outputs can be\nused."
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> x = np.linspace(-5, 5, 101)\n>>> y = np.linspace(-5, 5, 101)\n>>> # full coordinate arrays\n>>> xx, yy = np.meshgrid(x, y)\n>>> zz = np.sqrt(xx**2 + yy**2)\n>>> xx.shape, yy.shape, zz.shape\n((101, 101), (101, 101), (101, 101))\n>>> # sparse coordinate arrays\n>>> xs, ys = np.meshgrid(x, y, sparse=True)\n>>> zs = np.sqrt(xs**2 + ys**2)\n>>> xs.shape, ys.shape, zs.shape\n((1, 101), (101, 1), (101, 101))\n>>> np.array_equal(zz, zs)\nTrue"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> h = plt.contourf(x, y, zs)\n>>> plt.axis('scaled')\n>>> plt.colorbar()\n>>> plt.show()"
+            "links": [
+              {
+                "description": "Construct a multi-dimensional \"meshgrid\" using indexing notation.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Construct a multi-dimensional \"meshgrid\" using indexing notation."
+                  }
+                ],
+                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.mgrid.html",
+                "href": "",
+                "label": "mgrid",
+                "original_target": "mgrid",
+                "role": "",
+                "target": "mgrid",
+                "unresolved": false
+              },
+              {
+                "description": "Construct an open multi-dimensional \"meshgrid\" using indexing notation.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Construct an open multi-dimensional \"meshgrid\" using indexing notation."
+                  }
+                ],
+                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.ogrid.html",
+                "href": "",
+                "label": "ogrid",
+                "original_target": "ogrid",
+                "role": "",
+                "target": "ogrid",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.how-to-index.html",
+                "href": "",
+                "label": "how-to-index",
+                "original_target": "how-to-index",
+                "role": "ref",
+                "target": "how-to-index",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
           }
-        ]
+        ],
+        "title": "See also"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "mgrid \u2014 Construct a multi-dimensional \"meshgrid\" using indexing notation."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "This function supports both indexing conventions through the indexing\nkeyword argument.  Giving the string 'ij' returns a meshgrid with\nmatrix indexing, while 'xy' returns a meshgrid with Cartesian indexing.\nIn the 2-D case with inputs of length M and N, the outputs are of shape\n(N, M) for 'xy' indexing and (M, N) for 'ij' indexing.  In the 3-D case\nwith inputs of length M, N and P, outputs are of shape (N, M, P) for\n'xy' indexing and (M, N, P) for 'ij' indexing.  The difference is\nillustrated by the following code snippet:"
+              }
+            ],
+            "type": "paragraph"
           },
           {
-            "type": "paragraph",
-            "text": "ogrid \u2014 Construct an open multi-dimensional \"meshgrid\" using indexing notation."
+            "language": null,
+            "text": "xv, yv = we.meshgrid(x, y, indexing='ij')\nfor i in range(nx):\n    for j in range(ny):\n        # treat xv[i,j], yv[i,j]\n\nxv, yv = we.meshgrid(x, y, indexing='xy')\nfor i in range(nx):\n    for j in range(ny):\n        # treat xv[j,i], yv[j,i]",
+            "type": "literal_block"
           },
           {
-            "type": "paragraph",
-            "text": "how-to-index"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "In the 1-D and 0-D case, the indexing and sparse keywords have no effect."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Notes"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "nx, ny = (3, 2)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x = we.linspace(0, 1, nx)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "y = we.linspace(0, 1, ny)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "xv, yv = we.meshgrid(x, y)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "xv"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0. , 0.5, 1. ],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0. , 0.5, 1. ]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "yv"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0.,  0.,  0.],"
+              },
+              {
+                "kind": "output",
+                "text": "       [1.,  1.,  1.]])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "The result of "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/meshgrid",
+                "kind": "link",
+                "target": "meshgrid",
+                "text": "meshgrid"
+              },
+              {
+                "kind": "text",
+                "text": " is a coordinate grid:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import matplotlib.pyplot as plt"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "plt.plot(xv, yv, marker='o', color='k', linestyle='none')"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "plt.show()"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "You can create sparse output arrays to save memory and computation time."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "xv, yv = we.meshgrid(x, y, sparse=True)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "xv"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0. ,  0.5,  1. ]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "yv"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0.],"
+              },
+              {
+                "kind": "output",
+                "text": "       [1.]])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/meshgrid",
+                "kind": "link",
+                "target": "meshgrid",
+                "text": "meshgrid"
+              },
+              {
+                "kind": "text",
+                "text": " is very useful to evaluate functions on a grid. If the\nfunction depends on all coordinates, both dense and sparse outputs can be\nused."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x = we.linspace(-5, 5, 101)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "y = we.linspace(-5, 5, 101)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "# full coordinate arrays"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "xx, yy = we.meshgrid(x, y)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "zz = we.sqrt(xx**2 + yy**2)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "xx.shape, yy.shape, zz.shape"
+              },
+              {
+                "kind": "output",
+                "text": "((101, 101), (101, 101), (101, 101))"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "# sparse coordinate arrays"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "xs, ys = we.meshgrid(x, y, sparse=True)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "zs = we.sqrt(xs**2 + ys**2)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "xs.shape, ys.shape, zs.shape"
+              },
+              {
+                "kind": "output",
+                "text": "((1, 101), (101, 1), (101, 101))"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.array_equal(zz, zs)"
+              },
+              {
+                "kind": "output",
+                "text": "True"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "h = plt.contourf(x, y, zs)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "plt.axis('scaled')"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "plt.colorbar()"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "plt.show()"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_custom",
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "module": "numpy",
+    "name": "meshgrid",
+    "notes": "Coordinate matrices from coordinate vectors. Cost: numel(output).",
+    "numpy_ref": "np.meshgrid",
+    "signature": "we.meshgrid(*xi, copy=True, sparse=False, indexing='xy')",
+    "status": "supported",
+    "summary": "Return a tuple of coordinate matrices from coordinate vectors.",
+    "weight": 1.0,
+    "whest_ref": "we.meshgrid"
+  },
+  "schema_version": 1,
+  "slug": "meshgrid",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L5117",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L493"
   }
 }

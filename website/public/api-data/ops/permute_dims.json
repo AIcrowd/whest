@@ -1,143 +1,443 @@
 {
-  "schema_version": 1,
-  "slug": "permute_dims",
   "detail_href": "/docs/api/ops/permute_dims/",
   "detail_json_href": "/api-data/ops/permute_dims.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L1231-L1233",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.permute_dims.html"
-  },
-  "op": {
-    "name": "permute_dims",
-    "module": "numpy",
-    "whest_ref": "we.permute_dims",
-    "numpy_ref": "np.permute_dims",
-    "category": "free",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "0",
-    "cost_formula_latex": "$0$",
-    "notes": "Permute dimensions (NumPy 2.x array API).",
-    "summary": "Returns an array with axes transposed.",
-    "signature": "we.permute_dims(a, axes=None)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Returns an array with axes transposed."
-          },
-          {
-            "type": "paragraph",
-            "text": "For a 1-D array, this returns an unchanged view of the original array, as a\ntransposed vector is simply the same vector.\nTo convert a 1-D array into a 2-D column vector, an additional dimension\nmust be added, e.g., ``np.atleast_2d(a).T`` achieves this, as does\n``a[:, np.newaxis]``.\nFor a 2-D array, this is the standard matrix transpose.\nFor an n-D array, if axes are given, their order indicates how the\naxes are permuted (see Examples). If axes are not provided, then\n``transpose(a).shape == a.shape[::-1]``."
-          }
-        ]
-      },
-      {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
-          {
-            "name": "a",
-            "type": "array_like",
-            "desc_blocks": [
+            "inline": [
               {
-                "type": "paragraph",
-                "text": "Input array."
+                "kind": "text",
+                "text": "Returns an array with axes transposed."
               }
-            ]
-          },
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Summary"
+      },
+      {
+        "blocks": [
           {
-            "name": "axes",
-            "type": "tuple or list of ints, optional",
-            "desc_blocks": [
+            "inline": [
               {
-                "type": "paragraph",
-                "text": "If specified, it must be a tuple or list which contains a permutation\nof [0, 1, ..., N-1] where N is the number of axes of `a`. Negative\nindices can also be used to specify axes. The i-th axis of the returned\narray will correspond to the axis numbered ``axes[i]`` of the input.\nIf not specified, defaults to ``range(a.ndim)[::-1]``, which reverses\nthe order of the axes."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "p",
-            "type": "ndarray",
-            "desc_blocks": [
+                "kind": "text",
+                "text": "For a 1-D array, this returns an unchanged view of the original array, as a\ntransposed vector is simply the same vector.\nTo convert a 1-D array into a 2-D column vector, an additional dimension\nmust be added, e.g., "
+              },
               {
-                "type": "paragraph",
-                "text": "`a` with its axes permuted. A view is returned whenever possible."
+                "kind": "code",
+                "text": "we.atleast_2d(a).T"
+              },
+              {
+                "kind": "text",
+                "text": " achieves this, as does\n"
+              },
+              {
+                "kind": "code",
+                "text": "a[:, we.newaxis]"
+              },
+              {
+                "kind": "text",
+                "text": ".\nFor a 2-D array, this is the standard matrix transpose.\nFor an n-D array, if axes are given, their order indicates how the\naxes are permuted (see Examples). If axes are not provided, then\n"
+              },
+              {
+                "kind": "code",
+                "text": "transpose(a).shape == a.shape[::-1]"
+              },
+              {
+                "kind": "text",
+                "text": "."
               }
-            ]
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Extended Summary"
       },
       {
-        "kind": "notes",
-        "title": "Notes",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Use ``transpose(a, argsort(axes))`` to invert the transposition of tensors\nwhen using the `axes` keyword argument."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Input array."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Input array."
+                  }
+                ],
+                "name": "a",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If specified, it must be a tuple or list which contains a permutation\nof [0, 1, ..., N-1] where N is the number of axes of "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "a"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ". Negative\nindices can also be used to specify axes. The i-th axis of the returned\narray will correspond to the axis numbered "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "axes[i]"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " of the input.\nIf not specified, defaults to "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "range(a.ndim)[::-1]"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", which reverses\nthe order of the axes."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "tuple or list of ints, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "If specified, it must be a tuple or list which contains a permutation\nof [0, 1, ..., N-1] where N is the number of axes of "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "a"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ". Negative\nindices can also be used to specify axes. The i-th axis of the returned\narray will correspond to the axis numbered "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "axes[i]"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " of the input.\nIf not specified, defaults to "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "range(a.ndim)[::-1]"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", which reverses\nthe order of the axes."
+                  }
+                ],
+                "name": "axes",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
       },
       {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> a = np.array([[1, 2], [3, 4]])\n>>> a\narray([[1, 2],\n       [3, 4]])\n>>> np.transpose(a)\narray([[1, 3],\n       [2, 4]])"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> a = np.array([1, 2, 3, 4])\n>>> a\narray([1, 2, 3, 4])\n>>> np.transpose(a)\narray([1, 2, 3, 4])"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> a = np.ones((1, 2, 3))\n>>> np.transpose(a, (1, 0, 2)).shape\n(2, 1, 3)"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> a = np.ones((2, 3, 4, 5))\n>>> np.transpose(a).shape\n(5, 4, 3, 2)"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> a = np.arange(3*4*5).reshape((3, 4, 5))\n>>> np.transpose(a, (-1, 0, -2)).shape\n(5, 3, 4)"
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "code",
+                        "text": "a"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " with its axes permuted. A view is returned whenever possible."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "code",
+                    "text": "a"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " with its axes permuted. A view is returned whenever possible."
+                  }
+                ],
+                "name": "p",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Returns"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "ndarray.transpose \u2014 Equivalent method."
-          },
-          {
-            "type": "paragraph",
-            "text": "moveaxis \u2014 Move axes of an array to new positions."
-          },
-          {
-            "type": "paragraph",
-            "text": "argsort \u2014 Return the indices that would sort an array."
+            "links": [
+              {
+                "description": "Equivalent method.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Equivalent method."
+                  }
+                ],
+                "external_url": "",
+                "href": "",
+                "label": "ndarray.transpose",
+                "original_target": "ndarray.transpose",
+                "role": "",
+                "target": "ndarray.transpose",
+                "unresolved": true
+              },
+              {
+                "description": "Move axes of an array to new positions.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Move axes of an array to new positions."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/moveaxis",
+                "label": "we.moveaxis",
+                "original_target": "moveaxis",
+                "role": "",
+                "target": "moveaxis",
+                "unresolved": false
+              },
+              {
+                "description": "Return the indices that would sort an array.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Return the indices that would sort an array."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/argsort",
+                "label": "we.argsort",
+                "original_target": "argsort",
+                "role": "",
+                "target": "argsort",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
           }
-        ]
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Use "
+              },
+              {
+                "kind": "code",
+                "text": "transpose(a, argsort(axes))"
+              },
+              {
+                "kind": "text",
+                "text": " to invert the transposition of tensors\nwhen using the "
+              },
+              {
+                "kind": "code",
+                "text": "axes"
+              },
+              {
+                "kind": "text",
+                "text": " keyword argument."
+              }
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Notes"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.array([[1, 2], [3, 4]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a"
+              },
+              {
+                "kind": "output",
+                "text": "array([[1, 2],"
+              },
+              {
+                "kind": "output",
+                "text": "       [3, 4]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.transpose(a)"
+              },
+              {
+                "kind": "output",
+                "text": "array([[1, 3],"
+              },
+              {
+                "kind": "output",
+                "text": "       [2, 4]])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.array([1, 2, 3, 4])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a"
+              },
+              {
+                "kind": "output",
+                "text": "array([1, 2, 3, 4])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.transpose(a)"
+              },
+              {
+                "kind": "output",
+                "text": "array([1, 2, 3, 4])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.ones((1, 2, 3))"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.transpose(a, (1, 0, 2)).shape"
+              },
+              {
+                "kind": "output",
+                "text": "(2, 1, 3)"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.ones((2, 3, 4, 5))"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.transpose(a).shape"
+              },
+              {
+                "kind": "output",
+                "text": "(5, 4, 3, 2)"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.arange(3*4*5).reshape((3, 4, 5))"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.transpose(a, (-1, 0, -2)).shape"
+              },
+              {
+                "kind": "output",
+                "text": "(5, 3, 4)"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "free",
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "module": "numpy",
+    "name": "permute_dims",
+    "notes": "Permute dimensions (NumPy 2.x array API).",
+    "numpy_ref": "np.permute_dims",
+    "signature": "we.permute_dims(a, axes=None)",
+    "status": "supported",
+    "summary": "Returns an array with axes transposed.",
+    "weight": 1.0,
+    "whest_ref": "we.permute_dims"
+  },
+  "schema_version": 1,
+  "slug": "permute_dims",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L630",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1231"
   }
 }

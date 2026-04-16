@@ -1,0 +1,324 @@
+{
+  "aliases": [],
+  "api_docs_html": "",
+  "area": "core",
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Return the imaginary part of the complex argument."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Input array."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "array_like",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Input array."
+                }
+              ],
+              "name": "val",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "The imaginary component of the complex argument. If "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "val"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " is real,\nthe type of "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "val"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " is used for the output.  If "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "val"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " has complex\nelements, the returned type is float."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "ndarray or scalar",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "The imaginary component of the complex argument. If "
+                },
+                {
+                  "kind": "code",
+                  "text": "val"
+                },
+                {
+                  "kind": "text",
+                  "text": " is real,\nthe type of "
+                },
+                {
+                  "kind": "code",
+                  "text": "val"
+                },
+                {
+                  "kind": "text",
+                  "text": " is used for the output.  If "
+                },
+                {
+                  "kind": "code",
+                  "text": "val"
+                },
+                {
+                  "kind": "text",
+                  "text": " has complex\nelements, the returned type is float."
+                }
+              ],
+              "name": "out",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "links": [
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "",
+              "href": "/docs/api/ops/real",
+              "label": "we.real",
+              "original_target": "real",
+              "role": "",
+              "target": "real",
+              "unresolved": false
+            },
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "",
+              "href": "/docs/api/ops/angle",
+              "label": "we.angle",
+              "original_target": "angle",
+              "role": "",
+              "target": "angle",
+              "unresolved": false
+            },
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "",
+              "href": "/docs/api/ops/real_if_close",
+              "label": "we.real_if_close",
+              "original_target": "real_if_close",
+              "role": "",
+              "target": "real_if_close",
+              "unresolved": false
+            }
+          ],
+          "type": "link_list"
+        }
+      ],
+      "title": "See also"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import whest as we"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "a = we.array([1+2j, 3+4j, 5+6j])"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "a.imag"
+            },
+            {
+              "kind": "output",
+              "text": "array([2.,  4.,  6.])"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "a.imag = we.array([8, 10, 12])"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "a"
+            },
+            {
+              "kind": "output",
+              "text": "array([1. +8.j,  3.+10.j,  5.+12.j])"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.imag(1 + 1j)"
+            },
+            {
+              "kind": "output",
+              "text": "1.0"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
+    }
+  ],
+  "canonical_name": "imag",
+  "category": "counted_unary",
+  "cost_formula": "numel(output)",
+  "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+  "display_type": "counted",
+  "doc_coverage": {
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "example": {
+    "code": "import whest as we\n\na = we.array([1+2j, 3+4j, 5+6j])\n\na.imag\n\na.imag = we.array([8, 10, 12])\n\na\n\nwe.imag(1 + 1j)",
+    "output": "array([2.,  4.,  6.])\n\narray([1. +8.j,  3.+10.j,  5.+12.j])\n\n1.0",
+    "source": "derived"
+  },
+  "href": "/docs/api/ops/imag/",
+  "module": "numpy",
+  "name": "imag",
+  "next": {
+    "href": "/docs/api/ops/in1d/",
+    "label": "we.in1d"
+  },
+  "notes": "Return imaginary part of complex array.",
+  "notes_sections": [],
+  "numpy_ref": "np.imag",
+  "parameters": [
+    {
+      "body": [
+        "Input array."
+      ],
+      "name": "val",
+      "type": "array_like"
+    }
+  ],
+  "previous": {
+    "href": "/docs/api/ops/identity/",
+    "label": "we.identity"
+  },
+  "provenance_label": "Adapted from NumPy docs",
+  "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.imag.html",
+  "returns": [
+    {
+      "body": [
+        "The imaginary component of the complex argument. If `val` is real,",
+        "the type of `val` is used for the output.  If `val` has complex",
+        "elements, the returned type is float."
+      ],
+      "name": "out",
+      "type": "ndarray or scalar"
+    }
+  ],
+  "see_also": [
+    {
+      "description": "",
+      "description_inline": [],
+      "external_url": "",
+      "href": "/docs/api/ops/real",
+      "label": "we.real",
+      "original_target": "real",
+      "role": "",
+      "target": "real",
+      "unresolved": false
+    },
+    {
+      "description": "",
+      "description_inline": [],
+      "external_url": "",
+      "href": "/docs/api/ops/angle",
+      "label": "we.angle",
+      "original_target": "angle",
+      "role": "",
+      "target": "angle",
+      "unresolved": false
+    },
+    {
+      "description": "",
+      "description_inline": [],
+      "external_url": "",
+      "href": "/docs/api/ops/real_if_close",
+      "label": "we.real_if_close",
+      "original_target": "real_if_close",
+      "role": "",
+      "target": "real_if_close",
+      "unresolved": false
+    }
+  ],
+  "signature": "we.imag(val)",
+  "slug": "imag",
+  "summary": "Return the imaginary part of the complex argument.",
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L131",
+  "weight": 1.0,
+  "whest_examples_html": "",
+  "whest_ref": "we.imag",
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29"
+}

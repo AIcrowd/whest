@@ -31,7 +31,7 @@ def test_per_op_detail_payloads_exist_for_index_entries():
     operations = data["operations"]
     assert OPS_DETAIL_DIR.exists(), f"per-op detail dir not found at {OPS_DETAIL_DIR}"
 
-    sample_names = ["abs", "add", "einsum", "sum"]
+    sample_names = ["absolute", "add", "einsum", "sum"]
     operations_by_name = {entry["name"]: entry for entry in operations}
 
     for name in sample_names:
@@ -59,5 +59,5 @@ def test_generated_import_map_contains_known_op_slugs():
     source = OP_IMPORT_MAP_PATH.read_text()
 
     assert "export const opDocImports" in source
-    assert '"abs":' in source
+    assert '"absolute":' in source
     assert '"einsum":' in source

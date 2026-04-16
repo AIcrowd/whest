@@ -1,131 +1,339 @@
 {
-  "schema_version": 1,
-  "slug": "resize",
   "detail_href": "/docs/api/ops/resize/",
   "detail_json_href": "/api-data/ops/resize.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L1321-L1328",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.resize.html"
-  },
-  "op": {
-    "name": "resize",
-    "module": "numpy",
-    "whest_ref": "we.resize",
-    "numpy_ref": "np.resize",
-    "category": "counted_custom",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "per-operation",
-    "cost_formula_latex": "varies",
-    "notes": "Return new array with given shape by repeating. Cost: numel(output).",
-    "summary": "Return a new array with the specified shape.",
-    "signature": "we.resize(a, new_shape)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Return a new array with the specified shape."
-          },
-          {
-            "type": "paragraph",
-            "text": "If the new array is larger than the original array, then the new\narray is filled with repeated copies of `a`.  Note that this behavior\nis different from a.resize(new_shape) which fills with zeros instead\nof repeated copies of `a`."
-          }
-        ]
-      },
-      {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
-          {
-            "name": "a",
-            "type": "array_like",
-            "desc_blocks": [
+            "inline": [
               {
-                "type": "paragraph",
-                "text": "Array to be resized."
+                "kind": "text",
+                "text": "Return a new array with the specified shape."
               }
-            ]
-          },
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Summary"
+      },
+      {
+        "blocks": [
           {
-            "name": "new_shape",
-            "type": "int or tuple of int",
-            "desc_blocks": [
+            "inline": [
               {
-                "type": "paragraph",
-                "text": "Shape of resized array."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "reshaped_array",
-            "type": "ndarray",
-            "desc_blocks": [
+                "kind": "text",
+                "text": "If the new array is larger than the original array, then the new\narray is filled with repeated copies of "
+              },
               {
-                "type": "paragraph",
-                "text": "The new array is formed from the data in the old array, repeated\nif necessary to fill out the required number of elements.  The\ndata are repeated iterating over the array in C-order."
+                "kind": "code",
+                "text": "a"
+              },
+              {
+                "kind": "text",
+                "text": ".  Note that this behavior\nis different from a.resize(new_shape) which fills with zeros instead\nof repeated copies of "
+              },
+              {
+                "kind": "code",
+                "text": "a"
+              },
+              {
+                "kind": "text",
+                "text": "."
               }
-            ]
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Extended Summary"
       },
       {
-        "kind": "notes",
-        "title": "Notes",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "When the total size of the array does not change `~numpy.reshape` should\nbe used.  In most other cases either indexing (to reduce the size)\nor padding (to increase the size) may be a more appropriate solution."
-          },
-          {
-            "type": "paragraph",
-            "text": "Warning: This functionality does **not** consider axes separately,\ni.e. it does not apply interpolation/extrapolation.\nIt fills the return array with the required number of elements, iterating\nover `a` in C-order, disregarding axes (and cycling back from the start if\nthe new shape is larger).  This functionality is therefore not suitable to\nresize images, or data where each axis represents a separate and distinct\nentity."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Array to be resized."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Array to be resized."
+                  }
+                ],
+                "name": "a",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Shape of resized array."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "int or tuple of int",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Shape of resized array."
+                  }
+                ],
+                "name": "new_shape",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
       },
       {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> a = np.array([[0,1],[2,3]])\n>>> np.resize(a,(2,3))\narray([[0, 1, 2],\n       [3, 0, 1]])\n>>> np.resize(a,(1,4))\narray([[0, 1, 2, 3]])\n>>> np.resize(a,(2,4))\narray([[0, 1, 2, 3],\n       [0, 1, 2, 3]])"
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The new array is formed from the data in the old array, repeated\nif necessary to fill out the required number of elements.  The\ndata are repeated iterating over the array in C-order."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The new array is formed from the data in the old array, repeated\nif necessary to fill out the required number of elements.  The\ndata are repeated iterating over the array in C-order."
+                  }
+                ],
+                "name": "reshaped_array",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Returns"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "numpy.reshape \u2014 Reshape an array without changing the total size."
-          },
-          {
-            "type": "paragraph",
-            "text": "numpy.pad \u2014 Enlarge and pad an array."
-          },
-          {
-            "type": "paragraph",
-            "text": "numpy.repeat \u2014 Repeat elements of an array."
-          },
-          {
-            "type": "paragraph",
-            "text": "ndarray.resize \u2014 resize an array in-place."
+            "links": [
+              {
+                "description": "Reshape an array without changing the total size.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Reshape an array without changing the total size."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/reshape",
+                "label": "we.reshape",
+                "original_target": "numpy.reshape",
+                "role": "",
+                "target": "reshape",
+                "unresolved": false
+              },
+              {
+                "description": "Enlarge and pad an array.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Enlarge and pad an array."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/pad",
+                "label": "we.pad",
+                "original_target": "numpy.pad",
+                "role": "",
+                "target": "pad",
+                "unresolved": false
+              },
+              {
+                "description": "Repeat elements of an array.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Repeat elements of an array."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/repeat",
+                "label": "we.repeat",
+                "original_target": "numpy.repeat",
+                "role": "",
+                "target": "repeat",
+                "unresolved": false
+              },
+              {
+                "description": "resize an array in-place.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "resize an array in-place."
+                  }
+                ],
+                "external_url": "",
+                "href": "",
+                "label": "ndarray.resize",
+                "original_target": "ndarray.resize",
+                "role": "",
+                "target": "ndarray.resize",
+                "unresolved": true
+              }
+            ],
+            "type": "link_list"
           }
-        ]
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "When the total size of the array does not change "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/reshape",
+                "kind": "link",
+                "target": "reshape",
+                "text": "reshape"
+              },
+              {
+                "kind": "text",
+                "text": " should\nbe used.  In most other cases either indexing (to reduce the size)\nor padding (to increase the size) may be a more appropriate solution."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Warning: This functionality does "
+              },
+              {
+                "kind": "strong",
+                "text": "not"
+              },
+              {
+                "kind": "text",
+                "text": " consider axes separately,\ni.e. it does not apply interpolation/extrapolation.\nIt fills the return array with the required number of elements, iterating\nover "
+              },
+              {
+                "kind": "code",
+                "text": "a"
+              },
+              {
+                "kind": "text",
+                "text": " in C-order, disregarding axes (and cycling back from the start if\nthe new shape is larger).  This functionality is therefore not suitable to\nresize images, or data where each axis represents a separate and distinct\nentity."
+              }
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Notes"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.array([[0,1],[2,3]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.resize(a,(2,3))"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0, 1, 2],"
+              },
+              {
+                "kind": "output",
+                "text": "       [3, 0, 1]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.resize(a,(1,4))"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0, 1, 2, 3]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.resize(a,(2,4))"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0, 1, 2, 3],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 1, 2, 3]])"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_custom",
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "module": "numpy",
+    "name": "resize",
+    "notes": "Return new array with given shape by repeating. Cost: numel(output).",
+    "numpy_ref": "np.resize",
+    "signature": "we.resize(a, new_shape)",
+    "status": "supported",
+    "summary": "Return a new array with the specified shape.",
+    "weight": 1.0,
+    "whest_ref": "we.resize"
+  },
+  "schema_version": 1,
+  "slug": "resize",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L1534",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1321"
   }
 }

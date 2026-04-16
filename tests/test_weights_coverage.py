@@ -27,6 +27,14 @@ WEIGHTS_PATH = ROOT / "src" / "whest" / "data" / "weights.json"
 DOCS_PATH = ROOT / "website" / "content" / "docs" / "development" / "calibration.mdx"
 OPS_INDEX_PATH = ROOT / "website" / "public" / "ops.json"
 
+API_NAME_ALIASES = {
+    "abs": "absolute",
+    "bitwise_invert": "bitwise_not",
+    "concat": "concatenate",
+    "deg2rad": "radians",
+    "rad2deg": "degrees",
+}
+
 # Ensure benchmarks package is importable.
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -260,7 +268,12 @@ class TestDocsWeightCoverage:
         api_operations: dict[str, dict],
     ):
         """Every weighted op should appear in the generated API reference data."""
-        missing = [name for name in sorted(weights) if name not in api_operations]
+        canonical_weights = {
+            API_NAME_ALIASES.get(name, name): weight for name, weight in weights.items()
+        }
+        missing = [
+            name for name in sorted(canonical_weights) if name not in api_operations
+        ]
         assert not missing, (
             f"{len(missing)} weighted ops missing from API reference data:\n"
             + "\n".join(f"  {name}" for name in missing[:20])
@@ -268,7 +281,7 @@ class TestDocsWeightCoverage:
 
         mismatched = {
             name: (expected, api_operations[name]["weight"])
-            for name, expected in weights.items()
+            for name, expected in canonical_weights.items()
             if api_operations[name]["weight"] != expected
         }
         assert not mismatched, (

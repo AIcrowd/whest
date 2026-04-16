@@ -1,0 +1,182 @@
+{
+  "detail_href": "/docs/api/ops/stats-cauchy-ppf/",
+  "detail_json_href": "/api-data/ops/stats-cauchy-ppf.json",
+  "docs": {
+    "sections": [
+      {
+        "blocks": [
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Percent point function (inverse of "
+              },
+              {
+                "kind": "code",
+                "text": "cdf"
+              },
+              {
+                "kind": "text",
+                "text": ") at q of the given RV."
+              }
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Summary"
+      },
+      {
+        "blocks": [
+          {
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "lower tail probability"
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "lower tail probability"
+                  }
+                ],
+                "name": "q",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The shape parameter(s) for the distribution (see docstring of the\ninstance object for more information)"
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The shape parameter(s) for the distribution (see docstring of the\ninstance object for more information)"
+                  }
+                ],
+                "name": "arg1, arg2, arg3,...",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "location parameter (default=0)"
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "location parameter (default=0)"
+                  }
+                ],
+                "name": "loc",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "scale parameter (default=1)"
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "scale parameter (default=1)"
+                  }
+                ],
+                "name": "scale",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
+          }
+        ],
+        "title": "Parameters"
+      },
+      {
+        "blocks": [
+          {
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "quantile corresponding to the lower tail probability q."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "quantile corresponding to the lower tail probability q."
+                  }
+                ],
+                "name": "x",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
+          }
+        ],
+        "title": "Returns"
+      }
+    ]
+  },
+  "op": {
+    "category": "counted_custom",
+    "cost_formula": "5n",
+    "cost_formula_latex": "$5n$",
+    "module": "whest.stats",
+    "name": "stats.cauchy.ppf",
+    "notes": "Cauchy PPF; cost = numel(input).",
+    "numpy_ref": "np.stats.cauchy.ppf",
+    "signature": "we.stats.cauchy.ppf(q, loc=0, scale=1)",
+    "status": "supported",
+    "summary": "Percent point function (inverse of `cdf`) at q of the given RV.",
+    "weight": 16.0,
+    "whest_ref": "we.stats.cauchy.ppf"
+  },
+  "schema_version": 1,
+  "slug": "stats-cauchy-ppf",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2302",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_cauchy.py#L54"
+  }
+}

@@ -1,222 +1,859 @@
 {
-  "schema_version": 1,
-  "slug": "argsort",
   "detail_href": "/docs/api/ops/argsort/",
   "detail_json_href": "/api-data/ops/argsort.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L54-L68",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.argsort.html"
-  },
-  "op": {
-    "name": "argsort",
-    "module": "numpy",
-    "whest_ref": "we.argsort",
-    "numpy_ref": "np.argsort",
-    "category": "counted_custom",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "per-operation",
-    "cost_formula_latex": "varies",
-    "notes": "Indirect sort; cost = n*ceil(log2(n)) per slice.",
-    "summary": "Returns the indices that would sort an array.",
-    "signature": "we.argsort(a, axis=-1, kind=None, order=None, *, stable=None)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Returns the indices that would sort an array."
-          },
-          {
-            "type": "paragraph",
-            "text": "Perform an indirect sort along the given axis using the algorithm specified\nby the `kind` keyword. It returns an array of indices of the same shape as\n`a` that index data along the given axis in sorted order."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Returns the indices that would sort an array."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
+        "blocks": [
           {
-            "name": "a",
-            "type": "array_like",
-            "desc_blocks": [
+            "inline": [
               {
-                "type": "paragraph",
-                "text": "Array to sort."
-              }
-            ]
-          },
-          {
-            "name": "axis",
-            "type": "int or None, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Axis along which to sort.  The default is -1 (the last axis). If None,\nthe flattened array is used."
-              }
-            ]
-          },
-          {
-            "name": "kind",
-            "type": "{'quicksort', 'mergesort', 'heapsort', 'stable'}, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Sorting algorithm. The default is 'quicksort'. Note that both 'stable'\nand 'mergesort' use timsort under the covers and, in general, the\nactual implementation will vary with data type. The 'mergesort' option\nis retained for backwards compatibility."
-              }
-            ]
-          },
-          {
-            "name": "order",
-            "type": "str or list of str, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "When `a` is an array with fields defined, this argument specifies\nwhich fields to compare first, second, etc.  A single field can\nbe specified as a string, and not all fields need be specified,\nbut unspecified fields will still be used, in the order in which\nthey come up in the dtype, to break ties."
-              }
-            ]
-          },
-          {
-            "name": "stable",
-            "type": "bool, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Sort stability. If ``True``, the returned array will maintain\nthe relative order of ``a`` values which compare as equal.\nIf ``False`` or ``None``, this is not guaranteed. Internally,\nthis option selects ``kind='stable'``. Default: ``None``."
+                "kind": "text",
+                "text": "Perform an indirect sort along the given axis using the algorithm specified\nby the "
               },
               {
-                "type": "directive",
-                "name": "versionadded:: 2.0.0",
-                "body": "",
-                "raw": ".. versionadded:: 2.0.0"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "index_array",
-            "type": "ndarray, int",
-            "desc_blocks": [
+                "kind": "code",
+                "text": "kind"
+              },
               {
-                "type": "paragraph",
-                "text": "Array of indices that sort `a` along the specified `axis`.\nIf `a` is one-dimensional, ``a[index_array]`` yields a sorted `a`.\nMore generally, ``np.take_along_axis(a, index_array, axis=axis)``\nalways yields the sorted `a`, irrespective of dimensionality."
+                "kind": "text",
+                "text": " keyword. It returns an array of indices of the same shape as\n"
+              },
+              {
+                "kind": "code",
+                "text": "a"
+              },
+              {
+                "kind": "text",
+                "text": " that index data along the given axis in sorted order."
               }
-            ]
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Extended Summary"
       },
       {
-        "kind": "notes",
-        "title": "Notes",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "See `sort` for notes on the different sorting algorithms."
-          },
-          {
-            "type": "paragraph",
-            "text": "As of NumPy 1.4.0 `argsort` works with real/complex arrays containing\nnan values. The enhanced sort order is documented in `sort`."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Array to sort."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Array to sort."
+                  }
+                ],
+                "name": "a",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Axis along which to sort.  The default is -1 (the last axis). If None,\nthe flattened array is used."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "int or None, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Axis along which to sort.  The default is -1 (the last axis). If None,\nthe flattened array is used."
+                  }
+                ],
+                "name": "axis",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Sorting algorithm. The default is 'quicksort'. Note that both 'stable'\nand 'mergesort' use timsort under the covers and, in general, the\nactual implementation will vary with data type. The 'mergesort' option\nis retained for backwards compatibility."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "{'quicksort', 'mergesort', 'heapsort', 'stable'}, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Sorting algorithm. The default is 'quicksort'. Note that both 'stable'\nand 'mergesort' use timsort under the covers and, in general, the\nactual implementation will vary with data type. The 'mergesort' option\nis retained for backwards compatibility."
+                  }
+                ],
+                "name": "kind",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "When "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "a"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is an array with fields defined, this argument specifies\nwhich fields to compare first, second, etc.  A single field can\nbe specified as a string, and not all fields need be specified,\nbut unspecified fields will still be used, in the order in which\nthey come up in the dtype, to break ties."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "str or list of str, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "When "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "a"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is an array with fields defined, this argument specifies\nwhich fields to compare first, second, etc.  A single field can\nbe specified as a string, and not all fields need be specified,\nbut unspecified fields will still be used, in the order in which\nthey come up in the dtype, to break ties."
+                  }
+                ],
+                "name": "order",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Sort stability. If "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "True"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", the returned array will maintain\nthe relative order of "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "a"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " values which compare as equal.\nIf "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "False"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " or "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "None"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", this is not guaranteed. Internally,\nthis option selects "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "kind='stable'"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ". Default: "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "None"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
+                      }
+                    ],
+                    "type": "paragraph"
+                  },
+                  {
+                    "argument_inline": [],
+                    "content_blocks": [],
+                    "directive": "versionadded",
+                    "options": [],
+                    "raw_source": ".. versionadded:: 2.0.0",
+                    "supported": true,
+                    "type": "directive_block",
+                    "version": "2.0.0"
+                  }
+                ],
+                "data_type": "bool, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Sort stability. If "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "True"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", the returned array will maintain\nthe relative order of "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "a"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " values which compare as equal.\nIf "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "False"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " or "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "None"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", this is not guaranteed. Internally,\nthis option selects "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "kind='stable'"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ". Default: "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "None"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
+                  }
+                ],
+                "name": "stable",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
       },
       {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "One dimensional array:"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> x = np.array([3, 1, 2])\n>>> np.argsort(x)\narray([1, 2, 0])"
-          },
-          {
-            "type": "paragraph",
-            "text": "Two-dimensional array:"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> x = np.array([[0, 3], [2, 2]])\n>>> x\narray([[0, 3],\n       [2, 2]])"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> ind = np.argsort(x, axis=0)  # sorts along first axis (down)\n>>> ind\narray([[0, 1],\n       [1, 0]])\n>>> np.take_along_axis(x, ind, axis=0)  # same as np.sort(x, axis=0)\narray([[0, 2],\n       [2, 3]])"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> ind = np.argsort(x, axis=1)  # sorts along last axis (across)\n>>> ind\narray([[0, 1],\n       [0, 1]])\n>>> np.take_along_axis(x, ind, axis=1)  # same as np.sort(x, axis=1)\narray([[0, 3],\n       [2, 2]])"
-          },
-          {
-            "type": "paragraph",
-            "text": "Indices of the sorted elements of a N-dimensional array:"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> ind = np.unravel_index(np.argsort(x, axis=None), x.shape)\n>>> ind\n(array([0, 1, 1, 0]), array([0, 0, 1, 1]))\n>>> x[ind]  # same as np.sort(x, axis=None)\narray([0, 2, 2, 3])"
-          },
-          {
-            "type": "paragraph",
-            "text": "Sorting with keys:"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> x = np.array([(1, 0), (0, 1)], dtype=[('x', '<i4'), ('y', '<i4')])\n>>> x\narray([(1, 0), (0, 1)],\n      dtype=[('x', '<i4'), ('y', '<i4')])"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> np.argsort(x, order=('x','y'))\narray([1, 0])"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> np.argsort(x, order=('y','x'))\narray([0, 1])"
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Array of indices that sort "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "a"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " along the specified "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "axis"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ".\nIf "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "a"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is one-dimensional, "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "a[index_array]"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " yields a sorted "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "a"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ".\nMore generally, "
+                      },
+                      {
+                        "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.take_along_axis(a, index_array, axis=axis).html",
+                        "href": "",
+                        "kind": "link",
+                        "target": "take_along_axis(a, index_array, axis=axis)",
+                        "text": "we.take_along_axis(a, index_array, axis=axis)"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "\nalways yields the sorted "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "a"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", irrespective of dimensionality."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray, int",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Array of indices that sort "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "a"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " along the specified "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "axis"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ".\nIf "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "a"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is one-dimensional, "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "a[index_array]"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " yields a sorted "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "a"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ".\nMore generally, "
+                  },
+                  {
+                    "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.take_along_axis(a, index_array, axis=axis).html",
+                    "href": "",
+                    "kind": "link",
+                    "target": "take_along_axis(a, index_array, axis=axis)",
+                    "text": "we.take_along_axis(a, index_array, axis=axis)"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "\nalways yields the sorted "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "a"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", irrespective of dimensionality."
+                  }
+                ],
+                "name": "index_array",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Returns"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "sort \u2014 Describes sorting algorithms used."
-          },
-          {
-            "type": "paragraph",
-            "text": "lexsort \u2014 Indirect stable sort with multiple keys."
-          },
-          {
-            "type": "paragraph",
-            "text": "ndarray.sort \u2014 Inplace sort."
-          },
-          {
-            "type": "paragraph",
-            "text": "argpartition \u2014 Indirect partial sort."
-          },
-          {
-            "type": "paragraph",
-            "text": "take_along_axis \u2014 Apply ``index_array`` from argsort to an array as if by calling sort."
+            "links": [
+              {
+                "description": "Describes sorting algorithms used.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Describes sorting algorithms used."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/sort",
+                "label": "we.sort",
+                "original_target": "sort",
+                "role": "",
+                "target": "sort",
+                "unresolved": false
+              },
+              {
+                "description": "Indirect stable sort with multiple keys.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Indirect stable sort with multiple keys."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/lexsort",
+                "label": "we.lexsort",
+                "original_target": "lexsort",
+                "role": "",
+                "target": "lexsort",
+                "unresolved": false
+              },
+              {
+                "description": "Inplace sort.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Inplace sort."
+                  }
+                ],
+                "external_url": "",
+                "href": "",
+                "label": "ndarray.sort",
+                "original_target": "ndarray.sort",
+                "role": "",
+                "target": "ndarray.sort",
+                "unresolved": true
+              },
+              {
+                "description": "Indirect partial sort.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Indirect partial sort."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/argpartition",
+                "label": "we.argpartition",
+                "original_target": "argpartition",
+                "role": "",
+                "target": "argpartition",
+                "unresolved": false
+              },
+              {
+                "description": "Apply ``index_array`` from argsort to an array as if by calling sort.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Apply "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "index_array"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " from argsort to an array as if by calling sort."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/take_along_axis",
+                "label": "we.take_along_axis",
+                "original_target": "take_along_axis",
+                "role": "",
+                "target": "take_along_axis",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
           }
-        ]
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "See "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/sort",
+                "kind": "link",
+                "target": "sort",
+                "text": "sort"
+              },
+              {
+                "kind": "text",
+                "text": " for notes on the different sorting algorithms."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "As of NumPy 1.4.0 "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/argsort",
+                "kind": "link",
+                "target": "argsort",
+                "text": "argsort"
+              },
+              {
+                "kind": "text",
+                "text": " works with real/complex arrays containing\nnan values. The enhanced sort order is documented in "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/sort",
+                "kind": "link",
+                "target": "sort",
+                "text": "sort"
+              },
+              {
+                "kind": "text",
+                "text": "."
+              }
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Notes"
+      },
+      {
+        "blocks": [
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "One dimensional array:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x = we.array([3, 1, 2])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.argsort(x)"
+              },
+              {
+                "kind": "output",
+                "text": "array([1, 2, 0])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Two-dimensional array:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x = we.array([[0, 3], [2, 2]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0, 3],"
+              },
+              {
+                "kind": "output",
+                "text": "       [2, 2]])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "ind = we.argsort(x, axis=0)  # sorts along first axis (down)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "ind"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0, 1],"
+              },
+              {
+                "kind": "output",
+                "text": "       [1, 0]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.take_along_axis(x, ind, axis=0)  # same as we.sort(x, axis=0)"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0, 2],"
+              },
+              {
+                "kind": "output",
+                "text": "       [2, 3]])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "ind = we.argsort(x, axis=1)  # sorts along last axis (across)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "ind"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0, 1],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 1]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.take_along_axis(x, ind, axis=1)  # same as we.sort(x, axis=1)"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0, 3],"
+              },
+              {
+                "kind": "output",
+                "text": "       [2, 2]])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Indices of the sorted elements of a N-dimensional array:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "ind = we.unravel_index(we.argsort(x, axis=None), x.shape)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "ind"
+              },
+              {
+                "kind": "output",
+                "text": "(array([0, 1, 1, 0]), array([0, 0, 1, 1]))"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x[ind]  # same as we.sort(x, axis=None)"
+              },
+              {
+                "kind": "output",
+                "text": "array([0, 2, 2, 3])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Sorting with keys:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x = we.array([(1, 0), (0, 1)], dtype=[('x', '<i4'), ('y', '<i4')])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x"
+              },
+              {
+                "kind": "output",
+                "text": "array([(1, 0), (0, 1)],"
+              },
+              {
+                "kind": "output",
+                "text": "      dtype=[('x', '<i4'), ('y', '<i4')])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.argsort(x, order=('x','y'))"
+              },
+              {
+                "kind": "output",
+                "text": "array([1, 0])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.argsort(x, order=('y','x'))"
+              },
+              {
+                "kind": "output",
+                "text": "array([0, 1])"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_custom",
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "module": "numpy",
+    "name": "argsort",
+    "notes": "Indirect sort; cost = n*ceil(log2(n)) per slice.",
+    "numpy_ref": "np.argsort",
+    "signature": "we.argsort(a, axis=-1, kind=None, order=None, *, stable=None)",
+    "status": "supported",
+    "summary": "Returns the indices that would sort an array.",
+    "weight": 1.0,
+    "whest_ref": "we.argsort"
+  },
+  "schema_version": 1,
+  "slug": "argsort",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L1130",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L54"
   }
 }

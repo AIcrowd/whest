@@ -1,143 +1,405 @@
 {
-  "schema_version": 1,
-  "slug": "intersect1d",
   "detail_href": "/docs/api/ops/intersect1d/",
   "detail_json_href": "/api-data/ops/intersect1d.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L372-L382",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.intersect1d.html"
-  },
-  "op": {
-    "name": "intersect1d",
-    "module": "numpy",
-    "whest_ref": "we.intersect1d",
-    "numpy_ref": "np.intersect1d",
-    "category": "counted_custom",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "per-operation",
-    "cost_formula_latex": "varies",
-    "notes": "Set intersection; cost = (n+m)*ceil(log2(n+m)).",
-    "summary": "Find the intersection of two arrays.",
-    "signature": "we.intersect1d(ar1, ar2, assume_unique=False, return_indices=False)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Find the intersection of two arrays."
-          },
-          {
-            "type": "paragraph",
-            "text": "Return the sorted, unique values that are in both of the input arrays."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Find the intersection of two arrays."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
-          {
-            "name": "ar1, ar2",
-            "type": "array_like",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Input arrays. Will be flattened if not already 1D."
-              }
-            ]
-          },
-          {
-            "name": "assume_unique",
-            "type": "bool",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "If True, the input arrays are both assumed to be unique, which\ncan speed up the calculation.  If True but ``ar1`` or ``ar2`` are not\nunique, incorrect results and out-of-bounds indices could result.\nDefault is False."
-              }
-            ]
-          },
-          {
-            "name": "return_indices",
-            "type": "bool",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "If True, the indices which correspond to the intersection of the two\narrays are returned. The first instance of a value is used if there are\nmultiple. Default is False."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "intersect1d",
-            "type": "ndarray",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Sorted 1D array of common and unique elements."
-              }
-            ]
-          },
-          {
-            "name": "comm1",
-            "type": "ndarray",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "The indices of the first occurrences of the common values in `ar1`.\nOnly provided if `return_indices` is True."
-              }
-            ]
-          },
-          {
-            "name": "comm2",
-            "type": "ndarray",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "The indices of the first occurrences of the common values in `ar2`.\nOnly provided if `return_indices` is True."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> np.intersect1d([1, 3, 4, 3], [3, 1, 2, 1])\narray([1, 3])"
-          },
-          {
-            "type": "paragraph",
-            "text": "To intersect more than two arrays, use functools.reduce:"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> from functools import reduce\n>>> reduce(np.intersect1d, ([1, 3, 4, 3], [3, 1, 2, 1], [6, 3, 4, 2]))\narray([3])"
-          },
-          {
-            "type": "paragraph",
-            "text": "To return the indices of the values common to the input arrays\nalong with the intersected values:"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> x = np.array([1, 1, 2, 3, 4])\n>>> y = np.array([2, 1, 4, 6])\n>>> xy, x_ind, y_ind = np.intersect1d(x, y, return_indices=True)\n>>> x_ind, y_ind\n(array([0, 2, 4]), array([1, 0, 2]))\n>>> xy, x[x_ind], y[y_ind]\n(array([1, 2, 4]), array([1, 2, 4]), array([1, 2, 4]))"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Return the sorted, unique values that are in both of the input arrays."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Extended Summary"
+      },
+      {
+        "blocks": [
+          {
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Input arrays. Will be flattened if not already 1D."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Input arrays. Will be flattened if not already 1D."
+                  }
+                ],
+                "name": "ar1, ar2",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If True, the input arrays are both assumed to be unique, which\ncan speed up the calculation.  If True but "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "ar1"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " or "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "ar2"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " are not\nunique, incorrect results and out-of-bounds indices could result.\nDefault is False."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "bool",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "If True, the input arrays are both assumed to be unique, which\ncan speed up the calculation.  If True but "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "ar1"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " or "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "ar2"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " are not\nunique, incorrect results and out-of-bounds indices could result.\nDefault is False."
+                  }
+                ],
+                "name": "assume_unique",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If True, the indices which correspond to the intersection of the two\narrays are returned. The first instance of a value is used if there are\nmultiple. Default is False."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "bool",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "If True, the indices which correspond to the intersection of the two\narrays are returned. The first instance of a value is used if there are\nmultiple. Default is False."
+                  }
+                ],
+                "name": "return_indices",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
+          }
+        ],
+        "title": "Parameters"
+      },
+      {
+        "blocks": [
+          {
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Sorted 1D array of common and unique elements."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Sorted 1D array of common and unique elements."
+                  }
+                ],
+                "name": "intersect1d",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The indices of the first occurrences of the common values in "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "ar1"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ".\nOnly provided if "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "return_indices"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is True."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The indices of the first occurrences of the common values in "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "ar1"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ".\nOnly provided if "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "return_indices"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is True."
+                  }
+                ],
+                "name": "comm1",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The indices of the first occurrences of the common values in "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "ar2"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ".\nOnly provided if "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "return_indices"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is True."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The indices of the first occurrences of the common values in "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "ar2"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ".\nOnly provided if "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "return_indices"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is True."
+                  }
+                ],
+                "name": "comm2",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
+          }
+        ],
+        "title": "Returns"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.intersect1d([1, 3, 4, 3], [3, 1, 2, 1])"
+              },
+              {
+                "kind": "output",
+                "text": "array([1, 3])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "To intersect more than two arrays, use functools.reduce:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "from functools import reduce"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "reduce(we.intersect1d, ([1, 3, 4, 3], [3, 1, 2, 1], [6, 3, 4, 2]))"
+              },
+              {
+                "kind": "output",
+                "text": "array([3])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "To return the indices of the values common to the input arrays\nalong with the intersected values:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x = we.array([1, 1, 2, 3, 4])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "y = we.array([2, 1, 4, 6])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "xy, x_ind, y_ind = we.intersect1d(x, y, return_indices=True)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x_ind, y_ind"
+              },
+              {
+                "kind": "output",
+                "text": "(array([0, 2, 4]), array([1, 0, 2]))"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "xy, x[x_ind], y[y_ind]"
+              },
+              {
+                "kind": "output",
+                "text": "(array([1, 2, 4]), array([1, 2, 4]), array([1, 2, 4]))"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_custom",
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "module": "numpy",
+    "name": "intersect1d",
+    "notes": "Set intersection; cost = (n+m)*ceil(log2(n+m)).",
+    "numpy_ref": "np.intersect1d",
+    "signature": "we.intersect1d(ar1, ar2, assume_unique=False, return_indices=False)",
+    "status": "supported",
+    "summary": "Find the intersection of two arrays.",
+    "weight": 1.0,
+    "whest_ref": "we.intersect1d"
+  },
+  "schema_version": 1,
+  "slug": "intersect1d",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L617",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L372"
   }
 }

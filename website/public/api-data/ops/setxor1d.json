@@ -1,95 +1,178 @@
 {
-  "schema_version": 1,
-  "slug": "setxor1d",
   "detail_href": "/docs/api/ops/setxor1d/",
   "detail_json_href": "/api-data/ops/setxor1d.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L426-L436",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.setxor1d.html"
-  },
-  "op": {
-    "name": "setxor1d",
-    "module": "numpy",
-    "whest_ref": "we.setxor1d",
-    "numpy_ref": "np.setxor1d",
-    "category": "counted_custom",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "per-operation",
-    "cost_formula_latex": "varies",
-    "notes": "Symmetric set difference; cost = (n+m)*ceil(log2(n+m)).",
-    "summary": "Find the set exclusive-or of two arrays.",
-    "signature": "we.setxor1d(ar1, ar2, assume_unique=False)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Find the set exclusive-or of two arrays."
-          },
-          {
-            "type": "paragraph",
-            "text": "Return the sorted, unique values that are in only one (not both) of the\ninput arrays."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Find the set exclusive-or of two arrays."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
-          {
-            "name": "ar1, ar2",
-            "type": "array_like",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Input arrays."
-              }
-            ]
-          },
-          {
-            "name": "assume_unique",
-            "type": "bool",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "If True, the input arrays are both assumed to be unique, which\ncan speed up the calculation. Default is False."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "setxor1d",
-            "type": "ndarray",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Sorted 1D array of unique values that are in only one of the input\narrays."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> a = np.array([1, 2, 3, 2, 4])\n>>> b = np.array([2, 3, 5, 7, 5])\n>>> np.setxor1d(a,b)\narray([1, 4, 5, 7])"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Return the sorted, unique values that are in only one (not both) of the\ninput arrays."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Extended Summary"
+      },
+      {
+        "blocks": [
+          {
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Input arrays."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Input arrays."
+                  }
+                ],
+                "name": "ar1, ar2",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If True, the input arrays are both assumed to be unique, which\ncan speed up the calculation. Default is False."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "bool",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "If True, the input arrays are both assumed to be unique, which\ncan speed up the calculation. Default is False."
+                  }
+                ],
+                "name": "assume_unique",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
+          }
+        ],
+        "title": "Parameters"
+      },
+      {
+        "blocks": [
+          {
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Sorted 1D array of unique values that are in only one of the input\narrays."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Sorted 1D array of unique values that are in only one of the input\narrays."
+                  }
+                ],
+                "name": "setxor1d",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
+          }
+        ],
+        "title": "Returns"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.array([1, 2, 3, 2, 4])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "b = we.array([2, 3, 5, 7, 5])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.setxor1d(a,b)"
+              },
+              {
+                "kind": "output",
+                "text": "array([1, 4, 5, 7])"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_custom",
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "module": "numpy",
+    "name": "setxor1d",
+    "notes": "Symmetric set difference; cost = (n+m)*ceil(log2(n+m)).",
+    "numpy_ref": "np.setxor1d",
+    "signature": "we.setxor1d(ar1, ar2, assume_unique=False)",
+    "status": "supported",
+    "summary": "Find the set exclusive-or of two arrays.",
+    "weight": 1.0,
+    "whest_ref": "we.setxor1d"
+  },
+  "schema_version": 1,
+  "slug": "setxor1d",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L713",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L426"
   }
 }

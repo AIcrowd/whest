@@ -1,0 +1,381 @@
+{
+  "aliases": [],
+  "api_docs_html": "",
+  "area": "core",
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Move axes of an array to new positions."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Other axes remain in their original order."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "The array whose axes should be reordered."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "we.ndarray",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "The array whose axes should be reordered."
+                }
+              ],
+              "name": "a",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Original positions of the axes to move. These must be unique."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int or sequence of int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Original positions of the axes to move. These must be unique."
+                }
+              ],
+              "name": "source",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Destination positions for each of the original axes. These must also be\nunique."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int or sequence of int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Destination positions for each of the original axes. These must also be\nunique."
+                }
+              ],
+              "name": "destination",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Array with moved axes. This array is a view of the input array."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "we.ndarray",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Array with moved axes. This array is a view of the input array."
+                }
+              ],
+              "name": "result",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "links": [
+            {
+              "description": "Permute the dimensions of an array.",
+              "description_inline": [
+                {
+                  "kind": "text",
+                  "text": "Permute the dimensions of an array."
+                }
+              ],
+              "external_url": "",
+              "href": "/docs/api/ops/transpose",
+              "label": "we.transpose",
+              "original_target": "transpose",
+              "role": "",
+              "target": "transpose",
+              "unresolved": false
+            },
+            {
+              "description": "Interchange two axes of an array.",
+              "description_inline": [
+                {
+                  "kind": "text",
+                  "text": "Interchange two axes of an array."
+                }
+              ],
+              "external_url": "",
+              "href": "/docs/api/ops/swapaxes",
+              "label": "we.swapaxes",
+              "original_target": "swapaxes",
+              "role": "",
+              "target": "swapaxes",
+              "unresolved": false
+            }
+          ],
+          "type": "link_list"
+        }
+      ],
+      "title": "See also"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import whest as we"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "x = we.zeros((3, 4, 5))"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.moveaxis(x, 0, -1).shape"
+            },
+            {
+              "kind": "output",
+              "text": "(4, 5, 3)"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.moveaxis(x, -1, 0).shape"
+            },
+            {
+              "kind": "output",
+              "text": "(5, 3, 4)"
+            }
+          ],
+          "type": "doctest_block"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "These all achieve the same result:"
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.transpose(x).shape"
+            },
+            {
+              "kind": "output",
+              "text": "(5, 4, 3)"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.swapaxes(x, 0, -1).shape"
+            },
+            {
+              "kind": "output",
+              "text": "(5, 4, 3)"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.moveaxis(x, [0, 1], [-1, -2]).shape"
+            },
+            {
+              "kind": "output",
+              "text": "(5, 4, 3)"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.moveaxis(x, [0, 1, 2], [-1, -2, -3]).shape"
+            },
+            {
+              "kind": "output",
+              "text": "(5, 4, 3)"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
+    }
+  ],
+  "canonical_name": "moveaxis",
+  "category": "free",
+  "cost_formula": "0",
+  "cost_formula_latex": "$0$",
+  "display_type": "free",
+  "doc_coverage": {
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "example": {
+    "code": "import whest as we\n\nx = we.zeros((3, 4, 5))\n\nwe.moveaxis(x, 0, -1).shape\n\nwe.moveaxis(x, -1, 0).shape\n\nwe.transpose(x).shape\n\nwe.swapaxes(x, 0, -1).shape\n\nwe.moveaxis(x, [0, 1], [-1, -2]).shape\n\nwe.moveaxis(x, [0, 1, 2], [-1, -2, -3]).shape",
+    "output": "(4, 5, 3)\n\n(5, 3, 4)\n\n(5, 4, 3)\n\n(5, 4, 3)\n\n(5, 4, 3)\n\n(5, 4, 3)",
+    "source": "derived"
+  },
+  "href": "/docs/api/ops/moveaxis/",
+  "module": "numpy",
+  "name": "moveaxis",
+  "next": {
+    "href": "/docs/api/ops/multiply/",
+    "label": "we.multiply"
+  },
+  "notes": "Move axes to new positions.",
+  "notes_sections": [],
+  "numpy_ref": "np.moveaxis",
+  "parameters": [
+    {
+      "body": [
+        "The array whose axes should be reordered."
+      ],
+      "name": "a",
+      "type": "we.ndarray"
+    },
+    {
+      "body": [
+        "Original positions of the axes to move. These must be unique."
+      ],
+      "name": "source",
+      "type": "int or sequence of int"
+    },
+    {
+      "body": [
+        "Destination positions for each of the original axes. These must also be",
+        "unique."
+      ],
+      "name": "destination",
+      "type": "int or sequence of int"
+    }
+  ],
+  "previous": {
+    "href": "/docs/api/ops/modf/",
+    "label": "we.modf"
+  },
+  "provenance_label": "Adapted from NumPy docs",
+  "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.moveaxis.html",
+  "returns": [
+    {
+      "body": [
+        "Array with moved axes. This array is a view of the input array."
+      ],
+      "name": "result",
+      "type": "we.ndarray"
+    }
+  ],
+  "see_also": [
+    {
+      "description": "Permute the dimensions of an array.",
+      "description_inline": [
+        {
+          "kind": "text",
+          "text": "Permute the dimensions of an array."
+        }
+      ],
+      "external_url": "",
+      "href": "/docs/api/ops/transpose",
+      "label": "we.transpose",
+      "original_target": "transpose",
+      "role": "",
+      "target": "transpose",
+      "unresolved": false
+    },
+    {
+      "description": "Interchange two axes of an array.",
+      "description_inline": [
+        {
+          "kind": "text",
+          "text": "Interchange two axes of an array."
+        }
+      ],
+      "external_url": "",
+      "href": "/docs/api/ops/swapaxes",
+      "label": "we.swapaxes",
+      "original_target": "swapaxes",
+      "role": "",
+      "target": "swapaxes",
+      "unresolved": false
+    }
+  ],
+  "signature": "we.moveaxis(a, source, destination)",
+  "slug": "moveaxis",
+  "summary": "Move axes of an array to new positions.",
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L1448",
+  "weight": 1.0,
+  "whest_examples_html": "",
+  "whest_ref": "we.moveaxis",
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L230"
+}

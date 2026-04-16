@@ -1,72 +1,271 @@
 {
-  "schema_version": 1,
-  "slug": "vsplit",
   "detail_href": "/docs/api/ops/vsplit/",
   "detail_json_href": "/api-data/ops/vsplit.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L305-L314",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.vsplit.html"
-  },
-  "op": {
-    "name": "vsplit",
-    "module": "numpy",
-    "whest_ref": "we.vsplit",
-    "numpy_ref": "np.vsplit",
-    "category": "free",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "0",
-    "cost_formula_latex": "$0$",
-    "notes": "Split array into rows. Cost: numel(output).",
-    "summary": "Split an array into multiple sub-arrays vertically (row-wise).",
-    "signature": "we.vsplit(ary, indices_or_sections)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Split an array into multiple sub-arrays vertically (row-wise)."
-          },
-          {
-            "type": "paragraph",
-            "text": "Please refer to the ``split`` documentation.  ``vsplit`` is equivalent\nto ``split`` with `axis=0` (default), the array is always split along the\nfirst axis regardless of the array dimension."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Split an array into multiple sub-arrays vertically (row-wise)."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> x = np.arange(16.0).reshape(4, 4)\n>>> x\narray([[ 0.,   1.,   2.,   3.],\n       [ 4.,   5.,   6.,   7.],\n       [ 8.,   9.,  10.,  11.],\n       [12.,  13.,  14.,  15.]])\n>>> np.vsplit(x, 2)\n[array([[0., 1., 2., 3.],\n        [4., 5., 6., 7.]]),\n array([[ 8.,  9., 10., 11.],\n        [12., 13., 14., 15.]])]\n>>> np.vsplit(x, np.array([3, 6]))\n[array([[ 0.,  1.,  2.,  3.],\n        [ 4.,  5.,  6.,  7.],\n        [ 8.,  9., 10., 11.]]),\n array([[12., 13., 14., 15.]]),\n array([], shape=(0, 4), dtype=float64)]"
-          },
-          {
-            "type": "paragraph",
-            "text": "With a higher dimensional array the split is still along the first axis."
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> x = np.arange(8.0).reshape(2, 2, 2)\n>>> x\narray([[[0.,  1.],\n        [2.,  3.]],\n       [[4.,  5.],\n        [6.,  7.]]])\n>>> np.vsplit(x, 2)\n[array([[[0., 1.],\n         [2., 3.]]]),\n array([[[4., 5.],\n         [6., 7.]]])]"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Please refer to the "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/split",
+                "kind": "link",
+                "target": "split",
+                "text": "split"
+              },
+              {
+                "kind": "text",
+                "text": " documentation.  "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/vsplit",
+                "kind": "link",
+                "target": "vsplit",
+                "text": "vsplit"
+              },
+              {
+                "kind": "text",
+                "text": " is equivalent\nto "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/split",
+                "kind": "link",
+                "target": "split",
+                "text": "split"
+              },
+              {
+                "kind": "text",
+                "text": " with "
+              },
+              {
+                "kind": "code",
+                "text": "axis=0"
+              },
+              {
+                "kind": "text",
+                "text": " (default), the array is always split along the\nfirst axis regardless of the array dimension."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Extended Summary"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "split \u2014 Split an array into multiple sub-arrays of equal size."
+            "links": [
+              {
+                "description": "Split an array into multiple sub-arrays of equal size.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Split an array into multiple sub-arrays of equal size."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/split",
+                "label": "we.split",
+                "original_target": "split",
+                "role": "",
+                "target": "split",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
           }
-        ]
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x = we.arange(16.0).reshape(4, 4)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x"
+              },
+              {
+                "kind": "output",
+                "text": "array([[ 0.,   1.,   2.,   3.],"
+              },
+              {
+                "kind": "output",
+                "text": "       [ 4.,   5.,   6.,   7.],"
+              },
+              {
+                "kind": "output",
+                "text": "       [ 8.,   9.,  10.,  11.],"
+              },
+              {
+                "kind": "output",
+                "text": "       [12.,  13.,  14.,  15.]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.vsplit(x, 2)"
+              },
+              {
+                "kind": "output",
+                "text": "[array([[0., 1., 2., 3.],"
+              },
+              {
+                "kind": "output",
+                "text": "        [4., 5., 6., 7.]]),"
+              },
+              {
+                "kind": "output",
+                "text": " array([[ 8.,  9., 10., 11.],"
+              },
+              {
+                "kind": "output",
+                "text": "        [12., 13., 14., 15.]])]"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.vsplit(x, we.array([3, 6]))"
+              },
+              {
+                "kind": "output",
+                "text": "[array([[ 0.,  1.,  2.,  3.],"
+              },
+              {
+                "kind": "output",
+                "text": "        [ 4.,  5.,  6.,  7.],"
+              },
+              {
+                "kind": "output",
+                "text": "        [ 8.,  9., 10., 11.]]),"
+              },
+              {
+                "kind": "output",
+                "text": " array([[12., 13., 14., 15.]]),"
+              },
+              {
+                "kind": "output",
+                "text": " array([], shape=(0, 4), dtype=float64)]"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "With a higher dimensional array the split is still along the first axis."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x = we.arange(8.0).reshape(2, 2, 2)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x"
+              },
+              {
+                "kind": "output",
+                "text": "array([[[0.,  1.],"
+              },
+              {
+                "kind": "output",
+                "text": "        [2.,  3.]],"
+              },
+              {
+                "kind": "output",
+                "text": "       [[4.,  5.],"
+              },
+              {
+                "kind": "output",
+                "text": "        [6.,  7.]]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.vsplit(x, 2)"
+              },
+              {
+                "kind": "output",
+                "text": "[array([[[0., 1.],"
+              },
+              {
+                "kind": "output",
+                "text": "         [2., 3.]]]),"
+              },
+              {
+                "kind": "output",
+                "text": " array([[[4., 5.],"
+              },
+              {
+                "kind": "output",
+                "text": "         [6., 7.]]])]"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "free",
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "module": "numpy",
+    "name": "vsplit",
+    "notes": "Split array into rows. Cost: numel(output).",
+    "numpy_ref": "np.vsplit",
+    "signature": "we.vsplit(ary, indices_or_sections)",
+    "status": "supported",
+    "summary": "Split an array into multiple sub-arrays vertically (row-wise).",
+    "weight": 1.0,
+    "whest_ref": "we.vsplit"
+  },
+  "schema_version": 1,
+  "slug": "vsplit",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L957",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L305"
   }
 }

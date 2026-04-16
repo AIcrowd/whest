@@ -10,16 +10,21 @@ Usage
 from __future__ import annotations
 
 import argparse
+import csv
+import doctest
+import html
 import importlib
 import inspect
+import io
 import json
+import multiprocessing as mp
+import os
 import re
 import sys
 import textwrap
-import warnings
+from concurrent.futures import ProcessPoolExecutor
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
-
-from numpydoc.docscrape import NumpyDocString
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -30,11 +35,16 @@ PUBLIC_DIR = WEBSITE / "public"
 API_DATA_DIR = PUBLIC_DIR / "api-data" / "ops"
 GENERATED_DIR = WEBSITE / ".generated"
 API_INDEX_PATH = WEBSITE / "content" / "docs" / "api" / "index.mdx"
+OP_DOCS_DIR = WEBSITE / "content" / "docs" / "api" / "ops"
+SYMBOL_DOCS_DIR = WEBSITE / "content" / "docs" / "api" / "symbols"
+API_EXAMPLES_DIR = WEBSITE / "content" / "api-examples"
 # Legacy MkDocs paths kept for helper functions that are no longer invoked by
 # the current docs pipeline. The active build path only emits website/public/ops.json.
 DOCS = ROOT / "docs"
 API_DIR = DOCS / "api"
 REF_DIR = DOCS / "reference"
+WEIGHTS_PATH = ROOT / "src" / "whest" / "data" / "weights.json"
+WEIGHTS_CSV_PATH = ROOT / "src" / "whest" / "data" / "weights.csv"
 
 # ---------------------------------------------------------------------------
 # Registry loading
@@ -464,34 +474,234 @@ CATEGORY_COST_LATEX: dict[str, tuple[str, str]] = {
 
 
 # ---------------------------------------------------------------------------
+# Operation doc model
+# ---------------------------------------------------------------------------
+
+
+@dataclass(slots=True)
+class OperationDocRecord:
+    name: str
+    canonical_name: str
+    slug: str
+    href: str
+    module: str
+    area: str
+    whest_ref: str
+    numpy_ref: str
+    category: str
+    display_type: str
+    cost_formula: str
+    cost_formula_latex: str
+    weight: float
+    notes: str
+    aliases: list[str]
+    signature: str
+    summary: str = ""
+    provenance_label: str = ""
+    provenance_url: str = ""
+    whest_source_url: str = ""
+    upstream_source_url: str = ""
+    parameters: list["DocField"] | None = None
+    returns: list["DocField"] | None = None
+    see_also: list["DocLink"] | None = None
+    notes_sections: list[str] | None = None
+    example: "DocExample | None" = None
+    body_sections: list[dict] | None = None
+    doc_coverage: dict[str, object] = field(default_factory=dict)
+    previous: "OperationNavLink | None" = None
+    next: "OperationNavLink | None" = None
+    api_docs_html: str = ""
+    whest_examples_html: str = ""
+
+
+_WORKER_ALIAS_MAP: dict[str, str] | None = None
+_WORKER_SUPPORTED_OPS: set[str] | None = None
+
+
+@dataclass(slots=True)
+class DocField:
+    name: str
+    type: str
+    body: list[str]
+
+
+@dataclass(slots=True)
+class DocLink:
+    label: str
+    target: str
+    description: str = ""
+    description_inline: list[dict] | None = None
+    role: str = ""
+    original_target: str = ""
+    unresolved: bool = False
+    href: str | None = None
+    external_url: str | None = None
+
+
+@dataclass(slots=True)
+class DocExample:
+    code: str
+    output: str = ""
+    source: str = "derived"
+
+
+@dataclass(slots=True)
+class OperationNavLink:
+    href: str
+    label: str
+
+
+@dataclass(slots=True)
+class ParsedDoc:
+    summary: str
+    parameters: list[DocField]
+    returns: list[DocField]
+    see_also: list[DocLink]
+    notes: list[str]
+    note_lines: list[str]
+    examples: list[DocExample]
+    extended_summary: list[str] = field(default_factory=list)
+    raises: list[DocField] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
+    warns: list[DocField] = field(default_factory=list)
+    references: list[str] = field(default_factory=list)
+    upstream_signature: str = ""
+    sections: list[dict] | None = None
+    coverage: dict[str, object] = field(default_factory=dict)
+
+
+@dataclass(slots=True)
+class RelatedGuideLink:
+    title: str
+    href: str
+
+
+@dataclass(slots=True)
+class PublicApiSymbolRecord:
+    name: str
+    canonical_name: str
+    slug: str
+    href: str
+    kind: str
+    module: str
+    import_path: str
+    display_name: str
+    summary: str
+    signature: str
+    aliases: list[str]
+    source_url: str = ""
+    upstream_source_url: str = ""
+    related_guides: list[RelatedGuideLink] = field(default_factory=list)
+    body_sections: list[dict] | None = None
+
+
+# ---------------------------------------------------------------------------
 # Helper functions for op references and cost lookup
 # ---------------------------------------------------------------------------
+
+
+def normalize_area(module: str) -> str:
+    """Map a registry module name to its doc area."""
+    if module in {"numpy", "whest"}:
+        return "core"
+    if module.startswith("numpy."):
+        return module.removeprefix("numpy.")
+    if module == "whest.stats":
+        return "stats"
+    return "core"
+
+
+def slug_for_operation(name: str) -> str:
+    """Return a URL-safe slug for an operation name."""
+    return name.replace(".", "-")
+
+
+def detail_href_for_slug(slug: str) -> str:
+    """Return the canonical docs route for a generated operation page."""
+    return f"/docs/api/ops/{slug}/"
+
+
+def detail_json_href_for_slug(slug: str) -> str:
+    """Return the public JSON payload route for a generated operation page."""
+    return f"/api-data/ops/{slug}.json"
+
+
+CAMEL_BOUNDARY_RE = re.compile(r"(?<=[a-z0-9])(?=[A-Z])")
+
+
+def slug_for_symbol(name: str) -> str:
+    """Return a URL-safe slug for a public API symbol."""
+    normalized = name.replace(".", "-").replace("_", "-")
+    normalized = CAMEL_BOUNDARY_RE.sub("-", normalized)
+    normalized = re.sub(r"-{2,}", "-", normalized)
+    return normalized.lower()
+
+
+def display_type_for_category(category: str) -> str:
+    """Return the UI display type for a registry category."""
+    if category == "blacklisted":
+        return "blocked"
+    if category == "free":
+        return "free"
+    if category.startswith("counted_") and category != "counted_custom":
+        return "counted"
+    return "custom"
 
 
 def whest_ref(name: str, module: str) -> str:
     """Derive the whest call reference from an op name and registry module."""
     if module == "numpy.linalg":
-        return f"`we.linalg.{name.removeprefix('linalg.')}`"
+        return f"we.linalg.{name.removeprefix('linalg.')}"
     if module == "numpy.fft":
-        return f"`we.fft.{name.removeprefix('fft.')}`"
+        return f"we.fft.{name.removeprefix('fft.')}"
     if module == "numpy.random":
-        return f"`we.random.{name.removeprefix('random.')}`"
-    if module == "whest.stats":
-        return f"`we.{name}`"
-    return f"`we.{name}`"
+        return f"we.random.{name.removeprefix('random.')}"
+    return f"we.{name}"
 
 
 def numpy_ref(name: str, module: str) -> str:
     """Derive the NumPy call reference from an op name and registry module."""
     if module == "numpy.linalg":
-        return f"`np.linalg.{name.removeprefix('linalg.')}`"
+        return f"np.linalg.{name.removeprefix('linalg.')}"
     if module == "numpy.fft":
-        return f"`np.fft.{name.removeprefix('fft.')}`"
+        return f"np.fft.{name.removeprefix('fft.')}"
     if module == "numpy.random":
-        return f"`np.random.{name.removeprefix('random.')}`"
-    if module == "whest.stats":
-        return f"`scipy.{name}`"
-    return f"`np.{name}`"
+        return f"np.random.{name.removeprefix('random.')}"
+    return f"np.{name}"
+
+
+PUBLIC_SYMBOL_GUIDES: dict[str, list[tuple[str, str]]] = {
+    "BudgetContext": [
+        ("Budget Planning & Debugging", "/docs/guides/budget-planning"),
+        ("How whest works", "/docs/understanding/how-whest-works"),
+    ],
+    "OpRecord": [("Budget Planning & Debugging", "/docs/guides/budget-planning")],
+    "BudgetExhaustedError": [
+        ("Budget Planning & Debugging", "/docs/guides/budget-planning"),
+        ("Competition Quickstart", "/docs/getting-started/competition"),
+    ],
+    "TimeExhaustedError": [
+        ("Competition Quickstart", "/docs/getting-started/competition")
+    ],
+    "NoBudgetContextError": [
+        ("For Agents", "/docs/api/for-agents"),
+        ("Quickstart", "/docs/getting-started/quickstart"),
+    ],
+    "SymmetryError": [("Symmetry Savings", "/docs/guides/symmetry")],
+    "SymmetryLossWarning": [("Symmetry Savings", "/docs/guides/symmetry")],
+    "SymmetricTensor": [
+        ("Symmetry Savings", "/docs/guides/symmetry"),
+        ("Symmetry Detection Deep Dive", "/docs/understanding/symmetry-detection"),
+    ],
+    "SymmetryInfo": [
+        ("Symmetry Savings", "/docs/guides/symmetry"),
+        ("Symmetry Detection Deep Dive", "/docs/understanding/symmetry-detection"),
+    ],
+    "as_symmetric": [("Symmetry Savings", "/docs/guides/symmetry")],
+    "is_symmetric": [("Symmetry Savings", "/docs/guides/symmetry")],
+    "PathInfo": [("Einsum Guide", "/docs/guides/einsum")],
+    "StepInfo": [("Einsum Guide", "/docs/guides/einsum")],
+}
 
 
 def cost_for_op(name: str, category: str) -> tuple[str, str]:
@@ -501,320 +711,2531 @@ def cost_for_op(name: str, category: str) -> tuple[str, str]:
     return CATEGORY_COST_LATEX.get(category, ("unknown", "unknown"))
 
 
-def slug_for_op(name: str) -> str:
-    """Return the canonical slug for an operation."""
-    return name
+NUMPY_REF_PATTERN = re.compile(r"\b(?:np|numpy)\.(?=[A-Za-z_])")
 
 
-def detail_href_for_slug(slug: str) -> str:
-    """Return the public op detail page URL."""
-    return f"/docs/api/ops/{slug}/"
+def rewrite_api_refs(text: str) -> str:
+    """Rewrite NumPy API references to their whest equivalents."""
+    return NUMPY_REF_PATTERN.sub("we.", text)
 
 
-def detail_json_href_for_slug(slug: str) -> str:
-    """Return the public per-op JSON URL."""
-    return f"/api-data/ops/{slug}.json"
+def _split_paragraphs(lines: list[str]) -> list[str]:
+    paragraphs: list[str] = []
+    current: list[str] = []
+    for line in lines:
+        if line.strip():
+            current.append(line.rstrip())
+            continue
+        if current:
+            paragraphs.append(" ".join(part.strip() for part in current).strip())
+            current = []
+    if current:
+        paragraphs.append(" ".join(part.strip() for part in current).strip())
+    return paragraphs
 
 
-def load_weights() -> dict[str, float]:
-    """Load empirical weights if available."""
-    weights_path = ROOT / "src" / "whest" / "data" / "weights.json"
-    if not weights_path.exists():
-        return {}
-    raw = json.loads(weights_path.read_text())
-    return raw.get("weights", {})
+RST_ROLE_SCAN_PATTERN = re.compile(r":(?P<role>(?:py:)?[A-Za-z0-9_]+):`")
+ROLE_TARGET_PATTERN = re.compile(r"^(?P<title>.+?)\s*<(?P<target>.+)>$")
+_REGISTERED_RST_ROLES: set[str] = set()
 
 
-def resolve_whest_callable(name: str, module: str):
-    """Resolve a registry operation name to the exported whest callable."""
-    whest = importlib.import_module("whest")
-
-    if module == "numpy.linalg":
-        return getattr(whest.linalg, name.removeprefix("linalg."))
-    if module == "numpy.fft":
-        return getattr(whest.fft, name.removeprefix("fft."))
-    if module == "numpy.random":
-        return getattr(whest.random, name.removeprefix("random."))
-    if module == "whest.stats":
-        current = whest
-        for part in name.split("."):
-            current = getattr(current, part)
-        return current
-    return getattr(whest, name)
+def _new_doc_coverage() -> dict[str, list[dict]]:
+    return {
+        "unresolved_references": [],
+        "unsupported_directives": [],
+        "raw_blocks": [],
+    }
 
 
-def resolve_numpy_callable(name: str, module: str):
-    """Resolve a registry operation name to the corresponding NumPy callable."""
-    numpy = importlib.import_module("numpy")
-
-    if module == "numpy.linalg":
-        return getattr(numpy.linalg, name.removeprefix("linalg."))
-    if module == "numpy.fft":
-        return getattr(numpy.fft, name.removeprefix("fft."))
-    if module == "numpy.random":
-        return getattr(numpy.random, name.removeprefix("random."))
-    if module == "whest.stats":
-        return None
-    return getattr(numpy, name)
+def _record_coverage_event(
+    coverage: dict[str, object] | None, category: str, payload: dict[str, object]
+) -> None:
+    if coverage is None:
+        return
+    coverage.setdefault(category, []).append(payload)
 
 
-def numpy_docs_url(name: str, module: str) -> str:
-    """Return the NumPy generated-doc page for an operation."""
-    if module == "numpy.linalg":
-        full_name = f"numpy.linalg.{name.removeprefix('linalg.')}"
-    elif module == "numpy.fft":
-        full_name = f"numpy.fft.{name.removeprefix('fft.')}"
-    elif module == "numpy.random":
-        full_name = f"numpy.random.{name.removeprefix('random.')}"
-    elif module == "whest.stats":
+def _ensure_rst_role_registered(role_name: str) -> None:
+    if role_name in _REGISTERED_RST_ROLES or role_name == "math":
+        return
+
+    from docutils import nodes
+    from docutils.parsers.rst import roles
+
+    def _generic_role(  # type: ignore[override]
+        role: str,
+        rawtext: str,
+        text: str,
+        lineno: int,
+        inliner,
+        options=None,
+        content=None,
+    ):
+        node = nodes.inline(rawtext, text)
+        node["role_name"] = role
+        return [node], []
+
+    roles.register_local_role(role_name, _generic_role)
+    _REGISTERED_RST_ROLES.add(role_name)
+
+
+def _register_roles_from_text(text: str) -> None:
+    for match in RST_ROLE_SCAN_PATTERN.finditer(text):
+        _ensure_rst_role_registered(match.group("role"))
+
+
+def _normalize_reference_target(target: str) -> str:
+    normalized = " ".join(target.strip().split())
+    if normalized.startswith("whest."):
+        return f"we.{normalized.removeprefix('whest.')}"
+    return normalized
+
+
+def _operation_candidate_from_target(target: str) -> str:
+    normalized = _normalize_reference_target(target)
+    if normalized.startswith("we."):
+        return normalized.removeprefix("we.")
+    if normalized.startswith("numpy."):
+        return normalized.removeprefix("numpy.")
+    if normalized.startswith("np."):
+        return normalized.removeprefix("np.")
+    if normalized.startswith("scipy.stats."):
+        return f"stats.{normalized.removeprefix('scipy.stats.')}"
+    return normalized
+
+
+def _docs_url_for_reference_target(target: str, *, role: str = "") -> str:
+    normalized = _normalize_reference_target(rewrite_api_refs(target))
+
+    if role == "pep":
+        digits = re.sub(r"\D", "", normalized)
+        if digits:
+            return f"https://peps.python.org/pep-{int(digits):04d}/"
+
+    if normalized.startswith(("scipy.", "stats.")):
+        scipy_target = (
+            normalized
+            if normalized.startswith("scipy.")
+            else f"scipy.stats.{normalized.removeprefix('stats.')}"
+        )
+        return (
+            f"https://docs.scipy.org/doc/scipy/reference/generated/{scipy_target}.html"
+        )
+
+    candidate = _operation_candidate_from_target(normalized)
+    if not candidate:
         return ""
-    else:
-        full_name = f"numpy.{name}"
-    return f"https://numpy.org/doc/stable/reference/generated/{full_name}.html"
+
+    if candidate.startswith(("linalg.", "fft.", "random.", "ufunc.")):
+        return (
+            f"https://numpy.org/doc/stable/reference/generated/numpy.{candidate}.html"
+        )
+
+    if candidate.startswith("stats."):
+        return (
+            "https://docs.scipy.org/doc/scipy/reference/generated/"
+            f"scipy.stats.{candidate.removeprefix('stats.')}.html"
+        )
+
+    if "." not in candidate:
+        return (
+            f"https://numpy.org/doc/stable/reference/generated/numpy.{candidate}.html"
+        )
+
+    return ""
 
 
-def github_source_url(obj, *, repo: str, version: str | None = None) -> str | None:
-    """Build a GitHub source URL for a Python object when its source file is known."""
-    try:
-        source_file = Path(inspect.getsourcefile(obj) or "")
-        if not source_file.exists():
-            return None
-        source_lines, start_line = inspect.getsourcelines(obj)
-    except (OSError, TypeError):
+def _resolve_reference_destination(
+    target: str,
+    *,
+    original_target: str = "",
+    role: str = "",
+    alias_map: dict[str, str] | None = None,
+    supported_ops: set[str] | None = None,
+    internal_refs: dict[str, dict[str, str]] | None = None,
+) -> tuple[str, str, str]:
+    alias_map = alias_map or {}
+    supported_ops = supported_ops or set()
+    internal_refs = internal_refs or {}
+    normalized_target = _normalize_reference_target(target)
+
+    lookup_candidates = [normalized_target]
+    candidate = _operation_candidate_from_target(target)
+    if candidate and candidate not in lookup_candidates:
+        lookup_candidates.append(candidate)
+    if (
+        normalized_target.startswith("we.")
+        and normalized_target.removeprefix("we.") not in lookup_candidates
+    ):
+        lookup_candidates.append(normalized_target.removeprefix("we."))
+    if (
+        normalized_target.startswith("whest.")
+        and normalized_target.removeprefix("whest.") not in lookup_candidates
+    ):
+        lookup_candidates.append(normalized_target.removeprefix("whest."))
+
+    for lookup in lookup_candidates:
+        ref = internal_refs.get(lookup)
+        if ref:
+            return ref["href"], "", ref["canonical_name"]
+
+    canonical = resolve_canonical_name(candidate, alias_map)
+    if canonical in supported_ops:
+        return (
+            f"/docs/api/ops/{slug_for_operation(canonical)}",
+            "",
+            canonical,
+        )
+
+    external_url = _docs_url_for_reference_target(original_target or target, role=role)
+    return "", external_url, canonical
+
+
+def _parse_role_payload(payload: str) -> tuple[str, str | None, bool, bool]:
+    normalized = " ".join(payload.strip().split())
+    suppress_link = normalized.startswith("!")
+    if suppress_link:
+        normalized = normalized[1:].lstrip()
+
+    explicit_title: str | None = None
+    target = normalized
+    explicit_match = ROLE_TARGET_PATTERN.match(normalized)
+    if explicit_match:
+        explicit_title = explicit_match.group("title").strip()
+        target = explicit_match.group("target").strip()
+
+    shorten_display = target.startswith("~")
+    if shorten_display:
+        target = target[1:]
+
+    return target, explicit_title, suppress_link, shorten_display
+
+
+def _linkish_inline_node(
+    token: str,
+    *,
+    alias_map: dict[str, str] | None = None,
+    supported_ops: set[str] | None = None,
+    internal_refs: dict[str, dict[str, str]] | None = None,
+) -> dict | None:
+    target, explicit_title, suppress_link, shorten_display = _parse_role_payload(token)
+    if suppress_link:
         return None
 
-    if repo == "whest":
+    rewritten_target = _normalize_reference_target(rewrite_api_refs(target))
+    candidate = _operation_candidate_from_target(rewritten_target)
+    canonical_candidate = resolve_canonical_name(candidate, alias_map or {})
+    api_like = "." in rewritten_target or target.lstrip("~").startswith(
+        ("np.", "numpy.", "we.", "whest.", "scipy.")
+    )
+    if canonical_candidate not in (supported_ops or set()) and not api_like:
+        return None
+
+    href, external_url, canonical = _resolve_reference_destination(
+        rewritten_target,
+        original_target=target,
+        alias_map=alias_map,
+        supported_ops=supported_ops,
+        internal_refs=internal_refs,
+    )
+    if not href and not external_url:
+        return None
+
+    display_text = (
+        rewrite_api_refs(explicit_title)
+        if explicit_title
+        else rewritten_target.split(".")[-1]
+        if shorten_display
+        else rewrite_api_refs(target)
+    )
+    return {
+        "kind": "link",
+        "text": display_text,
+        "target": canonical,
+        "href": href,
+        "external_url": external_url,
+    }
+
+
+def _inline_text_from_children(children: list[object]) -> str:
+    parts: list[str] = []
+    for child in children:
         try:
-            rel_path = source_file.resolve().relative_to(ROOT)
-        except ValueError:
-            return None
-        branch = "main"
-        end_line = start_line + len(source_lines) - 1
-        return (
-            f"https://github.com/AIcrowd/whest/blob/{branch}/{rel_path.as_posix()}"
-            f"#L{start_line}-L{end_line}"
+            parts.append(child.astext())
+        except AttributeError:
+            parts.append(str(child))
+    return "".join(parts)
+
+
+def _convert_docutils_inline_node(
+    node: object,
+    *,
+    coverage: dict[str, object] | None = None,
+    supported_ops: set[str] | None = None,
+    alias_map: dict[str, str] | None = None,
+    internal_refs: dict[str, dict[str, str]] | None = None,
+) -> list[dict]:
+    from docutils import nodes as docutils_nodes
+
+    supported_ops = supported_ops or set()
+    alias_map = alias_map or {}
+
+    if isinstance(node, docutils_nodes.Text):
+        return [{"kind": "text", "text": str(node)}]
+
+    if isinstance(node, docutils_nodes.math):
+        return [{"kind": "math", "latex": node.astext()}]
+
+    if isinstance(node, docutils_nodes.reference):
+        return [
+            {
+                "kind": "link",
+                "text": node.astext(),
+                "href": node.get("refuri", ""),
+                "external_url": node.get("refuri", ""),
+            }
+        ]
+
+    if isinstance(node, docutils_nodes.inline) and node.get("role_name"):
+        role_name = node["role_name"]
+        target, explicit_title, suppress_link, shorten_display = _parse_role_payload(
+            node.astext()
+        )
+        rewritten_target = _normalize_reference_target(rewrite_api_refs(target))
+        href, external_url, canonical = _resolve_reference_destination(
+            rewritten_target,
+            original_target=target,
+            role=role_name,
+            alias_map=alias_map,
+            supported_ops=supported_ops,
+            internal_refs=internal_refs,
+        )
+        display_text = (
+            rewrite_api_refs(explicit_title)
+            if explicit_title
+            else rewritten_target.split(".")[-1]
+            if shorten_display
+            else rewrite_api_refs(target)
         )
 
-    if repo == "numpy":
-        numpy = importlib.import_module("numpy")
-        numpy_root = Path(numpy.__file__).resolve().parent
-        try:
-            rel_path = source_file.resolve().relative_to(numpy_root.parent)
-        except ValueError:
-            return None
-        tag = f"v{version or numpy.__version__}"
-        end_line = start_line + len(source_lines) - 1
-        return (
-            f"https://github.com/numpy/numpy/blob/{tag}/{rel_path.as_posix()}"
-            f"#L{start_line}-L{end_line}"
-        )
+        unresolved = not suppress_link and not href and not external_url
+        if unresolved:
+            _record_coverage_event(
+                coverage,
+                "unresolved_references",
+                {
+                    "role": role_name,
+                    "target": rewritten_target,
+                    "original_target": target,
+                    "display_text": display_text,
+                },
+            )
 
+        return [
+            {
+                "kind": "role_reference",
+                "role": role_name,
+                "target": canonical,
+                "original_target": target,
+                "display_text": display_text,
+                "suppress_link": suppress_link,
+                "explicit_title": explicit_title is not None,
+                "href": "" if suppress_link else href,
+                "external_url": "" if suppress_link else external_url,
+                "unresolved": unresolved,
+            }
+        ]
+
+    if isinstance(node, docutils_nodes.literal):
+        token = node.astext()
+        link_node = _linkish_inline_node(
+            token,
+            alias_map=alias_map,
+            supported_ops=supported_ops,
+            internal_refs=internal_refs,
+        )
+        if link_node is not None:
+            return [link_node]
+        return [{"kind": "code", "text": token}]
+
+    if isinstance(node, docutils_nodes.title_reference):
+        token = node.astext()
+        link_node = _linkish_inline_node(
+            token,
+            alias_map=alias_map,
+            supported_ops=supported_ops,
+            internal_refs=internal_refs,
+        )
+        if link_node is not None:
+            return [link_node]
+        return [{"kind": "code", "text": token}]
+
+    if isinstance(node, docutils_nodes.emphasis):
+        return [
+            {
+                "kind": "emphasis",
+                "text": _inline_text_from_children(list(node.children)),
+            }
+        ]
+
+    if isinstance(node, docutils_nodes.strong):
+        return [
+            {"kind": "strong", "text": _inline_text_from_children(list(node.children))}
+        ]
+
+    _record_coverage_event(
+        coverage,
+        "raw_blocks",
+        {
+            "kind": "inline_node",
+            "node_type": node.__class__.__name__,
+            "raw_text": getattr(node, "astext", lambda: str(node))(),
+        },
+    )
+    return [{"kind": "text", "text": getattr(node, "astext", lambda: str(node))()}]
+
+
+def parse_inline_nodes(
+    text: str,
+    *,
+    supported_ops: set[str] | None = None,
+    alias_map: dict[str, str] | None = None,
+    coverage: dict[str, object] | None = None,
+    internal_refs: dict[str, dict[str, str]] | None = None,
+) -> list[dict]:
+    """Parse inline reST/Sphinx markup into a structured AST."""
+
+    text = text.strip()
+    if not text:
+        return []
+
+    from docutils.core import publish_doctree
+
+    _register_roles_from_text(text)
+    doctree = publish_doctree(
+        text,
+        settings_overrides={
+            "warning_stream": io.StringIO(),
+            "report_level": 5,
+            "halt_level": 6,
+        },
+    )
+
+    if not doctree.children:
+        return [{"kind": "text", "text": text}]
+
+    paragraph = doctree.children[0]
+    children = getattr(paragraph, "children", doctree.children)
+
+    nodes: list[dict] = []
+    for child in children:
+        nodes.extend(
+            _convert_docutils_inline_node(
+                child,
+                coverage=coverage,
+                supported_ops=supported_ops,
+                alias_map=alias_map,
+                internal_refs=internal_refs,
+            )
+        )
+    return nodes
+
+
+def _coalesce_lines(lines: list[str]) -> str:
+    return " ".join(part.strip() for part in lines).strip()
+
+
+def _is_prompt_line(line: str) -> tuple[bool, str | None]:
+    stripped = line.lstrip()
+    if stripped.startswith(">>>"):
+        return True, ">>>"
+    if stripped.startswith("..."):
+        return True, "..."
+    return False, None
+
+
+def rewrite_example_text(text: str) -> str:
+    """Rewrite upstream NumPy example text to the current whest naming."""
+    rewritten = rewrite_api_refs(text)
+    rewritten = rewritten.replace("import numpy as np", "import whest as we")
+    return rewritten
+
+
+def _paragraphs_from_lines(lines: list[str]) -> list[str]:
+    paragraphs: list[str] = []
+    buffer: list[str] = []
+    for raw in lines:
+        line = raw.rstrip()
+        if line.strip():
+            buffer.append(line)
+            continue
+
+        if buffer:
+            paragraphs.append(_coalesce_lines(buffer))
+            buffer = []
+
+    if buffer:
+        paragraphs.append(_coalesce_lines(buffer))
+    return paragraphs
+
+
+DIRECTIVE_RE = re.compile(r"^\s*\.\.\s+([A-Za-z0-9_-]+)::\s*(.*)$")
+DIRECTIVE_OPTION_RE = re.compile(r"^\s*:([^:]+):\s*(.*)$")
+STRUCTURED_DIRECTIVES = {
+    "deprecated",
+    "math",
+    "note",
+    "plot",
+    "versionadded",
+    "versionchanged",
+    "warning",
+}
+
+
+def _language_from_literal_block(node: object) -> str | None:
+    classes = list(getattr(node, "get", lambda *_args, **_kwargs: [])("classes", []))
+    for class_name in classes:
+        if class_name not in {"code", "literal", "literal-block"}:
+            return class_name
     return None
 
 
-def block_from_lines(lines: list[str]) -> dict[str, str] | None:
-    """Convert a chunk of docstring lines into a normalized render block."""
-    if not lines:
-        return None
-    first = lines[0].strip()
-    if not first:
-        return None
-
-    if first.startswith(">>>") or first.startswith("..."):
-        return {"type": "code", "language": "text", "code": "\n".join(lines).rstrip()}
-
-    if first.startswith(".. "):
-        directive_name = first[3:].rstrip(":").strip()
-        body = "\n".join(lines[1:]).rstrip()
-        return {
-            "type": "directive",
-            "name": directive_name,
-            "body": body,
-            "raw": "\n".join(lines).rstrip(),
-        }
-
-    return {"type": "paragraph", "text": "\n".join(lines).rstrip()}
-
-
-def lines_to_blocks(lines: list[str]) -> list[dict[str, str]]:
-    """Normalize section text lines into paragraph/code/directive blocks."""
-    blocks: list[dict[str, str]] = []
-    chunk: list[str] = []
-
-    def flush() -> None:
-        nonlocal chunk
-        block = block_from_lines(chunk)
-        if block is not None:
-            blocks.append(block)
-        chunk = []
-
-    for line in lines:
-        if line.strip():
-            chunk.append(line.rstrip())
+def _parse_doctest_lines(text: str) -> list[dict]:
+    doctest_lines: list[dict] = []
+    for raw in text.splitlines():
+        is_prompt, prompt = _is_prompt_line(raw)
+        if is_prompt:
+            doctest_lines.append(
+                {
+                    "kind": "input",
+                    "prompt": prompt,
+                    "text": raw.lstrip()[3:].strip(),
+                }
+            )
             continue
-        flush()
-    flush()
-    return blocks
+        doctest_lines.append({"kind": "output", "text": raw.rstrip()})
+    return doctest_lines
 
 
-def field_items_to_payload(items) -> list[dict[str, object]]:
-    """Normalize numpydoc parameter/return entries into JSON-safe payloads."""
-    payload = []
-    for item in items:
-        payload.append(
+def _convert_docutils_blocks(
+    nodes_to_convert: list[object],
+    *,
+    supported_ops: set[str] | None = None,
+    alias_map: dict[str, str] | None = None,
+    coverage: dict[str, object] | None = None,
+    example_mode: bool = False,
+    internal_refs: dict[str, dict[str, str]] | None = None,
+) -> list[dict]:
+    from docutils import nodes as docutils_nodes
+
+    blocks: list[dict] = []
+
+    for node in nodes_to_convert:
+        if isinstance(node, docutils_nodes.paragraph):
+            blocks.append(
+                {
+                    "type": "paragraph",
+                    "inline": [
+                        inline_node
+                        for child in node.children
+                        for inline_node in _convert_docutils_inline_node(
+                            child,
+                            coverage=coverage,
+                            supported_ops=supported_ops,
+                            alias_map=alias_map,
+                            internal_refs=internal_refs,
+                        )
+                    ],
+                }
+            )
+            continue
+
+        if isinstance(node, docutils_nodes.definition_list):
+            items = []
+            for item in node.children:
+                if not isinstance(item, docutils_nodes.definition_list_item):
+                    continue
+                term_parts = []
+                body_blocks: list[dict] = []
+                for child in item.children:
+                    if isinstance(
+                        child, (docutils_nodes.term, docutils_nodes.classifier)
+                    ):
+                        for inline_child in child.children:
+                            term_parts.extend(
+                                _convert_docutils_inline_node(
+                                    inline_child,
+                                    coverage=coverage,
+                                    supported_ops=supported_ops,
+                                    alias_map=alias_map,
+                                    internal_refs=internal_refs,
+                                )
+                            )
+                    elif isinstance(child, docutils_nodes.definition):
+                        body_blocks.extend(
+                            _convert_docutils_blocks(
+                                list(child.children),
+                                supported_ops=supported_ops,
+                                alias_map=alias_map,
+                                coverage=coverage,
+                                example_mode=example_mode,
+                                internal_refs=internal_refs,
+                            )
+                        )
+                items.append({"term_inline": term_parts, "blocks": body_blocks})
+            blocks.append({"type": "definition_list", "items": items})
+            continue
+
+        if isinstance(node, docutils_nodes.bullet_list):
+            blocks.append(
+                {
+                    "type": "list",
+                    "ordered": False,
+                    "items": [
+                        {
+                            "blocks": _convert_docutils_blocks(
+                                list(item.children),
+                                supported_ops=supported_ops,
+                                alias_map=alias_map,
+                                coverage=coverage,
+                                example_mode=example_mode,
+                                internal_refs=internal_refs,
+                            )
+                        }
+                        for item in node.children
+                        if isinstance(item, docutils_nodes.list_item)
+                    ],
+                }
+            )
+            continue
+
+        if isinstance(node, docutils_nodes.enumerated_list):
+            blocks.append(
+                {
+                    "type": "list",
+                    "ordered": True,
+                    "items": [
+                        {
+                            "blocks": _convert_docutils_blocks(
+                                list(item.children),
+                                supported_ops=supported_ops,
+                                alias_map=alias_map,
+                                coverage=coverage,
+                                example_mode=example_mode,
+                                internal_refs=internal_refs,
+                            )
+                        }
+                        for item in node.children
+                        if isinstance(item, docutils_nodes.list_item)
+                    ],
+                }
+            )
+            continue
+
+        if isinstance(node, docutils_nodes.doctest_block):
+            text = node.astext()
+            if example_mode:
+                text = rewrite_example_text(text)
+            blocks.append(
+                {"type": "doctest_block", "lines": _parse_doctest_lines(text)}
+            )
+            continue
+
+        if isinstance(node, docutils_nodes.literal_block):
+            text = node.astext()
+            if example_mode:
+                text = rewrite_example_text(text)
+            blocks.append(
+                {
+                    "type": "literal_block",
+                    "text": text,
+                    "language": _language_from_literal_block(node),
+                }
+            )
+            continue
+
+        if isinstance(node, docutils_nodes.math_block):
+            blocks.append({"type": "math_block", "formulas": [node.astext()]})
+            continue
+
+        if isinstance(node, docutils_nodes.block_quote):
+            blocks.extend(
+                _convert_docutils_blocks(
+                    list(node.children),
+                    supported_ops=supported_ops,
+                    alias_map=alias_map,
+                    coverage=coverage,
+                    example_mode=example_mode,
+                    internal_refs=internal_refs,
+                )
+            )
+            continue
+
+        if isinstance(node, (docutils_nodes.system_message, docutils_nodes.table)):
+            raw_text = node.astext()
+            _record_coverage_event(
+                coverage,
+                "raw_blocks",
+                {
+                    "kind": node.__class__.__name__,
+                    "raw_text": raw_text,
+                },
+            )
+            blocks.append(
+                {
+                    "type": "raw_block",
+                    "raw_kind": node.__class__.__name__,
+                    "raw_text": raw_text,
+                }
+            )
+            continue
+
+        raw_text = getattr(node, "astext", lambda: str(node))()
+        _record_coverage_event(
+            coverage,
+            "raw_blocks",
             {
-                "name": item.name,
-                "type": item.type,
-                "desc_blocks": lines_to_blocks(list(item.desc)),
+                "kind": node.__class__.__name__,
+                "raw_text": raw_text,
+            },
+        )
+        blocks.append(
+            {
+                "type": "raw_block",
+                "raw_kind": node.__class__.__name__,
+                "raw_text": raw_text,
             }
         )
-    return payload
 
-
-def see_also_to_blocks(entries) -> list[dict[str, str]]:
-    """Normalize numpydoc See Also tuples into paragraph blocks."""
-    blocks: list[dict[str, str]] = []
-    for refs, desc in entries:
-        ref_text = ", ".join(name for name, _role in refs if name)
-        description = " ".join(line.strip() for line in desc if line.strip())
-        text = ref_text if not description else f"{ref_text} — {description}"
-        if text:
-            blocks.append({"type": "paragraph", "text": text})
     return blocks
 
 
-def normalize_signature(
-    whest_call_ref: str, callable_obj, np_doc_signature: str
-) -> str:
-    """Return a display signature preferring explicit numpydoc signatures when present."""
-    if np_doc_signature:
-        return re.sub(r"^[A-Za-z0-9_.]+", whest_call_ref, np_doc_signature, count=1)
-    return f"{whest_call_ref}{inspect.signature(callable_obj)}"
+def _parse_standard_rst_blocks(
+    lines: list[str],
+    *,
+    supported_ops: set[str] | None = None,
+    alias_map: dict[str, str] | None = None,
+    coverage: dict[str, object] | None = None,
+    example_mode: bool = False,
+    text_transform=None,
+    internal_refs: dict[str, dict[str, str]] | None = None,
+) -> list[dict]:
+    if not any(line.strip() for line in lines):
+        return []
 
+    from docutils.core import publish_doctree
 
-def parse_docstring_payload(callable_obj) -> tuple[str, list[dict[str, object]]]:
-    """Parse a callable docstring into a normalized summary and section list."""
-    docstring = inspect.getdoc(callable_obj) or ""
-    if not docstring:
-        return "", []
-
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore")
-        np_doc = NumpyDocString(docstring)
-
-    summary_lines = [line.strip() for line in np_doc["Summary"] if line.strip()]
-    extended_summary_lines = [line.rstrip() for line in np_doc["Extended Summary"]]
-    summary = " ".join(summary_lines).strip()
-
-    sections: list[dict[str, object]] = []
-    summary_blocks = lines_to_blocks(
-        summary_lines
-        + ([""] + extended_summary_lines if extended_summary_lines else [])
+    source = "\n".join(lines).strip("\n")
+    if text_transform is not None:
+        source = text_transform(source)
+    _register_roles_from_text(source)
+    doctree = publish_doctree(
+        source,
+        settings_overrides={
+            "warning_stream": io.StringIO(),
+            "report_level": 5,
+            "halt_level": 6,
+        },
     )
-    if summary_blocks:
-        sections.append(
-            {"kind": "summary", "title": "Summary", "blocks": summary_blocks}
-        )
+    return _convert_docutils_blocks(
+        list(doctree.children),
+        supported_ops=supported_ops,
+        alias_map=alias_map,
+        coverage=coverage,
+        example_mode=example_mode,
+        internal_refs=internal_refs,
+    )
 
-    section_specs = [
-        ("Parameters", "parameters", "Parameters"),
-        ("Returns", "returns", "Returns"),
-        ("Notes", "notes", "Notes"),
-        ("Examples", "examples", "Examples"),
-        ("See Also", "see-also", "See Also"),
+
+def _consume_directive_block(
+    lines: list[str], index: int
+) -> tuple[str, str, list[str], int]:
+    raw = lines[index].rstrip("\n")
+    match = DIRECTIVE_RE.match(raw)
+    if not match:
+        raise ValueError(f"Expected directive line, got: {raw!r}")
+
+    directive_name = match.group(1)
+    remainder = match.group(2).strip()
+    index += 1
+    payload: list[str] = []
+    total = len(lines)
+    while index < total:
+        current = lines[index].rstrip("\n")
+        if current.startswith((" ", "\t")) or not current.strip():
+            payload.append(current)
+            index += 1
+            continue
+        break
+    return directive_name, remainder, payload, index
+
+
+def _split_directive_payload(
+    payload: list[str],
+) -> tuple[list[dict[str, str]], list[str]]:
+    if not payload:
+        return [], []
+
+    dedented = textwrap.dedent("\n".join(payload)).splitlines()
+    options: list[dict[str, str]] = []
+    index = 0
+    while index < len(dedented):
+        line = dedented[index]
+        if not line.strip():
+            index += 1
+            if options:
+                break
+            continue
+        match = DIRECTIVE_OPTION_RE.match(line)
+        if not match:
+            break
+        options.append({"name": match.group(1), "value": match.group(2)})
+        index += 1
+
+    content_lines = dedented[index:]
+    while content_lines and not content_lines[0].strip():
+        content_lines = content_lines[1:]
+    while content_lines and not content_lines[-1].strip():
+        content_lines = content_lines[:-1]
+    return options, content_lines
+
+
+def _math_formulas_from_directive(
+    remainder: str, content_lines: list[str]
+) -> list[str]:
+    paragraphs: list[list[str]] = []
+    current: list[str] = [remainder] if remainder else []
+    for line in content_lines:
+        if line.strip():
+            current.append(line.strip())
+            continue
+        if current:
+            paragraphs.append(current)
+            current = []
+    if current:
+        paragraphs.append(current)
+    return [
+        _coalesce_lines(paragraph)
+        for paragraph in paragraphs
+        if _coalesce_lines(paragraph)
     ]
 
-    for np_key, kind, title in section_specs:
-        value = np_doc[np_key]
-        if not value:
-            continue
-        if np_key in {"Parameters", "Returns"}:
-            items = field_items_to_payload(value)
-            if items:
-                sections.append({"kind": kind, "title": title, "items": items})
-            continue
 
-        if np_key == "See Also":
-            blocks = see_also_to_blocks(value)
-            if blocks:
-                sections.append({"kind": kind, "title": title, "blocks": blocks})
-            continue
-
-        blocks = lines_to_blocks(list(value))
-        if blocks:
-            sections.append({"kind": kind, "title": title, "blocks": blocks})
-
-    return summary, sections
-
-
-def build_op_detail_payload(
-    name: str, info: dict, *, weights: dict[str, float]
-) -> dict[str, object]:
-    """Build the full per-op JSON payload for an operation."""
-    module = info["module"]
-    category = info["category"]
-    slug = slug_for_op(name)
-    numpy_callable = resolve_numpy_callable(name, module)
-    whest_callable = None
-    if category != "blacklisted":
-        whest_callable = resolve_whest_callable(name, module)
-
-    whest_call_ref = whest_ref(name, module).strip("`")
-    numpy_call_ref = numpy_ref(name, module).strip("`")
-    doc_callable = whest_callable or numpy_callable
-    if doc_callable is None:
-        raise ValueError(f"Could not resolve a doc callable for {name!r}")
-    summary, sections = parse_docstring_payload(doc_callable)
-
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore")
-        np_doc = NumpyDocString(inspect.getdoc(doc_callable) or "")
-
-    signature = normalize_signature(whest_call_ref, doc_callable, np_doc["Signature"])
-    detail_href = detail_href_for_slug(slug)
-    detail_json_href = detail_json_href_for_slug(slug)
-    plain_cost, latex_cost = cost_for_op(name, category)
-
-    whest_source = (
-        github_source_url(whest_callable, repo="whest")
-        if whest_callable is not None
-        else None
+def _build_directive_block(
+    directive_name: str,
+    remainder: str,
+    payload: list[str],
+    *,
+    supported_ops: set[str] | None = None,
+    alias_map: dict[str, str] | None = None,
+    coverage: dict[str, object] | None = None,
+    example_mode: bool = False,
+    text_transform=None,
+    internal_refs: dict[str, dict[str, str]] | None = None,
+) -> dict:
+    supported_ops = supported_ops or set()
+    alias_map = alias_map or {}
+    options, content_lines = _split_directive_payload(payload)
+    argument_text = (
+        text_transform(remainder) if text_transform is not None else remainder
     )
-    numpy_source = (
-        github_source_url(numpy_callable, repo="numpy")
-        if numpy_callable is not None
-        else None
+
+    if directive_name == "math":
+        formulas = _math_formulas_from_directive(argument_text, content_lines)
+        return {"type": "math_block", "formulas": formulas}
+
+    if directive_name in {"versionadded", "versionchanged", "deprecated"}:
+        version = ""
+        detail_text = argument_text
+        if argument_text:
+            parts = argument_text.split(maxsplit=1)
+            version = parts[0]
+            detail_text = parts[1] if len(parts) > 1 else ""
+        return {
+            "type": "directive_block",
+            "directive": directive_name,
+            "version": version,
+            "argument_inline": parse_inline_nodes(
+                detail_text,
+                supported_ops=supported_ops,
+                alias_map=alias_map,
+                coverage=coverage,
+                internal_refs=internal_refs,
+            ),
+            "options": options,
+            "content_blocks": [],
+            "supported": True,
+            "raw_source": "\n".join(
+                [
+                    f".. {directive_name}::{(' ' + remainder) if remainder else ''}".rstrip()
+                ]
+                + payload
+            ).strip("\n"),
+        }
+
+    if directive_name in {"note", "warning"}:
+        return {
+            "type": "directive_block",
+            "directive": directive_name,
+            "argument_inline": parse_inline_nodes(
+                argument_text,
+                supported_ops=supported_ops,
+                alias_map=alias_map,
+                coverage=coverage,
+                internal_refs=internal_refs,
+            )
+            if argument_text
+            else [],
+            "options": options,
+            "content_blocks": _parse_standard_rst_blocks(
+                content_lines,
+                supported_ops=supported_ops,
+                alias_map=alias_map,
+                coverage=coverage,
+                example_mode=example_mode,
+                text_transform=text_transform,
+                internal_refs=internal_refs,
+            ),
+            "supported": True,
+            "raw_source": "\n".join(
+                [
+                    f".. {directive_name}::{(' ' + remainder) if remainder else ''}".rstrip()
+                ]
+                + payload
+            ).strip("\n"),
+        }
+
+    if directive_name == "plot":
+        plot_source = "\n".join(content_lines).strip("\n")
+        if text_transform is not None and plot_source:
+            plot_source = text_transform(plot_source)
+        return {
+            "type": "directive_block",
+            "directive": directive_name,
+            "argument_inline": parse_inline_nodes(
+                argument_text,
+                supported_ops=supported_ops,
+                alias_map=alias_map,
+                coverage=coverage,
+                internal_refs=internal_refs,
+            )
+            if argument_text
+            else [],
+            "options": options,
+            "content_blocks": (
+                [{"type": "literal_block", "text": plot_source, "language": "python"}]
+                if plot_source
+                else []
+            ),
+            "supported": True,
+            "raw_source": "\n".join(
+                [
+                    f".. {directive_name}::{(' ' + remainder) if remainder else ''}".rstrip()
+                ]
+                + payload
+            ).strip("\n"),
+        }
+
+    raw_source = "\n".join(
+        [f".. {directive_name}::{(' ' + remainder) if remainder else ''}".rstrip()]
+        + payload
+    ).strip("\n")
+    _record_coverage_event(
+        coverage,
+        "unsupported_directives",
+        {
+            "directive": directive_name,
+            "raw_source": raw_source,
+        },
     )
-    if numpy_source is None:
-        numpy_source = numpy_docs_url(name, module)
+    return {
+        "type": "directive_block",
+        "directive": directive_name,
+        "argument_inline": parse_inline_nodes(
+            argument_text,
+            supported_ops=supported_ops,
+            alias_map=alias_map,
+            coverage=coverage,
+            internal_refs=internal_refs,
+        )
+        if argument_text
+        else [],
+        "options": options,
+        "content_blocks": [],
+        "supported": False,
+        "raw_source": raw_source,
+    }
+
+
+def _parse_examples_to_blocks(
+    lines: list[str],
+    *,
+    supported_ops: set[str] | None = None,
+    alias_map: dict[str, str] | None = None,
+    coverage: dict[str, object] | None = None,
+    internal_refs: dict[str, dict[str, str]] | None = None,
+) -> list[dict]:
+    """Convert Examples lines into a structured AST."""
+    return _parse_rich_doc_blocks(
+        lines,
+        supported_ops=supported_ops,
+        alias_map=alias_map,
+        coverage=coverage,
+        example_mode=True,
+        text_transform=rewrite_example_text,
+        internal_refs=internal_refs,
+    )
+
+
+def _parse_notes_to_blocks(
+    lines: list[str],
+    *,
+    supported_ops: set[str] | None = None,
+    alias_map: dict[str, str] | None = None,
+    coverage: dict[str, object] | None = None,
+    internal_refs: dict[str, dict[str, str]] | None = None,
+) -> list[dict]:
+    """Convert Notes lines into a structured AST."""
+    return _parse_rich_doc_blocks(
+        lines,
+        supported_ops=supported_ops,
+        alias_map=alias_map,
+        coverage=coverage,
+        internal_refs=internal_refs,
+    )
+
+
+def _parse_rich_doc_blocks(
+    lines: list[str],
+    *,
+    supported_ops: set[str] | None = None,
+    alias_map: dict[str, str] | None = None,
+    coverage: dict[str, object] | None = None,
+    example_mode: bool = False,
+    text_transform=None,
+    internal_refs: dict[str, dict[str, str]] | None = None,
+) -> list[dict]:
+    blocks: list[dict] = []
+    index = 0
+    total = len(lines)
+    buffer: list[str] = []
+
+    def flush_buffer() -> None:
+        nonlocal buffer
+        if not buffer:
+            return
+        blocks.extend(
+            _parse_standard_rst_blocks(
+                buffer,
+                supported_ops=supported_ops,
+                alias_map=alias_map,
+                coverage=coverage,
+                example_mode=example_mode,
+                text_transform=text_transform,
+                internal_refs=internal_refs,
+            )
+        )
+        buffer = []
+
+    while index < total:
+        raw = lines[index].rstrip("\n")
+        if DIRECTIVE_RE.match(raw):
+            flush_buffer()
+            directive_name, remainder, payload, index = _consume_directive_block(
+                lines, index
+            )
+            blocks.append(
+                _build_directive_block(
+                    directive_name,
+                    remainder,
+                    payload,
+                    supported_ops=supported_ops,
+                    alias_map=alias_map,
+                    coverage=coverage,
+                    example_mode=example_mode,
+                    text_transform=text_transform,
+                    internal_refs=internal_refs,
+                )
+            )
+            continue
+
+        buffer.append(raw)
+        index += 1
+
+    flush_buffer()
+
+    return blocks
+
+
+def _parse_field_body_to_blocks(
+    lines: list[str],
+    *,
+    supported_ops: set[str] | None = None,
+    alias_map: dict[str, str] | None = None,
+    coverage: dict[str, object] | None = None,
+    internal_refs: dict[str, dict[str, str]] | None = None,
+) -> list[dict]:
+    """Convert parameter/return body lines into a structured AST."""
+    return _parse_rich_doc_blocks(
+        lines,
+        supported_ops=supported_ops,
+        alias_map=alias_map,
+        coverage=coverage,
+        internal_refs=internal_refs,
+    )
+
+
+def _build_field_list_block(
+    title: str,
+    fields: list[DocField],
+    *,
+    supported_ops: set[str] | None = None,
+    alias_map: dict[str, str] | None = None,
+    coverage: dict[str, object] | None = None,
+    internal_refs: dict[str, dict[str, str]] | None = None,
+) -> dict | None:
+    if not fields:
+        return None
+
+    def preview_inline(body_blocks: list[dict]) -> list[dict]:
+        for block in body_blocks:
+            if block.get("type") == "paragraph":
+                return list(block.get("inline", []))
+        return []
+
+    items = [
+        {
+            "type": "field_list",
+            "name": field.name,
+            "data_type": field.type,
+            "inline": preview_inline(
+                body_blocks := _parse_field_body_to_blocks(
+                    field.body,
+                    supported_ops=supported_ops,
+                    alias_map=alias_map,
+                    coverage=coverage,
+                    internal_refs=internal_refs,
+                )
+            ),
+            "body_blocks": body_blocks,
+        }
+        for field in fields
+    ]
 
     return {
+        "title": title,
+        "blocks": [{"type": "field_list", "title": title, "items": items}],
+    }
+
+
+def _build_sections_for_doc(
+    parsed: ParsedDoc,
+    *,
+    supported_ops: set[str] | None = None,
+    alias_map: dict[str, str] | None = None,
+    internal_refs: dict[str, dict[str, str]] | None = None,
+) -> list[dict]:
+    sections: list[dict] = []
+    coverage = parsed.coverage
+
+    def build_text_section(
+        title: str,
+        lines: list[str],
+        *,
+        example_mode: bool = False,
+        text_transform=None,
+    ) -> None:
+        if not lines:
+            return
+        section_blocks = _parse_rich_doc_blocks(
+            lines,
+            supported_ops=supported_ops,
+            alias_map=alias_map,
+            coverage=coverage,
+            example_mode=example_mode,
+            text_transform=text_transform,
+            internal_refs=internal_refs,
+        )
+        if section_blocks:
+            sections.append({"title": title, "blocks": section_blocks})
+
+    if parsed.summary:
+        summary_inline = parse_inline_nodes(
+            parsed.summary,
+            supported_ops=supported_ops,
+            alias_map=alias_map,
+            coverage=coverage,
+            internal_refs=internal_refs,
+        )
+        if summary_inline:
+            sections.append(
+                {
+                    "title": "Summary",
+                    "blocks": [{"type": "paragraph", "inline": summary_inline}],
+                }
+            )
+
+    build_text_section("Extended Summary", parsed.extended_summary)
+
+    parameters_block = _build_field_list_block(
+        "Parameters",
+        parsed.parameters,
+        supported_ops=supported_ops,
+        alias_map=alias_map,
+        coverage=coverage,
+        internal_refs=internal_refs,
+    )
+    if parameters_block:
+        sections.append(parameters_block)
+
+    returns_block = _build_field_list_block(
+        "Returns",
+        parsed.returns,
+        supported_ops=supported_ops,
+        alias_map=alias_map,
+        coverage=coverage,
+        internal_refs=internal_refs,
+    )
+    if returns_block:
+        sections.append(returns_block)
+
+    raises_block = _build_field_list_block(
+        "Raises",
+        parsed.raises,
+        supported_ops=supported_ops,
+        alias_map=alias_map,
+        coverage=coverage,
+        internal_refs=internal_refs,
+    )
+    if raises_block:
+        sections.append(raises_block)
+
+    warns_block = _build_field_list_block(
+        "Warns",
+        parsed.warns,
+        supported_ops=supported_ops,
+        alias_map=alias_map,
+        coverage=coverage,
+        internal_refs=internal_refs,
+    )
+    if warns_block:
+        sections.append(warns_block)
+
+    if parsed.see_also:
+        sections.append(
+            {
+                "title": "See also",
+                "blocks": [
+                    {
+                        "type": "link_list",
+                        "links": [asdict(link) for link in parsed.see_also],
+                    }
+                ],
+            }
+        )
+
+    note_lines = list(parsed.note_lines)
+    if note_lines:
+        note_blocks = _parse_notes_to_blocks(
+            note_lines,
+            supported_ops=supported_ops,
+            alias_map=alias_map,
+            coverage=coverage,
+            internal_refs=internal_refs,
+        )
+        if note_blocks:
+            sections.append({"title": "Notes", "blocks": note_blocks})
+
+    build_text_section("Warnings", parsed.warnings)
+    build_text_section("References", parsed.references)
+
+    if parsed.examples:
+        example_lines = [
+            line.rstrip("\n") for line in parsed.examples[0].code.split("\n")
+        ]
+        example_blocks = _parse_examples_to_blocks(
+            example_lines,
+            supported_ops=supported_ops,
+            alias_map=alias_map,
+            coverage=coverage,
+            internal_refs=internal_refs,
+        )
+        if example_blocks:
+            sections.append({"title": "Examples", "blocks": example_blocks})
+
+    return sections
+
+
+def derive_example_from_upstream(example_block: str) -> DocExample:
+    """Derive a single whest example from a doctest-style upstream snippet."""
+    parser = doctest.DocTestParser()
+    parsed = parser.get_doctest(
+        textwrap.dedent(example_block).strip("\n"), {}, "whest-example", "", 0
+    )
+
+    code_parts: list[str] = []
+    output_parts: list[str] = []
+    for example in parsed.examples:
+        source = rewrite_example_text(example.source).strip()
+        if source:
+            code_parts.append(source.rstrip())
+
+        want = rewrite_example_text(example.want).strip()
+        if want:
+            output_parts.append(want.rstrip())
+
+    code = "\n\n".join(code_parts).strip()
+    output = "\n\n".join(output_parts).strip()
+    return DocExample(code=code, output=output)
+
+
+def parse_numpy_docstring(raw_doc: str) -> ParsedDoc:
+    """Parse a NumPy-style docstring into a structured internal model."""
+    try:
+        from numpydoc.docscrape import NumpyDocString
+    except ImportError as exc:  # pragma: no cover - environment issue
+        raise RuntimeError("numpydoc is required to parse upstream docstrings") from exc
+
+    doc = NumpyDocString(textwrap.dedent(raw_doc).strip("\n"))
+
+    summary = " ".join(part.strip() for part in doc["Summary"]).strip()
+    upstream_signature = str(doc["Signature"]).strip()
+
+    def parse_field_section(
+        section_name: str, *, single_element_is_type: bool = False
+    ) -> list[DocField]:
+        return [
+            DocField(name=name, type=type_, body=[line.rstrip() for line in desc])
+            for name, type_, desc in doc[section_name]
+        ]
+
+    parameters = parse_field_section("Parameters")
+    returns = parse_field_section("Returns")
+    raises = parse_field_section("Raises", single_element_is_type=True)
+    warns = parse_field_section("Warns", single_element_is_type=True)
+    see_also: list[DocLink] = []
+    for entry in doc["See Also"]:
+        if not entry:
+            continue
+        targets, desc = entry
+        description = " ".join(desc).strip() if desc else ""
+        if isinstance(targets, list):
+            for target, role in targets:
+                see_also.append(
+                    DocLink(
+                        label=target,
+                        target=target,
+                        original_target=target,
+                        role=role or "",
+                        description=description,
+                    )
+                )
+            continue
+        see_also.append(
+            DocLink(
+                label=targets,
+                target=targets,
+                original_target=targets,
+                description=description,
+            )
+        )
+    extended_summary = [line.rstrip("\n") for line in doc["Extended Summary"]]
+    raw_notes = [line.rstrip("\n") for line in doc["Notes"]]
+    notes = _split_paragraphs(raw_notes)
+    warnings = [line.rstrip("\n") for line in doc["Warnings"]]
+    references = [line.rstrip("\n") for line in doc["References"]]
+
+    example_text = "\n".join(line.rstrip() for line in doc["Examples"]).strip()
+    examples = [DocExample(code=example_text)] if example_text else []
+
+    return ParsedDoc(
+        summary=summary,
+        parameters=parameters,
+        returns=returns,
+        see_also=see_also,
+        notes=notes,
+        note_lines=raw_notes,
+        examples=examples,
+        extended_summary=extended_summary,
+        raises=raises,
+        warnings=warnings,
+        warns=warns,
+        references=references,
+        upstream_signature=upstream_signature,
+        sections=None,
+        coverage=_new_doc_coverage(),
+    )
+
+
+def docs_url_for_operation(name: str, module: str) -> str:
+    """Return the upstream reference docs URL for a supported operation."""
+    if module == "numpy.linalg":
+        return (
+            "https://numpy.org/doc/stable/reference/generated/"
+            f"numpy.linalg.{name.removeprefix('linalg.')}.html"
+        )
+    if module == "numpy.fft":
+        return (
+            "https://numpy.org/doc/stable/reference/generated/"
+            f"numpy.fft.{name.removeprefix('fft.')}.html"
+        )
+    if module == "numpy.random":
+        return (
+            "https://numpy.org/doc/stable/reference/generated/"
+            f"numpy.random.{name.removeprefix('random.')}.html"
+        )
+    if module == "whest.stats":
+        dist_name = name.split(".")[1]
+        return (
+            "https://docs.scipy.org/doc/scipy/reference/generated/"
+            f"scipy.stats.{dist_name}.html"
+        )
+    return f"https://numpy.org/doc/stable/reference/generated/numpy.{name}.html"
+
+
+def _repo_source_url(
+    obj: object, *, repo_blob_root: str, package_root: Path | None = None
+) -> str:
+    """Build a GitHub source URL for an imported object when inspect can locate it."""
+    target = inspect.unwrap(obj)
+    try:
+        source_path = Path(
+            inspect.getsourcefile(target) or inspect.getfile(target)
+        ).resolve()
+        _, start_line = inspect.getsourcelines(target)
+    except (OSError, TypeError):  # pragma: no cover - inspect support varies by object
+        return ""
+
+    if package_root is None:
+        try:
+            relative = source_path.relative_to(ROOT)
+        except ValueError:
+            return ""
+    else:
+        try:
+            relative = source_path.relative_to(package_root.parent)
+        except ValueError:
+            return ""
+
+    return f"{repo_blob_root}/{relative.as_posix()}#L{start_line}"
+
+
+def _resolve_attr(root: object, dotted_name: str) -> object:
+    current = root
+    for part in dotted_name.split("."):
+        current = getattr(current, part)
+    return current
+
+
+def _worker_init_operation_doc_context(
+    alias_items: tuple[tuple[str, str], ...], supported_ops: tuple[str, ...]
+) -> None:
+    """Initialize per-process context for parallel operation doc workers."""
+    global _WORKER_ALIAS_MAP
+    global _WORKER_SUPPORTED_OPS
+    _WORKER_ALIAS_MAP = dict(alias_items)
+    _WORKER_SUPPORTED_OPS = set(supported_ops)
+
+
+def _worker_build_operation_record(
+    task: tuple[
+        str,
+        str,
+        str,
+        list[str],
+        float,
+        str,
+        str,
+    ],
+) -> OperationDocRecord:
+    """Build a single operation doc record inside a worker process."""
+    name, module, category, aliases, weight, notes, owned_example_html = task
+
+    return _build_operation_record(
+        name,
+        module,
+        category,
+        aliases,
+        weight,
+        notes,
+        owned_example_html,
+        alias_map=_WORKER_ALIAS_MAP,
+        supported_ops=_WORKER_SUPPORTED_OPS,
+    )
+
+
+def _build_operation_record(
+    name: str,
+    module: str,
+    category: str,
+    aliases: list[str],
+    weight: float,
+    notes: str,
+    owned_example_html: str,
+    *,
+    alias_map: dict[str, str] | None,
+    supported_ops: set[str] | None,
+) -> OperationDocRecord:
+    """Build one in-memory operation record."""
+    if alias_map is None or supported_ops is None:
+        raise RuntimeError(
+            "Parallel worker context not initialized; call _worker_init_operation_doc_context()"
+        )
+
+    signature, parsed_doc, derived_example, whest_source_url, upstream_source_url = (
+        build_structured_doc(
+            name,
+            module,
+            owned_example_html,
+            alias_map=alias_map,
+            supported_ops=supported_ops,
+        )
+    )
+    cost_plain, cost_latex = cost_for_op(name, category)
+    return OperationDocRecord(
+        name=name,
+        canonical_name=name,
+        slug=slug_for_operation(name),
+        href=detail_href_for_slug(slug_for_operation(name)),
+        module=module,
+        area=normalize_area(module),
+        whest_ref=whest_ref(name, module),
+        numpy_ref=numpy_ref(name, module),
+        category=category,
+        display_type=display_type_for_category(category),
+        cost_formula=cost_plain,
+        cost_formula_latex=cost_latex,
+        weight=weight,
+        notes=notes,
+        aliases=aliases,
+        signature=signature,
+        summary=parsed_doc.summary,
+        provenance_label="Adapted from NumPy docs",
+        provenance_url=docs_url_for_operation(name, module),
+        whest_source_url=whest_source_url,
+        upstream_source_url=upstream_source_url,
+        parameters=parsed_doc.parameters,
+        returns=parsed_doc.returns,
+        see_also=parsed_doc.see_also,
+        notes_sections=parsed_doc.notes,
+        example=derived_example,
+        body_sections=parsed_doc.sections,
+        doc_coverage=parsed_doc.coverage,
+        api_docs_html="",
+        whest_examples_html=owned_example_html,
+    )
+
+
+def resolve_live_objects(name: str, module: str) -> tuple[object, object | None]:
+    """Resolve the live whest object and its upstream NumPy/SciPy counterpart."""
+    import numpy as np
+
+    import whest as we
+
+    if module == "numpy.linalg":
+        short_name = name.removeprefix("linalg.")
+        return getattr(we.linalg, short_name), getattr(np.linalg, short_name, None)
+    if module == "numpy.fft":
+        short_name = name.removeprefix("fft.")
+        return getattr(we.fft, short_name), getattr(np.fft, short_name, None)
+    if module == "numpy.random":
+        short_name = name.removeprefix("random.")
+        return getattr(we.random, short_name), getattr(np.random, short_name, None)
+    if module == "whest.stats":
+        try:
+            from scipy import stats as scipy_stats
+        except (
+            Exception
+        ):  # pragma: no cover - scipy availability is environment specific
+            scipy_stats = None
+        return _resolve_attr(we, name), (
+            _resolve_attr(scipy_stats, name.removeprefix("stats."))
+            if scipy_stats is not None
+            else None
+        )
+    return getattr(we, name), getattr(np, name, None)
+
+
+def _rewrite_doc_field(field: DocField) -> DocField:
+    return DocField(
+        name=field.name,
+        type=rewrite_api_refs(field.type),
+        body=[rewrite_api_refs(line) for line in field.body],
+    )
+
+
+def _rewrite_doc_link(link: DocLink) -> DocLink:
+    rewritten_target = _normalize_reference_target(rewrite_api_refs(link.target))
+    rewritten_original = link.original_target or link.target
+    return DocLink(
+        label=rewrite_api_refs(link.label),
+        target=rewritten_target,
+        description=rewrite_api_refs(link.description),
+        description_inline=None,
+        role=link.role,
+        original_target=rewritten_original,
+        unresolved=False,
+        href="",
+        external_url="",
+    )
+
+
+def _rewrite_parsed_doc(
+    parsed: ParsedDoc,
+    *,
+    alias_map: dict[str, str],
+    supported_ops: set[str],
+    internal_refs: dict[str, dict[str, str]] | None = None,
+) -> ParsedDoc:
+    parsed.summary = rewrite_api_refs(parsed.summary)
+    parsed.extended_summary = [
+        rewrite_api_refs(line) for line in parsed.extended_summary
+    ]
+    parsed.parameters = [_rewrite_doc_field(field) for field in parsed.parameters]
+    parsed.returns = [_rewrite_doc_field(field) for field in parsed.returns]
+    parsed.raises = [_rewrite_doc_field(field) for field in parsed.raises]
+    parsed.warns = [_rewrite_doc_field(field) for field in parsed.warns]
+    parsed.see_also = [
+        resolve_doc_link(
+            link,
+            alias_map=alias_map,
+            supported_ops=supported_ops,
+            coverage=parsed.coverage,
+            internal_refs=internal_refs,
+        )
+        for link in parsed.see_also
+    ]
+    parsed.notes = [rewrite_api_refs(note) for note in parsed.notes]
+    parsed.note_lines = [rewrite_api_refs(line) for line in parsed.note_lines]
+    parsed.warnings = [rewrite_api_refs(line) for line in parsed.warnings]
+    parsed.references = [rewrite_api_refs(line) for line in parsed.references]
+    parsed.sections = _build_sections_for_doc(
+        parsed,
+        supported_ops=supported_ops,
+        alias_map=alias_map,
+        internal_refs=internal_refs,
+    )
+    return parsed
+
+
+def resolve_doc_link(
+    link: DocLink,
+    *,
+    alias_map: dict[str, str],
+    supported_ops: set[str],
+    coverage: dict[str, object] | None = None,
+    internal_refs: dict[str, dict[str, str]] | None = None,
+) -> DocLink:
+    """Resolve a parsed see-also entry into internal and external link targets."""
+    rewritten = _rewrite_doc_link(link)
+    href, external_url, canonical_target = _resolve_reference_destination(
+        rewritten.target,
+        original_target=rewritten.original_target or rewritten.target,
+        role=rewritten.role,
+        alias_map=alias_map,
+        supported_ops=supported_ops,
+        internal_refs=internal_refs,
+    )
+    unresolved = not href and not external_url
+    if unresolved:
+        _record_coverage_event(
+            coverage,
+            "unresolved_references",
+            {
+                "role": rewritten.role or "see_also",
+                "target": rewritten.target,
+                "original_target": rewritten.original_target or rewritten.target,
+                "display_text": rewritten.label,
+            },
+        )
+
+    label = rewritten.label
+    if href and canonical_target in supported_ops and not label.startswith("we."):
+        label = f"we.{canonical_target}"
+
+    return DocLink(
+        label=label,
+        target=canonical_target,
+        description=rewritten.description,
+        description_inline=parse_inline_nodes(
+            rewritten.description,
+            supported_ops=supported_ops,
+            alias_map=alias_map,
+            coverage=coverage,
+            internal_refs=internal_refs,
+        )
+        if rewritten.description
+        else [],
+        role=rewritten.role,
+        original_target=rewritten.original_target or rewritten.target,
+        unresolved=unresolved,
+        href=href,
+        external_url=external_url,
+    )
+
+
+def build_structured_doc(
+    name: str,
+    module: str,
+    owned_example_html: str = "",
+    *,
+    alias_map: dict[str, str] | None = None,
+    supported_ops: set[str] | None = None,
+    internal_refs: dict[str, dict[str, str]] | None = None,
+) -> tuple[str, ParsedDoc, DocExample | None, str, str]:
+    """Resolve live objects and build the structured doc model for one op."""
+    import numpy as np
+
+    whest_obj, upstream_obj = resolve_live_objects(name, module)
+    alias_map = alias_map or {}
+    supported_ops = supported_ops or set()
+    raw_doc = inspect.getdoc(upstream_obj) or inspect.getdoc(whest_obj) or ""
+    parsed = _rewrite_parsed_doc(
+        parse_numpy_docstring(raw_doc),
+        alias_map=alias_map,
+        supported_ops=supported_ops,
+        internal_refs=internal_refs,
+    )
+
+    example: DocExample | None = None
+    if parsed.examples:
+        example = derive_example_from_upstream(parsed.examples[0].code)
+
+    try:
+        signature = f"{whest_ref(name, module)}{inspect.signature(whest_obj)}"
+    except (TypeError, ValueError):
+        signature = f"{whest_ref(name, module)}(...)"
+
+    whest_source_url = _repo_source_url(
+        whest_obj,
+        repo_blob_root="https://github.com/AIcrowd/whest/blob/main",
+    )
+
+    upstream_source_url = ""
+    if upstream_obj is not None:
+        numpy_root = Path(np.__file__).resolve().parent
+        upstream_source_url = _repo_source_url(
+            upstream_obj,
+            repo_blob_root=f"https://github.com/numpy/numpy/blob/v{np.__version__}",
+            package_root=numpy_root,
+        )
+        if not upstream_source_url and isinstance(upstream_obj, np.ufunc):
+            upstream_source_url = (
+                "https://github.com/numpy/numpy/blob/"
+                f"v{np.__version__}/numpy/_core/code_generators/ufunc_docstrings.py"
+            )
+
+    return signature, parsed, example, whest_source_url, upstream_source_url
+
+
+def _public_symbol_kind(obj: object, canonical_name: str) -> str:
+    if inspect.isclass(obj):
+        if issubclass(obj, Warning):
+            return "warning"
+        if issubclass(obj, Exception):
+            return "error"
+        return "class"
+    if canonical_name.startswith("flops.") and canonical_name.endswith("_cost"):
+        return "cost_helper"
+    return "function"
+
+
+def _top_level_symbol_aliases(name: str) -> list[str]:
+    return [name, f"we.{name}", f"whest.{name}"]
+
+
+def _flops_symbol_aliases(name: str) -> list[str]:
+    return [f"flops.{name}", f"we.flops.{name}", f"whest.flops.{name}", name]
+
+
+def _dedupe_aliases(values: list[str]) -> list[str]:
+    seen: set[str] = set()
+    deduped: list[str] = []
+    for value in values:
+        if not value or value in seen:
+            continue
+        seen.add(value)
+        deduped.append(value)
+    return deduped
+
+
+def _public_symbol_summary(raw_doc: str, parsed: ParsedDoc) -> str:
+    summary = parsed.summary.strip()
+    if summary:
+        return summary
+    for line in raw_doc.splitlines():
+        stripped = line.strip()
+        if stripped:
+            return rewrite_api_refs(stripped)
+    return ""
+
+
+def _symbol_signature(import_path: str, obj: object) -> str:
+    try:
+        return f"{import_path}{inspect.signature(obj)}"
+    except (TypeError, ValueError):
+        return import_path
+
+
+def _related_guides_for_symbol(canonical_name: str) -> list[RelatedGuideLink]:
+    guides = list(PUBLIC_SYMBOL_GUIDES.get(canonical_name, []))
+
+    if canonical_name.startswith("flops."):
+        guides.append(("Budget Planning & Debugging", "/docs/guides/budget-planning"))
+        if canonical_name.startswith(
+            (
+                "flops.solve_cost",
+                "flops.svd_cost",
+                "flops.inv_cost",
+                "flops.lstsq_cost",
+                "flops.pinv_cost",
+                "flops.cholesky_cost",
+                "flops.eig_cost",
+                "flops.eigh_cost",
+                "flops.qr_cost",
+            )
+        ):
+            guides.append(("Linear Algebra Guide", "/docs/guides/linalg"))
+        if canonical_name.startswith(
+            (
+                "flops.fft_cost",
+                "flops.fftn_cost",
+                "flops.hfft_cost",
+                "flops.rfft_cost",
+                "flops.rfftn_cost",
+            )
+        ):
+            guides.append(("FFT Guide", "/docs/guides/fft"))
+        if canonical_name == "flops.einsum_cost":
+            guides.append(("Einsum Guide", "/docs/guides/einsum"))
+
+    if canonical_name in {"Permutation", "PermutationGroup", "Cycle"}:
+        guides.append(("Symmetry Savings", "/docs/guides/symmetry"))
+
+    deduped: list[RelatedGuideLink] = []
+    seen: set[tuple[str, str]] = set()
+    for title, href in guides:
+        key = (title, href)
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(RelatedGuideLink(title=title, href=href))
+    return deduped
+
+
+def _build_operation_internal_refs(
+    registry: dict[str, dict], alias_map: dict[str, str]
+) -> dict[str, dict[str, str]]:
+    refs: dict[str, dict[str, str]] = {}
+    for name, info in registry.items():
+        canonical = resolve_canonical_name(name, alias_map)
+        entry = {
+            "canonical_name": canonical,
+            "href": f"/docs/api/ops/{slug_for_operation(canonical)}",
+        }
+        op_aliases = {
+            name,
+            whest_ref(name, info["module"]),
+            whest_ref(name, info["module"]).replace("we.", "whest.", 1),
+        }
+        for alias in op_aliases:
+            refs[alias] = entry
+    return refs
+
+
+def build_public_api_symbol_records(
+    registry: dict[str, dict], alias_map: dict[str, str]
+) -> list[PublicApiSymbolRecord]:
+    sys.path.insert(0, str(ROOT / "src"))
+    import whest as we
+
+    supported_ops = set(registry)
+    symbol_specs: dict[str, dict[str, object]] = {}
+    top_level_canonical_by_id: dict[int, str] = {}
+
+    for name in sorted(dir(we)):
+        if name.startswith("_") or name in registry:
+            continue
+        obj = getattr(we, name)
+        if inspect.ismodule(obj):
+            continue
+        if not (inspect.isclass(obj) or callable(obj)):
+            continue
+
+        top_level_canonical_by_id[id(obj)] = name
+        symbol_specs[name] = {
+            "canonical_name": name,
+            "obj": obj,
+            "kind": _public_symbol_kind(obj, name),
+            "module": getattr(obj, "__module__", "whest"),
+            "import_path": f"we.{name}",
+            "display_name": name,
+            "aliases": _top_level_symbol_aliases(name),
+        }
+
+    for name in getattr(we.flops, "__all__", []):
+        if not hasattr(we.flops, name):
+            continue
+        obj = getattr(we.flops, name)
+        canonical_name = top_level_canonical_by_id.get(id(obj), f"flops.{name}")
+        aliases = _flops_symbol_aliases(name)
+        if canonical_name in symbol_specs:
+            symbol_specs[canonical_name]["aliases"] = _dedupe_aliases(
+                list(symbol_specs[canonical_name]["aliases"]) + aliases
+            )
+            continue
+
+        symbol_specs[canonical_name] = {
+            "canonical_name": canonical_name,
+            "obj": obj,
+            "kind": _public_symbol_kind(obj, canonical_name),
+            "module": getattr(obj, "__module__", "whest.flops"),
+            "import_path": f"we.flops.{name}",
+            "display_name": f"we.flops.{name}",
+            "aliases": _dedupe_aliases(aliases),
+        }
+
+    internal_refs = _build_operation_internal_refs(registry, alias_map)
+    for spec in symbol_specs.values():
+        entry = {
+            "canonical_name": str(spec["canonical_name"]),
+            "href": f"/docs/api/symbols/{slug_for_symbol(str(spec['canonical_name']))}",
+        }
+        for alias in spec["aliases"]:
+            internal_refs[str(alias)] = entry
+
+    records: list[PublicApiSymbolRecord] = []
+    for canonical_name in sorted(symbol_specs):
+        spec = symbol_specs[canonical_name]
+        obj = spec["obj"]
+        raw_doc = inspect.getdoc(obj) or ""
+        parsed = _rewrite_parsed_doc(
+            parse_numpy_docstring(raw_doc),
+            alias_map=alias_map,
+            supported_ops=supported_ops,
+            internal_refs=internal_refs,
+        )
+        import_path = str(spec["import_path"])
+        record = PublicApiSymbolRecord(
+            name=canonical_name,
+            canonical_name=canonical_name,
+            slug=slug_for_symbol(canonical_name),
+            href=f"/docs/api/symbols/{slug_for_symbol(canonical_name)}",
+            kind=str(spec["kind"]),
+            module=str(spec["module"]),
+            import_path=import_path,
+            display_name=str(spec["display_name"]),
+            summary=_public_symbol_summary(raw_doc, parsed),
+            signature=_symbol_signature(import_path, obj),
+            aliases=_dedupe_aliases([canonical_name] + list(spec["aliases"])),
+            source_url=_repo_source_url(
+                obj,
+                repo_blob_root="https://github.com/AIcrowd/whest/blob/main",
+            ),
+            related_guides=_related_guides_for_symbol(canonical_name),
+            body_sections=parsed.sections or [],
+        )
+        records.append(record)
+
+    return records
+
+
+ALIAS_NOTE_PATTERN = re.compile(r"alias for ([\w./]+)", re.IGNORECASE)
+ALIAS_REASON_PATTERN = re.compile(r"Alias of ([\w./]+)", re.IGNORECASE)
+EXAMPLE_FENCE_PATTERN = re.compile(
+    r"```(?P<lang>[A-Za-z0-9_-]+)?\n(?P<body>[\s\S]*?)```", re.MULTILINE
+)
+
+
+def choose_alias_target(raw_target: str, registry: dict[str, dict]) -> str | None:
+    """Return the first canonical registry target encoded in alias metadata."""
+    cleaned = raw_target.strip().rstrip(").,;:")
+    candidates = [part.strip().rstrip(").,;:") for part in cleaned.split("/")]
+    for candidate in candidates:
+        if candidate in registry:
+            return candidate
+    return None
+
+
+def load_alias_map(registry: dict[str, dict]) -> dict[str, str]:
+    """Derive alias -> canonical mappings from registry notes and weights metadata."""
+    alias_map: dict[str, str] = {}
+
+    for name, info in registry.items():
+        match = ALIAS_NOTE_PATTERN.search(info.get("notes", ""))
+        if not match:
+            continue
+        target = choose_alias_target(match.group(1), registry)
+        if target and target != name:
+            alias_map[name] = target
+
+    if WEIGHTS_CSV_PATH.exists():
+        with WEIGHTS_CSV_PATH.open(newline="") as handle:
+            for row in csv.DictReader(handle):
+                if row.get("Status") != "alias":
+                    continue
+                name = row.get("Operation", "").strip()
+                if not name or name in alias_map or name not in registry:
+                    continue
+                reason = row.get("Exclusion Reason", "")
+                match = ALIAS_REASON_PATTERN.search(reason)
+                if not match:
+                    continue
+                target = choose_alias_target(match.group(1), registry)
+                if not target or target == name:
+                    continue
+                # Prefer registry-authored canonical targets when metadata disagrees.
+                if alias_map.get(target) == name:
+                    continue
+                alias_map[name] = target
+
+    return alias_map
+
+
+def resolve_canonical_name(name: str, alias_map: dict[str, str]) -> str:
+    """Resolve an alias chain to its canonical target."""
+    current = name
+    seen = {current}
+    while current in alias_map and alias_map[current] not in seen:
+        current = alias_map[current]
+        seen.add(current)
+    return current
+
+
+def load_operation_weights() -> dict[str, float]:
+    """Load per-operation weights for docs manifests."""
+    if not WEIGHTS_PATH.exists():
+        return {}
+    raw = json.loads(WEIGHTS_PATH.read_text())
+    return raw.get("weights", {})
+
+
+def example_file_for(name: str, example_root: Path) -> Path:
+    """Return the owned-example path for a canonical operation name."""
+    return example_root / f"{name}.mdx"
+
+
+def build_example_coverage(
+    operations: list[OperationDocRecord | str],
+    example_root: Path | None = None,
+    *,
+    overrides: dict[str, DocExample] | None = None,
+    derived_examples: dict[str, DocExample] | None = None,
+) -> dict[str, dict]:
+    """Compute example coverage for canonical operation pages."""
+    overrides = overrides or {}
+    derived_examples = derived_examples or {}
+    coverage: dict[str, dict] = {}
+
+    for item in operations:
+        if isinstance(item, OperationDocRecord):
+            name = item.name
+            record_example = item.example
+            provenance_url = item.provenance_url
+        else:
+            name = item
+            record_example = None
+            provenance_url = ""
+
+        if name in overrides:
+            example = overrides[name]
+            coverage[name] = {
+                "has_whest_examples": True,
+                "has_inherited_examples": False,
+                "example_count": 1,
+                "example_sources": ["override"],
+                "coverage_status": "override",
+                "example_source": example.source,
+            }
+            continue
+
+        if example_root is not None:
+            path = example_file_for(name, example_root)
+            if path.exists():
+                source = path.read_text()
+                example_count = len(EXAMPLE_FENCE_PATTERN.findall(source)) or 1
+                coverage[name] = {
+                    "has_whest_examples": True,
+                    "has_inherited_examples": False,
+                    "example_count": example_count,
+                    "example_sources": [str(path)],
+                    "coverage_status": "owned",
+                    "example_source": "owned",
+                }
+                continue
+
+        if name in derived_examples or record_example is not None:
+            example = derived_examples.get(name, record_example)
+            if example is None:
+                example = DocExample(code="", source="derived")
+            coverage[name] = {
+                "has_whest_examples": False,
+                "has_inherited_examples": True,
+                "example_count": 1,
+                "example_sources": [provenance_url or "derived"],
+                "coverage_status": "derived",
+                "example_source": example.source,
+            }
+            continue
+
+        coverage[name] = {
+            "has_whest_examples": False,
+            "has_inherited_examples": False,
+            "example_count": 0,
+            "example_sources": [],
+            "coverage_status": "missing",
+            "example_source": "missing",
+        }
+
+    return coverage
+
+
+def render_example_markdown_html(source: str) -> str:
+    """Render simple MDX example snippets into HTML for the op-doc manifest."""
+    rendered: list[str] = []
+    cursor = 0
+    for match in EXAMPLE_FENCE_PATTERN.finditer(source):
+        prose = source[cursor : match.start()].strip()
+        if prose:
+            rendered.append(f"<p>{html.escape(prose)}</p>")
+
+        language = (match.group("lang") or "").strip()
+        class_attr = f' class="language-{html.escape(language)}"' if language else ""
+        body = html.escape(match.group("body").rstrip("\n"))
+        rendered.append(f"<pre><code{class_attr}>{body}</code></pre>")
+        cursor = match.end()
+
+    trailing = source[cursor:].strip()
+    if trailing:
+        rendered.append(f"<p>{html.escape(trailing)}</p>")
+
+    return "\n".join(rendered)
+
+
+def load_whest_example_html(name: str, example_root: Path) -> str:
+    """Load and render owned whest examples for a canonical operation."""
+    path = example_file_for(name, example_root)
+    if not path.exists():
+        return ""
+
+    return render_example_markdown_html(path.read_text())
+
+
+def build_alias_groups(
+    registry: dict[str, dict], alias_map: dict[str, str]
+) -> dict[str, list[str]]:
+    """Group aliases by resolved canonical name."""
+    alias_groups: dict[str, list[str]] = {}
+    for alias in sorted(alias_map):
+        canonical = resolve_canonical_name(alias, alias_map)
+        if canonical == alias or canonical not in registry:
+            continue
+        alias_groups.setdefault(canonical, []).append(alias)
+    return alias_groups
+
+
+def resolve_operation_weight(
+    name: str,
+    registry: dict[str, dict],
+    weights: dict[str, float],
+    alias_map: dict[str, str],
+    alias_groups: dict[str, list[str]] | None = None,
+) -> float:
+    """Resolve a stable weight for canonical and alias rows."""
+    canonical = resolve_canonical_name(name, alias_map)
+    if canonical in weights:
+        return weights[canonical]
+
+    aliases = alias_groups.get(canonical, []) if alias_groups is not None else []
+    for alias in aliases:
+        if alias in weights:
+            return weights[alias]
+
+    if canonical not in registry and name in weights:
+        return weights[name]
+
+    return 1.0
+
+
+def build_operation_doc_records(
+    registry: dict[str, dict], *, workers: int = 1
+) -> list[OperationDocRecord]:
+    """Build canonical operation doc records for supported operations."""
+    alias_map = load_alias_map(registry)
+    alias_groups = build_alias_groups(registry, alias_map)
+    weights = load_operation_weights()
+    supported_ops = {
+        name
+        for name, info in registry.items()
+        if info["category"] != "blacklisted"
+        and resolve_canonical_name(name, alias_map) == name
+    }
+    tasks: list[tuple[str, str, str, list[str], float, str, str]] = []
+    for name, info in sorted(registry.items()):
+        if info["category"] == "blacklisted":
+            continue
+        if resolve_canonical_name(name, alias_map) != name:
+            continue
+
+        aliases = sorted(alias_groups.get(name, []))
+        weight = resolve_operation_weight(
+            name=name,
+            registry=registry,
+            weights=weights,
+            alias_map=alias_map,
+            alias_groups=alias_groups,
+        )
+
+        module = info["module"]
+        owned_example_html = load_whest_example_html(name, API_EXAMPLES_DIR)
+        tasks.append(
+            (
+                name,
+                module,
+                info["category"],
+                aliases,
+                weight,
+                info.get("notes", ""),
+                owned_example_html,
+            )
+        )
+
+    if workers > 1:
+        max_workers = min(
+            workers,
+            len(os.sched_getaffinity(0))
+            if hasattr(os, "sched_getaffinity")
+            else os.cpu_count() or 1,
+        )
+        mp_context = (
+            mp.get_context("fork") if "fork" in mp.get_all_start_methods() else None
+        )
+        with ProcessPoolExecutor(
+            max_workers=max_workers,
+            mp_context=mp_context,
+            initializer=_worker_init_operation_doc_context,
+            initargs=(tuple(alias_map.items()), tuple(sorted(supported_ops))),
+        ) as executor:
+            records = list(executor.map(_worker_build_operation_record, tasks))
+    else:
+        records = [
+            _build_operation_record(
+                *task,
+                alias_map=alias_map,
+                supported_ops=supported_ops,
+            )
+            for task in tasks
+        ]
+
+    for index, record in enumerate(records):
+        if index > 0:
+            previous = records[index - 1]
+            record.previous = OperationNavLink(
+                href=previous.href,
+                label=previous.whest_ref,
+            )
+        if index + 1 < len(records):
+            nxt = records[index + 1]
+            record.next = OperationNavLink(
+                href=nxt.href,
+                label=nxt.whest_ref,
+            )
+
+    return records
+
+
+def render_operation_stub(op: OperationDocRecord) -> str:
+    """Render a generated standalone MDX page stub for one canonical operation."""
+    return (
+        f'---\ntitle: "{op.whest_ref}"\n---\n\n<OperationDocPage name="{op.name}" />\n'
+    )
+
+
+def render_public_symbol_stub(symbol: PublicApiSymbolRecord) -> str:
+    """Render a generated standalone MDX page stub for one canonical public symbol."""
+    lines = [f'title: "{symbol.display_name}"']
+    if symbol.summary:
+        lines.append(f"description: {json.dumps(symbol.summary)}")
+    return (
+        "---\n"
+        + "\n".join(lines)
+        + f'\n---\n\n<PublicApiSymbolPage name="{symbol.name}" />\n'
+    )
+
+
+def write_json(path: Path, payload: object) -> None:
+    """Write a deterministic JSON artifact with trailing newline."""
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+
+
+def _serialize_public_op_payload(record: OperationDocRecord) -> dict[str, object]:
+    """Build the public per-op JSON contract from the rich internal record."""
+    return {
         "schema_version": 1,
-        "slug": slug,
-        "detail_href": detail_href,
-        "detail_json_href": detail_json_href,
+        "slug": record.slug,
+        "detail_href": record.href,
+        "detail_json_href": detail_json_href_for_slug(record.slug),
         "source": {
-            "whest": whest_source,
-            "numpy": numpy_source,
+            "whest": record.whest_source_url or None,
+            "numpy": record.upstream_source_url or record.provenance_url or None,
         },
         "op": {
-            "name": name,
-            "module": module,
-            "whest_ref": whest_call_ref,
-            "numpy_ref": numpy_call_ref,
-            "category": category,
-            "status": "blocked" if category == "blacklisted" else "supported",
-            "weight": weights.get(name, 1.0),
-            "cost_formula": plain_cost,
-            "cost_formula_latex": latex_cost,
-            "notes": info.get("notes", ""),
-            "summary": summary,
-            "signature": signature,
+            "name": record.name,
+            "module": record.module,
+            "whest_ref": record.whest_ref,
+            "numpy_ref": record.numpy_ref,
+            "category": record.category,
+            "status": "blocked" if record.category == "blacklisted" else "supported",
+            "weight": record.weight,
+            "cost_formula": record.cost_formula,
+            "cost_formula_latex": record.cost_formula_latex,
+            "notes": record.notes,
+            "summary": record.summary,
+            "signature": record.signature,
         },
         "docs": {
-            "sections": sections,
+            "sections": record.body_sections or [],
         },
     }
+
+
+def write_operation_doc_artifacts(
+    records: list[OperationDocRecord], website_root: Path
+) -> None:
+    """Emit generated operation payloads, refs, and static-import metadata."""
+    generated_dir = website_root / ".generated"
+    op_docs_payload_dir = generated_dir / "ops"
+    public_dir = website_root / "public"
+    public_payload_dir = public_dir / "api-data" / "ops"
+    generated_dir.mkdir(parents=True, exist_ok=True)
+    op_docs_payload_dir.mkdir(parents=True, exist_ok=True)
+    public_dir.mkdir(parents=True, exist_ok=True)
+    public_payload_dir.mkdir(parents=True, exist_ok=True)
+    for existing_payload in op_docs_payload_dir.glob("*.json"):
+        if existing_payload.stem not in {record.slug for record in records}:
+            existing_payload.unlink()
+    for existing_payload in public_payload_dir.glob("*.json"):
+        if existing_payload.stem not in {record.slug for record in records}:
+            existing_payload.unlink()
+
+    docs_manifest: dict[str, dict[str, object]] = {}
+    refs_manifest: dict[str, dict[str, str]] = {}
+    ops_index: list[dict[str, object]] = []
+    import_map_lines = [
+        "import type { OperationDocRecord } from '@/components/api-reference/op-doc-types';",
+        "",
+        "export const opDocImports: Record<string, () => Promise<{ default: OperationDocRecord }>> = {",
+    ]
+
+    for record in sorted(records, key=lambda op: op.name):
+        internal_payload = asdict(record)
+        public_payload = _serialize_public_op_payload(record)
+        write_json(op_docs_payload_dir / f"{record.slug}.json", internal_payload)
+        write_json(public_payload_dir / f"{record.slug}.json", public_payload)
+        docs_manifest[record.name] = internal_payload
+        refs_manifest[record.name] = {
+            "label": record.whest_ref,
+            "href": record.href,
+            "canonical_name": record.canonical_name,
+        }
+        for alias in record.aliases:
+            refs_manifest[alias] = {
+                "label": record.whest_ref,
+                "href": record.href,
+                "canonical_name": record.canonical_name,
+            }
+        ops_index.append(
+            {
+                "name": record.name,
+                "slug": record.slug,
+                "detail_href": record.href,
+                "detail_json_href": detail_json_href_for_slug(record.slug),
+                "module": record.module,
+                "whest_ref": record.whest_ref,
+                "numpy_ref": record.numpy_ref,
+                "category": record.category,
+                "cost_formula": record.cost_formula,
+                "cost_formula_latex": record.cost_formula_latex,
+                "free": record.category == "free",
+                "blocked": record.category == "blacklisted",
+                "status": "blocked"
+                if record.category == "blacklisted"
+                else "supported",
+                "notes": record.notes,
+                "summary": record.summary,
+                "weight": record.weight,
+                "area": record.area,
+                "display_type": record.display_type,
+            }
+        )
+        import_map_lines.append(
+            f'  "{record.slug}": () => import("./ops/{record.slug}.json"),'
+        )
+
+    import_map_lines.extend(
+        [
+            "};",
+            "",
+            "export const opDocSlugs = [",
+            *[
+                f'  "{record.slug}",'
+                for record in sorted(records, key=lambda op: op.slug)
+            ],
+            "] as const;",
+            "",
+        ]
+    )
+    write_json(generated_dir / "op-docs.json", docs_manifest)
+    write_json(generated_dir / "op-refs.json", refs_manifest)
+    write_json(
+        public_dir / "ops.json", {"operations": ops_index, "total": len(ops_index)}
+    )
+    (generated_dir / "op-doc-imports.ts").write_text("\n".join(import_map_lines))
+    print(f"  Generated .generated/ops/*.json ({len(records)} operations)")
+    print(f"  Generated public/api-data/ops/*.json ({len(records)} operations)")
+    print(f"  Generated public/ops.json ({len(ops_index)} operations)")
+    print(f"  Generated {generated_dir / 'op-doc-imports.ts'}")
+    print(f"  Generated {generated_dir / 'op-docs.json'}")
+    print(f"  Generated {generated_dir / 'op-refs.json'}")
+
+
+def write_public_symbol_artifacts(
+    records: list[PublicApiSymbolRecord], website_root: Path
+) -> None:
+    """Emit standalone MDX stubs plus generated public-symbol payloads."""
+    symbol_docs_dir = website_root / "content" / "docs" / "api" / "symbols"
+    generated_dir = website_root / ".generated"
+    symbol_docs_payload_dir = generated_dir / "symbols"
+    symbol_docs_dir.mkdir(parents=True, exist_ok=True)
+    generated_dir.mkdir(parents=True, exist_ok=True)
+    symbol_docs_payload_dir.mkdir(parents=True, exist_ok=True)
+
+    expected_pages = {record.slug for record in records}
+    for existing_page in symbol_docs_dir.glob("*.mdx"):
+        if existing_page.stem not in expected_pages:
+            existing_page.unlink()
+    for existing_payload in symbol_docs_payload_dir.glob("*.json"):
+        if existing_payload.stem not in expected_pages:
+            existing_payload.unlink()
+
+    docs_manifest: dict[str, dict[str, object]] = {}
+    for record in sorted(records, key=lambda symbol: symbol.name):
+        stub_path = symbol_docs_dir / f"{record.slug}.mdx"
+        stub_path.write_text(render_public_symbol_stub(record))
+        write_json(symbol_docs_payload_dir / f"{record.slug}.json", asdict(record))
+        docs_manifest[record.name] = asdict(record)
+
+    write_json(generated_dir / "public-api-symbols.json", docs_manifest)
+    print(f"  Generated {len(records)} standalone public-symbol stubs")
+    print(f"  Generated {generated_dir / 'public-api-symbols.json'}")
+
+
+def build_public_api_refs_manifest(
+    *,
+    operation_records: list[OperationDocRecord],
+    symbol_records: list[PublicApiSymbolRecord],
+) -> dict[str, dict[str, str]]:
+    """Build the unified public API ref manifest for docs linking and linting."""
+    manifest: dict[str, dict[str, str]] = {}
+
+    for record in operation_records:
+        entry = {
+            "canonical_name": record.canonical_name,
+            "href": record.href,
+            "label": record.whest_ref,
+            "kind": "op",
+            "module": record.whest_ref.rsplit(".", 1)[0],
+            "source_url": record.whest_source_url,
+            "import_path": record.whest_ref,
+        }
+        namespace = (
+            record.canonical_name.rsplit(".", 1)[0]
+            if "." in record.canonical_name
+            else ""
+        )
+        for alias in _dedupe_aliases([record.name] + list(record.aliases)):
+            manifest[alias] = entry
+            alias_import_path = (
+                f"we.{alias}"
+                if not namespace or "." in alias
+                else f"we.{namespace}.{alias}"
+            )
+            manifest[alias_import_path] = entry
+            manifest[alias_import_path.replace("we.", "whest.", 1)] = entry
+        manifest[record.whest_ref] = entry
+        manifest[record.whest_ref.replace("we.", "whest.", 1)] = entry
+
+    for record in symbol_records:
+        entry = {
+            "canonical_name": record.canonical_name,
+            "href": record.href,
+            "label": record.display_name,
+            "kind": record.kind,
+            "module": record.module,
+            "source_url": record.source_url,
+            "import_path": record.import_path,
+        }
+        for alias in record.aliases:
+            manifest[alias] = entry
+
+    return manifest
+
+
+def write_op_doc_coverage_artifact(
+    records: list[OperationDocRecord], website_root: Path
+) -> None:
+    """Write doc-parser coverage for unresolved references and raw fallbacks."""
+    generated_dir = website_root / ".generated"
+    generated_dir.mkdir(parents=True, exist_ok=True)
+    payload = {
+        record.name: {
+            "unresolved_references": record.doc_coverage.get(
+                "unresolved_references", []
+            ),
+            "unsupported_directives": record.doc_coverage.get(
+                "unsupported_directives", []
+            ),
+            "raw_blocks": record.doc_coverage.get("raw_blocks", []),
+            "has_issues": any(
+                record.doc_coverage.get(key)
+                for key in (
+                    "unresolved_references",
+                    "unsupported_directives",
+                    "raw_blocks",
+                )
+            ),
+        }
+        for record in records
+    }
+    write_json(generated_dir / "op-doc-coverage.json", payload)
+    print(f"  Generated {generated_dir / 'op-doc-coverage.json'}")
+
+
+def write_example_coverage_artifact(
+    coverage: dict[str, dict], website_root: Path
+) -> None:
+    """Write the owned-example coverage manifest."""
+    generated_dir = website_root / ".generated"
+    generated_dir.mkdir(parents=True, exist_ok=True)
+    write_json(generated_dir / "api-example-coverage.json", coverage)
+    print(f"  Generated {generated_dir / 'api-example-coverage.json'}")
+
+
+def assert_supported_docs_env() -> None:
+    """Fail fast unless the docs generator is running on supported NumPy."""
+    try:
+        import numpy as np
+        from numpy.lib import NumpyVersion
+    except (
+        Exception
+    ) as exc:  # pragma: no cover - import failure is environment-specific
+        raise RuntimeError("generate_api_docs.py requires NumPy >= 2.0,<2.3") from exc
+
+    version = NumpyVersion(np.__version__)
+    if not (NumpyVersion("2.0.0") <= version < NumpyVersion("2.3.0")):
+        raise RuntimeError(
+            f"generate_api_docs.py requires NumPy >= 2.0,<2.3; found {np.__version__}"
+        )
 
 
 def generate_audit_page(registry: dict[str, dict]) -> None:
@@ -864,7 +3285,7 @@ def generate_audit_page(registry: dict[str, dict]) -> None:
         if cat == "blacklisted":
             me_ref = "\u2014"
         lines.append(
-            f"| `{name}` | {me_ref} | {np_ref} | {cat} | {latex} | {status_display} | {notes} |"
+            f"| `{name}` | `{me_ref}` | `{np_ref}` | {cat} | {latex} | {status_display} | {notes} |"
         )
     lines.append("")
     out = REF_DIR / "operation-audit.md"
@@ -872,69 +3293,23 @@ def generate_audit_page(registry: dict[str, dict]) -> None:
     print(f"  Generated reference/operation-audit.md ({total} operations)")
 
 
-def generate_op_doc_import_map(slugs: list[str]) -> None:
-    """Generate the internal slug->lazy import map used by static op pages."""
-    GENERATED_DIR.mkdir(parents=True, exist_ok=True)
-    lines = [
-        "import type { OpDocPayload } from '@/components/api-reference/op-doc-types';",
-        "",
-        "export const opDocImports: Record<string, () => Promise<{ default: OpDocPayload }>> = {",
-    ]
-    for slug in slugs:
-        lines.append(f'  "{slug}": () => import("../public/api-data/ops/{slug}.json"),')
-    lines.extend(
-        [
-            "};",
-            "",
-            "export const opDocSlugs = [",
-        ]
-    )
-    for slug in slugs:
-        lines.append(f'  "{slug}",')
-    lines.extend(["] as const;", ""])
-
-    out = GENERATED_DIR / "op-doc-imports.ts"
-    out.write_text("\n".join(lines))
-    print(f"  Generated .generated/op-doc-imports.ts ({len(slugs)} ops)")
-
-
 def generate_ops_json(registry: dict[str, dict]) -> None:
-    """Generate the slim global index plus per-op JSON payloads."""
-    weights = load_weights()
-
-    PUBLIC_DIR.mkdir(parents=True, exist_ok=True)
-    API_DATA_DIR.mkdir(parents=True, exist_ok=True)
-    for existing_json in API_DATA_DIR.glob("*.json"):
-        existing_json.unlink()
+    """Generate website/public/ops.json — machine-readable operation manifest."""
+    weights = load_operation_weights()
+    alias_map = load_alias_map(registry)
+    alias_groups = build_alias_groups(registry, alias_map)
 
     ops = []
-    slugs: list[str] = []
-    seen_slugs: dict[str, str] = {}
-
     for name, info in sorted(registry.items()):
-        slug = slug_for_op(name)
-        if slug in seen_slugs:
-            raise ValueError(
-                f"Slug collision for {slug!r}: {seen_slugs[slug]!r} and {name!r}"
-            )
-        seen_slugs[slug] = name
-        slugs.append(slug)
-
-        payload = build_op_detail_payload(name, info, weights=weights)
-        (API_DATA_DIR / f"{slug}.json").write_text(json.dumps(payload, indent=2))
-
         cat = info["category"]
         mod = info["module"]
         plain, latex = cost_for_op(name, cat)
         ops.append(
             {
                 "name": name,
-                "slug": slug,
-                "detail_href": detail_href_for_slug(slug),
-                "detail_json_href": detail_json_href_for_slug(slug),
                 "module": mod,
-                "whest_ref": whest_ref(name, mod).strip("`"),
-                "numpy_ref": numpy_ref(name, mod).strip("`"),
+                "whest_ref": whest_ref(name, mod),
+                "numpy_ref": numpy_ref(name, mod),
                 "category": cat,
                 "cost_formula": plain,
                 "cost_formula_latex": latex,
@@ -942,16 +3317,19 @@ def generate_ops_json(registry: dict[str, dict]) -> None:
                 "blocked": cat == "blacklisted",
                 "status": "blocked" if cat == "blacklisted" else "supported",
                 "notes": info.get("notes", ""),
-                "summary": payload["op"]["summary"],
-                "weight": weights.get(name, 1.0),
+                "weight": resolve_operation_weight(
+                    name=name,
+                    registry=registry,
+                    weights=weights,
+                    alias_map=alias_map,
+                    alias_groups=alias_groups,
+                ),
             }
         )
-
+    PUBLIC_DIR.mkdir(parents=True, exist_ok=True)
     out = PUBLIC_DIR / "ops.json"
     out.write_text(json.dumps({"operations": ops, "total": len(ops)}, indent=2))
-    generate_op_doc_import_map(slugs)
     print(f"  Generated ops.json ({len(ops)} operations)")
-    print(f"  Generated api-data/ops/*.json ({len(ops)} operations)")
 
 
 def generate_cheat_sheet(registry: dict[str, dict]) -> None:
@@ -1109,20 +3487,14 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
         print(f"\nops.json missing 'operations' key at {ops_json_path}")
         return False
 
-    ops_names = {op["name"] for op in ops_data["operations"]}
-    registry_names = set(registry.keys())
-    missing_from_json = registry_names - ops_names
-    if missing_from_json:
-        print(f"\nMISSING from ops.json ({len(missing_from_json)} ops):")
-        for name in sorted(missing_from_json):
-            print(f"  {name}")
+    operations = ops_data["operations"]
+    if not operations:
+        print("\nops.json has no operations")
         return False
-
-    print(f"ops.json covers all {len(ops_names)} operations.")
 
     missing_detail_fields = [
         op["name"]
-        for op in ops_data["operations"]
+        for op in operations
         if not {"slug", "detail_href", "detail_json_href", "summary"} <= set(op)
     ]
     if missing_detail_fields:
@@ -1131,20 +3503,59 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
             print(f"  {name}")
         return False
 
-    detail_dir = PUBLIC_DIR / "api-data" / "ops"
-    if not detail_dir.exists():
-        print(f"\nper-op detail dir NOT FOUND at {detail_dir}")
+    print(f"ops.json covers {len(operations)} supported canonical operations.")
+
+    op_docs_path = GENERATED_DIR / "op-docs.json"
+    if not op_docs_path.exists():
+        print(f"\nop-docs.json NOT FOUND at {op_docs_path}")
         return False
 
-    sample_missing = []
-    for op in ops_data["operations"][:10]:
-        detail_path = detail_dir / f"{op['slug']}.json"
-        if not detail_path.exists():
-            sample_missing.append(str(detail_path))
-    if sample_missing:
-        print("\nMissing per-op detail payloads:")
-        for path in sample_missing:
-            print(f"  {path}")
+    op_refs_path = GENERATED_DIR / "op-refs.json"
+    if not op_refs_path.exists():
+        print(f"\nop-refs.json NOT FOUND at {op_refs_path}")
+        return False
+
+    example_coverage_path = GENERATED_DIR / "api-example-coverage.json"
+    if not example_coverage_path.exists():
+        print(f"\napi-example-coverage.json NOT FOUND at {example_coverage_path}")
+        return False
+
+    doc_coverage_path = GENERATED_DIR / "op-doc-coverage.json"
+    if not doc_coverage_path.exists():
+        print(f"\nop-doc-coverage.json NOT FOUND at {doc_coverage_path}")
+        return False
+
+    op_docs = json.loads(op_docs_path.read_text())
+    if "absolute" not in op_docs:
+        print(
+            f"\nop-docs.json missing canonical entry for 'absolute' at {op_docs_path}"
+        )
+        return False
+
+    op_refs = json.loads(op_refs_path.read_text())
+    abs_ref = op_refs.get("abs")
+    if (
+        not isinstance(abs_ref, dict)
+        or abs_ref.get("label") != "we.absolute"
+        or abs_ref.get("href") != "/docs/api/ops/absolute/"
+        or abs_ref.get("canonical_name") != "absolute"
+    ):
+        print(
+            "\nop-refs.json missing structured alias entry for "
+            "'abs' -> '/docs/api/ops/absolute/'"
+        )
+        return False
+
+    public_payload = API_DATA_DIR / "absolute.json"
+    if not public_payload.exists():
+        print(f"\nPer-op public payload missing for 'absolute' at {public_payload}")
+        return False
+
+    generated_payload = GENERATED_DIR / "ops" / "absolute.json"
+    if not generated_payload.exists():
+        print(
+            f"\nPer-op generated payload missing for 'absolute' at {generated_payload}"
+        )
         return False
 
     import_map_path = GENERATED_DIR / "op-doc-imports.ts"
@@ -1152,7 +3563,9 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
         print(f"\nGenerated import map NOT FOUND at {import_map_path}")
         return False
 
-    print("Per-op detail payloads and import map are present.")
+    print(
+        "Generated operation doc manifests, static payloads, parser coverage, and example coverage are present."
+    )
 
     return True
 
@@ -1169,8 +3582,15 @@ def main():
     parser.add_argument(
         "--verify", action="store_true", help="Verify coverage only (no generation)"
     )
+    parser.add_argument(
+        "--workers",
+        type=int,
+        default=1,
+        help="Use multiple processes to build operation docs (default: 1)",
+    )
     args = parser.parse_args()
 
+    assert_supported_docs_env()
     registry = load_registry()
 
     if args.verify:
@@ -1178,7 +3598,12 @@ def main():
         sys.exit(0 if ok else 1)
 
     print("Generating API reference data...")
-    generate_ops_json(registry)
+    worker_count = max(1, args.workers)
+    records = build_operation_doc_records(registry, workers=worker_count)
+    write_operation_doc_artifacts(records, WEBSITE)
+    write_op_doc_coverage_artifact(records, WEBSITE)
+    example_coverage = build_example_coverage(records, API_EXAMPLES_DIR)
+    write_example_coverage_artifact(example_coverage, WEBSITE)
 
     print("\nDone. Run with --verify to check coverage.")
 

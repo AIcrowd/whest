@@ -1,0 +1,174 @@
+{
+  "detail_href": "/docs/api/ops/stats-cauchy-pdf/",
+  "detail_json_href": "/api-data/ops/stats-cauchy-pdf.json",
+  "docs": {
+    "sections": [
+      {
+        "blocks": [
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Probability density function at x of the given RV."
+              }
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Summary"
+      },
+      {
+        "blocks": [
+          {
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "quantiles"
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "quantiles"
+                  }
+                ],
+                "name": "x",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The shape parameter(s) for the distribution (see docstring of the\ninstance object for more information)"
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The shape parameter(s) for the distribution (see docstring of the\ninstance object for more information)"
+                  }
+                ],
+                "name": "arg1, arg2, arg3,...",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "location parameter (default=0)"
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "location parameter (default=0)"
+                  }
+                ],
+                "name": "loc",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "scale parameter (default=1)"
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "scale parameter (default=1)"
+                  }
+                ],
+                "name": "scale",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
+          }
+        ],
+        "title": "Parameters"
+      },
+      {
+        "blocks": [
+          {
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Probability density function evaluated at x"
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Probability density function evaluated at x"
+                  }
+                ],
+                "name": "pdf",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
+          }
+        ],
+        "title": "Returns"
+      }
+    ]
+  },
+  "op": {
+    "category": "counted_custom",
+    "cost_formula": "6n",
+    "cost_formula_latex": "$6n$",
+    "module": "whest.stats",
+    "name": "stats.cauchy.pdf",
+    "notes": "Cauchy PDF; cost = numel(input).",
+    "numpy_ref": "np.stats.cauchy.pdf",
+    "signature": "we.stats.cauchy.pdf(x, loc=0, scale=1)",
+    "status": "supported",
+    "summary": "Probability density function at x of the given RV.",
+    "weight": 4.0,
+    "whest_ref": "we.stats.cauchy.pdf"
+  },
+  "schema_version": 1,
+  "slug": "stats-cauchy-pdf",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2051",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_cauchy.py#L32"
+  }
+}

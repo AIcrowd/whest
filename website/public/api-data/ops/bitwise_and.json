@@ -1,165 +1,577 @@
 {
-  "schema_version": 1,
-  "slug": "bitwise_and",
   "detail_href": "/docs/api/ops/bitwise_and/",
   "detail_json_href": "/api-data/ops/bitwise_and.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L73-L159",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.bitwise_and.html"
-  },
-  "op": {
-    "name": "bitwise_and",
-    "module": "numpy",
-    "whest_ref": "we.bitwise_and",
-    "numpy_ref": "np.bitwise_and",
-    "category": "counted_binary",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "numel(output)",
-    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "notes": "Element-wise bitwise AND.",
-    "summary": "Compute the bit-wise AND of two arrays element-wise.",
-    "signature": "we.bitwise_and(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature])"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Compute the bit-wise AND of two arrays element-wise."
-          },
-          {
-            "type": "paragraph",
-            "text": "Computes the bit-wise AND of the underlying binary representation of\nthe integers in the input arrays. This ufunc implements the C/Python\noperator ``&``."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Compute the bit-wise AND of two arrays element-wise."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
-          {
-            "name": "x1, x2",
-            "type": "array_like",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Only integer and boolean types are handled.\nIf ``x1.shape != x2.shape``, they must be broadcastable to a common\nshape (which becomes the shape of the output)."
-              }
-            ]
-          },
-          {
-            "name": "out",
-            "type": "ndarray, None, or tuple of ndarray and None, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
-              }
-            ]
-          },
-          {
-            "name": "where",
-            "type": "array_like, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the `out` array will be set to the ufunc result.\nElsewhere, the `out` array will retain its original value.\nNote that if an uninitialized `out` array is created via the default\n``out=None``, locations within it where the condition is False will\nremain uninitialized."
-              }
-            ]
-          },
-          {
-            "name": "**kwargs",
-            "type": "",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "For other keyword-only arguments, see the\n:ref:`ufunc docs <ufuncs.kwargs>`."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "out",
-            "type": "ndarray or scalar",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Result.\nThis is a scalar if both `x1` and `x2` are scalars."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np"
-          },
-          {
-            "type": "paragraph",
-            "text": "The number 13 is represented by ``00001101``.  Likewise, 17 is\nrepresented by ``00010001``.  The bit-wise AND of 13 and 17 is\ntherefore ``000000001``, or 1:"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> np.bitwise_and(13, 17)\n1"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> np.bitwise_and(14, 13)\n12\n>>> np.binary_repr(12)\n'1100'\n>>> np.bitwise_and([14,3], 13)\narray([12,  1])"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> np.bitwise_and([11,7], [4,25])\narray([0, 1])\n>>> np.bitwise_and(np.array([2,5,255]), np.array([3,14,16]))\narray([ 2,  4, 16])\n>>> np.bitwise_and([True, True], [False, True])\narray([False,  True])"
-          },
-          {
-            "type": "paragraph",
-            "text": "The ``&`` operator can be used as a shorthand for ``np.bitwise_and`` on\nndarrays."
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> x1 = np.array([2, 5, 255])\n>>> x2 = np.array([3, 14, 16])\n>>> x1 & x2\narray([ 2,  4, 16])"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Computes the bit-wise AND of the underlying binary representation of\nthe integers in the input arrays. This ufunc implements the C/Python\noperator "
+              },
+              {
+                "kind": "code",
+                "text": "&"
+              },
+              {
+                "kind": "text",
+                "text": "."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Extended Summary"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "logical_and"
-          },
-          {
-            "type": "paragraph",
-            "text": "bitwise_or"
-          },
-          {
-            "type": "paragraph",
-            "text": "bitwise_xor"
-          },
-          {
-            "type": "paragraph",
-            "text": "binary_repr \u2014 Return the binary representation of the input number as a string."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Only integer and boolean types are handled.\nIf "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "x1.shape != x2.shape"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", they must be broadcastable to a common\nshape (which becomes the shape of the output)."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Only integer and boolean types are handled.\nIf "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "x1.shape != x2.shape"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", they must be broadcastable to a common\nshape (which becomes the shape of the output)."
+                  }
+                ],
+                "name": "x1, x2",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray, None, or tuple of ndarray and None, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
+                  }
+                ],
+                "name": "out",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "out"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " array will be set to the ufunc result.\nElsewhere, the "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "out"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " array will retain its original value.\nNote that if an uninitialized "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "out"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " array is created via the default\n"
+                      },
+                      {
+                        "kind": "code",
+                        "text": "out=None"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", locations within it where the condition is False will\nremain uninitialized."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "out"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " array will be set to the ufunc result.\nElsewhere, the "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "out"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " array will retain its original value.\nNote that if an uninitialized "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "out"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " array is created via the default\n"
+                  },
+                  {
+                    "kind": "code",
+                    "text": "out=None"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", locations within it where the condition is False will\nremain uninitialized."
+                  }
+                ],
+                "name": "where",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "For other keyword-only arguments, see the\n"
+                      },
+                      {
+                        "display_text": "ufunc docs",
+                        "explicit_title": true,
+                        "external_url": "",
+                        "href": "",
+                        "kind": "role_reference",
+                        "original_target": "ufuncs.kwargs",
+                        "role": "ref",
+                        "suppress_link": false,
+                        "target": "ufuncs.kwargs",
+                        "unresolved": true
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "For other keyword-only arguments, see the\n"
+                  },
+                  {
+                    "display_text": "ufunc docs",
+                    "explicit_title": true,
+                    "external_url": "",
+                    "href": "",
+                    "kind": "role_reference",
+                    "original_target": "ufuncs.kwargs",
+                    "role": "ref",
+                    "suppress_link": false,
+                    "target": "ufuncs.kwargs",
+                    "unresolved": true
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
+                  }
+                ],
+                "name": "**kwargs",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
+      },
+      {
+        "blocks": [
+          {
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Result.\nThis is a scalar if both "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "x1"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " and "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "x2"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " are scalars."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray or scalar",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Result.\nThis is a scalar if both "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "x1"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " and "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "x2"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " are scalars."
+                  }
+                ],
+                "name": "out",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
+          }
+        ],
+        "title": "Returns"
+      },
+      {
+        "blocks": [
+          {
+            "links": [
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/logical_and",
+                "label": "we.logical_and",
+                "original_target": "logical_and",
+                "role": "",
+                "target": "logical_and",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/bitwise_or",
+                "label": "we.bitwise_or",
+                "original_target": "bitwise_or",
+                "role": "",
+                "target": "bitwise_or",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/bitwise_xor",
+                "label": "we.bitwise_xor",
+                "original_target": "bitwise_xor",
+                "role": "",
+                "target": "bitwise_xor",
+                "unresolved": false
+              },
+              {
+                "description": "Return the binary representation of the input number as a string.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Return the binary representation of the input number as a string."
+                  }
+                ],
+                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.binary_repr.html",
+                "href": "",
+                "label": "binary_repr",
+                "original_target": "binary_repr",
+                "role": "",
+                "target": "binary_repr",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
+          }
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "The number 13 is represented by "
+              },
+              {
+                "kind": "code",
+                "text": "00001101"
+              },
+              {
+                "kind": "text",
+                "text": ".  Likewise, 17 is\nrepresented by "
+              },
+              {
+                "kind": "code",
+                "text": "00010001"
+              },
+              {
+                "kind": "text",
+                "text": ".  The bit-wise AND of 13 and 17 is\ntherefore "
+              },
+              {
+                "kind": "code",
+                "text": "000000001"
+              },
+              {
+                "kind": "text",
+                "text": ", or 1:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.bitwise_and(13, 17)"
+              },
+              {
+                "kind": "output",
+                "text": "1"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.bitwise_and(14, 13)"
+              },
+              {
+                "kind": "output",
+                "text": "12"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.binary_repr(12)"
+              },
+              {
+                "kind": "output",
+                "text": "'1100'"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.bitwise_and([14,3], 13)"
+              },
+              {
+                "kind": "output",
+                "text": "array([12,  1])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.bitwise_and([11,7], [4,25])"
+              },
+              {
+                "kind": "output",
+                "text": "array([0, 1])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.bitwise_and(we.array([2,5,255]), we.array([3,14,16]))"
+              },
+              {
+                "kind": "output",
+                "text": "array([ 2,  4, 16])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.bitwise_and([True, True], [False, True])"
+              },
+              {
+                "kind": "output",
+                "text": "array([False,  True])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "The "
+              },
+              {
+                "kind": "code",
+                "text": "&"
+              },
+              {
+                "kind": "text",
+                "text": " operator can be used as a shorthand for "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/bitwise_and",
+                "kind": "link",
+                "target": "bitwise_and",
+                "text": "we.bitwise_and"
+              },
+              {
+                "kind": "text",
+                "text": " on\nndarrays."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x1 = we.array([2, 5, 255])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x2 = we.array([3, 14, 16])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x1 & x2"
+              },
+              {
+                "kind": "output",
+                "text": "array([ 2,  4, 16])"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_binary",
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "module": "numpy",
+    "name": "bitwise_and",
+    "notes": "Element-wise bitwise AND.",
+    "numpy_ref": "np.bitwise_and",
+    "signature": "we.bitwise_and(x, y)",
+    "status": "supported",
+    "summary": "Compute the bit-wise AND of two arrays element-wise.",
+    "weight": 1.0,
+    "whest_ref": "we.bitwise_and"
+  },
+  "schema_version": 1,
+  "slug": "bitwise_and",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L73"
   }
 }

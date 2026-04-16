@@ -1,182 +1,816 @@
 {
-  "schema_version": 1,
-  "slug": "dot",
   "detail_href": "/docs/api/ops/dot/",
   "detail_json_href": "/api-data/ops/dot.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L743-L775",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.dot.html"
-  },
-  "op": {
-    "name": "dot",
-    "module": "numpy",
-    "whest_ref": "we.dot",
-    "numpy_ref": "np.dot",
-    "category": "counted_custom",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "m * k * n (FMA=1)",
-    "cost_formula_latex": "$m \\cdot k \\cdot n$",
-    "notes": "Dot product; cost = M*K*N (FMA=1).",
-    "summary": "Dot product of two arrays. Specifically,",
-    "signature": "we.dot(a, b, out=None)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Dot product of two arrays. Specifically,"
-          },
-          {
-            "type": "paragraph",
-            "text": "- If both `a` and `b` are 1-D arrays, it is inner product of vectors\n  (without complex conjugation)."
-          },
-          {
-            "type": "paragraph",
-            "text": "- If both `a` and `b` are 2-D arrays, it is matrix multiplication,\n  but using :func:`matmul` or ``a @ b`` is preferred."
-          },
-          {
-            "type": "paragraph",
-            "text": "- If either `a` or `b` is 0-D (scalar), it is equivalent to\n  :func:`multiply` and using ``numpy.multiply(a, b)`` or ``a * b`` is\n  preferred."
-          },
-          {
-            "type": "paragraph",
-            "text": "- If `a` is an N-D array and `b` is a 1-D array, it is a sum product over\n  the last axis of `a` and `b`."
-          },
-          {
-            "type": "paragraph",
-            "text": "- If `a` is an N-D array and `b` is an M-D array (where ``M>=2``), it is a\n  sum product over the last axis of `a` and the second-to-last axis of\n  `b`::"
-          },
-          {
-            "type": "paragraph",
-            "text": "    dot(a, b)[i,j,k,m] = sum(a[i,j,:] * b[k,:,m])"
-          },
-          {
-            "type": "paragraph",
-            "text": "It uses an optimized BLAS library when possible (see `numpy.linalg`)."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Dot product of two arrays. Specifically,"
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
-          {
-            "name": "a",
-            "type": "array_like",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "First argument."
-              }
-            ]
-          },
-          {
-            "name": "b",
-            "type": "array_like",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Second argument."
-              }
-            ]
-          },
-          {
-            "name": "out",
-            "type": "ndarray, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Output argument. This must have the exact kind that would be returned\nif it was not used. In particular, it must have the right type, must be\nC-contiguous, and its dtype must be the dtype that would be returned\nfor `dot(a,b)`. This is a performance feature. Therefore, if these\nconditions are not met, an exception is raised, instead of attempting\nto be flexible."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "output",
-            "type": "ndarray",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Returns the dot product of `a` and `b`.  If `a` and `b` are both\nscalars or both 1-D arrays then a scalar is returned; otherwise\nan array is returned.\nIf `out` is given, then it is returned."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> np.dot(3, 4)\n12"
+            "items": [
+              {
+                "blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If both "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "a"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " and "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "b"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " are 1-D arrays, it is inner product of vectors\n(without complex conjugation)."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ]
+              },
+              {
+                "blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If both "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "a"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " and "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "b"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " are 2-D arrays, it is matrix multiplication,\nbut using "
+                      },
+                      {
+                        "display_text": "matmul",
+                        "explicit_title": false,
+                        "external_url": "",
+                        "href": "/docs/api/ops/matmul",
+                        "kind": "role_reference",
+                        "original_target": "matmul",
+                        "role": "func",
+                        "suppress_link": false,
+                        "target": "matmul",
+                        "unresolved": false
+                      },
+                      {
+                        "kind": "text",
+                        "text": " or "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "a @ b"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is preferred."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ]
+              },
+              {
+                "blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If either "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "a"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " or "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "b"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is 0-D (scalar), it is equivalent to\n"
+                      },
+                      {
+                        "display_text": "multiply",
+                        "explicit_title": false,
+                        "external_url": "",
+                        "href": "/docs/api/ops/multiply",
+                        "kind": "role_reference",
+                        "original_target": "multiply",
+                        "role": "func",
+                        "suppress_link": false,
+                        "target": "multiply",
+                        "unresolved": false
+                      },
+                      {
+                        "kind": "text",
+                        "text": " and using "
+                      },
+                      {
+                        "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.multiply(a, b).html",
+                        "href": "",
+                        "kind": "link",
+                        "target": "multiply(a, b)",
+                        "text": "we.multiply(a, b)"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " or "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "a * b"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is\npreferred."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ]
+              },
+              {
+                "blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "a"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is an N-D array and "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "b"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is a 1-D array, it is a sum product over\nthe last axis of "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "a"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " and "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "b"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ]
+              },
+              {
+                "blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "a"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is an N-D array and "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "b"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is an M-D array (where "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "M>=2"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "), it is a\nsum product over the last axis of "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "a"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " and the second-to-last axis of\n"
+                      },
+                      {
+                        "kind": "code",
+                        "text": "b"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ":"
+                      }
+                    ],
+                    "type": "paragraph"
+                  },
+                  {
+                    "language": null,
+                    "text": "dot(a, b)[i,j,k,m] = sum(a[i,j,:] * b[k,:,m])",
+                    "type": "literal_block"
+                  }
+                ]
+              }
+            ],
+            "ordered": false,
+            "type": "list"
           },
           {
-            "type": "paragraph",
-            "text": "Neither argument is complex-conjugated:"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> np.dot([2j, 3j], [2j, 3j])\n(-13+0j)"
-          },
-          {
-            "type": "paragraph",
-            "text": "For 2-D arrays it is the matrix product:"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> a = [[1, 0], [0, 1]]\n>>> b = [[4, 1], [2, 2]]\n>>> np.dot(a, b)\narray([[4, 1],\n       [2, 2]])"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> a = np.arange(3*4*5*6).reshape((3,4,5,6))\n>>> b = np.arange(3*4*5*6)[::-1].reshape((5,4,6,3))\n>>> np.dot(a, b)[2,3,2,1,2,2]\n499128\n>>> sum(a[2,3,2,:] * b[1,2,:,2])\n499128"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "It uses an optimized BLAS library when possible (see "
+              },
+              {
+                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.html",
+                "href": "",
+                "kind": "link",
+                "target": "linalg",
+                "text": "we.linalg"
+              },
+              {
+                "kind": "text",
+                "text": ")."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Extended Summary"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "vdot \u2014 Complex-conjugating dot product."
-          },
-          {
-            "type": "paragraph",
-            "text": "vecdot \u2014 Vector dot product of two arrays."
-          },
-          {
-            "type": "paragraph",
-            "text": "tensordot \u2014 Sum products over arbitrary axes."
-          },
-          {
-            "type": "paragraph",
-            "text": "einsum \u2014 Einstein summation convention."
-          },
-          {
-            "type": "paragraph",
-            "text": "matmul \u2014 '@' operator as method with out parameter."
-          },
-          {
-            "type": "paragraph",
-            "text": "linalg.multi_dot \u2014 Chained dot product."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "First argument."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "First argument."
+                  }
+                ],
+                "name": "a",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Second argument."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Second argument."
+                  }
+                ],
+                "name": "b",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Output argument. This must have the exact kind that would be returned\nif it was not used. In particular, it must have the right type, must be\nC-contiguous, and its dtype must be the dtype that would be returned\nfor "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "dot(a,b)"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ". This is a performance feature. Therefore, if these\nconditions are not met, an exception is raised, instead of attempting\nto be flexible."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Output argument. This must have the exact kind that would be returned\nif it was not used. In particular, it must have the right type, must be\nC-contiguous, and its dtype must be the dtype that would be returned\nfor "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "dot(a,b)"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ". This is a performance feature. Therefore, if these\nconditions are not met, an exception is raised, instead of attempting\nto be flexible."
+                  }
+                ],
+                "name": "out",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
+      },
+      {
+        "blocks": [
+          {
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Returns the dot product of "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "a"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " and "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "b"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ".  If "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "a"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " and "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "b"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " are both\nscalars or both 1-D arrays then a scalar is returned; otherwise\nan array is returned.\nIf "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "out"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is given, then it is returned."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Returns the dot product of "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "a"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " and "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "b"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ".  If "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "a"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " and "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "b"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " are both\nscalars or both 1-D arrays then a scalar is returned; otherwise\nan array is returned.\nIf "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "out"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is given, then it is returned."
+                  }
+                ],
+                "name": "output",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
+          }
+        ],
+        "title": "Returns"
+      },
+      {
+        "blocks": [
+          {
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If the last dimension of "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "a"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is not the same size as\nthe second-to-last dimension of "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "b"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ValueError",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "If the last dimension of "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "a"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is not the same size as\nthe second-to-last dimension of "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "b"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
+                  }
+                ],
+                "name": "",
+                "type": "field_list"
+              }
+            ],
+            "title": "Raises",
+            "type": "field_list"
+          }
+        ],
+        "title": "Raises"
+      },
+      {
+        "blocks": [
+          {
+            "links": [
+              {
+                "description": "Complex-conjugating dot product.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Complex-conjugating dot product."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/vdot",
+                "label": "we.vdot",
+                "original_target": "vdot",
+                "role": "",
+                "target": "vdot",
+                "unresolved": false
+              },
+              {
+                "description": "Vector dot product of two arrays.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Vector dot product of two arrays."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/vecdot",
+                "label": "we.vecdot",
+                "original_target": "vecdot",
+                "role": "",
+                "target": "vecdot",
+                "unresolved": false
+              },
+              {
+                "description": "Sum products over arbitrary axes.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Sum products over arbitrary axes."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/tensordot",
+                "label": "we.tensordot",
+                "original_target": "tensordot",
+                "role": "",
+                "target": "tensordot",
+                "unresolved": false
+              },
+              {
+                "description": "Einstein summation convention.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Einstein summation convention."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/einsum",
+                "label": "we.einsum",
+                "original_target": "einsum",
+                "role": "",
+                "target": "einsum",
+                "unresolved": false
+              },
+              {
+                "description": "'@' operator as method with out parameter.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "'@' operator as method with out parameter."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/matmul",
+                "label": "we.matmul",
+                "original_target": "matmul",
+                "role": "",
+                "target": "matmul",
+                "unresolved": false
+              },
+              {
+                "description": "Chained dot product.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Chained dot product."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/linalg-multi_dot",
+                "label": "we.linalg.multi_dot",
+                "original_target": "linalg.multi_dot",
+                "role": "",
+                "target": "linalg.multi_dot",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
+          }
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.dot(3, 4)"
+              },
+              {
+                "kind": "output",
+                "text": "12"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Neither argument is complex-conjugated:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.dot([2j, 3j], [2j, 3j])"
+              },
+              {
+                "kind": "output",
+                "text": "(-13+0j)"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "For 2-D arrays it is the matrix product:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = [[1, 0], [0, 1]]"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "b = [[4, 1], [2, 2]]"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.dot(a, b)"
+              },
+              {
+                "kind": "output",
+                "text": "array([[4, 1],"
+              },
+              {
+                "kind": "output",
+                "text": "       [2, 2]])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.arange(3*4*5*6).reshape((3,4,5,6))"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "b = we.arange(3*4*5*6)[::-1].reshape((5,4,6,3))"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.dot(a, b)[2,3,2,1,2,2]"
+              },
+              {
+                "kind": "output",
+                "text": "499128"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "sum(a[2,3,2,:] * b[1,2,:,2])"
+              },
+              {
+                "kind": "output",
+                "text": "499128"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_custom",
+    "cost_formula": "m * k * n (FMA=1)",
+    "cost_formula_latex": "$m \\cdot k \\cdot n$",
+    "module": "numpy",
+    "name": "dot",
+    "notes": "Dot product; cost = M*K*N (FMA=1).",
+    "numpy_ref": "np.dot",
+    "signature": "we.dot(a, b)",
+    "status": "supported",
+    "summary": "Dot product of two arrays. Specifically,",
+    "weight": 1.0,
+    "whest_ref": "we.dot"
+  },
+  "schema_version": 1,
+  "slug": "dot",
+  "source": {
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.dot.html",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L743"
   }
 }

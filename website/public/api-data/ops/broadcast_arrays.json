@@ -1,124 +1,280 @@
 {
-  "schema_version": 1,
-  "slug": "broadcast_arrays",
   "detail_href": "/docs/api/ops/broadcast_arrays/",
   "detail_json_href": "/api-data/ops/broadcast_arrays.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L718-L725",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.broadcast_arrays.html"
-  },
-  "op": {
-    "name": "broadcast_arrays",
-    "module": "numpy",
-    "whest_ref": "we.broadcast_arrays",
-    "numpy_ref": "np.broadcast_arrays",
-    "category": "free",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "0",
-    "cost_formula_latex": "$0$",
-    "notes": "Broadcast arrays against each other. Cost: numel(output).",
-    "summary": "Broadcast any number of arrays against each other.",
-    "signature": "we.broadcast_arrays(*args, subok=False)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Broadcast any number of arrays against each other."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Broadcast any number of arrays against each other."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
+        "blocks": [
           {
-            "name": "*args",
-            "type": "array_likes",
-            "desc_blocks": [
+            "items": [
               {
-                "type": "paragraph",
-                "text": "The arrays to broadcast."
-              }
-            ]
-          },
-          {
-            "name": "subok",
-            "type": "bool, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "If True, then sub-classes will be passed-through, otherwise\nthe returned arrays will be forced to be a base-class array (default)."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "broadcasted",
-            "type": "tuple of arrays",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "These arrays are views on the original arrays.  They are typically\nnot contiguous.  Furthermore, more than one element of a\nbroadcasted array may refer to a single memory location. If you need\nto write to the arrays, make copies first. While you can set the\n``writable`` flag True, writing to a single output value may end up\nchanging more than one location in the output array."
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The arrays to broadcast."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_likes",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The arrays to broadcast."
+                  }
+                ],
+                "name": "*args",
+                "type": "field_list"
               },
               {
-                "type": "directive",
-                "name": "deprecated:: 1.17",
-                "body": "    The output is currently marked so that if written to, a deprecation\n    warning will be emitted. A future version will set the\n    ``writable`` flag False so writing to it will raise an error.",
-                "raw": ".. deprecated:: 1.17\n    The output is currently marked so that if written to, a deprecation\n    warning will be emitted. A future version will set the\n    ``writable`` flag False so writing to it will raise an error."
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If True, then sub-classes will be passed-through, otherwise\nthe returned arrays will be forced to be a base-class array (default)."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "bool, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "If True, then sub-classes will be passed-through, otherwise\nthe returned arrays will be forced to be a base-class array (default)."
+                  }
+                ],
+                "name": "subok",
+                "type": "field_list"
               }
-            ]
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
       },
       {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> x = np.array([[1,2,3]])\n>>> y = np.array([[4],[5]])\n>>> np.broadcast_arrays(x, y)\n(array([[1, 2, 3],\n        [1, 2, 3]]),\n array([[4, 4, 4],\n        [5, 5, 5]]))"
-          },
-          {
-            "type": "paragraph",
-            "text": "Here is a useful idiom for getting contiguous copies instead of\nnon-contiguous views."
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> [np.array(a) for a in np.broadcast_arrays(x, y)]\n[array([[1, 2, 3],\n        [1, 2, 3]]),\n array([[4, 4, 4],\n        [5, 5, 5]])]"
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "These arrays are views on the original arrays.  They are typically\nnot contiguous.  Furthermore, more than one element of a\nbroadcasted array may refer to a single memory location. If you need\nto write to the arrays, make copies first. While you can set the\n"
+                      },
+                      {
+                        "kind": "code",
+                        "text": "writable"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " flag True, writing to a single output value may end up\nchanging more than one location in the output array."
+                      }
+                    ],
+                    "type": "paragraph"
+                  },
+                  {
+                    "argument_inline": [],
+                    "content_blocks": [],
+                    "directive": "deprecated",
+                    "options": [],
+                    "raw_source": ".. deprecated:: 1.17\n    The output is currently marked so that if written to, a deprecation\n    warning will be emitted. A future version will set the\n    ``writable`` flag False so writing to it will raise an error.",
+                    "supported": true,
+                    "type": "directive_block",
+                    "version": "1.17"
+                  }
+                ],
+                "data_type": "tuple of arrays",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "These arrays are views on the original arrays.  They are typically\nnot contiguous.  Furthermore, more than one element of a\nbroadcasted array may refer to a single memory location. If you need\nto write to the arrays, make copies first. While you can set the\n"
+                  },
+                  {
+                    "kind": "code",
+                    "text": "writable"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " flag True, writing to a single output value may end up\nchanging more than one location in the output array."
+                  }
+                ],
+                "name": "broadcasted",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Returns"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "broadcast"
-          },
-          {
-            "type": "paragraph",
-            "text": "broadcast_to"
-          },
-          {
-            "type": "paragraph",
-            "text": "broadcast_shapes"
+            "links": [
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.broadcast.html",
+                "href": "",
+                "label": "broadcast",
+                "original_target": "broadcast",
+                "role": "",
+                "target": "broadcast",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/broadcast_to",
+                "label": "we.broadcast_to",
+                "original_target": "broadcast_to",
+                "role": "",
+                "target": "broadcast_to",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/broadcast_shapes",
+                "label": "we.broadcast_shapes",
+                "original_target": "broadcast_shapes",
+                "role": "",
+                "target": "broadcast_shapes",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
           }
-        ]
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x = we.array([[1,2,3]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "y = we.array([[4],[5]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.broadcast_arrays(x, y)"
+              },
+              {
+                "kind": "output",
+                "text": "(array([[1, 2, 3],"
+              },
+              {
+                "kind": "output",
+                "text": "        [1, 2, 3]]),"
+              },
+              {
+                "kind": "output",
+                "text": " array([[4, 4, 4],"
+              },
+              {
+                "kind": "output",
+                "text": "        [5, 5, 5]]))"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Here is a useful idiom for getting contiguous copies instead of\nnon-contiguous views."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "[we.array(a) for a in we.broadcast_arrays(x, y)]"
+              },
+              {
+                "kind": "output",
+                "text": "[array([[1, 2, 3],"
+              },
+              {
+                "kind": "output",
+                "text": "        [1, 2, 3]]),"
+              },
+              {
+                "kind": "output",
+                "text": " array([[4, 4, 4],"
+              },
+              {
+                "kind": "output",
+                "text": "        [5, 5, 5]])]"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "free",
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "module": "numpy",
+    "name": "broadcast_arrays",
+    "notes": "Broadcast arrays against each other. Cost: numel(output).",
+    "numpy_ref": "np.broadcast_arrays",
+    "signature": "we.broadcast_arrays(*args, subok=False)",
+    "status": "supported",
+    "summary": "Broadcast any number of arrays against each other.",
+    "weight": 1.0,
+    "whest_ref": "we.broadcast_arrays"
+  },
+  "schema_version": 1,
+  "slug": "broadcast_arrays",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_stride_tricks_impl.py#L481",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L718"
   }
 }

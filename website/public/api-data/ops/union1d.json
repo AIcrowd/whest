@@ -1,94 +1,174 @@
 {
-  "schema_version": 1,
-  "slug": "union1d",
   "detail_href": "/docs/api/ops/union1d/",
   "detail_json_href": "/api-data/ops/union1d.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L391-L401",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.union1d.html"
-  },
-  "op": {
-    "name": "union1d",
-    "module": "numpy",
-    "whest_ref": "we.union1d",
-    "numpy_ref": "np.union1d",
-    "category": "counted_custom",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "per-operation",
-    "cost_formula_latex": "varies",
-    "notes": "Set union; cost = (n+m)*ceil(log2(n+m)).",
-    "summary": "Find the union of two arrays.",
-    "signature": "we.union1d(ar1, ar2)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Find the union of two arrays."
-          },
-          {
-            "type": "paragraph",
-            "text": "Return the unique, sorted array of values that are in either of the two\ninput arrays."
-          }
-        ]
-      },
-      {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
-          {
-            "name": "ar1, ar2",
-            "type": "array_like",
-            "desc_blocks": [
+            "inline": [
               {
-                "type": "paragraph",
-                "text": "Input arrays. They are flattened if they are not already 1D."
+                "kind": "text",
+                "text": "Find the union of two arrays."
               }
-            ]
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "union1d",
-            "type": "ndarray",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Unique, sorted union of the input arrays."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> np.union1d([-1, 0, 1], [-2, 0, 2])\narray([-2, -1,  0,  1,  2])"
-          },
-          {
-            "type": "paragraph",
-            "text": "To find the union of more than two arrays, use functools.reduce:"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> from functools import reduce\n>>> reduce(np.union1d, ([1, 3, 4, 3], [3, 1, 2, 1], [6, 3, 4, 2]))\narray([1, 2, 3, 4, 6])"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Return the unique, sorted array of values that are in either of the two\ninput arrays."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Extended Summary"
+      },
+      {
+        "blocks": [
+          {
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Input arrays. They are flattened if they are not already 1D."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Input arrays. They are flattened if they are not already 1D."
+                  }
+                ],
+                "name": "ar1, ar2",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
+          }
+        ],
+        "title": "Parameters"
+      },
+      {
+        "blocks": [
+          {
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Unique, sorted union of the input arrays."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Unique, sorted union of the input arrays."
+                  }
+                ],
+                "name": "union1d",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
+          }
+        ],
+        "title": "Returns"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.union1d([-1, 0, 1], [-2, 0, 2])"
+              },
+              {
+                "kind": "output",
+                "text": "array([-2, -1,  0,  1,  2])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "To find the union of more than two arrays, use functools.reduce:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "from functools import reduce"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "reduce(we.union1d, ([1, 3, 4, 3], [3, 1, 2, 1], [6, 3, 4, 2]))"
+              },
+              {
+                "kind": "output",
+                "text": "array([1, 2, 3, 4, 6])"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_custom",
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "module": "numpy",
+    "name": "union1d",
+    "notes": "Set union; cost = (n+m)*ceil(log2(n+m)).",
+    "numpy_ref": "np.union1d",
+    "signature": "we.union1d(ar1, ar2)",
+    "status": "supported",
+    "summary": "Find the union of two arrays.",
+    "weight": 1.0,
+    "whest_ref": "we.union1d"
+  },
+  "schema_version": 1,
+  "slug": "union1d",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L1140",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L391"
   }
 }

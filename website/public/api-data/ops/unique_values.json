@@ -1,99 +1,185 @@
 {
-  "schema_version": 1,
-  "slug": "unique_values",
   "detail_href": "/docs/api/ops/unique_values/",
   "detail_json_href": "/api-data/ops/unique_values.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L308-L317",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.unique_values.html"
-  },
-  "op": {
-    "name": "unique_values",
-    "module": "numpy",
-    "whest_ref": "we.unique_values",
-    "numpy_ref": "np.unique_values",
-    "category": "counted_custom",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "per-operation",
-    "cost_formula_latex": "varies",
-    "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
-    "summary": "Returns the unique elements of an input array `x`.",
-    "signature": "we.unique_values(x, /)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Returns the unique elements of an input array `x`."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Returns the unique elements of an input array "
+              },
+              {
+                "kind": "code",
+                "text": "x"
+              },
+              {
+                "kind": "text",
+                "text": "."
+              }
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Summary"
+      },
+      {
+        "blocks": [
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "This function is an Array API compatible alternative to:"
+              }
+            ],
+            "type": "paragraph"
           },
           {
-            "type": "paragraph",
-            "text": "This function is an Array API compatible alternative to::"
-          },
-          {
-            "type": "paragraph",
-            "text": "    np.unique(x, equal_nan=False)"
+            "language": null,
+            "text": "we.unique(x, equal_nan=False)",
+            "type": "literal_block"
           }
-        ]
+        ],
+        "title": "Extended Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
-          {
-            "name": "x",
-            "type": "array_like",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Input array. It will be flattened if it is not already 1-D."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "out",
-            "type": "ndarray",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "The unique elements of an input array."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> np.unique_values([1, 1, 2])\narray([1, 2])"
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Input array. It will be flattened if it is not already 1-D."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Input array. It will be flattened if it is not already 1-D."
+                  }
+                ],
+                "name": "x",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "unique \u2014 Find the unique elements of an array."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The unique elements of an input array."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The unique elements of an input array."
+                  }
+                ],
+                "name": "out",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Returns"
+      },
+      {
+        "blocks": [
+          {
+            "links": [
+              {
+                "description": "Find the unique elements of an array.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Find the unique elements of an array."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/unique",
+                "label": "we.unique",
+                "original_target": "unique",
+                "role": "",
+                "target": "unique",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
+          }
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.unique_values([1, 1, 2])"
+              },
+              {
+                "kind": "output",
+                "text": "array([1, 2])"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_custom",
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "module": "numpy",
+    "name": "unique_values",
+    "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
+    "numpy_ref": "np.unique_values",
+    "signature": "we.unique_values(x, /)",
+    "status": "supported",
+    "summary": "Returns the unique elements of an input array `x`.",
+    "weight": 1.0,
+    "whest_ref": "we.unique_values"
+  },
+  "schema_version": 1,
+  "slug": "unique_values",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L573",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L308"
   }
 }

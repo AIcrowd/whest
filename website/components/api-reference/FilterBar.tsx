@@ -10,9 +10,9 @@ interface FilterBarProps {
   onSearchChange: (value: string) => void;
   costFilter: CostFilter;
   onCostFilterChange: (value: CostFilter) => void;
-  module: string;
-  onModuleChange: (value: string) => void;
-  modules: string[];
+  area: string;
+  onAreaChange: (value: string) => void;
+  areas: string[];
   resultCount: number;
   totalCount: number;
 }
@@ -29,9 +29,9 @@ export default function FilterBar({
   onSearchChange,
   costFilter,
   onCostFilterChange,
-  module,
-  onModuleChange,
-  modules,
+  area,
+  onAreaChange,
+  areas,
   resultCount,
   totalCount,
 }: FilterBarProps): React.ReactElement {
@@ -46,13 +46,14 @@ export default function FilterBar({
           onChange={(e) => onSearchChange(e.target.value)}
         />
         <select
-          className={styles.moduleSelect}
-          value={module}
-          onChange={(e) => onModuleChange(e.target.value)}
+          className={styles.areaSelect}
+          aria-label="Area"
+          value={area}
+          onChange={(e) => onAreaChange(e.target.value)}
         >
-          <option value="">All modules</option>
-          {modules.map((m) => (
-            <option key={m} value={m}>{m}</option>
+          <option value="">All areas</option>
+          {areas.map((value) => (
+            <option key={value} value={value}>{value}</option>
           ))}
         </select>
       </div>

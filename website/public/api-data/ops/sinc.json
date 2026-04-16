@@ -1,118 +1,403 @@
 {
-  "schema_version": 1,
-  "slug": "sinc",
   "detail_href": "/docs/api/ops/sinc/",
   "detail_json_href": "/api-data/ops/sinc.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29-L42",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.sinc.html"
-  },
-  "op": {
-    "name": "sinc",
-    "module": "numpy",
-    "whest_ref": "we.sinc",
-    "numpy_ref": "np.sinc",
-    "category": "counted_unary",
-    "status": "supported",
-    "weight": 16.0,
-    "cost_formula": "numel(output)",
-    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "notes": "Normalized sinc function element-wise.",
-    "summary": "Return the normalized sinc function.",
-    "signature": "we.sinc(x)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Return the normalized sinc function."
-          },
-          {
-            "type": "paragraph",
-            "text": "The sinc function is equal to :math:`\\sin(\\pi x)/(\\pi x)` for any argument\n:math:`x\\ne 0`. ``sinc(0)`` takes the limit value 1, making ``sinc`` not\nonly everywhere continuous but also infinitely differentiable."
-          },
-          {
-            "type": "directive",
-            "name": "note",
-            "body": "",
-            "raw": ".. note::"
-          },
-          {
-            "type": "paragraph",
-            "text": "    Note the normalization factor of ``pi`` used in the definition.\n    This is the most commonly used definition in signal processing.\n    Use ``sinc(x / np.pi)`` to obtain the unnormalized sinc function\n    :math:`\\sin(x)/x` that is more common in mathematics."
-          }
-        ]
-      },
-      {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
-          {
-            "name": "x",
-            "type": "ndarray",
-            "desc_blocks": [
+            "inline": [
               {
-                "type": "paragraph",
-                "text": "Array (possibly multi-dimensional) of values for which to calculate\n``sinc(x)``."
+                "kind": "text",
+                "text": "Return the normalized sinc function."
               }
-            ]
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
+        "blocks": [
           {
-            "name": "out",
-            "type": "ndarray",
-            "desc_blocks": [
+            "inline": [
               {
-                "type": "paragraph",
-                "text": "``sinc(x)``, which has the same shape as the input."
+                "kind": "text",
+                "text": "The sinc function is equal to "
+              },
+              {
+                "kind": "math",
+                "latex": "\\sin(\\pi x)/(\\pi x)"
+              },
+              {
+                "kind": "text",
+                "text": " for any argument\n"
+              },
+              {
+                "kind": "math",
+                "latex": "x\\ne 0"
+              },
+              {
+                "kind": "text",
+                "text": ". "
+              },
+              {
+                "kind": "code",
+                "text": "sinc(0)"
+              },
+              {
+                "kind": "text",
+                "text": " takes the limit value 1, making "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/sinc",
+                "kind": "link",
+                "target": "sinc",
+                "text": "sinc"
+              },
+              {
+                "kind": "text",
+                "text": " not\nonly everywhere continuous but also infinitely differentiable."
               }
-            ]
+            ],
+            "type": "paragraph"
+          },
+          {
+            "argument_inline": [],
+            "content_blocks": [
+              {
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Note the normalization factor of "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "pi"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " used in the definition.\nThis is the most commonly used definition in signal processing.\nUse "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "sinc(x / we.pi)"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " to obtain the unnormalized sinc function\n"
+                  },
+                  {
+                    "kind": "math",
+                    "latex": "\\sin(x)/x"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " that is more common in mathematics."
+                  }
+                ],
+                "type": "paragraph"
+              }
+            ],
+            "directive": "note",
+            "options": [],
+            "raw_source": ".. note::\n\n    Note the normalization factor of ``pi`` used in the definition.\n    This is the most commonly used definition in signal processing.\n    Use ``sinc(x / we.pi)`` to obtain the unnormalized sinc function\n    :math:`\\sin(x)/x` that is more common in mathematics.",
+            "supported": true,
+            "type": "directive_block"
           }
-        ]
+        ],
+        "title": "Extended Summary"
       },
       {
-        "kind": "notes",
-        "title": "Notes",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "The name sinc is short for \"sine cardinal\" or \"sinus cardinalis\"."
-          },
-          {
-            "type": "paragraph",
-            "text": "The sinc function is used in various signal processing applications,\nincluding in anti-aliasing, in the construction of a Lanczos resampling\nfilter, and in interpolation."
-          },
-          {
-            "type": "paragraph",
-            "text": "For bandlimited interpolation of discrete-time signals, the ideal\ninterpolation kernel is proportional to the sinc function."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Array (possibly multi-dimensional) of values for which to calculate\n"
+                      },
+                      {
+                        "kind": "code",
+                        "text": "sinc(x)"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Array (possibly multi-dimensional) of values for which to calculate\n"
+                  },
+                  {
+                    "kind": "code",
+                    "text": "sinc(x)"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
+                  }
+                ],
+                "name": "x",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
       },
       {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> import matplotlib.pyplot as plt\n>>> x = np.linspace(-4, 4, 41)\n>>> np.sinc(x)\n array([-3.89804309e-17,  -4.92362781e-02,  -8.40918587e-02, # may vary\n        -8.90384387e-02,  -5.84680802e-02,   3.89804309e-17,\n        6.68206631e-02,   1.16434881e-01,   1.26137788e-01,\n        8.50444803e-02,  -3.89804309e-17,  -1.03943254e-01,\n        -1.89206682e-01,  -2.16236208e-01,  -1.55914881e-01,\n        3.89804309e-17,   2.33872321e-01,   5.04551152e-01,\n        7.56826729e-01,   9.35489284e-01,   1.00000000e+00,\n        9.35489284e-01,   7.56826729e-01,   5.04551152e-01,\n        2.33872321e-01,   3.89804309e-17,  -1.55914881e-01,\n       -2.16236208e-01,  -1.89206682e-01,  -1.03943254e-01,\n       -3.89804309e-17,   8.50444803e-02,   1.26137788e-01,\n        1.16434881e-01,   6.68206631e-02,   3.89804309e-17,\n        -5.84680802e-02,  -8.90384387e-02,  -8.40918587e-02,\n        -4.92362781e-02,  -3.89804309e-17])"
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "code",
+                        "text": "sinc(x)"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", which has the same shape as the input."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "code",
+                    "text": "sinc(x)"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", which has the same shape as the input."
+                  }
+                ],
+                "name": "out",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
+          }
+        ],
+        "title": "Returns"
+      },
+      {
+        "blocks": [
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "The name sinc is short for \"sine cardinal\" or \"sinus cardinalis\"."
+              }
+            ],
+            "type": "paragraph"
           },
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> plt.plot(x, np.sinc(x))\n[<matplotlib.lines.Line2D object at 0x...>]\n>>> plt.title(\"Sinc Function\")\nText(0.5, 1.0, 'Sinc Function')\n>>> plt.ylabel(\"Amplitude\")\nText(0, 0.5, 'Amplitude')\n>>> plt.xlabel(\"X\")\nText(0.5, 0, 'X')\n>>> plt.show()"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "The sinc function is used in various signal processing applications,\nincluding in anti-aliasing, in the construction of a Lanczos resampling\nfilter, and in interpolation."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "For bandlimited interpolation of discrete-time signals, the ideal\ninterpolation kernel is proportional to the sinc function."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Notes"
+      },
+      {
+        "blocks": [
+          {
+            "raw_kind": "footnote",
+            "raw_text": "1\n\nWeisstein, Eric W. \"Sinc Function.\" From MathWorld--A Wolfram Web\nResource. https://mathworld.wolfram.com/SincFunction.html",
+            "type": "raw_block"
+          },
+          {
+            "raw_kind": "footnote",
+            "raw_text": "2\n\nWikipedia, \"Sinc function\",\nhttps://en.wikipedia.org/wiki/Sinc_function",
+            "type": "raw_block"
+          }
+        ],
+        "title": "References"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import matplotlib.pyplot as plt"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x = we.linspace(-4, 4, 41)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.sinc(x)"
+              },
+              {
+                "kind": "output",
+                "text": " array([-3.89804309e-17,  -4.92362781e-02,  -8.40918587e-02, # may vary"
+              },
+              {
+                "kind": "output",
+                "text": "        -8.90384387e-02,  -5.84680802e-02,   3.89804309e-17,"
+              },
+              {
+                "kind": "output",
+                "text": "        6.68206631e-02,   1.16434881e-01,   1.26137788e-01,"
+              },
+              {
+                "kind": "output",
+                "text": "        8.50444803e-02,  -3.89804309e-17,  -1.03943254e-01,"
+              },
+              {
+                "kind": "output",
+                "text": "        -1.89206682e-01,  -2.16236208e-01,  -1.55914881e-01,"
+              },
+              {
+                "kind": "output",
+                "text": "        3.89804309e-17,   2.33872321e-01,   5.04551152e-01,"
+              },
+              {
+                "kind": "output",
+                "text": "        7.56826729e-01,   9.35489284e-01,   1.00000000e+00,"
+              },
+              {
+                "kind": "output",
+                "text": "        9.35489284e-01,   7.56826729e-01,   5.04551152e-01,"
+              },
+              {
+                "kind": "output",
+                "text": "        2.33872321e-01,   3.89804309e-17,  -1.55914881e-01,"
+              },
+              {
+                "kind": "output",
+                "text": "       -2.16236208e-01,  -1.89206682e-01,  -1.03943254e-01,"
+              },
+              {
+                "kind": "output",
+                "text": "       -3.89804309e-17,   8.50444803e-02,   1.26137788e-01,"
+              },
+              {
+                "kind": "output",
+                "text": "        1.16434881e-01,   6.68206631e-02,   3.89804309e-17,"
+              },
+              {
+                "kind": "output",
+                "text": "        -5.84680802e-02,  -8.90384387e-02,  -8.40918587e-02,"
+              },
+              {
+                "kind": "output",
+                "text": "        -4.92362781e-02,  -3.89804309e-17])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "plt.plot(x, we.sinc(x))"
+              },
+              {
+                "kind": "output",
+                "text": "[<matplotlib.lines.Line2D object at 0x...>]"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "plt.title(\"Sinc Function\")"
+              },
+              {
+                "kind": "output",
+                "text": "Text(0.5, 1.0, 'Sinc Function')"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "plt.ylabel(\"Amplitude\")"
+              },
+              {
+                "kind": "output",
+                "text": "Text(0, 0.5, 'Amplitude')"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "plt.xlabel(\"X\")"
+              },
+              {
+                "kind": "output",
+                "text": "Text(0.5, 0, 'X')"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "plt.show()"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_unary",
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "module": "numpy",
+    "name": "sinc",
+    "notes": "Normalized sinc function element-wise.",
+    "numpy_ref": "np.sinc",
+    "signature": "we.sinc(x)",
+    "status": "supported",
+    "summary": "Return the normalized sinc function.",
+    "weight": 16.0,
+    "whest_ref": "we.sinc"
+  },
+  "schema_version": 1,
+  "slug": "sinc",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L3752",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29"
   }
 }

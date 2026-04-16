@@ -1,115 +1,294 @@
 {
-  "schema_version": 1,
-  "slug": "repeat",
   "detail_href": "/docs/api/ops/repeat/",
   "detail_json_href": "/api-data/ops/repeat.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L390-L402",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.repeat.html"
-  },
-  "op": {
-    "name": "repeat",
-    "module": "numpy",
-    "whest_ref": "we.repeat",
-    "numpy_ref": "np.repeat",
-    "category": "counted_custom",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "per-operation",
-    "cost_formula_latex": "varies",
-    "notes": "Repeat elements of an array. Cost: numel(output).",
-    "summary": "Repeat each element of an array after themselves",
-    "signature": "we.repeat(a, repeats, axis=None)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Repeat each element of an array after themselves"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Repeat each element of an array after themselves"
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
-          {
-            "name": "a",
-            "type": "array_like",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Input array."
-              }
-            ]
-          },
-          {
-            "name": "repeats",
-            "type": "int or array of ints",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "The number of repetitions for each element.  `repeats` is broadcasted\nto fit the shape of the given axis."
-              }
-            ]
-          },
-          {
-            "name": "axis",
-            "type": "int, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "The axis along which to repeat values.  By default, use the\nflattened input array, and return a flat output array."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "repeated_array",
-            "type": "ndarray",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Output array which has the same shape as `a`, except along\nthe given axis."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> np.repeat(3, 4)\narray([3, 3, 3, 3])\n>>> x = np.array([[1,2],[3,4]])\n>>> np.repeat(x, 2)\narray([1, 1, 2, 2, 3, 3, 4, 4])\n>>> np.repeat(x, 3, axis=1)\narray([[1, 1, 1, 2, 2, 2],\n       [3, 3, 3, 4, 4, 4]])\n>>> np.repeat(x, [1, 2], axis=0)\narray([[1, 2],\n       [3, 4],\n       [3, 4]])"
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Input array."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Input array."
+                  }
+                ],
+                "name": "a",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The number of repetitions for each element.  "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "repeats"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is broadcasted\nto fit the shape of the given axis."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "int or array of ints",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The number of repetitions for each element.  "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "repeats"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is broadcasted\nto fit the shape of the given axis."
+                  }
+                ],
+                "name": "repeats",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The axis along which to repeat values.  By default, use the\nflattened input array, and return a flat output array."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "int, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The axis along which to repeat values.  By default, use the\nflattened input array, and return a flat output array."
+                  }
+                ],
+                "name": "axis",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "tile \u2014 Tile an array."
-          },
-          {
-            "type": "paragraph",
-            "text": "unique \u2014 Find the unique elements of an array."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Output array which has the same shape as "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "a"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", except along\nthe given axis."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Output array which has the same shape as "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "a"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", except along\nthe given axis."
+                  }
+                ],
+                "name": "repeated_array",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Returns"
+      },
+      {
+        "blocks": [
+          {
+            "links": [
+              {
+                "description": "Tile an array.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Tile an array."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/tile",
+                "label": "we.tile",
+                "original_target": "tile",
+                "role": "",
+                "target": "tile",
+                "unresolved": false
+              },
+              {
+                "description": "Find the unique elements of an array.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Find the unique elements of an array."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/unique",
+                "label": "we.unique",
+                "original_target": "unique",
+                "role": "",
+                "target": "unique",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
+          }
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.repeat(3, 4)"
+              },
+              {
+                "kind": "output",
+                "text": "array([3, 3, 3, 3])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x = we.array([[1,2],[3,4]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.repeat(x, 2)"
+              },
+              {
+                "kind": "output",
+                "text": "array([1, 1, 2, 2, 3, 3, 4, 4])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.repeat(x, 3, axis=1)"
+              },
+              {
+                "kind": "output",
+                "text": "array([[1, 1, 1, 2, 2, 2],"
+              },
+              {
+                "kind": "output",
+                "text": "       [3, 3, 3, 4, 4, 4]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.repeat(x, [1, 2], axis=0)"
+              },
+              {
+                "kind": "output",
+                "text": "array([[1, 2],"
+              },
+              {
+                "kind": "output",
+                "text": "       [3, 4],"
+              },
+              {
+                "kind": "output",
+                "text": "       [3, 4]])"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_custom",
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "module": "numpy",
+    "name": "repeat",
+    "notes": "Repeat elements of an array. Cost: numel(output).",
+    "numpy_ref": "np.repeat",
+    "signature": "we.repeat(a, repeats, axis=None)",
+    "status": "supported",
+    "summary": "Repeat each element of an array after themselves",
+    "weight": 1.0,
+    "whest_ref": "we.repeat"
+  },
+  "schema_version": 1,
+  "slug": "repeat",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L462",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L390"
   }
 }

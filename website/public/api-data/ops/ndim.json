@@ -1,99 +1,224 @@
 {
-  "schema_version": 1,
-  "slug": "ndim",
   "detail_href": "/docs/api/ops/ndim/",
   "detail_json_href": "/api-data/ops/ndim.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1187-L1189",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.ndim.html"
-  },
-  "op": {
-    "name": "ndim",
-    "module": "numpy",
-    "whest_ref": "we.ndim",
-    "numpy_ref": "np.ndim",
-    "category": "free",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "0",
-    "cost_formula_latex": "$0$",
-    "notes": "Return number of dimensions of array.",
-    "summary": "Return the number of dimensions of an array.",
-    "signature": "we.ndim(a)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Return the number of dimensions of an array."
-          }
-        ]
-      },
-      {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
-          {
-            "name": "a",
-            "type": "array_like",
-            "desc_blocks": [
+            "inline": [
               {
-                "type": "paragraph",
-                "text": "Input array.  If it is not already an ndarray, a conversion is\nattempted."
+                "kind": "text",
+                "text": "Return the number of dimensions of an array."
               }
-            ]
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
+        "blocks": [
           {
-            "name": "number_of_dimensions",
-            "type": "int",
-            "desc_blocks": [
+            "items": [
               {
-                "type": "paragraph",
-                "text": "The number of dimensions in `a`.  Scalars are zero-dimensional."
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Input array.  If it is not already an ndarray, a conversion is\nattempted."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Input array.  If it is not already an ndarray, a conversion is\nattempted."
+                  }
+                ],
+                "name": "a",
+                "type": "field_list"
               }
-            ]
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
       },
       {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> np.ndim([[1,2,3],[4,5,6]])\n2\n>>> np.ndim(np.array([[1,2,3],[4,5,6]]))\n2\n>>> np.ndim(1)\n0"
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The number of dimensions in "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "a"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ".  Scalars are zero-dimensional."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "int",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The number of dimensions in "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "a"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ".  Scalars are zero-dimensional."
+                  }
+                ],
+                "name": "number_of_dimensions",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Returns"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "ndarray.ndim \u2014 equivalent method"
-          },
-          {
-            "type": "paragraph",
-            "text": "shape \u2014 dimensions of array"
-          },
-          {
-            "type": "paragraph",
-            "text": "ndarray.shape \u2014 dimensions of array"
+            "links": [
+              {
+                "description": "equivalent method",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "equivalent method"
+                  }
+                ],
+                "external_url": "",
+                "href": "",
+                "label": "ndarray.ndim",
+                "original_target": "ndarray.ndim",
+                "role": "",
+                "target": "ndarray.ndim",
+                "unresolved": true
+              },
+              {
+                "description": "dimensions of array",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "dimensions of array"
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/shape",
+                "label": "we.shape",
+                "original_target": "shape",
+                "role": "",
+                "target": "shape",
+                "unresolved": false
+              },
+              {
+                "description": "dimensions of array",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "dimensions of array"
+                  }
+                ],
+                "external_url": "",
+                "href": "",
+                "label": "ndarray.shape",
+                "original_target": "ndarray.shape",
+                "role": "",
+                "target": "ndarray.shape",
+                "unresolved": true
+              }
+            ],
+            "type": "link_list"
           }
-        ]
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.ndim([[1,2,3],[4,5,6]])"
+              },
+              {
+                "kind": "output",
+                "text": "2"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.ndim(we.array([[1,2,3],[4,5,6]]))"
+              },
+              {
+                "kind": "output",
+                "text": "2"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.ndim(1)"
+              },
+              {
+                "kind": "output",
+                "text": "0"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "free",
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "module": "numpy",
+    "name": "ndim",
+    "notes": "Return number of dimensions of array.",
+    "numpy_ref": "np.ndim",
+    "signature": "we.ndim(a)",
+    "status": "supported",
+    "summary": "Return the number of dimensions of an array.",
+    "weight": 1.0,
+    "whest_ref": "we.ndim"
+  },
+  "schema_version": 1,
+  "slug": "ndim",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L3523",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1187"
   }
 }

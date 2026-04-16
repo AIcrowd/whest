@@ -1,134 +1,351 @@
 {
-  "schema_version": 1,
-  "slug": "ravel_multi_index",
   "detail_href": "/docs/api/ops/ravel_multi_index/",
   "detail_json_href": "/api-data/ops/ravel_multi_index.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L1305-L1307",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.ravel_multi_index.html"
-  },
-  "op": {
-    "name": "ravel_multi_index",
-    "module": "numpy",
-    "whest_ref": "we.ravel_multi_index",
-    "numpy_ref": "np.ravel_multi_index",
-    "category": "free",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "0",
-    "cost_formula_latex": "$0$",
-    "notes": "Convert multi-dimensional index to flat index.",
-    "summary": "Converts a tuple of index arrays into an array of flat indices, applying boundary modes to the multi-index.",
-    "signature": "we.ravel_multi_index(multi_index, dims, mode='raise', order='C')"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Converts a tuple of index arrays into an array of flat\nindices, applying boundary modes to the multi-index."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Converts a tuple of index arrays into an array of flat indices, applying boundary modes to the multi-index."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
+        "blocks": [
           {
-            "name": "multi_index",
-            "type": "tuple of array_like",
-            "desc_blocks": [
+            "items": [
               {
-                "type": "paragraph",
-                "text": "A tuple of integer arrays, one array for each dimension."
-              }
-            ]
-          },
-          {
-            "name": "dims",
-            "type": "tuple of ints",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "The shape of array into which the indices from ``multi_index`` apply."
-              }
-            ]
-          },
-          {
-            "name": "mode",
-            "type": "{'raise', 'wrap', 'clip'}, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Specifies how out-of-bounds indices are handled.  Can specify\neither one mode or a tuple of modes, one mode per index."
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "A tuple of integer arrays, one array for each dimension."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "tuple of array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "A tuple of integer arrays, one array for each dimension."
+                  }
+                ],
+                "name": "multi_index",
+                "type": "field_list"
               },
               {
-                "type": "paragraph",
-                "text": "* 'raise' -- raise an error (default)\n* 'wrap' -- wrap around\n* 'clip' -- clip to the range"
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The shape of array into which the indices from "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "multi_index"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " apply."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "tuple of ints",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The shape of array into which the indices from "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "multi_index"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " apply."
+                  }
+                ],
+                "name": "dims",
+                "type": "field_list"
               },
               {
-                "type": "paragraph",
-                "text": "In 'clip' mode, a negative index which would normally\nwrap will clip to 0 instead."
-              }
-            ]
-          },
-          {
-            "name": "order",
-            "type": "{'C', 'F'}, optional",
-            "desc_blocks": [
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Specifies how out-of-bounds indices are handled.  Can specify\neither one mode or a tuple of modes, one mode per index."
+                      }
+                    ],
+                    "type": "paragraph"
+                  },
+                  {
+                    "items": [
+                      {
+                        "blocks": [
+                          {
+                            "inline": [
+                              {
+                                "kind": "text",
+                                "text": "'raise' -- raise an error (default)"
+                              }
+                            ],
+                            "type": "paragraph"
+                          }
+                        ]
+                      },
+                      {
+                        "blocks": [
+                          {
+                            "inline": [
+                              {
+                                "kind": "text",
+                                "text": "'wrap' -- wrap around"
+                              }
+                            ],
+                            "type": "paragraph"
+                          }
+                        ]
+                      },
+                      {
+                        "blocks": [
+                          {
+                            "inline": [
+                              {
+                                "kind": "text",
+                                "text": "'clip' -- clip to the range"
+                              }
+                            ],
+                            "type": "paragraph"
+                          }
+                        ]
+                      }
+                    ],
+                    "ordered": false,
+                    "type": "list"
+                  },
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "In 'clip' mode, a negative index which would normally\nwrap will clip to 0 instead."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "{'raise', 'wrap', 'clip'}, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Specifies how out-of-bounds indices are handled.  Can specify\neither one mode or a tuple of modes, one mode per index."
+                  }
+                ],
+                "name": "mode",
+                "type": "field_list"
+              },
               {
-                "type": "paragraph",
-                "text": "Determines whether the multi-index should be viewed as\nindexing in row-major (C-style) or column-major\n(Fortran-style) order."
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Determines whether the multi-index should be viewed as\nindexing in row-major (C-style) or column-major\n(Fortran-style) order."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "{'C', 'F'}, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Determines whether the multi-index should be viewed as\nindexing in row-major (C-style) or column-major\n(Fortran-style) order."
+                  }
+                ],
+                "name": "order",
+                "type": "field_list"
               }
-            ]
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
       },
       {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "raveled_indices",
-            "type": "ndarray",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "An array of indices into the flattened version of an array\nof dimensions ``dims``."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> arr = np.array([[3,6,6],[4,5,1]])\n>>> np.ravel_multi_index(arr, (7,6))\narray([22, 41, 37])\n>>> np.ravel_multi_index(arr, (7,6), order='F')\narray([31, 41, 13])\n>>> np.ravel_multi_index(arr, (4,6), mode='clip')\narray([22, 23, 19])\n>>> np.ravel_multi_index(arr, (4,4), mode=('clip','wrap'))\narray([12, 13, 13])"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> np.ravel_multi_index((3,1,4,1), (6,7,8,9))\n1621"
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "An array of indices into the flattened version of an array\nof dimensions "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "dims"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "An array of indices into the flattened version of an array\nof dimensions "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "dims"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
+                  }
+                ],
+                "name": "raveled_indices",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Returns"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "unravel_index"
+            "links": [
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/unravel_index",
+                "label": "we.unravel_index",
+                "original_target": "unravel_index",
+                "role": "",
+                "target": "unravel_index",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
           }
-        ]
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "arr = we.array([[3,6,6],[4,5,1]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.ravel_multi_index(arr, (7,6))"
+              },
+              {
+                "kind": "output",
+                "text": "array([22, 41, 37])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.ravel_multi_index(arr, (7,6), order='F')"
+              },
+              {
+                "kind": "output",
+                "text": "array([31, 41, 13])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.ravel_multi_index(arr, (4,6), mode='clip')"
+              },
+              {
+                "kind": "output",
+                "text": "array([22, 23, 19])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.ravel_multi_index(arr, (4,4), mode=('clip','wrap'))"
+              },
+              {
+                "kind": "output",
+                "text": "array([12, 13, 13])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.ravel_multi_index((3,1,4,1), (6,7,8,9))"
+              },
+              {
+                "kind": "output",
+                "text": "1621"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "free",
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "module": "numpy",
+    "name": "ravel_multi_index",
+    "notes": "Convert multi-dimensional index to flat index.",
+    "numpy_ref": "np.ravel_multi_index",
+    "signature": "we.ravel_multi_index(*args, **kwargs)",
+    "status": "supported",
+    "summary": "Converts a tuple of index arrays into an array of flat indices, applying boundary modes to the multi-index.",
+    "weight": 1.0,
+    "whest_ref": "we.ravel_multi_index"
+  },
+  "schema_version": 1,
+  "slug": "ravel_multi_index",
+  "source": {
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.ravel_multi_index.html",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1305"
   }
 }

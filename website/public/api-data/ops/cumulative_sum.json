@@ -1,171 +1,651 @@
 {
-  "schema_version": 1,
-  "slug": "cumulative_sum",
   "detail_href": "/docs/api/ops/cumulative_sum/",
   "detail_json_href": "/api-data/ops/cumulative_sum.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L197-L255",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.cumulative_sum.html"
-  },
-  "op": {
-    "name": "cumulative_sum",
-    "module": "numpy",
-    "whest_ref": "we.cumulative_sum",
-    "numpy_ref": "np.cumulative_sum",
-    "category": "counted_reduction",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "numel(input)",
-    "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "notes": "Cumulative sum (NumPy 2.x array API).",
-    "summary": "Return the cumulative sum of the elements along a given axis.",
-    "signature": "we.cumulative_sum(x, /, *, axis=None, dtype=None, out=None, include_initial=False)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Return the cumulative sum of the elements along a given axis."
-          },
-          {
-            "type": "paragraph",
-            "text": "This function is an Array API compatible alternative to `numpy.cumsum`."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Return the cumulative sum of the elements along a given axis."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
-          {
-            "name": "x",
-            "type": "array_like",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Input array."
-              }
-            ]
-          },
-          {
-            "name": "axis",
-            "type": "int, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Axis along which the cumulative sum is computed. The default\n(None) is only allowed for one-dimensional arrays. For arrays\nwith more than one dimension ``axis`` is required."
-              }
-            ]
-          },
-          {
-            "name": "dtype",
-            "type": "dtype, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Type of the returned array and of the accumulator in which the\nelements are summed.  If ``dtype`` is not specified, it defaults\nto the dtype of ``x``, unless ``x`` has an integer dtype with\na precision less than that of the default platform integer.\nIn that case, the default platform integer is used."
-              }
-            ]
-          },
-          {
-            "name": "out",
-            "type": "ndarray, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Alternative output array in which to place the result. It must\nhave the same shape and buffer length as the expected output\nbut the type will be cast if necessary. See :ref:`ufuncs-output-type`\nfor more details."
-              }
-            ]
-          },
-          {
-            "name": "include_initial",
-            "type": "bool, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Boolean indicating whether to include the initial value (zeros) as\nthe first value in the output. With ``include_initial=True``\nthe shape of the output is different than the shape of the input.\nDefault: ``False``."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "cumulative_sum_along_axis",
-            "type": "ndarray",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "A new array holding the result is returned unless ``out`` is\nspecified, in which case a reference to ``out`` is returned. The\nresult has the same shape as ``x`` if ``include_initial=False``."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "notes",
-        "title": "Notes",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Arithmetic is modular when using integer types, and no error is\nraised on overflow."
-          },
-          {
-            "type": "paragraph",
-            "text": "``cumulative_sum(a)[-1]`` may not be equal to ``sum(a)`` for\nfloating-point values since ``sum`` may use a pairwise summation routine,\nreducing the roundoff-error. See `sum` for more information."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "This function is an Array API compatible alternative to "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/cumsum",
+                "kind": "link",
+                "target": "cumsum",
+                "text": "we.cumsum"
+              },
+              {
+                "kind": "text",
+                "text": "."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Extended Summary"
       },
       {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> a = np.array([1, 2, 3, 4, 5, 6])\n>>> a\narray([1, 2, 3, 4, 5, 6])\n>>> np.cumulative_sum(a)\narray([ 1,  3,  6, 10, 15, 21])\n>>> np.cumulative_sum(a, dtype=float)  # specifies type of output value(s)\narray([  1.,   3.,   6.,  10.,  15.,  21.])"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> b = np.array([[1, 2, 3], [4, 5, 6]])\n>>> np.cumulative_sum(b,axis=0)  # sum over rows for each of the 3 columns\narray([[1, 2, 3],\n       [5, 7, 9]])\n>>> np.cumulative_sum(b,axis=1)  # sum over columns for each of the 2 rows\narray([[ 1,  3,  6],\n       [ 4,  9, 15]])"
-          },
-          {
-            "type": "paragraph",
-            "text": "``cumulative_sum(c)[-1]`` may not be equal to ``sum(c)``"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> c = np.array([1, 2e-9, 3e-9] * 1000000)\n>>> np.cumulative_sum(c)[-1]\n1000000.0050045159\n>>> c.sum()\n1000000.0050000029"
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Input array."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Input array."
+                  }
+                ],
+                "name": "x",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Axis along which the cumulative sum is computed. The default\n(None) is only allowed for one-dimensional arrays. For arrays\nwith more than one dimension "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "axis"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is required."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "int, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Axis along which the cumulative sum is computed. The default\n(None) is only allowed for one-dimensional arrays. For arrays\nwith more than one dimension "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "axis"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is required."
+                  }
+                ],
+                "name": "axis",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Type of the returned array and of the accumulator in which the\nelements are summed.  If "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "dtype"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is not specified, it defaults\nto the dtype of "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "x"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", unless "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "x"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " has an integer dtype with\na precision less than that of the default platform integer.\nIn that case, the default platform integer is used."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "dtype, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Type of the returned array and of the accumulator in which the\nelements are summed.  If "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "dtype"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is not specified, it defaults\nto the dtype of "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "x"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", unless "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "x"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " has an integer dtype with\na precision less than that of the default platform integer.\nIn that case, the default platform integer is used."
+                  }
+                ],
+                "name": "dtype",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Alternative output array in which to place the result. It must\nhave the same shape and buffer length as the expected output\nbut the type will be cast if necessary. See "
+                      },
+                      {
+                        "display_text": "ufuncs-output-type",
+                        "explicit_title": false,
+                        "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.ufuncs-output-type.html",
+                        "href": "",
+                        "kind": "role_reference",
+                        "original_target": "ufuncs-output-type",
+                        "role": "ref",
+                        "suppress_link": false,
+                        "target": "ufuncs-output-type",
+                        "unresolved": false
+                      },
+                      {
+                        "kind": "text",
+                        "text": "\nfor more details."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Alternative output array in which to place the result. It must\nhave the same shape and buffer length as the expected output\nbut the type will be cast if necessary. See "
+                  },
+                  {
+                    "display_text": "ufuncs-output-type",
+                    "explicit_title": false,
+                    "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.ufuncs-output-type.html",
+                    "href": "",
+                    "kind": "role_reference",
+                    "original_target": "ufuncs-output-type",
+                    "role": "ref",
+                    "suppress_link": false,
+                    "target": "ufuncs-output-type",
+                    "unresolved": false
+                  },
+                  {
+                    "kind": "text",
+                    "text": "\nfor more details."
+                  }
+                ],
+                "name": "out",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Boolean indicating whether to include the initial value (zeros) as\nthe first value in the output. With "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "include_initial=True"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "\nthe shape of the output is different than the shape of the input.\nDefault: "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "False"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "bool, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Boolean indicating whether to include the initial value (zeros) as\nthe first value in the output. With "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "include_initial=True"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "\nthe shape of the output is different than the shape of the input.\nDefault: "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "False"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
+                  }
+                ],
+                "name": "include_initial",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "sum \u2014 Sum array elements."
-          },
-          {
-            "type": "paragraph",
-            "text": "trapezoid \u2014 Integration of array values using composite trapezoidal rule."
-          },
-          {
-            "type": "paragraph",
-            "text": "diff \u2014 Calculate the n-th discrete difference along given axis."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "A new array holding the result is returned unless "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "out"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is\nspecified, in which case a reference to "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "out"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is returned. The\nresult has the same shape as "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "x"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " if "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "include_initial=False"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "A new array holding the result is returned unless "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "out"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is\nspecified, in which case a reference to "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "out"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is returned. The\nresult has the same shape as "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "x"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " if "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "include_initial=False"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
+                  }
+                ],
+                "name": "cumulative_sum_along_axis",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Returns"
+      },
+      {
+        "blocks": [
+          {
+            "links": [
+              {
+                "description": "Sum array elements.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Sum array elements."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/sum",
+                "label": "we.sum",
+                "original_target": "sum",
+                "role": "",
+                "target": "sum",
+                "unresolved": false
+              },
+              {
+                "description": "Integration of array values using composite trapezoidal rule.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Integration of array values using composite trapezoidal rule."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/trapezoid",
+                "label": "we.trapezoid",
+                "original_target": "trapezoid",
+                "role": "",
+                "target": "trapezoid",
+                "unresolved": false
+              },
+              {
+                "description": "Calculate the n-th discrete difference along given axis.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Calculate the n-th discrete difference along given axis."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/diff",
+                "label": "we.diff",
+                "original_target": "diff",
+                "role": "",
+                "target": "diff",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
+          }
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Arithmetic is modular when using integer types, and no error is\nraised on overflow."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "inline": [
+              {
+                "kind": "code",
+                "text": "cumulative_sum(a)[-1]"
+              },
+              {
+                "kind": "text",
+                "text": " may not be equal to "
+              },
+              {
+                "kind": "code",
+                "text": "sum(a)"
+              },
+              {
+                "kind": "text",
+                "text": " for\nfloating-point values since "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/sum",
+                "kind": "link",
+                "target": "sum",
+                "text": "sum"
+              },
+              {
+                "kind": "text",
+                "text": " may use a pairwise summation routine,\nreducing the roundoff-error. See "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/sum",
+                "kind": "link",
+                "target": "sum",
+                "text": "sum"
+              },
+              {
+                "kind": "text",
+                "text": " for more information."
+              }
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Notes"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.array([1, 2, 3, 4, 5, 6])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a"
+              },
+              {
+                "kind": "output",
+                "text": "array([1, 2, 3, 4, 5, 6])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.cumulative_sum(a)"
+              },
+              {
+                "kind": "output",
+                "text": "array([ 1,  3,  6, 10, 15, 21])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.cumulative_sum(a, dtype=float)  # specifies type of output value(s)"
+              },
+              {
+                "kind": "output",
+                "text": "array([  1.,   3.,   6.,  10.,  15.,  21.])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "b = we.array([[1, 2, 3], [4, 5, 6]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.cumulative_sum(b,axis=0)  # sum over rows for each of the 3 columns"
+              },
+              {
+                "kind": "output",
+                "text": "array([[1, 2, 3],"
+              },
+              {
+                "kind": "output",
+                "text": "       [5, 7, 9]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.cumulative_sum(b,axis=1)  # sum over columns for each of the 2 rows"
+              },
+              {
+                "kind": "output",
+                "text": "array([[ 1,  3,  6],"
+              },
+              {
+                "kind": "output",
+                "text": "       [ 4,  9, 15]])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "code",
+                "text": "cumulative_sum(c)[-1]"
+              },
+              {
+                "kind": "text",
+                "text": " may not be equal to "
+              },
+              {
+                "kind": "code",
+                "text": "sum(c)"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "c = we.array([1, 2e-9, 3e-9] * 1000000)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.cumulative_sum(c)[-1]"
+              },
+              {
+                "kind": "output",
+                "text": "1000000.0050045159"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "c.sum()"
+              },
+              {
+                "kind": "output",
+                "text": "1000000.0050000029"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_reduction",
+    "cost_formula": "numel(input)",
+    "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "module": "numpy",
+    "name": "cumulative_sum",
+    "notes": "Cumulative sum (NumPy 2.x array API).",
+    "numpy_ref": "np.cumulative_sum",
+    "signature": "we.cumulative_sum(x, /, *, axis=None, dtype=None, out=None, include_initial=False)",
+    "status": "supported",
+    "summary": "Return the cumulative sum of the elements along a given axis.",
+    "weight": 1.0,
+    "whest_ref": "we.cumulative_sum"
+  },
+  "schema_version": 1,
+  "slug": "cumulative_sum",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L2790",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L197"
   }
 }

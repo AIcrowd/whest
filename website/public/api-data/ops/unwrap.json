@@ -1,145 +1,553 @@
 {
-  "schema_version": 1,
-  "slug": "unwrap",
   "detail_href": "/docs/api/ops/unwrap/",
   "detail_json_href": "/api-data/ops/unwrap.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L35-L45",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.unwrap.html"
-  },
-  "op": {
-    "name": "unwrap",
-    "module": "whest._unwrap",
-    "whest_ref": "we.unwrap",
-    "numpy_ref": "np.unwrap",
-    "category": "counted_custom",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "numel(input)",
-    "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "notes": "Phase unwrap. Cost: $\\text{numel}(\\text{input})$ (diff + conditional adjustment).",
-    "summary": "Unwrap by taking the complement of large deltas with respect to the period.",
-    "signature": "we.unwrap(p, discont=None, axis=-1, *, period=6.283185307179586)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Unwrap by taking the complement of large deltas with respect to the period."
-          },
-          {
-            "type": "paragraph",
-            "text": "This unwraps a signal `p` by changing elements which have an absolute\ndifference from their predecessor of more than ``max(discont, period/2)``\nto their `period`-complementary values."
-          },
-          {
-            "type": "paragraph",
-            "text": "For the default case where `period` is :math:`2\\pi` and `discont` is\n:math:`\\pi`, this unwraps a radian phase `p` such that adjacent differences\nare never greater than :math:`\\pi` by adding :math:`2k\\pi` for some\ninteger :math:`k`."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Unwrap by taking the complement of large deltas with respect to the period."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
+        "blocks": [
           {
-            "name": "p",
-            "type": "array_like",
-            "desc_blocks": [
+            "inline": [
               {
-                "type": "paragraph",
-                "text": "Input array."
-              }
-            ]
-          },
-          {
-            "name": "discont",
-            "type": "float, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Maximum discontinuity between values, default is ``period/2``.\nValues below ``period/2`` are treated as if they were ``period/2``.\nTo have an effect different from the default, `discont` should be\nlarger than ``period/2``."
-              }
-            ]
-          },
-          {
-            "name": "axis",
-            "type": "int, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Axis along which unwrap will operate, default is the last axis."
-              }
-            ]
-          },
-          {
-            "name": "period",
-            "type": "float, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Size of the range over which the input wraps. By default, it is\n``2 pi``."
+                "kind": "text",
+                "text": "This unwraps a signal "
               },
               {
-                "type": "directive",
-                "name": "versionadded:: 1.21.0",
-                "body": "",
-                "raw": ".. versionadded:: 1.21.0"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "out",
-            "type": "ndarray",
-            "desc_blocks": [
+                "kind": "code",
+                "text": "p"
+              },
               {
-                "type": "paragraph",
-                "text": "Output array."
+                "kind": "text",
+                "text": " by changing elements which have an absolute\ndifference from their predecessor of more than "
+              },
+              {
+                "kind": "code",
+                "text": "max(discont, period/2)"
+              },
+              {
+                "kind": "text",
+                "text": "\nto their "
+              },
+              {
+                "kind": "code",
+                "text": "period"
+              },
+              {
+                "kind": "text",
+                "text": "-complementary values."
               }
-            ]
+            ],
+            "type": "paragraph"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "For the default case where "
+              },
+              {
+                "kind": "code",
+                "text": "period"
+              },
+              {
+                "kind": "text",
+                "text": " is "
+              },
+              {
+                "kind": "math",
+                "latex": "2\\pi"
+              },
+              {
+                "kind": "text",
+                "text": " and "
+              },
+              {
+                "kind": "code",
+                "text": "discont"
+              },
+              {
+                "kind": "text",
+                "text": " is\n"
+              },
+              {
+                "kind": "math",
+                "latex": "\\pi"
+              },
+              {
+                "kind": "text",
+                "text": ", this unwraps a radian phase "
+              },
+              {
+                "kind": "code",
+                "text": "p"
+              },
+              {
+                "kind": "text",
+                "text": " such that adjacent differences\nare never greater than "
+              },
+              {
+                "kind": "math",
+                "latex": "\\pi"
+              },
+              {
+                "kind": "text",
+                "text": " by adding "
+              },
+              {
+                "kind": "math",
+                "latex": "2k\\pi"
+              },
+              {
+                "kind": "text",
+                "text": " for some\ninteger "
+              },
+              {
+                "kind": "math",
+                "latex": "k"
+              },
+              {
+                "kind": "text",
+                "text": "."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Extended Summary"
       },
       {
-        "kind": "notes",
-        "title": "Notes",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "If the discontinuity in `p` is smaller than ``period/2``,\nbut larger than `discont`, no unwrapping is done because taking\nthe complement would only make the discontinuity larger."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Input array."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Input array."
+                  }
+                ],
+                "name": "p",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Maximum discontinuity between values, default is "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "period/2"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ".\nValues below "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "period/2"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " are treated as if they were "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "period/2"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ".\nTo have an effect different from the default, "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "discont"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " should be\nlarger than "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "period/2"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "float, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Maximum discontinuity between values, default is "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "period/2"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ".\nValues below "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "period/2"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " are treated as if they were "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "period/2"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ".\nTo have an effect different from the default, "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "discont"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " should be\nlarger than "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "period/2"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
+                  }
+                ],
+                "name": "discont",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Axis along which unwrap will operate, default is the last axis."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "int, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Axis along which unwrap will operate, default is the last axis."
+                  }
+                ],
+                "name": "axis",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Size of the range over which the input wraps. By default, it is\n"
+                      },
+                      {
+                        "kind": "code",
+                        "text": "2 pi"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
+                      }
+                    ],
+                    "type": "paragraph"
+                  },
+                  {
+                    "argument_inline": [],
+                    "content_blocks": [],
+                    "directive": "versionadded",
+                    "options": [],
+                    "raw_source": ".. versionadded:: 1.21.0",
+                    "supported": true,
+                    "type": "directive_block",
+                    "version": "1.21.0"
+                  }
+                ],
+                "data_type": "float, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Size of the range over which the input wraps. By default, it is\n"
+                  },
+                  {
+                    "kind": "code",
+                    "text": "2 pi"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
+                  }
+                ],
+                "name": "period",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
       },
       {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> phase = np.linspace(0, np.pi, num=5)\n>>> phase[3:] += np.pi\n>>> phase\narray([ 0.        ,  0.78539816,  1.57079633,  5.49778714,  6.28318531]) # may vary\n>>> np.unwrap(phase)\narray([ 0.        ,  0.78539816,  1.57079633, -0.78539816,  0.        ]) # may vary\n>>> np.unwrap([0, 1, 2, -1, 0], period=4)\narray([0, 1, 2, 3, 4])\n>>> np.unwrap([ 1, 2, 3, 4, 5, 6, 1, 2, 3], period=6)\narray([1, 2, 3, 4, 5, 6, 7, 8, 9])\n>>> np.unwrap([2, 3, 4, 5, 2, 3, 4, 5], period=4)\narray([2, 3, 4, 5, 6, 7, 8, 9])\n>>> phase_deg = np.mod(np.linspace(0 ,720, 19), 360) - 180\n>>> np.unwrap(phase_deg, period=360)\narray([-180., -140., -100.,  -60.,  -20.,   20.,   60.,  100.,  140.,\n        180.,  220.,  260.,  300.,  340.,  380.,  420.,  460.,  500.,\n        540.])"
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Output array."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Output array."
+                  }
+                ],
+                "name": "out",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Returns"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "rad2deg, deg2rad"
+            "links": [
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/degrees",
+                "label": "we.degrees",
+                "original_target": "rad2deg",
+                "role": "",
+                "target": "degrees",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/radians",
+                "label": "we.radians",
+                "original_target": "deg2rad",
+                "role": "",
+                "target": "radians",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
           }
-        ]
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "If the discontinuity in "
+              },
+              {
+                "kind": "code",
+                "text": "p"
+              },
+              {
+                "kind": "text",
+                "text": " is smaller than "
+              },
+              {
+                "kind": "code",
+                "text": "period/2"
+              },
+              {
+                "kind": "text",
+                "text": ",\nbut larger than "
+              },
+              {
+                "kind": "code",
+                "text": "discont"
+              },
+              {
+                "kind": "text",
+                "text": ", no unwrapping is done because taking\nthe complement would only make the discontinuity larger."
+              }
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Notes"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "phase = we.linspace(0, we.pi, num=5)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "phase[3:] += we.pi"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "phase"
+              },
+              {
+                "kind": "output",
+                "text": "array([ 0.        ,  0.78539816,  1.57079633,  5.49778714,  6.28318531]) # may vary"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.unwrap(phase)"
+              },
+              {
+                "kind": "output",
+                "text": "array([ 0.        ,  0.78539816,  1.57079633, -0.78539816,  0.        ]) # may vary"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.unwrap([0, 1, 2, -1, 0], period=4)"
+              },
+              {
+                "kind": "output",
+                "text": "array([0, 1, 2, 3, 4])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.unwrap([ 1, 2, 3, 4, 5, 6, 1, 2, 3], period=6)"
+              },
+              {
+                "kind": "output",
+                "text": "array([1, 2, 3, 4, 5, 6, 7, 8, 9])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.unwrap([2, 3, 4, 5, 2, 3, 4, 5], period=4)"
+              },
+              {
+                "kind": "output",
+                "text": "array([2, 3, 4, 5, 6, 7, 8, 9])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "phase_deg = we.mod(we.linspace(0 ,720, 19), 360) - 180"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.unwrap(phase_deg, period=360)"
+              },
+              {
+                "kind": "output",
+                "text": "array([-180., -140., -100.,  -60.,  -20.,   20.,   60.,  100.,  140.,"
+              },
+              {
+                "kind": "output",
+                "text": "        180.,  220.,  260.,  300.,  340.,  380.,  420.,  460.,  500.,"
+              },
+              {
+                "kind": "output",
+                "text": "        540.])"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_custom",
+    "cost_formula": "numel(input)",
+    "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "module": "whest._unwrap",
+    "name": "unwrap",
+    "notes": "Phase unwrap. Cost: $\\text{numel}(\\text{input})$ (diff + conditional adjustment).",
+    "numpy_ref": "np.unwrap",
+    "signature": "we.unwrap(p, discont=None, axis=-1, *, period=6.283185307179586)",
+    "status": "supported",
+    "summary": "Unwrap by taking the complement of large deltas with respect to the period.",
+    "weight": 1.0,
+    "whest_ref": "we.unwrap"
+  },
+  "schema_version": 1,
+  "slug": "unwrap",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L1707",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_unwrap.py#L35"
   }
 }

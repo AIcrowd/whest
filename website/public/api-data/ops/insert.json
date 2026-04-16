@@ -1,178 +1,808 @@
 {
-  "schema_version": 1,
-  "slug": "insert",
   "detail_href": "/docs/api/ops/insert/",
   "detail_json_href": "/api-data/ops/insert.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L1068-L1075",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.insert.html"
-  },
-  "op": {
-    "name": "insert",
-    "module": "numpy",
-    "whest_ref": "we.insert",
-    "numpy_ref": "np.insert",
-    "category": "counted_custom",
-    "status": "supported",
-    "weight": 4.0,
-    "cost_formula": "per-operation",
-    "cost_formula_latex": "varies",
-    "notes": "Insert values along axis before given indices. Cost: numel(values).",
-    "summary": "Insert values along the given axis before the given indices.",
-    "signature": "we.insert(arr, obj, values, axis=None)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Insert values along the given axis before the given indices."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Insert values along the given axis before the given indices."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
+        "blocks": [
           {
-            "name": "arr",
-            "type": "array_like",
-            "desc_blocks": [
+            "items": [
               {
-                "type": "paragraph",
-                "text": "Input array."
-              }
-            ]
-          },
-          {
-            "name": "obj",
-            "type": "slice, int, array-like of ints or bools",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Object that defines the index or indices before which `values` is\ninserted."
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Input array."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Input array."
+                  }
+                ],
+                "name": "arr",
+                "type": "field_list"
               },
               {
-                "type": "directive",
-                "name": "versionchanged:: 2.1.2",
-                "body": "    Boolean indices are now treated as a mask of elements to insert,\n    rather than being cast to the integers 0 and 1.",
-                "raw": ".. versionchanged:: 2.1.2\n    Boolean indices are now treated as a mask of elements to insert,\n    rather than being cast to the integers 0 and 1."
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Object that defines the index or indices before which "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "values"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is\ninserted."
+                      }
+                    ],
+                    "type": "paragraph"
+                  },
+                  {
+                    "argument_inline": [],
+                    "content_blocks": [],
+                    "directive": "versionchanged",
+                    "options": [],
+                    "raw_source": ".. versionchanged:: 2.1.2\n    Boolean indices are now treated as a mask of elements to insert,\n    rather than being cast to the integers 0 and 1.",
+                    "supported": true,
+                    "type": "directive_block",
+                    "version": "2.1.2"
+                  },
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Support for multiple insertions when "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "obj"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is a single scalar or a\nsequence with one element (similar to calling insert multiple\ntimes)."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "slice, int, array-like of ints or bools",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Object that defines the index or indices before which "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "values"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is\ninserted."
+                  }
+                ],
+                "name": "obj",
+                "type": "field_list"
               },
               {
-                "type": "paragraph",
-                "text": "Support for multiple insertions when `obj` is a single scalar or a\nsequence with one element (similar to calling insert multiple\ntimes)."
-              }
-            ]
-          },
-          {
-            "name": "values",
-            "type": "array_like",
-            "desc_blocks": [
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Values to insert into "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "arr"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ". If the type of "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "values"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is different\nfrom that of "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "arr"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "values"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is converted to the type of "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "arr"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ".\n"
+                      },
+                      {
+                        "kind": "code",
+                        "text": "values"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " should be shaped so that "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "arr[...,obj,...] = values"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "\nis legal."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Values to insert into "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "arr"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ". If the type of "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "values"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is different\nfrom that of "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "arr"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "values"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is converted to the type of "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "arr"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ".\n"
+                  },
+                  {
+                    "kind": "code",
+                    "text": "values"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " should be shaped so that "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "arr[...,obj,...] = values"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "\nis legal."
+                  }
+                ],
+                "name": "values",
+                "type": "field_list"
+              },
               {
-                "type": "paragraph",
-                "text": "Values to insert into `arr`. If the type of `values` is different\nfrom that of `arr`, `values` is converted to the type of `arr`.\n`values` should be shaped so that ``arr[...,obj,...] = values``\nis legal."
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Axis along which to insert "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "values"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ".  If "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "axis"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is None then "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "arr"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "\nis flattened first."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "int, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Axis along which to insert "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "values"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ".  If "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "axis"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is None then "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "arr"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "\nis flattened first."
+                  }
+                ],
+                "name": "axis",
+                "type": "field_list"
               }
-            ]
-          },
-          {
-            "name": "axis",
-            "type": "int, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Axis along which to insert `values`.  If `axis` is None then `arr`\nis flattened first."
-              }
-            ]
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
       },
       {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "out",
-            "type": "ndarray",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "A copy of `arr` with `values` inserted.  Note that `insert`\ndoes not occur in-place: a new array is returned. If\n`axis` is None, `out` is a flattened array."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "notes",
-        "title": "Notes",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Note that for higher dimensional inserts ``obj=0`` behaves very different\nfrom ``obj=[0]`` just like ``arr[:,0,:] = values`` is different from\n``arr[:,[0],:] = values``. This is because of the difference between basic\nand advanced :ref:`indexing <basics.indexing>`."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "A copy of "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "arr"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " with "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "values"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " inserted.  Note that "
+                      },
+                      {
+                        "external_url": "",
+                        "href": "/docs/api/ops/insert",
+                        "kind": "link",
+                        "target": "insert",
+                        "text": "insert"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "\ndoes not occur in-place: a new array is returned. If\n"
+                      },
+                      {
+                        "kind": "code",
+                        "text": "axis"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is None, "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "out"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is a flattened array."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "A copy of "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "arr"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " with "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "values"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " inserted.  Note that "
+                  },
+                  {
+                    "external_url": "",
+                    "href": "/docs/api/ops/insert",
+                    "kind": "link",
+                    "target": "insert",
+                    "text": "insert"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "\ndoes not occur in-place: a new array is returned. If\n"
+                  },
+                  {
+                    "kind": "code",
+                    "text": "axis"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is None, "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "out"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is a flattened array."
+                  }
+                ],
+                "name": "out",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Returns"
       },
       {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> a = np.arange(6).reshape(3, 2)\n>>> a\narray([[0, 1],\n       [2, 3],\n       [4, 5]])\n>>> np.insert(a, 1, 6)\narray([0, 6, 1, 2, 3, 4, 5])\n>>> np.insert(a, 1, 6, axis=1)\narray([[0, 6, 1],\n       [2, 6, 3],\n       [4, 6, 5]])"
-          },
-          {
-            "type": "paragraph",
-            "text": "Difference between sequence and scalars,\nshowing how ``obj=[1]`` behaves different from ``obj=1``:"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> np.insert(a, [1], [[7],[8],[9]], axis=1)\narray([[0, 7, 1],\n       [2, 8, 3],\n       [4, 9, 5]])\n>>> np.insert(a, 1, [[7],[8],[9]], axis=1)\narray([[0, 7, 8, 9, 1],\n       [2, 7, 8, 9, 3],\n       [4, 7, 8, 9, 5]])\n>>> np.array_equal(np.insert(a, 1, [7, 8, 9], axis=1),\n...                np.insert(a, [1], [[7],[8],[9]], axis=1))\nTrue"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> b = a.flatten()\n>>> b\narray([0, 1, 2, 3, 4, 5])\n>>> np.insert(b, [2, 2], [6, 7])\narray([0, 1, 6, 7, 2, 3, 4, 5])"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> np.insert(b, slice(2, 4), [7, 8])\narray([0, 1, 7, 2, 8, 3, 4, 5])"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> np.insert(b, [2, 2], [7.13, False]) # type casting\narray([0, 1, 7, 0, 2, 3, 4, 5])"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> x = np.arange(8).reshape(2, 4)\n>>> idx = (1, 3)\n>>> np.insert(x, idx, 999, axis=1)\narray([[  0, 999,   1,   2, 999,   3],\n       [  4, 999,   5,   6, 999,   7]])"
+            "links": [
+              {
+                "description": "Append elements at the end of an array.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Append elements at the end of an array."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/append",
+                "label": "we.append",
+                "original_target": "append",
+                "role": "",
+                "target": "append",
+                "unresolved": false
+              },
+              {
+                "description": "Join a sequence of arrays along an existing axis.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Join a sequence of arrays along an existing axis."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/concatenate",
+                "label": "we.concatenate",
+                "original_target": "concatenate",
+                "role": "",
+                "target": "concatenate",
+                "unresolved": false
+              },
+              {
+                "description": "Delete elements from an array.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Delete elements from an array."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/delete",
+                "label": "we.delete",
+                "original_target": "delete",
+                "role": "",
+                "target": "delete",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
           }
-        ]
+        ],
+        "title": "See also"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "append \u2014 Append elements at the end of an array."
-          },
-          {
-            "type": "paragraph",
-            "text": "concatenate \u2014 Join a sequence of arrays along an existing axis."
-          },
-          {
-            "type": "paragraph",
-            "text": "delete \u2014 Delete elements from an array."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Note that for higher dimensional inserts "
+              },
+              {
+                "kind": "code",
+                "text": "obj=0"
+              },
+              {
+                "kind": "text",
+                "text": " behaves very different\nfrom "
+              },
+              {
+                "kind": "code",
+                "text": "obj=[0]"
+              },
+              {
+                "kind": "text",
+                "text": " just like "
+              },
+              {
+                "kind": "code",
+                "text": "arr[:,0,:] = values"
+              },
+              {
+                "kind": "text",
+                "text": " is different from\n"
+              },
+              {
+                "kind": "code",
+                "text": "arr[:,[0],:] = values"
+              },
+              {
+                "kind": "text",
+                "text": ". This is because of the difference between basic\nand advanced "
+              },
+              {
+                "display_text": "indexing",
+                "explicit_title": true,
+                "external_url": "",
+                "href": "",
+                "kind": "role_reference",
+                "original_target": "basics.indexing",
+                "role": "ref",
+                "suppress_link": false,
+                "target": "basics.indexing",
+                "unresolved": true
+              },
+              {
+                "kind": "text",
+                "text": "."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Notes"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.arange(6).reshape(3, 2)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0, 1],"
+              },
+              {
+                "kind": "output",
+                "text": "       [2, 3],"
+              },
+              {
+                "kind": "output",
+                "text": "       [4, 5]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.insert(a, 1, 6)"
+              },
+              {
+                "kind": "output",
+                "text": "array([0, 6, 1, 2, 3, 4, 5])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.insert(a, 1, 6, axis=1)"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0, 6, 1],"
+              },
+              {
+                "kind": "output",
+                "text": "       [2, 6, 3],"
+              },
+              {
+                "kind": "output",
+                "text": "       [4, 6, 5]])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Difference between sequence and scalars,\nshowing how "
+              },
+              {
+                "kind": "code",
+                "text": "obj=[1]"
+              },
+              {
+                "kind": "text",
+                "text": " behaves different from "
+              },
+              {
+                "kind": "code",
+                "text": "obj=1"
+              },
+              {
+                "kind": "text",
+                "text": ":"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.insert(a, [1], [[7],[8],[9]], axis=1)"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0, 7, 1],"
+              },
+              {
+                "kind": "output",
+                "text": "       [2, 8, 3],"
+              },
+              {
+                "kind": "output",
+                "text": "       [4, 9, 5]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.insert(a, 1, [[7],[8],[9]], axis=1)"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0, 7, 8, 9, 1],"
+              },
+              {
+                "kind": "output",
+                "text": "       [2, 7, 8, 9, 3],"
+              },
+              {
+                "kind": "output",
+                "text": "       [4, 7, 8, 9, 5]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.array_equal(we.insert(a, 1, [7, 8, 9], axis=1),"
+              },
+              {
+                "kind": "input",
+                "prompt": "...",
+                "text": "we.insert(a, [1], [[7],[8],[9]], axis=1))"
+              },
+              {
+                "kind": "output",
+                "text": "True"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "b = a.flatten()"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "b"
+              },
+              {
+                "kind": "output",
+                "text": "array([0, 1, 2, 3, 4, 5])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.insert(b, [2, 2], [6, 7])"
+              },
+              {
+                "kind": "output",
+                "text": "array([0, 1, 6, 7, 2, 3, 4, 5])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.insert(b, slice(2, 4), [7, 8])"
+              },
+              {
+                "kind": "output",
+                "text": "array([0, 1, 7, 2, 8, 3, 4, 5])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.insert(b, [2, 2], [7.13, False]) # type casting"
+              },
+              {
+                "kind": "output",
+                "text": "array([0, 1, 7, 0, 2, 3, 4, 5])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x = we.arange(8).reshape(2, 4)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "idx = (1, 3)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.insert(x, idx, 999, axis=1)"
+              },
+              {
+                "kind": "output",
+                "text": "array([[  0, 999,   1,   2, 999,   3],"
+              },
+              {
+                "kind": "output",
+                "text": "       [  4, 999,   5,   6, 999,   7]])"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_custom",
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "module": "numpy",
+    "name": "insert",
+    "notes": "Insert values along axis before given indices. Cost: numel(values).",
+    "numpy_ref": "np.insert",
+    "signature": "we.insert(arr, obj, values, axis=None)",
+    "status": "supported",
+    "summary": "Insert values along the given axis before the given indices.",
+    "weight": 4.0,
+    "whest_ref": "we.insert"
+  },
+  "schema_version": 1,
+  "slug": "insert",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L5456",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1068"
   }
 }

@@ -1,159 +1,615 @@
 {
-  "schema_version": 1,
-  "slug": "fill_diagonal",
   "detail_href": "/docs/api/ops/fill_diagonal/",
   "detail_json_href": "/api-data/ops/fill_diagonal.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L918-L927",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.fill_diagonal.html"
-  },
-  "op": {
-    "name": "fill_diagonal",
-    "module": "numpy",
-    "whest_ref": "we.fill_diagonal",
-    "numpy_ref": "np.fill_diagonal",
-    "category": "counted_custom",
-    "status": "supported",
-    "weight": 4.0,
-    "cost_formula": "per-operation",
-    "cost_formula_latex": "varies",
-    "notes": "Fill main diagonal of given array. Cost: min(m,n).",
-    "summary": "Fill the main diagonal of the given array of any dimensionality.",
-    "signature": "we.fill_diagonal(a, val, wrap=False, **kwargs)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Fill the main diagonal of the given array of any dimensionality."
-          },
-          {
-            "type": "paragraph",
-            "text": "For an array `a` with ``a.ndim >= 2``, the diagonal is the list of\nvalues ``a[i, ..., i]`` with indices ``i`` all identical.  This function\nmodifies the input array in-place without returning a value."
-          }
-        ]
-      },
-      {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
-          {
-            "name": "a",
-            "type": "array, at least 2-D.",
-            "desc_blocks": [
+            "inline": [
               {
-                "type": "paragraph",
-                "text": "Array whose diagonal is to be filled in-place."
+                "kind": "text",
+                "text": "Fill the main diagonal of the given array of any dimensionality."
               }
-            ]
-          },
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Summary"
+      },
+      {
+        "blocks": [
           {
-            "name": "val",
-            "type": "scalar or array_like",
-            "desc_blocks": [
+            "inline": [
               {
-                "type": "paragraph",
-                "text": "Value(s) to write on the diagonal. If `val` is scalar, the value is\nwritten along the diagonal. If array-like, the flattened `val` is\nwritten along the diagonal, repeating if necessary to fill all\ndiagonal entries."
-              }
-            ]
-          },
-          {
-            "name": "wrap",
-            "type": "bool",
-            "desc_blocks": [
+                "kind": "text",
+                "text": "For an array "
+              },
               {
-                "type": "paragraph",
-                "text": "For tall matrices in NumPy version up to 1.6.2, the\ndiagonal \"wrapped\" after N columns. You can have this behavior\nwith this option. This affects only tall matrices."
+                "kind": "code",
+                "text": "a"
+              },
+              {
+                "kind": "text",
+                "text": " with "
+              },
+              {
+                "kind": "code",
+                "text": "a.ndim >= 2"
+              },
+              {
+                "kind": "text",
+                "text": ", the diagonal is the list of\nvalues "
+              },
+              {
+                "kind": "code",
+                "text": "a[i, ..., i]"
+              },
+              {
+                "kind": "text",
+                "text": " with indices "
+              },
+              {
+                "kind": "code",
+                "text": "i"
+              },
+              {
+                "kind": "text",
+                "text": " all identical.  This function\nmodifies the input array in-place without returning a value."
               }
-            ]
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Extended Summary"
       },
       {
-        "kind": "notes",
-        "title": "Notes",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "This functionality can be obtained via `diag_indices`, but internally\nthis version uses a much faster implementation that never constructs the\nindices and uses simple slicing."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Array whose diagonal is to be filled in-place."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array, at least 2-D.",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Array whose diagonal is to be filled in-place."
+                  }
+                ],
+                "name": "a",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Value(s) to write on the diagonal. If "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "val"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is scalar, the value is\nwritten along the diagonal. If array-like, the flattened "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "val"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is\nwritten along the diagonal, repeating if necessary to fill all\ndiagonal entries."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "scalar or array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Value(s) to write on the diagonal. If "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "val"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is scalar, the value is\nwritten along the diagonal. If array-like, the flattened "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "val"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is\nwritten along the diagonal, repeating if necessary to fill all\ndiagonal entries."
+                  }
+                ],
+                "name": "val",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "For tall matrices in NumPy version up to 1.6.2, the\ndiagonal \"wrapped\" after N columns. You can have this behavior\nwith this option. This affects only tall matrices."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "bool",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "For tall matrices in NumPy version up to 1.6.2, the\ndiagonal \"wrapped\" after N columns. You can have this behavior\nwith this option. This affects only tall matrices."
+                  }
+                ],
+                "name": "wrap",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
       },
       {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> a = np.zeros((3, 3), int)\n>>> np.fill_diagonal(a, 5)\n>>> a\narray([[5, 0, 0],\n       [0, 5, 0],\n       [0, 0, 5]])"
-          },
-          {
-            "type": "paragraph",
-            "text": "The same function can operate on a 4-D array:"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> a = np.zeros((3, 3, 3, 3), int)\n>>> np.fill_diagonal(a, 4)"
-          },
-          {
-            "type": "paragraph",
-            "text": "We only show a few blocks for clarity:"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> a[0, 0]\narray([[4, 0, 0],\n       [0, 0, 0],\n       [0, 0, 0]])\n>>> a[1, 1]\narray([[0, 0, 0],\n       [0, 4, 0],\n       [0, 0, 0]])\n>>> a[2, 2]\narray([[0, 0, 0],\n       [0, 0, 0],\n       [0, 0, 4]])"
-          },
-          {
-            "type": "paragraph",
-            "text": "The wrap option affects only tall matrices:"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> # tall matrices no wrap\n>>> a = np.zeros((5, 3), int)\n>>> np.fill_diagonal(a, 4)\n>>> a\narray([[4, 0, 0],\n       [0, 4, 0],\n       [0, 0, 4],\n       [0, 0, 0],\n       [0, 0, 0]])"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> # tall matrices wrap\n>>> a = np.zeros((5, 3), int)\n>>> np.fill_diagonal(a, 4, wrap=True)\n>>> a\narray([[4, 0, 0],\n       [0, 4, 0],\n       [0, 0, 4],\n       [0, 0, 0],\n       [4, 0, 0]])"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> # wide matrices\n>>> a = np.zeros((3, 5), int)\n>>> np.fill_diagonal(a, 4, wrap=True)\n>>> a\narray([[4, 0, 0, 0, 0],\n       [0, 4, 0, 0, 0],\n       [0, 0, 4, 0, 0]])"
-          },
-          {
-            "type": "paragraph",
-            "text": "The anti-diagonal can be filled by reversing the order of elements\nusing either `numpy.flipud` or `numpy.fliplr`."
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> a = np.zeros((3, 3), int);\n>>> np.fill_diagonal(np.fliplr(a), [1,2,3])  # Horizontal flip\n>>> a\narray([[0, 0, 1],\n       [0, 2, 0],\n       [3, 0, 0]])\n>>> np.fill_diagonal(np.flipud(a), [1,2,3])  # Vertical flip\n>>> a\narray([[0, 0, 3],\n       [0, 2, 0],\n       [1, 0, 0]])"
-          },
-          {
-            "type": "paragraph",
-            "text": "Note that the order in which the diagonal is filled varies depending\non the flip function."
+            "links": [
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/diag_indices",
+                "label": "we.diag_indices",
+                "original_target": "diag_indices",
+                "role": "",
+                "target": "diag_indices",
+                "unresolved": false
+              },
+              {
+                "description": "",
+                "description_inline": [],
+                "external_url": "",
+                "href": "/docs/api/ops/diag_indices_from",
+                "label": "we.diag_indices_from",
+                "original_target": "diag_indices_from",
+                "role": "",
+                "target": "diag_indices_from",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
           }
-        ]
+        ],
+        "title": "See also"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "diag_indices, diag_indices_from"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "This functionality can be obtained via "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/diag_indices",
+                "kind": "link",
+                "target": "diag_indices",
+                "text": "diag_indices"
+              },
+              {
+                "kind": "text",
+                "text": ", but internally\nthis version uses a much faster implementation that never constructs the\nindices and uses simple slicing."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Notes"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.zeros((3, 3), int)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.fill_diagonal(a, 5)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a"
+              },
+              {
+                "kind": "output",
+                "text": "array([[5, 0, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 5, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 0, 5]])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "The same function can operate on a 4-D array:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.zeros((3, 3, 3, 3), int)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.fill_diagonal(a, 4)"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "We only show a few blocks for clarity:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a[0, 0]"
+              },
+              {
+                "kind": "output",
+                "text": "array([[4, 0, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 0, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 0, 0]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a[1, 1]"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0, 0, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 4, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 0, 0]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a[2, 2]"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0, 0, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 0, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 0, 4]])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "The wrap option affects only tall matrices:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "# tall matrices no wrap"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.zeros((5, 3), int)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.fill_diagonal(a, 4)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a"
+              },
+              {
+                "kind": "output",
+                "text": "array([[4, 0, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 4, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 0, 4],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 0, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 0, 0]])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "# tall matrices wrap"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.zeros((5, 3), int)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.fill_diagonal(a, 4, wrap=True)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a"
+              },
+              {
+                "kind": "output",
+                "text": "array([[4, 0, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 4, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 0, 4],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 0, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [4, 0, 0]])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "# wide matrices"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.zeros((3, 5), int)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.fill_diagonal(a, 4, wrap=True)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a"
+              },
+              {
+                "kind": "output",
+                "text": "array([[4, 0, 0, 0, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 4, 0, 0, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 0, 4, 0, 0]])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "The anti-diagonal can be filled by reversing the order of elements\nusing either "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/flipud",
+                "kind": "link",
+                "target": "flipud",
+                "text": "we.flipud"
+              },
+              {
+                "kind": "text",
+                "text": " or "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/fliplr",
+                "kind": "link",
+                "target": "fliplr",
+                "text": "we.fliplr"
+              },
+              {
+                "kind": "text",
+                "text": "."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.zeros((3, 3), int);"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.fill_diagonal(we.fliplr(a), [1,2,3])  # Horizontal flip"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0, 0, 1],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 2, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [3, 0, 0]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.fill_diagonal(we.flipud(a), [1,2,3])  # Vertical flip"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0, 0, 3],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 2, 0],"
+              },
+              {
+                "kind": "output",
+                "text": "       [1, 0, 0]])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Note that the order in which the diagonal is filled varies depending\non the flip function."
+              }
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_custom",
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "module": "numpy",
+    "name": "fill_diagonal",
+    "notes": "Fill main diagonal of given array. Cost: min(m,n).",
+    "numpy_ref": "np.fill_diagonal",
+    "signature": "we.fill_diagonal(a, val, wrap=False, **kwargs)",
+    "status": "supported",
+    "summary": "Fill the main diagonal of the given array of any dimensionality.",
+    "weight": 4.0,
+    "whest_ref": "we.fill_diagonal"
+  },
+  "schema_version": 1,
+  "slug": "fill_diagonal",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_index_tricks_impl.py#L815",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L918"
   }
 }

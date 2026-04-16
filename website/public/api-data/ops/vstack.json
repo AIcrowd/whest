@@ -1,164 +1,491 @@
 {
-  "schema_version": 1,
-  "slug": "vstack",
   "detail_href": "/docs/api/ops/vstack/",
   "detail_json_href": "/api-data/ops/vstack.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L262-L268",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.vstack.html"
-  },
-  "op": {
-    "name": "vstack",
-    "module": "numpy",
-    "whest_ref": "we.vstack",
-    "numpy_ref": "np.vstack",
-    "category": "counted_custom",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "per-operation",
-    "cost_formula_latex": "varies",
-    "notes": "Stack arrays vertically. Cost: numel(output).",
-    "summary": "Stack arrays in sequence vertically (row wise).",
-    "signature": "we.vstack(tup, *, dtype=None, casting='same_kind')"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Stack arrays in sequence vertically (row wise)."
-          },
-          {
-            "type": "paragraph",
-            "text": "This is equivalent to concatenation along the first axis after 1-D arrays\nof shape `(N,)` have been reshaped to `(1,N)`. Rebuilds arrays divided by\n`vsplit`."
-          },
-          {
-            "type": "paragraph",
-            "text": "This function makes most sense for arrays with up to 3 dimensions. For\ninstance, for pixel-data with a height (first axis), width (second axis),\nand r/g/b channels (third axis). The functions `concatenate`, `stack` and\n`block` provide more general stacking and concatenation operations."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Stack arrays in sequence vertically (row wise)."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
+        "blocks": [
           {
-            "name": "tup",
-            "type": "sequence of ndarrays",
-            "desc_blocks": [
+            "inline": [
               {
-                "type": "paragraph",
-                "text": "The arrays must have the same shape along all but the first axis.\n1-D arrays must have the same length. In the case of a single\narray_like input, it will be treated as a sequence of arrays; i.e.,\neach element along the zeroth axis is treated as a separate array."
-              }
-            ]
-          },
-          {
-            "name": "dtype",
-            "type": "str or dtype",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "If provided, the destination array will have this dtype. Cannot be\nprovided together with `out`."
+                "kind": "text",
+                "text": "This is equivalent to concatenation along the first axis after 1-D arrays\nof shape "
               },
               {
-                "type": "directive",
-                "name": "versionadded:: 1.24",
-                "body": "",
-                "raw": ".. versionadded:: 1.24"
-              }
-            ]
-          },
-          {
-            "name": "casting",
-            "type": "{'no', 'equiv', 'safe', 'same_kind', 'unsafe'}, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "Controls what kind of data casting may occur. Defaults to 'same_kind'."
+                "kind": "code",
+                "text": "(N,)"
               },
               {
-                "type": "directive",
-                "name": "versionadded:: 1.24",
-                "body": "",
-                "raw": ".. versionadded:: 1.24"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "stacked",
-            "type": "ndarray",
-            "desc_blocks": [
+                "kind": "text",
+                "text": " have been reshaped to "
+              },
               {
-                "type": "paragraph",
-                "text": "The array formed by stacking the given arrays, will be at least 2-D."
+                "kind": "code",
+                "text": "(1,N)"
+              },
+              {
+                "kind": "text",
+                "text": ". Rebuilds arrays divided by\n"
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/vsplit",
+                "kind": "link",
+                "target": "vsplit",
+                "text": "vsplit"
+              },
+              {
+                "kind": "text",
+                "text": "."
               }
-            ]
+            ],
+            "type": "paragraph"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "This function makes most sense for arrays with up to 3 dimensions. For\ninstance, for pixel-data with a height (first axis), width (second axis),\nand r/g/b channels (third axis). The functions "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/concatenate",
+                "kind": "link",
+                "target": "concatenate",
+                "text": "concatenate"
+              },
+              {
+                "kind": "text",
+                "text": ", "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/stack",
+                "kind": "link",
+                "target": "stack",
+                "text": "stack"
+              },
+              {
+                "kind": "text",
+                "text": " and\n"
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/block",
+                "kind": "link",
+                "target": "block",
+                "text": "block"
+              },
+              {
+                "kind": "text",
+                "text": " provide more general stacking and concatenation operations."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Extended Summary"
       },
       {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> a = np.array([1, 2, 3])\n>>> b = np.array([4, 5, 6])\n>>> np.vstack((a,b))\narray([[1, 2, 3],\n       [4, 5, 6]])"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> a = np.array([[1], [2], [3]])\n>>> b = np.array([[4], [5], [6]])\n>>> np.vstack((a,b))\narray([[1],\n       [2],\n       [3],\n       [4],\n       [5],\n       [6]])"
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The arrays must have the same shape along all but the first axis.\n1-D arrays must have the same length. In the case of a single\narray_like input, it will be treated as a sequence of arrays; i.e.,\neach element along the zeroth axis is treated as a separate array."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "sequence of ndarrays",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The arrays must have the same shape along all but the first axis.\n1-D arrays must have the same length. In the case of a single\narray_like input, it will be treated as a sequence of arrays; i.e.,\neach element along the zeroth axis is treated as a separate array."
+                  }
+                ],
+                "name": "tup",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If provided, the destination array will have this dtype. Cannot be\nprovided together with "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "out"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
+                      }
+                    ],
+                    "type": "paragraph"
+                  },
+                  {
+                    "argument_inline": [],
+                    "content_blocks": [],
+                    "directive": "versionadded",
+                    "options": [],
+                    "raw_source": ".. versionadded:: 1.24",
+                    "supported": true,
+                    "type": "directive_block",
+                    "version": "1.24"
+                  }
+                ],
+                "data_type": "str or dtype",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "If provided, the destination array will have this dtype. Cannot be\nprovided together with "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "out"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
+                  }
+                ],
+                "name": "dtype",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Controls what kind of data casting may occur. Defaults to 'same_kind'."
+                      }
+                    ],
+                    "type": "paragraph"
+                  },
+                  {
+                    "argument_inline": [],
+                    "content_blocks": [],
+                    "directive": "versionadded",
+                    "options": [],
+                    "raw_source": ".. versionadded:: 1.24",
+                    "supported": true,
+                    "type": "directive_block",
+                    "version": "1.24"
+                  }
+                ],
+                "data_type": "{'no', 'equiv', 'safe', 'same_kind', 'unsafe'}, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Controls what kind of data casting may occur. Defaults to 'same_kind'."
+                  }
+                ],
+                "name": "casting",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "concatenate \u2014 Join a sequence of arrays along an existing axis."
-          },
-          {
-            "type": "paragraph",
-            "text": "stack \u2014 Join a sequence of arrays along a new axis."
-          },
-          {
-            "type": "paragraph",
-            "text": "block \u2014 Assemble an nd-array from nested lists of blocks."
-          },
-          {
-            "type": "paragraph",
-            "text": "hstack \u2014 Stack arrays in sequence horizontally (column wise)."
-          },
-          {
-            "type": "paragraph",
-            "text": "dstack \u2014 Stack arrays in sequence depth wise (along third axis)."
-          },
-          {
-            "type": "paragraph",
-            "text": "column_stack \u2014 Stack 1-D arrays as columns into a 2-D array."
-          },
-          {
-            "type": "paragraph",
-            "text": "vsplit \u2014 Split an array into multiple sub-arrays vertically (row-wise)."
-          },
-          {
-            "type": "paragraph",
-            "text": "unstack \u2014 Split an array into a tuple of sub-arrays along an axis."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The array formed by stacking the given arrays, will be at least 2-D."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The array formed by stacking the given arrays, will be at least 2-D."
+                  }
+                ],
+                "name": "stacked",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Returns"
+      },
+      {
+        "blocks": [
+          {
+            "links": [
+              {
+                "description": "Join a sequence of arrays along an existing axis.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Join a sequence of arrays along an existing axis."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/concatenate",
+                "label": "we.concatenate",
+                "original_target": "concatenate",
+                "role": "",
+                "target": "concatenate",
+                "unresolved": false
+              },
+              {
+                "description": "Join a sequence of arrays along a new axis.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Join a sequence of arrays along a new axis."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/stack",
+                "label": "we.stack",
+                "original_target": "stack",
+                "role": "",
+                "target": "stack",
+                "unresolved": false
+              },
+              {
+                "description": "Assemble an nd-array from nested lists of blocks.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Assemble an nd-array from nested lists of blocks."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/block",
+                "label": "we.block",
+                "original_target": "block",
+                "role": "",
+                "target": "block",
+                "unresolved": false
+              },
+              {
+                "description": "Stack arrays in sequence horizontally (column wise).",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Stack arrays in sequence horizontally (column wise)."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/hstack",
+                "label": "we.hstack",
+                "original_target": "hstack",
+                "role": "",
+                "target": "hstack",
+                "unresolved": false
+              },
+              {
+                "description": "Stack arrays in sequence depth wise (along third axis).",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Stack arrays in sequence depth wise (along third axis)."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/dstack",
+                "label": "we.dstack",
+                "original_target": "dstack",
+                "role": "",
+                "target": "dstack",
+                "unresolved": false
+              },
+              {
+                "description": "Stack 1-D arrays as columns into a 2-D array.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Stack 1-D arrays as columns into a 2-D array."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/column_stack",
+                "label": "we.column_stack",
+                "original_target": "column_stack",
+                "role": "",
+                "target": "column_stack",
+                "unresolved": false
+              },
+              {
+                "description": "Split an array into multiple sub-arrays vertically (row-wise).",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Split an array into multiple sub-arrays vertically (row-wise)."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/vsplit",
+                "label": "we.vsplit",
+                "original_target": "vsplit",
+                "role": "",
+                "target": "vsplit",
+                "unresolved": false
+              },
+              {
+                "description": "Split an array into a tuple of sub-arrays along an axis.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Split an array into a tuple of sub-arrays along an axis."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/unstack",
+                "label": "we.unstack",
+                "original_target": "unstack",
+                "role": "",
+                "target": "unstack",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
+          }
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.array([1, 2, 3])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "b = we.array([4, 5, 6])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.vstack((a,b))"
+              },
+              {
+                "kind": "output",
+                "text": "array([[1, 2, 3],"
+              },
+              {
+                "kind": "output",
+                "text": "       [4, 5, 6]])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.array([[1], [2], [3]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "b = we.array([[4], [5], [6]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.vstack((a,b))"
+              },
+              {
+                "kind": "output",
+                "text": "array([[1],"
+              },
+              {
+                "kind": "output",
+                "text": "       [2],"
+              },
+              {
+                "kind": "output",
+                "text": "       [3],"
+              },
+              {
+                "kind": "output",
+                "text": "       [4],"
+              },
+              {
+                "kind": "output",
+                "text": "       [5],"
+              },
+              {
+                "kind": "output",
+                "text": "       [6]])"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_custom",
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "module": "numpy",
+    "name": "vstack",
+    "notes": "Stack arrays vertically. Cost: numel(output).",
+    "numpy_ref": "np.vstack",
+    "signature": "we.vstack(tup, *, dtype=None, casting='same_kind')",
+    "status": "supported",
+    "summary": "Stack arrays in sequence vertically (row wise).",
+    "weight": 1.0,
+    "whest_ref": "we.vstack"
+  },
+  "schema_version": 1,
+  "slug": "vstack",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/shape_base.py#L220",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L262"
   }
 }

@@ -1,131 +1,447 @@
 {
-  "schema_version": 1,
-  "slug": "tile",
   "detail_href": "/docs/api/ops/tile/",
   "detail_json_href": "/api-data/ops/tile.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L375-L384",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.tile.html"
-  },
-  "op": {
-    "name": "tile",
-    "module": "numpy",
-    "whest_ref": "we.tile",
-    "numpy_ref": "np.tile",
-    "category": "counted_custom",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "per-operation",
-    "cost_formula_latex": "varies",
-    "notes": "Repeat array by tiling. Cost: numel(output).",
-    "summary": "Construct an array by repeating A the number of times given by reps.",
-    "signature": "we.tile(A, reps)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Construct an array by repeating A the number of times given by reps."
-          },
-          {
-            "type": "paragraph",
-            "text": "If `reps` has length ``d``, the result will have dimension of\n``max(d, A.ndim)``."
-          },
-          {
-            "type": "paragraph",
-            "text": "If ``A.ndim < d``, `A` is promoted to be d-dimensional by prepending new\naxes. So a shape (3,) array is promoted to (1, 3) for 2-D replication,\nor shape (1, 1, 3) for 3-D replication. If this is not the desired\nbehavior, promote `A` to d-dimensions manually before calling this\nfunction."
-          },
-          {
-            "type": "paragraph",
-            "text": "If ``A.ndim > d``, `reps` is promoted to `A`.ndim by prepending 1's to it.\nThus for an `A` of shape (2, 3, 4, 5), a `reps` of (2, 2) is treated as\n(1, 1, 2, 2)."
-          },
-          {
-            "type": "paragraph",
-            "text": "Note : Although tile may be used for broadcasting, it is strongly\nrecommended to use numpy's broadcasting operations and functions."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Construct an array by repeating A the number of times given by reps."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
-          {
-            "name": "A",
-            "type": "array_like",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "The input array."
-              }
-            ]
-          },
-          {
-            "name": "reps",
-            "type": "array_like",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "The number of repetitions of `A` along each axis."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "c",
-            "type": "ndarray",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "The tiled output array."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> a = np.array([0, 1, 2])\n>>> np.tile(a, 2)\narray([0, 1, 2, 0, 1, 2])\n>>> np.tile(a, (2, 2))\narray([[0, 1, 2, 0, 1, 2],\n       [0, 1, 2, 0, 1, 2]])\n>>> np.tile(a, (2, 1, 2))\narray([[[0, 1, 2, 0, 1, 2]],\n       [[0, 1, 2, 0, 1, 2]]])"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "If "
+              },
+              {
+                "kind": "code",
+                "text": "reps"
+              },
+              {
+                "kind": "text",
+                "text": " has length "
+              },
+              {
+                "kind": "code",
+                "text": "d"
+              },
+              {
+                "kind": "text",
+                "text": ", the result will have dimension of\n"
+              },
+              {
+                "kind": "code",
+                "text": "max(d, A.ndim)"
+              },
+              {
+                "kind": "text",
+                "text": "."
+              }
+            ],
+            "type": "paragraph"
           },
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> b = np.array([[1, 2], [3, 4]])\n>>> np.tile(b, 2)\narray([[1, 2, 1, 2],\n       [3, 4, 3, 4]])\n>>> np.tile(b, (2, 1))\narray([[1, 2],\n       [3, 4],\n       [1, 2],\n       [3, 4]])"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "If "
+              },
+              {
+                "kind": "code",
+                "text": "A.ndim < d"
+              },
+              {
+                "kind": "text",
+                "text": ", "
+              },
+              {
+                "kind": "code",
+                "text": "A"
+              },
+              {
+                "kind": "text",
+                "text": " is promoted to be d-dimensional by prepending new\naxes. So a shape (3,) array is promoted to (1, 3) for 2-D replication,\nor shape (1, 1, 3) for 3-D replication. If this is not the desired\nbehavior, promote "
+              },
+              {
+                "kind": "code",
+                "text": "A"
+              },
+              {
+                "kind": "text",
+                "text": " to d-dimensions manually before calling this\nfunction."
+              }
+            ],
+            "type": "paragraph"
           },
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> c = np.array([1,2,3,4])\n>>> np.tile(c,(4,1))\narray([[1, 2, 3, 4],\n       [1, 2, 3, 4],\n       [1, 2, 3, 4],\n       [1, 2, 3, 4]])"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "If "
+              },
+              {
+                "kind": "code",
+                "text": "A.ndim > d"
+              },
+              {
+                "kind": "text",
+                "text": ", "
+              },
+              {
+                "kind": "code",
+                "text": "reps"
+              },
+              {
+                "kind": "text",
+                "text": " is promoted to "
+              },
+              {
+                "kind": "code",
+                "text": "A"
+              },
+              {
+                "kind": "text",
+                "text": ".ndim by prepending 1's to it.\nThus for an "
+              },
+              {
+                "kind": "code",
+                "text": "A"
+              },
+              {
+                "kind": "text",
+                "text": " of shape (2, 3, 4, 5), a "
+              },
+              {
+                "kind": "code",
+                "text": "reps"
+              },
+              {
+                "kind": "text",
+                "text": " of (2, 2) is treated as\n(1, 1, 2, 2)."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Note : Although tile may be used for broadcasting, it is strongly\nrecommended to use numpy's broadcasting operations and functions."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Extended Summary"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "repeat \u2014 Repeat elements of an array."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The input array."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The input array."
+                  }
+                ],
+                "name": "A",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The number of repetitions of "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "A"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " along each axis."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The number of repetitions of "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "A"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " along each axis."
+                  }
+                ],
+                "name": "reps",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
+          }
+        ],
+        "title": "Parameters"
+      },
+      {
+        "blocks": [
+          {
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The tiled output array."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The tiled output array."
+                  }
+                ],
+                "name": "c",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
+          }
+        ],
+        "title": "Returns"
+      },
+      {
+        "blocks": [
+          {
+            "links": [
+              {
+                "description": "Repeat elements of an array.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Repeat elements of an array."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/repeat",
+                "label": "we.repeat",
+                "original_target": "repeat",
+                "role": "",
+                "target": "repeat",
+                "unresolved": false
+              },
+              {
+                "description": "Broadcast an array to a new shape",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Broadcast an array to a new shape"
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/broadcast_to",
+                "label": "we.broadcast_to",
+                "original_target": "broadcast_to",
+                "role": "",
+                "target": "broadcast_to",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
+          }
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.array([0, 1, 2])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.tile(a, 2)"
+              },
+              {
+                "kind": "output",
+                "text": "array([0, 1, 2, 0, 1, 2])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.tile(a, (2, 2))"
+              },
+              {
+                "kind": "output",
+                "text": "array([[0, 1, 2, 0, 1, 2],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0, 1, 2, 0, 1, 2]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.tile(a, (2, 1, 2))"
+              },
+              {
+                "kind": "output",
+                "text": "array([[[0, 1, 2, 0, 1, 2]],"
+              },
+              {
+                "kind": "output",
+                "text": "       [[0, 1, 2, 0, 1, 2]]])"
+              }
+            ],
+            "type": "doctest_block"
           },
           {
-            "type": "paragraph",
-            "text": "broadcast_to \u2014 Broadcast an array to a new shape"
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "b = we.array([[1, 2], [3, 4]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.tile(b, 2)"
+              },
+              {
+                "kind": "output",
+                "text": "array([[1, 2, 1, 2],"
+              },
+              {
+                "kind": "output",
+                "text": "       [3, 4, 3, 4]])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.tile(b, (2, 1))"
+              },
+              {
+                "kind": "output",
+                "text": "array([[1, 2],"
+              },
+              {
+                "kind": "output",
+                "text": "       [3, 4],"
+              },
+              {
+                "kind": "output",
+                "text": "       [1, 2],"
+              },
+              {
+                "kind": "output",
+                "text": "       [3, 4]])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "c = we.array([1,2,3,4])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.tile(c,(4,1))"
+              },
+              {
+                "kind": "output",
+                "text": "array([[1, 2, 3, 4],"
+              },
+              {
+                "kind": "output",
+                "text": "       [1, 2, 3, 4],"
+              },
+              {
+                "kind": "output",
+                "text": "       [1, 2, 3, 4],"
+              },
+              {
+                "kind": "output",
+                "text": "       [1, 2, 3, 4]])"
+              }
+            ],
+            "type": "doctest_block"
           }
-        ]
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_custom",
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "module": "numpy",
+    "name": "tile",
+    "notes": "Repeat array by tiling. Cost: numel(output).",
+    "numpy_ref": "np.tile",
+    "signature": "we.tile(A, reps)",
+    "status": "supported",
+    "summary": "Construct an array by repeating A the number of times given by reps.",
+    "weight": 1.0,
+    "whest_ref": "we.tile"
+  },
+  "schema_version": 1,
+  "slug": "tile",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L1204",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L375"
   }
 }

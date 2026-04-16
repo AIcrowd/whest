@@ -1,166 +1,506 @@
 {
-  "schema_version": 1,
-  "slug": "require",
   "detail_href": "/docs/api/ops/require/",
   "detail_json_href": "/api-data/ops/require.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L1313-L1315",
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/_asarray.py#L27-L132"
-  },
-  "op": {
-    "name": "require",
-    "module": "numpy",
-    "whest_ref": "we.require",
-    "numpy_ref": "np.require",
-    "category": "free",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "0",
-    "cost_formula_latex": "$0$",
-    "notes": "Return array that satisfies requirements.",
-    "summary": "Return an ndarray of the provided type that satisfies requirements.",
-    "signature": "we.require(a, dtype=None, requirements=None, *, like=None)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Return an ndarray of the provided type that satisfies requirements."
-          },
-          {
-            "type": "paragraph",
-            "text": "This function is useful to be sure that an array with the correct flags\nis returned for passing to compiled code (perhaps through ctypes)."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Return an ndarray of the provided type that satisfies requirements."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
+        "blocks": [
           {
-            "name": "a",
-            "type": "array_like",
-            "desc_blocks": [
+            "inline": [
               {
-                "type": "paragraph",
-                "text": "The object to be converted to a type-and-requirement-satisfying array."
+                "kind": "text",
+                "text": "This function is useful to be sure that an array with the correct flags\nis returned for passing to compiled code (perhaps through ctypes)."
               }
-            ]
-          },
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Extended Summary"
+      },
+      {
+        "blocks": [
           {
-            "name": "dtype",
-            "type": "data-type",
-            "desc_blocks": [
+            "items": [
               {
-                "type": "paragraph",
-                "text": "The required data-type. If None preserve the current dtype. If your\napplication requires the data to be in native byteorder, include\na byteorder specification as a part of the dtype specification."
-              }
-            ]
-          },
-          {
-            "name": "requirements",
-            "type": "str or sequence of str",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "The requirements list can be any of the following"
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The object to be converted to a type-and-requirement-satisfying array."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The object to be converted to a type-and-requirement-satisfying array."
+                  }
+                ],
+                "name": "a",
+                "type": "field_list"
               },
               {
-                "type": "paragraph",
-                "text": "* 'F_CONTIGUOUS' ('F') - ensure a Fortran-contiguous array\n* 'C_CONTIGUOUS' ('C') - ensure a C-contiguous array\n* 'ALIGNED' ('A')      - ensure a data-type aligned array\n* 'WRITEABLE' ('W')    - ensure a writable array\n* 'OWNDATA' ('O')      - ensure an array that owns its own data\n* 'ENSUREARRAY', ('E') - ensure a base array, instead of a subclass"
-              }
-            ]
-          },
-          {
-            "name": "like",
-            "type": "array_like, optional",
-            "desc_blocks": [
-              {
-                "type": "paragraph",
-                "text": "    Reference object to allow the creation of arrays which are not\n    NumPy arrays. If an array-like passed in as ``like`` supports\n    the ``__array_function__`` protocol, the result will be defined\n    by it. In this case, it ensures the creation of an array object\n    compatible with that passed in via this argument."
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The required data-type. If None preserve the current dtype. If your\napplication requires the data to be in native byteorder, include\na byteorder specification as a part of the dtype specification."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "data-type",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The required data-type. If None preserve the current dtype. If your\napplication requires the data to be in native byteorder, include\na byteorder specification as a part of the dtype specification."
+                  }
+                ],
+                "name": "dtype",
+                "type": "field_list"
               },
               {
-                "type": "directive",
-                "name": "versionadded:: 1.20.0",
-                "body": "",
-                "raw": ".. versionadded:: 1.20.0"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "out",
-            "type": "ndarray",
-            "desc_blocks": [
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The requirements list can be any of the following"
+                      }
+                    ],
+                    "type": "paragraph"
+                  },
+                  {
+                    "items": [
+                      {
+                        "blocks": [
+                          {
+                            "inline": [
+                              {
+                                "kind": "text",
+                                "text": "'F_CONTIGUOUS' ('F') - ensure a Fortran-contiguous array"
+                              }
+                            ],
+                            "type": "paragraph"
+                          }
+                        ]
+                      },
+                      {
+                        "blocks": [
+                          {
+                            "inline": [
+                              {
+                                "kind": "text",
+                                "text": "'C_CONTIGUOUS' ('C') - ensure a C-contiguous array"
+                              }
+                            ],
+                            "type": "paragraph"
+                          }
+                        ]
+                      },
+                      {
+                        "blocks": [
+                          {
+                            "inline": [
+                              {
+                                "kind": "text",
+                                "text": "'ALIGNED' ('A')      - ensure a data-type aligned array"
+                              }
+                            ],
+                            "type": "paragraph"
+                          }
+                        ]
+                      },
+                      {
+                        "blocks": [
+                          {
+                            "inline": [
+                              {
+                                "kind": "text",
+                                "text": "'WRITEABLE' ('W')    - ensure a writable array"
+                              }
+                            ],
+                            "type": "paragraph"
+                          }
+                        ]
+                      },
+                      {
+                        "blocks": [
+                          {
+                            "inline": [
+                              {
+                                "kind": "text",
+                                "text": "'OWNDATA' ('O')      - ensure an array that owns its own data"
+                              }
+                            ],
+                            "type": "paragraph"
+                          }
+                        ]
+                      },
+                      {
+                        "blocks": [
+                          {
+                            "inline": [
+                              {
+                                "kind": "text",
+                                "text": "'ENSUREARRAY', ('E') - ensure a base array, instead of a subclass"
+                              }
+                            ],
+                            "type": "paragraph"
+                          }
+                        ]
+                      }
+                    ],
+                    "ordered": false,
+                    "type": "list"
+                  }
+                ],
+                "data_type": "str or sequence of str",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The requirements list can be any of the following"
+                  }
+                ],
+                "name": "requirements",
+                "type": "field_list"
+              },
               {
-                "type": "paragraph",
-                "text": "Array with specified requirements and type if given."
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Reference object to allow the creation of arrays which are not\nNumPy arrays. If an array-like passed in as "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "like"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " supports\nthe "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "__array_function__"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " protocol, the result will be defined\nby it. In this case, it ensures the creation of an array object\ncompatible with that passed in via this argument."
+                      }
+                    ],
+                    "type": "paragraph"
+                  },
+                  {
+                    "argument_inline": [],
+                    "content_blocks": [],
+                    "directive": "versionadded",
+                    "options": [],
+                    "raw_source": ".. versionadded:: 1.20.0",
+                    "supported": true,
+                    "type": "directive_block",
+                    "version": "1.20.0"
+                  }
+                ],
+                "data_type": "array_like, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Reference object to allow the creation of arrays which are not\nNumPy arrays. If an array-like passed in as "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "like"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " supports\nthe "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "__array_function__"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " protocol, the result will be defined\nby it. In this case, it ensures the creation of an array object\ncompatible with that passed in via this argument."
+                  }
+                ],
+                "name": "like",
+                "type": "field_list"
               }
-            ]
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
       },
       {
-        "kind": "notes",
-        "title": "Notes",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "The returned array will be guaranteed to have the listed requirements\nby making a copy if needed."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Array with specified requirements and type if given."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Array with specified requirements and type if given."
+                  }
+                ],
+                "name": "out",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Returns"
       },
       {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> x = np.arange(6).reshape(2,3)\n>>> x.flags\n  C_CONTIGUOUS : True\n  F_CONTIGUOUS : False\n  OWNDATA : False\n  WRITEABLE : True\n  ALIGNED : True\n  WRITEBACKIFCOPY : False"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> y = np.require(x, dtype=np.float32, requirements=['A', 'O', 'W', 'F'])\n>>> y.flags\n  C_CONTIGUOUS : False\n  F_CONTIGUOUS : True\n  OWNDATA : True\n  WRITEABLE : True\n  ALIGNED : True\n  WRITEBACKIFCOPY : False"
+            "links": [
+              {
+                "description": "Convert input to an ndarray.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Convert input to an ndarray."
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/asarray",
+                "label": "we.asarray",
+                "original_target": "asarray",
+                "role": "",
+                "target": "asarray",
+                "unresolved": false
+              },
+              {
+                "description": "Convert to an ndarray, but pass through ndarray subclasses.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Convert to an ndarray, but pass through ndarray subclasses."
+                  }
+                ],
+                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.asanyarray.html",
+                "href": "",
+                "label": "asanyarray",
+                "original_target": "asanyarray",
+                "role": "",
+                "target": "asanyarray",
+                "unresolved": false
+              },
+              {
+                "description": "Convert input to a contiguous array.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Convert input to a contiguous array."
+                  }
+                ],
+                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.ascontiguousarray.html",
+                "href": "",
+                "label": "ascontiguousarray",
+                "original_target": "ascontiguousarray",
+                "role": "",
+                "target": "ascontiguousarray",
+                "unresolved": false
+              },
+              {
+                "description": "Convert input to an ndarray with column-major memory order.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Convert input to an ndarray with column-major memory order."
+                  }
+                ],
+                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.asfortranarray.html",
+                "href": "",
+                "label": "asfortranarray",
+                "original_target": "asfortranarray",
+                "role": "",
+                "target": "asfortranarray",
+                "unresolved": false
+              },
+              {
+                "description": "Information about the memory layout of the array.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Information about the memory layout of the array."
+                  }
+                ],
+                "external_url": "",
+                "href": "",
+                "label": "ndarray.flags",
+                "original_target": "ndarray.flags",
+                "role": "",
+                "target": "ndarray.flags",
+                "unresolved": true
+              }
+            ],
+            "type": "link_list"
           }
-        ]
+        ],
+        "title": "See also"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "asarray \u2014 Convert input to an ndarray."
-          },
-          {
-            "type": "paragraph",
-            "text": "asanyarray \u2014 Convert to an ndarray, but pass through ndarray subclasses."
-          },
-          {
-            "type": "paragraph",
-            "text": "ascontiguousarray \u2014 Convert input to a contiguous array."
-          },
-          {
-            "type": "paragraph",
-            "text": "asfortranarray \u2014 Convert input to an ndarray with column-major memory order."
-          },
-          {
-            "type": "paragraph",
-            "text": "ndarray.flags \u2014 Information about the memory layout of the array."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "The returned array will be guaranteed to have the listed requirements\nby making a copy if needed."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Notes"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x = we.arange(6).reshape(2,3)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x.flags"
+              },
+              {
+                "kind": "output",
+                "text": "  C_CONTIGUOUS : True"
+              },
+              {
+                "kind": "output",
+                "text": "  F_CONTIGUOUS : False"
+              },
+              {
+                "kind": "output",
+                "text": "  OWNDATA : False"
+              },
+              {
+                "kind": "output",
+                "text": "  WRITEABLE : True"
+              },
+              {
+                "kind": "output",
+                "text": "  ALIGNED : True"
+              },
+              {
+                "kind": "output",
+                "text": "  WRITEBACKIFCOPY : False"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "y = we.require(x, dtype=we.float32, requirements=['A', 'O', 'W', 'F'])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "y.flags"
+              },
+              {
+                "kind": "output",
+                "text": "  C_CONTIGUOUS : False"
+              },
+              {
+                "kind": "output",
+                "text": "  F_CONTIGUOUS : True"
+              },
+              {
+                "kind": "output",
+                "text": "  OWNDATA : True"
+              },
+              {
+                "kind": "output",
+                "text": "  WRITEABLE : True"
+              },
+              {
+                "kind": "output",
+                "text": "  ALIGNED : True"
+              },
+              {
+                "kind": "output",
+                "text": "  WRITEBACKIFCOPY : False"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "free",
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "module": "numpy",
+    "name": "require",
+    "notes": "Return array that satisfies requirements.",
+    "numpy_ref": "np.require",
+    "signature": "we.require(a, dtype=None, requirements=None, *, like=None)",
+    "status": "supported",
+    "summary": "Return an ndarray of the provided type that satisfies requirements.",
+    "weight": 1.0,
+    "whest_ref": "we.require"
+  },
+  "schema_version": 1,
+  "slug": "require",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/_asarray.py#L27",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1313"
   }
 }

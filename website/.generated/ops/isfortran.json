@@ -1,0 +1,369 @@
+{
+  "aliases": [],
+  "api_docs_html": "",
+  "area": "core",
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Check if the array is Fortran contiguous but "
+            },
+            {
+              "kind": "emphasis",
+              "text": "not"
+            },
+            {
+              "kind": "text",
+              "text": " C contiguous."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This function is obsolete. If you only want to check if an array is Fortran\ncontiguous use "
+            },
+            {
+              "kind": "code",
+              "text": "a.flags.f_contiguous"
+            },
+            {
+              "kind": "text",
+              "text": " instead."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Input array."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "ndarray",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Input array."
+                }
+              ],
+              "name": "a",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Returns True if the array is Fortran contiguous but "
+                    },
+                    {
+                      "kind": "emphasis",
+                      "text": "not"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " C contiguous."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "bool",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Returns True if the array is Fortran contiguous but "
+                },
+                {
+                  "kind": "emphasis",
+                  "text": "not"
+                },
+                {
+                  "kind": "text",
+                  "text": " C contiguous."
+                }
+              ],
+              "name": "isfortran",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "we.array allows to specify whether the array is written in C-contiguous\norder (last index varies the fastest), or FORTRAN-contiguous order in\nmemory (first index varies the fastest)."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import whest as we"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "a = we.array([[1, 2, 3], [4, 5, 6]], order='C')"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "a"
+            },
+            {
+              "kind": "output",
+              "text": "array([[1, 2, 3],"
+            },
+            {
+              "kind": "output",
+              "text": "       [4, 5, 6]])"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.isfortran(a)"
+            },
+            {
+              "kind": "output",
+              "text": "False"
+            }
+          ],
+          "type": "doctest_block"
+        },
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "b = we.array([[1, 2, 3], [4, 5, 6]], order='F')"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "b"
+            },
+            {
+              "kind": "output",
+              "text": "array([[1, 2, 3],"
+            },
+            {
+              "kind": "output",
+              "text": "       [4, 5, 6]])"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.isfortran(b)"
+            },
+            {
+              "kind": "output",
+              "text": "True"
+            }
+          ],
+          "type": "doctest_block"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "The transpose of a C-ordered array is a FORTRAN-ordered array."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "a = we.array([[1, 2, 3], [4, 5, 6]], order='C')"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "a"
+            },
+            {
+              "kind": "output",
+              "text": "array([[1, 2, 3],"
+            },
+            {
+              "kind": "output",
+              "text": "       [4, 5, 6]])"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.isfortran(a)"
+            },
+            {
+              "kind": "output",
+              "text": "False"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "b = a.T"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "b"
+            },
+            {
+              "kind": "output",
+              "text": "array([[1, 4],"
+            },
+            {
+              "kind": "output",
+              "text": "       [2, 5],"
+            },
+            {
+              "kind": "output",
+              "text": "       [3, 6]])"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.isfortran(b)"
+            },
+            {
+              "kind": "output",
+              "text": "True"
+            }
+          ],
+          "type": "doctest_block"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "C-ordered arrays evaluate as False even if they are also FORTRAN-ordered."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.isfortran(we.array([1, 2], order='F'))"
+            },
+            {
+              "kind": "output",
+              "text": "False"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
+    }
+  ],
+  "canonical_name": "isfortran",
+  "category": "free",
+  "cost_formula": "0",
+  "cost_formula_latex": "$0$",
+  "display_type": "free",
+  "doc_coverage": {
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "example": {
+    "code": "import whest as we\n\na = we.array([[1, 2, 3], [4, 5, 6]], order='C')\n\na\n\nwe.isfortran(a)\n\nb = we.array([[1, 2, 3], [4, 5, 6]], order='F')\n\nb\n\nwe.isfortran(b)\n\na = we.array([[1, 2, 3], [4, 5, 6]], order='C')\n\na\n\nwe.isfortran(a)\n\nb = a.T\n\nb\n\nwe.isfortran(b)\n\nwe.isfortran(we.array([1, 2], order='F'))",
+    "output": "array([[1, 2, 3],\n       [4, 5, 6]])\n\nFalse\n\narray([[1, 2, 3],\n       [4, 5, 6]])\n\nTrue\n\narray([[1, 2, 3],\n       [4, 5, 6]])\n\nFalse\n\narray([[1, 4],\n       [2, 5],\n       [3, 6]])\n\nTrue\n\nFalse",
+    "source": "derived"
+  },
+  "href": "/docs/api/ops/isfortran/",
+  "module": "numpy",
+  "name": "isfortran",
+  "next": {
+    "href": "/docs/api/ops/isin/",
+    "label": "we.isin"
+  },
+  "notes": "Return True if array is Fortran contiguous.",
+  "notes_sections": [],
+  "numpy_ref": "np.isfortran",
+  "parameters": [
+    {
+      "body": [
+        "Input array."
+      ],
+      "name": "a",
+      "type": "ndarray"
+    }
+  ],
+  "previous": {
+    "href": "/docs/api/ops/isfinite/",
+    "label": "we.isfinite"
+  },
+  "provenance_label": "Adapted from NumPy docs",
+  "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.isfortran.html",
+  "returns": [
+    {
+      "body": [
+        "Returns True if the array is Fortran contiguous but *not* C contiguous."
+      ],
+      "name": "isfortran",
+      "type": "bool"
+    }
+  ],
+  "see_also": [],
+  "signature": "we.isfortran(a)",
+  "slug": "isfortran",
+  "summary": "Check if the array is Fortran contiguous but *not* C contiguous.",
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L520",
+  "weight": 1.0,
+  "whest_examples_html": "",
+  "whest_ref": "we.isfortran",
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1089"
+}

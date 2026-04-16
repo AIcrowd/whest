@@ -1,126 +1,346 @@
 {
-  "schema_version": 1,
-  "slug": "issubdtype",
   "detail_href": "/docs/api/ops/issubdtype/",
   "detail_json_href": "/api-data/ops/issubdtype.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1113-L1115",
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numerictypes.py#L471-L534"
-  },
-  "op": {
-    "name": "issubdtype",
-    "module": "numpy",
-    "whest_ref": "we.issubdtype",
-    "numpy_ref": "np.issubdtype",
-    "category": "free",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "0",
-    "cost_formula_latex": "$0$",
-    "notes": "Return True if first argument is lower in type hierarchy.",
-    "summary": "Returns True if first argument is a typecode lower/equal in type hierarchy.",
-    "signature": "we.issubdtype(arg1, arg2)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Returns True if first argument is a typecode lower/equal in type hierarchy."
-          },
-          {
-            "type": "paragraph",
-            "text": "This is like the builtin :func:`issubclass`, but for `dtype`\\ s."
-          }
-        ]
-      },
-      {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
-          {
-            "name": "arg1, arg2",
-            "type": "dtype_like",
-            "desc_blocks": [
+            "inline": [
               {
-                "type": "paragraph",
-                "text": "`dtype` or object coercible to one"
+                "kind": "text",
+                "text": "Returns True if first argument is a typecode lower/equal in type hierarchy."
               }
-            ]
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "out",
-            "type": "bool",
-            "desc_blocks": []
-          }
-        ]
-      },
-      {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "`issubdtype` can be used to check the type of arrays:"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> ints = np.array([1, 2, 3], dtype=np.int32)\n>>> np.issubdtype(ints.dtype, np.integer)\nTrue\n>>> np.issubdtype(ints.dtype, np.floating)\nFalse"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> floats = np.array([1, 2, 3], dtype=np.float32)\n>>> np.issubdtype(floats.dtype, np.integer)\nFalse\n>>> np.issubdtype(floats.dtype, np.floating)\nTrue"
-          },
-          {
-            "type": "paragraph",
-            "text": "Similar types of different sizes are not subdtypes of each other:"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> np.issubdtype(np.float64, np.float32)\nFalse\n>>> np.issubdtype(np.float32, np.float64)\nFalse"
-          },
-          {
-            "type": "paragraph",
-            "text": "but both are subtypes of `floating`:"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> np.issubdtype(np.float64, np.floating)\nTrue\n>>> np.issubdtype(np.float32, np.floating)\nTrue"
-          },
-          {
-            "type": "paragraph",
-            "text": "For convenience, dtype-like objects are allowed too:"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> np.issubdtype('S1', np.bytes_)\nTrue\n>>> np.issubdtype('i4', np.signedinteger)\nTrue"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "This is like the builtin "
+              },
+              {
+                "display_text": "issubclass",
+                "explicit_title": false,
+                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.issubclass.html",
+                "href": "",
+                "kind": "role_reference",
+                "original_target": "issubclass",
+                "role": "func",
+                "suppress_link": false,
+                "target": "issubclass",
+                "unresolved": false
+              },
+              {
+                "kind": "text",
+                "text": ", but for "
+              },
+              {
+                "kind": "code",
+                "text": "dtype"
+              },
+              {
+                "kind": "text",
+                "text": "\u0000 s."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Extended Summary"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "arrays.scalars \u2014 Overview of the numpy type hierarchy."
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "code",
+                        "text": "dtype"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " or object coercible to one"
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "dtype_like",
+                "inline": [
+                  {
+                    "kind": "code",
+                    "text": "dtype"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " or object coercible to one"
+                  }
+                ],
+                "name": "arg1, arg2",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
+      },
+      {
+        "blocks": [
+          {
+            "items": [
+              {
+                "body_blocks": [],
+                "data_type": "bool",
+                "inline": [],
+                "name": "out",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
+          }
+        ],
+        "title": "Returns"
+      },
+      {
+        "blocks": [
+          {
+            "links": [
+              {
+                "description": "Overview of the numpy type hierarchy.",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "Overview of the numpy type hierarchy."
+                  }
+                ],
+                "external_url": "",
+                "href": "",
+                "label": "arrays.scalars",
+                "original_target": "arrays.scalars",
+                "role": "ref",
+                "target": "arrays.scalars",
+                "unresolved": true
+              }
+            ],
+            "type": "link_list"
+          }
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "inline": [
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/issubdtype",
+                "kind": "link",
+                "target": "issubdtype",
+                "text": "issubdtype"
+              },
+              {
+                "kind": "text",
+                "text": " can be used to check the type of arrays:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "ints = we.array([1, 2, 3], dtype=we.int32)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.issubdtype(ints.dtype, we.integer)"
+              },
+              {
+                "kind": "output",
+                "text": "True"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.issubdtype(ints.dtype, we.floating)"
+              },
+              {
+                "kind": "output",
+                "text": "False"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "floats = we.array([1, 2, 3], dtype=we.float32)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.issubdtype(floats.dtype, we.integer)"
+              },
+              {
+                "kind": "output",
+                "text": "False"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.issubdtype(floats.dtype, we.floating)"
+              },
+              {
+                "kind": "output",
+                "text": "True"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Similar types of different sizes are not subdtypes of each other:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.issubdtype(we.float64, we.float32)"
+              },
+              {
+                "kind": "output",
+                "text": "False"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.issubdtype(we.float32, we.float64)"
+              },
+              {
+                "kind": "output",
+                "text": "False"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "but both are subtypes of "
+              },
+              {
+                "kind": "code",
+                "text": "floating"
+              },
+              {
+                "kind": "text",
+                "text": ":"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.issubdtype(we.float64, we.floating)"
+              },
+              {
+                "kind": "output",
+                "text": "True"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.issubdtype(we.float32, we.floating)"
+              },
+              {
+                "kind": "output",
+                "text": "True"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "For convenience, dtype-like objects are allowed too:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.issubdtype('S1', we.bytes_)"
+              },
+              {
+                "kind": "output",
+                "text": "True"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.issubdtype('i4', we.signedinteger)"
+              },
+              {
+                "kind": "output",
+                "text": "True"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "free",
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "module": "numpy",
+    "name": "issubdtype",
+    "notes": "Return True if first argument is lower in type hierarchy.",
+    "numpy_ref": "np.issubdtype",
+    "signature": "we.issubdtype(arg1, arg2)",
+    "status": "supported",
+    "summary": "Returns True if first argument is a typecode lower/equal in type hierarchy.",
+    "weight": 1.0,
+    "whest_ref": "we.issubdtype"
+  },
+  "schema_version": 1,
+  "slug": "issubdtype",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numerictypes.py#L471",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1113"
   }
 }

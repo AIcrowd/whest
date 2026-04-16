@@ -1,0 +1,470 @@
+{
+  "aliases": [],
+  "api_docs_html": "",
+  "area": "core",
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Return the indices for the upper-triangle of arr."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "See "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/ops/triu_indices",
+              "kind": "link",
+              "target": "triu_indices",
+              "text": "triu_indices"
+            },
+            {
+              "kind": "text",
+              "text": " for full details."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "The indices will be valid for square arrays."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "ndarray, shape(N, N)",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "The indices will be valid for square arrays."
+                }
+              ],
+              "name": "arr",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Diagonal offset (see "
+                    },
+                    {
+                      "external_url": "",
+                      "href": "/docs/api/ops/triu",
+                      "kind": "link",
+                      "target": "triu",
+                      "text": "triu"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " for details)."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Diagonal offset (see "
+                },
+                {
+                  "external_url": "",
+                  "href": "/docs/api/ops/triu",
+                  "kind": "link",
+                  "target": "triu",
+                  "text": "triu"
+                },
+                {
+                  "kind": "text",
+                  "text": " for details)."
+                }
+              ],
+              "name": "k",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Indices for the upper-triangle of "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "arr"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "tuple, shape(2) of ndarray, shape(N)",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Indices for the upper-triangle of "
+                },
+                {
+                  "kind": "code",
+                  "text": "arr"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
+                }
+              ],
+              "name": "triu_indices_from",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "links": [
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "",
+              "href": "/docs/api/ops/triu_indices",
+              "label": "we.triu_indices",
+              "original_target": "triu_indices",
+              "role": "",
+              "target": "triu_indices",
+              "unresolved": false
+            },
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "",
+              "href": "/docs/api/ops/triu",
+              "label": "we.triu",
+              "original_target": "triu",
+              "role": "",
+              "target": "triu",
+              "unresolved": false
+            },
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "",
+              "href": "/docs/api/ops/tril_indices_from",
+              "label": "we.tril_indices_from",
+              "original_target": "tril_indices_from",
+              "role": "",
+              "target": "tril_indices_from",
+              "unresolved": false
+            }
+          ],
+          "type": "link_list"
+        }
+      ],
+      "title": "See also"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import whest as we"
+            }
+          ],
+          "type": "doctest_block"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Create a 4 by 4 array"
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "a = we.arange(16).reshape(4, 4)"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "a"
+            },
+            {
+              "kind": "output",
+              "text": "array([[ 0,  1,  2,  3],"
+            },
+            {
+              "kind": "output",
+              "text": "       [ 4,  5,  6,  7],"
+            },
+            {
+              "kind": "output",
+              "text": "       [ 8,  9, 10, 11],"
+            },
+            {
+              "kind": "output",
+              "text": "       [12, 13, 14, 15]])"
+            }
+          ],
+          "type": "doctest_block"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Pass the array to get the indices of the upper triangular elements."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "triui = we.triu_indices_from(a)"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "triui"
+            },
+            {
+              "kind": "output",
+              "text": "(array([0, 0, 0, 0, 1, 1, 1, 2, 2, 3]), array([0, 1, 2, 3, 1, 2, 3, 2, 3, 3]))"
+            }
+          ],
+          "type": "doctest_block"
+        },
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "a[triui]"
+            },
+            {
+              "kind": "output",
+              "text": "array([ 0,  1,  2,  3,  5,  6,  7, 10, 11, 15])"
+            }
+          ],
+          "type": "doctest_block"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This is syntactic sugar for triu_indices()."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.triu_indices(a.shape[0])"
+            },
+            {
+              "kind": "output",
+              "text": "(array([0, 0, 0, 0, 1, 1, 1, 2, 2, 3]), array([0, 1, 2, 3, 1, 2, 3, 2, 3, 3]))"
+            }
+          ],
+          "type": "doctest_block"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Use the "
+            },
+            {
+              "kind": "code",
+              "text": "k"
+            },
+            {
+              "kind": "text",
+              "text": " parameter to return the indices for the upper triangular array\nfrom the k-th diagonal."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "triuim1 = we.triu_indices_from(a, k=1)"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "a[triuim1]"
+            },
+            {
+              "kind": "output",
+              "text": "array([ 1,  2,  3,  6,  7, 11])"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
+    }
+  ],
+  "canonical_name": "triu_indices_from",
+  "category": "free",
+  "cost_formula": "0",
+  "cost_formula_latex": "$0$",
+  "display_type": "free",
+  "doc_coverage": {
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "example": {
+    "code": "import whest as we\n\na = we.arange(16).reshape(4, 4)\n\na\n\ntriui = we.triu_indices_from(a)\n\ntriui\n\na[triui]\n\nwe.triu_indices(a.shape[0])\n\ntriuim1 = we.triu_indices_from(a, k=1)\n\na[triuim1]",
+    "output": "array([[ 0,  1,  2,  3],\n       [ 4,  5,  6,  7],\n       [ 8,  9, 10, 11],\n       [12, 13, 14, 15]])\n\n(array([0, 0, 0, 0, 1, 1, 1, 2, 2, 3]), array([0, 1, 2, 3, 1, 2, 3, 2, 3, 3]))\n\narray([ 0,  1,  2,  3,  5,  6,  7, 10, 11, 15])\n\n(array([0, 0, 0, 0, 1, 1, 1, 2, 2, 3]), array([0, 1, 2, 3, 1, 2, 3, 2, 3, 3]))\n\narray([ 1,  2,  3,  6,  7, 11])",
+    "source": "derived"
+  },
+  "href": "/docs/api/ops/triu_indices_from/",
+  "module": "numpy",
+  "name": "triu_indices_from",
+  "next": {
+    "href": "/docs/api/ops/true_divide/",
+    "label": "we.true_divide"
+  },
+  "notes": "Return upper-triangle indices for given array.",
+  "notes_sections": [],
+  "numpy_ref": "np.triu_indices_from",
+  "parameters": [
+    {
+      "body": [
+        "The indices will be valid for square arrays."
+      ],
+      "name": "arr",
+      "type": "ndarray, shape(N, N)"
+    },
+    {
+      "body": [
+        "Diagonal offset (see `triu` for details)."
+      ],
+      "name": "k",
+      "type": "int, optional"
+    }
+  ],
+  "previous": {
+    "href": "/docs/api/ops/triu_indices/",
+    "label": "we.triu_indices"
+  },
+  "provenance_label": "Adapted from NumPy docs",
+  "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.triu_indices_from.html",
+  "returns": [
+    {
+      "body": [
+        "Indices for the upper-triangle of `arr`."
+      ],
+      "name": "triu_indices_from",
+      "type": "tuple, shape(2) of ndarray, shape(N)"
+    }
+  ],
+  "see_also": [
+    {
+      "description": "",
+      "description_inline": [],
+      "external_url": "",
+      "href": "/docs/api/ops/triu_indices",
+      "label": "we.triu_indices",
+      "original_target": "triu_indices",
+      "role": "",
+      "target": "triu_indices",
+      "unresolved": false
+    },
+    {
+      "description": "",
+      "description_inline": [],
+      "external_url": "",
+      "href": "/docs/api/ops/triu",
+      "label": "we.triu",
+      "original_target": "triu",
+      "role": "",
+      "target": "triu",
+      "unresolved": false
+    },
+    {
+      "description": "",
+      "description_inline": [],
+      "external_url": "",
+      "href": "/docs/api/ops/tril_indices_from",
+      "label": "we.tril_indices_from",
+      "original_target": "tril_indices_from",
+      "role": "",
+      "target": "tril_indices_from",
+      "unresolved": false
+    }
+  ],
+  "signature": "we.triu_indices_from(arr, k=0)",
+  "slug": "triu_indices_from",
+  "summary": "Return the indices for the upper-triangle of arr.",
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L1128",
+  "weight": 1.0,
+  "whest_examples_html": "",
+  "whest_ref": "we.triu_indices_from",
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1481"
+}

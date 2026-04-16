@@ -1,125 +1,343 @@
 {
-  "schema_version": 1,
-  "slug": "kron",
   "detail_href": "/docs/api/ops/kron/",
   "detail_json_href": "/api-data/ops/kron.json",
-  "source": {
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L916-L929",
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.kron.html"
-  },
-  "op": {
-    "name": "kron",
-    "module": "numpy",
-    "whest_ref": "we.kron",
-    "numpy_ref": "np.kron",
-    "category": "counted_custom",
-    "status": "supported",
-    "weight": 1.0,
-    "cost_formula": "m1*m2 * n1*n2",
-    "cost_formula_latex": "$m_1 m_2 \\cdot n_1 n_2$",
-    "notes": "Kronecker product; cost proportional to output size.",
-    "summary": "Kronecker product of two arrays.",
-    "signature": "we.kron(a, b)"
-  },
   "docs": {
     "sections": [
       {
-        "kind": "summary",
-        "title": "Summary",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "Kronecker product of two arrays."
-          },
-          {
-            "type": "paragraph",
-            "text": "Computes the Kronecker product, a composite array made of blocks of the\nsecond array scaled by the first."
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Kronecker product of two arrays."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Summary"
       },
       {
-        "kind": "parameters",
-        "title": "Parameters",
-        "items": [
-          {
-            "name": "a, b",
-            "type": "array_like",
-            "desc_blocks": []
-          }
-        ]
-      },
-      {
-        "kind": "returns",
-        "title": "Returns",
-        "items": [
-          {
-            "name": "out",
-            "type": "ndarray",
-            "desc_blocks": []
-          }
-        ]
-      },
-      {
-        "kind": "notes",
-        "title": "Notes",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "The function assumes that the number of dimensions of `a` and `b`\nare the same, if necessary prepending the smallest with ones.\nIf ``a.shape = (r0,r1,..,rN)`` and ``b.shape = (s0,s1,...,sN)``,\nthe Kronecker product has shape ``(r0*s0, r1*s1, ..., rN*SN)``.\nThe elements are products of elements from `a` and `b`, organized\nexplicitly by::"
-          },
-          {
-            "type": "paragraph",
-            "text": "    kron(a,b)[k0,k1,...,kN] = a[i0,i1,...,iN] * b[j0,j1,...,jN]"
-          },
-          {
-            "type": "paragraph",
-            "text": "where::"
-          },
-          {
-            "type": "paragraph",
-            "text": "    kt = it * st + jt,  t = 0,...,N"
-          },
-          {
-            "type": "paragraph",
-            "text": "In the common 2-D case (N=1), the block structure can be visualized::"
-          },
-          {
-            "type": "paragraph",
-            "text": "    [[ a[0,0]*b,   a[0,1]*b,  ... , a[0,-1]*b  ],\n     [  ...                              ...   ],\n     [ a[-1,0]*b,  a[-1,1]*b, ... , a[-1,-1]*b ]]"
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Computes the Kronecker product, a composite array made of blocks of the\nsecond array scaled by the first."
+              }
+            ],
+            "type": "paragraph"
           }
-        ]
+        ],
+        "title": "Extended Summary"
       },
       {
-        "kind": "examples",
-        "title": "Examples",
         "blocks": [
           {
-            "type": "code",
-            "language": "text",
-            "code": ">>> import numpy as np\n>>> np.kron([1,10,100], [5,6,7])\narray([  5,   6,   7, ..., 500, 600, 700])\n>>> np.kron([5,6,7], [1,10,100])\narray([  5,  50, 500, ...,   7,  70, 700])"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> np.kron(np.eye(2), np.ones((2,2)))\narray([[1.,  1.,  0.,  0.],\n       [1.,  1.,  0.,  0.],\n       [0.,  0.,  1.,  1.],\n       [0.,  0.,  1.,  1.]])"
-          },
-          {
-            "type": "code",
-            "language": "text",
-            "code": ">>> a = np.arange(100).reshape((2,5,2,5))\n>>> b = np.arange(24).reshape((2,3,4))\n>>> c = np.kron(a,b)\n>>> c.shape\n(2, 10, 6, 20)\n>>> I = (1,3,0,2)\n>>> J = (0,2,1)\n>>> J1 = (0,) + J             # extend to ndim=4\n>>> S1 = (1,) + b.shape\n>>> K = tuple(np.array(I) * np.array(S1) + np.array(J1))\n>>> c[K] == a[I]*b[J]\nTrue"
+            "items": [
+              {
+                "body_blocks": [],
+                "data_type": "array_like",
+                "inline": [],
+                "name": "a, b",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Parameters"
       },
       {
-        "kind": "see-also",
-        "title": "See Also",
         "blocks": [
           {
-            "type": "paragraph",
-            "text": "outer \u2014 The outer product"
+            "items": [
+              {
+                "body_blocks": [],
+                "data_type": "ndarray",
+                "inline": [],
+                "name": "out",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
           }
-        ]
+        ],
+        "title": "Returns"
+      },
+      {
+        "blocks": [
+          {
+            "links": [
+              {
+                "description": "The outer product",
+                "description_inline": [
+                  {
+                    "kind": "text",
+                    "text": "The outer product"
+                  }
+                ],
+                "external_url": "",
+                "href": "/docs/api/ops/outer",
+                "label": "we.outer",
+                "original_target": "outer",
+                "role": "",
+                "target": "outer",
+                "unresolved": false
+              }
+            ],
+            "type": "link_list"
+          }
+        ],
+        "title": "See also"
+      },
+      {
+        "blocks": [
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "The function assumes that the number of dimensions of "
+              },
+              {
+                "kind": "code",
+                "text": "a"
+              },
+              {
+                "kind": "text",
+                "text": " and "
+              },
+              {
+                "kind": "code",
+                "text": "b"
+              },
+              {
+                "kind": "text",
+                "text": "\nare the same, if necessary prepending the smallest with ones.\nIf "
+              },
+              {
+                "kind": "code",
+                "text": "a.shape = (r0,r1,..,rN)"
+              },
+              {
+                "kind": "text",
+                "text": " and "
+              },
+              {
+                "kind": "code",
+                "text": "b.shape = (s0,s1,...,sN)"
+              },
+              {
+                "kind": "text",
+                "text": ",\nthe Kronecker product has shape "
+              },
+              {
+                "kind": "code",
+                "text": "(r0*s0, r1*s1, ..., rN*SN)"
+              },
+              {
+                "kind": "text",
+                "text": ".\nThe elements are products of elements from "
+              },
+              {
+                "kind": "code",
+                "text": "a"
+              },
+              {
+                "kind": "text",
+                "text": " and "
+              },
+              {
+                "kind": "code",
+                "text": "b"
+              },
+              {
+                "kind": "text",
+                "text": ", organized\nexplicitly by:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "language": null,
+            "text": "kron(a,b)[k0,k1,...,kN] = a[i0,i1,...,iN] * b[j0,j1,...,jN]",
+            "type": "literal_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "where:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "language": null,
+            "text": "kt = it * st + jt,  t = 0,...,N",
+            "type": "literal_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "In the common 2-D case (N=1), the block structure can be visualized:"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "language": null,
+            "text": "[[ a[0,0]*b,   a[0,1]*b,  ... , a[0,-1]*b  ],\n [  ...                              ...   ],\n [ a[-1,0]*b,  a[-1,1]*b, ... , a[-1,-1]*b ]]",
+            "type": "literal_block"
+          }
+        ],
+        "title": "Notes"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import whest as we"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.kron([1,10,100], [5,6,7])"
+              },
+              {
+                "kind": "output",
+                "text": "array([  5,   6,   7, ..., 500, 600, 700])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.kron([5,6,7], [1,10,100])"
+              },
+              {
+                "kind": "output",
+                "text": "array([  5,  50, 500, ...,   7,  70, 700])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "we.kron(we.eye(2), we.ones((2,2)))"
+              },
+              {
+                "kind": "output",
+                "text": "array([[1.,  1.,  0.,  0.],"
+              },
+              {
+                "kind": "output",
+                "text": "       [1.,  1.,  0.,  0.],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0.,  0.,  1.,  1.],"
+              },
+              {
+                "kind": "output",
+                "text": "       [0.,  0.,  1.,  1.]])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = we.arange(100).reshape((2,5,2,5))"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "b = we.arange(24).reshape((2,3,4))"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "c = we.kron(a,b)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "c.shape"
+              },
+              {
+                "kind": "output",
+                "text": "(2, 10, 6, 20)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "I = (1,3,0,2)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "J = (0,2,1)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "J1 = (0,) + J             # extend to ndim=4"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "S1 = (1,) + b.shape"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "K = tuple(we.array(I) * we.array(S1) + we.array(J1))"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "c[K] == a[I]*b[J]"
+              },
+              {
+                "kind": "output",
+                "text": "True"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
+  },
+  "op": {
+    "category": "counted_custom",
+    "cost_formula": "m1*m2 * n1*n2",
+    "cost_formula_latex": "$m_1 m_2 \\cdot n_1 n_2$",
+    "module": "numpy",
+    "name": "kron",
+    "notes": "Kronecker product; cost proportional to output size.",
+    "numpy_ref": "np.kron",
+    "signature": "we.kron(a, b)",
+    "status": "supported",
+    "summary": "Kronecker product of two arrays.",
+    "weight": 1.0,
+    "whest_ref": "we.kron"
+  },
+  "schema_version": 1,
+  "slug": "kron",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L1085",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L916"
   }
 }
