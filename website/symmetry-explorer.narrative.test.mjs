@@ -31,6 +31,19 @@ test('Acts 1 through 4 ask algorithmic questions rather than product-tour questi
   assert.match(EXPLORER_ACTS[3].question, /group is known/i);
 });
 
+test('Acts 1 through 4 expose the new narrative metadata fields', () => {
+  for (const act of EXPLORER_ACTS.slice(0, 4)) {
+    assert.equal(typeof act.interpretation, 'string');
+    assert.ok(act.interpretation.length > 20);
+    assert.equal(typeof act.algorithmTitle, 'string');
+    assert.ok(act.algorithmTitle.length > 3);
+    assert.equal(typeof act.algorithm, 'string');
+    assert.ok(act.algorithm.length > 20);
+    assert.equal(typeof act.produces, 'string');
+    assert.ok(act.produces.length > 10);
+  }
+});
+
 test('pickTopVisibleAct prefers the top-most visible act and falls back safely', () => {
   assert.equal(
     pickTopVisibleAct(
@@ -46,6 +59,7 @@ test('pickTopVisibleAct prefers the top-most visible act and falls back safely',
 
 test('shell contract uses primitive-based chrome instead of legacy header classes', () => {
   const source = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
+  assert.match(source, /StickyBar/);
   assert.match(source, /ExplorerSectionCard/);
   assert.doesNotMatch(source, /font-accent/);
 });
