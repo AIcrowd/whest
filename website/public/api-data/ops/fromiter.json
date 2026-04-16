@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "slug": "fromiter",
+  "detail_href": "/docs/api/ops/fromiter/",
+  "detail_json_href": "/api-data/ops/fromiter.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L1016-L1023",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.fromiter.html"
+  },
+  "op": {
+    "name": "fromiter",
+    "module": "numpy",
+    "whest_ref": "we.fromiter",
+    "numpy_ref": "np.fromiter",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 16.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Create array from an iterable. Cost: numel(output).",
+    "summary": "Create a new 1-dimensional array from an iterable object.",
+    "signature": "we.fromiter(iter, dtype, count=-1, *, like=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Create a new 1-dimensional array from an iterable object."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "iter",
+            "type": "iterable object",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "An iterable object providing data for the array."
+              }
+            ]
+          },
+          {
+            "name": "dtype",
+            "type": "data-type",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The data-type of the returned array."
+              },
+              {
+                "type": "directive",
+                "name": "versionchanged:: 1.23",
+                "body": "    Object and subarray dtypes are now supported (note that the final\n    result is not 1-D for a subarray dtype).",
+                "raw": ".. versionchanged:: 1.23\n    Object and subarray dtypes are now supported (note that the final\n    result is not 1-D for a subarray dtype)."
+              }
+            ]
+          },
+          {
+            "name": "count",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The number of items to read from *iterable*.  The default is -1,\nwhich means all data is read."
+              }
+            ]
+          },
+          {
+            "name": "like",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Reference object to allow the creation of arrays which are not\nNumPy arrays. If an array-like passed in as ``like`` supports\nthe ``__array_function__`` protocol, the result will be defined\nby it. In this case, it ensures the creation of an array object\ncompatible with that passed in via this argument."
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 1.20.0",
+                "body": "",
+                "raw": ".. versionadded:: 1.20.0"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The output array."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "    Specify `count` to improve performance.  It allows ``fromiter`` to\n    pre-allocate the output array, instead of resizing it on demand."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": "    >>> import numpy as np\n    >>> iterable = (x*x for x in range(5))\n    >>> np.fromiter(iterable, float)\n    array([  0.,   1.,   4.,   9.,  16.])"
+          },
+          {
+            "type": "paragraph",
+            "text": "    A carefully constructed subarray dtype will lead to higher dimensional\n    results:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": "    >>> iterable = ((x+1, x+2) for x in range(5))\n    >>> np.fromiter(iterable, dtype=np.dtype((int, 2)))\n    array([[1, 2],\n           [2, 3],\n           [3, 4],\n           [4, 5],\n           [5, 6]])"
+          }
+        ]
+      }
+    ]
+  }
+}

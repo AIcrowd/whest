@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "slug": "can_cast",
+  "detail_href": "/docs/api/ops/can_cast/",
+  "detail_json_href": "/api-data/ops/can_cast.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L739-L741",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.can_cast.html"
+  },
+  "op": {
+    "name": "can_cast",
+    "module": "numpy",
+    "whest_ref": "we.can_cast",
+    "numpy_ref": "np.can_cast",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Returns True if cast is safe.",
+    "summary": "Returns True if cast between data types can occur according to the casting rule.",
+    "signature": "we.can_cast(from_, to, casting='safe')"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Returns True if cast between data types can occur according to the\ncasting rule."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "from_",
+            "type": "dtype, dtype specifier, NumPy scalar, or array",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Data type, NumPy scalar, or array to cast from."
+              }
+            ]
+          },
+          {
+            "name": "to",
+            "type": "dtype or dtype specifier",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Data type to cast to."
+              }
+            ]
+          },
+          {
+            "name": "casting",
+            "type": "{'no', 'equiv', 'safe', 'same_kind', 'unsafe'}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Controls what kind of data casting may occur."
+              },
+              {
+                "type": "paragraph",
+                "text": "* 'no' means the data types should not be cast at all.\n* 'equiv' means only byte-order changes are allowed.\n* 'safe' means only casts which can preserve values are allowed.\n* 'same_kind' means only safe casts or casts within a kind,\n  like float64 to float32, are allowed.\n* 'unsafe' means any data conversions may be done."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "bool",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "True if cast can occur according to the casting rule."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "directive",
+            "name": "versionchanged:: 2.0",
+            "body": "   This function does not support Python scalars anymore and does not\n   apply any value-based logic for 0-D arrays and NumPy scalars.",
+            "raw": ".. versionchanged:: 2.0\n   This function does not support Python scalars anymore and does not\n   apply any value-based logic for 0-D arrays and NumPy scalars."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Basic examples"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.can_cast(np.int32, np.int64)\nTrue\n>>> np.can_cast(np.float64, complex)\nTrue\n>>> np.can_cast(complex, float)\nFalse"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.can_cast('i8', 'f8')\nTrue\n>>> np.can_cast('i8', 'f4')\nFalse\n>>> np.can_cast('i4', 'S4')\nFalse"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "dtype, result_type"
+          }
+        ]
+      }
+    ]
+  }
+}

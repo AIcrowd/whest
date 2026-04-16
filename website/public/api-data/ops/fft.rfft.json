@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "slug": "fft.rfft",
+  "detail_href": "/docs/api/ops/fft.rfft/",
+  "detail_json_href": "/api-data/ops/fft.rfft.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L200-L209",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.fft.rfft.html"
+  },
+  "op": {
+    "name": "fft.rfft",
+    "module": "numpy.fft",
+    "whest_ref": "we.fft.rfft",
+    "numpy_ref": "np.fft.rfft",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "5(n/2) * ceil(log2(n))",
+    "cost_formula_latex": "$5(n/2) \\cdot \\lceil\\log_2 n\\rceil$",
+    "notes": "1-D real FFT. Cost: 5*(n//2)*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
+    "summary": "Compute the one-dimensional discrete Fourier Transform for real input.",
+    "signature": "we.fft.rfft(a, n=None, axis=-1, norm=None, out=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Compute the one-dimensional discrete Fourier Transform for real input."
+          },
+          {
+            "type": "paragraph",
+            "text": "This function computes the one-dimensional *n*-point discrete Fourier\nTransform (DFT) of a real-valued array by means of an efficient algorithm\ncalled the Fast Fourier Transform (FFT)."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array"
+              }
+            ]
+          },
+          {
+            "name": "n",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Number of points along transformation axis in the input to use.\nIf `n` is smaller than the length of the input, the input is cropped.\nIf it is larger, the input is padded with zeros. If `n` is not given,\nthe length of the input along the axis specified by `axis` is used."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Axis over which to compute the FFT. If not given, the last axis is\nused."
+              }
+            ]
+          },
+          {
+            "name": "norm",
+            "type": "{\"backward\", \"ortho\", \"forward\"}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Normalization mode (see `numpy.fft`). Default is \"backward\".\nIndicates which direction of the forward/backward pair of transforms\nis scaled and with what normalization factor."
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 1.20.0",
+                "body": "",
+                "raw": ".. versionadded:: 1.20.0"
+              },
+              {
+                "type": "paragraph",
+                "text": "    The \"backward\", \"forward\" values were added."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "complex ndarray, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If provided, the result will be placed in this array. It should be\nof the appropriate shape and dtype."
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 2.0.0",
+                "body": "",
+                "raw": ".. versionadded:: 2.0.0"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "complex ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The truncated or zero-padded input, transformed along the axis\nindicated by `axis`, or the last one if `axis` is not specified.\nIf `n` is even, the length of the transformed axis is ``(n/2)+1``.\nIf `n` is odd, the length is ``(n+1)/2``."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "When the DFT is computed for purely real input, the output is\nHermitian-symmetric, i.e. the negative frequency terms are just the complex\nconjugates of the corresponding positive-frequency terms, and the\nnegative-frequency terms are therefore redundant.  This function does not\ncompute the negative frequency terms, and the length of the transformed\naxis of the output is therefore ``n//2 + 1``."
+          },
+          {
+            "type": "paragraph",
+            "text": "When ``A = rfft(a)`` and fs is the sampling frequency, ``A[0]`` contains\nthe zero-frequency term 0*fs, which is real due to Hermitian symmetry."
+          },
+          {
+            "type": "paragraph",
+            "text": "If `n` is even, ``A[-1]`` contains the term representing both positive\nand negative Nyquist frequency (+fs/2 and -fs/2), and must also be purely\nreal. If `n` is odd, there is no term at fs/2; ``A[-1]`` contains\nthe largest positive frequency (fs/2*(n-1)/n), and is complex in the\ngeneral case."
+          },
+          {
+            "type": "paragraph",
+            "text": "If the input `a` contains an imaginary part, it is silently discarded."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.fft.fft([0, 1, 0, 0])\narray([ 1.+0.j,  0.-1.j, -1.+0.j,  0.+1.j]) # may vary\n>>> np.fft.rfft([0, 1, 0, 0])\narray([ 1.+0.j,  0.-1.j, -1.+0.j]) # may vary"
+          },
+          {
+            "type": "paragraph",
+            "text": "Notice how the final element of the `fft` output is the complex conjugate\nof the second element, for real input. For `rfft`, this symmetry is\nexploited to compute only the non-negative frequency terms."
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "numpy.fft \u2014 For definition of the DFT and conventions used."
+          },
+          {
+            "type": "paragraph",
+            "text": "irfft \u2014 The inverse of `rfft`."
+          },
+          {
+            "type": "paragraph",
+            "text": "fft \u2014 The one-dimensional FFT of general (complex) input."
+          },
+          {
+            "type": "paragraph",
+            "text": "fftn \u2014 The *n*-dimensional FFT."
+          },
+          {
+            "type": "paragraph",
+            "text": "rfftn \u2014 The *n*-dimensional FFT of real input."
+          }
+        ]
+      }
+    ]
+  }
+}

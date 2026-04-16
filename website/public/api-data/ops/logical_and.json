@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "slug": "logical_and",
+  "detail_href": "/docs/api/ops/logical_and/",
+  "detail_json_href": "/api-data/ops/logical_and.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L73-L159",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.logical_and.html"
+  },
+  "op": {
+    "name": "logical_and",
+    "module": "numpy",
+    "whest_ref": "we.logical_and",
+    "numpy_ref": "np.logical_and",
+    "category": "counted_binary",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Element-wise logical AND.",
+    "summary": "Compute the truth value of x1 AND x2 element-wise.",
+    "signature": "we.logical_and(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature])"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Compute the truth value of x1 AND x2 element-wise."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x1, x2",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input arrays.\nIf ``x1.shape != x2.shape``, they must be broadcastable to a common\nshape (which becomes the shape of the output)."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, None, or tuple of ndarray and None, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
+              }
+            ]
+          },
+          {
+            "name": "where",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the `out` array will be set to the ufunc result.\nElsewhere, the `out` array will retain its original value.\nNote that if an uninitialized `out` array is created via the default\n``out=None``, locations within it where the condition is False will\nremain uninitialized."
+              }
+            ]
+          },
+          {
+            "name": "**kwargs",
+            "type": "",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "For other keyword-only arguments, see the\n:ref:`ufunc docs <ufuncs.kwargs>`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "y",
+            "type": "ndarray or bool",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Boolean result of the logical AND operation applied to the elements\nof `x1` and `x2`; the shape is determined by broadcasting.\nThis is a scalar if both `x1` and `x2` are scalars."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.logical_and(True, False)\nFalse\n>>> np.logical_and([True, False], [False, False])\narray([False, False])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.arange(5)\n>>> np.logical_and(x>1, x<4)\narray([False, False,  True,  True, False])"
+          },
+          {
+            "type": "paragraph",
+            "text": "The ``&`` operator can be used as a shorthand for ``np.logical_and`` on\nboolean ndarrays."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([True, False])\n>>> b = np.array([False, False])\n>>> a & b\narray([False, False])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "logical_or, logical_not, logical_xor"
+          },
+          {
+            "type": "paragraph",
+            "text": "bitwise_and"
+          }
+        ]
+      }
+    ]
+  }
+}

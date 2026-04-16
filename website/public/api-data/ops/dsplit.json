@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "slug": "dsplit",
+  "detail_href": "/docs/api/ops/dsplit/",
+  "detail_json_href": "/api-data/ops/dsplit.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L875-L884",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.dsplit.html"
+  },
+  "op": {
+    "name": "dsplit",
+    "module": "numpy",
+    "whest_ref": "we.dsplit",
+    "numpy_ref": "np.dsplit",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Split array into multiple sub-arrays depth-wise. Cost: numel(output).",
+    "summary": "Split array into multiple sub-arrays along the 3rd axis (depth).",
+    "signature": "we.dsplit(ary, indices_or_sections)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Split array into multiple sub-arrays along the 3rd axis (depth)."
+          },
+          {
+            "type": "paragraph",
+            "text": "Please refer to the `split` documentation.  `dsplit` is equivalent\nto `split` with ``axis=2``, the array is always split along the third\naxis provided the array dimension is greater than or equal to 3."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> x = np.arange(16.0).reshape(2, 2, 4)\n>>> x\narray([[[ 0.,   1.,   2.,   3.],\n        [ 4.,   5.,   6.,   7.]],\n       [[ 8.,   9.,  10.,  11.],\n        [12.,  13.,  14.,  15.]]])\n>>> np.dsplit(x, 2)\n[array([[[ 0.,  1.],\n        [ 4.,  5.]],\n       [[ 8.,  9.],\n        [12., 13.]]]), array([[[ 2.,  3.],\n        [ 6.,  7.]],\n       [[10., 11.],\n        [14., 15.]]])]\n>>> np.dsplit(x, np.array([3, 6]))\n[array([[[ 0.,   1.,   2.],\n        [ 4.,   5.,   6.]],\n       [[ 8.,   9.,  10.],\n        [12.,  13.,  14.]]]),\n array([[[ 3.],\n        [ 7.]],\n       [[11.],\n        [15.]]]),\narray([], shape=(2, 2, 0), dtype=float64)]"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "split \u2014 Split an array into multiple sub-arrays of equal size."
+          }
+        ]
+      }
+    ]
+  }
+}

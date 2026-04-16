@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "slug": "flatnonzero",
+  "detail_href": "/docs/api/ops/flatnonzero/",
+  "detail_json_href": "/api-data/ops/flatnonzero.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L933-L942",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.flatnonzero.html"
+  },
+  "op": {
+    "name": "flatnonzero",
+    "module": "numpy",
+    "whest_ref": "we.flatnonzero",
+    "numpy_ref": "np.flatnonzero",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Return indices of non-zero elements in flattened array. Cost: numel(input).",
+    "summary": "Return indices that are non-zero in the flattened version of a.",
+    "signature": "we.flatnonzero(a)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return indices that are non-zero in the flattened version of a."
+          },
+          {
+            "type": "paragraph",
+            "text": "This is equivalent to ``np.nonzero(np.ravel(a))[0]``."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input data."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "res",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Output array, containing the indices of the elements of ``a.ravel()``\nthat are non-zero."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> x = np.arange(-2, 3)\n>>> x\narray([-2, -1,  0,  1,  2])\n>>> np.flatnonzero(x)\narray([0, 1, 3, 4])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Use the indices of the non-zero elements as an index array to extract\nthese elements:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x.ravel()[np.flatnonzero(x)]\narray([-2, -1,  1,  2])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "nonzero \u2014 Return the indices of the non-zero elements of the input array."
+          },
+          {
+            "type": "paragraph",
+            "text": "ravel \u2014 Return a 1-D array containing the elements of the input array."
+          }
+        ]
+      }
+    ]
+  }
+}

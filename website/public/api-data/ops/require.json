@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "slug": "require",
+  "detail_href": "/docs/api/ops/require/",
+  "detail_json_href": "/api-data/ops/require.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L1313-L1315",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/_asarray.py#L27-L132"
+  },
+  "op": {
+    "name": "require",
+    "module": "numpy",
+    "whest_ref": "we.require",
+    "numpy_ref": "np.require",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Return array that satisfies requirements.",
+    "summary": "Return an ndarray of the provided type that satisfies requirements.",
+    "signature": "we.require(a, dtype=None, requirements=None, *, like=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return an ndarray of the provided type that satisfies requirements."
+          },
+          {
+            "type": "paragraph",
+            "text": "This function is useful to be sure that an array with the correct flags\nis returned for passing to compiled code (perhaps through ctypes)."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The object to be converted to a type-and-requirement-satisfying array."
+              }
+            ]
+          },
+          {
+            "name": "dtype",
+            "type": "data-type",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The required data-type. If None preserve the current dtype. If your\napplication requires the data to be in native byteorder, include\na byteorder specification as a part of the dtype specification."
+              }
+            ]
+          },
+          {
+            "name": "requirements",
+            "type": "str or sequence of str",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The requirements list can be any of the following"
+              },
+              {
+                "type": "paragraph",
+                "text": "* 'F_CONTIGUOUS' ('F') - ensure a Fortran-contiguous array\n* 'C_CONTIGUOUS' ('C') - ensure a C-contiguous array\n* 'ALIGNED' ('A')      - ensure a data-type aligned array\n* 'WRITEABLE' ('W')    - ensure a writable array\n* 'OWNDATA' ('O')      - ensure an array that owns its own data\n* 'ENSUREARRAY', ('E') - ensure a base array, instead of a subclass"
+              }
+            ]
+          },
+          {
+            "name": "like",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "    Reference object to allow the creation of arrays which are not\n    NumPy arrays. If an array-like passed in as ``like`` supports\n    the ``__array_function__`` protocol, the result will be defined\n    by it. In this case, it ensures the creation of an array object\n    compatible with that passed in via this argument."
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 1.20.0",
+                "body": "",
+                "raw": ".. versionadded:: 1.20.0"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Array with specified requirements and type if given."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The returned array will be guaranteed to have the listed requirements\nby making a copy if needed."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> x = np.arange(6).reshape(2,3)\n>>> x.flags\n  C_CONTIGUOUS : True\n  F_CONTIGUOUS : False\n  OWNDATA : False\n  WRITEABLE : True\n  ALIGNED : True\n  WRITEBACKIFCOPY : False"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> y = np.require(x, dtype=np.float32, requirements=['A', 'O', 'W', 'F'])\n>>> y.flags\n  C_CONTIGUOUS : False\n  F_CONTIGUOUS : True\n  OWNDATA : True\n  WRITEABLE : True\n  ALIGNED : True\n  WRITEBACKIFCOPY : False"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "asarray \u2014 Convert input to an ndarray."
+          },
+          {
+            "type": "paragraph",
+            "text": "asanyarray \u2014 Convert to an ndarray, but pass through ndarray subclasses."
+          },
+          {
+            "type": "paragraph",
+            "text": "ascontiguousarray \u2014 Convert input to a contiguous array."
+          },
+          {
+            "type": "paragraph",
+            "text": "asfortranarray \u2014 Convert input to an ndarray with column-major memory order."
+          },
+          {
+            "type": "paragraph",
+            "text": "ndarray.flags \u2014 Information about the memory layout of the array."
+          }
+        ]
+      }
+    ]
+  }
+}

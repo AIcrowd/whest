@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "slug": "ravel",
+  "detail_href": "/docs/api/ops/ravel/",
+  "detail_json_href": "/api-data/ops/ravel.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L336-L343",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.ravel.html"
+  },
+  "op": {
+    "name": "ravel",
+    "module": "numpy",
+    "whest_ref": "we.ravel",
+    "numpy_ref": "np.ravel",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Return contiguous flattened array. Cost: numel(input).",
+    "summary": "Return a contiguous flattened array.",
+    "signature": "we.ravel(a, order='C')"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return a contiguous flattened array."
+          },
+          {
+            "type": "paragraph",
+            "text": "A 1-D array, containing the elements of the input, is returned.  A copy is\nmade only if needed."
+          },
+          {
+            "type": "paragraph",
+            "text": "As of NumPy 1.10, the returned array will have the same type as the input\narray. (for example, a masked array will be returned for a masked array\ninput)"
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array.  The elements in `a` are read in the order specified by\n`order`, and packed as a 1-D array."
+              }
+            ]
+          },
+          {
+            "name": "order",
+            "type": "{'C','F', 'A', 'K'}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The elements of `a` are read using this index order. 'C' means\nto index the elements in row-major, C-style order,\nwith the last axis index changing fastest, back to the first\naxis index changing slowest.  'F' means to index the elements\nin column-major, Fortran-style order, with the\nfirst index changing fastest, and the last index changing\nslowest. Note that the 'C' and 'F' options take no account of\nthe memory layout of the underlying array, and only refer to\nthe order of axis indexing.  'A' means to read the elements in\nFortran-like index order if `a` is Fortran *contiguous* in\nmemory, C-like order otherwise.  'K' means to read the\nelements in the order they occur in memory, except for\nreversing the data when strides are negative.  By default, 'C'\nindex order is used."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "y",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "y is a contiguous 1-D array of the same subtype as `a`,\nwith shape ``(a.size,)``.\nNote that matrices are special cased for backward compatibility,\nif `a` is a matrix, then y is a 1-D ndarray."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "In row-major, C-style order, in two dimensions, the row index\nvaries the slowest, and the column index the quickest.  This can\nbe generalized to multiple dimensions, where row-major order\nimplies that the index along the first axis varies slowest, and\nthe index along the last quickest.  The opposite holds for\ncolumn-major, Fortran-style index ordering."
+          },
+          {
+            "type": "paragraph",
+            "text": "When a view is desired in as many cases as possible, ``arr.reshape(-1)``\nmay be preferable. However, ``ravel`` supports ``K`` in the optional\n``order`` argument while ``reshape`` does not."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "It is equivalent to ``reshape(-1, order=order)``."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> x = np.array([[1, 2, 3], [4, 5, 6]])\n>>> np.ravel(x)\narray([1, 2, 3, 4, 5, 6])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x.reshape(-1)\narray([1, 2, 3, 4, 5, 6])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.ravel(x, order='F')\narray([1, 4, 2, 5, 3, 6])"
+          },
+          {
+            "type": "paragraph",
+            "text": "When ``order`` is 'A', it will preserve the array's 'C' or 'F' ordering:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.ravel(x.T)\narray([1, 4, 2, 5, 3, 6])\n>>> np.ravel(x.T, order='A')\narray([1, 2, 3, 4, 5, 6])"
+          },
+          {
+            "type": "paragraph",
+            "text": "When ``order`` is 'K', it will preserve orderings that are neither 'C'\nnor 'F', but won't reverse axes:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.arange(3)[::-1]; a\narray([2, 1, 0])\n>>> a.ravel(order='C')\narray([2, 1, 0])\n>>> a.ravel(order='K')\narray([2, 1, 0])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.arange(12).reshape(2,3,2).swapaxes(1,2); a\narray([[[ 0,  2,  4],\n        [ 1,  3,  5]],\n       [[ 6,  8, 10],\n        [ 7,  9, 11]]])\n>>> a.ravel(order='C')\narray([ 0,  2,  4,  1,  3,  5,  6,  8, 10,  7,  9, 11])\n>>> a.ravel(order='K')\narray([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "ndarray.flat \u2014 1-D iterator over an array."
+          },
+          {
+            "type": "paragraph",
+            "text": "ndarray.flatten \u2014 1-D array copy of the elements of an array in row-major order."
+          },
+          {
+            "type": "paragraph",
+            "text": "ndarray.reshape \u2014 Change the shape of an array without changing its data."
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "slug": "clip",
+  "detail_href": "/docs/api/ops/clip/",
+  "detail_json_href": "/api-data/ops/clip.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L639-L653",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.clip.html"
+  },
+  "op": {
+    "name": "clip",
+    "module": "numpy",
+    "whest_ref": "we.clip",
+    "numpy_ref": "np.clip",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(input)",
+    "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "notes": "Clip array to [a_min, a_max] element-wise.",
+    "summary": "Clip (limit) the values in an array.",
+    "signature": "we.clip(a, a_min=<no value>, a_max=<no value>, out=None, *, min=<no value>, max=<no value>, **kwargs)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Clip (limit) the values in an array."
+          },
+          {
+            "type": "paragraph",
+            "text": "Given an interval, values outside the interval are clipped to\nthe interval edges.  For example, if an interval of ``[0, 1]``\nis specified, values smaller than 0 become 0, and values larger\nthan 1 become 1."
+          },
+          {
+            "type": "paragraph",
+            "text": "Equivalent to but faster than ``np.minimum(a_max, np.maximum(a, a_min))``."
+          },
+          {
+            "type": "paragraph",
+            "text": "No check is performed to ensure ``a_min < a_max``."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Array containing elements to clip."
+              }
+            ]
+          },
+          {
+            "name": "a_min, a_max",
+            "type": "array_like or None",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Minimum and maximum value. If ``None``, clipping is not performed on\nthe corresponding edge. If both ``a_min`` and ``a_max`` are ``None``,\nthe elements of the returned array stay the same. Both are broadcasted\nagainst ``a``."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The results will be placed in this array. It may be the input\narray for in-place clipping.  `out` must be of the right shape\nto hold the output.  Its type is preserved."
+              }
+            ]
+          },
+          {
+            "name": "min, max",
+            "type": "array_like or None",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Array API compatible alternatives for ``a_min`` and ``a_max``\narguments. Either ``a_min`` and ``a_max`` or ``min`` and ``max``\ncan be passed at the same time. Default: ``None``."
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 2.1.0",
+                "body": "",
+                "raw": ".. versionadded:: 2.1.0"
+              }
+            ]
+          },
+          {
+            "name": "**kwargs",
+            "type": "",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "For other keyword-only arguments, see the\n:ref:`ufunc docs <ufuncs.kwargs>`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "clipped_array",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "An array with the elements of `a`, but where values\n< `a_min` are replaced with `a_min`, and those > `a_max`\nwith `a_max`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "When `a_min` is greater than `a_max`, `clip` returns an\narray in which all values are equal to `a_max`,\nas shown in the second example."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> a = np.arange(10)\n>>> a\narray([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])\n>>> np.clip(a, 1, 8)\narray([1, 1, 2, 3, 4, 5, 6, 7, 8, 8])\n>>> np.clip(a, 8, 1)\narray([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])\n>>> np.clip(a, 3, 6, out=a)\narray([3, 3, 3, 3, 4, 5, 6, 6, 6, 6])\n>>> a\narray([3, 3, 3, 3, 4, 5, 6, 6, 6, 6])\n>>> a = np.arange(10)\n>>> a\narray([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])\n>>> np.clip(a, [3, 4, 1, 1, 1, 4, 4, 4, 4, 4], 8)\narray([3, 4, 2, 3, 4, 5, 6, 7, 8, 8])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "ufuncs-output-type"
+          }
+        ]
+      }
+    ]
+  }
+}

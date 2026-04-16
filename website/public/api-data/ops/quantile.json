@@ -1,0 +1,301 @@
+{
+  "schema_version": 1,
+  "slug": "quantile",
+  "detail_href": "/docs/api/ops/quantile/",
+  "detail_json_href": "/api-data/ops/quantile.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L197-L255",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.quantile.html"
+  },
+  "op": {
+    "name": "quantile",
+    "module": "numpy",
+    "whest_ref": "we.quantile",
+    "numpy_ref": "np.quantile",
+    "category": "counted_reduction",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(input)",
+    "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "notes": "q-th quantile of array elements.",
+    "summary": "Compute the q-th quantile of the data along the specified axis.",
+    "signature": "we.quantile(a, q, axis=None, out=None, overwrite_input=False, method='linear', keepdims=False, *, weights=None, interpolation=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Compute the q-th quantile of the data along the specified axis."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like of real numbers",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array or object that can be converted to an array."
+              }
+            ]
+          },
+          {
+            "name": "q",
+            "type": "array_like of float",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Probability or sequence of probabilities of the quantiles to compute.\nValues must be between 0 and 1 inclusive."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "{int, tuple of int, None}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Axis or axes along which the quantiles are computed. The default is\nto compute the quantile(s) along a flattened version of the array."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Alternative output array in which to place the result. It must have\nthe same shape and buffer length as the expected output, but the\ntype (of the output) will be cast if necessary."
+              }
+            ]
+          },
+          {
+            "name": "overwrite_input",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If True, then allow the input array `a` to be modified by\nintermediate calculations, to save memory. In this case, the\ncontents of the input `a` after this function completes is\nundefined."
+              }
+            ]
+          },
+          {
+            "name": "method",
+            "type": "str, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "This parameter specifies the method to use for estimating the\nquantile.  There are many different methods, some unique to NumPy.\nThe recommended options, numbered as they appear in [1]_, are:"
+              },
+              {
+                "type": "paragraph",
+                "text": "1. 'inverted_cdf'\n2. 'averaged_inverted_cdf'\n3. 'closest_observation'\n4. 'interpolated_inverted_cdf'\n5. 'hazen'\n6. 'weibull'\n7. 'linear'  (default)\n8. 'median_unbiased'\n9. 'normal_unbiased'"
+              },
+              {
+                "type": "paragraph",
+                "text": "The first three methods are discontinuous. For backward compatibility\nwith previous versions of NumPy, the following discontinuous variations\nof the default 'linear' (7.) option are available:"
+              },
+              {
+                "type": "paragraph",
+                "text": "* 'lower'\n* 'higher',\n* 'midpoint'\n* 'nearest'"
+              },
+              {
+                "type": "paragraph",
+                "text": "See Notes for details."
+              },
+              {
+                "type": "directive",
+                "name": "versionchanged:: 1.22.0",
+                "body": "    This argument was previously called \"interpolation\" and only\n    offered the \"linear\" default and last four options.",
+                "raw": ".. versionchanged:: 1.22.0\n    This argument was previously called \"interpolation\" and only\n    offered the \"linear\" default and last four options."
+              }
+            ]
+          },
+          {
+            "name": "keepdims",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If this is set to True, the axes which are reduced are left in\nthe result as dimensions with size one. With this option, the\nresult will broadcast correctly against the original array `a`."
+              }
+            ]
+          },
+          {
+            "name": "weights",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "An array of weights associated with the values in `a`. Each value in\n`a` contributes to the quantile according to its associated weight.\nThe weights array can either be 1-D (in which case its length must be\nthe size of `a` along the given axis) or of the same shape as `a`.\nIf `weights=None`, then all data in `a` are assumed to have a\nweight equal to one.\nOnly `method=\"inverted_cdf\"` supports weights.\nSee the notes for more details."
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 2.0.0",
+                "body": "",
+                "raw": ".. versionadded:: 2.0.0"
+              }
+            ]
+          },
+          {
+            "name": "interpolation",
+            "type": "str, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Deprecated name for the method keyword argument."
+              },
+              {
+                "type": "directive",
+                "name": "deprecated:: 1.22.0",
+                "body": "",
+                "raw": ".. deprecated:: 1.22.0"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "quantile",
+            "type": "scalar or ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If `q` is a single probability and `axis=None`, then the result\nis a scalar. If multiple probability levels are given, first axis\nof the result corresponds to the quantiles. The other axes are\nthe axes that remain after the reduction of `a`. If the input\ncontains integers or floats smaller than ``float64``, the output\ndata-type is ``float64``. Otherwise, the output data-type is the\nsame as that of the input. If `out` is specified, that array is\nreturned instead."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Given a sample `a` from an underlying distribution, `quantile` provides a\nnonparametric estimate of the inverse cumulative distribution function."
+          },
+          {
+            "type": "paragraph",
+            "text": "By default, this is done by interpolating between adjacent elements in\n``y``, a sorted copy of `a`::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    (1-g)*y[j] + g*y[j+1]"
+          },
+          {
+            "type": "paragraph",
+            "text": "where the index ``j`` and coefficient ``g`` are the integral and\nfractional components of ``q * (n-1)``, and ``n`` is the number of\nelements in the sample."
+          },
+          {
+            "type": "paragraph",
+            "text": "This is a special case of Equation 1 of H&F [1]_. More generally,"
+          },
+          {
+            "type": "paragraph",
+            "text": "- ``j = (q*n + m - 1) // 1``, and\n- ``g = (q*n + m - 1) % 1``,"
+          },
+          {
+            "type": "paragraph",
+            "text": "where ``m`` may be defined according to several different conventions.\nThe preferred convention may be selected using the ``method`` parameter:"
+          },
+          {
+            "type": "paragraph",
+            "text": "=============================== =============== ===============\n``method``                      number in H&F   ``m``\n=============================== =============== ===============\n``interpolated_inverted_cdf``   4               ``0``\n``hazen``                       5               ``1/2``\n``weibull``                     6               ``q``\n``linear`` (default)            7               ``1 - q``\n``median_unbiased``             8               ``q/3 + 1/3``\n``normal_unbiased``             9               ``q/4 + 3/8``\n=============================== =============== ==============="
+          },
+          {
+            "type": "paragraph",
+            "text": "Note that indices ``j`` and ``j + 1`` are clipped to the range ``0`` to\n``n - 1`` when the results of the formula would be outside the allowed\nrange of non-negative indices. The ``- 1`` in the formulas for ``j`` and\n``g`` accounts for Python's 0-based indexing."
+          },
+          {
+            "type": "paragraph",
+            "text": "The table above includes only the estimators from H&F that are continuous\nfunctions of probability `q` (estimators 4-9). NumPy also provides the\nthree discontinuous estimators from H&F (estimators 1-3), where ``j`` is\ndefined as above, ``m`` is defined as follows, and ``g`` is a function\nof the real-valued ``index = q*n + m - 1`` and ``j``."
+          },
+          {
+            "type": "paragraph",
+            "text": "1. ``inverted_cdf``: ``m = 0`` and ``g = int(index - j > 0)``\n2. ``averaged_inverted_cdf``: ``m = 0`` and\n   ``g = (1 + int(index - j > 0)) / 2``\n3. ``closest_observation``: ``m = -1/2`` and\n   ``g = 1 - int((index == j) & (j%2 == 1))``"
+          },
+          {
+            "type": "paragraph",
+            "text": "For backward compatibility with previous versions of NumPy, `quantile`\nprovides four additional discontinuous estimators. Like\n``method='linear'``, all have ``m = 1 - q`` so that ``j = q*(n-1) // 1``,\nbut ``g`` is defined as follows."
+          },
+          {
+            "type": "paragraph",
+            "text": "- ``lower``: ``g = 0``\n- ``midpoint``: ``g = 0.5``\n- ``higher``: ``g = 1``\n- ``nearest``: ``g = (q*(n-1) % 1) > 0.5``"
+          },
+          {
+            "type": "paragraph",
+            "text": "**Weighted quantiles:**\nMore formally, the quantile at probability level :math:`q` of a cumulative\ndistribution function :math:`F(y)=P(Y \\leq y)` with probability measure\n:math:`P` is defined as any number :math:`x` that fulfills the\n*coverage conditions*"
+          },
+          {
+            "type": "directive",
+            "name": "math:: P(Y < x) \\leq q \\quad\\text{and}\\quad P(Y \\leq x) \\geq q",
+            "body": "",
+            "raw": ".. math:: P(Y < x) \\leq q \\quad\\text{and}\\quad P(Y \\leq x) \\geq q"
+          },
+          {
+            "type": "paragraph",
+            "text": "with random variable :math:`Y\\sim P`.\nSample quantiles, the result of `quantile`, provide nonparametric\nestimation of the underlying population counterparts, represented by the\nunknown :math:`F`, given a data vector `a` of length ``n``."
+          },
+          {
+            "type": "paragraph",
+            "text": "Some of the estimators above arise when one considers :math:`F` as the\nempirical distribution function of the data, i.e.\n:math:`F(y) = \\frac{1}{n} \\sum_i 1_{a_i \\leq y}`.\nThen, different methods correspond to different choices of :math:`x` that\nfulfill the above coverage conditions. Methods that follow this approach\nare ``inverted_cdf`` and ``averaged_inverted_cdf``."
+          },
+          {
+            "type": "paragraph",
+            "text": "For weighted quantiles, the coverage conditions still hold. The\nempirical cumulative distribution is simply replaced by its weighted\nversion, i.e.\n:math:`P(Y \\leq t) = \\frac{1}{\\sum_i w_i} \\sum_i w_i 1_{x_i \\leq t}`.\nOnly ``method=\"inverted_cdf\"`` supports weights."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> a = np.array([[10, 7, 4], [3, 2, 1]])\n>>> a\narray([[10,  7,  4],\n       [ 3,  2,  1]])\n>>> np.quantile(a, 0.5)\n3.5\n>>> np.quantile(a, 0.5, axis=0)\narray([6.5, 4.5, 2.5])\n>>> np.quantile(a, 0.5, axis=1)\narray([7.,  2.])\n>>> np.quantile(a, 0.5, axis=1, keepdims=True)\narray([[7.],\n       [2.]])\n>>> m = np.quantile(a, 0.5, axis=0)\n>>> out = np.zeros_like(m)\n>>> np.quantile(a, 0.5, axis=0, out=out)\narray([6.5, 4.5, 2.5])\n>>> m\narray([6.5, 4.5, 2.5])\n>>> b = a.copy()\n>>> np.quantile(b, 0.5, axis=1, overwrite_input=True)\narray([7.,  2.])\n>>> assert not np.all(a == b)"
+          },
+          {
+            "type": "paragraph",
+            "text": "See also `numpy.percentile` for a visualization of most methods."
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "mean"
+          },
+          {
+            "type": "paragraph",
+            "text": "percentile \u2014 equivalent to quantile, but with q in the range [0, 100]."
+          },
+          {
+            "type": "paragraph",
+            "text": "median \u2014 equivalent to ``quantile(..., 0.5)``"
+          },
+          {
+            "type": "paragraph",
+            "text": "nanquantile"
+          }
+        ]
+      }
+    ]
+  }
+}

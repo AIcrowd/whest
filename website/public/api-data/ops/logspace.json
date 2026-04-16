@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "slug": "logspace",
+  "detail_href": "/docs/api/ops/logspace/",
+  "detail_json_href": "/api-data/ops/logspace.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L256-L261",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.logspace.html"
+  },
+  "op": {
+    "name": "logspace",
+    "module": "numpy",
+    "whest_ref": "we.logspace",
+    "numpy_ref": "np.logspace",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Log-spaced generation; cost = num.",
+    "summary": "Return numbers spaced evenly on a log scale.",
+    "signature": "we.logspace(start, stop, num=50, endpoint=True, base=10.0, dtype=None, axis=0)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return numbers spaced evenly on a log scale."
+          },
+          {
+            "type": "paragraph",
+            "text": "In linear space, the sequence starts at ``base ** start``\n(`base` to the power of `start`) and ends with ``base ** stop``\n(see `endpoint` below)."
+          },
+          {
+            "type": "directive",
+            "name": "versionchanged:: 1.25.0",
+            "body": "    Non-scalar 'base` is now supported",
+            "raw": ".. versionchanged:: 1.25.0\n    Non-scalar 'base` is now supported"
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "start",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "``base ** start`` is the starting value of the sequence."
+              }
+            ]
+          },
+          {
+            "name": "stop",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "``base ** stop`` is the final value of the sequence, unless `endpoint`\nis False.  In that case, ``num + 1`` values are spaced over the\ninterval in log-space, of which all but the last (a sequence of\nlength `num`) are returned."
+              }
+            ]
+          },
+          {
+            "name": "num",
+            "type": "integer, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Number of samples to generate.  Default is 50."
+              }
+            ]
+          },
+          {
+            "name": "endpoint",
+            "type": "boolean, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If true, `stop` is the last sample. Otherwise, it is not included.\nDefault is True."
+              }
+            ]
+          },
+          {
+            "name": "base",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The base of the log space. The step size between the elements in\n``ln(samples) / ln(base)`` (or ``log_base(samples)``) is uniform.\nDefault is 10.0."
+              }
+            ]
+          },
+          {
+            "name": "dtype",
+            "type": "dtype",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The type of the output array.  If `dtype` is not given, the data type\nis inferred from `start` and `stop`. The inferred type will never be\nan integer; `float` is chosen even if the arguments would produce an\narray of integers."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The axis in the result to store the samples.  Relevant only if start,\nstop, or base are array-like.  By default (0), the samples will be\nalong a new axis inserted at the beginning. Use -1 to get an axis at\nthe end."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "samples",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "`num` samples, equally spaced on a log scale."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "If base is a scalar, logspace is equivalent to the code"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> y = np.linspace(start, stop, num=num, endpoint=endpoint)\n... # doctest: +SKIP\n>>> power(base, y).astype(dtype)\n... # doctest: +SKIP"
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.logspace(2.0, 3.0, num=4)\narray([ 100.        ,  215.443469  ,  464.15888336, 1000.        ])\n>>> np.logspace(2.0, 3.0, num=4, endpoint=False)\narray([100.        ,  177.827941  ,  316.22776602,  562.34132519])\n>>> np.logspace(2.0, 3.0, num=4, base=2.0)\narray([4.        ,  5.0396842 ,  6.34960421,  8.        ])\n>>> np.logspace(2.0, 3.0, num=4, base=[2.0, 3.0], axis=-1)\narray([[ 4.        ,  5.0396842 ,  6.34960421,  8.        ],\n       [ 9.        , 12.98024613, 18.72075441, 27.        ]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Graphical illustration:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import matplotlib.pyplot as plt\n>>> N = 10\n>>> x1 = np.logspace(0.1, 1, N, endpoint=True)\n>>> x2 = np.logspace(0.1, 1, N, endpoint=False)\n>>> y = np.zeros(N)\n>>> plt.plot(x1, y, 'o')\n[<matplotlib.lines.Line2D object at 0x...>]\n>>> plt.plot(x2, y + 0.5, 'o')\n[<matplotlib.lines.Line2D object at 0x...>]\n>>> plt.ylim([-0.5, 1])\n(-0.5, 1)\n>>> plt.show()"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "arange \u2014 Similar to linspace, with the step size specified instead of the number of samples. Note that, when used with a float endpoint, the endpoint may or may not be included."
+          },
+          {
+            "type": "paragraph",
+            "text": "linspace \u2014 Similar to logspace, but with the samples uniformly distributed in linear space, instead of log space."
+          },
+          {
+            "type": "paragraph",
+            "text": "geomspace \u2014 Similar to logspace, but with endpoints specified directly."
+          },
+          {
+            "type": "paragraph",
+            "text": "how-to-partition"
+          }
+        ]
+      }
+    ]
+  }
+}

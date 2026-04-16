@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "slug": "linalg.qr",
+  "detail_href": "/docs/api/ops/linalg.qr/",
+  "detail_json_href": "/api-data/ops/linalg.qr.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_decompositions.py#L78-L90",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.qr.html"
+  },
+  "op": {
+    "name": "linalg.qr",
+    "module": "numpy.linalg",
+    "whest_ref": "we.linalg.qr",
+    "numpy_ref": "np.linalg.qr",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 4.0,
+    "cost_formula": "m * n * min(m,n)",
+    "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
+    "notes": "QR decomposition. Cost: $m \\cdot n \\cdot \\min(m,n)$.",
+    "summary": "Compute the qr factorization of a matrix.",
+    "signature": "we.linalg.qr(a, mode='reduced')"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Compute the qr factorization of a matrix."
+          },
+          {
+            "type": "paragraph",
+            "text": "Factor the matrix `a` as *qr*, where `q` is orthonormal and `r` is\nupper-triangular."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like, shape (..., M, N)",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "An array-like object with the dimensionality of at least 2."
+              }
+            ]
+          },
+          {
+            "name": "mode",
+            "type": "{'reduced', 'complete', 'r', 'raw'}, optional, default: 'reduced'",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If K = min(M, N), then"
+              },
+              {
+                "type": "paragraph",
+                "text": "* 'reduced'  : returns Q, R with dimensions (..., M, K), (..., K, N)\n* 'complete' : returns Q, R with dimensions (..., M, M), (..., M, N)\n* 'r'        : returns R only with dimensions (..., K, N)\n* 'raw'      : returns h, tau with dimensions (..., N, M), (..., K,)"
+              },
+              {
+                "type": "paragraph",
+                "text": "The options 'reduced', 'complete, and 'raw' are new in numpy 1.8,\nsee the notes for more information. The default is 'reduced', and to\nmaintain backward compatibility with earlier versions of numpy both\nit and the old default 'full' can be omitted. Note that array h\nreturned in 'raw' mode is transposed for calling Fortran. The\n'economic' mode is deprecated.  The modes 'full' and 'economic' may\nbe passed using only the first letter for backwards compatibility,\nbut all others must be spelled out. See the Notes for more\nexplanation."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "",
+            "type": "When mode is 'reduced' or 'complete', the result will be a namedtuple with",
+            "desc_blocks": []
+          },
+          {
+            "name": "",
+            "type": "the attributes `Q` and `R`.",
+            "desc_blocks": []
+          },
+          {
+            "name": "Q",
+            "type": "ndarray of float or complex, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A matrix with orthonormal columns. When mode = 'complete' the\nresult is an orthogonal/unitary matrix depending on whether or not\na is real/complex. The determinant may be either +/- 1 in that\ncase. In case the number of dimensions in the input array is\ngreater than 2 then a stack of the matrices with above properties\nis returned."
+              }
+            ]
+          },
+          {
+            "name": "R",
+            "type": "ndarray of float or complex, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The upper-triangular matrix or a stack of upper-triangular\nmatrices if the number of dimensions in the input array is greater\nthan 2."
+              }
+            ]
+          },
+          {
+            "name": "(h, tau)",
+            "type": "ndarrays of np.double or np.cdouble, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The array h contains the Householder reflectors that generate q\nalong with r. The tau array contains scaling factors for the\nreflectors. In the deprecated  'economic' mode only h is returned."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "This is an interface to the LAPACK routines ``dgeqrf``, ``zgeqrf``,\n``dorgqr``, and ``zungqr``."
+          },
+          {
+            "type": "paragraph",
+            "text": "For more information on the qr factorization, see for example:\nhttps://en.wikipedia.org/wiki/QR_factorization"
+          },
+          {
+            "type": "paragraph",
+            "text": "Subclasses of `ndarray` are preserved except for the 'raw' mode. So if\n`a` is of type `matrix`, all the return values will be matrices too."
+          },
+          {
+            "type": "paragraph",
+            "text": "New 'reduced', 'complete', and 'raw' options for mode were added in\nNumPy 1.8.0 and the old option 'full' was made an alias of 'reduced'.  In\naddition the options 'full' and 'economic' were deprecated.  Because\n'full' was the previous default and 'reduced' is the new default,\nbackward compatibility can be maintained by letting `mode` default.\nThe 'raw' option was added so that LAPACK routines that can multiply\narrays by q using the Householder reflectors can be used. Note that in\nthis case the returned arrays are of type np.double or np.cdouble and\nthe h array is transposed to be FORTRAN compatible.  No routines using\nthe 'raw' return are currently exposed by numpy, but some are available\nin lapack_lite and just await the necessary work."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> rng = np.random.default_rng()\n>>> a = rng.normal(size=(9, 6))\n>>> Q, R = np.linalg.qr(a)\n>>> np.allclose(a, np.dot(Q, R))  # a does equal QR\nTrue\n>>> R2 = np.linalg.qr(a, mode='r')\n>>> np.allclose(R, R2)  # mode='r' returns the same R as mode='full'\nTrue\n>>> a = np.random.normal(size=(3, 2, 2)) # Stack of 2 x 2 matrices as input\n>>> Q, R = np.linalg.qr(a)\n>>> Q.shape\n(3, 2, 2)\n>>> R.shape\n(3, 2, 2)\n>>> np.allclose(a, np.matmul(Q, R))\nTrue"
+          },
+          {
+            "type": "paragraph",
+            "text": "Example illustrating a common use of `qr`: solving of least squares\nproblems"
+          },
+          {
+            "type": "paragraph",
+            "text": "What are the least-squares-best `m` and `y0` in ``y = y0 + mx`` for\nthe following data: {(0,1), (1,0), (1,2), (2,1)}. (Graph the points\nand you'll see that it should be y0 = 0, m = 1.)  The answer is provided\nby solving the over-determined matrix equation ``Ax = b``, where::"
+          },
+          {
+            "type": "paragraph",
+            "text": "  A = array([[0, 1], [1, 1], [1, 1], [2, 1]])\n  x = array([[y0], [m]])\n  b = array([[1], [0], [2], [1]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "If A = QR such that Q is orthonormal (which is always possible via\nGram-Schmidt), then ``x = inv(R) * (Q.T) * b``.  (In numpy practice,\nhowever, we simply use `lstsq`.)"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> A = np.array([[0, 1], [1, 1], [1, 1], [2, 1]])\n>>> A\narray([[0, 1],\n       [1, 1],\n       [1, 1],\n       [2, 1]])\n>>> b = np.array([1, 2, 2, 3])\n>>> Q, R = np.linalg.qr(A)\n>>> p = np.dot(Q.T, b)\n>>> np.dot(np.linalg.inv(R), p)\narray([  1.,   1.])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "scipy.linalg.qr \u2014 Similar function in SciPy."
+          },
+          {
+            "type": "paragraph",
+            "text": "scipy.linalg.rq \u2014 Compute RQ decomposition of a matrix."
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "slug": "apply_along_axis",
+  "detail_href": "/docs/api/ops/apply_along_axis/",
+  "detail_json_href": "/api-data/ops/apply_along_axis.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L300-L311",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.apply_along_axis.html"
+  },
+  "op": {
+    "name": "apply_along_axis",
+    "module": "numpy",
+    "whest_ref": "we.apply_along_axis",
+    "numpy_ref": "np.apply_along_axis",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 4.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Apply function along axis. Cost: numel(output). Inner function costs tracked separately.",
+    "summary": "Apply a function to 1-D slices along the given axis.",
+    "signature": "we.apply_along_axis(func1d, axis, arr, *args, **kwargs)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Apply a function to 1-D slices along the given axis."
+          },
+          {
+            "type": "paragraph",
+            "text": "Execute `func1d(a, *args, **kwargs)` where `func1d` operates on 1-D arrays\nand `a` is a 1-D slice of `arr` along `axis`."
+          },
+          {
+            "type": "paragraph",
+            "text": "This is equivalent to (but faster than) the following use of `ndindex` and\n`s_`, which sets each of ``ii``, ``jj``, and ``kk`` to a tuple of indices::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    Ni, Nk = a.shape[:axis], a.shape[axis+1:]\n    for ii in ndindex(Ni):\n        for kk in ndindex(Nk):\n            f = func1d(arr[ii + s_[:,] + kk])\n            Nj = f.shape\n            for jj in ndindex(Nj):\n                out[ii + jj + kk] = f[jj]"
+          },
+          {
+            "type": "paragraph",
+            "text": "Equivalently, eliminating the inner loop, this can be expressed as::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    Ni, Nk = a.shape[:axis], a.shape[axis+1:]\n    for ii in ndindex(Ni):\n        for kk in ndindex(Nk):\n            out[ii + s_[...,] + kk] = func1d(arr[ii + s_[:,] + kk])"
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "func1d",
+            "type": "function (M,) -> (Nj...)",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "This function should accept 1-D arrays. It is applied to 1-D\nslices of `arr` along the specified axis."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "integer",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Axis along which `arr` is sliced."
+              }
+            ]
+          },
+          {
+            "name": "arr",
+            "type": "ndarray (Ni..., M, Nk...)",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array."
+              }
+            ]
+          },
+          {
+            "name": "args",
+            "type": "any",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Additional arguments to `func1d`."
+              }
+            ]
+          },
+          {
+            "name": "kwargs",
+            "type": "any",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Additional named arguments to `func1d`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray  (Ni..., Nj..., Nk...)",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The output array. The shape of `out` is identical to the shape of\n`arr`, except along the `axis` dimension. This axis is removed, and\nreplaced with new dimensions equal to the shape of the return value\nof `func1d`. So if `func1d` returns a scalar `out` will have one\nfewer dimensions than `arr`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> def my_func(a):\n...     \"\"\"Average first and last element of a 1-D array\"\"\"\n...     return (a[0] + a[-1]) * 0.5\n>>> b = np.array([[1,2,3], [4,5,6], [7,8,9]])\n>>> np.apply_along_axis(my_func, 0, b)\narray([4., 5., 6.])\n>>> np.apply_along_axis(my_func, 1, b)\narray([2.,  5.,  8.])"
+          },
+          {
+            "type": "paragraph",
+            "text": "For a function that returns a 1D array, the number of dimensions in\n`outarr` is the same as `arr`."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> b = np.array([[8,1,7], [4,3,9], [5,2,6]])\n>>> np.apply_along_axis(sorted, 1, b)\narray([[1, 7, 8],\n       [3, 4, 9],\n       [2, 5, 6]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "For a function that returns a higher dimensional array, those dimensions\nare inserted in place of the `axis` dimension."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> b = np.array([[1,2,3], [4,5,6], [7,8,9]])\n>>> np.apply_along_axis(np.diag, -1, b)\narray([[[1, 0, 0],\n        [0, 2, 0],\n        [0, 0, 3]],\n       [[4, 0, 0],\n        [0, 5, 0],\n        [0, 0, 6]],\n       [[7, 0, 0],\n        [0, 8, 0],\n        [0, 0, 9]]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "apply_over_axes \u2014 Apply a function repeatedly over multiple axes."
+          }
+        ]
+      }
+    ]
+  }
+}

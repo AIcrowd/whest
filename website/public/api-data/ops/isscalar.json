@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "slug": "isscalar",
+  "detail_href": "/docs/api/ops/isscalar/",
+  "detail_json_href": "/api-data/ops/isscalar.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1105-L1107",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L1927-L2011"
+  },
+  "op": {
+    "name": "isscalar",
+    "module": "numpy",
+    "whest_ref": "we.isscalar",
+    "numpy_ref": "np.isscalar",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Return True if input is a scalar.",
+    "summary": "Returns True if the type of `element` is a scalar type.",
+    "signature": "we.isscalar(element)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Returns True if the type of `element` is a scalar type."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "element",
+            "type": "any",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input argument, can be of any type and shape."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "val",
+            "type": "bool",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "True if `element` is a scalar type, False if it is not."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "If you need a stricter way to identify a *numerical* scalar, use\n``isinstance(x, numbers.Number)``, as that returns ``False`` for most\nnon-numerical elements such as strings."
+          },
+          {
+            "type": "paragraph",
+            "text": "In most cases ``np.ndim(x) == 0`` should be used instead of this function,\nas that will also return true for 0d arrays. This is how numpy overloads\nfunctions in the style of the ``dx`` arguments to `gradient` and\nthe ``bins`` argument to `histogram`. Some key differences:"
+          },
+          {
+            "type": "paragraph",
+            "text": "+------------------------------------+---------------+-------------------+\n| x                                  |``isscalar(x)``|``np.ndim(x) == 0``|\n+====================================+===============+===================+\n| PEP 3141 numeric objects           | ``True``      | ``True``          |\n| (including builtins)               |               |                   |\n+------------------------------------+---------------+-------------------+\n| builtin string and buffer objects  | ``True``      | ``True``          |\n+------------------------------------+---------------+-------------------+\n| other builtin objects, like        | ``False``     | ``True``          |\n| `pathlib.Path`, `Exception`,       |               |                   |\n| the result of `re.compile`         |               |                   |\n+------------------------------------+---------------+-------------------+\n| third-party objects like           | ``False``     | ``True``          |\n| `matplotlib.figure.Figure`         |               |                   |\n+------------------------------------+---------------+-------------------+\n| zero-dimensional numpy arrays      | ``False``     | ``True``          |\n+------------------------------------+---------------+-------------------+\n| other numpy arrays                 | ``False``     | ``False``         |\n+------------------------------------+---------------+-------------------+\n| `list`, `tuple`, and other         | ``False``     | ``False``         |\n| sequence objects                   |               |                   |\n+------------------------------------+---------------+-------------------+"
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.isscalar(3.1)\nTrue"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.isscalar(np.array(3.1))\nFalse"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.isscalar([3.1])\nFalse"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.isscalar(False)\nTrue"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.isscalar('numpy')\nTrue"
+          },
+          {
+            "type": "paragraph",
+            "text": "NumPy supports PEP 3141 numbers:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> from fractions import Fraction\n>>> np.isscalar(Fraction(5, 17))\nTrue\n>>> from numbers import Number\n>>> np.isscalar(Number())\nTrue"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "ndim \u2014 Get the number of dimensions of an array"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "slug": "polyder",
+  "detail_href": "/docs/api/ops/polyder/",
+  "detail_json_href": "/api-data/ops/polyder.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L128-L136",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.polyder.html"
+  },
+  "op": {
+    "name": "polyder",
+    "module": "whest._polynomial",
+    "whest_ref": "we.polyder",
+    "numpy_ref": "np.polyder",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "n",
+    "cost_formula_latex": "$n$",
+    "notes": "Differentiate polynomial. Cost: n FLOPs.",
+    "summary": "Return the derivative of the specified order of a polynomial.",
+    "signature": "we.polyder(p, m=1)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return the derivative of the specified order of a polynomial."
+          },
+          {
+            "type": "directive",
+            "name": "note",
+            "body": "   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `numpy.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
+            "raw": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `numpy.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "p",
+            "type": "poly1d or sequence",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Polynomial to differentiate.\nA sequence is interpreted as polynomial coefficients, see `poly1d`."
+              }
+            ]
+          },
+          {
+            "name": "m",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Order of differentiation (default: 1)"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "der",
+            "type": "poly1d",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A new polynomial representing the derivative."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The derivative of the polynomial :math:`x^3 + x^2 + x^1 + 1` is:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> p = np.poly1d([1,1,1,1])\n>>> p2 = np.polyder(p)\n>>> p2\npoly1d([3, 2, 1])"
+          },
+          {
+            "type": "paragraph",
+            "text": "which evaluates to:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> p2(2.)\n17.0"
+          },
+          {
+            "type": "paragraph",
+            "text": "We can verify this, approximating the derivative with\n``(f(x + h) - f(x))/h``:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> (p(2. + 0.001) - p(2.)) / 0.001\n17.007000999997857"
+          },
+          {
+            "type": "paragraph",
+            "text": "The fourth-order derivative of a 3rd-order polynomial is zero:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.polyder(p, 2)\npoly1d([6, 2])\n>>> np.polyder(p, 3)\npoly1d([6])\n>>> np.polyder(p, 4)\npoly1d([0])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "polyint \u2014 Anti-derivative of a polynomial."
+          },
+          {
+            "type": "paragraph",
+            "text": "poly1d \u2014 Class for one-dimensional polynomials."
+          }
+        ]
+      }
+    ]
+  }
+}

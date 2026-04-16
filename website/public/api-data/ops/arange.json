@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "slug": "arange",
+  "detail_href": "/docs/api/ops/arange/",
+  "detail_json_href": "/api-data/ops/arange.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L113-L122",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.arange.html"
+  },
+  "op": {
+    "name": "arange",
+    "module": "numpy",
+    "whest_ref": "we.arange",
+    "numpy_ref": "np.arange",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Return evenly spaced values in given interval. Cost: numel(output).",
+    "summary": "Return evenly spaced values within a given interval.",
+    "signature": "we.arange([start,] stop[, step,], dtype=None, *, device=None, like=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return evenly spaced values within a given interval."
+          },
+          {
+            "type": "paragraph",
+            "text": "    ``arange`` can be called with a varying number of positional arguments:"
+          },
+          {
+            "type": "paragraph",
+            "text": "    * ``arange(stop)``: Values are generated within the half-open interval\n      ``[0, stop)`` (in other words, the interval including `start` but\n      excluding `stop`).\n    * ``arange(start, stop)``: Values are generated within the half-open\n      interval ``[start, stop)``.\n    * ``arange(start, stop, step)`` Values are generated within the half-open\n      interval ``[start, stop)``, with spacing between values given by\n      ``step``."
+          },
+          {
+            "type": "paragraph",
+            "text": "    For integer arguments the function is roughly equivalent to the Python\n    built-in :py:class:`range`, but returns an ndarray rather than a ``range``\n    instance."
+          },
+          {
+            "type": "paragraph",
+            "text": "    When using a non-integer step, such as 0.1, it is often better to use\n    `numpy.linspace`."
+          },
+          {
+            "type": "paragraph",
+            "text": "    See the Warning sections below for more information."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "start",
+            "type": "integer or real, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Start of interval.  The interval includes this value.  The default\nstart value is 0."
+              }
+            ]
+          },
+          {
+            "name": "stop",
+            "type": "integer or real",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "End of interval.  The interval does not include this value, except\nin some cases where `step` is not an integer and floating point\nround-off affects the length of `out`."
+              }
+            ]
+          },
+          {
+            "name": "step",
+            "type": "integer or real, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Spacing between values.  For any output `out`, this is the distance\nbetween two adjacent values, ``out[i+1] - out[i]``.  The default\nstep size is 1.  If `step` is specified as a position argument,\n`start` must also be given."
+              }
+            ]
+          },
+          {
+            "name": "dtype",
+            "type": "dtype, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The type of the output array.  If `dtype` is not given, infer the data\ntype from the other input arguments."
+              }
+            ]
+          },
+          {
+            "name": "device",
+            "type": "str, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The device on which to place the created array. Default: ``None``.\nFor Array-API interoperability only, so must be ``\"cpu\"`` if passed."
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 2.0.0",
+                "body": "",
+                "raw": ".. versionadded:: 2.0.0"
+              }
+            ]
+          },
+          {
+            "name": "like",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Reference object to allow the creation of arrays which are not\nNumPy arrays. If an array-like passed in as ``like`` supports\nthe ``__array_function__`` protocol, the result will be defined\nby it. In this case, it ensures the creation of an array object\ncompatible with that passed in via this argument."
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 1.20.0",
+                "body": "",
+                "raw": ".. versionadded:: 1.20.0"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "arange",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Array of evenly spaced values."
+              },
+              {
+                "type": "paragraph",
+                "text": "For floating point arguments, the length of the result is\n``ceil((stop - start)/step)``.  Because of floating point overflow,\nthis rule may result in the last element of `out` being greater\nthan `stop`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": "    >>> import numpy as np\n    >>> np.arange(3)\n    array([0, 1, 2])\n    >>> np.arange(3.0)\n    array([ 0.,  1.,  2.])\n    >>> np.arange(3,7)\n    array([3, 4, 5, 6])\n    >>> np.arange(3,7,2)\n    array([3, 5])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "numpy.linspace \u2014 Evenly spaced numbers with careful handling of endpoints."
+          },
+          {
+            "type": "paragraph",
+            "text": "numpy.ogrid \u2014 Arrays of evenly spaced numbers in N-dimensions."
+          },
+          {
+            "type": "paragraph",
+            "text": "numpy.mgrid \u2014 Grid-shaped arrays of evenly spaced numbers in N-dimensions."
+          },
+          {
+            "type": "paragraph",
+            "text": "how-to-partition"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,428 @@
+{
+  "schema_version": 1,
+  "slug": "genfromtxt",
+  "detail_href": "/docs/api/ops/genfromtxt/",
+  "detail_json_href": "/api-data/ops/genfromtxt.json",
+  "source": {
+    "whest": null,
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_npyio_impl.py#L1747-L2496"
+  },
+  "op": {
+    "name": "genfromtxt",
+    "module": "numpy",
+    "whest_ref": "we.genfromtxt",
+    "numpy_ref": "np.genfromtxt",
+    "category": "blacklisted",
+    "status": "blocked",
+    "weight": 1.0,
+    "cost_formula": "N/A",
+    "cost_formula_latex": "N/A",
+    "notes": "Load data from text file with missing values. Not supported.",
+    "summary": "Load data from a text file, with missing values handled as specified.",
+    "signature": "we.genfromtxt(fname, dtype=<class 'float'>, comments='#', delimiter=None, skip_header=0, skip_footer=0, converters=None, missing_values=None, filling_values=None, usecols=None, names=None, excludelist=None, deletechars=\" !#$%&'()*+,-./:;<=>?@[\\\\]^{|}~\", replace_space='_', autostrip=False, case_sensitive=True, defaultfmt='f%i', unpack=None, usemask=False, loose=True, invalid_raise=True, max_rows=None, encoding=None, *, ndmin=0, like=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Load data from a text file, with missing values handled as specified."
+          },
+          {
+            "type": "paragraph",
+            "text": "Each line past the first `skip_header` lines is split at the `delimiter`\ncharacter, and characters following the `comments` character are discarded."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "fname",
+            "type": "file, str, pathlib.Path, list of str, generator",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "File, filename, list, or generator to read.  If the filename\nextension is ``.gz`` or ``.bz2``, the file is first decompressed. Note\nthat generators must return bytes or strings. The strings\nin a list or produced by a generator are treated as lines."
+              }
+            ]
+          },
+          {
+            "name": "dtype",
+            "type": "dtype, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Data type of the resulting array.\nIf None, the dtypes will be determined by the contents of each\ncolumn, individually."
+              }
+            ]
+          },
+          {
+            "name": "comments",
+            "type": "str, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The character used to indicate the start of a comment.\nAll the characters occurring on a line after a comment are discarded."
+              }
+            ]
+          },
+          {
+            "name": "delimiter",
+            "type": "str, int, or sequence, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The string used to separate values.  By default, any consecutive\nwhitespaces act as delimiter.  An integer or sequence of integers\ncan also be provided as width(s) of each field."
+              }
+            ]
+          },
+          {
+            "name": "skiprows",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "`skiprows` was removed in numpy 1.10. Please use `skip_header` instead."
+              }
+            ]
+          },
+          {
+            "name": "skip_header",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The number of lines to skip at the beginning of the file."
+              }
+            ]
+          },
+          {
+            "name": "skip_footer",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The number of lines to skip at the end of the file."
+              }
+            ]
+          },
+          {
+            "name": "converters",
+            "type": "variable, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The set of functions that convert the data of a column to a value.\nThe converters can also be used to provide a default value\nfor missing data: ``converters = {3: lambda s: float(s or 0)}``."
+              }
+            ]
+          },
+          {
+            "name": "missing",
+            "type": "variable, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "`missing` was removed in numpy 1.10. Please use `missing_values`\ninstead."
+              }
+            ]
+          },
+          {
+            "name": "missing_values",
+            "type": "variable, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The set of strings corresponding to missing data."
+              }
+            ]
+          },
+          {
+            "name": "filling_values",
+            "type": "variable, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The set of values to be used as default when the data are missing."
+              }
+            ]
+          },
+          {
+            "name": "usecols",
+            "type": "sequence, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Which columns to read, with 0 being the first.  For example,\n``usecols = (1, 4, 5)`` will extract the 2nd, 5th and 6th columns."
+              }
+            ]
+          },
+          {
+            "name": "names",
+            "type": "{None, True, str, sequence}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If `names` is True, the field names are read from the first line after\nthe first `skip_header` lines. This line can optionally be preceded\nby a comment delimiter. Any content before the comment delimiter is\ndiscarded. If `names` is a sequence or a single-string of\ncomma-separated names, the names will be used to define the field\nnames in a structured dtype. If `names` is None, the names of the\ndtype fields will be used, if any."
+              }
+            ]
+          },
+          {
+            "name": "excludelist",
+            "type": "sequence, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A list of names to exclude. This list is appended to the default list\n['return','file','print']. Excluded names are appended with an\nunderscore: for example, `file` would become `file_`."
+              }
+            ]
+          },
+          {
+            "name": "deletechars",
+            "type": "str, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A string combining invalid characters that must be deleted from the\nnames."
+              }
+            ]
+          },
+          {
+            "name": "defaultfmt",
+            "type": "str, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A format used to define default field names, such as \"f%i\" or \"f_%02i\"."
+              }
+            ]
+          },
+          {
+            "name": "autostrip",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Whether to automatically strip white spaces from the variables."
+              }
+            ]
+          },
+          {
+            "name": "replace_space",
+            "type": "char, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Character(s) used in replacement of white spaces in the variable\nnames. By default, use a '_'."
+              }
+            ]
+          },
+          {
+            "name": "case_sensitive",
+            "type": "{True, False, 'upper', 'lower'}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If True, field names are case sensitive.\nIf False or 'upper', field names are converted to upper case.\nIf 'lower', field names are converted to lower case."
+              }
+            ]
+          },
+          {
+            "name": "unpack",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If True, the returned array is transposed, so that arguments may be\nunpacked using ``x, y, z = genfromtxt(...)``.  When used with a\nstructured data-type, arrays are returned for each field.\nDefault is False."
+              }
+            ]
+          },
+          {
+            "name": "usemask",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If True, return a masked array.\nIf False, return a regular array."
+              }
+            ]
+          },
+          {
+            "name": "loose",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If True, do not raise errors for invalid values."
+              }
+            ]
+          },
+          {
+            "name": "invalid_raise",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If True, an exception is raised if an inconsistency is detected in the\nnumber of columns.\nIf False, a warning is emitted and the offending lines are skipped."
+              }
+            ]
+          },
+          {
+            "name": "max_rows",
+            "type": "int,  optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The maximum number of rows to read. Must not be used with skip_footer\nat the same time.  If given, the value must be at least 1. Default is\nto read the entire file."
+              }
+            ]
+          },
+          {
+            "name": "encoding",
+            "type": "str, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Encoding used to decode the inputfile. Does not apply when `fname`\nis a file object. The special value 'bytes' enables backward\ncompatibility workarounds that ensure that you receive byte arrays\nwhen possible and passes latin1 encoded strings to converters.\nOverride this value to receive unicode arrays and pass strings\nas input to converters.  If set to None the system default is used.\nThe default value is 'bytes'."
+              },
+              {
+                "type": "directive",
+                "name": "versionchanged:: 2.0",
+                "body": "    Before NumPy 2, the default was ``'bytes'`` for Python 2\n    compatibility. The default is now ``None``.",
+                "raw": ".. versionchanged:: 2.0\n    Before NumPy 2, the default was ``'bytes'`` for Python 2\n    compatibility. The default is now ``None``."
+              }
+            ]
+          },
+          {
+            "name": "ndmin",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Same parameter as `loadtxt`"
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 1.23.0",
+                "body": "",
+                "raw": ".. versionadded:: 1.23.0"
+              }
+            ]
+          },
+          {
+            "name": "like",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "    Reference object to allow the creation of arrays which are not\n    NumPy arrays. If an array-like passed in as ``like`` supports\n    the ``__array_function__`` protocol, the result will be defined\n    by it. In this case, it ensures the creation of an array object\n    compatible with that passed in via this argument."
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 1.20.0",
+                "body": "",
+                "raw": ".. versionadded:: 1.20.0"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Data read from the text file. If `usemask` is True, this is a\nmasked array."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "* When spaces are used as delimiters, or when no delimiter has been given\n  as input, there should not be any missing data between two fields.\n* When variables are named (either by a flexible dtype or with a `names`\n  sequence), there must not be any header in the file (else a ValueError\n  exception is raised).\n* Individual values are not stripped of spaces by default.\n  When using a custom converter, make sure the function does remove spaces.\n* Custom converters may receive unexpected values due to dtype\n  discovery."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> from io import StringIO\n>>> import numpy as np"
+          },
+          {
+            "type": "paragraph",
+            "text": "Comma delimited file with mixed dtype"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> s = StringIO(\"1,1.3,abcde\")\n>>> data = np.genfromtxt(s, dtype=[('myint','i8'),('myfloat','f8'),\n... ('mystring','S5')], delimiter=\",\")\n>>> data\narray((1, 1.3, b'abcde'),\n      dtype=[('myint', '<i8'), ('myfloat', '<f8'), ('mystring', 'S5')])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Using dtype = None"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> _ = s.seek(0) # needed for StringIO example only\n>>> data = np.genfromtxt(s, dtype=None,\n... names = ['myint','myfloat','mystring'], delimiter=\",\")\n>>> data\narray((1, 1.3, 'abcde'),\n      dtype=[('myint', '<i8'), ('myfloat', '<f8'), ('mystring', '<U5')])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Specifying dtype and names"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> _ = s.seek(0)\n>>> data = np.genfromtxt(s, dtype=\"i8,f8,S5\",\n... names=['myint','myfloat','mystring'], delimiter=\",\")\n>>> data\narray((1, 1.3, b'abcde'),\n      dtype=[('myint', '<i8'), ('myfloat', '<f8'), ('mystring', 'S5')])"
+          },
+          {
+            "type": "paragraph",
+            "text": "An example with fixed-width columns"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> s = StringIO(\"11.3abcde\")\n>>> data = np.genfromtxt(s, dtype=None, names=['intvar','fltvar','strvar'],\n...     delimiter=[1,3,5])\n>>> data\narray((1, 1.3, 'abcde'),\n      dtype=[('intvar', '<i8'), ('fltvar', '<f8'), ('strvar', '<U5')])"
+          },
+          {
+            "type": "paragraph",
+            "text": "An example to show comments"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> f = StringIO('''\n... text,# of chars\n... hello world,11\n... numpy,5''')\n>>> np.genfromtxt(f, dtype='S12,S12', delimiter=',')\narray([(b'text', b''), (b'hello world', b'11'), (b'numpy', b'5')],\n  dtype=[('f0', 'S12'), ('f1', 'S12')])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "numpy.loadtxt \u2014 equivalent function when no data is missing."
+          }
+        ]
+      }
+    ]
+  }
+}

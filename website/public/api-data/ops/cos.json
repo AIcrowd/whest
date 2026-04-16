@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "slug": "cos",
+  "detail_href": "/docs/api/ops/cos/",
+  "detail_json_href": "/api-data/ops/cos.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29-L42",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.cos.html"
+  },
+  "op": {
+    "name": "cos",
+    "module": "numpy",
+    "whest_ref": "we.cos",
+    "numpy_ref": "np.cos",
+    "category": "counted_unary",
+    "status": "supported",
+    "weight": 16.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Element-wise cosine.",
+    "summary": "Cosine element-wise.",
+    "signature": "we.cos(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature])"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Cosine element-wise."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array in radians."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, None, or tuple of ndarray and None, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
+              }
+            ]
+          },
+          {
+            "name": "where",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the `out` array will be set to the ufunc result.\nElsewhere, the `out` array will retain its original value.\nNote that if an uninitialized `out` array is created via the default\n``out=None``, locations within it where the condition is False will\nremain uninitialized."
+              }
+            ]
+          },
+          {
+            "name": "**kwargs",
+            "type": "",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "For other keyword-only arguments, see the\n:ref:`ufunc docs <ufuncs.kwargs>`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "y",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The corresponding cosine values.\nThis is a scalar if `x` is a scalar."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "If `out` is provided, the function writes the result into it,\nand returns a reference to `out`.  (See Examples)"
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.cos(np.array([0, np.pi/2, np.pi]))\narray([  1.00000000e+00,   6.12303177e-17,  -1.00000000e+00])\n>>>\n>>> # Example of providing the optional output parameter\n>>> out1 = np.array([0], dtype='d')\n>>> out2 = np.cos([0.1], out1)\n>>> out2 is out1\nTrue\n>>>\n>>> # Example of ValueError due to provision of shape mis-matched `out`\n>>> np.cos(np.zeros((3,3)),np.zeros((2,2)))\nTraceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\nValueError: operands could not be broadcast together with shapes (3,3) (2,2)"
+          }
+        ]
+      }
+    ]
+  }
+}

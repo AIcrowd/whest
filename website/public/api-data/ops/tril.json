@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "slug": "tril",
+  "detail_href": "/docs/api/ops/tril/",
+  "detail_json_href": "/api-data/ops/tril.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L452-L454",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.tril.html"
+  },
+  "op": {
+    "name": "tril",
+    "module": "numpy",
+    "whest_ref": "we.tril",
+    "numpy_ref": "np.tril",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Lower triangle of array.",
+    "summary": "Lower triangle of an array.",
+    "signature": "we.tril(m, k=0)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Lower triangle of an array."
+          },
+          {
+            "type": "paragraph",
+            "text": "Return a copy of an array with elements above the `k`-th diagonal zeroed.\nFor arrays with ``ndim`` exceeding 2, `tril` will apply to the final two\naxes."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "m",
+            "type": "array_like, shape (..., M, N)",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array."
+              }
+            ]
+          },
+          {
+            "name": "k",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Diagonal above which to zero elements.  `k = 0` (the default) is the\nmain diagonal, `k < 0` is below it and `k > 0` is above."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "tril",
+            "type": "ndarray, shape (..., M, N)",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Lower triangle of `m`, of same shape and data-type as `m`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.tril([[1,2,3],[4,5,6],[7,8,9],[10,11,12]], -1)\narray([[ 0,  0,  0],\n       [ 4,  0,  0],\n       [ 7,  8,  0],\n       [10, 11, 12]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.tril(np.arange(3*4*5).reshape(3, 4, 5))\narray([[[ 0,  0,  0,  0,  0],\n        [ 5,  6,  0,  0,  0],\n        [10, 11, 12,  0,  0],\n        [15, 16, 17, 18,  0]],\n       [[20,  0,  0,  0,  0],\n        [25, 26,  0,  0,  0],\n        [30, 31, 32,  0,  0],\n        [35, 36, 37, 38,  0]],\n       [[40,  0,  0,  0,  0],\n        [45, 46,  0,  0,  0],\n        [50, 51, 52,  0,  0],\n        [55, 56, 57, 58,  0]]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "triu \u2014 same thing, only for the upper triangle"
+          }
+        ]
+      }
+    ]
+  }
+}

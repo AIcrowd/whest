@@ -1,0 +1,188 @@
+{
+  "schema_version": 1,
+  "slug": "linalg.eig",
+  "detail_href": "/docs/api/ops/linalg.eig/",
+  "detail_json_href": "/api-data/ops/linalg.eig.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_decompositions.py#L116-L128",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.eig.html"
+  },
+  "op": {
+    "name": "linalg.eig",
+    "module": "numpy.linalg",
+    "whest_ref": "we.linalg.eig",
+    "numpy_ref": "np.linalg.eig",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 4.0,
+    "cost_formula": "n^3",
+    "cost_formula_latex": "$n^3$",
+    "notes": "Eigendecomposition. Cost: $n^3$.",
+    "summary": "Compute the eigenvalues and right eigenvectors of a square array.",
+    "signature": "we.linalg.eig(a)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Compute the eigenvalues and right eigenvectors of a square array."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "(..., M, M) array",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Matrices for which the eigenvalues and right eigenvectors will\nbe computed"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "",
+            "type": "A namedtuple with the following attributes:",
+            "desc_blocks": []
+          },
+          {
+            "name": "eigenvalues",
+            "type": "(..., M) array",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The eigenvalues, each repeated according to its multiplicity.\nThe eigenvalues are not necessarily ordered. The resulting\narray will be of complex type, unless the imaginary part is\nzero in which case it will be cast to a real type. When `a`\nis real the resulting eigenvalues will be real (0 imaginary\npart) or occur in conjugate pairs"
+              }
+            ]
+          },
+          {
+            "name": "eigenvectors",
+            "type": "(..., M, M) array",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The normalized (unit \"length\") eigenvectors, such that the\ncolumn ``eigenvectors[:,i]`` is the eigenvector corresponding to the\neigenvalue ``eigenvalues[i]``."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Broadcasting rules apply, see the `numpy.linalg` documentation for\ndetails."
+          },
+          {
+            "type": "paragraph",
+            "text": "This is implemented using the ``_geev`` LAPACK routines which compute\nthe eigenvalues and eigenvectors of general square arrays."
+          },
+          {
+            "type": "paragraph",
+            "text": "The number `w` is an eigenvalue of `a` if there exists a vector `v` such\nthat ``a @ v = w * v``. Thus, the arrays `a`, `eigenvalues`, and\n`eigenvectors` satisfy the equations ``a @ eigenvectors[:,i] =\neigenvalues[i] * eigenvectors[:,i]`` for :math:`i \\in \\{0,...,M-1\\}`."
+          },
+          {
+            "type": "paragraph",
+            "text": "The array `eigenvectors` may not be of maximum rank, that is, some of the\ncolumns may be linearly dependent, although round-off error may obscure\nthat fact. If the eigenvalues are all different, then theoretically the\neigenvectors are linearly independent and `a` can be diagonalized by a\nsimilarity transformation using `eigenvectors`, i.e, ``inv(eigenvectors) @\na @ eigenvectors`` is diagonal."
+          },
+          {
+            "type": "paragraph",
+            "text": "For non-Hermitian normal matrices the SciPy function `scipy.linalg.schur`\nis preferred because the matrix `eigenvectors` is guaranteed to be\nunitary, which is not the case when using `eig`. The Schur factorization\nproduces an upper triangular matrix rather than a diagonal matrix, but for\nnormal matrices only the diagonal of the upper triangular matrix is\nneeded, the rest is roundoff error."
+          },
+          {
+            "type": "paragraph",
+            "text": "Finally, it is emphasized that `eigenvectors` consists of the *right* (as\nin right-hand side) eigenvectors of `a`. A vector `y` satisfying ``y.T @ a\n= z * y.T`` for some number `z` is called a *left* eigenvector of `a`,\nand, in general, the left and right eigenvectors of a matrix are not\nnecessarily the (perhaps conjugate) transposes of each other."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> from numpy import linalg as LA"
+          },
+          {
+            "type": "paragraph",
+            "text": "(Almost) trivial example with real eigenvalues and eigenvectors."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> eigenvalues, eigenvectors = LA.eig(np.diag((1, 2, 3)))\n>>> eigenvalues\narray([1., 2., 3.])\n>>> eigenvectors\narray([[1., 0., 0.],\n       [0., 1., 0.],\n       [0., 0., 1.]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Real matrix possessing complex eigenvalues and eigenvectors;\nnote that the eigenvalues are complex conjugates of each other."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> eigenvalues, eigenvectors = LA.eig(np.array([[1, -1], [1, 1]]))\n>>> eigenvalues\narray([1.+1.j, 1.-1.j])\n>>> eigenvectors\narray([[0.70710678+0.j        , 0.70710678-0.j        ],\n       [0.        -0.70710678j, 0.        +0.70710678j]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Complex-valued matrix with real eigenvalues (but complex-valued\neigenvectors); note that ``a.conj().T == a``, i.e., `a` is Hermitian."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([[1, 1j], [-1j, 1]])\n>>> eigenvalues, eigenvectors = LA.eig(a)\n>>> eigenvalues\narray([2.+0.j, 0.+0.j])\n>>> eigenvectors\narray([[ 0.        +0.70710678j,  0.70710678+0.j        ], # may vary\n       [ 0.70710678+0.j        , -0.        +0.70710678j]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Be careful about round-off error!"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([[1 + 1e-9, 0], [0, 1 - 1e-9]])\n>>> # Theor. eigenvalues are 1 +/- 1e-9\n>>> eigenvalues, eigenvectors = LA.eig(a)\n>>> eigenvalues\narray([1., 1.])\n>>> eigenvectors\narray([[1., 0.],\n       [0., 1.]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "eigvals \u2014 eigenvalues of a non-symmetric array."
+          },
+          {
+            "type": "paragraph",
+            "text": "eigh \u2014 eigenvalues and eigenvectors of a real symmetric or complex Hermitian (conjugate symmetric) array."
+          },
+          {
+            "type": "paragraph",
+            "text": "eigvalsh \u2014 eigenvalues of a real symmetric or complex Hermitian (conjugate symmetric) array."
+          },
+          {
+            "type": "paragraph",
+            "text": "scipy.linalg.eig \u2014 Similar function in SciPy that also solves the generalized eigenvalue problem."
+          },
+          {
+            "type": "paragraph",
+            "text": "scipy.linalg.schur \u2014 Best choice for unitary and other non-Hermitian normal matrices."
+          }
+        ]
+      }
+    ]
+  }
+}

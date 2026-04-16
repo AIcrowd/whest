@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "slug": "minimum",
+  "detail_href": "/docs/api/ops/minimum/",
+  "detail_json_href": "/api-data/ops/minimum.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L73-L159",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.minimum.html"
+  },
+  "op": {
+    "name": "minimum",
+    "module": "numpy",
+    "whest_ref": "we.minimum",
+    "numpy_ref": "np.minimum",
+    "category": "counted_binary",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Element-wise minimum (propagates NaN).",
+    "summary": "Element-wise minimum of array elements.",
+    "signature": "we.minimum(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature])"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Element-wise minimum of array elements."
+          },
+          {
+            "type": "paragraph",
+            "text": "Compare two arrays and return a new array containing the element-wise\nminima. If one of the elements being compared is a NaN, then that\nelement is returned. If both elements are NaNs then the first is\nreturned. The latter distinction is important for complex NaNs, which\nare defined as at least one of the real or imaginary parts being a NaN.\nThe net effect is that NaNs are propagated."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x1, x2",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The arrays holding the elements to be compared.\nIf ``x1.shape != x2.shape``, they must be broadcastable to a common\nshape (which becomes the shape of the output)."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, None, or tuple of ndarray and None, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
+              }
+            ]
+          },
+          {
+            "name": "where",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the `out` array will be set to the ufunc result.\nElsewhere, the `out` array will retain its original value.\nNote that if an uninitialized `out` array is created via the default\n``out=None``, locations within it where the condition is False will\nremain uninitialized."
+              }
+            ]
+          },
+          {
+            "name": "**kwargs",
+            "type": "",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "For other keyword-only arguments, see the\n:ref:`ufunc docs <ufuncs.kwargs>`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "y",
+            "type": "ndarray or scalar",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The minimum of `x1` and `x2`, element-wise.\nThis is a scalar if both `x1` and `x2` are scalars."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The minimum is equivalent to ``np.where(x1 <= x2, x1, x2)`` when\nneither x1 nor x2 are NaNs, but it is faster and does proper\nbroadcasting."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.minimum([2, 3, 4], [1, 5, 2])\narray([1, 3, 2])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.minimum(np.eye(2), [0.5, 2]) # broadcasting\narray([[ 0.5,  0. ],\n       [ 0. ,  1. ]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.minimum([np.nan, 0, np.nan],[0, np.nan, np.nan])\narray([nan, nan, nan])\n>>> np.minimum(-np.inf, 1)\n-inf"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "maximum \u2014 Element-wise maximum of two arrays, propagates NaNs."
+          },
+          {
+            "type": "paragraph",
+            "text": "fmin \u2014 Element-wise minimum of two arrays, ignores NaNs."
+          },
+          {
+            "type": "paragraph",
+            "text": "amin \u2014 The minimum value of an array along a given axis, propagates NaNs."
+          },
+          {
+            "type": "paragraph",
+            "text": "nanmin \u2014 The minimum value of an array along a given axis, ignores NaNs."
+          },
+          {
+            "type": "paragraph",
+            "text": "fmax, amax, nanmax"
+          }
+        ]
+      }
+    ]
+  }
+}

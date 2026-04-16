@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "slug": "einsum",
+  "detail_href": "/docs/api/ops/einsum/",
+  "detail_json_href": "/api-data/ops/einsum.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L183-L313",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.einsum.html"
+  },
+  "op": {
+    "name": "einsum",
+    "module": "numpy",
+    "whest_ref": "we.einsum",
+    "numpy_ref": "np.einsum",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "op_factor * product of all index dims",
+    "cost_formula_latex": "$\\text{op\\_factor} \\cdot \\prod_i d_i$",
+    "notes": "Generalized Einstein summation.",
+    "summary": "Evaluate Einstein summation with FLOP counting and optional path optimization.",
+    "signature": "we.einsum(subscripts: 'str', *operands: '_np.ndarray', out=None, optimize: 'str | bool | list' = 'auto', symmetric_axes: 'list[tuple[int, ...]] | None' = None, symmetry: 'PermutationGroup | list[PermutationGroup] | None' = None, **kwargs) -> '_np.ndarray'"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Evaluate Einstein summation with FLOP counting and optional path optimization."
+          },
+          {
+            "type": "paragraph",
+            "text": "Wraps ``numpy.einsum`` with analytical FLOP cost computation and\noptional symmetry savings. If any input is a ``SymmetricTensor``,\nthe cost is automatically reduced. If ``symmetric_axes`` is provided\nand the output passes validation, a ``SymmetricTensor`` is returned."
+          },
+          {
+            "type": "paragraph",
+            "text": "All contractions go through opt_einsum's ``contract_path`` to find an\noptimal pairwise decomposition. The FLOP cost uses opt_einsum's cost\nmodel where FMA = 1 operation (see ``_cost_model.FMA_COST``)."
+          },
+          {
+            "type": "paragraph",
+            "text": "Contraction paths are cached in a module-level LRU cache keyed on\n(subscripts, shapes, optimizer, symmetry structure, operand identity).\nRepeated calls with the same inputs skip path recomputation entirely.\nSee ``clear_einsum_cache()`` and ``einsum_cache_info()``."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "subscripts",
+            "type": "str",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Einstein summation subscript string (e.g., ``'ij,jk->ik'``)."
+              }
+            ]
+          },
+          {
+            "name": "*operands",
+            "type": "numpy.ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input arrays. ``SymmetricTensor`` inputs are detected automatically\nfor cost savings."
+              }
+            ]
+          },
+          {
+            "name": "optimize",
+            "type": "str, bool, or list of tuple, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Contraction path strategy. Default ``'auto'``."
+              },
+              {
+                "type": "paragraph",
+                "text": "- ``'auto'``, ``'greedy'``, ``'optimal'``, ``'dp'``, etc.:\n  Use the named algorithm to find the best path.\n- A list of int-tuples (e.g. ``[(1, 2), (0, 1)]``): use this\n  explicit contraction path. Obtain one from ``me.einsum_path()``\n  or construct manually. Each tuple names the operand positions\n  to contract at that step; the result is appended to the end.\n- ``False``: treated as ``'auto'``."
+              }
+            ]
+          },
+          {
+            "name": "symmetric_axes",
+            "type": "list of tuple of int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "**Output** dimension symmetry groups (S_k only). Declares that the\nresult is symmetric in the given axes and wraps it as a\n``SymmetricTensor``. For example, ``[(0, 1)]`` means the output\nsatisfies ``result[i,j,...] == result[j,i,...]``. This does NOT\ndeclare input symmetry \u2014 use ``me.as_symmetric()`` for that.\nMutually exclusive with *symmetry*."
+              }
+            ]
+          },
+          {
+            "name": "symmetry",
+            "type": "PermutationGroup or list of PermutationGroup, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "**Output** permutation group symmetry. Declares that the result\nis symmetric under the given ``PermutationGroup``(s) and wraps it\nas a ``SymmetricTensor``. Unlike *symmetric_axes* (which always\nmeans S_k), this supports any permutation group \u2014 for example,\n``PermutationGroup.cyclic(3, axes=(0, 1, 2))`` declares cyclic\nsymmetry where ``result[i,j,k] == result[j,k,i] == result[k,i,j]``\nbut ``result[i,j,k]`` need not equal ``result[j,i,k]``.\nEach group must have ``axes`` set. Mutually exclusive with\n*symmetric_axes*. This does NOT declare input symmetry \u2014 use\n``me.as_symmetric()`` for that."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "",
+            "type": "numpy.ndarray or SymmetricTensor",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The result of the einsum."
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

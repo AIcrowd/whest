@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "slug": "einsum_path",
+  "detail_href": "/docs/api/ops/einsum_path/",
+  "detail_json_href": "/api-data/ops/einsum_path.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_einsum.py#L316-L356",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.einsum_path.html"
+  },
+  "op": {
+    "name": "einsum_path",
+    "module": "numpy",
+    "whest_ref": "we.einsum_path",
+    "numpy_ref": "np.einsum_path",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0 (planning only)",
+    "cost_formula_latex": "$0$",
+    "notes": "Optimize einsum contraction path (no numeric output).",
+    "summary": "Compute the optimal contraction path without executing.",
+    "signature": "we.einsum_path(subscripts: 'str', *operands, optimize: 'str | bool | list' = 'auto')"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Compute the optimal contraction path without executing."
+          },
+          {
+            "type": "paragraph",
+            "text": "Returns ``(path, PathInfo)`` with zero budget cost. The returned\n``path`` can be passed back to ``me.einsum(..., optimize=path)``\nto execute with that exact contraction order."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "subscripts",
+            "type": "str",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Einstein summation subscript string."
+              }
+            ]
+          },
+          {
+            "name": "*operands",
+            "type": "numpy.ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input arrays."
+              }
+            ]
+          },
+          {
+            "name": "optimize",
+            "type": "str, bool, or list of tuple, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Path optimization strategy. Default ``'auto'``."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "path",
+            "type": "list of tuple of int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The contraction path. Pass to ``me.einsum(..., optimize=path)``."
+              }
+            ]
+          },
+          {
+            "name": "info",
+            "type": "PathInfo",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Diagnostics including per-step costs and symmetry savings."
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

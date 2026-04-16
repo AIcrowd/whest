@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "slug": "linalg.matmul",
+  "detail_href": "/docs/api/ops/linalg.matmul/",
+  "detail_json_href": "/api-data/ops/linalg.matmul.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_aliases.py#L16-L18",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.matmul.html"
+  },
+  "op": {
+    "name": "linalg.matmul",
+    "module": "numpy.linalg",
+    "whest_ref": "we.linalg.matmul",
+    "numpy_ref": "np.linalg.matmul",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "delegates to we.matmul",
+    "cost_formula_latex": "delegates to `matmul`",
+    "notes": "Delegates to `we.matmul` which charges `m*k*n` FLOPs (FMA=1).",
+    "summary": "Computes the matrix product.",
+    "signature": "we.linalg.matmul(x1, x2, /)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Computes the matrix product."
+          },
+          {
+            "type": "paragraph",
+            "text": "This function is Array API compatible, contrary to\n:func:`numpy.matmul`."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x1",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The first input array."
+              }
+            ]
+          },
+          {
+            "name": "x2",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The second input array."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The matrix product of the inputs.\nThis is a scalar only when both ``x1``, ``x2`` are 1-d vectors."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "For 2-D arrays it is the matrix product:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([[1, 0],\n...               [0, 1]])\n>>> b = np.array([[4, 1],\n...               [2, 2]])\n>>> np.linalg.matmul(a, b)\narray([[4, 1],\n       [2, 2]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "For 2-D mixed with 1-D, the result is the usual."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([[1, 0],\n...               [0, 1]])\n>>> b = np.array([1, 2])\n>>> np.linalg.matmul(a, b)\narray([1, 2])\n>>> np.linalg.matmul(b, a)\narray([1, 2])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Broadcasting is conventional for stacks of arrays"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.arange(2 * 2 * 4).reshape((2, 2, 4))\n>>> b = np.arange(2 * 2 * 4).reshape((2, 4, 2))\n>>> np.linalg.matmul(a,b).shape\n(2, 2, 2)\n>>> np.linalg.matmul(a, b)[0, 1, 1]\n98\n>>> sum(a[0, 1, :] * b[0 , :, 1])\n98"
+          },
+          {
+            "type": "paragraph",
+            "text": "Vector, vector returns the scalar inner product, but neither argument\nis complex-conjugated:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.linalg.matmul([2j, 3j], [2j, 3j])\n(-13+0j)"
+          },
+          {
+            "type": "paragraph",
+            "text": "Scalar multiplication raises an error."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.linalg.matmul([1,2], 3)\nTraceback (most recent call last):\n...\nValueError: matmul: Input operand 1 does not have enough dimensions ..."
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "numpy.matmul"
+          }
+        ]
+      }
+    ]
+  }
+}

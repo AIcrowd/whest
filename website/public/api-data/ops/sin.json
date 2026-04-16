@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "slug": "sin",
+  "detail_href": "/docs/api/ops/sin/",
+  "detail_json_href": "/api-data/ops/sin.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29-L42",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.sin.html"
+  },
+  "op": {
+    "name": "sin",
+    "module": "numpy",
+    "whest_ref": "we.sin",
+    "numpy_ref": "np.sin",
+    "category": "counted_unary",
+    "status": "supported",
+    "weight": 16.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Element-wise sine.",
+    "summary": "Trigonometric sine, element-wise.",
+    "signature": "we.sin(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature])"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Trigonometric sine, element-wise."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Angle, in radians (:math:`2 \\pi` rad equals 360 degrees)."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, None, or tuple of ndarray and None, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
+              }
+            ]
+          },
+          {
+            "name": "where",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the `out` array will be set to the ufunc result.\nElsewhere, the `out` array will retain its original value.\nNote that if an uninitialized `out` array is created via the default\n``out=None``, locations within it where the condition is False will\nremain uninitialized."
+              }
+            ]
+          },
+          {
+            "name": "**kwargs",
+            "type": "",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "For other keyword-only arguments, see the\n:ref:`ufunc docs <ufuncs.kwargs>`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "y",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The sine of each element of x.\nThis is a scalar if `x` is a scalar."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The sine is one of the fundamental functions of trigonometry (the\nmathematical study of triangles).  Consider a circle of radius 1\ncentered on the origin.  A ray comes in from the :math:`+x` axis, makes\nan angle at the origin (measured counter-clockwise from that axis), and\ndeparts from the origin.  The :math:`y` coordinate of the outgoing\nray's intersection with the unit circle is the sine of that angle.  It\nranges from -1 for :math:`x=3\\pi / 2` to +1 for :math:`\\pi / 2.`  The\nfunction has zeroes where the angle is a multiple of :math:`\\pi`.\nSines of angles between :math:`\\pi` and :math:`2\\pi` are negative.\nThe numerous properties of the sine and related functions are included\nin any standard trigonometry text."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np"
+          },
+          {
+            "type": "paragraph",
+            "text": "Print sine of one angle:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.sin(np.pi/2.)\n1.0"
+          },
+          {
+            "type": "paragraph",
+            "text": "Print sines of an array of angles given in degrees:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.sin(np.array((0., 30., 45., 60., 90.)) * np.pi / 180. )\narray([ 0.        ,  0.5       ,  0.70710678,  0.8660254 ,  1.        ])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Plot the sine function:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import matplotlib.pylab as plt\n>>> x = np.linspace(-np.pi, np.pi, 201)\n>>> plt.plot(x, np.sin(x))\n>>> plt.xlabel('Angle [rad]')\n>>> plt.ylabel('sin(x)')\n>>> plt.axis('tight')\n>>> plt.show()"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "arcsin, sinh, cos"
+          }
+        ]
+      }
+    ]
+  }
+}

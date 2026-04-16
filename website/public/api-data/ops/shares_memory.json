@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "slug": "shares_memory",
+  "detail_href": "/docs/api/ops/shares_memory/",
+  "detail_json_href": "/api-data/ops/shares_memory.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1392-L1394",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.shares_memory.html"
+  },
+  "op": {
+    "name": "shares_memory",
+    "module": "numpy",
+    "whest_ref": "we.shares_memory",
+    "numpy_ref": "np.shares_memory",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Determine if two arrays share memory.",
+    "summary": "Determine if two arrays share memory.",
+    "signature": "we.shares_memory(a, b, /, max_work=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Determine if two arrays share memory."
+          },
+          {
+            "type": "directive",
+            "name": "warning",
+            "body": "",
+            "raw": ".. warning::"
+          },
+          {
+            "type": "paragraph",
+            "text": "   This function can be exponentially slow for some inputs, unless\n   `max_work` is set to zero or a positive integer.\n   If in doubt, use `numpy.may_share_memory` instead."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a, b",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input arrays"
+              }
+            ]
+          },
+          {
+            "name": "max_work",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Effort to spend on solving the overlap problem (maximum number\nof candidate solutions to consider). The following special\nvalues are recognized:"
+              },
+              {
+                "type": "paragraph",
+                "text": "max_work=-1 (default)\n    The problem is solved exactly. In this case, the function returns\n    True only if there is an element shared between the arrays. Finding\n    the exact solution may take extremely long in some cases.\nmax_work=0\n    Only the memory bounds of a and b are checked.\n    This is equivalent to using ``may_share_memory()``."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "bool",
+            "desc_blocks": []
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> x = np.array([1, 2, 3, 4])\n>>> np.shares_memory(x, np.array([5, 6, 7]))\nFalse\n>>> np.shares_memory(x[::2], x)\nTrue\n>>> np.shares_memory(x[::2], x[1::2])\nFalse"
+          },
+          {
+            "type": "paragraph",
+            "text": "Checking whether two arrays share memory is NP-complete, and\nruntime may increase exponentially in the number of\ndimensions. Hence, `max_work` should generally be set to a finite\nnumber, as it is possible to construct examples that take\nextremely long to run:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> from numpy.lib.stride_tricks import as_strided\n>>> x = np.zeros([192163377], dtype=np.int8)\n>>> x1 = as_strided(\n...     x, strides=(36674, 61119, 85569), shape=(1049, 1049, 1049))\n>>> x2 = as_strided(\n...     x[64023025:], strides=(12223, 12224, 1), shape=(1049, 1049, 1))\n>>> np.shares_memory(x1, x2, max_work=1000)\nTraceback (most recent call last):\n...\nnumpy.exceptions.TooHardError: Exceeded max_work"
+          },
+          {
+            "type": "paragraph",
+            "text": "Running ``np.shares_memory(x1, x2)`` without `max_work` set takes\naround 1 minute for this case. It is possible to find problems\nthat take still significantly longer."
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "may_share_memory"
+          }
+        ]
+      }
+    ]
+  }
+}

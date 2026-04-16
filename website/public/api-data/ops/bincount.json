@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "slug": "bincount",
+  "detail_href": "/docs/api/ops/bincount/",
+  "detail_json_href": "/api-data/ops/bincount.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L235-L241",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.bincount.html"
+  },
+  "op": {
+    "name": "bincount",
+    "module": "numpy",
+    "whest_ref": "we.bincount",
+    "numpy_ref": "np.bincount",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Integer counting; cost = numel(x).",
+    "summary": "Count number of occurrences of each value in array of non-negative ints.",
+    "signature": "we.bincount(x, /, weights=None, minlength=0)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Count number of occurrences of each value in array of non-negative ints."
+          },
+          {
+            "type": "paragraph",
+            "text": "The number of bins (of size 1) is one larger than the largest value in\n`x`. If `minlength` is specified, there will be at least this number\nof bins in the output array (though it will be longer if necessary,\ndepending on the contents of `x`).\nEach bin gives the number of occurrences of its index value in `x`.\nIf `weights` is specified the input array is weighted by it, i.e. if a\nvalue ``n`` is found at position ``i``, ``out[n] += weight[i]`` instead\nof ``out[n] += 1``."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "array_like, 1 dimension, nonnegative ints",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array."
+              }
+            ]
+          },
+          {
+            "name": "weights",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Weights, array of the same shape as `x`."
+              }
+            ]
+          },
+          {
+            "name": "minlength",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A minimum number of bins for the output array."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray of ints",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The result of binning the input array.\nThe length of `out` is equal to ``np.amax(x)+1``."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.bincount(np.arange(5))\narray([1, 1, 1, 1, 1])\n>>> np.bincount(np.array([0, 1, 1, 3, 2, 1, 7]))\narray([1, 3, 1, 1, 0, 0, 0, 1])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.array([0, 1, 1, 3, 2, 1, 7, 23])\n>>> np.bincount(x).size == np.amax(x)+1\nTrue"
+          },
+          {
+            "type": "paragraph",
+            "text": "The input array needs to be of integer dtype, otherwise a\nTypeError is raised:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.bincount(np.arange(5, dtype=float))\nTraceback (most recent call last):\n  ...\nTypeError: Cannot cast array data from dtype('float64') to dtype('int64')\naccording to the rule 'safe'"
+          },
+          {
+            "type": "paragraph",
+            "text": "A possible use of ``bincount`` is to perform sums over\nvariable-size chunks of an array, using the ``weights`` keyword."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> w = np.array([0.3, 0.5, 0.2, 0.7, 1., -0.6]) # weights\n>>> x = np.array([0, 1, 1, 2, 2, 2])\n>>> np.bincount(x,  weights=w)\narray([ 0.3,  0.7,  1.1])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "histogram, digitize, unique"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "slug": "bmat",
+  "detail_href": "/docs/api/ops/bmat/",
+  "detail_json_href": "/api-data/ops/bmat.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L705-L712",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/matrixlib/defmatrix.py#L1041-L1118"
+  },
+  "op": {
+    "name": "bmat",
+    "module": "numpy",
+    "whest_ref": "we.bmat",
+    "numpy_ref": "np.bmat",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 4.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Build matrix from nested list of matrices. Cost: numel(output).",
+    "summary": "Build a matrix object from a string, nested sequence, or array.",
+    "signature": "we.bmat(obj, ldict=None, gdict=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Build a matrix object from a string, nested sequence, or array."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "obj",
+            "type": "str or array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input data. If a string, variables in the current scope may be\nreferenced by name."
+              }
+            ]
+          },
+          {
+            "name": "ldict",
+            "type": "dict, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A dictionary that replaces local operands in current frame.\nIgnored if `obj` is not a string or `gdict` is None."
+              }
+            ]
+          },
+          {
+            "name": "gdict",
+            "type": "dict, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A dictionary that replaces global operands in current frame.\nIgnored if `obj` is not a string."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "matrix",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Returns a matrix object, which is a specialized 2-D array."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> A = np.asmatrix('1 1; 1 1')\n>>> B = np.asmatrix('2 2; 2 2')\n>>> C = np.asmatrix('3 4; 5 6')\n>>> D = np.asmatrix('7 8; 9 0')"
+          },
+          {
+            "type": "paragraph",
+            "text": "All the following expressions construct the same block matrix:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.bmat([[A, B], [C, D]])\nmatrix([[1, 1, 2, 2],\n        [1, 1, 2, 2],\n        [3, 4, 7, 8],\n        [5, 6, 9, 0]])\n>>> np.bmat(np.r_[np.c_[A, B], np.c_[C, D]])\nmatrix([[1, 1, 2, 2],\n        [1, 1, 2, 2],\n        [3, 4, 7, 8],\n        [5, 6, 9, 0]])\n>>> np.bmat('A,B; C,D')\nmatrix([[1, 1, 2, 2],\n        [1, 1, 2, 2],\n        [3, 4, 7, 8],\n        [5, 6, 9, 0]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "block \u2014 A generalization of this function for N-d arrays, that returns normal ndarrays."
+          }
+        ]
+      }
+    ]
+  }
+}

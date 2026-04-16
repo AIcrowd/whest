@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "slug": "nextafter",
+  "detail_href": "/docs/api/ops/nextafter/",
+  "detail_json_href": "/api-data/ops/nextafter.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L73-L159",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.nextafter.html"
+  },
+  "op": {
+    "name": "nextafter",
+    "module": "numpy",
+    "whest_ref": "we.nextafter",
+    "numpy_ref": "np.nextafter",
+    "category": "counted_binary",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Return next float after x1 toward x2 element-wise.",
+    "summary": "Return the next floating-point value after x1 towards x2, element-wise.",
+    "signature": "we.nextafter(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature])"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return the next floating-point value after x1 towards x2, element-wise."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x1",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Values to find the next representable value of."
+              }
+            ]
+          },
+          {
+            "name": "x2",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The direction where to look for the next representable value of `x1`.\nIf ``x1.shape != x2.shape``, they must be broadcastable to a common\nshape (which becomes the shape of the output)."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, None, or tuple of ndarray and None, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
+              }
+            ]
+          },
+          {
+            "name": "where",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the `out` array will be set to the ufunc result.\nElsewhere, the `out` array will retain its original value.\nNote that if an uninitialized `out` array is created via the default\n``out=None``, locations within it where the condition is False will\nremain uninitialized."
+              }
+            ]
+          },
+          {
+            "name": "**kwargs",
+            "type": "",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "For other keyword-only arguments, see the\n:ref:`ufunc docs <ufuncs.kwargs>`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray or scalar",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The next representable values of `x1` in the direction of `x2`.\nThis is a scalar if both `x1` and `x2` are scalars."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> eps = np.finfo(np.float64).eps\n>>> np.nextafter(1, 2) == eps + 1\nTrue\n>>> np.nextafter([1, 2], [2, 1]) == [eps + 1, 2 - eps]\narray([ True,  True])"
+          }
+        ]
+      }
+    ]
+  }
+}

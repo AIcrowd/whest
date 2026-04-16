@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "slug": "polysub",
+  "detail_href": "/docs/api/ops/polysub/",
+  "detail_json_href": "/api-data/ops/polysub.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L110-L122",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.polysub.html"
+  },
+  "op": {
+    "name": "polysub",
+    "module": "whest._polynomial",
+    "whest_ref": "we.polysub",
+    "numpy_ref": "np.polysub",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "max(n1, n2)",
+    "cost_formula_latex": "$\\max(n_1, n_2)$",
+    "notes": "Difference (subtraction) of two polynomials. Cost: max(n1, n2) FLOPs.",
+    "summary": "Difference (subtraction) of two polynomials.",
+    "signature": "we.polysub(a1, a2)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Difference (subtraction) of two polynomials."
+          },
+          {
+            "type": "directive",
+            "name": "note",
+            "body": "   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `numpy.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
+            "raw": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `numpy.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`."
+          },
+          {
+            "type": "paragraph",
+            "text": "Given two polynomials `a1` and `a2`, returns ``a1 - a2``.\n`a1` and `a2` can be either array_like sequences of the polynomials'\ncoefficients (including coefficients equal to zero), or `poly1d` objects."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a1, a2",
+            "type": "array_like or poly1d",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Minuend and subtrahend polynomials, respectively."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray or poly1d",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Array or `poly1d` object of the difference polynomial's coefficients."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "directive",
+            "name": "math:: (2 x^2 + 10 x - 2) - (3 x^2 + 10 x -4) = (-x^2 + 2)",
+            "body": "",
+            "raw": ".. math:: (2 x^2 + 10 x - 2) - (3 x^2 + 10 x -4) = (-x^2 + 2)"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.polysub([2, 10, -2], [3, 10, -4])\narray([-1,  0,  2])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "polyval, polydiv, polymul, polyadd"
+          }
+        ]
+      }
+    ]
+  }
+}

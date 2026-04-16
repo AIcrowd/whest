@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "slug": "linalg.eigvalsh",
+  "detail_href": "/docs/api/ops/linalg.eigvalsh/",
+  "detail_json_href": "/api-data/ops/linalg.eigvalsh.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_decompositions.py#L230-L242",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.eigvalsh.html"
+  },
+  "op": {
+    "name": "linalg.eigvalsh",
+    "module": "numpy.linalg",
+    "whest_ref": "we.linalg.eigvalsh",
+    "numpy_ref": "np.linalg.eigvalsh",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 4.0,
+    "cost_formula": "n^3",
+    "cost_formula_latex": "$n^3$",
+    "notes": "Symmetric eigenvalues. Cost: $n^3$.",
+    "summary": "Compute the eigenvalues of a complex Hermitian or real symmetric matrix.",
+    "signature": "we.linalg.eigvalsh(a, UPLO='L')"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Compute the eigenvalues of a complex Hermitian or real symmetric matrix."
+          },
+          {
+            "type": "paragraph",
+            "text": "Main difference from eigh: the eigenvectors are not computed."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "(..., M, M) array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A complex- or real-valued matrix whose eigenvalues are to be\ncomputed."
+              }
+            ]
+          },
+          {
+            "name": "UPLO",
+            "type": "{'L', 'U'}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Specifies whether the calculation is done with the lower triangular\npart of `a` ('L', default) or the upper triangular part ('U').\nIrrespective of this value only the real parts of the diagonal will\nbe considered in the computation to preserve the notion of a Hermitian\nmatrix. It therefore follows that the imaginary part of the diagonal\nwill always be treated as zero."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "w",
+            "type": "(..., M,) ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The eigenvalues in ascending order, each repeated according to\nits multiplicity."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Broadcasting rules apply, see the `numpy.linalg` documentation for\ndetails."
+          },
+          {
+            "type": "paragraph",
+            "text": "The eigenvalues are computed using LAPACK routines ``_syevd``, ``_heevd``."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> from numpy import linalg as LA\n>>> a = np.array([[1, -2j], [2j, 5]])\n>>> LA.eigvalsh(a)\narray([ 0.17157288,  5.82842712]) # may vary"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> # demonstrate the treatment of the imaginary part of the diagonal\n>>> a = np.array([[5+2j, 9-2j], [0+2j, 2-1j]])\n>>> a\narray([[5.+2.j, 9.-2.j],\n       [0.+2.j, 2.-1.j]])\n>>> # with UPLO='L' this is numerically equivalent to using LA.eigvals()\n>>> # with:\n>>> b = np.array([[5.+0.j, 0.-2.j], [0.+2.j, 2.-0.j]])\n>>> b\narray([[5.+0.j, 0.-2.j],\n       [0.+2.j, 2.+0.j]])\n>>> wa = LA.eigvalsh(a)\n>>> wb = LA.eigvals(b)\n>>> wa; wb\narray([1., 6.])\narray([6.+0.j, 1.+0.j])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "eigh \u2014 eigenvalues and eigenvectors of real symmetric or complex Hermitian (conjugate symmetric) arrays."
+          },
+          {
+            "type": "paragraph",
+            "text": "eigvals \u2014 eigenvalues of general real or complex arrays."
+          },
+          {
+            "type": "paragraph",
+            "text": "eig \u2014 eigenvalues and right eigenvectors of general real or complex arrays."
+          },
+          {
+            "type": "paragraph",
+            "text": "scipy.linalg.eigvalsh \u2014 Similar function in SciPy."
+          }
+        ]
+      }
+    ]
+  }
+}

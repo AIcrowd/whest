@@ -136,7 +136,6 @@
 
 /* ── Row ──────────────────────────────────────────────── */
 .opRow {
-  cursor: pointer;
   transition: all 0.15s ease;
 }
 
@@ -144,15 +143,15 @@
   background: hsl(var(--muted));
 }
 
-.opRowExpanded {
-  background: hsl(var(--muted));
-}
-
-.opName code {
+.opLink {
   font-weight: 500;
   color: #F0524D;
-  background: none;
-  padding: 0;
+  text-decoration: none;
+}
+
+.opLink:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
 }
 
 .opModule {
@@ -168,50 +167,19 @@
 
 /* ── Arrow ────────────────────────────────────────────── */
 .opArrow {
-  width: 28px;
-  text-align: center;
+  white-space: nowrap;
 }
 
-.arrow {
-  display: inline-block;
-  font-size: 0.65rem;
-  color: hsl(var(--muted-foreground));
-  transition: transform 0.15s;
+.detailLink {
+  color: hsl(var(--primary));
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
 }
 
-.arrowOpen {
-  transform: rotate(90deg);
-}
-
-/* ── Detail row ───────────────────────────────────────── */
-.detailRow td {
-  padding: 0.75rem 1rem;
-  background: hsl(var(--muted));
-  border-bottom: 2px solid hsl(var(--border));
-}
-
-.detailGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 0.6rem 1.5rem;
-}
-
-.detailItem {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-}
-
-.detailItemFull {
-  grid-column: 1 / -1;
-}
-
-.detailLabel {
-  font-size: 0.72rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: hsl(var(--muted-foreground));
+.detailLink:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
 }
 
 /* ── Badge ────────────────────────────────────────────── */

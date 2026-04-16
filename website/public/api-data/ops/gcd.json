@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "slug": "gcd",
+  "detail_href": "/docs/api/ops/gcd/",
+  "detail_json_href": "/api-data/ops/gcd.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L73-L159",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.gcd.html"
+  },
+  "op": {
+    "name": "gcd",
+    "module": "numpy",
+    "whest_ref": "we.gcd",
+    "numpy_ref": "np.gcd",
+    "category": "counted_binary",
+    "status": "supported",
+    "weight": 16.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Element-wise greatest common divisor.",
+    "summary": "Returns the greatest common divisor of ``|x1|`` and ``|x2|``",
+    "signature": "we.gcd(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature])"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Returns the greatest common divisor of ``|x1|`` and ``|x2|``"
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x1, x2",
+            "type": "array_like, int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Arrays of values.\nIf ``x1.shape != x2.shape``, they must be broadcastable to a common\nshape (which becomes the shape of the output)."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "y",
+            "type": "ndarray or scalar",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The greatest common divisor of the absolute value of the inputs\nThis is a scalar if both `x1` and `x2` are scalars."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.gcd(12, 20)\n4\n>>> np.gcd.reduce([15, 25, 35])\n5\n>>> np.gcd(np.arange(6), 20)\narray([20,  1,  2,  1,  4,  5])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "lcm \u2014 The lowest common multiple"
+          }
+        ]
+      }
+    ]
+  }
+}

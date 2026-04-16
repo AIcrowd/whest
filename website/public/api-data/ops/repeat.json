@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "slug": "repeat",
+  "detail_href": "/docs/api/ops/repeat/",
+  "detail_json_href": "/api-data/ops/repeat.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L390-L402",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.repeat.html"
+  },
+  "op": {
+    "name": "repeat",
+    "module": "numpy",
+    "whest_ref": "we.repeat",
+    "numpy_ref": "np.repeat",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Repeat elements of an array. Cost: numel(output).",
+    "summary": "Repeat each element of an array after themselves",
+    "signature": "we.repeat(a, repeats, axis=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Repeat each element of an array after themselves"
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array."
+              }
+            ]
+          },
+          {
+            "name": "repeats",
+            "type": "int or array of ints",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The number of repetitions for each element.  `repeats` is broadcasted\nto fit the shape of the given axis."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The axis along which to repeat values.  By default, use the\nflattened input array, and return a flat output array."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "repeated_array",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Output array which has the same shape as `a`, except along\nthe given axis."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.repeat(3, 4)\narray([3, 3, 3, 3])\n>>> x = np.array([[1,2],[3,4]])\n>>> np.repeat(x, 2)\narray([1, 1, 2, 2, 3, 3, 4, 4])\n>>> np.repeat(x, 3, axis=1)\narray([[1, 1, 1, 2, 2, 2],\n       [3, 3, 3, 4, 4, 4]])\n>>> np.repeat(x, [1, 2], axis=0)\narray([[1, 2],\n       [3, 4],\n       [3, 4]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "tile \u2014 Tile an array."
+          },
+          {
+            "type": "paragraph",
+            "text": "unique \u2014 Find the unique elements of an array."
+          }
+        ]
+      }
+    ]
+  }
+}

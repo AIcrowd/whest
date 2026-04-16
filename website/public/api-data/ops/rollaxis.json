@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "slug": "rollaxis",
+  "detail_href": "/docs/api/ops/rollaxis/",
+  "detail_json_href": "/api-data/ops/rollaxis.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L1342-L1349",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.rollaxis.html"
+  },
+  "op": {
+    "name": "rollaxis",
+    "module": "numpy",
+    "whest_ref": "we.rollaxis",
+    "numpy_ref": "np.rollaxis",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Roll specified axis backwards. Cost: numel(output).",
+    "summary": "Roll the specified axis backwards, until it lies in a given position.",
+    "signature": "we.rollaxis(a, axis, start=0)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Roll the specified axis backwards, until it lies in a given position."
+          },
+          {
+            "type": "paragraph",
+            "text": "This function continues to be supported for backward compatibility, but you\nshould prefer `moveaxis`. The `moveaxis` function was added in NumPy\n1.11."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The axis to be rolled. The positions of the other axes do not\nchange relative to one another."
+              }
+            ]
+          },
+          {
+            "name": "start",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "When ``start <= axis``, the axis is rolled back until it lies in\nthis position. When ``start > axis``, the axis is rolled until it\nlies before this position. The default, 0, results in a \"complete\"\nroll. The following table describes how negative values of ``start``\nare interpreted:"
+              },
+              {
+                "type": "directive",
+                "name": "table",
+                "body": "   :align: left",
+                "raw": ".. table::\n   :align: left"
+              },
+              {
+                "type": "paragraph",
+                "text": "   +-------------------+----------------------+\n   |     ``start``     | Normalized ``start`` |\n   +===================+======================+\n   | ``-(arr.ndim+1)`` | raise ``AxisError``  |\n   +-------------------+----------------------+\n   | ``-arr.ndim``     | 0                    |\n   +-------------------+----------------------+\n   | |vdots|           | |vdots|              |\n   +-------------------+----------------------+\n   | ``-1``            | ``arr.ndim-1``       |\n   +-------------------+----------------------+\n   | ``0``             | ``0``                |\n   +-------------------+----------------------+\n   | |vdots|           | |vdots|              |\n   +-------------------+----------------------+\n   | ``arr.ndim``      | ``arr.ndim``         |\n   +-------------------+----------------------+\n   | ``arr.ndim + 1``  | raise ``AxisError``  |\n   +-------------------+----------------------+"
+              },
+              {
+                "type": "directive",
+                "name": "|vdots|   unicode:: U+22EE .. Vertical Ellipsis",
+                "body": "",
+                "raw": ".. |vdots|   unicode:: U+22EE .. Vertical Ellipsis"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "res",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "For NumPy >= 1.10.0 a view of `a` is always returned. For earlier\nNumPy versions a view of `a` is returned only if the order of the\naxes is changed, otherwise the input array is returned."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> a = np.ones((3,4,5,6))\n>>> np.rollaxis(a, 3, 1).shape\n(3, 6, 4, 5)\n>>> np.rollaxis(a, 2).shape\n(5, 3, 4, 6)\n>>> np.rollaxis(a, 1, 4).shape\n(3, 5, 6, 4)"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "moveaxis \u2014 Move array axes to new positions."
+          },
+          {
+            "type": "paragraph",
+            "text": "roll \u2014 Roll the elements of an array by a number of positions along a given axis."
+          }
+        ]
+      }
+    ]
+  }
+}

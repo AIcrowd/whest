@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "slug": "swapaxes",
+  "detail_href": "/docs/api/ops/swapaxes/",
+  "detail_json_href": "/api-data/ops/swapaxes.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L222-L224",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.swapaxes.html"
+  },
+  "op": {
+    "name": "swapaxes",
+    "module": "numpy",
+    "whest_ref": "we.swapaxes",
+    "numpy_ref": "np.swapaxes",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Interchange two axes of an array.",
+    "summary": "Interchange two axes of an array.",
+    "signature": "we.swapaxes(a, axis1, axis2)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Interchange two axes of an array."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array."
+              }
+            ]
+          },
+          {
+            "name": "axis1",
+            "type": "int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "First axis."
+              }
+            ]
+          },
+          {
+            "name": "axis2",
+            "type": "int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Second axis."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "a_swapped",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "For NumPy >= 1.10.0, if `a` is an ndarray, then a view of `a` is\nreturned; otherwise a new array is created. For earlier NumPy\nversions a view of `a` is returned only if the order of the\naxes is changed, otherwise the input array is returned."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> x = np.array([[1,2,3]])\n>>> np.swapaxes(x,0,1)\narray([[1],\n       [2],\n       [3]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.array([[[0,1],[2,3]],[[4,5],[6,7]]])\n>>> x\narray([[[0, 1],\n        [2, 3]],\n       [[4, 5],\n        [6, 7]]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.swapaxes(x,0,2)\narray([[[0, 4],\n        [2, 6]],\n       [[1, 5],\n        [3, 7]]])"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "slug": "common_type",
+  "detail_href": "/docs/api/ops/common_type/",
+  "detail_json_href": "/api-data/ops/common_type.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L768-L770",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.common_type.html"
+  },
+  "op": {
+    "name": "common_type",
+    "module": "numpy",
+    "whest_ref": "we.common_type",
+    "numpy_ref": "np.common_type",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Return scalar type common to all input arrays.",
+    "summary": "Return a scalar type which is common to the input arrays.",
+    "signature": "we.common_type(*arrays)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return a scalar type which is common to the input arrays."
+          },
+          {
+            "type": "paragraph",
+            "text": "The return type will always be an inexact (i.e. floating point) scalar\ntype, even if all the arrays are integer arrays. If one of the inputs is\nan integer array, the minimum precision type that is returned is a\n64-bit floating point dtype."
+          },
+          {
+            "type": "paragraph",
+            "text": "All input arrays except int64 and uint64 can be safely cast to the\nreturned dtype without loss of information."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "array1, array2, ...",
+            "type": "ndarrays",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input arrays."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "data type code",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Data type code."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.common_type(np.arange(2, dtype=np.float32))\n<class 'numpy.float32'>\n>>> np.common_type(np.arange(2, dtype=np.float32), np.arange(2))\n<class 'numpy.float64'>\n>>> np.common_type(np.arange(4), np.array([45, 6.j]), np.array([45.0]))\n<class 'numpy.complex128'>"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "dtype, mintypecode"
+          }
+        ]
+      }
+    ]
+  }
+}

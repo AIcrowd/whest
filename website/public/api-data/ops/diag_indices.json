@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "slug": "diag_indices",
+  "detail_href": "/docs/api/ops/diag_indices/",
+  "detail_json_href": "/api-data/ops/diag_indices.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L841-L843",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_index_tricks_impl.py#L947-L1011"
+  },
+  "op": {
+    "name": "diag_indices",
+    "module": "numpy",
+    "whest_ref": "we.diag_indices",
+    "numpy_ref": "np.diag_indices",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Return indices to access main diagonal of n-D array.",
+    "summary": "Return the indices to access the main diagonal of an array.",
+    "signature": "we.diag_indices(n, ndim=2)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return the indices to access the main diagonal of an array."
+          },
+          {
+            "type": "paragraph",
+            "text": "This returns a tuple of indices that can be used to access the main\ndiagonal of an array `a` with ``a.ndim >= 2`` dimensions and shape\n(n, n, ..., n). For ``a.ndim = 2`` this is the usual diagonal, for\n``a.ndim > 2`` this is the set of indices to access ``a[i, i, ..., i]``\nfor ``i = [0..n-1]``."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "n",
+            "type": "int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The size, along each dimension, of the arrays for which the returned\nindices can be used."
+              }
+            ]
+          },
+          {
+            "name": "ndim",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The number of dimensions."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np"
+          },
+          {
+            "type": "paragraph",
+            "text": "Create a set of indices to access the diagonal of a (4, 4) array:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> di = np.diag_indices(4)\n>>> di\n(array([0, 1, 2, 3]), array([0, 1, 2, 3]))\n>>> a = np.arange(16).reshape(4, 4)\n>>> a\narray([[ 0,  1,  2,  3],\n       [ 4,  5,  6,  7],\n       [ 8,  9, 10, 11],\n       [12, 13, 14, 15]])\n>>> a[di] = 100\n>>> a\narray([[100,   1,   2,   3],\n       [  4, 100,   6,   7],\n       [  8,   9, 100,  11],\n       [ 12,  13,  14, 100]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Now, we create indices to manipulate a 3-D array:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> d3 = np.diag_indices(2, 3)\n>>> d3\n(array([0, 1]), array([0, 1]), array([0, 1]))"
+          },
+          {
+            "type": "paragraph",
+            "text": "And use it to set the diagonal of an array of zeros to 1:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.zeros((2, 2, 2), dtype=int)\n>>> a[d3] = 1\n>>> a\narray([[[1, 0],\n        [0, 0]],\n       [[0, 0],\n        [0, 1]]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "diag_indices_from"
+          }
+        ]
+      }
+    ]
+  }
+}

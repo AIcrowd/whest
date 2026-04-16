@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "slug": "array_equiv",
+  "detail_href": "/docs/api/ops/array_equiv/",
+  "detail_json_href": "/api-data/ops/array_equiv.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L76-L93",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.array_equiv.html"
+  },
+  "op": {
+    "name": "array_equiv",
+    "module": "numpy",
+    "whest_ref": "we.array_equiv",
+    "numpy_ref": "np.array_equiv",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Element-wise equivalence; cost = numel(a).",
+    "summary": "Returns True if input arrays are shape consistent and all elements equal.",
+    "signature": "we.array_equiv(a1, a2)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Returns True if input arrays are shape consistent and all elements equal."
+          },
+          {
+            "type": "paragraph",
+            "text": "Shape consistent means they are either the same shape, or one input array\ncan be broadcasted to create the same shape as the other one."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a1, a2",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input arrays."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "bool",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "True if equivalent, False otherwise."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.array_equiv([1, 2], [1, 2])\nTrue\n>>> np.array_equiv([1, 2], [1, 3])\nFalse"
+          },
+          {
+            "type": "paragraph",
+            "text": "Showing the shape equivalence:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.array_equiv([1, 2], [[1, 2], [1, 2]])\nTrue\n>>> np.array_equiv([1, 2], [[1, 2, 1, 2], [1, 2, 1, 2]])\nFalse"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.array_equiv([1, 2], [[1, 2], [1, 3]])\nFalse"
+          }
+        ]
+      }
+    ]
+  }
+}

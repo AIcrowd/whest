@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "slug": "put_along_axis",
+  "detail_href": "/docs/api/ops/put_along_axis/",
+  "detail_json_href": "/api-data/ops/put_along_axis.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L1275-L1284",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.put_along_axis.html"
+  },
+  "op": {
+    "name": "put_along_axis",
+    "module": "numpy",
+    "whest_ref": "we.put_along_axis",
+    "numpy_ref": "np.put_along_axis",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Put values into destination array using indices. Cost: numel(input).",
+    "summary": "Put values into the destination array by matching 1d index and data slices.",
+    "signature": "we.put_along_axis(arr, indices, values, axis, *args, **kwargs)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Put values into the destination array by matching 1d index and data slices."
+          },
+          {
+            "type": "paragraph",
+            "text": "This iterates over matching 1d slices oriented along the specified axis in\nthe index and data arrays, and uses the former to place values into the\nlatter. These slices can be different lengths."
+          },
+          {
+            "type": "paragraph",
+            "text": "Functions returning an index along an axis, like `argsort` and\n`argpartition`, produce suitable indices for this function."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "arr",
+            "type": "ndarray (Ni..., M, Nk...)",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Destination array."
+              }
+            ]
+          },
+          {
+            "name": "indices",
+            "type": "ndarray (Ni..., J, Nk...)",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Indices to change along each 1d slice of `arr`. This must match the\ndimension of arr, but dimensions in Ni and Nj may be 1 to broadcast\nagainst `arr`."
+              }
+            ]
+          },
+          {
+            "name": "values",
+            "type": "array_like (Ni..., J, Nk...)",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "values to insert at those indices. Its shape and dimension are\nbroadcast to match that of `indices`."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The axis to take 1d slices along. If axis is None, the destination\narray is treated as if a flattened 1d view had been created of it."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "This is equivalent to (but faster than) the following use of `ndindex` and\n`s_`, which sets each of ``ii`` and ``kk`` to a tuple of indices::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    Ni, M, Nk = a.shape[:axis], a.shape[axis], a.shape[axis+1:]\n    J = indices.shape[axis]  # Need not equal M"
+          },
+          {
+            "type": "paragraph",
+            "text": "    for ii in ndindex(Ni):\n        for kk in ndindex(Nk):\n            a_1d       = a      [ii + s_[:,] + kk]\n            indices_1d = indices[ii + s_[:,] + kk]\n            values_1d  = values [ii + s_[:,] + kk]\n            for j in range(J):\n                a_1d[indices_1d[j]] = values_1d[j]"
+          },
+          {
+            "type": "paragraph",
+            "text": "Equivalently, eliminating the inner loop, the last two lines would be::"
+          },
+          {
+            "type": "paragraph",
+            "text": "            a_1d[indices_1d] = values_1d"
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np"
+          },
+          {
+            "type": "paragraph",
+            "text": "For this sample array"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([[10, 30, 20], [60, 40, 50]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "We can replace the maximum values with:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> ai = np.argmax(a, axis=1, keepdims=True)\n>>> ai\narray([[1],\n       [0]])\n>>> np.put_along_axis(a, ai, 99, axis=1)\n>>> a\narray([[10, 99, 20],\n       [99, 40, 50]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "take_along_axis \u2014 Take values from the input array by matching 1d index and data slices"
+          }
+        ]
+      }
+    ]
+  }
+}

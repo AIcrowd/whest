@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "slug": "stats.logistic.ppf",
+  "detail_href": "/docs/api/ops/stats.logistic.ppf/",
+  "detail_json_href": "/api-data/ops/stats.logistic.ppf.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_logistic.py#L55-L64",
+    "numpy": ""
+  },
+  "op": {
+    "name": "stats.logistic.ppf",
+    "module": "whest.stats",
+    "whest_ref": "we.stats.logistic.ppf",
+    "numpy_ref": "scipy.stats.logistic.ppf",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 16.0,
+    "cost_formula": "5n",
+    "cost_formula_latex": "$5n$",
+    "notes": "Logistic PPF; cost = numel(input).",
+    "summary": "Percent-point function (inverse CDF) at *q*.",
+    "signature": "we.stats.logistic.ppf(q, loc=0, scale=1)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Percent-point function (inverse CDF) at *q*."
+          },
+          {
+            "type": "paragraph",
+            "text": "Equivalent to ``scipy.stats.logistic.ppf(q, loc, scale)``."
+          }
+        ]
+      }
+    ]
+  }
+}

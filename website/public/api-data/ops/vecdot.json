@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "slug": "vecdot",
+  "detail_href": "/docs/api/ops/vecdot/",
+  "detail_json_href": "/api-data/ops/vecdot.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L529-L556",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.vecdot.html"
+  },
+  "op": {
+    "name": "vecdot",
+    "module": "numpy",
+    "whest_ref": "we.vecdot",
+    "numpy_ref": "np.vecdot",
+    "category": "counted_binary",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "n",
+    "cost_formula_latex": "$n$",
+    "notes": "Vector dot product along last axis.",
+    "summary": "Counted version of np.vecdot.",
+    "signature": "we.vecdot(a, b, **kwargs)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Counted version of np.vecdot."
+          },
+          {
+            "type": "paragraph",
+            "text": "Vector dot product along last axis. Each output element is the dot\nproduct of two vectors of length K (the last axis), costing K FLOPs.\nTotal cost = batch_size * K = numel(a) when a and b have the same shape."
+          }
+        ]
+      }
+    ]
+  }
+}

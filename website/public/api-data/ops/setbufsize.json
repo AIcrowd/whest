@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "slug": "setbufsize",
+  "detail_href": "/docs/api/ops/setbufsize/",
+  "detail_json_href": "/api-data/ops/setbufsize.json",
+  "source": {
+    "whest": null,
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/_ufunc_config.py#L157-L194"
+  },
+  "op": {
+    "name": "setbufsize",
+    "module": "numpy",
+    "whest_ref": "we.setbufsize",
+    "numpy_ref": "np.setbufsize",
+    "category": "blacklisted",
+    "status": "blocked",
+    "weight": 1.0,
+    "cost_formula": "N/A",
+    "cost_formula_latex": "N/A",
+    "notes": "Set size of buffer used in ufuncs. Not supported.",
+    "summary": "Set the size of the buffer used in ufuncs.",
+    "signature": "we.setbufsize(size)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Set the size of the buffer used in ufuncs."
+          },
+          {
+            "type": "directive",
+            "name": "versionchanged:: 2.0",
+            "body": "    The scope of setting the buffer is tied to the `numpy.errstate`\n    context.  Exiting a ``with errstate():`` will also restore the bufsize.",
+            "raw": ".. versionchanged:: 2.0\n    The scope of setting the buffer is tied to the `numpy.errstate`\n    context.  Exiting a ``with errstate():`` will also restore the bufsize."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "size",
+            "type": "int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Size of buffer."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "bufsize",
+            "type": "int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Previous size of ufunc buffer in bytes."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "When exiting a `numpy.errstate` context manager the bufsize is restored:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> with np.errstate():\n...     np.setbufsize(4096)\n...     print(np.getbufsize())\n...\n8192\n4096\n>>> np.getbufsize()\n8192"
+          }
+        ]
+      }
+    ]
+  }
+}

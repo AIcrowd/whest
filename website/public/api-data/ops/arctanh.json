@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "slug": "arctanh",
+  "detail_href": "/docs/api/ops/arctanh/",
+  "detail_json_href": "/api-data/ops/arctanh.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29-L42",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.arctanh.html"
+  },
+  "op": {
+    "name": "arctanh",
+    "module": "numpy",
+    "whest_ref": "we.arctanh",
+    "numpy_ref": "np.arctanh",
+    "category": "counted_unary",
+    "status": "supported",
+    "weight": 16.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Element-wise inverse hyperbolic tangent.",
+    "summary": "Inverse hyperbolic tangent element-wise.",
+    "signature": "we.arctanh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature])"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Inverse hyperbolic tangent element-wise."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, None, or tuple of ndarray and None, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
+              }
+            ]
+          },
+          {
+            "name": "where",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the `out` array will be set to the ufunc result.\nElsewhere, the `out` array will retain its original value.\nNote that if an uninitialized `out` array is created via the default\n``out=None``, locations within it where the condition is False will\nremain uninitialized."
+              }
+            ]
+          },
+          {
+            "name": "**kwargs",
+            "type": "",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "For other keyword-only arguments, see the\n:ref:`ufunc docs <ufuncs.kwargs>`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray or scalar",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Array of the same shape as `x`.\nThis is a scalar if `x` is a scalar."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "`arctanh` is a multivalued function: for each `x` there are infinitely\nmany numbers `z` such that ``tanh(z) = x``. The convention is to return\nthe `z` whose imaginary part lies in `[-pi/2, pi/2]`."
+          },
+          {
+            "type": "paragraph",
+            "text": "For real-valued input data types, `arctanh` always returns real output.\nFor each value that cannot be expressed as a real number or infinity,\nit yields ``nan`` and sets the `invalid` floating point error flag."
+          },
+          {
+            "type": "paragraph",
+            "text": "For complex-valued input, `arctanh` is a complex analytical function\nthat has branch cuts `[-1, -inf]` and `[1, inf]` and is continuous from\nabove on the former and from below on the latter."
+          },
+          {
+            "type": "paragraph",
+            "text": "The inverse hyperbolic tangent is also known as `atanh` or ``tanh^-1``."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.arctanh([0, -0.5])\narray([ 0.        , -0.54930614])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "emath.arctanh"
+          }
+        ]
+      }
+    ]
+  }
+}

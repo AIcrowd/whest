@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "slug": "tril_indices",
+  "detail_href": "/docs/api/ops/tril_indices/",
+  "detail_json_href": "/api-data/ops/tril_indices.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L1442-L1444",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L894-L976"
+  },
+  "op": {
+    "name": "tril_indices",
+    "module": "numpy",
+    "whest_ref": "we.tril_indices",
+    "numpy_ref": "np.tril_indices",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Return lower-triangle indices for n x n array.",
+    "summary": "Return the indices for the lower-triangle of an (n, m) array.",
+    "signature": "we.tril_indices(n, k=0, m=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return the indices for the lower-triangle of an (n, m) array."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "n",
+            "type": "int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The row dimension of the arrays for which the returned\nindices will be valid."
+              }
+            ]
+          },
+          {
+            "name": "k",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Diagonal offset (see `tril` for details)."
+              }
+            ]
+          },
+          {
+            "name": "m",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The column dimension of the arrays for which the returned\narrays will be valid.\nBy default `m` is taken equal to `n`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "inds",
+            "type": "tuple of arrays",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The row and column indices, respectively. The row indices are sorted\nin non-decreasing order, and the correspdonding column indices are\nstrictly increasing for each row."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np"
+          },
+          {
+            "type": "paragraph",
+            "text": "Compute two different sets of indices to access 4x4 arrays, one for the\nlower triangular part starting at the main diagonal, and one starting two\ndiagonals further right:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> il1 = np.tril_indices(4)\n>>> il1\n(array([0, 1, 1, 2, 2, 2, 3, 3, 3, 3]), array([0, 0, 1, 0, 1, 2, 0, 1, 2, 3]))"
+          },
+          {
+            "type": "paragraph",
+            "text": "Note that row indices (first array) are non-decreasing, and the corresponding\ncolumn indices (second array) are strictly increasing for each row.\nHere is how they can be used with a sample array:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.arange(16).reshape(4, 4)\n>>> a\narray([[ 0,  1,  2,  3],\n       [ 4,  5,  6,  7],\n       [ 8,  9, 10, 11],\n       [12, 13, 14, 15]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Both for indexing:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a[il1]\narray([ 0,  4,  5, ..., 13, 14, 15])"
+          },
+          {
+            "type": "paragraph",
+            "text": "And for assigning values:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a[il1] = -1\n>>> a\narray([[-1,  1,  2,  3],\n       [-1, -1,  6,  7],\n       [-1, -1, -1, 11],\n       [-1, -1, -1, -1]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "These cover almost the whole array (two diagonals right of the main one):"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> il2 = np.tril_indices(4, 2)\n>>> a[il2] = -10\n>>> a\narray([[-10, -10, -10,   3],\n       [-10, -10, -10, -10],\n       [-10, -10, -10, -10],\n       [-10, -10, -10, -10]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "triu_indices \u2014 similar function, for upper-triangular."
+          },
+          {
+            "type": "paragraph",
+            "text": "mask_indices \u2014 generic function accepting an arbitrary mask function."
+          },
+          {
+            "type": "paragraph",
+            "text": "tril, triu"
+          }
+        ]
+      }
+    ]
+  }
+}

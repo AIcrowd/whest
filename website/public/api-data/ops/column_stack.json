@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "slug": "column_stack",
+  "detail_href": "/docs/api/ops/column_stack/",
+  "detail_json_href": "/api-data/ops/column_stack.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L760-L762",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.column_stack.html"
+  },
+  "op": {
+    "name": "column_stack",
+    "module": "numpy",
+    "whest_ref": "we.column_stack",
+    "numpy_ref": "np.column_stack",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Stack 1-D arrays as columns into 2-D array.",
+    "summary": "Stack 1-D arrays as columns into a 2-D array.",
+    "signature": "we.column_stack(tup)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Stack 1-D arrays as columns into a 2-D array."
+          },
+          {
+            "type": "paragraph",
+            "text": "Take a sequence of 1-D arrays and stack them as columns\nto make a single 2-D array. 2-D arrays are stacked as-is,\njust like with `hstack`.  1-D arrays are turned into 2-D columns\nfirst."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "tup",
+            "type": "sequence of 1-D or 2-D arrays.",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Arrays to stack. All of them must have the same first dimension."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "stacked",
+            "type": "2-D array",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The array formed by stacking the given arrays."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> a = np.array((1,2,3))\n>>> b = np.array((2,3,4))\n>>> np.column_stack((a,b))\narray([[1, 2],\n       [2, 3],\n       [3, 4]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "stack, hstack, vstack, concatenate"
+          }
+        ]
+      }
+    ]
+  }
+}

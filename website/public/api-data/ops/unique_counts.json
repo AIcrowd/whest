@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "slug": "unique_counts",
+  "detail_href": "/docs/api/ops/unique_counts/",
+  "detail_json_href": "/api-data/ops/unique_counts.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L274-L283",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.unique_counts.html"
+  },
+  "op": {
+    "name": "unique_counts",
+    "module": "numpy",
+    "whest_ref": "we.unique_counts",
+    "numpy_ref": "np.unique_counts",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
+    "summary": "Find the unique elements and counts of an input array `x`.",
+    "signature": "we.unique_counts(x, /)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Find the unique elements and counts of an input array `x`."
+          },
+          {
+            "type": "paragraph",
+            "text": "This function is an Array API compatible alternative to::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    np.unique(x, return_counts=True, equal_nan=False)"
+          },
+          {
+            "type": "paragraph",
+            "text": "but returns a namedtuple for easier access to each output."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array. It will be flattened if it is not already 1-D."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "namedtuple",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The result containing:"
+              },
+              {
+                "type": "paragraph",
+                "text": "* values - The unique elements of an input array.\n* counts - The corresponding counts for each unique element."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> x = [1, 1, 2]\n>>> uniq = np.unique_counts(x)\n>>> uniq.values\narray([1, 2])\n>>> uniq.counts\narray([2, 1])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "unique \u2014 Find the unique elements of an array."
+          }
+        ]
+      }
+    ]
+  }
+}

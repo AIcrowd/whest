@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "slug": "asinh",
+  "detail_href": "/docs/api/ops/asinh/",
+  "detail_json_href": "/api-data/ops/asinh.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29-L42",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.asinh.html"
+  },
+  "op": {
+    "name": "asinh",
+    "module": "numpy",
+    "whest_ref": "we.asinh",
+    "numpy_ref": "np.asinh",
+    "category": "counted_unary",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Alias for arcsinh (NumPy 2.x).",
+    "summary": "Inverse hyperbolic sine element-wise.",
+    "signature": "we.asinh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature])"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Inverse hyperbolic sine element-wise."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, None, or tuple of ndarray and None, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
+              }
+            ]
+          },
+          {
+            "name": "where",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the `out` array will be set to the ufunc result.\nElsewhere, the `out` array will retain its original value.\nNote that if an uninitialized `out` array is created via the default\n``out=None``, locations within it where the condition is False will\nremain uninitialized."
+              }
+            ]
+          },
+          {
+            "name": "**kwargs",
+            "type": "",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "For other keyword-only arguments, see the\n:ref:`ufunc docs <ufuncs.kwargs>`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray or scalar",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Array of the same shape as `x`.\nThis is a scalar if `x` is a scalar."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "`arcsinh` is a multivalued function: for each `x` there are infinitely\nmany numbers `z` such that `sinh(z) = x`. The convention is to return the\n`z` whose imaginary part lies in `[-pi/2, pi/2]`."
+          },
+          {
+            "type": "paragraph",
+            "text": "For real-valued input data types, `arcsinh` always returns real output.\nFor each value that cannot be expressed as a real number or infinity, it\nreturns ``nan`` and sets the `invalid` floating point error flag."
+          },
+          {
+            "type": "paragraph",
+            "text": "For complex-valued input, `arcsinh` is a complex analytical function that\nhas branch cuts `[1j, infj]` and `[-1j, -infj]` and is continuous from\nthe right on the former and from the left on the latter."
+          },
+          {
+            "type": "paragraph",
+            "text": "The inverse hyperbolic sine is also known as `asinh` or ``sinh^-1``."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.arcsinh(np.array([np.e, 10.0]))\narray([ 1.72538256,  2.99822295])"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "slug": "block",
+  "detail_href": "/docs/api/ops/block/",
+  "detail_json_href": "/api-data/ops/block.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L692-L699",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.block.html"
+  },
+  "op": {
+    "name": "block",
+    "module": "numpy",
+    "whest_ref": "we.block",
+    "numpy_ref": "np.block",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Assemble ndarray from nested list of blocks. Cost: numel(output).",
+    "summary": "Assemble an nd-array from nested lists of blocks.",
+    "signature": "we.block(arrays)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Assemble an nd-array from nested lists of blocks."
+          },
+          {
+            "type": "paragraph",
+            "text": "Blocks in the innermost lists are concatenated (see `concatenate`) along\nthe last dimension (-1), then these are concatenated along the\nsecond-last dimension (-2), and so on until the outermost list is reached."
+          },
+          {
+            "type": "paragraph",
+            "text": "Blocks can be of any dimension, but will not be broadcasted using\nthe normal rules. Instead, leading axes of size 1 are inserted,\nto make ``block.ndim`` the same for all blocks. This is primarily useful\nfor working with scalars, and means that code like ``np.block([v, 1])``\nis valid, where ``v.ndim == 1``."
+          },
+          {
+            "type": "paragraph",
+            "text": "When the nested list is two levels deep, this allows block matrices to be\nconstructed from their components."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "arrays",
+            "type": "nested list of array_like or scalars (but not tuples)",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If passed a single ndarray or scalar (a nested list of depth 0), this\nis returned unmodified (and not copied)."
+              },
+              {
+                "type": "paragraph",
+                "text": "Elements shapes must match along the appropriate axes (without\nbroadcasting), but leading 1s will be prepended to the shape as\nnecessary to make the dimensions match."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "block_array",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The array assembled from the given blocks."
+              },
+              {
+                "type": "paragraph",
+                "text": "The dimensionality of the output is equal to the greatest of:"
+              },
+              {
+                "type": "paragraph",
+                "text": "* the dimensionality of all the inputs\n* the depth to which the input list is nested"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "When called with only scalars, ``np.block`` is equivalent to an ndarray\ncall. So ``np.block([[1, 2], [3, 4]])`` is equivalent to\n``np.array([[1, 2], [3, 4]])``."
+          },
+          {
+            "type": "paragraph",
+            "text": "This function does not enforce that the blocks lie on a fixed grid.\n``np.block([[a, b], [c, d]])`` is not restricted to arrays of the form::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    AAAbb\n    AAAbb\n    cccDD"
+          },
+          {
+            "type": "paragraph",
+            "text": "But is also allowed to produce, for some ``a, b, c, d``::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    AAAbb\n    AAAbb\n    cDDDD"
+          },
+          {
+            "type": "paragraph",
+            "text": "Since concatenation happens along the last axis first, `block` is *not*\ncapable of producing the following directly::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    AAAbb\n    cccbb\n    cccDD"
+          },
+          {
+            "type": "paragraph",
+            "text": "Matlab's \"square bracket stacking\", ``[A, B, ...; p, q, ...]``, is\nequivalent to ``np.block([[A, B, ...], [p, q, ...]])``."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The most common use of this function is to build a block matrix:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> A = np.eye(2) * 2\n>>> B = np.eye(3) * 3\n>>> np.block([\n...     [A,               np.zeros((2, 3))],\n...     [np.ones((3, 2)), B               ]\n... ])\narray([[2., 0., 0., 0., 0.],\n       [0., 2., 0., 0., 0.],\n       [1., 1., 3., 0., 0.],\n       [1., 1., 0., 3., 0.],\n       [1., 1., 0., 0., 3.]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "With a list of depth 1, `block` can be used as `hstack`:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.block([1, 2, 3])              # hstack([1, 2, 3])\narray([1, 2, 3])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([1, 2, 3])\n>>> b = np.array([4, 5, 6])\n>>> np.block([a, b, 10])             # hstack([a, b, 10])\narray([ 1,  2,  3,  4,  5,  6, 10])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> A = np.ones((2, 2), int)\n>>> B = 2 * A\n>>> np.block([A, B])                 # hstack([A, B])\narray([[1, 1, 2, 2],\n       [1, 1, 2, 2]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "With a list of depth 2, `block` can be used in place of `vstack`:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([1, 2, 3])\n>>> b = np.array([4, 5, 6])\n>>> np.block([[a], [b]])             # vstack([a, b])\narray([[1, 2, 3],\n       [4, 5, 6]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> A = np.ones((2, 2), int)\n>>> B = 2 * A\n>>> np.block([[A], [B]])             # vstack([A, B])\narray([[1, 1],\n       [1, 1],\n       [2, 2],\n       [2, 2]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "It can also be used in place of `atleast_1d` and `atleast_2d`:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array(0)\n>>> b = np.array([1])\n>>> np.block([a])                    # atleast_1d(a)\narray([0])\n>>> np.block([b])                    # atleast_1d(b)\narray([1])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.block([[a]])                  # atleast_2d(a)\narray([[0]])\n>>> np.block([[b]])                  # atleast_2d(b)\narray([[1]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "concatenate \u2014 Join a sequence of arrays along an existing axis."
+          },
+          {
+            "type": "paragraph",
+            "text": "stack \u2014 Join a sequence of arrays along a new axis."
+          },
+          {
+            "type": "paragraph",
+            "text": "vstack \u2014 Stack arrays in sequence vertically (row wise)."
+          },
+          {
+            "type": "paragraph",
+            "text": "hstack \u2014 Stack arrays in sequence horizontally (column wise)."
+          },
+          {
+            "type": "paragraph",
+            "text": "dstack \u2014 Stack arrays in sequence depth wise (along third axis)."
+          },
+          {
+            "type": "paragraph",
+            "text": "column_stack \u2014 Stack 1-D arrays as columns into a 2-D array."
+          },
+          {
+            "type": "paragraph",
+            "text": "vsplit \u2014 Split an array into multiple sub-arrays vertically (row-wise)."
+          },
+          {
+            "type": "paragraph",
+            "text": "unstack \u2014 Split an array into a tuple of sub-arrays along an axis."
+          }
+        ]
+      }
+    ]
+  }
+}

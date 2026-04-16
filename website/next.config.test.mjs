@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
@@ -43,4 +44,13 @@ test('production config keeps the GitHub Pages base path', async () => {
   const config = await loadConfig('production');
 
   assert.equal(config.basePath, '/whest');
+});
+
+test('docs app route avoids runtime filesystem reads', async () => {
+  const routeSource = await readFile(
+    path.join(websiteRoot, 'app', 'docs', '[[...slug]]', 'page.tsx'),
+    'utf8',
+  );
+
+  assert.doesNotMatch(routeSource, /node:fs|node:fs\/promises|process\.cwd\(/);
 });

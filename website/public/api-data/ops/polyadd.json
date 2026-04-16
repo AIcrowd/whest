@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "slug": "polyadd",
+  "detail_href": "/docs/api/ops/polyadd/",
+  "detail_json_href": "/api-data/ops/polyadd.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L92-L104",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.polyadd.html"
+  },
+  "op": {
+    "name": "polyadd",
+    "module": "whest._polynomial",
+    "whest_ref": "we.polyadd",
+    "numpy_ref": "np.polyadd",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "max(n1, n2)",
+    "cost_formula_latex": "$\\max(n_1, n_2)$",
+    "notes": "Add two polynomials. Cost: max(n1, n2) FLOPs.",
+    "summary": "Find the sum of two polynomials.",
+    "signature": "we.polyadd(a1, a2)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Find the sum of two polynomials."
+          },
+          {
+            "type": "directive",
+            "name": "note",
+            "body": "   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `numpy.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
+            "raw": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `numpy.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`."
+          },
+          {
+            "type": "paragraph",
+            "text": "Returns the polynomial resulting from the sum of two input polynomials.\nEach input must be either a poly1d object or a 1D sequence of polynomial\ncoefficients, from highest to lowest degree."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a1, a2",
+            "type": "array_like or poly1d object",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input polynomials."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray or poly1d object",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The sum of the inputs. If either input is a poly1d object, then the\noutput is also a poly1d object. Otherwise, it is a 1D array of\npolynomial coefficients from highest to lowest degree."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.polyadd([1, 2], [9, 5, 4])\narray([9, 6, 6])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Using poly1d objects:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> p1 = np.poly1d([1, 2])\n>>> p2 = np.poly1d([9, 5, 4])\n>>> print(p1)\n1 x + 2\n>>> print(p2)\n   2\n9 x + 5 x + 4\n>>> print(np.polyadd(p1, p2))\n   2\n9 x + 6 x + 6"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "poly1d \u2014 A one-dimensional polynomial class."
+          },
+          {
+            "type": "paragraph",
+            "text": "poly, polyadd, polyder, polydiv, polyfit, polyint, polysub, polyval"
+          }
+        ]
+      }
+    ]
+  }
+}

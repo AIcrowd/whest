@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "slug": "fromregex",
+  "detail_href": "/docs/api/ops/fromregex/",
+  "detail_json_href": "/api-data/ops/fromregex.json",
+  "source": {
+    "whest": null,
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_npyio_impl.py#L1645-L1739"
+  },
+  "op": {
+    "name": "fromregex",
+    "module": "numpy",
+    "whest_ref": "we.fromregex",
+    "numpy_ref": "np.fromregex",
+    "category": "blacklisted",
+    "status": "blocked",
+    "weight": 1.0,
+    "cost_formula": "N/A",
+    "cost_formula_latex": "N/A",
+    "notes": "Construct array from text file using regex. Cost: numel(output).",
+    "summary": "Construct an array from a text file, using regular expression parsing.",
+    "signature": "we.fromregex(file, regexp, dtype, encoding=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Construct an array from a text file, using regular expression parsing."
+          },
+          {
+            "type": "paragraph",
+            "text": "The returned array is always a structured array, and is constructed from\nall matches of the regular expression in the file. Groups in the regular\nexpression are converted to fields of the structured array."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "file",
+            "type": "file, str, or pathlib.Path",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Filename or file object to read."
+              },
+              {
+                "type": "directive",
+                "name": "versionchanged:: 1.22.0",
+                "body": "    Now accepts `os.PathLike` implementations.",
+                "raw": ".. versionchanged:: 1.22.0\n    Now accepts `os.PathLike` implementations."
+              }
+            ]
+          },
+          {
+            "name": "regexp",
+            "type": "str or regexp",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Regular expression used to parse the file.\nGroups in the regular expression correspond to fields in the dtype."
+              }
+            ]
+          },
+          {
+            "name": "dtype",
+            "type": "dtype or list of dtypes",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Dtype for the structured array; must be a structured datatype."
+              }
+            ]
+          },
+          {
+            "name": "encoding",
+            "type": "str, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Encoding used to decode the inputfile. Does not apply to input streams."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "output",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The output array, containing the part of the content of `file` that\nwas matched by `regexp`. `output` is always a structured array."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Dtypes for structured arrays can be specified in several forms, but all\nforms specify at least the data type and field name. For details see\n`basics.rec`."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> from io import StringIO\n>>> text = StringIO(\"1312 foo\\n1534  bar\\n444   qux\")"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> regexp = r\"(\\d+)\\s+(...)\"  # match [digits, whitespace, anything]\n>>> output = np.fromregex(text, regexp,\n...                       [('num', np.int64), ('key', 'S3')])\n>>> output\narray([(1312, b'foo'), (1534, b'bar'), ( 444, b'qux')],\n      dtype=[('num', '<i8'), ('key', 'S3')])\n>>> output['num']\narray([1312, 1534,  444])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "fromstring, loadtxt"
+          }
+        ]
+      }
+    ]
+  }
+}

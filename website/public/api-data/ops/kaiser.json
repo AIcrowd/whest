@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "slug": "kaiser",
+  "detail_href": "/docs/api/ops/kaiser/",
+  "detail_json_href": "/api-data/ops/kaiser.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L157-L162",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L3617-L3745"
+  },
+  "op": {
+    "name": "kaiser",
+    "module": "whest._window",
+    "whest_ref": "we.kaiser",
+    "numpy_ref": "np.kaiser",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 16.0,
+    "cost_formula": "3n",
+    "cost_formula_latex": "$3n$",
+    "notes": "Kaiser window. Cost: 3*n (Bessel function eval per sample).",
+    "summary": "Return the Kaiser window.",
+    "signature": "we.kaiser(M, beta)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return the Kaiser window."
+          },
+          {
+            "type": "paragraph",
+            "text": "The Kaiser window is a taper formed by using a Bessel function."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "M",
+            "type": "int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Number of points in the output window. If zero or less, an\nempty array is returned."
+              }
+            ]
+          },
+          {
+            "name": "beta",
+            "type": "float",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Shape parameter for window."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "array",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The window, with the maximum value normalized to one (the value\none appears only if the number of samples is odd)."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The Kaiser window is defined as"
+          },
+          {
+            "type": "directive",
+            "name": "math::  w(n) = I_0\\left( \\beta \\sqrt{1-\\frac{4n^2}{(M-1)^2}}",
+            "body": "           \\right)/I_0(\\beta)",
+            "raw": ".. math::  w(n) = I_0\\left( \\beta \\sqrt{1-\\frac{4n^2}{(M-1)^2}}\n           \\right)/I_0(\\beta)"
+          },
+          {
+            "type": "paragraph",
+            "text": "with"
+          },
+          {
+            "type": "directive",
+            "name": "math:: \\quad -\\frac{M-1}{2} \\leq n \\leq \\frac{M-1}{2},",
+            "body": "",
+            "raw": ".. math:: \\quad -\\frac{M-1}{2} \\leq n \\leq \\frac{M-1}{2},"
+          },
+          {
+            "type": "paragraph",
+            "text": "where :math:`I_0` is the modified zeroth-order Bessel function."
+          },
+          {
+            "type": "paragraph",
+            "text": "The Kaiser was named for Jim Kaiser, who discovered a simple\napproximation to the DPSS window based on Bessel functions.  The Kaiser\nwindow is a very good approximation to the Digital Prolate Spheroidal\nSequence, or Slepian window, which is the transform which maximizes the\nenergy in the main lobe of the window relative to total energy."
+          },
+          {
+            "type": "paragraph",
+            "text": "The Kaiser can approximate many other windows by varying the beta\nparameter."
+          },
+          {
+            "type": "paragraph",
+            "text": "====  =======================\nbeta  Window shape\n====  =======================\n0     Rectangular\n5     Similar to a Hamming\n6     Similar to a Hanning\n8.6   Similar to a Blackman\n====  ======================="
+          },
+          {
+            "type": "paragraph",
+            "text": "A beta value of 14 is probably a good starting point. Note that as beta\ngets large, the window narrows, and so the number of samples needs to be\nlarge enough to sample the increasingly narrow spike, otherwise NaNs will\nget returned."
+          },
+          {
+            "type": "paragraph",
+            "text": "Most references to the Kaiser window come from the signal processing\nliterature, where it is used as one of many windowing functions for\nsmoothing values.  It is also known as an apodization (which means\n\"removing the foot\", i.e. smoothing discontinuities at the beginning\nand end of the sampled signal) or tapering function."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> import matplotlib.pyplot as plt\n>>> np.kaiser(12, 14)\n array([7.72686684e-06, 3.46009194e-03, 4.65200189e-02, # may vary\n        2.29737120e-01, 5.99885316e-01, 9.45674898e-01,\n        9.45674898e-01, 5.99885316e-01, 2.29737120e-01,\n        4.65200189e-02, 3.46009194e-03, 7.72686684e-06])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Plot the window and the frequency response."
+          },
+          {
+            "type": "directive",
+            "name": "plot",
+            "body": "    :include-source:",
+            "raw": ".. plot::\n    :include-source:"
+          },
+          {
+            "type": "paragraph",
+            "text": "    import matplotlib.pyplot as plt\n    from numpy.fft import fft, fftshift\n    window = np.kaiser(51, 14)\n    plt.plot(window)\n    plt.title(\"Kaiser window\")\n    plt.ylabel(\"Amplitude\")\n    plt.xlabel(\"Sample\")\n    plt.show()"
+          },
+          {
+            "type": "paragraph",
+            "text": "    plt.figure()\n    A = fft(window, 2048) / 25.5\n    mag = np.abs(fftshift(A))\n    freq = np.linspace(-0.5, 0.5, len(A))\n    response = 20 * np.log10(mag)\n    response = np.clip(response, -100, 100)\n    plt.plot(freq, response)\n    plt.title(\"Frequency response of Kaiser window\")\n    plt.ylabel(\"Magnitude [dB]\")\n    plt.xlabel(\"Normalized frequency [cycles per sample]\")\n    plt.axis('tight')\n    plt.show()"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "bartlett, blackman, hamming, hanning"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "slug": "tensordot",
+  "detail_href": "/docs/api/ops/tensordot/",
+  "detail_json_href": "/api-data/ops/tensordot.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L865-L892",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.tensordot.html"
+  },
+  "op": {
+    "name": "tensordot",
+    "module": "numpy",
+    "whest_ref": "we.tensordot",
+    "numpy_ref": "np.tensordot",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "product of contracted dims * output size",
+    "cost_formula_latex": "$\\prod_i d_i$",
+    "notes": "Tensor dot product along specified axes.",
+    "summary": "Compute tensor dot product along specified axes.",
+    "signature": "we.tensordot(a, b, axes=2)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Compute tensor dot product along specified axes."
+          },
+          {
+            "type": "paragraph",
+            "text": "Given two tensors, `a` and `b`, and an array_like object containing\ntwo array_like objects, ``(a_axes, b_axes)``, sum the products of\n`a`'s and `b`'s elements (components) over the axes specified by\n``a_axes`` and ``b_axes``. The third argument can be a single non-negative\ninteger_like scalar, ``N``; if it is such, then the last ``N`` dimensions\nof `a` and the first ``N`` dimensions of `b` are summed over."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a, b",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Tensors to \"dot\"."
+              }
+            ]
+          },
+          {
+            "name": "axes",
+            "type": "int or (2,) array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "* integer_like\n  If an int N, sum over the last N axes of `a` and the first N axes\n  of `b` in order. The sizes of the corresponding axes must match.\n* (2,) array_like\n  Or, a list of axes to be summed over, first sequence applying to `a`,\n  second to `b`. Both elements array_like must be of the same length."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "output",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The tensor dot product of the input."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Three common use cases are:\n    * ``axes = 0`` : tensor product :math:`a\\otimes b`\n    * ``axes = 1`` : tensor dot product :math:`a\\cdot b`\n    * ``axes = 2`` : (default) tensor double contraction :math:`a:b`"
+          },
+          {
+            "type": "paragraph",
+            "text": "When `axes` is integer_like, the sequence of axes for evaluation\nwill be: from the -Nth axis to the -1th axis in `a`,\nand from the 0th axis to (N-1)th axis in `b`.\nFor example, ``axes = 2`` is the equal to\n``axes = [[-2, -1], [0, 1]]``.\nWhen N-1 is smaller than 0, or when -N is larger than -1,\nthe element of `a` and `b` are defined as the `axes`."
+          },
+          {
+            "type": "paragraph",
+            "text": "When there is more than one axis to sum over - and they are not the last\n(first) axes of `a` (`b`) - the argument `axes` should consist of\ntwo sequences of the same length, with the first axis to sum over given\nfirst in both sequences, the second axis second, and so forth.\nThe calculation can be referred to ``numpy.einsum``."
+          },
+          {
+            "type": "paragraph",
+            "text": "The shape of the result consists of the non-contracted axes of the\nfirst tensor, followed by the non-contracted axes of the second."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "An example on integer_like:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a_0 = np.array([[1, 2], [3, 4]])\n>>> b_0 = np.array([[5, 6], [7, 8]])\n>>> c_0 = np.tensordot(a_0, b_0, axes=0)\n>>> c_0.shape\n(2, 2, 2, 2)\n>>> c_0\narray([[[[ 5,  6],\n         [ 7,  8]],\n        [[10, 12],\n         [14, 16]]],\n       [[[15, 18],\n         [21, 24]],\n        [[20, 24],\n         [28, 32]]]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "An example on array_like:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.arange(60.).reshape(3,4,5)\n>>> b = np.arange(24.).reshape(4,3,2)\n>>> c = np.tensordot(a,b, axes=([1,0],[0,1]))\n>>> c.shape\n(5, 2)\n>>> c\narray([[4400., 4730.],\n       [4532., 4874.],\n       [4664., 5018.],\n       [4796., 5162.],\n       [4928., 5306.]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "A slower but equivalent way of computing the same..."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> d = np.zeros((5,2))\n>>> for i in range(5):\n...   for j in range(2):\n...     for k in range(3):\n...       for n in range(4):\n...         d[i,j] += a[k,n,i] * b[n,k,j]\n>>> c == d\narray([[ True,  True],\n       [ True,  True],\n       [ True,  True],\n       [ True,  True],\n       [ True,  True]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "An extended example taking advantage of the overloading of + and \\*:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array(range(1, 9))\n>>> a.shape = (2, 2, 2)\n>>> A = np.array(('a', 'b', 'c', 'd'), dtype=object)\n>>> A.shape = (2, 2)\n>>> a; A\narray([[[1, 2],\n        [3, 4]],\n       [[5, 6],\n        [7, 8]]])\narray([['a', 'b'],\n       ['c', 'd']], dtype=object)"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.tensordot(a, A) # third argument default is 2 for double-contraction\narray(['abbcccdddd', 'aaaaabbbbbbcccccccdddddddd'], dtype=object)"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.tensordot(a, A, 1)\narray([[['acc', 'bdd'],\n        ['aaacccc', 'bbbdddd']],\n       [['aaaaacccccc', 'bbbbbdddddd'],\n        ['aaaaaaacccccccc', 'bbbbbbbdddddddd']]], dtype=object)"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.tensordot(a, A, 0) # tensor product (result too long to incl.)\narray([[[[['a', 'b'],\n          ['c', 'd']],\n          ..."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.tensordot(a, A, (0, 1))\narray([[['abbbbb', 'cddddd'],\n        ['aabbbbbb', 'ccdddddd']],\n       [['aaabbbbbbb', 'cccddddddd'],\n        ['aaaabbbbbbbb', 'ccccdddddddd']]], dtype=object)"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.tensordot(a, A, (2, 1))\narray([[['abb', 'cdd'],\n        ['aaabbbb', 'cccdddd']],\n       [['aaaaabbbbbb', 'cccccdddddd'],\n        ['aaaaaaabbbbbbbb', 'cccccccdddddddd']]], dtype=object)"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.tensordot(a, A, ((0, 1), (0, 1)))\narray(['abbbcccccddddddd', 'aabbbbccccccdddddddd'], dtype=object)"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.tensordot(a, A, ((2, 1), (1, 0)))\narray(['acccbbdddd', 'aaaaacccccccbbbbbbdddddddd'], dtype=object)"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "dot, einsum"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "slug": "random.poisson",
+  "detail_href": "/docs/api/ops/random.poisson/",
+  "detail_json_href": "/api-data/ops/random.poisson.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L55-L66",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.poisson.html"
+  },
+  "op": {
+    "name": "random.poisson",
+    "module": "numpy.random",
+    "whest_ref": "we.random.poisson",
+    "numpy_ref": "np.random.poisson",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 16.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Sampling; cost = numel(output).",
+    "summary": "Counted version of ``numpy.random.random.poisson``. Cost: numel(output) FLOPs.",
+    "signature": "we.random.poisson(lam=1.0, size=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Counted version of ``numpy.random.random.poisson``. Cost: numel(output) FLOPs."
+          }
+        ]
+      }
+    ]
+  }
+}

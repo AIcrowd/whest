@@ -1,0 +1,264 @@
+{
+  "schema_version": 1,
+  "slug": "polyfit",
+  "detail_href": "/docs/api/ops/polyfit/",
+  "detail_json_href": "/api-data/ops/polyfit.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L195-L203",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.polyfit.html"
+  },
+  "op": {
+    "name": "polyfit",
+    "module": "whest._polynomial",
+    "whest_ref": "we.polyfit",
+    "numpy_ref": "np.polyfit",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "2m * (deg+1)^2",
+    "cost_formula_latex": "$2m \\cdot (\\text{deg}+1)^2$",
+    "notes": "Least squares polynomial fit. Cost: 2 * m * (deg+1)^2 FLOPs.",
+    "summary": "Least squares polynomial fit.",
+    "signature": "we.polyfit(x, y, deg, rcond=None, full=False, w=None, cov=False)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Least squares polynomial fit."
+          },
+          {
+            "type": "directive",
+            "name": "note",
+            "body": "   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `numpy.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
+            "raw": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `numpy.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`."
+          },
+          {
+            "type": "paragraph",
+            "text": "Fit a polynomial ``p(x) = p[0] * x**deg + ... + p[deg]`` of degree `deg`\nto points `(x, y)`. Returns a vector of coefficients `p` that minimises\nthe squared error in the order `deg`, `deg-1`, ... `0`."
+          },
+          {
+            "type": "paragraph",
+            "text": "The `Polynomial.fit <numpy.polynomial.polynomial.Polynomial.fit>` class\nmethod is recommended for new code as it is more stable numerically. See\nthe documentation of the method for more information."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "array_like, shape (M,)",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "x-coordinates of the M sample points ``(x[i], y[i])``."
+              }
+            ]
+          },
+          {
+            "name": "y",
+            "type": "array_like, shape (M,) or (M, K)",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "y-coordinates of the sample points. Several data sets of sample\npoints sharing the same x-coordinates can be fitted at once by\npassing in a 2D-array that contains one dataset per column."
+              }
+            ]
+          },
+          {
+            "name": "deg",
+            "type": "int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Degree of the fitting polynomial"
+              }
+            ]
+          },
+          {
+            "name": "rcond",
+            "type": "float, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Relative condition number of the fit. Singular values smaller than\nthis relative to the largest singular value will be ignored. The\ndefault value is len(x)*eps, where eps is the relative precision of\nthe float type, about 2e-16 in most cases."
+              }
+            ]
+          },
+          {
+            "name": "full",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Switch determining nature of return value. When it is False (the\ndefault) just the coefficients are returned, when True diagnostic\ninformation from the singular value decomposition is also returned."
+              }
+            ]
+          },
+          {
+            "name": "w",
+            "type": "array_like, shape (M,), optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Weights. If not None, the weight ``w[i]`` applies to the unsquared\nresidual ``y[i] - y_hat[i]`` at ``x[i]``. Ideally the weights are\nchosen so that the errors of the products ``w[i]*y[i]`` all have the\nsame variance.  When using inverse-variance weighting, use\n``w[i] = 1/sigma(y[i])``.  The default value is None."
+              }
+            ]
+          },
+          {
+            "name": "cov",
+            "type": "bool or str, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If given and not `False`, return not just the estimate but also its\ncovariance matrix. By default, the covariance are scaled by\nchi2/dof, where dof = M - (deg + 1), i.e., the weights are presumed\nto be unreliable except in a relative sense and everything is scaled\nsuch that the reduced chi2 is unity. This scaling is omitted if\n``cov='unscaled'``, as is relevant for the case that the weights are\nw = 1/sigma, with sigma known to be a reliable estimate of the\nuncertainty."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "p",
+            "type": "ndarray, shape (deg + 1,) or (deg + 1, K)",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Polynomial coefficients, highest power first.  If `y` was 2-D, the\ncoefficients for `k`-th data set are in ``p[:,k]``."
+              }
+            ]
+          },
+          {
+            "name": "",
+            "type": "residuals, rank, singular_values, rcond",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "These values are only returned if ``full == True``"
+              },
+              {
+                "type": "paragraph",
+                "text": "- residuals -- sum of squared residuals of the least squares fit\n- rank -- the effective rank of the scaled Vandermonde\n   coefficient matrix\n- singular_values -- singular values of the scaled Vandermonde\n   coefficient matrix\n- rcond -- value of `rcond`."
+              },
+              {
+                "type": "paragraph",
+                "text": "For more details, see `numpy.linalg.lstsq`."
+              }
+            ]
+          },
+          {
+            "name": "V",
+            "type": "ndarray, shape (deg + 1, deg + 1) or (deg + 1, deg + 1, K)",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Present only if ``full == False`` and ``cov == True``.  The covariance\nmatrix of the polynomial coefficient estimates.  The diagonal of\nthis matrix are the variance estimates for each coefficient.  If y\nis a 2-D array, then the covariance matrix for the `k`-th data set\nare in ``V[:,:,k]``"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The solution minimizes the squared error"
+          },
+          {
+            "type": "directive",
+            "name": "math",
+            "body": "    E = \\sum_{j=0}^k |p(x_j) - y_j|^2",
+            "raw": ".. math::\n    E = \\sum_{j=0}^k |p(x_j) - y_j|^2"
+          },
+          {
+            "type": "paragraph",
+            "text": "in the equations::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    x[0]**n * p[0] + ... + x[0] * p[n-1] + p[n] = y[0]\n    x[1]**n * p[0] + ... + x[1] * p[n-1] + p[n] = y[1]\n    ...\n    x[k]**n * p[0] + ... + x[k] * p[n-1] + p[n] = y[k]"
+          },
+          {
+            "type": "paragraph",
+            "text": "The coefficient matrix of the coefficients `p` is a Vandermonde matrix."
+          },
+          {
+            "type": "paragraph",
+            "text": "`polyfit` issues a `~exceptions.RankWarning` when the least-squares fit is\nbadly conditioned. This implies that the best fit is not well-defined due\nto numerical error. The results may be improved by lowering the polynomial\ndegree or by replacing `x` by `x` - `x`.mean(). The `rcond` parameter\ncan also be set to a value smaller than its default, but the resulting\nfit may be spurious: including contributions from the small singular\nvalues can add numerical noise to the result."
+          },
+          {
+            "type": "paragraph",
+            "text": "Note that fitting polynomial coefficients is inherently badly conditioned\nwhen the degree of the polynomial is large or the interval of sample points\nis badly centered. The quality of the fit should always be checked in these\ncases. When polynomial fits are not satisfactory, splines may be a good\nalternative."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> import warnings\n>>> x = np.array([0.0, 1.0, 2.0, 3.0,  4.0,  5.0])\n>>> y = np.array([0.0, 0.8, 0.9, 0.1, -0.8, -1.0])\n>>> z = np.polyfit(x, y, 3)\n>>> z\narray([ 0.08703704, -0.81349206,  1.69312169, -0.03968254]) # may vary"
+          },
+          {
+            "type": "paragraph",
+            "text": "It is convenient to use `poly1d` objects for dealing with polynomials:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> p = np.poly1d(z)\n>>> p(0.5)\n0.6143849206349179 # may vary\n>>> p(3.5)\n-0.34732142857143039 # may vary\n>>> p(10)\n22.579365079365115 # may vary"
+          },
+          {
+            "type": "paragraph",
+            "text": "High-order polynomials may oscillate wildly:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> with warnings.catch_warnings():\n...     warnings.simplefilter('ignore', np.exceptions.RankWarning)\n...     p30 = np.poly1d(np.polyfit(x, y, 30))\n...\n>>> p30(4)\n-0.80000000000000204 # may vary\n>>> p30(5)\n-0.99999999999999445 # may vary\n>>> p30(4.5)\n-0.10547061179440398 # may vary"
+          },
+          {
+            "type": "paragraph",
+            "text": "Illustration:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import matplotlib.pyplot as plt\n>>> xp = np.linspace(-2, 6, 100)\n>>> _ = plt.plot(x, y, '.', xp, p(xp), '-', xp, p30(xp), '--')\n>>> plt.ylim(-2,2)\n(-2, 2)\n>>> plt.show()"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "polyval \u2014 Compute polynomial values."
+          },
+          {
+            "type": "paragraph",
+            "text": "linalg.lstsq \u2014 Computes a least-squares fit."
+          },
+          {
+            "type": "paragraph",
+            "text": "scipy.interpolate.UnivariateSpline \u2014 Computes spline fits."
+          }
+        ]
+      }
+    ]
+  }
+}

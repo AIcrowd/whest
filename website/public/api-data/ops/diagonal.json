@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "slug": "diagonal",
+  "detail_href": "/docs/api/ops/diagonal/",
+  "detail_json_href": "/api-data/ops/diagonal.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L460-L475",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.diagonal.html"
+  },
+  "op": {
+    "name": "diagonal",
+    "module": "numpy",
+    "whest_ref": "we.diagonal",
+    "numpy_ref": "np.diagonal",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Return specified diagonals. Cost: numel(input).",
+    "summary": "Return specified diagonals.",
+    "signature": "we.diagonal(a, offset=0, axis1=0, axis2=1)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return specified diagonals."
+          },
+          {
+            "type": "paragraph",
+            "text": "If `a` is 2-D, returns the diagonal of `a` with the given offset,\ni.e., the collection of elements of the form ``a[i, i+offset]``.  If\n`a` has more than two dimensions, then the axes specified by `axis1`\nand `axis2` are used to determine the 2-D sub-array whose diagonal is\nreturned.  The shape of the resulting array can be determined by\nremoving `axis1` and `axis2` and appending an index to the right equal\nto the size of the resulting diagonals."
+          },
+          {
+            "type": "paragraph",
+            "text": "In versions of NumPy prior to 1.7, this function always returned a new,\nindependent array containing a copy of the values in the diagonal."
+          },
+          {
+            "type": "paragraph",
+            "text": "In NumPy 1.7 and 1.8, it continues to return a copy of the diagonal,\nbut depending on this fact is deprecated. Writing to the resulting\narray continues to work as it used to, but a FutureWarning is issued."
+          },
+          {
+            "type": "paragraph",
+            "text": "Starting in NumPy 1.9 it returns a read-only view on the original array.\nAttempting to write to the resulting array will produce an error."
+          },
+          {
+            "type": "paragraph",
+            "text": "In some future release, it will return a read/write view and writing to\nthe returned array will alter your original array.  The returned array\nwill have the same type as the input array."
+          },
+          {
+            "type": "paragraph",
+            "text": "If you don't write to the array returned by this function, then you can\njust ignore all of the above."
+          },
+          {
+            "type": "paragraph",
+            "text": "If you depend on the current behavior, then we suggest copying the\nreturned array explicitly, i.e., use ``np.diagonal(a).copy()`` instead\nof just ``np.diagonal(a)``. This will work with both past and future\nversions of NumPy."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Array from which the diagonals are taken."
+              }
+            ]
+          },
+          {
+            "name": "offset",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Offset of the diagonal from the main diagonal.  Can be positive or\nnegative.  Defaults to main diagonal (0)."
+              }
+            ]
+          },
+          {
+            "name": "axis1",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Axis to be used as the first axis of the 2-D sub-arrays from which\nthe diagonals should be taken.  Defaults to first axis (0)."
+              }
+            ]
+          },
+          {
+            "name": "axis2",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Axis to be used as the second axis of the 2-D sub-arrays from\nwhich the diagonals should be taken. Defaults to second axis (1)."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "array_of_diagonals",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If `a` is 2-D, then a 1-D array containing the diagonal and of the\nsame type as `a` is returned unless `a` is a `matrix`, in which case\na 1-D array rather than a (2-D) `matrix` is returned in order to\nmaintain backward compatibility."
+              },
+              {
+                "type": "paragraph",
+                "text": "If ``a.ndim > 2``, then the dimensions specified by `axis1` and `axis2`\nare removed, and a new axis inserted at the end corresponding to the\ndiagonal."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> a = np.arange(4).reshape(2,2)\n>>> a\narray([[0, 1],\n       [2, 3]])\n>>> a.diagonal()\narray([0, 3])\n>>> a.diagonal(1)\narray([1])"
+          },
+          {
+            "type": "paragraph",
+            "text": "A 3-D example:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.arange(8).reshape(2,2,2); a\narray([[[0, 1],\n        [2, 3]],\n       [[4, 5],\n        [6, 7]]])\n>>> a.diagonal(0,  # Main diagonals of two arrays created by skipping\n...            0,  # across the outer(left)-most axis last and\n...            1)  # the \"middle\" (row) axis first.\narray([[0, 6],\n       [1, 7]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "The sub-arrays whose main diagonals we just obtained; note that each\ncorresponds to fixing the right-most (column) axis, and that the\ndiagonals are \"packed\" in rows."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a[:,:,0]  # main diagonal is [0 6]\narray([[0, 2],\n       [4, 6]])\n>>> a[:,:,1]  # main diagonal is [1 7]\narray([[1, 3],\n       [5, 7]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "The anti-diagonal can be obtained by reversing the order of elements\nusing either `numpy.flipud` or `numpy.fliplr`."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.arange(9).reshape(3, 3)\n>>> a\narray([[0, 1, 2],\n       [3, 4, 5],\n       [6, 7, 8]])\n>>> np.fliplr(a).diagonal()  # Horizontal flip\narray([2, 4, 6])\n>>> np.flipud(a).diagonal()  # Vertical flip\narray([6, 4, 2])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Note that the order in which the diagonal is retrieved varies depending\non the flip function."
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "diag \u2014 MATLAB work-a-like for 1-D and 2-D arrays."
+          },
+          {
+            "type": "paragraph",
+            "text": "diagflat \u2014 Create diagonal arrays."
+          },
+          {
+            "type": "paragraph",
+            "text": "trace \u2014 Sum along diagonals."
+          }
+        ]
+      }
+    ]
+  }
+}

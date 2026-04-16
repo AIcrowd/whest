@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "slug": "linalg.inv",
+  "detail_href": "/docs/api/ops/linalg.inv/",
+  "detail_json_href": "/api-data/ops/linalg.inv.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_solvers.py#L97-L114",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.inv.html"
+  },
+  "op": {
+    "name": "linalg.inv",
+    "module": "numpy.linalg",
+    "whest_ref": "we.linalg.inv",
+    "numpy_ref": "np.linalg.inv",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 4.0,
+    "cost_formula": "n^3",
+    "cost_formula_latex": "$n^3$",
+    "notes": "Matrix inverse. Cost: $n^3$ (LU + solve).",
+    "summary": "Compute the inverse of a matrix.",
+    "signature": "we.linalg.inv(a)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Compute the inverse of a matrix."
+          },
+          {
+            "type": "paragraph",
+            "text": "Given a square matrix `a`, return the matrix `ainv` satisfying\n``a @ ainv = ainv @ a = eye(a.shape[0])``."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "(..., M, M) array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Matrix to be inverted."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "ainv",
+            "type": "(..., M, M) ndarray or matrix",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Inverse of the matrix `a`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Broadcasting rules apply, see the `numpy.linalg` documentation for\ndetails."
+          },
+          {
+            "type": "paragraph",
+            "text": "If `a` is detected to be singular, a `LinAlgError` is raised. If `a` is\nill-conditioned, a `LinAlgError` may or may not be raised, and results may\nbe inaccurate due to floating-point errors."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> from numpy.linalg import inv\n>>> a = np.array([[1., 2.], [3., 4.]])\n>>> ainv = inv(a)\n>>> np.allclose(a @ ainv, np.eye(2))\nTrue\n>>> np.allclose(ainv @ a, np.eye(2))\nTrue"
+          },
+          {
+            "type": "paragraph",
+            "text": "If a is a matrix object, then the return value is a matrix as well:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> ainv = inv(np.matrix(a))\n>>> ainv\nmatrix([[-2. ,  1. ],\n        [ 1.5, -0.5]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Inverses of several matrices can be computed at once:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([[[1., 2.], [3., 4.]], [[1, 3], [3, 5]]])\n>>> inv(a)\narray([[[-2.  ,  1.  ],\n        [ 1.5 , -0.5 ]],\n       [[-1.25,  0.75],\n        [ 0.75, -0.25]]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "If a matrix is close to singular, the computed inverse may not satisfy\n``a @ ainv = ainv @ a = eye(a.shape[0])`` even if a `LinAlgError`\nis not raised:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([[2,4,6],[2,0,2],[6,8,14]])\n>>> inv(a)  # No errors raised\narray([[-1.12589991e+15, -5.62949953e+14,  5.62949953e+14],\n   [-1.12589991e+15, -5.62949953e+14,  5.62949953e+14],\n   [ 1.12589991e+15,  5.62949953e+14, -5.62949953e+14]])\n>>> a @ inv(a)\narray([[ 0.   , -0.5  ,  0.   ],  # may vary\n       [-0.5  ,  0.625,  0.25 ],\n       [ 0.   ,  0.   ,  1.   ]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "To detect ill-conditioned matrices, you can use `numpy.linalg.cond` to\ncompute its *condition number* [1]_. The larger the condition number, the\nmore ill-conditioned the matrix is. As a rule of thumb, if the condition\nnumber ``cond(a) = 10**k``, then you may lose up to ``k`` digits of\naccuracy on top of what would be lost to the numerical method due to loss\nof precision from arithmetic methods."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> from numpy.linalg import cond\n>>> cond(a)\nnp.float64(8.659885634118668e+17)  # may vary"
+          },
+          {
+            "type": "paragraph",
+            "text": "It is also possible to detect ill-conditioning by inspecting the matrix's\nsingular values directly. The ratio between the largest and the smallest\nsingular value is the condition number:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> from numpy.linalg import svd\n>>> sigma = svd(a, compute_uv=False)  # Do not compute singular vectors\n>>> sigma.max()/sigma.min()\n8.659885634118668e+17  # may vary"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "scipy.linalg.inv \u2014 Similar function in SciPy."
+          },
+          {
+            "type": "paragraph",
+            "text": "numpy.linalg.cond \u2014 Compute the condition number of a matrix."
+          },
+          {
+            "type": "paragraph",
+            "text": "numpy.linalg.svd \u2014 Compute the singular value decomposition of a matrix."
+          }
+        ]
+      }
+    ]
+  }
+}

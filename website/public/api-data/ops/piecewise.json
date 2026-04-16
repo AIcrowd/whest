@@ -1,0 +1,188 @@
+{
+  "schema_version": 1,
+  "slug": "piecewise",
+  "detail_href": "/docs/api/ops/piecewise/",
+  "detail_json_href": "/api-data/ops/piecewise.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L344-L353",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.piecewise.html"
+  },
+  "op": {
+    "name": "piecewise",
+    "module": "numpy",
+    "whest_ref": "we.piecewise",
+    "numpy_ref": "np.piecewise",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 4.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Piecewise function. Cost: numel(input).",
+    "summary": "Evaluate a piecewise-defined function.",
+    "signature": "we.piecewise(x, condlist, funclist, *args, **kw)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Evaluate a piecewise-defined function."
+          },
+          {
+            "type": "paragraph",
+            "text": "Given a set of conditions and corresponding functions, evaluate each\nfunction on the input data wherever its condition is true."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "ndarray or scalar",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The input domain."
+              }
+            ]
+          },
+          {
+            "name": "condlist",
+            "type": "list of bool arrays or bool scalars",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Each boolean array corresponds to a function in `funclist`.  Wherever\n`condlist[i]` is True, `funclist[i](x)` is used as the output value."
+              },
+              {
+                "type": "paragraph",
+                "text": "Each boolean array in `condlist` selects a piece of `x`,\nand should therefore be of the same shape as `x`."
+              },
+              {
+                "type": "paragraph",
+                "text": "The length of `condlist` must correspond to that of `funclist`.\nIf one extra function is given, i.e. if\n``len(funclist) == len(condlist) + 1``, then that extra function\nis the default value, used wherever all conditions are false."
+              }
+            ]
+          },
+          {
+            "name": "funclist",
+            "type": "list of callables, f(x,*args,**kw), or scalars",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Each function is evaluated over `x` wherever its corresponding\ncondition is True.  It should take a 1d array as input and give an 1d\narray or a scalar value as output.  If, instead of a callable,\na scalar is provided then a constant function (``lambda x: scalar``) is\nassumed."
+              }
+            ]
+          },
+          {
+            "name": "args",
+            "type": "tuple, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Any further arguments given to `piecewise` are passed to the functions\nupon execution, i.e., if called ``piecewise(..., ..., 1, 'a')``, then\neach function is called as ``f(x, 1, 'a')``."
+              }
+            ]
+          },
+          {
+            "name": "kw",
+            "type": "dict, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Keyword arguments used in calling `piecewise` are passed to the\nfunctions upon execution, i.e., if called\n``piecewise(..., ..., alpha=1)``, then each function is called as\n``f(x, alpha=1)``."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The output is the same shape and type as x and is found by\ncalling the functions in `funclist` on the appropriate portions of `x`,\nas defined by the boolean arrays in `condlist`.  Portions not covered\nby any condition have a default value of 0."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "This is similar to choose or select, except that functions are\nevaluated on elements of `x` that satisfy the corresponding condition from\n`condlist`."
+          },
+          {
+            "type": "paragraph",
+            "text": "The result is::"
+          },
+          {
+            "type": "paragraph",
+            "text": "        |--\n        |funclist[0](x[condlist[0]])\n  out = |funclist[1](x[condlist[1]])\n        |...\n        |funclist[n2](x[condlist[n2]])\n        |--"
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np"
+          },
+          {
+            "type": "paragraph",
+            "text": "Define the signum function, which is -1 for ``x < 0`` and +1 for ``x >= 0``."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.linspace(-2.5, 2.5, 6)\n>>> np.piecewise(x, [x < 0, x >= 0], [-1, 1])\narray([-1., -1., -1.,  1.,  1.,  1.])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Define the absolute value, which is ``-x`` for ``x <0`` and ``x`` for\n``x >= 0``."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.piecewise(x, [x < 0, x >= 0], [lambda x: -x, lambda x: x])\narray([2.5,  1.5,  0.5,  0.5,  1.5,  2.5])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Apply the same function to a scalar value."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> y = -2\n>>> np.piecewise(y, [y < 0, y >= 0], [lambda x: -x, lambda x: x])\narray(2)"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "choose, select, where"
+          }
+        ]
+      }
+    ]
+  }
+}

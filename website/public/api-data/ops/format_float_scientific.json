@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "slug": "format_float_scientific",
+  "detail_href": "/docs/api/ops/format_float_scientific/",
+  "detail_json_href": "/api-data/ops/format_float_scientific.json",
+  "source": {
+    "whest": null,
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/arrayprint.py#L1108-L1186"
+  },
+  "op": {
+    "name": "format_float_scientific",
+    "module": "numpy",
+    "whest_ref": "we.format_float_scientific",
+    "numpy_ref": "np.format_float_scientific",
+    "category": "blacklisted",
+    "status": "blocked",
+    "weight": 1.0,
+    "cost_formula": "N/A",
+    "cost_formula_latex": "N/A",
+    "notes": "Format floating point scalar as scientific notation. Not supported.",
+    "summary": "Format a floating-point scalar as a decimal string in scientific notation.",
+    "signature": "we.format_float_scientific(x, precision=None, unique=True, trim='k', sign=False, pad_left=None, exp_digits=None, min_digits=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Format a floating-point scalar as a decimal string in scientific notation."
+          },
+          {
+            "type": "paragraph",
+            "text": "Provides control over rounding, trimming and padding. Uses and assumes\nIEEE unbiased rounding. Uses the \"Dragon4\" algorithm."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "python float or numpy floating scalar",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Value to format."
+              }
+            ]
+          },
+          {
+            "name": "precision",
+            "type": "non-negative integer or None, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Maximum number of digits to print. May be None if `unique` is\n`True`, but must be an integer if unique is `False`."
+              }
+            ]
+          },
+          {
+            "name": "unique",
+            "type": "boolean, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If `True`, use a digit-generation strategy which gives the shortest\nrepresentation which uniquely identifies the floating-point number from\nother values of the same type, by judicious rounding. If `precision`\nis given fewer digits than necessary can be printed. If `min_digits`\nis given more can be printed, in which cases the last digit is rounded\nwith unbiased rounding.\nIf `False`, digits are generated as if printing an infinite-precision\nvalue and stopping after `precision` digits, rounding the remaining\nvalue with unbiased rounding"
+              }
+            ]
+          },
+          {
+            "name": "trim",
+            "type": "one of 'k', '.', '0', '-', optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Controls post-processing trimming of trailing digits, as follows:"
+              },
+              {
+                "type": "paragraph",
+                "text": "* 'k' : keep trailing zeros, keep decimal point (no trimming)\n* '.' : trim all trailing zeros, leave decimal point\n* '0' : trim all but the zero before the decimal point. Insert the\n  zero if it is missing.\n* '-' : trim trailing zeros and any trailing decimal point"
+              }
+            ]
+          },
+          {
+            "name": "sign",
+            "type": "boolean, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Whether to show the sign for positive values."
+              }
+            ]
+          },
+          {
+            "name": "pad_left",
+            "type": "non-negative integer, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Pad the left side of the string with whitespace until at least that\nmany characters are to the left of the decimal point."
+              }
+            ]
+          },
+          {
+            "name": "exp_digits",
+            "type": "non-negative integer, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Pad the exponent with zeros until it contains at least this\nmany digits. If omitted, the exponent will be at least 2 digits."
+              }
+            ]
+          },
+          {
+            "name": "min_digits",
+            "type": "non-negative integer or None, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Minimum number of digits to print. This only has an effect for\n`unique=True`. In that case more digits than necessary to uniquely\nidentify the value may be printed and rounded unbiased."
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 1.21.0",
+                "body": "",
+                "raw": ".. versionadded:: 1.21.0"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "rep",
+            "type": "string",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The string representation of the floating point value"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.format_float_scientific(np.float32(np.pi))\n'3.1415927e+00'\n>>> s = np.float32(1.23e24)\n>>> np.format_float_scientific(s, unique=False, precision=15)\n'1.230000071797338e+24'\n>>> np.format_float_scientific(s, exp_digits=4)\n'1.23e+0024'"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "format_float_positional"
+          }
+        ]
+      }
+    ]
+  }
+}

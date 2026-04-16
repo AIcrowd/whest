@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "slug": "ediff1d",
+  "detail_href": "/docs/api/ops/ediff1d/",
+  "detail_json_href": "/api-data/ops/ediff1d.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L1001-L1022",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.ediff1d.html"
+  },
+  "op": {
+    "name": "ediff1d",
+    "module": "numpy",
+    "whest_ref": "we.ediff1d",
+    "numpy_ref": "np.ediff1d",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(input)",
+    "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "notes": "Differences between consecutive elements.",
+    "summary": "The differences between consecutive elements of an array.",
+    "signature": "we.ediff1d(ary, to_end=None, to_begin=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The differences between consecutive elements of an array."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "ary",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If necessary, will be flattened before the differences are taken."
+              }
+            ]
+          },
+          {
+            "name": "to_end",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Number(s) to append at the end of the returned differences."
+              }
+            ]
+          },
+          {
+            "name": "to_begin",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Number(s) to prepend at the beginning of the returned differences."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "ediff1d",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The differences. Loosely, this is ``ary.flat[1:] - ary.flat[:-1]``."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "When applied to masked arrays, this function drops the mask information\nif the `to_begin` and/or `to_end` parameters are used."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> x = np.array([1, 2, 4, 7, 0])\n>>> np.ediff1d(x)\narray([ 1,  2,  3, -7])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.ediff1d(x, to_begin=-99, to_end=np.array([88, 99]))\narray([-99,   1,   2, ...,  -7,  88,  99])"
+          },
+          {
+            "type": "paragraph",
+            "text": "The returned array is always 1D."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> y = [[1, 2, 4], [1, 6, 24]]\n>>> np.ediff1d(y)\narray([ 1,  2, -3,  5, 18])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "diff, gradient"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "slug": "logaddexp2",
+  "detail_href": "/docs/api/ops/logaddexp2/",
+  "detail_json_href": "/api-data/ops/logaddexp2.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L73-L159",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.logaddexp2.html"
+  },
+  "op": {
+    "name": "logaddexp2",
+    "module": "numpy",
+    "whest_ref": "we.logaddexp2",
+    "numpy_ref": "np.logaddexp2",
+    "category": "counted_binary",
+    "status": "supported",
+    "weight": 16.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "log2(2**x1 + 2**x2) element-wise.",
+    "summary": "Logarithm of the sum of exponentiations of the inputs in base-2.",
+    "signature": "we.logaddexp2(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature])"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Logarithm of the sum of exponentiations of the inputs in base-2."
+          },
+          {
+            "type": "paragraph",
+            "text": "Calculates ``log2(2**x1 + 2**x2)``. This function is useful in machine\nlearning when the calculated probabilities of events may be so small as\nto exceed the range of normal floating point numbers.  In such cases\nthe base-2 logarithm of the calculated probability can be used instead.\nThis function allows adding probabilities stored in such a fashion."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x1, x2",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input values.\nIf ``x1.shape != x2.shape``, they must be broadcastable to a common\nshape (which becomes the shape of the output)."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, None, or tuple of ndarray and None, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
+              }
+            ]
+          },
+          {
+            "name": "where",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the `out` array will be set to the ufunc result.\nElsewhere, the `out` array will retain its original value.\nNote that if an uninitialized `out` array is created via the default\n``out=None``, locations within it where the condition is False will\nremain uninitialized."
+              }
+            ]
+          },
+          {
+            "name": "**kwargs",
+            "type": "",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "For other keyword-only arguments, see the\n:ref:`ufunc docs <ufuncs.kwargs>`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "result",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Base-2 logarithm of ``2**x1 + 2**x2``.\nThis is a scalar if both `x1` and `x2` are scalars."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> prob1 = np.log2(1e-50)\n>>> prob2 = np.log2(2.5e-50)\n>>> prob12 = np.logaddexp2(prob1, prob2)\n>>> prob1, prob2, prob12\n(-166.09640474436813, -164.77447664948076, -164.28904982231052)\n>>> 2**prob12\n3.4999999999999914e-50"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "logaddexp \u2014 Logarithm of the sum of exponentiations of the inputs."
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,245 @@
+{
+  "schema_version": 1,
+  "slug": "prod",
+  "detail_href": "/docs/api/ops/prod/",
+  "detail_json_href": "/api-data/ops/prod.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L197-L255",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.prod.html"
+  },
+  "op": {
+    "name": "prod",
+    "module": "numpy",
+    "whest_ref": "we.prod",
+    "numpy_ref": "np.prod",
+    "category": "counted_reduction",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(input)",
+    "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "notes": "Product of array elements.",
+    "summary": "Return the product of array elements over a given axis.",
+    "signature": "we.prod(a, axis=None, dtype=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return the product of array elements over a given axis."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input data."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "None or int or tuple of ints, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Axis or axes along which a product is performed.  The default,\naxis=None, will calculate the product of all the elements in the\ninput array. If axis is negative it counts from the last to the\nfirst axis."
+              },
+              {
+                "type": "paragraph",
+                "text": "If axis is a tuple of ints, a product is performed on all of the\naxes specified in the tuple instead of a single axis or all the\naxes as before."
+              }
+            ]
+          },
+          {
+            "name": "dtype",
+            "type": "dtype, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The type of the returned array, as well as of the accumulator in\nwhich the elements are multiplied.  The dtype of `a` is used by\ndefault unless `a` has an integer dtype of less precision than the\ndefault platform integer.  In that case, if `a` is signed then the\nplatform integer is used while if `a` is unsigned then an unsigned\ninteger of the same precision as the platform integer is used."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Alternative output array in which to place the result. It must have\nthe same shape as the expected output, but the type of the output\nvalues will be cast if necessary."
+              }
+            ]
+          },
+          {
+            "name": "keepdims",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If this is set to True, the axes which are reduced are left in the\nresult as dimensions with size one. With this option, the result\nwill broadcast correctly against the input array."
+              },
+              {
+                "type": "paragraph",
+                "text": "If the default value is passed, then `keepdims` will not be\npassed through to the `prod` method of sub-classes of\n`ndarray`, however any non-default value will be.  If the\nsub-class' method does not implement `keepdims` any\nexceptions will be raised."
+              }
+            ]
+          },
+          {
+            "name": "initial",
+            "type": "scalar, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The starting value for this product. See `~numpy.ufunc.reduce`\nfor details."
+              }
+            ]
+          },
+          {
+            "name": "where",
+            "type": "array_like of bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Elements to include in the product. See `~numpy.ufunc.reduce`\nfor details."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "product_along_axis",
+            "type": "ndarray, see `dtype` parameter above.",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "An array shaped as `a` but with the specified axis removed.\nReturns a reference to `out` if specified."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Arithmetic is modular when using integer types, and no error is\nraised on overflow.  That means that, on a 32-bit platform:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.array([536870910, 536870910, 536870910, 536870910])\n>>> np.prod(x)\n16 # may vary"
+          },
+          {
+            "type": "paragraph",
+            "text": "The product of an empty array is the neutral element 1:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.prod([])\n1.0"
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "By default, calculate the product of all elements:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.prod([1.,2.])\n2.0"
+          },
+          {
+            "type": "paragraph",
+            "text": "Even when the input array is two-dimensional:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([[1., 2.], [3., 4.]])\n>>> np.prod(a)\n24.0"
+          },
+          {
+            "type": "paragraph",
+            "text": "But we can also specify the axis over which to multiply:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.prod(a, axis=1)\narray([  2.,  12.])\n>>> np.prod(a, axis=0)\narray([3., 8.])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Or select specific elements to include:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.prod([1., np.nan, 3.], where=[True, False, True])\n3.0"
+          },
+          {
+            "type": "paragraph",
+            "text": "If the type of `x` is unsigned, then the output type is\nthe unsigned platform integer:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.array([1, 2, 3], dtype=np.uint8)\n>>> np.prod(x).dtype == np.uint\nTrue"
+          },
+          {
+            "type": "paragraph",
+            "text": "If `x` is of a signed integer type, then the output type\nis the default platform integer:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.array([1, 2, 3], dtype=np.int8)\n>>> np.prod(x).dtype == int\nTrue"
+          },
+          {
+            "type": "paragraph",
+            "text": "You can also start the product with a value other than one:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.prod([1, 2], initial=5)\n10"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "ndarray.prod \u2014 equivalent method"
+          },
+          {
+            "type": "paragraph",
+            "text": "ufuncs-output-type"
+          }
+        ]
+      }
+    ]
+  }
+}

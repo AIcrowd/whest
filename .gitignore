@@ -39,6 +39,8 @@ site/
 website/node_modules/
 website/.next/
 website/out/
+website/public/llms.txt
+website/public/llms-full.txt
 
 # Claude Code session data
 .claude/

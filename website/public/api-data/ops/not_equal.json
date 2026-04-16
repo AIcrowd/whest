@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "slug": "not_equal",
+  "detail_href": "/docs/api/ops/not_equal/",
+  "detail_json_href": "/api-data/ops/not_equal.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L73-L159",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.not_equal.html"
+  },
+  "op": {
+    "name": "not_equal",
+    "module": "numpy",
+    "whest_ref": "we.not_equal",
+    "numpy_ref": "np.not_equal",
+    "category": "counted_binary",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Element-wise x1 != x2.",
+    "summary": "Return (x1 != x2) element-wise.",
+    "signature": "we.not_equal(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature])"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return (x1 != x2) element-wise."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x1, x2",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input arrays.\nIf ``x1.shape != x2.shape``, they must be broadcastable to a common\nshape (which becomes the shape of the output)."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, None, or tuple of ndarray and None, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
+              }
+            ]
+          },
+          {
+            "name": "where",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the `out` array will be set to the ufunc result.\nElsewhere, the `out` array will retain its original value.\nNote that if an uninitialized `out` array is created via the default\n``out=None``, locations within it where the condition is False will\nremain uninitialized."
+              }
+            ]
+          },
+          {
+            "name": "**kwargs",
+            "type": "",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "For other keyword-only arguments, see the\n:ref:`ufunc docs <ufuncs.kwargs>`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray or scalar",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Output array, element-wise comparison of `x1` and `x2`.\nTypically of type bool, unless ``dtype=object`` is passed.\nThis is a scalar if both `x1` and `x2` are scalars."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.not_equal([1.,2.], [1., 3.])\narray([False,  True])\n>>> np.not_equal([1, 2], [[1, 3],[1, 4]])\narray([[False,  True],\n       [False,  True]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "The ``!=`` operator can be used as a shorthand for ``np.not_equal`` on\nndarrays."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([1., 2.])\n>>> b = np.array([1., 3.])\n>>> a != b\narray([False,  True])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "equal, greater, greater_equal, less, less_equal"
+          }
+        ]
+      }
+    ]
+  }
+}

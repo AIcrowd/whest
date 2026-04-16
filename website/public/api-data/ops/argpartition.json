@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "slug": "argpartition",
+  "detail_href": "/docs/api/ops/argpartition/",
+  "detail_json_href": "/api-data/ops/argpartition.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L131-L153",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.argpartition.html"
+  },
+  "op": {
+    "name": "argpartition",
+    "module": "numpy",
+    "whest_ref": "we.argpartition",
+    "numpy_ref": "np.argpartition",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Indirect partition; cost = n per slice.",
+    "summary": "Perform an indirect partition along the given axis using the algorithm specified by the `kind` keyword. It returns an array of indices of the same shape as `a` that index data along the given axis in partitioned order.",
+    "signature": "we.argpartition(a, kth, axis=-1, kind='introselect', order=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Perform an indirect partition along the given axis using the\nalgorithm specified by the `kind` keyword. It returns an array of\nindices of the same shape as `a` that index data along the given\naxis in partitioned order."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Array to sort."
+              }
+            ]
+          },
+          {
+            "name": "kth",
+            "type": "int or sequence of ints",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Element index to partition by. The k-th element will be in its\nfinal sorted position and all smaller elements will be moved\nbefore it and all larger elements behind it. The order of all\nelements in the partitions is undefined. If provided with a\nsequence of k-th it will partition all of them into their sorted\nposition at once."
+              },
+              {
+                "type": "directive",
+                "name": "deprecated:: 1.22.0",
+                "body": "    Passing booleans as index is deprecated.",
+                "raw": ".. deprecated:: 1.22.0\n    Passing booleans as index is deprecated."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "int or None, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Axis along which to sort. The default is -1 (the last axis). If\nNone, the flattened array is used."
+              }
+            ]
+          },
+          {
+            "name": "kind",
+            "type": "{'introselect'}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Selection algorithm. Default is 'introselect'"
+              }
+            ]
+          },
+          {
+            "name": "order",
+            "type": "str or list of str, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "When `a` is an array with fields defined, this argument\nspecifies which fields to compare first, second, etc. A single\nfield can be specified as a string, and not all fields need be\nspecified, but unspecified fields will still be used, in the\norder in which they come up in the dtype, to break ties."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "index_array",
+            "type": "ndarray, int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Array of indices that partition `a` along the specified axis.\nIf `a` is one-dimensional, ``a[index_array]`` yields a partitioned `a`.\nMore generally, ``np.take_along_axis(a, index_array, axis=axis)``\nalways yields the partitioned `a`, irrespective of dimensionality."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The returned indices are not guaranteed to be sorted according to\nthe values. Furthermore, the default selection algorithm ``introselect``\nis unstable, and hence the returned indices are not guaranteed\nto be the earliest/latest occurrence of the element."
+          },
+          {
+            "type": "paragraph",
+            "text": "`argpartition` works for real/complex inputs with nan values,\nsee `partition` for notes on the enhanced sort order and\ndifferent selection algorithms."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "One dimensional array:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> x = np.array([3, 4, 2, 1])\n>>> x[np.argpartition(x, 3)]\narray([2, 1, 3, 4]) # may vary\n>>> x[np.argpartition(x, (1, 3))]\narray([1, 2, 3, 4]) # may vary"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = [3, 4, 2, 1]\n>>> np.array(x)[np.argpartition(x, 3)]\narray([2, 1, 3, 4]) # may vary"
+          },
+          {
+            "type": "paragraph",
+            "text": "Multi-dimensional array:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.array([[3, 4, 2], [1, 3, 1]])\n>>> index_array = np.argpartition(x, kth=1, axis=-1)\n>>> # below is the same as np.partition(x, kth=1)\n>>> np.take_along_axis(x, index_array, axis=-1)\narray([[2, 3, 4],\n       [1, 1, 3]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "partition \u2014 Describes partition algorithms used."
+          },
+          {
+            "type": "paragraph",
+            "text": "ndarray.partition \u2014 Inplace partition."
+          },
+          {
+            "type": "paragraph",
+            "text": "argsort \u2014 Full indirect sort."
+          },
+          {
+            "type": "paragraph",
+            "text": "take_along_axis \u2014 Apply ``index_array`` from argpartition to an array as if by calling partition."
+          }
+        ]
+      }
+    ]
+  }
+}

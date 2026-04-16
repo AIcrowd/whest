@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "slug": "astype",
+  "detail_href": "/docs/api/ops/astype/",
+  "detail_json_href": "/api-data/ops/astype.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L512-L514",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.astype.html"
+  },
+  "op": {
+    "name": "astype",
+    "module": "numpy",
+    "whest_ref": "we.astype",
+    "numpy_ref": "np.astype",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Cast array to specified type.",
+    "summary": "Cast array to *dtype*. Wraps ``np.astype(x, dtype)``. Cost: 0 FLOPs.",
+    "signature": "we.astype(x, dtype, /, *, copy=True, device=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Cast array to *dtype*. Wraps ``np.astype(x, dtype)``. Cost: 0 FLOPs."
+          }
+        ]
+      }
+    ]
+  }
+}

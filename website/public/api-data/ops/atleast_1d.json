@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "slug": "atleast_1d",
+  "detail_href": "/docs/api/ops/atleast_1d/",
+  "detail_json_href": "/api-data/ops/atleast_1d.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L642-L644",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.atleast_1d.html"
+  },
+  "op": {
+    "name": "atleast_1d",
+    "module": "numpy",
+    "whest_ref": "we.atleast_1d",
+    "numpy_ref": "np.atleast_1d",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "View inputs as arrays with at least one dimension.",
+    "summary": "Convert inputs to arrays with at least one dimension.",
+    "signature": "we.atleast_1d(*arys)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Convert inputs to arrays with at least one dimension."
+          },
+          {
+            "type": "paragraph",
+            "text": "Scalar inputs are converted to 1-dimensional arrays, whilst\nhigher-dimensional inputs are preserved."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "arys1, arys2, ...",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "One or more input arrays."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "ret",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "An array, or tuple of arrays, each with ``a.ndim >= 1``.\nCopies are made only if necessary."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.atleast_1d(1.0)\narray([1.])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.arange(9.0).reshape(3,3)\n>>> np.atleast_1d(x)\narray([[0., 1., 2.],\n       [3., 4., 5.],\n       [6., 7., 8.]])\n>>> np.atleast_1d(x) is x\nTrue"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.atleast_1d(1, [3, 4])\n(array([1]), array([3, 4]))"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "atleast_2d, atleast_3d"
+          }
+        ]
+      }
+    ]
+  }
+}

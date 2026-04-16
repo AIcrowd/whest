@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "slug": "searchsorted",
+  "detail_href": "/docs/api/ops/searchsorted/",
+  "detail_json_href": "/api-data/ops/searchsorted.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L170-L189",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.searchsorted.html"
+  },
+  "op": {
+    "name": "searchsorted",
+    "module": "numpy",
+    "whest_ref": "we.searchsorted",
+    "numpy_ref": "np.searchsorted",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Binary search; cost = m*ceil(log2(n)).",
+    "summary": "Find indices where elements should be inserted to maintain order.",
+    "signature": "we.searchsorted(a, v, side='left', sorter=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Find indices where elements should be inserted to maintain order."
+          },
+          {
+            "type": "paragraph",
+            "text": "Find the indices into a sorted array `a` such that, if the\ncorresponding elements in `v` were inserted before the indices, the\norder of `a` would be preserved."
+          },
+          {
+            "type": "paragraph",
+            "text": "Assuming that `a` is sorted:"
+          },
+          {
+            "type": "paragraph",
+            "text": "======  ============================\n`side`  returned index `i` satisfies\n======  ============================\nleft    ``a[i-1] < v <= a[i]``\nright   ``a[i-1] <= v < a[i]``\n======  ============================"
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "1-D array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array. If `sorter` is None, then it must be sorted in\nascending order, otherwise `sorter` must be an array of indices\nthat sort it."
+              }
+            ]
+          },
+          {
+            "name": "v",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Values to insert into `a`."
+              }
+            ]
+          },
+          {
+            "name": "side",
+            "type": "{'left', 'right'}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If 'left', the index of the first suitable location found is given.\nIf 'right', return the last such index.  If there is no suitable\nindex, return either 0 or N (where N is the length of `a`)."
+              }
+            ]
+          },
+          {
+            "name": "sorter",
+            "type": "1-D array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Optional array of integer indices that sort array a into ascending\norder. They are typically the result of argsort."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "indices",
+            "type": "int or array of ints",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Array of insertion points with the same shape as `v`,\nor an integer if `v` is a scalar."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Binary search is used to find the required insertion points."
+          },
+          {
+            "type": "paragraph",
+            "text": "As of NumPy 1.4.0 `searchsorted` works with real/complex arrays containing\n`nan` values. The enhanced sort order is documented in `sort`."
+          },
+          {
+            "type": "paragraph",
+            "text": "This function uses the same algorithm as the builtin python\n`bisect.bisect_left` (``side='left'``) and `bisect.bisect_right`\n(``side='right'``) functions, which is also vectorized\nin the `v` argument."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.searchsorted([11,12,13,14,15], 13)\n2\n>>> np.searchsorted([11,12,13,14,15], 13, side='right')\n3\n>>> np.searchsorted([11,12,13,14,15], [-10, 20, 12, 13])\narray([0, 5, 1, 2])"
+          },
+          {
+            "type": "paragraph",
+            "text": "When `sorter` is used, the returned indices refer to the sorted\narray of `a` and not `a` itself:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([40, 10, 20, 30])\n>>> sorter = np.argsort(a)\n>>> sorter\narray([1, 2, 3, 0])  # Indices that would sort the array 'a'\n>>> result = np.searchsorted(a, 25, sorter=sorter)\n>>> result\n2\n>>> a[sorter[result]]\n30  # The element at index 2 of the sorted array is 30."
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "sort \u2014 Return a sorted copy of an array."
+          },
+          {
+            "type": "paragraph",
+            "text": "histogram \u2014 Produce histogram from 1-D data."
+          }
+        ]
+      }
+    ]
+  }
+}

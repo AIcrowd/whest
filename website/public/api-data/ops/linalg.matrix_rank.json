@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "slug": "linalg.matrix_rank",
+  "detail_href": "/docs/api/ops/linalg.matrix_rank/",
+  "detail_json_href": "/api-data/ops/linalg.matrix_rank.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L424-L446",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.matrix_rank.html"
+  },
+  "op": {
+    "name": "linalg.matrix_rank",
+    "module": "numpy.linalg",
+    "whest_ref": "we.linalg.matrix_rank",
+    "numpy_ref": "np.linalg.matrix_rank",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 4.0,
+    "cost_formula": "m * n * min(m,n)",
+    "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
+    "notes": "Matrix rank. Cost: m*n*min(m,n) (via SVD).",
+    "summary": "Return matrix rank of array using SVD method",
+    "signature": "we.linalg.matrix_rank(A, tol=None, hermitian=False, *, rtol=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return matrix rank of array using SVD method"
+          },
+          {
+            "type": "paragraph",
+            "text": "Rank of the array is the number of singular values of the array that are\ngreater than `tol`."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "A",
+            "type": "{(M,), (..., M, N)} array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input vector or stack of matrices."
+              }
+            ]
+          },
+          {
+            "name": "tol",
+            "type": "(...) array_like, float, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Threshold below which SVD values are considered zero. If `tol` is\nNone, and ``S`` is an array with singular values for `M`, and\n``eps`` is the epsilon value for datatype of ``S``, then `tol` is\nset to ``S.max() * max(M, N) * eps``."
+              }
+            ]
+          },
+          {
+            "name": "hermitian",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If True, `A` is assumed to be Hermitian (symmetric if real-valued),\nenabling a more efficient method for finding singular values.\nDefaults to False."
+              }
+            ]
+          },
+          {
+            "name": "rtol",
+            "type": "(...) array_like, float, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Parameter for the relative tolerance component. Only ``tol`` or\n``rtol`` can be set at a time. Defaults to ``max(M, N) * eps``."
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 2.0.0",
+                "body": "",
+                "raw": ".. versionadded:: 2.0.0"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "rank",
+            "type": "(...) array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Rank of A."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The default threshold to detect rank deficiency is a test on the magnitude\nof the singular values of `A`.  By default, we identify singular values\nless than ``S.max() * max(M, N) * eps`` as indicating rank deficiency\n(with the symbols defined above). This is the algorithm MATLAB uses [1].\nIt also appears in *Numerical recipes* in the discussion of SVD solutions\nfor linear least squares [2]."
+          },
+          {
+            "type": "paragraph",
+            "text": "This default threshold is designed to detect rank deficiency accounting\nfor the numerical errors of the SVD computation. Imagine that there\nis a column in `A` that is an exact (in floating point) linear combination\nof other columns in `A`. Computing the SVD on `A` will not produce\na singular value exactly equal to 0 in general: any difference of\nthe smallest SVD value from 0 will be caused by numerical imprecision\nin the calculation of the SVD. Our threshold for small SVD values takes\nthis numerical imprecision into account, and the default threshold will\ndetect such numerical rank deficiency. The threshold may declare a matrix\n`A` rank deficient even if the linear combination of some columns of `A`\nis not exactly equal to another column of `A` but only numerically very\nclose to another column of `A`."
+          },
+          {
+            "type": "paragraph",
+            "text": "We chose our default threshold because it is in wide use. Other thresholds\nare possible.  For example, elsewhere in the 2007 edition of *Numerical\nrecipes* there is an alternative threshold of ``S.max() *\nnp.finfo(A.dtype).eps / 2. * np.sqrt(m + n + 1.)``. The authors describe\nthis threshold as being based on \"expected roundoff error\" (p 71)."
+          },
+          {
+            "type": "paragraph",
+            "text": "The thresholds above deal with floating point roundoff error in the\ncalculation of the SVD.  However, you may have more information about\nthe sources of error in `A` that would make you consider other tolerance\nvalues to detect *effective* rank deficiency. The most useful measure\nof the tolerance depends on the operations you intend to use on your\nmatrix. For example, if your data come from uncertain measurements with\nuncertainties greater than floating point epsilon, choosing a tolerance\nnear that uncertainty may be preferable. The tolerance may be absolute\nif the uncertainties are absolute rather than relative."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> from numpy.linalg import matrix_rank\n>>> matrix_rank(np.eye(4)) # Full rank matrix\n4\n>>> I=np.eye(4); I[-1,-1] = 0. # rank deficient matrix\n>>> matrix_rank(I)\n3\n>>> matrix_rank(np.ones((4,))) # 1 dimension - rank 1 unless all 0\n1\n>>> matrix_rank(np.zeros((4,)))\n0"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "slug": "isfinite",
+  "detail_href": "/docs/api/ops/isfinite/",
+  "detail_json_href": "/api-data/ops/isfinite.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L546-L555",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.isfinite.html"
+  },
+  "op": {
+    "name": "isfinite",
+    "module": "numpy",
+    "whest_ref": "we.isfinite",
+    "numpy_ref": "np.isfinite",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Test for finite values element-wise. Cost: numel(input).",
+    "summary": "Test element-wise for finiteness (not infinity and not Not a Number).",
+    "signature": "we.isfinite(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature])"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Test element-wise for finiteness (not infinity and not Not a Number)."
+          },
+          {
+            "type": "paragraph",
+            "text": "The result is returned as a boolean array."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input values."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, None, or tuple of ndarray and None, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
+              }
+            ]
+          },
+          {
+            "name": "where",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the `out` array will be set to the ufunc result.\nElsewhere, the `out` array will retain its original value.\nNote that if an uninitialized `out` array is created via the default\n``out=None``, locations within it where the condition is False will\nremain uninitialized."
+              }
+            ]
+          },
+          {
+            "name": "**kwargs",
+            "type": "",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "For other keyword-only arguments, see the\n:ref:`ufunc docs <ufuncs.kwargs>`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "y",
+            "type": "ndarray, bool",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "True where ``x`` is not positive infinity, negative infinity,\nor NaN; false otherwise.\nThis is a scalar if `x` is a scalar."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Not a Number, positive infinity and negative infinity are considered\nto be non-finite."
+          },
+          {
+            "type": "paragraph",
+            "text": "NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic\n(IEEE 754). This means that Not a Number is not equivalent to infinity.\nAlso that positive infinity is not equivalent to negative infinity. But\ninfinity is equivalent to positive infinity.  Errors result if the\nsecond argument is also supplied when `x` is a scalar input, or if\nfirst and second arguments have different shapes."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.isfinite(1)\nTrue\n>>> np.isfinite(0)\nTrue\n>>> np.isfinite(np.nan)\nFalse\n>>> np.isfinite(np.inf)\nFalse\n>>> np.isfinite(-np.inf)\nFalse\n>>> np.isfinite([np.log(-1.),1.,np.log(0)])\narray([False,  True, False])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.array([-np.inf, 0., np.inf])\n>>> y = np.array([2, 2, 2])\n>>> np.isfinite(x, y)\narray([0, 1, 0])\n>>> y\narray([0, 1, 0])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "isinf, isneginf, isposinf, isnan"
+          }
+        ]
+      }
+    ]
+  }
+}

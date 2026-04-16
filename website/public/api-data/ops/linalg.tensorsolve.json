@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "slug": "linalg.tensorsolve",
+  "detail_href": "/docs/api/ops/linalg.tensorsolve/",
+  "detail_json_href": "/api-data/ops/linalg.tensorsolve.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_solvers.py#L241-L251",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.tensorsolve.html"
+  },
+  "op": {
+    "name": "linalg.tensorsolve",
+    "module": "numpy.linalg",
+    "whest_ref": "we.linalg.tensorsolve",
+    "numpy_ref": "np.linalg.tensorsolve",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 4.0,
+    "cost_formula": "n^3",
+    "cost_formula_latex": "$n^3$",
+    "notes": "Tensor solve. Cost: $n^3$ after reshape (delegates to solve).",
+    "summary": "Solve the tensor equation ``a x = b`` for x.",
+    "signature": "we.linalg.tensorsolve(a, b, axes=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Solve the tensor equation ``a x = b`` for x."
+          },
+          {
+            "type": "paragraph",
+            "text": "It is assumed that all indices of `x` are summed over in the product,\ntogether with the rightmost indices of `a`, as is done in, for example,\n``tensordot(a, x, axes=x.ndim)``."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Coefficient tensor, of shape ``b.shape + Q``. `Q`, a tuple, equals\nthe shape of that sub-tensor of `a` consisting of the appropriate\nnumber of its rightmost indices, and must be such that\n``prod(Q) == prod(b.shape)`` (in which sense `a` is said to be\n'square')."
+              }
+            ]
+          },
+          {
+            "name": "b",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Right-hand tensor, which can be of any shape."
+              }
+            ]
+          },
+          {
+            "name": "axes",
+            "type": "tuple of ints, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Axes in `a` to reorder to the right, before inversion.\nIf None (default), no reordering is done."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "x",
+            "type": "ndarray, shape Q",
+            "desc_blocks": []
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> a = np.eye(2*3*4)\n>>> a.shape = (2*3, 4, 2, 3, 4)\n>>> rng = np.random.default_rng()\n>>> b = rng.normal(size=(2*3, 4))\n>>> x = np.linalg.tensorsolve(a, b)\n>>> x.shape\n(2, 3, 4)\n>>> np.allclose(np.tensordot(a, x, axes=3), b)\nTrue"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "numpy.tensordot, tensorinv, numpy.einsum"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "slug": "ndim",
+  "detail_href": "/docs/api/ops/ndim/",
+  "detail_json_href": "/api-data/ops/ndim.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1187-L1189",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.ndim.html"
+  },
+  "op": {
+    "name": "ndim",
+    "module": "numpy",
+    "whest_ref": "we.ndim",
+    "numpy_ref": "np.ndim",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Return number of dimensions of array.",
+    "summary": "Return the number of dimensions of an array.",
+    "signature": "we.ndim(a)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return the number of dimensions of an array."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array.  If it is not already an ndarray, a conversion is\nattempted."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "number_of_dimensions",
+            "type": "int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The number of dimensions in `a`.  Scalars are zero-dimensional."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.ndim([[1,2,3],[4,5,6]])\n2\n>>> np.ndim(np.array([[1,2,3],[4,5,6]]))\n2\n>>> np.ndim(1)\n0"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "ndarray.ndim \u2014 equivalent method"
+          },
+          {
+            "type": "paragraph",
+            "text": "shape \u2014 dimensions of array"
+          },
+          {
+            "type": "paragraph",
+            "text": "ndarray.shape \u2014 dimensions of array"
+          }
+        ]
+      }
+    ]
+  }
+}

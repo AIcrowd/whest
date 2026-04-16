@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "slug": "broadcast_shapes",
+  "detail_href": "/docs/api/ops/broadcast_shapes/",
+  "detail_json_href": "/api-data/ops/broadcast_shapes.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L731-L733",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_stride_tricks_impl.py#L433-L474"
+  },
+  "op": {
+    "name": "broadcast_shapes",
+    "module": "numpy",
+    "whest_ref": "we.broadcast_shapes",
+    "numpy_ref": "np.broadcast_shapes",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Compute broadcast shape from input shapes.",
+    "summary": "Broadcast the input shapes into a single shape.",
+    "signature": "we.broadcast_shapes(*args)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Broadcast the input shapes into a single shape."
+          },
+          {
+            "type": "paragraph",
+            "text": ":ref:`Learn more about broadcasting here <basics.broadcasting>`."
+          },
+          {
+            "type": "directive",
+            "name": "versionadded:: 1.20.0",
+            "body": "",
+            "raw": ".. versionadded:: 1.20.0"
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "*args",
+            "type": "tuples of ints, or ints",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The shapes to be broadcast against each other."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "",
+            "type": "tuple",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Broadcasted shape."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.broadcast_shapes((1, 2), (3, 1), (3, 2))\n(3, 2)"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.broadcast_shapes((6, 7), (5, 6, 1), (7,), (5, 1, 7))\n(5, 6, 7)"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "broadcast"
+          },
+          {
+            "type": "paragraph",
+            "text": "broadcast_arrays"
+          },
+          {
+            "type": "paragraph",
+            "text": "broadcast_to"
+          }
+        ]
+      }
+    ]
+  }
+}

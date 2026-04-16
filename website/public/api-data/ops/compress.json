@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "slug": "compress",
+  "detail_href": "/docs/api/ops/compress/",
+  "detail_json_href": "/api-data/ops/compress.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L776-L791",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.compress.html"
+  },
+  "op": {
+    "name": "compress",
+    "module": "numpy",
+    "whest_ref": "we.compress",
+    "numpy_ref": "np.compress",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 4.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Return selected slices along axis. Cost: numel(input).",
+    "summary": "Return selected slices of an array along given axis.",
+    "signature": "we.compress(condition, a, axis=None, out=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return selected slices of an array along given axis."
+          },
+          {
+            "type": "paragraph",
+            "text": "When working along a given axis, a slice along that axis is returned in\n`output` for each index where `condition` evaluates to True. When\nworking on a 1-D array, `compress` is equivalent to `extract`."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "condition",
+            "type": "1-D array of bools",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Array that selects which entries to return. If len(condition)\nis less than the size of `a` along the given axis, then output is\ntruncated to the length of the condition array."
+              }
+            ]
+          },
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Array from which to extract a part."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Axis along which to take slices. If None (default), work on the\nflattened array."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Output array.  Its type is preserved and it must be of the right\nshape to hold the output."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "compressed_array",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A copy of `a` without the slices along axis for which `condition`\nis false."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> a = np.array([[1, 2], [3, 4], [5, 6]])\n>>> a\narray([[1, 2],\n       [3, 4],\n       [5, 6]])\n>>> np.compress([0, 1], a, axis=0)\narray([[3, 4]])\n>>> np.compress([False, True, True], a, axis=0)\narray([[3, 4],\n       [5, 6]])\n>>> np.compress([False, True], a, axis=1)\narray([[2],\n       [4],\n       [6]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Working on the flattened array does not return slices along an axis but\nselects elements."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.compress([False, True], a)\narray([2])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "take, choose, diag, diagonal, select"
+          },
+          {
+            "type": "paragraph",
+            "text": "ndarray.compress \u2014 Equivalent method in ndarray"
+          },
+          {
+            "type": "paragraph",
+            "text": "extract \u2014 Equivalent method when working on 1-D arrays"
+          },
+          {
+            "type": "paragraph",
+            "text": "ufuncs-output-type"
+          }
+        ]
+      }
+    ]
+  }
+}

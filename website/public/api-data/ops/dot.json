@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "slug": "dot",
+  "detail_href": "/docs/api/ops/dot/",
+  "detail_json_href": "/api-data/ops/dot.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L743-L775",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.dot.html"
+  },
+  "op": {
+    "name": "dot",
+    "module": "numpy",
+    "whest_ref": "we.dot",
+    "numpy_ref": "np.dot",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "m * k * n (FMA=1)",
+    "cost_formula_latex": "$m \\cdot k \\cdot n$",
+    "notes": "Dot product; cost = M*K*N (FMA=1).",
+    "summary": "Dot product of two arrays. Specifically,",
+    "signature": "we.dot(a, b, out=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Dot product of two arrays. Specifically,"
+          },
+          {
+            "type": "paragraph",
+            "text": "- If both `a` and `b` are 1-D arrays, it is inner product of vectors\n  (without complex conjugation)."
+          },
+          {
+            "type": "paragraph",
+            "text": "- If both `a` and `b` are 2-D arrays, it is matrix multiplication,\n  but using :func:`matmul` or ``a @ b`` is preferred."
+          },
+          {
+            "type": "paragraph",
+            "text": "- If either `a` or `b` is 0-D (scalar), it is equivalent to\n  :func:`multiply` and using ``numpy.multiply(a, b)`` or ``a * b`` is\n  preferred."
+          },
+          {
+            "type": "paragraph",
+            "text": "- If `a` is an N-D array and `b` is a 1-D array, it is a sum product over\n  the last axis of `a` and `b`."
+          },
+          {
+            "type": "paragraph",
+            "text": "- If `a` is an N-D array and `b` is an M-D array (where ``M>=2``), it is a\n  sum product over the last axis of `a` and the second-to-last axis of\n  `b`::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    dot(a, b)[i,j,k,m] = sum(a[i,j,:] * b[k,:,m])"
+          },
+          {
+            "type": "paragraph",
+            "text": "It uses an optimized BLAS library when possible (see `numpy.linalg`)."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "First argument."
+              }
+            ]
+          },
+          {
+            "name": "b",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Second argument."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Output argument. This must have the exact kind that would be returned\nif it was not used. In particular, it must have the right type, must be\nC-contiguous, and its dtype must be the dtype that would be returned\nfor `dot(a,b)`. This is a performance feature. Therefore, if these\nconditions are not met, an exception is raised, instead of attempting\nto be flexible."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "output",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Returns the dot product of `a` and `b`.  If `a` and `b` are both\nscalars or both 1-D arrays then a scalar is returned; otherwise\nan array is returned.\nIf `out` is given, then it is returned."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.dot(3, 4)\n12"
+          },
+          {
+            "type": "paragraph",
+            "text": "Neither argument is complex-conjugated:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.dot([2j, 3j], [2j, 3j])\n(-13+0j)"
+          },
+          {
+            "type": "paragraph",
+            "text": "For 2-D arrays it is the matrix product:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = [[1, 0], [0, 1]]\n>>> b = [[4, 1], [2, 2]]\n>>> np.dot(a, b)\narray([[4, 1],\n       [2, 2]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.arange(3*4*5*6).reshape((3,4,5,6))\n>>> b = np.arange(3*4*5*6)[::-1].reshape((5,4,6,3))\n>>> np.dot(a, b)[2,3,2,1,2,2]\n499128\n>>> sum(a[2,3,2,:] * b[1,2,:,2])\n499128"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "vdot \u2014 Complex-conjugating dot product."
+          },
+          {
+            "type": "paragraph",
+            "text": "vecdot \u2014 Vector dot product of two arrays."
+          },
+          {
+            "type": "paragraph",
+            "text": "tensordot \u2014 Sum products over arbitrary axes."
+          },
+          {
+            "type": "paragraph",
+            "text": "einsum \u2014 Einstein summation convention."
+          },
+          {
+            "type": "paragraph",
+            "text": "matmul \u2014 '@' operator as method with out parameter."
+          },
+          {
+            "type": "paragraph",
+            "text": "linalg.multi_dot \u2014 Chained dot product."
+          }
+        ]
+      }
+    ]
+  }
+}

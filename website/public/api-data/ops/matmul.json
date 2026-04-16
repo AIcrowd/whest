@@ -1,0 +1,220 @@
+{
+  "schema_version": 1,
+  "slug": "matmul",
+  "detail_href": "/docs/api/ops/matmul/",
+  "detail_json_href": "/api-data/ops/matmul.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L781-L814",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.matmul.html"
+  },
+  "op": {
+    "name": "matmul",
+    "module": "numpy",
+    "whest_ref": "we.matmul",
+    "numpy_ref": "np.matmul",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "m * k * n (FMA=1)",
+    "cost_formula_latex": "$m \\cdot k \\cdot n$",
+    "notes": "Matrix multiplication; cost = M*K*N (FMA=1).",
+    "summary": "Matrix product of two arrays.",
+    "signature": "we.matmul(x1, x2, /, out=None, *, casting='same_kind', order='K', dtype=None, subok=True[, signature, axes, axis])"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Matrix product of two arrays."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x1, x2",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input arrays, scalars not allowed."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A location into which the result is stored. If provided, it must have\na shape that matches the signature `(n,k),(k,m)->(n,m)`. If not\nprovided or None, a freshly-allocated array is returned."
+              }
+            ]
+          },
+          {
+            "name": "**kwargs",
+            "type": "",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "For other keyword-only arguments, see the\n:ref:`ufunc docs <ufuncs.kwargs>`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "y",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The matrix product of the inputs.\nThis is a scalar only when both x1, x2 are 1-d vectors."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The behavior depends on the arguments in the following way."
+          },
+          {
+            "type": "paragraph",
+            "text": "- If both arguments are 2-D they are multiplied like conventional\n  matrices.\n- If either argument is N-D, N > 2, it is treated as a stack of\n  matrices residing in the last two indexes and broadcast accordingly.\n- If the first argument is 1-D, it is promoted to a matrix by\n  prepending a 1 to its dimensions. After matrix multiplication\n  the prepended 1 is removed. (For stacks of vectors, use ``vecmat``.)\n- If the second argument is 1-D, it is promoted to a matrix by\n  appending a 1 to its dimensions. After matrix multiplication\n  the appended 1 is removed. (For stacks of vectors, use ``matvec``.)"
+          },
+          {
+            "type": "paragraph",
+            "text": "``matmul`` differs from ``dot`` in two important ways:"
+          },
+          {
+            "type": "paragraph",
+            "text": "- Multiplication by scalars is not allowed, use ``*`` instead.\n- Stacks of matrices are broadcast together as if the matrices\n  were elements, respecting the signature ``(n,k),(k,m)->(n,m)``:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": "  >>> a = np.ones([9, 5, 7, 4])\n  >>> c = np.ones([9, 5, 4, 3])\n  >>> np.dot(a, c).shape\n  (9, 5, 7, 9, 5, 3)\n  >>> np.matmul(a, c).shape\n  (9, 5, 7, 3)\n  >>> # n is 7, k is 4, m is 3"
+          },
+          {
+            "type": "paragraph",
+            "text": "The matmul function implements the semantics of the ``@`` operator\nintroduced in Python 3.5 following :pep:`465`."
+          },
+          {
+            "type": "paragraph",
+            "text": "It uses an optimized BLAS library when possible (see `numpy.linalg`)."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "For 2-D arrays it is the matrix product:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([[1, 0],\n...               [0, 1]])\n>>> b = np.array([[4, 1],\n...               [2, 2]])\n>>> np.matmul(a, b)\narray([[4, 1],\n       [2, 2]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "For 2-D mixed with 1-D, the result is the usual."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([[1, 0],\n...               [0, 1]])\n>>> b = np.array([1, 2])\n>>> np.matmul(a, b)\narray([1, 2])\n>>> np.matmul(b, a)\narray([1, 2])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Broadcasting is conventional for stacks of arrays"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.arange(2 * 2 * 4).reshape((2, 2, 4))\n>>> b = np.arange(2 * 2 * 4).reshape((2, 4, 2))\n>>> np.matmul(a,b).shape\n(2, 2, 2)\n>>> np.matmul(a, b)[0, 1, 1]\n98\n>>> sum(a[0, 1, :] * b[0 , :, 1])\n98"
+          },
+          {
+            "type": "paragraph",
+            "text": "Vector, vector returns the scalar inner product, but neither argument\nis complex-conjugated:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.matmul([2j, 3j], [2j, 3j])\n(-13+0j)"
+          },
+          {
+            "type": "paragraph",
+            "text": "Scalar multiplication raises an error."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.matmul([1,2], 3)\nTraceback (most recent call last):\n...\nValueError: matmul: Input operand 1 does not have enough dimensions ..."
+          },
+          {
+            "type": "paragraph",
+            "text": "The ``@`` operator can be used as a shorthand for ``np.matmul`` on\nndarrays."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x1 = np.array([2j, 3j])\n>>> x2 = np.array([2j, 3j])\n>>> x1 @ x2\n(-13+0j)"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "vecdot \u2014 Complex-conjugating dot product for stacks of vectors."
+          },
+          {
+            "type": "paragraph",
+            "text": "matvec \u2014 Matrix-vector product for stacks of matrices and vectors."
+          },
+          {
+            "type": "paragraph",
+            "text": "vecmat \u2014 Vector-matrix product for stacks of vectors and matrices."
+          },
+          {
+            "type": "paragraph",
+            "text": "tensordot \u2014 Sum products over arbitrary axes."
+          },
+          {
+            "type": "paragraph",
+            "text": "einsum \u2014 Einstein summation convention."
+          },
+          {
+            "type": "paragraph",
+            "text": "dot \u2014 alternative matrix product with different broadcasting rules."
+          }
+        ]
+      }
+    ]
+  }
+}

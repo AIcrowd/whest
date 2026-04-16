@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "slug": "vstack",
+  "detail_href": "/docs/api/ops/vstack/",
+  "detail_json_href": "/api-data/ops/vstack.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L262-L268",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.vstack.html"
+  },
+  "op": {
+    "name": "vstack",
+    "module": "numpy",
+    "whest_ref": "we.vstack",
+    "numpy_ref": "np.vstack",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Stack arrays vertically. Cost: numel(output).",
+    "summary": "Stack arrays in sequence vertically (row wise).",
+    "signature": "we.vstack(tup, *, dtype=None, casting='same_kind')"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Stack arrays in sequence vertically (row wise)."
+          },
+          {
+            "type": "paragraph",
+            "text": "This is equivalent to concatenation along the first axis after 1-D arrays\nof shape `(N,)` have been reshaped to `(1,N)`. Rebuilds arrays divided by\n`vsplit`."
+          },
+          {
+            "type": "paragraph",
+            "text": "This function makes most sense for arrays with up to 3 dimensions. For\ninstance, for pixel-data with a height (first axis), width (second axis),\nand r/g/b channels (third axis). The functions `concatenate`, `stack` and\n`block` provide more general stacking and concatenation operations."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "tup",
+            "type": "sequence of ndarrays",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The arrays must have the same shape along all but the first axis.\n1-D arrays must have the same length. In the case of a single\narray_like input, it will be treated as a sequence of arrays; i.e.,\neach element along the zeroth axis is treated as a separate array."
+              }
+            ]
+          },
+          {
+            "name": "dtype",
+            "type": "str or dtype",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If provided, the destination array will have this dtype. Cannot be\nprovided together with `out`."
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 1.24",
+                "body": "",
+                "raw": ".. versionadded:: 1.24"
+              }
+            ]
+          },
+          {
+            "name": "casting",
+            "type": "{'no', 'equiv', 'safe', 'same_kind', 'unsafe'}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Controls what kind of data casting may occur. Defaults to 'same_kind'."
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 1.24",
+                "body": "",
+                "raw": ".. versionadded:: 1.24"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "stacked",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The array formed by stacking the given arrays, will be at least 2-D."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> a = np.array([1, 2, 3])\n>>> b = np.array([4, 5, 6])\n>>> np.vstack((a,b))\narray([[1, 2, 3],\n       [4, 5, 6]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([[1], [2], [3]])\n>>> b = np.array([[4], [5], [6]])\n>>> np.vstack((a,b))\narray([[1],\n       [2],\n       [3],\n       [4],\n       [5],\n       [6]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "concatenate \u2014 Join a sequence of arrays along an existing axis."
+          },
+          {
+            "type": "paragraph",
+            "text": "stack \u2014 Join a sequence of arrays along a new axis."
+          },
+          {
+            "type": "paragraph",
+            "text": "block \u2014 Assemble an nd-array from nested lists of blocks."
+          },
+          {
+            "type": "paragraph",
+            "text": "hstack \u2014 Stack arrays in sequence horizontally (column wise)."
+          },
+          {
+            "type": "paragraph",
+            "text": "dstack \u2014 Stack arrays in sequence depth wise (along third axis)."
+          },
+          {
+            "type": "paragraph",
+            "text": "column_stack \u2014 Stack 1-D arrays as columns into a 2-D array."
+          },
+          {
+            "type": "paragraph",
+            "text": "vsplit \u2014 Split an array into multiple sub-arrays vertically (row-wise)."
+          },
+          {
+            "type": "paragraph",
+            "text": "unstack \u2014 Split an array into a tuple of sub-arrays along an axis."
+          }
+        ]
+      }
+    ]
+  }
+}

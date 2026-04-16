@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "slug": "base_repr",
+  "detail_href": "/docs/api/ops/base_repr/",
+  "detail_json_href": "/api-data/ops/base_repr.json",
+  "source": {
+    "whest": null,
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L2122-L2177"
+  },
+  "op": {
+    "name": "base_repr",
+    "module": "numpy",
+    "whest_ref": "we.base_repr",
+    "numpy_ref": "np.base_repr",
+    "category": "blacklisted",
+    "status": "blocked",
+    "weight": 1.0,
+    "cost_formula": "N/A",
+    "cost_formula_latex": "N/A",
+    "notes": "Return string representation of number in given base. Cost: numel(input).",
+    "summary": "Return a string representation of a number in the given base system.",
+    "signature": "we.base_repr(number, base=2, padding=0)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return a string representation of a number in the given base system."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "number",
+            "type": "int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The value to convert. Positive and negative values are handled."
+              }
+            ]
+          },
+          {
+            "name": "base",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Convert `number` to the `base` number system. The valid range is 2-36,\nthe default value is 2."
+              }
+            ]
+          },
+          {
+            "name": "padding",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Number of zeros padded on the left. Default is 0 (no padding)."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "str",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "String representation of `number` in `base` system."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.base_repr(5)\n'101'\n>>> np.base_repr(6, 5)\n'11'\n>>> np.base_repr(7, base=5, padding=3)\n'00012'"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.base_repr(10, base=16)\n'A'\n>>> np.base_repr(32, base=16)\n'20'"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "binary_repr \u2014 Faster version of `base_repr` for base 2."
+          }
+        ]
+      }
+    ]
+  }
+}

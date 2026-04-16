@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "slug": "isin",
+  "detail_href": "/docs/api/ops/isin/",
+  "detail_json_href": "/api-data/ops/isin.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L355-L365",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.isin.html"
+  },
+  "op": {
+    "name": "isin",
+    "module": "numpy",
+    "whest_ref": "we.isin",
+    "numpy_ref": "np.isin",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Set membership; cost = (n+m)*ceil(log2(n+m)).",
+    "summary": "Calculates ``element in test_elements``, broadcasting over `element` only. Returns a boolean array of the same shape as `element` that is True where an element of `element` is in `test_elements` and False otherwise.",
+    "signature": "we.isin(element, test_elements, assume_unique=False, invert=False, *, kind=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Calculates ``element in test_elements``, broadcasting over `element` only.\nReturns a boolean array of the same shape as `element` that is True\nwhere an element of `element` is in `test_elements` and False otherwise."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "element",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array."
+              }
+            ]
+          },
+          {
+            "name": "test_elements",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The values against which to test each value of `element`.\nThis argument is flattened if it is an array or array_like.\nSee notes for behavior with non-array-like parameters."
+              }
+            ]
+          },
+          {
+            "name": "assume_unique",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If True, the input arrays are both assumed to be unique, which\ncan speed up the calculation.  Default is False."
+              }
+            ]
+          },
+          {
+            "name": "invert",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If True, the values in the returned array are inverted, as if\ncalculating `element not in test_elements`. Default is False.\n``np.isin(a, b, invert=True)`` is equivalent to (but faster\nthan) ``np.invert(np.isin(a, b))``."
+              }
+            ]
+          },
+          {
+            "name": "kind",
+            "type": "{None, 'sort', 'table'}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The algorithm to use. This will not affect the final result,\nbut will affect the speed and memory use. The default, None,\nwill select automatically based on memory considerations."
+              },
+              {
+                "type": "paragraph",
+                "text": "* If 'sort', will use a mergesort-based approach. This will have\n  a memory usage of roughly 6 times the sum of the sizes of\n  `element` and `test_elements`, not accounting for size of dtypes.\n* If 'table', will use a lookup table approach similar\n  to a counting sort. This is only available for boolean and\n  integer arrays. This will have a memory usage of the\n  size of `element` plus the max-min value of `test_elements`.\n  `assume_unique` has no effect when the 'table' option is used.\n* If None, will automatically choose 'table' if\n  the required memory allocation is less than or equal to\n  6 times the sum of the sizes of `element` and `test_elements`,\n  otherwise will use 'sort'. This is done to not use\n  a large amount of memory by default, even though\n  'table' may be faster in most cases. If 'table' is chosen,\n  `assume_unique` will have no effect."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "isin",
+            "type": "ndarray, bool",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Has the same shape as `element`. The values `element[isin]`\nare in `test_elements`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "`isin` is an element-wise function version of the python keyword `in`.\n``isin(a, b)`` is roughly equivalent to\n``np.array([item in b for item in a])`` if `a` and `b` are 1-D sequences."
+          },
+          {
+            "type": "paragraph",
+            "text": "`element` and `test_elements` are converted to arrays if they are not\nalready. If `test_elements` is a set (or other non-sequence collection)\nit will be converted to an object array with one element, rather than an\narray of the values contained in `test_elements`. This is a consequence\nof the `array` constructor's way of handling non-sequence collections.\nConverting the set to a list usually gives the desired behavior."
+          },
+          {
+            "type": "paragraph",
+            "text": "Using ``kind='table'`` tends to be faster than `kind='sort'` if the\nfollowing relationship is true:\n``log10(len(test_elements)) >\n(log10(max(test_elements)-min(test_elements)) - 2.27) / 0.927``,\nbut may use greater memory. The default value for `kind` will\nbe automatically selected based only on memory usage, so one may\nmanually set ``kind='table'`` if memory constraints can be relaxed."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> element = 2*np.arange(4).reshape((2, 2))\n>>> element\narray([[0, 2],\n       [4, 6]])\n>>> test_elements = [1, 2, 4, 8]\n>>> mask = np.isin(element, test_elements)\n>>> mask\narray([[False,  True],\n       [ True, False]])\n>>> element[mask]\narray([2, 4])"
+          },
+          {
+            "type": "paragraph",
+            "text": "The indices of the matched values can be obtained with `nonzero`:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.nonzero(mask)\n(array([0, 1]), array([1, 0]))"
+          },
+          {
+            "type": "paragraph",
+            "text": "The test can also be inverted:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> mask = np.isin(element, test_elements, invert=True)\n>>> mask\narray([[ True, False],\n       [False,  True]])\n>>> element[mask]\narray([0, 6])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Because of how `array` handles sets, the following does not\nwork as expected:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> test_set = {1, 2, 4, 8}\n>>> np.isin(element, test_set)\narray([[False, False],\n       [False, False]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Casting the set to a list gives the expected result:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.isin(element, list(test_set))\narray([[False,  True],\n       [ True, False]])"
+          }
+        ]
+      }
+    ]
+  }
+}

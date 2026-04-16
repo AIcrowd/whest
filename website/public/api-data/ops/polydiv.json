@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "slug": "polydiv",
+  "detail_href": "/docs/api/ops/polydiv/",
+  "detail_json_href": "/api-data/ops/polydiv.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L177-L189",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.polydiv.html"
+  },
+  "op": {
+    "name": "polydiv",
+    "module": "whest._polynomial",
+    "whest_ref": "we.polydiv",
+    "numpy_ref": "np.polydiv",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "n1 * n2",
+    "cost_formula_latex": "$n_1 \\cdot n_2$",
+    "notes": "Divide one polynomial by another. Cost: n1 * n2 FLOPs.",
+    "summary": "Returns the quotient and remainder of polynomial division.",
+    "signature": "we.polydiv(u, v)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Returns the quotient and remainder of polynomial division."
+          },
+          {
+            "type": "directive",
+            "name": "note",
+            "body": "   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `numpy.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
+            "raw": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `numpy.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`."
+          },
+          {
+            "type": "paragraph",
+            "text": "The input arrays are the coefficients (including any coefficients\nequal to zero) of the \"numerator\" (dividend) and \"denominator\"\n(divisor) polynomials, respectively."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "u",
+            "type": "array_like or poly1d",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Dividend polynomial's coefficients."
+              }
+            ]
+          },
+          {
+            "name": "v",
+            "type": "array_like or poly1d",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Divisor polynomial's coefficients."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "q",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Coefficients, including those equal to zero, of the quotient."
+              }
+            ]
+          },
+          {
+            "name": "r",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Coefficients, including those equal to zero, of the remainder."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Both `u` and `v` must be 0-d or 1-d (ndim = 0 or 1), but `u.ndim` need\nnot equal `v.ndim`. In other words, all four possible combinations -\n``u.ndim = v.ndim = 0``, ``u.ndim = v.ndim = 1``,\n``u.ndim = 1, v.ndim = 0``, and ``u.ndim = 0, v.ndim = 1`` - work."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "directive",
+            "name": "math:: \\frac{3x^2 + 5x + 2}{2x + 1} = 1.5x + 1.75, remainder 0.25",
+            "body": "",
+            "raw": ".. math:: \\frac{3x^2 + 5x + 2}{2x + 1} = 1.5x + 1.75, remainder 0.25"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> x = np.array([3.0, 5.0, 2.0])\n>>> y = np.array([2.0, 1.0])\n>>> np.polydiv(x, y)\n(array([1.5 , 1.75]), array([0.25]))"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "poly, polyadd, polyder, polydiv, polyfit, polyint, polymul, polysub"
+          },
+          {
+            "type": "paragraph",
+            "text": "polyval"
+          }
+        ]
+      }
+    ]
+  }
+}

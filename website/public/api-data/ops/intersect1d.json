@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "slug": "intersect1d",
+  "detail_href": "/docs/api/ops/intersect1d/",
+  "detail_json_href": "/api-data/ops/intersect1d.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L372-L382",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.intersect1d.html"
+  },
+  "op": {
+    "name": "intersect1d",
+    "module": "numpy",
+    "whest_ref": "we.intersect1d",
+    "numpy_ref": "np.intersect1d",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Set intersection; cost = (n+m)*ceil(log2(n+m)).",
+    "summary": "Find the intersection of two arrays.",
+    "signature": "we.intersect1d(ar1, ar2, assume_unique=False, return_indices=False)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Find the intersection of two arrays."
+          },
+          {
+            "type": "paragraph",
+            "text": "Return the sorted, unique values that are in both of the input arrays."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "ar1, ar2",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input arrays. Will be flattened if not already 1D."
+              }
+            ]
+          },
+          {
+            "name": "assume_unique",
+            "type": "bool",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If True, the input arrays are both assumed to be unique, which\ncan speed up the calculation.  If True but ``ar1`` or ``ar2`` are not\nunique, incorrect results and out-of-bounds indices could result.\nDefault is False."
+              }
+            ]
+          },
+          {
+            "name": "return_indices",
+            "type": "bool",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If True, the indices which correspond to the intersection of the two\narrays are returned. The first instance of a value is used if there are\nmultiple. Default is False."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "intersect1d",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Sorted 1D array of common and unique elements."
+              }
+            ]
+          },
+          {
+            "name": "comm1",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The indices of the first occurrences of the common values in `ar1`.\nOnly provided if `return_indices` is True."
+              }
+            ]
+          },
+          {
+            "name": "comm2",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The indices of the first occurrences of the common values in `ar2`.\nOnly provided if `return_indices` is True."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.intersect1d([1, 3, 4, 3], [3, 1, 2, 1])\narray([1, 3])"
+          },
+          {
+            "type": "paragraph",
+            "text": "To intersect more than two arrays, use functools.reduce:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> from functools import reduce\n>>> reduce(np.intersect1d, ([1, 3, 4, 3], [3, 1, 2, 1], [6, 3, 4, 2]))\narray([3])"
+          },
+          {
+            "type": "paragraph",
+            "text": "To return the indices of the values common to the input arrays\nalong with the intersected values:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.array([1, 1, 2, 3, 4])\n>>> y = np.array([2, 1, 4, 6])\n>>> xy, x_ind, y_ind = np.intersect1d(x, y, return_indices=True)\n>>> x_ind, y_ind\n(array([0, 2, 4]), array([1, 0, 2]))\n>>> xy, x[x_ind], y[y_ind]\n(array([1, 2, 4]), array([1, 2, 4]), array([1, 2, 4]))"
+          }
+        ]
+      }
+    ]
+  }
+}

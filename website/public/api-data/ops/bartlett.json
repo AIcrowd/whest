@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "slug": "bartlett",
+  "detail_href": "/docs/api/ops/bartlett/",
+  "detail_json_href": "/api-data/ops/bartlett.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L33-L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L3158-L3262"
+  },
+  "op": {
+    "name": "bartlett",
+    "module": "whest._window",
+    "whest_ref": "we.bartlett",
+    "numpy_ref": "np.bartlett",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "n",
+    "cost_formula_latex": "$n$",
+    "notes": "Bartlett window. Cost: n (one linear eval per sample).",
+    "summary": "Return the Bartlett window.",
+    "signature": "we.bartlett(M)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return the Bartlett window."
+          },
+          {
+            "type": "paragraph",
+            "text": "The Bartlett window is very similar to a triangular window, except\nthat the end points are at zero.  It is often used in signal\nprocessing for tapering a signal, without generating too much\nripple in the frequency domain."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "M",
+            "type": "int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Number of points in the output window. If zero or less, an\nempty array is returned."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "array",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The triangular window, with the maximum value normalized to one\n(the value one appears only if the number of samples is odd), with\nthe first and last samples equal to zero."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The Bartlett window is defined as"
+          },
+          {
+            "type": "directive",
+            "name": "math:: w(n) = \\frac{2}{M-1} \\left(",
+            "body": "          \\frac{M-1}{2} - \\left|n - \\frac{M-1}{2}\\right|\n          \\right)",
+            "raw": ".. math:: w(n) = \\frac{2}{M-1} \\left(\n          \\frac{M-1}{2} - \\left|n - \\frac{M-1}{2}\\right|\n          \\right)"
+          },
+          {
+            "type": "paragraph",
+            "text": "Most references to the Bartlett window come from the signal processing\nliterature, where it is used as one of many windowing functions for\nsmoothing values.  Note that convolution with this window produces linear\ninterpolation.  It is also known as an apodization (which means \"removing\nthe foot\", i.e. smoothing discontinuities at the beginning and end of the\nsampled signal) or tapering function. The Fourier transform of the\nBartlett window is the product of two sinc functions. Note the excellent\ndiscussion in Kanasewich [2]_."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> import matplotlib.pyplot as plt\n>>> np.bartlett(12)\narray([ 0.        ,  0.18181818,  0.36363636,  0.54545455,  0.72727273, # may vary\n        0.90909091,  0.90909091,  0.72727273,  0.54545455,  0.36363636,\n        0.18181818,  0.        ])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Plot the window and its frequency response (requires SciPy and matplotlib)."
+          },
+          {
+            "type": "directive",
+            "name": "plot",
+            "body": "    :include-source:",
+            "raw": ".. plot::\n    :include-source:"
+          },
+          {
+            "type": "paragraph",
+            "text": "    import matplotlib.pyplot as plt\n    from numpy.fft import fft, fftshift\n    window = np.bartlett(51)\n    plt.plot(window)\n    plt.title(\"Bartlett window\")\n    plt.ylabel(\"Amplitude\")\n    plt.xlabel(\"Sample\")\n    plt.show()\n    plt.figure()\n    A = fft(window, 2048) / 25.5\n    mag = np.abs(fftshift(A))\n    freq = np.linspace(-0.5, 0.5, len(A))\n    with np.errstate(divide='ignore', invalid='ignore'):\n        response = 20 * np.log10(mag)\n    response = np.clip(response, -100, 100)\n    plt.plot(freq, response)\n    plt.title(\"Frequency response of Bartlett window\")\n    plt.ylabel(\"Magnitude [dB]\")\n    plt.xlabel(\"Normalized frequency [cycles per sample]\")\n    plt.axis('tight')\n    plt.show()"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "blackman, hamming, hanning, kaiser"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,200 @@
+{
+  "schema_version": 1,
+  "slug": "load",
+  "detail_href": "/docs/api/ops/load/",
+  "detail_json_href": "/api-data/ops/load.json",
+  "source": {
+    "whest": null,
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_npyio_impl.py#L308-L494"
+  },
+  "op": {
+    "name": "load",
+    "module": "numpy",
+    "whest_ref": "we.load",
+    "numpy_ref": "np.load",
+    "category": "blacklisted",
+    "status": "blocked",
+    "weight": 1.0,
+    "cost_formula": "N/A",
+    "cost_formula_latex": "N/A",
+    "notes": "Load arrays from .npy/.npz files. Not supported.",
+    "summary": "Load arrays or pickled objects from ``.npy``, ``.npz`` or pickled files.",
+    "signature": "we.load(file, mmap_mode=None, allow_pickle=False, fix_imports=True, encoding='ASCII', *, max_header_size=10000)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Load arrays or pickled objects from ``.npy``, ``.npz`` or pickled files."
+          },
+          {
+            "type": "directive",
+            "name": "warning:: Loading files that contain object arrays uses the ``pickle``",
+            "body": "             module, which is not secure against erroneous or maliciously\n             constructed data. Consider passing ``allow_pickle=False`` to\n             load data that is known not to contain object arrays for the\n             safer handling of untrusted sources.",
+            "raw": ".. warning:: Loading files that contain object arrays uses the ``pickle``\n             module, which is not secure against erroneous or maliciously\n             constructed data. Consider passing ``allow_pickle=False`` to\n             load data that is known not to contain object arrays for the\n             safer handling of untrusted sources."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "file",
+            "type": "file-like object, string, or pathlib.Path",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The file to read. File-like objects must support the\n``seek()`` and ``read()`` methods and must always\nbe opened in binary mode.  Pickled files require that the\nfile-like object support the ``readline()`` method as well."
+              }
+            ]
+          },
+          {
+            "name": "mmap_mode",
+            "type": "{None, 'r+', 'r', 'w+', 'c'}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If not None, then memory-map the file, using the given mode (see\n`numpy.memmap` for a detailed description of the modes).  A\nmemory-mapped array is kept on disk. However, it can be accessed\nand sliced like any ndarray.  Memory mapping is especially useful\nfor accessing small fragments of large files without reading the\nentire file into memory."
+              }
+            ]
+          },
+          {
+            "name": "allow_pickle",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Allow loading pickled object arrays stored in npy files. Reasons for\ndisallowing pickles include security, as loading pickled data can\nexecute arbitrary code. If pickles are disallowed, loading object\narrays will fail. Default: False"
+              }
+            ]
+          },
+          {
+            "name": "fix_imports",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Only useful when loading Python 2 generated pickled files on Python 3,\nwhich includes npy/npz files containing object arrays. If `fix_imports`\nis True, pickle will try to map the old Python 2 names to the new names\nused in Python 3."
+              }
+            ]
+          },
+          {
+            "name": "encoding",
+            "type": "str, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "What encoding to use when reading Python 2 strings. Only useful when\nloading Python 2 generated pickled files in Python 3, which includes\nnpy/npz files containing object arrays. Values other than 'latin1',\n'ASCII', and 'bytes' are not allowed, as they can corrupt numerical\ndata. Default: 'ASCII'"
+              }
+            ]
+          },
+          {
+            "name": "max_header_size",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Maximum allowed size of the header.  Large headers may not be safe\nto load securely and thus require explicitly passing a larger value.\nSee :py:func:`ast.literal_eval()` for details.\nThis option is ignored when `allow_pickle` is passed.  In that case\nthe file is by definition trusted and the limit is unnecessary."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "result",
+            "type": "array, tuple, dict, etc.",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Data stored in the file. For ``.npz`` files, the returned instance\nof NpzFile class must be closed to avoid leaking file descriptors."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "- If the file contains pickle data, then whatever object is stored\n  in the pickle is returned.\n- If the file is a ``.npy`` file, then a single array is returned.\n- If the file is a ``.npz`` file, then a dictionary-like object is\n  returned, containing ``{filename: array}`` key-value pairs, one for\n  each file in the archive.\n- If the file is a ``.npz`` file, the returned value supports the\n  context manager protocol in a similar fashion to the open function::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    with load('foo.npz') as data:\n        a = data['a']"
+          },
+          {
+            "type": "paragraph",
+            "text": "  The underlying file descriptor is closed when exiting the 'with'\n  block."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np"
+          },
+          {
+            "type": "paragraph",
+            "text": "Store data to disk, and load it again:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.save('/tmp/123', np.array([[1, 2, 3], [4, 5, 6]]))\n>>> np.load('/tmp/123.npy')\narray([[1, 2, 3],\n       [4, 5, 6]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Store compressed data to disk, and load it again:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a=np.array([[1, 2, 3], [4, 5, 6]])\n>>> b=np.array([1, 2])\n>>> np.savez('/tmp/123.npz', a=a, b=b)\n>>> data = np.load('/tmp/123.npz')\n>>> data['a']\narray([[1, 2, 3],\n       [4, 5, 6]])\n>>> data['b']\narray([1, 2])\n>>> data.close()"
+          },
+          {
+            "type": "paragraph",
+            "text": "Mem-map the stored array, and then access the second row\ndirectly from disk:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> X = np.load('/tmp/123.npy', mmap_mode='r')\n>>> X[1, :]\nmemmap([4, 5, 6])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "save, savez, savez_compressed, loadtxt"
+          },
+          {
+            "type": "paragraph",
+            "text": "memmap \u2014 Create a memory-map to an array stored in a file on disk."
+          },
+          {
+            "type": "paragraph",
+            "text": "lib.format.open_memmap \u2014 Create or load a memory-mapped ``.npy`` file."
+          }
+        ]
+      }
+    ]
+  }
+}

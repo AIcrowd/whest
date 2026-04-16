@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "slug": "random.shuffle",
+  "detail_href": "/docs/api/ops/random.shuffle/",
+  "detail_json_href": "/api-data/ops/random.shuffle.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L223-L237",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.shuffle.html"
+  },
+  "op": {
+    "name": "random.shuffle",
+    "module": "numpy.random",
+    "whest_ref": "we.random.shuffle",
+    "numpy_ref": "np.random.shuffle",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Shuffle; cost = n*ceil(log2(n)).",
+    "summary": "Counted version of ``numpy.random.shuffle``.",
+    "signature": "we.random.shuffle(x)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Counted version of ``numpy.random.shuffle``."
+          },
+          {
+            "type": "paragraph",
+            "text": "Modifies ``x`` in-place. Cost: numel(output) FLOPs."
+          }
+        ]
+      }
+    ]
+  }
+}

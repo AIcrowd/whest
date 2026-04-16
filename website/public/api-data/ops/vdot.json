@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "slug": "vdot",
+  "detail_href": "/docs/api/ops/vdot/",
+  "detail_json_href": "/api-data/ops/vdot.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L898-L910",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.vdot.html"
+  },
+  "op": {
+    "name": "vdot",
+    "module": "numpy",
+    "whest_ref": "we.vdot",
+    "numpy_ref": "np.vdot",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "n",
+    "cost_formula_latex": "$n$",
+    "notes": "Dot product with conjugation; cost = N (FMA=1).",
+    "summary": "Return the dot product of two vectors.",
+    "signature": "we.vdot(a, b, /)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return the dot product of two vectors."
+          },
+          {
+            "type": "paragraph",
+            "text": "The `vdot` function handles complex numbers differently than `dot`:\nif the first argument is complex, it is replaced by its complex conjugate\nin the dot product calculation. `vdot` also handles multidimensional\narrays differently than `dot`: it does not perform a matrix product, but\nflattens the arguments to 1-D arrays before taking a vector dot product."
+          },
+          {
+            "type": "paragraph",
+            "text": "Consequently, when the arguments are 2-D arrays of the same shape, this\nfunction effectively returns their\n`Frobenius inner product <https://en.wikipedia.org/wiki/Frobenius_inner_product>`_\n(also known as the *trace inner product* or the *standard inner product*\non a vector space of matrices)."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If `a` is complex the complex conjugate is taken before calculation\nof the dot product."
+              }
+            ]
+          },
+          {
+            "name": "b",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Second argument to the dot product."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "output",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Dot product of `a` and `b`.  Can be an int, float, or\ncomplex depending on the types of `a` and `b`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> a = np.array([1+2j,3+4j])\n>>> b = np.array([5+6j,7+8j])\n>>> np.vdot(a, b)\n(70-8j)\n>>> np.vdot(b, a)\n(70+8j)"
+          },
+          {
+            "type": "paragraph",
+            "text": "Note that higher-dimensional arrays are flattened!"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([[1, 4], [5, 6]])\n>>> b = np.array([[4, 1], [2, 2]])\n>>> np.vdot(a, b)\n30\n>>> np.vdot(b, a)\n30\n>>> 1*4 + 4*1 + 5*2 + 6*2\n30"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "dot \u2014 Return the dot product without using the complex conjugate of the first argument."
+          }
+        ]
+      }
+    ]
+  }
+}

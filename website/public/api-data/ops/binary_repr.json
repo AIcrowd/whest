@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "slug": "binary_repr",
+  "detail_href": "/docs/api/ops/binary_repr/",
+  "detail_json_href": "/api-data/ops/binary_repr.json",
+  "source": {
+    "whest": null,
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L2014-L2119"
+  },
+  "op": {
+    "name": "binary_repr",
+    "module": "numpy",
+    "whest_ref": "we.binary_repr",
+    "numpy_ref": "np.binary_repr",
+    "category": "blacklisted",
+    "status": "blocked",
+    "weight": 1.0,
+    "cost_formula": "N/A",
+    "cost_formula_latex": "N/A",
+    "notes": "Return binary string representation of the input number. Cost: numel(input).",
+    "summary": "Return the binary representation of the input number as a string.",
+    "signature": "we.binary_repr(num, width=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return the binary representation of the input number as a string."
+          },
+          {
+            "type": "paragraph",
+            "text": "For negative numbers, if width is not given, a minus sign is added to the\nfront. If width is given, the two's complement of the number is\nreturned, with respect to that width."
+          },
+          {
+            "type": "paragraph",
+            "text": "In a two's-complement system negative numbers are represented by the two's\ncomplement of the absolute value. This is the most common method of\nrepresenting signed integers on computers [1]_. A N-bit two's-complement\nsystem can represent every integer in the range\n:math:`-2^{N-1}` to :math:`+2^{N-1}-1`."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "num",
+            "type": "int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Only an integer decimal number can be used."
+              }
+            ]
+          },
+          {
+            "name": "width",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The length of the returned string if `num` is positive, or the length\nof the two's complement if `num` is negative, provided that `width` is\nat least a sufficient number of bits for `num` to be represented in\nthe designated form. If the `width` value is insufficient, an error is\nraised."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "bin",
+            "type": "str",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Binary representation of `num` or two's complement of `num`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "`binary_repr` is equivalent to using `base_repr` with base 2, but about 25x\nfaster."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.binary_repr(3)\n'11'\n>>> np.binary_repr(-3)\n'-11'\n>>> np.binary_repr(3, width=4)\n'0011'"
+          },
+          {
+            "type": "paragraph",
+            "text": "The two's complement is returned when the input number is negative and\nwidth is specified:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.binary_repr(-3, width=3)\n'101'\n>>> np.binary_repr(-3, width=5)\n'11101'"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "base_repr \u2014 Return a string representation of a number in the given base system."
+          },
+          {
+            "type": "paragraph",
+            "text": "bin \u2014 Python's built-in binary representation generator of an integer."
+          }
+        ]
+      }
+    ]
+  }
+}

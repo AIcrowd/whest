@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "slug": "histogramdd",
+  "detail_href": "/docs/api/ops/histogramdd/",
+  "detail_json_href": "/api-data/ops/histogramdd.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L175-L206",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.histogramdd.html"
+  },
+  "op": {
+    "name": "histogramdd",
+    "module": "numpy",
+    "whest_ref": "we.histogramdd",
+    "numpy_ref": "np.histogramdd",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "ND binning; cost = n*sum(ceil(log2(b_i))).",
+    "summary": "Compute the multidimensional histogram of some data.",
+    "signature": "we.histogramdd(sample, bins=10, range=None, density=None, weights=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Compute the multidimensional histogram of some data."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "sample",
+            "type": "(N, D) array, or (N, D) array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The data to be histogrammed."
+              },
+              {
+                "type": "paragraph",
+                "text": "Note the unusual interpretation of sample when an array_like:"
+              },
+              {
+                "type": "paragraph",
+                "text": "* When an array, each row is a coordinate in a D-dimensional space -\n  such as ``histogramdd(np.array([p1, p2, p3]))``.\n* When an array_like, each element is the list of values for single\n  coordinate - such as ``histogramdd((X, Y, Z))``."
+              },
+              {
+                "type": "paragraph",
+                "text": "The first form should be preferred."
+              }
+            ]
+          },
+          {
+            "name": "bins",
+            "type": "sequence or int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The bin specification:"
+              },
+              {
+                "type": "paragraph",
+                "text": "* A sequence of arrays describing the monotonically increasing bin\n  edges along each dimension.\n* The number of bins for each dimension (nx, ny, ... =bins)\n* The number of bins for all dimensions (nx=ny=...=bins)."
+              }
+            ]
+          },
+          {
+            "name": "range",
+            "type": "sequence, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A sequence of length D, each an optional (lower, upper) tuple giving\nthe outer bin edges to be used if the edges are not given explicitly in\n`bins`.\nAn entry of None in the sequence results in the minimum and maximum\nvalues being used for the corresponding dimension.\nThe default, None, is equivalent to passing a tuple of D None values."
+              }
+            ]
+          },
+          {
+            "name": "density",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If False, the default, returns the number of samples in each bin.\nIf True, returns the probability *density* function at the bin,\n``bin_count / sample_count / bin_volume``."
+              }
+            ]
+          },
+          {
+            "name": "weights",
+            "type": "(N,) array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "An array of values `w_i` weighing each sample `(x_i, y_i, z_i, ...)`.\nWeights are normalized to 1 if density is True. If density is False,\nthe values of the returned histogram are equal to the sum of the\nweights belonging to the samples falling into each bin."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "H",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The multidimensional histogram of sample x. See density and weights\nfor the different possible semantics."
+              }
+            ]
+          },
+          {
+            "name": "edges",
+            "type": "tuple of ndarrays",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A tuple of D arrays describing the bin edges for each dimension."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> rng = np.random.default_rng()\n>>> r = rng.normal(size=(100,3))\n>>> H, edges = np.histogramdd(r, bins = (5, 8, 4))\n>>> H.shape, edges[0].size, edges[1].size, edges[2].size\n((5, 8, 4), 6, 9, 5)"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "histogram \u2014 1-D histogram"
+          },
+          {
+            "type": "paragraph",
+            "text": "histogram2d \u2014 2-D histogram"
+          }
+        ]
+      }
+    ]
+  }
+}

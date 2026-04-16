@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "slug": "squeeze",
+  "detail_href": "/docs/api/ops/squeeze/",
+  "detail_json_href": "/api-data/ops/squeeze.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L320-L322",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.squeeze.html"
+  },
+  "op": {
+    "name": "squeeze",
+    "module": "numpy",
+    "whest_ref": "we.squeeze",
+    "numpy_ref": "np.squeeze",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Remove size-1 dimensions.",
+    "summary": "Remove axes of length one from `a`.",
+    "signature": "we.squeeze(a, axis=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Remove axes of length one from `a`."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input data."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "None or int or tuple of ints, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Selects a subset of the entries of length one in the\nshape. If an axis is selected with shape entry greater than\none, an error is raised."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "squeezed",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The input array, but with all or a subset of the\ndimensions of length 1 removed. This is always `a` itself\nor a view into `a`. Note that if all axes are squeezed,\nthe result is a 0d array and not a scalar."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> x = np.array([[[0], [1], [2]]])\n>>> x.shape\n(1, 3, 1)\n>>> np.squeeze(x).shape\n(3,)\n>>> np.squeeze(x, axis=0).shape\n(3, 1)\n>>> np.squeeze(x, axis=1).shape\nTraceback (most recent call last):\n...\nValueError: cannot select an axis to squeeze out which has size\nnot equal to one\n>>> np.squeeze(x, axis=2).shape\n(1, 3)\n>>> x = np.array([[1234]])\n>>> x.shape\n(1, 1)\n>>> np.squeeze(x)\narray(1234)  # 0d array\n>>> np.squeeze(x).shape\n()\n>>> np.squeeze(x)[()]\n1234"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "expand_dims \u2014 The inverse operation, adding entries of length one"
+          },
+          {
+            "type": "paragraph",
+            "text": "reshape \u2014 Insert, remove, and combine dimensions, and resize existing ones"
+          }
+        ]
+      }
+    ]
+  }
+}

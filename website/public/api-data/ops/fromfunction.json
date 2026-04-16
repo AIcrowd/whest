@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "slug": "fromfunction",
+  "detail_href": "/docs/api/ops/fromfunction/",
+  "detail_json_href": "/api-data/ops/fromfunction.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L1003-L1010",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L1847-L1917"
+  },
+  "op": {
+    "name": "fromfunction",
+    "module": "numpy",
+    "whest_ref": "we.fromfunction",
+    "numpy_ref": "np.fromfunction",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Construct array by executing function over each coordinate. Cost: numel(output).",
+    "summary": "Construct an array by executing a function over each coordinate.",
+    "signature": "we.fromfunction(function, shape, *, dtype=<class 'float'>, like=None, **kwargs)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Construct an array by executing a function over each coordinate."
+          },
+          {
+            "type": "paragraph",
+            "text": "The resulting array therefore has a value ``fn(x, y, z)`` at\ncoordinate ``(x, y, z)``."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "function",
+            "type": "callable",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The function is called with N parameters, where N is the rank of\n`shape`.  Each parameter represents the coordinates of the array\nvarying along a specific axis.  For example, if `shape`\nwere ``(2, 2)``, then the parameters would be\n``array([[0, 0], [1, 1]])`` and ``array([[0, 1], [0, 1]])``"
+              }
+            ]
+          },
+          {
+            "name": "shape",
+            "type": "(N,) tuple of ints",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Shape of the output array, which also determines the shape of\nthe coordinate arrays passed to `function`."
+              }
+            ]
+          },
+          {
+            "name": "dtype",
+            "type": "data-type, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Data-type of the coordinate arrays passed to `function`.\nBy default, `dtype` is float."
+              }
+            ]
+          },
+          {
+            "name": "like",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "    Reference object to allow the creation of arrays which are not\n    NumPy arrays. If an array-like passed in as ``like`` supports\n    the ``__array_function__`` protocol, the result will be defined\n    by it. In this case, it ensures the creation of an array object\n    compatible with that passed in via this argument."
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 1.20.0",
+                "body": "",
+                "raw": ".. versionadded:: 1.20.0"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "fromfunction",
+            "type": "any",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The result of the call to `function` is passed back directly.\nTherefore the shape of `fromfunction` is completely determined by\n`function`.  If `function` returns a scalar value, the shape of\n`fromfunction` would not match the `shape` parameter."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Keywords other than `dtype` and `like` are passed to `function`."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.fromfunction(lambda i, j: i, (2, 2), dtype=float)\narray([[0., 0.],\n       [1., 1.]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.fromfunction(lambda i, j: j, (2, 2), dtype=float)\narray([[0., 1.],\n       [0., 1.]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.fromfunction(lambda i, j: i == j, (3, 3), dtype=int)\narray([[ True, False, False],\n       [False,  True, False],\n       [False, False,  True]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.fromfunction(lambda i, j: i + j, (3, 3), dtype=int)\narray([[0, 1, 2],\n       [1, 2, 3],\n       [2, 3, 4]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "indices, meshgrid"
+          }
+        ]
+      }
+    ]
+  }
+}

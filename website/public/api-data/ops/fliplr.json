@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "slug": "fliplr",
+  "detail_href": "/docs/api/ops/fliplr/",
+  "detail_json_href": "/api-data/ops/fliplr.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L948-L950",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.fliplr.html"
+  },
+  "op": {
+    "name": "fliplr",
+    "module": "numpy",
+    "whest_ref": "we.fliplr",
+    "numpy_ref": "np.fliplr",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Flip array left-right.",
+    "summary": "Reverse the order of elements along axis 1 (left/right).",
+    "signature": "we.fliplr(m)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Reverse the order of elements along axis 1 (left/right)."
+          },
+          {
+            "type": "paragraph",
+            "text": "For a 2-D array, this flips the entries in each row in the left/right\ndirection. Columns are preserved, but appear in a different order than\nbefore."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "m",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array, must be at least 2-D."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "f",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A view of `m` with the columns reversed.  Since a view\nis returned, this operation is :math:`\\mathcal O(1)`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Equivalent to ``m[:,::-1]`` or ``np.flip(m, axis=1)``.\nRequires the array to be at least 2-D."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> A = np.diag([1.,2.,3.])\n>>> A\narray([[1.,  0.,  0.],\n       [0.,  2.,  0.],\n       [0.,  0.,  3.]])\n>>> np.fliplr(A)\narray([[0.,  0.,  1.],\n       [0.,  2.,  0.],\n       [3.,  0.,  0.]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> rng = np.random.default_rng()\n>>> A = rng.normal(size=(2,3,5))\n>>> np.all(np.fliplr(A) == A[:,::-1,...])\nTrue"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "flipud \u2014 Flip array in the up/down direction."
+          },
+          {
+            "type": "paragraph",
+            "text": "flip \u2014 Flip array in one or more dimensions."
+          },
+          {
+            "type": "paragraph",
+            "text": "rot90 \u2014 Rotate array counterclockwise."
+          }
+        ]
+      }
+    ]
+  }
+}

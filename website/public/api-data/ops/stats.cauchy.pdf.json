@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "slug": "stats.cauchy.pdf",
+  "detail_href": "/docs/api/ops/stats.cauchy.pdf/",
+  "detail_json_href": "/api-data/ops/stats.cauchy.pdf.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_cauchy.py#L32-L41",
+    "numpy": ""
+  },
+  "op": {
+    "name": "stats.cauchy.pdf",
+    "module": "whest.stats",
+    "whest_ref": "we.stats.cauchy.pdf",
+    "numpy_ref": "scipy.stats.cauchy.pdf",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 4.0,
+    "cost_formula": "6n",
+    "cost_formula_latex": "$6n$",
+    "notes": "Cauchy PDF; cost = numel(input).",
+    "summary": "Probability density function at *x*.",
+    "signature": "we.stats.cauchy.pdf(x, loc=0, scale=1)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Probability density function at *x*."
+          },
+          {
+            "type": "paragraph",
+            "text": "Equivalent to ``scipy.stats.cauchy.pdf(x, loc, scale)``."
+          }
+        ]
+      }
+    ]
+  }
+}

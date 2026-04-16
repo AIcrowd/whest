@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "slug": "interp",
+  "detail_href": "/docs/api/ops/interp/",
+  "detail_json_href": "/api-data/ops/interp.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L1148-L1161",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.interp.html"
+  },
+  "op": {
+    "name": "interp",
+    "module": "numpy",
+    "whest_ref": "we.interp",
+    "numpy_ref": "np.interp",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "n * log(m)",
+    "cost_formula_latex": "$n \\cdot \\log m$",
+    "notes": "1-D linear interpolation.",
+    "summary": "One-dimensional linear interpolation for monotonically increasing sample points.",
+    "signature": "we.interp(x, xp, fp, left=None, right=None, period=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "One-dimensional linear interpolation for monotonically increasing sample points."
+          },
+          {
+            "type": "paragraph",
+            "text": "Returns the one-dimensional piecewise linear interpolant to a function\nwith given discrete data points (`xp`, `fp`), evaluated at `x`."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The x-coordinates at which to evaluate the interpolated values."
+              }
+            ]
+          },
+          {
+            "name": "xp",
+            "type": "1-D sequence of floats",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The x-coordinates of the data points, must be increasing if argument\n`period` is not specified. Otherwise, `xp` is internally sorted after\nnormalizing the periodic boundaries with ``xp = xp % period``."
+              }
+            ]
+          },
+          {
+            "name": "fp",
+            "type": "1-D sequence of float or complex",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The y-coordinates of the data points, same length as `xp`."
+              }
+            ]
+          },
+          {
+            "name": "left",
+            "type": "optional float or complex corresponding to fp",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Value to return for `x < xp[0]`, default is `fp[0]`."
+              }
+            ]
+          },
+          {
+            "name": "right",
+            "type": "optional float or complex corresponding to fp",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Value to return for `x > xp[-1]`, default is `fp[-1]`."
+              }
+            ]
+          },
+          {
+            "name": "period",
+            "type": "None or float, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A period for the x-coordinates. This parameter allows the proper\ninterpolation of angular x-coordinates. Parameters `left` and `right`\nare ignored if `period` is specified."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "y",
+            "type": "float or complex (corresponding to fp) or ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The interpolated values, same shape as `x`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> xp = [1, 2, 3]\n>>> fp = [3, 2, 0]\n>>> np.interp(2.5, xp, fp)\n1.0\n>>> np.interp([0, 1, 1.5, 2.72, 3.14], xp, fp)\narray([3.  , 3.  , 2.5 , 0.56, 0.  ])\n>>> UNDEF = -99.0\n>>> np.interp(3.14, xp, fp, right=UNDEF)\n-99.0"
+          },
+          {
+            "type": "paragraph",
+            "text": "Plot an interpolant to the sine function:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.linspace(0, 2*np.pi, 10)\n>>> y = np.sin(x)\n>>> xvals = np.linspace(0, 2*np.pi, 50)\n>>> yinterp = np.interp(xvals, x, y)\n>>> import matplotlib.pyplot as plt\n>>> plt.plot(x, y, 'o')\n[<matplotlib.lines.Line2D object at 0x...>]\n>>> plt.plot(xvals, yinterp, '-x')\n[<matplotlib.lines.Line2D object at 0x...>]\n>>> plt.show()"
+          },
+          {
+            "type": "paragraph",
+            "text": "Interpolation with periodic x-coordinates:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = [-180, -170, -185, 185, -10, -5, 0, 365]\n>>> xp = [190, -190, 350, -350]\n>>> fp = [5, 10, 3, 4]\n>>> np.interp(x, xp, fp, period=360)\narray([7.5 , 5.  , 8.75, 6.25, 3.  , 3.25, 3.5 , 3.75])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Complex interpolation:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = [1.5, 4.0]\n>>> xp = [2,3,5]\n>>> fp = [1.0j, 0, 2+3j]\n>>> np.interp(x, xp, fp)\narray([0.+1.j , 1.+1.5j])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "scipy.interpolate"
+          }
+        ]
+      }
+    ]
+  }
+}

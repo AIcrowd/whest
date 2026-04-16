@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "slug": "trapezoid",
+  "detail_href": "/docs/api/ops/trapezoid/",
+  "detail_json_href": "/api-data/ops/trapezoid.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L1120-L1129",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.trapezoid.html"
+  },
+  "op": {
+    "name": "trapezoid",
+    "module": "numpy",
+    "whest_ref": "we.trapezoid",
+    "numpy_ref": "np.trapezoid",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(input)",
+    "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "notes": "Integrate using the trapezoidal rule.",
+    "summary": "Integrate along the given axis using the composite trapezoidal rule.",
+    "signature": "we.trapezoid(y, x=None, dx=1.0, axis=-1)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Integrate along the given axis using the composite trapezoidal rule."
+          },
+          {
+            "type": "paragraph",
+            "text": "If `x` is provided, the integration happens in sequence along its\nelements - they are not sorted."
+          },
+          {
+            "type": "paragraph",
+            "text": "Integrate `y` (`x`) along each 1d slice on the given axis, compute\n:math:`\\int y(x) dx`.\nWhen `x` is specified, this integrates along the parametric curve,\ncomputing :math:`\\int_t y(t) dt =\n\\int_t y(t) \\left.\\frac{dx}{dt}\\right|_{x=x(t)} dt`."
+          },
+          {
+            "type": "directive",
+            "name": "versionadded:: 2.0.0",
+            "body": "",
+            "raw": ".. versionadded:: 2.0.0"
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "y",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array to integrate."
+              }
+            ]
+          },
+          {
+            "name": "x",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The sample points corresponding to the `y` values. If `x` is None,\nthe sample points are assumed to be evenly spaced `dx` apart. The\ndefault is None."
+              }
+            ]
+          },
+          {
+            "name": "dx",
+            "type": "scalar, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The spacing between sample points when `x` is None. The default is 1."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The axis along which to integrate."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "trapezoid",
+            "type": "float or ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Definite integral of `y` = n-dimensional array as approximated along\na single axis by the trapezoidal rule. If `y` is a 1-dimensional array,\nthen the result is a float. If `n` is greater than 1, then the result\nis an `n`-1 dimensional array."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Image [2]_ illustrates trapezoidal rule -- y-axis locations of points\nwill be taken from `y` array, by default x-axis distances between\npoints will be 1.0, alternatively they can be provided with `x` array\nor with `dx` scalar.  Return value will be equal to combined area under\nthe red lines."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np"
+          },
+          {
+            "type": "paragraph",
+            "text": "Use the trapezoidal rule on evenly spaced points:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.trapezoid([1, 2, 3])\n4.0"
+          },
+          {
+            "type": "paragraph",
+            "text": "The spacing between sample points can be selected by either the\n``x`` or ``dx`` arguments:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.trapezoid([1, 2, 3], x=[4, 6, 8])\n8.0\n>>> np.trapezoid([1, 2, 3], dx=2)\n8.0"
+          },
+          {
+            "type": "paragraph",
+            "text": "Using a decreasing ``x`` corresponds to integrating in reverse:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.trapezoid([1, 2, 3], x=[8, 6, 4])\n-8.0"
+          },
+          {
+            "type": "paragraph",
+            "text": "More generally ``x`` is used to integrate along a parametric curve. We can\nestimate the integral :math:`\\int_0^1 x^2 = 1/3` using:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.linspace(0, 1, num=50)\n>>> y = x**2\n>>> np.trapezoid(y, x)\n0.33340274885464394"
+          },
+          {
+            "type": "paragraph",
+            "text": "Or estimate the area of a circle, noting we repeat the sample which closes\nthe curve:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> theta = np.linspace(0, 2 * np.pi, num=1000, endpoint=True)\n>>> np.trapezoid(np.cos(theta), x=np.sin(theta))\n3.141571941375841"
+          },
+          {
+            "type": "paragraph",
+            "text": "``np.trapezoid`` can be applied along a specified axis to do multiple\ncomputations in one call:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.arange(6).reshape(2, 3)\n>>> a\narray([[0, 1, 2],\n       [3, 4, 5]])\n>>> np.trapezoid(a, axis=0)\narray([1.5, 2.5, 3.5])\n>>> np.trapezoid(a, axis=1)\narray([2.,  8.])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "sum, cumsum"
+          }
+        ]
+      }
+    ]
+  }
+}

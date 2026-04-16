@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "slug": "asarray_chkfinite",
+  "detail_href": "/docs/api/ops/asarray_chkfinite/",
+  "detail_json_href": "/api-data/ops/asarray_chkfinite.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L621-L636",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L579-L648"
+  },
+  "op": {
+    "name": "asarray_chkfinite",
+    "module": "numpy",
+    "whest_ref": "we.asarray_chkfinite",
+    "numpy_ref": "np.asarray_chkfinite",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Convert to array, raising if NaN or inf. Cost: numel(input).",
+    "summary": "Convert the input to an array, checking for NaNs or Infs.",
+    "signature": "we.asarray_chkfinite(a, dtype=None, order=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Convert the input to an array, checking for NaNs or Infs."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input data, in any form that can be converted to an array.  This\nincludes lists, lists of tuples, tuples, tuples of tuples, tuples\nof lists and ndarrays.  Success requires no NaNs or Infs."
+              }
+            ]
+          },
+          {
+            "name": "dtype",
+            "type": "data-type, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "By default, the data-type is inferred from the input data."
+              }
+            ]
+          },
+          {
+            "name": "order",
+            "type": "{'C', 'F', 'A', 'K'}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Memory layout.  'A' and 'K' depend on the order of input array a.\n'C' row-major (C-style),\n'F' column-major (Fortran-style) memory representation.\n'A' (any) means 'F' if `a` is Fortran contiguous, 'C' otherwise\n'K' (keep) preserve input order\nDefaults to 'C'."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Array interpretation of `a`.  No copy is performed if the input\nis already an ndarray.  If `a` is a subclass of ndarray, a base\nclass ndarray is returned."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np"
+          },
+          {
+            "type": "paragraph",
+            "text": "Convert a list into an array. If all elements are finite, then\n``asarray_chkfinite`` is identical to ``asarray``."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = [1, 2]\n>>> np.asarray_chkfinite(a, dtype=float)\narray([1., 2.])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Raises ValueError if array_like contains Nans or Infs."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = [1, 2, np.inf]\n>>> try:\n...     np.asarray_chkfinite(a)\n... except ValueError:\n...     print('ValueError')\n...\nValueError"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "asarray \u2014 Create and array."
+          },
+          {
+            "type": "paragraph",
+            "text": "asanyarray \u2014 Similar function which passes through subclasses."
+          },
+          {
+            "type": "paragraph",
+            "text": "ascontiguousarray \u2014 Convert input to a contiguous array."
+          },
+          {
+            "type": "paragraph",
+            "text": "asfortranarray \u2014 Convert input to an ndarray with column-major memory order."
+          },
+          {
+            "type": "paragraph",
+            "text": "fromiter \u2014 Create an array from an iterator."
+          },
+          {
+            "type": "paragraph",
+            "text": "fromfunction \u2014 Construct an array by executing a function on grid positions."
+          }
+        ]
+      }
+    ]
+  }
+}

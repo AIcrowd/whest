@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "slug": "cross",
+  "detail_href": "/docs/api/ops/cross/",
+  "detail_json_href": "/api-data/ops/cross.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L935-L953",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.cross.html"
+  },
+  "op": {
+    "name": "cross",
+    "module": "numpy",
+    "whest_ref": "we.cross",
+    "numpy_ref": "np.cross",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Cross product of two 3-D vectors.",
+    "summary": "Return the cross product of two (arrays of) vectors.",
+    "signature": "we.cross(a, b, axisa=-1, axisb=-1, axisc=-1, axis=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return the cross product of two (arrays of) vectors."
+          },
+          {
+            "type": "paragraph",
+            "text": "The cross product of `a` and `b` in :math:`R^3` is a vector perpendicular\nto both `a` and `b`.  If `a` and `b` are arrays of vectors, the vectors\nare defined by the last axis of `a` and `b` by default, and these axes\ncan have dimensions 2 or 3.  Where the dimension of either `a` or `b` is\n2, the third component of the input vector is assumed to be zero and the\ncross product calculated accordingly.  In cases where both input vectors\nhave dimension 2, the z-component of the cross product is returned."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Components of the first vector(s)."
+              }
+            ]
+          },
+          {
+            "name": "b",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Components of the second vector(s)."
+              }
+            ]
+          },
+          {
+            "name": "axisa",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Axis of `a` that defines the vector(s).  By default, the last axis."
+              }
+            ]
+          },
+          {
+            "name": "axisb",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Axis of `b` that defines the vector(s).  By default, the last axis."
+              }
+            ]
+          },
+          {
+            "name": "axisc",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Axis of `c` containing the cross product vector(s).  Ignored if\nboth input vectors have dimension 2, as the return is scalar.\nBy default, the last axis."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If defined, the axis of `a`, `b` and `c` that defines the vector(s)\nand cross product(s).  Overrides `axisa`, `axisb` and `axisc`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "c",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Vector cross product(s)."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Supports full broadcasting of the inputs."
+          },
+          {
+            "type": "paragraph",
+            "text": "Dimension-2 input arrays were deprecated in 2.0.0. If you do need this\nfunctionality, you can use::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    def cross2d(x, y):\n        return x[..., 0] * y[..., 1] - x[..., 1] * y[..., 0]"
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Vector cross-product."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> x = [1, 2, 3]\n>>> y = [4, 5, 6]\n>>> np.cross(x, y)\narray([-3,  6, -3])"
+          },
+          {
+            "type": "paragraph",
+            "text": "One vector with dimension 2."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = [1, 2]\n>>> y = [4, 5, 6]\n>>> np.cross(x, y)\narray([12, -6, -3])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Equivalently:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = [1, 2, 0]\n>>> y = [4, 5, 6]\n>>> np.cross(x, y)\narray([12, -6, -3])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Both vectors with dimension 2."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = [1,2]\n>>> y = [4,5]\n>>> np.cross(x, y)\narray(-3)"
+          },
+          {
+            "type": "paragraph",
+            "text": "Multiple vector cross-products. Note that the direction of the cross\nproduct vector is defined by the *right-hand rule*."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.array([[1,2,3], [4,5,6]])\n>>> y = np.array([[4,5,6], [1,2,3]])\n>>> np.cross(x, y)\narray([[-3,  6, -3],\n       [ 3, -6,  3]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "The orientation of `c` can be changed using the `axisc` keyword."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.cross(x, y, axisc=0)\narray([[-3,  3],\n       [ 6, -6],\n       [-3,  3]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Change the vector definition of `x` and `y` using `axisa` and `axisb`."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.array([[1,2,3], [4,5,6], [7, 8, 9]])\n>>> y = np.array([[7, 8, 9], [4,5,6], [1,2,3]])\n>>> np.cross(x, y)\narray([[ -6,  12,  -6],\n       [  0,   0,   0],\n       [  6, -12,   6]])\n>>> np.cross(x, y, axisa=0, axisb=0)\narray([[-24,  48, -24],\n       [-30,  60, -30],\n       [-36,  72, -36]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "inner \u2014 Inner product"
+          },
+          {
+            "type": "paragraph",
+            "text": "outer \u2014 Outer product."
+          },
+          {
+            "type": "paragraph",
+            "text": "linalg.cross \u2014 An Array API compatible variation of ``np.cross``, which accepts (arrays of) 3-element vectors only."
+          },
+          {
+            "type": "paragraph",
+            "text": "ix_ \u2014 Construct index arrays."
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,186 @@
+{
+  "schema_version": 1,
+  "slug": "histogram",
+  "detail_href": "/docs/api/ops/histogram/",
+  "detail_json_href": "/api-data/ops/histogram.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L105-L118",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.histogram.html"
+  },
+  "op": {
+    "name": "histogram",
+    "module": "numpy",
+    "whest_ref": "we.histogram",
+    "numpy_ref": "np.histogram",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Binning; cost = n*ceil(log2(bins)).",
+    "summary": "Compute the histogram of a dataset.",
+    "signature": "we.histogram(a, bins=10, range=None, density=None, weights=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Compute the histogram of a dataset."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input data. The histogram is computed over the flattened array."
+              }
+            ]
+          },
+          {
+            "name": "bins",
+            "type": "int or sequence of scalars or str, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If `bins` is an int, it defines the number of equal-width\nbins in the given range (10, by default). If `bins` is a\nsequence, it defines a monotonically increasing array of bin edges,\nincluding the rightmost edge, allowing for non-uniform bin widths."
+              },
+              {
+                "type": "paragraph",
+                "text": "If `bins` is a string, it defines the method used to calculate the\noptimal bin width, as defined by `histogram_bin_edges`."
+              }
+            ]
+          },
+          {
+            "name": "range",
+            "type": "(float, float), optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The lower and upper range of the bins.  If not provided, range\nis simply ``(a.min(), a.max())``.  Values outside the range are\nignored. The first element of the range must be less than or\nequal to the second. `range` affects the automatic bin\ncomputation as well. While bin width is computed to be optimal\nbased on the actual data within `range`, the bin count will fill\nthe entire range including portions containing no data."
+              }
+            ]
+          },
+          {
+            "name": "weights",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "An array of weights, of the same shape as `a`.  Each value in\n`a` only contributes its associated weight towards the bin count\n(instead of 1). If `density` is True, the weights are\nnormalized, so that the integral of the density over the range\nremains 1.\nPlease note that the ``dtype`` of `weights` will also become the\n``dtype`` of the returned accumulator (`hist`), so it must be\nlarge enough to hold accumulated values as well."
+              }
+            ]
+          },
+          {
+            "name": "density",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If ``False``, the result will contain the number of samples in\neach bin. If ``True``, the result is the value of the\nprobability *density* function at the bin, normalized such that\nthe *integral* over the range is 1. Note that the sum of the\nhistogram values will not be equal to 1 unless bins of unity\nwidth are chosen; it is not a probability *mass* function."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "hist",
+            "type": "array",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The values of the histogram. See `density` and `weights` for a\ndescription of the possible semantics.  If `weights` are given,\n``hist.dtype`` will be taken from `weights`."
+              }
+            ]
+          },
+          {
+            "name": "bin_edges",
+            "type": "array of dtype float",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Return the bin edges ``(length(hist)+1)``."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "All but the last (righthand-most) bin is half-open.  In other words,\nif `bins` is::"
+          },
+          {
+            "type": "paragraph",
+            "text": "  [1, 2, 3, 4]"
+          },
+          {
+            "type": "paragraph",
+            "text": "then the first bin is ``[1, 2)`` (including 1, but excluding 2) and\nthe second ``[2, 3)``.  The last bin, however, is ``[3, 4]``, which\n*includes* 4."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.histogram([1, 2, 1], bins=[0, 1, 2, 3])\n(array([0, 2, 1]), array([0, 1, 2, 3]))\n>>> np.histogram(np.arange(4), bins=np.arange(5), density=True)\n(array([0.25, 0.25, 0.25, 0.25]), array([0, 1, 2, 3, 4]))\n>>> np.histogram([[1, 2, 1], [1, 0, 1]], bins=[0,1,2,3])\n(array([1, 4, 1]), array([0, 1, 2, 3]))"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.arange(5)\n>>> hist, bin_edges = np.histogram(a, density=True)\n>>> hist\narray([0.5, 0. , 0.5, 0. , 0. , 0.5, 0. , 0.5, 0. , 0.5])\n>>> hist.sum()\n2.4999999999999996\n>>> np.sum(hist * np.diff(bin_edges))\n1.0"
+          },
+          {
+            "type": "paragraph",
+            "text": "Automated Bin Selection Methods example, using 2 peak random data\nwith 2000 points."
+          },
+          {
+            "type": "directive",
+            "name": "plot",
+            "body": "    :include-source:",
+            "raw": ".. plot::\n    :include-source:"
+          },
+          {
+            "type": "paragraph",
+            "text": "    import matplotlib.pyplot as plt\n    import numpy as np"
+          },
+          {
+            "type": "paragraph",
+            "text": "    rng = np.random.RandomState(10)  # deterministic random data\n    a = np.hstack((rng.normal(size=1000),\n                   rng.normal(loc=5, scale=2, size=1000)))\n    plt.hist(a, bins='auto')  # arguments are passed to np.histogram\n    plt.title(\"Histogram with 'auto' bins\")\n    plt.show()"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "histogramdd, bincount, searchsorted, digitize, histogram_bin_edges"
+          }
+        ]
+      }
+    ]
+  }
+}

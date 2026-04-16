@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "slug": "cumulative_prod",
+  "detail_href": "/docs/api/ops/cumulative_prod/",
+  "detail_json_href": "/api-data/ops/cumulative_prod.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L197-L255",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.cumulative_prod.html"
+  },
+  "op": {
+    "name": "cumulative_prod",
+    "module": "numpy",
+    "whest_ref": "we.cumulative_prod",
+    "numpy_ref": "np.cumulative_prod",
+    "category": "counted_reduction",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(input)",
+    "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "notes": "Cumulative product (NumPy 2.x array API).",
+    "summary": "Return the cumulative product of elements along a given axis.",
+    "signature": "we.cumulative_prod(x, /, *, axis=None, dtype=None, out=None, include_initial=False)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return the cumulative product of elements along a given axis."
+          },
+          {
+            "type": "paragraph",
+            "text": "This function is an Array API compatible alternative to `numpy.cumprod`."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Axis along which the cumulative product is computed. The default\n(None) is only allowed for one-dimensional arrays. For arrays\nwith more than one dimension ``axis`` is required."
+              }
+            ]
+          },
+          {
+            "name": "dtype",
+            "type": "dtype, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Type of the returned array, as well as of the accumulator in which\nthe elements are multiplied.  If ``dtype`` is not specified, it\ndefaults to the dtype of ``x``, unless ``x`` has an integer dtype\nwith a precision less than that of the default platform integer.\nIn that case, the default platform integer is used instead."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Alternative output array in which to place the result. It must\nhave the same shape and buffer length as the expected output\nbut the type of the resulting values will be cast if necessary.\nSee :ref:`ufuncs-output-type` for more details."
+              }
+            ]
+          },
+          {
+            "name": "include_initial",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Boolean indicating whether to include the initial value (ones) as\nthe first value in the output. With ``include_initial=True``\nthe shape of the output is different than the shape of the input.\nDefault: ``False``."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "cumulative_prod_along_axis",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A new array holding the result is returned unless ``out`` is\nspecified, in which case a reference to ``out`` is returned. The\nresult has the same shape as ``x`` if ``include_initial=False``."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Arithmetic is modular when using integer types, and no error is\nraised on overflow."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([1, 2, 3])\n>>> np.cumulative_prod(a)  # intermediate results 1, 1*2\n...                        # total product 1*2*3 = 6\narray([1, 2, 6])\n>>> a = np.array([1, 2, 3, 4, 5, 6])\n>>> np.cumulative_prod(a, dtype=float) # specify type of output\narray([   1.,    2.,    6.,   24.,  120.,  720.])"
+          },
+          {
+            "type": "paragraph",
+            "text": "The cumulative product for each column (i.e., over the rows) of ``b``:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> b = np.array([[1, 2, 3], [4, 5, 6]])\n>>> np.cumulative_prod(b, axis=0)\narray([[ 1,  2,  3],\n       [ 4, 10, 18]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "The cumulative product for each row (i.e. over the columns) of ``b``:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.cumulative_prod(b, axis=1)\narray([[  1,   2,   6],\n       [  4,  20, 120]])"
+          }
+        ]
+      }
+    ]
+  }
+}

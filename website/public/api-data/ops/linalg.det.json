@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "slug": "linalg.det",
+  "detail_href": "/docs/api/ops/linalg.det/",
+  "detail_json_href": "/api-data/ops/linalg.det.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L79-L94",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.det.html"
+  },
+  "op": {
+    "name": "linalg.det",
+    "module": "numpy.linalg",
+    "whest_ref": "we.linalg.det",
+    "numpy_ref": "np.linalg.det",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 4.0,
+    "cost_formula": "n^3",
+    "cost_formula_latex": "$n^3$",
+    "notes": "Determinant. Cost: $n^3$.",
+    "summary": "Compute the determinant of an array.",
+    "signature": "we.linalg.det(a)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Compute the determinant of an array."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "(..., M, M) array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array to compute determinants for."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "det",
+            "type": "(...) array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Determinant of `a`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Broadcasting rules apply, see the `numpy.linalg` documentation for\ndetails."
+          },
+          {
+            "type": "paragraph",
+            "text": "The determinant is computed via LU factorization using the LAPACK\nroutine ``z/dgetrf``."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The determinant of a 2-D array [[a, b], [c, d]] is ad - bc:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> a = np.array([[1, 2], [3, 4]])\n>>> np.linalg.det(a)\n-2.0 # may vary"
+          },
+          {
+            "type": "paragraph",
+            "text": "Computing determinants for a stack of matrices:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([ [[1, 2], [3, 4]], [[1, 2], [2, 1]], [[1, 3], [3, 1]] ])\n>>> a.shape\n(3, 2, 2)\n>>> np.linalg.det(a)\narray([-2., -3., -8.])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "slogdet \u2014 Another way to represent the determinant, more suitable for large matrices where underflow/overflow may occur."
+          },
+          {
+            "type": "paragraph",
+            "text": "scipy.linalg.det \u2014 Similar function in SciPy."
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "slug": "apply_over_axes",
+  "detail_href": "/docs/api/ops/apply_over_axes/",
+  "detail_json_href": "/api-data/ops/apply_over_axes.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L322-L333",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.apply_over_axes.html"
+  },
+  "op": {
+    "name": "apply_over_axes",
+    "module": "numpy",
+    "whest_ref": "we.apply_over_axes",
+    "numpy_ref": "np.apply_over_axes",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Apply function over multiple axes. Cost: numel(output).",
+    "summary": "Apply a function repeatedly over multiple axes.",
+    "signature": "we.apply_over_axes(func, a, axes)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Apply a function repeatedly over multiple axes."
+          },
+          {
+            "type": "paragraph",
+            "text": "`func` is called as `res = func(a, axis)`, where `axis` is the first\nelement of `axes`.  The result `res` of the function call must have\neither the same dimensions as `a` or one less dimension.  If `res`\nhas one less dimension than `a`, a dimension is inserted before\n`axis`.  The call to `func` is then repeated for each axis in `axes`,\nwith `res` as the first argument."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "func",
+            "type": "function",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "This function must take two arguments, `func(a, axis)`."
+              }
+            ]
+          },
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array."
+              }
+            ]
+          },
+          {
+            "name": "axes",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Axes over which `func` is applied; the elements must be integers."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "apply_over_axis",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The output array.  The number of dimensions is the same as `a`,\nbut the shape can be different.  This depends on whether `func`\nchanges the shape of its output with respect to its input."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "This function is equivalent to tuple axis arguments to reorderable ufuncs\nwith keepdims=True. Tuple axis arguments to ufuncs have been available since\nversion 1.7.0."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> a = np.arange(24).reshape(2,3,4)\n>>> a\narray([[[ 0,  1,  2,  3],\n        [ 4,  5,  6,  7],\n        [ 8,  9, 10, 11]],\n       [[12, 13, 14, 15],\n        [16, 17, 18, 19],\n        [20, 21, 22, 23]]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Sum over axes 0 and 2. The result has same number of dimensions\nas the original array:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.apply_over_axes(np.sum, a, [0,2])\narray([[[ 60],\n        [ 92],\n        [124]]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Tuple axis arguments to ufuncs are equivalent:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.sum(a, axis=(0,2), keepdims=True)\narray([[[ 60],\n        [ 92],\n        [124]]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "apply_along_axis \u2014 Apply a function to 1-D slices of an array along the given axis."
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "slug": "matrix_transpose",
+  "detail_href": "/docs/api/ops/matrix_transpose/",
+  "detail_json_href": "/api-data/ops/matrix_transpose.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L1155-L1157",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.matrix_transpose.html"
+  },
+  "op": {
+    "name": "matrix_transpose",
+    "module": "numpy",
+    "whest_ref": "we.matrix_transpose",
+    "numpy_ref": "np.matrix_transpose",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Transpose last two dimensions (NumPy 2.x array API).",
+    "summary": "Transposes a matrix (or a stack of matrices) ``x``.",
+    "signature": "we.matrix_transpose(x, /)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Transposes a matrix (or a stack of matrices) ``x``."
+          },
+          {
+            "type": "paragraph",
+            "text": "This function is Array API compatible."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array having shape (..., M, N) and whose two innermost\ndimensions form ``MxN`` matrices."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "An array containing the transpose for each matrix and having shape\n(..., N, M)."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.matrix_transpose([[1, 2], [3, 4]])\narray([[1, 3],\n       [2, 4]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.matrix_transpose([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])\narray([[[1, 3],\n        [2, 4]],\n       [[5, 7],\n        [6, 8]]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "transpose \u2014 Generic transpose method."
+          }
+        ]
+      }
+    ]
+  }
+}

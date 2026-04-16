@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "slug": "iscomplexobj",
+  "detail_href": "/docs/api/ops/iscomplexobj/",
+  "detail_json_href": "/api-data/ops/iscomplexobj.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29-L42",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.iscomplexobj.html"
+  },
+  "op": {
+    "name": "iscomplexobj",
+    "module": "numpy",
+    "whest_ref": "we.iscomplexobj",
+    "numpy_ref": "np.iscomplexobj",
+    "category": "counted_unary",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Return True if input is a complex type or array.",
+    "summary": "Check for a complex type or an array of complex numbers.",
+    "signature": "we.iscomplexobj(x)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Check for a complex type or an array of complex numbers."
+          },
+          {
+            "type": "paragraph",
+            "text": "The type of the input is checked, not the value. Even if the input\nhas an imaginary part equal to zero, `iscomplexobj` evaluates to True."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "any",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The input can be of any type and shape."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "iscomplexobj",
+            "type": "bool",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The return value, True if `x` is of a complex type or has at least\none complex element."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.iscomplexobj(1)\nFalse\n>>> np.iscomplexobj(1+0j)\nTrue\n>>> np.iscomplexobj([3, 1+0j, True])\nTrue"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "isrealobj, iscomplex"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "slug": "fft.ifftshift",
+  "detail_href": "/docs/api/ops/fft.ifftshift/",
+  "detail_json_href": "/api-data/ops/fft.ifftshift.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_free.py#L41-L43",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.fft.ifftshift.html"
+  },
+  "op": {
+    "name": "fft.ifftshift",
+    "module": "numpy.fft",
+    "whest_ref": "we.fft.ifftshift",
+    "numpy_ref": "np.fft.ifftshift",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Inverse of fftshift. No arithmetic; index reordering only.",
+    "summary": "The inverse of `fftshift`. Although identical for even-length `x`, the functions differ by one sample for odd-length `x`.",
+    "signature": "we.fft.ifftshift(x, axes=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The inverse of `fftshift`. Although identical for even-length `x`, the\nfunctions differ by one sample for odd-length `x`."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array."
+              }
+            ]
+          },
+          {
+            "name": "axes",
+            "type": "int or shape tuple, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Axes over which to calculate.  Defaults to None, which shifts all axes."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "y",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The shifted array."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> freqs = np.fft.fftfreq(9, d=1./9).reshape(3, 3)\n>>> freqs\narray([[ 0.,  1.,  2.],\n       [ 3.,  4., -4.],\n       [-3., -2., -1.]])\n>>> np.fft.ifftshift(np.fft.fftshift(freqs))\narray([[ 0.,  1.,  2.],\n       [ 3.,  4., -4.],\n       [-3., -2., -1.]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "fftshift \u2014 Shift zero-frequency component to the center of the spectrum."
+          }
+        ]
+      }
+    ]
+  }
+}

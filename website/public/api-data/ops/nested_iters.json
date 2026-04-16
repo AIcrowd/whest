@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "slug": "nested_iters",
+  "detail_href": "/docs/api/ops/nested_iters/",
+  "detail_json_href": "/api-data/ops/nested_iters.json",
+  "source": {
+    "whest": null,
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.nested_iters.html"
+  },
+  "op": {
+    "name": "nested_iters",
+    "module": "numpy",
+    "whest_ref": "we.nested_iters",
+    "numpy_ref": "np.nested_iters",
+    "category": "blacklisted",
+    "status": "blocked",
+    "weight": 1.0,
+    "cost_formula": "N/A",
+    "cost_formula_latex": "N/A",
+    "notes": "Create nested iterators for multi-index broadcasting. Not supported.",
+    "summary": "Create nditers for use in nested loops",
+    "signature": "we.nested_iters(op, axes, flags=None, op_flags=None, op_dtypes=None,     order=\"K\", casting=\"safe\", buffersize=0)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Create nditers for use in nested loops"
+          },
+          {
+            "type": "paragraph",
+            "text": "Create a tuple of `nditer` objects which iterate in nested loops over\ndifferent axes of the op argument. The first iterator is used in the\noutermost loop, the last in the innermost loop. Advancing one will change\nthe subsequent iterators to point at its new element."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "op",
+            "type": "ndarray or sequence of array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The array(s) to iterate over."
+              }
+            ]
+          },
+          {
+            "name": "axes",
+            "type": "list of list of int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Each item is used as an \"op_axes\" argument to an nditer"
+              }
+            ]
+          },
+          {
+            "name": "flags, op_flags, op_dtypes, order, casting, buffersize (optional)",
+            "type": "",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "See `nditer` parameters of the same name"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "iters",
+            "type": "tuple of nditer",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "An nditer for each item in `axes`, outermost first"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Basic usage. Note how y is the \"flattened\" version of\n[a[:, 0, :], a[:, 1, 0], a[:, 2, :]] since we specified\nthe first iter's axes as [1]"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> a = np.arange(12).reshape(2, 3, 2)\n>>> i, j = np.nested_iters(a, [[1], [0, 2]], flags=[\"multi_index\"])\n>>> for x in i:\n...      print(i.multi_index)\n...      for y in j:\n...          print('', j.multi_index, y)\n(0,)\n (0, 0) 0\n (0, 1) 1\n (1, 0) 6\n (1, 1) 7\n(1,)\n (0, 0) 2\n (0, 1) 3\n (1, 0) 8\n (1, 1) 9\n(2,)\n (0, 0) 4\n (0, 1) 5\n (1, 0) 10\n (1, 1) 11"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "nditer"
+          }
+        ]
+      }
+    ]
+  }
+}

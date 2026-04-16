@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "slug": "isreal",
+  "detail_href": "/docs/api/ops/isreal/",
+  "detail_json_href": "/api-data/ops/isreal.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29-L42",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.isreal.html"
+  },
+  "op": {
+    "name": "isreal",
+    "module": "numpy",
+    "whest_ref": "we.isreal",
+    "numpy_ref": "np.isreal",
+    "category": "counted_unary",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Test if element is real (imag == 0) element-wise.",
+    "summary": "Returns a bool array, where True if input element is real.",
+    "signature": "we.isreal(x)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Returns a bool array, where True if input element is real."
+          },
+          {
+            "type": "paragraph",
+            "text": "If element has complex type with zero imaginary part, the return value\nfor that element is True."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray, bool",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Boolean array of same shape as `x`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "`isreal` may behave unexpectedly for string or object arrays (see examples)"
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> a = np.array([1+1j, 1+0j, 4.5, 3, 2, 2j], dtype=complex)\n>>> np.isreal(a)\narray([False,  True,  True,  True,  True, False])"
+          },
+          {
+            "type": "paragraph",
+            "text": "The function does not work on string arrays."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([2j, \"a\"], dtype=\"U\")\n>>> np.isreal(a)  # Warns about non-elementwise comparison\nFalse"
+          },
+          {
+            "type": "paragraph",
+            "text": "Returns True for all elements in input array of ``dtype=object`` even if\nany of the elements is complex."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([1, \"2\", 3+4j], dtype=object)\n>>> np.isreal(a)\narray([ True,  True,  True])"
+          },
+          {
+            "type": "paragraph",
+            "text": "isreal should not be used with object arrays"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([1+2j, 2+1j], dtype=object)\n>>> np.isreal(a)\narray([ True,  True])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "iscomplex"
+          },
+          {
+            "type": "paragraph",
+            "text": "isrealobj \u2014 Return True if x is not a complex type."
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "slug": "linspace",
+  "detail_href": "/docs/api/ops/linspace/",
+  "detail_json_href": "/api-data/ops/linspace.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L128-L134",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.linspace.html"
+  },
+  "op": {
+    "name": "linspace",
+    "module": "numpy",
+    "whest_ref": "we.linspace",
+    "numpy_ref": "np.linspace",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Return evenly spaced numbers over interval. Cost: numel(output).",
+    "summary": "Return evenly spaced numbers over a specified interval.",
+    "signature": "we.linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None, axis=0, *, device=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return evenly spaced numbers over a specified interval."
+          },
+          {
+            "type": "paragraph",
+            "text": "Returns `num` evenly spaced samples, calculated over the\ninterval [`start`, `stop`]."
+          },
+          {
+            "type": "paragraph",
+            "text": "The endpoint of the interval can optionally be excluded."
+          },
+          {
+            "type": "directive",
+            "name": "versionchanged:: 1.20.0",
+            "body": "    Values are rounded towards ``-inf`` instead of ``0`` when an\n    integer ``dtype`` is specified. The old behavior can\n    still be obtained with ``np.linspace(start, stop, num).astype(int)``",
+            "raw": ".. versionchanged:: 1.20.0\n    Values are rounded towards ``-inf`` instead of ``0`` when an\n    integer ``dtype`` is specified. The old behavior can\n    still be obtained with ``np.linspace(start, stop, num).astype(int)``"
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "start",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The starting value of the sequence."
+              }
+            ]
+          },
+          {
+            "name": "stop",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The end value of the sequence, unless `endpoint` is set to False.\nIn that case, the sequence consists of all but the last of ``num + 1``\nevenly spaced samples, so that `stop` is excluded.  Note that the step\nsize changes when `endpoint` is False."
+              }
+            ]
+          },
+          {
+            "name": "num",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Number of samples to generate. Default is 50. Must be non-negative."
+              }
+            ]
+          },
+          {
+            "name": "endpoint",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If True, `stop` is the last sample. Otherwise, it is not included.\nDefault is True."
+              }
+            ]
+          },
+          {
+            "name": "retstep",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If True, return (`samples`, `step`), where `step` is the spacing\nbetween samples."
+              }
+            ]
+          },
+          {
+            "name": "dtype",
+            "type": "dtype, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The type of the output array.  If `dtype` is not given, the data type\nis inferred from `start` and `stop`. The inferred dtype will never be\nan integer; `float` is chosen even if the arguments would produce an\narray of integers."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The axis in the result to store the samples.  Relevant only if start\nor stop are array-like.  By default (0), the samples will be along a\nnew axis inserted at the beginning. Use -1 to get an axis at the end."
+              }
+            ]
+          },
+          {
+            "name": "device",
+            "type": "str, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The device on which to place the created array. Default: None.\nFor Array-API interoperability only, so must be ``\"cpu\"`` if passed."
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 2.0.0",
+                "body": "",
+                "raw": ".. versionadded:: 2.0.0"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "samples",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "There are `num` equally spaced samples in the closed interval\n``[start, stop]`` or the half-open interval ``[start, stop)``\n(depending on whether `endpoint` is True or False)."
+              }
+            ]
+          },
+          {
+            "name": "step",
+            "type": "float, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Only returned if `retstep` is True"
+              },
+              {
+                "type": "paragraph",
+                "text": "Size of spacing between samples."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.linspace(2.0, 3.0, num=5)\narray([2.  , 2.25, 2.5 , 2.75, 3.  ])\n>>> np.linspace(2.0, 3.0, num=5, endpoint=False)\narray([2. ,  2.2,  2.4,  2.6,  2.8])\n>>> np.linspace(2.0, 3.0, num=5, retstep=True)\n(array([2.  ,  2.25,  2.5 ,  2.75,  3.  ]), 0.25)"
+          },
+          {
+            "type": "paragraph",
+            "text": "Graphical illustration:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import matplotlib.pyplot as plt\n>>> N = 8\n>>> y = np.zeros(N)\n>>> x1 = np.linspace(0, 10, N, endpoint=True)\n>>> x2 = np.linspace(0, 10, N, endpoint=False)\n>>> plt.plot(x1, y, 'o')\n[<matplotlib.lines.Line2D object at 0x...>]\n>>> plt.plot(x2, y + 0.5, 'o')\n[<matplotlib.lines.Line2D object at 0x...>]\n>>> plt.ylim([-0.5, 1])\n(-0.5, 1)\n>>> plt.show()"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "arange \u2014 Similar to `linspace`, but uses a step size (instead of the number of samples)."
+          },
+          {
+            "type": "paragraph",
+            "text": "geomspace \u2014 Similar to `linspace`, but with numbers spaced evenly on a log scale (a geometric progression)."
+          },
+          {
+            "type": "paragraph",
+            "text": "logspace \u2014 Similar to `geomspace`, but with the end points specified as logarithms."
+          },
+          {
+            "type": "paragraph",
+            "text": "how-to-partition"
+          }
+        ]
+      }
+    ]
+  }
+}

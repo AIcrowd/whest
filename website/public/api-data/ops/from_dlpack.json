@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "slug": "from_dlpack",
+  "detail_href": "/docs/api/ops/from_dlpack/",
+  "detail_json_href": "/api-data/ops/from_dlpack.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L964-L971",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.from_dlpack.html"
+  },
+  "op": {
+    "name": "from_dlpack",
+    "module": "numpy",
+    "whest_ref": "we.from_dlpack",
+    "numpy_ref": "np.from_dlpack",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Create ndarray from DLPack object (zero-copy). Cost: numel(output).",
+    "summary": "Create a NumPy array from an object implementing the ``__dlpack__`` protocol. Generally, the returned NumPy array is a view of the input object. See [1]_ and [2]_ for more details.",
+    "signature": "we.from_dlpack(x, /, *, device=None, copy=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Create a NumPy array from an object implementing the ``__dlpack__``\nprotocol. Generally, the returned NumPy array is a view of the input\nobject. See [1]_ and [2]_ for more details."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "object",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A Python object that implements the ``__dlpack__`` and\n``__dlpack_device__`` methods."
+              }
+            ]
+          },
+          {
+            "name": "device",
+            "type": "device, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Device on which to place the created array. Default: ``None``.\nMust be ``\"cpu\"`` if passed which may allow importing an array\nthat is not already CPU available."
+              }
+            ]
+          },
+          {
+            "name": "copy",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Boolean indicating whether or not to copy the input. If ``True``,\nthe copy will be made. If ``False``, the function will never copy,\nand will raise ``BufferError`` in case a copy is deemed necessary.\nPassing it requests a copy from the exporter who may or may not\nimplement the capability.\nIf ``None``, the function will reuse the existing memory buffer if\npossible and copy otherwise. Default: ``None``."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray",
+            "desc_blocks": []
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": "    >>> import torch  # doctest: +SKIP\n    >>> x = torch.arange(10)  # doctest: +SKIP\n    >>> # create a view of the torch tensor \"x\" in NumPy\n    >>> y = np.from_dlpack(x)  # doctest: +SKIP"
+          }
+        ]
+      }
+    ]
+  }
+}

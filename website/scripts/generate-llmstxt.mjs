@@ -5,6 +5,8 @@
  * Reads HTML files from out/, extracts text content, and produces:
  *   out/llms.txt       - index with section headers and links
  *   out/llms-full.txt  - all page content concatenated
+ *   public/llms.txt    - dev/runtime copy served by Next.js
+ *   public/llms-full.txt - dev/runtime copy served by Next.js
  *
  * Run: node scripts/generate-llmstxt.mjs
  */
@@ -16,6 +18,7 @@ import { JSDOM } from 'jsdom';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = path.resolve(__dirname, '..', 'out');
+const PUBLIC_DIR = path.resolve(__dirname, '..', 'public');
 const SITE_URL = 'https://aicrowd.github.io';
 const BASE_PATH = '/whest';
 
@@ -191,14 +194,28 @@ for (const [section, pages] of Object.entries(SECTIONS)) {
   llmsTxtLines.push('');
 }
 
+if (missing > 0) {
+  throw new Error(`[generate-llmstxt] ${missing} declared docs page(s) were missing from the build output`);
+}
+
 // Write output
 fs.mkdirSync(OUT_DIR, { recursive: true });
+fs.mkdirSync(PUBLIC_DIR, { recursive: true });
 
 const llmsTxtPath = path.join(OUT_DIR, 'llms.txt');
 const llmsFullPath = path.join(OUT_DIR, 'llms-full.txt');
+const publicLlmsTxtPath = path.join(PUBLIC_DIR, 'llms.txt');
+const publicLlmsFullPath = path.join(PUBLIC_DIR, 'llms-full.txt');
+const noJekyllPath = path.join(OUT_DIR, '.nojekyll');
 
 fs.writeFileSync(llmsTxtPath, llmsTxtLines.join('\n'), 'utf-8');
 fs.writeFileSync(llmsFullPath, llmsFullLines.join('\n'), 'utf-8');
+fs.writeFileSync(publicLlmsTxtPath, llmsTxtLines.join('\n'), 'utf-8');
+fs.writeFileSync(publicLlmsFullPath, llmsFullLines.join('\n'), 'utf-8');
+fs.writeFileSync(noJekyllPath, '', 'utf-8');
 
 console.log(`[generate-llmstxt] ${llmsTxtPath} (${found} pages found, ${missing} missing)`);
 console.log(`[generate-llmstxt] ${llmsFullPath}`);
+console.log(`[generate-llmstxt] ${publicLlmsTxtPath}`);
+console.log(`[generate-llmstxt] ${publicLlmsFullPath}`);
+console.log(`[generate-llmstxt] ${noJekyllPath}`);

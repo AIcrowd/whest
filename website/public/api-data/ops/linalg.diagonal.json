@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "slug": "linalg.diagonal",
+  "detail_href": "/docs/api/ops/linalg.diagonal/",
+  "detail_json_href": "/api-data/ops/linalg.diagonal.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_aliases.py#L100-L102",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.diagonal.html"
+  },
+  "op": {
+    "name": "linalg.diagonal",
+    "module": "numpy.linalg",
+    "whest_ref": "we.linalg.diagonal",
+    "numpy_ref": "np.linalg.diagonal",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "View of diagonal \u2014 delegates to whest.diagonal. Cost: 0 FLOPs.",
+    "summary": "Returns specified diagonals of a matrix (or a stack of matrices) ``x``.",
+    "signature": "we.linalg.diagonal(x, /, *, offset=0)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Returns specified diagonals of a matrix (or a stack of matrices) ``x``."
+          },
+          {
+            "type": "paragraph",
+            "text": "This function is Array API compatible, contrary to\n:py:func:`numpy.diagonal`, the matrix is assumed\nto be defined by the last two dimensions."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "(...,M,N) array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array having shape (..., M, N) and whose innermost two\ndimensions form MxN matrices."
+              }
+            ]
+          },
+          {
+            "name": "offset",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Offset specifying the off-diagonal relative to the main diagonal,\nwhere::"
+              },
+              {
+                "type": "paragraph",
+                "text": "    * offset = 0: the main diagonal.\n    * offset > 0: off-diagonal above the main diagonal.\n    * offset < 0: off-diagonal below the main diagonal."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "(...,min(N,M)) ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "An array containing the diagonals and whose shape is determined by\nremoving the last two dimensions and appending a dimension equal to\nthe size of the resulting diagonals. The returned array must have\nthe same data type as ``x``."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.arange(4).reshape(2, 2); a\narray([[0, 1],\n       [2, 3]])\n>>> np.linalg.diagonal(a)\narray([0, 3])"
+          },
+          {
+            "type": "paragraph",
+            "text": "A 3-D example:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.arange(8).reshape(2, 2, 2); a\narray([[[0, 1],\n        [2, 3]],\n       [[4, 5],\n        [6, 7]]])\n>>> np.linalg.diagonal(a)\narray([[0, 3],\n       [4, 7]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Diagonals adjacent to the main diagonal can be obtained by using the\n`offset` argument:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.arange(9).reshape(3, 3)\n>>> a\narray([[0, 1, 2],\n       [3, 4, 5],\n       [6, 7, 8]])\n>>> np.linalg.diagonal(a, offset=1)  # First superdiagonal\narray([1, 5])\n>>> np.linalg.diagonal(a, offset=2)  # Second superdiagonal\narray([2])\n>>> np.linalg.diagonal(a, offset=-1)  # First subdiagonal\narray([3, 7])\n>>> np.linalg.diagonal(a, offset=-2)  # Second subdiagonal\narray([6])"
+          },
+          {
+            "type": "paragraph",
+            "text": "The anti-diagonal can be obtained by reversing the order of elements\nusing either `numpy.flipud` or `numpy.fliplr`."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.arange(9).reshape(3, 3)\n>>> a\narray([[0, 1, 2],\n       [3, 4, 5],\n       [6, 7, 8]])\n>>> np.linalg.diagonal(np.fliplr(a))  # Horizontal flip\narray([2, 4, 6])\n>>> np.linalg.diagonal(np.flipud(a))  # Vertical flip\narray([6, 4, 2])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Note that the order in which the diagonal is retrieved varies depending\non the flip function."
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "numpy.diagonal"
+          }
+        ]
+      }
+    ]
+  }
+}

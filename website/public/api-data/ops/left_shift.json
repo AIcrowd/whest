@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "slug": "left_shift",
+  "detail_href": "/docs/api/ops/left_shift/",
+  "detail_json_href": "/api-data/ops/left_shift.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L73-L159",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.left_shift.html"
+  },
+  "op": {
+    "name": "left_shift",
+    "module": "numpy",
+    "whest_ref": "we.left_shift",
+    "numpy_ref": "np.left_shift",
+    "category": "counted_binary",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Element-wise left bit shift (legacy name).",
+    "summary": "Shift the bits of an integer to the left.",
+    "signature": "we.left_shift(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature])"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Shift the bits of an integer to the left."
+          },
+          {
+            "type": "paragraph",
+            "text": "Bits are shifted to the left by appending `x2` 0s at the right of `x1`.\nSince the internal representation of numbers is in binary format, this\noperation is equivalent to multiplying `x1` by ``2**x2``."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x1",
+            "type": "array_like of integer type",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input values."
+              }
+            ]
+          },
+          {
+            "name": "x2",
+            "type": "array_like of integer type",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Number of zeros to append to `x1`. Has to be non-negative.\nIf ``x1.shape != x2.shape``, they must be broadcastable to a common\nshape (which becomes the shape of the output)."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, None, or tuple of ndarray and None, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
+              }
+            ]
+          },
+          {
+            "name": "where",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the `out` array will be set to the ufunc result.\nElsewhere, the `out` array will retain its original value.\nNote that if an uninitialized `out` array is created via the default\n``out=None``, locations within it where the condition is False will\nremain uninitialized."
+              }
+            ]
+          },
+          {
+            "name": "**kwargs",
+            "type": "",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "For other keyword-only arguments, see the\n:ref:`ufunc docs <ufuncs.kwargs>`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "array of integer type",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Return `x1` with bits shifted `x2` times to the left.\nThis is a scalar if both `x1` and `x2` are scalars."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.binary_repr(5)\n'101'\n>>> np.left_shift(5, 2)\n20\n>>> np.binary_repr(20)\n'10100'"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.left_shift(5, [1,2,3])\narray([10, 20, 40])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Note that the dtype of the second argument may change the dtype of the\nresult and can lead to unexpected results in some cases (see\n:ref:`Casting Rules <ufuncs.casting>`):"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.left_shift(np.uint8(255), np.int64(1))  # Expect 254\n>>> print(a, type(a)) # Unexpected result due to upcasting\n510 <class 'numpy.int64'>\n>>> b = np.left_shift(np.uint8(255), np.uint8(1))\n>>> print(b, type(b))\n254 <class 'numpy.uint8'>"
+          },
+          {
+            "type": "paragraph",
+            "text": "The ``<<`` operator can be used as a shorthand for ``np.left_shift`` on\nndarrays."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x1 = 5\n>>> x2 = np.array([1, 2, 3])\n>>> x1 << x2\narray([10, 20, 40])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "right_shift \u2014 Shift the bits of an integer to the right."
+          },
+          {
+            "type": "paragraph",
+            "text": "binary_repr \u2014 Return the binary representation of the input number as a string."
+          }
+        ]
+      }
+    ]
+  }
+}

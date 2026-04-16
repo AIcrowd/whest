@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "slug": "random.set_state",
+  "detail_href": "/docs/api/ops/random.set_state/",
+  "detail_json_href": "/api-data/ops/random.set_state.json",
+  "source": {
+    "whest": null,
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.set_state.html"
+  },
+  "op": {
+    "name": "random.set_state",
+    "module": "numpy.random",
+    "whest_ref": "we.random.set_state",
+    "numpy_ref": "np.random.set_state",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Set internal state of generator.",
+    "summary": "Set the internal state of the generator from a tuple.",
+    "signature": "we.random.set_state(state)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Set the internal state of the generator from a tuple."
+          },
+          {
+            "type": "paragraph",
+            "text": "For use if one has reason to manually (re-)set the internal state of\nthe bit generator used by the RandomState instance. By default,\nRandomState uses the \"Mersenne Twister\"[1]_ pseudo-random number\ngenerating algorithm."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "state",
+            "type": "{tuple(str, ndarray of 624 uints, int, int, float), dict}",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The `state` tuple has the following items:"
+              },
+              {
+                "type": "paragraph",
+                "text": "1. the string 'MT19937', specifying the Mersenne Twister algorithm.\n2. a 1-D array of 624 unsigned integers ``keys``.\n3. an integer ``pos``.\n4. an integer ``has_gauss``.\n5. a float ``cached_gaussian``."
+              },
+              {
+                "type": "paragraph",
+                "text": "If state is a dictionary, it is directly set using the BitGenerators\n`state` property."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "None",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Returns 'None' on success."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "`set_state` and `get_state` are not needed to work with any of the\nrandom distributions in NumPy. If the internal state is manually altered,\nthe user should know exactly what he/she is doing."
+          },
+          {
+            "type": "paragraph",
+            "text": "For backwards compatibility, the form (str, array of 624 uints, int) is\nalso accepted although it is missing some information about the cached\nGaussian value: ``state = ('MT19937', keys, pos)``."
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "get_state"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "slug": "atleast_3d",
+  "detail_href": "/docs/api/ops/atleast_3d/",
+  "detail_json_href": "/api-data/ops/atleast_3d.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L658-L660",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.atleast_3d.html"
+  },
+  "op": {
+    "name": "atleast_3d",
+    "module": "numpy",
+    "whest_ref": "we.atleast_3d",
+    "numpy_ref": "np.atleast_3d",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "View inputs as arrays with at least three dimensions.",
+    "summary": "View inputs as arrays with at least three dimensions.",
+    "signature": "we.atleast_3d(*arys)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "View inputs as arrays with at least three dimensions."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "arys1, arys2, ...",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "One or more array-like sequences.  Non-array inputs are converted to\narrays.  Arrays that already have three or more dimensions are\npreserved."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "res1, res2, ...",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "An array, or tuple of arrays, each with ``a.ndim >= 3``.  Copies are\navoided where possible, and views with three or more dimensions are\nreturned.  For example, a 1-D array of shape ``(N,)`` becomes a view\nof shape ``(1, N, 1)``, and a 2-D array of shape ``(M, N)`` becomes a\nview of shape ``(M, N, 1)``."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.atleast_3d(3.0)\narray([[[3.]]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.arange(3.0)\n>>> np.atleast_3d(x).shape\n(1, 3, 1)"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.arange(12.0).reshape(4,3)\n>>> np.atleast_3d(x).shape\n(4, 3, 1)\n>>> np.atleast_3d(x).base is x.base  # x is a reshape, so not base itself\nTrue"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> for arr in np.atleast_3d([1, 2], [[1, 2]], [[[1, 2]]]):\n...     print(arr, arr.shape) # doctest: +SKIP\n...\n[[[1]\n  [2]]] (1, 2, 1)\n[[[1]\n  [2]]] (1, 2, 1)\n[[[1 2]]] (1, 1, 2)"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "atleast_1d, atleast_2d"
+          }
+        ]
+      }
+    ]
+  }
+}

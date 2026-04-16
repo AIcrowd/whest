@@ -55,7 +55,9 @@ test-numpy-compat:  ## Run NumPy's own tests against whest
 .PHONY: docs-build
 docs-build:  ## Generate API data and build website
 	$(UV) python scripts/generate_api_docs.py
+	$(UV) python scripts/generate_api_docs.py --verify
 	cd website && npm run build
+	cd website && npm run check:gh-pages
 
 .PHONY: docs-serve
 docs-serve:  ## Serve docs locally with live reload

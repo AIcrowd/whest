@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "slug": "linalg.matrix_power",
+  "detail_href": "/docs/api/ops/linalg.matrix_power/",
+  "detail_json_href": "/api-data/ops/linalg.matrix_power.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_compound.py#L109-L121",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.matrix_power.html"
+  },
+  "op": {
+    "name": "linalg.matrix_power",
+    "module": "numpy.linalg",
+    "whest_ref": "we.linalg.matrix_power",
+    "numpy_ref": "np.linalg.matrix_power",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "log2(k) * n^3",
+    "cost_formula_latex": "$\\lfloor\\log_2 k\\rfloor \\cdot n^3$",
+    "notes": "Matrix power. Cost: $(\\lfloor\\log_2 k\\rfloor + \\text{popcount}(k) - 1) \\cdot n^3$ (exponentiation by squaring).",
+    "summary": "Raise a square matrix to the (integer) power `n`.",
+    "signature": "we.linalg.matrix_power(a, n)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Raise a square matrix to the (integer) power `n`."
+          },
+          {
+            "type": "paragraph",
+            "text": "For positive integers `n`, the power is computed by repeated matrix\nsquarings and matrix multiplications. If ``n == 0``, the identity matrix\nof the same shape as M is returned. If ``n < 0``, the inverse\nis computed and then raised to the ``abs(n)``."
+          },
+          {
+            "type": "directive",
+            "name": "note:: Stacks of object matrices are not currently supported.",
+            "body": "",
+            "raw": ".. note:: Stacks of object matrices are not currently supported."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "(..., M, M) array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Matrix to be \"powered\"."
+              }
+            ]
+          },
+          {
+            "name": "n",
+            "type": "int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The exponent can be any integer or long integer, positive,\nnegative, or zero."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "a**n",
+            "type": "(..., M, M) ndarray or matrix object",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The return value is the same shape and type as `M`;\nif the exponent is positive or zero then the type of the\nelements is the same as those of `M`. If the exponent is\nnegative the elements are floating-point."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> from numpy.linalg import matrix_power\n>>> i = np.array([[0, 1], [-1, 0]]) # matrix equiv. of the imaginary unit\n>>> matrix_power(i, 3) # should = -i\narray([[ 0, -1],\n       [ 1,  0]])\n>>> matrix_power(i, 0)\narray([[1, 0],\n       [0, 1]])\n>>> matrix_power(i, -3) # should = 1/(-i) = i, but w/ f.p. elements\narray([[ 0.,  1.],\n       [-1.,  0.]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Somewhat more sophisticated example"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> q = np.zeros((4, 4))\n>>> q[0:2, 0:2] = -i\n>>> q[2:4, 2:4] = i\n>>> q # one of the three quaternion units not equal to 1\narray([[ 0., -1.,  0.,  0.],\n       [ 1.,  0.,  0.,  0.],\n       [ 0.,  0.,  0.,  1.],\n       [ 0.,  0., -1.,  0.]])\n>>> matrix_power(q, 2) # = -np.eye(4)\narray([[-1.,  0.,  0.,  0.],\n       [ 0., -1.,  0.,  0.],\n       [ 0.,  0., -1.,  0.],\n       [ 0.,  0.,  0., -1.]])"
+          }
+        ]
+      }
+    ]
+  }
+}

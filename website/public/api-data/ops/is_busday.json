@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "slug": "is_busday",
+  "detail_href": "/docs/api/ops/is_busday/",
+  "detail_json_href": "/api-data/ops/is_busday.json",
+  "source": {
+    "whest": null,
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.is_busday.html"
+  },
+  "op": {
+    "name": "is_busday",
+    "module": "numpy",
+    "whest_ref": "we.is_busday",
+    "numpy_ref": "np.is_busday",
+    "category": "blacklisted",
+    "status": "blocked",
+    "weight": 1.0,
+    "cost_formula": "N/A",
+    "cost_formula_latex": "N/A",
+    "notes": "Calculates which of given dates are valid days. Not supported.",
+    "summary": "Calculates which of the given dates are valid days, and which are not.",
+    "signature": "we.is_busday( dates, weekmask='1111100', holidays=None, busdaycal=None, out=None )"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Calculates which of the given dates are valid days, and which are not."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "dates",
+            "type": "array_like of datetime64[D]",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The array of dates to process."
+              }
+            ]
+          },
+          {
+            "name": "weekmask",
+            "type": "str or array_like of bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A seven-element array indicating which of Monday through Sunday are\nvalid days. May be specified as a length-seven list or array, like\n[1,1,1,1,1,0,0]; a length-seven string, like '1111100'; or a string\nlike \"Mon Tue Wed Thu Fri\", made up of 3-character abbreviations for\nweekdays, optionally separated by white space. Valid abbreviations\nare: Mon Tue Wed Thu Fri Sat Sun"
+              }
+            ]
+          },
+          {
+            "name": "holidays",
+            "type": "array_like of datetime64[D], optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "An array of dates to consider as invalid dates.  They may be\nspecified in any order, and NaT (not-a-time) dates are ignored.\nThis list is saved in a normalized form that is suited for\nfast calculations of valid days."
+              }
+            ]
+          },
+          {
+            "name": "busdaycal",
+            "type": "busdaycalendar, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A `busdaycalendar` object which specifies the valid days. If this\nparameter is provided, neither weekmask nor holidays may be\nprovided."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "array of bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If provided, this array is filled with the result."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "array of bool",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "An array with the same shape as ``dates``, containing True for\neach valid day, and False for each invalid day."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> # The weekdays are Friday, Saturday, and Monday\n... np.is_busday(['2011-07-01', '2011-07-02', '2011-07-18'],\n...                 holidays=['2011-07-01', '2011-07-04', '2011-07-17'])\narray([False, False,  True])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "busdaycalendar \u2014 An object that specifies a custom set of valid days."
+          },
+          {
+            "type": "paragraph",
+            "text": "busday_offset \u2014 Applies an offset counted in valid days."
+          },
+          {
+            "type": "paragraph",
+            "text": "busday_count \u2014 Counts how many valid days are in a half-open date range."
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "slug": "fmod",
+  "detail_href": "/docs/api/ops/fmod/",
+  "detail_json_href": "/api-data/ops/fmod.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L73-L159",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.fmod.html"
+  },
+  "op": {
+    "name": "fmod",
+    "module": "numpy",
+    "whest_ref": "we.fmod",
+    "numpy_ref": "np.fmod",
+    "category": "counted_binary",
+    "status": "supported",
+    "weight": 16.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Element-wise C-style fmod (remainder toward zero).",
+    "summary": "Returns the element-wise remainder of division.",
+    "signature": "we.fmod(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature])"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Returns the element-wise remainder of division."
+          },
+          {
+            "type": "paragraph",
+            "text": "This is the NumPy implementation of the C library function fmod, the\nremainder has the same sign as the dividend `x1`. It is equivalent to\nthe Matlab(TM) ``rem`` function and should not be confused with the\nPython modulus operator ``x1 % x2``."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x1",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Dividend."
+              }
+            ]
+          },
+          {
+            "name": "x2",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Divisor.\nIf ``x1.shape != x2.shape``, they must be broadcastable to a common\nshape (which becomes the shape of the output)."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, None, or tuple of ndarray and None, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
+              }
+            ]
+          },
+          {
+            "name": "where",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the `out` array will be set to the ufunc result.\nElsewhere, the `out` array will retain its original value.\nNote that if an uninitialized `out` array is created via the default\n``out=None``, locations within it where the condition is False will\nremain uninitialized."
+              }
+            ]
+          },
+          {
+            "name": "**kwargs",
+            "type": "",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "For other keyword-only arguments, see the\n:ref:`ufunc docs <ufuncs.kwargs>`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "y",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The remainder of the division of `x1` by `x2`.\nThis is a scalar if both `x1` and `x2` are scalars."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The result of the modulo operation for negative dividend and divisors\nis bound by conventions. For `fmod`, the sign of result is the sign of\nthe dividend, while for `remainder` the sign of the result is the sign\nof the divisor. The `fmod` function is equivalent to the Matlab(TM)\n``rem`` function."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.fmod([-3, -2, -1, 1, 2, 3], 2)\narray([-1,  0, -1,  1,  0,  1])\n>>> np.remainder([-3, -2, -1, 1, 2, 3], 2)\narray([1, 0, 1, 1, 0, 1])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.fmod([5, 3], [2, 2.])\narray([ 1.,  1.])\n>>> a = np.arange(-3, 3).reshape(3, 2)\n>>> a\narray([[-3, -2],\n       [-1,  0],\n       [ 1,  2]])\n>>> np.fmod(a, [2,2])\narray([[-1,  0],\n       [-1,  0],\n       [ 1,  0]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "remainder \u2014 Equivalent to the Python ``%`` operator."
+          },
+          {
+            "type": "paragraph",
+            "text": "divide"
+          }
+        ]
+      }
+    ]
+  }
+}

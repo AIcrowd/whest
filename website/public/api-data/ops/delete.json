@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "slug": "delete",
+  "detail_href": "/docs/api/ops/delete/",
+  "detail_json_href": "/api-data/ops/delete.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L827-L835",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.delete.html"
+  },
+  "op": {
+    "name": "delete",
+    "module": "numpy",
+    "whest_ref": "we.delete",
+    "numpy_ref": "np.delete",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Return array with sub-arrays deleted along axis. Cost: num deleted.",
+    "summary": "Return a new array with sub-arrays along an axis deleted. For a one dimensional array, this returns those entries not returned by `arr[obj]`.",
+    "signature": "we.delete(arr, obj, axis=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return a new array with sub-arrays along an axis deleted. For a one\ndimensional array, this returns those entries not returned by\n`arr[obj]`."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "arr",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array."
+              }
+            ]
+          },
+          {
+            "name": "obj",
+            "type": "slice, int, array-like of ints or bools",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Indicate indices of sub-arrays to remove along the specified axis."
+              },
+              {
+                "type": "directive",
+                "name": "versionchanged:: 1.19.0",
+                "body": "    Boolean indices are now treated as a mask of elements to remove,\n    rather than being cast to the integers 0 and 1.",
+                "raw": ".. versionchanged:: 1.19.0\n    Boolean indices are now treated as a mask of elements to remove,\n    rather than being cast to the integers 0 and 1."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The axis along which to delete the subarray defined by `obj`.\nIf `axis` is None, `obj` is applied to the flattened array."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A copy of `arr` with the elements specified by `obj` removed. Note\nthat `delete` does not occur in-place. If `axis` is None, `out` is\na flattened array."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Often it is preferable to use a boolean mask. For example:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> arr = np.arange(12) + 1\n>>> mask = np.ones(len(arr), dtype=bool)\n>>> mask[[0,2,4]] = False\n>>> result = arr[mask,...]"
+          },
+          {
+            "type": "paragraph",
+            "text": "Is equivalent to ``np.delete(arr, [0,2,4], axis=0)``, but allows further\nuse of `mask`."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> arr = np.array([[1,2,3,4], [5,6,7,8], [9,10,11,12]])\n>>> arr\narray([[ 1,  2,  3,  4],\n       [ 5,  6,  7,  8],\n       [ 9, 10, 11, 12]])\n>>> np.delete(arr, 1, 0)\narray([[ 1,  2,  3,  4],\n       [ 9, 10, 11, 12]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.delete(arr, np.s_[::2], 1)\narray([[ 2,  4],\n       [ 6,  8],\n       [10, 12]])\n>>> np.delete(arr, [1,3,5], None)\narray([ 1,  3,  5,  7,  8,  9, 10, 11, 12])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "insert \u2014 Insert elements into an array."
+          },
+          {
+            "type": "paragraph",
+            "text": "append \u2014 Append elements at the end of an array."
+          }
+        ]
+      }
+    ]
+  }
+}

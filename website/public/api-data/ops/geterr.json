@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "slug": "geterr",
+  "detail_href": "/docs/api/ops/geterr/",
+  "detail_json_href": "/api-data/ops/geterr.json",
+  "source": {
+    "whest": null,
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/_ufunc_config.py#L109-L154"
+  },
+  "op": {
+    "name": "geterr",
+    "module": "numpy",
+    "whest_ref": "we.geterr",
+    "numpy_ref": "np.geterr",
+    "category": "blacklisted",
+    "status": "blocked",
+    "weight": 1.0,
+    "cost_formula": "N/A",
+    "cost_formula_latex": "N/A",
+    "notes": "Get current way of handling floating-point errors. Not supported.",
+    "summary": "Get the current way of handling floating-point errors.",
+    "signature": "we.geterr()"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Get the current way of handling floating-point errors."
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "res",
+            "type": "dict",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A dictionary with keys \"divide\", \"over\", \"under\", and \"invalid\",\nwhose values are from the strings \"ignore\", \"print\", \"log\", \"warn\",\n\"raise\", and \"call\". The keys represent possible floating-point\nexceptions, and the values define how these exceptions are handled."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "For complete documentation of the types of floating-point exceptions and\ntreatment options, see `seterr`."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.geterr()\n{'divide': 'warn', 'over': 'warn', 'under': 'ignore', 'invalid': 'warn'}\n>>> np.arange(3.) / np.arange(3.)  # doctest: +SKIP\narray([nan,  1.,  1.])\nRuntimeWarning: invalid value encountered in divide"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> oldsettings = np.seterr(all='warn', invalid='raise')\n>>> np.geterr()\n{'divide': 'warn', 'over': 'warn', 'under': 'warn', 'invalid': 'raise'}\n>>> np.arange(3.) / np.arange(3.)\nTraceback (most recent call last):\n  ...\nFloatingPointError: invalid value encountered in divide\n>>> oldsettings = np.seterr(**oldsettings)  # restore original"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "geterrcall, seterr, seterrcall"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "slug": "argwhere",
+  "detail_href": "/docs/api/ops/argwhere/",
+  "detail_json_href": "/api-data/ops/argwhere.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L591-L600",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.argwhere.html"
+  },
+  "op": {
+    "name": "argwhere",
+    "module": "numpy",
+    "whest_ref": "we.argwhere",
+    "numpy_ref": "np.argwhere",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 4.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Find indices of non-zero elements. Cost: numel(input).",
+    "summary": "Find the indices of array elements that are non-zero, grouped by element.",
+    "signature": "we.argwhere(a)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Find the indices of array elements that are non-zero, grouped by element."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input data."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "index_array",
+            "type": "(N, a.ndim) ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Indices of elements that are non-zero. Indices are grouped by element.\nThis array will have shape ``(N, a.ndim)`` where ``N`` is the number of\nnon-zero items."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "``np.argwhere(a)`` is almost the same as ``np.transpose(np.nonzero(a))``,\nbut produces a result of the correct shape for a 0D array."
+          },
+          {
+            "type": "paragraph",
+            "text": "The output of ``argwhere`` is not suitable for indexing arrays.\nFor this purpose use ``nonzero(a)`` instead."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> x = np.arange(6).reshape(2,3)\n>>> x\narray([[0, 1, 2],\n       [3, 4, 5]])\n>>> np.argwhere(x>1)\narray([[0, 2],\n       [1, 0],\n       [1, 1],\n       [1, 2]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "where, nonzero"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "slug": "indices",
+  "detail_href": "/docs/api/ops/indices/",
+  "detail_json_href": "/api-data/ops/indices.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L1055-L1062",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L1745-L1844"
+  },
+  "op": {
+    "name": "indices",
+    "module": "numpy",
+    "whest_ref": "we.indices",
+    "numpy_ref": "np.indices",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Return array representing indices of a grid. Cost: numel(output).",
+    "summary": "Return an array representing the indices of a grid.",
+    "signature": "we.indices(dimensions, dtype=<class 'int'>, sparse=False)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return an array representing the indices of a grid."
+          },
+          {
+            "type": "paragraph",
+            "text": "Compute an array where the subarrays contain index values 0, 1, ...\nvarying only along the corresponding axis."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "dimensions",
+            "type": "sequence of ints",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The shape of the grid."
+              }
+            ]
+          },
+          {
+            "name": "dtype",
+            "type": "dtype, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Data type of the result."
+              }
+            ]
+          },
+          {
+            "name": "sparse",
+            "type": "boolean, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Return a sparse representation of the grid instead of a dense\nrepresentation. Default is False."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "grid",
+            "type": "one ndarray or tuple of ndarrays",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If sparse is False:\n    Returns one array of grid indices,\n    ``grid.shape = (len(dimensions),) + tuple(dimensions)``.\nIf sparse is True:\n    Returns a tuple of arrays, with\n    ``grid[i].shape = (1, ..., 1, dimensions[i], 1, ..., 1)`` with\n    dimensions[i] in the ith place"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The output shape in the dense case is obtained by prepending the number\nof dimensions in front of the tuple of dimensions, i.e. if `dimensions`\nis a tuple ``(r0, ..., rN-1)`` of length ``N``, the output shape is\n``(N, r0, ..., rN-1)``."
+          },
+          {
+            "type": "paragraph",
+            "text": "The subarrays ``grid[k]`` contains the N-D array of indices along the\n``k-th`` axis. Explicitly::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    grid[k, i0, i1, ..., iN-1] = ik"
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> grid = np.indices((2, 3))\n>>> grid.shape\n(2, 2, 3)\n>>> grid[0]        # row indices\narray([[0, 0, 0],\n       [1, 1, 1]])\n>>> grid[1]        # column indices\narray([[0, 1, 2],\n       [0, 1, 2]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "The indices can be used as an index into an array."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.arange(20).reshape(5, 4)\n>>> row, col = np.indices((2, 3))\n>>> x[row, col]\narray([[0, 1, 2],\n       [4, 5, 6]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Note that it would be more straightforward in the above example to\nextract the required elements directly with ``x[:2, :3]``."
+          },
+          {
+            "type": "paragraph",
+            "text": "If sparse is set to true, the grid will be returned in a sparse\nrepresentation."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> i, j = np.indices((2, 3), sparse=True)\n>>> i.shape\n(2, 1)\n>>> j.shape\n(1, 3)\n>>> i        # row indices\narray([[0],\n       [1]])\n>>> j        # column indices\narray([[0, 1, 2]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "mgrid, ogrid, meshgrid"
+          }
+        ]
+      }
+    ]
+  }
+}

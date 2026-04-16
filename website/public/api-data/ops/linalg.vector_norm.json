@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "slug": "linalg.vector_norm",
+  "detail_href": "/docs/api/ops/linalg.vector_norm/",
+  "detail_json_href": "/api-data/ops/linalg.vector_norm.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L251-L268",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.vector_norm.html"
+  },
+  "op": {
+    "name": "linalg.vector_norm",
+    "module": "numpy.linalg",
+    "whest_ref": "we.linalg.vector_norm",
+    "numpy_ref": "np.linalg.vector_norm",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel",
+    "cost_formula_latex": "$n$",
+    "notes": "Vector norm. Cost: numel (or 2*numel for general p-norm).",
+    "summary": "Computes the vector norm of a vector (or batch of vectors) ``x``.",
+    "signature": "we.linalg.vector_norm(x, ord=2, axis=None, keepdims=False)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Computes the vector norm of a vector (or batch of vectors) ``x``."
+          },
+          {
+            "type": "paragraph",
+            "text": "This function is Array API compatible."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "{None, int, 2-tuple of ints}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If an integer, ``axis`` specifies the axis (dimension) along which\nto compute vector norms. If an n-tuple, ``axis`` specifies the axes\n(dimensions) along which to compute batched vector norms. If ``None``,\nthe vector norm must be computed over all array values (i.e.,\nequivalent to computing the vector norm of a flattened array).\nDefault: ``None``."
+              }
+            ]
+          },
+          {
+            "name": "keepdims",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If this is set to True, the axes which are normed over are left in\nthe result as dimensions with size one. Default: False."
+              }
+            ]
+          },
+          {
+            "name": "ord",
+            "type": "{int, float, inf, -inf}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The order of the norm. For details see the table under ``Notes``\nin `numpy.linalg.norm`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> from numpy import linalg as LA\n>>> a = np.arange(9) + 1\n>>> a\narray([1, 2, 3, 4, 5, 6, 7, 8, 9])\n>>> b = a.reshape((3, 3))\n>>> b\narray([[1, 2, 3],\n       [4, 5, 6],\n       [7, 8, 9]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> LA.vector_norm(b)\n16.881943016134134\n>>> LA.vector_norm(b, ord=np.inf)\n9.0\n>>> LA.vector_norm(b, ord=-np.inf)\n1.0"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> LA.vector_norm(b, ord=0)\n9.0\n>>> LA.vector_norm(b, ord=1)\n45.0\n>>> LA.vector_norm(b, ord=-1)\n0.3534857623790153\n>>> LA.vector_norm(b, ord=2)\n16.881943016134134\n>>> LA.vector_norm(b, ord=-2)\n0.8058837395885292"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "numpy.linalg.norm \u2014 Generic norm function"
+          }
+        ]
+      }
+    ]
+  }
+}

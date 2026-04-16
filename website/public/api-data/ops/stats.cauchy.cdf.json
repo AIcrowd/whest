@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "slug": "stats.cauchy.cdf",
+  "detail_href": "/docs/api/ops/stats.cauchy.cdf/",
+  "detail_json_href": "/api-data/ops/stats.cauchy.cdf.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_cauchy.py#L43-L52",
+    "numpy": ""
+  },
+  "op": {
+    "name": "stats.cauchy.cdf",
+    "module": "whest.stats",
+    "whest_ref": "we.stats.cauchy.cdf",
+    "numpy_ref": "scipy.stats.cauchy.cdf",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 16.0,
+    "cost_formula": "5n",
+    "cost_formula_latex": "$5n$",
+    "notes": "Cauchy CDF; cost = numel(input).",
+    "summary": "Cumulative distribution function at *x*.",
+    "signature": "we.stats.cauchy.cdf(x, loc=0, scale=1)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Cumulative distribution function at *x*."
+          },
+          {
+            "type": "paragraph",
+            "text": "Equivalent to ``scipy.stats.cauchy.cdf(x, loc, scale)``."
+          }
+        ]
+      }
+    ]
+  }
+}

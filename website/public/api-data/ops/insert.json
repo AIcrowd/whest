@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "slug": "insert",
+  "detail_href": "/docs/api/ops/insert/",
+  "detail_json_href": "/api-data/ops/insert.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L1068-L1075",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.insert.html"
+  },
+  "op": {
+    "name": "insert",
+    "module": "numpy",
+    "whest_ref": "we.insert",
+    "numpy_ref": "np.insert",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 4.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Insert values along axis before given indices. Cost: numel(values).",
+    "summary": "Insert values along the given axis before the given indices.",
+    "signature": "we.insert(arr, obj, values, axis=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Insert values along the given axis before the given indices."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "arr",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array."
+              }
+            ]
+          },
+          {
+            "name": "obj",
+            "type": "slice, int, array-like of ints or bools",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Object that defines the index or indices before which `values` is\ninserted."
+              },
+              {
+                "type": "directive",
+                "name": "versionchanged:: 2.1.2",
+                "body": "    Boolean indices are now treated as a mask of elements to insert,\n    rather than being cast to the integers 0 and 1.",
+                "raw": ".. versionchanged:: 2.1.2\n    Boolean indices are now treated as a mask of elements to insert,\n    rather than being cast to the integers 0 and 1."
+              },
+              {
+                "type": "paragraph",
+                "text": "Support for multiple insertions when `obj` is a single scalar or a\nsequence with one element (similar to calling insert multiple\ntimes)."
+              }
+            ]
+          },
+          {
+            "name": "values",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Values to insert into `arr`. If the type of `values` is different\nfrom that of `arr`, `values` is converted to the type of `arr`.\n`values` should be shaped so that ``arr[...,obj,...] = values``\nis legal."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Axis along which to insert `values`.  If `axis` is None then `arr`\nis flattened first."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A copy of `arr` with `values` inserted.  Note that `insert`\ndoes not occur in-place: a new array is returned. If\n`axis` is None, `out` is a flattened array."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Note that for higher dimensional inserts ``obj=0`` behaves very different\nfrom ``obj=[0]`` just like ``arr[:,0,:] = values`` is different from\n``arr[:,[0],:] = values``. This is because of the difference between basic\nand advanced :ref:`indexing <basics.indexing>`."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> a = np.arange(6).reshape(3, 2)\n>>> a\narray([[0, 1],\n       [2, 3],\n       [4, 5]])\n>>> np.insert(a, 1, 6)\narray([0, 6, 1, 2, 3, 4, 5])\n>>> np.insert(a, 1, 6, axis=1)\narray([[0, 6, 1],\n       [2, 6, 3],\n       [4, 6, 5]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Difference between sequence and scalars,\nshowing how ``obj=[1]`` behaves different from ``obj=1``:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.insert(a, [1], [[7],[8],[9]], axis=1)\narray([[0, 7, 1],\n       [2, 8, 3],\n       [4, 9, 5]])\n>>> np.insert(a, 1, [[7],[8],[9]], axis=1)\narray([[0, 7, 8, 9, 1],\n       [2, 7, 8, 9, 3],\n       [4, 7, 8, 9, 5]])\n>>> np.array_equal(np.insert(a, 1, [7, 8, 9], axis=1),\n...                np.insert(a, [1], [[7],[8],[9]], axis=1))\nTrue"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> b = a.flatten()\n>>> b\narray([0, 1, 2, 3, 4, 5])\n>>> np.insert(b, [2, 2], [6, 7])\narray([0, 1, 6, 7, 2, 3, 4, 5])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.insert(b, slice(2, 4), [7, 8])\narray([0, 1, 7, 2, 8, 3, 4, 5])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.insert(b, [2, 2], [7.13, False]) # type casting\narray([0, 1, 7, 0, 2, 3, 4, 5])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.arange(8).reshape(2, 4)\n>>> idx = (1, 3)\n>>> np.insert(x, idx, 999, axis=1)\narray([[  0, 999,   1,   2, 999,   3],\n       [  4, 999,   5,   6, 999,   7]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "append \u2014 Append elements at the end of an array."
+          },
+          {
+            "type": "paragraph",
+            "text": "concatenate \u2014 Join a sequence of arrays along an existing axis."
+          },
+          {
+            "type": "paragraph",
+            "text": "delete \u2014 Delete elements from an array."
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "slug": "trace",
+  "detail_href": "/docs/api/ops/trace/",
+  "detail_json_href": "/api-data/ops/trace.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L23-L31",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.trace.html"
+  },
+  "op": {
+    "name": "trace",
+    "module": "numpy",
+    "whest_ref": "we.trace",
+    "numpy_ref": "np.trace",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Diagonal sum; cost = min(n,m).",
+    "summary": "Return the sum along diagonals of the array.",
+    "signature": "we.trace(a, offset=0, axis1=0, axis2=1, dtype=None, out=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return the sum along diagonals of the array."
+          },
+          {
+            "type": "paragraph",
+            "text": "If `a` is 2-D, the sum along its diagonal with the given offset\nis returned, i.e., the sum of elements ``a[i,i+offset]`` for all i."
+          },
+          {
+            "type": "paragraph",
+            "text": "If `a` has more than two dimensions, then the axes specified by axis1 and\naxis2 are used to determine the 2-D sub-arrays whose traces are returned.\nThe shape of the resulting array is the same as that of `a` with `axis1`\nand `axis2` removed."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array, from which the diagonals are taken."
+              }
+            ]
+          },
+          {
+            "name": "offset",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Offset of the diagonal from the main diagonal. Can be both positive\nand negative. Defaults to 0."
+              }
+            ]
+          },
+          {
+            "name": "axis1, axis2",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Axes to be used as the first and second axis of the 2-D sub-arrays\nfrom which the diagonals should be taken. Defaults are the first two\naxes of `a`."
+              }
+            ]
+          },
+          {
+            "name": "dtype",
+            "type": "dtype, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Determines the data-type of the returned array and of the accumulator\nwhere the elements are summed. If dtype has the value None and `a` is\nof integer type of precision less than the default integer\nprecision, then the default integer precision is used. Otherwise,\nthe precision is the same as that of `a`."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Array into which the output is placed. Its type is preserved and\nit must be of the right shape to hold the output."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "sum_along_diagonals",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If `a` is 2-D, the sum along the diagonal is returned.  If `a` has\nlarger dimensions, then an array of sums along diagonals is returned."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.trace(np.eye(3))\n3.0\n>>> a = np.arange(8).reshape((2,2,2))\n>>> np.trace(a)\narray([6, 8])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.arange(24).reshape((2,2,2,3))\n>>> np.trace(a).shape\n(2, 3)"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "diag, diagonal, diagflat"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "slug": "i0",
+  "detail_href": "/docs/api/ops/i0/",
+  "detail_json_href": "/api-data/ops/i0.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29-L42",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.i0.html"
+  },
+  "op": {
+    "name": "i0",
+    "module": "numpy",
+    "whest_ref": "we.i0",
+    "numpy_ref": "np.i0",
+    "category": "counted_unary",
+    "status": "supported",
+    "weight": 16.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Modified Bessel function of order 0, element-wise.",
+    "summary": "Modified Bessel function of the first kind, order 0.",
+    "signature": "we.i0(x)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Modified Bessel function of the first kind, order 0."
+          },
+          {
+            "type": "paragraph",
+            "text": "Usually denoted :math:`I_0`."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "array_like of float",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Argument of the Bessel function."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray, shape = x.shape, dtype = float",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The modified Bessel function evaluated at each of the elements of `x`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The scipy implementation is recommended over this function: it is a\nproper ufunc written in C, and more than an order of magnitude faster."
+          },
+          {
+            "type": "paragraph",
+            "text": "We use the algorithm published by Clenshaw [1]_ and referenced by\nAbramowitz and Stegun [2]_, for which the function domain is\npartitioned into the two intervals [0,8] and (8,inf), and Chebyshev\npolynomial expansions are employed in each interval. Relative error on\nthe domain [0,30] using IEEE arithmetic is documented [3]_ as having a\npeak of 5.8e-16 with an rms of 1.4e-16 (n = 30000)."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.i0(0.)\narray(1.0)\n>>> np.i0([0, 1, 2, 3])\narray([1.        , 1.26606588, 2.2795853 , 4.88079259])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "scipy.special.i0, scipy.special.iv, scipy.special.ive"
+          }
+        ]
+      }
+    ]
+  }
+}

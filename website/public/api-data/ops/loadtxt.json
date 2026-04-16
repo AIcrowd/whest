@@ -1,0 +1,377 @@
+{
+  "schema_version": 1,
+  "slug": "loadtxt",
+  "detail_href": "/docs/api/ops/loadtxt/",
+  "detail_json_href": "/api-data/ops/loadtxt.json",
+  "source": {
+    "whest": null,
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_npyio_impl.py#L1129-L1400"
+  },
+  "op": {
+    "name": "loadtxt",
+    "module": "numpy",
+    "whest_ref": "we.loadtxt",
+    "numpy_ref": "np.loadtxt",
+    "category": "blacklisted",
+    "status": "blocked",
+    "weight": 1.0,
+    "cost_formula": "N/A",
+    "cost_formula_latex": "N/A",
+    "notes": "Load data from text file. Not supported.",
+    "summary": "Load data from a text file.",
+    "signature": "we.loadtxt(fname, dtype=<class 'float'>, comments='#', delimiter=None, converters=None, skiprows=0, usecols=None, unpack=False, ndmin=0, encoding=None, max_rows=None, *, quotechar=None, like=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Load data from a text file."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "fname",
+            "type": "file, str, pathlib.Path, list of str, generator",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "File, filename, list, or generator to read.  If the filename\nextension is ``.gz`` or ``.bz2``, the file is first decompressed. Note\nthat generators must return bytes or strings. The strings\nin a list or produced by a generator are treated as lines."
+              }
+            ]
+          },
+          {
+            "name": "dtype",
+            "type": "data-type, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Data-type of the resulting array; default: float.  If this is a\nstructured data-type, the resulting array will be 1-dimensional, and\neach row will be interpreted as an element of the array.  In this\ncase, the number of columns used must match the number of fields in\nthe data-type."
+              }
+            ]
+          },
+          {
+            "name": "comments",
+            "type": "str or sequence of str or None, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The characters or list of characters used to indicate the start of a\ncomment. None implies no comments. For backwards compatibility, byte\nstrings will be decoded as 'latin1'. The default is '#'."
+              }
+            ]
+          },
+          {
+            "name": "delimiter",
+            "type": "str, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The character used to separate the values. For backwards compatibility,\nbyte strings will be decoded as 'latin1'. The default is whitespace."
+              },
+              {
+                "type": "directive",
+                "name": "versionchanged:: 1.23.0",
+                "body": "   Only single character delimiters are supported. Newline characters\n   cannot be used as the delimiter.",
+                "raw": ".. versionchanged:: 1.23.0\n   Only single character delimiters are supported. Newline characters\n   cannot be used as the delimiter."
+              }
+            ]
+          },
+          {
+            "name": "converters",
+            "type": "dict or callable, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Converter functions to customize value parsing. If `converters` is\ncallable, the function is applied to all columns, else it must be a\ndict that maps column number to a parser function.\nSee examples for further details.\nDefault: None."
+              },
+              {
+                "type": "directive",
+                "name": "versionchanged:: 1.23.0",
+                "body": "   The ability to pass a single callable to be applied to all columns\n   was added.",
+                "raw": ".. versionchanged:: 1.23.0\n   The ability to pass a single callable to be applied to all columns\n   was added."
+              }
+            ]
+          },
+          {
+            "name": "skiprows",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Skip the first `skiprows` lines, including comments; default: 0."
+              }
+            ]
+          },
+          {
+            "name": "usecols",
+            "type": "int or sequence, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Which columns to read, with 0 being the first. For example,\n``usecols = (1,4,5)`` will extract the 2nd, 5th and 6th columns.\nThe default, None, results in all columns being read."
+              }
+            ]
+          },
+          {
+            "name": "unpack",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If True, the returned array is transposed, so that arguments may be\nunpacked using ``x, y, z = loadtxt(...)``.  When used with a\nstructured data-type, arrays are returned for each field.\nDefault is False."
+              }
+            ]
+          },
+          {
+            "name": "ndmin",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The returned array will have at least `ndmin` dimensions.\nOtherwise mono-dimensional axes will be squeezed.\nLegal values: 0 (default), 1 or 2."
+              }
+            ]
+          },
+          {
+            "name": "encoding",
+            "type": "str, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Encoding used to decode the inputfile. Does not apply to input streams.\nThe special value 'bytes' enables backward compatibility workarounds\nthat ensures you receive byte arrays as results if possible and passes\n'latin1' encoded strings to converters. Override this value to receive\nunicode arrays and pass strings as input to converters.  If set to None\nthe system default is used. The default value is 'bytes'."
+              },
+              {
+                "type": "directive",
+                "name": "versionchanged:: 2.0",
+                "body": "    Before NumPy 2, the default was ``'bytes'`` for Python 2\n    compatibility. The default is now ``None``.",
+                "raw": ".. versionchanged:: 2.0\n    Before NumPy 2, the default was ``'bytes'`` for Python 2\n    compatibility. The default is now ``None``."
+              }
+            ]
+          },
+          {
+            "name": "max_rows",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Read `max_rows` rows of content after `skiprows` lines. The default is\nto read all the rows. Note that empty rows containing no data such as\nempty lines and comment lines are not counted towards `max_rows`,\nwhile such lines are counted in `skiprows`."
+              },
+              {
+                "type": "directive",
+                "name": "versionchanged:: 1.23.0",
+                "body": "    Lines containing no data, including comment lines (e.g., lines\n    starting with '#' or as specified via `comments`) are not counted\n    towards `max_rows`.",
+                "raw": ".. versionchanged:: 1.23.0\n    Lines containing no data, including comment lines (e.g., lines\n    starting with '#' or as specified via `comments`) are not counted\n    towards `max_rows`."
+              }
+            ]
+          },
+          {
+            "name": "quotechar",
+            "type": "unicode character or None, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The character used to denote the start and end of a quoted item.\nOccurrences of the delimiter or comment characters are ignored within\na quoted item. The default value is ``quotechar=None``, which means\nquoting support is disabled."
+              },
+              {
+                "type": "paragraph",
+                "text": "If two consecutive instances of `quotechar` are found within a quoted\nfield, the first is treated as an escape character. See examples."
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 1.23.0",
+                "body": "",
+                "raw": ".. versionadded:: 1.23.0"
+              }
+            ]
+          },
+          {
+            "name": "like",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "    Reference object to allow the creation of arrays which are not\n    NumPy arrays. If an array-like passed in as ``like`` supports\n    the ``__array_function__`` protocol, the result will be defined\n    by it. In this case, it ensures the creation of an array object\n    compatible with that passed in via this argument."
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 1.20.0",
+                "body": "",
+                "raw": ".. versionadded:: 1.20.0"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Data read from the text file."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "This function aims to be a fast reader for simply formatted files.  The\n`genfromtxt` function provides more sophisticated handling of, e.g.,\nlines with missing values."
+          },
+          {
+            "type": "paragraph",
+            "text": "Each row in the input text file must have the same number of values to be\nable to read all values. If all rows do not have same number of values, a\nsubset of up to n columns (where n is the least number of values present\nin all rows) can be read by specifying the columns via `usecols`."
+          },
+          {
+            "type": "paragraph",
+            "text": "The strings produced by the Python float.hex method can be used as\ninput for floats."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> from io import StringIO   # StringIO behaves like a file object\n>>> c = StringIO(\"0 1\\n2 3\")\n>>> np.loadtxt(c)\narray([[0., 1.],\n       [2., 3.]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> d = StringIO(\"M 21 72\\nF 35 58\")\n>>> np.loadtxt(d, dtype={'names': ('gender', 'age', 'weight'),\n...                      'formats': ('S1', 'i4', 'f4')})\narray([(b'M', 21, 72.), (b'F', 35, 58.)],\n      dtype=[('gender', 'S1'), ('age', '<i4'), ('weight', '<f4')])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> c = StringIO(\"1,0,2\\n3,0,4\")\n>>> x, y = np.loadtxt(c, delimiter=',', usecols=(0, 2), unpack=True)\n>>> x\narray([1., 3.])\n>>> y\narray([2., 4.])"
+          },
+          {
+            "type": "paragraph",
+            "text": "The `converters` argument is used to specify functions to preprocess the\ntext prior to parsing. `converters` can be a dictionary that maps\npreprocessing functions to each column:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> s = StringIO(\"1.618, 2.296\\n3.141, 4.669\\n\")\n>>> conv = {\n...     0: lambda x: np.floor(float(x)),  # conversion fn for column 0\n...     1: lambda x: np.ceil(float(x)),  # conversion fn for column 1\n... }\n>>> np.loadtxt(s, delimiter=\",\", converters=conv)\narray([[1., 3.],\n       [3., 5.]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "`converters` can be a callable instead of a dictionary, in which case it\nis applied to all columns:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> s = StringIO(\"0xDE 0xAD\\n0xC0 0xDE\")\n>>> import functools\n>>> conv = functools.partial(int, base=16)\n>>> np.loadtxt(s, converters=conv)\narray([[222., 173.],\n       [192., 222.]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "This example shows how `converters` can be used to convert a field\nwith a trailing minus sign into a negative number."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> s = StringIO(\"10.01 31.25-\\n19.22 64.31\\n17.57- 63.94\")\n>>> def conv(fld):\n...     return -float(fld[:-1]) if fld.endswith(\"-\") else float(fld)\n...\n>>> np.loadtxt(s, converters=conv)\narray([[ 10.01, -31.25],\n       [ 19.22,  64.31],\n       [-17.57,  63.94]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Using a callable as the converter can be particularly useful for handling\nvalues with different formatting, e.g. floats with underscores:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> s = StringIO(\"1 2.7 100_000\")\n>>> np.loadtxt(s, converters=float)\narray([1.e+00, 2.7e+00, 1.e+05])"
+          },
+          {
+            "type": "paragraph",
+            "text": "This idea can be extended to automatically handle values specified in\nmany different formats, such as hex values:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> def conv(val):\n...     try:\n...         return float(val)\n...     except ValueError:\n...         return float.fromhex(val)\n>>> s = StringIO(\"1, 2.5, 3_000, 0b4, 0x1.4000000000000p+2\")\n>>> np.loadtxt(s, delimiter=\",\", converters=conv)\narray([1.0e+00, 2.5e+00, 3.0e+03, 1.8e+02, 5.0e+00])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Or a format where the ``-`` sign comes after the number:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> s = StringIO(\"10.01 31.25-\\n19.22 64.31\\n17.57- 63.94\")\n>>> conv = lambda x: -float(x[:-1]) if x.endswith(\"-\") else float(x)\n>>> np.loadtxt(s, converters=conv)\narray([[ 10.01, -31.25],\n       [ 19.22,  64.31],\n       [-17.57,  63.94]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Support for quoted fields is enabled with the `quotechar` parameter.\nComment and delimiter characters are ignored when they appear within a\nquoted item delineated by `quotechar`:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> s = StringIO('\"alpha, #42\", 10.0\\n\"beta, #64\", 2.0\\n')\n>>> dtype = np.dtype([(\"label\", \"U12\"), (\"value\", float)])\n>>> np.loadtxt(s, dtype=dtype, delimiter=\",\", quotechar='\"')\narray([('alpha, #42', 10.), ('beta, #64',  2.)],\n      dtype=[('label', '<U12'), ('value', '<f8')])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Quoted fields can be separated by multiple whitespace characters:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> s = StringIO('\"alpha, #42\"       10.0\\n\"beta, #64\" 2.0\\n')\n>>> dtype = np.dtype([(\"label\", \"U12\"), (\"value\", float)])\n>>> np.loadtxt(s, dtype=dtype, delimiter=None, quotechar='\"')\narray([('alpha, #42', 10.), ('beta, #64',  2.)],\n      dtype=[('label', '<U12'), ('value', '<f8')])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Two consecutive quote characters within a quoted field are treated as a\nsingle escaped character:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> s = StringIO('\"Hello, my name is \"\"Monty\"\"!\"')\n>>> np.loadtxt(s, dtype=\"U\", delimiter=\",\", quotechar='\"')\narray('Hello, my name is \"Monty\"!', dtype='<U26')"
+          },
+          {
+            "type": "paragraph",
+            "text": "Read subset of columns when all rows do not contain equal number of values:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> d = StringIO(\"1 2\\n2 4\\n3 9 12\\n4 16 20\")\n>>> np.loadtxt(d, usecols=(0, 1))\narray([[ 1.,  2.],\n       [ 2.,  4.],\n       [ 3.,  9.],\n       [ 4., 16.]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "load, fromstring, fromregex"
+          },
+          {
+            "type": "paragraph",
+            "text": "genfromtxt \u2014 Load data with missing values handled as specified."
+          },
+          {
+            "type": "paragraph",
+            "text": "scipy.io.loadmat \u2014 reads MATLAB data files"
+          }
+        ]
+      }
+    ]
+  }
+}

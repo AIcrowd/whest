@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "slug": "put",
+  "detail_href": "/docs/api/ops/put/",
+  "detail_json_href": "/api-data/ops/put.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L1262-L1269",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.put.html"
+  },
+  "op": {
+    "name": "put",
+    "module": "numpy",
+    "whest_ref": "we.put",
+    "numpy_ref": "np.put",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Replace elements at given flat indices. Cost: numel(input).",
+    "summary": "Replaces specified elements of an array with given values.",
+    "signature": "we.put(a, ind, v, mode='raise')"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Replaces specified elements of an array with given values."
+          },
+          {
+            "type": "paragraph",
+            "text": "The indexing works on the flattened target array. `put` is roughly\nequivalent to:"
+          },
+          {
+            "type": "paragraph",
+            "text": "::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    a.flat[ind] = v"
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Target array."
+              }
+            ]
+          },
+          {
+            "name": "ind",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Target indices, interpreted as integers."
+              }
+            ]
+          },
+          {
+            "name": "v",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Values to place in `a` at target indices. If `v` is shorter than\n`ind` it will be repeated as necessary."
+              }
+            ]
+          },
+          {
+            "name": "mode",
+            "type": "{'raise', 'wrap', 'clip'}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Specifies how out-of-bounds indices will behave."
+              },
+              {
+                "type": "paragraph",
+                "text": "* 'raise' -- raise an error (default)\n* 'wrap' -- wrap around\n* 'clip' -- clip to the range"
+              },
+              {
+                "type": "paragraph",
+                "text": "'clip' mode means that all indices that are too large are replaced\nby the index that addresses the last element along that axis. Note\nthat this disables indexing with negative numbers. In 'raise' mode,\nif an exception occurs the target array may still be modified."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> a = np.arange(5)\n>>> np.put(a, [0, 2], [-44, -55])\n>>> a\narray([-44,   1, -55,   3,   4])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.arange(5)\n>>> np.put(a, 22, -5, mode='clip')\n>>> a\narray([ 0,  1,  2,  3, -5])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "putmask, place"
+          },
+          {
+            "type": "paragraph",
+            "text": "put_along_axis \u2014 Put elements by matching the array and the index arrays"
+          }
+        ]
+      }
+    ]
+  }
+}

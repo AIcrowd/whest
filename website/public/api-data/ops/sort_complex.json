@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "slug": "sort_complex",
+  "detail_href": "/docs/api/ops/sort_complex/",
+  "detail_json_href": "/api-data/ops/sort_complex.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L416-L430",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.sort_complex.html"
+  },
+  "op": {
+    "name": "sort_complex",
+    "module": "numpy",
+    "whest_ref": "we.sort_complex",
+    "numpy_ref": "np.sort_complex",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Sort complex array. Cost: $n \\cdot \\lceil\\log_2 n\\rceil$.",
+    "summary": "Counted version of np.sort_complex. Cost: n*ceil(log2(n)).",
+    "signature": "we.sort_complex(a)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Counted version of np.sort_complex. Cost: n*ceil(log2(n))."
+          }
+        ]
+      }
+    ]
+  }
+}

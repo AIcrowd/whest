@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "slug": "frompyfunc",
+  "detail_href": "/docs/api/ops/frompyfunc/",
+  "detail_json_href": "/api-data/ops/frompyfunc.json",
+  "source": {
+    "whest": null,
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.frompyfunc.html"
+  },
+  "op": {
+    "name": "frompyfunc",
+    "module": "numpy",
+    "whest_ref": "we.frompyfunc",
+    "numpy_ref": "np.frompyfunc",
+    "category": "blacklisted",
+    "status": "blocked",
+    "weight": 1.0,
+    "cost_formula": "N/A",
+    "cost_formula_latex": "N/A",
+    "notes": "Take arbitrary Python function and return NumPy ufunc. Not supported.",
+    "summary": "Takes an arbitrary Python function and returns a NumPy ufunc.",
+    "signature": "we.frompyfunc(func, /, nin, nout, *[, identity])"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Takes an arbitrary Python function and returns a NumPy ufunc."
+          },
+          {
+            "type": "paragraph",
+            "text": "Can be used, for example, to add broadcasting to a built-in Python\nfunction (see Examples section)."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "func",
+            "type": "Python function object",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "An arbitrary Python function."
+              }
+            ]
+          },
+          {
+            "name": "nin",
+            "type": "int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The number of input arguments."
+              }
+            ]
+          },
+          {
+            "name": "nout",
+            "type": "int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The number of objects returned by `func`."
+              }
+            ]
+          },
+          {
+            "name": "identity",
+            "type": "object, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The value to use for the `~numpy.ufunc.identity` attribute of the resulting\nobject. If specified, this is equivalent to setting the underlying\nC ``identity`` field to ``PyUFunc_IdentityValue``.\nIf omitted, the identity is set to ``PyUFunc_None``. Note that this is\n_not_ equivalent to setting the identity to ``None``, which implies the\noperation is reorderable."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ufunc",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Returns a NumPy universal function (``ufunc``) object."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The returned ufunc always returns PyObject arrays."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Use frompyfunc to add broadcasting to the Python function ``oct``:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> oct_array = np.frompyfunc(oct, 1, 1)\n>>> oct_array(np.array((10, 30, 100)))\narray(['0o12', '0o36', '0o144'], dtype=object)\n>>> np.array((oct(10), oct(30), oct(100))) # for comparison\narray(['0o12', '0o36', '0o144'], dtype='<U5')"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "vectorize \u2014 Evaluates pyfunc over input arrays using broadcasting rules of numpy."
+          }
+        ]
+      }
+    ]
+  }
+}

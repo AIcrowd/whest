@@ -1,0 +1,283 @@
+{
+  "schema_version": 1,
+  "slug": "pad",
+  "detail_href": "/docs/api/ops/pad/",
+  "detail_json_href": "/api-data/ops/pad.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L429-L438",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.pad.html"
+  },
+  "op": {
+    "name": "pad",
+    "module": "numpy",
+    "whest_ref": "we.pad",
+    "numpy_ref": "np.pad",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Pad array. Cost: numel(output).",
+    "summary": "Pad an array.",
+    "signature": "we.pad(array, pad_width, mode='constant', **kwargs)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Pad an array."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "array",
+            "type": "array_like of rank N",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The array to pad."
+              }
+            ]
+          },
+          {
+            "name": "pad_width",
+            "type": "{sequence, array_like, int}",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Number of values padded to the edges of each axis.\n``((before_1, after_1), ... (before_N, after_N))`` unique pad widths\nfor each axis.\n``(before, after)`` or ``((before, after),)`` yields same before\nand after pad for each axis.\n``(pad,)`` or ``int`` is a shortcut for before = after = pad width\nfor all axes."
+              }
+            ]
+          },
+          {
+            "name": "mode",
+            "type": "str or function, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "One of the following string values or a user supplied function."
+              },
+              {
+                "type": "paragraph",
+                "text": "'constant' (default)\n    Pads with a constant value.\n'edge'\n    Pads with the edge values of array.\n'linear_ramp'\n    Pads with the linear ramp between end_value and the\n    array edge value.\n'maximum'\n    Pads with the maximum value of all or part of the\n    vector along each axis.\n'mean'\n    Pads with the mean value of all or part of the\n    vector along each axis.\n'median'\n    Pads with the median value of all or part of the\n    vector along each axis.\n'minimum'\n    Pads with the minimum value of all or part of the\n    vector along each axis.\n'reflect'\n    Pads with the reflection of the vector mirrored on\n    the first and last values of the vector along each\n    axis.\n'symmetric'\n    Pads with the reflection of the vector mirrored\n    along the edge of the array.\n'wrap'\n    Pads with the wrap of the vector along the axis.\n    The first values are used to pad the end and the\n    end values are used to pad the beginning.\n'empty'\n    Pads with undefined values."
+              },
+              {
+                "type": "paragraph",
+                "text": "<function>\n    Padding function, see Notes."
+              }
+            ]
+          },
+          {
+            "name": "stat_length",
+            "type": "sequence or int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Used in 'maximum', 'mean', 'median', and 'minimum'.  Number of\nvalues at edge of each axis used to calculate the statistic value."
+              },
+              {
+                "type": "paragraph",
+                "text": "``((before_1, after_1), ... (before_N, after_N))`` unique statistic\nlengths for each axis."
+              },
+              {
+                "type": "paragraph",
+                "text": "``(before, after)`` or ``((before, after),)`` yields same before\nand after statistic lengths for each axis."
+              },
+              {
+                "type": "paragraph",
+                "text": "``(stat_length,)`` or ``int`` is a shortcut for\n``before = after = statistic`` length for all axes."
+              },
+              {
+                "type": "paragraph",
+                "text": "Default is ``None``, to use the entire axis."
+              }
+            ]
+          },
+          {
+            "name": "constant_values",
+            "type": "sequence or scalar, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Used in 'constant'.  The values to set the padded values for each\naxis."
+              },
+              {
+                "type": "paragraph",
+                "text": "``((before_1, after_1), ... (before_N, after_N))`` unique pad constants\nfor each axis."
+              },
+              {
+                "type": "paragraph",
+                "text": "``(before, after)`` or ``((before, after),)`` yields same before\nand after constants for each axis."
+              },
+              {
+                "type": "paragraph",
+                "text": "``(constant,)`` or ``constant`` is a shortcut for\n``before = after = constant`` for all axes."
+              },
+              {
+                "type": "paragraph",
+                "text": "Default is 0."
+              }
+            ]
+          },
+          {
+            "name": "end_values",
+            "type": "sequence or scalar, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Used in 'linear_ramp'.  The values used for the ending value of the\nlinear_ramp and that will form the edge of the padded array."
+              },
+              {
+                "type": "paragraph",
+                "text": "``((before_1, after_1), ... (before_N, after_N))`` unique end values\nfor each axis."
+              },
+              {
+                "type": "paragraph",
+                "text": "``(before, after)`` or ``((before, after),)`` yields same before\nand after end values for each axis."
+              },
+              {
+                "type": "paragraph",
+                "text": "``(constant,)`` or ``constant`` is a shortcut for\n``before = after = constant`` for all axes."
+              },
+              {
+                "type": "paragraph",
+                "text": "Default is 0."
+              }
+            ]
+          },
+          {
+            "name": "reflect_type",
+            "type": "{'even', 'odd'}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Used in 'reflect', and 'symmetric'.  The 'even' style is the\ndefault with an unaltered reflection around the edge value.  For\nthe 'odd' style, the extended part of the array is created by\nsubtracting the reflected values from two times the edge value."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "pad",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Padded array of rank equal to `array` with shape increased\naccording to `pad_width`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "For an array with rank greater than 1, some of the padding of later\naxes is calculated from padding of previous axes.  This is easiest to\nthink about with a rank 2 array where the corners of the padded array\nare calculated by using padded values from the first axis."
+          },
+          {
+            "type": "paragraph",
+            "text": "The padding function, if used, should modify a rank 1 array in-place. It\nhas the following signature::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    padding_func(vector, iaxis_pad_width, iaxis, kwargs)"
+          },
+          {
+            "type": "paragraph",
+            "text": "where"
+          },
+          {
+            "type": "paragraph",
+            "text": "vector : ndarray\n    A rank 1 array already padded with zeros.  Padded values are\n    vector[:iaxis_pad_width[0]] and vector[-iaxis_pad_width[1]:].\niaxis_pad_width : tuple\n    A 2-tuple of ints, iaxis_pad_width[0] represents the number of\n    values padded at the beginning of vector where\n    iaxis_pad_width[1] represents the number of values padded at\n    the end of vector.\niaxis : int\n    The axis currently being calculated.\nkwargs : dict\n    Any keyword arguments the function requires."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> a = [1, 2, 3, 4, 5]\n>>> np.pad(a, (2, 3), 'constant', constant_values=(4, 6))\narray([4, 4, 1, ..., 6, 6, 6])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.pad(a, (2, 3), 'edge')\narray([1, 1, 1, ..., 5, 5, 5])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.pad(a, (2, 3), 'linear_ramp', end_values=(5, -4))\narray([ 5,  3,  1,  2,  3,  4,  5,  2, -1, -4])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.pad(a, (2,), 'maximum')\narray([5, 5, 1, 2, 3, 4, 5, 5, 5])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.pad(a, (2,), 'mean')\narray([3, 3, 1, 2, 3, 4, 5, 3, 3])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.pad(a, (2,), 'median')\narray([3, 3, 1, 2, 3, 4, 5, 3, 3])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = [[1, 2], [3, 4]]\n>>> np.pad(a, ((3, 2), (2, 3)), 'minimum')\narray([[1, 1, 1, 2, 1, 1, 1],\n       [1, 1, 1, 2, 1, 1, 1],\n       [1, 1, 1, 2, 1, 1, 1],\n       [1, 1, 1, 2, 1, 1, 1],\n       [3, 3, 3, 4, 3, 3, 3],\n       [1, 1, 1, 2, 1, 1, 1],\n       [1, 1, 1, 2, 1, 1, 1]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = [1, 2, 3, 4, 5]\n>>> np.pad(a, (2, 3), 'reflect')\narray([3, 2, 1, 2, 3, 4, 5, 4, 3, 2])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.pad(a, (2, 3), 'reflect', reflect_type='odd')\narray([-1,  0,  1,  2,  3,  4,  5,  6,  7,  8])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.pad(a, (2, 3), 'symmetric')\narray([2, 1, 1, 2, 3, 4, 5, 5, 4, 3])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.pad(a, (2, 3), 'symmetric', reflect_type='odd')\narray([0, 1, 1, 2, 3, 4, 5, 5, 6, 7])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.pad(a, (2, 3), 'wrap')\narray([4, 5, 1, 2, 3, 4, 5, 1, 2, 3])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> def pad_with(vector, pad_width, iaxis, kwargs):\n...     pad_value = kwargs.get('padder', 10)\n...     vector[:pad_width[0]] = pad_value\n...     vector[-pad_width[1]:] = pad_value\n>>> a = np.arange(6)\n>>> a = a.reshape((2, 3))\n>>> np.pad(a, 2, pad_with)\narray([[10, 10, 10, 10, 10, 10, 10],\n       [10, 10, 10, 10, 10, 10, 10],\n       [10, 10,  0,  1,  2, 10, 10],\n       [10, 10,  3,  4,  5, 10, 10],\n       [10, 10, 10, 10, 10, 10, 10],\n       [10, 10, 10, 10, 10, 10, 10]])\n>>> np.pad(a, 2, pad_with, padder=100)\narray([[100, 100, 100, 100, 100, 100, 100],\n       [100, 100, 100, 100, 100, 100, 100],\n       [100, 100,   0,   1,   2, 100, 100],\n       [100, 100,   3,   4,   5, 100, 100],\n       [100, 100, 100, 100, 100, 100, 100],\n       [100, 100, 100, 100, 100, 100, 100]])"
+          }
+        ]
+      }
+    ]
+  }
+}

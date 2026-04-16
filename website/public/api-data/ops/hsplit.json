@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "slug": "hsplit",
+  "detail_href": "/docs/api/ops/hsplit/",
+  "detail_json_href": "/api-data/ops/hsplit.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L297-L299",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.hsplit.html"
+  },
+  "op": {
+    "name": "hsplit",
+    "module": "numpy",
+    "whest_ref": "we.hsplit",
+    "numpy_ref": "np.hsplit",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Split array into columns.",
+    "summary": "Split an array into multiple sub-arrays horizontally (column-wise).",
+    "signature": "we.hsplit(ary, indices_or_sections)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Split an array into multiple sub-arrays horizontally (column-wise)."
+          },
+          {
+            "type": "paragraph",
+            "text": "Please refer to the `split` documentation.  `hsplit` is equivalent\nto `split` with ``axis=1``, the array is always split along the second\naxis except for 1-D arrays, where it is split at ``axis=0``."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> x = np.arange(16.0).reshape(4, 4)\n>>> x\narray([[ 0.,   1.,   2.,   3.],\n       [ 4.,   5.,   6.,   7.],\n       [ 8.,   9.,  10.,  11.],\n       [12.,  13.,  14.,  15.]])\n>>> np.hsplit(x, 2)\n[array([[  0.,   1.],\n       [  4.,   5.],\n       [  8.,   9.],\n       [12.,  13.]]),\n array([[  2.,   3.],\n       [  6.,   7.],\n       [10.,  11.],\n       [14.,  15.]])]\n>>> np.hsplit(x, np.array([3, 6]))\n[array([[ 0.,   1.,   2.],\n       [ 4.,   5.,   6.],\n       [ 8.,   9.,  10.],\n       [12.,  13.,  14.]]),\n array([[ 3.],\n       [ 7.],\n       [11.],\n       [15.]]),\n array([], shape=(4, 0), dtype=float64)]"
+          },
+          {
+            "type": "paragraph",
+            "text": "With a higher dimensional array the split is still along the second axis."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.arange(8.0).reshape(2, 2, 2)\n>>> x\narray([[[0.,  1.],\n        [2.,  3.]],\n       [[4.,  5.],\n        [6.,  7.]]])\n>>> np.hsplit(x, 2)\n[array([[[0.,  1.]],\n       [[4.,  5.]]]),\n array([[[2.,  3.]],\n       [[6.,  7.]]])]"
+          },
+          {
+            "type": "paragraph",
+            "text": "With a 1-D array, the split is along axis 0."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.array([0, 1, 2, 3, 4, 5])\n>>> np.hsplit(x, 2)\n[array([0, 1, 2]), array([3, 4, 5])]"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "split \u2014 Split an array into multiple sub-arrays of equal size."
+          }
+        ]
+      }
+    ]
+  }
+}

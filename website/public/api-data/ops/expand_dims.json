@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "slug": "expand_dims",
+  "detail_href": "/docs/api/ops/expand_dims/",
+  "detail_json_href": "/api-data/ops/expand_dims.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L328-L330",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.expand_dims.html"
+  },
+  "op": {
+    "name": "expand_dims",
+    "module": "numpy",
+    "whest_ref": "we.expand_dims",
+    "numpy_ref": "np.expand_dims",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Insert new size-1 axis.",
+    "summary": "Expand the shape of an array.",
+    "signature": "we.expand_dims(a, axis)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Expand the shape of an array."
+          },
+          {
+            "type": "paragraph",
+            "text": "Insert a new axis that will appear at the `axis` position in the expanded\narray shape."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "int or tuple of ints",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Position in the expanded axes where the new axis (or axes) is placed."
+              },
+              {
+                "type": "directive",
+                "name": "deprecated:: 1.13.0",
+                "body": "    Passing an axis where ``axis > a.ndim`` will be treated as\n    ``axis == a.ndim``, and passing ``axis < -a.ndim - 1`` will\n    be treated as ``axis == 0``. This behavior is deprecated.",
+                "raw": ".. deprecated:: 1.13.0\n    Passing an axis where ``axis > a.ndim`` will be treated as\n    ``axis == a.ndim``, and passing ``axis < -a.ndim - 1`` will\n    be treated as ``axis == 0``. This behavior is deprecated."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "result",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "View of `a` with the number of dimensions increased."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> x = np.array([1, 2])\n>>> x.shape\n(2,)"
+          },
+          {
+            "type": "paragraph",
+            "text": "The following is equivalent to ``x[np.newaxis, :]`` or ``x[np.newaxis]``:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> y = np.expand_dims(x, axis=0)\n>>> y\narray([[1, 2]])\n>>> y.shape\n(1, 2)"
+          },
+          {
+            "type": "paragraph",
+            "text": "The following is equivalent to ``x[:, np.newaxis]``:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> y = np.expand_dims(x, axis=1)\n>>> y\narray([[1],\n       [2]])\n>>> y.shape\n(2, 1)"
+          },
+          {
+            "type": "paragraph",
+            "text": "``axis`` may also be a tuple:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> y = np.expand_dims(x, axis=(0, 1))\n>>> y\narray([[[1, 2]]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> y = np.expand_dims(x, axis=(2, 0))\n>>> y\narray([[[1],\n        [2]]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Note that some examples may use ``None`` instead of ``np.newaxis``.  These\nare the same objects:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.newaxis is None\nTrue"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "squeeze \u2014 The inverse operation, removing singleton dimensions"
+          },
+          {
+            "type": "paragraph",
+            "text": "reshape \u2014 Insert, remove, and combine dimensions, and resize existing ones"
+          },
+          {
+            "type": "paragraph",
+            "text": "atleast_1d, atleast_2d, atleast_3d"
+          }
+        ]
+      }
+    ]
+  }
+}

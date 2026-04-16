@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "slug": "asmatrix",
+  "detail_href": "/docs/api/ops/asmatrix/",
+  "detail_json_href": "/api-data/ops/asmatrix.json",
+  "source": {
+    "whest": null,
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/matrixlib/defmatrix.py#L35-L69"
+  },
+  "op": {
+    "name": "asmatrix",
+    "module": "numpy",
+    "whest_ref": "we.asmatrix",
+    "numpy_ref": "np.asmatrix",
+    "category": "blacklisted",
+    "status": "blocked",
+    "weight": 1.0,
+    "cost_formula": "N/A",
+    "cost_formula_latex": "N/A",
+    "notes": "Interpret input as matrix (deprecated). Not supported.",
+    "summary": "Interpret the input as a matrix.",
+    "signature": "we.asmatrix(data, dtype=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Interpret the input as a matrix."
+          },
+          {
+            "type": "paragraph",
+            "text": "Unlike `matrix`, `asmatrix` does not make a copy if the input is already\na matrix or an ndarray.  Equivalent to ``matrix(data, copy=False)``."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "data",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input data."
+              }
+            ]
+          },
+          {
+            "name": "dtype",
+            "type": "data-type",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Data-type of the output matrix."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "mat",
+            "type": "matrix",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "`data` interpreted as a matrix."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> x = np.array([[1, 2], [3, 4]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> m = np.asmatrix(x)"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x[0,0] = 5"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> m\nmatrix([[5, 2],\n        [3, 4]])"
+          }
+        ]
+      }
+    ]
+  }
+}

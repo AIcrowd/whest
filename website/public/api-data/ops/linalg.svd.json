@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "slug": "linalg.svd",
+  "detail_href": "/docs/api/ops/linalg.svd/",
+  "detail_json_href": "/api-data/ops/linalg.svd.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_svd.py#L27-L96",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html"
+  },
+  "op": {
+    "name": "linalg.svd",
+    "module": "numpy.linalg",
+    "whest_ref": "we.linalg.svd",
+    "numpy_ref": "np.linalg.svd",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 4.0,
+    "cost_formula": "m * n * k",
+    "cost_formula_latex": "$m \\cdot n \\cdot k$",
+    "notes": "Singular value decomposition; cost ~ O(min(m,n)*m*n).",
+    "summary": "Singular value decomposition with FLOP counting.",
+    "signature": "we.linalg.svd(a, full_matrices=True, compute_uv=True, hermitian=False, *, k=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Singular value decomposition with FLOP counting."
+          },
+          {
+            "type": "paragraph",
+            "text": "Matches ``numpy.linalg.svd`` signature with an optional *k* parameter\nfor truncated SVD (whest extension)."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array with shape ``(..., m, n)``."
+              }
+            ]
+          },
+          {
+            "name": "full_matrices",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If True (default), U and Vt have shapes ``(..., m, m)`` and\n``(..., n, n)``. If False, shapes are ``(..., m, K)`` and\n``(..., K, n)`` where K = min(m, n) or k if specified."
+              }
+            ]
+          },
+          {
+            "name": "compute_uv",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If True (default), compute U and Vt. If False, only compute\nsingular values."
+              }
+            ]
+          },
+          {
+            "name": "hermitian",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If True, a is assumed to be Hermitian. Default is False."
+              }
+            ]
+          },
+          {
+            "name": "k",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "**whest extension.** Number of singular values/vectors to return.\nMust satisfy 1 <= k <= min(m, n). If None (default), returns\nall min(m, n) components."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "",
+            "type": "When compute_uv is True (default):",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "U : ndarray, S : ndarray, Vt : ndarray"
+              }
+            ]
+          },
+          {
+            "name": "",
+            "type": "When compute_uv is False:",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "S : ndarray"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

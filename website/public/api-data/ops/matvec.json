@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "slug": "matvec",
+  "detail_href": "/docs/api/ops/matvec/",
+  "detail_json_href": "/api-data/ops/matvec.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L566-L589",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.matvec.html"
+  },
+  "op": {
+    "name": "matvec",
+    "module": "numpy",
+    "whest_ref": "we.matvec",
+    "numpy_ref": "np.matvec",
+    "category": "counted_binary",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Matrix-vector product. Cost = output_size * contracted_axis.",
+    "summary": "Counted version of np.matvec.",
+    "signature": "we.matvec(a, b, **kwargs)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Counted version of np.matvec."
+          },
+          {
+            "type": "paragraph",
+            "text": "Matrix-vector product. A is (..., m, n), v is (..., n), result is (..., m).\nCost = output_size * contracted_axis (A's last axis)."
+          }
+        ]
+      }
+    ]
+  }
+}

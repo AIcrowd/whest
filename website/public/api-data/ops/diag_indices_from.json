@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "slug": "diag_indices_from",
+  "detail_href": "/docs/api/ops/diag_indices_from/",
+  "detail_json_href": "/api-data/ops/diag_indices_from.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L849-L851",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.diag_indices_from.html"
+  },
+  "op": {
+    "name": "diag_indices_from",
+    "module": "numpy",
+    "whest_ref": "we.diag_indices_from",
+    "numpy_ref": "np.diag_indices_from",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Return indices to access main diagonal of given array.",
+    "summary": "Return the indices to access the main diagonal of an n-dimensional array.",
+    "signature": "we.diag_indices_from(arr)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return the indices to access the main diagonal of an n-dimensional array."
+          },
+          {
+            "type": "paragraph",
+            "text": "See `diag_indices` for full details."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "arr",
+            "type": "array, at least 2-D",
+            "desc_blocks": []
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np"
+          },
+          {
+            "type": "paragraph",
+            "text": "Create a 4 by 4 array."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.arange(16).reshape(4, 4)\n>>> a\narray([[ 0,  1,  2,  3],\n       [ 4,  5,  6,  7],\n       [ 8,  9, 10, 11],\n       [12, 13, 14, 15]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Get the indices of the diagonal elements."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> di = np.diag_indices_from(a)\n>>> di\n(array([0, 1, 2, 3]), array([0, 1, 2, 3]))"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a[di]\narray([ 0,  5, 10, 15])"
+          },
+          {
+            "type": "paragraph",
+            "text": "This is simply syntactic sugar for diag_indices."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.diag_indices(a.shape[0])\n(array([0, 1, 2, 3]), array([0, 1, 2, 3]))"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "diag_indices"
+          }
+        ]
+      }
+    ]
+  }
+}

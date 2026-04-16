@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "slug": "result_type",
+  "detail_href": "/docs/api/ops/result_type/",
+  "detail_json_href": "/api-data/ops/result_type.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1334-L1336",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.result_type.html"
+  },
+  "op": {
+    "name": "result_type",
+    "module": "numpy",
+    "whest_ref": "we.result_type",
+    "numpy_ref": "np.result_type",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Return type that results from applying NumPy type promotion.",
+    "summary": "Returns the type that results from applying the NumPy type promotion rules to the arguments.",
+    "signature": "we.result_type(*arrays_and_dtypes)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Returns the type that results from applying the NumPy\ntype promotion rules to the arguments."
+          },
+          {
+            "type": "paragraph",
+            "text": "Type promotion in NumPy works similarly to the rules in languages\nlike C++, with some slight differences.  When both scalars and\narrays are used, the array's type takes precedence and the actual value\nof the scalar is taken into account."
+          },
+          {
+            "type": "paragraph",
+            "text": "For example, calculating 3*a, where a is an array of 32-bit floats,\nintuitively should result in a 32-bit float output.  If the 3 is a\n32-bit integer, the NumPy rules indicate it can't convert losslessly\ninto a 32-bit float, so a 64-bit float should be the result type.\nBy examining the value of the constant, '3', we see that it fits in\nan 8-bit integer, which can be cast losslessly into the 32-bit float."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "arrays_and_dtypes",
+            "type": "list of arrays and dtypes",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The operands of some operation whose result type is needed."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "dtype",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The result type."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The specific algorithm used is as follows."
+          },
+          {
+            "type": "paragraph",
+            "text": "Categories are determined by first checking which of boolean,\ninteger (int/uint), or floating point (float/complex) the maximum\nkind of all the arrays and the scalars are."
+          },
+          {
+            "type": "paragraph",
+            "text": "If there are only scalars or the maximum category of the scalars\nis higher than the maximum category of the arrays,\nthe data types are combined with :func:`promote_types`\nto produce the return value."
+          },
+          {
+            "type": "paragraph",
+            "text": "Otherwise, `min_scalar_type` is called on each scalar, and\nthe resulting data types are all combined with :func:`promote_types`\nto produce the return value."
+          },
+          {
+            "type": "paragraph",
+            "text": "The set of int values is not a subset of the uint values for types\nwith the same number of bits, something not reflected in\n:func:`min_scalar_type`, but handled as a special case in `result_type`."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.result_type(3, np.arange(7, dtype='i1'))\ndtype('int8')"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.result_type('i4', 'c8')\ndtype('complex128')"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.result_type(3.0, -2)\ndtype('float64')"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "dtype, promote_types, min_scalar_type, can_cast"
+          }
+        ]
+      }
+    ]
+  }
+}

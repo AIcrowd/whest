@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "slug": "where",
+  "detail_href": "/docs/api/ops/where/",
+  "detail_json_href": "/api-data/ops/where.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L357-L369",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.where.html"
+  },
+  "op": {
+    "name": "where",
+    "module": "numpy",
+    "whest_ref": "we.where",
+    "numpy_ref": "np.where",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 4.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Select elements based on condition. Cost: numel(input).",
+    "summary": "Return elements chosen from `x` or `y` depending on `condition`.",
+    "signature": "we.where(condition, [x, y], /)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return elements chosen from `x` or `y` depending on `condition`."
+          },
+          {
+            "type": "directive",
+            "name": "note",
+            "body": "    When only `condition` is provided, this function is a shorthand for\n    ``np.asarray(condition).nonzero()``. Using `nonzero` directly should be\n    preferred, as it behaves correctly for subclasses. The rest of this\n    documentation covers only the case where all three arguments are\n    provided.",
+            "raw": ".. note::\n    When only `condition` is provided, this function is a shorthand for\n    ``np.asarray(condition).nonzero()``. Using `nonzero` directly should be\n    preferred, as it behaves correctly for subclasses. The rest of this\n    documentation covers only the case where all three arguments are\n    provided."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "condition",
+            "type": "array_like, bool",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Where True, yield `x`, otherwise yield `y`."
+              }
+            ]
+          },
+          {
+            "name": "x, y",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Values from which to choose. `x`, `y` and `condition` need to be\nbroadcastable to some shape."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "An array with elements from `x` where `condition` is True, and elements\nfrom `y` elsewhere."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "If all the arrays are 1-D, `where` is equivalent to::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    [xv if c else yv\n     for c, xv, yv in zip(condition, x, y)]"
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> a = np.arange(10)\n>>> a\narray([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])\n>>> np.where(a < 5, a, 10*a)\narray([ 0,  1,  2,  3,  4, 50, 60, 70, 80, 90])"
+          },
+          {
+            "type": "paragraph",
+            "text": "This can be used on multidimensional arrays too:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.where([[True, False], [True, True]],\n...          [[1, 2], [3, 4]],\n...          [[9, 8], [7, 6]])\narray([[1, 8],\n       [3, 4]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "The shapes of x, y, and the condition are broadcast together:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x, y = np.ogrid[:3, :4]\n>>> np.where(x < y, x, 10 + y)  # both x and 10+y are broadcast\narray([[10,  0,  0,  0],\n       [10, 11,  1,  1],\n       [10, 11, 12,  2]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([[0, 1, 2],\n...               [0, 2, 4],\n...               [0, 3, 6]])\n>>> np.where(a < 4, a, -1)  # -1 is broadcast\narray([[ 0,  1,  2],\n       [ 0,  2, -1],\n       [ 0,  3, -1]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "choose"
+          },
+          {
+            "type": "paragraph",
+            "text": "nonzero \u2014 The function that is called when x and y are omitted"
+          }
+        ]
+      }
+    ]
+  }
+}

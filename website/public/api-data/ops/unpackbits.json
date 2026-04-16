@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "slug": "unpackbits",
+  "detail_href": "/docs/api/ops/unpackbits/",
+  "detail_json_href": "/api-data/ops/unpackbits.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L1497-L1512",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.unpackbits.html"
+  },
+  "op": {
+    "name": "unpackbits",
+    "module": "numpy",
+    "whest_ref": "we.unpackbits",
+    "numpy_ref": "np.unpackbits",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Unpack elements of array into bits. Cost: numel(input).",
+    "summary": "Unpacks elements of a uint8 array into a binary-valued output array.",
+    "signature": "we.unpackbits(a, /, axis=None, count=None, bitorder='big')"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Unpacks elements of a uint8 array into a binary-valued output array."
+          },
+          {
+            "type": "paragraph",
+            "text": "Each element of `a` represents a bit-field that should be unpacked\ninto a binary-valued output array. The shape of the output array is\neither 1-D (if `axis` is ``None``) or the same shape as the input\narray with unpacking done along the axis specified."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "ndarray, uint8 type",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The dimension over which bit-unpacking is done.\n``None`` implies unpacking the flattened array."
+              }
+            ]
+          },
+          {
+            "name": "count",
+            "type": "int or None, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The number of elements to unpack along `axis`, provided as a way\nof undoing the effect of packing a size that is not a multiple\nof eight. A non-negative number means to only unpack `count`\nbits. A negative number means to trim off that many bits from\nthe end. ``None`` means to unpack the entire array (the\ndefault). Counts larger than the available number of bits will\nadd zero padding to the output. Negative counts must not\nexceed the available number of bits."
+              }
+            ]
+          },
+          {
+            "name": "bitorder",
+            "type": "{'big', 'little'}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The order of the returned bits. 'big' will mimic bin(val),\n``3 = 0b00000011 => [0, 0, 0, 0, 0, 0, 1, 1]``, 'little' will reverse\nthe order to ``[1, 1, 0, 0, 0, 0, 0, 0]``.\nDefaults to 'big'."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "unpacked",
+            "type": "ndarray, uint8 type",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The elements are binary-valued (0 or 1)."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> a = np.array([[2], [7], [23]], dtype=np.uint8)\n>>> a\narray([[ 2],\n       [ 7],\n       [23]], dtype=uint8)\n>>> b = np.unpackbits(a, axis=1)\n>>> b\narray([[0, 0, 0, 0, 0, 0, 1, 0],\n       [0, 0, 0, 0, 0, 1, 1, 1],\n       [0, 0, 0, 1, 0, 1, 1, 1]], dtype=uint8)\n>>> c = np.unpackbits(a, axis=1, count=-3)\n>>> c\narray([[0, 0, 0, 0, 0],\n       [0, 0, 0, 0, 0],\n       [0, 0, 0, 1, 0]], dtype=uint8)"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> p = np.packbits(b, axis=0)\n>>> np.unpackbits(p, axis=0)\narray([[0, 0, 0, 0, 0, 0, 1, 0],\n       [0, 0, 0, 0, 0, 1, 1, 1],\n       [0, 0, 0, 1, 0, 1, 1, 1],\n       [0, 0, 0, 0, 0, 0, 0, 0],\n       [0, 0, 0, 0, 0, 0, 0, 0],\n       [0, 0, 0, 0, 0, 0, 0, 0],\n       [0, 0, 0, 0, 0, 0, 0, 0],\n       [0, 0, 0, 0, 0, 0, 0, 0]], dtype=uint8)\n>>> np.array_equal(b, np.unpackbits(p, axis=0, count=b.shape[0]))\nTrue"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "packbits \u2014 Packs the elements of a binary-valued array into bits in a uint8 array."
+          }
+        ]
+      }
+    ]
+  }
+}

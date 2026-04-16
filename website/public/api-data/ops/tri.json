@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "slug": "tri",
+  "detail_href": "/docs/api/ops/tri/",
+  "detail_json_href": "/api-data/ops/tri.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L1434-L1436",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L376-L431"
+  },
+  "op": {
+    "name": "tri",
+    "module": "numpy",
+    "whest_ref": "we.tri",
+    "numpy_ref": "np.tri",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Array with ones at and below given diagonal.",
+    "summary": "An array with ones at and below the given diagonal and zeros elsewhere.",
+    "signature": "we.tri(N, M=None, k=0, dtype=<class 'float'>, *, like=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "An array with ones at and below the given diagonal and zeros elsewhere."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "N",
+            "type": "int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Number of rows in the array."
+              }
+            ]
+          },
+          {
+            "name": "M",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Number of columns in the array.\nBy default, `M` is taken equal to `N`."
+              }
+            ]
+          },
+          {
+            "name": "k",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The sub-diagonal at and below which the array is filled.\n`k` = 0 is the main diagonal, while `k` < 0 is below it,\nand `k` > 0 is above.  The default is 0."
+              }
+            ]
+          },
+          {
+            "name": "dtype",
+            "type": "dtype, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Data type of the returned array.  The default is float."
+              }
+            ]
+          },
+          {
+            "name": "like",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "    Reference object to allow the creation of arrays which are not\n    NumPy arrays. If an array-like passed in as ``like`` supports\n    the ``__array_function__`` protocol, the result will be defined\n    by it. In this case, it ensures the creation of an array object\n    compatible with that passed in via this argument."
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 1.20.0",
+                "body": "",
+                "raw": ".. versionadded:: 1.20.0"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "tri",
+            "type": "ndarray of shape (N, M)",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Array with its lower triangle filled with ones and zero elsewhere;\nin other words ``T[i,j] == 1`` for ``j <= i + k``, 0 otherwise."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.tri(3, 5, 2, dtype=int)\narray([[1, 1, 1, 0, 0],\n       [1, 1, 1, 1, 0],\n       [1, 1, 1, 1, 1]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.tri(3, 5, -1)\narray([[0.,  0.,  0.,  0.,  0.],\n       [1.,  0.,  0.,  0.,  0.],\n       [1.,  1.,  0.,  0.,  0.]])"
+          }
+        ]
+      }
+    ]
+  }
+}

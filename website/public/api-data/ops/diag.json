@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "slug": "diag",
+  "detail_href": "/docs/api/ops/diag/",
+  "detail_json_href": "/api-data/ops/diag.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L88-L107",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.diag.html"
+  },
+  "op": {
+    "name": "diag",
+    "module": "numpy",
+    "whest_ref": "we.diag",
+    "numpy_ref": "np.diag",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 4.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Extract diagonal or construct diagonal array. Cost: len(diagonal).",
+    "summary": "Extract a diagonal or construct a diagonal array.",
+    "signature": "we.diag(v, k=0)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Extract a diagonal or construct a diagonal array."
+          },
+          {
+            "type": "paragraph",
+            "text": "See the more detailed documentation for ``numpy.diagonal`` if you use this\nfunction to extract a diagonal and wish to write to the resulting array;\nwhether it returns a copy or a view depends on what version of numpy you\nare using."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "v",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If `v` is a 2-D array, return a copy of its `k`-th diagonal.\nIf `v` is a 1-D array, return a 2-D array with `v` on the `k`-th\ndiagonal."
+              }
+            ]
+          },
+          {
+            "name": "k",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Diagonal in question. The default is 0. Use `k>0` for diagonals\nabove the main diagonal, and `k<0` for diagonals below the main\ndiagonal."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The extracted diagonal or constructed diagonal array."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> x = np.arange(9).reshape((3,3))\n>>> x\narray([[0, 1, 2],\n       [3, 4, 5],\n       [6, 7, 8]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.diag(x)\narray([0, 4, 8])\n>>> np.diag(x, k=1)\narray([1, 5])\n>>> np.diag(x, k=-1)\narray([3, 7])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.diag(np.diag(x))\narray([[0, 0, 0],\n       [0, 4, 0],\n       [0, 0, 8]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "diagonal \u2014 Return specified diagonals."
+          },
+          {
+            "type": "paragraph",
+            "text": "diagflat \u2014 Create a 2-D array with the flattened input as a diagonal."
+          },
+          {
+            "type": "paragraph",
+            "text": "trace \u2014 Sum along diagonals."
+          },
+          {
+            "type": "paragraph",
+            "text": "triu \u2014 Upper triangle of an array."
+          },
+          {
+            "type": "paragraph",
+            "text": "tril \u2014 Lower triangle of an array."
+          }
+        ]
+      }
+    ]
+  }
+}

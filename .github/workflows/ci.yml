@@ -132,8 +132,17 @@ jobs:
       - name: Install website dependencies
         run: cd website && npm ci
 
+      - name: Generate API data
+        run: uv run python scripts/generate_api_docs.py
+
       - name: Run website regression tests
         run: cd website && npm test
+
+      - name: Build website
+        run: cd website && npm run build
+
+      - name: Run GH Pages compatibility checks
+        run: cd website && npm run check:gh-pages
 
   docs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -168,11 +177,26 @@ jobs:
       - name: Generate API data
         run: uv run python scripts/generate_api_docs.py
 
+      - name: Verify generated API data
+        run: uv run python scripts/generate_api_docs.py --verify
+
       - name: Build website
         run: cd website && npm run build
+
+      - name: Run GH Pages compatibility checks
+        run: cd website && npm run check:gh-pages
+
+      - name: Verify deploy artifact contents
+        run: |
+          test -f website/out/.nojekyll
+          test -f website/out/llms.txt
+          test -f website/out/llms-full.txt
+          test -f website/out/ops.json
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: website/out
+          force_orphan: true
+          enable_jekyll: false

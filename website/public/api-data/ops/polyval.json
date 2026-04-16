@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "slug": "polyval",
+  "detail_href": "/docs/api/ops/polyval/",
+  "detail_json_href": "/api-data/ops/polyval.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L72-L84",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.polyval.html"
+  },
+  "op": {
+    "name": "polyval",
+    "module": "whest._polynomial",
+    "whest_ref": "we.polyval",
+    "numpy_ref": "np.polyval",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "m * deg (FMA=1)",
+    "cost_formula_latex": "$m \\cdot \\text{deg}$",
+    "notes": "Evaluate polynomial at given points. Cost: $m \\cdot \\text{deg}$ (Horner's method, FMA=1).",
+    "summary": "Evaluate a polynomial at specific values.",
+    "signature": "we.polyval(p, x)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Evaluate a polynomial at specific values."
+          },
+          {
+            "type": "directive",
+            "name": "note",
+            "body": "   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `numpy.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
+            "raw": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `numpy.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`."
+          },
+          {
+            "type": "paragraph",
+            "text": "If `p` is of length N, this function returns the value::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    p[0]*x**(N-1) + p[1]*x**(N-2) + ... + p[N-2]*x + p[N-1]"
+          },
+          {
+            "type": "paragraph",
+            "text": "If `x` is a sequence, then ``p(x)`` is returned for each element of ``x``.\nIf `x` is another polynomial then the composite polynomial ``p(x(t))``\nis returned."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "p",
+            "type": "array_like or poly1d object",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "1D array of polynomial coefficients (including coefficients equal\nto zero) from highest degree to the constant term, or an\ninstance of poly1d."
+              }
+            ]
+          },
+          {
+            "name": "x",
+            "type": "array_like or poly1d object",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A number, an array of numbers, or an instance of poly1d, at\nwhich to evaluate `p`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "values",
+            "type": "ndarray or poly1d",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If `x` is a poly1d instance, the result is the composition of the two\npolynomials, i.e., `x` is \"substituted\" in `p` and the simplified\nresult is returned. In addition, the type of `x` - array_like or\npoly1d - governs the type of the output: `x` array_like => `values`\narray_like, `x` a poly1d object => `values` is also."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Horner's scheme [1]_ is used to evaluate the polynomial. Even so,\nfor polynomials of high degree the values may be inaccurate due to\nrounding errors. Use carefully."
+          },
+          {
+            "type": "paragraph",
+            "text": "If `x` is a subtype of `ndarray` the return value will be of the same type."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.polyval([3,0,1], 5)  # 3 * 5**2 + 0 * 5**1 + 1\n76\n>>> np.polyval([3,0,1], np.poly1d(5))\npoly1d([76])\n>>> np.polyval(np.poly1d([3,0,1]), 5)\n76\n>>> np.polyval(np.poly1d([3,0,1]), np.poly1d(5))\npoly1d([76])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "poly1d \u2014 A polynomial class."
+          }
+        ]
+      }
+    ]
+  }
+}

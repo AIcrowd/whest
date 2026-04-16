@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "slug": "take",
+  "detail_href": "/docs/api/ops/take/",
+  "detail_json_href": "/api-data/ops/take.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L1408-L1415",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.take.html"
+  },
+  "op": {
+    "name": "take",
+    "module": "numpy",
+    "whest_ref": "we.take",
+    "numpy_ref": "np.take",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 4.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Take elements from array along axis. Cost: numel(output).",
+    "summary": "Take elements from an array along an axis.",
+    "signature": "we.take(a, indices, axis=None, out=None, mode='raise')"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Take elements from an array along an axis."
+          },
+          {
+            "type": "paragraph",
+            "text": "When axis is not None, this function does the same thing as \"fancy\"\nindexing (indexing arrays using arrays); however, it can be easier to use\nif you need elements along a given axis. A call such as\n``np.take(arr, indices, axis=3)`` is equivalent to\n``arr[:,:,:,indices,...]``."
+          },
+          {
+            "type": "paragraph",
+            "text": "Explained without fancy indexing, this is equivalent to the following use\nof `ndindex`, which sets each of ``ii``, ``jj``, and ``kk`` to a tuple of\nindices::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    Ni, Nk = a.shape[:axis], a.shape[axis+1:]\n    Nj = indices.shape\n    for ii in ndindex(Ni):\n        for jj in ndindex(Nj):\n            for kk in ndindex(Nk):\n                out[ii + jj + kk] = a[ii + (indices[jj],) + kk]"
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like (Ni..., M, Nk...)",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The source array."
+              }
+            ]
+          },
+          {
+            "name": "indices",
+            "type": "array_like (Nj...)",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The indices of the values to extract.\nAlso allow scalars for indices."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The axis over which to select values. By default, the flattened\ninput array is used."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, optional (Ni..., Nj..., Nk...)",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If provided, the result will be placed in this array. It should\nbe of the appropriate shape and dtype. Note that `out` is always\nbuffered if `mode='raise'`; use other modes for better performance."
+              }
+            ]
+          },
+          {
+            "name": "mode",
+            "type": "{'raise', 'wrap', 'clip'}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Specifies how out-of-bounds indices will behave."
+              },
+              {
+                "type": "paragraph",
+                "text": "* 'raise' -- raise an error (default)\n* 'wrap' -- wrap around\n* 'clip' -- clip to the range"
+              },
+              {
+                "type": "paragraph",
+                "text": "'clip' mode means that all indices that are too large are replaced\nby the index that addresses the last element along that axis. Note\nthat this disables indexing with negative numbers."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray (Ni..., Nj..., Nk...)",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The returned array has the same type as `a`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "By eliminating the inner loop in the description above, and using `s_` to\nbuild simple slice objects, `take` can be expressed  in terms of applying\nfancy indexing to each 1-d slice::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    Ni, Nk = a.shape[:axis], a.shape[axis+1:]\n    for ii in ndindex(Ni):\n        for kk in ndindex(Nj):\n            out[ii + s_[...,] + kk] = a[ii + s_[:,] + kk][indices]"
+          },
+          {
+            "type": "paragraph",
+            "text": "For this reason, it is equivalent to (but faster than) the following use\nof `apply_along_axis`::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    out = np.apply_along_axis(lambda a_1d: a_1d[indices], axis, a)"
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> a = [4, 3, 5, 7, 6, 8]\n>>> indices = [0, 1, 4]\n>>> np.take(a, indices)\narray([4, 3, 6])"
+          },
+          {
+            "type": "paragraph",
+            "text": "In this example if `a` is an ndarray, \"fancy\" indexing can be used."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array(a)\n>>> a[indices]\narray([4, 3, 6])"
+          },
+          {
+            "type": "paragraph",
+            "text": "If `indices` is not one dimensional, the output also has these dimensions."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.take(a, [[0, 1], [2, 3]])\narray([[4, 3],\n       [5, 7]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "compress \u2014 Take elements using a boolean mask"
+          },
+          {
+            "type": "paragraph",
+            "text": "ndarray.take \u2014 equivalent method"
+          },
+          {
+            "type": "paragraph",
+            "text": "take_along_axis \u2014 Take elements by matching the array and the index arrays"
+          }
+        ]
+      }
+    ]
+  }
+}

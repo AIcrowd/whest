@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "slug": "ldexp",
+  "detail_href": "/docs/api/ops/ldexp/",
+  "detail_json_href": "/api-data/ops/ldexp.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L73-L159",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.ldexp.html"
+  },
+  "op": {
+    "name": "ldexp",
+    "module": "numpy",
+    "whest_ref": "we.ldexp",
+    "numpy_ref": "np.ldexp",
+    "category": "counted_binary",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Return x1 * 2**x2 element-wise.",
+    "summary": "Returns x1 * 2**x2, element-wise.",
+    "signature": "we.ldexp(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature])"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Returns x1 * 2**x2, element-wise."
+          },
+          {
+            "type": "paragraph",
+            "text": "The mantissas `x1` and twos exponents `x2` are used to construct\nfloating point numbers ``x1 * 2**x2``."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x1",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Array of multipliers."
+              }
+            ]
+          },
+          {
+            "name": "x2",
+            "type": "array_like, int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Array of twos exponents.\nIf ``x1.shape != x2.shape``, they must be broadcastable to a common\nshape (which becomes the shape of the output)."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, None, or tuple of ndarray and None, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
+              }
+            ]
+          },
+          {
+            "name": "where",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the `out` array will be set to the ufunc result.\nElsewhere, the `out` array will retain its original value.\nNote that if an uninitialized `out` array is created via the default\n``out=None``, locations within it where the condition is False will\nremain uninitialized."
+              }
+            ]
+          },
+          {
+            "name": "**kwargs",
+            "type": "",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "For other keyword-only arguments, see the\n:ref:`ufunc docs <ufuncs.kwargs>`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "y",
+            "type": "ndarray or scalar",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The result of ``x1 * 2**x2``.\nThis is a scalar if both `x1` and `x2` are scalars."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Complex dtypes are not supported, they will raise a TypeError."
+          },
+          {
+            "type": "paragraph",
+            "text": "`ldexp` is useful as the inverse of `frexp`, if used by itself it is\nmore clear to simply use the expression ``x1 * 2**x2``."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.ldexp(5, np.arange(4))\narray([ 5., 10., 20., 40.], dtype=float16)"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.arange(6)\n>>> np.ldexp(*np.frexp(x))\narray([ 0.,  1.,  2.,  3.,  4.,  5.])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "frexp \u2014 Return (y1, y2) from ``x = y1 * 2**y2``, inverse to `ldexp`."
+          }
+        ]
+      }
+    ]
+  }
+}

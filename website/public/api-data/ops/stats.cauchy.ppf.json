@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "slug": "stats.cauchy.ppf",
+  "detail_href": "/docs/api/ops/stats.cauchy.ppf/",
+  "detail_json_href": "/api-data/ops/stats.cauchy.ppf.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_cauchy.py#L54-L63",
+    "numpy": ""
+  },
+  "op": {
+    "name": "stats.cauchy.ppf",
+    "module": "whest.stats",
+    "whest_ref": "we.stats.cauchy.ppf",
+    "numpy_ref": "scipy.stats.cauchy.ppf",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 16.0,
+    "cost_formula": "5n",
+    "cost_formula_latex": "$5n$",
+    "notes": "Cauchy PPF; cost = numel(input).",
+    "summary": "Percent-point function (inverse CDF) at *q*.",
+    "signature": "we.stats.cauchy.ppf(q, loc=0, scale=1)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Percent-point function (inverse CDF) at *q*."
+          },
+          {
+            "type": "paragraph",
+            "text": "Equivalent to ``scipy.stats.cauchy.ppf(q, loc, scale)``."
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "slug": "flip",
+  "detail_href": "/docs/api/ops/flip/",
+  "detail_json_href": "/api-data/ops/flip.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L408-L410",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.flip.html"
+  },
+  "op": {
+    "name": "flip",
+    "module": "numpy",
+    "whest_ref": "we.flip",
+    "numpy_ref": "np.flip",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Reverse order of elements along axis.",
+    "summary": "Reverse the order of elements in an array along the given axis.",
+    "signature": "we.flip(m, axis=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Reverse the order of elements in an array along the given axis."
+          },
+          {
+            "type": "paragraph",
+            "text": "The shape of the array is preserved, but the elements are reordered."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "m",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "None or int or tuple of ints, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Axis or axes along which to flip over. The default,\naxis=None, will flip over all of the axes of the input array.\nIf axis is negative it counts from the last to the first axis."
+              },
+              {
+                "type": "paragraph",
+                "text": "If axis is a tuple of ints, flipping is performed on all of the axes\nspecified in the tuple."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A view of `m` with the entries of axis reversed.  Since a view is\nreturned, this operation is done in constant time."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "flip(m, 0) is equivalent to flipud(m)."
+          },
+          {
+            "type": "paragraph",
+            "text": "flip(m, 1) is equivalent to fliplr(m)."
+          },
+          {
+            "type": "paragraph",
+            "text": "flip(m, n) corresponds to ``m[...,::-1,...]`` with ``::-1`` at position n."
+          },
+          {
+            "type": "paragraph",
+            "text": "flip(m) corresponds to ``m[::-1,::-1,...,::-1]`` with ``::-1`` at all\npositions."
+          },
+          {
+            "type": "paragraph",
+            "text": "flip(m, (0, 1)) corresponds to ``m[::-1,::-1,...]`` with ``::-1`` at\nposition 0 and position 1."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> A = np.arange(8).reshape((2,2,2))\n>>> A\narray([[[0, 1],\n        [2, 3]],\n       [[4, 5],\n        [6, 7]]])\n>>> np.flip(A, 0)\narray([[[4, 5],\n        [6, 7]],\n       [[0, 1],\n        [2, 3]]])\n>>> np.flip(A, 1)\narray([[[2, 3],\n        [0, 1]],\n       [[6, 7],\n        [4, 5]]])\n>>> np.flip(A)\narray([[[7, 6],\n        [5, 4]],\n       [[3, 2],\n        [1, 0]]])\n>>> np.flip(A, (0, 2))\narray([[[5, 4],\n        [7, 6]],\n       [[1, 0],\n        [3, 2]]])\n>>> rng = np.random.default_rng()\n>>> A = rng.normal(size=(3,4,5))\n>>> np.all(np.flip(A,2) == A[:,:,::-1,...])\nTrue"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "flipud \u2014 Flip an array vertically (axis=0)."
+          },
+          {
+            "type": "paragraph",
+            "text": "fliplr \u2014 Flip an array horizontally (axis=1)."
+          }
+        ]
+      }
+    ]
+  }
+}

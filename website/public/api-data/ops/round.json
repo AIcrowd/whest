@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "slug": "round",
+  "detail_href": "/docs/api/ops/round/",
+  "detail_json_href": "/api-data/ops/round.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L387-L407",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.round.html"
+  },
+  "op": {
+    "name": "round",
+    "module": "numpy",
+    "whest_ref": "we.round",
+    "numpy_ref": "np.round",
+    "category": "counted_unary",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Round to given number of decimals element-wise.",
+    "summary": "Evenly round to the given number of decimals.",
+    "signature": "we.round(a, decimals=0, out=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Evenly round to the given number of decimals."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input data."
+              }
+            ]
+          },
+          {
+            "name": "decimals",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Number of decimal places to round to (default: 0).  If\ndecimals is negative, it specifies the number of positions to\nthe left of the decimal point."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Alternative output array in which to place the result. It must have\nthe same shape as the expected output, but the type of the output\nvalues will be cast if necessary. See :ref:`ufuncs-output-type`\nfor more details."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "rounded_array",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "An array of the same type as `a`, containing the rounded values.\nUnless `out` was specified, a new array is created.  A reference to\nthe result is returned."
+              },
+              {
+                "type": "paragraph",
+                "text": "The real and imaginary parts of complex numbers are rounded\nseparately.  The result of rounding a float is a float."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "For values exactly halfway between rounded decimal values, NumPy\nrounds to the nearest even value. Thus 1.5 and 2.5 round to 2.0,\n-0.5 and 0.5 round to 0.0, etc."
+          },
+          {
+            "type": "paragraph",
+            "text": "``np.round`` uses a fast but sometimes inexact algorithm to round\nfloating-point datatypes. For positive `decimals` it is equivalent to\n``np.true_divide(np.rint(a * 10**decimals), 10**decimals)``, which has\nerror due to the inexact representation of decimal fractions in the IEEE\nfloating point standard [1]_ and errors introduced when scaling by powers\nof ten. For instance, note the extra \"1\" in the following:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": "    >>> np.round(56294995342131.5, 3)\n    56294995342131.51"
+          },
+          {
+            "type": "paragraph",
+            "text": "If your goal is to print such values with a fixed number of decimals, it is\npreferable to use numpy's float printing routines to limit the number of\nprinted decimals:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": "    >>> np.format_float_positional(56294995342131.5, precision=3)\n    '56294995342131.5'"
+          },
+          {
+            "type": "paragraph",
+            "text": "The float printing routines use an accurate but much more computationally\ndemanding algorithm to compute the number of digits after the decimal\npoint."
+          },
+          {
+            "type": "paragraph",
+            "text": "Alternatively, Python's builtin `round` function uses a more accurate\nbut slower algorithm for 64-bit floating point values:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": "    >>> round(56294995342131.5, 3)\n    56294995342131.5\n    >>> np.round(16.055, 2), round(16.055, 2)  # equals 16.0549999999999997\n    (16.06, 16.05)"
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.round([0.37, 1.64])\narray([0., 2.])\n>>> np.round([0.37, 1.64], decimals=1)\narray([0.4, 1.6])\n>>> np.round([.5, 1.5, 2.5, 3.5, 4.5]) # rounds to nearest even value\narray([0., 2., 2., 4., 4.])\n>>> np.round([1,2,3,11], decimals=1) # ndarray of ints is returned\narray([ 1,  2,  3, 11])\n>>> np.round([1,2,3,11], decimals=-1)\narray([ 0,  0,  0, 10])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "ndarray.round \u2014 equivalent method"
+          },
+          {
+            "type": "paragraph",
+            "text": "around \u2014 an alias for this function"
+          },
+          {
+            "type": "paragraph",
+            "text": "ceil, fix, floor, rint, trunc"
+          }
+        ]
+      }
+    ]
+  }
+}

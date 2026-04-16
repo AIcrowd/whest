@@ -1,0 +1,283 @@
+{
+  "schema_version": 1,
+  "slug": "gradient",
+  "detail_href": "/docs/api/ops/gradient/",
+  "detail_json_href": "/api-data/ops/gradient.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L985-L994",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.gradient.html"
+  },
+  "op": {
+    "name": "gradient",
+    "module": "numpy",
+    "whest_ref": "we.gradient",
+    "numpy_ref": "np.gradient",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(input)",
+    "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "notes": "Gradient using central differences.",
+    "summary": "Return the gradient of an N-dimensional array.",
+    "signature": "we.gradient(f, *varargs, axis=None, edge_order=1)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return the gradient of an N-dimensional array."
+          },
+          {
+            "type": "paragraph",
+            "text": "The gradient is computed using second order accurate central differences\nin the interior points and either first or second order accurate one-sides\n(forward or backwards) differences at the boundaries.\nThe returned gradient hence has the same shape as the input array."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "f",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "An N-dimensional array containing samples of a scalar function."
+              }
+            ]
+          },
+          {
+            "name": "varargs",
+            "type": "list of scalar or array, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Spacing between f values. Default unitary spacing for all dimensions.\nSpacing can be specified using:"
+              },
+              {
+                "type": "paragraph",
+                "text": "1. single scalar to specify a sample distance for all dimensions.\n2. N scalars to specify a constant sample distance for each dimension.\n   i.e. `dx`, `dy`, `dz`, ...\n3. N arrays to specify the coordinates of the values along each\n   dimension of F. The length of the array must match the size of\n   the corresponding dimension\n4. Any combination of N scalars/arrays with the meaning of 2. and 3."
+              },
+              {
+                "type": "paragraph",
+                "text": "If `axis` is given, the number of varargs must equal the number of axes.\nDefault: 1. (see Examples below)."
+              }
+            ]
+          },
+          {
+            "name": "edge_order",
+            "type": "{1, 2}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Gradient is calculated using N-th order accurate differences\nat the boundaries. Default: 1."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "None or int or tuple of ints, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Gradient is calculated only along the given axis or axes\nThe default (axis = None) is to calculate the gradient for all the axes\nof the input array. axis may be negative, in which case it counts from\nthe last to the first axis."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "gradient",
+            "type": "ndarray or tuple of ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A tuple of ndarrays (or a single ndarray if there is only one\ndimension) corresponding to the derivatives of f with respect\nto each dimension. Each derivative has the same shape as f."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Assuming that :math:`f\\in C^{3}` (i.e., :math:`f` has at least 3 continuous\nderivatives) and let :math:`h_{*}` be a non-homogeneous stepsize, we\nminimize the \"consistency error\" :math:`\\eta_{i}` between the true gradient\nand its estimate from a linear combination of the neighboring grid-points:"
+          },
+          {
+            "type": "directive",
+            "name": "math",
+            "body": "",
+            "raw": ".. math::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    \\eta_{i} = f_{i}^{\\left(1\\right)} -\n                \\left[ \\alpha f\\left(x_{i}\\right) +\n                        \\beta f\\left(x_{i} + h_{d}\\right) +\n                        \\gamma f\\left(x_{i}-h_{s}\\right)\n                \\right]"
+          },
+          {
+            "type": "paragraph",
+            "text": "By substituting :math:`f(x_{i} + h_{d})` and :math:`f(x_{i} - h_{s})`\nwith their Taylor series expansion, this translates into solving\nthe following the linear system:"
+          },
+          {
+            "type": "directive",
+            "name": "math",
+            "body": "",
+            "raw": ".. math::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    \\left\\{\n        \\begin{array}{r}\n            \\alpha+\\beta+\\gamma=0 \\\\\n            \\beta h_{d}-\\gamma h_{s}=1 \\\\\n            \\beta h_{d}^{2}+\\gamma h_{s}^{2}=0\n        \\end{array}\n    \\right."
+          },
+          {
+            "type": "paragraph",
+            "text": "The resulting approximation of :math:`f_{i}^{(1)}` is the following:"
+          },
+          {
+            "type": "directive",
+            "name": "math",
+            "body": "",
+            "raw": ".. math::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    \\hat f_{i}^{(1)} =\n        \\frac{\n            h_{s}^{2}f\\left(x_{i} + h_{d}\\right)\n            + \\left(h_{d}^{2} - h_{s}^{2}\\right)f\\left(x_{i}\\right)\n            - h_{d}^{2}f\\left(x_{i}-h_{s}\\right)}\n            { h_{s}h_{d}\\left(h_{d} + h_{s}\\right)}\n        + \\mathcal{O}\\left(\\frac{h_{d}h_{s}^{2}\n                            + h_{s}h_{d}^{2}}{h_{d}\n                            + h_{s}}\\right)"
+          },
+          {
+            "type": "paragraph",
+            "text": "It is worth noting that if :math:`h_{s}=h_{d}`\n(i.e., data are evenly spaced)\nwe find the standard second order approximation:"
+          },
+          {
+            "type": "directive",
+            "name": "math",
+            "body": "",
+            "raw": ".. math::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    \\hat f_{i}^{(1)}=\n        \\frac{f\\left(x_{i+1}\\right) - f\\left(x_{i-1}\\right)}{2h}\n        + \\mathcal{O}\\left(h^{2}\\right)"
+          },
+          {
+            "type": "paragraph",
+            "text": "With a similar procedure the forward/backward approximations used for\nboundaries can be derived."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> f = np.array([1, 2, 4, 7, 11, 16])\n>>> np.gradient(f)\narray([1. , 1.5, 2.5, 3.5, 4.5, 5. ])\n>>> np.gradient(f, 2)\narray([0.5 ,  0.75,  1.25,  1.75,  2.25,  2.5 ])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Spacing can be also specified with an array that represents the coordinates\nof the values F along the dimensions.\nFor instance a uniform spacing:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.arange(f.size)\n>>> np.gradient(f, x)\narray([1. ,  1.5,  2.5,  3.5,  4.5,  5. ])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Or a non uniform one:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.array([0., 1., 1.5, 3.5, 4., 6.])\n>>> np.gradient(f, x)\narray([1. ,  3. ,  3.5,  6.7,  6.9,  2.5])"
+          },
+          {
+            "type": "paragraph",
+            "text": "For two dimensional arrays, the return will be two arrays ordered by\naxis. In this example the first array stands for the gradient in\nrows and the second one in columns direction:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.gradient(np.array([[1, 2, 6], [3, 4, 5]]))\n(array([[ 2.,  2., -1.],\n        [ 2.,  2., -1.]]),\n array([[1. , 2.5, 4. ],\n        [1. , 1. , 1. ]]))"
+          },
+          {
+            "type": "paragraph",
+            "text": "In this example the spacing is also specified:\nuniform for axis=0 and non uniform for axis=1"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> dx = 2.\n>>> y = [1., 1.5, 3.5]\n>>> np.gradient(np.array([[1, 2, 6], [3, 4, 5]]), dx, y)\n(array([[ 1. ,  1. , -0.5],\n        [ 1. ,  1. , -0.5]]),\n array([[2. , 2. , 2. ],\n        [2. , 1.7, 0.5]]))"
+          },
+          {
+            "type": "paragraph",
+            "text": "It is possible to specify how boundaries are treated using `edge_order`"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.array([0, 1, 2, 3, 4])\n>>> f = x**2\n>>> np.gradient(f, edge_order=1)\narray([1.,  2.,  4.,  6.,  7.])\n>>> np.gradient(f, edge_order=2)\narray([0., 2., 4., 6., 8.])"
+          },
+          {
+            "type": "paragraph",
+            "text": "The `axis` keyword can be used to specify a subset of axes of which the\ngradient is calculated"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.gradient(np.array([[1, 2, 6], [3, 4, 5]]), axis=0)\narray([[ 2.,  2., -1.],\n       [ 2.,  2., -1.]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "The `varargs` argument defines the spacing between sample points in the\ninput array. It can take two forms:"
+          },
+          {
+            "type": "paragraph",
+            "text": "1. An array, specifying coordinates, which may be unevenly spaced:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.array([0., 2., 3., 6., 8.])\n>>> y = x ** 2\n>>> np.gradient(y, x, edge_order=2)\narray([ 0.,  4.,  6., 12., 16.])"
+          },
+          {
+            "type": "paragraph",
+            "text": "2. A scalar, representing the fixed sample distance:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> dx = 2\n>>> x = np.array([0., 2., 4., 6., 8.])\n>>> y = x ** 2\n>>> np.gradient(y, dx, edge_order=2)\narray([ 0.,  4.,  8., 12., 16.])"
+          },
+          {
+            "type": "paragraph",
+            "text": "It's possible to provide different data for spacing along each dimension.\nThe number of arguments must match the number of dimensions in the input\ndata."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> dx = 2\n>>> dy = 3\n>>> x = np.arange(0, 6, dx)\n>>> y = np.arange(0, 9, dy)\n>>> xs, ys = np.meshgrid(x, y)\n>>> zs = xs + 2 * ys\n>>> np.gradient(zs, dy, dx)  # Passing two scalars\n(array([[2., 2., 2.],\n        [2., 2., 2.],\n        [2., 2., 2.]]),\n array([[1., 1., 1.],\n        [1., 1., 1.],\n        [1., 1., 1.]]))"
+          },
+          {
+            "type": "paragraph",
+            "text": "Mixing scalars and arrays is also allowed:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.gradient(zs, y, dx)  # Passing one array and one scalar\n(array([[2., 2., 2.],\n        [2., 2., 2.],\n        [2., 2., 2.]]),\n array([[1., 1., 1.],\n        [1., 1., 1.],\n        [1., 1., 1.]]))"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "slug": "correlate",
+  "detail_href": "/docs/api/ops/correlate/",
+  "detail_json_href": "/api-data/ops/correlate.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L1050-L1065",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.correlate.html"
+  },
+  "op": {
+    "name": "correlate",
+    "module": "numpy",
+    "whest_ref": "we.correlate",
+    "numpy_ref": "np.correlate",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "n * m",
+    "cost_formula_latex": "$n \\cdot m$",
+    "notes": "1-D cross-correlation.",
+    "summary": "Cross-correlation of two 1-dimensional sequences.",
+    "signature": "we.correlate(a, v, mode='valid')"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Cross-correlation of two 1-dimensional sequences."
+          },
+          {
+            "type": "paragraph",
+            "text": "This function computes the correlation as generally defined in signal\nprocessing texts [1]_:"
+          },
+          {
+            "type": "directive",
+            "name": "math:: c_k = \\sum_n a_{n+k} \\cdot \\overline{v}_n",
+            "body": "",
+            "raw": ".. math:: c_k = \\sum_n a_{n+k} \\cdot \\overline{v}_n"
+          },
+          {
+            "type": "paragraph",
+            "text": "with a and v sequences being zero-padded where necessary and\n:math:`\\overline v` denoting complex conjugation."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a, v",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input sequences."
+              }
+            ]
+          },
+          {
+            "name": "mode",
+            "type": "{'valid', 'same', 'full'}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Refer to the `convolve` docstring.  Note that the default\nis 'valid', unlike `convolve`, which uses 'full'."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Discrete cross-correlation of `a` and `v`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The definition of correlation above is not unique and sometimes\ncorrelation may be defined differently. Another common definition is [1]_:"
+          },
+          {
+            "type": "directive",
+            "name": "math:: c'_k = \\sum_n a_{n} \\cdot \\overline{v_{n+k}}",
+            "body": "",
+            "raw": ".. math:: c'_k = \\sum_n a_{n} \\cdot \\overline{v_{n+k}}"
+          },
+          {
+            "type": "paragraph",
+            "text": "which is related to :math:`c_k` by :math:`c'_k = c_{-k}`."
+          },
+          {
+            "type": "paragraph",
+            "text": "`numpy.correlate` may perform slowly in large arrays (i.e. n = 1e5)\nbecause it does not use the FFT to compute the convolution; in that case,\n`scipy.signal.correlate` might be preferable."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.correlate([1, 2, 3], [0, 1, 0.5])\narray([3.5])\n>>> np.correlate([1, 2, 3], [0, 1, 0.5], \"same\")\narray([2. ,  3.5,  3. ])\n>>> np.correlate([1, 2, 3], [0, 1, 0.5], \"full\")\narray([0.5,  2. ,  3.5,  3. ,  0. ])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Using complex sequences:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.correlate([1+1j, 2, 3-1j], [0, 1, 0.5j], 'full')\narray([ 0.5-0.5j,  1.0+0.j ,  1.5-1.5j,  3.0-1.j ,  0.0+0.j ])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Note that you get the time reversed, complex conjugated result\n(:math:`\\overline{c_{-k}}`) when the two input sequences a and v change\nplaces:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.correlate([0, 1, 0.5j], [1+1j, 2, 3-1j], 'full')\narray([ 0.0+0.j ,  3.0+1.j ,  1.5+1.5j,  1.0+0.j ,  0.5+0.5j])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "convolve \u2014 Discrete, linear convolution of two one-dimensional sequences."
+          },
+          {
+            "type": "paragraph",
+            "text": "scipy.signal.correlate \u2014 uses FFT which has superior performance on large arrays."
+          }
+        ]
+      }
+    ]
+  }
+}

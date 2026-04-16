@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "slug": "angle",
+  "detail_href": "/docs/api/ops/angle/",
+  "detail_json_href": "/api-data/ops/angle.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29-L42",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.angle.html"
+  },
+  "op": {
+    "name": "angle",
+    "module": "numpy",
+    "whest_ref": "we.angle",
+    "numpy_ref": "np.angle",
+    "category": "counted_unary",
+    "status": "supported",
+    "weight": 16.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Return angle of complex argument element-wise.",
+    "summary": "Return the angle of the complex argument.",
+    "signature": "we.angle(z, deg=False)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return the angle of the complex argument."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "z",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A complex number or sequence of complex numbers."
+              }
+            ]
+          },
+          {
+            "name": "deg",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Return angle in degrees if True, radians if False (default)."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "angle",
+            "type": "ndarray or scalar",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The counterclockwise angle from the positive real axis on the complex\nplane in the range ``(-pi, pi]``, with dtype as numpy.float64."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "This function passes the imaginary and real parts of the argument to\n`arctan2` to compute the result; consequently, it follows the convention\nof `arctan2` when the magnitude of the argument is zero. See example."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.angle([1.0, 1.0j, 1+1j])               # in radians\narray([ 0.        ,  1.57079633,  0.78539816]) # may vary\n>>> np.angle(1+1j, deg=True)                  # in degrees\n45.0\n>>> np.angle([0., -0., complex(0., -0.), complex(-0., -0.)])  # convention\narray([ 0.        ,  3.14159265, -0.        , -3.14159265])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "arctan2"
+          },
+          {
+            "type": "paragraph",
+            "text": "absolute"
+          }
+        ]
+      }
+    ]
+  }
+}

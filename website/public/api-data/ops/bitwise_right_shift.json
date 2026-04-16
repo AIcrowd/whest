@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "slug": "bitwise_right_shift",
+  "detail_href": "/docs/api/ops/bitwise_right_shift/",
+  "detail_json_href": "/api-data/ops/bitwise_right_shift.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L73-L159",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.bitwise_right_shift.html"
+  },
+  "op": {
+    "name": "bitwise_right_shift",
+    "module": "numpy",
+    "whest_ref": "we.bitwise_right_shift",
+    "numpy_ref": "np.bitwise_right_shift",
+    "category": "counted_binary",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Element-wise right bit shift.",
+    "summary": "Shift the bits of an integer to the right.",
+    "signature": "we.bitwise_right_shift(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature])"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Shift the bits of an integer to the right."
+          },
+          {
+            "type": "paragraph",
+            "text": "Bits are shifted to the right `x2`.  Because the internal\nrepresentation of numbers is in binary format, this operation is\nequivalent to dividing `x1` by ``2**x2``."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x1",
+            "type": "array_like, int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input values."
+              }
+            ]
+          },
+          {
+            "name": "x2",
+            "type": "array_like, int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Number of bits to remove at the right of `x1`.\nIf ``x1.shape != x2.shape``, they must be broadcastable to a common\nshape (which becomes the shape of the output)."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, None, or tuple of ndarray and None, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
+              }
+            ]
+          },
+          {
+            "name": "where",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the `out` array will be set to the ufunc result.\nElsewhere, the `out` array will retain its original value.\nNote that if an uninitialized `out` array is created via the default\n``out=None``, locations within it where the condition is False will\nremain uninitialized."
+              }
+            ]
+          },
+          {
+            "name": "**kwargs",
+            "type": "",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "For other keyword-only arguments, see the\n:ref:`ufunc docs <ufuncs.kwargs>`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray, int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Return `x1` with bits shifted `x2` times to the right.\nThis is a scalar if both `x1` and `x2` are scalars."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.binary_repr(10)\n'1010'\n>>> np.right_shift(10, 1)\n5\n>>> np.binary_repr(5)\n'101'"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.right_shift(10, [1,2,3])\narray([5, 2, 1])"
+          },
+          {
+            "type": "paragraph",
+            "text": "The ``>>`` operator can be used as a shorthand for ``np.right_shift`` on\nndarrays."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x1 = 10\n>>> x2 = np.array([1,2,3])\n>>> x1 >> x2\narray([5, 2, 1])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "left_shift \u2014 Shift the bits of an integer to the left."
+          },
+          {
+            "type": "paragraph",
+            "text": "binary_repr \u2014 Return the binary representation of the input number as a string."
+          }
+        ]
+      }
+    ]
+  }
+}

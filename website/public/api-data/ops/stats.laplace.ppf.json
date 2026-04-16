@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "slug": "stats.laplace.ppf",
+  "detail_href": "/docs/api/ops/stats.laplace.ppf/",
+  "detail_json_href": "/api-data/ops/stats.laplace.ppf.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_laplace.py#L54-L63",
+    "numpy": ""
+  },
+  "op": {
+    "name": "stats.laplace.ppf",
+    "module": "whest.stats",
+    "whest_ref": "we.stats.laplace.ppf",
+    "numpy_ref": "scipy.stats.laplace.ppf",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 16.0,
+    "cost_formula": "5n",
+    "cost_formula_latex": "$5n$",
+    "notes": "Laplace PPF; cost = numel(input).",
+    "summary": "Percent-point function (inverse CDF) at *q*.",
+    "signature": "we.stats.laplace.ppf(q, loc=0, scale=1)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Percent-point function (inverse CDF) at *q*."
+          },
+          {
+            "type": "paragraph",
+            "text": "Equivalent to ``scipy.stats.laplace.ppf(q, loc, scale)``."
+          }
+        ]
+      }
+    ]
+  }
+}

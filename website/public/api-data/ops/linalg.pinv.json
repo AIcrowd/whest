@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "slug": "linalg.pinv",
+  "detail_href": "/docs/api/ops/linalg.pinv/",
+  "detail_json_href": "/api-data/ops/linalg.pinv.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_solvers.py#L189-L206",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.pinv.html"
+  },
+  "op": {
+    "name": "linalg.pinv",
+    "module": "numpy.linalg",
+    "whest_ref": "we.linalg.pinv",
+    "numpy_ref": "np.linalg.pinv",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 4.0,
+    "cost_formula": "m * n * min(m,n)",
+    "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
+    "notes": "Pseudoinverse. Cost: m*n*min(m,n) (via SVD).",
+    "summary": "Compute the (Moore-Penrose) pseudo-inverse of a matrix.",
+    "signature": "we.linalg.pinv(a, rcond=None, hermitian=False, *, rtol=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Compute the (Moore-Penrose) pseudo-inverse of a matrix."
+          },
+          {
+            "type": "paragraph",
+            "text": "Calculate the generalized inverse of a matrix using its\nsingular-value decomposition (SVD) and including all\n*large* singular values."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "(..., M, N) array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Matrix or stack of matrices to be pseudo-inverted."
+              }
+            ]
+          },
+          {
+            "name": "rcond",
+            "type": "(...) array_like of float, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Cutoff for small singular values.\nSingular values less than or equal to\n``rcond * largest_singular_value`` are set to zero.\nBroadcasts against the stack of matrices. Default: ``1e-15``."
+              }
+            ]
+          },
+          {
+            "name": "hermitian",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If True, `a` is assumed to be Hermitian (symmetric if real-valued),\nenabling a more efficient method for finding singular values.\nDefaults to False."
+              }
+            ]
+          },
+          {
+            "name": "rtol",
+            "type": "(...) array_like of float, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Same as `rcond`, but it's an Array API compatible parameter name.\nOnly `rcond` or `rtol` can be set at a time. If none of them are\nprovided then NumPy's ``1e-15`` default is used. If ``rtol=None``\nis passed then the API standard default is used."
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 2.0.0",
+                "body": "",
+                "raw": ".. versionadded:: 2.0.0"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "B",
+            "type": "(..., N, M) ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The pseudo-inverse of `a`. If `a` is a `matrix` instance, then so\nis `B`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The pseudo-inverse of a matrix A, denoted :math:`A^+`, is\ndefined as: \"the matrix that 'solves' [the least-squares problem]\n:math:`Ax = b`,\" i.e., if :math:`\\bar{x}` is said solution, then\n:math:`A^+` is that matrix such that :math:`\\bar{x} = A^+b`."
+          },
+          {
+            "type": "paragraph",
+            "text": "It can be shown that if :math:`Q_1 \\Sigma Q_2^T = A` is the singular\nvalue decomposition of A, then\n:math:`A^+ = Q_2 \\Sigma^+ Q_1^T`, where :math:`Q_{1,2}` are\northogonal matrices, :math:`\\Sigma` is a diagonal matrix consisting\nof A's so-called singular values, (followed, typically, by\nzeros), and then :math:`\\Sigma^+` is simply the diagonal matrix\nconsisting of the reciprocals of A's singular values\n(again, followed by zeros). [1]_"
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The following example checks that ``a * a+ * a == a`` and\n``a+ * a * a+ == a+``:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> rng = np.random.default_rng()\n>>> a = rng.normal(size=(9, 6))\n>>> B = np.linalg.pinv(a)\n>>> np.allclose(a, np.dot(a, np.dot(B, a)))\nTrue\n>>> np.allclose(B, np.dot(B, np.dot(a, B)))\nTrue"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "scipy.linalg.pinv \u2014 Similar function in SciPy."
+          },
+          {
+            "type": "paragraph",
+            "text": "scipy.linalg.pinvh \u2014 Compute the (Moore-Penrose) pseudo-inverse of a Hermitian matrix."
+          }
+        ]
+      }
+    ]
+  }
+}

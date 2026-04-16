@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "slug": "fft.hfft",
+  "detail_href": "/docs/api/ops/fft.hfft/",
+  "detail_json_href": "/api-data/ops/fft.hfft.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L452-L461",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.fft.hfft.html"
+  },
+  "op": {
+    "name": "fft.hfft",
+    "module": "numpy.fft",
+    "whest_ref": "we.fft.hfft",
+    "numpy_ref": "np.fft.hfft",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "5n * ceil(log2(n))",
+    "cost_formula_latex": "$5n \\cdot \\lceil\\log_2 n\\rceil$",
+    "notes": "FFT of Hermitian-symmetric signal. Cost: 5*n_out*ceil(log2(n_out)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
+    "summary": "Compute the FFT of a signal that has Hermitian symmetry, i.e., a real spectrum.",
+    "signature": "we.fft.hfft(a, n=None, axis=-1, norm=None, out=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Compute the FFT of a signal that has Hermitian symmetry, i.e., a real\nspectrum."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The input array."
+              }
+            ]
+          },
+          {
+            "name": "n",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Length of the transformed axis of the output. For `n` output\npoints, ``n//2 + 1`` input points are necessary.  If the input is\nlonger than this, it is cropped.  If it is shorter than this, it is\npadded with zeros.  If `n` is not given, it is taken to be ``2*(m-1)``\nwhere ``m`` is the length of the input along the axis specified by\n`axis`."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Axis over which to compute the FFT. If not given, the last\naxis is used."
+              }
+            ]
+          },
+          {
+            "name": "norm",
+            "type": "{\"backward\", \"ortho\", \"forward\"}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Normalization mode (see `numpy.fft`). Default is \"backward\".\nIndicates which direction of the forward/backward pair of transforms\nis scaled and with what normalization factor."
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 1.20.0",
+                "body": "",
+                "raw": ".. versionadded:: 1.20.0"
+              },
+              {
+                "type": "paragraph",
+                "text": "    The \"backward\", \"forward\" values were added."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If provided, the result will be placed in this array. It should be\nof the appropriate shape and dtype."
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 2.0.0",
+                "body": "",
+                "raw": ".. versionadded:: 2.0.0"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The truncated or zero-padded input, transformed along the axis\nindicated by `axis`, or the last one if `axis` is not specified.\nThe length of the transformed axis is `n`, or, if `n` is not given,\n``2*m - 2`` where ``m`` is the length of the transformed axis of\nthe input. To get an odd number of output points, `n` must be\nspecified, for instance as ``2*m - 1`` in the typical case,"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "`hfft`/`ihfft` are a pair analogous to `rfft`/`irfft`, but for the\nopposite case: here the signal has Hermitian symmetry in the time\ndomain and is real in the frequency domain. So here it's `hfft` for\nwhich you must supply the length of the result if it is to be odd."
+          },
+          {
+            "type": "paragraph",
+            "text": "* even: ``ihfft(hfft(a, 2*len(a) - 2)) == a``, within roundoff error,\n* odd: ``ihfft(hfft(a, 2*len(a) - 1)) == a``, within roundoff error."
+          },
+          {
+            "type": "paragraph",
+            "text": "The correct interpretation of the hermitian input depends on the length of\nthe original data, as given by `n`. This is because each input shape could\ncorrespond to either an odd or even length signal. By default, `hfft`\nassumes an even output length which puts the last entry at the Nyquist\nfrequency; aliasing with its symmetric counterpart. By Hermitian symmetry,\nthe value is thus treated as purely real. To avoid losing information, the\nshape of the full signal **must** be given."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> signal = np.array([1, 2, 3, 4, 3, 2])\n>>> np.fft.fft(signal)\narray([15.+0.j,  -4.+0.j,   0.+0.j,  -1.-0.j,   0.+0.j,  -4.+0.j]) # may vary\n>>> np.fft.hfft(signal[:4]) # Input first half of signal\narray([15.,  -4.,   0.,  -1.,   0.,  -4.])\n>>> np.fft.hfft(signal, 6)  # Input entire signal and truncate\narray([15.,  -4.,   0.,  -1.,   0.,  -4.])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> signal = np.array([[1, 1.j], [-1.j, 2]])\n>>> np.conj(signal.T) - signal   # check Hermitian symmetry\narray([[ 0.-0.j,  -0.+0.j], # may vary\n       [ 0.+0.j,  0.-0.j]])\n>>> freq_spectrum = np.fft.hfft(signal)\n>>> freq_spectrum\narray([[ 1.,  1.],\n       [ 2., -2.]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "rfft \u2014 Compute the one-dimensional FFT for real input."
+          },
+          {
+            "type": "paragraph",
+            "text": "ihfft \u2014 The inverse of `hfft`."
+          }
+        ]
+      }
+    ]
+  }
+}

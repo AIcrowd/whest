@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "slug": "append",
+  "detail_href": "/docs/api/ops/append/",
+  "detail_json_href": "/api-data/ops/append.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L578-L585",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.append.html"
+  },
+  "op": {
+    "name": "append",
+    "module": "numpy",
+    "whest_ref": "we.append",
+    "numpy_ref": "np.append",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Append values to end of array. Cost: numel(values).",
+    "summary": "Append values to the end of an array.",
+    "signature": "we.append(arr, values, axis=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Append values to the end of an array."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "arr",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Values are appended to a copy of this array."
+              }
+            ]
+          },
+          {
+            "name": "values",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "These values are appended to a copy of `arr`.  It must be of the\ncorrect shape (the same shape as `arr`, excluding `axis`).  If\n`axis` is not specified, `values` can be any shape and will be\nflattened before use."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The axis along which `values` are appended.  If `axis` is not\ngiven, both `arr` and `values` are flattened before use."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "append",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A copy of `arr` with `values` appended to `axis`.  Note that\n`append` does not occur in-place: a new array is allocated and\nfilled.  If `axis` is None, `out` is a flattened array."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.append([1, 2, 3], [[4, 5, 6], [7, 8, 9]])\narray([1, 2, 3, ..., 7, 8, 9])"
+          },
+          {
+            "type": "paragraph",
+            "text": "When `axis` is specified, `values` must have the correct shape."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.append([[1, 2, 3], [4, 5, 6]], [[7, 8, 9]], axis=0)\narray([[1, 2, 3],\n       [4, 5, 6],\n       [7, 8, 9]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.append([[1, 2, 3], [4, 5, 6]], [7, 8, 9], axis=0)\nTraceback (most recent call last):\n    ...\nValueError: all the input arrays must have same number of dimensions, but\nthe array at index 0 has 2 dimension(s) and the array at index 1 has 1\ndimension(s)"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([1, 2], dtype=int)\n>>> c = np.append(a, [])\n>>> c\narray([1., 2.])\n>>> c.dtype\nfloat64"
+          },
+          {
+            "type": "paragraph",
+            "text": "Default dtype for empty ndarrays is `float64` thus making the output of dtype\n`float64` when appended with dtype `int64`"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "insert \u2014 Insert elements into an array."
+          },
+          {
+            "type": "paragraph",
+            "text": "delete \u2014 Delete elements from an array."
+          }
+        ]
+      }
+    ]
+  }
+}

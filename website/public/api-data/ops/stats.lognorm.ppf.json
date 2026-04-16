@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "slug": "stats.lognorm.ppf",
+  "detail_href": "/docs/api/ops/stats.lognorm.ppf/",
+  "detail_json_href": "/api-data/ops/stats.lognorm.ppf.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_lognorm.py#L81-L90",
+    "numpy": ""
+  },
+  "op": {
+    "name": "stats.lognorm.ppf",
+    "module": "whest.stats",
+    "whest_ref": "we.stats.lognorm.ppf",
+    "numpy_ref": "scipy.stats.lognorm.ppf",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 16.0,
+    "cost_formula": "45n",
+    "cost_formula_latex": "$45n$",
+    "notes": "Log-normal PPF; cost = numel(input).",
+    "summary": "Percent-point function (inverse CDF) at *q*.",
+    "signature": "we.stats.lognorm.ppf(q, s, loc=0, scale=1)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Percent-point function (inverse CDF) at *q*."
+          },
+          {
+            "type": "paragraph",
+            "text": "Equivalent to ``scipy.stats.lognorm.ppf(q, s, loc, scale)``."
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "slug": "copy",
+  "detail_href": "/docs/api/ops/copy/",
+  "detail_json_href": "/api-data/ops/copy.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L349-L351",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.copy.html"
+  },
+  "op": {
+    "name": "copy",
+    "module": "numpy",
+    "whest_ref": "we.copy",
+    "numpy_ref": "np.copy",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Return array copy.",
+    "summary": "Return an array copy of the given object.",
+    "signature": "we.copy(a, order='K', subok=False)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return an array copy of the given object."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input data."
+              }
+            ]
+          },
+          {
+            "name": "order",
+            "type": "{'C', 'F', 'A', 'K'}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Controls the memory layout of the copy. 'C' means C-order,\n'F' means F-order, 'A' means 'F' if `a` is Fortran contiguous,\n'C' otherwise. 'K' means match the layout of `a` as closely\nas possible. (Note that this function and :meth:`ndarray.copy` are very\nsimilar, but have different default values for their order=\narguments.)"
+              }
+            ]
+          },
+          {
+            "name": "subok",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If True, then sub-classes will be passed-through, otherwise the\nreturned array will be forced to be a base-class array (defaults to False)."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "arr",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Array interpretation of `a`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "This is equivalent to:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.array(a, copy=True)  #doctest: +SKIP"
+          },
+          {
+            "type": "paragraph",
+            "text": "The copy made of the data is shallow, i.e., for arrays with object dtype,\nthe new array will point to the same objects.\nSee Examples from `ndarray.copy`."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np"
+          },
+          {
+            "type": "paragraph",
+            "text": "Create an array x, with a reference y and a copy z:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.array([1, 2, 3])\n>>> y = x\n>>> z = np.copy(x)"
+          },
+          {
+            "type": "paragraph",
+            "text": "Note that, when we modify x, y changes, but not z:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x[0] = 10\n>>> x[0] == y[0]\nTrue\n>>> x[0] == z[0]\nFalse"
+          },
+          {
+            "type": "paragraph",
+            "text": "Note that, np.copy clears previously set WRITEABLE=False flag."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([1, 2, 3])\n>>> a.flags[\"WRITEABLE\"] = False\n>>> b = np.copy(a)\n>>> b.flags[\"WRITEABLE\"]\nTrue\n>>> b[0] = 3\n>>> b\narray([3, 2, 3])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "ndarray.copy \u2014 Preferred method for creating an array copy"
+          }
+        ]
+      }
+    ]
+  }
+}

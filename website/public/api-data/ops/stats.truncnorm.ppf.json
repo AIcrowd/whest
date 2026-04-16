@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "slug": "stats.truncnorm.ppf",
+  "detail_href": "/docs/api/ops/stats.truncnorm.ppf/",
+  "detail_json_href": "/api-data/ops/stats.truncnorm.ppf.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_truncnorm.py#L95-L104",
+    "numpy": ""
+  },
+  "op": {
+    "name": "stats.truncnorm.ppf",
+    "module": "whest.stats",
+    "whest_ref": "we.stats.truncnorm.ppf",
+    "numpy_ref": "scipy.stats.truncnorm.ppf",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 16.0,
+    "cost_formula": "50n",
+    "cost_formula_latex": "$50n$",
+    "notes": "Truncated normal PPF; cost = numel(input).",
+    "summary": "Percent-point function (inverse CDF) at *q*.",
+    "signature": "we.stats.truncnorm.ppf(q, a, b, loc=0, scale=1)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Percent-point function (inverse CDF) at *q*."
+          },
+          {
+            "type": "paragraph",
+            "text": "Equivalent to ``scipy.stats.truncnorm.ppf(q, a, b, loc, scale)``."
+          }
+        ]
+      }
+    ]
+  }
+}

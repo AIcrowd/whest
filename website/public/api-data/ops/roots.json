@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "slug": "roots",
+  "detail_href": "/docs/api/ops/roots/",
+  "detail_json_href": "/api-data/ops/roots.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L228-L236",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.roots.html"
+  },
+  "op": {
+    "name": "roots",
+    "module": "whest._polynomial",
+    "whest_ref": "we.roots",
+    "numpy_ref": "np.roots",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 16.0,
+    "cost_formula": "10n^3",
+    "cost_formula_latex": "$10n^3$",
+    "notes": "Return roots of polynomial with given coefficients. Cost: $n^3$ (companion matrix eig, simplified).",
+    "summary": "Return the roots of a polynomial with coefficients given in p.",
+    "signature": "we.roots(p)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return the roots of a polynomial with coefficients given in p."
+          },
+          {
+            "type": "directive",
+            "name": "note",
+            "body": "   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `numpy.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
+            "raw": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `numpy.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`."
+          },
+          {
+            "type": "paragraph",
+            "text": "The values in the rank-1 array `p` are coefficients of a polynomial.\nIf the length of `p` is n+1 then the polynomial is described by::"
+          },
+          {
+            "type": "paragraph",
+            "text": "  p[0] * x**n + p[1] * x**(n-1) + ... + p[n-1]*x + p[n]"
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "p",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Rank-1 array of polynomial coefficients."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "An array containing the roots of the polynomial."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The algorithm relies on computing the eigenvalues of the\ncompanion matrix [1]_."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> coeff = [3.2, 2, 1]\n>>> np.roots(coeff)\narray([-0.3125+0.46351241j, -0.3125-0.46351241j])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "poly \u2014 Find the coefficients of a polynomial with a given sequence of roots."
+          },
+          {
+            "type": "paragraph",
+            "text": "polyval \u2014 Compute polynomial values."
+          },
+          {
+            "type": "paragraph",
+            "text": "polyfit \u2014 Least squares polynomial fit."
+          },
+          {
+            "type": "paragraph",
+            "text": "poly1d \u2014 A one-dimensional polynomial class."
+          }
+        ]
+      }
+    ]
+  }
+}

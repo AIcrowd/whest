@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "slug": "linalg.norm",
+  "detail_href": "/docs/api/ops/linalg.norm/",
+  "detail_json_href": "/api-data/ops/linalg.norm.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L188-L215",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.norm.html"
+  },
+  "op": {
+    "name": "linalg.norm",
+    "module": "numpy.linalg",
+    "whest_ref": "we.linalg.norm",
+    "numpy_ref": "np.linalg.norm",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "depends on ord",
+    "cost_formula_latex": "varies",
+    "notes": "Norm. Cost depends on ord: numel for L1/inf, 2*numel for Frobenius, m*n*min(m,n) for ord=2.",
+    "summary": "Matrix or vector norm.",
+    "signature": "we.linalg.norm(x, ord=None, axis=None, keepdims=False)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Matrix or vector norm."
+          },
+          {
+            "type": "paragraph",
+            "text": "This function is able to return one of eight different matrix norms,\nor one of an infinite number of vector norms (described below), depending\non the value of the ``ord`` parameter."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array.  If `axis` is None, `x` must be 1-D or 2-D, unless `ord`\nis None. If both `axis` and `ord` are None, the 2-norm of\n``x.ravel`` will be returned."
+              }
+            ]
+          },
+          {
+            "name": "ord",
+            "type": "{int, float, inf, -inf, 'fro', 'nuc'}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Order of the norm (see table under ``Notes`` for what values are\nsupported for matrices and vectors respectively). inf means numpy's\n`inf` object. The default is None."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "{None, int, 2-tuple of ints}, optional.",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If `axis` is an integer, it specifies the axis of `x` along which to\ncompute the vector norms.  If `axis` is a 2-tuple, it specifies the\naxes that hold 2-D matrices, and the matrix norms of these matrices\nare computed.  If `axis` is None then either a vector norm (when `x`\nis 1-D) or a matrix norm (when `x` is 2-D) is returned. The default\nis None."
+              }
+            ]
+          },
+          {
+            "name": "keepdims",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If this is set to True, the axes which are normed over are left in the\nresult as dimensions with size one.  With this option the result will\nbroadcast correctly against the original `x`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "n",
+            "type": "float or ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Norm of the matrix or vector(s)."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "For values of ``ord < 1``, the result is, strictly speaking, not a\nmathematical 'norm', but it may still be useful for various numerical\npurposes."
+          },
+          {
+            "type": "paragraph",
+            "text": "The following norms can be calculated:"
+          },
+          {
+            "type": "paragraph",
+            "text": "=====  ============================  ==========================\nord    norm for matrices             norm for vectors\n=====  ============================  ==========================\nNone   Frobenius norm                2-norm\n'fro'  Frobenius norm                --\n'nuc'  nuclear norm                  --\ninf    max(sum(abs(x), axis=1))      max(abs(x))\n-inf   min(sum(abs(x), axis=1))      min(abs(x))\n0      --                            sum(x != 0)\n1      max(sum(abs(x), axis=0))      as below\n-1     min(sum(abs(x), axis=0))      as below\n2      2-norm (largest sing. value)  as below\n-2     smallest singular value       as below\nother  --                            sum(abs(x)**ord)**(1./ord)\n=====  ============================  =========================="
+          },
+          {
+            "type": "paragraph",
+            "text": "The Frobenius norm is given by [1]_:"
+          },
+          {
+            "type": "paragraph",
+            "text": ":math:`||A||_F = [\\sum_{i,j} abs(a_{i,j})^2]^{1/2}`"
+          },
+          {
+            "type": "paragraph",
+            "text": "The nuclear norm is the sum of the singular values."
+          },
+          {
+            "type": "paragraph",
+            "text": "Both the Frobenius and nuclear norm orders are only defined for\nmatrices and raise a ValueError when ``x.ndim != 2``."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> from numpy import linalg as LA\n>>> a = np.arange(9) - 4\n>>> a\narray([-4, -3, -2, ...,  2,  3,  4])\n>>> b = a.reshape((3, 3))\n>>> b\narray([[-4, -3, -2],\n       [-1,  0,  1],\n       [ 2,  3,  4]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> LA.norm(a)\n7.745966692414834\n>>> LA.norm(b)\n7.745966692414834\n>>> LA.norm(b, 'fro')\n7.745966692414834\n>>> LA.norm(a, np.inf)\n4.0\n>>> LA.norm(b, np.inf)\n9.0\n>>> LA.norm(a, -np.inf)\n0.0\n>>> LA.norm(b, -np.inf)\n2.0"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> LA.norm(a, 1)\n20.0\n>>> LA.norm(b, 1)\n7.0\n>>> LA.norm(a, -1)\n-4.6566128774142013e-010\n>>> LA.norm(b, -1)\n6.0\n>>> LA.norm(a, 2)\n7.745966692414834\n>>> LA.norm(b, 2)\n7.3484692283495345"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> LA.norm(a, -2)\n0.0\n>>> LA.norm(b, -2)\n1.8570331885190563e-016 # may vary\n>>> LA.norm(a, 3)\n5.8480354764257312 # may vary\n>>> LA.norm(a, -3)\n0.0"
+          },
+          {
+            "type": "paragraph",
+            "text": "Using the `axis` argument to compute vector norms:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> c = np.array([[ 1, 2, 3],\n...               [-1, 1, 4]])\n>>> LA.norm(c, axis=0)\narray([ 1.41421356,  2.23606798,  5.        ])\n>>> LA.norm(c, axis=1)\narray([ 3.74165739,  4.24264069])\n>>> LA.norm(c, ord=1, axis=1)\narray([ 6.,  6.])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Using the `axis` argument to compute matrix norms:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> m = np.arange(8).reshape(2,2,2)\n>>> LA.norm(m, axis=(1,2))\narray([  3.74165739,  11.22497216])\n>>> LA.norm(m[0, :, :]), LA.norm(m[1, :, :])\n(3.7416573867739413, 11.224972160321824)"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "scipy.linalg.norm \u2014 Similar function in SciPy."
+          }
+        ]
+      }
+    ]
+  }
+}

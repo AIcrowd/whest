@@ -13,7 +13,6 @@ export default function ApiReference({operations}: ApiReferenceProps): React.Rea
   const [search, setSearch] = useState('');
   const [costFilter, setCostFilter] = useState<CostFilter>('all');
   const [moduleFilter, setModuleFilter] = useState('');
-  const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
 
   const modules = useMemo(
     () => Array.from(new Set(operations.map((op) => op.module))).sort(),
@@ -42,11 +41,11 @@ export default function ApiReference({operations}: ApiReferenceProps): React.Rea
     <div className={styles.apiReference}>
       <FilterBar
         search={search}
-        onSearchChange={(v) => { setSearch(v); setExpandedIdx(null); }}
+        onSearchChange={setSearch}
         costFilter={costFilter}
-        onCostFilterChange={(v) => { setCostFilter(v); setExpandedIdx(null); }}
+        onCostFilterChange={setCostFilter}
         module={moduleFilter}
-        onModuleChange={(v) => { setModuleFilter(v); setExpandedIdx(null); }}
+        onModuleChange={setModuleFilter}
         modules={modules}
         resultCount={filtered.length}
         totalCount={operations.length}
@@ -67,8 +66,6 @@ export default function ApiReference({operations}: ApiReferenceProps): React.Rea
               <OperationRow
                 key={op.whest_ref}
                 op={op}
-                expanded={expandedIdx === i}
-                onToggle={() => setExpandedIdx(expandedIdx === i ? null : i)}
               />
             ))}
             {filtered.length === 0 && (

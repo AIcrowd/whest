@@ -1,0 +1,249 @@
+{
+  "schema_version": 1,
+  "slug": "percentile",
+  "detail_href": "/docs/api/ops/percentile/",
+  "detail_json_href": "/api-data/ops/percentile.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L197-L255",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.percentile.html"
+  },
+  "op": {
+    "name": "percentile",
+    "module": "numpy",
+    "whest_ref": "we.percentile",
+    "numpy_ref": "np.percentile",
+    "category": "counted_reduction",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(input)",
+    "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "notes": "q-th percentile of array elements.",
+    "summary": "Compute the q-th percentile of the data along the specified axis.",
+    "signature": "we.percentile(a, q, axis=None, out=None, overwrite_input=False, method='linear', keepdims=False, *, weights=None, interpolation=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Compute the q-th percentile of the data along the specified axis."
+          },
+          {
+            "type": "paragraph",
+            "text": "Returns the q-th percentile(s) of the array elements."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like of real numbers",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array or object that can be converted to an array."
+              }
+            ]
+          },
+          {
+            "name": "q",
+            "type": "array_like of float",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Percentage or sequence of percentages for the percentiles to compute.\nValues must be between 0 and 100 inclusive."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "{int, tuple of int, None}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Axis or axes along which the percentiles are computed. The\ndefault is to compute the percentile(s) along a flattened\nversion of the array."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Alternative output array in which to place the result. It must\nhave the same shape and buffer length as the expected output,\nbut the type (of the output) will be cast if necessary."
+              }
+            ]
+          },
+          {
+            "name": "overwrite_input",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If True, then allow the input array `a` to be modified by intermediate\ncalculations, to save memory. In this case, the contents of the input\n`a` after this function completes is undefined."
+              }
+            ]
+          },
+          {
+            "name": "method",
+            "type": "str, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "This parameter specifies the method to use for estimating the\npercentile.  There are many different methods, some unique to NumPy.\nSee the notes for explanation.  The options sorted by their R type\nas summarized in the H&F paper [1]_ are:"
+              },
+              {
+                "type": "paragraph",
+                "text": "1. 'inverted_cdf'\n2. 'averaged_inverted_cdf'\n3. 'closest_observation'\n4. 'interpolated_inverted_cdf'\n5. 'hazen'\n6. 'weibull'\n7. 'linear'  (default)\n8. 'median_unbiased'\n9. 'normal_unbiased'"
+              },
+              {
+                "type": "paragraph",
+                "text": "The first three methods are discontinuous.  NumPy further defines the\nfollowing discontinuous variations of the default 'linear' (7.) option:"
+              },
+              {
+                "type": "paragraph",
+                "text": "* 'lower'\n* 'higher',\n* 'midpoint'\n* 'nearest'"
+              },
+              {
+                "type": "directive",
+                "name": "versionchanged:: 1.22.0",
+                "body": "    This argument was previously called \"interpolation\" and only\n    offered the \"linear\" default and last four options.",
+                "raw": ".. versionchanged:: 1.22.0\n    This argument was previously called \"interpolation\" and only\n    offered the \"linear\" default and last four options."
+              }
+            ]
+          },
+          {
+            "name": "keepdims",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "   If this is set to True, the axes which are reduced are left in\n   the result as dimensions with size one. With this option, the\n   result will broadcast correctly against the original array `a`."
+              },
+              {
+                "type": "paragraph",
+                "text": "weights : array_like, optional\n   An array of weights associated with the values in `a`. Each value in\n   `a` contributes to the percentile according to its associated weight.\n   The weights array can either be 1-D (in which case its length must be\n   the size of `a` along the given axis) or of the same shape as `a`.\n   If `weights=None`, then all data in `a` are assumed to have a\n   weight equal to one.\n   Only `method=\"inverted_cdf\"` supports weights.\n   See the notes for more details."
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 2.0.0",
+                "body": "",
+                "raw": "   .. versionadded:: 2.0.0"
+              }
+            ]
+          },
+          {
+            "name": "interpolation",
+            "type": "str, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Deprecated name for the method keyword argument."
+              },
+              {
+                "type": "directive",
+                "name": "deprecated:: 1.22.0",
+                "body": "",
+                "raw": ".. deprecated:: 1.22.0"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "percentile",
+            "type": "scalar or ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If `q` is a single percentile and `axis=None`, then the result\nis a scalar. If multiple percentiles are given, first axis of\nthe result corresponds to the percentiles. The other axes are\nthe axes that remain after the reduction of `a`. If the input\ncontains integers or floats smaller than ``float64``, the output\ndata-type is ``float64``. Otherwise, the output data-type is the\nsame as that of the input. If `out` is specified, that array is\nreturned instead."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The behavior of `numpy.percentile` with percentage `q` is\nthat of `numpy.quantile` with argument ``q/100``.\nFor more information, please see `numpy.quantile`."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> a = np.array([[10, 7, 4], [3, 2, 1]])\n>>> a\narray([[10,  7,  4],\n       [ 3,  2,  1]])\n>>> np.percentile(a, 50)\n3.5\n>>> np.percentile(a, 50, axis=0)\narray([6.5, 4.5, 2.5])\n>>> np.percentile(a, 50, axis=1)\narray([7.,  2.])\n>>> np.percentile(a, 50, axis=1, keepdims=True)\narray([[7.],\n       [2.]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> m = np.percentile(a, 50, axis=0)\n>>> out = np.zeros_like(m)\n>>> np.percentile(a, 50, axis=0, out=out)\narray([6.5, 4.5, 2.5])\n>>> m\narray([6.5, 4.5, 2.5])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> b = a.copy()\n>>> np.percentile(b, 50, axis=1, overwrite_input=True)\narray([7.,  2.])\n>>> assert not np.all(a == b)"
+          },
+          {
+            "type": "paragraph",
+            "text": "The different methods can be visualized graphically:"
+          },
+          {
+            "type": "directive",
+            "name": "plot",
+            "body": "",
+            "raw": ".. plot::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    import matplotlib.pyplot as plt"
+          },
+          {
+            "type": "paragraph",
+            "text": "    a = np.arange(4)\n    p = np.linspace(0, 100, 6001)\n    ax = plt.gca()\n    lines = [\n        ('linear', '-', 'C0'),\n        ('inverted_cdf', ':', 'C1'),\n        # Almost the same as `inverted_cdf`:\n        ('averaged_inverted_cdf', '-.', 'C1'),\n        ('closest_observation', ':', 'C2'),\n        ('interpolated_inverted_cdf', '--', 'C1'),\n        ('hazen', '--', 'C3'),\n        ('weibull', '-.', 'C4'),\n        ('median_unbiased', '--', 'C5'),\n        ('normal_unbiased', '-.', 'C6'),\n        ]\n    for method, style, color in lines:\n        ax.plot(\n            p, np.percentile(a, p, method=method),\n            label=method, linestyle=style, color=color)\n    ax.set(\n        title='Percentiles for different methods and data: ' + str(a),\n        xlabel='Percentile',\n        ylabel='Estimated percentile value',\n        yticks=a)\n    ax.legend(bbox_to_anchor=(1.03, 1))\n    plt.tight_layout()\n    plt.show()"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "mean"
+          },
+          {
+            "type": "paragraph",
+            "text": "median \u2014 equivalent to ``percentile(..., 50)``"
+          },
+          {
+            "type": "paragraph",
+            "text": "nanpercentile"
+          },
+          {
+            "type": "paragraph",
+            "text": "quantile \u2014 equivalent to percentile, except q in the range [0, 1]."
+          }
+        ]
+      }
+    ]
+  }
+}

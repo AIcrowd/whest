@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "slug": "unique_values",
+  "detail_href": "/docs/api/ops/unique_values/",
+  "detail_json_href": "/api-data/ops/unique_values.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L308-L317",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.unique_values.html"
+  },
+  "op": {
+    "name": "unique_values",
+    "module": "numpy",
+    "whest_ref": "we.unique_values",
+    "numpy_ref": "np.unique_values",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
+    "summary": "Returns the unique elements of an input array `x`.",
+    "signature": "we.unique_values(x, /)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Returns the unique elements of an input array `x`."
+          },
+          {
+            "type": "paragraph",
+            "text": "This function is an Array API compatible alternative to::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    np.unique(x, equal_nan=False)"
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array. It will be flattened if it is not already 1-D."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The unique elements of an input array."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.unique_values([1, 1, 2])\narray([1, 2])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "unique \u2014 Find the unique elements of an array."
+          }
+        ]
+      }
+    ]
+  }
+}

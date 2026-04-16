@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "slug": "reciprocal",
+  "detail_href": "/docs/api/ops/reciprocal/",
+  "detail_json_href": "/api-data/ops/reciprocal.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29-L42",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.reciprocal.html"
+  },
+  "op": {
+    "name": "reciprocal",
+    "module": "numpy",
+    "whest_ref": "we.reciprocal",
+    "numpy_ref": "np.reciprocal",
+    "category": "counted_unary",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Element-wise 1/x.",
+    "summary": "Return the reciprocal of the argument, element-wise.",
+    "signature": "we.reciprocal(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature])"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return the reciprocal of the argument, element-wise."
+          },
+          {
+            "type": "paragraph",
+            "text": "Calculates ``1/x``."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, None, or tuple of ndarray and None, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
+              }
+            ]
+          },
+          {
+            "name": "where",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the `out` array will be set to the ufunc result.\nElsewhere, the `out` array will retain its original value.\nNote that if an uninitialized `out` array is created via the default\n``out=None``, locations within it where the condition is False will\nremain uninitialized."
+              }
+            ]
+          },
+          {
+            "name": "**kwargs",
+            "type": "",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "For other keyword-only arguments, see the\n:ref:`ufunc docs <ufuncs.kwargs>`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "y",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Return array.\nThis is a scalar if `x` is a scalar."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "directive",
+            "name": "note",
+            "body": "    This function is not designed to work with integers.",
+            "raw": ".. note::\n    This function is not designed to work with integers."
+          },
+          {
+            "type": "paragraph",
+            "text": "For integer arguments with absolute value larger than 1 the result is\nalways zero because of the way Python handles integer division.  For\ninteger zero the result is an overflow."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.reciprocal(2.)\n0.5\n>>> np.reciprocal([1, 2., 3.33])\narray([ 1.       ,  0.5      ,  0.3003003])"
+          }
+        ]
+      }
+    ]
+  }
+}

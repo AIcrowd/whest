@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "slug": "linalg.slogdet",
+  "detail_href": "/docs/api/ops/linalg.slogdet/",
+  "detail_json_href": "/api-data/ops/linalg.slogdet.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L122-L139",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.slogdet.html"
+  },
+  "op": {
+    "name": "linalg.slogdet",
+    "module": "numpy.linalg",
+    "whest_ref": "we.linalg.slogdet",
+    "numpy_ref": "np.linalg.slogdet",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 4.0,
+    "cost_formula": "n^3",
+    "cost_formula_latex": "$n^3$",
+    "notes": "Sign + log determinant. Cost: $n^3$.",
+    "summary": "Compute the sign and (natural) logarithm of the determinant of an array.",
+    "signature": "we.linalg.slogdet(a)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Compute the sign and (natural) logarithm of the determinant of an array."
+          },
+          {
+            "type": "paragraph",
+            "text": "If an array has a very small or very large determinant, then a call to\n`det` may overflow or underflow. This routine is more robust against such\nissues, because it computes the logarithm of the determinant rather than\nthe determinant itself."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "(..., M, M) array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array, has to be a square 2-D array."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "",
+            "type": "A namedtuple with the following attributes:",
+            "desc_blocks": []
+          },
+          {
+            "name": "sign",
+            "type": "(...) array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A number representing the sign of the determinant. For a real matrix,\nthis is 1, 0, or -1. For a complex matrix, this is a complex number\nwith absolute value 1 (i.e., it is on the unit circle), or else 0."
+              }
+            ]
+          },
+          {
+            "name": "logabsdet",
+            "type": "(...) array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The natural log of the absolute value of the determinant."
+              }
+            ]
+          },
+          {
+            "name": "",
+            "type": "If the determinant is zero, then `sign` will be 0 and `logabsdet`",
+            "desc_blocks": []
+          },
+          {
+            "name": "",
+            "type": "will be -inf. In all cases, the determinant is equal to",
+            "desc_blocks": []
+          },
+          {
+            "name": "",
+            "type": "``sign * np.exp(logabsdet)``.",
+            "desc_blocks": []
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Broadcasting rules apply, see the `numpy.linalg` documentation for\ndetails."
+          },
+          {
+            "type": "paragraph",
+            "text": "The determinant is computed via LU factorization using the LAPACK\nroutine ``z/dgetrf``."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The determinant of a 2-D array ``[[a, b], [c, d]]`` is ``ad - bc``:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> a = np.array([[1, 2], [3, 4]])\n>>> (sign, logabsdet) = np.linalg.slogdet(a)\n>>> (sign, logabsdet)\n(-1, 0.69314718055994529) # may vary\n>>> sign * np.exp(logabsdet)\n-2.0"
+          },
+          {
+            "type": "paragraph",
+            "text": "Computing log-determinants for a stack of matrices:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([ [[1, 2], [3, 4]], [[1, 2], [2, 1]], [[1, 3], [3, 1]] ])\n>>> a.shape\n(3, 2, 2)\n>>> sign, logabsdet = np.linalg.slogdet(a)\n>>> (sign, logabsdet)\n(array([-1., -1., -1.]), array([ 0.69314718,  1.09861229,  2.07944154]))\n>>> sign * np.exp(logabsdet)\narray([-2., -3., -8.])"
+          },
+          {
+            "type": "paragraph",
+            "text": "This routine succeeds where ordinary `det` does not:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.linalg.det(np.eye(500) * 0.1)\n0.0\n>>> np.linalg.slogdet(np.eye(500) * 0.1)\n(1, -1151.2925464970228)"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "det"
+          }
+        ]
+      }
+    ]
+  }
+}

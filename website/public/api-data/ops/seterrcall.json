@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "slug": "seterrcall",
+  "detail_href": "/docs/api/ops/seterrcall/",
+  "detail_json_href": "/api-data/ops/seterrcall.json",
+  "source": {
+    "whest": null,
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/_ufunc_config.py#L217-L304"
+  },
+  "op": {
+    "name": "seterrcall",
+    "module": "numpy",
+    "whest_ref": "we.seterrcall",
+    "numpy_ref": "np.seterrcall",
+    "category": "blacklisted",
+    "status": "blocked",
+    "weight": 1.0,
+    "cost_formula": "N/A",
+    "cost_formula_latex": "N/A",
+    "notes": "Set callback function for floating-point errors. Not supported.",
+    "summary": "Set the floating-point error callback function or log object.",
+    "signature": "we.seterrcall(func)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Set the floating-point error callback function or log object."
+          },
+          {
+            "type": "paragraph",
+            "text": "There are two ways to capture floating-point error messages.  The first\nis to set the error-handler to 'call', using `seterr`.  Then, set\nthe function to call using this function."
+          },
+          {
+            "type": "paragraph",
+            "text": "The second is to set the error-handler to 'log', using `seterr`.\nFloating-point errors then trigger a call to the 'write' method of\nthe provided object."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "func",
+            "type": "callable f(err, flag) or object with write method",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Function to call upon floating-point errors ('call'-mode) or\nobject whose 'write' method is used to log such message ('log'-mode)."
+              },
+              {
+                "type": "paragraph",
+                "text": "The call function takes two arguments. The first is a string describing\nthe type of error (such as \"divide by zero\", \"overflow\", \"underflow\",\nor \"invalid value\"), and the second is the status flag.  The flag is a\nbyte, whose four least-significant bits indicate the type of error, one\nof \"divide\", \"over\", \"under\", \"invalid\"::"
+              },
+              {
+                "type": "paragraph",
+                "text": "  [0 0 0 0 divide over under invalid]"
+              },
+              {
+                "type": "paragraph",
+                "text": "In other words, ``flags = divide + 2*over + 4*under + 8*invalid``."
+              },
+              {
+                "type": "paragraph",
+                "text": "If an object is provided, its write method should take one argument,\na string."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "h",
+            "type": "callable, log instance or None",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The old error handler."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Callback upon error:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> def err_handler(type, flag):\n...     print(\"Floating point error (%s), with flag %s\" % (type, flag))\n..."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> orig_handler = np.seterrcall(err_handler)\n>>> orig_err = np.seterr(all='call')"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.array([1, 2, 3]) / 0.0\nFloating point error (divide by zero), with flag 1\narray([inf, inf, inf])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.seterrcall(orig_handler)\n<function err_handler at 0x...>\n>>> np.seterr(**orig_err)\n{'divide': 'call', 'over': 'call', 'under': 'call', 'invalid': 'call'}"
+          },
+          {
+            "type": "paragraph",
+            "text": "Log error message:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> class Log:\n...     def write(self, msg):\n...         print(\"LOG: %s\" % msg)\n..."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> log = Log()\n>>> saved_handler = np.seterrcall(log)\n>>> save_err = np.seterr(all='log')"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.array([1, 2, 3]) / 0.0\nLOG: Warning: divide by zero encountered in divide\narray([inf, inf, inf])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.seterrcall(orig_handler)\n<numpy.Log object at 0x...>\n>>> np.seterr(**orig_err)\n{'divide': 'log', 'over': 'log', 'under': 'log', 'invalid': 'log'}"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "seterr, geterr, geterrcall"
+          }
+        ]
+      }
+    ]
+  }
+}

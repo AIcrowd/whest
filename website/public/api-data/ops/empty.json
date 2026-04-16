@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "slug": "empty",
+  "detail_href": "/docs/api/ops/empty/",
+  "detail_json_href": "/api-data/ops/empty.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L177-L179",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.empty.html"
+  },
+  "op": {
+    "name": "empty",
+    "module": "numpy",
+    "whest_ref": "we.empty",
+    "numpy_ref": "np.empty",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Uninitialized array allocation.",
+    "summary": "Return a new array of given shape and type, without initializing entries.",
+    "signature": "we.empty(shape, dtype=float, order='C', *, device=None, like=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return a new array of given shape and type, without initializing entries."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "shape",
+            "type": "int or tuple of int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Shape of the empty array, e.g., ``(2, 3)`` or ``2``."
+              }
+            ]
+          },
+          {
+            "name": "dtype",
+            "type": "data-type, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Desired output data-type for the array, e.g, `numpy.int8`. Default is\n`numpy.float64`."
+              }
+            ]
+          },
+          {
+            "name": "order",
+            "type": "{'C', 'F'}, optional, default: 'C'",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Whether to store multi-dimensional data in row-major\n(C-style) or column-major (Fortran-style) order in\nmemory."
+              }
+            ]
+          },
+          {
+            "name": "device",
+            "type": "str, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The device on which to place the created array. Default: ``None``.\nFor Array-API interoperability only, so must be ``\"cpu\"`` if passed."
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 2.0.0",
+                "body": "",
+                "raw": ".. versionadded:: 2.0.0"
+              }
+            ]
+          },
+          {
+            "name": "like",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Reference object to allow the creation of arrays which are not\nNumPy arrays. If an array-like passed in as ``like`` supports\nthe ``__array_function__`` protocol, the result will be defined\nby it. In this case, it ensures the creation of an array object\ncompatible with that passed in via this argument."
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 1.20.0",
+                "body": "",
+                "raw": ".. versionadded:: 1.20.0"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Array of uninitialized (arbitrary) data of the given shape, dtype, and\norder.  Object arrays will be initialized to None."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "    Unlike other array creation functions (e.g. `zeros`, `ones`, `full`),\n    `empty` does not initialize the values of the array, and may therefore be\n    marginally faster. However, the values stored in the newly allocated array\n    are arbitrary. For reproducible behavior, be sure to set each element of\n    the array before reading."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": "    >>> import numpy as np\n    >>> np.empty([2, 2])\n    array([[ -9.74499359e+001,   6.69583040e-309],\n           [  2.13182611e-314,   3.06959433e-309]])         #uninitialized"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": "    >>> np.empty([2, 2], dtype=int)\n    array([[-1073741821, -1067949133],\n           [  496041986,    19249760]])                     #uninitialized"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "empty_like \u2014 Return an empty array with shape and type of input."
+          },
+          {
+            "type": "paragraph",
+            "text": "ones \u2014 Return a new array setting values to one."
+          },
+          {
+            "type": "paragraph",
+            "text": "zeros \u2014 Return a new array setting values to zero."
+          },
+          {
+            "type": "paragraph",
+            "text": "full \u2014 Return a new array of given shape filled with value."
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "slug": "log10",
+  "detail_href": "/docs/api/ops/log10/",
+  "detail_json_href": "/api-data/ops/log10.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29-L42",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.log10.html"
+  },
+  "op": {
+    "name": "log10",
+    "module": "numpy",
+    "whest_ref": "we.log10",
+    "numpy_ref": "np.log10",
+    "category": "counted_unary",
+    "status": "supported",
+    "weight": 16.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Element-wise base-10 logarithm.",
+    "summary": "Return the base 10 logarithm of the input array, element-wise.",
+    "signature": "we.log10(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature])"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return the base 10 logarithm of the input array, element-wise."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input values."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "ndarray, None, or tuple of ndarray and None, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
+              }
+            ]
+          },
+          {
+            "name": "where",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the `out` array will be set to the ufunc result.\nElsewhere, the `out` array will retain its original value.\nNote that if an uninitialized `out` array is created via the default\n``out=None``, locations within it where the condition is False will\nremain uninitialized."
+              }
+            ]
+          },
+          {
+            "name": "**kwargs",
+            "type": "",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "For other keyword-only arguments, see the\n:ref:`ufunc docs <ufuncs.kwargs>`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "y",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The logarithm to the base 10 of `x`, element-wise. NaNs are\nreturned where x is negative.\nThis is a scalar if `x` is a scalar."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Logarithm is a multivalued function: for each `x` there is an infinite\nnumber of `z` such that `10**z = x`. The convention is to return the\n`z` whose imaginary part lies in `(-pi, pi]`."
+          },
+          {
+            "type": "paragraph",
+            "text": "For real-valued input data types, `log10` always returns real output.\nFor each value that cannot be expressed as a real number or infinity,\nit yields ``nan`` and sets the `invalid` floating point error flag."
+          },
+          {
+            "type": "paragraph",
+            "text": "For complex-valued input, `log10` is a complex analytical function that\nhas a branch cut `[-inf, 0]` and is continuous from above on it.\n`log10` handles the floating-point negative zero as an infinitesimal\nnegative number, conforming to the C99 standard."
+          },
+          {
+            "type": "paragraph",
+            "text": "In the cases where the input has a negative real part and a very small\nnegative complex part (approaching 0), the result is so close to `-pi`\nthat it evaluates to exactly `-pi`."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.log10([1e-15, -3.])\narray([-15.,  nan])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "emath.log10"
+          }
+        ]
+      }
+    ]
+  }
+}

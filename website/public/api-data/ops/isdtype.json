@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "slug": "isdtype",
+  "detail_href": "/docs/api/ops/isdtype/",
+  "detail_json_href": "/api-data/ops/isdtype.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1081-L1083",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numerictypes.py#L381-L468"
+  },
+  "op": {
+    "name": "isdtype",
+    "module": "numpy",
+    "whest_ref": "we.isdtype",
+    "numpy_ref": "np.isdtype",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Return True if array or dtype is of specified kind (NumPy 2.x).",
+    "summary": "Determine if a provided dtype is of a specified data type ``kind``.",
+    "signature": "we.isdtype(dtype, kind)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Determine if a provided dtype is of a specified data type ``kind``."
+          },
+          {
+            "type": "paragraph",
+            "text": "This function only supports built-in NumPy's data types.\nThird-party dtypes are not yet supported."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "dtype",
+            "type": "dtype",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The input dtype."
+              }
+            ]
+          },
+          {
+            "name": "kind",
+            "type": "dtype or str or tuple of dtypes/strs.",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "dtype or dtype kind. Allowed dtype kinds are:\n* ``'bool'`` : boolean kind\n* ``'signed integer'`` : signed integer data types\n* ``'unsigned integer'`` : unsigned integer data types\n* ``'integral'`` : integer data types\n* ``'real floating'`` : real-valued floating-point data types\n* ``'complex floating'`` : complex floating-point data types\n* ``'numeric'`` : numeric data types"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "bool",
+            "desc_blocks": []
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.isdtype(np.float32, np.float64)\nFalse\n>>> np.isdtype(np.float32, \"real floating\")\nTrue\n>>> np.isdtype(np.complex128, (\"real floating\", \"complex floating\"))\nTrue"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "issubdtype"
+          }
+        ]
+      }
+    ]
+  }
+}

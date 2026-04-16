@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "slug": "broadcast_to",
+  "detail_href": "/docs/api/ops/broadcast_to/",
+  "detail_json_href": "/api-data/ops/broadcast_to.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L481-L487",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.broadcast_to.html"
+  },
+  "op": {
+    "name": "broadcast_to",
+    "module": "numpy",
+    "whest_ref": "we.broadcast_to",
+    "numpy_ref": "np.broadcast_to",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Broadcast array to new shape. Cost: numel(output).",
+    "summary": "Broadcast an array to a new shape.",
+    "signature": "we.broadcast_to(array, shape, subok=False)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Broadcast an array to a new shape."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "array",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The array to broadcast."
+              }
+            ]
+          },
+          {
+            "name": "shape",
+            "type": "tuple or int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The shape of the desired array. A single integer ``i`` is interpreted\nas ``(i,)``."
+              }
+            ]
+          },
+          {
+            "name": "subok",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If True, then sub-classes will be passed-through, otherwise\nthe returned array will be forced to be a base-class array (default)."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "broadcast",
+            "type": "array",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A readonly view on the original array with the given shape. It is\ntypically not contiguous. Furthermore, more than one element of a\nbroadcasted array may refer to a single memory location."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> x = np.array([1, 2, 3])\n>>> np.broadcast_to(x, (3, 3))\narray([[1, 2, 3],\n       [1, 2, 3],\n       [1, 2, 3]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "broadcast"
+          },
+          {
+            "type": "paragraph",
+            "text": "broadcast_arrays"
+          },
+          {
+            "type": "paragraph",
+            "text": "broadcast_shapes"
+          }
+        ]
+      }
+    ]
+  }
+}

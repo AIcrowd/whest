@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "slug": "fft.ifft2",
+  "detail_href": "/docs/api/ops/fft.ifft2/",
+  "detail_json_href": "/api-data/ops/fft.ifft2.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L259-L272",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.fft.ifft2.html"
+  },
+  "op": {
+    "name": "fft.ifft2",
+    "module": "numpy.fft",
+    "whest_ref": "we.fft.ifft2",
+    "numpy_ref": "np.fft.ifft2",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "5N * ceil(log2(N))",
+    "cost_formula_latex": "$5N \\cdot \\lceil\\log_2 N\\rceil$",
+    "notes": "Inverse 2-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
+    "summary": "Compute the 2-dimensional inverse discrete Fourier Transform.",
+    "signature": "we.fft.ifft2(a, s=None, axes=(-2, -1), norm=None, out=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Compute the 2-dimensional inverse discrete Fourier Transform."
+          },
+          {
+            "type": "paragraph",
+            "text": "This function computes the inverse of the 2-dimensional discrete Fourier\nTransform over any number of axes in an M-dimensional array by means of\nthe Fast Fourier Transform (FFT).  In other words, ``ifft2(fft2(a)) == a``\nto within numerical accuracy.  By default, the inverse transform is\ncomputed over the last two axes of the input array."
+          },
+          {
+            "type": "paragraph",
+            "text": "The input, analogously to `ifft`, should be ordered in the same way as is\nreturned by `fft2`, i.e. it should have the term for zero frequency\nin the low-order corner of the two axes, the positive frequency terms in\nthe first half of these axes, the term for the Nyquist frequency in the\nmiddle of the axes and the negative frequency terms in the second half of\nboth axes, in order of decreasingly negative frequency."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array, can be complex."
+              }
+            ]
+          },
+          {
+            "name": "s",
+            "type": "sequence of ints, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Shape (length of each axis) of the output (``s[0]`` refers to axis 0,\n``s[1]`` to axis 1, etc.).  This corresponds to `n` for ``ifft(x, n)``.\nAlong each axis, if the given shape is smaller than that of the input,\nthe input is cropped. If it is larger, the input is padded with zeros."
+              },
+              {
+                "type": "directive",
+                "name": "versionchanged:: 2.0",
+                "body": "",
+                "raw": ".. versionchanged:: 2.0"
+              },
+              {
+                "type": "paragraph",
+                "text": "    If it is ``-1``, the whole input is used (no padding/trimming)."
+              },
+              {
+                "type": "paragraph",
+                "text": "If `s` is not given, the shape of the input along the axes specified\nby `axes` is used.  See notes for issue on `ifft` zero padding."
+              },
+              {
+                "type": "directive",
+                "name": "deprecated:: 2.0",
+                "body": "",
+                "raw": ".. deprecated:: 2.0"
+              },
+              {
+                "type": "paragraph",
+                "text": "    If `s` is not ``None``, `axes` must not be ``None`` either."
+              },
+              {
+                "type": "directive",
+                "name": "deprecated:: 2.0",
+                "body": "",
+                "raw": ".. deprecated:: 2.0"
+              },
+              {
+                "type": "paragraph",
+                "text": "    `s` must contain only ``int`` s, not ``None`` values. ``None``\n    values currently mean that the default value for ``n`` is used\n    in the corresponding 1-D transform, but this behaviour is\n    deprecated."
+              }
+            ]
+          },
+          {
+            "name": "axes",
+            "type": "sequence of ints, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Axes over which to compute the FFT.  If not given, the last two\naxes are used.  A repeated index in `axes` means the transform over\nthat axis is performed multiple times.  A one-element sequence means\nthat a one-dimensional FFT is performed. Default: ``(-2, -1)``."
+              },
+              {
+                "type": "directive",
+                "name": "deprecated:: 2.0",
+                "body": "",
+                "raw": ".. deprecated:: 2.0"
+              },
+              {
+                "type": "paragraph",
+                "text": "    If `s` is specified, the corresponding `axes` to be transformed\n    must not be ``None``."
+              }
+            ]
+          },
+          {
+            "name": "norm",
+            "type": "{\"backward\", \"ortho\", \"forward\"}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Normalization mode (see `numpy.fft`). Default is \"backward\".\nIndicates which direction of the forward/backward pair of transforms\nis scaled and with what normalization factor."
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 1.20.0",
+                "body": "",
+                "raw": ".. versionadded:: 1.20.0"
+              },
+              {
+                "type": "paragraph",
+                "text": "    The \"backward\", \"forward\" values were added."
+              }
+            ]
+          },
+          {
+            "name": "out",
+            "type": "complex ndarray, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If provided, the result will be placed in this array. It should be\nof the appropriate shape and dtype for all axes (and hence is\nincompatible with passing in all but the trivial ``s``)."
+              },
+              {
+                "type": "directive",
+                "name": "versionadded:: 2.0.0",
+                "body": "",
+                "raw": ".. versionadded:: 2.0.0"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "complex ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The truncated or zero-padded input, transformed along the axes\nindicated by `axes`, or the last two axes if `axes` is not given."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "`ifft2` is just `ifftn` with a different default for `axes`."
+          },
+          {
+            "type": "paragraph",
+            "text": "See `ifftn` for details and a plotting example, and `numpy.fft` for\ndefinition and conventions used."
+          },
+          {
+            "type": "paragraph",
+            "text": "Zero-padding, analogously with `ifft`, is performed by appending zeros to\nthe input along the specified dimension.  Although this is the common\napproach, it might lead to surprising results.  If another form of zero\npadding is desired, it must be performed before `ifft2` is called."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> a = 4 * np.eye(4)\n>>> np.fft.ifft2(a)\narray([[1.+0.j,  0.+0.j,  0.+0.j,  0.+0.j], # may vary\n       [0.+0.j,  0.+0.j,  0.+0.j,  1.+0.j],\n       [0.+0.j,  0.+0.j,  1.+0.j,  0.+0.j],\n       [0.+0.j,  1.+0.j,  0.+0.j,  0.+0.j]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "numpy.fft \u2014 Overall view of discrete Fourier transforms, with definitions and conventions used."
+          },
+          {
+            "type": "paragraph",
+            "text": "fft2 \u2014 The forward 2-dimensional FFT, of which `ifft2` is the inverse."
+          },
+          {
+            "type": "paragraph",
+            "text": "ifftn \u2014 The inverse of the *n*-dimensional FFT."
+          },
+          {
+            "type": "paragraph",
+            "text": "fft \u2014 The one-dimensional FFT."
+          },
+          {
+            "type": "paragraph",
+            "text": "ifft \u2014 The one-dimensional inverse FFT."
+          }
+        ]
+      }
+    ]
+  }
+}

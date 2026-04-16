@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "slug": "positive",
+  "detail_href": "/docs/api/ops/positive/",
+  "detail_json_href": "/api-data/ops/positive.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29-L42",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.positive.html"
+  },
+  "op": {
+    "name": "positive",
+    "module": "numpy",
+    "whest_ref": "we.positive",
+    "numpy_ref": "np.positive",
+    "category": "counted_unary",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Element-wise unary plus (copy with sign preserved).",
+    "summary": "Numerical positive, element-wise.",
+    "signature": "we.positive(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature])"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Numerical positive, element-wise."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "array_like or scalar",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "y",
+            "type": "ndarray or scalar",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Returned array or scalar: `y = +x`.\nThis is a scalar if `x` is a scalar."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Equivalent to `x.copy()`, but only defined for types that support\narithmetic."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x1 = np.array(([1., -1.]))\n>>> np.positive(x1)\narray([ 1., -1.])"
+          },
+          {
+            "type": "paragraph",
+            "text": "The unary ``+`` operator can be used as a shorthand for ``np.positive`` on\nndarrays."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x1 = np.array(([1., -1.]))\n>>> +x1\narray([ 1., -1.])"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "slug": "convolve",
+  "detail_href": "/docs/api/ops/convolve/",
+  "detail_json_href": "/api-data/ops/convolve.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L1029-L1044",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.convolve.html"
+  },
+  "op": {
+    "name": "convolve",
+    "module": "numpy",
+    "whest_ref": "we.convolve",
+    "numpy_ref": "np.convolve",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "n * m",
+    "cost_formula_latex": "$n \\cdot m$",
+    "notes": "1-D discrete convolution.",
+    "summary": "Returns the discrete, linear convolution of two one-dimensional sequences.",
+    "signature": "we.convolve(a, v, mode='full')"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Returns the discrete, linear convolution of two one-dimensional sequences."
+          },
+          {
+            "type": "paragraph",
+            "text": "The convolution operator is often seen in signal processing, where it\nmodels the effect of a linear time-invariant system on a signal [1]_.  In\nprobability theory, the sum of two independent random variables is\ndistributed according to the convolution of their individual\ndistributions."
+          },
+          {
+            "type": "paragraph",
+            "text": "If `v` is longer than `a`, the arrays are swapped before computation."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "(N,) array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "First one-dimensional input array."
+              }
+            ]
+          },
+          {
+            "name": "v",
+            "type": "(M,) array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Second one-dimensional input array."
+              }
+            ]
+          },
+          {
+            "name": "mode",
+            "type": "{'full', 'valid', 'same'}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "'full':\n  By default, mode is 'full'.  This returns the convolution\n  at each point of overlap, with an output shape of (N+M-1,). At\n  the end-points of the convolution, the signals do not overlap\n  completely, and boundary effects may be seen."
+              },
+              {
+                "type": "paragraph",
+                "text": "'same':\n  Mode 'same' returns output of length ``max(M, N)``.  Boundary\n  effects are still visible."
+              },
+              {
+                "type": "paragraph",
+                "text": "'valid':\n  Mode 'valid' returns output of length\n  ``max(M, N) - min(M, N) + 1``.  The convolution product is only given\n  for points where the signals overlap completely.  Values outside\n  the signal boundary have no effect."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Discrete, linear convolution of `a` and `v`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The discrete convolution operation is defined as"
+          },
+          {
+            "type": "directive",
+            "name": "math:: (a * v)_n = \\sum_{m = -\\infty}^{\\infty} a_m v_{n - m}",
+            "body": "",
+            "raw": ".. math:: (a * v)_n = \\sum_{m = -\\infty}^{\\infty} a_m v_{n - m}"
+          },
+          {
+            "type": "paragraph",
+            "text": "It can be shown that a convolution :math:`x(t) * y(t)` in time/space\nis equivalent to the multiplication :math:`X(f) Y(f)` in the Fourier\ndomain, after appropriate padding (padding is necessary to prevent\ncircular convolution).  Since multiplication is more efficient (faster)\nthan convolution, the function `scipy.signal.fftconvolve` exploits the\nFFT to calculate the convolution of large data-sets."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Note how the convolution operator flips the second array\nbefore \"sliding\" the two across one another:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.convolve([1, 2, 3], [0, 1, 0.5])\narray([0. , 1. , 2.5, 4. , 1.5])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Only return the middle values of the convolution.\nContains boundary effects, where zeros are taken\ninto account:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.convolve([1,2,3],[0,1,0.5], 'same')\narray([1. ,  2.5,  4. ])"
+          },
+          {
+            "type": "paragraph",
+            "text": "The two arrays are of the same length, so there\nis only one position where they completely overlap:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.convolve([1,2,3],[0,1,0.5], 'valid')\narray([2.5])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "scipy.signal.fftconvolve \u2014 Convolve two arrays using the Fast Fourier Transform."
+          },
+          {
+            "type": "paragraph",
+            "text": "scipy.linalg.toeplitz \u2014 Used to construct the convolution operator."
+          },
+          {
+            "type": "paragraph",
+            "text": "polymul \u2014 Polynomial multiplication. Same output as convolve, but also accepts poly1d objects as input."
+          }
+        ]
+      }
+    ]
+  }
+}

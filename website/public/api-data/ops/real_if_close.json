@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "slug": "real_if_close",
+  "detail_href": "/docs/api/ops/real_if_close/",
+  "detail_json_href": "/api-data/ops/real_if_close.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29-L42",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.real_if_close.html"
+  },
+  "op": {
+    "name": "real_if_close",
+    "module": "numpy",
+    "whest_ref": "we.real_if_close",
+    "numpy_ref": "np.real_if_close",
+    "category": "counted_unary",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Return real array if imaginary part is negligible.",
+    "summary": "If input is complex with all imaginary parts close to zero, return real parts.",
+    "signature": "we.real_if_close(a, tol=100)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "If input is complex with all imaginary parts close to zero, return\nreal parts."
+          },
+          {
+            "type": "paragraph",
+            "text": "\"Close to zero\" is defined as `tol` * (machine epsilon of the type for\n`a`)."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array."
+              }
+            ]
+          },
+          {
+            "name": "tol",
+            "type": "float",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Tolerance in machine epsilons for the complex part of the elements\nin the array. If the tolerance is <=1, then the absolute tolerance\nis used."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If `a` is real, the type of `a` is used for the output.  If `a`\nhas complex elements, the returned type is float."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Machine epsilon varies from machine to machine and between data types\nbut Python floats on most platforms have a machine epsilon equal to\n2.2204460492503131e-16.  You can use 'np.finfo(float).eps' to print\nout the machine epsilon for floats."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.finfo(float).eps\n2.2204460492503131e-16 # may vary"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.real_if_close([2.1 + 4e-14j, 5.2 + 3e-15j], tol=1000)\narray([2.1, 5.2])\n>>> np.real_if_close([2.1 + 4e-13j, 5.2 + 3e-15j], tol=1000)\narray([2.1+4.e-13j, 5.2 + 3e-15j])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "real, imag, angle"
+          }
+        ]
+      }
+    ]
+  }
+}

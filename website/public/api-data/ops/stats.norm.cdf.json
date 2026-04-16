@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "slug": "stats.norm.cdf",
+  "detail_href": "/docs/api/ops/stats.norm.cdf/",
+  "detail_json_href": "/api-data/ops/stats.norm.cdf.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_norm.py#L63-L86",
+    "numpy": ""
+  },
+  "op": {
+    "name": "stats.norm.cdf",
+    "module": "whest.stats",
+    "whest_ref": "we.stats.norm.cdf",
+    "numpy_ref": "scipy.stats.norm.cdf",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 16.0,
+    "cost_formula": "20n",
+    "cost_formula_latex": "$20n$",
+    "notes": "Normal CDF; cost = numel(input).",
+    "summary": "Cumulative distribution function at *x*.",
+    "signature": "we.stats.norm.cdf(x, loc=0, scale=1)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Cumulative distribution function at *x*."
+          },
+          {
+            "type": "paragraph",
+            "text": "Equivalent to ``scipy.stats.norm.cdf(x, loc, scale)``."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Quantiles."
+              }
+            ]
+          },
+          {
+            "name": "loc",
+            "type": "float, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Mean of the distribution (default 0)."
+              }
+            ]
+          },
+          {
+            "name": "scale",
+            "type": "float, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Standard deviation (default 1)."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "",
+            "type": "WhestArray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "CDF evaluated at *x*."
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "slug": "fill_diagonal",
+  "detail_href": "/docs/api/ops/fill_diagonal/",
+  "detail_json_href": "/api-data/ops/fill_diagonal.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L918-L927",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.fill_diagonal.html"
+  },
+  "op": {
+    "name": "fill_diagonal",
+    "module": "numpy",
+    "whest_ref": "we.fill_diagonal",
+    "numpy_ref": "np.fill_diagonal",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 4.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Fill main diagonal of given array. Cost: min(m,n).",
+    "summary": "Fill the main diagonal of the given array of any dimensionality.",
+    "signature": "we.fill_diagonal(a, val, wrap=False, **kwargs)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Fill the main diagonal of the given array of any dimensionality."
+          },
+          {
+            "type": "paragraph",
+            "text": "For an array `a` with ``a.ndim >= 2``, the diagonal is the list of\nvalues ``a[i, ..., i]`` with indices ``i`` all identical.  This function\nmodifies the input array in-place without returning a value."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array, at least 2-D.",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Array whose diagonal is to be filled in-place."
+              }
+            ]
+          },
+          {
+            "name": "val",
+            "type": "scalar or array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Value(s) to write on the diagonal. If `val` is scalar, the value is\nwritten along the diagonal. If array-like, the flattened `val` is\nwritten along the diagonal, repeating if necessary to fill all\ndiagonal entries."
+              }
+            ]
+          },
+          {
+            "name": "wrap",
+            "type": "bool",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "For tall matrices in NumPy version up to 1.6.2, the\ndiagonal \"wrapped\" after N columns. You can have this behavior\nwith this option. This affects only tall matrices."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "This functionality can be obtained via `diag_indices`, but internally\nthis version uses a much faster implementation that never constructs the\nindices and uses simple slicing."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> a = np.zeros((3, 3), int)\n>>> np.fill_diagonal(a, 5)\n>>> a\narray([[5, 0, 0],\n       [0, 5, 0],\n       [0, 0, 5]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "The same function can operate on a 4-D array:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.zeros((3, 3, 3, 3), int)\n>>> np.fill_diagonal(a, 4)"
+          },
+          {
+            "type": "paragraph",
+            "text": "We only show a few blocks for clarity:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a[0, 0]\narray([[4, 0, 0],\n       [0, 0, 0],\n       [0, 0, 0]])\n>>> a[1, 1]\narray([[0, 0, 0],\n       [0, 4, 0],\n       [0, 0, 0]])\n>>> a[2, 2]\narray([[0, 0, 0],\n       [0, 0, 0],\n       [0, 0, 4]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "The wrap option affects only tall matrices:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> # tall matrices no wrap\n>>> a = np.zeros((5, 3), int)\n>>> np.fill_diagonal(a, 4)\n>>> a\narray([[4, 0, 0],\n       [0, 4, 0],\n       [0, 0, 4],\n       [0, 0, 0],\n       [0, 0, 0]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> # tall matrices wrap\n>>> a = np.zeros((5, 3), int)\n>>> np.fill_diagonal(a, 4, wrap=True)\n>>> a\narray([[4, 0, 0],\n       [0, 4, 0],\n       [0, 0, 4],\n       [0, 0, 0],\n       [4, 0, 0]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> # wide matrices\n>>> a = np.zeros((3, 5), int)\n>>> np.fill_diagonal(a, 4, wrap=True)\n>>> a\narray([[4, 0, 0, 0, 0],\n       [0, 4, 0, 0, 0],\n       [0, 0, 4, 0, 0]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "The anti-diagonal can be filled by reversing the order of elements\nusing either `numpy.flipud` or `numpy.fliplr`."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.zeros((3, 3), int);\n>>> np.fill_diagonal(np.fliplr(a), [1,2,3])  # Horizontal flip\n>>> a\narray([[0, 0, 1],\n       [0, 2, 0],\n       [3, 0, 0]])\n>>> np.fill_diagonal(np.flipud(a), [1,2,3])  # Vertical flip\n>>> a\narray([[0, 0, 3],\n       [0, 2, 0],\n       [1, 0, 0]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Note that the order in which the diagonal is filled varies depending\non the flip function."
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "diag_indices, diag_indices_from"
+          }
+        ]
+      }
+    ]
+  }
+}

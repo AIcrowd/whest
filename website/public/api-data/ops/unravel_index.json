@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "slug": "unravel_index",
+  "detail_href": "/docs/api/ops/unravel_index/",
+  "detail_json_href": "/api-data/ops/unravel_index.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L1518-L1520",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.unravel_index.html"
+  },
+  "op": {
+    "name": "unravel_index",
+    "module": "numpy",
+    "whest_ref": "we.unravel_index",
+    "numpy_ref": "np.unravel_index",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Convert flat index to multi-dimensional index.",
+    "summary": "Converts a flat index or array of flat indices into a tuple of coordinate arrays.",
+    "signature": "we.unravel_index(indices, shape, order='C')"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Converts a flat index or array of flat indices into a tuple\nof coordinate arrays."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "indices",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "An integer array whose elements are indices into the flattened\nversion of an array of dimensions ``shape``. Before version 1.6.0,\nthis function accepted just one index value."
+              }
+            ]
+          },
+          {
+            "name": "shape",
+            "type": "tuple of ints",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The shape of the array to use for unraveling ``indices``."
+              }
+            ]
+          },
+          {
+            "name": "order",
+            "type": "{'C', 'F'}, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Determines whether the indices should be viewed as indexing in\nrow-major (C-style) or column-major (Fortran-style) order."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "unraveled_coords",
+            "type": "tuple of ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Each array in the tuple has the same shape as the ``indices``\narray."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.unravel_index([22, 41, 37], (7,6))\n(array([3, 6, 6]), array([4, 5, 1]))\n>>> np.unravel_index([31, 41, 13], (7,6), order='F')\n(array([3, 6, 6]), array([4, 5, 1]))"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.unravel_index(1621, (6,7,8,9))\n(3, 1, 4, 1)"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "ravel_multi_index"
+          }
+        ]
+      }
+    ]
+  }
+}

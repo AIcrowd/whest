@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "slug": "may_share_memory",
+  "detail_href": "/docs/api/ops/may_share_memory/",
+  "detail_json_href": "/api-data/ops/may_share_memory.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1163-L1165",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.may_share_memory.html"
+  },
+  "op": {
+    "name": "may_share_memory",
+    "module": "numpy",
+    "whest_ref": "we.may_share_memory",
+    "numpy_ref": "np.may_share_memory",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Determine if two arrays might share memory.",
+    "summary": "Determine if two arrays might share memory",
+    "signature": "we.may_share_memory(a, b, /, max_work=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Determine if two arrays might share memory"
+          },
+          {
+            "type": "paragraph",
+            "text": "A return of True does not necessarily mean that the two arrays\nshare any element.  It just means that they *might*."
+          },
+          {
+            "type": "paragraph",
+            "text": "Only the memory bounds of a and b are checked by default."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a, b",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input arrays"
+              }
+            ]
+          },
+          {
+            "name": "max_work",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Effort to spend on solving the overlap problem.  See\n`shares_memory` for details.  Default for ``may_share_memory``\nis to do a bounds check."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "bool",
+            "desc_blocks": []
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.may_share_memory(np.array([1,2]), np.array([5,8,9]))\nFalse\n>>> x = np.zeros([3, 4])\n>>> np.may_share_memory(x[:,0], x[:,1])\nTrue"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "shares_memory"
+          }
+        ]
+      }
+    ]
+  }
+}

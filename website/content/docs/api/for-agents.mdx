@@ -5,13 +5,14 @@ title: "For AI Agents"
 *Use this page if you are an AI coding assistant (or building one) that needs to generate whest code correctly.*
 
 **You will learn:**
-- How to orient yourself with llms.txt, ops.json, and the cheat sheet
+- How to orient yourself with llms.txt, ops.json, per-op JSON, and the cheat sheet
 - The five rules for generating correct whest code
 - How to avoid common mistakes AI agents make with whest
 
 This page is for AI coding assistants (Claude, Cursor, Copilot, etc.) helping
 users write whest code. It explains what resources are available, how to
 access them, and the key things you must know before generating code.
+
 ---
 
 ## Quick orientation
@@ -29,9 +30,10 @@ works with NumPy may fail or behave differently with whest:
 
 | Resource | Format | Use case |
 |----------|--------|----------|
-| [llms.txt](pathname:///llms.txt) | Markdown | Start here. Curated index of all doc pages with one-line descriptions. Under 4K tokens. |
-| [llms-full.txt](pathname:///llms-full.txt) | Markdown | Complete docs in one file. Use if your context window is large enough (~115KB). |
-| [ops.json](pathname:///ops.json) | JSON | Machine-readable manifest of all 508 operations. Query programmatically for name, category, cost formula, status. |
+| [llms.txt](../../../llms.txt) | Markdown | Start here. Curated index of all doc pages with one-line descriptions. Under 4K tokens. |
+| [llms-full.txt](../../../llms-full.txt) | Markdown | Complete docs in one file. Use if your context window is large enough (~115KB). |
+| [ops.json](../../../ops.json) | JSON | Slim machine-readable index of all 508 operations. Query programmatically for names, filters, and detail URLs. |
+| `/api-data/ops/<slug>.json` | JSON | Full standalone payload for one operation, including summary, signature, notes, and structured doc sections. |
 | [API Reference](./) | Markdown | Dense reference of every operation's cost and full operation inventory. |
 
 ### How to use llms.txt
@@ -57,11 +59,16 @@ everything in one request.
 
 ### How to use ops.json
 
-`ops.json` contains a JSON object with an `operations` array. Each entry has:
+`ops.json` contains a JSON object with an `operations` array. Each entry is a
+slim index row with the information needed to search, filter, and find the full
+payload for one operation:
 
 ```json
 {
   "name": "einsum",
+  "slug": "einsum",
+  "detail_href": "/docs/api/ops/einsum/",
+  "detail_json_href": "/api-data/ops/einsum.json",
   "module": "numpy",
   "whest_ref": "we.einsum",
   "numpy_ref": "np.einsum",
@@ -71,6 +78,7 @@ everything in one request.
   "free": false,
   "blocked": false,
   "status": "supported",
+  "summary": "Evaluate Einstein summation with FLOP counting and optional path optimization.",
   "notes": "Supports SymmetricTensor inputs and repeated-operand detection for automatic cost reduction"
 }
 ```
@@ -81,6 +89,32 @@ Use this to:
 - Get the cost formula for a specific operation: look up by `name`
 - List all free operations: filter by `"free": true`
 - Map between NumPy and whest calls: use `numpy_ref` and `whest_ref`
+- Jump to the standalone page or full payload: use `detail_href` and `detail_json_href`
+
+### How to use per-op JSON
+
+Each operation also has a full standalone JSON payload at:
+
+```text
+/api-data/ops/<slug>.json
+```
+
+For example:
+
+```text
+/api-data/ops/einsum.json
+```
+
+These payloads include:
+
+- top-level metadata (`slug`, `detail_href`, `detail_json_href`)
+- source links (`source.whest`, `source.numpy`)
+- operation metadata (`op.*`)
+- normalized doc sections under `docs.sections[]`
+
+Fetch the per-op JSON when you need the full signature, summary, notes,
+parameter list, returns, or examples for a single function without loading the
+entire reference surface.
 
 ## Five rules for generating whest code
 
@@ -119,7 +153,7 @@ Counted: `einsum`, `dot`, `matmul`, `exp`, `log`, `add`, `multiply`, `sum`,
 Blocked: `save`, `load`, `geterr`, `seterr`, and 28 others. These raise
 `AttributeError`.
 
-When in doubt, check `ops.json` or the [API Reference](./).
+When in doubt, check `ops.json`, the relevant `/api-data/ops/<slug>.json`, or the [API Reference](./).
 
 **3. Use `we.flops.*` to estimate costs before running.**
 

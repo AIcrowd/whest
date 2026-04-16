@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "slug": "hanning",
+  "detail_href": "/docs/api/ops/hanning/",
+  "detail_json_href": "/api-data/ops/hanning.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L126-L131",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L3265-L3364"
+  },
+  "op": {
+    "name": "hanning",
+    "module": "whest._window",
+    "whest_ref": "we.hanning",
+    "numpy_ref": "np.hanning",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 16.0,
+    "cost_formula": "n",
+    "cost_formula_latex": "$n$",
+    "notes": "Hanning window. Cost: n (one cosine per sample).",
+    "summary": "Return the Hanning window.",
+    "signature": "we.hanning(M)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return the Hanning window."
+          },
+          {
+            "type": "paragraph",
+            "text": "The Hanning window is a taper formed by using a weighted cosine."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "M",
+            "type": "int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Number of points in the output window. If zero or less, an\nempty array is returned."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray, shape(M,)",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The window, with the maximum value normalized to one (the value\none appears only if `M` is odd)."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The Hanning window is defined as"
+          },
+          {
+            "type": "directive",
+            "name": "math::  w(n) = 0.5 - 0.5\\cos\\left(\\frac{2\\pi{n}}{M-1}\\right)",
+            "body": "           \\qquad 0 \\leq n \\leq M-1",
+            "raw": ".. math::  w(n) = 0.5 - 0.5\\cos\\left(\\frac{2\\pi{n}}{M-1}\\right)\n           \\qquad 0 \\leq n \\leq M-1"
+          },
+          {
+            "type": "paragraph",
+            "text": "The Hanning was named for Julius von Hann, an Austrian meteorologist.\nIt is also known as the Cosine Bell. Some authors prefer that it be\ncalled a Hann window, to help avoid confusion with the very similar\nHamming window."
+          },
+          {
+            "type": "paragraph",
+            "text": "Most references to the Hanning window come from the signal processing\nliterature, where it is used as one of many windowing functions for\nsmoothing values.  It is also known as an apodization (which means\n\"removing the foot\", i.e. smoothing discontinuities at the beginning\nand end of the sampled signal) or tapering function."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.hanning(12)\narray([0.        , 0.07937323, 0.29229249, 0.57115742, 0.82743037,\n       0.97974649, 0.97974649, 0.82743037, 0.57115742, 0.29229249,\n       0.07937323, 0.        ])"
+          },
+          {
+            "type": "paragraph",
+            "text": "Plot the window and its frequency response."
+          },
+          {
+            "type": "directive",
+            "name": "plot",
+            "body": "    :include-source:",
+            "raw": ".. plot::\n    :include-source:"
+          },
+          {
+            "type": "paragraph",
+            "text": "    import matplotlib.pyplot as plt\n    from numpy.fft import fft, fftshift\n    window = np.hanning(51)\n    plt.plot(window)\n    plt.title(\"Hann window\")\n    plt.ylabel(\"Amplitude\")\n    plt.xlabel(\"Sample\")\n    plt.show()"
+          },
+          {
+            "type": "paragraph",
+            "text": "    plt.figure()\n    A = fft(window, 2048) / 25.5\n    mag = np.abs(fftshift(A))\n    freq = np.linspace(-0.5, 0.5, len(A))\n    with np.errstate(divide='ignore', invalid='ignore'):\n        response = 20 * np.log10(mag)\n    response = np.clip(response, -100, 100)\n    plt.plot(freq, response)\n    plt.title(\"Frequency response of the Hann window\")\n    plt.ylabel(\"Magnitude [dB]\")\n    plt.xlabel(\"Normalized frequency [cycles per sample]\")\n    plt.axis('tight')\n    plt.show()"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "bartlett, blackman, hamming, kaiser"
+          }
+        ]
+      }
+    ]
+  }
+}

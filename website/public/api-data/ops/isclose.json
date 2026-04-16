@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "slug": "isclose",
+  "detail_href": "/docs/api/ops/isclose/",
+  "detail_json_href": "/api-data/ops/isclose.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L443-L466",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.isclose.html"
+  },
+  "op": {
+    "name": "isclose",
+    "module": "numpy",
+    "whest_ref": "we.isclose",
+    "numpy_ref": "np.isclose",
+    "category": "counted_unary",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Element-wise approximate equality test.",
+    "summary": "Returns a boolean array where two arrays are element-wise equal within a tolerance.",
+    "signature": "we.isclose(a, b, rtol=1e-05, atol=1e-08, equal_nan=False)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Returns a boolean array where two arrays are element-wise equal within a\ntolerance."
+          },
+          {
+            "type": "paragraph",
+            "text": "The tolerance values are positive, typically very small numbers.  The\nrelative difference (`rtol` * abs(`b`)) and the absolute difference\n`atol` are added together to compare against the absolute difference\nbetween `a` and `b`."
+          },
+          {
+            "type": "directive",
+            "name": "warning:: The default `atol` is not appropriate for comparing numbers",
+            "body": "             with magnitudes much smaller than one (see Notes).",
+            "raw": ".. warning:: The default `atol` is not appropriate for comparing numbers\n             with magnitudes much smaller than one (see Notes)."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a, b",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input arrays to compare."
+              }
+            ]
+          },
+          {
+            "name": "rtol",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The relative tolerance parameter (see Notes)."
+              }
+            ]
+          },
+          {
+            "name": "atol",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The absolute tolerance parameter (see Notes)."
+              }
+            ]
+          },
+          {
+            "name": "equal_nan",
+            "type": "bool",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Whether to compare NaN's as equal.  If True, NaN's in `a` will be\nconsidered equal to NaN's in `b` in the output array."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "y",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Returns a boolean array of where `a` and `b` are equal within the\ngiven tolerance. If both `a` and `b` are scalars, returns a single\nboolean value."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "For finite values, isclose uses the following equation to test whether\ntwo floating point values are equivalent.::"
+          },
+          {
+            "type": "paragraph",
+            "text": " absolute(a - b) <= (atol + rtol * absolute(b))"
+          },
+          {
+            "type": "paragraph",
+            "text": "Unlike the built-in `math.isclose`, the above equation is not symmetric\nin `a` and `b` -- it assumes `b` is the reference value -- so that\n`isclose(a, b)` might be different from `isclose(b, a)`."
+          },
+          {
+            "type": "paragraph",
+            "text": "The default value of `atol` is not appropriate when the reference value\n`b` has magnitude smaller than one. For example, it is unlikely that\n``a = 1e-9`` and ``b = 2e-9`` should be considered \"close\", yet\n``isclose(1e-9, 2e-9)`` is ``True`` with default settings. Be sure\nto select `atol` for the use case at hand, especially for defining the\nthreshold below which a non-zero value in `a` will be considered \"close\"\nto a very small or zero value in `b`."
+          },
+          {
+            "type": "paragraph",
+            "text": "`isclose` is not defined for non-numeric data types.\n:class:`bool` is considered a numeric data-type for this purpose."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.isclose([1e10,1e-7], [1.00001e10,1e-8])\narray([ True, False])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.isclose([1e10,1e-8], [1.00001e10,1e-9])\narray([ True, True])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.isclose([1e10,1e-8], [1.0001e10,1e-9])\narray([False,  True])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.isclose([1.0, np.nan], [1.0, np.nan])\narray([ True, False])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.isclose([1.0, np.nan], [1.0, np.nan], equal_nan=True)\narray([ True, True])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.isclose([1e-8, 1e-7], [0.0, 0.0])\narray([ True, False])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.isclose([1e-100, 1e-7], [0.0, 0.0], atol=0.0)\narray([False, False])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.isclose([1e-10, 1e-10], [1e-20, 0.0])\narray([ True,  True])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.isclose([1e-10, 1e-10], [1e-20, 0.999999e-10], atol=0.0)\narray([False,  True])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "allclose"
+          },
+          {
+            "type": "paragraph",
+            "text": "math.isclose"
+          }
+        ]
+      }
+    ]
+  }
+}

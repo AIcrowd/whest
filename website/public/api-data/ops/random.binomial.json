@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "slug": "random.binomial",
+  "detail_href": "/docs/api/ops/random.binomial/",
+  "detail_json_href": "/api-data/ops/random.binomial.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L55-L66",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.binomial.html"
+  },
+  "op": {
+    "name": "random.binomial",
+    "module": "numpy.random",
+    "whest_ref": "we.random.binomial",
+    "numpy_ref": "np.random.binomial",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 16.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Sampling; cost = numel(output).",
+    "summary": "Counted version of ``numpy.random.random.binomial``. Cost: numel(output) FLOPs.",
+    "signature": "we.random.binomial(n, p, size=None)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Counted version of ``numpy.random.random.binomial``. Cost: numel(output) FLOPs."
+          }
+        ]
+      }
+    ]
+  }
+}

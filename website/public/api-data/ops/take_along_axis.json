@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "slug": "take_along_axis",
+  "detail_href": "/docs/api/ops/take_along_axis/",
+  "detail_json_href": "/api-data/ops/take_along_axis.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L1421-L1428",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.take_along_axis.html"
+  },
+  "op": {
+    "name": "take_along_axis",
+    "module": "numpy",
+    "whest_ref": "we.take_along_axis",
+    "numpy_ref": "np.take_along_axis",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Take values from input array by matching 1-D index. Cost: numel(output).",
+    "summary": "Take values from the input array by matching 1d index and data slices.",
+    "signature": "we.take_along_axis(arr, indices, axis)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Take values from the input array by matching 1d index and data slices."
+          },
+          {
+            "type": "paragraph",
+            "text": "This iterates over matching 1d slices oriented along the specified axis in\nthe index and data arrays, and uses the former to look up values in the\nlatter. These slices can be different lengths."
+          },
+          {
+            "type": "paragraph",
+            "text": "Functions returning an index along an axis, like `argsort` and\n`argpartition`, produce suitable indices for this function."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "arr",
+            "type": "ndarray (Ni..., M, Nk...)",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Source array"
+              }
+            ]
+          },
+          {
+            "name": "indices",
+            "type": "ndarray (Ni..., J, Nk...)",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Indices to take along each 1d slice of `arr`. This must match the\ndimension of arr, but dimensions Ni and Nj only need to broadcast\nagainst `arr`."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The axis to take 1d slices along. If axis is None, the input array is\ntreated as if it had first been flattened to 1d, for consistency with\n`sort` and `argsort`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "",
+            "type": "out: ndarray (Ni..., J, Nk...)",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The indexed result."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "This is equivalent to (but faster than) the following use of `ndindex` and\n`s_`, which sets each of ``ii`` and ``kk`` to a tuple of indices::"
+          },
+          {
+            "type": "paragraph",
+            "text": "    Ni, M, Nk = a.shape[:axis], a.shape[axis], a.shape[axis+1:]\n    J = indices.shape[axis]  # Need not equal M\n    out = np.empty(Ni + (J,) + Nk)"
+          },
+          {
+            "type": "paragraph",
+            "text": "    for ii in ndindex(Ni):\n        for kk in ndindex(Nk):\n            a_1d       = a      [ii + s_[:,] + kk]\n            indices_1d = indices[ii + s_[:,] + kk]\n            out_1d     = out    [ii + s_[:,] + kk]\n            for j in range(J):\n                out_1d[j] = a_1d[indices_1d[j]]"
+          },
+          {
+            "type": "paragraph",
+            "text": "Equivalently, eliminating the inner loop, the last two lines would be::"
+          },
+          {
+            "type": "paragraph",
+            "text": "            out_1d[:] = a_1d[indices_1d]"
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np"
+          },
+          {
+            "type": "paragraph",
+            "text": "For this sample array"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.array([[10, 30, 20], [60, 40, 50]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "We can sort either by using sort directly, or argsort and this function"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.sort(a, axis=1)\narray([[10, 20, 30],\n       [40, 50, 60]])\n>>> ai = np.argsort(a, axis=1)\n>>> ai\narray([[0, 2, 1],\n       [1, 2, 0]])\n>>> np.take_along_axis(a, ai, axis=1)\narray([[10, 20, 30],\n       [40, 50, 60]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "The same works for max and min, if you maintain the trivial dimension\nwith ``keepdims``:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.max(a, axis=1, keepdims=True)\narray([[30],\n       [60]])\n>>> ai = np.argmax(a, axis=1, keepdims=True)\n>>> ai\narray([[1],\n       [0]])\n>>> np.take_along_axis(a, ai, axis=1)\narray([[30],\n       [60]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "If we want to get the max and min at the same time, we can stack the\nindices first"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> ai_min = np.argmin(a, axis=1, keepdims=True)\n>>> ai_max = np.argmax(a, axis=1, keepdims=True)\n>>> ai = np.concatenate([ai_min, ai_max], axis=1)\n>>> ai\narray([[0, 1],\n       [1, 0]])\n>>> np.take_along_axis(a, ai, axis=1)\narray([[10, 30],\n       [40, 60]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "take \u2014 Take along an axis, using the same indices for every 1d slice"
+          },
+          {
+            "type": "paragraph",
+            "text": "put_along_axis \u2014 Put values into the destination array by matching 1d index and data slices"
+          }
+        ]
+      }
+    ]
+  }
+}

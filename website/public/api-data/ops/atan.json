@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "slug": "atan",
+  "detail_href": "/docs/api/ops/atan/",
+  "detail_json_href": "/api-data/ops/atan.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29-L42",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.atan.html"
+  },
+  "op": {
+    "name": "atan",
+    "module": "numpy",
+    "whest_ref": "we.atan",
+    "numpy_ref": "np.atan",
+    "category": "counted_unary",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Alias for arctan (NumPy 2.x).",
+    "summary": "Trigonometric inverse tangent, element-wise.",
+    "signature": "we.atan(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature])"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Trigonometric inverse tangent, element-wise."
+          },
+          {
+            "type": "paragraph",
+            "text": "The inverse of tan, so that if ``y = tan(x)`` then ``x = arctan(y)``."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "array_like",
+            "desc_blocks": []
+          },
+          {
+            "name": "out",
+            "type": "ndarray, None, or tuple of ndarray and None, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
+              }
+            ]
+          },
+          {
+            "name": "where",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "This condition is broadcast over the input. At locations where the\ncondition is True, the `out` array will be set to the ufunc result.\nElsewhere, the `out` array will retain its original value.\nNote that if an uninitialized `out` array is created via the default\n``out=None``, locations within it where the condition is False will\nremain uninitialized."
+              }
+            ]
+          },
+          {
+            "name": "**kwargs",
+            "type": "",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "For other keyword-only arguments, see the\n:ref:`ufunc docs <ufuncs.kwargs>`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray or scalar",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Out has the same shape as `x`.  Its real part is in\n``[-pi/2, pi/2]`` (``arctan(+/-inf)`` returns ``+/-pi/2``).\nThis is a scalar if `x` is a scalar."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "`arctan` is a multi-valued function: for each `x` there are infinitely\nmany numbers `z` such that tan(`z`) = `x`.  The convention is to return\nthe angle `z` whose real part lies in [-pi/2, pi/2]."
+          },
+          {
+            "type": "paragraph",
+            "text": "For real-valued input data types, `arctan` always returns real output.\nFor each value that cannot be expressed as a real number or infinity,\nit yields ``nan`` and sets the `invalid` floating point error flag."
+          },
+          {
+            "type": "paragraph",
+            "text": "For complex-valued input, `arctan` is a complex analytic function that\nhas [``1j, infj``] and [``-1j, -infj``] as branch cuts, and is continuous\nfrom the left on the former and from the right on the latter."
+          },
+          {
+            "type": "paragraph",
+            "text": "The inverse tangent is also known as `atan` or tan^{-1}."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "We expect the arctan of 0 to be 0, and of 1 to be pi/4:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.arctan([0, 1])\narray([ 0.        ,  0.78539816])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.pi/4\n0.78539816339744828"
+          },
+          {
+            "type": "paragraph",
+            "text": "Plot arctan:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import matplotlib.pyplot as plt\n>>> x = np.linspace(-10, 10)\n>>> plt.plot(x, np.arctan(x))\n>>> plt.axis('tight')\n>>> plt.show()"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "arctan2 \u2014 The \"four quadrant\" arctan of the angle formed by (`x`, `y`) and the positive `x`-axis."
+          },
+          {
+            "type": "paragraph",
+            "text": "angle \u2014 Argument of complex values."
+          }
+        ]
+      }
+    ]
+  }
+}

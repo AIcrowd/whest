@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "slug": "vander",
+  "detail_href": "/docs/api/ops/vander/",
+  "detail_json_href": "/api-data/ops/vander.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L280-L289",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.vander.html"
+  },
+  "op": {
+    "name": "vander",
+    "module": "numpy",
+    "whest_ref": "we.vander",
+    "numpy_ref": "np.vander",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Vandermonde matrix; cost = len(x)*(N-1).",
+    "summary": "Generate a Vandermonde matrix.",
+    "signature": "we.vander(x, N=None, increasing=False)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Generate a Vandermonde matrix."
+          },
+          {
+            "type": "paragraph",
+            "text": "The columns of the output matrix are powers of the input vector. The\norder of the powers is determined by the `increasing` boolean argument.\nSpecifically, when `increasing` is False, the `i`-th output column is\nthe input vector raised element-wise to the power of ``N - i - 1``. Such\na matrix with a geometric progression in each row is named for Alexandre-\nTheophile Vandermonde."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "1-D input array."
+              }
+            ]
+          },
+          {
+            "name": "N",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Number of columns in the output.  If `N` is not specified, a square\narray is returned (``N = len(x)``)."
+              }
+            ]
+          },
+          {
+            "name": "increasing",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Order of the powers of the columns.  If True, the powers increase\nfrom left to right, if False (the default) they are reversed."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Vandermonde matrix.  If `increasing` is False, the first column is\n``x^(N-1)``, the second ``x^(N-2)`` and so forth. If `increasing` is\nTrue, the columns are ``x^0, x^1, ..., x^(N-1)``."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> x = np.array([1, 2, 3, 5])\n>>> N = 3\n>>> np.vander(x, N)\narray([[ 1,  1,  1],\n       [ 4,  2,  1],\n       [ 9,  3,  1],\n       [25,  5,  1]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.column_stack([x**(N-1-i) for i in range(N)])\narray([[ 1,  1,  1],\n       [ 4,  2,  1],\n       [ 9,  3,  1],\n       [25,  5,  1]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.array([1, 2, 3, 5])\n>>> np.vander(x)\narray([[  1,   1,   1,   1],\n       [  8,   4,   2,   1],\n       [ 27,   9,   3,   1],\n       [125,  25,   5,   1]])\n>>> np.vander(x, increasing=True)\narray([[  1,   1,   1,   1],\n       [  1,   2,   4,   8],\n       [  1,   3,   9,  27],\n       [  1,   5,  25, 125]])"
+          },
+          {
+            "type": "paragraph",
+            "text": "The determinant of a square Vandermonde matrix is the product\nof the differences between the values of the input vector:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.linalg.det(np.vander(x))\n48.000000000000043 # may vary\n>>> (5-3)*(5-2)*(5-1)*(3-2)*(3-1)*(2-1)\n48"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "polynomial.polynomial.polyvander"
+          }
+        ]
+      }
+    ]
+  }
+}

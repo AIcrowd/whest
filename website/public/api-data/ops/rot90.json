@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "slug": "rot90",
+  "detail_href": "/docs/api/ops/rot90/",
+  "detail_json_href": "/api-data/ops/rot90.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L1355-L1357",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.rot90.html"
+  },
+  "op": {
+    "name": "rot90",
+    "module": "numpy",
+    "whest_ref": "we.rot90",
+    "numpy_ref": "np.rot90",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Rotate array 90 degrees.",
+    "summary": "Rotate an array by 90 degrees in the plane specified by axes.",
+    "signature": "we.rot90(m, k=1, axes=(0, 1))"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Rotate an array by 90 degrees in the plane specified by axes."
+          },
+          {
+            "type": "paragraph",
+            "text": "Rotation direction is from the first towards the second axis.\nThis means for a 2D array with the default `k` and `axes`, the\nrotation will be counterclockwise."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "m",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Array of two or more dimensions."
+              }
+            ]
+          },
+          {
+            "name": "k",
+            "type": "integer",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Number of times the array is rotated by 90 degrees."
+              }
+            ]
+          },
+          {
+            "name": "axes",
+            "type": "(2,) array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The array is rotated in the plane defined by the axes.\nAxes must be different."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "y",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A rotated view of `m`."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "``rot90(m, k=1, axes=(1,0))``  is the reverse of\n``rot90(m, k=1, axes=(0,1))``"
+          },
+          {
+            "type": "paragraph",
+            "text": "``rot90(m, k=1, axes=(1,0))`` is equivalent to\n``rot90(m, k=-1, axes=(0,1))``"
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> m = np.array([[1,2],[3,4]], int)\n>>> m\narray([[1, 2],\n       [3, 4]])\n>>> np.rot90(m)\narray([[2, 4],\n       [1, 3]])\n>>> np.rot90(m, 2)\narray([[4, 3],\n       [2, 1]])\n>>> m = np.arange(8).reshape((2,2,2))\n>>> np.rot90(m, 1, (1,2))\narray([[[1, 3],\n        [0, 2]],\n       [[5, 7],\n        [4, 6]]])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "flip \u2014 Reverse the order of elements in an array along the given axis."
+          },
+          {
+            "type": "paragraph",
+            "text": "fliplr \u2014 Flip an array horizontally."
+          },
+          {
+            "type": "paragraph",
+            "text": "flipud \u2014 Flip an array vertically."
+          }
+        ]
+      }
+    ]
+  }
+}

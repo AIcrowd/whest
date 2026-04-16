@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "slug": "diff",
+  "detail_href": "/docs/api/ops/diff/",
+  "detail_json_href": "/api-data/ops/diff.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L960-L978",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.diff.html"
+  },
+  "op": {
+    "name": "diff",
+    "module": "numpy",
+    "whest_ref": "we.diff",
+    "numpy_ref": "np.diff",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(input)",
+    "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "notes": "n-th discrete difference along axis.",
+    "summary": "Calculate the n-th discrete difference along the given axis.",
+    "signature": "we.diff(a, n=1, axis=-1, prepend=<no value>, append=<no value>)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Calculate the n-th discrete difference along the given axis."
+          },
+          {
+            "type": "paragraph",
+            "text": "The first difference is given by ``out[i] = a[i+1] - a[i]`` along\nthe given axis, higher differences are calculated by using `diff`\nrecursively."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "a",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Input array"
+              }
+            ]
+          },
+          {
+            "name": "n",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The number of times values are differenced. If zero, the input\nis returned as-is."
+              }
+            ]
+          },
+          {
+            "name": "axis",
+            "type": "int, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The axis along which the difference is taken, default is the\nlast axis."
+              }
+            ]
+          },
+          {
+            "name": "prepend, append",
+            "type": "array_like, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Values to prepend or append to `a` along axis prior to\nperforming the difference.  Scalar values are expanded to\narrays with length 1 in the direction of axis and the shape\nof the input array in along all other axes.  Otherwise the\ndimension and shape must match `a` except along axis."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "diff",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The n-th differences. The shape of the output is the same as `a`\nexcept along `axis` where the dimension is smaller by `n`. The\ntype of the output is the same as the type of the difference\nbetween any two elements of `a`. This is the same as the type of\n`a` in most cases. A notable exception is `datetime64`, which\nresults in a `timedelta64` output array."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Type is preserved for boolean arrays, so the result will contain\n`False` when consecutive elements are the same and `True` when they\ndiffer."
+          },
+          {
+            "type": "paragraph",
+            "text": "For unsigned integer arrays, the results will also be unsigned. This\nshould not be surprising, as the result is consistent with\ncalculating the difference directly:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> u8_arr = np.array([1, 0], dtype=np.uint8)\n>>> np.diff(u8_arr)\narray([255], dtype=uint8)\n>>> u8_arr[1,...] - u8_arr[0,...]\nnp.uint8(255)"
+          },
+          {
+            "type": "paragraph",
+            "text": "If this is not desirable, then the array should be cast to a larger\ninteger type first:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> i16_arr = u8_arr.astype(np.int16)\n>>> np.diff(i16_arr)\narray([-1], dtype=int16)"
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> x = np.array([1, 2, 4, 7, 0])\n>>> np.diff(x)\narray([ 1,  2,  3, -7])\n>>> np.diff(x, n=2)\narray([  1,   1, -10])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.array([[1, 3, 6, 10], [0, 5, 6, 8]])\n>>> np.diff(x)\narray([[2, 3, 4],\n       [5, 1, 2]])\n>>> np.diff(x, axis=0)\narray([[-1,  2,  0, -2]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.arange('1066-10-13', '1066-10-16', dtype=np.datetime64)\n>>> np.diff(x)\narray([1, 1], dtype='timedelta64[D]')"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "gradient, ediff1d, cumsum"
+          }
+        ]
+      }
+    ]
+  }
+}

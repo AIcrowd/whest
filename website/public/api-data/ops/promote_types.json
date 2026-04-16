@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "slug": "promote_types",
+  "detail_href": "/docs/api/ops/promote_types/",
+  "detail_json_href": "/api-data/ops/promote_types.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1254-L1256",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.promote_types.html"
+  },
+  "op": {
+    "name": "promote_types",
+    "module": "numpy",
+    "whest_ref": "we.promote_types",
+    "numpy_ref": "np.promote_types",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Return smallest type to which both types may be safely cast.",
+    "summary": "Returns the data type with the smallest size and smallest scalar kind to which both ``type1`` and ``type2`` may be safely cast. The returned data type is always considered \"canonical\", this mainly means that the promoted dtype will always be in native byte order.",
+    "signature": "we.promote_types(type1, type2)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Returns the data type with the smallest size and smallest scalar\nkind to which both ``type1`` and ``type2`` may be safely cast.\nThe returned data type is always considered \"canonical\", this mainly\nmeans that the promoted dtype will always be in native byte order."
+          },
+          {
+            "type": "paragraph",
+            "text": "    This function is symmetric, but rarely associative."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "type1",
+            "type": "dtype or dtype specifier",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "First data type."
+              }
+            ]
+          },
+          {
+            "name": "type2",
+            "type": "dtype or dtype specifier",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "Second data type."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "out",
+            "type": "dtype",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The promoted data type."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "    Please see `numpy.result_type` for additional information about promotion."
+          },
+          {
+            "type": "paragraph",
+            "text": "    Starting in NumPy 1.9, promote_types function now returns a valid string\n    length when given an integer or float dtype as one argument and a string\n    dtype as another argument. Previously it always returned the input string\n    dtype, even if it wasn't long enough to store the max integer/float value\n    converted to a string."
+          },
+          {
+            "type": "directive",
+            "name": "versionchanged:: 1.23.0",
+            "body": "",
+            "raw": "    .. versionchanged:: 1.23.0"
+          },
+          {
+            "type": "paragraph",
+            "text": "    NumPy now supports promotion for more structured dtypes.  It will now\n    remove unnecessary padding from a structure dtype and promote included\n    fields individually."
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": "    >>> import numpy as np\n    >>> np.promote_types('f4', 'f8')\n    dtype('float64')"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": "    >>> np.promote_types('i8', 'f4')\n    dtype('float64')"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": "    >>> np.promote_types('>i8', '<c8')\n    dtype('complex128')"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": "    >>> np.promote_types('i4', 'S8')\n    dtype('S11')"
+          },
+          {
+            "type": "paragraph",
+            "text": "    An example of a non-associative case:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": "    >>> p = np.promote_types\n    >>> p('S', p('i1', 'u1'))\n    dtype('S6')\n    >>> p(p('S', 'i1'), 'u1')\n    dtype('S4')"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "result_type, dtype, can_cast"
+          }
+        ]
+      }
+    ]
+  }
+}

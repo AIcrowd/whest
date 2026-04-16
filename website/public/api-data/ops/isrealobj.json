@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "slug": "isrealobj",
+  "detail_href": "/docs/api/ops/isrealobj/",
+  "detail_json_href": "/api-data/ops/isrealobj.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29-L42",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.isrealobj.html"
+  },
+  "op": {
+    "name": "isrealobj",
+    "module": "numpy",
+    "whest_ref": "we.isrealobj",
+    "numpy_ref": "np.isrealobj",
+    "category": "counted_unary",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Return True if x is a not complex type or array.",
+    "summary": "Return True if x is a not complex type or an array of complex numbers.",
+    "signature": "we.isrealobj(x)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return True if x is a not complex type or an array of complex numbers."
+          },
+          {
+            "type": "paragraph",
+            "text": "The type of the input is checked, not the value. So even if the input\nhas an imaginary part equal to zero, `isrealobj` evaluates to False\nif the data type is complex."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "x",
+            "type": "any",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The input can be of any type and shape."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "y",
+            "type": "bool",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The return value, False if `x` is of a complex type."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "notes",
+        "title": "Notes",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The function is only meant for arrays with numerical values but it\naccepts all other objects. Since it assumes array input, the return\nvalue of other objects may be True."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.isrealobj('A string')\nTrue\n>>> np.isrealobj(False)\nTrue\n>>> np.isrealobj(None)\nTrue"
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.isrealobj(1)\nTrue\n>>> np.isrealobj(1+0j)\nFalse\n>>> np.isrealobj([3, 1+0j, True])\nFalse"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "iscomplexobj, isreal"
+          }
+        ]
+      }
+    ]
+  }
+}

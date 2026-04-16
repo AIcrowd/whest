@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "slug": "broadcast_arrays",
+  "detail_href": "/docs/api/ops/broadcast_arrays/",
+  "detail_json_href": "/api-data/ops/broadcast_arrays.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L718-L725",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.broadcast_arrays.html"
+  },
+  "op": {
+    "name": "broadcast_arrays",
+    "module": "numpy",
+    "whest_ref": "we.broadcast_arrays",
+    "numpy_ref": "np.broadcast_arrays",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "Broadcast arrays against each other. Cost: numel(output).",
+    "summary": "Broadcast any number of arrays against each other.",
+    "signature": "we.broadcast_arrays(*args, subok=False)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Broadcast any number of arrays against each other."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "*args",
+            "type": "array_likes",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The arrays to broadcast."
+              }
+            ]
+          },
+          {
+            "name": "subok",
+            "type": "bool, optional",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "If True, then sub-classes will be passed-through, otherwise\nthe returned arrays will be forced to be a base-class array (default)."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "broadcasted",
+            "type": "tuple of arrays",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "These arrays are views on the original arrays.  They are typically\nnot contiguous.  Furthermore, more than one element of a\nbroadcasted array may refer to a single memory location. If you need\nto write to the arrays, make copies first. While you can set the\n``writable`` flag True, writing to a single output value may end up\nchanging more than one location in the output array."
+              },
+              {
+                "type": "directive",
+                "name": "deprecated:: 1.17",
+                "body": "    The output is currently marked so that if written to, a deprecation\n    warning will be emitted. A future version will set the\n    ``writable`` flag False so writing to it will raise an error.",
+                "raw": ".. deprecated:: 1.17\n    The output is currently marked so that if written to, a deprecation\n    warning will be emitted. A future version will set the\n    ``writable`` flag False so writing to it will raise an error."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> x = np.array([[1,2,3]])\n>>> y = np.array([[4],[5]])\n>>> np.broadcast_arrays(x, y)\n(array([[1, 2, 3],\n        [1, 2, 3]]),\n array([[4, 4, 4],\n        [5, 5, 5]]))"
+          },
+          {
+            "type": "paragraph",
+            "text": "Here is a useful idiom for getting contiguous copies instead of\nnon-contiguous views."
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> [np.array(a) for a in np.broadcast_arrays(x, y)]\n[array([[1, 2, 3],\n        [1, 2, 3]]),\n array([[4, 4, 4],\n        [5, 5, 5]])]"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "broadcast"
+          },
+          {
+            "type": "paragraph",
+            "text": "broadcast_to"
+          },
+          {
+            "type": "paragraph",
+            "text": "broadcast_shapes"
+          }
+        ]
+      }
+    ]
+  }
+}

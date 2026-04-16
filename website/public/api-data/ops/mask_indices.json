@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "slug": "mask_indices",
+  "detail_href": "/docs/api/ops/mask_indices/",
+  "detail_json_href": "/api-data/ops/mask_indices.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L1142-L1149",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L825-L891"
+  },
+  "op": {
+    "name": "mask_indices",
+    "module": "numpy",
+    "whest_ref": "we.mask_indices",
+    "numpy_ref": "np.mask_indices",
+    "category": "counted_custom",
+    "status": "supported",
+    "weight": 4.0,
+    "cost_formula": "per-operation",
+    "cost_formula_latex": "varies",
+    "notes": "Return indices of mask for n x n array. Cost: numel(output).",
+    "summary": "Return the indices to access (n, n) arrays, given a masking function.",
+    "signature": "we.mask_indices(n, mask_func, k=0)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Return the indices to access (n, n) arrays, given a masking function."
+          },
+          {
+            "type": "paragraph",
+            "text": "Assume `mask_func` is a function that, for a square array a of size\n``(n, n)`` with a possible offset argument `k`, when called as\n``mask_func(a, k)`` returns a new array with zeros in certain locations\n(functions like `triu` or `tril` do precisely this). Then this function\nreturns the indices where the non-zero values would be located."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "n",
+            "type": "int",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The returned indices will be valid to access arrays of shape (n, n)."
+              }
+            ]
+          },
+          {
+            "name": "mask_func",
+            "type": "callable",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "A function whose call signature is similar to that of `triu`, `tril`.\nThat is, ``mask_func(x, k)`` returns a boolean array, shaped like `x`.\n`k` is an optional argument to the function."
+              }
+            ]
+          },
+          {
+            "name": "k",
+            "type": "scalar",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "An optional argument which is passed through to `mask_func`. Functions\nlike `triu`, `tril` take a second argument that is interpreted as an\noffset."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "indices",
+            "type": "tuple of arrays.",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "The `n` arrays of indices corresponding to the locations where\n``mask_func(np.ones((n, n)), k)`` is True."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np"
+          },
+          {
+            "type": "paragraph",
+            "text": "These are the indices that would allow you to access the upper triangular\npart of any 3x3 array:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> iu = np.mask_indices(3, np.triu)"
+          },
+          {
+            "type": "paragraph",
+            "text": "For example, if `a` is a 3x3 array:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a = np.arange(9).reshape(3, 3)\n>>> a\narray([[0, 1, 2],\n       [3, 4, 5],\n       [6, 7, 8]])\n>>> a[iu]\narray([0, 1, 2, 4, 5, 8])"
+          },
+          {
+            "type": "paragraph",
+            "text": "An offset can be passed also to the masking function.  This gets us the\nindices starting on the first diagonal right of the main one:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> iu1 = np.mask_indices(3, np.triu, 1)"
+          },
+          {
+            "type": "paragraph",
+            "text": "with which we now extract only three elements:"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> a[iu1]\narray([1, 2, 5])"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "triu, tril, triu_indices, tril_indices"
+          }
+        ]
+      }
+    ]
+  }
+}

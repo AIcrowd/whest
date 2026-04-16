@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "slug": "vecmat",
+  "detail_href": "/docs/api/ops/vecmat/",
+  "detail_json_href": "/api-data/ops/vecmat.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L599-L622",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.vecmat.html"
+  },
+  "op": {
+    "name": "vecmat",
+    "module": "numpy",
+    "whest_ref": "we.vecmat",
+    "numpy_ref": "np.vecmat",
+    "category": "counted_binary",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "numel(output)",
+    "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "notes": "Vector-matrix product. Cost = output_size * contracted_axis.",
+    "summary": "Counted version of np.vecmat.",
+    "signature": "we.vecmat(a, b, **kwargs)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Counted version of np.vecmat."
+          },
+          {
+            "type": "paragraph",
+            "text": "Vector-matrix product. v is (..., n), A is (..., n, m), result is (..., m).\nCost = output_size * contracted_axis (v's last axis)."
+          }
+        ]
+      }
+    ]
+  }
+}

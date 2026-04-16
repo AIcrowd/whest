@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "slug": "atleast_2d",
+  "detail_href": "/docs/api/ops/atleast_2d/",
+  "detail_json_href": "/api-data/ops/atleast_2d.json",
+  "source": {
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_ndarray.py#L650-L652",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.atleast_2d.html"
+  },
+  "op": {
+    "name": "atleast_2d",
+    "module": "numpy",
+    "whest_ref": "we.atleast_2d",
+    "numpy_ref": "np.atleast_2d",
+    "category": "free",
+    "status": "supported",
+    "weight": 1.0,
+    "cost_formula": "0",
+    "cost_formula_latex": "$0$",
+    "notes": "View inputs as arrays with at least two dimensions.",
+    "summary": "View inputs as arrays with at least two dimensions.",
+    "signature": "we.atleast_2d(*arys)"
+  },
+  "docs": {
+    "sections": [
+      {
+        "kind": "summary",
+        "title": "Summary",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "View inputs as arrays with at least two dimensions."
+          }
+        ]
+      },
+      {
+        "kind": "parameters",
+        "title": "Parameters",
+        "items": [
+          {
+            "name": "arys1, arys2, ...",
+            "type": "array_like",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "One or more array-like sequences.  Non-array inputs are converted\nto arrays.  Arrays that already have two or more dimensions are\npreserved."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "returns",
+        "title": "Returns",
+        "items": [
+          {
+            "name": "res, res2, ...",
+            "type": "ndarray",
+            "desc_blocks": [
+              {
+                "type": "paragraph",
+                "text": "An array, or tuple of arrays, each with ``a.ndim >= 2``.\nCopies are avoided where possible, and views with two or more\ndimensions are returned."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "examples",
+        "title": "Examples",
+        "blocks": [
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> import numpy as np\n>>> np.atleast_2d(3.0)\narray([[3.]])"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> x = np.arange(3.0)\n>>> np.atleast_2d(x)\narray([[0., 1., 2.]])\n>>> np.atleast_2d(x).base is x\nTrue"
+          },
+          {
+            "type": "code",
+            "language": "text",
+            "code": ">>> np.atleast_2d(1, [1, 2], [[1, 2]])\n(array([[1]]), array([[1, 2]]), array([[1, 2]]))"
+          }
+        ]
+      },
+      {
+        "kind": "see-also",
+        "title": "See Also",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "atleast_1d, atleast_3d"
+          }
+        ]
+      }
+    ]
+  }
+}
