@@ -43,7 +43,7 @@ export default function TotalCostView({ costModel, componentData, dimensionN, nu
             {components.map((comp, idx) => (
               <TableRow key={`comp-row-${idx}`} className="border-0 bg-surface hover:bg-surface-raised">
                 <TableCell className="px-4 py-3 text-sm">
-                  <CaseBadge caseType={comp.caseType} size="sm" interactive={false} />
+                  <CaseBadge caseType={comp.caseType} size="sm" />
                 </TableCell>
                 <TableCell className="px-4 py-3 text-sm">
                   <InlineCodeList values={comp.labels ?? []} />

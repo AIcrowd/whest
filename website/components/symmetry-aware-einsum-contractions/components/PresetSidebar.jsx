@@ -18,7 +18,7 @@ export default function PresetSidebar({
   return (
     <aside
       aria-label="Preset examples"
-      className="sticky top-20 hidden max-h-[calc(100vh-5rem)] w-[20rem] shrink-0 self-start overflow-y-auto md:block xl:w-[20.5rem]"
+      className="sticky top-20 hidden max-h-[calc(100vh-5rem)] w-[18rem] shrink-0 self-start overflow-y-auto md:block"
     >
       <div className="px-2 pb-3 text-xs font-semibold uppercase tracking-[0.18em] text-primary/75">
         Presets
@@ -66,7 +66,7 @@ export default function PresetSidebar({
             />
             <span className="flex items-center gap-2 pl-3">
               {summary.caseType && (
-                <CaseBadge caseType={summary.caseType} size="xs" variant="compact" interactive={false} />
+                <CaseBadge caseType={summary.caseType} size="xs" variant="compact" />
               )}
               <Badge variant="outline" className="text-xs font-semibold uppercase tracking-[0.18em]">
                 {summary.expectedGroup}

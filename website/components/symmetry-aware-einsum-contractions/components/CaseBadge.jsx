@@ -20,8 +20,8 @@ const CASE_COLORS = {
 function getBadgeClasses(variant, size) {
   if (variant === 'compact') {
     return size === 'xs'
-      ? 'h-4 w-4 justify-center rounded text-xs font-bold'
-      : 'h-[18px] w-[18px] justify-center rounded text-xs font-bold';
+      ? 'h-5 w-5 justify-center rounded-full px-0.5 py-0 leading-none text-[11px] font-bold'
+      : 'h-6 w-6 justify-center rounded-full px-0.5 py-0 leading-none text-[11px] font-bold';
   }
 
   return size === 'xs'
@@ -67,27 +67,30 @@ export default function CaseBadge({
 
   return (
     <>
-      <Badge
-        ref={ref}
-        variant="outline"
-        className={cn(
-          'inline-flex shrink-0 items-center border font-mono',
-          getBadgeClasses(variant, size),
-          tooltip && 'cursor-help',
-          className,
-        )}
-        style={{
-          backgroundColor: colors.bg,
-          color: colors.text,
-          borderColor: colors.border,
-        }}
-        aria-label={presentation.label}
-        title={!tooltip ? presentation.label : undefined}
-        onMouseEnter={tooltip ? handleEnter : undefined}
-        onMouseLeave={tooltip ? () => setShowTooltip(false) : undefined}
+      <span
+        onPointerEnter={tooltip ? handleEnter : undefined}
+        onPointerLeave={tooltip ? () => setShowTooltip(false) : undefined}
       >
-        {label}
-      </Badge>
+        <Badge
+          ref={ref}
+          variant="outline"
+          className={cn(
+            'inline-flex shrink-0 items-center border font-mono',
+            getBadgeClasses(variant, size),
+            tooltip && 'cursor-help',
+            className,
+          )}
+          style={{
+            backgroundColor: colors.bg,
+            color: colors.text,
+            borderColor: colors.border,
+          }}
+          aria-label={presentation.label}
+          title={presentation.label}
+        >
+          {label}
+        </Badge>
+      </span>
 
       {showTooltip && tooltip && (
         <div

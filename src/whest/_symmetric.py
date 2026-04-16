@@ -115,36 +115,33 @@ def validate_symmetry(
 
 
 def symmetrize(
-    shape: tuple[int, ...] | list[int],
+    data: np.ndarray,
     group: PermutationGroup,
 ) -> SymmetricTensor:
-    """Construct a random tensor with the requested permutation-group symmetry.
+    """Project an array onto the invariant subspace of a permutation group.
 
-    This is a convenience helper for generating symmetric test data via the
-    Reynolds operator:
+    This applies Reynolds symmetrization:
 
     ``R_G(T) = (1 / |G|) * sum_{g in G} g · T``
 
     Parameters
     ----------
-    shape
-        Desired output shape.
-    group
+    data : array_like
+        Input array to project.
+    group : PermutationGroup
         Symmetry group to average over. If ``group.axes`` is ``None``, axes are
         interpreted as ``tuple(range(group.degree))``.
 
     Returns
     -------
     SymmetricTensor
-        A randomly generated tensor with the given symmetry, validated and wrapped
-        as a :class:`SymmetricTensor`.
+        The projected tensor, validated and wrapped as a :class:`SymmetricTensor`.
 
     Raises
     ------
-    ValueError
-        If ``shape`` cannot be interpreted as a sequence of dimensions.
     SymmetryError
-        If the projected result cannot be validated as symmetric for ``group``.
+        If ``data`` has incompatible dimensions for ``group`` axes or if the
+        projected result cannot be validated as symmetric for ``group``.
 
     Notes
     -----
@@ -152,20 +149,31 @@ def symmetrize(
     to :func:`as_symmetric` so the result participates in downstream symmetry
     tracking and validation in the usual way.
 
+    Estimated FLOP cost is approximately:
+
+    ``|G| * n_elem + n_elem`` for projection, plus validation from
+    ``as_symmetric``:
+
+    - ``|G|`` transposed add passes over ``n_elem`` elements
+    - one final scaling pass
+    - symmetry checks inside validation
+
+    where ``|G|`` is the group order and ``n_elem = data.size``.
+
+    The canonical pattern for generating random data with symmetry is:
+
+    ``we.random.symmetric(shape, symmetry_group, distribution=...)``.
+
     Examples
     --------
     >>> import whest as we
-    >>> S = we.symmetrize((4, 4), we.PermutationGroup.symmetric(2, axes=(0, 1)))
+    >>> data = we.random.randn(4, 4)
+    >>> S = we.symmetrize(data, we.PermutationGroup.symmetric(2, axes=(0, 1)))
     >>> S.is_symmetric((0, 1))
     True
     """
-    if not isinstance(shape, tuple):
-        try:
-            shape = tuple(shape)
-        except TypeError as exc:
-            raise ValueError("shape must be a sequence of integers") from exc
-    else:
-        shape = tuple(shape)
+    array = np.asarray(data)
+    shape = array.shape
 
     group_axes = group.axes if group.axes is not None else tuple(range(group.degree))
     if not all(0 <= axis < len(shape) for axis in group_axes):
@@ -176,14 +184,13 @@ def symmetrize(
         if len(axis_sizes) > 1:
             raise SymmetryError(axes=group_axes, max_deviation=float("inf"))
 
-    data = np.random.randn(*shape)
-    symmetrized = np.zeros_like(data)
+    symmetrized = np.zeros_like(array, dtype=np.result_type(array, np.float64))
 
     for g in group.elements():
         perm = list(range(len(shape)))
         for local_idx, tensor_axis in enumerate(group_axes):
             perm[tensor_axis] = group_axes[g.array_form[local_idx]]
-        symmetrized = symmetrized + np.transpose(data, perm)
+        symmetrized = symmetrized + np.transpose(array, perm)
 
     return as_symmetric(symmetrized / group.order(), symmetry=group)
 

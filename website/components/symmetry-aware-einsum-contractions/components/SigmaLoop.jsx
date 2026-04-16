@@ -3,6 +3,7 @@ import { buildUVertexLabels } from '../engine/uVertexLabel.js';
 import IncidenceMatrix from './IncidenceMatrix.jsx';
 
 const STAGE_LABELS = ['M', 'σ(M)', 'π(σ(M))'];
+const VISIBLE_VALID_PAIR_LIMIT = 5;
 
 export default function SigmaLoop({ results, graph, matrixData, example, variableColors }) {
   const allPairs = results.filter((result) => !result.skipped);
@@ -42,9 +43,29 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
   const [playing, setPlaying] = useState(false);
   const playRef = useRef(false);
   const [showRejected, setShowRejected] = useState(false);
+  const [showMoreValid, setShowMoreValid] = useState(false);
   const [modalIdx, setModalIdx] = useState(null); // index into allPairs for rejected modal
 
   const selected = selectedIdx !== null ? allPairs[selectedIdx] : null;
+  const inlineValidPairs = validPairs.slice(0, VISIBLE_VALID_PAIR_LIMIT);
+  const remainingValidPairs = validPairs.slice(VISIBLE_VALID_PAIR_LIMIT);
+
+  const closeAllModals = () => {
+    setShowRejected(false);
+    setShowMoreValid(false);
+    setModalIdx(null);
+  };
+
+  useEffect(() => {
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        closeAllModals();
+      }
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [showRejected, showMoreValid, modalIdx]);
 
   // Compute the three matrix stages
   const stages = computeStages(selected, originalMatrix, labels, uVertices);
@@ -118,7 +139,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
         <div className="pair-selector">
           <span className="pair-selector-label">Valid (σ, π) pairs:</span>
           <div className="pair-chips">
-            {validPairs.map((r) => {
+            {inlineValidPairs.map((r) => {
               const origIdx = allPairs.indexOf(r);
               return (
                 <button key={origIdx}
@@ -132,6 +153,15 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
                 </button>
               );
             })}
+
+            {remainingValidPairs.length > 0 && (
+              <button
+                className="valid-toggle"
+                onClick={() => setShowMoreValid(true)}
+              >
+                ▸ {remainingValidPairs.length} more (σ, π) pairs
+              </button>
+            )}
           </div>
         </div>
       )}
@@ -251,8 +281,24 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
           variableColors={variableColors}
           onSelectDetail={(origIdx) => setModalIdx(origIdx)}
           onBack={() => setModalIdx(null)}
-          onClose={() => { setShowRejected(false); setModalIdx(null); }}
+          onClose={closeAllModals}
           fmtSigma={fmtSigma}
+        />
+      )}
+
+      {showMoreValid && (
+        <ValidPairsModal
+          pairs={remainingValidPairs}
+          allPairs={allPairs}
+          uLabels={uLabels}
+          onSelectPair={(origIdx) => {
+            handleSelectPair(origIdx);
+            setShowMoreValid(false);
+          }}
+          onClose={closeAllModals}
+          fmtSigma={fmtSigma}
+          fmtPi={fmtPi}
+          kindLabel={kindLabel}
         />
       )}
     </div>
@@ -336,6 +382,48 @@ function RejectedModal({
             fmtSigma={fmtSigma}
           />
         )}
+      </div>
+    </div>
+  );
+}
+
+function ValidPairsModal({
+  pairs,
+  allPairs,
+  uLabels,
+  onSelectPair,
+  onClose,
+  fmtSigma,
+  fmtPi,
+  kindLabel,
+}) {
+  return (
+    <div className="rejected-modal-overlay" onClick={onClose}>
+      <div className="rejected-modal" onClick={(event) => event.stopPropagation()}>
+        <div className="rejected-modal-header">
+          <h4>{`${pairs.length} additional valid σ${pairs.length === 1 ? '' : "'s"}`}</h4>
+          <button className="rejected-modal-close" onClick={onClose}>✕</button>
+        </div>
+
+        <div className="rejected-list">
+          {pairs.map((r) => {
+            const origIdx = allPairs.indexOf(r);
+            return (
+              <button key={origIdx} className="rejected-list-item" onClick={() => onSelectPair(origIdx)}>
+                <span className="rejected-list-sigma">
+                  σ = {fmtSigma(r.sigmaRowPerm, uLabels)}
+                </span>
+                <span className="rejected-list-reason">
+                  π = {fmtPi(r.pi)}
+                </span>
+                <span className={`rejected-list-reason pair-kind pair-kind-${r.piKind || 'identity'}`}>
+                  {kindLabel(r.piKind)}
+                </span>
+                <span className="rejected-list-arrow">→</span>
+              </button>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

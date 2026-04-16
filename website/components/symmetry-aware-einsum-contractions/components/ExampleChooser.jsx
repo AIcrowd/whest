@@ -283,7 +283,7 @@ export default function ExampleChooser({
       eyebrow="Act 1"
       title={act?.heading}
       description={act?.why}
-      className="border-gray-200 bg-white"
+      className="h-full border-gray-200 bg-white"
       contentClassName="pt-5"
     >
       {checkpointItems.length > 0 && (
@@ -491,7 +491,8 @@ export default function ExampleChooser({
               <span className="whitespace-nowrap pt-1.5 font-mono text-sm text-gray-400">)</span>
               <Button
                 type="button"
-                className="shrink-0 whitespace-nowrap bg-coral px-5 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-coral-hover hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-40"
+                variant="default"
+                className="shrink-0 whitespace-nowrap px-5 py-2 text-sm font-semibold shadow-md transition-all hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-40"
                 onClick={handleAnalyze}
                 disabled={!validation.valid}
               >
@@ -560,7 +561,7 @@ export default function ExampleChooser({
               <span className="min-w-0 flex-1">
                 <span className="flex items-center gap-2">
                   <span className="truncate text-sm font-medium text-gray-900">{summary.name}</span>
-                  {summary.caseType && <CaseBadge caseType={summary.caseType} size="xs" variant="compact" interactive={false} />}
+                  {summary.caseType && <CaseBadge caseType={summary.caseType} size="xs" variant="compact" />}
                 </span>
                 <code className="mt-1 block truncate text-sm text-gray-500">{summary.formula}</code>
                 <span className="mt-1 block text-sm text-gray-400">{summary.expectedGroup}</span>
@@ -570,13 +571,15 @@ export default function ExampleChooser({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,7fr)_minmax(360px,3fr)]">
-        <div className="min-w-0">{builderContent}</div>
-        <div className="min-w-0">
+      <div className="grid grid-cols-1 gap-6 items-stretch lg:grid-cols-[minmax(0,60%)_minmax(0,40%)]">
+        <div className="min-w-0 h-full">{builderContent}</div>
+        <div className="min-w-0 h-full">
           <PythonCodeBlock
             code={pythonCode}
             title="Reference Code"
             description="This is a generated Python sketch of the contraction you are about to analyze."
+            className="h-full"
+            contentClassName="h-full"
           />
         </div>
       </div>

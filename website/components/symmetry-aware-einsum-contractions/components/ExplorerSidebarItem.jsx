@@ -14,13 +14,13 @@ function ExplorerSidebarItem({
   ...props
 }) {
   return (
-    <Component
-      data-slot="card"
-      data-size="sm"
-      type={Component === 'button' ? (type ?? 'button') : undefined}
-      className={cn(
-        'group/card flex w-full flex-col gap-1.5 overflow-hidden rounded-xl py-4 text-left text-sm text-card-foreground transition-colors',
-        active ? 'ring-2 ring-primary/20' : 'ring-1 ring-foreground/10',
+      <Component
+        data-slot="card"
+        data-size="sm"
+        type={Component === 'button' ? (type ?? 'button') : undefined}
+        className={cn(
+        'group/card flex w-full flex-col gap-1.5 overflow-visible rounded-xl border-2 border-border/40 py-4 text-left text-sm text-card-foreground transition-colors',
+        active ? 'ring-2 ring-primary/20 border-primary/55' : 'border-border/40',
         className,
       )}
       {...props}

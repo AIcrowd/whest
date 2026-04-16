@@ -128,7 +128,7 @@ export function generatePython(variables, subscripts, output, operandNames, dime
       lines.push(`${v.name} = we.random.randn(${new Array(v.rank).fill('n').join(', ')})`);
     } else {
       const group = buildGroupExpr(v);
-      lines.push(`${v.name} = we.symmetrize(`);
+      lines.push(`${v.name} = we.random.symmetric(`);
       lines.push(`    ${shape},`);
       lines.push(`    ${group}`);
       lines.push(')');

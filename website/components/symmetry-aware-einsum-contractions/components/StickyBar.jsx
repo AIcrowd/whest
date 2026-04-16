@@ -29,13 +29,21 @@ export default function StickyBar({ example, group, dimensionN, onDimensionChang
                 key={act.id}
                 href={`#${act.id}`}
                 className={cn(
-                  buttonVariants({ size: 'sm', variant: isActive ? 'secondary' : 'ghost' }),
-                  isActive ? 'bg-primary/10 text-primary hover:bg-primary/15' : 'text-muted-foreground',
+                  buttonVariants({ size: 'sm', variant: 'ghost' }),
+                  'inline-flex min-h-9 items-center gap-2 rounded-full border px-3 transition-colors',
+                  isActive
+                    ? 'border-primary/35 bg-primary/10 text-primary hover:border-primary/45 hover:bg-primary/15'
+                    : 'border-transparent text-muted-foreground hover:border-primary/25 hover:bg-primary/8 hover:text-primary',
                 )}
               >
                 <Badge
                   variant={isActive ? 'default' : 'outline'}
-                  className={isActive ? '' : 'text-muted-foreground'}
+                  className={cn(
+                    'flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 py-0 text-[11px] font-semibold',
+                    isActive
+                      ? 'bg-primary/20 text-primary'
+                      : 'border-primary/20 bg-background text-muted-foreground',
+                  )}
                 >
                   {idx + 1}
                 </Badge>
@@ -54,7 +62,7 @@ export default function StickyBar({ example, group, dimensionN, onDimensionChang
               max={25}
               value={dimensionN}
               onChange={(event) => onDimensionChange(Number(event.target.value))}
-              className="h-2 w-40 cursor-pointer accent-coral"
+              className="h-2 w-40 cursor-pointer accent-primary"
             />
             <span className="w-6 text-center text-sm font-mono font-bold text-foreground">
               {dimensionN}

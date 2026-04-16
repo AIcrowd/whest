@@ -731,6 +731,16 @@
 }
 .rejected-toggle:hover { background: #F0524D; color: #FFFFFF; }
 
+.valid-toggle {
+  background: #EAF7EE; border: 1px solid #23B761;
+  border-radius: 20px;
+  padding: 6px 16px; font-size: 12px; font-weight: 600;
+  color: #23B761; cursor: pointer;
+  font-family: inherit; transition: all 0.2s;
+}
+
+.valid-toggle:hover { background: #23B761; color: #FFFFFF; }
+
 .rejected-chips { margin-top: 8px; }
 
 .rejected-modal-overlay {
@@ -1223,8 +1233,50 @@
 .group-side-note {
   font-size: 12px;
   color: #AAACAD;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   font-family: inherit;
+  line-height: 1.5;
+}
+
+.group-split-summary {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  margin-bottom: 14px;
+}
+
+.group-split-card {
+  border: 1px solid #D9DCDC;
+  border-radius: 10px;
+  background: #FFFFFF;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.group-split-pill {
+  padding: 4px 10px !important;
+  font-size: 11px !important;
+}
+
+.group-split-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  color: #5D5F60;
+}
+
+.group-split-copy strong {
+  font-size: 13px;
+  white-space: nowrap;
+  color: #292C2D;
+}
+
+.group-split-copy span {
+  font-size: 12px;
+  color: #5D5F60;
 }
 
 .group-summary-row {
@@ -1861,4 +1913,3 @@
   .cost-equation { font-size: 13px; }
   .speedup-number { font-size: 2.2rem; }
 }
-

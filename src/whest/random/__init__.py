@@ -20,6 +20,7 @@ import numpy as _np
 import numpy.random as _npr
 
 from whest._flops import _ceil_log2, sort_cost
+from whest._perm_group import PermutationGroup
 from whest._validation import require_budget
 
 # ---------------------------------------------------------------------------
@@ -262,6 +263,143 @@ def choice(a, size=None, replace=True, p=None):
         ):
             result = _npr.choice(a, size=size, replace=replace, p=p)
     return result
+
+
+def symmetric(
+    shape: int | tuple[int, ...] | list[int],
+    group: PermutationGroup,
+    distribution: str | callable = "randn",
+    **distribution_kwargs,
+):
+    """Sample random data and project it to a symmetry group.
+
+    Parameters
+    ----------
+    shape : int or tuple of int
+        Shape of the sampled array.
+    group : PermutationGroup
+        Symmetry group used for Reynolds averaging.
+    distribution : str or callable, default ``\"randn\"``
+        Name of a ``numpy.random`` distribution function (for example
+        ``\"randn\"`` or ``\"normal\"``), or a callable that accepts either:
+
+        - ``(*shape, **kwargs)``
+        - ``size=shape``
+
+        and returns an array.
+    **distribution_kwargs
+        Extra keyword arguments forwarded to the distribution function.
+
+    Returns
+    -------
+    SymmetricTensor
+        The symmetrized sample wrapped with :func:`we.as_symmetric`.
+
+    Raises
+    ------
+    ValueError
+        If ``shape`` is not an integer or a tuple/list of integers.
+    TypeError
+        If ``distribution`` is neither a NumPy random distribution name nor a
+        callable.
+    AttributeError
+        If ``distribution`` is a string that is not present in NumPy random.
+    SymmetryError
+        If projected output does not satisfy the requested symmetry constraints.
+
+    Notes
+    -----
+    This is equivalent to ``we.symmetrize( sampled_data, group)`` where
+    ``sampled_data`` is drawn from ``distribution``.
+
+    The implementation currently:
+
+    1. Samples raw values from the selected distribution.
+    2. Applies :func:`we.symmetrize` to project into the symmetry-invariant
+       subspace.
+
+    Estimated FLOP cost is approximately:
+
+    ``C_dist(n_elem) + |G| * n_elem + n_elem`` (+ validation),
+
+    where ``n_elem`` is the sampled array size, ``|G|`` is the group order, and
+    ``C_dist(n_elem)`` is the cost of the chosen sampling distribution.
+    The default ``distribution='randn'`` corresponds to ``C_dist(n_elem)≈n_elem``.
+
+    For existing data, use :func:`we.symmetrize` directly.
+
+    Examples
+    --------
+    >>> import whest as we
+    >>> S = we.random.symmetric((4, 4), we.PermutationGroup.symmetric(2, axes=(0, 1)))
+    >>> S.is_symmetric((0, 1))
+    True
+
+    >>> S = we.random.symmetric(
+    ...     (3, 3, 3),
+    ...     we.PermutationGroup.cyclic(3, axes=(0, 1, 2)),
+    ...     distribution="normal",
+    ...     loc=0.0,
+    ...     scale=1.0,
+    ... )
+    >>> S.is_symmetric((0, 1, 2))
+    True
+
+    >>> import numpy as np
+    >>> import whest as we
+    >>> def shifted_uniform(shape, **kwargs):
+    ...     return np.random.uniform(*shape, **kwargs)
+    >>> S = we.random.symmetric((2, 2), we.PermutationGroup.symmetric(2, axes=(0, 1)), distribution=shifted_uniform)
+    >>> S.is_symmetric((0, 1))
+    True
+    """
+    if isinstance(shape, int):
+        shape_tuple = (shape,)
+    elif isinstance(shape, tuple):
+        shape_tuple = shape
+    elif isinstance(shape, list):
+        shape_tuple = tuple(shape)
+    else:
+        try:
+            shape_tuple = tuple(shape)
+        except TypeError as exc:
+            raise ValueError("shape must be an int or a tuple-like of ints") from exc
+
+    shape_tuple = tuple(int(s) for s in shape_tuple)
+    sample_size = _builtins.max(int(_np.prod(shape_tuple)), 1)
+
+    if isinstance(distribution, str):
+        if not hasattr(_npr, distribution):
+            raise AttributeError(
+                f"whest.random does not provide distribution '{distribution}'"
+            )
+        sampler = getattr(_npr, distribution)
+        if distribution in {"rand", "randn"}:
+            sample = sampler(*shape_tuple, **distribution_kwargs)
+        else:
+            sample = sampler(size=shape_tuple, **distribution_kwargs)
+    elif callable(distribution):
+        try:
+            sample = distribution(*shape_tuple, **distribution_kwargs)
+        except TypeError:
+            sample = distribution(size=shape_tuple, **distribution_kwargs)
+    else:
+        raise TypeError(
+            "distribution must be a numpy random function name or a callable"
+        )
+
+    budget = require_budget()
+    sym_cost = _builtins.max(sample_size * _builtins.max(group.order(), 1), 1)
+    sample_cost = sample_size
+    with budget.deduct(
+        "random.symmetric",
+        flop_cost=_builtins.max(sample_cost + sym_cost, 1),
+        subscripts=None,
+        shapes=(shape_tuple,),
+    ):
+        from whest import symmetrize
+
+        return symmetrize(sample, group)
 
 
 def bytes(length):

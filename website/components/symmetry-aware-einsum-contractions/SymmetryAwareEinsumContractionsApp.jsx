@@ -18,7 +18,7 @@ import SigmaLoop from './components/SigmaLoop.jsx';
 import GroupView from './components/GroupView.jsx';
 import RoleBadge from './components/RoleBadge.jsx';
 import PythonCodeBlock from './components/PythonCodeBlock.jsx';
-import ComponentCostView from './components/ComponentCostView.jsx';
+import ComponentCostView, { COMPONENT_STORY_TEXT } from './components/ComponentCostView.jsx';
 import TotalCostView from './components/TotalCostView.jsx';
 import { mergeObservedActEntries, pickTopVisibleAct } from './lib/activeAct.js';
 import { getPresetControlSelection } from './lib/presetSelection.js';
@@ -177,11 +177,12 @@ export default function SymmetryAwareEinsumContractionsApp() {
         activeActId={activeActId}
       />
 
-      <div className="mx-auto flex max-w-[1460px] flex-col gap-8 px-6 pb-20 pt-8 md:px-8 lg:px-10">
-        <ExplorerSectionCard
+      <div className="w-full pb-20 pt-8">
+        <div className="flex flex-col pb-6">
+          <ExplorerSectionCard
           eyebrow="Interactive walkthrough"
           title="Symmetry Aware Einsum Contractions"
-          description={<><em>Symmetry detection for einsum contractions</em>, explained as a four-act explorer.</>}
+          description={<><em>Symmetry detection for einsum contractions</em>, explained as a five-act explorer.</>}
           className="border-border/70 shadow-sm"
           contentClassName="pt-6"
         >
@@ -197,7 +198,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                 </Badge>
               </div>
               <p className="max-w-2xl text-sm leading-6 text-muted-foreground">
-                Start in Act 1 to choose a preset or build a custom contraction, then follow the graph, proof, and savings views in order.
+                Start in Act 1 to choose a preset or build a custom contraction, then follow the structure, proof, and savings views in order.
               </p>
             </div>
           ) : (
@@ -205,9 +206,11 @@ export default function SymmetryAwareEinsumContractionsApp() {
               Choose a preset or define your own contraction to walk through structure detection, group construction, and symmetry-aware pricing.
             </p>
           )}
-        </ExplorerSectionCard>
+          </ExplorerSectionCard>
 
-        <div className="flex flex-col gap-8 md:flex-row md:items-start">
+        </div>
+
+        <div className="mt-8 flex items-start gap-8">
           <PresetSidebar
             examples={EXAMPLES}
             selectedPresetIdx={selectedPresetIdx}
@@ -215,7 +218,8 @@ export default function SymmetryAwareEinsumContractionsApp() {
             onCustom={handleCustomMode}
           />
           <main className="min-w-0 flex-1">
-            <section id="setup" className="mb-12 scroll-mt-24">
+            <div className="mx-auto flex max-w-[1460px] flex-col px-6 md:px-8 lg:px-10">
+            <section id={EXPLORER_ACTS[0].id} className="mb-12 scroll-mt-24">
               <ExampleChooser
                 examples={EXAMPLES}
                 onSelect={handleSelect}
@@ -232,86 +236,95 @@ export default function SymmetryAwareEinsumContractionsApp() {
             {/* Only render pipeline sections when we have results */}
             {analysis && example && (
               <>
-                <section id="structure" className="mb-12 scroll-mt-24 border-t border-gray-200 pb-6 pt-10">
-                  <ActHeader
-                    number={2}
-                    heading={EXPLORER_ACTS[1].heading}
-                    question={EXPLORER_ACTS[1].question}
-                  />
-                  <NarrativeCallout label="Why this matters">{EXPLORER_ACTS[1].why}</NarrativeCallout>
-                  <p className="mt-4 text-sm leading-7 text-foreground">
-                    Left vertices (U) are operand axis-classes. Right vertices are index labels,
-                    partitioned into <RoleBadge role="v">V free</RoleBadge> and
-                    <RoleBadge role="w">W summed</RoleBadge>.
-                    {hasPerOpSym && (
-                      <> Per-operand symmetry <em>collapses</em> each operand&apos;s axes into a single U-vertex.</>
-                    )}
-                  </p>
-                  <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
-                    <div>
-                      <h3 className="mb-2 font-heading text-base font-semibold text-gray-900">Bipartite Graph</h3>
-                      <BipartiteGraph graph={graph} example={normalizedExample} variableColors={variableColors} />
+                <section id={EXPLORER_ACTS[1].id} className="mb-12 scroll-mt-24">
+                  <ExplorerSectionCard
+                    eyebrow="Act 2"
+                    title={EXPLORER_ACTS[1].heading}
+                    description={EXPLORER_ACTS[1].question}
+                    className="border-gray-200 bg-white"
+                    contentClassName="pt-5"
+                  >
+                    <NarrativeCallout label="Why this matters">{EXPLORER_ACTS[1].why}</NarrativeCallout>
+                    <p className="mt-4 text-sm leading-7 text-foreground">
+                      Left vertices (U) are operand axis-classes. Right vertices are index labels,
+                      partitioned into <RoleBadge role="v">V free</RoleBadge> and
+                      <RoleBadge role="w">W summed</RoleBadge>.
+                      {hasPerOpSym && (
+                        <> Per-operand symmetry <em>collapses</em> each operand&apos;s axes into a single U-vertex.</>
+                      )}
+                    </p>
+                    <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+                      <div>
+                        <h3 className="mb-2 font-heading text-base font-semibold text-gray-900">Bipartite Graph</h3>
+                        <BipartiteGraph graph={graph} example={normalizedExample} variableColors={variableColors} />
+                      </div>
+                      <div>
+                        <h3 className="mb-2 font-heading text-base font-semibold text-gray-900">Incidence Matrix M</h3>
+                        <MatrixView matrixData={matrixData} graph={graph} example={normalizedExample} variableColors={variableColors} />
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="mb-2 font-heading text-base font-semibold text-gray-900">Incidence Matrix M</h3>
-                      <MatrixView matrixData={matrixData} graph={graph} example={normalizedExample} variableColors={variableColors} />
+                    <p className="mt-4 text-sm text-gray-600">{EXPLORER_ACTS[1].bridge}</p>
+                    <div className="mt-4">
+                      <NarrativeCallout label="Takeaway" tone="accent">{EXPLORER_ACTS[1].takeaway}</NarrativeCallout>
                     </div>
-                  </div>
-                  <p className="mt-4 text-sm text-gray-600">{EXPLORER_ACTS[1].bridge}</p>
-                  <div className="mt-4">
-                    <NarrativeCallout label="Takeaway" tone="accent">{EXPLORER_ACTS[1].takeaway}</NarrativeCallout>
-                  </div>
+                  </ExplorerSectionCard>
                 </section>
 
-                <section id="proof" className="mb-12 scroll-mt-24 border-t border-gray-200 pb-6 pt-10">
-                  <ActHeader
-                    number={3}
-                    heading={EXPLORER_ACTS[2].heading}
-                    question={EXPLORER_ACTS[2].question}
-                  />
-                  <NarrativeCallout label="Why this matters">{EXPLORER_ACTS[2].why}</NarrativeCallout>
-                  <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
-                    <div>
-                      <h3 className="mb-2 font-heading text-base font-semibold text-gray-900">σ-Loop & π Detection</h3>
-                      <SigmaLoop
-                        results={sigmaResults}
-                        graph={graph}
-                        matrixData={matrixData}
-                        example={normalizedExample}
-                        variableColors={variableColors}
-                      />
+                <section id={EXPLORER_ACTS[2].id} className="mb-12 scroll-mt-24">
+                  <ExplorerSectionCard
+                    eyebrow="Act 3"
+                    title={EXPLORER_ACTS[2].heading}
+                    description={EXPLORER_ACTS[2].question}
+                    className="border-gray-200 bg-white"
+                    contentClassName="pt-5"
+                  >
+                    <NarrativeCallout label="Why this matters">{EXPLORER_ACTS[2].why}</NarrativeCallout>
+                    <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+                      <div>
+                        <h3 className="mb-2 font-heading text-base font-semibold text-gray-900">σ-Loop & π Detection</h3>
+                        <SigmaLoop
+                          results={sigmaResults}
+                          graph={graph}
+                          matrixData={matrixData}
+                          example={normalizedExample}
+                          variableColors={variableColors}
+                        />
+                      </div>
+                      <div>
+                        <h3 className="mb-2 font-heading text-base font-semibold text-gray-900">Group Construction</h3>
+                        <GroupView group={group} />
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="mb-2 font-heading text-base font-semibold text-gray-900">Group Construction</h3>
-                      <GroupView group={group} />
+                    <p className="mt-4 text-sm text-gray-600">{EXPLORER_ACTS[2].bridge}</p>
+                    <div className="mt-4">
+                      <NarrativeCallout label="Takeaway" tone="accent">{EXPLORER_ACTS[2].takeaway}</NarrativeCallout>
                     </div>
-                  </div>
-                  <p className="mt-4 text-sm text-gray-600">{EXPLORER_ACTS[2].bridge}</p>
-                  <div className="mt-4">
-                    <NarrativeCallout label="Takeaway" tone="accent">{EXPLORER_ACTS[2].takeaway}</NarrativeCallout>
-                  </div>
+                  </ExplorerSectionCard>
                 </section>
 
-                <section id="savings" className="mb-12 scroll-mt-24 border-t border-gray-200 pb-6 pt-10">
-                  <ActHeader
-                    number={4}
-                    heading={EXPLORER_ACTS[3].heading}
-                    question={EXPLORER_ACTS[3].question}
-                  />
-                  <div className="mt-6 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                    <div className="max-w-3xl">
+                <section id={EXPLORER_ACTS[3].id} className="mb-12 scroll-mt-24">
+                  <ExplorerSectionCard
+                    eyebrow="Act 4"
+                    title={EXPLORER_ACTS[3].heading}
+                    description={EXPLORER_ACTS[3].question}
+                    className="border-gray-200 bg-white"
+                    contentClassName="pt-5"
+                    action={
+                      <Button
+                        type="button"
+                        size="lg"
+                        className="gap-2 font-semibold shadow-sm"
+                        aria-label="Open mental framework"
+                        onClick={() => setShowMentalModel(true)}
+                      >
+                        Open Mental Framework
+                      </Button>
+                    }
+                  >
+                    <div className="grid gap-4 md:grid-cols-2">
                       <NarrativeCallout label="Why this matters">{EXPLORER_ACTS[3].why}</NarrativeCallout>
+                      <NarrativeCallout label="Component Story">{COMPONENT_STORY_TEXT}</NarrativeCallout>
                     </div>
-                    <Button
-                      type="button"
-                      size="lg"
-                      className="w-full gap-2 font-semibold shadow-sm lg:w-auto lg:self-start"
-                      aria-label="Open mental framework"
-                      onClick={() => setShowMentalModel(true)}
-                    >
-                      Open Mental Framework
-                    </Button>
-                  </div>
 
                   {showMentalModel && (
                     <div
@@ -358,15 +371,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       vLabels={group.vLabels}
                       selectedOrbitIdx={resolvedSelectedOrbitIdx}
                       onSelectOrbit={setSelectedOrbitIdx}
-                    />
-                  </div>
-
-                  <div className="mt-6">
-                    <TotalCostView
-                      costModel={cost}
-                      componentData={componentData}
-                      dimensionN={dimensionN}
-                      numTerms={normalizedExample?.subscripts?.length ?? 1}
+                      showComponentStory={false}
                     />
                   </div>
 
@@ -374,6 +379,33 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   <div className="mt-4">
                     <NarrativeCallout label="Takeaway" tone="accent">{EXPLORER_ACTS[3].takeaway}</NarrativeCallout>
                   </div>
+                  </ExplorerSectionCard>
+                </section>
+
+                <section id={EXPLORER_ACTS[4].id} className="mb-12 scroll-mt-24">
+                  <ExplorerSectionCard
+                    eyebrow="Act 5"
+                    title={EXPLORER_ACTS[4].heading}
+                    description={EXPLORER_ACTS[4].question}
+                    className="border-gray-200 bg-white"
+                    contentClassName="pt-5"
+                  >
+                    <NarrativeCallout label="Why this matters">{EXPLORER_ACTS[4].why}</NarrativeCallout>
+
+                    <div className="mt-6">
+                      <TotalCostView
+                        costModel={cost}
+                        componentData={componentData}
+                        dimensionN={dimensionN}
+                        numTerms={normalizedExample?.subscripts?.length ?? 1}
+                      />
+                    </div>
+
+                    <p className="mt-4 text-sm text-gray-600">{EXPLORER_ACTS[4].bridge}</p>
+                    <div className="mt-4">
+                      <NarrativeCallout label="Takeaway" tone="accent">{EXPLORER_ACTS[4].takeaway}</NarrativeCallout>
+                    </div>
+                  </ExplorerSectionCard>
                 </section>
               </>
             )}
@@ -384,23 +416,9 @@ export default function SymmetryAwareEinsumContractionsApp() {
                 Define your variables and einsum expression above, then click <strong className="font-semibold text-coral">Analyze</strong> to explore the symmetry detection algorithm.
               </div>
             )}
+            </div>
           </main>
         </div>
-      </div>
-    </div>
-  );
-}
-
-function ActHeader({ number, heading, question }) {
-  return (
-    <div className="mb-8 flex items-start gap-5">
-      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-coral text-sm font-mono font-bold text-white">
-        {number}
-      </span>
-      <div className="flex-1 space-y-1.5">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-coral">Act {number}</p>
-        <h2 className="font-heading text-2xl font-semibold tracking-tight text-gray-900">{heading}</h2>
-        <p className="text-sm italic leading-6 text-gray-600">{question}</p>
       </div>
     </div>
   );

@@ -506,44 +506,51 @@ export function DecisionTree() {
   );
 
   const activeTooltip = hoveredNode ? tooltips[hoveredNode] : null;
+  const [isDeepDiveOpen, setIsDeepDiveOpen] = useState(true);
 
   return (
-    <details open className="rounded-lg border border-gray-200 bg-white">
+    <details
+      open={isDeepDiveOpen}
+      onToggle={(event) => setIsDeepDiveOpen(event.currentTarget.open)}
+      className="overflow-hidden rounded-lg border border-gray-200 bg-white"
+    >
       <summary className="cursor-pointer rounded-lg bg-gray-50 px-3.5 py-2.5 text-xs font-semibold text-gray-600">
         Deep dive: Classification decision tree
       </summary>
-      <div className="relative p-2" ref={wrapRef}>
-        <div className="h-[440px] w-full min-w-0">
-          <DecisionTreeGraph
-            nodes={nodes}
-            edges={edges}
-            onNodeMouseEnter={handleNodeMouseEnter}
-            onNodeMouseLeave={handleNodeMouseLeave}
-          />
-        </div>
-
-        {activeTooltip && (
-          <div
-            className={cn(
-              'pointer-events-none fixed z-[9999] w-72 bg-gray-900 px-3.5 py-3 text-white shadow-2xl',
-              tooltipPos.flipped ? 'translate-y-0' : 'translate-y-[-100%]',
-            )}
-            style={{
-              left: tooltipPos.x,
-              top: tooltipPos.y,
-              transform: tooltipPos.flipped ? 'translateX(-50%)' : 'translateX(-50%) translateY(-100%)',
-            }}
-          >
-            <div className="mb-1 text-xs font-bold">{activeTooltip.title}</div>
-            <div className="text-[11px] leading-relaxed text-gray-300">{activeTooltip.body}</div>
-            {activeTooltip.latex && (
-              <div className="mt-2 text-xs">
-                <Latex math={activeTooltip.latex} />
-              </div>
-            )}
+      {isDeepDiveOpen && (
+        <div className="relative p-2" ref={wrapRef}>
+          <div className="h-[440px] w-full min-w-0">
+            <DecisionTreeGraph
+              nodes={nodes}
+              edges={edges}
+              onNodeMouseEnter={handleNodeMouseEnter}
+              onNodeMouseLeave={handleNodeMouseLeave}
+            />
           </div>
-        )}
-      </div>
+
+          {activeTooltip && (
+            <div
+              className={cn(
+                'pointer-events-none fixed z-[9999] w-72 bg-gray-900 px-3.5 py-3 text-white shadow-2xl',
+                tooltipPos.flipped ? 'translate-y-0' : 'translate-y-[-100%]',
+              )}
+              style={{
+                left: tooltipPos.x,
+                top: tooltipPos.y,
+                transform: tooltipPos.flipped ? 'translateX(-50%)' : 'translateX(-50%) translateY(-100%)',
+              }}
+            >
+              <div className="mb-1 text-xs font-bold">{activeTooltip.title}</div>
+              <div className="text-[11px] leading-relaxed text-gray-300">{activeTooltip.body}</div>
+              {activeTooltip.latex && (
+                <div className="mt-2 text-xs">
+                  <Latex math={activeTooltip.latex} />
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
     </details>
   );
 }

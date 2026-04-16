@@ -43,14 +43,18 @@ export default function GroupView({ group }) {
 
         <div className="group-split-summary">
           <div className="group-split-card">
-            <RoleBadge role="v" as="badge" interactive>V</RoleBadge>
-            <strong>{group.vGroupName || 'trivial'}</strong>
-            <span>{group.vLabels.length} free label{group.vLabels.length === 1 ? '' : 's'}</span>
+            <RoleBadge role="v" as="badge" interactive className="group-split-pill">V</RoleBadge>
+            <div className="group-split-copy">
+              <strong>{group.vGroupName || 'trivial'}</strong>
+              <span>{group.vLabels.length} free label{group.vLabels.length === 1 ? '' : 's'}</span>
+            </div>
           </div>
           <div className="group-split-card">
-            <RoleBadge role="w" as="badge" interactive>W</RoleBadge>
-            <strong>{group.wLabels.length > 0 ? (group.wGroupName || 'trivial') : 'none'}</strong>
-            <span>{group.wLabels.length} summed label{group.wLabels.length === 1 ? '' : 's'}</span>
+            <RoleBadge role="w" as="badge" interactive className="group-split-pill">W</RoleBadge>
+            <div className="group-split-copy">
+              <strong>{group.wLabels.length > 0 ? (group.wGroupName || 'trivial') : 'none'}</strong>
+              <span>{group.wLabels.length} summed label{group.wLabels.length === 1 ? '' : 's'}</span>
+            </div>
           </div>
         </div>
 

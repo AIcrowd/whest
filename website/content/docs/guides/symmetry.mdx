@@ -7,6 +7,8 @@ title: "Symmetry Savings"
 **You will learn:**
 - How to declare full and non-full tensor symmetries with `we.as_symmetric()`
 - How to generate example tensors for arbitrary permutation groups
+- When to use `we.random.symmetric()` (sample + project) versus `we.symmetrize()`
+  (project existing data)
 - How slicing, reductions, and binary pointwise ops preserve, weaken, or drop symmetry metadata
 - When to re-tag results with `we.as_symmetric()` after conservative propagation
 
@@ -149,22 +151,30 @@ This is the explicit-group equivalent of `symmetric_axes=[(0, 1), (2, 3)]`.
 
 ## Generating example data with the Reynolds operator
 
-When you want example tensors for arbitrary groups, prefer ``we.symmetrize``.
-It is a handy helper that applies the Reynolds operator.
-Use ``we.symmetrize`` for randomized example data generation, and
+When you want example tensors for arbitrary groups, prefer ``we.random.symmetric``.
+It is a handy helper that samples from a distribution and applies the Reynolds
+operator.
+Use ``we.symmetrize`` when you already have concrete data to symmetrize, and
 ``we.as_symmetric`` when you already have concrete data to validate and tag.
 
 ``R_G(T) = (1 / |G|) * sum_{g in G} g · T``
 
 ```python
-S = we.symmetrize((4, 4, 4), s3_group)
-T = we.symmetrize((4, 4, 4), c3_group)
-U = we.symmetrize((4, 4, 4, 4), d4_group)
+S = we.random.symmetric((4, 4, 4), s3_group)
+T = we.random.symmetric((4, 4, 4), c3_group)
+U = we.random.symmetric((4, 4, 4, 4), d4_group)
 ```
 
 This helper is ideal for docs, tests, and experiments:
 
 - it works for `S_k`, `C_k`, `D_k`, and custom generator sets
+- prefer `we.random.symmetric()` for synthetic data generation
+- `we.random.symmetric` internally samples data and calls ``we.symmetrize`` so the
+  projection and validation behavior is identical.
+- approximate costs (meaningful estimate):
+  - `we.random.symmetric`: ``C_dist(n) + |G| * n + n`` + validation
+  - `we.symmetrize`: ``|G| * n + n`` + validation  
+    with ``n`` total elements and ``|G|`` group order.
 - in exact arithmetic it projects onto the invariant subspace, and in practice
   `we.as_symmetric()` validates the result with its usual validation tolerances
 - it keeps examples consistent across symmetry classes
@@ -174,13 +184,14 @@ s3_group = we.PermutationGroup.symmetric(3, axes=(0, 1, 2))
 c3_group = we.PermutationGroup.cyclic(3, axes=(0, 1, 2))
 d4_group = we.PermutationGroup.dihedral(4, axes=(0, 1, 2, 3))
 
-s3_tensor = we.symmetrize((4, 4, 4), s3_group)
-c3_tensor = we.symmetrize((4, 4, 4), c3_group)
-d4_tensor = we.symmetrize((4, 4, 4, 4), d4_group)
+s3_tensor = we.random.symmetric((4, 4, 4), s3_group)
+c3_tensor = we.random.symmetric((4, 4, 4), c3_group)
+d4_tensor = we.random.symmetric((4, 4, 4, 4), d4_group)
 ```
 
-The propagation examples below assume `import whest as we` and
-`we.symmetrize(...)` from the earlier sections.
+The propagation examples below assume `import whest as we`; generated tensors
+above use ``we.random.symmetric(...)`` and the explicit transform helper is
+``we.symmetrize(...)``.
 
 ## Symmetry propagation at a glance
 
@@ -239,8 +250,8 @@ The difference between full and non-full groups matters immediately:
 s3_group = we.PermutationGroup.symmetric(3, axes=(0, 1, 2))
 c3_group = we.PermutationGroup.cyclic(3, axes=(0, 1, 2))
 
-s3_tensor = we.symmetrize((4, 4, 4), s3_group)
-c3_tensor = we.symmetrize((4, 4, 4), c3_group)
+s3_tensor = we.random.symmetric((4, 4, 4), s3_group)
+c3_tensor = we.random.symmetric((4, 4, 4), c3_group)
 
 s3_slice = s3_tensor[:, :, 0]
 c3_slice = c3_tensor[:, :, 0]
@@ -261,9 +272,9 @@ s3_group = we.PermutationGroup.symmetric(3, axes=(0, 1, 2))
 c3_group = we.PermutationGroup.cyclic(3, axes=(0, 1, 2))
 c4_group = we.PermutationGroup.cyclic(4, axes=(0, 1, 2, 3))
 
-s3_tensor = we.symmetrize((4, 4, 4), s3_group)
-c3_tensor = we.symmetrize((4, 4, 4), c3_group)
-c4_tensor = we.symmetrize((4, 4, 4, 4), c4_group)
+s3_tensor = we.random.symmetric((4, 4, 4), s3_group)
+c3_tensor = we.random.symmetric((4, 4, 4), c3_group)
+c4_tensor = we.random.symmetric((4, 4, 4, 4), c4_group)
 
 s3_reduced = we.sum(s3_tensor, axis=0)
 c3_reduced = we.sum(c3_tensor, axis=2)
@@ -292,8 +303,8 @@ not just matching tuples of axis numbers.
 s3_group = we.PermutationGroup.symmetric(3, axes=(0, 1, 2))
 c3_group = we.PermutationGroup.cyclic(3, axes=(0, 1, 2))
 
-s3_tensor = we.symmetrize((4, 4, 4), s3_group)
-c3_tensor = we.symmetrize((4, 4, 4), c3_group)
+s3_tensor = we.random.symmetric((4, 4, 4), s3_group)
+c3_tensor = we.random.symmetric((4, 4, 4), c3_group)
 
 intersection_tensor = we.add(s3_tensor, c3_tensor)
 ```

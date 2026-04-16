@@ -27,12 +27,21 @@ export const EXPLORER_ACTS = [
   },
   {
     id: 'savings',
+    navTitle: 'Detect Structure',
+    heading: 'Detect the Structure',
+    question: 'How do the discovered symmetries break into components with different cost behavior?',
+    why: 'With the full group fixed, each independent component contributes its own representative count and output-update count.',
+    bridge: 'Component-level structure (including orbit enumeration) explains where savings are coming from.',
+    takeaway: 'This act surfaces the per-component cost story before calculating final totals.',
+  },
+  {
+    id: 'price-savings',
     navTitle: 'Price Savings',
-    heading: 'Price The Savings',
-    question: 'How does the detected symmetry reduce the computation?',
-    why: 'The cost model first counts one representative multiplication per orbit, then counts the projected output updates that still need to happen.',
-    bridge: 'Independent label components factor the counting problem before the final totals are assembled.',
-    takeaway: 'The totals below are the payoff of the structure and symmetry proven above.',
+    heading: 'Price Savings',
+    question: 'How much runtime do these components save in total?',
+    why: 'The final table combines all components and compares full-cost and symmetry-aware cost, including multiplication, accumulation, and speedup.',
+    bridge: 'These totals are the final payoff of the earlier structure and symmetry analysis.',
+    takeaway: 'The final cost table is the concrete price of symmetry-aware contraction.',
   },
 ];
 

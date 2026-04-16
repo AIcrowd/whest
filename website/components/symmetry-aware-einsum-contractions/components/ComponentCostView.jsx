@@ -7,6 +7,8 @@ import NarrativeCallout from './NarrativeCallout.jsx';
 import OrbitInspector from './OrbitInspector.jsx';
 import { DecisionTree, LabelInteractionGraph } from './ComponentView.jsx';
 
+export const COMPONENT_STORY_TEXT = 'The detected group splits into independent components. Each component contributes its own multiplication representatives and accumulation rule, so the savings story can be read locally before the totals are assembled.';
+
 function computeMultiplicationOrbits(comp, dimensionN) {
   try {
     const sizes = (comp.labels ?? []).map(() => dimensionN);
@@ -50,7 +52,7 @@ function ComponentCard({ comp, dimensionN, fallbackReductionCost }) {
       style={{ borderLeftWidth: 4, borderLeftColor: CASE_META[comp.caseType]?.color ?? '#D1D5DB' }}
     >
       <div className="flex flex-wrap items-center gap-2">
-        <CaseBadge caseType={comp.caseType} interactive={false} />
+        <CaseBadge caseType={comp.caseType} />
         <code className="text-sm text-foreground">{`{${(comp.labels ?? []).join(', ')}}`}</code>
         <span className="text-sm text-muted-foreground">{comp.groupName || 'trivial'}</span>
         {comp.order > 1 && <span className="text-sm font-mono text-muted-foreground">|G|={comp.order}</span>}
@@ -94,6 +96,7 @@ export default function ComponentCostView({
   vLabels,
   selectedOrbitIdx,
   onSelectOrbit,
+  showComponentStory = true,
 }) {
   if (!componentData || !costModel) return null;
 
@@ -106,9 +109,11 @@ export default function ComponentCostView({
 
   return (
     <div className="space-y-6">
-      <NarrativeCallout label="Component Story">
-        The detected group splits into independent components. Each component contributes its own multiplication representatives and accumulation rule, so the savings story can be read locally before the totals are assembled.
-      </NarrativeCallout>
+      {showComponentStory ? (
+        <NarrativeCallout label="Component Story">
+          {COMPONENT_STORY_TEXT}
+        </NarrativeCallout>
+      ) : null}
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
         <div className="rounded-xl border border-gray-200 bg-white p-4">
