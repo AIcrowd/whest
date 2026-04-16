@@ -167,8 +167,16 @@ def symmetrize(
     else:
         shape = tuple(shape)
 
-    data = np.random.randn(*shape)
     group_axes = group.axes if group.axes is not None else tuple(range(group.degree))
+    if not all(0 <= axis < len(shape) for axis in group_axes):
+        raise SymmetryError(axes=group_axes, max_deviation=float("inf"))
+
+    if group_axes:
+        axis_sizes = {shape[i] for i in group_axes}
+        if len(axis_sizes) > 1:
+            raise SymmetryError(axes=group_axes, max_deviation=float("inf"))
+
+    data = np.random.randn(*shape)
     symmetrized = np.zeros_like(data)
 
     for g in group.elements():
