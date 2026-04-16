@@ -218,7 +218,6 @@ export default function ComponentCostView({
           </PanZoomCanvas>
         </div>
 
-        {/* DecisionTree replaced by DecisionLadder (Task 5.5) */}
         <DecisionLadder activeRegimeId={components[0]?.accumulation?.regimeId ?? null} />
       </div>
 

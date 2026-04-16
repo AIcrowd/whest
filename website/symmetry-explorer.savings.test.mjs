@@ -45,12 +45,13 @@ test('TotalCostView renders the current savings metric cards', () => {
   assert.match(totalCostSource, /border-green-600\/20 bg-green-600\/5/);
 });
 
-test('ComponentCostView renders the current decision tree and component table', () => {
+test('ComponentCostView renders the decision ladder and component table', () => {
   const componentCostSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/ComponentCostView.jsx', import.meta.url), 'utf8');
 
   assert.match(componentCostSource, /TableHeader/);
   assert.match(componentCostSource, /TableBody/);
-  assert.match(componentCostSource, /DecisionTree/);
+  // DecisionTree was replaced by DecisionLadder in C5 (shape + regime ladder).
+  assert.match(componentCostSource, /DecisionLadder/);
   // Trivial case has a dedicated code path (not a Burnside degeneration).
   assert.match(componentCostSource, /isTrivial\(comp\)/);
   assert.match(componentCostSource, /directCount\(comp/);
