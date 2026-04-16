@@ -28,7 +28,7 @@ export default function DocsSidebarItem({ item }) {
       icon={item.icon}
       className={itemClasses}
       style={{ paddingInlineStart: itemOffset }}
-      external={item.external}
+      external={isStandaloneLaunch ? false : item.external}
       active={active}
       target={isStandaloneLaunch ? '_blank' : undefined}
       rel={isStandaloneLaunch ? 'noreferrer noopener' : undefined}
