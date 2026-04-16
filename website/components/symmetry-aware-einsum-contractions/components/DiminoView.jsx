@@ -1,8 +1,22 @@
-import { useEffect, useMemo, useState } from 'react';
-import { buildDiminoStages } from '../engine/permutation.js';
+import { useMemo } from 'react';
+
+function permutationKeyFromPi(pi, orderedLabels) {
+  if (!pi || !orderedLabels?.length) return null;
+  const indexByLabel = new Map(orderedLabels.map((label, index) => [label, index]));
+  const arr = orderedLabels.map((label) => indexByLabel.get(pi[label]));
+  if (arr.some((value) => value === undefined)) return null;
+  return arr.join(',');
+}
 
 function fmtPiMapping(pi, labels) {
-  return labels.map((label) => `${label}→${pi[label]}`).join(', ');
+  if (!pi || !labels?.length) return '';
+  return labels.map((label) => `${label}${pi[label]}`).join(', ');
+}
+
+function newElementsFromClosure(candidate) {
+  if (!candidate) return [];
+  const beforeKeys = new Set((candidate.beforeElements || []).map((element) => element.key()));
+  return (candidate.afterElements || []).filter((element) => !beforeKeys.has(element.key()));
 }
 
 function PermCards({ elements, labels, highlight = false, emptyText = null }) {
@@ -25,244 +39,122 @@ function PermCards({ elements, labels, highlight = false, emptyText = null }) {
   );
 }
 
+function ProofSection({ title, children }) {
+  return (
+    <div className="rounded-lg border border-border bg-surface-raised p-3">
+      <div className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">{title}</div>
+      <div className="mt-3">{children}</div>
+    </div>
+  );
+}
+
 export default function DiminoView({ group, sigmaResults = [], selectedPairIndex = null }) {
-  const stages = useMemo(() => buildDiminoStages(group.fullGenerators || []), [group.fullGenerators]);
-  const validPiCards = useMemo(() => group.generatorSelection?.validPiCards || [], [group.generatorSelection]);
-  const selectedSigmaPair = useMemo(() => {
+  const orderedLabels = group?.allLabels || [];
+  const selectedPair = useMemo(() => {
     const activePairs = sigmaResults.filter((result) => !result.skipped);
     if (selectedPairIndex === null || selectedPairIndex < 0 || selectedPairIndex >= activePairs.length) {
       return null;
     }
-
     return activePairs[selectedPairIndex] ?? null;
   }, [selectedPairIndex, sigmaResults]);
-  const selectedGeneratorCards = useMemo(() => {
-    const firstMatchByKey = new Map(validPiCards.map((card) => [card.permutationKey, card]));
-    return (group.fullGenerators || []).map((generator, idx) => ({
-      generator,
-      index: idx,
-      key: generator.key(),
-      source: firstMatchByKey.get(generator.key()) || null,
-    }));
-  }, [group.fullGenerators, validPiCards]);
-  const [activeRoundIdx, setActiveRoundIdx] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  useEffect(() => {
-    setActiveRoundIdx(0);
-    setIsPlaying(false);
-  }, [stages.length]);
-
-  useEffect(() => {
-    if (!isPlaying) return undefined;
-    if (activeRoundIdx >= stages.length - 1) {
-      setIsPlaying(false);
-      return undefined;
-    }
-
-    const timer = window.setTimeout(() => {
-      setActiveRoundIdx((current) => Math.min(current + 1, stages.length - 1));
-    }, 1400);
-
-    return () => window.clearTimeout(timer);
-  }, [activeRoundIdx, isPlaying, stages.length]);
-
-  const stage = stages[activeRoundIdx];
-  const isInitialRound = activeRoundIdx === 0;
-  const canGoPrev = activeRoundIdx > 0;
-  const canGoNext = activeRoundIdx < stages.length - 1;
+  const selectedPermutationKey = selectedPair?.pi ? permutationKeyFromPi(selectedPair.pi, orderedLabels) : null;
+  const candidate = useMemo(
+    () => group?.generatorSelection?.candidatePermutations?.find((entry) => entry.permutationKey === selectedPermutationKey) ?? null,
+    [group?.generatorSelection?.candidatePermutations, selectedPermutationKey],
+  );
+  const closureNewElements = useMemo(() => newElementsFromClosure(candidate), [candidate]);
+  const decisionKeepsCandidate = Boolean(candidate?.kept);
+  const hasMergedProvenance = (candidate?.sourcePiIds?.length || 0) > 1;
 
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h3 className="font-heading text-base font-semibold text-gray-900">Dimino: build the subgroup round by round</h3>
-          <p className="mt-2 max-w-[62ch] text-sm leading-6 text-muted-foreground">
-            Dimino starts from the identity subgroup. In each round, we add one chosen generator and close under composition with the subgroup already built.
-          </p>
-        </div>
-        <div className="rounded-full border border-border bg-surface-raised px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-          round {activeRoundIdx} / {Math.max(stages.length - 1, 0)}
-        </div>
+      <div>
+        <h3 className="font-heading text-base font-semibold text-gray-900">Generator Construction</h3>
+        <p className="mt-2 max-w-[62ch] text-sm leading-6 text-muted-foreground">
+          Each valid  induces a candidate permutation. We keep it only if adding it enlarges the subgroup generated so far.
+        </p>
       </div>
 
-      <div className="mt-4 rounded-lg border border-border bg-surface-raised p-3">
-        <div className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Selected σ-pair</div>
-        {selectedSigmaPair ? (
-          <div className="mt-2 space-y-2">
-            <div className="text-sm font-semibold text-foreground">
-              {`Pair ${selectedPairIndex + 1}: ${selectedSigmaPair.isValid ? 'valid input for Dimino' : 'not used by Dimino'}`}
-            </div>
-            <div className="text-sm leading-6 text-muted-foreground">
-              {selectedSigmaPair.pi
-                ? `π mapping: ${fmtPiMapping(selectedSigmaPair.pi, group.allLabels)}`
-                : selectedSigmaPair.reason || 'No π mapping is available for this pair.'}
-            </div>
-          </div>
-        ) : (
-          <div className="mt-2 text-sm leading-6 text-muted-foreground">
-            No σ-pair is selected yet. Pick a pair in the σ-loop to inspect how it feeds the Dimino generator set.
-          </div>
-        )}
-      </div>
-
-      <div className="mt-4 flex flex-wrap items-center gap-2">
-        <button
-          type="button"
-          className="rounded-full border border-border bg-white px-3 py-1.5 text-xs font-semibold text-foreground transition-colors hover:border-coral hover:text-coral disabled:cursor-not-allowed disabled:opacity-50"
-          onClick={() => setActiveRoundIdx((current) => Math.max(current - 1, 0))}
-          disabled={!canGoPrev}
-        >
-          Previous round
-        </button>
-        <button
-          type="button"
-          className="rounded-full border border-coral bg-coral px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-coral-dark"
-          onClick={() => setIsPlaying((current) => !current)}
-        >
-          {isPlaying ? 'Pause' : 'Play'}
-        </button>
-        <button
-          type="button"
-          className="rounded-full border border-border bg-white px-3 py-1.5 text-xs font-semibold text-foreground transition-colors hover:border-coral hover:text-coral disabled:cursor-not-allowed disabled:opacity-50"
-          onClick={() => setActiveRoundIdx((current) => Math.min(current + 1, stages.length - 1))}
-          disabled={!canGoNext}
-        >
-          Next round
-        </button>
-        <div className="ml-auto flex flex-wrap items-center gap-1.5">
-          {stages.map((candidate) => (
-            <button
-              key={`dimino-round-${candidate.roundNumber}`}
-              type="button"
-              className={`rounded-full px-2.5 py-1 text-[11px] font-semibold transition-colors ${
-                candidate.roundNumber === activeRoundIdx
-                  ? 'bg-coral text-white'
-                  : 'border border-border bg-white text-muted-foreground hover:border-coral hover:text-coral'
-              }`}
-              onClick={() => {
-                setActiveRoundIdx(candidate.roundNumber);
-                setIsPlaying(false);
-              }}
-            >
-              {`Round ${candidate.roundNumber}`}
-            </button>
-          ))}
+      {!selectedPair ? (
+        <div className="mt-4 rounded-lg border border-dashed border-border bg-surface-raised p-4 text-sm leading-6 text-muted-foreground">
+          Select a valid (, ) pair on the left to inspect the single candidate-construction step it induces.
         </div>
-      </div>
-
-      <div className="mt-4 rounded-lg border border-border bg-surface-raised p-3">
-        <div className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Input generators</div>
-        <div className="mt-2 text-sm leading-6 text-muted-foreground">
-          Dimino runs on this selected generator set, not on every valid π.
+      ) : !candidate ? (
+        <div className="mt-4 rounded-lg border border-dashed border-border bg-surface-raised p-4 text-sm leading-6 text-muted-foreground">
+          This selection does not produce a non-identity candidate permutation for generator construction.
         </div>
-        <div className="mt-3 grid gap-2 md:grid-cols-2">
-          {selectedGeneratorCards.map((card) => {
-            const isActive = stage.generatorIndex === card.index;
-            const isSeen = card.index < (stage.activeGenerators?.length ?? 0);
-            return (
-              <div
-                key={`dimino-generator-${card.key}-${card.index}`}
-                className={`rounded-lg border px-3 py-2 transition-colors ${
-                  isActive
-                    ? 'border-coral bg-coral-light'
-                    : isSeen
-                      ? 'border-border bg-white'
-                      : 'border-border/70 bg-white/70'
-                }`}
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <div className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                    {`Generator ${card.index + 1}`}
-                  </div>
-                  <div className={`text-[11px] font-semibold ${isActive ? 'text-coral' : 'text-muted-foreground'}`}>
-                    {isActive ? 'adding this generator now' : isSeen ? 'already included' : 'not added yet'}
-                  </div>
-                </div>
-                <div className="mt-2 font-mono text-sm text-foreground">{card.generator.cycleNotation(group.allLabels)}</div>
-                <div className="mt-2 text-xs text-muted-foreground">
-                  {card.source ? `from π: ${fmtPiMapping(card.source.pi, group.allLabels)}` : 'from the deduplicated candidate-permutation bank'}
-                </div>
+      ) : (
+        <div className="mt-4 space-y-4">
+          <ProofSection title="Current candidate from ">
+            <div className="space-y-3">
+              <div className="perm-card generator dimino-new">
+                <code className="perm-notation">{candidate.cycleNotation}</code>
+                <span className="perm-structure">candidate induced by the selected valid </span>
               </div>
-            );
-          })}
-          {selectedGeneratorCards.length === 0 ? (
-            <div className="rounded-lg border border-dashed border-border bg-white px-3 py-3 text-sm text-muted-foreground">
-              No non-identity generators were selected. The group stays at the identity subgroup.
+              <div className="text-sm leading-6 text-muted-foreground">
+                {`Selected  mapping: ${fmtPiMapping(selectedPair.pi, orderedLabels)}`}
+              </div>
+            </div>
+          </ProofSection>
+
+          <ProofSection title="Previous subgroup">
+            <div className="space-y-3">
+              <div className="text-sm leading-6 text-muted-foreground">
+                {`Before testing ${candidate.cycleNotation}, the subgroup already had order ${candidate.growthFrom}.`}
+              </div>
+              <PermCards
+                elements={candidate.beforeElements || []}
+                labels={orderedLabels}
+                emptyText="The construction starts from the identity subgroup."
+              />
+            </div>
+          </ProofSection>
+
+          <ProofSection title="Closure test">
+            <div className="space-y-3">
+              <div className="text-sm leading-6 text-muted-foreground">
+                Close the previous subgroup together with the candidate under composition and check whether any new elements appear.
+              </div>
+              <PermCards
+                elements={closureNewElements}
+                labels={orderedLabels}
+                highlight
+                emptyText="Closure adds no new elements, so the candidate is already generated by the previous subgroup."
+              />
+              <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                <span>{`order before ${candidate.growthFrom}`}</span>
+                <span>{`new from closure ${closureNewElements.length}`}</span>
+                <span>{`order after ${candidate.growthTo}`}</span>
+              </div>
+            </div>
+          </ProofSection>
+
+          <ProofSection title="Decision">
+            <div className={`rounded-lg border px-3 py-3 text-sm leading-6 ${decisionKeepsCandidate ? 'border-emerald-200 bg-emerald-50 text-emerald-900' : 'border-amber-200 bg-amber-50 text-amber-900'}`}>
+              {decisionKeepsCandidate
+                ? `Keep ${candidate.cycleNotation}: the subgroup grows from order ${candidate.growthFrom} to ${candidate.growthTo}.`
+                : `Discard ${candidate.cycleNotation}: closure stays at order ${candidate.growthTo}, so this candidate is redundant.`}
+            </div>
+          </ProofSection>
+
+          <ProofSection title="Subgroup after test">
+            <div className="space-y-3">
+              <PermCards elements={candidate.afterElements || []} labels={orderedLabels} />
+              <div className="text-sm leading-6 text-muted-foreground">
+                {decisionKeepsCandidate
+                  ? 'This enlarged subgroup becomes the starting point for the next candidate.'
+                  : 'The subgroup is unchanged, so the next candidate is tested against the same generated set.'}
+              </div>
+            </div>
+          </ProofSection>
+
+          {hasMergedProvenance ? (
+            <div className="rounded-lg border border-border bg-white p-3 text-xs leading-6 text-muted-foreground">
+              {`Provenance note: ${candidate.sourcePiIds.length} valid  mappings collapse to this same candidate permutation, so they share this closure decision.`}
             </div>
           ) : null}
         </div>
-      </div>
-
-      <div className="mt-4 rounded-lg border border-border bg-surface-raised p-3">
-        <div className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Current round transformation</div>
-        <div className="mt-2 text-sm font-semibold text-foreground">
-          {isInitialRound ? 'Round 0: start from identity' : `Round ${stage.roundNumber}: add Generator ${stage.roundNumber}`}
-        </div>
-        <div className="mt-2 text-sm leading-6 text-foreground">
-          {isInitialRound
-            ? 'No generator yet. The subgroup starts at the identity element only.'
-            : `Take the subgroup from the previous round, add Generator ${stage.roundNumber}, then close under composition.`}
-        </div>
-
-        <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1fr)_48px_minmax(0,220px)_48px_minmax(0,1fr)] xl:items-start">
-          <div className="min-w-0">
-            <div className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Subgroup before</div>
-            <PermCards elements={stage.beforeElements} labels={group.allLabels} />
-          </div>
-
-          <div className="hidden xl:flex h-full items-start justify-center pt-10 text-lg font-semibold text-muted-foreground">+</div>
-
-          <div className="rounded-lg border border-border bg-white p-3">
-            <div className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-              {isInitialRound ? 'Start state' : `Add Generator ${stage.roundNumber}`}
-            </div>
-            <div className="mt-2">
-              {stage.generator ? (
-                <div className="perm-card generator dimino-new">
-                  <code className="perm-notation">{stage.generator.cycleNotation(group.allLabels)}</code>
-                  <span className="perm-structure">chosen generator</span>
-                </div>
-              ) : (
-                <div className="text-sm text-muted-foreground">Identity subgroup only.</div>
-              )}
-            </div>
-            <div className="mt-3 text-xs text-muted-foreground">
-              {isInitialRound
-                ? 'There is no added generator in Round 0.'
-                : 'This is the new generator introduced at this round.'}
-            </div>
-          </div>
-
-          <div className="hidden xl:flex h-full items-start justify-center pt-10 text-lg font-semibold text-muted-foreground">=</div>
-
-          <div className="min-w-0">
-            <div className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Subgroup after</div>
-            <PermCards elements={stage.afterElements} labels={group.allLabels} />
-          </div>
-        </div>
-
-        <div className="mt-4 rounded-lg border border-border bg-white p-3">
-          <div className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Closure under composition</div>
-          <p className="mt-2 text-sm leading-6 text-muted-foreground">
-            These new elements appear because the added generator composes with the subgroup already generated.
-          </p>
-          <div className="mt-3">
-            <div className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">New elements from closure</div>
-            <PermCards
-              elements={stage.newElements}
-              labels={group.allLabels}
-              highlight
-              emptyText={isInitialRound ? 'Identity is the starting subgroup.' : 'This generator adds no new elements beyond the subgroup already built.'}
-            />
-          </div>
-          <div className="mt-3 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-            <span>{`order before ${stage.beforeSize}`}</span>
-            <span>{`new elements ${stage.newCount}`}</span>
-            <span>{`order after ${stage.afterSize}`}</span>
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   );
 }
