@@ -314,7 +314,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         />
                       </div>
                       <div>
-                        <h3 className="mb-2 font-heading text-base font-semibold text-gray-900">Group Construction</h3>
+                        <h3 className="mb-2 font-heading text-base font-semibold text-gray-900">Generator Construction</h3>
                         <GroupView group={group} />
                         <div className="mt-4">
                           <DiminoView
