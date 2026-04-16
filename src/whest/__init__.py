@@ -11,6 +11,8 @@ Usage::
         print(budget.summary())
 """
 
+import importlib as _importlib
+
 import numpy as _np
 
 from whest._registry import REGISTRY_META as _REGISTRY_META
@@ -25,15 +27,6 @@ from whest._version_check import check_numpy_version as _check_numpy_version
 _check_numpy_version(__numpy_supported__)
 
 # --- Budget and diagnostics ---
-# --- Submodules ---
-from whest import (
-    fft,  # noqa: F401
-    flops,  # noqa: F401
-    linalg,  # noqa: F401
-    random,  # noqa: F401
-    stats,  # noqa: F401
-    testing,  # noqa: F401
-)
 from whest._budget import (  # noqa: F401
     BudgetContext,
     OpRecord,
@@ -506,4 +499,17 @@ from whest._errstate import (  # noqa: F401, E402
 from whest._registry import make_module_getattr as _make_module_getattr
 from whest._type_info import finfo, iinfo  # noqa: F401, E402
 
-__getattr__ = _make_module_getattr(module_prefix="", module_label="whest")
+_LAZY_SUBMODULES = frozenset({"fft", "flops", "linalg", "random", "stats", "testing"})
+_registry_getattr = _make_module_getattr(module_prefix="", module_label="whest")
+
+
+def __getattr__(name: str):
+    if name in _LAZY_SUBMODULES:
+        module = _importlib.import_module(f"whest.{name}")
+        globals()[name] = module
+        return module
+    return _registry_getattr(name)
+
+
+def __dir__() -> list[str]:
+    return sorted(set(globals()) | _LAZY_SUBMODULES)
