@@ -20,6 +20,8 @@
 
 import { Permutation, dimino } from './permutation.js';
 import { classifyComponent } from './classificationSpec.js';
+import { detectShape } from './shapeLayer.js';
+import { computeAccumulation } from './accumulationCount.js';
 
 export const CASE_META = {
   trivial: {
@@ -314,4 +316,38 @@ export function decomposeAndClassify(allLabels, vLabels, wLabels, fullGenerators
   });
 
   return { interactionGraph, components };
+}
+
+/**
+ * Like decomposeAndClassify, but also attaches { shape, accumulation } to each
+ * component using the shape layer + regime ladder from accumulationCount.js.
+ *
+ * @param {string[]} allLabels
+ * @param {string[]} vLabels
+ * @param {string[]} wLabels
+ * @param {Permutation[]} fullGenerators
+ * @param {Permutation[]} fullElements
+ * @param {number[]} sizes - one entry per label in allLabels
+ */
+export function decomposeClassifyAndCount(
+  allLabels, vLabels, wLabels, fullGenerators, fullElements, sizes,
+) {
+  const base = decomposeAndClassify(allLabels, vLabels, wLabels, fullGenerators, fullElements);
+  const components = base.components.map((comp) => {
+    const compSizes = comp.indices.map((i) => sizes[i]);
+    const localLabels = comp.labels;
+    const vPositionsLocal = comp.va.map((l) => localLabels.indexOf(l));
+    const shape = detectShape({ va: comp.va, wa: comp.wa, elements: comp.elements });
+    const accumulation = computeAccumulation({
+      labels: localLabels,
+      va: comp.va,
+      wa: comp.wa,
+      elements: comp.elements,
+      sizes: compSizes,
+      visiblePositions: vPositionsLocal,
+      generators: comp.generators,
+    });
+    return { ...comp, shape: shape.kind, accumulation };
+  });
+  return { ...base, components };
 }
