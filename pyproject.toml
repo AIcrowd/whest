@@ -17,7 +17,9 @@ dev = [
     "ruff>=0.4",
     "scipy>=1.10",
 ]
-docs = []
+docs = [
+    "numpydoc>=1.8",
+]
 sympy = [
     "sympy>=1.11",
 ]
