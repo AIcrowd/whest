@@ -66,6 +66,7 @@ function normalizeExample(example) {
 export default function SymmetryAwareEinsumContractionsApp() {
   const [exampleIdx, setExampleIdx] = useState(DEFAULT_EXAMPLE_IDX);
   const [customExample, setCustomExample] = useState(null);
+  const [previewExample, setPreviewExample] = useState(EXAMPLES[DEFAULT_EXAMPLE_IDX]);
   const [dimensionN, setDimensionN] = useState(5);
   const [selectedOrbitIdx, setSelectedOrbitIdx] = useState(-1);
   const [activeActId, setActiveActId] = useState(EXPLORER_ACTS[0].id);
@@ -91,6 +92,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
   const handleSelect = useCallback((idx) => {
     setShowMentalModel((isOpen) => reduceMentalModelVisibility(isOpen, 'selectPreset'));
     setExampleIdx(idx);
+    setPreviewExample(EXAMPLES[idx] ?? null);
     setIsDirty(false);
     setSelectedOrbitIdx(-1);
   }, []);
@@ -99,15 +101,17 @@ export default function SymmetryAwareEinsumContractionsApp() {
   const handleCustomExample = useCallback((ex) => {
     setShowMentalModel((isOpen) => reduceMentalModelVisibility(isOpen, 'customExample'));
     setCustomExample(ex);
+    setPreviewExample(ex);
     setExampleIdx(CUSTOM_IDX);
     setSelectedOrbitIdx(-1);
   }, []);
 
   const handleCustomMode = useCallback(() => {
     setShowMentalModel((isOpen) => reduceMentalModelVisibility(isOpen, 'customMode'));
+    setPreviewExample(customExample ?? EXAMPLES[DEFAULT_EXAMPLE_IDX]);
     setExampleIdx(CUSTOM_IDX);
     setSelectedOrbitIdx(-1);
-  }, []);
+  }, [customExample]);
 
   const analysis = useMemo(() => {
     if (!example) return null;
@@ -172,7 +176,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
   return (
     <div className="min-h-screen bg-background">
       <StickyBar
-        example={example}
+        example={previewExample ?? example}
         group={group}
         activeActId={activeActId}
       />
@@ -208,6 +212,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                 onDimensionChange={setDimensionN}
                 onCustom={handleCustomMode}
                 onCustomExample={handleCustomExample}
+                onPreviewChange={setPreviewExample}
                 onDirtyChange={setIsDirty}
                 act={EXPLORER_ACTS[0]}
                 checkpointItems={checkpointItems}
@@ -225,7 +230,8 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >
-                    <NarrativeCallout label="Why this matters">{EXPLORER_ACTS[1].why}</NarrativeCallout>
+                    <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[1].interpretation}</NarrativeCallout>
+                    <NarrativeCallout label="Algorithm" tone="algorithm">{EXPLORER_ACTS[1].algorithm}</NarrativeCallout>
                     <p className="mt-4 text-sm leading-7 text-foreground">
                       Left vertices (U) are operand axis-classes. Right vertices are index labels,
                       partitioned into <RoleBadge role="v">V free</RoleBadge> and
@@ -244,9 +250,8 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         <MatrixView matrixData={matrixData} graph={graph} example={normalizedExample} variableColors={variableColors} />
                       </div>
                     </div>
-                    <p className="mt-4 text-sm text-gray-600">{EXPLORER_ACTS[1].bridge}</p>
                     <div className="mt-4">
-                      <NarrativeCallout label="Takeaway" tone="accent">{EXPLORER_ACTS[1].takeaway}</NarrativeCallout>
+                      <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[1].produces}</NarrativeCallout>
                     </div>
                   </ExplorerSectionCard>
                 </section>
@@ -259,7 +264,8 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >
-                    <NarrativeCallout label="Why this matters">{EXPLORER_ACTS[2].why}</NarrativeCallout>
+                    <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[2].interpretation}</NarrativeCallout>
+                    <NarrativeCallout label="Algorithm" tone="algorithm">{EXPLORER_ACTS[2].algorithm}</NarrativeCallout>
                     <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
                       <div>
                         <h3 className="mb-2 font-heading text-base font-semibold text-gray-900">σ-Loop & π Detection</h3>
@@ -276,9 +282,8 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         <GroupView group={group} />
                       </div>
                     </div>
-                    <p className="mt-4 text-sm text-gray-600">{EXPLORER_ACTS[2].bridge}</p>
                     <div className="mt-4">
-                      <NarrativeCallout label="Takeaway" tone="accent">{EXPLORER_ACTS[2].takeaway}</NarrativeCallout>
+                      <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[2].produces}</NarrativeCallout>
                     </div>
                   </ExplorerSectionCard>
                 </section>
@@ -302,8 +307,9 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       </Button>
                     }
                   >
+                    <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[3].interpretation}</NarrativeCallout>
+                    <NarrativeCallout label="Algorithm" tone="algorithm">{EXPLORER_ACTS[3].algorithm}</NarrativeCallout>
                     <div className="grid gap-4 md:grid-cols-2">
-                      <NarrativeCallout label="Why this matters">{EXPLORER_ACTS[3].why}</NarrativeCallout>
                       <NarrativeCallout label="Component Story">{COMPONENT_STORY_TEXT}</NarrativeCallout>
                     </div>
 
@@ -356,9 +362,8 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     />
                   </div>
 
-                  <p className="mt-4 text-sm text-gray-600">{EXPLORER_ACTS[3].bridge}</p>
                   <div className="mt-4">
-                    <NarrativeCallout label="Takeaway" tone="accent">{EXPLORER_ACTS[3].takeaway}</NarrativeCallout>
+                    <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[3].produces}</NarrativeCallout>
                   </div>
                   </ExplorerSectionCard>
                 </section>
