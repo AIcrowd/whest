@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import Latex from './Latex.jsx';
 import GlossaryProse from './GlossaryProse.jsx';
-import { getCasePresentation } from './casePresentation.js';
+import { getRegimePresentation } from './regimePresentation.js';
 import { cn } from '../lib/utils.js';
 
 const TOOLTIP_WIDTH = 320;
@@ -10,14 +10,25 @@ const TOOLTIP_HEIGHT = 240;
 const VIEWPORT_PADDING = 16;
 const TOOLTIP_OFFSET = 8;
 
-const CASE_COLORS = {
-  trivial: { bg: 'rgba(148, 163, 184, 0.12)', text: '#475569', border: 'rgba(148, 163, 184, 0.45)' },
-  A: { bg: 'rgba(74, 124, 255, 0.12)', text: '#4A7CFF', border: 'rgba(74, 124, 255, 0.35)' },
-  B: { bg: 'rgba(148, 163, 184, 0.12)', text: '#64748B', border: 'rgba(148, 163, 184, 0.35)' },
-  C: { bg: 'rgba(250, 158, 51, 0.12)', text: '#D97706', border: 'rgba(250, 158, 51, 0.35)' },
-  D: { bg: 'rgba(35, 183, 97, 0.12)', text: '#15803D', border: 'rgba(35, 183, 97, 0.35)' },
-  E: { bg: 'rgba(240, 82, 77, 0.12)', text: '#DC2626', border: 'rgba(240, 82, 77, 0.35)' },
-};
+/**
+ * Mix a #RRGGBB hex color with white to produce a soft background tint.
+ * `amount` in [0,1]: 0 = pure color, 1 = white.
+ */
+function mixWithWhite(hex, amount) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  const mix = (c) => Math.round(c + (255 - c) * amount);
+  return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
+}
+
+function colorsFor(baseColor) {
+  return {
+    bg: mixWithWhite(baseColor, 0.88),
+    text: baseColor,
+    border: mixWithWhite(baseColor, 0.55),
+  };
+}
 
 function getBadgeClasses(variant, size) {
   if (variant === 'compact') {
@@ -33,6 +44,7 @@ function getBadgeClasses(variant, size) {
 
 export default function CaseBadge({
   caseType,
+  regimeId,
   size = 'sm',
   variant = 'pill',
   interactive = true,
@@ -42,8 +54,10 @@ export default function CaseBadge({
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0, flipped: false });
   const ref = useRef(null);
 
-  const presentation = getCasePresentation(caseType);
-  const colors = CASE_COLORS[caseType] ?? CASE_COLORS.A;
+  // Prefer explicit regimeId; fall back to legacy caseType for callers not yet migrated.
+  const id = regimeId ?? caseType;
+  const presentation = getRegimePresentation(id);
+  const colors = colorsFor(presentation.color ?? '#94A3B8');
   const tooltip = interactive ? presentation.tooltip : null;
 
   const handleEnter = () => {
@@ -134,6 +148,11 @@ export default function CaseBadge({
           }}
         >
           <div className="mb-1 whitespace-normal break-words text-sm font-semibold leading-6">{tooltip.title}</div>
+          {tooltip.whenText && (
+            <div className="mb-2 text-[11px] uppercase tracking-wider text-gray-400">
+              When: {tooltip.whenText}
+            </div>
+          )}
           <div className="max-w-full whitespace-normal break-words text-sm leading-6 text-gray-300">
             {tooltip.body}
           </div>

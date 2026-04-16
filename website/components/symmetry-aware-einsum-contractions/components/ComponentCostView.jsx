@@ -130,7 +130,7 @@ function ComponentSummaryTable({
             return (
               <TableRow key={`comp-row-${idx}`} className="border-0 bg-surface hover:bg-surface-raised">
                 <TableCell className="px-3 py-2">
-                  <CaseBadge caseType={comp.caseType} size="sm" />
+                  <CaseBadge regimeId={comp.accumulation?.regimeId ?? comp.shape ?? comp.caseType} caseType={comp.caseType} size="sm" />
                 </TableCell>
                 <TableCell className="px-3 py-2">
                   <LabelsCell comp={comp} />
@@ -219,7 +219,10 @@ export default function ComponentCostView({
           </PanZoomCanvas>
         </div>
 
-        <DecisionLadder activeRegimeId={components[0]?.accumulation?.regimeId ?? null} />
+        <DecisionLadder
+          activeRegimeId={components[0]?.accumulation?.regimeId ?? null}
+          activeShapeId={components[0]?.shape ?? null}
+        />
       </div>
 
       <ComponentSummaryTable

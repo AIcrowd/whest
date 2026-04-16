@@ -13,6 +13,15 @@ import { CASE_META } from '../engine/componentDecomposition.js';
  * backwards compatibility — still used by some tests and preset metadata.
  */
 
+const LEGACY_CASE_COLORS = {
+  trivial: '#94A3B8',
+  A: '#4A7CFF',
+  B: '#64748B',
+  C: '#FA9E33',
+  D: '#23B761',
+  E: '#F0524D',
+};
+
 function buildLegacyPresentation(caseType) {
   for (const leaf of Object.values(CLASSIFICATION_LEAVES)) {
     if (leaf.caseType !== caseType) continue;
@@ -22,6 +31,7 @@ function buildLegacyPresentation(caseType) {
       shortLabel: leaf.shortLabel,
       methodLabel: leaf.methodLabel ?? leaf.label,
       humanName: leaf.humanName ?? null,
+      color: LEGACY_CASE_COLORS[caseType] ?? '#94A3B8',
       tooltip: {
         title: leaf.label,
         body: leaf.description,
@@ -48,9 +58,11 @@ function regimePresentationFromSpec(id) {
       shortLabel: spec.shortLabel,
       methodLabel: spec.label,
       humanName: spec.description,
+      color: spec.color ?? '#94A3B8',
       tooltip: {
         title: spec.label,
         body: spec.description,
+        whenText: spec.when ?? null,
         latex: spec.latex ?? null,
         glossary: null,
       },
@@ -64,9 +76,11 @@ function regimePresentationFromSpec(id) {
       shortLabel: spec.shortLabel,
       methodLabel: spec.label,
       humanName: spec.description,
+      color: spec.color ?? '#94A3B8',
       tooltip: {
         title: spec.label,
         body: spec.description,
+        whenText: spec.when ?? null,
         latex: spec.latex ?? null,
         glossary: null,
       },
