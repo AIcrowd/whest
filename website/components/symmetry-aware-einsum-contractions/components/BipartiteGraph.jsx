@@ -3,7 +3,11 @@
  * labeled group boxes for U axis-classes (left), V free and W summed (right).
  */
 
-export default function BipartiteGraph({ graph, example, variableColors }) {
+export default function BipartiteGraph({ graph, example, variableColors, highlightedLabels = new Set() }) {
+  const isHighlighted = (label) =>
+    highlightedLabels instanceof Set
+      ? highlightedLabels.has(label)
+      : Array.isArray(highlightedLabels) && highlightedLabels.includes(label);
   const { uVertices, incidence, freeLabels, summedLabels, identicalGroups } = graph;
 
   const vLabels = [...freeLabels].sort();
@@ -220,13 +224,15 @@ export default function BipartiteGraph({ graph, example, variableColors }) {
         {/* ── V label nodes (right) ── */}
         {vLabels.map((lbl, i) => {
           const y = vPositions[i];
+          const hl = isHighlighted(lbl);
           return (
             <g key={`v-${lbl}`}>
               <circle cx={rightX} cy={y} r={nodeR}
-                fill="white" stroke="#4A7CFF" strokeWidth={1.5}
-                filter="url(#node-shadow)" />
+                fill="white" stroke={hl ? '#F59E0B' : '#4A7CFF'} strokeWidth={hl ? 3 : 1.5}
+                filter="url(#node-shadow)"
+                className={hl ? 'stroke-amber-400 stroke-[3px]' : ''} />
               <text x={rightX} y={y + 1} textAnchor="middle" dominantBaseline="middle"
-                fill="#4A7CFF" fontSize={11} fontWeight={600}
+                fill={hl ? '#F59E0B' : '#4A7CFF'} fontSize={11} fontWeight={600}
                 fontFamily="'IBM Plex Mono', monospace">
                 {lbl}
               </text>
@@ -237,13 +243,15 @@ export default function BipartiteGraph({ graph, example, variableColors }) {
         {/* ── W label nodes (right) ── */}
         {wLabels.map((lbl, i) => {
           const y = wPositions[i];
+          const hl = isHighlighted(lbl);
           return (
             <g key={`w-${lbl}`}>
               <circle cx={rightX} cy={y} r={nodeR}
-                fill="white" stroke="#64748B" strokeWidth={1.5}
-                filter="url(#node-shadow)" />
+                fill="white" stroke={hl ? '#F59E0B' : '#64748B'} strokeWidth={hl ? 3 : 1.5}
+                filter="url(#node-shadow)"
+                className={hl ? 'stroke-amber-400 stroke-[3px]' : ''} />
               <text x={rightX} y={y + 1} textAnchor="middle" dominantBaseline="middle"
-                fill="#64748B" fontSize={11} fontWeight={600}
+                fill={hl ? '#F59E0B' : '#64748B'} fontSize={11} fontWeight={600}
                 fontFamily="'IBM Plex Mono', monospace">
                 {lbl}
               </text>
