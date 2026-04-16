@@ -54,10 +54,10 @@ test('symmetry guide documents every declaration style', async () => {
   );
 });
 
-test('symmetry guide includes the Reynolds helper and whest-only indexing examples', async () => {
+test('symmetry guide includes the Reynolds section and whest-only indexing examples', async () => {
   const source = await readSymmetryGuide();
 
-  assert.match(source, /def symmetrize_with_group\(shape, symmetry_group\):/);
+  assert.match(source, /Generating example data with the Reynolds operator/);
   assert.match(source, /we\.newaxis/);
   assert.match(source, /we\.array\(\[0, 1\]\)/);
 });

@@ -69,7 +69,7 @@ test('Acts 2 through 4 render the named-procedure bridge text in the live shell'
 
   assert.match(appSource, /EXPLORER_ACTS\[1\]\.bridge/);
   assert.match(appSource, /EXPLORER_ACTS\[2\]\.bridge/);
-  assert.match(appSource, /EXPLORER_ACTS\[3\]\.bridge/);
+  assert.match(appSource, /We now decompose the detected global action/);
 });
 
 test('acts 1 through 4 explicitly distinguish declared and detected symmetry', () => {

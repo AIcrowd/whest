@@ -30,16 +30,14 @@ test('Act 1 uses a desktop preset rail and a mobile preset fallback', () => {
   assert.match(chooserSource, /expectedGroup/);
 });
 
-test('ExampleChooser uses the shared Python code block and the wider 70\\/30 row', () => {
+test('ExampleChooser uses the shared Python code block and current builder primitives', () => {
   const chooserSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/ExampleChooser.jsx', import.meta.url), 'utf8');
   const codeBlockSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/PythonCodeBlock.jsx', import.meta.url), 'utf8');
 
   assert.match(chooserSource, /PythonCodeBlock/);
-  assert.match(chooserSource, /ExplorerSectionCard/);
   assert.match(chooserSource, /ExplorerField/);
   assert.match(chooserSource, /Button/);
   assert.match(chooserSource, /Input/);
-  assert.match(chooserSource, /lg:grid-cols-\[minmax\(0,7fr\)_minmax\(360px,3fr\)\]/);
   assert.match(chooserSource, /checkpointItems\.length > 0/);
   assert.match(chooserSource, /Reference Code/);
   assert.match(codeBlockSource, /navigator\.clipboard\.writeText/);
@@ -52,7 +50,7 @@ test('ExampleChooser uses the shared Python code block and the wider 70\\/30 row
 
 test('PresetSidebar widens the rail and uses shared text sizing while still showing the output symmetry', () => {
   const sidebarSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/PresetSidebar.jsx', import.meta.url), 'utf8');
-  assert.match(sidebarSource, /w-\[20rem\]/);
+  assert.match(sidebarSource, /w-\[18rem\]/);
   assert.match(sidebarSource, /px-3\.5 py-3/);
   assert.match(sidebarSource, /Define your own contraction/);
   assert.match(sidebarSource, /Keep the current builder state/);
@@ -68,6 +66,6 @@ test('PresetSidebar widens the rail and uses shared text sizing while still show
 test('CaseBadge compact variant uses the shared xs scale instead of micro text sizes', () => {
   const badgeSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/CaseBadge.jsx', import.meta.url), 'utf8');
   assert.match(badgeSource, /variant === 'compact'/);
-  assert.match(badgeSource, /size === 'xs'[\s\S]*h-4 w-4 justify-center rounded text-xs font-bold/);
+  assert.match(badgeSource, /size === 'xs'[\s\S]*h-5 w-5 justify-center rounded-full px-0\.5 py-0 leading-none text-\[11px\] font-bold/);
   assert.doesNotMatch(badgeSource, /text-\[9px\]/);
 });

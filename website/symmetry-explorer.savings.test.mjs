@@ -10,9 +10,10 @@ test('Acts 2-4 are sequenced around the inline savings narrative', () => {
   assert.match(appSource, /EXPLORER_ACTS\[1\]\.heading/);
   assert.match(appSource, /EXPLORER_ACTS\[2\]\.heading/);
   assert.match(appSource, /EXPLORER_ACTS\[3\]\.heading/);
-  assert.match(appSource, /NarrativeCallout label="Why this matters">\{EXPLORER_ACTS\[3\]\.why\}/);
+  assert.match(appSource, /We now decompose the detected global action/);
   assert.match(componentCostSource, /independent components/);
-  assert.match(totalCostSource, /payoff of the previous acts/);
+  assert.match(appSource, /EXPLORER_ACTS\[4\]\.question/);
+  assert.doesNotMatch(totalCostSource, /payoff of the previous acts/);
 });
 
 test('Act 4 opens the Mental Framework in a modal using the shared code block', () => {
@@ -29,28 +30,27 @@ test('Act 4 opens the Mental Framework in a modal using the shared code block', 
   assert.match(appSource, /setShowMentalModel\(\(isOpen\) => reduceMentalModelVisibility\(isOpen, 'customExample'\)\)/);
 });
 
-test('TotalCostView renders savings totals with shared table and metric primitives', () => {
+test('TotalCostView renders the current savings metric cards', () => {
   const totalCostSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/TotalCostView.jsx', import.meta.url), 'utf8');
 
   assert.match(totalCostSource, /space-y-8/);
-  assert.match(totalCostSource, /TableHeader/);
-  assert.match(totalCostSource, /TableBody/);
   assert.match(totalCostSource, /ExplorerMetricCard/);
+  assert.match(totalCostSource, /%age Savings/);
+  assert.match(totalCostSource, /Cost:/);
+  assert.match(totalCostSource, /Speedup:/);
+  assert.doesNotMatch(totalCostSource, /TableHeader/);
+  assert.doesNotMatch(totalCostSource, /TableBody/);
   assert.doesNotMatch(totalCostSource, /text-xs font-semibold uppercase tracking-wide/);
-  assert.match(totalCostSource, /px-4 py-3 text-sm font-semibold uppercase tracking-\[0\.16em\] text-muted-foreground/);
-  assert.match(totalCostSource, /px-4 py-3 text-sm/);
-  assert.match(totalCostSource, /font-mono text-sm text-foreground/);
   assert.match(totalCostSource, /border-coral\/30 bg-coral-light/);
   assert.match(totalCostSource, /border-green-600\/20 bg-green-600\/5/);
 });
 
-test('ComponentCostView composes component summaries from shared metric primitives', () => {
+test('ComponentCostView renders the current decision tree and component table', () => {
   const componentCostSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/ComponentCostView.jsx', import.meta.url), 'utf8');
 
-  assert.doesNotMatch(componentCostSource, /function MetricCard/);
-  assert.doesNotMatch(componentCostSource, /text-\[11px\]/);
-  assert.match(componentCostSource, /ExplorerMetricCard/);
-  assert.match(componentCostSource, /text-sm font-semibold uppercase tracking-\[0\.16em\] text-muted-foreground/);
-  assert.match(componentCostSource, /label=\"Method\"/);
+  assert.match(componentCostSource, /TableHeader/);
+  assert.match(componentCostSource, /TableBody/);
   assert.match(componentCostSource, /DecisionTree/);
+  assert.match(componentCostSource, /Direct count \(trivial\)/);
+  assert.match(componentCostSource, /Orbit Enumeration/);
 });

@@ -16,7 +16,7 @@ test('symmetry explorer acts use interpretation, algorithm, and output framing',
   const shellActsSource = act5Start >= 0 ? appSource.slice(0, act5Start) : appSource;
 
   assert.equal(countMatches(shellActsSource, /label="Interpretation"/g), 4);
-  assert.equal(countMatches(shellActsSource, /label="Algorithm"/g), 4);
+  assert.equal(countMatches(shellActsSource, /label="Approach"/g), 4);
   assert.equal(countMatches(shellActsSource, /label="What this produces"/g), 4);
   assert.doesNotMatch(shellActsSource, /label="Why this matters"|label="Takeaway"/);
 });
