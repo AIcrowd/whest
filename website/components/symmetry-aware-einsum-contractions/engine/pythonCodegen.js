@@ -90,6 +90,53 @@ function shapeExpr(rank) {
   return `(${new Array(rank).fill('n').join(', ')})`;
 }
 
+function indentLines(lines, spaces = 4) {
+  const prefix = ' '.repeat(spaces);
+  return lines.map((line) => (line ? `${prefix}${line}` : line));
+}
+
+function buildGroupLines(variable) {
+  const { symmetry, symAxes, generators } = variable;
+  const k = symAxes.length;
+  const axesTuple = `(${symAxes.join(', ')})`;
+
+  switch (symmetry) {
+    case 'symmetric':
+      return [
+        'we.PermutationGroup.symmetric(',
+        `    ${k},`,
+        `    axes=${axesTuple},`,
+        ')',
+      ];
+    case 'cyclic':
+      return [
+        'we.PermutationGroup.cyclic(',
+        `    ${k},`,
+        `    axes=${axesTuple},`,
+        ')',
+      ];
+    case 'dihedral':
+      return [
+        'we.PermutationGroup.dihedral(',
+        `    ${k},`,
+        `    axes=${axesTuple},`,
+        ')',
+      ];
+    case 'custom': {
+      const gens = parseGensForPython(generators || '');
+      const lines = ['we.PermutationGroup('];
+      for (const gen of gens) {
+        lines.push(`    ${gen},`);
+      }
+      lines.push(`    axes=${axesTuple},`);
+      lines.push(')');
+      return lines;
+    }
+    default:
+      return [];
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Main export
 // ---------------------------------------------------------------------------
@@ -127,10 +174,9 @@ export function generatePython(variables, subscripts, output, operandNames, dime
     if (v.symmetry === 'none') {
       lines.push(`${v.name} = we.random.randn(${new Array(v.rank).fill('n').join(', ')})`);
     } else {
-      const group = buildGroupExpr(v);
       lines.push(`${v.name} = we.random.symmetric(`);
       lines.push(`    ${shape},`);
-      lines.push(`    ${group}`);
+      lines.push(...indentLines(buildGroupLines(v)));
       lines.push(')');
     }
   }
@@ -141,7 +187,10 @@ export function generatePython(variables, subscripts, output, operandNames, dime
   lines.push('# --- Expression ---');
   const names = operandNames.split(',').map((s) => s.trim()).join(', ');
   const einsumStr = `'${subscripts}->${output}'`;
-  lines.push(`path, info = we.einsum_path(${einsumStr}, ${names})`);
+  lines.push('path, info = we.einsum_path(');
+  lines.push(`    ${einsumStr},`);
+  lines.push(`    ${names},`);
+  lines.push(')');
   lines.push('print(info)');
   lines.push('');
 
