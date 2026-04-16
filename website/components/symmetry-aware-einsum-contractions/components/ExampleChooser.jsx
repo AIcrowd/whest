@@ -112,6 +112,7 @@ export default function ExampleChooser({
   onDimensionChange,
   onCustom,
   onCustomExample,
+  onPreviewChange,
   onDirtyChange,
   checkpointItems = [],
 }) {
@@ -250,6 +251,21 @@ export default function ExampleChooser({
     [variables, subscriptsStr, outputStr, operandNamesStr, dimensionN],
   );
 
+  useEffect(() => {
+    const opsArr = operandNamesStr.split(',').map((part) => part.trim()).filter(Boolean);
+    onPreviewChange?.({
+      id: activePresetIdx >= 0 ? examples[activePresetIdx].id : 'custom',
+      name: activePresetIdx >= 0 ? examples[activePresetIdx].name : 'Custom',
+      formula: `einsum('${subscriptsStr}->${outputStr.trim()}', ${opsArr.join(', ')})`,
+      variables,
+      expression: {
+        subscripts: subscriptsStr,
+        output: outputStr.trim(),
+        operandNames: operandNamesStr,
+      },
+    });
+  }, [activePresetIdx, examples, onPreviewChange, operandNamesStr, outputStr, subscriptsStr, variables]);
+
   const handleAnalyze = useCallback(() => {
     if (!validation.valid) return;
 
@@ -265,6 +281,12 @@ export default function ExampleChooser({
       id: activePresetIdx >= 0 ? examples[activePresetIdx].id : 'custom',
       name: activePresetIdx >= 0 ? examples[activePresetIdx].name : 'Custom',
       formula,
+      variables,
+      expression: {
+        subscripts: subscriptsStr,
+        output: out,
+        operandNames: operandNamesStr,
+      },
       subscripts: subs,
       output: out,
       operandNames: opsArr,

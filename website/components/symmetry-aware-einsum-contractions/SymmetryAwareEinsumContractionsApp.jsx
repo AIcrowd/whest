@@ -66,6 +66,7 @@ function normalizeExample(example) {
 export default function SymmetryAwareEinsumContractionsApp() {
   const [exampleIdx, setExampleIdx] = useState(DEFAULT_EXAMPLE_IDX);
   const [customExample, setCustomExample] = useState(null);
+  const [previewExample, setPreviewExample] = useState(EXAMPLES[DEFAULT_EXAMPLE_IDX]);
   const [dimensionN, setDimensionN] = useState(5);
   const [selectedOrbitIdx, setSelectedOrbitIdx] = useState(-1);
   const [activeActId, setActiveActId] = useState(EXPLORER_ACTS[0].id);
@@ -91,6 +92,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
   const handleSelect = useCallback((idx) => {
     setShowMentalModel((isOpen) => reduceMentalModelVisibility(isOpen, 'selectPreset'));
     setExampleIdx(idx);
+    setPreviewExample(EXAMPLES[idx] ?? null);
     setIsDirty(false);
     setSelectedOrbitIdx(-1);
   }, []);
@@ -99,6 +101,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
   const handleCustomExample = useCallback((ex) => {
     setShowMentalModel((isOpen) => reduceMentalModelVisibility(isOpen, 'customExample'));
     setCustomExample(ex);
+    setPreviewExample(ex);
     setExampleIdx(CUSTOM_IDX);
     setSelectedOrbitIdx(-1);
   }, []);
@@ -172,7 +175,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
   return (
     <div className="min-h-screen bg-background">
       <StickyBar
-        example={example}
+        example={previewExample ?? example}
         group={group}
         activeActId={activeActId}
       />
@@ -220,6 +223,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   onDimensionChange={setDimensionN}
                   onCustom={handleCustomMode}
                   onCustomExample={handleCustomExample}
+                  onPreviewChange={setPreviewExample}
                   onDirtyChange={setIsDirty}
                   checkpointItems={checkpointItems}
                 />
