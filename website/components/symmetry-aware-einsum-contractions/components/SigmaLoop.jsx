@@ -413,10 +413,10 @@ function ValidPairsModal({
                 <span className="rejected-list-sigma">
                   σ = {fmtSigma(r.sigmaRowPerm, uLabels)}
                 </span>
-                <span className="rejected-list-reason">
+                <span className="pair-pi">
                   π = {fmtPi(r.pi)}
                 </span>
-                <span className={`rejected-list-reason pair-kind pair-kind-${r.piKind || 'identity'}`}>
+                <span className={`pair-kind pair-kind-${r.piKind || 'identity'}`}>
                   {kindLabel(r.piKind)}
                 </span>
                 <span className="rejected-list-arrow">→</span>

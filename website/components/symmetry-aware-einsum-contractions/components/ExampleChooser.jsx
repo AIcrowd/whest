@@ -11,6 +11,7 @@ import CaseBadge from './CaseBadge.jsx';
 import ExplorerField from './ExplorerField.jsx';
 import ExplorerSectionCard from './ExplorerSectionCard.jsx';
 import PythonCodeBlock from './PythonCodeBlock.jsx';
+import SymmetryBadge from './SymmetryBadge.jsx';
 
 const SYM_TYPES = ['none', 'symmetric', 'cyclic', 'dihedral', 'custom'];
 const SYM_LABELS = {
@@ -109,6 +110,7 @@ export default function ExampleChooser({
   onSelect,
   selectedPresetIdx = 0,
   dimensionN,
+  onDimensionChange,
   onCustom,
   onCustomExample,
   onDirtyChange,
@@ -500,6 +502,22 @@ export default function ExampleChooser({
               </Button>
             </div>
           </div>
+          <div className="mt-3 flex justify-end">
+            <label className="flex cursor-pointer items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5">
+              <span className="text-sm font-mono font-semibold text-muted-foreground">n =</span>
+              <input
+                type="range"
+                min={2}
+                max={25}
+                value={dimensionN}
+                onChange={(event) => onDimensionChange?.(Number(event.target.value))}
+                className="h-2 w-40 cursor-pointer accent-primary"
+              />
+              <span className="w-6 text-center text-sm font-mono font-bold text-foreground">
+                {dimensionN}
+              </span>
+            </label>
+          </div>
         </div>
 
         {validation.errors.length > 0 && (
@@ -562,9 +580,10 @@ export default function ExampleChooser({
                 <span className="flex items-center gap-2">
                   <span className="truncate text-sm font-medium text-gray-900">{summary.name}</span>
                   {summary.caseType && <CaseBadge caseType={summary.caseType} size="xs" variant="compact" />}
+                  <SymmetryBadge value={summary.expectedGroup} className="shrink-0" />
                 </span>
                 <code className="mt-1 block truncate text-sm text-gray-500">{summary.formula}</code>
-                <span className="mt-1 block text-sm text-gray-400">{summary.expectedGroup}</span>
+                <span className="mt-1 block text-sm text-gray-400">{summary.description}</span>
               </span>
             </Button>
           ))}

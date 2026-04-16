@@ -172,8 +172,6 @@ export default function SymmetryAwareEinsumContractionsApp() {
       <StickyBar
         example={example}
         group={group}
-        dimensionN={dimensionN}
-        onDimensionChange={setDimensionN}
         activeActId={activeActId}
       />
 
@@ -186,26 +184,6 @@ export default function SymmetryAwareEinsumContractionsApp() {
           className="border-border/70 shadow-sm"
           contentClassName="pt-6"
         >
-          {example && group ? (
-            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-              <div className="flex min-w-0 flex-wrap items-center gap-2">
-                <Badge>einsum</Badge>
-                <code className="truncate rounded-md border border-primary/20 bg-primary/10 px-3 py-1.5 font-mono text-sm font-medium text-primary shadow-sm">
-                  {example.formula}
-                </code>
-                <Badge variant="outline" className="border-primary/25 bg-primary/10 text-primary">
-                  {group.fullGroupName || 'trivial'}
-                </Badge>
-              </div>
-              <p className="max-w-2xl text-sm leading-6 text-muted-foreground">
-                Start in Act 1 to choose a preset or build a custom contraction, then follow the structure, proof, and savings views in order.
-              </p>
-            </div>
-          ) : (
-            <p className="max-w-3xl text-sm leading-6 text-muted-foreground">
-              Choose a preset or define your own contraction to walk through structure detection, group construction, and symmetry-aware pricing.
-            </p>
-          )}
           </ExplorerSectionCard>
 
         </div>
@@ -225,6 +203,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                 onSelect={handleSelect}
                 selectedPresetIdx={selectedPresetIdx}
                 dimensionN={dimensionN}
+                onDimensionChange={setDimensionN}
                 onCustom={handleCustomMode}
                 onCustomExample={handleCustomExample}
                 onDirtyChange={setIsDirty}

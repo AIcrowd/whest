@@ -5,6 +5,8 @@ import CaseBadge from './CaseBadge.jsx';
 import ExplorerMetricCard from './ExplorerMetricCard.jsx';
 import NarrativeCallout from './NarrativeCallout.jsx';
 import OrbitInspector from './OrbitInspector.jsx';
+import RoleBadge from './RoleBadge.jsx';
+import SymmetryBadge from './SymmetryBadge.jsx';
 import { DecisionTree, LabelInteractionGraph } from './ComponentView.jsx';
 
 export const COMPONENT_STORY_TEXT = 'The detected group splits into independent components. Each component contributes its own multiplication representatives and accumulation rule, so the savings story can be read locally before the totals are assembled.';
@@ -42,6 +44,22 @@ function methodLabel(comp) {
   return CASE_META[comp.caseType]?.method ?? 'orbit enumeration';
 }
 
+function LabelRoleList({ role, labels }) {
+  if (!labels?.length) {
+    return <span className="text-xs text-muted-foreground">none</span>;
+  }
+
+  return (
+    <div className="flex flex-wrap items-center gap-1.5">
+      {labels.map((label) => (
+        <RoleBadge key={`${role}-${label}`} role={role}>
+          {label}
+        </RoleBadge>
+      ))}
+    </div>
+  );
+}
+
 function ComponentCard({ comp, dimensionN, fallbackReductionCost }) {
   const multiplicationOrbits = computeMultiplicationOrbits(comp, dimensionN);
   const accumulationCost = computeAccumulationCost(comp, dimensionN, fallbackReductionCost);
@@ -54,7 +72,7 @@ function ComponentCard({ comp, dimensionN, fallbackReductionCost }) {
       <div className="flex flex-wrap items-center gap-2">
         <CaseBadge caseType={comp.caseType} />
         <code className="text-sm text-foreground">{`{${(comp.labels ?? []).join(', ')}}`}</code>
-        <span className="text-sm text-muted-foreground">{comp.groupName || 'trivial'}</span>
+        <SymmetryBadge value={comp.groupName || 'trivial'} />
         {comp.order > 1 && <span className="text-sm font-mono text-muted-foreground">|G|={comp.order}</span>}
       </div>
 
@@ -75,9 +93,16 @@ function ComponentCard({ comp, dimensionN, fallbackReductionCost }) {
           label="Method"
           value={methodLabel(comp)}
           detail={
-            <>
-              V: {(comp.va ?? []).join(', ') || '—'} | W: {(comp.wa ?? []).join(', ') || '—'}
-            </>
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <RoleBadge role="v">V</RoleBadge>
+                <LabelRoleList role="v" labels={comp.va ?? []} />
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                <RoleBadge role="w">W</RoleBadge>
+                <LabelRoleList role="w" labels={comp.wa ?? []} />
+              </div>
+            </div>
           }
           className="border-0 bg-gray-50 shadow-none"
           valueClassName="font-sans text-sm font-semibold text-gray-700"

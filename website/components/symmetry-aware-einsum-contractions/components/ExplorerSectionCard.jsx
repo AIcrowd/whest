@@ -11,6 +11,10 @@ function ExplorerSectionCard({
   contentClassName,
   ...props
 }) {
+  const hasContent = Array.isArray(children)
+    ? children.some((child) => child != null && child !== false && child !== '')
+    : children != null && children !== false && children !== '';
+
   return (
     <Card className={cn('border-border/70 shadow-sm', className)} {...props}>
       {(title || description || eyebrow || action) && (
@@ -25,9 +29,11 @@ function ExplorerSectionCard({
           </div>
         </CardHeader>
       )}
-      <CardContent className={cn('pt-5', contentClassName)}>
-        {children}
-      </CardContent>
+      {hasContent ? (
+        <CardContent className={cn('pt-5', contentClassName)}>
+          {children}
+        </CardContent>
+      ) : null}
     </Card>
   );
 }
