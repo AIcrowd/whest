@@ -23,13 +23,13 @@ function formatFullNumpyRef(numpyRef: string) {
 
 function getTopicForOperation(op: OperationDocRecord) {
   if (op.area === 'linalg') {
-    return { label: 'Linear algebra', href: '/docs/api/linalg' };
+    return { label: 'Linear algebra', href: '/docs/api' };
   }
   if (op.area === 'fft') {
-    return { label: 'Discrete Fourier Transform', href: '/docs/api/fft' };
+    return { label: 'Discrete Fourier Transform', href: '/docs/api' };
   }
   if (op.area === 'random') {
-    return { label: 'Random sampling', href: '/docs/api/random' };
+    return { label: 'Random sampling', href: '/docs/api' };
   }
   if (
     /^(histogram|histogram_bin_edges|bincount|digitize|percentile|nanpercentile|quantile|nanquantile|median|nanmedian|mean|nanmean|average|std|nanstd|var|nanvar|corrcoef|cov)\b/.test(
