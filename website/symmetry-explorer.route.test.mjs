@@ -2,13 +2,26 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
+function countMatches(source, pattern) {
+  const matches = source.match(pattern);
+  return matches ? matches.length : 0;
+}
+
 test('symmetry explorer acts use interpretation, algorithm, and output framing', () => {
   const appSource = fs.readFileSync(
     new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url),
     'utf8',
   );
+  const act5Start = appSource.indexOf('<section id={EXPLORER_ACTS[4].id}');
+  const shellActsSource = act5Start >= 0 ? appSource.slice(0, act5Start) : appSource;
+  const chooserSource = fs.readFileSync(
+    new URL('./components/symmetry-aware-einsum-contractions/components/ExampleChooser.jsx', import.meta.url),
+    'utf8',
+  );
+  const shellSource = `${shellActsSource}\n${chooserSource}`;
 
-  assert.match(appSource, /label="Interpretation"/);
-  assert.match(appSource, /label="Algorithm"/);
-  assert.match(appSource, /label="What this produces"/);
+  assert.equal(countMatches(shellSource, /label="Interpretation"/g), 4);
+  assert.equal(countMatches(shellSource, /label="Algorithm"/g), 4);
+  assert.equal(countMatches(shellSource, /label="What this produces"/g), 4);
+  assert.doesNotMatch(shellSource, /label="Why this matters"|label="Takeaway"/);
 });
