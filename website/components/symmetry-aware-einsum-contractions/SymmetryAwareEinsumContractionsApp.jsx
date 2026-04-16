@@ -11,6 +11,7 @@ import ExplorerSectionCard from './components/ExplorerSectionCard.jsx';
 import { EXPLORER_ACTS, buildAnalysisCheckpoint } from './components/explorerNarrative.js';
 import NarrativeCallout from './components/NarrativeCallout.jsx';
 import ExampleChooser from './components/ExampleChooser.jsx';
+import LabelClusterPanel from './components/LabelClusterPanel.jsx';
 import PresetSidebar from './components/PresetSidebar.jsx';
 import BipartiteGraph from './components/BipartiteGraph.jsx';
 import MatrixView from './components/MatrixView.jsx';
@@ -67,7 +68,10 @@ export default function SymmetryAwareEinsumContractionsApp() {
   const [exampleIdx, setExampleIdx] = useState(DEFAULT_EXAMPLE_IDX);
   const [customExample, setCustomExample] = useState(null);
   const [previewExample, setPreviewExample] = useState(EXAMPLES[DEFAULT_EXAMPLE_IDX]);
-  const [dimensionN, setDimensionN] = useState(5);
+  const [defaultSize, setDefaultSize] = useState(5);
+  const [clusterSizes, setClusterSizes] = useState({}); // { [clusterId]: size }
+  // Back-compat alias — many child components still take a single `dimensionN` prop.
+  const dimensionN = defaultSize;
   const [selectedOrbitIdx, setSelectedOrbitIdx] = useState(-1);
   const [selectedSigmaPairIndex, setSelectedSigmaPairIndex] = useState(null);
   const [activeActId, setActiveActId] = useState(EXPLORER_ACTS[0].id);
@@ -97,6 +101,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
     setIsDirty(false);
     setSelectedOrbitIdx(-1);
     setSelectedSigmaPairIndex(null);
+    setClusterSizes({});
   }, []);
 
   // Handle custom example submission
@@ -107,6 +112,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
     setExampleIdx(CUSTOM_IDX);
     setSelectedOrbitIdx(-1);
     setSelectedSigmaPairIndex(null);
+    setClusterSizes({});
   }, []);
 
   const handleCustomMode = useCallback(() => {
@@ -114,17 +120,21 @@ export default function SymmetryAwareEinsumContractionsApp() {
     setExampleIdx(CUSTOM_IDX);
     setSelectedOrbitIdx(-1);
     setSelectedSigmaPairIndex(null);
+    setClusterSizes({});
   }, []);
 
   const analysis = useMemo(() => {
     if (!example) return null;
     try {
-      return analyzeExample(example, dimensionN);
+      const normalized = normalizeExample(example);
+      const examplePreset = normalized.labelSizes || {};
+      const mergedLabelSizes = { ...examplePreset, ...clusterSizes };
+      return analyzeExample({ ...normalized, labelSizes: mergedLabelSizes }, defaultSize);
     } catch (err) {
       console.error('Pipeline error:', err);
       return null;
     }
-  }, [example, dimensionN]);
+  }, [example, clusterSizes, defaultSize]);
 
   const {
     graph,
@@ -133,7 +143,21 @@ export default function SymmetryAwareEinsumContractionsApp() {
     symmetry: group,
     componentData,
     costModel: cost,
+    clusters: analysisClusters,
   } = analysis || {};
+
+  // Seed clusterSizes from analysis when clusters appear
+  useEffect(() => {
+    if (!analysis?.clusters) return;
+    setClusterSizes((prev) => {
+      const next = { ...prev };
+      let changed = false;
+      for (const c of analysis.clusters) {
+        if (next[c.id] == null) { next[c.id] = c.size; changed = true; }
+      }
+      return changed ? next : prev;
+    });
+  }, [analysis?.clusters]);
 
   const resolvedSelectedOrbitIdx = useMemo(() => {
     const orbitRows = cost?.orbitRows ?? [];
@@ -226,13 +250,30 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   onSelect={handleSelect}
                   selectedPresetIdx={selectedPresetIdx}
                   dimensionN={dimensionN}
-                  onDimensionChange={setDimensionN}
+                  onDimensionChange={setDefaultSize}
                   onCustom={handleCustomMode}
                   onCustomExample={handleCustomExample}
                   onPreviewChange={setPreviewExample}
                   onDirtyChange={setIsDirty}
                   checkpointItems={checkpointItems}
                 />
+                {analysisClusters?.length > 0 ? (
+                  <div className="mt-4">
+                    <LabelClusterPanel
+                      clusters={analysisClusters.map((c) => ({ ...c, size: clusterSizes[c.id] ?? c.size }))}
+                      onSizeChange={(id, size) => setClusterSizes((prev) => ({ ...prev, [id]: size }))}
+                      vLabels={group?.vLabels || []}
+                      onSetAll={(n) => {
+                        setDefaultSize(n);
+                        setClusterSizes((prev) => {
+                          const next = {};
+                          for (const k of Object.keys(prev)) next[k] = n;
+                          return next;
+                        });
+                      }}
+                    />
+                  </div>
+                ) : null}
                 <div className="mt-4">
                   <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[0].produces}</NarrativeCallout>
                 </div>

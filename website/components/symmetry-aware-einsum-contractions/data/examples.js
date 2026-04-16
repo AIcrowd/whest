@@ -38,6 +38,7 @@ export const EXAMPLES = [
       { name: 'X', rank: 2, symmetry: 'none', symAxes: null, generators: '' },
     ],
     expression: { subscripts: 'ia,ib', output: 'ab', operandNames: 'X, X' },
+    labelSizes: { 'i': 8, 'a,b': 3 },
   },
   {
     id: 'triple-outer',
@@ -51,6 +52,7 @@ export const EXAMPLES = [
       { name: 'X', rank: 2, symmetry: 'none', symAxes: null, generators: '' },
     ],
     expression: { subscripts: 'ia,ib,ic', output: 'abc', operandNames: 'X, X, X' },
+    labelSizes: { 'i': 6, 'a,b,c': 3 },
   },
   {
     id: 'outer',
@@ -64,6 +66,7 @@ export const EXAMPLES = [
       { name: 'X', rank: 2, symmetry: 'none', symAxes: null, generators: '' },
     ],
     expression: { subscripts: 'ab,cd', output: 'abcd', operandNames: 'X, X' },
+    labelSizes: { 'a,c': 4, 'b,d': 3 },
   },
   {
     id: 'triangle',
