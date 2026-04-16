@@ -1,0 +1,294 @@
+{
+  "aliases": [],
+  "api_docs_html": "",
+  "area": "fft",
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "The inverse of "
+            },
+            {
+              "kind": "code",
+              "text": "fftshift"
+            },
+            {
+              "kind": "text",
+              "text": ". Although identical for even-length "
+            },
+            {
+              "kind": "code",
+              "text": "x"
+            },
+            {
+              "kind": "text",
+              "text": ", the functions differ by one sample for odd-length "
+            },
+            {
+              "kind": "code",
+              "text": "x"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Input array."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "array_like",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Input array."
+                }
+              ],
+              "name": "x",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Axes over which to calculate.  Defaults to None, which shifts all axes."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int or shape tuple, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Axes over which to calculate.  Defaults to None, which shifts all axes."
+                }
+              ],
+              "name": "axes",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "The shifted array."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "ndarray",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "The shifted array."
+                }
+              ],
+              "name": "y",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "links": [
+            {
+              "description": "Shift zero-frequency component to the center of the spectrum.",
+              "description_inline": [
+                {
+                  "kind": "text",
+                  "text": "Shift zero-frequency component to the center of the spectrum."
+                }
+              ],
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fftshift.html",
+              "href": "",
+              "label": "fftshift",
+              "original_target": "fftshift",
+              "role": "",
+              "target": "fftshift",
+              "unresolved": false
+            }
+          ],
+          "type": "link_list"
+        }
+      ],
+      "title": "See also"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import whest as we"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "freqs = we.fft.fftfreq(9, d=1./9).reshape(3, 3)"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "freqs"
+            },
+            {
+              "kind": "output",
+              "text": "array([[ 0.,  1.,  2.],"
+            },
+            {
+              "kind": "output",
+              "text": "       [ 3.,  4., -4.],"
+            },
+            {
+              "kind": "output",
+              "text": "       [-3., -2., -1.]])"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.fft.ifftshift(we.fft.fftshift(freqs))"
+            },
+            {
+              "kind": "output",
+              "text": "array([[ 0.,  1.,  2.],"
+            },
+            {
+              "kind": "output",
+              "text": "       [ 3.,  4., -4.],"
+            },
+            {
+              "kind": "output",
+              "text": "       [-3., -2., -1.]])"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
+    }
+  ],
+  "canonical_name": "fft.ifftshift",
+  "category": "free",
+  "cost_formula": "0",
+  "cost_formula_latex": "$0$",
+  "display_type": "free",
+  "doc_coverage": {
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "example": {
+    "code": "import whest as we\n\nfreqs = we.fft.fftfreq(9, d=1./9).reshape(3, 3)\n\nfreqs\n\nwe.fft.ifftshift(we.fft.fftshift(freqs))",
+    "output": "array([[ 0.,  1.,  2.],\n       [ 3.,  4., -4.],\n       [-3., -2., -1.]])\n\narray([[ 0.,  1.,  2.],\n       [ 3.,  4., -4.],\n       [-3., -2., -1.]])",
+    "source": "derived"
+  },
+  "href": "/docs/api/ops/fft-ifftshift",
+  "name": "fft.ifftshift",
+  "next": {
+    "href": "/docs/api/ops/fft-ihfft",
+    "label": "we.fft.ihfft"
+  },
+  "notes": "Inverse of fftshift. No arithmetic; index reordering only.",
+  "notes_sections": [],
+  "numpy_ref": "np.fft.ifftshift",
+  "parameters": [
+    {
+      "body": [
+        "Input array."
+      ],
+      "name": "x",
+      "type": "array_like"
+    },
+    {
+      "body": [
+        "Axes over which to calculate.  Defaults to None, which shifts all axes."
+      ],
+      "name": "axes",
+      "type": "int or shape tuple, optional"
+    }
+  ],
+  "previous": {
+    "href": "/docs/api/ops/fft-ifftn",
+    "label": "we.fft.ifftn"
+  },
+  "provenance_label": "Adapted from NumPy docs",
+  "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.ifftshift.html",
+  "returns": [
+    {
+      "body": [
+        "The shifted array."
+      ],
+      "name": "y",
+      "type": "ndarray"
+    }
+  ],
+  "see_also": [
+    {
+      "description": "Shift zero-frequency component to the center of the spectrum.",
+      "description_inline": [
+        {
+          "kind": "text",
+          "text": "Shift zero-frequency component to the center of the spectrum."
+        }
+      ],
+      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fftshift.html",
+      "href": "",
+      "label": "fftshift",
+      "original_target": "fftshift",
+      "role": "",
+      "target": "fftshift",
+      "unresolved": false
+    }
+  ],
+  "signature": "we.fft.ifftshift(x, axes=None)",
+  "slug": "fft-ifftshift",
+  "summary": "The inverse of `fftshift`. Although identical for even-length `x`, the functions differ by one sample for odd-length `x`.",
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_helper.py#L77",
+  "weight": 1.0,
+  "whest_examples_html": "",
+  "whest_ref": "we.fft.ifftshift",
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_free.py#L41"
+}

@@ -1,26 +1,28 @@
 'use client';
 
 import opsData from '../../public/ops.json';
-import opDocsJson from '../../.generated/op-docs.json';
 import opRefsJson from '../../.generated/op-refs.json';
 import ApiReferenceInner from './ApiReference';
 import type {Operation} from './OperationRow';
 
-type OperationDocPreview = Pick<Operation, 'area' | 'display_type'> & {href: string};
 type OperationRefEntry = {href: string; canonical_name: string};
 
 export default function ApiReference() {
-  const opDocs = opDocsJson as Record<string, OperationDocPreview>;
   const opRefs = opRefsJson as Record<string, OperationRefEntry>;
+  const operationByName = new Map(opsData.operations.map((op) => [op.name, op]));
 
   const operations: Operation[] = opsData.operations.map((op) => {
     const ref = opRefs[op.name];
-    const docRecord = ref ? opDocs[ref.canonical_name] : undefined;
+    const canonical = operationByName.get(ref?.canonical_name ?? op.name);
+    const area = canonical ? normalizeArea(canonical.module) : normalizeArea(op.module);
+    const displayType = canonical
+      ? displayTypeForCategory(canonical.category)
+      : displayTypeForCategory(op.category);
 
     return {
       ...op,
-      area: docRecord?.area ?? normalizeArea(op.module),
-      display_type: docRecord?.display_type ?? displayTypeForCategory(op.category),
+      area,
+      display_type: displayType,
       href: op.blocked ? undefined : ref?.href,
     };
   });

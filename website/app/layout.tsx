@@ -1,5 +1,6 @@
 import { Inter, Geist } from 'next/font/google';
 import { Provider } from '@/components/provider';
+import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import 'katex/dist/katex.css';
 import './global.css';
@@ -10,6 +11,14 @@ const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 const inter = Inter({
   subsets: ['latin'],
 });
+
+export const metadata: Metadata = {
+  icons: {
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
+};
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (

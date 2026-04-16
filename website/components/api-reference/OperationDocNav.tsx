@@ -1,31 +1,35 @@
-import OperationDocLink from './OperationDocLink';
-import styles from './styles.module.css';
+import Link from 'next/link';
+import {ChevronLeft, ChevronRight} from 'lucide-react';
 import type {OperationNavLink} from './op-doc-types';
 
-function NavCard({
-  title,
-  link,
-  align,
-}: {
-  title: 'Previous' | 'Next';
-  link?: OperationNavLink | null;
-  align: 'left' | 'right';
-}) {
-  if (!link) {
-    return <div className={`${styles.docNavCard} ${styles.docNavCardMuted}`} />;
-  }
+function NavCard({link, index}: {link: OperationNavLink; index: 0 | 1}) {
+  const Icon = index === 0 ? ChevronLeft : ChevronRight;
 
   return (
-    <OperationDocLink
+    <Link
       href={link.href}
-      label={
-        <>
-          <span className={styles.docNavLabel}>{title}</span>
-          <span className={styles.docNavValue}>{link.label}</span>
-        </>
-      }
-      className={`${styles.docNavCard} ${align === 'right' ? styles.docNavCardRight : ''}`}
-    />
+      className={[
+        'flex flex-col gap-2 rounded-lg border p-4 text-sm transition-colors hover:bg-fd-accent/80 hover:text-fd-accent-foreground @max-lg:col-span-full',
+        index === 1 ? 'text-end' : '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
+    >
+      <div
+        className={[
+          'inline-flex items-center gap-1.5 font-medium',
+          index === 1 ? 'flex-row-reverse' : '',
+        ]
+          .filter(Boolean)
+          .join(' ')}
+      >
+        <Icon className="-mx-1 size-4 shrink-0 rtl:rotate-180" />
+        <p>{link.label}</p>
+      </div>
+      <p className="text-fd-muted-foreground truncate">
+        {index === 0 ? 'Previous Page' : 'Next Page'}
+      </p>
+    </Link>
   );
 }
 
@@ -41,9 +45,15 @@ export default function OperationDocNav({
   }
 
   return (
-    <nav className={styles.docNav} aria-label="Operation navigation">
-      <NavCard title="Previous" link={previous} align="left" />
-      <NavCard title="Next" link={next} align="right" />
+    <nav
+      className={[
+        '@container grid gap-4',
+        previous && next ? 'grid-cols-2' : 'grid-cols-1',
+      ].join(' ')}
+      aria-label="Operation navigation"
+    >
+      {previous ? <NavCard link={previous} index={0} /> : null}
+      {next ? <NavCard link={next} index={1} /> : null}
     </nav>
   );
 }

@@ -360,6 +360,75 @@ def test_rewrite_api_refs_swaps_numpy_symbols_for_whest():
     assert "we.histogram_bin_edges" in rewritten
 
 
+def test_parse_inline_nodes_emits_structured_role_references():
+    mod = load_generate_api_docs_module()
+
+    nodes = mod.parse_inline_nodes(
+        "See :meth:`~numpy.ufunc.reduce`, :func:`custom text <numpy.absolute>`, and :func:`!numpy.sum`.",
+        supported_ops={"absolute"},
+        alias_map={},
+    )
+
+    reduce_ref = next(node for node in nodes if node.get("kind") == "role_reference" and node.get("role") == "meth")
+    absolute_ref = next(
+        node
+        for node in nodes
+        if node.get("kind") == "role_reference"
+        and node.get("role") == "func"
+        and node.get("display_text") == "custom text"
+    )
+    suppressed_ref = next(
+        node
+        for node in nodes
+        if node.get("kind") == "role_reference"
+        and node.get("role") == "func"
+        and node.get("suppress_link") is True
+    )
+
+    assert reduce_ref["display_text"] == "reduce"
+    assert reduce_ref["external_url"].endswith("numpy.ufunc.reduce.html")
+    assert absolute_ref["href"] == "/docs/api/ops/absolute"
+    assert absolute_ref["explicit_title"] is True
+    assert suppressed_ref["href"] == ""
+    assert suppressed_ref["external_url"] == ""
+
+
+def test_parse_rich_doc_blocks_preserves_directives_and_nested_blocks():
+    mod = load_generate_api_docs_module()
+    coverage = mod._new_doc_coverage()
+
+    blocks = mod._parse_rich_doc_blocks(
+        [
+            "Elements to include in the variance. See :meth:`~numpy.ufunc.reduce` for details.",
+            "",
+            ".. versionadded:: 1.22.0",
+            "",
+            "'doane'",
+            "    Estimator based on Doane's rule.",
+            "",
+            ".. note::",
+            "    See ``histogram_bin_edges`` for additional context.",
+            "",
+            "* First item",
+            "* Second item",
+        ],
+        supported_ops={"histogram_bin_edges"},
+        alias_map={},
+        coverage=coverage,
+    )
+
+    assert any(block["type"] == "directive_block" and block["directive"] == "versionadded" for block in blocks)
+    assert any(block["type"] == "definition_list" for block in blocks)
+    assert any(block["type"] == "list" and block["ordered"] is False for block in blocks)
+    assert any(
+        block["type"] == "directive_block"
+        and block["directive"] == "note"
+        and block["content_blocks"][0]["type"] == "paragraph"
+        for block in blocks
+    )
+    assert coverage["unsupported_directives"] == []
+
+
 def test_derive_example_from_doctest_keeps_code_and_output():
     mod = load_generate_api_docs_module()
 
@@ -424,6 +493,7 @@ def test_resolve_doc_link_sets_internal_and_external_urls():
     assert external.external_url == (
         "https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.svd.html"
     )
+    assert internal.description_inline
 
 
 def test_write_generated_operation_artifacts_emit_structured_parity_fields(tmp_path):
@@ -479,6 +549,40 @@ def test_write_generated_operation_artifacts_emit_structured_parity_fields(tmp_p
     assert absolute["notes_sections"][0] == "Supports broadcasting."
     assert absolute["example"]["source"] == "derived"
     assert absolute["next"]["href"] == "/docs/api/ops/add"
+
+
+def test_write_op_doc_coverage_artifact(tmp_path):
+    mod = load_generate_api_docs_module()
+
+    record = mod.OperationDocRecord(
+        name="absolute",
+        canonical_name="absolute",
+        slug="absolute",
+        href="/docs/api/ops/absolute",
+        area="core",
+        whest_ref="we.absolute",
+        numpy_ref="np.absolute",
+        category="counted_unary",
+        display_type="counted",
+        cost_formula="numel(output)",
+        cost_formula_latex=r"$\text{numel}(\text{output})$",
+        weight=1.0,
+        notes="Element-wise absolute value.",
+        aliases=[],
+        signature="we.absolute(x)",
+        summary="Calculate the absolute value element-wise.",
+        doc_coverage={
+            "unresolved_references": [{"role": "ref", "target": "ufuncs.kwargs"}],
+            "unsupported_directives": [],
+            "raw_blocks": [],
+        },
+    )
+
+    mod.write_op_doc_coverage_artifact([record], tmp_path)
+
+    payload = mod.json.loads((tmp_path / ".generated" / "op-doc-coverage.json").read_text())
+    assert payload["absolute"]["has_issues"] is True
+    assert payload["absolute"]["unresolved_references"][0]["target"] == "ufuncs.kwargs"
 
 
 def test_build_example_coverage_prefers_override_then_derived():

@@ -1,0 +1,331 @@
+{
+  "aliases": [],
+  "api_docs_html": "",
+  "area": "core",
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Return True if x is a not complex type or an array of complex numbers."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "The type of the input is checked, not the value. So even if the input\nhas an imaginary part equal to zero, "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/ops/isrealobj",
+              "kind": "link",
+              "target": "isrealobj",
+              "text": "isrealobj"
+            },
+            {
+              "kind": "text",
+              "text": " evaluates to False\nif the data type is complex."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "The input can be of any type and shape."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "any",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "The input can be of any type and shape."
+                }
+              ],
+              "name": "x",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "The return value, False if "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "x"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " is of a complex type."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "bool",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "The return value, False if "
+                },
+                {
+                  "kind": "code",
+                  "text": "x"
+                },
+                {
+                  "kind": "text",
+                  "text": " is of a complex type."
+                }
+              ],
+              "name": "y",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "links": [
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "",
+              "href": "/docs/api/ops/iscomplexobj",
+              "label": "we.iscomplexobj",
+              "original_target": "iscomplexobj",
+              "role": "",
+              "target": "iscomplexobj",
+              "unresolved": false
+            },
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "",
+              "href": "/docs/api/ops/isreal",
+              "label": "we.isreal",
+              "original_target": "isreal",
+              "role": "",
+              "target": "isreal",
+              "unresolved": false
+            }
+          ],
+          "type": "link_list"
+        }
+      ],
+      "title": "See also"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "The function is only meant for arrays with numerical values but it\naccepts all other objects. Since it assumes array input, the return\nvalue of other objects may be True."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.isrealobj('A string')"
+            },
+            {
+              "kind": "output",
+              "text": "True"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.isrealobj(False)"
+            },
+            {
+              "kind": "output",
+              "text": "True"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.isrealobj(None)"
+            },
+            {
+              "kind": "output",
+              "text": "True"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Notes"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import whest as we"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.isrealobj(1)"
+            },
+            {
+              "kind": "output",
+              "text": "True"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.isrealobj(1+0j)"
+            },
+            {
+              "kind": "output",
+              "text": "False"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.isrealobj([3, 1+0j, True])"
+            },
+            {
+              "kind": "output",
+              "text": "False"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
+    }
+  ],
+  "canonical_name": "isrealobj",
+  "category": "counted_unary",
+  "cost_formula": "numel(output)",
+  "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+  "display_type": "counted",
+  "doc_coverage": {
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "example": {
+    "code": "import whest as we\n\nwe.isrealobj(1)\n\nwe.isrealobj(1+0j)\n\nwe.isrealobj([3, 1+0j, True])",
+    "output": "True\n\nFalse\n\nFalse",
+    "source": "derived"
+  },
+  "href": "/docs/api/ops/isrealobj",
+  "name": "isrealobj",
+  "next": {
+    "href": "/docs/api/ops/isscalar",
+    "label": "we.isscalar"
+  },
+  "notes": "Return True if x is a not complex type or array.",
+  "notes_sections": [
+    "The function is only meant for arrays with numerical values but it accepts all other objects. Since it assumes array input, the return value of other objects may be True.",
+    ">>> we.isrealobj('A string') True >>> we.isrealobj(False) True >>> we.isrealobj(None) True"
+  ],
+  "numpy_ref": "np.isrealobj",
+  "parameters": [
+    {
+      "body": [
+        "The input can be of any type and shape."
+      ],
+      "name": "x",
+      "type": "any"
+    }
+  ],
+  "previous": {
+    "href": "/docs/api/ops/isreal",
+    "label": "we.isreal"
+  },
+  "provenance_label": "Adapted from NumPy docs",
+  "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.isrealobj.html",
+  "returns": [
+    {
+      "body": [
+        "The return value, False if `x` is of a complex type."
+      ],
+      "name": "y",
+      "type": "bool"
+    }
+  ],
+  "see_also": [
+    {
+      "description": "",
+      "description_inline": [],
+      "external_url": "",
+      "href": "/docs/api/ops/iscomplexobj",
+      "label": "we.iscomplexobj",
+      "original_target": "iscomplexobj",
+      "role": "",
+      "target": "iscomplexobj",
+      "unresolved": false
+    },
+    {
+      "description": "",
+      "description_inline": [],
+      "external_url": "",
+      "href": "/docs/api/ops/isreal",
+      "label": "we.isreal",
+      "original_target": "isreal",
+      "role": "",
+      "target": "isreal",
+      "unresolved": false
+    }
+  ],
+  "signature": "we.isrealobj(x)",
+  "slug": "isrealobj",
+  "summary": "Return True if x is a not complex type or an array of complex numbers.",
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L312",
+  "weight": 1.0,
+  "whest_examples_html": "",
+  "whest_ref": "we.isrealobj",
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29"
+}

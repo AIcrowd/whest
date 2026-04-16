@@ -1,0 +1,182 @@
+{
+  "aliases": [],
+  "api_docs_html": "",
+  "area": "core",
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Sort a complex array using the real part first, then the imaginary part."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Input array"
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "array_like",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Input array"
+                }
+              ],
+              "name": "a",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Always returns a sorted complex array."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "complex ndarray",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Always returns a sorted complex array."
+                }
+              ],
+              "name": "out",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import whest as we"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.sort_complex([5, 3, 6, 2, 1])"
+            },
+            {
+              "kind": "output",
+              "text": "array([1.+0.j, 2.+0.j, 3.+0.j, 5.+0.j, 6.+0.j])"
+            }
+          ],
+          "type": "doctest_block"
+        },
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.sort_complex([1 + 2j, 2 - 1j, 3 - 2j, 3 - 3j, 3 + 5j])"
+            },
+            {
+              "kind": "output",
+              "text": "array([1.+2.j,  2.-1.j,  3.-3.j,  3.-2.j,  3.+5.j])"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
+    }
+  ],
+  "canonical_name": "sort_complex",
+  "category": "counted_custom",
+  "cost_formula": "per-operation",
+  "cost_formula_latex": "varies",
+  "display_type": "custom",
+  "doc_coverage": {
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "example": {
+    "code": "import whest as we\n\nwe.sort_complex([5, 3, 6, 2, 1])\n\nwe.sort_complex([1 + 2j, 2 - 1j, 3 - 2j, 3 - 3j, 3 + 5j])",
+    "output": "array([1.+0.j, 2.+0.j, 3.+0.j, 5.+0.j, 6.+0.j])\n\narray([1.+2.j,  2.-1.j,  3.-3.j,  3.-2.j,  3.+5.j])",
+    "source": "derived"
+  },
+  "href": "/docs/api/ops/sort_complex",
+  "name": "sort_complex",
+  "next": {
+    "href": "/docs/api/ops/spacing",
+    "label": "we.spacing"
+  },
+  "notes": "Sort complex array. Cost: $n \\cdot \\lceil\\log_2 n\\rceil$.",
+  "notes_sections": [],
+  "numpy_ref": "np.sort_complex",
+  "parameters": [
+    {
+      "body": [
+        "Input array"
+      ],
+      "name": "a",
+      "type": "array_like"
+    }
+  ],
+  "previous": {
+    "href": "/docs/api/ops/sort",
+    "label": "we.sort"
+  },
+  "provenance_label": "Adapted from NumPy docs",
+  "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.sort_complex.html",
+  "returns": [
+    {
+      "body": [
+        "Always returns a sorted complex array."
+      ],
+      "name": "out",
+      "type": "complex ndarray"
+    }
+  ],
+  "see_also": [],
+  "signature": "we.sort_complex(a)",
+  "slug": "sort_complex",
+  "summary": "Sort a complex array using the real part first, then the imaginary part.",
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L1808",
+  "weight": 1.0,
+  "whest_examples_html": "",
+  "whest_ref": "we.sort_complex",
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L416"
+}

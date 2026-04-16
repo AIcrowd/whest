@@ -16,7 +16,7 @@ function renderFormula(value: string) {
 }
 
 export default function OperationDocOverlay({op}: {op: OperationDocRecord}) {
-  const aliases = op.aliases.length ? op.aliases.map((alias) => `we.${alias}`).join(', ') : 'None';
+  const aliases = op.aliases.length ? op.aliases.map((alias) => `we.${alias}`).join(', ') : null;
 
   return (
     <section className={styles.docOverlay} aria-labelledby="operation-quick-info">
@@ -43,14 +43,12 @@ export default function OperationDocOverlay({op}: {op: OperationDocRecord}) {
       </div>
 
       <div className={styles.docDenseGrid}>
-        <div className={styles.docDenseItem}>
-          <span className={styles.docMetaLabel}>Canonical Name</span>
-          <span className={styles.docMetaValue}>{op.name}</span>
-        </div>
-        <div className={styles.docDenseItem}>
-          <span className={styles.docMetaLabel}>Aliases</span>
-          <span className={styles.docMetaValue}>{aliases}</span>
-        </div>
+        {aliases ? (
+          <div className={styles.docDenseItem}>
+            <span className={styles.docMetaLabel}>Aliases</span>
+            <span className={styles.docMetaValue}>{aliases}</span>
+          </div>
+        ) : null}
         <div className={`${styles.docDenseItem} ${styles.docDenseItemWide}`}>
           <span className={styles.docMetaLabel}>Cost Formula</span>
           <div className={styles.docFormula}>{renderFormula(op.cost_formula_latex)}</div>

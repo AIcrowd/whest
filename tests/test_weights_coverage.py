@@ -254,6 +254,26 @@ class TestWeightsJsonCoverage:
 class TestDocsWeightCoverage:
     """Verify calibration docs and API reference expose weighted operations."""
 
+    def test_api_reference_manifest_matches_registry(
+        self,
+        api_operations: dict[str, dict],
+    ):
+        """ops.json should stay in lockstep with the registry."""
+        api_names = set(api_operations)
+        registry_names = set(REGISTRY)
+
+        missing = sorted(registry_names - api_names)
+        extra = sorted(api_names - registry_names)
+
+        assert not missing, (
+            f"{len(missing)} registry ops missing from website/public/ops.json:\n"
+            + "\n".join(f"  {name}" for name in missing[:20])
+        )
+        assert not extra, (
+            f"{len(extra)} ops present in website/public/ops.json but not in the registry:\n"
+            + "\n".join(f"  {name}" for name in extra[:20])
+        )
+
     def test_all_weighted_ops_appear_in_api_reference(
         self,
         weights: dict[str, float],

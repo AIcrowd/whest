@@ -1,0 +1,66 @@
+{
+  "aliases": [],
+  "api_docs_html": "",
+  "area": "random",
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Return random floats in the half-open interval [0.0, 1.0). Alias for "
+            },
+            {
+              "kind": "code",
+              "text": "random_sample"
+            },
+            {
+              "kind": "text",
+              "text": " to ease forward-porting to the new random API."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    }
+  ],
+  "canonical_name": "random.random",
+  "category": "counted_custom",
+  "cost_formula": "per-operation",
+  "cost_formula_latex": "varies",
+  "display_type": "custom",
+  "doc_coverage": {
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "example": null,
+  "href": "/docs/api/ops/random-random",
+  "name": "random.random",
+  "next": {
+    "href": "/docs/api/ops/random-random_integers",
+    "label": "we.random.random_integers"
+  },
+  "notes": "Sampling; cost = numel(output).",
+  "notes_sections": [],
+  "numpy_ref": "np.random.random",
+  "parameters": [],
+  "previous": {
+    "href": "/docs/api/ops/random-randn",
+    "label": "we.random.randn"
+  },
+  "provenance_label": "Adapted from NumPy docs",
+  "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.random.html",
+  "returns": [],
+  "see_also": [],
+  "signature": "we.random.random(size=None)",
+  "slug": "random-random",
+  "summary": "Return random floats in the half-open interval [0.0, 1.0). Alias for `random_sample` to ease forward-porting to the new random API.",
+  "upstream_source_url": "",
+  "weight": 1.0,
+  "whest_examples_html": "",
+  "whest_ref": "we.random.random",
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L176"
+}

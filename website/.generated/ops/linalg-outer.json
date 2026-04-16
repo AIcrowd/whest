@@ -1,0 +1,418 @@
+{
+  "aliases": [],
+  "api_docs_html": "",
+  "area": "linalg",
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Compute the outer product of two vectors."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This function is Array API compatible. Compared to "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/ops/outer",
+              "kind": "link",
+              "target": "outer",
+              "text": "we.outer"
+            },
+            {
+              "kind": "text",
+              "text": "\nit accepts 1-dimensional inputs only."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "One-dimensional input array of size "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "N"
+                    },
+                    {
+                      "kind": "text",
+                      "text": ".\nMust have a numeric data type."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "(M,) array_like",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "One-dimensional input array of size "
+                },
+                {
+                  "kind": "code",
+                  "text": "N"
+                },
+                {
+                  "kind": "text",
+                  "text": ".\nMust have a numeric data type."
+                }
+              ],
+              "name": "x1",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "One-dimensional input array of size "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "M"
+                    },
+                    {
+                      "kind": "text",
+                      "text": ".\nMust have a numeric data type."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "(N,) array_like",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "One-dimensional input array of size "
+                },
+                {
+                  "kind": "code",
+                  "text": "M"
+                },
+                {
+                  "kind": "text",
+                  "text": ".\nMust have a numeric data type."
+                }
+              ],
+              "name": "x2",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "code",
+                      "text": "out[i, j] = a[i] * b[j]"
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "(M, N) ndarray",
+              "inline": [
+                {
+                  "kind": "code",
+                  "text": "out[i, j] = a[i] * b[j]"
+                }
+              ],
+              "name": "out",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "links": [
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "",
+              "href": "/docs/api/ops/outer",
+              "label": "we.outer",
+              "original_target": "outer",
+              "role": "",
+              "target": "outer",
+              "unresolved": false
+            }
+          ],
+          "type": "link_list"
+        }
+      ],
+      "title": "See also"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Make a ("
+            },
+            {
+              "kind": "emphasis",
+              "text": "very"
+            },
+            {
+              "kind": "text",
+              "text": " coarse) grid for computing a Mandelbrot set:"
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "rl = we.linalg.outer(we.ones((5,)), we.linspace(-2, 2, 5))"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "rl"
+            },
+            {
+              "kind": "output",
+              "text": "array([[-2., -1.,  0.,  1.,  2.],"
+            },
+            {
+              "kind": "output",
+              "text": "       [-2., -1.,  0.,  1.,  2.],"
+            },
+            {
+              "kind": "output",
+              "text": "       [-2., -1.,  0.,  1.,  2.],"
+            },
+            {
+              "kind": "output",
+              "text": "       [-2., -1.,  0.,  1.,  2.],"
+            },
+            {
+              "kind": "output",
+              "text": "       [-2., -1.,  0.,  1.,  2.]])"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "im = we.linalg.outer(1j*we.linspace(2, -2, 5), we.ones((5,)))"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "im"
+            },
+            {
+              "kind": "output",
+              "text": "array([[0.+2.j, 0.+2.j, 0.+2.j, 0.+2.j, 0.+2.j],"
+            },
+            {
+              "kind": "output",
+              "text": "       [0.+1.j, 0.+1.j, 0.+1.j, 0.+1.j, 0.+1.j],"
+            },
+            {
+              "kind": "output",
+              "text": "       [0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j],"
+            },
+            {
+              "kind": "output",
+              "text": "       [0.-1.j, 0.-1.j, 0.-1.j, 0.-1.j, 0.-1.j],"
+            },
+            {
+              "kind": "output",
+              "text": "       [0.-2.j, 0.-2.j, 0.-2.j, 0.-2.j, 0.-2.j]])"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "grid = rl + im"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "grid"
+            },
+            {
+              "kind": "output",
+              "text": "array([[-2.+2.j, -1.+2.j,  0.+2.j,  1.+2.j,  2.+2.j],"
+            },
+            {
+              "kind": "output",
+              "text": "       [-2.+1.j, -1.+1.j,  0.+1.j,  1.+1.j,  2.+1.j],"
+            },
+            {
+              "kind": "output",
+              "text": "       [-2.+0.j, -1.+0.j,  0.+0.j,  1.+0.j,  2.+0.j],"
+            },
+            {
+              "kind": "output",
+              "text": "       [-2.-1.j, -1.-1.j,  0.-1.j,  1.-1.j,  2.-1.j],"
+            },
+            {
+              "kind": "output",
+              "text": "       [-2.-2.j, -1.-2.j,  0.-2.j,  1.-2.j,  2.-2.j]])"
+            }
+          ],
+          "type": "doctest_block"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "An example using a \"vector\" of letters:"
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "x = we.array(['a', 'b', 'c'], dtype=object)"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.linalg.outer(x, [1, 2, 3])"
+            },
+            {
+              "kind": "output",
+              "text": "array([['a', 'aa', 'aaa'],"
+            },
+            {
+              "kind": "output",
+              "text": "       ['b', 'bb', 'bbb'],"
+            },
+            {
+              "kind": "output",
+              "text": "       ['c', 'cc', 'ccc']], dtype=object)"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
+    }
+  ],
+  "canonical_name": "linalg.outer",
+  "category": "counted_custom",
+  "cost_formula": "delegates to we.outer",
+  "cost_formula_latex": "delegates to `outer`",
+  "display_type": "custom",
+  "doc_coverage": {
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "example": {
+    "code": "rl = we.linalg.outer(we.ones((5,)), we.linspace(-2, 2, 5))\n\nrl\n\nim = we.linalg.outer(1j*we.linspace(2, -2, 5), we.ones((5,)))\n\nim\n\ngrid = rl + im\n\ngrid\n\nx = we.array(['a', 'b', 'c'], dtype=object)\n\nwe.linalg.outer(x, [1, 2, 3])",
+    "output": "array([[-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.]])\n\narray([[0.+2.j, 0.+2.j, 0.+2.j, 0.+2.j, 0.+2.j],\n       [0.+1.j, 0.+1.j, 0.+1.j, 0.+1.j, 0.+1.j],\n       [0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j],\n       [0.-1.j, 0.-1.j, 0.-1.j, 0.-1.j, 0.-1.j],\n       [0.-2.j, 0.-2.j, 0.-2.j, 0.-2.j, 0.-2.j]])\n\narray([[-2.+2.j, -1.+2.j,  0.+2.j,  1.+2.j,  2.+2.j],\n       [-2.+1.j, -1.+1.j,  0.+1.j,  1.+1.j,  2.+1.j],\n       [-2.+0.j, -1.+0.j,  0.+0.j,  1.+0.j,  2.+0.j],\n       [-2.-1.j, -1.-1.j,  0.-1.j,  1.-1.j,  2.-1.j],\n       [-2.-2.j, -1.-2.j,  0.-2.j,  1.-2.j,  2.-2.j]])\n\narray([['a', 'aa', 'aaa'],\n       ['b', 'bb', 'bbb'],\n       ['c', 'cc', 'ccc']], dtype=object)",
+    "source": "derived"
+  },
+  "href": "/docs/api/ops/linalg-outer",
+  "name": "linalg.outer",
+  "next": {
+    "href": "/docs/api/ops/linalg-pinv",
+    "label": "we.linalg.pinv"
+  },
+  "notes": "Delegates to `we.outer` which charges `m*n` FLOPs.",
+  "notes_sections": [],
+  "numpy_ref": "np.linalg.outer",
+  "parameters": [
+    {
+      "body": [
+        "One-dimensional input array of size ``N``.",
+        "Must have a numeric data type."
+      ],
+      "name": "x1",
+      "type": "(M,) array_like"
+    },
+    {
+      "body": [
+        "One-dimensional input array of size ``M``.",
+        "Must have a numeric data type."
+      ],
+      "name": "x2",
+      "type": "(N,) array_like"
+    }
+  ],
+  "previous": {
+    "href": "/docs/api/ops/linalg-norm",
+    "label": "we.linalg.norm"
+  },
+  "provenance_label": "Adapted from NumPy docs",
+  "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.outer.html",
+  "returns": [
+    {
+      "body": [
+        "``out[i, j] = a[i] * b[j]``"
+      ],
+      "name": "out",
+      "type": "(M, N) ndarray"
+    }
+  ],
+  "see_also": [
+    {
+      "description": "",
+      "description_inline": [],
+      "external_url": "",
+      "href": "/docs/api/ops/outer",
+      "label": "we.outer",
+      "original_target": "outer",
+      "role": "",
+      "target": "outer",
+      "unresolved": false
+    }
+  ],
+  "signature": "we.linalg.outer(x1, x2, /)",
+  "slug": "linalg-outer",
+  "summary": "Compute the outer product of two vectors.",
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L850",
+  "weight": 1.0,
+  "whest_examples_html": "",
+  "whest_ref": "we.linalg.outer",
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_aliases.py#L57"
+}

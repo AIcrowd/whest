@@ -155,14 +155,6 @@ html > body[data-scroll-locked] {
 
 /* Code block background: let Shiki's github theme handle it */
 
-/* Fix 3: Inline code — coral tint background, no border */
-.prose code:not(pre code) {
-  font-size: 0.875em;
-  background: var(--accent);
-  color: hsl(var(--primary));
-  border: none;
-}
-
 /* Fix 4: Breadcrumb-to-H1 spacing */
 .prose h1:first-child {
   margin-top: 1rem;

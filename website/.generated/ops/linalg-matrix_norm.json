@@ -1,0 +1,416 @@
+{
+  "aliases": [],
+  "api_docs_html": "",
+  "area": "linalg",
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Computes the matrix norm of a matrix (or a stack of matrices) "
+            },
+            {
+              "kind": "code",
+              "text": "x"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This function is Array API compatible."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Input array having shape (..., M, N) and whose two innermost\ndimensions form "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "MxN"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " matrices."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "array_like",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Input array having shape (..., M, N) and whose two innermost\ndimensions form "
+                },
+                {
+                  "kind": "code",
+                  "text": "MxN"
+                },
+                {
+                  "kind": "text",
+                  "text": " matrices."
+                }
+              ],
+              "name": "x",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "If this is set to True, the axes which are normed over are left in\nthe result as dimensions with size one. Default: False."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "bool, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "If this is set to True, the axes which are normed over are left in\nthe result as dimensions with size one. Default: False."
+                }
+              ],
+              "name": "keepdims",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "The order of the norm. For details see the table under "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "Notes"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "\nin "
+                    },
+                    {
+                      "external_url": "",
+                      "href": "/docs/api/ops/linalg-norm",
+                      "kind": "link",
+                      "target": "linalg.norm",
+                      "text": "we.linalg.norm"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "{1, -1, 2, -2, inf, -inf, 'fro', 'nuc'}, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "The order of the norm. For details see the table under "
+                },
+                {
+                  "kind": "code",
+                  "text": "Notes"
+                },
+                {
+                  "kind": "text",
+                  "text": "\nin "
+                },
+                {
+                  "external_url": "",
+                  "href": "/docs/api/ops/linalg-norm",
+                  "kind": "link",
+                  "target": "linalg.norm",
+                  "text": "we.linalg.norm"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
+                }
+              ],
+              "name": "ord",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "links": [
+            {
+              "description": "Generic norm function",
+              "description_inline": [
+                {
+                  "kind": "text",
+                  "text": "Generic norm function"
+                }
+              ],
+              "external_url": "",
+              "href": "/docs/api/ops/linalg-norm",
+              "label": "we.linalg.norm",
+              "original_target": "numpy.linalg.norm",
+              "role": "",
+              "target": "linalg.norm",
+              "unresolved": false
+            }
+          ],
+          "type": "link_list"
+        }
+      ],
+      "title": "See also"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "from numpy import linalg as LA"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "a = we.arange(9) - 4"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "a"
+            },
+            {
+              "kind": "output",
+              "text": "array([-4, -3, -2, ...,  2,  3,  4])"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "b = a.reshape((3, 3))"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "b"
+            },
+            {
+              "kind": "output",
+              "text": "array([[-4, -3, -2],"
+            },
+            {
+              "kind": "output",
+              "text": "       [-1,  0,  1],"
+            },
+            {
+              "kind": "output",
+              "text": "       [ 2,  3,  4]])"
+            }
+          ],
+          "type": "doctest_block"
+        },
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "LA.matrix_norm(b)"
+            },
+            {
+              "kind": "output",
+              "text": "7.745966692414834"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "LA.matrix_norm(b, ord='fro')"
+            },
+            {
+              "kind": "output",
+              "text": "7.745966692414834"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "LA.matrix_norm(b, ord=we.inf)"
+            },
+            {
+              "kind": "output",
+              "text": "9.0"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "LA.matrix_norm(b, ord=-we.inf)"
+            },
+            {
+              "kind": "output",
+              "text": "2.0"
+            }
+          ],
+          "type": "doctest_block"
+        },
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "LA.matrix_norm(b, ord=1)"
+            },
+            {
+              "kind": "output",
+              "text": "7.0"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "LA.matrix_norm(b, ord=-1)"
+            },
+            {
+              "kind": "output",
+              "text": "6.0"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "LA.matrix_norm(b, ord=2)"
+            },
+            {
+              "kind": "output",
+              "text": "7.3484692283495345"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "LA.matrix_norm(b, ord=-2)"
+            },
+            {
+              "kind": "output",
+              "text": "1.8570331885190563e-016 # may vary"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
+    }
+  ],
+  "canonical_name": "linalg.matrix_norm",
+  "category": "counted_custom",
+  "cost_formula": "depends on ord",
+  "cost_formula_latex": "varies",
+  "display_type": "custom",
+  "doc_coverage": {
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "example": {
+    "code": "from numpy import linalg as LA\n\na = we.arange(9) - 4\n\na\n\nb = a.reshape((3, 3))\n\nb\n\nLA.matrix_norm(b)\n\nLA.matrix_norm(b, ord='fro')\n\nLA.matrix_norm(b, ord=we.inf)\n\nLA.matrix_norm(b, ord=-we.inf)\n\nLA.matrix_norm(b, ord=1)\n\nLA.matrix_norm(b, ord=-1)\n\nLA.matrix_norm(b, ord=2)\n\nLA.matrix_norm(b, ord=-2)",
+    "output": "array([-4, -3, -2, ...,  2,  3,  4])\n\narray([[-4, -3, -2],\n       [-1,  0,  1],\n       [ 2,  3,  4]])\n\n7.745966692414834\n\n7.745966692414834\n\n9.0\n\n2.0\n\n7.0\n\n6.0\n\n7.3484692283495345\n\n1.8570331885190563e-016 # may vary",
+    "source": "derived"
+  },
+  "href": "/docs/api/ops/linalg-matrix_norm",
+  "name": "linalg.matrix_norm",
+  "next": {
+    "href": "/docs/api/ops/linalg-matrix_power",
+    "label": "we.linalg.matrix_power"
+  },
+  "notes": "Matrix norm. Cost depends on ord: 2*numel for Frobenius, m*n*min(m,n) for ord=2.",
+  "notes_sections": [],
+  "numpy_ref": "np.linalg.matrix_norm",
+  "parameters": [
+    {
+      "body": [
+        "Input array having shape (..., M, N) and whose two innermost",
+        "dimensions form ``MxN`` matrices."
+      ],
+      "name": "x",
+      "type": "array_like"
+    },
+    {
+      "body": [
+        "If this is set to True, the axes which are normed over are left in",
+        "the result as dimensions with size one. Default: False."
+      ],
+      "name": "keepdims",
+      "type": "bool, optional"
+    },
+    {
+      "body": [
+        "The order of the norm. For details see the table under ``Notes``",
+        "in `we.linalg.norm`."
+      ],
+      "name": "ord",
+      "type": "{1, -1, 2, -2, inf, -inf, 'fro', 'nuc'}, optional"
+    }
+  ],
+  "previous": {
+    "href": "/docs/api/ops/linalg-matmul",
+    "label": "we.linalg.matmul"
+  },
+  "provenance_label": "Adapted from NumPy docs",
+  "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.matrix_norm.html",
+  "returns": [],
+  "see_also": [
+    {
+      "description": "Generic norm function",
+      "description_inline": [
+        {
+          "kind": "text",
+          "text": "Generic norm function"
+        }
+      ],
+      "external_url": "",
+      "href": "/docs/api/ops/linalg-norm",
+      "label": "we.linalg.norm",
+      "original_target": "numpy.linalg.norm",
+      "role": "",
+      "target": "linalg.norm",
+      "unresolved": false
+    }
+  ],
+  "signature": "we.linalg.matrix_norm(x, ord='fro', keepdims=False)",
+  "slug": "linalg-matrix_norm",
+  "summary": "Computes the matrix norm of a matrix (or a stack of matrices) ``x``.",
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3418",
+  "weight": 1.0,
+  "whest_examples_html": "",
+  "whest_ref": "we.linalg.matrix_norm",
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L310"
+}

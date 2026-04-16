@@ -1,0 +1,251 @@
+{
+  "aliases": [],
+  "api_docs_html": "",
+  "area": "core",
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Check whether or not an object can be iterated over."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Input object."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "object",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Input object."
+                }
+              ],
+              "name": "y",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Return "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "True"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " if the object has an iterator method or is a\nsequence and "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "False"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " otherwise."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "bool",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Return "
+                },
+                {
+                  "kind": "code",
+                  "text": "True"
+                },
+                {
+                  "kind": "text",
+                  "text": " if the object has an iterator method or is a\nsequence and "
+                },
+                {
+                  "kind": "code",
+                  "text": "False"
+                },
+                {
+                  "kind": "text",
+                  "text": " otherwise."
+                }
+              ],
+              "name": "b",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "In most cases, the results of "
+            },
+            {
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.iterable(obj).html",
+              "href": "",
+              "kind": "link",
+              "target": "iterable(obj)",
+              "text": "we.iterable(obj)"
+            },
+            {
+              "kind": "text",
+              "text": " are consistent with\n"
+            },
+            {
+              "kind": "code",
+              "text": "isinstance(obj, collections.abc.Iterable)"
+            },
+            {
+              "kind": "text",
+              "text": ". One notable exception is\nthe treatment of 0-dimensional arrays:"
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "language": null,
+          "text": ">>> from collections.abc import Iterable\n>>> a = we.array(1.0)  # 0-dimensional numpy array\n>>> isinstance(a, Iterable)\nTrue\n>>> we.iterable(a)\nFalse",
+          "type": "literal_block"
+        }
+      ],
+      "title": "Notes"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import whest as we"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.iterable([1, 2, 3])"
+            },
+            {
+              "kind": "output",
+              "text": "True"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.iterable(2)"
+            },
+            {
+              "kind": "output",
+              "text": "False"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
+    }
+  ],
+  "canonical_name": "iterable",
+  "category": "free",
+  "cost_formula": "0",
+  "cost_formula_latex": "$0$",
+  "display_type": "free",
+  "doc_coverage": {
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "example": {
+    "code": "import whest as we\n\nwe.iterable([1, 2, 3])\n\nwe.iterable(2)",
+    "output": "True\n\nFalse",
+    "source": "derived"
+  },
+  "href": "/docs/api/ops/iterable",
+  "name": "iterable",
+  "next": {
+    "href": "/docs/api/ops/ix_",
+    "label": "we.ix_"
+  },
+  "notes": "Return True if object is iterable.",
+  "notes_sections": [
+    "In most cases, the results of ``we.iterable(obj)`` are consistent with ``isinstance(obj, collections.abc.Iterable)``. One notable exception is the treatment of 0-dimensional arrays::",
+    ">>> from collections.abc import Iterable >>> a = we.array(1.0)  # 0-dimensional numpy array >>> isinstance(a, Iterable) True >>> we.iterable(a) False"
+  ],
+  "numpy_ref": "np.iterable",
+  "parameters": [
+    {
+      "body": [
+        "Input object."
+      ],
+      "name": "y",
+      "type": "object"
+    }
+  ],
+  "previous": {
+    "href": "/docs/api/ops/issubdtype",
+    "label": "we.issubdtype"
+  },
+  "provenance_label": "Adapted from NumPy docs",
+  "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.iterable.html",
+  "returns": [
+    {
+      "body": [
+        "Return ``True`` if the object has an iterator method or is a",
+        "sequence and ``False`` otherwise."
+      ],
+      "name": "b",
+      "type": "bool"
+    }
+  ],
+  "see_also": [],
+  "signature": "we.iterable(y)",
+  "slug": "iterable",
+  "summary": "Check whether or not an object can be iterated over.",
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L339",
+  "weight": 1.0,
+  "whest_examples_html": "",
+  "whest_ref": "we.iterable",
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1121"
+}

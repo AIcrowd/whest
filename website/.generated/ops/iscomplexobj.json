@@ -1,0 +1,283 @@
+{
+  "aliases": [],
+  "api_docs_html": "",
+  "area": "core",
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Check for a complex type or an array of complex numbers."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "The type of the input is checked, not the value. Even if the input\nhas an imaginary part equal to zero, "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/ops/iscomplexobj",
+              "kind": "link",
+              "target": "iscomplexobj",
+              "text": "iscomplexobj"
+            },
+            {
+              "kind": "text",
+              "text": " evaluates to True."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "The input can be of any type and shape."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "any",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "The input can be of any type and shape."
+                }
+              ],
+              "name": "x",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "The return value, True if "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "x"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " is of a complex type or has at least\none complex element."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "bool",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "The return value, True if "
+                },
+                {
+                  "kind": "code",
+                  "text": "x"
+                },
+                {
+                  "kind": "text",
+                  "text": " is of a complex type or has at least\none complex element."
+                }
+              ],
+              "name": "iscomplexobj",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "links": [
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "",
+              "href": "/docs/api/ops/isrealobj",
+              "label": "we.isrealobj",
+              "original_target": "isrealobj",
+              "role": "",
+              "target": "isrealobj",
+              "unresolved": false
+            },
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "",
+              "href": "/docs/api/ops/iscomplex",
+              "label": "we.iscomplex",
+              "original_target": "iscomplex",
+              "role": "",
+              "target": "iscomplex",
+              "unresolved": false
+            }
+          ],
+          "type": "link_list"
+        }
+      ],
+      "title": "See also"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import whest as we"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.iscomplexobj(1)"
+            },
+            {
+              "kind": "output",
+              "text": "False"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.iscomplexobj(1+0j)"
+            },
+            {
+              "kind": "output",
+              "text": "True"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.iscomplexobj([3, 1+0j, True])"
+            },
+            {
+              "kind": "output",
+              "text": "True"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
+    }
+  ],
+  "canonical_name": "iscomplexobj",
+  "category": "counted_unary",
+  "cost_formula": "numel(output)",
+  "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+  "display_type": "counted",
+  "doc_coverage": {
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "example": {
+    "code": "import whest as we\n\nwe.iscomplexobj(1)\n\nwe.iscomplexobj(1+0j)\n\nwe.iscomplexobj([3, 1+0j, True])",
+    "output": "False\n\nTrue\n\nTrue",
+    "source": "derived"
+  },
+  "href": "/docs/api/ops/iscomplexobj",
+  "name": "iscomplexobj",
+  "next": {
+    "href": "/docs/api/ops/isdtype",
+    "label": "we.isdtype"
+  },
+  "notes": "Return True if input is a complex type or array.",
+  "notes_sections": [],
+  "numpy_ref": "np.iscomplexobj",
+  "parameters": [
+    {
+      "body": [
+        "The input can be of any type and shape."
+      ],
+      "name": "x",
+      "type": "any"
+    }
+  ],
+  "previous": {
+    "href": "/docs/api/ops/iscomplex",
+    "label": "we.iscomplex"
+  },
+  "provenance_label": "Adapted from NumPy docs",
+  "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.iscomplexobj.html",
+  "returns": [
+    {
+      "body": [
+        "The return value, True if `x` is of a complex type or has at least",
+        "one complex element."
+      ],
+      "name": "iscomplexobj",
+      "type": "bool"
+    }
+  ],
+  "see_also": [
+    {
+      "description": "",
+      "description_inline": [],
+      "external_url": "",
+      "href": "/docs/api/ops/isrealobj",
+      "label": "we.isrealobj",
+      "original_target": "isrealobj",
+      "role": "",
+      "target": "isrealobj",
+      "unresolved": false
+    },
+    {
+      "description": "",
+      "description_inline": [],
+      "external_url": "",
+      "href": "/docs/api/ops/iscomplex",
+      "label": "we.iscomplex",
+      "original_target": "iscomplex",
+      "role": "",
+      "target": "iscomplex",
+      "unresolved": false
+    }
+  ],
+  "signature": "we.iscomplexobj(x)",
+  "slug": "iscomplexobj",
+  "summary": "Check for a complex type or an array of complex numbers.",
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L270",
+  "weight": 1.0,
+  "whest_examples_html": "",
+  "whest_ref": "we.iscomplexobj",
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29"
+}

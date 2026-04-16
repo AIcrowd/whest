@@ -15,11 +15,15 @@ import csv
 import html
 import importlib
 import inspect
+import io
+import os
 import json
 import re
 import sys
 import textwrap
-from dataclasses import asdict, dataclass
+import multiprocessing as mp
+from concurrent.futures import ProcessPoolExecutor
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
@@ -499,10 +503,16 @@ class OperationDocRecord:
     see_also: list["DocLink"] | None = None
     notes_sections: list[str] | None = None
     example: "DocExample | None" = None
+    body_sections: list[dict] | None = None
+    doc_coverage: dict[str, object] = field(default_factory=dict)
     previous: "OperationNavLink | None" = None
     next: "OperationNavLink | None" = None
     api_docs_html: str = ""
     whest_examples_html: str = ""
+
+
+_WORKER_ALIAS_MAP: dict[str, str] | None = None
+_WORKER_SUPPORTED_OPS: set[str] | None = None
 
 
 @dataclass(slots=True)
@@ -517,6 +527,10 @@ class DocLink:
     label: str
     target: str
     description: str = ""
+    description_inline: list[dict] | None = None
+    role: str = ""
+    original_target: str = ""
+    unresolved: bool = False
     href: str | None = None
     external_url: str | None = None
 
@@ -541,7 +555,16 @@ class ParsedDoc:
     returns: list[DocField]
     see_also: list[DocLink]
     notes: list[str]
+    note_lines: list[str]
     examples: list[DocExample]
+    extended_summary: list[str] = field(default_factory=list)
+    raises: list[DocField] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
+    warns: list[DocField] = field(default_factory=list)
+    references: list[str] = field(default_factory=list)
+    upstream_signature: str = ""
+    sections: list[dict] | None = None
+    coverage: dict[str, object] = field(default_factory=dict)
 
 
 # ---------------------------------------------------------------------------
@@ -628,6 +651,1127 @@ def _split_paragraphs(lines: list[str]) -> list[str]:
     return paragraphs
 
 
+RST_ROLE_SCAN_PATTERN = re.compile(r":(?P<role>(?:py:)?[A-Za-z0-9_]+):`")
+ROLE_TARGET_PATTERN = re.compile(r"^(?P<title>.+?)\s*<(?P<target>.+)>$")
+_REGISTERED_RST_ROLES: set[str] = set()
+
+
+def _new_doc_coverage() -> dict[str, list[dict]]:
+    return {
+        "unresolved_references": [],
+        "unsupported_directives": [],
+        "raw_blocks": [],
+    }
+
+
+def _record_coverage_event(
+    coverage: dict[str, object] | None, category: str, payload: dict[str, object]
+) -> None:
+    if coverage is None:
+        return
+    coverage.setdefault(category, []).append(payload)
+
+
+def _ensure_rst_role_registered(role_name: str) -> None:
+    if role_name in _REGISTERED_RST_ROLES or role_name == "math":
+        return
+
+    from docutils import nodes
+    from docutils.parsers.rst import roles
+
+    def _generic_role(  # type: ignore[override]
+        role: str,
+        rawtext: str,
+        text: str,
+        lineno: int,
+        inliner,
+        options=None,
+        content=None,
+    ):
+        node = nodes.inline(rawtext, text)
+        node["role_name"] = role
+        return [node], []
+
+    roles.register_local_role(role_name, _generic_role)
+    _REGISTERED_RST_ROLES.add(role_name)
+
+
+def _register_roles_from_text(text: str) -> None:
+    for match in RST_ROLE_SCAN_PATTERN.finditer(text):
+        _ensure_rst_role_registered(match.group("role"))
+
+
+def _normalize_reference_target(target: str) -> str:
+    normalized = " ".join(target.strip().split())
+    if normalized.startswith("whest."):
+        return f"we.{normalized.removeprefix('whest.')}"
+    return normalized
+
+
+def _operation_candidate_from_target(target: str) -> str:
+    normalized = _normalize_reference_target(target)
+    if normalized.startswith("we."):
+        return normalized.removeprefix("we.")
+    if normalized.startswith("numpy."):
+        return normalized.removeprefix("numpy.")
+    if normalized.startswith("np."):
+        return normalized.removeprefix("np.")
+    if normalized.startswith("scipy.stats."):
+        return f"stats.{normalized.removeprefix('scipy.stats.')}"
+    return normalized
+
+
+def _docs_url_for_reference_target(target: str, *, role: str = "") -> str:
+    normalized = _normalize_reference_target(rewrite_api_refs(target))
+
+    if role == "pep":
+        digits = re.sub(r"\D", "", normalized)
+        if digits:
+            return f"https://peps.python.org/pep-{int(digits):04d}/"
+
+    if normalized.startswith(("scipy.", "stats.")):
+        scipy_target = (
+            normalized
+            if normalized.startswith("scipy.")
+            else f"scipy.stats.{normalized.removeprefix('stats.')}"
+        )
+        return f"https://docs.scipy.org/doc/scipy/reference/generated/{scipy_target}.html"
+
+    candidate = _operation_candidate_from_target(normalized)
+    if not candidate:
+        return ""
+
+    if candidate.startswith(("linalg.", "fft.", "random.", "ufunc.")):
+        return f"https://numpy.org/doc/stable/reference/generated/numpy.{candidate}.html"
+
+    if candidate.startswith("stats."):
+        return (
+            "https://docs.scipy.org/doc/scipy/reference/generated/"
+            f"scipy.stats.{candidate.removeprefix('stats.')}.html"
+        )
+
+    if "." not in candidate:
+        return f"https://numpy.org/doc/stable/reference/generated/numpy.{candidate}.html"
+
+    return ""
+
+
+def _resolve_reference_destination(
+    target: str,
+    *,
+    original_target: str = "",
+    role: str = "",
+    alias_map: dict[str, str] | None = None,
+    supported_ops: set[str] | None = None,
+) -> tuple[str, str, str]:
+    alias_map = alias_map or {}
+    supported_ops = supported_ops or set()
+    candidate = _operation_candidate_from_target(target)
+    canonical = resolve_canonical_name(candidate, alias_map)
+    if canonical in supported_ops:
+        return (
+            f"/docs/api/ops/{slug_for_operation(canonical)}",
+            "",
+            canonical,
+        )
+
+    external_url = _docs_url_for_reference_target(original_target or target, role=role)
+    return "", external_url, canonical
+
+
+def _parse_role_payload(payload: str) -> tuple[str, str | None, bool, bool]:
+    normalized = " ".join(payload.strip().split())
+    suppress_link = normalized.startswith("!")
+    if suppress_link:
+        normalized = normalized[1:].lstrip()
+
+    explicit_title: str | None = None
+    target = normalized
+    explicit_match = ROLE_TARGET_PATTERN.match(normalized)
+    if explicit_match:
+        explicit_title = explicit_match.group("title").strip()
+        target = explicit_match.group("target").strip()
+
+    shorten_display = target.startswith("~")
+    if shorten_display:
+        target = target[1:]
+
+    return target, explicit_title, suppress_link, shorten_display
+
+
+def _linkish_inline_node(
+    token: str,
+    *,
+    alias_map: dict[str, str] | None = None,
+    supported_ops: set[str] | None = None,
+) -> dict | None:
+    target, explicit_title, suppress_link, shorten_display = _parse_role_payload(token)
+    if suppress_link:
+        return None
+
+    rewritten_target = _normalize_reference_target(rewrite_api_refs(target))
+    candidate = _operation_candidate_from_target(rewritten_target)
+    canonical_candidate = resolve_canonical_name(candidate, alias_map or {})
+    api_like = "." in rewritten_target or target.lstrip("~").startswith(
+        ("np.", "numpy.", "we.", "whest.", "scipy.")
+    )
+    if canonical_candidate not in (supported_ops or set()) and not api_like:
+        return None
+
+    href, external_url, canonical = _resolve_reference_destination(
+        rewritten_target,
+        original_target=target,
+        alias_map=alias_map,
+        supported_ops=supported_ops,
+    )
+    if not href and not external_url:
+        return None
+
+    display_text = (
+        rewrite_api_refs(explicit_title)
+        if explicit_title
+        else rewritten_target.split(".")[-1]
+        if shorten_display
+        else rewrite_api_refs(target)
+    )
+    return {
+        "kind": "link",
+        "text": display_text,
+        "target": canonical,
+        "href": href,
+        "external_url": external_url,
+    }
+
+
+def _inline_text_from_children(children: list[object]) -> str:
+    parts: list[str] = []
+    for child in children:
+        try:
+            parts.append(child.astext())
+        except AttributeError:
+            parts.append(str(child))
+    return "".join(parts)
+
+
+def _convert_docutils_inline_node(
+    node: object,
+    *,
+    coverage: dict[str, object] | None = None,
+    supported_ops: set[str] | None = None,
+    alias_map: dict[str, str] | None = None,
+) -> list[dict]:
+    from docutils import nodes as docutils_nodes
+
+    supported_ops = supported_ops or set()
+    alias_map = alias_map or {}
+
+    if isinstance(node, docutils_nodes.Text):
+        return [{"kind": "text", "text": str(node)}]
+
+    if isinstance(node, docutils_nodes.math):
+        return [{"kind": "math", "latex": node.astext()}]
+
+    if isinstance(node, docutils_nodes.reference):
+        return [
+            {
+                "kind": "link",
+                "text": node.astext(),
+                "href": node.get("refuri", ""),
+                "external_url": node.get("refuri", ""),
+            }
+        ]
+
+    if isinstance(node, docutils_nodes.inline) and node.get("role_name"):
+        role_name = node["role_name"]
+        target, explicit_title, suppress_link, shorten_display = _parse_role_payload(
+            node.astext()
+        )
+        rewritten_target = _normalize_reference_target(rewrite_api_refs(target))
+        href, external_url, canonical = _resolve_reference_destination(
+            rewritten_target,
+            original_target=target,
+            role=role_name,
+            alias_map=alias_map,
+            supported_ops=supported_ops,
+        )
+        display_text = (
+            rewrite_api_refs(explicit_title)
+            if explicit_title
+            else rewritten_target.split(".")[-1]
+            if shorten_display
+            else rewrite_api_refs(target)
+        )
+
+        unresolved = not suppress_link and not href and not external_url
+        if unresolved:
+            _record_coverage_event(
+                coverage,
+                "unresolved_references",
+                {
+                    "role": role_name,
+                    "target": rewritten_target,
+                    "original_target": target,
+                    "display_text": display_text,
+                },
+            )
+
+        return [
+            {
+                "kind": "role_reference",
+                "role": role_name,
+                "target": canonical,
+                "original_target": target,
+                "display_text": display_text,
+                "suppress_link": suppress_link,
+                "explicit_title": explicit_title is not None,
+                "href": "" if suppress_link else href,
+                "external_url": "" if suppress_link else external_url,
+                "unresolved": unresolved,
+            }
+        ]
+
+    if isinstance(node, docutils_nodes.literal):
+        token = node.astext()
+        link_node = _linkish_inline_node(
+            token,
+            alias_map=alias_map,
+            supported_ops=supported_ops,
+        )
+        if link_node is not None:
+            return [link_node]
+        return [{"kind": "code", "text": token}]
+
+    if isinstance(node, docutils_nodes.title_reference):
+        token = node.astext()
+        link_node = _linkish_inline_node(
+            token,
+            alias_map=alias_map,
+            supported_ops=supported_ops,
+        )
+        if link_node is not None:
+            return [link_node]
+        return [{"kind": "code", "text": token}]
+
+    if isinstance(node, docutils_nodes.emphasis):
+        return [{"kind": "emphasis", "text": _inline_text_from_children(list(node.children))}]
+
+    if isinstance(node, docutils_nodes.strong):
+        return [{"kind": "strong", "text": _inline_text_from_children(list(node.children))}]
+
+    _record_coverage_event(
+        coverage,
+        "raw_blocks",
+        {
+            "kind": "inline_node",
+            "node_type": node.__class__.__name__,
+            "raw_text": getattr(node, "astext", lambda: str(node))(),
+        },
+    )
+    return [{"kind": "text", "text": getattr(node, "astext", lambda: str(node))()}]
+
+
+def parse_inline_nodes(
+    text: str,
+    *,
+    supported_ops: set[str] | None = None,
+    alias_map: dict[str, str] | None = None,
+    coverage: dict[str, object] | None = None,
+) -> list[dict]:
+    """Parse inline reST/Sphinx markup into a structured AST."""
+
+    text = text.strip()
+    if not text:
+        return []
+
+    from docutils.core import publish_doctree
+
+    _register_roles_from_text(text)
+    doctree = publish_doctree(
+        text,
+        settings_overrides={
+            "warning_stream": io.StringIO(),
+            "report_level": 5,
+            "halt_level": 6,
+        },
+    )
+
+    if not doctree.children:
+        return [{"kind": "text", "text": text}]
+
+    paragraph = doctree.children[0]
+    children = getattr(paragraph, "children", doctree.children)
+
+    nodes: list[dict] = []
+    for child in children:
+        nodes.extend(
+            _convert_docutils_inline_node(
+                child,
+                coverage=coverage,
+                supported_ops=supported_ops,
+                alias_map=alias_map,
+            )
+        )
+    return nodes
+
+
+def _coalesce_lines(lines: list[str]) -> str:
+    return " ".join(part.strip() for part in lines).strip()
+
+
+def _is_prompt_line(line: str) -> tuple[bool, str | None]:
+    stripped = line.lstrip()
+    if stripped.startswith(">>>"):
+        return True, ">>>"
+    if stripped.startswith("..."):
+        return True, "..."
+    return False, None
+
+
+def rewrite_example_text(text: str) -> str:
+    """Rewrite upstream NumPy example text to the current whest naming."""
+    rewritten = rewrite_api_refs(text)
+    rewritten = rewritten.replace("import numpy as np", "import whest as we")
+    return rewritten
+
+
+def _paragraphs_from_lines(lines: list[str]) -> list[str]:
+    paragraphs: list[str] = []
+    buffer: list[str] = []
+    for raw in lines:
+        line = raw.rstrip()
+        if line.strip():
+            buffer.append(line)
+            continue
+
+        if buffer:
+            paragraphs.append(_coalesce_lines(buffer))
+            buffer = []
+
+    if buffer:
+        paragraphs.append(_coalesce_lines(buffer))
+    return paragraphs
+
+
+DIRECTIVE_RE = re.compile(r"^\s*\.\.\s+([A-Za-z0-9_-]+)::\s*(.*)$")
+DIRECTIVE_OPTION_RE = re.compile(r"^\s*:([^:]+):\s*(.*)$")
+STRUCTURED_DIRECTIVES = {
+    "deprecated",
+    "math",
+    "note",
+    "plot",
+    "versionadded",
+    "versionchanged",
+    "warning",
+}
+
+
+def _language_from_literal_block(node: object) -> str | None:
+    classes = list(getattr(node, "get", lambda *_args, **_kwargs: [])("classes", []))
+    for class_name in classes:
+        if class_name not in {"code", "literal", "literal-block"}:
+            return class_name
+    return None
+
+
+def _parse_doctest_lines(text: str) -> list[dict]:
+    doctest_lines: list[dict] = []
+    for raw in text.splitlines():
+        is_prompt, prompt = _is_prompt_line(raw)
+        if is_prompt:
+            doctest_lines.append(
+                {
+                    "kind": "input",
+                    "prompt": prompt,
+                    "text": raw.lstrip()[3:].strip(),
+                }
+            )
+            continue
+        doctest_lines.append({"kind": "output", "text": raw.rstrip()})
+    return doctest_lines
+
+
+def _convert_docutils_blocks(
+    nodes_to_convert: list[object],
+    *,
+    supported_ops: set[str] | None = None,
+    alias_map: dict[str, str] | None = None,
+    coverage: dict[str, object] | None = None,
+    example_mode: bool = False,
+) -> list[dict]:
+    from docutils import nodes as docutils_nodes
+
+    blocks: list[dict] = []
+
+    for node in nodes_to_convert:
+        if isinstance(node, docutils_nodes.paragraph):
+            blocks.append(
+                {
+                    "type": "paragraph",
+                    "inline": [
+                        inline_node
+                        for child in node.children
+                        for inline_node in _convert_docutils_inline_node(
+                            child,
+                            coverage=coverage,
+                            supported_ops=supported_ops,
+                            alias_map=alias_map,
+                        )
+                    ],
+                }
+            )
+            continue
+
+        if isinstance(node, docutils_nodes.definition_list):
+            items = []
+            for item in node.children:
+                if not isinstance(item, docutils_nodes.definition_list_item):
+                    continue
+                term_parts = []
+                body_blocks: list[dict] = []
+                for child in item.children:
+                    if isinstance(child, (docutils_nodes.term, docutils_nodes.classifier)):
+                        for inline_child in child.children:
+                            term_parts.extend(
+                                _convert_docutils_inline_node(
+                                    inline_child,
+                                    coverage=coverage,
+                                    supported_ops=supported_ops,
+                                    alias_map=alias_map,
+                                )
+                            )
+                    elif isinstance(child, docutils_nodes.definition):
+                        body_blocks.extend(
+                            _convert_docutils_blocks(
+                                list(child.children),
+                                supported_ops=supported_ops,
+                                alias_map=alias_map,
+                                coverage=coverage,
+                                example_mode=example_mode,
+                            )
+                        )
+                items.append({"term_inline": term_parts, "blocks": body_blocks})
+            blocks.append({"type": "definition_list", "items": items})
+            continue
+
+        if isinstance(node, docutils_nodes.bullet_list):
+            blocks.append(
+                {
+                    "type": "list",
+                    "ordered": False,
+                    "items": [
+                        {
+                            "blocks": _convert_docutils_blocks(
+                                list(item.children),
+                                supported_ops=supported_ops,
+                                alias_map=alias_map,
+                                coverage=coverage,
+                                example_mode=example_mode,
+                            )
+                        }
+                        for item in node.children
+                        if isinstance(item, docutils_nodes.list_item)
+                    ],
+                }
+            )
+            continue
+
+        if isinstance(node, docutils_nodes.enumerated_list):
+            blocks.append(
+                {
+                    "type": "list",
+                    "ordered": True,
+                    "items": [
+                        {
+                            "blocks": _convert_docutils_blocks(
+                                list(item.children),
+                                supported_ops=supported_ops,
+                                alias_map=alias_map,
+                                coverage=coverage,
+                                example_mode=example_mode,
+                            )
+                        }
+                        for item in node.children
+                        if isinstance(item, docutils_nodes.list_item)
+                    ],
+                }
+            )
+            continue
+
+        if isinstance(node, docutils_nodes.doctest_block):
+            text = node.astext()
+            if example_mode:
+                text = rewrite_example_text(text)
+            blocks.append({"type": "doctest_block", "lines": _parse_doctest_lines(text)})
+            continue
+
+        if isinstance(node, docutils_nodes.literal_block):
+            text = node.astext()
+            if example_mode:
+                text = rewrite_example_text(text)
+            blocks.append(
+                {
+                    "type": "literal_block",
+                    "text": text,
+                    "language": _language_from_literal_block(node),
+                }
+            )
+            continue
+
+        if isinstance(node, docutils_nodes.math_block):
+            blocks.append({"type": "math_block", "formulas": [node.astext()]})
+            continue
+
+        if isinstance(node, docutils_nodes.block_quote):
+            blocks.extend(
+                _convert_docutils_blocks(
+                    list(node.children),
+                    supported_ops=supported_ops,
+                    alias_map=alias_map,
+                    coverage=coverage,
+                    example_mode=example_mode,
+                )
+            )
+            continue
+
+        if isinstance(node, (docutils_nodes.system_message, docutils_nodes.table)):
+            raw_text = node.astext()
+            _record_coverage_event(
+                coverage,
+                "raw_blocks",
+                {
+                    "kind": node.__class__.__name__,
+                    "raw_text": raw_text,
+                },
+            )
+            blocks.append(
+                {
+                    "type": "raw_block",
+                    "raw_kind": node.__class__.__name__,
+                    "raw_text": raw_text,
+                }
+            )
+            continue
+
+        raw_text = getattr(node, "astext", lambda: str(node))()
+        _record_coverage_event(
+            coverage,
+            "raw_blocks",
+            {
+                "kind": node.__class__.__name__,
+                "raw_text": raw_text,
+            },
+        )
+        blocks.append(
+            {
+                "type": "raw_block",
+                "raw_kind": node.__class__.__name__,
+                "raw_text": raw_text,
+            }
+        )
+
+    return blocks
+
+
+def _parse_standard_rst_blocks(
+    lines: list[str],
+    *,
+    supported_ops: set[str] | None = None,
+    alias_map: dict[str, str] | None = None,
+    coverage: dict[str, object] | None = None,
+    example_mode: bool = False,
+    text_transform=None,
+) -> list[dict]:
+    if not any(line.strip() for line in lines):
+        return []
+
+    from docutils.core import publish_doctree
+
+    source = "\n".join(lines).strip("\n")
+    if text_transform is not None:
+        source = text_transform(source)
+    _register_roles_from_text(source)
+    doctree = publish_doctree(
+        source,
+        settings_overrides={
+            "warning_stream": io.StringIO(),
+            "report_level": 5,
+            "halt_level": 6,
+        },
+    )
+    return _convert_docutils_blocks(
+        list(doctree.children),
+        supported_ops=supported_ops,
+        alias_map=alias_map,
+        coverage=coverage,
+        example_mode=example_mode,
+    )
+
+
+def _consume_directive_block(
+    lines: list[str], index: int
+) -> tuple[str, str, list[str], int]:
+    raw = lines[index].rstrip("\n")
+    match = DIRECTIVE_RE.match(raw)
+    if not match:
+        raise ValueError(f"Expected directive line, got: {raw!r}")
+
+    directive_name = match.group(1)
+    remainder = match.group(2).strip()
+    index += 1
+    payload: list[str] = []
+    total = len(lines)
+    while index < total:
+        current = lines[index].rstrip("\n")
+        if current.startswith((" ", "\t")) or not current.strip():
+            payload.append(current)
+            index += 1
+            continue
+        break
+    return directive_name, remainder, payload, index
+
+
+def _split_directive_payload(payload: list[str]) -> tuple[list[dict[str, str]], list[str]]:
+    if not payload:
+        return [], []
+
+    dedented = textwrap.dedent("\n".join(payload)).splitlines()
+    options: list[dict[str, str]] = []
+    index = 0
+    while index < len(dedented):
+        line = dedented[index]
+        if not line.strip():
+            index += 1
+            if options:
+                break
+            continue
+        match = DIRECTIVE_OPTION_RE.match(line)
+        if not match:
+            break
+        options.append({"name": match.group(1), "value": match.group(2)})
+        index += 1
+
+    content_lines = dedented[index:]
+    while content_lines and not content_lines[0].strip():
+        content_lines = content_lines[1:]
+    while content_lines and not content_lines[-1].strip():
+        content_lines = content_lines[:-1]
+    return options, content_lines
+
+
+def _math_formulas_from_directive(
+    remainder: str, content_lines: list[str]
+) -> list[str]:
+    paragraphs: list[list[str]] = []
+    current: list[str] = [remainder] if remainder else []
+    for line in content_lines:
+        if line.strip():
+            current.append(line.strip())
+            continue
+        if current:
+            paragraphs.append(current)
+            current = []
+    if current:
+        paragraphs.append(current)
+    return [_coalesce_lines(paragraph) for paragraph in paragraphs if _coalesce_lines(paragraph)]
+
+
+def _build_directive_block(
+    directive_name: str,
+    remainder: str,
+    payload: list[str],
+    *,
+    supported_ops: set[str] | None = None,
+    alias_map: dict[str, str] | None = None,
+    coverage: dict[str, object] | None = None,
+    example_mode: bool = False,
+    text_transform=None,
+) -> dict:
+    supported_ops = supported_ops or set()
+    alias_map = alias_map or {}
+    options, content_lines = _split_directive_payload(payload)
+    argument_text = text_transform(remainder) if text_transform is not None else remainder
+
+    if directive_name == "math":
+        formulas = _math_formulas_from_directive(argument_text, content_lines)
+        return {"type": "math_block", "formulas": formulas}
+
+    if directive_name in {"versionadded", "versionchanged", "deprecated"}:
+        version = ""
+        detail_text = argument_text
+        if argument_text:
+            parts = argument_text.split(maxsplit=1)
+            version = parts[0]
+            detail_text = parts[1] if len(parts) > 1 else ""
+        return {
+            "type": "directive_block",
+            "directive": directive_name,
+            "version": version,
+            "argument_inline": parse_inline_nodes(
+                detail_text,
+                supported_ops=supported_ops,
+                alias_map=alias_map,
+                coverage=coverage,
+            ),
+            "options": options,
+            "content_blocks": [],
+            "supported": True,
+            "raw_source": "\n".join([f".. {directive_name}::{(' ' + remainder) if remainder else ''}".rstrip()] + payload).strip(
+                "\n"
+            ),
+        }
+
+    if directive_name in {"note", "warning"}:
+        return {
+            "type": "directive_block",
+            "directive": directive_name,
+            "argument_inline": parse_inline_nodes(
+                argument_text,
+                supported_ops=supported_ops,
+                alias_map=alias_map,
+                coverage=coverage,
+            )
+            if argument_text
+            else [],
+            "options": options,
+            "content_blocks": _parse_standard_rst_blocks(
+                content_lines,
+                supported_ops=supported_ops,
+                alias_map=alias_map,
+                coverage=coverage,
+                example_mode=example_mode,
+                text_transform=text_transform,
+            ),
+            "supported": True,
+            "raw_source": "\n".join([f".. {directive_name}::{(' ' + remainder) if remainder else ''}".rstrip()] + payload).strip(
+                "\n"
+            ),
+        }
+
+    if directive_name == "plot":
+        plot_source = "\n".join(content_lines).strip("\n")
+        if text_transform is not None and plot_source:
+            plot_source = text_transform(plot_source)
+        return {
+            "type": "directive_block",
+            "directive": directive_name,
+            "argument_inline": parse_inline_nodes(
+                argument_text,
+                supported_ops=supported_ops,
+                alias_map=alias_map,
+                coverage=coverage,
+            )
+            if argument_text
+            else [],
+            "options": options,
+            "content_blocks": (
+                [{"type": "literal_block", "text": plot_source, "language": "python"}]
+                if plot_source
+                else []
+            ),
+            "supported": True,
+            "raw_source": "\n".join([f".. {directive_name}::{(' ' + remainder) if remainder else ''}".rstrip()] + payload).strip(
+                "\n"
+            ),
+        }
+
+    raw_source = "\n".join(
+        [f".. {directive_name}::{(' ' + remainder) if remainder else ''}".rstrip()] + payload
+    ).strip("\n")
+    _record_coverage_event(
+        coverage,
+        "unsupported_directives",
+        {
+            "directive": directive_name,
+            "raw_source": raw_source,
+        },
+    )
+    return {
+        "type": "directive_block",
+        "directive": directive_name,
+        "argument_inline": parse_inline_nodes(
+            argument_text,
+            supported_ops=supported_ops,
+            alias_map=alias_map,
+            coverage=coverage,
+        )
+        if argument_text
+        else [],
+        "options": options,
+        "content_blocks": [],
+        "supported": False,
+        "raw_source": raw_source,
+    }
+
+
+def _parse_examples_to_blocks(
+    lines: list[str],
+    *,
+    supported_ops: set[str] | None = None,
+    alias_map: dict[str, str] | None = None,
+    coverage: dict[str, object] | None = None,
+) -> list[dict]:
+    """Convert Examples lines into a structured AST."""
+    return _parse_rich_doc_blocks(
+        lines,
+        supported_ops=supported_ops,
+        alias_map=alias_map,
+        coverage=coverage,
+        example_mode=True,
+        text_transform=rewrite_example_text,
+    )
+
+
+def _parse_notes_to_blocks(
+    lines: list[str],
+    *,
+    supported_ops: set[str] | None = None,
+    alias_map: dict[str, str] | None = None,
+    coverage: dict[str, object] | None = None,
+) -> list[dict]:
+    """Convert Notes lines into a structured AST."""
+    return _parse_rich_doc_blocks(
+        lines,
+        supported_ops=supported_ops,
+        alias_map=alias_map,
+        coverage=coverage,
+    )
+
+
+def _parse_rich_doc_blocks(
+    lines: list[str],
+    *,
+    supported_ops: set[str] | None = None,
+    alias_map: dict[str, str] | None = None,
+    coverage: dict[str, object] | None = None,
+    example_mode: bool = False,
+    text_transform=None,
+) -> list[dict]:
+    blocks: list[dict] = []
+    index = 0
+    total = len(lines)
+    buffer: list[str] = []
+
+    def flush_buffer() -> None:
+        nonlocal buffer
+        if not buffer:
+            return
+        blocks.extend(
+            _parse_standard_rst_blocks(
+                buffer,
+                supported_ops=supported_ops,
+                alias_map=alias_map,
+                coverage=coverage,
+                example_mode=example_mode,
+                text_transform=text_transform,
+            )
+        )
+        buffer = []
+
+    while index < total:
+        raw = lines[index].rstrip("\n")
+        if DIRECTIVE_RE.match(raw):
+            flush_buffer()
+            directive_name, remainder, payload, index = _consume_directive_block(lines, index)
+            blocks.append(
+                _build_directive_block(
+                    directive_name,
+                    remainder,
+                    payload,
+                    supported_ops=supported_ops,
+                    alias_map=alias_map,
+                    coverage=coverage,
+                    example_mode=example_mode,
+                    text_transform=text_transform,
+                )
+            )
+            continue
+
+        buffer.append(raw)
+        index += 1
+
+    flush_buffer()
+
+    return blocks
+
+
+def _parse_field_body_to_blocks(
+    lines: list[str],
+    *,
+    supported_ops: set[str] | None = None,
+    alias_map: dict[str, str] | None = None,
+    coverage: dict[str, object] | None = None,
+) -> list[dict]:
+    """Convert parameter/return body lines into a structured AST."""
+    return _parse_rich_doc_blocks(
+        lines,
+        supported_ops=supported_ops,
+        alias_map=alias_map,
+        coverage=coverage,
+    )
+
+
+def _build_field_list_block(
+    title: str,
+    fields: list[DocField],
+    *,
+    supported_ops: set[str] | None = None,
+    alias_map: dict[str, str] | None = None,
+    coverage: dict[str, object] | None = None,
+) -> dict | None:
+    if not fields:
+        return None
+
+    def preview_inline(body_blocks: list[dict]) -> list[dict]:
+        for block in body_blocks:
+            if block.get("type") == "paragraph":
+                return list(block.get("inline", []))
+        return []
+
+    items = [
+        {
+            "type": "field_list",
+            "name": field.name,
+            "data_type": field.type,
+            "inline": preview_inline(
+                body_blocks := _parse_field_body_to_blocks(
+                    field.body,
+                    supported_ops=supported_ops,
+                    alias_map=alias_map,
+                    coverage=coverage,
+                )
+            ),
+            "body_blocks": body_blocks,
+        }
+        for field in fields
+    ]
+
+    return {
+        "title": title,
+        "blocks": [{"type": "field_list", "title": title, "items": items}],
+    }
+
+
+def _build_sections_for_doc(
+    parsed: ParsedDoc,
+    *,
+    supported_ops: set[str] | None = None,
+    alias_map: dict[str, str] | None = None,
+) -> list[dict]:
+    sections: list[dict] = []
+    coverage = parsed.coverage
+
+    def build_text_section(
+        title: str,
+        lines: list[str],
+        *,
+        example_mode: bool = False,
+        text_transform=None,
+    ) -> None:
+        if not lines:
+            return
+        section_blocks = _parse_rich_doc_blocks(
+            lines,
+            supported_ops=supported_ops,
+            alias_map=alias_map,
+            coverage=coverage,
+            example_mode=example_mode,
+            text_transform=text_transform,
+        )
+        if section_blocks:
+            sections.append({"title": title, "blocks": section_blocks})
+
+    if parsed.summary:
+        summary_inline = parse_inline_nodes(
+            parsed.summary,
+            supported_ops=supported_ops,
+            alias_map=alias_map,
+            coverage=coverage,
+        )
+        if summary_inline:
+            sections.append(
+                {"title": "Summary", "blocks": [{"type": "paragraph", "inline": summary_inline}]}
+            )
+
+    build_text_section("Extended Summary", parsed.extended_summary)
+
+    parameters_block = _build_field_list_block(
+        "Parameters",
+        parsed.parameters,
+        supported_ops=supported_ops,
+        alias_map=alias_map,
+        coverage=coverage,
+    )
+    if parameters_block:
+        sections.append(parameters_block)
+
+    returns_block = _build_field_list_block(
+        "Returns",
+        parsed.returns,
+        supported_ops=supported_ops,
+        alias_map=alias_map,
+        coverage=coverage,
+    )
+    if returns_block:
+        sections.append(returns_block)
+
+    raises_block = _build_field_list_block(
+        "Raises",
+        parsed.raises,
+        supported_ops=supported_ops,
+        alias_map=alias_map,
+        coverage=coverage,
+    )
+    if raises_block:
+        sections.append(raises_block)
+
+    warns_block = _build_field_list_block(
+        "Warns",
+        parsed.warns,
+        supported_ops=supported_ops,
+        alias_map=alias_map,
+        coverage=coverage,
+    )
+    if warns_block:
+        sections.append(warns_block)
+
+    if parsed.see_also:
+        sections.append(
+            {
+                "title": "See also",
+                "blocks": [
+                    {"type": "link_list", "links": [asdict(link) for link in parsed.see_also]}
+                ],
+            }
+        )
+
+    note_lines = list(parsed.note_lines)
+    if note_lines:
+        note_blocks = _parse_notes_to_blocks(
+            note_lines,
+            supported_ops=supported_ops,
+            alias_map=alias_map,
+            coverage=coverage,
+        )
+        if note_blocks:
+            sections.append({"title": "Notes", "blocks": note_blocks})
+
+    build_text_section("Warnings", parsed.warnings)
+    build_text_section("References", parsed.references)
+
+    if parsed.examples:
+        example_lines = [line.rstrip("\n") for line in parsed.examples[0].code.split("\n")]
+        example_blocks = _parse_examples_to_blocks(
+            example_lines,
+            supported_ops=supported_ops,
+            alias_map=alias_map,
+            coverage=coverage,
+        )
+        if example_blocks:
+            sections.append({"title": "Examples", "blocks": example_blocks})
+
+    return sections
+
+
 def derive_example_from_upstream(example_block: str) -> DocExample:
     """Derive a single whest example from a doctest-style upstream snippet."""
     parser = doctest.DocTestParser()
@@ -638,12 +1782,11 @@ def derive_example_from_upstream(example_block: str) -> DocExample:
     code_parts: list[str] = []
     output_parts: list[str] = []
     for example in parsed.examples:
-        source = rewrite_api_refs(example.source).strip()
-        source = source.replace("import numpy as np", "import whest as we")
+        source = rewrite_example_text(example.source).strip()
         if source:
             code_parts.append(source.rstrip())
 
-        want = rewrite_api_refs(example.want).strip()
+        want = rewrite_example_text(example.want).strip()
         if want:
             output_parts.append(want.rstrip())
 
@@ -662,15 +1805,18 @@ def parse_numpy_docstring(raw_doc: str) -> ParsedDoc:
     doc = NumpyDocString(textwrap.dedent(raw_doc).strip("\n"))
 
     summary = " ".join(part.strip() for part in doc["Summary"]).strip()
+    upstream_signature = str(doc["Signature"]).strip()
 
-    parameters = [
-        DocField(name=name, type=type_, body=[line.rstrip() for line in desc])
-        for name, type_, desc in doc["Parameters"]
-    ]
-    returns = [
-        DocField(name=name, type=type_, body=[line.rstrip() for line in desc])
-        for name, type_, desc in doc["Returns"]
-    ]
+    def parse_field_section(section_name: str, *, single_element_is_type: bool = False) -> list[DocField]:
+        return [
+            DocField(name=name, type=type_, body=[line.rstrip() for line in desc])
+            for name, type_, desc in doc[section_name]
+        ]
+
+    parameters = parse_field_section("Parameters")
+    returns = parse_field_section("Returns")
+    raises = parse_field_section("Raises", single_element_is_type=True)
+    warns = parse_field_section("Warns", single_element_is_type=True)
     see_also: list[DocLink] = []
     for entry in doc["See Also"]:
         if not entry:
@@ -678,13 +1824,30 @@ def parse_numpy_docstring(raw_doc: str) -> ParsedDoc:
         targets, desc = entry
         description = " ".join(desc).strip() if desc else ""
         if isinstance(targets, list):
-            for target, _ in targets:
+            for target, role in targets:
                 see_also.append(
-                    DocLink(label=target, target=target, description=description)
+                    DocLink(
+                        label=target,
+                        target=target,
+                        original_target=target,
+                        role=role or "",
+                        description=description,
+                    )
                 )
             continue
-        see_also.append(DocLink(label=targets, target=targets, description=description))
-    notes = _split_paragraphs(list(doc["Notes"]))
+        see_also.append(
+            DocLink(
+                label=targets,
+                target=targets,
+                original_target=targets,
+                description=description,
+            )
+        )
+    extended_summary = [line.rstrip("\n") for line in doc["Extended Summary"]]
+    raw_notes = [line.rstrip("\n") for line in doc["Notes"]]
+    notes = _split_paragraphs(raw_notes)
+    warnings = [line.rstrip("\n") for line in doc["Warnings"]]
+    references = [line.rstrip("\n") for line in doc["References"]]
 
     example_text = "\n".join(line.rstrip() for line in doc["Examples"]).strip()
     examples = [DocExample(code=example_text)] if example_text else []
@@ -695,7 +1858,16 @@ def parse_numpy_docstring(raw_doc: str) -> ParsedDoc:
         returns=returns,
         see_also=see_also,
         notes=notes,
+        note_lines=raw_notes,
         examples=examples,
+        extended_summary=extended_summary,
+        raises=raises,
+        warnings=warnings,
+        warns=warns,
+        references=references,
+        upstream_signature=upstream_signature,
+        sections=None,
+        coverage=_new_doc_coverage(),
     )
 
 
@@ -759,6 +1931,104 @@ def _resolve_attr(root: object, dotted_name: str) -> object:
     return current
 
 
+def _worker_init_operation_doc_context(
+    alias_items: tuple[tuple[str, str], ...], supported_ops: tuple[str, ...]
+) -> None:
+    """Initialize per-process context for parallel operation doc workers."""
+    global _WORKER_ALIAS_MAP
+    global _WORKER_SUPPORTED_OPS
+    _WORKER_ALIAS_MAP = dict(alias_items)
+    _WORKER_SUPPORTED_OPS = set(supported_ops)
+
+
+def _worker_build_operation_record(
+    task: tuple[
+        str,
+        str,
+        str,
+        list[str],
+        float,
+        str,
+        str,
+    ]
+) -> OperationDocRecord:
+    """Build a single operation doc record inside a worker process."""
+    name, module, category, aliases, weight, notes, owned_example_html = task
+
+    return _build_operation_record(
+        name,
+        module,
+        category,
+        aliases,
+        weight,
+        notes,
+        owned_example_html,
+        alias_map=_WORKER_ALIAS_MAP,
+        supported_ops=_WORKER_SUPPORTED_OPS,
+    )
+
+
+def _build_operation_record(
+    name: str,
+    module: str,
+    category: str,
+    aliases: list[str],
+    weight: float,
+    notes: str,
+    owned_example_html: str,
+    *,
+    alias_map: dict[str, str] | None,
+    supported_ops: set[str] | None,
+) -> OperationDocRecord:
+    """Build one in-memory operation record."""
+    if alias_map is None or supported_ops is None:
+        raise RuntimeError(
+            "Parallel worker context not initialized; call _worker_init_operation_doc_context()"
+        )
+
+    signature, parsed_doc, derived_example, whest_source_url, upstream_source_url = (
+        build_structured_doc(
+            name,
+            module,
+            owned_example_html,
+            alias_map=alias_map,
+            supported_ops=supported_ops,
+        )
+    )
+    cost_plain, cost_latex = cost_for_op(name, category)
+    return OperationDocRecord(
+        name=name,
+        canonical_name=name,
+        slug=slug_for_operation(name),
+        href=f"/docs/api/ops/{slug_for_operation(name)}",
+        area=normalize_area(module),
+        whest_ref=whest_ref(name, module),
+        numpy_ref=numpy_ref(name, module),
+        category=category,
+        display_type=display_type_for_category(category),
+        cost_formula=cost_plain,
+        cost_formula_latex=cost_latex,
+        weight=weight,
+        notes=notes,
+        aliases=aliases,
+        signature=signature,
+        summary=parsed_doc.summary,
+        provenance_label="Adapted from NumPy docs",
+        provenance_url=docs_url_for_operation(name, module),
+        whest_source_url=whest_source_url,
+        upstream_source_url=upstream_source_url,
+        parameters=parsed_doc.parameters,
+        returns=parsed_doc.returns,
+        see_also=parsed_doc.see_also,
+        notes_sections=parsed_doc.notes,
+        example=derived_example,
+        body_sections=parsed_doc.sections,
+        doc_coverage=parsed_doc.coverage,
+        api_docs_html="",
+        whest_examples_html=owned_example_html,
+    )
+
+
 def resolve_live_objects(name: str, module: str) -> tuple[object, object | None]:
     """Resolve the live whest object and its upstream NumPy/SciPy counterpart."""
     import numpy as np
@@ -796,43 +2066,68 @@ def _rewrite_doc_field(field: DocField) -> DocField:
 
 
 def _rewrite_doc_link(link: DocLink) -> DocLink:
-    rewritten_target = rewrite_api_refs(link.target)
+    rewritten_target = _normalize_reference_target(rewrite_api_refs(link.target))
+    rewritten_original = link.original_target or link.target
     return DocLink(
         label=rewrite_api_refs(link.label),
-        target=rewritten_target.removeprefix("we."),
+        target=rewritten_target,
         description=rewrite_api_refs(link.description),
+        description_inline=None,
+        role=link.role,
+        original_target=rewritten_original,
+        unresolved=False,
         href="",
         external_url="",
     )
 
-
-def _external_docs_url(target: str) -> str:
-    """Return an upstream documentation URL for unresolved references."""
-    if target.startswith("scipy."):
-        return f"https://docs.scipy.org/doc/scipy/reference/generated/{target}.html"
-    if target.startswith("numpy."):
-        return f"https://numpy.org/doc/stable/reference/generated/{target}.html"
-    return ""
-
-
 def resolve_doc_link(
-    link: DocLink, *, alias_map: dict[str, str], supported_ops: set[str]
+    link: DocLink,
+    *,
+    alias_map: dict[str, str],
+    supported_ops: set[str],
+    coverage: dict[str, object] | None = None,
 ) -> DocLink:
     """Resolve a parsed see-also entry into internal and external link targets."""
     rewritten = _rewrite_doc_link(link)
-    canonical_target = resolve_canonical_name(rewritten.target, alias_map)
-    href = (
-        f"/docs/api/ops/{slug_for_operation(canonical_target)}"
-        if canonical_target in supported_ops
-        else ""
+    href, external_url, canonical_target = _resolve_reference_destination(
+        rewritten.target,
+        original_target=rewritten.original_target or rewritten.target,
+        role=rewritten.role,
+        alias_map=alias_map,
+        supported_ops=supported_ops,
     )
-    external_url = "" if href else _external_docs_url(link.target)
-    if not external_url and not href and link.target.startswith(("numpy.", "scipy.")):
-        external_url = _external_docs_url(link.target)
+    unresolved = not href and not external_url
+    if unresolved:
+        _record_coverage_event(
+            coverage,
+            "unresolved_references",
+            {
+                "role": rewritten.role or "see_also",
+                "target": rewritten.target,
+                "original_target": rewritten.original_target or rewritten.target,
+                "display_text": rewritten.label,
+            },
+        )
+
+    label = rewritten.label
+    if href and not label.startswith("we."):
+        label = f"we.{canonical_target}"
+
     return DocLink(
-        label=rewritten.label,
+        label=label,
         target=canonical_target,
         description=rewritten.description,
+        description_inline=parse_inline_nodes(
+            rewritten.description,
+            supported_ops=supported_ops,
+            alias_map=alias_map,
+            coverage=coverage,
+        )
+        if rewritten.description
+        else [],
+        role=rewritten.role,
+        original_target=rewritten.original_target or rewritten.target,
+        unresolved=unresolved,
         href=href,
         external_url=external_url,
     )
@@ -856,13 +2151,27 @@ def build_structured_doc(
     parsed = parse_numpy_docstring(raw_doc)
 
     parsed.summary = rewrite_api_refs(parsed.summary)
+    parsed.extended_summary = [rewrite_api_refs(line) for line in parsed.extended_summary]
     parsed.parameters = [_rewrite_doc_field(field) for field in parsed.parameters]
     parsed.returns = [_rewrite_doc_field(field) for field in parsed.returns]
+    parsed.raises = [_rewrite_doc_field(field) for field in parsed.raises]
+    parsed.warns = [_rewrite_doc_field(field) for field in parsed.warns]
     parsed.see_also = [
-        resolve_doc_link(link, alias_map=alias_map, supported_ops=supported_ops)
+        resolve_doc_link(
+            link,
+            alias_map=alias_map,
+            supported_ops=supported_ops,
+            coverage=parsed.coverage,
+        )
         for link in parsed.see_also
     ]
     parsed.notes = [rewrite_api_refs(note) for note in parsed.notes]
+    parsed.note_lines = [rewrite_api_refs(line) for line in parsed.note_lines]
+    parsed.warnings = [rewrite_api_refs(line) for line in parsed.warnings]
+    parsed.references = [rewrite_api_refs(line) for line in parsed.references]
+    parsed.sections = _build_sections_for_doc(
+        parsed, supported_ops=supported_ops, alias_map=alias_map
+    )
 
     example: DocExample | None = None
     if parsed.examples:
@@ -1112,7 +2421,9 @@ def resolve_operation_weight(
     return 1.0
 
 
-def build_operation_doc_records(registry: dict[str, dict]) -> list[OperationDocRecord]:
+def build_operation_doc_records(
+    registry: dict[str, dict], *, workers: int = 1
+) -> list[OperationDocRecord]:
     """Build canonical operation doc records for supported operations."""
     alias_map = load_alias_map(registry)
     alias_groups = build_alias_groups(registry, alias_map)
@@ -1122,7 +2433,7 @@ def build_operation_doc_records(registry: dict[str, dict]) -> list[OperationDocR
         for name, info in registry.items()
         if info["category"] != "blacklisted" and resolve_canonical_name(name, alias_map) == name
     }
-    records: list[OperationDocRecord] = []
+    tasks: list[tuple[str, str, str, list[str], float, str, str]] = []
     for name, info in sorted(registry.items()):
         if info["category"] == "blacklisted":
             continue
@@ -1139,48 +2450,45 @@ def build_operation_doc_records(registry: dict[str, dict]) -> list[OperationDocR
         )
 
         module = info["module"]
-        cost_plain, cost_latex = cost_for_op(name, info["category"])
         owned_example_html = load_whest_example_html(name, API_EXAMPLES_DIR)
-        signature, parsed_doc, derived_example, whest_source_url, upstream_source_url = (
-            build_structured_doc(
+        tasks.append(
+            (
                 name,
                 module,
+                info["category"],
+                aliases,
+                weight,
+                info.get("notes", ""),
                 owned_example_html,
+            )
+        )
+
+    if workers > 1:
+        max_workers = min(
+            workers,
+            len(os.sched_getaffinity(0)) if hasattr(os, "sched_getaffinity") else os.cpu_count() or 1,
+        )
+        mp_context = (
+            mp.get_context("fork")
+            if "fork" in mp.get_all_start_methods()
+            else None
+        )
+        with ProcessPoolExecutor(
+            max_workers=max_workers,
+            mp_context=mp_context,
+            initializer=_worker_init_operation_doc_context,
+            initargs=(tuple(alias_map.items()), tuple(sorted(supported_ops))),
+        ) as executor:
+            records = list(executor.map(_worker_build_operation_record, tasks))
+    else:
+        records = [
+            _build_operation_record(
+                *task,
                 alias_map=alias_map,
                 supported_ops=supported_ops,
             )
-        )
-        records.append(
-            OperationDocRecord(
-                name=name,
-                canonical_name=name,
-                slug=slug_for_operation(name),
-                href=f"/docs/api/ops/{slug_for_operation(name)}",
-                area=normalize_area(module),
-                whest_ref=whest_ref(name, module),
-                numpy_ref=numpy_ref(name, module),
-                category=info["category"],
-                display_type=display_type_for_category(info["category"]),
-                cost_formula=cost_plain,
-                cost_formula_latex=cost_latex,
-                weight=weight,
-                notes=info.get("notes", ""),
-                aliases=aliases,
-                signature=signature,
-                summary=parsed_doc.summary,
-                provenance_label="Adapted from NumPy docs",
-                provenance_url=docs_url_for_operation(name, module),
-                whest_source_url=whest_source_url,
-                upstream_source_url=upstream_source_url,
-                parameters=parsed_doc.parameters,
-                returns=parsed_doc.returns,
-                see_also=parsed_doc.see_also,
-                notes_sections=parsed_doc.notes,
-                example=derived_example,
-                api_docs_html="",
-                whest_examples_html=owned_example_html,
-            )
-        )
+            for task in tasks
+        ]
 
     for index, record in enumerate(records):
         if index > 0:
@@ -1220,8 +2528,10 @@ def write_operation_doc_artifacts(
     """Emit standalone MDX stubs plus generated operation manifests."""
     op_docs_dir = website_root / "content" / "docs" / "api" / "ops"
     generated_dir = website_root / ".generated"
+    op_docs_payload_dir = generated_dir / "ops"
     op_docs_dir.mkdir(parents=True, exist_ok=True)
     generated_dir.mkdir(parents=True, exist_ok=True)
+    op_docs_payload_dir.mkdir(parents=True, exist_ok=True)
 
     expected_pages = {record.slug for record in records}
     for existing_page in op_docs_dir.glob("*.mdx"):
@@ -1234,6 +2544,7 @@ def write_operation_doc_artifacts(
     for record in sorted(records, key=lambda op: op.name):
         stub_path = op_docs_dir / f"{record.slug}.mdx"
         stub_path.write_text(render_operation_stub(record))
+        write_json(op_docs_payload_dir / f"{record.slug}.json", asdict(record))
         docs_manifest[record.name] = asdict(record)
         refs_manifest[record.name] = {
             "label": record.whest_ref,
@@ -1252,6 +2563,25 @@ def write_operation_doc_artifacts(
     print(f"  Generated {len(records)} standalone operation stubs")
     print(f"  Generated {generated_dir / 'op-docs.json'}")
     print(f"  Generated {generated_dir / 'op-refs.json'}")
+
+
+def write_op_doc_coverage_artifact(
+    records: list[OperationDocRecord], website_root: Path
+) -> None:
+    """Write doc-parser coverage for unresolved references and raw fallbacks."""
+    generated_dir = website_root / ".generated"
+    generated_dir.mkdir(parents=True, exist_ok=True)
+    payload = {
+        record.name: {
+            "unresolved_references": record.doc_coverage.get("unresolved_references", []),
+            "unsupported_directives": record.doc_coverage.get("unsupported_directives", []),
+            "raw_blocks": record.doc_coverage.get("raw_blocks", []),
+            "has_issues": any(record.doc_coverage.get(key) for key in ("unresolved_references", "unsupported_directives", "raw_blocks")),
+        }
+        for record in records
+    }
+    write_json(generated_dir / "op-doc-coverage.json", payload)
+    print(f"  Generated {generated_dir / 'op-doc-coverage.json'}")
 
 
 def write_example_coverage_artifact(
@@ -1554,6 +2884,11 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
         print(f"\napi-example-coverage.json NOT FOUND at {example_coverage_path}")
         return False
 
+    doc_coverage_path = GENERATED_DIR / "op-doc-coverage.json"
+    if not doc_coverage_path.exists():
+        print(f"\nop-doc-coverage.json NOT FOUND at {doc_coverage_path}")
+        return False
+
     sample_op_page = OP_DOCS_DIR / "absolute.mdx"
     if not sample_op_page.exists():
         print(f"\nGenerated operation page NOT FOUND at {sample_op_page}")
@@ -1578,7 +2913,14 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
         )
         return False
 
-    print("Generated operation doc manifests, stub pages, and example coverage are present.")
+    print("Generated operation doc manifests, parser coverage, stub pages, and example coverage are present.")
+    generated_payload = GENERATED_DIR / "ops" / "absolute.json"
+    if not generated_payload.exists():
+        print(
+            "\nPer-op generated payload missing for 'absolute' at "
+            f"{generated_payload}"
+        )
+        return False
 
     return True
 
@@ -1595,6 +2937,12 @@ def main():
     parser.add_argument(
         "--verify", action="store_true", help="Verify coverage only (no generation)"
     )
+    parser.add_argument(
+        "--workers",
+        type=int,
+        default=1,
+        help="Use multiple processes to build operation docs (default: 1)",
+    )
     args = parser.parse_args()
 
     assert_supported_docs_env()
@@ -1606,8 +2954,10 @@ def main():
 
     print("Generating API reference data...")
     generate_ops_json(registry)
-    records = build_operation_doc_records(registry)
+    worker_count = max(1, args.workers)
+    records = build_operation_doc_records(registry, workers=worker_count)
     write_operation_doc_artifacts(records, WEBSITE)
+    write_op_doc_coverage_artifact(records, WEBSITE)
     example_coverage = build_example_coverage(records, API_EXAMPLES_DIR)
     write_example_coverage_artifact(example_coverage, WEBSITE)
 

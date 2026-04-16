@@ -1,0 +1,310 @@
+{
+  "aliases": [],
+  "api_docs_html": "",
+  "area": "core",
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Stack 1-D arrays as columns into a 2-D array."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Take a sequence of 1-D arrays and stack them as columns\nto make a single 2-D array. 2-D arrays are stacked as-is,\njust like with "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/ops/hstack",
+              "kind": "link",
+              "target": "hstack",
+              "text": "hstack"
+            },
+            {
+              "kind": "text",
+              "text": ".  1-D arrays are turned into 2-D columns\nfirst."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Arrays to stack. All of them must have the same first dimension."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "sequence of 1-D or 2-D arrays.",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Arrays to stack. All of them must have the same first dimension."
+                }
+              ],
+              "name": "tup",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "The array formed by stacking the given arrays."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "2-D array",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "The array formed by stacking the given arrays."
+                }
+              ],
+              "name": "stacked",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "links": [
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "",
+              "href": "/docs/api/ops/stack",
+              "label": "we.stack",
+              "original_target": "stack",
+              "role": "",
+              "target": "stack",
+              "unresolved": false
+            },
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "",
+              "href": "/docs/api/ops/hstack",
+              "label": "we.hstack",
+              "original_target": "hstack",
+              "role": "",
+              "target": "hstack",
+              "unresolved": false
+            },
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "",
+              "href": "/docs/api/ops/vstack",
+              "label": "we.vstack",
+              "original_target": "vstack",
+              "role": "",
+              "target": "vstack",
+              "unresolved": false
+            },
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "",
+              "href": "/docs/api/ops/concatenate",
+              "label": "we.concatenate",
+              "original_target": "concatenate",
+              "role": "",
+              "target": "concatenate",
+              "unresolved": false
+            }
+          ],
+          "type": "link_list"
+        }
+      ],
+      "title": "See also"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import whest as we"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "a = we.array((1,2,3))"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "b = we.array((2,3,4))"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.column_stack((a,b))"
+            },
+            {
+              "kind": "output",
+              "text": "array([[1, 2],"
+            },
+            {
+              "kind": "output",
+              "text": "       [2, 3],"
+            },
+            {
+              "kind": "output",
+              "text": "       [3, 4]])"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
+    }
+  ],
+  "canonical_name": "column_stack",
+  "category": "free",
+  "cost_formula": "0",
+  "cost_formula_latex": "$0$",
+  "display_type": "free",
+  "doc_coverage": {
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "example": {
+    "code": "import whest as we\n\na = we.array((1,2,3))\n\nb = we.array((2,3,4))\n\nwe.column_stack((a,b))",
+    "output": "array([[1, 2],\n       [2, 3],\n       [3, 4]])",
+    "source": "derived"
+  },
+  "href": "/docs/api/ops/column_stack",
+  "name": "column_stack",
+  "next": {
+    "href": "/docs/api/ops/common_type",
+    "label": "we.common_type"
+  },
+  "notes": "Stack 1-D arrays as columns into 2-D array.",
+  "notes_sections": [],
+  "numpy_ref": "np.column_stack",
+  "parameters": [
+    {
+      "body": [
+        "Arrays to stack. All of them must have the same first dimension."
+      ],
+      "name": "tup",
+      "type": "sequence of 1-D or 2-D arrays."
+    }
+  ],
+  "previous": {
+    "href": "/docs/api/ops/clip",
+    "label": "we.clip"
+  },
+  "provenance_label": "Adapted from NumPy docs",
+  "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.column_stack.html",
+  "returns": [
+    {
+      "body": [
+        "The array formed by stacking the given arrays."
+      ],
+      "name": "stacked",
+      "type": "2-D array"
+    }
+  ],
+  "see_also": [
+    {
+      "description": "",
+      "description_inline": [],
+      "external_url": "",
+      "href": "/docs/api/ops/stack",
+      "label": "we.stack",
+      "original_target": "stack",
+      "role": "",
+      "target": "stack",
+      "unresolved": false
+    },
+    {
+      "description": "",
+      "description_inline": [],
+      "external_url": "",
+      "href": "/docs/api/ops/hstack",
+      "label": "we.hstack",
+      "original_target": "hstack",
+      "role": "",
+      "target": "hstack",
+      "unresolved": false
+    },
+    {
+      "description": "",
+      "description_inline": [],
+      "external_url": "",
+      "href": "/docs/api/ops/vstack",
+      "label": "we.vstack",
+      "original_target": "vstack",
+      "role": "",
+      "target": "vstack",
+      "unresolved": false
+    },
+    {
+      "description": "",
+      "description_inline": [],
+      "external_url": "",
+      "href": "/docs/api/ops/concatenate",
+      "label": "we.concatenate",
+      "original_target": "concatenate",
+      "role": "",
+      "target": "concatenate",
+      "unresolved": false
+    }
+  ],
+  "signature": "we.column_stack(tup)",
+  "slug": "column_stack",
+  "summary": "Stack 1-D arrays as columns into a 2-D array.",
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L621",
+  "weight": 1.0,
+  "whest_examples_html": "",
+  "whest_ref": "we.column_stack",
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L760"
+}

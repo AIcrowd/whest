@@ -1,0 +1,318 @@
+{
+  "aliases": [],
+  "api_docs_html": "",
+  "area": "core",
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Find the unique elements of "
+            },
+            {
+              "kind": "code",
+              "text": "x"
+            },
+            {
+              "kind": "text",
+              "text": " and indices to reconstruct "
+            },
+            {
+              "kind": "code",
+              "text": "x"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This function is an Array API compatible alternative to:"
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "language": null,
+          "text": "we.unique(x, return_inverse=True, equal_nan=False)",
+          "type": "literal_block"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "but returns a namedtuple for easier access to each output."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Input array. It will be flattened if it is not already 1-D."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "array_like",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Input array. It will be flattened if it is not already 1-D."
+                }
+              ],
+              "name": "x",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "The result containing:"
+                    }
+                  ],
+                  "type": "paragraph"
+                },
+                {
+                  "items": [
+                    {
+                      "blocks": [
+                        {
+                          "inline": [
+                            {
+                              "kind": "text",
+                              "text": "values - The unique elements of an input array."
+                            }
+                          ],
+                          "type": "paragraph"
+                        }
+                      ]
+                    },
+                    {
+                      "blocks": [
+                        {
+                          "inline": [
+                            {
+                              "kind": "text",
+                              "text": "inverse_indices - The indices from the set of unique elements\nthat reconstruct "
+                            },
+                            {
+                              "kind": "code",
+                              "text": "x"
+                            },
+                            {
+                              "kind": "text",
+                              "text": "."
+                            }
+                          ],
+                          "type": "paragraph"
+                        }
+                      ]
+                    }
+                  ],
+                  "ordered": false,
+                  "type": "list"
+                }
+              ],
+              "data_type": "namedtuple",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "The result containing:"
+                }
+              ],
+              "name": "out",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "links": [
+            {
+              "description": "Find the unique elements of an array.",
+              "description_inline": [
+                {
+                  "kind": "text",
+                  "text": "Find the unique elements of an array."
+                }
+              ],
+              "external_url": "",
+              "href": "/docs/api/ops/unique",
+              "label": "we.unique",
+              "original_target": "unique",
+              "role": "",
+              "target": "unique",
+              "unresolved": false
+            }
+          ],
+          "type": "link_list"
+        }
+      ],
+      "title": "See also"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import whest as we"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "x = [1, 1, 2]"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "uniq = we.unique_inverse(x)"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "uniq.values"
+            },
+            {
+              "kind": "output",
+              "text": "array([1, 2])"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "uniq.inverse_indices"
+            },
+            {
+              "kind": "output",
+              "text": "array([0, 0, 1])"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
+    }
+  ],
+  "canonical_name": "unique_inverse",
+  "category": "counted_custom",
+  "cost_formula": "per-operation",
+  "cost_formula_latex": "varies",
+  "display_type": "custom",
+  "doc_coverage": {
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "example": {
+    "code": "import whest as we\n\nx = [1, 1, 2]\n\nuniq = we.unique_inverse(x)\n\nuniq.values\n\nuniq.inverse_indices",
+    "output": "array([1, 2])\n\narray([0, 0, 1])",
+    "source": "derived"
+  },
+  "href": "/docs/api/ops/unique_inverse",
+  "name": "unique_inverse",
+  "next": {
+    "href": "/docs/api/ops/unique_values",
+    "label": "we.unique_values"
+  },
+  "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
+  "notes_sections": [],
+  "numpy_ref": "np.unique_inverse",
+  "parameters": [
+    {
+      "body": [
+        "Input array. It will be flattened if it is not already 1-D."
+      ],
+      "name": "x",
+      "type": "array_like"
+    }
+  ],
+  "previous": {
+    "href": "/docs/api/ops/unique_counts",
+    "label": "we.unique_counts"
+  },
+  "provenance_label": "Adapted from NumPy docs",
+  "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.unique_inverse.html",
+  "returns": [
+    {
+      "body": [
+        "The result containing:",
+        "",
+        "* values - The unique elements of an input array.",
+        "* inverse_indices - The indices from the set of unique elements",
+        "  that reconstruct `x`."
+      ],
+      "name": "out",
+      "type": "namedtuple"
+    }
+  ],
+  "see_also": [
+    {
+      "description": "Find the unique elements of an array.",
+      "description_inline": [
+        {
+          "kind": "text",
+          "text": "Find the unique elements of an array."
+        }
+      ],
+      "external_url": "",
+      "href": "/docs/api/ops/unique",
+      "label": "we.unique",
+      "original_target": "unique",
+      "role": "",
+      "target": "unique",
+      "unresolved": false
+    }
+  ],
+  "signature": "we.unique_inverse(x, /)",
+  "slug": "unique_inverse",
+  "summary": "Find the unique elements of `x` and indices to reconstruct `x`.",
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L520",
+  "weight": 1.0,
+  "whest_examples_html": "",
+  "whest_ref": "we.unique_inverse",
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L291"
+}
