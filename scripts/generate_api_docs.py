@@ -683,7 +683,9 @@ def see_also_to_blocks(entries) -> list[dict[str, str]]:
     return blocks
 
 
-def normalize_signature(whest_call_ref: str, callable_obj, np_doc_signature: str) -> str:
+def normalize_signature(
+    whest_call_ref: str, callable_obj, np_doc_signature: str
+) -> str:
     """Return a display signature preferring explicit numpydoc signatures when present."""
     if np_doc_signature:
         return re.sub(r"^[A-Za-z0-9_.]+", whest_call_ref, np_doc_signature, count=1)
@@ -705,9 +707,14 @@ def parse_docstring_payload(callable_obj) -> tuple[str, list[dict[str, object]]]
     summary = " ".join(summary_lines).strip()
 
     sections: list[dict[str, object]] = []
-    summary_blocks = lines_to_blocks(summary_lines + ([""] + extended_summary_lines if extended_summary_lines else []))
+    summary_blocks = lines_to_blocks(
+        summary_lines
+        + ([""] + extended_summary_lines if extended_summary_lines else [])
+    )
     if summary_blocks:
-        sections.append({"kind": "summary", "title": "Summary", "blocks": summary_blocks})
+        sections.append(
+            {"kind": "summary", "title": "Summary", "blocks": summary_blocks}
+        )
 
     section_specs = [
         ("Parameters", "parameters", "Parameters"),
@@ -740,7 +747,9 @@ def parse_docstring_payload(callable_obj) -> tuple[str, list[dict[str, object]]]
     return summary, sections
 
 
-def build_op_detail_payload(name: str, info: dict, *, weights: dict[str, float]) -> dict[str, object]:
+def build_op_detail_payload(
+    name: str, info: dict, *, weights: dict[str, float]
+) -> dict[str, object]:
     """Build the full per-op JSON payload for an operation."""
     module = info["module"]
     category = info["category"]
@@ -872,9 +881,7 @@ def generate_op_doc_import_map(slugs: list[str]) -> None:
         "export const opDocImports: Record<string, () => Promise<{ default: OpDocPayload }>> = {",
     ]
     for slug in slugs:
-        lines.append(
-            f'  "{slug}": () => import("../public/api-data/ops/{slug}.json"),'
-        )
+        lines.append(f'  "{slug}": () => import("../public/api-data/ops/{slug}.json"),')
     lines.extend(
         [
             "};",
@@ -884,7 +891,7 @@ def generate_op_doc_import_map(slugs: list[str]) -> None:
     )
     for slug in slugs:
         lines.append(f'  "{slug}",')
-    lines.extend(['] as const;', ""])
+    lines.extend(["] as const;", ""])
 
     out = GENERATED_DIR / "op-doc-imports.ts"
     out.write_text("\n".join(lines))
