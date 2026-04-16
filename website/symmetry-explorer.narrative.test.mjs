@@ -58,9 +58,16 @@ test('pickTopVisibleAct prefers the top-most visible act and falls back safely',
 });
 
 test('shell contract uses primitive-based chrome instead of legacy header classes', () => {
-  const source = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
-  assert.match(source, /StickyBar/);
-  assert.match(source, /ExplorerSectionCard/);
+  const source = fs.readFileSync(
+    new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url),
+    'utf8',
+  );
+  const stickyBarIndex = source.indexOf('<StickyBar');
+  const firstSectionIndex = source.indexOf('<ExplorerSectionCard');
+
+  assert.notEqual(stickyBarIndex, -1);
+  assert.notEqual(firstSectionIndex, -1);
+  assert.ok(stickyBarIndex < firstSectionIndex);
   assert.doesNotMatch(source, /font-accent/);
 });
 
