@@ -40,6 +40,7 @@ test('getPresetSummary includes the expectedGroup used by the preset controls', 
     formula: "einsum('ij,jk→ik', A, A)",
     description: 'Identical operands but different subscript structure → σ-loop finds no valid π',
     caseType: 'trivial',
+    regimeId: 'trivial',
     expectedGroup: 'trivial',
     color: '#D1D5DB',
   });

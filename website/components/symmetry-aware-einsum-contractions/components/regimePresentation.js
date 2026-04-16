@@ -64,7 +64,7 @@ function regimePresentationFromSpec(id) {
         body: spec.description,
         whenText: spec.when ?? null,
         latex: spec.latex ?? null,
-        glossary: null,
+        glossary: spec.glossary ?? null,
       },
     };
   }
@@ -82,7 +82,7 @@ function regimePresentationFromSpec(id) {
         body: spec.description,
         whenText: spec.when ?? null,
         latex: spec.latex ?? null,
-        glossary: null,
+        glossary: spec.glossary ?? null,
       },
     };
   }

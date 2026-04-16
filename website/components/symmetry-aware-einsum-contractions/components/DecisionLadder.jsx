@@ -2,6 +2,7 @@ import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from '
 import { Controls, Handle, Position, ReactFlow, ReactFlowProvider } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import Latex from './Latex.jsx';
+import GlossaryProse from './GlossaryProse.jsx';
 import { SHAPE_SPEC } from '../engine/shapeSpec.js';
 import { REGIME_SPEC } from '../engine/regimeSpec.js';
 
@@ -159,10 +160,10 @@ function QuestionNode({ data }) {
       className="box-border flex h-full w-full cursor-help items-center justify-center rounded-md border border-gray-200 bg-white px-3 py-1.5 text-center text-sm leading-tight text-gray-900 shadow-sm transition-colors hover:border-gray-400"
       data-tree-node={data.nodeId}
     >
-      <Handle type="target" position={Position.Top} className="pointer-events-none opacity-0" />
+      <Handle id="top" type="target" position={Position.Top} className="pointer-events-none opacity-0" />
       {data.text}
-      <Handle type="source" position={Position.Bottom} className="pointer-events-none opacity-0" />
-      <Handle type="source" position={Position.Left} id="side" className="pointer-events-none opacity-0" />
+      <Handle id="bottom" type="source" position={Position.Bottom} className="pointer-events-none opacity-0" />
+      <Handle id="side" type="source" position={Position.Left} className="pointer-events-none opacity-0" />
     </div>
   );
 }
@@ -174,7 +175,7 @@ function SourceNode({ data }) {
       data-tree-node={data.nodeId}
     >
       {data.text}
-      <Handle type="source" position={Position.Bottom} className="pointer-events-none opacity-0" />
+      <Handle id="bottom" type="source" position={Position.Bottom} className="pointer-events-none opacity-0" />
     </div>
   );
 }
@@ -193,8 +194,8 @@ function LeafNode({ data }) {
       }}
       data-tree-node={data.nodeId}
     >
-      <Handle type="target" position={Position.Right} id="right" className="pointer-events-none opacity-0" />
-      <Handle type="target" position={Position.Top} id="top" className="pointer-events-none opacity-0" />
+      <Handle id="right" type="target" position={Position.Right} className="pointer-events-none opacity-0" />
+      <Handle id="top" type="target" position={Position.Top} className="pointer-events-none opacity-0" />
       {data.text}
     </div>
   );
@@ -235,6 +236,7 @@ function tooltipFor(nodeId) {
       whenText: spec.when,
       body: spec.description,
       latex: spec.latex,
+      glossary: spec.glossary,
       color: spec.color,
     };
   }
@@ -285,8 +287,8 @@ function buildLadderLayout(activeLeafId) {
       edges.push({
         id: 's0-q0',
         source: 's0',
+        sourceHandle: 'bottom',
         target: question.id,
-        sourceHandle: null,
         targetHandle: 'top',
         style: { stroke: '#94A3B8', strokeWidth: 1.5 },
       });
@@ -314,6 +316,7 @@ function buildLadderLayout(activeLeafId) {
       edges.push({
         id: `${question.id}-${plan.spineNext}`,
         source: question.id,
+        sourceHandle: 'bottom',
         target: plan.spineNext,
         targetHandle: 'top',
         label: plan.spineEdge.label,
@@ -324,6 +327,7 @@ function buildLadderLayout(activeLeafId) {
       edges.push({
         id: `${question.id}-${plan.spineNext}`,
         source: question.id,
+        sourceHandle: 'bottom',
         target: plan.spineNext,
         targetHandle: 'top',
         label: plan.spineEdge.label,
@@ -364,7 +368,7 @@ const DecisionLadderGraph = memo(function DecisionLadderGraph({
         zoomOnScroll
         zoomOnPinch
         zoomOnDoubleClick
-        preventScrolling={false}
+        preventScrolling
         proOptions={{ hideAttribution: true }}
         onNodeMouseEnter={onNodeMouseEnter}
         onNodeMouseLeave={onNodeMouseLeave}
@@ -393,8 +397,8 @@ export default function DecisionLadder({ activeRegimeId = null, activeShapeId = 
   const openTooltipForNode = useCallback((nodeId, rect) => {
     if (hoveredNodeRef.current === nodeId) return;
     if (!rect) return;
-    const tooltipW = 320;
-    const tooltipH = 260;
+    const tooltipW = 460;
+    const tooltipH = 340;
     const vw = document.documentElement.clientWidth;
     const vh = document.documentElement.clientHeight;
     let x = rect.left + rect.width / 2;
@@ -495,7 +499,7 @@ export default function DecisionLadder({ activeRegimeId = null, activeShapeId = 
       </div>
       {activeTooltip && (
         <div
-          className="pointer-events-none fixed z-[9999] w-80 max-w-[calc(100vw-2rem)] rounded-lg bg-gray-900 px-4 py-3.5 text-white shadow-2xl"
+          className="pointer-events-none fixed z-[9999] w-[460px] max-w-[calc(100vw-2rem)] rounded-lg bg-gray-900 px-4 py-3.5 text-white shadow-2xl"
           style={{
             left: tooltipPos.x,
             top: tooltipPos.y,
@@ -521,7 +525,14 @@ export default function DecisionLadder({ activeRegimeId = null, activeShapeId = 
           </div>
           {activeTooltip.latex && (
             <div className="mt-3 overflow-x-auto border-t border-gray-700 pt-3 text-sm text-gray-100">
-              <Latex math={activeTooltip.latex} display />
+              <div className="min-w-0">
+                <Latex math={activeTooltip.latex} display />
+              </div>
+            </div>
+          )}
+          {activeTooltip.glossary && (
+            <div className="mt-3 whitespace-normal break-words border-t border-gray-700 pt-3 text-[11px] leading-relaxed text-gray-300">
+              <GlossaryProse text={activeTooltip.glossary} />
             </div>
           )}
         </div>

@@ -5,8 +5,8 @@ import GlossaryProse from './GlossaryProse.jsx';
 import { getRegimePresentation } from './regimePresentation.js';
 import { cn } from '../lib/utils.js';
 
-const TOOLTIP_WIDTH = 320;
-const TOOLTIP_HEIGHT = 240;
+const TOOLTIP_WIDTH = 460;
+const TOOLTIP_HEIGHT = 340;
 const VIEWPORT_PADDING = 16;
 const TOOLTIP_OFFSET = 8;
 
@@ -140,7 +140,7 @@ export default function CaseBadge({
 
       {showTooltip && tooltip && (
         <div
-          className="pointer-events-none fixed z-[9999] w-80 max-w-[calc(100vw-2rem)] rounded-lg bg-gray-900 px-4 py-3.5 text-white shadow-2xl"
+          className="pointer-events-none fixed z-[9999] w-[460px] max-w-[calc(100vw-2rem)] rounded-lg bg-gray-900 px-4 py-3.5 text-white shadow-2xl"
           style={{
             left: tooltipPos.x,
             top: tooltipPos.y,

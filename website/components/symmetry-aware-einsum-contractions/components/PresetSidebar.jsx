@@ -65,8 +65,8 @@ export default function PresetSidebar({
               style={{ backgroundColor: summary.color }}
             />
             <span className="flex items-center gap-2 pl-3">
-              {summary.caseType && (
-                <CaseBadge caseType={summary.caseType} size="xs" variant="compact" />
+              {summary.regimeId && (
+                <CaseBadge regimeId={summary.regimeId} caseType={summary.caseType} size="xs" variant="compact" />
               )}
               <SymmetryBadge value={summary.expectedGroup} />
             </span>
