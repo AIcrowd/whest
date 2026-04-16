@@ -10,6 +10,7 @@ import { LabelInteractionGraph } from './ComponentView.jsx';
 import DecisionLadder from './DecisionLadder.jsx';
 import PanZoomCanvas from './PanZoomCanvas.jsx';
 import { getCasePresentation, getRegimePresentation } from './regimePresentation.js';
+import ExplorerModal from './ExplorerModal.jsx';
 
 function isTrivial(comp) {
   return comp.caseType === 'trivial';
@@ -232,51 +233,25 @@ export default function ComponentCostView({
         }}
       />
 
-      {showOrbitModal && (
-        <div
-          className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 backdrop-blur-sm"
-          onClick={() => {
-            setShowOrbitModal(false);
-            setOrbitModalComponent(null);
-          }}
-        >
-          <div
-            className="max-h-[85vh] w-[min(960px,92vw)] overflow-y-auto rounded-xl bg-white shadow-2xl"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="orbit-inspector-modal-title"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className="flex items-center justify-between gap-4 border-b border-border/70 px-5 py-4">
-              <h2 id="orbit-inspector-modal-title" className="text-sm font-medium text-foreground">
-                Orbit Enumeration
-              </h2>
-              <button
-                type="button"
-                className="rounded-md px-2 py-1 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                aria-label="Close orbit inspector"
-                onClick={() => {
-                  setShowOrbitModal(false);
-                  setOrbitModalComponent(null);
-                }}
-              >
-                Close
-              </button>
-            </div>
-            <div className="px-5 pb-5 pt-5">
-              <OrbitInspector
-                orbitRows={orbitRows}
-                selectedOrbitIdx={selectedOrbitIdx}
-                onSelectOrbit={onSelectOrbit}
-                showHeader={false}
-                formulaMath={ORBIT_ENUMERATION_FORMULA}
-                dimensionN={dimensionN}
-                componentContext={orbitModalComponent}
-              />
-            </div>
-          </div>
-        </div>
-      )}
+      <ExplorerModal
+        title="Orbit Enumeration"
+        titleId="orbit-inspector-modal-title"
+        open={showOrbitModal}
+        onClose={() => {
+          setShowOrbitModal(false);
+          setOrbitModalComponent(null);
+        }}
+      >
+        <OrbitInspector
+          orbitRows={orbitRows}
+          selectedOrbitIdx={selectedOrbitIdx}
+          onSelectOrbit={onSelectOrbit}
+          showHeader={false}
+          formulaMath={ORBIT_ENUMERATION_FORMULA}
+          dimensionN={dimensionN}
+          componentContext={orbitModalComponent}
+        />
+      </ExplorerModal>
     </div>
   );
 }

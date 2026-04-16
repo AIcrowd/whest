@@ -61,6 +61,24 @@ export const EXPLORER_ACTS = [
   },
 ];
 
+/**
+ * Distill-style article section anchors. Used by any future continuous-scroll
+ * layout. Not yet consumed by the main app (which still uses EXPLORER_ACTS);
+ * tracked in TODOS.md as a follow-up.
+ */
+export const ARTICLE_SECTIONS = [
+  { id: 'problem', heading: 'The counting problem', lede: 'Define M, A, and the V/W split. One micro-example to build intuition.' },
+  { id: 'shape', heading: 'Shape first', lede: 'Trivial, all-visible, all-summed — the three fast shortcuts before the regime ladder.' },
+  { id: 'ladder', heading: 'Mixed: the ladder', lede: 'The 8-regime priority ladder that routes every V+W mixed component to its closed form or the brute-force floor.' },
+  { id: 'spotlight-full-sym', heading: 'Spotlight: Full-symmetric', lede: 'The Young shortcut and why n^m·C(r+n-1, n-1) is so clean.' },
+  { id: 'spotlight-setwise', heading: 'Spotlight: V-setwise-stable', lede: 'The orbit-fiber reduction that covers most partial-group cases.' },
+  { id: 'spotlight-direct-product', heading: 'Spotlight: Direct product', lede: 'When V and W decouple, the formula splits into a trivial V part and a Burnside W part.' },
+  { id: 'spotlight-singleton', heading: 'Spotlight: Singleton', lede: 'Weighted Burnside with a single free label — compact and powerful.' },
+  { id: 'reference-cards', heading: 'Reference: remaining regimes', lede: 'Alternating, wreath, and diagonal as reference cards with formulas and examples.' },
+  { id: 'playground', heading: 'Playground', lede: 'Tinker freely. Watch which regime fires. Share via URL.' },
+  { id: 'appendix', heading: 'Appendix', lede: 'Ladder pseudocode, budget configuration, verification pointers.' },
+];
+
 export function buildAnalysisCheckpoint({ example, group }) {
   if (!example || !group) return [];
 

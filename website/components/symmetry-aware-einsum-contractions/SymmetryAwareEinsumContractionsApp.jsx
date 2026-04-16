@@ -19,6 +19,7 @@ import SigmaLoop from './components/SigmaLoop.jsx';
 import DiminoView from './components/DiminoView.jsx';
 import RoleBadge from './components/RoleBadge.jsx';
 import PythonCodeBlock from './components/PythonCodeBlock.jsx';
+import ExplorerModal from './components/ExplorerModal.jsx';
 import ComponentCostView from './components/ComponentCostView.jsx';
 import TotalCostView from './components/TotalCostView.jsx';
 import { mergeObservedActEntries, pickTopVisibleAct } from './lib/activeAct.js';
@@ -399,41 +400,18 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       but the exact counting procedure.
                     </p>
 
-                  {showMentalModel && (
-                    <div
-                      className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 backdrop-blur-sm"
-                      onClick={() => setShowMentalModel(false)}
-                    >
-                      <div
-                        className="max-h-[85vh] w-[min(960px,92vw)] overflow-y-auto rounded-xl bg-white shadow-2xl"
-                        role="dialog"
-                        aria-modal="true"
-                        aria-labelledby="mental-framework-modal-title"
-                        onClick={(event) => event.stopPropagation()}
-                      >
-                        <div className="flex items-center justify-between gap-4 border-b border-border/70 px-5 py-4">
-                          <h2 id="mental-framework-modal-title" className="sr-only">Mental Framework</h2>
-                          <div className="text-sm font-medium text-foreground">Mental Framework</div>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            aria-label="Close mental framework"
-                            onClick={() => setShowMentalModel(false)}
-                          >
-                            Close
-                          </Button>
-                        </div>
-                        <div className="px-5 pb-5 pt-5">
-                          <PythonCodeBlock
-                            code={mentalModelCode}
-                            title="Mental Framework"
-                            description="Read this as the mental model for the rest of Act 4: first count one symmetry-unique multiplication representative, then count every distinct output-bin update it causes."
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  )}
+                  <ExplorerModal
+                    title="Mental Framework"
+                    titleId="mental-framework-modal-title"
+                    open={showMentalModel}
+                    onClose={() => setShowMentalModel(false)}
+                  >
+                    <PythonCodeBlock
+                      code={mentalModelCode}
+                      title="Mental Framework"
+                      description="Read this as the mental model for the rest of Act 4: first count one symmetry-unique multiplication representative, then count every distinct output-bin update it causes."
+                    />
+                  </ExplorerModal>
 
                   <div className="mt-6">
                     <ComponentCostView
