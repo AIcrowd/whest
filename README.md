@@ -118,7 +118,7 @@ import whest as we
 
 depth, width = 5, 256
 
-with we.BudgetContext(flop_budget=10**8) as budget:
+with we.BudgetContext(flop_budget=10**8, wall_time_limit_s=5.0) as budget:
     # Weight init
     scale = we.sqrt(2 / width)
     weights = [we.random.randn(width, width) * scale
@@ -132,10 +132,18 @@ with we.BudgetContext(flop_budget=10**8) as budget:
         if i < depth - 1:
             h = we.maximum(h, 0)
 
-    print(budget.summary())
+    print(budget.summary())   # current context summary
+
+we.budget_summary()           # session/global summary
 ```
 
 ```
+
+`wall_time_limit_s` starts when the context is entered and is checked before
+and after each counted NumPy call. If the limit is exceeded, whest raises
+`TimeExhaustedError` with the operation name, elapsed time, and configured
+limit. Use `budget.summary()` for the current context and
+`we.budget_summary()` when you want the accumulated session/global view.
 whest FLOP Budget Summary
 =========================
   Total budget:     100,000,000

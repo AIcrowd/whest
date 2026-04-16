@@ -106,6 +106,34 @@ data = budget.summary_dict(by_namespace=True)
 print(data["by_namespace"]["predict.fallback.sampling"]["flops_used"])
 ```
 
+## Add a time limit when FLOPs are not the only risk
+
+Some operations are analytically cheap enough to fit the FLOP budget but still
+slow in practice. Use `wall_time_limit_s` on the same `BudgetContext` when you
+want a cooperative wall-clock deadline in addition to the FLOP cap:
+
+```python
+with we.BudgetContext(
+    flop_budget=10_000_000,
+    wall_time_limit_s=2.0,
+    namespace="predict",
+) as budget:
+    # computation must stay within both limits
+    ...
+
+print(budget.summary())
+```
+
+When the time limit is exceeded, whest raises `TimeExhaustedError` at the next
+operation boundary. The summary exposes three timing views:
+
+- `wall_time_s`: total elapsed time for the context
+- `tracked_time_s`: time spent inside counted NumPy calls
+- `untracked_time_s`: everything else in the context (`wall_time_s - tracked_time_s`)
+
+Use `budget.summary()` when you want the current context's timings, and
+`we.budget_summary()` when you want the accumulated session/global view.
+
 ## Diagnose overruns
 
 When you hit a `BudgetExhaustedError`, the budget's operation log gives per-call detail:
