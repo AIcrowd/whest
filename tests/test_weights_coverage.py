@@ -8,7 +8,7 @@ registry either:
   4. Falls into a documented exclusion category (bitwise, complex, etc.)
 
 It also validates that:
-  1. The calibration guide still documents the measurement methodology, and
+  1. The development calibration guide still documents the measurement methodology, and
   2. The generated API reference data still exposes every weighted operation.
 """
 
@@ -24,7 +24,7 @@ from whest._registry import REGISTRY
 
 ROOT = Path(__file__).resolve().parent.parent
 WEIGHTS_PATH = ROOT / "src" / "whest" / "data" / "weights.json"
-DOCS_PATH = ROOT / "website" / "content" / "docs" / "understanding" / "calibration.mdx"
+DOCS_PATH = ROOT / "website" / "content" / "docs" / "development" / "calibration.mdx"
 OPS_INDEX_PATH = ROOT / "website" / "public" / "ops.json"
 
 # Ensure benchmarks package is importable.
