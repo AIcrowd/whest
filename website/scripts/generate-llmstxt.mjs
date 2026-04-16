@@ -45,7 +45,6 @@ const SECTIONS = {
     'understanding/flop-counting-model': 'Analytical FLOP cost formulas and conventions',
     'understanding/operation-categories': 'Free vs counted vs blocked operations',
     'understanding/symmetry-detection': 'Subgraph symmetry detection algorithm deep dive',
-    'understanding/calibration': 'Empirical weight calibration methodology',
   },
   'API Reference': {
     'api': 'Interactive searchable reference for all 508 operations',
@@ -57,6 +56,7 @@ const SECTIONS = {
   },
   'Development': {
     'development/contributing': 'Repository layout, local workflows, and test suite',
+    'development/calibration': 'Empirical weight calibration methodology',
   },
   'Changelog': {
     'changelog': 'Release history and breaking changes',

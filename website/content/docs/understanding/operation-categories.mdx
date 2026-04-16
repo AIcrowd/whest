@@ -37,7 +37,7 @@ Operations that perform arithmetic. Cost is computed analytically from tensor sh
 | Random | numel(output) | `we.random.randn`, `we.random.normal`, `we.random.uniform` |
 | Stats | flat per-element (varies) | `we.stats.norm.pdf`, `we.stats.expon.cdf`, `we.stats.cauchy.ppf` |
 
-When inputs are `SymmetricTensor`, many operations automatically get reduced costs. See [Exploit Symmetry](../guides/symmetry).
+When inputs are `SymmetricTensor`, many operations automatically get reduced costs. See [Exploit Symmetry](/docs/guides/symmetry/).
 
 ### 🔴 Blacklisted operations
 
@@ -50,10 +50,10 @@ we.save(array, "file.npy")
 
 **Blacklisted categories:** I/O (`save`, `load`, `loadtxt`, `savetxt`, `savez`, `genfromtxt`), configuration (`seterr`, `geterr`, `setbufsize`), datetime (`busday_count`, `is_busday`), display (`array2string`, `array_repr`), functional (`apply_along_axis`, `piecewise`, `frompyfunc`).
 
-See [API Reference](../api/) for the complete list.
+See [API Reference](/docs/api/) for the complete list.
 
 ## 📎 Related pages
 
-- [API Reference](../api/) — complete list of every operation and its category
-- [FLOP Counting Model](./flop-counting-model) — how costs are calculated
-- [Migrate from NumPy](../guides/migrate-from-numpy) — what changes when moving from NumPy
+- [API Reference](/docs/api/) — complete list of every operation and its category
+- [FLOP Counting Model](/docs/understanding/flop-counting-model/) — how costs are calculated
+- [Migrate from NumPy](/docs/guides/migrate-from-numpy/) — what changes when moving from NumPy

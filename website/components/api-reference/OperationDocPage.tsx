@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { CodeBlock, Pre } from 'fumadocs-ui/components/codeblock';
 import type { ReactNode } from 'react';
+import { withBasePath } from '@/lib/base-path';
 import type {
   OpDocBlock,
   OpDocFieldItem,
@@ -124,9 +125,12 @@ export default function OperationDocPage({
               numpy source
             </Link>
           ) : null}
-          <Link className="font-medium text-primary underline-offset-4 hover:underline" href={doc.detail_json_href}>
+          <a
+            className="font-medium text-primary underline-offset-4 hover:underline"
+            href={withBasePath(doc.detail_json_href)}
+          >
             json payload
-          </Link>
+          </a>
         </div>
         <div className="grid gap-4 rounded-xl border border-border bg-muted/20 p-4 text-sm sm:grid-cols-2 xl:grid-cols-4">
           <div>

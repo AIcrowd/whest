@@ -29,11 +29,6 @@ export function injectSymmetryAwareEinsumContractionsLink(tree) {
           continue;
         }
 
-        if (!inserted && child.type === 'page' && child.url === '/docs/understanding/calibration') {
-          nextChildren.push(createLaunchItem());
-          inserted = true;
-        }
-
         nextChildren.push(child);
       }
 

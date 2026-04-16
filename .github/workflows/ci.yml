@@ -192,6 +192,8 @@ jobs:
           test -f website/out/llms.txt
           test -f website/out/llms-full.txt
           test -f website/out/ops.json
+          test -f website/out/api-data/ops/einsum.json
+          test -f website/out/docs/development/calibration/index.html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4

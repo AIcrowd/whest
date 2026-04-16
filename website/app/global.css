@@ -141,6 +141,10 @@ html > body[data-scroll-locked] {
   }
 }
 
+#nd-home-layout #nd-nav > div > div:last-child {
+  display: none;
+}
+
 /* Code block styling is handled by Shiki themes in source.config.ts */
 
 /* ── Spacious Apple-like feel ───────────────────────── */
@@ -155,20 +159,7 @@ html > body[data-scroll-locked] {
 
 /* Code block background: let Shiki's github theme handle it */
 
-/* Fix 3: Inline code — coral tint background, no border */
-.prose code:not(pre code) {
-  font-size: 0.875em;
-  background: var(--accent);
-  color: hsl(var(--primary));
-  border: none;
-}
-
 /* Fix 4: Breadcrumb-to-H1 spacing */
 .prose h1:first-child {
   margin-top: 1rem;
-}
-
-/* Increase content padding for breathing room */
-main {
-  padding-top: 1rem;
 }

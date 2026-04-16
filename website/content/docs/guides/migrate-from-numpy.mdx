@@ -11,8 +11,8 @@ title: "Migrate from NumPy"
 
 ## Prerequisites
 
-- [Installation](../getting-started/installation)
-- [Quickstart](../getting-started/quickstart)
+- [Installation](/docs/getting-started/installation/)
+- [Quickstart](/docs/getting-started/quickstart/)
 
 ## The basics
 
@@ -76,7 +76,7 @@ with we.BudgetContext(flop_budget=20_000_000) as budget:
 
 **Symptom:** `AttributeError` when calling an I/O or config function (e.g., `we.save`, `we.seterr`)
 
-**Fix:** 32 operations are blacklisted because they are I/O, configuration, or datetime functions with no FLOP cost. See [Operation Categories](../understanding/operation-categories) for the full list. Use `numpy` directly for these.
+**Fix:** 32 operations are blacklisted because they are I/O, configuration, or datetime functions with no FLOP cost. See [Operation Categories](/docs/understanding/operation-categories/) for the full list. Use `numpy` directly for these.
 
 **Symptom:** Using `np.linalg.svd` instead of `we.linalg.svd`
 
@@ -84,5 +84,5 @@ with we.BudgetContext(flop_budget=20_000_000) as budget:
 
 ## 📎 Related pages
 
-- [Operation Categories](../understanding/operation-categories) — what's supported and what isn't
-- [API Reference](../api/) — full list of all operations
+- [Operation Categories](/docs/understanding/operation-categories/) — what's supported and what isn't
+- [API Reference](/docs/api/) — full list of all operations

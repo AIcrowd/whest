@@ -9,6 +9,7 @@ import SortableTable from './shared/SortableTable';
 import Mermaid from './mermaid';
 import RichOutputPre from './rich-output-pre';
 import { isRichOutputBlock } from './rich-output.mjs';
+import StaticFileLink from './static-file-link';
 import { STANDALONE_SYMMETRY_AWARE_EINSUM_URL } from '@/lib/docsTree';
 
 function DocsPre(props: ComponentProps<'pre'> & { title?: string }) {
@@ -53,6 +54,7 @@ export function getMDXComponents(components?: MDXComponents) {
     Mermaid,
     Accordions,
     Accordion,
+    StaticFileLink,
     ...components,
   } satisfies MDXComponents;
 }

@@ -15,5 +15,5 @@ test('einsum guide links to the current symmetry guide path', async () => {
 
   assert.doesNotMatch(source, /exploit-symmetry\.md/);
   assert.doesNotMatch(source, /\[Exploit Symmetry(?: Savings)?\]\(\.\/symmetry\)/);
-  assert.match(source, /\[Symmetry Savings\]\(\.\/symmetry\)/);
+  assert.match(source, /\[Symmetry Savings\]\(\/docs\/guides\/symmetry\/\)/);
 });

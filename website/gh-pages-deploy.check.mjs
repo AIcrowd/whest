@@ -1,10 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { access, readFile } from 'node:fs/promises';
+import { access, readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { JSDOM } from 'jsdom';
 
 const websiteRoot = path.dirname(fileURLToPath(import.meta.url));
+const outRoot = path.join(websiteRoot, 'out');
+const DEPLOY_BASE_PATH = '/whest';
 
 async function readSource(relativePath) {
   return readFile(path.join(websiteRoot, relativePath), 'utf8');
@@ -14,9 +17,9 @@ test('for-agents links use normal static paths for machine-readable artifacts', 
   const source = await readSource('content/docs/api/for-agents.mdx');
 
   assert.doesNotMatch(source, /pathname:\/\//);
-  assert.match(source, /\.\.\/\.\.\/\.\.\/llms\.txt/);
-  assert.match(source, /\.\.\/\.\.\/\.\.\/llms-full\.txt/);
-  assert.match(source, /\.\.\/\.\.\/\.\.\/ops\.json/);
+  assert.match(source, /<StaticFileLink href="\/llms\.txt">llms\.txt<\/StaticFileLink>/);
+  assert.match(source, /<StaticFileLink href="\/llms-full\.txt">llms-full\.txt<\/StaticFileLink>/);
+  assert.match(source, /<StaticFileLink href="\/ops\.json">ops\.json<\/StaticFileLink>/);
   assert.match(source, /\/api-data\/ops\/<slug>\.json/);
 });
 
@@ -54,4 +57,82 @@ test('build-generated public artifacts exist and are non-empty', async () => {
   assert.ok(llmsFull.length > 1000);
   assert.match(sampleDetail, /"schema_version": 1/);
   assert.match(sampleDetail, /"detail_json_href": "\/api-data\/ops\/einsum\.json"/);
+});
+
+async function collectHtmlFiles(dir) {
+  const entries = await readdir(dir, { withFileTypes: true });
+  const files = [];
+
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...(await collectHtmlFiles(fullPath)));
+      continue;
+    }
+    if (entry.isFile() && entry.name.endsWith('.html')) {
+      files.push(fullPath);
+    }
+  }
+
+  return files;
+}
+
+function outputPathForHref(href) {
+  if (!href.startsWith('/')) return null;
+  if (!href.startsWith(DEPLOY_BASE_PATH)) return null;
+
+  const relative = href.slice(DEPLOY_BASE_PATH.length) || '/';
+  if (!relative.endsWith('/') && path.extname(relative)) {
+    return path.join(outRoot, relative.replace(/^\//, ''));
+  }
+
+  const withoutQuery = relative.split('#', 1)[0].split('?', 1)[0];
+  const normalized = withoutQuery === '/' ? '' : withoutQuery.replace(/^\//, '');
+  return path.join(outRoot, normalized, 'index.html');
+}
+
+test('exported site has no broken same-origin HTML links or hardcoded root logo paths', async () => {
+  const htmlFiles = await collectHtmlFiles(outRoot);
+  const brokenTargets = [];
+
+  for (const htmlFile of htmlFiles) {
+    const html = await readFile(htmlFile, 'utf8');
+    const dom = new JSDOM(html);
+    const anchors = [...dom.window.document.querySelectorAll('a[href]')];
+
+    assert.doesNotMatch(
+      html,
+      /https:\/\/aicrowd\.github\.io\/logo\.png|href="\/logo\.png"|src="\/logo\.png"/,
+      `hardcoded root logo path found in ${path.relative(outRoot, htmlFile)}`,
+    );
+
+    for (const anchor of anchors) {
+      const href = anchor.getAttribute('href');
+      if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('http')) {
+        continue;
+      }
+      if (href.startsWith('/') && !href.startsWith(DEPLOY_BASE_PATH)) {
+        brokenTargets.push({
+          page: path.relative(outRoot, htmlFile),
+          href,
+          target: 'missing-base-path',
+        });
+        continue;
+      }
+      const outputTarget = outputPathForHref(href);
+      if (!outputTarget) continue;
+
+      try {
+        await access(outputTarget);
+      } catch {
+        brokenTargets.push({
+          page: path.relative(outRoot, htmlFile),
+          href,
+          target: path.relative(outRoot, outputTarget),
+        });
+      }
+    }
+  }
+
+  assert.deepEqual(brokenTargets, []);
 });

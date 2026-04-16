@@ -18,7 +18,6 @@ test('injectSymmetryAwareEinsumContractionsLink replaces the old embedded docs i
         children: [
           { type: 'page', name: 'How whest Works', url: '/docs/understanding/how-whest-works' },
           { type: 'page', name: 'Symmetry Explorer', url: '/docs/understanding/symmetry-explorer' },
-          { type: 'page', name: 'Calibration', url: '/docs/understanding/calibration' },
         ],
       },
     ],
