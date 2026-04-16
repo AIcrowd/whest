@@ -210,8 +210,10 @@ export default function SymmetryAwareEinsumContractionsApp() {
                 className="border-gray-200 bg-white"
                 contentClassName="pt-5"
               >
-                <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[0].interpretation}</NarrativeCallout>
-                <NarrativeCallout label="Algorithm" tone="algorithm">{EXPLORER_ACTS[0].algorithm}</NarrativeCallout>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[0].interpretation}</NarrativeCallout>
+                  <NarrativeCallout label="Algorithm" tone="algorithm">{EXPLORER_ACTS[0].algorithm}</NarrativeCallout>
+                </div>
                 <p className="mt-4 text-sm leading-7 text-foreground">
                   This act specifies declared input symmetry only. It fixes the operands and labels before any detected contraction symmetry is considered.
                 </p>
@@ -244,8 +246,10 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >
-                    <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[1].interpretation}</NarrativeCallout>
-                    <NarrativeCallout label="Algorithm" tone="algorithm">{EXPLORER_ACTS[1].algorithm}</NarrativeCallout>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[1].interpretation}</NarrativeCallout>
+                      <NarrativeCallout label="Algorithm" tone="algorithm">{EXPLORER_ACTS[1].algorithm}</NarrativeCallout>
+                    </div>
                     <p className="mt-4 text-sm leading-7 text-foreground">
                       Declared input symmetry changes the encoding before any detected contraction symmetry is computed.
                     </p>
@@ -284,8 +288,10 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >
-                    <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[2].interpretation}</NarrativeCallout>
-                    <NarrativeCallout label="Algorithm" tone="algorithm">{EXPLORER_ACTS[2].algorithm}</NarrativeCallout>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[2].interpretation}</NarrativeCallout>
+                      <NarrativeCallout label="Algorithm" tone="algorithm">{EXPLORER_ACTS[2].algorithm}</NarrativeCallout>
+                    </div>
                     <p className="mt-4 text-sm leading-7 text-foreground">
                       Detected contraction symmetry is a property of the whole einsum expression, not just one input tensor.
                     </p>
@@ -333,8 +339,10 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       </Button>
                     }
                   >
-                    <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[3].interpretation}</NarrativeCallout>
-                    <NarrativeCallout label="Algorithm" tone="algorithm">{EXPLORER_ACTS[3].algorithm}</NarrativeCallout>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[3].interpretation}</NarrativeCallout>
+                      <NarrativeCallout label="Algorithm" tone="algorithm">{EXPLORER_ACTS[3].algorithm}</NarrativeCallout>
+                    </div>
                     <p className="mt-4 text-sm leading-7 text-foreground">
                       The detected global action may have been influenced by declared input symmetry, but it is the object being decomposed.
                     </p>
