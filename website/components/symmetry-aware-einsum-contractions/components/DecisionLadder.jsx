@@ -3,18 +3,98 @@ import { Controls, Handle, Position, ReactFlow, ReactFlowProvider } from '@xyflo
 import '@xyflow/react/dist/style.css';
 import Latex from './Latex.jsx';
 import { SHAPE_SPEC } from '../engine/shapeSpec.js';
-import { REGIME_SPEC, REGIME_PRIORITY } from '../engine/regimeSpec.js';
+import { REGIME_SPEC } from '../engine/regimeSpec.js';
 
-// Layout constants — visually dense like the old DecisionTree.
-const SHAPE_NODE_W = 150;
-const SHAPE_NODE_H = 56;
-const REGIME_NODE_W = 250;
-const REGIME_NODE_H = 68;
-const SHAPE_Y = 0;
-const SHAPE_GAP = 170;
-const FIRST_REGIME_Y = 150;
-const REGIME_ROW_GAP = 100;
-const REGIME_X = 1.5 * SHAPE_GAP;
+// ─── Layout constants ─────────────────────────────────────────────────
+// Mirrors the old ComponentView.DecisionTree feel: leaves on the left,
+// questions on the spine, terminal leaf at the bottom of the spine.
+
+const LEAF_W = 210;
+const LEAF_H = 44;
+const QUESTION_W = 190;
+const QUESTION_H = 44;
+const LEAF_X = 0;
+const LEAF_QUESTION_GAP = 56;
+const QUESTION_X = LEAF_W + LEAF_QUESTION_GAP;
+const LEAF_CENTER_OFFSET = (QUESTION_W - LEAF_W) / 2;
+const SOURCE_W = 140;
+const SOURCE_H = 38;
+const SOURCE_X = QUESTION_X + (QUESTION_W - SOURCE_W) / 2;
+const ROW_GAP = 88;
+const TREE_ENTRY_Y = ROW_GAP;
+const TREE_SPINE_START_Y = ROW_GAP * 2;
+
+const EDGE_YES = { color: '#23B761', label: 'yes' };
+const EDGE_NO = { color: '#F0524D', label: 'no' };
+
+// ─── Decision spec ────────────────────────────────────────────────────
+// 10 yes/no questions routing a component through shape → regime ladder.
+// Each `onTrue`/`onFalse` is either a next question id or a leaf id.
+
+const QUESTIONS = [
+  {
+    id: 'q_hasG',
+    short: '|G| > 1 ?',
+    long: 'Is the detected symmetry group nontrivial?',
+    onTrue: 'q_hasW', onFalse: 'trivial',
+  },
+  {
+    id: 'q_hasW',
+    short: 'W ≠ ∅ ?',
+    long: 'Are there summed (contracted) labels?',
+    onTrue: 'q_hasV', onFalse: 'allVisible',
+  },
+  {
+    id: 'q_hasV',
+    short: 'V ≠ ∅ ?',
+    long: 'Are there free (output) labels?',
+    onTrue: 'q_singleton', onFalse: 'allSummed',
+  },
+  {
+    id: 'q_singleton',
+    short: '|V| = 1 ?',
+    long: 'Exactly one free label — singleton weighted Burnside applies.',
+    onTrue: 'singleton', onFalse: 'q_fullSym',
+  },
+  {
+    id: 'q_fullSym',
+    short: 'G = S_L ?',
+    long: 'Full symmetric group on labels with uniform sizes — Young shortcut.',
+    onTrue: 'fullSymmetric', onFalse: 'q_alt',
+  },
+  {
+    id: 'q_alt',
+    short: 'G = A_L ?',
+    long: 'Alternating group (order L!/2) with uniform sizes.',
+    onTrue: 'alternating', onFalse: 'q_direct',
+  },
+  {
+    id: 'q_direct',
+    short: 'Split V/W ?',
+    long: 'Every generator moves only V-labels or only W-labels — direct product.',
+    onTrue: 'directProduct', onFalse: 'q_wreath',
+  },
+  {
+    id: 'q_wreath',
+    short: 'H ≀ S_b blocks ?',
+    long: 'b equal-size blocks with S_b block-permuting; V = u whole blocks.',
+    onTrue: 'wreath', onFalse: 'q_diag',
+  },
+  {
+    id: 'q_diag',
+    short: 'Diagonal S_m ?',
+    long: '|V| = |W| = m with a paired S_m acting the same way on both.',
+    onTrue: 'diagonalSimultaneous', onFalse: 'q_setwise',
+  },
+  {
+    id: 'q_setwise',
+    short: 'V setwise stable ?',
+    long: 'Every g ∈ G preserves V as a set — orbit-fiber reduction.',
+    onTrue: 'vSetwiseStable', onFalse: 'bruteForceOrbit',
+  },
+];
+
+// ─── Helpers ──────────────────────────────────────────────────────────
 
 function mixWithWhite(hex, amount) {
   const r = parseInt(hex.slice(1, 3), 16);
@@ -24,134 +104,132 @@ function mixWithWhite(hex, amount) {
   return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
 }
 
-function ShapeNode({ data }) {
-  const bg = data.active ? mixWithWhite(data.color, 0.78) : '#FFFFFF';
-  const border = data.active ? data.color : '#E5E7EB';
-  return (
-    <div
-      className="box-border flex h-full w-full cursor-help items-center justify-center rounded-md px-3 py-2 text-center text-xs font-semibold shadow-sm transition-all hover:shadow"
-      style={{
-        backgroundColor: bg,
-        borderWidth: 2,
-        borderStyle: 'solid',
-        borderColor: border,
-        color: data.active ? data.color : '#334155',
-      }}
-      data-tree-node={data.nodeId}
-    >
-      <Handle type="target" position={Position.Top} className="pointer-events-none opacity-0" />
-      {data.label}
-      <Handle type="source" position={Position.Bottom} className="pointer-events-none opacity-0" />
-    </div>
-  );
+function specFor(leafId) {
+  return SHAPE_SPEC[leafId] || REGIME_SPEC[leafId] || null;
 }
 
-function RegimeNode({ data }) {
-  const bg = data.active ? mixWithWhite(data.color, 0.78) : '#FFFFFF';
-  const border = data.active ? data.color : mixWithWhite(data.color, 0.55);
-  const text = data.active ? data.color : '#1F2937';
-  return (
-    <div
-      className="box-border flex h-full w-full cursor-help flex-col justify-center rounded-md px-3 py-2 text-left shadow-sm transition-all hover:shadow"
-      style={{
-        backgroundColor: bg,
-        borderWidth: 2,
-        borderStyle: 'solid',
-        borderColor: border,
-      }}
-      data-tree-node={data.nodeId}
-    >
-      <Handle type="target" position={Position.Top} className="pointer-events-none opacity-0" />
-      <div className="flex items-center gap-2">
-        <span
-          className="inline-block h-2 w-2 shrink-0 rounded-full"
-          style={{ backgroundColor: data.color }}
-        />
-        <span className="text-xs font-semibold" style={{ color: text }}>
-          {data.label}
-        </span>
-      </div>
-      <div className="mt-0.5 truncate text-[10px] leading-tight text-gray-500">{data.when}</div>
-      <Handle type="source" position={Position.Bottom} className="pointer-events-none opacity-0" />
-    </div>
-  );
+function isLeafId(id) {
+  return !!specFor(id);
 }
 
-const nodeTypes = { shape: ShapeNode, regime: RegimeNode };
-
-function buildLadderLayout(activeRegimeId, activeShapeId) {
-  const nodes = [];
-  const edges = [];
-  const shapeOrder = ['trivial', 'allVisible', 'allSummed', 'mixed'];
-
-  shapeOrder.forEach((shapeId, i) => {
-    const spec = SHAPE_SPEC[shapeId];
-    nodes.push({
-      id: `shape-${shapeId}`,
-      type: 'shape',
-      position: { x: i * SHAPE_GAP, y: SHAPE_Y },
-      style: { width: SHAPE_NODE_W, height: SHAPE_NODE_H },
-      data: {
-        label: spec.label,
-        color: spec.color,
-        active: activeShapeId === shapeId,
-        nodeId: `shape-${shapeId}`,
-      },
-    });
-  });
-
-  REGIME_PRIORITY.forEach((regimeId, i) => {
-    const spec = REGIME_SPEC[regimeId];
-    nodes.push({
-      id: `regime-${regimeId}`,
-      type: 'regime',
-      position: { x: REGIME_X, y: FIRST_REGIME_Y + i * REGIME_ROW_GAP },
-      style: { width: REGIME_NODE_W, height: REGIME_NODE_H },
-      data: {
-        label: spec.label,
-        color: spec.color,
-        when: spec.when,
-        active: activeRegimeId === regimeId,
-        nodeId: `regime-${regimeId}`,
-      },
-    });
-    if (i > 0) {
-      const prev = REGIME_PRIORITY[i - 1];
-      edges.push({
-        id: `e-${prev}-${regimeId}`,
-        source: `regime-${prev}`,
-        target: `regime-${regimeId}`,
-        style: { stroke: '#CBD5E1', strokeWidth: 1.5 },
-      });
-    }
-  });
-
-  edges.push({
-    id: 'shape-mixed-to-regime',
-    source: 'shape-mixed',
-    target: `regime-${REGIME_PRIORITY[0]}`,
-    style: { stroke: SHAPE_SPEC.mixed.color, strokeWidth: 2, strokeDasharray: '6 4' },
-    animated: activeShapeId === 'mixed',
-  });
-
-  return { nodes, edges };
-}
-
-function tooltipFor(nodeId) {
-  if (nodeId?.startsWith('shape-')) {
-    const spec = SHAPE_SPEC[nodeId.slice('shape-'.length)];
-    if (!spec) return null;
+function planRow(question) {
+  const onTrueIsLeaf = isLeafId(question.onTrue);
+  const onFalseIsLeaf = isLeafId(question.onFalse);
+  if (onTrueIsLeaf && onFalseIsLeaf) {
     return {
-      title: spec.label,
-      whenText: spec.when,
-      body: spec.description,
-      latex: spec.latex,
-      color: spec.color,
+      sideLeaf: question.onTrue,
+      sideEdge: EDGE_YES,
+      spineNext: question.onFalse,
+      spineEdge: EDGE_NO,
+      spineIsTerminalLeaf: true,
     };
   }
-  if (nodeId?.startsWith('regime-')) {
-    const spec = REGIME_SPEC[nodeId.slice('regime-'.length)];
-    if (!spec) return null;
+  if (onTrueIsLeaf) {
+    return {
+      sideLeaf: question.onTrue,
+      sideEdge: EDGE_YES,
+      spineNext: question.onFalse,
+      spineEdge: EDGE_NO,
+      spineIsTerminalLeaf: false,
+    };
+  }
+  if (onFalseIsLeaf) {
+    return {
+      sideLeaf: question.onFalse,
+      sideEdge: EDGE_NO,
+      spineNext: question.onTrue,
+      spineEdge: EDGE_YES,
+      spineIsTerminalLeaf: false,
+    };
+  }
+  return {
+    sideLeaf: null,
+    sideEdge: null,
+    spineNext: question.onTrue,
+    spineEdge: EDGE_YES,
+    spineIsTerminalLeaf: false,
+  };
+}
+
+// ─── Node renderers ──────────────────────────────────────────────────
+
+function QuestionNode({ data }) {
+  return (
+    <div
+      className="box-border flex h-full w-full cursor-help items-center justify-center rounded-md border border-gray-200 bg-white px-3 py-1.5 text-center text-sm leading-tight text-gray-900 shadow-sm transition-colors hover:border-gray-400"
+      data-tree-node={data.nodeId}
+    >
+      <Handle type="target" position={Position.Top} className="pointer-events-none opacity-0" />
+      {data.text}
+      <Handle type="source" position={Position.Bottom} className="pointer-events-none opacity-0" />
+      <Handle type="source" position={Position.Left} id="side" className="pointer-events-none opacity-0" />
+    </div>
+  );
+}
+
+function SourceNode({ data }) {
+  return (
+    <div
+      className="box-border flex h-full w-full cursor-help items-center justify-center rounded-full border border-gray-200 bg-white px-3 py-1.5 text-center text-sm font-semibold leading-tight text-gray-900 shadow-sm"
+      data-tree-node={data.nodeId}
+    >
+      {data.text}
+      <Handle type="source" position={Position.Bottom} className="pointer-events-none opacity-0" />
+    </div>
+  );
+}
+
+function LeafNode({ data }) {
+  const bg = data.active ? mixWithWhite(data.color, 0.72) : mixWithWhite(data.color, 0.88);
+  return (
+    <div
+      className="box-border flex h-full w-full cursor-help items-center justify-center whitespace-nowrap rounded-lg px-2 py-0.5 text-center text-sm font-bold leading-tight shadow-sm transition-all hover:shadow"
+      style={{
+        backgroundColor: bg,
+        borderColor: data.color,
+        borderWidth: data.active ? 3 : 2,
+        borderStyle: 'solid',
+        color: '#0F172A',
+      }}
+      data-tree-node={data.nodeId}
+    >
+      <Handle type="target" position={Position.Right} id="right" className="pointer-events-none opacity-0" />
+      <Handle type="target" position={Position.Top} id="top" className="pointer-events-none opacity-0" />
+      {data.text}
+    </div>
+  );
+}
+
+const dlNodeTypes = {
+  source: SourceNode,
+  question: QuestionNode,
+  leaf: LeafNode,
+};
+
+// ─── Tooltip ──────────────────────────────────────────────────────────
+
+function tooltipFor(nodeId) {
+  if (nodeId === 's0') {
+    return {
+      title: 'Component',
+      whenText: null,
+      body: 'Start with one independent component of the detected group action. The ladder decides how to count its multiplications and output-bin updates.',
+      latex: null,
+      color: '#64748B',
+    };
+  }
+  const q = QUESTIONS.find((x) => x.id === nodeId);
+  if (q) {
+    return {
+      title: q.short,
+      whenText: null,
+      body: q.long,
+      latex: null,
+      color: '#64748B',
+    };
+  }
+  const spec = specFor(nodeId);
+  if (spec) {
     return {
       title: spec.label,
       whenText: spec.when,
@@ -162,6 +240,103 @@ function tooltipFor(nodeId) {
   }
   return null;
 }
+
+// ─── Layout ──────────────────────────────────────────────────────────
+
+function buildLadderLayout(activeLeafId) {
+  const nodes = [];
+  const edges = [];
+
+  function leafNodeData(leafId, y, centered = false) {
+    const spec = specFor(leafId);
+    return {
+      id: leafId,
+      position: { x: centered ? QUESTION_X + LEAF_CENTER_OFFSET : LEAF_X, y },
+      type: 'leaf',
+      style: { width: LEAF_W, height: LEAF_H },
+      data: {
+        text: spec.label,
+        color: spec.color,
+        active: activeLeafId === leafId,
+        nodeId: leafId,
+      },
+    };
+  }
+
+  nodes.push({
+    id: 's0',
+    position: { x: SOURCE_X, y: 0 },
+    type: 'source',
+    style: { width: SOURCE_W, height: SOURCE_H },
+    data: { text: 'Component', nodeId: 's0' },
+  });
+
+  QUESTIONS.forEach((question, index) => {
+    const y = index === 0 ? TREE_ENTRY_Y : TREE_SPINE_START_Y + ROW_GAP * (index - 1);
+    nodes.push({
+      id: question.id,
+      position: { x: QUESTION_X, y },
+      type: 'question',
+      style: { width: QUESTION_W, height: QUESTION_H },
+      data: { text: question.short, nodeId: question.id },
+    });
+
+    if (index === 0) {
+      edges.push({
+        id: 's0-q0',
+        source: 's0',
+        target: question.id,
+        sourceHandle: null,
+        targetHandle: 'top',
+        style: { stroke: '#94A3B8', strokeWidth: 1.5 },
+      });
+    }
+
+    const plan = planRow(question);
+
+    if (plan.sideLeaf) {
+      nodes.push(leafNodeData(plan.sideLeaf, y));
+      edges.push({
+        id: `${question.id}-${plan.sideLeaf}`,
+        source: question.id,
+        sourceHandle: 'side',
+        target: plan.sideLeaf,
+        targetHandle: 'right',
+        label: plan.sideEdge.label,
+        labelStyle: { fontSize: 11, fontWeight: 700, fill: plan.sideEdge.color },
+        style: { stroke: plan.sideEdge.color, strokeWidth: 1.5 },
+      });
+    }
+
+    if (plan.spineIsTerminalLeaf) {
+      const terminalY = TREE_SPINE_START_Y + ROW_GAP * index;
+      nodes.push(leafNodeData(plan.spineNext, terminalY, true));
+      edges.push({
+        id: `${question.id}-${plan.spineNext}`,
+        source: question.id,
+        target: plan.spineNext,
+        targetHandle: 'top',
+        label: plan.spineEdge.label,
+        labelStyle: { fontSize: 11, fontWeight: 700, fill: plan.spineEdge.color },
+        style: { stroke: plan.spineEdge.color, strokeWidth: 1.5 },
+      });
+    } else if (plan.spineNext) {
+      edges.push({
+        id: `${question.id}-${plan.spineNext}`,
+        source: question.id,
+        target: plan.spineNext,
+        targetHandle: 'top',
+        label: plan.spineEdge.label,
+        labelStyle: { fontSize: 11, fontWeight: 700, fill: plan.spineEdge.color },
+        style: { stroke: plan.spineEdge.color, strokeWidth: 1.5 },
+      });
+    }
+  });
+
+  return { nodes, edges };
+}
+
+// ─── Graph memo ──────────────────────────────────────────────────────
 
 const DecisionLadderGraph = memo(function DecisionLadderGraph({
   nodes,
@@ -174,18 +349,21 @@ const DecisionLadderGraph = memo(function DecisionLadderGraph({
       <ReactFlow
         nodes={nodes}
         edges={edges}
-        nodeTypes={nodeTypes}
+        nodeTypes={dlNodeTypes}
         className="h-full w-full"
         defaultEdgeOptions={{ type: 'step', style: { strokeWidth: 2 } }}
         fitView
-        fitViewOptions={{ padding: 0.12, maxZoom: 1, minZoom: 0.4 }}
+        fitViewOptions={{ padding: 0.15, maxZoom: 1, minZoom: 0.4 }}
         minZoom={0.4}
         maxZoom={2.5}
         nodesDraggable={false}
         nodesConnectable={false}
         elementsSelectable={false}
-        zoomOnScroll={false}
+        panOnDrag
         panOnScroll={false}
+        zoomOnScroll
+        zoomOnPinch
+        zoomOnDoubleClick
         preventScrolling={false}
         proOptions={{ hideAttribution: true }}
         onNodeMouseEnter={onNodeMouseEnter}
@@ -197,17 +375,20 @@ const DecisionLadderGraph = memo(function DecisionLadderGraph({
   );
 });
 
+// ─── Component ────────────────────────────────────────────────────────
+
 export default function DecisionLadder({ activeRegimeId = null, activeShapeId = null }) {
+  // A component's "active leaf" is either a shape (trivial/allVisible/allSummed)
+  // when the ladder short-circuited, or a regime id when the mixed path ran.
+  const activeLeafId = activeRegimeId || activeShapeId || null;
+
   const [hoveredNode, setHoveredNode] = useState(null);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0, flipped: false });
   const wrapRef = useRef(null);
   const hideTimerRef = useRef(null);
   const hoveredNodeRef = useRef(null);
 
-  const { nodes, edges } = useMemo(
-    () => buildLadderLayout(activeRegimeId, activeShapeId),
-    [activeRegimeId, activeShapeId],
-  );
+  const { nodes, edges } = useMemo(() => buildLadderLayout(activeLeafId), [activeLeafId]);
 
   const openTooltipForNode = useCallback((nodeId, rect) => {
     if (hoveredNodeRef.current === nodeId) return;
