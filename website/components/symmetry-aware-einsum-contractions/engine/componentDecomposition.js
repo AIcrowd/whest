@@ -3,18 +3,31 @@
  *
  * Decomposes the full symmetry group G into independent label components
  * (connected components of the label-interaction graph) and classifies
- * each component as Case A through Case E.
+ * each component using the shared spec in ./classificationSpec.js.
  *
- * Case A: only V-labels (Wa = empty)
- * Case B: only W-labels (Va = empty)
- * Case C: both V and W labels, but no generator crosses the V/W boundary
- * Case D: cross-V/W generators AND the restricted group is the full symmetric group (|Ga| = |La|!)
- * Case E: cross-V/W generators but NOT the full symmetric group
+ * Cases:
+ *   trivial  — no nontrivial symmetry (|Gₐ| = 1)
+ *   A        — only V-labels (Wa = empty)
+ *   B        — only W-labels (Va = empty)
+ *   C        — both V and W labels, but no generator crosses the V/W boundary
+ *   D        — cross-V/W generators AND the restricted group is the full symmetric group
+ *   E        — cross-V/W generators but NOT the full symmetric group
+ *
+ * The decision order and predicates live in classificationSpec.js; changes
+ * to the tree structure happen in one place there, and both this module
+ * and the tree visualization pick them up automatically.
  */
 
 import { Permutation, dimino } from './permutation.js';
+import { classifyComponent } from './classificationSpec.js';
 
 export const CASE_META = {
+  trivial: {
+    label: 'Direct count (trivial)',
+    description: 'Trivial group — no symmetry, count every assignment directly',
+    color: '#CBD5E1',
+    method: 'ρ = |Iₐ| (direct)',
+  },
   A: {
     label: 'Case A: V-only',
     description: 'V-only component (free labels only, no summed labels)',
@@ -242,17 +255,16 @@ export function decomposeAndClassify(allLabels, vLabels, wLabels, fullGenerators
       return false;
     });
 
-    let caseType;
-    if (wa.length === 0) {
-      caseType = 'A';
-    } else if (va.length === 0) {
-      caseType = 'B';
-    } else if (!hasCrossGen) {
-      caseType = 'C';
-    } else {
-      const isFullSym = order === factorial(indices.length);
-      caseType = isFullSym ? 'D' : 'E';
-    }
+    const isFullSym = order === factorial(indices.length);
+    const classification = classifyComponent({
+      order,
+      vCount: va.length,
+      wCount: wa.length,
+      hasCrossGen,
+      isFullSym,
+      labelCount: indices.length,
+    });
+    const { caseType, path } = classification;
 
     let ha = null;
     let haElements = null;
@@ -295,6 +307,7 @@ export function decomposeAndClassify(allLabels, vLabels, wLabels, fullGenerators
       order,
       groupName,
       caseType,
+      path,
       ha,
       haElements,
     };

@@ -7,14 +7,22 @@ import RoleBadge from './RoleBadge.jsx';
 import SymmetryBadge from './SymmetryBadge.jsx';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { DecisionTree, LabelInteractionGraph } from './ComponentView.jsx';
+import PanZoomCanvas from './PanZoomCanvas.jsx';
 import { getCasePresentation } from './casePresentation.js';
 
-function hasNontrivialSymmetry(comp) {
-  if (comp.groupName && comp.groupName !== 'trivial') return true;
-  return (comp.elements?.length ?? 0) > 1;
+function isTrivial(comp) {
+  return comp.caseType === 'trivial';
+}
+
+// Direct product count: ρ = ∏ n_ℓ over all labels in the component.
+// Dedicated trivial path — no Burnside call, no orbit enumeration.
+function directCount(comp, dimensionN) {
+  const k = comp.labels?.length ?? 0;
+  return Math.pow(dimensionN, k);
 }
 
 function computeMultiplicationOrbits(comp, dimensionN) {
+  if (isTrivial(comp)) return directCount(comp, dimensionN);
   try {
     const sizes = (comp.labels ?? []).map(() => dimensionN);
     if (!comp.elements?.length) return 0;
@@ -25,6 +33,7 @@ function computeMultiplicationOrbits(comp, dimensionN) {
 }
 
 function computeAccumulationCost(comp, dimensionN, fallbackReductionCost) {
+  if (isTrivial(comp)) return directCount(comp, dimensionN);
   switch (comp.caseType) {
     case 'A':
       return Math.pow(dimensionN, comp.va?.length ?? 0);
@@ -44,34 +53,18 @@ function computeAccumulationCost(comp, dimensionN, fallbackReductionCost) {
 }
 
 function methodLabel(comp) {
-  if (!hasNontrivialSymmetry(comp)) {
-    return 'Direct count (trivial)';
-  }
+  return getCasePresentation(comp.caseType)?.methodLabel ?? 'Orbit enumeration';
+}
 
-  switch (comp.caseType) {
-    case 'A':
-      return 'V-only formula';
-    case 'B':
-      return 'Burnside on G_a';
-    case 'C':
-      return 'Orbit enumeration';
-    case 'D':
-      return 'Burnside on H_a';
-    case 'E':
-      return 'Orbit enumeration';
-    default:
-      return 'Orbit enumeration';
-  }
+function methodHumanName(comp) {
+  return getCasePresentation(comp.caseType)?.humanName ?? null;
 }
 
 function supportsOrbitEnumeration(comp) {
-  return hasNontrivialSymmetry(comp) && (comp.caseType === 'C' || comp.caseType === 'E');
+  return !isTrivial(comp) && (comp.caseType === 'C' || comp.caseType === 'E');
 }
 
 function methodFormula(comp) {
-  if (!hasNontrivialSymmetry(comp)) {
-    return String.raw`|I_a / G_a| = |I_a| \quad \text{when } G_a = \{e\}`;
-  }
   return getCasePresentation(comp.caseType)?.tooltip?.latex ?? null;
 }
 
@@ -100,7 +93,7 @@ function ComponentSummaryTable({
   onOpenOrbitModal,
 }) {
   return (
-    <div className="rounded-xl border border-border bg-white shadow-sm">
+    <div className="max-w-full overflow-x-auto rounded-xl border border-border bg-white shadow-sm">
       <Table className="text-sm">
         <TableHeader className="bg-surface-raised">
           <TableRow className="border-border hover:bg-surface-raised">
@@ -144,6 +137,11 @@ function ComponentSummaryTable({
                         <span className="text-xs font-medium text-foreground">{methodLabel(comp)}</span>
                       )}
                     </div>
+                    {methodHumanName(comp) ? (
+                      <div className="text-[11px] italic leading-snug text-muted-foreground">
+                        {methodHumanName(comp)}
+                      </div>
+                    ) : null}
                     {methodFormula(comp) ? (
                       <div className="text-xs text-muted-foreground">
                         <Latex math={methodFormula(comp)} />
@@ -184,20 +182,23 @@ export default function ComponentCostView({
   const orbitRows = costModel.orbitRows ?? [];
 
   return (
-    <div className="space-y-6">
+    <div className="min-w-0 space-y-6">
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="rounded-xl border border-gray-200 bg-white p-4">
           <div className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">Interaction Graph</div>
           <p className="mt-2 text-sm leading-6 text-muted-foreground">
             These independent components come from the label interaction graph induced by the detected group generators.
           </p>
-          <div className="mt-4 flex min-h-[620px] items-center justify-center">
+          <PanZoomCanvas
+            className="mt-4 h-[620px]"
+            ariaLabel="Interaction graph (zoomable)"
+          >
             <LabelInteractionGraph
               allLabels={allLabels}
               vLabels={vLabels}
               interactionGraph={componentData.interactionGraph}
             />
-          </div>
+          </PanZoomCanvas>
         </div>
 
         <DecisionTree components={components} />

@@ -1,5 +1,58 @@
 import CaseBadge from './CaseBadge.jsx';
 import ExplorerMetricCard from './ExplorerMetricCard.jsx';
+import GlossaryProse from './GlossaryProse.jsx';
+import Latex from './Latex.jsx';
+
+const AGGREGATION_FORMULA = String.raw`\text{Mult} = (k - 1)\!\prod_{a}\!\mu_a,\qquad \text{Acc} = \prod_{a}\!\alpha_a,\qquad \text{Total} = \text{Mult} + \text{Acc}`;
+
+const AGGREGATION_LEGEND = [
+  {
+    symbol: String.raw`\mu_a`,
+    definition: 'multiplication orbits per component (Act 4 "Multiplication Cost" column).',
+  },
+  {
+    symbol: String.raw`\alpha_a`,
+    definition: 'distinct output bins per component (Act 4 "Accumulation Cost" column).',
+  },
+  {
+    symbol: 'k',
+    definition: 'number of operand tensors in the einsum — $(k-1)$ multiplications combine each orbit representative.',
+  },
+];
+
+function AggregationExplainer() {
+  return (
+    <figure className="rounded-xl border border-border bg-white px-6 py-8 shadow-sm sm:px-10">
+      <div className="mx-auto max-w-2xl">
+        <div className="text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+          How components combine
+        </div>
+        <p className="mt-3 text-center text-sm leading-7 text-foreground/80">
+          <GlossaryProse text="Because the decomposition groups labels into disjoint components, the detected group $G$ factors as a direct product $\prod_a G_a$. Orbits factor the same way, and the output projection factors across components too — so each component's per-row numbers in Act 4 multiply across components, while multiplications and accumulations add at the end." />
+        </p>
+      </div>
+
+      <div className="mt-6 flex justify-center overflow-x-auto">
+        <Latex display math={AGGREGATION_FORMULA} />
+      </div>
+
+      <figcaption className="mx-auto mt-6 max-w-md border-t border-border/60 pt-4">
+        <dl className="grid grid-cols-[auto_1fr] items-baseline gap-x-4 gap-y-2 text-[12px] leading-relaxed text-muted-foreground">
+          {AGGREGATION_LEGEND.map((entry) => (
+            <div key={entry.symbol} className="contents">
+              <dt className="justify-self-end text-foreground">
+                <Latex math={entry.symbol} />
+              </dt>
+              <dd>
+                <GlossaryProse text={entry.definition} />
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </figcaption>
+    </figure>
+  );
+}
 
 function ComponentRecap({ components }) {
   if (!components?.length) return null;
@@ -37,6 +90,8 @@ export default function TotalCostView({ costModel, componentData, dimensionN, nu
     <div className="space-y-8">
       <ComponentRecap components={components} />
 
+      <AggregationExplainer />
+
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <ExplorerMetricCard
           label="Multiplication Cost"
@@ -61,9 +116,12 @@ export default function TotalCostView({ costModel, componentData, dimensionN, nu
           label="Dense Cost"
           value={denseTotalCost.toLocaleString()}
           detail={
-            <>
-              {Math.max(numTerms - 1, 0)} × n<sup>{allLabelCount}</sup> + n<sup>{allLabelCount}</sup> with n={dimensionN}
-            </>
+            <span className="flex flex-col gap-1">
+              <Latex math={String.raw`(k - 1)\,n^{|L|} + n^{|L|}`} />
+              <span className="text-[11px] text-muted-foreground">
+                <Latex math={String.raw`k=${numTerms},\ |L|=${allLabelCount},\ n=${dimensionN}`} />
+              </span>
+            </span>
           }
         />
         <ExplorerMetricCard
@@ -72,7 +130,7 @@ export default function TotalCostView({ costModel, componentData, dimensionN, nu
           detail="multiplication + accumulation under full orbit model"
         />
         <ExplorerMetricCard
-          label="%age Savings"
+          label="% savings"
           value={`${savingsPct}%`}
           detail={savings === 0 ? 'Cost: 0; Speedup: 1.0×' : `Cost: ${savings.toLocaleString()}; Speedup: ${totalSpeedup}×`}
           className="border-green-600/20 bg-green-600/5"

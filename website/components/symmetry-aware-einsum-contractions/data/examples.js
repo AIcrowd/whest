@@ -5,7 +5,7 @@ export const EXAMPLES = [
     formula: "einsum('ij,jk→ik', A, A)",
     description: 'Identical operands but different subscript structure → σ-loop finds no valid π',
     expectedGroup: 'trivial',
-    caseType: null,
+    caseType: 'trivial',
     color: '#D1D5DB',
     variables: [
       { name: 'A', rank: 2, symmetry: 'none', symAxes: null, generators: '' },
@@ -18,7 +18,7 @@ export const EXAMPLES = [
     formula: "einsum('ij,jk,kl→il', A, B, A)",
     description: 'A appears twice but B breaks the chain — no identical group forms',
     expectedGroup: 'trivial',
-    caseType: null,
+    caseType: 'trivial',
     color: '#E5E7EB',
     variables: [
       { name: 'A', rank: 2, symmetry: 'none', symAxes: null, generators: '' },

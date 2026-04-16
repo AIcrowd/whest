@@ -1,15 +1,17 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import Latex from './Latex.jsx';
+import GlossaryProse from './GlossaryProse.jsx';
 import { getCasePresentation } from './casePresentation.js';
 import { cn } from '../lib/utils.js';
 
 const TOOLTIP_WIDTH = 320;
-const TOOLTIP_HEIGHT = 152;
+const TOOLTIP_HEIGHT = 240;
 const VIEWPORT_PADDING = 16;
 const TOOLTIP_OFFSET = 8;
 
 const CASE_COLORS = {
+  trivial: { bg: 'rgba(148, 163, 184, 0.12)', text: '#475569', border: 'rgba(148, 163, 184, 0.45)' },
   A: { bg: 'rgba(74, 124, 255, 0.12)', text: '#4A7CFF', border: 'rgba(74, 124, 255, 0.35)' },
   B: { bg: 'rgba(148, 163, 184, 0.12)', text: '#64748B', border: 'rgba(148, 163, 184, 0.35)' },
   C: { bg: 'rgba(250, 158, 51, 0.12)', text: '#D97706', border: 'rgba(250, 158, 51, 0.35)' },
@@ -63,6 +65,37 @@ export default function CaseBadge({
     setShowTooltip(true);
   };
 
+  // Defensive dismissal: pointerleave isn't always guaranteed to fire (scroll,
+  // focus change, programmatic events, touch). Close the tooltip whenever the
+  // user interacts elsewhere so it can't get stuck floating on the page.
+  useEffect(() => {
+    if (!showTooltip) return undefined;
+
+    const dismiss = () => setShowTooltip(false);
+    const dismissOnEscape = (event) => {
+      if (event.key === 'Escape') setShowTooltip(false);
+    };
+    const dismissIfOutside = (event) => {
+      if (!ref.current) return;
+      if (event.target instanceof Node && ref.current.contains(event.target)) return;
+      setShowTooltip(false);
+    };
+
+    window.addEventListener('scroll', dismiss, true);
+    window.addEventListener('resize', dismiss);
+    window.addEventListener('keydown', dismissOnEscape);
+    window.addEventListener('pointerdown', dismissIfOutside);
+    window.addEventListener('blur', dismiss);
+
+    return () => {
+      window.removeEventListener('scroll', dismiss, true);
+      window.removeEventListener('resize', dismiss);
+      window.removeEventListener('keydown', dismissOnEscape);
+      window.removeEventListener('pointerdown', dismissIfOutside);
+      window.removeEventListener('blur', dismiss);
+    };
+  }, [showTooltip]);
+
   const label = variant === 'compact' ? presentation.shortLabel : presentation.label;
 
   return (
@@ -109,6 +142,11 @@ export default function CaseBadge({
               <div className="min-w-0">
                 <Latex math={tooltip.latex} display />
               </div>
+            </div>
+          )}
+          {tooltip.glossary && (
+            <div className="mt-3 whitespace-normal break-words text-xs leading-relaxed text-gray-300">
+              <GlossaryProse text={tooltip.glossary} />
             </div>
           )}
           <div

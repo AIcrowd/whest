@@ -35,7 +35,7 @@ test('TotalCostView renders the current savings metric cards', () => {
 
   assert.match(totalCostSource, /space-y-8/);
   assert.match(totalCostSource, /ExplorerMetricCard/);
-  assert.match(totalCostSource, /%age Savings/);
+  assert.match(totalCostSource, /% savings/);
   assert.match(totalCostSource, /Cost:/);
   assert.match(totalCostSource, /Speedup:/);
   assert.doesNotMatch(totalCostSource, /TableHeader/);
@@ -51,6 +51,41 @@ test('ComponentCostView renders the current decision tree and component table', 
   assert.match(componentCostSource, /TableHeader/);
   assert.match(componentCostSource, /TableBody/);
   assert.match(componentCostSource, /DecisionTree/);
-  assert.match(componentCostSource, /Direct count \(trivial\)/);
+  // Trivial case has a dedicated code path (not a Burnside degeneration).
+  assert.match(componentCostSource, /isTrivial\(comp\)/);
+  assert.match(componentCostSource, /directCount\(comp/);
   assert.match(componentCostSource, /Orbit Enumeration/);
+  // The per-component table must be able to horizontally scroll on narrow
+  // viewports instead of silently overflowing the page.
+  assert.match(componentCostSource, /overflow-x-auto rounded-xl/);
+  assert.match(componentCostSource, /min-w-0 space-y-6/);
+});
+
+test('TotalCostView explains how per-component costs aggregate into the global total', () => {
+  const totalCostSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/TotalCostView.jsx', import.meta.url), 'utf8');
+
+  // Helpers the explainer block depends on.
+  assert.match(totalCostSource, /import GlossaryProse from '\.\/GlossaryProse\.jsx'/);
+  assert.match(totalCostSource, /import Latex from '\.\/Latex\.jsx'/);
+
+  // The explainer block itself.
+  assert.match(totalCostSource, /How components combine/);
+  assert.match(totalCostSource, /AggregationExplainer/);
+
+  // Formula pinning — catches silent edits that break the aggregation story.
+  assert.match(totalCostSource, /AGGREGATION_FORMULA/);
+  assert.match(totalCostSource, /\\text\{Mult\}\s*=\s*\(k\s*-\s*1\)/);
+  assert.match(totalCostSource, /\\prod_\{a\}\\!\\mu_a/);
+  assert.match(totalCostSource, /\\prod_\{a\}\\!\\alpha_a/);
+  assert.match(totalCostSource, /\\text\{Total\}\s*=\s*\\text\{Mult\}\s*\+\s*\\text\{Acc\}/);
+
+  // Glossary legend for the formula variables — rendered as a definition list,
+  // one row per symbol so the math is readable on small screens.
+  assert.match(totalCostSource, /AGGREGATION_LEGEND/);
+  assert.match(totalCostSource, /multiplication orbits per component/);
+  assert.match(totalCostSource, /distinct output bins per component/);
+  assert.match(totalCostSource, /number of operand tensors/);
+  assert.match(totalCostSource, /<dl/);
+  assert.match(totalCostSource, /<dt/);
+  assert.match(totalCostSource, /<dd/);
 });
