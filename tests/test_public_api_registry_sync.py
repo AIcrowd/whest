@@ -16,7 +16,6 @@ import inspect
 import whest as we
 from whest._registry import REGISTRY
 
-
 # These are intentionally public helpers, not registry-backed supported ops.
 TOP_LEVEL_NON_REGISTRY_CALLABLES = {
     "as_symmetric",

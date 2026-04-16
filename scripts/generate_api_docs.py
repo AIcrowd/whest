@@ -10,18 +10,18 @@ Usage
 from __future__ import annotations
 
 import argparse
-import doctest
 import csv
+import doctest
 import html
 import importlib
 import inspect
 import io
-import os
 import json
+import multiprocessing as mp
+import os
 import re
 import sys
 import textwrap
-import multiprocessing as mp
 from concurrent.futures import ProcessPoolExecutor
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
