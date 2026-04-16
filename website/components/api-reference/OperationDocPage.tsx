@@ -61,8 +61,8 @@ export default async function OperationDocPage({name}: {name: string}) {
           <OperationDocSection title="Returns" fields={op.returns} />
           <OperationDocSection title="See also" links={op.see_also} />
           <OperationDocSection title="Notes" paragraphs={op.notes_sections} />
-        <OperationDocExample example={op.example} />
-      </>
+          <OperationDocExample example={op.example} />
+        </>
       )}
     </>
   );

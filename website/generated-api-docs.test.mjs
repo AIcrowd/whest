@@ -19,12 +19,15 @@ test('mdx components register the standalone operation doc renderer', async () =
 
 test('operation doc page renderer keeps the required section order', async () => {
   const source = await readSource('components/api-reference/OperationDocPage.tsx');
+  const docsRoute = await readSource('app/docs/[[...slug]]/page.tsx');
 
   assert.match(source, /OperationDocHeader/);
   assert.match(source, /OperationDocOverlay/);
   assert.match(source, /OperationDocSection/);
   assert.match(source, /OperationDocExample/);
-  assert.match(source, /OperationDocNav/);
+  assert.doesNotMatch(source, /OperationDocNav/);
+  assert.match(docsRoute, /OperationDocNav/);
+  assert.match(docsRoute, /footer=/);
   assert.doesNotMatch(source, /Whest Examples/);
   assert.doesNotMatch(source, /No API docs available/i);
   assert.doesNotMatch(source, /No examples available/i);
