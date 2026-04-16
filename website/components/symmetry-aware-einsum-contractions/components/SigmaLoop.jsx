@@ -286,12 +286,12 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
                   <div>
                     <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Ordered active labels</div>
                     <code className="mt-1 block font-mono text-foreground">{`[${labels.join(', ')}]`}</code>
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    This π induces candidate permutation {selectedCandidate ? selectedCandidate.cycleNotation : '—'} on the ordered active labels. The right panel tests whether adding it enlarges the generated subgroup.
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      This π induces candidate permutation {selectedCandidate ? selectedCandidate.cycleNotation : '—'} on the ordered active labels. The right panel now tests it in generator construction.
+                    </div>
                   </div>
                 </div>
-              </div>
             </>
           )}
         </div>
