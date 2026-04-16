@@ -73,6 +73,6 @@ test('machine-readable links use plain anchors instead of framework navigation',
   assert.doesNotMatch(agentsSource, /\.\.\/\.\.\/\.\.\/llms\.txt/);
   assert.doesNotMatch(agentsSource, /\(\/?\.\//);
 
-  assert.match(opPageSource, /withBasePath\(doc\.detail_json_href\)/);
-  assert.doesNotMatch(opPageSource, /<Link[^>]+href=\{doc\.detail_json_href\}/);
+  assert.doesNotMatch(opPageSource, /detail_json_href/);
+  assert.doesNotMatch(opPageSource, /json payload/i);
 });
