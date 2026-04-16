@@ -11,6 +11,7 @@ whest functions call _np.func() → numpy.func() → we.func() → ...
 """
 
 import fnmatch
+import importlib
 import sys
 import types
 
@@ -109,12 +110,16 @@ def _rebind_whest_np(frozen_np):
     """Replace _np in all whest modules with the frozen copy."""
     for mod_name in _WHEST_MODULES_WITH_NP:
         mod = sys.modules.get(mod_name)
+        if mod is None:
+            mod = importlib.import_module(mod_name)
         if mod is not None and hasattr(mod, "_np"):
             _REBOUND[mod_name] = mod._np
             mod._np = frozen_np
     # Also rebind _npr (numpy.random) in modules that use it
     for mod_name in _WHEST_MODULES_WITH_NPR:
         mod = sys.modules.get(mod_name)
+        if mod is None:
+            mod = importlib.import_module(mod_name)
         if mod is not None and hasattr(mod, "_npr"):
             _REBOUND[mod_name + "._npr"] = mod._npr
             mod._npr = frozen_np.random

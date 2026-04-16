@@ -8,6 +8,8 @@ import sys
 import numpy as np
 import pytest
 
+from tests.numpy_compat import conftest as numpy_compat_conftest
+
 LAZY_SUBMODULES = ("fft", "flops", "linalg", "random", "stats", "testing")
 
 
@@ -57,3 +59,22 @@ def test_registry_attribute_errors_are_unchanged_for_unknown_names():
 
     with pytest.raises(AttributeError, match="does not provide"):
         getattr(we, "totally_fake_function_xyz")
+
+
+def test_numpy_compat_rebind_imports_lazy_random_before_patching_numpy():
+    we = _fresh_whest()
+
+    we.__dict__.pop("random", None)
+    sys.modules.pop("whest.random", None)
+    assert "whest.random" not in sys.modules
+
+    frozen = numpy_compat_conftest._freeze_numpy()
+    numpy_compat_conftest._rebind_whest_np(frozen)
+    try:
+        assert "whest.random" in sys.modules
+        numpy_compat_conftest._patch_numpy()
+        result = np.random.choice(a=[False, True], size=8)
+        assert result.shape == (8,)
+    finally:
+        numpy_compat_conftest._unpatch_numpy()
+        numpy_compat_conftest._restore_whest_np()
