@@ -28,6 +28,7 @@ test('MDX SymmetryExplorer resolves to a standalone launch handoff instead of th
 
   assert.match(source, /function SymmetryExplorerStandaloneHandoff/);
   assert.match(source, /SymmetryExplorer:\s*SymmetryExplorerStandaloneHandoff/);
-  assert.match(source, /href="\/symmetry-aware-einsum-contractions"/);
+  assert.match(source, /import Link from 'next\/link'/);
+  assert.match(source, /href=\{STANDALONE_SYMMETRY_AWARE_EINSUM_URL\}/);
   assert.doesNotMatch(source, /SymmetryExplorer:\s*SymmetryAwareEinsumContractionsApp/);
 });
