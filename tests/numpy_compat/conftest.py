@@ -79,6 +79,7 @@ _WHEST_MODULES_WITH_NP = [
     "whest.linalg._compound",
     "whest.linalg._svd",
     "whest.linalg._aliases",
+    "whest.random",
 ]
 
 # Modules that also import numpy.random as _npr
