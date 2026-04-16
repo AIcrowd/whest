@@ -8,6 +8,7 @@ import {
 import { parseCycleNotation } from './cycleParser.js';
 import { computeExactCostModel } from './costModel.js';
 import { decomposeClassifyAndCount } from './componentDecomposition.js';
+import { computeLabelClusters } from './sizeAware/labelClusters.js';
 
 function normalizeExample(example) {
   if (!example) return null;
@@ -50,7 +51,19 @@ export function analyzeExample(example, dimensionN) {
   const matrixData = buildIncidenceMatrix(graph);
   const sigmaResults = runSigmaLoop(graph, matrixData, normalizedExample);
   const symmetry = buildGroup(sigmaResults, graph, normalizedExample);
-  const sizes = symmetry.allLabels.map(() => dimensionN);
+  const rawClusters = computeLabelClusters(symmetry.allLabels, symmetry.fullGenerators, dimensionN);
+  const labelSizesOverride = example.labelSizes || {};
+  const clusters = rawClusters.map((c) => ({
+    ...c,
+    size: Object.prototype.hasOwnProperty.call(labelSizesOverride, c.id)
+      ? labelSizesOverride[c.id]
+      : dimensionN,
+  }));
+  const sizeByLabel = new Map();
+  for (const c of clusters) {
+    for (const label of c.labels) sizeByLabel.set(label, c.size);
+  }
+  const sizes = symmetry.allLabels.map((l) => sizeByLabel.get(l) ?? dimensionN);
   const componentData = decomposeClassifyAndCount(
     symmetry.allLabels,
     symmetry.vLabels,
@@ -68,5 +81,5 @@ export function analyzeExample(example, dimensionN) {
     numTerms: normalizedExample.subscripts.length,
   });
 
-  return { graph, matrixData, sigmaResults, symmetry, componentData, burnside, costModel };
+  return { graph, matrixData, sigmaResults, symmetry, componentData, burnside, costModel, clusters };
 }
