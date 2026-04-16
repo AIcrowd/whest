@@ -18,11 +18,15 @@ import types
 import numpy as np
 import pytest
 
-import whest as we
 from whest._budget import _reset_global_default, budget_reset
 from whest._registry import REGISTRY
 
 from .xfails import XFAIL_PATTERNS
+
+# Ensure direct imports of `tests.numpy_compat.conftest` reuse the same module
+# instance pytest loaded as a conftest plugin, rather than executing this file
+# a second time after NumPy has already been patched.
+sys.modules.setdefault("tests.numpy_compat.conftest", sys.modules[__name__])
 
 
 class _NonDescriptor:
@@ -79,6 +83,7 @@ _WHEST_MODULES_WITH_NP = [
     "whest.linalg._compound",
     "whest.linalg._svd",
     "whest.linalg._aliases",
+    "whest.random",
 ]
 
 # Modules that also import numpy.random as _npr
@@ -87,23 +92,38 @@ _WHEST_MODULES_WITH_NPR = [
 ]
 
 
+def _snapshot_numpy_module(source_np):
+    """Create an unfrozen snapshot copy of numpy and key submodules."""
+    frozen = types.ModuleType("_frozen_numpy")
+    frozen.__dict__.update(source_np.__dict__)
+
+    for submod_name in ("linalg", "fft", "random"):
+        original_submod = getattr(source_np, submod_name)
+        frozen_submod = types.ModuleType(f"_frozen_numpy.{submod_name}")
+        frozen_submod.__dict__.update(original_submod.__dict__)
+        setattr(frozen, submod_name, frozen_submod)
+
+    return frozen
+
+
+_ORIGINAL_NUMPY = _snapshot_numpy_module(np)
+
+
+def _current_whest():
+    """Return the currently imported whest module, reimporting if needed."""
+    mod = sys.modules.get("whest")
+    if mod is None:
+        mod = importlib.import_module("whest")
+    return mod
+
+
 def _freeze_numpy():
     """Create a frozen copy of numpy that won't be affected by patching.
 
     Returns a module whose attributes are snapshots of numpy's current
     functions. Submodules (linalg, fft, random) are also frozen.
     """
-    frozen = types.ModuleType("_frozen_numpy")
-    frozen.__dict__.update(np.__dict__)
-
-    # Freeze submodules so _np.linalg.solve etc. still work
-    for submod_name in ("linalg", "fft", "random"):
-        original_submod = getattr(np, submod_name)
-        frozen_submod = types.ModuleType(f"_frozen_numpy.{submod_name}")
-        frozen_submod.__dict__.update(original_submod.__dict__)
-        setattr(frozen, submod_name, frozen_submod)
-
-    return frozen
+    return _snapshot_numpy_module(_ORIGINAL_NUMPY)
 
 
 def _rebind_whest_np(frozen_np):
@@ -147,6 +167,8 @@ def _patch_numpy():
     ufuncs, custom ops, submodule functions, and free ops. The frozen
     numpy copy prevents infinite recursion.
     """
+    we = _current_whest()
+
     for name, meta in REGISTRY.items():
         cat = meta["category"]
         if cat == "blacklisted":

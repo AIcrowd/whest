@@ -5,11 +5,25 @@ import IncidenceMatrix from './IncidenceMatrix.jsx';
 const STAGE_LABELS = ['M', 'σ(M)', 'π(σ(M))'];
 const VISIBLE_VALID_PAIR_LIMIT = 5;
 
-export default function SigmaLoop({ results, graph, matrixData, example, variableColors }) {
+export default function SigmaLoop({ results, graph, matrixData, example, variableColors, group, onSelectedPairChange }) {
   const allPairs = results.filter((result) => !result.skipped);
   const validPairs = allPairs.filter((result) => result.isValid);
   const rejectedPairs = allPairs.filter((result) => !result.isValid);
-  const resultsKey = `${results.length}:${validPairs.length}`;
+  const resultsKey = results
+    .map((result, index) => {
+      const sigmaSignature = JSON.stringify(result.sigmaRowPerm ?? null);
+      const piSignature = JSON.stringify(result.pi ?? null);
+      return [
+        index,
+        result.skipped ? 1 : 0,
+        result.isValid ? 1 : 0,
+        result.piKind ?? '',
+        result.reason ?? '',
+        sigmaSignature,
+        piSignature,
+      ].join(':');
+    })
+    .join('|');
 
   return (
     <SigmaLoopInner
@@ -22,11 +36,13 @@ export default function SigmaLoop({ results, graph, matrixData, example, variabl
       example={example}
       variableColors={variableColors}
       results={results}
+      group={group}
+      onSelectedPairChange={onSelectedPairChange}
     />
   );
 }
 
-function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData, example, variableColors, results }) {
+function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData, example, variableColors, results, group, onSelectedPairChange }) {
   const { uVertices, freeLabels } = graph;
   const uLabels = buildUVertexLabels(uVertices, example);
   const labels = matrixData.labels;
@@ -49,6 +65,9 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
   const selected = selectedIdx !== null ? allPairs[selectedIdx] : null;
   const inlineValidPairs = validPairs.slice(0, VISIBLE_VALID_PAIR_LIMIT);
   const remainingValidPairs = validPairs.slice(VISIBLE_VALID_PAIR_LIMIT);
+  const provenance = group?.generatorSelection;
+  const selectedPermutationKey = selected?.pi ? permutationKeyFromPi(selected.pi, group?.allLabels || labels) : null;
+  const selectedCandidate = provenance?.candidatePermutations?.find((candidate) => candidate.permutationKey === selectedPermutationKey) ?? null;
 
   const closeAllModals = () => {
     setShowRejected(false);
@@ -100,6 +119,16 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
     return () => clearTimeout(timer);
   }, [playing, stage, selected]);
 
+  useEffect(() => {
+    if (selectedIdx === null) {
+      onSelectedPairChange?.(null);
+      return;
+    }
+    const selectedPair = allPairs[selectedIdx];
+    const validPairIndex = selectedPair?.isValid ? validPairs.indexOf(selectedPair) : null;
+    onSelectedPairChange?.(validPairIndex !== -1 ? validPairIndex : null);
+  }, [selectedIdx, allPairs, validPairs, onSelectedPairChange]);
+
   function handleSelectPair(idx) {
     setSelectedIdx(idx);
     // Auto-advance to σ(M) so the user immediately sees the effect
@@ -143,7 +172,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
               const origIdx = allPairs.indexOf(r);
               return (
                 <button key={origIdx}
-                  className={`pair-chip pair-valid ${selectedIdx === origIdx ? 'pair-active' : ''}`}
+                  className="pair-chip pair-valid"
                   onClick={() => handleSelectPair(origIdx)}>
                   <span className="pair-sigma">σ = {fmtSigma(r.sigmaRowPerm, uLabels)}</span>
                   <span className="pair-pi">π = {fmtPi(r.pi)}</span>
@@ -246,22 +275,30 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
           )}
 
           {/* π mapping detail (when at stage 1 or 2 and valid) */}
-          {selected.isValid && selected.pi && stage >= 1 && (
-            <div className="pi-detail-panel">
-              <h5>π mapping</h5>
-              <div className="pi-arrows">
-                {Object.entries(selected.pi).map(([from, to]) => (
-                  <div key={from} className={`pi-arrow ${from !== to ? 'moved' : 'fixed'}`}>
-                    <span>{from}</span>
-                    <span className="arrow">→</span>
-                    <span>{to}</span>
+          {selected.isValid && selected.pi && (
+            <>
+              <div className="pi-detail-panel">
+                <h5>π mapping</h5>
+                <div className="pi-arrows">
+                  {Object.entries(selected.pi).map(([from, to]) => (
+                    <div key={from} className={`pi-arrow ${from !== to ? 'moved' : 'fixed'}`}>
+                      <span>{from}</span>
+                      <span className="arrow">→</span>
+                      <span>{to}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-4 space-y-3 text-sm">
+                  <div>
+                    <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Ordered active labels</div>
+                    <code className="mt-1 block font-mono text-foreground">{`[${labels.join(', ')}]`}</code>
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      This π induces candidate permutation {selectedCandidate ? selectedCandidate.cycleNotation : '—'} on the ordered active labels. The right panel now tests it in generator construction.
+                    </div>
                   </div>
-                ))}
-              </div>
-              <p className="sigma-caption">
-                {kindCaption(selected.piKind)}
-              </p>
-            </div>
+                </div>
+            </>
           )}
         </div>
       )}
@@ -413,10 +450,10 @@ function ValidPairsModal({
                 <span className="rejected-list-sigma">
                   σ = {fmtSigma(r.sigmaRowPerm, uLabels)}
                 </span>
-                <span className="rejected-list-reason">
+                <span className="pair-pi">
                   π = {fmtPi(r.pi)}
                 </span>
-                <span className={`rejected-list-reason pair-kind pair-kind-${r.piKind || 'identity'}`}>
+                <span className={`pair-kind pair-kind-${r.piKind || 'identity'}`}>
                   {kindLabel(r.piKind)}
                 </span>
                 <span className="rejected-list-arrow">→</span>
@@ -606,4 +643,12 @@ function fmtPi(pi) {
     if (cycle.length > 1) cycles.push(cycle);
   }
   return cycles.map(c => '(' + c.join(' ') + ')').join('') || 'e';
+}
+
+function permutationKeyFromPi(pi, orderedLabels) {
+  if (!pi || !orderedLabels?.length) return null;
+  const indexByLabel = new Map(orderedLabels.map((label, index) => [label, index]));
+  const arr = orderedLabels.map((label) => indexByLabel.get(pi[label]));
+  if (arr.some((value) => value === undefined)) return null;
+  return arr.join(',');
 }

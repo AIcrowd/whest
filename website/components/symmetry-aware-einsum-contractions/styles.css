@@ -705,10 +705,8 @@
 }
 
 .pair-chip:hover { border-color: #AAACAD; }
-.pair-chip.pair-active { border-color: #F0524D; box-shadow: 0 0 0 3px #FEF2F1; }
 .pair-chip.pair-valid { border-left: 3px solid #23B761; }
 .pair-chip.pair-invalid { border-left: 3px solid #F0524D; opacity: 0.6; }
-.pair-chip.pair-invalid.pair-active { opacity: 1; }
 
 .pair-sigma {
   font-weight: 500; font-size: 11px;

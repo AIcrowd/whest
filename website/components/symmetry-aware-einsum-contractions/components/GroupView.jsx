@@ -2,10 +2,10 @@ import RoleBadge from './RoleBadge.jsx';
 
 function actionTags(actionSummary = {}) {
   const tags = [];
-  if (actionSummary.hasCross) tags.push({ key: 'cross', className: 'group-tag-cross', text: 'cross V/W present' });
-  if (actionSummary.hasVOnly) tags.push({ key: 'v', className: 'group-tag-v', text: 'V-only action present' });
-  if (actionSummary.hasWOnly) tags.push({ key: 'w', className: 'group-tag-w', text: 'W-only action present' });
-  if (actionSummary.hasCorrelated) tags.push({ key: 'correlated', className: 'group-tag-correlated', text: 'correlated V/W action present' });
+  if (actionSummary.hasCross) tags.push({ key: 'cross', className: 'border-rose-200 bg-rose-50 text-rose-700', text: 'cross V/W present' });
+  if (actionSummary.hasVOnly) tags.push({ key: 'v', className: 'border-blue-200 bg-blue-50 text-blue-700', text: 'V-only action present' });
+  if (actionSummary.hasWOnly) tags.push({ key: 'w', className: 'border-slate-200 bg-slate-50 text-slate-700', text: 'W-only action present' });
+  if (actionSummary.hasCorrelated) tags.push({ key: 'correlated', className: 'border-amber-200 bg-amber-50 text-amber-700', text: 'correlated V/W action present' });
   return tags;
 }
 
@@ -34,9 +34,14 @@ export default function GroupView({ group }) {
         </p>
 
         {tags.length > 0 && (
-          <div className="group-tags">
+          <div className="mt-3 flex flex-wrap items-center gap-2">
             {tags.map((tag) => (
-              <span key={tag.key} className={`group-tag ${tag.className}`}>{tag.text}</span>
+              <span
+                key={tag.key}
+                className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-semibold ${tag.className}`}
+              >
+                {tag.text}
+              </span>
             ))}
           </div>
         )}

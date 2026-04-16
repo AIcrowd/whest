@@ -109,6 +109,91 @@ export function dimino(generators) {
   return elements;
 }
 
+function enumerateClosure(generators) {
+  if (!generators.length) return [Permutation.identity(0)];
+  const n = generators[0].size;
+  const identity = Permutation.identity(n);
+  const elements = [identity];
+  const seen = new Set([identity.key()]);
+  const frontier = [identity];
+
+  while (frontier.length > 0) {
+    const nextFrontier = [];
+    for (const element of frontier) {
+      for (const generator of generators) {
+        const leftProduct = generator.compose(element);
+        if (!seen.has(leftProduct.key())) {
+          seen.add(leftProduct.key());
+          elements.push(leftProduct);
+          nextFrontier.push(leftProduct);
+        }
+
+        const rightProduct = element.compose(generator);
+        if (!seen.has(rightProduct.key())) {
+          seen.add(rightProduct.key());
+          elements.push(rightProduct);
+          nextFrontier.push(rightProduct);
+        }
+      }
+    }
+    frontier.splice(0, frontier.length, ...nextFrontier);
+  }
+
+  return elements;
+}
+
+/**
+ * Build generator-round teaching stages for Dimino's algorithm.
+ * Each round adds one generator, then closes the subgroup under composition.
+ */
+export function buildDiminoStages(generators) {
+  const degree = generators[0]?.size ?? 0;
+  const identity = Permutation.identity(degree);
+  const stages = [
+    {
+      index: 0,
+      roundNumber: 0,
+      generatorIndex: null,
+      generator: null,
+      activeGenerators: [],
+      beforeElements: [identity],
+      afterElements: [identity],
+      newElements: [],
+      beforeSize: 1,
+      afterSize: 1,
+      newCount: 0,
+    },
+  ];
+
+  let activeGenerators = [];
+  let currentElements = [identity];
+
+  generators.forEach((generator, generatorIdx) => {
+    activeGenerators = [...activeGenerators, generator];
+    const nextElements = enumerateClosure(activeGenerators);
+    const currentKeys = new Set(currentElements.map((element) => element.key()));
+    const newElements = nextElements.filter((element) => !currentKeys.has(element.key()));
+
+    stages.push({
+      index: generatorIdx + 1,
+      roundNumber: generatorIdx + 1,
+      generatorIndex: generatorIdx,
+      generator,
+      activeGenerators,
+      beforeElements: currentElements,
+      afterElements: nextElements,
+      newElements,
+      beforeSize: currentElements.length,
+      afterSize: nextElements.length,
+      newCount: newElements.length,
+    });
+
+    currentElements = nextElements;
+  });
+
+  return stages;
+}
+
 /**
  * Burnside's lemma: count unique tensor elements.
  * Port of whest/_perm_group.py:238-272

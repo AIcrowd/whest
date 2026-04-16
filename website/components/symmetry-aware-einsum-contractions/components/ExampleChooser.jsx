@@ -9,8 +9,8 @@ import { cn } from '../lib/utils.js';
 import { CUSTOM_IDX, getPresetSummary, presetToState, resolvePresetSelection } from '../lib/presetSelection.js';
 import CaseBadge from './CaseBadge.jsx';
 import ExplorerField from './ExplorerField.jsx';
-import ExplorerSectionCard from './ExplorerSectionCard.jsx';
 import PythonCodeBlock from './PythonCodeBlock.jsx';
+import SymmetryBadge from './SymmetryBadge.jsx';
 
 const SYM_TYPES = ['none', 'symmetric', 'cyclic', 'dihedral', 'custom'];
 const SYM_LABELS = {
@@ -109,10 +109,11 @@ export default function ExampleChooser({
   onSelect,
   selectedPresetIdx = 0,
   dimensionN,
+  onDimensionChange,
   onCustom,
   onCustomExample,
+  onPreviewChange,
   onDirtyChange,
-  act,
   checkpointItems = [],
 }) {
   const initialSelection = resolvePresetSelection(examples, selectedPresetIdx);
@@ -250,6 +251,21 @@ export default function ExampleChooser({
     [variables, subscriptsStr, outputStr, operandNamesStr, dimensionN],
   );
 
+  useEffect(() => {
+    const opsArr = operandNamesStr.split(',').map((part) => part.trim()).filter(Boolean);
+    onPreviewChange?.({
+      id: activePresetIdx >= 0 ? examples[activePresetIdx].id : 'custom',
+      name: activePresetIdx >= 0 ? examples[activePresetIdx].name : 'Custom',
+      formula: `einsum('${subscriptsStr}->${outputStr.trim()}', ${opsArr.join(', ')})`,
+      variables,
+      expression: {
+        subscripts: subscriptsStr,
+        output: outputStr.trim(),
+        operandNames: operandNamesStr,
+      },
+    });
+  }, [activePresetIdx, examples, onPreviewChange, operandNamesStr, outputStr, subscriptsStr, variables]);
+
   const handleAnalyze = useCallback(() => {
     if (!validation.valid) return;
 
@@ -265,6 +281,12 @@ export default function ExampleChooser({
       id: activePresetIdx >= 0 ? examples[activePresetIdx].id : 'custom',
       name: activePresetIdx >= 0 ? examples[activePresetIdx].name : 'Custom',
       formula,
+      variables,
+      expression: {
+        subscripts: subscriptsStr,
+        output: out,
+        operandNames: operandNamesStr,
+      },
       subscripts: subs,
       output: out,
       operandNames: opsArr,
@@ -279,13 +301,7 @@ export default function ExampleChooser({
   }, [activePresetIdx, examples, onCustomExample, onDirtyChange, operandNamesStr, outputStr, subscriptsStr, validation.valid, variables]);
 
   const builderContent = (
-    <ExplorerSectionCard
-      eyebrow="Act 1"
-      title={act?.heading}
-      description={act?.why}
-      className="h-full border-gray-200 bg-white"
-      contentClassName="pt-5"
-    >
+    <>
       {checkpointItems.length > 0 && (
         <div className="mt-4 grid gap-3 rounded-xl border border-gray-200 bg-gray-50 p-4 sm:grid-cols-2">
           {checkpointItems.map((item) => (
@@ -500,6 +516,22 @@ export default function ExampleChooser({
               </Button>
             </div>
           </div>
+          <div className="mt-3 flex justify-end">
+            <label className="flex cursor-pointer items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5">
+              <span className="text-sm font-mono font-semibold text-muted-foreground">n =</span>
+              <input
+                type="range"
+                min={2}
+                max={25}
+                value={dimensionN}
+                onChange={(event) => onDimensionChange?.(Number(event.target.value))}
+                className="h-2 w-40 cursor-pointer accent-primary"
+              />
+              <span className="w-6 text-center text-sm font-mono font-bold text-foreground">
+                {dimensionN}
+              </span>
+            </label>
+          </div>
         </div>
 
         {validation.errors.length > 0 && (
@@ -513,7 +545,7 @@ export default function ExampleChooser({
           </div>
         )}
       </div>
-    </ExplorerSectionCard>
+    </>
   );
 
   return (
@@ -562,9 +594,10 @@ export default function ExampleChooser({
                 <span className="flex items-center gap-2">
                   <span className="truncate text-sm font-medium text-gray-900">{summary.name}</span>
                   {summary.caseType && <CaseBadge caseType={summary.caseType} size="xs" variant="compact" />}
+                  <SymmetryBadge value={summary.expectedGroup} className="shrink-0" />
                 </span>
                 <code className="mt-1 block truncate text-sm text-gray-500">{summary.formula}</code>
-                <span className="mt-1 block text-sm text-gray-400">{summary.expectedGroup}</span>
+                <span className="mt-1 block text-sm text-gray-400">{summary.description}</span>
               </span>
             </Button>
           ))}

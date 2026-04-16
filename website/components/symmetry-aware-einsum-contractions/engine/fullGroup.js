@@ -25,6 +25,90 @@ function minimalGenerators(generators) {
   return minimal;
 }
 
+function buildGeneratorSelectionProvenance(allLabels, validPiResults) {
+  const allLabelIndex = new Map(allLabels.map((label, index) => [label, index]));
+
+  const validPiCards = validPiResults
+    .filter((result) => !result.skipped && !result.piIsIdentity)
+    .map((result, index) => {
+      const arr = allLabels.map((label) => allLabelIndex.get(result.pi[label]));
+      const permutation = new Permutation(arr);
+      return {
+        id: `valid-pi-${index}`,
+        piKind: result.piKind,
+        pi: result.pi,
+        permutation,
+        permutationKey: permutation.key(),
+        arrayForm: permutation.arr,
+        cycleNotation: permutation.cycleNotation(allLabels),
+        isIdentity: permutation.isIdentity,
+      };
+    })
+    .filter((card) => !card.isIdentity);
+
+  const piToCandidateKey = new Map();
+  const candidateByKey = new Map();
+  const candidatePermutations = [];
+  for (const card of validPiCards) {
+    piToCandidateKey.set(card.id, card.permutationKey);
+    const existing = candidateByKey.get(card.permutationKey);
+    if (existing) {
+      existing.sourcePiIds.push(card.id);
+      existing.sourcePiKinds.push(card.piKind);
+      continue;
+    }
+    const candidate = {
+      id: `candidate-${candidatePermutations.length}`,
+      permutation: card.permutation,
+      permutationKey: card.permutationKey,
+      arrayForm: card.permutation.arr,
+      cycleNotation: card.permutation.cycleNotation(allLabels),
+      sourcePiIds: [card.id],
+      sourcePiKinds: [card.piKind],
+      kept: false,
+      beforeElements: [],
+      afterElements: [],
+    };
+    candidatePermutations.push(candidate);
+    candidateByKey.set(card.permutationKey, candidate);
+  }
+
+  const selectedGenerators = [];
+  let currentSize = 1;
+  let currentElements = allLabels.length > 0 ? [Permutation.identity(allLabels.length)] : [];
+  for (const candidate of candidatePermutations) {
+    candidate.beforeElements = [...currentElements];
+    const trial = [...selectedGenerators.map((entry) => entry.permutation), candidate.permutation];
+    const elements = dimino(trial);
+    candidate.afterElements = [...elements];
+    if (elements.length > currentSize) {
+      candidate.kept = true;
+      candidate.growthFrom = currentSize;
+      candidate.growthTo = elements.length;
+      selectedGenerators.push({
+        id: `selected-generator-${selectedGenerators.length}`,
+        sourcePiIds: [...candidate.sourcePiIds],
+        permutation: candidate.permutation,
+        permutationKey: candidate.permutationKey,
+        arrayForm: candidate.arrayForm,
+        cycleNotation: candidate.cycleNotation,
+      });
+      currentSize = elements.length;
+      currentElements = elements;
+    } else {
+      candidate.growthFrom = currentSize;
+      candidate.growthTo = currentSize;
+    }
+  }
+
+  return {
+    validPiCards,
+    candidatePermutations,
+    selectedGenerators,
+    piToCandidateKey: Object.fromEntries(piToCandidateKey),
+  };
+}
+
 function permutationOrder(permutation) {
   const cycles = permutation.cyclicForm();
   if (cycles.length === 0) return 1;
@@ -190,6 +274,7 @@ export function buildFullGroup(allLabelsInput, validPiResultsInput, vLabelsInput
   const wLabels = wLabelsInput instanceof Set ? wLabelsInput : new Set(wLabelsInput);
   validatePiMappings(allLabels, validPiResults);
   const allLabelIndex = new Map(allLabels.map((label, index) => [label, index]));
+  const generatorSelection = buildGeneratorSelectionProvenance(allLabels, validPiResults);
 
   const generatorsAll = [];
   for (const result of validPiResults) {
@@ -230,5 +315,6 @@ export function buildFullGroup(allLabelsInput, validPiResultsInput, vLabelsInput
     fullGroupName,
     actionSummary,
     validPiResults,
+    generatorSelection,
   };
 }

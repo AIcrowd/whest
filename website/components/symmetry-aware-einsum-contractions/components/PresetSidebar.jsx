@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
-import { Badge } from '@/components/ui/badge';
 import { cn } from '../lib/utils.js';
 import { getPresetSummary } from '../lib/presetSelection.js';
 import CaseBadge from './CaseBadge.jsx';
 import ExplorerSidebarItem from './ExplorerSidebarItem.jsx';
+import SymmetryBadge from './SymmetryBadge.jsx';
 
 const CUSTOM_IDX = -1;
 
@@ -68,12 +68,10 @@ export default function PresetSidebar({
               {summary.caseType && (
                 <CaseBadge caseType={summary.caseType} size="xs" variant="compact" />
               )}
-              <Badge variant="outline" className="text-xs font-semibold uppercase tracking-[0.18em]">
-                {summary.expectedGroup}
-              </Badge>
+              <SymmetryBadge value={summary.expectedGroup} />
             </span>
             <code className="mt-1 block truncate pl-3 text-sm text-gray-500">{summary.formula}</code>
-            <span className="mt-1 block pl-3 text-sm text-gray-400">{summary.expectedGroup}</span>
+            <span className="mt-1 block pl-3 text-sm text-gray-400">{summary.description}</span>
           </ExplorerSidebarItem>
         ))}
       </div>

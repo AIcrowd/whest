@@ -1,9 +1,11 @@
 import ExplorerSectionCard from './ExplorerSectionCard.jsx';
 
 export default function NarrativeCallout({ label, tone = 'muted', children }) {
-  const toneClass = tone === 'accent'
-    ? 'border-coral/20 bg-coral-light/60'
-    : 'border-border/70 bg-muted/30';
+  const toneClass = {
+    muted: 'border-border/70 bg-muted/30',
+    algorithm: 'border-border/70 bg-white',
+    accent: 'border-coral/20 bg-coral-light/60',
+  }[tone] ?? 'border-border/70 bg-muted/30';
 
   return (
     <ExplorerSectionCard

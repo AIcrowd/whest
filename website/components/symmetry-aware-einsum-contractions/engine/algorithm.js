@@ -569,6 +569,7 @@ export function buildGroup(sigmaResults, graph) {
     fullGroupName: fullGroup.fullGroupName,
     actionSummary: fullGroup.actionSummary,
     validPiResults: fullGroup.validPiResults,
+    generatorSelection: fullGroup.generatorSelection,
   };
 }
 

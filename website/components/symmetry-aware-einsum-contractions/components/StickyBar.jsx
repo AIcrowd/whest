@@ -3,24 +3,49 @@ import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { EXPLORER_ACTS } from './explorerNarrative.js';
 
-export default function StickyBar({ example, group, dimensionN, onDimensionChange, activeActId }) {
+function symmetryLabel(variable) {
+  if (!variable || variable.symmetry === 'none') return 'dense';
+  const k = (variable.symAxes && variable.symAxes.length) || variable.rank;
+  const axes = Array.isArray(variable.symAxes) ? variable.symAxes : null;
+  const hasExplicitPartialAxes = axes && axes.length > 0 && axes.length < variable.rank;
+
+  switch (variable.symmetry) {
+    case 'symmetric':
+      return hasExplicitPartialAxes ? `S${k}{${axes.join(',')}}` : `S${k}`;
+    case 'cyclic':
+      return hasExplicitPartialAxes ? `C${k}{${axes.join(',')}}` : `C${k}`;
+    case 'dihedral':
+      return hasExplicitPartialAxes ? `D${k}{${axes.join(',')}}` : `D${k}`;
+    case 'custom':
+      return hasExplicitPartialAxes ? `custom{${axes.join(',')}}` : 'custom';
+    default:
+      return null;
+  }
+}
+
+function ParameterSymmetryRow({ variables = [] }) {
+  return (
+    <div className="flex flex-wrap items-center gap-1.5">
+      {variables.map((variable, idx) => (
+        <span
+          key={`sticky-sym-${variable.name}-${idx}`}
+          className="inline-flex items-center gap-1 rounded-full border border-primary/18 bg-white px-2 py-0.5 text-xs font-mono text-foreground shadow-sm"
+        >
+          <span className="font-semibold text-primary">{variable.name}</span>
+          <span className="text-muted-foreground">:</span>
+          <span className="text-coral">{symmetryLabel(variable)}</span>
+        </span>
+      ))}
+    </div>
+  );
+}
+
+export default function StickyBar({ example, group, activeActId }) {
+  const variables = example?.variables ?? [];
+
   return (
     <div className="sticky top-0 z-40 border-b border-border/70 bg-background/95 backdrop-blur-sm">
       <div className="mx-auto flex max-w-[1460px] flex-col gap-4 px-6 py-4 md:flex-row md:items-center md:justify-between md:px-8">
-        {example && (
-          <div className="flex min-w-0 shrink items-center gap-2">
-            <Badge className="shrink-0">einsum</Badge>
-            <code className="truncate rounded-md border border-primary/20 bg-primary/10 px-2.5 py-1 text-sm font-mono font-medium text-primary shadow-sm">
-              {example.formula}
-            </code>
-            {group && (
-              <Badge variant="outline" className="shrink-0 border-primary/25 bg-primary/10 text-primary">
-                {group.fullGroupName || 'trivial'}
-              </Badge>
-            )}
-          </div>
-        )}
-
         <nav className="flex shrink-0 items-center gap-1 overflow-x-auto pb-1 md:pb-0">
           {EXPLORER_ACTS.map((act, idx) => {
             const isActive = activeActId === act.id;
@@ -53,21 +78,23 @@ export default function StickyBar({ example, group, dimensionN, onDimensionChang
           })}
         </nav>
 
-        <div className="flex shrink-0 items-center gap-3 self-end md:self-auto">
-          <label className="flex cursor-pointer items-center gap-2">
-            <span className="text-sm font-mono font-semibold text-muted-foreground">n =</span>
-            <input
-              type="range"
-              min={2}
-              max={25}
-              value={dimensionN}
-              onChange={(event) => onDimensionChange(Number(event.target.value))}
-              className="h-2 w-40 cursor-pointer accent-primary"
-            />
-            <span className="w-6 text-center text-sm font-mono font-bold text-foreground">
-              {dimensionN}
-            </span>
-          </label>
+        <div className="flex min-w-0 shrink flex-col items-start gap-2 self-end md:max-w-[42rem] md:items-end md:self-auto">
+          {example && (
+            <>
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge className="shrink-0">einsum</Badge>
+                <code className="block rounded-md border border-primary/20 bg-primary/10 px-2.5 py-1 text-sm font-mono font-medium text-primary shadow-sm">
+                  {example.formula}
+                </code>
+                {group && (
+                  <Badge variant="outline" className="shrink-0 border-primary/25 bg-primary/10 text-primary">
+                    {group.fullGroupName || 'trivial'}
+                  </Badge>
+                )}
+              </div>
+              <ParameterSymmetryRow variables={variables} />
+            </>
+          )}
         </div>
       </div>
     </div>
