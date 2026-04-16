@@ -97,6 +97,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
     setPreviewExample(EXAMPLES[idx] ?? null);
     setIsDirty(false);
     setSelectedOrbitIdx(-1);
+    setSelectedSigmaPairIndex(null);
   }, []);
 
   // Handle custom example submission
@@ -106,12 +107,14 @@ export default function SymmetryAwareEinsumContractionsApp() {
     setPreviewExample(ex);
     setExampleIdx(CUSTOM_IDX);
     setSelectedOrbitIdx(-1);
+    setSelectedSigmaPairIndex(null);
   }, []);
 
   const handleCustomMode = useCallback(() => {
     setShowMentalModel((isOpen) => reduceMentalModelVisibility(isOpen, 'customMode'));
     setExampleIdx(CUSTOM_IDX);
     setSelectedOrbitIdx(-1);
+    setSelectedSigmaPairIndex(null);
   }, []);
 
   const analysis = useMemo(() => {

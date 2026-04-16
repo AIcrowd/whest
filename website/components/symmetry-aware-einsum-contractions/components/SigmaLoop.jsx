@@ -9,7 +9,21 @@ export default function SigmaLoop({ results, graph, matrixData, example, variabl
   const allPairs = results.filter((result) => !result.skipped);
   const validPairs = allPairs.filter((result) => result.isValid);
   const rejectedPairs = allPairs.filter((result) => !result.isValid);
-  const resultsKey = `${results.length}:${validPairs.length}`;
+  const resultsKey = results
+    .map((result, index) => {
+      const sigmaSignature = JSON.stringify(result.sigmaRowPerm ?? null);
+      const piSignature = JSON.stringify(result.pi ?? null);
+      return [
+        index,
+        result.skipped ? 1 : 0,
+        result.isValid ? 1 : 0,
+        result.piKind ?? '',
+        result.reason ?? '',
+        sigmaSignature,
+        piSignature,
+      ].join(':');
+    })
+    .join('|');
 
   return (
     <SigmaLoopInner
