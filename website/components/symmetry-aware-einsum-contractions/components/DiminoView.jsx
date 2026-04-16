@@ -51,11 +51,11 @@ function ProofSection({ title, children }) {
 export default function DiminoView({ group, sigmaResults = [], selectedPairIndex = null }) {
   const orderedLabels = group?.allLabels || [];
   const selectedPair = useMemo(() => {
-    const activePairs = sigmaResults.filter((result) => !result.skipped);
-    if (selectedPairIndex === null || selectedPairIndex < 0 || selectedPairIndex >= activePairs.length) {
+    const allPairs = sigmaResults.filter((result) => !result.skipped);
+    if (selectedPairIndex === null || selectedPairIndex < 0 || selectedPairIndex >= allPairs.length) {
       return null;
     }
-    return activePairs[selectedPairIndex] ?? null;
+    return allPairs[selectedPairIndex] ?? null;
   }, [selectedPairIndex, sigmaResults]);
   const selectedPermutationKey = selectedPair?.pi ? permutationKeyFromPi(selectedPair.pi, orderedLabels) : null;
   const candidate = useMemo(
@@ -69,7 +69,6 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
       <div>
-        <h3 className="font-heading text-base font-semibold text-gray-900">Generator Construction</h3>
         <p className="mt-2 max-w-[62ch] text-sm leading-6 text-muted-foreground">
           Each valid π induces a candidate permutation. We keep it only if adding it enlarges the subgroup generated so far.
         </p>
