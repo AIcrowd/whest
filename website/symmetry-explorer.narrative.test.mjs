@@ -44,14 +44,19 @@ test('Acts 1 through 4 expose the new narrative metadata fields', () => {
   }
 });
 
-test('explorer prose distinguishes declared and detected symmetry explicitly', () => {
+test('acts 1 through 4 explicitly distinguish declared and detected symmetry', () => {
   const appSource = fs.readFileSync(
     new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url),
     'utf8',
   );
+  const act5Start = appSource.indexOf('<section id={EXPLORER_ACTS[4].id}');
+  const shellActsSource = act5Start >= 0 ? appSource.slice(0, act5Start) : appSource;
 
-  assert.match(appSource, /declared input symmetry/i);
-  assert.match(appSource, /detected contraction symmetry/i);
+  const declaredMatches = shellActsSource.match(/declared input symmetry/gi) ?? [];
+  const detectedMatches = shellActsSource.match(/detected contraction symmetry/gi) ?? [];
+
+  assert.ok(declaredMatches.length >= 2);
+  assert.ok(detectedMatches.length >= 2);
 });
 
 test('pickTopVisibleAct prefers the top-most visible act and falls back safely', () => {
