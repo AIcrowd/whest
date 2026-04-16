@@ -61,6 +61,17 @@ test('Acts 2 through 4 surface the named procedures used by the algorithm', () =
   assert.match(joinedCopy, /orbit enumeration/i);
 });
 
+test('Acts 2 through 4 render the named-procedure bridge text in the live shell', () => {
+  const appSource = fs.readFileSync(
+    new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(appSource, /EXPLORER_ACTS\[1\]\.bridge/);
+  assert.match(appSource, /EXPLORER_ACTS\[2\]\.bridge/);
+  assert.match(appSource, /EXPLORER_ACTS\[3\]\.bridge/);
+});
+
 test('acts 1 through 4 explicitly distinguish declared and detected symmetry', () => {
   const appSource = fs.readFileSync(
     new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url),
