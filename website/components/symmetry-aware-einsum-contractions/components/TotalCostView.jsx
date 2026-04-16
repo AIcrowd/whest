@@ -1,11 +1,24 @@
 import CaseBadge from './CaseBadge.jsx';
 import ExplorerMetricCard from './ExplorerMetricCard.jsx';
 import NarrativeCallout from './NarrativeCallout.jsx';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
-function InlineCodeList({ values }) {
-  if (!values?.length) return <span className="text-muted-foreground">—</span>;
-  return <code className="font-mono text-sm text-foreground">{values.join(', ')}</code>;
+function ComponentRecap({ components }) {
+  if (!components?.length) return null;
+
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <span className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Component recap</span>
+      {components.map((comp, idx) => (
+        <span
+          key={`component-recap-${idx}`}
+          className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-raised px-2.5 py-1 text-xs text-muted-foreground"
+        >
+          <CaseBadge caseType={comp.caseType} size="xs" />
+          <span className="font-mono">{`{${(comp.labels ?? []).join(', ')}}`}</span>
+        </span>
+      ))}
+    </div>
+  );
 }
 
 export default function TotalCostView({ costModel, componentData, dimensionN, numTerms = 1 }) {
@@ -19,49 +32,11 @@ export default function TotalCostView({ costModel, componentData, dimensionN, nu
   const totalSpeedup = totalCost > 0 ? (denseTotalCost / totalCost).toFixed(1) : '1.0';
   const savings = denseTotalCost - totalCost;
   const savingsPct = denseTotalCost > 0 ? ((savings / denseTotalCost) * 100).toFixed(1) : '0';
-
   const { components = [] } = componentData;
 
   return (
     <div className="space-y-8">
-      <NarrativeCallout label="Why this matters">
-        These totals combine the representative multiplications and the remaining output-bin updates into the final symmetry-aware contraction cost.
-      </NarrativeCallout>
-
-      <div className="rounded-xl border border-border bg-white shadow-sm">
-        <Table className="text-sm">
-          <TableHeader className="bg-surface-raised">
-            <TableRow className="border-border hover:bg-surface-raised">
-              <TableHead className="px-4 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">Case</TableHead>
-              <TableHead className="px-4 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">Labels</TableHead>
-              <TableHead className="px-4 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">V (free)</TableHead>
-              <TableHead className="px-4 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">W (summed)</TableHead>
-              <TableHead className="px-4 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">Group</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody className="divide-y divide-border">
-            {components.map((comp, idx) => (
-              <TableRow key={`comp-row-${idx}`} className="border-0 bg-surface hover:bg-surface-raised">
-                <TableCell className="px-4 py-3 text-sm">
-                  <CaseBadge caseType={comp.caseType} size="sm" />
-                </TableCell>
-                <TableCell className="px-4 py-3 text-sm">
-                  <InlineCodeList values={comp.labels ?? []} />
-                </TableCell>
-                <TableCell className="px-4 py-3 text-sm">
-                  <InlineCodeList values={comp.va ?? []} />
-                </TableCell>
-                <TableCell className="px-4 py-3 text-sm">
-                  <InlineCodeList values={comp.wa ?? []} />
-                </TableCell>
-                <TableCell className="px-4 py-3 text-sm">
-                  <code className="font-mono text-sm text-foreground">{comp.groupName ?? '—'}</code>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+      <ComponentRecap components={components} />
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <ExplorerMetricCard

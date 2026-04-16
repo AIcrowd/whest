@@ -26,6 +26,8 @@ import { reduceMentalModelVisibility } from './lib/mentalModelState.js';
 import './styles.css';
 
 const CUSTOM_IDX = -1;
+const DEFAULT_EXAMPLE_ID = 'triple-outer';
+const DEFAULT_EXAMPLE_IDX = Math.max(0, EXAMPLES.findIndex((example) => example.id === DEFAULT_EXAMPLE_ID));
 
 /**
  * Convert the new preset format (with `variables` and `expression` fields)
@@ -62,7 +64,7 @@ function normalizeExample(example) {
 }
 
 export default function SymmetryAwareEinsumContractionsApp() {
-  const [exampleIdx, setExampleIdx] = useState(0);
+  const [exampleIdx, setExampleIdx] = useState(DEFAULT_EXAMPLE_IDX);
   const [customExample, setCustomExample] = useState(null);
   const [dimensionN, setDimensionN] = useState(5);
   const [selectedOrbitIdx, setSelectedOrbitIdx] = useState(-1);

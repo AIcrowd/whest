@@ -4,8 +4,8 @@ import Latex from './Latex.jsx';
 import { getCasePresentation } from './casePresentation.js';
 import { cn } from '../lib/utils.js';
 
-const TOOLTIP_WIDTH = 280;
-const TOOLTIP_HEIGHT = 128;
+const TOOLTIP_WIDTH = 320;
+const TOOLTIP_HEIGHT = 152;
 const VIEWPORT_PADDING = 16;
 const TOOLTIP_OFFSET = 8;
 
@@ -86,7 +86,6 @@ export default function CaseBadge({
             borderColor: colors.border,
           }}
           aria-label={presentation.label}
-          title={presentation.label}
         >
           {label}
         </Badge>
@@ -94,18 +93,22 @@ export default function CaseBadge({
 
       {showTooltip && tooltip && (
         <div
-          className="fixed z-[9999] w-72 rounded-lg bg-gray-900 px-3.5 py-3 text-white shadow-2xl"
+          className="pointer-events-none fixed z-[9999] w-80 max-w-[calc(100vw-2rem)] rounded-lg bg-gray-900 px-4 py-3.5 text-white shadow-2xl"
           style={{
             left: tooltipPos.x,
             top: tooltipPos.y,
             transform: tooltipPos.flipped ? 'translateX(-50%)' : 'translateX(-50%) translateY(-100%)',
           }}
         >
-          <div className="mb-1 text-xs font-bold">{tooltip.title}</div>
-          <div className="text-[11px] leading-relaxed text-gray-300">{tooltip.body}</div>
+          <div className="mb-1 whitespace-normal break-words text-sm font-semibold leading-6">{tooltip.title}</div>
+          <div className="max-w-full whitespace-normal break-words text-sm leading-6 text-gray-300">
+            {tooltip.body}
+          </div>
           {tooltip.latex && (
-            <div className="mt-2 border-t border-gray-700 pt-2 text-center">
-              <Latex math={tooltip.latex} />
+            <div className="mt-3 overflow-x-auto border-t border-gray-700 pt-3 text-sm text-gray-100">
+              <div className="min-w-0">
+                <Latex math={tooltip.latex} display />
+              </div>
             </div>
           )}
           <div
