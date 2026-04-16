@@ -735,14 +735,18 @@ def _docs_url_for_reference_target(target: str, *, role: str = "") -> str:
             if normalized.startswith("scipy.")
             else f"scipy.stats.{normalized.removeprefix('stats.')}"
         )
-        return f"https://docs.scipy.org/doc/scipy/reference/generated/{scipy_target}.html"
+        return (
+            f"https://docs.scipy.org/doc/scipy/reference/generated/{scipy_target}.html"
+        )
 
     candidate = _operation_candidate_from_target(normalized)
     if not candidate:
         return ""
 
     if candidate.startswith(("linalg.", "fft.", "random.", "ufunc.")):
-        return f"https://numpy.org/doc/stable/reference/generated/numpy.{candidate}.html"
+        return (
+            f"https://numpy.org/doc/stable/reference/generated/numpy.{candidate}.html"
+        )
 
     if candidate.startswith("stats."):
         return (
@@ -751,7 +755,9 @@ def _docs_url_for_reference_target(target: str, *, role: str = "") -> str:
         )
 
     if "." not in candidate:
-        return f"https://numpy.org/doc/stable/reference/generated/numpy.{candidate}.html"
+        return (
+            f"https://numpy.org/doc/stable/reference/generated/numpy.{candidate}.html"
+        )
 
     return ""
 
@@ -953,10 +959,17 @@ def _convert_docutils_inline_node(
         return [{"kind": "code", "text": token}]
 
     if isinstance(node, docutils_nodes.emphasis):
-        return [{"kind": "emphasis", "text": _inline_text_from_children(list(node.children))}]
+        return [
+            {
+                "kind": "emphasis",
+                "text": _inline_text_from_children(list(node.children)),
+            }
+        ]
 
     if isinstance(node, docutils_nodes.strong):
-        return [{"kind": "strong", "text": _inline_text_from_children(list(node.children))}]
+        return [
+            {"kind": "strong", "text": _inline_text_from_children(list(node.children))}
+        ]
 
     _record_coverage_event(
         coverage,
@@ -1129,7 +1142,9 @@ def _convert_docutils_blocks(
                 term_parts = []
                 body_blocks: list[dict] = []
                 for child in item.children:
-                    if isinstance(child, (docutils_nodes.term, docutils_nodes.classifier)):
+                    if isinstance(
+                        child, (docutils_nodes.term, docutils_nodes.classifier)
+                    ):
                         for inline_child in child.children:
                             term_parts.extend(
                                 _convert_docutils_inline_node(
@@ -1201,7 +1216,9 @@ def _convert_docutils_blocks(
             text = node.astext()
             if example_mode:
                 text = rewrite_example_text(text)
-            blocks.append({"type": "doctest_block", "lines": _parse_doctest_lines(text)})
+            blocks.append(
+                {"type": "doctest_block", "lines": _parse_doctest_lines(text)}
+            )
             continue
 
         if isinstance(node, docutils_nodes.literal_block):
@@ -1330,7 +1347,9 @@ def _consume_directive_block(
     return directive_name, remainder, payload, index
 
 
-def _split_directive_payload(payload: list[str]) -> tuple[list[dict[str, str]], list[str]]:
+def _split_directive_payload(
+    payload: list[str],
+) -> tuple[list[dict[str, str]], list[str]]:
     if not payload:
         return [], []
 
@@ -1372,7 +1391,11 @@ def _math_formulas_from_directive(
             current = []
     if current:
         paragraphs.append(current)
-    return [_coalesce_lines(paragraph) for paragraph in paragraphs if _coalesce_lines(paragraph)]
+    return [
+        _coalesce_lines(paragraph)
+        for paragraph in paragraphs
+        if _coalesce_lines(paragraph)
+    ]
 
 
 def _build_directive_block(
@@ -1389,7 +1412,9 @@ def _build_directive_block(
     supported_ops = supported_ops or set()
     alias_map = alias_map or {}
     options, content_lines = _split_directive_payload(payload)
-    argument_text = text_transform(remainder) if text_transform is not None else remainder
+    argument_text = (
+        text_transform(remainder) if text_transform is not None else remainder
+    )
 
     if directive_name == "math":
         formulas = _math_formulas_from_directive(argument_text, content_lines)
@@ -1415,9 +1440,12 @@ def _build_directive_block(
             "options": options,
             "content_blocks": [],
             "supported": True,
-            "raw_source": "\n".join([f".. {directive_name}::{(' ' + remainder) if remainder else ''}".rstrip()] + payload).strip(
-                "\n"
-            ),
+            "raw_source": "\n".join(
+                [
+                    f".. {directive_name}::{(' ' + remainder) if remainder else ''}".rstrip()
+                ]
+                + payload
+            ).strip("\n"),
         }
 
     if directive_name in {"note", "warning"}:
@@ -1442,9 +1470,12 @@ def _build_directive_block(
                 text_transform=text_transform,
             ),
             "supported": True,
-            "raw_source": "\n".join([f".. {directive_name}::{(' ' + remainder) if remainder else ''}".rstrip()] + payload).strip(
-                "\n"
-            ),
+            "raw_source": "\n".join(
+                [
+                    f".. {directive_name}::{(' ' + remainder) if remainder else ''}".rstrip()
+                ]
+                + payload
+            ).strip("\n"),
         }
 
     if directive_name == "plot":
@@ -1469,13 +1500,17 @@ def _build_directive_block(
                 else []
             ),
             "supported": True,
-            "raw_source": "\n".join([f".. {directive_name}::{(' ' + remainder) if remainder else ''}".rstrip()] + payload).strip(
-                "\n"
-            ),
+            "raw_source": "\n".join(
+                [
+                    f".. {directive_name}::{(' ' + remainder) if remainder else ''}".rstrip()
+                ]
+                + payload
+            ).strip("\n"),
         }
 
     raw_source = "\n".join(
-        [f".. {directive_name}::{(' ' + remainder) if remainder else ''}".rstrip()] + payload
+        [f".. {directive_name}::{(' ' + remainder) if remainder else ''}".rstrip()]
+        + payload
     ).strip("\n")
     _record_coverage_event(
         coverage,
@@ -1571,7 +1606,9 @@ def _parse_rich_doc_blocks(
         raw = lines[index].rstrip("\n")
         if DIRECTIVE_RE.match(raw):
             flush_buffer()
-            directive_name, remainder, payload, index = _consume_directive_block(lines, index)
+            directive_name, remainder, payload, index = _consume_directive_block(
+                lines, index
+            )
             blocks.append(
                 _build_directive_block(
                     directive_name,
@@ -1689,7 +1726,10 @@ def _build_sections_for_doc(
         )
         if summary_inline:
             sections.append(
-                {"title": "Summary", "blocks": [{"type": "paragraph", "inline": summary_inline}]}
+                {
+                    "title": "Summary",
+                    "blocks": [{"type": "paragraph", "inline": summary_inline}],
+                }
             )
 
     build_text_section("Extended Summary", parsed.extended_summary)
@@ -1739,7 +1779,10 @@ def _build_sections_for_doc(
             {
                 "title": "See also",
                 "blocks": [
-                    {"type": "link_list", "links": [asdict(link) for link in parsed.see_also]}
+                    {
+                        "type": "link_list",
+                        "links": [asdict(link) for link in parsed.see_also],
+                    }
                 ],
             }
         )
@@ -1759,7 +1802,9 @@ def _build_sections_for_doc(
     build_text_section("References", parsed.references)
 
     if parsed.examples:
-        example_lines = [line.rstrip("\n") for line in parsed.examples[0].code.split("\n")]
+        example_lines = [
+            line.rstrip("\n") for line in parsed.examples[0].code.split("\n")
+        ]
         example_blocks = _parse_examples_to_blocks(
             example_lines,
             supported_ops=supported_ops,
@@ -1807,7 +1852,9 @@ def parse_numpy_docstring(raw_doc: str) -> ParsedDoc:
     summary = " ".join(part.strip() for part in doc["Summary"]).strip()
     upstream_signature = str(doc["Signature"]).strip()
 
-    def parse_field_section(section_name: str, *, single_element_is_type: bool = False) -> list[DocField]:
+    def parse_field_section(
+        section_name: str, *, single_element_is_type: bool = False
+    ) -> list[DocField]:
         return [
             DocField(name=name, type=type_, body=[line.rstrip() for line in desc])
             for name, type_, desc in doc[section_name]
@@ -1950,7 +1997,7 @@ def _worker_build_operation_record(
         float,
         str,
         str,
-    ]
+    ],
 ) -> OperationDocRecord:
     """Build a single operation doc record inside a worker process."""
     name, module, category, aliases, weight, notes, owned_example_html = task
@@ -2047,7 +2094,9 @@ def resolve_live_objects(name: str, module: str) -> tuple[object, object | None]
     if module == "whest.stats":
         try:
             from scipy import stats as scipy_stats
-        except Exception:  # pragma: no cover - scipy availability is environment specific
+        except (
+            Exception
+        ):  # pragma: no cover - scipy availability is environment specific
             scipy_stats = None
         return _resolve_attr(we, name), (
             _resolve_attr(scipy_stats, name.removeprefix("stats."))
@@ -2079,6 +2128,7 @@ def _rewrite_doc_link(link: DocLink) -> DocLink:
         href="",
         external_url="",
     )
+
 
 def resolve_doc_link(
     link: DocLink,
@@ -2151,7 +2201,9 @@ def build_structured_doc(
     parsed = parse_numpy_docstring(raw_doc)
 
     parsed.summary = rewrite_api_refs(parsed.summary)
-    parsed.extended_summary = [rewrite_api_refs(line) for line in parsed.extended_summary]
+    parsed.extended_summary = [
+        rewrite_api_refs(line) for line in parsed.extended_summary
+    ]
     parsed.parameters = [_rewrite_doc_field(field) for field in parsed.parameters]
     parsed.returns = [_rewrite_doc_field(field) for field in parsed.returns]
     parsed.raises = [_rewrite_doc_field(field) for field in parsed.raises]
@@ -2431,7 +2483,8 @@ def build_operation_doc_records(
     supported_ops = {
         name
         for name, info in registry.items()
-        if info["category"] != "blacklisted" and resolve_canonical_name(name, alias_map) == name
+        if info["category"] != "blacklisted"
+        and resolve_canonical_name(name, alias_map) == name
     }
     tasks: list[tuple[str, str, str, list[str], float, str, str]] = []
     for name, info in sorted(registry.items()):
@@ -2466,12 +2519,12 @@ def build_operation_doc_records(
     if workers > 1:
         max_workers = min(
             workers,
-            len(os.sched_getaffinity(0)) if hasattr(os, "sched_getaffinity") else os.cpu_count() or 1,
+            len(os.sched_getaffinity(0))
+            if hasattr(os, "sched_getaffinity")
+            else os.cpu_count() or 1,
         )
         mp_context = (
-            mp.get_context("fork")
-            if "fork" in mp.get_all_start_methods()
-            else None
+            mp.get_context("fork") if "fork" in mp.get_all_start_methods() else None
         )
         with ProcessPoolExecutor(
             max_workers=max_workers,
@@ -2510,10 +2563,7 @@ def build_operation_doc_records(
 def render_operation_stub(op: OperationDocRecord) -> str:
     """Render a generated standalone MDX page stub for one canonical operation."""
     return (
-        f'---\n'
-        f'title: "{op.whest_ref}"\n'
-        f'---\n\n'
-        f'<OperationDocPage name="{op.name}" />\n'
+        f'---\ntitle: "{op.whest_ref}"\n---\n\n<OperationDocPage name="{op.name}" />\n'
     )
 
 
@@ -2573,10 +2623,21 @@ def write_op_doc_coverage_artifact(
     generated_dir.mkdir(parents=True, exist_ok=True)
     payload = {
         record.name: {
-            "unresolved_references": record.doc_coverage.get("unresolved_references", []),
-            "unsupported_directives": record.doc_coverage.get("unsupported_directives", []),
+            "unresolved_references": record.doc_coverage.get(
+                "unresolved_references", []
+            ),
+            "unsupported_directives": record.doc_coverage.get(
+                "unsupported_directives", []
+            ),
             "raw_blocks": record.doc_coverage.get("raw_blocks", []),
-            "has_issues": any(record.doc_coverage.get(key) for key in ("unresolved_references", "unsupported_directives", "raw_blocks")),
+            "has_issues": any(
+                record.doc_coverage.get(key)
+                for key in (
+                    "unresolved_references",
+                    "unsupported_directives",
+                    "raw_blocks",
+                )
+            ),
         }
         for record in records
     }
@@ -2599,7 +2660,9 @@ def assert_supported_docs_env() -> None:
     try:
         import numpy as np
         from numpy.lib import NumpyVersion
-    except Exception as exc:  # pragma: no cover - import failure is environment-specific
+    except (
+        Exception
+    ) as exc:  # pragma: no cover - import failure is environment-specific
         raise RuntimeError("generate_api_docs.py requires NumPy >= 2.0,<2.3") from exc
 
     version = NumpyVersion(np.__version__)
@@ -2896,7 +2959,9 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
 
     op_docs = json.loads(op_docs_path.read_text())
     if "absolute" not in op_docs:
-        print(f"\nop-docs.json missing canonical entry for 'absolute' at {op_docs_path}")
+        print(
+            f"\nop-docs.json missing canonical entry for 'absolute' at {op_docs_path}"
+        )
         return False
 
     op_refs = json.loads(op_refs_path.read_text())
@@ -2913,12 +2978,13 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
         )
         return False
 
-    print("Generated operation doc manifests, parser coverage, stub pages, and example coverage are present.")
+    print(
+        "Generated operation doc manifests, parser coverage, stub pages, and example coverage are present."
+    )
     generated_payload = GENERATED_DIR / "ops" / "absolute.json"
     if not generated_payload.exists():
         print(
-            "\nPer-op generated payload missing for 'absolute' at "
-            f"{generated_payload}"
+            f"\nPer-op generated payload missing for 'absolute' at {generated_payload}"
         )
         return False
 

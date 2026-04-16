@@ -83,7 +83,9 @@ def test_random_module_defined_public_callables_are_registry_backed():
 
 def test_linalg_public_exports_are_registry_backed():
     missing = sorted(
-        f"linalg.{name}" for name in we.linalg.__all__ if f"linalg.{name}" not in REGISTRY
+        f"linalg.{name}"
+        for name in we.linalg.__all__
+        if f"linalg.{name}" not in REGISTRY
     )
     assert not missing, (
         "whest.linalg public exports missing from whest._registry: "

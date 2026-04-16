@@ -6,7 +6,9 @@ from pathlib import Path
 
 
 def load_generate_api_docs_module():
-    script_path = Path(__file__).resolve().parents[1] / "scripts" / "generate_api_docs.py"
+    script_path = (
+        Path(__file__).resolve().parents[1] / "scripts" / "generate_api_docs.py"
+    )
     spec = importlib.util.spec_from_file_location("generate_api_docs", script_path)
     module = importlib.util.module_from_spec(spec)
     assert spec is not None
@@ -369,7 +371,11 @@ def test_parse_inline_nodes_emits_structured_role_references():
         alias_map={},
     )
 
-    reduce_ref = next(node for node in nodes if node.get("kind") == "role_reference" and node.get("role") == "meth")
+    reduce_ref = next(
+        node
+        for node in nodes
+        if node.get("kind") == "role_reference" and node.get("role") == "meth"
+    )
     absolute_ref = next(
         node
         for node in nodes
@@ -417,9 +423,14 @@ def test_parse_rich_doc_blocks_preserves_directives_and_nested_blocks():
         coverage=coverage,
     )
 
-    assert any(block["type"] == "directive_block" and block["directive"] == "versionadded" for block in blocks)
+    assert any(
+        block["type"] == "directive_block" and block["directive"] == "versionadded"
+        for block in blocks
+    )
     assert any(block["type"] == "definition_list" for block in blocks)
-    assert any(block["type"] == "list" and block["ordered"] is False for block in blocks)
+    assert any(
+        block["type"] == "list" and block["ordered"] is False for block in blocks
+    )
     assert any(
         block["type"] == "directive_block"
         and block["directive"] == "note"
@@ -521,9 +532,17 @@ def test_write_generated_operation_artifacts_emit_structured_parity_fields(tmp_p
             provenance_url="https://numpy.org/doc/stable/reference/generated/numpy.absolute.html",
             whest_source_url="https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L10",
             upstream_source_url="https://github.com/numpy/numpy/blob/main/numpy/_core/code_generators/ufunc_docstrings.py",
-            parameters=[mod.DocField(name="x", type="array_like", body=["Input array."])],
-            returns=[mod.DocField(name="absolute", type="ndarray", body=["Absolute value of x."])],
-            see_also=[mod.DocLink(label="we.fabs", target="fabs", href="/docs/api/ops/fabs")],
+            parameters=[
+                mod.DocField(name="x", type="array_like", body=["Input array."])
+            ],
+            returns=[
+                mod.DocField(
+                    name="absolute", type="ndarray", body=["Absolute value of x."]
+                )
+            ],
+            see_also=[
+                mod.DocLink(label="we.fabs", target="fabs", href="/docs/api/ops/fabs")
+            ],
             notes_sections=["Supports broadcasting."],
             example=mod.DocExample(
                 code="import whest as we\nwe.absolute([-1, 2])",
@@ -580,7 +599,9 @@ def test_write_op_doc_coverage_artifact(tmp_path):
 
     mod.write_op_doc_coverage_artifact([record], tmp_path)
 
-    payload = mod.json.loads((tmp_path / ".generated" / "op-doc-coverage.json").read_text())
+    payload = mod.json.loads(
+        (tmp_path / ".generated" / "op-doc-coverage.json").read_text()
+    )
     assert payload["absolute"]["has_issues"] is True
     assert payload["absolute"]["unresolved_references"][0]["target"] == "ufuncs.kwargs"
 
