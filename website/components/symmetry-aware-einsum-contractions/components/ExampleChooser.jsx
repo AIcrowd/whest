@@ -106,56 +106,6 @@ function buildPerOpSymmetry(variables, operandNamesStr, subscriptsStr) {
   });
 }
 
-function variableNameSequence(index) {
-  let current = index;
-  let label = '';
-
-  do {
-    label = String.fromCharCode(65 + (current % 26)) + label;
-    current = Math.floor(current / 26) - 1;
-  } while (current >= 0);
-
-  return label;
-}
-
-function variableNameIndex(name) {
-  if (!/^[A-Z]+$/.test(name)) return null;
-
-  let value = 0;
-  for (let idx = 0; idx < name.length; idx += 1) {
-    value = value * 26 + (name.charCodeAt(idx) - 64);
-  }
-  return value - 1;
-}
-
-function nextAvailableVariableName(variables, preferredName = 'A', currentIdx = null) {
-  const usedNames = new Set(
-    variables
-      .filter((_, idx) => idx !== currentIdx)
-      .map((variable) => variable.name.trim())
-      .filter(Boolean),
-  );
-
-  const cleanedPreferred = preferredName.trim() || 'A';
-  if (!usedNames.has(cleanedPreferred)) return cleanedPreferred;
-
-  const preferredIndex = variableNameIndex(cleanedPreferred);
-  if (preferredIndex != null) {
-    let offset = 1;
-    while (offset < 4096) {
-      const candidate = variableNameSequence(preferredIndex + offset);
-      if (!usedNames.has(candidate)) return candidate;
-      offset += 1;
-    }
-  }
-
-  let suffix = 1;
-  while (usedNames.has(`${cleanedPreferred}${suffix}`)) {
-    suffix += 1;
-  }
-  return `${cleanedPreferred}${suffix}`;
-}
-
 export default function ExampleChooser({
   examples,
   onSelect,
@@ -164,7 +114,6 @@ export default function ExampleChooser({
   onDimensionChange,
   onCustom,
   onCustomExample,
-  onPreviewChange,
   onDirtyChange,
   act,
   checkpointItems = [],
@@ -221,10 +170,7 @@ export default function ExampleChooser({
   const updateVar = useCallback((idx, field, value) => {
     setVariables((prev) => {
       const next = [...prev];
-      const resolvedValue = field === 'name'
-        ? nextAvailableVariableName(prev, value, idx)
-        : value;
-      next[idx] = { ...next[idx], [field]: resolvedValue };
+      next[idx] = { ...next[idx], [field]: value };
 
       if (field === 'symmetry') {
         if (value === 'none') {
@@ -271,8 +217,7 @@ export default function ExampleChooser({
 
   const addVar = useCallback(() => {
     setVariables((prev) => {
-      const lastName = prev.at(-1)?.name?.trim() || 'A';
-      const name = nextAvailableVariableName(prev, lastName);
+      const name = String.fromCharCode(65 + prev.length);
       return [
         ...prev,
         { name, rank: 2, symmetry: 'none', symAxes: null, generators: '' },
@@ -311,22 +256,6 @@ export default function ExampleChooser({
     [variables, subscriptsStr, outputStr, operandNamesStr, dimensionN],
   );
 
-  useEffect(() => {
-    const opsArr = operandNamesStr.split(',').map((part) => part.trim()).filter(Boolean);
-    const preview = {
-      id: activePresetIdx >= 0 ? examples[activePresetIdx].id : 'custom',
-      name: activePresetIdx >= 0 ? examples[activePresetIdx].name : 'Custom',
-      formula: `einsum('${subscriptsStr}->${outputStr.trim()}', ${opsArr.join(', ')})`,
-      variables,
-      expression: {
-        subscripts: subscriptsStr,
-        output: outputStr.trim(),
-        operandNames: operandNamesStr,
-      },
-    };
-    onPreviewChange?.(preview);
-  }, [activePresetIdx, examples, onPreviewChange, operandNamesStr, outputStr, subscriptsStr, variables]);
-
   const handleAnalyze = useCallback(() => {
     if (!validation.valid) return;
 
@@ -342,12 +271,6 @@ export default function ExampleChooser({
       id: activePresetIdx >= 0 ? examples[activePresetIdx].id : 'custom',
       name: activePresetIdx >= 0 ? examples[activePresetIdx].name : 'Custom',
       formula,
-      variables,
-      expression: {
-        subscripts: subscriptsStr,
-        output: out,
-        operandNames: operandNamesStr,
-      },
       subscripts: subs,
       output: out,
       operandNames: opsArr,
