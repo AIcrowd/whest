@@ -61,6 +61,13 @@ with we.BudgetContext(flop_budget=10**9, wall_time_limit_s=60.0) as budget:
 
 If the wall-clock time is exceeded, whest raises `TimeExhaustedError`. The timer starts when the context is entered and is checked after each counted operation.
 
+What `wall_time_limit_s` does and does not do:
+
+- It is a `BudgetContext` setting, so you configure it in the same place you set `flop_budget`.
+- It measures total wall-clock time for the active context, not FLOPs.
+- It is checked cooperatively before and after counted NumPy calls, so overshoot is bounded by the duration of one NumPy call.
+- It is a clean diagnostic limit inside whest. Hard process/container kills still belong to the outer execution environment.
+
 ## Reading the budget summary
 
 Call `budget.summary()` when you want the current context's summary, or `we.budget_summary()` for the accumulated session/global view. Both stay flat by default; use `by_namespace=True` only when you want a namespace breakdown:
@@ -71,6 +78,12 @@ print(budget.summary(by_namespace=True))  # context summary with namespaces
 we.budget_summary()                       # session/global summary
 we.budget_summary(by_namespace=True)      # session/global summary with namespaces
 ```
+
+Use these forms for different questions:
+
+- `budget.summary()` answers "what did this one explicit context spend?"
+- `we.budget_summary()` answers "what has this process/session spent overall?"
+- `budget.summary_dict(...)` and `we.budget_summary_dict(...)` return the same information as structured data instead of formatted text.
 
 The block below shows `print(budget.summary(by_namespace=True))` for the `solver` context:
 
@@ -104,6 +117,7 @@ Key things to look for:
 - **Budget / Used / Remaining:** the top rows show the explicit competition budget, current spend, and remaining headroom
 - **By namespace:** `solver` is the root prefix, and nested scopes show up as dotted paths like `solver.precompute`. Use `budget.summary(by_namespace=True)` for the current context or `we.budget_summary(by_namespace=True)` for the accumulated session/global view
 - **By operation:** this toy pass is dominated by the single `einsum`; `exp` and `sum` are tiny by comparison
+- **Wall / tracked / untracked time:** wall time is total elapsed time for the context, tracked time is time spent inside counted NumPy calls, and untracked time is everything else in the context (`wall_time - tracked_time`)
 - **Flat default:** the default summary stays flat unless you opt into `by_namespace=True`
 
 For programmatic access, use `we.budget_summary_dict()`:

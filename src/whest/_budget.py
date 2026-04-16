@@ -203,6 +203,17 @@ class BudgetContext:
         Maximum number of FLOPs allowed. Must be > 0.
     flop_multiplier : float, optional
         Multiplier applied to all FLOP costs. Default 1.
+    quiet : bool, optional
+        When ``True``, suppress the startup banner printed on context entry.
+    namespace : str | None, optional
+        Root namespace prefix used for operation attribution inside this
+        context. Nested ``we.namespace(...)`` scopes append dotted segments.
+    wall_time_limit_s : float | None, optional
+        Cooperative wall-clock limit for the entire context. The timer starts
+        when the context is entered and is checked before and after each
+        counted NumPy call. If the deadline is exceeded, whest raises
+        ``TimeExhaustedError`` at the next operation boundary. This is a
+        diagnostic UX limit, not a hard preemptive kill.
     """
 
     def __init__(
@@ -456,7 +467,12 @@ def budget(
     namespace: str | None = None,
     wall_time_limit_s: float | None = None,
 ) -> BudgetContext:
-    """Create a BudgetContext usable as both a context manager and decorator."""
+    """Create a ``BudgetContext`` usable as a context manager or decorator.
+
+    This helper accepts the same arguments as ``BudgetContext(...)``,
+    including ``namespace=...`` for attribution and ``wall_time_limit_s=...``
+    for cooperative wall-clock limits.
+    """
     return BudgetContext(
         flop_budget=flop_budget,
         flop_multiplier=flop_multiplier,
