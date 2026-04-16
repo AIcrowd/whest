@@ -1,6 +1,5 @@
 import CaseBadge from './CaseBadge.jsx';
 import ExplorerMetricCard from './ExplorerMetricCard.jsx';
-import NarrativeCallout from './NarrativeCallout.jsx';
 
 function ComponentRecap({ components }) {
   if (!components?.length) return null;
@@ -73,18 +72,14 @@ export default function TotalCostView({ costModel, componentData, dimensionN, nu
           detail="multiplication + accumulation under full orbit model"
         />
         <ExplorerMetricCard
-          label="Savings"
-          value={savings.toLocaleString()}
-          detail={savings === 0 ? '1.0× (no savings)' : `${totalSpeedup}× speedup (${savingsPct}%)`}
+          label="%age Savings"
+          value={`${savingsPct}%`}
+          detail={savings === 0 ? 'Cost: 0; Speedup: 1.0×' : `Cost: ${savings.toLocaleString()}; Speedup: ${totalSpeedup}×`}
           className="border-green-600/20 bg-green-600/5"
           valueClassName="text-green-700"
           detailClassName="text-gray-400"
         />
       </div>
-
-      <NarrativeCallout label="Takeaway" tone="accent">
-        This is the payoff of the previous acts: once the full group is fixed, the dense cost collapses to the orbit counts and output updates shown here.
-      </NarrativeCallout>
     </div>
   );
 }

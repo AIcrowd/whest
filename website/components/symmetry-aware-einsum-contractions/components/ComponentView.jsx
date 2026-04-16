@@ -27,7 +27,12 @@ const LEAF_X = 0;
 const LEAF_QUESTION_GAP = 56;
 const QUESTION_X = LEAF_W + LEAF_QUESTION_GAP;
 const LEAF_CENTER_OFFSET = (QUESTION_W - LEAF_W) / 2;
+const SOURCE_W = 120;
+const SOURCE_H = 36;
+const SOURCE_X = QUESTION_X + (QUESTION_W - SOURCE_W) / 2;
 const ROW_GAP = 86;
+const TREE_ENTRY_Y = ROW_GAP;
+const TREE_SPINE_START_Y = ROW_GAP * 2;
 
 function circlePos(i, total, radius) {
   const angle = (2 * Math.PI * i) / total - Math.PI / 2;
@@ -130,7 +135,7 @@ export function LabelInteractionGraph({ allLabels = [], vLabels = [], interactio
 function QuestionNode({ data }) {
   return (
     <div
-      className="box-border flex h-full w-full cursor-help items-center justify-center rounded-md border border-gray-200 bg-white px-3 py-1.5 text-center text-[11px] font-mono leading-tight text-gray-900 shadow-sm transition-colors hover:border-gray-400"
+      className="box-border flex h-full w-full cursor-help items-center justify-center rounded-md border border-gray-200 bg-white px-3 py-1.5 text-center text-sm leading-tight text-gray-900 shadow-sm transition-colors hover:border-gray-400"
       title={data.title}
       data-tree-node={data.nodeId}
     >
@@ -142,11 +147,24 @@ function QuestionNode({ data }) {
   );
 }
 
+function SourceNode({ data }) {
+  return (
+    <div
+      className="box-border flex h-full w-full cursor-help items-center justify-center rounded-full border border-gray-200 bg-white px-3 py-1.5 text-center text-sm font-semibold leading-tight text-gray-900 shadow-sm transition-colors hover:border-gray-400"
+      title={data.title}
+      data-tree-node={data.nodeId}
+    >
+      {data.text}
+      <Handle id="bottom" type="source" position={Position.Bottom} className="pointer-events-none opacity-0" />
+    </div>
+  );
+}
+
 function LeafNode({ data }) {
   return (
     <div
       className={cn(
-        'box-border flex h-full w-full cursor-help items-center justify-center rounded-lg border px-2 py-0.5 text-center text-[10px] leading-tight font-accent font-bold whitespace-nowrap transition-colors text-gray-900',
+        'box-border flex h-full w-full cursor-help items-center justify-center rounded-lg border px-2 py-0.5 text-center text-sm leading-tight font-accent font-bold whitespace-nowrap transition-colors text-gray-900',
       )}
       style={{
         backgroundColor: `${data.color}20`,
@@ -164,6 +182,7 @@ function LeafNode({ data }) {
 }
 
 const dtNodeTypes = {
+  source: SourceNode,
   question: QuestionNode,
   leaf: LeafNode,
 };
@@ -206,6 +225,19 @@ export function DecisionTree() {
   const hoveredNodeRef = useRef(null);
 
   const tooltips = {
+    s0: {
+      title: 'Component',
+      body: 'Start with one independent component of the detected group action. The tree decides how to count its multiplication representatives and accumulation updates.',
+    },
+    q0: {
+      title: 'Check: nontrivial symmetry?',
+      body: 'Does this component have any detected symmetry beyond the identity? If not, there is no quotienting to do and the count stays direct.',
+    },
+    t0: {
+      title: 'Direct count (trivial)',
+      body: 'The component symmetry is trivial, so every assignment remains distinct. Multiplication and accumulation counts are read off directly without Burnside or orbit enumeration.',
+      latex: String.raw`|I_a / G_a| = |I_a| \quad \text{when } G_a = \{e\}`,
+    },
     q1: {
       title: 'Check: W-labels present?',
       body: 'Does this component contain any summed (contracted) labels? If not, the symmetry only acts on output indices.',
@@ -310,117 +342,96 @@ export function DecisionTree() {
   useEffect(() => () => cancelHide(), [cancelHide]);
 
   const nodes = useMemo(
-    () => [
-      {
-        id: 'q1',
-        position: { x: QUESTION_X, y: 0 },
-        type: 'question',
-        style: { width: QUESTION_W, height: QUESTION_H },
-        data: {
-          text: 'W₀ = ∅ ?',
-          title: 'Check: W-labels present?',
-          nodeId: 'q1',
+    () => {
+      const questionNodes = [
+        ['q0', 'Has symmetry?', 'Check: nontrivial symmetry?', TREE_ENTRY_Y],
+        ['q1', 'W₀ = ∅ ?', 'Check: W-labels present?', TREE_SPINE_START_Y],
+        ['q2', 'V₀ = ∅ ?', 'Check: V-labels present?', TREE_SPINE_START_Y + ROW_GAP],
+        ['q3', 'Cross V/W gens?', 'Check: cross-boundary generators?', TREE_SPINE_START_Y + ROW_GAP * 2],
+        ['q4', 'Gₐ = Sym(Lₐ) ?', 'Check: full symmetric group?', TREE_SPINE_START_Y + ROW_GAP * 3],
+      ];
+
+      const leafNodes = [
+        ['t0', 'Direct count (trivial)', 'Direct count (trivial)', null, TREE_ENTRY_Y],
+        ['a', 'Case A: V-only', 'Case A: V-only', CASE_NODE_COLORS.A, TREE_SPINE_START_Y],
+        ['b', 'Case B: W-only', 'Case B: W-only', CASE_NODE_COLORS.B, TREE_SPINE_START_Y + ROW_GAP],
+        ['c', 'Case C: Correlated', 'Case C: Correlated', CASE_NODE_COLORS.C, TREE_SPINE_START_Y + ROW_GAP * 2],
+        ['d', 'Case D: Cross (Young)', 'Case D: Cross (Young)', CASE_NODE_COLORS.D, TREE_SPINE_START_Y + ROW_GAP * 3],
+      ];
+
+      return [
+        {
+          id: 's0',
+          position: { x: SOURCE_X, y: 0 },
+          type: 'source',
+          style: { width: SOURCE_W, height: SOURCE_H },
+          data: {
+            text: 'Component',
+            title: 'Component',
+            nodeId: 's0',
+          },
         },
-      },
-      {
-        id: 'a',
-        position: { x: LEAF_X, y: 0 },
-        type: 'leaf',
-        data: {
-          text: 'Case A: V-only',
-          title: 'Case A: V-only',
-          nodeId: 'a',
-          color: CASE_NODE_COLORS.A,
+        ...questionNodes.map(([id, text, title, y]) => ({
+          id,
+          position: { x: QUESTION_X, y },
+          type: 'question',
+          style: { width: QUESTION_W, height: QUESTION_H },
+          data: { text, title, nodeId: id },
+        })),
+        ...leafNodes.map(([id, text, title, color, y]) => ({
+          id,
+          position: { x: LEAF_X, y },
+          type: 'leaf',
+          style: { width: LEAF_W, height: LEAF_H },
+          data: { text, title, nodeId: id, color: color ?? '#CBD5E1' },
+        })),
+        {
+          id: 'e',
+          position: { x: QUESTION_X + LEAF_CENTER_OFFSET, y: TREE_SPINE_START_Y + ROW_GAP * 4 },
+          type: 'leaf',
+          style: { width: LEAF_W, height: LEAF_H },
+          data: {
+            text: 'Case E: Cross (general)',
+            title: 'Case E: Cross (general)',
+            nodeId: 'e',
+            color: CASE_NODE_COLORS.E,
+          },
         },
-        style: { width: LEAF_W, height: LEAF_H },
-      },
-      {
-        id: 'q2',
-        position: { x: QUESTION_X, y: ROW_GAP },
-        type: 'question',
-        style: { width: QUESTION_W, height: QUESTION_H },
-        data: {
-          text: 'V₀ = ∅ ?',
-          title: 'Check: V-labels present?',
-          nodeId: 'q2',
-        },
-      },
-      {
-        id: 'b',
-        position: { x: LEAF_X, y: ROW_GAP },
-        type: 'leaf',
-        data: {
-          text: 'Case B: W-only',
-          title: 'Case B: W-only',
-          nodeId: 'b',
-          color: CASE_NODE_COLORS.B,
-        },
-        style: { width: LEAF_W, height: LEAF_H },
-      },
-      {
-        id: 'q3',
-        position: { x: QUESTION_X, y: ROW_GAP * 2 },
-        type: 'question',
-        style: { width: QUESTION_W, height: QUESTION_H },
-        data: {
-          text: 'Cross V/W gens?',
-          title: 'Check: cross-boundary generators?',
-          nodeId: 'q3',
-        },
-      },
-      {
-        id: 'c',
-        position: { x: LEAF_X, y: ROW_GAP * 2 },
-        type: 'leaf',
-        data: {
-          text: 'Case C: Correlated',
-          title: 'Case C: Correlated',
-          nodeId: 'c',
-          color: CASE_NODE_COLORS.C,
-        },
-        style: { width: LEAF_W, height: LEAF_H },
-      },
-      {
-        id: 'q4',
-        position: { x: QUESTION_X, y: ROW_GAP * 3 },
-        type: 'question',
-        style: { width: QUESTION_W, height: QUESTION_H },
-        data: {
-          text: 'Gₐ = Sym(Lₐ) ?',
-          title: 'Check: full symmetric group?',
-          nodeId: 'q4',
-        },
-      },
-      {
-        id: 'd',
-        position: { x: LEAF_X, y: ROW_GAP * 3 },
-        type: 'leaf',
-        data: {
-          text: 'Case D: Cross (Young)',
-          title: 'Case D: Cross (Young)',
-          nodeId: 'd',
-          color: CASE_NODE_COLORS.D,
-        },
-        style: { width: LEAF_W, height: LEAF_H },
-      },
-      {
-        id: 'e',
-        position: { x: QUESTION_X + LEAF_CENTER_OFFSET, y: ROW_GAP * 4 },
-        type: 'leaf',
-        data: {
-          text: 'Case E: Cross (general)',
-          title: 'Case E: Cross (general)',
-          nodeId: 'e',
-          color: CASE_NODE_COLORS.E,
-        },
-        style: { width: LEAF_W, height: LEAF_H },
-      },
-    ],
+      ];
+    },
     [],
   );
 
   const edges = useMemo(
     () => [
+      {
+        id: 's0-q0',
+        source: 's0',
+        sourceHandle: 'bottom',
+        target: 'q0',
+        targetHandle: 'top',
+        style: { stroke: '#94A3B8', strokeWidth: 1.5 },
+      },
+      {
+        id: 'q0-t0',
+        source: 'q0',
+        sourceHandle: 'yes',
+        target: 't0',
+        targetHandle: 'right',
+        label: 'no',
+        labelStyle: { fontSize: 10, fontWeight: 700, fill: '#F0524D' },
+        style: { stroke: '#F0524D', strokeWidth: 1.5 },
+      },
+      {
+        id: 'q0-q1',
+        source: 'q0',
+        sourceHandle: 'bottom',
+        target: 'q1',
+        targetHandle: 'top',
+        label: 'yes',
+        labelStyle: { fontSize: 10, fontWeight: 700, fill: '#23B761' },
+        style: { stroke: '#23B761', strokeWidth: 1.5 },
+      },
       {
         id: 'q1-a',
         source: 'q1',
@@ -518,8 +529,12 @@ export function DecisionTree() {
         Deep dive: Classification decision tree
       </summary>
       {isDeepDiveOpen && (
-        <div className="relative p-2" ref={wrapRef}>
-          <div className="h-[440px] w-full min-w-0">
+        <div className="relative flex min-h-[620px] flex-col justify-center p-2" ref={wrapRef}>
+          <p className="px-2 pb-2 pt-1 text-sm leading-6 text-muted-foreground">
+            First check whether the component has any nontrivial detected symmetry at all. Only components that do
+            flow into the A-E structural spine below.
+          </p>
+          <div className="flex h-[620px] w-full min-w-0 items-center justify-center">
             <DecisionTreeGraph
               nodes={nodes}
               edges={edges}

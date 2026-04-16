@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { burnsideCount } from '../engine/permutation.js';
 import CaseBadge from './CaseBadge.jsx';
 import Latex from './Latex.jsx';
-import NarrativeCallout from './NarrativeCallout.jsx';
 import OrbitInspector from './OrbitInspector.jsx';
 import RoleBadge from './RoleBadge.jsx';
 import SymmetryBadge from './SymmetryBadge.jsx';
@@ -10,7 +9,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { DecisionTree, LabelInteractionGraph } from './ComponentView.jsx';
 import { getCasePresentation } from './casePresentation.js';
 
-export const COMPONENT_STORY_TEXT = 'The detected group splits into independent components. Each component contributes its own multiplication representatives and accumulation rule, so the savings story can be read locally before the totals are assembled.';
+function hasNontrivialSymmetry(comp) {
+  if (comp.groupName && comp.groupName !== 'trivial') return true;
+  return (comp.elements?.length ?? 0) > 1;
+}
 
 function computeMultiplicationOrbits(comp, dimensionN) {
   try {
@@ -42,6 +44,10 @@ function computeAccumulationCost(comp, dimensionN, fallbackReductionCost) {
 }
 
 function methodLabel(comp) {
+  if (!hasNontrivialSymmetry(comp)) {
+    return 'Direct count (trivial)';
+  }
+
   switch (comp.caseType) {
     case 'A':
       return 'V-only formula';
@@ -59,10 +65,13 @@ function methodLabel(comp) {
 }
 
 function supportsOrbitEnumeration(comp) {
-  return comp.caseType === 'C' || comp.caseType === 'E';
+  return hasNontrivialSymmetry(comp) && (comp.caseType === 'C' || comp.caseType === 'E');
 }
 
 function methodFormula(comp) {
+  if (!hasNontrivialSymmetry(comp)) {
+    return String.raw`|I_a / G_a| = |I_a| \quad \text{when } G_a = \{e\}`;
+  }
   return getCasePresentation(comp.caseType)?.tooltip?.latex ?? null;
 }
 
@@ -165,7 +174,6 @@ export default function ComponentCostView({
   vLabels,
   selectedOrbitIdx,
   onSelectOrbit,
-  showComponentStory = true,
 }) {
   if (!componentData || !costModel) return null;
 
@@ -177,19 +185,13 @@ export default function ComponentCostView({
 
   return (
     <div className="space-y-6">
-      {showComponentStory ? (
-        <NarrativeCallout label="Component Story">
-          {COMPONENT_STORY_TEXT}
-        </NarrativeCallout>
-      ) : null}
-
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
+      <div className="grid gap-6 lg:grid-cols-2">
         <div className="rounded-xl border border-gray-200 bg-white p-4">
           <div className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">Interaction Graph</div>
           <p className="mt-2 text-sm leading-6 text-muted-foreground">
             These independent components come from the label interaction graph induced by the detected group generators.
           </p>
-          <div className="mt-4 flex justify-center">
+          <div className="mt-4 flex min-h-[620px] items-center justify-center">
             <LabelInteractionGraph
               allLabels={allLabels}
               vLabels={vLabels}

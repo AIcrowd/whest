@@ -34,7 +34,7 @@ export const EXPLORER_ACTS = [
     algorithm: 'Enumerate candidate σ, search for compatible π, keep valid σ, and use Dimino’s algorithm to generate the explicit finite group action.',
     produces: 'The detected contraction symmetry group `G`.',
     why: 'This act turns structural candidates into actual symmetries by checking which row moves still admit a recovering label permutation.',
-    bridge: 'Dimino’s algorithm turns a small generator set into the explicit finite group action used by the later cost model.',
+    bridge: '',
     takeaway: 'The full group is fixed, so we can count representatives and output-bin updates separately.',
   },
   {
@@ -55,7 +55,7 @@ export const EXPLORER_ACTS = [
     navTitle: 'Price Savings',
     heading: 'Price Savings',
     question: 'How much runtime do these components save in total?',
-    why: 'The final table combines all components and compares full-cost and symmetry-aware cost, including multiplication, accumulation, and speedup.',
+    why: 'This is the payoff of the previous acts: once the full group is fixed, the dense cost collapses to the orbit counts and output updates shown here.',
     bridge: 'These totals are the final payoff of the earlier structure and symmetry analysis.',
     takeaway: 'The final cost table is the concrete price of symmetry-aware contraction.',
   },
