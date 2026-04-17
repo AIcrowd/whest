@@ -9,6 +9,7 @@ import numpy as _np
 from whest._docstrings import attach_docstring
 from whest._flops import search_cost, sort_cost
 from whest._validation import require_budget
+from whest.errors import UnsupportedFunctionError
 
 
 def _sort_cost_nd(a: _np.ndarray, axis: int) -> int:
@@ -335,21 +336,29 @@ def _set_cost(ar1, ar2):
     return sort_cost(total)
 
 
-def in1d(ar1, ar2, **kwargs):
-    """Counted version of ``numpy.in1d``. Cost: (n+m)*ceil(log2(n+m)) FLOPs."""
-    budget = require_budget()
-    a1 = _np.asarray(ar1)
-    a2 = _np.asarray(ar2)
-    cost = _set_cost(a1, a2)
-    with budget.deduct(
-        "in1d", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
-    ):
-        result = _np.in1d(ar1, ar2, **kwargs)
-    return result
+if hasattr(_np, "in1d"):
 
+    def in1d(ar1, ar2, **kwargs):
+        """Counted version of ``numpy.in1d``. Cost: (n+m)*ceil(log2(n+m)) FLOPs."""
+        budget = require_budget()
+        a1 = _np.asarray(ar1)
+        a2 = _np.asarray(ar2)
+        cost = _set_cost(a1, a2)
+        with budget.deduct(
+            "in1d", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
+        ):
+            result = _np.in1d(ar1, ar2, **kwargs)
+        return result
 
-attach_docstring(in1d, _np.in1d, "counted_custom", "(n+m)*ceil(log2(n+m)) FLOPs")
-in1d.__signature__ = _inspect.signature(_np.in1d)
+    attach_docstring(in1d, _np.in1d, "counted_custom", "(n+m)*ceil(log2(n+m)) FLOPs")
+    in1d.__signature__ = _inspect.signature(_np.in1d)
+
+else:
+
+    def in1d(*args, **kwargs):
+        raise UnsupportedFunctionError(
+            "in1d", max_version="2.4", replacement="isin"
+        )
 
 
 def isin(element, test_elements, **kwargs):

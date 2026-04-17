@@ -130,3 +130,23 @@ def test_all_version_gated_functions_importable():
     assert hasattr(we, "cumulative_sum")
     assert hasattr(we, "cumulative_prod")
     assert hasattr(we, "unstack")
+
+
+def test_in1d_removed_in_numpy_2_4(monkeypatch):
+    """When numpy.in1d is unavailable, we.in1d raises UnsupportedFunctionError."""
+    import importlib
+
+    import numpy as _np
+
+    import whest._sorting_ops as _sorting_ops
+
+    # Reload the module with numpy.in1d hidden to hit the else branch.
+    monkeypatch.delattr(_np, "in1d", raising=False)
+    importlib.reload(_sorting_ops)
+
+    with pytest.raises(UnsupportedFunctionError) as exc_info:
+        _sorting_ops.in1d([1, 2, 3], [2, 3, 4])
+    err = exc_info.value
+    assert err.max_version == "2.4"
+    assert err.replacement == "isin"
+    assert "removed in numpy 2.4" in str(err)
