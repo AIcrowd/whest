@@ -9,6 +9,17 @@ import numpy as _np
 from whest._docstrings import attach_docstring
 from whest._flops import search_cost, sort_cost
 from whest._validation import require_budget
+from whest.errors import UnsupportedFunctionError
+
+# Numpy 2.3+ relaxed the sort guarantee for string / complex unique;
+# this module shims the guarantee back for whest callers.
+_NUMPY_GE_2_3 = tuple(int(x) for x in _np.__version__.split(".")[:2]) >= (2, 3)
+
+# dtype kinds where numpy 2.3+ may drop the sort guarantee.
+# Values are numpy dtype.kind codes:
+#   U = unicode string, S = bytes string, O = object,
+#   c = complex float (both complex64 and complex128).
+_UNSORTED_IN_NP_2_3 = frozenset("USOc")
 
 
 def _sort_cost_nd(a: _np.ndarray, axis: int) -> int:
@@ -241,7 +252,12 @@ def _unique_cost(ar):
 
 
 def unique(ar, **kwargs):
-    """Counted version of ``numpy.unique``. Cost: n*ceil(log2(n)) FLOPs."""
+    """Counted version of ``numpy.unique``. Cost: n*ceil(log2(n)) FLOPs.
+
+    On numpy 2.3+ the sort guarantee is relaxed for string and complex dtypes.
+    This wrapper re-sorts the values (only when no auxiliary-return kwargs are
+    requested) to preserve pre-2.3 semantics.
+    """
     budget = require_budget()
     ar_arr = _np.asarray(ar)
     cost = _unique_cost(ar_arr)
@@ -249,6 +265,19 @@ def unique(ar, **kwargs):
         "unique", flop_cost=cost, subscripts=None, shapes=(ar_arr.shape,)
     ):
         result = _np.unique(ar_arr, **kwargs)
+
+    # Shim: restore sort guarantee for string / complex dtypes on numpy 2.3+.
+    # Only active for the default signature (no auxiliary arrays requested).
+    _returns_tuple = any(
+        kwargs.get(k, False)
+        for k in ("return_index", "return_inverse", "return_counts")
+    )
+    if (
+        _NUMPY_GE_2_3
+        and not _returns_tuple
+        and ar_arr.dtype.kind in _UNSORTED_IN_NP_2_3
+    ):
+        result = _np.sort(result)
     return result
 
 
@@ -335,21 +364,27 @@ def _set_cost(ar1, ar2):
     return sort_cost(total)
 
 
-def in1d(ar1, ar2, **kwargs):
-    """Counted version of ``numpy.in1d``. Cost: (n+m)*ceil(log2(n+m)) FLOPs."""
-    budget = require_budget()
-    a1 = _np.asarray(ar1)
-    a2 = _np.asarray(ar2)
-    cost = _set_cost(a1, a2)
-    with budget.deduct(
-        "in1d", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
-    ):
-        result = _np.in1d(ar1, ar2, **kwargs)
-    return result
+if hasattr(_np, "in1d"):
 
+    def in1d(ar1, ar2, **kwargs):
+        """Counted version of ``numpy.in1d``. Cost: (n+m)*ceil(log2(n+m)) FLOPs."""
+        budget = require_budget()
+        a1 = _np.asarray(ar1)
+        a2 = _np.asarray(ar2)
+        cost = _set_cost(a1, a2)
+        with budget.deduct(
+            "in1d", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
+        ):
+            result = _np.in1d(ar1, ar2, **kwargs)
+        return result
 
-attach_docstring(in1d, _np.in1d, "counted_custom", "(n+m)*ceil(log2(n+m)) FLOPs")
-in1d.__signature__ = _inspect.signature(_np.in1d)
+    attach_docstring(in1d, _np.in1d, "counted_custom", "(n+m)*ceil(log2(n+m)) FLOPs")
+    in1d.__signature__ = _inspect.signature(_np.in1d)
+
+else:
+
+    def in1d(*args, **kwargs):
+        raise UnsupportedFunctionError("in1d", max_version="2.4", replacement="isin")
 
 
 def isin(element, test_elements, **kwargs):

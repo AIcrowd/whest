@@ -70,10 +70,15 @@ def roots_cost(n: int) -> int:
 
 
 def polyval(p, x):
-    """Evaluate a polynomial at given points. Wraps ``numpy.polyval``."""
+    """Evaluate a polynomial at given points. Wraps ``numpy.polyval``.
+
+    ``x`` is converted via ``asanyarray`` so ndarray subclasses
+    (e.g. ``numpy.ma.MaskedArray``) are preserved through the call —
+    matches numpy's own ``polyval`` contract.
+    """
     budget = require_budget()
     p = _np.asarray(p)
-    x = _np.asarray(x)
+    x = _np.asanyarray(x)
     deg = len(p) - 1
     m = x.size
     cost = polyval_cost(deg, m)

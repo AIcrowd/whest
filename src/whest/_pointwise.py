@@ -216,6 +216,13 @@ def _counted_reduction(
         with budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(a.shape,)):
             result = np_func(a, axis=axis, **kwargs)
 
+        # If caller passed out=, honor numpy's contract: the returned object
+        # must be the exact same object (identity). Skip WhestArray wrapping
+        # and symmetry tagging when out= is supplied — callers relying on
+        # out= are opting out of whest's subclass semantics.
+        if kwargs.get("out") is not None:
+            return kwargs["out"]
+
         # Propagate symmetry through reduction.
         if sym_info is not None:
             keepdims = kwargs.get("keepdims", False)
@@ -682,7 +689,29 @@ amax = _counted_reduction(_np.amax, "amax")
 amin = _counted_reduction(_np.amin, "amin")
 any = _counted_reduction(_np.any, "any")
 average = _counted_reduction(_np.average, "average")
-count_nonzero = _counted_reduction(_np.count_nonzero, "count_nonzero")
+_count_nonzero_counted = _counted_reduction(_np.count_nonzero, "count_nonzero")
+
+
+def count_nonzero(a, axis=None, *, keepdims=False):
+    """Counted version of ``numpy.count_nonzero``. Cost: numel(input) FLOPs.
+
+    When ``axis is None`` (and not ``keepdims``) the result is always
+    coerced to a Python ``int``. This is unconditional because whest's
+    ``_counted_reduction`` factory wraps scalar results via ``_aswhest``
+    on every numpy version, so without this coercion users would see a
+    ``WhestArray`` rather than the plain ``int`` that ``numpy.count_nonzero``
+    documents. The coercion also normalizes the numpy 2.3+ change where
+    the raw numpy return type became a numpy scalar.
+    """
+    result = _count_nonzero_counted(a, axis=axis, keepdims=keepdims)
+    if axis is None and not keepdims:
+        return int(result)
+    return result
+
+
+attach_docstring(
+    count_nonzero, _np.count_nonzero, "counted_reduction", "numel(input) FLOPs"
+)
 if hasattr(_np, "cumulative_prod"):
     cumulative_prod = _counted_reduction(_np.cumulative_prod, "cumulative_prod")
 else:
@@ -1132,17 +1161,27 @@ def trapezoid(y, x=None, dx=1.0, axis=-1):
 attach_docstring(trapezoid, _np.trapezoid, "counted_custom", "numel(input) FLOPs")
 
 
-def trapz(y, x=None, dx=1.0, axis=-1):
-    """Counted version of np.trapz (deprecated alias for trapezoid)."""
-    budget = require_budget()
-    if not isinstance(y, _np.ndarray):
-        y = _np.asarray(y)
-    with budget.deduct("trapz", flop_cost=y.size, subscripts=None, shapes=(y.shape,)):
-        result = _np.trapz(y, x=x, dx=dx, axis=axis)
-    return result
+if hasattr(_np, "trapz"):
 
+    def trapz(y, x=None, dx=1.0, axis=-1):
+        """Counted version of np.trapz (deprecated alias for trapezoid)."""
+        budget = require_budget()
+        if not isinstance(y, _np.ndarray):
+            y = _np.asarray(y)
+        with budget.deduct(
+            "trapz", flop_cost=y.size, subscripts=None, shapes=(y.shape,)
+        ):
+            result = _np.trapz(y, x=x, dx=dx, axis=axis)
+        return result
 
-attach_docstring(trapz, _np.trapz, "counted_custom", "numel(input) FLOPs")
+    attach_docstring(trapz, _np.trapz, "counted_custom", "numel(input) FLOPs")
+
+else:
+
+    def trapz(*args, **kwargs):
+        raise UnsupportedFunctionError(
+            "trapz", max_version="2.4", replacement="trapezoid"
+        )
 
 
 def interp(x, xp, fp, **kwargs):

@@ -5,7 +5,7 @@ description = "NumPy-compatible math primitives with FLOP counting for the Mecha
 requires-python = ">=3.10"
 license = "MIT"
 dependencies = [
-    "numpy>=2.0.0,<2.3.0",
+    "numpy>=2.0.0,<2.5.0",
 ]
 
 [project.optional-dependencies]

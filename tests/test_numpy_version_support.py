@@ -130,3 +130,65 @@ def test_all_version_gated_functions_importable():
     assert hasattr(we, "cumulative_sum")
     assert hasattr(we, "cumulative_prod")
     assert hasattr(we, "unstack")
+
+
+def test_in1d_removed_in_numpy_2_4(monkeypatch):
+    """When numpy.in1d is unavailable, we.in1d raises UnsupportedFunctionError."""
+    import importlib
+
+    import numpy as _np
+
+    import whest._sorting_ops as _sorting_ops
+
+    # importlib.reload() mutates the module's __dict__ in place, so saving
+    # sys.modules[name] does NOT give us a clean restore path — the
+    # module object is the same before and after reload. We must re-run
+    # the module's code with _np.in1d live to rebind the real wrapper.
+    _real_np_in1d = getattr(_np, "in1d", None)
+
+    try:
+        monkeypatch.delattr(_np, "in1d", raising=False)
+        importlib.reload(_sorting_ops)
+
+        with pytest.raises(UnsupportedFunctionError) as exc_info:
+            _sorting_ops.in1d([1, 2, 3], [2, 3, 4])
+        err = exc_info.value
+        assert err.max_version == "2.4"
+        assert err.replacement == "isin"
+        assert "removed in numpy 2.4" in str(err)
+    finally:
+        # Put _np.in1d back and reload so the module's in1d attribute
+        # rebinds to the real wrapper. Any later `from whest._sorting_ops
+        # import in1d` in the same worker will then get the real function.
+        if _real_np_in1d is not None:
+            _np.in1d = _real_np_in1d
+        importlib.reload(_sorting_ops)
+
+
+def test_trapz_removed_in_numpy_2_4(monkeypatch):
+    """When numpy.trapz is unavailable, we.trapz raises UnsupportedFunctionError."""
+    import importlib
+
+    import numpy as _np
+
+    import whest._pointwise as _pointwise
+
+    _real_np_trapz = getattr(_np, "trapz", None)
+
+    try:
+        monkeypatch.delattr(_np, "trapz", raising=False)
+        importlib.reload(_pointwise)
+
+        with pytest.raises(UnsupportedFunctionError) as exc_info:
+            _pointwise.trapz([1.0, 2.0, 3.0])
+        err = exc_info.value
+        assert err.max_version == "2.4"
+        assert err.replacement == "trapezoid"
+        assert "removed in numpy 2.4" in str(err)
+    finally:
+        # Restore _np.trapz and reload so any later `from whest._pointwise
+        # import trapz` in the same worker gets the real wrapper, not the
+        # stub that was bound during the reload above.
+        if _real_np_trapz is not None:
+            _np.trapz = _real_np_trapz
+        importlib.reload(_pointwise)
