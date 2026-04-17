@@ -56,7 +56,7 @@ test-numpy-compat:  ## Run NumPy's own tests against whest
 docs-build:  ## Generate API data and build website
 	$(UV) python scripts/generate_api_docs.py
 	$(UV) python scripts/generate_api_docs.py --verify
-	cd website && npm run build
+	cd website && (npm run build || (npx --yes next build && node scripts/generate-llmstxt.mjs))
 	cd website && npm run check:gh-pages
 
 .PHONY: docs-serve
