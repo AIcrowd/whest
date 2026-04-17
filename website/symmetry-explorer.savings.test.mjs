@@ -19,18 +19,17 @@ test('Acts 2-4 are sequenced around the inline savings narrative', () => {
   assert.doesNotMatch(totalCostSource, /payoff of the previous acts/);
 });
 
-test('Act 4 opens the Mental Framework in a modal using the shared code block', () => {
+test('Act 4 no longer carries the Mental Framework modal — it is now the preamble', () => {
   const appSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
 
-  assert.doesNotMatch(appSource, /<PseudocodeRail/);
-  assert.match(appSource, /showMentalModel/);
-  assert.match(appSource, /Open Mental Framework/);
-  assert.match(appSource, /buildMentalModelCode/);
-  assert.match(appSource, /PythonCodeBlock/);
-  assert.match(appSource, /reduceMentalModelVisibility/);
-  assert.match(appSource, /setShowMentalModel\(\(isOpen\) => reduceMentalModelVisibility\(isOpen, 'selectPreset'\)\)/);
-  assert.match(appSource, /setShowMentalModel\(\(isOpen\) => reduceMentalModelVisibility\(isOpen, 'customMode'\)\)/);
-  assert.match(appSource, /setShowMentalModel\(\(isOpen\) => reduceMentalModelVisibility\(isOpen, 'customExample'\)\)/);
+  // Mental Framework is now a permanent preamble section, not a modal on Act 4.
+  assert.doesNotMatch(appSource, /Open Mental Framework/);
+  assert.doesNotMatch(appSource, /showMentalModel/);
+  assert.doesNotMatch(appSource, /reduceMentalModelVisibility/);
+  assert.doesNotMatch(appSource, /buildMentalModelCode/);
+  // The app renders the new preamble above Act 1.
+  assert.match(appSource, /import AlgorithmAtAGlance/);
+  assert.match(appSource, /<AlgorithmAtAGlance/);
 });
 
 test('TotalCostView renders the current savings metric cards', () => {

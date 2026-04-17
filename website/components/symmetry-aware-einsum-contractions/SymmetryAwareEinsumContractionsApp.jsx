@@ -1,15 +1,15 @@
 import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { EXAMPLES } from './data/examples.js';
 import { parseCycleNotation } from './engine/cycleParser.js';
 import { buildVariableColors } from './engine/colorPalette.js';
 import { analyzeExample } from './engine/pipeline.js';
-import { buildMentalModelCode, pickDefaultOrbitRow } from './engine/teachingModel.js';
+import { pickDefaultOrbitRow } from './engine/teachingModel.js';
 import StickyBar from './components/StickyBar.jsx';
 import ExplorerSectionCard from './components/ExplorerSectionCard.jsx';
 import { EXPLORER_ACTS } from './components/explorerNarrative.js';
 import NarrativeCallout from './components/NarrativeCallout.jsx';
+import AlgorithmAtAGlance from './components/AlgorithmAtAGlance.jsx';
 import ExampleChooser from './components/ExampleChooser.jsx';
 import PresetSidebar from './components/PresetSidebar.jsx';
 import BipartiteGraph from './components/BipartiteGraph.jsx';
@@ -17,13 +17,10 @@ import MatrixView from './components/MatrixView.jsx';
 import SigmaLoop from './components/SigmaLoop.jsx';
 import DiminoView from './components/DiminoView.jsx';
 import RoleBadge from './components/RoleBadge.jsx';
-import PythonCodeBlock from './components/PythonCodeBlock.jsx';
-import ExplorerModal from './components/ExplorerModal.jsx';
 import ComponentCostView from './components/ComponentCostView.jsx';
 import TotalCostView from './components/TotalCostView.jsx';
 import { mergeObservedActEntries, pickTopVisibleAct } from './lib/activeAct.js';
 import { getPresetControlSelection } from './lib/presetSelection.js';
-import { reduceMentalModelVisibility } from './lib/mentalModelState.js';
 import { useKeyboardShortcuts } from './lib/useKeyboardShortcuts.js';
 import './styles.css';
 
@@ -77,7 +74,6 @@ export default function SymmetryAwareEinsumContractionsApp() {
   const [selectedSigmaPairIndex, setSelectedSigmaPairIndex] = useState(null);
   const [activeActId, setActiveActId] = useState(EXPLORER_ACTS[0].id);
   const [isDirty, setIsDirty] = useState(false);
-  const [showMentalModel, setShowMentalModel] = useState(false);
   // Cross-highlight payload emitted by the Act-4 Interaction Graph on hover.
   // `labels` → halo those characters in the StickyBar einsum equation;
   // `leafKeys` → spotlight matching leaves in the DecisionLadder.
@@ -109,7 +105,6 @@ export default function SymmetryAwareEinsumContractionsApp() {
 
   // Handle preset selection
   const handleSelect = useCallback((idx) => {
-    setShowMentalModel((isOpen) => reduceMentalModelVisibility(isOpen, 'selectPreset'));
     setExampleIdx(idx);
     setPreviewExample(EXAMPLES[idx] ?? null);
     setIsDirty(false);
@@ -120,7 +115,6 @@ export default function SymmetryAwareEinsumContractionsApp() {
 
   // Handle custom example submission
   const handleCustomExample = useCallback((ex) => {
-    setShowMentalModel((isOpen) => reduceMentalModelVisibility(isOpen, 'customExample'));
     setCustomExample(ex);
     setPreviewExample(ex);
     setExampleIdx(CUSTOM_IDX);
@@ -130,7 +124,6 @@ export default function SymmetryAwareEinsumContractionsApp() {
   }, []);
 
   const handleCustomMode = useCallback(() => {
-    setShowMentalModel((isOpen) => reduceMentalModelVisibility(isOpen, 'customMode'));
     setExampleIdx(CUSTOM_IDX);
     setSelectedOrbitIdx(-1);
     setSelectedSigmaPairIndex(null);
@@ -179,11 +172,6 @@ export default function SymmetryAwareEinsumContractionsApp() {
     if (selectedOrbitIdx >= 0 && selectedOrbitIdx < orbitRows.length) return selectedOrbitIdx;
     return pickDefaultOrbitRow(orbitRows);
   }, [cost, selectedOrbitIdx]);
-
-  const mentalModelCode = useMemo(
-    () => buildMentalModelCode(cost?.orbitRows?.[resolvedSelectedOrbitIdx] ?? null),
-    [cost, resolvedSelectedOrbitIdx],
-  );
 
   // Check if per-op symmetry is active for any operand
   const hasPerOpSym = normalizedExample && (
@@ -246,6 +234,10 @@ export default function SymmetryAwareEinsumContractionsApp() {
         >
           </ExplorerSectionCard>
 
+        </div>
+
+        <div className="mx-auto w-full max-w-[1460px] px-6 md:px-8 lg:px-10">
+          <AlgorithmAtAGlance />
         </div>
 
         <div className="mt-8 flex items-start gap-8">
@@ -383,17 +375,6 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     description={EXPLORER_ACTS[3].question}
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
-                    action={
-                      <Button
-                        type="button"
-                        size="lg"
-                        className="gap-2 font-semibold shadow-sm"
-                        aria-label="Open mental framework"
-                        onClick={() => setShowMentalModel(true)}
-                      >
-                        Open Mental Framework
-                      </Button>
-                    }
                   >
                     <div className="grid gap-4 md:grid-cols-2">
                       <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[3].interpretation}</NarrativeCallout>
@@ -406,19 +387,6 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       combined. When no analytic shortcut is valid for a component, orbit enumeration is not a fallback
                       but the exact counting procedure.
                     </p>
-
-                  <ExplorerModal
-                    title="Mental Framework"
-                    titleId="mental-framework-modal-title"
-                    open={showMentalModel}
-                    onClose={() => setShowMentalModel(false)}
-                  >
-                    <PythonCodeBlock
-                      code={mentalModelCode}
-                      title="Mental Framework"
-                      description="Read this as the mental model for the rest of Act 4: first count one symmetry-unique multiplication representative, then count every distinct output-bin update it causes."
-                    />
-                  </ExplorerModal>
 
                   <div className="mt-6">
                     <ComponentCostView

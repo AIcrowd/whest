@@ -9,7 +9,6 @@ import {
   presetToState,
   resolvePresetSelection,
 } from './components/symmetry-aware-einsum-contractions/lib/presetSelection.js';
-import { reduceMentalModelVisibility } from './components/symmetry-aware-einsum-contractions/lib/mentalModelState.js';
 
 test('resolvePresetSelection keeps custom mode without requesting a preset reload', () => {
   assert.deepEqual(resolvePresetSelection(EXAMPLES, CUSTOM_IDX), {
@@ -52,10 +51,3 @@ test('getPresetControlSelection projects dirty preset edits into custom mode', (
   assert.equal(getPresetControlSelection(CUSTOM_IDX, false), CUSTOM_IDX);
 });
 
-test('reduceMentalModelVisibility closes the modal on context changes and preserves other states', () => {
-  assert.equal(reduceMentalModelVisibility(true, 'selectPreset'), false);
-  assert.equal(reduceMentalModelVisibility(true, 'customMode'), false);
-  assert.equal(reduceMentalModelVisibility(true, 'customExample'), false);
-  assert.equal(reduceMentalModelVisibility(true, 'noop'), true);
-  assert.equal(reduceMentalModelVisibility(false, 'noop'), false);
-});

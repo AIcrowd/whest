@@ -1,65 +1,7 @@
 /* Visualization-only styles for the symmetry explorer. */
 
-/* ─── Teaching Scaffold ───────────────── */
+/* ─── Orbit Inspector ─────────────────── */
 
-.pseudocode-rail {
-  position: relative;
-}
-
-.pseudocode-rail-inner {
-  position: relative;
-}
-
-.pseudocode-editor {
-  border-radius: 18px;
-  overflow: hidden;
-  border: 1px solid rgba(21, 27, 38, 0.12);
-  box-shadow: 0 14px 34px rgba(17, 24, 39, 0.14);
-  background: #0f172a;
-  margin-top: 18px;
-}
-
-.pseudocode-editor-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  justify-content: space-between;
-  padding: 12px 16px;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
-  background: linear-gradient(180deg, #182235 0%, #111827 100%);
-}
-
-.pseudocode-editor-chrome {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.pseudocode-editor-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.pseudocode-editor-dot-red { background: #ff5f57; }
-.pseudocode-editor-dot-amber { background: #febc2e; }
-.pseudocode-editor-dot-green { background: #28c840; }
-
-.pseudocode-editor-title {
-  flex: 1;
-  min-width: 0;
-}
-
-.pseudocode-editor-title h2 {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: 12px;
-  font-weight: 600;
-  color: #f8fafc;
-  letter-spacing: 0.01em;
-}
-
-.pseudocode-kicker,
 .orbit-inspector-kicker {
   display: inline-block;
   margin-bottom: 6px;
@@ -71,122 +13,17 @@
   color: #F0524D;
 }
 
-.pseudocode-editor-title .pseudocode-kicker {
-  margin-bottom: 2px;
-  color: #fda4a4;
-}
-
-.pseudocode-editor-lang {
-  padding: 3px 8px;
-  border-radius: 999px;
-  background: rgba(248, 250, 252, 0.08);
-  border: 1px solid rgba(248, 250, 252, 0.08);
-  color: #cbd5e1;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
 .orbit-inspector-header h3 {
   font-family: inherit;
   font-size: 15px;
   letter-spacing: -0.01em;
 }
 
-.pseudocode-editor-caption,
-.orbit-inspector-header p {
-  margin-top: 0;
-  font-size: 12px;
-  line-height: 1.6;
-}
-
-.pseudocode-editor-caption {
-  padding: 10px 16px 0;
-  color: #a8b5c7;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
 .orbit-inspector-header p {
   margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.6;
   color: #5D5F60;
-}
-
-.pseudocode-editor-body {
-  overflow-x: auto;
-  padding: 8px 0 10px;
-}
-
-.pseudocode-code-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  min-width: max-content;
-}
-
-.pseudocode-code-line {
-  display: grid;
-  grid-template-columns: 42px minmax(0, 1fr);
-  gap: 14px;
-  align-items: start;
-  padding: 0 16px;
-  color: #7f8ea3;
-  transition: background 0.18s ease, color 0.18s ease;
-}
-
-.pseudocode-code-line-focused {
-  color: #f8fafc;
-  background: rgba(244, 114, 100, 0.12);
-  box-shadow: inset 3px 0 0 #f0524d;
-}
-
-.pseudocode-code-line-block-start {
-  border-top: 1px solid rgba(240, 82, 77, 0.26);
-}
-
-.pseudocode-code-line-block-end {
-  border-bottom: 1px solid rgba(240, 82, 77, 0.26);
-}
-
-.pseudocode-code-gutter {
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-end;
-  width: 42px;
-  padding: 6px 0;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: 12px;
-  font-weight: 600;
-  color: #66758d;
-  user-select: none;
-}
-
-.pseudocode-code-line-focused .pseudocode-code-gutter {
-  color: #fca5a5;
-}
-
-.pseudocode-code-text {
-  display: block;
-  padding: 6px 0;
-  margin: 0;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: 12px;
-  line-height: 1.45;
-  white-space: pre;
-}
-
-.pseudocode-token-keyword { color: #fda4af; }
-.pseudocode-token-function { color: #93c5fd; }
-.pseudocode-token-number { color: #fdba74; }
-.pseudocode-token-state { color: #e2e8f0; }
-.pseudocode-token-comment { color: #94a3b8; }
-.pseudocode-token-plain { color: inherit; }
-
-.pseudocode-code-line:not(.pseudocode-code-line-focused) .pseudocode-token-state {
-  color: #d7e0ea;
 }
 
 .mental-model-grid {

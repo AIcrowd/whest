@@ -38,13 +38,16 @@ test('ExplorerModal component exists and exports a default function', () => {
   assert.match(src, /aria-modal="true"/);
 });
 
-test('App uses ExplorerModal for Mental Framework', () => {
+test('App mounts the Mental Framework inline via the AlgorithmAtAGlance preamble, not a modal', () => {
   const src = readFileSync(
     resolve(__dirname, 'components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx'),
     'utf-8',
   );
-  assert.match(src, /import ExplorerModal/);
-  assert.match(src, /<ExplorerModal[^>]*title="Mental Framework"/);
+  // The preamble component is imported and rendered in the app.
+  assert.match(src, /import AlgorithmAtAGlance from '\.\/components\/AlgorithmAtAGlance\.jsx'/);
+  assert.match(src, /<AlgorithmAtAGlance\s*\/>/);
+  // The old modal pattern is gone from this file.
+  assert.doesNotMatch(src, /<ExplorerModal[^>]*title="Mental Framework"/);
 });
 
 test('ComponentCostView uses ExplorerModal for Orbit Enumeration', () => {
