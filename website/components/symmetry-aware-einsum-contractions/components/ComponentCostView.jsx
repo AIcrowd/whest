@@ -101,9 +101,12 @@ function ComponentSummaryTable({
         const canOpenOrbits = supportsOrbitEnumeration(comp) && (orbitRows?.length ?? 0) > 0;
         // Per-component dense baseline = n^|L_a| (one tuple per cell, no
         // (k-1) factor — that lives globally on ∏_a M_a, not per-component).
-        // Mul savings  = 1 - M_a   / n^|L_a|
-        // Acc savings  = 1 - α_a   / n^|L_a|
-        // No per-row "Total %" — global Total % lives in TotalCostView.
+        // Mul  savings = 1 - M_a   / n^|L_a|
+        // Acc  savings = 1 - α_a   / n^|L_a|
+        // Total savings = 1 - (M_a + α_a) / (2 · n^|L_a|)
+        //   This is the per-component combined reduction at unit (k=2) cost.
+        //   The honest global Total% lives in TotalCostView; this pill is a
+        //   quick "is this component pulling its weight?" indicator.
         const labelCount = comp.labels?.length ?? 0;
         const denseCell = dimensionN ** labelCount;
         const actualAcc = accumulationCount(comp);
@@ -111,6 +114,9 @@ function ComponentSummaryTable({
           dense > 0 ? Math.max(0, Math.round((1 - actual / dense) * 100)) : null;
         const multSavingsPct = M_a !== null ? pct(M_a, denseCell) : null;
         const accSavingsPct = actualAcc !== null ? pct(actualAcc, denseCell) : null;
+        const totalSavingsPct = (M_a !== null && actualAcc !== null)
+          ? pct(M_a + actualAcc, 2 * denseCell)
+          : null;
 
         const leafId = comp.accumulation?.regimeId ?? comp.shape ?? comp.caseType;
         const presentation = getRegimePresentation(leafId);
@@ -158,7 +164,7 @@ function ComponentSummaryTable({
                 {canOpenOrbits ? (
                   <button
                     type="button"
-                    className="inline-flex items-center gap-1 text-[11px] font-medium text-primary underline decoration-primary/40 decoration-dotted underline-offset-[3px] transition-colors hover:decoration-primary"
+                    className="inline-flex cursor-pointer items-center gap-1 text-[11px] font-medium text-primary underline decoration-primary/40 decoration-dotted underline-offset-[3px] transition-colors hover:decoration-primary"
                     onClick={() => onOpenOrbitModal?.(comp)}
                   >
                     Enumerate orbits →
@@ -208,40 +214,50 @@ function ComponentSummaryTable({
                 )}
               </div>
 
-              {/* Savings — two pills, no fake Total. The global Total %
-                  lives in TotalCostView (Act 5) where the (k-1)·∏Mₐ + ∏αₐ
-                  formula combines the per-component contributions properly. */}
+              {/* Savings — three pills: Total (the headline), then Mult and
+                  Acc breakdowns. The honest global Total% lives in
+                  TotalCostView; the per-row Total here is a quick visual
+                  signal (green when this component saves anything, red when
+                  it doesn't pull any weight at all). */}
               <div>
-                {multSavingsPct !== null || accSavingsPct !== null ? (
-                  <div className="flex flex-wrap items-center gap-1.5">
-                    {multSavingsPct !== null ? (
-                      <span
-                        className={`rounded-full px-2 py-0.5 font-mono text-[11px] font-semibold ${
-                          multSavingsPct >= 50
-                            ? 'bg-emerald-100 text-emerald-800'
-                            : multSavingsPct > 0
-                              ? 'bg-amber-50 text-amber-800'
-                              : 'bg-stone-100 text-stone-600'
-                        }`}
-                        title={`Mult savings: dense Mₐ would be ${denseCell.toLocaleString()}; symmetry gives ${M_a?.toLocaleString?.()}.`}
-                      >
-                        Mult {multSavingsPct}%
+                {totalSavingsPct !== null ? (
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+                        Total
                       </span>
-                    ) : null}
-                    {accSavingsPct !== null ? (
                       <span
-                        className={`rounded-full px-2 py-0.5 font-mono text-[11px] font-semibold ${
-                          accSavingsPct >= 50
+                        className={`rounded-full px-2 py-0.5 font-mono text-xs font-semibold ${
+                          totalSavingsPct > 0
                             ? 'bg-emerald-100 text-emerald-800'
-                            : accSavingsPct > 0
-                              ? 'bg-amber-50 text-amber-800'
-                              : 'bg-stone-100 text-stone-600'
+                            : 'bg-rose-100 text-rose-800'
                         }`}
-                        title={`Acc savings: dense αₐ would be ${denseCell.toLocaleString()}; symmetry gives ${actualAcc?.toLocaleString?.()}.`}
+                        title={`Per-component combined savings: 1 − (Mₐ + αₐ) / (2 · n^${labelCount}) = 1 − (${(M_a ?? 0).toLocaleString()} + ${(actualAcc ?? 0).toLocaleString()}) / ${(2 * denseCell).toLocaleString()}.`}
                       >
-                        Acc {accSavingsPct}%
+                        {totalSavingsPct}%
                       </span>
-                    ) : null}
+                    </div>
+                    <div className="flex flex-wrap items-center gap-x-1.5 font-mono text-[10px] leading-tight">
+                      {multSavingsPct !== null ? (
+                        <span
+                          className="font-semibold text-primary"
+                          title={`Mult savings: dense Mₐ would be ${denseCell.toLocaleString()}; symmetry gives ${M_a?.toLocaleString?.()}.`}
+                        >
+                          Mult {multSavingsPct}%
+                        </span>
+                      ) : null}
+                      {multSavingsPct !== null && accSavingsPct !== null ? (
+                        <span className="text-stone-300" aria-hidden="true">·</span>
+                      ) : null}
+                      {accSavingsPct !== null ? (
+                        <span
+                          className="font-semibold text-amber-700"
+                          title={`Acc savings: dense αₐ would be ${denseCell.toLocaleString()}; symmetry gives ${actualAcc?.toLocaleString?.()}.`}
+                        >
+                          Acc {accSavingsPct}%
+                        </span>
+                      ) : null}
+                    </div>
                   </div>
                 ) : (
                   <span className="text-[11px] text-muted-foreground">—</span>

@@ -268,20 +268,22 @@ function ComponentRecap({ components }) {
       {components.map((comp, idx) => (
         <span
           key={`component-recap-${idx}`}
-          className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-raised py-1 pl-2 pr-2.5 text-xs text-muted-foreground"
+          className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-raised py-1 pl-2 pr-2.5 text-[11px] leading-none text-muted-foreground"
           style={{ borderLeftColor: componentColor(idx), borderLeftWidth: 3 }}
         >
           <span
             aria-hidden="true"
-            className="inline-block h-2 w-2 rounded-full"
+            className="inline-block h-2 w-2 shrink-0 rounded-full"
             style={{ backgroundColor: componentColor(idx) }}
           />
-          <CaseBadge
-            regimeId={comp.accumulation?.regimeId ?? comp.shape ?? comp.caseType}
-            caseType={comp.caseType}
-            size="xs"
-          />
-          <span className="font-mono">{`{${(comp.labels ?? []).join(', ')}}`}</span>
+          <span className="inline-flex items-center">
+            <CaseBadge
+              regimeId={comp.accumulation?.regimeId ?? comp.shape ?? comp.caseType}
+              caseType={comp.caseType}
+              size="xs"
+            />
+          </span>
+          <span className="font-mono leading-none">{`{${(comp.labels ?? []).join(', ')}}`}</span>
         </span>
       ))}
     </div>

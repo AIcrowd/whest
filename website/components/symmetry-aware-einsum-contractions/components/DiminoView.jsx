@@ -91,18 +91,23 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
         ) : null}
         {usingCandidateFallback ? (
           <div className="mt-3 rounded-lg border border-dashed border-border bg-surface-raised px-3 py-2 text-xs leading-5 text-muted-foreground">
-            The selected pair does not map to a unique induced label permutation, so this panel is showing the first induced label permutation as a stable fallback.
+            The selected pair does not map to a unique induced label permutation, so this panel is showing the first one as a stable fallback.
           </div>
         ) : null}
         <p className="mt-2 max-w-[62ch] text-sm leading-6 text-muted-foreground">
-          Each valid π induces a induced label permutation. We keep it only if adding it enlarges the subgroup generated so far.
+          Each valid π induces a label permutation on the active labels. We keep it only if adding it enlarges the subgroup generated so far.
         </p>
         {group ? (
           <div className="mt-3 rounded-lg border border-border bg-surface-raised px-3 py-2 text-xs leading-5 text-muted-foreground">
-            <div className="font-semibold text-foreground">
-              {group.fullGroupName} · order {group.fullOrder}
+            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-foreground">
+              <code className="rounded bg-stone-100 px-1.5 py-0.5 font-mono text-[12px] font-semibold tracking-wide text-foreground">
+                {group.fullGroupName}
+              </code>
+              <span className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+                order&nbsp;<span className="font-semibold text-foreground">{group.fullOrder}</span>
+              </span>
             </div>
-            <div className="mt-1">
+            <div className="mt-1.5">
               {`${group.fullDegree} active labels: ${group.allLabels.join(', ')}`}
               {group.fullGenerators?.length ? ` · ${group.fullGenerators.length} generator${group.fullGenerators.length === 1 ? '' : 's'}` : ''}
             </div>

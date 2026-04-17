@@ -148,7 +148,7 @@ export default function AlgorithmAtAGlance() {
       <ExplorerSectionCard
         eyebrow="Algorithm at a Glance"
         title={<span id="algorithm-at-a-glance-title">What this explorer is counting</span>}
-        description="The whole algorithm in under twenty lines, paired with the notation it operates on."
+        description="The whole algorithm in ten lines, paired with the notation it operates on."
         className="border-gray-200 bg-white"
         contentClassName="pt-6"
       >

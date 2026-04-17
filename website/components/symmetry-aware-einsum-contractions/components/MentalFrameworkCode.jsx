@@ -54,10 +54,9 @@ const LINES = [
   { id: 'rep-loop',     number: 5,  kind: 'code', code: 'for rep in RepSet:' },
   { id: 'step1-ann',    number: 6,  kind: 'annotation', step: 'mult', indent: 4 },
   { id: 'base-val',     number: 7,  kind: 'code', code: '    base_val = product_at(rep)' },
-  { id: 'blank-2',      number: 8,  kind: 'code', code: '' },
-  { id: 'out-loop',     number: 9,  kind: 'code', code: '    for out in Outs(rep):' },
-  { id: 'step2-ann',    number: 10, kind: 'annotation', step: 'acc', indent: 8 },
-  { id: 'reduce',       number: 11, kind: 'code', code: '        R[out] += coeff(rep, out) * base_val' },
+  { id: 'out-loop',     number: 8,  kind: 'code', code: '    for out in Outs(rep):' },
+  { id: 'step2-ann',    number: 9,  kind: 'annotation', step: 'acc', indent: 8 },
+  { id: 'reduce',       number: 10, kind: 'code', code: '        R[out] += coeff(rep, out) * base_val' },
 ];
 
 function AnnotationRow({ line }) {
