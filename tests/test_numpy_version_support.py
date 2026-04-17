@@ -159,3 +159,28 @@ def test_in1d_removed_in_numpy_2_4(monkeypatch):
     finally:
         # Restore sys.modules so later tests / consumers see the real in1d.
         sys.modules["whest._sorting_ops"] = _original_sorting_ops
+
+
+def test_trapz_removed_in_numpy_2_4(monkeypatch):
+    """When numpy.trapz is unavailable, we.trapz raises UnsupportedFunctionError."""
+    import importlib
+    import sys
+
+    import numpy as _np
+
+    import whest._pointwise as _pointwise
+
+    _original_pointwise = sys.modules["whest._pointwise"]
+
+    try:
+        monkeypatch.delattr(_np, "trapz", raising=False)
+        importlib.reload(_pointwise)
+
+        with pytest.raises(UnsupportedFunctionError) as exc_info:
+            _pointwise.trapz([1.0, 2.0, 3.0])
+        err = exc_info.value
+        assert err.max_version == "2.4"
+        assert err.replacement == "trapezoid"
+        assert "removed in numpy 2.4" in str(err)
+    finally:
+        sys.modules["whest._pointwise"] = _original_pointwise
