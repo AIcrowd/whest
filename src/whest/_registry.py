@@ -13,9 +13,9 @@ blacklisted        intentionally unsupported
 from __future__ import annotations
 
 REGISTRY_META: dict = {
-    "numpy_version": "2.2.6",
-    "numpy_supported": ">=2.0.0,<2.3.0",
-    "last_updated": "2026-04-12",
+    "numpy_version": "2.4.4",
+    "numpy_supported": ">=2.0.0,<2.5.0",
+    "last_updated": "2026-04-17",
 }
 
 # ---------------------------------------------------------------------------

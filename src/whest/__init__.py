@@ -20,7 +20,7 @@ from whest._registry import REGISTRY_META as _REGISTRY_META
 __version__ = f"0.2.0+np{_np.__version__}"
 __numpy_version__ = _np.__version__
 __numpy_pinned__ = _REGISTRY_META["numpy_version"]
-__numpy_supported__ = _REGISTRY_META.get("numpy_supported", ">=2.0.0,<2.3.0")
+__numpy_supported__ = _REGISTRY_META.get("numpy_supported", ">=2.0.0,<2.5.0")
 
 from whest._version_check import check_numpy_version as _check_numpy_version
 

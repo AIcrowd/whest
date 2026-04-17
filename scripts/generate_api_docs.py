@@ -3232,12 +3232,12 @@ def assert_supported_docs_env() -> None:
     except (
         Exception
     ) as exc:  # pragma: no cover - import failure is environment-specific
-        raise RuntimeError("generate_api_docs.py requires NumPy >= 2.0,<2.3") from exc
+        raise RuntimeError("generate_api_docs.py requires NumPy >= 2.0,<2.5") from exc
 
     version = NumpyVersion(np.__version__)
-    if not (NumpyVersion("2.0.0") <= version < NumpyVersion("2.3.0")):
+    if not (NumpyVersion("2.0.0") <= version < NumpyVersion("2.5.0")):
         raise RuntimeError(
-            f"generate_api_docs.py requires NumPy >= 2.0,<2.3; found {np.__version__}"
+            f"generate_api_docs.py requires NumPy >= 2.0,<2.5; found {np.__version__}"
         )
 
 
