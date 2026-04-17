@@ -2,6 +2,7 @@ import { useState, useCallback, useMemo, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { validateAll } from '../engine/validation.js';
+import { varField } from '../engine/validationMessages.js';
 import { generatePython } from '../engine/pythonCodegen.js';
 import { buildVariableColors, SYMMETRY_ICONS, contrastText } from '../engine/colorPalette.js';
 import { parseCycleNotation } from '../engine/cycleParser.js';
@@ -125,6 +126,15 @@ export default function ExampleChooser({
   const [operandNamesStr, setOperandNamesStr] = useState(initial.operandNamesStr);
   const [activePresetIdx, setActivePresetIdx] = useState(initialPresetIdx);
 
+  // Fields the user has "finished" interacting with (blur or button click).
+  // Validation errors are suppressed until their field lands here — prevents
+  // half-typed-state noise. Clicking Analyze promotes every offending field.
+  const [touched, setTouched] = useState(() => new Set());
+  const touch = useCallback((field) => {
+    if (!field) return;
+    setTouched((prev) => (prev.has(field) ? prev : new Set(prev).add(field)));
+  }, []);
+
   const presetSummaries = useMemo(() => examples.map(getPresetSummary), [examples]);
 
   const loadPreset = useCallback((idx) => {
@@ -136,6 +146,7 @@ export default function ExampleChooser({
     setOutputStr(presetState.outputStr);
     setOperandNamesStr(presetState.operandNamesStr);
     setActivePresetIdx(selection.activePresetIdx);
+    setTouched(new Set());
     onSelect(idx);
     onDirtyChange?.(false);
   }, [examples, onDirtyChange, onSelect]);
@@ -155,6 +166,7 @@ export default function ExampleChooser({
     setOperandNamesStr(presetState.operandNamesStr);
     setActivePresetIdx(selection.activePresetIdx);
     if (selection.dirtyState === 'clear') {
+      setTouched(new Set());
       onDirtyChange?.(false);
     }
   }, [examples, onDirtyChange, selectedPresetIdx]);
@@ -245,6 +257,30 @@ export default function ExampleChooser({
     () => validateAll(variables, subscriptsStr, outputStr, operandNamesStr),
     [variables, subscriptsStr, outputStr, operandNamesStr],
   );
+
+  const visibleErrors = useMemo(
+    () => validation.errors.filter((error) => touched.has(error.field)),
+    [validation.errors, touched],
+  );
+  const errorFieldSet = useMemo(
+    () => new Set(visibleErrors.map((error) => error.field)),
+    [visibleErrors],
+  );
+
+  const applyFix = useCallback((fix) => {
+    if (!fix || typeof fix.apply !== 'function') return;
+    const next = fix.apply({
+      variables,
+      subscriptsStr,
+      outputStr,
+      operandNamesStr,
+    });
+    if (next.variables !== variables) setVariables(next.variables);
+    if (next.subscriptsStr !== subscriptsStr) setSubscriptsStr(next.subscriptsStr);
+    if (next.outputStr !== outputStr) setOutputStr(next.outputStr);
+    if (next.operandNamesStr !== operandNamesStr) setOperandNamesStr(next.operandNamesStr);
+    markCustom();
+  }, [markCustom, operandNamesStr, outputStr, subscriptsStr, variables]);
   const pythonCode = useMemo(
     () => generatePython(variables, subscriptsStr, outputStr, operandNamesStr, dimensionN),
     [variables, subscriptsStr, outputStr, operandNamesStr, dimensionN],
@@ -266,7 +302,15 @@ export default function ExampleChooser({
   }, [activePresetIdx, examples, onPreviewChange, operandNamesStr, outputStr, subscriptsStr, variables]);
 
   const handleAnalyze = useCallback(() => {
-    if (!validation.valid) return;
+    if (!validation.valid) {
+      // Reveal every offending field so the user can see what's blocking them.
+      setTouched((prev) => {
+        const next = new Set(prev);
+        for (const error of validation.errors) next.add(error.field);
+        return next;
+      });
+      return;
+    }
 
     const subs = subscriptsStr.split(',').map((part) => part.trim());
     const out = outputStr.trim();
@@ -317,9 +361,13 @@ export default function ExampleChooser({
                 >
                   <div className="mb-1 flex items-center gap-1.5">
                     <Input
-                      className="h-auto w-20 rounded border border-gray-200 px-2.5 py-1.5 text-sm font-mono focus:border-coral focus:ring-coral/30"
+                      className={cn(
+                        'h-auto w-20 rounded border px-2.5 py-1.5 text-sm font-mono focus:border-coral focus:ring-coral/30',
+                        errorFieldSet.has(varField(idx, 'name')) ? 'border-red-300' : 'border-gray-200',
+                      )}
                       value={variable.name}
                       onChange={(event) => updateVar(idx, 'name', event.target.value)}
+                      onBlur={() => touch(varField(idx, 'name'))}
                       placeholder="X"
                       maxLength={8}
                     />
@@ -330,7 +378,10 @@ export default function ExampleChooser({
                         variant="outline"
                         size="icon-xs"
                         className="h-8 w-8 rounded border-gray-200 text-sm hover:bg-gray-50 disabled:opacity-30"
-                        onClick={() => updateVar(idx, 'rank', Math.max(1, variable.rank - 1))}
+                        onClick={() => {
+                          updateVar(idx, 'rank', Math.max(1, variable.rank - 1));
+                          touch(varField(idx, 'rank'));
+                        }}
                         disabled={variable.rank <= 1}
                       >
                         -
@@ -341,7 +392,10 @@ export default function ExampleChooser({
                         variant="outline"
                         size="icon-xs"
                         className="h-8 w-8 rounded border-gray-200 text-sm hover:bg-gray-50 disabled:opacity-30"
-                        onClick={() => updateVar(idx, 'rank', Math.min(8, variable.rank + 1))}
+                        onClick={() => {
+                          updateVar(idx, 'rank', Math.min(8, variable.rank + 1));
+                          touch(varField(idx, 'rank'));
+                        }}
                         disabled={variable.rank >= 8}
                       >
                         +
@@ -398,7 +452,10 @@ export default function ExampleChooser({
                                 ? 'border-gray-900 bg-gray-900 text-white'
                                 : 'border-gray-200 bg-white text-gray-500 hover:border-gray-400',
                             )}
-                            onClick={() => toggleAxis(idx, axisIdx)}
+                            onClick={() => {
+                              toggleAxis(idx, axisIdx);
+                              touch(varField(idx, 'axes'));
+                            }}
                             title={`Axis ${axisIdx}`}
                           >
                             {axisIdx}
@@ -413,9 +470,13 @@ export default function ExampleChooser({
                       label="Generators"
                       className="mb-1"
                       labelClassName="text-sm font-semibold uppercase tracking-[0.18em] text-gray-400"
-                      inputClassName="h-auto border-gray-200 px-3 py-1.5 text-sm font-mono focus:border-coral focus:ring-coral/30"
+                      inputClassName={cn(
+                        'h-auto px-3 py-1.5 text-sm font-mono focus:border-coral focus:ring-coral/30',
+                        errorFieldSet.has(varField(idx, 'generators')) ? 'border-red-300' : 'border-gray-200',
+                      )}
                       value={variable.generators}
                       onChange={(event) => updateVar(idx, 'generators', event.target.value)}
+                      onBlur={() => touch(varField(idx, 'generators'))}
                       placeholder="(0 1)(2 3), (0 2)(1 3)"
                       hint={(
                         <>
@@ -463,11 +524,12 @@ export default function ExampleChooser({
               <div className="flex min-w-[60px] flex-1 flex-col items-center">
                 <Input
                   className={cn(
-                    'h-auto w-full rounded-lg border border-gray-200 px-3 py-1.5 font-mono text-sm focus:border-coral focus:ring-coral/30',
-                    validation.errors.some((error) => error.includes('subscript') || error.includes('Subscript') || error.includes('operand')) && 'border-red-300',
+                    'h-auto w-full rounded-lg border px-3 py-1.5 font-mono text-sm focus:border-coral focus:ring-coral/30',
+                    errorFieldSet.has('subscripts') ? 'border-red-300' : 'border-gray-200',
                   )}
                   value={subscriptsStr}
                   onChange={(event) => handleSubscriptsChange(event.target.value.toLowerCase())}
+                  onBlur={() => touch('subscripts')}
                   placeholder="ia,ib"
                 />
                 <span className="mt-1 text-sm font-semibold uppercase tracking-[0.18em] text-gray-400">subscripts</span>
@@ -476,11 +538,12 @@ export default function ExampleChooser({
               <div className="flex min-w-[60px] flex-1 flex-col items-center">
                 <Input
                   className={cn(
-                    'h-auto w-full rounded-lg border border-gray-200 px-3 py-1.5 font-mono text-sm focus:border-coral focus:ring-coral/30',
-                    validation.errors.some((error) => error.includes('utput')) && 'border-red-300',
+                    'h-auto w-full rounded-lg border px-3 py-1.5 font-mono text-sm focus:border-coral focus:ring-coral/30',
+                    errorFieldSet.has('output') ? 'border-red-300' : 'border-gray-200',
                   )}
                   value={outputStr}
                   onChange={(event) => handleOutputChange(event.target.value.toLowerCase())}
+                  onBlur={() => touch('output')}
                   placeholder="ab"
                 />
                 <span className="mt-1 text-sm font-semibold uppercase tracking-[0.18em] text-gray-400">output</span>
@@ -489,11 +552,12 @@ export default function ExampleChooser({
               <div className="flex min-w-[60px] flex-1 flex-col items-center">
                 <Input
                   className={cn(
-                    'h-auto w-full rounded-lg border border-gray-200 px-3 py-1.5 font-mono text-sm focus:border-coral focus:ring-coral/30',
-                    validation.errors.some((error) => error.includes('operand') || error.includes('Operand')) && 'border-red-300',
+                    'h-auto w-full rounded-lg border px-3 py-1.5 font-mono text-sm focus:border-coral focus:ring-coral/30',
+                    errorFieldSet.has('operands') ? 'border-red-300' : 'border-gray-200',
                   )}
                   value={operandNamesStr}
                   onChange={(event) => handleOperandNamesChange(event.target.value)}
+                  onBlur={() => touch('operands')}
                   placeholder="X, X"
                 />
                 <span className="mt-1 text-sm font-semibold uppercase tracking-[0.18em] text-gray-400">operands</span>
@@ -502,9 +566,12 @@ export default function ExampleChooser({
               <Button
                 type="button"
                 variant="default"
-                className="shrink-0 whitespace-nowrap px-5 py-2 text-sm font-semibold shadow-md transition-all hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-40"
+                className={cn(
+                  'shrink-0 whitespace-nowrap px-5 py-2 text-sm font-semibold shadow-md transition-all hover:shadow-lg',
+                  !validation.valid && 'opacity-60 hover:shadow-md',
+                )}
                 onClick={handleAnalyze}
-                disabled={!validation.valid}
+                title={validation.valid ? undefined : 'Click to see what needs fixing'}
               >
                 &#x25B6; Analyze
               </Button>
@@ -528,12 +595,24 @@ export default function ExampleChooser({
           </div>
         </div>
 
-        {validation.errors.length > 0 && (
-          <div className="space-y-0.5 rounded-lg border border-red-200 bg-red-50 px-3 py-2">
-            {validation.errors.map((error, idx) => (
-              <div key={idx} className="flex items-center gap-1.5 text-xs text-red-600">
-                <span className="shrink-0 text-red-400">&#x26A0;</span>
-                {error}
+        {visibleErrors.length > 0 && (
+          <div className="space-y-1 rounded-lg border border-red-200 bg-red-50 px-3 py-2">
+            {visibleErrors.map((error, idx) => (
+              <div
+                key={`${error.code}-${error.field}-${idx}`}
+                className="flex items-start gap-1.5 text-xs text-red-600"
+              >
+                <span className="mt-0.5 shrink-0 text-red-400">&#x26A0;</span>
+                <span className="flex-1 leading-snug">{error.message}</span>
+                {error.fix && (
+                  <button
+                    type="button"
+                    onClick={() => applyFix(error.fix)}
+                    className="shrink-0 rounded-md border border-red-300 bg-white px-2 py-0.5 text-xs font-semibold text-red-700 transition-colors hover:bg-red-100"
+                  >
+                    {error.fix.label}
+                  </button>
+                )}
               </div>
             ))}
           </div>
