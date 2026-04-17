@@ -1,70 +1,262 @@
 import CaseBadge from './CaseBadge.jsx';
 import ExplorerMetricCard from './ExplorerMetricCard.jsx';
+import ExplorerSectionCard from './ExplorerSectionCard.jsx';
 import GlossaryProse from './GlossaryProse.jsx';
 import Latex from './Latex.jsx';
+import { componentColor } from '../engine/componentPalette.js';
 
-// Notation matches the Counting Convention band at the top of the page:
-//   M — orbit count (size-aware Burnside, per component: M_a).
-//   μ = (k − 1) · ∏_a M_a  — total multiplication cost.
-//   α_a — accumulation cost per component; α = ∏_a α_a aggregates.
-const AGGREGATION_FORMULA = String.raw`\mu = (k - 1)\!\prod_{a}\!M_a,\qquad \alpha = \prod_{a}\!\alpha_a,\qquad \text{Total} = \mu + \alpha`;
+// Color palette — one hue per symbol ROLE (not per component). The same hex
+// is used on the formula glyph, the glossary dt, and any related tooltip.
+// Six roles total; see the design doc at
+// ~/.claude/plans/this-is-a-bit-glistening-quiche.md for the locked palette.
+const SYM = {
+  k:       '#475569', // slate  — operand count
+  group:   '#7C3AED', // violet — G, G_a, |G_a|, G_V (the -V/-W subscripts
+                      //         themselves are colored as the V/W labels
+                      //         below, not violet)
+  element: '#EA580C', // burnt orange — g (group element summed over)
+  cycle:   '#059669', // emerald — running indices and sizes: ℓ, c, L, R, Ω,
+                      //           n_ℓ, n_c, n_Ω, c_Ω(g), c_R(g)
+  alpha:   '#B45309', // amber  — α, α_a (accumulation)
+  orbit:   '#0E7490', // cyan   — X, X/G_a, O, π (the -V/-W subscripts on X
+                      //          and π are colored as the V/W labels below)
+  vlabel:  '#4A7CFF', // blue   — V (free / output labels). Matches the V
+                      //          dot in the Interaction Graph legend and
+                      //          the IncidenceMatrix's inc-col-v.
+  wlabel:  '#94A3B8', // slate  — W (summed / contracted labels). Matches
+                      //          the W dot in the Interaction Graph legend.
+};
 
+// Canonical formula string — exported for tests and for readers who want the
+// raw LaTeX without the color decorations. Intentionally spells out the full
+// Burnside expansion (not just `\mu = (k-1)\prod_a M_a`) because the hero now
+// renders the Burnside sum inline, and this constant is the single source of
+// truth for "what the hero says".
+const AGGREGATION_FORMULA = String.raw`\text{Total} \;=\; (k-1) \cdot \prod_{a} \tfrac{1}{|G_a|} \sum_{g \in G_a} \prod_{c} n_c \;+\; \prod_{a} \alpha_a`;
+
+// Helper: \textcolor wrapper for composing LaTeX with a role color. The
+// legend definitions below use these so that every math token inside a
+// definition wears the same color as its dt symbol — and the same color as
+// the token appears in the hero formula above.
+const tc = (color, tex) => `\\textcolor{${color}}{${tex}}`;
+
+// Glossary — "hybrid" policy: covers every symbol in the top line plus any
+// piecewise symbol that appears in two or more rows. One-off symbols (Ω, R,
+// n_Ω, c_Ω(g), H_a, h) are taught by leaf-badge tooltips where they appear.
+// Seven rows total. Colors in the definition prose + math match the dt
+// color for each symbol, so the reader's eye binds symbol ↔ definition ↔
+// hero appearance by color.
 const AGGREGATION_LEGEND = [
   {
-    symbol: String.raw`M_a`,
-    definition: 'orbit count per component — the Burnside sum $\\tfrac{1}{|G_a|}\\sum_{g} \\prod_c n_c$. Shown as "M" in Act 4 per-component rows.',
-  },
-  {
-    symbol: String.raw`\alpha_a`,
-    definition: 'accumulation cost per component — distinct output bins written by that component. Shown as "α" in Act 4 per-component rows.',
-  },
-  {
-    symbol: String.raw`\mu`,
-    definition: 'total multiplication cost. $\\mu = (k-1)\\prod_a M_a$ — note the $(k-1)$ applies once to the product of orbit counts, so $\\mu \\neq \\prod_a \\mu_a$ (don\'t multiply per-component $\\mu$ values).',
-  },
-  {
-    symbol: String.raw`\alpha`,
-    definition: 'total accumulation cost. $\\alpha = \\prod_a \\alpha_a$ — per-component accumulations multiply cleanly.',
-  },
-  {
     symbol: 'k',
-    definition: 'number of operand tensors in the einsum — $(k-1)$ multiplications combine each orbit representative, applied once to the global orbit product.',
+    color: SYM.k,
+    definition: `number of operand tensors in the einsum. $(${tc(SYM.k, 'k')}-1)$ binary multiplies combine each orbit representative.`,
+  },
+  {
+    symbol: String.raw`G_a`,
+    color: SYM.group,
+    definition: `symmetry group acting on component $a$; $|${tc(SYM.group, 'G_a')}|$ is its order (number of group elements averaged over).`,
+  },
+  {
+    symbol: 'g',
+    color: SYM.element,
+    definition: `one group element — a permutation of the component's labels. The sum averages over every $${tc(SYM.element, 'g')} \\in ${tc(SYM.group, 'G_a')}$.`,
+  },
+  {
+    symbol: String.raw`n_c`,
+    color: SYM.cycle,
+    definition: `size of labels in cycle $${tc(SYM.cycle, 'c')}$ of $${tc(SYM.element, 'g')}$. Cycles of the identity degenerate to singleton labels, so $${tc(SYM.cycle, '\\prod_c n_c')}$ collapses to $${tc(SYM.cycle, '\\prod_\\ell n_\\ell')}$ on the trivial / all-visible rows.`,
+  },
+  {
+    // V and W carry their canonical page colors (blue / slate) — the same
+    // hues used by the Interaction Graph legend and the Incidence Matrix
+    // v/w columns. `entry.color` is a placeholder here; the inline colors
+    // in `symbol` + `definition` carry the real visual binding.
+    symbol: `${tc(SYM.vlabel, 'V')},\\ ${tc(SYM.wlabel, 'W')}`,
+    color: SYM.vlabel,
+    // Definition is a JSX fragment so we can color the prose phrases
+    // "free (output) labels" / "summed (contracted) labels" directly.
+    definition: (
+      <>
+        <span style={{ color: SYM.vlabel }}>free (output) labels</span>
+        {' and '}
+        <span style={{ color: SYM.wlabel }}>summed (contracted) labels</span>
+        {', per component.'}
+      </>
+    ),
+  },
+  {
+    symbol: `${tc(SYM.orbit, 'X')},\\ ${tc(SYM.orbit, 'X/G_a')},\\ ${tc(SYM.orbit, 'O')},\\ ${tc(SYM.orbit, '\\pi')}_{${tc(SYM.vlabel, 'V')}}(${tc(SYM.orbit, 'O')})`,
+    color: SYM.orbit,
+    definition: `assignment space $${tc(SYM.orbit, 'X')} = [n]^L$; its $${tc(SYM.group, 'G_a')}$-orbit decomposition $${tc(SYM.orbit, 'X/G_a')}$; a single orbit $${tc(SYM.orbit, 'O')}$; and its projection onto the free labels $${tc(SYM.orbit, '\\pi')}_{${tc(SYM.vlabel, 'V')}}(${tc(SYM.orbit, 'O')})$ — the distinct output bins that orbit touches.`,
+  },
+  {
+    symbol: `${tc(SYM.alpha, '\\alpha')},\\ ${tc(SYM.alpha, '\\alpha_a')}`,
+    color: SYM.alpha,
+    definition: `accumulation cost. Per-component accumulation is $${tc(SYM.alpha, '\\alpha_a')}$ — one of the six case-specific formulas above. Global total is $${tc(SYM.alpha, '\\alpha')} = ${tc(SYM.alpha, '\\prod_a \\alpha_a')}$.`,
   },
 ];
 
+// Six leaves of the current SHAPE × REGIME classification (see shapeSpec.js +
+// regimeSpec.js). Each entry bundles the α_a formula and its layer tag; the
+// leaf *id* is the canonical regime/shape id so CaseBadge can resolve its
+// color + tooltip from the live spec — no duplicated content here.
+const AGGREGATION_LEAVES = [
+  {
+    id: 'trivial',
+    layer: 'shape',
+    formula: String.raw`\textcolor{${SYM.cycle}}{\prod_{\ell \in L} n_\ell}`,
+  },
+  {
+    id: 'allVisible',
+    layer: 'shape',
+    formula: String.raw`\textcolor{${SYM.cycle}}{\prod_{\ell \in \textcolor{${SYM.vlabel}}{V}} n_\ell}`,
+  },
+  {
+    id: 'allSummed',
+    layer: 'shape',
+    formula: String.raw`|\textcolor{${SYM.orbit}}{X}/\textcolor{${SYM.group}}{G_a}| = \tfrac{1}{|\textcolor{${SYM.group}}{G_a}|} \textcolor{${SYM.element}}{\sum_{g}} \textcolor{${SYM.cycle}}{\prod_c n_c}`,
+  },
+  {
+    id: 'singleton',
+    layer: 'regime',
+    formula: String.raw`\tfrac{\textcolor{${SYM.cycle}}{n_\Omega}}{|\textcolor{${SYM.group}}{G_a}|} \textcolor{${SYM.element}}{\sum_{g}} \Bigl(\textcolor{${SYM.cycle}}{\prod_{c \in R} n_c}\Bigr)\!\Bigl(\textcolor{${SYM.cycle}}{n_\Omega^{\,c_\Omega(g)}} - (\textcolor{${SYM.cycle}}{n_\Omega} - 1)^{\,c_\Omega(g)}\Bigr)`,
+  },
+  {
+    id: 'directProduct',
+    layer: 'regime',
+    formula: String.raw`\Bigl(\textcolor{${SYM.cycle}}{\prod_{\ell \in \textcolor{${SYM.vlabel}}{V}} n_\ell}\Bigr) \cdot |\textcolor{${SYM.orbit}}{X}_{\textcolor{${SYM.wlabel}}{W}} / \textcolor{${SYM.group}}{G}_{\textcolor{${SYM.wlabel}}{W}}|`,
+  },
+  {
+    id: 'bruteForceOrbit',
+    layer: 'regime',
+    formula: String.raw`\textcolor{${SYM.orbit}}{\sum_{O \in X/G_a}} |\textcolor{${SYM.orbit}}{\pi}_{\textcolor{${SYM.vlabel}}{V}}(\textcolor{${SYM.orbit}}{O})|`,
+  },
+];
+
+// ---------------------------------------------------------------------------
+// Hero formula — top line + piecewise definition of α_a.
+// ---------------------------------------------------------------------------
+
+const TOP_LINE = String.raw`\text{Total} \;=\; (\textcolor{${SYM.k}}{k}-1) \cdot \prod_a \tfrac{1}{|\textcolor{${SYM.group}}{G_a}|} \textcolor{${SYM.element}}{\sum_{g \in G_a}} \textcolor{${SYM.cycle}}{\prod_c n_c} \;+\; \prod_a \textcolor{${SYM.alpha}}{\alpha_a}`;
+// The `g \in G_a` subscript above is fully orange; G_a in the subscript is
+// close enough to the rest of the sum that unified orange reads better than
+// splitting the colors inside a 7-point subscript.
+
+function HeroFormulaBlock() {
+  return (
+    <div className="space-y-7">
+      {/* Top line */}
+      <div className="flex justify-center overflow-x-auto">
+        <div className="min-w-0 text-[17px] sm:text-[19px]">
+          <Latex display math={TOP_LINE} />
+        </div>
+      </div>
+
+      {/* Piecewise — α_a defined by six leaves of the shape × regime ladder */}
+      <div className="flex justify-center overflow-x-auto">
+        <div
+          className="grid items-center gap-x-5 gap-y-2 text-[14px]"
+          style={{ gridTemplateColumns: 'auto auto 1fr auto' }}
+        >
+          {/* Prefix (α_a =) and big brace both span all 6 rows */}
+          <div
+            className="flex items-center gap-2 self-center pr-1"
+            style={{ gridColumn: 1, gridRow: '1 / span 6' }}
+          >
+            <span className="text-[20px]" style={{ color: SYM.alpha }}>
+              <Latex math={String.raw`\alpha_a`} />
+            </span>
+            <span className="text-[18px] text-muted-foreground">=</span>
+          </div>
+          <div
+            aria-hidden="true"
+            className="flex select-none items-center self-stretch font-serif font-thin leading-none"
+            style={{
+              gridColumn: 2,
+              gridRow: '1 / span 6',
+              fontSize: '140px',
+              color: SYM.alpha,
+            }}
+          >
+            {'{'}
+          </div>
+
+          {AGGREGATION_LEAVES.map((leaf) => (
+            <FormulaRow key={leaf.id} leaf={leaf} />
+          ))}
+        </div>
+      </div>
+
+      <p className="text-center text-[12px] text-muted-foreground">
+        Six paths through Act 3&rsquo;s decision ladder: three Shape-layer leaves
+        terminate immediately; Mixed components dispatch to one of three
+        Regime-layer leaves. Hover any leaf to see the case details.
+      </p>
+    </div>
+  );
+}
+
+function FormulaRow({ leaf }) {
+  return (
+    <>
+      {/* Formula cell wrapped in CaseBadge passthrough mode — hovering the
+          formula opens the same shape/regime tooltip as the leaf pill. */}
+      <div className="py-1 pr-4" style={{ gridColumn: 3 }}>
+        <CaseBadge regimeId={leaf.id} className="whitespace-nowrap">
+          <Latex math={leaf.formula} />
+        </CaseBadge>
+      </div>
+      <div className="flex items-center gap-2 whitespace-nowrap pl-2 text-[12px] text-muted-foreground" style={{ gridColumn: 4 }}>
+        <span className="italic">if</span>
+        <span className="rounded border border-border bg-surface-raised px-1.5 py-[1px] text-[9px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+          {leaf.layer}
+        </span>
+        <CaseBadge regimeId={leaf.id} size="xs" />
+      </div>
+    </>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// AggregationExplainer — wraps the hero and the glossary.
+// ---------------------------------------------------------------------------
+
 function AggregationExplainer() {
   return (
-    <figure className="rounded-xl border border-border bg-white px-6 py-8 shadow-sm sm:px-10">
-      <div className="mx-auto max-w-2xl">
-        <div className="text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-          How components combine
-        </div>
-        <p className="mt-3 text-center text-sm leading-7 text-foreground/80">
-          <GlossaryProse text="The group $G$ factors as $\prod_a G_a$, so per-component orbit counts $M_a$ and accumulations $\alpha_a$ multiply across components: $M = \prod_a M_a$ and $\alpha = \prod_a \alpha_a$. The $(k-1)$ factor that converts orbits into multiplications applies once to the global product, giving $\mu = (k-1)\cdot M$. Finally, the two totals $\mu$ and $\alpha$ add to give Total Cost." />
-        </p>
+    <ExplorerSectionCard eyebrow="How components combine">
+      <div className="rounded-xl border border-border/60 bg-gradient-to-br from-surface-raised/60 to-white px-6 py-8">
+        <HeroFormulaBlock />
       </div>
 
-      <div className="mt-6 flex justify-center overflow-x-auto">
-        <Latex display math={AGGREGATION_FORMULA} />
-      </div>
-
-      <figcaption className="mx-auto mt-6 max-w-md border-t border-border/60 pt-4">
-        <dl className="grid grid-cols-[auto_1fr] items-baseline gap-x-4 gap-y-2 text-[12px] leading-relaxed text-muted-foreground">
+      <div className="mx-auto mt-8 max-w-2xl border-t border-border/60 pt-5">
+        <dl className="grid grid-cols-[auto_1fr] items-baseline gap-x-5 gap-y-3 text-[12.5px] leading-relaxed text-muted-foreground">
           {AGGREGATION_LEGEND.map((entry) => (
             <div key={entry.symbol} className="contents">
-              <dt className="justify-self-end text-foreground">
+              <dt
+                className="justify-self-end whitespace-nowrap text-[15px]"
+                style={{ color: entry.color }}
+              >
                 <Latex math={entry.symbol} />
               </dt>
               <dd>
-                <GlossaryProse text={entry.definition} />
+                {typeof entry.definition === 'string'
+                  ? <GlossaryProse text={entry.definition} />
+                  : entry.definition}
               </dd>
             </div>
           ))}
         </dl>
-      </figcaption>
-    </figure>
+      </div>
+    </ExplorerSectionCard>
   );
 }
+
+// ---------------------------------------------------------------------------
+// ComponentRecap — unchanged: color dot + case badge + label set per
+// component. Component colors live only here; the formula above uses symbol
+// roles instead.
+// ---------------------------------------------------------------------------
 
 function ComponentRecap({ components }) {
   if (!components?.length) return null;
@@ -75,8 +267,14 @@ function ComponentRecap({ components }) {
       {components.map((comp, idx) => (
         <span
           key={`component-recap-${idx}`}
-          className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-raised px-2.5 py-1 text-xs text-muted-foreground"
+          className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-raised py-1 pl-2 pr-2.5 text-xs text-muted-foreground"
+          style={{ borderLeftColor: componentColor(idx), borderLeftWidth: 3 }}
         >
+          <span
+            aria-hidden="true"
+            className="inline-block h-2 w-2 rounded-full"
+            style={{ backgroundColor: componentColor(idx) }}
+          />
           <CaseBadge
             regimeId={comp.accumulation?.regimeId ?? comp.shape ?? comp.caseType}
             caseType={comp.caseType}
@@ -157,3 +355,6 @@ export default function TotalCostView({ costModel, componentData, dimensionN, nu
     </div>
   );
 }
+
+// Exported for tests — catches silent regressions in the pedagogy.
+export { AGGREGATION_FORMULA, AGGREGATION_LEGEND, AGGREGATION_LEAVES };

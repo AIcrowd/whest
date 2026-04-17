@@ -8,6 +8,7 @@ import {
   CLASSIFICATION_LEAVES,
   CLASSIFICATION_QUESTIONS,
 } from '../engine/classificationSpec.js';
+import { COMPONENT_COLORS as COMP_COLORS } from '../engine/componentPalette.js';
 import Latex from './Latex.jsx';
 import GlossaryProse from './GlossaryProse.jsx';
 
@@ -17,7 +18,6 @@ const ORBIT_R = 80;
 const NODE_R = 14;
 const COLOR_V = '#4A7CFF';
 const COLOR_W = '#94A3B8';
-const COMP_COLORS = ['#4A7CFF', '#23B761', '#FA9E33', '#7C3AED', '#F0524D'];
 const CASE_NODE_COLORS = {
   trivial: CASE_META.trivial?.color ?? '#CBD5E1',
   A: CASE_META.A?.color ?? '#4A7CFF',

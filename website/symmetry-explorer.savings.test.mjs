@@ -75,24 +75,49 @@ test('TotalCostView explains how per-component costs aggregate into the global t
   assert.match(totalCostSource, /How components combine/);
   assert.match(totalCostSource, /AggregationExplainer/);
 
-  // Formula pinning — catches silent edits that break the aggregation story.
-  // Notation updated to match the Counting Convention band: μ = total
-  // multiplication cost, α = total accumulation cost, M_a = per-component
-  // orbit count (Burnside). μ_a is no longer used at the aggregation layer.
+  // Top-line formula: Burnside unrolled on the μ arm, ∏_a α_a on the α arm.
+  // The hero renders the real machinery now, not a three-term shorthand.
   assert.match(totalCostSource, /AGGREGATION_FORMULA/);
-  assert.match(totalCostSource, /\\mu\s*=\s*\(k\s*-\s*1\)/);
-  assert.match(totalCostSource, /\\prod_\{a\}\\!M_a/);
-  assert.match(totalCostSource, /\\prod_\{a\}\\!\\alpha_a/);
-  assert.match(totalCostSource, /\\text\{Total\}\s*=\s*\\mu\s*\+\s*\\alpha/);
+  assert.match(totalCostSource, /\\text\{Total\}\s*\\;=\\;/);
+  assert.match(totalCostSource, /\(k-1\)\s*\\cdot\s*\\prod_\{a\}/);
+  assert.match(totalCostSource, /\\tfrac\{1\}\{\|G_a\|\}/);
+  assert.match(totalCostSource, /\\sum_\{g\s*\\in\s*G_a\}/);
+  assert.match(totalCostSource, /\\prod_\{c\}\s*n_c/);
+  assert.match(totalCostSource, /\\prod_\{a\}\s*\\alpha_a/);
 
-  // Glossary legend for the formula variables — rendered as a definition list,
-  // one row per symbol so the math is readable on small screens.
+  // Glossary — rendered as a definition list. Hybrid policy: covers every
+  // symbol in the top line plus any piecewise symbol that appears in two or
+  // more rows. One-off symbols live in leaf-badge tooltips.
   assert.match(totalCostSource, /AGGREGATION_LEGEND/);
-  assert.match(totalCostSource, /orbit count per component/);
-  assert.match(totalCostSource, /total multiplication cost/);
-  assert.match(totalCostSource, /accumulation cost per component/);
   assert.match(totalCostSource, /number of operand tensors/);
+  assert.match(totalCostSource, /symmetry group acting on component/);
+  // V and W — phrases wrapped in JSX spans so each can carry its own color
+  // (the V/W coloring matches the Interaction Graph legend).
+  assert.match(totalCostSource, /free \(output\) labels/);
+  assert.match(totalCostSource, /summed \(contracted\) labels/);
+  assert.match(totalCostSource, /orbit decomposition/);
+  assert.match(totalCostSource, /accumulation cost/);
   assert.match(totalCostSource, /<dl/);
   assert.match(totalCostSource, /<dt/);
   assert.match(totalCostSource, /<dd/);
+
+  // Six leaves from the current SHAPE × REGIME classification
+  // (shapeSpec.js + regimeSpec.js). Leaf ids match the canonical regime/shape
+  // ids so CaseBadge resolves color + tooltip from the live spec — no
+  // duplicated content in this file.
+  assert.match(totalCostSource, /AGGREGATION_LEAVES/);
+  for (const leaf of [
+    "id: 'trivial'",
+    "id: 'allVisible'",
+    "id: 'allSummed'",
+    "id: 'singleton'",
+    "id: 'directProduct'",
+    "id: 'bruteForceOrbit'",
+  ]) {
+    assert.ok(totalCostSource.includes(leaf), `expected leaf ${leaf} in TotalCostView`);
+  }
+
+  // Leaf badges reuse CaseBadge so their tooltip content stays in sync with
+  // the regime/shape specs and the rest of the page.
+  assert.match(totalCostSource, /CaseBadge\s+regimeId=\{leaf\.id\}/);
 });
