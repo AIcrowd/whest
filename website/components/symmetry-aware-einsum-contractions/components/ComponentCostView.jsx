@@ -112,16 +112,31 @@ function ComponentSummaryTable({
 }) {
   return (
     <div className="max-w-full overflow-x-auto rounded-xl border border-border bg-white shadow-sm">
-      <Table className="text-sm">
+      <Table className="w-full table-fixed text-sm">
+        <colgroup>
+          <col className="w-[10%]" />
+          <col className="w-[10%]" />
+          <col className="w-[12%]" />
+          <col className="w-[30%]" />
+          <col className="w-[11%]" />
+          <col className="w-[11%]" />
+          <col className="w-[16%]" />
+        </colgroup>
         <TableHeader className="bg-surface-raised">
           <TableRow className="border-border hover:bg-surface-raised">
-            <TableHead className="px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Case</TableHead>
-            <TableHead className="px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Labels</TableHead>
-            <TableHead className="px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Symmetry</TableHead>
-            <TableHead className="px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Method</TableHead>
-            <TableHead className="px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Multiplication Cost</TableHead>
-            <TableHead className="px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Accumulation Cost</TableHead>
-            <TableHead className="px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Total Savings</TableHead>
+            <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Case</TableHead>
+            <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Labels</TableHead>
+            <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Symmetry</TableHead>
+            <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Method</TableHead>
+            <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              <span className="block leading-tight">Multiplication</span>
+              <span className="block leading-tight">Cost</span>
+            </TableHead>
+            <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              <span className="block leading-tight">Accumulation</span>
+              <span className="block leading-tight">Cost</span>
+            </TableHead>
+            <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Savings</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody className="divide-y divide-border">
@@ -133,13 +148,16 @@ function ComponentSummaryTable({
             // and one write. Actual cost: mult orbits + distinct output bins.
             // Savings % = 1 - actual / dense, floored at 0.
             const labelCount = comp.labels?.length ?? 0;
-            const denseWork = 2 * dimensionN ** labelCount;
+            const denseCell = dimensionN ** labelCount; // |X| for this component
+            const denseWork = 2 * denseCell;            // one product + one write per cell
             const actualAcc = accumulationCount(comp);
             const actualWork = multiplicationOrbits + (actualAcc ?? 0);
-            const savingsPct =
-              denseWork > 0 && actualAcc !== null
-                ? Math.max(0, Math.round((1 - actualWork / denseWork) * 100))
-                : null;
+            const pct = (actual, dense) =>
+              dense > 0 ? Math.max(0, Math.round((1 - actual / dense) * 100)) : null;
+            const multSavingsPct = pct(multiplicationOrbits, denseCell);
+            const accSavingsPct = actualAcc !== null ? pct(actualAcc, denseCell) : null;
+            const totalSavingsPct =
+              actualAcc !== null ? pct(actualWork, denseWork) : null;
 
             return (
               <TableRow key={`comp-row-${idx}`} className="border-0 bg-surface hover:bg-surface-raised">
@@ -188,19 +206,32 @@ function ComponentSummaryTable({
                     : <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] text-amber-800">Unavailable</span>}
                 </TableCell>
                 <TableCell className="px-3 py-2">
-                  {savingsPct !== null ? (
-                    <span
-                      className={`rounded-full px-2 py-0.5 font-mono text-xs font-semibold ${
-                        savingsPct >= 50
-                          ? 'bg-emerald-100 text-emerald-800'
-                          : savingsPct > 0
-                            ? 'bg-amber-50 text-amber-800'
-                            : 'bg-stone-100 text-stone-600'
-                      }`}
-                      title={`dense ${denseWork.toLocaleString()} → actual ${actualWork.toLocaleString()}`}
-                    >
-                      {savingsPct}%
-                    </span>
+                  {totalSavingsPct !== null ? (
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+                          Total
+                        </span>
+                        <span
+                          className={`rounded-full px-2 py-0.5 font-mono text-xs font-semibold ${
+                            totalSavingsPct >= 50
+                              ? 'bg-emerald-100 text-emerald-800'
+                              : totalSavingsPct > 0
+                                ? 'bg-amber-50 text-amber-800'
+                                : 'bg-stone-100 text-stone-600'
+                          }`}
+                          title={`dense ${denseWork.toLocaleString()} → actual ${actualWork.toLocaleString()}`}
+                        >
+                          {totalSavingsPct}%
+                        </span>
+                      </div>
+                      <dl className="grid grid-cols-[auto_auto] gap-x-2 gap-y-0.5 font-mono text-[10px] leading-tight text-muted-foreground">
+                        <dt>Mult</dt>
+                        <dd className="text-right">{multSavingsPct}%</dd>
+                        <dt>Acc</dt>
+                        <dd className="text-right">{accSavingsPct}%</dd>
+                      </dl>
+                    </div>
                   ) : (
                     <span className="text-[11px] text-muted-foreground">—</span>
                   )}
