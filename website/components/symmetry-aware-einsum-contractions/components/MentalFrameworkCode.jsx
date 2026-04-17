@@ -35,13 +35,11 @@ const STEPS = {
   mult: {
     kicker: 'Step 1',
     label: 'multiply once',
-    count: 'μ = |RepSet|',
     color: 'text-primary',
   },
   acc: {
     kicker: 'Step 2',
     label: 'accumulate many',
-    count: 'α',
     color: 'text-amber-700',
   },
 };
@@ -75,9 +73,6 @@ function AnnotationRow({ line }) {
         <span className={`${step.color} font-bold`} aria-hidden="true">┃ </span>
         <span className={`${step.color} font-semibold not-italic`}>
           {step.kicker} · {step.label}
-        </span>
-        <span className="text-stone-500">
-          {'  '}({step.count})
         </span>
       </code>
     </Fragment>
@@ -138,6 +133,32 @@ export default function MentalFrameworkCode() {
             <CodeRow key={line.id} line={line} />
           ),
         )}
+      </div>
+
+      {/* Counting convention — introduces μ and α for the first time on the
+          page. Lives at the bottom of the figure so the figure's stretched
+          height (matching the left column) is used rather than left empty. */}
+      <div className="mt-auto border-t border-stone-200/70 bg-stone-100/60 px-5 py-4 md:px-6">
+        <div className="font-heading text-[10px] font-semibold uppercase tracking-[0.18em] text-stone-500">
+          Counting convention
+        </div>
+        <p className="mt-1.5 text-[12.5px] leading-6 text-stone-700">
+          Every{' '}
+          <code className="rounded bg-stone-200/60 px-1 font-mono text-[12px] text-stone-800">
+            base_val
+          </code>{' '}
+          above is short-hand for a multiplicative chain: two-operand einsums
+          cost one multiply per line, three-operand einsums cost two,
+          four-operand einsums cost three. Summing across all lines gives what
+          we call the{' '}
+          <strong className="font-semibold text-primary">Multiplication Cost (μ)</strong>.
+          Every{' '}
+          <code className="rounded bg-stone-200/60 px-1 font-mono text-[12px] text-stone-800">
+            R[out] += coeff · base_val
+          </code>{' '}
+          is one fused multiply-add; the sum of those is the{' '}
+          <strong className="font-semibold text-amber-700">Accumulation Cost (α)</strong>.
+        </p>
       </div>
     </figure>
   );

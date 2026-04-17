@@ -122,20 +122,32 @@ test('MentalFrameworkCode uses inline annotation rows at the correct indent', ()
   assert.doesNotMatch(src, /border-l-\[3px\]/);
 });
 
-test('MentalFrameworkCode step metadata names the Feynman-style labels and counts', () => {
+test('MentalFrameworkCode step metadata names the Feynman-style labels and colors', () => {
   const src = readComponent('MentalFrameworkCode.jsx');
-  // Step 1 · multiply once (μ = |RepSet|) in coral; Step 2 · accumulate
-  // many (α) in amber.
+  // Step 1 · multiply once (coral) and Step 2 · accumulate many (amber).
+  // μ and α themselves are introduced in the Counting Convention block
+  // below the code, so the inline step labels stay terse.
   assert.match(src, /kicker:\s*'Step 1'/);
   assert.match(src, /kicker:\s*'Step 2'/);
   assert.match(src, /label:\s*'multiply once'/);
   assert.match(src, /label:\s*'accumulate many'/);
-  assert.match(src, /count:\s*'μ = \|RepSet\|'/);
-  assert.match(src, /count:\s*'α'/);
   assert.match(src, /color:\s*'text-primary'/);
   assert.match(src, /color:\s*'text-amber-700'/);
   // Heavy vertical-bar glyph marks each annotation row.
   assert.match(src, /┃/);
+});
+
+test('MentalFrameworkCode renders the Counting Convention panel introducing μ and α', () => {
+  const src = readComponent('MentalFrameworkCode.jsx');
+  assert.match(src, /Counting convention/);
+  assert.match(src, /Multiplication Cost \(μ\)/);
+  assert.match(src, /Accumulation Cost \(α\)/);
+  // Anchors into the code above — names both lines it talks about.
+  assert.match(src, /base_val/);
+  assert.match(src, /R\[out\] \+= coeff/);
+  // Panel sits inside the figure and uses mt-auto to claim the stretched
+  // dead space at the bottom of the card.
+  assert.match(src, /mt-auto/);
 });
 
 test('MentalFrameworkCode uses Feynman-friendly comments for RepSet, Outs(rep) and coeff', () => {
