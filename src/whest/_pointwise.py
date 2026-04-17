@@ -20,6 +20,9 @@ from whest._symmetric import (
 from whest._validation import check_nan_inf, require_budget
 from whest.errors import UnsupportedFunctionError
 
+# Numpy 2.3+ introduces behavioral changes this module shims back to 2.2 semantics.
+_NUMPY_GE_2_3 = tuple(int(x) for x in _np.__version__.split(".")[:2]) >= (2, 3)
+
 # ---------------------------------------------------------------------------
 # Factory helpers
 # ---------------------------------------------------------------------------
@@ -682,7 +685,24 @@ amax = _counted_reduction(_np.amax, "amax")
 amin = _counted_reduction(_np.amin, "amin")
 any = _counted_reduction(_np.any, "any")
 average = _counted_reduction(_np.average, "average")
-count_nonzero = _counted_reduction(_np.count_nonzero, "count_nonzero")
+_count_nonzero_counted = _counted_reduction(_np.count_nonzero, "count_nonzero")
+
+
+def count_nonzero(a, axis=None, *, keepdims=False):
+    """Counted version of ``numpy.count_nonzero``. Cost: numel(input) FLOPs.
+
+    On numpy 2.3+, numpy returns a numpy scalar when ``axis is None``; this
+    wrapper coerces back to a Python ``int`` to preserve pre-2.3 semantics.
+    """
+    result = _count_nonzero_counted(a, axis=axis, keepdims=keepdims)
+    if axis is None and not keepdims:
+        return int(result)
+    return result
+
+
+attach_docstring(
+    count_nonzero, _np.count_nonzero, "counted_reduction", "numel(input) FLOPs"
+)
 if hasattr(_np, "cumulative_prod"):
     cumulative_prod = _counted_reduction(_np.cumulative_prod, "cumulative_prod")
 else:
