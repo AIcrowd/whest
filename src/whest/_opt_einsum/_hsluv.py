@@ -11,7 +11,7 @@ See NOTICE in this package for attribution details.
 from __future__ import annotations
 
 import math
-from functools import lru_cache, cache
+from functools import cache
 
 _M = (
     (3.240969941904521, -1.537383177570093, -0.498610760293),

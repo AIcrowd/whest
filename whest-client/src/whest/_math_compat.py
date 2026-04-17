@@ -12,8 +12,8 @@ a fallback ``_constants.py`` is checked in with the same values.
 
 from __future__ import annotations
 
-from functools import reduce
 from collections.abc import Iterable
+from functools import reduce
 
 from whest._constants import e, inf, nan, pi
 
