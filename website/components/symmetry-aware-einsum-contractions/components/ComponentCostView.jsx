@@ -12,6 +12,7 @@ import PanZoomCanvas from './PanZoomCanvas.jsx';
 import ExplorerModal from './ExplorerModal.jsx';
 import MultiplicationCostCard from './MultiplicationCostCard.jsx';
 import AccumulationHardCard from './AccumulationHardCard.jsx';
+import { getRegimePresentation } from './regimePresentation.js';
 
 function isTrivial(comp) {
   return comp.caseType === 'trivial';
@@ -152,23 +153,35 @@ function ComponentSummaryTable({
                   <SymmetryBadge value={comp.groupName || 'trivial'} />
                 </TableCell>
                 <TableCell className="px-3 py-2">
-                  <div className="flex flex-wrap items-center gap-1.5">
-                    <CaseBadge
-                      regimeId={comp.accumulation?.regimeId ?? comp.shape ?? comp.caseType}
-                      caseType={comp.caseType}
-                      size="sm"
-                      variant="pill"
-                    />
-                    {canOpenOrbits ? (
-                      <button
-                        type="button"
-                        className="rounded-full border border-coral bg-white px-2 py-0.5 text-[10px] font-semibold text-coral transition-colors hover:bg-coral-light"
-                        onClick={() => onOpenOrbitModal?.(comp)}
-                      >
-                        Enumerate →
-                      </button>
-                    ) : null}
-                  </div>
+                  {(() => {
+                    const leafId = comp.accumulation?.regimeId ?? comp.shape ?? comp.caseType;
+                    const presentation = getRegimePresentation(leafId);
+                    const description = presentation?.tooltip?.body;
+                    const latex = presentation?.tooltip?.latex;
+                    return (
+                      <div className="space-y-1.5">
+                        {description ? (
+                          <div className="text-[11px] italic leading-snug text-muted-foreground">
+                            {description}
+                          </div>
+                        ) : null}
+                        {latex ? (
+                          <div className="overflow-x-auto text-xs text-foreground">
+                            <Latex math={latex} />
+                          </div>
+                        ) : null}
+                        {canOpenOrbits ? (
+                          <button
+                            type="button"
+                            className="rounded-full border border-coral bg-white px-2 py-0.5 text-[10px] font-semibold text-coral transition-colors hover:bg-coral-light"
+                            onClick={() => onOpenOrbitModal?.(comp)}
+                          >
+                            Enumerate orbits →
+                          </button>
+                        ) : null}
+                      </div>
+                    );
+                  })()}
                 </TableCell>
                 <TableCell className="px-3 py-2">
                   <code className="font-mono text-xs text-foreground">{multiplicationOrbits.toLocaleString()}</code>
