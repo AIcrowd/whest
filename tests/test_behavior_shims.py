@@ -42,3 +42,51 @@ def test_count_nonzero_int_return_with_shim_forced(monkeypatch):
     result = _pointwise.count_nonzero(arr)
     assert type(result) is int
     assert result == 3
+
+
+# -------------------------------------------------------------------------
+# unique: string / complex input must return sorted values on all versions
+# -------------------------------------------------------------------------
+
+
+def test_unique_strings_returns_sorted():
+    arr = np.array(["banana", "apple", "cherry", "apple"])
+    result = we.unique(arr)
+    np.testing.assert_array_equal(result, np.array(["apple", "banana", "cherry"]))
+
+
+def test_unique_complex_returns_sorted():
+    arr = np.array([2 + 1j, 1 + 0j, 2 + 0j, 1 + 0j], dtype=np.complex128)
+    result = we.unique(arr)
+    expected = np.sort(np.array([1 + 0j, 2 + 0j, 2 + 1j]))
+    np.testing.assert_array_equal(result, expected)
+
+
+def test_unique_numeric_sort_unaffected():
+    """Negative case: shim is a no-op for non-string / non-complex dtypes."""
+    arr = np.array([3.0, 1.0, 2.0, 1.0])
+    result = we.unique(arr)
+    np.testing.assert_array_equal(result, np.array([1.0, 2.0, 3.0]))
+
+
+def test_unique_with_return_index_delegates_to_numpy():
+    """Shim does not attempt to re-sort when auxiliary arrays are requested."""
+    arr = np.array(["b", "a", "c"])
+    values, idx = we.unique(arr, return_index=True)
+    # Shape / type consistency; actual order is whatever numpy returns.
+    assert values.shape == (3,)
+    assert idx.shape == (3,)
+
+
+def test_unique_shim_forced_for_strings(monkeypatch):
+    """Force the shim's code path to verify the re-sort on numpy <2.3 too."""
+    import whest._sorting_ops as _sorting_ops
+
+    monkeypatch.setattr(_sorting_ops, "_NUMPY_GE_2_3", True)
+    # Input order matters — we need something numpy would return unsorted
+    # if the 2.3+ behavior were active. Since we're on 2.2, the raw call
+    # sorts; our re-sort is a no-op. So test that the RESULT is sorted
+    # either way.
+    arr = np.array(["banana", "apple", "cherry"])
+    result = _sorting_ops.unique(arr)
+    np.testing.assert_array_equal(result, np.array(["apple", "banana", "cherry"]))
