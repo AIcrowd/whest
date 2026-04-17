@@ -101,18 +101,20 @@ function ComponentSummaryTable({
     <div className="max-w-full overflow-x-auto rounded-xl border border-border bg-white shadow-sm">
       <Table className="w-full table-fixed text-sm">
         <colgroup>
+          <col className="w-[11%]" />
+          <col className="w-[11%]" />
           <col className="w-[14%]" />
-          <col className="w-[14%]" />
-          <col className="w-[18%]" />
-          <col className="w-[14%]" />
-          <col className="w-[18%]" />
           <col className="w-[22%]" />
+          <col className="w-[12%]" />
+          <col className="w-[14%]" />
+          <col className="w-[16%]" />
         </colgroup>
         <TableHeader className="bg-surface-raised">
           <TableRow className="border-border hover:bg-surface-raised">
             <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Case</TableHead>
             <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Labels</TableHead>
             <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Symmetry</TableHead>
+            <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Method</TableHead>
             <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">MUL Cost</TableHead>
             <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Acc Cost</TableHead>
             <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Savings</TableHead>
@@ -150,29 +152,37 @@ function ComponentSummaryTable({
                   <SymmetryBadge value={comp.groupName || 'trivial'} />
                 </TableCell>
                 <TableCell className="px-3 py-2">
-                  <code className="font-mono text-xs text-foreground">{multiplicationOrbits.toLocaleString()}</code>
-                </TableCell>
-                <TableCell className="px-3 py-2">
-                  <div className="flex flex-wrap items-center gap-2">
-                    {accumulationCount(comp) !== null ? (
-                      <code className="font-mono text-xs text-foreground">
-                        {accumulationCount(comp).toLocaleString()}
-                      </code>
-                    ) : (
-                      <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] text-amber-800">
-                        Unavailable
-                      </span>
-                    )}
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <CaseBadge
+                      regimeId={comp.accumulation?.regimeId ?? comp.shape ?? comp.caseType}
+                      caseType={comp.caseType}
+                      size="sm"
+                      variant="pill"
+                    />
                     {canOpenOrbits ? (
                       <button
                         type="button"
                         className="rounded-full border border-coral bg-white px-2 py-0.5 text-[10px] font-semibold text-coral transition-colors hover:bg-coral-light"
                         onClick={() => onOpenOrbitModal?.(comp)}
                       >
-                        Orbit Enumeration
+                        Enumerate →
                       </button>
                     ) : null}
                   </div>
+                </TableCell>
+                <TableCell className="px-3 py-2">
+                  <code className="font-mono text-xs text-foreground">{multiplicationOrbits.toLocaleString()}</code>
+                </TableCell>
+                <TableCell className="px-3 py-2">
+                  {accumulationCount(comp) !== null ? (
+                    <code className="font-mono text-xs text-foreground">
+                      {accumulationCount(comp).toLocaleString()}
+                    </code>
+                  ) : (
+                    <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] text-amber-800">
+                      Unavailable
+                    </span>
+                  )}
                 </TableCell>
                 <TableCell className="px-3 py-2">
                   {totalSavingsPct !== null ? (
