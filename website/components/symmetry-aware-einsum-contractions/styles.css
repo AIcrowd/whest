@@ -525,6 +525,25 @@
   gap: 8px;
 }
 
+.pair-chips-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.pair-chips-grid .pair-chip {
+  width: 100%;
+}
+
+.sigma-toggles-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
 .pair-chip {
   display: flex;
   flex-direction: column;

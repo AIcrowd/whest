@@ -3,7 +3,7 @@ import { buildUVertexLabels } from '../engine/uVertexLabel.js';
 import IncidenceMatrix from './IncidenceMatrix.jsx';
 
 const STAGE_LABELS = ['M', 'σ(M)', 'π(σ(M))'];
-const VISIBLE_VALID_PAIR_LIMIT = 5;
+const VISIBLE_VALID_PAIR_LIMIT = 4;
 
 export default function SigmaLoop({ results, graph, matrixData, example, variableColors, group, onSelectedPairChange }) {
   const allPairs = results.filter((result) => !result.skipped);
@@ -163,11 +163,11 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
         </div>
       </div>
 
-      {/* Valid pairs — shown inline */}
+      {/* Valid pairs — shown inline in a 2-column grid */}
       {validPairs.length > 0 && (
         <div className="pair-selector">
           <span className="pair-selector-label">Valid (σ, π) pairs:</span>
-          <div className="pair-chips">
+          <div className="pair-chips pair-chips-grid">
             {inlineValidPairs.map((r) => {
               const origIdx = allPairs.indexOf(r);
               return (
@@ -182,27 +182,28 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
                 </button>
               );
             })}
-
-            {remainingValidPairs.length > 0 && (
-              <button
-                className="valid-toggle"
-                onClick={() => setShowMoreValid(true)}
-              >
-                ▸ {remainingValidPairs.length} more (σ, π) pairs
-              </button>
-            )}
           </div>
         </div>
       )}
 
-      {/* Rejected pairs — opens modal list */}
-      {rejectedPairs.length > 0 && (
-        <div className="rejected-section">
-          <button
-            className="rejected-toggle"
-            onClick={() => setShowRejected(true)}>
-            ▸ {rejectedPairs.length} rejected σ{rejectedPairs.length !== 1 ? "'s" : ''}
-          </button>
+      {/* Overflow + rejected toggles — share one row */}
+      {(remainingValidPairs.length > 0 || rejectedPairs.length > 0) && (
+        <div className="sigma-toggles-row">
+          {remainingValidPairs.length > 0 && (
+            <button
+              className="valid-toggle"
+              onClick={() => setShowMoreValid(true)}
+            >
+              ▸ {remainingValidPairs.length} more (σ, π) pair{remainingValidPairs.length !== 1 ? 's' : ''}
+            </button>
+          )}
+          {rejectedPairs.length > 0 && (
+            <button
+              className="rejected-toggle"
+              onClick={() => setShowRejected(true)}>
+              ▸ {rejectedPairs.length} rejected σ{rejectedPairs.length !== 1 ? "'s" : ''}
+            </button>
+          )}
         </div>
       )}
 
