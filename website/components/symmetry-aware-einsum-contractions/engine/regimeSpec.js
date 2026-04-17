@@ -42,7 +42,7 @@ export const REGIME_SPEC = {
   },
   bruteForceOrbit: {
     id: 'bruteForceOrbit',
-    label: 'Brute-force orbit projection',
+    label: 'Brute-force orbit',
     shortLabel: 'Brute',
     when: 'No closed form fired; Π n_ℓ · |G| ≤ budget.',
     latex: String.raw`A = \sum_{O \in X/G} |\pi_V(O)|`,

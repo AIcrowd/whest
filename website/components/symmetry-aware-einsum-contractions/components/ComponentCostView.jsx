@@ -102,12 +102,12 @@ function ComponentSummaryTable({
     <div className="max-w-full overflow-x-auto rounded-xl border border-border bg-white shadow-sm">
       <Table className="w-full table-fixed text-sm">
         <colgroup>
-          <col className="w-[11%]" />
-          <col className="w-[11%]" />
           <col className="w-[14%]" />
-          <col className="w-[22%]" />
+          <col className="w-[9%]" />
           <col className="w-[12%]" />
-          <col className="w-[14%]" />
+          <col className="w-[27%]" />
+          <col className="w-[10%]" />
+          <col className="w-[12%]" />
           <col className="w-[16%]" />
         </colgroup>
         <TableHeader className="bg-surface-raised">
@@ -143,16 +143,16 @@ function ComponentSummaryTable({
 
             return (
               <TableRow key={`comp-row-${idx}`} className="border-0 bg-surface hover:bg-surface-raised">
-                <TableCell className="px-3 py-2">
+                <TableCell className="px-3 py-3 align-top">
                   <CaseBadge regimeId={comp.accumulation?.regimeId ?? comp.shape ?? comp.caseType} caseType={comp.caseType} size="sm" />
                 </TableCell>
-                <TableCell className="px-3 py-2">
+                <TableCell className="px-3 py-3 align-top">
                   <LabelsCell comp={comp} />
                 </TableCell>
-                <TableCell className="px-3 py-2">
+                <TableCell className="px-3 py-3 align-top">
                   <SymmetryBadge value={comp.groupName || 'trivial'} />
                 </TableCell>
-                <TableCell className="px-3 py-2">
+                <TableCell className="px-3 py-3 align-top">
                   {(() => {
                     const leafId = comp.accumulation?.regimeId ?? comp.shape ?? comp.caseType;
                     const presentation = getRegimePresentation(leafId);
@@ -183,12 +183,12 @@ function ComponentSummaryTable({
                     );
                   })()}
                 </TableCell>
-                <TableCell className="px-3 py-2">
-                  <code className="font-mono text-xs text-foreground">{multiplicationOrbits.toLocaleString()}</code>
+                <TableCell className="px-3 py-3 align-top">
+                  <code className="font-mono text-sm font-semibold text-foreground">{multiplicationOrbits.toLocaleString()}</code>
                 </TableCell>
-                <TableCell className="px-3 py-2">
+                <TableCell className="px-3 py-3 align-top">
                   {accumulationCount(comp) !== null ? (
-                    <code className="font-mono text-xs text-foreground">
+                    <code className="font-mono text-sm font-semibold text-foreground">
                       {accumulationCount(comp).toLocaleString()}
                     </code>
                   ) : (
@@ -197,7 +197,7 @@ function ComponentSummaryTable({
                     </span>
                   )}
                 </TableCell>
-                <TableCell className="px-3 py-2">
+                <TableCell className="px-3 py-3 align-top">
                   {totalSavingsPct !== null ? (
                     <div className="flex flex-col gap-1">
                       <div className="flex items-center gap-1.5">
