@@ -227,10 +227,17 @@ XFAIL_PATTERNS: dict[str, str] = {
         "SUBCLASS_RETURN: _aswhest OWNDATA copy interacts with _symmetric_2d wrapping"
     ),
     "*TestResize::test_reshape_from_zero": (
-        "NUMPY_INTERNAL: resize from zero-element array edge case"
+        "SUBCLASS_RETURN: np.resize returns WhestArray; the subsequent "
+        "assert_array_equal invokes WhestArray.__eq__ -> we.equal -> "
+        "np.equal, which has no ufunc loop for VoidDType (the test uses "
+        "dtype=[('a', np.float32)], a structured dtype). Same root cause "
+        "as other SUBCLASS_RETURN entries."
     ),
     "*TestFromiter::test_growth_and_complicated_dtypes*i,O*": (
-        "NUMPY_INTERNAL: fromiter with object dtype interacts unexpectedly with patched np"
+        "SUBCLASS_RETURN: fromiter returns WhestArray; the subsequent "
+        "assert_array_equal invokes WhestArray.__eq__ -> we.equal -> "
+        "np.equal, which has no ufunc loop for VoidDType (structured "
+        "dtypes). Same root cause as other SUBCLASS_RETURN entries."
     ),
     "*TestOut::test_out_wrap_no_leak": (
         "NUMPY_INTERNAL: refcount check sees unexpected count due to WhestArray subclass "
