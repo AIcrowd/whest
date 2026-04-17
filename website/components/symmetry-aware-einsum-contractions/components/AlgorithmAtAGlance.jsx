@@ -53,7 +53,7 @@ function ColorLegend() {
 
 function EinsumIntroColumn() {
   return (
-    <div>
+    <div className="flex h-full flex-col">
       <span className="font-heading text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
         Einsum contraction
       </span>
@@ -88,7 +88,11 @@ function EinsumIntroColumn() {
 
       <ColorLegend />
 
-      <div className="mt-6 rounded-2xl border border-primary/20 bg-accent/40 px-5 py-5">
+      {/* Spacer: anchors the callout to the bottom when the right column is taller
+          (so both columns end at the same y), with a mt-6 minimum gap when not. */}
+      <div className="mt-6 flex-1" aria-hidden="true" />
+
+      <div className="rounded-2xl border border-primary/20 bg-accent/40 px-5 py-5">
         <span className="font-heading text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
           Where symmetry enters
         </span>
@@ -115,7 +119,7 @@ function EinsumIntroColumn() {
 
 function MentalFrameworkColumn() {
   return (
-    <div>
+    <div className="flex h-full flex-col">
       <span className="font-heading text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
         The mental framework
       </span>
@@ -130,7 +134,7 @@ function MentalFrameworkColumn() {
         counting them without enumerating the full grid.
       </p>
 
-      <div className="mt-6">
+      <div className="mt-6 flex flex-1 flex-col">
         <MentalFrameworkCode />
       </div>
     </div>
@@ -148,11 +152,12 @@ export default function AlgorithmAtAGlance() {
         contentClassName="pt-6"
       >
         {/* Two-column top: einsum notation (L) ↔ mental framework code (R).
-            items-start lets each column take its natural height rather than
-            stretching both to the taller one's bottom — the right column's
-            Counting Convention band makes it taller, so matching heights
-            would leave dead space under the left column. */}
-        <div className="grid items-start gap-8 lg:grid-cols-2 lg:gap-10">
+            items-stretch makes both columns reach the same y by design:
+            whichever side is naturally shorter grows a spacer to fill. On the
+            left the "Where symmetry enters" callout sticks to the bottom; on
+            the right the MentalFrameworkCode figure stretches so its Counting
+            Convention band anchors to the bottom. */}
+        <div className="grid items-stretch gap-8 lg:grid-cols-2 lg:gap-10">
           <EinsumIntroColumn />
           <MentalFrameworkColumn />
         </div>

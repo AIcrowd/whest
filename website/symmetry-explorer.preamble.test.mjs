@@ -146,9 +146,26 @@ test('MentalFrameworkCode renders the Counting Convention panel introducing μ a
   assert.match(src, /base_val/);
   assert.match(src, /R\[out\] \+= coeff/);
   // Panel sits inside the figure as its own bottom band with a soft
-  // top border; each column flows at natural height (items-start on the
-  // parent grid), so no stretch-to-match CSS is needed here.
+  // top border; mt-auto anchors it to the bottom of the figure so that
+  // when the parent column stretches to match the left side's height
+  // (items-stretch on the grid), the Counting Convention band stays
+  // glued to the bottom instead of floating in the middle.
   assert.match(src, /border-t border-stone-200\/70/);
+  assert.match(src, /mt-auto border-t border-stone-200\/70/);
+});
+
+test('Preamble columns are forced to equal height so both bottoms align', () => {
+  const src = readComponent('AlgorithmAtAGlance.jsx');
+  // items-stretch on the parent grid makes both columns the same height;
+  // the shorter side grows a spacer / stretched figure to fill.
+  assert.match(src, /items-stretch/);
+  assert.doesNotMatch(src, /items-start/);
+  // Left column is a flex column so the callout can be anchored at the
+  // bottom via a flex-1 spacer above it.
+  assert.match(src, /flex h-full flex-col/);
+  // Right column's figure wrapper is flex-1 so the MentalFrameworkCode
+  // figure fills the remaining vertical space.
+  assert.match(src, /mt-6 flex flex-1 flex-col/);
 });
 
 test('MentalFrameworkCode uses Feynman-friendly comments for RepSet, Outs(rep) and coeff', () => {

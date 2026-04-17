@@ -103,7 +103,7 @@ function CodeRow({ line }) {
 
 export default function MentalFrameworkCode() {
   return (
-    <figure className="relative overflow-hidden rounded-2xl border border-stone-200 bg-stone-50 shadow-sm">
+    <figure className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-stone-200 bg-stone-50 shadow-sm">
       <figcaption className="flex items-baseline justify-between gap-3 border-b border-stone-200/70 px-5 py-3 md:px-6">
         <span className="font-heading text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
           Mental framework
@@ -136,10 +136,10 @@ export default function MentalFrameworkCode() {
       </div>
 
       {/* Counting convention — introduces μ and α for the first time on the
-          page. Sits directly below the code grid; figure takes its natural
-          height and the grid's items-start lets the left column flow
-          independently. */}
-      <div className="border-t border-stone-200/70 bg-stone-100/60 px-5 py-4 md:px-6">
+          page. Sits directly below the code grid; mt-auto anchors it to the
+          bottom of the figure so that when the parent column stretches to
+          match the left side's height, the band stays glued to the bottom. */}
+      <div className="mt-auto border-t border-stone-200/70 bg-stone-100/60 px-5 py-4 md:px-6">
         <div className="font-heading text-[10px] font-semibold uppercase tracking-[0.18em] text-stone-500">
           Counting convention
         </div>

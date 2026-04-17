@@ -599,7 +599,11 @@ export default function ExampleChooser({
       </div>
 
       <div className="grid grid-cols-1 gap-6 items-stretch lg:grid-cols-[minmax(0,60%)_minmax(0,40%)]">
-        <div className="min-w-0 h-full">{builderContent}</div>
+        {/* Left cell is shorter than the right (PythonCodeBlock fills its cell
+            exactly). justify-center spreads the slack equally above and below
+            the builder so the variables toolbar + expression row sit centred
+            rather than huddled at the top of the cell. */}
+        <div className="flex min-w-0 h-full flex-col justify-center">{builderContent}</div>
         <div className="min-w-0 h-full">
           <PythonCodeBlock
             code={pythonCode}
