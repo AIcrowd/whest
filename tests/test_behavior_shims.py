@@ -33,11 +33,9 @@ def test_count_nonzero_with_axis_returns_ndarray():
     np.testing.assert_array_equal(result, [1, 1, 2])
 
 
-def test_count_nonzero_int_return_with_shim_forced(monkeypatch):
-    """Force the shim's code path even on numpy <2.3 to verify the int coercion."""
+def test_count_nonzero_int_return_is_unconditional():
+    """Coercion to int for axis=None is unconditional regardless of numpy version."""
     import whest._pointwise as _pointwise
-
-    monkeypatch.setattr(_pointwise, "_NUMPY_GE_2_3", True)
     arr = np.array([0, 1, 2, 0, 3])
     result = _pointwise.count_nonzero(arr)
     assert type(result) is int

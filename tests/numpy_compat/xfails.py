@@ -123,6 +123,12 @@ Unit suite gaps (for Task 11 to fix, not this file):
 # Reason-string constants for use in XFAIL_PATTERNS values.
 # Using bare string literals in the dict is fine too; these exist so
 # grep / tooling can find all tests sharing a category quickly.
+# NOTE: BEHAVIORAL_SHIM and REMOVED_IN_NUMPY are reserved for future
+# triage rounds. The current 2.3/2.4 triage did not surface any test
+# needing these categories — numpy's own test suite doesn't exercise
+# count_nonzero return types or the removed in1d/trapz symbols from
+# within its bundled test files. If a future triage finds such tests,
+# use these constants as XFAIL_PATTERNS values.
 BEHAVIORAL_SHIM = (
     "BEHAVIORAL_SHIM: whest intentionally preserves pre-2.3 behavior; "
     "numpy's test asserts the 2.3+ behavior and therefore fails when "

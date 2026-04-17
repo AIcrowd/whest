@@ -20,9 +20,6 @@ from whest._symmetric import (
 from whest._validation import check_nan_inf, require_budget
 from whest.errors import UnsupportedFunctionError
 
-# Numpy 2.3+ introduces behavioral changes this module shims back to 2.2 semantics.
-_NUMPY_GE_2_3 = tuple(int(x) for x in _np.__version__.split(".")[:2]) >= (2, 3)
-
 # ---------------------------------------------------------------------------
 # Factory helpers
 # ---------------------------------------------------------------------------
@@ -691,8 +688,13 @@ _count_nonzero_counted = _counted_reduction(_np.count_nonzero, "count_nonzero")
 def count_nonzero(a, axis=None, *, keepdims=False):
     """Counted version of ``numpy.count_nonzero``. Cost: numel(input) FLOPs.
 
-    On numpy 2.3+, numpy returns a numpy scalar when ``axis is None``; this
-    wrapper coerces back to a Python ``int`` to preserve pre-2.3 semantics.
+    When ``axis is None`` (and not ``keepdims``) the result is always
+    coerced to a Python ``int``. This is unconditional because whest's
+    ``_counted_reduction`` factory wraps scalar results via ``_aswhest``
+    on every numpy version, so without this coercion users would see a
+    ``WhestArray`` rather than the plain ``int`` that ``numpy.count_nonzero``
+    documents. The coercion also normalizes the numpy 2.3+ change where
+    the raw numpy return type became a numpy scalar.
     """
     result = _count_nonzero_counted(a, axis=axis, keepdims=keepdims)
     if axis is None and not keepdims:
