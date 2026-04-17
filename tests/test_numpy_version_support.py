@@ -135,18 +135,27 @@ def test_all_version_gated_functions_importable():
 def test_in1d_removed_in_numpy_2_4(monkeypatch):
     """When numpy.in1d is unavailable, we.in1d raises UnsupportedFunctionError."""
     import importlib
+    import sys
 
     import numpy as _np
 
     import whest._sorting_ops as _sorting_ops
 
-    # Reload the module with numpy.in1d hidden to hit the else branch.
-    monkeypatch.delattr(_np, "in1d", raising=False)
-    importlib.reload(_sorting_ops)
+    # Save the real module object so we can restore it after the test —
+    # otherwise the reload below leaves sys.modules pointing at the stub
+    # version, which would leak to any later code that does a fresh import.
+    _original_sorting_ops = sys.modules["whest._sorting_ops"]
 
-    with pytest.raises(UnsupportedFunctionError) as exc_info:
-        _sorting_ops.in1d([1, 2, 3], [2, 3, 4])
-    err = exc_info.value
-    assert err.max_version == "2.4"
-    assert err.replacement == "isin"
-    assert "removed in numpy 2.4" in str(err)
+    try:
+        monkeypatch.delattr(_np, "in1d", raising=False)
+        importlib.reload(_sorting_ops)
+
+        with pytest.raises(UnsupportedFunctionError) as exc_info:
+            _sorting_ops.in1d([1, 2, 3], [2, 3, 4])
+        err = exc_info.value
+        assert err.max_version == "2.4"
+        assert err.replacement == "isin"
+        assert "removed in numpy 2.4" in str(err)
+    finally:
+        # Restore sys.modules so later tests / consumers see the real in1d.
+        sys.modules["whest._sorting_ops"] = _original_sorting_ops
