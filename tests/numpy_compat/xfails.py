@@ -141,6 +141,27 @@ REMOVED_IN_NUMPY = (
 
 XFAIL_PATTERNS: dict[str, str] = {
     # ------------------------------------------------------------------ #
+    # test_pocketfft.py — upstream numpy flake (not whest's fault)        #
+    # ------------------------------------------------------------------ #
+    # test_identity_long_short_reversed[longdouble] has atol = 5 * spacing
+    # on the dtype, which on Linux x86 (80-bit extended longdouble,
+    # ε ≈ 1.08e-19) leaves about 5.4e-19 of headroom. The test uses
+    # unseeded random input and hits ~5.96e-19 mismatches "fairly often"
+    # (numpy's words). Upstream patched this on numpy main in commit
+    # 0c514d9 by bumping atol from 5×spacing to 6×spacing; shipped in
+    # numpy 2.4 but NOT backported to 2.3. So this pattern fires only
+    # on numpy 2.3 × longdouble × Linux; on 2.2 the native path returned
+    # double anyway, and on 2.4+ the upstream fix means the test passes.
+    # strict=False (the default for our conftest) handles the 2.2/2.4
+    # xpass cases cleanly.
+    "*TestFFT1D::test_identity_long_short_reversed*longdouble*": (
+        "UPSTREAM_NUMPY_FLAKE: numpy 2.3 longdouble FFT tolerance is too "
+        "tight (5×spacing on ε≈1.08e-19 leaves no headroom); unseeded "
+        "random input hits this occasionally. Fixed upstream in numpy "
+        "commit 0c514d9 (atol: 5→6×spacing), shipped in 2.4, not "
+        "backported to 2.3. xpass on 2.2/2.4 is expected."
+    ),
+    # ------------------------------------------------------------------ #
     # test_random.py                                                      #
     # ------------------------------------------------------------------ #
     # test_shuffle iterates the shuffle over 11 array variants and does
