@@ -224,16 +224,16 @@ export default function SymmetryAwareEinsumContractionsApp() {
       />
 
       <div className="w-full pb-20 pt-8">
-        <div className="flex flex-col pb-6">
-          <ExplorerSectionCard
-          eyebrow="Interactive walkthrough"
-          title="Symmetry Aware Einsum Contractions"
-          description={<><em>Symmetry detection for einsum contractions</em>, explained as a five-act explorer.</>}
-          className="border-border/70 shadow-sm"
-          contentClassName="pt-6"
-        >
-          </ExplorerSectionCard>
-
+        <div className="mx-auto flex w-full max-w-[1460px] flex-col gap-2 px-6 pb-6 md:px-8 lg:px-10">
+          <span className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+            Interactive walkthrough
+          </span>
+          <h1 className="text-lg font-semibold leading-tight text-foreground">
+            Symmetry Aware Einsum Contractions
+          </h1>
+          <p className="text-sm leading-6 text-muted-foreground">
+            <em>Symmetry detection for einsum contractions</em>, explained as a five-act explorer.
+          </p>
         </div>
 
         <div className="mx-auto w-full max-w-[1460px] px-6 md:px-8 lg:px-10">

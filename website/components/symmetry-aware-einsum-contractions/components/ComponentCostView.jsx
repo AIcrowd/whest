@@ -8,7 +8,6 @@ import SymmetryBadge from './SymmetryBadge.jsx';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { LabelInteractionGraph } from './ComponentView.jsx';
 import DecisionLadder from './DecisionLadder.jsx';
-import CompactCaseTable from './CompactCaseTable.jsx';
 import PanZoomCanvas from './PanZoomCanvas.jsx';
 import { getCasePresentation, getRegimePresentation } from './regimePresentation.js';
 import ExplorerModal from './ExplorerModal.jsx';
@@ -122,6 +121,7 @@ function ComponentSummaryTable({
             <TableHead className="px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Method</TableHead>
             <TableHead className="px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Multiplication Cost</TableHead>
             <TableHead className="px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Accumulation Cost</TableHead>
+            <TableHead className="px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Total Savings</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody className="divide-y divide-border">
@@ -129,6 +129,17 @@ function ComponentSummaryTable({
             const multiplicationOrbits = computeMultiplicationOrbits(comp, dimensionN);
             const accumulationCost = computeAccumulationCost(comp, dimensionN, fallbackReductionCost);
             const canOpenOrbits = supportsOrbitEnumeration(comp) && (orbitRows?.length ?? 0) > 0;
+            // Dense baseline for this component: every tuple does one product
+            // and one write. Actual cost: mult orbits + distinct output bins.
+            // Savings % = 1 - actual / dense, floored at 0.
+            const labelCount = comp.labels?.length ?? 0;
+            const denseWork = 2 * dimensionN ** labelCount;
+            const actualAcc = accumulationCount(comp);
+            const actualWork = multiplicationOrbits + (actualAcc ?? 0);
+            const savingsPct =
+              denseWork > 0 && actualAcc !== null
+                ? Math.max(0, Math.round((1 - actualWork / denseWork) * 100))
+                : null;
 
             return (
               <TableRow key={`comp-row-${idx}`} className="border-0 bg-surface hover:bg-surface-raised">
@@ -175,6 +186,24 @@ function ComponentSummaryTable({
                   {accumulationCount(comp) !== null
                     ? <code className="font-mono text-xs text-foreground">{accumulationCount(comp).toLocaleString()}</code>
                     : <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] text-amber-800">Unavailable</span>}
+                </TableCell>
+                <TableCell className="px-3 py-2">
+                  {savingsPct !== null ? (
+                    <span
+                      className={`rounded-full px-2 py-0.5 font-mono text-xs font-semibold ${
+                        savingsPct >= 50
+                          ? 'bg-emerald-100 text-emerald-800'
+                          : savingsPct > 0
+                            ? 'bg-amber-50 text-amber-800'
+                            : 'bg-stone-100 text-stone-600'
+                      }`}
+                      title={`dense ${denseWork.toLocaleString()} → actual ${actualWork.toLocaleString()}`}
+                    >
+                      {savingsPct}%
+                    </span>
+                  ) : (
+                    <span className="text-[11px] text-muted-foreground">—</span>
+                  )}
                 </TableCell>
               </TableRow>
             );
@@ -314,8 +343,8 @@ export default function ComponentCostView({
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
           Each component is routed through a yes/no spine that dispatches to the
           cheapest applicable closed form, or to brute-force orbit projection
-          when nothing else fits. Median/max timings in the table on the right
-          come from the latest benchmark run.
+          when nothing else fits. The table on the right shows each detected
+          component, the method that fires, and the savings over dense.
         </p>
         <div className="mt-4 grid gap-6 lg:grid-cols-[30%_1fr]">
           <DecisionLadder
@@ -324,24 +353,18 @@ export default function ComponentCostView({
               .filter(Boolean)}
             spotlightLeafIds={spotlightLeafIds}
           />
-          <CompactCaseTable
-            activeRegimeIds={components
-              .flatMap((c) => [c.accumulation?.regimeId, c.shape])
-              .filter(Boolean)}
+          <ComponentSummaryTable
+            components={components}
+            dimensionN={dimensionN}
+            fallbackReductionCost={fallbackReductionCost}
+            orbitRows={orbitRows}
+            onOpenOrbitModal={(comp) => {
+              setOrbitModalComponent(comp);
+              setShowOrbitModal(true);
+            }}
           />
         </div>
       </div>
-
-      <ComponentSummaryTable
-        components={components}
-        dimensionN={dimensionN}
-        fallbackReductionCost={fallbackReductionCost}
-        orbitRows={orbitRows}
-        onOpenOrbitModal={(comp) => {
-          setOrbitModalComponent(comp);
-          setShowOrbitModal(true);
-        }}
-      />
 
       <ExplorerModal
         title="Orbit Enumeration"
