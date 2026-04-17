@@ -1161,7 +1161,9 @@ if hasattr(_np, "trapz"):
         budget = require_budget()
         if not isinstance(y, _np.ndarray):
             y = _np.asarray(y)
-        with budget.deduct("trapz", flop_cost=y.size, subscripts=None, shapes=(y.shape,)):
+        with budget.deduct(
+            "trapz", flop_cost=y.size, subscripts=None, shapes=(y.shape,)
+        ):
             result = _np.trapz(y, x=x, dx=dx, axis=axis)
         return result
 

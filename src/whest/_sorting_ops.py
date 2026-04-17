@@ -384,9 +384,7 @@ if hasattr(_np, "in1d"):
 else:
 
     def in1d(*args, **kwargs):
-        raise UnsupportedFunctionError(
-            "in1d", max_version="2.4", replacement="isin"
-        )
+        raise UnsupportedFunctionError("in1d", max_version="2.4", replacement="isin")
 
 
 def isin(element, test_elements, **kwargs):
