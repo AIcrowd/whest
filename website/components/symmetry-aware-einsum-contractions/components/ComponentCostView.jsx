@@ -8,6 +8,7 @@ import SymmetryBadge from './SymmetryBadge.jsx';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { LabelInteractionGraph } from './ComponentView.jsx';
 import DecisionLadder from './DecisionLadder.jsx';
+import CompactCaseTable from './CompactCaseTable.jsx';
 import PanZoomCanvas from './PanZoomCanvas.jsx';
 import { getCasePresentation, getRegimePresentation } from './regimePresentation.js';
 import ExplorerModal from './ExplorerModal.jsx';
@@ -313,15 +314,20 @@ export default function ComponentCostView({
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
           Each component is routed through a yes/no spine that dispatches to the
           cheapest applicable closed form, or to brute-force orbit projection
-          when nothing else fits. The highlighted leaf on the left is where the
-          current example lands.
+          when nothing else fits. Median/max timings in the table on the right
+          come from the latest benchmark run.
         </p>
-        <div className="mt-4">
+        <div className="mt-4 grid gap-6 lg:grid-cols-[30%_1fr]">
           <DecisionLadder
             activeLeafIds={components
               .flatMap((c) => [c.accumulation?.regimeId, c.shape])
               .filter(Boolean)}
             spotlightLeafIds={spotlightLeafIds}
+          />
+          <CompactCaseTable
+            activeRegimeIds={components
+              .flatMap((c) => [c.accumulation?.regimeId, c.shape])
+              .filter(Boolean)}
           />
         </div>
       </div>

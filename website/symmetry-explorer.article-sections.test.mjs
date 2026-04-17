@@ -7,9 +7,9 @@ import { ARTICLE_SECTIONS, EXPLORER_ACTS } from './components/symmetry-aware-ein
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-test('ARTICLE_SECTIONS exports 10 Distill-style sections with id, heading, lede', () => {
+test('ARTICLE_SECTIONS exports 8 Distill-style sections with id, heading, lede', () => {
   assert.ok(Array.isArray(ARTICLE_SECTIONS));
-  assert.equal(ARTICLE_SECTIONS.length, 10);
+  assert.equal(ARTICLE_SECTIONS.length, 8);
   for (const s of ARTICLE_SECTIONS) {
     assert.equal(typeof s.id, 'string');
     assert.equal(typeof s.heading, 'string');

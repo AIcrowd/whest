@@ -55,43 +55,13 @@ const QUESTIONS = [
     id: 'q_singleton',
     short: '|V| = 1 ?',
     long: 'Exactly one free label — singleton weighted Burnside applies.',
-    onTrue: 'singleton', onFalse: 'q_fullSym',
-  },
-  {
-    id: 'q_fullSym',
-    short: 'G = S_L ?',
-    long: 'Full symmetric group on labels with uniform sizes — Young shortcut.',
-    onTrue: 'fullSymmetric', onFalse: 'q_alt',
-  },
-  {
-    id: 'q_alt',
-    short: 'G = A_L ?',
-    long: 'Alternating group (order L!/2) with uniform sizes.',
-    onTrue: 'alternating', onFalse: 'q_direct',
+    onTrue: 'singleton', onFalse: 'q_direct',
   },
   {
     id: 'q_direct',
     short: 'Split V/W ?',
     long: 'Every generator moves only V-labels or only W-labels — direct product.',
-    onTrue: 'directProduct', onFalse: 'q_wreath',
-  },
-  {
-    id: 'q_wreath',
-    short: 'H ≀ S_b blocks ?',
-    long: 'b equal-size blocks with S_b block-permuting; V = u whole blocks.',
-    onTrue: 'wreath', onFalse: 'q_diag',
-  },
-  {
-    id: 'q_diag',
-    short: 'Diagonal S_m ?',
-    long: '|V| = |W| = m with a paired S_m acting the same way on both.',
-    onTrue: 'diagonalSimultaneous', onFalse: 'q_setwise',
-  },
-  {
-    id: 'q_setwise',
-    short: 'V setwise stable ?',
-    long: 'Every g ∈ G preserves V as a set — orbit-fiber reduction.',
-    onTrue: 'vSetwiseStable', onFalse: 'bruteForceOrbit',
+    onTrue: 'directProduct', onFalse: 'bruteForceOrbit',
   },
 ];
 

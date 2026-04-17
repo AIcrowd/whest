@@ -4,7 +4,7 @@ import { analyzeExample } from './components/symmetry-aware-einsum-contractions/
 import { EXAMPLES } from './components/symmetry-aware-einsum-contractions/data/examples.js';
 
 test('analyzeExample attaches comp.shape + comp.accumulation for every component', () => {
-  const ex = EXAMPLES.find((e) => e.id === 'gram');
+  const ex = EXAMPLES.find((e) => e.id === 'triple-outer');
   const analysis = analyzeExample(ex, 3);
   for (const comp of analysis.componentData.components) {
     assert.ok(comp.shape, `component missing shape: ${JSON.stringify(comp.labels)}`);
@@ -15,7 +15,7 @@ test('analyzeExample attaches comp.shape + comp.accumulation for every component
 });
 
 test('analyzeExample produces accumulation across multiple preset examples', () => {
-  const sampleIds = ['gram', 'triple-outer', 'outer'];
+  const sampleIds = ['bilinear-trace', 'triple-outer', 'outer'];
   for (const id of sampleIds) {
     const ex = EXAMPLES.find((e) => e.id === id);
     if (!ex) continue;

@@ -7,7 +7,7 @@ import { CASE_META } from '../engine/componentDecomposition.js';
 /**
  * Rendering metadata for each regime or shape id.
  *
- * Entries for regimes (singleton, fullSymmetric, ...) come from REGIME_SPEC.
+ * Entries for regimes (singleton, directProduct, bruteForceOrbit) come from REGIME_SPEC.
  * Entries for shapes (trivial, allVisible, allSummed, mixed) come from SHAPE_SPEC.
  * Legacy case types (A, B, C, D, E, trivial) map via CLASSIFICATION_LEAVES for
  * backwards compatibility — still used by some tests and preset metadata.

@@ -33,21 +33,6 @@ export const EXAMPLES = [
     expression: { subscripts: 'ij,jk,kl', output: 'il', operandNames: 'A, B, A' },
   },
   {
-    id: 'gram',
-    name: 'Gram matrix',
-    formula: "einsum('ia,ib→ab', X, X)",
-    description: 'XᵀX is symmetric — S2 swaps output labels {a,b}, V setwise-stable, W={i}',
-    expectedGroup: 'S2{a,b}',
-    caseType: 'A',
-    regimeId: 'vSetwiseStable',
-    color: '#FA9E33',
-    variables: [
-      { name: 'X', rank: 2, symmetry: 'none', symAxes: null, generators: '' },
-    ],
-    expression: { subscripts: 'ia,ib', output: 'ab', operandNames: 'X, X' },
-    labelSizes: { 'i': 8, 'a,b': 3 },
-  },
-  {
     id: 'triple-outer',
     name: 'Triple outer (S3)',
     formula: "einsum('ia,ib,ic→abc', X, X, X)",
@@ -219,21 +204,6 @@ export const EXAMPLES = [
       { name: 'W', rank: 2, symmetry: 'none', symAxes: null, generators: '' },
     ],
     expression: { subscripts: 'aijkl,ab', output: 'ijklb', operandNames: 'T, W' },
-  },
-  {
-    id: 'sym-tensor-partial',
-    name: 'Sym tensor → partial contract',
-    formula: "einsum('ijk→ij', T)",
-    description: 'T symmetric in all 3 axes, contracting one. V={i,j}, W={k}, G = S₃ on full L → fullSymmetric',
-    expectedGroup: 'S3{i,j,k}',
-    caseType: 'D',
-    regimeId: 'fullSymmetric',
-    color: '#23B761',
-    variables: [
-      { name: 'T', rank: 3, symmetry: 'symmetric', symAxes: [0, 1, 2], generators: '' },
-    ],
-    expression: { subscripts: 'ijk', output: 'ij', operandNames: 'T' },
-    labelSizes: { 'i,j,k': 3 },
   },
   {
     id: 'sym-tensor-fullV',
