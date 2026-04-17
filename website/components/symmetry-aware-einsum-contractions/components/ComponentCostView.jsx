@@ -343,28 +343,29 @@ export default function ComponentCostView({
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
           Each component is routed through a yes/no spine that dispatches to the
           cheapest applicable closed form, or to brute-force orbit projection
-          when nothing else fits. The table on the right shows each detected
-          component, the method that fires, and the savings over dense.
+          when nothing else fits. The highlighted leaf on the left is where the
+          current example lands.
         </p>
-        <div className="mt-4 grid gap-6 lg:grid-cols-[30%_1fr]">
+        <div className="mt-4">
           <DecisionLadder
             activeLeafIds={components
               .flatMap((c) => [c.accumulation?.regimeId, c.shape])
               .filter(Boolean)}
             spotlightLeafIds={spotlightLeafIds}
           />
-          <ComponentSummaryTable
-            components={components}
-            dimensionN={dimensionN}
-            fallbackReductionCost={fallbackReductionCost}
-            orbitRows={orbitRows}
-            onOpenOrbitModal={(comp) => {
-              setOrbitModalComponent(comp);
-              setShowOrbitModal(true);
-            }}
-          />
         </div>
       </div>
+
+      <ComponentSummaryTable
+        components={components}
+        dimensionN={dimensionN}
+        fallbackReductionCost={fallbackReductionCost}
+        orbitRows={orbitRows}
+        onOpenOrbitModal={(comp) => {
+          setOrbitModalComponent(comp);
+          setShowOrbitModal(true);
+        }}
+      />
 
       <ExplorerModal
         title="Orbit Enumeration"
