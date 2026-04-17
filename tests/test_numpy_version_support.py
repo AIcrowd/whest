@@ -135,16 +135,16 @@ def test_all_version_gated_functions_importable():
 def test_in1d_removed_in_numpy_2_4(monkeypatch):
     """When numpy.in1d is unavailable, we.in1d raises UnsupportedFunctionError."""
     import importlib
-    import sys
 
     import numpy as _np
 
     import whest._sorting_ops as _sorting_ops
 
-    # Save the real module object so we can restore it after the test —
-    # otherwise the reload below leaves sys.modules pointing at the stub
-    # version, which would leak to any later code that does a fresh import.
-    _original_sorting_ops = sys.modules["whest._sorting_ops"]
+    # importlib.reload() mutates the module's __dict__ in place, so saving
+    # sys.modules[name] does NOT give us a clean restore path — the
+    # module object is the same before and after reload. We must re-run
+    # the module's code with _np.in1d live to rebind the real wrapper.
+    _real_np_in1d = getattr(_np, "in1d", None)
 
     try:
         monkeypatch.delattr(_np, "in1d", raising=False)
@@ -157,20 +157,23 @@ def test_in1d_removed_in_numpy_2_4(monkeypatch):
         assert err.replacement == "isin"
         assert "removed in numpy 2.4" in str(err)
     finally:
-        # Restore sys.modules so later tests / consumers see the real in1d.
-        sys.modules["whest._sorting_ops"] = _original_sorting_ops
+        # Put _np.in1d back and reload so the module's in1d attribute
+        # rebinds to the real wrapper. Any later `from whest._sorting_ops
+        # import in1d` in the same worker will then get the real function.
+        if _real_np_in1d is not None:
+            _np.in1d = _real_np_in1d
+        importlib.reload(_sorting_ops)
 
 
 def test_trapz_removed_in_numpy_2_4(monkeypatch):
     """When numpy.trapz is unavailable, we.trapz raises UnsupportedFunctionError."""
     import importlib
-    import sys
 
     import numpy as _np
 
     import whest._pointwise as _pointwise
 
-    _original_pointwise = sys.modules["whest._pointwise"]
+    _real_np_trapz = getattr(_np, "trapz", None)
 
     try:
         monkeypatch.delattr(_np, "trapz", raising=False)
@@ -183,4 +186,9 @@ def test_trapz_removed_in_numpy_2_4(monkeypatch):
         assert err.replacement == "trapezoid"
         assert "removed in numpy 2.4" in str(err)
     finally:
-        sys.modules["whest._pointwise"] = _original_pointwise
+        # Restore _np.trapz and reload so any later `from whest._pointwise
+        # import trapz` in the same worker gets the real wrapper, not the
+        # stub that was bound during the reload above.
+        if _real_np_trapz is not None:
+            _np.trapz = _real_np_trapz
+        importlib.reload(_pointwise)
