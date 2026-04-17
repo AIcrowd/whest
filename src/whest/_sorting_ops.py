@@ -15,10 +15,11 @@ from whest.errors import UnsupportedFunctionError
 # this module shims the guarantee back for whest callers.
 _NUMPY_GE_2_3 = tuple(int(x) for x in _np.__version__.split(".")[:2]) >= (2, 3)
 
-# dtype kinds where numpy 2.3+ may drop the sort guarantee:
+# dtype kinds where numpy 2.3+ may drop the sort guarantee.
+# Values are numpy dtype.kind codes:
 #   U = unicode string, S = bytes string, O = object,
-#   c = complex64, F = complex64 alias, D = complex128
-_UNSORTED_IN_NP_2_3 = frozenset("USOcFD")
+#   c = complex float (both complex64 and complex128).
+_UNSORTED_IN_NP_2_3 = frozenset("USOc")
 
 
 def _sort_cost_nd(a: _np.ndarray, axis: int) -> int:
