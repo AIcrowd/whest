@@ -13,7 +13,6 @@ import ExplorerModal from './ExplorerModal.jsx';
 import MultiplicationCostCard from './MultiplicationCostCard.jsx';
 import AccumulationHardCard from './AccumulationHardCard.jsx';
 import { getRegimePresentation } from './regimePresentation.js';
-import MathText from './MathText.jsx';
 
 function isTrivial(comp) {
   return comp.caseType === 'trivial';
@@ -76,30 +75,22 @@ function supportsOrbitEnumeration(comp) {
 }
 
 /**
- * Distill-style method description: split "Technique — reason" on the
- * em-dash, render the technique bold + the reason regular weight, with
- * MathText coloring the shared math tokens (V, W, G, μ, α) in both halves.
+ * Method description: split "Technique — reason" on the em-dash and render
+ * the technique bold + the reason in muted body. Plain-text throughout
+ * (colour-coding of individual math symbols is a separate follow-up).
  */
 function MethodDescription({ text }) {
   if (typeof text !== 'string' || !text.includes('—')) {
-    return (
-      <p className="text-[12.5px] leading-snug text-foreground">
-        <MathText>{text}</MathText>
-      </p>
-    );
+    return <p className="text-[12.5px] leading-snug text-foreground">{text}</p>;
   }
   const [head, ...rest] = text.split('—');
   const technique = head.trim();
   const reason = rest.join('—').trim();
   return (
     <p className="text-[12.5px] leading-snug text-foreground">
-      <span className="font-semibold">
-        <MathText>{technique}</MathText>
-      </span>
+      <span className="font-semibold">{technique}</span>
       <span className="text-muted-foreground"> — </span>
-      <span className="text-stone-700">
-        <MathText>{reason}</MathText>
-      </span>
+      <span className="text-stone-700">{reason}</span>
     </p>
   );
 }
@@ -191,7 +182,7 @@ function ComponentSummaryTable({
                 <LabelsCell comp={comp} />
               </div>
 
-              {/* Method: description + μ/α formulas, wrapped in a CaseBadge
+              {/* Method: description + α formula, wrapped in a CaseBadge
                   passthrough so hovering any part opens the full tooltip
                   (glossary and all). */}
               <div className="space-y-2">
@@ -200,20 +191,7 @@ function ComponentSummaryTable({
                     {methodDescription ? (
                       <MethodDescription text={methodDescription} />
                     ) : null}
-                    {(presentation?.tooltip?.latexMult || presentation?.tooltip?.latexAcc) ? (
-                      <div className="space-y-1 overflow-x-auto pl-2 text-[13px] text-foreground">
-                        {presentation.tooltip.latexMult ? (
-                          <div>
-                            <Latex math={presentation.tooltip.latexMult} />
-                          </div>
-                        ) : null}
-                        {presentation.tooltip.latexAcc ? (
-                          <div>
-                            <Latex math={presentation.tooltip.latexAcc} />
-                          </div>
-                        ) : null}
-                      </div>
-                    ) : methodLatex ? (
+                    {methodLatex ? (
                       <div className="overflow-x-auto pl-2 text-[13px] text-foreground">
                         <Latex math={methodLatex} />
                       </div>

@@ -61,8 +61,6 @@ function regimePresentationFromSpec(id) {
       body: spec.description,
       whenText: spec.when ?? null,
       latex: spec.latex ?? null,
-      latexMult: spec.latexMult ?? null,
-      latexAcc: spec.latexAcc ?? spec.latex ?? null,
       glossary: spec.glossary ?? null,
     },
   };
