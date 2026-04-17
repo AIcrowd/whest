@@ -98,140 +98,157 @@ function ComponentSummaryTable({
   orbitRows,
   onOpenOrbitModal,
 }) {
+  // Shared column template so every component card's middle-row lines up
+  // column-wise with the global header at the top.
+  const MIDDLE_COLS = 'grid-cols-[1.2fr_2.5fr_0.9fr_0.9fr_1.4fr]';
+
   return (
     <div className="max-w-full overflow-x-auto rounded-xl border border-border bg-white shadow-sm">
-      <Table className="w-full table-fixed text-sm">
-        <colgroup>
-          <col className="w-[14%]" />
-          <col className="w-[9%]" />
-          <col className="w-[12%]" />
-          <col className="w-[27%]" />
-          <col className="w-[10%]" />
-          <col className="w-[12%]" />
-          <col className="w-[16%]" />
-        </colgroup>
-        <TableHeader className="bg-surface-raised">
-          <TableRow className="border-border hover:bg-surface-raised">
-            <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Case</TableHead>
-            <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Labels</TableHead>
-            <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Symmetry</TableHead>
-            <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Method</TableHead>
-            <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">MUL Cost</TableHead>
-            <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Acc Cost</TableHead>
-            <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Savings</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody className="divide-y divide-border">
-          {components.map((comp, idx) => {
-            const multiplicationOrbits = computeMultiplicationOrbits(comp, dimensionN);
-            const accumulationCost = computeAccumulationCost(comp, dimensionN, fallbackReductionCost);
-            const canOpenOrbits = supportsOrbitEnumeration(comp) && (orbitRows?.length ?? 0) > 0;
-            // Dense baseline for this component: every tuple does one product
-            // and one write. Actual cost: mult orbits + distinct output bins.
-            // Savings % = 1 - actual / dense, floored at 0.
-            const labelCount = comp.labels?.length ?? 0;
-            const denseCell = dimensionN ** labelCount; // |X| for this component
-            const denseWork = 2 * denseCell;            // one product + one write per cell
-            const actualAcc = accumulationCount(comp);
-            const actualWork = multiplicationOrbits + (actualAcc ?? 0);
-            const pct = (actual, dense) =>
-              dense > 0 ? Math.max(0, Math.round((1 - actual / dense) * 100)) : null;
-            const multSavingsPct = pct(multiplicationOrbits, denseCell);
-            const accSavingsPct = actualAcc !== null ? pct(actualAcc, denseCell) : null;
-            const totalSavingsPct =
-              actualAcc !== null ? pct(actualWork, denseWork) : null;
+      {/* Global column header — only labels the 5 middle-row columns. */}
+      <div
+        className={`grid ${MIDDLE_COLS} items-center gap-x-4 bg-surface-raised px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground`}
+      >
+        <span>Labels</span>
+        <span>Method</span>
+        <span>MUL Cost</span>
+        <span>Acc Cost</span>
+        <span>Savings</span>
+      </div>
 
-            return (
-              <TableRow key={`comp-row-${idx}`} className="border-0 bg-surface hover:bg-surface-raised">
-                <TableCell className="px-3 py-3 align-top">
-                  <CaseBadge regimeId={comp.accumulation?.regimeId ?? comp.shape ?? comp.caseType} caseType={comp.caseType} size="sm" />
-                </TableCell>
-                <TableCell className="px-3 py-3 align-top">
-                  <LabelsCell comp={comp} />
-                </TableCell>
-                <TableCell className="px-3 py-3 align-top">
-                  <SymmetryBadge value={comp.groupName || 'trivial'} />
-                </TableCell>
-                <TableCell className="px-3 py-3 align-top">
-                  {(() => {
-                    const leafId = comp.accumulation?.regimeId ?? comp.shape ?? comp.caseType;
-                    const presentation = getRegimePresentation(leafId);
-                    const description = presentation?.tooltip?.body;
-                    const latex = presentation?.tooltip?.latex;
-                    return (
-                      <div className="space-y-1.5">
-                        {description ? (
-                          <div className="text-[11px] italic leading-snug text-muted-foreground">
-                            {description}
-                          </div>
-                        ) : null}
-                        {latex ? (
-                          <div className="overflow-x-auto text-xs text-foreground">
-                            <Latex math={latex} />
-                          </div>
-                        ) : null}
-                        {canOpenOrbits ? (
-                          <button
-                            type="button"
-                            className="rounded-full border border-coral bg-white px-2 py-0.5 text-[10px] font-semibold text-coral transition-colors hover:bg-coral-light"
-                            onClick={() => onOpenOrbitModal?.(comp)}
-                          >
-                            Enumerate orbits →
-                          </button>
-                        ) : null}
-                      </div>
-                    );
-                  })()}
-                </TableCell>
-                <TableCell className="px-3 py-3 align-top">
-                  <code className="font-mono text-sm font-semibold text-foreground">{multiplicationOrbits.toLocaleString()}</code>
-                </TableCell>
-                <TableCell className="px-3 py-3 align-top">
-                  {accumulationCount(comp) !== null ? (
-                    <code className="font-mono text-sm font-semibold text-foreground">
-                      {accumulationCount(comp).toLocaleString()}
-                    </code>
-                  ) : (
-                    <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] text-amber-800">
-                      Unavailable
-                    </span>
-                  )}
-                </TableCell>
-                <TableCell className="px-3 py-3 align-top">
-                  {totalSavingsPct !== null ? (
-                    <div className="flex flex-col gap-1">
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
-                          Total
-                        </span>
-                        <span
-                          className={`rounded-full px-2 py-0.5 font-mono text-xs font-semibold ${
-                            totalSavingsPct >= 50
-                              ? 'bg-emerald-100 text-emerald-800'
-                              : totalSavingsPct > 0
-                                ? 'bg-amber-50 text-amber-800'
-                                : 'bg-stone-100 text-stone-600'
-                          }`}
-                          title={`dense ${denseWork.toLocaleString()} → actual ${actualWork.toLocaleString()}`}
-                        >
-                          {totalSavingsPct}%
-                        </span>
-                      </div>
-                      <div className="flex flex-wrap items-center gap-x-1.5 font-mono text-[10px] leading-tight">
-                        <span className="font-semibold text-primary">Mult {multSavingsPct}%</span>
-                        <span className="text-stone-300" aria-hidden="true">·</span>
-                        <span className="font-semibold text-amber-700">Acc {accSavingsPct}%</span>
-                      </div>
+      {components.map((comp, idx) => {
+        const multiplicationOrbits = computeMultiplicationOrbits(comp, dimensionN);
+        const accumulationCost = computeAccumulationCost(comp, dimensionN, fallbackReductionCost);
+        const canOpenOrbits = supportsOrbitEnumeration(comp) && (orbitRows?.length ?? 0) > 0;
+        // Dense baseline for this component: every tuple does one product
+        // and one write. Actual cost: mult orbits + distinct output bins.
+        // Savings % = 1 - actual / dense, floored at 0.
+        const labelCount = comp.labels?.length ?? 0;
+        const denseCell = dimensionN ** labelCount;
+        const denseWork = 2 * denseCell;
+        const actualAcc = accumulationCount(comp);
+        const actualWork = multiplicationOrbits + (actualAcc ?? 0);
+        const pct = (actual, dense) =>
+          dense > 0 ? Math.max(0, Math.round((1 - actual / dense) * 100)) : null;
+        const multSavingsPct = pct(multiplicationOrbits, denseCell);
+        const accSavingsPct = actualAcc !== null ? pct(actualAcc, denseCell) : null;
+        const totalSavingsPct =
+          actualAcc !== null ? pct(actualWork, denseWork) : null;
+
+        const leafId = comp.accumulation?.regimeId ?? comp.shape ?? comp.caseType;
+        const presentation = getRegimePresentation(leafId);
+        const methodDescription = presentation?.tooltip?.body;
+        const methodLatex = presentation?.tooltip?.latex;
+
+        return (
+          <div
+            key={`comp-${idx}`}
+            className="border-t-2 border-border/70 px-5"
+          >
+            {/* Band 1 — Case (full-width header band) */}
+            <div className="flex items-center gap-2 py-3">
+              <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                Case
+              </span>
+              <CaseBadge regimeId={leafId} caseType={comp.caseType} size="sm" />
+            </div>
+
+            <div className="border-t border-border/40" aria-hidden="true" />
+
+            {/* Band 2 — the 5-column middle row */}
+            <div className={`grid ${MIDDLE_COLS} items-start gap-x-4 py-3`}>
+              {/* Labels */}
+              <div>
+                <LabelsCell comp={comp} />
+              </div>
+
+              {/* Method: description + latex + (optional) Enumerate orbits button */}
+              <div className="space-y-1.5">
+                {methodDescription ? (
+                  <div className="text-[11px] italic leading-snug text-muted-foreground">
+                    {methodDescription}
+                  </div>
+                ) : null}
+                {methodLatex ? (
+                  <div className="overflow-x-auto text-xs text-foreground">
+                    <Latex math={methodLatex} />
+                  </div>
+                ) : null}
+                {canOpenOrbits ? (
+                  <button
+                    type="button"
+                    className="rounded-full border border-coral bg-white px-2 py-0.5 text-[10px] font-semibold text-coral transition-colors hover:bg-coral-light"
+                    onClick={() => onOpenOrbitModal?.(comp)}
+                  >
+                    Enumerate orbits →
+                  </button>
+                ) : null}
+              </div>
+
+              {/* MUL Cost */}
+              <div>
+                <code className="font-mono text-sm font-semibold text-foreground">
+                  {multiplicationOrbits.toLocaleString()}
+                </code>
+              </div>
+
+              {/* Acc Cost */}
+              <div>
+                {actualAcc !== null ? (
+                  <code className="font-mono text-sm font-semibold text-foreground">
+                    {actualAcc.toLocaleString()}
+                  </code>
+                ) : (
+                  <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] text-amber-800">
+                    Unavailable
+                  </span>
+                )}
+              </div>
+
+              {/* Savings */}
+              <div>
+                {totalSavingsPct !== null ? (
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+                        Total
+                      </span>
+                      <span
+                        className={`rounded-full px-2 py-0.5 font-mono text-xs font-semibold ${
+                          totalSavingsPct >= 50
+                            ? 'bg-emerald-100 text-emerald-800'
+                            : totalSavingsPct > 0
+                              ? 'bg-amber-50 text-amber-800'
+                              : 'bg-stone-100 text-stone-600'
+                        }`}
+                        title={`dense ${denseWork.toLocaleString()} → actual ${actualWork.toLocaleString()}`}
+                      >
+                        {totalSavingsPct}%
+                      </span>
                     </div>
-                  ) : (
-                    <span className="text-[11px] text-muted-foreground">—</span>
-                  )}
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+                    <div className="flex flex-wrap items-center gap-x-1.5 font-mono text-[10px] leading-tight">
+                      <span className="font-semibold text-primary">Mult {multSavingsPct}%</span>
+                      <span className="text-stone-300" aria-hidden="true">·</span>
+                      <span className="font-semibold text-amber-700">Acc {accSavingsPct}%</span>
+                    </div>
+                  </div>
+                ) : (
+                  <span className="text-[11px] text-muted-foreground">—</span>
+                )}
+              </div>
+            </div>
+
+            <div className="border-t border-border/40" aria-hidden="true" />
+
+            {/* Band 3 — Symmetry (full-width footer band) */}
+            <div className="flex items-center gap-2 py-3">
+              <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                Symmetry
+              </span>
+              <SymmetryBadge value={comp.groupName || 'trivial'} />
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
