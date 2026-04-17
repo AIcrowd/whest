@@ -7,13 +7,25 @@ import GlossaryList from './GlossaryList.jsx';
 import { SHAPE_SPEC } from '../engine/shapeSpec.js';
 import { REGIME_SPEC } from '../engine/regimeSpec.js';
 
-// ─── Layout constants ─────────────────────────────────────────────────
-// Mirrors the old ComponentView.DecisionTree feel: leaves on the left,
-// questions on the spine, terminal leaf at the bottom of the spine.
+// ─── DecisionLadder (two-stage hybrid) ─────────────────────────────────
+//
+// Same node types and styling as the classic ladder, but the tree is split
+// into two named bands:
+//
+//   STAGE 1 — Structural checks. Decisions here only need (V, W, generators).
+//             No group enumeration (dimino) required to REACH a leaf.
+//             Leaves: allVisible · allSummed · trivial · directProduct.
+//
+//   STAGE 2 — Symmetry checks. We materialise G and run the remaining
+//             ladder: singleton vs bruteForceOrbit fallback.
+//
+// An explicit "enumerate G" divider between the two bands makes the
+// computational cost boundary obvious: everything above the line is
+// (almost) free; everything below pays the dimino cost.
 
 const LEAF_W = 210;
 const LEAF_H = 44;
-const QUESTION_W = 190;
+const QUESTION_W = 200;
 const QUESTION_H = 44;
 const LEAF_X = 0;
 const LEAF_QUESTION_GAP = 56;
@@ -23,46 +35,63 @@ const SOURCE_W = 140;
 const SOURCE_H = 38;
 const SOURCE_X = QUESTION_X + (QUESTION_W - SOURCE_W) / 2;
 const ROW_GAP = 88;
-const TREE_ENTRY_Y = ROW_GAP;
-const TREE_SPINE_START_Y = ROW_GAP * 2;
+
+const BAND_WIDTH = QUESTION_X + QUESTION_W + 80; // leaves + gap + questions + right pad
+const BAND_X = -40;                                // left pad
+const STAGE_1_TOP_Y = 0;
+const SOURCE_Y = 48;
+const Q1_Y = SOURCE_Y + 88;                        // q_hasW
+const Q2_Y = Q1_Y + ROW_GAP;                       // q_hasV
+const Q3_Y = Q2_Y + ROW_GAP;                       // q_trivial
+const Q4_Y = Q3_Y + ROW_GAP;                       // q_direct
+const STAGE_1_BOTTOM_Y = Q4_Y + LEAF_H + 44;
+
+const ENUMERATE_Y = STAGE_1_BOTTOM_Y + 12;
+const ENUMERATE_H = 44;
+const STAGE_2_TOP_Y = ENUMERATE_Y + ENUMERATE_H + 32;
+const Q5_Y = STAGE_2_TOP_Y + 32;                   // q_singleton
+const STAGE_2_BOTTOM_Y = Q5_Y + ROW_GAP + LEAF_H + 32;
 
 const EDGE_YES = { color: '#23B761', label: 'yes' };
 const EDGE_NO = { color: '#F0524D', label: 'no' };
 
-// ─── Decision spec ────────────────────────────────────────────────────
-// 10 yes/no questions routing a component through shape → regime ladder.
-// Each `onTrue`/`onFalse` is either a next question id or a leaf id.
+// ─── Decision spec — reordered to dimino-free questions first ─────────
 
 const QUESTIONS = [
   {
-    id: 'q_hasG',
-    short: '|G| > 1 ?',
-    long: 'Is the detected symmetry group nontrivial?',
-    onTrue: 'q_hasW', onFalse: 'trivial',
-  },
-  {
     id: 'q_hasW',
     short: 'W ≠ ∅ ?',
-    long: 'Are there summed (contracted) labels?',
+    long: 'Are there summed (contracted) labels? Cheap: checks wa.length alone — no group enumeration needed.',
     onTrue: 'q_hasV', onFalse: 'allVisible',
+    stage: 1,
   },
   {
     id: 'q_hasV',
     short: 'V ≠ ∅ ?',
-    long: 'Are there free (output) labels?',
-    onTrue: 'q_singleton', onFalse: 'allSummed',
+    long: 'Are there free (output) labels? Cheap: checks va.length alone — no group enumeration needed.',
+    onTrue: 'q_trivial', onFalse: 'allSummed',
+    stage: 1,
+  },
+  {
+    id: 'q_trivial',
+    short: '|G| = 1 ?',
+    long: 'Is the symmetry group trivial? Cheap: detected from generators without running dimino (every gen is the identity, or no generators at all).',
+    onTrue: 'trivial', onFalse: 'q_direct',
+    stage: 1,
+  },
+  {
+    id: 'q_direct',
+    short: 'All gens V-only or W-only ?',
+    long: 'Every generator moves only V-labels or only W-labels — cheap syntactic check on the generator list; decides directProduct without enumerating G.',
+    onTrue: 'directProduct', onFalse: 'ENUMERATE',
+    stage: 1,
   },
   {
     id: 'q_singleton',
     short: '|V| = 1 ?',
-    long: 'Exactly one free label — singleton weighted Burnside applies.',
-    onTrue: 'singleton', onFalse: 'q_direct',
-  },
-  {
-    id: 'q_direct',
-    short: 'Split V/W ?',
-    long: 'Every generator moves only V-labels or only W-labels — direct product.',
-    onTrue: 'directProduct', onFalse: 'bruteForceOrbit',
+    long: 'Exactly one free label — singleton weighted Burnside applies. From here down, we have G materialised.',
+    onTrue: 'singleton', onFalse: 'bruteForceOrbit',
+    stage: 2,
   },
 ];
 
@@ -78,49 +107,6 @@ function mixWithWhite(hex, amount) {
 
 function specFor(leafId) {
   return SHAPE_SPEC[leafId] || REGIME_SPEC[leafId] || null;
-}
-
-function isLeafId(id) {
-  return !!specFor(id);
-}
-
-function planRow(question) {
-  const onTrueIsLeaf = isLeafId(question.onTrue);
-  const onFalseIsLeaf = isLeafId(question.onFalse);
-  if (onTrueIsLeaf && onFalseIsLeaf) {
-    return {
-      sideLeaf: question.onTrue,
-      sideEdge: EDGE_YES,
-      spineNext: question.onFalse,
-      spineEdge: EDGE_NO,
-      spineIsTerminalLeaf: true,
-    };
-  }
-  if (onTrueIsLeaf) {
-    return {
-      sideLeaf: question.onTrue,
-      sideEdge: EDGE_YES,
-      spineNext: question.onFalse,
-      spineEdge: EDGE_NO,
-      spineIsTerminalLeaf: false,
-    };
-  }
-  if (onFalseIsLeaf) {
-    return {
-      sideLeaf: question.onFalse,
-      sideEdge: EDGE_NO,
-      spineNext: question.onTrue,
-      spineEdge: EDGE_YES,
-      spineIsTerminalLeaf: false,
-    };
-  }
-  return {
-    sideLeaf: null,
-    sideEdge: null,
-    spineNext: question.onTrue,
-    spineEdge: EDGE_YES,
-    spineIsTerminalLeaf: false,
-  };
 }
 
 // ─── Node renderers ──────────────────────────────────────────────────
@@ -153,9 +139,6 @@ function SourceNode({ data }) {
 
 function LeafNode({ data }) {
   const bg = data.active ? mixWithWhite(data.color, 0.72) : mixWithWhite(data.color, 0.88);
-  // Spotlight > active > idle. Spotlight is a coral ring (matches the
-  // StickyBar halo color) so the cross-highlight reads as "these two
-  // surfaces are talking about the same thing".
   const SPOTLIGHT_RING = '#F0524D';
   const shadow = data.spotlight
     ? `0 0 0 10px ${SPOTLIGHT_RING}33, 0 0 0 6px ${mixWithWhite(data.color, 0.6)}`
@@ -184,10 +167,65 @@ function LeafNode({ data }) {
   );
 }
 
+// Stage band — visual container highlighting the "no-dimino" / "needs-dimino"
+// regions. Rendered as a normal ReactFlow node so pan/zoom stays in sync.
+//
+// Both the stage label and the caption live in the top row — label pinned
+// left, caption pinned right — so neither collides with edge labels near the
+// bottom of the band (where the "no" label crosses into the enumerate node).
+function StageBandNode({ data }) {
+  const isStage1 = data.stage === 1;
+  const accent = isStage1 ? '#16A34A' : '#6D28D9';
+  return (
+    <div
+      className="pointer-events-none box-border h-full w-full rounded-xl"
+      style={{
+        background: isStage1
+          ? 'linear-gradient(180deg, rgba(34,197,94,0.07) 0%, rgba(34,197,94,0.03) 100%)'
+          : 'linear-gradient(180deg, rgba(139,92,246,0.08) 0%, rgba(139,92,246,0.03) 100%)',
+        border: `1.5px dashed ${accent}`,
+      }}
+    >
+      <div
+        className="absolute left-4 top-2 text-[10px] font-bold uppercase tracking-[0.12em]"
+        style={{ color: accent }}
+      >
+        {data.label}
+      </div>
+      <div
+        className="absolute right-4 top-2 text-[10px] font-medium italic"
+        style={{ color: accent }}
+      >
+        {data.caption}
+      </div>
+    </div>
+  );
+}
+
+// "Enumerate G" divider — the moment dimino is paid.
+function EnumerateNode({ data }) {
+  return (
+    <div
+      className="box-border flex h-full w-full cursor-help items-center gap-2 rounded-md border-2 border-dashed border-violet-400 bg-violet-50 px-3 py-1.5 text-center text-[13px] font-semibold leading-tight text-violet-700 shadow-sm"
+      data-tree-node={data.nodeId}
+    >
+      <Handle id="top" type="target" position={Position.Top} className="pointer-events-none opacity-0" />
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+        <circle cx="12" cy="12" r="3" />
+        <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1" />
+      </svg>
+      <span>{data.text}</span>
+      <Handle id="bottom" type="source" position={Position.Bottom} className="pointer-events-none opacity-0" />
+    </div>
+  );
+}
+
 const dlNodeTypes = {
   source: SourceNode,
   question: QuestionNode,
   leaf: LeafNode,
+  stageBand: StageBandNode,
+  enumerate: EnumerateNode,
 };
 
 // ─── Tooltip ──────────────────────────────────────────────────────────
@@ -197,19 +235,28 @@ function tooltipFor(nodeId) {
     return {
       title: 'Component',
       whenText: null,
-      body: 'Start with one independent component of the detected group action. The ladder decides how to count its multiplications and output-bin updates.',
+      body: 'Start with one independent component of the detected group action. The two-stage ladder tries structural (dimino-free) checks first, then enumerates G only if nothing lands.',
       latex: null,
       color: '#64748B',
+    };
+  }
+  if (nodeId === 'enumerate') {
+    return {
+      title: 'Enumerate G (dimino)',
+      whenText: 'Paid once, only when structural checks all refuse',
+      body: 'Materialise every group element via Dimino\'s algorithm. After this point the remaining ladder has access to the full group and can use Burnside / orbit enumeration.',
+      latex: null,
+      color: '#8B5CF6',
     };
   }
   const q = QUESTIONS.find((x) => x.id === nodeId);
   if (q) {
     return {
       title: q.short,
-      whenText: null,
+      whenText: q.stage === 1 ? 'Stage 1 — structural check (no dimino)' : 'Stage 2 — symmetry check (dimino done)',
       body: q.long,
       latex: null,
-      color: '#64748B',
+      color: q.stage === 1 ? '#16A34A' : '#8B5CF6',
     };
   }
   const spec = specFor(nodeId);
@@ -227,6 +274,11 @@ function tooltipFor(nodeId) {
 }
 
 // ─── Layout ──────────────────────────────────────────────────────────
+//
+// Both stages share the same left-leaf / right-spine structure as the classic
+// ladder, so the spatial grammar is unchanged. What's new:
+//   - a pair of dashed "Stage 1 / Stage 2" bands behind the rows.
+//   - an "enumerate G" node sitting on the spine between the two stages.
 
 function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
   const active = activeLeafIds instanceof Set
@@ -235,10 +287,11 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
   const spotlight = spotlightLeafIds instanceof Set
     ? spotlightLeafIds
     : new Set(spotlightLeafIds || []);
+
   const nodes = [];
   const edges = [];
 
-  function leafNodeData(leafId, y, centered = false) {
+  function leafNode(leafId, y, centered = false) {
     const spec = specFor(leafId);
     return {
       id: leafId,
@@ -255,84 +308,177 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
     };
   }
 
+  // Background stage bands — added FIRST so they render behind everything.
+  nodes.push({
+    id: 'band_stage_1',
+    position: { x: BAND_X, y: STAGE_1_TOP_Y },
+    type: 'stageBand',
+    style: { width: BAND_WIDTH, height: STAGE_1_BOTTOM_Y - STAGE_1_TOP_Y },
+    data: { stage: 1, label: 'Stage 1 · Structural', caption: 'No dimino needed to decide' },
+    draggable: false,
+    selectable: false,
+    zIndex: -1,
+  });
+  nodes.push({
+    id: 'band_stage_2',
+    position: { x: BAND_X, y: STAGE_2_TOP_Y - 16 },
+    type: 'stageBand',
+    style: { width: BAND_WIDTH, height: STAGE_2_BOTTOM_Y - STAGE_2_TOP_Y + 16 },
+    // No caption needed: the immediately-preceding "enumerate G via dimino"
+    // divider already tells the reader G is now materialised.
+    data: { stage: 2, label: 'Stage 2 · Symmetry', caption: '' },
+    draggable: false,
+    selectable: false,
+    zIndex: -1,
+  });
+
+  // Source.
   nodes.push({
     id: 's0',
-    position: { x: SOURCE_X, y: 0 },
+    position: { x: SOURCE_X, y: SOURCE_Y },
     type: 'source',
     style: { width: SOURCE_W, height: SOURCE_H },
     data: { text: 'Component', nodeId: 's0' },
   });
 
-  QUESTIONS.forEach((question, index) => {
-    const y = index === 0 ? TREE_ENTRY_Y : TREE_SPINE_START_Y + ROW_GAP * (index - 1);
+  // For each Stage-1 question, decide which branch is the leaf and which
+  // is the spine continuation. Terminal "spine" of Stage 1 is the enumerate
+  // divider — emerges from whichever side of the last question continues.
+  const spineYs = [Q1_Y, Q2_Y, Q3_Y, Q4_Y];
+  const stage1 = QUESTIONS.filter((q) => q.stage === 1);
+
+  function planStage1(q, nextIsEnumerate) {
+    // Spine continuation is whichever branch is NOT a leaf in SHAPE_SPEC /
+    // REGIME_SPEC — for q_direct the non-leaf branch is the sentinel
+    // 'ENUMERATE' which leads to the divider node.
+    const onTrueIsLeaf = q.onTrue !== 'ENUMERATE' && !!specFor(q.onTrue);
+    const onFalseIsLeaf = q.onFalse !== 'ENUMERATE' && !!specFor(q.onFalse);
+    if (onTrueIsLeaf && !onFalseIsLeaf) {
+      return {
+        sideLeaf: q.onTrue, sideEdge: EDGE_YES,
+        spineTarget: q.onFalse, spineEdge: EDGE_NO,
+      };
+    }
+    if (onFalseIsLeaf && !onTrueIsLeaf) {
+      return {
+        sideLeaf: q.onFalse, sideEdge: EDGE_NO,
+        spineTarget: q.onTrue, spineEdge: EDGE_YES,
+      };
+    }
+    // Both or neither — shouldn't happen in current spec, but be defensive.
+    return { sideLeaf: null, spineTarget: q.onTrue, spineEdge: EDGE_YES };
+  }
+
+  stage1.forEach((q, i) => {
+    const y = spineYs[i];
     nodes.push({
-      id: question.id,
+      id: q.id,
       position: { x: QUESTION_X, y },
       type: 'question',
       style: { width: QUESTION_W, height: QUESTION_H },
-      data: { text: question.short, nodeId: question.id },
+      data: { text: q.short, nodeId: q.id },
     });
 
-    if (index === 0) {
+    // Spine edge from previous node (source or prior question) to this q.
+    if (i === 0) {
       edges.push({
-        id: 's0-q0',
-        source: 's0',
-        sourceHandle: 'bottom',
-        target: question.id,
-        targetHandle: 'top',
+        id: `s0-${q.id}`,
+        source: 's0', sourceHandle: 'bottom',
+        target: q.id, targetHandle: 'top',
         style: { stroke: '#94A3B8', strokeWidth: 1.5 },
+      });
+    } else {
+      // Label with the prior question's SPINE edge (the branch that led to us).
+      const prevQ = stage1[i - 1];
+      const prevPlan = planStage1(prevQ, false);
+      edges.push({
+        id: `${prevQ.id}-${q.id}`,
+        source: prevQ.id, sourceHandle: 'bottom',
+        target: q.id, targetHandle: 'top',
+        label: prevPlan.spineEdge.label,
+        labelStyle: { fontSize: 11, fontWeight: 700, fill: prevPlan.spineEdge.color },
+        style: { stroke: prevPlan.spineEdge.color, strokeWidth: 1.5 },
       });
     }
 
-    const plan = planRow(question);
-
+    // Side leaf (the non-spine branch).
+    const plan = planStage1(q, false);
     if (plan.sideLeaf) {
-      nodes.push(leafNodeData(plan.sideLeaf, y));
+      nodes.push(leafNode(plan.sideLeaf, y));
       edges.push({
-        id: `${question.id}-${plan.sideLeaf}`,
-        source: question.id,
-        sourceHandle: 'side',
-        target: plan.sideLeaf,
-        targetHandle: 'right',
+        id: `${q.id}-${plan.sideLeaf}`,
+        source: q.id, sourceHandle: 'side',
+        target: plan.sideLeaf, targetHandle: 'right',
         label: plan.sideEdge.label,
         labelStyle: { fontSize: 11, fontWeight: 700, fill: plan.sideEdge.color },
         style: { stroke: plan.sideEdge.color, strokeWidth: 1.5 },
       });
     }
+  });
 
-    if (plan.spineIsTerminalLeaf) {
-      const terminalY = TREE_SPINE_START_Y + ROW_GAP * index;
-      nodes.push(leafNodeData(plan.spineNext, terminalY, true));
-      edges.push({
-        id: `${question.id}-${plan.spineNext}`,
-        source: question.id,
-        sourceHandle: 'bottom',
-        target: plan.spineNext,
-        targetHandle: 'top',
-        label: plan.spineEdge.label,
-        labelStyle: { fontSize: 11, fontWeight: 700, fill: plan.spineEdge.color },
-        style: { stroke: plan.spineEdge.color, strokeWidth: 1.5 },
-      });
-    } else if (plan.spineNext) {
-      edges.push({
-        id: `${question.id}-${plan.spineNext}`,
-        source: question.id,
-        sourceHandle: 'bottom',
-        target: plan.spineNext,
-        targetHandle: 'top',
-        label: plan.spineEdge.label,
-        labelStyle: { fontSize: 11, fontWeight: 700, fill: plan.spineEdge.color },
-        style: { stroke: plan.spineEdge.color, strokeWidth: 1.5 },
-      });
-    }
+  // Enumerate-G divider — reached via the last Stage-1 question's spine branch.
+  const lastStage1 = stage1[stage1.length - 1];
+  const lastPlan = planStage1(lastStage1, true);
+  nodes.push({
+    id: 'enumerate',
+    position: { x: QUESTION_X - 12, y: ENUMERATE_Y },
+    type: 'enumerate',
+    style: { width: QUESTION_W + 24, height: ENUMERATE_H },
+    data: { text: 'enumerate G via dimino', nodeId: 'enumerate' },
+  });
+  edges.push({
+    id: `${lastStage1.id}-enumerate`,
+    source: lastStage1.id, sourceHandle: 'bottom',
+    target: 'enumerate', targetHandle: 'top',
+    label: lastPlan.spineEdge.label,
+    labelStyle: { fontSize: 11, fontWeight: 700, fill: lastPlan.spineEdge.color },
+    style: { stroke: lastPlan.spineEdge.color, strokeWidth: 1.5 },
+  });
+
+  // Stage 2 — one question, two leaves.
+  const stage2Q = QUESTIONS.find((q) => q.id === 'q_singleton');
+  nodes.push({
+    id: stage2Q.id,
+    position: { x: QUESTION_X, y: Q5_Y },
+    type: 'question',
+    style: { width: QUESTION_W, height: QUESTION_H },
+    data: { text: stage2Q.short, nodeId: stage2Q.id },
+  });
+  edges.push({
+    id: `enumerate-${stage2Q.id}`,
+    source: 'enumerate', sourceHandle: 'bottom',
+    target: stage2Q.id, targetHandle: 'top',
+    style: { stroke: '#8B5CF6', strokeWidth: 1.5, strokeDasharray: '6 3' },
+  });
+
+  // q_singleton yes → singleton leaf on the left.
+  nodes.push(leafNode('singleton', Q5_Y));
+  edges.push({
+    id: `${stage2Q.id}-singleton`,
+    source: stage2Q.id, sourceHandle: 'side',
+    target: 'singleton', targetHandle: 'right',
+    label: EDGE_YES.label,
+    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_YES.color },
+    style: { stroke: EDGE_YES.color, strokeWidth: 1.5 },
+  });
+
+  // q_singleton no → bruteForceOrbit terminal centered under the spine.
+  const bruteY = Q5_Y + ROW_GAP;
+  nodes.push(leafNode('bruteForceOrbit', bruteY, true));
+  edges.push({
+    id: `${stage2Q.id}-bruteForceOrbit`,
+    source: stage2Q.id, sourceHandle: 'bottom',
+    target: 'bruteForceOrbit', targetHandle: 'top',
+    label: EDGE_NO.label,
+    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_NO.color },
+    style: { stroke: EDGE_NO.color, strokeWidth: 1.5 },
   });
 
   return { nodes, edges };
 }
 
-// ─── Pan/zoom chrome (shared visual language with PanZoomCanvas) ──────
+// ─── Pan/zoom chrome ─────────────────────────────────────────────────
 
-// Lives INSIDE <ReactFlow> so it can use the store-coupled hook.
 function LadderControlsPanel() {
   const { zoomIn, zoomOut, fitView } = useReactFlow();
   return (
@@ -340,7 +486,7 @@ function LadderControlsPanel() {
       <PanZoomControls
         onZoomIn={() => zoomIn({ duration: 150 })}
         onZoomOut={() => zoomOut({ duration: 150 })}
-        onReset={() => fitView({ padding: 0.15, duration: 200, maxZoom: 1 })}
+        onReset={() => fitView({ padding: 0.12, duration: 200, maxZoom: 1 })}
       />
     </Panel>
   );
@@ -371,7 +517,7 @@ const DecisionLadderGraph = memo(function DecisionLadderGraph({
         className="h-full w-full"
         defaultEdgeOptions={{ type: 'step', style: { strokeWidth: 2 } }}
         fitView
-        fitViewOptions={{ padding: 0.15, maxZoom: 1, minZoom: 0.4 }}
+        fitViewOptions={{ padding: 0.12, maxZoom: 1, minZoom: 0.4 }}
         minZoom={0.4}
         maxZoom={2.5}
         nodesDraggable={false}
@@ -403,10 +549,6 @@ export default function DecisionLadder({
   activeLeafIds = null,
   spotlightLeafIds = null,
 }) {
-  // Highlighting policy: every detected leaf across all components gets a
-  // halo (including shape leaves like `trivial` / `allVisible`). The
-  // `activeLeafIds` prop is the authoritative source; legacy single-value
-  // props stay as a fallback for callers not yet migrated.
   const effectiveLeafIds = useMemo(() => {
     if (Array.isArray(activeLeafIds) || activeLeafIds instanceof Set) {
       return new Set(activeLeafIds);
@@ -481,8 +623,7 @@ export default function DecisionLadder({
 
   const handleNodeMouseEnter = useCallback((evt, node) => {
     cancelHide();
-    const nodeEl =
-      evt?.target instanceof Element ? evt.target.closest('.react-flow__node') : null;
+    const nodeEl = evt?.target instanceof Element ? evt.target.closest('.react-flow__node') : null;
     if (nodeEl) {
       openTooltipForNode(node.id, nodeEl.getBoundingClientRect());
       return;
@@ -529,7 +670,7 @@ export default function DecisionLadder({
 
   return (
     <div ref={wrapRef} className="relative">
-      <div className="h-[720px] w-full rounded-lg border border-gray-200 bg-white">
+      <div className="h-[800px] w-full rounded-lg border border-gray-200 bg-white">
         <DecisionLadderGraph
           nodes={nodes}
           edges={edges}
@@ -557,7 +698,9 @@ export default function DecisionLadder({
           </div>
           {activeTooltip.whenText && (
             <div className="mb-2 text-[11px] uppercase tracking-wider text-gray-400">
-              When: {activeTooltip.whenText}
+              {activeTooltip.whenText.toLowerCase().startsWith('when')
+                ? activeTooltip.whenText
+                : `When: ${activeTooltip.whenText}`}
             </div>
           )}
           <div className="whitespace-normal break-words text-sm leading-6 text-gray-300">

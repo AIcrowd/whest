@@ -14,9 +14,21 @@ function read() {
   return readFileSync(SRC, 'utf-8');
 }
 
-test('DecisionLadder QUESTIONS array has exactly 5 entries (one per surviving branch point)', () => {
+// DecisionLadder has been promoted to the two-stage hybrid layout:
+//   STAGE 1 — dimino-free structural checks. Four questions whose decisions
+//             only need (V, W, generators).
+//             q_hasW  → W ≠ ∅ ?             (leaf on "no": allVisible)
+//             q_hasV  → V ≠ ∅ ?             (leaf on "no": allSummed)
+//             q_trivial → |G| = 1 ?         (leaf on "yes": trivial)
+//             q_direct  → all gens V-only / W-only ?  (leaf on "yes": directProduct;
+//                         "no" crosses into the ENUMERATE divider)
+//
+//   STAGE 2 — after enumerating G via Dimino. One question with two leaves.
+//             q_singleton → |V| = 1 ?       (yes: singleton; no: bruteForceOrbit)
+
+test('DecisionLadder QUESTIONS array has exactly 5 entries, in stage order', () => {
   const src = read();
-  const ids = ['q_hasG', 'q_hasW', 'q_hasV', 'q_singleton', 'q_direct'];
+  const ids = ['q_hasW', 'q_hasV', 'q_trivial', 'q_direct', 'q_singleton'];
   let lastIdx = -1;
   for (const id of ids) {
     const idx = src.indexOf(`id: '${id}'`);
@@ -40,9 +52,30 @@ test('DecisionLadder no longer references the 5 deleted regime leaves', () => {
   }
 });
 
-test('DecisionLadder routes q_singleton.onFalse straight to q_direct, and q_direct.onFalse to bruteForceOrbit', () => {
+test('DecisionLadder Stage-1 routing: q_direct feeds the ENUMERATE divider on the "no" branch', () => {
   const src = read();
-  // Keep these as the structural contract the 6-case partition depends on.
-  assert.match(src, /id:\s*'q_singleton',[\s\S]*?onTrue:\s*'singleton',\s*onFalse:\s*'q_direct'/);
-  assert.match(src, /id:\s*'q_direct',[\s\S]*?onTrue:\s*'directProduct',\s*onFalse:\s*'bruteForceOrbit'/);
+  assert.match(src, /id:\s*'q_direct',[\s\S]*?onTrue:\s*'directProduct',\s*onFalse:\s*'ENUMERATE'/);
+});
+
+test('DecisionLadder Stage-2 routing: q_singleton splits into singleton (yes) and bruteForceOrbit (no)', () => {
+  const src = read();
+  assert.match(src, /id:\s*'q_singleton',[\s\S]*?onTrue:\s*'singleton',\s*onFalse:\s*'bruteForceOrbit'/);
+});
+
+test('DecisionLadder marks questions with their stage (1 structural, 2 symmetry)', () => {
+  const src = read();
+  // Every question entry should name which stage it belongs to, so the
+  // layout code can group them under the correct band.
+  assert.match(src, /stage:\s*1/);
+  assert.match(src, /stage:\s*2/);
+});
+
+test('DecisionLadder includes the ENUMERATE divider node type + tooltip entry', () => {
+  const src = read();
+  // Visual artefact that sits between the two stages.
+  assert.match(src, /enumerate G via dimino/i);
+  // Custom ReactFlow node type for the divider.
+  assert.match(src, /type:\s*'enumerate'/);
+  // Stage bands render as their own ReactFlow node type.
+  assert.match(src, /type:\s*'stageBand'/);
 });
