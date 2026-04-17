@@ -1,5 +1,76 @@
 import { parseCycleNotation, generatorIndices } from './cycleParser.js';
 
+// ── Friendly hints for the custom-generators field ───────────────────
+// Each hint is parametrised by the variable's selected axes count, so
+// suggestions always refer to indices the user can actually use.
+
+function cycleExample(axesCount) {
+  if (axesCount >= 4) return '(0 1)(2 3)';
+  if (axesCount === 3) return '(0 1 2)';
+  return '(0 1)';
+}
+
+function indexRange(axesCount) {
+  if (axesCount <= 1) return '0';
+  return `0–${axesCount - 1}`;
+}
+
+function emptyGeneratorHint(varName, axesCount) {
+  if (axesCount === 2) {
+    return `Variable "${varName}": add a cycle like (0 1) to swap the two selected axes.`;
+  }
+  if (axesCount === 3) {
+    return `Variable "${varName}": add a cycle like (0 1) to swap two axes, or (0 1 2) to rotate all three.`;
+  }
+  return `Variable "${varName}": add at least one cycle, e.g. ${cycleExample(axesCount)}. Separate multiple generators with commas: (0 1), (1 2).`;
+}
+
+function outOfRangeHint(varName, idx, axesCount) {
+  return `Variable "${varName}": index ${idx} is outside your ${axesCount} selected ${axesCount === 1 ? 'axis' : 'axes'} — valid indices are ${indexRange(axesCount)}.`;
+}
+
+function prettifyParseError(varName, axesCount, raw) {
+  const prefix = `Variable "${varName}": `;
+  const example = cycleExample(axesCount);
+  const range = indexRange(axesCount);
+
+  if (raw.startsWith('Empty cycle')) {
+    return `${prefix}empty cycle () — write cycles like ${example}.`;
+  }
+  if (raw.startsWith('Cycle must contain at least 2 elements')) {
+    const m = raw.match(/\(([^)]*)\)/);
+    const inner = m ? m[1] : '';
+    return `${prefix}the cycle (${inner}) is too short — cycles need ≥ 2 elements. Try something like ${example}.`;
+  }
+  if (raw.startsWith('Invalid element')) {
+    const m = raw.match(/"([^"]*)"/);
+    const bad = m ? m[1] : 'that token';
+    return `${prefix}"${bad}" isn't a valid index — use whole numbers ${range}, e.g. ${example}.`;
+  }
+  if (raw.startsWith('Duplicate index')) {
+    const m = raw.match(/index (\d+) within cycle \(([^)]*)\)/);
+    if (m) {
+      return `${prefix}axis ${m[1]} appears twice in (${m[2]}) — each cycle can visit an axis at most once.`;
+    }
+    return `${prefix}an axis appears twice inside one cycle — each cycle can visit an axis at most once.`;
+  }
+  if (raw.startsWith('Unexpected characters outside parentheses')) {
+    const m = raw.match(/"([^"]*)"/);
+    const leftover = m ? m[1] : '';
+    return `${prefix}"${leftover}" is outside any cycle — every cycle must be wrapped in parentheses, e.g. ${example}.`;
+  }
+  if (raw.startsWith('No cycles found')) {
+    return `${prefix}no cycles detected — try ${example}.`;
+  }
+  if (/^Index \d+ appears in more than one cycle/.test(raw)) {
+    const m = raw.match(/Index (\d+)/);
+    const idx = m ? m[1] : 'an axis';
+    return `${prefix}axis ${idx} appears in more than one cycle of the same generator — within one generator cycles must be disjoint. Split them with a comma, e.g. (0 1), (0 2).`;
+  }
+  // Fallback: never drop information.
+  return `${prefix}${raw}`;
+}
+
 /**
  * Validate all variable definitions and the einsum expression.
  *
@@ -51,31 +122,21 @@ export function validateAll(variables, subscripts, output, operandNames) {
 
     // 5. Custom symmetry requires non-empty generators string
     if (v.symmetry === 'custom') {
+      const axesCount = Array.isArray(v.symAxes) ? v.symAxes.length : v.rank;
       if (!v.generators || v.generators.trim() === '') {
-        errors.push(
-          `Variable "${v.name}": custom symmetry requires a non-empty generators string.`
-        );
+        errors.push(emptyGeneratorHint(v.name, axesCount));
       } else {
         // 6. Custom generators must parse successfully
-        let parsed;
-        try {
-          parsed = parseCycleNotation(v.generators);
-        } catch (e) {
-          errors.push(
-            `Variable "${v.name}": failed to parse generators – ${e.message}`
-          );
-          parsed = null;
-        }
+        const { generators: parsedGenerators, error: parseError } =
+          parseCycleNotation(v.generators);
 
-        // 7. Custom generator cycle indices must be within range of selected axes count
-        if (parsed) {
-          const axesCount = Array.isArray(v.symAxes) ? v.symAxes.length : v.rank;
-          const indices = generatorIndices(parsed);
-          for (const idx of indices) {
+        if (parseError) {
+          errors.push(prettifyParseError(v.name, axesCount, parseError));
+        } else {
+          // 7. Custom generator cycle indices must be within range of selected axes count
+          for (const idx of generatorIndices(parsedGenerators)) {
             if (idx >= axesCount) {
-              errors.push(
-                `Variable "${v.name}": generator cycle index ${idx} is out of range (${axesCount} axes selected).`
-              );
+              errors.push(outOfRangeHint(v.name, idx, axesCount));
             }
           }
         }
