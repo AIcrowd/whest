@@ -39,7 +39,7 @@ def _symmetry_fingerprint(operands, input_parts):
     determines the symmetry structure without referencing tensor values.
     """
     parts = []
-    for op, chars in zip(operands, input_parts):
+    for op, _chars in zip(operands, input_parts, strict=False):
         if not isinstance(op, SymmetricTensor) or op.symmetry_info is None:
             parts.append(None)
             continue
@@ -91,7 +91,7 @@ def _make_path_cache(maxsize):
         output_str = subscripts.split("->")[1] if "->" in subscripts else ""
 
         perm_groups = []
-        for fp_entry, chars in zip(symmetry_fingerprint, input_parts):
+        for fp_entry, chars in zip(symmetry_fingerprint, input_parts, strict=False):
             if fp_entry is None:
                 perm_groups.append(None)
                 continue
@@ -171,7 +171,7 @@ def einsum_cache_info():
 def _execute_pairwise(path_info, operands: list):
     """Execute pairwise contractions according to the optimized path."""
     ops = list(operands)
-    for contract_inds, step in zip(path_info.path, path_info.steps):
+    for contract_inds, step in zip(path_info.path, path_info.steps, strict=False):
         # Pop operands in reverse sorted order (same as opt_einsum convention)
         inds = sorted(contract_inds, reverse=True)
         tensors = [ops.pop(i) for i in inds]

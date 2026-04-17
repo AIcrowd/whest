@@ -215,7 +215,7 @@ class TestTransparency:
 
         with we.BudgetContext(flop_budget=1_000_000):
             x = we.array([10.0, 20.0, 30.0])
-            values = [v for v in x]
+            values = list(x)
             assert values == [10.0, 20.0, 30.0]
 
     def test_indexing(self):
@@ -282,13 +282,13 @@ class TestErrors:
         import whest as we
 
         with pytest.raises(AttributeError, match="blacklisted"):
-            we.save
+            _ = we.save
 
     def test_unknown_function(self):
         import whest as we
 
         with pytest.raises(AttributeError):
-            we.nonexistent_function_xyz
+            _ = we.nonexistent_function_xyz
 
 
 # ---------------------------------------------------------------------------

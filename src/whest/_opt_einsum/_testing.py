@@ -39,7 +39,7 @@ _sizes = [
     2,
     6,
 ]
-_default_dim_dict = dict(zip(_valid_chars, _sizes))
+_default_dim_dict = dict(zip(_valid_chars, _sizes, strict=False))
 assert len(_valid_chars) == len(_sizes), (
     f"Valid characters and sizes must be the same length: {len(_valid_chars)} != {len(_sizes)}"
 )

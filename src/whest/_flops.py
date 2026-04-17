@@ -43,7 +43,7 @@ def parse_einsum_subscripts(subscripts: str) -> tuple[list[list[str]], list[str]
 def einsum_cost(
     subscripts: str,
     shapes: list[tuple[int, ...]],
-    operand_symmetries: "list[SymmetryInfo | None] | None" = None,
+    operand_symmetries: list[SymmetryInfo | None] | None = None,
 ) -> int:
     """FLOP cost of an einsum operation.
 
@@ -76,7 +76,7 @@ def einsum_cost(
 
         perm_groups = [
             _symmetry_info_to_perm_groups(sym, chars)
-            for sym, chars in zip(operand_symmetries, input_parts)
+            for sym, chars in zip(operand_symmetries, input_parts, strict=False)
         ]
 
         from whest._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
@@ -97,7 +97,7 @@ def einsum_cost(
 
 
 def pointwise_cost(
-    shape: tuple[int, ...], symmetry_info: "SymmetryInfo | None" = None
+    shape: tuple[int, ...], symmetry_info: SymmetryInfo | None = None
 ) -> int:
     """FLOP cost of a pointwise (element-wise) operation.
 
@@ -124,7 +124,7 @@ def pointwise_cost(
 def reduction_cost(
     input_shape: tuple[int, ...],
     axis: int | None = None,
-    symmetry_info: "SymmetryInfo | None" = None,
+    symmetry_info: SymmetryInfo | None = None,
 ) -> int:
     """FLOP cost of a reduction operation.
 

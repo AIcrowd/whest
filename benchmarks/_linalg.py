@@ -155,14 +155,10 @@ def benchmark_linalg(
 
         # Build bench code
         if op == "linalg.solve":
-            bench_suffix = "; b = np.ones({n}, dtype=np.{dtype})".format(
-                n=n, dtype=dtype
-            )
+            bench_suffix = f"; b = np.ones({n}, dtype=np.{dtype})"
             bench = "np.linalg.solve(A, b)"
         elif op == "linalg.lstsq":
-            bench_suffix = "; b = np.ones({n}, dtype=np.{dtype})".format(
-                n=n, dtype=dtype
-            )
+            bench_suffix = f"; b = np.ones({n}, dtype=np.{dtype})"
             bench = "np.linalg.lstsq(A, b, rcond=None)"
         else:
             bench_suffix = ""

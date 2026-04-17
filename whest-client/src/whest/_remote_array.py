@@ -8,7 +8,7 @@ operations are dispatched to the server transparently.
 from __future__ import annotations
 
 import struct
-from typing import Any, Dict, Tuple, Union
+from typing import Any
 
 from whest._math_compat import prod as _prod
 
@@ -19,7 +19,7 @@ from whest._math_compat import prod as _prod
 #: Maps dtype string to (struct format char, byte width).
 #: Complex types use their float-component format char; _bytes_to_list
 #: handles pairing them into Python complex numbers.
-_DTYPE_INFO: Dict[str, Tuple[str, int]] = {
+_DTYPE_INFO: dict[str, tuple[str, int]] = {
     "float64": ("d", 8),
     "float32": ("f", 4),
     "float16": ("e", 2),
@@ -40,7 +40,7 @@ _DTYPE_INFO: Dict[str, Tuple[str, int]] = {
 _COMPLEX_DTYPES = frozenset({"complex64", "complex128"})
 
 
-def _bytes_to_list(data: bytes, shape: Tuple[int, ...], dtype: str) -> Any:
+def _bytes_to_list(data: bytes, shape: tuple[int, ...], dtype: str) -> Any:
     """Convert raw *data* bytes into a (possibly nested) Python list.
 
     Uses :mod:`struct` for unpacking -- no numpy dependency.
@@ -87,7 +87,7 @@ def _bytes_to_list(data: bytes, shape: Tuple[int, ...], dtype: str) -> Any:
     return _reshape(flat, shape)
 
 
-def _reshape(flat: list, shape: Tuple[int, ...]) -> Any:
+def _reshape(flat: list, shape: tuple[int, ...]) -> Any:
     """Reshape a flat list into nested lists matching *shape*."""
     if len(shape) == 1:
         return flat
@@ -121,7 +121,7 @@ class RemoteScalar:
 
     __slots__ = ("_value", "_dtype")
 
-    def __init__(self, value: Union[int, float], dtype: str) -> None:
+    def __init__(self, value: int | float, dtype: str) -> None:
         self._value = value
         self._dtype = dtype
 
@@ -149,7 +149,7 @@ class RemoteScalar:
 
     # -- conversions --------------------------------------------------------
 
-    def tolist(self) -> Union[int, float]:
+    def tolist(self) -> int | float:
         return self._value
 
     def __float__(self) -> float:
@@ -365,7 +365,7 @@ class RemoteArray(metaclass=_RemoteArrayMeta):
 
     # -- data access (auto-fetch from server) -------------------------------
 
-    def _fetch_data(self) -> Tuple[bytes, tuple, str]:
+    def _fetch_data(self) -> tuple[bytes, tuple, str]:
         """Fetch the raw data from the server.
 
         Returns ``(raw_bytes, shape, dtype)``.
@@ -602,7 +602,7 @@ class RemoteArray(metaclass=_RemoteArrayMeta):
 # ---------------------------------------------------------------------------
 
 
-def _result_from_response(resp: dict) -> Union[RemoteArray, RemoteScalar, tuple, dict]:
+def _result_from_response(resp: dict) -> RemoteArray | RemoteScalar | tuple | dict:
     """Convert a server response dict into the appropriate proxy object.
 
     Examines the ``"result"`` key:

@@ -171,7 +171,7 @@ class TestBuildBipartite:
         assert g.free_labels == frozenset("ab")
         assert g.summed_labels == frozenset("ij")
         # T's rows have incidence {i: 1} and {j: 1}
-        t_rows = [row for u, row in zip(g.u_operand, g.incidence) if u == 0]
+        t_rows = [row for u, row in zip(g.u_operand, g.incidence, strict=False) if u == 0]
         assert len(t_rows) == 2
         assert {"i": 1} in t_rows
         assert {"j": 1} in t_rows

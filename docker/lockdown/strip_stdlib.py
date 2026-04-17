@@ -56,7 +56,7 @@ def _discover_kept_files() -> set[str]:
 
     # Collect all file paths from loaded modules
     kept = set()
-    for name, mod in sys.modules.items():
+    for _name, mod in sys.modules.items():
         f = getattr(mod, "__file__", None)
         if f:
             kept.add(os.path.realpath(f))
@@ -77,7 +77,7 @@ def _discover_kept_files() -> set[str]:
                     kept.add(os.path.realpath(init))
 
     # Keep all .so files from loaded C extensions
-    for name, mod in sys.modules.items():
+    for _name, mod in sys.modules.items():
         f = getattr(mod, "__file__", None)
         if f and f.endswith(".so"):
             kept.add(os.path.realpath(f))
@@ -86,7 +86,7 @@ def _discover_kept_files() -> set[str]:
     stdlib = _stdlib_dir()
     enc_dir = os.path.join(stdlib, "encodings")
     if os.path.isdir(enc_dir):
-        for root, dirs, files in os.walk(enc_dir):
+        for root, _dirs, files in os.walk(enc_dir):
             for fname in files:
                 kept.add(os.path.realpath(os.path.join(root, fname)))
 
@@ -139,7 +139,7 @@ def strip(dry_run: bool = False) -> None:
         for d in [_stdlib_dir(), _platstdlib_dir()]:
             if not os.path.isdir(d):
                 continue
-            for root, dirnames, filenames in os.walk(d, topdown=False):
+            for root, dirnames, _filenames in os.walk(d, topdown=False):
                 for dirname in dirnames:
                     dirpath = os.path.join(root, dirname)
                     try:

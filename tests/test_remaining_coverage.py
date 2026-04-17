@@ -806,7 +806,7 @@ class TestRandomGetattr:
         from whest import random as merandom
 
         with pytest.raises(AttributeError, match="does not provide"):
-            merandom.totally_nonexistent_attr_xyz
+            _ = merandom.totally_nonexistent_attr_xyz
 
 
 class TestRandomOutputSize:

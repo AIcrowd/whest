@@ -46,7 +46,7 @@ BITWISE_OPS: list[str] = UNARY_OPS + BINARY_OPS + SHIFT_OPS + SPECIAL_OPS
 
 # --- Analytical formula strings (all cost = n) ----------------------------
 
-_FORMULA_STRINGS: dict[str, str] = {op: "n" for op in BITWISE_OPS}
+_FORMULA_STRINGS: dict[str, str] = dict.fromkeys(BITWISE_OPS, "n")
 
 
 def _analytical_cost(op: str, n: int) -> int:  # noqa: ARG001

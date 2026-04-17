@@ -42,7 +42,7 @@ def test_registered_not_implemented_gives_message():
 
 def test_unknown_name_still_errors():
     with pytest.raises(AttributeError, match="does not provide"):
-        getattr(we, "totally_fake_function_xyz")
+        _ = we.totally_fake_function_xyz
 
 
 def test_fft_submodule_exists():
@@ -67,4 +67,4 @@ def test_fft_getattr_gives_blacklist_error():
 def test_linalg_getattr_consults_registry():
     """Verify that accessing a non-existent linalg attr raises AttributeError."""
     with pytest.raises(AttributeError):
-        getattr(we.linalg, "nonexistent_function_xyz")
+        _ = we.linalg.nonexistent_function_xyz

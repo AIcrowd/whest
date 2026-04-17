@@ -6,7 +6,7 @@ proxy to the server for more complex estimations.
 
 from __future__ import annotations
 
-from typing import Sequence, Tuple, Union
+from collections.abc import Sequence
 
 from whest._math_compat import prod as _prod
 
@@ -15,7 +15,7 @@ from whest._math_compat import prod as _prod
 # ---------------------------------------------------------------------------
 
 
-def pointwise_cost(shape: Tuple[int, ...]) -> int:
+def pointwise_cost(shape: tuple[int, ...]) -> int:
     """Return the FLOP cost of a pointwise (element-wise) operation.
 
     Parameters
@@ -32,7 +32,7 @@ def pointwise_cost(shape: Tuple[int, ...]) -> int:
     return max(_prod(shape), 1)
 
 
-def reduction_cost(input_shape: Tuple[int, ...], axis: Union[int, None] = None) -> int:
+def reduction_cost(input_shape: tuple[int, ...], axis: int | None = None) -> int:
     """Return the FLOP cost of a reduction operation.
 
     Parameters
@@ -61,7 +61,7 @@ def reduction_cost(input_shape: Tuple[int, ...], axis: Union[int, None] = None) 
 # ---------------------------------------------------------------------------
 
 
-def einsum_cost(subscripts: str, shapes: Sequence[Tuple[int, ...]]) -> int:
+def einsum_cost(subscripts: str, shapes: Sequence[tuple[int, ...]]) -> int:
     """Query the server for the FLOP cost of an einsum operation.
 
     Parameters

@@ -122,7 +122,7 @@ class TestSymmetryAwarePaths:
         from whest._opt_einsum._contract import contract_path
 
         args = ("ij,jk,ki->", (10, 10), (10, 10), (10, 10))
-        kwargs = dict(shapes=True, optimize="greedy")
+        kwargs = {"shapes": True, "optimize": "greedy"}
 
         _, info_dense = contract_path(*args, **kwargs)
 
@@ -412,10 +412,10 @@ class TestFixedSymmetricFlopCount:
 
         # Count FMA ops for unique (j,k) pairs (FMA=1 op)
         counted_ops = 0
-        for a in range(n):
+        for _a in range(n):
             for j in range(n):
-                for k in range(j, n):  # unique (j,k) only
-                    for i in range(n):
+                for _k in range(j, n):  # unique (j,k) only
+                    for _i in range(n):
                         counted_ops += 1  # one FMA (fused multiply-add)
 
         size_dict = {"i": n, "j": n, "k": n, "a": n}

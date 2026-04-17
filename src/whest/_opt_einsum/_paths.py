@@ -770,7 +770,7 @@ def ssa_greedy_optimize(
 
     # Find initial candidate contractions.
     queue: list[GreedyContractionType] = []
-    for dim, dim_keys in dim_to_keys.items():
+    for _dim, dim_keys in dim_to_keys.items():
         dim_keys_list = sorted(dim_keys, key=remaining.__getitem__)
         for i, k1 in enumerate(dim_keys_list[:-1]):
             k2s_guess = dim_keys_list[1 + i :]
@@ -1016,7 +1016,7 @@ def _bitmap_select(
         >>> list(_bitmap_select(0b11010, ['A', 'B', 'C', 'D', 'E']))
         ['B', 'D', 'E']
     """
-    return (x for x, b in zip(seq, bin(s)[:1:-1]) if b == "1")
+    return (x for x, b in zip(seq, bin(s)[:1:-1], strict=False) if b == "1")
 
 
 def _dp_calc_legs(g, all_tensors, s, inputs, i1_cut_i2_wo_output, i1_union_i2):

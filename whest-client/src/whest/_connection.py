@@ -74,10 +74,10 @@ class Connection:
         try:
             sock.send(raw_request)
             raw_response: bytes = sock.recv()
-        except zmq.Again:
+        except zmq.Again as err:
             # Socket is in a bad state after timeout — reset it
             self._reset_socket()
-            raise WhestServerError("server timeout: no response within timeout period")
+            raise WhestServerError("server timeout: no response within timeout period") from err
         t1 = time.monotonic_ns()
 
         response = decode_response(raw_response)

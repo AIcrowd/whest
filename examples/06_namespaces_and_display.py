@@ -48,7 +48,7 @@ with we.BudgetContext(
     namespace="training",
     quiet=True,
 ) as train_ctx:
-    for step in range(5):  # 5 forward passes
+    for _step in range(5):  # 5 forward passes
         h = we.array(np.random.randn(batch_size, 64).astype(np.float32))
         for W_layer, b in layers:
             # Linear: h @ W.T  (batch_size x 64) @ (64 x 64) -> (batch_size x 64)

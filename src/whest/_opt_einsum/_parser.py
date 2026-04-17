@@ -174,7 +174,7 @@ def find_output_shape(
     return tuple(
         max(
             shape[loc]
-            for shape, loc in zip(shapes, [x.find(c) for x in inputs])
+            for shape, loc in zip(shapes, [x.find(c) for x in inputs], strict=False)
             if loc >= 0
         )
         for c in output
@@ -233,10 +233,10 @@ def possibly_convert_to_numpy(x: Any) -> Any:
     if not hasattr(x, "shape"):
         try:
             import numpy as np  # type: ignore
-        except ModuleNotFoundError:
+        except ModuleNotFoundError as err:
             raise ModuleNotFoundError(
                 "numpy is required to convert non-array objects to arrays. This function will be deprecated in the future."
-            )
+            ) from err
 
         return np.asanyarray(x)
     else:
@@ -288,10 +288,10 @@ def convert_interleaved_input(operands: Sequence[Any]) -> tuple[str, tuple[Any, 
             symbol: get_symbol(idx) for idx, symbol in enumerate(sorted(symbol_set))
         }
 
-    except TypeError:  # unhashable or uncomparable object
+    except TypeError as err:  # unhashable or uncomparable object
         raise TypeError(
             "For this input type lists must contain either Ellipsis or hashable and comparable object (e.g. int, str)."
-        )
+        ) from err
 
     subscripts = ",".join(convert_subscripts(sub, symbol_map) for sub in subscript_list)
     if output_list is not None:

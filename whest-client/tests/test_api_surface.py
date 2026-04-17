@@ -253,29 +253,29 @@ class TestGetattr:
 
     def test_blacklisted_top_level(self):
         with pytest.raises(AttributeError, match="intentionally not supported"):
-            we.save
+            _ = we.save
 
     def test_blacklisted_top_level_load(self):
         with pytest.raises(AttributeError, match="intentionally not supported"):
-            we.load
+            _ = we.load
 
     def test_unknown_top_level(self):
         with pytest.raises(AttributeError, match="has no attribute"):
-            we.completely_nonexistent_function_xyz
+            _ = we.completely_nonexistent_function_xyz
 
     def test_fft_registered_not_blacklisted(self):
         # fft.fft is now counted_custom, not blacklisted
         with pytest.raises(AttributeError, match="registered but not yet implemented"):
-            we.fft.fft
+            _ = we.fft.fft
 
     def test_fft_rfft_registered_not_blacklisted(self):
         # fft.rfft is now counted_custom, not blacklisted
         with pytest.raises(AttributeError, match="registered but not yet implemented"):
-            we.fft.rfft
+            _ = we.fft.rfft
 
     def test_unknown_fft(self):
         with pytest.raises(AttributeError, match="has no attribute"):
-            we.fft.nonexistent_xyz
+            _ = we.fft.nonexistent_xyz
 
     def test_linalg_eig_is_proxy(self):
         # linalg.eig is now a counted_custom proxy, not blacklisted
@@ -283,11 +283,11 @@ class TestGetattr:
 
     def test_unknown_linalg(self):
         with pytest.raises(AttributeError, match="has no attribute"):
-            we.linalg.nonexistent_xyz
+            _ = we.linalg.nonexistent_xyz
 
     def test_unknown_random(self):
         with pytest.raises(AttributeError, match="has no attribute"):
-            we.random.nonexistent_xyz
+            _ = we.random.nonexistent_xyz
 
 
 # ===================================================================

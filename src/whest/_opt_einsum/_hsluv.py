@@ -11,7 +11,7 @@ See NOTICE in this package for attribution details.
 from __future__ import annotations
 
 import math
-from functools import lru_cache
+from functools import lru_cache, cache
 
 _M = (
     (3.240969941904521, -1.537383177570093, -0.498610760293),
@@ -139,7 +139,7 @@ def _max_chroma_for_lh(lightness: float, hue: float) -> float:
 def _dot_product(
     left: tuple[float, float, float], right: tuple[float, float, float]
 ) -> float:
-    return sum(left_value * right_value for left_value, right_value in zip(left, right))
+    return sum(left_value * right_value for left_value, right_value in zip(left, right, strict=False))
 
 
 def _from_linear(channel: float) -> float:
@@ -217,7 +217,7 @@ def rgb_distance_hex(left: str, right: str) -> float:
     return math.dist(left_rgb, right_rgb)
 
 
-@lru_cache(maxsize=None)
+@cache
 def rich_label_palette(slot_count: int) -> tuple[str, ...]:
     if slot_count <= 64:
         return PRECOMPUTED_QUALITATIVE_HSLUV_PALETTE_64

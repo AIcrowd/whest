@@ -18,7 +18,6 @@ import json
 import sys
 import types
 import warnings
-from typing import Dict, Tuple
 
 import numpy as np
 
@@ -279,7 +278,7 @@ def _should_skip(name: str, obj) -> bool:
     return False
 
 
-def introspect_numpy() -> Dict[str, dict]:
+def introspect_numpy() -> dict[str, dict]:
     """Walk numpy and its submodules to discover all public callables.
 
     Returns
@@ -288,7 +287,7 @@ def introspect_numpy() -> Dict[str, dict]:
         Maps qualified name (e.g. ``"exp"``, ``"linalg.svd"``) to a metadata
         dict with keys ``"module"`` (str) and ``"kind"`` (str).
     """
-    discovered: Dict[str, dict] = {}
+    discovered: dict[str, dict] = {}
 
     # Suppress numpy FutureWarning / DeprecationWarning for deprecated aliases
     # (e.g. np.bytes, np.int, np.float) that trigger on attribute access.
@@ -331,7 +330,7 @@ def introspect_numpy() -> Dict[str, dict]:
     return discovered
 
 
-def load_registry() -> Tuple[dict, dict]:
+def load_registry() -> tuple[dict, dict]:
     """Load the whest registry.
 
     Returns
@@ -349,9 +348,9 @@ def load_registry() -> Tuple[dict, dict]:
 
 
 def compare(
-    discovered: Dict[str, dict],
+    discovered: dict[str, dict],
     registry: dict,
-) -> Dict[str, list]:
+) -> dict[str, list]:
     """Compare discovered numpy callables against the whest registry.
 
     Parameters
@@ -384,7 +383,7 @@ def compare(
         except (AttributeError, TypeError):
             pass
 
-    result: Dict[str, list] = {
+    result: dict[str, list] = {
         "covered": [],
         "registered_not_implemented": [],
         "unclassified": [],
@@ -428,8 +427,8 @@ def _category_color(category: str) -> str:
 
 
 def print_rich_report(
-    discovered: Dict[str, dict],
-    comparison: Dict[str, list],
+    discovered: dict[str, dict],
+    comparison: dict[str, list],
     registry: dict,
     filter_category: str | None = None,
     filter_module: str | None = None,
@@ -505,8 +504,8 @@ def print_rich_report(
 
 
 def print_plain_report(
-    discovered: Dict[str, dict],
-    comparison: Dict[str, list],
+    discovered: dict[str, dict],
+    comparison: dict[str, list],
     registry: dict,
     filter_category: str | None = None,
     filter_module: str | None = None,

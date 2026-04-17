@@ -10,7 +10,7 @@ Detection of symmetries is handled by ``_subgraph_symmetry.SubgraphSymmetryOracl
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Collection
+from collections.abc import Collection
 
 from whest._perm_group import PermutationGroup
 
