@@ -1,5 +1,6 @@
 import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Controls, Handle, Position, ReactFlow, ReactFlowProvider } from '@xyflow/react';
+import { Handle, Panel, Position, ReactFlow, ReactFlowProvider, useReactFlow } from '@xyflow/react';
+import PanZoomControls, { PanZoomHint } from './PanZoomControls.jsx';
 import '@xyflow/react/dist/style.css';
 import Latex from './Latex.jsx';
 import GlossaryList from './GlossaryList.jsx';
@@ -329,6 +330,30 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
   return { nodes, edges };
 }
 
+// ─── Pan/zoom chrome (shared visual language with PanZoomCanvas) ──────
+
+// Lives INSIDE <ReactFlow> so it can use the store-coupled hook.
+function LadderControlsPanel() {
+  const { zoomIn, zoomOut, fitView } = useReactFlow();
+  return (
+    <Panel position="bottom-right" className="!m-2">
+      <PanZoomControls
+        onZoomIn={() => zoomIn({ duration: 150 })}
+        onZoomOut={() => zoomOut({ duration: 150 })}
+        onReset={() => fitView({ padding: 0.15, duration: 200, maxZoom: 1 })}
+      />
+    </Panel>
+  );
+}
+
+function LadderHintPanel() {
+  return (
+    <Panel position="bottom-left" className="!m-2">
+      <PanZoomHint />
+    </Panel>
+  );
+}
+
 // ─── Graph memo ──────────────────────────────────────────────────────
 
 const DecisionLadderGraph = memo(function DecisionLadderGraph({
@@ -357,12 +382,14 @@ const DecisionLadderGraph = memo(function DecisionLadderGraph({
         zoomOnScroll
         zoomOnPinch
         zoomOnDoubleClick
-        preventScrolling
+        preventScrolling={false}
+        zoomActivationKeyCode={['Meta', 'Control']}
         proOptions={{ hideAttribution: true }}
         onNodeMouseEnter={onNodeMouseEnter}
         onNodeMouseLeave={onNodeMouseLeave}
       >
-        <Controls showInteractive={false} position="bottom-right" />
+        <LadderHintPanel />
+        <LadderControlsPanel />
       </ReactFlow>
     </ReactFlowProvider>
   );

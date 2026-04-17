@@ -225,9 +225,6 @@ export default function SymmetryAwareEinsumContractionsApp() {
 
       <div className="w-full pb-20 pt-8">
         <div className="mx-auto flex w-full max-w-[1460px] flex-col gap-2 px-6 pb-6 md:px-8 lg:px-10">
-          <span className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-            Interactive walkthrough
-          </span>
           <h1 className="text-lg font-semibold leading-tight text-foreground">
             Symmetry Aware Einsum Contractions
           </h1>
