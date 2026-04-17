@@ -141,13 +141,19 @@ REMOVED_IN_NUMPY = (
 
 XFAIL_PATTERNS: dict[str, str] = {
     # ------------------------------------------------------------------ #
-    # test_random.py — counted random wrapper signature divergences        #
+    # test_random.py                                                      #
     # ------------------------------------------------------------------ #
-    # whest random wrappers are plain functions, not methods on the
-    # RandomState class. Tests that use np.random.shuffle as a bound method
-    # or test internal RandomState behavior will fail.
+    # test_shuffle iterates the shuffle over 11 array variants and does
+    # assert_array_equal after each. The shuffle itself succeeds; the
+    # failure is in the equality check for structured-dtype arrays
+    # (WhestArray.__eq__ -> we.equal -> np.equal raises _UFuncNoLoopError
+    # on VoidDType) and the dtype=object case (legacy RandomState shuffle
+    # order differs from what the test hard-codes, which numpy documents
+    # as "will not be fixed" — see the UserWarning emitted during the run).
     "*TestRandomDist::test_shuffle": (
-        "WRAPPER_SIGNATURE: whest shuffle is a plain function, not a bound method"
+        "SUBCLASS_RETURN: WhestArray.__eq__ routes through we.equal which "
+        "lacks a ufunc loop for structured dtypes; same root cause as the "
+        "other SUBCLASS_RETURN entries"
     ),
     # NOTE: test_polyval, test_out_scalar, and test_choice_return_shape
     # were previously xfailed here. They now pass after targeted fixes:
