@@ -9,7 +9,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { LabelInteractionGraph } from './ComponentView.jsx';
 import DecisionLadder from './DecisionLadder.jsx';
 import PanZoomCanvas from './PanZoomCanvas.jsx';
-import { getCasePresentation, getRegimePresentation } from './regimePresentation.js';
 import ExplorerModal from './ExplorerModal.jsx';
 import MultiplicationCostCard from './MultiplicationCostCard.jsx';
 import AccumulationHardCard from './AccumulationHardCard.jsx';
@@ -70,20 +69,8 @@ function multiplicationOrbits(comp) {
     : (comp.multiplication?.count ?? null);
 }
 
-function methodLabel(comp) {
-  return getCasePresentation(comp.caseType)?.methodLabel ?? 'Orbit enumeration';
-}
-
-function methodHumanName(comp) {
-  return getCasePresentation(comp.caseType)?.humanName ?? null;
-}
-
 function supportsOrbitEnumeration(comp) {
   return !isTrivial(comp) && (comp.caseType === 'C' || comp.caseType === 'E');
-}
-
-function methodFormula(comp) {
-  return getCasePresentation(comp.caseType)?.tooltip?.latex ?? null;
 }
 
 function LabelsCell({ comp }) {
@@ -114,20 +101,18 @@ function ComponentSummaryTable({
     <div className="max-w-full overflow-x-auto rounded-xl border border-border bg-white shadow-sm">
       <Table className="w-full table-fixed text-sm">
         <colgroup>
-          <col className="w-[10%]" />
-          <col className="w-[10%]" />
-          <col className="w-[12%]" />
-          <col className="w-[30%]" />
-          <col className="w-[11%]" />
-          <col className="w-[11%]" />
-          <col className="w-[16%]" />
+          <col className="w-[14%]" />
+          <col className="w-[14%]" />
+          <col className="w-[18%]" />
+          <col className="w-[14%]" />
+          <col className="w-[18%]" />
+          <col className="w-[22%]" />
         </colgroup>
         <TableHeader className="bg-surface-raised">
           <TableRow className="border-border hover:bg-surface-raised">
             <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Case</TableHead>
             <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Labels</TableHead>
             <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Symmetry</TableHead>
-            <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Method</TableHead>
             <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">MUL Cost</TableHead>
             <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Acc Cost</TableHead>
             <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Savings</TableHead>
@@ -165,39 +150,29 @@ function ComponentSummaryTable({
                   <SymmetryBadge value={comp.groupName || 'trivial'} />
                 </TableCell>
                 <TableCell className="px-3 py-2">
-                  <div className="space-y-2">
-                    <div className="flex flex-wrap items-center gap-2">
-                      {canOpenOrbits ? (
-                        <button
-                          type="button"
-                          className="rounded-full border border-coral bg-white px-2.5 py-1 text-xs font-semibold text-coral transition-colors hover:bg-coral-light"
-                          onClick={() => onOpenOrbitModal?.(comp)}
-                        >
-                          Orbit Enumeration
-                        </button>
-                      ) : (
-                        <span className="text-xs font-medium text-foreground">{methodLabel(comp)}</span>
-                      )}
-                    </div>
-                    {methodHumanName(comp) ? (
-                      <div className="text-[11px] italic leading-snug text-muted-foreground">
-                        {methodHumanName(comp)}
-                      </div>
-                    ) : null}
-                    {methodFormula(comp) ? (
-                      <div className="text-xs text-muted-foreground">
-                        <Latex math={methodFormula(comp)} />
-                      </div>
-                    ) : null}
-                  </div>
-                </TableCell>
-                <TableCell className="px-3 py-2">
                   <code className="font-mono text-xs text-foreground">{multiplicationOrbits.toLocaleString()}</code>
                 </TableCell>
                 <TableCell className="px-3 py-2">
-                  {accumulationCount(comp) !== null
-                    ? <code className="font-mono text-xs text-foreground">{accumulationCount(comp).toLocaleString()}</code>
-                    : <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] text-amber-800">Unavailable</span>}
+                  <div className="flex flex-wrap items-center gap-2">
+                    {accumulationCount(comp) !== null ? (
+                      <code className="font-mono text-xs text-foreground">
+                        {accumulationCount(comp).toLocaleString()}
+                      </code>
+                    ) : (
+                      <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] text-amber-800">
+                        Unavailable
+                      </span>
+                    )}
+                    {canOpenOrbits ? (
+                      <button
+                        type="button"
+                        className="rounded-full border border-coral bg-white px-2 py-0.5 text-[10px] font-semibold text-coral transition-colors hover:bg-coral-light"
+                        onClick={() => onOpenOrbitModal?.(comp)}
+                      >
+                        Orbit Enumeration
+                      </button>
+                    ) : null}
+                  </div>
                 </TableCell>
                 <TableCell className="px-3 py-2">
                   {totalSavingsPct !== null ? (

@@ -10,7 +10,8 @@ import { CASE_META } from '../engine/componentDecomposition.js';
  * Entries for regimes (singleton, directProduct, bruteForceOrbit) come from REGIME_SPEC.
  * Entries for shapes (trivial, allVisible, allSummed, mixed) come from SHAPE_SPEC.
  * Legacy case types (A, B, C, D, E, trivial) map via CLASSIFICATION_LEAVES for
- * backwards compatibility — still used by some tests and preset metadata.
+ * backwards compatibility — still used by CaseBadge when a preset passes its
+ * historical caseType letter.
  */
 
 const LEGACY_CASE_COLORS = {
@@ -29,8 +30,6 @@ function buildLegacyPresentation(caseType) {
       id: leaf.id,
       label: CASE_META[caseType]?.label ?? leaf.label,
       shortLabel: leaf.shortLabel,
-      methodLabel: leaf.methodLabel ?? leaf.label,
-      humanName: leaf.humanName ?? null,
       color: LEGACY_CASE_COLORS[caseType] ?? '#94A3B8',
       tooltip: {
         title: leaf.label,
@@ -50,43 +49,21 @@ const LEGACY_CASE_PRESENTATION = Object.fromEntries(
 );
 
 function regimePresentationFromSpec(id) {
-  if (REGIME_SPEC[id]) {
-    const spec = REGIME_SPEC[id];
-    return {
-      id,
-      label: spec.label,
-      shortLabel: spec.shortLabel,
-      methodLabel: spec.label,
-      humanName: spec.description,
-      color: spec.color ?? '#94A3B8',
-      tooltip: {
-        title: spec.label,
-        body: spec.description,
-        whenText: spec.when ?? null,
-        latex: spec.latex ?? null,
-        glossary: spec.glossary ?? null,
-      },
-    };
-  }
-  if (SHAPE_SPEC[id]) {
-    const spec = SHAPE_SPEC[id];
-    return {
-      id,
-      label: spec.label,
-      shortLabel: spec.shortLabel,
-      methodLabel: spec.label,
-      humanName: spec.description,
-      color: spec.color ?? '#94A3B8',
-      tooltip: {
-        title: spec.label,
-        body: spec.description,
-        whenText: spec.when ?? null,
-        latex: spec.latex ?? null,
-        glossary: spec.glossary ?? null,
-      },
-    };
-  }
-  return null;
+  const spec = REGIME_SPEC[id] || SHAPE_SPEC[id];
+  if (!spec) return null;
+  return {
+    id,
+    label: spec.label,
+    shortLabel: spec.shortLabel,
+    color: spec.color ?? '#94A3B8',
+    tooltip: {
+      title: spec.label,
+      body: spec.description,
+      whenText: spec.when ?? null,
+      latex: spec.latex ?? null,
+      glossary: spec.glossary ?? null,
+    },
+  };
 }
 
 export function getRegimePresentation(id) {
@@ -98,19 +75,11 @@ export function getRegimePresentation(id) {
       id: key,
       label: `Regime ${key}`,
       shortLabel: key,
-      methodLabel: 'Orbit enumeration',
-      humanName: null,
       tooltip: null,
     }
   );
 }
 
-// Backwards-compatible alias consumed by older call sites.
-export function getCasePresentation(caseType) {
-  return getRegimePresentation(caseType);
-}
-
-export const CASE_PRESENTATION = LEGACY_CASE_PRESENTATION;
 export const REGIME_PRESENTATION = Object.fromEntries(
   Object.keys(REGIME_SPEC).map((id) => [id, regimePresentationFromSpec(id)]),
 );

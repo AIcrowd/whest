@@ -67,34 +67,8 @@ test('each leaf\'s latex formula matches the mathematics the engine actually com
   assert.match(CLASSIFICATION_LEAVES.d.latex, /H_a\s*=\s*\\mathrm\{Stab\}_\{G_a\}\(V_a\)/);
 });
 
-test('every leaf carries methodLabel, humanName, latex, and glossary (tooltip contract)', () => {
+test('every leaf carries latex + glossary (tooltip contract)', () => {
   for (const leaf of Object.values(CLASSIFICATION_LEAVES)) {
-    assert.equal(
-      typeof leaf.methodLabel,
-      'string',
-      `leaf ${leaf.id} must have methodLabel (used in the Method column)`,
-    );
-    assert.ok(leaf.methodLabel.length > 0, `leaf ${leaf.id} methodLabel must be non-empty`);
-    assert.ok(
-      !/\bformula\b/i.test(leaf.methodLabel),
-      `leaf ${leaf.id} methodLabel must not call itself a "formula" — name the approach (got: "${leaf.methodLabel}")`,
-    );
-
-    assert.equal(
-      typeof leaf.humanName,
-      'string',
-      `leaf ${leaf.id} must have humanName (plain-English one-liner)`,
-    );
-    assert.ok(
-      leaf.humanName.length >= 10,
-      `leaf ${leaf.id} humanName must actually say something (got "${leaf.humanName}")`,
-    );
-    // Human name avoids jargon that only appears in the technical label.
-    assert.ok(
-      !/Burnside|Hₐ|H_a/.test(leaf.humanName),
-      `leaf ${leaf.id} humanName must be jargon-free (got "${leaf.humanName}")`,
-    );
-
     assert.equal(typeof leaf.latex, 'string', `leaf ${leaf.id} must have latex`);
     assert.equal(
       typeof leaf.glossary,
