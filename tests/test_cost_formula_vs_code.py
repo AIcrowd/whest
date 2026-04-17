@@ -603,7 +603,20 @@ class TestSorting:
 
 class TestSetOps:
     @pytest.mark.parametrize(
-        "name", ["in1d", "isin", "intersect1d", "union1d", "setdiff1d", "setxor1d"]
+        "name",
+        [
+            pytest.param(
+                "in1d",
+                marks=pytest.mark.skipif(
+                    not hasattr(numpy, "in1d"), reason="numpy 2.4+ removed in1d"
+                ),
+            ),
+            "isin",
+            "intersect1d",
+            "union1d",
+            "setdiff1d",
+            "setxor1d",
+        ],
     )
     def test_set_op_cost(self, name, we):
         # (100+50)*ceil(log2(150)) = 150*8 = 1200

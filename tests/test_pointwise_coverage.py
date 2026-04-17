@@ -925,6 +925,7 @@ class TestAdditionalCustomOps:
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.skipif(not hasattr(numpy, "trapz"), reason="numpy 2.4+ removed trapz")
 class TestTrapz:
     def test_trapz_basic(self):
         from whest._pointwise import trapz

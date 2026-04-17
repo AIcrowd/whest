@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import numpy
+import pytest
 
 from whest._budget import BudgetContext
 from whest._flops import search_cost, sort_cost
@@ -336,6 +337,7 @@ def _set_op_expected_cost(a1, a2):
     return sort_cost(n + m)
 
 
+@pytest.mark.skipif(not hasattr(numpy, "in1d"), reason="numpy 2.4+ removed in1d")
 class TestIn1d:
     def test_result_matches_numpy(self):
         ar1 = numpy.array([1, 2, 3, 4, 5])
