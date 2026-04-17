@@ -10,7 +10,7 @@
 [![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://aicrowd.github.io/whest/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-[![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)]()
+[![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)](https://github.com/AIcrowd/whest/actions/workflows/ci.yml)
 
 </div>
 
@@ -93,7 +93,7 @@ we.budget_summary()  # 984,321 FLOPs
 
 | Module | Operations | Cost Model | Status |
 |--------|-----------|------------|--------|
-| Core (`we.*`) | 339 | Varies by category (unary, binary, reduction, free) | Supported |
+| Core (`we.*`) | 333 | Varies by category (unary, binary, reduction, free) | Supported |
 | `we.linalg` | 31 | Per-operation formulas | Supported |
 | `we.fft` | 18 | `5n * ceil(log2(n))` for transforms | Supported |
 | `we.random` | 51 | `numel(output)` per sample; shuffle: `n*ceil(log2(n))` | Supported |
@@ -189,7 +189,7 @@ with we.BudgetContext(flop_budget=10**8) as budget:
 
 This works for any einsum where the same Python object appears at multiple
 operand positions. See the
-[exploit-symmetry guide](docs/how-to/exploit-symmetry.md) for more examples
+[exploit-symmetry guide](website/content/docs/guides/symmetry.mdx) for more examples
 including triple products and block symmetries.
 
 ## How It Works
@@ -217,34 +217,34 @@ including triple products and block symmetries.
 
 **Getting Started**
 
-- [Installation & Setup](docs/getting-started/installation.md)
-- [Your First Budget](docs/getting-started/first-budget.md)
+- [Installation & Setup](website/content/docs/getting-started/installation.mdx)
+- [Your First Budget](website/content/docs/getting-started/quickstart.mdx)
 
 **How-To Guides**
 
-- [Use Einsum](docs/how-to/use-einsum.md)
-- [Exploit Symmetry](docs/how-to/exploit-symmetry.md)
-- [Use Linear Algebra](docs/how-to/use-linalg.md)
-- [Plan Your Budget](docs/how-to/plan-your-budget.md)
-- [Debug Budget Overruns](docs/how-to/debug-budget-overruns.md)
-- [Migrate from NumPy](docs/how-to/migrate-from-numpy.md)
+- [Use Einsum](website/content/docs/guides/einsum.mdx)
+- [Exploit Symmetry](website/content/docs/guides/symmetry.mdx)
+- [Use Linear Algebra](website/content/docs/guides/linalg.mdx)
+- [Plan Your Budget](website/content/docs/guides/budget-planning.mdx)
+- [Debug Budget Overruns](website/content/docs/guides/budget-planning.mdx)
+- [Migrate from NumPy](website/content/docs/guides/migrate-from-numpy.mdx)
 
 **Concepts**
 
-- [FLOP Counting Model](docs/concepts/flop-counting-model.md)
-- [Operation Categories](docs/concepts/operation-categories.md)
+- [FLOP Counting Model](website/content/docs/understanding/flop-counting-model.mdx)
+- [Operation Categories](website/content/docs/understanding/operation-categories.mdx)
 
 **Development**
 
-- [Contributor Guide](docs/development/contributing.md)
+- [Contributor Guide](website/content/docs/development/contributing.mdx)
 
 **API Reference**
 
-- [Full API Reference](docs/api/)
+- [Full API Reference](website/content/docs/api/index.mdx)
 
 **For AI Agents:**
 
-- [Cheat Sheet](docs/reference/cheat-sheet.md) -- compact reference for fast lookup
+- [Cheat Sheet](website/content/docs/api/for-agents.mdx) -- compact reference for fast lookup
 
 ## Development
 
@@ -257,7 +257,7 @@ make docs-serve                # local docs at http://127.0.0.1:8000
 ```
 
 For the monorepo layout, client/server workflows, and generated-doc rules, see
-[Contributor Guide](docs/development/contributing.md).
+[Contributor Guide](website/content/docs/development/contributing.mdx).
 
 ## Citation
 
