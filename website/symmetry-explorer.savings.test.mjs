@@ -76,17 +76,21 @@ test('TotalCostView explains how per-component costs aggregate into the global t
   assert.match(totalCostSource, /AggregationExplainer/);
 
   // Formula pinning — catches silent edits that break the aggregation story.
+  // Notation updated to match the Counting Convention band: μ = total
+  // multiplication cost, α = total accumulation cost, M_a = per-component
+  // orbit count (Burnside). μ_a is no longer used at the aggregation layer.
   assert.match(totalCostSource, /AGGREGATION_FORMULA/);
-  assert.match(totalCostSource, /\\text\{Mult\}\s*=\s*\(k\s*-\s*1\)/);
-  assert.match(totalCostSource, /\\prod_\{a\}\\!\\mu_a/);
+  assert.match(totalCostSource, /\\mu\s*=\s*\(k\s*-\s*1\)/);
+  assert.match(totalCostSource, /\\prod_\{a\}\\!M_a/);
   assert.match(totalCostSource, /\\prod_\{a\}\\!\\alpha_a/);
-  assert.match(totalCostSource, /\\text\{Total\}\s*=\s*\\text\{Mult\}\s*\+\s*\\text\{Acc\}/);
+  assert.match(totalCostSource, /\\text\{Total\}\s*=\s*\\mu\s*\+\s*\\alpha/);
 
   // Glossary legend for the formula variables — rendered as a definition list,
   // one row per symbol so the math is readable on small screens.
   assert.match(totalCostSource, /AGGREGATION_LEGEND/);
-  assert.match(totalCostSource, /multiplication orbits per component/);
-  assert.match(totalCostSource, /distinct output bins per component/);
+  assert.match(totalCostSource, /orbit count per component/);
+  assert.match(totalCostSource, /total multiplication cost/);
+  assert.match(totalCostSource, /accumulation cost per component/);
   assert.match(totalCostSource, /number of operand tensors/);
   assert.match(totalCostSource, /<dl/);
   assert.match(totalCostSource, /<dt/);

@@ -353,6 +353,7 @@ export default function ComponentCostView({
   componentData,
   costModel,
   dimensionN,
+  numTerms = 2,
   allLabels,
   vLabels,
   fullGenerators,
@@ -403,12 +404,17 @@ export default function ComponentCostView({
           <InteractionGraphLegend />
         </div>
 
-        <div className="flex flex-col gap-6">
+        {/* justify-center spreads any slack vertical space (this column is
+            shorter than the interaction-graph column on the left) equally
+            between the top and bottom, so the two cost cards sit centred
+            rather than huddled at the top with dead space beneath. */}
+        <div className="flex flex-col justify-center gap-6">
           <MultiplicationCostCard
             components={components.map((comp) => ({
               ...comp,
               multiplicationCount: computeMultiplicationOrbits(comp, dimensionN),
             }))}
+            numTerms={numTerms}
           />
           <AccumulationHardCard />
         </div>

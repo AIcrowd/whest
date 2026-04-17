@@ -15,10 +15,16 @@ test('MultiplicationCostCard exports a default React component', () => {
   assert.match(src, /export default function MultiplicationCostCard/);
 });
 
-test('MultiplicationCostCard shows the size-aware Burnside formula + live rows', () => {
+test('MultiplicationCostCard shows both μ and M formulas + live rows', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/MultiplicationCostCard.jsx');
-  assert.match(src, /Calculating Multiplication Costs/);
+  // Heading uses the canonical μ notation from the Counting Convention band.
+  assert.match(src, /Calculating Multiplication Cost \(μ\)/);
   assert.match(src, /Live for this example/i);
+  // μ-formula ties the Burnside count M to the binary-multiply cost via (k−1).
+  assert.match(src, /\\mu\s*\\;=\\;\s*\(/);
+  // Mentions num_terms as the einsum-operand-count scaling factor.
+  assert.match(src, /num_terms/);
+  // And the raw Burnside sum below it.
   assert.match(src, /\\mathrm\{cycles\}\(g\)/);
   assert.match(src, /multiplicationCount/);
 });
@@ -26,7 +32,8 @@ test('MultiplicationCostCard shows the size-aware Burnside formula + live rows',
 test('AccumulationHardCard exports a default React component with pointer text', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/AccumulationHardCard.jsx');
   assert.match(src, /export default function AccumulationHardCard/);
-  assert.match(src, /Why Accumulation Cost is Hard/);
+  // Title now uses α to match the Counting Convention band.
+  assert.match(src, /Why Accumulation Cost \(α\) is Hard/);
   assert.match(src, /See the Classification Tree below/);
 });
 

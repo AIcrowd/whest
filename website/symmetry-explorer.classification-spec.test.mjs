@@ -41,28 +41,28 @@ test('each leaf\'s latex formula matches the mathematics the engine actually com
   assert.match(CLASSIFICATION_LEAVES.trivial.latex, /I_a\s*\/\s*G_a/);
   assert.match(CLASSIFICATION_LEAVES.trivial.latex, /G_a\s*=\s*\\\{e\\\}/);
 
-  // A: ρ_a = Π_{ℓ∈V_a} n_ℓ
-  assert.match(CLASSIFICATION_LEAVES.a.latex, /\\rho_a/);
+  // A: α_a = Π_{ℓ∈V_a} n_ℓ
+  assert.match(CLASSIFICATION_LEAVES.a.latex, /\\alpha_a/);
   assert.match(CLASSIFICATION_LEAVES.a.latex, /\\prod/);
   assert.match(CLASSIFICATION_LEAVES.a.latex, /V_a/);
   assert.match(CLASSIFICATION_LEAVES.a.latex, /n_\\ell/);
 
-  // B: ρ_a = |I_a/G_a| (Burnside)
-  assert.match(CLASSIFICATION_LEAVES.b.latex, /\\rho_a/);
+  // B: α_a = |I_a/G_a| (Burnside)
+  assert.match(CLASSIFICATION_LEAVES.b.latex, /\\alpha_a/);
   assert.match(CLASSIFICATION_LEAVES.b.latex, /I_a\s*\/\s*G_a/);
   assert.match(CLASSIFICATION_LEAVES.b.latex, /Burnside/);
 
-  // C/E: ρ_a = Σ_{O∈I_a/G_a} |π_{V_a}(O)|
+  // C/E: α_a = Σ_{O∈I_a/G_a} |π_{V_a}(O)|
   for (const leafId of ['c', 'e']) {
     const leaf = CLASSIFICATION_LEAVES[leafId];
-    assert.match(leaf.latex, /\\rho_a/, `${leafId} must define ρ_a`);
+    assert.match(leaf.latex, /\\alpha_a/, `${leafId} must define α_a`);
     assert.match(leaf.latex, /\\sum/, `${leafId} must be a sum over orbits`);
     assert.match(leaf.latex, /I_a\s*\/\s*G_a/, `${leafId} must iterate orbits of G_a`);
     assert.match(leaf.latex, /\\pi_\{V_a\}/, `${leafId} must project onto V_a`);
   }
 
-  // D: ρ_a = |I_a/H_a|, H_a = Stab_{G_a}(V_a)
-  assert.match(CLASSIFICATION_LEAVES.d.latex, /\\rho_a/);
+  // D: α_a = |I_a/H_a|, H_a = Stab_{G_a}(V_a)
+  assert.match(CLASSIFICATION_LEAVES.d.latex, /\\alpha_a/);
   assert.match(CLASSIFICATION_LEAVES.d.latex, /I_a\s*\/\s*H_a/);
   assert.match(CLASSIFICATION_LEAVES.d.latex, /H_a\s*=\s*\\mathrm\{Stab\}_\{G_a\}\(V_a\)/);
 });

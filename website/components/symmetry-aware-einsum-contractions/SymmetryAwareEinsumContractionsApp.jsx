@@ -390,6 +390,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       componentData={componentData}
                       costModel={cost}
                       dimensionN={dimensionN}
+                      numTerms={normalizedExample?.subscripts?.length ?? 1}
                       allLabels={group.allLabels}
                       vLabels={group.vLabels}
                       fullGenerators={group.fullGenerators}

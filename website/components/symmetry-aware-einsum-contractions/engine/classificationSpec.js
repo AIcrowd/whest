@@ -45,8 +45,8 @@ export const CLASSIFICATION_LEAVES = {
     label: 'Case A: V-only',
     shortLabel: 'A',
     description: 'All labels are free (output). Symmetry reduces unique multiplications, but every output bin must still be written.',
-    latex: String.raw`\rho_a = \prod_{\ell \in V_a} n_\ell`,
-    glossary: '$\\rho_a$: accumulation cost (distinct output bins for this component). $V_a$: free (output) labels in the component. $n_\\ell$: dimension size of label $\\ell$. Multiplications still fold via Burnside on $G_a$, but since $W_a$ (summed labels) is empty, no output tuples collapse — every output bin is written, so accumulation is just the Cartesian product of free-label sizes.',
+    latex: String.raw`\alpha_a = \prod_{\ell \in V_a} n_\ell`,
+    glossary: '$\\alpha_a$: accumulation cost (distinct output bins for this component). $V_a$: free (output) labels in the component. $n_\\ell$: dimension size of label $\\ell$. Multiplications still fold via Burnside on $G_a$, but since $W_a$ (summed labels) is empty, no output tuples collapse — every output bin is written, so accumulation is just the Cartesian product of free-label sizes.',
   },
   b: {
     id: 'b',
@@ -54,8 +54,8 @@ export const CLASSIFICATION_LEAVES = {
     label: 'Case B: W-only',
     shortLabel: 'B',
     description: 'All labels are summed. Orbits collapse both multiplications and accumulations equally.',
-    latex: String.raw`\rho_a = |I_a / G_a| \text{ (Burnside)}`,
-    glossary: '$\\rho_a$: accumulation cost. $I_a$: tuple space for this component. $G_a$: detected group. Since $V_a$ (free labels) is empty, each orbit writes exactly one output bin — so multiplications and accumulations have the same count, computed via Burnside (average of fixed-point sets over $G_a$).',
+    latex: String.raw`\alpha_a = |I_a / G_a| \text{ (Burnside)}`,
+    glossary: '$\\alpha_a$: accumulation cost. $I_a$: tuple space for this component. $G_a$: detected group. Since $V_a$ (free labels) is empty, each orbit writes exactly one output bin — so multiplications and accumulations have the same count, computed via Burnside (average of fixed-point sets over $G_a$).',
   },
   c: {
     id: 'c',
@@ -63,8 +63,8 @@ export const CLASSIFICATION_LEAVES = {
     label: 'Case C: Correlated',
     shortLabel: 'C',
     description: 'V and W labels are both present and generators act on both sides simultaneously, but no generator crosses the V/W boundary. No product formula exists — enumerate orbits exactly.',
-    latex: String.raw`\rho_a = \sum_{O \in I_a/G_a} |\pi_{V_a}(O)|`,
-    glossary: '$\\rho_a$: accumulation cost. $I_a/G_a$: the set of $G_a$-orbits on $I_a$. $O$: one orbit. $\\pi_{V_a}(O)$: the orbit restricted to the free labels. Multiplications still fold via Burnside on $G_a$. For outputs, each orbit may touch several distinct bins, so $\\rho_a$ sums the distinct $V$-projections across all orbits — explicit enumeration required.',
+    latex: String.raw`\alpha_a = \sum_{O \in I_a/G_a} |\pi_{V_a}(O)|`,
+    glossary: '$\\alpha_a$: accumulation cost. $I_a/G_a$: the set of $G_a$-orbits on $I_a$. $O$: one orbit. $\\pi_{V_a}(O)$: the orbit restricted to the free labels. Multiplications still fold via Burnside on $G_a$. For outputs, each orbit may touch several distinct bins, so $\\alpha_a$ sums the distinct $V$-projections across all orbits — explicit enumeration required.',
   },
   d: {
     id: 'd',
@@ -72,8 +72,8 @@ export const CLASSIFICATION_LEAVES = {
     label: 'Case D: Cross (Young)',
     shortLabel: 'D',
     description: 'Cross-boundary generators with the full symmetric group. The V-stabilizer Hₐ gives an analytic Burnside count for accumulation cost.',
-    latex: String.raw`\rho_a = |I_a / H_a|, \quad H_a = \mathrm{Stab}_{G_a}(V_a)`,
-    glossary: '$\\rho_a$: accumulation cost. $I_a$: tuple space. $H_a$: the $V$-stabilizer of $G_a$, i.e. the subgroup whose elements leave every free label fixed pointwise. Multiplications fold via Burnside on $G_a$. Because $G_a$ is the full symmetric group on $L_a$ (Young structure), Burnside on $H_a$ gives the output-bin count analytically — no explicit orbit walk needed.',
+    latex: String.raw`\alpha_a = |I_a / H_a|, \quad H_a = \mathrm{Stab}_{G_a}(V_a)`,
+    glossary: '$\\alpha_a$: accumulation cost. $I_a$: tuple space. $H_a$: the $V$-stabilizer of $G_a$, i.e. the subgroup whose elements leave every free label fixed pointwise. Multiplications fold via Burnside on $G_a$. Because $G_a$ is the full symmetric group on $L_a$ (Young structure), Burnside on $H_a$ gives the output-bin count analytically — no explicit orbit walk needed.',
   },
   e: {
     id: 'e',
@@ -81,8 +81,8 @@ export const CLASSIFICATION_LEAVES = {
     label: 'Case E: Cross (general)',
     shortLabel: 'E',
     description: 'Cross-boundary generators but not the full symmetric group. Value coincidences can merge output bins unpredictably — must enumerate orbits.',
-    latex: String.raw`\rho_a = \sum_{O \in I_a/G_a} |\pi_{V_a}(O)|`,
-    glossary: '$\\rho_a$: accumulation cost. $I_a/G_a$: $G_a$-orbits on $I_a$. $\\pi_{V_a}(O)$: projection of orbit $O$ onto the free labels $V_a$. Multiplications fold via Burnside on $G_a$. Since $G_a$ is not the full symmetric group, there is no Young-style shortcut for outputs — orbits must be enumerated and their $V$-projections counted individually.',
+    latex: String.raw`\alpha_a = \sum_{O \in I_a/G_a} |\pi_{V_a}(O)|`,
+    glossary: '$\\alpha_a$: accumulation cost. $I_a/G_a$: $G_a$-orbits on $I_a$. $\\pi_{V_a}(O)$: projection of orbit $O$ onto the free labels $V_a$. Multiplications fold via Burnside on $G_a$. Since $G_a$ is not the full symmetric group, there is no Young-style shortcut for outputs — orbits must be enumerated and their $V$-projections counted individually.',
   },
 };
 
@@ -141,7 +141,7 @@ export const CLASSIFICATION_QUESTIONS = [
     short: 'Gₐ = Sym(Lₐ) ?',
     long: 'Check: full symmetric group?',
     description: 'Is Gₐ the full symmetric group on all labels in this component? That is, |Gₐ| = |Lₐ|! (factorial). If yes, the Young-tableau formula gives an analytic shortcut.',
-    latex: String.raw`|G_a| = |L_a|! \implies \rho_a = |I_a / H_a|`,
+    latex: String.raw`|G_a| = |L_a|! \implies \alpha_a = |I_a / H_a|`,
     test: (facts) => facts.isFullSym,
     onTrue: 'd',
     onFalse: 'e',

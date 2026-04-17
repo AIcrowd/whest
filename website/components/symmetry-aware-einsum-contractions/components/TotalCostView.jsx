@@ -3,20 +3,32 @@ import ExplorerMetricCard from './ExplorerMetricCard.jsx';
 import GlossaryProse from './GlossaryProse.jsx';
 import Latex from './Latex.jsx';
 
-const AGGREGATION_FORMULA = String.raw`\text{Mult} = (k - 1)\!\prod_{a}\!\mu_a,\qquad \text{Acc} = \prod_{a}\!\alpha_a,\qquad \text{Total} = \text{Mult} + \text{Acc}`;
+// Notation matches the Counting Convention band at the top of the page:
+//   M — orbit count (size-aware Burnside, per component: M_a).
+//   μ = (k − 1) · ∏_a M_a  — total multiplication cost.
+//   α_a — accumulation cost per component; α = ∏_a α_a aggregates.
+const AGGREGATION_FORMULA = String.raw`\mu = (k - 1)\!\prod_{a}\!M_a,\qquad \alpha = \prod_{a}\!\alpha_a,\qquad \text{Total} = \mu + \alpha`;
 
 const AGGREGATION_LEGEND = [
   {
-    symbol: String.raw`\mu_a`,
-    definition: 'multiplication orbits per component (Act 4 "Multiplication Cost" column).',
+    symbol: String.raw`M_a`,
+    definition: 'orbit count per component — the Burnside sum $\\tfrac{1}{|G_a|}\\sum_{g} \\prod_c n_c$. Shown as "M" in Act 4 per-component rows.',
   },
   {
     symbol: String.raw`\alpha_a`,
-    definition: 'distinct output bins per component (Act 4 "Accumulation Cost" column).',
+    definition: 'accumulation cost per component — distinct output bins written by that component. Shown as "α" in Act 4 per-component rows.',
+  },
+  {
+    symbol: String.raw`\mu`,
+    definition: 'total multiplication cost. $\\mu = (k-1)\\prod_a M_a$ — note the $(k-1)$ applies once to the product of orbit counts, so $\\mu \\neq \\prod_a \\mu_a$ (don\'t multiply per-component $\\mu$ values).',
+  },
+  {
+    symbol: String.raw`\alpha`,
+    definition: 'total accumulation cost. $\\alpha = \\prod_a \\alpha_a$ — per-component accumulations multiply cleanly.',
   },
   {
     symbol: 'k',
-    definition: 'number of operand tensors in the einsum — $(k-1)$ multiplications combine each orbit representative.',
+    definition: 'number of operand tensors in the einsum — $(k-1)$ multiplications combine each orbit representative, applied once to the global orbit product.',
   },
 ];
 
@@ -28,7 +40,7 @@ function AggregationExplainer() {
           How components combine
         </div>
         <p className="mt-3 text-center text-sm leading-7 text-foreground/80">
-          <GlossaryProse text="Because the decomposition groups labels into disjoint components, the detected group $G$ factors as a direct product $\prod_a G_a$. Orbits factor the same way, and the output projection factors across components too — so each component's per-row numbers in Act 4 multiply across components, while multiplications and accumulations add at the end." />
+          <GlossaryProse text="The group $G$ factors as $\prod_a G_a$, so per-component orbit counts $M_a$ and accumulations $\alpha_a$ multiply across components: $M = \prod_a M_a$ and $\alpha = \prod_a \alpha_a$. The $(k-1)$ factor that converts orbits into multiplications applies once to the global product, giving $\mu = (k-1)\cdot M$. Finally, the two totals $\mu$ and $\alpha$ add to give Total Cost." />
         </p>
       </div>
 
@@ -98,19 +110,19 @@ export default function TotalCostView({ costModel, componentData, dimensionN, nu
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <ExplorerMetricCard
-          label="Multiplication Cost"
+          label={<>Multiplication Cost <span className="normal-case">(μ)</span></>}
           value={evaluationCost.toLocaleString()}
-          detail={`${orbitCount.toLocaleString()} multiplication orbit${orbitCount !== 1 ? 's' : ''}`}
+          detail={`μ = (k−1)·M over ${orbitCount.toLocaleString()} orbit${orbitCount !== 1 ? 's' : ''}`}
         />
         <ExplorerMetricCard
-          label="Accumulation Cost"
+          label={<>Accumulation Cost <span className="normal-case">(α)</span></>}
           value={reductionCost.toLocaleString()}
-          detail="distinct output-bin updates"
+          detail="α = distinct output-bin updates"
         />
         <ExplorerMetricCard
           label="Total Cost"
           value={totalCost.toLocaleString()}
-          detail="multiplication + accumulation"
+          detail="μ + α"
           className="border-coral/30 bg-coral-light"
         />
       </div>
@@ -121,7 +133,7 @@ export default function TotalCostView({ costModel, componentData, dimensionN, nu
           value={denseTotalCost.toLocaleString()}
           detail={
             <span className="flex flex-col gap-1">
-              <Latex math={String.raw`(k - 1)\,n^{|L|} + n^{|L|}`} />
+              <Latex math={String.raw`\mu + \alpha = (k - 1)\,n^{|L|} + n^{|L|}`} />
               <span className="text-[11px] text-muted-foreground">
                 <Latex math={String.raw`k=${numTerms},\ |L|=${allLabelCount},\ n=${dimensionN}`} />
               </span>
@@ -131,7 +143,7 @@ export default function TotalCostView({ costModel, componentData, dimensionN, nu
         <ExplorerMetricCard
           label="Symmetry-Aware Cost"
           value={totalCost.toLocaleString()}
-          detail="multiplication + accumulation under full orbit model"
+          detail="μ + α with the detected G applied"
         />
         <ExplorerMetricCard
           label="% savings"

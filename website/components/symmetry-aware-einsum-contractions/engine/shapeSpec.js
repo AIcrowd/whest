@@ -29,6 +29,10 @@ export const SHAPE_SPEC = {
       { term: 'V', definition: 'the free (output) labels.' },
       { term: 'W = \\varnothing', definition: 'no summed labels in this component.' },
       { term: 'n_\\ell', definition: 'the size of label $\\ell$. Every output bin is written exactly once, so $\\alpha$ is the Cartesian product of free-label sizes.' },
+      {
+        term: 'V\\text{-symmetry}',
+        definition: 'Symmetry on $V$ does NOT reduce $\\alpha$ here — the output tensor is dense, so every $V$-tuple is its own bin even when two tuples are related by a symmetry. $V$-symmetry DOES reduce the multiplication count $\\mu$: you compute each orbit\'s product once and reuse it across the orbit\'s positions. See the Multiplication Cost card.',
+      },
     ],
     color: '#4A7CFF', // blue
   },
