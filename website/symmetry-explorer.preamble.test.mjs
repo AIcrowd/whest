@@ -145,9 +145,10 @@ test('MentalFrameworkCode renders the Counting Convention panel introducing μ a
   // Anchors into the code above — names both lines it talks about.
   assert.match(src, /base_val/);
   assert.match(src, /R\[out\] \+= coeff/);
-  // Panel sits inside the figure and uses mt-auto to claim the stretched
-  // dead space at the bottom of the card.
-  assert.match(src, /mt-auto/);
+  // Panel sits inside the figure as its own bottom band with a soft
+  // top border; each column flows at natural height (items-start on the
+  // parent grid), so no stretch-to-match CSS is needed here.
+  assert.match(src, /border-t border-stone-200\/70/);
 });
 
 test('MentalFrameworkCode uses Feynman-friendly comments for RepSet, Outs(rep) and coeff', () => {

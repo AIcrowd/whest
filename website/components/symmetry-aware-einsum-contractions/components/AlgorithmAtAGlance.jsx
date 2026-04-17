@@ -115,7 +115,7 @@ function EinsumIntroColumn() {
 
 function MentalFrameworkColumn() {
   return (
-    <div className="flex h-full flex-col">
+    <div>
       <span className="font-heading text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
         The mental framework
       </span>
@@ -130,7 +130,7 @@ function MentalFrameworkColumn() {
         counting them without enumerating the full grid.
       </p>
 
-      <div className="mt-6 flex flex-1 flex-col">
+      <div className="mt-6">
         <MentalFrameworkCode />
       </div>
     </div>
@@ -147,8 +147,12 @@ export default function AlgorithmAtAGlance() {
         className="border-gray-200 bg-white"
         contentClassName="pt-6"
       >
-        {/* Two-column top: einsum notation (L) ↔ mental framework code (R) */}
-        <div className="grid gap-8 lg:grid-cols-2 lg:gap-10">
+        {/* Two-column top: einsum notation (L) ↔ mental framework code (R).
+            items-start lets each column take its natural height rather than
+            stretching both to the taller one's bottom — the right column's
+            Counting Convention band makes it taller, so matching heights
+            would leave dead space under the left column. */}
+        <div className="grid items-start gap-8 lg:grid-cols-2 lg:gap-10">
           <EinsumIntroColumn />
           <MentalFrameworkColumn />
         </div>
