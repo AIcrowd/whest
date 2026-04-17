@@ -141,12 +141,6 @@ REMOVED_IN_NUMPY = (
 
 XFAIL_PATTERNS: dict[str, str] = {
     # ------------------------------------------------------------------ #
-    # test_polynomial.py — divergences                                    #
-    # ------------------------------------------------------------------ #
-    "*TestEvaluation::test_polyval": (
-        "NOT_IMPLEMENTED: whest polyval doesn't support masked arrays"
-    ),
-    # ------------------------------------------------------------------ #
     # test_random.py — counted random wrapper signature divergences        #
     # ------------------------------------------------------------------ #
     # whest random wrappers are plain functions, not methods on the
@@ -155,12 +149,16 @@ XFAIL_PATTERNS: dict[str, str] = {
     "*TestRandomDist::test_shuffle": (
         "WRAPPER_SIGNATURE: whest shuffle is a plain function, not a bound method"
     ),
-    "*TestStdVar::test_out_scalar": (
-        "SUBCLASS_RETURN: std/var out= parameter interacts with WhestArray wrapping"
-    ),
-    "*TestRandomDist::test_choice_return_shape": (
-        "SUBCLASS_RETURN: choice return wrapping differs"
-    ),
+    # NOTE: test_polyval, test_out_scalar, and test_choice_return_shape
+    # were previously xfailed here. They now pass after targeted fixes:
+    #   - polyval: use asanyarray(x) to preserve MaskedArray / ndarray
+    #     subclasses through _np.polyval.
+    #   - std/var/mean: honor the out= identity contract in
+    #     _counted_reduction — when out is passed, return it directly
+    #     without WhestArray rewrapping.
+    #   - random.choice: preserve object-pick identity when picking a
+    #     scalar from an object-dtype array; added "choice" to the
+    #     wrap_module_returns skip list.
     # ------------------------------------------------------------------ #
     # SUBCLASS_RETURN — WhestArray subclass propagation               #
     # ------------------------------------------------------------------ #

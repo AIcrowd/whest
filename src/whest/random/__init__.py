@@ -262,6 +262,18 @@ def choice(a, size=None, replace=True, p=None):
             "random.choice", flop_cost=cost, subscripts=None, shapes=((n,),)
         ):
             result = _npr.choice(a, size=size, replace=replace, p=p)
+    # Preserve identity when picking a scalar from an object-dtype array:
+    # numpy returns the exact object stored in the input, and user code
+    # (e.g. `choice(object_array) is original_object`) relies on that.
+    # Wrapping in WhestArray would break the identity. `wrap_module_returns`
+    # skips this function (see skip_names below); we do explicit wrapping
+    # only for the common numeric case.
+    if size is None and isinstance(a, _np.ndarray) and a.dtype.kind == "O":
+        return result
+    if isinstance(result, _np.ndarray):
+        from whest._ndarray import _aswhest
+
+        return _aswhest(result)
     return result
 
 
@@ -440,5 +452,8 @@ _wrap_module_returns(
         "seed",
         "get_state",
         "set_state",
+        # choice does its own wrapping because it needs to preserve the
+        # identity of picked objects from object-dtype arrays.
+        "choice",
     },
 )

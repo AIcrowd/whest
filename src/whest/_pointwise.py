@@ -216,6 +216,13 @@ def _counted_reduction(
         with budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(a.shape,)):
             result = np_func(a, axis=axis, **kwargs)
 
+        # If caller passed out=, honor numpy's contract: the returned object
+        # must be the exact same object (identity). Skip WhestArray wrapping
+        # and symmetry tagging when out= is supplied — callers relying on
+        # out= are opting out of whest's subclass semantics.
+        if kwargs.get("out") is not None:
+            return kwargs["out"]
+
         # Propagate symmetry through reduction.
         if sym_info is not None:
             keepdims = kwargs.get("keepdims", False)
