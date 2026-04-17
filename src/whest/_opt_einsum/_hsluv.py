@@ -139,7 +139,10 @@ def _max_chroma_for_lh(lightness: float, hue: float) -> float:
 def _dot_product(
     left: tuple[float, float, float], right: tuple[float, float, float]
 ) -> float:
-    return sum(left_value * right_value for left_value, right_value in zip(left, right, strict=False))
+    return sum(
+        left_value * right_value
+        for left_value, right_value in zip(left, right, strict=False)
+    )
 
 
 def _from_linear(channel: float) -> float:
