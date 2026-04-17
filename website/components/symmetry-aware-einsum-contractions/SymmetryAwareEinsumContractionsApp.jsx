@@ -310,12 +310,12 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       )}
                     </p>
                     <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
-                      <div>
-                        <h3 className="mb-2 font-heading text-base font-semibold text-gray-900">Bipartite Graph</h3>
+                      <div className="grid grid-rows-[auto_1fr] gap-2">
+                        <h3 className="font-heading text-base font-semibold text-gray-900">Bipartite Graph</h3>
                         <BipartiteGraph graph={graph} example={normalizedExample} variableColors={variableColors} />
                       </div>
-                      <div>
-                        <h3 className="mb-2 font-heading text-base font-semibold text-gray-900">Incidence Matrix M</h3>
+                      <div className="grid grid-rows-[auto_1fr] gap-2">
+                        <h3 className="font-heading text-base font-semibold text-gray-900">Incidence Matrix M</h3>
                         <MatrixView matrixData={matrixData} graph={graph} example={normalizedExample} variableColors={variableColors} />
                       </div>
                     </div>
@@ -341,8 +341,8 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       {EXPLORER_ACTS[2].bridge}
                     </p>
                     <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
-                      <div>
-                        <h3 className="mb-2 font-heading text-base font-semibold text-gray-900">σ-Loop & π Detection</h3>
+                      <div className="grid grid-rows-[auto_1fr] gap-2">
+                        <h3 className="font-heading text-base font-semibold text-gray-900">σ-Loop & π Detection</h3>
                         <SigmaLoop
                           results={sigmaResults}
                           graph={graph}
@@ -353,8 +353,8 @@ export default function SymmetryAwareEinsumContractionsApp() {
                           onSelectedPairChange={setSelectedSigmaPairIndex}
                         />
                       </div>
-                      <div>
-                        <h3 className="mb-2 font-heading text-base font-semibold text-gray-900">Generator Construction</h3>
+                      <div className="grid grid-rows-[auto_1fr] gap-2">
+                        <h3 className="font-heading text-base font-semibold text-gray-900">Generator Construction</h3>
                         <DiminoView
                           group={group}
                           sigmaResults={sigmaResults}
