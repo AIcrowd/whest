@@ -1134,7 +1134,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "numpy", specifier = ">=2.0.0,<2.3.0" },
+    { name = "numpy", specifier = ">=2.0.0,<2.5.0" },
     { name = "numpydoc", marker = "extra == 'docs'", specifier = ">=1.8" },
     { name = "psutil", marker = "extra == 'dev'", specifier = ">=5.9" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=7.0" },
