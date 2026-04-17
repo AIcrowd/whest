@@ -128,14 +128,8 @@ function ComponentSummaryTable({
             <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Labels</TableHead>
             <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Symmetry</TableHead>
             <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Method</TableHead>
-            <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-              <span className="block leading-tight">Multiplication</span>
-              <span className="block leading-tight">Cost</span>
-            </TableHead>
-            <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-              <span className="block leading-tight">Accumulation</span>
-              <span className="block leading-tight">Cost</span>
-            </TableHead>
+            <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">MUL Cost</TableHead>
+            <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Acc Cost</TableHead>
             <TableHead className="whitespace-normal px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Savings</TableHead>
           </TableRow>
         </TableHeader>
@@ -225,12 +219,11 @@ function ComponentSummaryTable({
                           {totalSavingsPct}%
                         </span>
                       </div>
-                      <dl className="grid grid-cols-[auto_auto] gap-x-2 gap-y-0.5 font-mono text-[10px] leading-tight text-muted-foreground">
-                        <dt>Mult</dt>
-                        <dd className="text-right">{multSavingsPct}%</dd>
-                        <dt>Acc</dt>
-                        <dd className="text-right">{accSavingsPct}%</dd>
-                      </dl>
+                      <div className="flex flex-wrap items-center gap-x-1.5 font-mono text-[10px] leading-tight">
+                        <span className="font-semibold text-primary">Mult {multSavingsPct}%</span>
+                        <span className="text-stone-300" aria-hidden="true">·</span>
+                        <span className="font-semibold text-amber-700">Acc {accSavingsPct}%</span>
+                      </div>
                     </div>
                   ) : (
                     <span className="text-[11px] text-muted-foreground">—</span>
