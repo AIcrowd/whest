@@ -57,7 +57,7 @@ def build_einsum_args(n: int, s: int, t: int, v: int):
     output_labels = a_labels + b_labels
     inner_labels = c_labels
 
-    size_dict = {lbl: n for lbl in all_labels}
+    size_dict = dict.fromkeys(all_labels, n)
 
     # A is symmetric in all its indices (a_labels + c_labels)
     # B is symmetric in all its indices (b_labels + c_labels)

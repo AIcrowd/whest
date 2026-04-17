@@ -72,8 +72,8 @@ def _derive_pi_canonical(
 
 
 def _collect_pi_permutations(
-    graph: "EinsumBipartite",
-    sub: "_Subgraph",
+    graph: EinsumBipartite,
+    sub: _Subgraph,
     row_order: tuple[int, ...],
     col_of: dict[str, tuple[int, ...]],
     fp_to_labels: dict[tuple[int, ...], set[str]],
@@ -122,7 +122,7 @@ def _collect_pi_permutations(
     row_perm_generators: list[tuple[int, ...]] = []
 
     # --- Source A: per-operand internal symmetry generators ---
-    for op_idx in sorted(set(graph.u_operand[u] for u in row_order)):
+    for op_idx in sorted({graph.u_operand[u] for u in row_order}):
         groups = graph.per_op_groups[op_idx]
         if groups is None:
             continue
@@ -196,7 +196,7 @@ def _collect_pi_permutations(
             if len(pos_a) != len(pos_b):
                 continue  # block sizes must match
             row_perm = list(identity_row)
-            for pa, pb in zip(pos_a, pos_b):
+            for pa, pb in zip(pos_a, pos_b, strict=False):
                 row_perm[pa] = identity_row[pb]
                 row_perm[pb] = identity_row[pa]
             row_perm_generators.append(tuple(row_perm))
@@ -361,7 +361,7 @@ def _build_bipartite(
 
         # Build one U vertex per axis, with incidence = label multiplicity.
         num_classes = len(sub)
-        class_incidence: list[dict[str, int]] = [dict() for _ in range(num_classes)]
+        class_incidence: list[dict[str, int]] = [{} for _ in range(num_classes)]
         class_labels: list[set[str]] = [set() for _ in range(num_classes)]
         for k, c in enumerate(sub):
             cls = class_of_position[k]

@@ -64,11 +64,11 @@ class _OpTimer:
 
     __slots__ = ("_budget", "_start")
 
-    def __init__(self, budget: "BudgetContext"):
+    def __init__(self, budget: BudgetContext):
         self._budget = budget
         self._start: float | None = None
 
-    def __enter__(self) -> "_OpTimer":
+    def __enter__(self) -> _OpTimer:
         self._start = time.perf_counter()
         return self
 
@@ -96,7 +96,7 @@ class _OpTimer:
 
 
 _thread_local = threading.local()
-_all_budget_contexts: weakref.WeakSet["BudgetContext"] = weakref.WeakSet()
+_all_budget_contexts: weakref.WeakSet[BudgetContext] = weakref.WeakSet()
 
 
 def get_active_budget() -> BudgetContext | None:
@@ -107,11 +107,11 @@ def get_active_budget() -> BudgetContext | None:
 class _NamespaceScope:
     __slots__ = ("_budget", "_segment")
 
-    def __init__(self, budget: "BudgetContext", segment: str):
+    def __init__(self, budget: BudgetContext, segment: str):
         self._budget = budget
         self._segment = segment
 
-    def __enter__(self) -> "BudgetContext":
+    def __enter__(self) -> BudgetContext:
         self._budget._push_namespace(self._segment)
         return self._budget
 
@@ -383,7 +383,7 @@ class BudgetContext:
                 f"Namespace stack corrupted: expected {expected!r}, got {actual!r}"
             )
 
-    def _snapshot_record(self) -> "NamespaceRecord":
+    def _snapshot_record(self) -> NamespaceRecord:
         wall_time = self.wall_time_s
         if wall_time is None and self._start_time is not None:
             wall_time = self.elapsed_s

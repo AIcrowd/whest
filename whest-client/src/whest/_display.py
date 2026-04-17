@@ -271,7 +271,7 @@ def budget_summary():
     """Print or return the session-wide budget summary."""
     result = render_budget_summary()
     try:
-        get_ipython  # noqa: F821
+        _ = get_ipython  # noqa: F821
         return result
     except NameError:
         if isinstance(result, str):

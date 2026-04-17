@@ -159,7 +159,6 @@ def benchmark_polynomial(
 
         if dist_values:
             results[op] = statistics.median(dist_values)
-            dist_values.index(statistics.median(dist_values))
             # Build explicit benchmark_size per op
             if op == "polyval":
                 bm_size = f"c: ({degree + 1},), x: ({n},)"

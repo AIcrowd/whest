@@ -246,8 +246,6 @@ def benchmark_sorting(
 
         if dist_values:
             results[op] = statistics.median(dist_values)
-            # Find the perf_instructions corresponding to the median alpha
-            dist_values.index(statistics.median(dist_values))
             # Build explicit benchmark_size per op
             if op in (
                 "sort",

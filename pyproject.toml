@@ -52,6 +52,7 @@ target-version = "py310"
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I"]
+extend-select = ["B", "C4", "UP"]
 
 [tool.ruff.lint.per-file-ignores]
 # Public re-exports: imports are intentionally "unused" from ruff's perspective

@@ -62,7 +62,7 @@ class TestSsaPathComputeCostUsesOracle:
         X = np.ones((n, n, n))
         inputs = [frozenset("ijk"), frozenset("ilm")]
         output = frozenset("jklm")
-        size_dict = {c: n for c in "ijklm"}
+        size_dict = dict.fromkeys("ijklm", n)
 
         oracle = SubgraphSymmetryOracle([X, X], ["ijk", "ilm"], [None, None], "jklm")
 

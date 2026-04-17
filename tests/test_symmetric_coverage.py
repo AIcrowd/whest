@@ -40,7 +40,7 @@ def _assert_groups_equal(result, expected_axes_list):
     """Assert result is a list of PermutationGroups matching expected axes tuples."""
     assert result is not None
     assert len(result) == len(expected_axes_list)
-    for grp, axes in zip(result, expected_axes_list):
+    for grp, axes in zip(result, expected_axes_list, strict=False):
         assert isinstance(grp, PermutationGroup)
         assert grp.axes == tuple(axes), f"expected axes {tuple(axes)}, got {grp.axes}"
         import math

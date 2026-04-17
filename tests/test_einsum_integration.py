@@ -256,7 +256,7 @@ class TestPathInfoDebugFields:
         B = numpy.ones((5, 5))
         C = numpy.ones((5, 5))
         path, info = einsum_path("ij,jk,kl->il", A, B, C)
-        for step, path_tuple in zip(info.steps, path):
+        for step, path_tuple in zip(info.steps, path, strict=False):
             assert step.path_indices == tuple(path_tuple)
 
     def test_step_merged_subset_grows_monotonically(self):

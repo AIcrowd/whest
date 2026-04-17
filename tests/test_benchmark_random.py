@@ -125,7 +125,7 @@ class TestBenchmarkRandom:
             result, details = benchmark_random(n=1_000, dtype="float64", repeats=1)
 
         assert set(details.keys()) == set(result.keys())
-        for op, d in details.items():
+        for _op, d in details.items():
             assert d["category"] == "counted_custom"
             assert d["analytical_formula"] == "numel(output)"
             assert d["analytical_flops"] == 1_000

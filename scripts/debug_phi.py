@@ -24,7 +24,7 @@ print("Oracle inner symmetry:", sym.inner)
 all_indices = frozenset("ijklm")
 output_indices = frozenset("jklm")
 inner_indices = frozenset("i")
-size_dict = {c: n for c in "ijklm"}
+size_dict = dict.fromkeys("ijklm", n)
 
 # What unique_elements gives with oracle-detected symmetry
 combined_sym = list(sym.output or []) + list(sym.inner or [])

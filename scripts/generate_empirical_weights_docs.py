@@ -288,7 +288,7 @@ def _empty_row(
     op_name: str, status: str, reason: str, category: str, notes: str
 ) -> dict:
     """Build a row with only status/reason fields populated."""
-    row = {col: "" for col in CSV_COLUMNS}
+    row = dict.fromkeys(CSV_COLUMNS, "")
     row["Operation"] = op_name
     row["Status"] = status
     row["Exclusion Reason"] = reason
@@ -512,7 +512,7 @@ def build_rows(data: dict) -> list[dict]:
         rows.append(row)
 
     # --- Excluded ops ---
-    for group_name, (op_set, reason) in _EXCLUSIONS.items():
+    for _group_name, (op_set, reason) in _EXCLUSIONS.items():
         for op_name in sorted(op_set):
             if op_name in weights:
                 continue

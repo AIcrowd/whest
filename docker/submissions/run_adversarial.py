@@ -55,7 +55,7 @@ except (PermissionError, OSError):
 
 # Test 5: can read own submission files
 try:
-    open("/submission/run.py", "r").read()
+    open("/submission/run.py").read()
     check("can read /submission/", True)
 except Exception:
     check("can read /submission/", False)

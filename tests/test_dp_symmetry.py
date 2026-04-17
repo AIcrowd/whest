@@ -116,12 +116,12 @@ class TestDPMatchesOptimalUnderExactScoring:
         should agree on optimized_cost down to the last FLOP."""
         n = 6
         X = np.ones((n, n))
-        oracle_kwargs = dict(
-            operands=[X, X, X, X],
-            subscript_parts=["ij", "ik", "il", "im"],
-            per_op_groups=[None, None, None, None],
-            output_chars="jklm",
-        )
+        oracle_kwargs = {
+            "operands": [X, X, X, X],
+            "subscript_parts": ["ij", "ik", "il", "im"],
+            "per_op_groups": [None, None, None, None],
+            "output_chars": "jklm",
+        }
         _, info_dp = contract_path(
             "ij,ik,il,im->jklm",
             (n, n),
@@ -153,12 +153,12 @@ class TestDPMatchesOptimalUnderExactScoring:
         S3 gives ~1/6 savings, but // 2 would give only 1/2."""
         n = 10
         X = np.ones((n, n))
-        oracle_kwargs = dict(
-            operands=[X, X, X],
-            subscript_parts=["ai", "bi", "ci"],
-            per_op_groups=[None, None, None],
-            output_chars="abc",
-        )
+        oracle_kwargs = {
+            "operands": [X, X, X],
+            "subscript_parts": ["ai", "bi", "ci"],
+            "per_op_groups": [None, None, None],
+            "output_chars": "abc",
+        }
         _, info_dp = contract_path(
             "ai,bi,ci->abc",
             (n, n),
@@ -207,12 +207,12 @@ class TestDPSingleTermReductionWithOracle:
         n = 4
         v = np.ones(n)
         X = np.ones((n, n))
-        oracle_kwargs = dict(
-            operands=[v, X, X],
-            subscript_parts=["i", "ab", "cd"],
-            per_op_groups=[None, None, None],
-            output_chars="abcd",
-        )
+        oracle_kwargs = {
+            "operands": [v, X, X],
+            "subscript_parts": ["i", "ab", "cd"],
+            "per_op_groups": [None, None, None],
+            "output_chars": "abcd",
+        }
         # Sanity check: the oracle really does report block S2 at the
         # CORRECT subset {1, 2} and None at the WRONG subset {0, 1}.
         # If this invariant breaks (e.g., the oracle implementation

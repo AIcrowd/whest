@@ -61,7 +61,7 @@ def benchmark_window(
         # Window functions are deterministic (no input distribution),
         # but we still take 3 measurements with different seeds for
         # consistency (they'll be nearly identical).
-        for seed in [42, 123, 999]:
+        for _seed in [42, 123, 999]:
             setup = "import numpy as np"
             if op == "kaiser":
                 bench = f"np.kaiser({n}, 14.0)"

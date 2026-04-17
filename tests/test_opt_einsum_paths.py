@@ -102,7 +102,7 @@ def assert_contract_order(
 
 def test_size_by_dict() -> None:
     sizes_dict = {}
-    for ind, val in zip("abcdez", [2, 5, 9, 11, 13, 0]):
+    for ind, val in zip("abcdez", [2, 5, 9, 11, 13, 0], strict=False):
         sizes_dict[ind] = val
 
     path_func = oe._helpers.compute_size_by_dict

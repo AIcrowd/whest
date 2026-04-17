@@ -145,7 +145,7 @@ def normalize_weights(
 def normalize_weights_v2(
     raw_alpha: dict[str, float],
     all_details: dict[str, dict],
-    baselines: "BaselineResult",
+    baselines: BaselineResult,
 ) -> dict[str, float]:
     """Subtract per-category ufunc overhead and clamp to minimum 1.0.
 

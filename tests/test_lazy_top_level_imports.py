@@ -58,7 +58,7 @@ def test_registry_attribute_errors_are_unchanged_for_unknown_names():
     we = _fresh_whest()
 
     with pytest.raises(AttributeError, match="does not provide"):
-        getattr(we, "totally_fake_function_xyz")
+        _ = we.totally_fake_function_xyz
 
 
 def test_numpy_compat_rebind_imports_lazy_random_before_patching_numpy():

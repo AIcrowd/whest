@@ -501,15 +501,15 @@ class OperationDocRecord:
     provenance_url: str = ""
     whest_source_url: str = ""
     upstream_source_url: str = ""
-    parameters: list["DocField"] | None = None
-    returns: list["DocField"] | None = None
-    see_also: list["DocLink"] | None = None
+    parameters: list[DocField] | None = None
+    returns: list[DocField] | None = None
+    see_also: list[DocLink] | None = None
     notes_sections: list[str] | None = None
-    example: "DocExample | None" = None
+    example: DocExample | None = None
     body_sections: list[dict] | None = None
     doc_coverage: dict[str, object] = field(default_factory=dict)
-    previous: "OperationNavLink | None" = None
-    next: "OperationNavLink | None" = None
+    previous: OperationNavLink | None = None
+    next: OperationNavLink | None = None
     api_docs_html: str = ""
     whest_examples_html: str = ""
 
@@ -1390,7 +1390,7 @@ def _convert_docutils_blocks(
             )
             continue
 
-        raw_text = getattr(node, "astext", lambda: str(node))()
+        raw_text = getattr(node, "astext", lambda node=node: str(node))()
         _record_coverage_event(
             coverage,
             "raw_blocks",
@@ -3415,7 +3415,7 @@ def update_counted_ops_page(registry: dict[str, dict]) -> None:
     content = page.read_text()
 
     additions = []
-    for module_directive, label in [
+    for module_directive, _label in [
         ("whest._polynomial", "polynomial"),
         ("whest._window", "window"),
         ("whest._unwrap", "unwrap"),

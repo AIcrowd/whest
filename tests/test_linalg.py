@@ -76,4 +76,4 @@ def test_linalg_unsupported():
         AttributeError,
         match="(does not provide|does not support|registered but not yet implemented)",
     ):
-        linalg.cross_decomposition
+        _ = linalg.cross_decomposition

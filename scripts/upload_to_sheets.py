@@ -88,7 +88,7 @@ def load_csv(path: Path) -> list[list[str]]:
     """Load CSV as a list of rows (each row is a list of strings)."""
     with open(path) as f:
         reader = csv.reader(f)
-        return [row for row in reader]
+        return list(reader)
 
 
 def create_spreadsheet() -> str:
