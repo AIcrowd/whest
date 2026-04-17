@@ -71,18 +71,52 @@ class SymmetryError(WhestError):
 
 
 class UnsupportedFunctionError(WhestError):
-    """Raised when calling a function not available in the installed NumPy."""
+    """Raised when calling a function not available in the installed NumPy.
 
-    def __init__(self, func_name: str, *, min_version: str):
+    Use ``min_version`` for functions that require a newer numpy than installed
+    (e.g. ``bitwise_count`` requires numpy >= 2.1). Use ``max_version`` for
+    functions that have been removed in a newer numpy than installed
+    (e.g. ``in1d`` was removed in numpy 2.4). ``replacement`` optionally names
+    the function users should call instead.
+    """
+
+    def __init__(
+        self,
+        func_name: str,
+        *,
+        min_version: str | None = None,
+        max_version: str | None = None,
+        replacement: str | None = None,
+    ):
         import numpy as _np
 
         self.func_name = func_name
         self.min_version = min_version
-        super().__init__(
-            f"numpy.{func_name} requires numpy >= {min_version} "
-            f"(you have numpy {_np.__version__}). "
-            f"To use it: uv pip install 'numpy>={min_version}'"
-        )
+        self.max_version = max_version
+        self.replacement = replacement
+
+        if max_version is not None:
+            if replacement is not None:
+                msg = (
+                    f"numpy.{func_name} was removed in numpy {max_version}; "
+                    f"use `{replacement}` instead "
+                    f"(you have numpy {_np.__version__})."
+                )
+            else:
+                msg = (
+                    f"numpy.{func_name} was removed in numpy {max_version} "
+                    f"(you have numpy {_np.__version__})."
+                )
+        elif min_version is not None:
+            msg = (
+                f"numpy.{func_name} requires numpy >= {min_version} "
+                f"(you have numpy {_np.__version__}). "
+                f"To use it: uv pip install 'numpy>={min_version}'"
+            )
+        else:
+            msg = f"numpy.{func_name} is not supported by whest."
+
+        super().__init__(msg)
 
 
 class WhestWarning(UserWarning):
