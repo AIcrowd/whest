@@ -25,8 +25,7 @@ SKIP_FUNCTIONS = {
     "einsum_path",
 }
 
-import numpy as _np_mod
-_NUMPY_GE_2_4 = tuple(int(x) for x in _np_mod.__version__.split(".")[:2]) >= (2, 4)
+_NUMPY_GE_2_4 = tuple(int(x) for x in np.__version__.split(".")[:2]) >= (2, 4)
 if _NUMPY_GE_2_4:
     # numpy 2.4 added C-level positional-only markers that whest's
     # (*args, **kwargs) wrappers can't match exactly.
