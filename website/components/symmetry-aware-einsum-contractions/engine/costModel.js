@@ -2,7 +2,7 @@ function tupleKey(labels, tuple) {
   return labels.map((label) => tuple[label]).join('|');
 }
 
-function enumerateTuples(labels, dimensionN) {
+function enumerateTuples(labels, sizesByLabel) {
   const tuples = [];
   const current = {};
 
@@ -13,7 +13,8 @@ function enumerateTuples(labels, dimensionN) {
     }
 
     const label = labels[idx];
-    for (let value = 0; value < dimensionN; value++) {
+    const size = sizesByLabel[label];
+    for (let value = 0; value < size; value++) {
       current[label] = value;
       visit(idx + 1);
     }
@@ -37,14 +38,30 @@ function projectTuple(tuple, vLabels) {
   return projected;
 }
 
-export function computeExactCostModel({ labels, vLabels, groupElements, dimensionN, numTerms }) {
-  const tuples = enumerateTuples(labels, dimensionN);
+/**
+ * Brute-force orbit enumeration. Canonical for n ≤ ~6, used as ground-truth
+ * for the per-component aggregation tests in
+ * `symmetry-explorer.cost-narrative.test.mjs`. The displayed μ and α on the
+ * page come from `aggregateComponentCosts` (per-component decomposition);
+ * this function exists to verify that the decomposition agrees with global
+ * enumeration.
+ */
+export function computeExactCostModel({ labels, vLabels, groupElements, dimensionN, sizes, numTerms }) {
+  // Build per-label size map. Prefer explicit `sizes` (size-aware presets);
+  // fall back to uniform `dimensionN`.
+  const sizesByLabel = {};
+  if (Array.isArray(sizes) && sizes.length === labels.length) {
+    labels.forEach((label, i) => { sizesByLabel[label] = sizes[i]; });
+  } else {
+    labels.forEach((label) => { sizesByLabel[label] = dimensionN; });
+  }
+  const tuples = enumerateTuples(labels, sizesByLabel);
   const effectiveElements = groupElements.length > 0
     ? groupElements
     : [{ arr: Array.from({ length: labels.length }, (_, idx) => idx) }];
   const seen = new Set();
   const orbitRows = [];
-  let reductionCost = 0;
+  let reductionCostExact = 0;
 
   for (const tuple of tuples) {
     const repKey = tupleKey(labels, tuple);
@@ -75,16 +92,57 @@ export function computeExactCostModel({ labels, vLabels, groupElements, dimensio
       outputCount: outputs.size,
     };
     orbitRows.push(row);
-    reductionCost += row.outputCount;
+    reductionCostExact += row.outputCount;
   }
 
   const orbitCount = orbitRows.length;
-  const evaluationCost = Math.max(numTerms - 1, 0) * orbitCount;
+  const evaluationCostExact = Math.max(numTerms - 1, 0) * orbitCount;
 
   return {
     orbitCount,
-    evaluationCost,
-    reductionCost,
+    evaluationCostExact,
+    reductionCostExact,
     orbitRows,
   };
+}
+
+/**
+ * Aggregate per-component costs into the global μ and α the hero displays.
+ *
+ * The hero formula is
+ *   Total = (k - 1) · ∏_a M_a  +  ∏_a α_a
+ *
+ * which holds whenever the components are independent (G = ∏_a G_a, X = ∏_a X_a).
+ * `decomposeClassifyAndCount` produces such components and attaches
+ * `comp.multiplication.count = M_a` and `comp.accumulation.count = α_a`.
+ *
+ * Returns `null` if any component has a missing accumulation count (e.g. the
+ * regime ladder fell through, which currently can only happen when bruteForce
+ * is disabled).
+ */
+export function aggregateComponentCosts(components, numTerms) {
+  if (!Array.isArray(components) || components.length === 0) {
+    return { mu: 0, alpha: 0, mTotal: 0, perComponent: [] };
+  }
+
+  let mTotal = 1;
+  let alpha = 1;
+  const perComponent = [];
+
+  for (const comp of components) {
+    const M_a = comp.multiplication?.count;
+    const alpha_a = comp.accumulation?.count;
+    if (M_a == null || alpha_a == null) return null;
+    mTotal *= M_a;
+    alpha *= alpha_a;
+    perComponent.push({
+      labels: comp.labels,
+      M_a,
+      alpha_a,
+      regimeId: comp.accumulation?.regimeId ?? null,
+    });
+  }
+
+  const mu = Math.max(numTerms - 1, 0) * mTotal;
+  return { mu, alpha, mTotal, perComponent };
 }

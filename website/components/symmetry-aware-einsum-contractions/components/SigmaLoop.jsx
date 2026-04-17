@@ -295,7 +295,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
                     <code className="mt-1 block font-mono text-foreground">{`[${labels.join(', ')}]`}</code>
                     </div>
                     <div className="text-sm text-muted-foreground">
-                      This π induces candidate permutation {selectedCandidate ? selectedCandidate.cycleNotation : '—'} on the ordered active labels. The right panel now tests it in generator construction.
+                      This π induces the label permutation {selectedCandidate ? selectedCandidate.cycleNotation : '—'} on the ordered active labels. The right panel now tests it in generator construction.
                     </div>
                   </div>
                 </div>

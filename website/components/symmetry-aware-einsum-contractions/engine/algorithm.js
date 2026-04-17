@@ -718,7 +718,6 @@ export function computeBurnside(group, dimensionN) {
     fullTotalFixed: fullResult.totalFixed,
     orbitCount,
     totalTupleCount,
-    evaluationCost: orbitCount,
     dimensionN,
   };
 }

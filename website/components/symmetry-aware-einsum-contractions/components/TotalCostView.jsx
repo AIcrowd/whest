@@ -65,7 +65,7 @@ const AGGREGATION_LEGEND = [
   {
     symbol: String.raw`n_c`,
     color: SYM.cycle,
-    definition: `size of labels in cycle $${tc(SYM.cycle, 'c')}$ of $${tc(SYM.element, 'g')}$. Cycles of the identity degenerate to singleton labels, so $${tc(SYM.cycle, '\\prod_c n_c')}$ collapses to $${tc(SYM.cycle, '\\prod_\\ell n_\\ell')}$ on the trivial / all-visible rows.`,
+    definition: `the common label-size inside cycle $${tc(SYM.cycle, 'c')}$ of $${tc(SYM.element, 'g')}$ — forced equal by the action, since $${tc(SYM.element, 'g')}$ permutes labels of equal size. The product $${tc(SYM.cycle, '\\prod_c n_c')}$ equals $|\\mathrm{Fix}(${tc(SYM.element, 'g')})| = |${tc(SYM.orbit, 'X')}^{${tc(SYM.element, 'g')}}|$ — the standard Burnside fixed-point set, written here as a product of cycle sizes. Cycles of the identity degenerate to singleton labels, so $${tc(SYM.cycle, '\\prod_c n_c')}$ collapses to $${tc(SYM.cycle, '\\prod_\\ell n_\\ell')}$ on the trivial / all-visible rows.`,
   },
   {
     // V and W carry their canonical page colors (blue / slate) — the same
@@ -189,9 +189,10 @@ function HeroFormulaBlock() {
       </div>
 
       <p className="text-center text-[12px] text-muted-foreground">
-        Six paths through Act 3&rsquo;s decision ladder: three Shape-layer leaves
-        terminate immediately; Mixed components dispatch to one of three
-        Regime-layer leaves. Hover any leaf to see the case details.
+        Six paths through Act 4&rsquo;s decision ladder, in priority order — first
+        matching leaf wins. Three Shape-layer leaves terminate immediately;
+        Mixed components dispatch to one of three Regime-layer leaves. Hover
+        any leaf to see the case details.
       </p>
     </div>
   );
@@ -287,11 +288,11 @@ function ComponentRecap({ components }) {
   );
 }
 
-export default function TotalCostView({ costModel, componentData, dimensionN, numTerms = 1 }) {
-  if (!costModel || !componentData) return null;
+export default function TotalCostView({ componentCosts, componentData, dimensionN, numTerms = 1 }) {
+  if (!componentCosts || !componentData) return null;
 
-  const { orbitCount = 0, evaluationCost = 0, reductionCost = 0 } = costModel;
-  const totalCost = evaluationCost + reductionCost;
+  const { mu = 0, alpha = 0, mTotal = 0 } = componentCosts;
+  const totalCost = mu + alpha;
   const allLabelCount = componentData?.components?.reduce((sum, comp) => sum + comp.labels.length, 0) ?? 0;
   const denseTuples = Math.pow(dimensionN, allLabelCount);
   const denseTotalCost = Math.max(numTerms - 1, 0) * denseTuples + denseTuples;
@@ -309,13 +310,13 @@ export default function TotalCostView({ costModel, componentData, dimensionN, nu
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <ExplorerMetricCard
           label={<>Multiplication Cost <span className="normal-case">(μ)</span></>}
-          value={evaluationCost.toLocaleString()}
-          detail={`μ = (k−1)·M over ${orbitCount.toLocaleString()} orbit${orbitCount !== 1 ? 's' : ''}`}
+          value={mu.toLocaleString()}
+          detail={`μ = (k−1) · ∏ₐ Mₐ = (${Math.max(numTerms - 1, 0)}) · ${mTotal.toLocaleString()}`}
         />
         <ExplorerMetricCard
           label={<>Accumulation Cost <span className="normal-case">(α)</span></>}
-          value={reductionCost.toLocaleString()}
-          detail="α = distinct output-bin updates"
+          value={alpha.toLocaleString()}
+          detail="α = ∏ₐ αₐ (distinct output-bin updates)"
         />
         <ExplorerMetricCard
           label="Total Cost"

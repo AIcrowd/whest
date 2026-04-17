@@ -18,7 +18,7 @@ test('EXPLORER_ACTS defines the five narrative acts in the updated story order',
       { id: 'setup', navTitle: 'Set Up', heading: 'Specify the Contraction' },
       { id: 'structure', navTitle: 'See Structure', heading: 'Encode the Structure' },
       { id: 'proof', navTitle: 'Prove Symmetry', heading: 'Detect and Generate the Symmetry Group' },
-      { id: 'savings', navTitle: 'Detect Structure', heading: 'Decompose the Group Action' },
+      { id: 'decompose', navTitle: 'Decompose Action', heading: 'Decompose the Group Action' },
       { id: 'price-savings', navTitle: 'Price Savings', heading: 'Price Savings' },
     ],
   );
@@ -69,7 +69,7 @@ test('Acts 2 through 4 render the named-procedure bridge text in the live shell'
 
   assert.match(appSource, /EXPLORER_ACTS\[1\]\.bridge/);
   assert.match(appSource, /EXPLORER_ACTS\[2\]\.bridge/);
-  assert.match(appSource, /We now decompose the detected global action/);
+  assert.match(appSource, /EXPLORER_ACTS\[3\]\.bridge/);
 });
 
 test('acts 1 through 4 explicitly distinguish declared and detected symmetry', () => {

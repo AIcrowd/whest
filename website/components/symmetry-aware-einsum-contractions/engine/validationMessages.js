@@ -184,8 +184,6 @@ export function customGeneratorsParseError(i, { name, axesCount, rawError }) {
     const m = rawError.match(/"([^"]*)"/);
     const leftover = m ? m[1] : '';
     message = `${prefix}"${leftover}" is outside any cycle — every cycle must be wrapped in parentheses, e.g. ${example}.`;
-  } else if (rawError.startsWith('No cycles found')) {
-    message = `${prefix}no cycles detected — try ${example}.`;
   } else if (/^Index \d+ appears in more than one cycle/.test(rawError)) {
     const m = rawError.match(/Index (\d+)/);
     const idx = m ? m[1] : 'an axis';
@@ -201,12 +199,15 @@ export function customGeneratorsParseError(i, { name, axesCount, rawError }) {
   };
 }
 
-export function customGeneratorAxisOorError(i, { name, badIdx, axesCount }) {
+export function customGeneratorAxisOorError(i, { name, badIdx, axesCount, axesExplicitlySelected = true }) {
   const axisWord = axesCount === 1 ? 'axis' : 'axes';
+  // Only call them "selected" when the user actually selected a subset.
+  // Otherwise the axes come from the variable's rank, and "selected" is a lie.
+  const qualifier = axesExplicitlySelected ? `your ${axesCount} selected ${axisWord}` : `the ${axesCount} ${axisWord} (rank ${axesCount})`;
   return {
     code: ERROR_CODES.CUSTOM_GENERATOR_AXIS_OOR,
     field: varField(i, 'generators'),
-    message: `Variable "${name}": index ${badIdx} is outside your ${axesCount} selected ${axisWord} — valid indices are ${indexRange(axesCount)}.`,
+    message: `Variable "${name}": index ${badIdx} is outside ${qualifier} — valid indices are ${indexRange(axesCount)}.`,
   };
 }
 

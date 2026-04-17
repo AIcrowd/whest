@@ -18,7 +18,7 @@
  * and the tree visualization pick them up automatically.
  */
 
-import { Permutation, dimino } from './permutation.js';
+import { Permutation, dimino, burnsideCount } from './permutation.js';
 import { classifyComponent } from './classificationSpec.js';
 import { detectShape } from './shapeLayer.js';
 import { computeAccumulation } from './accumulationCount.js';
@@ -204,12 +204,16 @@ function classifyGroupName(labels, generators, elements) {
 
   if (order === 2) {
     if (effectiveDegree > 2) {
+      // Single generator with disjoint 2-cycles: one coupled order-2 element,
+      // not S2 × S2 (which would have order 4). Cycle notation makes the
+      // order unambiguous.
       const gen = generators[0];
       const cycles = gen?.cyclicForm() || [];
       if (cycles.length > 1 && cycles.every((cycle) => cycle.length === 2)) {
-        return cycles
-          .map((cycle) => `S2{${cycle.map((i) => labels[i]).join(',')}}`)
-          .join('\u00d7');
+        const genText = cycles
+          .map((cycle) => `(${cycle.map((i) => labels[i]).join(' ')})`)
+          .join('');
+        return `\u27e8${genText}\u27e9`;
       }
       return `Z2${labelSet}`;
     }
@@ -352,7 +356,12 @@ export function decomposeClassifyAndCount(
       visiblePositions: vPositionsLocal,
       generators: comp.generators,
     });
-    return { ...comp, shape: shape.kind, accumulation };
+    // Per-component orbit count M_a = Burnside on this component's group action.
+    // For trivial components (identity-only) this equals ∏ compSizes.
+    const multiplication = {
+      count: burnsideCount(comp.elements, compSizes).uniqueCount,
+    };
+    return { ...comp, shape: shape.kind, accumulation, multiplication };
   });
   return { ...base, components };
 }

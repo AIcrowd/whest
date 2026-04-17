@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import { burnsideCount } from '../engine/permutation.js';
 import CaseBadge from './CaseBadge.jsx';
 import Latex from './Latex.jsx';
 import OrbitInspector from './OrbitInspector.jsx';
 import RoleBadge from './RoleBadge.jsx';
 import SymmetryBadge from './SymmetryBadge.jsx';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { LabelInteractionGraph } from './ComponentView.jsx';
 import DecisionLadder from './DecisionLadder.jsx';
 import PanZoomCanvas from './PanZoomCanvas.jsx';
@@ -18,42 +16,11 @@ function isTrivial(comp) {
   return comp.caseType === 'trivial';
 }
 
-// Direct product count: ρ = ∏ n_ℓ over all labels in the component.
-// Dedicated trivial path — no Burnside call, no orbit enumeration.
-function directCount(comp, dimensionN) {
-  const k = comp.labels?.length ?? 0;
-  return Math.pow(dimensionN, k);
-}
-
-function computeMultiplicationOrbits(comp, dimensionN) {
-  if (isTrivial(comp)) return directCount(comp, dimensionN);
-  try {
-    const sizes = (comp.labels ?? []).map(() => dimensionN);
-    if (!comp.elements?.length) return 0;
-    return burnsideCount(comp.elements, sizes).uniqueCount;
-  } catch {
-    return 0;
-  }
-}
-
-function computeAccumulationCost(comp, dimensionN, fallbackReductionCost) {
-  if (isTrivial(comp)) return directCount(comp, dimensionN);
-  switch (comp.caseType) {
-    case 'A':
-      return Math.pow(dimensionN, comp.va?.length ?? 0);
-    case 'B':
-      return computeMultiplicationOrbits(comp, dimensionN);
-    case 'D':
-      try {
-        const sizes = (comp.labels ?? []).map(() => dimensionN);
-        if (!comp.haElements?.length) return 0;
-        return burnsideCount(comp.haElements, sizes).uniqueCount;
-      } catch {
-        return 0;
-      }
-    default:
-      return fallbackReductionCost;
-  }
+// Per-component orbit count M_a, sourced from the engine field that
+// `decomposeClassifyAndCount` now populates. The value is what the Act 5
+// hero formula multiplies into ∏_a M_a.
+function multiplicationCount(comp) {
+  return comp.multiplication?.count ?? null;
 }
 
 function accumulationCount(comp) {
@@ -62,12 +29,6 @@ function accumulationCount(comp) {
 
 function accumulationFormula(comp) {
   return comp.accumulation?.latex ?? null;
-}
-
-function multiplicationOrbits(comp) {
-  return comp.accumulation?.count != null
-    ? (comp.multiplication?.count ?? null)
-    : (comp.multiplication?.count ?? null);
 }
 
 function supportsOrbitEnumeration(comp) {
@@ -115,7 +76,6 @@ function LabelsCell({ comp }) {
 function ComponentSummaryTable({
   components,
   dimensionN,
-  fallbackReductionCost,
   orbitRows,
   onOpenOrbitModal,
 }) {
@@ -131,29 +91,26 @@ function ComponentSummaryTable({
       >
         <span>Labels</span>
         <span>Method</span>
-        <span>MUL Cost</span>
-        <span>Acc Cost</span>
-        <span>Savings</span>
+        <span>Orbits (Mₐ)</span>
+        <span>Accumulation (αₐ)</span>
+        <span>Savings vs dense</span>
       </div>
 
       {components.map((comp, idx) => {
-        const multiplicationOrbits = computeMultiplicationOrbits(comp, dimensionN);
-        const accumulationCost = computeAccumulationCost(comp, dimensionN, fallbackReductionCost);
+        const M_a = multiplicationCount(comp);
         const canOpenOrbits = supportsOrbitEnumeration(comp) && (orbitRows?.length ?? 0) > 0;
-        // Dense baseline for this component: every tuple does one product
-        // and one write. Actual cost: mult orbits + distinct output bins.
-        // Savings % = 1 - actual / dense, floored at 0.
+        // Per-component dense baseline = n^|L_a| (one tuple per cell, no
+        // (k-1) factor — that lives globally on ∏_a M_a, not per-component).
+        // Mul savings  = 1 - M_a   / n^|L_a|
+        // Acc savings  = 1 - α_a   / n^|L_a|
+        // No per-row "Total %" — global Total % lives in TotalCostView.
         const labelCount = comp.labels?.length ?? 0;
         const denseCell = dimensionN ** labelCount;
-        const denseWork = 2 * denseCell;
         const actualAcc = accumulationCount(comp);
-        const actualWork = multiplicationOrbits + (actualAcc ?? 0);
         const pct = (actual, dense) =>
           dense > 0 ? Math.max(0, Math.round((1 - actual / dense) * 100)) : null;
-        const multSavingsPct = pct(multiplicationOrbits, denseCell);
+        const multSavingsPct = M_a !== null ? pct(M_a, denseCell) : null;
         const accSavingsPct = actualAcc !== null ? pct(actualAcc, denseCell) : null;
-        const totalSavingsPct =
-          actualAcc !== null ? pct(actualWork, denseWork) : null;
 
         const leafId = comp.accumulation?.regimeId ?? comp.shape ?? comp.caseType;
         const presentation = getRegimePresentation(leafId);
@@ -209,17 +166,25 @@ function ComponentSummaryTable({
                 ) : null}
               </div>
 
-              {/* MUL Cost (with greyed-out dense reference) */}
+              {/* Orbits Mₐ (with greyed-out dense reference) */}
               <div className="flex items-baseline gap-1">
-                <code className="font-mono text-sm font-semibold text-foreground">
-                  {multiplicationOrbits.toLocaleString()}
-                </code>
-                <span
-                  className="font-mono text-[11px] text-muted-foreground/60"
-                  title={`Dense baseline: every tuple does one product (${denseCell.toLocaleString()} = n^${labelCount})`}
-                >
-                  / {denseCell.toLocaleString()}
-                </span>
+                {M_a !== null ? (
+                  <>
+                    <code className="font-mono text-sm font-semibold text-foreground">
+                      {M_a.toLocaleString()}
+                    </code>
+                    <span
+                      className="font-mono text-[11px] text-muted-foreground/60"
+                      title={`Dense orbit count = n^${labelCount} = ${denseCell.toLocaleString()} (one per assignment when no symmetry collapses any pair).`}
+                    >
+                      / {denseCell.toLocaleString()}
+                    </span>
+                  </>
+                ) : (
+                  <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] text-amber-800">
+                    Unavailable
+                  </span>
+                )}
               </div>
 
               {/* Acc Cost (with greyed-out dense reference) */}
@@ -243,32 +208,40 @@ function ComponentSummaryTable({
                 )}
               </div>
 
-              {/* Savings */}
+              {/* Savings — two pills, no fake Total. The global Total %
+                  lives in TotalCostView (Act 5) where the (k-1)·∏Mₐ + ∏αₐ
+                  formula combines the per-component contributions properly. */}
               <div>
-                {totalSavingsPct !== null ? (
-                  <div className="flex flex-col gap-1">
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
-                        Total
-                      </span>
+                {multSavingsPct !== null || accSavingsPct !== null ? (
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    {multSavingsPct !== null ? (
                       <span
-                        className={`rounded-full px-2 py-0.5 font-mono text-xs font-semibold ${
-                          totalSavingsPct >= 50
+                        className={`rounded-full px-2 py-0.5 font-mono text-[11px] font-semibold ${
+                          multSavingsPct >= 50
                             ? 'bg-emerald-100 text-emerald-800'
-                            : totalSavingsPct > 0
+                            : multSavingsPct > 0
                               ? 'bg-amber-50 text-amber-800'
                               : 'bg-stone-100 text-stone-600'
                         }`}
-                        title={`dense ${denseWork.toLocaleString()} → actual ${actualWork.toLocaleString()}`}
+                        title={`Mult savings: dense Mₐ would be ${denseCell.toLocaleString()}; symmetry gives ${M_a?.toLocaleString?.()}.`}
                       >
-                        {totalSavingsPct}%
+                        Mult {multSavingsPct}%
                       </span>
-                    </div>
-                    <div className="flex flex-wrap items-center gap-x-1.5 font-mono text-[10px] leading-tight">
-                      <span className="font-semibold text-primary">Mult {multSavingsPct}%</span>
-                      <span className="text-stone-300" aria-hidden="true">·</span>
-                      <span className="font-semibold text-amber-700">Acc {accSavingsPct}%</span>
-                    </div>
+                    ) : null}
+                    {accSavingsPct !== null ? (
+                      <span
+                        className={`rounded-full px-2 py-0.5 font-mono text-[11px] font-semibold ${
+                          accSavingsPct >= 50
+                            ? 'bg-emerald-100 text-emerald-800'
+                            : accSavingsPct > 0
+                              ? 'bg-amber-50 text-amber-800'
+                              : 'bg-stone-100 text-stone-600'
+                        }`}
+                        title={`Acc savings: dense αₐ would be ${denseCell.toLocaleString()}; symmetry gives ${actualAcc?.toLocaleString?.()}.`}
+                      >
+                        Acc {accSavingsPct}%
+                      </span>
+                    ) : null}
                   </div>
                 ) : (
                   <span className="text-[11px] text-muted-foreground">—</span>
@@ -367,7 +340,6 @@ export default function ComponentCostView({
   const [showOrbitModal, setShowOrbitModal] = useState(false);
   const [orbitModalComponent, setOrbitModalComponent] = useState(null);
   const components = componentData.components ?? [];
-  const fallbackReductionCost = costModel.reductionCost ?? 0;
   const orbitRows = costModel.orbitRows ?? [];
 
   return (
@@ -412,7 +384,7 @@ export default function ComponentCostView({
           <MultiplicationCostCard
             components={components.map((comp) => ({
               ...comp,
-              multiplicationCount: computeMultiplicationOrbits(comp, dimensionN),
+              multiplicationCount: multiplicationCount(comp),
             }))}
             numTerms={numTerms}
           />
@@ -443,7 +415,6 @@ export default function ComponentCostView({
       <ComponentSummaryTable
         components={components}
         dimensionN={dimensionN}
-        fallbackReductionCost={fallbackReductionCost}
         orbitRows={orbitRows}
         onOpenOrbitModal={(comp) => {
           setOrbitModalComponent(comp);

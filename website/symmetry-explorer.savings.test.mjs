@@ -10,7 +10,9 @@ test('Acts 2-4 are sequenced around the inline savings narrative', () => {
   assert.match(appSource, /EXPLORER_ACTS\[1\]\.heading/);
   assert.match(appSource, /EXPLORER_ACTS\[2\]\.heading/);
   assert.match(appSource, /EXPLORER_ACTS\[3\]\.heading/);
-  assert.match(appSource, /We now decompose the detected global action/);
+  // Act 4 must read its bridge text from EXPLORER_ACTS instead of hardcoding,
+  // for symmetry with Acts 2/3 (single source of truth in explorerNarrative.js).
+  assert.match(appSource, /EXPLORER_ACTS\[3\]\.bridge/);
   // Interaction Graph card caption must name the math (edge = co-permuted)
   // AND the consequence (components factor the cost). See fizzy-nibbling-turtle plan.
   assert.match(componentCostSource, /moves together/);
@@ -50,14 +52,17 @@ test('TotalCostView renders the current savings metric cards', () => {
 test('ComponentCostView renders the decision ladder and component table', () => {
   const componentCostSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/ComponentCostView.jsx', import.meta.url), 'utf8');
 
-  assert.match(componentCostSource, /TableHeader/);
-  assert.match(componentCostSource, /TableBody/);
   // DecisionTree was replaced by DecisionLadder in C5 (shape + regime ladder).
   assert.match(componentCostSource, /DecisionLadder/);
-  // Trivial case has a dedicated code path (not a Burnside degeneration).
+  // Trivial case is still a recognized branch (e.g. trivial orbit enumeration is disabled).
   assert.match(componentCostSource, /isTrivial\(comp\)/);
-  assert.match(componentCostSource, /directCount\(comp/);
-  assert.match(componentCostSource, /Orbit Enumeration/);
+  // Per-component Mₐ and αₐ come from the engine fields populated by
+  // decomposeClassifyAndCount + accumulationCount — the column values
+  // displayed in the table must match the hero formula (∏_a Mₐ, ∏_a αₐ).
+  assert.match(componentCostSource, /multiplicationCount\(comp\)/);
+  assert.match(componentCostSource, /accumulationCount\(comp\)/);
+  assert.match(componentCostSource, /Orbits \(Mₐ\)/);
+  assert.match(componentCostSource, /Accumulation \(αₐ\)/);
   // The per-component table must be able to horizontally scroll on narrow
   // viewports instead of silently overflowing the page.
   assert.match(componentCostSource, /overflow-x-auto rounded-xl/);

@@ -67,9 +67,9 @@ export function validateAll(variables, subscripts, output, operandNames) {
           }),
         );
       } else {
-        // 4. Named symmetry axis indices must be < rank
+        // 4. Named symmetry axis indices must be in [0, rank)
         for (const idx of v.symAxes) {
-          if (idx >= v.rank) {
+          if (idx < 0 || idx >= v.rank) {
             errors.push(
               namedSymAxisOorError(i, {
                 name: v.name,
@@ -84,7 +84,8 @@ export function validateAll(variables, subscripts, output, operandNames) {
 
     // 5–7. Custom symmetry
     if (v.symmetry === 'custom') {
-      const axesCount = Array.isArray(v.symAxes) ? v.symAxes.length : v.rank;
+      const axesExplicitlySelected = Array.isArray(v.symAxes);
+      const axesCount = axesExplicitlySelected ? v.symAxes.length : v.rank;
       if (!v.generators || v.generators.trim() === '') {
         errors.push(customGeneratorsEmptyError(i, { name: v.name, axesCount }));
       } else {
@@ -101,12 +102,13 @@ export function validateAll(variables, subscripts, output, operandNames) {
           );
         } else {
           for (const idx of generatorIndices(parsedGenerators)) {
-            if (idx >= axesCount) {
+            if (idx < 0 || idx >= axesCount) {
               errors.push(
                 customGeneratorAxisOorError(i, {
                   name: v.name,
                   badIdx: idx,
                   axesCount,
+                  axesExplicitlySelected,
                 }),
               );
             }

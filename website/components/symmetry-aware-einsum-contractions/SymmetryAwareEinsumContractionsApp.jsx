@@ -150,6 +150,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
     symmetry: group,
     componentData,
     costModel: cost,
+    componentCosts,
     clusters: analysisClusters,
   } = analysis || {};
 
@@ -334,9 +335,11 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[2].interpretation}</NarrativeCallout>
                       <NarrativeCallout label="Approach" tone="algorithm">{EXPLORER_ACTS[2].algorithm}</NarrativeCallout>
                     </div>
-                    <p className="mt-4 text-sm leading-7 text-foreground">
-                      {EXPLORER_ACTS[2].bridge}
-                    </p>
+                    {EXPLORER_ACTS[2].bridge && (
+                      <p className="mt-4 text-sm leading-7 text-foreground">
+                        {EXPLORER_ACTS[2].bridge}
+                      </p>
+                    )}
                     <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
                       <div className="grid grid-rows-[auto_1fr] gap-2">
                         <h3 className="font-heading text-base font-semibold text-gray-900">σ-Loop & π Detection</h3>
@@ -377,13 +380,11 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[3].interpretation}</NarrativeCallout>
                       <NarrativeCallout label="Approach" tone="algorithm">{EXPLORER_ACTS[3].algorithm}</NarrativeCallout>
                     </div>
-                    <p className="mt-4 text-sm leading-7 text-foreground">
-                      We now decompose the detected global action, which may have been induced in part by declared
-                      input symmetry, into independent components. Each component contributes its own multiplication
-                      representatives and accumulation rule, so the savings can be understood locally before they are
-                      combined. When no analytic shortcut is valid for a component, orbit enumeration is not a fallback
-                      but the exact counting procedure.
-                    </p>
+                    {EXPLORER_ACTS[3].bridge && (
+                      <p className="mt-4 text-sm leading-7 text-foreground">
+                        {EXPLORER_ACTS[3].bridge}
+                      </p>
+                    )}
 
                   <div className="mt-6">
                     <ComponentCostView
@@ -421,7 +422,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
 
                     <div className="mt-6">
                       <TotalCostView
-                        costModel={cost}
+                        componentCosts={componentCosts}
                         componentData={componentData}
                         dimensionN={dimensionN}
                         numTerms={normalizedExample?.subscripts?.length ?? 1}

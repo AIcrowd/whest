@@ -6,7 +6,7 @@ import {
   computeBurnside,
 } from './algorithm.js';
 import { parseCycleNotation } from './cycleParser.js';
-import { computeExactCostModel } from './costModel.js';
+import { computeExactCostModel, aggregateComponentCosts } from './costModel.js';
 import { decomposeClassifyAndCount } from './componentDecomposition.js';
 import { computeLabelClusters } from './sizeAware/labelClusters.js';
 
@@ -73,13 +73,28 @@ export function analyzeExample(example, dimensionN) {
     sizes,
   );
   const burnside = computeBurnside(symmetry, dimensionN);
+  const numTerms = normalizedExample.subscripts.length;
   const costModel = computeExactCostModel({
     labels: symmetry.allLabels,
     vLabels: symmetry.vLabels,
     groupElements: symmetry.fullElements,
     dimensionN,
-    numTerms: normalizedExample.subscripts.length,
+    sizes,
+    numTerms,
   });
+  // Per-component aggregation drives the displayed μ and α.
+  // costModel above is kept as a brute-force ground truth.
+  const componentCosts = aggregateComponentCosts(componentData.components, numTerms);
 
-  return { graph, matrixData, sigmaResults, symmetry, componentData, burnside, costModel, clusters };
+  return {
+    graph,
+    matrixData,
+    sigmaResults,
+    symmetry,
+    componentData,
+    burnside,
+    costModel,
+    componentCosts,
+    clusters,
+  };
 }

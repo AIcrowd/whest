@@ -75,7 +75,7 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
       <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
         <h3 className="font-heading text-base font-semibold text-gray-900">Generator Construction</h3>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
-          Select a valid `(σ, π)` pair on the left to test the candidate permutation it induces.
+          Select a valid `(σ, π)` pair on the left to test the induced label permutation it induces.
         </p>
       </div>
     );
@@ -91,11 +91,11 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
         ) : null}
         {usingCandidateFallback ? (
           <div className="mt-3 rounded-lg border border-dashed border-border bg-surface-raised px-3 py-2 text-xs leading-5 text-muted-foreground">
-            The selected pair does not map to a unique candidate permutation, so this panel is showing the first candidate permutation as a stable fallback.
+            The selected pair does not map to a unique induced label permutation, so this panel is showing the first induced label permutation as a stable fallback.
           </div>
         ) : null}
         <p className="mt-2 max-w-[62ch] text-sm leading-6 text-muted-foreground">
-          Each valid π induces a candidate permutation. We keep it only if adding it enlarges the subgroup generated so far.
+          Each valid π induces a induced label permutation. We keep it only if adding it enlarges the subgroup generated so far.
         </p>
         {group ? (
           <div className="mt-3 rounded-lg border border-border bg-surface-raised px-3 py-2 text-xs leading-5 text-muted-foreground">
@@ -116,7 +116,7 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
         </div>
       ) : !candidate ? (
         <div className="mt-4 rounded-lg border border-dashed border-border bg-surface-raised p-4 text-sm leading-6 text-muted-foreground">
-          This selection does not produce a non-identity candidate permutation for generator construction.
+          This selection does not produce a non-identity induced label permutation for generator construction.
         </div>
       ) : (
         <div className="mt-4 space-y-4">
@@ -185,7 +185,7 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
 
           {hasMergedProvenance ? (
             <div className="rounded-lg border border-border bg-white p-3 text-xs leading-6 text-muted-foreground">
-              {`Provenance note: ${candidate.sourcePiIds.length} valid π mappings collapse to this same candidate permutation, so they share this closure decision.`}
+              {`Provenance note: ${candidate.sourcePiIds.length} valid π mappings collapse to this same induced label permutation, so they share this closure decision.`}
             </div>
           ) : null}
         </div>

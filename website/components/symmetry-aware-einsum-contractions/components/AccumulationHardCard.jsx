@@ -4,18 +4,18 @@ import Latex from './Latex.jsx';
 /**
  * Teaching card: "Why Accumulation Cost (α) is Hard".
  *
- * Static prose explaining why α (accumulation cost) resists the uniform
- * Burnside treatment that M (orbit count) enjoys — and points the reader
- * to the Classification Tree below, which routes each component to its
- * cheapest applicable closed form.
+ * Static prose explaining why αₐ (per-component accumulation cost) resists
+ * the uniform Burnside treatment that Mₐ (per-component orbit count) enjoys —
+ * and points the reader to the Classification Tree below, which routes each
+ * component to its cheapest applicable closed form.
  *
  * Symbols follow the canonical page vocabulary set by the Counting
- * Convention band: μ is multiplication cost, α is accumulation cost, M is
- * the raw orbit count.
+ * Convention band: μ is multiplication cost, α is accumulation cost (with
+ * αₐ per-component), Mₐ is the per-component orbit count.
  *
  * The α formula has a hover tooltip (same visual shape as the μ tooltip
- * in MultiplicationCostCard) that makes the contrast explicit: α sees the
- * V/W split, μ doesn't.
+ * in MultiplicationCostCard) that makes the contrast explicit: αₐ sees the
+ * V/W split, Mₐ doesn't.
  */
 
 // ─── Intuition tooltip ────────────────────────────────────────────────
@@ -69,18 +69,18 @@ function FormulaIntuitionTooltip({ anchorRect, onDismiss }) {
         <span className="text-sm font-semibold">Why α is structure-sensitive</span>
       </div>
 
-      {/* Property 1 — α sees the V/W split. */}
+      {/* Property 1 — αₐ sees the V/W split. */}
       <div className="text-[12px] leading-5 text-gray-300">
         <div className="font-semibold uppercase tracking-wider text-gray-400 text-[10px] mb-1">
-          α reads the V/W split
+          αₐ reads the V/W split
         </div>
         <p>
-          Unlike M, α depends on <span className="italic">how</span> each orbit
-          projects onto the free labels V. One orbit can contribute{' '}
+          Unlike Mₐ, αₐ depends on <span className="italic">how</span> each orbit
+          projects onto the free labels Vₐ. One orbit can contribute{' '}
           <span className="font-mono">1</span> (all elements share one output
           bin) or the full orbit size (every element lands in a different bin),
-          depending on whether the symmetry is W-only, V-only, or crosses the
-          V/W boundary.
+          depending on whether the component&apos;s symmetry is W-only, V-only,
+          or crosses the V/W boundary.
         </p>
       </div>
 
@@ -91,10 +91,10 @@ function FormulaIntuitionTooltip({ anchorRect, onDismiss }) {
         </div>
         <p>
           The generic formula <span className="font-mono">Σ_O |π_V(O)|</span> still
-          works, but reading it costs <span className="font-mono">O(|X|·|G|)</span>{' '}
+          works, but reading it costs <span className="font-mono">O(|Xₐ|·|Gₐ|)</span>{' '}
           — you walk every orbit and measure its V-projection size. Specialized
-          regimes (direct-product, singleton, …) short-circuit this when G has
-          recognisable structure on V and W.
+          regimes (direct-product, singleton, …) short-circuit this when Gₐ has
+          recognisable structure on Vₐ and Wₐ.
         </p>
       </div>
 
@@ -102,7 +102,7 @@ function FormulaIntuitionTooltip({ anchorRect, onDismiss }) {
       <div className="mt-3 border-t border-gray-700 pt-3 text-[11.5px] leading-5 text-gray-400">
         <span className="mr-1 font-semibold uppercase tracking-wider text-gray-500">Net</span>
         <span>
-          μ cares only about G. α cares about G <span className="italic">and</span>{' '}
+          Mₐ cares only about Gₐ. αₐ cares about Gₐ <span className="italic">and</span>{' '}
           the V/W split — so the Classification Tree below exists to find the
           right closed form for each split.
         </span>
@@ -155,10 +155,11 @@ export default function AccumulationHardCard() {
         Why Accumulation Cost <span className="normal-case">(α)</span> is Hard
       </div>
       <p className="mt-2 text-sm leading-6 text-foreground">
-        Unlike <span className="font-mono">M</span>, the accumulation cost{' '}
-        <span className="font-mono">α</span> depends on how each orbit{' '}
-        <em>projects</em> onto the free labels V. That projection isn&apos;t a
-        simple Burnside sum.
+        Unlike <span className="font-mono">Mₐ</span>, the per-component
+        accumulation cost <span className="font-mono">αₐ</span> depends on how
+        each orbit <em>projects</em> onto the free labels Vₐ. That projection
+        isn&apos;t a simple Burnside sum, and the global α is{' '}
+        <span className="font-mono">∏ₐ αₐ</span>.
       </p>
 
       {/* Hover-wrapped formula — mirrors the μ card so the two cards share
@@ -174,7 +175,7 @@ export default function AccumulationHardCard() {
         role="button"
         aria-describedby="acc-formula-intuition"
       >
-        <Latex math={String.raw`\alpha \;=\; \sum_{O \in X/G} |\pi_V(O)|`} display />
+        <Latex math={String.raw`\alpha_a \;=\; \sum_{O \in X_a/G_a} |\pi_V(O)|`} display />
         <div
           className="pointer-events-none absolute right-2 top-1.5 text-[10px] font-medium uppercase tracking-wider text-amber-600/70 opacity-0 transition-opacity group-hover:opacity-100"
           aria-hidden

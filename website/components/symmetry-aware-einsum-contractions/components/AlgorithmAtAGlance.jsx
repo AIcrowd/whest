@@ -105,7 +105,8 @@ function EinsumIntroColumn() {
           permutations of the labels. Those permutations form a{' '}
           <strong className="font-semibold">group G</strong>, and whole{' '}
           <em>orbits</em> of products collapse to a single distinct computation — the dense{' '}
-          <Latex math={DENSE_SCALING} /> drops to roughly <Latex math={String.raw`n^{5}/|G|`} />.
+          <Latex math={DENSE_SCALING} /> drops to <Latex math={String.raw`n^{5}/|G|`} /> in the best
+          case (a free action), and to a Burnside count <Latex math={String.raw`(1/|G|)\sum_g |\mathrm{Fix}(g)|`} /> in general.
         </p>
         <p className="mt-3 text-[13px] italic leading-6 text-stone-600">
           The explorer finds G automatically, then counts the distinct products (<Latex math="\mu" />)
