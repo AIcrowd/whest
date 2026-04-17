@@ -693,7 +693,7 @@
     "href": "/docs/api/ops/indices/",
     "label": "we.indices"
   },
-  "notes": "Set membership; cost = (n+m)*ceil(log2(n+m)).",
+  "notes": "Set membership; cost = (n+m)*ceil(log2(n+m)). Removed in numpy 2.4; use `isin` instead.",
   "notes_sections": [
     "`in1d` can be considered as an element-wise function version of the python keyword `in`, for 1-D sequences. ``in1d(a, b)`` is roughly equivalent to ``we.array([item in b for item in a])``. However, this idea fails if `ar2` is a set, or similar (non-sequence) container:  As ``ar2`` is converted to an array, in those cases ``asarray(ar2)`` is an object array rather than the expected array of contained values.",
     "Using ``kind='table'`` tends to be faster than `kind='sort'` if the following relationship is true: ``log10(len(ar2)) > (log10(max(ar2)-min(ar2)) - 2.27) / 0.927``, but may use greater memory. The default value for `kind` will be automatically selected based only on memory usage, so one may manually set ``kind='table'`` if memory constraints can be relaxed."
@@ -798,5 +798,5 @@
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.in1d",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L338"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L369"
 }
