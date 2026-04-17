@@ -63,6 +63,7 @@ export default function CaseBadge({
   interactive = true,
   active = false,
   className,
+  children = null,
 }) {
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0, flipped: false });
@@ -138,36 +139,58 @@ export default function CaseBadge({
   }, [showTooltip]);
 
   const label = variant === 'compact' ? presentation.shortLabel : presentation.label;
+  const hasMultLatex = Boolean(tooltip?.latexMult);
+  const hasAccLatex = Boolean(tooltip?.latexAcc);
+
+  const triggerProps = tooltip
+    ? {
+      onPointerEnter: handleEnter,
+      onPointerLeave: () => setShowTooltip(false),
+    }
+    : {};
+
+  const trigger = children ? (
+    // Passthrough: wrap arbitrary children as the tooltip trigger. Used by
+    // ComponentSummaryTable's Method cell so hovering the formulas opens
+    // the same tooltip that the pill in the Case band shows.
+    <span
+      ref={ref}
+      {...triggerProps}
+      aria-label={presentation.label}
+      className={cn(tooltip && 'cursor-help inline-block', className)}
+    >
+      {children}
+    </span>
+  ) : (
+    <span {...triggerProps}>
+      <Badge
+        ref={ref}
+        variant="outline"
+        className={cn(
+          'inline-flex items-center border font-mono',
+          variant === 'compact' ? 'shrink-0' : '',
+          getBadgeClasses(variant, size),
+          tooltip && 'cursor-help',
+          className,
+        )}
+        style={{
+          backgroundColor: colors.bg,
+          color: colors.text,
+          borderColor: colors.border,
+          boxShadow: active
+            ? `0 0 0 4px ${colors.bg}, 0 0 0 5px ${colors.border}`
+            : undefined,
+        }}
+        aria-label={presentation.label}
+      >
+        {label}
+      </Badge>
+    </span>
+  );
 
   return (
     <>
-      <span
-        onPointerEnter={tooltip ? handleEnter : undefined}
-        onPointerLeave={tooltip ? () => setShowTooltip(false) : undefined}
-      >
-        <Badge
-          ref={ref}
-          variant="outline"
-          className={cn(
-            'inline-flex items-center border font-mono',
-            variant === 'compact' ? 'shrink-0' : '',
-            getBadgeClasses(variant, size),
-            tooltip && 'cursor-help',
-            className,
-          )}
-          style={{
-            backgroundColor: colors.bg,
-            color: colors.text,
-            borderColor: colors.border,
-            boxShadow: active
-              ? `0 0 0 4px ${colors.bg}, 0 0 0 5px ${colors.border}`
-              : undefined,
-          }}
-          aria-label={presentation.label}
-        >
-          {label}
-        </Badge>
-      </span>
+      {trigger}
 
       {showTooltip && tooltip && typeof document !== 'undefined' && createPortal(
         <div
@@ -187,13 +210,26 @@ export default function CaseBadge({
           <div className="max-w-full whitespace-normal break-words text-sm leading-6 text-gray-300">
             {tooltip.body}
           </div>
-          {tooltip.latex && (
+          {(hasMultLatex || hasAccLatex) ? (
+            <div className="mt-3 space-y-2 overflow-x-auto border-t border-gray-700 pt-3 text-sm text-gray-100">
+              {hasMultLatex && (
+                <div className="min-w-0">
+                  <Latex math={tooltip.latexMult} display />
+                </div>
+              )}
+              {hasAccLatex && (
+                <div className="min-w-0">
+                  <Latex math={tooltip.latexAcc} display />
+                </div>
+              )}
+            </div>
+          ) : tooltip.latex ? (
             <div className="mt-3 overflow-x-auto border-t border-gray-700 pt-3 text-sm text-gray-100">
               <div className="min-w-0">
                 <Latex math={tooltip.latex} display />
               </div>
             </div>
-          )}
+          ) : null}
           {tooltip.glossary && (
             <div className="mt-3 whitespace-normal break-words border-t border-gray-700 pt-3 text-xs leading-relaxed text-gray-300">
               <div className="mb-1.5 text-[10px] uppercase tracking-wider text-gray-500">Where</div>

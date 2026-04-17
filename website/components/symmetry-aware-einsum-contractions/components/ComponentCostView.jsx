@@ -13,6 +13,7 @@ import ExplorerModal from './ExplorerModal.jsx';
 import MultiplicationCostCard from './MultiplicationCostCard.jsx';
 import AccumulationHardCard from './AccumulationHardCard.jsx';
 import { getRegimePresentation } from './regimePresentation.js';
+import MathText from './MathText.jsx';
 
 function isTrivial(comp) {
   return comp.caseType === 'trivial';
@@ -72,6 +73,35 @@ function multiplicationOrbits(comp) {
 
 function supportsOrbitEnumeration(comp) {
   return !isTrivial(comp) && (comp.caseType === 'C' || comp.caseType === 'E');
+}
+
+/**
+ * Distill-style method description: split "Technique — reason" on the
+ * em-dash, render the technique bold + the reason regular weight, with
+ * MathText coloring the shared math tokens (V, W, G, μ, α) in both halves.
+ */
+function MethodDescription({ text }) {
+  if (typeof text !== 'string' || !text.includes('—')) {
+    return (
+      <p className="text-[12.5px] leading-snug text-foreground">
+        <MathText>{text}</MathText>
+      </p>
+    );
+  }
+  const [head, ...rest] = text.split('—');
+  const technique = head.trim();
+  const reason = rest.join('—').trim();
+  return (
+    <p className="text-[12.5px] leading-snug text-foreground">
+      <span className="font-semibold">
+        <MathText>{technique}</MathText>
+      </span>
+      <span className="text-muted-foreground"> — </span>
+      <span className="text-stone-700">
+        <MathText>{reason}</MathText>
+      </span>
+    </p>
+  );
 }
 
 function LabelsCell({ comp }) {
@@ -161,22 +191,39 @@ function ComponentSummaryTable({
                 <LabelsCell comp={comp} />
               </div>
 
-              {/* Method: description + latex + (optional) Enumerate orbits button */}
-              <div className="space-y-1.5">
-                {methodDescription ? (
-                  <div className="text-[11px] italic leading-snug text-muted-foreground">
-                    {methodDescription}
+              {/* Method: description + μ/α formulas, wrapped in a CaseBadge
+                  passthrough so hovering any part opens the full tooltip
+                  (glossary and all). */}
+              <div className="space-y-2">
+                <CaseBadge regimeId={leafId} caseType={comp.caseType}>
+                  <div className="space-y-2">
+                    {methodDescription ? (
+                      <MethodDescription text={methodDescription} />
+                    ) : null}
+                    {(presentation?.tooltip?.latexMult || presentation?.tooltip?.latexAcc) ? (
+                      <div className="space-y-1 overflow-x-auto pl-2 text-[13px] text-foreground">
+                        {presentation.tooltip.latexMult ? (
+                          <div>
+                            <Latex math={presentation.tooltip.latexMult} />
+                          </div>
+                        ) : null}
+                        {presentation.tooltip.latexAcc ? (
+                          <div>
+                            <Latex math={presentation.tooltip.latexAcc} />
+                          </div>
+                        ) : null}
+                      </div>
+                    ) : methodLatex ? (
+                      <div className="overflow-x-auto pl-2 text-[13px] text-foreground">
+                        <Latex math={methodLatex} />
+                      </div>
+                    ) : null}
                   </div>
-                ) : null}
-                {methodLatex ? (
-                  <div className="overflow-x-auto text-xs text-foreground">
-                    <Latex math={methodLatex} />
-                  </div>
-                ) : null}
+                </CaseBadge>
                 {canOpenOrbits ? (
                   <button
                     type="button"
-                    className="rounded-full border border-coral bg-white px-2 py-0.5 text-[10px] font-semibold text-coral transition-colors hover:bg-coral-light"
+                    className="inline-flex items-center gap-1 text-[11px] font-medium text-primary underline decoration-primary/40 decoration-dotted underline-offset-[3px] transition-colors hover:decoration-primary"
                     onClick={() => onOpenOrbitModal?.(comp)}
                   >
                     Enumerate orbits →
@@ -184,19 +231,33 @@ function ComponentSummaryTable({
                 ) : null}
               </div>
 
-              {/* MUL Cost */}
-              <div>
+              {/* MUL Cost (with greyed-out dense reference) */}
+              <div className="flex items-baseline gap-1">
                 <code className="font-mono text-sm font-semibold text-foreground">
                   {multiplicationOrbits.toLocaleString()}
                 </code>
+                <span
+                  className="font-mono text-[11px] text-muted-foreground/60"
+                  title={`Dense baseline: every tuple does one product (${denseCell.toLocaleString()} = n^${labelCount})`}
+                >
+                  / {denseCell.toLocaleString()}
+                </span>
               </div>
 
-              {/* Acc Cost */}
-              <div>
+              {/* Acc Cost (with greyed-out dense reference) */}
+              <div className="flex items-baseline gap-1">
                 {actualAcc !== null ? (
-                  <code className="font-mono text-sm font-semibold text-foreground">
-                    {actualAcc.toLocaleString()}
-                  </code>
+                  <>
+                    <code className="font-mono text-sm font-semibold text-foreground">
+                      {actualAcc.toLocaleString()}
+                    </code>
+                    <span
+                      className="font-mono text-[11px] text-muted-foreground/60"
+                      title={`Dense baseline: one write per tuple (${denseCell.toLocaleString()} = n^${labelCount})`}
+                    >
+                      / {denseCell.toLocaleString()}
+                    </span>
+                  </>
                 ) : (
                   <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] text-amber-800">
                     Unavailable
