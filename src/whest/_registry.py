@@ -924,7 +924,8 @@ REGISTRY: dict[str, dict] = {
     "trapz": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Alias for trapezoid (deprecated).",
+        "max_numpy": "2.4",
+        "notes": "Alias for trapezoid (deprecated). Removed in numpy 2.4; use `trapezoid` instead.",
     },
     "interp": {
         "category": "counted_custom",
@@ -1509,7 +1510,8 @@ REGISTRY: dict[str, dict] = {
     "in1d": {
         "category": "counted_custom",
         "module": "numpy",
-        "notes": "Set membership; cost = (n+m)*ceil(log2(n+m)).",
+        "max_numpy": "2.4",
+        "notes": "Set membership; cost = (n+m)*ceil(log2(n+m)). Removed in numpy 2.4; use `isin` instead.",
     },
     "select": {
         "category": "counted_custom",
