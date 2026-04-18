@@ -230,7 +230,7 @@ const dlNodeTypes = {
 
 // ─── Tooltip ──────────────────────────────────────────────────────────
 
-function tooltipFor(nodeId) {
+function tooltipFor(nodeId, liveReasonsByLeaf = null) {
   if (nodeId === 's0') {
     return {
       title: 'Component',
@@ -261,6 +261,7 @@ function tooltipFor(nodeId) {
   }
   const spec = specFor(nodeId);
   if (spec) {
+    const liveReasons = liveReasonsByLeaf?.get?.(nodeId) ?? [];
     return {
       title: spec.label,
       whenText: spec.when,
@@ -268,6 +269,7 @@ function tooltipFor(nodeId) {
       latex: spec.latex,
       glossary: spec.glossary,
       color: spec.color,
+      liveReasons,
     };
   }
   return null;
@@ -548,6 +550,11 @@ export default function DecisionLadder({
   activeShapeId = null,
   activeLeafIds = null,
   spotlightLeafIds = null,
+  // Optional: { Map<leafId, string[]> } — verdict.reason strings collected
+  // from each component's accumulation.trace. When the user hovers a leaf
+  // that has live reasons, the tooltip appends them so the reader sees the
+  // concrete numbers (e.g. "estimate 800,000,000 exceeds budget").
+  liveReasonsByLeaf = null,
 }) {
   const effectiveLeafIds = useMemo(() => {
     if (Array.isArray(activeLeafIds) || activeLeafIds instanceof Set) {
@@ -666,7 +673,7 @@ export default function DecisionLadder({
     };
   }, [hoveredNode, cancelHide]);
 
-  const activeTooltip = hoveredNode ? tooltipFor(hoveredNode) : null;
+  const activeTooltip = hoveredNode ? tooltipFor(hoveredNode, liveReasonsByLeaf) : null;
 
   return (
     <div ref={wrapRef} className="relative">
@@ -717,6 +724,18 @@ export default function DecisionLadder({
             <div className="mt-3 whitespace-normal break-words border-t border-gray-700 pt-3 text-[11px] leading-relaxed text-gray-300">
               <div className="mb-1.5 text-[10px] uppercase tracking-wider text-gray-500">Where</div>
               <GlossaryList entries={activeTooltip.glossary} />
+            </div>
+          )}
+          {activeTooltip.liveReasons && activeTooltip.liveReasons.length > 0 && (
+            <div className="mt-3 whitespace-normal break-words border-t border-gray-700 pt-3 text-[11px] leading-relaxed text-gray-300">
+              <div className="mb-1.5 text-[10px] uppercase tracking-wider text-gray-500">
+                Live for this example
+              </div>
+              <ul className="list-none space-y-0.5 font-mono text-[11px] text-gray-300">
+                {activeTooltip.liveReasons.map((r, i) => (
+                  <li key={i}>· {r}</li>
+                ))}
+              </ul>
             </div>
           )}
         </div>

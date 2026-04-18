@@ -58,9 +58,9 @@ export const REGIME_SPEC = {
     id: 'bruteForceOrbit',
     label: 'Brute-force orbit',
     shortLabel: 'Brute',
-    when: 'No closed form fired; Π n_ℓ · |G| ≤ budget.',
+    when: 'Terminal leaf — fires when no closed form applies, gated by $|X| \\cdot |G| \\leq 1{,}500{,}000$ to bound page latency.',
     latex: String.raw`\alpha = \sum_{O \in X / G} |\pi_V(O)|`,
-    description: 'Enumerate X/G — no closed-form shortcut applies; walk every orbit and project.',
+    description: 'Walks each orbit by applying every $g \\in G$ and projecting onto $V$. Declines (αₐ reported as Unavailable) when $|X| \\cdot |G|$ would exceed the latency budget — the refusal is calibrated, not a bug.',
     glossary: [
       { term: '\\alpha', definition: 'the accumulation count — distinct output-bin updates, summed across orbits.' },
       { term: 'V', definition: 'the free (output) labels.' },
@@ -69,7 +69,8 @@ export const REGIME_SPEC = {
       { term: 'X / G', definition: 'the set of $G$-orbits on $X$.' },
       { term: 'O', definition: 'a single $G$-orbit in $X / G$.' },
       { term: '\\pi_V(O)', definition: 'the projection of $O$ onto the free labels — the distinct output bins this orbit touches.' },
-      { term: 'runtime', definition: 'this method costs $O(|X| \\cdot |G|)$, gated by the brute-force budget.' },
+      { term: 'runtime', definition: 'this method costs $O(|X| \\cdot |G|)$ — exactly one hash insert per (tuple, $g$) pair. Capped by the budget below.' },
+      { term: 'budget', definition: 'the latency cap on $|X| \\cdot |G|$, set at $1{,}500{,}000$ — roughly the most a JS main thread will do without a noticeable hitch. Below the cap the regime fires; above it, it declines and αₐ is reported as Unavailable. Shrink $n$ to bring the estimate back under.' },
     ],
     color: '#F0524D', // red
   },

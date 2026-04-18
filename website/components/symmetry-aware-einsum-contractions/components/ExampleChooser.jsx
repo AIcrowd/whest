@@ -578,7 +578,10 @@ export default function ExampleChooser({
             </div>
           </div>
           <div className="mt-3 flex justify-end">
-            <label className="flex cursor-pointer items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5">
+            <label
+              className="flex cursor-pointer items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5"
+              title="Per-label dimension. Drives the brute-force budget estimate (Π nₗ · |G|) — shrinking n is the fastest way back under the 1,500,000 cap when a component shows αₐ as Unavailable."
+            >
               <span className="text-sm font-mono font-semibold text-muted-foreground">n =</span>
               <input
                 type="range"

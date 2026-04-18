@@ -208,7 +208,21 @@ function ComponentSummaryTable({
                     </span>
                   </>
                 ) : (
-                  <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] text-amber-800">
+                  <span
+                    className="cursor-help rounded-full bg-amber-100 px-2 py-0.5 text-[11px] text-amber-800"
+                    title={(() => {
+                      // Prefer the most specific refusal — the brute-force
+                      // entry carries the actual `Π nₗ · |G|` estimate, which
+                      // is the actionable signal. The 'fallthrough' sentinel
+                      // is just the loop's exit marker; skip it.
+                      const trace = comp.accumulation?.trace ?? [];
+                      const declined = [...trace]
+                        .reverse()
+                        .find((t) => t.decision === 'refused' && t.regimeId !== 'fallthrough');
+                      const reason = declined?.reason ?? 'no regime fired';
+                      return `αₐ withheld: ${reason}. Try a smaller dimensionN to bring the estimate under the 1,500,000 cap.`;
+                    })()}
+                  >
                     Unavailable
                   </span>
                 )}
@@ -424,6 +438,24 @@ export default function ComponentCostView({
               .flatMap((c) => [c.accumulation?.regimeId, c.shape])
               .filter(Boolean)}
             spotlightLeafIds={spotlightLeafIds}
+            liveReasonsByLeaf={(() => {
+              // For each leaf actually visited by some component (whether
+              // it fired or refused), surface the verdict.reason string —
+              // the brute-force regime in particular formats it with the
+              // concrete (Π nₗ · |G|) estimate, which is what readers want
+              // to see when they hit Unavailable.
+              const map = new Map();
+              for (const comp of components) {
+                const trace = comp.accumulation?.trace ?? [];
+                for (const step of trace) {
+                  if (!step?.regimeId || !step?.reason) continue;
+                  const list = map.get(step.regimeId) ?? [];
+                  if (!list.includes(step.reason)) list.push(step.reason);
+                  map.set(step.regimeId, list);
+                }
+              }
+              return map;
+            })()}
           />
         </div>
       </div>
