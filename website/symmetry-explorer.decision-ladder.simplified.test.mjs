@@ -20,15 +20,17 @@ function read() {
 //             q_hasW  → W ≠ ∅ ?             (leaf on "no": allVisible)
 //             q_hasV  → V ≠ ∅ ?             (leaf on "no": allSummed)
 //             q_trivial → |G| = 1 ?         (leaf on "yes": trivial)
-//             q_direct  → all gens V-only / W-only ?  (leaf on "yes": directProduct;
+//             q_direct  → F-check passes?   (leaf on "yes": directProduct;
 //                         "no" crosses into the ENUMERATE divider)
 //
-//   STAGE 2 — after enumerating G via Dimino. One question with two leaves.
-//             q_singleton → |V| = 1 ?       (yes: singleton; no: bruteForceOrbit)
+//   STAGE 2 — after enumerating G via Dimino. Three questions and four leaves.
+//             q_singleton → |V| = 1 ?       (yes: singleton; no: q_crossVW)
+//             q_crossVW   → Cross-V/W element?  (yes: q_fullSym; no: bruteForceOrbit)
+//             q_fullSym   → G = Sym(L_c)?   (yes: young; no: bruteForceOrbit)
 
-test('DecisionLadder QUESTIONS array has exactly 5 entries, in stage order', () => {
+test('DecisionLadder QUESTIONS array has 7 entries, in stage order', () => {
   const src = read();
-  const ids = ['q_hasW', 'q_hasV', 'q_trivial', 'q_direct', 'q_singleton'];
+  const ids = ['q_hasW', 'q_hasV', 'q_trivial', 'q_direct', 'q_singleton', 'q_crossVW', 'q_fullSym'];
   let lastIdx = -1;
   for (const id of ids) {
     const idx = src.indexOf(`id: '${id}'`);
@@ -38,9 +40,9 @@ test('DecisionLadder QUESTIONS array has exactly 5 entries, in stage order', () 
   }
 });
 
-test('DecisionLadder no longer references the 5 deleted branch questions', () => {
+test('DecisionLadder no longer references the 4 deleted branch questions', () => {
   const src = read();
-  for (const gone of ['q_fullSym', 'q_alt', 'q_wreath', 'q_diag', 'q_setwise']) {
+  for (const gone of ['q_alt', 'q_wreath', 'q_diag', 'q_setwise']) {
     assert.doesNotMatch(src, new RegExp(gone), `stale question '${gone}' still present in DecisionLadder`);
   }
 });
@@ -57,9 +59,19 @@ test('DecisionLadder Stage-1 routing: q_direct feeds the ENUMERATE divider on th
   assert.match(src, /id:\s*'q_direct',[\s\S]*?onTrue:\s*'directProduct',\s*onFalse:\s*'ENUMERATE'/);
 });
 
-test('DecisionLadder Stage-2 routing: q_singleton splits into singleton (yes) and bruteForceOrbit (no)', () => {
+test('DecisionLadder Stage-2 routing: q_singleton splits into singleton (yes) and q_crossVW (no)', () => {
   const src = read();
-  assert.match(src, /id:\s*'q_singleton',[\s\S]*?onTrue:\s*'singleton',\s*onFalse:\s*'bruteForceOrbit'/);
+  assert.match(src, /id:\s*'q_singleton',[\s\S]*?onTrue:\s*'singleton',\s*onFalse:\s*'q_crossVW'/);
+});
+
+test('DecisionLadder Stage-2 routing: q_crossVW splits into q_fullSym (yes) and bruteForceOrbit (no)', () => {
+  const src = read();
+  assert.match(src, /id:\s*'q_crossVW',[\s\S]*?onTrue:\s*'q_fullSym',[\s\S]*?onFalse:\s*'bruteForceOrbit'/);
+});
+
+test('DecisionLadder Stage-2 routing: q_fullSym splits into young (yes) and bruteForceOrbit (no)', () => {
+  const src = read();
+  assert.match(src, /id:\s*'q_fullSym',[\s\S]*?onTrue:\s*'young',[\s\S]*?onFalse:\s*'bruteForceOrbit'/);
 });
 
 test('DecisionLadder marks questions with their stage (1 structural, 2 symmetry)', () => {

@@ -50,7 +50,9 @@ const ENUMERATE_Y = STAGE_1_BOTTOM_Y + 12;
 const ENUMERATE_H = 44;
 const STAGE_2_TOP_Y = ENUMERATE_Y + ENUMERATE_H + 32;
 const Q5_Y = STAGE_2_TOP_Y + 32;                   // q_singleton
-const STAGE_2_BOTTOM_Y = Q5_Y + ROW_GAP + LEAF_H + 32;
+const Q6_Y = Q5_Y + ROW_GAP;                       // q_crossVW
+const Q7_Y = Q6_Y + ROW_GAP;                       // q_fullSym
+const STAGE_2_BOTTOM_Y = Q7_Y + ROW_GAP + LEAF_H + 32;
 
 const EDGE_YES = { color: '#23B761', label: 'yes' };
 const EDGE_NO = { color: '#F0524D', label: 'no' };
@@ -81,8 +83,8 @@ const QUESTIONS = [
   },
   {
     id: 'q_direct',
-    short: 'All gens V-only or W-only ?',
-    long: 'Every generator moves only V-labels or only W-labels — cheap syntactic check on the generator list; decides directProduct without enumerating G.',
+    short: 'F-check passes ?',
+    long: 'Does G factor cleanly as G_V × G_W, with no cross-V/W element and both projections non-trivial? Element-level check post-Dimino: |G| = |G_V|·|G_W| with |G_V| > 1 AND |G_W| > 1.',
     onTrue: 'directProduct', onFalse: 'ENUMERATE',
     stage: 1,
   },
@@ -90,7 +92,23 @@ const QUESTIONS = [
     id: 'q_singleton',
     short: '|V| = 1 ?',
     long: 'Exactly one free label — singleton weighted Burnside applies. From here down, we have G materialised.',
-    onTrue: 'singleton', onFalse: 'bruteForceOrbit',
+    onTrue: 'singleton', onFalse: 'q_crossVW',
+    stage: 2,
+  },
+  {
+    id: 'q_crossVW',
+    short: 'Cross-V/W element ?',
+    long: 'Does any element of G map a V-label to a W-label or vice versa? Cross elements arise from declared axis symmetries spanning V/W, or from identical-operand swaps pairing V with W labels.',
+    onTrue: 'q_fullSym',
+    onFalse: 'bruteForceOrbit',
+    stage: 2,
+  },
+  {
+    id: 'q_fullSym',
+    short: 'G = Sym(L_c) ?',
+    long: 'Is the detected group the full symmetric group on the component\'s labels, i.e. |G| = |L_c|!? If so, the pointwise V-stabilizer is the Young subgroup Sym(W) and α has a multinomial closed form.',
+    onTrue: 'young',
+    onFalse: 'bruteForceOrbit',
     stage: 2,
   },
 ];
@@ -437,7 +455,7 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
     style: { stroke: lastPlan.spineEdge.color, strokeWidth: 1.5 },
   });
 
-  // Stage 2 — one question, two leaves.
+  // Stage 2 — q_singleton, then cross-V/W branch, then young/bruteForceOrbit leaves.
   const stage2Q = QUESTIONS.find((q) => q.id === 'q_singleton');
   nodes.push({
     id: stage2Q.id,
@@ -464,12 +482,71 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
     style: { stroke: EDGE_YES.color, strokeWidth: 1.5 },
   });
 
-  // q_singleton no → bruteForceOrbit terminal centered under the spine.
-  const bruteY = Q5_Y + ROW_GAP;
+  // q_singleton no → q_crossVW question on the spine.
+  const crossVWQ = QUESTIONS.find((q) => q.id === 'q_crossVW');
+  nodes.push({
+    id: crossVWQ.id,
+    position: { x: QUESTION_X, y: Q6_Y },
+    type: 'question',
+    style: { width: QUESTION_W, height: QUESTION_H },
+    data: { text: crossVWQ.short, nodeId: crossVWQ.id },
+  });
+  edges.push({
+    id: `${stage2Q.id}-${crossVWQ.id}`,
+    source: stage2Q.id, sourceHandle: 'bottom',
+    target: crossVWQ.id, targetHandle: 'top',
+    label: EDGE_NO.label,
+    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_NO.color },
+    style: { stroke: EDGE_NO.color, strokeWidth: 1.5 },
+  });
+
+  // q_crossVW no → bruteForceOrbit leaf on the left.
+  nodes.push(leafNode('bruteForceOrbit', Q6_Y));
+  edges.push({
+    id: `${crossVWQ.id}-bruteForceOrbit`,
+    source: crossVWQ.id, sourceHandle: 'side',
+    target: 'bruteForceOrbit', targetHandle: 'right',
+    label: EDGE_NO.label,
+    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_NO.color },
+    style: { stroke: EDGE_NO.color, strokeWidth: 1.5 },
+  });
+
+  // q_crossVW yes → q_fullSym question on the spine.
+  const fullSymQ = QUESTIONS.find((q) => q.id === 'q_fullSym');
+  nodes.push({
+    id: fullSymQ.id,
+    position: { x: QUESTION_X, y: Q7_Y },
+    type: 'question',
+    style: { width: QUESTION_W, height: QUESTION_H },
+    data: { text: fullSymQ.short, nodeId: fullSymQ.id },
+  });
+  edges.push({
+    id: `${crossVWQ.id}-${fullSymQ.id}`,
+    source: crossVWQ.id, sourceHandle: 'bottom',
+    target: fullSymQ.id, targetHandle: 'top',
+    label: EDGE_YES.label,
+    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_YES.color },
+    style: { stroke: EDGE_YES.color, strokeWidth: 1.5 },
+  });
+
+  // q_fullSym yes → young leaf on the left.
+  const youngY = Q7_Y;
+  nodes.push(leafNode('young', youngY));
+  edges.push({
+    id: `${fullSymQ.id}-young`,
+    source: fullSymQ.id, sourceHandle: 'side',
+    target: 'young', targetHandle: 'right',
+    label: EDGE_YES.label,
+    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_YES.color },
+    style: { stroke: EDGE_YES.color, strokeWidth: 1.5 },
+  });
+
+  // q_fullSym no → bruteForceOrbit terminal centered under the spine.
+  const bruteY = Q7_Y + ROW_GAP;
   nodes.push(leafNode('bruteForceOrbit', bruteY, true));
   edges.push({
-    id: `${stage2Q.id}-bruteForceOrbit`,
-    source: stage2Q.id, sourceHandle: 'bottom',
+    id: `${fullSymQ.id}-bruteForceOrbit`,
+    source: fullSymQ.id, sourceHandle: 'bottom',
     target: 'bruteForceOrbit', targetHandle: 'top',
     label: EDGE_NO.label,
     labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_NO.color },
