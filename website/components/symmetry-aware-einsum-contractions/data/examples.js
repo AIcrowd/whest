@@ -205,4 +205,30 @@ export const EXAMPLES = [
     expression: { subscripts: 'ijk', output: 'ijk', operandNames: 'T' },
     labelSizes: { 'i,j,k': 4 },
   },
+  {
+    id: 'four-A-grid',
+    name: 'Four identical A grid',
+    formula: "einsum('ai,bi,aj,bj→ab', A, A, A, A)",
+    description: "Four identical A's arranged so V-swap (a↔b) and W-swap (i↔j) are independent symmetries. G factors as S₂ × S₂ with no cross-V/W elements, so the label-interaction graph decomposes into two components — {a,b} on the V-side (allVisible) and {i,j} on the W-side (allSummed) — each handled by its own closed-form regime.",
+    expectedGroup: 'S2{a,b} × S2{i,j}',
+    regimeId: 'allVisible',
+    color: '#4A7CFF',
+    variables: [
+      { name: 'A', rank: 2, symmetry: 'none', symAxes: null, generators: '' },
+    ],
+    expression: { subscripts: 'ai,bi,aj,bj', output: 'ab', operandNames: 'A, A, A, A' },
+  },
+  {
+    id: 'young-s3',
+    name: 'Young S₃ (abc → ab)',
+    formula: "einsum('abc→ab', T)",
+    description: "T is fully symmetric on all three axes, so G = S₃ on {a,b,c} includes cross-V/W elements (e.g. (b c) swaps a V-label with a W-label). With |V|=2 and G the full symmetric group, the Young regime fires: α = n^|V| · C(n+|W|−1, |W|), the pointwise V-stabilizer Burnside count.",
+    expectedGroup: 'S3{a,b,c}',
+    regimeId: 'young',
+    color: '#23B761',
+    variables: [
+      { name: 'T', rank: 3, symmetry: 'symmetric', symAxes: [0, 1, 2], generators: '' },
+    ],
+    expression: { subscripts: 'abc', output: 'ab', operandNames: 'T' },
+  },
 ];
