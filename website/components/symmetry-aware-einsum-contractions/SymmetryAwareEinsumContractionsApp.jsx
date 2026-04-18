@@ -249,7 +249,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
             <div className="mx-auto flex max-w-[1460px] flex-col px-6 md:px-8 lg:px-10">
             <section id={EXPLORER_ACTS[0].id} className="mb-12 scroll-mt-24">
               <ExplorerSectionCard
-                eyebrow="Section 1"
+                eyebrow="§ 1"
                 title={EXPLORER_ACTS[0].heading}
                 description={EXPLORER_ACTS[0].question}
                 className="border-gray-200 bg-white"
@@ -283,7 +283,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
               <>
                 <section id={EXPLORER_ACTS[1].id} className="mb-12 scroll-mt-24">
                   <ExplorerSectionCard
-                    eyebrow="Section 2"
+                    eyebrow="§ 2"
                     title={EXPLORER_ACTS[1].heading}
                     description={EXPLORER_ACTS[1].question}
                     className="border-gray-200 bg-white"
@@ -325,7 +325,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
 
                 <section id={EXPLORER_ACTS[2].id} className="mb-12 scroll-mt-24">
                   <ExplorerSectionCard
-                    eyebrow="Section 3"
+                    eyebrow="§ 3"
                     title={EXPLORER_ACTS[2].heading}
                     description={EXPLORER_ACTS[2].question}
                     className="border-gray-200 bg-white"
@@ -370,7 +370,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
 
                 <section id={EXPLORER_ACTS[3].id} className="mb-12 scroll-mt-24">
                   <ExplorerSectionCard
-                    eyebrow="Section 4"
+                    eyebrow="§ 4"
                     title={EXPLORER_ACTS[3].heading}
                     description={EXPLORER_ACTS[3].question}
                     className="border-gray-200 bg-white"
@@ -410,7 +410,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
 
                 <section id={EXPLORER_ACTS[4].id} className="mb-12 scroll-mt-24">
                   <ExplorerSectionCard
-                    eyebrow="Section 5"
+                    eyebrow="§ 5"
                     title={EXPLORER_ACTS[4].heading}
                     description={EXPLORER_ACTS[4].question}
                     className="border-gray-200 bg-white"

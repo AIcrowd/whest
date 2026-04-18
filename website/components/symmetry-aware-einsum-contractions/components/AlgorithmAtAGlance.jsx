@@ -167,7 +167,7 @@ export default function AlgorithmAtAGlance() {
           The rest of this page shows how the explorer detects the symmetry group{' '}
           <Latex math="G" /> from a contraction and computes{' '}
           <Latex math={String.raw`\mu`} /> and <Latex math={String.raw`\alpha`} /> automatically.
-          Start with <strong className="font-semibold">Section 1</strong> below to pick or build a
+          Start with <strong className="font-semibold">§ 1</strong> below to pick or build a
           contraction.
         </p>
       </ExplorerSectionCard>

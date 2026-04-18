@@ -189,7 +189,7 @@ function HeroFormulaBlock() {
       </div>
 
       <p className="text-center text-[12px] text-muted-foreground">
-        Six paths through Section 4&rsquo;s decision ladder, in priority order — first
+        Six paths through §4&rsquo;s decision ladder, in priority order — first
         matching leaf wins. Three Shape-layer leaves terminate immediately;
         Mixed components dispatch to one of three Regime-layer leaves. Hover
         any leaf to see the case details.
