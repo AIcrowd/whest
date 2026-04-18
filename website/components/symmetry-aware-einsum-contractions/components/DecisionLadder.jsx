@@ -36,28 +36,30 @@ const SOURCE_H = 38;
 const SOURCE_X = QUESTION_X + (QUESTION_W - SOURCE_W) / 2;
 const ROW_GAP = 88;
 
-// Horizontal padding is symmetric (left = right) and generous enough to
-// accommodate the q_crossVW → BFO edge (Stage 2), which exits the right
-// side of q_crossVW, loops right-down-left back into the bottom BFO's
-// right side.
-const BAND_HORIZONTAL_PAD = 120;
-const BAND_WIDTH = QUESTION_X + QUESTION_W + BAND_HORIZONTAL_PAD;
-const BAND_X = -BAND_HORIZONTAL_PAD;
+// Single padding constant used on all four sides of both stage bands so
+// the dashed borders have visually symmetric margins all around.
+// Value must be large enough to clear the q_crossVW → BFO edge arc in
+// Stage 2 (exits q_crossVW's right, loops right-down-left back into
+// BFO's right handle).
+const BAND_PAD = 120;
+const BAND_X = -BAND_PAD;
+const BAND_WIDTH = QUESTION_X + QUESTION_W + 2 * BAND_PAD;
+
 const STAGE_1_TOP_Y = 0;
-const SOURCE_Y = 48;
+const SOURCE_Y = BAND_PAD;                         // top pad
 const Q1_Y = SOURCE_Y + 88;                        // q_hasW
 const Q2_Y = Q1_Y + ROW_GAP;                       // q_hasV
 const Q3_Y = Q2_Y + ROW_GAP;                       // q_trivial
 const Q4_Y = Q3_Y + ROW_GAP;                       // q_direct
-const STAGE_1_BOTTOM_Y = Q4_Y + LEAF_H + 44;
+const STAGE_1_BOTTOM_Y = Q4_Y + LEAF_H + BAND_PAD; // bottom pad
 
 const ENUMERATE_Y = STAGE_1_BOTTOM_Y + 12;
 const ENUMERATE_H = 44;
 const STAGE_2_TOP_Y = ENUMERATE_Y + ENUMERATE_H + 32;
-const Q5_Y = STAGE_2_TOP_Y + 32;                   // q_singleton
+const Q5_Y = STAGE_2_TOP_Y + BAND_PAD;             // top pad
 const Q6_Y = Q5_Y + ROW_GAP;                       // q_crossVW
 const Q7_Y = Q6_Y + ROW_GAP;                       // q_fullSym
-const STAGE_2_BOTTOM_Y = Q7_Y + ROW_GAP + LEAF_H + 32;
+const STAGE_2_BOTTOM_Y = Q7_Y + ROW_GAP + LEAF_H + BAND_PAD; // bottom pad
 
 const EDGE_YES = { color: '#23B761', label: 'yes' };
 const EDGE_NO = { color: '#F0524D', label: 'no' };
