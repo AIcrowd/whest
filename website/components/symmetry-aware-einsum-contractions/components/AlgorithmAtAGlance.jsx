@@ -128,9 +128,11 @@ function EinsumIntroColumn() {
 
 function MentalFrameworkColumn() {
   return (
-    <div className="flex h-full flex-col">
+    <div id="mental-framework" className="flex h-full flex-col scroll-mt-24">
       <span className="font-heading text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
-        The mental framework
+        <AnchorLink anchorId="mental-framework" labelText="The mental framework">
+          The mental framework
+        </AnchorLink>
       </span>
       <h3 className="mt-1 font-heading text-lg font-semibold text-foreground">
         The same two loops — dense or symmetric
