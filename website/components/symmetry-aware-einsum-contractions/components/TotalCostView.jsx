@@ -352,8 +352,8 @@ export default function TotalCostView({ componentCosts, componentData, dimension
               )}
               {showComparison && exprAlpha !== null && (
                 <span className="mt-1 rounded border-l-2 border-amber-500 bg-amber-50 px-3 py-2 text-sm text-amber-900">
-                  <span className="block font-mono">
-                    Under G_EXPR (expression-level): α = {exprAlpha}
+                  <span className="block">
+                    Under <Latex math="G_{\text{expr}}" /> (expression-level): α = {exprAlpha}
                   </span>
                   <span className="mt-1 block text-xs text-amber-800">
                     This is what naive Burnside under the counting symmetry would give —{' '}

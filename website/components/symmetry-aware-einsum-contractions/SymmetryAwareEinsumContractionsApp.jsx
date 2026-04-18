@@ -10,6 +10,7 @@ import TwoKindsSection from './components/TwoKindsSection.jsx';
 import ExplorerSectionCard, { SectionEyebrow, AnchorLink } from './components/ExplorerSectionCard.jsx';
 import { EXPLORER_ACTS } from './components/explorerNarrative.js';
 import NarrativeCallout from './components/NarrativeCallout.jsx';
+import InlineMathText from './components/InlineMathText.jsx';
 import AlgorithmAtAGlance from './components/AlgorithmAtAGlance.jsx';
 import ExampleChooser from './components/ExampleChooser.jsx';
 import PresetSidebar from './components/PresetSidebar.jsx';
@@ -253,7 +254,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
               <ExplorerSectionCard
                 eyebrow={<SectionEyebrow n={1} anchorId={EXPLORER_ACTS[0].id} />}
                 title={EXPLORER_ACTS[0].heading}
-                description={EXPLORER_ACTS[0].question}
+                description={<InlineMathText>{EXPLORER_ACTS[0].question}</InlineMathText>}
                 className="border-gray-200 bg-white"
                 contentClassName="pt-5"
               >
@@ -287,7 +288,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   <ExplorerSectionCard
                     eyebrow={<SectionEyebrow n={2} anchorId={EXPLORER_ACTS[1].id} />}
                     title={EXPLORER_ACTS[1].heading}
-                    description={EXPLORER_ACTS[1].question}
+                    description={<InlineMathText>{EXPLORER_ACTS[1].question}</InlineMathText>}
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >
@@ -299,7 +300,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       Declared input symmetry changes the encoding before any detected contraction symmetry is computed.
                     </p>
                     <p className="mt-4 text-sm leading-7 text-foreground">
-                      {EXPLORER_ACTS[1].bridge}
+                      <InlineMathText>{EXPLORER_ACTS[1].bridge}</InlineMathText>
                     </p>
                     <p className="mt-4 text-sm leading-7 text-foreground">
                       Left vertices (U) are operand axis-classes. Right vertices are index labels,
@@ -353,7 +354,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   <ExplorerSectionCard
                     eyebrow={<SectionEyebrow n={4} anchorId={EXPLORER_ACTS[3].id} />}
                     title={EXPLORER_ACTS[3].heading}
-                    description={EXPLORER_ACTS[3].question}
+                    description={<InlineMathText>{EXPLORER_ACTS[3].question}</InlineMathText>}
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >
@@ -363,7 +364,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     </div>
                     {EXPLORER_ACTS[3].bridge && (
                       <p className="mt-4 text-sm leading-7 text-foreground">
-                        {EXPLORER_ACTS[3].bridge}
+                        <InlineMathText>{EXPLORER_ACTS[3].bridge}</InlineMathText>
                       </p>
                     )}
                     <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-1">
@@ -390,7 +391,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   <ExplorerSectionCard
                     eyebrow={<SectionEyebrow n={5} anchorId={EXPLORER_ACTS[4].id} />}
                     title={EXPLORER_ACTS[4].heading}
-                    description={EXPLORER_ACTS[4].question}
+                    description={<InlineMathText>{EXPLORER_ACTS[4].question}</InlineMathText>}
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >
@@ -400,7 +401,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     </div>
                     {EXPLORER_ACTS[4].bridge && (
                       <p className="mt-4 text-sm leading-7 text-foreground">
-                        {EXPLORER_ACTS[4].bridge}
+                        <InlineMathText>{EXPLORER_ACTS[4].bridge}</InlineMathText>
                       </p>
                     )}
 
@@ -430,7 +431,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   <ExplorerSectionCard
                     eyebrow={<SectionEyebrow n={6} anchorId={EXPLORER_ACTS[5].id} />}
                     title={EXPLORER_ACTS[5].heading}
-                    description={EXPLORER_ACTS[5].question}
+                    description={<InlineMathText>{EXPLORER_ACTS[5].question}</InlineMathText>}
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >

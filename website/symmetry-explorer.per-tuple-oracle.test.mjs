@@ -26,7 +26,7 @@ for (const example of EXAMPLES) {
     const actual = analysis.symmetry?.fullElements?.length ?? 1;
     assert.equal(
       actual, expected,
-      `Expected |G_PT|=${expected} for ${example.id}, got ${actual}`,
+      `Expected |G_pt|=${expected} for ${example.id}, got ${actual}`,
     );
   });
 }

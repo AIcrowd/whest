@@ -1,8 +1,8 @@
 // website/components/symmetry-aware-einsum-contractions/engine/comparisonAlpha.js
 //
 // Pedagogical helper: compute what α would be if orbit compression used
-// G_EXPR (the expression-level counting symmetry V-sub × S(W)) instead of
-// G_PT (the per-tuple group). G_EXPR over-compresses because dummy-rename
+// G_expr (the expression-level counting symmetry V-sub × S(W)) instead of
+// G_pt (the per-tuple group). G_expr over-compresses because dummy-rename
 // orbits can contain tuples with different summand values.
 //
 // This result is NEVER used for the real cost display — only shown in the
@@ -27,24 +27,24 @@ function allAssignments(sizes) {
 
 /**
  * Compute α that would result from applying orbit-based compression under
- * G_EXPR instead of G_PT. Purely didactic — never used for the real cost
+ * G_expr instead of G_pt. Purely didactic — never used for the real cost
  * display.
  *
  * Performs orbit enumeration at the GLOBAL level (all einsum labels together)
- * under G_EXPR, projecting each orbit to the free (V) labels and counting
+ * under G_expr, projecting each orbit to the free (V) labels and counting
  * distinct output bins touched. This matches the naive approach that conflates
  * counting symmetry with per-tuple symmetry.
  *
  * Returns null if:
  *   - expressionGroup is missing / empty, or
- *   - G_EXPR and G_PT have the same order (no comparison to show).
+ *   - G_expr and G_pt have the same order (no comparison to show).
  */
 export function computeExpressionAlphaTotal({ analysis }) {
   const expressionGroup = analysis?.expressionGroup;
   const perTupleGroup = analysis?.symmetry;
   if (!expressionGroup?.elements?.length) return null;
 
-  // Quick check: if G_EXPR has the same order as G_PT, they're identical in
+  // Quick check: if G_expr has the same order as G_pt, they're identical in
   // effect and there's no meaningful comparison to show.
   const gExprOrder = expressionGroup.elements.length;
   const gPtOrder = perTupleGroup?.fullElements?.length ?? 1;
@@ -64,7 +64,7 @@ export function computeExpressionAlphaTotal({ analysis }) {
   const sizes = globalLabels.map((l) => sizeByLabel.get(l) ?? 1);
   const vPos = vLabels.map((l) => globalLabels.indexOf(l));
 
-  // Global orbit enumeration under G_EXPR on [n]^|allLabels|.
+  // Global orbit enumeration under G_expr on [n]^|allLabels|.
   const elements = expressionGroup.elements;
   const keyFn = (t) => t.join('|');
   const remaining = new Map();

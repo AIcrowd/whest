@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import { Permutation } from './components/symmetry-aware-einsum-contractions/engine/permutation.js';
 import { buildExpressionGroup } from './components/symmetry-aware-einsum-contractions/engine/expressionGroup.js';
 
-test('Frobenius (V=∅, W={i,j}): G_EXPR = Sym(W) = {e, (i j)}', () => {
+test('Frobenius (V=∅, W={i,j}): G_expr = Sym(W) = {e, (i j)}', () => {
   const identity = Permutation.identity(2);
   const result = buildExpressionGroup({
     perTupleElements: [identity],
@@ -20,7 +20,7 @@ test('Frobenius (V=∅, W={i,j}): G_EXPR = Sym(W) = {e, (i j)}', () => {
   assert.equal(result.sw.length, 2, 'Sym(W) = {e, (i j)}');
 });
 
-test('bilinear-trace: G_PT={e,(i j)(k l)} ⇒ G_EXPR = Z₂ × Z₂ order 4', () => {
+test('bilinear-trace: G_pt={e,(i j)(k l)} ⇒ G_expr = Z₂ × Z₂ order 4', () => {
   const identity = Permutation.identity(4);
   const ijkl = new Permutation([1, 0, 3, 2]); // (i j)(k l) on [i,j,k,l]
   const result = buildExpressionGroup({
@@ -34,7 +34,7 @@ test('bilinear-trace: G_PT={e,(i j)(k l)} ⇒ G_EXPR = Z₂ × Z₂ order 4', ()
   assert.equal(result.sw.length, 2, 'S(W) = {e, (k l)}');
 });
 
-test('triple-outer: G_PT=S₃ on V={a,b,c}, |W|=1 ⇒ G_EXPR = S₃', () => {
+test('triple-outer: G_pt=S₃ on V={a,b,c}, |W|=1 ⇒ G_expr = S₃', () => {
   const s3 = [
     new Permutation([0, 1, 2, 3]), // e
     new Permutation([1, 0, 2, 3]), // (a b)
@@ -54,8 +54,8 @@ test('triple-outer: G_PT=S₃ on V={a,b,c}, |W|=1 ⇒ G_EXPR = S₃', () => {
   assert.equal(result.sw.length, 1, 'S(W) trivial when |W|=1');
 });
 
-test('G_PT with cross-V/W elements: V-sub drops them but S(W) is still full', () => {
-  // Labels [a, b, c]. V = {a, b}. W = {c}. G_PT includes (a c) which
+test('G_pt with cross-V/W elements: V-sub drops them but S(W) is still full', () => {
+  // Labels [a, b, c]. V = {a, b}. W = {c}. G_pt includes (a c) which
   // crosses V/W. The V-sub projection should drop it; keep only elements
   // that preserve V.
   const identity = Permutation.identity(3);
@@ -73,6 +73,6 @@ test('G_PT with cross-V/W elements: V-sub drops them but S(W) is still full', ()
   assert.equal(result.vSub.length, 2, 'V-sub contains only V-preserving projections');
   // S(W) = Sym({c}) = trivial.
   assert.equal(result.sw.length, 1);
-  // G_EXPR = vSub × sw = 2 × 1 = 2.
+  // G_expr = vSub × sw = 2 × 1 = 2.
   assert.equal(result.order, 2);
 });

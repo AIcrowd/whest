@@ -98,8 +98,8 @@ function ParameterSymmetryRow({ variables = [] }) {
 export default function StickyBar({ example, group, expressionGroup = null, activeActId, hoveredLabels = null }) {
   const variables = example?.variables ?? [];
 
-  // Show the expression-level badge only when G_EXPR is strictly larger than
-  // G_PT. When they coincide (|W| ≤ 1), the "counting group" and
+  // Show the expression-level badge only when G_expr is strictly larger than
+  // G_pt. When they coincide (|W| ≤ 1), the "counting group" and
   // "compression group" are the same, so displaying both is noise.
   const gptOrder = group?.fullElements?.length ?? group?.fullOrder ?? 1;
   const gExprOrder = expressionGroup?.order ?? gptOrder;
@@ -152,7 +152,7 @@ export default function StickyBar({ example, group, expressionGroup = null, acti
                   <Badge
                     variant="outline"
                     className="shrink-0 border-primary/25 bg-primary/10 text-primary"
-                    title="Per-tuple symmetry group G_PT — drives compression (μ, α). Computed via σ-loop Sources A+B."
+                    title="Per-tuple symmetry group G_pt — drives compression (μ, α). Computed via σ-loop Sources A+B."
                   >
                     <span className="mr-1 text-[10px] uppercase tracking-wide opacity-70">per-tuple</span>
                     {group.fullGroupName || 'trivial'}
@@ -162,7 +162,7 @@ export default function StickyBar({ example, group, expressionGroup = null, acti
                   <Badge
                     variant="outline"
                     className="shrink-0 border-amber-500/40 bg-amber-50 text-amber-800"
-                    title="Expression-level group G_EXPR = V-sub × S(W) — counting symmetry. NOT used for compression (would over-compress). Larger than G_PT when |W| ≥ 2 because it includes dummy-rename permutations of summed labels."
+                    title="Expression-level group G_expr = V-sub × S(W) — counting symmetry. NOT used for compression (would over-compress). Larger than G_pt when |W| ≥ 2 because it includes dummy-rename permutations of summed labels."
                   >
                     <span className="mr-1 text-[10px] uppercase tracking-wide opacity-70">expr-level</span>
                     |G| = {gExprOrder}

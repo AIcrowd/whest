@@ -1,4 +1,5 @@
 import ExplorerSectionCard from './ExplorerSectionCard.jsx';
+import InlineMathText from './InlineMathText.jsx';
 
 export default function NarrativeCallout({ label, tone = 'muted', children }) {
   const toneClass = {
@@ -17,7 +18,9 @@ export default function NarrativeCallout({ label, tone = 'muted', children }) {
       className={`${toneClass} h-full`}
       contentClassName="pt-3 flex flex-1 flex-col justify-center"
     >
-      <p className="text-[15px] leading-7 text-gray-700">{children}</p>
+      <p className="text-[15px] leading-7 text-gray-700">
+        <InlineMathText>{children}</InlineMathText>
+      </p>
     </ExplorerSectionCard>
   );
 }

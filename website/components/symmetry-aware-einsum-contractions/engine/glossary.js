@@ -14,11 +14,11 @@ export const GLOSSARY = [
     definition: 'A label permutation π such that the total sum is unchanged under renaming all labels by π, even if individual terms get reshuffled. Always a superset of per-tuple symmetries; includes dummy-rename permutations of summed labels.',
   },
   {
-    term: 'V-sub',
-    definition: 'The per-tuple group G_PT projected onto the free (output) labels V. Each π ∈ G_PT restricted to V-labels; the set of such restrictions is a subgroup of Sym(V).',
+    term: '$V_{\\text{sub}}$',
+    definition: 'The per-tuple group $G_{\\text{pt}}$ projected onto the free (output) labels V. Each $π ∈ G_{\\text{pt}}$ restricted to V-labels; the set of such restrictions is a subgroup of $\\mathrm{Sym}(V)$.',
   },
   {
-    term: 'S(W)',
+    term: '$S(W)$',
     definition: 'The full symmetric group on the summed (contracted) labels W. Every permutation of W is always an expression-level symmetry because the sum over W is bound-variable iteration — renaming dummies does not change the total.',
   },
   {

@@ -230,7 +230,7 @@ of this group (not just the generators), deriving pi for each.
 > *not* **per-tuple** symmetries. Feeding them into Burnside orbit compression
 > caused over-compression: on Frobenius `'ij,ij→'` with generic A at n=2, the
 > engine claimed μ=3 when the truth is μ=4. Source C was removed; expression-
-> level symmetries are now recovered separately via V-sub × S(W) (below)
+> level symmetries are now recovered separately via $V_{\text{sub}} \times S(W)$ (below)
 > without contaminating compression.
 
 For each group element `sigma`:
@@ -250,7 +250,7 @@ For each group element `sigma`:
    (singleton, young, directProduct, bruteForceOrbit) dispatches correctly
    based on whether cross elements are present.
 5. **Collect pi as a `Permutation` object** over all labels. Non-identity
-   permutations become generators of the detected per-tuple group `G_PT`.
+   permutations become generators of the detected per-tuple group $G_{\text{pt}}$.
 
 The sigma-loop collects all non-identity pi as `Permutation` objects.
 These generators are passed to Dimino's algorithm (via `PermutationGroup(...)`)
@@ -260,30 +260,30 @@ to close the group and build the exact **per-tuple** symmetry group.
 
 Every einsum actually admits **two** distinct label-permutation groups:
 
-- **Per-tuple** `G_PT`: a permutation π such that for every tuple `t` of
+- **Per-tuple** $G_{\text{pt}}$: a permutation π such that for every tuple `t` of
   index values, `summand(t) = summand(π⁻¹ t)`. Compression uses this group
   — reusing one orbit representative is only valid when every tuple in the
   orbit has the same summand value.
 
-- **Expression-level** `G_EXPR`: a permutation π such that the total sum
+- **Expression-level** $G_{\text{expr}}$: a permutation π such that the total sum
   is unchanged under renaming all labels by π, even if individual terms get
-  reshuffled. Always a superset of `G_PT`; includes dummy-rename
+  reshuffled. Always a superset of $G_{\text{pt}}$; includes dummy-rename
   permutations of summed labels.
 
 The expression-level group factors cleanly (when restricted to V/W-
-preserving elements) as **V-sub × S(W)**:
+preserving elements) as $V_{\text{sub}} \times S(W)$:
 
-- **V-sub**: `G_PT` projected to V-labels (the action on output axes).
-- **S(W)**: the full symmetric group on W-labels. Every permutation of W
+- $V_{\text{sub}}$: $G_{\text{pt}}$ projected to V-labels (the action on output axes).
+- $S(W)$: the full symmetric group on W-labels. Every permutation of W
   is always an expression-level symmetry because summing over W is
   bound-variable iteration — renaming dummies does not change the total.
 
-`G_EXPR` is computed directly from this formula, with no additional σ-loop
+$G_{\text{expr}}$ is computed directly from this formula, with no additional σ-loop
 source and no Dimino pass. The explorer shows both groups in its sticky
 bar (`per-tuple` and `expr-level` badges) when they differ.
 
-**Why both?** Compression formulas (μ, α) must use `G_PT` — feeding them
-`G_EXPR` over-compresses, because dummy-rename orbits contain tuples whose
+**Why both?** Compression formulas (μ, α) must use $G_{\text{pt}}$ — feeding them
+$G_{\text{expr}}$ over-compresses, because dummy-rename orbits contain tuples whose
 summand values differ. But the expression-level group is the "natural"
 counting symmetry readers recognize: bilinear-trace has a Z₂ × Z₂ counting
 symmetry even though only its Z₂ diagonal is per-tuple. Exposing both

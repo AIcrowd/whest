@@ -86,7 +86,7 @@ export function muAlphaGroundTruth(elements, sizes, vPositions) {
 }
 
 /**
- * Expected |G_PT| per preset from the Python prototype's oracle.
+ * Expected |G_pt| per preset from the Python prototype's oracle.
  * Source: /Users/mohanty/.claude/plans/sigma-prototype/alpha_mu_audit_v2_output.txt
  *
  * These are the group orders AFTER Source C removal. Presets not listed

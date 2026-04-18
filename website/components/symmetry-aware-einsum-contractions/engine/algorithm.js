@@ -252,7 +252,7 @@ export function runSigmaLoop(graph, matrixData, example) {
   // total sum but NOT at the per-tuple level required by Burnside orbit
   // compression, so feeding them to the compression pipeline caused
   // over-compression on Frobenius-style einsums. Expression-level
-  // symmetries are now recovered separately via G_EXPR = V-sub × S(W)
+  // symmetries are now recovered separately via G_expr = V-sub × S(W)
   // for pedagogical display without contaminating compression.)
 
   // ── Build group from all generators, enumerate all elements via Dimino ──

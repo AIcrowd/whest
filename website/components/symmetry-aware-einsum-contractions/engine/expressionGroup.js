@@ -1,34 +1,34 @@
 // website/components/symmetry-aware-einsum-contractions/engine/expressionGroup.js
 //
-// Given the per-tuple group G_PT (materialized via Dimino), compute the
-// expression-level group G_EXPR = V-sub × S(W).
+// Given the per-tuple group G_pt (materialized via Dimino), compute the
+// expression-level group G_expr = V-sub × S(W).
 //
-// V-sub = G_PT projected onto V-labels (set of distinct V-restrictions,
+// V-sub = G_pt projected onto V-labels (set of distinct V-restrictions,
 //         always a subgroup of Sym(V)).
 // S(W)  = full symmetric group on W-labels (|W|! permutations; every
 //         permutation of the summed indices is a dummy-rename symmetry,
 //         always an expression-level symmetry regardless of operand
 //         structure).
-// G_EXPR = Cartesian product, each pair lifted to a permutation of all labels.
+// G_expr = Cartesian product, each pair lifted to a permutation of all labels.
 //
-// G_EXPR is strictly for pedagogy / display ("this einsum's counting
+// G_expr is strictly for pedagogy / display ("this einsum's counting
 // symmetry"). It does NOT feed into Burnside compression — that uses
-// G_PT. Conflating the two (which Source C effectively did) causes
+// G_pt. Conflating the two (which Source C effectively did) causes
 // over-compression.
 
 import { Permutation } from './permutation.js';
 
 /**
- * Build G_EXPR = V-sub × S(W) from G_PT.
+ * Build G_expr = V-sub × S(W) from G_pt.
  *
  * @param {object} args
- * @param {Permutation[]} args.perTupleElements  G_PT elements over allLabels
+ * @param {Permutation[]} args.perTupleElements  G_pt elements over allLabels
  * @param {string[]}     args.vLabels             free labels
  * @param {string[]}     args.wLabels             summed labels
  * @param {string[]}     args.allLabels           full label list (indexing order)
  * @returns {{
- *   elements: Permutation[],  // full G_EXPR over allLabels
- *   vSub: Permutation[],      // distinct V-projections of G_PT (indexed over V only)
+ *   elements: Permutation[],  // full G_expr over allLabels
+ *   vSub: Permutation[],      // distinct V-projections of G_pt (indexed over V only)
  *   sw: Permutation[],        // |W|! permutations indexed over W only
  *   order: number,
  * }}
@@ -56,7 +56,7 @@ export function buildExpressionGroup({ perTupleElements = [], vLabels = [], wLab
   // S(W): enumerate all permutations of wLabels.
   const sw = allPermutations(wLabels.length).map((p) => new Permutation(p));
 
-  // G_EXPR: Cartesian product of vSub × sw, each pair lifted to a full-label
+  // G_expr: Cartesian product of vSub × sw, each pair lifted to a full-label
   // permutation that acts by vElem on V-positions and wElem on W-positions
   // (identity elsewhere — but our allLabels = V ∪ W so there is no elsewhere).
   const elements = [];

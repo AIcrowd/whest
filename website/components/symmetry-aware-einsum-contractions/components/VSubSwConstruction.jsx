@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Latex from './Latex.jsx';
 
 /**
  * Format a Permutation (with `.arr` field) in disjoint cycle notation over
@@ -35,7 +36,7 @@ function toCycleNotation(perm, labels) {
 
 /**
  * Three-column widget displaying V-sub, S(W), and their Cartesian product
- * G_EXPR = V-sub x S(W) in cycle notation. Hover a left or middle element
+ * G_expr = V-sub x S(W) in cycle notation. Hover a left or middle element
  * to highlight the corresponding product rows.
  *
  * Props:
@@ -85,9 +86,9 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
         {/* Left column: V-sub */}
         <div>
           <div className={colHead}>
-            V-sub
+            <Latex math="V_{\text{sub}}" />
             <span className="ml-1 text-[10px] text-muted-foreground normal-case tracking-normal">
-              (G_PT projected to V-labels)
+              (<Latex math="G_{\text{pt}}" /> projected to V-labels)
             </span>
           </div>
           <div className="flex flex-col gap-0.5">
@@ -107,7 +108,7 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
         {/* Middle column: S(W) */}
         <div>
           <div className={colHead}>
-            S(W)
+            <Latex math="S(W)" />
             <span className="ml-1 text-[10px] text-muted-foreground normal-case tracking-normal">
               (all dummy-rename perms)
             </span>
@@ -126,10 +127,10 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
           </div>
         </div>
 
-        {/* Right column: G_EXPR product */}
+        {/* Right column: G_expr product */}
         <div>
           <div className={colHead}>
-            G_EXPR = V-sub &times; S(W)
+            <Latex math="G_{\text{expr}} = V_{\text{sub}} \times S(W)" />
             <span className="ml-1 text-[10px] text-muted-foreground normal-case tracking-normal">
               (expression-level group)
             </span>

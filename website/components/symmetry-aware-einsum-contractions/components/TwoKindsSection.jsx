@@ -1,5 +1,6 @@
 import ExplorerSectionCard, { SectionEyebrow, AnchorLink } from './ExplorerSectionCard.jsx';
 import NarrativeCallout from './NarrativeCallout.jsx';
+import InlineMathText from './InlineMathText.jsx';
 import Latex from './Latex.jsx';
 import SigmaLoop from './SigmaLoop.jsx';
 import VSubSwConstruction from './VSubSwConstruction.jsx';
@@ -47,7 +48,7 @@ export default function TwoKindsSection({
 
       {(bridge ?? act.bridge) && (
         <p className="mt-4 text-sm leading-7 text-foreground">
-          {bridge ?? act.bridge}
+          <InlineMathText>{bridge ?? act.bridge}</InlineMathText>
         </p>
       )}
 
@@ -119,8 +120,9 @@ export default function TwoKindsSection({
           <p className="text-muted-foreground text-[13px]">
             <strong>Why it matters:</strong> Compression needs the <em>stronger</em> notion
             (per-tuple). Using expression-level symmetry instead inflates the apparent
-            group size and over-counts reuse opportunities. G_PT drives cost formulas;
-            G_EXPR tells the counting story.
+            group size and over-counts reuse opportunities.{' '}
+            <Latex math="G_{\text{pt}}" /> drives cost formulas;{' '}
+            <Latex math="G_{\text{expr}}" /> tells the counting story.
           </p>
         </div>
       </div>
@@ -136,8 +138,8 @@ export default function TwoKindsSection({
           <p className="text-sm leading-7 text-foreground mb-4">
             The σ-loop enumerates candidate row permutations and tests whether a
             recovering label permutation π exists. Valid (σ, π) pairs become
-            generators for G_PT via Source A (declared axis symmetries) and
-            Source B (identical-operand swaps).
+            generators for <Latex math="G_{\text{pt}}" /> via Source A
+            (declared axis symmetries) and Source B (identical-operand swaps).
           </p>
           <SigmaLoop
             results={sigmaResults}
@@ -154,13 +156,14 @@ export default function TwoKindsSection({
       {/* Widget 3: V-sub × S(W) construction */}
       <div id="two-kinds-vsub-sw" className="mt-6 scroll-mt-24">
         <h3 className="font-heading text-base font-semibold text-gray-900 mb-3">
-          <AnchorLink anchorId="two-kinds-vsub-sw" labelText="V-sub × S(W) construction">
-            G_EXPR = V-sub &times; S(W) Construction
+          <AnchorLink anchorId="two-kinds-vsub-sw" labelText="V-sub times S(W) construction">
+            <Latex math="G_{\text{expr}} = V_{\text{sub}} \times S(W)" /> Construction
           </AnchorLink>
         </h3>
         <p className="text-sm leading-7 text-foreground mb-4">
-          G_EXPR is computed directly: take the V-restriction of G_PT (V-sub)
-          and pair it with every permutation of the summed labels (S(W)). No
+          <Latex math="G_{\text{expr}}" /> is computed directly: take the V-restriction
+          of <Latex math="G_{\text{pt}}" /> (<Latex math="V_{\text{sub}}" />) and pair it
+          with every permutation of the summed labels (<Latex math="S(W)" />). No
           Dimino needed. Hover a row in either left column to highlight the
           corresponding product entries.
         </p>
