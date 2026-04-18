@@ -93,7 +93,7 @@ const AGGREGATION_LEGEND = [
   {
     symbol: `${tc(SYM.alpha, '\\alpha')},\\ ${tc(SYM.alpha, '\\alpha_a')}`,
     color: SYM.alpha,
-    definition: `accumulation cost. Per-component accumulation is $${tc(SYM.alpha, '\\alpha_a')}$ — one of the six case-specific formulas above. Global total is $${tc(SYM.alpha, '\\alpha')} = ${tc(SYM.alpha, '\\prod_a \\alpha_a')}$.`,
+    definition: `accumulation cost. Per-component accumulation is $${tc(SYM.alpha, '\\alpha_a')}$ — one of the shape- and regime-specific formulas above. Global total is $${tc(SYM.alpha, '\\alpha')} = ${tc(SYM.alpha, '\\prod_a \\alpha_a')}$.`,
   },
 ];
 

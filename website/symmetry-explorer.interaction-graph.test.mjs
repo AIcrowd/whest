@@ -135,7 +135,7 @@ test('LabelInteractionGraph card surface is interactive (Stage 2)', () => {
   assert.match(source, /kind: 'edge'/);
   assert.match(source, /kind: 'hull'/);
 
-  // Defensive dismissal mirrors the DecisionLadder/DecisionTree pattern.
+  // Defensive dismissal mirrors the DecisionLadder pattern.
   assert.match(source, /addEventListener\('scroll', dismiss, true\)/);
   assert.match(source, /addEventListener\('pointerdown', dismissIfOutside\)/);
   assert.match(source, /addEventListener\('keydown', dismissOnEscape\)/);
