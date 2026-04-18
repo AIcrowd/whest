@@ -239,16 +239,23 @@ export default function MultiplicationCostCard({ components = [], numTerms = 2 }
                     </span>
                   </div>
                 ))}
-                <div className="mt-2 border-t border-gray-200 pt-2 text-xs font-mono text-gray-900">
-                  <div className="text-muted-foreground">
-                    M = ∏ₐ Mₐ = {M_global != null ? M_global.toLocaleString() : '—'}
+                <div className="mt-2 border-t border-gray-200 pt-2 font-mono text-xs text-gray-900">
+                  {/* Two aligned chains — symbolic form, then numeric
+                      substitution, so the reader can trace each token back
+                      to its origin without glancing at footnote prose. */}
+                  <div className="grid grid-cols-[auto_auto_1fr] items-baseline gap-x-2">
+                    <span className="text-muted-foreground">M</span>
+                    <span className="text-muted-foreground">= ∏ₐ Mₐ</span>
+                    <span className="text-muted-foreground">
+                      = {orbitsPerComp.map((n) => n?.toLocaleString() ?? '—').join(' · ')} = <strong className="font-semibold text-foreground">{M_global?.toLocaleString() ?? '—'}</strong>
+                    </span>
+
+                    <span>μ</span>
+                    <span>= (num_terms − 1) · M</span>
+                    <span>
+                      = ({numTerms} − 1) · {M_global?.toLocaleString() ?? '—'} = <strong className="font-semibold text-primary">{mu?.toLocaleString() ?? '—'}</strong>
+                    </span>
                   </div>
-                  <div className="mt-0.5 font-semibold">
-                    μ = ({factor}) · M = {mu != null ? mu.toLocaleString() : '—'}
-                  </div>
-                </div>
-                <div className="text-[10.5px] italic text-muted-foreground">
-                  ({numTerms}-operand einsum → factor (num_terms − 1) = {factor})
                 </div>
               </>
             );
