@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Latex from './Latex.jsx';
+import { AnchorLink } from './ExplorerSectionCard.jsx';
 
 /**
  * Teaching card: "Why Accumulation Cost (α) is Hard".
@@ -150,9 +151,11 @@ export default function AccumulationHardCard() {
   }, []);
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-4">
+    <div id="accumulation-cost" className="rounded-xl border border-gray-200 bg-white p-4 scroll-mt-24">
       <div className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-        Why Accumulation Cost <span className="normal-case">(α)</span> is Hard
+        <AnchorLink anchorId="accumulation-cost" labelText="Why Accumulation Cost (α) is Hard">
+          Why Accumulation Cost <span className="normal-case">(α)</span> is Hard
+        </AnchorLink>
       </div>
       <p className="mt-2 text-sm leading-6 text-foreground">
         Unlike <span className="font-mono">Mₐ</span>, the per-component

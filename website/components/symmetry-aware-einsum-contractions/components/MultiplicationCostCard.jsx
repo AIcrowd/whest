@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Latex from './Latex.jsx';
 import CaseBadge from './CaseBadge.jsx';
+import { AnchorLink } from './ExplorerSectionCard.jsx';
 
 /**
  * Teaching card: "Calculating Multiplication Cost (μ)".
@@ -154,9 +155,11 @@ export default function MultiplicationCostCard({ components = [], numTerms = 2 }
   const factor = Math.max(numTerms - 1, 0);
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-4">
+    <div id="multiplication-cost" className="rounded-xl border border-gray-200 bg-white p-4 scroll-mt-24">
       <div className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-        Calculating Multiplication Cost <span className="normal-case">(μ)</span>
+        <AnchorLink anchorId="multiplication-cost" labelText="Calculating Multiplication Cost (μ)">
+          Calculating Multiplication Cost <span className="normal-case">(μ)</span>
+        </AnchorLink>
       </div>
       <p className="mt-2 text-sm leading-6 text-foreground">
         Every component gets the same treatment. Size-aware Burnside counts the

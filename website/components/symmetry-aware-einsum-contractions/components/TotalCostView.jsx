@@ -225,7 +225,11 @@ function FormulaRow({ leaf }) {
 
 function AggregationExplainer() {
   return (
-    <ExplorerSectionCard eyebrow="How components combine">
+    <ExplorerSectionCard
+      eyebrow={<AnchorLink anchorId="how-components-combine" labelText="How components combine">How components combine</AnchorLink>}
+      id="how-components-combine"
+      className="scroll-mt-24"
+    >
       <div className="rounded-xl border border-border/60 bg-gradient-to-br from-surface-raised/60 to-white px-6 py-8">
         <HeroFormulaBlock />
       </div>

@@ -53,9 +53,11 @@ function ColorLegend() {
 
 function EinsumIntroColumn() {
   return (
-    <div className="flex h-full flex-col">
+    <div id="einsum-contraction" className="flex h-full flex-col scroll-mt-24">
       <span className="font-heading text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
-        Einsum contraction
+        <AnchorLink anchorId="einsum-contraction" labelText="Einsum contraction">
+          Einsum contraction
+        </AnchorLink>
       </span>
       <h3 className="mt-1 font-heading text-lg font-semibold text-foreground">
         A tensor operation, written as one formula
@@ -92,9 +94,15 @@ function EinsumIntroColumn() {
           (so both columns end at the same y), with a mt-6 minimum gap when not. */}
       <div className="mt-6 flex-1" aria-hidden="true" />
 
-      <div className="rounded-2xl border border-primary/20 bg-accent/40 px-5 py-5">
+      <div id="where-symmetry-enters" className="rounded-2xl border border-primary/20 bg-accent/40 px-5 py-5 scroll-mt-24">
         <span className="font-heading text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
-          Where symmetry enters
+          <AnchorLink
+            anchorId="where-symmetry-enters"
+            labelText="Where symmetry enters"
+            hashGlyphClassName="text-[12px] text-primary/70"
+          >
+            Where symmetry enters
+          </AnchorLink>
         </span>
         <h4 className="mt-1 font-heading text-base font-semibold text-foreground">
           Not every product is distinct
