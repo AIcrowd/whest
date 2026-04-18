@@ -32,9 +32,9 @@ export const EXPLORER_ACTS = [
     interpretation: 'This act moves from candidates to proofs: we only keep relabelings that can be justified by the contraction structure.',
     algorithmTitle: 'Search and generate the group',
     algorithm: 'Enumerate candidate σ, search for compatible π, keep valid σ, and use Dimino’s algorithm to generate the explicit finite group action.',
-    produces: 'The detected contraction symmetry group `G`, an explicit generator set, and the V/W partition over the labels — everything §4 needs to decompose the action.',
+    produces: 'The detected contraction symmetry group `G`, an explicit generator set, and the V/W partition over the labels — everything Section 4 needs to decompose the action.',
     why: 'This act turns structural candidates into actual symmetries by checking which row moves still admit a recovering label permutation.',
-    bridge: 'The σ-loop pairs each row move with a label permutation π; valid pairs feed Dimino, which closes them into the full group G that §4 will decompose.',
+    bridge: 'The σ-loop pairs each row move with a label permutation π; valid pairs feed Dimino, which closes them into the full group G that Section 4 will decompose.',
     takeaway: 'The full group is fixed, so we can count representatives and output-bin updates separately.',
   },
   {
