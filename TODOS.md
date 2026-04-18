@@ -6,18 +6,6 @@ but not landed in commits C1–C5.
 
 ## Engine
 
-### Cleanup: delete `classificationSpec.js` and `casePresentation.js` shim
-- `website/components/symmetry-aware-einsum-contractions/engine/classificationSpec.js`
-  now carries an `@deprecated` JSDoc header but is still referenced by
-  `symmetry-explorer.classification-spec.test.mjs` (70+ assertions) and by the
-  legacy-backward-compat path in `regimePresentation.js`. Plan for removal:
-  1. Migrate `symmetry-explorer.classification-spec.test.mjs` to assert against
-     `SHAPE_SPEC` + `REGIME_SPEC` (or replace with shape-layer-specific tests).
-  2. Drop the `LEGACY_CASE_PRESENTATION` block from `regimePresentation.js`.
-  3. Delete `classificationSpec.js`.
-- The file `casePresentation.js` was renamed to `regimePresentation.js` in C5.5
-  via `git mv`. The old filename is gone from HEAD. No further rename work.
-
 ### `diagonalSimultaneous` refusal message when m > 4
 - Currently returns "no diagonal V↔W pairing works" whenever m > 4, even though
   the search is capped (not actually attempted). Users/debuggers may see this
@@ -121,7 +109,7 @@ but not landed in commits C1–C5.
 - Known deltas to log: `generatorIsLocalBlockInternal` in wreath (extension);
   `generators` threaded through `computeAccumulation` context (absent from the
   plan's original prose); `restrictToW` upgrade from duck-type to real
-  `Permutation`; `classificationSpec.js` kept as `@deprecated` shim not deleted.
+  `Permutation`.
 
 ### Verification script alignment
 - The external `followup_verification/verify_families.py` checks uniform-size

@@ -56,7 +56,6 @@ function getBadgeClasses(variant, size) {
 }
 
 export default function CaseBadge({
-  caseType,
   regimeId,
   size = 'sm',
   variant = 'pill',
@@ -81,9 +80,7 @@ export default function CaseBadge({
     return () => { tooltipSubscribers.delete(notify); };
   }, []);
 
-  // Prefer explicit regimeId; fall back to legacy caseType for callers not yet migrated.
-  const id = regimeId ?? caseType;
-  const presentation = getRegimePresentation(id);
+  const presentation = getRegimePresentation(regimeId);
   const colors = colorsFor(presentation.color ?? '#94A3B8');
   const tooltip = interactive ? presentation.tooltip : null;
 

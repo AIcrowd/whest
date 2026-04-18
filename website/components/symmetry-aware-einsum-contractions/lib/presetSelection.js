@@ -25,8 +25,7 @@ export function getPresetSummary(ex) {
     name: ex.name,
     formula: ex.formula,
     description: ex.description ?? '',
-    caseType: ex.caseType ?? null,
-    regimeId: ex.regimeId ?? ex.shapeId ?? ex.caseType ?? null,
+    regimeId: ex.regimeId ?? ex.shapeId ?? null,
     expectedGroup: ex.expectedGroup ?? '',
     color: ex.color ?? '#7C3AED',
   };

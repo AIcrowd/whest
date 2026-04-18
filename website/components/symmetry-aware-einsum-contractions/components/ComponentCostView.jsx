@@ -14,7 +14,7 @@ import AccumulationHardCard from './AccumulationHardCard.jsx';
 import { getRegimePresentation } from './regimePresentation.js';
 
 function isTrivial(comp) {
-  return comp.caseType === 'trivial';
+  return comp.shape === 'trivial';
 }
 
 // Per-component orbit count M_a, sourced from the engine field that
@@ -33,7 +33,7 @@ function accumulationFormula(comp) {
 }
 
 function supportsOrbitEnumeration(comp) {
-  return !isTrivial(comp) && (comp.caseType === 'C' || comp.caseType === 'E');
+  return !isTrivial(comp) && comp.accumulation?.regimeId === 'bruteForceOrbit';
 }
 
 /**
@@ -65,7 +65,7 @@ function LabelsCell({ comp }) {
       {orderedLabels.map((label) => {
         const role = (comp.va ?? []).includes(label) ? 'v' : 'w';
         return (
-          <RoleBadge key={`${comp.caseType}-${label}`} role={role}>
+          <RoleBadge key={`${comp.shape ?? 'comp'}-${label}`} role={role}>
             {label}
           </RoleBadge>
         );
@@ -119,7 +119,7 @@ function ComponentSummaryTable({
           ? pct(M_a + actualAcc, 2 * denseCell)
           : null;
 
-        const leafId = comp.accumulation?.regimeId ?? comp.shape ?? comp.caseType;
+        const leafId = comp.accumulation?.regimeId ?? comp.shape;
         const presentation = getRegimePresentation(leafId);
         const methodDescription = presentation?.tooltip?.body;
         const methodLatex = presentation?.tooltip?.latex;
@@ -134,7 +134,7 @@ function ComponentSummaryTable({
               <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                 Case
               </span>
-              <CaseBadge regimeId={leafId} caseType={comp.caseType} size="sm" />
+              <CaseBadge regimeId={leafId} size="sm" />
             </div>
 
             <div className="border-t border-border/40" aria-hidden="true" />
@@ -150,7 +150,7 @@ function ComponentSummaryTable({
                   passthrough so hovering any part opens the full tooltip
                   (glossary and all). */}
               <div className="space-y-2">
-                <CaseBadge regimeId={leafId} caseType={comp.caseType}>
+                <CaseBadge regimeId={leafId}>
                   <div className="space-y-2">
                     {methodDescription ? (
                       <MethodDescription text={methodDescription} />
@@ -326,7 +326,7 @@ function InteractionGraphMetricStrip({ labelCount, edgeCount, componentCount }) 
 
 // Inline legend for the graph's visual vocabulary. The V/W dot colors here
 // must match LabelInteractionGraph's COLOR_V / COLOR_W so the legend stays
-// truthful — see ComponentView.jsx.
+// truthful.
 function InteractionGraphLegend() {
   return (
     <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11px] text-muted-foreground">
@@ -347,7 +347,7 @@ function InteractionGraphLegend() {
           className="inline-block size-2.5 rounded-sm border"
           style={{ borderStyle: 'dashed', borderColor: '#94A3B8' }}
         />
-        hull: one independent component (Case A–E)
+        hull: one independent component
       </span>
     </div>
   );

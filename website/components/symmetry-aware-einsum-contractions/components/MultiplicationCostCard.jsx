@@ -217,8 +217,7 @@ export default function MultiplicationCostCard({ components = [] }) {
                 className="flex items-center gap-2 text-xs"
               >
                 <CaseBadge
-                  regimeId={comp.accumulation?.regimeId ?? comp.shape ?? comp.caseType}
-                  caseType={comp.caseType}
+                  regimeId={comp.accumulation?.regimeId ?? comp.shape}
                   size="xs"
                   variant="pill"
                 />

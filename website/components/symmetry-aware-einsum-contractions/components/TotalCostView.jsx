@@ -286,8 +286,7 @@ function ComponentRecap({ components }) {
           />
           <span className="inline-flex items-center">
             <CaseBadge
-              regimeId={comp.accumulation?.regimeId ?? comp.shape ?? comp.caseType}
-              caseType={comp.caseType}
+              regimeId={comp.accumulation?.regimeId ?? comp.shape}
               size="xs"
             />
           </span>

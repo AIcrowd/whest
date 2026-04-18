@@ -66,7 +66,7 @@ export default function PresetSidebar({
             />
             <span className="flex flex-wrap items-center gap-2 pl-3">
               {summary.regimeId && (
-                <CaseBadge regimeId={summary.regimeId} caseType={summary.caseType} size="sm" variant="pill" />
+                <CaseBadge regimeId={summary.regimeId} size="sm" variant="pill" />
               )}
               <SymmetryBadge value={summary.expectedGroup} />
             </span>

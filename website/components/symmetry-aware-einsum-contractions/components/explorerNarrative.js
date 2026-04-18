@@ -44,7 +44,7 @@ export const EXPLORER_ACTS = [
     question: 'Once the full symmetry group is known, how does its action split into components with different counting behavior?',
     interpretation: 'Knowing the group is not enough; we still need to analyze how it acts on different parts of the label set.',
     algorithmTitle: 'Decompose the action',
-    algorithm: 'Perform component decomposition, classify each component into cases A through E, use closed-form counting where valid, and use orbit enumeration otherwise.',
+    algorithm: 'Perform component decomposition, classify each component by shape and regime, use closed-form counting where valid, and fall back to brute-force orbit enumeration otherwise.',
     produces: 'A component-level cost model: per-component Mₐ (orbit count) and αₐ (accumulation), ready for the global aggregate (k−1)·∏ₐ Mₐ + ∏ₐ αₐ.',
     why: 'With the full group fixed, each independent component contributes its own representative count and output-update count.',
     bridge: 'Orbit enumeration is not a heuristic fallback but the exact procedure required when no analytic shortcut is valid.',

@@ -96,9 +96,8 @@ test('Cross-highlight wiring: App → StickyBar (halo) and App → DecisionLadde
   // LabelInteractionGraph emits a payload with both label names and leaf keys.
   assert.match(graphSource, /buildHoverPayload/);
   assert.match(graphSource, /leafKeys/);
-  // Hull payload carries caseType, shape, and regimeId so the ladder can
+  // Hull payload carries shape and regimeId so the ladder can
   // match whichever leaf representation the component surfaces.
-  assert.match(graphSource, /hull\.comp\.caseType/);
   assert.match(graphSource, /hull\.comp\.shape/);
   assert.match(graphSource, /hull\.comp\.accumulation\?\.regimeId/);
 
@@ -148,7 +147,7 @@ test('LabelInteractionGraph card surface is interactive (Stage 2)', () => {
 
   // Edge tooltip attributes the edge to a specific generator.
   assert.match(source, /Generator σ\$\{genIdx \+ 1\}/);
-  // Hull tooltip surfaces the case method formula (the whole point of
-  // unifying hull color with CASE_META).
-  assert.match(source, /meta\?\.method/);
+  // Hull tooltip surfaces the regime/shape presentation body (the whole
+  // point of unifying hull color with the ladder via getRegimePresentation).
+  assert.match(source, /presentation\?\.tooltip\?\.body/);
 });

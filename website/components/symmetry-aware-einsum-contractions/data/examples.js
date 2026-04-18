@@ -9,7 +9,6 @@ export const EXAMPLES = [
     formula: "einsum('ij,jk→ik', A, A)",
     description: 'Identical operands but different subscript structure → σ-loop finds no valid π',
     expectedGroup: 'trivial',
-    caseType: 'trivial',
     regimeId: 'trivial',
     color: '#D1D5DB',
     variables: [
@@ -23,7 +22,6 @@ export const EXAMPLES = [
     formula: "einsum('ij,jk,kl→il', A, B, A)",
     description: 'A appears twice but B breaks the chain — no identical group forms',
     expectedGroup: 'trivial',
-    caseType: 'trivial',
     regimeId: 'trivial',
     color: '#E5E7EB',
     variables: [
@@ -38,7 +36,6 @@ export const EXAMPLES = [
     formula: "einsum('ia,ib,ic→abc', X, X, X)",
     description: '3 identical operands → full S3 on output. V+W with a direct-product factorization',
     expectedGroup: 'S3{a,b,c}',
-    caseType: 'A',
     regimeId: 'directProduct',
     color: '#4A7CFF',
     variables: [
@@ -53,7 +50,6 @@ export const EXAMPLES = [
     formula: "einsum('ab,cd→abcd', X, X)",
     description: 'Detects block symmetry — swapping (a,b)↔(c,d) gives one coupled (a c)(b d) generator (order 2). All labels free.',
     expectedGroup: '⟨(a c)(b d)⟩',
-    caseType: 'A',
     regimeId: 'allVisible',
     color: '#4A7CFF',
     variables: [
@@ -68,7 +64,6 @@ export const EXAMPLES = [
     formula: "einsum('ij,jk,ki→ijk', A, A, A)",
     description: 'Cyclic chain — only rotations are valid (not reflections), so C3 not S3',
     expectedGroup: 'C3{i,j,k}',
-    caseType: 'A',
     regimeId: 'allVisible',
     color: '#4A7CFF',
     variables: [
@@ -82,7 +77,6 @@ export const EXAMPLES = [
     formula: "einsum('ij,jk,kl,li→ijkl', S, S, S, S)",
     description: 'S symmetric ⇒ per-operand axis swaps (Source A) plus identical-operand cyclic swaps (Source B); Dimino closes them to D4 — no axis collapse needed.',
     expectedGroup: 'D4{i,j,k,l}',
-    caseType: 'A',
     regimeId: 'allVisible',
     color: '#4A7CFF',
     variables: [
@@ -96,7 +90,6 @@ export const EXAMPLES = [
     formula: "einsum('ij,ji→', A, A)",
     description: 'No free labels — symmetry is on W (summed) side. S2{i,j} reduces contraction cost',
     expectedGroup: 'W: S2{i,j}',
-    caseType: 'B',
     regimeId: 'allSummed',
     color: '#64748B',
     variables: [
@@ -110,7 +103,6 @@ export const EXAMPLES = [
     formula: "einsum('ij,ij→', A, A)",
     description: 'Identical operands with matching subscripts → axis-relabeling (Source C) gives the i↔j coordinated swap; the operand swap itself is identity. All-summed Burnside.',
     expectedGroup: 'W: S2{i,j}',
-    caseType: 'B',
     regimeId: 'allSummed',
     color: '#64748B',
     variables: [
@@ -124,7 +116,6 @@ export const EXAMPLES = [
     formula: "einsum('ik,jl→ij', A, A)",
     description: 'Identical ops give one coupled (i↔j)(k↔l) generator (order 2). Restricted to V vs W it splits cleanly, so the direct-product regime fires.',
     expectedGroup: '⟨(i j)(k l)⟩',
-    caseType: 'C',
     regimeId: 'directProduct',
     color: '#4A7CFF',
     variables: [
@@ -138,7 +129,6 @@ export const EXAMPLES = [
     formula: "einsum('ij,k→ik', A, B)",
     description: 'A symmetric (i↔j) crosses V/W; decomposition isolates the {i,j} component (V-part = {i}) where the singleton regime fires. The independent {k} component is trivial.',
     expectedGroup: 'S2{i,j}',
-    caseType: 'D',
     regimeId: 'singleton',
     color: '#8B5CF6',
     variables: [
@@ -153,7 +143,6 @@ export const EXAMPLES = [
     formula: "einsum('ijk→i', T)",
     description: 'Full S₃ on {i,j,k} crosses V/W. |V|=1 → singleton formula on S₃',
     expectedGroup: 'S3{i,j,k}',
-    caseType: 'D',
     regimeId: 'singleton',
     color: '#8B5CF6',
     variables: [
@@ -167,7 +156,6 @@ export const EXAMPLES = [
     formula: "einsum('ijk→i', T)",
     description: 'C₃ on {i,j,k} crosses V/W but is not full symmetric. |V|=1 → singleton formula',
     expectedGroup: 'C3{i,j,k}',
-    caseType: 'E',
     regimeId: 'singleton',
     color: '#8B5CF6',
     variables: [
@@ -181,7 +169,6 @@ export const EXAMPLES = [
     formula: "einsum('aijk,ab→ijkb', T, W)",
     description: 'T has C₃ on axes {i,j,k}, contracted with W on index a. Generators split V / W',
     expectedGroup: 'C3{i,j,k}',
-    caseType: 'A',
     regimeId: 'directProduct',
     color: '#4A7CFF',
     variables: [
@@ -196,7 +183,6 @@ export const EXAMPLES = [
     formula: "einsum('aijkl,ab→ijklb', T, W)",
     description: 'T has D₄ on axes {i,j,k,l}, contracted with W on index a. Generators split V / W',
     expectedGroup: 'D4{i,j,k,l}',
-    caseType: 'A',
     regimeId: 'directProduct',
     color: '#4A7CFF',
     variables: [
@@ -211,7 +197,6 @@ export const EXAMPLES = [
     formula: "einsum('ijk→ijk', T)",
     description: 'Symmetric rank-3 tensor, no contraction. Pure V side — all-visible shape.',
     expectedGroup: 'S3{i,j,k}',
-    caseType: 'A',
     regimeId: 'allVisible',
     color: '#4A7CFF',
     variables: [
