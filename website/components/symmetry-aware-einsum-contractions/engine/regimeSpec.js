@@ -56,7 +56,7 @@ export const REGIME_SPEC = {
   },
   young: {
     id: 'young',
-    label: 'Young subgroup (full Sym, cross V/W)',
+    label: 'Young subgroup',
     shortLabel: 'Young',
     when: 'Cross-V/W elements present AND G = Sym(L_c) AND |V_c|≥2.',
     latex: String.raw`\alpha = n_L^{|V|} \cdot \binom{n_L + |W| - 1}{|W|}`,
