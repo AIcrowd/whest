@@ -54,6 +54,23 @@ export const REGIME_SPEC = {
     ],
     color: '#4A7CFF', // blue
   },
+  young: {
+    id: 'young',
+    label: 'Young subgroup (full Sym, cross V/W)',
+    shortLabel: 'Young',
+    when: 'Cross-V/W elements present AND G = Sym(L_c) AND |V_c|≥2.',
+    latex: String.raw`\alpha = n_L^{|V|} \cdot \binom{n_L + |W| - 1}{|W|}`,
+    description: 'When the detected group is the full symmetric group on all labels in the component, the pointwise V-stabilizer is a Young subgroup (specifically, Sym(W) — permutations that fix every V-label individually). α can be computed directly via Burnside on Sym(W) — a multinomial closed form, no orbit enumeration needed.',
+    glossary: [
+      { term: '\\alpha', definition: 'the accumulation count — distinct output-bin updates.' },
+      { term: 'n_L', definition: 'the shared dimension size of every label in the component.' },
+      { term: '|V|', definition: 'number of free (output) labels in the component.' },
+      { term: '|W|', definition: 'number of summed (contracted) labels in the component.' },
+      { term: 'Young subgroup', definition: 'a subgroup of a symmetric group that is a product of smaller symmetric groups on a partition of the underlying set.' },
+      { term: '\\mathrm{Stab}_G(V)', definition: 'the pointwise V-stabilizer — elements that fix every V-label individually. When G = Sym(L), this is the Young subgroup Sym(W).' },
+    ],
+    color: '#23B761',
+  },
   bruteForceOrbit: {
     id: 'bruteForceOrbit',
     label: 'Brute-force orbit',
@@ -80,5 +97,6 @@ export const REGIME_SPEC = {
 export const REGIME_PRIORITY = [
   'singleton',
   'directProduct',
+  'young',
   'bruteForceOrbit',
 ];
