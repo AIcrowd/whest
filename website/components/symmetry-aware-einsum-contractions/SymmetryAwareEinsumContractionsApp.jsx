@@ -6,6 +6,7 @@ import { buildVariableColors } from './engine/colorPalette.js';
 import { analyzeExample } from './engine/pipeline.js';
 import { pickDefaultOrbitRow } from './engine/teachingModel.js';
 import StickyBar from './components/StickyBar.jsx';
+import TwoKindsSection from './components/TwoKindsSection.jsx';
 import ExplorerSectionCard, { SectionEyebrow, AnchorLink } from './components/ExplorerSectionCard.jsx';
 import { EXPLORER_ACTS } from './components/explorerNarrative.js';
 import NarrativeCallout from './components/NarrativeCallout.jsx';
@@ -231,7 +232,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
             Symmetry Aware Einsum Contractions
           </h1>
           <p className="text-sm leading-6 text-muted-foreground">
-            <em>Symmetry detection for einsum contractions</em>, explained in five sections.
+            <em>Symmetry detection for einsum contractions</em>, explained in six sections.
           </p>
         </div>
 
@@ -332,57 +333,20 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   </ExplorerSectionCard>
                 </section>
 
+                {/* Act 3: EXPLORER_ACTS[2].heading = Two Kinds of Symmetry */}
                 <section id={EXPLORER_ACTS[2].id} className="mb-12 scroll-mt-24">
-                  <ExplorerSectionCard
-                    eyebrow={<SectionEyebrow n={3} anchorId={EXPLORER_ACTS[2].id} />}
-                    title={EXPLORER_ACTS[2].heading}
-                    description={EXPLORER_ACTS[2].question}
-                    className="border-gray-200 bg-white"
-                    contentClassName="pt-5"
-                  >
-                    <div className="grid gap-4 md:grid-cols-2">
-                      <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[2].interpretation}</NarrativeCallout>
-                      <NarrativeCallout label="Approach" tone="algorithm">{EXPLORER_ACTS[2].algorithm}</NarrativeCallout>
-                    </div>
-                    {EXPLORER_ACTS[2].bridge && (
-                      <p className="mt-4 text-sm leading-7 text-foreground">
-                        {EXPLORER_ACTS[2].bridge}
-                      </p>
-                    )}
-                    <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
-                      <div id="sigma-loop" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
-                        <h3 className="font-heading text-base font-semibold text-gray-900">
-                          <AnchorLink anchorId="sigma-loop" labelText="σ-Loop & π Detection">
-                            σ-Loop & π Detection
-                          </AnchorLink>
-                        </h3>
-                        <SigmaLoop
-                          results={sigmaResults}
-                          graph={graph}
-                          matrixData={matrixData}
-                          example={normalizedExample}
-                          variableColors={variableColors}
-                          group={group}
-                          onSelectedPairChange={setSelectedSigmaPairIndex}
-                        />
-                      </div>
-                      <div id="generator-construction" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
-                        <h3 className="font-heading text-base font-semibold text-gray-900">
-                          <AnchorLink anchorId="generator-construction" labelText="Generator Construction">
-                            Generator Construction
-                          </AnchorLink>
-                        </h3>
-                        <DiminoView
-                          group={group}
-                          sigmaResults={sigmaResults}
-                          selectedPairIndex={selectedSigmaPairIndex}
-                        />
-                      </div>
-                    </div>
-                    <div className="mt-4">
-                      <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[2].produces}</NarrativeCallout>
-                    </div>
-                  </ExplorerSectionCard>
+                  <TwoKindsSection
+                    analysis={analysis}
+                    graph={graph}
+                    matrixData={matrixData}
+                    example={normalizedExample}
+                    sigmaResults={sigmaResults}
+                    variableColors={variableColors}
+                    group={group}
+                    bridge={EXPLORER_ACTS[2].bridge}
+                    onSelectedPairChange={setSelectedSigmaPairIndex}
+                    selectedSigmaPairIndex={selectedSigmaPairIndex}
+                  />
                 </section>
 
                 <section id={EXPLORER_ACTS[3].id} className="mb-12 scroll-mt-24">
@@ -400,6 +364,43 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     {EXPLORER_ACTS[3].bridge && (
                       <p className="mt-4 text-sm leading-7 text-foreground">
                         {EXPLORER_ACTS[3].bridge}
+                      </p>
+                    )}
+                    <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-1">
+                      <div id="generator-construction" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
+                        <h3 className="font-heading text-base font-semibold text-gray-900">
+                          <AnchorLink anchorId="generator-construction" labelText="Generator Construction">
+                            Generator Construction
+                          </AnchorLink>
+                        </h3>
+                        <DiminoView
+                          group={group}
+                          sigmaResults={sigmaResults}
+                          selectedPairIndex={selectedSigmaPairIndex}
+                        />
+                      </div>
+                    </div>
+                    <div className="mt-4">
+                      <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[3].produces}</NarrativeCallout>
+                    </div>
+                  </ExplorerSectionCard>
+                </section>
+
+                <section id={EXPLORER_ACTS[4].id} className="mb-12 scroll-mt-24">
+                  <ExplorerSectionCard
+                    eyebrow={<SectionEyebrow n={5} anchorId={EXPLORER_ACTS[4].id} />}
+                    title={EXPLORER_ACTS[4].heading}
+                    description={EXPLORER_ACTS[4].question}
+                    className="border-gray-200 bg-white"
+                    contentClassName="pt-5"
+                  >
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[4].interpretation}</NarrativeCallout>
+                      <NarrativeCallout label="Approach" tone="algorithm">{EXPLORER_ACTS[4].algorithm}</NarrativeCallout>
+                    </div>
+                    {EXPLORER_ACTS[4].bridge && (
+                      <p className="mt-4 text-sm leading-7 text-foreground">
+                        {EXPLORER_ACTS[4].bridge}
                       </p>
                     )}
 
@@ -420,21 +421,21 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   </div>
 
                   <div className="mt-4">
-                    <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[3].produces}</NarrativeCallout>
+                    <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[4].produces}</NarrativeCallout>
                   </div>
                   </ExplorerSectionCard>
                 </section>
 
-                <section id={EXPLORER_ACTS[4].id} className="mb-12 scroll-mt-24">
+                <section id={EXPLORER_ACTS[5].id} className="mb-12 scroll-mt-24">
                   <ExplorerSectionCard
-                    eyebrow={<SectionEyebrow n={5} anchorId={EXPLORER_ACTS[4].id} />}
-                    title={EXPLORER_ACTS[4].heading}
-                    description={EXPLORER_ACTS[4].question}
+                    eyebrow={<SectionEyebrow n={6} anchorId={EXPLORER_ACTS[5].id} />}
+                    title={EXPLORER_ACTS[5].heading}
+                    description={EXPLORER_ACTS[5].question}
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >
                     <p className="text-sm leading-7 text-foreground">
-                      {EXPLORER_ACTS[4].why}
+                      {EXPLORER_ACTS[5].why}
                     </p>
 
                     <div className="mt-6">
