@@ -444,6 +444,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         componentData={componentData}
                         dimensionN={dimensionN}
                         numTerms={normalizedExample?.subscripts?.length ?? 1}
+                        analysis={analysis}
                       />
                     </div>
                   </ExplorerSectionCard>
