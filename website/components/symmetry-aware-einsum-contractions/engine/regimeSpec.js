@@ -70,7 +70,7 @@ export const REGIME_SPEC = {
       { term: 'O', definition: 'a single $G$-orbit in $X / G$.' },
       { term: '\\pi_V(O)', definition: 'the projection of $O$ onto the free labels — the distinct output bins this orbit touches.' },
       { term: 'runtime', definition: 'this method costs $O(|X| \\cdot |G|)$ — exactly one hash insert per (tuple, $g$) pair. Capped by the budget below.' },
-      { term: 'budget', definition: 'the latency cap on $|X| \\cdot |G|$, set at $1{,}500{,}000$ — roughly the most a JS main thread will do without a noticeable hitch. Below the cap the regime fires; above it, it declines and αₐ is reported as Unavailable. Shrink $n$ to bring the estimate back under.' },
+      { term: 'budget', definition: 'the latency cap on $|X| \\cdot |G|$, set at $1{,}500{,}000$ — roughly the most a JS main thread will do without a noticeable hitch. Below the cap the regime fires; above it, it declines and αₐ is reported as Unavailable. The cap bounds demo latency; it does not reflect the einsum\'s structural cost.' },
     ],
     color: '#F0524D', // red
   },
