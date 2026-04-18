@@ -8,22 +8,6 @@ function labelIndices(labels) {
   return idx;
 }
 
-function movedPositions(perm) {
-  const out = [];
-  for (let i = 0; i < perm.arr.length; i += 1) {
-    if (perm.arr[i] !== i) out.push(i);
-  }
-  return out;
-}
-
-function generatorIsVOnly(gen, vSet) {
-  return movedPositions(gen).every((i) => vSet.has(i));
-}
-
-function generatorIsWOnly(gen, wSet) {
-  return movedPositions(gen).every((i) => wSet.has(i));
-}
-
 /**
  * Restrict a permutation acting on global positions to a Permutation acting
  * on the local positions wPos (which must be W-invariant for this regime).
@@ -37,8 +21,8 @@ function restrictToW(g, wPos) {
     const globalImage = g.arr[wPos[i]];
     const localImage = localIndex.get(globalImage);
     if (localImage === undefined) {
-      // Should never happen: generators accepted by recognize() never move W to non-W.
-      throw new Error('directProduct.restrictToW: generator moves W out of W');
+      // Should never happen: elements accepted by recognize() never move W to non-W.
+      throw new Error('directProduct.restrictToW: element moves W out of W');
     }
     arr[i] = localImage;
   }
@@ -47,19 +31,45 @@ function restrictToW(g, wPos) {
 
 export const directProductRegime = {
   id: 'directProduct',
-  recognize({ labels, va, wa, generators = [] }) {
-    if (!generators.length) return { fired: false, reason: 'no generators provided' };
+  /**
+   * Fire iff (a) every post-Dimino element preserves V/W setwise (no cross),
+   * (b) |G| = |G_V| · |G_W| (F-check), and (c) both projections non-trivial
+   * (meaningfulness guard: V- or W-trivial reduces to allVisible/allSummed).
+   */
+  recognize({ labels, va, wa, elements = [] }) {
+    if (!elements.length) return { fired: false, reason: 'no elements provided' };
     const idx = labelIndices(labels);
-    const vSet = new Set(va.map((l) => idx[l]));
-    const wSet = new Set(wa.map((l) => idx[l]));
-    for (const g of generators) {
-      const vOnly = generatorIsVOnly(g, vSet);
-      const wOnly = generatorIsWOnly(g, wSet);
-      if (!vOnly && !wOnly) {
-        return { fired: false, reason: `generator ${g.cycleNotation(labels)} crosses V/W` };
+    const vPos = va.map((l) => idx[l]);
+    const wPos = wa.map((l) => idx[l]);
+    const vSet = new Set(vPos);
+
+    // Every element must preserve V/W setwise — no cross-V/W elements.
+    for (const g of elements) {
+      for (const pos of vPos) {
+        if (!vSet.has(g.arr[pos])) {
+          return { fired: false, reason: 'element crosses V→W' };
+        }
       }
     }
-    return { fired: true, reason: 'every generator moves only V or only W' };
+
+    // Compute V- and W-projection cardinalities.
+    const gVKeys = new Set();
+    const gWKeys = new Set();
+    for (const g of elements) {
+      gVKeys.add(vPos.map((p) => g.arr[p]).join(','));
+      gWKeys.add(wPos.map((p) => g.arr[p]).join(','));
+    }
+
+    // Meaningfulness guard — both projections must be non-trivial.
+    if (gVKeys.size <= 1 || gWKeys.size <= 1) {
+      return { fired: false, reason: 'V- or W-projection is trivial' };
+    }
+
+    // F-check.
+    const ok = elements.length === gVKeys.size * gWKeys.size;
+    return ok
+      ? { fired: true, reason: `|G|=${elements.length} = |G_V|·|G_W|=${gVKeys.size}·${gWKeys.size}` }
+      : { fired: false, reason: `|G|=${elements.length} ≠ |G_V|·|G_W|=${gVKeys.size}·${gWKeys.size}` };
   },
   compute({ labels, va, wa, elements, sizes }) {
     const idx = labelIndices(labels);
