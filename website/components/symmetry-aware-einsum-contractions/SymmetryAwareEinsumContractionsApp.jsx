@@ -220,6 +220,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
       <StickyBar
         example={previewExample ?? example}
         group={group}
+        expressionGroup={analysis?.expressionGroup}
         activeActId={activeActId}
         hoveredLabels={hoveredLabelSet}
       />
