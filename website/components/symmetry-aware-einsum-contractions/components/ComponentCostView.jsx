@@ -421,7 +421,6 @@ export default function ComponentCostView({
               ...comp,
               multiplicationCount: multiplicationCount(comp),
             }))}
-            numTerms={numTerms}
           />
           <AccumulationHardCard />
         </div>

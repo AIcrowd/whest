@@ -114,7 +114,7 @@ function FormulaIntuitionTooltip({ anchorRect, onDismiss }) {
   );
 }
 
-export default function MultiplicationCostCard({ components = [], numTerms = 2 }) {
+export default function MultiplicationCostCard({ components = [] }) {
   const formulaRef = useRef(null);
   const [anchorRect, setAnchorRect] = useState(null);
   const hideTimerRef = useRef(null);
@@ -151,8 +151,6 @@ export default function MultiplicationCostCard({ components = [], numTerms = 2 }
   useEffect(() => () => {
     if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
   }, []);
-
-  const factor = Math.max(numTerms - 1, 0);
 
   return (
     <div id="multiplication-cost" className="rounded-xl border border-gray-200 bg-white p-4 scroll-mt-24">
@@ -211,55 +209,28 @@ export default function MultiplicationCostCard({ components = [], numTerms = 2 }
           <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
             Live for this example
           </div>
-          {(() => {
-            const orbitsPerComp = components.map((comp) =>
-              comp.multiplicationCount ?? comp.multiplication?.count ?? null,
-            );
-            const allKnown = orbitsPerComp.every((o) => o != null);
-            const M_global = allKnown ? orbitsPerComp.reduce((p, n) => p * n, 1) : null;
-            const mu = M_global != null ? M_global * factor : null;
+          {components.map((comp, i) => {
+            const orbits = comp.multiplicationCount ?? comp.multiplication?.count ?? null;
             return (
-              <>
-                {components.map((comp, i) => (
-                  <div
-                    key={`mult-${i}`}
-                    className="flex items-center gap-2 text-xs"
-                  >
-                    <CaseBadge
-                      regimeId={comp.accumulation?.regimeId ?? comp.shape ?? comp.caseType}
-                      caseType={comp.caseType}
-                      size="xs"
-                      variant="pill"
-                    />
-                    <span className="truncate text-gray-600">
-                      {comp.labels?.join(', ') || '∅'}
-                    </span>
-                    <span className="ml-auto font-mono text-gray-900">
-                      Mₐ = {orbitsPerComp[i] != null ? orbitsPerComp[i].toLocaleString() : '—'}
-                    </span>
-                  </div>
-                ))}
-                <div className="mt-2 border-t border-gray-200 pt-2 font-mono text-xs text-gray-900">
-                  {/* Two aligned chains — symbolic form, then numeric
-                      substitution, so the reader can trace each token back
-                      to its origin without glancing at footnote prose. */}
-                  <div className="grid grid-cols-[auto_auto_1fr] items-baseline gap-x-2">
-                    <span className="text-muted-foreground">M</span>
-                    <span className="text-muted-foreground">= ∏ₐ Mₐ</span>
-                    <span className="text-muted-foreground">
-                      = {orbitsPerComp.map((n) => n?.toLocaleString() ?? '—').join(' · ')} = <strong className="font-semibold text-foreground">{M_global?.toLocaleString() ?? '—'}</strong>
-                    </span>
-
-                    <span>μ</span>
-                    <span>= (num_terms − 1) · M</span>
-                    <span>
-                      = ({numTerms} − 1) · {M_global?.toLocaleString() ?? '—'} = <strong className="font-semibold text-primary">{mu?.toLocaleString() ?? '—'}</strong>
-                    </span>
-                  </div>
-                </div>
-              </>
+              <div
+                key={`mult-${i}`}
+                className="flex items-center gap-2 text-xs"
+              >
+                <CaseBadge
+                  regimeId={comp.accumulation?.regimeId ?? comp.shape ?? comp.caseType}
+                  caseType={comp.caseType}
+                  size="xs"
+                  variant="pill"
+                />
+                <span className="truncate text-gray-600">
+                  {comp.labels?.join(', ') || '∅'}
+                </span>
+                <span className="ml-auto font-mono text-gray-900">
+                  Mₐ = {orbits != null ? orbits.toLocaleString() : '—'}
+                </span>
+              </div>
             );
-          })()}
+          })}
         </div>
       )}
 
