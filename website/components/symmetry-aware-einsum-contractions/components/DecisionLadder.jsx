@@ -36,12 +36,13 @@ const SOURCE_H = 38;
 const SOURCE_X = QUESTION_X + (QUESTION_W - SOURCE_W) / 2;
 const ROW_GAP = 88;
 
-// Right padding is generous enough to accommodate the q_crossVW → BFO
-// edge (Stage 2), which exits the right side of q_crossVW, loops right,
-// down, and back into the bottom BFO's right side. A narrower pad made
-// that arc collide with the stage band's right border.
-const BAND_WIDTH = QUESTION_X + QUESTION_W + 160; // leaves + gap + questions + right pad
-const BAND_X = -40;                                // left pad
+// Horizontal padding is symmetric (left = right) and generous enough to
+// accommodate the q_crossVW → BFO edge (Stage 2), which exits the right
+// side of q_crossVW, loops right-down-left back into the bottom BFO's
+// right side.
+const BAND_HORIZONTAL_PAD = 120;
+const BAND_WIDTH = QUESTION_X + QUESTION_W + BAND_HORIZONTAL_PAD;
+const BAND_X = -BAND_HORIZONTAL_PAD;
 const STAGE_1_TOP_Y = 0;
 const SOURCE_Y = 48;
 const Q1_Y = SOURCE_Y + 88;                        // q_hasW
