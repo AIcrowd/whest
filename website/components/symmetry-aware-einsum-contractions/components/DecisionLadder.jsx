@@ -139,6 +139,7 @@ function QuestionNode({ data }) {
       {data.text}
       <Handle id="bottom" type="source" position={Position.Bottom} className="pointer-events-none opacity-0" />
       <Handle id="side" type="source" position={Position.Left} className="pointer-events-none opacity-0" />
+      <Handle id="right" type="source" position={Position.Right} className="pointer-events-none opacity-0" />
     </div>
   );
 }
@@ -510,18 +511,19 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
   });
 
   // Single bruteForceOrbit leaf serves BOTH "no" branches (q_crossVW-no and
-  // q_fullSym-no). Placing one leaf keeps tooltip/hover state consistent
-  // (two nodes with the same id broke ReactFlow's event binding) and
-  // visually makes the convergence explicit — both structural failure
-  // modes terminate at the same fallback regime.
-  //
-  // Positioned on the left at Q6_Y so the q_crossVW side-handle → right-handle
-  // edge is a clean horizontal line. q_fullSym's "no" reaches the same leaf
-  // via an up-and-over smoothstep.
-  nodes.push(leafNode('bruteForceOrbit', Q6_Y));
+  // q_fullSym-no). Positioned at the bottom of the tree (centered under
+  // the spine, below q_fullSym) so:
+  //   - q_fullSym-no connects cleanly via a short vertical edge from its
+  //     bottom handle into BFO's top handle.
+  //   - q_crossVW-no exits the RIGHT side of the question, sweeps down and
+  //     around the spine, and connects into BFO's right handle.
+  // This keeps a single tooltip-addressable node while making both failure
+  // modes visually converge at the tree's terminal.
+  const bruteY = Q7_Y + ROW_GAP;
+  nodes.push(leafNode('bruteForceOrbit', bruteY, true));
   edges.push({
     id: `${crossVWQ.id}-bruteForceOrbit`,
-    source: crossVWQ.id, sourceHandle: 'side',
+    source: crossVWQ.id, sourceHandle: 'right',
     target: 'bruteForceOrbit', targetHandle: 'right',
     label: EDGE_NO.label,
     labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_NO.color },
@@ -557,13 +559,12 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
     style: { stroke: EDGE_YES.color, strokeWidth: 1.5 },
   });
 
-  // q_fullSym no → same single bruteForceOrbit leaf (on the left at Q6_Y).
-  // Edge goes from q_fullSym's left-side handle up-and-over to the leaf's
-  // right-side handle. ReactFlow smoothstep routing handles the curve.
+  // q_fullSym no → same single bruteForceOrbit leaf at the bottom. Short
+  // vertical edge from q_fullSym's bottom handle into BFO's top handle.
   edges.push({
     id: `${fullSymQ.id}-bruteForceOrbit`,
-    source: fullSymQ.id, sourceHandle: 'side',
-    target: 'bruteForceOrbit', targetHandle: 'right',
+    source: fullSymQ.id, sourceHandle: 'bottom',
+    target: 'bruteForceOrbit', targetHandle: 'top',
     label: EDGE_NO.label,
     labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_NO.color },
     style: { stroke: EDGE_NO.color, strokeWidth: 1.5 },
