@@ -9,6 +9,7 @@ import { parseCycleNotation } from './cycleParser.js';
 import { computeExactCostModel, aggregateComponentCosts } from './costModel.js';
 import { decomposeClassifyAndCount } from './componentDecomposition.js';
 import { computeLabelClusters } from './sizeAware/labelClusters.js';
+import { buildExpressionGroup } from './expressionGroup.js';
 
 function normalizeExample(example) {
   if (!example) return null;
@@ -86,6 +87,15 @@ export function analyzeExample(example, dimensionN) {
   // costModel above is kept as a brute-force ground truth.
   const componentCosts = aggregateComponentCosts(componentData.components, numTerms);
 
+  // Expression-level group: V-sub × S(W). Pedagogical only — not used for
+  // compression. See engine/expressionGroup.js for the derivation.
+  const expressionGroup = buildExpressionGroup({
+    perTupleElements: symmetry.fullElements ?? [],
+    vLabels: symmetry.vLabels ?? [],
+    wLabels: symmetry.wLabels ?? [],
+    allLabels: symmetry.allLabels ?? [],
+  });
+
   return {
     graph,
     matrixData,
@@ -96,5 +106,6 @@ export function analyzeExample(example, dimensionN) {
     costModel,
     componentCosts,
     clusters,
+    expressionGroup,
   };
 }
