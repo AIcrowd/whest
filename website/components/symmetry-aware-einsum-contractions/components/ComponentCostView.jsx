@@ -436,14 +436,16 @@ export default function ComponentCostView({
           <span className="font-semibold">Budget.</span> Brute-force orbit is the
           terminal leaf — it walks every <code className="font-mono">(tuple, g)</code> pair
           in <code className="font-mono">X × G</code>, so its cost is exactly
-          {' '}<code className="font-mono">|X| · |G|</code>. Two sides matter, and
-          both come from <em>einsum structure</em>:{' '}
-          <code className="font-mono">|X|</code> is driven by the number of labels{' '}
+          {' '}<code className="font-mono">|X| · |G|</code>
+          {' '}<em>pair-touches</em>, each ≈ one hash-map op. Both factors come
+          from <em>einsum structure</em>: <code className="font-mono">|X|</code>
+          {' '}is driven by the number of labels{' '}
           <code className="font-mono">|L|</code>, and{' '}
           <code className="font-mono">|G|</code> is the detected group order. We
-          cap the product at <strong>1,500,000</strong> hash inserts (≈ a few
-          hundred ms on a JS main thread) so the page stays responsive; above
-          the cap, the regime declines and the αₐ cell reads{' '}
+          cap the count at <strong>1,500,000 pair-touches</strong> — a
+          calibration, not a constant: roughly what a JS main thread handles in
+          a few hundred ms without visibly hitching the UI. Above the cap, the
+          regime declines and the αₐ cell reads{' '}
           <span className="rounded-full bg-amber-100 px-1.5 py-0.5 font-mono text-[11px] text-amber-800">Unavailable</span>.
           The cap is a demo-latency contract, not a statement about the einsum's
           structural cost. Hover the cell or the leaf to see the live estimate.
