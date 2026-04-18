@@ -432,6 +432,19 @@ export default function ComponentCostView({
           when nothing else fits. The highlighted leaf on the left is where the
           current example lands.
         </p>
+        <div className="mt-2 rounded-md border border-amber-200/60 bg-amber-50/50 px-3 py-2 text-[12.5px] leading-6 text-amber-900">
+          <span className="font-semibold">Budget.</span> Brute-force orbit is the
+          terminal leaf — it walks every <code className="font-mono">(tuple, g)</code> pair
+          in <code className="font-mono">X × G</code>, so its cost is exactly
+          {' '}<code className="font-mono">|X| · |G| = Πₗ nₗ · |G|</code>. We cap that
+          product at <strong>1,500,000</strong> hash inserts (≈ a few hundred ms
+          on a JS main thread). Below the cap the regime fires and returns an
+          exact αₐ; above it, the regime declines and the αₐ cell reads{' '}
+          <span className="rounded-full bg-amber-100 px-1.5 py-0.5 font-mono text-[11px] text-amber-800">Unavailable</span>.
+          Hover the cell or the leaf to see the live estimate; shrink the{' '}
+          <code className="font-mono">n</code> slider in Act 1 to bring the
+          estimate back under.
+        </div>
         <div className="mt-4">
           <DecisionLadder
             activeLeafIds={components
