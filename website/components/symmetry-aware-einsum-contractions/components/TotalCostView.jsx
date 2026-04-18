@@ -130,6 +130,11 @@ const AGGREGATION_LEAVES = [
     formula: String.raw`\Bigl(\textcolor{${SYM.cycle}}{\prod_{\ell \in \textcolor{${SYM.vlabel}}{V}} n_\ell}\Bigr) \cdot |\textcolor{${SYM.orbit}}{X}_{\textcolor{${SYM.wlabel}}{W}} / \textcolor{${SYM.group}}{G}_{\textcolor{${SYM.wlabel}}{W}}|`,
   },
   {
+    id: 'young',
+    layer: 'regime',
+    formula: String.raw`\textcolor{${SYM.cycle}}{n_L^{|\textcolor{${SYM.vlabel}}{V}|}} \cdot \binom{\textcolor{${SYM.cycle}}{n_L} + |\textcolor{${SYM.wlabel}}{W}| - 1}{|\textcolor{${SYM.wlabel}}{W}|}`,
+  },
+  {
     id: 'bruteForceOrbit',
     layer: 'regime',
     formula: String.raw`\textcolor{${SYM.orbit}}{\sum_{O \in X/G_a}} |\textcolor{${SYM.orbit}}{\pi}_{\textcolor{${SYM.vlabel}}{V}}(\textcolor{${SYM.orbit}}{O})|`,

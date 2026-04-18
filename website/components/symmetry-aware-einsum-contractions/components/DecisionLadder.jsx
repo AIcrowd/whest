@@ -164,9 +164,12 @@ function LeafNode({ data }) {
       ? `0 0 0 6px ${mixWithWhite(data.color, 0.65)}`
       : undefined;
   const borderColor = data.spotlight ? SPOTLIGHT_RING : data.color;
+  // Allow 2-line wrap for longer leaf labels (e.g. the Young regime's
+  // "Young subgroup (full Sym, cross V/W)"). Shorter labels render on one
+  // line as usual because justify-center + items-center vertically centers.
   return (
     <div
-      className="box-border flex h-full w-full cursor-help items-center justify-center whitespace-nowrap rounded-lg px-2 py-0.5 text-center text-sm font-bold leading-tight shadow-sm transition-all hover:shadow"
+      className="box-border flex h-full w-full cursor-help items-center justify-center whitespace-normal break-words rounded-lg px-2 py-0.5 text-center text-xs font-bold leading-tight shadow-sm transition-all hover:shadow"
       style={{
         backgroundColor: bg,
         borderColor,
@@ -311,10 +314,16 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
   const nodes = [];
   const edges = [];
 
-  function leafNode(leafId, y, centered = false) {
+  // leafNode creates a ReactFlow node for a regime/shape leaf. Pass a
+  // non-null `nodeIdSuffix` to make the instance visually distinct while
+  // still pulling label/color from the regime/shape spec. This is used when
+  // the same regime appears as a leaf in multiple branches (e.g.,
+  // bruteForceOrbit is reachable from both q_crossVW "no" and q_fullSym "no").
+  function leafNode(leafId, y, centered = false, nodeIdSuffix = null) {
     const spec = specFor(leafId);
+    const nodeId = nodeIdSuffix ? `${leafId}__${nodeIdSuffix}` : leafId;
     return {
-      id: leafId,
+      id: nodeId,
       position: { x: centered ? QUESTION_X + LEAF_CENTER_OFFSET : LEAF_X, y },
       type: 'leaf',
       style: { width: LEAF_W, height: LEAF_H },
@@ -323,7 +332,7 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
         color: spec.color,
         active: active.has(leafId),
         spotlight: spotlight.has(leafId),
-        nodeId: leafId,
+        nodeId: leafId, // keep the canonical id for active/spotlight testing
       },
     };
   }
@@ -500,12 +509,15 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
     style: { stroke: EDGE_NO.color, strokeWidth: 1.5 },
   });
 
-  // q_crossVW no → bruteForceOrbit leaf on the left.
-  nodes.push(leafNode('bruteForceOrbit', Q6_Y));
+  // q_crossVW no → bruteForceOrbit leaf on the left. Uses a unique node id
+  // suffix so it doesn't collide with the other bruteForceOrbit leaf below
+  // q_fullSym — otherwise ReactFlow treats them as one node and the edge
+  // routing gets tangled.
+  nodes.push(leafNode('bruteForceOrbit', Q6_Y, false, 'crossNo'));
   edges.push({
-    id: `${crossVWQ.id}-bruteForceOrbit`,
+    id: `${crossVWQ.id}-bruteForceOrbit-crossNo`,
     source: crossVWQ.id, sourceHandle: 'side',
-    target: 'bruteForceOrbit', targetHandle: 'right',
+    target: 'bruteForceOrbit__crossNo', targetHandle: 'right',
     label: EDGE_NO.label,
     labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_NO.color },
     style: { stroke: EDGE_NO.color, strokeWidth: 1.5 },
@@ -529,9 +541,16 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
     style: { stroke: EDGE_YES.color, strokeWidth: 1.5 },
   });
 
-  // q_fullSym yes → young leaf on the left.
-  const youngY = Q7_Y;
-  nodes.push(leafNode('young', youngY));
+  // q_fullSym yes → young leaf on the left. The Young label ("Young subgroup
+  // (full Sym, cross V/W)") is longer than the other regime labels, so the
+  // leaf is rendered taller to accommodate a 2-line wrap without colliding
+  // with adjacent rows.
+  const YOUNG_LEAF_H = 56;
+  const youngY = Q7_Y - (YOUNG_LEAF_H - LEAF_H) / 2; // keep vertical centerline aligned with Q7 row
+  nodes.push({
+    ...leafNode('young', youngY),
+    style: { width: LEAF_W, height: YOUNG_LEAF_H },
+  });
   edges.push({
     id: `${fullSymQ.id}-young`,
     source: fullSymQ.id, sourceHandle: 'side',
@@ -541,13 +560,14 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
     style: { stroke: EDGE_YES.color, strokeWidth: 1.5 },
   });
 
-  // q_fullSym no → bruteForceOrbit terminal centered under the spine.
+  // q_fullSym no → bruteForceOrbit terminal centered under the spine. Unique
+  // node-id suffix keeps it visually separate from the q_crossVW-no leaf.
   const bruteY = Q7_Y + ROW_GAP;
-  nodes.push(leafNode('bruteForceOrbit', bruteY, true));
+  nodes.push(leafNode('bruteForceOrbit', bruteY, true, 'fullSymNo'));
   edges.push({
-    id: `${fullSymQ.id}-bruteForceOrbit`,
+    id: `${fullSymQ.id}-bruteForceOrbit-fullSymNo`,
     source: fullSymQ.id, sourceHandle: 'bottom',
-    target: 'bruteForceOrbit', targetHandle: 'top',
+    target: 'bruteForceOrbit__fullSymNo', targetHandle: 'top',
     label: EDGE_NO.label,
     labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_NO.color },
     style: { stroke: EDGE_NO.color, strokeWidth: 1.5 },
