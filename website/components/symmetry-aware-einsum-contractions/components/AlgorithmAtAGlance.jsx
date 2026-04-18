@@ -1,4 +1,4 @@
-import ExplorerSectionCard from './ExplorerSectionCard.jsx';
+import ExplorerSectionCard, { AnchorLink } from './ExplorerSectionCard.jsx';
 import Latex from './Latex.jsx';
 import MentalFrameworkCode from './MentalFrameworkCode.jsx';
 
@@ -144,9 +144,9 @@ function MentalFrameworkColumn() {
 
 export default function AlgorithmAtAGlance() {
   return (
-    <section aria-labelledby="algorithm-at-a-glance-title" className="mb-10 scroll-mt-24">
+    <section id="algorithm-at-a-glance" aria-labelledby="algorithm-at-a-glance-title" className="mb-10 scroll-mt-24">
       <ExplorerSectionCard
-        eyebrow="Algorithm at a Glance"
+        eyebrow={<AnchorLink anchorId="algorithm-at-a-glance" labelText="Algorithm at a Glance">Algorithm at a Glance</AnchorLink>}
         title={<span id="algorithm-at-a-glance-title">What this explorer is counting</span>}
         description="The whole algorithm in ten lines, paired with the notation it operates on."
         className="border-gray-200 bg-white"

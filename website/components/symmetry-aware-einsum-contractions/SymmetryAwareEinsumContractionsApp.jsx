@@ -6,7 +6,7 @@ import { buildVariableColors } from './engine/colorPalette.js';
 import { analyzeExample } from './engine/pipeline.js';
 import { pickDefaultOrbitRow } from './engine/teachingModel.js';
 import StickyBar from './components/StickyBar.jsx';
-import ExplorerSectionCard, { SectionEyebrow } from './components/ExplorerSectionCard.jsx';
+import ExplorerSectionCard, { SectionEyebrow, AnchorLink } from './components/ExplorerSectionCard.jsx';
 import { EXPLORER_ACTS } from './components/explorerNarrative.js';
 import NarrativeCallout from './components/NarrativeCallout.jsx';
 import AlgorithmAtAGlance from './components/AlgorithmAtAGlance.jsx';
@@ -249,7 +249,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
             <div className="mx-auto flex max-w-[1460px] flex-col px-6 md:px-8 lg:px-10">
             <section id={EXPLORER_ACTS[0].id} className="mb-12 scroll-mt-24">
               <ExplorerSectionCard
-                eyebrow={<SectionEyebrow n={1} />}
+                eyebrow={<SectionEyebrow n={1} anchorId={EXPLORER_ACTS[0].id} />}
                 title={EXPLORER_ACTS[0].heading}
                 description={EXPLORER_ACTS[0].question}
                 className="border-gray-200 bg-white"
@@ -283,7 +283,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
               <>
                 <section id={EXPLORER_ACTS[1].id} className="mb-12 scroll-mt-24">
                   <ExplorerSectionCard
-                    eyebrow={<SectionEyebrow n={2} />}
+                    eyebrow={<SectionEyebrow n={2} anchorId={EXPLORER_ACTS[1].id} />}
                     title={EXPLORER_ACTS[1].heading}
                     description={EXPLORER_ACTS[1].question}
                     className="border-gray-200 bg-white"
@@ -308,12 +308,20 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       )}
                     </p>
                     <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
-                      <div className="grid grid-rows-[auto_1fr] gap-2">
-                        <h3 className="font-heading text-base font-semibold text-gray-900">Bipartite Graph</h3>
+                      <div id="bipartite-graph" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
+                        <h3 className="font-heading text-base font-semibold text-gray-900">
+                          <AnchorLink anchorId="bipartite-graph" labelText="Bipartite Graph">
+                            Bipartite Graph
+                          </AnchorLink>
+                        </h3>
                         <BipartiteGraph graph={graph} example={normalizedExample} variableColors={variableColors} />
                       </div>
-                      <div className="grid grid-rows-[auto_1fr] gap-2">
-                        <h3 className="font-heading text-base font-semibold text-gray-900">Incidence Matrix M</h3>
+                      <div id="incidence-matrix" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
+                        <h3 className="font-heading text-base font-semibold text-gray-900">
+                          <AnchorLink anchorId="incidence-matrix" labelText="Incidence Matrix">
+                            Incidence Matrix M
+                          </AnchorLink>
+                        </h3>
                         <MatrixView matrixData={matrixData} graph={graph} example={normalizedExample} variableColors={variableColors} />
                       </div>
                     </div>
@@ -325,7 +333,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
 
                 <section id={EXPLORER_ACTS[2].id} className="mb-12 scroll-mt-24">
                   <ExplorerSectionCard
-                    eyebrow={<SectionEyebrow n={3} />}
+                    eyebrow={<SectionEyebrow n={3} anchorId={EXPLORER_ACTS[2].id} />}
                     title={EXPLORER_ACTS[2].heading}
                     description={EXPLORER_ACTS[2].question}
                     className="border-gray-200 bg-white"
@@ -341,8 +349,12 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       </p>
                     )}
                     <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
-                      <div className="grid grid-rows-[auto_1fr] gap-2">
-                        <h3 className="font-heading text-base font-semibold text-gray-900">σ-Loop & π Detection</h3>
+                      <div id="sigma-loop" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
+                        <h3 className="font-heading text-base font-semibold text-gray-900">
+                          <AnchorLink anchorId="sigma-loop" labelText="σ-Loop & π Detection">
+                            σ-Loop & π Detection
+                          </AnchorLink>
+                        </h3>
                         <SigmaLoop
                           results={sigmaResults}
                           graph={graph}
@@ -353,8 +365,12 @@ export default function SymmetryAwareEinsumContractionsApp() {
                           onSelectedPairChange={setSelectedSigmaPairIndex}
                         />
                       </div>
-                      <div className="grid grid-rows-[auto_1fr] gap-2">
-                        <h3 className="font-heading text-base font-semibold text-gray-900">Generator Construction</h3>
+                      <div id="generator-construction" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
+                        <h3 className="font-heading text-base font-semibold text-gray-900">
+                          <AnchorLink anchorId="generator-construction" labelText="Generator Construction">
+                            Generator Construction
+                          </AnchorLink>
+                        </h3>
                         <DiminoView
                           group={group}
                           sigmaResults={sigmaResults}
@@ -370,7 +386,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
 
                 <section id={EXPLORER_ACTS[3].id} className="mb-12 scroll-mt-24">
                   <ExplorerSectionCard
-                    eyebrow={<SectionEyebrow n={4} />}
+                    eyebrow={<SectionEyebrow n={4} anchorId={EXPLORER_ACTS[3].id} />}
                     title={EXPLORER_ACTS[3].heading}
                     description={EXPLORER_ACTS[3].question}
                     className="border-gray-200 bg-white"
@@ -410,7 +426,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
 
                 <section id={EXPLORER_ACTS[4].id} className="mb-12 scroll-mt-24">
                   <ExplorerSectionCard
-                    eyebrow={<SectionEyebrow n={5} />}
+                    eyebrow={<SectionEyebrow n={5} anchorId={EXPLORER_ACTS[4].id} />}
                     title={EXPLORER_ACTS[4].heading}
                     description={EXPLORER_ACTS[4].question}
                     className="border-gray-200 bg-white"

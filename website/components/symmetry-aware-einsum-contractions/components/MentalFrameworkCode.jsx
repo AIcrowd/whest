@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 import { tokenizePseudocodeLine } from '../engine/teachingModel.js';
+import { AnchorLink } from './ExplorerSectionCard.jsx';
 
 /**
  * Editorial-light rendering of the symmetry-aware contraction pseudocode.
@@ -102,10 +103,12 @@ function CodeRow({ line }) {
 
 export default function MentalFrameworkCode() {
   return (
-    <figure className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-stone-200 bg-stone-50 shadow-sm">
+    <figure id="mental-framework" className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-stone-200 bg-stone-50 shadow-sm scroll-mt-24">
       <figcaption className="flex items-baseline justify-between gap-3 border-b border-stone-200/70 px-5 py-3 md:px-6">
         <span className="font-heading text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
-          Mental framework
+          <AnchorLink anchorId="mental-framework" labelText="Mental framework">
+            Mental framework
+          </AnchorLink>
         </span>
         <span className="font-mono text-xs text-stone-400">contraction.py</span>
       </figcaption>

@@ -1,5 +1,63 @@
+import { useState } from 'react';
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '../lib/utils.js';
+
+/**
+ * Wraps any heading content in a click-to-copy permalink. A tiny `#` glyph
+ * appears on hover; clicking copies `window.origin + pathname + #anchorId`
+ * to the clipboard and updates `location.hash` so the native browser
+ * "Copy link" and Cmd/Ctrl-click behaviours also work on right-click.
+ *
+ * Pass `labelText` to customise the aria-label and tooltip (e.g. "Section 4",
+ * "Mental framework"); it only affects a11y and the mouse-over tooltip, not
+ * the visible content.
+ *
+ * Designed to degrade cleanly: if `anchorId` is absent, just renders children.
+ */
+function AnchorLink({ anchorId, labelText, hashGlyphClassName, children }) {
+  const [copied, setCopied] = useState(false);
+
+  if (!anchorId) return <>{children}</>;
+
+  const onClick = async (event) => {
+    // Let Cmd/Ctrl/Shift-clicks and middle-clicks fall through to the browser's
+    // default "open in new tab / window" handling; only hijack the bare click.
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+    event.preventDefault();
+    const url = `${window.location.origin}${window.location.pathname}#${anchorId}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1400);
+    } catch {
+      // Clipboard can be blocked (non-https contexts, sandbox, etc.); just
+      // update the hash so the URL bar carries the link the user can copy.
+    }
+    window.history.replaceState(null, '', `#${anchorId}`);
+  };
+
+  return (
+    <a
+      href={`#${anchorId}`}
+      onClick={onClick}
+      className="group inline-flex items-baseline gap-2 no-underline hover:no-underline focus-visible:outline-2 focus-visible:outline-offset-2"
+      title={copied ? 'Link copied!' : `Copy link${labelText ? ` to ${labelText}` : ''}`}
+      aria-label={`Copy link${labelText ? ` to ${labelText}` : ''}`}
+    >
+      {children}
+      <span
+        aria-hidden="true"
+        className={cn(
+          'inline-block font-mono leading-none transition-opacity',
+          hashGlyphClassName ?? 'text-[13px] text-muted-foreground',
+          copied ? 'opacity-100 text-emerald-600' : 'opacity-0 group-hover:opacity-60 group-focus-visible:opacity-100',
+        )}
+      >
+        {copied ? '✓ copied' : '#'}
+      </span>
+    </a>
+  );
+}
 
 /**
  * Distinctive section label for the five top-level sections of the explorer.
@@ -8,11 +66,12 @@ import { cn } from '../lib/utils.js';
  *   - 'SECTION'  — small uppercase, letterspaced, muted gray (the caption role)
  *   - 'N'        — large serif italic, coral/primary, the eye-catching anchor
  *
- * Rendered side-by-side along a shared baseline. The number is the thing the
- * reader's eye tracks when scanning the page; 'SECTION' is the label.
+ * When an `anchorId` is supplied, the whole eyebrow becomes a click-to-copy
+ * permalink via the shared AnchorLink helper (same UX used on subsection
+ * headings so the affordance feels consistent page-wide).
  */
-function SectionEyebrow({ n }) {
-  return (
+function SectionEyebrow({ n, anchorId }) {
+  const content = (
     <span className="inline-flex items-baseline gap-2">
       <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
         Section
@@ -24,6 +83,12 @@ function SectionEyebrow({ n }) {
         {n}
       </span>
     </span>
+  );
+
+  return (
+    <AnchorLink anchorId={anchorId} labelText={`Section ${n}`}>
+      {content}
+    </AnchorLink>
   );
 }
 
@@ -71,5 +136,5 @@ function ExplorerSectionCard({
   );
 }
 
-export { ExplorerSectionCard, SectionEyebrow };
+export { ExplorerSectionCard, SectionEyebrow, AnchorLink };
 export default ExplorerSectionCard;

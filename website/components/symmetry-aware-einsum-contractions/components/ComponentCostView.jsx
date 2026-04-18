@@ -4,6 +4,7 @@ import Latex from './Latex.jsx';
 import OrbitInspector from './OrbitInspector.jsx';
 import RoleBadge from './RoleBadge.jsx';
 import SymmetryBadge from './SymmetryBadge.jsx';
+import { AnchorLink } from './ExplorerSectionCard.jsx';
 import { LabelInteractionGraph } from './ComponentView.jsx';
 import DecisionLadder from './DecisionLadder.jsx';
 import PanZoomCanvas from './PanZoomCanvas.jsx';
@@ -375,10 +376,14 @@ export default function ComponentCostView({
   return (
     <div className="min-w-0 space-y-6">
       <div className="grid gap-6 lg:grid-cols-2">
-        <div className="rounded-xl border border-gray-200 bg-white p-4">
+        <div id="interaction-graph" className="rounded-xl border border-gray-200 bg-white p-4 scroll-mt-24">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
-              <div className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">Interaction Graph</div>
+              <div className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                <AnchorLink anchorId="interaction-graph" labelText="Interaction Graph">
+                  Interaction Graph
+                </AnchorLink>
+              </div>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">
                 Nodes are <strong className="font-semibold text-foreground">labels</strong>; an edge marks labels that a generator of&nbsp;
                 <Latex math="G" />&nbsp;moves together. Disjoint components factor the cost into independent sub-problems — each one lands on a case in the decision tree below.
@@ -422,9 +427,11 @@ export default function ComponentCostView({
         </div>
       </div>
 
-      <div className="rounded-xl border border-gray-200 bg-white p-4">
+      <div id="classification-tree" className="rounded-xl border border-gray-200 bg-white p-4 scroll-mt-24">
         <div className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-          Classification Tree
+          <AnchorLink anchorId="classification-tree" labelText="Classification Tree">
+            Classification Tree
+          </AnchorLink>
         </div>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
           Each component is routed through a yes/no spine that dispatches to the

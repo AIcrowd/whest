@@ -1,6 +1,6 @@
 import CaseBadge from './CaseBadge.jsx';
 import ExplorerMetricCard from './ExplorerMetricCard.jsx';
-import ExplorerSectionCard from './ExplorerSectionCard.jsx';
+import ExplorerSectionCard, { AnchorLink } from './ExplorerSectionCard.jsx';
 import GlossaryProse from './GlossaryProse.jsx';
 import Latex from './Latex.jsx';
 import { componentColor } from '../engine/componentPalette.js';
@@ -263,8 +263,12 @@ function ComponentRecap({ components }) {
   if (!components?.length) return null;
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
-      <span className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Component recap</span>
+    <div id="component-recap" className="flex flex-wrap items-center gap-2 scroll-mt-24">
+      <span className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+        <AnchorLink anchorId="component-recap" labelText="Component recap">
+          Component recap
+        </AnchorLink>
+      </span>
       {components.map((comp, idx) => (
         <span
           key={`component-recap-${idx}`}
