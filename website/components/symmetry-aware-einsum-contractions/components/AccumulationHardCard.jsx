@@ -67,13 +67,13 @@ function FormulaIntuitionTooltip({ anchorRect, onDismiss }) {
     >
       <div className="mb-2 flex items-center gap-2">
         <span className="inline-block h-2.5 w-2.5 rounded-full bg-amber-400" />
-        <span className="text-sm font-semibold">Why α is structure-sensitive</span>
+        <span className="text-sm font-semibold">Why <Latex math="\alpha" /> is structure-sensitive</span>
       </div>
 
       {/* Property 1 — αₐ sees the V/W split. */}
       <div className="text-[12px] leading-5 text-gray-300">
         <div className="font-semibold uppercase tracking-wider text-gray-400 text-[10px] mb-1">
-          αₐ reads the V/W split
+          <Latex math="\alpha_a" /> reads the V/W split
         </div>
         <p>
           Unlike Mₐ, αₐ depends on <span className="italic">how</span> each orbit

@@ -69,6 +69,16 @@ const COLOR_W = '#64748B';
 const vStyle = { color: COLOR_V, fontWeight: 600 };
 const wStyle = { color: COLOR_W, fontWeight: 600 };
 
+// Typography used by ExplorerSectionCard when its `eyebrow` prop is a plain
+// string (small-caps caption, letterspaced, muted). We reapply it here
+// whenever a callsite needs JSX for the eyebrow — specifically when the
+// label embeds a `<Latex ... />` render, since the Latex component has to be
+// a React element rather than a string. The `uppercase` transform is safe
+// on the surrounding prose because `Latex.jsx` shields its KaTeX output
+// with `text-transform: none`, so math glyphs (α, etc.) stay lowercase.
+const EYEBROW_CAPTION_CLASS =
+  'text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground';
+
 /**
  * Per-preset storage-α ledger used by §6.
  *
@@ -519,7 +529,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
               <NarrativeCallout label="The open optimization">
                 {`For every $\\sigma \\in G_{\\text{pt}}\\big|_V$, the identity $R[\\sigma\\,\\omega] = R[\\omega]$ holds on the output tensor. For generic operands this inclusion is tight: $G_{\\text{pt}}\\big|_V$ is the complete structural V-symmetry of $R$, in the sense that any further $\\sigma \\in \\mathrm{Sym}(V)$ with $R[\\sigma\\,\\omega] = R[\\omega]$ would require value-level structure in the operands (rank-deficiency, sparsity) outside this engine's scope. A computational model with symmetry-aware output storage — where a single physical slot represents all cells in a $G_{\\text{pt}}\\big|_V$-orbit — collapses writes to mirrored cells automatically and reduces the accumulation count.`}
               </NarrativeCallout>
-              <NarrativeCallout label="Why α does not fold this in" tone="algorithm">
+              <NarrativeCallout label={<span className={EYEBROW_CAPTION_CLASS}>Why <Latex math="\alpha" /> does not fold this in</span>} tone="algorithm">
                 {`The reported $\\alpha$ counts distinct accumulation operations in the enumerate-and-accumulate evaluation, using $G_{\\text{pt}}$ as the equivalence relation on summand values. Post-accumulation storage collapse is an independent optimization axis. Folding it into $\\alpha$ without changing the underlying computational model would conflate two distinct cost reductions and obscure the source of each.`}
               </NarrativeCallout>
             </div>
@@ -605,7 +615,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
             </div>
 
             <div className="mt-4">
-              <NarrativeCallout label="Scope of the reported α" tone="accent">
+              <NarrativeCallout label={<span className={EYEBROW_CAPTION_CLASS}>Scope of the reported <Latex math="\alpha" /></span>} tone="accent">
                 {`The $\\alpha$ shown on the main page counts distinct accumulation operations in the enumerate-and-accumulate evaluation model, with $G_{\\text{pt}}$ as the equivalence relation on summand values. Three optimization axes lie outside this scope: $G_{\\text{pt}}\\big|_V$-level output-tensor storage (discussed above), algebraic restructuring such as factoring $R = v\\,v^\\top$, and contraction re-ordering. Each can reduce the total operation count further than $\\alpha$ reports, and each requires algorithmic machinery distinct from the pointwise orbit compression this page measures.`}
               </NarrativeCallout>
             </div>
