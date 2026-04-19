@@ -604,9 +604,30 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
               </h3>
             </div>
 
+            {/*
+              Bridging paragraph. Without this the reader hits
+              "G_pt|V-aware storage" immediately after six sections spent
+              arguing that "G_f's extras beyond G_pt admit no pointwise
+              compression", and the apparent contradiction lands before
+              the axis-pivot is named. Three beats:
+                1. Close the accumulation-count story from §6.
+                2. Name the new axis (output-tensor storage).
+                3. Reframe G_pt|V's role: it appeared in §5 as the
+                   V-factor of G_f, but equivalently it is a *subgroup
+                   of G_pt itself*. That dual role is the reason R is
+                   genuinely pointwise-symmetric under G_pt|V — and
+                   therefore why storage collapse is a legitimate
+                   (not formal-only) win here.
+            */}
+            <p className="mb-4 text-sm leading-7 text-gray-700">
+              <InlineMathText>
+                {`Section 6 closed the accumulation-count story: $G_{\\text{f}}$'s extra elements beyond $G_{\\text{pt}}$ admit no pointwise compression of $\\alpha$ under the enumerate-and-accumulate evaluation model. Before closing the appendix we pivot to a *different* optimization axis — output-tensor storage — where savings *are* available. The group governing this axis is $G_{\\text{pt}}\\big|_V$: it appeared in §5 as the V-factor of $G_{\\text{f}}$, but equivalently it is a subgroup of $G_{\\text{pt}}$ itself — the V-action that $G_{\\text{pt}}$'s V/W-preserving elements already induce. That dual role is precisely why the output tensor is genuinely *pointwise*-symmetric under it, and therefore why the savings discussed below are not formal-only.`}
+              </InlineMathText>
+            </p>
+
             <div className="grid gap-4 md:grid-cols-2">
               <NarrativeCallout label="The open optimization">
-                {`For every $\\sigma \\in G_{\\text{pt}}\\big|_V$, the identity $R[\\sigma\\,\\omega] = R[\\omega]$ holds on the output tensor. For generic operands this inclusion is tight: $G_{\\text{pt}}\\big|_V$ is the complete structural V-symmetry of $R$, in the sense that any further $\\sigma \\in \\mathrm{Sym}(V)$ with $R[\\sigma\\,\\omega] = R[\\omega]$ would require value-level structure in the operands (rank-deficiency, sparsity) outside this engine's scope. A computational model with symmetry-aware output storage — where a single physical slot represents all cells in a $G_{\\text{pt}}\\big|_V$-orbit — collapses writes to mirrored cells automatically and reduces the accumulation count.`}
+                {`For every $\\sigma \\in G_{\\text{pt}}\\big|_V$, the identity $R[\\sigma\\,\\omega] = R[\\omega]$ holds on the output tensor — cell by cell, not merely in aggregate. For generic operands this inclusion is tight: $G_{\\text{pt}}\\big|_V$ is the complete structural V-symmetry of $R$, in the sense that any further $\\sigma \\in \\mathrm{Sym}(V)$ with $R[\\sigma\\,\\omega] = R[\\omega]$ would require value-level structure in the operands (rank-deficiency, sparsity) outside this engine's scope. A computational model with symmetry-aware output storage — where a single physical slot represents all cells in a $G_{\\text{pt}}\\big|_V$-orbit — collapses writes to mirrored cells automatically and reduces the accumulation count.`}
               </NarrativeCallout>
               <NarrativeCallout label={<span className={EYEBROW_CAPTION_CLASS}>Why <Latex math="\alpha" /> does not fold this in</span>} tone="algorithm">
                 {`The reported $\\alpha$ counts distinct accumulation operations in the enumerate-and-accumulate evaluation, using $G_{\\text{pt}}$ as the equivalence relation on summand values. Post-accumulation storage collapse is an independent optimization axis. Folding it into $\\alpha$ without changing the underlying computational model would conflate two distinct cost reductions and obscure the source of each.`}
