@@ -6,7 +6,7 @@ import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
 // anchor is the wordmark only.
 function Wordmark() {
   return (
-    <span className="whest-wordmark text-[17px]" aria-label="Whest.">
+    <span className="whest-wordmark text-[22px]" aria-label="Whest.">
       Whest<span className="whest-wordmark__dot">.</span>
     </span>
   );
