@@ -381,13 +381,12 @@ function HeroHeadline({ children, dot }: { children: string; dot?: string }) {
 export default function HomePage() {
   return (
     <main className="bg-white dark:bg-[#0E0F10]">
-      {/* 1. Masthead — left-aligned editorial hero, brush mark anchors the right column.
-          max-w-[var(--content-max)] matches the diptych / nav-grid below, so the headline and
-          "What does this code cost?" share the same optical left margin. Two equal
-          columns give the logo breathing room on both sides instead of pinning it
-          to the section's right edge. */}
+      {/* 1. Masthead — left-aligned editorial hero. Text block hugs the left,
+          capped at --prose-max (720px); brush mark hugs the right edge of the
+          content-max container. At wide viewports this reads as a classic
+          editorial pairing rather than a floating illustration in a fat column. */}
       <section className="mx-auto w-full max-w-[var(--content-max)] px-6 pt-16 pb-14 md:px-8 md:pt-24 md:pb-20">
-        <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:gap-12 lg:gap-16">
+        <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-[minmax(0,var(--prose-max))_minmax(0,1fr)] md:gap-12 lg:gap-16">
           <div className="max-w-[var(--prose-max)]">
           <div
             className="mb-6 font-sans text-[10px] font-semibold uppercase text-gray-400 dark:text-gray-500"
@@ -419,10 +418,10 @@ export default function HomePage() {
               Install
             </Link>
             <Link
-              href="/docs"
+              href="/docs/understanding/how-whest-works"
               className="inline-flex items-center rounded-lg border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-900 no-underline transition-colors hover:border-[#F0524D] hover:text-[#F0524D] dark:border-gray-700 dark:text-gray-100"
             >
-              Read the docs &rarr;
+              How it works &rarr;
             </Link>
           </div>
 
@@ -431,8 +430,10 @@ export default function HomePage() {
           </HomeCodeTerminal>
           </div>
 
-          {/* Brush mark — centered both ways inside its grid cell */}
-          <div className="row-start-1 flex items-center justify-center self-center md:row-start-auto">
+          {/* Brush mark — centered on mobile (stacked), pinned to the right
+              edge of the content-max container on md+ for editorial symmetry
+              with the left-aligned text block. */}
+          <div className="row-start-1 flex items-center justify-center self-center md:row-start-auto md:justify-end">
             <Image
               src={withBasePath('/logo.png')}
               alt="whest"
