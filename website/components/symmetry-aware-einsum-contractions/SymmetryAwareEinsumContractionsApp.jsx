@@ -228,15 +228,49 @@ export default function SymmetryAwareEinsumContractionsApp() {
         hoveredLabels={hoveredLabelSet}
       />
 
-      <div className="w-full pb-20 pt-8">
-        <div className="mx-auto flex w-full max-w-[1460px] flex-col gap-2 px-6 pb-6 md:px-8 lg:px-10">
-          <h1 className="text-lg font-semibold leading-tight text-foreground">
-            Symmetry Aware Einsum Contractions
+      <div className="w-full pb-20 pt-10">
+        {/* Editorial masthead — matches the docs home page register
+            (app/(home)/page.tsx). Uppercase kicker with leading rule +
+            Newsreader display-serif headline ending in a coral period +
+            Source Serif 4 italic lede. The same typographic rhythm the
+            reader sees at aicrowd.github.io/whest/ carries directly
+            into the explorer so the two pages feel like one product. */}
+        <header className="mx-auto flex w-full max-w-[1460px] flex-col px-6 pb-10 md:px-8 lg:px-10">
+          <div
+            className="mb-5 font-sans text-[10px] font-semibold uppercase text-gray-400"
+            style={{ letterSpacing: '0.2em' }}
+          >
+            <span aria-hidden className="mr-2 inline-block h-px w-8 align-middle bg-gray-300" />
+            A worked companion to the paper
+          </div>
+
+          <h1
+            className="m-0 font-semibold text-gray-900 dark:text-gray-100"
+            style={{
+              fontFamily: 'var(--font-display-serif), Georgia, serif',
+              fontVariationSettings: "'opsz' 72",
+              fontSize: 'clamp(36px, 5vw, 52px)',
+              letterSpacing: '-0.02em',
+              lineHeight: 1.05,
+            }}
+          >
+            Symmetry-aware einsum contractions<span style={{ color: 'var(--coral)' }}>.</span>
           </h1>
-          <p className="text-sm leading-6 text-muted-foreground">
-            <em>Symmetry detection for einsum contractions</em>, explained in five sections.
+
+          <p
+            className="mt-5 max-w-[var(--prose-max)] text-[17px] italic text-gray-600 dark:text-gray-300"
+            style={{
+              fontFamily: 'var(--font-paper-serif), Georgia, serif',
+              fontVariationSettings: "'opsz' 18",
+              lineHeight: 1.6,
+            }}
+          >
+            Given a tensor contraction written in einsum notation, when is the
+            computation invariant under a group of operand permutations — and
+            how much work can we save by exploiting it? Walk through the
+            algorithm in five sections; the visualizations update live.
           </p>
-        </div>
+        </header>
 
         <div className="mx-auto w-full max-w-[1460px] px-6 md:px-8 lg:px-10">
           <AlgorithmAtAGlance />
