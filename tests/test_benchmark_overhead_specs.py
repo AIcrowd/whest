@@ -11,11 +11,18 @@ def test_seed_cases_include_api_and_operator_surfaces():
 
 
 def test_seed_cases_have_required_fields():
-    case = seed_cases()[0]
-    assert isinstance(case, BenchmarkCase)
-    assert case.family
-    assert case.case_id
-    assert case.size_name in {"tiny", "medium"}
-    assert case.surface in {"api", "operator"}
-    assert callable(case.numpy_factory)
-    assert callable(case.whest_factory)
+    cases = seed_cases()
+    assert cases
+
+    for case in cases:
+        assert isinstance(case, BenchmarkCase)
+        assert case.case_id
+        assert case.op_name in {"add", "matmul"}
+        assert case.family
+        assert case.surface in {"api", "operator"}
+        assert case.dtype == "float64"
+        assert case.size_name in {"tiny", "medium"}
+        assert case.startup_mode
+        assert case.source_file
+        assert callable(case.numpy_factory)
+        assert callable(case.whest_factory)
