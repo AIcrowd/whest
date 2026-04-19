@@ -18,7 +18,7 @@ export const EXPLORER_ACTS = [
     question: 'How do we represent this contraction so that possible relabeling symmetries become testable?',
     interpretation: 'We convert the contraction into a structural object that records which labels touch which operand-axis classes.',
     algorithmTitle: 'Build the structural encoding',
-    algorithm: 'Build a bipartite graph and incidence matrix, with declared input symmetry collapsing equivalent axis-positions first.',
+    algorithm: 'Build a bipartite graph (one U-vertex per axis) and its incidence matrix. Declared per-operand symmetry is recorded separately and later feeds the σ-loop\'s Source-A generators, rather than collapsing axes in the graph.',
     produces: 'A structural signature for each label.',
     why: 'The graph gives the visual picture, while the incidence matrix gives the exact signature the detector works on.',
     bridge: 'Matching column fingerprints tell us which labels are even candidates for relabeling.',

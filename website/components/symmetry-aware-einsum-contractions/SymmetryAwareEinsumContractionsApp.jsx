@@ -308,7 +308,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       partitioned into <RoleBadge role="v">V free</RoleBadge> and
                       <RoleBadge role="w">W summed</RoleBadge>.
                       {hasPerOpSym && (
-                        <> Per-operand symmetry <em>collapses</em> each operand&apos;s axes into a single U-vertex.</>
+                        <> The graph keeps one U-vertex per axis; per-operand symmetry is recorded separately and drives the σ-loop&apos;s Source-A generators in Section 3.</>
                       )}
                     </p>
                     <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
