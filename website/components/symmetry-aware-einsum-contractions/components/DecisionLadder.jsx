@@ -36,30 +36,31 @@ const SOURCE_H = 38;
 const SOURCE_X = QUESTION_X + (QUESTION_W - SOURCE_W) / 2;
 const ROW_GAP = 88;
 
-// Single padding constant used on all four sides of both stage bands so
-// the dashed borders have visually symmetric margins all around.
-// Value must be large enough to clear the q_crossVW → BFO edge arc in
-// Stage 2 (exits q_crossVW's right, loops right-down-left back into
-// BFO's right handle).
-const BAND_PAD = 120;
-const BAND_X = -BAND_PAD;
-const BAND_WIDTH = QUESTION_X + QUESTION_W + 2 * BAND_PAD;
+// Horizontal padding: must be large enough to clear the q_crossVW → BFO
+// edge arc in Stage 2 (exits q_crossVW's right, loops right-down-left back
+// into BFO's right handle). Kept at 120 for arc clearance.
+// Vertical padding: smaller — the dashed band just needs to breathe above
+// the first row and below the last row; no arcs cross top/bottom.
+const BAND_PAD_X = 120;
+const BAND_PAD_Y = 60;
+const BAND_X = -BAND_PAD_X;
+const BAND_WIDTH = QUESTION_X + QUESTION_W + 2 * BAND_PAD_X;
 
 const STAGE_1_TOP_Y = 0;
-const SOURCE_Y = BAND_PAD;                         // top pad
-const Q1_Y = SOURCE_Y + 88;                        // q_hasW
-const Q2_Y = Q1_Y + ROW_GAP;                       // q_hasV
-const Q3_Y = Q2_Y + ROW_GAP;                       // q_trivial
-const Q4_Y = Q3_Y + ROW_GAP;                       // q_direct
-const STAGE_1_BOTTOM_Y = Q4_Y + LEAF_H + BAND_PAD; // bottom pad
+const SOURCE_Y = BAND_PAD_Y;                         // top pad
+const Q1_Y = SOURCE_Y + 88;                          // q_hasW
+const Q2_Y = Q1_Y + ROW_GAP;                         // q_hasV
+const Q3_Y = Q2_Y + ROW_GAP;                         // q_trivial
+const STAGE_1_BOTTOM_Y = Q3_Y + LEAF_H + BAND_PAD_Y; // bottom pad
 
 const ENUMERATE_Y = STAGE_1_BOTTOM_Y + 12;
 const ENUMERATE_H = 44;
 const STAGE_2_TOP_Y = ENUMERATE_Y + ENUMERATE_H + 32;
-const Q5_Y = STAGE_2_TOP_Y + BAND_PAD;             // top pad
-const Q6_Y = Q5_Y + ROW_GAP;                       // q_crossVW
-const Q7_Y = Q6_Y + ROW_GAP;                       // q_fullSym
-const STAGE_2_BOTTOM_Y = Q7_Y + ROW_GAP + LEAF_H + BAND_PAD; // bottom pad
+const Q_SINGLETON_Y = STAGE_2_TOP_Y + BAND_PAD_Y;    // top pad
+const Q_DIRECT_Y = Q_SINGLETON_Y + ROW_GAP;          // q_direct (F-check) — post-dimino
+const Q_CROSSVW_Y = Q_DIRECT_Y + ROW_GAP;            // q_crossVW
+const Q_FULLSYM_Y = Q_CROSSVW_Y + ROW_GAP;           // q_fullSym
+const STAGE_2_BOTTOM_Y = Q_FULLSYM_Y + ROW_GAP + LEAF_H + BAND_PAD_Y; // bottom pad
 
 const EDGE_YES = { color: '#23B761', label: 'yes' };
 const EDGE_NO = { color: '#F0524D', label: 'no' };
@@ -85,21 +86,21 @@ const QUESTIONS = [
     id: 'q_trivial',
     short: '|G| = 1 ?',
     long: 'Is the symmetry group trivial? Cheap: detected from generators without running dimino (every gen is the identity, or no generators at all).',
-    onTrue: 'trivial', onFalse: 'q_direct',
-    stage: 1,
-  },
-  {
-    id: 'q_direct',
-    short: 'F-check passes ?',
-    long: 'Does G factor cleanly as G_V × G_W, with no cross-V/W element and both projections non-trivial? Element-level check post-Dimino: |G| = |G_V|·|G_W| with |G_V| > 1 AND |G_W| > 1.',
-    onTrue: 'directProduct', onFalse: 'ENUMERATE',
+    onTrue: 'trivial', onFalse: 'ENUMERATE',
     stage: 1,
   },
   {
     id: 'q_singleton',
     short: '|V| = 1 ?',
     long: 'Exactly one free label — singleton weighted Burnside applies. From here down, we have G materialised.',
-    onTrue: 'singleton', onFalse: 'q_crossVW',
+    onTrue: 'singleton', onFalse: 'q_direct',
+    stage: 2,
+  },
+  {
+    id: 'q_direct',
+    short: 'F-check passes ?',
+    long: 'Does G factor cleanly as G_V × G_W, with no cross-V/W element and both projections non-trivial? Element-level check post-Dimino: |G| = |G_V|·|G_W| with |G_V| > 1 AND |G_W| > 1.',
+    onTrue: 'directProduct', onFalse: 'q_crossVW',
     stage: 2,
   },
   {
@@ -381,7 +382,7 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
   // For each Stage-1 question, decide which branch is the leaf and which
   // is the spine continuation. Terminal "spine" of Stage 1 is the enumerate
   // divider — emerges from whichever side of the last question continues.
-  const spineYs = [Q1_Y, Q2_Y, Q3_Y, Q4_Y];
+  const spineYs = [Q1_Y, Q2_Y, Q3_Y];
   const stage1 = QUESTIONS.filter((q) => q.stage === 1);
 
   function planStage1(q, nextIsEnumerate) {
@@ -472,45 +473,75 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
     style: { stroke: lastPlan.spineEdge.color, strokeWidth: 1.5 },
   });
 
-  // Stage 2 — q_singleton, then cross-V/W branch, then young/bruteForceOrbit leaves.
-  const stage2Q = QUESTIONS.find((q) => q.id === 'q_singleton');
+  // Stage 2 — q_singleton → q_direct (F-check) → q_crossVW → q_fullSym.
+  // All four questions need post-Dimino group elements.
+  const singletonQ = QUESTIONS.find((q) => q.id === 'q_singleton');
   nodes.push({
-    id: stage2Q.id,
-    position: { x: QUESTION_X, y: Q5_Y },
+    id: singletonQ.id,
+    position: { x: QUESTION_X, y: Q_SINGLETON_Y },
     type: 'question',
     style: { width: QUESTION_W, height: QUESTION_H },
-    data: { text: stage2Q.short, nodeId: stage2Q.id },
+    data: { text: singletonQ.short, nodeId: singletonQ.id },
   });
   edges.push({
-    id: `enumerate-${stage2Q.id}`,
+    id: `enumerate-${singletonQ.id}`,
     source: 'enumerate', sourceHandle: 'bottom',
-    target: stage2Q.id, targetHandle: 'top',
+    target: singletonQ.id, targetHandle: 'top',
     style: { stroke: '#8B5CF6', strokeWidth: 1.5, strokeDasharray: '6 3' },
   });
 
   // q_singleton yes → singleton leaf on the left.
-  nodes.push(leafNode('singleton', Q5_Y));
+  nodes.push(leafNode('singleton', Q_SINGLETON_Y));
   edges.push({
-    id: `${stage2Q.id}-singleton`,
-    source: stage2Q.id, sourceHandle: 'side',
+    id: `${singletonQ.id}-singleton`,
+    source: singletonQ.id, sourceHandle: 'side',
     target: 'singleton', targetHandle: 'right',
     label: EDGE_YES.label,
     labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_YES.color },
     style: { stroke: EDGE_YES.color, strokeWidth: 1.5 },
   });
 
-  // q_singleton no → q_crossVW question on the spine.
+  // q_singleton no → q_direct (F-check) on the spine.
+  const directQ = QUESTIONS.find((q) => q.id === 'q_direct');
+  nodes.push({
+    id: directQ.id,
+    position: { x: QUESTION_X, y: Q_DIRECT_Y },
+    type: 'question',
+    style: { width: QUESTION_W, height: QUESTION_H },
+    data: { text: directQ.short, nodeId: directQ.id },
+  });
+  edges.push({
+    id: `${singletonQ.id}-${directQ.id}`,
+    source: singletonQ.id, sourceHandle: 'bottom',
+    target: directQ.id, targetHandle: 'top',
+    label: EDGE_NO.label,
+    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_NO.color },
+    style: { stroke: EDGE_NO.color, strokeWidth: 1.5 },
+  });
+
+  // q_direct yes → directProduct leaf on the left.
+  nodes.push(leafNode('directProduct', Q_DIRECT_Y));
+  edges.push({
+    id: `${directQ.id}-directProduct`,
+    source: directQ.id, sourceHandle: 'side',
+    target: 'directProduct', targetHandle: 'right',
+    label: EDGE_YES.label,
+    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_YES.color },
+    style: { stroke: EDGE_YES.color, strokeWidth: 1.5 },
+  });
+
+  // q_direct no → q_crossVW on the spine.
   const crossVWQ = QUESTIONS.find((q) => q.id === 'q_crossVW');
   nodes.push({
     id: crossVWQ.id,
-    position: { x: QUESTION_X, y: Q6_Y },
+    position: { x: QUESTION_X, y: Q_CROSSVW_Y },
     type: 'question',
     style: { width: QUESTION_W, height: QUESTION_H },
     data: { text: crossVWQ.short, nodeId: crossVWQ.id },
   });
   edges.push({
-    id: `${stage2Q.id}-${crossVWQ.id}`,
-    source: stage2Q.id, sourceHandle: 'bottom',
+    id: `${directQ.id}-${crossVWQ.id}`,
+    source: directQ.id, sourceHandle: 'bottom',
     target: crossVWQ.id, targetHandle: 'top',
     label: EDGE_NO.label,
     labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_NO.color },
@@ -524,9 +555,7 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
   //     bottom handle into BFO's top handle.
   //   - q_crossVW-no exits the RIGHT side of the question, sweeps down and
   //     around the spine, and connects into BFO's right handle.
-  // This keeps a single tooltip-addressable node while making both failure
-  // modes visually converge at the tree's terminal.
-  const bruteY = Q7_Y + ROW_GAP;
+  const bruteY = Q_FULLSYM_Y + ROW_GAP;
   nodes.push(leafNode('bruteForceOrbit', bruteY, true));
   edges.push({
     id: `${crossVWQ.id}-bruteForceOrbit`,
@@ -541,7 +570,7 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
   const fullSymQ = QUESTIONS.find((q) => q.id === 'q_fullSym');
   nodes.push({
     id: fullSymQ.id,
-    position: { x: QUESTION_X, y: Q7_Y },
+    position: { x: QUESTION_X, y: Q_FULLSYM_Y },
     type: 'question',
     style: { width: QUESTION_W, height: QUESTION_H },
     data: { text: fullSymQ.short, nodeId: fullSymQ.id },
@@ -556,7 +585,7 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
   });
 
   // q_fullSym yes → young leaf on the left.
-  nodes.push(leafNode('young', Q7_Y));
+  nodes.push(leafNode('young', Q_FULLSYM_Y));
   edges.push({
     id: `${fullSymQ.id}-young`,
     source: fullSymQ.id, sourceHandle: 'side',

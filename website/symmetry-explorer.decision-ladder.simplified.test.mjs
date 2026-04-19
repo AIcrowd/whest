@@ -15,22 +15,24 @@ function read() {
 }
 
 // DecisionLadder has been promoted to the two-stage hybrid layout:
-//   STAGE 1 — dimino-free structural checks. Four questions whose decisions
-//             only need (V, W, generators).
+//   STAGE 1 — dimino-free structural checks. Three questions whose decisions
+//             only need (V, W, generators). No element iteration required.
 //             q_hasW  → W ≠ ∅ ?             (leaf on "no": allVisible)
 //             q_hasV  → V ≠ ∅ ?             (leaf on "no": allSummed)
-//             q_trivial → |G| = 1 ?         (leaf on "yes": trivial)
-//             q_direct  → F-check passes?   (leaf on "yes": directProduct;
+//             q_trivial → |G| = 1 ?         (leaf on "yes": trivial;
 //                         "no" crosses into the ENUMERATE divider)
 //
-//   STAGE 2 — after enumerating G via Dimino. Three questions and four leaves.
-//             q_singleton → |V| = 1 ?       (yes: singleton; no: q_crossVW)
-//             q_crossVW   → Cross-V/W element?  (yes: q_fullSym; no: bruteForceOrbit)
+//   STAGE 2 — after enumerating G via Dimino. Four questions and four leaves.
+//             q_singleton → |V| = 1 ?       (yes: singleton; no: q_direct)
+//             q_direct    → F-check passes? (yes: directProduct; no: q_crossVW)
+//                           — moved from Stage 1 because the element-level
+//                           F-check requires the materialised group.
+//             q_crossVW   → Cross-V/W element? (yes: q_fullSym; no: bruteForceOrbit)
 //             q_fullSym   → G = Sym(L_c)?   (yes: young; no: bruteForceOrbit)
 
 test('DecisionLadder QUESTIONS array has 7 entries, in stage order', () => {
   const src = read();
-  const ids = ['q_hasW', 'q_hasV', 'q_trivial', 'q_direct', 'q_singleton', 'q_crossVW', 'q_fullSym'];
+  const ids = ['q_hasW', 'q_hasV', 'q_trivial', 'q_singleton', 'q_direct', 'q_crossVW', 'q_fullSym'];
   let lastIdx = -1;
   for (const id of ids) {
     const idx = src.indexOf(`id: '${id}'`);
@@ -54,14 +56,26 @@ test('DecisionLadder no longer references the 5 deleted regime leaves', () => {
   }
 });
 
-test('DecisionLadder Stage-1 routing: q_direct feeds the ENUMERATE divider on the "no" branch', () => {
+test('DecisionLadder Stage-1 routing: q_trivial feeds the ENUMERATE divider on the "no" branch', () => {
   const src = read();
-  assert.match(src, /id:\s*'q_direct',[\s\S]*?onTrue:\s*'directProduct',\s*onFalse:\s*'ENUMERATE'/);
+  assert.match(src, /id:\s*'q_trivial',[\s\S]*?onTrue:\s*'trivial',\s*onFalse:\s*'ENUMERATE'/);
 });
 
-test('DecisionLadder Stage-2 routing: q_singleton splits into singleton (yes) and q_crossVW (no)', () => {
+test('DecisionLadder Stage-2 routing: q_singleton splits into singleton (yes) and q_direct (no)', () => {
   const src = read();
-  assert.match(src, /id:\s*'q_singleton',[\s\S]*?onTrue:\s*'singleton',\s*onFalse:\s*'q_crossVW'/);
+  assert.match(src, /id:\s*'q_singleton',[\s\S]*?onTrue:\s*'singleton',\s*onFalse:\s*'q_direct'/);
+});
+
+test('DecisionLadder Stage-2 routing: q_direct splits into directProduct (yes) and q_crossVW (no)', () => {
+  const src = read();
+  assert.match(src, /id:\s*'q_direct',[\s\S]*?onTrue:\s*'directProduct',\s*onFalse:\s*'q_crossVW'/);
+});
+
+test('DecisionLadder q_direct is in Stage 2 (F-check inspects post-dimino elements)', () => {
+  const src = read();
+  const match = src.match(/id:\s*'q_direct'[\s\S]*?stage:\s*(\d)/);
+  assert.ok(match, 'q_direct entry missing or has no stage marker');
+  assert.equal(match[1], '2', 'q_direct must be in Stage 2 after the element-level F-check upgrade');
 });
 
 test('DecisionLadder Stage-2 routing: q_crossVW splits into q_fullSym (yes) and bruteForceOrbit (no)', () => {
