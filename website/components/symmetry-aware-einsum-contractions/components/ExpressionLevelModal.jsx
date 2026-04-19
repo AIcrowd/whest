@@ -410,6 +410,12 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
               </h3>
             </div>
 
+            <p className="mb-3 text-sm leading-7 text-foreground">
+              <InlineMathText>
+                {`Under the wreath framing of Section 3, $G_{\\text{pt}}\\big|_V$ is the image under $\\texttt{derivePi}$ of the V-preserving wreath elements, restricted to V. These are the V-actions that are **row-witnessed** — discoverable by inspecting the row-permutation structure of the bipartite graph.`}
+              </InlineMathText>
+            </p>
+
             <div className="grid gap-4 md:grid-cols-2">
               <NarrativeCallout label="Definition">
                 {`$G_{\\text{pt}}\\big|_V$ is the image of $G_{\\text{pt}}$ under restriction to the V-labels. Concretely, let $\\mathrm{Stab}_{G_{\\text{pt}}}(V)$ be the subgroup of $G_{\\text{pt}}$ whose elements preserve $V$ setwise (they permute V-labels among themselves and W-labels among themselves, without crossing). For each $\\pi \\in \\mathrm{Stab}_{G_{\\text{pt}}}(V)$, record its action on V-positions and deduplicate; the resulting set is a subgroup of $\\mathrm{Sym}(V)$, called the $\\textit{induced permutation group on V}$ and written $G_{\\text{pt}}\\big|_V$.`}
@@ -510,6 +516,12 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                 The symmetric group on summed labels <Latex math="S(W)" />
               </h3>
             </div>
+
+            <p className="mb-3 text-sm leading-7 text-foreground">
+              <InlineMathText>
+                {`Unlike $G_{\\text{pt}}\\big|_V$, the $S(W)$ factor is **row-unwitnessed**: no $\\sigma$ in the wreath produces these W-permutations as its induced $\\pi$. They are formal symmetries by virtue of being permutations of bound summation indices — renaming dummies leaves any sum invariant. This is the only factor of $G_{\\text{f}}$ that is strictly non-row-visible.`}
+              </InlineMathText>
+            </p>
 
             <div className="grid gap-4 md:grid-cols-2">
               <NarrativeCallout label="Definition">
