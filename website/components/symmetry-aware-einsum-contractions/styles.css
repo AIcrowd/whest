@@ -1687,31 +1687,41 @@
 
 .cost-item.highlight .cost-val { color: var(--coral); }
 
+/* Speedup callout — matches `.speedup` in design-system/Whest Einsum
+   Explorer.html: coral-light ground, big coral mono numeral, coral
+   uppercase kicker underneath. The before-state was white card + coral
+   border + green number, which broke the identity moment the reference
+   is going for. */
 .speedup-card {
-  background: var(--white);
-  border: 2px solid var(--coral);
-  border-radius: 8px;
-  padding: 24px;
+  background: var(--coral-light);
+  border: 1px solid color-mix(in oklab, var(--coral) 25%, transparent);
+  border-radius: var(--radius-xl);
+  padding: 28px 20px;
   text-align: center;
 }
 
 .speedup-number {
-  font-size: 3rem;
+  font-size: 44px;
   font-weight: 700;
   font-family: var(--font-mono);
-  color: var(--color-success-alt);
+  color: var(--coral);
+  letter-spacing: -0.02em;
+  line-height: 1;
 }
 
 .speedup-label {
-  color: var(--gray-600);
-  font-size: 13px;
-  font-weight: 500;
+  color: var(--coral);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-top: 10px;
 }
 
 .speedup-detail {
   color: var(--success);
   font-size: 12px;
-  margin-top: 4px;
+  margin-top: 6px;
   font-family: var(--font-mono);
   font-weight: 500;
 }
