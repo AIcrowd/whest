@@ -88,32 +88,37 @@ def _read_jsonl(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
-def _manifest_schema_version(run: dict[str, object]) -> int:
-    manifest = run.get("manifest")
+def _normalize_manifest(manifest: object) -> dict[str, object]:
     if manifest is None:
-        return SCHEMA_VERSION
+        manifest = {}
     if not isinstance(manifest, dict):
         raise TypeError("manifest must be a mapping")
-    schema_version = manifest.get("schema_version", SCHEMA_VERSION)
-    if schema_version != SCHEMA_VERSION:
+    normalized = dict(manifest)
+    normalized.setdefault("schema_version", SCHEMA_VERSION)
+    if normalized["schema_version"] != SCHEMA_VERSION:
         raise ValueError(
-            f"schema_version mismatch: expected {SCHEMA_VERSION}, got {schema_version}"
+            f"schema_version mismatch: expected {SCHEMA_VERSION}, got {normalized['schema_version']}"
         )
-    return SCHEMA_VERSION
+    return normalized
+
+
+def _validate_manifest(manifest: object) -> dict[str, object]:
+    if not isinstance(manifest, dict):
+        raise TypeError("manifest must be a mapping")
+    if "schema_version" not in manifest:
+        raise ValueError("schema_version missing from manifest")
+    if manifest["schema_version"] != SCHEMA_VERSION:
+        raise ValueError(
+            f"schema_version mismatch: expected {SCHEMA_VERSION}, got {manifest['schema_version']}"
+        )
+    return manifest
 
 
 def write_run_artifacts(root: Path, run: dict[str, object]) -> Path:
     root = Path(root)
     root.mkdir(parents=True, exist_ok=True)
 
-    raw_manifest = run.get("manifest", {})
-    if raw_manifest is None:
-        raw_manifest = {}
-    if not isinstance(raw_manifest, dict):
-        raise TypeError("manifest must be a mapping")
-    manifest = dict(raw_manifest)
-    manifest.setdefault("schema_version", SCHEMA_VERSION)
-    _manifest_schema_version({"manifest": manifest})
+    manifest = _normalize_manifest(run.get("manifest"))
     _write_json(root / _JSON_FILENAME_MAP["manifest"], manifest)
 
     for key, filename in _JSON_FILENAME_MAP.items():
@@ -136,6 +141,7 @@ def load_run(path: Path) -> dict[str, object]:
 
     for key, filename in _JSON_FILENAME_MAP.items():
         run[key] = _read_json(root / filename)
+    run["manifest"] = _validate_manifest(run["manifest"])
 
     for key, filename in _JSONL_FILENAME_MAP.items():
         run[key] = _read_jsonl(root / filename)
@@ -146,13 +152,6 @@ def load_run(path: Path) -> dict[str, object]:
 def compare_runs(base_path: Path, candidate_path: Path) -> dict[str, object]:
     base_run = load_run(base_path)
     candidate_run = load_run(candidate_path)
-    base_schema_version = _manifest_schema_version(base_run)
-    candidate_schema_version = _manifest_schema_version(candidate_run)
-    if base_schema_version != candidate_schema_version:
-        raise ValueError(
-            "schema_version mismatch: "
-            f"base={base_schema_version}, candidate={candidate_schema_version}"
-        )
 
     base_cases = {row["case_id"]: row for row in base_run.get("cases", [])}
     candidate_cases = {
