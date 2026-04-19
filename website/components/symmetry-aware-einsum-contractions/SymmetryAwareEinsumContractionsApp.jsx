@@ -347,7 +347,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       labels, partitioned into <RoleBadge role="v">V free</RoleBadge> and
                       <RoleBadge role="w">W summed</RoleBadge>.
                       {hasPerOpSym && (
-                        <> The graph keeps one U-vertex per axis; per-operand symmetry is recorded separately and drives the σ-loop&apos;s Source-A generators in Section 3.</>
+                        <> The graph keeps one U-vertex per axis; per-operand symmetry is recorded separately and enters the σ-loop in Section 3 as the base factor <InlineMathText>{'$H_i$'}</InlineMathText> of each identical-operand group&rsquo;s wreath contribution.</>
                       )}
                     </p>
                     <p className="mt-4 font-serif text-[17px] italic leading-[1.75] text-gray-600">
@@ -394,6 +394,18 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         <InlineMathText>{EXPLORER_ACTS[2].bridge}</InlineMathText>
                       </p>
                     )}
+                    <p className="mt-4 text-sm leading-7 text-foreground">
+                      The symmetries we can detect at the row-permutation level form a wreath product:
+                      one factor <InlineMathText>{'$H_i \\wr S_{m_i}$'}</InlineMathText> per identical-operand group{' '}
+                      <InlineMathText>{'$i$'}</InlineMathText>, where <InlineMathText>{'$H_i$'}</InlineMathText> is each operand&rsquo;s declared axis symmetry
+                      and <InlineMathText>{'$m_i$'}</InlineMathText> is the copy count. This is a theorem &mdash; the σ-loop&rsquo;s row-permutation group equals
+                      this wreath exactly (see Appendix). For the current einsum, the wreath factorisation is
+                      rendered in the middle panel; each of its elements is either matrix-preserving (discarded as trivial),
+                      derivePi-rejected (no compatible label permutation exists), or contributes a valid{' '}
+                      <InlineMathText>{'$\\pi$'}</InlineMathText> to <InlineMathText>{'$G_{\\text{pt}}$'}</InlineMathText>.
+                      The left panel shows the valid (σ, π) pairs; the right panel shows them combining as generators of{' '}
+                      <InlineMathText>{'$G_{\\text{pt}}$'}</InlineMathText> under Dimino (a verification step &mdash; the set is already composition-closed).
+                    </p>
                     <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
                       <div id="sigma-loop" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
                         <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
