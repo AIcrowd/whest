@@ -79,7 +79,7 @@ Submissions run under two layers of time enforcement:
 
 Signal-based preemption (`SIGALRM`) is deliberately not used because Python signal handlers cannot interrupt C extensions (numpy/LAPACK/BLAS), making them ineffective for exactly the operations where time limits matter most.
 
-## ⚠️ Common pitfalls
+## Common pitfalls
 
 **Symptom:** `Connection refused` or `timeout`
 
@@ -89,7 +89,7 @@ Signal-based preemption (`SIGALRM`) is deliberately not used because Python sign
 
 **Fix:** Change the port in both the server `--url` and client `WHEST_SERVER_URL`.
 
-## 📎 Related pages
+## Related pages
 
 - [Client-Server Model](/docs/infrastructure/client-server/) — architecture overview
 - [Contributor Guide](/docs/development/contributing/) — local repo workflows

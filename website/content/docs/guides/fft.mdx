@@ -129,7 +129,7 @@ print(f"Complex FFT: {fft_cost(n):,} FLOPs")   # 104,857,600
 print(f"Real FFT:    {rfft_cost(n):,} FLOPs")   # 52,428,800
 ```
 
-## ⚠️ Common pitfalls
+## Common pitfalls
 
 **Symptom:** Using `we.fft.fft` on real data when `we.fft.rfft` would suffice
 
@@ -139,7 +139,7 @@ print(f"Real FFT:    {rfft_cost(n):,} FLOPs")   # 52,428,800
 
 **Fix:** The cost scales as $5 \cdot \prod n_\{i\} \cdot \lceil\log_2(\prod n_\{i\})\rceil$. A 256x256 2-D FFT processes 65,536 elements, not 256. Use `fft_cost` to estimate before running.
 
-## 📎 Related pages
+## Related pages
 
 - [API Reference](/docs/api/) — full function signatures and docstrings
 - [Plan Your Budget](/docs/guides/budget-planning/) — general cost estimation workflow
