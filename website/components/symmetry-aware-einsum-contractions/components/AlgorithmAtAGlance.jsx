@@ -54,7 +54,7 @@ function ColorLegend() {
 function EinsumIntroColumn() {
   return (
     <div id="einsum-contraction" className="flex h-full flex-col scroll-mt-24">
-      <span className="font-heading text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+      <span className="font-sans text-[11px] font-semibold uppercase tracking-[0.16em] text-coral">
         <AnchorLink anchorId="einsum-contraction" labelText="Einsum contraction">
           Einsum contraction
         </AnchorLink>
@@ -129,7 +129,7 @@ function EinsumIntroColumn() {
 function MentalFrameworkColumn() {
   return (
     <div id="mental-framework" className="flex h-full flex-col scroll-mt-24">
-      <span className="font-heading text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+      <span className="font-sans text-[11px] font-semibold uppercase tracking-[0.16em] text-coral">
         <AnchorLink anchorId="mental-framework" labelText="The mental framework">
           The mental framework
         </AnchorLink>
