@@ -455,7 +455,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         onClick={() => setExprModalOpen(true)}
                         className="text-left underline decoration-dotted underline-offset-4 hover:text-gray-900"
                       >
-                        <span className="font-semibold">Counting symmetry</span> — why the expression-level group <span className="font-mono">G<sub>expr</sub></span> is larger than <span className="font-mono">G<sub>pt</sub></span> and why it isn't used for compression.
+                        <span className="font-semibold">The formal symmetry group</span> — why <span className="font-mono">G<sub>f</sub> = G<sub>pt</sub>|<sub>V</sub> × S(W)</span> is strictly larger than the pointwise group <span className="font-mono">G<sub>pt</sub></span>, and why its extra elements are not used for compression.
                       </button>
                     </div>
                   </ExplorerSectionCard>

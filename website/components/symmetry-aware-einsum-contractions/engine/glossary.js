@@ -6,20 +6,20 @@
 
 export const GLOSSARY = [
   {
-    term: 'per-tuple symmetry',
-    definition: 'A label permutation π such that for every tuple t of index values, summand(t) = summand(π⁻¹ t). Compression uses this group: reusing one orbit representative is only valid when every tuple in the orbit has the same summand value.',
+    term: 'pointwise symmetry',
+    definition: 'A label permutation π such that for every tuple t of index values, summand(t) = summand(π⁻¹ t). The invariance is required at every individual summand (pointwise on the tuple space), not merely on the total. Compression uses this group: reusing one orbit representative is only valid when every tuple in the orbit has the same summand value.',
   },
   {
-    term: 'expression-level symmetry',
-    definition: 'A label permutation π such that the total sum is unchanged under renaming all labels by π, even if individual terms get reshuffled. Always a superset of per-tuple symmetries; includes dummy-rename permutations of summed labels.',
+    term: 'formal symmetry',
+    definition: 'A label permutation π such that the total sum is unchanged under renaming all labels by π, even when individual terms reshuffle. "Formal" here has its standard mathematical meaning — invariance at the level of the expression as a formal sum, not at the level of its values. Every pointwise symmetry is a formal symmetry; the converse does not hold in general.',
   },
   {
-    term: '$V_{\\text{sub}}$',
-    definition: 'The per-tuple group $G_{\\text{pt}}$ projected onto the free (output) labels V. Each $π ∈ G_{\\text{pt}}$ restricted to V-labels; the set of such restrictions is a subgroup of $\\mathrm{Sym}(V)$.',
+    term: '$G_{\\text{pt}}\\big|_V$',
+    definition: 'The induced permutation group on V by $G_{\\text{pt}}$: for each V/W-preserving element $\\pi \\in G_{\\text{pt}}$, record its action on V-positions and deduplicate. The resulting subgroup of $\\mathrm{Sym}(V)$ acts as an output-tensor symmetry, i.e. $R[\\sigma\\,\\omega] = R[\\omega]$ for every $\\sigma \\in G_{\\text{pt}}\\big|_V$.',
   },
   {
     term: '$S(W)$',
-    definition: 'The full symmetric group on the summed (contracted) labels W. Every permutation of W is always an expression-level symmetry because the sum over W is bound-variable iteration — renaming dummies does not change the total.',
+    definition: 'The full symmetric group on the summed (contracted) labels W. Every permutation of W is a formal symmetry because the sum over W is bound-variable iteration — renaming dummies does not change the total.',
   },
   {
     term: 'Source A',

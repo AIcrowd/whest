@@ -14,11 +14,17 @@ const vStyle = { color: COLOR_V, fontWeight: 600 };
 const wStyle = { color: COLOR_W, fontWeight: 600 };
 
 /**
- * Appendix modal that walks the reader through the expression-level
- * counting symmetry: define the two groups (G_pt, G_expr), define the two
- * building blocks of G_expr (V_sub and S(W)), assemble them, explain why
- * we do not use G_expr for compression, and disclose the output-tensor
- * savings we still leave on the table.
+ * Appendix modal that walks the reader through the distinction between the
+ * two symmetry groups of an einsum:
+ *
+ *   · the pointwise symmetry group G_pt  — holds at each summand
+ *   · the formal symmetry group     G_f  — holds only on the total sum
+ *
+ * and builds G_f from its two components: the induced permutation group
+ * G_pt|_V and the symmetric group S(W). The modal then contrasts the α
+ * that naive Burnside on G_f would claim with the correct G_pt-based α,
+ * and discloses the output-tensor savings still available via
+ * G_pt|_V-aware storage.
  */
 export default function ExpressionLevelModal({ isOpen, onClose, analysis, group }) {
   const vLabels = group?.vLabels ?? [];
@@ -61,11 +67,11 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
           <div>
             <div className={sectionNumber}>Appendix</div>
             <h2 id="expr-modal-heading" className="font-heading text-lg font-semibold text-gray-900">
-              Counting symmetry: <Latex math="G_{\text{expr}} = V_{\text{sub}} \times S(W)" />
+              The formal symmetry group: <Latex math="G_{\text{f}} = G_{\text{pt}}\big|_V \times S(W)" />
             </h2>
             <p className="mt-1 text-sm leading-6 text-gray-600">
               <InlineMathText>
-                {`The main page reports a single detected symmetry group $G$ and uses it to drive every cost number. Inside this appendix we refer to it as $G_{\\text{pt}}$ — the $\\textit{per-tuple}$ group — to distinguish it from the larger counting symmetry $G_{\\text{expr}}$ discussed here. The two sections below define both groups precisely before the rest of the appendix builds $G_{\\text{expr}}$ from its components.`}
+                {`The main page reports a single detected symmetry group $G$ and uses it to drive every cost number. Inside this appendix we refer to that group as $G_{\\text{pt}}$ — the $\\textit{pointwise symmetry group}$ — to distinguish it from the larger $\\textit{formal symmetry group}$ $G_{\\text{f}}$ discussed here. The first section below defines both groups precisely; the sections that follow construct $G_{\\text{f}}$ from its two components.`}
               </InlineMathText>
             </p>
           </div>
@@ -92,33 +98,33 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
 
         {/* Body */}
         <div className="space-y-10 px-6 py-6">
-          {/* §0 — Definitions upfront */}
+          {/* §0 — Definitions */}
           <section>
             <div className="mb-2">
               <div className={sectionNumber}>§0 · Terms used in this appendix</div>
-              <h3 className={sectionTitle}>Compression, counting, and the two groups</h3>
+              <h3 className={sectionTitle}>Compression, pointwise symmetry, formal symmetry</h3>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
               <NarrativeCallout label="Compression">
-                {`The main page's goal. Given an einsum, report the minimum number of distinct scalar multiplications $\\mu$ and the minimum number of distinct accumulations $\\alpha$ needed to produce the output tensor, exploiting symmetry to reuse products and share work across tuples. Cost formulas like "$\\mu = |X / G|$" are compression claims.`}
+                {`The main page's goal. Given an einsum $\\sum_t \\text{summand}(t)$, report the minimum number of distinct scalar multiplications $\\mu$ and the minimum number of distinct accumulations $\\alpha$ needed to produce the output tensor, using symmetry to reuse products and share work across tuples.`}
               </NarrativeCallout>
-              <NarrativeCallout label="Counting symmetry" tone="algorithm">
-                {`A structural invariance of the $\\textit{total sum}$ — a label permutation under which the einsum $\\sum_t \\text{summand}(t)$ evaluates to the same scalar total, even though individual summands may reshuffle. Counting symmetries describe what the expression admits as a symbolic object; they do not, on their own, license arithmetic reuse.`}
+              <NarrativeCallout label="Pointwise symmetry group" tone="algorithm">
+                {`$G_{\\text{pt}}$ — the subgroup of $\\mathrm{Sym}(L)$ consisting of label permutations $\\pi$ for which $\\text{summand}(t) = \\text{summand}(\\pi^{-1} t)$ holds for every tuple $t \\in [n]^L$. The invariance is required at every individual summand ("pointwise" on the tuple space), not merely on the total. $G_{\\text{pt}}$ is the largest group that licenses Burnside-style orbit compression in the enumerate-and-accumulate evaluation model, and every $\\mu$ and $\\alpha$ on the main page is computed with respect to it.`}
               </NarrativeCallout>
             </div>
 
             <div className="mt-4 grid gap-4 md:grid-cols-2">
-              <NarrativeCallout label="G_pt — the per-tuple group">
-                {`The group of label permutations under which $\\text{summand}(t)$ equals $\\text{summand}(\\pi^{-1} t)$ for every tuple $t$, not just on the total sum. $G_{\\text{pt}}$ is the largest group that licenses compression in the enumerate-and-accumulate evaluation model. The engine computes it via σ-loop Sources A and B, and every reported $\\mu$ and $\\alpha$ is taken with respect to this group.`}
+              <NarrativeCallout label="Formal symmetry group">
+                {`$G_{\\text{f}}$ — the subgroup of $\\mathrm{Sym}(L)$ consisting of label permutations $\\pi$ for which $\\sum_t \\text{summand}(t) = \\sum_t \\text{summand}(\\pi^{-1} t)$; that is, the total sum is invariant although individual summands may be reshuffled. "Formal" here has its standard mathematical meaning — invariance at the level of the expression treated as a formal sum, not at the level of its values.`}
               </NarrativeCallout>
-              <NarrativeCallout label="G_expr — the counting group">
-                {`The full expression-level group: all label permutations under which $\\sum_t \\text{summand}(t)$ is invariant, including dummy relabellings of summed indices. $G_{\\text{expr}} \\supseteq G_{\\text{pt}}$. In the bilinear-trace case below, $G_{\\text{expr}}$ has four elements and $G_{\\text{pt}}$ has two.`}
+              <NarrativeCallout label="Relationship" tone="algorithm">
+                {`$G_{\\text{pt}} \\subseteq G_{\\text{f}}$ always. The additional elements of $G_{\\text{f}} \\setminus G_{\\text{pt}}$ come from two sources: dummy-variable renamings of the summed labels, and V-only reshuffles that only hold after aggregation. For bilinear-trace (§2 below) $G_{\\text{pt}}$ has 2 elements and $G_{\\text{f}}$ has 4.`}
               </NarrativeCallout>
             </div>
           </section>
 
-          {/* §1 — The distinction (Frobenius worked example) */}
+          {/* §1 — Frobenius worked example */}
           <section>
             <div className="mb-2">
               <div className={sectionNumber}>§1 · The distinction made concrete</div>
@@ -129,7 +135,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
 
             <div className="mb-4 text-sm leading-7 text-foreground">
               <InlineMathText>
-                {`Take $R = \\sum_{i,j} A[i,j] \\cdot A[i,j]$ on a $2 \\times 2$ generic matrix $A = \\begin{pmatrix} 1 & 2 \\\\ 3 & 4 \\end{pmatrix}$. The four summands are:`}
+                {`Take $R = \\sum_{i,j} A[i,j] \\cdot A[i,j]$ on a generic $2 \\times 2$ matrix $A = \\begin{pmatrix} 1 & 2 \\\\ 3 & 4 \\end{pmatrix}$. The four summands are:`}
               </InlineMathText>
             </div>
 
@@ -161,7 +167,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
 
             <p className="mt-4 text-sm leading-7 text-foreground">
               <InlineMathText>
-                {`Apply the permutation $(i\\;j)$: for each tuple $(i,j)$ replace it with $(j,i)$. The four summands become`}
+                {`Applying the permutation $(i\\;j)$ — replace each tuple $(i,j)$ with $(j,i)$ — yields:`}
               </InlineMathText>
             </p>
 
@@ -187,32 +193,32 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
 
             <div className="mt-4 rounded-md border-l-4 border-amber-500 bg-amber-50 px-5 py-3 text-sm leading-7 text-amber-900">
               <InlineMathText>
-                {`The totals agree: $R = R' = 30$. However, the individual summands at positions 2 and 3 have exchanged values ($4 \\leftrightarrow 9$). The permutation $(i\\;j)$ preserves the sum by reshuffling — not by leaving each term invariant. Hence $(i\\;j)$ is a counting symmetry of this expression but is not an element of $G_{\\text{pt}}$; compression that treated it as such would require $A[0,1]^2 = A[1,0]^2$, which fails for a non-symmetric $A$.`}
+                {`The totals agree: $R = R' = 30$. However, the individual summands at positions 2 and 3 have exchanged values ($4 \\leftrightarrow 9$). The permutation $(i\\;j)$ preserves the sum through reshuffling rather than through term-by-term equality. Hence $(i\\;j) \\in G_{\\text{f}}$ — a formal symmetry — but $(i\\;j) \\notin G_{\\text{pt}}$; a compression scheme that treated it as pointwise would require $A[0,1]^2 = A[1,0]^2$, which fails for a generic $A$.`}
               </InlineMathText>
             </div>
 
             <div className="mt-4">
               <NarrativeCallout label="Takeaway" tone="accent">
-                {`For this einsum $G_{\\text{pt}} = \\{e\\}$ (the identity alone is per-tuple on a generic $A$), while $G_{\\text{expr}}$ contains the extra element $(i\\;j)$. The remainder of the appendix explains where that extra element comes from and why it is harmless for counting but incorrect for compression.`}
+                {`For this einsum $G_{\\text{pt}} = \\{e\\}$ on a generic $A$ (only the identity is pointwise), while $G_{\\text{f}}$ contains the additional element $(i\\;j)$. The remainder of the appendix explains where $G_{\\text{f}}$'s extra elements come from and why they admit no arithmetic reuse.`}
               </NarrativeCallout>
             </div>
           </section>
 
-          {/* §2 — V_sub */}
+          {/* §2 — Induced permutation group on V */}
           <section>
             <div className="mb-2">
-              <div className={sectionNumber}>§2 · Building block 1</div>
+              <div className={sectionNumber}>§2 · Component 1 of G_f</div>
               <h3 className={sectionTitle}>
-                <Latex math="V_{\text{sub}}" /> — the V-restriction of <Latex math="G_{\text{pt}}" />
+                <Latex math="G_{\text{pt}}\big|_V" /> — the induced permutation group on V
               </h3>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
               <NarrativeCallout label="Definition">
-                {`$V_{\\text{sub}}$ is the image of $G_{\\text{pt}}$ under restriction to the V-labels. Concretely: for each $V/W$-preserving element $\\pi \\in G_{\\text{pt}}$, record its action on V-positions and discard its action on W-positions; deduplicate the resulting permutations. The output is a subgroup of $\\mathrm{Sym}(V)$.`}
+                {`$G_{\\text{pt}}\\big|_V$ is the image of $G_{\\text{pt}}$ under restriction to the V-labels. Concretely, let $\\mathrm{Stab}_{G_{\\text{pt}}}(V)$ be the subgroup of $G_{\\text{pt}}$ whose elements preserve $V$ setwise (they permute V-labels among themselves and W-labels among themselves, without crossing). For each $\\pi \\in \\mathrm{Stab}_{G_{\\text{pt}}}(V)$, record its action on V-positions and deduplicate; the resulting set is a subgroup of $\\mathrm{Sym}(V)$, called the $\\textit{induced permutation group on V}$ and written $G_{\\text{pt}}\\big|_V$.`}
               </NarrativeCallout>
               <NarrativeCallout label="Interpretation on the output tensor" tone="algorithm">
-                {`For every $\\sigma \\in V_{\\text{sub}}$, the output tensor satisfies $R[\\sigma\\,\\omega] = R[\\omega]$ for every $\\omega \\in [n]^V$. This is a genuine symmetry of the computed output, not a symbolic invariance of the sum.`}
+                {`For every $\\sigma \\in G_{\\text{pt}}\\big|_V$, the output tensor satisfies $R[\\sigma\\,\\omega] = R[\\omega]$ for every $\\omega \\in [n]^V$. This is a genuine symmetry of the computed output tensor itself, not a symbolic invariance of the sum — the cells $R[\\omega]$ and $R[\\sigma\\,\\omega]$ carry identical values.`}
               </NarrativeCallout>
             </div>
 
@@ -220,7 +226,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
               <p className="font-semibold">Worked example — bilinear trace at <Latex math="n = 2" />.</p>
               <p className="mt-2">
                 <InlineMathText>
-                  {`The einsum $\\mathtt{ik{,}jl\\to ij}$ computes $R[i,j] = \\sum_{k,l} A[i,k] \\cdot A[j,l]$ with $V = \\{i, j\\}$ and $W = \\{k, l\\}$. The σ-loop's Source B emits the permutation that swaps the two identical $A$ operands; this exchanges $i \\leftrightarrow j$ together with $k \\leftrightarrow l$. The detected per-tuple group is therefore $G_{\\text{pt}} = \\{e,\\;(i\\;j)(k\\;l)\\}$. Restricting each element to V yields $V_{\\text{sub}} = \\{e,\\;(i\\;j)\\}$, a copy of $S_2$ acting on $\\{i,j\\}$.`}
+                  {`The einsum $\\mathtt{ik{,}jl\\to ij}$ computes $R[i,j] = \\sum_{k,l} A[i,k] \\cdot A[j,l]$ with $V = \\{i, j\\}$ and $W = \\{k, l\\}$. The σ-loop's Source B emits the permutation that swaps the two identical $A$ operands, exchanging $i \\leftrightarrow j$ together with $k \\leftrightarrow l$. The detected pointwise group is therefore $G_{\\text{pt}} = \\{e,\\;(i\\;j)(k\\;l)\\}$. Restricting each element to V yields $G_{\\text{pt}}\\big|_V = \\{e,\\;(i\\;j)\\}$, a copy of $S_2$ acting on $\\{i,j\\}$.`}
                 </InlineMathText>
               </p>
             </div>
@@ -288,13 +294,13 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
 
             <div className="mt-4 rounded-md border-l-4 border-emerald-500 bg-emerald-50 px-5 py-3 text-sm leading-7 text-emerald-900">
               <InlineMathText>
-                {`The two off-diagonal cells agree: $R[0,1] = R[1,0] = 21$. The equality holds term by term between $R[0,1]$ and $R[1,0]$ — each product in one row is the commuted twin of a product in the other. This is the defining feature of an element of $V_{\\text{sub}}$: the symmetry holds on the computed output tensor itself, $R[\\sigma\\,\\omega] = R[\\omega]$, not merely on the total over all outputs.`}
+                {`The two off-diagonal cells agree: $R[0,1] = R[1,0] = 21$, and the agreement is term-by-term — each product in one expansion is the commuted twin of a product in the other. The equality therefore holds on the computed output tensor itself, not merely on a total: $R[\\sigma\\,\\omega] = R[\\omega]$ for every $\\sigma \\in G_{\\text{pt}}\\big|_V$.`}
               </InlineMathText>
             </div>
 
             <div className="mt-4 rounded-md border border-border/60 bg-muted/20 px-4 py-3 text-[13px] leading-6 text-muted-foreground">
               <InlineMathText>
-                {`Equivalently, $R[i,j] = (\\sum_k A[i,k])(\\sum_l A[j,l]) = v_i\\,v_j$ where $v = \\mathrm{rowsum}(A)$; the outer product $v\\,v^\\top$ is symmetric by construction, so $V_{\\text{sub}} = \\{e,(i\\;j)\\}$ acts trivially on $R$ for every $A$.`}
+                {`Algebraically, $R[i,j] = (\\sum_k A[i,k])(\\sum_l A[j,l]) = v_i\\,v_j$ with $v = \\mathrm{rowsum}(A)$; the outer product $v\\,v^\\top$ is symmetric by construction, so $G_{\\text{pt}}\\big|_V = \\{e,(i\\;j)\\}$ acts trivially on $R$ for every $A$.`}
               </InlineMathText>
             </div>
           </section>
@@ -302,7 +308,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
           {/* §3 — S(W) */}
           <section>
             <div className="mb-2">
-              <div className={sectionNumber}>§3 · Building block 2</div>
+              <div className={sectionNumber}>§3 · Component 2 of G_f</div>
               <h3 className={sectionTitle}>
                 <Latex math="S(W)" /> — dummy relabellings of summed indices
               </h3>
@@ -310,10 +316,10 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
 
             <div className="grid gap-4 md:grid-cols-2">
               <NarrativeCallout label="Definition">
-                {`$S(W)$ is the full symmetric group on the summed labels $W$: every permutation of $W$, of which there are $|W|!$ in total, regardless of operand structure or declared symmetries.`}
+                {`$S(W)$ is the full symmetric group on the summed labels $W$: every permutation of $W$, of which there are $|W|!$ in total. Unlike $G_{\\text{pt}}\\big|_V$, the group $S(W)$ depends only on the cardinality of $W$; it is independent of operand structure or declared symmetries.`}
               </NarrativeCallout>
-              <NarrativeCallout label="Why every permutation of W is a counting symmetry" tone="algorithm">
-                {`W-labels are bound summation indices. Relabelling them consistently across every operand occurrence yields the identity $\\sum_{k} f(k) = \\sum_{k'} f(k')$ on the total. This invariance is syntactic — it holds regardless of $f$ — and it provides no term-level identity, since the individual summand values at $k=0$ and $k=1$ need not coincide.`}
+              <NarrativeCallout label="Why every permutation of W is a formal symmetry" tone="algorithm">
+                {`W-labels are bound summation indices. Relabelling them consistently across every operand occurrence yields the identity $\\sum_{k} f(k) = \\sum_{k'} f(k')$ on the total, independent of $f$. The invariance is syntactic — it holds at the level of the formal sum — and it provides no term-level identity, since individual summand values at $k=0$ and $k=1$ need not coincide.`}
               </NarrativeCallout>
             </div>
 
@@ -321,38 +327,38 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
               <p className="font-semibold">Worked example — bilinear trace (continued).</p>
               <p className="mt-1">
                 <InlineMathText>
-                  {`With $W = \\{k,l\\}$, $S(W) = \\{e,\\;(k\\;l)\\}$. The permutation $(k\\;l)$ is a counting symmetry because $\\sum_{k,l} A[i,k]\\,A[j,l] = \\sum_{k,l} A[i,l]\\,A[j,k]$ — the two double sums iterate over the same set of index pairs and differ only in which variable is named $k$.`}
+                  {`With $W = \\{k,l\\}$, $S(W) = \\{e,\\;(k\\;l)\\}$. The permutation $(k\\;l)$ is a formal symmetry because $\\sum_{k,l} A[i,k]\\,A[j,l] = \\sum_{k,l} A[i,l]\\,A[j,k]$ — the two double sums iterate over the same set of index pairs and differ only in which variable is named $k$.`}
                 </InlineMathText>
               </p>
               <p className="mt-2 text-muted-foreground text-[13px]">
                 <InlineMathText>
-                  {`However, $(k\\;l)$ is not per-tuple. Fixing $(i,j) = (0,1)$ and comparing the individual summands at $(k,l) = (0,1)$ and its image $(1,0)$ gives $A[0,0] \\cdot A[1,1]$ versus $A[0,1] \\cdot A[1,0]$. These expressions differ for a generic $A$, so applying $(k\\;l)$ to Burnside's orbit formula would produce a compression claim that is numerically incorrect.`}
+                  {`However, $(k\\;l)$ is not pointwise. Fix $(i,j) = (0,1)$ and compare the individual summands at $(k,l) = (0,1)$ and its image $(1,0)$: one is $A[0,0] \\cdot A[1,1]$ and the other is $A[0,1] \\cdot A[1,0]$. These expressions differ for a generic $A$, so applying $(k\\;l)$ to Burnside's orbit formula would yield a compression claim that does not match the true output.`}
                 </InlineMathText>
               </p>
             </div>
           </section>
 
-          {/* §4 — Assemble G_expr */}
+          {/* §4 — Assemble G_f */}
           <section>
             <div className="mb-2">
               <div className={sectionNumber}>§4 · Assembly</div>
               <h3 className={sectionTitle}>
-                <Latex math="G_{\text{expr}} = V_{\text{sub}} \times S(W)" />
+                <Latex math="G_{\text{f}} = G_{\text{pt}}\big|_V \times S(W)" />
               </h3>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
               <NarrativeCallout label="Construction">
-                {`Each pair $(\\sigma_V,\\;\\sigma_W)$ with $\\sigma_V \\in V_{\\text{sub}}$ and $\\sigma_W \\in S(W)$ lifts to a single label permutation on $V \\cup W$ that acts as $\\sigma_V$ on V-positions and as $\\sigma_W$ on W-positions. The set of all such lifts forms $G_{\\text{expr}}$, a subgroup of $\\mathrm{Sym}(V \\cup W)$ of order $|V_{\\text{sub}}| \\cdot |W|!$.`}
+                {`Each pair $(\\sigma_V,\\;\\sigma_W)$ with $\\sigma_V \\in G_{\\text{pt}}\\big|_V$ and $\\sigma_W \\in S(W)$ lifts to a single label permutation on $V \\cup W$ that acts as $\\sigma_V$ on V-positions and as $\\sigma_W$ on W-positions. The set of all such lifts forms $G_{\\text{f}}$, a subgroup of $\\mathrm{Sym}(V \\cup W)$ of order $|G_{\\text{pt}}\\big|_V| \\cdot |W|!$.`}
               </NarrativeCallout>
               <NarrativeCallout label="Cost of construction" tone="algorithm">
-                {`No Dimino closure is required. $V_{\\text{sub}}$ is already materialized from $G_{\\text{pt}}$; $S(W)$ is an immediate $|W|!$ enumeration of permutations of the summed labels. $G_{\\text{expr}}$ is then the on-the-fly Cartesian product.`}
+                {`No Dimino closure is required. $G_{\\text{pt}}\\big|_V$ is already determined by $G_{\\text{pt}}$, and $S(W)$ is an immediate $|W|!$ enumeration of permutations of the summed labels. $G_{\\text{f}}$ is then the on-the-fly Cartesian product.`}
               </NarrativeCallout>
             </div>
 
             <p className="mt-4 text-sm leading-7 text-foreground">
               The widget below enumerates these pairs for the currently selected preset. Each row in the rightmost column corresponds to the pair{' '}
-              <span className="font-mono text-[12px]">V<sub>sub</sub> row i × S(W) row j</span>.
+              <span className="font-mono text-[12px]">G<sub>pt</sub>|<sub>V</sub> row i × S(W) row j</span>.
               Hovering a row in any column highlights the corresponding rows in the other two columns.
             </p>
             <div className="mt-3">
@@ -364,12 +370,12 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
             </div>
           </section>
 
-          {/* §5 — Why not for compression */}
+          {/* §5 — Why G_f is not used for compression */}
           <section>
             <div className="mb-2">
-              <div className={sectionNumber}>§5 · Why G_expr is not used for compression</div>
+              <div className={sectionNumber}>§5 · Why G_f is not used for compression</div>
               <h3 className={sectionTitle}>
-                <Latex math="\alpha" /> under <Latex math="G_{\text{expr}}" />
+                <Latex math="\alpha" /> under <Latex math="G_{\text{f}}" />
               </h3>
             </div>
 
@@ -378,43 +384,43 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                 <div className="rounded-md border-l-4 border-amber-500 bg-amber-50 px-5 py-4 text-sm leading-7 text-amber-900">
                   <p>
                     <InlineMathText>
-                      {`Applying Burnside's orbit-counting formula to $G_{\\text{expr}}$ in place of $G_{\\text{pt}}$ would yield $\\alpha =$`}
+                      {`Applying Burnside's orbit-counting formula to $G_{\\text{f}}$ in place of $G_{\\text{pt}}$ would yield $\\alpha =$`}
                     </InlineMathText>{' '}
                     <strong>{exprAlpha}</strong>.
                   </p>
                   <p className="mt-2 text-[13px] text-amber-800">
                     <InlineMathText>
-                      {`This value is incorrect. Dummy-rename orbits under $S(W)$ contain tuples whose summand values differ, so selecting one representative per orbit and multiplying by the orbit size produces a compression claim that does not match the true output for a generic operand. The main-page cost card therefore reports $\\alpha$ with respect to $G_{\\text{pt}}$ only.`}
+                      {`This value is not correct as a compression count. Orbits under $S(W)$ contain tuples whose summand values differ (§3 above), so selecting one representative per orbit and multiplying by the orbit size produces a claim that does not match the true output for a generic operand. The main-page cost card therefore reports $\\alpha$ with respect to $G_{\\text{pt}}$ only.`}
                     </InlineMathText>
                   </p>
                 </div>
                 <div className="mt-4">
-                  <NarrativeCallout label="Why G_pt, and not G_expr" tone="accent">
-                    {`$G_{\\text{pt}}$ is the largest group under which every orbit's summand values are equal; Burnside's "one representative per orbit" principle is faithful there. Any larger group collapses orbits whose representatives Burnside would implicitly assume to be equal but which are not — yielding numerically wrong compressed outputs.`}
+                  <NarrativeCallout label="Why G_pt, and not G_f" tone="accent">
+                    {`$G_{\\text{pt}}$ is the largest group under which every orbit's summand values are equal; Burnside's "one representative per orbit" principle is faithful there. Any larger group collapses orbits whose representatives Burnside would implicitly assume to be equal when they are not, yielding compression claims that do not match the true output.`}
                   </NarrativeCallout>
                 </div>
               </>
             ) : (
               <div className="rounded-md border border-border/60 bg-muted/20 px-5 py-4 text-sm text-muted-foreground">
                 <InlineMathText>
-                  {`For this einsum $G_{\\text{expr}}$ coincides with $G_{\\text{pt}}$ (either $|W| \\leq 1$ or the residual $V_{\\text{sub}}$ factor is trivial), so the two counts agree and no contrast is available to display.`}
+                  {`For this einsum $G_{\\text{f}}$ coincides with $G_{\\text{pt}}$ (either $|W| \\leq 1$ or the induced permutation group on V is trivial), so the two counts agree and no contrast is available to display.`}
                 </InlineMathText>
               </div>
             )}
           </section>
 
-          {/* §6 — Leftover savings */}
+          {/* §6 — Leftover savings via G_pt|_V-aware storage */}
           <section>
             <div className="mb-2">
-              <div className={sectionNumber}>§6 · A real opportunity this engine does not claim</div>
+              <div className={sectionNumber}>§6 · Savings this engine does not claim</div>
               <h3 className={sectionTitle}>
-                Output-tensor symmetry from <Latex math="V_{\text{sub}}" />
+                Output-tensor symmetry from <Latex math="G_{\text{pt}}\big|_V" />
               </h3>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
               <NarrativeCallout label="The open optimization">
-                {`For every $\\sigma \\in V_{\\text{sub}}$, the identity $R[\\sigma\\,\\omega] = R[\\omega]$ holds on the output tensor. In a computational model equipped with symmetry-aware output storage — where a single physical slot represents all cells in a $V_{\\text{sub}}$-orbit — writes to mirrored cells collapse automatically, reducing the accumulation count.`}
+                {`For every $\\sigma \\in G_{\\text{pt}}\\big|_V$, the identity $R[\\sigma\\,\\omega] = R[\\omega]$ holds on the output tensor. In a computational model equipped with symmetry-aware output storage — where a single physical slot represents all cells in a $G_{\\text{pt}}\\big|_V$-orbit — writes to mirrored cells collapse automatically, reducing the accumulation count.`}
               </NarrativeCallout>
               <NarrativeCallout label="Why α does not fold this in" tone="algorithm">
                 {`The reported $\\alpha$ counts distinct accumulation operations in the enumerate-and-accumulate evaluation, using $G_{\\text{pt}}$ as the equivalence relation on summand values. Post-accumulation storage collapse is an independent optimization axis. Folding it into $\\alpha$ without changing the underlying computational model would conflate two distinct cost reductions and obscure the source of each.`}
@@ -425,19 +431,19 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
               <p className="font-semibold">Quantifying the gap — bilinear trace at n = 2.</p>
               <p className="mt-1">
                 <InlineMathText>
-                  {`The main-page cost card reports $\\alpha = 14$. Under $V_{\\text{sub}}$-aware storage, the output cells $R[0,1]$ and $R[1,0]$ occupy a single physical slot; the 4 accumulations each would have received reduce to a single stream of 4 accumulations into that slot plus no additional copy, for a total of 10 accumulations instead of 14.`}
+                  {`The main-page cost card reports $\\alpha = 14$. Under $G_{\\text{pt}}\\big|_V$-aware storage, the output cells $R[0,1]$ and $R[1,0]$ occupy a single physical slot; the 4 accumulations each would have received consolidate into 4 accumulations into that shared slot, for a total of 10 accumulations instead of 14.`}
                 </InlineMathText>
               </p>
               <p className="mt-2">
                 <InlineMathText>
-                  {`Generalising: per $V_{\\text{sub}}$-orbit of size $s$, the savings are $(s-1) \\cdot (\\text{accumulations per bin})$ operations. This is a real opportunity, and it lives in $V_{\\text{sub}}$; the $S(W)$ factor of $G_{\\text{expr}}$ contributes nothing at the storage level because $S(W)$ acts on summation variables, not on output cells.`}
+                  {`More generally, per $G_{\\text{pt}}\\big|_V$-orbit of size $s$, the savings are $(s-1) \\cdot (\\text{accumulations per bin})$ operations. This is a real opportunity, and it lives entirely in the induced permutation group $G_{\\text{pt}}\\big|_V$; the $S(W)$ factor of $G_{\\text{f}}$ contributes nothing at the storage level because $S(W)$ acts on summation variables, not on output cells.`}
                 </InlineMathText>
               </p>
             </div>
 
             <div className="mt-4">
               <NarrativeCallout label="Scope of the reported α" tone="accent">
-                {`The $\\alpha$ shown on the main page counts distinct accumulation operations in the enumerate-and-accumulate evaluation model, with $G_{\\text{pt}}$ as the equivalence relation on summand values. Three optimization axes lie outside this scope: $V_{\\text{sub}}$-level output-tensor storage (discussed above), algebraic restructuring such as factoring $R = v\\,v^\\top$, and contraction re-ordering. Each can reduce the total operation count further than $\\alpha$ reports, and each requires algorithmic machinery distinct from the per-tuple orbit compression this page measures.`}
+                {`The $\\alpha$ shown on the main page counts distinct accumulation operations in the enumerate-and-accumulate evaluation model, with $G_{\\text{pt}}$ as the equivalence relation on summand values. Three optimization axes lie outside this scope: $G_{\\text{pt}}\\big|_V$-level output-tensor storage (discussed above), algebraic restructuring such as factoring $R = v\\,v^\\top$, and contraction re-ordering. Each can reduce the total operation count further than $\\alpha$ reports, and each requires algorithmic machinery distinct from the pointwise orbit compression this page measures.`}
               </NarrativeCallout>
             </div>
           </section>

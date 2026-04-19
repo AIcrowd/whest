@@ -79,15 +79,16 @@ function ColoredLabels({ text, vSet, wSet }) {
 }
 
 /**
- * V-sub × S(W) construction widget. Renders a 5-column grid:
+ * G_f = G_pt|_V × S(W) construction widget. Renders a 5-column grid:
  *
- *   V-sub   ×   S(W)   =   G_expr
+ *   G_pt|_V   ×   S(W)   =   G_f
  *
- * with standard cycle notation (spaces between labels) and every label
- * inside a cycle colored by its V/W class (V → blue, W → slate) using the
- * same canonical hexes the rest of the explorer uses. Hover is
- * bidirectional: hover any row in any column to highlight its counterparts
- * in the other two.
+ * where G_pt|_V is the induced permutation group on V (the V-restriction
+ * of G_pt), S(W) is the symmetric group on W-labels, and G_f is the
+ * formal symmetry group. Every label inside a cycle is colored by its
+ * V/W class (V → blue, W → slate) using the canonical hexes the rest of
+ * the explorer uses. Hover is bidirectional: hover any row in any column
+ * to highlight its counterparts in the other two.
  */
 export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLabels = [] }) {
   const [hoveredVIdx, setHoveredVIdx] = useState(null);
@@ -100,7 +101,7 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
   if (!expressionGroup || expressionGroup.order <= 1) {
     return (
       <div className="rounded-md border border-border/60 bg-muted/20 px-5 py-4 text-sm text-muted-foreground">
-        V-sub × S(W) is trivial for this einsum (only the identity permutation).
+        G<sub>pt</sub>|<sub>V</sub> × S(W) is trivial for this einsum (only the identity permutation).
       </div>
     );
   }
@@ -157,9 +158,9 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
         {/* Column headers */}
         <div>
           <div className={colHead}>
-            <Latex math="V_{\text{sub}}" />
+            <Latex math="G_{\text{pt}}\big|_V" />
             <span className="ml-1 text-[10px] text-muted-foreground normal-case tracking-normal">
-              (<Latex math="G_{\text{pt}}" /> restricted to V)
+              (induced permutation group on V)
             </span>
           </div>
         </div>
@@ -168,21 +169,21 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
           <div className={colHead}>
             <Latex math="S(W)" />
             <span className="ml-1 text-[10px] text-muted-foreground normal-case tracking-normal">
-              (all dummy-rename permutations)
+              (symmetric group on W-labels)
             </span>
           </div>
         </div>
         <div className={colHead} />
         <div>
           <div className={colHead}>
-            <Latex math="G_{\text{expr}} = V_{\text{sub}} \times S(W)" />
+            <Latex math="G_{\text{f}} = G_{\text{pt}}\big|_V \times S(W)" />
             <span className="ml-1 text-[10px] text-muted-foreground normal-case tracking-normal">
-              (expression-level group)
+              (formal symmetry group)
             </span>
           </div>
         </div>
 
-        {/* V-sub column */}
+        {/* G_pt|_V column */}
         <div className="flex flex-col gap-0.5">
           {vSub.map((vElem, vi) => {
             const active = effectiveVIdx === vi;
@@ -212,7 +213,7 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
           })}
         </div>
 
-        {/* × separator (one per V-sub row) */}
+        {/* × separator (one per G_pt|_V row) */}
         <div className="flex flex-col gap-0.5">
           {vSub.map((_, vi) => (
             <div
@@ -280,7 +281,7 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
           )}
         </div>
 
-        {/* G_expr product column */}
+        {/* G_f product column */}
         <div className="flex flex-col gap-0.5">
           {vSub.flatMap((_, vi) =>
             sw.map((_, wi) => {

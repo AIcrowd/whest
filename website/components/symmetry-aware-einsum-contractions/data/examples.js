@@ -101,7 +101,7 @@ export const EXAMPLES = [
     id: 'frobenius',
     name: 'Frobenius ⟨A,A⟩',
     formula: "einsum('ij,ij→', A, A)",
-    description: 'Generic A with matching subscripts → no per-tuple symmetry; μ = α = n².',
+    description: 'Generic A with matching subscripts → no pointwise symmetry; μ = α = n².',
     expectedGroup: 'trivial',
     regimeId: 'trivial',
     color: '#64748B',
