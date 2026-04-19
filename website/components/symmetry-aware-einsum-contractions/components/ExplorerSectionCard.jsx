@@ -145,7 +145,15 @@ function ExplorerSectionCard({
                   {title}
                 </CardTitle>
               ) : null}
-              {description ? <CardDescription className="text-sm leading-6">{description}</CardDescription> : null}
+              {description ? (
+                // Paper-register italic lede — mirrors the DocsDescription
+                // treatment in app/global.css (Source Serif 4 italic 18px
+                // gray-600 / 1.5), so the section 'question' reads as an
+                // editorial subtitle, not a dense UI caption.
+                <CardDescription className="font-serif text-[17px] italic leading-[1.5] text-gray-600">
+                  {description}
+                </CardDescription>
+              ) : null}
             </div>
             {action ? <CardAction>{action}</CardAction> : null}
           </div>
