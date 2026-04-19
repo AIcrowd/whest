@@ -8,6 +8,26 @@ def test_seed_cases_include_api_and_operator_surfaces():
     assert ("add", "operator") in surfaces
     assert ("matmul", "api") in surfaces
     assert ("matmul", "operator") in surfaces
+    assert len({case.case_id for case in cases}) == len(cases)
+    assert {
+        case.case_id
+        for case in cases
+    } == {
+        "add-api-tiny",
+        "add-api-medium",
+        "add-operator-tiny",
+        "add-operator-medium",
+        "matmul-api-tiny",
+        "matmul-api-medium",
+        "matmul-operator-tiny",
+        "matmul-operator-medium",
+    }
+    assert {
+        case.op_name: case.family for case in cases if case.surface == "api"
+    }["add"] == "pointwise"
+    assert {
+        case.op_name: case.family for case in cases if case.surface == "api"
+    }["matmul"] == "contractions"
 
 
 def test_seed_cases_have_required_fields():
@@ -24,5 +44,7 @@ def test_seed_cases_have_required_fields():
         assert case.size_name in {"tiny", "medium"}
         assert case.startup_mode
         assert case.source_file
+        assert case.operand_shapes
+        assert all(isinstance(shape, tuple) for shape in case.operand_shapes)
         assert callable(case.numpy_factory)
         assert callable(case.whest_factory)

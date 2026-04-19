@@ -24,12 +24,29 @@ class BenchmarkCase:
     size_name: str
     startup_mode: str
     source_file: str
+    operand_shapes: tuple[tuple[int, ...], tuple[int, ...]]
     numpy_factory: Callable[[object, object], object]
     whest_factory: Callable[[object, object], object]
 
 
 def _case_id(op_name: str, surface: Surface, size_name: str) -> str:
     return f"{op_name}-{surface}-{size_name}"
+
+
+def _add_shapes(size_name: str) -> tuple[tuple[int, ...], tuple[int, ...]]:
+    if size_name == "tiny":
+        return ((8,), (8,))
+    if size_name == "medium":
+        return ((1024,), (1024,))
+    raise ValueError(f"unsupported add size_name: {size_name}")
+
+
+def _matmul_shapes(size_name: str) -> tuple[tuple[int, ...], tuple[int, ...]]:
+    if size_name == "tiny":
+        return ((8, 8), (8, 8))
+    if size_name == "medium":
+        return ((512, 512), (512, 512))
+    raise ValueError(f"unsupported matmul size_name: {size_name}")
 
 
 def _numpy_add_api(a, b):
@@ -78,6 +95,7 @@ def seed_cases() -> tuple[BenchmarkCase, ...]:
             size_name="tiny",
             startup_mode="warmup",
             source_file="src/whest/_pointwise.py",
+            operand_shapes=_add_shapes("tiny"),
             numpy_factory=_numpy_add_api,
             whest_factory=_whest_add_api,
         ),
@@ -90,6 +108,7 @@ def seed_cases() -> tuple[BenchmarkCase, ...]:
             size_name="medium",
             startup_mode="warmup",
             source_file="src/whest/_pointwise.py",
+            operand_shapes=_add_shapes("medium"),
             numpy_factory=_numpy_add_api,
             whest_factory=_whest_add_api,
         ),
@@ -102,6 +121,7 @@ def seed_cases() -> tuple[BenchmarkCase, ...]:
             size_name="tiny",
             startup_mode="warmup",
             source_file="src/whest/_ndarray.py",
+            operand_shapes=_add_shapes("tiny"),
             numpy_factory=_numpy_add_operator,
             whest_factory=_whest_add_operator,
         ),
@@ -114,54 +134,59 @@ def seed_cases() -> tuple[BenchmarkCase, ...]:
             size_name="medium",
             startup_mode="warmup",
             source_file="src/whest/_ndarray.py",
+            operand_shapes=_add_shapes("medium"),
             numpy_factory=_numpy_add_operator,
             whest_factory=_whest_add_operator,
         ),
         BenchmarkCase(
             case_id=_case_id("matmul", "api", "tiny"),
             op_name="matmul",
-            family="linalg",
+            family="contractions",
             surface="api",
             dtype=dtype,
             size_name="tiny",
             startup_mode="warmup",
             source_file="src/whest/_pointwise.py",
+            operand_shapes=_matmul_shapes("tiny"),
             numpy_factory=_numpy_matmul_api,
             whest_factory=_whest_matmul_api,
         ),
         BenchmarkCase(
             case_id=_case_id("matmul", "api", "medium"),
             op_name="matmul",
-            family="linalg",
+            family="contractions",
             surface="api",
             dtype=dtype,
             size_name="medium",
             startup_mode="warmup",
             source_file="src/whest/_pointwise.py",
+            operand_shapes=_matmul_shapes("medium"),
             numpy_factory=_numpy_matmul_api,
             whest_factory=_whest_matmul_api,
         ),
         BenchmarkCase(
             case_id=_case_id("matmul", "operator", "tiny"),
             op_name="matmul",
-            family="linalg",
+            family="contractions",
             surface="operator",
             dtype=dtype,
             size_name="tiny",
             startup_mode="warmup",
             source_file="src/whest/_ndarray.py",
+            operand_shapes=_matmul_shapes("tiny"),
             numpy_factory=_numpy_matmul_operator,
             whest_factory=_whest_matmul_operator,
         ),
         BenchmarkCase(
             case_id=_case_id("matmul", "operator", "medium"),
             op_name="matmul",
-            family="linalg",
+            family="contractions",
             surface="operator",
             dtype=dtype,
             size_name="medium",
             startup_mode="warmup",
             source_file="src/whest/_ndarray.py",
+            operand_shapes=_matmul_shapes("medium"),
             numpy_factory=_numpy_matmul_operator,
             whest_factory=_whest_matmul_operator,
         ),
