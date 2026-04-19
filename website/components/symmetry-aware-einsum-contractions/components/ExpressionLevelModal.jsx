@@ -46,6 +46,94 @@ function describeOperands(preset) {
   return rows;
 }
 
+/**
+ * Long-form, human-readable description of a single operand's declared axis
+ * symmetry. Richer than `variableSymmetryLabel` (which returns the short
+ * badge string `S3`, `C4`, `dense`, etc.) — this also names the axes
+ * involved and spells out the custom generators, so the appendix tooltip
+ * can show the reader the full construction without them needing to open
+ * the builder.
+ *
+ * Examples:
+ *   - dense
+ *   - S3 on axes (0, 1, 2)
+ *   - C3 on axes (1, 2, 3)
+ *   - custom ⟨(0 1), (0 2), (3 4)⟩
+ */
+function detailedSymmetryDescription(variable) {
+  if (!variable || variable.symmetry === 'none') return 'dense';
+  if (variable.symmetry === 'custom') {
+    return `custom ⟨${(variable.generators || '').trim() || '∅'}⟩`;
+  }
+  const axes = variable.symAxes ?? [];
+  const axesStr = axes.length ? `axes (${axes.join(', ')})` : 'all axes';
+  const prefix =
+    variable.symmetry === 'symmetric' ? 'S' :
+    variable.symmetry === 'cyclic' ? 'C' :
+    variable.symmetry === 'dihedral' ? 'D' : '';
+  const k = axes.length || variable.rank;
+  return `${prefix}${k} on ${axesStr}`;
+}
+
+/**
+ * Content for the hover tooltip on each row's Einsum cell. Renders:
+ *   - Line 1: the full `einsum(...)` formula exactly as the page's main-page
+ *     preset list shows it (operand names included).
+ *   - Line 2+: one row per distinct operand with its rank and a full
+ *     symmetry descriptor (axes / generators spelled out).
+ *
+ * Designed to sit inside a `group-hover:block` wrapper so the reveal is
+ * pure CSS — no state, no Portal, works across every row identically.
+ */
+function EinsumConstructionTooltip({ preset }) {
+  if (!preset) return null;
+  const opNames = (preset.expression?.operandNames ?? '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const counts = new Map();
+  for (const n of opNames) counts.set(n, (counts.get(n) ?? 0) + 1);
+  const seen = new Set();
+  const distinctOps = [];
+  for (const n of opNames) {
+    if (seen.has(n)) continue;
+    seen.add(n);
+    const v = preset.variables?.find((x) => x.name === n);
+    distinctOps.push({ name: n, count: counts.get(n), variable: v });
+  }
+  return (
+    <>
+      <div className="mb-2 font-mono text-[12px] font-semibold text-gray-900 break-all">
+        {preset.formula}
+      </div>
+      <div className="border-t border-gray-200 pt-2">
+        <div className="mb-1 text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">
+          Operands
+        </div>
+        <div className="space-y-1">
+          {distinctOps.map((op) => (
+            <div key={op.name} className="flex flex-wrap items-baseline gap-x-1.5 text-[11.5px] leading-5">
+              <span className="font-mono font-semibold text-gray-900">{op.name}</span>
+              {op.count > 1 && (
+                <span className="font-mono text-[10.5px] text-gray-500">×{op.count}</span>
+              )}
+              <span className="text-gray-400">·</span>
+              <span className="text-gray-700">rank {op.variable?.rank ?? '?'}</span>
+              <span className="text-gray-400">·</span>
+              <span className="font-mono text-gray-800">{detailedSymmetryDescription(op.variable)}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      {preset.description && (
+        <div className="mt-2 border-t border-gray-200 pt-2 text-[11px] leading-5 text-gray-600">
+          {preset.description}
+        </div>
+      )}
+    </>
+  );
+}
+
 // V/W color palette — same hexes the rest of the page uses so the worked
 // examples inside the modal read against the same colour convention.
 const COLOR_V = '#4A7CFF';
@@ -555,9 +643,28 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                         >
                           <td className="px-2 py-2 font-mono whitespace-nowrap">{r.id}</td>
                           <td className="px-2 py-2 font-mono whitespace-nowrap">
-                            {subs.replace(/,/g, ', ')}
-                            <span className="mx-1">→</span>
-                            {output || <Latex math="\varnothing" />}
+                            {/*
+                              Pure-CSS hover reveal: the inner `group` wraps both
+                              the cell's visible einsum text and an absolutely
+                              positioned tooltip. `group-hover:block` flips the
+                              tooltip in when the cursor enters the wrapper; a
+                              dotted underline on the einsum surface signals the
+                              affordance. z-50 keeps it above sibling rows, and
+                              `pointer-events-none` prevents the panel from
+                              trapping the cursor inside the cell (important so
+                              moving to the next row dismisses the current
+                              tooltip cleanly).
+                            */}
+                            <div className="group relative inline-block">
+                              <span className="cursor-help border-b border-dotted border-gray-300">
+                                {subs.replace(/,/g, ', ')}
+                                <span className="mx-1">→</span>
+                                {output || <Latex math="\varnothing" />}
+                              </span>
+                              <div className="pointer-events-none absolute left-0 top-full z-50 mt-1.5 hidden w-[380px] whitespace-normal rounded-lg border border-gray-300 bg-white p-3 text-[12px] leading-5 text-gray-700 shadow-xl group-hover:block">
+                                <EinsumConstructionTooltip preset={preset} />
+                              </div>
+                            </div>
                           </td>
                           <td className="px-2 py-2 whitespace-nowrap">
                             {operands.map((o, i) => (
@@ -589,7 +696,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                   </tbody>
                 </table>
                 <p className="mt-2 text-[11px] italic text-muted-foreground">
-                  All entries computed at <Latex math="n = 3" />; sorted by % saving, descending. <span className="font-mono not-italic">×k</span> on an operand indicates it appears <Latex math="k" /> times in the expression (driving Source B of the σ-loop).
+                  All entries computed at <Latex math="n = 3" />; sorted by % saving, descending. <span className="font-mono not-italic">×k</span> on an operand indicates it appears <Latex math="k" /> times in the expression (driving Source B of the σ-loop). Hover any einsum to see the full construction with per-operand ranks, declared axes, and generators.
                 </p>
               </div>
               <p className="mt-3 text-[13px] text-muted-foreground">
