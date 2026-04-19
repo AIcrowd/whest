@@ -4,6 +4,62 @@ import InlineMathText from './InlineMathText.jsx';
 import NarrativeCallout from './NarrativeCallout.jsx';
 import VSubSwConstruction from './VSubSwConstruction.jsx';
 import { computeExpressionAlphaTotal } from '../engine/comparisonAlpha.js';
+import { EXAMPLES } from '../data/examples.js';
+
+// Lookup map keyed by preset id so §6's savings table can pull the raw
+// einsum and per-operand symmetry declarations straight from the source
+// of truth, rather than duplicating that data into the row array below.
+const EXAMPLES_BY_ID = new Map(EXAMPLES.map((ex) => [ex.id, ex]));
+
+/**
+ * Compact human-readable descriptor for a single operand's declared axis
+ * symmetry. Returns:
+ *   - 'none'            — no declared symmetry
+ *   - 'symmetric'       — full symmetric across all axes
+ *   - 'sym(0,1,2)'      — symmetric restricted to listed axes
+ *   - 'cyclic'          — full cyclic across all axes
+ *   - 'cyclic(1,2,3)'   — cyclic restricted to listed axes
+ *   - '⟨(0 1), (2 3)⟩'  — user-declared generators
+ */
+function symDescriptor(variable) {
+  if (!variable || variable.symmetry === 'none') return 'none';
+  const axes = variable.symAxes;
+  const axesStr = axes?.join(',') ?? '';
+  const fullRank = axes && axes.length === variable.rank;
+  if (variable.symmetry === 'symmetric') return fullRank ? 'symmetric' : `sym(${axesStr})`;
+  if (variable.symmetry === 'cyclic') return fullRank ? 'cyclic' : `cyclic(${axesStr})`;
+  if (variable.symmetry === 'custom') return `⟨${(variable.generators || '').trim()}⟩`;
+  return variable.symmetry;
+}
+
+/**
+ * Per-preset operand listing: distinct operand names in first-appearance
+ * order, annotated with their repeat count (drives Source B of the σ-loop)
+ * and declared axis symmetry (Source A). Used to render the "Operand sym"
+ * column in §6's savings table.
+ */
+function describeOperands(preset) {
+  if (!preset) return [];
+  const opNames = (preset.expression?.operandNames ?? '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const counts = new Map();
+  for (const n of opNames) counts.set(n, (counts.get(n) ?? 0) + 1);
+  const seen = new Set();
+  const rows = [];
+  for (const n of opNames) {
+    if (seen.has(n)) continue;
+    seen.add(n);
+    const v = preset.variables?.find((x) => x.name === n);
+    rows.push({
+      name: n,
+      count: counts.get(n),
+      sym: symDescriptor(v),
+    });
+  }
+  return rows;
+}
 
 // V/W color palette — same hexes the rest of the page uses so the worked
 // examples inside the modal read against the same colour convention.
@@ -476,34 +532,60 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                 </InlineMathText>
               </p>
               <div className="mt-3 overflow-x-auto">
-                <table className="w-full text-[13px] border-collapse">
+                <table className="w-full text-[12px] border-collapse">
                   <thead>
                     <tr className="border-b border-border/60 text-left text-[12px] text-muted-foreground">
-                      <th className="px-3 py-2 font-semibold">Preset</th>
-                      <th className="px-3 py-2 font-semibold">V</th>
-                      <th className="px-3 py-2 font-semibold"><Latex math="G_{\text{pt}}\big|_V" /></th>
-                      <th className="px-3 py-2 font-semibold text-right"><Latex math="\alpha_{\text{engine}}" /></th>
-                      <th className="px-3 py-2 font-semibold text-right"><Latex math="\alpha_{\text{storage}}" /></th>
-                      <th className="px-3 py-2 font-semibold text-right">Saving</th>
+                      <th className="px-2 py-2 font-semibold">Preset</th>
+                      <th className="px-2 py-2 font-semibold">Einsum</th>
+                      <th className="px-2 py-2 font-semibold">Operand sym.</th>
+                      <th className="px-2 py-2 font-semibold">V</th>
+                      <th className="px-2 py-2 font-semibold"><Latex math="G_{\text{pt}}\big|_V" /></th>
+                      <th className="px-2 py-2 font-semibold text-right"><Latex math="\alpha_{\text{engine}}" /></th>
+                      <th className="px-2 py-2 font-semibold text-right"><Latex math="\alpha_{\text{storage}}" /></th>
+                      <th className="px-2 py-2 font-semibold text-right">Saving</th>
                     </tr>
                   </thead>
                   <tbody>
                     {SAVINGS_TABLE_ROWS.map((r, idx) => {
                       const isLast = idx === SAVINGS_TABLE_ROWS.length - 1;
                       const hasSaving = r.saving > 0;
+                      const preset = EXAMPLES_BY_ID.get(r.id);
+                      const subs = preset?.expression?.subscripts ?? '';
+                      const output = preset?.expression?.output ?? '';
+                      const operands = describeOperands(preset);
                       return (
                         <tr
                           key={r.id}
                           className={`${isLast ? '' : 'border-b border-border/40'} ${hasSaving ? '' : 'text-muted-foreground'}`}
                         >
-                          <td className="px-3 py-2 font-mono">{r.id}</td>
-                          <td className="px-3 py-2">
+                          <td className="px-2 py-2 font-mono whitespace-nowrap">{r.id}</td>
+                          <td className="px-2 py-2 font-mono whitespace-nowrap">
+                            {subs.replace(/,/g, ', ')}
+                            <span className="mx-1">→</span>
+                            {output || <Latex math="\varnothing" />}
+                          </td>
+                          <td className="px-2 py-2 whitespace-nowrap">
+                            {operands.map((o, i) => (
+                              <span key={o.name}>
+                                {i > 0 && <span className="text-muted-foreground">; </span>}
+                                <span className="font-mono font-semibold">{o.name}</span>
+                                {o.count > 1 && (
+                                  <span className="font-mono text-muted-foreground">×{o.count}</span>
+                                )}
+                                <span className="text-muted-foreground">: </span>
+                                <span className={o.sym === 'none' ? 'text-muted-foreground italic' : 'font-mono'}>
+                                  {o.sym}
+                                </span>
+                              </span>
+                            ))}
+                          </td>
+                          <td className="px-2 py-2 whitespace-nowrap">
                             <Latex math={r.v === '\\varnothing' ? '\\varnothing' : `\\{${r.v}\\}`} />
                           </td>
-                          <td className="px-3 py-2"><Latex math={r.vSub} /></td>
-                          <td className="px-3 py-2 text-right font-mono">{r.ae}</td>
-                          <td className="px-3 py-2 text-right font-mono">{r.as}</td>
-                          <td className={`px-3 py-2 text-right font-mono ${hasSaving ? 'text-emerald-700' : ''}`}>
+                          <td className="px-2 py-2 whitespace-nowrap"><Latex math={r.vSub} /></td>
+                          <td className="px-2 py-2 text-right font-mono">{r.ae}</td>
+                          <td className="px-2 py-2 text-right font-mono">{r.as}</td>
+                          <td className={`px-2 py-2 text-right font-mono whitespace-nowrap ${hasSaving ? 'text-emerald-700' : ''}`}>
                             {hasSaving ? `${r.saving} (${r.pct}%)` : '—'}
                           </td>
                         </tr>
@@ -512,7 +594,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                   </tbody>
                 </table>
                 <p className="mt-2 text-[11px] italic text-muted-foreground">
-                  All entries computed at <Latex math="n = 3" />; sorted by % saving, descending.
+                  All entries computed at <Latex math="n = 3" />; sorted by % saving, descending. <span className="font-mono not-italic">×k</span> on an operand indicates it appears <Latex math="k" /> times in the expression (driving Source B of the σ-loop).
                 </p>
               </div>
               <p className="mt-3 text-[13px] text-muted-foreground">
