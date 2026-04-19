@@ -237,17 +237,25 @@ function FormulaRow({ leaf }) {
 // ---------------------------------------------------------------------------
 
 function AggregationExplainer() {
+  // Editorial flat layout — no outer card, no inner gradient-box. The
+  // formula and its glossary float inside Section 5's ExplorerSectionCard
+  // with only whitespace framing them, so the reader's eye travels
+  // directly from the top 'Total = …' line down through the six
+  // piecewise α_a cases without being boxed three times over.
   return (
-    <ExplorerSectionCard
-      eyebrow={<AnchorLink anchorId="how-components-combine" labelText="How components combine">How components combine</AnchorLink>}
+    <section
       id="how-components-combine"
+      aria-labelledby="how-components-combine-sr"
       className="scroll-mt-24"
     >
-      <div className="rounded-xl border border-border/60 bg-gradient-to-br from-surface-raised/60 to-white px-6 py-8">
+      <h3 id="how-components-combine-sr" className="sr-only">
+        How components combine
+      </h3>
+      <div className="py-4">
         <HeroFormulaBlock />
       </div>
 
-      <div className="mx-auto mt-8 max-w-2xl border-t border-border/60 pt-5">
+      <div className="mx-auto mt-10 max-w-2xl border-t border-gray-100 pt-6">
         <dl className="grid grid-cols-[auto_1fr] items-baseline gap-x-5 gap-y-3 text-[12.5px] leading-relaxed text-muted-foreground">
           {AGGREGATION_LEGEND.map((entry) => (
             <div key={entry.symbol} className="contents">
@@ -266,22 +274,27 @@ function AggregationExplainer() {
           ))}
         </dl>
       </div>
-    </ExplorerSectionCard>
+    </section>
   );
 }
 
 // ---------------------------------------------------------------------------
-// ComponentRecap — unchanged: color dot + case badge + label set per
-// component. Component colors live only here; the formula above uses symbol
-// roles instead.
+// ComponentRecap — inline legend entries (not pills). Component identity
+// color lives as a thin vertical rule left of each entry; the CaseBadge
+// carries regime semantics; mono-italic labels carry the axis set. Drops
+// the triple-boundary pill (rounded-full border + 3px left rail + inner
+// color dot) which read as a chip row rather than an editorial legend.
+// Component identity colors (componentColor) still thread through to the
+// Interaction Graph hulls in Act 4 and the combine formula above — only
+// the visual treatment here flattens.
 // ---------------------------------------------------------------------------
 
 function ComponentRecap({ components }) {
   if (!components?.length) return null;
 
   return (
-    <div id="component-recap" className="flex flex-wrap items-center gap-2 scroll-mt-24">
-      <span className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+    <div id="component-recap" className="flex flex-wrap items-center gap-x-6 gap-y-2 scroll-mt-24">
+      <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-coral">
         <AnchorLink anchorId="component-recap" labelText="Component recap">
           Component recap
         </AnchorLink>
@@ -289,21 +302,18 @@ function ComponentRecap({ components }) {
       {components.map((comp, idx) => (
         <span
           key={`component-recap-${idx}`}
-          className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-raised py-1 pl-2 pr-2.5 text-[11px] leading-none text-muted-foreground"
-          style={{ borderLeftColor: componentColor(idx), borderLeftWidth: 3 }}
+          className="inline-flex items-center gap-2 text-[12px] leading-none text-gray-600"
         >
           <span
             aria-hidden="true"
-            className="inline-block h-2 w-2 shrink-0 rounded-full"
+            className="inline-block h-4 w-[3px] shrink-0 rounded-[2px]"
             style={{ backgroundColor: componentColor(idx) }}
           />
-          <span className="inline-flex items-center">
-            <CaseBadge
-              regimeId={comp.accumulation?.regimeId ?? comp.shape}
-              size="xs"
-            />
-          </span>
-          <span className="font-mono leading-none">{`{${(comp.labels ?? []).join(', ')}}`}</span>
+          <CaseBadge
+            regimeId={comp.accumulation?.regimeId ?? comp.shape}
+            size="xs"
+          />
+          <span className="font-mono text-gray-900">{`{${(comp.labels ?? []).join(', ')}}`}</span>
         </span>
       ))}
     </div>
