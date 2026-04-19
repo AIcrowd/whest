@@ -19,6 +19,7 @@ import BipartiteGraph from './components/BipartiteGraph.jsx';
 import MatrixView from './components/MatrixView.jsx';
 import SigmaLoop from './components/SigmaLoop.jsx';
 import DiminoView from './components/DiminoView.jsx';
+import WreathStructureView from './components/WreathStructureView.jsx';
 import RoleBadge from './components/RoleBadge.jsx';
 import ComponentCostView from './components/ComponentCostView.jsx';
 import TotalCostView from './components/TotalCostView.jsx';
@@ -393,7 +394,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         <InlineMathText>{EXPLORER_ACTS[2].bridge}</InlineMathText>
                       </p>
                     )}
-                    <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+                    <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
                       <div id="sigma-loop" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
                         <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
                           <AnchorLink anchorId="sigma-loop" labelText="σ-Loop & π Detection">
@@ -408,6 +409,18 @@ export default function SymmetryAwareEinsumContractionsApp() {
                           variableColors={variableColors}
                           group={group}
                           onSelectedPairChange={setSelectedSigmaPairIndex}
+                        />
+                      </div>
+                      <div id="wreath-structure" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
+                        <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
+                          <AnchorLink anchorId="wreath-structure" labelText="Wreath structure">
+                            Wreath structure
+                          </AnchorLink>
+                        </h3>
+                        <WreathStructureView
+                          analysis={analysis}
+                          example={normalizedExample}
+                          onOpenModalSection={() => setExprModalOpen(true)}
                         />
                       </div>
                       <div id="generator-construction" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
