@@ -63,7 +63,7 @@ function EinsumIntroColumn() {
         A tensor operation, written as one formula
       </h3>
 
-      <p className="mt-3 text-[15px] leading-7 text-foreground">
+      <p className="mt-3 font-serif text-[17px] leading-[1.75] text-gray-700">
         Every index label that appears on an input but not on the output is{' '}
         <strong className="font-semibold">summed over</strong>; labels on the output are{' '}
         <strong className="font-semibold">free</strong>. A dense implementation pays for every cell of
@@ -71,7 +71,7 @@ function EinsumIntroColumn() {
       </p>
 
       <div className="mt-6 overflow-x-auto rounded-2xl border border-stone-200 bg-white px-5 py-6">
-        <p className="text-center font-heading text-[11px] font-semibold uppercase tracking-[0.16em] text-stone-500">
+        <p className="text-center font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">
           Example — a 4‑operand matrix chain
         </p>
         <div className="mt-3 flex justify-center text-[19px]">
@@ -95,7 +95,7 @@ function EinsumIntroColumn() {
       <div className="mt-6 flex-1" aria-hidden="true" />
 
       <div id="where-symmetry-enters" className="rounded-2xl border border-primary/20 bg-accent/40 px-5 py-5 scroll-mt-24">
-        <span className="font-heading text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+        <span className="font-sans text-[11px] font-semibold uppercase tracking-[0.16em] text-coral">
           <AnchorLink
             anchorId="where-symmetry-enters"
             labelText="Where symmetry enters"
@@ -138,7 +138,7 @@ function MentalFrameworkColumn() {
         The same two loops — dense or symmetric
       </h3>
 
-      <p className="mt-3 text-[15px] leading-7 text-foreground">
+      <p className="mt-3 font-serif text-[17px] leading-[1.75] text-gray-700">
         Every contraction has the same shape. Symmetry only changes the content of three things:{' '}
         <code className="font-mono">RepSet</code>, <code className="font-mono">Outs(rep)</code>, and{' '}
         <code className="font-mono">coeff(rep, out)</code>. The rest of the explorer is about
@@ -179,7 +179,7 @@ export default function AlgorithmAtAGlance() {
           <MentalFrameworkColumn />
         </div>
 
-        <p className="mt-10 border-t border-stone-200 pt-8 text-[15px] leading-7 text-foreground">
+        <p className="mt-10 border-t border-stone-200 pt-8 font-serif text-[17px] leading-[1.75] text-gray-700">
           The rest of this page shows how the explorer detects the symmetry group{' '}
           <Latex math="G" /> from a contraction and computes{' '}
           <Latex math={String.raw`\mu`} /> and <Latex math={String.raw`\alpha`} /> automatically.

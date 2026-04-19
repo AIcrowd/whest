@@ -104,7 +104,7 @@ export default function MentalFrameworkCode() {
   return (
     <figure className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-stone-200 bg-stone-50 shadow-sm">
       <figcaption className="flex items-baseline justify-between gap-3 border-b border-stone-200/70 px-5 py-3 md:px-6">
-        <span className="font-heading text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+        <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">
           Mental framework
         </span>
         <span className="font-mono text-xs text-stone-400">contraction.py</span>
@@ -139,7 +139,7 @@ export default function MentalFrameworkCode() {
           bottom of the figure so that when the parent column stretches to
           match the left side's height, the band stays glued to the bottom. */}
       <div className="mt-auto border-t border-stone-200/70 bg-stone-100/60 px-5 py-4 md:px-6">
-        <div className="font-heading text-[10px] font-semibold uppercase tracking-[0.18em] text-stone-500">
+        <div className="font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">
           Counting convention
         </div>
         <p className="mt-1.5 text-[12.5px] leading-6 text-stone-700">
