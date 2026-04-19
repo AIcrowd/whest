@@ -642,14 +642,28 @@ export default function HomePage() {
           lineHeight: 1.6,
         }}
       >
-        whest is maintained by AIcrowd. The design system extends the{' '}
-        <Link
-          href="/symmetry-aware-einsum-contractions"
-          className="italic text-gray-500 underline-offset-4 hover:text-[#F0524D] hover:underline dark:text-gray-400"
+        <span className="whest-wordmark not-italic text-[inherit]" aria-label="Whest.">
+          Whest<span className="whest-wordmark__dot">.</span>
+        </span>{' '}
+        is built and maintained by{' '}
+        <a
+          href="https://www.aicrowd.com"
+          target="_blank"
+          rel="noreferrer noopener"
+          className="italic text-gray-500 underline-offset-4 hover:text-[var(--coral)] hover:underline dark:text-gray-400"
         >
-          Symmetry-Aware Einsum Contractions
-        </Link>{' '}
-        explorer.
+          AIcrowd
+        </a>{' '}
+        and the{' '}
+        <a
+          href="https://www.alignment.org"
+          target="_blank"
+          rel="noreferrer noopener"
+          className="italic text-gray-500 underline-offset-4 hover:text-[var(--coral)] hover:underline dark:text-gray-400"
+        >
+          Alignment Research Center
+        </a>
+        .
       </footer>
     </main>
   );
