@@ -56,7 +56,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
       role="presentation"
     >
       <div
-        className="relative w-full max-w-3xl rounded-lg border border-gray-200 bg-white shadow-2xl"
+        className="relative w-full max-w-5xl rounded-lg border border-gray-200 bg-white shadow-2xl"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
@@ -101,8 +101,8 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
           {/* §0 — Definitions */}
           <section>
             <div className="mb-2">
-              <div className={sectionNumber}>§0 · Terms used in this appendix</div>
-              <h3 className={sectionTitle}>Compression, pointwise symmetry, formal symmetry</h3>
+              <div className={sectionNumber}>§0 · Preliminaries</div>
+              <h3 className={sectionTitle}>Definitions</h3>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
@@ -127,9 +127,9 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
           {/* §1 — Frobenius worked example */}
           <section>
             <div className="mb-2">
-              <div className={sectionNumber}>§1 · The distinction made concrete</div>
+              <div className={sectionNumber}>§1 · Motivating example</div>
               <h3 className={sectionTitle}>
-                Frobenius trace at <Latex math="n = 2" />
+                The Frobenius trace at <Latex math="n = 2" />
               </h3>
             </div>
 
@@ -207,9 +207,9 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
           {/* §2 — Induced permutation group on V */}
           <section>
             <div className="mb-2">
-              <div className={sectionNumber}>§2 · Component 1 of G_f</div>
+              <div className={sectionNumber}>§2 · First component</div>
               <h3 className={sectionTitle}>
-                <Latex math="G_{\text{pt}}\big|_V" /> — the induced permutation group on V
+                The induced permutation group <Latex math="G_{\text{pt}}\big|_V" />
               </h3>
             </div>
 
@@ -308,9 +308,9 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
           {/* §3 — S(W) */}
           <section>
             <div className="mb-2">
-              <div className={sectionNumber}>§3 · Component 2 of G_f</div>
+              <div className={sectionNumber}>§3 · Second component</div>
               <h3 className={sectionTitle}>
-                <Latex math="S(W)" /> — dummy relabellings of summed indices
+                The symmetric group on summed labels <Latex math="S(W)" />
               </h3>
             </div>
 
@@ -341,8 +341,9 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
           {/* §4 — Assemble G_f */}
           <section>
             <div className="mb-2">
-              <div className={sectionNumber}>§4 · Assembly</div>
+              <div className={sectionNumber}>§4 · Construction of G_f</div>
               <h3 className={sectionTitle}>
+                The formal symmetry group:{' '}
                 <Latex math="G_{\text{f}} = G_{\text{pt}}\big|_V \times S(W)" />
               </h3>
             </div>
@@ -373,9 +374,9 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
           {/* §5 — Why G_f is not used for compression */}
           <section>
             <div className="mb-2">
-              <div className={sectionNumber}>§5 · Why G_f is not used for compression</div>
+              <div className={sectionNumber}>§5 · Consequences for compression</div>
               <h3 className={sectionTitle}>
-                <Latex math="\alpha" /> under <Latex math="G_{\text{f}}" />
+                The accumulation count <Latex math="\alpha" /> under <Latex math="G_{\text{f}}" />
               </h3>
             </div>
 
@@ -412,9 +413,9 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
           {/* §6 — Leftover savings via G_pt|_V-aware storage */}
           <section>
             <div className="mb-2">
-              <div className={sectionNumber}>§6 · Savings this engine does not claim</div>
+              <div className={sectionNumber}>§6 · Remark on output-tensor symmetry</div>
               <h3 className={sectionTitle}>
-                Output-tensor symmetry from <Latex math="G_{\text{pt}}\big|_V" />
+                Savings accessible under <Latex math="G_{\text{pt}}\big|_V" />-aware storage
               </h3>
             </div>
 
