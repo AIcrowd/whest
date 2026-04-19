@@ -3,13 +3,12 @@
 from __future__ import annotations
 
 import argparse
-import json
 from pathlib import Path
 from typing import Any, Iterable
 
 from benchmarks._metadata import collect_environment_metadata
 from benchmarks.overhead import SCHEMA_VERSION
-from benchmarks.overhead.artifacts import load_run, write_run_artifacts
+from benchmarks.overhead.artifacts import _json_text, load_run, write_run_artifacts
 from benchmarks.overhead.discovery import classify_public_operations
 from benchmarks.overhead.execution import run_case
 from benchmarks.overhead.policy import evaluate_case, load_policy, suggest_thresholds
@@ -112,7 +111,7 @@ def _write_suggested_policy(
     output_dir.mkdir(parents=True, exist_ok=True)
     suggested_path = output_dir / "suggested_policy.json"
     suggested_path.write_text(
-        json.dumps(suggest_thresholds(cases, policy), indent=2, sort_keys=True) + "\n",
+        _json_text(suggest_thresholds(cases, policy)),
         encoding="utf-8",
     )
     return suggested_path
@@ -132,13 +131,17 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Wrote suggested policy to {suggested_path}")
         return 0
 
-    discovered = classify_public_operations()
     selected_cases = _select_cases(
         seed_cases(),
         family=args.family,
         surface=args.surface,
         case_id=args.case_id,
     )
+    if not selected_cases:
+        print("No benchmark cases matched the requested filters.")
+        return 1
+
+    discovered = classify_public_operations()
     evaluated_cases = [
         evaluate_case(run_case(case, mode=args.mode), policy) for case in selected_cases
     ]

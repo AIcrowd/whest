@@ -1,4 +1,5 @@
 from pathlib import Path
+import json
 
 from benchmarks.overhead import SCHEMA_VERSION
 from benchmarks.overhead.cli import build_parser, main
@@ -236,3 +237,33 @@ def test_main_supports_suggest_thresholds_mode(tmp_path: Path, monkeypatch, caps
     assert exit_code == 0
     assert suggested_path.exists()
     assert "suggested_policy.json" in captured.out
+
+
+def test_main_writes_json_safe_suggested_policy(tmp_path: Path, monkeypatch):
+    monkeypatch.setattr(
+        "benchmarks.overhead.cli.load_policy",
+        lambda path=None: {
+            "schema_version": SCHEMA_VERSION,
+            "policy_version": "baseline",
+            "default": {"ratio_max": 6.0},
+        },
+    )
+    monkeypatch.setattr(
+        "benchmarks.overhead.cli.load_run",
+        lambda output_dir: {
+            "manifest": {"mode": "full"},
+            "cases": [
+                {"case_id": "add-api-tiny", "family": "pointwise", "surface": "api", "ratio": float("inf")}
+            ],
+        },
+    )
+
+    exit_code = main(["suggest-thresholds", "--output-dir", str(tmp_path)])
+    suggested_path = tmp_path / "suggested_policy.json"
+    suggested_text = suggested_path.read_text(encoding="utf-8")
+    suggested = json.loads(suggested_text)
+
+    assert exit_code == 0
+    assert suggested_path.exists()
+    assert "Infinity" not in suggested_text
+    assert suggested["default"]["ratio_max"] == {"__whest_float__": "inf"}

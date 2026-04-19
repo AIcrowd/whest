@@ -15,12 +15,14 @@ def load_policy(path: str | Path | None = None) -> dict[str, Any]:
     """Load a policy document from disk."""
     policy_path = _DEFAULT_POLICY_PATH if path is None else Path(path)
     policy = json.loads(policy_path.read_text(encoding="utf-8"))
-    schema_version = policy.get("schema_version", SCHEMA_VERSION)
-    if schema_version != SCHEMA_VERSION:
+    if not isinstance(policy, dict):
+        raise TypeError("policy must be a mapping")
+    if "schema_version" not in policy:
+        raise ValueError("schema_version missing from policy")
+    if policy["schema_version"] != SCHEMA_VERSION:
         raise ValueError(
-            f"schema_version mismatch: expected {SCHEMA_VERSION}, got {schema_version}"
+            f"schema_version mismatch: expected {SCHEMA_VERSION}, got {policy['schema_version']}"
         )
-    policy["schema_version"] = SCHEMA_VERSION
     return policy
 
 
@@ -63,12 +65,18 @@ def suggest_thresholds(
     cases: list[dict[str, Any]], policy: dict[str, Any]
 ) -> dict[str, Any]:
     """Suggest thresholds based on observed case ratios."""
+    bucketed_cases: dict[str, list[dict[str, Any]]] = {}
+    for case in cases:
+        bucket, _ = _policy_bucket(case, policy)
+        bucketed_cases.setdefault(bucket, []).append(case)
+
     suggestion: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
         "policy_version": "suggested",
         "default": {
             "ratio_max": _max_ratio(
-                cases, current=float(policy.get("default", {}).get("ratio_max", float("inf")))
+                bucketed_cases.get("default", []),
+                current=float(policy.get("default", {}).get("ratio_max", float("inf"))),
             )
         },
     }
@@ -77,16 +85,24 @@ def suggest_thresholds(
     if family_policies:
         suggestion["family"] = {}
         for family in sorted(family_policies):
-            current = float(family_policies.get(family, {}).get("ratio_max", suggestion["default"]["ratio_max"]))
-            matching = [case for case in cases if case.get("family") == family]
+            current = float(
+                family_policies.get(family, {}).get(
+                    "ratio_max", suggestion["default"]["ratio_max"]
+                )
+            )
+            matching = bucketed_cases.get(f"family:{family}", [])
             suggestion["family"][family] = {"ratio_max": _max_ratio(matching, current=current)}
 
     surface_policies = policy.get("surface", {})
     if surface_policies:
         suggestion["surface"] = {}
         for surface in sorted(surface_policies):
-            current = float(surface_policies.get(surface, {}).get("ratio_max", suggestion["default"]["ratio_max"]))
-            matching = [case for case in cases if case.get("surface") == surface]
+            current = float(
+                surface_policies.get(surface, {}).get(
+                    "ratio_max", suggestion["default"]["ratio_max"]
+                )
+            )
+            matching = bucketed_cases.get(f"surface:{surface}", [])
             suggestion["surface"][surface] = {"ratio_max": _max_ratio(matching, current=current)}
 
     return suggestion

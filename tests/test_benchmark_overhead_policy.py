@@ -24,6 +24,26 @@ def test_load_policy_reads_json_file(tmp_path: Path):
     assert policy["default"]["ratio_max"] == 3.5
 
 
+def test_load_policy_rejects_missing_schema_version(tmp_path: Path):
+    policy_path = tmp_path / "policy.json"
+    policy_path.write_text(
+        """
+        {
+          "policy_version": "custom",
+          "default": {"ratio_max": 3.5}
+        }
+        """,
+        encoding="utf-8",
+    )
+
+    try:
+        load_policy(policy_path)
+    except ValueError as exc:
+        assert "schema_version" in str(exc)
+    else:
+        raise AssertionError("expected load_policy() to reject missing schema_version")
+
+
 def test_evaluate_case_prefers_surface_then_family_then_default():
     policy = {
         "schema_version": SCHEMA_VERSION,
@@ -96,10 +116,10 @@ def test_suggest_thresholds_preserves_policy_shape_and_uses_observed_ratios():
     assert suggestion == {
         "schema_version": SCHEMA_VERSION,
         "policy_version": "suggested",
-        "default": {"ratio_max": 6.75},
+        "default": {"ratio_max": 6.0},
         "family": {
             "pointwise": {"ratio_max": 1.5},
-            "contractions": {"ratio_max": 6.75},
+            "contractions": {"ratio_max": 3.25},
         },
         "surface": {"operator": {"ratio_max": 6.75}},
     }

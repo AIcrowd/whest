@@ -246,6 +246,45 @@ including triple products and block symmetries.
 
 - [Cheat Sheet](website/content/docs/api/for-agents.mdx) -- compact reference for fast lookup
 
+## Overhead Regression Harness
+
+The runtime-overhead harness in `benchmarks/overhead/` is separate from the
+existing FLOP-weight calibration benchmarks. Calibration benchmarks help tune
+analytical weights against NumPy kernels; the overhead harness measures the
+runtime tax that `whest` adds on top of raw NumPy for representative public
+operations.
+
+This harness is CI-ready, but it is intentionally manual-first right now. Run
+it on representative nodes first, review the artifacts and thresholds with the
+team, and only wire it into CI after those thresholds are stable.
+
+Reduced sweep for routine validation:
+
+```bash
+python -m benchmarks.overhead ci --output-dir .benchmarks/overhead-ci
+```
+
+Focused run for optimization work on one case:
+
+```bash
+python -m benchmarks.overhead focus \
+  --case-id pointwise:add:api:tiny:float64 \
+  --output-dir .benchmarks/overhead-focus
+```
+
+Full representative-node run and threshold suggestion flow:
+
+```bash
+python -m benchmarks.overhead full --output-dir .benchmarks/overhead-full
+python -m benchmarks.overhead suggest-thresholds --output-dir .benchmarks/overhead-full
+```
+
+Each run writes machine-consumable JSON/JSONL artifacts including the manifest,
+environment snapshot, evaluated cases, timing samples, and `whest` accounting
+details. That makes the harness agent-friendly: developers or optimization
+agents can diff runs, rank regressions, inspect per-case overhead ratios, and
+generate updated threshold suggestions without scraping terminal output.
+
 ## Development
 
 ```bash
