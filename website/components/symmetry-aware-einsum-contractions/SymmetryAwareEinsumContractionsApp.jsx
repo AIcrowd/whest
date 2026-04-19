@@ -11,6 +11,7 @@ import ExplorerSectionCard, { SectionEyebrow, AnchorLink } from './components/Ex
 import { EXPLORER_ACTS } from './components/explorerNarrative.js';
 import NarrativeCallout from './components/NarrativeCallout.jsx';
 import InlineMathText from './components/InlineMathText.jsx';
+import Latex from './components/Latex.jsx';
 import AlgorithmAtAGlance from './components/AlgorithmAtAGlance.jsx';
 import ExampleChooser from './components/ExampleChooser.jsx';
 import PresetSidebar from './components/PresetSidebar.jsx';
@@ -453,9 +454,15 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       <button
                         type="button"
                         onClick={() => setExprModalOpen(true)}
-                        className="text-left underline decoration-dotted underline-offset-4 hover:text-gray-900"
+                        className="block w-full text-left hover:text-gray-900"
                       >
-                        <span className="font-semibold">The formal symmetry group</span> — why <span className="font-mono">G<sub>f</sub> = G<sub>pt</sub>|<sub>V</sub> × S(W)</span> is strictly larger than the pointwise group <span className="font-mono">G<sub>pt</sub></span>, and why its extra elements are not used for compression.
+                        <span className="block font-semibold underline decoration-dotted underline-offset-4">
+                          Is the detected group the full symmetry of this expression?
+                        </span>
+                        <span className="mt-1.5 block text-[13px] leading-6 text-gray-700">
+                          No — the total sum admits a strictly larger formal symmetry group. An appendix on the distinction, on{' '}
+                          <Latex math="G_{\text{f}} = G_{\text{pt}}\big|_V \times S(W)" />, and on the per-preset output-tensor storage savings it still leaves on the table.
+                        </span>
                       </button>
                     </div>
                   </ExplorerSectionCard>

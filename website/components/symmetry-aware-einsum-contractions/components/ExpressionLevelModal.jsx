@@ -5,6 +5,7 @@ import NarrativeCallout from './NarrativeCallout.jsx';
 import VSubSwConstruction from './VSubSwConstruction.jsx';
 import { computeExpressionAlphaTotal } from '../engine/comparisonAlpha.js';
 import { EXAMPLES } from '../data/examples.js';
+import { variableSymmetryLabel } from '../lib/symmetryLabel.js';
 
 // Lookup map keyed by preset id so §6's savings table can pull the raw
 // einsum and per-operand symmetry declarations straight from the source
@@ -12,31 +13,15 @@ import { EXAMPLES } from '../data/examples.js';
 const EXAMPLES_BY_ID = new Map(EXAMPLES.map((ex) => [ex.id, ex]));
 
 /**
- * Compact human-readable descriptor for a single operand's declared axis
- * symmetry. Returns:
- *   - 'none'            — no declared symmetry
- *   - 'symmetric'       — full symmetric across all axes
- *   - 'sym(0,1,2)'      — symmetric restricted to listed axes
- *   - 'cyclic'          — full cyclic across all axes
- *   - 'cyclic(1,2,3)'   — cyclic restricted to listed axes
- *   - '⟨(0 1), (2 3)⟩'  — user-declared generators
- */
-function symDescriptor(variable) {
-  if (!variable || variable.symmetry === 'none') return 'none';
-  const axes = variable.symAxes;
-  const axesStr = axes?.join(',') ?? '';
-  const fullRank = axes && axes.length === variable.rank;
-  if (variable.symmetry === 'symmetric') return fullRank ? 'symmetric' : `sym(${axesStr})`;
-  if (variable.symmetry === 'cyclic') return fullRank ? 'cyclic' : `cyclic(${axesStr})`;
-  if (variable.symmetry === 'custom') return `⟨${(variable.generators || '').trim()}⟩`;
-  return variable.symmetry;
-}
-
-/**
  * Per-preset operand listing: distinct operand names in first-appearance
  * order, annotated with their repeat count (drives Source B of the σ-loop)
  * and declared axis symmetry (Source A). Used to render the "Operand sym"
  * column in §6's savings table.
+ *
+ * The `sym` field uses `variableSymmetryLabel` — the same short-form
+ * vocabulary (`dense`, `S3`, `C4`, `D2`, `custom (N gens)`) the main-page
+ * builder and preset sidebar use, so the reader does not have to learn a
+ * second notation inside the appendix.
  */
 function describeOperands(preset) {
   if (!preset) return [];
@@ -55,7 +40,7 @@ function describeOperands(preset) {
     rows.push({
       name: n,
       count: counts.get(n),
-      sym: symDescriptor(v),
+      sym: variableSymmetryLabel(v),
     });
   }
   return rows;
@@ -583,7 +568,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                                   <span className="font-mono text-muted-foreground">×{o.count}</span>
                                 )}
                                 <span className="text-muted-foreground">: </span>
-                                <span className={o.sym === 'none' ? 'text-muted-foreground italic' : 'font-mono'}>
+                                <span className={o.sym === 'dense' ? 'text-muted-foreground italic' : 'font-mono'}>
                                   {o.sym}
                                 </span>
                               </span>

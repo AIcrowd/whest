@@ -8,6 +8,7 @@ import { buildVariableColors, SYMMETRY_ICONS, contrastText } from '../engine/col
 import { parseCycleNotation } from '../engine/cycleParser.js';
 import { cn } from '../lib/utils.js';
 import { CUSTOM_IDX, getPresetSummary, presetToState, resolvePresetSelection } from '../lib/presetSelection.js';
+import { variableSymmetryLabel } from '../lib/symmetryLabel.js';
 import CaseBadge from './CaseBadge.jsx';
 import ExplorerField from './ExplorerField.jsx';
 import PythonCodeBlock from './PythonCodeBlock.jsx';
@@ -38,19 +39,9 @@ function groupOrder(symmetry, k) {
   }
 }
 
-function badgeLabel(variable) {
-  const { symmetry, rank, symAxes, generators } = variable;
-  if (symmetry === 'none') return 'dense';
-  if (symmetry === 'custom') {
-    if (!generators || !generators.trim()) return 'custom';
-    const parsed = parseCycleNotation(generators);
-    if (parsed.error || !parsed.generators) return 'custom';
-    return `custom (${parsed.generators.length} gen${parsed.generators.length !== 1 ? 's' : ''})`;
-  }
-  const k = (symAxes && symAxes.length) || rank;
-  const prefix = symmetry === 'symmetric' ? 'S' : symmetry === 'cyclic' ? 'C' : 'D';
-  return `${prefix}${k}`;
-}
+// Thin wrapper: the shared util lives in lib/symmetryLabel.js so the
+// appendix modal's savings table can reuse the exact same vocabulary.
+const badgeLabel = variableSymmetryLabel;
 
 function badgeOrder(variable) {
   const { symmetry, rank, symAxes } = variable;
