@@ -143,6 +143,9 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
 
   return (
     <div className="sigma-loop">
+      <div className="text-[11px] text-muted-foreground mb-2">
+        Each σ is a wreath element; each valid pair shows derivePi(σ) = π.
+      </div>
       {/* Summary stats */}
       <div className="sigma-summary">
         <div className="sigma-stat">

@@ -132,6 +132,10 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
     const isTrivialGroup = !group?.fullOrder || group.fullOrder <= 1;
     return (
       <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+        <div className="text-[11px] text-muted-foreground mb-2">
+          Dimino&apos;s algorithm, closing the valid π&apos;s into G_pt — a verification step,
+          since the valid-π set is already composition-closed.
+        </div>
         {isTrivialGroup ? (
           <div className="space-y-3 text-sm leading-6 text-muted-foreground">
             <p className="text-foreground">
@@ -157,6 +161,10 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
 
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+      <div className="text-[11px] text-muted-foreground mb-2">
+        Dimino&apos;s algorithm, closing the valid π&apos;s into G_pt — a verification step,
+        since the valid-π set is already composition-closed.
+      </div>
       <div>
         {usingPairFallback ? (
           <div className="rounded-lg border border-dashed border-border bg-surface-raised px-3 py-2 text-xs leading-5 text-muted-foreground">
