@@ -293,7 +293,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                 className="border-gray-200 bg-white"
                 contentClassName="pt-5"
               >
-                <div className="grid gap-4 md:grid-cols-2">
+                <div className="grid gap-6 md:grid-cols-2">
                   <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[0].interpretation}</NarrativeCallout>
                   <NarrativeCallout label="Approach" tone="algorithm">{EXPLORER_ACTS[0].algorithm}</NarrativeCallout>
                 </div>
@@ -327,23 +327,30 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >
-                    <div className="grid gap-4 md:grid-cols-2">
+                    <div className="grid gap-6 md:grid-cols-2">
                       <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[1].interpretation}</NarrativeCallout>
                       <NarrativeCallout label="Approach" tone="algorithm">{EXPLORER_ACTS[1].algorithm}</NarrativeCallout>
                     </div>
-                    <p className="mt-4 text-sm leading-7 text-foreground">
-                      Declared input symmetry changes the encoding before any detected contraction symmetry is computed.
-                    </p>
-                    <p className="mt-4 text-sm leading-7 text-foreground">
-                      <InlineMathText>{EXPLORER_ACTS[1].bridge}</InlineMathText>
-                    </p>
-                    <p className="mt-4 text-sm leading-7 text-foreground">
-                      Left vertices (U) are operand axis-classes. Right vertices are index labels,
-                      partitioned into <RoleBadge role="v">V free</RoleBadge> and
+                    {/* Paper-register body — the three staccato single-
+                        sentence paragraphs here were chopping the reading
+                        rhythm. Consolidate the two observations about the
+                        bipartite encoding into one flowing paragraph, keep
+                        the forward-looking bridge as its own paragraph (it
+                        points at Section 3's fingerprint work). Typography
+                        follows the docs paper register: Source Serif 4
+                        17px / line-height 1.75 / gray-700. */}
+                    <p className="mt-5 font-serif text-[17px] leading-[1.75] text-gray-700">
+                      Declared input symmetry changes the encoding before any
+                      detected contraction symmetry is computed. Left vertices
+                      (U) are operand axis-classes; right vertices are index
+                      labels, partitioned into <RoleBadge role="v">V free</RoleBadge> and
                       <RoleBadge role="w">W summed</RoleBadge>.
                       {hasPerOpSym && (
                         <> Per-operand symmetry <em>collapses</em> each operand&apos;s axes into a single U-vertex.</>
                       )}
+                    </p>
+                    <p className="mt-4 font-serif text-[17px] italic leading-[1.75] text-gray-600">
+                      <InlineMathText>{EXPLORER_ACTS[1].bridge}</InlineMathText>
                     </p>
                     <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
                       <div id="bipartite-graph" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
@@ -377,7 +384,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >
-                    <div className="grid gap-4 md:grid-cols-2">
+                    <div className="grid gap-6 md:grid-cols-2">
                       <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[2].interpretation}</NarrativeCallout>
                       <NarrativeCallout label="Approach" tone="algorithm">{EXPLORER_ACTS[2].algorithm}</NarrativeCallout>
                     </div>
@@ -430,7 +437,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >
-                    <div className="grid gap-4 md:grid-cols-2">
+                    <div className="grid gap-6 md:grid-cols-2">
                       <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[3].interpretation}</NarrativeCallout>
                       <NarrativeCallout label="Approach" tone="algorithm">{EXPLORER_ACTS[3].algorithm}</NarrativeCallout>
                     </div>
