@@ -20,25 +20,23 @@ def test_operator_surface_cases_are_present_for_key_dunders():
 
 def test_stats_surface_entries_are_accounted_for():
     result = classify_public_operations()
-    entries = (
-        result["benchmarked"]
-        + result["excluded"]
-        + result["unsupported"]
-        + result["unclassified"]
-    )
-    assert any(
-        entry["surface"] == "stats"
-        and entry["qualified_name"].endswith((".pdf", ".cdf", ".ppf"))
-        for entry in entries
-    )
+    stats_entries = [
+        entry
+        for entry in result["inventory"]
+        if entry["surface"] == "stats" and entry["op_name"] == "pdf"
+    ]
+    qualified_names = {entry["qualified_name"] for entry in stats_entries}
+    assert "whest.stats.norm.pdf" in qualified_names
+    assert "whest.stats.uniform.pdf" in qualified_names
+    assert all(entry["status"] == "unclassified" for entry in stats_entries)
 
 
 def test_alias_exports_remain_visible_per_surface():
     result = classify_public_operations()
-    matmul_exports = {
-        entry["qualified_name"]
+    matmul_statuses = {
+        entry["qualified_name"]: entry["status"]
         for entry in result["inventory"]
         if entry["op_name"] == "matmul"
     }
-    assert "whest.matmul" in matmul_exports
-    assert "whest.linalg.matmul" in matmul_exports
+    assert matmul_statuses["whest.matmul"] == "benchmarked"
+    assert matmul_statuses["whest.linalg.matmul"] == "unclassified"

@@ -112,11 +112,15 @@ def _build_inventory() -> list[dict[str, Any]]:
     return sorted(records, key=lambda entry: (entry["surface"], entry["qualified_name"]))
 
 
+def _public_export_name(case: Any) -> str:
+    return f"whest.{case.op_name}"
+
+
 def classify_public_operations() -> dict[str, list[dict[str, Any]]]:
     """Return a ledger of benchmarked, excluded, unsupported, and unclassified ops."""
 
     benchmark_cases = seed_cases()
-    benchmarked_names = {case.op_name for case in benchmark_cases}
+    benchmarked_exports = {_public_export_name(case) for case in benchmark_cases}
     excluded_reasons, unsupported_reasons = _load_exclusion_policies()
     inventory = _build_inventory()
 
@@ -125,6 +129,7 @@ def classify_public_operations() -> dict[str, list[dict[str, Any]]]:
             "case_id": case.case_id,
             "op_name": case.op_name,
             "surface": case.surface,
+            "qualified_name": _public_export_name(case),
             "family": case.family,
             "dtype": case.dtype,
             "size_name": case.size_name,
@@ -138,6 +143,7 @@ def classify_public_operations() -> dict[str, list[dict[str, Any]]]:
         {
             "op_name": op_name,
             "surface": "api",
+            "qualified_name": f"whest.{op_name}",
             "reason": reason,
         }
         for op_name, reason in sorted(excluded_reasons.items())
@@ -147,18 +153,33 @@ def classify_public_operations() -> dict[str, list[dict[str, Any]]]:
         {
             "op_name": op_name,
             "surface": "api",
+            "qualified_name": f"whest.{op_name}",
             "reason": reason,
         }
         for op_name, reason in sorted(unsupported_reasons.items())
     ]
 
-    discovered_accounted_for = benchmarked_names | set(excluded_reasons) | set(
-        unsupported_reasons
-    )
+    excluded_exports = {f"whest.{name}" for name in excluded_reasons}
+    unsupported_exports = {f"whest.{name}" for name in unsupported_reasons}
+    accounted_for = benchmarked_exports | excluded_exports | unsupported_exports
+
+    inventory_by_status = []
+    for entry in inventory:
+        qualified_name = entry["qualified_name"]
+        if qualified_name in benchmarked_exports:
+            status = "benchmarked"
+        elif qualified_name in excluded_exports:
+            status = "excluded"
+        elif qualified_name in unsupported_exports:
+            status = "unsupported"
+        else:
+            status = "unclassified"
+        inventory_by_status.append({**entry, "status": status})
+
     unclassified = [
         entry
-        for entry in inventory
-        if entry["op_name"] not in discovered_accounted_for
+        for entry in inventory_by_status
+        if entry["qualified_name"] not in accounted_for
     ]
 
     return {
@@ -166,5 +187,5 @@ def classify_public_operations() -> dict[str, list[dict[str, Any]]]:
         "excluded": excluded,
         "unsupported": unsupported,
         "unclassified": unclassified,
-        "inventory": inventory,
+        "inventory": inventory_by_status,
     }
