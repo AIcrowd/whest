@@ -92,8 +92,38 @@ export default function WreathStructureView({ analysis, example, onOpenModalSect
           </table>
         </div>
       ) : (
-        // Large wreath — aggregated summary lands in Task 8
-        null
+        // Large wreath — aggregated summary + disclosure
+        <div className="mt-3 rounded-md border border-border/40 bg-white p-3">
+          <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-2">
+            Aggregated summary
+          </div>
+          <ul className="text-[12px] space-y-1">
+            <li>
+              <span className="font-mono">|G_wreath| = {wreathElements.length}</span>
+            </li>
+            <li className="text-emerald-700">
+              ✓ valid (contributes to G_pt): {wreathElements.filter((e) => e.classification === 'valid').length}
+            </li>
+            <li className="text-muted-foreground">
+              ✗ matrix-preserving (discarded): {wreathElements.filter((e) => e.classification === 'matrix-preserving').length}
+            </li>
+            <li className="text-amber-600/80">
+              ✗ derivePi-rejected (discarded): {wreathElements.filter((e) => e.classification === 'rejected').length}
+            </li>
+          </ul>
+          <details className="mt-2 text-[11px]">
+            <summary className="cursor-pointer text-muted-foreground hover:text-foreground">
+              Representative generators (first 12 elements)
+            </summary>
+            <table className="mt-2 w-full text-[11px] border-collapse">
+              <tbody>
+                {wreathElements.slice(0, 12).map((e, idx) => (
+                  <WreathElementRow key={e.id} element={e} index={idx} />
+                ))}
+              </tbody>
+            </table>
+          </details>
+        </div>
       )}
       {/* Band C (summary + bridge) added in Task 9 */}
     </div>
