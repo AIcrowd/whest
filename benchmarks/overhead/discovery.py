@@ -116,6 +116,21 @@ def _canonical_qualified_name(name: str) -> str:
     return name if "." in name else f"whest.{name}"
 
 
+def _surface_from_qualified_name(qualified_name: str) -> str:
+    parts = qualified_name.split(".")
+    if len(parts) < 2:
+        return "api"
+    if parts[1] == "linalg":
+        return "linalg"
+    if parts[1] == "fft":
+        return "fft"
+    if parts[1] == "random":
+        return "random"
+    if parts[1] == "stats":
+        return "stats"
+    return "api"
+
+
 def classify_public_operations() -> dict[str, list[dict[str, Any]]]:
     """Return a ledger of benchmarked, excluded, unsupported, and unclassified ops."""
 
@@ -146,8 +161,10 @@ def classify_public_operations() -> dict[str, list[dict[str, Any]]]:
     excluded = [
         {
             "op_name": op_name,
-            "surface": "api",
             "qualified_name": _canonical_qualified_name(op_name),
+            "surface": _surface_from_qualified_name(
+                _canonical_qualified_name(op_name)
+            ),
             "reason": reason,
         }
         for op_name, reason in sorted(excluded_reasons.items())
@@ -156,8 +173,10 @@ def classify_public_operations() -> dict[str, list[dict[str, Any]]]:
     unsupported = [
         {
             "op_name": op_name,
-            "surface": "api",
             "qualified_name": _canonical_qualified_name(op_name),
+            "surface": _surface_from_qualified_name(
+                _canonical_qualified_name(op_name)
+            ),
             "reason": reason,
         }
         for op_name, reason in sorted(unsupported_reasons.items())

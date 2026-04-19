@@ -40,3 +40,44 @@ def test_alias_exports_remain_visible_per_surface():
     }
     assert matmul_statuses["whest.matmul"] == "benchmarked"
     assert matmul_statuses["whest.linalg.matmul"] == "unclassified"
+
+
+def test_fully_qualified_exclusions_keep_their_surface(monkeypatch):
+    from benchmarks.overhead import discovery
+
+    monkeypatch.setattr(
+        discovery,
+        "_load_exclusion_policies",
+        lambda: (
+            {"whest.linalg.matmul": "qualified exclusion"},
+            {"whest.stats.norm.pdf": "qualified unsupported"},
+        ),
+    )
+
+    result = classify_public_operations()
+    exclusion = next(
+        entry
+        for entry in result["excluded"]
+        if entry["qualified_name"] == "whest.linalg.matmul"
+    )
+    unsupported = next(
+        entry
+        for entry in result["unsupported"]
+        if entry["qualified_name"] == "whest.stats.norm.pdf"
+    )
+
+    assert exclusion["surface"] == "linalg"
+    assert unsupported["surface"] == "stats"
+
+    linalg_row = next(
+        entry
+        for entry in result["inventory"]
+        if entry["qualified_name"] == "whest.linalg.matmul"
+    )
+    stats_row = next(
+        entry
+        for entry in result["inventory"]
+        if entry["qualified_name"] == "whest.stats.norm.pdf"
+    )
+    assert linalg_row["status"] == "excluded"
+    assert stats_row["status"] == "unsupported"
