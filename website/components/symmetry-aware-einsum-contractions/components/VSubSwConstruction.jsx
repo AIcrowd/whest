@@ -162,6 +162,9 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
             <span className="ml-1 text-[10px] text-muted-foreground normal-case tracking-normal">
               (induced permutation group on V)
             </span>
+            <span className="block text-[10px] text-muted-foreground normal-case tracking-normal">
+              (row-witnessed)
+            </span>
           </div>
         </div>
         <div className={colHead} />
@@ -171,6 +174,9 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
             <span className="ml-1 text-[10px] text-muted-foreground normal-case tracking-normal">
               (symmetric group on W-labels)
             </span>
+            <span className="block text-[10px] text-muted-foreground normal-case tracking-normal">
+              (row-unwitnessed)
+            </span>
           </div>
         </div>
         <div className={colHead} />
@@ -179,6 +185,9 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
             <Latex math="G_{\text{f}} = G_{\text{pt}}\big|_V \times S(W)" />
             <span className="ml-1 text-[10px] text-muted-foreground normal-case tracking-normal">
               (formal symmetry group)
+            </span>
+            <span className="block text-[10px] text-muted-foreground normal-case tracking-normal">
+              (row-witnessed × row-unwitnessed)
             </span>
           </div>
         </div>
