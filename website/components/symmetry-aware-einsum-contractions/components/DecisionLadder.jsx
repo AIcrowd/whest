@@ -66,6 +66,27 @@ const STAGE_2_BOTTOM_Y = Q_FULLSYM_Y + ROW_GAP + LEAF_H + BAND_PAD_Y; // bottom 
 const EDGE_YES = { color: '#23B761', label: 'yes' };
 const EDGE_NO = { color: '#F0524D', label: 'no' };
 
+// Edge-label offsets. Once the label background went transparent (so the
+// dashed stage bands read through), the naturally centered label text
+// started overlapping the stroke it was annotating. These offsets shift
+// the text perpendicular to its edge so the yes/no "sits" next to the
+// line instead of crossing it:
+//
+//   VERTICAL edges  (spine: question → question, question → enumerate,
+//                    ENUM → Q_singleton, singleton → direct, etc.)
+//     → label moves to the RIGHT of the vertical line
+//
+//   HORIZONTAL edges (side: question → leaf, also the crossVW → BFO
+//                     right-hand loop whose midpoint sits on a vertical
+//                     segment of the step path — treated as vertical)
+//     → label moves ABOVE the horizontal line
+//
+// Applied via the labelStyle `transform` CSS property. Because
+// labelBgStyle is transparent the invisible background rect stays put
+// at the edge midpoint — only the visible text shifts.
+const LABEL_OFFSET_VERTICAL = { transform: 'translate(12px, 0)' };
+const LABEL_OFFSET_HORIZONTAL = { transform: 'translate(0, -9px)' };
+
 // ─── Decision spec — mirrors the engine's `detectShape` order ─────────
 //
 // engine/shapeLayer.js checks (in order):
@@ -448,7 +469,7 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
         source: prevQ.id, sourceHandle: 'bottom',
         target: q.id, targetHandle: 'top',
         label: prevPlan.spineEdge.label,
-        labelStyle: { fontSize: 11, fontWeight: 700, fill: prevPlan.spineEdge.color },
+        labelStyle: { fontSize: 11, fontWeight: 700, fill: prevPlan.spineEdge.color, ...LABEL_OFFSET_VERTICAL },
         style: { stroke: prevPlan.spineEdge.color, strokeWidth: 1.5 },
       });
     }
@@ -462,7 +483,7 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
         source: q.id, sourceHandle: 'side',
         target: plan.sideLeaf, targetHandle: 'right',
         label: plan.sideEdge.label,
-        labelStyle: { fontSize: 11, fontWeight: 700, fill: plan.sideEdge.color },
+        labelStyle: { fontSize: 11, fontWeight: 700, fill: plan.sideEdge.color, ...LABEL_OFFSET_HORIZONTAL },
         style: { stroke: plan.sideEdge.color, strokeWidth: 1.5 },
       });
     }
@@ -483,7 +504,7 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
     source: lastStage1.id, sourceHandle: 'bottom',
     target: 'enumerate', targetHandle: 'top',
     label: lastPlan.spineEdge.label,
-    labelStyle: { fontSize: 11, fontWeight: 700, fill: lastPlan.spineEdge.color },
+    labelStyle: { fontSize: 11, fontWeight: 700, fill: lastPlan.spineEdge.color, ...LABEL_OFFSET_VERTICAL },
     style: { stroke: lastPlan.spineEdge.color, strokeWidth: 1.5 },
   });
 
@@ -511,7 +532,7 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
     source: singletonQ.id, sourceHandle: 'side',
     target: 'singleton', targetHandle: 'right',
     label: EDGE_YES.label,
-    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_YES.color },
+    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_YES.color, ...LABEL_OFFSET_HORIZONTAL },
     style: { stroke: EDGE_YES.color, strokeWidth: 1.5 },
   });
 
@@ -529,7 +550,7 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
     source: singletonQ.id, sourceHandle: 'bottom',
     target: directQ.id, targetHandle: 'top',
     label: EDGE_NO.label,
-    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_NO.color },
+    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_NO.color, ...LABEL_OFFSET_VERTICAL },
     style: { stroke: EDGE_NO.color, strokeWidth: 1.5 },
   });
 
@@ -540,7 +561,7 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
     source: directQ.id, sourceHandle: 'side',
     target: 'directProduct', targetHandle: 'right',
     label: EDGE_YES.label,
-    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_YES.color },
+    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_YES.color, ...LABEL_OFFSET_HORIZONTAL },
     style: { stroke: EDGE_YES.color, strokeWidth: 1.5 },
   });
 
@@ -558,7 +579,7 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
     source: directQ.id, sourceHandle: 'bottom',
     target: crossVWQ.id, targetHandle: 'top',
     label: EDGE_NO.label,
-    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_NO.color },
+    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_NO.color, ...LABEL_OFFSET_VERTICAL },
     style: { stroke: EDGE_NO.color, strokeWidth: 1.5 },
   });
 
@@ -576,7 +597,10 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
     source: crossVWQ.id, sourceHandle: 'right',
     target: 'bruteForceOrbit', targetHandle: 'right',
     label: EDGE_NO.label,
-    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_NO.color },
+    // This edge's step path has a long vertical segment on the RIGHT side
+    // of the tree, so the midpoint sits on a vertical line — treat it as
+    // a vertical edge and shift the label horizontally.
+    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_NO.color, ...LABEL_OFFSET_VERTICAL },
     style: { stroke: EDGE_NO.color, strokeWidth: 1.5 },
   });
 
@@ -594,7 +618,7 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
     source: crossVWQ.id, sourceHandle: 'bottom',
     target: fullSymQ.id, targetHandle: 'top',
     label: EDGE_YES.label,
-    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_YES.color },
+    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_YES.color, ...LABEL_OFFSET_VERTICAL },
     style: { stroke: EDGE_YES.color, strokeWidth: 1.5 },
   });
 
@@ -605,7 +629,7 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
     source: fullSymQ.id, sourceHandle: 'side',
     target: 'young', targetHandle: 'right',
     label: EDGE_YES.label,
-    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_YES.color },
+    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_YES.color, ...LABEL_OFFSET_HORIZONTAL },
     style: { stroke: EDGE_YES.color, strokeWidth: 1.5 },
   });
 
@@ -616,7 +640,7 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
     source: fullSymQ.id, sourceHandle: 'bottom',
     target: 'bruteForceOrbit', targetHandle: 'top',
     label: EDGE_NO.label,
-    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_NO.color },
+    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_NO.color, ...LABEL_OFFSET_VERTICAL },
     style: { stroke: EDGE_NO.color, strokeWidth: 1.5 },
   });
 
