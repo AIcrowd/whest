@@ -321,83 +321,103 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
             </div>
           </section>
 
-          {/* §2 — Frobenius worked example */}
+          {/* §2 — 4-preset gallery + detection boundary */}
           <section>
             <div className="mb-2">
-              <SectionEyebrow n={2} label="Motivating example" />
+              <SectionEyebrow n={2} label="The row-level detection boundary" />
               <h3 className={`${sectionTitle} mt-1`}>
-                The Frobenius trace at <Latex math="n = 2" />
+                When can the σ-loop see a symmetry, and when can't it?
               </h3>
             </div>
 
             <div className="mb-4 text-sm leading-7 text-foreground">
               <InlineMathText>
-                {`Take $R = \\sum_{i,j} A[i,j] \\cdot A[i,j]$ on a generic $2 \\times 2$ matrix $A = \\begin{pmatrix} 1 & 2 \\\\ 3 & 4 \\end{pmatrix}$. The four summands are:`}
+                {`The two symmetry groups we just defined — the pointwise $G_{\\text{pt}}$ and the formal $G_{\\text{f}}$ — differ on every einsum where the σ-loop's wreath elements either collapse to identity $\\pi$ under dedup or get rejected by $\\texttt{derivePi}$. This section makes the mechanism visible on four concrete presets, then states the exact rule for when $G_{\\text{pt}} = \\{e\\}$ and why.`}
               </InlineMathText>
             </div>
 
-            <div className="rounded-md border border-border/60 bg-muted/20 px-5 py-4 font-mono text-[13px] leading-relaxed text-foreground">
-              <div>
-                (<span style={vStyle}>i</span>=0, <span style={vStyle}>j</span>=0):{' '}
-                A[<span style={vStyle}>0</span>,<span style={vStyle}>0</span>] ·
-                A[<span style={vStyle}>0</span>,<span style={vStyle}>0</span>] = 1 · 1 = 1
-              </div>
-              <div>
-                (<span style={vStyle}>i</span>=0, <span style={vStyle}>j</span>=1):{' '}
-                A[<span style={vStyle}>0</span>,<span style={vStyle}>1</span>] ·
-                A[<span style={vStyle}>0</span>,<span style={vStyle}>1</span>] = 2 · 2 = 4
-              </div>
-              <div>
-                (<span style={vStyle}>i</span>=1, <span style={vStyle}>j</span>=0):{' '}
-                A[<span style={vStyle}>1</span>,<span style={vStyle}>0</span>] ·
-                A[<span style={vStyle}>1</span>,<span style={vStyle}>0</span>] = 3 · 3 = 9
-              </div>
-              <div>
-                (<span style={vStyle}>i</span>=1, <span style={vStyle}>j</span>=1):{' '}
-                A[<span style={vStyle}>1</span>,<span style={vStyle}>1</span>] ·
-                A[<span style={vStyle}>1</span>,<span style={vStyle}>1</span>] = 4 · 4 = 16
-              </div>
-              <div className="mt-2 border-t border-border/60 pt-2">
-                R = 1 + 4 + 9 + 16 = <strong>30</strong>
-              </div>
+            <div className="mb-4 overflow-x-auto">
+              <table className="w-full text-[12px] border-collapse">
+                <thead>
+                  <tr className="border-b border-border/60 text-left text-muted-foreground">
+                    <th className="px-2 py-2 font-semibold">Preset</th>
+                    <th className="px-2 py-2 font-semibold"><Latex math="L, V, W" /></th>
+                    <th className="px-2 py-2 font-semibold"><Latex math="H_A, m_A" /></th>
+                    <th className="px-2 py-2 font-semibold"><Latex math="|G_{\text{wreath}}|" /></th>
+                    <th className="px-2 py-2 font-semibold">valid</th>
+                    <th className="px-2 py-2 font-semibold">matrix-preserving</th>
+                    <th className="px-2 py-2 font-semibold">rejected</th>
+                    <th className="px-2 py-2 font-semibold"><Latex math="|G_{\text{pt}}|" /></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-border/40">
+                    <td className="px-2 py-2 font-mono">frobenius</td>
+                    <td className="px-2 py-2"><Latex math="\{i,j\}, \varnothing, \{i,j\}" /></td>
+                    <td className="px-2 py-2"><Latex math="\{e\}, 2" /></td>
+                    <td className="px-2 py-2 font-mono">2</td>
+                    <td className="px-2 py-2 font-mono text-emerald-700">0</td>
+                    <td className="px-2 py-2 font-mono text-muted-foreground">2</td>
+                    <td className="px-2 py-2 font-mono text-muted-foreground">0</td>
+                    <td className="px-2 py-2 font-mono">1</td>
+                  </tr>
+                  <tr className="border-b border-border/40">
+                    <td className="px-2 py-2 font-mono">trace-product</td>
+                    <td className="px-2 py-2"><Latex math="\{i,j\}, \varnothing, \{i,j\}" /></td>
+                    <td className="px-2 py-2"><Latex math="\{e\}, 2" /></td>
+                    <td className="px-2 py-2 font-mono">2</td>
+                    <td className="px-2 py-2 font-mono text-emerald-700">1</td>
+                    <td className="px-2 py-2 font-mono text-muted-foreground">1</td>
+                    <td className="px-2 py-2 font-mono text-muted-foreground">0</td>
+                    <td className="px-2 py-2 font-mono">2</td>
+                  </tr>
+                  <tr className="border-b border-border/40">
+                    <td className="px-2 py-2 font-mono">triangle</td>
+                    <td className="px-2 py-2"><Latex math="\{i,j,k\}, \{i,j,k\}, \varnothing" /></td>
+                    <td className="px-2 py-2"><Latex math="\{e\}, 3" /></td>
+                    <td className="px-2 py-2 font-mono">6</td>
+                    <td className="px-2 py-2 font-mono text-emerald-700">2</td>
+                    <td className="px-2 py-2 font-mono text-muted-foreground">1</td>
+                    <td className="px-2 py-2 font-mono text-amber-600/80">3</td>
+                    <td className="px-2 py-2 font-mono">3</td>
+                  </tr>
+                  <tr>
+                    <td className="px-2 py-2 font-mono">young-s3</td>
+                    <td className="px-2 py-2"><Latex math="\{a,b,c\}, \{a,b\}, \{c\}" /></td>
+                    <td className="px-2 py-2"><Latex math="S_3, 1" /></td>
+                    <td className="px-2 py-2 font-mono">6</td>
+                    <td className="px-2 py-2 font-mono text-emerald-700">5</td>
+                    <td className="px-2 py-2 font-mono text-muted-foreground">1</td>
+                    <td className="px-2 py-2 font-mono text-muted-foreground">0</td>
+                    <td className="px-2 py-2 font-mono">6</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
 
-            <p className="mt-4 text-sm leading-7 text-foreground">
-              <InlineMathText>
-                {`Applying the permutation $(i\\;j)$ — replace each tuple $(i,j)$ with $(j,i)$ — yields:`}
-              </InlineMathText>
-            </p>
+            <ul className="mb-4 list-none space-y-1.5 text-[12px] leading-5 text-foreground">
+              <li><span className="font-mono font-semibold">frobenius</span> — <em>class 1 only</em>: wreath non-trivial, π-dedup collapses everything to identity.</li>
+              <li><span className="font-mono font-semibold">trace-product</span> — <em>classes 1 + 2</em>: the two A's have different subscripts, so the operand swap induces <InlineMathText>{`$\\pi = (i\\;j)$`}</InlineMathText>; G_pt gains it.</li>
+              <li><span className="font-mono font-semibold">triangle</span> — <em>all three classes visible</em>: the three adjacent copy-transpositions are rejected by derivePi (their column fingerprints don't match). Smallest preset exhibiting the rejected class.</li>
+              <li><span className="font-mono font-semibold">young-s3</span> — <em>class 2 dominates</em>: only base-group generators (declared <InlineMathText>{`$S_3$`}</InlineMathText> on T's axes); every non-identity wreath element is valid.</li>
+            </ul>
 
-            <div className="mt-2 rounded-md border border-border/60 bg-muted/20 px-5 py-4 font-mono text-[13px] leading-relaxed text-foreground">
-              <div>
-                (0, 0) → (0, 0): A[0,0]² = 1 <span className="text-muted-foreground">(unchanged)</span>
-              </div>
-              <div>
-                (0, 1) → (1, 0): A[1,0]² = <strong className="text-red-700">9</strong>{' '}
-                <span className="text-muted-foreground">(was 4)</span>
-              </div>
-              <div>
-                (1, 0) → (0, 1): A[0,1]² = <strong className="text-red-700">4</strong>{' '}
-                <span className="text-muted-foreground">(was 9)</span>
-              </div>
-              <div>
-                (1, 1) → (1, 1): A[1,1]² = 16 <span className="text-muted-foreground">(unchanged)</span>
-              </div>
-              <div className="mt-2 border-t border-border/60 pt-2">
-                R' = 1 + 9 + 4 + 16 = <strong>30</strong>
-              </div>
+            <div className="mb-4 rounded-md border-l-4 border-border/60 bg-muted/20 px-4 py-3 text-[12px] leading-6 text-foreground">
+              <p className="font-semibold mb-1">Frobenius</p>
+              <p>
+                <InlineMathText>
+                  {`$M$ is invariant elementwise under the operand swap (both A's have subscripts $(i, j)$); $\\texttt{derivePi}(\\text{swap})$ returns identity. $G_{\\text{pt}} = \\{e\\}$. The $(i\\;j)$ dummy-renaming is **row-unwitnessed** and lives in $S(W)$.`}
+                </InlineMathText>
+              </p>
             </div>
 
-            <div className="mt-4 rounded-md border-l-4 border-amber-500 bg-amber-50 px-5 py-3 text-sm leading-7 text-amber-900">
-              <InlineMathText>
-                {`The totals agree: $R = R' = 30$. However, the individual summands at positions 2 and 3 have exchanged values ($4 \\leftrightarrow 9$). The permutation $(i\\;j)$ preserves the sum through reshuffling rather than through term-by-term equality. Hence $(i\\;j) \\in G_{\\text{f}}$ — a formal symmetry — but $(i\\;j) \\notin G_{\\text{pt}}$; a compression scheme that treated it as pointwise would require $A[0,1]^2 = A[1,0]^2$, which fails for a generic $A$.`}
-              </InlineMathText>
-            </div>
-
-            <div className="mt-4">
-              <NarrativeCallout label="Takeaway" tone="accent">
-                {`For this einsum $G_{\\text{pt}} = \\{e\\}$ on a generic $A$ (only the identity is pointwise), while $G_{\\text{f}}$ contains the additional element $(i\\;j)$. The remainder of the appendix explains where $G_{\\text{f}}$'s extra elements come from and why they admit no arithmetic reuse.`}
-              </NarrativeCallout>
+            <div className="mb-4 rounded-md border-l-4 border-border/60 bg-muted/20 px-4 py-3 text-[12px] leading-6 text-foreground">
+              <p className="font-semibold mb-1">Triangle</p>
+              <p>
+                <InlineMathText>
+                  {`Each adjacent copy-transposition changes the set of U-vertex rows, but the column fingerprints don't form a bijection with the original's (a missing cyclic rotation would be required); $\\texttt{derivePi}$ returns $\\texttt{null}$. Only the two 3-cycles produce valid $\\pi$'s. $G_{\\text{pt}} = C_3$.`}
+                </InlineMathText>
+              </p>
             </div>
           </section>
 
