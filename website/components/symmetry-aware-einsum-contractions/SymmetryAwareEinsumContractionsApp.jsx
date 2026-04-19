@@ -450,21 +450,29 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       />
                     </div>
 
-                    <div className="mt-6 rounded-md border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-700">
-                      <button
-                        type="button"
-                        onClick={() => setExprModalOpen(true)}
-                        className="block w-full text-left hover:text-gray-900"
-                      >
-                        <span className="block font-semibold underline decoration-dotted underline-offset-4">
-                          Is the detected group the full symmetry of this expression?
-                        </span>
-                        <span className="mt-1.5 block text-[13px] leading-6 text-gray-700">
-                          No — the total sum admits a strictly larger formal symmetry group. An appendix on the distinction, on{' '}
-                          <Latex math="G_{\text{f}} = G_{\text{pt}}\big|_V \times S(W)" />, and on the per-preset output-tensor storage savings it still leaves on the table.
-                        </span>
-                      </button>
-                    </div>
+                    {/*
+                      Entire bordered box is the click target. `cursor-pointer`
+                      is set explicitly because Tailwind's Preflight resets
+                      <button> to `cursor: default`, which otherwise leaves
+                      users without the standard link affordance. The hover
+                      state brightens the border + background so the reader
+                      sees this as one coherent clickable surface rather than
+                      a decorative callout with an underlined word somewhere
+                      inside it.
+                    */}
+                    <button
+                      type="button"
+                      onClick={() => setExprModalOpen(true)}
+                      className="mt-6 block w-full cursor-pointer rounded-md border border-gray-200 bg-gray-50 px-4 py-3 text-left text-sm text-gray-700 transition-colors hover:border-gray-300 hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
+                    >
+                      <span className="block font-semibold text-gray-900 underline decoration-dotted underline-offset-4">
+                        Is the detected group the full symmetry of this expression?
+                      </span>
+                      <span className="mt-1.5 block text-[13px] leading-6 text-gray-700">
+                        No — the total sum admits a strictly larger formal symmetry group. An appendix on the distinction, on{' '}
+                        <Latex math="G_{\text{f}} = G_{\text{pt}}\big|_V \times S(W)" />, and on the per-preset output-tensor storage savings it still leaves on the table.
+                      </span>
+                    </button>
                   </ExplorerSectionCard>
                 </section>
               </>
