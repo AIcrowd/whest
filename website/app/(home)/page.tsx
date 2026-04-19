@@ -362,18 +362,17 @@ function TerminalLine({
 function HeroHeadline({ children, dot }: { children: string; dot?: string }) {
   return (
     <h1
-      className="m-0 font-semibold"
+      className="m-0 font-semibold text-gray-900 dark:text-gray-100"
       style={{
         fontFamily: 'var(--font-display-serif), Georgia, serif',
         fontVariationSettings: "'opsz' 72",
         fontSize: 'clamp(44px, 7vw, 64px)',
         letterSpacing: '-0.02em',
         lineHeight: 1.02,
-        color: 'var(--gray-900, #292C2D)',
       }}
     >
       {children}
-      <span style={{ color: '#F0524D' }}>{dot ?? '.'}</span>
+      <span style={{ color: 'var(--coral)' }}>{dot ?? '.'}</span>
     </h1>
   );
 }
@@ -452,7 +451,16 @@ export default function HomePage() {
               width={280}
               height={150}
               priority
-              className="h-auto w-[180px] select-none md:w-[220px] lg:w-[260px]"
+              className="h-auto w-[180px] select-none md:w-[220px] lg:w-[260px] dark:hidden"
+            />
+            <Image
+              src={withBasePath('/logo-dark.png')}
+              alt=""
+              aria-hidden
+              width={280}
+              height={150}
+              priority
+              className="hidden h-auto w-[180px] select-none md:w-[220px] lg:w-[260px] dark:block"
             />
           </div>
         </div>

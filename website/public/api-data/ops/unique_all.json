@@ -284,6 +284,6 @@
   "slug": "unique_all",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L408",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L259"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L288"
   }
 }

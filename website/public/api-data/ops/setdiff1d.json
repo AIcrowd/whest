@@ -259,6 +259,6 @@
   "slug": "setdiff1d",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L1177",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L407"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L442"
   }
 }

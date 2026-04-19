@@ -109,3 +109,18 @@ article > div.prose h4 {
   outline: none;
   box-shadow: var(--ring-focus);
 }
+
+/* -------------------------------------------------------------------------
+   Sidebar active item — dark mode override
+   The light-mode rule in global.css uses coral-light at 50% opacity, which
+   reads muddy against the near-black dark ground. Swap to base-coral at low
+   opacity so the active item keeps a warm tint in dark mode, and lift the
+   text color to coral for additional contrast.
+   Lives here (not global.css) because global.css declares
+   `@custom-variant dark` which causes Tailwind v4's Lightning CSS compiler
+   to drop raw `.dark` selectors from the output.
+   ------------------------------------------------------------------------- */
+.dark aside#nd-sidebar a[data-active='true'] {
+  background: color-mix(in oklab, var(--coral) 18%, transparent);
+  color: var(--coral);
+}

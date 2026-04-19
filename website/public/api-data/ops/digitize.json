@@ -562,6 +562,6 @@
   "slug": "digitize",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L5718",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L201"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L212"
   }
 }

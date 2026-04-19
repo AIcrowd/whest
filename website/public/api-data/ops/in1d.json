@@ -678,7 +678,7 @@
     "cost_formula_latex": "varies",
     "module": "numpy",
     "name": "in1d",
-    "notes": "Set membership; cost = (n+m)*ceil(log2(n+m)).",
+    "notes": "Set membership; cost = (n+m)*ceil(log2(n+m)). Removed in numpy 2.4; use `isin` instead.",
     "numpy_ref": "np.in1d",
     "signature": "we.in1d(ar1, ar2, assume_unique=False, invert=False, *, kind=None)",
     "status": "supported",
@@ -690,6 +690,6 @@
   "slug": "in1d",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L762",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L338"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L369"
   }
 }

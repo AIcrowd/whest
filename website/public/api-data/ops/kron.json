@@ -338,6 +338,6 @@
   "slug": "kron",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L1085",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L916"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L945"
   }
 }

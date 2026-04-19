@@ -256,6 +256,6 @@
   "slug": "unique_inverse",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L520",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L291"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L320"
   }
 }

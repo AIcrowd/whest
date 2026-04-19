@@ -543,6 +543,6 @@
   "slug": "poly",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_polynomial_impl.py#L34",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L210"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L215"
   }
 }
