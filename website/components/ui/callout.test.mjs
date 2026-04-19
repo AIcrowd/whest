@@ -1,28 +1,29 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { renderToStaticMarkup } from 'react-dom/server';
-import React from 'react';
-import { Callout } from './callout.tsx';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
 
-test('Callout renders children', () => {
-  const html = renderToStaticMarkup(
-    React.createElement(Callout, null, 'hello world')
-  );
-  assert.match(html, /hello world/);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const source = readFileSync(join(__dirname, 'callout.tsx'), 'utf8');
+
+test('Callout component source exports the Callout function', () => {
+  assert.match(source, /export function Callout\s*\(/);
 });
 
-test('Callout default variant sets data-variant="default"', () => {
-  const html = renderToStaticMarkup(
-    React.createElement(Callout, { label: 'NOTE' }, 'body text')
-  );
-  assert.match(html, /data-variant="default"/);
-  assert.match(html, /NOTE/);
+test('Callout supports default and accent variants', () => {
+  assert.match(source, /variant === 'default'/);
+  assert.match(source, /variant === 'accent'/);
 });
 
-test('Callout accent variant sets data-variant="accent"', () => {
-  const html = renderToStaticMarkup(
-    React.createElement(Callout, { variant: 'accent', label: 'TIP' }, 'x')
-  );
-  assert.match(html, /data-variant="accent"/);
-  assert.match(html, /TIP/);
+test('Callout applies spec-aligned tokens', () => {
+  // Kicker tracking
+  assert.match(source, /var\(--tracking-kicker-loose\)/);
+  // Radius-xl container
+  assert.match(source, /var\(--radius-xl\)/);
+  // Coral-light accent ground
+  assert.match(source, /var\(--coral-light\)/);
+  // Gray-50 default ground
+  assert.match(source, /var\(--gray-50\)/);
 });

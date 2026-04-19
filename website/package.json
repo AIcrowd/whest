@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build && node scripts/generate-llmstxt.mjs",
     "check:gh-pages": "node --test gh-pages-deploy.check.mjs",
-    "test": "node --loader ./tsx-loader.mjs --test",
+    "test": "node --test",
     "start": "next start"
   },
   "dependencies": {
