@@ -430,10 +430,11 @@ export default function HomePage() {
           </HomeCodeTerminal>
           </div>
 
-          {/* Brush mark — centered on mobile (stacked), pinned to the right
-              edge of the content-max container on md+ for editorial symmetry
-              with the left-aligned text block. */}
-          <div className="row-start-1 flex items-center justify-center self-center md:row-start-auto md:justify-end">
+          {/* Brush mark — horizontally centered in its grid cell (both
+              mobile and desktop). The left column is capped at --prose-max
+              so the right cell is tight enough that centering reads as
+              balanced rather than floating. */}
+          <div className="row-start-1 flex items-center justify-center self-center md:row-start-auto">
             <Image
               src={withBasePath('/logo.png')}
               alt="whest"
