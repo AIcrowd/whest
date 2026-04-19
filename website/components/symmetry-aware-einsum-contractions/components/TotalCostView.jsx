@@ -174,14 +174,22 @@ function HeroFormulaBlock() {
             </span>
             <span className="text-[18px] text-muted-foreground">=</span>
           </div>
+          {/* Big `{` bracketing the six piecewise cases — paints in the
+              brand coral (the page's primary identity) and is scaled tall
+              enough to visually bracket all six leaves instead of hovering
+              over the middle two. leading-none so the glyph's ink height,
+              not its font metric box, is what we control; scaleY stretches
+              it vertically without distorting the curl thickness. */}
           <div
             aria-hidden="true"
-            className="flex select-none items-center self-stretch font-serif font-thin leading-none"
+            className="flex select-none items-center justify-center self-stretch font-serif font-thin leading-none"
             style={{
               gridColumn: 2,
               gridRow: '1 / span 6',
-              fontSize: '140px',
-              color: SYM.alpha,
+              fontSize: '180px',
+              transform: 'scaleY(1.35)',
+              transformOrigin: 'center',
+              color: 'var(--coral)',
             }}
           >
             {'{'}

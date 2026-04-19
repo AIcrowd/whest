@@ -569,20 +569,24 @@ export default function ExampleChooser({
             </div>
           </div>
           <div className="mt-3 flex justify-end">
+            {/* Dimension knob — styled as a neutral form-field chip per the
+                design-system input spec (gray-200 border, white bg, mono
+                13px). The coral sits on the slider accent only, so the
+                chip reads as a utility control rather than a brand CTA. */}
             <label
-              className="flex cursor-pointer items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5"
+              className="flex cursor-pointer items-center gap-2.5 rounded-full border border-gray-200 bg-white px-3.5 py-1.5 transition-colors hover:border-gray-300"
               title="Per-label dimension — a demo knob for visualising the contraction at different scales. It does not change the einsum's structural cost (|L|, |G|); it only scales |X| = nᴸ, which is how the brute-force estimate |X|·|G| (counted in (tuple, g) pair-touches, cap 1,500,000) moves with it."
             >
-              <span className="text-sm font-mono font-semibold text-muted-foreground">n =</span>
+              <span className="font-mono text-xs font-semibold uppercase tracking-[0.04em] text-gray-400">n</span>
               <input
                 type="range"
                 min={2}
                 max={25}
                 value={dimensionN}
                 onChange={(event) => onDimensionChange?.(Number(event.target.value))}
-                className="h-2 w-40 cursor-pointer accent-primary"
+                className="h-1.5 w-40 cursor-pointer accent-[var(--coral)]"
               />
-              <span className="w-6 text-center text-sm font-mono font-bold text-foreground">
+              <span className="w-6 text-center font-mono text-sm font-semibold text-gray-900">
                 {dimensionN}
               </span>
             </label>
