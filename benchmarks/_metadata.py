@@ -95,24 +95,8 @@ PERF_EVENTS = [
 ]
 
 
-def collect_metadata(dtype: str, repeats: int, distributions: int) -> dict[str, Any]:
-    """Collect hardware/software metadata for a benchmark run.
-
-    Parameters
-    ----------
-    dtype : str
-        NumPy dtype string (e.g. "float64").
-    repeats : int
-        Number of timing repetitions per operation.
-    distributions : int
-        Number of input distributions to sample.
-
-    Returns
-    -------
-    dict
-        Metadata dictionary with timestamp, hardware, software, and
-        benchmark_config sections.
-    """
+def collect_environment_metadata() -> dict[str, Any]:
+    """Collect the shared hardware/software metadata for a benchmark run."""
     cores, threads = _cpu_cores_threads()
     cache = _read_cache_info()
 
@@ -132,10 +116,32 @@ def collect_metadata(dtype: str, repeats: int, distributions: int) -> dict[str, 
             "numpy": np.__version__,
             "blas": _blas_info(),
         },
-        "benchmark_config": {
-            "dtype": dtype,
-            "repeats": repeats,
-            "distributions": distributions,
-            "perf_events": PERF_EVENTS,
-        },
     }
+
+
+def collect_metadata(dtype: str, repeats: int, distributions: int) -> dict[str, Any]:
+    """Collect hardware/software metadata for a benchmark run.
+
+    Parameters
+    ----------
+    dtype : str
+        NumPy dtype string (e.g. "float64").
+    repeats : int
+        Number of timing repetitions per operation.
+    distributions : int
+        Number of input distributions to sample.
+
+    Returns
+    -------
+    dict
+        Metadata dictionary with timestamp, hardware, software, and
+        benchmark_config sections.
+    """
+    meta = collect_environment_metadata()
+    meta["benchmark_config"] = {
+        "dtype": dtype,
+        "repeats": repeats,
+        "distributions": distributions,
+        "perf_events": PERF_EVENTS,
+    }
+    return meta

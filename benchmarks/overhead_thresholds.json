@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "policy_version": "bootstrap",
+  "default": {
+    "ratio_max": 6.0
+  },
+  "family": {
+    "pointwise": {
+      "ratio_max": 6.0
+    },
+    "reductions": {
+      "ratio_max": 6.0
+    },
+    "contractions": {
+      "ratio_max": 4.0
+    },
+    "linalg": {
+      "ratio_max": 4.0
+    },
+    "fft": {
+      "ratio_max": 4.0
+    },
+    "random": {
+      "ratio_max": 7.0
+    },
+    "stats": {
+      "ratio_max": 7.0
+    }
+  },
+  "surface": {
+    "operator": {
+      "ratio_max": 7.0
+    }
+  }
+}

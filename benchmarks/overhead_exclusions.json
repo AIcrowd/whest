@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "excluded": {
+    "budget_summary": "diagnostic helper, not a NumPy baseline candidate",
+    "budget_live": "diagnostic helper, not a NumPy baseline candidate",
+    "configure": "configuration helper, not a runtime benchmark candidate",
+    "namespace": "context helper, not a NumPy baseline candidate"
+  },
+  "unsupported_for_ratio": {
+    "budget": "context-manager factory, not comparable to a single NumPy call"
+  }
+}

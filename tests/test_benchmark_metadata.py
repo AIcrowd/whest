@@ -1,6 +1,14 @@
 """Tests for benchmark hardware/software metadata collection."""
 
-from benchmarks._metadata import collect_metadata
+from benchmarks._metadata import collect_environment_metadata, collect_metadata
+
+
+def test_collect_environment_metadata_has_required_keys():
+    meta = collect_environment_metadata()
+    assert "timestamp" in meta
+    assert "hardware" in meta
+    assert "software" in meta
+    assert "benchmark_config" not in meta
 
 
 def test_collect_metadata_has_required_keys():
