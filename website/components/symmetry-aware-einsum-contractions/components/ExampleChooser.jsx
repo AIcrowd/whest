@@ -554,18 +554,24 @@ export default function ExampleChooser({
                 <span className="mt-1 text-sm font-semibold uppercase tracking-[0.18em] text-gray-400">operands</span>
               </div>
               <span className="whitespace-nowrap pt-1.5 font-mono text-sm text-gray-400">)</span>
-              <Button
+              {/* Primary CTA — mirrors the home-page Install button
+                  (app/(home)/page.tsx:423–428): rounded-lg 8px, coral
+                  ground, coral-hover on hover, coral-at-20% focus ring,
+                  text-white / sm / medium. No shadow elevation (the docs
+                  register is shadowless). Native <button> instead of the
+                  shadcn Button variant so chrome matches the home CTA
+                  exactly without override dance. */}
+              <button
                 type="button"
-                variant="default"
                 className={cn(
-                  'shrink-0 whitespace-nowrap px-5 py-2 text-sm font-semibold shadow-md transition-all hover:shadow-lg',
-                  !validation.valid && 'opacity-60 hover:shadow-md',
+                  'inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-[8px] bg-[var(--coral)] px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[var(--coral-hover)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--coral)]/20',
+                  !validation.valid && 'opacity-60',
                 )}
                 onClick={handleAnalyze}
                 title={validation.valid ? undefined : 'Click to see what needs fixing'}
               >
-                &#x25B6; Analyze
-              </Button>
+                <span aria-hidden>&#x25B6;</span> Analyze
+              </button>
             </div>
           </div>
           <div className="mt-3 flex justify-end">
