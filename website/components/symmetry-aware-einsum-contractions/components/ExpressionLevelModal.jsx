@@ -71,7 +71,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
             </h2>
             <p className="mt-1 text-sm leading-6 text-gray-600">
               <InlineMathText>
-                {`The main page reports a single detected symmetry group $G$ and uses it to drive every cost number. Inside this appendix we refer to that group as $G_{\\text{pt}}$ — the $\\textit{pointwise symmetry group}$ — to distinguish it from the larger $\\textit{formal symmetry group}$ $G_{\\text{f}}$ discussed here. The first section below defines both groups precisely; the sections that follow construct $G_{\\text{f}}$ from its two components.`}
+                {`Throughout this appendix we write an einsum in the generic form $R = \\sum_t \\text{summand}(t)$, where $t$ ranges over tuples of label values in $[n]^L$ and $\\text{summand}(t) = \\prod_k T_k[s_k(t)]$ is the product of operand values at that tuple. The main page reports a single detected symmetry group $G$ and uses it to drive every cost number. Inside this appendix we refer to that group as $G_{\\text{pt}}$ — the $\\textit{pointwise symmetry group}$ — to distinguish it from the larger $\\textit{formal symmetry group}$ $G_{\\text{f}}$ discussed here. The first section below defines both groups precisely; the sections that follow construct $G_{\\text{f}}$ from its two components.`}
               </InlineMathText>
             </p>
           </div>
