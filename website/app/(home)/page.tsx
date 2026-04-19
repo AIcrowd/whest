@@ -386,7 +386,7 @@ export default function HomePage() {
           content-max container. At wide viewports this reads as a classic
           editorial pairing rather than a floating illustration in a fat column. */}
       <section className="mx-auto w-full max-w-[var(--content-max)] px-6 pt-16 pb-14 md:px-8 md:pt-24 md:pb-20">
-        <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-[minmax(0,var(--prose-max))_minmax(0,1fr)] md:gap-12 lg:gap-16">
+        <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-[minmax(0,var(--prose-max))_minmax(0,1fr)] md:gap-0">
           <div className="max-w-[var(--prose-max)]">
           <div
             className="mb-6 font-sans text-[10px] font-semibold uppercase text-gray-400 dark:text-gray-500"
