@@ -185,14 +185,12 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
               <p className="font-semibold">Worked example — bilinear trace.</p>
               <p className="mt-1">
                 <InlineMathText>
-                  $G_{'\\text{pt}'} = \{e,\;(i\;j)(k\;l)\}$. V = $\{i,j\}$, W = $\{k,l\}$.
-                  Restricting the one non-identity element to V gives $(i\;j)$. So
-                  $V_{'\\text{sub}'} = \{e,\;(i\;j)\} \cong S_2$ on $\{i,j\}$.
+                  {`$G_{\\text{pt}} = \\{e,\\;(i\\;j)(k\\;l)\\}$. V = $\\{i,j\\}$, W = $\\{k,l\\}$. Restricting the one non-identity element to V gives $(i\\;j)$. So $V_{\\text{sub}} = \\{e,\\;(i\\;j)\\} \\cong S_2$ on $\\{i,j\\}$.`}
                 </InlineMathText>
               </p>
               <p className="mt-2 text-muted-foreground text-[13px]">
                 <InlineMathText>
-                  Note the output really is symmetric: $R[i,j] = R[j,i]$. That's $V_{'\\text{sub}'}$ showing up in the output tensor.
+                  {`Note the output really is symmetric: $R[i,j] = R[j,i]$. That's $V_{\\text{sub}}$ showing up in the output tensor.`}
                 </InlineMathText>
               </p>
             </div>
@@ -220,13 +218,13 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
               <p className="font-semibold">Concretely, for bilinear trace.</p>
               <p className="mt-1">
                 <InlineMathText>
-                  W = $\{k,l\}$, so $S(W) = \{e,\;(k\;l)\}$ — the 2-element group that renames the
-                  two summed indices. $(k\;l)$ is always an expression-level symmetry because
-                  $\sum_{'k,l'} f(k,l) = \sum_{'k,l'} f(l,k)$.
+                  {`W = $\\{k,l\\}$, so $S(W) = \\{e,\\;(k\\;l)\\}$ — the 2-element group that renames the two summed indices. $(k\\;l)$ is always an expression-level symmetry because $\\sum_{k,l} f(k,l) = \\sum_{k,l} f(l,k)$.`}
                 </InlineMathText>
               </p>
               <p className="mt-2 text-muted-foreground text-[13px]">
-                {`But $(k\\;l)$ is NOT per-tuple: the individual summand at $(k,l)=(0,1)$ becomes the one at $(1,0)$, which is a different number for a general operand. Dummy-rename works on totals, not on terms.`}
+                <InlineMathText>
+                  {`But $(k\\;l)$ is NOT per-tuple: the individual summand at $(k,l)=(0,1)$ becomes the one at $(1,0)$, which is a different number for a general operand. Dummy-rename works on totals, not on terms.`}
+                </InlineMathText>
               </p>
             </div>
           </section>
