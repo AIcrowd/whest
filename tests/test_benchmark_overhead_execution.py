@@ -248,6 +248,16 @@ def test_startup_result_uses_serialized_factories_not_op_name_dispatch():
     assert result["whest_details"]["operations"]["add"]["calls"] >= 1
 
 
+def test_case_payload_uses_whest_free_numpy_factory_module():
+    from benchmarks.overhead.execution import _case_payload
+
+    case = seed_cases()[0]
+
+    payload = _case_payload(case)
+
+    assert payload["numpy_factory"]["module"] != "benchmarks.overhead.specs"
+
+
 @pytest.mark.parametrize(
     "case",
     [case for case in seed_cases() if case.op_name == "matmul" and case.size_name == "medium"],

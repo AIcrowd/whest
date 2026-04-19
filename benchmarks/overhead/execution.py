@@ -176,11 +176,21 @@ def _callable_payload(func: Callable[..., object]) -> dict[str, str]:
     return {"module": module, "qualname": qualname}
 
 
+def _numpy_startup_payload(func: Callable[..., object]) -> dict[str, str]:
+    payload = _callable_payload(func)
+    if (
+        payload["module"] == "benchmarks.overhead.specs"
+        and payload["qualname"].startswith("_numpy_")
+    ):
+        payload["module"] = "benchmarks.overhead.startup_numpy"
+    return payload
+
+
 def _case_payload(case: BenchmarkCase) -> dict[str, object]:
     return {
         "dtype": case.dtype,
         "operand_shapes": [list(shape) for shape in case.operand_shapes],
-        "numpy_factory": _callable_payload(case.numpy_factory),
+        "numpy_factory": _numpy_startup_payload(case.numpy_factory),
         "whest_factory": _callable_payload(case.whest_factory),
     }
 
