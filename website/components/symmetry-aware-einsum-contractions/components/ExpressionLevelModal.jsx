@@ -15,9 +15,9 @@ const EXAMPLES_BY_ID = new Map(EXAMPLES.map((ex) => [ex.id, ex]));
 
 /**
  * Per-preset operand listing: distinct operand names in first-appearance
- * order, annotated with their repeat count (drives Source B of the σ-loop)
- * and declared axis symmetry (Source A). Used to render the "Operand sym"
- * column in §7's savings table.
+ * order, annotated with their repeat count (drives top-group transpositions
+ * in the wreath σ-loop) and declared axis symmetry (base-group generators).
+ * Used to render the "Operand sym" column in §7's savings table.
  *
  * The `sym` field uses `variableSymmetryLabel` — the same short-form
  * vocabulary (`dense`, `S3`, `C4`, `D2`, `custom (N gens)`) the main-page
@@ -508,7 +508,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
               <p className="font-semibold">Worked example — bilinear trace at <Latex math="n = 2" />.</p>
               <p className="mt-2">
                 <InlineMathText>
-                  {`The einsum $\\mathtt{ik{,}jl\\to ij}$ computes $R[i,j] = \\sum_{k,l} A[i,k] \\cdot A[j,l]$ with $V = \\{i, j\\}$ and $W = \\{k, l\\}$. The σ-loop's Source B emits the permutation that swaps the two identical $A$ operands, exchanging $i \\leftrightarrow j$ together with $k \\leftrightarrow l$. The detected pointwise group is therefore $G_{\\text{pt}} = \\{e,\\;(i\\;j)(k\\;l)\\}$. Restricting each element to V yields $G_{\\text{pt}}\\big|_V = \\{e,\\;(i\\;j)\\}$, a copy of $S_2$ acting on $\\{i,j\\}$.`}
+                  {`The einsum $\\mathtt{ik{,}jl\\to ij}$ computes $R[i,j] = \\sum_{k,l} A[i,k] \\cdot A[j,l]$ with $V = \\{i, j\\}$ and $W = \\{k, l\\}$. The σ-loop's top-group transposition emits the permutation that swaps the two identical $A$ operands, exchanging $i \\leftrightarrow j$ together with $k \\leftrightarrow l$. The detected pointwise group is therefore $G_{\\text{pt}} = \\{e,\\;(i\\;j)(k\\;l)\\}$. Restricting each element to V yields $G_{\\text{pt}}\\big|_V = \\{e,\\;(i\\;j)\\}$, a copy of $S_2$ acting on $\\{i,j\\}$.`}
                 </InlineMathText>
               </p>
             </div>
@@ -829,7 +829,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                   </tbody>
                 </table>
                 <p className="mt-2 text-[11px] italic text-muted-foreground">
-                  All entries computed at <Latex math="n = 3" />; sorted by % saving, descending. <span className="font-mono not-italic">×k</span> on an operand indicates it appears <Latex math="k" /> times in the expression (driving Source B of the σ-loop). Hover any einsum to see the full construction with per-operand ranks, declared axes, and generators.
+                  All entries computed at <Latex math="n = 3" />; sorted by % saving, descending. <span className="font-mono not-italic">×k</span> on an operand indicates it appears <Latex math="k" /> times in the expression (driving top-group transpositions in the wreath σ-loop). Hover any einsum to see the full construction with per-operand ranks, declared axes, and generators.
                 </p>
               </div>
               <p className="mt-3 text-[13px] text-muted-foreground">
