@@ -116,3 +116,24 @@ test('enumerateWreath first emitted element is the identity', () => {
   // Identity on a 4-vertex universe: [0,1,2,3]
   assert.deepEqual(first.rowPerm.arr, [0, 1, 2, 3], 'first element must be identity');
 });
+
+test('enumerateH accepts both raw-string and pre-parsed custom.generators', () => {
+  // Raw string form — the shape the wreath-equivalence loop test builds
+  const fromString = [...enumerateWreath({
+    identicalGroups: [[0]],
+    perOpSymmetry: [{ type: 'custom', axes: [0, 1, 2, 3], generators: '(0 1), (2 3)' }],
+    axisRanks: [4],
+  })];
+
+  // Pre-parsed array form — the shape `pipeline.js::analyzeExample` produces
+  // after `parseCycleNotation`. Same group ⟨(0 1), (2 3)⟩ ≅ S_2 × S_2, |G| = 4.
+  const fromArray = [...enumerateWreath({
+    identicalGroups: [[0]],
+    perOpSymmetry: [{ type: 'custom', axes: [0, 1, 2, 3], generators: [[[0, 1]], [[2, 3]]] }],
+    axisRanks: [4],
+  })];
+
+  assert.equal(fromString.length, 4, '⟨(0 1), (2 3)⟩ has order 4 (raw string)');
+  assert.equal(fromArray.length, 4, '⟨(0 1), (2 3)⟩ has order 4 (pre-parsed)');
+  assert.equal(fromString.length, fromArray.length, 'both shapes yield the same count');
+});

@@ -15,11 +15,15 @@
 import { Permutation, dimino } from './permutation.js';
 import { parseCycleNotation } from './cycleParser.js';
 
-function factorial(n) { let f = 1; for (let i = 2; i <= n; i++) f *= i; return f; }
-
 // Enumerate every element of a rank-n permutation group described by
 // `sym` ('symmetric' | 'cyclic' | 'dihedral' | { type: 'custom', generators, axes }
 //  | null/'none'/undefined). Returns an array of Permutation on [0, rank).
+//
+// `sym.generators` for the custom branch may be either:
+//   - a raw cycle-notation string ("(0 1), (2 3)"), or
+//   - the pre-parsed array-of-cycle-arrays shape that
+//     `pipeline.js::analyzeExample` produces via `parseCycleNotation`.
+// Both shapes are accepted so callers don't need to re-normalise.
 export function enumerateH(sym, rank) {
   if (!sym || sym === 'none') return [Permutation.identity(rank)];
 
@@ -63,10 +67,23 @@ export function enumerateH(sym, rank) {
   }
 
   if (sym?.type === 'custom') {
+    // axes kept for future symAxes support; not used by the cycle-to-arr loop
+    // since custom cycles already index into [0, rank).
+    // eslint-disable-next-line no-unused-vars
     const axes = sym.axes || Array.from({ length: rank }, (_, i) => i);
-    const parsed = parseCycleNotation(sym.generators || '');
-    if (!parsed.generators || parsed.generators.length === 0) return [identity];
-    const gens = parsed.generators.map((perm) => {
+    // Accept both raw strings and the pre-parsed array shape that
+    // pipeline.js emits (see module header).
+    let generatorCycles;
+    if (typeof sym.generators === 'string') {
+      const parsed = parseCycleNotation(sym.generators);
+      generatorCycles = parsed.generators;
+    } else if (Array.isArray(sym.generators)) {
+      generatorCycles = sym.generators;
+    } else {
+      generatorCycles = null;
+    }
+    if (!generatorCycles || generatorCycles.length === 0) return [identity];
+    const gens = generatorCycles.map((perm) => {
       const arr = Array.from({ length: rank }, (_, i) => i);
       for (const cycle of perm) {
         for (let k = 0; k < cycle.length; k += 1) {
