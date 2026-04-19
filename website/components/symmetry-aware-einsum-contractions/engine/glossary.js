@@ -11,7 +11,7 @@ export const GLOSSARY = [
   },
   {
     term: 'formal symmetry',
-    definition: 'A label permutation π such that the total sum is unchanged under renaming all labels by π, even when individual terms reshuffle. "Formal" here has its standard mathematical meaning — invariance at the level of the expression as a formal sum, not at the level of its values. Every pointwise symmetry is a formal symmetry; the converse does not hold in general.',
+    definition: 'A V-preserving label permutation π = (π_V, π_W) ∈ Sym(V) × Sym(W) under which the output tensor R, viewed as a polynomial in the entries of the operand tensors, is invariant: R[π_V·ω] = R[ω] as polynomials, after relabelling the summed indices by π_W. "Formal" here has its standard mathematical meaning — invariance at the level of the expression as a formal polynomial, not at the level of its values on any specific operand. The V-preserving restriction of any pointwise symmetry projects to a formal symmetry; the converse does not hold in general (dummy W-renamings in {e} × S(W) are formal but not pointwise).',
   },
   {
     term: '$G_{\\text{pt}}\\big|_V$',
@@ -27,7 +27,7 @@ export const GLOSSARY = [
   },
   {
     term: 'Source B',
-    definition: 'σ-loop generators from identical-operand swaps. When two operands share Python identity, swapping their positions induces a label permutation matching axes across the two subscripts.',
+    definition: 'σ-loop generators from identical-operand swaps. The engine groups operands by name (the JS engine in `algorithm.js` uses `nameToPositions[name]` to bucket positions sharing an operand identifier), and when two positions share that name, swapping them induces a label permutation matching axes across the two subscripts.',
   },
   {
     term: 'component',
