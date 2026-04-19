@@ -152,11 +152,11 @@ export default function AccumulationHardCard() {
 
   return (
     <div id="accumulation-cost" className="rounded-xl border border-gray-200 bg-white p-4 scroll-mt-24">
-      <div className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+      <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
         <AnchorLink anchorId="accumulation-cost" labelText="Why Accumulation Cost (α) is Hard">
-          Why Accumulation Cost <span className="normal-case">(α)</span> is Hard
+          Why Accumulation Cost <span>(α)</span> is Hard
         </AnchorLink>
-      </div>
+      </h3>
       <p className="mt-2 text-sm leading-6 text-foreground">
         Unlike <span className="font-mono">Mₐ</span>, the per-component
         accumulation cost <span className="font-mono">αₐ</span> depends on how

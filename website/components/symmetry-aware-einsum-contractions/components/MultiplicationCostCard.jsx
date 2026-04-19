@@ -154,11 +154,11 @@ export default function MultiplicationCostCard({ components = [] }) {
 
   return (
     <div id="multiplication-cost" className="rounded-xl border border-gray-200 bg-white p-4 scroll-mt-24">
-      <div className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+      <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
         <AnchorLink anchorId="multiplication-cost" labelText="Calculating Multiplication Cost (μ)">
-          Calculating Multiplication Cost <span className="normal-case">(μ)</span>
+          Calculating Multiplication Cost <span>(μ)</span>
         </AnchorLink>
-      </div>
+      </h3>
       <p className="mt-2 text-sm leading-6 text-foreground">
         Every component gets the same treatment. Size-aware Burnside counts the
         per-component orbit count <span className="font-mono">Mₐ</span> once each;
