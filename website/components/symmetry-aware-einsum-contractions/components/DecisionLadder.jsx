@@ -101,47 +101,73 @@ const LABEL_OFFSET_HORIZONTAL = { transform: 'translate(0, -11px)' };
 // output: if the ladder's path disagreed with the engine's, the reader
 // could highlight one leaf while having arrived there via a different
 // branching story than the code.
+//
+// Each QUESTION carries three tooltip fields that the `tooltipFor`
+// resolver stitches into labeled sections:
+//
+//   checks    — precisely what's tested, in engine terms.
+//   why       — the connection between the yes/no answer and the
+//               closed-form (or fallback) that gates it.
+//   intuition — common misconceptions, concrete preset examples, and
+//               the subtleties careful readers trip on. Optional.
+//
+// These were originally squeezed into a single `long` string; splitting
+// them makes the tooltip easier to scan and lets each section stand on
+// its own (especially "intuition", which is where the reader builds the
+// model that prevents future confusion).
 
 const QUESTIONS = [
   {
     id: 'q_trivial',
     short: '|G| = 1 ?',
-    long: 'Is the symmetry group trivial? Cheap: detected from generators without running dimino (every gen is the identity, or no generators at all). The engine checks this first because if |G|=1 there is nothing to classify — regardless of V/W structure, the answer is simply |X| = Π n_ℓ.',
+    checks: 'Does the σ-loop produce any non-identity generator for $G_{\\text{pt}}$? This is the cheap pre-dimino version of the check: if Sources A+B yield zero generators (or only the identity), $|G|=1$ is known immediately; otherwise dimino is run later to materialise the full group.',
+    why: 'With no symmetry no two tuples are equivalent, so every full assignment is its own accumulation bin. $\\alpha$ collapses to the product of all label sizes, $\\prod_{\\ell \\in L} n_\\ell$, and there is nothing further to classify — regardless of $V$/$W$ shape.',
+    intuition: 'Generic operands with no declared axis symmetries, and no repeated-operand structure the σ-loop can exploit, land here. Examples: $\\texttt{frobenius}$ ($\\texttt{ij,ij→}$ — two identical $A$\'s but matching subscripts kill the swap), $\\texttt{matrix-chain}$ ($\\texttt{ij,jk→ik}$ — identical $A$\'s but different subscript structure), $\\texttt{mixed-chain}$ ($A$,$B$,$A$ with $B$ breaking the chain).',
     onTrue: 'trivial', onFalse: 'q_hasW',
     stage: 1,
   },
   {
     id: 'q_hasW',
     short: 'W ≠ ∅ ?',
-    long: 'Are there summed (contracted) labels? Cheap: checks wa.length alone — no group enumeration needed.',
+    checks: 'Purely structural: does the einsum sum over any label, i.e. does any label appear in the input subscripts but not in the output? $|W| > 0$ tests that.',
+    why: 'If $W = \\emptyset$, every label is free; the expression is an elementwise product, each output cell is touched exactly once, and $\\alpha$ collapses to $\\prod_{\\ell \\in V} n_\\ell$ — no orbit work needed.',
+    intuition: 'Examples with $W = \\emptyset$ (all labels free): $\\texttt{outer}$ ($\\texttt{ab,cd→abcd}$), $\\texttt{triangle}$, $\\texttt{four-cycle}$, $\\texttt{triple-outer}$, $\\texttt{declared-c3}$. These are "visible-only" einsums.',
     onTrue: 'q_hasV', onFalse: 'allVisible',
     stage: 1,
   },
   {
     id: 'q_hasV',
     short: 'V ≠ ∅ ?',
-    long: 'Are there free (output) labels? Cheap: checks va.length alone — no group enumeration needed. "Yes" means both V and W are populated and the group is non-trivial; proceed into Stage 2 with G materialised via dimino.',
+    checks: 'Purely structural: does the output expression contain any labels? $|V| > 0$ tests that.',
+    why: 'If $V = \\emptyset$, the output is a single scalar, so there is exactly one accumulation bin and $\\alpha$ equals $|X/G|$ — the classical Burnside orbit count on the full tuple space.',
+    intuition: 'Examples with $V = \\emptyset$: $\\texttt{frobenius}$ ($\\texttt{ij,ij→}$) and $\\texttt{trace-product}$ ($\\texttt{ij,ji→}$) — both produce scalars. "Yes" here means both $V$ and $W$ are populated and $G$ is non-trivial; this is the only branch that pays the cost of dimino and proceeds into Stage 2.',
     onTrue: 'ENUMERATE', onFalse: 'allSummed',
     stage: 1,
   },
   {
     id: 'q_singleton',
     short: '|V| = 1 ?',
-    long: 'Exactly one free label — singleton weighted Burnside applies. From here down, we have G materialised.',
+    checks: 'Does the output have exactly one axis on this component? $|V_c| = 1$.',
+    why: 'With a single free label, the $V$-projection of every orbit is just that label\'s $G$-orbit — small and structured. A closed-form "point-stabilizer weighted Burnside" gives $\\alpha$ in one shot, with no orbit enumeration on the full tuple space.',
+    intuition: 'Examples: $\\texttt{cross-s3}$ ($\\texttt{ijk→i}$ with $T$ fully symmetric — $S_3$ on $\\{i,j,k\\}$ reducing to a vector) and $\\texttt{cyclic-cross}$ (same shape with $C_3$). Any $\\texttt{...→i}$ einsum with non-trivial $G$ that mixes $i$ with summed labels lands here.',
     onTrue: 'singleton', onFalse: 'q_direct',
     stage: 2,
   },
   {
     id: 'q_direct',
     short: 'F-check passes ?',
-    long: 'Does G factor cleanly as G_V × G_W, with no cross-V/W element and both projections non-trivial? Element-level check post-Dimino: |G| = |G_V|·|G_W| with |G_V| > 1 AND |G_W| > 1.',
+    checks: 'Three post-dimino conditions, all required: (1) no element of $G$ maps a $V$-label to a $W$-label (no cross), (2) $|G| = |G_V| \\cdot |G_W|$ where $G_V$, $G_W$ are the projections onto $V$ and $W$, and (3) both $|G_V| > 1$ and $|G_W| > 1$ (meaningfulness guard).',
+    why: 'All three together say $G$ is exactly the direct product of its $V$-action and its $W$-action, with no coupling. $\\alpha$ then decomposes: for each $V$-tuple, Burnside runs independently on the $W$-side. Closed form: $\\alpha = (\\prod_{\\ell \\in V} n_\\ell) \\cdot |[n]^W / G_W|$.',
+    intuition: '"No cross" alone is not enough — $\\texttt{bilinear-trace}$ has no cross elements but $|G|=2 \\neq |G_V| \\cdot |G_W| = 4$ because its single non-identity element $(i\\;j)(k\\;l)$ is a *coupled* $\\mathbb{Z}_2$ (swapping $V$ forces swapping $W$). Passing examples: $\\texttt{four-A-grid}$, $\\texttt{direct-s2-s2}$, $\\texttt{direct-s2-c3}$, $\\texttt{direct-s3-s2}$.',
     onTrue: 'directProduct', onFalse: 'q_crossVW',
     stage: 2,
   },
   {
     id: 'q_crossVW',
     short: 'Cross-V/W element ?',
-    long: 'Does any element of G map a V-label to a W-label or vice versa? Cross elements arise from declared axis symmetries spanning V/W, or from identical-operand swaps pairing V with W labels.',
+    checks: 'Does any element $g \\in G$ move at least one $V$-label to a $W$-label (or vice versa)? An element-level scan: for each $g$, does there exist $\\ell \\in V$ with $g(\\ell) \\in W$?',
+    why: 'The young regime requires at least one cross element — its multinomial closed form assumes $G$ genuinely mixes $V$ and $W$. Without cross, young cannot fire and bruteForceOrbit is the only remaining option.',
+    intuition: 'Common confusion: "we are already in Stage 2, both $V$ and $W$ are non-empty — don\'t elements of $G$ always mix them?" **No.** $V \\neq \\emptyset$ and $W \\neq \\emptyset$ only say the einsum *has* both kinds of labels; they say nothing about how $G$ acts. Reaching this node with answer "no" happens when q_direct refused for a *numeric* reason, not because of cross. Examples: $\\texttt{four-A-grid}$\'s $S_2\\{a,b\\} \\times S_2\\{i,j\\}$ has zero cross elements (it fires directProduct, never reaching here); $\\texttt{bilinear-trace}$\'s coupled $\\mathbb{Z}_2$ also has zero cross but q_direct refused on $|G| \\neq |G_V| \\cdot |G_W|$ — that is a "no-cross but reach here" case, and it falls straight to BFO. Cross elements themselves arise from declared axis symmetries spanning $V$ and $W$ on an operand, or from identical-operand swaps pairing a $V$-label with a $W$-label.',
     onTrue: 'q_fullSym',
     onFalse: 'bruteForceOrbit',
     stage: 2,
@@ -149,7 +175,9 @@ const QUESTIONS = [
   {
     id: 'q_fullSym',
     short: 'G = Sym(L_c) ?',
-    long: 'Is the detected group the full symmetric group on the component\'s labels, i.e. |G| = |L_c|!? If so, the pointwise V-stabilizer is the Young subgroup Sym(W) and α has a multinomial closed form.',
+    checks: 'Is $G$ the full symmetric group on the component\'s label set — every permutation of $L_c$? The cardinality test $|G| = |L_c|!$ decides this.',
+    why: 'When $G = \\mathrm{Sym}(L)$, the pointwise $V$-stabilizer is exactly the Young subgroup $\\mathrm{Sym}(W)$. The orbit count collapses to a multinomial: $\\alpha = n_L^{|V|} \\cdot \\binom{n_L + |W| - 1}{|W|}$, with no orbit enumeration.',
+    intuition: 'Examples that fire young: $\\texttt{young-s3}$ ($\\texttt{abc→ab}$ with $T$ fully symmetric, $|G|=6=3!$), $\\texttt{young-s4-v2w2}$, $\\texttt{young-s4-v3w1}$. Examples with cross elements but $G \\neq \\mathrm{Sym}$: $\\texttt{cross-c3-partial}$ ($C_3 \\subsetneq S_3$), $\\texttt{cross-s2}$ ($S_2 \\subsetneq S_3$ on a 3-label component). These fall to bruteForceOrbit because the closed form requires the full symmetric group.',
     onTrue: 'young',
     onFalse: 'bruteForceOrbit',
     stage: 2,
@@ -319,7 +347,12 @@ function tooltipFor(nodeId, liveReasonsByLeaf = null) {
     return {
       title: q.short,
       whenText: q.stage === 1 ? 'Stage 1 — structural check (no dimino)' : 'Stage 2 — symmetry check (dimino done)',
-      body: q.long,
+      // Structured sections replace the old single `body` string for
+      // question nodes. The render path displays `checks`, `why`, and
+      // `intuition` under their own captioned headings when present.
+      checks: q.checks,
+      why: q.why,
+      intuition: q.intuition,
       latex: null,
       color: q.stage === 1 ? '#16A34A' : '#8B5CF6',
     };
@@ -767,7 +800,13 @@ export default function DecisionLadder({
     if (hoveredNodeRef.current === nodeId) return;
     if (!rect) return;
     const tooltipW = 460;
-    const tooltipH = 340;
+    // Bumped from 340 → 520: the restructured question tooltips carry
+    // three stacked sections (Checks · Why · Intuition), and the
+    // intuition paragraphs for q_crossVW / q_direct run long by design
+    // because they're where readers build the missing mental model.
+    // Under-estimating the height made the placer flip tooltips above
+    // short nodes even when plenty of room below would have fit.
+    const tooltipH = 520;
     const vw = document.documentElement.clientWidth;
     const vh = document.documentElement.clientHeight;
     let x = rect.left + rect.width / 2;
@@ -892,9 +931,35 @@ export default function DecisionLadder({
               </InlineMathText>
             </div>
           )}
-          <div className="whitespace-normal break-words text-sm leading-6 text-gray-300">
-            <InlineMathText>{activeTooltip.body}</InlineMathText>
-          </div>
+          {activeTooltip.body && (
+            <div className="whitespace-normal break-words text-sm leading-6 text-gray-300">
+              <InlineMathText>{activeTooltip.body}</InlineMathText>
+            </div>
+          )}
+          {activeTooltip.checks && (
+            <div className="whitespace-normal break-words text-sm leading-6 text-gray-300">
+              <div className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-gray-500">
+                What's checked
+              </div>
+              <InlineMathText>{activeTooltip.checks}</InlineMathText>
+            </div>
+          )}
+          {activeTooltip.why && (
+            <div className="mt-3 whitespace-normal break-words border-t border-gray-700 pt-3 text-sm leading-6 text-gray-300">
+              <div className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-gray-500">
+                Why it matters
+              </div>
+              <InlineMathText>{activeTooltip.why}</InlineMathText>
+            </div>
+          )}
+          {activeTooltip.intuition && (
+            <div className="mt-3 whitespace-normal break-words border-t border-gray-700 pt-3 text-sm leading-6 text-gray-300">
+              <div className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-gray-500">
+                Intuition
+              </div>
+              <InlineMathText>{activeTooltip.intuition}</InlineMathText>
+            </div>
+          )}
           {activeTooltip.latex && (
             <div className="mt-3 overflow-x-auto border-t border-gray-700 pt-3 text-sm text-gray-100">
               <div className="min-w-0">
