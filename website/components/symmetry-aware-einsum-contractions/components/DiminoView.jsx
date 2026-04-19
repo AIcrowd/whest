@@ -82,7 +82,7 @@ function PermCards({ elements, labels, vSet, wSet, highlight = false, emptyText 
 function ProofSection({ title, children }) {
   return (
     <div className="rounded-lg border border-border bg-surface-raised p-3">
-      <div className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">{title}</div>
+      <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">{title}</div>
       <div className="mt-3">{children}</div>
     </div>
   );

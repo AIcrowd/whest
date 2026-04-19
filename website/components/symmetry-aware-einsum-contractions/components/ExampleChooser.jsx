@@ -338,7 +338,7 @@ export default function ExampleChooser({
     <>
       <div className="space-y-4">
         <div>
-          <div className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-gray-500">Variables</div>
+          <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">Variables</div>
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
             {variables.map((variable, idx) => {
               const variableColor = varColors[variable.name] || {};
@@ -460,7 +460,7 @@ export default function ExampleChooser({
                     <ExplorerField
                       label="Generators"
                       className="mb-1"
-                      labelClassName="text-sm font-semibold uppercase tracking-[0.18em] text-gray-400"
+                      labelClassName="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400"
                       inputClassName={cn(
                         'h-auto px-3 py-1.5 text-sm font-mono focus:border-coral focus:ring-coral/30',
                         errorFieldSet.has(varField(idx, 'generators')) ? 'border-red-300' : 'border-gray-200',
@@ -508,7 +508,7 @@ export default function ExampleChooser({
         </div>
 
         <div>
-          <div className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-gray-500">Expression</div>
+          <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">Expression</div>
           <div className="my-4">
             <div className="flex flex-wrap items-start gap-2">
               <span className="whitespace-nowrap pt-1.5 font-mono text-sm font-semibold text-coral">einsum(&#39;</span>
@@ -523,7 +523,7 @@ export default function ExampleChooser({
                   onBlur={() => touch('subscripts')}
                   placeholder="ia,ib"
                 />
-                <span className="mt-1 text-sm font-semibold uppercase tracking-[0.18em] text-gray-400">subscripts</span>
+                <span className="mt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">subscripts</span>
               </div>
               <span className="whitespace-nowrap pt-1.5 font-mono text-sm text-gray-400">&rarr;</span>
               <div className="flex min-w-[60px] flex-1 flex-col items-center">
@@ -537,7 +537,7 @@ export default function ExampleChooser({
                   onBlur={() => touch('output')}
                   placeholder="ab"
                 />
-                <span className="mt-1 text-sm font-semibold uppercase tracking-[0.18em] text-gray-400">output</span>
+                <span className="mt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">output</span>
               </div>
               <span className="whitespace-nowrap pt-1.5 font-mono text-sm text-gray-400">&#39;,</span>
               <div className="flex min-w-[60px] flex-1 flex-col items-center">
@@ -551,38 +551,48 @@ export default function ExampleChooser({
                   onBlur={() => touch('operands')}
                   placeholder="X, X"
                 />
-                <span className="mt-1 text-sm font-semibold uppercase tracking-[0.18em] text-gray-400">operands</span>
+                <span className="mt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">operands</span>
               </div>
               <span className="whitespace-nowrap pt-1.5 font-mono text-sm text-gray-400">)</span>
-              <Button
+              {/* Primary CTA — mirrors the home-page Install button
+                  (app/(home)/page.tsx:423–428): rounded-lg 8px, coral
+                  ground, coral-hover on hover, coral-at-20% focus ring,
+                  text-white / sm / medium. No shadow elevation (the docs
+                  register is shadowless). Native <button> instead of the
+                  shadcn Button variant so chrome matches the home CTA
+                  exactly without override dance. */}
+              <button
                 type="button"
-                variant="default"
                 className={cn(
-                  'shrink-0 whitespace-nowrap px-5 py-2 text-sm font-semibold shadow-md transition-all hover:shadow-lg',
-                  !validation.valid && 'opacity-60 hover:shadow-md',
+                  'inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg bg-[var(--coral)] px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[var(--coral-hover)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--coral)]/20',
+                  !validation.valid && 'opacity-60',
                 )}
                 onClick={handleAnalyze}
                 title={validation.valid ? undefined : 'Click to see what needs fixing'}
               >
-                &#x25B6; Analyze
-              </Button>
+                <span aria-hidden>&#x25B6;</span> Analyze
+              </button>
             </div>
           </div>
           <div className="mt-3 flex justify-end">
+            {/* Dimension knob — styled as a neutral form-field chip per the
+                design-system input spec (gray-200 border, white bg, mono
+                13px). The coral sits on the slider accent only, so the
+                chip reads as a utility control rather than a brand CTA. */}
             <label
-              className="flex cursor-pointer items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5"
+              className="flex cursor-pointer items-center gap-2.5 rounded-full border border-gray-200 bg-white px-3.5 py-1.5 transition-colors hover:border-gray-300"
               title="Per-label dimension — a demo knob for visualising the contraction at different scales. It does not change the einsum's structural cost (|L|, |G|); it only scales |X| = nᴸ, which is how the brute-force estimate |X|·|G| (counted in (tuple, g) pair-touches, cap 1,500,000) moves with it."
             >
-              <span className="text-sm font-mono font-semibold text-muted-foreground">n =</span>
+              <span className="font-mono text-xs font-semibold uppercase tracking-[0.04em] text-gray-400">n</span>
               <input
                 type="range"
                 min={2}
                 max={25}
                 value={dimensionN}
                 onChange={(event) => onDimensionChange?.(Number(event.target.value))}
-                className="h-2 w-40 cursor-pointer accent-primary"
+                className="h-1.5 w-40 cursor-pointer accent-[var(--coral)]"
               />
-              <span className="w-6 text-center text-sm font-mono font-bold text-foreground">
+              <span className="w-6 text-center font-mono text-sm font-semibold text-gray-900">
                 {dimensionN}
               </span>
             </label>

@@ -1,0 +1,104 @@
+/* =========================================================================
+   Whest Design System — Symmetry-Aware Einsum Explorer surface adapter
+
+   The explorer's styles.css is token-driven against the canonical Foundation
+   register (var(--white), var(--gray-900), var(--gray-*), var(--coral*)).
+   Those tokens are fixed light-mode values. To make the explorer track the
+   near-black dark register used by the docs site, we remap those canonical
+   tokens inside the `.dark` scope, limited to the explorer's page shell,
+   so no other surface is affected.
+
+   Why not `.dark` rules in the explorer's own styles.css?  That file is
+   imported before the `@custom-variant dark` directive in global.css
+   applies, and Lightning CSS silently drops raw `.dark` selectors when the
+   custom-variant directive is present in the same compilation unit.
+   Keeping the dark overrides here (a file without `@custom-variant dark`)
+   is the safe adapter pattern — same approach the docs-surface adapter
+   uses for the sidebar-active rule.
+   ========================================================================= */
+
+.dark .symmetry-aware-einsum-contractions-page-shell {
+  /* Foundation neutrals, remapped for near-black dark ground */
+  --white:     oklch(0.250 0.005 220);                    /* card bg   */
+  --gray-50:   oklch(0.291 0.005 219.9);                  /* inset bg  */
+  --gray-100:  oklch(0.291 0.005 219.9);                  /* chip bg   */
+  --gray-200:  color-mix(in oklab, #ffffff 12%, transparent); /* border */
+  --gray-400:  oklch(0.743 0.003 229.6);                  /* muted ink */
+  --gray-600:  #A8ACAD;                                    /* secondary ink (= --code-punc-dark) */
+  --gray-900:  #E8EAEB;                                    /* body ink    (= --code-ink-dark)   */
+
+  /* Coral register — keep accent identity; the tint must sit on a dark
+     ground so coral-light (#FEF2F1) on dark reads as a gray smear. Swap to
+     the color-mix-with-coral pattern the docs adapter uses for sidebar. */
+  --coral-light: color-mix(in oklab, var(--coral) 18%, transparent);
+}
+
+/* -------------------------------------------------------------------------
+   Tailwind-utility adapters for the explorer chrome (dark only)
+
+   Many JSX files in the explorer use hard-coded Tailwind classes
+   (bg-white, text-gray-500, border-gray-200, …) which compile to fixed
+   hex colors and therefore don't adapt when `.dark` is set on <html>.
+   Rather than sweep 25+ JSX files, we adapt the common chrome utilities
+   here, scoped to the explorer's page shell so no other surface is
+   affected. New JSX should prefer semantic utilities (bg-card,
+   text-foreground, border, etc.) — these overrides are a migration
+   bridge for the existing tree.
+   ------------------------------------------------------------------------- */
+
+.dark .symmetry-aware-einsum-contractions-page-shell .bg-white {
+  background-color: var(--card);
+}
+.dark .symmetry-aware-einsum-contractions-page-shell .bg-white\/90 {
+  background-color: color-mix(in oklab, var(--card) 90%, transparent);
+}
+.dark .symmetry-aware-einsum-contractions-page-shell .bg-white\/85 {
+  background-color: color-mix(in oklab, var(--card) 85%, transparent);
+}
+
+.dark .symmetry-aware-einsum-contractions-page-shell .bg-gray-50,
+.dark .symmetry-aware-einsum-contractions-page-shell .bg-gray-100 {
+  background-color: var(--muted);
+}
+.dark .symmetry-aware-einsum-contractions-page-shell .bg-gray-50\/40 {
+  background-color: color-mix(in oklab, var(--muted) 40%, transparent);
+}
+.dark .symmetry-aware-einsum-contractions-page-shell .bg-gray-200 {
+  background-color: color-mix(in oklab, #ffffff 14%, transparent);
+}
+.dark .symmetry-aware-einsum-contractions-page-shell .bg-gray-900 {
+  background-color: var(--foreground);
+  color: var(--background);
+}
+
+.dark .symmetry-aware-einsum-contractions-page-shell .text-gray-900,
+.dark .symmetry-aware-einsum-contractions-page-shell .text-gray-800,
+.dark .symmetry-aware-einsum-contractions-page-shell .text-gray-700 {
+  color: var(--foreground);
+}
+.dark .symmetry-aware-einsum-contractions-page-shell .text-gray-600 {
+  color: #C8CBCC;
+}
+.dark .symmetry-aware-einsum-contractions-page-shell .text-gray-500,
+.dark .symmetry-aware-einsum-contractions-page-shell .text-gray-400 {
+  color: var(--muted-foreground);
+}
+.dark .symmetry-aware-einsum-contractions-page-shell .text-gray-300,
+.dark .symmetry-aware-einsum-contractions-page-shell .text-gray-200,
+.dark .symmetry-aware-einsum-contractions-page-shell .text-gray-100 {
+  color: color-mix(in oklab, var(--foreground) 70%, transparent);
+}
+
+.dark .symmetry-aware-einsum-contractions-page-shell .border-gray-100,
+.dark .symmetry-aware-einsum-contractions-page-shell .border-gray-200,
+.dark .symmetry-aware-einsum-contractions-page-shell .border-gray-300 {
+  border-color: var(--border);
+}
+.dark .symmetry-aware-einsum-contractions-page-shell .border-gray-400,
+.dark .symmetry-aware-einsum-contractions-page-shell .border-gray-500 {
+  border-color: color-mix(in oklab, #ffffff 20%, transparent);
+}
+.dark .symmetry-aware-einsum-contractions-page-shell .border-gray-700,
+.dark .symmetry-aware-einsum-contractions-page-shell .border-gray-900 {
+  border-color: color-mix(in oklab, #ffffff 28%, transparent);
+}

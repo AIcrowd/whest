@@ -88,7 +88,7 @@ function ComponentSummaryTable({
     <div className="max-w-full overflow-x-auto rounded-xl border border-border bg-white shadow-sm">
       {/* Global column header — only labels the 5 middle-row columns. */}
       <div
-        className={`grid ${MIDDLE_COLS} items-center gap-x-4 bg-surface-raised px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground`}
+        className={`grid ${MIDDLE_COLS} items-center gap-x-4 bg-surface-raised px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400`}
       >
         <span>Labels</span>
         <span>Method</span>
@@ -379,11 +379,11 @@ export default function ComponentCostView({
         <div id="interaction-graph" className="rounded-xl border border-gray-200 bg-white p-4 scroll-mt-24">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
-              <div className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
                 <AnchorLink anchorId="interaction-graph" labelText="Interaction Graph">
                   Interaction Graph
                 </AnchorLink>
-              </div>
+              </h3>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">
                 Nodes are <strong className="font-semibold text-foreground">labels</strong>; an edge marks labels that a generator of&nbsp;
                 <Latex math="G" />&nbsp;moves together. Disjoint components factor the cost into independent sub-problems — each one lands on a case in the decision tree below.
@@ -427,11 +427,11 @@ export default function ComponentCostView({
       </div>
 
       <div id="classification-tree" className="rounded-xl border border-gray-200 bg-white p-4 scroll-mt-24">
-        <div className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+        <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
           <AnchorLink anchorId="classification-tree" labelText="Classification Tree">
             Classification Tree
           </AnchorLink>
-        </div>
+        </h3>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
           Each component is routed through a yes/no spine that dispatches to the
           cheapest applicable closed form, or to brute-force orbit projection

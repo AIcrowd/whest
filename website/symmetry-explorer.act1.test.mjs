@@ -25,7 +25,11 @@ test('Act 1 uses a desktop preset rail and a mobile preset fallback', () => {
   assert.match(chooserSource, /gap-3 px-4 py-3/);
   assert.match(chooserSource, /text-sm text-gray-500/);
   assert.match(chooserSource, /text-sm text-gray-400/);
-  assert.doesNotMatch(chooserSource, /text-\[10px\]/);
+  // 10px is legitimate for design-system kickers (.w-kicker is 10/0.2em/
+  // gray-400 in colors_and_type.css). The builder's 'VARIABLES' /
+  // 'subscripts' / 'output' / 'operands' labels are kickers at spec size.
+  // 11px was and still is disallowed here — reserved for the PresetSidebar
+  // kicker under the paper-register register.
   assert.doesNotMatch(chooserSource, /text-\[11px\]/);
   assert.match(chooserSource, /expectedGroup/);
 });
@@ -46,19 +50,30 @@ test('ExampleChooser uses the shared Python code block and current builder primi
   assert.match(codeBlockSource, /\[&_\.hl-str\]:text-emerald-300/);
 });
 
-test('PresetSidebar widens the rail and uses shared text sizing while still showing the output symmetry', () => {
+test('PresetSidebar matches the design-system preset-list spec (flat container, 10px gray kicker, canonical padding)', () => {
   const sidebarSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/PresetSidebar.jsx', import.meta.url), 'utf8');
   assert.match(sidebarSource, /w-\[18rem\]/);
-  assert.match(sidebarSource, /px-3\.5 py-3/);
+  // Spec padding: items sit inside an outer gray-200 rounded container,
+  // `pl-5` leaves room for the 4px coral left rail on active items.
+  assert.match(sidebarSource, /px-4 py-3 pl-5/);
   assert.match(sidebarSource, /Define your own contraction/);
   assert.match(sidebarSource, /Keep the current builder state/);
-  assert.match(sidebarSource, /text-xs font-semibold uppercase tracking-\[0\.18em\] text-primary\/75/);
+  // Kicker follows the `--text-10` / gray-400 / 0.2em tracking spec from
+  // design-system/colors_and_type.css (`.w-kicker` default register).
+  assert.match(sidebarSource, /text-\[10px\] font-semibold uppercase tracking-\[0\.2em\] text-gray-400/);
+  // Outer flat container wrapping the preset rows.
+  assert.match(sidebarSource, /divide-y divide-gray-100[\s\S]*rounded-lg border border-gray-200/);
   assert.match(sidebarSource, /text-sm text-gray-500/);
   assert.match(sidebarSource, /text-sm text-gray-400/);
-  assert.doesNotMatch(sidebarSource, /text-\[10px\]/);
+  // 11px body text is still disallowed — the kicker is the one exception
+  // and uses text-[10px] (spec-specified for eyebrows).
   assert.doesNotMatch(sidebarSource, /text-\[11px\]/);
   assert.match(sidebarSource, /CaseBadge/);
   assert.match(sidebarSource, /summary\.expectedGroup/);
+  // Active rail is always coral — regime identity lives on CaseBadge, not
+  // the rail (was: `style={{ backgroundColor: summary.color }}`).
+  assert.match(sidebarSource, /rounded-\[2px\] bg-coral/);
+  assert.doesNotMatch(sidebarSource, /backgroundColor: summary\.color/);
 });
 
 test('CaseBadge compact variant uses the shared xs scale instead of micro text sizes', () => {

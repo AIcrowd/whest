@@ -228,15 +228,49 @@ export default function SymmetryAwareEinsumContractionsApp() {
         hoveredLabels={hoveredLabelSet}
       />
 
-      <div className="w-full pb-20 pt-8">
-        <div className="mx-auto flex w-full max-w-[1460px] flex-col gap-2 px-6 pb-6 md:px-8 lg:px-10">
-          <h1 className="text-lg font-semibold leading-tight text-foreground">
-            Symmetry Aware Einsum Contractions
+      <div className="w-full pb-20 pt-10">
+        {/* Editorial masthead — matches the docs home page register
+            (app/(home)/page.tsx). Uppercase kicker with leading rule +
+            Newsreader display-serif headline ending in a coral period +
+            Source Serif 4 italic lede. The same typographic rhythm the
+            reader sees at aicrowd.github.io/whest/ carries directly
+            into the explorer so the two pages feel like one product. */}
+        <header className="mx-auto flex w-full max-w-[1460px] flex-col px-6 pb-10 md:px-8 lg:px-10">
+          <div
+            className="mb-5 font-sans text-[10px] font-semibold uppercase text-gray-400"
+            style={{ letterSpacing: '0.2em' }}
+          >
+            <span aria-hidden className="mr-2 inline-block h-px w-8 align-middle bg-gray-300" />
+            An interactive walkthrough
+          </div>
+
+          <h1
+            className="m-0 font-semibold text-gray-900 dark:text-gray-100"
+            style={{
+              fontFamily: 'var(--font-display-serif), Georgia, serif',
+              fontVariationSettings: "'opsz' 72",
+              fontSize: 'clamp(36px, 5vw, 52px)',
+              letterSpacing: '-0.02em',
+              lineHeight: 1.05,
+            }}
+          >
+            Symmetry-aware einsum contractions<span style={{ color: 'var(--coral)' }}>.</span>
           </h1>
-          <p className="text-sm leading-6 text-muted-foreground">
-            <em>Symmetry detection for einsum contractions</em>, explained in five sections.
+
+          <p
+            className="mt-5 max-w-[var(--prose-max)] text-[17px] italic text-gray-600 dark:text-gray-300"
+            style={{
+              fontFamily: 'var(--font-paper-serif), Georgia, serif',
+              fontVariationSettings: "'opsz' 18",
+              lineHeight: 1.6,
+            }}
+          >
+            Given a tensor contraction written in einsum notation, when is the
+            computation invariant under a group of operand permutations — and
+            how much work can we save by exploiting it? Walk through the
+            algorithm in five sections; the visualizations update live.
           </p>
-        </div>
+        </header>
 
         <div className="mx-auto w-full max-w-[1460px] px-6 md:px-8 lg:px-10">
           <AlgorithmAtAGlance />
@@ -259,7 +293,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                 className="border-gray-200 bg-white"
                 contentClassName="pt-5"
               >
-                <div className="grid gap-4 md:grid-cols-2">
+                <div className="grid gap-6 md:grid-cols-2">
                   <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[0].interpretation}</NarrativeCallout>
                   <NarrativeCallout label="Approach" tone="algorithm">{EXPLORER_ACTS[0].algorithm}</NarrativeCallout>
                 </div>
@@ -293,27 +327,34 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >
-                    <div className="grid gap-4 md:grid-cols-2">
+                    <div className="grid gap-6 md:grid-cols-2">
                       <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[1].interpretation}</NarrativeCallout>
                       <NarrativeCallout label="Approach" tone="algorithm">{EXPLORER_ACTS[1].algorithm}</NarrativeCallout>
                     </div>
-                    <p className="mt-4 text-sm leading-7 text-foreground">
-                      Declared input symmetry changes the encoding before any detected contraction symmetry is computed.
-                    </p>
-                    <p className="mt-4 text-sm leading-7 text-foreground">
-                      <InlineMathText>{EXPLORER_ACTS[1].bridge}</InlineMathText>
-                    </p>
-                    <p className="mt-4 text-sm leading-7 text-foreground">
-                      Left vertices (U) are operand axis-classes. Right vertices are index labels,
-                      partitioned into <RoleBadge role="v">V free</RoleBadge> and
+                    {/* Paper-register body — the three staccato single-
+                        sentence paragraphs here were chopping the reading
+                        rhythm. Consolidate the two observations about the
+                        bipartite encoding into one flowing paragraph, keep
+                        the forward-looking bridge as its own paragraph (it
+                        points at Section 3's fingerprint work). Typography
+                        follows the docs paper register: Source Serif 4
+                        17px / line-height 1.75 / gray-700. */}
+                    <p className="mt-5 font-serif text-[17px] leading-[1.75] text-gray-700">
+                      Declared input symmetry changes the encoding before any
+                      detected contraction symmetry is computed. Left vertices
+                      (U) are operand axis-classes; right vertices are index
+                      labels, partitioned into <RoleBadge role="v">V free</RoleBadge> and
                       <RoleBadge role="w">W summed</RoleBadge>.
                       {hasPerOpSym && (
                         <> The graph keeps one U-vertex per axis; per-operand symmetry is recorded separately and drives the σ-loop&apos;s Source-A generators in Section 3.</>
                       )}
                     </p>
+                    <p className="mt-4 font-serif text-[17px] italic leading-[1.75] text-gray-600">
+                      <InlineMathText>{EXPLORER_ACTS[1].bridge}</InlineMathText>
+                    </p>
                     <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
                       <div id="bipartite-graph" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
-                        <h3 className="font-heading text-base font-semibold text-gray-900">
+                        <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
                           <AnchorLink anchorId="bipartite-graph" labelText="Bipartite Graph">
                             Bipartite Graph
                           </AnchorLink>
@@ -321,7 +362,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         <BipartiteGraph graph={graph} example={normalizedExample} variableColors={variableColors} />
                       </div>
                       <div id="incidence-matrix" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
-                        <h3 className="font-heading text-base font-semibold text-gray-900">
+                        <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
                           <AnchorLink anchorId="incidence-matrix" labelText="Incidence Matrix">
                             Incidence Matrix M
                           </AnchorLink>
@@ -343,7 +384,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >
-                    <div className="grid gap-4 md:grid-cols-2">
+                    <div className="grid gap-6 md:grid-cols-2">
                       <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[2].interpretation}</NarrativeCallout>
                       <NarrativeCallout label="Approach" tone="algorithm">{EXPLORER_ACTS[2].algorithm}</NarrativeCallout>
                     </div>
@@ -354,7 +395,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     )}
                     <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
                       <div id="sigma-loop" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
-                        <h3 className="font-heading text-base font-semibold text-gray-900">
+                        <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
                           <AnchorLink anchorId="sigma-loop" labelText="σ-Loop & π Detection">
                             σ-Loop &amp; π Detection
                           </AnchorLink>
@@ -370,7 +411,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         />
                       </div>
                       <div id="generator-construction" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
-                        <h3 className="font-heading text-base font-semibold text-gray-900">
+                        <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
                           <AnchorLink anchorId="generator-construction" labelText="Generator Construction">
                             Generator Construction
                           </AnchorLink>
@@ -396,7 +437,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >
-                    <div className="grid gap-4 md:grid-cols-2">
+                    <div className="grid gap-6 md:grid-cols-2">
                       <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[3].interpretation}</NarrativeCallout>
                       <NarrativeCallout label="Approach" tone="algorithm">{EXPLORER_ACTS[3].algorithm}</NarrativeCallout>
                     </div>

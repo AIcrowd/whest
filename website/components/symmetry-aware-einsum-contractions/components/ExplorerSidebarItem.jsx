@@ -19,8 +19,11 @@ function ExplorerSidebarItem({
         data-size="sm"
         type={Component === 'button' ? (type ?? 'button') : undefined}
         className={cn(
-        'group/card flex w-full flex-col gap-1.5 overflow-visible rounded-xl border-2 border-border/40 py-4 text-left text-sm text-card-foreground transition-colors',
-        active ? 'ring-2 ring-primary/20 border-primary/55' : 'border-border/40',
+        // Flat preset row: no card border, no ring. The wrapping list
+        // container (PresetSidebar) carries the gray-200 outline and the
+        // 1px gray-100 dividers between siblings; the active state is
+        // carried by coral-light bg + the 4px coral left-rail span.
+        'group/card flex w-full flex-col gap-1.5 overflow-visible py-4 text-left text-sm text-card-foreground transition-colors',
         className,
       )}
       {...props}
