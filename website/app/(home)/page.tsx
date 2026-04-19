@@ -381,12 +381,22 @@ function HeroHeadline({ children, dot }: { children: string; dot?: string }) {
 export default function HomePage() {
   return (
     <main className="bg-white dark:bg-[#0E0F10]">
-      {/* 1. Masthead — left-aligned editorial hero. Text block hugs the left,
-          capped at --prose-max (720px); brush mark hugs the right edge of the
-          content-max container. At wide viewports this reads as a classic
-          editorial pairing rather than a floating illustration in a fat column. */}
+      {/* 1. Masthead — left-aligned editorial hero.
+
+          Responsive layout:
+          • < lg (≤1023px):  Stacked — text block, then brush mark below,
+                              both centered. Single column is simpler and
+                              keeps the headline at its full prose-max
+                              measure on md breakpoints (where a 2-column
+                              grid would crowd the text).
+          • lg+ (≥1024px):   3-column grid `[prose-max][1fr][1fr]`. Text in
+                              col 1, logo in col 2 (justify-self-center),
+                              col 3 is an intentional spacer. This lands
+                              the logo near the π ↔ ∞ midpoint of the
+                              metrics row below, instead of floating in
+                              a wide 2-col right column. */}
       <section className="mx-auto w-full max-w-[var(--content-max)] px-6 pt-16 pb-14 md:px-8 md:pt-24 md:pb-20">
-        <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-[minmax(0,var(--prose-max))_minmax(0,1fr)] md:gap-0">
+        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[minmax(0,var(--prose-max))_minmax(0,1fr)_minmax(0,1fr)] lg:gap-8">
           <div className="max-w-[var(--prose-max)]">
           <div
             className="mb-6 font-sans text-[10px] font-semibold uppercase text-gray-400 dark:text-gray-500"
@@ -430,11 +440,12 @@ export default function HomePage() {
           </HomeCodeTerminal>
           </div>
 
-          {/* Brush mark — horizontally centered in its grid cell (both
-              mobile and desktop). The left column is capped at --prose-max
-              so the right cell is tight enough that centering reads as
-              balanced rather than floating. */}
-          <div className="row-start-1 flex items-center justify-center self-center md:row-start-auto">
+          {/* Brush mark —
+              • < lg: stacked above the text (row-start-1), centered.
+              • lg+ : lands in col 2 of the 3-col grid with justify-self-center,
+                      which places its center near the π ↔ ∞ midpoint of the
+                      metrics row below. */}
+          <div className="row-start-1 flex items-center justify-center self-center lg:col-start-2 lg:row-start-auto lg:justify-self-center">
             <Image
               src={withBasePath('/logo.png')}
               alt="whest"
