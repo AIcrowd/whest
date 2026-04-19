@@ -292,7 +292,30 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
                 <div className="mt-4 space-y-3 text-sm">
                   <div>
                     <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Ordered active labels</div>
-                    <code className="mt-1 block font-mono text-foreground">{`[${labels.join(', ')}]`}</code>
+                    {/*
+                      Color each label by its V/W role so this block matches
+                      the rest of the page (InteractionGraph, DiminoView,
+                      VSubSwConstruction, ExpressionLevelModal all use
+                      #4A7CFF for V and #64748B for W). Without this the
+                      [a, b, c, i] list rendered as uniform black text —
+                      the one place on the page where the V/W distinction
+                      was not visible at a glance.
+                    */}
+                    <code className="mt-1 block font-mono text-foreground">
+                      [
+                      {labels.map((l, i) => {
+                        const isV = group?.vLabels?.includes(l);
+                        const isW = group?.wLabels?.includes(l);
+                        const color = isV ? '#4A7CFF' : isW ? '#64748B' : undefined;
+                        return (
+                          <span key={`${l}-${i}`}>
+                            {i > 0 && ', '}
+                            <span style={color ? { color, fontWeight: 600 } : undefined}>{l}</span>
+                          </span>
+                        );
+                      })}
+                      ]
+                    </code>
                     </div>
                     <div className="text-sm text-muted-foreground">
                       This π induces the label permutation {selectedCandidate ? selectedCandidate.cycleNotation : '—'} on the ordered active labels. The right panel now tests it in generator construction.
