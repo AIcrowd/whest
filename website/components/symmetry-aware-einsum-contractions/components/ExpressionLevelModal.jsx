@@ -6,8 +6,9 @@ import VSubSwConstruction from './VSubSwConstruction.jsx';
 import { computeExpressionAlphaTotal } from '../engine/comparisonAlpha.js';
 import { EXAMPLES } from '../data/examples.js';
 import { variableSymmetryLabel } from '../lib/symmetryLabel.js';
+import { SectionEyebrow } from './ExplorerSectionCard.jsx';
 
-// Lookup map keyed by preset id so §6's savings table can pull the raw
+// Lookup map keyed by preset id so §7's savings table can pull the raw
 // einsum and per-operand symmetry declarations straight from the source
 // of truth, rather than duplicating that data into the row array below.
 const EXAMPLES_BY_ID = new Map(EXAMPLES.map((ex) => [ex.id, ex]));
@@ -16,7 +17,7 @@ const EXAMPLES_BY_ID = new Map(EXAMPLES.map((ex) => [ex.id, ex]));
  * Per-preset operand listing: distinct operand names in first-appearance
  * order, annotated with their repeat count (drives Source B of the σ-loop)
  * and declared axis symmetry (Source A). Used to render the "Operand sym"
- * column in §6's savings table.
+ * column in §7's savings table.
  *
  * The `sym` field uses `variableSymmetryLabel` — the same short-form
  * vocabulary (`dense`, `S3`, `C4`, `D2`, `custom (N gens)`) the main-page
@@ -153,7 +154,7 @@ const EYEBROW_CAPTION_CLASS =
   'text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground';
 
 /**
- * Per-preset storage-α ledger used by §6.
+ * Per-preset storage-α ledger used by §7.
  *
  * All measurements taken at n = 3 by `analyzeExample(preset, 3)` followed by
  * `α_storage = Σ over G_pt-orbits O of |π_V(O) / G_pt|_V|`, i.e. the number
@@ -191,41 +192,6 @@ const SAVINGS_TABLE_ROWS = [
   { id: 'frobenius',        v: '\\varnothing',   vSub: '\\{e\\}',         ae: 9,   as: 9,   saving: 0,   pct: '0' },
   { id: 'trace-product',    v: '\\varnothing',   vSub: '\\{e\\}',         ae: 6,   as: 6,   saving: 0,   pct: '0' },
 ];
-
-/**
- * Eyebrow for an appendix section — mirrors the main page's
- * `<SectionEyebrow />` typography (letterspaced small-caps caption + serif
- * italic number in the primary colour) so the modal's §-numbered headers
- * read with the same visual weight and rhythm as the page's top-level
- * "Section N · <Title>" markers. Uses "§" rather than "Section" as the
- * caption because the modal is semantically an *appendix* — separately
- * numbered from the main page's five explorer sections.
- *
- * Optional `label` renders alongside the number as a short descriptor
- * (e.g. "Preliminaries", "Motivating example") — same small-caps style
- * as the "§" glyph, separated by a muted bullet.
- */
-function AppendixSectionEyebrow({ n, label }) {
-  const captionClass =
-    'text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground';
-  return (
-    <span className="inline-flex items-baseline gap-2">
-      <span className={captionClass}>§</span>
-      <span
-        className="font-serif italic leading-none text-primary"
-        style={{ fontSize: '22px', fontWeight: 700 }}
-      >
-        {n}
-      </span>
-      {label && (
-        <span className={`${captionClass} inline-flex items-baseline gap-2`}>
-          <span aria-hidden>·</span>
-          <span>{label}</span>
-        </span>
-      )}
-    </span>
-  );
-}
 
 /**
  * Appendix modal that walks the reader through the distinction between the
@@ -317,10 +283,10 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
 
         {/* Body */}
         <div className="space-y-10 px-6 py-6">
-          {/* §0 — Definitions */}
+          {/* §1 — Definitions */}
           <section>
             <div className="mb-2">
-              <AppendixSectionEyebrow n={0} label="Preliminaries" />
+              <SectionEyebrow n={1} label="Preliminaries" />
               <h3 className={`${sectionTitle} mt-1`}>Definitions</h3>
             </div>
 
@@ -338,15 +304,15 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                 {`$G_{\\text{f}}$ — the subgroup of $\\mathrm{Sym}(L)$ consisting of label permutations $\\pi$ for which $\\sum_t \\text{summand}(t) = \\sum_t \\text{summand}(\\pi^{-1} t)$; that is, the total sum is invariant although individual summands may be reshuffled. "Formal" here has its standard mathematical meaning — invariance at the level of the expression treated as a formal sum, not at the level of its values.`}
               </NarrativeCallout>
               <NarrativeCallout label="Relationship" tone="algorithm">
-                {`$G_{\\text{pt}} \\subseteq G_{\\text{f}}$ always. The additional elements of $G_{\\text{f}} \\setminus G_{\\text{pt}}$ come from two sources: dummy-variable renamings of the summed labels, and V-only reshuffles that only hold after aggregation. For bilinear-trace (§2 below) $G_{\\text{pt}}$ has 2 elements and $G_{\\text{f}}$ has 4.`}
+                {`$G_{\\text{pt}} \\subseteq G_{\\text{f}}$ always. The additional elements of $G_{\\text{f}} \\setminus G_{\\text{pt}}$ come from two sources: dummy-variable renamings of the summed labels, and V-only reshuffles that only hold after aggregation. For bilinear-trace (§3 below) $G_{\\text{pt}}$ has 2 elements and $G_{\\text{f}}$ has 4.`}
               </NarrativeCallout>
             </div>
           </section>
 
-          {/* §1 — Frobenius worked example */}
+          {/* §2 — Frobenius worked example */}
           <section>
             <div className="mb-2">
-              <AppendixSectionEyebrow n={1} label="Motivating example" />
+              <SectionEyebrow n={2} label="Motivating example" />
               <h3 className={`${sectionTitle} mt-1`}>
                 The Frobenius trace at <Latex math="n = 2" />
               </h3>
@@ -423,10 +389,10 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
             </div>
           </section>
 
-          {/* §2 — Induced permutation group on V */}
+          {/* §3 — Induced permutation group on V */}
           <section>
             <div className="mb-2">
-              <AppendixSectionEyebrow n={2} label="First component" />
+              <SectionEyebrow n={3} label="First component" />
               <h3 className={`${sectionTitle} mt-1`}>
                 The induced permutation group <Latex math="G_{\text{pt}}\big|_V" />
               </h3>
@@ -452,7 +418,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
 
             <p className="mt-4 text-sm leading-7 text-foreground">
               <InlineMathText>
-                {`Using the same $A = \\begin{pmatrix} 1 & 2 \\\\ 3 & 4 \\end{pmatrix}$ as in §1, each output cell expands as a sum of four products:`}
+                {`Using the same $A = \\begin{pmatrix} 1 & 2 \\\\ 3 & 4 \\end{pmatrix}$ as in §2, each output cell expands as a sum of four products:`}
               </InlineMathText>
             </p>
 
@@ -524,10 +490,10 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
             </div>
           </section>
 
-          {/* §3 — S(W) */}
+          {/* §4 — S(W) */}
           <section>
             <div className="mb-2">
-              <AppendixSectionEyebrow n={3} label="Second component" />
+              <SectionEyebrow n={4} label="Second component" />
               <h3 className={`${sectionTitle} mt-1`}>
                 The symmetric group on summed labels <Latex math="S(W)" />
               </h3>
@@ -557,10 +523,10 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
             </div>
           </section>
 
-          {/* §4 — Assemble G_f */}
+          {/* §5 — Assemble G_f */}
           <section>
             <div className="mb-2">
-              <AppendixSectionEyebrow n={4} label="Construction of G_f" />
+              <SectionEyebrow n={5} label="Construction of G_f" />
               <h3 className={`${sectionTitle} mt-1`}>
                 The formal symmetry group:{' '}
                 <Latex math="G_{\text{f}} = G_{\text{pt}}\big|_V \times S(W)" />
@@ -590,10 +556,10 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
             </div>
           </section>
 
-          {/* §5 — Why G_f is not used for compression */}
+          {/* §6 — Why G_f is not used for compression */}
           <section>
             <div className="mb-2">
-              <AppendixSectionEyebrow n={5} label="Consequences for compression" />
+              <SectionEyebrow n={6} label="Consequences for compression" />
               <h3 className={`${sectionTitle} mt-1`}>
                 The accumulation count <Latex math="\alpha" /> under <Latex math="G_{\text{f}}" />
               </h3>
@@ -610,7 +576,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                   </p>
                   <p className="mt-2 text-[13px] text-amber-800">
                     <InlineMathText>
-                      {`This value is not correct as a compression count. Orbits under $S(W)$ contain tuples whose summand values differ (§3 above), so selecting one representative per orbit and multiplying by the orbit size produces a claim that does not match the true output for a generic operand. The main-page cost card therefore reports $\\alpha$ with respect to $G_{\\text{pt}}$ only.`}
+                      {`This value is not correct as a compression count. Orbits under $S(W)$ contain tuples whose summand values differ (§4 above), so selecting one representative per orbit and multiplying by the orbit size produces a claim that does not match the true output for a generic operand. The main-page cost card therefore reports $\\alpha$ with respect to $G_{\\text{pt}}$ only.`}
                     </InlineMathText>
                   </p>
                 </div>
@@ -629,10 +595,10 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
             )}
           </section>
 
-          {/* §6 — Leftover savings via G_pt|_V-aware storage */}
+          {/* §7 — Leftover savings via G_pt|_V-aware storage */}
           <section>
             <div className="mb-2">
-              <AppendixSectionEyebrow n={6} label="Remark on output-tensor symmetry" />
+              <SectionEyebrow n={7} label="Remark on output-tensor symmetry" />
               <h3 className={`${sectionTitle} mt-1`}>
                 Savings accessible under <Latex math="G_{\text{pt}}\big|_V" />-aware storage
               </h3>

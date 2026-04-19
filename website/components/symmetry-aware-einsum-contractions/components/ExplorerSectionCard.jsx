@@ -60,28 +60,41 @@ function AnchorLink({ anchorId, labelText, hashGlyphClassName, children }) {
 }
 
 /**
- * Distinctive section label for the five top-level sections of the explorer.
+ * Distinctive section label for the five top-level sections of the explorer,
+ * and (with an optional `label`) for appendix subsections that want the same
+ * typography. Single source of truth so main-page and modal eyebrows cannot
+ * drift stylistically.
  *
  * Visual grammar (Distill / academic-paper):
  *   - 'SECTION'  — small uppercase, letterspaced, muted gray (the caption role)
  *   - 'N'        — large serif italic, coral/primary, the eye-catching anchor
+ *   - `label`    — optional small-caps descriptor rendered after the number,
+ *                  separated by a muted bullet. Used by the appendix modal to
+ *                  hang section labels ("Preliminaries", "Motivating example",
+ *                  …) off the same eyebrow without introducing a second style.
  *
  * When an `anchorId` is supplied, the whole eyebrow becomes a click-to-copy
  * permalink via the shared AnchorLink helper (same UX used on subsection
  * headings so the affordance feels consistent page-wide).
  */
-function SectionEyebrow({ n, anchorId }) {
+function SectionEyebrow({ n, anchorId, label = null }) {
+  const captionClass =
+    'text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground';
   const content = (
     <span className="inline-flex items-baseline gap-2">
-      <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-        Section
-      </span>
+      <span className={captionClass}>Section</span>
       <span
         className="font-serif italic leading-none text-primary"
         style={{ fontSize: '22px', fontWeight: 700 }}
       >
         {n}
       </span>
+      {label && (
+        <span className={`${captionClass} inline-flex items-baseline gap-2`}>
+          <span aria-hidden>·</span>
+          <span>{label}</span>
+        </span>
+      )}
     </span>
   );
 
