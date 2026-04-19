@@ -16,6 +16,16 @@ def test_summarize_samples_computes_median_and_best():
     assert summary.sample_count == 3
 
 
+def test_summarize_samples_normalizes_per_iteration():
+    numpy_summary = summarize_samples([100, 120, 110], iterations=10)
+    whest_summary = summarize_samples([50, 60, 55], iterations=5)
+
+    assert numpy_summary.best_ns == 10
+    assert numpy_summary.median_ns == 11
+    assert whest_summary.best_ns == 10
+    assert whest_summary.median_ns == 11
+
+
 def test_calibrate_iterations_doubles_until_threshold(monkeypatch):
     calls = []
     elapsed_by_iterations = {1: 1_000, 2: 2_000, 4: 60_000}

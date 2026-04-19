@@ -13,19 +13,23 @@ from typing import Callable, Sequence
 class SampleSummary:
     """Summary statistics for a set of timing samples."""
 
-    best_ns: int
+    best_ns: float
     median_ns: float
     sample_count: int
 
 
-def summarize_samples(samples: Sequence[int]) -> SampleSummary:
-    """Return the best and median timing for the given samples."""
+def summarize_samples(
+    samples: Sequence[int], *, iterations: int = 1
+) -> SampleSummary:
+    """Return per-iteration best and median timing for the given samples."""
     if not samples:
         raise ValueError("samples must not be empty")
+    if iterations < 1:
+        raise ValueError("iterations must be at least 1")
     ordered = sorted(samples)
     return SampleSummary(
-        best_ns=ordered[0],
-        median_ns=median(ordered),
+        best_ns=ordered[0] / iterations,
+        median_ns=median(ordered) / iterations,
         sample_count=len(ordered),
     )
 
