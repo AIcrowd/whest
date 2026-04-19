@@ -59,3 +59,40 @@ article pre,
 article pre[class*="language-"] {
   background: var(--code-bg, #ffffff);
 }
+
+/* -------------------------------------------------------------------------
+   Prose headings — Whest Design System spec
+   H1–H3 = Newsreader display serif with opsz presets (--vs-display-*)
+   H4    = Inter app-sans
+   ------------------------------------------------------------------------- */
+article > div.prose :where(h1, h2, h3) {
+  font-family: var(--font-display-serif), 'Source Serif 4', Georgia, serif;
+  font-weight: 600;
+}
+
+article > div.prose h1 {
+  font-size: 2.5rem;                               /* 40px */
+  font-variation-settings: var(--vs-display-xl);   /* opsz 72 */
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+article > div.prose h2 {
+  font-size: 2rem;                                 /* 32px */
+  font-variation-settings: var(--vs-display-md);   /* opsz 32 */
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-top: 2.25em;
+}
+article > div.prose h3 {
+  font-size: 1.375rem;                             /* 22px */
+  font-variation-settings: var(--vs-display-sm);   /* opsz 18 */
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+article > div.prose h4 {
+  font-family: var(--font-app-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.9375rem;                            /* 15px */
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.3;
+}
