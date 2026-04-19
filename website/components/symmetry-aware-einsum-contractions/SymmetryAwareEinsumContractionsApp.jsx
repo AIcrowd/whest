@@ -347,7 +347,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     </p>
                     <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
                       <div id="bipartite-graph" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
-                        <h3 className="font-heading text-base font-semibold text-gray-900">
+                        <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
                           <AnchorLink anchorId="bipartite-graph" labelText="Bipartite Graph">
                             Bipartite Graph
                           </AnchorLink>
@@ -355,7 +355,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         <BipartiteGraph graph={graph} example={normalizedExample} variableColors={variableColors} />
                       </div>
                       <div id="incidence-matrix" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
-                        <h3 className="font-heading text-base font-semibold text-gray-900">
+                        <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
                           <AnchorLink anchorId="incidence-matrix" labelText="Incidence Matrix">
                             Incidence Matrix M
                           </AnchorLink>
@@ -388,7 +388,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     )}
                     <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
                       <div id="sigma-loop" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
-                        <h3 className="font-heading text-base font-semibold text-gray-900">
+                        <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
                           <AnchorLink anchorId="sigma-loop" labelText="σ-Loop & π Detection">
                             σ-Loop &amp; π Detection
                           </AnchorLink>
@@ -404,7 +404,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         />
                       </div>
                       <div id="generator-construction" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
-                        <h3 className="font-heading text-base font-semibold text-gray-900">
+                        <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
                           <AnchorLink anchorId="generator-construction" labelText="Generator Construction">
                             Generator Construction
                           </AnchorLink>
