@@ -70,3 +70,49 @@ test('|sigmaResults| equals the wreath order ∏_i |H_i|^{m_i} · m_i! on every 
     );
   }
 });
+
+import { enumerateWreath } from './components/symmetry-aware-einsum-contractions/engine/wreath.js';
+
+test('enumerateWreath emits the correct count on representative structures', () => {
+  // Single copy, no declared symmetry: wreath = trivial
+  const trivial = [...enumerateWreath({
+    identicalGroups: [[0]],
+    perOpSymmetry: [null],
+    axisRanks: [2],
+  })];
+  assert.equal(trivial.length, 1, 'single-copy trivial-sym wreath has order 1');
+
+  // Two identical copies, no declared symmetry: wreath = {e} ≀ S_2 = S_2 (order 2)
+  const identicalPair = [...enumerateWreath({
+    identicalGroups: [[0, 1]],
+    perOpSymmetry: [null, null],
+    axisRanks: [2, 2],
+  })];
+  assert.equal(identicalPair.length, 2, '{e} ≀ S_2 has order 2');
+
+  // One rank-2 symmetric operand, single copy: wreath = S_2 ≀ S_1 = S_2 (order 2)
+  const oneSym = [...enumerateWreath({
+    identicalGroups: [[0]],
+    perOpSymmetry: ['symmetric'],
+    axisRanks: [2],
+  })];
+  assert.equal(oneSym.length, 2, 'S_2 ≀ S_1 has order 2');
+
+  // Four rank-2 symmetric identical copies: wreath = S_2 ≀ S_4 = 2^4 · 24 = 384
+  const fourCycleLike = [...enumerateWreath({
+    identicalGroups: [[0, 1, 2, 3]],
+    perOpSymmetry: ['symmetric', 'symmetric', 'symmetric', 'symmetric'],
+    axisRanks: [2, 2, 2, 2],
+  })];
+  assert.equal(fourCycleLike.length, 384, 'S_2 ≀ S_4 has order 384');
+});
+
+test('enumerateWreath first emitted element is the identity', () => {
+  const [first] = [...enumerateWreath({
+    identicalGroups: [[0, 1]],
+    perOpSymmetry: [null, null],
+    axisRanks: [2, 2],
+  })];
+  // Identity on a 4-vertex universe: [0,1,2,3]
+  assert.deepEqual(first.rowPerm.arr, [0, 1, 2, 3], 'first element must be identity');
+});
