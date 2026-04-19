@@ -51,7 +51,10 @@ function FormulaHighlighted({ example, hoveredLabels }) {
     <>
       <span>{"einsum('"}</span>
       <SubscriptTokens text={expr.subscripts} hoveredLabels={hoveredLabels} />
-      <span>{'→'}</span>
+      {/* Arrow is the one coral accent inside the neutral stadium-pill —
+          matches `.formula-live .arr { color: var(--coral) }` in
+          design-system/preview/components.html. */}
+      <span className="mx-1 text-coral">{'→'}</span>
       <SubscriptTokens text={expr.output ?? ''} hoveredLabels={hoveredLabels} />
       <span>{`', ${expr.operandNames ?? ''})`}</span>
     </>
@@ -137,8 +140,17 @@ export default function StickyBar({ example, group, activeActId, hoveredLabels =
           {example && (
             <>
               <div className="flex flex-wrap items-center gap-2">
-                <Badge className="shrink-0">einsum</Badge>
-                <code className="block rounded-md border border-primary/20 bg-primary/10 px-2.5 py-1 text-sm font-mono font-medium text-primary shadow-sm">
+                <Badge
+                  variant="outline"
+                  className="shrink-0 border-gray-200 bg-white text-gray-500 shadow-none"
+                >
+                  einsum
+                </Badge>
+                {/* Neutral stadium pill per design-system `.formula-live`:
+                    gray-100 ground, gray-600 ink, 1px gray-200 border,
+                    rounded-full (=20px stadium). The only coral moment
+                    inside is the arrow (see FormulaHighlighted above). */}
+                <code className="block rounded-full border border-gray-200 bg-gray-100 px-3 py-1 text-sm font-mono font-medium text-gray-600 shadow-sm">
                   <FormulaHighlighted example={example} hoveredLabels={hoveredLabels} />
                 </code>
                 {group && (

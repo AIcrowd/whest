@@ -57,6 +57,14 @@ html > body[data-scroll-locked] {
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
+  /* Brand identity — canonical design-system coral, exposed as a Tailwind
+     color so `text-coral`, `bg-coral`, `border-coral` resolve via the
+     utility layer. Previously only `text-primary` reached coral (via
+     shadcn's --primary alias); pages that used `text-coral` silently
+     fell through to the default palette. */
+  --color-coral: var(--coral);
+  --color-coral-hover: var(--coral-hover);
+  --color-coral-light: var(--coral-light);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
