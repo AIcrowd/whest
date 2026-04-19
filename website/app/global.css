@@ -3,6 +3,7 @@
 @import 'tailwindcss';
 @import './design-system/tokens.css';
 @import './design-system/docs-surface.css';
+@import './design-system/einsum-surface.css';
 @import 'fumadocs-ui/css/shadcn.css';
 @import 'fumadocs-ui/css/preset.css';
 @import "tw-animate-css";
