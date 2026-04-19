@@ -23,13 +23,13 @@ cd whest
 uv sync --all-extras
 ```
 
-## ✅ Verify installation
+## Verify installation
 
 ```bash
 uv run python -c "import whest as we; print(we.__version__)"
 ```
 
-## 🔍 What you'll see
+## What you'll see
 
 ```
 0.2.0+np2.2.6
@@ -37,7 +37,7 @@ uv run python -c "import whest as we; print(we.__version__)"
 
 The version string includes the installed NumPy version suffix. If you see a version number, whest is installed correctly.
 
-## ⚠️ Common pitfalls
+## Common pitfalls
 
 **Symptom:** `ImportError: numpy version mismatch`
 
@@ -47,6 +47,6 @@ The version string includes the installed NumPy version suffix. If you see a ver
 uv run python -c "import numpy; print(numpy.__version__)"
 ```
 
-## 📎 Related pages
+## Related pages
 
 - [Quickstart](/docs/getting-started/quickstart/) — run your first FLOP-counted computation

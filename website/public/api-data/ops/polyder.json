@@ -385,6 +385,6 @@
   "slug": "polyder",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_polynomial_impl.py#L367",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L128"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L133"
   }
 }

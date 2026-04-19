@@ -712,6 +712,6 @@
   "slug": "lexsort",
   "source": {
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.lexsort.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L77"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L88"
   }
 }

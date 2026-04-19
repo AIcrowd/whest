@@ -226,6 +226,6 @@
   "slug": "random-bytes",
   "source": {
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.bytes.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L405"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L417"
   }
 }

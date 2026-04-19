@@ -362,18 +362,17 @@ function TerminalLine({
 function HeroHeadline({ children, dot }: { children: string; dot?: string }) {
   return (
     <h1
-      className="m-0 font-semibold"
+      className="m-0 font-semibold text-gray-900 dark:text-gray-100"
       style={{
         fontFamily: 'var(--font-display-serif), Georgia, serif',
         fontVariationSettings: "'opsz' 72",
         fontSize: 'clamp(44px, 7vw, 64px)',
         letterSpacing: '-0.02em',
         lineHeight: 1.02,
-        color: 'var(--gray-900, #292C2D)',
       }}
     >
       {children}
-      <span style={{ color: '#F0524D' }}>{dot ?? '.'}</span>
+      <span style={{ color: 'var(--coral)' }}>{dot ?? '.'}</span>
     </h1>
   );
 }
@@ -452,7 +451,16 @@ export default function HomePage() {
               width={280}
               height={150}
               priority
-              className="h-auto w-[180px] select-none md:w-[220px] lg:w-[260px]"
+              className="h-auto w-[180px] select-none md:w-[220px] lg:w-[260px] dark:hidden"
+            />
+            <Image
+              src={withBasePath('/logo-dark.png')}
+              alt=""
+              aria-hidden
+              width={280}
+              height={150}
+              priority
+              className="hidden h-auto w-[180px] select-none md:w-[220px] lg:w-[260px] dark:block"
             />
           </div>
         </div>
@@ -634,14 +642,28 @@ export default function HomePage() {
           lineHeight: 1.6,
         }}
       >
-        whest is maintained by AIcrowd. The design system extends the{' '}
-        <Link
-          href="/symmetry-aware-einsum-contractions"
-          className="italic text-gray-500 underline-offset-4 hover:text-[#F0524D] hover:underline dark:text-gray-400"
+        <span className="whest-wordmark not-italic text-[inherit]" aria-label="Whest.">
+          Whest<span className="whest-wordmark__dot">.</span>
+        </span>{' '}
+        is built and maintained by{' '}
+        <a
+          href="https://www.aicrowd.com"
+          target="_blank"
+          rel="noreferrer noopener"
+          className="italic text-gray-500 underline-offset-4 hover:text-[var(--coral)] hover:underline dark:text-gray-400"
         >
-          Symmetry-Aware Einsum Contractions
-        </Link>{' '}
-        explorer.
+          AIcrowd
+        </a>{' '}
+        and the{' '}
+        <a
+          href="https://www.alignment.org"
+          target="_blank"
+          rel="noreferrer noopener"
+          className="italic text-gray-500 underline-offset-4 hover:text-[var(--coral)] hover:underline dark:text-gray-400"
+        >
+          Alignment Research Center
+        </a>
+        .
       </footer>
     </main>
   );

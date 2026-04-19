@@ -969,6 +969,6 @@
   "slug": "cov",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L2680",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L1105"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L1134"
   }
 }

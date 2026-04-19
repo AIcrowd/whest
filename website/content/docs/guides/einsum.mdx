@@ -215,13 +215,13 @@ we.clear_einsum_cache()
 we.configure(einsum_path_cache_size=8192)
 ```
 
-## ⚠️ Common pitfalls
+## Common pitfalls
 
 **Symptom:** Unexpectedly high FLOP cost
 
 **Fix:** Check all index dimensions. A subscript like `'ijkl,jklm->im'` multiplies all five dimension sizes together. Use `we.flops.einsum_cost()` or `we.einsum_path()` to preview costs before executing.
 
-## 📎 Related pages
+## Related pages
 
 - [Symmetry Savings](/docs/guides/symmetry/) — full guide to symmetry mechanisms
 - [API Reference](/docs/api/) — algorithms, symmetry support, and operation details

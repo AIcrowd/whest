@@ -1232,6 +1232,6 @@
   "slug": "polyfit",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_polynomial_impl.py#L449",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L195"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L200"
   }
 }

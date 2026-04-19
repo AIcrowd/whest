@@ -9,7 +9,12 @@ import { withBasePath } from '@/lib/base-path';
 
 export const metadata: Metadata = {
   icons: {
-    icon: withBasePath('/logo.png'),
+    // Per design-system §03 size ladder, anything under 48px collapses
+    // to the coral dot — the SVG scales cleanly for all favicon sizes.
+    icon: [
+      { url: withBasePath('/favicon.svg'), type: 'image/svg+xml' },
+      { url: withBasePath('/logo.png'), type: 'image/png' },
+    ],
     apple: withBasePath('/logo.png'),
   },
 };

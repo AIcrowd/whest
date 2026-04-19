@@ -3092,7 +3092,7 @@
       "free": false,
       "module": "numpy",
       "name": "in1d",
-      "notes": "Set membership; cost = (n+m)*ceil(log2(n+m)).",
+      "notes": "Set membership; cost = (n+m)*ceil(log2(n+m)). Removed in numpy 2.4; use `isin` instead.",
       "numpy_ref": "np.in1d",
       "slug": "in1d",
       "status": "supported",

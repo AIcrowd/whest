@@ -360,6 +360,6 @@
   "slug": "polyadd",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_polynomial_impl.py#L786",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L92"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L97"
   }
 }
