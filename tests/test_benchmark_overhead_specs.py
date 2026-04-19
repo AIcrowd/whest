@@ -28,6 +28,15 @@ def test_seed_cases_include_api_and_operator_surfaces():
     assert {
         case.op_name: case.family for case in cases if case.surface == "api"
     }["matmul"] == "contractions"
+    assert {
+        case.op_name: case.qualified_name
+        for case in cases
+        if case.surface == "api"
+    } == {
+        "add": "whest.add",
+        "matmul": "whest.matmul",
+    }
+    assert all(case.qualified_name is None for case in cases if case.surface == "operator")
 
 
 def test_seed_cases_have_required_fields():
@@ -38,6 +47,7 @@ def test_seed_cases_have_required_fields():
         assert isinstance(case, BenchmarkCase)
         assert case.case_id
         assert case.op_name in {"add", "matmul"}
+        assert case.qualified_name in {"whest.add", "whest.matmul", None}
         assert case.family
         assert case.surface in {"api", "operator"}
         assert case.dtype == "float64"

@@ -18,6 +18,7 @@ class BenchmarkCase:
 
     case_id: str
     op_name: str
+    qualified_name: str | None
     family: str
     surface: Surface
     dtype: str
@@ -89,6 +90,7 @@ def seed_cases() -> tuple[BenchmarkCase, ...]:
         BenchmarkCase(
             case_id=_case_id("add", "api", "tiny"),
             op_name="add",
+            qualified_name="whest.add",
             family="pointwise",
             surface="api",
             dtype=dtype,
@@ -102,6 +104,7 @@ def seed_cases() -> tuple[BenchmarkCase, ...]:
         BenchmarkCase(
             case_id=_case_id("add", "api", "medium"),
             op_name="add",
+            qualified_name="whest.add",
             family="pointwise",
             surface="api",
             dtype=dtype,
@@ -115,6 +118,7 @@ def seed_cases() -> tuple[BenchmarkCase, ...]:
         BenchmarkCase(
             case_id=_case_id("add", "operator", "tiny"),
             op_name="add",
+            qualified_name=None,
             family="pointwise",
             surface="operator",
             dtype=dtype,
@@ -128,6 +132,7 @@ def seed_cases() -> tuple[BenchmarkCase, ...]:
         BenchmarkCase(
             case_id=_case_id("add", "operator", "medium"),
             op_name="add",
+            qualified_name=None,
             family="pointwise",
             surface="operator",
             dtype=dtype,
@@ -141,6 +146,7 @@ def seed_cases() -> tuple[BenchmarkCase, ...]:
         BenchmarkCase(
             case_id=_case_id("matmul", "api", "tiny"),
             op_name="matmul",
+            qualified_name="whest.matmul",
             family="contractions",
             surface="api",
             dtype=dtype,
@@ -154,6 +160,7 @@ def seed_cases() -> tuple[BenchmarkCase, ...]:
         BenchmarkCase(
             case_id=_case_id("matmul", "api", "medium"),
             op_name="matmul",
+            qualified_name="whest.matmul",
             family="contractions",
             surface="api",
             dtype=dtype,
@@ -167,6 +174,7 @@ def seed_cases() -> tuple[BenchmarkCase, ...]:
         BenchmarkCase(
             case_id=_case_id("matmul", "operator", "tiny"),
             op_name="matmul",
+            qualified_name=None,
             family="contractions",
             surface="operator",
             dtype=dtype,
@@ -180,6 +188,7 @@ def seed_cases() -> tuple[BenchmarkCase, ...]:
         BenchmarkCase(
             case_id=_case_id("matmul", "operator", "medium"),
             op_name="matmul",
+            qualified_name=None,
             family="contractions",
             surface="operator",
             dtype=dtype,
