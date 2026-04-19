@@ -382,13 +382,13 @@ export default function HomePage() {
   return (
     <main className="bg-white dark:bg-[#0E0F10]">
       {/* 1. Masthead — left-aligned editorial hero, brush mark anchors the right column.
-          max-w-[1100px] matches the diptych / nav-grid below, so the headline and
+          max-w-[var(--content-max)] matches the diptych / nav-grid below, so the headline and
           "What does this code cost?" share the same optical left margin. Two equal
           columns give the logo breathing room on both sides instead of pinning it
           to the section's right edge. */}
-      <section className="mx-auto w-full max-w-[1100px] px-6 pt-16 pb-14 md:px-8 md:pt-24 md:pb-20">
+      <section className="mx-auto w-full max-w-[var(--content-max)] px-6 pt-16 pb-14 md:px-8 md:pt-24 md:pb-20">
         <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:gap-12 lg:gap-16">
-          <div className="max-w-[720px]">
+          <div className="max-w-[var(--prose-max)]">
           <div
             className="mb-6 font-sans text-[10px] font-semibold uppercase text-gray-400 dark:text-gray-500"
             style={{ letterSpacing: '0.2em' }}
@@ -446,7 +446,7 @@ export default function HomePage() {
       </section>
 
       {/* 2. Metric row — 508 · 0 · ∞ trio (breadth · methodology · composition) */}
-      <section className="mx-auto w-full max-w-[1100px] grid grid-cols-1 gap-10 px-6 py-16 text-center sm:grid-cols-3 sm:gap-8 md:gap-12 md:py-20">
+      <section className="mx-auto w-full max-w-[var(--content-max)] grid grid-cols-1 gap-10 px-6 py-16 text-center sm:grid-cols-3 sm:gap-8 md:gap-12 md:py-20">
         {features.map((feature) => (
           <div key={feature.label} className="flex min-h-[140px] flex-col items-center justify-center">
             <span
@@ -483,8 +483,8 @@ export default function HomePage() {
       </section>
 
       {/* 3. Diptych — NumPy vs whest */}
-      <section className="mx-auto w-full max-w-[1100px] px-6 pb-20 md:px-8">
-        <div className="max-w-[720px]">
+      <section className="mx-auto w-full max-w-[var(--content-max)] px-6 pb-20 md:px-8">
+        <div className="max-w-[var(--prose-max)]">
           <div
             className="mb-3 font-sans text-[10px] font-semibold uppercase text-gray-400 dark:text-gray-500"
             style={{ letterSpacing: '0.2em' }}
@@ -536,7 +536,7 @@ export default function HomePage() {
         </div>
 
         <p
-          className="mt-6 max-w-[720px] text-[14px] italic text-gray-500 dark:text-gray-400"
+          className="mt-6 max-w-[var(--prose-max)] text-[14px] italic text-gray-500 dark:text-gray-400"
           style={{
             fontFamily: 'var(--font-paper-serif), Georgia, serif',
             fontVariationSettings: "'opsz' 14",
@@ -550,7 +550,7 @@ export default function HomePage() {
       </section>
 
       {/* 4. Explore the docs — editorial index-card grid */}
-      <section className="mx-auto w-full max-w-[1100px] px-6 pb-24 md:px-8">
+      <section className="mx-auto w-full max-w-[var(--content-max)] px-6 pb-24 md:px-8">
         <div
           className="mb-3 font-sans text-[10px] font-semibold uppercase text-gray-400 dark:text-gray-500"
           style={{ letterSpacing: '0.2em' }}
@@ -614,7 +614,7 @@ export default function HomePage() {
 
       {/* 5. Colophon */}
       <footer
-        className="mx-auto w-full max-w-[720px] px-6 pb-16 text-center text-[13px] italic text-gray-400 dark:text-gray-500"
+        className="mx-auto w-full max-w-[var(--prose-max)] px-6 pb-16 text-center text-[13px] italic text-gray-400 dark:text-gray-500"
         style={{
           fontFamily: 'var(--font-paper-serif), Georgia, serif',
           fontVariationSettings: "'opsz' 13",

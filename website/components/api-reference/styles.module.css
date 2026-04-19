@@ -34,8 +34,8 @@
 
 .searchInput:focus {
   outline: none;
-  border-color: #F0524D;
-  box-shadow: 0 0 0 2px rgba(240, 82, 77, 0.15);
+  border-color: var(--coral);
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--coral) 15%, transparent);
 }
 
 .areaSelect {
@@ -52,7 +52,7 @@
 
 .areaSelect:focus {
   outline: none;
-  border-color: #F0524D;
+  border-color: var(--coral);
 }
 
 /* ── Toggle buttons ───────────────────────────────────── */
@@ -85,12 +85,12 @@
 }
 
 .toggleBtnActive {
-  background: #F0524D;
+  background: var(--coral);
   color: #fff;
 }
 
 .toggleBtnActive:hover {
-  background: #D23934;
+  background: var(--coral-hover);
 }
 
 .resultCount {
@@ -145,7 +145,7 @@
 
 .opName code {
   font-weight: 500;
-  color: #F0524D;
+  color: var(--coral);
   background: none;
   padding: 0;
 }
@@ -200,12 +200,12 @@
 }
 
 .weight--2 {
-  background: rgba(240, 82, 77, 0.10);
+  background: color-mix(in oklab, var(--coral) 10%, transparent);
   color: var(--coral-hover, #D23934);
 }
 
 .weight--4 {
-  background: rgba(240, 82, 77, 0.18);
+  background: color-mix(in oklab, var(--coral) 18%, transparent);
   color: var(--coral-hover, #D23934);
 }
 

@@ -166,8 +166,8 @@ export default function HomeCodeTerminal({
 
       <div
         className={cn(
-          'relative overflow-hidden rounded-lg border border-[#D9DCDC] bg-white',
-          'dark:border-[#2B2F30] dark:bg-[#1A1D1E]',
+          'relative overflow-hidden rounded-lg border border-[var(--gray-200)] bg-white',
+          'dark:border-[#2B2F30] dark:bg-[var(--code-bg-dark)]',
         )}
       >
         <button
