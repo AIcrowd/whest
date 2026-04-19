@@ -36,6 +36,12 @@ def _public_callable_names(module: Any) -> list[str]:
     return names
 
 
+def _callable_alias_key(value: Any) -> Any:
+    if inspect.ismethod(value):
+        return (id(value.__self__), value.__func__)
+    return value
+
+
 def _iter_public_operations(module_name: str):
     module = importlib.import_module(module_name)
     for name in _public_callable_names(module):
@@ -44,28 +50,30 @@ def _iter_public_operations(module_name: str):
         except AttributeError:
             continue
         if inspect.isroutine(value):
-            yield name, value
+            yield {
+                "module": module_name,
+                "op_name": name,
+                "qualified_name": f"{module_name}.{name}",
+                "surface": _module_surface(module_name),
+                "value": value,
+                "alias_key": _callable_alias_key(value),
+            }
             continue
         if module_name == "whest.stats" and all(
             hasattr(value, attr) for attr in ("pdf", "cdf", "ppf")
         ):
-            yield name, value
-
-
-def _iter_stats_operations(module_name: str):
-    module = importlib.import_module(module_name)
-    for dist_name in _public_callable_names(module):
-        try:
-            distribution = getattr(module, dist_name)
-        except AttributeError:
-            continue
-        for method_name in ("pdf", "cdf", "ppf"):
-            if not hasattr(distribution, method_name):
-                continue
-            method = getattr(distribution, method_name)
-            if not callable(method):
-                continue
-            yield f"{dist_name}.{method_name}", method
+            for method_name in ("pdf", "cdf", "ppf"):
+                method = getattr(value, method_name)
+                if not callable(method):
+                    continue
+                yield {
+                    "module": f"{module_name}.{name}",
+                    "op_name": method_name,
+                    "qualified_name": f"{module_name}.{name}.{method_name}",
+                    "surface": "stats",
+                    "value": method,
+                    "alias_key": _callable_alias_key(method),
+                }
 
 
 def _load_exclusion_policies() -> tuple[dict[str, str], dict[str, str]]:
@@ -74,47 +82,34 @@ def _load_exclusion_policies() -> tuple[dict[str, str], dict[str, str]]:
 
 
 def _build_inventory() -> list[dict[str, Any]]:
-    records_by_id: dict[int, dict[str, Any]] = {}
+    records: list[dict[str, Any]] = []
 
     for module_name in DISCOVERY_MODULES:
-        iterator = (
-            _iter_stats_operations(module_name)
-            if module_name == "whest.stats"
-            else _iter_public_operations(module_name)
-        )
-        for name, value in iterator:
-            record = records_by_id.setdefault(
-                id(value),
+        for entry in _iter_public_operations(module_name):
+            records.append(
                 {
-                    "module_surface": _module_surface(module_name),
-                    "callable": value,
-                    "names": set(),
-                    "qualified_names": set(),
-                    "modules": set(),
-                },
+                    "op_name": entry["op_name"],
+                    "surface": entry["surface"],
+                    "module": entry["module"],
+                    "qualified_name": entry["qualified_name"],
+                    "aliases": [],
+                    "alias_key": entry["alias_key"],
+                }
             )
-            record["names"].add(name)
-            record["qualified_names"].add(f"{module_name}.{name}")
-            record["modules"].add(module_name)
 
-    inventory: list[dict[str, Any]] = []
-    for record in records_by_id.values():
-        names = sorted(record["names"])
-        qualified_names = sorted(record["qualified_names"])
-        inventory.append(
-            {
-                "op_name": names[0],
-                "surface": record["module_surface"],
-                "module": qualified_names[0].rsplit(".", 1)[0],
-                "qualified_name": qualified_names[0],
-                "qualified_names": qualified_names,
-                "names": names,
-                "aliases": names[1:],
-                "modules": sorted(record["modules"]),
-            }
-        )
+    aliases_by_key: dict[Any, list[str]] = {}
+    for entry in records:
+        aliases_by_key.setdefault(entry["alias_key"], []).append(entry["qualified_name"])
 
-    return sorted(inventory, key=lambda entry: (entry["surface"], entry["op_name"]))
+    for entry in records:
+        entry["aliases"] = [
+            qualified_name
+            for qualified_name in sorted(aliases_by_key[entry["alias_key"]])
+            if qualified_name != entry["qualified_name"]
+        ]
+        del entry["alias_key"]
+
+    return sorted(records, key=lambda entry: (entry["surface"], entry["qualified_name"]))
 
 
 def classify_public_operations() -> dict[str, list[dict[str, Any]]]:
@@ -163,7 +158,7 @@ def classify_public_operations() -> dict[str, list[dict[str, Any]]]:
     unclassified = [
         entry
         for entry in inventory
-        if not set(entry["names"]) & discovered_accounted_for
+        if entry["op_name"] not in discovered_accounted_for
     ]
 
     return {
@@ -171,4 +166,5 @@ def classify_public_operations() -> dict[str, list[dict[str, Any]]]:
         "excluded": excluded,
         "unsupported": unsupported,
         "unclassified": unclassified,
+        "inventory": inventory,
     }

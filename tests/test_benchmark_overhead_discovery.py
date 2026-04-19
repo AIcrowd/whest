@@ -31,3 +31,14 @@ def test_stats_surface_entries_are_accounted_for():
         and entry["qualified_name"].endswith((".pdf", ".cdf", ".ppf"))
         for entry in entries
     )
+
+
+def test_alias_exports_remain_visible_per_surface():
+    result = classify_public_operations()
+    matmul_exports = {
+        entry["qualified_name"]
+        for entry in result["inventory"]
+        if entry["op_name"] == "matmul"
+    }
+    assert "whest.matmul" in matmul_exports
+    assert "whest.linalg.matmul" in matmul_exports
