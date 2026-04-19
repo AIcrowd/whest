@@ -1,23 +1,20 @@
-import { useMemo, useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import Latex from './Latex.jsx';
 
-/**
- * Render a Permutation in disjoint cycle notation as an array of JSX tokens.
- * Every label is wrapped in a span whose color is set by its V/W class:
- *   - V-label  → sky
- *   - W-label  → amber
- * Parens, spaces, and the literal "id" fall back to neutral foreground.
- *
- * @param {Permutation} perm       - permutation object with .arr
- * @param {string[]}    labels     - labels[i] is the label at position i
- * @param {Set<string>} vLabelSet  - V-labels (for color lookup)
- * @param {Set<string>} wLabelSet  - W-labels (for color lookup)
- * @returns {JSX.Element[]} tokens ready to render inside a font-mono span
- */
-function renderCycleTokens(perm, labels, vLabelSet, wLabelSet) {
-  const arr = perm?.arr;
-  if (!arr) return [<span key="id" className="text-muted-foreground">id</span>];
+// V/W color palette — same hexes the rest of the page uses (DiminoView,
+// TotalCostView, InteractionGraph legend, IncidenceMatrix v/w columns).
+const COLOR_V = '#4A7CFF';
+const COLOR_W = '#64748B';
 
+/**
+ * Format a Permutation in standard disjoint cycle notation. Fixed points
+ * are omitted; identity renders as "id". Labels inside a cycle are
+ * space-separated so "(i j)" unambiguously reads "i maps to j, j maps to i"
+ * — not a single two-character label "ij" that happens to be fixed.
+ */
+function toCycleString(perm, labels) {
+  const arr = perm?.arr;
+  if (!arr) return 'id';
   const visited = new Set();
   const cycles = [];
   for (let i = 0; i < arr.length; i += 1) {
@@ -34,48 +31,63 @@ function renderCycleTokens(perm, labels, vLabelSet, wLabelSet) {
     }
     if (cycle.length > 1) cycles.push(cycle);
   }
-
-  if (cycles.length === 0) {
-    return [<span key="id" className="text-muted-foreground italic">id</span>];
-  }
-
-  const tokens = [];
-  let key = 0;
-  for (const cycle of cycles) {
-    tokens.push(<span key={key++} className="text-gray-400">(</span>);
-    for (let k = 0; k < cycle.length; k += 1) {
-      const label = labels[cycle[k]] ?? String(cycle[k]);
-      const colorClass = vLabelSet.has(label)
-        ? 'text-sky-700'
-        : wLabelSet.has(label)
-          ? 'text-amber-700'
-          : 'text-foreground';
-      tokens.push(
-        <span key={key++} className={`${colorClass} font-semibold`}>
-          {label}
-        </span>,
-      );
-      if (k < cycle.length - 1) tokens.push(<span key={key++} className="text-gray-400"> </span>);
-    }
-    tokens.push(<span key={key++} className="text-gray-400">)</span>);
-  }
-  return tokens;
+  if (cycles.length === 0) return 'id';
+  return cycles.map((c) => '(' + c.map((idx) => labels[idx] ?? String(idx)).join(' ') + ')').join('');
 }
 
 /**
- * V-sub × S(W) construction widget. Renders three columns of permutations
- * plus visible × / = separators so the equation reads left-to-right:
+ * Render a cycle-notation string with every label re-colored by V/W class.
+ * Parens, spaces, and the "id" token pass through uncolored. Inline spans
+ * (no flex container) so the inter-label spaces render verbatim.
+ */
+function ColoredLabels({ text, vSet, wSet }) {
+  if (!text) return null;
+  if (text === 'id') {
+    return <span className="italic text-muted-foreground">id</span>;
+  }
+  // Tokenize on any non-label character; keep separators in the token list.
+  const tokens = text.split(/([() ])/);
+  return (
+    <>
+      {tokens.map((tok, i) => {
+        if (!tok) return null;
+        if (vSet.has(tok)) {
+          return (
+            <span key={i} style={{ color: COLOR_V, fontWeight: 600 }}>
+              {tok}
+            </span>
+          );
+        }
+        if (wSet.has(tok)) {
+          return (
+            <span key={i} style={{ color: COLOR_W, fontWeight: 600 }}>
+              {tok}
+            </span>
+          );
+        }
+        if (tok === '(' || tok === ')') {
+          return (
+            <span key={i} className="text-gray-400">
+              {tok}
+            </span>
+          );
+        }
+        return <Fragment key={i}>{tok}</Fragment>;
+      })}
+    </>
+  );
+}
+
+/**
+ * V-sub × S(W) construction widget. Renders a 5-column grid:
  *
  *   V-sub   ×   S(W)   =   G_expr
  *
- * Each label in a cycle is colored by its V/W class (sky/amber), matching
- * the site-wide convention. Hover any cell in any of the three columns to
- * highlight its contribution(s) in the other two.
- *
- * Props:
- *   expressionGroup - { elements, vSub, sw, order } from analysis.expressionGroup
- *   vLabels         - free labels (string[])
- *   wLabels         - summed labels (string[])
+ * with standard cycle notation (spaces between labels) and every label
+ * inside a cycle colored by its V/W class (V → blue, W → slate) using the
+ * same canonical hexes the rest of the explorer uses. Hover is
+ * bidirectional: hover any row in any column to highlight its counterparts
+ * in the other two.
  */
 export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLabels = [] }) {
   const [hoveredVIdx, setHoveredVIdx] = useState(null);
@@ -95,10 +107,11 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
 
   const { vSub, sw } = expressionGroup;
   const swCount = sw?.length ?? 0;
+  const allLabels = [...vLabels, ...wLabels];
 
   // Derive the effective (vIdx, wIdx) pair being highlighted. A product-row
-  // hover resolves to a unique (vIdx, wIdx); a column-cell hover leaves the
-  // other index null.
+  // hover resolves to a unique pair; a source-column hover leaves the other
+  // coordinate null.
   const effectiveVIdx =
     hoveredProductIdx !== null ? Math.floor(hoveredProductIdx / swCount) : hoveredVIdx;
   const effectiveWIdx =
@@ -119,13 +132,21 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
   const cellBase =
     'font-mono text-sm px-2 py-1 rounded cursor-default transition-colors border border-transparent';
   const cellNormal = 'hover:border-border/60 hover:bg-muted/30';
-  const vActive = 'bg-sky-50 border-sky-300';
-  const wActive = 'bg-amber-50 border-amber-300';
-  const prodActive = 'bg-emerald-50 border-emerald-400';
-  const prodDim = 'opacity-40';
-  const sepBase = 'flex h-8 items-center justify-center text-xl font-light text-muted-foreground select-none';
+  const sepBase =
+    'flex h-8 items-center justify-center text-xl font-light text-muted-foreground select-none';
 
-  const allLabels = [...vLabels, ...wLabels];
+  const activeVStyle = {
+    background: `${COLOR_V}15`, // ~8% alpha
+    borderColor: `${COLOR_V}66`,
+  };
+  const activeWStyle = {
+    background: `${COLOR_W}1F`, // ~12% alpha
+    borderColor: `${COLOR_W}80`,
+  };
+  const activeProductStyle = {
+    background: '#ECFDF5',
+    borderColor: '#6EE7B7',
+  };
 
   return (
     <div className="overflow-x-auto">
@@ -161,38 +182,43 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
           </div>
         </div>
 
-        {/* Row content — stacked vertically inside each column cell */}
-
         {/* V-sub column */}
         <div className="flex flex-col gap-0.5">
-          {vSub.map((vElem, vi) => (
-            <button
-              type="button"
-              key={vi}
-              className={`${cellBase} ${cellNormal} flex items-center gap-2 text-left ${
-                effectiveVIdx === vi ? vActive : ''
-              }`}
-              onMouseEnter={() => setHoveredVIdx(vi)}
-              onMouseLeave={() => setHoveredVIdx(null)}
-              onFocus={() => setHoveredVIdx(vi)}
-              onBlur={() => setHoveredVIdx(null)}
-            >
-              <span className="w-5 shrink-0 text-right text-[11px] font-semibold text-muted-foreground">
-                {vi + 1}
-              </span>
-              <span className="flex flex-wrap items-baseline">
-                {renderCycleTokens(vElem, vLabels, vLabelSet, wLabelSet)}
-              </span>
-            </button>
-          ))}
+          {vSub.map((vElem, vi) => {
+            const active = effectiveVIdx === vi;
+            return (
+              <button
+                type="button"
+                key={vi}
+                className={`${cellBase} ${cellNormal} flex items-center gap-2 text-left`}
+                style={active ? activeVStyle : undefined}
+                onMouseEnter={() => setHoveredVIdx(vi)}
+                onMouseLeave={() => setHoveredVIdx(null)}
+                onFocus={() => setHoveredVIdx(vi)}
+                onBlur={() => setHoveredVIdx(null)}
+              >
+                <span className="w-5 shrink-0 text-right text-[11px] font-semibold text-muted-foreground">
+                  {vi + 1}
+                </span>
+                <span>
+                  <ColoredLabels
+                    text={toCycleString(vElem, vLabels)}
+                    vSet={vLabelSet}
+                    wSet={wLabelSet}
+                  />
+                </span>
+              </button>
+            );
+          })}
         </div>
 
-        {/* × separator (repeated on every V-sub row) */}
+        {/* × separator (one per V-sub row) */}
         <div className="flex flex-col gap-0.5">
           {vSub.map((_, vi) => (
             <div
               key={vi}
-              className={`${sepBase} ${effectiveVIdx === vi ? 'text-sky-600' : ''}`}
+              className={sepBase}
+              style={effectiveVIdx === vi ? { color: COLOR_V } : undefined}
               aria-hidden
             >
               ×
@@ -202,29 +228,35 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
 
         {/* S(W) column */}
         <div className="flex flex-col gap-0.5">
-          {sw.map((wElem, wi) => (
-            <button
-              type="button"
-              key={wi}
-              className={`${cellBase} ${cellNormal} flex items-center gap-2 text-left ${
-                effectiveWIdx === wi ? wActive : ''
-              }`}
-              onMouseEnter={() => setHoveredWIdx(wi)}
-              onMouseLeave={() => setHoveredWIdx(null)}
-              onFocus={() => setHoveredWIdx(wi)}
-              onBlur={() => setHoveredWIdx(null)}
-            >
-              <span className="w-5 shrink-0 text-right text-[11px] font-semibold text-muted-foreground">
-                {wi + 1}
-              </span>
-              <span className="flex flex-wrap items-baseline">
-                {renderCycleTokens(wElem, wLabels, vLabelSet, wLabelSet)}
-              </span>
-            </button>
-          ))}
+          {sw.map((wElem, wi) => {
+            const active = effectiveWIdx === wi;
+            return (
+              <button
+                type="button"
+                key={wi}
+                className={`${cellBase} ${cellNormal} flex items-center gap-2 text-left`}
+                style={active ? activeWStyle : undefined}
+                onMouseEnter={() => setHoveredWIdx(wi)}
+                onMouseLeave={() => setHoveredWIdx(null)}
+                onFocus={() => setHoveredWIdx(wi)}
+                onBlur={() => setHoveredWIdx(null)}
+              >
+                <span className="w-5 shrink-0 text-right text-[11px] font-semibold text-muted-foreground">
+                  {wi + 1}
+                </span>
+                <span>
+                  <ColoredLabels
+                    text={toCycleString(wElem, wLabels)}
+                    vSet={vLabelSet}
+                    wSet={wLabelSet}
+                  />
+                </span>
+              </button>
+            );
+          })}
         </div>
 
-        {/* = separator */}
+        {/* = separator (one per product row) */}
         <div className="flex flex-col gap-0.5">
           {vSub.flatMap((_, vi) =>
             sw.map((_, wi) => {
@@ -234,9 +266,11 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
               return (
                 <div
                   key={productIdx}
-                  className={`${sepBase} ${active ? 'text-emerald-700' : ''} ${
-                    dim ? 'opacity-30' : ''
-                  }`}
+                  className={sepBase}
+                  style={{
+                    color: active ? '#059669' : undefined,
+                    opacity: dim ? 0.3 : 1,
+                  }}
                   aria-hidden
                 >
                   =
@@ -246,7 +280,7 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
           )}
         </div>
 
-        {/* G_expr product column — every (vi, wi) pair */}
+        {/* G_expr product column */}
         <div className="flex flex-col gap-0.5">
           {vSub.flatMap((_, vi) =>
             sw.map((_, wi) => {
@@ -261,8 +295,12 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
                   type="button"
                   key={productIdx}
                   className={`${cellBase} flex items-center gap-2 text-left ${
-                    active ? prodActive : cellNormal
-                  } ${dim ? prodDim : ''}`}
+                    active ? '' : cellNormal
+                  }`}
+                  style={{
+                    ...(active ? activeProductStyle : {}),
+                    opacity: dim ? 0.4 : 1,
+                  }}
                   onMouseEnter={() => setHoveredProductIdx(productIdx)}
                   onMouseLeave={() => setHoveredProductIdx(null)}
                   onFocus={() => setHoveredProductIdx(productIdx)}
@@ -271,8 +309,12 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
                   <span className="w-10 shrink-0 text-right text-[10px] font-mono text-muted-foreground">
                     {vi + 1}·{wi + 1}
                   </span>
-                  <span className="flex flex-wrap items-baseline">
-                    {renderCycleTokens(elem, allLabels, vLabelSet, wLabelSet)}
+                  <span>
+                    <ColoredLabels
+                      text={toCycleString(elem, allLabels)}
+                      vSet={vLabelSet}
+                      wSet={wLabelSet}
+                    />
                   </span>
                 </button>
               );
@@ -283,11 +325,17 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
 
       <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1 text-[11px] text-muted-foreground">
         <span className="inline-flex items-center gap-1.5">
-          <span className="inline-block h-3 w-3 rounded-sm bg-sky-200 border border-sky-400" />
+          <span
+            className="inline-block h-3 w-3 rounded-sm"
+            style={{ background: `${COLOR_V}33`, border: `1px solid ${COLOR_V}` }}
+          />
           V-label
         </span>
         <span className="inline-flex items-center gap-1.5">
-          <span className="inline-block h-3 w-3 rounded-sm bg-amber-200 border border-amber-400" />
+          <span
+            className="inline-block h-3 w-3 rounded-sm"
+            style={{ background: `${COLOR_W}33`, border: `1px solid ${COLOR_W}` }}
+          />
           W-label
         </span>
         <span className="ml-auto italic">
