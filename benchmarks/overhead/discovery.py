@@ -36,7 +36,7 @@ def _public_callable_names(module: Any) -> list[str]:
     return names
 
 
-def _iter_public_callables(module_name: str):
+def _iter_public_operations(module_name: str):
     module = importlib.import_module(module_name)
     for name in _public_callable_names(module):
         try:
@@ -44,6 +44,11 @@ def _iter_public_callables(module_name: str):
         except AttributeError:
             continue
         if inspect.isroutine(value):
+            yield name, value
+            continue
+        if module_name == "whest.stats" and all(
+            hasattr(value, attr) for attr in ("pdf", "cdf", "ppf")
+        ):
             yield name, value
 
 
@@ -56,7 +61,7 @@ def _build_inventory() -> list[dict[str, Any]]:
     records_by_id: dict[int, dict[str, Any]] = {}
 
     for module_name in DISCOVERY_MODULES:
-        for name, value in _iter_public_callables(module_name):
+        for name, value in _iter_public_operations(module_name):
             record = records_by_id.setdefault(
                 id(value),
                 {

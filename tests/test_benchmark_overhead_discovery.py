@@ -16,3 +16,14 @@ def test_operator_surface_cases_are_present_for_key_dunders():
     }
     assert "add" in operator_cases
     assert "matmul" in operator_cases
+
+
+def test_stats_surface_entries_are_accounted_for():
+    result = classify_public_operations()
+    entries = (
+        result["benchmarked"]
+        + result["excluded"]
+        + result["unsupported"]
+        + result["unclassified"]
+    )
+    assert any(entry["surface"] == "stats" for entry in entries)
