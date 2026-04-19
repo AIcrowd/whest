@@ -173,6 +173,13 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* =========================================================================
+   Chips — drawn from the Whest Design System palette.
+   Areas + types pick from the four universal semantics + neutral.
+   Weights ride the whestbench heatmap axis (gray-100 → coral).
+   Font: Inter (app register); chips are UI chrome, never paper serif.
+   ========================================================================= */
+
 .weightChip {
   display: inline-flex;
   align-items: center;
@@ -180,6 +187,7 @@
   min-width: 3.6rem;
   padding: 0.18rem 0.55rem;
   border-radius: 999px;
+  font-family: var(--font-app-sans, ui-sans-serif, system-ui, sans-serif);
   font-size: 0.74rem;
   font-weight: 700;
   letter-spacing: 0.01em;
@@ -187,23 +195,23 @@
 }
 
 .weight--1 {
-  background: hsl(var(--secondary));
-  color: hsl(var(--muted-foreground));
+  background: var(--whest-gray-100, #F1F3F5);
+  color: var(--whest-gray-600, #5D5F60);
 }
 
 .weight--2 {
-  background: #dbeafe;
-  color: #1d4ed8;
+  background: rgba(240, 82, 77, 0.10);
+  color: var(--whest-coral-hover, #D23934);
 }
 
 .weight--4 {
-  background: #fef3c7;
-  color: #b45309;
+  background: rgba(240, 82, 77, 0.18);
+  color: var(--whest-coral-hover, #D23934);
 }
 
 .weight--16 {
-  background: #fee2e2;
-  color: #b91c1c;
+  background: var(--whest-coral, #F0524D);
+  color: #ffffff;
 }
 
 .opFormula {
@@ -218,55 +226,58 @@
   justify-content: center;
   padding: 0.18rem 0.6rem;
   border-radius: 999px;
+  font-family: var(--font-app-sans, ui-sans-serif, system-ui, sans-serif);
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   white-space: nowrap;
 }
 
+/* Areas — neutral "default" for `core`, then the four semantics */
 .area--core {
-  background: #f3e8ff;
-  color: #7c3aed;
+  background: var(--whest-gray-100, #F1F3F5);
+  color: var(--whest-gray-900, #292C2D);
 }
 
 .area--linalg {
-  background: #dbeafe;
-  color: #1d4ed8;
+  background: rgba(74, 124, 255, 0.12);
+  color: #1E4ACC;
 }
 
 .area--fft {
-  background: #fef3c7;
-  color: #b45309;
+  background: rgba(250, 158, 51, 0.15);
+  color: #A8650B;
 }
 
 .area--random {
-  background: #dcfce7;
-  color: #166534;
+  background: rgba(35, 183, 97, 0.13);
+  color: #126E39;
 }
 
 .area--stats {
-  background: #fee2e2;
-  color: #b91c1c;
+  background: var(--whest-coral-light, #FEF2F1);
+  color: var(--whest-coral-hover, #D23934);
 }
 
+/* Types — same palette, distinct meaning */
 .type--counted {
-  background: #dbeafe;
-  color: #1e40af;
+  background: rgba(74, 124, 255, 0.12);
+  color: #1E4ACC;
 }
 
 .type--custom {
-  background: #fde68a;
-  color: #92400e;
+  background: rgba(250, 158, 51, 0.18);
+  color: #A8650B;
 }
 
 .type--free {
-  background: #dcfce7;
-  color: #166534;
+  background: rgba(35, 183, 97, 0.13);
+  color: #126E39;
 }
 
 .type--blocked {
-  background: #fee2e2;
-  color: #991b1b;
+  background: var(--whest-coral-light, #FEF2F1);
+  color: var(--whest-coral-hover, #D23934);
 }
 
 .docHeader {
@@ -375,21 +386,46 @@
   }
 }
 
+/* Dissolved operation summary — no card chrome, no heading.
+   Flows as a metadata block inside the page's paper-register prose. */
 .docOverlay {
-  margin: 0 0 1.5rem;
-  padding: 0.85rem 0.95rem;
-  border: 1px solid hsl(var(--border));
-  border-radius: 0.85rem;
-  background: linear-gradient(180deg, rgba(255, 252, 250, 0.95), rgba(255, 255, 255, 1));
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+  margin: 0 0 2rem;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
 }
 
-.docOverlay h2 {
-  margin: 0 0 0.65rem;
-  font-size: 1rem;
-  letter-spacing: -0.015em;
+/* Top strip — Area / Type / Weight / NumPy Ref as inline kicker+value pairs */
+.docMetaStrip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1.75rem;
+  margin: 0 0 1.25rem;
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--whest-gray-200, #D9DCDC);
+  border-bottom: 1px solid var(--whest-gray-200, #D9DCDC);
 }
 
+.docMetaPair {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+/* Subsequent rows — longer values that need their own line */
+.docMetaRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.55rem 1rem;
+  margin: 0.85rem 0;
+}
+
+/* Legacy grid classes retained for any other callers; no card chrome */
 .docMetaGrid,
 .docDenseGrid {
   display: grid;
@@ -413,10 +449,10 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 0.4rem 0.55rem;
-  padding: 0.45rem 0.6rem;
-  border: 1px solid hsl(var(--border));
-  border-radius: 0.7rem;
-  background: hsl(var(--background));
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
 }
 
 .docDenseItemWide {
@@ -425,11 +461,12 @@
 }
 
 .docMetaLabel {
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-family: var(--font-app-sans, ui-sans-serif, system-ui, sans-serif);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: hsl(var(--muted-foreground));
+  color: var(--whest-gray-400, #AAACAD);
   white-space: nowrap;
 }
 

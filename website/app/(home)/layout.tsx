@@ -6,13 +6,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   const options = baseOptions();
 
   return (
-    <HomeLayout
-      {...options}
-      nav={{
-        ...options.nav,
-        title: <span className="font-semibold">whest</span>,
-      }}
-    >
+    <HomeLayout {...options} nav={options.nav}>
       {children}
     </HomeLayout>
   );

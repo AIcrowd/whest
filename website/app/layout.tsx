@@ -1,4 +1,4 @@
-import { Inter, Geist } from 'next/font/google';
+import { Inter, Newsreader, Source_Serif_4, JetBrains_Mono } from 'next/font/google';
 import { Provider } from '@/components/provider';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
@@ -14,15 +14,55 @@ export const metadata: Metadata = {
   },
 };
 
-const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
-
+// Four type registers from the Whest Design System.
+// - App (UI chrome, buttons, dense panels):      Inter
+// - Editorial / display (wordmark, h1–h3):        Newsreader (variable opsz 6–72)
+// - Paper (long-form body prose ≥ 15px):          Source Serif 4 (variable opsz 8–60)
+// - Code (blocks, inline, formulas):              JetBrains Mono
 const inter = Inter({
   subsets: ['latin'],
+  variable: '--font-app-sans',
+  display: 'swap',
+});
+
+const newsreader = Newsreader({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-display-serif',
+  display: 'swap',
+});
+
+const sourceSerif = Source_Serif_4({
+  subsets: ['latin'],
+  weight: ['400', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-paper-serif',
+  display: 'swap',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-mono',
+  display: 'swap',
 });
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={cn(inter.className, 'font-sans', geist.variable)} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={cn(
+        inter.className,
+        'font-sans',
+        inter.variable,
+        newsreader.variable,
+        sourceSerif.variable,
+        jetbrainsMono.variable,
+      )}
+      suppressHydrationWarning
+    >
       <body className="flex flex-col min-h-screen">
         <Provider>{children}</Provider>
       </body>

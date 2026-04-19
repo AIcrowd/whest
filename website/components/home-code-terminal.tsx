@@ -1,14 +1,99 @@
 'use client';
 
 import { Check, Clipboard } from 'lucide-react';
-import { useEffect, useState, type ReactNode } from 'react';
+import {
+  Children,
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react';
+import { motion, useInView } from 'motion/react';
 import { cn } from '@/lib/utils';
-import { Terminal as MagicTerminal } from '@/components/ui/terminal';
+
+// =========================================================================
+// HomeCodeTerminal — Whest Design System "paper" code block.
+// Pure-white canvas, 1px gray-200 border, 8px radius. Replaces the old
+// #071018 dark terminal with traffic-light chrome.
+//
+// Keeps the staggered line-reveal motion (the one moment of motion the
+// home page earns) via a lightweight sequence context. Lines wrap their
+// children in <AnimatedSpan> and reveal in order — same behaviour as the
+// previous <Terminal> primitive, stripped of the shell-window framing.
+// =========================================================================
+
+interface SequenceContextValue {
+  completeItem: (index: number) => void;
+  activeIndex: number;
+  sequenceStarted: boolean;
+}
+
+const SequenceContext = createContext<SequenceContextValue | null>(null);
+const ItemIndexContext = createContext<number | null>(null);
+
+function useSequence() {
+  return useContext(SequenceContext);
+}
+function useItemIndex() {
+  return useContext(ItemIndexContext);
+}
+
+export const AnimatedSpan = ({
+  children,
+  delay = 0,
+  className,
+  startOnView = false,
+}: {
+  children: ReactNode;
+  delay?: number;
+  className?: string;
+  startOnView?: boolean;
+}) => {
+  const elementRef = useRef<HTMLDivElement | null>(null);
+  const isInView = useInView(elementRef as React.RefObject<Element>, {
+    amount: 0.3,
+    once: true,
+  });
+
+  const sequence = useSequence();
+  const itemIndex = useItemIndex();
+  const [hasStarted, setHasStarted] = useState(false);
+
+  useEffect(() => {
+    if (!sequence || itemIndex === null || !sequence.sequenceStarted || hasStarted) return;
+    if (sequence.activeIndex === itemIndex) {
+      setHasStarted(true);
+    }
+  }, [sequence, itemIndex, hasStarted]);
+
+  const shouldAnimate = sequence ? hasStarted : startOnView ? isInView : true;
+
+  return (
+    <motion.div
+      ref={elementRef}
+      initial={{ opacity: 0, y: -4 }}
+      animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: -4 }}
+      transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1], delay: sequence ? 0 : delay / 1000 }}
+      className={cn('grid', className)}
+      onAnimationComplete={() => {
+        if (!sequence || itemIndex === null) return;
+        sequence.completeItem(itemIndex);
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+};
 
 export default function HomeCodeTerminal({
   children,
   copyText,
   className,
+  label,
+  labelAccent = false,
   center = false,
   sequence = false,
   startOnView = false,
@@ -16,11 +101,20 @@ export default function HomeCodeTerminal({
   children: ReactNode;
   copyText: string;
   className?: string;
+  label?: string;
+  labelAccent?: boolean;
   center?: boolean;
   sequence?: boolean;
   startOnView?: boolean;
 }) {
   const [copied, setCopied] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const isInView = useInView(containerRef as React.RefObject<Element>, {
+    amount: 0.3,
+    once: true,
+  });
+  const [activeIndex, setActiveIndex] = useState(0);
+  const sequenceHasStarted = sequence ? !startOnView || isInView : false;
 
   useEffect(() => {
     if (!copied) return undefined;
@@ -33,27 +127,74 @@ export default function HomeCodeTerminal({
     setCopied(true);
   }
 
-  return (
-    <div className="relative">
-      <button
-        type="button"
-        onClick={handleCopy}
-        aria-label={copied ? 'Copied' : 'Copy code'}
-        className="absolute right-3 top-3 z-10 rounded-md p-1.5 text-slate-300 transition hover:bg-white/8 hover:text-white"
-      >
-        {copied ? <Check className="size-4" /> : <Clipboard className="size-4" />}
-      </button>
-      <MagicTerminal
-        sequence={sequence}
-        startOnView={startOnView}
+  const contextValue = useMemo<SequenceContextValue | null>(() => {
+    if (!sequence) return null;
+    return {
+      completeItem: (index: number) => {
+        setActiveIndex((current) => (index === current ? current + 1 : current));
+      },
+      activeIndex,
+      sequenceStarted: sequenceHasStarted,
+    };
+  }, [activeIndex, sequence, sequenceHasStarted]);
+
+  const wrappedChildren = useMemo(() => {
+    if (!sequence) return children;
+    return Children.toArray(children).map((child, index) => (
+      <ItemIndexContext.Provider key={index} value={index}>
+        {child as ReactNode}
+      </ItemIndexContext.Provider>
+    ));
+  }, [children, sequence]);
+
+  const content = (
+    <div ref={containerRef} className={className}>
+      {label ? (
+        <div
+          className={cn(
+            'mb-3 flex items-center gap-2 font-sans text-[10px] font-semibold uppercase',
+            labelAccent
+              ? 'text-[#F0524D]'
+              : 'text-gray-400 dark:text-gray-500',
+          )}
+          style={{ letterSpacing: '0.2em' }}
+        >
+          <span aria-hidden className={cn('h-px w-5', labelAccent ? 'bg-[#F0524D]' : 'bg-gray-300 dark:bg-gray-600')} />
+          {label}
+        </div>
+      ) : null}
+
+      <div
         className={cn(
-          'h-auto max-h-none max-w-none overflow-hidden rounded-2xl border-[#14303c] bg-[#071018] text-[#f8fafc] shadow-[0_18px_56px_rgba(7,16,24,0.18)] [&>div:first-child]:border-[#14303c] [&>div:first-child]:bg-[#071018] [&>div:first-child]:p-4 [&>pre]:bg-[#071018] [&>pre]:px-5 [&>pre]:py-4 [&>pre]:shadow-none [&>pre>code]:w-full',
-          center && '[&>pre]:overflow-x-auto',
-          className,
+          'relative overflow-hidden rounded-lg border border-[#D9DCDC] bg-white',
+          'dark:border-[#2B2F30] dark:bg-[#1A1D1E]',
         )}
       >
-        {children}
-      </MagicTerminal>
+        <button
+          type="button"
+          onClick={handleCopy}
+          aria-label={copied ? 'Copied' : 'Copy code'}
+          className={cn(
+            'absolute end-3 top-3 z-10 rounded-md p-1.5 text-gray-400 transition',
+            'hover:bg-gray-100 hover:text-gray-900',
+            'dark:hover:bg-[#22262A] dark:hover:text-gray-100',
+          )}
+        >
+          {copied ? <Check className="size-3.5" /> : <Clipboard className="size-3.5" />}
+        </button>
+        <pre
+          className={cn(
+            'px-5 py-4 text-[13.5px] leading-[1.55] text-gray-900 dark:text-gray-100',
+            center && 'overflow-x-auto',
+          )}
+          style={{ fontFamily: 'var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace)' }}
+        >
+          <code className="grid gap-y-0.5 overflow-auto">{wrappedChildren}</code>
+        </pre>
+      </div>
     </div>
   );
+
+  if (!sequence) return content;
+  return <SequenceContext.Provider value={contextValue}>{content}</SequenceContext.Provider>;
 }

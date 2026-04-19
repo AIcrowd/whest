@@ -6,6 +6,56 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* =========================================================================
+   Whest Design System — Foundation tokens
+   (see design system: colors_and_type.css)
+   ========================================================================= */
+:root {
+  /* Brand coral + neutrals */
+  --whest-coral: #F0524D;
+  --whest-coral-hover: #D23934;
+  --whest-coral-light: #FEF2F1;
+
+  --whest-gray-900: #292C2D;
+  --whest-gray-600: #5D5F60;
+  --whest-gray-400: #AAACAD;
+  --whest-gray-200: #D9DCDC;
+  --whest-gray-100: #F1F3F5;
+  --whest-gray-50:  #F8F9F9;
+
+  /* Universal semantics */
+  --whest-success: #23B761;
+  --whest-warning: #FA9E33;
+  --whest-info:    #4A7CFF;
+
+  /* Code syntax — derived from foundation + semantics */
+  --whest-code-ink:     var(--whest-gray-900);
+  --whest-code-punc:    var(--whest-gray-600);
+  --whest-code-comment: var(--whest-gray-400);
+  --whest-code-op:      var(--whest-coral);
+  --whest-code-string:  var(--whest-coral-hover);
+  --whest-code-fn:      #2959C4;
+  --whest-code-keyword: #5E36C4;
+  --whest-code-number:  #0B6D7A;
+  --whest-code-class:   var(--whest-warning);
+
+  /* Newsreader variation-axis presets (editorial display serif) */
+  --vs-display-xl: 'opsz' 72;
+  --vs-display-md: 'opsz' 32;
+  --vs-display-sm: 'opsz' 18;
+  --vs-paper-body: 'opsz' 18;
+
+  /* Kicker / eyebrow tracking */
+  --tracking-kicker: 0.16em;
+  --tracking-kicker-loose: 0.2em;
+
+  /* Motion */
+  --whest-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --whest-dur-fast:   180ms;
+  --whest-dur-normal: 250ms;
+  --whest-dur-slow:   500ms;
+}
+
 html {
   scrollbar-gutter: stable;
 }
@@ -16,8 +66,11 @@ html > body[data-scroll-locked] {
 }
 
 @theme inline {
-  --font-heading: var(--font-sans);
-  --font-sans: var(--font-sans);
+  /* Four type registers — Whest Design System */
+  --font-heading: var(--font-display-serif), 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --font-serif: var(--font-paper-serif), 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-sans: var(--font-app-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -147,19 +200,185 @@ html > body[data-scroll-locked] {
 
 /* Code block styling is handled by Shiki themes in source.config.ts */
 
-/* ── Spacious Apple-like feel ───────────────────────── */
-.prose {
+/* =========================================================================
+   Docs prose — Paper register (Whest Design System)
+   Body: Source Serif 4   Headings: Newsreader   Code: JetBrains Mono
+   Distill.pub-adjacent long-form rhythm on pure white.
+   Scope: ONLY the DocsBody ('article > div.prose'). The fumadocs TOC also
+   uses the class `prose` on its item anchors — we must not restyle those.
+   ========================================================================= */
+article > div.prose {
   max-width: 720px;
+  font-family: var(--font-paper-serif), 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  font-variation-settings: var(--vs-paper-body);
+  font-size: 17px;
+  line-height: 1.75;
+  font-feature-settings: 'onum', 'kern';
 }
 
-/* Fix 1: Heading hierarchy — widen gap between H1 and H2 */
-.prose h1 {
-  font-size: 2rem; /* 32px vs H2's 24px */
+article > div.prose :where(p, li, blockquote, dd, dt, figcaption) {
+  font-family: var(--font-paper-serif), 'Source Serif 4', Georgia, 'Times New Roman', serif;
 }
 
-/* Code block background: let Shiki's github theme handle it */
+article > div.prose :where(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-display-serif), 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
 
-/* Fix 4: Breadcrumb-to-H1 spacing */
-.prose h1:first-child {
+article > div.prose h1 {
+  font-size: 2.5rem;                 /* 40px editorial display */
+  font-variation-settings: var(--vs-display-md);
+  line-height: 1.15;
+}
+article > div.prose h2 {
+  font-size: 1.625rem;               /* 26px — per design spec */
+  font-variation-settings: 'opsz' 48;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  margin-top: 2.25em;
+}
+/* H3 deliberately switches to sans for a structural contrast with h2's serif —
+   the designer's call in docs-type-and-code.html §01 */
+article > div.prose h3 {
+  font-family: var(--font-app-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.0625rem;              /* 17px */
+  font-weight: 600;
+  font-variation-settings: normal;
+  letter-spacing: -0.005em;
+  line-height: 1.3;
+}
+article > div.prose h4 {
+  font-family: var(--font-app-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.9375rem;              /* 15px */
+  font-weight: 600;
+  font-variation-settings: normal;
+  letter-spacing: -0.005em;
+}
+
+article > div.prose h1:first-child {
   margin-top: 1rem;
+}
+
+article > div.prose em    { font-style: italic; }
+article > div.prose strong { font-weight: 600; }
+
+/* Inline code — app-register mono on a neutral chip */
+article > div.prose :not(pre) > code {
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.92em;
+  padding: 0.08em 0.4em;
+  border-radius: 4px;
+  background: var(--whest-gray-100);
+  color: var(--whest-gray-900);
+}
+
+.dark article > div.prose :not(pre) > code {
+  background: color-mix(in oklab, var(--whest-gray-900) 70%, white 0%);
+  color: #E8EAEB;
+}
+
+/* DocsTitle — the page H1 rendered by fumadocs outside .prose.
+   DocsTitle receives its size/weight via className in [[...slug]]/page.tsx;
+   here we only pin the font family. */
+article > h1 {
+  font-family: var(--font-display-serif), 'Source Serif 4', Georgia, serif !important;
+}
+
+/* DocsDescription — the italic lede AFTER the title.
+   Spec: Source Serif 4 italic · 18px · gray-600 · line-height 1.5 · margin-bottom 40px
+   Scoped with sibling selector so it doesn't match the breadcrumb above the h1. */
+article > h1 ~ p.text-fd-muted-foreground,
+article > h1 ~ div.text-fd-muted-foreground {
+  font-family: var(--font-paper-serif), 'Source Serif 4', Georgia, serif;
+  font-style: italic;
+  font-variation-settings: var(--vs-paper-body);
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--whest-gray-600);
+  margin-bottom: 40px;
+}
+
+/* Breadcrumb — fumadocs renders a div.text-fd-muted-foreground BEFORE the h1.
+   Designer's spec: Inter 600 · 11px · UPPERCASE · 0.08em tracking · gray-400,
+   with coral for the "here" segment. Uses :has() to distinguish from the
+   DocsDescription (which shares the same class but sits AFTER the h1). */
+article > :is(div, nav).text-fd-muted-foreground:has(~ h1),
+article > :is(div, nav).text-fd-muted-foreground:has(~ h1) *,
+article > :is(div, nav).text-fd-muted-foreground:has(~ h1) a,
+article > :is(div, nav).text-fd-muted-foreground:has(~ h1) span {
+  font-family: var(--font-app-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  font-style: normal;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--whest-gray-400);
+}
+article > :is(div, nav).text-fd-muted-foreground:has(~ h1) a.text-fd-primary,
+article > :is(div, nav).text-fd-muted-foreground:has(~ h1) [data-active='true'] {
+  color: var(--whest-coral);
+}
+
+/* Sidebar + TOC use app register (Inter) for UI chrome — default is fine.
+   Three overrides to match the design system:
+   - Group toggles become kickers (uppercase 11px 600 tracked gray-400)
+   - Active leaf gets the 3px coral left-rail called out in the README
+   - Active leaf weight bumps to 600 so selection reads without color alone */
+aside#nd-sidebar button[aria-expanded] {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--whest-gray-400);
+}
+
+aside#nd-sidebar a[data-active='true'] {
+  font-weight: 600;
+  border-inline-start: 3px solid var(--whest-coral);
+  /* Fumadocs sets padding-inline-start as an inline style for indent depth.
+     Shift the whole item 3px left so the rail hangs into the sidebar gutter
+     and the text edge still aligns with non-active siblings. */
+  margin-inline-start: -3px;
+}
+
+/* Kicker / eyebrow utility — for TOC labels, section kickers */
+.w-kicker {
+  font-family: var(--font-app-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-kicker);
+  color: var(--whest-gray-400);
+}
+
+/* Coral-dot wordmark — persistent glyph for `Whest.` */
+.whest-wordmark {
+  font-family: var(--font-display-serif), 'Source Serif 4', Georgia, serif;
+  font-weight: 700;
+  font-variation-settings: 'opsz' 32;
+  letter-spacing: -0.015em;
+  color: var(--whest-gray-900);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0;
+}
+.dark .whest-wordmark {
+  color: #E8EAEB;
+}
+.whest-wordmark__dot {
+  color: var(--whest-coral);
+  display: inline-block;
+  /* Period already carries the weight of the font; nudge down-baseline for
+     optical balance against the tall x-height of Newsreader */
+  transform: translateY(0);
+}
+.whest-wordmark__sub {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--whest-gray-600);
+  margin-left: 1px;
+}
+.dark .whest-wordmark__sub {
+  color: var(--whest-gray-400);
 }

@@ -21,7 +21,12 @@ export default async function Page(props: {
 
   return (
     <DocsPage toc={page.data.toc} full={page.data.full}>
-      <DocsTitle>{page.data.title}</DocsTitle>
+      <DocsTitle
+        className="!text-[2.5rem] !font-semibold !leading-[1.1] !tracking-[-0.02em]"
+        style={{ fontVariationSettings: "'opsz' 72" }}
+      >
+        {page.data.title}
+      </DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>
         <MDX

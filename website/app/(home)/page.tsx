@@ -1,5 +1,4 @@
-import HomeCodeTerminal from '@/components/home-code-terminal';
-import { AnimatedSpan } from '@/components/ui/terminal';
+import HomeCodeTerminal, { AnimatedSpan } from '@/components/home-code-terminal';
 import { withBasePath } from '@/lib/base-path';
 import type { Metadata } from 'next';
 import Image from 'next/image';
@@ -8,56 +7,64 @@ import Link from 'next/link';
 export const metadata: Metadata = {
   title: 'whest',
   description:
-    'NumPy-compatible math primitives with analytical FLOP counting. Set budgets, track costs, and understand your compute.',
+    'A NumPy-compatible math library that counts every FLOP analytically, so compute budgets stop being guesswork.',
 };
+
+// =========================================================================
+// Whest Design System — Home page, paper-register edition.
+// Pure white canvas, left-aligned editorial layout, Newsreader display
+// serif for headings + wordmark, Source Serif 4 for body prose, Inter for
+// UI chrome + kickers, JetBrains Mono for code. Code palette derives from
+// the same tokens as the Shiki `whest-paper` theme in lib/shiki-themes.ts.
+// =========================================================================
 
 const features = [
   {
-    kind: 'metric' as const,
     number: '508',
     label: 'Operations',
-    desc: 'NumPy-compatible operations with analytical FLOP costs',
+    desc: 'NumPy-compatible operations with analytical FLOP costs.',
   },
   {
-    kind: 'logo' as const,
+    number: '\u03C0',
+    label: 'Symmetry-aware',
+    desc: 'Symmetry metadata propagates through the chain, so costs scale with unique elements.',
   },
   {
-    kind: 'metric' as const,
     number: '\u221E',
     label: 'Composable',
-    desc: 'Budget contexts, namespaces, and per-operation breakdowns',
+    desc: 'Budget contexts, namespaces, and per-operation breakdowns.',
   },
 ];
 
 const navCards = [
   {
-    title: 'Get Started',
-    desc: 'Install whest and create your first FLOP budget',
+    title: 'Get started',
+    desc: 'Install whest and create your first FLOP budget.',
     link: '/docs/getting-started/installation',
   },
   {
     title: 'Migrate from NumPy',
-    desc: 'Convert existing code with FLOP annotations',
+    desc: 'Convert existing code with FLOP annotations.',
     link: '/docs/guides/migrate-from-numpy',
   },
   {
-    title: 'API Reference',
-    desc: 'Search all 508 operations with interactive filters',
+    title: 'API reference',
+    desc: 'Search all 508 operations with interactive filters.',
     link: '/docs/api',
   },
   {
-    title: 'FLOP Counting Model',
-    desc: 'How costs are computed analytically',
+    title: 'FLOP counting model',
+    desc: 'How costs are computed analytically.',
     link: '/docs/understanding/flop-counting-model',
   },
   {
-    title: 'Symmetry Explorer',
-    desc: 'Interactive einsum symmetry visualization',
+    title: 'Symmetry explorer',
+    desc: 'Interactive einsum symmetry visualization.',
     link: '/symmetry-aware-einsum-contractions',
   },
   {
-    title: 'For AI Agents',
-    desc: 'Machine-readable resources and rules',
+    title: 'For AI agents',
+    desc: 'Machine-readable resources and rules.',
     link: '/docs/api/for-agents',
   },
 ];
@@ -104,14 +111,18 @@ for i, W in enumerate(weights):
         h = we.maximum(h, 0)
 we.budget_summary()  # 984,321 FLOPs`;
 
+// Whest-paper-tuned syntax palette. These are the same hex values the
+// Shiki `whestLight` theme emits (see lib/shiki-themes.ts) — using them
+// directly here lets us keep the per-line typing animation while still
+// rendering with the design system's code colors.
 const TOKENS = {
-  base: 'text-[#c9d1d9]',
-  muted: 'text-[#8b949e]',
-  keyword: 'text-[#ff7b72]',
-  number: 'text-[#79c0ff]',
-  string: 'text-[#a5d6ff]',
-  op: 'text-[#ff7b72]',
-  func: 'text-[#d2a8ff]',
+  base: 'text-[#292C2D] dark:text-[#E8EAEB]',                 // ink
+  muted: 'text-[#AAACAD] italic dark:text-[#6B7072]',          // comment
+  keyword: 'text-[#5E36C4] dark:text-[#B99BFF]',               // violet
+  number: 'text-[#0B6D7A] dark:text-[#6BD4CE]',                // teal
+  string: 'text-[#D23934] dark:text-[#FF8A7A]',                // coral-hover
+  op: 'text-[#F0524D]',                                        // brand coral
+  func: 'text-[#2959C4] dark:text-[#8FB4FF]',                  // V-blue
 } as const;
 
 type Token = {
@@ -308,13 +319,11 @@ const whestLines: Token[][] = [
 
 function TerminalLine({
   tokens,
-  center = false,
   animated = false,
   noWrap = false,
   delayMs = 0,
 }: {
   tokens: Token[];
-  center?: boolean;
   animated?: boolean;
   noWrap?: boolean;
   delayMs?: number;
@@ -331,9 +340,8 @@ function TerminalLine({
     );
 
   const className = [
-    'font-mono text-sm leading-5',
+    'leading-[1.55]',
     noWrap ? 'whitespace-nowrap' : 'whitespace-pre',
-    center ? 'mx-auto w-fit text-center' : '',
   ]
     .filter(Boolean)
     .join(' ');
@@ -343,130 +351,285 @@ function TerminalLine({
   }
 
   return (
-    <AnimatedSpan className="font-mono text-sm leading-5" delay={delayMs} startOnView={false}>
+    <AnimatedSpan className="leading-[1.55]" delay={delayMs} startOnView={false}>
       <span className={className}>{content}</span>
     </AnimatedSpan>
   );
 }
 
+// Base unstyled wordmark used in the big hero. Colors + fonts are supplied
+// by .whest-wordmark / .whest-wordmark__dot utilities in global.css.
+function HeroHeadline({ children, dot }: { children: string; dot?: string }) {
+  return (
+    <h1
+      className="m-0 font-semibold"
+      style={{
+        fontFamily: 'var(--font-display-serif), Georgia, serif',
+        fontVariationSettings: "'opsz' 72",
+        fontSize: 'clamp(44px, 7vw, 64px)',
+        letterSpacing: '-0.02em',
+        lineHeight: 1.02,
+        color: 'var(--whest-gray-900, #292C2D)',
+      }}
+    >
+      {children}
+      <span style={{ color: '#F0524D' }}>{dot ?? '.'}</span>
+    </h1>
+  );
+}
+
 export default function HomePage() {
   return (
-    <main>
-      <section className="-mt-px bg-gradient-to-b from-red-50 to-white dark:from-[#1a1020] dark:to-transparent px-6 pt-16 pb-20 text-center">
-        <h1 className="mb-4 text-5xl leading-tight font-bold tracking-tight text-gray-900 dark:text-gray-100">
-          Count every FLOP.
-        </h1>
-        <p className="mx-auto mb-8 max-w-xl text-lg leading-relaxed text-gray-500 dark:text-gray-400">
-          NumPy-compatible math primitives with analytical FLOP counting. Set
-          budgets, track costs, and understand your compute.
-        </p>
-        <div className="mb-8 flex flex-wrap justify-center gap-3">
-          <Link
-            href="/docs/getting-started/installation"
-            className="bg-[#F0524D] px-6 py-2.5 font-semibold text-white no-underline transition-all hover:-translate-y-0.5 hover:bg-[#D23934] rounded-lg"
+    <main className="bg-white dark:bg-[#0E0F10]">
+      {/* 1. Masthead — left-aligned editorial hero, brush mark anchors the right column.
+          max-w-[1100px] matches the diptych / nav-grid below, so the headline and
+          "What does this code cost?" share the same optical left margin. Two equal
+          columns give the logo breathing room on both sides instead of pinning it
+          to the section's right edge. */}
+      <section className="mx-auto w-full max-w-[1100px] px-6 pt-16 pb-14 md:px-8 md:pt-24 md:pb-20">
+        <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:gap-12 lg:gap-16">
+          <div className="max-w-[720px]">
+          <div
+            className="mb-6 font-sans text-[10px] font-semibold uppercase text-gray-400 dark:text-gray-500"
+            style={{ letterSpacing: '0.2em' }}
           >
-            Get Started
-          </Link>
-          <Link
-            href="/docs/api"
-            className="border border-gray-200 px-6 py-2.5 font-semibold text-gray-900 no-underline transition-all hover:border-[#F0524D] hover:text-[#F0524D] rounded-lg dark:border-gray-700 dark:text-gray-100"
+            <span aria-hidden className="mr-2 inline-block h-px w-8 align-middle bg-gray-300 dark:bg-gray-600" />
+            WHEST · A FLOP-COUNTING NUMPY
+          </div>
+
+          <HeroHeadline>Count every FLOP</HeroHeadline>
+
+          <p
+            className="mt-6 mb-9 max-w-[600px] text-[17px] italic text-gray-600 dark:text-gray-300"
+            style={{
+              fontFamily: 'var(--font-paper-serif), Georgia, serif',
+              fontVariationSettings: "'opsz' 18",
+              lineHeight: 1.6,
+            }}
           >
-            API Reference
-          </Link>
-        </div>
-        <div className="mx-auto max-w-xl">
-          <HomeCodeTerminal copyText={installCode} center>
-            <TerminalLine tokens={installLine} center noWrap />
+            A NumPy-compatible math library that counts every FLOP
+            analytically, so compute budgets stop being guesswork.
+          </p>
+
+          <div className="mb-10 flex flex-wrap items-center gap-3">
+            <Link
+              href="/docs/getting-started/installation"
+              className="inline-flex items-center rounded-lg bg-[#F0524D] px-5 py-2.5 text-sm font-medium text-white no-underline transition-colors hover:bg-[#D23934] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[#F0524D]/20"
+            >
+              Install
+            </Link>
+            <Link
+              href="/docs"
+              className="inline-flex items-center rounded-lg border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-900 no-underline transition-colors hover:border-[#F0524D] hover:text-[#F0524D] dark:border-gray-700 dark:text-gray-100"
+            >
+              Read the docs &rarr;
+            </Link>
+          </div>
+
+          <HomeCodeTerminal copyText={installCode} className="max-w-[600px]">
+            <TerminalLine tokens={installLine} noWrap />
           </HomeCodeTerminal>
+          </div>
+
+          {/* Brush mark — centered both ways inside its grid cell */}
+          <div className="row-start-1 flex items-center justify-center self-center md:row-start-auto">
+            <Image
+              src={withBasePath('/logo.png')}
+              alt="whest"
+              width={280}
+              height={150}
+              priority
+              className="h-auto w-[180px] select-none md:w-[220px] lg:w-[260px]"
+            />
+          </div>
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-4xl grid-cols-1 gap-8 px-6 py-16 text-center md:grid-cols-3">
+      {/* 2. Metric row — 508 · 0 · ∞ trio (breadth · methodology · composition) */}
+      <section className="mx-auto w-full max-w-[1100px] grid grid-cols-1 gap-10 px-6 py-16 text-center sm:grid-cols-3 sm:gap-8 md:gap-12 md:py-20">
         {features.map((feature) => (
-          <div
-            key={feature.kind === 'logo' ? 'logo' : feature.label}
-            className="flex min-h-[112px] flex-col items-center justify-center"
-          >
-            {feature.kind === 'logo' ? (
-              <Image
-                src={withBasePath('/logo.png')}
-                alt="whest"
-                width={180}
-                height={96}
-                className="h-auto w-36 md:w-[180px]"
-              />
-            ) : (
-              <>
-                <span className="mb-2 text-4xl leading-none font-bold text-[#F0524D]">
-                  {feature.number}
-                </span>
-                <span className="mb-3 text-xs font-semibold tracking-widest text-gray-400 uppercase dark:text-gray-500">
-                  {feature.label}
-                </span>
-                <p className="m-0 max-w-[280px] text-sm leading-relaxed text-gray-500 dark:text-gray-400">
-                  {feature.desc}
-                </p>
-              </>
-            )}
+          <div key={feature.label} className="flex min-h-[140px] flex-col items-center justify-center">
+            <span
+              className="mb-3 block text-[#F0524D]"
+              style={{
+                fontFamily: 'var(--font-display-serif), Georgia, serif',
+                fontVariationSettings: "'opsz' 72",
+                fontWeight: 700,
+                fontSize: '48px',
+                lineHeight: 1,
+                letterSpacing: '-0.015em',
+              }}
+            >
+              {feature.number}
+            </span>
+            <span
+              className="mb-3 block font-sans text-[10px] font-semibold uppercase text-gray-400 dark:text-gray-500"
+              style={{ letterSpacing: '0.2em' }}
+            >
+              {feature.label}
+            </span>
+            <p
+              className="m-0 max-w-[280px] text-[14px] text-gray-600 dark:text-gray-400"
+              style={{
+                fontFamily: 'var(--font-paper-serif), Georgia, serif',
+                fontVariationSettings: "'opsz' 14",
+                lineHeight: 1.6,
+              }}
+            >
+              {feature.desc}
+            </p>
           </div>
         ))}
       </section>
 
-      <section className="mx-auto max-w-3xl px-6 pb-16">
-        <h2 className="mb-6 text-center text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
-          See it in action
-        </h2>
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-5">
-          <div className="mx-auto w-full max-w-[520px] text-left">
-            <div className="mb-3 text-center text-xs font-semibold tracking-[0.18em] text-gray-400 uppercase dark:text-gray-500">
-              NumPy
-            </div>
-            <HomeCodeTerminal copyText={numpyCode} className="w-full">
+      {/* 3. Diptych — NumPy vs whest */}
+      <section className="mx-auto w-full max-w-[1100px] px-6 pb-20 md:px-8">
+        <div className="max-w-[720px]">
+          <div
+            className="mb-3 font-sans text-[10px] font-semibold uppercase text-gray-400 dark:text-gray-500"
+            style={{ letterSpacing: '0.2em' }}
+          >
+            <span aria-hidden className="mr-2 inline-block h-px w-8 align-middle bg-gray-300 dark:bg-gray-600" />
+            IN ACTION
+          </div>
+          <h2
+            className="mb-3 m-0 text-gray-900 dark:text-gray-100"
+            style={{
+              fontFamily: 'var(--font-display-serif), Georgia, serif',
+              fontVariationSettings: "'opsz' 32",
+              fontWeight: 600,
+              fontSize: '28px',
+              letterSpacing: '-0.015em',
+              lineHeight: 1.2,
+            }}
+          >
+            What does this code cost<span style={{ color: '#F0524D' }}>?</span>
+          </h2>
+          <p
+            className="mb-10 max-w-[600px] text-[15px] italic text-gray-600 dark:text-gray-400"
+            style={{
+              fontFamily: 'var(--font-paper-serif), Georgia, serif',
+              fontVariationSettings: "'opsz' 15",
+              lineHeight: 1.6,
+            }}
+          >
+            Same five-layer MLP, written twice. The one on the right counts
+            every FLOP analytically as it runs.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-6">
+          <div className="text-left">
+            <HomeCodeTerminal copyText={numpyCode} label="NumPy">
               {numpyLines.map((tokens, index) => (
                 <TerminalLine key={index} tokens={tokens} />
               ))}
             </HomeCodeTerminal>
           </div>
-          <div className="mx-auto w-full max-w-[520px] text-left">
-            <div className="mb-3 text-center text-xs font-semibold tracking-[0.18em] text-gray-400 uppercase dark:text-gray-500">
-              whest
-            </div>
-            <HomeCodeTerminal copyText={whestCode} className="w-full">
+          <div className="text-left">
+            <HomeCodeTerminal copyText={whestCode} label="Whest" labelAccent>
               {whestLines.map((tokens, index) => (
                 <TerminalLine key={index} tokens={tokens} animated delayMs={index * 140} />
               ))}
             </HomeCodeTerminal>
           </div>
         </div>
+
+        <p
+          className="mt-6 max-w-[720px] text-[14px] italic text-gray-500 dark:text-gray-400"
+          style={{
+            fontFamily: 'var(--font-paper-serif), Georgia, serif',
+            fontVariationSettings: "'opsz' 14",
+            lineHeight: 1.6,
+          }}
+        >
+          The answer, on the right:{' '}
+          <span className="not-italic font-medium text-[#F0524D]">984,321 FLOPs</span>
+          {' '}— counted analytically as the NumPy call runs.
+        </p>
       </section>
 
-      <section className="mx-auto max-w-4xl px-6 pb-20">
-        <h2 className="mb-8 text-center text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
-          Explore the docs
+      {/* 4. Explore the docs — editorial index-card grid */}
+      <section className="mx-auto w-full max-w-[1100px] px-6 pb-24 md:px-8">
+        <div
+          className="mb-3 font-sans text-[10px] font-semibold uppercase text-gray-400 dark:text-gray-500"
+          style={{ letterSpacing: '0.2em' }}
+        >
+          <span aria-hidden className="mr-2 inline-block h-px w-8 align-middle bg-gray-300 dark:bg-gray-600" />
+          READ ON
+        </div>
+        <h2
+          className="mb-10 m-0 text-gray-900 dark:text-gray-100"
+          style={{
+            fontFamily: 'var(--font-display-serif), Georgia, serif',
+            fontVariationSettings: "'opsz' 32",
+            fontWeight: 600,
+            fontSize: '28px',
+            letterSpacing: '-0.015em',
+            lineHeight: 1.2,
+          }}
+        >
+          Explore the docs<span style={{ color: '#F0524D' }}>.</span>
         </h2>
+
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {navCards.map((card) => (
             <Link
               key={card.title}
               href={card.link}
-              className="group relative rounded-xl border border-gray-200 p-6 text-inherit no-underline transition-all hover:-translate-y-0.5 hover:border-[#F0524D] hover:shadow-md dark:border-gray-700"
+              className="group relative block rounded-lg border border-gray-200 p-6 text-inherit no-underline transition-colors hover:border-[#F0524D] dark:border-gray-700"
             >
               <span
-                className="absolute top-5 right-5 text-lg text-gray-400 transition-all group-hover:translate-x-1 group-hover:text-[#F0524D]"
+                className="absolute end-5 top-5 text-lg text-gray-400 transition-colors group-hover:text-[#F0524D]"
                 aria-hidden="true"
               >
                 &rarr;
               </span>
-              <div className="mb-1.5 text-base font-semibold text-gray-900 dark:text-gray-100">
+              <div
+                className="mb-2 text-[19px] italic text-gray-900 underline-offset-4 group-hover:underline dark:text-gray-100"
+                style={{
+                  fontFamily: 'var(--font-display-serif), Georgia, serif',
+                  fontVariationSettings: "'opsz' 24",
+                  fontWeight: 600,
+                  letterSpacing: '-0.005em',
+                  lineHeight: 1.25,
+                }}
+              >
                 {card.title}
               </div>
-              <p className="m-0 text-sm leading-relaxed text-gray-500 dark:text-gray-400">
+              <p
+                className="m-0 max-w-[22rem] text-[14px] text-gray-600 dark:text-gray-400"
+                style={{
+                  fontFamily: 'var(--font-paper-serif), Georgia, serif',
+                  fontVariationSettings: "'opsz' 14",
+                  lineHeight: 1.6,
+                }}
+              >
                 {card.desc}
               </p>
             </Link>
           ))}
         </div>
       </section>
+
+      {/* 5. Colophon */}
+      <footer
+        className="mx-auto w-full max-w-[720px] px-6 pb-16 text-center text-[13px] italic text-gray-400 dark:text-gray-500"
+        style={{
+          fontFamily: 'var(--font-paper-serif), Georgia, serif',
+          fontVariationSettings: "'opsz' 13",
+          lineHeight: 1.6,
+        }}
+      >
+        whest is maintained by AIcrowd. The design system extends the{' '}
+        <Link
+          href="/symmetry-aware-einsum-contractions"
+          className="italic text-gray-500 underline-offset-4 hover:text-[#F0524D] hover:underline dark:text-gray-400"
+        >
+          Symmetry-Aware Einsum Contractions
+        </Link>{' '}
+        explorer.
+      </footer>
     </main>
   );
 }

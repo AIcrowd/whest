@@ -15,7 +15,9 @@ test('homepage matches the intended current docs IA and comparison layout', asyn
 
   assert.match(source, /export const metadata/);
   assert.match(source, /HomeCodeTerminal/);
-  assert.match(source, /kind:\s*'logo'/);
+  // Logo is now in the masthead (beside the wordmark) rather than a middle slot
+  // of the metric row — guard that the brush mark still renders on the page.
+  assert.match(source, /withBasePath\('\/logo\.png'\)/);
   assert.match(source, /numpyCode/);
   assert.match(source, /whestCode/);
 
