@@ -53,11 +53,15 @@
   --fd-primary-foreground: #ffffff;
 }
 
-/* Code blocks stay on white per spec (--code-bg: #FFFFFF). Keep the
-   override so Fumadocs's card wrapper doesn't tint them. */
-article pre,
-article pre[class*="language-"] {
+/* Code blocks stay on white in light mode (--code-bg: #FFFFFF). In dark
+   mode, let the Shiki theme wrapper carry the --code-bg-dark background. */
+:root:not(.dark) article pre,
+:root:not(.dark) article pre[class*="language-"] {
   background: var(--code-bg, #ffffff);
+}
+.dark article pre,
+.dark article pre[class*="language-"] {
+  background: var(--code-bg-dark, #1A1D1E);
 }
 
 /* -------------------------------------------------------------------------
