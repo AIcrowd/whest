@@ -555,11 +555,14 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                 The formal symmetry group:{' '}
                 <Latex math="G_{\text{f}} = G_{\text{pt}}\big|_V \times S(W)" />
               </h3>
+              <div className="mb-2 text-sm text-muted-foreground">
+                <Latex math="= (\text{row-witnessed V-action}) \times (\text{row-unwitnessed W-permutation})" />
+              </div>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
               <NarrativeCallout label="Construction">
-                {`Each pair $(\\sigma_V,\\;\\sigma_W)$ with $\\sigma_V \\in G_{\\text{pt}}\\big|_V$ and $\\sigma_W \\in S(W)$ lifts to a single label permutation on $V \\cup W$ that acts as $\\sigma_V$ on V-positions and as $\\sigma_W$ on W-positions. The set of all such lifts forms $G_{\\text{f}}$, a subgroup of $\\mathrm{Sym}(V \\cup W)$ of order $|G_{\\text{pt}}\\big|_V| \\cdot |W|!$.`}
+                {`Each pair $(\\sigma_V,\\;\\sigma_W)$ with $\\sigma_V \\in G_{\\text{pt}}\\big|_V$ and $\\sigma_W \\in S(W)$ lifts to a single label permutation on $V \\cup W$ that acts as $\\sigma_V$ on V-positions and as $\\sigma_W$ on W-positions. The set of all such lifts forms $G_{\\text{f}}$, a subgroup of $\\mathrm{Sym}(V \\cup W)$ of order $|G_{\\text{pt}}\\big|_V| \\cdot |W|!$. This factorisation states the theorem: every V-preserving polynomial symmetry of R decomposes into a V-action that the wreath witnesses (row-witnessed) and a W-action that no wreath element surfaces (row-unwitnessed).`}
               </NarrativeCallout>
               <NarrativeCallout label="Cost of construction" tone="algorithm">
                 {`No Dimino closure is required. $G_{\\text{pt}}\\big|_V$ is already determined by $G_{\\text{pt}}$, and $S(W)$ is an immediate $|W|!$ enumeration of permutations of the summed labels. $G_{\\text{f}}$ is then the on-the-fly Cartesian product.`}
