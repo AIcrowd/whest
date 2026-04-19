@@ -167,15 +167,29 @@ export default function StickyBar({ example, group, activeActId, hoveredLabels =
                 <code className="block rounded-full border border-gray-200 bg-gray-100 px-3 py-1 text-sm font-mono font-medium text-gray-600 shadow-sm">
                   <FormulaHighlighted example={example} hoveredLabels={hoveredLabels} />
                 </code>
-                {group && (
-                  <Badge
-                    variant="outline"
-                    className="shrink-0 border-primary/25 bg-primary/10 text-primary"
-                    title="Detected symmetry group — drives compression (μ, α). Computed via σ-loop Sources A+B."
-                  >
-                    {group.fullGroupName || 'trivial'}
-                  </Badge>
-                )}
+                {group && (() => {
+                  // Per design-system/preview/components.html `.group-badge`:
+                  // mono 11px stadium pill in the success-green register —
+                  // "we detected a non-trivial group" is a positive signal.
+                  // When the group is trivial (no symmetry found) the pill
+                  // goes muted gray so it doesn't claim a success it didn't
+                  // earn.
+                  const isTrivial = !group.fullGroupName;
+                  return (
+                    <Badge
+                      variant="outline"
+                      className={cn(
+                        'shrink-0 rounded-full px-3 font-mono text-[11px] font-semibold shadow-none',
+                        isTrivial
+                          ? 'border-gray-200 bg-gray-50 text-gray-500'
+                          : 'border-[color:color-mix(in_oklab,var(--success)_25%,transparent)] bg-[color:color-mix(in_oklab,var(--success)_8%,transparent)] text-[color:var(--color-success-alt)]',
+                      )}
+                      title="Detected symmetry group — drives compression (μ, α). Computed via σ-loop Sources A+B."
+                    >
+                      {group.fullGroupName || 'trivial'}
+                    </Badge>
+                  );
+                })()}
               </div>
               <ParameterSymmetryRow variables={variables} />
             </>
