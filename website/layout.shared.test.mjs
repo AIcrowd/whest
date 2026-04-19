@@ -15,12 +15,14 @@ test('shared layout nav uses the wordmark, not a raster logo', async () => {
   assert.doesNotMatch(source, /src="\/whest\/logo\.png"/);
 });
 
-test('root layout metadata points the favicon at the shared site logo', async () => {
+test('root layout metadata wires the favicon through withBasePath', async () => {
   const file = path.join(websiteRoot, 'app', 'layout.tsx');
   const source = await readFile(file, 'utf8');
 
   assert.match(source, /export const metadata/);
   assert.match(source, /icons:\s*\{/);
-  assert.match(source, /icon:\s*withBasePath\('\/logo\.png'\)/);
-  assert.match(source, /apple:\s*withBasePath\('\/logo\.png'\)/);
+  // Primary favicon: the coral-dot SVG from the design-system size ladder
+  assert.match(source, /withBasePath\('\/favicon\.svg'\)/);
+  // PNG fallback and apple touch icon still point at the brush logo
+  assert.match(source, /withBasePath\('\/logo\.png'\)/);
 });
