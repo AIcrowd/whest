@@ -299,8 +299,14 @@
 
 .docSignature {
   margin: 0;
-  font-size: 1.06rem;
-  line-height: 1.35;
+  /* Override prose's paper-serif rule on <p> inside article > div.prose */
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace !important;
+  font-size: 1.0625rem;
+  line-height: 1.45;
+  color: var(--gray-900);
+}
+.docSignature span {
+  font-family: inherit;
 }
 
 .docSignatureBlock::after {
@@ -310,20 +316,18 @@
 }
 
 .docSignatureNamespace {
-  font-weight: 700;
-  color: hsl(var(--foreground));
+  font-weight: 500;
+  color: var(--gray-600);
 }
 
 .docSignatureFunction {
-  font-weight: 800;
-  color: var(--color-primary);
+  font-weight: 700;
+  color: var(--coral);
 }
 
 .docSignatureParams {
-  font-family: var(--fd-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
-  font-style: italic;
-  font-weight: 700;
-  color: hsl(var(--foreground));
+  font-weight: 400;
+  color: var(--gray-900);
 }
 
 .docSummary {
@@ -331,7 +335,7 @@
   margin: 0.4rem 0 0;
   font-size: 1rem;
   line-height: 1.65;
-  color: hsl(var(--foreground));
+  color: var(--gray-900);
 }
 
 .docMetaLine {
