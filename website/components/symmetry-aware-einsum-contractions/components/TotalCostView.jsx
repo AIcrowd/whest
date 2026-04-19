@@ -1,11 +1,9 @@
-import { useState, useMemo } from 'react';
 import CaseBadge from './CaseBadge.jsx';
 import ExplorerMetricCard from './ExplorerMetricCard.jsx';
 import ExplorerSectionCard, { AnchorLink } from './ExplorerSectionCard.jsx';
 import GlossaryProse from './GlossaryProse.jsx';
 import Latex from './Latex.jsx';
 import { componentColor } from '../engine/componentPalette.js';
-import { computeExpressionAlphaTotal } from '../engine/comparisonAlpha.js';
 
 // Color palette — one hue per symbol ROLE (not per component). The same hex
 // is used on the formula glyph, the glossary dt, and any related tooltip.
@@ -305,12 +303,6 @@ function ComponentRecap({ components }) {
 }
 
 export default function TotalCostView({ componentCosts, componentData, dimensionN, numTerms = 1, analysis }) {
-  const [showComparison, setShowComparison] = useState(false);
-  const exprAlpha = useMemo(
-    () => computeExpressionAlphaTotal({ analysis }),
-    [analysis],
-  );
-
   if (!componentCosts || !componentData) return null;
 
   const { mu = 0, alpha = 0, mTotal = 0 } = componentCosts;
@@ -338,32 +330,7 @@ export default function TotalCostView({ componentCosts, componentData, dimension
         <ExplorerMetricCard
           label={<>Accumulation Cost <span className="normal-case">(α)</span></>}
           value={alpha.toLocaleString()}
-          detail={
-            <span className="flex flex-col gap-2">
-              <span>α = ∏ₐ αₐ (distinct output-bin updates)</span>
-              {exprAlpha !== null && (
-                <button
-                  type="button"
-                  onClick={() => setShowComparison((v) => !v)}
-                  className="self-start text-xs text-amber-700 underline underline-offset-2 hover:text-amber-900"
-                >
-                  {showComparison ? 'Hide' : 'Show'} expression-level comparison
-                </button>
-              )}
-              {showComparison && exprAlpha !== null && (
-                <span className="mt-1 rounded border-l-2 border-amber-500 bg-amber-50 px-3 py-2 text-sm text-amber-900">
-                  <span className="block">
-                    Under <Latex math="G_{\text{expr}}" /> (expression-level): α = {exprAlpha}
-                  </span>
-                  <span className="mt-1 block text-xs text-amber-800">
-                    This is what naive Burnside under the counting symmetry would give —{' '}
-                    <strong>over-compresses</strong> because dummy-rename orbits contain
-                    tuples with different summand values.
-                  </span>
-                </span>
-              )}
-            </span>
-          }
+          detail="α = ∏ₐ αₐ (distinct output-bin updates)"
         />
         <ExplorerMetricCard
           label="Total Cost"

@@ -6,7 +6,7 @@ import { buildVariableColors } from './engine/colorPalette.js';
 import { analyzeExample } from './engine/pipeline.js';
 import { pickDefaultOrbitRow } from './engine/teachingModel.js';
 import StickyBar from './components/StickyBar.jsx';
-import TwoKindsSection from './components/TwoKindsSection.jsx';
+import ExpressionLevelModal from './components/ExpressionLevelModal.jsx';
 import ExplorerSectionCard, { SectionEyebrow, AnchorLink } from './components/ExplorerSectionCard.jsx';
 import { EXPLORER_ACTS } from './components/explorerNarrative.js';
 import NarrativeCallout from './components/NarrativeCallout.jsx';
@@ -80,6 +80,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
   // `labels` → halo those characters in the StickyBar einsum equation;
   // `leafKeys` → spotlight matching leaves in the DecisionLadder.
   const [graphHover, setGraphHover] = useState(null);
+  const [exprModalOpen, setExprModalOpen] = useState(false);
   const handleGraphHover = useCallback((payload) => setGraphHover(payload), []);
   const hoveredLabelSet = useMemo(
     () => (graphHover?.labels?.length ? new Set(graphHover.labels) : null),
@@ -222,7 +223,6 @@ export default function SymmetryAwareEinsumContractionsApp() {
       <StickyBar
         example={previewExample ?? example}
         group={group}
-        expressionGroup={analysis?.expressionGroup}
         activeActId={activeActId}
         hoveredLabels={hoveredLabelSet}
       />
@@ -233,7 +233,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
             Symmetry Aware Einsum Contractions
           </h1>
           <p className="text-sm leading-6 text-muted-foreground">
-            <em>Symmetry detection for einsum contractions</em>, explained in six sections.
+            <em>Symmetry detection for einsum contractions</em>, explained in five sections.
           </p>
         </div>
 
@@ -334,20 +334,57 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   </ExplorerSectionCard>
                 </section>
 
-                {/* Act 3: EXPLORER_ACTS[2].heading = Two Kinds of Symmetry */}
                 <section id={EXPLORER_ACTS[2].id} className="mb-12 scroll-mt-24">
-                  <TwoKindsSection
-                    analysis={analysis}
-                    graph={graph}
-                    matrixData={matrixData}
-                    example={normalizedExample}
-                    sigmaResults={sigmaResults}
-                    variableColors={variableColors}
-                    group={group}
-                    bridge={EXPLORER_ACTS[2].bridge}
-                    onSelectedPairChange={setSelectedSigmaPairIndex}
-                    selectedSigmaPairIndex={selectedSigmaPairIndex}
-                  />
+                  <ExplorerSectionCard
+                    eyebrow={<SectionEyebrow n={3} anchorId={EXPLORER_ACTS[2].id} />}
+                    title={EXPLORER_ACTS[2].heading}
+                    description={<InlineMathText>{EXPLORER_ACTS[2].question}</InlineMathText>}
+                    className="border-gray-200 bg-white"
+                    contentClassName="pt-5"
+                  >
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[2].interpretation}</NarrativeCallout>
+                      <NarrativeCallout label="Approach" tone="algorithm">{EXPLORER_ACTS[2].algorithm}</NarrativeCallout>
+                    </div>
+                    {EXPLORER_ACTS[2].bridge && (
+                      <p className="mt-4 text-sm leading-7 text-foreground">
+                        <InlineMathText>{EXPLORER_ACTS[2].bridge}</InlineMathText>
+                      </p>
+                    )}
+                    <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+                      <div id="sigma-loop" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
+                        <h3 className="font-heading text-base font-semibold text-gray-900">
+                          <AnchorLink anchorId="sigma-loop" labelText="σ-Loop & π Detection">
+                            σ-Loop &amp; π Detection
+                          </AnchorLink>
+                        </h3>
+                        <SigmaLoop
+                          results={sigmaResults}
+                          graph={graph}
+                          matrixData={matrixData}
+                          example={normalizedExample}
+                          variableColors={variableColors}
+                          group={group}
+                          onSelectedPairChange={setSelectedSigmaPairIndex}
+                        />
+                      </div>
+                      <div id="generator-construction" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
+                        <h3 className="font-heading text-base font-semibold text-gray-900">
+                          <AnchorLink anchorId="generator-construction" labelText="Generator Construction">
+                            Generator Construction
+                          </AnchorLink>
+                        </h3>
+                        <DiminoView
+                          group={group}
+                          sigmaResults={sigmaResults}
+                          selectedPairIndex={selectedSigmaPairIndex}
+                        />
+                      </div>
+                    </div>
+                    <div className="mt-4">
+                      <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[2].produces}</NarrativeCallout>
+                    </div>
+                  </ExplorerSectionCard>
                 </section>
 
                 <section id={EXPLORER_ACTS[3].id} className="mb-12 scroll-mt-24">
@@ -365,43 +402,6 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     {EXPLORER_ACTS[3].bridge && (
                       <p className="mt-4 text-sm leading-7 text-foreground">
                         <InlineMathText>{EXPLORER_ACTS[3].bridge}</InlineMathText>
-                      </p>
-                    )}
-                    <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-1">
-                      <div id="generator-construction" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
-                        <h3 className="font-heading text-base font-semibold text-gray-900">
-                          <AnchorLink anchorId="generator-construction" labelText="Generator Construction">
-                            Generator Construction
-                          </AnchorLink>
-                        </h3>
-                        <DiminoView
-                          group={group}
-                          sigmaResults={sigmaResults}
-                          selectedPairIndex={selectedSigmaPairIndex}
-                        />
-                      </div>
-                    </div>
-                    <div className="mt-4">
-                      <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[3].produces}</NarrativeCallout>
-                    </div>
-                  </ExplorerSectionCard>
-                </section>
-
-                <section id={EXPLORER_ACTS[4].id} className="mb-12 scroll-mt-24">
-                  <ExplorerSectionCard
-                    eyebrow={<SectionEyebrow n={5} anchorId={EXPLORER_ACTS[4].id} />}
-                    title={EXPLORER_ACTS[4].heading}
-                    description={<InlineMathText>{EXPLORER_ACTS[4].question}</InlineMathText>}
-                    className="border-gray-200 bg-white"
-                    contentClassName="pt-5"
-                  >
-                    <div className="grid gap-4 md:grid-cols-2">
-                      <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[4].interpretation}</NarrativeCallout>
-                      <NarrativeCallout label="Approach" tone="algorithm">{EXPLORER_ACTS[4].algorithm}</NarrativeCallout>
-                    </div>
-                    {EXPLORER_ACTS[4].bridge && (
-                      <p className="mt-4 text-sm leading-7 text-foreground">
-                        <InlineMathText>{EXPLORER_ACTS[4].bridge}</InlineMathText>
                       </p>
                     )}
 
@@ -422,21 +422,21 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   </div>
 
                   <div className="mt-4">
-                    <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[4].produces}</NarrativeCallout>
+                    <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[3].produces}</NarrativeCallout>
                   </div>
                   </ExplorerSectionCard>
                 </section>
 
-                <section id={EXPLORER_ACTS[5].id} className="mb-12 scroll-mt-24">
+                <section id={EXPLORER_ACTS[4].id} className="mb-12 scroll-mt-24">
                   <ExplorerSectionCard
-                    eyebrow={<SectionEyebrow n={6} anchorId={EXPLORER_ACTS[5].id} />}
-                    title={EXPLORER_ACTS[5].heading}
-                    description={<InlineMathText>{EXPLORER_ACTS[5].question}</InlineMathText>}
+                    eyebrow={<SectionEyebrow n={5} anchorId={EXPLORER_ACTS[4].id} />}
+                    title={EXPLORER_ACTS[4].heading}
+                    description={<InlineMathText>{EXPLORER_ACTS[4].question}</InlineMathText>}
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >
                     <p className="text-sm leading-7 text-foreground">
-                      {EXPLORER_ACTS[5].why}
+                      {EXPLORER_ACTS[4].why}
                     </p>
 
                     <div className="mt-6">
@@ -447,6 +447,16 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         numTerms={normalizedExample?.subscripts?.length ?? 1}
                         analysis={analysis}
                       />
+                    </div>
+
+                    <div className="mt-6 rounded-md border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-700">
+                      <button
+                        type="button"
+                        onClick={() => setExprModalOpen(true)}
+                        className="text-left underline decoration-dotted underline-offset-4 hover:text-gray-900"
+                      >
+                        <span className="font-semibold">Counting symmetry</span> — why the expression-level group <span className="font-mono">G<sub>expr</sub></span> is larger than <span className="font-mono">G<sub>pt</sub></span> and why it isn't used for compression.
+                      </button>
                     </div>
                   </ExplorerSectionCard>
                 </section>
@@ -463,6 +473,13 @@ export default function SymmetryAwareEinsumContractionsApp() {
           </main>
         </div>
       </div>
+
+      <ExpressionLevelModal
+        isOpen={exprModalOpen}
+        onClose={() => setExprModalOpen(false)}
+        analysis={analysis}
+        group={group}
+      />
     </div>
   );
 }

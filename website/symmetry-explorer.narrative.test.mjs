@@ -11,30 +11,28 @@ import {
   pickTopVisibleAct,
 } from './components/symmetry-aware-einsum-contractions/lib/activeAct.js';
 
-test('EXPLORER_ACTS defines the six narrative acts in the updated story order', () => {
+test('EXPLORER_ACTS defines the five narrative acts in the updated story order', () => {
   assert.deepEqual(
     EXPLORER_ACTS.map(({ id, navTitle, heading }) => ({ id, navTitle, heading })),
     [
       { id: 'setup', navTitle: 'Set Up', heading: 'Specify the Contraction' },
       { id: 'structure', navTitle: 'See Structure', heading: 'Encode the Structure' },
-      { id: 'two-kinds', navTitle: 'Two Kinds', heading: 'Two Kinds of Symmetry' },
-      { id: 'proof', navTitle: 'Prove Symmetry', heading: 'Materialize and Name the Group' },
+      { id: 'proof', navTitle: 'Prove Symmetry', heading: 'Detect and Generate the Symmetry Group' },
       { id: 'decompose', navTitle: 'Decompose Action', heading: 'Decompose the Group Action' },
       { id: 'price-savings', navTitle: 'Price Savings', heading: 'Price Savings' },
     ],
   );
 });
 
-test('Acts 1 through 5 ask algorithmic questions rather than product-tour questions', () => {
+test('Acts 1 through 4 ask algorithmic questions rather than product-tour questions', () => {
   assert.match(EXPLORER_ACTS[0].question, /what exact einsum/i);
   assert.match(EXPLORER_ACTS[1].question, /represent this contraction/i);
-  assert.match(EXPLORER_ACTS[2].question, /what exactly is preserved/i);
-  assert.match(EXPLORER_ACTS[3].question, /full enumerated group/i);
-  assert.match(EXPLORER_ACTS[4].question, /group is known/i);
+  assert.match(EXPLORER_ACTS[2].question, /genuine symmetries of the contraction/i);
+  assert.match(EXPLORER_ACTS[3].question, /group is known/i);
 });
 
-test('Acts 1 through 5 expose the new narrative metadata fields', () => {
-  for (const act of EXPLORER_ACTS.slice(0, 5)) {
+test('Acts 1 through 4 expose the new narrative metadata fields', () => {
+  for (const act of EXPLORER_ACTS.slice(0, 4)) {
     assert.equal(typeof act.interpretation, 'string');
     assert.ok(act.interpretation.length > 20);
     assert.equal(typeof act.algorithmTitle, 'string');
@@ -46,9 +44,9 @@ test('Acts 1 through 5 expose the new narrative metadata fields', () => {
   }
 });
 
-test('Acts 2 through 5 surface the named procedures used by the algorithm', () => {
+test('Acts 2 through 4 surface the named procedures used by the algorithm', () => {
   const joinedCopy = EXPLORER_ACTS
-    .slice(1, 5)
+    .slice(1, 4)
     .flatMap(({ heading, question, interpretation, algorithm, produces }) => [
       heading,
       question,
@@ -63,7 +61,7 @@ test('Acts 2 through 5 surface the named procedures used by the algorithm', () =
   assert.match(joinedCopy, /orbit enumeration/i);
 });
 
-test('Acts 2 through 5 render the named-procedure bridge text in the live shell', () => {
+test('Acts 2 through 4 render the named-procedure bridge text in the live shell', () => {
   const appSource = fs.readFileSync(
     new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url),
     'utf8',
@@ -72,10 +70,9 @@ test('Acts 2 through 5 render the named-procedure bridge text in the live shell'
   assert.match(appSource, /EXPLORER_ACTS\[1\]\.bridge/);
   assert.match(appSource, /EXPLORER_ACTS\[2\]\.bridge/);
   assert.match(appSource, /EXPLORER_ACTS\[3\]\.bridge/);
-  assert.match(appSource, /EXPLORER_ACTS\[4\]\.bridge/);
 });
 
-test('acts 1 through 5 explicitly distinguish declared and detected symmetry', () => {
+test('acts 1 through 4 explicitly distinguish declared and detected symmetry', () => {
   const appSource = fs.readFileSync(
     new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url),
     'utf8',
@@ -84,8 +81,8 @@ test('acts 1 through 5 explicitly distinguish declared and detected symmetry', (
     new URL('./components/symmetry-aware-einsum-contractions/components/explorerNarrative.js', import.meta.url),
     'utf8',
   );
-  const act5Start = appSource.indexOf('<section id={EXPLORER_ACTS[5].id}');
-  const shellActsSource = act5Start >= 0 ? appSource.slice(0, act5Start) : appSource;
+  const act4Start = appSource.indexOf('<section id={EXPLORER_ACTS[4].id}');
+  const shellActsSource = act4Start >= 0 ? appSource.slice(0, act4Start) : appSource;
   const combined = `${shellActsSource}\n${narrativeSource}`;
 
   const declaredMatches = combined.match(/declared input symmetry/gi) ?? [];
