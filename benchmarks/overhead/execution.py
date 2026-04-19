@@ -2,18 +2,22 @@
 
 from __future__ import annotations
 
+import gc
 import json
 import os
 import subprocess
 import sys
 import textwrap
 from pathlib import Path
+from time import perf_counter_ns
+from typing import Callable
 
 import numpy as np
 
 from benchmarks.overhead.specs import BenchmarkCase
 from benchmarks.overhead.timing import (
     SampleSummary,
+    calibrate_iterations,
     measure_samples,
     summarize_samples,
 )
@@ -31,8 +35,9 @@ def _materialize_operand(
     shape: tuple[int, ...], dtype: str, *, offset: int
 ) -> np.ndarray:
     size = int(np.prod(shape, dtype=int)) if shape else 1
-    values = np.arange(size, dtype=np.float64).reshape(shape)
-    return (values + offset + 1).astype(np.dtype(dtype), copy=False)
+    values = np.arange(size, dtype=np.float64)
+    values = ((values + (offset * 7)) % 31 - 15) / 16.0
+    return values.reshape(shape).astype(np.dtype(dtype), copy=False)
 
 
 def _materialize_operands(case: BenchmarkCase) -> tuple[np.ndarray, np.ndarray]:
@@ -44,9 +49,15 @@ def _materialize_operands(case: BenchmarkCase) -> tuple[np.ndarray, np.ndarray]:
 
 def _build_case_closures(
     case: BenchmarkCase, operands: tuple[object, object]
-) -> tuple[callable, callable]:
-    numpy_callable = lambda: case.numpy_factory(*operands)
-    whest_callable = lambda: case.whest_factory(*operands)
+) -> tuple[Callable[[], object], Callable[[], object]]:
+    def numpy_callable() -> object:
+        with np.errstate(all="ignore"):
+            return case.numpy_factory(*operands)
+
+    def whest_callable() -> object:
+        with np.errstate(all="ignore"):
+            return case.whest_factory(*operands)
+
     return numpy_callable, whest_callable
 
 
@@ -60,25 +71,72 @@ def _summary_to_dict(summary: SampleSummary, *, iterations: int) -> dict[str, fl
 
 
 def _summarize_budget(budget) -> dict[str, object]:
-    summary = budget.summary_dict()
+    return _summarize_operation_records(
+        budget.op_log,
+        flops_used=budget.flops_used,
+        tracked_time_s=budget.total_tracked_time,
+    )
+
+
+def _summarize_operation_records(
+    op_log: list[object], *, flops_used: int, tracked_time_s: float
+) -> dict[str, object]:
+    operations: dict[str, dict[str, float | int]] = {}
+    for record in op_log:
+        bucket = operations.setdefault(
+            record.op_name,
+            {"flop_cost": 0, "calls": 0, "duration": 0.0},
+        )
+        bucket["flop_cost"] += record.flop_cost
+        bucket["calls"] += 1
+        if record.duration is not None:
+            bucket["duration"] += record.duration
     return {
-        "flops_used": budget.flops_used,
-        "op_count": len(budget.op_log),
-        "tracked_time_s": budget.total_tracked_time,
-        "operations": summary["operations"],
+        "flops_used": flops_used,
+        "op_count": len(op_log),
+        "tracked_time_s": tracked_time_s,
+        "operations": operations,
     }
-
-
-def _measure_whest_details(whest_callable) -> dict[str, object]:
-    import whest as we
-
-    with we.BudgetContext(flop_budget=_STEADY_STATE_BUDGET, quiet=True) as budget:
-        whest_callable()
-    return _summarize_budget(budget)
 
 
 def _measured_samples_for_mode(mode: str) -> int:
     return _CI_MEASURED_SAMPLES if mode == "ci" else _DEFAULT_MEASURED_SAMPLES
+
+
+def _time_iterations(func: Callable[[], object], iterations: int) -> int:
+    started_ns = perf_counter_ns()
+    for _ in range(iterations):
+        func()
+    return perf_counter_ns() - started_ns
+
+
+def _measure_whest_samples(
+    whest_callable: Callable[[], object], *, measured_samples: int
+) -> tuple[list[int], int, dict[str, object]]:
+    import whest as we
+
+    we.budget_reset()
+    was_enabled = gc.isenabled()
+    if was_enabled:
+        gc.disable()
+    try:
+        for _ in range(_WARMUP_SAMPLES):
+            whest_callable()
+
+        iterations, _ = calibrate_iterations(
+            whest_callable,
+            minimum_elapsed_ns=_MINIMUM_ELAPSED_NS,
+        )
+        with we.BudgetContext(flop_budget=_STEADY_STATE_BUDGET, quiet=True) as budget:
+            samples = [
+                _time_iterations(whest_callable, iterations)
+                for _ in range(measured_samples)
+            ]
+        return samples, iterations, _summarize_budget(budget)
+    finally:
+        if was_enabled:
+            gc.enable()
+        we.budget_reset()
 
 
 def _steady_state_result(case: BenchmarkCase, *, mode: str) -> dict[str, object]:
@@ -92,15 +150,10 @@ def _steady_state_result(case: BenchmarkCase, *, mode: str) -> dict[str, object]
         measured_samples=measured_samples,
         minimum_elapsed_ns=_MINIMUM_ELAPSED_NS,
     )
-    import whest as we
-
-    with we.BudgetContext(flop_budget=_STEADY_STATE_BUDGET, quiet=True) as budget:
-        whest_samples, whest_iterations = measure_samples(
-            whest_callable,
-            warmup_samples=_WARMUP_SAMPLES,
-            measured_samples=measured_samples,
-            minimum_elapsed_ns=_MINIMUM_ELAPSED_NS,
-        )
+    whest_samples, whest_iterations, whest_details = _measure_whest_samples(
+        whest_callable,
+        measured_samples=measured_samples,
+    )
 
     numpy_summary = summarize_samples(numpy_samples, iterations=numpy_iterations)
     whest_summary = summarize_samples(whest_samples, iterations=whest_iterations)
@@ -111,22 +164,31 @@ def _steady_state_result(case: BenchmarkCase, *, mode: str) -> dict[str, object]
         "numpy": _summary_to_dict(numpy_summary, iterations=numpy_iterations),
         "whest": _summary_to_dict(whest_summary, iterations=whest_iterations),
         "ratio": ratio,
-        "whest_details": _summarize_budget(budget),
+        "whest_details": whest_details,
     }
+
+
+def _callable_payload(func: Callable[..., object]) -> dict[str, str]:
+    qualname = getattr(func, "__qualname__", "")
+    module = getattr(func, "__module__", "")
+    if not module or not qualname or "<locals>" in qualname:
+        raise ValueError(f"factory must be importable: {func!r}")
+    return {"module": module, "qualname": qualname}
 
 
 def _case_payload(case: BenchmarkCase) -> dict[str, object]:
     return {
-        "op_name": case.op_name,
-        "surface": case.surface,
         "dtype": case.dtype,
         "operand_shapes": [list(shape) for shape in case.operand_shapes],
+        "numpy_factory": _callable_payload(case.numpy_factory),
+        "whest_factory": _callable_payload(case.whest_factory),
     }
 
 
 def _startup_script() -> str:
     return textwrap.dedent(
         """
+        import importlib
         import json
         import sys
         import time
@@ -136,8 +198,16 @@ def _startup_script() -> str:
             import numpy as np
 
             size = int(np.prod(shape, dtype=int)) if shape else 1
-            values = np.arange(size, dtype=np.float64).reshape(tuple(shape))
-            return (values + offset + 1).astype(dtype, copy=False)
+            values = np.arange(size, dtype=np.float64)
+            values = ((values + (offset * 7)) % 31 - 15) / 16.0
+            return values.reshape(tuple(shape)).astype(dtype, copy=False)
+
+
+        def resolve_callable(spec):
+            obj = importlib.import_module(spec["module"])
+            for segment in spec["qualname"].split("."):
+                obj = getattr(obj, segment)
+            return obj
 
 
         def run_numpy(payload):
@@ -145,13 +215,9 @@ def _startup_script() -> str:
 
             a = materialize(payload["operand_shapes"][0], payload["dtype"], 0)
             b = materialize(payload["operand_shapes"][1], payload["dtype"], 17)
-            op_name = payload["op_name"]
-            surface = payload["surface"]
-            if op_name == "add":
-                return np.add(a, b) if surface == "api" else a + b
-            if op_name == "matmul":
-                return np.matmul(a, b) if surface == "api" else a @ b
-            raise ValueError(f"unsupported startup case: {op_name}/{surface}")
+            numpy_factory = resolve_callable(payload["numpy_factory"])
+            with np.errstate(all="ignore"):
+                return numpy_factory(a, b)
 
 
         def summarize_budget(budget):
@@ -170,21 +236,10 @@ def _startup_script() -> str:
 
             a = materialize(payload["operand_shapes"][0], payload["dtype"], 0)
             b = materialize(payload["operand_shapes"][1], payload["dtype"], 17)
-            op_name = payload["op_name"]
-            surface = payload["surface"]
+            whest_factory = resolve_callable(payload["whest_factory"])
             with we.BudgetContext(flop_budget=int(1e15), quiet=True) as budget:
-                if op_name == "add":
-                    if surface == "api":
-                        we.add(a, b)
-                    else:
-                        we.array(a) + we.array(b)
-                elif op_name == "matmul":
-                    if surface == "api":
-                        we.matmul(a, b)
-                    else:
-                        we.array(a) @ we.array(b)
-                else:
-                    raise ValueError(f"unsupported startup case: {op_name}/{surface}")
+                with np.errstate(all="ignore"):
+                    whest_factory(a, b)
             return summarize_budget(budget)
 
 
