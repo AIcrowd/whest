@@ -136,7 +136,15 @@ function ExplorerSectionCard({
                   ? <CardDescription className="text-[11px] font-semibold uppercase tracking-[0.16em] text-coral">{eyebrow}</CardDescription>
                   : <div>{eyebrow}</div>
               ) : null}
-              {title ? <CardTitle className="text-lg leading-tight">{title}</CardTitle> : null}
+              {title ? (
+                // Paper-register H2 per design-system/preview/type-pairings.html:
+                // Newsreader display-serif 22–24px 600 -0.01em. The section
+                // 'question' is the major break on the page, so it needs to
+                // out-rank the Inter 15px viz-panel H3s inside the card.
+                <CardTitle className="font-heading text-[22px] font-semibold leading-[1.2] tracking-[-0.01em] text-gray-900">
+                  {title}
+                </CardTitle>
+              ) : null}
               {description ? <CardDescription className="text-sm leading-6">{description}</CardDescription> : null}
             </div>
             {action ? <CardAction>{action}</CardAction> : null}
