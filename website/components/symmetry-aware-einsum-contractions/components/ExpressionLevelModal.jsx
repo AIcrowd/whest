@@ -304,7 +304,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                 {`$G_{\\text{f}}$ — the subgroup of $\\mathrm{Sym}(L)$ consisting of label permutations $\\pi$ for which $\\sum_t \\text{summand}(t) = \\sum_t \\text{summand}(\\pi^{-1} t)$; that is, the total sum is invariant although individual summands may be reshuffled. "Formal" here has its standard mathematical meaning — invariance at the level of the expression treated as a formal sum, not at the level of its values.`}
               </NarrativeCallout>
               <NarrativeCallout label="Relationship" tone="algorithm">
-                {`$G_{\\text{pt}} \\subseteq G_{\\text{f}}$ always. The additional elements of $G_{\\text{f}} \\setminus G_{\\text{pt}}$ come from two sources: dummy-variable renamings of the summed labels, and V-only reshuffles that only hold after aggregation. For bilinear-trace (§3 below) $G_{\\text{pt}}$ has 2 elements and $G_{\\text{f}}$ has 4.`}
+                {`$G_{\\text{pt}} \\subseteq G_{\\text{f}}$ always. The additional elements of $G_{\\text{f}} \\setminus G_{\\text{pt}}$ come from two sources: dummy-variable renamings of the summed labels, and V-only reshuffles that only hold after aggregation. For bilinear-trace (Section 3 below) $G_{\\text{pt}}$ has 2 elements and $G_{\\text{f}}$ has 4.`}
               </NarrativeCallout>
             </div>
           </section>
@@ -418,7 +418,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
 
             <p className="mt-4 text-sm leading-7 text-foreground">
               <InlineMathText>
-                {`Using the same $A = \\begin{pmatrix} 1 & 2 \\\\ 3 & 4 \\end{pmatrix}$ as in §2, each output cell expands as a sum of four products:`}
+                {`Using the same $A = \\begin{pmatrix} 1 & 2 \\\\ 3 & 4 \\end{pmatrix}$ as in Section 2, each output cell expands as a sum of four products:`}
               </InlineMathText>
             </p>
 
@@ -576,7 +576,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                   </p>
                   <p className="mt-2 text-[13px] text-amber-800">
                     <InlineMathText>
-                      {`This value is not correct as a compression count. Orbits under $S(W)$ contain tuples whose summand values differ (§4 above), so selecting one representative per orbit and multiplying by the orbit size produces a claim that does not match the true output for a generic operand. The main-page cost card therefore reports $\\alpha$ with respect to $G_{\\text{pt}}$ only.`}
+                      {`This value is not correct as a compression count. Orbits under $S(W)$ contain tuples whose summand values differ (Section 4 above), so selecting one representative per orbit and multiplying by the orbit size produces a claim that does not match the true output for a generic operand. The main-page cost card therefore reports $\\alpha$ with respect to $G_{\\text{pt}}$ only.`}
                     </InlineMathText>
                   </p>
                 </div>
@@ -621,7 +621,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
             */}
             <p className="mb-4 text-sm leading-7 text-gray-700">
               <InlineMathText>
-                {`Section 6 closed the accumulation-count story: $G_{\\text{f}}$'s extra elements beyond $G_{\\text{pt}}$ admit no pointwise compression of $\\alpha$ under the enumerate-and-accumulate evaluation model. Before closing the appendix we pivot to a *different* optimization axis — output-tensor storage — where savings *are* available. The group governing this axis is $G_{\\text{pt}}\\big|_V$: it appeared in §5 as the V-factor of $G_{\\text{f}}$, but equivalently it is a subgroup of $G_{\\text{pt}}$ itself — the V-action that $G_{\\text{pt}}$'s V/W-preserving elements already induce. That dual role is precisely why the output tensor is genuinely *pointwise*-symmetric under it, and therefore why the savings discussed below are not formal-only.`}
+                {`Section 6 closed the accumulation-count story: $G_{\\text{f}}$'s extra elements beyond $G_{\\text{pt}}$ admit no pointwise compression of $\\alpha$ under the enumerate-and-accumulate evaluation model. Before closing the appendix we pivot to a *different* optimization axis — output-tensor storage — where savings *are* available. The group governing this axis is $G_{\\text{pt}}\\big|_V$: it appeared in Section 5 as the V-factor of $G_{\\text{f}}$, but equivalently it is a subgroup of $G_{\\text{pt}}$ itself — the V-action that $G_{\\text{pt}}$'s V/W-preserving elements already induce. That dual role is precisely why the output tensor is genuinely *pointwise*-symmetric under it, and therefore why the savings discussed below are not formal-only.`}
               </InlineMathText>
             </p>
 
