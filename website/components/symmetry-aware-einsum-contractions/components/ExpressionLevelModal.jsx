@@ -216,18 +216,86 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
               </NarrativeCallout>
             </div>
 
-            <div className="mt-4 rounded-md border border-border/60 bg-muted/20 px-5 py-4 text-sm leading-7 text-foreground">
-              <p className="font-semibold">Worked example — bilinear trace.</p>
-              <p className="mt-1">
+            <div className="mt-4 text-sm leading-7 text-foreground">
+              <p className="font-semibold">Worked example — bilinear trace at <Latex math="n = 2" />.</p>
+              <p className="mt-2">
                 <InlineMathText>
-                  {`Consider $\\mathtt{ik{,}jl\\to ij}$, that is $R[i,j] = \\sum_{k,l} A[i,k] \\cdot A[j,l]$. Here $V = \\{i, j\\}$ and $W = \\{k, l\\}$. The detected per-tuple group is $G_{\\text{pt}} = \\{e,\\;(i\\;j)(k\\;l)\\}$: swapping the two identical $A$'s exchanges V-labels $i \\leftrightarrow j$ together with W-labels $k \\leftrightarrow l$. Restricting the non-identity element to V yields $(i\\;j)$, so $V_{\\text{sub}} = \\{e,\\;(i\\;j)\\} \\cong S_2$ acting on $\\{i,j\\}$.`}
+                  {`The einsum $\\mathtt{ik{,}jl\\to ij}$ computes $R[i,j] = \\sum_{k,l} A[i,k] \\cdot A[j,l]$ with $V = \\{i, j\\}$ and $W = \\{k, l\\}$. The σ-loop's Source B emits the permutation that swaps the two identical $A$ operands; this exchanges $i \\leftrightarrow j$ together with $k \\leftrightarrow l$. The detected per-tuple group is therefore $G_{\\text{pt}} = \\{e,\\;(i\\;j)(k\\;l)\\}$. Restricting each element to V yields $V_{\\text{sub}} = \\{e,\\;(i\\;j)\\}$, a copy of $S_2$ acting on $\\{i,j\\}$.`}
                 </InlineMathText>
               </p>
-              <p className="mt-2 text-muted-foreground text-[13px]">
-                <InlineMathText>
-                  {`The output tensor is genuinely symmetric under this action: $R[i,j] = R[j,i]$ for every $(i,j)$ in this einsum, because $R[i,j] = (\\sum_k A[i,k])(\\sum_l A[j,l])$ is a product of two scalars.`}
-                </InlineMathText>
-              </p>
+            </div>
+
+            <p className="mt-4 text-sm leading-7 text-foreground">
+              <InlineMathText>
+                {`Using the same $A = \\begin{pmatrix} 1 & 2 \\\\ 3 & 4 \\end{pmatrix}$ as in §1, each output cell expands as a sum of four products:`}
+              </InlineMathText>
+            </p>
+
+            <div className="mt-2 rounded-md border border-border/60 bg-muted/20 px-5 py-4 font-mono text-[13px] leading-relaxed text-foreground">
+              <div>
+                R[<span style={vStyle}>0</span>,<span style={vStyle}>0</span>]
+                {' = '}
+                A[<span style={vStyle}>0</span>,<span style={wStyle}>0</span>]·A[<span style={vStyle}>0</span>,<span style={wStyle}>0</span>]
+                {' + '}
+                A[<span style={vStyle}>0</span>,<span style={wStyle}>0</span>]·A[<span style={vStyle}>0</span>,<span style={wStyle}>1</span>]
+                {' + '}
+                A[<span style={vStyle}>0</span>,<span style={wStyle}>1</span>]·A[<span style={vStyle}>0</span>,<span style={wStyle}>0</span>]
+                {' + '}
+                A[<span style={vStyle}>0</span>,<span style={wStyle}>1</span>]·A[<span style={vStyle}>0</span>,<span style={wStyle}>1</span>]
+                {' = '}
+                1 + 2 + 2 + 4 = <strong>9</strong>
+              </div>
+              <div className="mt-1">
+                R[<span style={vStyle}>0</span>,<span style={vStyle}>1</span>]
+                {' = '}
+                A[<span style={vStyle}>0</span>,<span style={wStyle}>0</span>]·A[<span style={vStyle}>1</span>,<span style={wStyle}>0</span>]
+                {' + '}
+                A[<span style={vStyle}>0</span>,<span style={wStyle}>0</span>]·A[<span style={vStyle}>1</span>,<span style={wStyle}>1</span>]
+                {' + '}
+                A[<span style={vStyle}>0</span>,<span style={wStyle}>1</span>]·A[<span style={vStyle}>1</span>,<span style={wStyle}>0</span>]
+                {' + '}
+                A[<span style={vStyle}>0</span>,<span style={wStyle}>1</span>]·A[<span style={vStyle}>1</span>,<span style={wStyle}>1</span>]
+                {' = '}
+                3 + 4 + 6 + 8 = <strong>21</strong>
+              </div>
+              <div className="mt-1">
+                R[<span style={vStyle}>1</span>,<span style={vStyle}>0</span>]
+                {' = '}
+                A[<span style={vStyle}>1</span>,<span style={wStyle}>0</span>]·A[<span style={vStyle}>0</span>,<span style={wStyle}>0</span>]
+                {' + '}
+                A[<span style={vStyle}>1</span>,<span style={wStyle}>0</span>]·A[<span style={vStyle}>0</span>,<span style={wStyle}>1</span>]
+                {' + '}
+                A[<span style={vStyle}>1</span>,<span style={wStyle}>1</span>]·A[<span style={vStyle}>0</span>,<span style={wStyle}>0</span>]
+                {' + '}
+                A[<span style={vStyle}>1</span>,<span style={wStyle}>1</span>]·A[<span style={vStyle}>0</span>,<span style={wStyle}>1</span>]
+                {' = '}
+                3 + 6 + 4 + 8 = <strong>21</strong>
+              </div>
+              <div className="mt-1">
+                R[<span style={vStyle}>1</span>,<span style={vStyle}>1</span>]
+                {' = '}
+                A[<span style={vStyle}>1</span>,<span style={wStyle}>0</span>]·A[<span style={vStyle}>1</span>,<span style={wStyle}>0</span>]
+                {' + '}
+                A[<span style={vStyle}>1</span>,<span style={wStyle}>0</span>]·A[<span style={vStyle}>1</span>,<span style={wStyle}>1</span>]
+                {' + '}
+                A[<span style={vStyle}>1</span>,<span style={wStyle}>1</span>]·A[<span style={vStyle}>1</span>,<span style={wStyle}>0</span>]
+                {' + '}
+                A[<span style={vStyle}>1</span>,<span style={wStyle}>1</span>]·A[<span style={vStyle}>1</span>,<span style={wStyle}>1</span>]
+                {' = '}
+                9 + 12 + 12 + 16 = <strong>49</strong>
+              </div>
+            </div>
+
+            <div className="mt-4 rounded-md border-l-4 border-emerald-500 bg-emerald-50 px-5 py-3 text-sm leading-7 text-emerald-900">
+              <InlineMathText>
+                {`The two off-diagonal cells agree: $R[0,1] = R[1,0] = 21$. The equality holds term by term between $R[0,1]$ and $R[1,0]$ — each product in one row is the commuted twin of a product in the other. This is the defining feature of an element of $V_{\\text{sub}}$: the symmetry holds on the computed output tensor itself, $R[\\sigma\\,\\omega] = R[\\omega]$, not merely on the total over all outputs.`}
+              </InlineMathText>
+            </div>
+
+            <div className="mt-4 rounded-md border border-border/60 bg-muted/20 px-4 py-3 text-[13px] leading-6 text-muted-foreground">
+              <InlineMathText>
+                {`Equivalently, $R[i,j] = (\\sum_k A[i,k])(\\sum_l A[j,l]) = v_i\\,v_j$ where $v = \\mathrm{rowsum}(A)$; the outer product $v\\,v^\\top$ is symmetric by construction, so $V_{\\text{sub}} = \\{e,(i\\;j)\\}$ acts trivially on $R$ for every $A$.`}
+              </InlineMathText>
             </div>
           </section>
 
