@@ -11,9 +11,11 @@ import Latex from './Latex.jsx';
  *   B. per-element table (small wreath) or aggregated summary (large).
  *   C. count summary + bridge to the modal's formal argument.
  *
- * This revision implements Band A; Bands B and C are added in
- * subsequent tasks.
+ * This revision implements Bands A and B; Band C is added in Task 9.
  */
+
+const BAND_B_THRESHOLD = 24;
+
 export default function WreathStructureView({ analysis, example, onOpenModalSection }) {
   const symmetry = analysis?.symmetry;
   const wreathElements = symmetry?.wreathElements;
@@ -45,6 +47,8 @@ export default function WreathStructureView({ analysis, example, onOpenModalSect
 
   if (!wreathElements || wreathElements.length === 0) return null;
 
+  const smallWreath = wreathElements.length <= BAND_B_THRESHOLD;
+
   const formulaLatex = factors.length === 0
     ? 'G_{\\text{wreath}} = \\{e\\}'
     : `G_{\\text{wreath}} = ${factors.map((f) => `(${f.symmetryLabel} \\wr S_{${f.m}})`).join(' \\times ')} = ${totalOrder}`;
@@ -67,8 +71,72 @@ export default function WreathStructureView({ analysis, example, onOpenModalSect
           </div>
         ))}
       </div>
-      {/* Bands B + C added in subsequent tasks */}
+      {/* Band B — per-element table (small wreath) or aggregated summary (large wreath, Task 8) */}
+      {smallWreath ? (
+        <div className="mt-3 overflow-x-auto">
+          <table className="w-full text-[12px] border-collapse">
+            <thead>
+              <tr className="border-b border-border/60 text-left text-muted-foreground">
+                <th className="px-2 py-2 font-semibold">#</th>
+                <th className="px-2 py-2 font-semibold">Factor decomposition</th>
+                <th className="px-2 py-2 font-semibold">Matrix effect</th>
+                <th className="px-2 py-2 font-semibold">derivePi(σ)</th>
+                <th className="px-2 py-2 font-semibold">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {wreathElements.map((e, idx) => (
+                <WreathElementRow key={e.id} element={e} index={idx} />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        // Large wreath — aggregated summary lands in Task 8
+        null
+      )}
+      {/* Band C (summary + bridge) added in Task 9 */}
     </div>
+  );
+}
+
+function WreathElementRow({ element, index }) {
+  const classLabel = {
+    'valid': '✓ valid',
+    'matrix-preserving': '✗ matrix-preserving',
+    'rejected': '✗ rejected',
+  }[element.classification];
+
+  const rowColorClass = {
+    'valid': '',
+    'matrix-preserving': 'text-muted-foreground italic',
+    'rejected': 'text-amber-600/80 italic',
+  }[element.classification];
+
+  const matrixEffect = element.matrixPreserving
+    ? <span className="text-muted-foreground">M_σ = M</span>
+    : <span>M_σ ≠ M</span>;
+
+  const piStr = element.derivePiResult === null
+    ? '—'
+    : piCycleNotation(element.derivePiResult);
+
+  const factorStr = element.factorization
+    ? element.factorization.map((f) => {
+        const baseStr = f.baseTuple.map((h) => (h.isIdentity ? 'e' : h.cycleNotation())).join(',');
+        const topStr = f.topPerm.map((v, idx) => (v === idx ? null : `${idx}→${v}`)).filter(Boolean).join(',') || 'id';
+        return `(${baseStr}; ${topStr})`;
+      }).join(' × ')
+    : '';
+
+  return (
+    <tr className={`border-b border-border/30 ${rowColorClass}`}>
+      <td className="px-2 py-1 font-mono text-[11px]">{index}</td>
+      <td className="px-2 py-1 font-mono text-[11px]">{factorStr}</td>
+      <td className="px-2 py-1">{matrixEffect}</td>
+      <td className="px-2 py-1 font-mono text-[11px]">{piStr}</td>
+      <td className="px-2 py-1">{classLabel}</td>
+    </tr>
   );
 }
 
@@ -97,4 +165,35 @@ function hGroupOrder(variable, rank) {
   // approximate as 1 to avoid a false value. Band B shows element-by-
   // element truth via wreathElements.length.
   return 1;
+}
+
+// derivePi returns a plain label→label object, not a Permutation. These
+// helpers give it isIdentity / cycleNotation semantics without upgrading
+// the engine's data shape.
+function piIsIdentity(pi) {
+  if (!pi) return false;
+  for (const [k, v] of Object.entries(pi)) {
+    if (k !== v) return false;
+  }
+  return true;
+}
+
+function piCycleNotation(pi) {
+  if (!pi) return '—';
+  if (piIsIdentity(pi)) return 'identity';
+  const visited = new Set();
+  const cycles = [];
+  const keys = Object.keys(pi).sort();
+  for (const label of keys) {
+    if (visited.has(label)) continue;
+    const cycle = [];
+    let cur = label;
+    while (!visited.has(cur)) {
+      visited.add(cur);
+      cycle.push(cur);
+      cur = pi[cur];
+    }
+    if (cycle.length >= 2) cycles.push(`(${cycle.join(' ')})`);
+  }
+  return cycles.length ? cycles.join('') : 'identity';
 }
