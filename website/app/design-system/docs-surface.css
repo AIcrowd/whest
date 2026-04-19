@@ -1,7 +1,7 @@
 /* =========================================================================
    Whest Design System — Docs Surface Adapter
    Local composition layer. Responsibilities:
-   - Tier-3C warm paper register (light mode)
+   - Foundation white surface register (light mode)
    - Bridge canonical tokens into shadcn (--color-*) + Fumadocs (--fd-*)
    - Focus ring (global :focus-visible)
    - Prose headings and utility classes
@@ -10,53 +10,52 @@
    ========================================================================= */
 
 /* -------------------------------------------------------------------------
-   Tier-3C Warm Paper Register (light mode only)
-   Maps canonical docs tokens into the shadcn + Fumadocs variable layers
-   that existing components already consume. Dark mode keeps the current
-   near-black palette defined in global.css; a warm-dark register is a
-   design-system followup.
+   Foundation Register — Clean White Surface
+   Routes canonical Foundation tokens into the shadcn + Fumadocs variable
+   layers that existing components consume. Pure #ffffff page and cards
+   (no off-white, no warm paper). Dark mode keeps the current near-black
+   palette defined in global.css.
    ------------------------------------------------------------------------- */
 :root {
   --radius: var(--radius-lg); /* 0.5rem — matches spec --radius-lg */
 
   /* shadcn / Tailwind theme vars */
-  --background: var(--docs-paper);              /* #FBF7F2 */
-  --foreground: var(--docs-ink);                /* #132228 */
-  --card: var(--docs-paper-card);               /* #FFFDF9 */
-  --card-foreground: var(--docs-ink);
-  --popover: var(--docs-paper-card);
-  --popover-foreground: var(--docs-ink);
-  --muted: var(--gray-100);                     /* inline-code chip ground */
-  --muted-foreground: var(--docs-muted);        /* #5F6B71 */
-  --border: var(--docs-line);
-  --input: var(--docs-line);
+  --background: #ffffff;
+  --foreground: var(--gray-900);
+  --card: #ffffff;
+  --card-foreground: var(--gray-900);
+  --popover: #ffffff;
+  --popover-foreground: var(--gray-900);
+  --muted: var(--gray-100);
+  --muted-foreground: var(--gray-600);
+  --border: var(--gray-200);
+  --input: var(--gray-200);
   --secondary: var(--gray-50);
-  --secondary-foreground: var(--docs-ink);
+  --secondary-foreground: var(--gray-900);
   --accent: var(--coral-light);
-  --accent-foreground: var(--docs-ink);
-  --sidebar: var(--docs-paper-card);
-  --sidebar-foreground: var(--docs-ink);
-  --sidebar-border: var(--docs-line);
+  --accent-foreground: var(--gray-900);
+  --sidebar: #ffffff;
+  --sidebar-foreground: var(--gray-900);
+  --sidebar-border: var(--gray-200);
   --sidebar-accent: var(--coral-light);
-  --sidebar-accent-foreground: var(--docs-ink);
+  --sidebar-accent-foreground: var(--gray-900);
 
   /* Fumadocs vars (mirror shadcn where applicable) */
-  --fd-background: var(--docs-paper);
-  --fd-foreground: var(--docs-ink);
-  --fd-card: var(--docs-paper-card);
+  --fd-background: #ffffff;
+  --fd-foreground: var(--gray-900);
+  --fd-card: #ffffff;
   --fd-muted: var(--gray-100);
-  --fd-muted-foreground: var(--docs-muted);
-  --fd-border: var(--docs-line);
+  --fd-muted-foreground: var(--gray-600);
+  --fd-border: var(--gray-200);
   --fd-accent: var(--coral-light);
-  --fd-accent-foreground: var(--docs-ink);
+  --fd-accent-foreground: var(--gray-900);
   --fd-primary: var(--coral);
   --fd-primary-foreground: #ffffff;
 }
 
-/* Code blocks stay on the white register per spec (--code-bg: #FFFFFF).
-   Fumadocs wraps <pre> with a card that reads --fd-card; override here. */
+/* Code blocks stay on white per spec (--code-bg: #FFFFFF). Keep the
+   override so Fumadocs's card wrapper doesn't tint them. */
 article pre,
 article pre[class*="language-"] {
   background: var(--code-bg, #ffffff);
 }
-
