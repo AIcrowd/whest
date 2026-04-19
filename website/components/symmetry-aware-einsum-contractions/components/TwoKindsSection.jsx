@@ -164,8 +164,9 @@ export default function TwoKindsSection({
           <Latex math="G_{\text{expr}}" /> is computed directly: take the V-restriction
           of <Latex math="G_{\text{pt}}" /> (<Latex math="V_{\text{sub}}" />) and pair it
           with every permutation of the summed labels (<Latex math="S(W)" />). No
-          Dimino needed. Hover a row in either left column to highlight the
-          corresponding product entries.
+          Dimino needed. Every product row on the right is{' '}
+          <span className="font-mono text-[12px]">V-sub row <em>i</em> × S(W) row <em>j</em></span>.
+          Hover any row to highlight its counterpart(s) in the other columns.
         </p>
         <VSubSwConstruction
           expressionGroup={analysis?.expressionGroup}
