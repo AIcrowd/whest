@@ -26,4 +26,8 @@ def test_stats_surface_entries_are_accounted_for():
         + result["unsupported"]
         + result["unclassified"]
     )
-    assert any(entry["surface"] == "stats" for entry in entries)
+    assert any(
+        entry["surface"] == "stats"
+        and entry["qualified_name"].endswith((".pdf", ".cdf", ".ppf"))
+        for entry in entries
+    )

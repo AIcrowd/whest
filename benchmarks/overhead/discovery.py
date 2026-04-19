@@ -52,6 +52,22 @@ def _iter_public_operations(module_name: str):
             yield name, value
 
 
+def _iter_stats_operations(module_name: str):
+    module = importlib.import_module(module_name)
+    for dist_name in _public_callable_names(module):
+        try:
+            distribution = getattr(module, dist_name)
+        except AttributeError:
+            continue
+        for method_name in ("pdf", "cdf", "ppf"):
+            if not hasattr(distribution, method_name):
+                continue
+            method = getattr(distribution, method_name)
+            if not callable(method):
+                continue
+            yield f"{dist_name}.{method_name}", method
+
+
 def _load_exclusion_policies() -> tuple[dict[str, str], dict[str, str]]:
     payload = json.loads(_EXCLUSION_PATH.read_text())
     return payload["excluded"], payload["unsupported_for_ratio"]
@@ -61,7 +77,12 @@ def _build_inventory() -> list[dict[str, Any]]:
     records_by_id: dict[int, dict[str, Any]] = {}
 
     for module_name in DISCOVERY_MODULES:
-        for name, value in _iter_public_operations(module_name):
+        iterator = (
+            _iter_stats_operations(module_name)
+            if module_name == "whest.stats"
+            else _iter_public_operations(module_name)
+        )
+        for name, value in iterator:
             record = records_by_id.setdefault(
                 id(value),
                 {
