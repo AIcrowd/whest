@@ -603,7 +603,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                   </p>
                   <p className="mt-2 text-[13px] text-amber-800">
                     <InlineMathText>
-                      {`This value is not correct as a compression count. Orbits under $S(W)$ contain tuples whose summand values differ (Section 4 above), so selecting one representative per orbit and multiplying by the orbit size produces a claim that does not match the true output for a generic operand. The main-page cost card therefore reports $\\alpha$ with respect to $G_{\\text{pt}}$ only.`}
+                      {`This value is not correct as a compression count. Orbits under $S(W)$ contain tuples whose summand values differ — because $S(W)$ is row-unwitnessed, its orbits don't correspond to any row-level symmetry of the summand, only to the bound-variable renaming of the total (Section 4 above). The main-page cost card therefore reports $\\alpha$ with respect to $G_{\\text{pt}}$ only.`}
                     </InlineMathText>
                   </p>
                 </div>
