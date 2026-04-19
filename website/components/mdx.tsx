@@ -7,17 +7,11 @@ import { CodeBlock, Pre } from 'fumadocs-ui/components/codeblock';
 import ApiReference from './api-reference';
 import SortableTable from './shared/SortableTable';
 import Mermaid from './mermaid';
-import RichOutputPre from './rich-output-pre';
-import { isRichOutputBlock } from './rich-output.mjs';
 import StaticFileLink from './static-file-link';
 import { Callout } from './ui/callout';
 import { STANDALONE_SYMMETRY_AWARE_EINSUM_URL } from '@/lib/docsTree';
 
-function DocsPre(props: ComponentProps<'pre'> & { title?: string }) {
-  if (isRichOutputBlock(props)) {
-    return <RichOutputPre {...props} />;
-  }
-
+function DocsPre(props: ComponentProps<'pre'>) {
   return (
     <CodeBlock {...props}>
       <Pre>{props.children}</Pre>

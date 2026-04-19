@@ -87,18 +87,18 @@ Use these forms for different questions:
 
 The block below shows `print(budget.summary(by_namespace=True))` for the `solver` context:
 
-```text title="__rich_output__"
-\x1b[36mwhest FLOP Budget Summary [solver]\x1b[0m
-\x1b[2m==================================\x1b[0m
+```text
+whest FLOP Budget Summary [solver]
+==================================
   Total budget:              50,000,000
-  \x1b[32mUsed:\x1b[0m                          66,048  (0.1%)
+  Used:                          66,048  (0.1%)
   Remaining:                 49,933,952  (99.9%)
 
-  \x1b[1mBy namespace:\x1b[0m
+  By namespace:
     solver                         66,048  (100.0%)  [3 calls]  0.000s
 
-  \x1b[1mBy operation:\x1b[0m
-    \x1b[31meinsum\x1b[0m                     65,536  ( 99.2%)  [1 call]
+  By operation:
+    einsum                     65,536  ( 99.2%)  [1 call]
     exp                           256  (  0.4%)  [1 call]
     sum                           256  (  0.4%)  [1 call]
 
@@ -106,7 +106,7 @@ The block below shows `print(budget.summary(by_namespace=True))` for the `solver
   Tracked time:          ...s  ( ...%)
   Untracked time:        ...s  ( ...%)
 
-  \x1b[1mBy operation (time):\x1b[0m
+  By operation (time):
     einsum                 ...s  ( ...%)  [1 call]
     sum                    ...s  ( ...%)  [1 call]
     exp                    ...s  ( ...%)  [1 call]
