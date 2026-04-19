@@ -218,11 +218,9 @@ aside#nd-sidebar button[aria-expanded] {
 
 aside#nd-sidebar a[data-active='true'] {
   font-weight: 600;
-  border-inline-start: 3px solid var(--coral);
-  /* Fumadocs sets padding-inline-start as an inline style for indent depth.
-     Shift the whole item 3px left so the rail hangs into the sidebar gutter
-     and the text edge still aligns with non-active siblings. */
-  margin-inline-start: -3px;
+  border-inline-start: 4px solid var(--primary);
+  margin-inline-start: -4px;
+  background: color-mix(in oklab, var(--accent) 50%, transparent);
 }
 
 /* Kicker / eyebrow utility — for TOC labels, section kickers */
