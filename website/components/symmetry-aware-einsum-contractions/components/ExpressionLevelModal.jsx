@@ -368,8 +368,8 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
             </div>
 
             <div className="mt-4">
-              <NarrativeCallout label="Recommended framing for downstream audiences" tone="accent">
-                {`Report $\\alpha$ as "distinct accumulation operations under the enumerate-and-accumulate evaluation, using $G_{\\text{pt}}$ for per-summand equivalence." State explicitly that $V_{\\text{sub}}$-level output-tensor symmetry, algebraic restructuring (e.g. $R = v\\,v^\\top$), and contraction re-ordering are complementary optimizations not folded into this figure.`}
+              <NarrativeCallout label="Scope of the reported α" tone="accent">
+                {`The $\\alpha$ shown on the main page counts distinct accumulation operations in the enumerate-and-accumulate evaluation model, with $G_{\\text{pt}}$ as the equivalence relation on summand values. Three optimization axes lie outside this scope: $V_{\\text{sub}}$-level output-tensor storage (discussed above), algebraic restructuring such as factoring $R = v\\,v^\\top$, and contraction re-ordering. Each can reduce the total operation count further than $\\alpha$ reports, and each requires algorithmic machinery distinct from the per-tuple orbit compression this page measures.`}
               </NarrativeCallout>
             </div>
           </section>
