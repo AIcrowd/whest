@@ -113,12 +113,44 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
   const usingCandidateFallback = Boolean(selectedPair && !matchedCandidate && candidate && candidate === candidatePermutations[0]);
 
   if (!selectedPair || !candidate) {
+    // Reaching this branch means there is no non-identity induced label
+    // permutation to feed into Dimino. Two sub-cases collapse here:
+    //
+    //   (a) σ-loop found zero valid (σ, π) pairs at all — every candidate
+    //       σ was rejected because no compatible π exists (e.g. matrix-chain,
+    //       mixed-chain: identical operands but different subscript shapes).
+    //
+    //   (b) σ-loop found valid pairs, but every π it produced is the
+    //       identity — so fullGroup.js filters them out of candidatePermutations
+    //       (line 47) and nothing reaches Dimino (e.g. frobenius: the two A's
+    //       can swap, but their subscripts match identically, so the recovery
+    //       π is identity).
+    //
+    // Both collapse to |G| = 1, so the panel should say that directly rather
+    // than telling the reader to "select a valid pair" — there is nothing
+    // they can click that would change the outcome.
+    const isTrivialGroup = !group?.fullOrder || group.fullOrder <= 1;
     return (
       <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-        <h3 className="font-heading text-base font-semibold text-gray-900">Generator Construction</h3>
-        <p className="mt-2 text-sm leading-6 text-muted-foreground">
-          Select a valid `(σ, π)` pair on the left to test the induced label permutation it induces.
-        </p>
+        {isTrivialGroup ? (
+          <div className="space-y-3 text-sm leading-6 text-muted-foreground">
+            <p className="text-foreground">
+              The detected symmetry group is <span className="font-mono">{'{e}'}</span> — every valid (σ, π) pair induces the identity permutation (or no valid pair exists), so there are no non-trivial generators to feed into Dimino's closure.
+            </p>
+            <p>
+              Try a preset with declared axis symmetries or genuinely-identical operands where the recovery π is non-trivial — e.g.{' '}
+              <code className="font-mono text-xs">bilinear-trace</code>,{' '}
+              <code className="font-mono text-xs">outer</code>,{' '}
+              <code className="font-mono text-xs">four-cycle</code>,{' '}
+              <code className="font-mono text-xs">triple-outer</code>{' '}
+              — to see Dimino build a non-trivial group from the generators.
+            </p>
+          </div>
+        ) : (
+          <p className="text-sm leading-6 text-muted-foreground">
+            Select a valid (σ, π) pair on the left to test the induced label permutation it induces.
+          </p>
+        )}
       </div>
     );
   }
