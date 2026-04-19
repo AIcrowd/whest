@@ -193,6 +193,41 @@ const SAVINGS_TABLE_ROWS = [
 ];
 
 /**
+ * Eyebrow for an appendix section — mirrors the main page's
+ * `<SectionEyebrow />` typography (letterspaced small-caps caption + serif
+ * italic number in the primary colour) so the modal's §-numbered headers
+ * read with the same visual weight and rhythm as the page's top-level
+ * "Section N · <Title>" markers. Uses "§" rather than "Section" as the
+ * caption because the modal is semantically an *appendix* — separately
+ * numbered from the main page's five explorer sections.
+ *
+ * Optional `label` renders alongside the number as a short descriptor
+ * (e.g. "Preliminaries", "Motivating example") — same small-caps style
+ * as the "§" glyph, separated by a muted bullet.
+ */
+function AppendixSectionEyebrow({ n, label }) {
+  const captionClass =
+    'text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground';
+  return (
+    <span className="inline-flex items-baseline gap-2">
+      <span className={captionClass}>§</span>
+      <span
+        className="font-serif italic leading-none text-primary"
+        style={{ fontSize: '22px', fontWeight: 700 }}
+      >
+        {n}
+      </span>
+      {label && (
+        <span className={`${captionClass} inline-flex items-baseline gap-2`}>
+          <span aria-hidden>·</span>
+          <span>{label}</span>
+        </span>
+      )}
+    </span>
+  );
+}
+
+/**
  * Appendix modal that walks the reader through the distinction between the
  * two symmetry groups of an einsum:
  *
@@ -225,8 +260,13 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
 
   if (!isOpen) return null;
 
-  const sectionNumber = 'text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground';
-  const sectionTitle = 'font-heading text-base font-semibold text-gray-900';
+  // Small-caps caption, used for the top "Appendix" label on the modal header
+  // and for the section-label descriptor appearing alongside the § number.
+  const sectionCaption = 'text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground';
+  // Matches the main-page `ExplorerSectionCard` title — same size (text-lg),
+  // same weight and colour — so an appendix §-header reads with the same
+  // visual weight as a top-level "Section N: Set Up" on the explorer page.
+  const sectionTitle = 'font-heading text-lg font-semibold leading-tight text-gray-900';
 
   return (
     <div
@@ -244,8 +284,8 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
         {/* Header */}
         <div className="flex items-start justify-between border-b border-gray-200 px-6 py-4">
           <div>
-            <div className={sectionNumber}>Appendix</div>
-            <h2 id="expr-modal-heading" className="font-heading text-lg font-semibold text-gray-900">
+            <div className={sectionCaption}>Appendix</div>
+            <h2 id="expr-modal-heading" className="mt-1 font-heading text-lg font-semibold text-gray-900">
               The formal symmetry group: <Latex math="G_{\text{f}} = G_{\text{pt}}\big|_V \times S(W)" />
             </h2>
             <p className="mt-1 text-sm leading-6 text-gray-600">
@@ -280,8 +320,8 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
           {/* §0 — Definitions */}
           <section>
             <div className="mb-2">
-              <div className={sectionNumber}>§0 · Preliminaries</div>
-              <h3 className={sectionTitle}>Definitions</h3>
+              <AppendixSectionEyebrow n={0} label="Preliminaries" />
+              <h3 className={`${sectionTitle} mt-1`}>Definitions</h3>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
@@ -306,8 +346,8 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
           {/* §1 — Frobenius worked example */}
           <section>
             <div className="mb-2">
-              <div className={sectionNumber}>§1 · Motivating example</div>
-              <h3 className={sectionTitle}>
+              <AppendixSectionEyebrow n={1} label="Motivating example" />
+              <h3 className={`${sectionTitle} mt-1`}>
                 The Frobenius trace at <Latex math="n = 2" />
               </h3>
             </div>
@@ -386,8 +426,8 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
           {/* §2 — Induced permutation group on V */}
           <section>
             <div className="mb-2">
-              <div className={sectionNumber}>§2 · First component</div>
-              <h3 className={sectionTitle}>
+              <AppendixSectionEyebrow n={2} label="First component" />
+              <h3 className={`${sectionTitle} mt-1`}>
                 The induced permutation group <Latex math="G_{\text{pt}}\big|_V" />
               </h3>
             </div>
@@ -487,8 +527,8 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
           {/* §3 — S(W) */}
           <section>
             <div className="mb-2">
-              <div className={sectionNumber}>§3 · Second component</div>
-              <h3 className={sectionTitle}>
+              <AppendixSectionEyebrow n={3} label="Second component" />
+              <h3 className={`${sectionTitle} mt-1`}>
                 The symmetric group on summed labels <Latex math="S(W)" />
               </h3>
             </div>
@@ -520,8 +560,8 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
           {/* §4 — Assemble G_f */}
           <section>
             <div className="mb-2">
-              <div className={sectionNumber}>§4 · Construction of G_f</div>
-              <h3 className={sectionTitle}>
+              <AppendixSectionEyebrow n={4} label="Construction of G_f" />
+              <h3 className={`${sectionTitle} mt-1`}>
                 The formal symmetry group:{' '}
                 <Latex math="G_{\text{f}} = G_{\text{pt}}\big|_V \times S(W)" />
               </h3>
@@ -553,8 +593,8 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
           {/* §5 — Why G_f is not used for compression */}
           <section>
             <div className="mb-2">
-              <div className={sectionNumber}>§5 · Consequences for compression</div>
-              <h3 className={sectionTitle}>
+              <AppendixSectionEyebrow n={5} label="Consequences for compression" />
+              <h3 className={`${sectionTitle} mt-1`}>
                 The accumulation count <Latex math="\alpha" /> under <Latex math="G_{\text{f}}" />
               </h3>
             </div>
@@ -592,8 +632,8 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
           {/* §6 — Leftover savings via G_pt|_V-aware storage */}
           <section>
             <div className="mb-2">
-              <div className={sectionNumber}>§6 · Remark on output-tensor symmetry</div>
-              <h3 className={sectionTitle}>
+              <AppendixSectionEyebrow n={6} label="Remark on output-tensor symmetry" />
+              <h3 className={`${sectionTitle} mt-1`}>
                 Savings accessible under <Latex math="G_{\text{pt}}\big|_V" />-aware storage
               </h3>
             </div>
