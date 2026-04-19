@@ -218,9 +218,9 @@ aside#nd-sidebar button[aria-expanded] {
 
 aside#nd-sidebar a[data-active='true'] {
   font-weight: 600;
-  border-inline-start: 4px solid var(--primary);
+  border-inline-start: 4px solid var(--coral);
   margin-inline-start: -4px;
-  background: color-mix(in oklab, var(--accent) 50%, transparent);
+  background: color-mix(in oklab, var(--coral-light) 50%, transparent);
 }
 
 /* Kicker / eyebrow utility — for TOC labels, section kickers */
