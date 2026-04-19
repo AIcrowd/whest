@@ -338,7 +338,7 @@ export default function ExampleChooser({
     <>
       <div className="space-y-4">
         <div>
-          <div className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-gray-500">Variables</div>
+          <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">Variables</div>
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
             {variables.map((variable, idx) => {
               const variableColor = varColors[variable.name] || {};
@@ -460,7 +460,7 @@ export default function ExampleChooser({
                     <ExplorerField
                       label="Generators"
                       className="mb-1"
-                      labelClassName="text-sm font-semibold uppercase tracking-[0.18em] text-gray-400"
+                      labelClassName="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400"
                       inputClassName={cn(
                         'h-auto px-3 py-1.5 text-sm font-mono focus:border-coral focus:ring-coral/30',
                         errorFieldSet.has(varField(idx, 'generators')) ? 'border-red-300' : 'border-gray-200',
@@ -508,7 +508,7 @@ export default function ExampleChooser({
         </div>
 
         <div>
-          <div className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-gray-500">Expression</div>
+          <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">Expression</div>
           <div className="my-4">
             <div className="flex flex-wrap items-start gap-2">
               <span className="whitespace-nowrap pt-1.5 font-mono text-sm font-semibold text-coral">einsum(&#39;</span>
@@ -523,7 +523,7 @@ export default function ExampleChooser({
                   onBlur={() => touch('subscripts')}
                   placeholder="ia,ib"
                 />
-                <span className="mt-1 text-sm font-semibold uppercase tracking-[0.18em] text-gray-400">subscripts</span>
+                <span className="mt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">subscripts</span>
               </div>
               <span className="whitespace-nowrap pt-1.5 font-mono text-sm text-gray-400">&rarr;</span>
               <div className="flex min-w-[60px] flex-1 flex-col items-center">
@@ -537,7 +537,7 @@ export default function ExampleChooser({
                   onBlur={() => touch('output')}
                   placeholder="ab"
                 />
-                <span className="mt-1 text-sm font-semibold uppercase tracking-[0.18em] text-gray-400">output</span>
+                <span className="mt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">output</span>
               </div>
               <span className="whitespace-nowrap pt-1.5 font-mono text-sm text-gray-400">&#39;,</span>
               <div className="flex min-w-[60px] flex-1 flex-col items-center">
@@ -551,7 +551,7 @@ export default function ExampleChooser({
                   onBlur={() => touch('operands')}
                   placeholder="X, X"
                 />
-                <span className="mt-1 text-sm font-semibold uppercase tracking-[0.18em] text-gray-400">operands</span>
+                <span className="mt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">operands</span>
               </div>
               <span className="whitespace-nowrap pt-1.5 font-mono text-sm text-gray-400">)</span>
               {/* Primary CTA — mirrors the home-page Install button

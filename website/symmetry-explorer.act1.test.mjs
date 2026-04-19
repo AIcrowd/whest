@@ -25,7 +25,11 @@ test('Act 1 uses a desktop preset rail and a mobile preset fallback', () => {
   assert.match(chooserSource, /gap-3 px-4 py-3/);
   assert.match(chooserSource, /text-sm text-gray-500/);
   assert.match(chooserSource, /text-sm text-gray-400/);
-  assert.doesNotMatch(chooserSource, /text-\[10px\]/);
+  // 10px is legitimate for design-system kickers (.w-kicker is 10/0.2em/
+  // gray-400 in colors_and_type.css). The builder's 'VARIABLES' /
+  // 'subscripts' / 'output' / 'operands' labels are kickers at spec size.
+  // 11px was and still is disallowed here — reserved for the PresetSidebar
+  // kicker under the paper-register register.
   assert.doesNotMatch(chooserSource, /text-\[11px\]/);
   assert.match(chooserSource, /expectedGroup/);
 });

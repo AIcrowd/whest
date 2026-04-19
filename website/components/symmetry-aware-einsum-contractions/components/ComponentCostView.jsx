@@ -88,7 +88,7 @@ function ComponentSummaryTable({
     <div className="max-w-full overflow-x-auto rounded-xl border border-border bg-white shadow-sm">
       {/* Global column header — only labels the 5 middle-row columns. */}
       <div
-        className={`grid ${MIDDLE_COLS} items-center gap-x-4 bg-surface-raised px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground`}
+        className={`grid ${MIDDLE_COLS} items-center gap-x-4 bg-surface-raised px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400`}
       >
         <span>Labels</span>
         <span>Method</span>

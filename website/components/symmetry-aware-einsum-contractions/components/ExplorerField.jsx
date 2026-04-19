@@ -16,7 +16,7 @@ function ExplorerField({
   return (
     <label className={cn('grid gap-2', className)} htmlFor={inputId}>
       {label ? (
-        <span className={cn('text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground', labelClassName)}>
+        <span className={cn('text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400', labelClassName)}>
           {label}
         </span>
       ) : null}

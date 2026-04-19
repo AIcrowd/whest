@@ -16,7 +16,7 @@ function ExplorerMetricCard({
   return (
     <Card className={className} size="sm" {...props}>
       <CardHeader className="pb-0">
-        {heading ? <CardDescription className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">{heading}</CardDescription> : null}
+        {heading ? <CardDescription className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">{heading}</CardDescription> : null}
         <CardTitle className={cn('font-mono text-3xl font-bold', valueClassName)}>
           {value}
         </CardTitle>
