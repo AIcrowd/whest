@@ -564,7 +564,7 @@ export default function ExampleChooser({
               <button
                 type="button"
                 className={cn(
-                  'inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-[8px] bg-[var(--coral)] px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[var(--coral-hover)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--coral)]/20',
+                  'inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg bg-[var(--coral)] px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[var(--coral-hover)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--coral)]/20',
                   !validation.valid && 'opacity-60',
                 )}
                 onClick={handleAnalyze}
