@@ -421,7 +421,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
 
             <div className="grid gap-4 md:grid-cols-2">
               <NarrativeCallout label="The open optimization">
-                {`For every $\\sigma \\in G_{\\text{pt}}\\big|_V$, the identity $R[\\sigma\\,\\omega] = R[\\omega]$ holds on the output tensor. In a computational model equipped with symmetry-aware output storage — where a single physical slot represents all cells in a $G_{\\text{pt}}\\big|_V$-orbit — writes to mirrored cells collapse automatically, reducing the accumulation count.`}
+                {`For every $\\sigma \\in G_{\\text{pt}}\\big|_V$, the identity $R[\\sigma\\,\\omega] = R[\\omega]$ holds on the output tensor. For generic operands this inclusion is tight: $G_{\\text{pt}}\\big|_V$ is the complete structural V-symmetry of $R$, in the sense that any further $\\sigma \\in \\mathrm{Sym}(V)$ with $R[\\sigma\\,\\omega] = R[\\omega]$ would require value-level structure in the operands (rank-deficiency, sparsity) outside this engine's scope. A computational model with symmetry-aware output storage — where a single physical slot represents all cells in a $G_{\\text{pt}}\\big|_V$-orbit — collapses writes to mirrored cells automatically and reduces the accumulation count.`}
               </NarrativeCallout>
               <NarrativeCallout label="Why α does not fold this in" tone="algorithm">
                 {`The reported $\\alpha$ counts distinct accumulation operations in the enumerate-and-accumulate evaluation, using $G_{\\text{pt}}$ as the equivalence relation on summand values. Post-accumulation storage collapse is an independent optimization axis. Folding it into $\\alpha$ without changing the underlying computational model would conflate two distinct cost reductions and obscure the source of each.`}
@@ -429,15 +429,55 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
             </div>
 
             <div className="mt-4 rounded-md border border-border/60 bg-muted/20 px-5 py-4 text-sm leading-7 text-foreground">
-              <p className="font-semibold">Quantifying the gap — bilinear trace at n = 2.</p>
-              <p className="mt-1">
-                <InlineMathText>
-                  {`The main-page cost card reports $\\alpha = 14$. Under $G_{\\text{pt}}\\big|_V$-aware storage, the output cells $R[0,1]$ and $R[1,0]$ occupy a single physical slot; the 4 accumulations each would have received consolidate into 4 accumulations into that shared slot, for a total of 10 accumulations instead of 14.`}
-                </InlineMathText>
-              </p>
+              <p className="font-semibold">Magnitude of the gap, across sample presets.</p>
               <p className="mt-2">
                 <InlineMathText>
-                  {`More generally, per $G_{\\text{pt}}\\big|_V$-orbit of size $s$, the savings are $(s-1) \\cdot (\\text{accumulations per bin})$ operations. This is a real opportunity, and it lives entirely in the induced permutation group $G_{\\text{pt}}\\big|_V$; the $S(W)$ factor of $G_{\\text{f}}$ contributes nothing at the storage level because $S(W)$ acts on summation variables, not on output cells.`}
+                  {`Per $G_{\\text{pt}}\\big|_V$-orbit of size $s$, the savings are $(s-1) \\cdot (\\text{accumulations per bin})$ operations, and the total gap scales with the size of $G_{\\text{pt}}\\big|_V$.`}
+                </InlineMathText>
+              </p>
+              <div className="mt-3 overflow-x-auto">
+                <table className="w-full text-[13px] border-collapse">
+                  <thead>
+                    <tr className="border-b border-border/60 text-left text-[11px] uppercase tracking-wide text-muted-foreground">
+                      <th className="px-3 py-2 font-semibold">Preset</th>
+                      <th className="px-3 py-2 font-semibold">n</th>
+                      <th className="px-3 py-2 font-semibold"><Latex math="G_{\text{pt}}\big|_V" /></th>
+                      <th className="px-3 py-2 font-semibold text-right">Engine <Latex math="\alpha" /></th>
+                      <th className="px-3 py-2 font-semibold text-right">Storage <Latex math="\alpha" /></th>
+                      <th className="px-3 py-2 font-semibold text-right">Saving</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-border/40">
+                      <td className="px-3 py-2 font-mono">bilinear-trace</td>
+                      <td className="px-3 py-2 font-mono">2</td>
+                      <td className="px-3 py-2"><Latex math="S_2 \text{ on } \{i,j\}" /></td>
+                      <td className="px-3 py-2 text-right font-mono">14</td>
+                      <td className="px-3 py-2 text-right font-mono">10</td>
+                      <td className="px-3 py-2 text-right font-mono text-emerald-700">4 (29%)</td>
+                    </tr>
+                    <tr className="border-b border-border/40">
+                      <td className="px-3 py-2 font-mono">four-A-grid</td>
+                      <td className="px-3 py-2 font-mono">3</td>
+                      <td className="px-3 py-2"><Latex math="S_2 \text{ on } \{a,b\}" /></td>
+                      <td className="px-3 py-2 text-right font-mono">54</td>
+                      <td className="px-3 py-2 text-right font-mono">36</td>
+                      <td className="px-3 py-2 text-right font-mono text-emerald-700">18 (33%)</td>
+                    </tr>
+                    <tr>
+                      <td className="px-3 py-2 font-mono">direct-s3-s2</td>
+                      <td className="px-3 py-2 font-mono">3</td>
+                      <td className="px-3 py-2"><Latex math="S_3 \text{ on } \{a,b,c\}" /></td>
+                      <td className="px-3 py-2 text-right font-mono">162</td>
+                      <td className="px-3 py-2 text-right font-mono">60</td>
+                      <td className="px-3 py-2 text-right font-mono text-emerald-700">102 (63%)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p className="mt-3 text-[13px] text-muted-foreground">
+                <InlineMathText>
+                  {`The $S(W)$ factor of $G_{\\text{f}}$ contributes nothing at the storage level because $S(W)$ acts on summation variables rather than output cells; there is no output-tensor symmetry to exploit on the W-side beyond what $G_{\\text{pt}}$ already captures through its orbit structure on tuples.`}
                 </InlineMathText>
               </p>
             </div>
