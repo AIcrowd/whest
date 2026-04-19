@@ -96,3 +96,12 @@ article > div.prose h4 {
   letter-spacing: -0.005em;
   line-height: 1.3;
 }
+
+/* -------------------------------------------------------------------------
+   Focus ring — spec --ring-focus (info-blue, 3px at 12% opacity)
+   --ring-coral is available for primary-on-primary surfaces.
+   ------------------------------------------------------------------------- */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--ring-focus);
+}
