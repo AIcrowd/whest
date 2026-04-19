@@ -14,6 +14,46 @@ const vStyle = { color: COLOR_V, fontWeight: 600 };
 const wStyle = { color: COLOR_W, fontWeight: 600 };
 
 /**
+ * Per-preset storage-α ledger used by §6.
+ *
+ * All measurements taken at n = 3 by `analyzeExample(preset, 3)` followed by
+ * `α_storage = Σ over G_pt-orbits O of |π_V(O) / G_pt|_V|`, i.e. the number
+ * of distinct (G_pt|_V)-output-slot writes each orbit contributes under a
+ * symmetry-aware output store. For presets with trivial $G_{\text{pt}}\big|_V$,
+ * α_storage equals α_engine (no mirrored cells to collapse).
+ *
+ * Rows are sorted by savings percentage descending so the nontrivial cases
+ * read first and the zero-savings "nothing to mirror" block sits at the end.
+ *
+ * If the engine's α definition or the preset list changes, regenerate by
+ * running a small survey of EXAMPLES through analyzeExample at n = 3.
+ */
+const SAVINGS_TABLE_ROWS = [
+  { id: 'triple-outer',     v: 'a,b,c',          vSub: 'S_3',             ae: 162, as: 30,  saving: 132, pct: '81.5' },
+  { id: 'four-cycle',       v: 'i,j,k,l',        vSub: '\\text{order-}8', ae: 81,  as: 21,  saving: 60,  pct: '74.1' },
+  { id: 'outer',            v: 'a,b,c,d',        vSub: '\\text{order-}2', ae: 144, as: 45,  saving: 99,  pct: '68.8' },
+  { id: 'bilinear-trace-3', v: 'i,j,m',          vSub: 'S_3',             ae: 516, as: 165, saving: 351, pct: '68.0' },
+  { id: 'direct-s3-s2',     v: 'a,b,c',          vSub: 'S_3',             ae: 162, as: 60,  saving: 102, pct: '63.0' },
+  { id: 'young-s4-v3w1',    v: 'a,b,c',          vSub: 'S_3',             ae: 81,  as: 30,  saving: 51,  pct: '63.0' },
+  { id: 'declared-c3',      v: 'b,i,j,k',        vSub: '\\text{order-}3', ae: 243, as: 99,  saving: 144, pct: '59.3' },
+  { id: 'triangle',         v: 'i,j,k',          vSub: 'C_3',             ae: 27,  as: 11,  saving: 16,  pct: '59.3' },
+  { id: 'bilinear-trace',   v: 'i,j',            vSub: 'S_2',             ae: 72,  as: 45,  saving: 27,  pct: '37.5' },
+  { id: 'direct-s2-c3',     v: 'a,b',            vSub: 'S_2',             ae: 99,  as: 66,  saving: 33,  pct: '33.3' },
+  { id: 'four-A-grid',      v: 'a,b',            vSub: 'S_2',             ae: 54,  as: 36,  saving: 18,  pct: '33.3' },
+  { id: 'young-s4-v2w2',    v: 'a,b',            vSub: 'S_2',             ae: 54,  as: 36,  saving: 18,  pct: '33.3' },
+  { id: 'direct-s2-s2',     v: 'a,b',            vSub: 'S_2',             ae: 54,  as: 36,  saving: 18,  pct: '33.3' },
+  { id: 'young-s3',         v: 'a,b',            vSub: 'S_2',             ae: 27,  as: 18,  saving: 9,   pct: '33.3' },
+  { id: 'mixed-chain',      v: 'i,l',            vSub: '\\{e\\}',         ae: 81,  as: 81,  saving: 0,   pct: '0' },
+  { id: 'matrix-chain',     v: 'i,k',            vSub: '\\{e\\}',         ae: 27,  as: 27,  saving: 0,   pct: '0' },
+  { id: 'cross-c3-partial', v: 'a,b',            vSub: '\\{e\\}',         ae: 27,  as: 27,  saving: 0,   pct: '0' },
+  { id: 'cross-s2',         v: 'i,k',            vSub: '\\{e\\}',         ae: 27,  as: 27,  saving: 0,   pct: '0' },
+  { id: 'cyclic-cross',     v: 'i',              vSub: '\\{e\\}',         ae: 21,  as: 21,  saving: 0,   pct: '0' },
+  { id: 'cross-s3',         v: 'i',              vSub: '\\{e\\}',         ae: 18,  as: 18,  saving: 0,   pct: '0' },
+  { id: 'frobenius',        v: '\\varnothing',   vSub: '\\{e\\}',         ae: 9,   as: 9,   saving: 0,   pct: '0' },
+  { id: 'trace-product',    v: '\\varnothing',   vSub: '\\{e\\}',         ae: 6,   as: 6,   saving: 0,   pct: '0' },
+];
+
+/**
  * Appendix modal that walks the reader through the distinction between the
  * two symmetry groups of an einsum:
  *
@@ -429,51 +469,51 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
             </div>
 
             <div className="mt-4 rounded-md border border-border/60 bg-muted/20 px-5 py-4 text-sm leading-7 text-foreground">
-              <p className="font-semibold">Magnitude of the gap, across sample presets.</p>
+              <p className="font-semibold">Magnitude of the gap, across every preset in the explorer.</p>
               <p className="mt-2">
                 <InlineMathText>
-                  {`Per $G_{\\text{pt}}\\big|_V$-orbit of size $s$, the savings are $(s-1) \\cdot (\\text{accumulations per bin})$ operations, and the total gap scales with the size of $G_{\\text{pt}}\\big|_V$.`}
+                  {`Per $G_{\\text{pt}}\\big|_V$-orbit of size $s$, the savings are $(s-1) \\cdot (\\text{accumulations per bin})$ operations, so the total gap scales with the order and orbit structure of $G_{\\text{pt}}\\big|_V$. Presets with trivial $G_{\\text{pt}}\\big|_V$ carry no output-tensor mirroring — there is nothing to collapse, and $\\alpha_{\\text{storage}} = \\alpha_{\\text{engine}}$.`}
                 </InlineMathText>
               </p>
               <div className="mt-3 overflow-x-auto">
                 <table className="w-full text-[13px] border-collapse">
                   <thead>
-                    <tr className="border-b border-border/60 text-left text-[11px] uppercase tracking-wide text-muted-foreground">
+                    <tr className="border-b border-border/60 text-left text-[12px] text-muted-foreground">
                       <th className="px-3 py-2 font-semibold">Preset</th>
-                      <th className="px-3 py-2 font-semibold">n</th>
+                      <th className="px-3 py-2 font-semibold">V</th>
                       <th className="px-3 py-2 font-semibold"><Latex math="G_{\text{pt}}\big|_V" /></th>
-                      <th className="px-3 py-2 font-semibold text-right">Engine <Latex math="\alpha" /></th>
-                      <th className="px-3 py-2 font-semibold text-right">Storage <Latex math="\alpha" /></th>
+                      <th className="px-3 py-2 font-semibold text-right"><Latex math="\alpha_{\text{engine}}" /></th>
+                      <th className="px-3 py-2 font-semibold text-right"><Latex math="\alpha_{\text{storage}}" /></th>
                       <th className="px-3 py-2 font-semibold text-right">Saving</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="border-b border-border/40">
-                      <td className="px-3 py-2 font-mono">bilinear-trace</td>
-                      <td className="px-3 py-2 font-mono">2</td>
-                      <td className="px-3 py-2"><Latex math="S_2 \text{ on } \{i,j\}" /></td>
-                      <td className="px-3 py-2 text-right font-mono">14</td>
-                      <td className="px-3 py-2 text-right font-mono">10</td>
-                      <td className="px-3 py-2 text-right font-mono text-emerald-700">4 (29%)</td>
-                    </tr>
-                    <tr className="border-b border-border/40">
-                      <td className="px-3 py-2 font-mono">four-A-grid</td>
-                      <td className="px-3 py-2 font-mono">3</td>
-                      <td className="px-3 py-2"><Latex math="S_2 \text{ on } \{a,b\}" /></td>
-                      <td className="px-3 py-2 text-right font-mono">54</td>
-                      <td className="px-3 py-2 text-right font-mono">36</td>
-                      <td className="px-3 py-2 text-right font-mono text-emerald-700">18 (33%)</td>
-                    </tr>
-                    <tr>
-                      <td className="px-3 py-2 font-mono">direct-s3-s2</td>
-                      <td className="px-3 py-2 font-mono">3</td>
-                      <td className="px-3 py-2"><Latex math="S_3 \text{ on } \{a,b,c\}" /></td>
-                      <td className="px-3 py-2 text-right font-mono">162</td>
-                      <td className="px-3 py-2 text-right font-mono">60</td>
-                      <td className="px-3 py-2 text-right font-mono text-emerald-700">102 (63%)</td>
-                    </tr>
+                    {SAVINGS_TABLE_ROWS.map((r, idx) => {
+                      const isLast = idx === SAVINGS_TABLE_ROWS.length - 1;
+                      const hasSaving = r.saving > 0;
+                      return (
+                        <tr
+                          key={r.id}
+                          className={`${isLast ? '' : 'border-b border-border/40'} ${hasSaving ? '' : 'text-muted-foreground'}`}
+                        >
+                          <td className="px-3 py-2 font-mono">{r.id}</td>
+                          <td className="px-3 py-2">
+                            <Latex math={r.v === '\\varnothing' ? '\\varnothing' : `\\{${r.v}\\}`} />
+                          </td>
+                          <td className="px-3 py-2"><Latex math={r.vSub} /></td>
+                          <td className="px-3 py-2 text-right font-mono">{r.ae}</td>
+                          <td className="px-3 py-2 text-right font-mono">{r.as}</td>
+                          <td className={`px-3 py-2 text-right font-mono ${hasSaving ? 'text-emerald-700' : ''}`}>
+                            {hasSaving ? `${r.saving} (${r.pct}%)` : '—'}
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
+                <p className="mt-2 text-[11px] italic text-muted-foreground">
+                  All entries computed at <Latex math="n = 3" />; sorted by % saving, descending.
+                </p>
               </div>
               <p className="mt-3 text-[13px] text-muted-foreground">
                 <InlineMathText>
