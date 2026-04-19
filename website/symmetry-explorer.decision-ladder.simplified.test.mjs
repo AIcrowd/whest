@@ -14,13 +14,16 @@ function read() {
   return readFileSync(SRC, 'utf-8');
 }
 
-// DecisionLadder has been promoted to the two-stage hybrid layout:
+// DecisionLadder follows a two-stage hybrid layout whose Stage-1 ordering
+// mirrors engine/shapeLayer.js's `detectShape` — trivial first, then
+// W-empty, then V-empty — so the reader's narrative and the engine's
+// actual code path agree leaf by leaf.
+//
 //   STAGE 1 — dimino-free structural checks. Three questions whose decisions
 //             only need (V, W, generators). No element iteration required.
-//             q_hasW  → W ≠ ∅ ?             (leaf on "no": allVisible)
-//             q_hasV  → V ≠ ∅ ?             (leaf on "no": allSummed)
-//             q_trivial → |G| = 1 ?         (leaf on "yes": trivial;
-//                         "no" crosses into the ENUMERATE divider)
+//             q_trivial → |G| = 1 ?         (yes: trivial; no: q_hasW)
+//             q_hasW    → W ≠ ∅ ?           (yes: q_hasV; no: allVisible)
+//             q_hasV    → V ≠ ∅ ?           (yes: ENUMERATE; no: allSummed)
 //
 //   STAGE 2 — after enumerating G via Dimino. Four questions and four leaves.
 //             q_singleton → |V| = 1 ?       (yes: singleton; no: q_direct)
@@ -32,7 +35,8 @@ function read() {
 
 test('DecisionLadder QUESTIONS array has 7 entries, in stage order', () => {
   const src = read();
-  const ids = ['q_hasW', 'q_hasV', 'q_trivial', 'q_singleton', 'q_direct', 'q_crossVW', 'q_fullSym'];
+  // Stage-1 order mirrors engine/shapeLayer.js: trivial → hasW → hasV.
+  const ids = ['q_trivial', 'q_hasW', 'q_hasV', 'q_singleton', 'q_direct', 'q_crossVW', 'q_fullSym'];
   let lastIdx = -1;
   for (const id of ids) {
     const idx = src.indexOf(`id: '${id}'`);
@@ -56,9 +60,19 @@ test('DecisionLadder no longer references the 5 deleted regime leaves', () => {
   }
 });
 
-test('DecisionLadder Stage-1 routing: q_trivial feeds the ENUMERATE divider on the "no" branch', () => {
+test('DecisionLadder Stage-1 routing: q_trivial splits into trivial (yes) and q_hasW (no)', () => {
+  // q_trivial is now the first Stage-1 question — matches engine order where
+  // |G|≤1 is the fast-exit check before wa.length / va.length are inspected.
   const src = read();
-  assert.match(src, /id:\s*'q_trivial',[\s\S]*?onTrue:\s*'trivial',\s*onFalse:\s*'ENUMERATE'/);
+  assert.match(src, /id:\s*'q_trivial',[\s\S]*?onTrue:\s*'trivial',\s*onFalse:\s*'q_hasW'/);
+});
+
+test('DecisionLadder Stage-1 routing: q_hasV feeds the ENUMERATE divider on the "yes" branch', () => {
+  // q_hasV is now the LAST Stage-1 question; "yes" (V ≠ ∅ with both W and
+  // the group non-trivial) is the only path that escapes Stage 1 into
+  // element-level checks, so this is the edge that crosses into enumerate-G.
+  const src = read();
+  assert.match(src, /id:\s*'q_hasV',[\s\S]*?onTrue:\s*'ENUMERATE',\s*onFalse:\s*'allSummed'/);
 });
 
 test('DecisionLadder Stage-2 routing: q_singleton splits into singleton (yes) and q_direct (no)', () => {

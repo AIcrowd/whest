@@ -49,9 +49,9 @@ const BAND_WIDTH = QUESTION_X + QUESTION_W + 2 * BAND_PAD_X;
 
 const STAGE_1_TOP_Y = 0;
 const SOURCE_Y = BAND_PAD_Y;                         // top pad
-const Q1_Y = SOURCE_Y + 88;                          // q_hasW
-const Q2_Y = Q1_Y + ROW_GAP;                         // q_hasV
-const Q3_Y = Q2_Y + ROW_GAP;                         // q_trivial
+const Q1_Y = SOURCE_Y + 88;                          // q_trivial
+const Q2_Y = Q1_Y + ROW_GAP;                         // q_hasW
+const Q3_Y = Q2_Y + ROW_GAP;                         // q_hasV
 const STAGE_1_BOTTOM_Y = Q3_Y + LEAF_H + BAND_PAD_Y; // bottom pad
 
 const ENUMERATE_Y = STAGE_1_BOTTOM_Y + 12;
@@ -66,9 +66,29 @@ const STAGE_2_BOTTOM_Y = Q_FULLSYM_Y + ROW_GAP + LEAF_H + BAND_PAD_Y; // bottom 
 const EDGE_YES = { color: '#23B761', label: 'yes' };
 const EDGE_NO = { color: '#F0524D', label: 'no' };
 
-// ─── Decision spec — reordered to dimino-free questions first ─────────
+// ─── Decision spec — mirrors the engine's `detectShape` order ─────────
+//
+// engine/shapeLayer.js checks (in order):
+//     |G| ≤ 1  → trivial
+//     wa == [] → allVisible
+//     va == [] → allSummed
+//     else     → mixed (drop into Stage 2)
+//
+// Stage 1 here asks the same three questions in the same order so the UI
+// narrative matches the code path the engine actually takes. Beyond
+// pedagogy this matters because activeLeafIds are driven by the engine's
+// output: if the ladder's path disagreed with the engine's, the reader
+// could highlight one leaf while having arrived there via a different
+// branching story than the code.
 
 const QUESTIONS = [
+  {
+    id: 'q_trivial',
+    short: '|G| = 1 ?',
+    long: 'Is the symmetry group trivial? Cheap: detected from generators without running dimino (every gen is the identity, or no generators at all). The engine checks this first because if |G|=1 there is nothing to classify — regardless of V/W structure, the answer is simply |X| = Π n_ℓ.',
+    onTrue: 'trivial', onFalse: 'q_hasW',
+    stage: 1,
+  },
   {
     id: 'q_hasW',
     short: 'W ≠ ∅ ?',
@@ -79,15 +99,8 @@ const QUESTIONS = [
   {
     id: 'q_hasV',
     short: 'V ≠ ∅ ?',
-    long: 'Are there free (output) labels? Cheap: checks va.length alone — no group enumeration needed.',
-    onTrue: 'q_trivial', onFalse: 'allSummed',
-    stage: 1,
-  },
-  {
-    id: 'q_trivial',
-    short: '|G| = 1 ?',
-    long: 'Is the symmetry group trivial? Cheap: detected from generators without running dimino (every gen is the identity, or no generators at all).',
-    onTrue: 'trivial', onFalse: 'ENUMERATE',
+    long: 'Are there free (output) labels? Cheap: checks va.length alone — no group enumeration needed. "Yes" means both V and W are populated and the group is non-trivial; proceed into Stage 2 with G materialised via dimino.',
+    onTrue: 'ENUMERATE', onFalse: 'allSummed',
     stage: 1,
   },
   {
@@ -648,7 +661,19 @@ const DecisionLadderGraph = memo(function DecisionLadderGraph({
         edges={edges}
         nodeTypes={dlNodeTypes}
         className="h-full w-full"
-        defaultEdgeOptions={{ type: 'step', style: { strokeWidth: 2 } }}
+        defaultEdgeOptions={{
+          type: 'step',
+          style: { strokeWidth: 2 },
+          // Kill the default white rectangle ReactFlow draws behind every
+          // edge label. The yes/no text sits directly on the dashed stage
+          // bands, and the opaque (even low-opacity) rect breaks the band's
+          // visual continuity. `fillOpacity: 0` plus zero padding leaves
+          // just the letterform glyphs, which read cleanly against both
+          // stage bands and the white page background.
+          labelBgStyle: { fill: 'transparent', fillOpacity: 0 },
+          labelBgPadding: [0, 0],
+          labelBgBorderRadius: 0,
+        }}
         fitView
         fitViewOptions={{ padding: 0.12, maxZoom: 1, minZoom: 0.4 }}
         minZoom={0.4}
