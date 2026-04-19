@@ -78,8 +78,10 @@ function AnchorLink({ anchorId, labelText, hashGlyphClassName, children }) {
  * headings so the affordance feels consistent page-wide).
  */
 function SectionEyebrow({ n, anchorId, label = null }) {
+  // `.sec-kicker` spec from design-system/preview/components.html:
+  // 11px / 600 / 0.16em tracking / uppercase / coral.
   const captionClass =
-    'text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground';
+    'text-[11px] font-semibold uppercase tracking-[0.16em] text-coral';
   const content = (
     <span className="inline-flex items-baseline gap-2">
       <span className={captionClass}>Section</span>
@@ -120,17 +122,18 @@ function ExplorerSectionCard({
     : children != null && children !== false && children !== '';
 
   return (
-    <Card className={cn('border-border/70 shadow-sm', className)} {...props}>
+    <Card className={cn('border-gray-200 shadow-none', className)} {...props}>
       {(title || description || eyebrow || action) && (
-        <CardHeader className="border-b border-border/70">
+        <CardHeader className="border-b border-gray-100">
           <div className="flex items-start justify-between gap-2.5">
             <div className="space-y-2">
               {eyebrow ? (
                 typeof eyebrow === 'string'
-                  // Back-compat: any string eyebrow still gets the old
-                  // uppercase-caption styling. Distinctive section-N labels
-                  // come through as <SectionEyebrow n={...} /> JSX.
-                  ? <CardDescription className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">{eyebrow}</CardDescription>
+                  // Back-compat: string eyebrows (used by the Algorithm-at-
+                  // a-Glance preamble and a few appendix cards) get the same
+                  // coral kicker treatment as SectionEyebrow so the page
+                  // eyebrow rhythm stays consistent.
+                  ? <CardDescription className="text-[11px] font-semibold uppercase tracking-[0.16em] text-coral">{eyebrow}</CardDescription>
                   : <div>{eyebrow}</div>
               ) : null}
               {title ? <CardTitle className="text-lg leading-tight">{title}</CardTitle> : null}
