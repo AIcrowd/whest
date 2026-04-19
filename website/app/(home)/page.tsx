@@ -428,10 +428,10 @@ export default function HomePage() {
               Install
             </Link>
             <Link
-              href="/docs/understanding/how-whest-works"
+              href="/docs/getting-started/quickstart"
               className="inline-flex items-center rounded-lg border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-900 no-underline transition-colors hover:border-[#F0524D] hover:text-[#F0524D] dark:border-gray-700 dark:text-gray-100"
             >
-              How it works &rarr;
+              Quickstart &rarr;
             </Link>
           </div>
 
