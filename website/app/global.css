@@ -221,12 +221,12 @@ article > div.prose :not(pre) > code {
   font-size: 0.92em;
   padding: 0.08em 0.4em;
   border-radius: 4px;
-  background: var(--whest-gray-100);
-  color: var(--whest-gray-900);
+  background: var(--gray-100);
+  color: var(--gray-900);
 }
 
 .dark article > div.prose :not(pre) > code {
-  background: color-mix(in oklab, var(--whest-gray-900) 70%, white 0%);
+  background: color-mix(in oklab, var(--gray-900) 70%, white 0%);
   color: #E8EAEB;
 }
 
@@ -247,7 +247,7 @@ article > h1 ~ div.text-fd-muted-foreground {
   font-variation-settings: var(--vs-paper-body);
   font-size: 18px;
   line-height: 1.5;
-  color: var(--whest-gray-600);
+  color: var(--gray-600);
   margin-bottom: 40px;
 }
 
@@ -265,11 +265,11 @@ article > :is(div, nav).text-fd-muted-foreground:has(~ h1) span {
   font-style: normal;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--whest-gray-400);
+  color: var(--gray-400);
 }
 article > :is(div, nav).text-fd-muted-foreground:has(~ h1) a.text-fd-primary,
 article > :is(div, nav).text-fd-muted-foreground:has(~ h1) [data-active='true'] {
-  color: var(--whest-coral);
+  color: var(--coral);
 }
 
 /* Sidebar + TOC use app register (Inter) for UI chrome — default is fine.
@@ -282,12 +282,12 @@ aside#nd-sidebar button[aria-expanded] {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  color: var(--whest-gray-400);
+  color: var(--gray-400);
 }
 
 aside#nd-sidebar a[data-active='true'] {
   font-weight: 600;
-  border-inline-start: 3px solid var(--whest-coral);
+  border-inline-start: 3px solid var(--coral);
   /* Fumadocs sets padding-inline-start as an inline style for indent depth.
      Shift the whole item 3px left so the rail hangs into the sidebar gutter
      and the text edge still aligns with non-active siblings. */
@@ -301,7 +301,7 @@ aside#nd-sidebar a[data-active='true'] {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: var(--tracking-kicker);
-  color: var(--whest-gray-400);
+  color: var(--gray-400);
 }
 
 /* Coral-dot wordmark — persistent glyph for `Whest.` */
@@ -310,7 +310,7 @@ aside#nd-sidebar a[data-active='true'] {
   font-weight: 700;
   font-variation-settings: 'opsz' 32;
   letter-spacing: -0.015em;
-  color: var(--whest-gray-900);
+  color: var(--gray-900);
   display: inline-flex;
   align-items: baseline;
   gap: 0;
@@ -319,7 +319,7 @@ aside#nd-sidebar a[data-active='true'] {
   color: #E8EAEB;
 }
 .whest-wordmark__dot {
-  color: var(--whest-coral);
+  color: var(--coral);
   display: inline-block;
   /* Period already carries the weight of the font; nudge down-baseline for
      optical balance against the tall x-height of Newsreader */
@@ -328,9 +328,9 @@ aside#nd-sidebar a[data-active='true'] {
 .whest-wordmark__sub {
   font-style: italic;
   font-weight: 400;
-  color: var(--whest-gray-600);
+  color: var(--gray-600);
   margin-left: 1px;
 }
 .dark .whest-wordmark__sub {
-  color: var(--whest-gray-400);
+  color: var(--gray-400);
 }

@@ -369,7 +369,7 @@ function HeroHeadline({ children, dot }: { children: string; dot?: string }) {
         fontSize: 'clamp(44px, 7vw, 64px)',
         letterSpacing: '-0.02em',
         lineHeight: 1.02,
-        color: 'var(--whest-gray-900, #292C2D)',
+        color: 'var(--gray-900, #292C2D)',
       }}
     >
       {children}

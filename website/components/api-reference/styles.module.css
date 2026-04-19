@@ -195,22 +195,22 @@
 }
 
 .weight--1 {
-  background: var(--whest-gray-100, #F1F3F5);
-  color: var(--whest-gray-600, #5D5F60);
+  background: var(--gray-100, #F1F3F5);
+  color: var(--gray-600, #5D5F60);
 }
 
 .weight--2 {
   background: rgba(240, 82, 77, 0.10);
-  color: var(--whest-coral-hover, #D23934);
+  color: var(--coral-hover, #D23934);
 }
 
 .weight--4 {
   background: rgba(240, 82, 77, 0.18);
-  color: var(--whest-coral-hover, #D23934);
+  color: var(--coral-hover, #D23934);
 }
 
 .weight--16 {
-  background: var(--whest-coral, #F0524D);
+  background: var(--coral, #F0524D);
   color: #ffffff;
 }
 
@@ -235,8 +235,8 @@
 
 /* Areas — neutral "default" for `core`, then the four semantics */
 .area--core {
-  background: var(--whest-gray-100, #F1F3F5);
-  color: var(--whest-gray-900, #292C2D);
+  background: var(--gray-100, #F1F3F5);
+  color: var(--gray-900, #292C2D);
 }
 
 .area--linalg {
@@ -255,8 +255,8 @@
 }
 
 .area--stats {
-  background: var(--whest-coral-light, #FEF2F1);
-  color: var(--whest-coral-hover, #D23934);
+  background: var(--coral-light, #FEF2F1);
+  color: var(--coral-hover, #D23934);
 }
 
 /* Types — same palette, distinct meaning */
@@ -276,8 +276,8 @@
 }
 
 .type--blocked {
-  background: var(--whest-coral-light, #FEF2F1);
-  color: var(--whest-coral-hover, #D23934);
+  background: var(--coral-light, #FEF2F1);
+  color: var(--coral-hover, #D23934);
 }
 
 .docHeader {
@@ -405,8 +405,8 @@
   gap: 0.6rem 1.75rem;
   margin: 0 0 1.25rem;
   padding: 0.75rem 0;
-  border-top: 1px solid var(--whest-gray-200, #D9DCDC);
-  border-bottom: 1px solid var(--whest-gray-200, #D9DCDC);
+  border-top: 1px solid var(--gray-200, #D9DCDC);
+  border-bottom: 1px solid var(--gray-200, #D9DCDC);
 }
 
 .docMetaPair {
@@ -466,7 +466,7 @@
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--whest-gray-400, #AAACAD);
+  color: var(--gray-400, #AAACAD);
   white-space: nowrap;
 }
 
