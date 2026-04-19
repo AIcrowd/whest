@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Latex from './Latex.jsx';
+import InlineMathText from './InlineMathText.jsx';
 import { REGIME_SPEC } from '../engine/regimeSpec.js';
 import { SHAPE_SPEC } from '../engine/shapeSpec.js';
 
@@ -44,9 +45,11 @@ export default function FormulaPopover({ regimeId, children }) {
         >
           <div className="mb-1 text-sm font-semibold">{spec.label}</div>
           <div className="mb-2 text-[11px] uppercase tracking-wider text-muted-foreground">
-            When: {spec.when}
+            When: <InlineMathText>{spec.when}</InlineMathText>
           </div>
-          <div className="mb-2 leading-relaxed text-gray-700">{spec.description}</div>
+          <div className="mb-2 leading-relaxed text-gray-700">
+            <InlineMathText>{spec.description}</InlineMathText>
+          </div>
           <div className="text-xs">
             <Latex math={spec.latex} />
           </div>

@@ -3,6 +3,7 @@ import { Handle, Panel, Position, ReactFlow, ReactFlowProvider, useReactFlow } f
 import PanZoomControls, { PanZoomHint } from './PanZoomControls.jsx';
 import '@xyflow/react/dist/style.css';
 import Latex from './Latex.jsx';
+import InlineMathText from './InlineMathText.jsx';
 import GlossaryList from './GlossaryList.jsx';
 import { SHAPE_SPEC } from '../engine/shapeSpec.js';
 import { REGIME_SPEC } from '../engine/regimeSpec.js';
@@ -835,13 +836,15 @@ export default function DecisionLadder({
           </div>
           {activeTooltip.whenText && (
             <div className="mb-2 text-[11px] uppercase tracking-wider text-gray-400">
-              {activeTooltip.whenText.toLowerCase().startsWith('when')
-                ? activeTooltip.whenText
-                : `When: ${activeTooltip.whenText}`}
+              <InlineMathText>
+                {activeTooltip.whenText.toLowerCase().startsWith('when')
+                  ? activeTooltip.whenText
+                  : `When: ${activeTooltip.whenText}`}
+              </InlineMathText>
             </div>
           )}
           <div className="whitespace-normal break-words text-sm leading-6 text-gray-300">
-            {activeTooltip.body}
+            <InlineMathText>{activeTooltip.body}</InlineMathText>
           </div>
           {activeTooltip.latex && (
             <div className="mt-3 overflow-x-auto border-t border-gray-700 pt-3 text-sm text-gray-100">
