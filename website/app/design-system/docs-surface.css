@@ -1,0 +1,39 @@
+/* =========================================================================
+   Whest Design System — Docs Surface Adapter
+   Local composition layer. Responsibilities:
+   - Tier-3C warm paper register (light mode)
+   - Bridge canonical tokens into shadcn (--color-*) + Fumadocs (--fd-*)
+   - Focus ring (global :focus-visible)
+   - Prose headings and utility classes
+
+   The authoritative tokens live in ./tokens.css — do not redefine them here.
+   ========================================================================= */
+
+/* --- Temporary back-compat aliases (removed in Task 3) -------------------- */
+:root {
+  --whest-coral: var(--coral);
+  --whest-coral-hover: var(--coral-hover);
+  --whest-coral-light: var(--coral-light);
+  --whest-gray-900: var(--gray-900);
+  --whest-gray-600: var(--gray-600);
+  --whest-gray-400: var(--gray-400);
+  --whest-gray-200: var(--gray-200);
+  --whest-gray-100: var(--gray-100);
+  --whest-gray-50:  var(--gray-50);
+  --whest-success:  var(--success);
+  --whest-warning:  var(--warning);
+  --whest-info:     var(--info);
+  --whest-code-ink:     var(--code-ink);
+  --whest-code-punc:    var(--code-punc);
+  --whest-code-comment: var(--code-comment);
+  --whest-code-op:      var(--code-op);
+  --whest-code-string:  var(--code-string);
+  --whest-code-fn:      var(--code-fn);
+  --whest-code-keyword: var(--code-keyword);
+  --whest-code-number:  var(--code-number);
+  --whest-code-class:   var(--code-class);
+  --whest-ease:       var(--ease-standard);
+  --whest-dur-fast:   var(--dur-fast);
+  --whest-dur-normal: var(--dur-normal);
+  --whest-dur-slow:   var(--dur-slow);
+}

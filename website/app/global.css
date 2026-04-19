@@ -1,60 +1,12 @@
 @import 'tailwindcss';
+@import './design-system/tokens.css';
+@import './design-system/docs-surface.css';
 @import 'fumadocs-ui/css/shadcn.css';
 @import 'fumadocs-ui/css/preset.css';
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
-
-/* =========================================================================
-   Whest Design System — Foundation tokens
-   (see design system: colors_and_type.css)
-   ========================================================================= */
-:root {
-  /* Brand coral + neutrals */
-  --whest-coral: #F0524D;
-  --whest-coral-hover: #D23934;
-  --whest-coral-light: #FEF2F1;
-
-  --whest-gray-900: #292C2D;
-  --whest-gray-600: #5D5F60;
-  --whest-gray-400: #AAACAD;
-  --whest-gray-200: #D9DCDC;
-  --whest-gray-100: #F1F3F5;
-  --whest-gray-50:  #F8F9F9;
-
-  /* Universal semantics */
-  --whest-success: #23B761;
-  --whest-warning: #FA9E33;
-  --whest-info:    #4A7CFF;
-
-  /* Code syntax — derived from foundation + semantics */
-  --whest-code-ink:     var(--whest-gray-900);
-  --whest-code-punc:    var(--whest-gray-600);
-  --whest-code-comment: var(--whest-gray-400);
-  --whest-code-op:      var(--whest-coral);
-  --whest-code-string:  var(--whest-coral-hover);
-  --whest-code-fn:      #2959C4;
-  --whest-code-keyword: #5E36C4;
-  --whest-code-number:  #0B6D7A;
-  --whest-code-class:   var(--whest-warning);
-
-  /* Newsreader variation-axis presets (editorial display serif) */
-  --vs-display-xl: 'opsz' 72;
-  --vs-display-md: 'opsz' 32;
-  --vs-display-sm: 'opsz' 18;
-  --vs-paper-body: 'opsz' 18;
-
-  /* Kicker / eyebrow tracking */
-  --tracking-kicker: 0.16em;
-  --tracking-kicker-loose: 0.2em;
-
-  /* Motion */
-  --whest-ease: cubic-bezier(0.4, 0, 0.2, 1);
-  --whest-dur-fast:   180ms;
-  --whest-dur-normal: 250ms;
-  --whest-dur-slow:   500ms;
-}
 
 html {
   scrollbar-gutter: stable;
