@@ -213,7 +213,10 @@ aside#nd-sidebar button[aria-expanded] {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  color: var(--gray-400);
+  /* Spec default for kickers is gray-400, calibrated on warm paper. On
+     pure white that fails WCAG AA contrast at 11px, so bump to gray-600
+     (~7:1). Still muted — leaves stay the louder element. */
+  color: var(--gray-600);
 }
 
 aside#nd-sidebar a[data-active='true'] {
