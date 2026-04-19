@@ -419,6 +419,65 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                 </InlineMathText>
               </p>
             </div>
+
+            <div className="mb-4 rounded-md border border-primary/40 bg-primary/5 px-5 py-4 text-[13px] leading-7 text-foreground">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground mb-2">
+                Proposition + Theorem (verbatim, audit-verified)
+              </div>
+              <p className="mb-3">
+                <strong>Proposition (Frobenius-class presets).</strong>{' '}
+                <em>
+                  <InlineMathText>
+                    {`Let an einsum satisfy: (1) No operand has declared axis symmetry ($H_i = \\{e\\}$ for every identical-operand group i); (2) Every identical-operand group of size $\\geq 2$ consists of copies with identical subscript strings. Then for generic operands, $G_{\\text{pt}} = \\{e\\}$ and $G_{\\text{f}} = S(W)$ — every formal symmetry beyond identity is row-unwitnessed and lives in the $S(W)$ factor of the §5 construction.`}
+                  </InlineMathText>
+                </em>
+              </p>
+              <p className="mb-3">
+                <InlineMathText>
+                  {`*Proof.* The wreath $\\prod_i (H_i \\wr S_{m_i})$ reduces under (1) to $\\prod_i S_{m_i}$ (pure copy-permutations). A copy-permutation $\\sigma$ within group $i$ sends U-vertex $(i, j, \\text{axis } k)$ to $(i, \\sigma_i(j), k)$. Under (2), every copy in group $i$ has the same axis-to-label mapping, so the permuted U-vertex carries the same label as the original. Hence $M_\\sigma = M$ elementwise. By Theorem (b) below, $\\texttt{derivePi}(\\sigma) = \\text{identity}$. No non-identity $\\pi$ contributions exist, so $G_{\\text{pt}} = \\{e\\}$. Then $G_{\\text{f}} = G_{\\text{pt}}\\big|_V \\times S(W) = \\{e\\} \\times S(W) = S(W)$. ∎`}
+                </InlineMathText>
+              </p>
+              <p className="mb-3">
+                <strong>Theorem (row-level detection boundary).</strong>{' '}
+                <em>
+                  <InlineMathText>
+                    {`Let $G_{\\text{wreath}}$ denote the σ-loop's row-permutation group — namely $\\prod_i (H_i \\wr S_{m_i})$ per the wreath-equivalence result.`}
+                  </InlineMathText>
+                </em>
+              </p>
+              <p className="mb-2 pl-4">
+                <em>
+                  <InlineMathText>
+                    {`(a) The σ-loop iterates over every $\\sigma \\in G_{\\text{wreath}}$ and applies $\\texttt{derivePi}$. A given $\\sigma$ yields a valid label permutation iff $\\sigma$'s column fingerprints bijectively match the original's; some wreath elements pass (e.g. triangle's two 3-cycles), others fail (e.g. triangle's three adjacent transpositions) and are rejected.`}
+                  </InlineMathText>
+                </em>
+              </p>
+              <p className="mb-2 pl-4">
+                <em>
+                  <InlineMathText>
+                    {`(b) For any $\\sigma \\in G_{\\text{wreath}}$ that passes $\\texttt{derivePi}$, the derived $\\pi$ is the identity iff $M_\\sigma = M$ elementwise — i.e. $\\sigma$ preserves the incidence matrix row-by-row with no column relabelling needed.`}
+                  </InlineMathText>
+                </em>
+              </p>
+              <p className="mb-3 pl-4">
+                <em>
+                  <InlineMathText>
+                    {`(c) The non-identity valid $\\pi$'s — $\\{ \\texttt{derivePi}(\\sigma) : \\sigma \\in G_{\\text{wreath}}, \\texttt{derivePi}(\\sigma) \\neq \\texttt{null}, \\texttt{derivePi}(\\sigma) \\neq e \\}$ — form a subgroup of $\\mathrm{Sym}(L)$ which is exactly $G_{\\text{pt}}$. (The engine closes them via Dimino for robustness, but the set is already composition-closed.)`}
+                  </InlineMathText>
+                </em>
+              </p>
+              <p className="mb-0">
+                <strong>Corollary.</strong>{' '}
+                <em>
+                  <InlineMathText>
+                    {`If every $\\sigma \\in G_{\\text{wreath}}$ preserves $M$ elementwise, then $G_{\\text{pt}} = \\{e\\}$.`}
+                  </InlineMathText>
+                </em>
+              </p>
+              <div className="mt-3 text-[11px] text-muted-foreground">
+                Source: <code className="font-mono">REVIEW_RESPONSE.md §5</code> — the theorem is empirically verified on 22 presets + 543 σ-checks. See <code className="font-mono">AUDIT.md</code> Appendix A for the wreath-equivalence proof.
+              </div>
+            </div>
           </section>
 
           {/* §3 — Induced permutation group on V */}
