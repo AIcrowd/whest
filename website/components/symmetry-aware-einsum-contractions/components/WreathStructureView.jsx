@@ -125,7 +125,25 @@ export default function WreathStructureView({ analysis, example, onOpenModalSect
           </details>
         </div>
       )}
-      {/* Band C (summary + bridge) added in Task 9 */}
+      {/* Band C — summary + bridge */}
+      <div className="mt-3 border-t border-border/40 pt-2 text-[12px]">
+        <span className="font-mono">
+          |G_wreath| = {wreathElements.length}
+          {'  →  '}
+          valid (K): {wreathElements.filter((e) => e.classification === 'valid').length}
+          , matrix-preserving: {wreathElements.filter((e) => e.classification === 'matrix-preserving').length}
+          , rejected: {wreathElements.filter((e) => e.classification === 'rejected').length}
+        </span>
+        {onOpenModalSection && (
+          <button
+            type="button"
+            onClick={() => onOpenModalSection(2)}
+            className="ml-3 text-primary underline hover:no-underline"
+          >
+            Formal argument → modal §2
+          </button>
+        )}
+      </div>
     </div>
   );
 }
