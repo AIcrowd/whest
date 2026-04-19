@@ -156,27 +156,39 @@ const EYEBROW_CAPTION_CLASS =
 /**
  * Per-preset storage-α ledger used by §7.
  *
- * All measurements taken at n = 3 by `analyzeExample(preset, 3)` followed by
+ * Baseline: `analyzeExample(preset, 3)` followed by
  * `α_storage = Σ over G_pt-orbits O of |π_V(O) / G_pt|_V|`, i.e. the number
  * of distinct (G_pt|_V)-output-slot writes each orbit contributes under a
  * symmetry-aware output store. For presets with trivial $G_{\text{pt}}\big|_V$,
  * α_storage equals α_engine (no mirrored cells to collapse).
  *
+ * Label-size overrides. A few presets declare non-uniform `labelSizes` on
+ * their definition in `data/examples.js` — currently `triple-outer`
+ * (`{ i: 6, 'a,b,c': 3 }`) and `outer` (`{ 'a,c': 4, 'b,d': 3 }`). The
+ * engine applies those overrides to every label's effective size, and the
+ * rows below apply them *consistently* to BOTH `ae` and `as`: otherwise
+ * the two columns describe different operand shapes and the reported
+ * saving becomes meaningless. (An earlier version of this table mixed
+ * override-aware `ae` with uniform-n `as` for those two presets; the
+ * SymPy audit at `.claude/worktrees/.../audit/check_savings_table.py`
+ * caught the discrepancy.)
+ *
  * Rows are sorted by savings percentage descending so the nontrivial cases
  * read first and the zero-savings "nothing to mirror" block sits at the end.
  *
  * If the engine's α definition or the preset list changes, regenerate by
- * running a small survey of EXAMPLES through analyzeExample at n = 3.
+ * running a small survey of EXAMPLES through `analyzeExample(preset, 3)`
+ * and the audit's `alpha_storage` reference.
  */
 const SAVINGS_TABLE_ROWS = [
-  { id: 'triple-outer',     v: 'a,b,c',          vSub: 'S_3',             ae: 162, as: 30,  saving: 132, pct: '81.5' },
   { id: 'four-cycle',       v: 'i,j,k,l',        vSub: '\\text{order-}8', ae: 81,  as: 21,  saving: 60,  pct: '74.1' },
-  { id: 'outer',            v: 'a,b,c,d',        vSub: '\\text{order-}2', ae: 144, as: 45,  saving: 99,  pct: '68.8' },
   { id: 'bilinear-trace-3', v: 'i,j,m',          vSub: 'S_3',             ae: 516, as: 165, saving: 351, pct: '68.0' },
   { id: 'direct-s3-s2',     v: 'a,b,c',          vSub: 'S_3',             ae: 162, as: 60,  saving: 102, pct: '63.0' },
   { id: 'young-s4-v3w1',    v: 'a,b,c',          vSub: 'S_3',             ae: 81,  as: 30,  saving: 51,  pct: '63.0' },
+  { id: 'triple-outer',     v: 'a,b,c',          vSub: 'S_3',             ae: 162, as: 60,  saving: 102, pct: '63.0' },
   { id: 'declared-c3',      v: 'b,i,j,k',        vSub: '\\text{order-}3', ae: 243, as: 99,  saving: 144, pct: '59.3' },
   { id: 'triangle',         v: 'i,j,k',          vSub: 'C_3',             ae: 27,  as: 11,  saving: 16,  pct: '59.3' },
+  { id: 'outer',            v: 'a,b,c,d',        vSub: '\\text{order-}2', ae: 144, as: 78,  saving: 66,  pct: '45.8' },
   { id: 'bilinear-trace',   v: 'i,j',            vSub: 'S_2',             ae: 72,  as: 45,  saving: 27,  pct: '37.5' },
   { id: 'direct-s2-c3',     v: 'a,b',            vSub: 'S_2',             ae: 99,  as: 66,  saving: 33,  pct: '33.3' },
   { id: 'four-A-grid',      v: 'a,b',            vSub: 'S_2',             ae: 54,  as: 36,  saving: 18,  pct: '33.3' },
