@@ -50,7 +50,7 @@ export function analyzeExample(example, dimensionN) {
   const normalizedExample = normalizeExample(example);
   const graph = buildBipartite(normalizedExample);
   const matrixData = buildIncidenceMatrix(graph);
-  const sigmaResults = runSigmaLoop(graph, matrixData, normalizedExample);
+  const { results: sigmaResults, wreathElements } = runSigmaLoop(graph, matrixData, normalizedExample);
   const symmetry = buildGroup(sigmaResults, graph, normalizedExample);
   const rawClusters = computeLabelClusters(symmetry.allLabels, symmetry.fullGenerators, dimensionN);
   const labelSizesOverride = example.labelSizes || {};
@@ -100,7 +100,11 @@ export function analyzeExample(example, dimensionN) {
     graph,
     matrixData,
     sigmaResults,
-    symmetry,
+    symmetry: {
+      ...symmetry,
+      wreathElements,
+      identicalGroups: graph.identicalGroups,
+    },
     componentData,
     burnside,
     costModel,

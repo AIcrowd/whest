@@ -146,6 +146,11 @@ function derivePi(sigmaColOf, fpToLabels, vLabels, wLabels) {
  * enumerateWreath, replacing the old Source A/B generator emission +
  * Dimino-#1 closure pipeline. Per AUDIT Appendix A, the result is an
  * identity-equivalent set.
+ *
+ * @returns {{results: Array, wreathElements: Array}} results is the Shape-1/2/3
+ *   schema consumed by buildGroup/SigmaLoop/DiminoView (unchanged from Task 3).
+ *   wreathElements is a parallel array with 3-way classification entries aligned
+ *   index-by-index with results.
  */
 export function runSigmaLoop(graph, matrixData, example) {
   const { freeLabels, summedLabels, allLabels, incidence, uOperand } = graph;
@@ -163,6 +168,7 @@ export function runSigmaLoop(graph, matrixData, example) {
   }
 
   const results = [];
+  const wreathElements = [];
 
   // ── Directly enumerate the wreath product ∏_i (H_i ≀ S_{m_i}) ──
   // (Replaces the old Source A/B emitters + Dimino-#1 closure.
@@ -227,6 +233,15 @@ export function runSigmaLoop(graph, matrixData, example) {
         piMovesV: false,
         piMovesW: false,
       });
+      wreathElements.push({
+        id: `w${wreathElements.length}`,
+        rowPerm: element.rowPerm,
+        derivePiResult: identityPi,
+        matrixPreserving: true,
+        isValid: true,
+        classification: 'matrix-preserving',
+        factorization: element.factorization,
+      });
       continue;
     }
 
@@ -250,6 +265,15 @@ export function runSigmaLoop(graph, matrixData, example) {
         sigma: {}, sigmaRowPerm, sigmaMatrix, sigmaColOf,
         isValid: false, reason: 'No matching π (fingerprint mismatch)',
       });
+      wreathElements.push({
+        id: `w${wreathElements.length}`,
+        rowPerm: element.rowPerm,
+        derivePiResult: null,
+        matrixPreserving: false,
+        isValid: false,
+        classification: 'rejected',
+        factorization: element.factorization,
+      });
       continue;
     }
 
@@ -266,9 +290,18 @@ export function runSigmaLoop(graph, matrixData, example) {
       isValid: true, piIsIdentity, piKind,
       piCrossesVw, piMovesV, piMovesW,
     });
+    wreathElements.push({
+      id: `w${wreathElements.length}`,
+      rowPerm: element.rowPerm,
+      derivePiResult: pi,
+      matrixPreserving: piIsIdentity,
+      isValid: true,
+      classification: piIsIdentity ? 'matrix-preserving' : 'valid',
+      factorization: element.factorization,
+    });
   }
 
-  return results;
+  return { results, wreathElements };
 }
 
 // ─── Group Construction ───────────────────────────────────────────
