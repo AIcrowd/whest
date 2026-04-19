@@ -84,8 +84,8 @@ const EDGE_NO = { color: '#F0524D', label: 'no' };
 // Applied via the labelStyle `transform` CSS property. Because
 // labelBgStyle is transparent the invisible background rect stays put
 // at the edge midpoint — only the visible text shifts.
-const LABEL_OFFSET_VERTICAL = { transform: 'translate(12px, 0)' };
-const LABEL_OFFSET_HORIZONTAL = { transform: 'translate(0, -9px)' };
+const LABEL_OFFSET_VERTICAL = { transform: 'translate(18px, 0)' };
+const LABEL_OFFSET_HORIZONTAL = { transform: 'translate(0, -11px)' };
 
 // ─── Decision spec — mirrors the engine's `detectShape` order ─────────
 //
