@@ -22,12 +22,24 @@ export const GLOSSARY = [
     definition: 'The full symmetric group on the summed (contracted) labels W. Every permutation of W is a formal symmetry because the sum over W is bound-variable iteration — renaming dummies does not change the total.',
   },
   {
-    term: 'Source A',
-    definition: "σ-loop generators from declared axis symmetries on individual operands. For T declared symmetric on axes (0,1), Source A emits the label swap linking those axes.",
+    term: 'wreath product',
+    definition: 'The row-permutation group the σ-loop enumerates: $\\prod_i (H_i \\wr S_{m_i})$, where $i$ ranges over identical-operand groups (operands sharing a name), $H_i$ is each operand\'s declared axis symmetry, and $m_i$ is the number of copies. Elements factor as $(h_0, \\ldots, h_{m-1}; \\sigma)$ with each $h_j \\in H_i$ and $\\sigma \\in S_{m_i}$.',
   },
   {
-    term: 'Source B',
-    definition: 'σ-loop generators from identical-operand swaps. The engine groups operands by name (the JS engine in `algorithm.js` uses `nameToPositions[name]` to bucket positions sharing an operand identifier), and when two positions share that name, swapping them induces a label permutation matching axes across the two subscripts.',
+    term: 'row-witnessed',
+    definition: 'A symmetry is row-witnessed if it arises as `derivePi(σ)` for some wreath element $\\sigma \\in \\prod_i (H_i \\wr S_{m_i})$ and survives the identity-filter. $G_{\\text{pt}}|_V$ is row-witnessed.',
+  },
+  {
+    term: 'row-unwitnessed',
+    definition: 'A symmetry is row-unwitnessed if no wreath element produces it via `derivePi`. The $S(W)$ factor of $G_{\\text{f}}$ is entirely row-unwitnessed — bound-variable renamings of summed labels that leave the total invariant without appearing at any row level.',
+  },
+  {
+    term: 'base-group generator',
+    definition: 'An element of the wreath\'s base factor $H_i^{m_i}$ — an axis permutation acting within a single copy of operand $i$, with the top-group component held as identity. Produced from an operand\'s declared axis symmetry.',
+  },
+  {
+    term: 'top-group transposition',
+    definition: 'An adjacent copy-transposition in the wreath\'s top factor $S_{m_i}$: swaps adjacent copies of an identical-operand group with base-group components held as identity. Produced from identical-operand swaps.',
   },
   {
     term: 'component',

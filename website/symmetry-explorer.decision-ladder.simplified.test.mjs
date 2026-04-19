@@ -55,9 +55,14 @@ test('DecisionLadder no longer references the 4 deleted branch questions', () =>
 
 test('DecisionLadder no longer references the 5 deleted regime leaves', () => {
   const src = read();
-  for (const gone of ['fullSymmetric', 'alternating', 'wreath', 'diagonalSimultaneous', 'vSetwiseStable']) {
+  // Match as quoted leaf-id strings (e.g. onTrue: 'wreath', specFor('wreath')).
+  // 'wreath' and 'wreath product' may appear in prose after the Task 5
+  // nomenclature update; only the bare quoted id form is stale.
+  for (const gone of ['fullSymmetric', 'alternating', 'diagonalSimultaneous', 'vSetwiseStable']) {
     assert.doesNotMatch(src, new RegExp(gone), `stale regime '${gone}' still referenced in DecisionLadder`);
   }
+  // 'wreath' as a leaf id: quoted, followed by word boundary (not 'wreath product' etc.)
+  assert.doesNotMatch(src, /'wreath'/, "stale regime 'wreath' still referenced as a leaf id in DecisionLadder");
 });
 
 test('DecisionLadder Stage-1 routing: q_trivial splits into trivial (yes) and q_hasW (no)', () => {
