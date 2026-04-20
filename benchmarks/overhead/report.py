@@ -57,9 +57,9 @@ def build_browser_report_payload(
         steady_state_delta_ns = float(whest_row.get("median_ns", 0.0)) - float(
             numpy_row.get("median_ns", 0.0)
         )
-        startup_delta_ns = float(startup.get("whest", {}).get("elapsed_ns", 0.0)) - float(
-            startup.get("numpy", {}).get("elapsed_ns", 0.0)
-        )
+        startup_delta_ns = float(
+            startup.get("whest", {}).get("elapsed_ns", 0.0)
+        ) - float(startup.get("numpy", {}).get("elapsed_ns", 0.0))
         details = case.get("whest_details", {})
         operations = details.get("operations", {})
         baseline_case = base_cases.get(case["case_id"], {})

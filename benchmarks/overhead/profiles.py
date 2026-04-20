@@ -27,7 +27,12 @@ _NONZERO_DENOMINATOR_BINARY = {
 _POSITIVE_BASE_BINARY = {"power", "float_power"}
 _BITWISE_UNARY = {"bitwise_not", "bitwise_invert", "invert", "bitwise_count"}
 _BITWISE_BINARY = {"bitwise_and", "bitwise_or", "bitwise_xor", "gcd", "lcm"}
-_BITWISE_SHIFT = {"bitwise_left_shift", "bitwise_right_shift", "left_shift", "right_shift"}
+_BITWISE_SHIFT = {
+    "bitwise_left_shift",
+    "bitwise_right_shift",
+    "left_shift",
+    "right_shift",
+}
 
 _RANDOM_EXTRA_ARGS: dict[str, tuple[object, ...]] = {
     "uniform": (0.0, 1.0),
@@ -89,13 +94,17 @@ def _int_vector(size_name: str, dtype: str = "int64", *, offset: int = 0) -> np.
     return (values + 1).astype(np.dtype(dtype), copy=False)
 
 
-def _complex_vector(size_name: str, dtype: str = "complex128", *, offset: int = 0) -> np.ndarray:
+def _complex_vector(
+    size_name: str, dtype: str = "complex128", *, offset: int = 0
+) -> np.ndarray:
     real = _vector(size_name, "float64", offset=offset)
     imag = _vector(size_name, "float64", offset=offset + 11)
     return (real + (1j * imag)).astype(np.dtype(dtype), copy=False)
 
 
-def _linspace_vector(size_name: str, dtype: str, start: float, stop: float) -> np.ndarray:
+def _linspace_vector(
+    size_name: str, dtype: str, start: float, stop: float
+) -> np.ndarray:
     return np.linspace(
         start,
         stop,
@@ -175,12 +184,16 @@ def _matrix_samples(size_name: str, dtype: str, *, rows: int = 4) -> np.ndarray:
 
 def _tensor_matrix(size_name: str, dtype: str) -> tuple[np.ndarray, int]:
     side = 4 if size_name == "tiny" else 9
-    matrix = _spd_matrix("tiny" if size_name == "tiny" else "medium", dtype=np.dtype(dtype).name)
+    matrix = _spd_matrix(
+        "tiny" if size_name == "tiny" else "medium", dtype=np.dtype(dtype).name
+    )
     matrix = matrix[:side, :side]
     return matrix, int(round(np.sqrt(side)))
 
 
-def _misc_args(op_name: str, size_name: str, dtype: str) -> tuple[tuple[Any, ...], dict[str, Any]]:
+def _misc_args(
+    op_name: str, size_name: str, dtype: str
+) -> tuple[tuple[Any, ...], dict[str, Any]]:
     if op_name in {"diff", "ediff1d"}:
         return (_vector(size_name, dtype),), {}
     if op_name in {"gradient", "unwrap"}:
@@ -191,12 +204,16 @@ def _misc_args(op_name: str, size_name: str, dtype: str) -> tuple[tuple[Any, ...
         return (_matrix_samples(size_name, dtype),), {}
     if op_name == "cross":
         a = np.stack([_vector(size_name, dtype, offset=i) for i in range(3)], axis=-1)
-        b = np.stack([_vector(size_name, dtype, offset=i + 7) for i in range(3)], axis=-1)
+        b = np.stack(
+            [_vector(size_name, dtype, offset=i + 7) for i in range(3)], axis=-1
+        )
         return (a, b), {}
     if op_name == "histogram":
         return (_vector(size_name, dtype),), {"bins": 8}
     if op_name == "histogram2d":
-        return (_vector(size_name, dtype), _vector(size_name, dtype, offset=5)), {"bins": 8}
+        return (_vector(size_name, dtype), _vector(size_name, dtype, offset=5)), {
+            "bins": 8
+        }
     if op_name == "histogramdd":
         samples = np.stack(
             [_vector(size_name, dtype, offset=i * 5) for i in range(3)],
@@ -213,7 +230,11 @@ def _misc_args(op_name: str, size_name: str, dtype: str) -> tuple[tuple[Any, ...
     if op_name == "interp":
         xp = np.linspace(0.0, 1.0, 8, dtype=np.dtype(dtype))
         fp = np.linspace(-1.0, 1.0, 8, dtype=np.dtype(dtype))
-        return (np.linspace(0.0, 1.0, _VECTOR_SIZES[size_name], dtype=np.dtype(dtype)), xp, fp), {}
+        return (
+            np.linspace(0.0, 1.0, _VECTOR_SIZES[size_name], dtype=np.dtype(dtype)),
+            xp,
+            fp,
+        ), {}
     if op_name == "trapezoid":
         return (_vector(size_name, dtype),), {}
     if op_name == "vander":
@@ -221,7 +242,9 @@ def _misc_args(op_name: str, size_name: str, dtype: str) -> tuple[tuple[Any, ...
     raise ValueError(f"unsupported misc op: {op_name!r}")
 
 
-def _polynomial_args(op_name: str, size_name: str, dtype: str) -> tuple[tuple[Any, ...], dict[str, Any]]:
+def _polynomial_args(
+    op_name: str, size_name: str, dtype: str
+) -> tuple[tuple[Any, ...], dict[str, Any]]:
     coeffs = np.linspace(-1.0, 1.0, 6, dtype=np.dtype(dtype))
     coeffs_b = np.linspace(0.5, 1.5, 6, dtype=np.dtype(dtype))
     x = np.linspace(-1.0, 1.0, _VECTOR_SIZES[size_name], dtype=np.dtype(dtype))
@@ -242,7 +265,9 @@ def _polynomial_args(op_name: str, size_name: str, dtype: str) -> tuple[tuple[An
     raise ValueError(f"unsupported polynomial op: {op_name!r}")
 
 
-def _linalg_delegate_args(op_name: str, size_name: str, dtype: str) -> tuple[tuple[Any, ...], dict[str, Any]]:
+def _linalg_delegate_args(
+    op_name: str, size_name: str, dtype: str
+) -> tuple[tuple[Any, ...], dict[str, Any]]:
     if op_name in {"cond", "matrix_rank", "matrix_norm"}:
         return (_spd_matrix(size_name, dtype),), {}
     if op_name == "matrix_power":
@@ -255,7 +280,9 @@ def _linalg_delegate_args(op_name: str, size_name: str, dtype: str) -> tuple[tup
         return (_vector(size_name, dtype), _vector(size_name, dtype, offset=7)), {}
     if op_name == "cross":
         a = np.stack([_vector(size_name, dtype, offset=i) for i in range(3)], axis=-1)
-        b = np.stack([_vector(size_name, dtype, offset=i + 7) for i in range(3)], axis=-1)
+        b = np.stack(
+            [_vector(size_name, dtype, offset=i + 7) for i in range(3)], axis=-1
+        )
         return (a, b), {}
     if op_name == "multi_dot":
         a = _matrix(size_name, dtype)[:, :12]
@@ -283,29 +310,47 @@ def _linalg_delegate_args(op_name: str, size_name: str, dtype: str) -> tuple[tup
     raise ValueError(f"unsupported linalg delegate op: {op_name!r}")
 
 
-def _bitwise_args(op_name: str, size_name: str) -> tuple[tuple[Any, ...], dict[str, Any]]:
+def _bitwise_args(
+    op_name: str, size_name: str
+) -> tuple[tuple[Any, ...], dict[str, Any]]:
     if op_name in _BITWISE_UNARY:
         return (_int_vector(size_name),), {}
     if op_name in _BITWISE_BINARY:
         return (_int_vector(size_name), _int_vector(size_name, offset=5)), {}
     if op_name in _BITWISE_SHIFT:
-        return (_int_vector(size_name), np.full(_VECTOR_SIZES[size_name], 2, dtype=np.int64)), {}
+        return (
+            _int_vector(size_name),
+            np.full(_VECTOR_SIZES[size_name], 2, dtype=np.int64),
+        ), {}
     raise ValueError(f"unsupported bitwise op: {op_name!r}")
 
 
-def _complex_args(op_name: str, size_name: str, dtype: str) -> tuple[tuple[Any, ...], dict[str, Any]]:
+def _complex_args(
+    op_name: str, size_name: str, dtype: str
+) -> tuple[tuple[Any, ...], dict[str, Any]]:
     values = _complex_vector(size_name, dtype)
     if op_name == "sort_complex":
         return (values,), {}
     return (values,), {}
 
 
-def _free_args(op_name: str, size_name: str, dtype: str) -> tuple[tuple[Any, ...], dict[str, Any]]:
+def _free_args(
+    op_name: str, size_name: str, dtype: str
+) -> tuple[tuple[Any, ...], dict[str, Any]]:
     matrix = _matrix(size_name, dtype)
     cube = _cube(size_name, dtype)
     if op_name in {"asarray"}:
         return (_array_data(size_name),), {}
-    if op_name in {"copy", "require", "ravel", "flip", "fliplr", "flipud", "rot90", "squeeze"}:
+    if op_name in {
+        "copy",
+        "require",
+        "ravel",
+        "flip",
+        "fliplr",
+        "flipud",
+        "rot90",
+        "squeeze",
+    }:
         if op_name == "squeeze":
             return (matrix.reshape(1, *matrix.shape),), {}
         return (matrix,), {}
@@ -412,7 +457,9 @@ def _unary_vector(op_name: str, size_name: str, dtype: str) -> np.ndarray:
     return _vector(size_name, dtype)
 
 
-def _binary_inputs(op_name: str, size_name: str, dtype: str) -> tuple[np.ndarray, np.ndarray]:
+def _binary_inputs(
+    op_name: str, size_name: str, dtype: str
+) -> tuple[np.ndarray, np.ndarray]:
     if op_name in _NONZERO_DENOMINATOR_BINARY:
         return _vector(size_name, dtype), _positive_vector(size_name, dtype, offset=13)
     if op_name in _POSITIVE_BASE_BINARY:
@@ -426,7 +473,9 @@ def _binary_inputs(op_name: str, size_name: str, dtype: str) -> tuple[np.ndarray
     return _vector(size_name, dtype), _vector(size_name, dtype, offset=13)
 
 
-def materialize_case_inputs(case_payload: dict[str, Any]) -> tuple[tuple[Any, ...], dict[str, Any]]:
+def materialize_case_inputs(
+    case_payload: dict[str, Any],
+) -> tuple[tuple[Any, ...], dict[str, Any]]:
     """Materialize positional/keyword call inputs for one benchmark case."""
 
     profile_kind = case_payload.get("profile_kind")

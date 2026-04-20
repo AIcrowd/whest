@@ -28,7 +28,9 @@ def _case(case_id: str, *, family: str, surface: str) -> BenchmarkCase:
     )
 
 
-def test_cli_full_then_suggest_thresholds_round_trip(tmp_path: Path, monkeypatch, capsys):
+def test_cli_full_then_suggest_thresholds_round_trip(
+    tmp_path: Path, monkeypatch, capsys
+):
     monkeypatch.setattr("benchmarks.overhead.cli.seed_cases", lambda: ())
     monkeypatch.setattr(
         "benchmarks.overhead.cli.full_cases",
@@ -70,15 +72,29 @@ def test_cli_full_then_suggest_thresholds_round_trip(tmp_path: Path, monkeypatch
             "dtype": case.dtype,
             "source_file": case.source_file,
             "mode": mode,
-            "numpy": {"median_ns": 10, "best_ns": 9, "sample_count": 3, "iterations": 1},
-            "whest": {"median_ns": 12, "best_ns": 11, "sample_count": 3, "iterations": 1},
+            "numpy": {
+                "median_ns": 10,
+                "best_ns": 9,
+                "sample_count": 3,
+                "iterations": 1,
+            },
+            "whest": {
+                "median_ns": 12,
+                "best_ns": 11,
+                "sample_count": 3,
+                "iterations": 1,
+            },
             "ratio": 1.2,
             "whest_details": {"flops_used": 2, "op_count": 1, "tracked_time_s": 0.001},
             "startup": {
                 "numpy": {"elapsed_ns": 100},
                 "whest": {"elapsed_ns": 150},
                 "ratio": 1.5,
-                "whest_details": {"flops_used": 1, "op_count": 1, "tracked_time_s": 0.0001},
+                "whest_details": {
+                    "flops_used": 1,
+                    "op_count": 1,
+                    "tracked_time_s": 0.0001,
+                },
             },
         },
     )
@@ -90,7 +106,9 @@ def test_cli_full_then_suggest_thresholds_round_trip(tmp_path: Path, monkeypatch
 
     captured = capsys.readouterr()
     run = load_run(output_dir)
-    suggested = json.loads((output_dir / "suggested_policy.json").read_text(encoding="utf-8"))
+    suggested = json.loads(
+        (output_dir / "suggested_policy.json").read_text(encoding="utf-8")
+    )
 
     assert full_exit == 0
     assert suggest_exit == 0
@@ -142,15 +160,29 @@ def test_focus_mode_writes_filtered_artifacts(tmp_path: Path, monkeypatch, capsy
             "dtype": case.dtype,
             "source_file": case.source_file,
             "mode": mode,
-            "numpy": {"median_ns": 10, "best_ns": 9, "sample_count": 3, "iterations": 1},
-            "whest": {"median_ns": 12, "best_ns": 11, "sample_count": 3, "iterations": 1},
+            "numpy": {
+                "median_ns": 10,
+                "best_ns": 9,
+                "sample_count": 3,
+                "iterations": 1,
+            },
+            "whest": {
+                "median_ns": 12,
+                "best_ns": 11,
+                "sample_count": 3,
+                "iterations": 1,
+            },
             "ratio": 1.2,
             "whest_details": {"flops_used": 2, "op_count": 1, "tracked_time_s": 0.001},
             "startup": {
                 "numpy": {"elapsed_ns": 100},
                 "whest": {"elapsed_ns": 150},
                 "ratio": 1.5,
-                "whest_details": {"flops_used": 1, "op_count": 1, "tracked_time_s": 0.0001},
+                "whest_details": {
+                    "flops_used": 1,
+                    "op_count": 1,
+                    "tracked_time_s": 0.0001,
+                },
             },
         },
     )
@@ -267,8 +299,18 @@ def test_cli_full_then_report_round_trip(tmp_path: Path, monkeypatch, capsys):
             "dtype": case.dtype,
             "source_file": case.source_file,
             "mode": mode,
-            "numpy": {"median_ns": 10, "best_ns": 9, "sample_count": 3, "iterations": 1},
-            "whest": {"median_ns": 12, "best_ns": 11, "sample_count": 3, "iterations": 1},
+            "numpy": {
+                "median_ns": 10,
+                "best_ns": 9,
+                "sample_count": 3,
+                "iterations": 1,
+            },
+            "whest": {
+                "median_ns": 12,
+                "best_ns": 11,
+                "sample_count": 3,
+                "iterations": 1,
+            },
             "ratio": 1.2,
             "whest_details": {
                 "flops_used": 2,
@@ -280,7 +322,11 @@ def test_cli_full_then_report_round_trip(tmp_path: Path, monkeypatch, capsys):
                 "numpy": {"elapsed_ns": 100},
                 "whest": {"elapsed_ns": 150},
                 "ratio": 1.5,
-                "whest_details": {"flops_used": 1, "op_count": 1, "tracked_time_s": 0.0001},
+                "whest_details": {
+                    "flops_used": 1,
+                    "op_count": 1,
+                    "tracked_time_s": 0.0001,
+                },
             },
         },
     )
@@ -292,7 +338,9 @@ def test_cli_full_then_report_round_trip(tmp_path: Path, monkeypatch, capsys):
 
     captured = capsys.readouterr()
     report_html = output_dir / "report.html"
-    report_data = json.loads((output_dir / "report_data.json").read_text(encoding="utf-8"))
+    report_data = json.loads(
+        (output_dir / "report_data.json").read_text(encoding="utf-8")
+    )
 
     assert full_exit == 0
     assert report_exit == 0

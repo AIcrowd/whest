@@ -99,7 +99,9 @@ def _build_inventory() -> list[dict[str, Any]]:
 
     aliases_by_key: dict[Any, list[str]] = {}
     for entry in records:
-        aliases_by_key.setdefault(entry["alias_key"], []).append(entry["qualified_name"])
+        aliases_by_key.setdefault(entry["alias_key"], []).append(
+            entry["qualified_name"]
+        )
 
     for entry in records:
         entry["aliases"] = [
@@ -109,7 +111,9 @@ def _build_inventory() -> list[dict[str, Any]]:
         ]
         del entry["alias_key"]
 
-    return sorted(records, key=lambda entry: (entry["surface"], entry["qualified_name"]))
+    return sorted(
+        records, key=lambda entry: (entry["surface"], entry["qualified_name"])
+    )
 
 
 def _canonical_qualified_name(name: str) -> str:
@@ -162,9 +166,7 @@ def classify_public_operations() -> dict[str, list[dict[str, Any]]]:
         {
             "op_name": op_name,
             "qualified_name": _canonical_qualified_name(op_name),
-            "surface": _surface_from_qualified_name(
-                _canonical_qualified_name(op_name)
-            ),
+            "surface": _surface_from_qualified_name(_canonical_qualified_name(op_name)),
             "reason": reason,
         }
         for op_name, reason in sorted(excluded_reasons.items())
@@ -174,9 +176,7 @@ def classify_public_operations() -> dict[str, list[dict[str, Any]]]:
         {
             "op_name": op_name,
             "qualified_name": _canonical_qualified_name(op_name),
-            "surface": _surface_from_qualified_name(
-                _canonical_qualified_name(op_name)
-            ),
+            "surface": _surface_from_qualified_name(_canonical_qualified_name(op_name)),
             "reason": reason,
         }
         for op_name, reason in sorted(unsupported_reasons.items())

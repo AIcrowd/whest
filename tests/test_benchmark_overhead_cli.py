@@ -122,7 +122,12 @@ def test_aggregate_operations_marks_partial_errors_explicitly():
 def test_build_accountability_compat_field_tracks_discovery_only_callables():
     accountability = _build_accountability(
         [{"qualified_name": "whest.add"}],
-        {"inventory": [{"qualified_name": "whest.add"}, {"qualified_name": "whest.linalg.matmul"}]},
+        {
+            "inventory": [
+                {"qualified_name": "whest.add"},
+                {"qualified_name": "whest.linalg.matmul"},
+            ]
+        },
     )
 
     assert accountability["discovered_missing_in_docs"] == ["whest.linalg.matmul"]
@@ -195,15 +200,29 @@ def test_main_runs_selected_cases_writes_artifacts_and_returns_failure_code(
             "dtype": case.dtype,
             "source_file": case.source_file,
             "mode": mode,
-            "numpy": {"median_ns": 10, "best_ns": 9, "sample_count": 3, "iterations": 1},
-            "whest": {"median_ns": 12, "best_ns": 11, "sample_count": 3, "iterations": 1},
+            "numpy": {
+                "median_ns": 10,
+                "best_ns": 9,
+                "sample_count": 3,
+                "iterations": 1,
+            },
+            "whest": {
+                "median_ns": 12,
+                "best_ns": 11,
+                "sample_count": 3,
+                "iterations": 1,
+            },
             "ratio": 1.2 if case.case_id == "add-api-tiny" else 7.5,
             "whest_details": {"flops_used": 2, "op_count": 1, "tracked_time_s": 0.001},
             "startup": {
                 "numpy": {"elapsed_ns": 100},
                 "whest": {"elapsed_ns": 200},
                 "ratio": 2.0,
-                "whest_details": {"flops_used": 1, "op_count": 1, "tracked_time_s": 0.0001},
+                "whest_details": {
+                    "flops_used": 1,
+                    "op_count": 1,
+                    "tracked_time_s": 0.0001,
+                },
             },
         }
 
@@ -223,7 +242,9 @@ def test_main_runs_selected_cases_writes_artifacts_and_returns_failure_code(
         written["run"] = run
         return output_dir
 
-    monkeypatch.setattr("benchmarks.overhead.cli.write_run_artifacts", fake_write_run_artifacts)
+    monkeypatch.setattr(
+        "benchmarks.overhead.cli.write_run_artifacts", fake_write_run_artifacts
+    )
     monkeypatch.setattr(
         "benchmarks.overhead.cli.render_terminal_summary",
         lambda manifest, rendered_cases: "terminal summary",
@@ -262,14 +283,54 @@ def test_main_runs_selected_cases_writes_artifacts_and_returns_failure_code(
     assert written["run"]["cases"][1]["passed"] is False
     assert written["run"]["operations"] == []
     assert written["run"]["samples"] == [
-        {"case_id": "add-api-tiny", "phase": "steady_state", "engine": "numpy", "median_ns": 10},
-        {"case_id": "add-api-tiny", "phase": "steady_state", "engine": "whest", "median_ns": 12},
-        {"case_id": "add-api-tiny", "phase": "startup", "engine": "numpy", "elapsed_ns": 100},
-        {"case_id": "add-api-tiny", "phase": "startup", "engine": "whest", "elapsed_ns": 200},
-        {"case_id": "add-operator-tiny", "phase": "steady_state", "engine": "numpy", "median_ns": 10},
-        {"case_id": "add-operator-tiny", "phase": "steady_state", "engine": "whest", "median_ns": 12},
-        {"case_id": "add-operator-tiny", "phase": "startup", "engine": "numpy", "elapsed_ns": 100},
-        {"case_id": "add-operator-tiny", "phase": "startup", "engine": "whest", "elapsed_ns": 200},
+        {
+            "case_id": "add-api-tiny",
+            "phase": "steady_state",
+            "engine": "numpy",
+            "median_ns": 10,
+        },
+        {
+            "case_id": "add-api-tiny",
+            "phase": "steady_state",
+            "engine": "whest",
+            "median_ns": 12,
+        },
+        {
+            "case_id": "add-api-tiny",
+            "phase": "startup",
+            "engine": "numpy",
+            "elapsed_ns": 100,
+        },
+        {
+            "case_id": "add-api-tiny",
+            "phase": "startup",
+            "engine": "whest",
+            "elapsed_ns": 200,
+        },
+        {
+            "case_id": "add-operator-tiny",
+            "phase": "steady_state",
+            "engine": "numpy",
+            "median_ns": 10,
+        },
+        {
+            "case_id": "add-operator-tiny",
+            "phase": "steady_state",
+            "engine": "whest",
+            "median_ns": 12,
+        },
+        {
+            "case_id": "add-operator-tiny",
+            "phase": "startup",
+            "engine": "numpy",
+            "elapsed_ns": 100,
+        },
+        {
+            "case_id": "add-operator-tiny",
+            "phase": "startup",
+            "engine": "whest",
+            "elapsed_ns": 200,
+        },
     ]
     assert written["run"]["whest_details"] == [
         {
@@ -304,7 +365,9 @@ def test_main_runs_selected_cases_writes_artifacts_and_returns_failure_code(
     assert "terminal summary" in captured.out
 
 
-def test_focus_mode_can_select_all_cases_for_one_operation(tmp_path: Path, monkeypatch, capsys):
+def test_focus_mode_can_select_all_cases_for_one_operation(
+    tmp_path: Path, monkeypatch, capsys
+):
     cases = [
         _case("add-api-tiny", family="pointwise", surface="api"),
         _case("add-api-medium", family="pointwise", surface="api"),
@@ -346,15 +409,29 @@ def test_focus_mode_can_select_all_cases_for_one_operation(tmp_path: Path, monke
             "dtype": case.dtype,
             "source_file": case.source_file,
             "mode": mode,
-            "numpy": {"median_ns": 10, "best_ns": 9, "sample_count": 3, "iterations": 1},
-            "whest": {"median_ns": 12, "best_ns": 11, "sample_count": 3, "iterations": 1},
+            "numpy": {
+                "median_ns": 10,
+                "best_ns": 9,
+                "sample_count": 3,
+                "iterations": 1,
+            },
+            "whest": {
+                "median_ns": 12,
+                "best_ns": 11,
+                "sample_count": 3,
+                "iterations": 1,
+            },
             "ratio": 1.2,
             "whest_details": {"flops_used": 2, "op_count": 1, "tracked_time_s": 0.001},
             "startup": {
                 "numpy": {"elapsed_ns": 100},
                 "whest": {"elapsed_ns": 200},
                 "ratio": 2.0,
-                "whest_details": {"flops_used": 1, "op_count": 1, "tracked_time_s": 0.0001},
+                "whest_details": {
+                    "flops_used": 1,
+                    "op_count": 1,
+                    "tracked_time_s": 0.0001,
+                },
             },
         },
     )
@@ -369,7 +446,10 @@ def test_focus_mode_can_select_all_cases_for_one_operation(tmp_path: Path, monke
     )
     monkeypatch.setattr(
         "benchmarks.overhead.cli.load_policy",
-        lambda path=None: {"schema_version": SCHEMA_VERSION, "default": {"ratio_max": 6.0}},
+        lambda path=None: {
+            "schema_version": SCHEMA_VERSION,
+            "default": {"ratio_max": 6.0},
+        },
     )
 
     output_dir = tmp_path / "focus-op"
@@ -396,7 +476,12 @@ def test_main_supports_suggest_thresholds_mode(tmp_path: Path, monkeypatch, caps
         lambda output_dir: {
             "manifest": {"mode": "full"},
             "cases": [
-                {"case_id": "add-api-tiny", "family": "pointwise", "surface": "api", "ratio": 1.5}
+                {
+                    "case_id": "add-api-tiny",
+                    "family": "pointwise",
+                    "surface": "api",
+                    "ratio": 1.5,
+                }
             ],
         },
     )
@@ -432,7 +517,12 @@ def test_main_writes_json_safe_suggested_policy(tmp_path: Path, monkeypatch):
         lambda output_dir: {
             "manifest": {"mode": "full"},
             "cases": [
-                {"case_id": "add-api-tiny", "family": "pointwise", "surface": "api", "ratio": float("inf")}
+                {
+                    "case_id": "add-api-tiny",
+                    "family": "pointwise",
+                    "surface": "api",
+                    "ratio": float("inf"),
+                }
             ],
         },
     )
@@ -456,7 +546,11 @@ def test_main_report_mode_loads_run_writes_browser_report_and_prints_path(
     monkeypatch.setattr(
         "benchmarks.overhead.cli.load_run",
         lambda output_dir: {
-            "manifest": {"schema_version": SCHEMA_VERSION, "mode": "full", "selected_cases": []},
+            "manifest": {
+                "schema_version": SCHEMA_VERSION,
+                "mode": "full",
+                "selected_cases": [],
+            },
             "environment": {"software": {"python": "test"}},
             "summary": {"case_count": 0, "passed": 0, "failed": 0, "worst_ratio": 0.0},
             "cases": [],
@@ -486,7 +580,11 @@ def test_main_report_mode_builds_comparison_when_baseline_run_is_provided(
     monkeypatch.setattr(
         "benchmarks.overhead.cli.load_run",
         lambda output_dir: {
-            "manifest": {"schema_version": SCHEMA_VERSION, "mode": "full", "selected_cases": []},
+            "manifest": {
+                "schema_version": SCHEMA_VERSION,
+                "mode": "full",
+                "selected_cases": [],
+            },
             "environment": {},
             "summary": {"case_count": 0, "passed": 0, "failed": 0, "worst_ratio": 0.0},
             "cases": [],
@@ -507,7 +605,9 @@ def test_main_report_mode_builds_comparison_when_baseline_run_is_provided(
         observed["comparison"] = comparison
         return output_dir / "report.html"
 
-    monkeypatch.setattr("benchmarks.overhead.cli.write_browser_report", fake_write_browser_report)
+    monkeypatch.setattr(
+        "benchmarks.overhead.cli.write_browser_report", fake_write_browser_report
+    )
 
     exit_code = main(
         [

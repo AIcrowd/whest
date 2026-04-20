@@ -277,9 +277,15 @@ def _generation_plan(
     if module == "whest.stats":
         return "unsupported", None, {"op_name": leaf_name}
     if module == "numpy.random" and leaf_name in {"bytes", "random_integers"}:
-        return "generated", "random_call", {"op_name": leaf_name, "random_name": leaf_name}
+        return (
+            "generated",
+            "random_call",
+            {"op_name": leaf_name, "random_name": leaf_name},
+        )
     if module == "numpy.linalg" and leaf_name in _LINALG_NAMES:
-        kind = "linalg_matrix_rhs" if leaf_name in _LINALG_RHS_NAMES else "linalg_matrix"
+        kind = (
+            "linalg_matrix_rhs" if leaf_name in _LINALG_RHS_NAMES else "linalg_matrix"
+        )
         return "generated", kind, {"op_name": leaf_name}
     if module == "numpy.linalg" and leaf_name in _LINALG_DELEGATE_NAMES:
         return "generated", "linalg_delegate", {"op_name": leaf_name}
@@ -289,7 +295,11 @@ def _generation_plan(
     if module == "numpy.fft" and leaf_name in _FFT_FREE_PROFILE_KINDS:
         return "generated", _FFT_FREE_PROFILE_KINDS[leaf_name], {"op_name": leaf_name}
     if module == "numpy.random" and leaf_name in _RANDOM_NAMES:
-        return "generated", "random_call", {"op_name": leaf_name, "random_name": leaf_name}
+        return (
+            "generated",
+            "random_call",
+            {"op_name": leaf_name, "random_name": leaf_name},
+        )
     if leaf_name in _BITWISE_NAMES:
         if "shift" in leaf_name:
             return "generated", "bitwise_shift", {"op_name": leaf_name}
@@ -558,8 +568,7 @@ def documented_operations() -> tuple[dict[str, object], ...]:
                 "profile_params": profile_params,
                 "profile_dtype": _profile_dtype(profile_kind),
                 "generated_case_ids": [
-                    _case_id(slug, "api", size_name)
-                    for size_name in ("tiny", "medium")
+                    _case_id(slug, "api", size_name) for size_name in ("tiny", "medium")
                 ]
                 if generation_status == "generated"
                 else [],

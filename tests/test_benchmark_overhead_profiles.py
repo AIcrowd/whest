@@ -86,8 +86,18 @@ def test_materialize_case_inputs_builds_linalg_matrices_without_runtime_warnings
     assert np.isfinite(matrix).all()
 
 
-@pytest.mark.parametrize(("op_name", "expected_q"), [("percentile", 50), ("nanpercentile", 50), ("quantile", 0.5), ("nanquantile", 0.5)])
-def test_materialize_case_inputs_uses_keyword_q_for_percentile_families(op_name, expected_q):
+@pytest.mark.parametrize(
+    ("op_name", "expected_q"),
+    [
+        ("percentile", 50),
+        ("nanpercentile", 50),
+        ("quantile", 0.5),
+        ("nanquantile", 0.5),
+    ],
+)
+def test_materialize_case_inputs_uses_keyword_q_for_percentile_families(
+    op_name, expected_q
+):
     args, kwargs = materialize_case_inputs(_payload(op_name, "vector_reduction"))
 
     assert len(args) == 1

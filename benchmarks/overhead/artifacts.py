@@ -67,7 +67,10 @@ def _decode_value(value: object) -> object:
 
 
 def _json_text(payload: object) -> str:
-    return json.dumps(_encode_value(payload), indent=2, sort_keys=True, allow_nan=False) + "\n"
+    return (
+        json.dumps(_encode_value(payload), indent=2, sort_keys=True, allow_nan=False)
+        + "\n"
+    )
 
 
 def _write_json(path: Path, payload: object) -> None:
@@ -76,8 +79,7 @@ def _write_json(path: Path, payload: object) -> None:
 
 def _write_jsonl(path: Path, rows: list[object]) -> None:
     lines = [
-        json.dumps(_encode_value(row), sort_keys=True, allow_nan=False)
-        for row in rows
+        json.dumps(_encode_value(row), sort_keys=True, allow_nan=False) for row in rows
     ]
     path.write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8")
 
@@ -180,9 +182,7 @@ def compare_runs(base_path: Path, candidate_path: Path) -> dict[str, object]:
     candidate_run = load_run(candidate_path)
 
     base_cases = {row["case_id"]: row for row in base_run.get("cases", [])}
-    candidate_cases = {
-        row["case_id"]: row for row in candidate_run.get("cases", [])
-    }
+    candidate_cases = {row["case_id"]: row for row in candidate_run.get("cases", [])}
 
     regressions: list[dict[str, object]] = []
     improvements: list[dict[str, object]] = []

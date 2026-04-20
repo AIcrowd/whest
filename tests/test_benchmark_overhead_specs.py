@@ -14,10 +14,7 @@ def test_seed_cases_include_api_and_operator_surfaces():
     assert ("matmul", "api") in surfaces
     assert ("matmul", "operator") in surfaces
     assert len({case.case_id for case in cases}) == len(cases)
-    assert {
-        case.case_id
-        for case in cases
-    } == {
+    assert {case.case_id for case in cases} == {
         "add-api-tiny",
         "add-api-medium",
         "add-operator-tiny",
@@ -27,21 +24,21 @@ def test_seed_cases_include_api_and_operator_surfaces():
         "matmul-operator-tiny",
         "matmul-operator-medium",
     }
+    assert {case.op_name: case.family for case in cases if case.surface == "api"}[
+        "add"
+    ] == "pointwise"
+    assert {case.op_name: case.family for case in cases if case.surface == "api"}[
+        "matmul"
+    ] == "contractions"
     assert {
-        case.op_name: case.family for case in cases if case.surface == "api"
-    }["add"] == "pointwise"
-    assert {
-        case.op_name: case.family for case in cases if case.surface == "api"
-    }["matmul"] == "contractions"
-    assert {
-        case.op_name: case.qualified_name
-        for case in cases
-        if case.surface == "api"
+        case.op_name: case.qualified_name for case in cases if case.surface == "api"
     } == {
         "add": "whest.add",
         "matmul": "whest.matmul",
     }
-    assert all(case.qualified_name is None for case in cases if case.surface == "operator")
+    assert all(
+        case.qualified_name is None for case in cases if case.surface == "operator"
+    )
 
 
 def test_seed_cases_have_required_fields():
@@ -115,6 +112,8 @@ def test_full_cases_expand_docs_inventory_with_tiny_and_medium_profiles():
     assert "bitwise_and-api-tiny" in case_ids
     assert "angle-api-tiny" in case_ids
 
-    add_cases = [case for case in cases if case.op_name == "add" and case.surface == "api"]
+    add_cases = [
+        case for case in cases if case.op_name == "add" and case.surface == "api"
+    ]
     assert {case.size_name for case in add_cases} == {"tiny", "medium"}
     assert all(case.slug == "add" for case in add_cases)

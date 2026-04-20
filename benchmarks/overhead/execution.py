@@ -82,7 +82,9 @@ def _case_inputs(case: BenchmarkCase) -> tuple[tuple[object, ...], dict[str, obj
 
 def _build_case_closures(
     case: BenchmarkCase,
-    args_and_kwargs: tuple[tuple[object, ...], dict[str, object]] | tuple[object, ...] | None = None,
+    args_and_kwargs: tuple[tuple[object, ...], dict[str, object]]
+    | tuple[object, ...]
+    | None = None,
 ) -> tuple[Callable[[], object], Callable[[], object]]:
     if args_and_kwargs is None:
         args, kwargs = _case_inputs(case)
@@ -113,7 +115,9 @@ def _build_case_closures(
     return numpy_callable, whest_callable
 
 
-def _summary_to_dict(summary: SampleSummary, *, iterations: int) -> dict[str, float | int]:
+def _summary_to_dict(
+    summary: SampleSummary, *, iterations: int
+) -> dict[str, float | int]:
     return {
         "best_ns": summary.best_ns,
         "median_ns": summary.median_ns,
@@ -213,7 +217,9 @@ def _steady_state_result(case: BenchmarkCase, *, mode: str) -> dict[str, object]
     numpy_summary = summarize_samples(numpy_samples, iterations=numpy_iterations)
     whest_summary = summarize_samples(whest_samples, iterations=whest_iterations)
     numpy_median = numpy_summary.median_ns
-    ratio = float("inf") if numpy_median == 0 else whest_summary.median_ns / numpy_median
+    ratio = (
+        float("inf") if numpy_median == 0 else whest_summary.median_ns / numpy_median
+    )
 
     return {
         "numpy": _summary_to_dict(numpy_summary, iterations=numpy_iterations),
@@ -238,10 +244,9 @@ def _callable_payload(func: Callable[..., object] | str) -> dict[str, str]:
 
 def _numpy_startup_payload(func: Callable[..., object]) -> dict[str, str]:
     payload = _callable_payload(func)
-    if (
-        payload["module"] == "benchmarks.overhead.specs"
-        and payload["qualname"].startswith("_numpy_")
-    ):
+    if payload["module"] == "benchmarks.overhead.specs" and payload[
+        "qualname"
+    ].startswith("_numpy_"):
         payload["module"] = "benchmarks.overhead.startup_numpy"
     return payload
 
@@ -374,7 +379,11 @@ def _startup_result(case: BenchmarkCase) -> dict[str, object]:
     numpy_result = _run_startup_subprocess(case, engine="numpy")
     whest_result = _run_startup_subprocess(case, engine="whest")
     numpy_elapsed = numpy_result["elapsed_ns"]
-    ratio = float("inf") if numpy_elapsed == 0 else whest_result["elapsed_ns"] / numpy_elapsed
+    ratio = (
+        float("inf")
+        if numpy_elapsed == 0
+        else whest_result["elapsed_ns"] / numpy_elapsed
+    )
     return {
         "numpy": {"elapsed_ns": numpy_elapsed},
         "whest": {"elapsed_ns": whest_result["elapsed_ns"]},

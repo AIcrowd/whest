@@ -91,7 +91,9 @@ def suggest_thresholds(
                 )
             )
             matching = bucketed_cases.get(f"family:{family}", [])
-            suggestion["family"][family] = {"ratio_max": _max_ratio(matching, current=current)}
+            suggestion["family"][family] = {
+                "ratio_max": _max_ratio(matching, current=current)
+            }
 
     surface_policies = policy.get("surface", {})
     if surface_policies:
@@ -103,6 +105,8 @@ def suggest_thresholds(
                 )
             )
             matching = bucketed_cases.get(f"surface:{surface}", [])
-            suggestion["surface"][surface] = {"ratio_max": _max_ratio(matching, current=current)}
+            suggestion["surface"][surface] = {
+                "ratio_max": _max_ratio(matching, current=current)
+            }
 
     return suggestion

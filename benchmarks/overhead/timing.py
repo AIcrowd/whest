@@ -18,9 +18,7 @@ class SampleSummary:
     sample_count: int
 
 
-def summarize_samples(
-    samples: Sequence[int], *, iterations: int = 1
-) -> SampleSummary:
+def summarize_samples(samples: Sequence[int], *, iterations: int = 1) -> SampleSummary:
     """Return per-iteration best and median timing for the given samples."""
     if not samples:
         raise ValueError("samples must not be empty")
@@ -75,9 +73,7 @@ def measure_samples(
         iterations, _ = calibrate_iterations(
             func, minimum_elapsed_ns=minimum_elapsed_ns
         )
-        samples = [
-            _time_iterations(func, iterations) for _ in range(measured_samples)
-        ]
+        samples = [_time_iterations(func, iterations) for _ in range(measured_samples)]
         return samples, iterations
     finally:
         if was_enabled:

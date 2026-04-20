@@ -12,7 +12,11 @@ from benchmarks.overhead.report import (
 def test_render_terminal_summary_highlights_worst_regressions():
     manifest = {
         "mode": "full",
-        "selected_cases": ["add-api-medium", "matmul-api-medium", "matmul-operator-medium"],
+        "selected_cases": [
+            "add-api-medium",
+            "matmul-api-medium",
+            "matmul-operator-medium",
+        ],
         "unclassified_operations": [{"qualified_name": "whest.linalg.matmul"}],
     }
     cases = [
@@ -51,7 +55,11 @@ def test_render_terminal_summary_highlights_worst_regressions():
 
 
 def test_render_terminal_summary_reports_all_pass_cleanly():
-    manifest = {"mode": "ci", "selected_cases": ["add-api-tiny"], "unclassified_operations": []}
+    manifest = {
+        "mode": "ci",
+        "selected_cases": ["add-api-tiny"],
+        "unclassified_operations": [],
+    }
     cases = [
         {
             "case_id": "add-api-tiny",
@@ -128,7 +136,9 @@ def test_build_browser_report_payload_flattens_cases_and_counts():
                     "flops_used": 8,
                     "op_count": 1,
                     "tracked_time_s": 0.0001,
-                    "operations": {"add": {"calls": 1, "duration": 0.0001, "flop_cost": 8}},
+                    "operations": {
+                        "add": {"calls": 1, "duration": 0.0001, "flop_cost": 8}
+                    },
                 },
             },
             {
@@ -180,7 +190,10 @@ def test_write_browser_report_emits_html_and_json(tmp_path):
             "selected_cases": ["add-api-tiny"],
             "unclassified_operations": [],
         },
-        "environment": {"software": {"python": "3.14.3"}, "timestamp": "2026-04-20T00:00:00+00:00"},
+        "environment": {
+            "software": {"python": "3.14.3"},
+            "timestamp": "2026-04-20T00:00:00+00:00",
+        },
         "summary": {"case_count": 1, "passed": 1, "failed": 0, "worst_ratio": 1.2},
         "operations": [
             {
@@ -214,7 +227,9 @@ def test_write_browser_report_emits_html_and_json(tmp_path):
                     "flops_used": 8,
                     "op_count": 1,
                     "tracked_time_s": 0.0001,
-                    "operations": {"add": {"calls": 1, "duration": 0.0001, "flop_cost": 8}},
+                    "operations": {
+                        "add": {"calls": 1, "duration": 0.0001, "flop_cost": 8}
+                    },
                 },
             }
         ],

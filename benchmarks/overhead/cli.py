@@ -311,7 +311,9 @@ def main(argv: list[str] | None = None) -> int:
     benchmark_errors: dict[str, list[str]] = defaultdict(list)
     for case in selected_cases:
         try:
-            evaluated_cases.append(evaluate_case(run_case(case, mode=args.mode), policy))
+            evaluated_cases.append(
+                evaluate_case(run_case(case, mode=args.mode), policy)
+            )
         except Exception as exc:  # pragma: no cover - exercised via operation rows
             benchmark_errors[str(case.slug or case.op_name)].append(
                 f"{case.case_id}: {exc}"
@@ -321,7 +323,9 @@ def main(argv: list[str] | None = None) -> int:
         "schema_version": SCHEMA_VERSION,
         "mode": args.mode,
         "selected_cases": [case.case_id for case in selected_cases],
-        "unclassified_operations": list(accountability.get("unclassified_operations", [])),
+        "unclassified_operations": list(
+            accountability.get("unclassified_operations", [])
+        ),
     }
     operation_rows = _aggregate_operations(
         ops_catalog,
@@ -348,6 +352,7 @@ def main(argv: list[str] | None = None) -> int:
     print(render_terminal_summary(manifest, evaluated_cases))
     return (
         0
-        if all(case.get("passed", False) for case in evaluated_cases) and not benchmark_errors
+        if all(case.get("passed", False) for case in evaluated_cases)
+        and not benchmark_errors
         else 1
     )

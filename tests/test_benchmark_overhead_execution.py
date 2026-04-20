@@ -73,12 +73,17 @@ def test_run_case_returns_top_level_steady_state_fields(monkeypatch):
         execution_mod,
         "_measure_whest_samples",
         lambda whest_callable, *, measured_samples: (
-            whest_sample_calls.append(measured_samples) or ([200, 220, 210], 20, {
-                "flops_used": 6,
-                "op_count": 3,
-                "tracked_time_s": 0.01,
-                "operations": {"add": {"calls": 3}},
-            })
+            whest_sample_calls.append(measured_samples)
+            or (
+                [200, 220, 210],
+                20,
+                {
+                    "flops_used": 6,
+                    "op_count": 3,
+                    "tracked_time_s": 0.01,
+                    "operations": {"add": {"calls": 3}},
+                },
+            )
         ),
     )
     monkeypatch.setattr(execution_mod, "summarize_samples", fake_summarize_samples)
@@ -171,12 +176,17 @@ def test_run_case_uses_mode_to_choose_measured_sample_count(
         execution_mod,
         "_measure_whest_samples",
         lambda whest_callable, *, measured_samples: (
-            whest_measured_samples_seen.append(measured_samples) or ([100, 110, 120], 10, {
-                "flops_used": 0,
-                "op_count": 0,
-                "tracked_time_s": 0.0,
-                "operations": {},
-            })
+            whest_measured_samples_seen.append(measured_samples)
+            or (
+                [100, 110, 120],
+                10,
+                {
+                    "flops_used": 0,
+                    "op_count": 0,
+                    "tracked_time_s": 0.0,
+                    "operations": {},
+                },
+            )
         ),
     )
     monkeypatch.setattr(
@@ -212,7 +222,9 @@ def test_startup_result_reports_numpy_and_whest_timings(case):
     assert set(result) >= {"numpy", "whest", "ratio"}
     assert result["numpy"]["elapsed_ns"] > 0
     assert result["whest"]["elapsed_ns"] > 0
-    assert result["ratio"] == result["whest"]["elapsed_ns"] / result["numpy"]["elapsed_ns"]
+    assert (
+        result["ratio"] == result["whest"]["elapsed_ns"] / result["numpy"]["elapsed_ns"]
+    )
     assert set(result["whest_details"]) == {
         "flops_used",
         "op_count",
@@ -259,7 +271,11 @@ def test_case_payload_uses_whest_free_numpy_factory_module():
 
 @pytest.mark.parametrize(
     "case",
-    [case for case in seed_cases() if case.op_name == "matmul" and case.size_name == "medium"],
+    [
+        case
+        for case in seed_cases()
+        if case.op_name == "matmul" and case.size_name == "medium"
+    ],
     ids=lambda case: case.case_id,
 )
 def test_materialized_medium_matmul_operands_are_warning_free(case):

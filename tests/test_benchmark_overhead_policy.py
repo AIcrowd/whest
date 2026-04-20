@@ -101,8 +101,18 @@ def test_suggest_thresholds_preserves_policy_shape_and_uses_observed_ratios():
         "surface": {"operator": {"ratio_max": 7.0}},
     }
     cases = [
-        {"case_id": "add-api-medium", "family": "pointwise", "surface": "api", "ratio": 1.5},
-        {"case_id": "matmul-api-medium", "family": "contractions", "surface": "api", "ratio": 3.25},
+        {
+            "case_id": "add-api-medium",
+            "family": "pointwise",
+            "surface": "api",
+            "ratio": 1.5,
+        },
+        {
+            "case_id": "matmul-api-medium",
+            "family": "contractions",
+            "surface": "api",
+            "ratio": 3.25,
+        },
         {
             "case_id": "matmul-operator-medium",
             "family": "contractions",

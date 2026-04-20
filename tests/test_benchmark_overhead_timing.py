@@ -121,7 +121,9 @@ def test_measure_samples_disables_and_restores_gc(monkeypatch):
     assert samples == [456, 456, 456]
     assert events[:3] == ["disabled", "warmup", "warmup"]
     assert events[3] == ("calibrate", 1, 1 << 20)
-    batch_events = [event for event in events if isinstance(event, tuple) and event[0] == "batch"]
+    batch_events = [
+        event for event in events if isinstance(event, tuple) and event[0] == "batch"
+    ]
     measured_events = [event for event in events if event == "batch"]
 
     assert batch_events == [("batch", 8), ("batch", 8), ("batch", 8)]
