@@ -172,8 +172,8 @@ function WreathElementRow({ element, index }) {
   }[element.classification];
 
   const matrixEffect = element.matrixPreserving
-    ? <Latex math={String.raw`\sigma(M) = M`} />
-    : <Latex math={String.raw`\sigma(M) \ne M`} />;
+    ? String.raw`\sigma(M) = M`
+    : String.raw`\sigma(M) \ne M`;
   const piStr = element.derivePiResult === null ? '—' : piCycleNotation(element.derivePiResult);
   const factorStr = element.factorization
     ? element.factorization.map((factor) => {

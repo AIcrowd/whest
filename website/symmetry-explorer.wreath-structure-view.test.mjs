@@ -56,7 +56,9 @@ test('WreathStructureView caps the initial table at 10 rows, opens a modal for t
   assert.match(WIDGET_SRC, /✓ kept in G/);
   assert.match(WIDGET_SRC, /✗ no matching relabeling/);
   assert.match(WIDGET_SRC, /style=\{\{ color: notationColor\('sigma_row_move'\) \}\}/);
+  assert.match(WIDGET_SRC, /const matrixEffect = element\.matrixPreserving\s*\?\s*String\.raw`\\sigma\(M\) = M`/);
   assert.match(WIDGET_SRC, /Latex math=\{matrixEffect\}/);
+  assert.doesNotMatch(WIDGET_SRC, /const matrixEffect = element\.matrixPreserving\s*\?\s*<Latex/);
   assert.match(WIDGET_SRC, /sigma_row_move/);
 });
 
