@@ -45,14 +45,17 @@ test('WreathStructureView uses the same card styling language as the rest of the
   assert.match(WIDGET_SRC, /rounded-lg border border-gray-200 bg-gray-50/);
 });
 
-test('WreathStructureView caps the initial table at 10 rows, opens a modal for the rest, and color-codes row outcomes', () => {
+test('WreathStructureView caps the initial table at 10 rows, opens a modal for the rest, and uses neutral rows with outcome-only status cues', () => {
   assert.match(WIDGET_SRC, /INITIAL_ROW_LIMIT\s*=\s*10/);
   assert.match(WIDGET_SRC, /Click to see/);
   assert.match(WIDGET_SRC, /ExplorerModal/);
   assert.doesNotMatch(WIDGET_SRC, /Aggregated Summary/);
-  assert.match(WIDGET_SRC, /bg-emerald/);
-  assert.match(WIDGET_SRC, /notationColor\('v_free'\)/);
-  assert.match(WIDGET_SRC, /bg-rose/);
+  assert.doesNotMatch(WIDGET_SRC, /bg-emerald-50/);
+  assert.doesNotMatch(WIDGET_SRC, /bg-rose-50/);
+  assert.match(WIDGET_SRC, /✓ kept in G/);
+  assert.match(WIDGET_SRC, /✗ no matching relabeling/);
+  assert.match(WIDGET_SRC, /style=\{\{ color: notationColor\('sigma_row_move'\) \}\}/);
+  assert.match(WIDGET_SRC, /Latex math=\{matrixEffect\}/);
   assert.match(WIDGET_SRC, /sigma_row_move/);
 });
 

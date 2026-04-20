@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { buildUVertexLabels } from '../engine/uVertexLabel.js';
 import IncidenceMatrix from './IncidenceMatrix.jsx';
-import { notationColor } from '../lib/notationSystem.js';
+import InlineMathText from './InlineMathText.jsx';
+import { notationColor, notationLatex } from '../lib/notationSystem.js';
 
 const STAGE_LABELS = ['M', 'σ(M)', 'π(σ(M))'];
 const VISIBLE_VALID_PAIR_LIMIT = 4;
@@ -145,7 +146,9 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
   return (
     <div className="sigma-loop">
       <div className="text-[11px] text-muted-foreground mb-2">
-        Each σ is a wreath element; each accepted pair shows a row move together with its matching relabeling π.
+        <InlineMathText>
+          {`Each $${notationLatex('sigma_row_move')}$ is a wreath element; each accepted pair shows a row move together with its matching relabeling $${notationLatex('pi_relabeling')}$.`}
+        </InlineMathText>
       </div>
       {/* Summary stats */}
       <div className="sigma-summary">

@@ -371,7 +371,9 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       <div id="sigma-loop" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
                         <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
                           <AnchorLink anchorId="sigma-loop" labelText="σ-Loop & π Detection">
-                            σ-Loop &amp; π Detection
+                            <InlineMathText>
+                              {`$${notationLatex('sigma_row_move')}$-Loop & $${notationLatex('pi_relabeling')}$ Detection`}
+                            </InlineMathText>
                           </AnchorLink>
                         </h3>
                         <SigmaLoop

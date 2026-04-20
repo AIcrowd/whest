@@ -14,6 +14,7 @@ import {
 
 const V_COLOR = notationColor('v_free');
 const W_COLOR = notationColor('w_summed');
+const U_FALLBACK_COLOR = notationColor('sigma_row_move');
 
 export default function BipartiteGraph({ graph, example, variableColors, highlightedLabels = new Set() }) {
   const isHighlighted = (label) =>
@@ -144,7 +145,7 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
               <LabelBadge
                 x={lbLeft + 12} y={top}
                 text={label}
-                color={vc?.color || '#FA9E33'} bg="#F8F9F9"
+                color={vc?.color || U_FALLBACK_COLOR} bg="#F8F9F9"
               />
             </g>
           );
@@ -240,7 +241,7 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
           const pillR = pillH / 2;
           const nOpName = example.operandNames?.[u.opIdx];
           const nVc = variableColors?.[nOpName];
-          const nodeColor = nVc?.color || '#FA9E33';
+          const nodeColor = nVc?.color || U_FALLBACK_COLOR;
           const hasSymmetry = nVc?.symmetry && nVc.symmetry !== 'none';
           return (
             <g key={`u-${i}`}>

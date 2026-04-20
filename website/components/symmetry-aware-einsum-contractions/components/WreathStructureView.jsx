@@ -149,30 +149,32 @@ function WreathElementTable({ elements }) {
 
 function WreathElementRow({ element, index }) {
   const classLabel = {
-    valid: 'kept in G',
+    valid: '✓ kept in G',
     'matrix-preserving': 'identity only',
-    rejected: 'no matching relabeling',
+    rejected: '✗ no matching relabeling',
   }[element.classification];
 
   const rowTone = {
     valid: {
-      row: 'bg-emerald-50 text-emerald-950',
+      row: 'bg-white text-gray-900',
       pill: 'border-emerald-200 bg-emerald-100 text-emerald-800',
       outcome: 'text-emerald-700',
     },
     'matrix-preserving': {
-      row: 'bg-slate-50 text-slate-700',
+      row: 'bg-white text-gray-900',
       pill: 'border-slate-200 bg-slate-100 text-slate-600',
       outcome: 'text-slate-500',
     },
     rejected: {
-      row: 'bg-rose-50 text-rose-950',
+      row: 'bg-white text-gray-900',
       pill: 'border-rose-200 bg-rose-100 text-rose-800',
       outcome: 'text-rose-700',
     },
   }[element.classification];
 
-  const matrixEffect = element.matrixPreserving ? 'σ(M) = M' : 'σ(M) ≠ M';
+  const matrixEffect = element.matrixPreserving
+    ? `${notationLatex('sigma_row_move')}(M) = M`
+    : `${notationLatex('sigma_row_move')}(M) \\ne M`;
   const piStr = element.derivePiResult === null ? '—' : piCycleNotation(element.derivePiResult);
   const factorStr = element.factorization
     ? element.factorization.map((factor) => {
@@ -193,7 +195,11 @@ function WreathElementRow({ element, index }) {
         </span>
       </td>
       <td className="px-3 py-2 font-mono text-[11px]">{factorStr}</td>
-      <td className="px-3 py-2 font-mono text-[11px]">{matrixEffect}</td>
+      <td className="px-3 py-2 font-mono text-[11px]">
+        <span style={{ color: notationColor('sigma_row_move') }}>
+          <Latex math={matrixEffect} />
+        </span>
+      </td>
       <td className="px-3 py-2 font-mono text-[11px]">{piStr}</td>
       <td className={`px-3 py-2 font-medium ${rowTone.outcome}`}>{classLabel}</td>
     </tr>
