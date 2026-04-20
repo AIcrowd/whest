@@ -31,6 +31,12 @@ const SYM = {
 // renders the Burnside sum inline, and this constant is the single source of
 // truth for "what the hero says".
 const AGGREGATION_FORMULA = String.raw`\text{Total} \;=\; (k-1) \cdot \prod_{a} \tfrac{1}{|G_a|} \sum_{g \in G_a} \prod_{c} n_c \;+\; \prod_{a} \alpha_a`;
+const SECTION_FIVE_INTRO_PARAGRAPH = 'The earlier sections identified the symmetry group, decomposed its action into components, and computed the local quantities that govern work. This section gathers those local counts back into one runtime model for the full contraction.';
+const SECTION_FIVE_INTRO_LEAD = 'We do that by combining the multiplication cost and the accumulation cost. Writing these as $\\mu$ and $\\alpha$, the total symmetry-aware cost is';
+const SECTION_FIVE_INTRO_CLOSE = 'The full equation below makes that assembly explicit, and the summary that follows shows how the resulting symmetry-aware total compares with the naive dense baseline.';
+const SECTION_FIVE_TOTAL_FORMULA = String.raw`\mathrm{Total} = \mu + \alpha`;
+const SECTION_FIVE_MU_FORMULA = String.raw`\mu = (k-1)\prod_a M_a`;
+const SECTION_FIVE_ALPHA_FORMULA = String.raw`\alpha = \prod_a \alpha_a`;
 const PIECEWISE_BRACE = String.raw`\left\{\vphantom{\begin{matrix}x\\x\\x\\x\\x\\x\end{matrix}}\right.`;
 const PIECEWISE_PREFIX = String.raw`\textcolor{${notationColor('alpha_component')}}{${notationLatex('alpha_component')}} \, = \, \textcolor{#ef5a4c}{${PIECEWISE_BRACE}}`;
 
@@ -297,6 +303,60 @@ function ComponentRecap({ components }) {
   );
 }
 
+function SectionFiveIntroBlock() {
+  return (
+    <div className="mx-auto max-w-[48rem] space-y-7 text-center">
+      <p
+        className="font-serif text-[17px] leading-[1.75] text-gray-700"
+        style={{ textAlign: 'justify' }}
+      >
+        <InlineMathText>{SECTION_FIVE_INTRO_PARAGRAPH}</InlineMathText>
+      </p>
+
+      <div className="space-y-7">
+        <p
+          className="font-serif text-[17px] leading-[1.75] text-gray-700"
+          style={{ textAlign: 'justify' }}
+        >
+          <InlineMathText>{SECTION_FIVE_INTRO_LEAD}</InlineMathText>
+        </p>
+
+        <div className="space-y-6">
+          <div className="flex justify-center overflow-x-auto overflow-y-visible">
+            <div className="min-w-0 text-[18px] sm:text-[20px]">
+              <Latex display math={SECTION_FIVE_TOTAL_FORMULA} />
+            </div>
+          </div>
+
+          <div className="relative mx-auto grid max-w-[30rem] grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-2">
+            <div
+              aria-hidden="true"
+              className="absolute bottom-[18%] left-1/2 top-[18%] hidden w-px -translate-x-1/2 bg-gray-100 sm:block"
+            />
+            <div className="flex justify-center overflow-x-auto overflow-y-visible sm:justify-end sm:pr-5">
+              <div className="min-w-0 text-[17px] sm:text-[19px]">
+                <Latex display math={SECTION_FIVE_MU_FORMULA} />
+              </div>
+            </div>
+            <div className="flex justify-center overflow-x-auto overflow-y-visible sm:justify-start sm:pl-5">
+              <div className="min-w-0 text-[17px] sm:text-[19px]">
+                <Latex display math={SECTION_FIVE_ALPHA_FORMULA} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p
+          className="font-serif text-[17px] leading-[1.75] text-gray-700"
+          style={{ textAlign: 'justify' }}
+        >
+          <InlineMathText>{SECTION_FIVE_INTRO_CLOSE}</InlineMathText>
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function ComparisonMetric({ label, value, valueClassName }) {
   return (
     <div className="flex min-h-[160px] flex-col items-center justify-center px-4 py-[28px] text-center sm:px-6">
@@ -444,6 +504,8 @@ export default function TotalCostView({
   return (
     <div className="space-y-8">
       <ComponentRecap components={components} />
+
+      <SectionFiveIntroBlock />
 
       <AggregationExplainer />
 

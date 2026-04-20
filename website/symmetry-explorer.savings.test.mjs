@@ -15,7 +15,7 @@ test('Acts 2-4 are sequenced around the inline savings narrative', () => {
   assert.match(appSource, /EXPLORER_ACTS\[3\]\.introParagraphs/);
   assert.match(appSource, /EXPLORER_ACTS\[4\]\.heading/);
   assert.match(appSource, /EXPLORER_ACTS\[4\]\.question/);
-  assert.match(appSource, /EXPLORER_ACTS\[4\]\.introParagraphs/);
+  assert.doesNotMatch(appSource, /EXPLORER_ACTS\[4\]\.introParagraphs/);
   assert.doesNotMatch(appSource, /EXPLORER_ACTS\[4\]\.supportingSentence/);
   assert.doesNotMatch(appSource, /EXPLORER_ACTS\[[1-4]\]\.bridge/);
   assert.doesNotMatch(appSource, /EXPLORER_ACTS\[4\]\.why/);
@@ -42,6 +42,7 @@ test('Act 4 no longer carries the Mental Framework modal — it is now the pream
 test('Section 5 renders the exact Option B-style Cost Savings spread', () => {
   const appSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
   const totalCostSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/TotalCostView.jsx', import.meta.url), 'utf8');
+  const totalCostIndex = appSource.indexOf('<TotalCostView');
   const denseIndex = totalCostSource.indexOf("label: 'Dense Cost'");
   const symmetryIndex = totalCostSource.indexOf("label: 'Symmetry-Aware Cost'");
   const muIndex = totalCostSource.indexOf("label: 'Multiplication Cost (μ)'");
@@ -51,6 +52,7 @@ test('Section 5 renders the exact Option B-style Cost Savings spread', () => {
 
   assert.match(appSource, /title={EXPLORER_ACTS\[4\]\.heading}/);
   assert.match(appSource, /description={<InlineMathText>{EXPLORER_ACTS\[4\]\.question}<\/InlineMathText>}/);
+  assert.ok(totalCostIndex !== -1);
   assert.match(totalCostSource, /section5-editorial-spread/);
   assert.match(totalCostSource, /section5-editorial-header/);
   assert.match(totalCostSource, /section5-band-top/);
@@ -120,17 +122,21 @@ test('ComponentCostView renders the decision ladder and component table', () => 
 test('TotalCostView explains how per-component costs aggregate into the global total', () => {
   const totalCostSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/TotalCostView.jsx', import.meta.url), 'utf8');
   const recapIndex = totalCostSource.indexOf('<ComponentRecap components={components} />');
-  const introIndex = totalCostSource.indexOf('<SectionFiveIntro />');
+  const introIndex = totalCostSource.indexOf('<SectionFiveIntroBlock />');
   const aggregationIndex = totalCostSource.indexOf('<AggregationExplainer />');
   const spreadIndex = totalCostSource.indexOf('<EditorialComparisonSpread');
 
   // Helpers the explainer block depends on.
   assert.match(totalCostSource, /import GlossaryProse from '\.\/GlossaryProse\.jsx'/);
   assert.match(totalCostSource, /import Latex from '\.\/Latex\.jsx'/);
-  assert.equal(introIndex, -1);
-  assert.doesNotMatch(totalCostSource, /The earlier sections identified the symmetry group, decomposed its action into components, and computed the local quantities that govern work\./);
-  assert.doesNotMatch(totalCostSource, /We do that by combining the multiplication cost and the accumulation cost\./);
-  assert.doesNotMatch(totalCostSource, /\\mathrm\{Total\} = \\mu \+ \\alpha/);
+  assert.match(totalCostSource, /The earlier sections identified the symmetry group, decomposed its action into components, and computed the local quantities that govern work\./);
+  assert.match(totalCostSource, /We do that by combining the multiplication cost and the accumulation cost/);
+  assert.match(totalCostSource, /SECTION_FIVE_TOTAL_FORMULA = String\.raw`\\mathrm\{Total\} = \\mu \+ \\alpha`/);
+  assert.match(totalCostSource, /SECTION_FIVE_MU_FORMULA = String\.raw`\\mu = \(k-1\)\\prod_a M_a`/);
+  assert.match(totalCostSource, /SECTION_FIVE_ALPHA_FORMULA = String\.raw`\\alpha = \\prod_a \\alpha_a`/);
+  assert.match(totalCostSource, /The full equation below makes that assembly explicit, and the summary that follows shows how the resulting symmetry-aware total compares with the naive dense baseline\./);
+  assert.match(totalCostSource, /<ComponentRecap components=\{components\} \/>/);
+  assert.match(totalCostSource, /SectionFiveIntroBlock/);
 
   // The explainer block itself.
   assert.match(totalCostSource, /How components combine/);
@@ -185,8 +191,7 @@ test('TotalCostView explains how per-component costs aggregate into the global t
   assert.match(totalCostSource, /CaseBadge\s+regimeId=\{leaf\.id\}/);
   assert.doesNotMatch(totalCostSource, /larger formal group/);
   assert.match(totalCostSource, /Symmetry-Aware Cost/);
-  assert.ok(recapIndex !== -1 && aggregationIndex !== -1 && spreadIndex !== -1);
-  assert.equal(introIndex, -1);
-  assert.ok(recapIndex < aggregationIndex && aggregationIndex < spreadIndex);
+  assert.ok(recapIndex !== -1 && introIndex !== -1 && aggregationIndex !== -1 && spreadIndex !== -1);
+  assert.ok(recapIndex < introIndex && introIndex < aggregationIndex && aggregationIndex < spreadIndex);
   assert.doesNotMatch(totalCostSource, /Seven paths through Section 5/);
 });

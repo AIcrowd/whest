@@ -1,8 +1,16 @@
 import InlineMathText from './InlineMathText.jsx';
 
-export default function SectionIntroProse({ paragraphs, className = '' }) {
+export default function SectionIntroProse({
+  paragraphs,
+  className = '',
+  columns = 'two',
+}) {
+  const gridClassName = columns === 'one'
+    ? 'grid gap-y-4'
+    : 'grid gap-x-8 gap-y-4 md:grid-cols-2';
+
   return (
-    <div className={['grid gap-x-8 gap-y-4 md:grid-cols-2', className].filter(Boolean).join(' ')}>
+    <div className={[gridClassName, className].filter(Boolean).join(' ')}>
       {paragraphs.map((paragraph, index) => (
         <p
           key={index}
