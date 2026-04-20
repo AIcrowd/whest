@@ -15,10 +15,18 @@ _JSON_FILENAME_MAP = {
     "summary": "summary.json",
 }
 
+_OPTIONAL_JSON_FILENAME_MAP = {
+    "accountability": "accountability.json",
+}
+
 _JSONL_FILENAME_MAP = {
     "cases": "cases.jsonl",
     "samples": "samples.jsonl",
     "whest_details": "whest_details.jsonl",
+}
+
+_OPTIONAL_JSONL_FILENAME_MAP = {
+    "operations": "operations.jsonl",
 }
 
 _FLOAT_TAG = "__whest_float__"
@@ -126,7 +134,17 @@ def write_run_artifacts(root: Path, run: dict[str, object]) -> Path:
             continue
         _write_json(root / filename, run.get(key, {}))
 
+    for key, filename in _OPTIONAL_JSON_FILENAME_MAP.items():
+        if key in run:
+            _write_json(root / filename, run.get(key, {}))
+
     for key, filename in _JSONL_FILENAME_MAP.items():
+        rows = run.get(key, [])
+        if not isinstance(rows, list):
+            raise TypeError(f"{key} must be a list")
+        _write_jsonl(root / filename, rows)
+
+    for key, filename in _OPTIONAL_JSONL_FILENAME_MAP.items():
         rows = run.get(key, [])
         if not isinstance(rows, list):
             raise TypeError(f"{key} must be a list")
@@ -143,8 +161,16 @@ def load_run(path: Path) -> dict[str, object]:
         run[key] = _read_json(root / filename)
     run["manifest"] = _validate_manifest(run["manifest"])
 
+    for key, filename in _OPTIONAL_JSON_FILENAME_MAP.items():
+        path = root / filename
+        run[key] = _read_json(path) if path.exists() else {}
+
     for key, filename in _JSONL_FILENAME_MAP.items():
         run[key] = _read_jsonl(root / filename)
+
+    for key, filename in _OPTIONAL_JSONL_FILENAME_MAP.items():
+        path = root / filename
+        run[key] = _read_jsonl(path) if path.exists() else []
 
     return run
 

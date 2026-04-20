@@ -3,17 +3,20 @@
 from __future__ import annotations
 
 import gc
+import importlib
 import json
 import os
 import subprocess
 import sys
 import textwrap
+import warnings
 from pathlib import Path
 from time import perf_counter_ns
-from typing import Callable
+from typing import Any, Callable
 
 import numpy as np
 
+from benchmarks.overhead.profiles import materialize_case_inputs
 from benchmarks.overhead.specs import BenchmarkCase
 from benchmarks.overhead.timing import (
     SampleSummary,
@@ -27,7 +30,8 @@ _STARTUP_BUDGET = int(1e15)
 _STEADY_STATE_BUDGET = int(1e15)
 _WARMUP_SAMPLES = 3
 _CI_MEASURED_SAMPLES = 7
-_DEFAULT_MEASURED_SAMPLES = 15
+_FULL_MEASURED_SAMPLES = 5
+_FOCUS_MEASURED_SAMPLES = 15
 _MINIMUM_ELAPSED_NS = 200_000
 
 
@@ -47,16 +51,63 @@ def _materialize_operands(case: BenchmarkCase) -> tuple[np.ndarray, np.ndarray]:
     )
 
 
+def _resolve_factory(factory: Callable[..., object] | str) -> Callable[..., object]:
+    if callable(factory):
+        return factory
+    module_name, _, qualname = factory.rpartition(".")
+    if not module_name or not qualname:
+        raise ValueError(f"factory must be a callable or import path: {factory!r}")
+    obj: Any = importlib.import_module(module_name)
+    for segment in qualname.split("."):
+        obj = getattr(obj, segment)
+    if not callable(obj):
+        raise TypeError(f"resolved factory is not callable: {factory!r}")
+    return obj
+
+
+def _case_inputs(case: BenchmarkCase) -> tuple[tuple[object, ...], dict[str, object]]:
+    if case.profile_kind:
+        return materialize_case_inputs(
+            {
+                "op_name": case.op_name,
+                "size_name": case.size_name,
+                "dtype": case.dtype,
+                "profile_kind": case.profile_kind,
+                "profile_params": case.profile_params,
+            }
+        )
+    return _materialize_operands(case), {}
+
+
 def _build_case_closures(
-    case: BenchmarkCase, operands: tuple[object, object]
+    case: BenchmarkCase,
+    args_and_kwargs: tuple[tuple[object, ...], dict[str, object]] | tuple[object, ...] | None = None,
 ) -> tuple[Callable[[], object], Callable[[], object]]:
+    if args_and_kwargs is None:
+        args, kwargs = _case_inputs(case)
+    elif (
+        isinstance(args_and_kwargs, tuple)
+        and len(args_and_kwargs) == 2
+        and isinstance(args_and_kwargs[1], dict)
+    ):
+        args, kwargs = args_and_kwargs
+    else:
+        args = tuple(args_and_kwargs)
+        kwargs = {}
+    numpy_factory = _resolve_factory(case.numpy_factory)
+    whest_factory = _resolve_factory(case.whest_factory)
+
     def numpy_callable() -> object:
-        with np.errstate(all="ignore"):
-            return case.numpy_factory(*operands)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=DeprecationWarning)
+            with np.errstate(all="ignore"):
+                return numpy_factory(*args, **kwargs)
 
     def whest_callable() -> object:
-        with np.errstate(all="ignore"):
-            return case.whest_factory(*operands)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=DeprecationWarning)
+            with np.errstate(all="ignore"):
+                return whest_factory(*args, **kwargs)
 
     return numpy_callable, whest_callable
 
@@ -100,7 +151,11 @@ def _summarize_operation_records(
 
 
 def _measured_samples_for_mode(mode: str) -> int:
-    return _CI_MEASURED_SAMPLES if mode == "ci" else _DEFAULT_MEASURED_SAMPLES
+    if mode == "ci":
+        return _CI_MEASURED_SAMPLES
+    if mode in {"focus", "timing"}:
+        return _FOCUS_MEASURED_SAMPLES
+    return _FULL_MEASURED_SAMPLES
 
 
 def _time_iterations(func: Callable[[], object], iterations: int) -> int:
@@ -140,8 +195,7 @@ def _measure_whest_samples(
 
 
 def _steady_state_result(case: BenchmarkCase, *, mode: str) -> dict[str, object]:
-    operands = _materialize_operands(case)
-    numpy_callable, whest_callable = _build_case_closures(case, operands)
+    numpy_callable, whest_callable = _build_case_closures(case)
     measured_samples = _measured_samples_for_mode(mode)
 
     numpy_samples, numpy_iterations = measure_samples(
@@ -168,7 +222,12 @@ def _steady_state_result(case: BenchmarkCase, *, mode: str) -> dict[str, object]
     }
 
 
-def _callable_payload(func: Callable[..., object]) -> dict[str, str]:
+def _callable_payload(func: Callable[..., object] | str) -> dict[str, str]:
+    if isinstance(func, str):
+        module, _, qualname = func.rpartition(".")
+        if not module or not qualname:
+            raise ValueError(f"factory path must be importable: {func!r}")
+        return {"module": module, "qualname": qualname}
     qualname = getattr(func, "__qualname__", "")
     module = getattr(func, "__module__", "")
     if not module or not qualname or "<locals>" in qualname:
@@ -188,8 +247,12 @@ def _numpy_startup_payload(func: Callable[..., object]) -> dict[str, str]:
 
 def _case_payload(case: BenchmarkCase) -> dict[str, object]:
     return {
+        "op_name": case.op_name,
+        "size_name": case.size_name,
         "dtype": case.dtype,
         "operand_shapes": [list(shape) for shape in case.operand_shapes],
+        "profile_kind": case.profile_kind,
+        "profile_params": case.profile_params,
         "numpy_factory": _numpy_startup_payload(case.numpy_factory),
         "whest_factory": _callable_payload(case.whest_factory),
     }
@@ -203,6 +266,7 @@ def _startup_script() -> str:
         import sys
         import time
 
+        from benchmarks.overhead.profiles import materialize_case_inputs
 
         def materialize(shape, dtype, offset):
             import numpy as np
@@ -220,14 +284,21 @@ def _startup_script() -> str:
             return obj
 
 
+        def build_inputs(case):
+            if case.get("profile_kind"):
+                return materialize_case_inputs(case)
+            a = materialize(case["operand_shapes"][0], case["dtype"], 0)
+            b = materialize(case["operand_shapes"][1], case["dtype"], 17)
+            return (a, b), {}
+
+
         def run_numpy(payload):
             import numpy as np
 
-            a = materialize(payload["operand_shapes"][0], payload["dtype"], 0)
-            b = materialize(payload["operand_shapes"][1], payload["dtype"], 17)
+            args, kwargs = build_inputs(payload)
             numpy_factory = resolve_callable(payload["numpy_factory"])
             with np.errstate(all="ignore"):
-                return numpy_factory(a, b)
+                return numpy_factory(*args, **kwargs)
 
 
         def summarize_budget(budget):
@@ -244,12 +315,11 @@ def _startup_script() -> str:
             import numpy as np
             import whest as we
 
-            a = materialize(payload["operand_shapes"][0], payload["dtype"], 0)
-            b = materialize(payload["operand_shapes"][1], payload["dtype"], 17)
+            args, kwargs = build_inputs(payload)
             whest_factory = resolve_callable(payload["whest_factory"])
             with we.BudgetContext(flop_budget=int(1e15), quiet=True) as budget:
                 with np.errstate(all="ignore"):
-                    whest_factory(a, b)
+                    whest_factory(*args, **kwargs)
             return summarize_budget(budget)
 
 
@@ -317,11 +387,14 @@ def run_case(case: BenchmarkCase, *, mode: str) -> dict[str, object]:
     return {
         "case_id": case.case_id,
         "op_name": case.op_name,
+        "slug": case.slug or case.op_name,
         "family": case.family,
         "surface": case.surface,
         "size_name": case.size_name,
         "dtype": case.dtype,
         "source_file": case.source_file,
+        "category": case.category,
+        "area": case.area,
         "mode": mode,
         "numpy": steady_state["numpy"],
         "whest": steady_state["whest"],

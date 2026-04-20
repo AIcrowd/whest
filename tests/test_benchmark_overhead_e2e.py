@@ -29,9 +29,21 @@ def _case(case_id: str, *, family: str, surface: str) -> BenchmarkCase:
 
 
 def test_cli_full_then_suggest_thresholds_round_trip(tmp_path: Path, monkeypatch, capsys):
+    monkeypatch.setattr("benchmarks.overhead.cli.seed_cases", lambda: ())
     monkeypatch.setattr(
-        "benchmarks.overhead.cli.seed_cases",
+        "benchmarks.overhead.cli.full_cases",
         lambda: (_case("add-api-tiny", family="pointwise", surface="api"),),
+    )
+    monkeypatch.setattr(
+        "benchmarks.overhead.cli.documented_operations",
+        lambda: [
+            {
+                "slug": "add",
+                "name": "add",
+                "generation_status": "generated",
+                "generated_case_ids": ["add-api-tiny"],
+            }
+        ],
     )
     monkeypatch.setattr(
         "benchmarks.overhead.cli.classify_public_operations",
@@ -103,6 +115,8 @@ def test_focus_mode_writes_filtered_artifacts(tmp_path: Path, monkeypatch, capsy
             _case("matmul-api-tiny", family="contractions", surface="api"),
         ),
     )
+    monkeypatch.setattr("benchmarks.overhead.cli.full_cases", lambda: ())
+    monkeypatch.setattr("benchmarks.overhead.cli.documented_operations", lambda: [])
     monkeypatch.setattr(
         "benchmarks.overhead.cli.classify_public_operations",
         lambda: {
@@ -176,6 +190,8 @@ def test_focus_mode_returns_failure_when_filters_match_no_cases(
         "benchmarks.overhead.cli.seed_cases",
         lambda: (_case("add-api-tiny", family="pointwise", surface="api"),),
     )
+    monkeypatch.setattr("benchmarks.overhead.cli.full_cases", lambda: ())
+    monkeypatch.setattr("benchmarks.overhead.cli.documented_operations", lambda: [])
     monkeypatch.setattr(
         "benchmarks.overhead.cli.classify_public_operations",
         lambda: {
@@ -207,6 +223,83 @@ def test_focus_mode_returns_failure_when_filters_match_no_cases(
     assert exit_code == 1
     assert "No benchmark cases matched the requested filters." in captured.out
     assert not (output_dir / "manifest.json").exists()
+
+
+def test_cli_full_then_report_round_trip(tmp_path: Path, monkeypatch, capsys):
+    monkeypatch.setattr("benchmarks.overhead.cli.seed_cases", lambda: ())
+    monkeypatch.setattr(
+        "benchmarks.overhead.cli.full_cases",
+        lambda: (_case("add-api-tiny", family="pointwise", surface="api"),),
+    )
+    monkeypatch.setattr(
+        "benchmarks.overhead.cli.documented_operations",
+        lambda: [
+            {
+                "slug": "add",
+                "name": "add",
+                "generation_status": "generated",
+                "generated_case_ids": ["add-api-tiny"],
+            }
+        ],
+    )
+    monkeypatch.setattr(
+        "benchmarks.overhead.cli.classify_public_operations",
+        lambda: {
+            "unclassified": [],
+            "inventory": [],
+            "benchmarked": [],
+            "excluded": [],
+            "unsupported": [],
+        },
+    )
+    monkeypatch.setattr(
+        "benchmarks.overhead.cli.collect_environment_metadata",
+        lambda: {"software": {"python": "test"}},
+    )
+    monkeypatch.setattr(
+        "benchmarks.overhead.cli.run_case",
+        lambda case, *, mode: {
+            "case_id": case.case_id,
+            "op_name": case.op_name,
+            "family": case.family,
+            "surface": case.surface,
+            "size_name": case.size_name,
+            "dtype": case.dtype,
+            "source_file": case.source_file,
+            "mode": mode,
+            "numpy": {"median_ns": 10, "best_ns": 9, "sample_count": 3, "iterations": 1},
+            "whest": {"median_ns": 12, "best_ns": 11, "sample_count": 3, "iterations": 1},
+            "ratio": 1.2,
+            "whest_details": {
+                "flops_used": 2,
+                "op_count": 1,
+                "tracked_time_s": 0.001,
+                "operations": {"add": {"calls": 1, "duration": 0.001, "flop_cost": 2}},
+            },
+            "startup": {
+                "numpy": {"elapsed_ns": 100},
+                "whest": {"elapsed_ns": 150},
+                "ratio": 1.5,
+                "whest_details": {"flops_used": 1, "op_count": 1, "tracked_time_s": 0.0001},
+            },
+        },
+    )
+
+    output_dir = tmp_path / "run"
+
+    full_exit = main(["full", "--output-dir", str(output_dir)])
+    report_exit = main(["report", "--output-dir", str(output_dir)])
+
+    captured = capsys.readouterr()
+    report_html = output_dir / "report.html"
+    report_data = json.loads((output_dir / "report_data.json").read_text(encoding="utf-8"))
+
+    assert full_exit == 0
+    assert report_exit == 0
+    assert report_html.exists()
+    assert "report.html" in captured.out
+    assert report_data["summary"]["case_count"] == 1
+    assert report_data["cases"][0]["case_id"] == "add-api-tiny"
 
 
 def test_module_entrypoint_delegates_to_cli_main(monkeypatch):

@@ -251,8 +251,10 @@ including triple products and block symmetries.
 The runtime-overhead harness in `benchmarks/overhead/` is separate from the
 existing FLOP-weight calibration benchmarks. Calibration benchmarks help tune
 analytical weights against NumPy kernels; the overhead harness measures the
-runtime tax that `whest` adds on top of raw NumPy for representative public
-operations.
+runtime tax that `whest` adds on top of raw NumPy for documented public
+operations. The broader `full` sweep reuses the calibration benchmark taxonomy
+and per-op setup knowledge, but rescales those profiles to overhead-sized
+`tiny` and `medium` runs that preserve realistic user-facing call patterns.
 
 This harness is CI-ready, but it is intentionally manual-first right now. Run
 it on representative nodes first, review the artifacts and thresholds with the
@@ -262,28 +264,35 @@ Reduced sweep for routine validation:
 
 ```bash
 python -m benchmarks.overhead ci --output-dir .benchmarks/overhead-ci
+python -m benchmarks.overhead report --output-dir .benchmarks/overhead-ci
 ```
 
-Focused run for optimization work on one case:
+Focused run for optimization work on one operation:
 
 ```bash
 python -m benchmarks.overhead focus \
-  --case-id pointwise:add:api:tiny:float64 \
+  --slug add \
   --output-dir .benchmarks/overhead-focus
 ```
 
-Full representative-node run and threshold suggestion flow:
+`focus` also supports `--case-id` for single-case debugging.
+
+Full documented-operation sweep and threshold suggestion flow:
 
 ```bash
 python -m benchmarks.overhead full --output-dir .benchmarks/overhead-full
+python -m benchmarks.overhead report --output-dir .benchmarks/overhead-full
 python -m benchmarks.overhead suggest-thresholds --output-dir .benchmarks/overhead-full
 ```
 
 Each run writes machine-consumable JSON/JSONL artifacts including the manifest,
-environment snapshot, evaluated cases, timing samples, and `whest` accounting
-details. That makes the harness agent-friendly: developers or optimization
-agents can diff runs, rank regressions, inspect per-case overhead ratios, and
-generate updated threshold suggestions without scraping terminal output.
+environment snapshot, per-operation aggregates, evaluated cases, timing samples,
+and `whest` accounting details. `python -m benchmarks.overhead report` turns
+those artifacts into a static `report.html` plus `report_data.json` in the run
+directory, so developers or optimization agents can scan the full documented API
+inventory in a browser, filter by family/category/coverage status, drill down to
+the measured cases for an operation, diff against a baseline later, and generate
+updated threshold suggestions without scraping terminal output.
 
 ## Development
 

@@ -12,6 +12,7 @@ def test_write_run_artifacts_creates_required_files(tmp_path: Path):
         "environment": {"software": {"numpy": "2.x"}},
         "summary": {"case_count": 1},
         "cases": [{"case_id": "pointwise:add:api:tiny:float64"}],
+        "operations": [{"slug": "add", "coverage_status": "measured"}],
         "samples": [
             {"case_id": "pointwise:add:api:tiny:float64", "phase": "steady_state"}
         ],
@@ -27,6 +28,7 @@ def test_write_run_artifacts_creates_required_files(tmp_path: Path):
     assert (output_dir / "environment.json").exists()
     assert (output_dir / "summary.json").exists()
     assert (output_dir / "cases.jsonl").exists()
+    assert (output_dir / "operations.jsonl").exists()
     assert (output_dir / "samples.jsonl").exists()
     assert (output_dir / "whest_details.jsonl").exists()
 
@@ -37,6 +39,7 @@ def test_load_run_and_compare_runs_round_trip(tmp_path: Path):
         "environment": {},
         "summary": {},
         "cases": [{"case_id": "case-a", "ratio": 2.0}],
+        "operations": [],
         "samples": [],
         "whest_details": [],
     }
@@ -45,6 +48,7 @@ def test_load_run_and_compare_runs_round_trip(tmp_path: Path):
         "environment": {},
         "summary": {},
         "cases": [{"case_id": "case-a", "ratio": 3.0}],
+        "operations": [],
         "samples": [],
         "whest_details": [],
     }
@@ -69,6 +73,7 @@ def test_write_run_artifacts_injects_schema_version(tmp_path: Path):
         "environment": {},
         "summary": {},
         "cases": [],
+        "operations": [],
         "samples": [],
         "whest_details": [],
     }
@@ -84,6 +89,7 @@ def test_write_run_artifacts_preserves_non_finite_ratios(tmp_path: Path):
         "environment": {},
         "summary": {},
         "cases": [{"case_id": "case-inf", "ratio": float("inf")}],
+        "operations": [],
         "samples": [],
         "whest_details": [],
     }
@@ -101,6 +107,7 @@ def test_write_run_artifacts_rejects_schema_version_mismatch(tmp_path: Path):
         "environment": {},
         "summary": {},
         "cases": [],
+        "operations": [],
         "samples": [],
         "whest_details": [],
     }
@@ -115,6 +122,7 @@ def test_load_run_rejects_missing_required_artifact(tmp_path: Path):
         "environment": {},
         "summary": {},
         "cases": [],
+        "operations": [],
         "samples": [],
         "whest_details": [],
     }
@@ -131,6 +139,7 @@ def test_load_run_rejects_schema_version_mismatch(tmp_path: Path):
         "environment": {},
         "summary": {},
         "cases": [],
+        "operations": [],
         "samples": [],
         "whest_details": [],
     }
@@ -150,6 +159,7 @@ def test_compare_runs_rejects_schema_mismatch(tmp_path: Path):
         "environment": {},
         "summary": {},
         "cases": [{"case_id": "case-a", "ratio": 2.0}],
+        "operations": [],
         "samples": [],
         "whest_details": [],
     }
@@ -158,6 +168,7 @@ def test_compare_runs_rejects_schema_mismatch(tmp_path: Path):
         "environment": {},
         "summary": {},
         "cases": [{"case_id": "case-a", "ratio": 3.0}],
+        "operations": [],
         "samples": [],
         "whest_details": [],
     }
@@ -179,6 +190,7 @@ def test_compare_runs_rejects_missing_schema_version(tmp_path: Path):
         "environment": {},
         "summary": {},
         "cases": [{"case_id": "case-a", "ratio": 2.0}],
+        "operations": [],
         "samples": [],
         "whest_details": [],
     }
@@ -187,6 +199,7 @@ def test_compare_runs_rejects_missing_schema_version(tmp_path: Path):
         "environment": {},
         "summary": {},
         "cases": [{"case_id": "case-a", "ratio": 3.0}],
+        "operations": [],
         "samples": [],
         "whest_details": [],
     }
@@ -197,3 +210,23 @@ def test_compare_runs_rejects_missing_schema_version(tmp_path: Path):
 
     with pytest.raises(ValueError, match="schema_version"):
         compare_runs(base_dir, candidate_dir)
+
+
+def test_load_run_defaults_missing_operations_artifact_to_empty_list(tmp_path: Path):
+    run = {
+        "manifest": {"schema_version": SCHEMA_VERSION},
+        "environment": {},
+        "summary": {},
+        "cases": [],
+        "samples": [],
+        "whest_details": [],
+    }
+
+    output_dir = write_run_artifacts(tmp_path, run)
+    operations_path = output_dir / "operations.jsonl"
+    if operations_path.exists():
+        operations_path.unlink()
+
+    loaded = load_run(output_dir)
+
+    assert loaded["operations"] == []
