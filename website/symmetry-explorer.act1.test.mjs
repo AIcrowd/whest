@@ -49,7 +49,9 @@ test('ExampleChooser uses the shared Python code block and current builder primi
   assert.match(codeBlockSource, /ExplorerSectionCard/);
   assert.match(codeBlockSource, /Button/);
   assert.match(codeBlockSource, /\[&_\.hl-kw\]:font-semibold/);
-  assert.match(codeBlockSource, /\[&_\.hl-str\]:text-emerald-300/);
+  assert.match(codeBlockSource, /bg-white/);
+  assert.match(codeBlockSource, /\[&_\.hl-str\]:text-emerald-700/);
+  assert.match(codeBlockSource, /text-\[#ef5a4c\]/);
 });
 
 test('PresetSidebar matches the design-system preset-list spec (flat container, 10px gray kicker, canonical padding)', () => {

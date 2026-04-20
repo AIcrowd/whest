@@ -89,9 +89,9 @@ function highlightPython(code) {
 function PythonHighlight({ code }) {
   const html = useMemo(() => highlightPython(code), [code]);
   return (
-    <pre className="min-h-0 h-full overflow-auto whitespace-pre-wrap rounded-xl bg-slate-950 p-5 font-mono text-sm leading-7 text-slate-300">
+    <pre className="min-h-0 h-full overflow-auto whitespace-pre-wrap rounded-xl border border-stone-200 bg-white p-5 font-mono text-sm leading-7 text-stone-800">
       <code
-        className="[&_.hl-cmt]:text-slate-500 [&_.hl-fn]:font-semibold [&_.hl-fn]:text-sky-300 [&_.hl-kw]:font-semibold [&_.hl-kw]:text-rose-300 [&_.hl-num]:text-amber-300 [&_.hl-str]:text-emerald-300"
+        className="[&_.hl-cmt]:text-stone-500 [&_.hl-fn]:font-semibold [&_.hl-fn]:text-slate-700 [&_.hl-kw]:font-semibold [&_.hl-kw]:text-[#ef5a4c] [&_.hl-num]:text-amber-700 [&_.hl-str]:text-emerald-700"
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </pre>
@@ -121,7 +121,7 @@ export default function PythonCodeBlock({
         type="button"
         size="icon-sm"
         variant="outline"
-        className="absolute right-3 top-3 z-10 size-7 border-white/25 bg-slate-900/85 text-slate-200 hover:bg-slate-900"
+        className="absolute right-3 top-3 z-10 size-7 border-stone-200 bg-white/95 text-stone-500 hover:bg-stone-50 hover:text-stone-700"
         onClick={handleCopy}
         aria-label={copied ? 'Copied' : 'Copy code'}
         title={copied ? 'Copied' : 'Copy code'}
@@ -143,7 +143,7 @@ export default function PythonCodeBlock({
     <ExplorerSectionCard
       eyebrow={title}
       description={description}
-      className={['border-border/70 bg-muted/20', className].filter(Boolean).join(' ')}
+      className={['border-gray-200 bg-white', className].filter(Boolean).join(' ')}
       contentClassName={['pt-5', 'min-h-0', 'flex', 'flex-col', contentClassName].filter(Boolean).join(' ')}
       action={null}
     >
