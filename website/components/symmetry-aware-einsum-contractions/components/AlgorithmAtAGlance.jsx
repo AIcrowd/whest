@@ -75,15 +75,12 @@ function EinsumIntroColumn({ example }) {
       </p>
 
       <div className="mt-6 overflow-x-auto rounded-2xl border border-stone-200 bg-white px-5 py-6">
-        <p className="text-center font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">
-          Example — the selected contraction
-        </p>
-        <div className="mt-4 flex justify-center">
+        <div className="flex justify-center">
           <code className="rounded-md px-2 py-1 font-mono text-[16px] font-semibold tracking-[0.01em] text-stone-800">
             {view.exactEinsumText}
           </code>
         </div>
-        <div className="mt-3 flex justify-center text-[19px]">
+        <div className="mt-2.5 flex justify-center text-[19px]">
           <Latex display math={view.expandedEquationLatex} />
         </div>
         <p

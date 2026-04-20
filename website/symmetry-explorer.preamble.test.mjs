@@ -45,7 +45,7 @@ test('Einsum column uses a parametric exact-einsum lead-in followed by a color-c
   assert.match(src, /buildSection1ExampleView/);
   assert.match(src, /view\.exactEinsumText/);
   assert.match(src, /Latex display math=\{view\.expandedEquationLatex\}/);
-  assert.match(src, /mt-3 flex justify-center text-\[19px\]/);
+  assert.match(src, /mt-2\.5 flex justify-center text-\[19px\]/);
   assert.match(src, /LANDING_FREE_LABEL_COLOR/);
   assert.match(src, /operandCount/);
   assert.match(src, /labelCount/);
@@ -56,6 +56,7 @@ test('Einsum column uses a parametric exact-einsum lead-in followed by a color-c
   assert.doesNotMatch(src, /What this fixes/);
   assert.doesNotMatch(src, /CHAIN_FORMULA/);
   assert.doesNotMatch(src, /Exact einsum/);
+  assert.doesNotMatch(src, /Example — the selected contraction/);
   assert.doesNotMatch(src, /A\[/);
   assert.doesNotMatch(src, /B\[/);
   assert.doesNotMatch(src, /C\[/);

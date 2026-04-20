@@ -151,3 +151,38 @@ test('LabelInteractionGraph card surface is interactive (Stage 2)', () => {
   // point of unifying hull color with the ladder via getRegimePresentation).
   assert.match(source, /presentation\?\.tooltip\?\.body/);
 });
+
+test('StickyBar selected section pill keeps a visible coral inner marker and aligned geometry', () => {
+  const source = fs.readFileSync(
+    new URL('./components/symmetry-aware-einsum-contractions/components/StickyBar.jsx', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(source, /isActive\s*\?\s*'border-\[var\(--coral\)\] bg-white text-\[var\(--coral-hover\)\]/);
+  assert.match(source, /isActive\s*\?\s*'border-\[var\(--coral\)\] bg-\[var\(--coral\)\] text-white'/);
+  assert.match(source, /inline-flex h-9 min-h-9 items-center gap-2 rounded-full border px-3/);
+  assert.match(source, /h-5 min-w-5 items-center justify-center rounded-full/);
+  assert.doesNotMatch(source, /isActive\s*\?\s*'bg-primary\/20 text-primary'/);
+});
+
+test('StickyBar keeps the einsum pill as trigger and moves symmetry metadata into a popover', () => {
+  const source = fs.readFileSync(
+    new URL('./components/symmetry-aware-einsum-contractions/components/StickyBar.jsx', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(source, /function StickyMetadataPopover/);
+  assert.match(source, /createPortal\(/);
+  assert.match(source, /showMetadataPopover/);
+  assert.match(source, /bg-white/);
+  assert.match(source, /import SymmetryBadge from '\.\/SymmetryBadge\.jsx'/);
+  assert.match(source, /function SymmetryChip/);
+  assert.match(source, /buildMetadataItems/);
+  assert.match(source, /<SymmetryBadge value=\{groupLabel\}/);
+  assert.match(source, /text-stone-400">,<\//);
+  assert.match(source, /text-stone-500">→<\//);
+  assert.match(source, /group\?\.fullGroupName \|\| 'trivial'/);
+  assert.match(source, /inline-flex w-max max-w-\[calc\(100vw-2rem\)\]/);
+  assert.match(source, /clampedCenterX/);
+  assert.doesNotMatch(source, /title="Detected symmetry group — drives compression/);
+});

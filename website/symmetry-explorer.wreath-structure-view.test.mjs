@@ -32,7 +32,7 @@ test('WreathStructureView reads analysis.symmetry.wreathElements and identicalGr
 });
 
 test('WreathStructureView uses the cleaned editorial labels and no stale modal-section link', () => {
-  assert.match(WIDGET_SRC, /matching relabeling π/);
+  assert.match(WIDGET_SRC, /matching relabeling <Latex math=\{String\.raw`\\pi`\} \/>/);
   assert.match(WIDGET_SRC, /no matching relabeling/);
   assert.doesNotMatch(WIDGET_SRC, /derivePi\(σ\)/);
   assert.doesNotMatch(WIDGET_SRC, /Formal argument → modal §2/);
@@ -42,7 +42,8 @@ test('WreathStructureView uses the cleaned editorial labels and no stale modal-s
 
 test('WreathStructureView uses the same card styling language as the rest of the explorer', () => {
   assert.match(WIDGET_SRC, /rounded-xl border border-gray-200 bg-white/);
-  assert.match(WIDGET_SRC, /rounded-lg border border-gray-200 bg-gray-50/);
+  assert.match(WIDGET_SRC, /rounded-lg border border-gray-200 bg-white/);
+  assert.match(WIDGET_SRC, /rounded-full border border-gray-200 bg-gray-50/);
 });
 
 test('WreathStructureView caps the initial table at 10 rows, opens a modal for the rest, and uses neutral rows with outcome-only status cues', () => {

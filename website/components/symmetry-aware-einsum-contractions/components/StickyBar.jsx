@@ -1,9 +1,12 @@
 import Link from 'next/link';
+import { createPortal } from 'react-dom';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { withBasePath } from '@/lib/base-path';
 import { EXPLORER_ACTS } from './explorerNarrative.js';
+import SymmetryBadge from './SymmetryBadge.jsx';
 
 // Character-by-character renderer for a subscript/output *label region*
 // (e.g. "ia,ib,ic" or "abc"). Letters matching `hoveredLabels` swap to
@@ -83,25 +86,132 @@ function symmetryLabel(variable) {
   }
 }
 
-function ParameterSymmetryRow({ variables = [] }) {
+function buildMetadataItems({ variables = [], group }) {
+  const operands = variables.map((variable) => ({
+    name: variable.name,
+    symmetry: symmetryLabel(variable),
+  }));
+  return {
+    operands,
+    groupLabel: group?.fullGroupName || 'trivial',
+  };
+}
+
+function SymmetryChip({ name, symmetry }) {
   return (
-    <div className="flex flex-wrap items-center gap-1.5">
-      {variables.map((variable, idx) => (
-        <span
-          key={`sticky-sym-${variable.name}-${idx}`}
-          className="inline-flex items-center gap-1 rounded-full border border-primary/18 bg-white px-2 py-0.5 text-xs font-mono text-foreground shadow-sm"
-        >
-          <span className="font-semibold text-primary">{variable.name}</span>
-          <span className="text-muted-foreground">:</span>
-          <span className="text-coral">{symmetryLabel(variable)}</span>
-        </span>
-      ))}
-    </div>
+    <span className="inline-flex items-center gap-1 rounded-full border border-primary/18 bg-white px-2 py-0.5 text-xs font-mono text-foreground shadow-sm">
+      <span className="font-semibold text-primary">{name}</span>
+      <span className="text-muted-foreground">:</span>
+      <span className="text-coral">{symmetry}</span>
+    </span>
+  );
+}
+
+function StickyMetadataPopover({ anchorRect, operands, groupLabel }) {
+  if (!anchorRect || typeof document === 'undefined') return null;
+
+  const viewportWidth = document.documentElement.clientWidth;
+  const clampedCenterX = Math.min(
+    Math.max(anchorRect.left + anchorRect.width / 2, 180),
+    viewportWidth - 180,
+  );
+  const x = Math.min(
+    Math.max(clampedCenterX, 32),
+    viewportWidth - 32,
+  );
+  const y = anchorRect.bottom + 10;
+
+  return createPortal(
+    <div
+      role="dialog"
+      aria-label="Einsum metadata"
+      className="pointer-events-none fixed z-[9999] inline-flex w-max max-w-[calc(100vw-2rem)] rounded-xl border border-stone-200 bg-white px-4 py-3 text-stone-900 shadow-[0_24px_60px_rgba(15,23,42,0.12)]"
+      style={{
+        left: x,
+        top: y,
+        transform: 'translateX(-50%)',
+      }}
+    >
+      <div className="flex flex-wrap items-center gap-1.5 font-mono text-[12px] leading-6 text-stone-700">
+        {operands.map((operand, idx) => (
+          <span key={`sticky-metadata-${operand.name}-${idx}`} className="contents">
+            {idx > 0 && <span className="text-stone-400">,</span>}
+            <SymmetryChip name={operand.name} symmetry={operand.symmetry} />
+          </span>
+        ))}
+        <span className="text-stone-500">→</span>
+        <SymmetryBadge value={groupLabel} className="text-[11px] leading-5 shadow-none" />
+      </div>
+      <div
+        className="absolute left-1/2 top-[-6px] h-1.5 w-3 bg-white"
+        style={{
+          clipPath: 'polygon(50% 0, 0 100%, 100% 100%)',
+          transform: 'translateX(-50%)',
+        }}
+      />
+    </div>,
+    document.body,
   );
 }
 
 export default function StickyBar({ example, group, activeActId, hoveredLabels = null }) {
   const variables = example?.variables ?? [];
+  const [showMetadataPopover, setShowMetadataPopover] = useState(false);
+  const [metadataAnchorRect, setMetadataAnchorRect] = useState(null);
+  const metadataTriggerRef = useRef(null);
+  const closeTimerRef = useRef(null);
+  const metadataItems = useMemo(
+    () => buildMetadataItems({ variables, group }),
+    [group, variables],
+  );
+
+  const clearCloseTimer = () => {
+    if (closeTimerRef.current) {
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  };
+
+  const openMetadataPopover = () => {
+    clearCloseTimer();
+    if (!metadataTriggerRef.current) return;
+    setMetadataAnchorRect(metadataTriggerRef.current.getBoundingClientRect());
+    setShowMetadataPopover(true);
+  };
+
+  const scheduleMetadataClose = () => {
+    clearCloseTimer();
+    closeTimerRef.current = window.setTimeout(() => setShowMetadataPopover(false), 80);
+  };
+
+  useEffect(() => () => clearCloseTimer(), []);
+
+  useEffect(() => {
+    if (!showMetadataPopover) return undefined;
+
+    const dismiss = () => setShowMetadataPopover(false);
+    const dismissOnEscape = (event) => {
+      if (event.key === 'Escape') setShowMetadataPopover(false);
+    };
+    const dismissIfOutside = (event) => {
+      if (!metadataTriggerRef.current) return;
+      if (event.target instanceof Node && metadataTriggerRef.current.contains(event.target)) return;
+      setShowMetadataPopover(false);
+    };
+
+    window.addEventListener('scroll', dismiss, true);
+    window.addEventListener('resize', dismiss);
+    window.addEventListener('keydown', dismissOnEscape);
+    window.addEventListener('pointerdown', dismissIfOutside);
+    window.addEventListener('blur', dismiss);
+    return () => {
+      window.removeEventListener('scroll', dismiss, true);
+      window.removeEventListener('resize', dismiss);
+      window.removeEventListener('keydown', dismissOnEscape);
+      window.removeEventListener('pointerdown', dismissIfOutside);
+      window.removeEventListener('blur', dismiss);
+    };
+  }, [showMetadataPopover]);
 
   return (
     <div className="sticky top-0 z-40 border-b border-border/70 bg-background/95 backdrop-blur-sm">
@@ -127,18 +237,18 @@ export default function StickyBar({ example, group, activeActId, hoveredLabels =
                 href={`#${act.id}`}
                 className={cn(
                   buttonVariants({ size: 'sm', variant: 'ghost' }),
-                  'inline-flex min-h-9 items-center gap-2 rounded-full border px-3 transition-colors',
+                  'inline-flex h-9 min-h-9 items-center gap-2 rounded-full border px-3 transition-colors',
                   isActive
-                    ? 'border-primary/35 bg-primary/10 text-primary hover:border-primary/45 hover:bg-primary/15'
+                    ? 'border-[var(--coral)] bg-white text-[var(--coral-hover)] hover:border-[var(--coral)] hover:bg-[color:color-mix(in_oklab,var(--coral)_8%,white)]'
                     : 'border-transparent text-muted-foreground hover:border-primary/25 hover:bg-primary/8 hover:text-primary',
                 )}
               >
                 <Badge
                   variant={isActive ? 'default' : 'outline'}
                   className={cn(
-                    'flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 py-0 text-[11px] font-semibold',
+                    'flex h-5 min-w-5 items-center justify-center rounded-full border px-1.5 py-0 text-[11px] font-semibold leading-none',
                     isActive
-                      ? 'bg-primary/20 text-primary'
+                      ? 'border-[var(--coral)] bg-[var(--coral)] text-white'
                       : 'border-primary/20 bg-background text-muted-foreground',
                   )}
                 >
@@ -152,47 +262,45 @@ export default function StickyBar({ example, group, activeActId, hoveredLabels =
 
         <div className="flex min-w-0 shrink flex-col items-start gap-2 self-end md:max-w-[42rem] md:items-end md:self-auto">
           {example && (
-            <>
-              <div className="flex flex-wrap items-center gap-2">
-                <Badge
-                  variant="outline"
-                  className="shrink-0 border-gray-200 bg-white text-gray-500 shadow-none"
-                >
-                  einsum
-                </Badge>
-                {/* Neutral stadium pill per design-system `.formula-live`:
-                    gray-100 ground, gray-600 ink, 1px gray-200 border,
-                    rounded-full (=20px stadium). The only coral moment
-                    inside is the arrow (see FormulaHighlighted above). */}
-                <code className="block rounded-full border border-gray-200 bg-gray-100 px-3 py-1 text-sm font-mono font-medium text-gray-600 shadow-sm">
-                  <FormulaHighlighted example={example} hoveredLabels={hoveredLabels} />
-                </code>
-                {group && (() => {
-                  // Per design-system/preview/components.html `.group-badge`:
-                  // mono 11px stadium pill in the success-green register —
-                  // "we detected a non-trivial group" is a positive signal.
-                  // When the group is trivial (no symmetry found) the pill
-                  // goes muted gray so it doesn't claim a success it didn't
-                  // earn.
-                  const isTrivial = !group.fullGroupName;
-                  return (
-                    <Badge
-                      variant="outline"
-                      className={cn(
-                        'shrink-0 rounded-full px-3 font-mono text-[11px] font-semibold shadow-none',
-                        isTrivial
-                          ? 'border-gray-200 bg-gray-50 text-gray-500'
-                          : 'border-[color:color-mix(in_oklab,var(--success)_25%,transparent)] bg-[color:color-mix(in_oklab,var(--success)_8%,transparent)] text-[color:var(--color-success-alt)]',
-                      )}
-                      title="Detected symmetry group — drives compression (μ, α). Computed via σ-loop Sources A+B."
-                    >
-                      {group.fullGroupName || 'trivial'}
-                    </Badge>
-                  );
-                })()}
-              </div>
-              <ParameterSymmetryRow variables={variables} />
-            </>
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge
+                variant="outline"
+                className="shrink-0 border-gray-200 bg-white text-gray-500 shadow-none"
+              >
+                einsum
+              </Badge>
+              {/* Neutral stadium pill per design-system `.formula-live`:
+                  gray-100 ground, gray-600 ink, 1px gray-200 border,
+                  rounded-full (=20px stadium). The only coral moment
+                  inside is the arrow (see FormulaHighlighted above). */}
+              <button
+                ref={metadataTriggerRef}
+                type="button"
+                aria-haspopup="dialog"
+                aria-expanded={showMetadataPopover}
+                onPointerEnter={openMetadataPopover}
+                onPointerLeave={scheduleMetadataClose}
+                onFocus={openMetadataPopover}
+                onBlur={scheduleMetadataClose}
+                onClick={() => {
+                  if (showMetadataPopover) {
+                    setShowMetadataPopover(false);
+                    return;
+                  }
+                  openMetadataPopover();
+                }}
+                className="block rounded-full border border-gray-200 bg-gray-100 px-3 py-1 text-left text-sm font-mono font-medium text-gray-600 shadow-sm transition-colors hover:border-stone-300 hover:bg-stone-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25"
+              >
+                <FormulaHighlighted example={example} hoveredLabels={hoveredLabels} />
+              </button>
+              {showMetadataPopover && (
+                <StickyMetadataPopover
+                  anchorRect={metadataAnchorRect}
+                  operands={metadataItems.operands}
+                  groupLabel={metadataItems.groupLabel}
+                />
+              )}
+            </div>
           )}
         </div>
       </div>
