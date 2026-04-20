@@ -2,8 +2,8 @@ from pathlib import Path
 
 import pytest
 
-from benchmarks.overhead.artifacts import compare_runs, load_run, write_run_artifacts
 from benchmarks.overhead import SCHEMA_VERSION
+from benchmarks.overhead.artifacts import compare_runs, load_run, write_run_artifacts
 
 
 def test_write_run_artifacts_creates_required_files(tmp_path: Path):
@@ -145,7 +145,7 @@ def test_load_run_rejects_schema_version_mismatch(tmp_path: Path):
     }
     output_dir = write_run_artifacts(tmp_path, run)
     (output_dir / "manifest.json").write_text(
-        '{"schema_version": %d}\n' % (SCHEMA_VERSION + 1),
+        f'{{"schema_version": {SCHEMA_VERSION + 1}}}\n',
         encoding="utf-8",
     )
 
@@ -176,7 +176,7 @@ def test_compare_runs_rejects_schema_mismatch(tmp_path: Path):
     base_dir = write_run_artifacts(tmp_path / "base", base)
     candidate_dir = write_run_artifacts(tmp_path / "candidate", candidate)
     (candidate_dir / "manifest.json").write_text(
-        '{"schema_version": %d}\n' % (SCHEMA_VERSION + 1),
+        f'{{"schema_version": {SCHEMA_VERSION + 1}}}\n',
         encoding="utf-8",
     )
 

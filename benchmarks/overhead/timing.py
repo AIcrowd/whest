@@ -3,10 +3,10 @@
 from __future__ import annotations
 
 import gc
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from statistics import median
 from time import perf_counter_ns
-from typing import Callable, Sequence
 
 
 @dataclass(frozen=True)

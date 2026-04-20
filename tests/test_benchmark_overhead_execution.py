@@ -5,7 +5,6 @@ import numpy as np
 import pytest
 
 import whest as we
-
 from benchmarks.overhead import specs as specs_mod
 from benchmarks.overhead.specs import BenchmarkCase, seed_cases
 
@@ -264,7 +263,10 @@ def test_case_payload_uses_whest_free_numpy_factory_module():
     ids=lambda case: case.case_id,
 )
 def test_materialized_medium_matmul_operands_are_warning_free(case):
-    from benchmarks.overhead.execution import _build_case_closures, _materialize_operands
+    from benchmarks.overhead.execution import (
+        _build_case_closures,
+        _materialize_operands,
+    )
 
     operands = _materialize_operands(case)
     numpy_callable, whest_callable = _build_case_closures(case, operands)

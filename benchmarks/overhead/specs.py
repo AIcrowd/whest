@@ -4,16 +4,17 @@ from __future__ import annotations
 
 import json
 import re
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, Callable, Literal
+from typing import Literal
 
 import numpy as np
 
-from benchmarks._fft import FFT_OPS
 from benchmarks._bitwise import BITWISE_OPS
 from benchmarks._complex import COMPLEX_OPS
+from benchmarks._fft import FFT_OPS
 from benchmarks._linalg import LINALG_OPS
 from benchmarks._linalg_delegates import LINALG_DELEGATE_OPS
 from benchmarks._misc import MISC_OPS
@@ -21,7 +22,6 @@ from benchmarks._pointwise import BINARY_OPS, UNARY_OPS
 from benchmarks._polynomial import POLYNOMIAL_OPS
 from benchmarks._random import RANDOM_OPS
 from benchmarks._reductions import REDUCTION_OPS
-from benchmarks._sorting import SORTING_OPS
 from benchmarks._window import WINDOW_OPS
 
 Surface = Literal["api", "operator"]

@@ -4,8 +4,9 @@ from __future__ import annotations
 
 import argparse
 from collections import defaultdict
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 from benchmarks._metadata import collect_environment_metadata
 from benchmarks.overhead import SCHEMA_VERSION

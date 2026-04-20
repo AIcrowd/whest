@@ -10,9 +10,10 @@ import subprocess
 import sys
 import textwrap
 import warnings
+from collections.abc import Callable
 from pathlib import Path
 from time import perf_counter_ns
-from typing import Any, Callable
+from typing import Any
 
 import numpy as np
 
