@@ -55,7 +55,7 @@ function FormulaIntuitionTooltip({ anchorRect, onDismiss }) {
 
   return (
     <div
-      className="pointer-events-none fixed z-[9999] w-[440px] max-w-[calc(100vw-2rem)] rounded-xl border border-stone-200 bg-[rgba(255,252,247,0.98)] px-4 py-3.5 text-stone-900 shadow-[0_24px_60px_rgba(15,23,42,0.16)] backdrop-blur-sm"
+      className="pointer-events-none fixed z-[9999] w-[440px] max-w-[calc(100vw-2rem)] rounded-xl border border-stone-200 bg-white px-4 py-3.5 text-stone-900 shadow-[0_24px_60px_rgba(15,23,42,0.16)]"
       style={{
         left: pos.x,
         top: pos.y,
@@ -142,7 +142,7 @@ export default function AccumulationHardCard() {
     <div id="accumulation-cost" className="rounded-xl border border-gray-200 bg-white p-4 scroll-mt-24">
       <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
         <AnchorLink anchorId="accumulation-cost" labelText="Why Accumulation Cost (α) is Hard">
-          Why Accumulation Cost <span>(α)</span> is Hard
+          Why Accumulation Cost <span>(<Latex math={String.raw`\alpha`} />)</span> is Hard
         </AnchorLink>
       </h3>
       <p className="mt-2 text-sm leading-6 text-foreground">
@@ -153,7 +153,7 @@ export default function AccumulationHardCard() {
           a visual rhythm. The tooltip explains what makes α different. */}
       <div
         ref={formulaRef}
-        className="group relative mt-3 cursor-help rounded-md bg-gray-50 px-3 py-2.5 transition-colors hover:bg-amber-50/60"
+        className="group relative mt-3 cursor-help rounded-md bg-white px-3 py-2.5 transition-colors hover:bg-white"
         onMouseEnter={openTooltip}
         onMouseLeave={scheduleHide}
         onFocus={openTooltip}
@@ -163,12 +163,6 @@ export default function AccumulationHardCard() {
         aria-describedby="acc-formula-intuition"
       >
         <Latex math={String.raw`\alpha_a \;=\; \sum_{O \in X_a/G_a} |\pi_{V_{\mathrm{free}}}(O)|`} display />
-        <div
-          className="pointer-events-none absolute right-2 top-1.5 text-[10px] font-medium uppercase tracking-wider text-amber-600/70 opacity-0 transition-opacity group-hover:opacity-100"
-          aria-hidden
-        >
-          hover for intuition
-        </div>
       </div>
 
       <p className="mt-3 text-sm leading-6 text-foreground">

@@ -1,5 +1,6 @@
 import { Fragment, useMemo } from 'react';
 import { notationColor } from '../lib/notationSystem.js';
+import Latex from './Latex.jsx';
 
 // V/W color palette — same hexes the rest of Act 4 uses (Interaction Graph
 // legend, IncidenceMatrix v/w columns, TotalCostView hero glossary).
@@ -132,16 +133,16 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
     return (
       <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
         <div className="text-[11px] text-muted-foreground mb-2">
-          Dimino&apos;s algorithm, closing the valid π&apos;s into the detected group G — a verification step,
+          Dimino&apos;s algorithm, closing the valid <Latex math={String.raw`\pi`} />&apos;s into the detected group G — a verification step,
           since the valid-π set is already composition-closed.
         </div>
         {isTrivialGroup ? (
           <div className="space-y-3 text-sm leading-6 text-muted-foreground">
             <p className="text-foreground">
-              The detected symmetry group is <span className="font-mono">{'{e}'}</span> — every valid (σ, π) pair induces the identity permutation (or no valid pair exists), so there are no non-trivial generators to feed into Dimino's closure.
+              The detected symmetry group is <span className="font-mono">{'{e}'}</span> — every valid (<Latex math={String.raw`\sigma`} />, <Latex math={String.raw`\pi`} />) pair induces the identity permutation (or no valid pair exists), so there are no non-trivial generators to feed into Dimino's closure.
             </p>
             <p>
-              Try a preset with declared axis symmetries or genuinely-identical operands where the recovery π is non-trivial — e.g.{' '}
+              Try a preset with declared axis symmetries or genuinely-identical operands where the recovery <Latex math={String.raw`\pi`} /> is non-trivial — e.g.{' '}
               <code className="font-mono text-xs">bilinear-trace</code>,{' '}
               <code className="font-mono text-xs">outer</code>,{' '}
               <code className="font-mono text-xs">four-cycle</code>,{' '}
@@ -151,7 +152,7 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
           </div>
         ) : (
           <p className="text-sm leading-6 text-muted-foreground">
-            Select a valid (σ, π) pair on the left to test the induced label permutation it induces.
+            Select a valid (<Latex math={String.raw`\sigma`} />, <Latex math={String.raw`\pi`} />) pair on the left to test the induced label permutation it induces.
           </p>
         )}
       </div>
@@ -161,13 +162,13 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
       <div className="text-[11px] text-muted-foreground mb-2">
-        Dimino&apos;s algorithm, closing the valid π&apos;s into the detected group G — a verification step,
+        Dimino&apos;s algorithm, closing the valid <Latex math={String.raw`\pi`} />&apos;s into the detected group G — a verification step,
         since the valid-π set is already composition-closed.
       </div>
       <div>
         {usingPairFallback ? (
           <div className="rounded-lg border border-dashed border-border bg-surface-raised px-3 py-2 text-xs leading-5 text-muted-foreground">
-            No exact pair is selected yet, so this panel is showing the first valid `(σ, π)` pair as a stable fallback.
+            No exact pair is selected yet, so this panel is showing the first valid (<Latex math={String.raw`\sigma`} />, <Latex math={String.raw`\pi`} />) pair as a stable fallback.
           </div>
         ) : null}
         {usingCandidateFallback ? (
@@ -176,7 +177,7 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
           </div>
         ) : null}
         <p className="mt-2 max-w-[62ch] text-sm leading-6 text-muted-foreground">
-          Each valid π induces a label permutation on the active labels. We keep it only if adding it enlarges the subgroup generated so far.
+          Each valid <Latex math={String.raw`\pi`} /> induces a label permutation on the active labels. We keep it only if adding it enlarges the subgroup generated so far.
         </p>
         {group ? (
           <div className="mt-3 rounded-lg border border-border bg-surface-raised px-3 py-2 text-xs leading-5 text-muted-foreground">
@@ -199,7 +200,7 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
 
       {!selectedPair ? (
         <div className="mt-4 rounded-lg border border-dashed border-border bg-surface-raised p-4 text-sm leading-6 text-muted-foreground">
-          Select a valid (σ, π) pair on the left to inspect the single candidate-construction step it induces.
+          Select a valid (<Latex math={String.raw`\sigma`} />, <Latex math={String.raw`\pi`} />) pair on the left to inspect the single candidate-construction step it induces.
         </div>
       ) : !candidate ? (
         <div className="mt-4 rounded-lg border border-dashed border-border bg-surface-raised p-4 text-sm leading-6 text-muted-foreground">
@@ -207,16 +208,18 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
         </div>
       ) : (
         <div className="mt-4 space-y-4">
-          <ProofSection title="Current candidate from π">
+          <ProofSection title={<>Current candidate from <Latex math={String.raw`\pi`} /></>}>
             <div className="space-y-3">
               <div className="perm-card generator dimino-new">
                 <code className="perm-notation">
                   <ColoredLabels text={candidate.cycleNotation} vSet={vSet} wSet={wSet} />
                 </code>
-                <span className="perm-structure">candidate induced by the selected valid π</span>
+                <span className="perm-structure">candidate induced by the selected valid <Latex math={String.raw`\pi`} /></span>
               </div>
               <div className="text-sm leading-6 text-muted-foreground">
-                {'Selected π mapping: '}
+                {'Selected '}
+                <Latex math={String.raw`\pi`} />
+                {' mapping: '}
                 <ColoredLabels text={fmtPiMapping(selectedPair.pi, orderedLabels)} vSet={vSet} wSet={wSet} />
               </div>
             </div>
@@ -288,7 +291,7 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
 
           {hasMergedProvenance ? (
             <div className="rounded-lg border border-border bg-white p-3 text-xs leading-6 text-muted-foreground">
-              {`Provenance note: ${candidate.sourcePiIds.length} valid π mappings collapse to this same induced label permutation, so they share this closure decision.`}
+              <>Provenance note: {candidate.sourcePiIds.length} valid <Latex math={String.raw`\pi`} /> mappings collapse to this same induced label permutation, so they share this closure decision.</>
             </div>
           ) : null}
         </div>

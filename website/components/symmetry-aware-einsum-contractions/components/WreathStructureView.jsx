@@ -55,13 +55,12 @@ export default function WreathStructureView({ analysis, example }) {
         </InlineMathText>
       </p>
 
-      <div className="mt-4 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
-        <Latex math={formulaLatex} display />
-      </div>
-
-      {factors.length > 0 ? (
-        <div className="mt-4 flex flex-wrap gap-2">
-          {factors.map((factor, index) => (
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        <div className="rounded-full border border-gray-200 bg-white px-3 py-1.5 text-[12px] text-gray-600">
+          <Latex math={formulaLatex} />
+        </div>
+        {factors.length > 0 ? (
+          factors.map((factor, index) => (
             <div
               key={`${factor.name ?? 'operand'}-${index}`}
               className="rounded-full border border-gray-200 bg-white px-3 py-1.5 text-[12px] text-gray-600"
@@ -71,9 +70,9 @@ export default function WreathStructureView({ analysis, example }) {
               <span className="ml-2">H = <Latex math={factor.symmetryLabel} /></span>
               <span className="ml-2">m = {factor.m}</span>
             </div>
-          ))}
-        </div>
-      ) : null}
+          ))
+        ) : null}
+      </div>
 
       <WreathElementTable elements={visibleElements} />
 
@@ -133,7 +132,7 @@ function WreathElementTable({ elements }) {
             </th>
             <th className="px-3 py-2 font-semibold">Factor decomposition</th>
             <th className="px-3 py-2 font-semibold">Row action on M</th>
-            <th className="px-3 py-2 font-semibold">matching relabeling π</th>
+            <th className="px-3 py-2 font-semibold">matching relabeling <Latex math={String.raw`\pi`} /></th>
             <th className="px-3 py-2 font-semibold">Outcome</th>
           </tr>
         </thead>
@@ -173,8 +172,8 @@ function WreathElementRow({ element, index }) {
   }[element.classification];
 
   const matrixEffect = element.matrixPreserving
-    ? `${notationLatex('sigma_row_move')}(M) = M`
-    : `${notationLatex('sigma_row_move')}(M) \\ne M`;
+    ? <Latex math={String.raw`\sigma(M) = M`} />
+    : <Latex math={String.raw`\sigma(M) \ne M`} />;
   const piStr = element.derivePiResult === null ? '—' : piCycleNotation(element.derivePiResult);
   const factorStr = element.factorization
     ? element.factorization.map((factor) => {

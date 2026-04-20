@@ -421,7 +421,7 @@ export function LabelInteractionGraph({
       {hovered && typeof document !== 'undefined'
         ? createPortal(
             <div
-              className="pointer-events-none fixed z-[9999] w-72 rounded-lg border border-stone-200 bg-[rgba(255,252,247,0.98)] px-3.5 py-3 text-stone-900 shadow-[0_20px_48px_rgba(15,23,42,0.16)] backdrop-blur-sm"
+              className="pointer-events-none fixed z-[9999] w-72 rounded-lg border border-stone-200 bg-white px-3.5 py-3 text-stone-900 shadow-[0_20px_48px_rgba(15,23,42,0.16)]"
               style={{
                 left: tooltipPos.x,
                 top: tooltipPos.y,

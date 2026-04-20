@@ -1,8 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import { buildUVertexLabels } from '../engine/uVertexLabel.js';
 import IncidenceMatrix from './IncidenceMatrix.jsx';
+<<<<<<< HEAD
 import InlineMathText from './InlineMathText.jsx';
 import { notationColor, notationLatex } from '../lib/notationSystem.js';
+=======
+import Latex from './Latex.jsx';
+import { notationColor } from '../lib/notationSystem.js';
+>>>>>>> 28129099 (fix: polish explorer notation rendering)
 
 const STAGE_LABELS = ['M', 'σ(M)', 'π(σ(M))'];
 const VISIBLE_VALID_PAIR_LIMIT = 4;
@@ -154,7 +159,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
       <div className="sigma-summary">
         <div className="sigma-stat">
           <span className="stat-num">{results.length}</span>
-          <span className="stat-label">total σ's</span>
+          <span className="stat-label">total <Latex math={String.raw`\sigma`} />&apos;s</span>
         </div>
         <div className="sigma-stat">
           <span className="stat-num">{results.filter(r => r.skipped).length}</span>
@@ -162,7 +167,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
         </div>
         <div className="sigma-stat accepted">
           <span className="stat-num">{allPairs.filter(r => r.isValid).length}</span>
-          <span className="stat-label">valid π found</span>
+          <span className="stat-label">valid <Latex math={String.raw`\pi`} /> found</span>
         </div>
         <div className="sigma-stat rejected">
           <span className="stat-num">{allPairs.filter(r => !r.isValid).length}</span>
@@ -173,7 +178,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
       {/* Valid pairs — shown inline in a 2-column grid */}
       {validPairs.length > 0 && (
         <div className="pair-selector">
-          <span className="pair-selector-label">Valid (σ, π) pairs:</span>
+          <span className="pair-selector-label">Valid (<Latex math={String.raw`\sigma`} />, <Latex math={String.raw`\pi`} />) pairs:</span>
           <div className="pair-chips pair-chips-grid">
             {inlineValidPairs.map((r) => {
               const origIdx = allPairs.indexOf(r);
@@ -181,8 +186,8 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
                 <button key={origIdx}
                   className="pair-chip pair-valid"
                   onClick={() => handleSelectPair(origIdx)}>
-                  <span className="pair-sigma">σ = {fmtSigma(r.sigmaRowPerm, uLabels)}</span>
-                  <span className="pair-pi">π = {fmtPi(r.pi)}</span>
+                  <span className="pair-sigma"><Latex math={String.raw`\sigma`} /> = {fmtSigma(r.sigmaRowPerm, uLabels)}</span>
+                  <span className="pair-pi"><Latex math={String.raw`\pi`} /> = {fmtPi(r.pi)}</span>
                   <span className={`pair-kind pair-kind-${r.piKind || 'identity'}`}>
                     {kindLabel(r.piKind)}
                   </span>
@@ -201,14 +206,14 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
               className="valid-toggle"
               onClick={() => setShowMoreValid(true)}
             >
-              ▸ {remainingValidPairs.length} more (σ, π) pair{remainingValidPairs.length !== 1 ? 's' : ''}
+              ▸ {remainingValidPairs.length} more (<Latex math={String.raw`\sigma`} />, <Latex math={String.raw`\pi`} />) pair{remainingValidPairs.length !== 1 ? 's' : ''}
             </button>
           )}
           {rejectedPairs.length > 0 && (
             <button
               className="rejected-toggle"
               onClick={() => setShowRejected(true)}>
-              ▸ {rejectedPairs.length} rejected σ{rejectedPairs.length !== 1 ? "'s" : ''}
+              ▸ {rejectedPairs.length} rejected <Latex math={String.raw`\sigma`} />{rejectedPairs.length !== 1 ? "'s" : ''}
             </button>
           )}
         </div>
@@ -225,7 +230,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
                 <div key={i} className="stage-step-wrapper">
                   {i > 0 && (
                     <div className={`stage-connector ${stage >= i ? 'stage-connector-done' : ''} ${!reachable ? 'stage-connector-disabled' : ''}`}>
-                      <span className="stage-connector-label">{i === 1 ? 'apply σ' : 'apply π'}</span>
+                      <span className="stage-connector-label">{i === 1 ? <>apply <Latex math={String.raw`\sigma`} /></> : <>apply <Latex math={String.raw`\pi`} /></>}</span>
                     </div>
                   )}
                   <button
@@ -276,7 +281,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
               )}
               {stage >= 1 && !selected.isValid && (
                 <div className="recovery-badge-below recovery-fail">
-                  π not found — {selected.reason}
+                  <Latex math={String.raw`\pi`} /> not found — {selected.reason}
                 </div>
               )}
             </div>
@@ -286,7 +291,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
           {selected.isValid && selected.pi && (
             <>
               <div className="pi-detail-panel">
-                <h5>π mapping</h5>
+                <h5><Latex math={String.raw`\pi`} /> mapping</h5>
                 <div className="pi-arrows">
                   {Object.entries(selected.pi).map(([from, to]) => (
                     <div key={from} className={`pi-arrow ${from !== to ? 'moved' : 'fixed'}`}>
@@ -329,7 +334,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
                     </code>
                     </div>
                     <div className="text-sm text-muted-foreground">
-                      This π induces the label permutation {selectedCandidate ? selectedCandidate.cycleNotation : '—'} on the ordered active labels. The right panel now tests it in generator construction.
+                      This <Latex math={String.raw`\pi`} /> induces the label permutation {selectedCandidate ? selectedCandidate.cycleNotation : '—'} on the ordered active labels. The right panel now tests it in generator construction.
                     </div>
                   </div>
                 </div>
@@ -414,7 +419,7 @@ function RejectedModal({
     <div className="rejected-modal-overlay" onClick={onClose}>
       <div className="rejected-modal" onClick={e => e.stopPropagation()}>
         <div className="rejected-modal-header">
-          <h4>{pair ? 'Rejected σ — Detail' : `${rejectedPairs.length} Rejected σ's`}</h4>
+          <h4>{pair ? <>Rejected <Latex math={String.raw`\sigma`} /> — Detail</> : <>{rejectedPairs.length} Rejected <Latex math={String.raw`\sigma`} />&apos;s</>}</h4>
           <button className="rejected-modal-close" onClick={onClose}>✕</button>
         </div>
 
@@ -427,10 +432,10 @@ function RejectedModal({
                 <button key={origIdx} className="rejected-list-item"
                   onClick={() => onSelectDetail(origIdx)}>
                   <span className="rejected-list-sigma">
-                    σ = {fmtSigma(r.sigmaRowPerm, uLabels)}
+                    <Latex math={String.raw`\sigma`} /> = {fmtSigma(r.sigmaRowPerm, uLabels)}
                   </span>
                   <span className="rejected-list-reason">
-                    {r.reason || 'no valid π'}
+                    {r.reason || <>no valid <Latex math={String.raw`\pi`} /></>}
                   </span>
                   <span className="rejected-list-arrow">→</span>
                 </button>
@@ -473,7 +478,7 @@ function ValidPairsModal({
     <div className="rejected-modal-overlay" onClick={onClose}>
       <div className="rejected-modal" onClick={(event) => event.stopPropagation()}>
         <div className="rejected-modal-header">
-          <h4>{`${pairs.length} additional valid σ${pairs.length === 1 ? '' : "'s"}`}</h4>
+          <h4>{pairs.length} additional valid <Latex math={String.raw`\sigma`} />{pairs.length === 1 ? '' : "'s"}</h4>
           <button className="rejected-modal-close" onClick={onClose}>✕</button>
         </div>
 
@@ -483,10 +488,10 @@ function ValidPairsModal({
             return (
               <button key={origIdx} className="rejected-list-item" onClick={() => onSelectPair(origIdx)}>
                 <span className="rejected-list-sigma">
-                  σ = {fmtSigma(r.sigmaRowPerm, uLabels)}
+                  <Latex math={String.raw`\sigma`} /> = {fmtSigma(r.sigmaRowPerm, uLabels)}
                 </span>
                 <span className="pair-pi">
-                  π = {fmtPi(r.pi)}
+                  <Latex math={String.raw`\pi`} /> = {fmtPi(r.pi)}
                 </span>
                 <span className={`pair-kind pair-kind-${r.piKind || 'identity'}`}>
                   {kindLabel(r.piKind)}
@@ -520,9 +525,9 @@ function RejectedDetail({ pair, labels, uVertices, example, freeLabels, uLabels,
         ← Back to list
       </button>
       <div className="rejected-modal-sigma">
-        σ = {fmtSigma(pair.sigmaRowPerm, uLabels)}
+        <Latex math={String.raw`\sigma`} /> = {fmtSigma(pair.sigmaRowPerm, uLabels)}
       </div>
-      <p className="rejected-modal-reason">{pair.reason || 'No valid π found'}</p>
+      <p className="rejected-modal-reason">{pair.reason || <>No valid <Latex math={String.raw`\pi`} /> found</>}</p>
 
       <div className="rejected-detail-controls">
         <button

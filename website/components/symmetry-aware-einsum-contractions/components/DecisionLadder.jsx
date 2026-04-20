@@ -947,7 +947,7 @@ export default function DecisionLadder({
       </div>
       {activeTooltip && (
         <div
-          className="pointer-events-none fixed z-[9999] w-[460px] max-w-[calc(100vw-2rem)] rounded-xl border border-stone-200 bg-[rgba(255,252,247,0.98)] px-4 py-3.5 text-stone-900 shadow-[0_24px_60px_rgba(15,23,42,0.16)] backdrop-blur-sm"
+          className="pointer-events-none fixed z-[9999] w-[460px] max-w-[calc(100vw-2rem)] rounded-xl border border-stone-200 bg-white px-4 py-3.5 text-stone-900 shadow-[0_24px_60px_rgba(15,23,42,0.16)]"
           style={{
             left: tooltipPos.x,
             top: tooltipPos.y,

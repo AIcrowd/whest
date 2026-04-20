@@ -190,7 +190,7 @@ export default function CaseBadge({
 
       {showTooltip && tooltip && typeof document !== 'undefined' && createPortal(
         <div
-          className="pointer-events-none fixed z-[9999] w-[460px] max-w-[calc(100vw-2rem)] rounded-xl border border-stone-200 bg-[rgba(255,252,247,0.98)] px-4 py-3.5 text-stone-900 shadow-[0_24px_60px_rgba(15,23,42,0.16)] backdrop-blur-sm"
+          className="pointer-events-none fixed z-[9999] w-[460px] max-w-[calc(100vw-2rem)] rounded-xl border border-stone-200 bg-white px-4 py-3.5 text-stone-900 shadow-[0_24px_60px_rgba(15,23,42,0.16)]"
           style={{
             left: tooltipPos.x,
             top: tooltipPos.y,
@@ -223,7 +223,7 @@ export default function CaseBadge({
           )}
           <div
             className={cn(
-              'absolute left-1/2 h-1.5 w-3 bg-[rgba(255,252,247,0.98)]',
+              'absolute left-1/2 h-1.5 w-3 bg-white',
               tooltipPos.flipped ? 'top-[-6px]' : 'bottom-[-6px]',
             )}
             style={{
