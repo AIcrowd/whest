@@ -1,13 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { buildUVertexLabels } from '../engine/uVertexLabel.js';
 import IncidenceMatrix from './IncidenceMatrix.jsx';
-<<<<<<< HEAD
 import InlineMathText from './InlineMathText.jsx';
-import { notationColor, notationLatex } from '../lib/notationSystem.js';
-=======
 import Latex from './Latex.jsx';
-import { notationColor } from '../lib/notationSystem.js';
->>>>>>> 28129099 (fix: polish explorer notation rendering)
+import { notationColor, notationLatex } from '../lib/notationSystem.js';
 
 const STAGE_LABELS = ['M', 'σ(M)', 'π(σ(M))'];
 const VISIBLE_VALID_PAIR_LIMIT = 4;
