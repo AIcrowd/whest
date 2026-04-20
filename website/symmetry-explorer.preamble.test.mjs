@@ -36,6 +36,8 @@ test('Preamble lays Einsum notation and the code side-by-side on wide viewports'
   assert.match(src, /MentalFrameworkColumn/);
   // MentalFrameworkCode is still imported (it is the code card).
   assert.match(src, /import MentalFrameworkCode/);
+  assert.match(src, /<MentalFrameworkColumn example=\{example\} \/>/);
+  assert.match(src, /<MentalFrameworkCode example=\{example\} \/>/);
 });
 
 test('Einsum column uses a parametric exact-einsum lead-in followed by a color-coded expanded form', () => {
@@ -87,9 +89,10 @@ test('μ / α definitions live in the code step headers — no separate callouts
 
 test('MentalFrameworkCode renders a short, natural-reading pseudocode (not the 20-line teaching model)', () => {
   const src = readComponent('MentalFrameworkCode.jsx');
-  // Local LINES constant defines the compact pseudocode; the long-form
-  // buildMentalModelLines() is no longer used by the preamble card.
-  assert.match(src, /const LINES = \[/);
+  // Local BASE_LINES define the compact pseudocode and buildLines(example)
+  // parametrizes the inline comments from the current contraction.
+  assert.match(src, /const BASE_LINES = \[/);
+  assert.match(src, /function buildLines\(example\)/);
   assert.doesNotMatch(src, /buildMentalModelLines/);
   // The two core lines of the algorithm.
   assert.match(src, /for rep in RepSet:/);
@@ -104,11 +107,10 @@ test('MentalFrameworkCode renders a short, natural-reading pseudocode (not the 2
 
 test('MentalFrameworkCode opens with the slogan above the code', () => {
   const src = readComponent('MentalFrameworkCode.jsx');
-  // Slogan is the whole algorithm in two sentences; placed above the code
-  // grid so the reader grasps the shape before diving into Python.
-  assert.match(src, /Compute each distinct product ONCE/);
-  assert.match(src, /Spread it to every output cell it contributes to/);
-  const sloganIdx = src.indexOf('Compute each distinct product ONCE');
+  // Slogan is now a compact two-part editorial cue above the code grid.
+  assert.match(src, /Multiply Once/);
+  assert.match(src, /Accumulate Many/);
+  const sloganIdx = src.indexOf('Multiply Once');
   const gridIdx = src.indexOf('aria-label="Symmetry-aware contraction pseudocode"');
   assert.ok(sloganIdx < gridIdx, 'slogan must render before the code grid');
 });
@@ -129,15 +131,14 @@ test('MentalFrameworkCode uses inline annotation rows at the correct indent', ()
 
 test('MentalFrameworkCode step metadata names the Feynman-style labels and colors', () => {
   const src = readComponent('MentalFrameworkCode.jsx');
-  // Step 1 · multiply once (coral) and Step 2 · accumulate many (amber).
+  // Step 1 · multiply once and Step 2 · accumulate many both use coral.
   // μ and α themselves are introduced in the Counting Convention block
   // below the code, so the inline step labels stay terse.
   assert.match(src, /kicker:\s*'Step 1'/);
   assert.match(src, /kicker:\s*'Step 2'/);
   assert.match(src, /label:\s*'multiply once'/);
   assert.match(src, /label:\s*'accumulate many'/);
-  assert.match(src, /color:\s*'text-primary'/);
-  assert.match(src, /color:\s*'text-amber-700'/);
+  assert.match(src, /color:\s*'text-\[#ef5a4c\]'/);
   // Heavy vertical-bar glyph marks each annotation row.
   assert.match(src, /┃/);
 });
@@ -157,6 +158,7 @@ test('MentalFrameworkCode renders the Counting Convention panel introducing μ a
   // glued to the bottom instead of floating in the middle.
   assert.match(src, /border-t border-stone-200\/70/);
   assert.match(src, /mt-auto border-t border-stone-200\/70/);
+  assert.match(src, /bg-gray-50/);
 });
 
 test('Preamble columns are forced to equal height so both bottoms align', () => {
@@ -181,6 +183,17 @@ test('MentalFrameworkCode uses Feynman-friendly comments for RepSet, Outs(rep) a
   assert.match(src, /# coeff\s+— how many orbit copies land on that bin/);
   // No jargon-heavy "representatives we walk" phrasing anywhere.
   assert.doesNotMatch(src, /representatives we walk/);
+});
+
+test('MentalFrameworkCode parameterizes inline comments from the active example', () => {
+  const src = readComponent('MentalFrameworkCode.jsx');
+  assert.match(src, /function normalizeExampleForPseudocode/);
+  assert.match(src, /function buildBaseValueComment/);
+  assert.match(src, /function buildReduceComment/);
+  assert.match(src, /base_val = product_at\(rep\)\$\{baseValueComment\}/);
+  assert.match(src, /R\[out\] \+= coeff\(rep, out\) \* base_val\$\{reduceComment\}/);
+  assert.match(src, /across all contracted indices/);
+  assert.match(src, /# R\[/);
 });
 
 test('Preamble no longer embeds a worked example — the payoff lives inside the explorer', () => {

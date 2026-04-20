@@ -143,7 +143,7 @@ function EinsumIntroColumn({ example }) {
   );
 }
 
-function MentalFrameworkColumn() {
+function MentalFrameworkColumn({ example }) {
   return (
     <div id="mental-framework" className="flex h-full flex-col scroll-mt-24">
       <span className="font-sans text-[11px] font-semibold uppercase tracking-[0.16em] text-coral">
@@ -166,7 +166,7 @@ function MentalFrameworkColumn() {
       </p>
 
       <div className="mt-6 flex flex-1 flex-col">
-        <MentalFrameworkCode />
+        <MentalFrameworkCode example={example} />
       </div>
     </div>
   );
@@ -196,7 +196,7 @@ export default function AlgorithmAtAGlance({ example }) {
             Convention band anchors to the bottom. */}
         <div className="grid items-stretch gap-8 lg:grid-cols-2 lg:gap-10">
           <EinsumIntroColumn example={example} />
-          <MentalFrameworkColumn />
+          <MentalFrameworkColumn example={example} />
         </div>
 
         <p

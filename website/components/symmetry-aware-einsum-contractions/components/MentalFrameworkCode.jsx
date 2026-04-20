@@ -5,15 +5,13 @@ import { tokenizePseudocodeLine } from '../engine/teachingModel.js';
  * Editorial-light rendering of the symmetry-aware contraction pseudocode.
  *
  * Card layout (top to bottom):
- *   1. Title caption (Mental framework · contraction.py)
- *   2. Slogan — the whole algorithm as one sentence:
- *      "Compute each distinct product ONCE. Spread it to every output cell
- *      it contributes to."
- *   3. Pseudocode block — an uninterrupted Python fragment. Two inline
+ *   1. Slogan — the whole algorithm in four words:
+ *      "Multiply Once → Accumulate Many"
+ *   2. Pseudocode block — an uninterrupted Python fragment. Two inline
  *      "annotation rows" sit at the exact indent of the lines they describe,
  *      carrying a coloured bar marker:
  *         ┃ Step 1 · multiply once    (coral, indent 4, before base_val)
- *         ┃ Step 2 · accumulate many  (amber, indent 8, before R[out] +=)
+ *         ┃ Step 2 · accumulate many  (coral, indent 8, before R[out] +=)
  *
  * Key goal: the reader sees the "multiply once, accumulate many" shape
  * directly in the code, with step labels anchored at the exact spot they
@@ -35,18 +33,85 @@ const STEPS = {
   mult: {
     kicker: 'Step 1',
     label: 'multiply once',
-    color: 'text-primary',
+    color: 'text-[#ef5a4c]',
   },
   acc: {
     kicker: 'Step 2',
     label: 'accumulate many',
-    color: 'text-amber-700',
+    color: 'text-[#ef5a4c]',
   },
 };
 
+function normalizeExampleForPseudocode(example) {
+  if (!example) return null;
+  if (Array.isArray(example.subscripts) && Array.isArray(example.operandNames)) {
+    return {
+      subscripts: example.subscripts,
+      output: example.output ?? '',
+      operandNames: example.operandNames,
+    };
+  }
+  if (example.expression?.subscripts && example.expression?.operandNames) {
+    return {
+      subscripts: example.expression.subscripts.split(',').map((part) => part.trim()),
+      output: example.expression.output ?? '',
+      operandNames: example.expression.operandNames.split(',').map((part) => part.trim()),
+    };
+  }
+  return null;
+}
+
+function formatSubscript(subscript) {
+  return subscript.split('').join(',');
+}
+
+function buildBaseValueComment(example) {
+  const normalized = normalizeExampleForPseudocode(example);
+  if (!normalized) return '';
+  const factors = normalized.subscripts.map((subscript, idx) => {
+    const name = normalized.operandNames[idx] ?? `X${idx}`;
+    return `${name}[${formatSubscript(subscript)}]`;
+  });
+  return factors.length > 0 ? `  # = ${factors.join(' * ')}` : '';
+}
+
+function buildReduceComment(example) {
+  const normalized = normalizeExampleForPseudocode(example);
+  if (!normalized?.output) return '';
+  const allLabels = normalized.subscripts.join('').split('');
+  const outputLabels = normalized.output.split('');
+  const contractedLabels = [...new Set(allLabels.filter((label) => !outputLabels.includes(label)))];
+  const contractedSuffix = contractedLabels.length > 0
+    ? ` across all contracted indices ${contractedLabels.join(',')}`
+    : '';
+  return `  # R[${formatSubscript(normalized.output)}]${contractedSuffix}`;
+}
+
+function wrapCommentLines(commentText, maxChars = 84) {
+  const normalized = commentText.trim().replace(/^#\s*/, '');
+  if (!normalized) return [];
+
+  const words = normalized.split(/\s+/);
+  const lines = [];
+  let current = '';
+
+  for (const word of words) {
+    const next = current ? `${current} ${word}` : word;
+    if (next.length <= maxChars || current.length === 0) {
+      current = next;
+      continue;
+    }
+    lines.push(current);
+    current = word;
+  }
+
+  if (current) lines.push(current);
+  return lines.map((line) => `# ${line}`);
+}
+
 // Each row has `kind: 'code' | 'annotation'`. Annotation rows sit inline at
 // the same indent as the code line they describe and carry a coloured ┃ bar.
-const LINES = [
+const BASE_LINES = [
   { id: 'comment-rep',  number: 1,  kind: 'code', code: '# RepSet     — unique input tuples to multiply.' },
   { id: 'comment-outs', number: 2,  kind: 'code', code: '# Outs(rep)  — unique output bins this product lands in.' },
   { id: 'comment-coef', number: 3,  kind: 'code', code: '# coeff      — how many orbit copies land on that bin.' },
@@ -58,6 +123,20 @@ const LINES = [
   { id: 'step2-ann',    number: 9,  kind: 'annotation', step: 'acc', indent: 8 },
   { id: 'reduce',       number: 10, kind: 'code', code: '        R[out] += coeff(rep, out) * base_val' },
 ];
+
+function buildLines(example) {
+  const baseValueComment = buildBaseValueComment(example);
+  const reduceComment = buildReduceComment(example);
+  return BASE_LINES.map((line) => {
+    if (line.id === 'base-val') {
+      return { ...line, code: `    base_val = product_at(rep)${baseValueComment}` };
+    }
+    if (line.id === 'reduce') {
+      return { ...line, code: `        R[out] += coeff(rep, out) * base_val${reduceComment}` };
+    }
+    return line;
+  });
+}
 
 function AnnotationRow({ line }) {
   const step = STEPS[line.step];
@@ -79,7 +158,12 @@ function AnnotationRow({ line }) {
 }
 
 function CodeRow({ line }) {
-  const tokens = tokenizePseudocodeLine(line.code);
+  const inlineCommentMatch = line.code.match(/(\s+#.*)$/);
+  const codePrefix = inlineCommentMatch ? line.code.slice(0, -inlineCommentMatch[1].length) : line.code;
+  const commentSuffix = inlineCommentMatch ? inlineCommentMatch[1] : '';
+  const leadingWhitespace = codePrefix.match(/^\s*/)?.[0] ?? '';
+  const tokens = tokenizePseudocodeLine(codePrefix);
+  const wrappedCommentLines = commentSuffix ? wrapCommentLines(commentSuffix) : [];
   return (
     <Fragment>
       <span className="select-none pr-3 text-right text-xs text-stone-400">
@@ -89,34 +173,41 @@ function CodeRow({ line }) {
         {tokens.length === 0 ? (
           <span>&nbsp;</span>
         ) : (
-          tokens.map((token, idx) => (
-            <span key={idx} className={TOKEN_CLASS[token.kind] ?? TOKEN_CLASS.plain}>
-              {token.text}
-            </span>
-          ))
+          <>
+            {tokens.map((token, idx) => (
+              <span key={idx} className={TOKEN_CLASS[token.kind] ?? TOKEN_CLASS.plain}>
+                {token.text}
+              </span>
+            ))}
+            {wrappedCommentLines.length > 0 ? (
+              <span
+                className="mt-0.5 block max-w-[84ch] text-stone-500"
+                style={{ paddingLeft: `${leadingWhitespace.length}ch` }}
+              >
+                {wrappedCommentLines.map((commentLine, idx) => (
+                  <span key={idx} className="block italic">
+                    {commentLine}
+                  </span>
+                ))}
+              </span>
+            ) : null}
+          </>
         )}
       </code>
     </Fragment>
   );
 }
 
-export default function MentalFrameworkCode() {
+export default function MentalFrameworkCode({ example }) {
+  const lines = buildLines(example);
   return (
-    <figure className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-stone-200 bg-stone-50 shadow-sm">
-      <figcaption className="flex items-baseline justify-between gap-3 border-b border-stone-200/70 px-5 py-3 md:px-6">
-        <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">
-          Mental framework
-        </span>
-        <span className="font-mono text-xs text-stone-400">contraction.py</span>
-      </figcaption>
-
+    <figure className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm">
       {/* Slogan — the whole algorithm in two sentences. */}
       <div className="border-b border-stone-200/60 px-5 py-4 md:px-6">
-        <p className="text-[14px] leading-6 text-stone-800">
-          <strong className="font-semibold text-stone-900">
-            Compute each distinct product ONCE.
-          </strong>{' '}
-          Spread it to every output cell it contributes to.
+        <p className="text-[15px] leading-6 text-stone-800">
+          <span className="font-semibold text-[#ef5a4c]">Multiply Once</span>
+          <span className="px-2 text-stone-900">-&gt;</span>
+          <span className="font-semibold text-[#ef5a4c]">Accumulate Many</span>
         </p>
       </div>
 
@@ -125,7 +216,7 @@ export default function MentalFrameworkCode() {
         role="region"
         aria-label="Symmetry-aware contraction pseudocode"
       >
-        {LINES.map((line) =>
+        {lines.map((line) =>
           line.kind === 'annotation' ? (
             <AnnotationRow key={line.id} line={line} />
           ) : (
@@ -138,7 +229,7 @@ export default function MentalFrameworkCode() {
           page. Sits directly below the code grid; mt-auto anchors it to the
           bottom of the figure so that when the parent column stretches to
           match the left side's height, the band stays glued to the bottom. */}
-      <div className="mt-auto border-t border-stone-200/70 bg-stone-100/60 px-5 py-4 md:px-6">
+      <div className="mt-auto border-t border-stone-200/70 bg-gray-50 px-5 py-4 md:px-6">
         <div className="font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">
           Counting convention
         </div>
