@@ -7,16 +7,19 @@ function countMatches(source, pattern) {
   return matches ? matches.length : 0;
 }
 
-test('symmetry explorer acts use interpretation, algorithm, and output framing', () => {
+test('symmetry explorer acts use prose-first intros and output framing', () => {
   const appSource = fs.readFileSync(
     new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url),
     'utf8',
   );
-  const act5Start = appSource.indexOf('<section id={EXPLORER_ACTS[4].id}');
-  const shellActsSource = act5Start >= 0 ? appSource.slice(0, act5Start) : appSource;
-
-  assert.equal(countMatches(shellActsSource, /label="Interpretation"/g), 4);
-  assert.equal(countMatches(shellActsSource, /label="Approach"/g), 4);
-  assert.equal(countMatches(shellActsSource, /label="What this produces"/g), 4);
-  assert.doesNotMatch(shellActsSource, /label="Why this matters"|label="Takeaway"/);
+  assert.match(appSource, /import SectionIntroProse from '\.\/components\/SectionIntroProse\.jsx';/);
+  assert.equal(countMatches(appSource, /EXPLORER_ACTS\[[0-4]\]\.introParagraphs/g), 4);
+  assert.match(appSource, /title={EXPLORER_ACTS\[4\]\.heading}/);
+  assert.match(appSource, /description={<InlineMathText>{EXPLORER_ACTS\[4\]\.question}<\/InlineMathText>}/);
+  assert.doesNotMatch(appSource, /EXPLORER_ACTS\[4\]\.supportingSentence/);
+  assert.equal(countMatches(appSource, /label="Interpretation"/g), 0);
+  assert.equal(countMatches(appSource, /label="Approach"/g), 0);
+  assert.equal(countMatches(appSource, /label="What this produces"/g), 4);
+  assert.doesNotMatch(appSource, /EXPLORER_ACTS\[4\]\.why/);
+  assert.doesNotMatch(appSource, /onOpenModalSection=\{/);
 });

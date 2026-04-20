@@ -176,12 +176,17 @@ function classifyGroupName(labels, generators, elements) {
   if (isCyclicGroup(supportElements, effectiveDegree)) return `C${effectiveDegree}${labelSet}`;
   if (isDihedralGroup(supportElements, effectiveDegree)) return `D${effectiveDegree}${labelSet}`;
   if (order === 2 && effectiveDegree > 2) {
+    // Single generator that is the product of disjoint 2-cycles: this is a
+    // single coupled order-2 element, NOT the direct product S2 × S2 (which
+    // would have order 4). Render the generator in cycle notation so the
+    // group order is unambiguous.
     const generator = generators[0];
     const cycles = generator?.cyclicForm() || [];
     if (cycles.length > 0 && cycles.every((cycle) => cycle.length === 2) && cycles.length > 1) {
-      return cycles
-        .map((cycle) => `S2{${cycle.map((i) => labels[i]).join(',')}}`)
-        .join('\u00d7');
+      const generatorText = cycles
+        .map((cycle) => `(${cycle.map((i) => labels[i]).join(' ')})`)
+        .join('');
+      return `\u27e8${generatorText}\u27e9`;
     }
     return `Z2${labelSet}`;
   }

@@ -18,8 +18,8 @@ test('EXPLORER_ACTS defines the five narrative acts in the updated story order',
       { id: 'setup', navTitle: 'Set Up', heading: 'Specify the Contraction' },
       { id: 'structure', navTitle: 'See Structure', heading: 'Encode the Structure' },
       { id: 'proof', navTitle: 'Prove Symmetry', heading: 'Detect and Generate the Symmetry Group' },
-      { id: 'savings', navTitle: 'Detect Structure', heading: 'Decompose the Group Action' },
-      { id: 'price-savings', navTitle: 'Price Savings', heading: 'Price Savings' },
+      { id: 'decompose', navTitle: 'Decompose Action', heading: 'Decompose the Group Action' },
+      { id: 'cost-savings', navTitle: 'Cost Savings', heading: 'Assemble the Cost Model' },
     ],
   );
 });
@@ -27,64 +27,73 @@ test('EXPLORER_ACTS defines the five narrative acts in the updated story order',
 test('Acts 1 through 4 ask algorithmic questions rather than product-tour questions', () => {
   assert.match(EXPLORER_ACTS[0].question, /what exact einsum/i);
   assert.match(EXPLORER_ACTS[1].question, /represent this contraction/i);
-  assert.match(EXPLORER_ACTS[2].question, /what full group do they generate/i);
+  assert.match(EXPLORER_ACTS[2].question, /genuine symmetries of the contraction/i);
   assert.match(EXPLORER_ACTS[3].question, /group is known/i);
+  assert.match(EXPLORER_ACTS[4].question, /detected symmetry determine the total cost of the contraction/i);
 });
 
-test('Acts 1 through 4 expose the new narrative metadata fields', () => {
+test('Acts 1 through 4 expose introParagraphs and no longer expose paired-callout copy fields', () => {
   for (const act of EXPLORER_ACTS.slice(0, 4)) {
-    assert.equal(typeof act.interpretation, 'string');
-    assert.ok(act.interpretation.length > 20);
-    assert.equal(typeof act.algorithmTitle, 'string');
-    assert.ok(act.algorithmTitle.length > 3);
-    assert.equal(typeof act.algorithm, 'string');
-    assert.ok(act.algorithm.length > 20);
+    assert.ok(Array.isArray(act.introParagraphs));
+    assert.equal(act.introParagraphs.length, 2);
+    assert.ok(act.introParagraphs.every((paragraph) => typeof paragraph === 'string' && paragraph.length > 40));
+  }
+
+  for (const act of EXPLORER_ACTS.slice(0, 4)) {
     assert.equal(typeof act.produces, 'string');
     assert.ok(act.produces.length > 10);
   }
 });
 
-test('Acts 2 through 4 surface the named procedures used by the algorithm', () => {
+test('EXPLORER_ACTS no longer carries legacy paired-callout compatibility fields', () => {
+  for (const act of EXPLORER_ACTS) {
+    for (const legacyField of ['interpretation', 'algorithmTitle', 'algorithm', 'why', 'bridge', 'takeaway']) {
+      assert.equal(legacyField in act, false, `did not expect ${legacyField} on ${act.id}`);
+    }
+  }
+  assert.equal('supportingSentence' in EXPLORER_ACTS[4], false);
+});
+
+test('approved notation-first prose appears in the narrative data', () => {
+  const section2 = EXPLORER_ACTS[1].introParagraphs.join(' ');
+  const section3 = EXPLORER_ACTS[2].introParagraphs.join(' ');
+  const section4 = EXPLORER_ACTS[3].introParagraphs.join(' ');
+
+  assert.match(section2, /V_\{\\mathrm\{free\}\}/);
+  assert.match(section2, /W_\{\\mathrm\{summed\}\}/);
+  assert.match(section2, /forget the numerical entries/i);
+  assert.match(section2, /incidence pattern/i);
+  assert.doesNotMatch(section2, /purely combinatorial encoding/i);
+  assert.match(section2, /incidence matrix/i);
+  assert.match(section2, /\$M\$/);
+
+  assert.match(section3, /wreath product/i);
+  assert.match(section3, /G_\{\\mathrm\{wreath\}\}/);
+  assert.match(section3, /\\sigma \\in G_\{\\mathrm\{wreath\}\}/);
+  assert.match(section3, /\\pi \\in \\mathrm\{Sym\}\(L\)/);
+  assert.match(section3, /H_i \\wr S_\{m_i\}/);
+  assert.match(section3, /row moves worth testing/i);
+  assert.match(section3, /\$G\$/);
+  assert.doesNotMatch(section3, /derivePi|G_pt/);
+
+  assert.match(section4, /L_a = V_\{\\mathrm\{free\},a\} \\sqcup W_\{\\mathrm\{summed\},a\}/);
+  assert.match(section4, /\$M_a\$/);
+  assert.match(section4, /\$\\alpha_a\$/);
+});
+
+test('Acts 1 through 4 still distinguish declared and detected symmetry in the new prose', () => {
   const joinedCopy = EXPLORER_ACTS
-    .slice(1, 4)
-    .flatMap(({ heading, question, interpretation, algorithm, produces }) => [
+    .slice(0, 4)
+    .flatMap(({ heading, question, introParagraphs, produces }) => [
       heading,
       question,
-      interpretation,
-      algorithm,
+      ...introParagraphs,
       produces,
     ])
     .join(' ');
 
-  assert.match(joinedCopy, /incidence matrix/i);
-  assert.match(joinedCopy, /Dimino/i);
-  assert.match(joinedCopy, /orbit enumeration/i);
-});
-
-test('Acts 2 through 4 render the named-procedure bridge text in the live shell', () => {
-  const appSource = fs.readFileSync(
-    new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url),
-    'utf8',
-  );
-
-  assert.match(appSource, /EXPLORER_ACTS\[1\]\.bridge/);
-  assert.match(appSource, /EXPLORER_ACTS\[2\]\.bridge/);
-  assert.match(appSource, /We now decompose the detected global action/);
-});
-
-test('acts 1 through 4 explicitly distinguish declared and detected symmetry', () => {
-  const appSource = fs.readFileSync(
-    new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url),
-    'utf8',
-  );
-  const act5Start = appSource.indexOf('<section id={EXPLORER_ACTS[4].id}');
-  const shellActsSource = act5Start >= 0 ? appSource.slice(0, act5Start) : appSource;
-
-  const declaredMatches = shellActsSource.match(/declared input symmetry/gi) ?? [];
-  const detectedMatches = shellActsSource.match(/detected contraction symmetry/gi) ?? [];
-
-  assert.ok(declaredMatches.length >= 2);
-  assert.ok(detectedMatches.length >= 2);
+  assert.match(joinedCopy, /declared symmetry/i);
+  assert.match(joinedCopy, /detected symmetry group/i);
 });
 
 test('pickTopVisibleAct prefers the top-most visible act and falls back safely', () => {

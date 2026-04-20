@@ -6,7 +6,9 @@
  * matching the animated matrix style. When `animate` is true, rows
  * and columns transition smoothly to new positions.
  */
+import Latex from './Latex.jsx';
 import { buildUVertexLabels } from '../engine/uVertexLabel.js';
+import { notationLatex } from '../lib/notationSystem.js';
 
 // Layout constants — single source of truth
 export const CELL_W = 70;
@@ -78,7 +80,22 @@ export default function IncidenceMatrix({
 
   return (
     <div className="inc-matrix-outer">
-      {label && <div className="inc-matrix-label">{label}</div>}
+      {label && (
+        <div className="inc-matrix-label">
+          <Latex math={label} />
+        </div>
+      )}
+      <div className="inc-matrix-legend">
+        <span className="inc-matrix-legend-item">
+          <span className="inc-matrix-legend-kicker">rows:</span>
+          <Latex math={notationLatex('u_axis_classes')} />
+          <span className="inc-matrix-legend-text">axis classes</span>
+        </span>
+        <span className="inc-matrix-legend-item">
+          <span className="inc-matrix-legend-kicker">columns:</span>
+          <Latex math={`${notationLatex('l_labels')} = ${notationLatex('v_free')} \\sqcup ${notationLatex('w_summed')}`} />
+        </span>
+      </div>
       <div className="inc-matrix" style={{ height: containerH, width: containerW }}>
         {/* Column headers */}
         {colLabels.map((lbl, ci) => {
@@ -92,7 +109,7 @@ export default function IncidenceMatrix({
                 transform: `translateX(${labelW + ci * cellW}px)`,
                 width: cellW, height: headerH,
               }}>
-              {lbl}
+              <Latex math={lbl} />
             </div>
           );
         })}
@@ -149,7 +166,9 @@ export default function IncidenceMatrix({
           const eqColor = fpColors[fp];
           return (
             <div key={lbl} className="inc-fp-item" style={eqColor ? { borderColor: eqColor } : {}}>
-              <span className={`inc-fp-label ${freeLabels?.has(lbl) ? 'inc-col-v' : 'inc-col-w'}`}>{lbl}</span>
+              <span className={`inc-fp-label ${freeLabels?.has(lbl) ? 'inc-col-v' : 'inc-col-w'}`}>
+                <Latex math={lbl} />
+              </span>
               <code className="inc-fp-value">({fp})</code>
               {eqColor && <span className="inc-fp-eq" style={{ background: eqColor }}>≡</span>}
             </div>

@@ -20,11 +20,14 @@ export default function PresetSidebar({
       aria-label="Preset examples"
       className="sticky top-20 hidden max-h-[calc(100vh-5rem)] w-[18rem] shrink-0 self-start overflow-y-auto md:block"
     >
-      <div className="px-2 pb-3 text-xs font-semibold uppercase tracking-[0.18em] text-primary/75">
+      <div className="px-1 pb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">
         Presets
       </div>
 
-      <div className="space-y-1">
+      {/* Flat list container — one outer gray-200 border wraps the whole
+          preset list; 1px gray-100 dividers separate siblings. Matches
+          `.preset-list` in design-system/preview/components.html. */}
+      <div className="divide-y divide-gray-100 overflow-hidden rounded-lg border border-gray-200 bg-white">
         <ExplorerSidebarItem
           as="button"
           active={selectedPresetIdx === CUSTOM_IDX}
@@ -32,16 +35,18 @@ export default function PresetSidebar({
           badge="Freeform"
           badgeClassName="bg-gray-100 text-gray-500"
           className={cn(
-            'relative px-3.5 py-3',
+            'relative px-4 py-3 pl-5',
             selectedPresetIdx === CUSTOM_IDX
-              ? 'bg-coral-light/50 ring-coral/30'
+              ? 'bg-coral-light/50'
               : 'hover:bg-gray-50',
           )}
           onClick={onCustom}
         >
-            <span className="absolute inset-y-3 left-0.5 w-1 rounded-full bg-coral" />
-          <code className="mt-1 block truncate pl-3 text-sm text-gray-500">Define your own contraction</code>
-          <span className="mt-1 block pl-3 text-sm text-gray-400">
+          {selectedPresetIdx === CUSTOM_IDX && (
+            <span className="absolute inset-y-3 left-[2px] w-1 rounded-[2px] bg-coral" />
+          )}
+          <code className="mt-1 block truncate text-sm text-gray-500">Define your own contraction</code>
+          <span className="mt-1 block text-sm text-gray-400">
             Keep the current builder state and switch into custom mode.
           </span>
         </ExplorerSidebarItem>
@@ -53,25 +58,26 @@ export default function PresetSidebar({
             active={selectedPresetIdx === idx}
             title={summary.name}
             className={cn(
-              'relative px-3.5 py-3',
+              'relative px-4 py-3 pl-5',
               selectedPresetIdx === idx
-                ? 'bg-coral-light/50 ring-coral/30'
+                ? 'bg-coral-light/50'
                 : 'hover:bg-gray-50',
             )}
             onClick={() => onSelect(idx)}
           >
-            <span
-              className="absolute inset-y-3 left-0.5 w-1 rounded-full"
-              style={{ backgroundColor: summary.color }}
-            />
-            <span className="flex items-center gap-2 pl-3">
-              {summary.caseType && (
-                <CaseBadge caseType={summary.caseType} size="xs" variant="compact" />
-              )}
+            {/* Active rail — always coral per reference template. Regime
+                identity lives on CaseBadge below, not on the rail. */}
+            {selectedPresetIdx === idx && (
+              <span className="absolute inset-y-3 left-[2px] w-1 rounded-[2px] bg-coral" />
+            )}
+            <span className="flex flex-wrap items-center gap-2">
+              {summary.caseIds?.map((caseId) => (
+                <CaseBadge key={caseId} regimeId={caseId} size="sm" variant="pill" />
+              ))}
               <SymmetryBadge value={summary.expectedGroup} />
             </span>
-            <code className="mt-1 block truncate pl-3 text-sm text-gray-500">{summary.formula}</code>
-            <span className="mt-1 block pl-3 text-sm text-gray-400">{summary.description}</span>
+            <code className="mt-1 block truncate text-sm text-gray-500">{summary.formula}</code>
+            <span className="mt-1 block text-sm text-gray-400">{summary.description}</span>
           </ExplorerSidebarItem>
         ))}
       </div>

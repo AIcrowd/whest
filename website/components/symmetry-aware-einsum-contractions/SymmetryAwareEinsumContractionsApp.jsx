@@ -1,28 +1,32 @@
 import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { EXAMPLES } from './data/examples.js';
 import { parseCycleNotation } from './engine/cycleParser.js';
 import { buildVariableColors } from './engine/colorPalette.js';
 import { analyzeExample } from './engine/pipeline.js';
-import { buildMentalModelCode, pickDefaultOrbitRow } from './engine/teachingModel.js';
+import { pickDefaultOrbitRow } from './engine/teachingModel.js';
 import StickyBar from './components/StickyBar.jsx';
-import ExplorerSectionCard from './components/ExplorerSectionCard.jsx';
-import { EXPLORER_ACTS, buildAnalysisCheckpoint } from './components/explorerNarrative.js';
+import ExpressionLevelModal from './components/ExpressionLevelModal.jsx';
+import ExplorerSectionCard, { SectionEyebrow, AnchorLink } from './components/ExplorerSectionCard.jsx';
+import { EXPLORER_ACTS } from './components/explorerNarrative.js';
 import NarrativeCallout from './components/NarrativeCallout.jsx';
+import SectionIntroProse from './components/SectionIntroProse.jsx';
+import InlineMathText from './components/InlineMathText.jsx';
+import Latex from './components/Latex.jsx';
+import AlgorithmAtAGlance from './components/AlgorithmAtAGlance.jsx';
 import ExampleChooser from './components/ExampleChooser.jsx';
 import PresetSidebar from './components/PresetSidebar.jsx';
 import BipartiteGraph from './components/BipartiteGraph.jsx';
 import MatrixView from './components/MatrixView.jsx';
 import SigmaLoop from './components/SigmaLoop.jsx';
 import DiminoView from './components/DiminoView.jsx';
-import RoleBadge from './components/RoleBadge.jsx';
-import PythonCodeBlock from './components/PythonCodeBlock.jsx';
+import WreathStructureView from './components/WreathStructureView.jsx';
 import ComponentCostView from './components/ComponentCostView.jsx';
 import TotalCostView from './components/TotalCostView.jsx';
 import { mergeObservedActEntries, pickTopVisibleAct } from './lib/activeAct.js';
 import { getPresetControlSelection } from './lib/presetSelection.js';
-import { reduceMentalModelVisibility } from './lib/mentalModelState.js';
+import { notationLatex } from './lib/notationSystem.js';
+import { useKeyboardShortcuts } from './lib/useKeyboardShortcuts.js';
 import './styles.css';
 
 const CUSTOM_IDX = -1;
@@ -67,12 +71,28 @@ export default function SymmetryAwareEinsumContractionsApp() {
   const [exampleIdx, setExampleIdx] = useState(DEFAULT_EXAMPLE_IDX);
   const [customExample, setCustomExample] = useState(null);
   const [previewExample, setPreviewExample] = useState(EXAMPLES[DEFAULT_EXAMPLE_IDX]);
-  const [dimensionN, setDimensionN] = useState(5);
+  const [defaultSize, setDefaultSize] = useState(5);
+  const [clusterSizes, setClusterSizes] = useState({}); // { [clusterId]: size }
+  // Back-compat alias — many child components still take a single `dimensionN` prop.
+  const dimensionN = defaultSize;
   const [selectedOrbitIdx, setSelectedOrbitIdx] = useState(-1);
   const [selectedSigmaPairIndex, setSelectedSigmaPairIndex] = useState(null);
   const [activeActId, setActiveActId] = useState(EXPLORER_ACTS[0].id);
   const [isDirty, setIsDirty] = useState(false);
-  const [showMentalModel, setShowMentalModel] = useState(false);
+  // Cross-highlight payload emitted by the Act-4 Interaction Graph on hover.
+  // `labels` → halo those characters in the StickyBar einsum equation;
+  // `leafKeys` → spotlight matching leaves in the DecisionLadder.
+  const [graphHover, setGraphHover] = useState(null);
+  const [exprModalOpen, setExprModalOpen] = useState(false);
+  const handleGraphHover = useCallback((payload) => setGraphHover(payload), []);
+  const hoveredLabelSet = useMemo(
+    () => (graphHover?.labels?.length ? new Set(graphHover.labels) : null),
+    [graphHover],
+  );
+  const spotlightLeafSet = useMemo(
+    () => (graphHover?.leafKeys?.length ? new Set(graphHover.leafKeys) : null),
+    [graphHover],
+  );
   const observedEntriesRef = useRef(new Map());
 
   // Resolve the active example: preset or custom
@@ -91,40 +111,43 @@ export default function SymmetryAwareEinsumContractionsApp() {
 
   // Handle preset selection
   const handleSelect = useCallback((idx) => {
-    setShowMentalModel((isOpen) => reduceMentalModelVisibility(isOpen, 'selectPreset'));
     setExampleIdx(idx);
     setPreviewExample(EXAMPLES[idx] ?? null);
     setIsDirty(false);
     setSelectedOrbitIdx(-1);
     setSelectedSigmaPairIndex(null);
+    setClusterSizes({});
   }, []);
 
   // Handle custom example submission
   const handleCustomExample = useCallback((ex) => {
-    setShowMentalModel((isOpen) => reduceMentalModelVisibility(isOpen, 'customExample'));
     setCustomExample(ex);
     setPreviewExample(ex);
     setExampleIdx(CUSTOM_IDX);
     setSelectedOrbitIdx(-1);
     setSelectedSigmaPairIndex(null);
+    setClusterSizes({});
   }, []);
 
   const handleCustomMode = useCallback(() => {
-    setShowMentalModel((isOpen) => reduceMentalModelVisibility(isOpen, 'customMode'));
     setExampleIdx(CUSTOM_IDX);
     setSelectedOrbitIdx(-1);
     setSelectedSigmaPairIndex(null);
+    setClusterSizes({});
   }, []);
 
   const analysis = useMemo(() => {
     if (!example) return null;
     try {
-      return analyzeExample(example, dimensionN);
+      const normalized = normalizeExample(example);
+      const examplePreset = normalized.labelSizes || {};
+      const mergedLabelSizes = { ...examplePreset, ...clusterSizes };
+      return analyzeExample({ ...normalized, labelSizes: mergedLabelSizes }, defaultSize);
     } catch (err) {
       console.error('Pipeline error:', err);
       return null;
     }
-  }, [example, dimensionN]);
+  }, [example, clusterSizes, defaultSize]);
 
   const {
     graph,
@@ -133,7 +156,22 @@ export default function SymmetryAwareEinsumContractionsApp() {
     symmetry: group,
     componentData,
     costModel: cost,
+    componentCosts,
+    clusters: analysisClusters,
   } = analysis || {};
+
+  // Seed clusterSizes from analysis when clusters appear
+  useEffect(() => {
+    if (!analysis?.clusters) return;
+    setClusterSizes((prev) => {
+      const next = { ...prev };
+      let changed = false;
+      for (const c of analysis.clusters) {
+        if (next[c.id] == null) { next[c.id] = c.size; changed = true; }
+      }
+      return changed ? next : prev;
+    });
+  }, [analysis?.clusters]);
 
   const resolvedSelectedOrbitIdx = useMemo(() => {
     const orbitRows = cost?.orbitRows ?? [];
@@ -141,17 +179,6 @@ export default function SymmetryAwareEinsumContractionsApp() {
     if (selectedOrbitIdx >= 0 && selectedOrbitIdx < orbitRows.length) return selectedOrbitIdx;
     return pickDefaultOrbitRow(orbitRows);
   }, [cost, selectedOrbitIdx]);
-
-  const mentalModelCode = useMemo(
-    () => buildMentalModelCode(cost?.orbitRows?.[resolvedSelectedOrbitIdx] ?? null),
-    [cost, resolvedSelectedOrbitIdx],
-  );
-
-  // Check if per-op symmetry is active for any operand
-  const hasPerOpSym = normalizedExample && (
-    normalizedExample.perOpSymmetry === 'symmetric' ||
-    (Array.isArray(normalizedExample.perOpSymmetry) && normalizedExample.perOpSymmetry.some(s => s === 'symmetric' || (s && typeof s === 'object')))
-  );
 
   useEffect(() => {
     const sections = EXPLORER_ACTS
@@ -174,7 +201,19 @@ export default function SymmetryAwareEinsumContractionsApp() {
     return () => observer.disconnect();
   }, [analysis, example]);
 
-  const checkpointItems = buildAnalysisCheckpoint({ example: normalizedExample, group });
+  useKeyboardShortcuts({
+    ArrowLeft: () => {
+      if (selectedPresetIdx == null) return;
+      const target = Math.max(0, (selectedPresetIdx ?? 0) - 1);
+      handleSelect(target);
+    },
+    ArrowRight: () => {
+      if (selectedPresetIdx == null) return;
+      const target = Math.min(EXAMPLES.length - 1, (selectedPresetIdx ?? 0) + 1);
+      handleSelect(target);
+    },
+    r: () => handleSelect(Math.floor(Math.random() * EXAMPLES.length)),
+  });
 
   return (
     <div className="min-h-screen bg-background">
@@ -182,19 +221,55 @@ export default function SymmetryAwareEinsumContractionsApp() {
         example={previewExample ?? example}
         group={group}
         activeActId={activeActId}
+        hoveredLabels={hoveredLabelSet}
       />
 
-      <div className="w-full pb-20 pt-8">
-        <div className="flex flex-col pb-6">
-          <ExplorerSectionCard
-          eyebrow="Interactive walkthrough"
-          title="Symmetry Aware Einsum Contractions"
-          description={<><em>Symmetry detection for einsum contractions</em>, explained as a five-act explorer.</>}
-          className="border-border/70 shadow-sm"
-          contentClassName="pt-6"
-        >
-          </ExplorerSectionCard>
+      <div className="w-full pb-20 pt-10">
+        {/* Editorial masthead — matches the docs home page register
+            (app/(home)/page.tsx). Uppercase kicker with leading rule +
+            Newsreader display-serif headline ending in a coral period +
+            Source Serif 4 italic lede. The same typographic rhythm the
+            reader sees at aicrowd.github.io/whest/ carries directly
+            into the explorer so the two pages feel like one product. */}
+        <header className="mx-auto flex w-full max-w-[1460px] flex-col px-6 pb-10 md:px-8 lg:px-10">
+          <div
+            className="mb-5 font-sans text-[10px] font-semibold uppercase text-gray-400"
+            style={{ letterSpacing: '0.2em' }}
+          >
+            <span aria-hidden className="mr-2 inline-block h-px w-8 align-middle bg-gray-300" />
+            An interactive walkthrough
+          </div>
 
+          <h1
+            className="m-0 font-semibold text-gray-900 dark:text-gray-100"
+            style={{
+              fontFamily: 'var(--font-display-serif), Georgia, serif',
+              fontVariationSettings: "'opsz' 72",
+              fontSize: 'clamp(36px, 5vw, 52px)',
+              letterSpacing: '-0.02em',
+              lineHeight: 1.05,
+            }}
+          >
+            Symmetry-aware einsum contractions<span style={{ color: 'var(--coral)' }}>.</span>
+          </h1>
+
+          <p
+            className="mt-5 max-w-[var(--prose-max)] text-[17px] italic text-gray-600 dark:text-gray-300"
+            style={{
+              fontFamily: 'var(--font-paper-serif), Georgia, serif',
+              fontVariationSettings: "'opsz' 18",
+              lineHeight: 1.6,
+            }}
+          >
+            Given a tensor contraction written in einsum notation, when is the
+            computation invariant under a group of operand permutations — and
+            how much work can we save by exploiting it? Walk through the
+            algorithm in five sections; the visualizations update live.
+          </p>
+        </header>
+
+        <div className="mx-auto w-full max-w-[1460px] px-6 md:px-8 lg:px-10">
+          <AlgorithmAtAGlance example={previewExample ?? example} />
         </div>
 
         <div className="mt-8 flex items-start gap-8">
@@ -208,31 +283,26 @@ export default function SymmetryAwareEinsumContractionsApp() {
             <div className="mx-auto flex max-w-[1460px] flex-col px-6 md:px-8 lg:px-10">
             <section id={EXPLORER_ACTS[0].id} className="mb-12 scroll-mt-24">
               <ExplorerSectionCard
-                eyebrow="Act 1"
+                eyebrow={<SectionEyebrow n={1} anchorId={EXPLORER_ACTS[0].id} />}
                 title={EXPLORER_ACTS[0].heading}
-                description={EXPLORER_ACTS[0].question}
+                description={<InlineMathText>{EXPLORER_ACTS[0].question}</InlineMathText>}
                 className="border-gray-200 bg-white"
                 contentClassName="pt-5"
               >
-                <div className="grid gap-4 md:grid-cols-2">
-                  <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[0].interpretation}</NarrativeCallout>
-                  <NarrativeCallout label="Approach" tone="algorithm">{EXPLORER_ACTS[0].algorithm}</NarrativeCallout>
+                <SectionIntroProse paragraphs={EXPLORER_ACTS[0].introParagraphs} />
+                <div className="mt-6">
+                  <ExampleChooser
+                    examples={EXAMPLES}
+                    onSelect={handleSelect}
+                    selectedPresetIdx={selectedPresetIdx}
+                    dimensionN={dimensionN}
+                    onDimensionChange={setDefaultSize}
+                    onCustom={handleCustomMode}
+                    onCustomExample={handleCustomExample}
+                    onPreviewChange={setPreviewExample}
+                    onDirtyChange={setIsDirty}
+                  />
                 </div>
-                <p className="mt-4 text-sm leading-7 text-foreground">
-                  This act specifies declared input symmetry only. It fixes the operands and labels before any detected contraction symmetry is considered.
-                </p>
-                <ExampleChooser
-                  examples={EXAMPLES}
-                  onSelect={handleSelect}
-                  selectedPresetIdx={selectedPresetIdx}
-                  dimensionN={dimensionN}
-                  onDimensionChange={setDimensionN}
-                  onCustom={handleCustomMode}
-                  onCustomExample={handleCustomExample}
-                  onPreviewChange={setPreviewExample}
-                  onDirtyChange={setIsDirty}
-                  checkpointItems={checkpointItems}
-                />
                 <div className="mt-4">
                   <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[0].produces}</NarrativeCallout>
                 </div>
@@ -244,37 +314,28 @@ export default function SymmetryAwareEinsumContractionsApp() {
               <>
                 <section id={EXPLORER_ACTS[1].id} className="mb-12 scroll-mt-24">
                   <ExplorerSectionCard
-                    eyebrow="Act 2"
+                    eyebrow={<SectionEyebrow n={2} anchorId={EXPLORER_ACTS[1].id} />}
                     title={EXPLORER_ACTS[1].heading}
-                    description={EXPLORER_ACTS[1].question}
+                    description={<InlineMathText>{EXPLORER_ACTS[1].question}</InlineMathText>}
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >
-                    <div className="grid gap-4 md:grid-cols-2">
-                      <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[1].interpretation}</NarrativeCallout>
-                      <NarrativeCallout label="Approach" tone="algorithm">{EXPLORER_ACTS[1].algorithm}</NarrativeCallout>
-                    </div>
-                    <p className="mt-4 text-sm leading-7 text-foreground">
-                      Declared input symmetry changes the encoding before any detected contraction symmetry is computed.
-                    </p>
-                    <p className="mt-4 text-sm leading-7 text-foreground">
-                      {EXPLORER_ACTS[1].bridge}
-                    </p>
-                    <p className="mt-4 text-sm leading-7 text-foreground">
-                      Left vertices (U) are operand axis-classes. Right vertices are index labels,
-                      partitioned into <RoleBadge role="v">V free</RoleBadge> and
-                      <RoleBadge role="w">W summed</RoleBadge>.
-                      {hasPerOpSym && (
-                        <> Per-operand symmetry <em>collapses</em> each operand&apos;s axes into a single U-vertex.</>
-                      )}
-                    </p>
+                    <SectionIntroProse paragraphs={EXPLORER_ACTS[1].introParagraphs} />
                     <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
-                      <div>
-                        <h3 className="mb-2 font-heading text-base font-semibold text-gray-900">Bipartite Graph</h3>
+                      <div id="bipartite-graph" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
+                        <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
+                          <AnchorLink anchorId="bipartite-graph" labelText="Bipartite Graph">
+                            Bipartite Graph
+                          </AnchorLink>
+                        </h3>
                         <BipartiteGraph graph={graph} example={normalizedExample} variableColors={variableColors} />
                       </div>
-                      <div>
-                        <h3 className="mb-2 font-heading text-base font-semibold text-gray-900">Incidence Matrix M</h3>
+                      <div id="incidence-matrix" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
+                        <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
+                          <AnchorLink anchorId="incidence-matrix" labelText="Incidence Matrix">
+                            Incidence Matrix M
+                          </AnchorLink>
+                        </h3>
                         <MatrixView matrixData={matrixData} graph={graph} example={normalizedExample} variableColors={variableColors} />
                       </div>
                     </div>
@@ -286,22 +347,33 @@ export default function SymmetryAwareEinsumContractionsApp() {
 
                 <section id={EXPLORER_ACTS[2].id} className="mb-12 scroll-mt-24">
                   <ExplorerSectionCard
-                    eyebrow="Act 3"
+                    eyebrow={<SectionEyebrow n={3} anchorId={EXPLORER_ACTS[2].id} />}
                     title={EXPLORER_ACTS[2].heading}
-                    description={EXPLORER_ACTS[2].question}
+                    description={<InlineMathText>{EXPLORER_ACTS[2].question}</InlineMathText>}
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >
-                    <div className="grid gap-4 md:grid-cols-2">
-                      <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[2].interpretation}</NarrativeCallout>
-                      <NarrativeCallout label="Approach" tone="algorithm">{EXPLORER_ACTS[2].algorithm}</NarrativeCallout>
+                    <SectionIntroProse paragraphs={EXPLORER_ACTS[2].introParagraphs} />
+                    {/* Wreath structure renders full-width — the enumeration target the σ-loop walks over. */}
+                    <div id="wreath-structure" className="mt-6 flex flex-col gap-2 scroll-mt-24">
+                      <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
+                        <AnchorLink anchorId="wreath-structure" labelText="Wreath structure">
+                          Wreath structure
+                        </AnchorLink>
+                      </h3>
+                      <WreathStructureView
+                        analysis={analysis}
+                        example={normalizedExample}
+                      />
                     </div>
-                    <p className="mt-4 text-sm leading-7 text-foreground">
-                      {EXPLORER_ACTS[2].bridge}
-                    </p>
+                    {/* σ-Loop (enumerates the wreath) + Generator Construction (closes valid π's). */}
                     <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
-                      <div>
-                        <h3 className="mb-2 font-heading text-base font-semibold text-gray-900">σ-Loop & π Detection</h3>
+                      <div id="sigma-loop" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
+                        <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
+                          <AnchorLink anchorId="sigma-loop" labelText="σ-Loop & π Detection">
+                            σ-Loop &amp; π Detection
+                          </AnchorLink>
+                        </h3>
                         <SigmaLoop
                           results={sigmaResults}
                           graph={graph}
@@ -312,8 +384,12 @@ export default function SymmetryAwareEinsumContractionsApp() {
                           onSelectedPairChange={setSelectedSigmaPairIndex}
                         />
                       </div>
-                      <div>
-                        <h3 className="mb-2 font-heading text-base font-semibold text-gray-900">Generator Construction</h3>
+                      <div id="generator-construction" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
+                        <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
+                          <AnchorLink anchorId="generator-construction" labelText="Generator Construction">
+                            Generator Construction
+                          </AnchorLink>
+                        </h3>
                         <DiminoView
                           group={group}
                           sigmaResults={sigmaResults}
@@ -329,109 +405,73 @@ export default function SymmetryAwareEinsumContractionsApp() {
 
                 <section id={EXPLORER_ACTS[3].id} className="mb-12 scroll-mt-24">
                   <ExplorerSectionCard
-                    eyebrow="Act 4"
+                    eyebrow={<SectionEyebrow n={4} anchorId={EXPLORER_ACTS[3].id} />}
                     title={EXPLORER_ACTS[3].heading}
-                    description={EXPLORER_ACTS[3].question}
+                    description={<InlineMathText>{EXPLORER_ACTS[3].question}</InlineMathText>}
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
-                    action={
-                      <Button
-                        type="button"
-                        size="lg"
-                        className="gap-2 font-semibold shadow-sm"
-                        aria-label="Open mental framework"
-                        onClick={() => setShowMentalModel(true)}
-                      >
-                        Open Mental Framework
-                      </Button>
-                    }
                   >
-                    <div className="grid gap-4 md:grid-cols-2">
-                      <NarrativeCallout label="Interpretation">{EXPLORER_ACTS[3].interpretation}</NarrativeCallout>
-                      <NarrativeCallout label="Approach" tone="algorithm">{EXPLORER_ACTS[3].algorithm}</NarrativeCallout>
+                    <SectionIntroProse paragraphs={EXPLORER_ACTS[3].introParagraphs} />
+                    <div className="mt-6">
+                      <ComponentCostView
+                        componentData={componentData}
+                        costModel={cost}
+                        dimensionN={dimensionN}
+                        numTerms={normalizedExample?.subscripts?.length ?? 1}
+                        allLabels={group.allLabels}
+                        vLabels={group.vLabels}
+                        fullGenerators={group.fullGenerators}
+                        selectedOrbitIdx={resolvedSelectedOrbitIdx}
+                        onSelectOrbit={setSelectedOrbitIdx}
+                        onGraphHover={handleGraphHover}
+                        spotlightLeafIds={spotlightLeafSet}
+                      />
                     </div>
-                    <p className="mt-4 text-sm leading-7 text-foreground">
-                      We now decompose the detected global action, which may have been induced in part by declared
-                      input symmetry, into independent components. Each component contributes its own multiplication
-                      representatives and accumulation rule, so the savings can be understood locally before they are
-                      combined. When no analytic shortcut is valid for a component, orbit enumeration is not a fallback
-                      but the exact counting procedure.
-                    </p>
 
-                  {showMentalModel && (
-                    <div
-                      className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 backdrop-blur-sm"
-                      onClick={() => setShowMentalModel(false)}
-                    >
-                      <div
-                        className="max-h-[85vh] w-[min(960px,92vw)] overflow-y-auto rounded-xl bg-white shadow-2xl"
-                        role="dialog"
-                        aria-modal="true"
-                        aria-labelledby="mental-framework-modal-title"
-                        onClick={(event) => event.stopPropagation()}
-                      >
-                        <div className="flex items-center justify-between gap-4 border-b border-border/70 px-5 py-4">
-                          <h2 id="mental-framework-modal-title" className="sr-only">Mental Framework</h2>
-                          <div className="text-sm font-medium text-foreground">Mental Framework</div>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            aria-label="Close mental framework"
-                            onClick={() => setShowMentalModel(false)}
-                          >
-                            Close
-                          </Button>
-                        </div>
-                        <div className="px-5 pb-5 pt-5">
-                          <PythonCodeBlock
-                            code={mentalModelCode}
-                            title="Mental Framework"
-                            description="Read this as the mental model for the rest of Act 4: first count one symmetry-unique multiplication representative, then count every distinct output-bin update it causes."
-                          />
-                        </div>
-                      </div>
+                    <div className="mt-4">
+                      <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[3].produces}</NarrativeCallout>
                     </div>
-                  )}
-
-                  <div className="mt-6">
-                    <ComponentCostView
-                      componentData={componentData}
-                      costModel={cost}
-                      dimensionN={dimensionN}
-                      allLabels={group.allLabels}
-                      vLabels={group.vLabels}
-                      selectedOrbitIdx={resolvedSelectedOrbitIdx}
-                      onSelectOrbit={setSelectedOrbitIdx}
-                    />
-                  </div>
-
-                  <div className="mt-4">
-                    <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[3].produces}</NarrativeCallout>
-                  </div>
                   </ExplorerSectionCard>
                 </section>
 
                 <section id={EXPLORER_ACTS[4].id} className="mb-12 scroll-mt-24">
                   <ExplorerSectionCard
-                    eyebrow="Act 5"
+                    eyebrow={<SectionEyebrow n={5} anchorId={EXPLORER_ACTS[4].id} />}
                     title={EXPLORER_ACTS[4].heading}
-                    description={EXPLORER_ACTS[4].question}
+                    description={<InlineMathText>{EXPLORER_ACTS[4].question}</InlineMathText>}
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >
-                    <p className="text-sm leading-7 text-foreground">
-                      {EXPLORER_ACTS[4].why}
-                    </p>
+                    <TotalCostView
+                      componentCosts={componentCosts}
+                      componentData={componentData}
+                      dimensionN={dimensionN}
+                      numTerms={normalizedExample?.subscripts?.length ?? 1}
+                    />
 
-                    <div className="mt-6">
-                      <TotalCostView
-                        costModel={cost}
-                        componentData={componentData}
-                        dimensionN={dimensionN}
-                        numTerms={normalizedExample?.subscripts?.length ?? 1}
-                      />
-                    </div>
+                    {/*
+                      Entire bordered box is the click target. `cursor-pointer`
+                      is set explicitly because Tailwind's Preflight resets
+                      <button> to `cursor: default`, which otherwise leaves
+                      users without the standard link affordance. The hover
+                      state brightens the border + background so the reader
+                      sees this as one coherent clickable surface rather than
+                      a decorative callout with an underlined word somewhere
+                      inside it.
+                    */}
+                    <button
+                      type="button"
+                      onClick={() => setExprModalOpen(true)}
+                      className="mt-6 block w-full cursor-pointer rounded-md border border-gray-200 bg-gray-50 px-4 py-3 text-left text-sm text-gray-700 transition-colors hover:border-gray-300 hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
+                    >
+                      <span className="block font-semibold text-gray-900 underline decoration-dotted underline-offset-4">
+                        Is the detected group the full symmetry of this expression?
+                      </span>
+                      <span className="mt-1.5 block text-[13px] leading-6 text-gray-700">
+                        No — the total sum admits a strictly larger formal symmetry group. An appendix on the distinction, on{' '}
+                        <Latex math={`${notationLatex('g_formal')} = ${notationLatex('g_pointwise_restricted_v')} \\times ${notationLatex('s_w_summed')}`} />, and on the per-preset output-tensor storage savings it still leaves on the table.
+                      </span>
+                    </button>
                   </ExplorerSectionCard>
                 </section>
               </>
@@ -447,6 +487,13 @@ export default function SymmetryAwareEinsumContractionsApp() {
           </main>
         </div>
       </div>
+
+      <ExpressionLevelModal
+        isOpen={exprModalOpen}
+        onClose={() => setExprModalOpen(false)}
+        analysis={analysis}
+        group={group}
+      />
     </div>
   );
 }

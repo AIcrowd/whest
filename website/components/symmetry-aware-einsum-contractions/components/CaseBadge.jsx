@@ -1,23 +1,48 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Badge } from '@/components/ui/badge';
 import Latex from './Latex.jsx';
-import GlossaryProse from './GlossaryProse.jsx';
-import { getCasePresentation } from './casePresentation.js';
+import InlineMathText from './InlineMathText.jsx';
+import GlossaryList from './GlossaryList.jsx';
+import { getRegimePresentation } from './regimePresentation.js';
 import { cn } from '../lib/utils.js';
 
-const TOOLTIP_WIDTH = 320;
-const TOOLTIP_HEIGHT = 240;
+const TOOLTIP_WIDTH = 460;
+const TOOLTIP_HEIGHT = 340;
 const VIEWPORT_PADDING = 16;
 const TOOLTIP_OFFSET = 8;
 
-const CASE_COLORS = {
-  trivial: { bg: 'rgba(148, 163, 184, 0.12)', text: '#475569', border: 'rgba(148, 163, 184, 0.45)' },
-  A: { bg: 'rgba(74, 124, 255, 0.12)', text: '#4A7CFF', border: 'rgba(74, 124, 255, 0.35)' },
-  B: { bg: 'rgba(148, 163, 184, 0.12)', text: '#64748B', border: 'rgba(148, 163, 184, 0.35)' },
-  C: { bg: 'rgba(250, 158, 51, 0.12)', text: '#D97706', border: 'rgba(250, 158, 51, 0.35)' },
-  D: { bg: 'rgba(35, 183, 97, 0.12)', text: '#15803D', border: 'rgba(35, 183, 97, 0.35)' },
-  E: { bg: 'rgba(240, 82, 77, 0.12)', text: '#DC2626', border: 'rgba(240, 82, 77, 0.35)' },
-};
+/**
+ * Module-level coordinator: at most one CaseBadge tooltip is visible at a time.
+ * When a badge opens its tooltip it broadcasts its identity; any other
+ * subscriber that is currently open closes itself. This prevents overlapping
+ * tooltips from fighting each other when the mouse path crosses multiple
+ * pills (the original "overlap weirdness" bug).
+ */
+const tooltipSubscribers = new Set();
+function broadcastTooltipOpen(ownerId) {
+  for (const notify of tooltipSubscribers) notify(ownerId);
+}
+
+/**
+ * Mix a #RRGGBB hex color with white to produce a soft background tint.
+ * `amount` in [0,1]: 0 = pure color, 1 = white.
+ */
+function mixWithWhite(hex, amount) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  const mix = (c) => Math.round(c + (255 - c) * amount);
+  return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
+}
+
+function colorsFor(baseColor) {
+  return {
+    bg: mixWithWhite(baseColor, 0.88),
+    text: baseColor,
+    border: mixWithWhite(baseColor, 0.55),
+  };
+}
 
 function getBadgeClasses(variant, size) {
   if (variant === 'compact') {
@@ -32,18 +57,32 @@ function getBadgeClasses(variant, size) {
 }
 
 export default function CaseBadge({
-  caseType,
+  regimeId,
   size = 'sm',
   variant = 'pill',
   interactive = true,
+  active = false,
   className,
+  children = null,
 }) {
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0, flipped: false });
   const ref = useRef(null);
+  const ownerIdRef = useRef(null);
+  if (ownerIdRef.current === null) ownerIdRef.current = Symbol('case-badge');
 
-  const presentation = getCasePresentation(caseType);
-  const colors = CASE_COLORS[caseType] ?? CASE_COLORS.A;
+  // Subscribe to peer openings: when any other CaseBadge opens its tooltip,
+  // close ours so that only one is ever visible at a time.
+  useEffect(() => {
+    const notify = (openedOwnerId) => {
+      if (openedOwnerId !== ownerIdRef.current) setShowTooltip(false);
+    };
+    tooltipSubscribers.add(notify);
+    return () => { tooltipSubscribers.delete(notify); };
+  }, []);
+
+  const presentation = getRegimePresentation(regimeId);
+  const colors = colorsFor(presentation.color ?? '#94A3B8');
   const tooltip = interactive ? presentation.tooltip : null;
 
   const handleEnter = () => {
@@ -62,6 +101,7 @@ export default function CaseBadge({
     }
 
     setTooltipPos({ x, y, flipped });
+    broadcastTooltipOpen(ownerIdRef.current);
     setShowTooltip(true);
   };
 
@@ -98,60 +138,92 @@ export default function CaseBadge({
 
   const label = variant === 'compact' ? presentation.shortLabel : presentation.label;
 
+  const triggerProps = tooltip
+    ? {
+      onPointerEnter: handleEnter,
+      onPointerLeave: () => setShowTooltip(false),
+    }
+    : {};
+
+  const trigger = children ? (
+    // Passthrough: wrap arbitrary children as the tooltip trigger. Used by
+    // ComponentSummaryTable's Method cell so hovering the formulas opens
+    // the same tooltip that the pill in the Case band shows.
+    <span
+      ref={ref}
+      {...triggerProps}
+      aria-label={presentation.label}
+      className={cn(tooltip && 'cursor-help inline-block', className)}
+    >
+      {children}
+    </span>
+  ) : (
+    <span {...triggerProps}>
+      <Badge
+        ref={ref}
+        variant="outline"
+        className={cn(
+          'inline-flex items-center border font-mono',
+          variant === 'compact' ? 'shrink-0' : '',
+          getBadgeClasses(variant, size),
+          tooltip && 'cursor-help',
+          className,
+        )}
+        style={{
+          backgroundColor: colors.bg,
+          color: colors.text,
+          borderColor: colors.border,
+          boxShadow: active
+            ? `0 0 0 4px ${colors.bg}, 0 0 0 5px ${colors.border}`
+            : undefined,
+        }}
+        aria-label={presentation.label}
+      >
+        {label}
+      </Badge>
+    </span>
+  );
+
   return (
     <>
-      <span
-        onPointerEnter={tooltip ? handleEnter : undefined}
-        onPointerLeave={tooltip ? () => setShowTooltip(false) : undefined}
-      >
-        <Badge
-          ref={ref}
-          variant="outline"
-          className={cn(
-            'inline-flex shrink-0 items-center border font-mono',
-            getBadgeClasses(variant, size),
-            tooltip && 'cursor-help',
-            className,
-          )}
-          style={{
-            backgroundColor: colors.bg,
-            color: colors.text,
-            borderColor: colors.border,
-          }}
-          aria-label={presentation.label}
-        >
-          {label}
-        </Badge>
-      </span>
+      {trigger}
 
-      {showTooltip && tooltip && (
+      {showTooltip && tooltip && typeof document !== 'undefined' && createPortal(
         <div
-          className="pointer-events-none fixed z-[9999] w-80 max-w-[calc(100vw-2rem)] rounded-lg bg-gray-900 px-4 py-3.5 text-white shadow-2xl"
+          className="pointer-events-none fixed z-[9999] w-[460px] max-w-[calc(100vw-2rem)] rounded-xl border border-stone-200 bg-[rgba(255,252,247,0.98)] px-4 py-3.5 text-stone-900 shadow-[0_24px_60px_rgba(15,23,42,0.16)] backdrop-blur-sm"
           style={{
             left: tooltipPos.x,
             top: tooltipPos.y,
             transform: tooltipPos.flipped ? 'translateX(-50%)' : 'translateX(-50%) translateY(-100%)',
           }}
         >
-          <div className="mb-1 whitespace-normal break-words text-sm font-semibold leading-6">{tooltip.title}</div>
-          <div className="max-w-full whitespace-normal break-words text-sm leading-6 text-gray-300">
-            {tooltip.body}
+          <div className="mb-1 whitespace-normal break-words text-sm font-semibold leading-6">
+            <InlineMathText>{tooltip.title}</InlineMathText>
+          </div>
+          {tooltip.whenText && (
+            <div className="mb-2 text-[11px] uppercase tracking-wider text-stone-500">
+              When: <InlineMathText>{tooltip.whenText}</InlineMathText>
+            </div>
+          )}
+          <div className="max-w-full whitespace-normal break-words text-sm leading-6 text-stone-700">
+            <InlineMathText>{tooltip.body}</InlineMathText>
           </div>
           {tooltip.latex && (
-            <div className="mt-3 overflow-x-auto border-t border-gray-700 pt-3 text-sm text-gray-100">
+            <div className="mt-3 overflow-x-auto border-t border-stone-200 pt-3 text-sm text-stone-900">
               <div className="min-w-0">
                 <Latex math={tooltip.latex} display />
               </div>
             </div>
           )}
           {tooltip.glossary && (
-            <div className="mt-3 whitespace-normal break-words text-xs leading-relaxed text-gray-300">
-              <GlossaryProse text={tooltip.glossary} />
+            <div className="mt-3 whitespace-normal break-words border-t border-stone-200 pt-3 text-xs leading-relaxed text-stone-700">
+              <div className="mb-1.5 text-[10px] uppercase tracking-wider text-stone-500">Where</div>
+              <GlossaryList entries={tooltip.glossary} />
             </div>
           )}
           <div
             className={cn(
-              'absolute left-1/2 h-1.5 w-3 bg-gray-900',
+              'absolute left-1/2 h-1.5 w-3 bg-[rgba(255,252,247,0.98)]',
               tooltipPos.flipped ? 'top-[-6px]' : 'bottom-[-6px]',
             )}
             style={{
@@ -161,7 +233,8 @@ export default function CaseBadge({
                 : 'translateX(-50%)',
             }}
           />
-        </div>
+        </div>,
+        document.body,
       )}
     </>
   );

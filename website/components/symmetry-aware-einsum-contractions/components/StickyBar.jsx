@@ -1,7 +1,67 @@
+import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { withBasePath } from '@/lib/base-path';
 import { EXPLORER_ACTS } from './explorerNarrative.js';
+
+// Character-by-character renderer for a subscript/output *label region*
+// (e.g. "ia,ib,ic" or "abc"). Letters matching `hoveredLabels` swap to
+// pitch black with a coral underline; everything else passes through.
+// Layout is stable: no bold (glyph widths stay fixed), no padding/ring
+// (no per-char circle outlines).
+function SubscriptTokens({ text, hoveredLabels }) {
+  const chars = Array.from(String(text ?? ''));
+  const hasHover = hoveredLabels instanceof Set && hoveredLabels.size > 0;
+  return (
+    <>
+      {chars.map((ch, idx) => {
+        const isLetter = /[A-Za-z]/.test(ch);
+        const isHit = hasHover && isLetter && hoveredLabels.has(ch);
+        if (!isHit) return <span key={idx}>{ch}</span>;
+        // `decoration-coral` / `text-coral` are NOT defined in this Tailwind
+        // theme — only `--primary` / `--color-primary` resolve to the coral
+        // hex. `text-black` gives the strong contrast against the coral-tint
+        // badge background that plain coral text can't.
+        return (
+          <span
+            key={idx}
+            className="text-black underline decoration-primary decoration-2 underline-offset-2"
+          >
+            {ch}
+          </span>
+        );
+      })}
+    </>
+  );
+}
+
+// Renders the einsum formula with per-region tokenization. Only the
+// subscript + output label regions are highlight-able — so hovering a
+// label like `i` no longer lights up the `i` in "einsum". We rebuild from
+// `example.expression` (structured) rather than walking the display string,
+// so the visible formula always matches the authoritative subscripts.
+function FormulaHighlighted({ example, hoveredLabels }) {
+  const expr = example?.expression;
+  if (!expr || typeof expr.subscripts !== 'string') {
+    // Pre-normalized or malformed example — fall back to the raw string
+    // with no highlighting. Better than crashing or silently highlighting
+    // the wrong characters.
+    return <>{example?.formula ?? ''}</>;
+  }
+  return (
+    <>
+      <span>{"einsum('"}</span>
+      <SubscriptTokens text={expr.subscripts} hoveredLabels={hoveredLabels} />
+      {/* Arrow is the one coral accent inside the neutral stadium-pill —
+          matches `.formula-live .arr { color: var(--coral) }` in
+          design-system/preview/components.html. */}
+      <span className="mx-1 text-coral">{'→'}</span>
+      <SubscriptTokens text={expr.output ?? ''} hoveredLabels={hoveredLabels} />
+      <span>{`', ${expr.operandNames ?? ''})`}</span>
+    </>
+  );
+}
 
 function symmetryLabel(variable) {
   if (!variable || variable.symmetry === 'none') return 'dense';
@@ -40,12 +100,24 @@ function ParameterSymmetryRow({ variables = [] }) {
   );
 }
 
-export default function StickyBar({ example, group, activeActId }) {
+export default function StickyBar({ example, group, activeActId, hoveredLabels = null }) {
   const variables = example?.variables ?? [];
 
   return (
     <div className="sticky top-0 z-40 border-b border-border/70 bg-background/95 backdrop-blur-sm">
       <div className="mx-auto flex max-w-[1460px] flex-col gap-4 px-6 py-4 md:flex-row md:items-center md:justify-between md:px-8">
+        {/* Whest wordmark — the one in-product brand anchor. Matches the
+            `.brand` slot of design-system/Whest Einsum Explorer.html and
+            the nav wordmark in lib/layout.shared.tsx. Reuses the global
+            `.whest-wordmark` utility (Newsreader 700 opsz32, coral dot);
+            do not reimplement. */}
+        <Link
+          href={withBasePath('/')}
+          aria-label="Whest."
+          className="whest-wordmark mr-4 shrink-0 text-[20px] no-underline"
+        >
+          Whest<span className="whest-wordmark__dot">.</span>
+        </Link>
         <nav className="flex shrink-0 items-center gap-1 overflow-x-auto pb-1 md:pb-0">
           {EXPLORER_ACTS.map((act, idx) => {
             const isActive = activeActId === act.id;
@@ -82,15 +154,42 @@ export default function StickyBar({ example, group, activeActId }) {
           {example && (
             <>
               <div className="flex flex-wrap items-center gap-2">
-                <Badge className="shrink-0">einsum</Badge>
-                <code className="block rounded-md border border-primary/20 bg-primary/10 px-2.5 py-1 text-sm font-mono font-medium text-primary shadow-sm">
-                  {example.formula}
+                <Badge
+                  variant="outline"
+                  className="shrink-0 border-gray-200 bg-white text-gray-500 shadow-none"
+                >
+                  einsum
+                </Badge>
+                {/* Neutral stadium pill per design-system `.formula-live`:
+                    gray-100 ground, gray-600 ink, 1px gray-200 border,
+                    rounded-full (=20px stadium). The only coral moment
+                    inside is the arrow (see FormulaHighlighted above). */}
+                <code className="block rounded-full border border-gray-200 bg-gray-100 px-3 py-1 text-sm font-mono font-medium text-gray-600 shadow-sm">
+                  <FormulaHighlighted example={example} hoveredLabels={hoveredLabels} />
                 </code>
-                {group && (
-                  <Badge variant="outline" className="shrink-0 border-primary/25 bg-primary/10 text-primary">
-                    {group.fullGroupName || 'trivial'}
-                  </Badge>
-                )}
+                {group && (() => {
+                  // Per design-system/preview/components.html `.group-badge`:
+                  // mono 11px stadium pill in the success-green register —
+                  // "we detected a non-trivial group" is a positive signal.
+                  // When the group is trivial (no symmetry found) the pill
+                  // goes muted gray so it doesn't claim a success it didn't
+                  // earn.
+                  const isTrivial = !group.fullGroupName;
+                  return (
+                    <Badge
+                      variant="outline"
+                      className={cn(
+                        'shrink-0 rounded-full px-3 font-mono text-[11px] font-semibold shadow-none',
+                        isTrivial
+                          ? 'border-gray-200 bg-gray-50 text-gray-500'
+                          : 'border-[color:color-mix(in_oklab,var(--success)_25%,transparent)] bg-[color:color-mix(in_oklab,var(--success)_8%,transparent)] text-[color:var(--color-success-alt)]',
+                      )}
+                      title="Detected symmetry group — drives compression (μ, α). Computed via σ-loop Sources A+B."
+                    >
+                      {group.fullGroupName || 'trivial'}
+                    </Badge>
+                  );
+                })()}
               </div>
               <ParameterSymmetryRow variables={variables} />
             </>

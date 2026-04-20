@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { buildUVertexLabels } from '../engine/uVertexLabel.js';
 import IncidenceMatrix from './IncidenceMatrix.jsx';
+import { notationColor } from '../lib/notationSystem.js';
 
 const STAGE_LABELS = ['M', 'σ(M)', 'π(σ(M))'];
-const VISIBLE_VALID_PAIR_LIMIT = 5;
+const VISIBLE_VALID_PAIR_LIMIT = 4;
 
 export default function SigmaLoop({ results, graph, matrixData, example, variableColors, group, onSelectedPairChange }) {
   const allPairs = results.filter((result) => !result.skipped);
@@ -143,6 +144,9 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
 
   return (
     <div className="sigma-loop">
+      <div className="text-[11px] text-muted-foreground mb-2">
+        Each σ is a wreath element; each accepted pair shows a row move together with its matching relabeling π.
+      </div>
       {/* Summary stats */}
       <div className="sigma-summary">
         <div className="sigma-stat">
@@ -163,11 +167,11 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
         </div>
       </div>
 
-      {/* Valid pairs — shown inline */}
+      {/* Valid pairs — shown inline in a 2-column grid */}
       {validPairs.length > 0 && (
         <div className="pair-selector">
           <span className="pair-selector-label">Valid (σ, π) pairs:</span>
-          <div className="pair-chips">
+          <div className="pair-chips pair-chips-grid">
             {inlineValidPairs.map((r) => {
               const origIdx = allPairs.indexOf(r);
               return (
@@ -182,27 +186,28 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
                 </button>
               );
             })}
-
-            {remainingValidPairs.length > 0 && (
-              <button
-                className="valid-toggle"
-                onClick={() => setShowMoreValid(true)}
-              >
-                ▸ {remainingValidPairs.length} more (σ, π) pairs
-              </button>
-            )}
           </div>
         </div>
       )}
 
-      {/* Rejected pairs — opens modal list */}
-      {rejectedPairs.length > 0 && (
-        <div className="rejected-section">
-          <button
-            className="rejected-toggle"
-            onClick={() => setShowRejected(true)}>
-            ▸ {rejectedPairs.length} rejected σ{rejectedPairs.length !== 1 ? "'s" : ''}
-          </button>
+      {/* Overflow + rejected toggles — share one row */}
+      {(remainingValidPairs.length > 0 || rejectedPairs.length > 0) && (
+        <div className="sigma-toggles-row">
+          {remainingValidPairs.length > 0 && (
+            <button
+              className="valid-toggle"
+              onClick={() => setShowMoreValid(true)}
+            >
+              ▸ {remainingValidPairs.length} more (σ, π) pair{remainingValidPairs.length !== 1 ? 's' : ''}
+            </button>
+          )}
+          {rejectedPairs.length > 0 && (
+            <button
+              className="rejected-toggle"
+              onClick={() => setShowRejected(true)}>
+              ▸ {rejectedPairs.length} rejected σ{rejectedPairs.length !== 1 ? "'s" : ''}
+            </button>
+          )}
         </div>
       )}
 
@@ -291,10 +296,37 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
                 <div className="mt-4 space-y-3 text-sm">
                   <div>
                     <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Ordered active labels</div>
-                    <code className="mt-1 block font-mono text-foreground">{`[${labels.join(', ')}]`}</code>
+                    {/*
+                      Color each label by its V/W role so this block matches
+                      the rest of the page (InteractionGraph, DiminoView,
+                      VSubSwConstruction, ExpressionLevelModal all use the
+                      shared notation palette for free and summed labels).
+                      Without this the [a, b, c, i] list rendered as uniform black text —
+                      the one place on the page where the V/W distinction
+                      was not visible at a glance.
+                    */}
+                    <code className="mt-1 block font-mono text-foreground">
+                      [
+                      {labels.map((l, i) => {
+                        const isV = group?.vLabels?.includes(l);
+                        const isW = group?.wLabels?.includes(l);
+                        const color = isV
+                          ? notationColor('v_free')
+                          : isW
+                            ? notationColor('w_summed')
+                            : undefined;
+                        return (
+                          <span key={`${l}-${i}`}>
+                            {i > 0 && ', '}
+                            <span style={color ? { color, fontWeight: 600 } : undefined}>{l}</span>
+                          </span>
+                        );
+                      })}
+                      ]
+                    </code>
                     </div>
                     <div className="text-sm text-muted-foreground">
-                      This π induces candidate permutation {selectedCandidate ? selectedCandidate.cycleNotation : '—'} on the ordered active labels. The right panel now tests it in generator construction.
+                      This π induces the label permutation {selectedCandidate ? selectedCandidate.cycleNotation : '—'} on the ordered active labels. The right panel now tests it in generator construction.
                     </div>
                   </div>
                 </div>

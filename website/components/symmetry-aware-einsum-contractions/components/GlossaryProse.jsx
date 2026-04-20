@@ -1,4 +1,5 @@
 import Latex from './Latex.jsx';
+import { renderTooltipInlineText } from './InlineMathText.jsx';
 
 /**
  * Renders a glossary string where `$...$` segments are rendered as inline KaTeX
@@ -42,7 +43,7 @@ export default function GlossaryProse({ text }) {
       {parts.map((part) =>
         part.kind === 'math'
           ? <Latex key={part.key} math={part.value} />
-          : <span key={part.key}>{part.value}</span>,
+          : renderTooltipInlineText(part.value, `glossary-${part.key}`),
       )}
     </>
   );

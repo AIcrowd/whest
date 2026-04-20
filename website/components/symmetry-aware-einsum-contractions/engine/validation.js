@@ -1,13 +1,36 @@
 import { parseCycleNotation, generatorIndices } from './cycleParser.js';
+import {
+  nameEmptyError,
+  rankTooSmallError,
+  namedSymAxesTooFewError,
+  namedSymAxisOorError,
+  customGeneratorsEmptyError,
+  customGeneratorsParseError,
+  customGeneratorAxisOorError,
+  noOperandsError,
+  subscriptsOperandsCountMismatchError,
+  operandUndefinedError,
+  subscriptNonLowercaseError,
+  subscriptDuplicateLabelError,
+  subscriptLengthMismatchError,
+  outputNonLowercaseError,
+  outputLabelMissingError,
+} from './validationMessages.js';
 
 /**
  * Validate all variable definitions and the einsum expression.
+ *
+ * Returns an array of structured errors, each of the shape
+ *   { code, field, message, fix? }
+ * (see validationMessages.js). The legacy consumer pattern of
+ * `err.includes('...')` still works on `err.message`; anything new
+ * should switch to `err.code` or `err.field`.
  *
  * @param {Array<{name:string, rank:number, symmetry:string, symAxes:number[], generators:string}>} variables
  * @param {string} subscripts  – comma-separated subscript strings, e.g. "aijk,ab"
  * @param {string} output      – output subscript, e.g. "ijkb"
  * @param {string} operandNames – comma-separated operand names, e.g. "T, W"
- * @returns {{ valid: boolean, errors: string[] }}
+ * @returns {{ valid: boolean, errors: Array<{code:string, field:string, message:string, fix?: {label:string, apply:Function}}> }}
  */
 export function validateAll(variables, subscripts, output, operandNames) {
   const errors = [];
@@ -15,10 +38,12 @@ export function validateAll(variables, subscripts, output, operandNames) {
   // ── Variable-level checks ──────────────────────────────────────────
 
   const varMap = new Map();
-  for (const v of variables) {
+  for (let i = 0; i < variables.length; i += 1) {
+    const v = variables[i];
+
     // 1. Name must be non-empty
     if (!v.name || v.name.trim() === '') {
-      errors.push('Variable name must be non-empty.');
+      errors.push(nameEmptyError(i));
       continue;
     }
 
@@ -26,7 +51,7 @@ export function validateAll(variables, subscripts, output, operandNames) {
 
     // 2. Rank must be >= 1
     if (v.rank == null || v.rank < 1) {
-      errors.push(`Variable "${v.name}": rank must be >= 1.`);
+      errors.push(rankTooSmallError(i, { name: v.name, rank: v.rank }));
     }
 
     const isNamed = ['symmetric', 'cyclic', 'dihedral'].includes(v.symmetry);
@@ -35,46 +60,56 @@ export function validateAll(variables, subscripts, output, operandNames) {
     if (isNamed) {
       if (!Array.isArray(v.symAxes) || v.symAxes.length < 2) {
         errors.push(
-          `Variable "${v.name}": ${v.symmetry} symmetry requires at least 2 symmetry axes.`
+          namedSymAxesTooFewError(i, {
+            name: v.name,
+            rank: v.rank,
+            symmetry: v.symmetry,
+          }),
         );
       } else {
-        // 4. Named symmetry axis indices must be < rank
+        // 4. Named symmetry axis indices must be in [0, rank)
         for (const idx of v.symAxes) {
-          if (idx >= v.rank) {
+          if (idx < 0 || idx >= v.rank) {
             errors.push(
-              `Variable "${v.name}": symmetry axis index ${idx} is out of range (rank ${v.rank}).`
+              namedSymAxisOorError(i, {
+                name: v.name,
+                badIdx: idx,
+                rank: v.rank,
+              }),
             );
           }
         }
       }
     }
 
-    // 5. Custom symmetry requires non-empty generators string
+    // 5–7. Custom symmetry
     if (v.symmetry === 'custom') {
+      const axesExplicitlySelected = Array.isArray(v.symAxes);
+      const axesCount = axesExplicitlySelected ? v.symAxes.length : v.rank;
       if (!v.generators || v.generators.trim() === '') {
-        errors.push(
-          `Variable "${v.name}": custom symmetry requires a non-empty generators string.`
-        );
+        errors.push(customGeneratorsEmptyError(i, { name: v.name, axesCount }));
       } else {
-        // 6. Custom generators must parse successfully
-        let parsed;
-        try {
-          parsed = parseCycleNotation(v.generators);
-        } catch (e) {
-          errors.push(
-            `Variable "${v.name}": failed to parse generators – ${e.message}`
-          );
-          parsed = null;
-        }
+        const { generators: parsedGenerators, error: parseError } =
+          parseCycleNotation(v.generators);
 
-        // 7. Custom generator cycle indices must be within range of selected axes count
-        if (parsed) {
-          const axesCount = Array.isArray(v.symAxes) ? v.symAxes.length : v.rank;
-          const indices = generatorIndices(parsed);
-          for (const idx of indices) {
-            if (idx >= axesCount) {
+        if (parseError) {
+          errors.push(
+            customGeneratorsParseError(i, {
+              name: v.name,
+              axesCount,
+              rawError: parseError,
+            }),
+          );
+        } else {
+          for (const idx of generatorIndices(parsedGenerators)) {
+            if (idx < 0 || idx >= axesCount) {
               errors.push(
-                `Variable "${v.name}": generator cycle index ${idx} is out of range (${axesCount} axes selected).`
+                customGeneratorAxisOorError(i, {
+                  name: v.name,
+                  badIdx: idx,
+                  axesCount,
+                  axesExplicitlySelected,
+                }),
               );
             }
           }
@@ -94,25 +129,28 @@ export function validateAll(variables, subscripts, output, operandNames) {
 
   // 8. At least one operand
   if (opNames.length === 0) {
-    errors.push('Expression must have at least one operand.');
+    errors.push(noOperandsError());
   }
 
   // 9. Number of subscripts must equal number of operands
   if (subs.length !== opNames.length) {
     errors.push(
-      `Number of subscripts (${subs.length}) must equal number of operands (${opNames.length}).`
+      subscriptsOperandsCountMismatchError({
+        subsCount: subs.length,
+        opsCount: opNames.length,
+      }),
     );
   }
 
   // 10–13: per-operand checks
   const allInputLabels = new Set();
 
-  for (let i = 0; i < opNames.length; i++) {
+  for (let i = 0; i < opNames.length; i += 1) {
     const name = opNames[i];
 
     // 10. All operand names must reference defined variable names
     if (!varMap.has(name)) {
-      errors.push(`Operand "${name}" does not reference a defined variable.`);
+      errors.push(operandUndefinedError({ name }));
     }
 
     if (i < subs.length) {
@@ -120,18 +158,14 @@ export function validateAll(variables, subscripts, output, operandNames) {
 
       // 11. Each subscript must be lowercase letters only
       if (!/^[a-z]+$/.test(sub)) {
-        errors.push(
-          `Subscript "${sub}" for operand "${name}" must contain only lowercase letters.`
-        );
+        errors.push(subscriptNonLowercaseError({ opIdx: i, sub, name }));
       }
 
       // 12. No duplicate labels within a single subscript
       const seen = new Set();
       for (const ch of sub) {
         if (seen.has(ch)) {
-          errors.push(
-            `Subscript "${sub}" for operand "${name}" has duplicate label "${ch}".`
-          );
+          errors.push(subscriptDuplicateLabelError({ sub, name, ch }));
           break;
         }
         seen.add(ch);
@@ -141,7 +175,14 @@ export function validateAll(variables, subscripts, output, operandNames) {
       const v = varMap.get(name);
       if (v && sub.length !== v.rank) {
         errors.push(
-          `Subscript "${sub}" length (${sub.length}) does not match variable "${name}" rank (${v.rank}).`
+          subscriptLengthMismatchError({
+            opIdx: i,
+            sub,
+            name,
+            rank: v.rank,
+            subscriptsStr: subscripts || '',
+            outputStr: output || '',
+          }),
         );
       }
 
@@ -153,16 +194,14 @@ export function validateAll(variables, subscripts, output, operandNames) {
 
   // 14. Output must be lowercase letters only
   if (output && !/^[a-z]*$/.test(output)) {
-    errors.push('Output subscript must contain only lowercase letters.');
+    errors.push(outputNonLowercaseError({ outputStr: output }));
   }
 
   // 15. All output labels must exist in at least one input subscript
   if (output) {
     for (const ch of output) {
       if (/[a-z]/.test(ch) && !allInputLabels.has(ch)) {
-        errors.push(
-          `Output label "${ch}" does not appear in any input subscript.`
-        );
+        errors.push(outputLabelMissingError({ ch }));
       }
     }
   }
