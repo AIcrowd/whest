@@ -15,6 +15,7 @@ test('Acts 2-4 are sequenced around the inline savings narrative', () => {
   assert.match(appSource, /EXPLORER_ACTS\[3\]\.introParagraphs/);
   assert.match(appSource, /EXPLORER_ACTS\[4\]\.heading/);
   assert.match(appSource, /EXPLORER_ACTS\[4\]\.question/);
+  assert.match(appSource, /EXPLORER_ACTS\[4\]\.introParagraphs/);
   assert.doesNotMatch(appSource, /EXPLORER_ACTS\[4\]\.supportingSentence/);
   assert.doesNotMatch(appSource, /EXPLORER_ACTS\[[1-4]\]\.bridge/);
   assert.doesNotMatch(appSource, /EXPLORER_ACTS\[4\]\.why/);
@@ -126,13 +127,10 @@ test('TotalCostView explains how per-component costs aggregate into the global t
   // Helpers the explainer block depends on.
   assert.match(totalCostSource, /import GlossaryProse from '\.\/GlossaryProse\.jsx'/);
   assert.match(totalCostSource, /import Latex from '\.\/Latex\.jsx'/);
-  assert.match(totalCostSource, /The earlier sections identified the symmetry group, decomposed its action into components, and computed the local quantities that govern work\./);
-  assert.match(totalCostSource, /We do that by combining the multiplication cost and the accumulation cost\./);
-  assert.match(totalCostSource, /Writing these as/);
-  assert.match(totalCostSource, /\\mathrm\{Total\} = \\mu \+ \\alpha/);
-  assert.match(totalCostSource, /\\mu = \(k-1\)\\prod_a M_a/);
-  assert.match(totalCostSource, /\\alpha = \\prod_a \\alpha_a/);
-  assert.match(totalCostSource, /The full formula below makes that assembly explicit, and the summary that follows shows how the resulting symmetry-aware total compares with the naive dense baseline\./);
+  assert.equal(introIndex, -1);
+  assert.doesNotMatch(totalCostSource, /The earlier sections identified the symmetry group, decomposed its action into components, and computed the local quantities that govern work\./);
+  assert.doesNotMatch(totalCostSource, /We do that by combining the multiplication cost and the accumulation cost\./);
+  assert.doesNotMatch(totalCostSource, /\\mathrm\{Total\} = \\mu \+ \\alpha/);
 
   // The explainer block itself.
   assert.match(totalCostSource, /How components combine/);
@@ -187,7 +185,8 @@ test('TotalCostView explains how per-component costs aggregate into the global t
   assert.match(totalCostSource, /CaseBadge\s+regimeId=\{leaf\.id\}/);
   assert.doesNotMatch(totalCostSource, /larger formal group/);
   assert.match(totalCostSource, /Symmetry-Aware Cost/);
-  assert.ok(recapIndex !== -1 && introIndex !== -1 && aggregationIndex !== -1 && spreadIndex !== -1);
-  assert.ok(recapIndex < introIndex && introIndex < aggregationIndex && aggregationIndex < spreadIndex);
+  assert.ok(recapIndex !== -1 && aggregationIndex !== -1 && spreadIndex !== -1);
+  assert.equal(introIndex, -1);
+  assert.ok(recapIndex < aggregationIndex && aggregationIndex < spreadIndex);
   assert.doesNotMatch(totalCostSource, /Seven paths through Section 5/);
 });

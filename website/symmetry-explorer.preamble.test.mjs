@@ -62,6 +62,7 @@ test('Einsum column uses a parametric exact-einsum lead-in followed by a color-c
     src.indexOf('view.expandedEquationLatex') < src.indexOf('The summed labels'),
     'expanded contraction should render before the prose explanation',
   );
+  assert.match(src, /textAlign: 'justify'/);
 });
 
 test('Einsum column transitions to symmetry at the bottom', () => {

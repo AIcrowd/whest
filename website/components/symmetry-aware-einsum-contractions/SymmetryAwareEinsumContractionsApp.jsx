@@ -442,6 +442,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >
+                    <SectionIntroProse paragraphs={EXPLORER_ACTS[4].introParagraphs} />
                     <TotalCostView
                       componentCosts={componentCosts}
                       componentData={componentData}

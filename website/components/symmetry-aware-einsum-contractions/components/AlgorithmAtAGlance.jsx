@@ -46,6 +46,8 @@ function ColorLegend() {
   );
 }
 
+const JUSTIFIED_PROSE_STYLE = { textAlign: 'justify' };
+
 function EinsumIntroColumn({ example }) {
   const view = buildSection1ExampleView(example);
   if (!view) return null;
@@ -62,7 +64,10 @@ function EinsumIntroColumn({ example }) {
         A tensor operation, written as one formula
       </h3>
 
-      <p className="mt-3 font-serif text-[17px] leading-[1.75] text-gray-700">
+      <p
+        className="mt-3 font-serif text-[17px] leading-[1.75] text-gray-700"
+        style={JUSTIFIED_PROSE_STYLE}
+      >
         Every index label that appears on an input but not on the output is{' '}
         <strong className="font-semibold">summed over</strong>; labels on the output are{' '}
         <strong className="font-semibold">free</strong>. A dense implementation pays for every cell of
@@ -81,7 +86,10 @@ function EinsumIntroColumn({ example }) {
         <div className="mt-3 flex justify-center text-[19px]">
           <Latex display math={view.expandedEquationLatex} />
         </div>
-        <p className="mt-4 text-center text-[13px] leading-6 text-stone-600">
+        <p
+          className="mx-auto mt-4 max-w-[46rem] text-[13px] leading-6 text-stone-600"
+          style={JUSTIFIED_PROSE_STYLE}
+        >
           <strong className="font-semibold text-stone-900">
             {view.operandCount} operand{view.operandCount === 1 ? '' : 's'}, {view.labelCount} label{view.labelCount === 1 ? '' : 's'}.
           </strong>{' '}
@@ -110,7 +118,10 @@ function EinsumIntroColumn({ example }) {
         <h4 className="mt-1 font-heading text-base font-semibold text-foreground">
           Not every product is distinct
         </h4>
-        <p className="mt-2 text-[14px] leading-7 text-foreground">
+        <p
+          className="mt-2 text-[14px] leading-7 text-foreground"
+          style={JUSTIFIED_PROSE_STYLE}
+        >
           If several operands are identical or individually symmetric
           (e.g. <Latex math={String.raw`A_{ij} = A_{ji}`} />), the formula is invariant under certain
           permutations of the labels. Those permutations form a{' '}
@@ -119,7 +130,10 @@ function EinsumIntroColumn({ example }) {
           <Latex math={DENSE_SCALING} /> drops to <Latex math={String.raw`n^{5}/|G|`} /> in the best
           case (a free action), and to a Burnside count <Latex math={String.raw`(1/|G|)\sum_g |\mathrm{Fix}(g)|`} /> in general.
         </p>
-        <p className="mt-3 text-[13px] italic leading-6 text-stone-600">
+        <p
+          className="mt-3 text-[13px] italic leading-6 text-stone-600"
+          style={JUSTIFIED_PROSE_STYLE}
+        >
           The explorer finds G automatically, then counts the distinct products (<Latex math="\mu" />)
           and distinct output‑bin updates (<Latex math="\alpha" />) — the two numbers driving the
           code on the right.
@@ -141,7 +155,10 @@ function MentalFrameworkColumn() {
         The same two loops — dense or symmetric
       </h3>
 
-      <p className="mt-3 font-serif text-[17px] leading-[1.75] text-gray-700">
+      <p
+        className="mt-3 font-serif text-[17px] leading-[1.75] text-gray-700"
+        style={JUSTIFIED_PROSE_STYLE}
+      >
         Every contraction has the same shape. Symmetry only changes the content of three things:{' '}
         <code className="font-mono">RepSet</code>, <code className="font-mono">Outs(rep)</code>, and{' '}
         <code className="font-mono">coeff(rep, out)</code>. The rest of the explorer is about
@@ -182,7 +199,10 @@ export default function AlgorithmAtAGlance({ example }) {
           <MentalFrameworkColumn />
         </div>
 
-        <p className="mt-10 border-t border-stone-200 pt-8 font-serif text-[17px] leading-[1.75] text-gray-700">
+        <p
+          className="mt-10 border-t border-stone-200 pt-8 font-serif text-[17px] leading-[1.75] text-gray-700"
+          style={JUSTIFIED_PROSE_STYLE}
+        >
           The rest of this page shows how the explorer detects the symmetry group{' '}
           <Latex math="G" /> from a contraction and computes{' '}
           <Latex math={String.raw`\mu`} /> and <Latex math={String.raw`\alpha`} /> automatically.

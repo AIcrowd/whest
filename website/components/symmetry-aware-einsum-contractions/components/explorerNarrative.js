@@ -50,6 +50,10 @@ export const EXPLORER_ACTS = [
     navTitle: 'Cost Savings',
     heading: 'Assemble the Cost Model',
     question: 'How does the detected symmetry determine the total cost of the contraction?',
+    introParagraphs: [
+      'The earlier sections identified the symmetry group, decomposed its action into components, and computed the local quantities that govern work. This section gathers those local counts back into one runtime model for the full contraction.',
+      'We do that by combining the multiplication cost and the accumulation cost, written as $\\mu$ and $\\alpha$. The total symmetry-aware cost is their sum, $\\mathrm{Total} = \\mu + \\alpha$. The full formula below makes that assembly explicit, and the summary that follows shows how the resulting symmetry-aware total compares with the naive dense baseline.',
+    ],
   },
 ];
 
