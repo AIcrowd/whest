@@ -179,10 +179,27 @@ test('StickyBar keeps the einsum pill as trigger and moves symmetry metadata int
   assert.match(source, /function SymmetryChip/);
   assert.match(source, /buildMetadataItems/);
   assert.match(source, /<SymmetryBadge value=\{groupLabel\}/);
+  assert.match(source, /inline-flex h-6 items-center gap-1 rounded-full/);
+  assert.match(source, /className="h-6 px-2\.5 text-\[11px\] leading-5 shadow-none"/);
   assert.match(source, /text-stone-400">,<\//);
   assert.match(source, /text-stone-500">→<\//);
   assert.match(source, /group\?\.fullGroupName \|\| 'trivial'/);
   assert.match(source, /inline-flex w-max max-w-\[calc\(100vw-2rem\)\]/);
   assert.match(source, /clampedCenterX/);
   assert.doesNotMatch(source, /title="Detected symmetry group — drives compression/);
+});
+
+test('SymmetryBadge renders output symmetry in the same black-outline pill language while tokenizing group content', () => {
+  const source = fs.readFileSync(
+    new URL('./components/symmetry-aware-einsum-contractions/components/SymmetryBadge.jsx', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(source, /notationColor\('v_free'\)/);
+  assert.match(source, /inline-flex h-6 items-center rounded-full border-black\/70 bg-white px-2\.5 font-mono/);
+  assert.match(source, /function ColoredGroupTail/);
+  assert.match(source, /font-bold text-black/);
+  assert.match(source, /const shorthandMatch = text\.match\(\/\^\(\[A-Z\]\\d\+\)\(\\\{\.\*\\\}\)\?\$\/\);/);
+  assert.match(source, /const permGroupMatch = text\.match\(\/\^\(PermGroup\)\(\.\*\)\$\/\);/);
+  assert.ok(source.includes(String.raw`const generatedCyclesMatch = text.match(/^(\u27e8)(.*)(\u27e9)$/);`));
 });

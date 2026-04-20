@@ -46,12 +46,23 @@ test('ExampleChooser uses the shared Python code block and current builder primi
   assert.match(chooserSource, /Input/);
   assert.match(codeBlockSource, /navigator\.clipboard\.writeText/);
   assert.match(codeBlockSource, /function highlightPython/);
+  assert.match(codeBlockSource, /const PRIMARY_FUNCTIONS = new Set\(\['randn', 'einsum_path'\]\)/);
   assert.match(codeBlockSource, /ExplorerSectionCard/);
   assert.match(codeBlockSource, /Button/);
+  assert.match(codeBlockSource, /hl-fn-primary/);
   assert.match(codeBlockSource, /\[&_\.hl-kw\]:font-semibold/);
   assert.match(codeBlockSource, /bg-white/);
   assert.match(codeBlockSource, /\[&_\.hl-str\]:text-emerald-700/);
   assert.match(codeBlockSource, /text-\[#ef5a4c\]/);
+});
+
+test('ExampleChooser increments added variable names spreadsheet-style', () => {
+  const chooserSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/ExampleChooser.jsx', import.meta.url), 'utf8');
+
+  assert.match(chooserSource, /function nextVariableName/);
+  assert.match(chooserSource, /while \(idx >= 0 && chars\[idx\] === 'Z'\)/);
+  assert.match(chooserSource, /chars\.unshift\('A'\)/);
+  assert.match(chooserSource, /name: nextVariableName\(lastName\)/);
 });
 
 test('PresetSidebar matches the design-system preset-list spec (flat container, 10px gray kicker, canonical padding)', () => {

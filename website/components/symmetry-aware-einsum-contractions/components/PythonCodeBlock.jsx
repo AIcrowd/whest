@@ -42,6 +42,7 @@ function highlightPython(code) {
     'import', 'from', 'as', 'for', 'in', 'if', 'else', 'def', 'return',
     'class', 'sum', 'range', 'list', 'True', 'False', 'None',
   ]);
+  const PRIMARY_FUNCTIONS = new Set(['randn', 'einsum_path']);
 
   function esc(value) {
     return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -63,7 +64,11 @@ function highlightPython(code) {
       } else {
         const after = text.slice(re.lastIndex).match(/^\s*\(/);
         if (after) {
-          result += `<span class="hl-fn">${esc(word)}</span>`;
+          if (PRIMARY_FUNCTIONS.has(word)) {
+            result += `<span class="hl-fn-primary">${esc(word)}</span>`;
+          } else {
+            result += `<span class="hl-fn">${esc(word)}</span>`;
+          }
         } else {
           result += esc(word);
         }
@@ -91,7 +96,7 @@ function PythonHighlight({ code }) {
   return (
     <pre className="min-h-0 h-full overflow-auto whitespace-pre-wrap rounded-xl border border-stone-200 bg-white p-5 font-mono text-sm leading-7 text-stone-800">
       <code
-        className="[&_.hl-cmt]:text-stone-500 [&_.hl-fn]:font-semibold [&_.hl-fn]:text-slate-700 [&_.hl-kw]:font-semibold [&_.hl-kw]:text-[#ef5a4c] [&_.hl-num]:text-amber-700 [&_.hl-str]:text-emerald-700"
+        className="[&_.hl-cmt]:text-stone-500 [&_.hl-fn]:font-semibold [&_.hl-fn]:text-slate-700 [&_.hl-fn-primary]:font-semibold [&_.hl-fn-primary]:text-[#ef5a4c] [&_.hl-kw]:font-semibold [&_.hl-kw]:text-[#ef5a4c] [&_.hl-num]:text-amber-700 [&_.hl-str]:text-emerald-700"
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </pre>

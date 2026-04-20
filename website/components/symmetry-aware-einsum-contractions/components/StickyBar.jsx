@@ -86,10 +86,40 @@ function symmetryLabel(variable) {
   }
 }
 
-function buildMetadataItems({ variables = [], group }) {
-  const operands = variables.map((variable) => ({
-    name: variable.name,
-    symmetry: symmetryLabel(variable),
+function symmetryLabelFromPerOp(perOpSymmetry) {
+  if (!perOpSymmetry) return 'dense';
+  if (perOpSymmetry === 'symmetric') return 'dense';
+  if (typeof perOpSymmetry === 'string') return perOpSymmetry;
+
+  const axes = Array.isArray(perOpSymmetry.axes) ? perOpSymmetry.axes : null;
+  const k = axes?.length || null;
+  switch (perOpSymmetry.type) {
+    case 'cyclic':
+      return k ? `C${k}` : 'cyclic';
+    case 'dihedral':
+      return k ? `D${k}` : 'dihedral';
+    case 'custom':
+      return axes?.length ? `custom{${axes.join(',')}}` : 'custom';
+    case 'symmetric':
+      return k ? `S${k}` : 'symmetric';
+    default:
+      return 'dense';
+  }
+}
+
+function buildMetadataItems({ example, group }) {
+  const operandNames = Array.isArray(example?.operandNames)
+    ? example.operandNames
+    : typeof example?.expression?.operandNames === 'string'
+      ? example.expression.operandNames.split(',').map((part) => part.trim()).filter(Boolean)
+      : [];
+  const perOpSymmetry = Array.isArray(example?.perOpSymmetry) ? example.perOpSymmetry : [];
+  const variablesByName = new Map((example?.variables ?? []).map((variable) => [variable.name, variable]));
+  const operands = operandNames.map((name, idx) => ({
+    name,
+    symmetry: idx < perOpSymmetry.length && perOpSymmetry[idx] !== undefined
+      ? symmetryLabelFromPerOp(perOpSymmetry[idx])
+      : symmetryLabel(variablesByName.get(name)),
   }));
   return {
     operands,
@@ -99,7 +129,7 @@ function buildMetadataItems({ variables = [], group }) {
 
 function SymmetryChip({ name, symmetry }) {
   return (
-    <span className="inline-flex items-center gap-1 rounded-full border border-primary/18 bg-white px-2 py-0.5 text-xs font-mono text-foreground shadow-sm">
+    <span className="inline-flex h-6 items-center gap-1 rounded-full border border-primary/18 bg-white px-2.5 text-xs font-mono text-foreground shadow-sm">
       <span className="font-semibold text-primary">{name}</span>
       <span className="text-muted-foreground">:</span>
       <span className="text-coral">{symmetry}</span>
@@ -140,7 +170,7 @@ function StickyMetadataPopover({ anchorRect, operands, groupLabel }) {
           </span>
         ))}
         <span className="text-stone-500">→</span>
-        <SymmetryBadge value={groupLabel} className="text-[11px] leading-5 shadow-none" />
+        <SymmetryBadge value={groupLabel} className="h-6 px-2.5 text-[11px] leading-5 shadow-none" />
       </div>
       <div
         className="absolute left-1/2 top-[-6px] h-1.5 w-3 bg-white"
@@ -155,14 +185,13 @@ function StickyMetadataPopover({ anchorRect, operands, groupLabel }) {
 }
 
 export default function StickyBar({ example, group, activeActId, hoveredLabels = null }) {
-  const variables = example?.variables ?? [];
   const [showMetadataPopover, setShowMetadataPopover] = useState(false);
   const [metadataAnchorRect, setMetadataAnchorRect] = useState(null);
   const metadataTriggerRef = useRef(null);
   const closeTimerRef = useRef(null);
   const metadataItems = useMemo(
-    () => buildMetadataItems({ variables, group }),
-    [group, variables],
+    () => buildMetadataItems({ example, group }),
+    [example, group],
   );
 
   const clearCloseTimer = () => {

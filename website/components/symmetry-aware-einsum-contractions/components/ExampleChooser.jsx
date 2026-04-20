@@ -96,6 +96,24 @@ function buildPerOpSymmetry(variables, operandNamesStr, subscriptsStr) {
   });
 }
 
+function nextVariableName(name) {
+  const seed = String(name ?? '').trim().toUpperCase();
+  if (!/^[A-Z]+$/.test(seed)) return 'A';
+
+  const chars = seed.split('');
+  let idx = chars.length - 1;
+  while (idx >= 0 && chars[idx] === 'Z') {
+    chars[idx] = 'A';
+    idx -= 1;
+  }
+  if (idx < 0) {
+    chars.unshift('A');
+  } else {
+    chars[idx] = String.fromCharCode(chars[idx].charCodeAt(0) + 1);
+  }
+  return chars.join('');
+}
+
 export default function ExampleChooser({
   examples,
   onSelect,
@@ -216,10 +234,19 @@ export default function ExampleChooser({
   }, [markCustom]);
 
   const addVar = useCallback(() => {
-    setVariables((prev) => [
-      ...prev,
-      { name: 'A', rank: 2, symmetry: 'none', symAxes: null, generators: '' },
-    ]);
+    setVariables((prev) => {
+      const lastName = prev.at(-1)?.name ?? 'A';
+      return [
+        ...prev,
+        {
+          name: nextVariableName(lastName),
+          rank: 2,
+          symmetry: 'none',
+          symAxes: null,
+          generators: '',
+        },
+      ];
+    });
     markCustom();
   }, [markCustom]);
 
