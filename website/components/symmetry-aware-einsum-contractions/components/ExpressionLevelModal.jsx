@@ -1,7 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import Latex from './Latex.jsx';
 import InlineMathText from './InlineMathText.jsx';
-import NarrativeCallout from './NarrativeCallout.jsx';
 import VSubSwConstruction from './VSubSwConstruction.jsx';
 import AppendixSection from './AppendixSection.jsx';
 import AppendixTheoremBlock from './AppendixTheoremBlock.jsx';
@@ -144,16 +143,6 @@ const COLOR_W = notationColor('w_summed');
 
 const vStyle = { color: COLOR_V, fontWeight: 600 };
 const wStyle = { color: COLOR_W, fontWeight: 600 };
-
-// Typography used by ExplorerSectionCard when its `eyebrow` prop is a plain
-// string (small-caps caption, letterspaced, muted). We reapply it here
-// whenever a callsite needs JSX for the eyebrow — specifically when the
-// label embeds a `<Latex ... />` render, since the Latex component has to be
-// a React element rather than a string. The `uppercase` transform is safe
-// on the surrounding prose because `Latex.jsx` shields its KaTeX output
-// with `text-transform: none`, so math glyphs (α, etc.) stay lowercase.
-const EYEBROW_CAPTION_CLASS =
-  'text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground';
 
 /**
  * Per-preset storage-α ledger used by §7.
@@ -484,13 +473,17 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
               </InlineMathText>
             </p>
 
-            <div className="grid gap-4 md:grid-cols-2">
-              <NarrativeCallout label="Definition">
-                {`$G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$ is the image of $G_{\\text{pt}}$ under restriction to the $V_{\\mathrm{free}}$-labels. Concretely, let $\\mathrm{Stab}_{G_{\\text{pt}}}(V_{\\mathrm{free}})$ be the subgroup of $G_{\\text{pt}}$ whose elements preserve $V_{\\mathrm{free}}$ setwise (they permute $V_{\\mathrm{free}}$-labels among themselves and $W_{\\mathrm{summed}}$-labels among themselves, without crossing). For each $\\pi \\in \\mathrm{Stab}_{G_{\\text{pt}}}(V_{\\mathrm{free}})$, record its action on $V_{\\mathrm{free}}$-positions and deduplicate; the resulting set is a subgroup of $\\mathrm{Sym}(V_{\\mathrm{free}})$, called the $\\textit{induced permutation group on }V_{\\mathrm{free}}$ and written $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$.`}
-              </NarrativeCallout>
-              <NarrativeCallout label="Interpretation on the output tensor" tone="algorithm">
-                {`For every $\\sigma \\in G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$, the output tensor satisfies $R[\\sigma\\,\\omega] = R[\\omega]$ for every $\\omega \\in [n]^{V_{\\mathrm{free}}}$. This is a genuine symmetry of the computed output tensor itself, not a symbolic invariance of the sum — the cells $R[\\omega]$ and $R[\\sigma\\,\\omega]$ carry identical values.`}
-              </NarrativeCallout>
+            <div className="max-w-[74ch] space-y-4 font-serif text-[17px] leading-[1.75] text-gray-700">
+              <p>
+                <InlineMathText>
+                  {`$G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$ is the image of $G_{\\text{pt}}$ under restriction to the $V_{\\mathrm{free}}$ labels. Concretely, let $\\mathrm{Stab}_{G_{\\text{pt}}}(V_{\\mathrm{free}})$ be the subgroup whose elements preserve $V_{\\mathrm{free}}$ setwise, then deduplicate their actions on the free positions to obtain a subgroup of $\\mathrm{Sym}(V_{\\mathrm{free}})$.`}
+                </InlineMathText>
+              </p>
+              <p>
+                <InlineMathText>
+                  {`This induced group is written $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$. For every $\\sigma$ in it, the output tensor satisfies $R[\\sigma\\,\\omega] = R[\\omega]$ for all $\\omega \\in [n]^{V_{\\mathrm{free}}}$, so the symmetry is genuine on the computed output tensor itself and not merely on the formal sum.`}
+                </InlineMathText>
+              </p>
             </div>
 
             <div className="mt-4 text-sm leading-7 text-foreground">
@@ -589,13 +582,17 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
               </InlineMathText>
             </p>
 
-            <div className="grid gap-4 md:grid-cols-2">
-              <NarrativeCallout label="Definition">
-                {`$S(W_{\\mathrm{summed}})$ is the full symmetric group on the summed labels $W_{\\mathrm{summed}}$: every permutation of $W_{\\mathrm{summed}}$, of which there are $|W_{\\mathrm{summed}}|!$ in total. Unlike $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$, the group $S(W_{\\mathrm{summed}})$ depends only on the cardinality of $W_{\\mathrm{summed}}$; it is independent of operand structure or declared symmetries.`}
-              </NarrativeCallout>
-              <NarrativeCallout label="Why every permutation of W is a formal symmetry" tone="algorithm">
-                {`W-labels are bound summation indices. Relabelling them consistently across every operand occurrence yields the identity $\\sum_{k} f(k) = \\sum_{k'} f(k')$ on the total, independent of $f$. The invariance is syntactic — it holds at the level of the formal sum — and it provides no term-level identity, since individual summand values at $k=0$ and $k=1$ need not coincide.`}
-              </NarrativeCallout>
+            <div className="max-w-[74ch] space-y-4 font-serif text-[17px] leading-[1.75] text-gray-700">
+              <p>
+                <InlineMathText>
+                  {`$S(W_{\\mathrm{summed}})$ is the full symmetric group on the summed labels $W_{\\mathrm{summed}}$. Its size is $|W_{\\mathrm{summed}}|!$, and unlike $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$ it depends only on how many summed labels there are, not on operand structure or declared symmetries.`}
+                </InlineMathText>
+              </p>
+              <p>
+                <InlineMathText>
+                  {`Every permutation of $W_{\\mathrm{summed}}$ is a formal symmetry because summed labels are dummy variables: relabelling them consistently across all operands yields the same total sum. That invariance is syntactic rather than pointwise, since individual summands at two permuted tuples need not agree.`}
+                </InlineMathText>
+              </p>
             </div>
 
             <div className="mt-4 rounded-md border border-border/60 bg-muted/20 px-5 py-4 text-sm leading-7 text-foreground">
@@ -722,13 +719,22 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
               </InlineMathText>
             </p>
 
-            <div className="grid gap-4 md:grid-cols-2">
-              <NarrativeCallout label="The open optimization">
-                {`For every $\\sigma \\in G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$, the identity $R[\\sigma\\,\\omega] = R[\\omega]$ holds on the output tensor — cell by cell, not merely in aggregate. For generic operands at $n$ large enough to separate the group's orbits, this inclusion is tight: $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$ is the complete structural $V_{\\mathrm{free}}$-symmetry of $R$. At small $n$ the index space itself can degenerate and produce coincidental $V_{\\mathrm{free}}$-symmetries that vanish at larger $n$ — e.g. $\\texttt{cross-c3-partial}$ at $n = 2$ has $R[0,1] = R[1,0]$ for every cyclic $T$, collapsing only once $n \\geq 3$ separates the cyclic orbits on $\\{i,j,k\\}$. Persistent extra $V_{\\mathrm{free}}$-symmetry at large $n$ would require value-level structure in the operands (rank-deficiency, sparsity) outside this engine's scope. A computational model with symmetry-aware output storage — where a single physical slot represents all cells in a $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$-orbit — collapses writes to mirrored cells automatically and reduces the accumulation count.`}
-              </NarrativeCallout>
-              <NarrativeCallout label={<span className={EYEBROW_CAPTION_CLASS}>Why <Latex math="\alpha" /> does not fold this in</span>} tone="algorithm">
-                {`The reported $\\alpha$ counts distinct accumulation operations in the enumerate-and-accumulate evaluation, using $G_{\\text{pt}}$ as the equivalence relation on summand values. Post-accumulation storage collapse is an independent optimization axis. Folding it into $\\alpha$ without changing the underlying computational model would conflate two distinct cost reductions and obscure the source of each.`}
-              </NarrativeCallout>
+            <div className="max-w-[74ch] space-y-4 font-serif text-[17px] leading-[1.75] text-gray-700">
+              <p>
+                <InlineMathText>
+                  {`For every $\\sigma \\in G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$, the identity $R[\\sigma\\,\\omega] = R[\\omega]$ holds on the output tensor cell by cell. For generic operands at large enough $n$, this inclusion is tight: $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$ is the complete structural $V_{\\mathrm{free}}$ symmetry of $R$.`}
+                </InlineMathText>
+              </p>
+              <p>
+                <InlineMathText>
+                  {`At small $n$, the index space can degenerate and create coincidental free-label symmetries that disappear once larger label sizes separate the relevant orbits. A symmetry-aware output store can exploit the persistent $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$ orbits by mapping each orbit of output cells to one physical slot and thereby reducing mirrored writes.`}
+                </InlineMathText>
+              </p>
+              <p>
+                <InlineMathText>
+                  {`The reported $\\alpha$ does not include that win because it counts distinct accumulation operations in the enumerate-and-accumulate model using $G_{\\text{pt}}$ as the summand-value equivalence relation. Post-accumulation storage collapse is a separate optimization axis, so folding it into $\\alpha$ would blur two different sources of savings.`}
+                </InlineMathText>
+              </p>
             </div>
 
             <div className="mt-4 rounded-md border border-border/60 bg-muted/20 px-5 py-4 text-sm leading-7 text-foreground">
@@ -830,10 +836,12 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
               </p>
             </div>
 
-            <div className="mt-4">
-              <NarrativeCallout label={<span className={EYEBROW_CAPTION_CLASS}>Scope of the reported <Latex math="\alpha" /></span>} tone="accent">
-                {`The $\\alpha$ shown on the main page counts distinct accumulation operations in the enumerate-and-accumulate evaluation model, with $G_{\\text{pt}}$ as the equivalence relation on summand values. Three optimization axes lie outside this scope: $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$-level output-tensor storage (discussed above), algebraic restructuring such as factoring $R = v\\,v^\\top$, and contraction re-ordering. Each can reduce the total operation count further than $\\alpha$ reports, and each requires algorithmic machinery distinct from the pointwise orbit compression this page measures.`}
-              </NarrativeCallout>
+            <div className="mt-4 max-w-[74ch] font-serif text-[17px] leading-[1.75] text-gray-700">
+              <p>
+                <InlineMathText>
+                  {`The $\\alpha$ shown on the main page counts distinct accumulation operations in the enumerate-and-accumulate evaluation model with $G_{\\text{pt}}$ as the equivalence relation on summand values. Output-tensor storage collapse, algebraic restructuring such as factoring $R = v\\,v^\\top$, and contraction re-ordering all sit outside that scope and require different machinery than the pointwise orbit compression measured here.`}
+                </InlineMathText>
+              </p>
             </div>
           </AppendixSection>
         </div>
