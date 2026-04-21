@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import { EXAMPLES } from './components/symmetry-aware-einsum-contractions/data/examples.js';
+import { analyzeExample } from './components/symmetry-aware-einsum-contractions/engine/pipeline.js';
 
 test('Acts 2-4 are sequenced around the inline savings narrative', () => {
   const appSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
@@ -105,8 +107,16 @@ test('ComponentCostView renders the decision ladder and component table', () => 
   // displayed in the table must match the hero formula (∏_a Mₐ, ∏_a αₐ).
   assert.match(componentCostSource, /multiplicationCount\(comp\)/);
   assert.match(componentCostSource, /accumulationCount\(comp\)/);
-  assert.match(componentCostSource, /Orbits \(Mₐ\)/);
-  assert.match(componentCostSource, /Accumulation \(αₐ\)/);
+  assert.match(componentCostSource, /NotationSymbol/);
+  assert.match(componentCostSource, /<span>Component<\/span>/);
+  assert.match(componentCostSource, /Orbits\s*<NotationSymbol id="m_component" mode="math" \/>/);
+  assert.match(componentCostSource, /Accumulations\s*<NotationSymbol id="alpha_component" mode="math" \/>/);
+  assert.match(componentCostSource, /className="space-y-2\.5"/);
+  assert.match(componentCostSource, /<span className="text-\[10px\] font-semibold uppercase tracking-\[0\.16em\] text-muted-foreground">\s*Case/);
+  assert.match(componentCostSource, /<span className="block text-\[10px\] font-semibold uppercase tracking-\[0\.16em\] text-muted-foreground">\s*Symmetry/);
+  assert.doesNotMatch(componentCostSource, /Global column header — only labels the 5 middle-row columns\.\s*\*\/[\s\S]*<span>Labels<\/span>/);
+  assert.match(componentCostSource, /function denseTupleCount\(comp, dimensionN\)/);
+  assert.match(componentCostSource, /const denseCell = denseTupleCount\(comp, dimensionN\);/);
   // The per-component table must be able to horizontally scroll on narrow
   // viewports instead of silently overflowing the page, even after the
   // editorial shell was flattened.
@@ -195,4 +205,14 @@ test('TotalCostView explains how per-component costs aggregate into the global t
   assert.ok(recapIndex !== -1 && introIndex !== -1 && aggregationIndex !== -1 && spreadIndex !== -1);
   assert.ok(recapIndex < introIndex && introIndex < aggregationIndex && aggregationIndex < spreadIndex);
   assert.doesNotMatch(totalCostSource, /Seven paths through Section 5/);
+});
+
+test('triple-outer component baselines stay size-aware', () => {
+  const tripleOuter = EXAMPLES.find((example) => example.id === 'triple-outer');
+  const analysis = analyzeExample(tripleOuter, 5);
+  const componentSizes = analysis.componentData.components
+    .map((component) => component.sizes.join(','))
+    .sort();
+
+  assert.deepEqual(componentSizes, ['3,3,3', '6']);
 });

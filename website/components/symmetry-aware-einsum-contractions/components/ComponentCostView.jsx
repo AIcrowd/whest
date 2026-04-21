@@ -5,6 +5,7 @@ import Latex from './Latex.jsx';
 import OrbitInspector from './OrbitInspector.jsx';
 import RoleBadge from './RoleBadge.jsx';
 import SymmetryBadge from './SymmetryBadge.jsx';
+import NotationSymbol from './NotationSymbol.jsx';
 import { AnchorLink } from './ExplorerSectionCard.jsx';
 import { LabelInteractionGraph } from './ComponentView.jsx';
 import DecisionLadder from './DecisionLadder.jsx';
@@ -40,6 +41,13 @@ function accumulationFormula(comp) {
 
 function supportsOrbitEnumeration(comp) {
   return !isTrivial(comp) && comp.accumulation?.regimeId === 'bruteForceOrbit';
+}
+
+function denseTupleCount(comp, dimensionN) {
+  const sizes = Array.isArray(comp.sizes) && comp.sizes.length > 0
+    ? comp.sizes
+    : Array(comp.labels?.length ?? 0).fill(dimensionN);
+  return sizes.reduce((product, size) => product * size, 1);
 }
 
 /**
@@ -100,10 +108,10 @@ function ComponentSummaryTable({
       <div
         className={`grid ${MIDDLE_COLS} items-center gap-x-4 bg-surface-raised px-5 py-2.5 text-center text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-900`}
       >
-        <span>Labels</span>
+        <span>Component</span>
         <span>Method</span>
-        <span>Orbits (Mₐ)</span>
-        <span>Accumulation (αₐ)</span>
+        <span>Orbits <NotationSymbol id="m_component" mode="math" /></span>
+        <span>Accumulations <NotationSymbol id="alpha_component" mode="math" /></span>
         <span>Savings vs dense</span>
       </div>
 
@@ -119,7 +127,7 @@ function ComponentSummaryTable({
         //   The honest global Total% lives in TotalCostView; this pill is a
         //   quick "is this component pulling its weight?" indicator.
         const labelCount = comp.labels?.length ?? 0;
-        const denseCell = dimensionN ** labelCount;
+        const denseCell = denseTupleCount(comp, dimensionN);
         const actualAcc = accumulationCount(comp);
         const pct = (actual, dense) =>
           dense > 0 ? Math.max(0, Math.round((1 - actual / dense) * 100)) : null;
@@ -139,27 +147,22 @@ function ComponentSummaryTable({
             key={`comp-${idx}`}
             className="border-t-2 border-border/70 px-5"
           >
-            {/* Band 1 — Case (full-width header band) */}
-            <div className="flex items-center gap-2 py-3">
-              <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                Case
-              </span>
-              <CaseBadge regimeId={leafId} size="sm" />
-            </div>
-
-            <div className="border-t border-border/40" aria-hidden="true" />
-
-            {/* Band 2 — the 5-column middle row */}
+            {/* the 5-column row */}
             <div className={`grid ${MIDDLE_COLS} items-start gap-x-4 py-3`}>
-              {/* Labels */}
-              <div className="space-y-3">
+              {/* Component */}
+              <div className="space-y-2.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    Case
+                  </span>
+                  <CaseBadge regimeId={leafId} size="sm" />
+                </div>
                 <LabelsCell comp={comp} />
-                <div className="w-full border-t border-border/30" aria-hidden="true" />
-                <div className="space-y-1.5">
+                <div className="space-y-1">
                   <span className="block text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                     Symmetry
                   </span>
-                  <div>
+                  <div className="flex items-center">
                     <SymmetryBadge value={comp.groupName || 'trivial'} />
                   </div>
                 </div>
@@ -193,19 +196,19 @@ function ComponentSummaryTable({
               </div>
 
               {/* Orbits Mₐ (with greyed-out dense reference) */}
-              <div className="flex items-baseline gap-1">
+              <div className="flex justify-center">
                 {M_a !== null ? (
-                  <>
+                  <div className="flex items-baseline gap-1">
                     <code className="font-mono text-sm font-semibold text-foreground">
                       {M_a.toLocaleString()}
                     </code>
                     <span
                       className="font-mono text-[11px] text-muted-foreground/60"
-                      title={`Dense orbit count = n^${labelCount} = ${denseCell.toLocaleString()} (one per assignment when no symmetry collapses any pair).`}
+                      title={`Dense tuple count = ${denseCell.toLocaleString()} (the full assignment space ${Array.isArray(comp.sizes) && comp.sizes.length > 0 ? `∏ n_ℓ over sizes ${comp.sizes.join(' × ')}` : `n^${labelCount}`} before any symmetry collapse).`}
                     >
                       / {denseCell.toLocaleString()}
                     </span>
-                  </>
+                  </div>
                 ) : (
                   <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] text-amber-800">
                     Unavailable
@@ -214,19 +217,19 @@ function ComponentSummaryTable({
               </div>
 
               {/* Acc Cost (with greyed-out dense reference) */}
-              <div className="flex items-baseline gap-1">
+              <div className="flex justify-center">
                 {actualAcc !== null ? (
-                  <>
+                  <div className="flex items-baseline gap-1">
                     <code className="font-mono text-sm font-semibold text-foreground">
                       {actualAcc.toLocaleString()}
                     </code>
                     <span
                       className="font-mono text-[11px] text-muted-foreground/60"
-                      title={`Dense baseline: one write per tuple (${denseCell.toLocaleString()} = n^${labelCount})`}
+                      title={`Dense baseline: one write per tuple (${denseCell.toLocaleString()} total assignments before symmetry).`}
                     >
                       / {denseCell.toLocaleString()}
                     </span>
-                  </>
+                  </div>
                 ) : (
                   <span
                     className="cursor-help rounded-full bg-amber-100 px-2 py-0.5 text-[11px] text-amber-800"

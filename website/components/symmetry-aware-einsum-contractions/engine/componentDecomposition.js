@@ -253,7 +253,7 @@ export function decomposeClassifyAndCount(
     const multiplication = {
       count: burnsideCount(comp.elements, compSizes).uniqueCount,
     };
-    return { ...comp, shape: shape.kind, accumulation, multiplication };
+    return { ...comp, sizes: compSizes, shape: shape.kind, accumulation, multiplication };
   });
   return { ...base, components };
 }
