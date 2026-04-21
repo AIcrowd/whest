@@ -240,9 +240,6 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
 
   if (!isOpen) return null;
 
-  // Small-caps caption, used for the top "Appendix" label on the modal header
-  // and for the section-label descriptor appearing alongside the § number.
-  const sectionCaption = 'text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground';
   return (
     <div
       className="fixed inset-0 z-[9998] flex items-start justify-center overflow-y-auto bg-black/40 px-4 py-10"
@@ -256,23 +253,27 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
         aria-modal="true"
         aria-labelledby="expr-modal-heading"
       >
-        {/* Header */}
-        <div className="flex items-start justify-between border-b border-gray-200 px-6 py-4">
-          <div>
-            <div className={sectionCaption}>Appendix</div>
-            <h2 id="expr-modal-heading" className="mt-1 font-heading text-lg font-semibold text-gray-900">
-              The formal symmetry group: <Latex math="G_{\text{f}} = G_{\text{pt}}\big|_{V_{\mathrm{free}}} \times S(W_{\mathrm{summed}})" />
+        <div className="relative px-8 pt-8 pb-6">
+          <div className="text-center">
+            <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gray-500">
+              Appendix
+            </div>
+            <h2
+              id="expr-modal-heading"
+              className="mt-3 font-heading text-[32px] font-semibold leading-tight text-gray-900"
+            >
+              Expression-level symmetry and output storage
             </h2>
-            <p className="mt-1 text-sm leading-6 text-gray-600">
+            <p className="mx-auto mt-4 max-w-[72ch] font-serif text-[17px] leading-[1.75] text-gray-700">
               <InlineMathText>
-                {`Throughout this appendix we write an einsum in the generic form $R = \\sum_t \\text{summand}(t)$, where $t$ ranges over tuples of label values in $[n]^L$ and $\\text{summand}(t) = \\prod_k T_k[s_k(t)]$ is the product of operand values at that tuple. The main page reports a single detected symmetry group $G$ and uses it to drive every cost number. Inside this appendix we refer to that group as $G_{\\text{pt}}$ — the $\\textit{pointwise symmetry group}$ — to distinguish it from the larger $\\textit{formal symmetry group}$ $G_{\\text{f}}$ discussed here. The first section below defines both groups precisely; the sections that follow construct $G_{\\text{f}}$ from its two components.`}
+                {`The main page reports the detected pointwise symmetry group that licenses orbit compression. This appendix distinguishes that group from the larger formal symmetry group, explains why Burnside on the formal group overcounts, and shows the storage-aware savings still left on the table.`}
               </InlineMathText>
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="ml-4 shrink-0 rounded-md p-1.5 text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+            className="absolute right-6 top-6 rounded-md p-1.5 text-gray-500 hover:bg-gray-100 hover:text-gray-900"
             aria-label="Close"
           >
             <svg
@@ -290,8 +291,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
           </button>
         </div>
 
-        {/* Body */}
-        <div className="space-y-10 px-6 py-6">
+        <div className="px-8 pb-10">
           {/* §1 — Definitions */}
           <AppendixSection
             n={1}
@@ -300,22 +300,32 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
             deck="The main page reports the detected symmetry group used for cost compression; this appendix separates that pointwise group from the larger formal symmetry group."
           >
 
-            <div className="grid gap-4 md:grid-cols-2">
-              <NarrativeCallout label="Compression">
-                {`The main page's goal. Given an einsum $\\sum_t \\text{summand}(t)$, report the minimum number of distinct scalar multiplications $\\mu$ and the minimum number of distinct accumulations $\\alpha$ needed to produce the output tensor, using symmetry to reuse products and share work across tuples.`}
-              </NarrativeCallout>
-              <NarrativeCallout label="Pointwise symmetry group" tone="algorithm">
-                {`$G_{\\text{pt}}$ — the subgroup of $\\mathrm{Sym}(L)$ consisting of label permutations $\\pi$ for which $\\text{summand}(t) = \\text{summand}(\\pi^{-1} t)$ holds for every tuple $t \\in [n]^L$. The invariance is required at every individual summand ("pointwise" on the tuple space), not merely on the total. $G_{\\text{pt}}$ is the largest group that licenses Burnside-style orbit compression in the enumerate-and-accumulate evaluation model, and every $\\mu$ and $\\alpha$ on the main page is computed with respect to it. Under the wreath framing of Section 3, $G_{\\text{pt}}$ is the group generated by the non-identity valid $\\pi$'s the σ-loop emits from elements of $\\prod_i (H_i \\wr S_{m_i})$ — i.e. the row-witnessed pointwise symmetries after π-dedup.`}
-              </NarrativeCallout>
-            </div>
-
-            <div className="mt-4 grid gap-4 md:grid-cols-2">
-              <NarrativeCallout label="Formal symmetry group">
-                {`$G_{\\text{f}}$ — the subgroup of $\\mathrm{Sym}(V_{\\mathrm{free}}) \\times \\mathrm{Sym}(W_{\\mathrm{summed}})$ consisting of $V_{\\mathrm{free}}$-preserving label permutations $\\pi = (\\pi_{V_{\\mathrm{free}}}, \\pi_{W_{\\mathrm{summed}}})$ under which the output tensor $R$, viewed as a polynomial in the entries of the operand tensors, is invariant: $R[\\pi_{V_{\\mathrm{free}}}\\,\\omega] = R[\\omega]$ as polynomials, after relabelling the summed indices by $\\pi_{W_{\\mathrm{summed}}}$. "Formal" has its standard mathematical meaning — invariance at the level of the expression treated as a formal polynomial, not at the level of its values on any specific operand. $G_{\\text{f}}$ decomposes into two factors with distinct detection mechanisms: a row-witnessed $V_{\\mathrm{free}}$-action (everything that arose from the σ-loop's wreath enumeration) and a row-unwitnessed $W_{\\mathrm{summed}}$-permutation (dummy renaming of summed labels, never surfaced by any row-perm).`}
-              </NarrativeCallout>
-              <NarrativeCallout label="Relationship" tone="algorithm">
-                {`$G_{\\text{pt}}$ and $G_{\\text{f}}$ live in different ambient groups. $G_{\\text{pt}} \\subseteq \\mathrm{Sym}(L)$ may include cross-$V_{\\mathrm{free}}$/$W_{\\mathrm{summed}}$ elements — permutations that send a $V_{\\mathrm{free}}$-label to a $W_{\\mathrm{summed}}$-label — whereas $G_{\\text{f}} \\subseteq \\mathrm{Sym}(V_{\\mathrm{free}}) \\times \\mathrm{Sym}(W_{\\mathrm{summed}})$ is $V_{\\mathrm{free}}$-preserving by design. They are connected through $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$, the $V_{\\mathrm{free}}$-action that $G_{\\text{pt}}$'s $V_{\\mathrm{free}}$/$W_{\\mathrm{summed}}$-preserving elements induce on $V_{\\mathrm{free}}$-labels; Section 5 shows that $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$ is exactly the $V_{\\mathrm{free}}$-factor of $G_{\\text{f}}$. The strictly-formal elements of $G_{\\text{f}}$ outside that factor are **row-unwitnessed** — dummy-variable renamings of the summed labels ($\\{e\\} \\times S(W_{\\mathrm{summed}})$) that hold only after aggregation and never appear as induced $\\pi$'s of any wreath element. For bilinear-trace (Section 3 below) $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$ has 2 elements, $S(W_{\\mathrm{summed}})$ has 2 elements, and $G_{\\text{f}}$ has 4.`}
-              </NarrativeCallout>
+            <div className="max-w-[74ch] space-y-4 font-serif text-[17px] leading-[1.75] text-gray-700">
+              <p>
+                <InlineMathText>
+                  {`The main page's goal is operational: given an einsum $\\sum_t \\text{summand}(t)$, it reports the minimum number of distinct scalar multiplications $\\mu$ and accumulations $\\alpha$ needed to produce the output tensor by reusing work across tuples.`}
+                </InlineMathText>
+              </p>
+              <p>
+                <InlineMathText>
+                  {`$G_{\\text{pt}}$ is the pointwise symmetry group acting on individual summands, while $G_{\\text{f}}$ records formal invariance of the total expression after dummy-index renaming.`}
+                </InlineMathText>
+              </p>
+              <p>
+                <InlineMathText>
+                  {`Concretely, $G_{\\text{pt}} \\subseteq \\mathrm{Sym}(L)$ consists of label permutations $\\pi$ for which $\\text{summand}(t) = \\text{summand}(\\pi^{-1} t)$ for every tuple $t \\in [n]^L$. It is the largest group that genuinely licenses Burnside-style orbit compression in the enumerate-and-accumulate model, and every main-page cost is computed with respect to it.`}
+                </InlineMathText>
+              </p>
+              <p>
+                <InlineMathText>
+                  {`By contrast, $G_{\\text{f}} \\subseteq \\mathrm{Sym}(V_{\\mathrm{free}}) \\times \\mathrm{Sym}(W_{\\mathrm{summed}})$ captures invariance of the output tensor viewed as a formal polynomial. Its extra $W_{\\mathrm{summed}}$ permutations are dummy-index renamings: they preserve the total sum after aggregation, but they do not identify equal summands tuple-by-tuple.`}
+                </InlineMathText>
+              </p>
+              <p>
+                <InlineMathText>
+                  {`These groups are related through $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$, the $V_{\\mathrm{free}}$-action induced by the $V_{\\mathrm{free}}$-preserving elements of the detected group. That induced action becomes the $V_{\\mathrm{free}}$-factor of $G_{\\text{f}}$, while the row-unwitnessed dummy renamings supply the $S(W_{\\mathrm{summed}})$ factor.`}
+                </InlineMathText>
+              </p>
             </div>
           </AppendixSection>
 
@@ -458,9 +468,6 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
               <AppendixTheoremBlock kind="Corollary">
                 {`If every $\\sigma \\in G_{\\text{wreath}}$ preserves $M$ elementwise, then $G_{\\text{pt}} = \\{e\\}$.`}
               </AppendixTheoremBlock>
-              <div className="mt-3 text-[11px] text-muted-foreground">
-                Source: <code className="font-mono">REVIEW_RESPONSE.md §5</code> — the theorem is empirically verified on 22 presets + 543 σ-checks. See <code className="font-mono">AUDIT.md</code> Appendix A for the wreath-equivalence proof.
-              </div>
             </div>
           </AppendixSection>
 
@@ -612,20 +619,29 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
             label="How the formal group is built"
             title="How the formal group is built"
           >
-            <div className="mb-2 text-sm text-muted-foreground">
+            <div className="mb-3 text-sm text-muted-foreground">
                 <Latex math="= (\text{row-witnessed V-action}) \times (\text{row-unwitnessed W-permutation})" />
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2">
-              <NarrativeCallout label="Construction">
-                {`Each pair $(\\sigma_{V_{\\mathrm{free}}},\\;\\sigma_{W_{\\mathrm{summed}}})$ with $\\sigma_{V_{\\mathrm{free}}} \\in G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$ and $\\sigma_{W_{\\mathrm{summed}}} \\in S(W_{\\mathrm{summed}})$ lifts to a single label permutation on $V_{\\mathrm{free}} \\cup W_{\\mathrm{summed}}$ that acts as $\\sigma_{V_{\\mathrm{free}}}$ on $V_{\\mathrm{free}}$-positions and as $\\sigma_{W_{\\mathrm{summed}}}$ on $W_{\\mathrm{summed}}$-positions. The set of all such lifts forms $G_{\\text{f}}$, a subgroup of $\\mathrm{Sym}(V_{\\mathrm{free}} \\cup W_{\\mathrm{summed}})$ of order $|G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}| \\cdot |W_{\\mathrm{summed}}|!$. This factorisation states the theorem: every $V_{\\mathrm{free}}$-preserving polynomial symmetry of R decomposes into a $V_{\\mathrm{free}}$-action that the wreath witnesses (row-witnessed) and a $W_{\\mathrm{summed}}$-action that no wreath element surfaces (row-unwitnessed).`}
-              </NarrativeCallout>
-              <NarrativeCallout label="Cost of construction" tone="algorithm">
-                {`No Dimino closure is required. $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$ is already determined by $G_{\\text{pt}}$, and $S(W_{\\mathrm{summed}})$ is an immediate $|W_{\\mathrm{summed}}|!$ enumeration of permutations of the summed labels. $G_{\\text{f}}$ is then the on-the-fly Cartesian product.`}
-              </NarrativeCallout>
+            <div className="max-w-[74ch] space-y-4 font-serif text-[17px] leading-[1.75] text-gray-700">
+              <p>
+                <InlineMathText>
+                  {`Each pair $(\\sigma_{V_{\\mathrm{free}}},\\;\\sigma_{W_{\\mathrm{summed}}})$ with $\\sigma_{V_{\\mathrm{free}}} \\in G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$ and $\\sigma_{W_{\\mathrm{summed}}} \\in S(W_{\\mathrm{summed}})$ lifts to a single label permutation on $V_{\\mathrm{free}} \\cup W_{\\mathrm{summed}}$ that acts separately on the free and summed positions.`}
+                </InlineMathText>
+              </p>
+              <p>
+                <InlineMathText>
+                  {`The set of all such lifts is $G_{\\text{f}}$, with order $|G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}| \\cdot |W_{\\mathrm{summed}}|!$. This is the decomposition promised by the appendix: every $V_{\\mathrm{free}}$-preserving polynomial symmetry splits into a row-witnessed action on output labels and a row-unwitnessed permutation of dummy labels.`}
+                </InlineMathText>
+              </p>
+              <p>
+                <InlineMathText>
+                  {`No additional closure step is needed at this stage. $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$ has already been determined from the detected pointwise group, $S(W_{\\mathrm{summed}})$ depends only on the number of summed labels, and $G_{\\text{f}}$ is their direct product.`}
+                </InlineMathText>
+              </p>
             </div>
 
-            <p className="mt-4 text-sm leading-7 text-foreground">
+            <p className="mt-5 text-sm leading-7 text-foreground">
               The widget below enumerates these pairs for the currently selected preset. Each row in the rightmost column corresponds to the pair{' '}
               <span className="font-mono text-[12px]">G<sub>pt</sub>|<sub>V_free</sub> row i × S(W_summed) row j</span>.
               Hovering a row in any column highlights the corresponding rows in the other two columns.
@@ -661,10 +677,12 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                     </InlineMathText>
                   </p>
                 </div>
-                <div className="mt-4">
-                  <NarrativeCallout label="Why G_pt, and not G_f" tone="accent">
-                    {`$G_{\\text{pt}}$ is the largest group under which every orbit's summand values are equal; Burnside's "one representative per orbit" principle is faithful there. Any larger group collapses orbits whose representatives Burnside would implicitly assume to be equal when they are not, yielding compression claims that do not match the true output.`}
-                  </NarrativeCallout>
+                <div className="mt-4 max-w-[74ch] font-serif text-[17px] leading-[1.75] text-gray-700">
+                  <p>
+                    <InlineMathText>
+                      {`$G_{\\text{pt}}$ is the largest group under which every orbit's summand values are genuinely equal, so Burnside's "one representative per orbit" principle is faithful there. Any larger group collapses tuples whose representatives are only formally related, producing a compression claim that does not match the actual output tensor.`}
+                    </InlineMathText>
+                  </p>
                 </div>
               </>
             ) : (
